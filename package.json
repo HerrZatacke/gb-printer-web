@@ -66,5 +66,9 @@
     "last 4 versions",
     "Firefox ESR",
     "not ie < 11"
-  ]
+  ],
+  "dependencies": {
+    "@serialport/parser-readline": "^8.0.6",
+    "serialport": "^8.0.7"
+  }
 }

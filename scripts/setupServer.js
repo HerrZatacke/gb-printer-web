@@ -1,5 +1,5 @@
+const serialportMiddleware = require('./middlewares/serialport');
+
 module.exports = (app) => {
-  app.use('/api', (req, res) => {
-    res.json({ message: 'hi from an example express middleware' });
-  });
+  app.use('/api/serial', serialportMiddleware());
 };

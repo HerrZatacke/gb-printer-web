@@ -1,0 +1,18 @@
+@import '~reset-css/sass/reset';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  @include fontFamily;
+
+  background: $color-white;
+  color: $color-black;
+}
+
+pre {
+  font-family: monospace;
+  height: 30vh;
+  overflow-y: scroll;
+}
