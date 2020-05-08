@@ -29,8 +29,9 @@ const getSerialportMiddleware = () => {
     console.error(chalk.red(error.message));
     console.error(error.stack);
   });
-  // port.on('close', () => {
-  // });
+  port.on('close', () => {
+    console.error(chalk.red('Port closed?'));
+  });
 
   const parser = port.pipe(new Readline({ delimiter: '\n' }));
 
