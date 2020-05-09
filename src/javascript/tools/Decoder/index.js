@@ -4,7 +4,7 @@ const TILE_PIXEL_WIDTH = 8;
 const TILE_PIXEL_HEIGHT = 8;
 const TILES_PER_LINE = 20;
 
-class Index {
+class Decoder {
   constructor({ canvas }) {
     this.canvas = canvas;
     this.canvasContext = this.canvas.getContext('2d');
@@ -112,4 +112,4 @@ class Index {
   }
 }
 
-export default Index;
+export default Decoder;
