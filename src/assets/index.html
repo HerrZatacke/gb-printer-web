@@ -6,7 +6,16 @@
     <title><%=htmlWebpackPlugin.options.title%></title>
   </head>
   <body>
-    <div id="app"></div>
-    <pre id="log"></pre>
+    <div class="content">
+      <div class="cform">
+        <input class="url" value="192.168.0.14:81" />
+        <button type="button" class="connect">
+          Connect
+        </button>
+      </div>
+
+      <div class="preview"><canvas width="480" height="432"></canvas></div>
+      <pre></pre>
+    </div>
   </body>
 </html>

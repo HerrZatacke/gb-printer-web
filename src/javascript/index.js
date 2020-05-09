@@ -1,28 +1,31 @@
 import 'babel-polyfill/dist/polyfill';
 import '../scss/index.scss';
-// import initApp from './app/initApp';
+import Decoder from './tools/Decoder';
+import Socket from './tools/Socket';
+import log from './tools/log';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // eslint-disable-next-line no-console
-  // console.log(JSON.stringify(CONFIG, null, 2));
-  // initApp();
 
-  const log = document.getElementById('log');
+  const decoder = new Decoder({
+    canvas: document.querySelector('canvas'),
+  });
 
-  window.setInterval(() => {
-    fetch('/api/serial')
-      .then((res) => res.json())
-      .catch((error) => [error.message])
-      .then((lines) => {
-        if (lines.length) {
-          lines.forEach((line) => {
-            log.innerText += `${line}\n`;
-          });
+  const urlField = document.querySelector('input.url');
+  const connect = document.querySelector('button.connect');
 
-          log.scrollTo(0, log.scrollHeight);
-        }
-      });
-  }, 100);
+  const socket = new Socket({
+    onMessage: (message) => {
+      log(`${message}`);
+      decoder.line(message);
+    },
+  });
 
-  log.click();
+  if (urlField.value) {
+    socket.connect(`ws://${urlField.value}/`);
+  }
+
+  connect.addEventListener('click', () => {
+    socket.connect(`ws://${urlField.value}/`);
+  });
+
 });
