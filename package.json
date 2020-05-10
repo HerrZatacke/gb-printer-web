@@ -11,13 +11,6 @@
   },
   "author": "Herr Zatacke",
   "private": true,
-  "projectConfig": {
-    "projectName": "gb-printer-web",
-    "color": {
-      "black": "rgba(4, 0, 0, 1)",
-      "white": "#ddeeff"
-    }
-  },
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.8.7",

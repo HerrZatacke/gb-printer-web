@@ -6,14 +6,13 @@
     <title><%=htmlWebpackPlugin.options.title%></title>
   </head>
   <body>
+    <div id="app"></div>
     <div class="content">
       <div class="cform">
         <input class="url" value="<%=htmlWebpackPlugin.options.socketURL%>" />
         <button type="button" class="connect">Connect</button>
         <button type="button" class="mock">Mock</button>
       </div>
-
-      <div class="preview"><canvas width="480" height="432"></canvas></div>
       <pre></pre>
     </div>
   </body>

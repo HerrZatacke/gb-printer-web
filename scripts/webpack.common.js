@@ -1,11 +1,8 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const pxtorem = require('postcss-pxtorem');
 const autoprefixer = require('autoprefixer');
-const { projectConfig } = require('../package.json');
-const jsonScss = require('./jsonScss');
 
 module.exports = ({
   socketURL,
@@ -82,9 +79,6 @@ module.exports = ({
             loader: 'sass-resources-loader',
             options: {
               resources: [
-                jsonScss({
-                  config: projectConfig,
-                }),
                 path.join(process.cwd(), 'src', 'scss', 'auto-imports', '**', '*.scss'),
               ],
             },
@@ -108,9 +102,6 @@ module.exports = ({
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',
-    }),
-    new webpack.DefinePlugin({
-      CONFIG: JSON.stringify(projectConfig),
     }),
   ],
 });

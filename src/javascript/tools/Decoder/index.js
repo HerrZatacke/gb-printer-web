@@ -5,28 +5,25 @@ const TILE_PIXEL_HEIGHT = 8;
 const TILES_PER_LINE = 20;
 
 class Decoder {
-  constructor({ canvas }) {
+
+  constructor() {
+    this.canvas = null;
+    this.canvasContext = null;
+    this.tileCount = null;
+    this.tileSize = null;
+  }
+
+  setCanvas(canvas) {
     this.canvas = canvas;
     this.canvasContext = this.canvas.getContext('2d');
     this.tileSize = this.canvas.width / (TILE_PIXEL_WIDTH * TILES_PER_LINE);
+  }
+
+  clear() {
     this.tileCount = 0;
   }
 
   line(rawLine) {
-    if ((rawLine.charAt(0) === '#')) {
-      return;
-    }
-
-    if ((rawLine.charAt(0) === '!')) {
-      try {
-        const { command } = JSON.parse(rawLine.slice(1).trim());
-        if (command === 'INIT') {
-          this.tileCount = 0;
-        }
-      } catch (error) {
-        throw new Error('Error while trying to parse JSON data command block');
-      }
-    }
 
     const tile = this.decodeTile(rawLine);
 

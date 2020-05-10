@@ -1,36 +1,12 @@
 import 'babel-polyfill/dist/polyfill';
 import '../scss/index.scss';
-import Decoder from './tools/Decoder';
-import Socket from './tools/Socket';
-import log from './tools/log';
+
+import initApp from './app/initApp';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const decoder = new Decoder({
-    canvas: document.querySelector('canvas'),
-  });
-
-  const urlField = document.querySelector('input.url');
-  const connect = document.querySelector('button.connect');
+  initApp();
   const mock = document.querySelector('button.mock');
-
-  const socket = new Socket({
-    onMessage: (message) => {
-      message.split('\n')
-        .forEach((line) => {
-          log(line);
-          decoder.line(line);
-        });
-    },
-  });
-
-  if (urlField.value) {
-    socket.connect(`ws://${urlField.value}/`);
-  }
-
-  connect.addEventListener('click', () => {
-    socket.connect(`ws://${urlField.value}/`);
-  });
 
   mock.addEventListener('click', () => {
     fetch('/mock')
