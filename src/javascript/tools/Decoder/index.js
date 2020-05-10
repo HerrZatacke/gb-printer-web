@@ -74,7 +74,8 @@ class Decoder {
     const tileYOffset = Math.floor((this.tileCount - 1) / TILES_PER_LINE);
     const pixelSize = this.canvas.width / (TILES_PER_LINE * TILE_PIXEL_WIDTH);
 
-    const colors = ['#EBC4AB', '#649a57', '#574431', '#323727'];
+    // const colors = ['#EBC4AB', '#649a57', '#574431', '#323727'];
+    const colors = ['#ffffff', '#aaaaaa', '#555555', '#000000'];
 
     const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset * pixelSize;
     const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset * pixelSize;

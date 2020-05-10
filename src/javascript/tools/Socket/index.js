@@ -66,6 +66,10 @@ class Socket {
           this.newSocket();
           break;
         case WebSocket.OPEN:
+
+          // eslint-disable-next-line no-console
+          console.log('pömgh!');
+
           this.socket.send('ping');
           break;
         default:

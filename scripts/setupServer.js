@@ -1,5 +1,5 @@
-const serialportMiddleware = require('./middlewares/serialport');
+const serialportWebsocket = require('./sockets/serialport');
 
-module.exports = (app) => {
-  app.use('/api/serial', serialportMiddleware());
+module.exports = (/* app */) => {
+  serialportWebsocket();
 };
