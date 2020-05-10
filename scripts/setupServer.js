@@ -1,5 +1,5 @@
 const serialportWebsocket = require('./sockets/serialport');
 
-module.exports = (/* app */) => {
-  serialportWebsocket();
+module.exports = (app) => {
+  serialportWebsocket(app);
 };

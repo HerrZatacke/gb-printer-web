@@ -12,11 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const urlField = document.querySelector('input.url');
   const connect = document.querySelector('button.connect');
+  const mock = document.querySelector('button.mock');
 
   const socket = new Socket({
     onMessage: (message) => {
-      log(message);
-      decoder.line(message);
+      message.split('\n')
+        .forEach((line) => {
+          log(line);
+          decoder.line(line);
+        });
     },
   });
 
@@ -26,6 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   connect.addEventListener('click', () => {
     socket.connect(`ws://${urlField.value}/`);
+  });
+
+  mock.addEventListener('click', () => {
+    fetch('/mock')
+      .then((res) => res.json())
+      // eslint-disable-next-line no-console
+      .then(console.log.bind(console))
+      .catch(console.error.bind(console));
   });
 
 });

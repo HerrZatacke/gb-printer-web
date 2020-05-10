@@ -1,20 +1,9 @@
 const WebSocketServer = require('ws').Server;
 
-const chalk = require('chalk');
+const mock = require('./mock');
+const openPorts = require('./openPorts');
 
-const SerialPort = require('serialport');
-const Readline = require('@serialport/parser-readline');
-
-const portConfig = {
-  // path: 'COM19',
-  path: 'COM12',
-  baudRate: '115200',
-  dataBits: '7',
-  stopBits: '1',
-  parity: 'even',
-};
-
-const getSerialportMiddleware = () => {
+const serialportWebsocket = (app) => {
 
   const webSocketServer = new WebSocketServer({
     port: 3001,
@@ -32,45 +21,26 @@ const getSerialportMiddleware = () => {
     });
   };
 
-  let parser = null;
+  const mockFunction = mock(broadcast);
 
-  const port = new SerialPort(portConfig.path, {
-    baudRate: parseInt(portConfig.baudRate, 10),
-    dataBits: parseInt(portConfig.dataBits, 10),
-    stopBits: parseInt(portConfig.stopBits, 10),
-    parity: portConfig.parity,
-    autoOpen: true,
+  openPorts(broadcast);
+
+  app.use('/mock', (req, res) => {
+    mockFunction();
+    res.json('mocking...');
   });
 
-  port.on('error', (error) => {
-    console.error(chalk.red(error.message));
-    console.error(error.stack);
-  });
-
-  port.on('close', () => {
-    console.error(chalk.red('Port closed?'));
-  });
-
-  port.on('open', () => {
-    parser = port.pipe(new Readline({ delimiter: '\n' }));
-
-    parser.on('data', (line) => {
-      broadcast(line);
-    });
-  });
-
-  webSocketServer.on('connection', (/* socket */) => {
-
-    // here's listening to a message from the client
-    // socket.on('message', (msg) => {
-    //   console.log(msg);
-    // });
-
-    global.setTimeout(() => {
-      broadcast('# this is a fake content');
-    }, 4000);
-  });
+  // webSocketServer.on('connection', (/* socket */) => {
+  //   here's listening to a message from the client
+  //   socket.on('message', (msg) => {
+  //     console.log(msg);
+  //   });
+  //
+  //   global.setTimeout(() => {
+  //     mock(broadcast);
+  //   }, 4000);
+  // });
 
 };
 
-module.exports = getSerialportMiddleware;
+module.exports = serialportWebsocket;
