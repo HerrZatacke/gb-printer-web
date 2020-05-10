@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const image = require('./image');
 
-const mock = (broadcast) => {
+const mock = (sendMessage) => {
   let isMocking;
 
   const concatImage = image.reduce((acc, { timestamp, command }) => {
@@ -28,7 +28,12 @@ const mock = (broadcast) => {
 
     concatImage.forEach(({ timestamp, command }, index) => {
       global.setTimeout(() => {
-        broadcast(command);
+
+        if (command.charAt(0) === '#') {
+          sendMessage(`# MOCK ${command}`);
+        } else {
+          sendMessage(command);
+        }
 
         if (index + 1 === concatImage.length) {
           isMocking = false;
