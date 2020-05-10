@@ -1,11 +1,7 @@
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
-const contentOptions = {
-  socketURL: 'localhost:3001',
-};
-
-module.exports = merge(common(contentOptions), {
+module.exports = merge(common(), {
   mode: 'production',
   devtool: false,
 });

@@ -4,11 +4,7 @@ const merge = require('webpack-merge');
 const setupServer = require('./setupServer');
 const common = require('./webpack.common.js');
 
-const contentOptions = {
-  socketURL: 'localhost:3001',
-};
-
-module.exports = merge(common(contentOptions), {
+module.exports = merge(common(), {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   devServer: {

@@ -10,7 +10,11 @@ const initApp = () => {
     return;
   }
 
-  render(<Provider store={getStore()}><App /></Provider>, appRoot);
+  const initialState = {
+    socketUrl: 'localhost:3001',
+  };
+
+  render(<Provider store={getStore(initialState)}><App /></Provider>, appRoot);
 };
 
 export default initApp;

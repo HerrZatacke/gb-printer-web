@@ -9,8 +9,18 @@
     display: flex;
   }
 
-  &__entry {
-    border-right: 1px solid rgba($color-white, 0.3);
+  &__entry{
+    position: relative;
+  }
+
+  &__entry:after {
+    content: '';
+    height: 40px;
+    width: 1px;
+    position: absolute;
+    right: 0;
+    top: 10px;
+    background-color: rgba($color-white, 0.15);
   }
 
   &__link {
@@ -18,14 +28,12 @@
     display: block;
     padding: 20px;
     line-height: 20px;
-    color: $color-white;
+    color: $color-primary-text;
 
-    &--active {
-      background-color: $color-secondary;
-    }
-
+    &--active,
     &:hover {
       background-color: $color-secondary;
+      color: $color-secondary-text
     }
   }
 }

@@ -2,6 +2,12 @@
   position: relative;
 
   &__content {
-    padding-top: 60px;
+    padding: 80px 20px 20px 20px;
+  }
+
+  &__content-headline {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: $color-primary;
   }
 }

@@ -4,9 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const pxtorem = require('postcss-pxtorem');
 const autoprefixer = require('autoprefixer');
 
-module.exports = ({
-  socketURL,
-}) => ({
+module.exports = () => ({
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
   },
@@ -94,7 +92,6 @@ module.exports = ({
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Gameboy Printer Web',
-      socketURL,
       template: './src/assets/index.html',
       filename: 'index.html',
       chunks: ['main'],

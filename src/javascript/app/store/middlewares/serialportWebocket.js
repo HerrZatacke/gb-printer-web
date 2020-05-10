@@ -49,22 +49,18 @@ const serialportWebocket = (store) => {
     },
   });
 
+  const socketUrl = store.getState().socketUrl;
+  if (socketUrl) {
+    socket.connect(`ws://${socketUrl}/`);
+  }
 
-  // Todo: handle these canges in state
-  window.setTimeout(() => {
-    const urlField = document.querySelector('input.url');
-    const connect = document.querySelector('button.connect');
-
-    if (urlField.value) {
-      socket.connect(`ws://${urlField.value}/`);
+  return (next) => (action) => {
+    if (action.type === 'SET_SOCKET_URL') {
+      socket.connect(`ws://${action.payload}/`);
     }
 
-    connect.addEventListener('click', () => {
-      socket.connect(`ws://${urlField.value}/`);
-    });
-  }, 2000);
-
-  return (next) => (action) => next(action);
+    return next(action);
+  };
 };
 
 export default serialportWebocket;
