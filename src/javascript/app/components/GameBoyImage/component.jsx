@@ -1,5 +1,7 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import classnames from 'classnames';
 import Decoder from '../../../tools/Decoder';
 
 class GameBoyImage extends Component {
@@ -23,8 +25,15 @@ class GameBoyImage extends Component {
 
   render() {
     return (
-      <div className="gameboy-image">
-        <canvas width={160} ref={this.canvasRef} />
+      <div className={
+        classnames('gameboy-image', {
+          'gameboy-image--receiving': this.props.tiles.length,
+        })
+      }
+      >
+        <Link to="/gallery">
+          <canvas width={160} ref={this.canvasRef} />
+        </Link>
       </div>
     );
   }

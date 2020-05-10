@@ -1,29 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 
 const Navigation = (/* props */) => (
   <nav className="navigation">
     <ul className="navigation__list">
       <li className="navigation__entry">
-        <Link to="/" className="navigation__link">
+        <NavLink to="/" activeClassName="navigation__link--active" className="navigation__link" exact>
           Home
-        </Link>
+        </NavLink>
       </li>
       <li className="navigation__entry">
-        <Link to="/gallery" className="navigation__link">
+        <NavLink to="/gallery" activeClassName="navigation__link--active" className="navigation__link" exact>
           Gallery
-        </Link>
+        </NavLink>
       </li>
       <li className="navigation__entry">
-        <Link to="/palettes" className="navigation__link">
+        <NavLink to="/palettes" activeClassName="navigation__link--active" className="navigation__link" exact>
           Palettes
-        </Link>
+        </NavLink>
       </li>
       <li className="navigation__entry">
-        <Link to="/settings" className="navigation__link">
+        <NavLink to="/settings" activeClassName="navigation__link--active" className="navigation__link" exact>
           Settings
-        </Link>
+        </NavLink>
       </li>
     </ul>
   </nav>

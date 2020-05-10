@@ -17,6 +17,15 @@
     text-decoration: none;
     display: block;
     padding: 20px;
+    line-height: 20px;
     color: $color-white;
+
+    &--active {
+      background-color: $color-secondary;
+    }
+
+    &:hover {
+      background-color: $color-secondary;
+    }
   }
 }
