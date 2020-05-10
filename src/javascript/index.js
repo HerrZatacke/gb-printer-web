@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const socket = new Socket({
     onMessage: (message) => {
-      log(`${message}`);
+      log(message);
       decoder.line(message);
     },
   });

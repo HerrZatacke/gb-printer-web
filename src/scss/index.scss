@@ -23,9 +23,15 @@ pre {
 .preview {
   display: block;
   width: 480px;
+  max-width: 100vw;
+  min-height: 432px;
   margin: 0 auto;
   height: 432px;
   background: #102540;
+
+  canvas {
+    width: 100%;
+  }
 }
 
 input.url {
