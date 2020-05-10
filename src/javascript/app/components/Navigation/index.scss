@@ -1,3 +1,22 @@
 .navigation {
   background-color: $color-primary;
+  box-shadow: 0 -6px 6px 6px rgba($color-black, 0.7);
+  position: fixed;
+  width: 100vw;
+
+  &__list {
+    width: 100vw;
+    display: flex;
+  }
+
+  &__entry {
+    border-right: 1px solid rgba($color-white, 0.3);
+  }
+
+  &__link {
+    text-decoration: none;
+    display: block;
+    padding: 20px;
+    color: $color-white;
+  }
 }
