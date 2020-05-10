@@ -29,11 +29,7 @@ const mock = (sendMessage) => {
     concatImage.forEach(({ timestamp, command }, index) => {
       global.setTimeout(() => {
 
-        if (command.charAt(0) === '#') {
-          sendMessage(`# MOCK ${command}`);
-        } else {
-          sendMessage(command);
-        }
+        sendMessage(command);
 
         if (index + 1 === concatImage.length) {
           isMocking = false;

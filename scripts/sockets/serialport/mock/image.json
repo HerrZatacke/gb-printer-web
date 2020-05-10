@@ -1,6 +1,6 @@
 [
-  { "timestamp": 0, "command": "# GAMEBOY PRINTER EMULATION PROJECT"},
-  { "timestamp": 0, "command": "# By Brian Khuu (2017)"},
+  { "timestamp": 0, "command": "# MOCK # GAMEBOY PRINTER EMULATION PROJECT"},
+  { "timestamp": 0, "command": "# MOCK # By Brian Khuu (2017)"},
   { "timestamp": 402, "command": "!{\"command\":\"INIT\"}"},
   { "timestamp": 1211, "command": "!{\"command\":\"DATA\",\"compressed\":0,\"more\":1}"},
   { "timestamp": 1211, "command": "FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF"},
@@ -397,6 +397,6 @@
   { "timestamp": 16485, "command": "!{\"command\":\"INQY\",\"status\":{\"lowbatt\":0,\"jam\":0,\"err\":0,\"pkterr\":0,\"unproc\":0,\"full\":1,\"bsy\":1,\"chk_err\":0}}"},
   { "timestamp": 16587, "command": "!{\"command\":\"INQY\",\"status\":{\"lowbatt\":0,\"jam\":0,\"err\":0,\"pkterr\":0,\"unproc\":0,\"full\":1,\"bsy\":1,\"chk_err\":0}}"},
   { "timestamp": 16687, "command": "!{\"command\":\"INQY\",\"status\":{\"lowbatt\":0,\"jam\":0,\"err\":0,\"pkterr\":0,\"unproc\":0,\"full\":1,\"bsy\":1,\"chk_err\":0}}"},
-  { "timestamp": 16687, "command": "# Finished Pretending To Print for fun!"},
+  { "timestamp": 16687, "command": "# MOCK # Finished Pretending To Print for fun!"},
   { "timestamp": 16788, "command": "!{\"command\":\"INQY\",\"status\":{\"lowbatt\":0,\"jam\":0,\"err\":0,\"pkterr\":0,\"unproc\":0,\"full\":1,\"bsy\":0,\"chk_err\":0}}"}
 ]
