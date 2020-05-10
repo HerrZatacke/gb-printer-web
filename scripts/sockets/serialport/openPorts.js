@@ -39,7 +39,11 @@ const openPorts = (sendMessage) => {
       parser = port.pipe(new Readline({ delimiter: '\n' }));
 
       parser.on('data', (line) => {
-        sendMessage(line);
+        if (line.charAt(0) === '#') {
+          sendMessage(`# ${portConfig.path} ${line}`);
+        } else {
+          sendMessage(line);
+        }
       });
     });
   });
