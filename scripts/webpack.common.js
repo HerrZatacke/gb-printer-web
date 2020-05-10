@@ -7,7 +7,9 @@ const autoprefixer = require('autoprefixer');
 const { projectConfig } = require('../package.json');
 const jsonScss = require('./jsonScss');
 
-module.exports = {
+module.exports = ({
+  socketURL,
+}) => ({
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
   },
@@ -98,6 +100,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Gameboy Printer Web',
+      socketURL,
       template: './src/assets/index.html',
       filename: 'index.html',
       chunks: ['main'],
@@ -110,4 +113,4 @@ module.exports = {
       CONFIG: JSON.stringify(projectConfig),
     }),
   ],
-};
+});
