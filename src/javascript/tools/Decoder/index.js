@@ -11,6 +11,7 @@ class Decoder {
     this.canvasContext = null;
     this.lastTileIndex = null;
     this.tileSize = null;
+    this.tiles = [];
     this.colors = [];
   }
 
@@ -22,10 +23,12 @@ class Decoder {
 
   setPalette(palette) {
     this.colors = palette;
+    this.fullRender();
   }
 
   clear() {
     this.lastTileIndex = 0;
+    this.tiles = [];
   }
 
   line(index, rawLine) {
@@ -37,8 +40,16 @@ class Decoder {
       return;
     }
 
+    this.tiles[index] = rawLine;
+
     this.checkResize();
     this.renderTile(tile, 3, 3);
+  }
+
+  fullRender() {
+    this.tiles.forEach((tile, index) => {
+      this.line(index, tile);
+    });
   }
 
   // Gameboy tile decoder function from http://www.huderlem.com/demos/gameboy2bpp.html
