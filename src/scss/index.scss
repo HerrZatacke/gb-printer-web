@@ -7,7 +7,7 @@
 body {
   @include fontFamily;
 
-  background: $color-white;
+  background: $page-background;
   color: $color-black;
 }
 
