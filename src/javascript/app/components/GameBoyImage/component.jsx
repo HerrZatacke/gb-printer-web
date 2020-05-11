@@ -12,16 +12,7 @@ class GameBoyImage extends Component {
   }
 
   componentDidUpdate() {
-    this.decoder.setCanvas(this.canvasRef.current);
-    this.decoder.setPalette(this.props.palette);
-    const newestLine = this.props.tiles[this.props.tiles.length - 1];
-
-    if (!newestLine) {
-      this.decoder.clear();
-      return;
-    }
-
-    this.decoder.line(this.props.tiles.length, newestLine);
+    this.decoder.update(this.canvasRef.current, this.props.palette, this.props.tiles);
   }
 
   render() {

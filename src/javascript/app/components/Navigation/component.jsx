@@ -25,6 +25,11 @@ const Navigation = (/* props */) => (
           Settings
         </NavLink>
       </li>
+      <li className="navigation__entry">
+        <NavLink to="/dump" activeClassName="navigation__link--active" className="navigation__link" exact>
+          Dump
+        </NavLink>
+      </li>
     </ul>
   </nav>
 );

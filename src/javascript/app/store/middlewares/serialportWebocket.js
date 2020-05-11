@@ -1,4 +1,5 @@
 import Sockette from '../../../libs/sockette';
+import handleLines from '../../../tools/handleLines';
 
 const serialportWebocket = (store) => {
 
@@ -19,37 +20,9 @@ const serialportWebocket = (store) => {
       onmessage: ({ data }) => {
         data
           .split('\n')
-          .forEach((rawLine) => {
-            // commented lines are not saved
-            if ((rawLine.charAt(0) === '#')) {
-              return;
-            }
-
-            // ! indicates a command
-            if ((rawLine.charAt(0) === '!')) {
-              try {
-                const { command } = JSON.parse(rawLine.slice(1).trim());
-                if (command === 'INIT') {
-                  store.dispatch({
-                    type: 'CLEAR_LINES',
-                    payload: rawLine,
-                  });
-                }
-              } catch (error) {
-                store.dispatch({
-                  type: 'PARSE_ERROR',
-                  payload: 'Error while trying to parse JSON data command block',
-                });
-              }
-
-              return;
-            }
-
-            store.dispatch({
-              type: 'NEW_LINE',
-              payload: rawLine,
-            });
-          });
+          .map(handleLines)
+          .filter(Boolean)
+          .forEach(store.dispatch);
       },
     });
   }, 1000);

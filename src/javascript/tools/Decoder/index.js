@@ -9,46 +9,89 @@ class Decoder {
   constructor() {
     this.canvas = null;
     this.canvasContext = null;
-    this.lastTileIndex = null;
     this.tileSize = null;
     this.tiles = [];
     this.colors = [];
   }
 
+  update(canvas, palette, tiles) {
+
+    const canvasChanged = this.setCanvas(canvas); // true/false
+    const paletteChanged = this.setPalette(palette); // true/false
+    const tilesChanged = this.setTiles(tiles); // actual list of tiles that have changed
+
+    // if canvas or palette have changed, or tiles were cleared, always do a full render
+    if (canvasChanged || paletteChanged || !this.tiles.length) {
+      this.fullRender();
+      return;
+    }
+
+    // we have a list of some updated tiles
+    if (tilesChanged.length) {
+      tilesChanged.forEach(({ index, newTile }) => {
+        this.renderTile(index, newTile);
+      });
+    }
+  }
+
   setCanvas(canvas) {
+    if (this.canvas === canvas) {
+      return false;
+    }
+
     this.canvas = canvas;
     this.canvasContext = this.canvas.getContext('2d');
     this.tileSize = this.canvas.width / (TILE_PIXEL_WIDTH * TILES_PER_LINE);
+
+    return true;
   }
 
   setPalette(palette) {
+    if (JSON.stringify(this.colors) === JSON.stringify(palette)) {
+      return false;
+    }
+
     this.colors = palette;
-    this.fullRender();
+
+    return true;
   }
 
-  clear() {
-    this.lastTileIndex = 0;
-    this.tiles = [];
+  setTiles(tiles) {
+
+    const changedTiles = tiles
+      .map((newTile, index) => {
+        const changed = newTile !== this.tiles[index];
+
+        if (!changed) {
+          return null;
+        }
+
+        return {
+          index,
+          newTile,
+        };
+      })
+      .filter(Boolean);
+
+    this.tiles = tiles;
+    return changedTiles;
   }
 
-  line(index, rawLine) {
-
-    this.lastTileIndex = index;
+  renderTile(tileIndex, rawLine) {
     const tile = this.decodeTile(rawLine);
 
     if (!tile) {
       return;
     }
 
-    this.tiles[index] = rawLine;
-
     this.checkResize();
-    this.renderTile(tile);
+    this.paintTile(tile, tileIndex);
   }
 
   fullRender() {
+    this.checkResize();
     this.tiles.forEach((tile, index) => {
-      this.line(index, tile);
+      this.renderTile(index, tile);
     });
   }
 
@@ -81,10 +124,9 @@ class Decoder {
   }
 
   // This paints the tile with a specified offset and pixel width
-  renderTile(pixels) {
-
-    const tileXOffset = (this.lastTileIndex - 1) % TILES_PER_LINE;
-    const tileYOffset = Math.floor((this.lastTileIndex - 1) / TILES_PER_LINE);
+  paintTile(pixels, index) {
+    const tileXOffset = index % TILES_PER_LINE;
+    const tileYOffset = Math.floor(index / TILES_PER_LINE);
     const pixelSize = this.canvas.width / (TILES_PER_LINE * TILE_PIXEL_WIDTH);
 
     const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset * pixelSize;
@@ -110,16 +152,18 @@ class Decoder {
   }
 
   checkResize() {
-    const tileHeightCount = Math.ceil(this.lastTileIndex / TILES_PER_LINE);
-
+    const tileHeightCount = Math.ceil(this.tiles.length / TILES_PER_LINE);
     const newHeight = this.tileSize * TILE_PIXEL_HEIGHT * tileHeightCount;
-    const imageData = this.canvasContext.getImageData(0, 0, this.canvas.width, this.canvas.height);
 
     if (this.canvas.height !== newHeight) {
-      this.canvas.height = newHeight;
+      if (this.canvas.height) {
+        const imageData = this.canvasContext.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        this.canvas.height = newHeight;
+        this.canvasContext.putImageData(imageData, 0, 0);
+      } else {
+        this.canvas.height = newHeight;
+      }
     }
-
-    this.canvasContext.putImageData(imageData, 0, 0);
   }
 }
 

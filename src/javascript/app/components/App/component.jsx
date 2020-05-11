@@ -5,6 +5,7 @@ import Navigation from '../Navigation';
 import GameBoyImage from '../GameBoyImage';
 import Settings from '../Settings';
 import Palettes from '../Palettes';
+import Dump from '../Dump';
 
 const App = (/* props */) => (
   <Router>
@@ -22,6 +23,10 @@ const App = (/* props */) => (
         <Route path="/settings">
           <h1 className="app__content-headline">Settings</h1>
           <Settings />
+        </Route>
+        <Route path="/dump">
+          <h1 className="app__content-headline">Paste your plaintext</h1>
+          <Dump />
         </Route>
         <Route path="/">
           <h1 className="app__content-headline">Home</h1>
