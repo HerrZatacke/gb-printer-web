@@ -9,8 +9,9 @@ class Decoder {
   constructor() {
     this.canvas = null;
     this.canvasContext = null;
-    this.tileCount = null;
+    this.lastTileIndex = null;
     this.tileSize = null;
+    this.colors = [];
   }
 
   setCanvas(canvas) {
@@ -19,19 +20,23 @@ class Decoder {
     this.tileSize = this.canvas.width / (TILE_PIXEL_WIDTH * TILES_PER_LINE);
   }
 
-  clear() {
-    this.tileCount = 0;
+  setPalette(palette) {
+    this.colors = palette;
   }
 
-  line(rawLine) {
+  clear() {
+    this.lastTileIndex = 0;
+  }
 
+  line(index, rawLine) {
+
+    this.lastTileIndex = index;
     const tile = this.decodeTile(rawLine);
 
     if (!tile) {
       return;
     }
 
-    this.tileCount += 1;
     this.checkResize();
     this.renderTile(tile, 3, 3);
   }
@@ -67,12 +72,9 @@ class Decoder {
   // This paints the tile with a specified offset and pixel width
   renderTile(pixels) {
 
-    const tileXOffset = (this.tileCount - 1) % TILES_PER_LINE;
-    const tileYOffset = Math.floor((this.tileCount - 1) / TILES_PER_LINE);
+    const tileXOffset = (this.lastTileIndex - 1) % TILES_PER_LINE;
+    const tileYOffset = Math.floor((this.lastTileIndex - 1) / TILES_PER_LINE);
     const pixelSize = this.canvas.width / (TILES_PER_LINE * TILE_PIXEL_WIDTH);
-
-    // const colors = ['#EBC4AB', '#649a57', '#574431', '#323727'];
-    const colors = ['#ffffff', '#aaaaaa', '#555555', '#000000'];
 
     const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset * pixelSize;
     const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset * pixelSize;
@@ -83,7 +85,7 @@ class Decoder {
         // pixels along the tile's y axis
 
         // Pixel Color
-        this.canvasContext.fillStyle = colors[pixels[(y * TILE_PIXEL_WIDTH) + x]];
+        this.canvasContext.fillStyle = this.colors[pixels[(y * TILE_PIXEL_WIDTH) + x]];
 
         // Pixel Position (Needed to add +1 to pixel width and height to fill in a gap)
         this.canvasContext.fillRect(
@@ -97,7 +99,7 @@ class Decoder {
   }
 
   checkResize() {
-    const tileHeightCount = Math.ceil(this.tileCount / TILES_PER_LINE);
+    const tileHeightCount = Math.ceil(this.lastTileIndex / TILES_PER_LINE);
 
     const newHeight = this.tileSize * TILE_PIXEL_HEIGHT * tileHeightCount;
     const imageData = this.canvasContext.getImageData(0, 0, this.canvas.width, this.canvas.height);

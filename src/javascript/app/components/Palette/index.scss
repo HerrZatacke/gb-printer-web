@@ -1,0 +1,21 @@
+.palette {
+  height: 40px;
+
+  &--active {
+    background: $color-secondary;
+  }
+
+  &__shortname {
+    font-size: 12px;
+    color: $color-text-bright;
+  }
+
+  &__name {
+    padding: 0 15px;
+  }
+
+  &__color {
+    width: 70px;
+  }
+}
+

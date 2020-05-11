@@ -4,6 +4,7 @@ import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
 import GameBoyImage from '../GameBoyImage';
 import Settings from '../Settings';
+import Palettes from '../Palettes';
 
 const App = (/* props */) => (
   <Router>
@@ -16,6 +17,7 @@ const App = (/* props */) => (
         </Route>
         <Route path="/palettes">
           <h1 className="app__content-headline">Palettes</h1>
+          <Palettes />
         </Route>
         <Route path="/settings">
           <h1 className="app__content-headline">Settings</h1>

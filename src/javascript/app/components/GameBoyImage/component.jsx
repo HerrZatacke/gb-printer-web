@@ -13,6 +13,7 @@ class GameBoyImage extends Component {
 
   componentDidUpdate() {
     this.decoder.setCanvas(this.canvasRef.current);
+    this.decoder.setPalette(this.props.palette);
     const newestLine = this.props.tiles[this.props.tiles.length - 1];
 
     if (!newestLine) {
@@ -20,7 +21,7 @@ class GameBoyImage extends Component {
       return;
     }
 
-    this.decoder.line(newestLine);
+    this.decoder.line(this.props.tiles.length, newestLine);
   }
 
   render() {
@@ -41,6 +42,7 @@ class GameBoyImage extends Component {
 
 GameBoyImage.propTypes = {
   tiles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  palette: PropTypes.array.isRequired,
 };
 
 GameBoyImage.defaultProps = {
