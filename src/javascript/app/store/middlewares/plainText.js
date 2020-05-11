@@ -11,6 +11,7 @@ const plainText = (store) => (next) => (action) => {
       .map(handleLines)
       .filter(Boolean)
       .filter(({ type }) => (type === 'NEW_LINE'))
+      // ToDo: check for multiple images in Dump
       .map(({ payload }) => payload)
       .filter(Boolean);
 
