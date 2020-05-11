@@ -2,24 +2,39 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+const GRADIENT_OPACITY = '36';
+
 const Component = (props) => (
-  <tr
+  <li
     className={
       classnames('palette', {
         'palette--active': props.isActive,
       })
     }
-    onClick={() => {
-      props.setActive();
+    style={{
+      backgroundImage: `linear-gradient(to right, ${props.palette[0]}${GRADIENT_OPACITY} 0%, ${props.palette[1]}${GRADIENT_OPACITY} 33.3%, ${props.palette[2]}${GRADIENT_OPACITY} 66.6%, ${props.palette[3]}${GRADIENT_OPACITY} 100%)`,
     }}
   >
-    <td className="palette__shortname">{props.shortName}</td>
-    <td className="palette__name">{props.name}</td>
-    <td className="palette__color" style={{ backgroundColor: props.palette[0] }} title={props.palette[0]}> </td>
-    <td className="palette__color" style={{ backgroundColor: props.palette[1] }} title={props.palette[1]}> </td>
-    <td className="palette__color" style={{ backgroundColor: props.palette[2] }} title={props.palette[2]}> </td>
-    <td className="palette__color" style={{ backgroundColor: props.palette[3] }} title={props.palette[3]}> </td>
-  </tr>
+    <button
+      className="palette__set-active"
+      type="button"
+      onClick={() => {
+        props.setActive();
+      }}
+    >
+      Set this palette active
+    </button>
+    <div className="palette__name">
+      {props.name}
+      <span className="palette__shortname">{props.shortName}</span>
+    </div>
+    <div className="palette__colors">
+      <div className="palette__color" style={{ backgroundColor: props.palette[0] }} title={props.palette[0]}> </div>
+      <div className="palette__color" style={{ backgroundColor: props.palette[1] }} title={props.palette[1]}> </div>
+      <div className="palette__color" style={{ backgroundColor: props.palette[2] }} title={props.palette[2]}> </div>
+      <div className="palette__color" style={{ backgroundColor: props.palette[3] }} title={props.palette[3]}> </div>
+    </div>
+  </li>
 );
 
 Component.propTypes = {

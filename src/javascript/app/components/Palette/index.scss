@@ -1,21 +1,56 @@
 .palette {
-  height: 40px;
+  position: relative;
+  padding: 20px;
+  margin: 10px 0;
+  border-radius: 6px;
+  box-shadow: rgba($color-secondary, 0.4) 1px 2px 4px 0;
 
   &--active {
     background: $color-secondary;
   }
 
-  &__shortname {
-    font-size: 12px;
-    color: $color-text-bright;
+  &:hover {
+    background: $color-secondary;
+  }
+
+  &__set-active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    user-select: none;
   }
 
   &__name {
-    padding: 0 15px;
+    font-size: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-right: 40px;
+  }
+
+  &__shortname {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+    color: $color-secondary;
+  }
+
+  &--active &__shortname {
+    color: $color-primary;
+  }
+
+  &__colors {
+    display: flex;
+    justify-content: space-between;
   }
 
   &__color {
-    width: 70px;
+    flex-basis: 25%;
+    height: 40px;
   }
 }
 

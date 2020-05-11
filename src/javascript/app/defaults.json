@@ -1,5 +1,6 @@
 {
   "socketUrl": "gameboycamera.local:81",
+  "activePalette": "bw",
   "palettes": [
     {
       "name": "Black & White",
@@ -43,7 +44,7 @@
     },
     {
       "name": "The death of Yung Columbus",
-      "shortName": "tdocy",
+      "shortName": "tdoyc",
       "palette": ["#b5ff32", "#ff2261", "#462917", "#1d1414"]
     },
     {

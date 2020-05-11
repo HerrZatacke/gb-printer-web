@@ -3,7 +3,7 @@
   width: 160px;
   min-height: 144px;
   background: $color-secondary;
-  position: absolute;
+  position: fixed;
   top: -100px;
   right: 0;
   transition: top 300ms ease-in-out;

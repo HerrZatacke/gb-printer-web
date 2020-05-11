@@ -3,6 +3,7 @@
   box-shadow: 0 -6px 6px 6px rgba($color-black, 0.7);
   position: fixed;
   width: 100vw;
+  z-index: $z-index-navigation;
 
   &__list {
     width: 100vw;
