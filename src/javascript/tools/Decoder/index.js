@@ -43,7 +43,7 @@ class Decoder {
     this.tiles[index] = rawLine;
 
     this.checkResize();
-    this.renderTile(tile, 3, 3);
+    this.renderTile(tile);
   }
 
   fullRender() {
