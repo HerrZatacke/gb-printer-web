@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SocketStateIndicator from '../SocketStateIndicator';
 
 class Settings extends React.Component {
   constructor(props) {
@@ -21,33 +22,58 @@ class Settings extends React.Component {
   render() {
     return (
       <div className="settings">
-        <input
-          className="url"
-          value={this.state.socketUrl}
-          onChange={({ target }) => {
-            this.setState({
-              sync: false,
-              socketUrl: target.value,
-            });
-          }}
-        />
-        <button
-          type="button"
-          onClick={() => {
-            this.setState({
-              sync: true,
-            });
-            this.props.updateSocketUrl(this.state.socketUrl);
-          }}
-        >
-          Connect
-        </button>
-        <button
-          type="button"
-          onClick={this.props.startMock}
-        >
-          Mock
-        </button>
+        <div className="settings__inputgroup">
+          <label htmlFor="settings-url" className="settings__label">
+            Remote Socket URL
+            <SocketStateIndicator />
+          </label>
+          <input
+            id="settings-url"
+            className="settings__input"
+            value={this.state.socketUrl}
+            onChange={({ target }) => {
+              this.setState({
+                sync: false,
+                socketUrl: target.value,
+              });
+            }}
+            onKeyUp={(ev) => {
+              switch (ev.key) {
+                case 'Enter':
+                  this.props.updateSocketUrl(this.state.socketUrl);
+                  break;
+                case 'Escape':
+                  this.setState({
+                    socketUrl: this.props.socketUrl,
+                    sync: true,
+                  });
+                  break;
+                default:
+              }
+            }}
+          />
+          <button
+            type="button"
+            className="settings__button"
+            onClick={() => {
+              this.setState({
+                sync: true,
+              });
+              this.props.updateSocketUrl(this.state.socketUrl);
+            }}
+          >
+            Connect
+          </button>
+        </div>
+        <div className="settings__inputgroup">
+          <button
+            type="button"
+            className="settings__button"
+            onClick={this.props.startMock}
+          >
+            Mock
+          </button>
+        </div>
       </div>
     );
   }

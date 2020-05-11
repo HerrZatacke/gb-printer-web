@@ -2,12 +2,15 @@
   position: relative;
 
   &__content {
-    padding: 80px 20px 20px 20px;
+    width: 600px;
+    max-width: 600px;
+    margin: auto;
+    padding: 120px 20px 20px 20px;
   }
 
   &__content-headline {
     font-size: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     color: $color-primary;
   }
 }

@@ -1,62 +1,62 @@
-import Socket from '../../../tools/Socket';
+import Sockette from '../../../libs/sockette';
 
 const serialportWebocket = (store) => {
 
-  const socket = new Socket({
-    onMessage: (message) => {
-      message.split('\n')
-        .forEach((rawLine) => {
-          // commented lines are not saved
-          if ((rawLine.charAt(0) === '#')) {
-            return;
-          }
+  const socketUrl = store.getState().socketUrl;
 
-          // ! indicates a command
-          if ((rawLine.charAt(0) === '!')) {
-            try {
-              const { command, more } = JSON.parse(rawLine.slice(1).trim());
+  let socket;
 
-              if (command === 'INIT') {
-                store.dispatch({
-                  type: 'CLEAR_LINES',
-                });
-                return;
-              }
-
-              if (command === 'DATA' && more === 0) {
-                store.dispatch({
-                  type: 'IMAGE_COMPLETE',
-                });
-                return;
-              }
-
-              return;
-            } catch (error) {
-              store.dispatch({
-                type: 'PARSE_ERROR',
-                payload: 'Error while trying to parse JSON data command block',
-              });
+  window.setTimeout(() => {
+    socket = new Sockette(`ws://${socketUrl}`, {
+      timeout: 5000,
+      maxAttempts: 10,
+      onstatechange: (readyState) => {
+        store.dispatch({
+          type: 'SET_SOCKET_STATE',
+          payload: readyState,
+        });
+      },
+      onmessage: ({ data }) => {
+        data
+          .split('\n')
+          .forEach((rawLine) => {
+            // commented lines are not saved
+            if ((rawLine.charAt(0) === '#')) {
               return;
             }
 
-          }
+            // ! indicates a command
+            if ((rawLine.charAt(0) === '!')) {
+              try {
+                const { command } = JSON.parse(rawLine.slice(1).trim());
+                if (command === 'INIT') {
+                  store.dispatch({
+                    type: 'CLEAR_LINES',
+                    payload: rawLine,
+                  });
+                }
+              } catch (error) {
+                store.dispatch({
+                  type: 'PARSE_ERROR',
+                  payload: 'Error while trying to parse JSON data command block',
+                });
+              }
 
-          store.dispatch({
-            type: 'NEW_LINE',
-            payload: rawLine,
+              return;
+            }
+
+            store.dispatch({
+              type: 'NEW_LINE',
+              payload: rawLine,
+            });
           });
-        });
-    },
-  });
-
-  const socketUrl = store.getState().socketUrl;
-  if (socketUrl) {
-    socket.connect(`ws://${socketUrl}/`);
-  }
+      },
+    });
+  }, 1000);
 
   return (next) => (action) => {
     if (action.type === 'SET_SOCKET_URL') {
-      socket.connect(`ws://${action.payload}/`);
+      socket.setUrl(`ws://${action.payload}`);
     }
 
     return next(action);

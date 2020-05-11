@@ -1,0 +1,26 @@
+.socketstate-indicator {
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin: 5px 0 5px 10px;
+
+  &--closed {
+    background-color: #ff0000;
+  }
+
+  &--closing {
+    background-color: #eeee00;
+  }
+
+  &--open {
+    background-color: #00aa00;
+  }
+
+  &--connecting {
+    background-color: #eeee00;
+  }
+
+}

@@ -1,3 +1,40 @@
 .settings {
+  &__inputgroup {
+    display: flex;
+    height: 40px;
+    color: $color-text;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+  }
 
+  &__label {
+    flex-basis: 300px;
+    flex-grow: 0;
+    line-height: 40px;
+  }
+
+  &__input {
+    flex-basis: auto;
+    flex-grow: 1;
+    margin-left: 20px;
+    padding: 10px 12px;
+    border: 1px solid $color-text-bright;
+    color: $color-text;
+  }
+
+  &__button {
+    flex-basis: 80px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-left: 20px;
+    color: $color-text-bright;
+    background: $color-primary;
+    border: none;
+    cursor: pointer;
+
+
+    &:hover {
+      background: $color-secondary;
+    }
+  }
 }
