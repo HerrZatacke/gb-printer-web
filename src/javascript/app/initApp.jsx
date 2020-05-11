@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import App from './components/App';
 import getStore from './store';
+import defaults from './defaults.json';
 
 const initApp = () => {
   const appRoot = document.getElementById('app');
@@ -10,9 +11,14 @@ const initApp = () => {
     return;
   }
 
-  const initialState = {
-    socketUrl: 'localhost:3001',
-  };
+  let storedSettings;
+  try {
+    storedSettings = JSON.parse(localStorage.getItem('gbp-web-state'));
+  } catch (error) {
+    storedSettings = {};
+  }
+
+  const initialState = Object.assign(defaults, storedSettings);
 
   render(<Provider store={getStore(initialState)}><App /></Provider>, appRoot);
 };

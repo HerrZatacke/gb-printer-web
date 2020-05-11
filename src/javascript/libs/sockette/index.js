@@ -67,7 +67,11 @@ export default function (url, opts) {
 
   $.setUrl = function(url) {
     _url = url;
-    $.close();
+    try {
+      $.close();
+    } catch (e) {
+      //
+    }
     $.open();
   };
 
