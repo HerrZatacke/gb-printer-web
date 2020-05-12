@@ -19,6 +19,7 @@ class Decoder {
     const canvasChanged = this.setCanvas(canvas); // true/false
     const paletteChanged = this.setPalette(palette); // true/false
     const tilesChanged = this.setTiles(tiles); // actual list of tiles that have changed
+    this.checkResize();
 
     // if canvas or palette have changed, or tiles were cleared, always do a full render
     if (canvasChanged || paletteChanged || !this.tiles.length) {
@@ -84,12 +85,10 @@ class Decoder {
       return;
     }
 
-    this.checkResize();
     this.paintTile(tile, tileIndex);
   }
 
   fullRender() {
-    this.checkResize();
     this.tiles.forEach((tile, index) => {
       this.renderTile(index, tile);
     });
