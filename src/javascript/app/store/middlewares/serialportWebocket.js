@@ -42,7 +42,7 @@ const serialportWebocket = (store) => {
       if (socket) {
         socket.setUrl(protocolSocketUrl);
       } else {
-        socket = newSocket(store.dispatch(), protocolSocketUrl);
+        socket = newSocket(store.dispatch, protocolSocketUrl);
       }
     }
 
