@@ -18,3 +18,4 @@ If you want this app to locally connect to an Arduino running the gbp-emulator y
 ## research
 * [Websockets](https://tttapa.github.io/ESP8266/Chap14%20-%20WebSocket.html)
 * [Programming a standalone ESP8266](https://www.instructables.com/id/3-Simple-Ways-of-Programming-an-ESP8266-12X-Module/)
+* [Deploying your JS App to Github Pages the easy way (or not)](https://medium.com/linagora-engineering/1ef8c48424b7)
