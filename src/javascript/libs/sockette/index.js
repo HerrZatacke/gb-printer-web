@@ -1,4 +1,5 @@
 /* eslint-disable */
+// Adapted from https://github.com/lukeed/sockette
 function noop() {}
 
 export default function (url, opts) {
