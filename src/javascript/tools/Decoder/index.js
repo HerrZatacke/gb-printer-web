@@ -19,10 +19,12 @@ class Decoder {
     const canvasChanged = this.setCanvas(canvas); // true/false
     const paletteChanged = this.setPalette(palette); // true/false
     const tilesChanged = this.setTiles(tiles); // actual list of tiles that have changed
-    this.checkResize();
+    const newHeight = this.checkResize();
 
     // if canvas or palette have changed, or tiles were cleared, always do a full render
     if (canvasChanged || paletteChanged || !this.tiles.length) {
+      this.canvasContext.fillStyle = this.colors[1];
+      this.canvasContext.fillRect(0, 0, 160, newHeight);
       window.setTimeout(() => {
         this.fullRender();
       }, Math.random() * 1500);
@@ -161,6 +163,8 @@ class Decoder {
         this.canvas.height = newHeight;
       }
     }
+
+    return newHeight;
   }
 }
 
