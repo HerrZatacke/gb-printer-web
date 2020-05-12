@@ -6,7 +6,7 @@
     "jest": true
   },
   "globals": {
-    "CONFIG": true
+    "ENV": true
   },
   "rules": {
     // Airbnb overwrites

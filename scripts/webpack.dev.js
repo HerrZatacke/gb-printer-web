@@ -30,5 +30,8 @@ module.exports = merge(common(), {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({
+      ENV: '\'development\'',
+    }),
   ],
 });
