@@ -65,15 +65,17 @@ class Settings extends React.Component {
             Connect
           </button>
         </div>
-        <div className="settings__inputgroup">
-          <button
-            type="button"
-            className="settings__button"
-            onClick={this.props.startMock}
-          >
-            Mock
-          </button>
-        </div>
+        { (ENV === 'production') ? null : (
+          <div className="settings__inputgroup">
+            <button
+              type="button"
+              className="settings__button"
+              onClick={this.props.startMock}
+            >
+              Mock
+            </button>
+          </div>
+        )}
       </div>
     );
   }
