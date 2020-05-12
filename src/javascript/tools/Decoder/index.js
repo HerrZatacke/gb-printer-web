@@ -25,9 +25,12 @@ class Decoder {
     if (canvasChanged || paletteChanged || !this.tiles.length) {
       this.canvasContext.fillStyle = this.colors[1];
       this.canvasContext.fillRect(0, 0, 160, newHeight);
+
+      // This takes sooo much time... needs to be asynched in some way...
       window.setTimeout(() => {
         this.fullRender();
       }, Math.random() * 1500);
+
     } else if (tilesChanged.length) { // we have a list of some updated tiles
       tilesChanged.forEach(({ index, newTile }) => {
         this.renderTile(index, newTile);
