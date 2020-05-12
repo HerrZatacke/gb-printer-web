@@ -1,6 +1,19 @@
 import pako from 'pako';
 import hash from 'object-hash';
 
+const dummyImage = () => (
+  [...new Array(20 * 18)]
+    .map(() => (
+      [...new Array(16)]
+        .map(() => (
+          Math.floor(Math.random() * 256)
+            .toString(16)
+            .padLeft(2, '0')
+        ))
+        .join(' ')
+    ))
+);
+
 const save = (lineBuffer) => {
   const imageData = lineBuffer
     .map((line) => (
@@ -27,7 +40,7 @@ const load = (dataHash) => {
     const inflated = pako.inflate(binary, { to: 'string' });
     return inflated.split('\n');
   } catch (error) {
-    return [];
+    return dummyImage();
   }
 };
 
