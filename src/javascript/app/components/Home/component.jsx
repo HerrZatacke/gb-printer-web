@@ -20,6 +20,12 @@ const Home = () => (
         </Link>
       </li>
     </ol>
+    <p>
+      There are some ui rendering/blocking issues in the gallery, especially if there are a lot of images present already.
+    </p>
+    <a href="https://github.com/HerrZatacke/gb-printer-web">
+      This project on GitHub
+    </a>
   </div>
 );
 
