@@ -1,26 +1,28 @@
-import pako from 'pako';
+import dayjs from 'dayjs';
+import { save } from '../../../tools/storage';
 
 const saveLineBuffer = (store) => (next) => (action) => {
 
-  const lineBuffer = store.getState().lineBuffer;
+  const state = store.getState();
 
   if (action.type === 'IMAGE_COMPLETE') {
 
-    const imageData = lineBuffer
-      .map((line) => (
-        line.replace(/ /gi, '')
-      ))
-      .join('\n');
+    const dataHash = save(state.lineBuffer);
 
-    const compressed = pako.deflate(imageData, { to: 'string' });
+    const image = {
+      hash: dataHash,
+      created: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      title: `Created at ${dayjs().format('DD.MM.YYYY HH:mm')}`,
+      lines: state.lineBuffer.length,
+      palette: state.activePalette,
+    };
 
-    // eslint-disable-next-line no-console
-    console.log(compressed.length);
+    store.dispatch({
+      type: 'ADD_IMAGE',
+      payload: image,
+    });
 
-    const decompressed = pako.inflate(compressed, { to: 'string' });
-
-    // eslint-disable-next-line no-console
-    console.log(decompressed === imageData);
+    // console.log(load(dataHash));
   }
 
   next(action);

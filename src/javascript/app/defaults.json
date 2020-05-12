@@ -1,6 +1,7 @@
 {
   "socketUrl": "gameboycamera.local:81",
   "activePalette": "bw",
+  "images": [],
   "palettes": [
     {
       "name": "Black & White",
