@@ -22,9 +22,13 @@ const save = (lineBuffer) => {
 };
 
 const load = (dataHash) => {
-  const binary = localStorage.getItem(`gbp-web-${dataHash}`);
-  const inflated = pako.inflate(binary, { to: 'string' });
-  return inflated.split('\n');
+  try {
+    const binary = localStorage.getItem(`gbp-web-${dataHash}`);
+    const inflated = pako.inflate(binary, { to: 'string' });
+    return inflated.split('\n');
+  } catch (error) {
+    return [];
+  }
 };
 
 export {
