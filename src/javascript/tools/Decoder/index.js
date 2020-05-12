@@ -23,12 +23,10 @@ class Decoder {
 
     // if canvas or palette have changed, or tiles were cleared, always do a full render
     if (canvasChanged || paletteChanged || !this.tiles.length) {
-      this.fullRender();
-      return;
-    }
-
-    // we have a list of some updated tiles
-    if (tilesChanged.length) {
+      window.setTimeout(() => {
+        this.fullRender();
+      }, Math.random() * 1500);
+    } else if (tilesChanged.length) { // we have a list of some updated tiles
       tilesChanged.forEach(({ index, newTile }) => {
         this.renderTile(index, newTile);
       });
