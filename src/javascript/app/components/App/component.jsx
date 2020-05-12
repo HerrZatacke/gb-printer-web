@@ -6,6 +6,7 @@ import Settings from '../Settings';
 import Palettes from '../Palettes';
 import Dump from '../Dump';
 import Gallery from '../Gallery';
+import Home from '../Home';
 
 const App = (/* props */) => (
   <Router>
@@ -30,7 +31,8 @@ const App = (/* props */) => (
           <Dump />
         </Route>
         <Route path="/">
-          <h1 className="app__content-headline">Home</h1>
+          <h1 className="app__content-headline">Gameboy Printer Web</h1>
+          <Home />
         </Route>
       </Switch>
     </div>
