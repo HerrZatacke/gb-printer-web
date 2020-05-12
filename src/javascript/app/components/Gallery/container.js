@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
-const mapStateToProps = (/* state */) => ({
+const mapStateToProps = (state) => ({
+  images: state.images,
 });
 
 const mapDispatchToProps = (/* dispatch */) => ({

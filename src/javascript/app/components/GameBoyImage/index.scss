@@ -1,20 +1,5 @@
-.gameboy-image {
+canvas.gameboy-image {
+  width: 100%;
   display: block;
-  width: 160px;
-  min-height: 144px;
-  background: $color-secondary;
-  position: fixed;
-  top: -100px;
-  right: 0;
-  transition: top 300ms ease-in-out;
-
-  &--receiving {
-    top: 60px;
-  }
-
-  canvas {
-    width: 100%;
-    display: block;
-    image-rendering: pixelated;
-  }
+  image-rendering: pixelated;
 }
