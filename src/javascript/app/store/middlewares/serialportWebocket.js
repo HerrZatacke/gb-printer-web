@@ -1,6 +1,8 @@
 import Sockette from '../../../libs/sockette';
 import handleLines from '../../../tools/handleLines';
 
+const WEBSOCKETS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws';
+
 const serialportWebocket = (store) => {
 
   const socketUrl = store.getState().socketUrl;
@@ -8,7 +10,7 @@ const serialportWebocket = (store) => {
   let socket;
 
   window.setTimeout(() => {
-    socket = new Sockette(`ws://${socketUrl}`, {
+    socket = new Sockette(`${WEBSOCKETS_PROTOCOL}//${socketUrl}`, {
       timeout: 5000,
       maxAttempts: 10,
       onstatechange: (readyState) => {
@@ -29,7 +31,7 @@ const serialportWebocket = (store) => {
 
   return (next) => (action) => {
     if (action.type === 'SET_SOCKET_URL') {
-      socket.setUrl(`ws://${action.payload}`);
+      socket.setUrl(`${WEBSOCKETS_PROTOCOL}//${action.payload}`);
     }
 
     return next(action);
