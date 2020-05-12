@@ -1,7 +1,7 @@
 import Sockette from '../../../libs/sockette';
 import handleLines from '../../../tools/handleLines';
 
-const WEBSOCKETS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws';
+const WEBSOCKETS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 
 const newSocket = (dispatch, socketUrl) => (
   new Sockette(socketUrl, {
