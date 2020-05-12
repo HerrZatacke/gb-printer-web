@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
-import { load } from '../../../tools/storage';
 
-const mapStateToProps = (state, { hash, palette }) => ({
-  tiles: load(hash),
+const mapStateToProps = (state, { palette }) => ({
   palette: state.palettes.find(({ shortName }) => shortName === palette).palette,
 });
 

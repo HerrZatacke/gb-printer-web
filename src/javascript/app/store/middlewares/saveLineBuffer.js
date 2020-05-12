@@ -5,9 +5,11 @@ const saveLineBuffer = (store) => (next) => (action) => {
 
   const state = store.getState();
 
-  if (action.type === 'IMAGE_COMPLETE') {
-
-    const dataHash = save(state.lineBuffer);
+  if (
+    (action.type === 'IMAGE_COMPLETE') ||
+    (action.type === 'SET_ALL_LINES')
+  ) {
+    const dataHash = save(action.payload || state.lineBuffer);
 
     const image = {
       hash: dataHash,

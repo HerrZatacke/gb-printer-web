@@ -1,21 +1,34 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Decoder from '../../../tools/Decoder';
 
 class GameBoyImage extends Component {
   constructor(props) {
     super(props);
-    this.canvasRef = createRef();
+    this.canvasRef = null;
     this.decoder = new Decoder();
   }
 
   componentDidUpdate() {
-    this.decoder.update(this.canvasRef.current, this.props.palette, this.props.tiles);
+    this.updateCanvasContent();
+  }
+
+  updateCanvasContent() {
+    this.decoder.update(this.canvasRef, this.props.palette, this.props.tiles);
   }
 
   render() {
     return (
-      <canvas className="gameboy-image" width={160} ref={this.canvasRef} />
+      <canvas
+        className="gameboy-image"
+        width={160}
+        ref={(node) => {
+          this.canvasRef = node;
+          if (node) {
+            this.updateCanvasContent();
+          }
+        }}
+      />
     );
   }
 }

@@ -3,22 +3,40 @@ import handleLines from '../../../tools/handleLines';
 const plainText = (store) => (next) => (action) => {
   if (action.type === 'IMPORT_PLAIN_TEXT') {
 
-    store.dispatch({
-      type: 'CLEAR_LINES',
-    });
+    let dataLines = [];
 
-    const lines = action.payload.split('\n')
+    action.payload.split('\n')
       .map(handleLines)
       .filter(Boolean)
-      .filter(({ type }) => (type === 'NEW_LINE'))
-      // ToDo: check for multiple images in Dump
-      .map(({ payload }) => payload)
-      .filter(Boolean);
+      .map((lineAction) => {
 
-    store.dispatch({
-      type: 'SET_ALL_LINES',
-      payload: lines,
-    });
+        switch (lineAction.type) {
+          case 'NEW_LINE':
+            dataLines.push(lineAction.payload);
+            return null;
+
+          case 'IMAGE_COMPLETE':
+            return {
+              type: 'SET_ALL_LINES',
+              payload: dataLines.filter(Boolean),
+            };
+
+          case 'CLEAR_LINES':
+            dataLines = [];
+            return null;
+
+
+          default:
+            return null;
+        }
+
+      })
+      .filter(Boolean)
+      .forEach((parsedAction, index) => {
+        window.setTimeout(() => {
+          store.dispatch(parsedAction);
+        }, index * 50);
+      });
 
     return;
   }
