@@ -5,6 +5,7 @@
   position: relative;
 
   &__download {
+    display: none;
     position: absolute;
     top: 5px;
     left: 5px;
@@ -12,6 +13,10 @@
     height: 20px;
     border: none;
     background: $color-grey-85;
+  }
+
+  &:hover &__download {
+    display: block;
   }
 }
 
