@@ -1,5 +1,19 @@
 .home {
+  color: $color-text;
+
   & > * {
+    display: block;
     margin-bottom: 20px;
   }
+
+  h3 {
+    font-size: 30px;
+  }
+
+  ul, ol {
+    & > li:before {
+      content: '• '
+    }
+  }
+
 }
