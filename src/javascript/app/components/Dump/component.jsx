@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import dummyContent from './dummy';
 
 class Dump extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
+      text: dummyContent.join('\n'),
     };
   }
 
