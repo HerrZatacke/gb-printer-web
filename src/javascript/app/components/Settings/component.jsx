@@ -22,49 +22,61 @@ class Settings extends React.Component {
   render() {
     return (
       <div className="settings">
-        <div className="settings__inputgroup">
-          <label htmlFor="settings-url" className="settings__label">
-            Remote Socket URL
-            <SocketStateIndicator />
-          </label>
-          <input
-            id="settings-url"
-            className="settings__input"
-            value={this.state.socketUrl}
-            onChange={({ target }) => {
-              this.setState({
-                sync: false,
-                socketUrl: target.value,
-              });
-            }}
-            onKeyUp={(ev) => {
-              switch (ev.key) {
-                case 'Enter':
-                  this.props.updateSocketUrl(this.state.socketUrl);
-                  break;
-                case 'Escape':
-                  this.setState({
-                    socketUrl: this.props.socketUrl,
-                    sync: true,
-                  });
-                  break;
-                default:
-              }
-            }}
-          />
-          <button
-            type="button"
-            className="settings__button"
-            onClick={() => {
-              this.setState({
-                sync: true,
-              });
-              this.props.updateSocketUrl(this.state.socketUrl);
-            }}
-          >
-            Connect
-          </button>
-        </div>
+        { (window.location.protocol === 'https:') ? (
+          <div className="settings__inputgroup">
+            <div className="settings__label">
+              SSL WebSockets are currently not supported by the
+              {' '}
+              <a href="https://github.com/gilmaimon/ArduinoWebsockets/issues/59">
+                ArduinoWebsockets library
+              </a>
+            </div>
+          </div>
+        ) : (
+          <div className="settings__inputgroup">
+            <label htmlFor="settings-url" className="settings__label">
+              Remote Socket URL
+              <SocketStateIndicator />
+            </label>
+            <input
+              id="settings-url"
+              className="settings__input"
+              value={this.state.socketUrl}
+              onChange={({ target }) => {
+                this.setState({
+                  sync: false,
+                  socketUrl: target.value,
+                });
+              }}
+              onKeyUp={(ev) => {
+                switch (ev.key) {
+                  case 'Enter':
+                    this.props.updateSocketUrl(this.state.socketUrl);
+                    break;
+                  case 'Escape':
+                    this.setState({
+                      socketUrl: this.props.socketUrl,
+                      sync: true,
+                    });
+                    break;
+                  default:
+                }
+              }}
+            />
+            <button
+              type="button"
+              className="settings__button"
+              onClick={() => {
+                this.setState({
+                  sync: true,
+                });
+                this.props.updateSocketUrl(this.state.socketUrl);
+              }}
+            >
+              Connect
+            </button>
+          </div>
+        )}
         { (ENV === 'production') ? null : (
           <div className="settings__inputgroup">
             <button

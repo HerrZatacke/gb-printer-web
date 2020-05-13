@@ -1,8 +1,6 @@
 import Sockette from '../../../libs/sockette';
 import handleLines from '../../../tools/handleLines';
 
-const WEBSOCKETS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-
 const newSocket = (dispatch, socketUrl) => (
   new Sockette(socketUrl, {
     timeout: 5000,
@@ -30,15 +28,15 @@ const serialportWebocket = (store) => {
   let socket;
 
   // Do not autoconnect when on prod
-  if (socketUrl && ENV !== 'production') {
+  if (socketUrl && window.location.protocol !== 'https:') {
     window.setTimeout(() => {
-      socket = newSocket(store.dispatch, `${WEBSOCKETS_PROTOCOL}//${socketUrl}`);
+      socket = newSocket(store.dispatch, `ws://${socketUrl}`);
     }, 1000);
   }
 
   return (next) => (action) => {
     if (action.type === 'SET_SOCKET_URL') {
-      const protocolSocketUrl = `${WEBSOCKETS_PROTOCOL}//${action.payload}`;
+      const protocolSocketUrl = `ws://${action.payload}`;
       if (socket) {
         socket.setUrl(protocolSocketUrl);
       } else {
