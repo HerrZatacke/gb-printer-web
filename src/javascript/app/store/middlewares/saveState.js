@@ -1,4 +1,4 @@
-import defaults from '../../defaults.json';
+import defaults from '../../defaults';
 
 const saveState = (store) => (next) => (action) => {
   next(action);
@@ -8,6 +8,10 @@ const saveState = (store) => (next) => (action) => {
 
   Object.keys(defaults)
     .forEach((key) => {
+      if (key === 'palettes') {
+        return;
+      }
+
       savedState[key] = state[key];
     });
 
