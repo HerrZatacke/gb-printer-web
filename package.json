@@ -8,7 +8,7 @@
     "build": "npm run build:clean && npm run build:webpack",
     "build:clean": "rimraf dist/*",
     "build:webpack": "webpack --config ./scripts/webpack.prod.js",
-    "deploy-gh-pages": "cd dist && git add . && git commit -m \"pages update\" && git push"
+    "deploy-gh-pages": "npm run build && cd dist && git add . && git commit -m \"pages update\" && git push"
   },
   "author": "Herr Zatacke",
   "private": true,
