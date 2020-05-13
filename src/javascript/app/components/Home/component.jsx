@@ -29,16 +29,31 @@ const Home = () => (
     <h3>ToDo:</h3>
     <ul>
       <li>
-        Edit images
+        Selection scale factor 1x2x3x4x...
+        <br />
+        Save images in different resolutions / imagetypes
+        <br />
+        Multiple scales for download in zip
+        <br />
+        Download per image or select checkbox for images in a zip
+        <br />
+        Export without frame / with different frame
+        <br />
+        Select multiple palettes to download the gallery in.
+      </li>
+      <li>
+        Edit images: color palette (with quick preview ) / title
+        <br />
+        lightbox zoom option in gallery
+      </li>
+      <li>
+        Upload hex as file
       </li>
       <li>
         Edit palettes
       </li>
       <li>
-        Export data/single images
-      </li>
-      <li>
-        Save images in different resolutions / imagetypes
+        Export settings data
       </li>
       <li>
         Allow rendering animated Gifs

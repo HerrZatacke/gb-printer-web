@@ -11,8 +11,17 @@
   }
 
   ul, ol {
+    padding-left: 20px;
+
+    li {
+      padding-top: 10px;
+    }
+
     & > li:before {
-      content: '• '
+      content: '• ';
+      width: 20px;
+      display: inline-block;
+      margin-left: -20px;
     }
   }
 
