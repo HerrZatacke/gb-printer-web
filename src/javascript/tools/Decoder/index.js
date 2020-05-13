@@ -29,7 +29,7 @@ class Decoder {
       // This takes sooo much time... needs to be asynched in some way...
       window.setTimeout(() => {
         this.fullRender();
-      }, Math.random() * 1500);
+      }, Math.random() * 120);
 
     } else if (tilesChanged.length) { // we have a list of some updated tiles
       tilesChanged.forEach(({ index, newTile }) => {
