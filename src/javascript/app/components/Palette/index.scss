@@ -5,7 +5,7 @@
   flex-grow: 1;
   position: relative;
   margin: 10px;
-  border-radius: 6px;
+  border-radius: $default-border-radius;
   box-shadow: rgba($color-secondary, 0.4) 1px 2px 4px 0;
   background: $color-white;
   transition: transform 100ms ease-in-out;

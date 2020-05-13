@@ -14,7 +14,7 @@ class Decoder {
     this.colors = [];
   }
 
-  update(canvas, palette, tiles) {
+  update(canvas, palette, tiles, timeout = 120) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
     const paletteChanged = this.setPalette(palette); // true/false
@@ -27,9 +27,10 @@ class Decoder {
       this.canvasContext.fillRect(0, 0, 160, newHeight);
 
       // This takes sooo much time... needs to be asynched in some way...
+      // ToDo: Optimize render and remove this timeout
       window.setTimeout(() => {
         this.fullRender();
-      }, Math.random() * 120);
+      }, Math.random() * timeout);
 
     } else if (tilesChanged.length) { // we have a list of some updated tiles
       tilesChanged.forEach(({ index, newTile }) => {

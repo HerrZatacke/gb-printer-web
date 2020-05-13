@@ -3,7 +3,7 @@
     display: flex;
     height: 40px;
     color: $color-text;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-bottom: 30px;
   }
 
@@ -11,6 +11,25 @@
     flex-basis: 300px;
     flex-grow: 0;
     line-height: 40px;
+  }
+
+  &__label-check {
+    cursor: pointer;
+    background: $color-grey-75;
+    flex-grow: 1;
+    margin-left: 20px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: $default-border-radius;
+    user-select: none;
+
+    &--selected {
+      background: $color-tertiary;
+    }
+
+    input {
+      display: none;
+    }
   }
 
   &__input {

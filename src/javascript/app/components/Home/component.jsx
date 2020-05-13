@@ -21,6 +21,7 @@ const Home = () => (
       </li>
     </ol>
     <p>
+      {/* eslint-disable-next-line max-len */}
       There are some ui rendering/blocking issues in the gallery, especially if there are a lot of images present already.
     </p>
     <a href="https://github.com/HerrZatacke/gb-printer-web">

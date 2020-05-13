@@ -17,6 +17,13 @@ class GalleryImage extends React.Component {
       <li className="gallery-image">
         <GameBoyImage tiles={this.tiles} palette={this.props.palette} />
         <span>{this.props.title}</span>
+        <button
+          type="button"
+          className="gallery-image__download"
+          onClick={this.props.startDownload}
+        >
+          ⇩
+        </button>
       </li>
     );
   }
@@ -26,6 +33,7 @@ GalleryImage.propTypes = {
   title: PropTypes.string.isRequired,
   hash: PropTypes.string.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  startDownload: PropTypes.func.isRequired,
 };
 
 GalleryImage.defaultProps = {

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import SocketStateIndicator from '../SocketStateIndicator';
 
 class Settings extends React.Component {
@@ -22,7 +23,32 @@ class Settings extends React.Component {
   render() {
     return (
       <div className="settings">
-        { (window.location.protocol === 'https:') ? (
+        <div className="settings__inputgroup">
+          <div className="settings__label">
+            Image export dimensions
+          </div>
+          {[1, 2, 3, 4, 5, 6].map((factor) => (
+            <label
+              key={factor}
+              className={
+                classnames('settings__label-check', {
+                  'settings__label-check--selected': this.props.exportScaleFactors.includes(factor),
+                })
+              }
+              title={`${factor * 160}×${factor * 144}`}
+            >
+              {`${factor}×`}
+              <input
+                type="checkbox"
+                checked={this.props.exportScaleFactors.includes(factor)}
+                onChange={({ target }) => {
+                  this.props.changeExportScaleFactors(factor, target.checked);
+                }}
+              />
+            </label>
+          ))}
+        </div>
+        {(window.location.protocol === 'https:') ? (
           <div className="settings__inputgroup">
             <div className="settings__label">
               SSL WebSockets are currently not supported by the
@@ -77,7 +103,7 @@ class Settings extends React.Component {
             </button>
           </div>
         )}
-        { (ENV === 'production') ? null : (
+        {(ENV === 'production') ? null : (
           <div className="settings__inputgroup">
             <button
               type="button"
@@ -94,12 +120,13 @@ class Settings extends React.Component {
 }
 
 Settings.propTypes = {
+  changeExportScaleFactors: PropTypes.func.isRequired,
+  exportScaleFactors: PropTypes.array.isRequired,
   socketUrl: PropTypes.string.isRequired,
-  updateSocketUrl: PropTypes.func.isRequired,
   startMock: PropTypes.func.isRequired,
+  updateSocketUrl: PropTypes.func.isRequired,
 };
 
-Settings.defaultProps = {
-};
+Settings.defaultProps = {};
 
 export default Settings;

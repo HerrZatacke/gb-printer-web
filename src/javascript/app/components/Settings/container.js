@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   socketUrl: state.socketUrl,
+  exportScaleFactors: state.exportScaleFactors,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -14,6 +15,15 @@ const mapDispatchToProps = (dispatch) => ({
   startMock() {
     dispatch({
       type: 'START_MOCK',
+    });
+  },
+  changeExportScaleFactors(factor, checked) {
+    dispatch({
+      type: 'UPDATE_EXPORT_SCALE_FACTORS',
+      payload: {
+        factor,
+        checked,
+      },
     });
   },
 });

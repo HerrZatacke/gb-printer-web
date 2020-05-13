@@ -1,8 +1,12 @@
 $page-background: #d6d3dc;
 
 $color-black: #000000;
+$color-grey-25: #404040;
+$color-grey-50: #808080;
+$color-grey-75: #bfbfbf;
+$color-grey-75: #bfbfbf;
+$color-grey-85: #d8d8d8;
 $color-white: #ffffff;
-$color-grey-50: #888888;
 
 $color-text: #363132;
 $color-text-bright: #a8b8b8;
@@ -13,3 +17,5 @@ $color-tertiary: #4a6959;
 // Sort by index
 $z-index-live-image: 1;
 $z-index-navigation: 2;
+
+$default-border-radius: 6px;
