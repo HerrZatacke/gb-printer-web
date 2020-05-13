@@ -2,6 +2,8 @@ $page-background: #d6d3dc;
 
 $color-black: #000000;
 $color-white: #ffffff;
+$color-grey-50: #888888;
+
 $color-text: #363132;
 $color-text-bright: #a8b8b8;
 $color-primary: #292037;
@@ -9,4 +11,5 @@ $color-secondary: #455c63;
 $color-tertiary: #4a6959;
 
 // Sort by index
-$z-index-navigation: 1;
+$z-index-live-image: 1;
+$z-index-navigation: 2;

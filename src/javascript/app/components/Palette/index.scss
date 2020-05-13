@@ -1,32 +1,41 @@
 .palette {
+  $palette-padding: 20px;
+
+  flex-basis: 270px;
+  flex-grow: 1;
   position: relative;
-  padding: 20px;
-  margin: 10px 0;
+  margin: 10px;
   border-radius: 6px;
   box-shadow: rgba($color-secondary, 0.4) 1px 2px 4px 0;
+  background: $color-white;
+  transition: transform 100ms ease-in-out;
 
   &--active {
-    background: $color-secondary;
+    background: $color-grey-50;
   }
 
   &:hover {
-    background: $color-secondary;
+    background: $color-grey-50;
+    transform: scale(1.025);
   }
 
-  &__set-active {
-    position: absolute;
-    top: 0;
-    left: 0;
+  &__button {
+    @include font;
+
+    line-height: 2em;
     width: 100%;
     height: 100%;
-    opacity: 0;
     cursor: pointer;
-    user-select: none;
+    padding: $palette-padding $palette-padding 70px $palette-padding;
+    background: none;
+    border: none;
+    text-align: left;
   }
 
   &__name {
+    height: 100%;
     font-size: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     position: relative;
     padding-right: 40px;
   }
@@ -46,6 +55,9 @@
   &__colors {
     display: flex;
     justify-content: space-between;
+    position: absolute;
+    width: calc(100% - #{$palette-padding * 2});
+    bottom: $palette-padding;
   }
 
   &__color {

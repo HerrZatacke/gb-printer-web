@@ -5,8 +5,9 @@
 }
 
 body {
-  @include fontFamily;
+  @include font;
 
+  line-height: 1.3em;
   background: $page-background;
   color: $color-black;
 }

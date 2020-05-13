@@ -16,24 +16,23 @@ const Component = (props) => (
     }}
   >
     <button
-      className="palette__set-active"
-      type="button"
       onClick={() => {
         props.setActive();
       }}
+      className="palette__button"
+      type="button"
     >
-      Set this palette active
+      <div className="palette__name">
+        {props.name}
+        <span className="palette__shortname">{props.shortName}</span>
+      </div>
+      <div className="palette__colors">
+        <div className="palette__color" style={{ backgroundColor: props.palette[0] }} title={props.palette[0]}> </div>
+        <div className="palette__color" style={{ backgroundColor: props.palette[1] }} title={props.palette[1]}> </div>
+        <div className="palette__color" style={{ backgroundColor: props.palette[2] }} title={props.palette[2]}> </div>
+        <div className="palette__color" style={{ backgroundColor: props.palette[3] }} title={props.palette[3]}> </div>
+      </div>
     </button>
-    <div className="palette__name">
-      {props.name}
-      <span className="palette__shortname">{props.shortName}</span>
-    </div>
-    <div className="palette__colors">
-      <div className="palette__color" style={{ backgroundColor: props.palette[0] }} title={props.palette[0]}> </div>
-      <div className="palette__color" style={{ backgroundColor: props.palette[1] }} title={props.palette[1]}> </div>
-      <div className="palette__color" style={{ backgroundColor: props.palette[2] }} title={props.palette[2]}> </div>
-      <div className="palette__color" style={{ backgroundColor: props.palette[3] }} title={props.palette[3]}> </div>
-    </div>
   </li>
 );
 

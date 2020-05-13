@@ -7,6 +7,7 @@
   top: -100px;
   right: 0;
   transition: top 300ms ease-in-out;
+  z-index: $z-index-live-image;
 
   &--receiving {
     top: 60px;
