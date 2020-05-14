@@ -1,8 +1,10 @@
 import Sockette from '../../../libs/sockette';
 import handleLines from '../../../tools/handleLines';
 
-const newSocket = (dispatch, socketUrl) => (
-  new Sockette(socketUrl, {
+const newSocket = (dispatch, socketUrl) => {
+  let silenceTimeout = null;
+
+  return new Sockette(socketUrl, {
     timeout: 5000,
     maxAttempts: 10,
     onstatechange: (readyState) => {
@@ -12,14 +14,23 @@ const newSocket = (dispatch, socketUrl) => (
       });
     },
     onmessage: ({ data }) => {
+      window.clearTimeout(silenceTimeout);
+
+      // Let the live-image disappear after a few seconds
+      silenceTimeout = window.setTimeout(() => {
+        dispatch({
+          type: 'CLEAR_LINES',
+        });
+      }, 5000);
+
       data
         .split('\n')
         .map(handleLines)
         .filter(Boolean)
         .forEach(dispatch);
     },
-  })
-);
+  });
+};
 
 const serialportWebocket = (store) => {
 
