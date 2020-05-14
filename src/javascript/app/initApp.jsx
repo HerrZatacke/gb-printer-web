@@ -20,6 +20,15 @@ const initApp = () => {
 
   const initialState = Object.assign(defaults, storedSettings);
 
+  // dev: change palettes
+  // initialState.images = initialState.images.map((image) => ({
+  //   ...image,
+  //   palette: 'bw',
+  // }));
+
+  // dev clear all images
+  // initialState.images = [];
+
   render(<Provider store={getStore(initialState)}><App /></Provider>, appRoot);
 };
 

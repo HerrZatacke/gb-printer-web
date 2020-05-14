@@ -1,4 +1,3 @@
-
 // Tile Constants
 const TILE_PIXEL_WIDTH = 8;
 const TILE_PIXEL_HEIGHT = 8;
@@ -9,34 +8,62 @@ class Decoder {
   constructor() {
     this.canvas = null;
     this.canvasContext = null;
-    this.tileSize = null;
     this.tiles = [];
     this.colors = [];
+    this.rawImageData = [];
   }
 
-  update(canvas, palette, tiles, timeout = 120) {
+  update(canvas, palette, tiles) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
     const paletteChanged = this.setPalette(palette); // true/false
-    const tilesChanged = this.setTiles(tiles); // actual list of tiles that have changed
-    const newHeight = this.checkResize();
 
-    // if canvas or palette have changed, or tiles were cleared, always do a full render
     if (canvasChanged || paletteChanged || !this.tiles.length) {
-      this.canvasContext.fillStyle = this.colors[1];
-      this.canvasContext.fillRect(0, 0, 160, newHeight);
-
-      // This takes sooo much time... needs to be asynched in some way...
-      // ToDo: Optimize render and remove this timeout
-      window.setTimeout(() => {
-        this.fullRender();
-      }, Math.random() * timeout);
-
-    } else if (tilesChanged.length) { // we have a list of some updated tiles
-      tilesChanged.forEach(({ index, newTile }) => {
-        this.renderTile(index, newTile);
-      });
+      this.tiles = [];
     }
+
+    const tilesChanged = this.setTiles(tiles); // returns actual list of tiles that have changed
+
+    const newHeight = this.getHeight();
+
+    if (newHeight === 0) {
+      this.canvas.height = 0;
+      return;
+    }
+
+    if (this.canvas.height !== newHeight || !this.rawImageData.length) {
+      this.canvas.height = newHeight;
+
+      // copy existing image data and add the missing space for additional height
+      const newRawImageData = new Uint8ClampedArray(160 * newHeight * 4);
+      this.rawImageData.forEach((value, index) => {
+        newRawImageData[index] = value;
+      });
+      this.rawImageData = newRawImageData;
+    }
+
+    tilesChanged.forEach(({ index, newTile }) => {
+      this.renderTile(index, newTile);
+    });
+
+    const imageData = new ImageData(this.rawImageData, 160, newHeight);
+    this.canvasContext.putImageData(imageData, 0, 0);
+  }
+
+  getScaledCanvas(scaleFactor) {
+    const initialWidth = this.canvas.width;
+    const initialHeight = this.canvas.height;
+
+    const scaledCanvas = document.createElement('canvas');
+    const scaledContext = scaledCanvas.getContext('2d');
+    scaledCanvas.width = initialWidth * scaleFactor;
+    scaledCanvas.height = initialHeight * scaleFactor;
+
+    this.tiles.forEach((tile, index) => {
+      this.paintTileScaled(this.decodeTile(tile), index, scaledContext, scaleFactor);
+    });
+
+    return scaledCanvas;
   }
 
   setCanvas(canvas) {
@@ -46,8 +73,6 @@ class Decoder {
 
     this.canvas = canvas;
     this.canvasContext = this.canvas.getContext('2d');
-    this.tileSize = this.canvas.width / (TILE_PIXEL_WIDTH * TILES_PER_LINE);
-
     return true;
   }
 
@@ -57,6 +82,11 @@ class Decoder {
     }
 
     this.colors = palette;
+
+    this.colorData = this.colors.map((color) => (
+      // ensure correct hex string length
+      color.length !== 7 ? null : parseInt(color.substring(1), 16)
+    ));
 
     return true;
   }
@@ -92,18 +122,9 @@ class Decoder {
     this.paintTile(tile, tileIndex);
   }
 
-  fullRender() {
-    this.tiles.forEach((tile, index) => {
-      this.renderTile(index, tile);
-    });
-  }
-
   // Gameboy tile decoder function from http://www.huderlem.com/demos/gameboy2bpp.html
   decodeTile(rawBytes) {
-    const bytes = rawBytes.replace(/[^0-9A-F]/ig, '');
-    if (bytes.length !== 32) {
-      return false;
-    }
+    const bytes = rawBytes.replace(/[^0-9A-F]/ig, '').padEnd(32, 'f');
 
     const byteArray = new Array(16);
     for (let i = 0; i < byteArray.length; i += 1) {
@@ -130,7 +151,32 @@ class Decoder {
   paintTile(pixels, index) {
     const tileXOffset = index % TILES_PER_LINE;
     const tileYOffset = Math.floor(index / TILES_PER_LINE);
-    const pixelSize = this.canvas.width / (TILES_PER_LINE * TILE_PIXEL_WIDTH);
+
+    const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset;
+    const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset;
+
+    // pixels along the tile's x axis
+    for (let x = 0; x < TILE_PIXEL_WIDTH; x += 1) {
+      for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
+        // pixels along the tile's y axis
+
+        const rawIndex = (pixelXOffset + x + ((pixelYOffset + y) * 160)) * 4;
+        const value = this.colorData[pixels[(y * TILE_PIXEL_WIDTH) + x]];
+
+        // eslint-disable-next-line no-bitwise
+        this.rawImageData[rawIndex] = (value & 0xff0000) >> 16;
+        // eslint-disable-next-line no-bitwise
+        this.rawImageData[rawIndex + 1] = (value & 0x00ff00) >> 8;
+        // eslint-disable-next-line no-bitwise
+        this.rawImageData[rawIndex + 2] = (value & 0x0000ff);
+        this.rawImageData[rawIndex + 3] = 255;
+      }
+    }
+  }
+
+  paintTileScaled(pixels, index, canvasContext, pixelSize) {
+    const tileXOffset = index % TILES_PER_LINE;
+    const tileYOffset = Math.floor(index / TILES_PER_LINE);
 
     const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset * pixelSize;
     const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset * pixelSize;
@@ -141,10 +187,11 @@ class Decoder {
         // pixels along the tile's y axis
 
         // Pixel Color
-        this.canvasContext.fillStyle = this.colors[pixels[(y * TILE_PIXEL_WIDTH) + x]];
+        // eslint-disable-next-line no-param-reassign
+        canvasContext.fillStyle = this.colors[pixels[(y * TILE_PIXEL_WIDTH) + x]];
 
         // Pixel Position (Needed to add +1 to pixel width and height to fill in a gap)
-        this.canvasContext.fillRect(
+        canvasContext.fillRect(
           pixelXOffset + (x * pixelSize),
           pixelYOffset + (y * pixelSize),
           pixelSize + 1,
@@ -154,21 +201,8 @@ class Decoder {
     }
   }
 
-  checkResize() {
-    const tileHeightCount = Math.ceil(this.tiles.length / TILES_PER_LINE);
-    const newHeight = this.tileSize * TILE_PIXEL_HEIGHT * tileHeightCount;
-
-    if (this.canvas.height !== newHeight) {
-      if (this.canvas.height) {
-        const imageData = this.canvasContext.getImageData(0, 0, this.canvas.width, this.canvas.height);
-        this.canvas.height = newHeight;
-        this.canvasContext.putImageData(imageData, 0, 0);
-      } else {
-        this.canvas.height = newHeight;
-      }
-    }
-
-    return newHeight;
+  getHeight() {
+    return TILE_PIXEL_HEIGHT * Math.ceil(this.tiles.length / TILES_PER_LINE);
   }
 }
 

@@ -13,25 +13,27 @@ const startDownload = (store) => (next) => (action) => {
     const canvas = document.createElement('canvas');
     const filename = `${palette.shortName}-${image.title}`;
 
-    canvas.width = 160 * exportScaleFactor;
+    canvas.width = 160;
 
     const decoder = new Decoder();
-    decoder.update(canvas, palette.palette, tiles, 0);
+    decoder.update(canvas, palette.palette, tiles);
+
+    const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
 
     // ToDo: Optimize render and remove this timeout
     window.setTimeout(() => {
-      if (canvas.msToBlob) {
-        window.navigator.msSaveBlob(canvas.msToBlob(), `${filename}.png`);
+      if (scaledCanvas.msToBlob) {
+        window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${filename}.png`);
       } else {
         const fileType = 'png';
 
         let imageData;
         switch (fileType) {
           case 'png':
-            imageData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+            imageData = scaledCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
             break;
           case 'jpg':
-            imageData = canvas.toDataURL('image/jpeg', 1).replace('image/jpeg', 'image/octet-stream');
+            imageData = scaledCanvas.toDataURL('image/jpeg', 1).replace('image/jpeg', 'image/octet-stream');
             break;
           default:
             break;
