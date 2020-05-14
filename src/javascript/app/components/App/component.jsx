@@ -8,6 +8,7 @@ import Palettes from '../Palettes';
 import Dump from '../Dump';
 import Gallery from '../Gallery';
 import Home from '../Home';
+import EditImage from '../EditImage';
 
 const App = (/* props */) => (
   <Router>
@@ -38,6 +39,7 @@ const App = (/* props */) => (
       </Switch>
     </div>
     <Confirmation />
+    <EditImage />
   </Router>
 );
 

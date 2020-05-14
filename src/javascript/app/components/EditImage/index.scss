@@ -1,0 +1,44 @@
+.edit-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  &__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba($color-tertiary, 0.3);
+  }
+
+  &__box {
+    position: absolute;
+    top: 100px;
+    left: calc(50vw - 200px);
+    width: 480px;
+    background: $page-background;
+    border-radius: $default-border-radius;
+    color: $color-text;
+    overflow: hidden;
+  }
+
+  &__header {
+    display: block;
+    padding: 15px 20px 10px;
+
+    &:before {
+      position: absolute;
+      content: '✎'
+    }
+  }
+
+  &__header-edit {
+    color: inherit;
+    border: none;
+    width: 100%;
+    font-size: 18px;
+    background: none;
+    padding-left: 25px;
+  }
+}

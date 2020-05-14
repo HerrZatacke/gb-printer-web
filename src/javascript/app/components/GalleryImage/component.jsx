@@ -32,6 +32,13 @@ class GalleryImage extends React.Component {
           >
             ×
           </button>
+          <button
+            type="button"
+            className="gallery-image__button"
+            onClick={this.props.editImage}
+          >
+            ✎
+          </button>
         </div>
       </li>
     );
@@ -40,6 +47,7 @@ class GalleryImage extends React.Component {
 
 GalleryImage.propTypes = {
   deleteImage: PropTypes.func.isRequired,
+  editImage: PropTypes.func.isRequired,
   hash: PropTypes.string.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   startDownload: PropTypes.func.isRequired,

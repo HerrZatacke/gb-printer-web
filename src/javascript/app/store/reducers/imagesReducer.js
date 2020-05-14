@@ -13,6 +13,7 @@ const imagesReducer = (value = [], action) => {
     case 'DELETE_IMAGE':
       del(action.payload);
       return value.filter(({ hash }) => hash !== action.payload);
+    case 'UPDATE_IMAGE':
     default:
       return value;
   }
