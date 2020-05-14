@@ -44,7 +44,12 @@ const load = (dataHash) => {
   }
 };
 
+const del = (dataHash) => {
+  localStorage.removeItem(`gbp-web-${dataHash}`);
+};
+
 export {
   save,
   load,
+  del,
 };

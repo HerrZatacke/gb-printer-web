@@ -14,6 +14,11 @@ const Gallery = (props) => (
         />
       ))
     }
+    <li className="gallery-image--dummy" />
+    <li className="gallery-image--dummy" />
+    <li className="gallery-image--dummy" />
+    <li className="gallery-image--dummy" />
+    <li className="gallery-image--dummy" />
   </ul>
 );
 

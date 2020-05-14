@@ -11,6 +11,12 @@ const mapDispatchToProps = (dispatch, { hash }) => ({
       payload: hash,
     });
   },
+  deleteImage: () => {
+    dispatch({
+      type: 'DELETE_IMAGE',
+      payload: hash,
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);
