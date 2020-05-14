@@ -1,0 +1,26 @@
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px 20px;
+
+  &__button {
+    border: none;
+    border-radius: $default-border-radius;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: $color-white;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &--confirm {
+      background: $color-button-green;
+    }
+
+    &--deny {
+      background: $color-button-red;
+    }
+  }
+}

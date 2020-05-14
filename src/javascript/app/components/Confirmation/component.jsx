@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Buttons from '../Buttons';
 
 const Confirmation = (props) => (
   props.message ? (
@@ -9,22 +10,7 @@ const Confirmation = (props) => (
         <div className="confirmation__message">
           {props.message}
         </div>
-        <div className="confirmation__buttons">
-          <button
-            className="confirmation__button confirmation__button--confirm"
-            type="button"
-            onClick={props.confirm}
-          >
-            Ok
-          </button>
-          <button
-            className="confirmation__button confirmation__button--deny"
-            type="button"
-            onClick={props.deny}
-          >
-            Nay
-          </button>
-        </div>
+        <Buttons confirm={props.confirm} deny={props.deny} />
       </div>
     </div>
   ) : null
