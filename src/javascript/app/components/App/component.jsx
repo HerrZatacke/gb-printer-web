@@ -1,6 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
+import Confirmation from '../Confirmation';
 import LiveImage from '../LiveImage';
 import Settings from '../Settings';
 import Palettes from '../Palettes';
@@ -36,6 +37,7 @@ const App = (/* props */) => (
         </Route>
       </Switch>
     </div>
+    <Confirmation />
   </Router>
 );
 

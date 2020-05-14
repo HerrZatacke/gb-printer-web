@@ -6,6 +6,7 @@ import saveState from './middlewares/saveState';
 import plainText from './middlewares/plainText';
 import saveLineBuffer from './middlewares/saveLineBuffer';
 import startDownload from './middlewares/startDownload';
+import confirmation from './middlewares/confirmation';
 
 // eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -16,6 +17,7 @@ const enhancers = [
   applyMiddleware(plainText),
   applyMiddleware(saveLineBuffer),
   applyMiddleware(startDownload),
+  applyMiddleware(confirmation),
 
   // should be the last mw
   applyMiddleware(saveState),
