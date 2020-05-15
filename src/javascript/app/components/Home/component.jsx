@@ -30,9 +30,10 @@ const Home = () => (
     <h3>ToDo:</h3>
     <ul>
       <li>
-        Selection scale factor 1x2x3x4x...
+        <strike>Selection scale factor 1x2x3x4x...</strike>
         <br />
-        Save images in different resolutions / imagetypes
+        <strike>Save images in different resolutions</strike>
+        / imagetypes
         <br />
         Multiple scales for download in zip
         <br />
@@ -43,9 +44,12 @@ const Home = () => (
         Select multiple palettes to download the gallery in.
       </li>
       <li>
-        Edit images: color palette (with quick preview ) / title
+        <strike>Edit images: color palette (with quick preview ) / title</strike>
         <br />
-        lightbox zoom option in gallery
+        <strike>lightbox zoom option in gallery</strike>
+        add: close on esc
+        <br />
+        allow some gesture navigation on touch devices
       </li>
       <li>
         Upload hex as file
