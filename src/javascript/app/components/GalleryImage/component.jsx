@@ -15,8 +15,14 @@ class GalleryImage extends React.Component {
   render() {
     return (
       <li className="gallery-image">
-        <GameBoyImage tiles={this.tiles} palette={this.props.palette} />
-        <span>{this.props.title}</span>
+        <span className="gallery-image__image">
+          <GameBoyImage tiles={this.tiles} palette={this.props.palette} />
+        </span>
+        <span
+          className="gallery-image__title"
+        >
+          {this.props.title}
+        </span>
         <div className="gallery-image__buttons">
           <button
             type="button"

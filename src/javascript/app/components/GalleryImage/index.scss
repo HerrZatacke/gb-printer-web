@@ -1,8 +1,24 @@
 .gallery-image {
   flex-shrink: 0;
-  width: 160px;
-  margin: 10px;
+  width: 180px;
+  margin: 5px;
   position: relative;
+  border-radius: $default-border-radius;
+  background-color: $color-grey-50;
+  padding: 10px;
+
+  &__image {
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  &__title {
+    font-size: 14px;
+    line-height: 16px;
+    display: block;
+    color: white;
+  }
+
 
   &__buttons {
     display: none;
@@ -15,7 +31,7 @@
     width: 20px;
     height: 20px;
     border: none;
-    background: $color-grey-85;
+    background: $color-grey-90;
     margin-right: 5px;
 
     &:hover {
