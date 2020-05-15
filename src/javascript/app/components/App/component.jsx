@@ -18,6 +18,12 @@ const App = (/* props */) => (
       <Switch>
         <Route path="/gallery">
           <h1 className="app__content-headline">Gallery</h1>
+          <p className="app__content-hint">
+            These images are stored in the localStorage of your browser.
+            That&apos;s why you (currently) cannot share a link to one of them.
+            <br />
+            Also if you clear your browser&apos;s cookies, the images will be gone too.
+          </p>
           <Gallery />
         </Route>
         <Route path="/palettes">
