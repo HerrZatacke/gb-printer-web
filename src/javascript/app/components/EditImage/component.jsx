@@ -11,7 +11,7 @@ const EditImage = (props) => (
       <div
         className="edit-image__box"
         style={{
-          backgroundColor: props.palette.palette[0],
+          backgroundImage: `linear-gradient(to bottom, ${props.palette.palette[0]} 500px, #ffffff 600px)`,
         }}
       >
         <label

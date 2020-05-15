@@ -1,12 +1,64 @@
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
+}
+
 .palette-select {
   display: block;
   width: 440px;
   line-height: 24px;
   height: 40px;
   background: none;
-  margin: 20px;
+  margin: 10px 20px;
   border: none;
   font-size: 16px;
+  color: inherit;
 }
 
+.fancy-palette-select {
+  display: flex;
+  flex-wrap: wrap;
+  width: 440px;
+  margin: 0 20px;
+  //overflow-x: scroll;
+  //overflow-y: visible;
 
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  &__entry {
+    height: 36px;
+    flex-basis: 36px;
+    flex-shrink: 0;
+    margin: 2px;
+    overflow: hidden;
+    border-radius: 50%;
+
+    &--active,
+    &:hover {
+      box-shadow: 1px 1px 4px 2px $color-grey-40;
+    }
+
+    &:hover {
+      animation: spin 800ms infinite linear;
+    }
+  }
+
+  &__button {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  &__color {
+    float: left;
+    width: 50%;
+    height: 50%;
+  }
+}
