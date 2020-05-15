@@ -35,7 +35,7 @@ const Home = () => (
         <strike>Save images in different resolutions</strike>
         / imagetypes
         <br />
-        Multiple scales for download in zip
+        <strike>Multiple scales for download in zip</strike>
         <br />
         Download per image or select checkbox for images in a zip
         <br />

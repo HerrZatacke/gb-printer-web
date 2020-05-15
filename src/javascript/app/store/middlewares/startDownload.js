@@ -1,50 +1,64 @@
 import { load } from '../../../tools/storage';
 import Decoder from '../../../tools/Decoder';
+import zipFiles from '../../../tools/zipFiles';
 
 const startDownload = (store) => (next) => (action) => {
 
   if (action.type === 'START_DOWNLOAD') {
     const state = store.getState();
 
+    const exportScaleFactors = state.exportScaleFactors;
+
+    if (exportScaleFactors.length === 0) {
+      return null;
+    }
+
     const image = state.images.find(({ hash }) => hash === action.payload);
     const palette = state.palettes.find(({ shortName }) => shortName === image.palette);
     const tiles = load(action.payload);
-    const exportScaleFactor = state.exportScaleFactors;
+    const fileTitle = `${palette.shortName}-${image.title}`;
     const canvas = document.createElement('canvas');
-    const filename = `${palette.shortName}-${image.title}`;
-
     canvas.width = 160;
-
     const decoder = new Decoder();
     decoder.update(canvas, palette.palette, tiles);
 
-    const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
+    const images = exportScaleFactors.map((exportScaleFactor) => (
+      new Promise((resolve, reject) => {
 
-    // ToDo: Optimize render and remove this timeout
-    window.setTimeout(() => {
-      if (scaledCanvas.msToBlob) {
-        window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${filename}.png`);
-      } else {
-        const fileType = 'png';
+        const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
 
-        let imageData;
-        switch (fileType) {
-          case 'png':
-            imageData = scaledCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-            break;
-          case 'jpg':
-            imageData = scaledCanvas.toDataURL('image/jpeg', 1).replace('image/jpeg', 'image/octet-stream');
-            break;
-          default:
-            break;
+        if (scaledCanvas.msToBlob) {
+          window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${fileTitle}.png`);
+          return;
         }
 
-        const download = document.createElement('a');
-        download.setAttribute('href', imageData);
-        download.setAttribute('download', `${filename}.${fileType}`);
-        download.click();
-      }
-    }, 2);
+        const fileType = 'png';
+
+        const onBlobComplete = (blob) => {
+          blob.arrayBuffer().then((arrayBuffer) => {
+            resolve({
+              filename: `${exportScaleFactor}x-${fileTitle}.${fileType}`,
+              arrayBuffer,
+              blob,
+            });
+          });
+        };
+
+        switch (fileType) {
+          case 'png':
+            scaledCanvas.toBlob(onBlobComplete, 'image/png');
+            break;
+          case 'jpg':
+            scaledCanvas.toBlob(onBlobComplete, 'image/jpeg', 1);
+            break;
+          default:
+            reject(new Error('could not export image'));
+            break;
+        }
+      })
+    ));
+
+    Promise.all(images).then(zipFiles(fileTitle));
 
   }
 
