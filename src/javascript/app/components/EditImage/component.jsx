@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GameBoyImage from '../GameBoyImage';
 import PaletteSelect from '../PaletteSelect';
+import Buttons from '../Buttons/component';
 
 const EditImage = (props) => (
   (props.imageData) ? (
@@ -28,19 +29,28 @@ const EditImage = (props) => (
             }}
           />
         </label>
-        <GameBoyImage tiles={props.imageData} palette={props.palette.palette || ['#ffffff', '#dddddd', '#bbbbbb', '#999999']} />
+        <GameBoyImage
+          tiles={props.imageData}
+          palette={props.palette.palette || ['#ffffff', '#dddddd', '#bbbbbb', '#999999']}
+        />
         <PaletteSelect value={props.palette.shortName} onChange={props.updatePalette} />
+        <Buttons
+          confirm={props.save}
+          deny={props.cancel}
+        />
       </div>
     </div>
   ) : null
 );
 
 EditImage.propTypes = {
-  title: PropTypes.string,
+  cancel: PropTypes.func.isRequired,
   imageData: PropTypes.array,
   palette: PropTypes.object,
-  updateTitle: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
+  title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
+  updateTitle: PropTypes.func.isRequired,
 };
 
 EditImage.defaultProps = {

@@ -4,18 +4,18 @@ import PropTypes from 'prop-types';
 const Buttons = (props) => (
   <div className="buttons">
     <button
+      className="buttons__button buttons__button--deny"
+      type="button"
+      onClick={props.deny}
+    >
+      Cancel
+    </button>
+    <button
       className="buttons__button buttons__button--confirm"
       type="button"
       onClick={props.confirm}
     >
       Ok
-    </button>
-    <button
-      className="buttons__button buttons__button--deny"
-      type="button"
-      onClick={props.deny}
-    >
-      Nay
     </button>
   </div>
 );

@@ -7,6 +7,9 @@ const editImageReducer = (value = {}, action) => {
         ...value,
         ...action.payload,
       };
+    case 'CANCEL_EDIT_IMAGE':
+    case 'UPDATE_IMAGE':
+      return {};
     default:
       return value;
   }

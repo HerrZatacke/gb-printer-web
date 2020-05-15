@@ -22,6 +22,16 @@ const mapDispatchToProps = (dispatch) => ({
       payload: { palette },
     });
   },
+  save: () => {
+    dispatch({
+      type: 'SAVE_EDIT_IMAGE',
+    });
+  },
+  cancel: () => {
+    dispatch({
+      type: 'CANCEL_EDIT_IMAGE',
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);
