@@ -2,6 +2,10 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 .navigation{background-color:#292037;-webkit-box-shadow:0 -0.375rem 0.375rem 0.375rem rgba(0,0,0,0.7);box-shadow:0 -0.375rem 0.375rem 0.375rem rgba(0,0,0,0.7);position:fixed;width:100vw;z-index:2}.navigation__list{width:100vw;display:-webkit-box;display:-ms-flexbox;display:flex}.navigation__entry{position:relative}.navigation__entry:after{content:'';height:2.5rem;width:1px;position:absolute;right:0;top:0.625rem;background-color:rgba(255,255,255,0.15)}.navigation__link{text-decoration:none;display:block;padding:1.25rem;line-height:1.25rem;color:#a8b8b8}.navigation__link--active,.navigation__link:hover{background-color:#455c63;color:#a8b8b8}
 
+.buttons{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;margin:0.938rem 1.25rem}.buttons__button{border:none;border-radius:6px;padding:0.625rem 1.25rem;margin-left:0.625rem;cursor:pointer;color:#fff}.buttons__button:hover{opacity:0.7}.buttons__button--confirm{background:#3f9e7c}.buttons__button--deny{background:#9e3232}
+
+.confirmation{position:fixed;top:0;left:0}.confirmation__backdrop{position:absolute;top:0;left:0;width:100vw;height:100vh;background:rgba(74,105,89,0.3)}.confirmation__box{position:absolute;top:6.25rem;left:calc(50vw - 12.5rem);width:25rem;background:#d6d3dc;border-radius:6px;color:#363132;overflow:hidden}.confirmation__message{font-size:1.125rem;margin-bottom:0.938rem;padding:0.938rem 1.25rem;color:#fff;background-color:#4a6959}
+
 canvas.gameboy-image{width:100%;display:block;-ms-interpolation-mode:nearest-neighbor;image-rendering:-webkit-optimize-contrast;image-rendering:-moz-crisp-edges;image-rendering:-o-pixelated;image-rendering:pixelated}
 
 .live-image{display:block;width:10rem;min-height:9rem;background:#455c63;position:fixed;top:-6.25rem;right:0;-webkit-transition:top 300ms ease-in-out;-o-transition:top 300ms ease-in-out;transition:top 300ms ease-in-out;z-index:1}.live-image--receiving{top:3.75rem}
@@ -16,11 +20,15 @@ canvas.gameboy-image{width:100%;display:block;-ms-interpolation-mode:nearest-nei
 
 .dump__data{width:100%;height:31.25rem;font-size:0.75rem;white-space:nowrap}
 
-.gallery-image{-ms-flex-negative:0;flex-shrink:0;width:10rem;margin:0.625rem;position:relative}.gallery-image__download{display:none;position:absolute;top:0.313rem;left:0.313rem;width:1.25rem;height:1.25rem;border:none;background:#d8d8d8}.gallery-image:hover .gallery-image__download{display:block}
+.gallery-image{-ms-flex-negative:0;flex-shrink:0;width:10rem;margin:0.625rem;position:relative}.gallery-image__buttons{display:none;position:absolute;top:0.313rem;left:0.313rem}.gallery-image__button{width:1.25rem;height:1.25rem;border:none;background:#d8d8d8;margin-right:0.313rem}.gallery-image__button:hover{background:#4a6959;color:#fff}.gallery-image:hover .gallery-image__buttons{display:block}.gallery-image--dummy{margin:0 0.625rem;-ms-flex-negative:0;flex-shrink:0;width:10rem}
 
 .gallery{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;margin:0 -0.625rem}
 
 .home{color:#363132}.home>*{display:block;margin-bottom:1.25rem}.home h3{font-size:1.875rem}.home ul,.home ol{padding-left:1.25rem}.home ul li,.home ol li{padding-top:0.625rem}.home ul>li:before,.home ol>li:before{content:'• ';width:1.25rem;display:inline-block;margin-left:-1.25rem}
+
+.palette-select{display:block;width:27.5rem;line-height:1.5rem;height:2.5rem;background:none;margin:1.25rem;border:none;font-size:1rem}
+
+.edit-image{position:fixed;top:0;left:0}.edit-image__backdrop{position:absolute;top:0;left:0;width:100vw;height:100vh;background:rgba(74,105,89,0.3)}.edit-image__box{position:absolute;top:6.25rem;left:calc(50vw - 15rem);width:30rem;background:#d6d3dc;border-radius:6px;color:#363132;overflow:hidden}.edit-image__header{display:block;padding:0.938rem 1.25rem 0.625rem}.edit-image__header:before{position:absolute;content:'✎'}.edit-image__header-edit{color:inherit;border:none;width:100%;font-size:1.125rem;background:none;padding-left:1.563rem}
 
 .app{position:relative}.app__content{width:90vw;max-width:62.5rem;margin:auto;padding:7.5rem 1.25rem 1.25rem 1.25rem}.app__content-headline{font-size:1.875rem;margin-bottom:1.875rem;color:#292037}
 
