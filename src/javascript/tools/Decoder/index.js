@@ -46,15 +46,19 @@ class Decoder {
     });
 
     const context = this.canvas.getContext('2d');
+    let imageData;
 
+    // IE11 canot create an ImageData object - so I reuse the existing imagedata and overwrite each byte manually
     try {
-      const imageData = new ImageData(this.rawImageData, 160, newHeight);
-      context.putImageData(imageData, 0, 0);
+      imageData = new ImageData(this.rawImageData, 160, newHeight);
     } catch (error) {
-      // ToDo IE11: maybe use existing imageData?
-      context.fillStyle = this.colors[3];
-      context.fillRect(0, 0, 160, newHeight);
+      imageData = context.getImageData(0, 0, 160, newHeight);
+      this.rawImageData.forEach((value, index) => {
+        imageData.data[index] = value;
+      });
     }
+
+    context.putImageData(imageData, 0, 0);
   }
 
   getScaledCanvas(scaleFactor) {
