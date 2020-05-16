@@ -10,6 +10,10 @@ module.exports = merge(common(), {
     new webpack.DefinePlugin({
       ENV: '\'production\'',
     }),
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      reportFilename: 'bundles.html',
+      openAnalyzer: false,
+    }),
   ],
 });
