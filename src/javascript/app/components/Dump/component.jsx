@@ -1,14 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dummyContent from './dummy';
 
 class Dump extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      text: dummyContent.join('\n'),
+      text: '',
     };
+  }
+
+  componentDidMount() {
+    import(/* webpackChunkName: "dummy" */ './dummy')
+      .then(({ default: dummyContent }) => {
+        this.setState({
+          text: dummyContent.join('\n'),
+        });
+      });
   }
 
   render() {

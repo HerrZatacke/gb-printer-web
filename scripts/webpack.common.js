@@ -85,9 +85,14 @@ module.exports = () => ({
       },
     ],
   },
+  optimization: {
+    splitChunks: {
+      automaticNameDelimiter: '/',
+    },
+  },
   output: {
     path: path.resolve(process.cwd(), 'dist'),
-    filename: '[name].bundle.js',
+    filename: '[hash:4]/[name].js',
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -97,7 +102,7 @@ module.exports = () => ({
       chunks: ['main'],
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: '[hash:4]/[name].css',
       chunkFilename: '[id].css',
     }),
   ],
