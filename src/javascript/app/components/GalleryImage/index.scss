@@ -1,18 +1,45 @@
+
 .gallery-image {
   flex-shrink: 0;
-  width: 180px;
+  width: 0;
   margin: 5px;
   position: relative;
   border-radius: $default-border-radius;
   background-color: $color-grey-50;
   padding: 10px;
+  box-sizing: content-box;
+
+  .gallery-1x & {
+    width: 160px;
+  }
+
+  .gallery-2x & {
+    width: 320px;
+  }
+
+  .gallery-3x & {
+    width: 480px;
+  }
+
+  .gallery-4x & {
+    width: 540px;
+  }
 
   &__image {
-    margin-bottom: 10px;
     display: block;
   }
 
+  .gallery-list & {
+    width: 100%;
+    display: flex;
+  }
+
+  .gallery-list &__image {
+    width: 60px;
+  }
+
   &__title {
+    margin-top: 10px;
     font-size: 14px;
     line-height: 16px;
     display: block;
@@ -46,10 +73,10 @@
 
   // easy way for a parent with justify-content: space-between; to still align last row left.
   &--dummy {
-    width: 180px;
-    margin: 5px;
-    padding: 10px;
-    flex-shrink: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }
 
