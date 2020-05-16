@@ -27,16 +27,29 @@ const save = (lineBuffer) => {
     level: 8,
   });
 
-  const dataHash = hash(compressed);
+  let dataHash = hash(compressed);
 
-  localStorage.setItem(`gbp-web-${dataHash}`, compressed);
+  try {
+    localStorage.setItem(`gbp-web-${dataHash}`, compressed);
+  } catch (error) {
+    localStorage.removeItem(`gbp-web-${dataHash}`, compressed);
+    dataHash = `base64-${dataHash}`;
+    localStorage.setItem(`gbp-web-${dataHash}`, btoa(compressed));
+  }
 
   return dataHash;
 };
 
 const load = (dataHash) => {
   try {
-    const binary = localStorage.getItem(`gbp-web-${dataHash}`);
+    let binary;
+
+    if (dataHash.startsWith('base64-')) {
+      binary = atob(localStorage.getItem(`gbp-web-${dataHash}`));
+    } else {
+      binary = localStorage.getItem(`gbp-web-${dataHash}`);
+    }
+
     const inflated = pako.inflate(binary, { to: 'string' });
     return inflated.split('\n');
   } catch (error) {
