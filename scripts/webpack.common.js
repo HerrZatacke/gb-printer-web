@@ -104,9 +104,5 @@ module.exports = () => ({
       filename: 'index.html',
       chunks: ['polyfill', 'main'],
     }),
-    new MiniCssExtractPlugin({
-      filename: '[hash:4]/[name].css',
-      chunkFilename: '[id].css',
-    }),
   ],
 });
