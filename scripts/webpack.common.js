@@ -12,6 +12,9 @@ module.exports = () => ({
     main: [
       path.join(process.cwd(), 'src', 'javascript', 'index.js'),
     ],
+    polyfill: [
+      'babel-polyfill/dist/polyfill',
+    ],
   },
   module: {
     rules: [
@@ -99,7 +102,7 @@ module.exports = () => ({
       title: 'Gameboy Printer Web',
       template: './src/assets/index.html',
       filename: 'index.html',
-      chunks: ['main'],
+      chunks: ['polyfill', 'main'],
     }),
     new MiniCssExtractPlugin({
       filename: '[hash:4]/[name].css',
