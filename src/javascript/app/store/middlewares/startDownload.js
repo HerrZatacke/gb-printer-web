@@ -1,6 +1,6 @@
 import { load } from '../../../tools/storage';
 import Decoder from '../../../tools/Decoder';
-import zipFiles from '../../../tools/zipFiles';
+import zipFiles from '../../../tools/download';
 
 const startDownload = (store) => (next) => (action) => {
 
@@ -35,13 +35,27 @@ const startDownload = (store) => (next) => (action) => {
         const fileType = 'png';
 
         const onBlobComplete = (blob) => {
-          blob.arrayBuffer().then((arrayBuffer) => {
-            resolve({
-              filename: `${exportScaleFactor}x-${fileTitle}.${fileType}`,
-              arrayBuffer,
-              blob,
+          const filename = `${exportScaleFactor}x-${fileTitle}.${fileType}`;
+          if (typeof blob.arrayBuffer === 'function') {
+            blob.arrayBuffer().then((arrayBuffer) => {
+              resolve({
+                filename,
+                arrayBuffer,
+                blob,
+              });
             });
-          });
+          } else {
+            const fileReader = new FileReader();
+            fileReader.onload = (ev) => {
+              resolve({
+                filename,
+                arrayBuffer: ev.target.result,
+                blob,
+              });
+            };
+
+            fileReader.readAsArrayBuffer(blob);
+          }
         };
 
         switch (fileType) {

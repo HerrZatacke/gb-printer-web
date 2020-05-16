@@ -1,6 +1,6 @@
 import { saveAs } from 'file-saver';
 
-const zipFiles = (zipFileName) => (files) => {
+const download = (zipFileName) => (files) => {
 
   import(/* webpackChunkName: "jszip" */ 'jszip')
     .then(({ default: JSZip }) => {
@@ -28,4 +28,4 @@ const zipFiles = (zipFileName) => (files) => {
     });
 };
 
-export default zipFiles;
+export default download;
