@@ -7,7 +7,6 @@ class Decoder {
 
   constructor() {
     this.canvas = null;
-    this.canvasContext = null;
     this.tiles = [];
     this.colors = [];
     this.rawImageData = [];
@@ -46,8 +45,16 @@ class Decoder {
       this.renderTile(index, newTile);
     });
 
-    const imageData = new ImageData(this.rawImageData, 160, newHeight);
-    this.canvasContext.putImageData(imageData, 0, 0);
+    const context = this.canvas.getContext('2d');
+
+    try {
+      const imageData = new ImageData(this.rawImageData, 160, newHeight);
+      context.putImageData(imageData, 0, 0);
+    } catch (error) {
+      // ToDo IE11: maybe use existing imageData?
+      context.fillStyle = this.colors[3];
+      context.fillRect(0, 0, 160, newHeight);
+    }
   }
 
   getScaledCanvas(scaleFactor) {
@@ -72,7 +79,6 @@ class Decoder {
     }
 
     this.canvas = canvas;
-    this.canvasContext = this.canvas.getContext('2d');
     return true;
   }
 
