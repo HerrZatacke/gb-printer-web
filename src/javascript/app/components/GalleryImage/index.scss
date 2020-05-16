@@ -46,9 +46,10 @@
 
   // easy way for a parent with justify-content: space-between; to still align last row left.
   &--dummy {
-    margin: 0 10px;
+    width: 180px;
+    margin: 5px;
+    padding: 10px;
     flex-shrink: 0;
-    width: 160px;
   }
 }
 
