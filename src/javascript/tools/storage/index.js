@@ -1,6 +1,3 @@
-import pako from 'pako';
-import hash from 'object-hash';
-
 const dummyImage = () => (
   [...new Array(20 * 18)]
     .map(() => (
@@ -15,50 +12,57 @@ const dummyImage = () => (
 );
 
 const save = (lineBuffer) => (
-  new Promise((resolve) => {
-    const imageData = lineBuffer
-      .map((line) => (
-        line.replace(/ /gi, '')
-      ))
-      .join('\n');
+  import(/* webpackChunkName: "object-hash" */ 'object-hash')
+    .then(({ default: hash }) => (
+      import(/* webpackChunkName: "pako" */ 'pako')
+        .then(({ default: pako }) => {
+          const imageData = lineBuffer
+            .map((line) => (
+              line.replace(/ /gi, '')
+            ))
+            .join('\n');
 
-    const compressed = pako.deflate(imageData, {
-      to: 'string',
-      strategy: 1,
-      level: 8,
-    });
+          const compressed = pako.deflate(imageData, {
+            to: 'string',
+            strategy: 1,
+            level: 8,
+          });
 
-    let dataHash = hash(compressed);
+          let dataHash = hash(compressed);
 
-    try {
-      localStorage.setItem(`gbp-web-${dataHash}`, compressed);
-    } catch (error) {
-      localStorage.removeItem(`gbp-web-${dataHash}`, compressed);
-      dataHash = `base64-${dataHash}`;
-      localStorage.setItem(`gbp-web-${dataHash}`, btoa(compressed));
-    }
+          try {
+            localStorage.setItem(`gbp-web-${dataHash}`, compressed);
+          } catch (error) {
+            localStorage.removeItem(`gbp-web-${dataHash}`, compressed);
+            dataHash = `base64-${dataHash}`;
+            localStorage.setItem(`gbp-web-${dataHash}`, btoa(compressed));
+          }
 
-    resolve(dataHash);
-  })
+          return dataHash;
+
+        })
+    ))
 );
 
 const load = (dataHash) => (
-  new Promise((resolve) => {
-    try {
-      let binary;
+  import(/* webpackChunkName: "pako" */ 'pako')
+    .then(({ default: pako }) => {
 
-      if (dataHash.startsWith('base64-')) {
-        binary = atob(localStorage.getItem(`gbp-web-${dataHash}`));
-      } else {
-        binary = localStorage.getItem(`gbp-web-${dataHash}`);
+      try {
+        let binary;
+
+        if (dataHash.startsWith('base64-')) {
+          binary = atob(localStorage.getItem(`gbp-web-${dataHash}`));
+        } else {
+          binary = localStorage.getItem(`gbp-web-${dataHash}`);
+        }
+
+        const inflated = pako.inflate(binary, { to: 'string' });
+        return inflated.split('\n');
+      } catch (error) {
+        return dummyImage();
       }
-
-      const inflated = pako.inflate(binary, { to: 'string' });
-      resolve(inflated.split('\n'));
-    } catch (error) {
-      resolve(dummyImage());
-    }
-  })
+    })
 );
 
 const del = (dataHash) => {
