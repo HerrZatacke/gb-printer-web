@@ -69,7 +69,7 @@ class EditImage extends React.Component {
 
 EditImage.propTypes = {
   cancel: PropTypes.func.isRequired,
-  imageHash: PropTypes.array,
+  imageHash: PropTypes.string,
   palette: PropTypes.object,
   save: PropTypes.func.isRequired,
   title: PropTypes.string,
