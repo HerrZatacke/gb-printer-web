@@ -8,15 +8,25 @@ class GalleryImage extends React.Component {
   constructor(props) {
     super(props);
 
-    // the content of the image should never change...
-    this.tiles = load(props.hash);
+    this.state = {
+      tiles: null,
+    };
+  }
+
+  componentDidMount() {
+    load(this.props.hash)
+      .then((tiles) => {
+        this.setState({ tiles });
+      });
   }
 
   render() {
     return (
       <li className="gallery-image">
         <span className="gallery-image__image">
-          <GameBoyImage tiles={this.tiles} palette={this.props.palette} />
+          { this.state.tiles ? (
+            <GameBoyImage tiles={this.state.tiles} palette={this.props.palette} />
+          ) : null }
         </span>
         <span
           className="gallery-image__title"

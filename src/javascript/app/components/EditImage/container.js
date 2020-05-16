@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
-import { load } from '../../../tools/storage';
 
 const mapStateToProps = (state) => ({
   title: state.editImage.title || '',
-  imageData: state.editImage.hash ? load(state.editImage.hash) || null : null,
+  imageHash: state.editImage.hash,
   palette: state.editImage.palette ? state.palettes.find(({ shortName }) => (
     shortName === state.editImage.palette
   )) || {} : {},
