@@ -23,6 +23,7 @@
     border-radius: $default-border-radius;
     user-select: none;
 
+    &:hover,
     &--selected {
       background: $color-tertiary;
     }

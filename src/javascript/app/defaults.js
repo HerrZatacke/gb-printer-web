@@ -2,6 +2,7 @@ export default {
   socketUrl: 'gameboycamera.local:81',
   activePalette: 'bw',
   images: [],
+  galleryView: '1x',
   exportScaleFactors: [4],
   palettes: [
     {

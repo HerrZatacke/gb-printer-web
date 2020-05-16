@@ -1,8 +1,47 @@
 .gallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 -10px;
+
+  &__views {
+    position: absolute;
+    right: 0;
+    top: 120px;
+    display: flex;
+
+  }
+
+  &__view {
+    color: $color-white;
+    background: $color-grey-70;
+    flex-grow: 1;
+    margin-left: 10px;
+    line-height: 40px;
+    width: 40px;
+    text-align: center;
+    border-radius: $default-border-radius;
+
+    button {
+      border: none;
+      background: none;
+      margin: 0;
+      padding: 0;
+      width: inherit;
+      line-height: inherit;
+      cursor: pointer;
+      display: block;
+    }
+
+    &:hover,
+    &--selected {
+      background: $color-tertiary;
+    }
+
+    input {
+      display: none;
+    }
+  }
 }
 
 
