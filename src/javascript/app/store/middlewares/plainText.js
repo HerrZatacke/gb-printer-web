@@ -16,10 +16,7 @@ const plainText = (store) => (next) => (action) => {
             return null;
 
           case 'IMAGE_COMPLETE':
-            return {
-              type: 'SET_ALL_LINES',
-              payload: dataLines.filter(Boolean),
-            };
+            return dataLines.filter(Boolean);
 
           case 'CLEAR_LINES':
             dataLines = [];
@@ -32,9 +29,12 @@ const plainText = (store) => (next) => (action) => {
 
       })
       .filter(Boolean)
-      .forEach((parsedAction, index) => {
+      .forEach((imageLines, index) => {
         window.setTimeout(() => {
-          store.dispatch(parsedAction);
+          store.dispatch({
+            type: 'SET_ALL_LINES',
+            payload: imageLines,
+          });
         }, index * 50);
       });
 
