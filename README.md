@@ -1,6 +1,10 @@
 # Gameboy Printer Web
 
-## Setup
+A basic version of this tool is avaliable [on GitHub-pages](https://herrzatacke.github.io/gb-printer-web/#/)  
+This version does not allow listening to your serial ports (yet), but you can still [copy/paste](https://herrzatacke.github.io/gb-printer-web/#/dump) the serial output of the [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)  
+This project is meant to replace my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter) which has too many restrictions due to running in a terminal only.
+
+## Local Setup
 
 You can run this app locally to directly use the gbp-emulator on your serial port 
 * Install [node.js](https://nodejs.org/) if you haven't already.
@@ -27,6 +31,9 @@ Create a file `ports.config.json` in the root dir and configure it like the foll
   ...
 ]
 ```
+
+## Future Plans
+This tool is meant to be integrated into the [Websocket GBP Emulator](https://github.com/HerrZatacke/websocket-gbp-emulator)
 
 ## research
 * [Websockets](https://tttapa.github.io/ESP8266/Chap14%20-%20WebSocket.html)
