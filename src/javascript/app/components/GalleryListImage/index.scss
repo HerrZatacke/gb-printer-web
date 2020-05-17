@@ -1,0 +1,44 @@
+.gallery-list-image {
+  background-color: $color-grey-50;
+  border-bottom: 1px solid $page-background;
+
+  &__image {
+    width: 60px;
+    padding: 10px;
+  }
+
+  &__description {
+    vertical-align: middle;
+  }
+
+  &__title {
+    font-size: 14px;
+    line-height: 16px;
+    color: white;
+    display: block;
+  }
+
+  &__created {
+    font-size: 12px;
+    line-height: 14px;
+    color: $color-grey-80;
+  }
+
+  &__buttons {
+  }
+
+  &__button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: $color-grey-90;
+    margin-right: 5px;
+
+    &:hover {
+      background: $color-tertiary;
+      color: $color-white;
+    }
+  }
+}
+
+

@@ -2,66 +2,88 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import GalleryImage from '../GalleryImage';
+import GalleryListImage from '../GalleryListImage';
 
 const GALLERY_VIEWS = [
-  // 'list',
+  'list',
   '1x',
   '2x',
   '3x',
   '4x',
 ];
 
-const Gallery = (props) => (
-  <>
-    <ul className="gallery__views">
+const Gallery = (props) => {
+
+  const ImageComponent = props.currentView === 'list' ? GalleryListImage : GalleryImage;
+
+  const content = props.images.map((image) => (
+    <ImageComponent
+      key={image.hash}
+      hash={image.hash}
+      palette={image.palette}
+      title={image.title}
+      created={image.created}
+    />
+  ));
+
+  if (props.currentView !== 'list') {
+    content.push(
+      <li className="gallery-image gallery-image--dummy" key="dummy1" />,
+      <li className="gallery-image gallery-image--dummy" key="dummy2" />,
+      <li className="gallery-image gallery-image--dummy" key="dummy3" />,
+      <li className="gallery-image gallery-image--dummy" key="dummy4" />,
+      <li className="gallery-image gallery-image--dummy" key="dummy5" />,
+    );
+  }
+
+
+  return (
+    <>
+      <ul className="gallery__views">
+        {
+          GALLERY_VIEWS.map((view) => (
+            <li
+              key={view}
+              className={
+                classnames('gallery__view', {
+                  'gallery__view--selected': props.currentView === view,
+                })
+              }
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  props.updateView(view);
+                }}
+              >
+                {view}
+              </button>
+            </li>
+          ))
+        }
+      </ul>
       {
-        GALLERY_VIEWS.map((view) => (
-          <li
-            key={view}
+        (props.currentView === 'list') ? (
+          <table className="gallery gallery--list">
+            <tbody>
+              {content}
+            </tbody>
+          </table>
+        ) : (
+          <ul
             className={
-              classnames('gallery__view', {
-                'gallery__view--selected': props.currentView === view,
+              classnames('gallery', {
+                [`gallery--${props.currentView}`]: true,
               })
             }
           >
-            <button
-              type="button"
-              onClick={() => {
-                props.updateView(view);
-              }}
-            >
-              {view}
-            </button>
-          </li>
-        ))
+            {content}
+          </ul>
+        )
       }
-    </ul>
-    <ul
-      className={
-        classnames('gallery', {
-          [`gallery-${props.currentView}`]: true,
-        })
-      }
-    >
-      {
-        props.images.map((image) => (
-          <GalleryImage
-            key={image.hash}
-            hash={image.hash}
-            palette={image.palette}
-            title={image.title}
-            created={image.created}
-          />
-        ))
-      }
-      <li className="gallery-image gallery-image--dummy" />
-      <li className="gallery-image gallery-image--dummy" />
-      <li className="gallery-image gallery-image--dummy" />
-      <li className="gallery-image gallery-image--dummy" />
-      <li className="gallery-image gallery-image--dummy" />
-    </ul>
-  </>
-);
+    </>
+  );
+};
 
 Gallery.propTypes = {
   images: PropTypes.array.isRequired,
