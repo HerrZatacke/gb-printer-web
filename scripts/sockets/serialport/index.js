@@ -29,18 +29,6 @@ const serialportWebsocket = (app) => {
     mockFunction();
     res.json('mocking...');
   });
-
-  // webSocketServer.on('connection', (/* socket */) => {
-  //   here's listening to a message from the client
-  //   socket.on('message', (msg) => {
-  //     console.log(msg);
-  //   });
-  //
-  //   global.setTimeout(() => {
-  //     mock(broadcast);
-  //   }, 4000);
-  // });
-
 };
 
 module.exports = serialportWebsocket;
