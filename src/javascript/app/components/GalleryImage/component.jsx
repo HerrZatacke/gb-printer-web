@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { dateFormat, dateFormatReadable } from '../../../tools/values';
 import GameBoyImage from '../GameBoyImage';
 import { load } from '../../../tools/storage';
+
+dayjs.extend(customParseFormat);
 
 class GalleryImage extends React.Component {
 
@@ -38,7 +43,7 @@ class GalleryImage extends React.Component {
         <span
           className="gallery-image__created"
         >
-          {this.props.created}
+          {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
         </span>
         <div className="gallery-image__buttons">
           <button
