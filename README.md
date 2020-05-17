@@ -9,6 +9,8 @@ You can run this app locally to directly use the gbp-emulator on your serial por
 * add a `ports.config.json` in the root dir (see below)
 * run `npm start`
 * open [localhost:3000](http://localhost:3000)
+* go to the 'Settings' page and change the 'Remote Socket URL' to `localhost:3001`
+* Print something
 
 
 ## Serial Config with `ports.config.json`
