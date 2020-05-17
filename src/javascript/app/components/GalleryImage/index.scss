@@ -60,6 +60,8 @@
     border: none;
     background: $color-grey-90;
     margin-right: 5px;
+    padding: 0 ;
+    cursor: pointer;
 
     &:hover {
       background: $color-tertiary;

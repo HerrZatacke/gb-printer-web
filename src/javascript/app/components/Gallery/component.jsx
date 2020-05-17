@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import GalleryImage from '../GalleryImage';
 import GalleryListImage from '../GalleryListImage';
+import SVG from '../SVG';
 
 const GALLERY_VIEWS = [
   'list',
@@ -56,7 +57,7 @@ const Gallery = (props) => {
                   props.updateView(view);
                 }}
               >
-                {view}
+                <SVG name={view} />
               </button>
             </li>
           ))
