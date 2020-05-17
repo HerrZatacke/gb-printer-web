@@ -1,7 +1,7 @@
 # Gameboy Printer Web
 
 A basic version of this tool is avaliable [on GitHub-pages](https://herrzatacke.github.io/gb-printer-web/#/)  
-This version does not allow listening to your serial ports (yet), but you can still [copy/paste](https://herrzatacke.github.io/gb-printer-web/#/dump) the serial output of the [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)  
+This version does not allow listening to your serial ports (yet), but you can still [copy/paste](https://herrzatacke.github.io/gb-printer-web/#/dump) the serial output of the original [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)  
 This project is meant to replace my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter)
 
 ## Local Setup
