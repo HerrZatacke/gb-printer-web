@@ -1,7 +1,24 @@
 # Gameboy Printer Web
 
-## Setup
-If you want this app to locally connect to an Arduino running the gbp-emulator you need to create a file `ports.config.json` and configure it accordingly (multiple ports are supported):
+A basic version of this tool is avaliable [on GitHub-pages](https://herrzatacke.github.io/gb-printer-web/#/)  
+This version does not allow listening to your serial ports (yet), but you can still [copy/paste](https://herrzatacke.github.io/gb-printer-web/#/dump) the serial output of the original [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)  
+This project is meant to replace my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter)
+
+## Local Setup
+
+You can run this app locally to directly use the gbp-emulator on your serial port 
+* Install [node.js](https://nodejs.org/) if you haven't already.
+* Check out/clone/download [this repository](https://github.com/HerrZatacke/gb-printer-web")
+* Run `npm i` in the root directory via your commandline
+* Add a `ports.config.json` in the root dir (see below)
+* Run `npm start` via your commandline
+* Open [localhost:3000](http://localhost:3000)
+* Go to the 'Settings' page and change the 'Remote Socket URL' to `localhost:3001`
+* Print something
+
+
+## Serial Config with `ports.config.json`
+Create a file `ports.config.json` in the root dir and configure it like the following example (multiple ports are supported):
 ``` json
 [
   {
@@ -14,6 +31,9 @@ If you want this app to locally connect to an Arduino running the gbp-emulator y
   ...
 ]
 ```
+
+## Future Plans
+This tool is meant to be integrated into the [Websocket GBP Emulator](https://github.com/HerrZatacke/websocket-gbp-emulator)
 
 ## research
 * [Websockets](https://tttapa.github.io/ESP8266/Chap14%20-%20WebSocket.html)
