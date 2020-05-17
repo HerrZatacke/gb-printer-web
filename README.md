@@ -3,7 +3,7 @@
 ## Setup
 
 You can run this app locally to directly use the gbp-emulator on your serial port 
-
+* install [node.js](https://nodejs.org/) if you haven't already.
 * check out [this repository](https://github.com/HerrZatacke/gb-printer-web")
 * run `npm i` in the root directory
 * add a `ports.config.json` in the root dir (see below)
