@@ -13,13 +13,15 @@ import saveEditImage from './middlewares/saveEditImage';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const enhancers = [
-  applyMiddleware(serialportWebocket),
-  applyMiddleware(triggerMock),
-  applyMiddleware(plainText),
-  applyMiddleware(saveLineBuffer),
-  applyMiddleware(startDownload),
-  applyMiddleware(confirmation),
-  applyMiddleware(saveEditImage),
+  applyMiddleware(
+    serialportWebocket,
+    triggerMock,
+    plainText,
+    saveLineBuffer,
+    startDownload,
+    confirmation,
+    saveEditImage,
+  ),
 
   // should be the last mw
   applyMiddleware(saveState),
