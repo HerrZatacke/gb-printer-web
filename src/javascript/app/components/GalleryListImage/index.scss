@@ -24,7 +24,24 @@
     color: $color-grey-80;
   }
 
-  &__buttons {
+  &__checkbox {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+
+    &--red {
+      box-shadow: 0 0 0 2px #ff0000;
+    }
+    &--green {
+      box-shadow: 0 0 0 2px #00ff00;
+    }
+    &--blue {
+      box-shadow: 0 0 0 2px #0000ff;
+    }
+    &--normal {
+      box-shadow: 0 0 0 2px #000000;
+    }
   }
 
   &__button {

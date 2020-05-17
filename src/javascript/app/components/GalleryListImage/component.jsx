@@ -44,6 +44,41 @@ class GalleryListImage extends React.Component {
           </span>
         </td>
 
+        <td className="gallery-list-image__checkboxes">
+          <input
+            className="gallery-list-image__checkbox gallery-list-image__checkbox--red"
+            checked={this.props.isR}
+            onChange={(ev) => {
+              this.props.updateRGBN('r', ev.target.checked);
+            }}
+            type="checkbox"
+          />
+          <input
+            className="gallery-list-image__checkbox gallery-list-image__checkbox--green"
+            checked={this.props.isG}
+            onChange={(ev) => {
+              this.props.updateRGBN('g', ev.target.checked);
+            }}
+            type="checkbox"
+          />
+          <input
+            className="gallery-list-image__checkbox gallery-list-image__checkbox--blue"
+            checked={this.props.isB}
+            onChange={(ev) => {
+              this.props.updateRGBN('b', ev.target.checked);
+            }}
+            type="checkbox"
+          />
+          <input
+            className="gallery-list-image__checkbox gallery-list-image__checkbox--normal"
+            checked={this.props.isN}
+            onChange={(ev) => {
+              this.props.updateRGBN('n', ev.target.checked);
+            }}
+            type="checkbox"
+          />
+        </td>
+
         <td className="gallery-list-image__buttons">
           <button
             type="button"
@@ -77,9 +112,14 @@ GalleryListImage.propTypes = {
   deleteImage: PropTypes.func.isRequired,
   editImage: PropTypes.func.isRequired,
   hash: PropTypes.string.isRequired,
+  isR: PropTypes.bool.isRequired,
+  isG: PropTypes.bool.isRequired,
+  isB: PropTypes.bool.isRequired,
+  isN: PropTypes.bool.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   startDownload: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  updateRGBN: PropTypes.func.isRequired,
 };
 
 GalleryListImage.defaultProps = {
