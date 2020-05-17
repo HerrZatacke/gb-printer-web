@@ -4,6 +4,7 @@ import confirmation from './reducers/confirmationReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import editImage from './reducers/editImageReducer';
 import galleryView from './reducers/galleryViewReducer';
+import globalIndex from './reducers/globalIndexReducer';
 import images from './reducers/imagesReducer';
 import lineBuffer from './reducers/lineBufferReducer';
 import palettes from './reducers/palettesReducer';
@@ -16,6 +17,7 @@ export default combineReducers({
   exportScaleFactors,
   editImage,
   galleryView,
+  globalIndex,
   images,
   lineBuffer,
   palettes,

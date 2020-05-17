@@ -50,6 +50,7 @@ const Gallery = (props) => (
             hash={image.hash}
             palette={image.palette}
             title={image.title}
+            created={image.created}
           />
         ))
       }

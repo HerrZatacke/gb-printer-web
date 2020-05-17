@@ -4,6 +4,7 @@ export default {
   images: [],
   galleryView: '1x',
   exportScaleFactors: [4],
+  globalIndex: 1,
   palettes: [
     {
       name: 'Black & White',

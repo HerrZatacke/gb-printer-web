@@ -1,6 +1,6 @@
 const editImageReducer = (value = {}, action) => {
   switch (action.type) {
-    case 'EDIT_IMAGE':
+    case 'SET_EDIT_IMAGE':
       return action.payload;
     case 'UPDATE_EDIT_IMAGE':
       return {

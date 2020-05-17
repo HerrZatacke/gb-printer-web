@@ -45,6 +45,7 @@ class EditImage extends React.Component {
             >
               <input
                 className="edit-image__header-edit"
+                placeholder="Add a title"
                 value={this.props.title}
                 onChange={(ev) => {
                   this.props.updateTitle(ev.target.value);

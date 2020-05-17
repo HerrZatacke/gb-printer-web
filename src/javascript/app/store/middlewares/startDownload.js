@@ -1,6 +1,7 @@
 import { load } from '../../../tools/storage';
 import Decoder from '../../../tools/Decoder';
 import zipFiles from '../../../tools/download';
+import generateFileName from '../../../tools/generateFileName';
 
 const startDownload = (store) => (next) => (action) => {
 
@@ -18,7 +19,6 @@ const startDownload = (store) => (next) => (action) => {
     load(action.payload)
       .then((tiles) => {
 
-        const fileTitle = `${palette.shortName}-${image.title}`;
         const canvas = document.createElement('canvas');
         canvas.width = 160;
         const decoder = new Decoder();
@@ -27,21 +27,22 @@ const startDownload = (store) => (next) => (action) => {
         const images = exportScaleFactors.map((exportScaleFactor) => (
           new Promise((resolve, reject) => {
 
+            const fileType = 'png';
+
+            const filename = generateFileName(image, palette, exportScaleFactor);
+
             const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
 
             if (scaledCanvas.msToBlob) {
-              window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${fileTitle}.png`);
+              window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${filename}.png`);
               return;
             }
 
-            const fileType = 'png';
-
             const onBlobComplete = (blob) => {
-              const filename = `${exportScaleFactor}x-${fileTitle}.${fileType}`;
               if (typeof blob.arrayBuffer === 'function') {
                 blob.arrayBuffer().then((arrayBuffer) => {
                   resolve({
-                    filename,
+                    filename: `${filename}.${fileType}`,
                     arrayBuffer,
                     blob,
                   });
@@ -50,7 +51,7 @@ const startDownload = (store) => (next) => (action) => {
                 const fileReader = new FileReader();
                 fileReader.onload = (ev) => {
                   resolve({
-                    filename,
+                    filename: `${filename}.${fileType}`,
                     arrayBuffer: ev.target.result,
                     blob,
                   });
@@ -74,7 +75,7 @@ const startDownload = (store) => (next) => (action) => {
           })
         ));
 
-        Promise.all(images).then(zipFiles(fileTitle));
+        Promise.all(images).then(zipFiles(generateFileName(image, palette)));
       });
   }
 

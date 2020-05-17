@@ -28,10 +28,17 @@ class GalleryImage extends React.Component {
             <GameBoyImage tiles={this.state.tiles} palette={this.props.palette} />
           ) : null }
         </span>
+        {this.props.title ? (
+          <span
+            className="gallery-image__title"
+          >
+            {this.props.title}
+          </span>
+        ) : null}
         <span
-          className="gallery-image__title"
+          className="gallery-image__created"
         >
-          {this.props.title}
+          {this.props.created}
         </span>
         <div className="gallery-image__buttons">
           <button
@@ -62,6 +69,7 @@ class GalleryImage extends React.Component {
 }
 
 GalleryImage.propTypes = {
+  created: PropTypes.string.isRequired,
   deleteImage: PropTypes.func.isRequired,
   editImage: PropTypes.func.isRequired,
   hash: PropTypes.string.isRequired,

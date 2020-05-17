@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { save } from '../../../tools/storage';
+import { dateFormat } from '../../../tools/values';
 
 const saveLineBuffer = (store) => (next) => (action) => {
 
@@ -13,8 +14,9 @@ const saveLineBuffer = (store) => (next) => (action) => {
       .then((dataHash) => {
         const image = {
           hash: dataHash,
-          created: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-          title: `Created at ${dayjs().format('DD.MM.YYYY HH:mm')}`,
+          created: dayjs().format(dateFormat),
+          title: '',
+          index: state.globalIndex,
           lines: state.lineBuffer.length,
           palette: state.activePalette,
         };

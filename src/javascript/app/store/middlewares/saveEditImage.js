@@ -1,13 +1,20 @@
 const saveEditImage = (store) => (next) => (action) => {
 
-  if (action.type === 'SAVE_EDIT_IMAGE') {
-    const state = store.getState();
+  switch (action.type) {
+    case 'SAVE_EDIT_IMAGE':
+      store.dispatch({
+        type: 'UPDATE_IMAGE',
+        payload: store.getState().editImage,
+      });
+      return;
 
-    store.dispatch({
-      type: 'UPDATE_IMAGE',
-      payload: state.editImage,
-    });
-    return;
+    case 'EDIT_IMAGE':
+      store.dispatch({
+        type: 'SET_EDIT_IMAGE',
+        payload: store.getState().images.find(({ hash }) => hash === action.payload),
+      });
+      return;
+    default:
   }
 
   next(action);

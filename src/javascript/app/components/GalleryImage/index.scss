@@ -7,7 +7,7 @@
   position: relative;
   border-radius: $default-border-radius;
   background-color: $color-grey-50;
-  padding: 10px;
+  padding: 10px 10px 30px 10px;
   box-sizing: content-box;
 
   .gallery-1x & {
@@ -47,6 +47,14 @@
     color: white;
   }
 
+  &__created {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    font-size: 12px;
+    line-height: 14px;
+    color: $color-grey-80;
+  }
 
   &__buttons {
     display: none;

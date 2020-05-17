@@ -20,7 +20,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   editImage: () => {
     dispatch({
       type: 'EDIT_IMAGE',
-      payload: ownProps,
+      payload: ownProps.hash,
     });
   },
 });
