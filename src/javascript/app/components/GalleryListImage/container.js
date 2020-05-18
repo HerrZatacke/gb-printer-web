@@ -9,24 +9,6 @@ const mapStateToProps = (state, { palette, hash }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  startDownload: () => {
-    dispatch({
-      type: 'START_DOWNLOAD',
-      payload: ownProps.hash,
-    });
-  },
-  deleteImage: () => {
-    dispatch({
-      type: 'DELETE_IMAGE',
-      payload: ownProps.hash,
-    });
-  },
-  editImage: () => {
-    dispatch({
-      type: 'EDIT_IMAGE',
-      payload: ownProps.hash,
-    });
-  },
   updateRGBN: (part, checked) => {
     dispatch({
       type: 'UPDATE_RGBN_PART',

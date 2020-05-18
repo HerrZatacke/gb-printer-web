@@ -43,24 +43,6 @@
       box-shadow: 0 0 0 2px #000000;
     }
   }
-
-  &__button {
-    width: 20px;
-    height: 20px;
-    border: none;
-    background: $color-grey-90;
-    margin-right: 5px;
-    padding: 0 ;
-    cursor: pointer;
-    fill: $color-tertiary;
-    border-radius: $default-border-radius-small;
-
-    &:hover {
-      background: $color-tertiary;
-      color: $color-white;
-      fill: currentColor;
-    }
-  }
 }
 
 

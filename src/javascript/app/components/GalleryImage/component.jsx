@@ -5,7 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { dateFormat, dateFormatReadable } from '../../../tools/values';
 import GameBoyImage from '../GameBoyImage';
 import { load } from '../../../tools/storage';
-import SVG from '../SVG';
+import GalleryImageButtons from '../GalleryImageButtons';
 
 dayjs.extend(customParseFormat);
 
@@ -46,29 +46,7 @@ class GalleryImage extends React.Component {
         >
           {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
         </span>
-        <div className="gallery-image__buttons">
-          <button
-            type="button"
-            className="gallery-image__button"
-            onClick={this.props.startDownload}
-          >
-            <SVG name="download" />
-          </button>
-          <button
-            type="button"
-            className="gallery-image__button"
-            onClick={this.props.deleteImage}
-          >
-            <SVG name="delete" />
-          </button>
-          <button
-            type="button"
-            className="gallery-image__button"
-            onClick={this.props.editImage}
-          >
-            <SVG name="edit" />
-          </button>
-        </div>
+        <GalleryImageButtons hash={this.props.hash} />
       </li>
     );
   }
@@ -76,11 +54,8 @@ class GalleryImage extends React.Component {
 
 GalleryImage.propTypes = {
   created: PropTypes.string.isRequired,
-  deleteImage: PropTypes.func.isRequired,
-  editImage: PropTypes.func.isRequired,
   hash: PropTypes.string.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  startDownload: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
 
