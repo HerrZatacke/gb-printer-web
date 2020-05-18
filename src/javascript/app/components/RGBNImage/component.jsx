@@ -22,7 +22,9 @@ class RGBNImage extends Component {
       load(this.props.tilesN),
     ])
       .then(([r, g, b, n]) => {
-        this.rgbnDecoder.update(this.canvasRef, r, g, b, n);
+        if (this.canvasRef) {
+          this.rgbnDecoder.update(this.canvasRef, r, g, b, n);
+        }
       });
   }
 
