@@ -52,10 +52,13 @@
     margin-right: 5px;
     padding: 0 ;
     cursor: pointer;
+    fill: $color-tertiary;
+    border-radius: $default-border-radius-small;
 
     &:hover {
       background: $color-tertiary;
       color: $color-white;
+      fill: currentColor;
     }
   }
 }
