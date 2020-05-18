@@ -23,6 +23,12 @@ const SVG = (props) => {
           <path d="M4 14.978v1.978L16 17v-2.022zM13.5 3l-8 8-1 3.5 3.5-1 8-8L13.5 3zm0 .8l.85.85-9.1 9.1L6 11.5l7.5-7.7z" />
         </svg>
       );
+    case 'circle':
+      return (
+        <svg className="svg" viewBox="0 0 20 20">
+          <circle r="8" cx="10" cy="10" />
+        </svg>
+      );
     case 'list':
       return (
         <svg className="svg" viewBox="0 0 40 40">

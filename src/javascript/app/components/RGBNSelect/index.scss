@@ -1,21 +1,55 @@
 .rgbn-select {
-  &__box {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__button {
     width: 20px;
     height: 20px;
     border: none;
-    background: none;
+    margin-right: 5px;
+    padding: 0 ;
+    cursor: pointer;
+    fill: currentColor;
+    border-radius: 50%;
+    background-color: $color-grey-10;
+    transition: transform 150ms ease-in-out, background-color 150ms linear;
+
+    svg {
+      transition: opacity 150ms ease-in-out;
+      opacity: 0.2;
+    }
+
 
     &--red {
-      box-shadow: 0 0 0 2px #ff0000;
+      color: #ff0000;
     }
     &--green {
-      box-shadow: 0 0 0 2px #00ff00;
+      color: #00ff00;
     }
     &--blue {
-      box-shadow: 0 0 0 2px #0000ff;
+      color: #0000ff;
     }
     &--normal {
-      box-shadow: 0 0 0 2px #000000;
+      color: #000000;
+    }
+
+    &--selected,
+    &:hover {
+      background-color: $color-grey-90;
+
+      svg {
+        opacity: 1;
+      }
+    }
+
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &--selected:hover {
+      transform: scale(1.4);
     }
   }
 }

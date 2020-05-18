@@ -2,21 +2,41 @@
   background-color: $color-grey-50;
   border-bottom: 1px solid $page-background;
 
+  &:hover{
+    background-color: $color-grey-60;
+  }
+
   &:last-child {
     border: none;
   }
 
   td {
+    padding: 0 10px;
     vertical-align: middle;
   }
 
-  &__image {
+  &__cell-image {
     width: 60px;
-    padding: 10px;
+  }
+
+  &__cell-description {}
+
+  &__cell-rgbn {
+    width: 120px;
+  }
+
+  &__cell-buttons {
+    width: 95px;
+  }
+
+  &__image {
+    width: 40px;
+    padding: 10px 0;
   }
 
   &__description {
     overflow: hidden;
+    text-align: left;
   }
 
   &__title {

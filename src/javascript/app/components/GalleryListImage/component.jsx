@@ -30,7 +30,7 @@ class GalleryListImage extends React.Component {
   render() {
     return (
       <tr className="gallery-list-image">
-        <td>
+        <td className="gallery-list-image__cell-image">
           <div className="gallery-list-image__image">
             { this.state.tiles ? (
               <GameBoyImage tiles={this.state.tiles} palette={this.props.palette} />
@@ -38,7 +38,7 @@ class GalleryListImage extends React.Component {
           </div>
         </td>
 
-        <td>
+        <td className="gallery-list-image__cell-description">
           <div className="gallery-list-image__description">
             <span className="gallery-list-image__title">
               {this.props.title}
@@ -49,11 +49,11 @@ class GalleryListImage extends React.Component {
           </div>
         </td>
 
-        <td>
+        <td className="gallery-list-image__cell-rgbn">
           <RGBNSelect hash={this.props.hash} />
         </td>
 
-        <td>
+        <td className="gallery-list-image__cell-buttons">
           <GalleryImageButtons hash={this.props.hash} />
         </td>
       </tr>
