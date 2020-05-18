@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Buttons from '../Buttons';
@@ -5,7 +6,11 @@ import Buttons from '../Buttons';
 const Confirmation = (props) => (
   props.message ? (
     <div className="confirmation">
-      <div className="confirmation__backdrop" />
+      <button
+        type="button"
+        className="confirmation__backdrop"
+        onClick={props.deny}
+      />
       <div className="confirmation__box">
         <div className="confirmation__message">
           {props.message}
