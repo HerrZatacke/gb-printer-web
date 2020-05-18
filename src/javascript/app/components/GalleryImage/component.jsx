@@ -5,6 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { dateFormat, dateFormatReadable } from '../../../tools/values';
 import GameBoyImage from '../GameBoyImage';
 import { load } from '../../../tools/storage';
+import SVG from '../SVG';
 
 dayjs.extend(customParseFormat);
 
@@ -51,21 +52,21 @@ class GalleryImage extends React.Component {
             className="gallery-image__button"
             onClick={this.props.startDownload}
           >
-            ⇩
+            <SVG name="download" />
           </button>
           <button
             type="button"
             className="gallery-image__button"
             onClick={this.props.deleteImage}
           >
-            ×
+            <SVG name="delete" />
           </button>
           <button
             type="button"
             className="gallery-image__button"
             onClick={this.props.editImage}
           >
-            ✎
+            <SVG name="edit" />
           </button>
         </div>
       </li>

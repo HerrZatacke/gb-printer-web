@@ -9,6 +9,7 @@ import Dump from '../Dump';
 import Gallery from '../Gallery';
 import Home from '../Home';
 import EditImage from '../EditImage';
+import RGBNImage from '../RGBNImage';
 
 const App = (/* props */) => (
   <Router>
@@ -46,6 +47,7 @@ const App = (/* props */) => (
     </div>
     <Confirmation />
     <EditImage />
+    <RGBNImage />
   </Router>
 );
 

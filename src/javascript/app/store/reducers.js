@@ -8,6 +8,7 @@ import globalIndex from './reducers/globalIndexReducer';
 import images from './reducers/imagesReducer';
 import lineBuffer from './reducers/lineBufferReducer';
 import palettes from './reducers/palettesReducer';
+import rgbnImages from './reducers/rgbnImagesReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
 
@@ -21,6 +22,7 @@ export default combineReducers({
   images,
   lineBuffer,
   palettes,
+  rgbnImages,
   socketState,
   socketUrl,
 });

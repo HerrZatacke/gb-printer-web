@@ -1,0 +1,63 @@
+.gallery-list-image {
+  background-color: $color-grey-50;
+  border-bottom: 1px solid $page-background;
+
+  &__image {
+    width: 60px;
+    padding: 10px;
+  }
+
+  &__description {
+    vertical-align: middle;
+  }
+
+  &__title {
+    font-size: 14px;
+    line-height: 16px;
+    color: white;
+    display: block;
+  }
+
+  &__created {
+    font-size: 12px;
+    line-height: 14px;
+    color: $color-grey-80;
+  }
+
+  &__checkbox {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+
+    &--red {
+      box-shadow: 0 0 0 2px #ff0000;
+    }
+    &--green {
+      box-shadow: 0 0 0 2px #00ff00;
+    }
+    &--blue {
+      box-shadow: 0 0 0 2px #0000ff;
+    }
+    &--normal {
+      box-shadow: 0 0 0 2px #000000;
+    }
+  }
+
+  &__button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: $color-grey-90;
+    margin-right: 5px;
+    padding: 0 ;
+    cursor: pointer;
+
+    &:hover {
+      background: $color-tertiary;
+      color: $color-white;
+    }
+  }
+}
+
+
