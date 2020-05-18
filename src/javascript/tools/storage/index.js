@@ -1,16 +1,3 @@
-const dummyImage = () => (
-  [...new Array(20 * 18)]
-    .map(() => (
-      [...new Array(16)]
-        .map(() => (
-          Math.floor(Math.random() * 256)
-            .toString(16)
-            .padLeft(2, '0')
-        ))
-        .join(' ')
-    ))
-);
-
 const save = (lineBuffer) => (
   import(/* webpackChunkName: "object-hash" */ 'object-hash')
     .then(({ default: hash }) => (
@@ -60,7 +47,7 @@ const load = (dataHash) => (
         const inflated = pako.inflate(binary, { to: 'string' });
         return inflated.split('\n');
       } catch (error) {
-        return dummyImage();
+        return null;
       }
     })
 );
