@@ -157,6 +157,18 @@ class Decoder {
     return pixels;
   }
 
+  getRGBValue(pixels, index) {
+    const value = this.colorData[pixels[index]];
+    return {
+      // eslint-disable-next-line no-bitwise
+      r: (value & 0xff0000) >> 16,
+      // eslint-disable-next-line no-bitwise
+      g: (value & 0x00ff00) >> 8,
+      // eslint-disable-next-line no-bitwise
+      b: (value & 0x0000ff),
+    };
+  }
+
   // This paints the tile with a specified offset and pixel width
   paintTile(pixels, index) {
     const tileXOffset = index % TILES_PER_LINE;
@@ -179,18 +191,6 @@ class Decoder {
         this.rawImageData[rawIndex + 3] = 255;
       }
     }
-  }
-
-  getRGBValue(pixels, index) {
-    const value = this.colorData[pixels[index]];
-    return {
-      // eslint-disable-next-line no-bitwise
-      r: (value & 0xff0000) >> 16,
-      // eslint-disable-next-line no-bitwise
-      g: (value & 0x00ff00) >> 8,
-      // eslint-disable-next-line no-bitwise
-      b: (value & 0x0000ff),
-    };
   }
 
   paintTileScaled(pixels, index, canvasContext, pixelSize) {
