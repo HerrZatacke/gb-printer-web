@@ -1,13 +1,10 @@
 import { load } from '../../../tools/storage';
-import Decoder from '../../../tools/Decoder';
-import zipFiles from '../../../tools/download';
-import generateFileName from '../../../tools/generateFileName';
+import { prepareFiles, prepareFilesRGBN } from '../../../tools/download';
 
 const startDownload = (store) => (next) => (action) => {
 
   if (action.type === 'START_DOWNLOAD') {
     const state = store.getState();
-
     const exportScaleFactors = state.exportScaleFactors;
 
     if (exportScaleFactors.length === 0) {
@@ -17,66 +14,25 @@ const startDownload = (store) => (next) => (action) => {
     const image = state.images.find(({ hash }) => hash === action.payload);
     const palette = state.palettes.find(({ shortName }) => shortName === image.palette);
     load(action.payload)
-      .then((tiles) => {
+      .then(prepareFiles(palette, exportScaleFactors, image));
 
-        const canvas = document.createElement('canvas');
-        canvas.width = 160;
-        const decoder = new Decoder();
-        decoder.update(canvas, tiles, palette.palette);
+  } else if (action.type === 'START_DOWNLOAD_RGBN') {
+    const state = store.getState();
+    const exportScaleFactors = state.exportScaleFactors;
 
-        const images = exportScaleFactors.map((exportScaleFactor) => (
-          new Promise((resolve, reject) => {
+    if (exportScaleFactors.length === 0) {
+      return null;
+    }
 
-            const fileType = 'png';
 
-            const filename = generateFileName(image, palette, exportScaleFactor);
+    Promise.all([
+      load(state.rgbnImages.r),
+      load(state.rgbnImages.g),
+      load(state.rgbnImages.b),
+      load(state.rgbnImages.n),
+    ])
+      .then(prepareFilesRGBN(exportScaleFactors));
 
-            const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
-
-            if (scaledCanvas.msToBlob) {
-              window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${filename}.png`);
-              return;
-            }
-
-            const onBlobComplete = (blob) => {
-              if (typeof blob.arrayBuffer === 'function') {
-                blob.arrayBuffer().then((arrayBuffer) => {
-                  resolve({
-                    filename: `${filename}.${fileType}`,
-                    arrayBuffer,
-                    blob,
-                  });
-                });
-              } else {
-                const fileReader = new FileReader();
-                fileReader.onload = (ev) => {
-                  resolve({
-                    filename: `${filename}.${fileType}`,
-                    arrayBuffer: ev.target.result,
-                    blob,
-                  });
-                };
-
-                fileReader.readAsArrayBuffer(blob);
-              }
-            };
-
-            switch (fileType) {
-              case 'png':
-                scaledCanvas.toBlob(onBlobComplete, 'image/png');
-                break;
-              case 'jpg':
-                scaledCanvas.toBlob(onBlobComplete, 'image/jpeg', 1);
-                break;
-              default:
-                reject(new Error('could not export image'));
-                break;
-            }
-          })
-        ));
-
-        Promise.all(images).then(zipFiles(generateFileName(image, palette)));
-      });
   }
 
   return next(action);

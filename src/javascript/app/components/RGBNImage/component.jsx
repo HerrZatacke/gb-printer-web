@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import { load } from '../../../tools/storage';
+import SVG from '../SVG';
 
 class RGBNImage extends Component {
   constructor(props) {
@@ -31,19 +33,34 @@ class RGBNImage extends Component {
   }
 
   render() {
+    const hasTiles = (this.props.tilesR || this.props.tilesG || this.props.tilesB || this.props.tilesN);
     return (
-      (this.props.tilesR || this.props.tilesG || this.props.tilesB || this.props.tilesN) ? (
-        <canvas
-          className="rgbn-image"
-          width={160}
-          ref={(node) => {
-            this.canvasRef = node;
-            if (node) {
-              this.updateCanvasContent();
-            }
-          }}
-        />
-      ) : null
+      <div
+        className={
+          classnames('rgbn-image', {
+            'rgbn-image--has-tiles': hasTiles,
+          })
+        }
+      >
+        { hasTiles ? (
+          <button
+            className="rgbn-image__button"
+            type="button"
+            onClick={this.props.startDownload}
+          >
+            <canvas
+              width={160}
+              ref={(node) => {
+                this.canvasRef = node;
+                if (node) {
+                  this.updateCanvasContent();
+                }
+              }}
+            />
+            <SVG name="download" />
+          </button>
+        ) : null }
+      </div>
     );
   }
 }
@@ -53,6 +70,7 @@ RGBNImage.propTypes = {
   tilesG: PropTypes.string,
   tilesB: PropTypes.string,
   tilesN: PropTypes.string,
+  startDownload: PropTypes.func.isRequired,
 };
 
 RGBNImage.defaultProps = {
