@@ -26,6 +26,17 @@ class RGBNImage extends Component {
         if (this.canvasRef) {
           const tiles = RGBNDecoder.rgbnTiles(rgbn);
           this.rgbnDecoder.update(this.canvasRef, tiles);
+
+          // Test scaling of decoder
+          // let childCanvas;
+          // do {
+          //   childCanvas = document.querySelector('body > canvas');
+          //   if (childCanvas) {
+          //     document.querySelector('body').removeChild(childCanvas);
+          //   }
+          // } while (childCanvas);
+          //
+          // document.querySelector('body').appendChild(this.rgbnDecoder.getScaledCanvas(3));
         }
       });
   }
