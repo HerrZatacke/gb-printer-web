@@ -9,11 +9,6 @@ const GREYS = [0xff, 0xaa, 0x55, 0x00];
 
 class RGBNDecoder extends Decoder {
 
-  constructor() {
-    super();
-    delete this.colors;
-  }
-
   update(canvas, tiles) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
