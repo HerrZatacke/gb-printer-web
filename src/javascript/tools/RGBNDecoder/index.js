@@ -14,17 +14,18 @@ class RGBNDecoder extends Decoder {
     console.log('implement me!');
   }
 
-  renderTile(tileIndex, { r, g, b, n }) {
-    this.paintTile({
-      r: this.decodeTile(r),
-      g: this.decodeTile(g),
-      b: this.decodeTile(b),
-      n: this.decodeTile(n),
-    }, tileIndex);
+  setPalette() {
+    // for the RGBN Image the "palette" does not exist and therefore never change
+    return false;
   }
 
-  setPalette() {
-    return false;
+  decodeTile({ r, g, b, n }) {
+    return {
+      r: super.decodeTile(r),
+      g: super.decodeTile(g),
+      b: super.decodeTile(b),
+      n: super.decodeTile(n),
+    };
   }
 
   // This paints the tile with a specified offset and pixel width
@@ -64,6 +65,7 @@ class RGBNDecoder extends Decoder {
   }
 
   getHeight() {
+    // RGBN image has always a height of 144
     return 144;
   }
 
