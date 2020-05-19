@@ -2,13 +2,41 @@
   background-color: $color-grey-50;
   border-bottom: 1px solid $page-background;
 
-  &__image {
+  &:hover{
+    background-color: $color-grey-60;
+  }
+
+  &:last-child {
+    border: none;
+  }
+
+  td {
+    padding: 0 10px;
+    vertical-align: middle;
+  }
+
+  &__cell-image {
     width: 60px;
-    padding: 10px;
+  }
+
+  &__cell-description {}
+
+  &__cell-rgbn {
+    width: 120px;
+  }
+
+  &__cell-buttons {
+    width: 95px;
+  }
+
+  &__image {
+    width: 40px;
+    padding: 10px 0;
   }
 
   &__description {
-    vertical-align: middle;
+    overflow: hidden;
+    text-align: left;
   }
 
   &__title {
@@ -23,41 +51,4 @@
     line-height: 14px;
     color: $color-grey-80;
   }
-
-  &__checkbox {
-    width: 20px;
-    height: 20px;
-    border: none;
-    background: none;
-
-    &--red {
-      box-shadow: 0 0 0 2px #ff0000;
-    }
-    &--green {
-      box-shadow: 0 0 0 2px #00ff00;
-    }
-    &--blue {
-      box-shadow: 0 0 0 2px #0000ff;
-    }
-    &--normal {
-      box-shadow: 0 0 0 2px #000000;
-    }
-  }
-
-  &__button {
-    width: 20px;
-    height: 20px;
-    border: none;
-    background: $color-grey-90;
-    margin-right: 5px;
-    padding: 0 ;
-    cursor: pointer;
-
-    &:hover {
-      background: $color-tertiary;
-      color: $color-white;
-    }
-  }
 }
-
-

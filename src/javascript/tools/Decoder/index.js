@@ -45,6 +45,11 @@ class Decoder {
       this.renderTile(index, newTile);
     });
 
+    this.updateCanvas(newHeight);
+  }
+
+  updateCanvas(newHeight) {
+
     const context = this.canvas.getContext('2d');
     let imageData;
 

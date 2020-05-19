@@ -47,29 +47,14 @@
     color: $color-grey-80;
   }
 
-  &__buttons {
+  .gallery-image-buttons {
     display: none;
     position: absolute;
     top: 5px;
     left: 5px;
   }
 
-  &__button {
-    width: 20px;
-    height: 20px;
-    border: none;
-    background: $color-grey-90;
-    margin-right: 5px;
-    padding: 0 ;
-    cursor: pointer;
-
-    &:hover {
-      background: $color-tertiary;
-      color: $color-white;
-    }
-  }
-
-  &:hover &__buttons {
+  &:hover .gallery-image-buttons {
     display: block;
   }
 

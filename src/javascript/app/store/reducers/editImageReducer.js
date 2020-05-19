@@ -9,6 +9,7 @@ const editImageReducer = (value = {}, action) => {
       };
     case 'CANCEL_EDIT_IMAGE':
     case 'UPDATE_IMAGE':
+    case 'CLOSE_OVERLAY':
       return {};
     default:
       return value;

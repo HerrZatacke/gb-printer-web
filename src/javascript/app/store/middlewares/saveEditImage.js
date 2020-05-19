@@ -1,23 +1,36 @@
-const saveEditImage = (store) => (next) => (action) => {
+const saveEditImage = (store) => {
 
-  switch (action.type) {
-    case 'SAVE_EDIT_IMAGE':
+  document.addEventListener('keyup', (ev) => {
+    if (ev.key === 'Enter' && ev.ctrlKey && store.getState().editImage.hash) {
       store.dispatch({
-        type: 'UPDATE_IMAGE',
-        payload: store.getState().editImage,
+        type: 'SAVE_EDIT_IMAGE',
       });
-      return;
+    }
+  });
 
-    case 'EDIT_IMAGE':
-      store.dispatch({
-        type: 'SET_EDIT_IMAGE',
-        payload: store.getState().images.find(({ hash }) => hash === action.payload),
-      });
-      return;
-    default:
-  }
+  return (next) => (action) => {
 
-  next(action);
+    switch (action.type) {
+      case 'SAVE_EDIT_IMAGE':
+        store.dispatch({
+          type: 'UPDATE_IMAGE',
+          payload: store.getState().editImage,
+        });
+        return;
+
+      case 'EDIT_IMAGE':
+        store.dispatch({
+          type: 'SET_EDIT_IMAGE',
+          payload: store.getState()
+            .images
+            .find(({ hash }) => hash === action.payload),
+        });
+        return;
+      default:
+    }
+
+    next(action);
+  };
 };
 
 

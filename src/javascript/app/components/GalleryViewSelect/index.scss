@@ -1,0 +1,39 @@
+.gallery-view-select {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+
+  &__view {
+    color: $color-white;
+    background: $color-grey-70;
+    flex-grow: 0;
+    margin-left: 5px;
+    line-height: 40px;
+    width: 40px;
+    text-align: center;
+    border-radius: $default-border-radius;
+
+    button {
+      border: none;
+      background: none;
+      margin: 0;
+      padding: 0;
+      width: inherit;
+      line-height: inherit;
+      cursor: pointer;
+      display: block;
+      fill: $color-icon-tertiary;
+    }
+
+    &:hover,
+    &--selected {
+      background: $color-tertiary;
+    }
+
+    input {
+      display: none;
+    }
+  }
+}
+
+

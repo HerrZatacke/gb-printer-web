@@ -10,6 +10,7 @@ import Gallery from '../Gallery';
 import Home from '../Home';
 import EditImage from '../EditImage';
 import RGBNImage from '../RGBNImage';
+import GalleryViewSelect from '../GalleryViewSelect';
 
 const App = (/* props */) => (
   <Router>
@@ -25,6 +26,7 @@ const App = (/* props */) => (
             <br />
             Also if you clear your browser&apos;s cookies, the images will be gone too.
           </p>
+          <GalleryViewSelect />
           <Gallery />
         </Route>
         <Route path="/palettes">
