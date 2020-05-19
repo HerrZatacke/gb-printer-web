@@ -5,13 +5,8 @@ const GREYS = [0xff, 0xaa, 0x55, 0x00];
 
 class RGBNDecoder extends Decoder {
 
-  getScaledCanvas() {
-    // eslint-disable-next-line no-console
-    console.log('implement me!');
-  }
-
+  // for the RGBN Image the "palette" does not exist and therefore never change
   setPalette() {
-    // for the RGBN Image the "palette" does not exist and therefore never change
     return false;
   }
 
@@ -35,13 +30,8 @@ class RGBNDecoder extends Decoder {
     };
   }
 
-  paintTileScaled() {
-    // eslint-disable-next-line no-console
-    console.log('implement me!');
-  }
-
+  // RGBN image has always a height of 144
   getHeight() {
-    // RGBN image has always a height of 144
     return 144;
   }
 

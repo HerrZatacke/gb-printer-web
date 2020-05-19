@@ -205,9 +205,9 @@ class Decoder {
       for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
         // pixels along the tile's y axis
 
-        // Pixel Color
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x);
         // eslint-disable-next-line no-param-reassign
-        canvasContext.fillStyle = this.colors[pixels[(y * TILE_PIXEL_WIDTH) + x]];
+        canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
 
         // Pixel Position (Needed to add +1 to pixel width and height to fill in a gap)
         canvasContext.fillRect(
