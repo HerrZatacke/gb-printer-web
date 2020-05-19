@@ -1,10 +1,6 @@
 // Tile Constants
 import Decoder from '../Decoder';
 
-const TILE_PIXEL_WIDTH = 8;
-const TILE_PIXEL_HEIGHT = 8;
-const TILES_PER_LINE = 20;
-
 const GREYS = [0xff, 0xaa, 0x55, 0x00];
 
 class RGBNDecoder extends Decoder {
@@ -28,35 +24,15 @@ class RGBNDecoder extends Decoder {
     };
   }
 
-  // This paints the tile with a specified offset and pixel width
-  paintTile({ r, g, b, n }, index) {
-    const tileXOffset = index % TILES_PER_LINE;
-    const tileYOffset = Math.floor(index / TILES_PER_LINE);
+  getRGBValue({ r, g, b, n }, index) {
 
-    const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset;
-    const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset;
+    const valueN = GREYS[n[index]];
 
-    // pixels along the tile's x axis
-    for (let x = 0; x < TILE_PIXEL_WIDTH; x += 1) {
-      for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
-        // pixels along the tile's y axis
-
-        const rawIndex = (pixelXOffset + x + ((pixelYOffset + y) * 160)) * 4;
-
-        const valueN = GREYS[n[(y * TILE_PIXEL_WIDTH) + x]];
-        const valueR = GREYS[r[(y * TILE_PIXEL_WIDTH) + x]] * valueN / 0xff;
-        const valueG = GREYS[g[(y * TILE_PIXEL_WIDTH) + x]] * valueN / 0xff;
-        const valueB = GREYS[b[(y * TILE_PIXEL_WIDTH) + x]] * valueN / 0xff;
-
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex] = valueR;
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex + 1] = valueG;
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex + 2] = valueB;
-        this.rawImageData[rawIndex + 3] = 255;
-      }
-    }
+    return {
+      r: GREYS[r[index]] * valueN / 0xff,
+      g: GREYS[g[index]] * valueN / 0xff,
+      b: GREYS[b[index]] * valueN / 0xff,
+    };
   }
 
   paintTileScaled() {
