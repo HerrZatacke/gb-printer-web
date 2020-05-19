@@ -129,11 +129,6 @@ class Decoder {
 
   renderTile(tileIndex, rawLine) {
     const tile = this.decodeTile(rawLine);
-
-    if (!tile) {
-      return;
-    }
-
     this.paintTile(tile, tileIndex);
   }
 
