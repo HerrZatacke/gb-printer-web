@@ -5,11 +5,12 @@ import classnames from 'classnames';
 import GameBoyImage from '../GameBoyImage';
 
 const LiveImage = (props) => (
-  <div className={
-    classnames('live-image', {
-      'live-image--receiving': props.tiles.length,
-    })
-  }
+  <div
+    className={
+      classnames('live-image', {
+        'live-image--receiving': props.tiles.length,
+      })
+    }
   >
     <Link to="/gallery">
       <GameBoyImage palette={props.palette} tiles={props.tiles} />
