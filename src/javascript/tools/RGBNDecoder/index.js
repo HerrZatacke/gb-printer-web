@@ -14,7 +14,7 @@ class RGBNDecoder extends Decoder {
     delete this.colors;
   }
 
-  update(canvas, tilesR, tilesG, tilesB, tilesN) {
+  update(canvas, tiles) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
 
@@ -22,9 +22,9 @@ class RGBNDecoder extends Decoder {
       this.tiles = [];
     }
 
-    this.setTiles(tilesR, tilesG, tilesB, tilesN);
+    const tilesChanged = this.setTiles(tiles); // returns actual list of tiles that have changed
 
-    const newHeight = 144;
+    const newHeight = this.getHeight();
 
     this.canvas.height = newHeight;
 
@@ -35,20 +35,11 @@ class RGBNDecoder extends Decoder {
 
     this.rawImageData = newRawImageData;
 
-    this.tiles.forEach((newTile, index) => {
+    tilesChanged.forEach(({ index, newTile }) => {
       this.renderTile(index, newTile);
     });
 
     this.updateCanvas(newHeight);
-  }
-
-  setTiles(r, g, b, n) {
-    this.tiles = [...Array(360)].map((_, i) => ({
-      r: r ? r[i] : ''.padStart(32, '0'),
-      g: g ? g[i] : ''.padStart(32, '0'),
-      b: b ? b[i] : ''.padStart(32, '0'),
-      n: n ? n[i] : ''.padStart(32, '0'),
-    }));
   }
 
   getScaledCanvas() {
@@ -57,15 +48,12 @@ class RGBNDecoder extends Decoder {
   }
 
   renderTile(tileIndex, { r, g, b, n }) {
-
-    const rendered = {
+    this.paintTile({
       r: this.decodeTile(r),
       g: this.decodeTile(g),
       b: this.decodeTile(b),
       n: this.decodeTile(n),
-    };
-
-    this.paintTile(rendered, tileIndex);
+    }, tileIndex);
   }
 
   // This paints the tile with a specified offset and pixel width
@@ -102,6 +90,19 @@ class RGBNDecoder extends Decoder {
   paintTileScaled() {
     // eslint-disable-next-line no-console
     console.log('implement me!');
+  }
+
+  static rgbnTiles([r, g, b, n]) {
+    return [...Array(360)].map((_, i) => ({
+      r: r ? r[i] : ''.padStart(32, '0'),
+      g: g ? g[i] : ''.padStart(32, '0'),
+      b: b ? b[i] : ''.padStart(32, '0'),
+      n: n ? n[i] : ''.padStart(32, '0'),
+    }));
+  }
+
+  getHeight() {
+    return 144;
   }
 }
 
