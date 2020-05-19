@@ -22,7 +22,7 @@ const startDownload = (store) => (next) => (action) => {
         const canvas = document.createElement('canvas');
         canvas.width = 160;
         const decoder = new Decoder();
-        decoder.update(canvas, palette.palette, tiles);
+        decoder.update(canvas, tiles, palette.palette);
 
         const images = exportScaleFactors.map((exportScaleFactor) => (
           new Promise((resolve, reject) => {

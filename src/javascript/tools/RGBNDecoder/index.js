@@ -9,41 +9,6 @@ const GREYS = [0xff, 0xaa, 0x55, 0x00];
 
 class RGBNDecoder extends Decoder {
 
-  update(canvas, tiles) {
-
-    const canvasChanged = this.setCanvas(canvas); // true/false
-
-    if (canvasChanged || !this.tiles.length) {
-      this.tiles = [];
-    }
-
-    const tilesChanged = this.setTiles(tiles); // returns actual list of tiles that have changed
-
-    const newHeight = this.getHeight();
-
-    if (newHeight === 0) {
-      this.canvas.height = 0;
-      return;
-    }
-
-    if (this.canvas.height !== newHeight || !this.rawImageData.length) {
-      this.canvas.height = newHeight;
-
-      // copy existing image data and add the missing space for additional height
-      const newRawImageData = new Uint8ClampedArray(160 * newHeight * 4);
-      this.rawImageData.forEach((value, index) => {
-        newRawImageData[index] = value;
-      });
-      this.rawImageData = newRawImageData;
-    }
-
-    tilesChanged.forEach(({ index, newTile }) => {
-      this.renderTile(index, newTile);
-    });
-
-    this.updateCanvas(newHeight);
-  }
-
   getScaledCanvas() {
     // eslint-disable-next-line no-console
     console.log('implement me!');
@@ -56,6 +21,10 @@ class RGBNDecoder extends Decoder {
       b: this.decodeTile(b),
       n: this.decodeTile(n),
     }, tileIndex);
+  }
+
+  setPalette() {
+    return false;
   }
 
   // This paints the tile with a specified offset and pixel width

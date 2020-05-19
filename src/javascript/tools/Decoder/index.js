@@ -12,7 +12,7 @@ class Decoder {
     this.rawImageData = [];
   }
 
-  update(canvas, palette, tiles) {
+  update(canvas, tiles, palette) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
     const paletteChanged = this.setPalette(palette); // true/false
