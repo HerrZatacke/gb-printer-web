@@ -20,6 +20,7 @@ class RGBNDecoder extends Decoder {
   }
 
   getRGBValue({ r, g, b, n }, index) {
+    // const valueN = [0xcc, 0x99, 0x66, 0x33][n[index]];
     const valueN = GREYS[n[index]];
     return {
       r: GREYS[r[index]] * valueN / 0xff,
