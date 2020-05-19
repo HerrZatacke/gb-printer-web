@@ -63,6 +63,10 @@ class RGBNDecoder extends Decoder {
     console.log('implement me!');
   }
 
+  getHeight() {
+    return 144;
+  }
+
   static rgbnTiles([r, g, b, n]) {
     return [...Array(360)].map((_, i) => ({
       r: r ? r[i] : ''.padStart(32, '0'),
@@ -70,10 +74,6 @@ class RGBNDecoder extends Decoder {
       b: b ? b[i] : ''.padStart(32, '0'),
       n: n ? n[i] : ''.padStart(32, '0'),
     }));
-  }
-
-  getHeight() {
-    return 144;
   }
 }
 
