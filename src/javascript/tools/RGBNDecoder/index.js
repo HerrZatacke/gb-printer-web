@@ -21,14 +21,21 @@ class RGBNDecoder extends Decoder {
 
     const newHeight = this.getHeight();
 
-    this.canvas.height = newHeight;
+    if (newHeight === 0) {
+      this.canvas.height = 0;
+      return;
+    }
 
-    const newRawImageData = new Uint8ClampedArray(160 * newHeight * 4);
-    this.rawImageData.forEach((value, index) => {
-      newRawImageData[index] = value;
-    });
+    if (this.canvas.height !== newHeight || !this.rawImageData.length) {
+      this.canvas.height = newHeight;
 
-    this.rawImageData = newRawImageData;
+      // copy existing image data and add the missing space for additional height
+      const newRawImageData = new Uint8ClampedArray(160 * newHeight * 4);
+      this.rawImageData.forEach((value, index) => {
+        newRawImageData[index] = value;
+      });
+      this.rawImageData = newRawImageData;
+    }
 
     tilesChanged.forEach(({ index, newTile }) => {
       this.renderTile(index, newTile);
