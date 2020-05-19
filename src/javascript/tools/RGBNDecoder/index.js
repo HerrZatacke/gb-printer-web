@@ -26,6 +26,8 @@ class RGBNDecoder extends Decoder {
 
     const newHeight = 144;
 
+    this.canvas.height = newHeight;
+
     const newRawImageData = new Uint8ClampedArray(160 * newHeight * 4);
     this.rawImageData.forEach((value, index) => {
       newRawImageData[index] = value;

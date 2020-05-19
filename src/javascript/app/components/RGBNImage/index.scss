@@ -1,8 +1,12 @@
 canvas.rgbn-image {
   position: fixed;
-  top: 100px;
-  left: 100px;
+  top: 60px;
+  right: 160px;
   width: 160px;
+  height: 144px;
   display: block;
   image-rendering: pixelated;
+  background: $color-secondary;
+  transition: top 300ms ease-in-out;
+  z-index: $z-index-live-image;
 }
