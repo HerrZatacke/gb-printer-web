@@ -5,7 +5,7 @@ const mapStateToProps = (state) => ({
   imageHash: state.editImage.hash,
   palette: state.editImage.palette ? state.palettes.find(({ shortName }) => (
     shortName === state.editImage.palette
-  )) || {} : {},
+  )) || state.palettes[0] : state.palettes[0],
 });
 
 const mapDispatchToProps = (dispatch) => ({
