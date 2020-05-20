@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import activePalette from './reducers/activePaletteReducer';
 import confirmation from './reducers/confirmationReducer';
+import dragover from './reducers/dragoverReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import editImage from './reducers/editImageReducer';
 import galleryView from './reducers/galleryViewReducer';
@@ -15,6 +16,7 @@ import socketUrl from './reducers/socketUrlReducer';
 export default combineReducers({
   activePalette,
   confirmation,
+  dragover,
   exportScaleFactors,
   editImage,
   galleryView,

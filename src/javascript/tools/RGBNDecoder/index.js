@@ -1,105 +1,46 @@
 // Tile Constants
 import Decoder from '../Decoder';
 
-const TILE_PIXEL_WIDTH = 8;
-const TILE_PIXEL_HEIGHT = 8;
-const TILES_PER_LINE = 20;
-
 const GREYS = [0xff, 0xaa, 0x55, 0x00];
 
 class RGBNDecoder extends Decoder {
 
-  constructor() {
-    super();
-    delete this.colors;
+  // for the RGBN Image the "palette" does not exist and therefore never change
+  setPalette() {
+    return false;
   }
 
-  update(canvas, tilesR, tilesG, tilesB, tilesN) {
-
-    const canvasChanged = this.setCanvas(canvas); // true/false
-
-    if (canvasChanged || !this.tiles.length) {
-      this.tiles = [];
-    }
-
-    this.setTiles(tilesR, tilesG, tilesB, tilesN);
-
-    const newHeight = 144;
-
-    const newRawImageData = new Uint8ClampedArray(160 * newHeight * 4);
-    this.rawImageData.forEach((value, index) => {
-      newRawImageData[index] = value;
-    });
-
-    this.rawImageData = newRawImageData;
-
-    this.tiles.forEach((newTile, index) => {
-      this.renderTile(index, newTile);
-    });
-
-    this.updateCanvas(newHeight);
+  decodeTile({ r, g, b, n }) {
+    return {
+      r: super.decodeTile(r),
+      g: super.decodeTile(g),
+      b: super.decodeTile(b),
+      n: super.decodeTile(n),
+    };
   }
 
-  setTiles(r, g, b, n) {
-    this.tiles = [...Array(360)].map((_, i) => ({
+  getRGBValue({ r, g, b, n }, index) {
+    // const valueN = [0xcc, 0x99, 0x66, 0x33][n[index]];
+    const valueN = GREYS[n[index]];
+    return {
+      r: GREYS[r[index]] * valueN / 0xff,
+      g: GREYS[g[index]] * valueN / 0xff,
+      b: GREYS[b[index]] * valueN / 0xff,
+    };
+  }
+
+  // RGBN image has always a height of 144
+  getHeight() {
+    return 144;
+  }
+
+  static rgbnTiles([r, g, b, n]) {
+    return [...Array(360)].map((_, i) => ({
       r: r ? r[i] : ''.padStart(32, '0'),
       g: g ? g[i] : ''.padStart(32, '0'),
       b: b ? b[i] : ''.padStart(32, '0'),
       n: n ? n[i] : ''.padStart(32, '0'),
     }));
-  }
-
-  getScaledCanvas() {
-    // eslint-disable-next-line no-console
-    console.log('implement me!');
-  }
-
-  renderTile(tileIndex, { r, g, b, n }) {
-
-    const rendered = {
-      r: this.decodeTile(r),
-      g: this.decodeTile(g),
-      b: this.decodeTile(b),
-      n: this.decodeTile(n),
-    };
-
-    this.paintTile(rendered, tileIndex);
-  }
-
-  // This paints the tile with a specified offset and pixel width
-  paintTile({ r, g, b, n }, index) {
-    const tileXOffset = index % TILES_PER_LINE;
-    const tileYOffset = Math.floor(index / TILES_PER_LINE);
-
-    const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset;
-    const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset;
-
-    // pixels along the tile's x axis
-    for (let x = 0; x < TILE_PIXEL_WIDTH; x += 1) {
-      for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
-        // pixels along the tile's y axis
-
-        const rawIndex = (pixelXOffset + x + ((pixelYOffset + y) * 160)) * 4;
-
-        const valueN = GREYS[n[(y * TILE_PIXEL_WIDTH) + x]];
-        const valueR = GREYS[r[(y * TILE_PIXEL_WIDTH) + x]] * valueN / 0xff;
-        const valueG = GREYS[g[(y * TILE_PIXEL_WIDTH) + x]] * valueN / 0xff;
-        const valueB = GREYS[b[(y * TILE_PIXEL_WIDTH) + x]] * valueN / 0xff;
-
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex] = valueR;
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex + 1] = valueG;
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex + 2] = valueB;
-        this.rawImageData[rawIndex + 3] = 255;
-      }
-    }
-  }
-
-  paintTileScaled() {
-    // eslint-disable-next-line no-console
-    console.log('implement me!');
   }
 }
 

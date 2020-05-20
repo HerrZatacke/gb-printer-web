@@ -1,8 +1,49 @@
-canvas.rgbn-image {
+.rgbn-image {
   position: fixed;
-  top: 100px;
-  left: 100px;
+  top: -100px;
+  right: 160px;
   width: 160px;
+  height: 144px;
   display: block;
   image-rendering: pixelated;
+  background: $color-secondary;
+  transition: top 300ms ease-in-out;
+  z-index: $z-index-live-image;
+
+  &__button {
+    border: none;
+    padding: 0;
+    outline: none;
+
+    &:hover svg {
+      display: block;
+    }
+  }
+
+  // temp until there are more buttons required for rgbn image
+  svg {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: $color-tertiary;
+    margin-right: 5px;
+    padding: 0 ;
+    cursor: pointer;
+    fill: $color-grey-90;
+    border-radius: $default-border-radius-small;
+  }
+
+  canvas {
+    display: block;
+    background: none;
+    cursor: pointer;
+  }
+
+  &--has-tiles {
+    top: 60px;
+  }
 }

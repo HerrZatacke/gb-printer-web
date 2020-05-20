@@ -31,7 +31,9 @@
 
   &__image {
     width: 40px;
-    padding: 10px 0;
+    margin: 10px 0;
+    min-height: 36px;
+    background-color: $color-grey-40;
   }
 
   &__description {

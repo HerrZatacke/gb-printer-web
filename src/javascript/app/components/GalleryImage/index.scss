@@ -28,6 +28,8 @@
 
   &__image {
     display: block;
+    min-height: 144px;
+    background-color: $color-grey-40;
   }
 
   &__title {

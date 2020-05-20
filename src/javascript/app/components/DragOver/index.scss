@@ -1,0 +1,20 @@
+.drag-over {
+  position: fixed;
+  top: 10vh;
+  left: 10vw;
+  width: 80vw;
+  height: 80vh;
+  border: 12px dashed $color-grey-70;
+  background: $color-grey-90;
+  border-radius: 5vw;
+
+  &:before {
+    content: 'Drag your file(s)';
+    font-size: 5vw;
+    font-weight: bold;
+    color: $color-grey-60;
+    line-height: 80vh;
+    text-align: center;
+    display: block;
+  }
+}

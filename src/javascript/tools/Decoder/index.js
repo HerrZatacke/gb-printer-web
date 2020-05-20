@@ -12,7 +12,7 @@ class Decoder {
     this.rawImageData = [];
   }
 
-  update(canvas, palette, tiles) {
+  update(canvas, tiles, palette) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
     const paletteChanged = this.setPalette(palette); // true/false
@@ -129,11 +129,6 @@ class Decoder {
 
   renderTile(tileIndex, rawLine) {
     const tile = this.decodeTile(rawLine);
-
-    if (!tile) {
-      return;
-    }
-
     this.paintTile(tile, tileIndex);
   }
 
@@ -162,6 +157,18 @@ class Decoder {
     return pixels;
   }
 
+  getRGBValue(pixels, index) {
+    const value = this.colorData[pixels[index]];
+    return {
+      // eslint-disable-next-line no-bitwise
+      r: (value & 0xff0000) >> 16,
+      // eslint-disable-next-line no-bitwise
+      g: (value & 0x00ff00) >> 8,
+      // eslint-disable-next-line no-bitwise
+      b: (value & 0x0000ff),
+    };
+  }
+
   // This paints the tile with a specified offset and pixel width
   paintTile(pixels, index) {
     const tileXOffset = index % TILES_PER_LINE;
@@ -176,14 +183,11 @@ class Decoder {
         // pixels along the tile's y axis
 
         const rawIndex = (pixelXOffset + x + ((pixelYOffset + y) * 160)) * 4;
-        const value = this.colorData[pixels[(y * TILE_PIXEL_WIDTH) + x]];
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x);
 
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex] = (value & 0xff0000) >> 16;
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex + 1] = (value & 0x00ff00) >> 8;
-        // eslint-disable-next-line no-bitwise
-        this.rawImageData[rawIndex + 2] = (value & 0x0000ff);
+        this.rawImageData[rawIndex] = color.r;
+        this.rawImageData[rawIndex + 1] = color.g;
+        this.rawImageData[rawIndex + 2] = color.b;
         this.rawImageData[rawIndex + 3] = 255;
       }
     }
@@ -201,9 +205,9 @@ class Decoder {
       for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
         // pixels along the tile's y axis
 
-        // Pixel Color
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x);
         // eslint-disable-next-line no-param-reassign
-        canvasContext.fillStyle = this.colors[pixels[(y * TILE_PIXEL_WIDTH) + x]];
+        canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
 
         // Pixel Position (Needed to add +1 to pixel width and height to fill in a gap)
         canvasContext.fillRect(

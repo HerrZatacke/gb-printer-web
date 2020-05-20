@@ -14,7 +14,7 @@ class GameBoyImage extends Component {
   }
 
   updateCanvasContent() {
-    this.decoder.update(this.canvasRef, this.props.palette, this.props.tiles);
+    this.decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
   }
 
   render() {
