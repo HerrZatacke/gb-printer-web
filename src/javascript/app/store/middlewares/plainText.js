@@ -51,7 +51,7 @@ const plainText = (store) => {
               dataLines = [];
               return lines.length ? {
                 lines,
-                file: action.file.replace(/.txt$/gi, ''),
+                file: action.file ? action.file.replace(/.txt$/gi, '') : false,
               } : false;
 
             default:
