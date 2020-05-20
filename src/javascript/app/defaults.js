@@ -1,5 +1,5 @@
 export default {
-  socketUrl: 'gameboycamera.local:81',
+  socketUrl: 'localhost:3001',
   activePalette: 'bw',
   images: [],
   galleryView: '1x',
