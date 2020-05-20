@@ -30,29 +30,17 @@ const Home = () => (
     <h3>ToDo:</h3>
     <ul>
       <li>
-        <strike>Selection scale factor 1x2x3x4x...</strike>
-        <br />
-        <strike>Save images in different resolutions</strike>
-        / imagetypes
-        <br />
-        <strike>Multiple scales for download in zip</strike>
-        <br />
-        Download per image or select checkbox for images in a zip
-        <br />
+        Save RGB images to gallery
+      </li>
+      <li>
         Export without frame / with different frame
-        <br />
+      </li>
+      <li>
         Select multiple palettes to download the gallery in.
+        (add checkbox to images, maybe allow download from galleries-page)
       </li>
       <li>
-        <strike>Edit images: color palette (with quick preview ) / title</strike>
-        <br />
-        <strike>lightbox zoom option in gallery</strike>
-        add: close on esc
-        <br />
         allow some gesture navigation on touch devices
-      </li>
-      <li>
-        Upload hex as file
       </li>
       <li>
         Edit palettes
@@ -62,9 +50,6 @@ const Home = () => (
       </li>
       <li>
         Allow rendering animated Gifs
-      </li>
-      <li>
-        Allow rendering rgb images with/without 4th contrast image
       </li>
     </ul>
   </div>
