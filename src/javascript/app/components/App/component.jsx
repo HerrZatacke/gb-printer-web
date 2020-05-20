@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Confirmation from '../Confirmation';
@@ -13,14 +14,16 @@ import RGBNImage from '../RGBNImage';
 import GalleryViewSelect from '../GalleryViewSelect';
 import DragOver from '../DragOver';
 
-const App = (/* props */) => (
+const App = (props) => (
   <Router>
     <LiveImage />
     <Navigation />
     <div className="app__content">
       <Switch>
         <Route path="/gallery">
-          <h1 className="app__content-headline">Gallery</h1>
+          <h1 className="app__content-headline">
+            {`Gallery (${props.imageCount})`}
+          </h1>
           <p className="app__content-hint">
             These images are stored in the localStorage of your browser.
             That&apos;s why you (currently) cannot share a link to one of them.
@@ -56,6 +59,7 @@ const App = (/* props */) => (
 );
 
 App.propTypes = {
+  imageCount: PropTypes.number.isRequired,
 };
 
 App.defaultProps = {

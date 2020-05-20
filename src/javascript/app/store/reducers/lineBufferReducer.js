@@ -6,7 +6,7 @@ const lineBufferReducer = (value = [], action) => {
     case 'NEW_LINE':
       return [...value, action.payload];
     case 'SET_ALL_LINES':
-      return action.payload;
+      return action.payload.lines;
     default:
       return value;
   }

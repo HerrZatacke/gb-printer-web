@@ -10,12 +10,13 @@ const saveLineBuffer = (store) => (next) => (action) => {
     (action.type === 'IMAGE_COMPLETE') ||
     (action.type === 'SET_ALL_LINES')
   ) {
-    save(action.payload || state.lineBuffer)
+
+    save(action.payload.lines || state.lineBuffer)
       .then((dataHash) => {
         const image = {
           hash: dataHash,
           created: dayjs().format(dateFormat),
-          title: '',
+          title: action.payload.file || '',
           index: state.globalIndex,
           lines: state.lineBuffer.length,
           palette: state.activePalette,

@@ -32,31 +32,40 @@ const plainText = (store) => {
 
       let dataLines = [];
 
-      images.push(
-        ...action.payload.split('\n')
-          .map(handleLines)
-          .filter(Boolean)
-          .map((lineAction) => {
+      // const terminatorLine = '';
+      const terminatorLine = '!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }';
 
-            switch (lineAction.type) {
-              case 'NEW_LINE':
-                dataLines.push(lineAction.payload);
-                return null;
+      const imagesFromFile = `${action.payload}\n${terminatorLine}`.split('\n')
+        .map(handleLines)
+        .filter(Boolean)
+        .map((lineAction) => {
 
-              case 'IMAGE_COMPLETE':
-                // eslint-disable-next-line no-case-declarations
-                const lines = dataLines.filter(Boolean);
-                dataLines = [];
-                return lines;
+          switch (lineAction.type) {
+            case 'NEW_LINE':
+              dataLines.push(lineAction.payload);
+              return null;
 
-              default:
-                return null;
-            }
+            case 'IMAGE_COMPLETE':
+              // eslint-disable-next-line no-case-declarations
+              const lines = dataLines.filter(Boolean);
+              dataLines = [];
+              return lines.length ? {
+                lines,
+                file: action.file.replace(/.txt$/gi, ''),
+              } : false;
 
-          })
-          .filter(Boolean),
-      );
+            default:
+              return null;
+          }
 
+        })
+        .filter(Boolean);
+
+      if (!imagesFromFile.length) {
+        console.warn(`File ${action.file} did not contain images`);
+      }
+
+      images.push(...imagesFromFile);
 
       startQueue();
       return;

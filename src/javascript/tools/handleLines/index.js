@@ -29,9 +29,15 @@ const handleLines = (rawLine) => {
     return null;
   }
 
+  const cleanLine = rawLine.replace(/[^0-9A-F]/ig, '');
+
+  if (!cleanLine.length) {
+    return null;
+  }
+
   return {
     type: 'NEW_LINE',
-    payload: rawLine,
+    payload: cleanLine,
   };
 };
 

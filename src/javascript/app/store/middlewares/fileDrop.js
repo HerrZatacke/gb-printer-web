@@ -13,6 +13,7 @@ const handleFile = (dispatch) => (file) => {
     dispatch({
       type: 'IMPORT_PLAIN_TEXT',
       payload: ev.target.result,
+      file: file.name,
     });
   };
 
