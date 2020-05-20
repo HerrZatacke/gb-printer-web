@@ -16,12 +16,10 @@ const plainText = (store) => (next) => (action) => {
             return null;
 
           case 'IMAGE_COMPLETE':
-            return dataLines.filter(Boolean);
-
-          case 'CLEAR_LINES':
+            // eslint-disable-next-line no-case-declarations
+            const lines = dataLines.filter(Boolean);
             dataLines = [];
-            return null;
-
+            return lines;
 
           default:
             return null;

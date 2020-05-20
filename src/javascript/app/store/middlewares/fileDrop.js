@@ -25,7 +25,6 @@ const fileDrop = (store) => {
   let dragoverTimeout;
   let dragging = false;
 
-
   // detect start and end of dragover as there is no native dragend ecent for files
   root.addEventListener('dragover', (ev) => {
     ev.preventDefault();
