@@ -44,5 +44,5 @@ canvas.gameboy-image{width:100%;display:block;-ms-interpolation-mode:nearest-nei
 
 .drag-over{position:fixed;top:10vh;left:10vw;width:80vw;height:80vh;border:12px dashed #b2b2b2;background:#e5e5e5;border-radius:5vw}.drag-over:before{content:'Drag your file(s)';font-size:5vw;font-weight:bold;color:#999;line-height:80vh;text-align:center;display:block}
 
-.app{position:relative}.app__content{width:90vw;max-width:72.5rem;margin:auto;padding:7.5rem 1.25rem 1.25rem 1.25rem;position:relative}.app__content-headline{font-size:1.875rem;margin-bottom:1.875rem;color:#292037}.app__content-hint{font-size:0.75rem;line-height:0.875rem;margin-bottom:1.25rem}
+.app{position:relative;min-height:100vh}.app__content{width:90vw;max-width:72.5rem;margin:auto;padding:7.5rem 1.25rem 1.25rem 1.25rem;position:relative}.app__content-headline{font-size:1.875rem;margin-bottom:1.875rem;color:#292037}.app__content-hint{font-size:0.75rem;line-height:0.875rem;margin-bottom:1.25rem}
 
