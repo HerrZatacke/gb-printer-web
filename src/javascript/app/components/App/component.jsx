@@ -11,6 +11,7 @@ import Home from '../Home';
 import EditImage from '../EditImage';
 import RGBNImage from '../RGBNImage';
 import GalleryViewSelect from '../GalleryViewSelect';
+import DragOver from '../DragOver';
 
 const App = (/* props */) => (
   <Router>
@@ -50,6 +51,7 @@ const App = (/* props */) => (
     <Confirmation />
     <EditImage />
     <RGBNImage />
+    <DragOver />
   </Router>
 );
 
