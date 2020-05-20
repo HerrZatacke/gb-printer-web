@@ -42,5 +42,7 @@ canvas.gameboy-image{width:100%;display:block;-ms-interpolation-mode:nearest-nei
 
 .gallery-view-select{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;margin-bottom:1.25rem}.gallery-view-select__view{color:#fff;background:#b2b2b2;-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;margin-left:0.313rem;line-height:2.5rem;width:2.5rem;text-align:center;border-radius:5px}.gallery-view-select__view button{border:none;background:none;margin:0;padding:0;width:inherit;line-height:inherit;cursor:pointer;display:block;fill:#6d9b83}.gallery-view-select__view:hover,.gallery-view-select__view--selected{background:#4a6959}.gallery-view-select__view input{display:none}
 
+.drag-over{position:fixed;top:10vh;left:10vw;width:80vw;height:80vh;border:12px dashed #b2b2b2;background:#e5e5e5;border-radius:5vw}.drag-over:before{content:'Drag your file(s)';font-size:5vw;font-weight:bold;color:#999;line-height:80vh;text-align:center;display:block}
+
 .app{position:relative}.app__content{width:90vw;max-width:72.5rem;margin:auto;padding:7.5rem 1.25rem 1.25rem 1.25rem;position:relative}.app__content-headline{font-size:1.875rem;margin-bottom:1.875rem;color:#292037}.app__content-hint{font-size:0.75rem;line-height:0.875rem;margin-bottom:1.25rem}
 
