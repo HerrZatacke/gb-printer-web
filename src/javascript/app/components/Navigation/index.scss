@@ -12,6 +12,12 @@
 
   &__entry{
     position: relative;
+
+    &--queuesize {
+      padding: 20px;
+      line-height: 20px;
+      color: red;
+    }
   }
 
   &__entry:after {

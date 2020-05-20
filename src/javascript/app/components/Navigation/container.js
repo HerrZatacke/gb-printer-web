@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
-const mapStateToProps = (/* state */) => ({
+const mapStateToProps = (state) => ({
+  importQueueSize: state.importQueueSize,
 });
 
 const mapDispatchToProps = (/* dispatch */) => ({

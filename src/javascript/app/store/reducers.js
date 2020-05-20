@@ -7,6 +7,7 @@ import editImage from './reducers/editImageReducer';
 import galleryView from './reducers/galleryViewReducer';
 import globalIndex from './reducers/globalIndexReducer';
 import images from './reducers/imagesReducer';
+import importQueueSize from './reducers/importQueueSizeReducer';
 import lineBuffer from './reducers/lineBufferReducer';
 import palettes from './reducers/palettesReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
@@ -22,6 +23,7 @@ export default combineReducers({
   galleryView,
   globalIndex,
   images,
+  importQueueSize,
   lineBuffer,
   palettes,
   rgbnImages,

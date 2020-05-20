@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
-const Navigation = (/* props */) => (
+const Navigation = (props) => (
   <nav className="navigation">
     <ul className="navigation__list">
       <li className="navigation__entry">
@@ -30,11 +30,17 @@ const Navigation = (/* props */) => (
           Dump
         </NavLink>
       </li>
+      { props.importQueueSize > 0 ? (
+        <li className="navigation__entry navigation__entry--queuesize">
+          {props.importQueueSize}
+        </li>
+      ) : null }
     </ul>
   </nav>
 );
 
 Navigation.propTypes = {
+  importQueueSize: PropTypes.number.isRequired,
 };
 
 Navigation.defaultProps = {

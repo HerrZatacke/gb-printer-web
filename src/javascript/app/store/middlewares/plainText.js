@@ -1,45 +1,73 @@
 import handleLines from '../../../tools/handleLines';
 
-const plainText = (store) => (next) => (action) => {
-  if (action.type === 'IMPORT_PLAIN_TEXT') {
+const plainText = (store) => {
 
-    let dataLines = [];
+  const images = [];
+  let queueRunning;
 
-    action.payload.split('\n')
-      .map(handleLines)
-      .filter(Boolean)
-      .map((lineAction) => {
+  const startQueue = () => {
+    if (queueRunning || !images.length) {
+      return;
+    }
 
-        switch (lineAction.type) {
-          case 'NEW_LINE':
-            dataLines.push(lineAction.payload);
-            return null;
+    queueRunning = true;
 
-          case 'IMAGE_COMPLETE':
-            // eslint-disable-next-line no-case-declarations
-            const lines = dataLines.filter(Boolean);
-            dataLines = [];
-            return lines;
-
-          default:
-            return null;
-        }
-
-      })
-      .filter(Boolean)
-      .forEach((imageLines, index) => {
-        window.setTimeout(() => {
-          store.dispatch({
-            type: 'SET_ALL_LINES',
-            payload: imageLines,
-          });
-        }, index * 50);
+    window.setTimeout(() => {
+      queueRunning = false;
+      store.dispatch({
+        type: 'SET_ALL_LINES',
+        payload: images.shift(),
       });
+    }, 50);
 
-    return;
-  }
+    store.dispatch({
+      type: 'IMPORT_QUEUE_SIZE',
+      payload: images.length - 1,
+    });
+  };
 
-  next(action);
+
+  return (next) => (action) => {
+    if (action.type === 'IMPORT_PLAIN_TEXT') {
+
+      let dataLines = [];
+
+      images.push(
+        ...action.payload.split('\n')
+          .map(handleLines)
+          .filter(Boolean)
+          .map((lineAction) => {
+
+            switch (lineAction.type) {
+              case 'NEW_LINE':
+                dataLines.push(lineAction.payload);
+                return null;
+
+              case 'IMAGE_COMPLETE':
+                // eslint-disable-next-line no-case-declarations
+                const lines = dataLines.filter(Boolean);
+                dataLines = [];
+                return lines;
+
+              default:
+                return null;
+            }
+
+          })
+          .filter(Boolean),
+      );
+
+
+      startQueue();
+      return;
+    }
+
+    next(action);
+
+    if (action.type === 'ADD_IMAGE') {
+      startQueue();
+    }
+  };
 };
 
 
