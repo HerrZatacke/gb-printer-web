@@ -13,6 +13,8 @@ const Home = () => (
         <Link to="/dump">
           Then paste your exports into a textfield
         </Link>
+        {' '}
+        (or simply drag and drop your dump(s) into this window)
       </li>
       <li>
         <Link to="/gallery">
