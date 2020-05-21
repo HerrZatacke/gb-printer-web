@@ -1,8 +1,7 @@
 .gallery-image-buttons {
   height: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
 
   &__button {
     width: 20px;
