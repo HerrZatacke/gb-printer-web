@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Decoder from '../../../tools/Decoder';
+import RGBNDecoder from '../../../tools/RGBNDecoder';
 
 class GameBoyImage extends Component {
   constructor(props) {
     super(props);
     this.canvasRef = null;
-    this.decoder = new Decoder();
+    this.decoder = props.isRGBN ? new RGBNDecoder() : new Decoder();
   }
 
   componentDidUpdate() {
@@ -34,11 +35,16 @@ class GameBoyImage extends Component {
 }
 
 GameBoyImage.propTypes = {
-  tiles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tiles: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.arrayOf(PropTypes.object),
+  ]).isRequired,
   palette: PropTypes.array.isRequired,
+  isRGBN: PropTypes.bool,
 };
 
 GameBoyImage.defaultProps = {
+  isRGBN: false,
 };
 
 export default GameBoyImage;

@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
   } : null,
   saveRGBNImage: buttons.includes('saveRGBNImage') ? () => {
     dispatch({
-      type: 'SAVE_IMAGE',
+      type: 'SAVE_RGBN_IMAGE',
       payload: hash,
     });
   } : null,
