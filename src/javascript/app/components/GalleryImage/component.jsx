@@ -62,7 +62,7 @@ class GalleryImage extends React.Component {
         >
           {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
         </span>
-        <GalleryImageButtons hash={this.props.hash} buttons={this.state.isRGBN ? ['delete'] : ['download', 'delete', 'edit']} />
+        <GalleryImageButtons hash={this.props.hash} buttons={this.state.isRGBN ? ['delete', 'download'] : ['download', 'delete', 'edit']} />
       </li>
     );
   }

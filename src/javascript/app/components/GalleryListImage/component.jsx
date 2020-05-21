@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
@@ -63,7 +64,8 @@ class GalleryListImage extends React.Component {
         <td className="gallery-list-image__cell-description">
           <div className="gallery-list-image__description">
             <span className="gallery-list-image__title">
-              {this.props.title}
+              {this.props.hash}
+              {/*{this.props.title}*/}
             </span>
             <span className="gallery-list-image__created">
               {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
@@ -78,7 +80,7 @@ class GalleryListImage extends React.Component {
         </td>
 
         <td className="gallery-list-image__cell-buttons">
-          <GalleryImageButtons hash={this.props.hash} buttons={this.state.isRGBN ? ['delete'] : ['download', 'delete', 'edit']} />
+          <GalleryImageButtons hash={this.props.hash} buttons={this.state.isRGBN ? ['delete', 'download'] : ['download', 'delete', 'edit']} />
         </td>
       </tr>
     );
