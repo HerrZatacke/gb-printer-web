@@ -38,6 +38,12 @@ class GalleryListImage extends React.Component {
           </div>
         </td>
 
+        <td className="gallery-list-image__cell-index">
+          <div className="gallery-list-image__index">
+            {this.props.index}
+          </div>
+        </td>
+
         <td className="gallery-list-image__cell-description">
           <div className="gallery-list-image__description">
             <span className="gallery-list-image__title">
@@ -66,6 +72,7 @@ GalleryListImage.propTypes = {
   hash: PropTypes.string.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   title: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 GalleryListImage.defaultProps = {
