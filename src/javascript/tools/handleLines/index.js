@@ -7,14 +7,14 @@ const handleLines = (rawLine) => {
   // ! indicates a command
   if ((rawLine.charAt(0) === '!')) {
     try {
-      const { command, more } = JSON.parse(rawLine.slice(1).trim());
-      if (command === 'INIT') {
-        return {
-          type: 'CLEAR_LINES',
-        };
-      }
+      const { command, margin_lower: marginLower } = JSON.parse(rawLine.slice(1).trim());
+      // if (command === 'INIT') {
+      //   return {
+      //     type: 'CLEAR_LINES',
+      //   };
+      // }
 
-      if (command === 'DATA' && !more) {
+      if (command === 'PRNT' && marginLower > 0) {
         return {
           type: 'IMAGE_COMPLETE',
         };
@@ -29,9 +29,15 @@ const handleLines = (rawLine) => {
     return null;
   }
 
+  const cleanLine = rawLine.replace(/[^0-9A-F]/ig, '');
+
+  if (!cleanLine.length) {
+    return null;
+  }
+
   return {
     type: 'NEW_LINE',
-    payload: rawLine,
+    payload: cleanLine,
   };
 };
 

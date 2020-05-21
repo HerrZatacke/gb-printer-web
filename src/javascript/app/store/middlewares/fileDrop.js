@@ -13,6 +13,7 @@ const handleFile = (dispatch) => (file) => {
     dispatch({
       type: 'IMPORT_PLAIN_TEXT',
       payload: ev.target.result,
+      file: file.name,
     });
   };
 
@@ -24,7 +25,6 @@ const fileDrop = (store) => {
   const handleFileDispatch = handleFile(store.dispatch);
   let dragoverTimeout;
   let dragging = false;
-
 
   // detect start and end of dragover as there is no native dragend ecent for files
   root.addEventListener('dragover', (ev) => {
@@ -61,17 +61,7 @@ const fileDrop = (store) => {
       files = [...ev.dataTransfer.files];
     }
 
-    let timeout = 0;
-
-    files.forEach((file) => {
-      window.setTimeout(() => {
-        handleFileDispatch(file);
-      }, timeout);
-
-      // Approximation when dealing with multiple files
-      // ToDo: better handle with callbacks
-      timeout += 350 + (file.size / 400);
-    });
+    files.forEach(handleFileDispatch);
   });
 
   return (next) => (action) => {
