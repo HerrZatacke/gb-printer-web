@@ -1,7 +1,8 @@
 import RGBNDecoder from '../RGBNDecoder';
 import download from './download';
+import generateFileName from '../generateFileName';
 
-const prepareFilesRGBN = (exportScaleFactors) => (tiles) => {
+const prepareFilesRGBN = (exportScaleFactors, image) => (tiles) => {
 
   const canvas = document.createElement('canvas');
   canvas.width = 160;
@@ -13,7 +14,7 @@ const prepareFilesRGBN = (exportScaleFactors) => (tiles) => {
 
       const fileType = 'png';
 
-      const filename = `rgbn-${exportScaleFactor}x`;
+      const filename = generateFileName(image, {}, exportScaleFactor);
 
       const scaledCanvas = rgbnDecoder.getScaledCanvas(exportScaleFactor);
 

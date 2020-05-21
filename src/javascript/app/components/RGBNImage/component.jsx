@@ -53,7 +53,7 @@ class RGBNImage extends Component {
             }}
           />
         ) : null }
-        <GalleryImageButtons hash="newRGBN" buttons={['download', 'saveRGBNImage']} />
+        <GalleryImageButtons hash="newRGBN" buttons={['saveRGBNImage']} />
       </div>
     );
   }
