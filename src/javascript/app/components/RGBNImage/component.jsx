@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import { load } from '../../../tools/storage';
-import SVG from '../SVG';
+import GalleryImageButtons from '../GalleryImageButtons';
 
 class RGBNImage extends Component {
   constructor(props) {
@@ -43,23 +43,17 @@ class RGBNImage extends Component {
         }
       >
         { hasTiles ? (
-          <button
-            className="rgbn-image__button"
-            type="button"
-            onClick={this.props.startDownload}
-          >
-            <canvas
-              width={160}
-              ref={(node) => {
-                this.canvasRef = node;
-                if (node) {
-                  this.updateCanvasContent();
-                }
-              }}
-            />
-            <SVG name="download" />
-          </button>
+          <canvas
+            width={160}
+            ref={(node) => {
+              this.canvasRef = node;
+              if (node) {
+                this.updateCanvasContent();
+              }
+            }}
+          />
         ) : null }
+        <GalleryImageButtons hash="newRGBN" buttons={['download']} />
       </div>
     );
   }
@@ -70,7 +64,6 @@ RGBNImage.propTypes = {
   tilesG: PropTypes.string,
   tilesB: PropTypes.string,
   tilesN: PropTypes.string,
-  startDownload: PropTypes.func.isRequired,
 };
 
 RGBNImage.defaultProps = {
