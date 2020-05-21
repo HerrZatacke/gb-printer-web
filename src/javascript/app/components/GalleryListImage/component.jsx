@@ -19,7 +19,7 @@ class GalleryListImage extends React.Component {
 
     this.state = {
       tiles: null,
-      isRGBN: !!this.props.hashes,
+      isRGBN: null,
     };
   }
 
@@ -34,12 +34,16 @@ class GalleryListImage extends React.Component {
         .then((tiles) => {
           this.setState({
             tiles: RGBNDecoder.rgbnTiles(tiles),
+            isRGBN: true,
           });
         });
     } else {
       load(this.props.hash)
         .then((tiles) => {
-          this.setState({ tiles });
+          this.setState({
+            tiles,
+            isRGBN: false,
+          });
         });
     }
   }
@@ -50,7 +54,11 @@ class GalleryListImage extends React.Component {
         <td className="gallery-list-image__cell-image">
           <div className="gallery-list-image__image">
             { this.state.tiles ? (
-              <GameBoyImage tiles={this.state.tiles} palette={this.props.palette} isRGBN={!!this.state.isRGBN} />
+              <GameBoyImage
+                tiles={this.state.tiles}
+                palette={this.props.palette}
+                isRGBN={this.state.isRGBN}
+              />
             ) : null }
           </div>
         </td>
@@ -79,7 +87,7 @@ class GalleryListImage extends React.Component {
         </td>
 
         <td className="gallery-list-image__cell-buttons">
-          <GalleryImageButtons hash={this.props.hash} buttons={this.state.isRGBN ? ['delete', 'download'] : ['download', 'delete', 'edit']} />
+          <GalleryImageButtons hash={this.props.hash} buttons={['download', 'delete', 'edit']} />
         </td>
       </tr>
     );

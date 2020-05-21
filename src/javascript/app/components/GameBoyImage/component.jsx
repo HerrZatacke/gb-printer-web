@@ -7,7 +7,6 @@ class GameBoyImage extends Component {
   constructor(props) {
     super(props);
     this.canvasRef = null;
-    this.decoder = props.isRGBN ? new RGBNDecoder() : new Decoder();
   }
 
   componentDidUpdate() {
@@ -15,7 +14,8 @@ class GameBoyImage extends Component {
   }
 
   updateCanvasContent() {
-    this.decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
+    const decoder = this.props.isRGBN ? new RGBNDecoder() : new Decoder();
+    decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
   }
 
   render() {

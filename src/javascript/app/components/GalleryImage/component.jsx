@@ -17,7 +17,7 @@ class GalleryImage extends React.Component {
 
     this.state = {
       tiles: null,
-      isRGBN: !!this.props.hashes,
+      isRGBN: null,
     };
   }
 
@@ -32,12 +32,16 @@ class GalleryImage extends React.Component {
         .then((tiles) => {
           this.setState({
             tiles: RGBNDecoder.rgbnTiles(tiles),
+            isRGBN: true,
           });
         });
     } else {
       load(this.props.hash)
         .then((tiles) => {
-          this.setState({ tiles });
+          this.setState({
+            tiles,
+            isRGBN: false,
+          });
         });
     }
   }
@@ -47,7 +51,11 @@ class GalleryImage extends React.Component {
       <li className="gallery-image">
         <span className="gallery-image__image">
           { this.state.tiles ? (
-            <GameBoyImage tiles={this.state.tiles} palette={this.props.palette} isRGBN={!!this.state.isRGBN} />
+            <GameBoyImage
+              tiles={this.state.tiles}
+              palette={this.props.palette}
+              isRGBN={this.state.isRGBN}
+            />
           ) : null }
         </span>
         {this.props.title ? (
