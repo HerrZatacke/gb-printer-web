@@ -64,8 +64,7 @@ class GalleryListImage extends React.Component {
         <td className="gallery-list-image__cell-description">
           <div className="gallery-list-image__description">
             <span className="gallery-list-image__title">
-              {this.props.hash}
-              {/*{this.props.title}*/}
+              {this.props.title}
             </span>
             <span className="gallery-list-image__created">
               {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
