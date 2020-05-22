@@ -29,6 +29,12 @@ const SVG = (props) => {
           <circle r="8" cx="10" cy="10" />
         </svg>
       );
+    case 'save':
+      return (
+        <svg className="svg" viewBox="0 0 20 20">
+          <path d="M12 4v3h-2V4zM5 15v-4h10v4zm8-7H6l.01-4H4v12h12V6l-2-2h-1z" />
+        </svg>
+      );
     case 'list':
       return (
         <svg className="svg" viewBox="0 0 40 40">

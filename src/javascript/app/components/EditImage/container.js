@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   title: state.editImage.title || '',
-  imageHash: state.editImage.hash,
+  hash: state.editImage.hash,
+  hashes: state.editImage.hashes,
   palette: state.editImage.palette ? state.palettes.find(({ shortName }) => (
     shortName === state.editImage.palette
   )) || state.palettes[0] : state.palettes[0],

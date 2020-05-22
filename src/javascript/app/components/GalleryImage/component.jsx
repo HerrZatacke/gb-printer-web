@@ -6,6 +6,7 @@ import { dateFormat, dateFormatReadable } from '../../../tools/values';
 import GameBoyImage from '../GameBoyImage';
 import { load } from '../../../tools/storage';
 import GalleryImageButtons from '../GalleryImageButtons';
+import RGBNDecoder from '../../../tools/RGBNDecoder';
 
 dayjs.extend(customParseFormat);
 
@@ -16,14 +17,33 @@ class GalleryImage extends React.Component {
 
     this.state = {
       tiles: null,
+      isRGBN: null,
     };
   }
 
   componentDidMount() {
-    load(this.props.hash)
-      .then((tiles) => {
-        this.setState({ tiles });
-      });
+    if (this.props.hashes) {
+      Promise.all([
+        load(this.props.hashes.r),
+        load(this.props.hashes.g),
+        load(this.props.hashes.b),
+        load(this.props.hashes.n),
+      ])
+        .then((tiles) => {
+          this.setState({
+            tiles: RGBNDecoder.rgbnTiles(tiles),
+            isRGBN: true,
+          });
+        });
+    } else {
+      load(this.props.hash)
+        .then((tiles) => {
+          this.setState({
+            tiles,
+            isRGBN: false,
+          });
+        });
+    }
   }
 
   render() {
@@ -31,7 +51,11 @@ class GalleryImage extends React.Component {
       <li className="gallery-image">
         <span className="gallery-image__image">
           { this.state.tiles ? (
-            <GameBoyImage tiles={this.state.tiles} palette={this.props.palette} />
+            <GameBoyImage
+              tiles={this.state.tiles}
+              palette={this.props.palette}
+              isRGBN={this.state.isRGBN}
+            />
           ) : null }
         </span>
         {this.props.title ? (
@@ -46,7 +70,7 @@ class GalleryImage extends React.Component {
         >
           {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
         </span>
-        <GalleryImageButtons hash={this.props.hash} />
+        <GalleryImageButtons hash={this.props.hash} buttons={this.state.isRGBN ? ['delete', 'download'] : ['download', 'delete', 'edit']} />
       </li>
     );
   }
@@ -55,11 +79,13 @@ class GalleryImage extends React.Component {
 GalleryImage.propTypes = {
   created: PropTypes.string.isRequired,
   hash: PropTypes.string.isRequired,
+  hashes: PropTypes.object,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   title: PropTypes.string.isRequired,
 };
 
 GalleryImage.defaultProps = {
+  hashes: null,
 };
 
 export default GalleryImage;

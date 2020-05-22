@@ -5,34 +5,30 @@ const startDownload = (store) => (next) => (action) => {
 
   if (action.type === 'START_DOWNLOAD') {
     const state = store.getState();
-    const exportScaleFactors = state.exportScaleFactors;
-
-    if (exportScaleFactors.length === 0) {
-      return null;
-    }
-
     const image = state.images.find(({ hash }) => hash === action.payload);
-    const palette = state.palettes.find(({ shortName }) => shortName === image.palette);
-    load(action.payload)
-      .then(prepareFiles(palette, exportScaleFactors, image));
-
-  } else if (action.type === 'START_DOWNLOAD_RGBN') {
-    const state = store.getState();
     const exportScaleFactors = state.exportScaleFactors;
 
     if (exportScaleFactors.length === 0) {
       return null;
     }
 
+    if (!image.hashes) {
+      // default type image
+      const palette = state.palettes.find(({ shortName }) => shortName === image.palette);
+      load(action.payload)
+        .then(prepareFiles(palette, exportScaleFactors, image));
 
-    Promise.all([
-      load(state.rgbnImages.r),
-      load(state.rgbnImages.g),
-      load(state.rgbnImages.b),
-      load(state.rgbnImages.n),
-    ])
-      .then(prepareFilesRGBN(exportScaleFactors));
+    } else {
+      // rgbn image
+      Promise.all([
+        load(image.hashes.r),
+        load(image.hashes.g),
+        load(image.hashes.b),
+        load(image.hashes.n),
+      ])
+        .then(prepareFilesRGBN(exportScaleFactors, image));
 
+    }
   }
 
   return next(action);

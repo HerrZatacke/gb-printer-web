@@ -7,12 +7,6 @@ const mapStateToProps = (state) => ({
   tilesN: state.rgbnImages.n,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  startDownload: () => {
-    dispatch({
-      type: 'START_DOWNLOAD_RGBN',
-    });
-  },
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps);

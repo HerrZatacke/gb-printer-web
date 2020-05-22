@@ -15,6 +15,8 @@ const Gallery = (props) => {
       palette={image.palette}
       title={image.title}
       created={image.created}
+      index={image.index}
+      hashes={image.hashes}
     />
   ));
 

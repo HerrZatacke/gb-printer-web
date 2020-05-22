@@ -10,6 +10,8 @@ import confirmation from './middlewares/confirmation';
 import saveEditImage from './middlewares/saveEditImage';
 import hideLiveImage from './middlewares/hideLiveImage';
 import fileDrop from './middlewares/fileDrop';
+import saveRGBNImage from './middlewares/saveRGBNImage';
+import deleteImage from './middlewares/deleteImage';
 
 // eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -25,6 +27,8 @@ const enhancers = [
     confirmation,
     saveEditImage,
     hideLiveImage,
+    saveRGBNImage,
+    deleteImage,
   ),
 
   // should be the last mw
