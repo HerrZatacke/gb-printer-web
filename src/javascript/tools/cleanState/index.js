@@ -16,10 +16,10 @@ const cleanState = (initialState) => {
 
       // image is a rgbn image
       if (image.hashes) {
-        if (!image.RGBNPalette) {
+        if (!image.rgbnPalette) {
           return {
             ...image,
-            RGBNPalette: {
+            rgbnPalette: {
               r: DEFAULT_GREYS.slice(),
               g: DEFAULT_GREYS.slice(),
               b: DEFAULT_GREYS.slice(),
