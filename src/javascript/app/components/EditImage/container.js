@@ -8,7 +8,7 @@ const mapStateToProps = (state) => {
   let palette;
 
   if (state.editImage.hashes) {
-    palette = state.editImage.rgbnPalette;
+    palette = state.editImage.palette;
   } else {
     palette = state.palettes.find(({ shortName }) => shortName === state.editImage.palette);
   }
@@ -32,12 +32,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'UPDATE_EDIT_IMAGE',
       payload: { palette },
-    });
-  },
-  updateRGBNPalette: (rgbnPalette) => {
-    dispatch({
-      type: 'UPDATE_EDIT_IMAGE',
-      payload: { rgbnPalette },
     });
   },
   save: () => {

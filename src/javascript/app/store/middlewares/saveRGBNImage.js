@@ -10,7 +10,7 @@ const saveRGBNImage = (store) => (next) => (action) => {
     import(/* webpackChunkName: "object-hash" */ 'object-hash')
       .then(({ default: hash }) => {
         const image = {
-          rgbnPalette: defaultPalette,
+          palette: defaultPalette,
           hashes: { ...state.rgbnImages },
           hash: hash(state.rgbnImages),
           created: dayjs().format(dateFormat),

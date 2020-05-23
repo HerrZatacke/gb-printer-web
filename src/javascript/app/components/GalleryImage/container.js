@@ -5,7 +5,7 @@ const mapStateToProps = (state, { hash }) => {
   let palette;
 
   if (image.hashes) {
-    palette = image.rgbnPalette;
+    palette = image.palette;
   } else {
     palette = state.palettes.find(({ shortName }) => shortName === image.palette);
   }

@@ -97,7 +97,7 @@ class EditImage extends React.Component {
             { this.props.hashes ? (
               <GreySelect
                 values={this.props.palette}
-                onChange={this.props.updateRGBNPalette}
+                onChange={this.props.updatePalette}
               />
             ) : (
               <PaletteSelect
@@ -124,7 +124,6 @@ EditImage.propTypes = {
   save: PropTypes.func.isRequired,
   title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
-  updateRGBNPalette: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
 };
 

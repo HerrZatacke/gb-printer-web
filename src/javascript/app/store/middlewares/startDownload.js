@@ -19,7 +19,7 @@ const startDownload = (store) => (next) => (action) => {
         .then(prepareFiles(palette, exportScaleFactors, image));
 
     } else {
-      const palette = image.rgbnPalette;
+      const palette = image.palette;
 
       // rgbn image
       Promise.all([
