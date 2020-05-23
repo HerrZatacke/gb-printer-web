@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   tiles: state.lineBuffer,
-  palette: state.palettes.find(({ shortName }) => shortName === state.activePalette).palette,
+  palette: state.palettes.find(({ shortName }) => shortName === state.activePalette),
 });
 
 const mapDispatchToProps = (/* dispatch */) => ({
