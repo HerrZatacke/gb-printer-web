@@ -31,26 +31,32 @@ const save = (lineBuffer) => (
     ))
 );
 
-const load = (dataHash) => (
-  import(/* webpackChunkName: "pako" */ 'pako')
-    .then(({ default: pako }) => {
+const load = (dataHash) => {
+  if (!dataHash) {
+    return null;
+  }
 
-      try {
-        let binary;
+  return (
+    import(/* webpackChunkName: "pako" */ 'pako')
+      .then(({ default: pako }) => {
 
-        if (dataHash.startsWith('base64-')) {
-          binary = atob(localStorage.getItem(`gbp-web-${dataHash}`));
-        } else {
-          binary = localStorage.getItem(`gbp-web-${dataHash}`);
+        try {
+          let binary;
+
+          if (dataHash.startsWith('base64-')) {
+            binary = atob(localStorage.getItem(`gbp-web-${dataHash}`));
+          } else {
+            binary = localStorage.getItem(`gbp-web-${dataHash}`);
+          }
+
+          const inflated = pako.inflate(binary, { to: 'string' });
+          return inflated.split('\n');
+        } catch (error) {
+          return null;
         }
-
-        const inflated = pako.inflate(binary, { to: 'string' });
-        return inflated.split('\n');
-      } catch (error) {
-        return null;
-      }
-    })
-);
+      })
+  );
+};
 
 const del = (dataHash) => {
   localStorage.removeItem(`gbp-web-${dataHash}`);
