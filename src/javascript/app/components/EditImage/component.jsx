@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GameBoyImage from '../GameBoyImage';
 import PaletteSelect from '../PaletteSelect';
-import Buttons from '../Buttons/component';
-import { load } from '../../../tools/storage';
+import Buttons from '../Buttons';
+import GreySelect from '../GreySelect';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
+import { load } from '../../../tools/storage';
 
 class EditImage extends React.Component {
   constructor(props) {
@@ -12,7 +13,22 @@ class EditImage extends React.Component {
 
     this.state = {
       tiles: null,
-      isRGBN: null,
+      loaded: false,
+      hash: props.hash,
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    // same image
+    if (props.hash === state.hash) {
+      return state;
+    }
+
+    // image changed or was unloaded
+    return {
+      tiles: null,
+      loaded: false,
+      hash: props.hash,
     };
   }
 
@@ -29,7 +45,7 @@ class EditImage extends React.Component {
           .then((tiles) => {
             this.setState({
               tiles: RGBNDecoder.rgbnTiles(tiles),
-              isRGBN: true,
+              loaded: true,
             });
           });
       } else {
@@ -37,7 +53,7 @@ class EditImage extends React.Component {
           .then((tiles) => {
             this.setState({
               tiles,
-              isRGBN: false,
+              loaded: true,
             });
           });
       }
@@ -46,20 +62,23 @@ class EditImage extends React.Component {
   }
 
   render() {
+
+    const paletteColors = this.props.palette ? this.props.palette.palette : null;
+
     return (
-      (this.props.hash && this.state.tiles) ? (
+      (this.state.loaded) ? (
         <div className="edit-image">
           <div className="edit-image__backdrop" />
           <div
             className="edit-image__box"
             style={{
-              backgroundImage: `linear-gradient(to bottom, ${this.props.palette.palette[0]} 500px, #ffffff 600px)`,
+              backgroundImage: paletteColors ? `linear-gradient(to bottom, ${paletteColors[0]} 500px, #ffffff 600px)` : null,
             }}
           >
             <label
               className="edit-image__header"
               style={{
-                color: this.props.palette.palette[3],
+                color: paletteColors ? paletteColors[3] : null,
               }}
             >
               <input
@@ -73,10 +92,14 @@ class EditImage extends React.Component {
             </label>
             <GameBoyImage
               tiles={this.state.tiles}
-              palette={this.props.palette.palette || ['#ffffff', '#dddddd', '#bbbbbb', '#999999']}
-              isRGBN={this.state.isRGBN}
+              palette={this.props.palette}
             />
-            { this.state.isRGBN ? null : (
+            { this.props.hashes ? (
+              <GreySelect
+                values={this.props.palette}
+                onChange={this.props.updateRGBNPalette}
+              />
+            ) : (
               <PaletteSelect
                 value={this.props.palette.shortName}
                 onChange={this.props.updatePalette}
@@ -101,6 +124,7 @@ EditImage.propTypes = {
   save: PropTypes.func.isRequired,
   title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
+  updateRGBNPalette: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
 };
 
@@ -108,7 +132,7 @@ EditImage.defaultProps = {
   title: null,
   hash: null,
   hashes: null,
-  palette: [],
+  palette: null,
 };
 
 export default EditImage;
