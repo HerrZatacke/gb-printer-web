@@ -4,19 +4,18 @@ import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Confirmation from '../Confirmation';
 import LiveImage from '../LiveImage';
+import EditImage from '../EditImage';
+import RGBNImage from '../RGBNImage';
 import Settings from '../Settings';
 import Palettes from '../Palettes';
 import Dump from '../Dump';
 import Gallery from '../Gallery';
 import Home from '../Home';
-import EditImage from '../EditImage';
-import RGBNImage from '../RGBNImage';
 import GalleryViewSelect from '../GalleryViewSelect';
 import DragOver from '../DragOver';
 
 const App = (props) => (
   <Router>
-    <LiveImage />
     <Navigation />
     <div className="app__content">
       <Switch>
@@ -53,6 +52,7 @@ const App = (props) => (
     </div>
     <Confirmation />
     <EditImage />
+    <LiveImage />
     <RGBNImage />
     <DragOver />
   </Router>
