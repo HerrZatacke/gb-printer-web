@@ -4,6 +4,7 @@ const dayjs = require('dayjs');
 const chalk = require('chalk');
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
+const mkdirp = require('mkdirp');
 
 let ports;
 try {
@@ -14,10 +15,13 @@ try {
 }
 
 const openPorts = (sendMessage) => {
+
+  const dumpDir = path.join(process.cwd(), 'dumps');
+  mkdirp.sync(dumpDir);
+  const dumpFileName = path.join(dumpDir, `dump-${dayjs().format('YYYY-MM-DD-HH-mm')}.txt`);
+
   [ports].flat().forEach((portConfig) => {
     let parser = null;
-
-    const dumpFileName = path.join(process.cwd(), `dump-${dayjs().format('YYYY-MM-DD-HH-mm')}.txt`);
 
     // eslint-disable-next-line no-console
     console.log(chalk.cyan(`opening port ${portConfig.path}`));
