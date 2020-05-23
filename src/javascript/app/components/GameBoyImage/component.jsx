@@ -7,16 +7,6 @@ class GameBoyImage extends Component {
   constructor(props) {
     super(props);
     this.canvasRef = null;
-
-    this.failed = false;
-
-    if (props.isRGBN && !props.rgbnPalette) {
-      this.failed = 'Palette missing for RGBN image';
-    }
-
-    if (!props.isRGBN && !props.palette) {
-      this.failed = 'Palette missing for image';
-    }
   }
 
   componentDidUpdate() {
@@ -24,19 +14,17 @@ class GameBoyImage extends Component {
   }
 
   updateCanvasContent() {
-    if (this.props.isRGBN) {
-      const decoder = new RGBNDecoder();
-      decoder.update(this.canvasRef, this.props.tiles, this.props.rgbnPalette);
-    } else {
+    if (this.props.palette.palette) {
       const decoder = new Decoder();
+      decoder.update(this.canvasRef, this.props.tiles, this.props.palette.palette);
+    } else {
+      const decoder = new RGBNDecoder();
       decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
     }
   }
 
   render() {
-    return this.failed ? (
-      <span>{this.failed}</span>
-    ) : (
+    return (
       <canvas
         className="gameboy-image"
         width={160}
@@ -56,14 +44,9 @@ GameBoyImage.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.arrayOf(PropTypes.object),
   ]).isRequired,
-  palette: PropTypes.array.isRequired,
-  rgbnPalette: PropTypes.object,
-  isRGBN: PropTypes.bool,
+  palette: PropTypes.object.isRequired,
 };
 
-GameBoyImage.defaultProps = {
-  isRGBN: false,
-  rgbnPalette: null,
-};
+GameBoyImage.defaultProps = {};
 
 export default GameBoyImage;

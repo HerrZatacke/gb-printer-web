@@ -98,7 +98,7 @@ GalleryListImage.propTypes = {
   created: PropTypes.string.isRequired,
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
-  palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  palette: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
 };

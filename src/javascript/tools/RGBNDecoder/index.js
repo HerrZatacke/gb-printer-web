@@ -1,13 +1,19 @@
-// Tile Constants
 import Decoder from '../Decoder';
-
-const GREYS = [0xff, 0xaa, 0x55, 0x00];
 
 class RGBNDecoder extends Decoder {
 
   // for the RGBN Image the "palette" does not exist and therefore never change
-  setPalette() {
-    return false;
+  setPalette(palette) {
+    if (!palette) {
+      return false;
+    }
+
+    if (JSON.stringify(this.palette) === JSON.stringify(palette)) {
+      return false;
+    }
+
+    this.palette = palette;
+    return true;
   }
 
   decodeTile({ r, g, b, n }) {
@@ -20,12 +26,11 @@ class RGBNDecoder extends Decoder {
   }
 
   getRGBValue({ r, g, b, n }, index) {
-    // const valueN = [0xcc, 0x99, 0x66, 0x33][n[index]];
-    const valueN = GREYS[n[index]];
+    const valueN = this.palette.n[3 - n[index]];
     return {
-      r: GREYS[r[index]] * valueN / 0xff,
-      g: GREYS[g[index]] * valueN / 0xff,
-      b: GREYS[b[index]] * valueN / 0xff,
+      r: this.palette.r[3 - r[index]] * valueN / 0xff,
+      g: this.palette.g[3 - g[index]] * valueN / 0xff,
+      b: this.palette.b[3 - b[index]] * valueN / 0xff,
     };
   }
 

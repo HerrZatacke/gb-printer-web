@@ -1,8 +1,23 @@
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state, { palette }) => ({
-  palette: (state.palettes.find(({ shortName }) => shortName === palette) || state.palettes[0]).palette,
-});
+const mapStateToProps = (state, { hash }) => {
+  const image = state.images.find((img) => img.hash === hash);
+  let palette;
+
+  if (image.hashes) {
+    palette = image.RGBNPalette;
+  } else {
+    palette = state.palettes.find(({ shortName }) => shortName === image.palette);
+  }
+
+  return ({
+    title: image.title,
+    created: image.created,
+    index: image.index,
+    hashes: image.hashes,
+    palette,
+  });
+};
 
 const mapDispatchToProps = () => ({});
 

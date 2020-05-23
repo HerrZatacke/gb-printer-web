@@ -9,15 +9,7 @@ const Gallery = (props) => {
   const ImageComponent = props.currentView === 'list' ? GalleryListImage : GalleryImage;
 
   const content = props.images.map((image) => (
-    <ImageComponent
-      key={image.hash}
-      hash={image.hash}
-      palette={image.palette}
-      title={image.title}
-      created={image.created}
-      index={image.index}
-      hashes={image.hashes}
-    />
+    <ImageComponent key={image.hash} hash={image.hash} />
   ));
 
   if (props.currentView !== 'list') {
