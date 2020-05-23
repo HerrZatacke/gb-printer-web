@@ -32,7 +32,7 @@ const Home = () => (
     <h3>ToDo:</h3>
     <ul>
       <li>
-        Save RGB images to gallery
+        Add lightbox to gallery. (Fullscreen mode?)
       </li>
       <li>
         Export without frame / with different frame
