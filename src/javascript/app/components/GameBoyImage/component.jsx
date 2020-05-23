@@ -14,12 +14,16 @@ class GameBoyImage extends Component {
   }
 
   updateCanvasContent() {
-    if (this.props.palette.palette) {
-      const decoder = new Decoder();
-      decoder.update(this.canvasRef, this.props.tiles, this.props.palette.palette);
-    } else {
-      const decoder = new RGBNDecoder();
-      decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
+    try {
+      if (this.props.palette.palette) {
+        const decoder = new Decoder();
+        decoder.update(this.canvasRef, this.props.tiles, this.props.palette.palette);
+      } else {
+        const decoder = new RGBNDecoder();
+        decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
+      }
+    } catch (error) {
+      console.error(`error in GameBoyImage: ${error.message}`);
     }
   }
 

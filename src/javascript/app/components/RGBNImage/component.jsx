@@ -2,15 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
-import { load } from '../../../tools/storage';
 import GalleryImageButtons from '../GalleryImageButtons';
-
-const DEFAULT_PALETTE = {
-  r: [0x00, 0x55, 0xaa, 0xff],
-  g: [0x00, 0x55, 0xaa, 0xff],
-  b: [0x00, 0x55, 0xaa, 0xff],
-  n: [0x00, 0x55, 0xaa, 0xff],
-};
+import { load } from '../../../tools/storage';
+import { defaultPalette } from '../../defaults';
 
 class RGBNImage extends Component {
   constructor(props) {
@@ -33,7 +27,7 @@ class RGBNImage extends Component {
       .then((rgbn) => {
         if (this.canvasRef) {
           const tiles = RGBNDecoder.rgbnTiles(rgbn);
-          this.rgbnDecoder.update(this.canvasRef, tiles, DEFAULT_PALETTE);
+          this.rgbnDecoder.update(this.canvasRef, tiles, defaultPalette);
         }
       });
   }

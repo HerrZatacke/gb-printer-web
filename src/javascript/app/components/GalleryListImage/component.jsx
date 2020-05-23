@@ -6,7 +6,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GameBoyImage from '../GameBoyImage';
 import GalleryImageButtons from '../GalleryImageButtons';
 import RGBNSelect from '../RGBNSelect';
-import { dateFormat, dateFormatReadable } from '../../../tools/values';
+import { dateFormat, dateFormatReadable } from '../../defaults';
 import { load } from '../../../tools/storage';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 

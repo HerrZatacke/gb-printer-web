@@ -1,4 +1,4 @@
-const DEFAULT_GREYS = [0x00, 0x55, 0xaa, 0xff];
+import { defaultPalette } from '../../app/defaults';
 
 const cleanState = (initialState) => {
   const palettesShorts = initialState.palettes.map(({ shortName }) => shortName);
@@ -19,12 +19,7 @@ const cleanState = (initialState) => {
         if (!image.rgbnPalette) {
           return {
             ...image,
-            rgbnPalette: {
-              r: DEFAULT_GREYS.slice(),
-              g: DEFAULT_GREYS.slice(),
-              b: DEFAULT_GREYS.slice(),
-              n: DEFAULT_GREYS.slice(),
-            },
+            rgbnPalette: defaultPalette,
           };
         }
 
