@@ -1,4 +1,5 @@
 import Decoder from '../Decoder';
+import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
 import download from './download';
 
@@ -6,8 +7,15 @@ const prepareFiles = (palette, exportScaleFactors, image) => (tiles) => {
 
   const canvas = document.createElement('canvas');
   canvas.width = 160;
-  const decoder = new Decoder();
-  decoder.update(canvas, tiles, palette.palette);
+
+  const isRGBN = !!image.hashes;
+  const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
+
+  if (isRGBN) {
+    decoder.update(canvas, RGBNDecoder.rgbnTiles(tiles), palette);
+  } else {
+    decoder.update(canvas, tiles, palette.palette);
+  }
 
   const images = exportScaleFactors.map((exportScaleFactor) => (
     new Promise((resolve, reject) => {

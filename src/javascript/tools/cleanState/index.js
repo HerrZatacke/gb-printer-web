@@ -1,4 +1,4 @@
-const DEFAULT_GREYS = [0xff, 0xaa, 0x55, 0x00];
+const DEFAULT_GREYS = [0x00, 0x55, 0xaa, 0xff];
 
 const cleanState = (initialState) => {
   const palettesShorts = initialState.palettes.map(({ shortName }) => shortName);
