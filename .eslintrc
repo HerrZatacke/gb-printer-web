@@ -38,6 +38,7 @@
     "react/no-array-index-key": "off",
     "class-methods-use-this": "off",
     "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/control-has-associated-label": "off",
     "jsx-a11y/interactive-supports-focus": "warn",
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/label-has-associated-control": [
