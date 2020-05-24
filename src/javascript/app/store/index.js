@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import reducers from './reducers';
+import cleanState from '../../tools/cleanState';
 import serialportWebocket from './middlewares/serialportWebocket';
 import triggerMock from './middlewares/triggerMock';
 import saveState from './middlewares/saveState';
@@ -36,7 +37,7 @@ const enhancers = [
 ];
 
 const getStore = (config) => (
-  createStore(reducers, config, composeEnhancers(...enhancers))
+  createStore(reducers, cleanState(config), composeEnhancers(...enhancers))
 );
 
 

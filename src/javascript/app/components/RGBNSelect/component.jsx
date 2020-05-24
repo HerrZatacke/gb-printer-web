@@ -30,7 +30,6 @@ const RGBNSelect = (props) => (
   <div className="rgbn-select">
     {
       BOXES.map(({ propKey, cssModifier, updateKey }) => (
-        // eslint-disable-next-line jsx-a11y/control-has-associated-label
         <button
           type="button"
           key={propKey}

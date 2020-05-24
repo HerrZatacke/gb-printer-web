@@ -1,4 +1,4 @@
-import defaults from '../../defaults';
+import defaults from '../defaults';
 
 const saveState = (store) => (next) => (action) => {
   next(action);

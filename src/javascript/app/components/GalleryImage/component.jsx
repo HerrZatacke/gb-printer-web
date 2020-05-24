@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { dateFormat, dateFormatReadable } from '../../../tools/values';
 import GameBoyImage from '../GameBoyImage';
-import { load } from '../../../tools/storage';
 import GalleryImageButtons from '../GalleryImageButtons';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
+import { dateFormat, dateFormatReadable } from '../../defaults';
+import { load } from '../../../tools/storage';
 
 dayjs.extend(customParseFormat);
 
@@ -17,7 +17,6 @@ class GalleryImage extends React.Component {
 
     this.state = {
       tiles: null,
-      isRGBN: null,
     };
   }
 
@@ -32,7 +31,6 @@ class GalleryImage extends React.Component {
         .then((tiles) => {
           this.setState({
             tiles: RGBNDecoder.rgbnTiles(tiles),
-            isRGBN: true,
           });
         });
     } else {
@@ -40,7 +38,6 @@ class GalleryImage extends React.Component {
         .then((tiles) => {
           this.setState({
             tiles,
-            isRGBN: false,
           });
         });
     }
@@ -54,7 +51,6 @@ class GalleryImage extends React.Component {
             <GameBoyImage
               tiles={this.state.tiles}
               palette={this.props.palette}
-              isRGBN={this.state.isRGBN}
             />
           ) : null }
         </span>
@@ -70,7 +66,7 @@ class GalleryImage extends React.Component {
         >
           {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
         </span>
-        <GalleryImageButtons hash={this.props.hash} buttons={this.state.isRGBN ? ['delete', 'download'] : ['download', 'delete', 'edit']} />
+        <GalleryImageButtons hash={this.props.hash} buttons={['download', 'delete', 'edit']} />
       </li>
     );
   }
@@ -80,7 +76,7 @@ GalleryImage.propTypes = {
   created: PropTypes.string.isRequired,
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
-  palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  palette: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
 };
 

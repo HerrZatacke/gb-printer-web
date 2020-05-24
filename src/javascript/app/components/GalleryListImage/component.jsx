@@ -6,7 +6,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GameBoyImage from '../GameBoyImage';
 import GalleryImageButtons from '../GalleryImageButtons';
 import RGBNSelect from '../RGBNSelect';
-import { dateFormat, dateFormatReadable } from '../../../tools/values';
+import { dateFormat, dateFormatReadable } from '../../defaults';
 import { load } from '../../../tools/storage';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 
@@ -98,7 +98,7 @@ GalleryListImage.propTypes = {
   created: PropTypes.string.isRequired,
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
-  palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  palette: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
 };

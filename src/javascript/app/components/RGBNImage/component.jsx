@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
-import { load } from '../../../tools/storage';
 import GalleryImageButtons from '../GalleryImageButtons';
+import { load } from '../../../tools/storage';
+import { defaultPalette } from '../../defaults';
 
 class RGBNImage extends Component {
   constructor(props) {
@@ -24,10 +25,9 @@ class RGBNImage extends Component {
       load(this.props.tilesN),
     ])
       .then((rgbn) => {
-
         if (this.canvasRef) {
           const tiles = RGBNDecoder.rgbnTiles(rgbn);
-          this.rgbnDecoder.update(this.canvasRef, tiles);
+          this.rgbnDecoder.update(this.canvasRef, tiles, defaultPalette);
         }
       });
   }
@@ -67,10 +67,10 @@ RGBNImage.propTypes = {
 };
 
 RGBNImage.defaultProps = {
-  tilesR: [],
-  tilesG: [],
-  tilesB: [],
-  tilesN: [],
+  tilesR: null,
+  tilesG: null,
+  tilesB: null,
+  tilesN: null,
 };
 
 export default RGBNImage;

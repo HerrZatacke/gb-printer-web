@@ -1,5 +1,5 @@
 import { load } from '../../../tools/storage';
-import { prepareFiles, prepareFilesRGBN } from '../../../tools/download';
+import { prepareFiles } from '../../../tools/download';
 
 const startDownload = (store) => (next) => (action) => {
 
@@ -19,6 +19,8 @@ const startDownload = (store) => (next) => (action) => {
         .then(prepareFiles(palette, exportScaleFactors, image));
 
     } else {
+      const palette = image.palette;
+
       // rgbn image
       Promise.all([
         load(image.hashes.r),
@@ -26,7 +28,7 @@ const startDownload = (store) => (next) => (action) => {
         load(image.hashes.b),
         load(image.hashes.n),
       ])
-        .then(prepareFilesRGBN(exportScaleFactors, image));
+        .then(prepareFiles(palette, exportScaleFactors, image));
 
     }
   }

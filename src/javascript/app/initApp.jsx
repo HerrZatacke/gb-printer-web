@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import App from './components/App';
 import getStore from './store';
-import defaults from './defaults';
+import defaults from './store/defaults';
 
 const initApp = () => {
   const appRoot = document.getElementById('app');
@@ -19,15 +19,6 @@ const initApp = () => {
   }
 
   const initialState = Object.assign(defaults, storedSettings);
-
-  // dev: change palettes
-  // initialState.images = initialState.images.map((image) => ({
-  //   ...image,
-  //   palette: 'bw',
-  // }));
-
-  // dev clear all images
-  // initialState.images = [];
 
   render(<Provider store={getStore(initialState)}><App /></Provider>, appRoot);
 };

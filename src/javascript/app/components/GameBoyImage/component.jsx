@@ -14,8 +14,17 @@ class GameBoyImage extends Component {
   }
 
   updateCanvasContent() {
-    const decoder = this.props.isRGBN ? new RGBNDecoder() : new Decoder();
-    decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
+    try {
+      if (this.props.palette.palette) {
+        const decoder = new Decoder();
+        decoder.update(this.canvasRef, this.props.tiles, this.props.palette.palette);
+      } else {
+        const decoder = new RGBNDecoder();
+        decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
+      }
+    } catch (error) {
+      console.error(`error in GameBoyImage: ${error.message}`);
+    }
   }
 
   render() {
@@ -39,12 +48,9 @@ GameBoyImage.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.arrayOf(PropTypes.object),
   ]).isRequired,
-  palette: PropTypes.array.isRequired,
-  isRGBN: PropTypes.bool,
+  palette: PropTypes.object.isRequired,
 };
 
-GameBoyImage.defaultProps = {
-  isRGBN: false,
-};
+GameBoyImage.defaultProps = {};
 
 export default GameBoyImage;

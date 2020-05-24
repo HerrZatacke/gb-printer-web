@@ -1,0 +1,49 @@
+.color-slider {
+  padding: 20px 0;
+
+  &__rail {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 32px;
+    transform: translate(0%, -50%);
+    border: none;
+    background: none;
+    padding: 0;
+  }
+
+  &__rail-inner {
+    position: absolute;
+    width: calc(100% + 10px);
+    height: 10px;
+    transform: translate(-5px, -50%);
+    border-radius: $default-border-radius;
+    pointer-events: none;
+
+    [data-color=r] & { background-image: linear-gradient(to right, $color-black 0%, $color-strong-red 100%); }
+    [data-color=g] & { background-image: linear-gradient(to right, $color-black 0%, $color-strong-green 100%); }
+    [data-color=b] & { background-image: linear-gradient(to right, $color-black 0%, $color-strong-blue 100%); }
+    [data-color=n] & { background-image: linear-gradient(to right, $color-black 0%, $color-white 100%); }
+  }
+
+  &__handle {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 3px 1px $color-grey-40;
+
+    [data-color=r] & { background-color: $color-strong-red; }
+    [data-color=g] & { background-color: $color-strong-green; }
+    [data-color=b] & { background-color: $color-strong-blue; }
+    [data-color=n] & { background-color: $color-grey-40; }
+
+    &:hover {
+      background-color: $color-grey-70;
+    }
+  }
+}

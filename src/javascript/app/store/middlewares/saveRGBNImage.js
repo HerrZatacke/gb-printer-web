@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { dateFormat } from '../../../tools/values';
+import { dateFormat, defaultPalette } from '../../defaults';
 
 const saveRGBNImage = (store) => (next) => (action) => {
 
@@ -10,6 +10,7 @@ const saveRGBNImage = (store) => (next) => (action) => {
     import(/* webpackChunkName: "object-hash" */ 'object-hash')
       .then(({ default: hash }) => {
         const image = {
+          palette: defaultPalette,
           hashes: { ...state.rgbnImages },
           hash: hash(state.rgbnImages),
           created: dayjs().format(dateFormat),
