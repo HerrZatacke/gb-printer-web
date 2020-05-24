@@ -10,5 +10,6 @@ yarn-error.log*
 .yarn-integrity
 .idea
 ports.config.json
-dump*.txt
+dumps/*
+!dumps/.gitkeep 
 .DS_Store
