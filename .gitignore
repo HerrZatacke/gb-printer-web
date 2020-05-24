@@ -11,3 +11,4 @@ yarn-error.log*
 .idea
 ports.config.json
 dump*.txt
+.DS_Store
