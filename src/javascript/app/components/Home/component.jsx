@@ -40,6 +40,9 @@ const Home = () => (
         Add some sort of pagination to increase performance
       </li>
       <li>
+        Add filters/tags
+      </li>
+      <li>
         Export without frame / with different frame
       </li>
       <li>
