@@ -1,7 +1,7 @@
 const confirmation = (store) => {
 
   document.addEventListener('keyup', (ev) => {
-    if (ev.key === 'Escape') {
+    if ((ev.key === 'Escape') || (ev.key === 'Esc')) {
       store.dispatch({
         type: 'CLOSE_OVERLAY',
       });

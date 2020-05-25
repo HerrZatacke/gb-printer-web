@@ -1,8 +1,17 @@
 const confirmation = (store) => {
 
-  document.addEventListener('keyup', (ev) => {
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+      store.dispatch({
+        type: 'SET_LIGHTBOX_IMAGE_INDEX',
+        payload: null,
+      });
+    }
+  });
 
+  document.addEventListener('keyup', (ev) => {
     switch (ev.key) {
+      case 'Esc':
       case 'Escape':
         store.dispatch({
           type: 'SET_LIGHTBOX_IMAGE_INDEX',
@@ -10,12 +19,14 @@ const confirmation = (store) => {
         });
         break;
 
+      case 'Right':
       case 'ArrowRight':
         store.dispatch({
           type: 'LIGHTBOX_NEXT',
         });
         break;
 
+      case 'Left':
       case 'ArrowLeft':
         store.dispatch({
           type: 'LIGHTBOX_PREV',
@@ -43,6 +54,16 @@ const confirmation = (store) => {
           payload: Math.max(state.lightboxImage - 1, 0),
         });
         return;
+      case 'SET_LIGHTBOX_IMAGE_INDEX':
+        if (action.payload && !state.lightboxImage) {
+          try {
+            document.querySelector('#app').requestFullscreen();
+          } catch (error) {
+            /* muss ja nich... IE I'm looking at you */
+          }
+        }
+
+        break;
       default:
         break;
     }
