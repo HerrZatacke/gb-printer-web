@@ -1,35 +1,37 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import reducers from './reducers';
 import cleanState from '../../tools/cleanState';
-import serialportWebocket from './middlewares/serialportWebocket';
-import triggerMock from './middlewares/triggerMock';
-import saveState from './middlewares/saveState';
-import plainText from './middlewares/plainText';
-import saveLineBuffer from './middlewares/saveLineBuffer';
-import startDownload from './middlewares/startDownload';
 import confirmation from './middlewares/confirmation';
-import saveEditImage from './middlewares/saveEditImage';
-import hideLiveImage from './middlewares/hideLiveImage';
-import fileDrop from './middlewares/fileDrop';
-import saveRGBNImage from './middlewares/saveRGBNImage';
 import deleteImage from './middlewares/deleteImage';
+import fileDrop from './middlewares/fileDrop';
+import hideLiveImage from './middlewares/hideLiveImage';
+import lightbox from './middlewares/lightbox';
+import plainText from './middlewares/plainText';
+import saveEditImage from './middlewares/saveEditImage';
+import saveLineBuffer from './middlewares/saveLineBuffer';
+import saveRGBNImage from './middlewares/saveRGBNImage';
+import saveState from './middlewares/saveState';
+import serialportWebocket from './middlewares/serialportWebocket';
+import startDownload from './middlewares/startDownload';
+import triggerMock from './middlewares/triggerMock';
 
 // eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const enhancers = [
   applyMiddleware(
-    fileDrop,
-    serialportWebocket,
-    triggerMock,
-    plainText,
-    saveLineBuffer,
-    startDownload,
     confirmation,
-    saveEditImage,
-    hideLiveImage,
-    saveRGBNImage,
     deleteImage,
+    fileDrop,
+    hideLiveImage,
+    lightbox,
+    plainText,
+    saveEditImage,
+    saveLineBuffer,
+    saveRGBNImage,
+    serialportWebocket,
+    startDownload,
+    triggerMock,
   ),
 
   // should be the last mw

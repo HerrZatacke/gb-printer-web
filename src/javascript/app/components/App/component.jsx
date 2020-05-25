@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Confirmation from '../Confirmation';
-import LiveImage from '../LiveImage';
 import EditImage from '../EditImage';
+import LiveImage from '../LiveImage';
+import LightboxImage from '../LightboxImage';
 import RGBNImage from '../RGBNImage';
 import Settings from '../Settings';
 import Palettes from '../Palettes';
@@ -53,6 +54,7 @@ const App = (props) => (
     <Confirmation />
     <EditImage />
     <LiveImage />
+    <LightboxImage />
     <RGBNImage />
     <DragOver />
   </Router>

@@ -1,8 +1,12 @@
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state, { hash }) => {
-  const image = state.images.find((img) => img.hash === hash);
+const mapStateToProps = (state) => {
+  const image = state.images.find((_, index) => index === state.lightboxImage);
   let palette;
+
+  if (!image) {
+    return {};
+  }
 
   if (image.hashes) {
     palette = image.palette;
@@ -11,21 +15,15 @@ const mapStateToProps = (state, { hash }) => {
   }
 
   return ({
+    hash: image.hash,
     title: image.title,
     created: image.created,
-    index: image.index,
     hashes: image.hashes,
     palette,
   });
 };
 
-const mapDispatchToProps = (dispatch, { index }) => ({
-  setLightboxImageIndex: () => {
-    dispatch({
-      type: 'SET_LIGHTBOX_IMAGE_INDEX',
-      payload: index,
-    });
-  },
+const mapDispatchToProps = () => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

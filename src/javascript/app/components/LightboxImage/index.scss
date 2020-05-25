@@ -1,0 +1,50 @@
+.lightbox-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: $z-index-overlay;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  &__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($color-black, 0.95);
+  }
+
+  &__box {
+    width: 85vh;
+    max-height: calc(100vh - 30px);
+    background: $page-background;
+    border-radius: $default-border-radius;
+    color: $color-text;
+    z-index: $z-index-overlay-content;
+
+    @media (max-aspect-ratio: 1/1) {
+      width: 85vw;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__title {
+    display: block;
+    padding: 15px 20px 10px;
+  }
+
+  &__created {
+    display: block;
+    font-size: 12px;
+    text-align: right;
+    padding: 15px 20px 10px;
+  }
+}

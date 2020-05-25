@@ -46,14 +46,18 @@ class GalleryImage extends React.Component {
   render() {
     return (
       <li className="gallery-image">
-        <span className="gallery-image__image">
+        <button
+          type="button"
+          className="gallery-image__image"
+          onClick={this.props.setLightboxImageIndex}
+        >
           { this.state.tiles ? (
             <GameBoyImage
               tiles={this.state.tiles}
               palette={this.props.palette}
             />
           ) : null }
-        </span>
+        </button>
         {this.props.title ? (
           <span
             className="gallery-image__title"
@@ -78,6 +82,7 @@ GalleryImage.propTypes = {
   hashes: PropTypes.object,
   palette: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
+  setLightboxImageIndex: PropTypes.func.isRequired,
 };
 
 GalleryImage.defaultProps = {

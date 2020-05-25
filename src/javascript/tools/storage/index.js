@@ -33,7 +33,7 @@ const save = (lineBuffer) => (
 
 const load = (dataHash) => {
   if (!dataHash) {
-    return null;
+    return Promise.resolve(null);
   }
 
   return (
