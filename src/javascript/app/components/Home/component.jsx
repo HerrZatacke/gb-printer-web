@@ -37,6 +37,9 @@ const Home = () => (
         Arrows/Enter/Esc work... Mouse navigation not yet implemented
       </li>
       <li>
+        Add some sort of pagination to increase performance
+      </li>
+      <li>
         Export without frame / with different frame
       </li>
       <li>
