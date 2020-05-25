@@ -23,7 +23,28 @@ const mapStateToProps = (state) => {
   });
 };
 
-const mapDispatchToProps = () => ({
+const mapDispatchToProps = (dispatch) => ({
+  close: () => {
+    dispatch({
+      type: 'SET_LIGHTBOX_IMAGE_INDEX',
+      payload: null,
+    });
+  },
+  prev: () => {
+    dispatch({
+      type: 'LIGHTBOX_PREV',
+    });
+  },
+  next: () => {
+    dispatch({
+      type: 'LIGHTBOX_NEXT',
+    });
+  },
+  fullscreen: () => {
+    dispatch({
+      type: 'LIGHTBOX_FULLSCREEN',
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

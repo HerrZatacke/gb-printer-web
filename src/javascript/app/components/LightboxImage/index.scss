@@ -20,15 +20,16 @@
   }
 
   &__box {
-    width: 85vh;
+    width: calc(95vh - 80px);
     max-height: calc(100vh - 30px);
     background: $page-background;
     border-radius: $default-border-radius;
     color: $color-text;
     z-index: $z-index-overlay-content;
+    position: relative;
 
     @media (max-aspect-ratio: 1/1) {
-      width: 85vw;
+      width: calc(95vw - 80px);
     }
 
     &::-webkit-scrollbar {
@@ -39,6 +40,47 @@
   &__title {
     display: block;
     padding: 15px 20px 10px;
+    min-height: 45px;
+  }
+
+  &__button {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    top: 3px;
+    background: none;
+    border: none;
+    position: absolute;
+    fill: $color-secondary;
+
+    &--fullscreen {
+      right: 50px;
+    }
+
+    &--close {
+      right: 5px;
+    }
+
+    &--left {
+      left: 0;
+    }
+
+    &--right {
+      right: 0;
+    }
+
+    &:hover {
+      fill: $color-white;
+    }
+  }
+
+
+  &__navigation {
+    position: absolute;
+    top: calc(50% - 23px);
+    width: calc(100% + 80px);
+    left: -40px;
+    height: 46px;
   }
 
   &__created {

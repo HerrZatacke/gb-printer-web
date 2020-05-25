@@ -65,6 +65,30 @@ const SVG = (props) => {
           <path d="M34 34V6H6v28z" />
         </svg>
       );
+    case 'close':
+      return (
+        <svg className="svg" viewBox="0 0 40 40">
+          <path d="M7 3l12 17L7 37h2l11-15.584L31 37h2L21 20 33 3h-2L20 18.584 9 3H7z" />
+        </svg>
+      );
+    case 'fullscreen':
+      return (
+        <svg className="svg" viewBox="0 0 40 40">
+          <path d="M37 13h-2V9h-5V7h7zM3 13h2V9h5V7H3zm34 14h-2v4h-5v2h7zM3 27h2v4h5v2H3z" />
+        </svg>
+      );
+    case 'right':
+      return (
+        <svg className="svg" viewBox="0 0 40 40">
+          <path d="M17 3l12 17-12 17h-2l12-17L15 3z" />
+        </svg>
+      );
+    case 'left':
+      return (
+        <svg className="svg" viewBox="0 0 40 40">
+          <path d="M23 3L11 20l12 17h2L13 20 25 3z" />
+        </svg>
+      );
     default:
       return null;
   }

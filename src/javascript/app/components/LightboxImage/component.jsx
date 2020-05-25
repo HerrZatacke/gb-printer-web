@@ -5,6 +5,7 @@ import GameBoyImage from '../GameBoyImage';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import { load } from '../../../tools/storage';
 import { dateFormat, dateFormatReadable } from '../../defaults';
+import SVG from '../SVG';
 
 class LightboxImage extends React.Component {
 
@@ -69,10 +70,40 @@ class LightboxImage extends React.Component {
           <label className="lightbox-image__title">
             {this.props.title}
           </label>
+          <button
+            type="button"
+            className="lightbox-image__button lightbox-image__button--fullscreen"
+            onClick={this.props.fullscreen}
+          >
+            <SVG name="fullscreen" />
+          </button>
+          <button
+            type="button"
+            className="lightbox-image__button lightbox-image__button--close"
+            onClick={this.props.close}
+          >
+            <SVG name="close" />
+          </button>
           <GameBoyImage
             tiles={this.state.tiles}
             palette={this.props.palette}
           />
+          <div className="lightbox-image__navigation">
+            <button
+              type="button"
+              className="lightbox-image__button lightbox-image__button--left"
+              onClick={this.props.prev}
+            >
+              <SVG name="left" />
+            </button>
+            <button
+              type="button"
+              className="lightbox-image__button lightbox-image__button--right"
+              onClick={this.props.next}
+            >
+              <SVG name="right" />
+            </button>
+          </div>
           <div className="lightbox-image__created">
             {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
           </div>
@@ -88,6 +119,10 @@ LightboxImage.propTypes = {
   hashes: PropTypes.object,
   palette: PropTypes.object,
   title: PropTypes.string,
+  close: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
+  fullscreen: PropTypes.func.isRequired,
 };
 
 LightboxImage.defaultProps = {

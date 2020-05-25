@@ -1,13 +1,6 @@
-const confirmation = (store) => {
+import { closeFullscreen, openFullscreen } from '../../../tools/fullscreen';
 
-  document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) {
-      store.dispatch({
-        type: 'SET_LIGHTBOX_IMAGE_INDEX',
-        payload: null,
-      });
-    }
-  });
+const confirmation = (store) => {
 
   document.addEventListener('keyup', (ev) => {
     switch (ev.key) {
@@ -54,13 +47,17 @@ const confirmation = (store) => {
           payload: Math.max(state.lightboxImage - 1, 0),
         });
         return;
+      case 'LIGHTBOX_FULLSCREEN':
+        if (!document.fullscreenElement) {
+          openFullscreen(document.querySelector('body'));
+        } else {
+          closeFullscreen();
+        }
+
+        break;
       case 'SET_LIGHTBOX_IMAGE_INDEX':
-        if (action.payload && !state.lightboxImage) {
-          try {
-            document.querySelector('#app').requestFullscreen();
-          } catch (error) {
-            /* muss ja nich... IE I'm looking at you */
-          }
+        if (!action.payload) {
+          closeFullscreen();
         }
 
         break;
