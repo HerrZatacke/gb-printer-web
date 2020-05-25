@@ -32,7 +32,9 @@ const Home = () => (
     <h3>ToDo:</h3>
     <ul>
       <li>
-        Add lightbox to gallery. (Fullscreen mode?)
+        <strike>Add lightbox to gallery. (Fullscreen mode?)</strike>
+        <br />
+        Arrows/Enter/Esc work... Mouse navigation not yet implemented
       </li>
       <li>
         Export without frame / with different frame
