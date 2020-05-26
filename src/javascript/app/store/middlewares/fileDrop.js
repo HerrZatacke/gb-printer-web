@@ -1,3 +1,5 @@
+import transformSav from '../../../tools/transformSav';
+
 const handleFile = (dispatch) => (file) => {
 
   // roughly larger than 1MB is too much....
@@ -9,15 +11,24 @@ const handleFile = (dispatch) => (file) => {
   }
 
   const reader = new FileReader();
+
   reader.onload = (ev) => {
+
+    // for now let's assume all .sav files have the same size...
+    const dumpText = file.size === 131072 ? transformSav(ev.target.result) : ev.target.result;
+
     dispatch({
       type: 'IMPORT_PLAIN_TEXT',
-      payload: ev.target.result,
+      payload: dumpText,
       file: file.name,
     });
   };
 
-  reader.readAsText(file);
+  if (file.size === 131072) {
+    reader.readAsArrayBuffer(file);
+  } else {
+    reader.readAsText(file);
+  }
 };
 
 const fileDrop = (store) => {
