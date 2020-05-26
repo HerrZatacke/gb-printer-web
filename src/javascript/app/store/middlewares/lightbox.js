@@ -2,12 +2,14 @@ import screenfull from 'screenfull';
 
 const confirmation = (store) => {
 
-  screenfull.on('change', () => {
-    store.dispatch({
-      type: 'SET_IS_FULLSCREEN',
-      payload: !!screenfull.element,
+  if (screenfull.isEnabled) {
+    screenfull.on('change', () => {
+      store.dispatch({
+        type: 'SET_IS_FULLSCREEN',
+        payload: !!screenfull.element,
+      });
     });
-  });
+  }
 
   document.addEventListener('keyup', (ev) => {
     switch (ev.key) {
@@ -63,15 +65,17 @@ const confirmation = (store) => {
         });
         return;
       case 'LIGHTBOX_FULLSCREEN':
-        if (!screenfull.element) {
-          screenfull.request(document.querySelector('body'));
-        } else {
-          screenfull.exit();
+        if (screenfull.isEnabled) {
+          if (!screenfull.element) {
+            screenfull.request(document.querySelector('body'));
+          } else {
+            screenfull.exit();
+          }
         }
 
         break;
       case 'SET_LIGHTBOX_IMAGE_INDEX':
-        if (!action.payload && screenfull.element) {
+        if (screenfull.isEnabled && !action.payload && screenfull.element) {
           screenfull.exit();
         }
 
