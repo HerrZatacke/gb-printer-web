@@ -1,6 +1,15 @@
-import { closeFullscreen, openFullscreen } from '../../../tools/fullscreen';
+import screenfull from 'screenfull';
 
 const confirmation = (store) => {
+
+  screenfull.on('change', () => {
+    if (!screenfull.isFullscreen) {
+      store.dispatch({
+        type: 'SET_LIGHTBOX_IMAGE_INDEX',
+        payload: null,
+      });
+    }
+  });
 
   document.addEventListener('keyup', (ev) => {
     switch (ev.key) {
@@ -36,28 +45,36 @@ const confirmation = (store) => {
 
     switch (action.type) {
       case 'LIGHTBOX_NEXT':
+        if (state.lightboxImage === null) {
+          return;
+        }
+
         store.dispatch({
           type: 'SET_LIGHTBOX_IMAGE_INDEX',
           payload: Math.min(state.lightboxImage + 1, state.images.length - 1),
         });
         return;
       case 'LIGHTBOX_PREV':
+        if (state.lightboxImage === null) {
+          return;
+        }
+
         store.dispatch({
           type: 'SET_LIGHTBOX_IMAGE_INDEX',
           payload: Math.max(state.lightboxImage - 1, 0),
         });
         return;
       case 'LIGHTBOX_FULLSCREEN':
-        if (!document.fullscreenElement) {
-          openFullscreen(document.querySelector('body'));
+        if (!screenfull.element) {
+          screenfull.request(document.querySelector('body'));
         } else {
-          closeFullscreen();
+          screenfull.exit();
         }
 
         break;
       case 'SET_LIGHTBOX_IMAGE_INDEX':
-        if (!action.payload) {
-          closeFullscreen();
+        if (!action.payload && screenfull.element) {
+          screenfull.exit();
         }
 
         break;
