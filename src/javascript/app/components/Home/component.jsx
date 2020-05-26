@@ -17,7 +17,7 @@ const Home = () => (
         (or simply drag and drop your dump(s) into this window)
       </li>
       <li>
-        You can also try to drag/drop your cartridge dump into this window.
+        You can also try to drag/drop your cartridge dump into this window (Currently I assume the size is exactly 131072 bytes, as this is the only sample I have).
         <br />
         This should work - if it does not, please
         {' '}
