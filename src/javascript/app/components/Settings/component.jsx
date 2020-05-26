@@ -10,6 +10,7 @@ class Settings extends React.Component {
     this.state = {
       sync: true,
       socketUrl: props.socketUrl,
+      pageSize: props.pageSize,
     };
   }
 
@@ -17,6 +18,7 @@ class Settings extends React.Component {
     return {
       url: state.sync ? props.socketUrl : state.socketUrl,
       sync: state.sync,
+      pageSize: state.sync ? props.pageSize : state.pageSize,
     };
   }
 
@@ -35,14 +37,18 @@ class Settings extends React.Component {
             className="settings__input"
             type="number"
             min="0"
-            max="120"
-            value={this.props.pageSize}
+            value={this.state.pageSize}
             onChange={({ target }) => {
-              if (isNaN(parseInt(target.value, 10))) {
-                return;
-              }
-
-              this.props.setPageSize(parseInt(target.value, 10));
+              this.setState({
+                sync: false,
+                pageSize: target.value,
+              });
+            }}
+            onBlur={() => {
+              this.props.setPageSize(parseInt(this.state.pageSize, 10) || 0);
+              this.setState({
+                sync: true,
+              });
             }}
           />
         </div>
