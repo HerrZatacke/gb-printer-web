@@ -32,14 +32,6 @@ const Home = () => (
     <h3>ToDo:</h3>
     <ul>
       <li>
-        <strike>Add lightbox to gallery. (Fullscreen mode?)</strike>
-        <br />
-        Arrows/Enter/Esc work... Mouse navigation not yet implemented
-      </li>
-      <li>
-        Add some sort of pagination to increase performance
-      </li>
-      <li>
         Add filters/tags
       </li>
       <li>
