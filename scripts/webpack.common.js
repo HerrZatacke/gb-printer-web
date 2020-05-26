@@ -102,6 +102,7 @@ module.exports = () => ({
       title: 'Gameboy Printer Web',
       template: './src/assets/index.html',
       filename: 'index.html',
+      favicon: './src/assets/images/favicon.png',
       chunks: ['polyfill', 'main'],
     }),
   ],
