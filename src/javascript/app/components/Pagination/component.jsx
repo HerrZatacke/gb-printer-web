@@ -6,14 +6,8 @@ import SVG from '../SVG';
 
 const Pagination = (props) => {
 
-  if (props.totalPages === 0) {
-    return null;
-  }
-
   if (props.totalPages < 2) {
-    return (
-      <div className="pagination" />
-    );
+    return null;
   }
 
   const pages = [...new Array(props.totalPages)].map((undef, index) => index);

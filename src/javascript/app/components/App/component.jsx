@@ -34,6 +34,7 @@ const App = (props) => (
           <GalleryViewSelect />
           <Pagination />
           <Gallery />
+          <Pagination />
         </Route>
         <Route path="/palettes">
           <h1 className="app__content-headline">Palettes</h1>
