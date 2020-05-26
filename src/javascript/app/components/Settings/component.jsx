@@ -28,7 +28,13 @@ class Settings extends React.Component {
         <div className="settings__inputgroup">
           <div className="settings__label">
             Page size
-            <span className="settings__note">
+            <span
+              className={
+                classnames('settings__note', {
+                  'settings__note--warn': !this.props.pageSize,
+                })
+              }
+            >
               (set to 0 to disable pagination - might cause performance issues on large sets of images)
             </span>
           </div>

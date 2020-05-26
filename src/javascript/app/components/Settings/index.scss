@@ -16,6 +16,10 @@
   &__note {
     padding-left: 10px;
     font-size: 12px;
+
+    &--warn {
+      color: $color-warn-red;
+    }
   }
 
   &__label-check {
