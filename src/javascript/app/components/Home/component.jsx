@@ -17,6 +17,13 @@ const Home = () => (
         (or simply drag and drop your dump(s) into this window)
       </li>
       <li>
+        You can also try to drag/drop your cartridge dump into this window.
+        <br />
+        This should work - if it does not, please
+        {' '}
+        <a href="https://github.com/HerrZatacke/gb-printer-web/issues">open an issue and attach your file.</a>
+      </li>
+      <li>
         <Link to="/gallery">
           And check your images in the gallery
         </Link>
