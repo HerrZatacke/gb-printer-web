@@ -5,7 +5,9 @@ const mapStateToProps = (state) => {
   let palette;
 
   if (!image) {
-    return {};
+    return {
+      isFullscreen: state.isFullscreen,
+    };
   }
 
   if (image.hashes) {
@@ -19,6 +21,7 @@ const mapStateToProps = (state) => {
     title: image.title,
     created: image.created,
     hashes: image.hashes,
+    isFullscreen: state.isFullscreen,
     palette,
   });
 };

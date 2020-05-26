@@ -70,13 +70,15 @@ class LightboxImage extends React.Component {
           <label className="lightbox-image__title">
             {this.props.title}
           </label>
-          <button
-            type="button"
-            className="lightbox-image__button lightbox-image__button--fullscreen"
-            onClick={this.props.fullscreen}
-          >
-            <SVG name="fullscreen" />
-          </button>
+          { this.props.isFullscreen ? null : (
+            <button
+              type="button"
+              className="lightbox-image__button lightbox-image__button--fullscreen"
+              onClick={this.props.fullscreen}
+            >
+              <SVG name="fullscreen" />
+            </button>
+          ) }
           <button
             type="button"
             className="lightbox-image__button lightbox-image__button--close"
@@ -123,6 +125,7 @@ LightboxImage.propTypes = {
   prev: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
   fullscreen: PropTypes.func.isRequired,
+  isFullscreen: PropTypes.bool.isRequired,
 };
 
 LightboxImage.defaultProps = {

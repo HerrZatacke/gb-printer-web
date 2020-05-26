@@ -3,12 +3,10 @@ import screenfull from 'screenfull';
 const confirmation = (store) => {
 
   screenfull.on('change', () => {
-    if (!screenfull.isFullscreen) {
-      store.dispatch({
-        type: 'SET_LIGHTBOX_IMAGE_INDEX',
-        payload: null,
-      });
-    }
+    store.dispatch({
+      type: 'SET_IS_FULLSCREEN',
+      payload: !!screenfull.element,
+    });
   });
 
   document.addEventListener('keyup', (ev) => {

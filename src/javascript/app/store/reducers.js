@@ -8,6 +8,7 @@ import galleryView from './reducers/galleryViewReducer';
 import globalIndex from './reducers/globalIndexReducer';
 import images from './reducers/imagesReducer';
 import importQueueSize from './reducers/importQueueSizeReducer';
+import isFullscreen from './reducers/isFullscreenReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import lineBuffer from './reducers/lineBufferReducer';
 import palettes from './reducers/palettesReducer';
@@ -25,6 +26,7 @@ export default combineReducers({
   globalIndex,
   images,
   importQueueSize,
+  isFullscreen,
   lightboxImage,
   lineBuffer,
   palettes,
