@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => ({
   socketUrl: state.socketUrl,
   exportScaleFactors: state.exportScaleFactors,
+  pageSize: state.pageSize,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -15,6 +16,12 @@ const mapDispatchToProps = (dispatch) => ({
   startMock() {
     dispatch({
       type: 'START_MOCK',
+    });
+  },
+  setPageSize(pageSize) {
+    dispatch({
+      type: 'SET_PAGESIZE',
+      payload: pageSize,
     });
   },
   changeExportScaleFactors(factor, checked) {

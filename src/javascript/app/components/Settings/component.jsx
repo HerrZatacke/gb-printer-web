@@ -25,6 +25,29 @@ class Settings extends React.Component {
       <div className="settings">
         <div className="settings__inputgroup">
           <div className="settings__label">
+            Page size
+            <span className="settings__note">
+              (set to 0 to disable pagination - might cause performance issues on large sets of images)
+            </span>
+          </div>
+          <input
+            id="settings-url"
+            className="settings__input"
+            type="number"
+            min="0"
+            max="120"
+            value={this.props.pageSize}
+            onChange={({ target }) => {
+              if (isNaN(parseInt(target.value, 10))) {
+                return;
+              }
+
+              this.props.setPageSize(parseInt(target.value, 10));
+            }}
+          />
+        </div>
+        <div className="settings__inputgroup">
+          <div className="settings__label">
             Image export dimensions
           </div>
           {[1, 2, 3, 4, 6, 8, 10].map((factor) => (
@@ -125,6 +148,8 @@ Settings.propTypes = {
   socketUrl: PropTypes.string.isRequired,
   startMock: PropTypes.func.isRequired,
   updateSocketUrl: PropTypes.func.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  setPageSize: PropTypes.func.isRequired,
 };
 
 Settings.defaultProps = {};

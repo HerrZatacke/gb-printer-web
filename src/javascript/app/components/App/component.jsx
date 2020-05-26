@@ -14,6 +14,7 @@ import Gallery from '../Gallery';
 import Home from '../Home';
 import GalleryViewSelect from '../GalleryViewSelect';
 import DragOver from '../DragOver';
+import Pagination from '../Pagination';
 
 const App = (props) => (
   <Router>
@@ -31,6 +32,7 @@ const App = (props) => (
             Also if you clear your browser&apos;s cookies, the images will be gone too.
           </p>
           <GalleryViewSelect />
+          <Pagination />
           <Gallery />
         </Route>
         <Route path="/palettes">

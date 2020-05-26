@@ -1,16 +1,21 @@
 .settings {
   &__inputgroup {
     display: flex;
-    height: 40px;
+    min-height: 40px;
     color: $color-text;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
   }
 
   &__label {
     flex-basis: 300px;
     flex-grow: 0;
-    line-height: 40px;
+  }
+
+  &__note {
+    padding-left: 10px;
+    font-size: 12px;
   }
 
   &__label-check {
@@ -47,6 +52,7 @@
     flex-grow: 0;
     flex-shrink: 0;
     margin-left: 20px;
+    min-height: 40px;
     color: $color-text-bright;
     background: $color-primary;
     border: none;

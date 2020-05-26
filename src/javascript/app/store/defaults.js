@@ -5,6 +5,7 @@ export default {
   galleryView: '1x',
   exportScaleFactors: [4],
   globalIndex: 1,
+  pageSize: 15,
   palettes: [
     {
       name: 'Black & White',

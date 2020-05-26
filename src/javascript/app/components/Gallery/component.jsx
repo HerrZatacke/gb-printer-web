@@ -9,7 +9,7 @@ const Gallery = (props) => {
   const ImageComponent = props.currentView === 'list' ? GalleryListImage : GalleryImage;
 
   const content = props.images.map((image, index) => (
-    <ImageComponent key={image.hash} hash={image.hash} index={index} />
+    <ImageComponent key={image.hash} hash={image.hash} index={index + props.indexOffset} />
   ));
 
   if (props.currentView !== 'list') {
@@ -44,6 +44,7 @@ const Gallery = (props) => {
 
 Gallery.propTypes = {
   images: PropTypes.array.isRequired,
+  indexOffset: PropTypes.number.isRequired,
   currentView: PropTypes.string.isRequired,
 };
 
