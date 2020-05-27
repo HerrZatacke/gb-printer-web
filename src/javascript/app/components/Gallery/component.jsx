@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import GalleryImage from '../GalleryImage';
-import GalleryListImage from '../GalleryListImage';
 
 const Gallery = (props) => {
-
-  const ImageComponent = props.currentView === 'list' ? GalleryListImage : GalleryImage;
-
   const content = props.images.map((image, index) => (
-    <ImageComponent key={image.hash} hash={image.hash} index={index + props.indexOffset} />
+    <GalleryImage
+      type={props.currentView === 'list' ? 'list' : 'default'}
+      key={image.hash}
+      hash={image.hash}
+      index={index + props.indexOffset}
+    />
   ));
 
   if (props.currentView !== 'list') {
