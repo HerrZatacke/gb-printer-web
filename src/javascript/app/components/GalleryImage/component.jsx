@@ -87,6 +87,9 @@ class GalleryImage extends React.Component {
           {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
         </span>
         <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'edit']} />
+        { /* this.props.hashes ? null : (
+          <RGBNSelect hash={this.props.hash} />
+        ) */ }
       </li>
     );
   }
