@@ -8,6 +8,7 @@ import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import galleryView from './reducers/galleryViewReducer';
 import globalIndex from './reducers/globalIndexReducer';
 import images from './reducers/imagesReducer';
+import imageSelection from './reducers/imageSelectionReducer';
 import importQueueSize from './reducers/importQueueSizeReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
@@ -28,6 +29,7 @@ export default combineReducers({
   galleryView,
   globalIndex,
   images,
+  imageSelection,
   importQueueSize,
   isFullscreen,
   lightboxImage,

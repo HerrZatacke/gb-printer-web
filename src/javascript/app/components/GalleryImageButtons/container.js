@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state, { hash }) => ({
+  isSelected: state.imageSelection.includes(hash),
+});
 
 const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
   startDownload: buttons.includes('download') ? () => {
@@ -26,6 +28,19 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
       type: 'SAVE_RGBN_IMAGE',
       payload: hash,
     });
+  } : null,
+  updateImageToSelection: buttons.includes('select') ? (mode) => {
+    if (mode === 'add') {
+      dispatch({
+        type: 'IMAGE_SELECTION_ADD',
+        payload: hash,
+      });
+    } else {
+      dispatch({
+        type: 'IMAGE_SELECTION_REMOVE',
+        payload: hash,
+      });
+    }
   } : null,
 });
 

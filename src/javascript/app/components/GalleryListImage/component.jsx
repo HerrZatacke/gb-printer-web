@@ -87,7 +87,7 @@ class GalleryListImage extends React.Component {
         </td>
 
         <td className="gallery-list-image__cell-buttons">
-          <GalleryImageButtons hash={this.props.hash} buttons={['download', 'delete', 'edit']} />
+          <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'edit']} />
         </td>
       </tr>
     );
