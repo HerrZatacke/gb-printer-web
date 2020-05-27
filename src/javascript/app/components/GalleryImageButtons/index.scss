@@ -2,6 +2,9 @@
   height: 100%;
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  cursor: default;
+  padding: 0 10px;
 
   &__button {
     width: 20px;

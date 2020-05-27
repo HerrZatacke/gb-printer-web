@@ -27,7 +27,13 @@ const BOXES = [
 ];
 
 const RGBNSelect = (props) => (
-  <div className="rgbn-select">
+  <div
+    className="rgbn-select"
+    onClick={(ev) => {
+      ev.stopPropagation();
+    }}
+    role="presentation"
+  >
     {
       BOXES.map(({ propKey, cssModifier, updateKey }) => (
         <button

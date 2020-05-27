@@ -9,6 +9,7 @@
   background-color: $color-grey-50;
   padding: 10px 10px 30px 10px;
   box-sizing: content-box;
+  cursor: pointer;
 
   &--selected {
     background-color: $color-selected-image;
@@ -84,6 +85,7 @@
 .gallery-list-image {
   background-color: $color-grey-50;
   border-bottom: 1px solid $page-background;
+  cursor: pointer;
 
   &--selected {
     background-color: $color-selected-image;
@@ -98,7 +100,6 @@
   }
 
   td {
-    padding: 0 5px;
     vertical-align: middle;
 
     &:first-child {
@@ -107,6 +108,7 @@
   }
 
   &__cell-image {
+    padding: 0 5px 0 10px;
     width: 60px;
   }
 
@@ -122,21 +124,31 @@
     text-align: right;
   }
 
-  &__cell-description {}
+  &__cell-description {
+    padding: 0 5px;
+  }
 
   &__cell-rgbn {
-    width: 120px;
+    width: 140px;
+    height: 40px;
+    padding: 0;
   }
 
   &__cell-buttons {
-    width: 95px;
+    width: 120px;
+    height: 40px;
+    padding: 0;
   }
 
   &__image {
+    display: block;
     width: 40px;
     margin: 10px 0;
     min-height: 36px;
     background-color: $color-grey-40;
+    border: none;
+    padding: 0;
+    cursor: pointer;
   }
 
   &__description {

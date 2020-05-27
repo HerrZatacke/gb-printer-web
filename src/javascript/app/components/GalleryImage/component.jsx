@@ -53,19 +53,17 @@ class GalleryImage extends React.Component {
             'gallery-image--selected': this.props.isSelected,
           })
         }
+        onClick={this.props.setLightboxImageIndex}
+        role="presentation"
       >
-        <button
-          type="button"
-          className="gallery-image__image"
-          onClick={this.props.setLightboxImageIndex}
-        >
+        <div className="gallery-image__image">
           { this.state.tiles ? (
             <GameBoyImage
               tiles={this.state.tiles}
               palette={this.props.palette}
             />
           ) : null }
-        </button>
+        </div>
         {this.props.title ? (
           <span
             className="gallery-image__title"
@@ -91,6 +89,8 @@ class GalleryImage extends React.Component {
             'gallery-list-image--selected': this.props.isSelected,
           })
         }
+        onClick={this.props.setLightboxImageIndex}
+        role="presentation"
       >
         <td className="gallery-list-image__cell-image">
           <div className="gallery-list-image__image">

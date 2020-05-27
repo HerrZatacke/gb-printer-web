@@ -8,7 +8,13 @@ import SVG from '../SVG';
 dayjs.extend(customParseFormat);
 
 const GalleryImageButtons = (props) => (
-  <div className="gallery-image-buttons">
+  <div
+    className="gallery-image-buttons"
+    onClick={(ev) => {
+      ev.stopPropagation();
+    }}
+    role="presentation"
+  >
     { props.updateImageToSelection ? (
       <button
         type="button"
