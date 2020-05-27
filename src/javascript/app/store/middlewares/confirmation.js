@@ -1,10 +1,11 @@
 const confirmation = (store) => {
 
-  document.addEventListener('keyup', (ev) => {
+  document.addEventListener('keydown', (ev) => {
     if ((ev.key === 'Escape') || (ev.key === 'Esc')) {
       store.dispatch({
         type: 'CLOSE_OVERLAY',
       });
+      ev.preventDefault();
     }
   });
 

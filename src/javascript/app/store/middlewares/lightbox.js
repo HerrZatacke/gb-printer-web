@@ -11,7 +11,7 @@ const confirmation = (store) => {
     });
   }
 
-  document.addEventListener('keyup', (ev) => {
+  document.addEventListener('keydown', (ev) => {
     switch (ev.key) {
       case 'Esc':
       case 'Escape':
@@ -19,6 +19,7 @@ const confirmation = (store) => {
           type: 'SET_LIGHTBOX_IMAGE_INDEX',
           payload: null,
         });
+        ev.preventDefault();
         break;
 
       case 'Right':
@@ -26,6 +27,7 @@ const confirmation = (store) => {
         store.dispatch({
           type: 'LIGHTBOX_NEXT',
         });
+        ev.preventDefault();
         break;
 
       case 'Left':
@@ -33,6 +35,7 @@ const confirmation = (store) => {
         store.dispatch({
           type: 'LIGHTBOX_PREV',
         });
+        ev.preventDefault();
         break;
 
       default:
