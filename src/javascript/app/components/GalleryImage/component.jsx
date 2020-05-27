@@ -98,7 +98,6 @@ class GalleryImage extends React.Component {
               <GameBoyImage
                 tiles={this.state.tiles}
                 palette={this.props.palette}
-                isRGBN={this.state.isRGBN}
               />
             ) : null }
           </div>
