@@ -20,6 +20,8 @@ class GalleryImage extends React.Component {
     this.state = {
       tiles: null,
     };
+
+    this.handleCellClick = this.handleCellClick.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +47,14 @@ class GalleryImage extends React.Component {
     }
   }
 
+  handleCellClick(ev) {
+    if (ev.ctrlKey) {
+      this.props.updateImageToSelection(this.props.isSelected ? 'remove' : 'add');
+    } else {
+      this.props.setLightboxImageIndex();
+    }
+  }
+
   renderDefault() {
     return (
       <li
@@ -53,7 +63,7 @@ class GalleryImage extends React.Component {
             'gallery-image--selected': this.props.isSelected,
           })
         }
-        onClick={this.props.setLightboxImageIndex}
+        onClick={this.handleCellClick}
         role="presentation"
       >
         <div className="gallery-image__image">
@@ -89,7 +99,7 @@ class GalleryImage extends React.Component {
             'gallery-list-image--selected': this.props.isSelected,
           })
         }
-        onClick={this.props.setLightboxImageIndex}
+        onClick={this.handleCellClick}
         role="presentation"
       >
         <td className="gallery-list-image__cell-image">
@@ -148,6 +158,7 @@ GalleryImage.propTypes = {
   type: PropTypes.oneOf(['list', 'default']).isRequired,
   index: PropTypes.number.isRequired,
   isSelected: PropTypes.bool.isRequired,
+  updateImageToSelection: PropTypes.func.isRequired,
 };
 
 GalleryImage.defaultProps = {

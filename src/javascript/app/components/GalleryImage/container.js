@@ -20,12 +20,25 @@ const mapStateToProps = (state, { hash }) => {
   });
 };
 
-const mapDispatchToProps = (dispatch, { index }) => ({
+const mapDispatchToProps = (dispatch, { index, hash }) => ({
   setLightboxImageIndex: () => {
     dispatch({
       type: 'SET_LIGHTBOX_IMAGE_INDEX',
       payload: index,
     });
+  },
+  updateImageToSelection: (mode) => {
+    if (mode === 'add') {
+      dispatch({
+        type: 'IMAGE_SELECTION_ADD',
+        payload: hash,
+      });
+    } else {
+      dispatch({
+        type: 'IMAGE_SELECTION_REMOVE',
+        payload: hash,
+      });
+    }
   },
 });
 

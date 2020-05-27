@@ -1,3 +1,22 @@
+.gallery-image,
+.gallery-list-image {
+  background-color: $color-grey-50;
+  cursor: pointer;
+
+  &:hover{
+    background-color: $color-grey-60;
+  }
+
+  &--selected {
+    background-color: $color-selected-image;
+
+    &:hover {
+      background-color: $color-selected-image-hover;
+    }
+  }
+
+}
+
 
 .gallery-image {
   flex-shrink: 0;
@@ -6,14 +25,8 @@
   margin: 0 5px 10px;
   position: relative;
   border-radius: $default-border-radius;
-  background-color: $color-grey-50;
   padding: 10px 10px 30px 10px;
   box-sizing: content-box;
-  cursor: pointer;
-
-  &--selected {
-    background-color: $color-selected-image;
-  }
 
   .gallery--1x & {
     width: 160px;
@@ -83,17 +96,7 @@
 }
 
 .gallery-list-image {
-  background-color: $color-grey-50;
   border-bottom: 1px solid $page-background;
-  cursor: pointer;
-
-  &--selected {
-    background-color: $color-selected-image;
-  }
-
-  &:hover{
-    background-color: $color-grey-60;
-  }
 
   &:last-child {
     border: none;
