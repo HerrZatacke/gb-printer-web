@@ -26,11 +26,13 @@ Create a file `ports.config.json` in the root dir and configure it like the foll
     "baudRate": 115200,
     "dataBits": 8,
     "stopBits": 1,
-    "parity": "none"
+    "parity": "none",
+    "retry": false
   },
   ...
 ]
 ```
+you can set `retry` to a number of milliseconds after which a retry will be attempted to open the port.
 
 ## Future Plans
 This tool is meant to be integrated into the [Websocket GBP Emulator](https://github.com/HerrZatacke/websocket-gbp-emulator)

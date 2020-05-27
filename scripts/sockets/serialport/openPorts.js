@@ -20,7 +20,7 @@ const openPorts = (sendMessage) => {
   mkdirp.sync(dumpDir);
   const dumpFileName = path.join(dumpDir, `dump-${dayjs().format('YYYY-MM-DD-HH-mm')}.txt`);
 
-  [ports].flat().forEach((portConfig) => {
+  const openPort = (portConfig) => {
     let parser = null;
 
     // eslint-disable-next-line no-console
@@ -36,10 +36,25 @@ const openPorts = (sendMessage) => {
 
     port.on('error', (error) => {
       console.error(chalk.red(error.message));
+
+      if (port.isOpen) {
+        port.close();
+      }
+
+      if (portConfig.retry) {
+        global.setTimeout(() => {
+          openPort(portConfig);
+        }, portConfig.retry);
+      }
     });
 
     port.on('close', () => {
       console.error(chalk.red('Port closed?'));
+      if (portConfig.retry) {
+        global.setTimeout(() => {
+          openPort(portConfig);
+        }, portConfig.retry);
+      }
     });
 
     port.on('open', () => {
@@ -57,7 +72,9 @@ const openPorts = (sendMessage) => {
         }
       });
     });
-  });
+  };
+
+  [ports].flat().forEach(openPort);
 };
 
 module.exports = openPorts;
