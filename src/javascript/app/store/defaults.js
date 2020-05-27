@@ -6,6 +6,8 @@ export default {
   exportScaleFactors: [4],
   globalIndex: 1,
   pageSize: 15,
+  imageSelection: [],
+  rgbnImages: {},
   palettes: [
     {
       name: 'Black & White',
