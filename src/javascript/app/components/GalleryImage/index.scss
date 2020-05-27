@@ -10,6 +10,10 @@
   padding: 10px 10px 30px 10px;
   box-sizing: content-box;
 
+  &--selected {
+    background-color: $color-selected-image;
+  }
+
   .gallery--1x & {
     width: 160px;
   }
@@ -80,6 +84,10 @@
 .gallery-list-image {
   background-color: $color-grey-50;
   border-bottom: 1px solid $page-background;
+
+  &--selected {
+    background-color: $color-selected-image;
+  }
 
   &:hover{
     background-color: $color-grey-60;

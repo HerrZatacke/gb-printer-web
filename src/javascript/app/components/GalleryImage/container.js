@@ -15,6 +15,7 @@ const mapStateToProps = (state, { hash }) => {
     created: image.created,
     index: image.index,
     hashes: image.hashes,
+    isSelected: state.imageSelection.includes(hash),
     palette,
   });
 };

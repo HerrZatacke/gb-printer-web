@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
+import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GameBoyImage from '../GameBoyImage';
 import GalleryImageButtons from '../GalleryImageButtons';
@@ -46,7 +47,13 @@ class GalleryImage extends React.Component {
 
   renderDefault() {
     return (
-      <li className="gallery-image">
+      <li
+        className={
+          classnames('gallery-image', {
+            'gallery-image--selected': this.props.isSelected,
+          })
+        }
+      >
         <button
           type="button"
           className="gallery-image__image"
@@ -78,7 +85,13 @@ class GalleryImage extends React.Component {
 
   renderList() {
     return (
-      <tr className="gallery-list-image">
+      <tr
+        className={
+          classnames('gallery-list-image', {
+            'gallery-list-image--selected': this.props.isSelected,
+          })
+        }
+      >
         <td className="gallery-list-image__cell-image">
           <div className="gallery-list-image__image">
             { this.state.tiles ? (
@@ -135,6 +148,7 @@ GalleryImage.propTypes = {
   setLightboxImageIndex: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['list', 'default']).isRequired,
   index: PropTypes.number.isRequired,
+  isSelected: PropTypes.bool.isRequired,
 };
 
 GalleryImage.defaultProps = {
