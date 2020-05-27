@@ -23,6 +23,11 @@
       }
     }
 
+    &--checked {
+      fill: $color-grey-90;
+      background: $color-tertiary;
+    }
+
     &:hover {
       background: $color-tertiary;
       color: $color-white;
