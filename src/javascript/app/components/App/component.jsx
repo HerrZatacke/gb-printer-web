@@ -10,7 +10,6 @@ import RGBNImage from '../RGBNImage';
 import Settings from '../Settings';
 import Palettes from '../Palettes';
 import Dump from '../Dump';
-import GalleryHeader from '../GalleryHeader';
 import Gallery from '../Gallery';
 import Home from '../Home';
 import DragOver from '../DragOver';
@@ -30,9 +29,7 @@ const App = (props) => (
             <br />
             Also if you clear your browser&apos;s cookies, the images will be gone too.
           </p>
-          <GalleryHeader />
           <Gallery />
-          <GalleryHeader />
         </Route>
         <Route path="/palettes">
           <h1 className="app__content-headline">Palettes</h1>

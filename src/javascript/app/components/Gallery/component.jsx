@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import GalleryImage from '../GalleryImage';
+import GalleryHeader from '../GalleryHeader';
 
 const Gallery = (props) => {
   const content = props.images.map((image, index) => (
@@ -24,22 +25,34 @@ const Gallery = (props) => {
   }
 
 
-  return (props.currentView === 'list') ? (
-    <table className="gallery gallery--list">
-      <tbody>
-        {content}
-      </tbody>
-    </table>
-  ) : (
-    <ul
-      className={
-        classnames('gallery', {
-          [`gallery--${props.currentView}`]: true,
-        })
+  return (
+    <>
+      <GalleryHeader />
+      {
+        (props.currentView === 'list') ? (
+          <table className="gallery gallery--list">
+            <tbody>
+              {content}
+            </tbody>
+          </table>
+        ) : (
+          <ul
+            className={
+              classnames('gallery', {
+                [`gallery--${props.currentView}`]: true,
+              })
+            }
+          >
+            {content}
+          </ul>
+        )
       }
-    >
-      {content}
-    </ul>
+      {
+        props.images.length < 3 ? null : (
+          <GalleryHeader />
+        )
+      }
+    </>
   );
 };
 

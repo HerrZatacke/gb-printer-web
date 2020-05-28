@@ -11,6 +11,9 @@ const rgbnImagesReducer = (value = DEFAULT, action) => {
       return { ...value, ...action.payload };
     case 'ADD_IMAGE':
       return action.payload.hashes ? { ...DEFAULT } : value;
+    case 'DELETE_IMAGE':
+    case 'DELETE_IMAGES':
+      return DEFAULT;
     default:
       return value;
   }
