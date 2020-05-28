@@ -21,7 +21,10 @@ const App = (props) => (
       <Switch>
         <Route path="/gallery">
           <h1 className="app__content-headline">
-            {`Gallery (${props.imageCount})`}
+            Gallery
+            <span className="app__counter">
+              { props.selectedCount ? `(${props.selectedCount} of ${props.imageCount} images selected)` : `(${props.imageCount} images)` }
+            </span>
           </h1>
           <p className="app__content-hint">
             These images are stored in the localStorage of your browser.
@@ -59,6 +62,7 @@ const App = (props) => (
 
 App.propTypes = {
   imageCount: PropTypes.number.isRequired,
+  selectedCount: PropTypes.number.isRequired,
 };
 
 App.defaultProps = {

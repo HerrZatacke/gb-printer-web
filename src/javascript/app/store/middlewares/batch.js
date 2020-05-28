@@ -22,7 +22,7 @@ const batch = (store) => (next) => (action) => {
   }
 
   if (action.type === 'BATCH_TASK') {
-    const { imageSelection } = store.getState();
+    const { images, imageSelection, currentPage, pageSize } = store.getState();
 
     if (imageSelection.length) {
       switch (action.payload) {
@@ -44,6 +44,27 @@ const batch = (store) => (next) => (action) => {
           break;
       }
     }
+
+    switch (action.payload) {
+      case 'checkall':
+        store.dispatch({
+          type: 'IMAGE_SELECTION_SET',
+          payload: images.slice(currentPage * pageSize, (currentPage + 1) * pageSize).map(({ hash }) => hash),
+        });
+        break;
+
+      case 'uncheckall':
+        store.dispatch({
+          type: 'IMAGE_SELECTION_SET',
+          payload: [],
+        });
+        break;
+
+      default:
+        break;
+    }
+
+    return;
   }
 
   next(action);

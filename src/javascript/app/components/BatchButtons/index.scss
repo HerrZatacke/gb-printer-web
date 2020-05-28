@@ -34,7 +34,6 @@
     &--disabled {
       button {
         cursor: default;
-        fill: $color-icon-tertiary;
       }
 
       .svg {
@@ -42,8 +41,20 @@
       }
     }
 
-    :not(&--disabled) &:hover {
+    &--enabled:hover {
       background: $color-tertiary;
+    }
+
+
+    // checkmark
+    .tick {
+      display: none;
+    }
+
+    &--has-unselected {
+      .tick {
+        display: block;
+      }
     }
   }
 }
