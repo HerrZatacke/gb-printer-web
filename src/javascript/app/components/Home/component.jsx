@@ -17,6 +17,11 @@ const Home = () => (
         (or simply drag and drop your dump(s) into this window)
       </li>
       <li>
+        <Link to="/gallery">
+          And check your images in the gallery
+        </Link>
+      </li>
+      <li>
         You can also try to drag/drop your cartridge dump into this window
         <br />
         (Currently I assume the size is exactly 131072 bytes, as this is the only sample I have).
@@ -25,15 +30,10 @@ const Home = () => (
         {' '}
         <a href="https://github.com/HerrZatacke/gb-printer-web/issues">open an issue and attach your file.</a>
       </li>
-      <li>
-        <Link to="/gallery">
-          And check your images in the gallery
-        </Link>
-      </li>
     </ol>
     <p>
-      {/* eslint-disable-next-line max-len */}
-      There are some ui rendering/blocking issues in the gallery, especially if there are a lot of images present already.
+      There are some ui rendering/blocking issues in the gallery,
+      especially if there are a lot of images present already.
     </p>
     <a href="https://github.com/HerrZatacke/gb-printer-web">
       This project on GitHub
