@@ -5,7 +5,8 @@ const handleFile = (dispatch) => (file) => {
   // roughly larger than 1MB is too much....
   if (file.size > 0xfffff) {
     dispatch({
-      type: 'FILE_TOO_LARGE',
+      type: 'ERROR',
+      payload: 'FILE_TOO_LARGE',
     });
     return;
   }
@@ -16,6 +17,15 @@ const handleFile = (dispatch) => (file) => {
 
     // for now let's assume all .sav files have the same size...
     const dumpText = file.size === 131072 ? transformSav(ev.target.result) : ev.target.result;
+
+    // file must contain something that resembles a gb printer command
+    if (dumpText.indexOf('!{"command"') === -1) {
+      dispatch({
+        type: 'ERROR',
+        payload: 'NOT_A_DUMP',
+      });
+      return;
+    }
 
     dispatch({
       type: 'IMPORT_PLAIN_TEXT',
