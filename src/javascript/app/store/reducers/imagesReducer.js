@@ -10,6 +10,8 @@ const imagesReducer = (value = [], action) => {
       return unique([...value, action.payload]);
     case 'DELETE_IMAGE':
       return value.filter(({ hash }) => hash !== action.payload);
+    case 'DELETE_IMAGES':
+      return value.filter(({ hash }) => !action.payload.includes(hash));
     case 'UPDATE_IMAGE':
       return value.map((image) => (
         image.hash === action.payload.hash ? action.payload : image

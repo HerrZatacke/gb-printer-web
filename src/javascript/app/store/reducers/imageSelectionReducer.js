@@ -4,6 +4,8 @@ const imageSelectionReducer = (value = [], action) => {
       return [...value.filter((hash) => hash !== action.payload)];
     case 'IMAGE_SELECTION_ADD':
       return [...value, action.payload];
+    case 'DELETE_IMAGES':
+      return [];
     default:
       return value;
   }

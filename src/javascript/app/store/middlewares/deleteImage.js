@@ -1,7 +1,7 @@
 import { del } from '../../../tools/storage';
 
-const hashIsUsedInRGBN = (hash, otherImages) => (
-  !!otherImages.find(({ hashes }) => {
+const hashIsUsedInRGBN = (hash, images) => (
+  !!images.find(({ hashes }) => {
     if (!hashes) {
       return false;
     }
@@ -11,43 +11,41 @@ const hashIsUsedInRGBN = (hash, otherImages) => (
   })
 );
 
-const hashIsUsedInDefault = (hash, otherImages) => (
-  !!otherImages.find((image) => image.hash === hash)
+const hashIsUsedInDefault = (hash, images) => (
+  !!images.find((image) => image.hash === hash)
 );
+
+const deleteFromLocalStorage = (images, deleteHash) => {
+  if (
+    !hashIsUsedInRGBN(deleteHash, images) &&
+    !hashIsUsedInDefault(deleteHash, images)
+  ) {
+    del(deleteHash);
+  }
+};
+
+const cleanupLocalStorage = (images) => {
+  Object.keys(localStorage)
+    .filter((key) => (key !== 'gbp-web-state' && key.startsWith('gbp-web-')))
+    .map((key) => key.replace(/^gbp-web-/gi, ''))
+    .forEach((hash) => {
+      deleteFromLocalStorage(images, hash);
+    });
+};
 
 const deleteImage = (store) => (next) => (action) => {
 
-  if (action.type === 'DELETE_IMAGE') {
-
-    const state = store.getState();
-
-    const toDelete = state.images.find(({ hash }) => hash === action.payload);
-    const deleteType = toDelete.hashes ? 'rgbn' : 'default';
-    const otherImages = state.images.filter(({ hash }) => hash !== toDelete.hash);
-
-    // Find RGBN images that contain the hash of the default image to be deleted
-    if (deleteType === 'default') {
-      // if the hash is not used in an rgbn image, remove it from localStorage
-      if (!hashIsUsedInRGBN(toDelete.hash, otherImages)) {
-        del(toDelete.hash);
-      }
-    }
-
-    // cleanup if r,g,b,n, hashes are not used elsewhere
-    if (deleteType === 'rgbn') {
-      const { r, g, b, n } = toDelete.hashes;
-      [r, g, b, n].filter(Boolean).forEach((partHash) => {
-        if (
-          !hashIsUsedInRGBN(partHash, otherImages) &&
-          !hashIsUsedInDefault(partHash, otherImages)
-        ) {
-          del(partHash);
-        }
-      });
-    }
-  }
-
+  // first delete object data, then do a localStorage cleanup
   next(action);
+
+  switch (action.type) {
+    case 'DELETE_IMAGE':
+    case 'DELETE_IMAGES':
+      cleanupLocalStorage(store.getState().images);
+      break;
+    default:
+      break;
+  }
 };
 
 export default deleteImage;
