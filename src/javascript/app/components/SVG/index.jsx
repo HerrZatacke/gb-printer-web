@@ -14,7 +14,7 @@ const SVG = (props) => {
     case 'delete':
       return (
         <svg className="svg" viewBox="0 0 20 20">
-          <path d="M6 5L5 6l4 4-4 4 1 1 4-4 4 4 1-1-4-4 4-4-1-1-4 4z" />
+          <path d="M13 5v10h-1V5zM7 5v10H6V5zm4 0v10h-1V5zM9 5v10H8V5zM4 3v2h1v12h9V5h1V3h-4V2H8v1z" />
         </svg>
       );
     case 'edit':
