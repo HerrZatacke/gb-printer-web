@@ -13,6 +13,7 @@ import saveRGBNImage from './middlewares/saveRGBNImage';
 import serialportWebocket from './middlewares/serialportWebocket';
 import startDownload from './middlewares/startDownload';
 import triggerMock from './middlewares/triggerMock';
+import validateCurrentPageIndex from './middlewares/validateCurrentPageIndex';
 
 export default applyMiddleware(
   batch,
@@ -29,4 +30,5 @@ export default applyMiddleware(
   serialportWebocket,
   startDownload,
   triggerMock,
+  validateCurrentPageIndex,
 );
