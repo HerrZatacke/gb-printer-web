@@ -44,7 +44,6 @@ const App = (props) => (
           <Dump />
         </Route>
         <Route path="/">
-          <h1 className="app__content-headline">Gameboy Printer Web</h1>
           <Home />
         </Route>
       </Switch>

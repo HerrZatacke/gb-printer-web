@@ -1,76 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import docs from '../../../../../README.md';
 
-const Home = () => (
-  <div className="home">
-    <ol>
-      <li>
-        <Link to="/palettes">
-          First choose a color palette
-        </Link>
-      </li>
-      <li>
-        <Link to="/dump">
-          Then paste your exports into a textfield
-        </Link>
-        {' '}
-        (or simply drag and drop your dump(s) into this window)
-      </li>
-      <li>
-        <Link to="/gallery">
-          And check your images in the gallery
-        </Link>
-      </li>
-      <li>
-        You can also try to drag/drop your cartridge dump into this window
-        <br />
-        (Currently I assume the size is exactly 131072 bytes, as this is the only sample I have).
-        <br />
-        This should work - if it does not, please
-        {' '}
-        <a href="https://github.com/HerrZatacke/gb-printer-web/issues">open an issue and attach your file.</a>
-      </li>
-    </ol>
-    <p>
-      There are some ui rendering/blocking issues in the gallery,
-      especially if there are a lot of images present already.
-    </p>
-    <a href="https://github.com/HerrZatacke/gb-printer-web">
-      This project on GitHub
-    </a>
-    <h3>ToDo:</h3>
-    <ul>
-      <li>
-        Add filters/tags
-      </li>
-      <li>
-        Export without frame / with different frame
-      </li>
-      <li>
-        Select multiple palettes to download the gallery in.
-        (add checkbox to images, maybe allow download from galleries-page)
-      </li>
-      <li>
-        allow some gesture navigation on touch devices
-      </li>
-      <li>
-        Edit palettes
-      </li>
-      <li>
-        Export settings data
-      </li>
-      <li>
-        Allow rendering animated Gifs
-      </li>
-      <li>
-        Other blendmodes than multiply for RGB-Images
-      </li>
-      <li>
-        Reset button for sliders when editing RGB-Images
-      </li>
-    </ul>
-  </div>
-);
+let ReactMarkdown = null;
+
+class Home extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      mdComponentReady: false,
+    };
+  }
+
+  componentDidMount() {
+    import(/* webpackChunkName: "react-markdown" */ 'react-markdown')
+      .then(({ default: MDComponent }) => {
+        ReactMarkdown = MDComponent;
+        this.setState({
+          mdComponentReady: true,
+        });
+      });
+  }
+
+  render() {
+    return (
+      <div className="home">
+        { this.state.mdComponentReady ? (
+          <ReactMarkdown className="markdown-body" source={docs} />
+        ) : null }
+      </div>
+    );
+  }
+}
 
 Home.propTypes = {};
 

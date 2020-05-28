@@ -1,14 +1,33 @@
-# Gameboy Printer Web
+# Game Boy Printer Web
 
-A basic version of this tool is avaliable [on GitHub-pages](https://herrzatacke.github.io/gb-printer-web/#/)  
-This version does not allow listening to your serial ports (yet), but you can still [copy/paste](https://herrzatacke.github.io/gb-printer-web/#/dump) the serial output of the original [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)  
-This project is meant to replace my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter)
+## Basic usage
+* choose a [color palette](#/palettes)
+* [paste your exports](#/dump) into a textfield (or simply drag and drop your dump(s) into this window)
+* check your images [in the gallery](#/gallery)
+* You can also try to drag/drop your cartridge dump into this window  
+
+## Supported formats
+* This Project is mainly built around the serial output of the original [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)
+* Cart .SAV files are also supported experimentally  
+Currently I assume the size is exactly `131072 bytes`, as this is the only sample of a cartridge dump I have.  
+If it does not work, [please open an issue](https://github.com/HerrZatacke/gb-printer-web/issues) and attach your file.  
+
+
+## ToDos
+* Add filters/tags
+* Export without frame / with different frame
+* Select multiple palettes to download the gallery in. (add checkbox to images, maybe allow download from galleries-page)
+* allow some gesture navigation on touch devices
+* Edit palettes
+* Export settings data
+* Allow rendering animated Gifs
+* Other blendmodes than multiply for RGB-Images
+* Reset button for sliders when editing RGB-Images
 
 ## Local Setup
-
 You can run this app locally to directly use the gbp-emulator on your serial port 
 * Install [node.js](https://nodejs.org/) if you haven't already.
-* Check out/clone/download [this repository](https://github.com/HerrZatacke/gb-printer-web")
+* Check out/clone/download [this repository](https://github.com/HerrZatacke/gb-printer-web)
 * Run `npm i` in the root directory via your commandline
 * Add a `ports.config.json` in the root dir (see below)
 * Run `npm start` via your commandline
@@ -37,8 +56,13 @@ you can set `retry` to a number of milliseconds after which a retry will be atte
 ## Future Plans
 This tool is meant to be integrated into the [Websocket GBP Emulator](https://github.com/HerrZatacke/websocket-gbp-emulator)
 
-## research
-* [Websockets](https://tttapa.github.io/ESP8266/Chap14%20-%20WebSocket.html)
+## Links and research
+* The source to this project is [available on GitHub](https://github.com/HerrZatacke/gb-printer-web)
+* A basic version of this tool is avaliable [on GitHub-pages](https://herrzatacke.github.io/gb-printer-web/#/)  
+* This project is meant to replace my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter)
+
+### Research
+* [Websockets on an ESP8266](https://tttapa.github.io/ESP8266/Chap14%20-%20WebSocket.html)
 * [Programming a standalone ESP8266](https://www.instructables.com/id/3-Simple-Ways-of-Programming-an-ESP8266-12X-Module/)
 * [Deploying your JS App to Github Pages the easy way (or not)](https://medium.com/linagora-engineering/1ef8c48424b7)
 * [SSL WebSockets for the Arduino currently not supported](https://github.com/gilmaimon/ArduinoWebsockets/issues/59) 

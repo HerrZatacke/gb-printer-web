@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
-import App from './components/App';
 import getStore from './store';
 import defaults from './store/defaults';
 
@@ -20,7 +19,11 @@ const initApp = () => {
 
   const initialState = Object.assign(defaults, storedSettings);
 
-  render(<Provider store={getStore(initialState)}><App /></Provider>, appRoot);
+  import(/* webpackChunkName: "app" */ './components/App')
+    .then(({ default: App }) => {
+      render(<Provider store={getStore(initialState)}><App /></Provider>, appRoot);
+    });
+
 };
 
 export default initApp;

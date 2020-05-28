@@ -1,28 +1,5 @@
 .home {
+  @import '~github-markdown-css';
+
   color: $color-text;
-
-  & > * {
-    display: block;
-    margin-bottom: 20px;
-  }
-
-  h3 {
-    font-size: 30px;
-  }
-
-  ul, ol {
-    padding-left: 20px;
-
-    li {
-      padding-top: 10px;
-    }
-
-    & > li:before {
-      content: '• ';
-      width: 20px;
-      display: inline-block;
-      margin-left: -20px;
-    }
-  }
-
 }
