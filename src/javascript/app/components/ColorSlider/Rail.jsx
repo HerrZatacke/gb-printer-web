@@ -9,6 +9,7 @@ const Rail = ({ getRailProps }) => {
       className="color-slider__rail"
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
+      tabIndex="-1"
     >
       <div className="color-slider__rail-inner" />
     </button>
