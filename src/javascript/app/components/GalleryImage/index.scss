@@ -2,6 +2,7 @@
 .gallery-list-image {
   background-color: $color-grey-50;
   cursor: pointer;
+  user-select: none;
 
   &:hover{
     background-color: $color-grey-60;

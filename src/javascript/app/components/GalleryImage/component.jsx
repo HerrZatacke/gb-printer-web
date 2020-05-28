@@ -48,8 +48,9 @@ class GalleryImage extends React.Component {
   }
 
   handleCellClick(ev) {
-    if (ev.ctrlKey) {
-      this.props.updateImageToSelection(this.props.isSelected ? 'remove' : 'add');
+    if (ev.ctrlKey || ev.shiftKey) {
+      ev.preventDefault();
+      this.props.updateImageSelection(this.props.isSelected ? 'remove' : 'add', ev.shiftKey);
     } else {
       this.props.setLightboxImageIndex();
     }
@@ -161,7 +162,7 @@ GalleryImage.propTypes = {
   type: PropTypes.oneOf(['list', 'default']).isRequired,
   index: PropTypes.number.isRequired,
   isSelected: PropTypes.bool.isRequired,
-  updateImageToSelection: PropTypes.func.isRequired,
+  updateImageSelection: PropTypes.func.isRequired,
 };
 
 GalleryImage.defaultProps = {

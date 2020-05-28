@@ -27,8 +27,13 @@ const mapDispatchToProps = (dispatch, { index, hash }) => ({
       payload: index,
     });
   },
-  updateImageToSelection: (mode) => {
-    if (mode === 'add') {
+  updateImageSelection: (mode, shift) => {
+    if (shift) {
+      dispatch({
+        type: 'IMAGE_SELECTION_SHIFTCLICK',
+        payload: hash,
+      });
+    } else if (mode === 'add') {
       dispatch({
         type: 'IMAGE_SELECTION_ADD',
         payload: hash,

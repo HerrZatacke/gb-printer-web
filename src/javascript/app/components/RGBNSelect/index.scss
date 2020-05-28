@@ -17,6 +17,7 @@
     border-radius: 50%;
     background-color: $color-grey-10;
     transition: transform 150ms ease-in-out, background-color 150ms linear;
+    outline: none;
 
     svg {
       transition: opacity 150ms ease-in-out;

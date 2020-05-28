@@ -16,6 +16,7 @@
     cursor: pointer;
     fill: $color-tertiary;
     border-radius: $default-border-radius-small;
+    outline: none;
 
     &--unchecked {
       .tick {

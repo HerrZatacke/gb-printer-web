@@ -1,4 +1,25 @@
+import getFilteredImages from '../../../tools/getFilteredImages';
+
 const batch = (store) => (next) => (action) => {
+
+  if (action.type === 'IMAGE_SELECTION_SHIFTCLICK') {
+    const state = store.getState();
+    const images = getFilteredImages(state);
+    const { lastSelectedImage, currentPage, pageSize } = state;
+    const selectedIndex = images.findIndex(({ hash }) => hash === action.payload);
+    let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);
+    if (prevSelectedIndex === -1) {
+      prevSelectedIndex = currentPage * pageSize;
+    }
+
+    const from = Math.min(prevSelectedIndex, selectedIndex);
+    const to = Math.max(prevSelectedIndex, selectedIndex);
+
+    store.dispatch({
+      type: 'IMAGE_SELECTION_SET',
+      payload: images.slice(from, to + 1).map(({ hash }) => hash),
+    });
+  }
 
   if (action.type === 'BATCH_TASK') {
     const { imageSelection } = store.getState();

@@ -11,6 +11,7 @@ import images from './reducers/imagesReducer';
 import imageSelection from './reducers/imageSelectionReducer';
 import importQueueSize from './reducers/importQueueSizeReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
+import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import lineBuffer from './reducers/lineBufferReducer';
 import pageSize from './reducers/pageSizeReducer';
@@ -32,6 +33,7 @@ export default combineReducers({
   imageSelection,
   importQueueSize,
   isFullscreen,
+  lastSelectedImage,
   lightboxImage,
   lineBuffer,
   pageSize,
