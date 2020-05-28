@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import SVG from '../SVG';
 
 const BATCH_ACTIONS = [
-  'download',
+  // 'download',
   'delete',
-  'edit',
+  // 'edit',
 ];
 
 const BatchButtons = (props) => (
@@ -14,9 +15,14 @@ const BatchButtons = (props) => (
       BATCH_ACTIONS.map((action) => (
         <li
           key={action}
-          className="batch-buttons__action"
+          className={
+            classnames('batch-buttons__action', {
+              'batch-buttons__action--disabled': !props.enabled,
+            })
+          }
         >
           <button
+            disabled={!props.enabled}
             type="button"
             onClick={() => props.batchDelete(action)}
           >
@@ -30,6 +36,7 @@ const BatchButtons = (props) => (
 
 BatchButtons.propTypes = {
   batchDelete: PropTypes.func.isRequired,
+  enabled: PropTypes.bool.isRequired,
 };
 
 BatchButtons.defaultProps = {
