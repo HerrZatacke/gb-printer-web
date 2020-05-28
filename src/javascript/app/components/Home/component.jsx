@@ -62,6 +62,12 @@ const Home = () => (
       <li>
         Allow rendering animated Gifs
       </li>
+      <li>
+        Other blendmodes than multiply for RGB-Images
+      </li>
+      <li>
+        Reset button for sliders when editing RGB-Images
+      </li>
     </ul>
   </div>
 );
