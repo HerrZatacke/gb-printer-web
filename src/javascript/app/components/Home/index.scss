@@ -1,5 +1,9 @@
 .home {
   @import '~github-markdown-css';
 
+  menu, ol, ul {
+    list-style: disc;
+  }
+
   color: $color-text;
 }
