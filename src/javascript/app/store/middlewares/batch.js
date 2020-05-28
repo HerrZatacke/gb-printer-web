@@ -5,9 +5,12 @@ const batch = (store) => (next) => (action) => {
   if (action.type === 'IMAGE_SELECTION_SHIFTCLICK') {
     const state = store.getState();
     const images = getFilteredImages(state);
-    const { lastSelectedImage } = state;
+    const { lastSelectedImage, currentPage, pageSize } = state;
     const selectedIndex = images.findIndex(({ hash }) => hash === action.payload);
-    const prevSelectedIndex = Math.max(0, images.findIndex(({ hash }) => hash === lastSelectedImage));
+    let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);
+    if (prevSelectedIndex === -1) {
+      prevSelectedIndex = currentPage * pageSize;
+    }
 
     const from = Math.min(prevSelectedIndex, selectedIndex);
     const to = Math.max(prevSelectedIndex, selectedIndex);
