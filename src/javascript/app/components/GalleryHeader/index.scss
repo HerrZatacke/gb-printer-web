@@ -1,0 +1,49 @@
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+
+  .gallery-view-select,
+  .pagination,
+  .batch-buttons {
+    flex: 33% 1 0;
+  }
+
+  .gallery-view-select {
+    justify-content: flex-start;
+
+  }
+
+  .pagination {
+    justify-content: center;
+  }
+
+  .batch-buttons {
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 920px) {
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .gallery-view-select,
+    .batch-buttons {
+      flex: auto 1 1;
+    }
+
+    .pagination {
+      flex-basis: 100%;
+      order: 3;
+    }
+  }
+
+  @media (max-width: 500px) {
+    flex-wrap: wrap;
+
+    .gallery-view-select,
+    .pagination,
+    .batch-buttons {
+      flex: 100% 0 0;
+      justify-content: center;
+    }
+  }
+}

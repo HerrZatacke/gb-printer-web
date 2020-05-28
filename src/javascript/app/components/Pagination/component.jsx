@@ -79,11 +79,9 @@ const Pagination = (props) => {
   }
 
   return (
-    <div className="pagination">
-      <ul className="pagination__list">
-        {displayedPages.filter(Boolean)}
-      </ul>
-    </div>
+    <ul className="pagination">
+      {displayedPages.filter(Boolean)}
+    </ul>
   );
 };
 
