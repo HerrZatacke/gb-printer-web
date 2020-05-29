@@ -18,7 +18,7 @@ const rgbnPaletteName = ({ r, g, b, n }) => {
   );
 };
 
-const generateFileName = (image, palette, exportScaleFactor = false) => {
+const generateFileName = ({ image, palette, exportScaleFactor = false }) => {
 
   const date = dayjs(image.created, dateFormat).format(dateFormatFilename);
 

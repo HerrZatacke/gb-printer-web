@@ -23,7 +23,10 @@ const getImagePalette = ({ palettes }, { hashes, palette }) => (
 const handleSingleImage = (prepareFiles, state) => (imageHash) => {
   const image = state.images.find(({ hash }) => hash === imageHash);
   const imagePalette = getImagePalette(state, image);
-  const zipFilename = generateFileName(image, imagePalette);
+  const zipFilename = generateFileName({
+    image,
+    palette: imagePalette,
+  });
 
   return loadImageTiles(image)
     .then(prepareFiles(imagePalette, image))

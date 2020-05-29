@@ -21,7 +21,11 @@ const getPrepareFiles = (exportScaleFactors) => (palette, image) => (tiles) => {
 
       const fileType = 'png';
 
-      const filename = generateFileName(image, palette, exportScaleFactor);
+      const filename = generateFileName({
+        image,
+        palette,
+        exportScaleFactor,
+      });
 
       const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
 
