@@ -2,17 +2,16 @@ import { saveAs } from 'file-saver';
 
 const download = (zipFileName) => (files) => {
 
+  // if only one file,
+  if (files.length === 1) {
+    const image = files[0];
+    saveAs(image.blob, image.filename);
+    return;
+  }
+
   import(/* webpackChunkName: "jszip" */ 'jszip')
     .then(({ default: JSZip }) => {
-
       const zip = new JSZip();
-
-      // if only one file,
-      if (files.length === 1) {
-        const image = files[0];
-        saveAs(image.blob, image.filename);
-        return;
-      }
 
       files.forEach(({ filename, arrayBuffer }) => {
         zip.file(filename, arrayBuffer);
