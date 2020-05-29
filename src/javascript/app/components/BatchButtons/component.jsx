@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import SVG from '../SVG';
 
 const BATCH_ACTIONS = [
-  // 'download',
+  'download',
   'delete',
   // 'edit',
 ];

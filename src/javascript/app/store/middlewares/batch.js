@@ -33,8 +33,10 @@ const batch = (store) => (next) => (action) => {
           });
           break;
         case 'download':
-          // eslint-disable-next-line no-alert
-          alert('Not yet...');
+          store.dispatch({
+            type: 'DOWNLOAD_SELECTION',
+            payload: imageSelection,
+          });
           break;
         case 'edit':
           // eslint-disable-next-line no-alert

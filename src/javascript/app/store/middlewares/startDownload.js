@@ -22,9 +22,34 @@ const getImagePalette = ({ palettes }, { hashes, palette }) => (
   (!hashes) ? palettes.find(({ shortName }) => shortName === palette) : palette
 );
 
+
+const handleSingleImage = (prepareFiles, state) => (imageHash) => {
+  const image = state.images.find(({ hash }) => hash === imageHash);
+  const imagePalette = getImagePalette(state, image);
+  const zipFilename = generateFileName(image, imagePalette);
+
+  return loadImageData(image)
+    .then(prepareFiles(imagePalette, image))
+    .then(download(zipFilename));
+};
+
+const handleImageCollection = (prepareFiles, state) => (collection) => {
+  const zipFilename = 'so.many.files';
+
+  Promise.all(collection.map((imageHash) => {
+    const image = state.images.find(({ hash }) => hash === imageHash);
+    const imagePalette = getImagePalette(state, image);
+
+    return loadImageData(image)
+      .then(prepareFiles(imagePalette, image));
+  }))
+    .then((resultImages) => resultImages.flat())
+    .then(download(zipFilename));
+};
+
 const startDownload = (store) => (next) => (action) => {
 
-  if (action.type === 'START_DOWNLOAD') {
+  if ((action.type === 'START_DOWNLOAD') || (action.type === 'DOWNLOAD_SELECTION')) {
     const state = store.getState();
     const exportScaleFactors = state.exportScaleFactors;
 
@@ -34,13 +59,18 @@ const startDownload = (store) => (next) => (action) => {
 
     const prepareFiles = getPrepareFiles(exportScaleFactors);
 
-    const image = state.images.find(({ hash }) => hash === action.payload);
-    const imagePalette = getImagePalette(state, image);
+    switch (action.type) {
+      case 'START_DOWNLOAD':
+        handleSingleImage(prepareFiles, state)(action.payload);
+        break;
 
-    loadImageData(image)
-      .then(prepareFiles(imagePalette, image))
-      .then(download(generateFileName(image, imagePalette)));
+      case 'DOWNLOAD_SELECTION':
+        handleImageCollection(prepareFiles, state)(action.payload);
+        break;
 
+      default:
+        break;
+    }
   }
 
   return next(action);
