@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'debounce';
-import Slider from '../ColorSlider';
+import ColorSlider from '../ColorSlider';
 
 class GreySelect extends React.Component {
 
@@ -27,7 +27,7 @@ class GreySelect extends React.Component {
         {
           ['r', 'g', 'b', 'n']
             .map((color) => (
-              <Slider
+              <ColorSlider
                 key={`slider-${color}`}
                 color={color}
                 values={this.state[color]}

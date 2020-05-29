@@ -1,5 +1,30 @@
 .color-slider {
-  padding: 20px 0;
+  padding: 20px;
+  display: flex;
+
+  &__button {
+    border: none;
+    background: $color-grey-90;
+    fill: $color-tertiary;
+    border-radius: $default-border-radius-small;
+    width: 20px;
+    flex: 20px 0 0;
+    padding: 0;
+    height: 20px;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    &:hover {
+      background: $color-tertiary;
+      fill: $color-grey-90;
+    }
+  }
+
+  &__root {
+    position: relative;
+    width: 100%;
+    margin: 0 20px;
+  }
 
   &__rail {
     position: absolute;

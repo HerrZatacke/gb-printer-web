@@ -23,6 +23,12 @@ const SVG = (props) => {
           <path d="M4 14.978v1.978L16 17v-2.022zM13.5 3l-8 8-1 3.5 3.5-1 8-8L13.5 3zm0 .8l.85.85-9.1 9.1L6 11.5l7.5-7.7z" />
         </svg>
       );
+    case 'reset':
+      return (
+        <svg className="svg" viewBox="0 0 20 20">
+          <path d="M6 10a4 4 0 104-4v2L4 5l6-3v2a6 6 0 11-6 6" />
+        </svg>
+      );
     case 'checkmark':
       return (
         <svg className="svg checked" viewBox="0 0 20 20">
