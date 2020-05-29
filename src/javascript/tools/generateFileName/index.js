@@ -18,16 +18,22 @@ const rgbnPaletteName = ({ r, g, b, n }) => {
   );
 };
 
-const generateFileName = ({ image, palette, exportScaleFactor = false }) => {
-
-  const date = dayjs(image.created, dateFormat).format(dateFormatFilename);
-
-  const paletteName = palette.shortName || rgbnPaletteName(palette);
+const generateFileName = ({
+  image = false,
+  palette = false,
+  exportScaleFactor = false,
+  prefix = false,
+  useCurrentDate = false,
+}) => {
+  const date = useCurrentDate ? dayjs() : dayjs(image.created, dateFormat);
+  const formattedDate = date.format(dateFormatFilename);
+  const paletteName = palette ? (palette.shortName || rgbnPaletteName(palette)) : false;
 
   return [
-    date,
-    (image.index || 0).toString(10).padStart(4, '0'),
-    image.title || null,
+    prefix,
+    formattedDate,
+    image ? (image.index || 0).toString(10).padStart(4, '0') : null,
+    image && image.title ? image.title : null,
     exportScaleFactor ? `${exportScaleFactor}x` : null,
     paletteName,
   ]

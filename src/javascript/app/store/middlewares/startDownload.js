@@ -34,7 +34,10 @@ const handleSingleImage = (prepareFiles, state) => (imageHash) => {
 };
 
 const handleImageCollection = (prepareFiles, state) => (collection) => {
-  const zipFilename = 'so.many.files';
+  const zipFilename = generateFileName({
+    prefix: 'gallery',
+    useCurrentDate: true,
+  });
 
   Promise.all(collection.map((imageHash) => {
     const image = state.images.find(({ hash }) => hash === imageHash);
