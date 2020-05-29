@@ -1,7 +1,7 @@
 import download from './download';
-import prepareFiles from './prepareFiles';
+import getPrepareFiles from './getPrepareFiles';
 
 export {
   download,
-  prepareFiles,
+  getPrepareFiles,
 };

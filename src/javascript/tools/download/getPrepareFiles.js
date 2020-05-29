@@ -1,9 +1,8 @@
 import Decoder from '../Decoder';
 import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
-import download from './download';
 
-const prepareFiles = (palette, exportScaleFactors, image) => (tiles) => {
+const getPrepareFiles = (exportScaleFactors) => (palette, image) => (tiles) => {
 
   const canvas = document.createElement('canvas');
   canvas.width = 160;
@@ -68,7 +67,7 @@ const prepareFiles = (palette, exportScaleFactors, image) => (tiles) => {
     })
   ));
 
-  Promise.all(images).then(download(generateFileName(image, palette)));
+  return Promise.all(images);
 };
 
-export default prepareFiles;
+export default getPrepareFiles;

@@ -1,5 +1,7 @@
 import { load } from '../../../tools/storage';
-import { prepareFiles } from '../../../tools/download';
+import { getPrepareFiles } from '../../../tools/download';
+import download from '../../../tools/download/download';
+import generateFileName from '../../../tools/generateFileName';
 
 const loadImageData = ({ hash, hashes }) => {
   if (!hashes) {
@@ -30,11 +32,14 @@ const startDownload = (store) => (next) => (action) => {
       return null;
     }
 
+    const prepareFiles = getPrepareFiles(exportScaleFactors);
+
     const image = state.images.find(({ hash }) => hash === action.payload);
     const imagePalette = getImagePalette(state, image);
 
     loadImageData(image)
-      .then(prepareFiles(imagePalette, exportScaleFactors, image));
+      .then(prepareFiles(imagePalette, image))
+      .then(download(generateFileName(image, imagePalette)));
 
   }
 
