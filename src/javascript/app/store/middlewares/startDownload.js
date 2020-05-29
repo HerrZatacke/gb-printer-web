@@ -35,7 +35,7 @@ const handleSingleImage = (prepareFiles, state) => (imageHash) => {
 
 const handleImageCollection = (prepareFiles, state) => (collection) => {
   const zipFilename = generateFileName({
-    prefix: 'gallery',
+    altTitle: 'gameboy-printer-gallery',
     useCurrentDate: true,
   });
 

@@ -22,7 +22,7 @@ const generateFileName = ({
   image = false,
   palette = false,
   exportScaleFactor = false,
-  prefix = false,
+  altTitle = false,
   useCurrentDate = false,
 }) => {
   const date = useCurrentDate ? dayjs() : dayjs(image.created, dateFormat);
@@ -30,10 +30,9 @@ const generateFileName = ({
   const paletteName = palette ? (palette.shortName || rgbnPaletteName(palette)) : false;
 
   return [
-    prefix,
     formattedDate,
     image ? (image.index || 0).toString(10).padStart(4, '0') : null,
-    image && image.title ? image.title : null,
+    image && image.title ? image.title : altTitle,
     exportScaleFactor ? `${exportScaleFactor}x` : null,
     paletteName,
   ]
