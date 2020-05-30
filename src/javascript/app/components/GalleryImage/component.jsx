@@ -47,6 +47,10 @@ class GalleryImage extends React.Component {
     }
   }
 
+  getDateText() {
+    return this.props.created ? dayjs(this.props.created, dateFormat).format(dateFormatReadable) : null;
+  }
+
   handleCellClick(ev) {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
@@ -85,7 +89,7 @@ class GalleryImage extends React.Component {
         <span
           className="gallery-image__created"
         >
-          {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
+          {this.getDateText()}
         </span>
         <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'edit']} />
         { /* this.props.hashes ? null : (
@@ -129,7 +133,7 @@ class GalleryImage extends React.Component {
               {this.props.title}
             </span>
             <span className="gallery-list-image__created">
-              {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
+              {this.getDateText()}
             </span>
           </div>
         </td>
@@ -153,7 +157,7 @@ class GalleryImage extends React.Component {
 }
 
 GalleryImage.propTypes = {
-  created: PropTypes.string.isRequired,
+  created: PropTypes.string,
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
   palette: PropTypes.object.isRequired,
@@ -166,6 +170,7 @@ GalleryImage.propTypes = {
 };
 
 GalleryImage.defaultProps = {
+  created: null,
   hashes: null,
 };
 
