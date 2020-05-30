@@ -31,6 +31,22 @@ const cleanState = (initialState) => {
     })
     .filter(Boolean);
 
+
+  // assign index to images with no or duplicate index
+  images
+    .filter((image, imageIndex) => {
+      if (!image.index) {
+        return true;
+      }
+
+      return images.findIndex(({ index }) => index === image.index) !== imageIndex;
+    }).forEach((image) => {
+      // eslint-disable-next-line no-param-reassign
+      image.index = initialState.globalIndex;
+      // eslint-disable-next-line no-param-reassign
+      initialState.globalIndex += 1;
+    });
+
   return { ...initialState, images };
 };
 
