@@ -1,4 +1,6 @@
 // Tile Constants
+import { black } from '../frame';
+
 const TILE_PIXEL_WIDTH = 8;
 const TILE_PIXEL_HEIGHT = 8;
 const TILES_PER_LINE = 20;
@@ -133,7 +135,7 @@ class Decoder {
   }
 
   // Gameboy tile decoder function from http://www.huderlem.com/demos/gameboy2bpp.html
-  decodeTile(rawBytes) {
+  decodeTile(rawBytes = black) {
     const bytes = rawBytes.replace(/[^0-9A-F]/ig, '').padEnd(32, 'f');
 
     const byteArray = new Array(16);
