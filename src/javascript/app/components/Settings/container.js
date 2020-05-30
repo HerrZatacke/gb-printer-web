@@ -24,6 +24,12 @@ const mapDispatchToProps = (dispatch) => ({
       payload: pageSize,
     });
   },
+  exportSettings(what) {
+    dispatch({
+      type: 'SETTINGS_EXPORT',
+      payload: what,
+    });
+  },
   changeExportScaleFactors(factor, checked) {
     dispatch({
       type: 'UPDATE_EXPORT_SCALE_FACTORS',

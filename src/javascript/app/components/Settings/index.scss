@@ -8,6 +8,14 @@
     margin-bottom: 30px;
   }
 
+  &__buttongroup {
+    flex-wrap: wrap;
+  }
+
+  &__buttongroup &__button {
+    flex: 200px 1 0;
+  }
+
   &__label {
     flex-basis: 300px;
     flex-grow: 0;
@@ -55,7 +63,7 @@
     flex-basis: 80px;
     flex-grow: 0;
     flex-shrink: 0;
-    margin-left: 20px;
+    margin: 5px 0 5px 20px;
     min-height: 40px;
     color: $color-text-bright;
     background: $color-primary;

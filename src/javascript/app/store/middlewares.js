@@ -11,6 +11,7 @@ import saveEditImage from './middlewares/saveEditImage';
 import saveLineBuffer from './middlewares/saveLineBuffer';
 import saveRGBNImage from './middlewares/saveRGBNImage';
 import serialportWebocket from './middlewares/serialportWebocket';
+import settings from './middlewares/settings';
 import startDownload from './middlewares/startDownload';
 import triggerMock from './middlewares/triggerMock';
 import validateCurrentPageIndex from './middlewares/validateCurrentPageIndex';
@@ -28,6 +29,7 @@ export default applyMiddleware(
   saveLineBuffer,
   saveRGBNImage,
   serialportWebocket,
+  settings,
   startDownload,
   triggerMock,
   validateCurrentPageIndex,

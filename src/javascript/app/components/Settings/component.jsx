@@ -149,6 +149,29 @@ class Settings extends React.Component {
             </button>
           </div>
         )}
+        <div className="settings__inputgroup settings__buttongroup">
+          <button
+            type="button"
+            className="settings__button"
+            onClick={() => this.props.exportSettings('debug')}
+          >
+            Export debug settings
+          </button>
+          <button
+            type="button"
+            className="settings__button"
+            onClick={() => this.props.exportSettings('settings')}
+          >
+            Export settings
+          </button>
+          <button
+            type="button"
+            className="settings__button"
+            onClick={() => this.props.exportSettings('full')}
+          >
+            Export everything (including images)
+          </button>
+        </div>
       </div>
     );
   }
@@ -162,6 +185,7 @@ Settings.propTypes = {
   updateSocketUrl: PropTypes.func.isRequired,
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
+  exportSettings: PropTypes.func.isRequired,
 };
 
 Settings.defaultProps = {};
