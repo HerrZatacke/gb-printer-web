@@ -1,3 +1,5 @@
+import dummyImage from './dummyImage';
+
 const save = (lineBuffer) => (
   import(/* webpackChunkName: "object-hash" */ 'object-hash')
     .then(({ default: hash }) => (
@@ -52,7 +54,7 @@ const load = (dataHash) => {
           const inflated = pako.inflate(binary, { to: 'string' });
           return inflated.split('\n');
         } catch (error) {
-          return null;
+          return dummyImage(dataHash);
         }
       })
   );
