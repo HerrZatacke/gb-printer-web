@@ -26,7 +26,7 @@ const generateFileName = ({
   useCurrentDate = false,
 }) => {
   const date = useCurrentDate ? dayjs() : dayjs(image.created, dateFormat);
-  const formattedDate = date.format(dateFormatFilename);
+  const formattedDate = date.isValid() ? date.format(dateFormatFilename) : false;
   const paletteName = palette ? (palette.shortName || rgbnPaletteName(palette)) : false;
 
   return [
