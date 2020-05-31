@@ -33,7 +33,7 @@ const save = (lineBuffer) => (
     ))
 );
 
-const load = (dataHash) => {
+const load = (dataHash, frame) => {
   if (!dataHash) {
     return Promise.resolve(null);
   }
@@ -57,7 +57,16 @@ const load = (dataHash) => {
           return dummyImage(dataHash);
         }
       })
-  );
+  ).then((tiles) => {
+    if (!frame) {
+      return tiles;
+    }
+
+    return import(/* webpackChunkName: "applyFrame" */ '../applyFrame')
+      .then(({ default: applyFrame }) => (
+        applyFrame(tiles, frame)
+      ));
+  });
 };
 
 const del = (dataHash) => {
