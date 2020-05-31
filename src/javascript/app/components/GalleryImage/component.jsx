@@ -27,10 +27,10 @@ class GalleryImage extends React.Component {
   componentDidMount() {
     if (this.props.hashes) {
       Promise.all([
-        load(this.props.hashes.r),
-        load(this.props.hashes.g),
-        load(this.props.hashes.b),
-        load(this.props.hashes.n),
+        load(this.props.hashes.r, this.props.frames.r),
+        load(this.props.hashes.g, this.props.frames.g),
+        load(this.props.hashes.b, this.props.frames.b),
+        load(this.props.hashes.n, this.props.frames.n),
       ])
         .then((tiles) => {
           this.setState({
@@ -38,7 +38,7 @@ class GalleryImage extends React.Component {
           });
         });
     } else {
-      load(this.props.hash)
+      load(this.props.hash, this.props.frame)
         .then((tiles) => {
           this.setState({
             tiles,
@@ -161,6 +161,8 @@ GalleryImage.propTypes = {
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
   palette: PropTypes.object.isRequired,
+  frame: PropTypes.string,
+  frames: PropTypes.object,
   title: PropTypes.string.isRequired,
   setLightboxImageIndex: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['list', 'default']).isRequired,
@@ -172,6 +174,8 @@ GalleryImage.propTypes = {
 GalleryImage.defaultProps = {
   created: null,
   hashes: null,
+  frame: null,
+  frames: null,
 };
 
 export default GalleryImage;

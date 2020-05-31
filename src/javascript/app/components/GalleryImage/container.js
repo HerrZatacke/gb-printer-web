@@ -3,20 +3,30 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state, { hash }) => {
   const image = state.images.find((img) => img.hash === hash);
   let palette;
+  let frames;
 
   if (image.hashes) {
     palette = image.palette;
+    frames = {
+      r: image.frame || state.images.find((img) => img.hash === image.hashes.r).frame,
+      g: image.frame || state.images.find((img) => img.hash === image.hashes.g).frame,
+      b: image.frame || state.images.find((img) => img.hash === image.hashes.b).frame,
+      n: image.frame || state.images.find((img) => img.hash === image.hashes.n).frame,
+    };
   } else {
     palette = state.palettes.find(({ shortName }) => shortName === image.palette);
+    frames = null;
   }
 
   return ({
     title: image.title,
     created: image.created,
     index: image.index,
+    frame: image.frame,
     hashes: image.hashes,
     isSelected: state.imageSelection.includes(hash),
     palette,
+    frames,
   });
 };
 
