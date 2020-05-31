@@ -9,7 +9,7 @@ const validateCurrentPageIndex = (store) => (next) => (action) => {
   if (totalPages <= currentPage) {
     store.dispatch({
       type: 'SET_CURRENTPAGE',
-      payload: totalPages - 1,
+      payload: Math.max(0, totalPages - 1),
     });
   }
 
