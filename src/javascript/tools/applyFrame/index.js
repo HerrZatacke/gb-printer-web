@@ -15,6 +15,7 @@ import int14 from './int/14';
 import int15 from './int/15';
 import int16 from './int/16';
 import int17 from './int/17';
+import int18 from './int/18';
 
 const frames = {
   int01,
@@ -34,6 +35,7 @@ const frames = {
   int15,
   int16,
   int17,
+  int18,
 };
 
 const applyFrame = (tiles, which) => {
