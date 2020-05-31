@@ -19,10 +19,10 @@ class RGBNImage extends Component {
 
   updateCanvasContent() {
     Promise.all([
-      load(this.props.tilesR),
-      load(this.props.tilesG),
-      load(this.props.tilesB),
-      load(this.props.tilesN),
+      load(this.props.hashes.r, this.props.frames.r),
+      load(this.props.hashes.g, this.props.frames.g),
+      load(this.props.hashes.b, this.props.frames.b),
+      load(this.props.hashes.n, this.props.frames.n),
     ])
       .then((rgbn) => {
         if (this.canvasRef) {
@@ -33,7 +33,7 @@ class RGBNImage extends Component {
   }
 
   render() {
-    const hasTiles = (this.props.tilesR || this.props.tilesG || this.props.tilesB || this.props.tilesN);
+    const hasTiles = (this.props.hashes.r || this.props.hashes.g || this.props.hashes.b || this.props.hashes.n);
     return (
       <div
         className={
@@ -60,17 +60,13 @@ class RGBNImage extends Component {
 }
 
 RGBNImage.propTypes = {
-  tilesR: PropTypes.string,
-  tilesG: PropTypes.string,
-  tilesB: PropTypes.string,
-  tilesN: PropTypes.string,
+  hashes: PropTypes.object,
+  frames: PropTypes.object,
 };
 
 RGBNImage.defaultProps = {
-  tilesR: null,
-  tilesG: null,
-  tilesB: null,
-  tilesN: null,
+  hashes: null,
+  frames: null,
 };
 
 export default RGBNImage;
