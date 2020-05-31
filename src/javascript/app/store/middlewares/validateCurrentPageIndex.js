@@ -3,8 +3,12 @@ const validateCurrentPageIndex = (store) => (next) => (action) => {
   next(action);
 
   const state = store.getState();
-  const totalPages = state.pageSize ? Math.ceil(state.images.length / state.pageSize) : 0;
+  const totalPages = state.pageSize ? Math.ceil(state.images.length / state.pageSize) : 1;
   const currentPage = state.currentPage;
+
+  if (currentPage === 0) {
+    return;
+  }
 
   if (totalPages <= currentPage) {
     store.dispatch({
