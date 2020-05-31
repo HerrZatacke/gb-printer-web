@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import getRGBNFrames from '../../../tools/getRGBNFrames';
 
 const mapStateToProps = (state, { hash }) => {
   const image = state.images.find((img) => img.hash === hash);
@@ -7,12 +8,7 @@ const mapStateToProps = (state, { hash }) => {
 
   if (image.hashes) {
     palette = image.palette;
-    frames = {
-      r: image.frame || state.images.find((img) => img.hash === image.hashes.r).frame,
-      g: image.frame || state.images.find((img) => img.hash === image.hashes.g).frame,
-      b: image.frame || state.images.find((img) => img.hash === image.hashes.b).frame,
-      n: image.frame || state.images.find((img) => img.hash === image.hashes.n).frame,
-    };
+    frames = getRGBNFrames(state, image.hashes, image.frame);
   } else {
     palette = state.palettes.find(({ shortName }) => shortName === image.palette);
     frames = null;

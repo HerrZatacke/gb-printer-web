@@ -2,23 +2,14 @@ import { load } from '../../../tools/storage';
 import { getPrepareFiles } from '../../../tools/download';
 import download from '../../../tools/download/download';
 import generateFileName from '../../../tools/generateFileName';
+import getRGBNFrames from '../../../tools/getRGBNFrames';
 
 const loadImageTiles = ({ hash, frame, hashes }, state) => {
   if (!hashes) {
     return load(hash, frame);
   }
 
-  const imageR = state.images.find((img) => img.hash === hashes.r);
-  const imageG = state.images.find((img) => img.hash === hashes.g);
-  const imageB = state.images.find((img) => img.hash === hashes.b);
-  const imageN = state.images.find((img) => img.hash === hashes.n);
-
-  const frames = {
-    r: frame || (imageR ? imageR.frame : null),
-    g: frame || (imageG ? imageG.frame : null),
-    b: frame || (imageB ? imageB.frame : null),
-    n: frame || (imageN ? imageN.frame : null),
-  };
+  const frames = getRGBNFrames(state, hashes, frame);
 
   return Promise.all([
     load(hashes.r, frames.r || frame),
