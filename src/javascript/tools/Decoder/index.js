@@ -1,5 +1,5 @@
 // Tile Constants
-import { black } from '../frame';
+const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
 
 const TILE_PIXEL_WIDTH = 8;
 const TILE_PIXEL_HEIGHT = 8;
