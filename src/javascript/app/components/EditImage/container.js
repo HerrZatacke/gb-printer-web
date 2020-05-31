@@ -40,6 +40,12 @@ const mapDispatchToProps = (dispatch) => ({
       payload: { palette },
     });
   },
+  updateFrame: (frame) => {
+    dispatch({
+      type: 'UPDATE_EDIT_IMAGE',
+      payload: { frame },
+    });
+  },
   save: () => {
     dispatch({
       type: 'SAVE_EDIT_IMAGE',

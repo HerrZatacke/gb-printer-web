@@ -52,4 +52,12 @@
     background: none;
     padding-left: 25px;
   }
+
+  &__section-title {
+    display: block;
+    width: 440px;
+    line-height: 22px;
+    margin: 20px 20px -5px 20px;
+    font-size: 18px;
+  }
 }

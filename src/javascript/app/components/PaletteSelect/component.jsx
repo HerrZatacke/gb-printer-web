@@ -15,6 +15,7 @@ class PaletteSelect extends React.Component {
   render() {
     return (
       <>
+        <h3 className="edit-image__section-title">Select Palette</h3>
         <select
           className="palette-select"
           value={this.props.value}

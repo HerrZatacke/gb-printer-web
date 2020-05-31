@@ -2,12 +2,12 @@ import frames from './frames';
 
 const applyFrame = (tiles, which) => {
 
-  const loadFrame = frames[which];
-  if (!loadFrame) {
+  const frameData = frames.find(({ id }) => id === which);
+  if (!frameData) {
     return Promise.resolve(tiles);
   }
 
-  return loadFrame()
+  return frameData.get()
     .then((frame) => {
 
       const result = [...tiles];

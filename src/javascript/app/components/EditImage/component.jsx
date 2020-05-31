@@ -4,6 +4,7 @@ import GameBoyImage from '../GameBoyImage';
 import PaletteSelect from '../PaletteSelect';
 import Buttons from '../Buttons';
 import GreySelect from '../GreySelect';
+import FrameSelect from '../FrameSelect';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import { load } from '../../../tools/storage';
 
@@ -33,7 +34,13 @@ class EditImage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.hash !== this.props.hash && this.props.hash) {
+    if (
+      this.props.hash &&
+      (
+        (prevProps.hash !== this.props.hash) ||
+        (prevProps.frame !== this.props.frame)
+      )
+    ) {
 
       if (this.props.hashes) {
         Promise.all([
@@ -94,6 +101,10 @@ class EditImage extends React.Component {
               tiles={this.state.tiles}
               palette={this.props.palette}
             />
+            <FrameSelect
+              updateFrame={this.props.updateFrame}
+              frame={this.props.frame || ''}
+            />
             { this.props.hashes ? (
               <GreySelect
                 values={this.props.palette}
@@ -127,6 +138,7 @@ EditImage.propTypes = {
   title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
+  updateFrame: PropTypes.func.isRequired,
 };
 
 EditImage.defaultProps = {
