@@ -15,14 +15,12 @@ If it does not work, [please open an issue](https://github.com/HerrZatacke/gb-pr
 
 ## ToDos
 * Add filters/tags
-* Export without frame / with different frame
-* Select multiple palettes to download the gallery in. (add checkbox to images, maybe allow download from galleries-page)
-* allow some gesture navigation on touch devices
 * Edit palettes
-* Export settings data
 * Allow rendering animated Gifs
+* Select multiple palettes to download the gallery in.
+* allow some gesture navigation on touch devices
+* Export without frame
 * Other blendmodes than multiply for RGB-Images
-* Reset button for sliders when editing RGB-Images
 
 ## Local Setup
 You can run this app locally to directly use the gbp-emulator on your serial port 
