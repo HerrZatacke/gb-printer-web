@@ -38,10 +38,10 @@ class LightboxImage extends React.Component {
 
       if (this.props.hashes) {
         Promise.all([
-          load(this.props.hashes.r),
-          load(this.props.hashes.g),
-          load(this.props.hashes.b),
-          load(this.props.hashes.n),
+          load(this.props.hashes.r, this.props.frames.r),
+          load(this.props.hashes.g, this.props.frames.g),
+          load(this.props.hashes.b, this.props.frames.b),
+          load(this.props.hashes.n, this.props.frames.n),
         ])
           .then((tiles) => {
             this.setState({
@@ -50,7 +50,7 @@ class LightboxImage extends React.Component {
             });
           });
       } else {
-        load(this.props.hash)
+        load(this.props.hash, this.props.frame)
           .then((tiles) => {
             this.setState({
               tiles,
@@ -120,6 +120,8 @@ LightboxImage.propTypes = {
   hash: PropTypes.string,
   hashes: PropTypes.object,
   palette: PropTypes.object,
+  frame: PropTypes.string,
+  frames: PropTypes.object,
   title: PropTypes.string,
   close: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired,
@@ -134,6 +136,8 @@ LightboxImage.defaultProps = {
   hashes: null,
   palette: null,
   title: null,
+  frame: null,
+  frames: null,
 };
 
 export default LightboxImage;

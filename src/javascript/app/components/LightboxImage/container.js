@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => {
   const image = state.images.find((_, index) => index === state.lightboxImage);
   let palette;
+  let frames;
 
   if (!image) {
     return {
@@ -12,8 +13,15 @@ const mapStateToProps = (state) => {
 
   if (image.hashes) {
     palette = image.palette;
+    frames = {
+      r: image.frame || state.images.find((img) => img.hash === image.hashes.r).frame,
+      g: image.frame || state.images.find((img) => img.hash === image.hashes.g).frame,
+      b: image.frame || state.images.find((img) => img.hash === image.hashes.b).frame,
+      n: image.frame || state.images.find((img) => img.hash === image.hashes.n).frame,
+    };
   } else {
     palette = state.palettes.find(({ shortName }) => shortName === image.palette);
+    frames = null;
   }
 
   return ({
@@ -21,8 +29,10 @@ const mapStateToProps = (state) => {
     title: image.title,
     created: image.created,
     hashes: image.hashes,
+    frame: image.frame,
     isFullscreen: state.isFullscreen,
     palette,
+    frames,
   });
 };
 
