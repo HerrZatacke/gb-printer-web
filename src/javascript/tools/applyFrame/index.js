@@ -16,6 +16,10 @@ import int15 from './int/15';
 import int16 from './int/16';
 import int17 from './int/17';
 import int18 from './int/18';
+import jp01 from './jp/01';
+import jp02 from './jp/02';
+import jp07 from './jp/07';
+import jp09 from './jp/09';
 
 const frames = {
   int01,
@@ -36,6 +40,10 @@ const frames = {
   int16,
   int17,
   int18,
+  jp01,
+  jp02,
+  jp07,
+  jp09,
 };
 
 const applyFrame = (tiles, which) => {
