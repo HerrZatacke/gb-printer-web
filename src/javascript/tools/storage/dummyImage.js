@@ -4,7 +4,7 @@ import { upper, lower, black } from '../frame';
 const dummyImage = (hash) => {
   const result = [];
 
-  const text = `The following hash is missimg in your localStorage:\n${hash}\n\nMaybe you imported a debug dump?`;
+  const text = `The following hash is missing in your localStorage:\n${hash}\n\nMaybe you imported a debug dump?`;
 
   const lines = text.split('\n')
     .map((line) => line.match(/.{1,32}/g))
