@@ -1,4 +1,4 @@
-const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
+const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF\n';
 
 const transformSav = (raw) => {
 
@@ -39,14 +39,13 @@ const transformSav = (raw) => {
 
     if (i % 4096 === 3583) {
       // lower frame
-      transformed.push(...[...Array(2)].map(() => black));
+      transformed.push(...[...Array(40)].map(() => black));
       transformed.push('!{"command":"DATA","compressed":0,"more":0}\n');
       transformed.push('!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }\n');
     }
   }
 
   return transformed.join('');
-
 };
 
 export default transformSav;
