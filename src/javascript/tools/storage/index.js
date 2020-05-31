@@ -1,4 +1,5 @@
 import dummyImage from './dummyImage';
+import applyFrame from '../applyFrame';
 
 const save = (lineBuffer) => (
   import(/* webpackChunkName: "object-hash" */ 'object-hash')
@@ -62,10 +63,7 @@ const load = (dataHash, frame) => {
       return tiles;
     }
 
-    return import(/* webpackChunkName: "applyFrame" */ '../applyFrame')
-      .then(({ default: applyFrame }) => (
-        applyFrame(tiles, frame)
-      ));
+    return applyFrame(tiles, frame);
   });
 };
 

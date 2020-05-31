@@ -1,62 +1,38 @@
-import int01 from './int/01';
-import int02 from './int/02';
-import int03 from './int/03';
-import int04 from './int/04';
-import int05 from './int/05';
-import int06 from './int/06';
-import int07 from './int/07';
-import int08 from './int/08';
-import int09 from './int/09';
-import int10 from './int/10';
-import int11 from './int/11';
-import int12 from './int/12';
-import int13 from './int/13';
-import int14 from './int/14';
-import int15 from './int/15';
-import int16 from './int/16';
-import int17 from './int/17';
-import int18 from './int/18';
-import jp01 from './jp/01';
-import jp02 from './jp/02';
-import jp07 from './jp/07';
-import jp09 from './jp/09';
-
 export default {
-  int01,
-  int02,
-  int03,
-  int04,
-  int05,
-  int06,
-  int07,
-  int08,
-  int09,
-  int10,
-  int11,
-  int12,
-  int13,
-  int14,
-  int15,
-  int16,
-  int17,
-  int18,
-
-  jp01,
-  jp02,
-  jp03: int03,
-  jp04: int04,
-  jp05: int05,
-  jp06: int06,
-  jp07,
-  jp08: int08,
-  jp09,
-  jp10: int10,
-  jp11: int11,
-  jp12: int12,
-  jp13: int13,
-  jp14: int14,
-  jp15: int15,
-  jp16: int16,
-  jp17: int17,
-  jp18: int18,
+  int01: () => (import(/* webpackChunkName: "frames/int01" */ './int/01').then(({ default: frame }) => (frame))),
+  int02: () => (import(/* webpackChunkName: "frames/int02" */ './int/02').then(({ default: frame }) => (frame))),
+  int03: () => (import(/* webpackChunkName: "frames/int03" */ './int/03').then(({ default: frame }) => (frame))),
+  int04: () => (import(/* webpackChunkName: "frames/int04" */ './int/04').then(({ default: frame }) => (frame))),
+  int05: () => (import(/* webpackChunkName: "frames/int05" */ './int/05').then(({ default: frame }) => (frame))),
+  int06: () => (import(/* webpackChunkName: "frames/int06" */ './int/06').then(({ default: frame }) => (frame))),
+  int07: () => (import(/* webpackChunkName: "frames/int07" */ './int/07').then(({ default: frame }) => (frame))),
+  int08: () => (import(/* webpackChunkName: "frames/int08" */ './int/08').then(({ default: frame }) => (frame))),
+  int09: () => (import(/* webpackChunkName: "frames/int09" */ './int/09').then(({ default: frame }) => (frame))),
+  int10: () => (import(/* webpackChunkName: "frames/int10" */ './int/10').then(({ default: frame }) => (frame))),
+  int11: () => (import(/* webpackChunkName: "frames/int11" */ './int/11').then(({ default: frame }) => (frame))),
+  int12: () => (import(/* webpackChunkName: "frames/int12" */ './int/12').then(({ default: frame }) => (frame))),
+  int13: () => (import(/* webpackChunkName: "frames/int13" */ './int/13').then(({ default: frame }) => (frame))),
+  int14: () => (import(/* webpackChunkName: "frames/int14" */ './int/14').then(({ default: frame }) => (frame))),
+  int15: () => (import(/* webpackChunkName: "frames/int15" */ './int/15').then(({ default: frame }) => (frame))),
+  int16: () => (import(/* webpackChunkName: "frames/int16" */ './int/16').then(({ default: frame }) => (frame))),
+  int17: () => (import(/* webpackChunkName: "frames/int17" */ './int/17').then(({ default: frame }) => (frame))),
+  int18: () => (import(/* webpackChunkName: "frames/int18" */ './int/18').then(({ default: frame }) => (frame))),
+  jp01: () => (import(/* webpackChunkName: "frames/jp01" */ './jp/01').then(({ default: frame }) => (frame))),
+  jp02: () => (import(/* webpackChunkName: "frames/jp02" */ './jp/02').then(({ default: frame }) => (frame))),
+  jp03: () => (import(/* webpackChunkName: "frames/int03" */ './int/03').then(({ default: frame }) => (frame))),
+  jp04: () => (import(/* webpackChunkName: "frames/int04" */ './int/04').then(({ default: frame }) => (frame))),
+  jp05: () => (import(/* webpackChunkName: "frames/int05" */ './int/05').then(({ default: frame }) => (frame))),
+  jp06: () => (import(/* webpackChunkName: "frames/int06" */ './int/06').then(({ default: frame }) => (frame))),
+  jp07: () => (import(/* webpackChunkName: "frames/jp07" */ './jp/07').then(({ default: frame }) => (frame))),
+  jp08: () => (import(/* webpackChunkName: "frames/int08" */ './int/08').then(({ default: frame }) => (frame))),
+  jp09: () => (import(/* webpackChunkName: "frames/jp09" */ './jp/09').then(({ default: frame }) => (frame))),
+  jp10: () => (import(/* webpackChunkName: "frames/int10" */ './int/10').then(({ default: frame }) => (frame))),
+  jp11: () => (import(/* webpackChunkName: "frames/int11" */ './int/11').then(({ default: frame }) => (frame))),
+  jp12: () => (import(/* webpackChunkName: "frames/int12" */ './int/12').then(({ default: frame }) => (frame))),
+  jp13: () => (import(/* webpackChunkName: "frames/int13" */ './int/13').then(({ default: frame }) => (frame))),
+  jp14: () => (import(/* webpackChunkName: "frames/int14" */ './int/14').then(({ default: frame }) => (frame))),
+  jp15: () => (import(/* webpackChunkName: "frames/int15" */ './int/15').then(({ default: frame }) => (frame))),
+  jp16: () => (import(/* webpackChunkName: "frames/int16" */ './int/16').then(({ default: frame }) => (frame))),
+  jp17: () => (import(/* webpackChunkName: "frames/int17" */ './int/17').then(({ default: frame }) => (frame))),
+  jp18: () => (import(/* webpackChunkName: "frames/int18" */ './int/18').then(({ default: frame }) => (frame))),
 };
