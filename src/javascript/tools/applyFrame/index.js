@@ -1,8 +1,10 @@
 import int01 from './int/01';
+import int02 from './int/02';
 import int16 from './int/16';
 
 const frames = {
   int01,
+  int02,
   int16,
 };
 
