@@ -37,10 +37,10 @@ class EditImage extends React.Component {
 
       if (this.props.hashes) {
         Promise.all([
-          load(this.props.hashes.r),
-          load(this.props.hashes.g),
-          load(this.props.hashes.b),
-          load(this.props.hashes.n),
+          load(this.props.hashes.r, this.props.frames.r),
+          load(this.props.hashes.g, this.props.frames.g),
+          load(this.props.hashes.b, this.props.frames.b),
+          load(this.props.hashes.n, this.props.frames.n),
         ])
           .then((tiles) => {
             this.setState({
@@ -49,7 +49,7 @@ class EditImage extends React.Component {
             });
           });
       } else {
-        load(this.props.hash)
+        load(this.props.hash, this.props.frame)
           .then((tiles) => {
             this.setState({
               tiles,
@@ -121,6 +121,8 @@ EditImage.propTypes = {
   hash: PropTypes.string,
   hashes: PropTypes.object,
   palette: PropTypes.object,
+  frame: PropTypes.string,
+  frames: PropTypes.object,
   save: PropTypes.func.isRequired,
   title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
@@ -132,6 +134,8 @@ EditImage.defaultProps = {
   hash: null,
   hashes: null,
   palette: null,
+  frame: null,
+  frames: null,
 };
 
 export default EditImage;

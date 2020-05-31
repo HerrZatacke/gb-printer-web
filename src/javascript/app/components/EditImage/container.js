@@ -6,18 +6,28 @@ const mapStateToProps = (state) => {
   }
 
   let palette;
+  let frames;
 
   if (state.editImage.hashes) {
     palette = state.editImage.palette;
+    frames = {
+      r: state.editImage.frame || state.images.find((img) => img.hash === state.editImage.hashes.r).frame,
+      g: state.editImage.frame || state.images.find((img) => img.hash === state.editImage.hashes.g).frame,
+      b: state.editImage.frame || state.images.find((img) => img.hash === state.editImage.hashes.b).frame,
+      n: state.editImage.frame || state.images.find((img) => img.hash === state.editImage.hashes.n).frame,
+    };
   } else {
     palette = state.palettes.find(({ shortName }) => shortName === state.editImage.palette);
+    frames = null;
   }
 
   return ({
     hash: state.editImage.hash,
     title: state.editImage.title,
     hashes: state.editImage.hashes,
+    frame: state.editImage.frame,
     palette,
+    frames,
   });
 };
 
