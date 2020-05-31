@@ -1,5 +1,3 @@
-/*
-* */
 const upper = [
   'FF FF FF FF FF FF FF 07 FF 03 FF 03 03 03 03 03',
   'FF FF FF FF FF FF FF E0 FF C0 FF C0 FE C0 FC C0',

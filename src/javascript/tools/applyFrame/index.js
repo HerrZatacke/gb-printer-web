@@ -2,6 +2,7 @@ import int01 from './int/01';
 import int02 from './int/02';
 import int03 from './int/03';
 import int04 from './int/04';
+import int05 from './int/05';
 import int16 from './int/16';
 
 const frames = {
@@ -9,6 +10,7 @@ const frames = {
   int02,
   int03,
   int04,
+  int05,
   int16,
 };
 
