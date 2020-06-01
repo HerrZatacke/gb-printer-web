@@ -29,7 +29,7 @@ class EditImageTabs extends React.Component {
                 'edit-image-tabs__tab--active': this.state.tabIndex === 0,
               })
             }
-            onFocusCapture={() => {
+            onFocus={() => {
               this.setState({
                 tabIndex: 0,
               });
@@ -63,7 +63,7 @@ class EditImageTabs extends React.Component {
                 'edit-image-tabs__tab--active': this.state.tabIndex === 1,
               })
             }
-            onFocusCapture={() => {
+            onFocus={() => {
               this.setState({
                 tabIndex: 1,
               });
@@ -83,7 +83,7 @@ class EditImageTabs extends React.Component {
                 'edit-image-tabs__tab--active': this.state.tabIndex === 2,
               })
             }
-            onFocusCapture={() => {
+            onFocus={() => {
               this.setState({
                 tabIndex: 2,
               });
