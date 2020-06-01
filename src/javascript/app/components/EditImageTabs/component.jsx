@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -11,6 +12,14 @@ class EditImageTabs extends React.Component {
 
     this.state = {
       tabIndex: 0,
+    };
+  }
+
+  focusEvent(tabIndex) {
+    return () => {
+      this.setState({
+        tabIndex,
+      });
     };
   }
 
@@ -29,11 +38,8 @@ class EditImageTabs extends React.Component {
                 'edit-image-tabs__tab--active': this.state.tabIndex === 0,
               })
             }
-            onFocus={() => {
-              this.setState({
-                tabIndex: 0,
-              });
-            }}
+            onFocus={this.focusEvent(0)}
+            onClick={this.focusEvent(0)}
           >
             { this.props.hashes ? (
               <>
@@ -63,11 +69,8 @@ class EditImageTabs extends React.Component {
                 'edit-image-tabs__tab--active': this.state.tabIndex === 1,
               })
             }
-            onFocus={() => {
-              this.setState({
-                tabIndex: 1,
-              });
-            }}
+            onFocus={this.focusEvent(1)}
+            onClick={this.focusEvent(1)}
           >
             <button type="button" className="edit-image-tabs__button">
               Select Frame
@@ -83,11 +86,9 @@ class EditImageTabs extends React.Component {
                 'edit-image-tabs__tab--active': this.state.tabIndex === 2,
               })
             }
-            onFocus={() => {
-              this.setState({
-                tabIndex: 2,
-              });
-            }}
+            onFocus={this.focusEvent(2)}
+            onClick={this.focusEvent(2)}
+
           >
             <button type="button" className="edit-image-tabs__button">
               Tags
