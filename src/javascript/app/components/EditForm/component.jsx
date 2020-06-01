@@ -6,7 +6,7 @@ import EditImageTabs from '../EditImageTabs';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import { load } from '../../../tools/storage';
 
-class EditImage extends React.Component {
+class EditForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -125,7 +125,7 @@ class EditImage extends React.Component {
   }
 }
 
-EditImage.propTypes = {
+EditForm.propTypes = {
   cancel: PropTypes.func.isRequired,
   hash: PropTypes.string,
   hashes: PropTypes.object,
@@ -139,7 +139,7 @@ EditImage.propTypes = {
   updateFrame: PropTypes.func.isRequired,
 };
 
-EditImage.defaultProps = {
+EditForm.defaultProps = {
   title: null,
   hash: null,
   hashes: null,
@@ -148,4 +148,4 @@ EditImage.defaultProps = {
   frames: null,
 };
 
-export default EditImage;
+export default EditForm;

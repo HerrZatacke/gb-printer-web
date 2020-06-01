@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Confirmation from '../Confirmation';
-import EditImage from '../EditImage';
+import EditForm from '../EditForm';
 import LiveImage from '../LiveImage';
 import LightboxImage from '../LightboxImage';
 import RGBNImage from '../RGBNImage';
@@ -52,7 +52,7 @@ const App = (props) => (
       </Switch>
     </div>
     <Confirmation />
-    <EditImage />
+    <EditForm />
     <LiveImage />
     <LightboxImage />
     <RGBNImage />
