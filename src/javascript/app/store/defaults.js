@@ -8,6 +8,7 @@ export default {
   pageSize: 15,
   imageSelection: [],
   rgbnImages: {},
+  editImage: {},
   palettes: [
     {
       name: 'Black & White',

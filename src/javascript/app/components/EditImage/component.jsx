@@ -33,6 +33,12 @@ class EditImage extends React.Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.hash) {
+      this.loadImage();
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (
       this.props.hash &&
@@ -41,30 +47,32 @@ class EditImage extends React.Component {
         (prevProps.frame !== this.props.frame)
       )
     ) {
+      this.loadImage();
+    }
+  }
 
-      if (this.props.hashes) {
-        Promise.all([
-          load(this.props.hashes.r, this.props.frames.r),
-          load(this.props.hashes.g, this.props.frames.g),
-          load(this.props.hashes.b, this.props.frames.b),
-          load(this.props.hashes.n, this.props.frames.n),
-        ])
-          .then((tiles) => {
-            this.setState({
-              tiles: RGBNDecoder.rgbnTiles(tiles),
-              loaded: true,
-            });
+  loadImage() {
+    if (this.props.hashes) {
+      Promise.all([
+        load(this.props.hashes.r, this.props.frames.r),
+        load(this.props.hashes.g, this.props.frames.g),
+        load(this.props.hashes.b, this.props.frames.b),
+        load(this.props.hashes.n, this.props.frames.n),
+      ])
+        .then((tiles) => {
+          this.setState({
+            tiles: RGBNDecoder.rgbnTiles(tiles),
+            loaded: true,
           });
-      } else {
-        load(this.props.hash, this.props.frame)
-          .then((tiles) => {
-            this.setState({
-              tiles,
-              loaded: true,
-            });
+        });
+    } else {
+      load(this.props.hash, this.props.frame)
+        .then((tiles) => {
+          this.setState({
+            tiles,
+            loaded: true,
           });
-      }
-
+        });
     }
   }
 
