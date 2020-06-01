@@ -5,11 +5,11 @@
 
 .palette-select {
   display: block;
-  width: 440px;
+  width: 100%;
   line-height: 24px;
   height: 40px;
   background: none;
-  margin: 10px 20px;
+  margin-bottom: 10px;
   border: 1px solid $color-grey-50;
   font-size: 16px;
   color: inherit;
@@ -17,11 +17,9 @@
 
 .fancy-palette-select {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  width: 440px;
-  margin: 0 20px;
-  //overflow-x: scroll;
-  //overflow-y: visible;
+  width: 100%;
 
   &::-webkit-scrollbar {
     width: 0;
@@ -30,9 +28,8 @@
   }
 
   &__entry {
-    height: 36px;
-    flex-basis: 36px;
-    flex-shrink: 0;
+    height: 35px;
+    flex: 35px 0 0;
     margin: 2px;
     overflow: hidden;
     border-radius: 50%;

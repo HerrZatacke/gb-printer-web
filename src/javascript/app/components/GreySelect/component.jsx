@@ -23,24 +23,21 @@ class GreySelect extends React.Component {
 
   render() {
     return (
-      <>
-        <h3 className="edit-image__section-title">Edit Greytones</h3>
-        <div className="grey-select">
-          {
-            ['r', 'g', 'b', 'n']
-              .map((color) => (
-                <ColorSlider
-                  key={`slider-${color}`}
-                  color={color}
-                  values={this.state[color]}
-                  onChange={(values) => {
-                    this.change(color, values);
-                  }}
-                />
-              ))
-          }
-        </div>
-      </>
+      <div className="grey-select">
+        {
+          ['r', 'g', 'b', 'n']
+            .map((color) => (
+              <ColorSlider
+                key={`slider-${color}`}
+                color={color}
+                values={this.state[color]}
+                onChange={(values) => {
+                  this.change(color, values);
+                }}
+              />
+            ))
+        }
+      </div>
     );
   }
 }

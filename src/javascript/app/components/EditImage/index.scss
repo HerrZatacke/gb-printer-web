@@ -32,6 +32,11 @@
     &::-webkit-scrollbar {
       display: none;
     }
+
+    @media (max-width: 480px) {
+      width: 100vw;
+      min-width: 320px;
+    }
   }
 
   &__header {

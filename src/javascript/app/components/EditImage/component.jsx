@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GameBoyImage from '../GameBoyImage';
-import PaletteSelect from '../PaletteSelect';
 import Buttons from '../Buttons';
-import GreySelect from '../GreySelect';
-import FrameSelect from '../FrameSelect';
+import EditImageTabs from '../EditImageTabs';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import { load } from '../../../tools/storage';
 
@@ -109,21 +107,13 @@ class EditImage extends React.Component {
               tiles={this.state.tiles}
               palette={this.props.palette}
             />
-            <FrameSelect
+            <EditImageTabs
+              hashes={this.props.hashes}
+              palette={this.props.palette}
+              frame={this.props.frame}
+              updatePalette={this.props.updatePalette}
               updateFrame={this.props.updateFrame}
-              frame={this.props.frame || ''}
             />
-            { this.props.hashes ? (
-              <GreySelect
-                values={this.props.palette}
-                onChange={this.props.updatePalette}
-              />
-            ) : (
-              <PaletteSelect
-                value={this.props.palette.shortName}
-                onChange={this.props.updatePalette}
-              />
-            ) }
             <Buttons
               confirm={this.props.save}
               deny={this.props.cancel}

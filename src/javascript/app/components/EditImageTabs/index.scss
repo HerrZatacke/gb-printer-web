@@ -1,0 +1,49 @@
+.edit-image-tabs {
+  position: relative;
+  overflow-x: hidden;
+
+  &__list {
+    width: 300%;
+    display: flex;
+    transition: margin 300ms ease-in-out;
+  }
+
+  &__tab {
+    flex: 33.33% 0 0;
+    padding: 80px 20px 0 20px;
+  }
+
+  &__button {
+    position: absolute;
+    top: 0;
+    width: calc(33.33% - 20px);
+    margin: 20px 0 0 10px;
+    background: $color-primary;
+    color: $color-white;
+    border: none;
+    padding: 0 5px;
+    height: 40px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-secondary;
+    }
+  }
+
+  &__tab--active &__button {
+    background-color: $color-secondary;
+  }
+
+  &__tab:nth-child(1) &__button {
+    left: 10px;
+  }
+
+  &__tab:nth-child(2) &__button {
+    left: 33.33%;
+  }
+
+  &__tab:nth-child(3) &__button {
+    left: calc(66.66% - 10px);
+  }
+
+}
