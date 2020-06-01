@@ -18,6 +18,7 @@ const mapStateToProps = (state) => {
   }
 
   return ({
+    batch: state.editImage.batch,
     hash: state.editImage.hash,
     title: state.editImage.title,
     hashes: state.editImage.hashes,

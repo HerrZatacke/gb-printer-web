@@ -107,6 +107,21 @@ class EditForm extends React.Component {
               tiles={this.state.tiles}
               palette={this.props.palette}
             />
+            { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
+              <div
+                className="edit-image__batch-warn"
+                style={{
+                  borderLeftColor: this.props.palette.palette[1],
+                  borderTopColor: this.props.palette.palette[1],
+                  backgroundColor: this.props.palette.palette[2],
+                  borderRightColor: this.props.palette.palette[3],
+                  borderBottomColor: this.props.palette.palette[3],
+                  color: this.props.palette.palette[0],
+                }}
+              >
+                { `You are editing ${this.props.batch.selection.length} images` }
+              </div>
+            ) : null }
             <EditImageTabs
               hashes={this.props.hashes}
               palette={this.props.palette}
@@ -126,6 +141,7 @@ class EditForm extends React.Component {
 }
 
 EditForm.propTypes = {
+  batch: PropTypes.object,
   cancel: PropTypes.func.isRequired,
   hash: PropTypes.string,
   hashes: PropTypes.object,
@@ -140,6 +156,7 @@ EditForm.propTypes = {
 };
 
 EditForm.defaultProps = {
+  batch: null,
   title: null,
   hash: null,
   hashes: null,

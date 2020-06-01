@@ -6,7 +6,7 @@ import SVG from '../SVG';
 const BATCH_ACTIONS = [
   'download',
   'delete',
-  // 'edit',
+  'edit',
 ];
 
 const BatchButtons = (props) => (

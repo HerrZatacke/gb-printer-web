@@ -21,6 +21,15 @@ const batch = (store) => (next) => (action) => {
     });
   }
 
+  if (action.type === 'UPDATE_IMAGE') {
+    const { editImage } = store.getState();
+    if (editImage.selection && editImage.selection.length) {
+
+      // Do not propagate update (for now?)
+      return;
+    }
+  }
+
   if (action.type === 'BATCH_TASK') {
     const { images, imageSelection, currentPage, pageSize } = store.getState();
 
@@ -39,8 +48,18 @@ const batch = (store) => (next) => (action) => {
           });
           break;
         case 'edit':
-          // eslint-disable-next-line no-alert
-          alert('Not yet...');
+          store.dispatch({
+            type: 'SET_EDIT_IMAGE',
+            payload: {
+              ...images.find(({ hash }) => hash === imageSelection[0]),
+              batch: {
+                selection: imageSelection,
+                title: false,
+                palette: false,
+                frame: false,
+              },
+            },
+          });
           break;
         default:
           break;
