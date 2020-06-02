@@ -32,19 +32,19 @@ const mapDispatchToProps = (dispatch) => ({
   updateTitle: (title) => {
     dispatch({
       type: 'UPDATE_EDIT_IMAGE',
-      payload: { title },
+      payload: { title, confirmed: true },
     });
   },
-  updatePalette: (palette) => {
+  updatePalette: (palette, confirmed) => {
     dispatch({
       type: 'UPDATE_EDIT_IMAGE',
-      payload: { palette },
+      payload: { palette, confirmed },
     });
   },
   updateFrame: (frame) => {
     dispatch({
       type: 'UPDATE_EDIT_IMAGE',
-      payload: { frame },
+      payload: { frame, confirmed: true },
     });
   },
   save: () => {

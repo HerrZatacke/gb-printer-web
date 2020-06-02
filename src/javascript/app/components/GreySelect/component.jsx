@@ -18,7 +18,7 @@ class GreySelect extends React.Component {
   }
 
   sendUpdate() {
-    this.props.onChange(this.state);
+    this.props.onChange(this.state, true);
   }
 
   render() {

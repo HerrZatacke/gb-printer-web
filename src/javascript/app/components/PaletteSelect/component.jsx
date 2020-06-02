@@ -19,7 +19,7 @@ class PaletteSelect extends React.Component {
           className="palette-select"
           value={this.props.value}
           onChange={(ev) => {
-            this.props.onChange(ev.target.value);
+            this.props.onChange(ev.target.value, true);
             this.setState({
               initiallySelected: ev.target.value,
             });
@@ -52,13 +52,13 @@ class PaletteSelect extends React.Component {
                   className="fancy-palette-select__button"
                   title={name}
                   onClick={() => {
-                    this.props.onChange(shortName);
+                    this.props.onChange(shortName, true);
                     this.setState({
                       initiallySelected: shortName,
                     });
                   }}
                   onMouseEnter={() => {
-                    this.props.onChange(shortName);
+                    this.props.onChange(shortName, false);
                   }}
                   onMouseLeave={() => {
                     this.props.onChange(this.state.initiallySelected);

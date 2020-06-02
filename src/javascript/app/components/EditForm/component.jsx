@@ -110,16 +110,30 @@ class EditForm extends React.Component {
             { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
               <div
                 className="edit-image__batch-warn"
-                style={{
-                  borderLeftColor: this.props.palette.palette[1],
-                  borderTopColor: this.props.palette.palette[1],
-                  backgroundColor: this.props.palette.palette[2],
-                  borderRightColor: this.props.palette.palette[3],
-                  borderBottomColor: this.props.palette.palette[3],
-                  color: this.props.palette.palette[0],
-                }}
+                style={paletteColors ? {
+                  borderLeftColor: paletteColors[1],
+                  borderTopColor: paletteColors[1],
+                  backgroundColor: paletteColors[2],
+                  borderRightColor: paletteColors[3],
+                  borderBottomColor: paletteColors[3],
+                  color: paletteColors[0],
+                } : null}
               >
                 { `You are editing ${this.props.batch.selection.length} images` }
+                { this.props.batch.title || this.props.batch.palette || this.props.batch.frame ? (
+                  <p className="edit-image__batch-update-list">
+                    {'Will update: '}
+                    {
+                      [
+                        this.props.batch.title ? 'title' : null,
+                        this.props.batch.palette ? 'palette' : null,
+                        this.props.batch.frame ? 'frame' : null,
+                      ]
+                        .filter(Boolean)
+                        .join(', ')
+                    }
+                  </p>
+                ) : null}
               </div>
             ) : null }
             <EditImageTabs

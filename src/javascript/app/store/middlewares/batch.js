@@ -1,5 +1,7 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 
+const UPDATATABLES = ['frame', 'palette', 'title'];
+
 const batch = (store) => (next) => (action) => {
 
   if (action.type === 'IMAGE_SELECTION_SHIFTCLICK') {
@@ -22,10 +24,49 @@ const batch = (store) => (next) => (action) => {
   }
 
   if (action.type === 'UPDATE_IMAGE') {
-    const { editImage } = store.getState();
-    if (editImage.selection && editImage.selection.length) {
+    const { editImage, images } = store.getState();
+    if (editImage.batch && editImage.batch.selection && editImage.batch.selection.length) {
 
-      // Do not propagate update (for now?)
+      const updatedImagess = editImage.batch.selection.map((selcetionHash, selectionIndex) => {
+        const updateImage = images.find(({ hash }) => hash === selcetionHash);
+
+        if (!updateImage) {
+          return false;
+        }
+
+        const updates = {};
+        UPDATATABLES.forEach((updatable) => {
+          switch (updatable) {
+            case 'title':
+              updates.title = editImage.title.replace(/%n/gi, selectionIndex + 1);
+              break;
+
+            case 'palette':
+              // prevent palette from updating if types are incompatible
+              if (typeof updateImage.palette === typeof editImage.palette) {
+                updates.palette = editImage.palette;
+              }
+
+              break;
+            default:
+              updates.frame = editImage.frame;
+              break;
+          }
+        });
+
+        return {
+          ...updateImage,
+          ...updates,
+        };
+      })
+        .filter(Boolean);
+
+      store.dispatch({
+        type: 'UPDATE_IMAGES_BATCH',
+        payload: updatedImagess,
+      });
+
+      // Do not propagate update
       return;
     }
   }
