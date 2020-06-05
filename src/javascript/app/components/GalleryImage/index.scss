@@ -74,10 +74,13 @@
 
   //.rgbn-select,
   .gallery-image-buttons {
-    display: none;
     position: absolute;
     left: -5px;
     height: auto;
+
+    body.no-touch & {
+      display: none;
+    }
   }
 
   .gallery-image-buttons {
@@ -89,7 +92,7 @@
   //}
 
   //&:hover .rgbn-select,
-  &:hover .gallery-image-buttons {
+  body.no-touch &:hover .gallery-image-buttons {
     display: block;
   }
 

@@ -6,6 +6,11 @@
   cursor: default;
   padding: 0 10px;
 
+  body.is-touch & {
+    transform-origin: 10px 0;
+    transform: scale(2);
+  }
+
   &__button {
     width: 20px;
     height: 20px;
