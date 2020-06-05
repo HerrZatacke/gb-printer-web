@@ -65,7 +65,7 @@ const GalleryImageButtons = (props) => (
         <SVG name="save" />
       </button>
     ) : null }
-    { props.shareImage ? (
+    { props.shareImage && props.canShare ? (
       <button
         type="button"
         className="gallery-image-buttons__button"
@@ -78,6 +78,7 @@ const GalleryImageButtons = (props) => (
 );
 
 GalleryImageButtons.propTypes = {
+  canShare: PropTypes.bool.isRequired,
   deleteImage: PropTypes.func,
   editImage: PropTypes.func,
   isSelected: PropTypes.bool.isRequired,

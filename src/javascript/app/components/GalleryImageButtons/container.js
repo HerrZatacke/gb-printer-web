@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state, { hash }) => ({
   isSelected: state.imageSelection.includes(hash),
+  canShare: state.canShare,
 });
 
 const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
@@ -23,8 +24,7 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
       payload: hash,
     });
   } : null,
-  // shareImage: buttons.includes('share') ? () => {
-  shareImage: (buttons.includes('share') && window.navigator.canShare) ? () => {
+  shareImage: buttons.includes('share') ? () => {
     dispatch({
       type: 'SHARE_IMAGE',
       payload: hash,
