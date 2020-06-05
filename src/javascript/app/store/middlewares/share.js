@@ -56,8 +56,6 @@ const batch = (store) => (next) => (action) => {
           try {
             window.navigator.share(shareData)
               // eslint-disable-next-line no-alert
-              .then(() => alert('success'))
-              // eslint-disable-next-line no-alert
               .catch((error) => alert(JSON.stringify({ s: 3, error })));
           } catch (error) {
             // eslint-disable-next-line no-alert
