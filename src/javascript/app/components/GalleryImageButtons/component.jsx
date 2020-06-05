@@ -65,6 +65,15 @@ const GalleryImageButtons = (props) => (
         <SVG name="save" />
       </button>
     ) : null }
+    { props.shareImage ? (
+      <button
+        type="button"
+        className="gallery-image-buttons__button"
+        onClick={props.shareImage}
+      >
+        <SVG name="save" />
+      </button>
+    ) : null }
   </div>
 );
 
@@ -72,16 +81,18 @@ GalleryImageButtons.propTypes = {
   deleteImage: PropTypes.func,
   editImage: PropTypes.func,
   isSelected: PropTypes.bool.isRequired,
-  startDownload: PropTypes.func,
   saveRGBNImage: PropTypes.func,
+  shareImage: PropTypes.func,
+  startDownload: PropTypes.func,
   updateImageToSelection: PropTypes.func,
 };
 
 GalleryImageButtons.defaultProps = {
   deleteImage: null,
   editImage: null,
-  startDownload: null,
   saveRGBNImage: null,
+  shareImage: null,
+  startDownload: null,
   updateImageToSelection: null,
 };
 

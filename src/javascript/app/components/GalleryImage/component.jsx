@@ -119,7 +119,7 @@ class GalleryImage extends React.Component {
         >
           {this.getDateText()}
         </span>
-        <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'edit']} />
+        <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'edit', 'share']} />
         { /* this.props.hashes ? null : (
           <RGBNSelect hash={this.props.hash} />
         ) */ }

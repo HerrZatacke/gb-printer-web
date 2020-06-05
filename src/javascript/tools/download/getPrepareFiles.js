@@ -41,6 +41,7 @@ const getPrepareFiles = (exportScaleFactors) => (palette, image) => (tiles) => {
               filename: `${filename}.${fileType}`,
               arrayBuffer,
               blob,
+              canvas: scaledCanvas,
             });
           });
         } else {

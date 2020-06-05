@@ -23,6 +23,12 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
       payload: hash,
     });
   } : null,
+  // shareImage: (buttons.includes('share') && window.navigator.share) ? () => {
+  //   dispatch({
+  //     type: 'SHARE_IMAGE',
+  //     payload: hash,
+  //   });
+  // } : null,
   saveRGBNImage: buttons.includes('saveRGBNImage') ? () => {
     dispatch({
       type: 'SAVE_RGBN_IMAGE',
