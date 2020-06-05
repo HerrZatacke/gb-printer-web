@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
     });
   } : null,
   // shareImage: buttons.includes('share') ? () => {
-  shareImage: (buttons.includes('share') && window.navigator.share) ? () => {
+  shareImage: (buttons.includes('share') && window.navigator.canShare) ? () => {
     dispatch({
       type: 'SHARE_IMAGE',
       payload: hash,

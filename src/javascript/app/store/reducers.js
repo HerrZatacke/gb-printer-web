@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import activePalette from './reducers/activePaletteReducer';
+import canShare from './reducers/canShareReducer';
 import confirmation from './reducers/confirmationReducer';
 import currentPage from './reducers/currentPageReducer';
 import dragover from './reducers/dragoverReducer';
@@ -22,6 +23,7 @@ import socketUrl from './reducers/socketUrlReducer';
 
 export default combineReducers({
   activePalette,
+  canShare,
   confirmation,
   currentPage,
   dragover,
