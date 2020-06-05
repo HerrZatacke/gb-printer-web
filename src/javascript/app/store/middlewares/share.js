@@ -52,7 +52,7 @@ const batch = (store) => (next) => (action) => {
           alert(JSON.stringify({ s: 1, error }));
         }
 
-        if (shareData && window.navigator.canShare && window.navigator.canShare(shareData)) {
+        if (shareData && window.navigator.share) {
           try {
             window.navigator.share(shareData)
               // eslint-disable-next-line no-alert
@@ -63,7 +63,11 @@ const batch = (store) => (next) => (action) => {
           }
         } else {
           // eslint-disable-next-line no-alert
-          alert('sharing not enabled in your browser');
+          alert(`sharing not enabled in your browser... because:
+share is: ${typeof window.navigator.share}
+shareData is: ${typeof shareData}
+canShare is: ${typeof window.navigator.canShare}
+canShare says: ${window.navigator.canShare ? window.navigator.canShare(shareData) : ''}`);
         }
 
       });
