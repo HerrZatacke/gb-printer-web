@@ -71,7 +71,7 @@ const GalleryImageButtons = (props) => (
         className="gallery-image-buttons__button"
         onClick={props.shareImage}
       >
-        <SVG name="save" />
+        <SVG name="share" />
       </button>
     ) : null }
   </div>

@@ -38,28 +38,34 @@ const batch = (store) => (next) => (action) => {
       .then(prepareFiles(imagePalette, image))
       .then((res) => {
 
-        const canvas = res[0].canvas;
+        const { blob, filename, title } = res[0];
 
-        if (window.navigator.share && canvas) {
+        let file;
 
+        try {
+          file = new File([blob], filename, { type: 'image/png', lastModified: new Date() });
+        } catch (error) {
+          // eslint-disable-next-line no-alert
+          alert(JSON.stringify({ s: 1, error }));
+        }
+
+        if (window.navigator.canShare && window.navigator.canShare() && blob) {
           try {
             window.navigator.share({
-              url: canvas.toDataURL('png', 1),
-              title: 'shary',
+              files: [file],
+              title,
             })
               // eslint-disable-next-line no-alert
-              .then((success) => alert(success))
+              .then(() => alert('success'))
               // eslint-disable-next-line no-alert
-              .catch((error) => alert(error));
+              .catch((error) => alert(JSON.stringify({ s: 3, error })));
           } catch (error) {
             // eslint-disable-next-line no-alert
-            alert(error);
+            alert(JSON.stringify({ s: 4, error }));
           }
         } else {
           // eslint-disable-next-line no-alert
-          alert(typeof window.navigator.share);
-          // eslint-disable-next-line no-console
-          console.log(res[0].canvas);
+          alert('sharing not enabled in your browser');
         }
 
       });
