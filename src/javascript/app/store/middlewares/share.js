@@ -40,21 +40,21 @@ const batch = (store) => (next) => (action) => {
 
         const { blob, filename, title } = res[0];
 
-        let file;
+        let shareData;
 
         try {
-          file = new File([blob], filename, { type: 'image/png', lastModified: new Date() });
+          shareData = {
+            files: [new File([blob], filename, { type: 'image/png', lastModified: new Date() })],
+            title,
+          };
         } catch (error) {
           // eslint-disable-next-line no-alert
           alert(JSON.stringify({ s: 1, error }));
         }
 
-        if (window.navigator.canShare && window.navigator.canShare() && blob) {
+        if (shareData && window.navigator.canShare && window.navigator.canShare(shareData)) {
           try {
-            window.navigator.share({
-              files: [file],
-              title,
-            })
+            window.navigator.share(shareData)
               // eslint-disable-next-line no-alert
               .then(() => alert('success'))
               // eslint-disable-next-line no-alert
