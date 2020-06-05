@@ -18,12 +18,6 @@
     border-radius: $default-border-radius-small;
     outline: none;
 
-    &--unchecked {
-      .tick {
-        display: none;
-      }
-    }
-
     &--checked {
       fill: $color-grey-90;
       background: $color-tertiary;
