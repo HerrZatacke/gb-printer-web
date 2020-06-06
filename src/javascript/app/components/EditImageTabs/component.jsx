@@ -95,6 +95,7 @@ class EditImageTabs extends React.Component {
               Tags
             </button>
             <TagsSelect
+              updateTags={this.props.updateTags}
               tags={this.props.tags}
               batchTags={this.props.batchTags}
             />
@@ -111,7 +112,11 @@ EditImageTabs.propTypes = {
   hashes: PropTypes.object,
   palette: PropTypes.object,
   frame: PropTypes.string,
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tags: PropTypes.shape({
+    initial: PropTypes.array.isRequired,
+    add: PropTypes.array.isRequired,
+    remove: PropTypes.array.isRequired,
+  }).isRequired,
   batchTags: PropTypes.shape({
     initial: PropTypes.array.isRequired,
     add: PropTypes.array.isRequired,
@@ -121,7 +126,7 @@ EditImageTabs.propTypes = {
   // save: PropTypes.func.isRequired,
   // title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
-  // updateTitle: PropTypes.func.isRequired,
+  updateTags: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
 };
 

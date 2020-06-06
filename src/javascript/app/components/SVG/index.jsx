@@ -48,6 +48,18 @@ const SVG = (props) => {
           <circle r="8" cx="10" cy="10" />
         </svg>
       );
+    case 'add':
+      return (
+        <svg className="svg" viewBox="0 0 20 20">
+          <path d="M8 2v6H2v4h6v6h4v-6h6V8h-6V2z" />
+        </svg>
+      );
+    case 'remove':
+      return (
+        <svg className="svg" viewBox="0 0 20 20">
+          <path d="M2 8v4h16V8z" />
+        </svg>
+      );
     case 'save':
       return (
         <svg className="svg" viewBox="0 0 20 20">

@@ -76,103 +76,105 @@ class EditForm extends React.Component {
 
   render() {
 
+    if (!this.state.loaded) {
+      return null;
+    }
+
     const paletteColors = this.props.palette ? this.props.palette.palette : null;
 
-    const batchWillUpdateTags = (
+    const willUpdateTags = (
       this.props.batch &&
       !!(
-        this.props.batch.tags.add.length ||
-        this.props.batch.tags.remove.length
+        this.props.tags.add.length ||
+        this.props.tags.remove.length
       )
     );
 
-    const batchWillUpdate = (
+    const willUpdateBatch = (
       this.props.batch &&
       (
         this.props.batch.title ||
         this.props.batch.palette ||
         this.props.batch.frame ||
-        batchWillUpdateTags
+        willUpdateTags
       )
     );
 
     return (
-      (this.state.loaded) ? (
-        <div className="edit-image">
-          <div className="edit-image__backdrop" />
-          <div
-            className="edit-image__box"
-            style={{
-              backgroundImage: paletteColors ? `linear-gradient(to bottom, ${paletteColors[0]} 500px, #ffffff 600px)` : null,
-            }}
-          >
-            <div className="edit-image__box-content">
-              <label
-                className="edit-image__header"
-                style={{
-                  color: paletteColors ? paletteColors[3] : null,
+      <div className="edit-image">
+        <div className="edit-image__backdrop" />
+        <div
+          className="edit-image__box"
+          style={{
+            backgroundImage: paletteColors ? `linear-gradient(to bottom, ${paletteColors[0]} 500px, #ffffff 600px)` : null,
+          }}
+        >
+          <div className="edit-image__box-content">
+            <label
+              className="edit-image__header"
+              style={{
+                color: paletteColors ? paletteColors[3] : null,
+              }}
+            >
+              <input
+                className="edit-image__header-edit"
+                placeholder="Add a title"
+                value={this.props.title}
+                onChange={(ev) => {
+                  this.props.updateTitle(ev.target.value);
                 }}
+              />
+            </label>
+            <GameBoyImage
+              tiles={this.state.tiles}
+              palette={this.props.palette}
+            />
+            { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
+              <div
+                className="edit-image__batch-warn"
+                style={paletteColors ? {
+                  borderLeftColor: paletteColors[1],
+                  borderTopColor: paletteColors[1],
+                  backgroundColor: paletteColors[2],
+                  borderRightColor: paletteColors[3],
+                  borderBottomColor: paletteColors[3],
+                  color: paletteColors[0],
+                } : null}
               >
-                <input
-                  className="edit-image__header-edit"
-                  placeholder="Add a title"
-                  value={this.props.title}
-                  onChange={(ev) => {
-                    this.props.updateTitle(ev.target.value);
-                  }}
-                />
-              </label>
-              <GameBoyImage
-                tiles={this.state.tiles}
-                palette={this.props.palette}
-              />
-              { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
-                <div
-                  className="edit-image__batch-warn"
-                  style={paletteColors ? {
-                    borderLeftColor: paletteColors[1],
-                    borderTopColor: paletteColors[1],
-                    backgroundColor: paletteColors[2],
-                    borderRightColor: paletteColors[3],
-                    borderBottomColor: paletteColors[3],
-                    color: paletteColors[0],
-                  } : null}
-                >
-                  { `You are editing ${this.props.batch.selection.length} images` }
-                  { batchWillUpdate ? (
-                    <p className="edit-image__batch-update-list">
-                      {'Will update: '}
-                      {
-                        [
-                          this.props.batch.title ? 'title' : null,
-                          this.props.batch.palette ? 'palette' : null,
-                          this.props.batch.frame ? 'frame' : null,
-                          batchWillUpdateTags ? 'tags' : null,
-                        ]
-                          .filter(Boolean)
-                          .join(', ')
-                      }
-                    </p>
-                  ) : null}
-                </div>
-              ) : null }
-              <EditImageTabs
-                hashes={this.props.hashes}
-                palette={this.props.palette}
-                frame={this.props.frame}
-                tags={this.props.tags}
-                batchTags={this.props.batch ? this.props.batch.tags : null}
-                updatePalette={this.props.updatePalette}
-                updateFrame={this.props.updateFrame}
-              />
-            </div>
-            <Buttons
-              confirm={this.props.save}
-              deny={this.props.cancel}
+                { `You are editing ${this.props.batch.selection.length} images` }
+                { willUpdateBatch ? (
+                  <p className="edit-image__batch-update-list">
+                    {'Will update: '}
+                    {
+                      [
+                        this.props.batch.title ? 'title' : null,
+                        this.props.batch.palette ? 'palette' : null,
+                        this.props.batch.frame ? 'frame' : null,
+                        willUpdateTags ? 'tags' : null,
+                      ]
+                        .filter(Boolean)
+                        .join(', ')
+                    }
+                  </p>
+                ) : null}
+              </div>
+            ) : null }
+            <EditImageTabs
+              hashes={this.props.hashes}
+              palette={this.props.palette}
+              frame={this.props.frame}
+              tags={this.props.tags}
+              updatePalette={this.props.updatePalette}
+              updateFrame={this.props.updateFrame}
+              updateTags={this.props.updateTags}
             />
           </div>
+          <Buttons
+            confirm={this.props.save}
+            deny={this.props.cancel}
+          />
         </div>
-      ) : null
+      </div>
     );
   }
 }
@@ -186,11 +188,16 @@ EditForm.propTypes = {
   frame: PropTypes.string,
   frames: PropTypes.object,
   save: PropTypes.func.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tags: PropTypes.shape({
+    initial: PropTypes.array.isRequired,
+    add: PropTypes.array.isRequired,
+    remove: PropTypes.array.isRequired,
+  }),
   title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
+  updateTags: PropTypes.func.isRequired,
 };
 
 EditForm.defaultProps = {
@@ -199,6 +206,11 @@ EditForm.defaultProps = {
   hash: null,
   hashes: null,
   palette: null,
+  tags: {
+    initial: [],
+    add: [],
+    remove: [],
+  },
   frame: null,
   frames: null,
 };

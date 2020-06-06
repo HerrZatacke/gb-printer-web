@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
   return ({
     batch: state.editImage.batch,
     hash: state.editImage.hash,
-    tags: state.editImage.tags || [],
+    tags: state.editImage.tags,
     title: state.editImage.title,
     hashes: state.editImage.hashes,
     frame: state.editImage.frame,
@@ -42,6 +42,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'UPDATE_EDIT_IMAGE',
       payload: { frame, confirmed: true },
+    });
+  },
+  updateTags: (mode, tag) => {
+    dispatch({
+      type: 'UPDATE_EDIT_IMAGE',
+      payload: { tag, mode, confirmed: true },
     });
   },
   save: () => {

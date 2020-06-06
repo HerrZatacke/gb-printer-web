@@ -1,13 +1,18 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
+import applyTagChanges from '../../../tools/applyTagChanges';
 
-const UPDATATABLES = ['frame', 'palette', 'title'];
+const UPDATATABLES = ['frame', 'palette', 'title', 'tags'];
 
 const collectTags = (batchImages) => {
   const allTags = batchImages.map(({ tags }) => tags).flat();
-  return allTags
-    .filter((tag, index) => (
-      allTags.findIndex((findTag) => findTag === tag) === index
-    ));
+  return {
+    initial: allTags
+      .filter((tag, index) => (
+        allTags.findIndex((findTag) => findTag === tag) === index
+      )),
+    add: [],
+    remove: [],
+  };
 };
 
 const batch = (store) => (next) => (action) => {
@@ -43,6 +48,8 @@ const batch = (store) => (next) => (action) => {
         }
 
         const updates = {};
+        let tags = updateImage.tags;
+
         UPDATATABLES.forEach((updatable) => {
           switch (updatable) {
             case 'title':
@@ -71,6 +78,13 @@ const batch = (store) => (next) => (action) => {
 
               updates.frame = editImage.frame;
               break;
+
+            case 'tags':
+              tags = applyTagChanges({
+                ...editImage.tags,
+                initial: updateImage.tags,
+              });
+              break;
             default:
               break;
           }
@@ -79,6 +93,7 @@ const batch = (store) => (next) => (action) => {
         return {
           ...updateImage,
           ...updates,
+          tags,
         };
       })
         .filter(Boolean);
@@ -118,15 +133,11 @@ const batch = (store) => (next) => (action) => {
               ...batchImages[0],
               batch: {
                 selection: imageSelection,
-                tags: {
-                  initial: collectTags(batchImages),
-                  add: [],
-                  remove: [],
-                },
                 title: false,
                 palette: false,
                 frame: false,
               },
+              tags: collectTags(batchImages),
             },
           });
           break;
