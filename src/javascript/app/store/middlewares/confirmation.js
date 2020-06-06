@@ -24,10 +24,15 @@ const confirmation = (store) => {
 
   document.addEventListener('keydown', (ev) => {
     if ((ev.key === 'Escape') || (ev.key === 'Esc')) {
+      const state = store.getState();
+
       store.dispatch({
         type: 'CLOSE_OVERLAY',
       });
-      ev.preventDefault();
+
+      if (state.confirmation) {
+        ev.preventDefault();
+      }
     }
   });
 
