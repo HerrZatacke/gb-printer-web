@@ -13,11 +13,15 @@
   &__entry{
     position: relative;
 
-    &--queuesize {
-      padding: 20px;
-      line-height: 20px;
-      color: red;
-    }
+  }
+
+  &__queuesize {
+    padding: 20px;
+    line-height: 20px;
+    color: red;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
   &__entry:after {

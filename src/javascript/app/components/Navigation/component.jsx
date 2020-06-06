@@ -30,12 +30,12 @@ const Navigation = (props) => (
           Dump
         </NavLink>
       </li>
-      { props.importQueueSize > 0 ? (
-        <li className="navigation__entry navigation__entry--queuesize">
-          {props.importQueueSize}
-        </li>
-      ) : null }
     </ul>
+    { props.importQueueSize > 0 ? (
+      <div className="navigation__queuesize">
+        {props.importQueueSize}
+      </div>
+    ) : null }
   </nav>
 );
 
