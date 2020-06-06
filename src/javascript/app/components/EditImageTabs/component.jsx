@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import FrameSelect from '../FrameSelect';
 import GreySelect from '../GreySelect';
 import PaletteSelect from '../PaletteSelect';
+import TagsSelect from '../TagsSelect';
 
 class EditImageTabs extends React.Component {
   constructor(props) {
@@ -80,7 +81,7 @@ class EditImageTabs extends React.Component {
               frame={this.props.frame || ''}
             />
           </li>
-          { /* <li
+          <li
             className={
               classnames('edit-image-tabs__tab', {
                 'edit-image-tabs__tab--active': this.state.tabIndex === 2,
@@ -93,8 +94,11 @@ class EditImageTabs extends React.Component {
             <button type="button" className="edit-image-tabs__button">
               Tags
             </button>
-            <p>Tags will be editable here...</p>
-          </li> */ }
+            <TagsSelect
+              tags={this.props.tags}
+              batchTags={this.props.batchTags}
+            />
+          </li>
         </ul>
       </div>
     );
@@ -107,6 +111,12 @@ EditImageTabs.propTypes = {
   hashes: PropTypes.object,
   palette: PropTypes.object,
   frame: PropTypes.string,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  batchTags: PropTypes.shape({
+    initial: PropTypes.array.isRequired,
+    add: PropTypes.array.isRequired,
+    remove: PropTypes.array.isRequired,
+  }),
   // frames: PropTypes.object,
   // save: PropTypes.func.isRequired,
   // title: PropTypes.string,
@@ -119,6 +129,7 @@ EditImageTabs.defaultProps = {
   // title: null,
   // hash: null,
   hashes: null,
+  batchTags: null,
   palette: null,
   frame: null,
   // frames: null,

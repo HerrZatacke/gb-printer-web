@@ -160,6 +160,8 @@ class EditForm extends React.Component {
                 hashes={this.props.hashes}
                 palette={this.props.palette}
                 frame={this.props.frame}
+                tags={this.props.tags}
+                batchTags={this.props.batch ? this.props.batch.tags : null}
                 updatePalette={this.props.updatePalette}
                 updateFrame={this.props.updateFrame}
               />
@@ -184,6 +186,7 @@ EditForm.propTypes = {
   frame: PropTypes.string,
   frames: PropTypes.object,
   save: PropTypes.func.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,

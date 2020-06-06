@@ -2,10 +2,6 @@ import { connect } from 'react-redux';
 import getRGBNFrames from '../../../tools/getRGBNFrames';
 
 const mapStateToProps = (state) => {
-  if (!state.editImage) {
-    return {};
-  }
-
   let palette;
   let frames;
 
@@ -20,6 +16,7 @@ const mapStateToProps = (state) => {
   return ({
     batch: state.editImage.batch,
     hash: state.editImage.hash,
+    tags: state.editImage.tags || [],
     title: state.editImage.title,
     hashes: state.editImage.hashes,
     frame: state.editImage.frame,
