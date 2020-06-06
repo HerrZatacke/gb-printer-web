@@ -12,6 +12,11 @@ const confirmation = (store) => {
   }
 
   document.addEventListener('keydown', (ev) => {
+    const state = store.getState();
+    if (!state.lightboxImage) {
+      return;
+    }
+
     switch (ev.key) {
       case 'Esc':
       case 'Escape':
