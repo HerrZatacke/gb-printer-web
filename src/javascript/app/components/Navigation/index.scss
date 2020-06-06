@@ -2,12 +2,45 @@
   background-color: $color-primary;
   box-shadow: 0 -6px 6px 6px rgba($color-black, 0.7);
   position: fixed;
+  min-height: 60px;
   width: 100vw;
   z-index: $z-index-navigation;
+
+  &__burger-button {
+    display: none;
+
+    @media (max-width: 480px) {
+      display: block;
+      width: 60px;
+      height: 60px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      fill: $color-text-bright;
+      padding: 10px;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover {
+        background: $color-secondary;
+      }
+    }
+  }
 
   &__list {
     width: 100vw;
     display: flex;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      display: none;
+    }
+  }
+
+  &--mobile-open &__list {
+    display: block;
   }
 
   &__entry{
@@ -26,12 +59,19 @@
 
   &__entry:after {
     content: '';
+    position: absolute;
     height: 40px;
     width: 1px;
-    position: absolute;
     right: 0;
     top: 10px;
     background-color: rgba($color-white, 0.15);
+
+    @media (max-width: 480px) {
+      height: 1px;
+      width: 100vw;
+      right: unset;
+      top: 0;
+    }
   }
 
   &__link {

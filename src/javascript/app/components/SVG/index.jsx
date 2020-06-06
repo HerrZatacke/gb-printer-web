@@ -108,6 +108,18 @@ const SVG = (props) => {
           <path d="M23 3L11 20l12 17h2L13 20 25 3z" />
         </svg>
       );
+    case 'burger':
+      return (
+        <svg className="svg" viewBox="0 0 40 40">
+          <path d="M2 6v4h36V6zm0 12v4h36v-4zm0 12v4h36v-4z" />
+        </svg>
+      );
+    case 'close-nav':
+      return (
+        <svg className="svg" viewBox="0 0 40 40">
+          <path d="M5.5 2.5l-3 3L17 20 2.5 34.5l3 3L20 23l14.5 14.5 3-3L23 20 37.5 5.5l-3-3L20 17z" />
+        </svg>
+      );
     default:
       return null;
   }
