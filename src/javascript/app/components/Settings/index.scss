@@ -15,10 +15,12 @@
 
   &__buttongroup {
     flex-wrap: wrap;
+    margin: 0 -10px;
   }
 
   &__buttongroup &__button {
     flex: 200px 1 0;
+    margin: 5px 10px;
   }
 
   &__label {
