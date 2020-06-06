@@ -88,61 +88,63 @@ class EditForm extends React.Component {
               backgroundImage: paletteColors ? `linear-gradient(to bottom, ${paletteColors[0]} 500px, #ffffff 600px)` : null,
             }}
           >
-            <label
-              className="edit-image__header"
-              style={{
-                color: paletteColors ? paletteColors[3] : null,
-              }}
-            >
-              <input
-                className="edit-image__header-edit"
-                placeholder="Add a title"
-                value={this.props.title}
-                onChange={(ev) => {
-                  this.props.updateTitle(ev.target.value);
+            <div className="edit-image__box-content">
+              <label
+                className="edit-image__header"
+                style={{
+                  color: paletteColors ? paletteColors[3] : null,
                 }}
-              />
-            </label>
-            <GameBoyImage
-              tiles={this.state.tiles}
-              palette={this.props.palette}
-            />
-            { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
-              <div
-                className="edit-image__batch-warn"
-                style={paletteColors ? {
-                  borderLeftColor: paletteColors[1],
-                  borderTopColor: paletteColors[1],
-                  backgroundColor: paletteColors[2],
-                  borderRightColor: paletteColors[3],
-                  borderBottomColor: paletteColors[3],
-                  color: paletteColors[0],
-                } : null}
               >
-                { `You are editing ${this.props.batch.selection.length} images` }
-                { this.props.batch.title || this.props.batch.palette || this.props.batch.frame ? (
-                  <p className="edit-image__batch-update-list">
-                    {'Will update: '}
-                    {
-                      [
-                        this.props.batch.title ? 'title' : null,
-                        this.props.batch.palette ? 'palette' : null,
-                        this.props.batch.frame ? 'frame' : null,
-                      ]
-                        .filter(Boolean)
-                        .join(', ')
-                    }
-                  </p>
-                ) : null}
-              </div>
-            ) : null }
-            <EditImageTabs
-              hashes={this.props.hashes}
-              palette={this.props.palette}
-              frame={this.props.frame}
-              updatePalette={this.props.updatePalette}
-              updateFrame={this.props.updateFrame}
-            />
+                <input
+                  className="edit-image__header-edit"
+                  placeholder="Add a title"
+                  value={this.props.title}
+                  onChange={(ev) => {
+                    this.props.updateTitle(ev.target.value);
+                  }}
+                />
+              </label>
+              <GameBoyImage
+                tiles={this.state.tiles}
+                palette={this.props.palette}
+              />
+              { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
+                <div
+                  className="edit-image__batch-warn"
+                  style={paletteColors ? {
+                    borderLeftColor: paletteColors[1],
+                    borderTopColor: paletteColors[1],
+                    backgroundColor: paletteColors[2],
+                    borderRightColor: paletteColors[3],
+                    borderBottomColor: paletteColors[3],
+                    color: paletteColors[0],
+                  } : null}
+                >
+                  { `You are editing ${this.props.batch.selection.length} images` }
+                  { this.props.batch.title || this.props.batch.palette || this.props.batch.frame ? (
+                    <p className="edit-image__batch-update-list">
+                      {'Will update: '}
+                      {
+                        [
+                          this.props.batch.title ? 'title' : null,
+                          this.props.batch.palette ? 'palette' : null,
+                          this.props.batch.frame ? 'frame' : null,
+                        ]
+                          .filter(Boolean)
+                          .join(', ')
+                      }
+                    </p>
+                  ) : null}
+                </div>
+              ) : null }
+              <EditImageTabs
+                hashes={this.props.hashes}
+                palette={this.props.palette}
+                frame={this.props.frame}
+                updatePalette={this.props.updatePalette}
+                updateFrame={this.props.updateFrame}
+              />
+            </div>
             <Buttons
               confirm={this.props.save}
               deny={this.props.cancel}

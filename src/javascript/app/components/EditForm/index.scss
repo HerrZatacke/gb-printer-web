@@ -25,20 +25,26 @@
     background: $page-background;
     border-radius: $default-border-radius;
     color: $color-text;
-    z-index: $z-index-overlay-content;
-    overflow-y: auto;
-    position: relative;
-
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    z-index: $z-index-overlay-box;
 
     @media (max-width: 480px) {
       width: 100vw;
       min-width: 320px;
       max-height: calc(100vh - 150px);
       border-radius: 0;
+    }
+  }
+
+  &__box-content {
+    overflow-y: auto;
+    position: relative;
+    height: calc(100% - 50px);
+    padding-bottom: 15px;
+    z-index: $z-index-overlay-content;
+
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 

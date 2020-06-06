@@ -1,7 +1,10 @@
 .buttons {
   display: flex;
   justify-content: flex-end;
-  margin: 15px 20px;
+  padding: 15px;
+  margin-top: -15px;
+  z-index: $z-index-overlay-buttons;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 1) 10px);
 
   &__button {
     border: none;
