@@ -10,6 +10,13 @@ class Navigation extends React.Component {
     this.state = {
       mobileNavOpen: false,
     };
+    this.closeMobileNav = this.closeMobileNav.bind(this);
+  }
+
+  closeMobileNav() {
+    this.setState({
+      mobileNavOpen: false,
+    });
   }
 
   render() {
@@ -36,27 +43,57 @@ class Navigation extends React.Component {
         </button>
         <ul className="navigation__list">
           <li className="navigation__entry">
-            <NavLink to="/" activeClassName="navigation__link--active" className="navigation__link" exact>
+            <NavLink
+              to="/"
+              activeClassName="navigation__link--active"
+              className="navigation__link"
+              exact
+              onClick={this.closeMobileNav}
+            >
               Home
             </NavLink>
           </li>
           <li className="navigation__entry">
-            <NavLink to="/gallery" activeClassName="navigation__link--active" className="navigation__link" exact>
+            <NavLink
+              to="/gallery"
+              activeClassName="navigation__link--active"
+              className="navigation__link"
+              exact
+              onClick={this.closeMobileNav}
+            >
               Gallery
             </NavLink>
           </li>
           <li className="navigation__entry">
-            <NavLink to="/palettes" activeClassName="navigation__link--active" className="navigation__link" exact>
+            <NavLink
+              to="/palettes"
+              activeClassName="navigation__link--active"
+              className="navigation__link"
+              exact
+              onClick={this.closeMobileNav}
+            >
               Palettes
             </NavLink>
           </li>
           <li className="navigation__entry">
-            <NavLink to="/settings" activeClassName="navigation__link--active" className="navigation__link" exact>
+            <NavLink
+              to="/settings"
+              activeClassName="navigation__link--active"
+              className="navigation__link"
+              exact
+              onClick={this.closeMobileNav}
+            >
               Settings
             </NavLink>
           </li>
           <li className="navigation__entry">
-            <NavLink to="/dump" activeClassName="navigation__link--active" className="navigation__link" exact>
+            <NavLink
+              to="/dump"
+              activeClassName="navigation__link--active"
+              className="navigation__link"
+              exact
+              onClick={this.closeMobileNav}
+            >
               Dump
             </NavLink>
           </li>
