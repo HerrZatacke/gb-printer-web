@@ -38,18 +38,32 @@ const batch = (store) => (next) => (action) => {
         UPDATATABLES.forEach((updatable) => {
           switch (updatable) {
             case 'title':
+              if (!editImage.batch.title) {
+                break;
+              }
+
               updates.title = editImage.title.replace(/%n/gi, selectionIndex + 1);
               break;
 
             case 'palette':
+              if (!editImage.batch.palette) {
+                break;
+              }
+
               // prevent palette from updating if types are incompatible
               if (typeof updateImage.palette === typeof editImage.palette) {
                 updates.palette = editImage.palette;
               }
 
               break;
-            default:
+            case 'frame':
+              if (!editImage.batch.frame) {
+                break;
+              }
+
               updates.frame = editImage.frame;
+              break;
+            default:
               break;
           }
         });
