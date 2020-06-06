@@ -26,7 +26,10 @@ class Settings extends React.Component {
     return (
       <div className="settings">
         <div className="settings__inputgroup">
-          <div className="settings__label">
+          <label
+            htmlFor="settings-pagesize"
+            className="settings__label"
+          >
             Page size
             <span
               className={
@@ -37,9 +40,9 @@ class Settings extends React.Component {
             >
               (set to 0 to disable pagination - might cause performance issues on large sets of images)
             </span>
-          </div>
+          </label>
           <input
-            id="settings-url"
+            id="settings-pagesize"
             className="settings__input"
             type="number"
             min="0"
