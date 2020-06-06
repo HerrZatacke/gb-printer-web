@@ -45,6 +45,8 @@ const cleanState = (initialState) => {
       image.index = initialState.globalIndex;
       // eslint-disable-next-line no-param-reassign
       initialState.globalIndex += 1;
+      // eslint-disable-next-line no-param-reassign
+      image.tags = image.tags || [];
     });
 
   return { ...initialState, images };
