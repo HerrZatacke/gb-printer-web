@@ -13,7 +13,7 @@ const confirmation = (store) => {
 
   document.addEventListener('keydown', (ev) => {
     const state = store.getState();
-    if (!state.lightboxImage) {
+    if (state.lightboxImage === null) {
       return;
     }
 

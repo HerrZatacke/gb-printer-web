@@ -1,14 +1,18 @@
 import { connect } from 'react-redux';
 import getRGBNFrames from '../../../tools/getRGBNFrames';
+import getFilteredImages from '../../../tools/getFilteredImages';
 
 const mapStateToProps = (state) => {
-  const image = state.images.find((_, index) => index === state.lightboxImage);
+  const images = getFilteredImages(state);
+  const image = images.find((_, index) => index === state.lightboxImage);
   let palette;
   let frames;
 
   if (!image) {
     return {
-      isFullscreen: state.isFullscreen,
+      isFullscreen: false,
+      index: 0,
+      size: 0,
     };
   }
 
@@ -29,6 +33,8 @@ const mapStateToProps = (state) => {
     isFullscreen: state.isFullscreen,
     palette,
     frames,
+    index: state.lightboxImage || 0,
+    size: images.length || 0,
   });
 };
 

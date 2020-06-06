@@ -91,20 +91,24 @@ class LightboxImage extends React.Component {
             palette={this.props.palette}
           />
           <div className="lightbox-image__navigation">
-            <button
-              type="button"
-              className="lightbox-image__button lightbox-image__button--left"
-              onClick={this.props.prev}
-            >
-              <SVG name="left" />
-            </button>
-            <button
-              type="button"
-              className="lightbox-image__button lightbox-image__button--right"
-              onClick={this.props.next}
-            >
-              <SVG name="right" />
-            </button>
+            { this.props.index > 0 ? (
+              <button
+                type="button"
+                className="lightbox-image__button lightbox-image__button--left"
+                onClick={this.props.prev}
+              >
+                <SVG name="left" />
+              </button>
+            ) : null }
+            { this.props.index < this.props.size - 1 ? (
+              <button
+                type="button"
+                className="lightbox-image__button lightbox-image__button--right"
+                onClick={this.props.next}
+              >
+                <SVG name="right" />
+              </button>
+            ) : null }
           </div>
           <div className="lightbox-image__created">
             {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
@@ -128,6 +132,8 @@ LightboxImage.propTypes = {
   next: PropTypes.func.isRequired,
   fullscreen: PropTypes.func.isRequired,
   isFullscreen: PropTypes.bool.isRequired,
+  index: PropTypes.number.isRequired,
+  size: PropTypes.number.isRequired,
 };
 
 LightboxImage.defaultProps = {
