@@ -78,6 +78,24 @@ class EditForm extends React.Component {
 
     const paletteColors = this.props.palette ? this.props.palette.palette : null;
 
+    const batchWillUpdateTags = (
+      this.props.batch &&
+      !!(
+        this.props.batch.tags.add.length ||
+        this.props.batch.tags.remove.length
+      )
+    );
+
+    const batchWillUpdate = (
+      this.props.batch &&
+      (
+        this.props.batch.title ||
+        this.props.batch.palette ||
+        this.props.batch.frame ||
+        batchWillUpdateTags
+      )
+    );
+
     return (
       (this.state.loaded) ? (
         <div className="edit-image">
@@ -121,7 +139,7 @@ class EditForm extends React.Component {
                   } : null}
                 >
                   { `You are editing ${this.props.batch.selection.length} images` }
-                  { this.props.batch.title || this.props.batch.palette || this.props.batch.frame ? (
+                  { batchWillUpdate ? (
                     <p className="edit-image__batch-update-list">
                       {'Will update: '}
                       {
@@ -129,6 +147,7 @@ class EditForm extends React.Component {
                           this.props.batch.title ? 'title' : null,
                           this.props.batch.palette ? 'palette' : null,
                           this.props.batch.frame ? 'frame' : null,
+                          batchWillUpdateTags ? 'tags' : null,
                         ]
                           .filter(Boolean)
                           .join(', ')
