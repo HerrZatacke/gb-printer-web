@@ -2,6 +2,14 @@ import getFilteredImages from '../../../tools/getFilteredImages';
 
 const UPDATATABLES = ['frame', 'palette', 'title'];
 
+const collectTags = (batchImages) => {
+  const allTags = batchImages.map(({ tags }) => tags).flat();
+  return allTags
+    .filter((tag, index) => (
+      allTags.findIndex((findTag) => findTag === tag) === index
+    ));
+};
+
 const batch = (store) => (next) => (action) => {
 
   if (action.type === 'IMAGE_SELECTION_SHIFTCLICK') {
@@ -87,6 +95,7 @@ const batch = (store) => (next) => (action) => {
 
   if (action.type === 'BATCH_TASK') {
     const { images, imageSelection, currentPage, pageSize } = store.getState();
+    const batchImages = images.filter(({ hash }) => imageSelection.includes(hash));
 
     if (imageSelection.length) {
       switch (action.payload) {
@@ -106,9 +115,14 @@ const batch = (store) => (next) => (action) => {
           store.dispatch({
             type: 'SET_EDIT_IMAGE',
             payload: {
-              ...images.find(({ hash }) => hash === imageSelection[0]),
+              ...batchImages[0],
               batch: {
                 selection: imageSelection,
+                tags: {
+                  initial: collectTags(batchImages),
+                  add: [],
+                  remove: [],
+                },
                 title: false,
                 palette: false,
                 frame: false,
