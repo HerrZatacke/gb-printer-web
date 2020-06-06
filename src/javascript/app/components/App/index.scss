@@ -8,6 +8,10 @@
     margin: auto;
     padding: 120px 20px 20px 20px;
     position: relative;
+
+    @media (max-width: 380px) {
+      width: 100%;
+    }
   }
 
   &__content-headline {

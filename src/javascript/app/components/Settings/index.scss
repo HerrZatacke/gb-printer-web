@@ -6,6 +6,11 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+
+    @media (max-width: 740px) {
+      flex-wrap: wrap;
+      margin-left: -20px;
+    }
   }
 
   &__buttongroup {
@@ -17,8 +22,14 @@
   }
 
   &__label {
-    flex-basis: 300px;
+    flex-basis: 30%;
     flex-grow: 0;
+
+    @media (max-width: 740px) {
+      flex-basis: 100%;
+      margin-bottom: 10px;
+      margin-left: 20px;
+    }
   }
 
   &__note {
@@ -48,6 +59,12 @@
     input {
       display: none;
     }
+
+    @media (max-width: 740px) {
+      flex-basis: 20%;
+      margin-bottom: 10px;
+    }
+
   }
 
   &__input {
