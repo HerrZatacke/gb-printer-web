@@ -1,6 +1,10 @@
 @keyframes spin {
-  from {transform:rotate(0deg);}
-  to {transform:rotate(360deg);}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .palette-select {
@@ -20,6 +24,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;
+  overflow-y: hidden; // prevent jumping because of scrollbar
 
   &::-webkit-scrollbar {
     width: 0;
@@ -34,12 +39,16 @@
     overflow: hidden;
     border-radius: 50%;
 
-    &--active,
-    &:hover {
-      box-shadow: 1px 1px 4px 2px $color-grey-40;
+    &--active {
+      border: 5px solid $color-grey-20;
     }
 
+    &--active,
     &:hover {
+      transform: scale(1.1);
+    }
+
+    &:hover .fancy-palette-select__button {
       animation: spin 800ms infinite linear;
     }
   }
@@ -51,6 +60,7 @@
     border: none;
     padding: 0;
     cursor: pointer;
+    outline: none;
   }
 
   &__color {

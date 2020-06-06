@@ -5,6 +5,7 @@
   margin-top: -15px;
   z-index: $z-index-overlay-buttons;
   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 1) 10px);
+  pointer-events: none;
 
   &__button {
     border: none;
@@ -13,6 +14,7 @@
     margin-left: 10px;
     cursor: pointer;
     color: $color-white;
+    pointer-events: all;
 
     &:hover {
       opacity: 0.7;
