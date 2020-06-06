@@ -2,10 +2,15 @@ const saveEditImage = (store) => {
 
   document.addEventListener('keydown', (ev) => {
     if (ev.key === 'Enter' && ev.ctrlKey && store.getState().editImage.hash) {
+      const state = store.getState();
+
       store.dispatch({
         type: 'SAVE_EDIT_IMAGE',
       });
-      ev.preventDefault();
+
+      if (state.editImage) {
+        ev.preventDefault();
+      }
     }
   });
 
