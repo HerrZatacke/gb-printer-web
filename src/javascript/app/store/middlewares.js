@@ -14,7 +14,6 @@ import serialportWebocket from './middlewares/serialportWebocket';
 import settings from './middlewares/settings';
 import share from './middlewares/share';
 import startDownload from './middlewares/startDownload';
-import triggerMock from './middlewares/triggerMock';
 import validateCurrentPageIndex from './middlewares/validateCurrentPageIndex';
 
 export default applyMiddleware(
@@ -33,6 +32,5 @@ export default applyMiddleware(
   settings,
   share,
   startDownload,
-  triggerMock,
   validateCurrentPageIndex,
 );

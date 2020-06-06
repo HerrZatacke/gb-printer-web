@@ -13,11 +13,6 @@ const mapDispatchToProps = (dispatch) => ({
       payload: socketUrl,
     });
   },
-  startMock() {
-    dispatch({
-      type: 'START_MOCK',
-    });
-  },
   setPageSize(pageSize) {
     dispatch({
       type: 'SET_PAGESIZE',

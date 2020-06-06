@@ -141,17 +141,6 @@ class Settings extends React.Component {
             </button>
           </div>
         )}
-        {(ENV === 'production') ? null : (
-          <div className="settings__inputgroup">
-            <button
-              type="button"
-              className="settings__button"
-              onClick={this.props.startMock}
-            >
-              Mock
-            </button>
-          </div>
-        )}
         <div className="settings__inputgroup settings__buttongroup">
           <button
             type="button"
@@ -184,7 +173,6 @@ Settings.propTypes = {
   changeExportScaleFactors: PropTypes.func.isRequired,
   exportScaleFactors: PropTypes.array.isRequired,
   socketUrl: PropTypes.string.isRequired,
-  startMock: PropTypes.func.isRequired,
   updateSocketUrl: PropTypes.func.isRequired,
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
