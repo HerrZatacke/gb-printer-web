@@ -16,8 +16,19 @@
     border-radius: 15px;
     position: relative;
     user-select: none;
+
+    &--input {
+      padding: 5px 15px;
+    }
   }
 
+  &__tag--input &__tag-name {
+    border: none;
+    outline: none;
+    background-color: $color-grey-80;
+    width: 100px;
+    border-radius: $default-border-radius-small;
+  }
 
   &__tag--add {
     background-color: $color-tag-change-green;
@@ -59,5 +70,6 @@
     display: block;
     height: 20px;
     line-height: 20px;
+
   }
 }
