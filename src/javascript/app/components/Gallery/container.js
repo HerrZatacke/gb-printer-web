@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
 
-const mapStateToProps = (state) => {
-  const indexOffset = state.currentPage * state.pageSize;
+const mapStateToProps = (state, { page }) => {
+  const indexOffset = page * state.pageSize;
   const images = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
 
   return ({

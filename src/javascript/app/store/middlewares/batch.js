@@ -20,11 +20,11 @@ const batch = (store) => (next) => (action) => {
   if (action.type === 'IMAGE_SELECTION_SHIFTCLICK') {
     const state = store.getState();
     const images = getFilteredImages(state);
-    const { lastSelectedImage, currentPage, pageSize } = state;
+    const { lastSelectedImage, pageSize } = state;
     const selectedIndex = images.findIndex(({ hash }) => hash === action.payload);
     let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);
     if (prevSelectedIndex === -1) {
-      prevSelectedIndex = currentPage * pageSize;
+      prevSelectedIndex = action.page * pageSize;
     }
 
     const from = Math.min(prevSelectedIndex, selectedIndex);
@@ -109,7 +109,7 @@ const batch = (store) => (next) => (action) => {
   }
 
   if (action.type === 'BATCH_TASK') {
-    const { images, imageSelection, currentPage, pageSize } = store.getState();
+    const { images, imageSelection, pageSize } = store.getState();
     const batchImages = images.filter(({ hash }) => imageSelection.includes(hash));
 
     if (imageSelection.length) {
@@ -150,7 +150,7 @@ const batch = (store) => (next) => (action) => {
       case 'checkall':
         store.dispatch({
           type: 'IMAGE_SELECTION_SET',
-          payload: images.slice(currentPage * pageSize, (currentPage + 1) * pageSize).map(({ hash }) => hash),
+          payload: images.slice(action.page * pageSize, (action.page + 1) * pageSize).map(({ hash }) => hash),
         });
         break;
 

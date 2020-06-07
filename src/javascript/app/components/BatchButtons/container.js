@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
 
-const mapStateToProps = (state) => {
-  const indexOffset = state.currentPage * state.pageSize;
+const mapStateToProps = (state, { page }) => {
+  const indexOffset = page * state.pageSize;
   const images = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
   const hasUnselected = !!images.find(({ hash }) => !state.imageSelection.includes(hash));
 
@@ -13,10 +13,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  batchTask: (action) => {
+  batchTask: (action, page) => {
     dispatch({
       type: 'BATCH_TASK',
       payload: action,
+      page,
     });
   },
 });

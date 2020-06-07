@@ -27,7 +27,7 @@ const Gallery = (props) => {
 
   return (
     <>
-      <GalleryHeader />
+      <GalleryHeader page={props.page} />
       {
         (props.currentView === 'list') ? (
           <table className="gallery gallery--list">
@@ -49,7 +49,7 @@ const Gallery = (props) => {
       }
       {
         props.images.length < 3 ? null : (
-          <GalleryHeader />
+          <GalleryHeader page={props.page} />
         )
       }
     </>
@@ -60,6 +60,7 @@ Gallery.propTypes = {
   images: PropTypes.array.isRequired,
   indexOffset: PropTypes.number.isRequired,
   currentView: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
 };
 
 Gallery.defaultProps = {

@@ -1,26 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 const PaginationButton = (props) => (
   <li
     className={props.className}
   >
-    <button
-      type="button"
+    <NavLink
+      className="pagination__link"
+      to={`/gallery/page/${props.page + 1}`}
       disabled={props.disabled}
-      onClick={props.disabled ? null : props.action}
       title={props.title}
     >
       {props.children}
-    </button>
+    </NavLink>
   </li>
 );
 
 PaginationButton.propTypes = {
-  className: PropTypes.string,
   children: PropTypes.node.isRequired,
-  action: PropTypes.func.isRequired,
+  className: PropTypes.string,
   disabled: PropTypes.bool,
+  page: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
 };
 

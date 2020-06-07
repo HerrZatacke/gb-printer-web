@@ -20,7 +20,7 @@ const BatchButtons = (props) => (
     >
       <button
         type="button"
-        onClick={() => props.batchTask(props.hasUnselected ? 'checkall' : 'uncheckall')}
+        onClick={() => props.batchTask(props.hasUnselected ? 'checkall' : 'uncheckall', props.page)}
       >
         <SVG name="checkmark" />
       </button>
@@ -39,7 +39,7 @@ const BatchButtons = (props) => (
           <button
             disabled={!props.enabled}
             type="button"
-            onClick={() => props.batchTask(action)}
+            onClick={() => props.batchTask(action, props.page)}
           >
             <SVG name={action} />
           </button>
@@ -53,6 +53,7 @@ BatchButtons.propTypes = {
   batchTask: PropTypes.func.isRequired,
   enabled: PropTypes.bool.isRequired,
   hasUnselected: PropTypes.bool.isRequired,
+  page: PropTypes.number.isRequired,
 };
 
 BatchButtons.defaultProps = {

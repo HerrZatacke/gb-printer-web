@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import activePalette from './reducers/activePaletteReducer';
 import canShare from './reducers/canShareReducer';
 import confirmation from './reducers/confirmationReducer';
-import currentPage from './reducers/currentPageReducer';
 import dragover from './reducers/dragoverReducer';
 import editImage from './reducers/editImageReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
@@ -26,7 +25,6 @@ export default combineReducers({
   activePalette,
   canShare,
   confirmation,
-  currentPage,
   dragover,
   editImage,
   exportScaleFactors,

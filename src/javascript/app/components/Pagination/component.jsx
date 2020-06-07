@@ -11,67 +11,60 @@ const Pagination = (props) => {
   }
 
   const pages = [...new Array(props.totalPages)].map((undef, index) => index);
-  const { setCurrentPage, currentPage } = props;
+  const { page } = props;
 
-  const displayedPages = pages.map((page) => {
-    switch (page) {
+  const displayedPages = pages.map((pageIndex) => {
+    switch (pageIndex) {
       // first, current, before/after current and lastpage
       case 0:
-      case currentPage - 1:
-      case currentPage:
-      case currentPage + 1:
+      case page - 1:
+      case page:
+      case page + 1:
       case pages.length - 1:
         return (
           <PaginationButton
-            key={page}
-            page={page}
+            key={pageIndex}
+            page={pageIndex}
             className={classNames('pagination__list-item pagination__list-item--page', {
-              'pagination__list-item--page--active': page === currentPage,
+              'pagination__list-item--page--active': pageIndex === page,
             })}
-            title={`To page ${page + 1}`}
-            disabled={page === currentPage}
-            action={() => {
-              setCurrentPage(page);
-            }}
+            title={`To page ${pageIndex + 1}`}
+            disabled={pageIndex === page}
           >
-            {page + 1}
+            {pageIndex + 1}
           </PaginationButton>
         );
       // ellipsis to indicate left out pages
-      case currentPage - 2:
-      case currentPage + 2:
-        return <li key={page} className="pagination__list-item pagination__list-item--ellipsis" />;
+      case page - 2:
+      case page + 2:
+        return <li key={pageIndex} className="pagination__list-item pagination__list-item--ellipsis" />;
       default:
         return null;
     }
   });
 
-  if (currentPage > 0) {
+  if (page > 0) {
     displayedPages.unshift((
       <PaginationButton
         key="back"
         className="pagination__list-item pagination__list-item--prevnext pagination__list-item--prevnext-prev"
         title="To previous page"
-        disabled={currentPage < 1}
-        action={() => {
-          setCurrentPage(currentPage - 1);
-        }}
+        disabled={page < 1}
+        page={page - 1}
       >
         <SVG name="left" />
       </PaginationButton>
     ));
   }
 
-  if (currentPage < pages.length - 1) {
+  if (page < pages.length - 1) {
     displayedPages.push((
       <PaginationButton
         key="next"
         className="pagination__list-item pagination__list-item--prevnext"
         title="To next page"
-        disabled={currentPage >= pages.length - 1}
-        action={() => {
-          setCurrentPage(currentPage + 1);
-        }}
+        disabled={page >= pages.length - 1}
+        page={page + 1}
       >
         <SVG name="right" />
       </PaginationButton>
@@ -88,8 +81,7 @@ const Pagination = (props) => {
 
 Pagination.propTypes = {
   totalPages: PropTypes.number.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  setCurrentPage: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
 };
 
 export default Pagination;

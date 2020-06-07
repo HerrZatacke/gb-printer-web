@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Confirmation from '../Confirmation';
 import EditForm from '../EditForm';
@@ -13,27 +13,40 @@ import Dump from '../Dump';
 import Gallery from '../Gallery';
 import Home from '../Home';
 import DragOver from '../DragOver';
+import GalleryIntroText from './galleryInroText';
+import getValidPageIndex from '../../../tools/getValidPageIndex';
 
 const App = (props) => (
   <Router>
     <Navigation />
     <div className="app__content">
       <Switch>
-        <Route path="/gallery">
-          <h1 className="app__content-headline">
-            Gallery
-            <span className="app__counter">
-              { props.selectedCount ? `(${props.selectedCount} of ${props.imageCount} images selected)` : `(${props.imageCount} images)` }
-            </span>
-          </h1>
-          <p className="app__content-hint">
-            These images are stored in the localStorage of your browser.
-            That&apos;s why you (currently) cannot share a link to one of them.
-            <br />
-            Also if you clear your browser&apos;s cookies, the images will be gone too.
-          </p>
-          <Gallery />
+        <Route exact path="/gallery">
+          <Redirect to="/gallery/page/1" />
         </Route>
+        <Route
+          path="/gallery/page/:page"
+          render={({ match }) => {
+
+            const { valid, page } = getValidPageIndex({
+              urlParam: match.params.page,
+              pageSize: props.pageSize,
+              imageCount: props.imageCount,
+            });
+
+            return valid ? (
+              <>
+                <GalleryIntroText
+                  imageCount={props.imageCount}
+                  selectedCount={props.selectedCount}
+                />
+                <Gallery page={page} />
+              </>
+            ) : (
+              <Redirect to={`/gallery/page/${page + 1}`} />
+            );
+          }}
+        />
         <Route path="/palettes">
           <h1 className="app__content-headline">Palettes</h1>
           <Palettes />
@@ -63,6 +76,7 @@ const App = (props) => (
 App.propTypes = {
   imageCount: PropTypes.number.isRequired,
   selectedCount: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
 };
 
 App.defaultProps = {
