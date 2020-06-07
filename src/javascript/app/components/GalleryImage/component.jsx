@@ -123,6 +123,7 @@ class GalleryImage extends React.Component {
           {this.props.tags.map((tag) => (
             <li
               key={tag}
+              title={tag}
               className="gallery-list-image__tag"
             >
               {tag}
