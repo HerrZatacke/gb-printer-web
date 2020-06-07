@@ -17,6 +17,8 @@ class EditForm extends React.Component {
       loaded: false,
       hash: props.hash,
     };
+
+    this.restoreScroll = window.scrollY;
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -76,14 +78,25 @@ class EditForm extends React.Component {
     }
   }
 
-  render() {
-
-    if (!this.state.loaded) {
+  applyOverlayScrolling() {
+    if (!this.state.loaded && body.classList.contains('has-overlay')) {
       body.classList.remove('has-overlay');
-      return null;
+      window.scrollTo(0, this.restoreScroll);
     }
 
-    body.classList.add('has-overlay');
+    if (this.state.loaded && !body.classList.contains('has-overlay')) {
+      this.restoreScroll = window.scrollY;
+      body.classList.add('has-overlay');
+    }
+  }
+
+  render() {
+
+    this.applyOverlayScrolling();
+
+    if (!this.state.loaded) {
+      return null;
+    }
 
     const paletteColors = this.props.palette ? this.props.palette.palette : null;
 
