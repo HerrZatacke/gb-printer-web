@@ -11,6 +11,7 @@ module.exports = merge(common(), {
   devServer: {
     inline: true,
     hot: true,
+    disableHostCheck: true,
     stats: {
       colors: true,
       assets: false,
