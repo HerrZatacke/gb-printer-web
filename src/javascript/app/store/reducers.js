@@ -20,6 +20,7 @@ import palettes from './reducers/palettesReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
+import windowDimensions from './reducers/windowDimensionsReducer';
 
 export default combineReducers({
   activePalette,
@@ -43,4 +44,5 @@ export default combineReducers({
   rgbnImages,
   socketState,
   socketUrl,
+  windowDimensions,
 });

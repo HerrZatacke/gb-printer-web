@@ -10,6 +10,10 @@
   align-items: center;
   justify-content: space-around;
 
+  @media (max-width: 480px) {
+    justify-content: flex-start;
+  }
+
   &__backdrop {
     position: absolute;
     top: 0;
@@ -21,7 +25,6 @@
 
   &__box {
     width: 480px;
-    max-height: calc(100vh - 30px);
     background: $page-background;
     border-radius: $default-border-radius;
     color: $color-text;
@@ -30,14 +33,15 @@
     @media (max-width: 480px) {
       width: 100vw;
       min-width: 320px;
-      max-height: calc(100vh - 150px);
       border-radius: 0;
     }
   }
 
   &__box-content {
     overflow-y: auto;
+    overflow-scrolling: touch;
     position: relative;
+    max-height: calc(100% - 50px);
     height: calc(100% - 50px);
     padding-bottom: 15px;
     z-index: $z-index-overlay-content;

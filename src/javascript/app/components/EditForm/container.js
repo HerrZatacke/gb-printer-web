@@ -13,6 +13,10 @@ const mapStateToProps = (state) => {
     frames = null;
   }
 
+  const height = (state.windowDimensions.width <= 480) ?
+    state.windowDimensions.height :
+    Math.min(800, state.windowDimensions.height);
+
   return ({
     batch: state.editImage.batch,
     hash: state.editImage.hash,
@@ -22,6 +26,7 @@ const mapStateToProps = (state) => {
     frame: state.editImage.frame,
     palette,
     frames,
+    height,
   });
 };
 

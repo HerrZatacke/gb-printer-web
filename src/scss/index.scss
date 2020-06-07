@@ -11,6 +11,10 @@ body {
   background: $page-background;
   color: $color-black;
   min-width: 320px;
+
+  &.has-overlay {
+    position: fixed;
+  }
 }
 
 pre {

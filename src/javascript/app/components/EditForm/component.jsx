@@ -6,6 +6,8 @@ import EditImageTabs from '../EditImageTabs';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import { load } from '../../../tools/storage';
 
+const body = document.querySelector('body');
+
 class EditForm extends React.Component {
   constructor(props) {
     super(props);
@@ -77,8 +79,11 @@ class EditForm extends React.Component {
   render() {
 
     if (!this.state.loaded) {
+      body.classList.remove('has-overlay');
       return null;
     }
+
+    body.classList.add('has-overlay');
 
     const paletteColors = this.props.palette ? this.props.palette.palette : null;
 
@@ -107,6 +112,7 @@ class EditForm extends React.Component {
           className="edit-image__box"
           style={{
             backgroundImage: paletteColors ? `linear-gradient(to bottom, ${paletteColors[0]} 500px, #ffffff 600px)` : null,
+            height: `${this.props.height}px`,
           }}
         >
           <div className="edit-image__box-content">
@@ -198,6 +204,7 @@ EditForm.propTypes = {
   updateTitle: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
   updateTags: PropTypes.func.isRequired,
+  height: PropTypes.number.isRequired,
 };
 
 EditForm.defaultProps = {
