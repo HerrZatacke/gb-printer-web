@@ -15,6 +15,7 @@ const saveRGBNImage = (store) => (next) => (action) => {
           hash: hash(state.rgbnImages),
           created: dayjs().format(dateFormat),
           title: '',
+          tags: [],
           index: state.globalIndex,
         };
 

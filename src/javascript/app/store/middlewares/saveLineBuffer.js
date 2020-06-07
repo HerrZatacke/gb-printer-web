@@ -19,6 +19,7 @@ const saveLineBuffer = (store) => (next) => (action) => {
           title: (action.payload && action.payload.file) ? action.payload.file : '',
           index: state.globalIndex,
           lines: state.lineBuffer.length,
+          tags: [],
           palette: state.activePalette,
         };
 
