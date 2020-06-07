@@ -60,6 +60,8 @@ const editImageReducer = (value = {}, action) => {
     case 'UPDATE_IMAGES_BATCH':
     case 'CLOSE_OVERLAY':
       return {};
+    case 'GLOBAL_UPDATE':
+      return action.payload.editImage || value;
     default:
       return value;
   }

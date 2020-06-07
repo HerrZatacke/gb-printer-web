@@ -9,6 +9,8 @@ const imageSelectionReducer = (value = [], action) => {
       return action.payload;
     case 'DELETE_IMAGES':
       return [];
+    case 'GLOBAL_UPDATE':
+      return action.payload.imageSelection || value;
     default:
       return value;
   }

@@ -14,6 +14,8 @@ const rgbnImagesReducer = (value = DEFAULT, action) => {
     case 'DELETE_IMAGE':
     case 'DELETE_IMAGES':
       return DEFAULT;
+    case 'GLOBAL_UPDATE':
+      return action.payload.rgbnImages || value;
     default:
       return value;
   }

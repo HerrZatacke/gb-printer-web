@@ -12,6 +12,8 @@ const exportScaleFactorsReducer = (value = [1], action) => {
       return value.filter((factor) => (
         factor !== action.payload.factor
       ));
+    case 'GLOBAL_UPDATE':
+      return action.payload.exportScaleFactors || value;
     default:
       return value;
   }
