@@ -119,6 +119,16 @@ class GalleryImage extends React.Component {
         >
           {this.getDateText()}
         </span>
+        <ul className="gallery-list-image__tags">
+          {this.props.tags.map((tag) => (
+            <li
+              key={tag}
+              className="gallery-list-image__tag"
+            >
+              {tag}
+            </li>
+          ))}
+        </ul>
         <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'edit', 'share']} />
         { /* this.props.hashes ? null : (
           <RGBNSelect hash={this.props.hash} />
@@ -192,6 +202,7 @@ GalleryImage.propTypes = {
   frame: PropTypes.string,
   frames: PropTypes.object,
   title: PropTypes.string.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   setLightboxImageIndex: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['list', 'default']).isRequired,
   index: PropTypes.number.isRequired,

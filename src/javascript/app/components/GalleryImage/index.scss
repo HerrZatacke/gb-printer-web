@@ -184,4 +184,21 @@
     line-height: 14px;
     color: $color-grey-80;
   }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5px -3px 0 -3px;
+  }
+
+  &__tag {
+    height: 18px;
+    border-radius: 9px;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0 3px 4px 3px;
+    padding: 2px 8px;
+    background-color: $color-secondary;
+    color: $color-text-bright;
+  }
 }
