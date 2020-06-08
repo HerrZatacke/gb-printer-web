@@ -64,31 +64,33 @@ class EditImageTabs extends React.Component {
               </>
             ) }
           </li>
-          <li
-            className={
-              classnames('edit-image-tabs__tab', {
-                'edit-image-tabs__tab--active': this.state.tabIndex === 1,
-              })
-            }
-            onFocus={this.focusEvent(1)}
-            onClick={this.focusEvent(1)}
-          >
-            <button type="button" className="edit-image-tabs__button">
-              Select Frame
-            </button>
-            <FrameSelect
-              updateFrame={this.props.updateFrame}
-              frame={this.props.frame || ''}
-            />
-          </li>
+          {this.props.regularImage ? (
+            <li
+              className={
+                classnames('edit-image-tabs__tab', {
+                  'edit-image-tabs__tab--active': this.state.tabIndex === 1,
+                })
+              }
+              onFocus={this.focusEvent(1)}
+              onClick={this.focusEvent(1)}
+            >
+              <button type="button" className="edit-image-tabs__button">
+                Select Frame
+              </button>
+              <FrameSelect
+                updateFrame={this.props.updateFrame}
+                frame={this.props.frame || ''}
+              />
+            </li>
+          ) : null}
           <li
             className={
               classnames('edit-image-tabs__tab', {
                 'edit-image-tabs__tab--active': this.state.tabIndex === 2,
               })
             }
-            onFocus={this.focusEvent(2)}
-            onClick={this.focusEvent(2)}
+            onFocus={this.focusEvent(this.props.regularImage ? 2 : 1)}
+            onClick={this.focusEvent(this.props.regularImage ? 2 : 1)}
 
           >
             <button type="button" className="edit-image-tabs__button">
@@ -125,6 +127,7 @@ EditImageTabs.propTypes = {
   // frames: PropTypes.object,
   // save: PropTypes.func.isRequired,
   // title: PropTypes.string,
+  regularImage: PropTypes.bool.isRequired,
   updatePalette: PropTypes.func.isRequired,
   updateTags: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,

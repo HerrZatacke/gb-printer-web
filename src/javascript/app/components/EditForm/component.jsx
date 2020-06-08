@@ -179,6 +179,7 @@ class EditForm extends React.Component {
               </div>
             ) : null }
             <EditImageTabs
+              regularImage={this.state.tiles.length === 360}
               hashes={this.props.hashes}
               palette={this.props.palette}
               frame={this.props.frame}
