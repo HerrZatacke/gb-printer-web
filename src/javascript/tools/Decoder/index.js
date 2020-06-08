@@ -242,7 +242,7 @@ class Decoder {
       for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
         // pixels along the tile's y axis
 
-        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x);
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index);
         // eslint-disable-next-line no-param-reassign
         canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
 

@@ -9,11 +9,12 @@ const getPrepareFiles = (exportScaleFactors) => (palette, image) => (tiles) => {
 
   const isRGBN = !!image.hashes;
   const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
+  const lockFrame = image.lockFrame || false;
 
   if (isRGBN) {
-    decoder.update(canvas, RGBNDecoder.rgbnTiles(tiles), palette);
+    decoder.update(canvas, RGBNDecoder.rgbnTiles(tiles), palette, lockFrame);
   } else {
-    decoder.update(canvas, tiles, palette.palette);
+    decoder.update(canvas, tiles, palette.palette, lockFrame);
   }
 
   const images = exportScaleFactors.map((exportScaleFactor) => (
