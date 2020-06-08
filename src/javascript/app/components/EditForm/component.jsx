@@ -124,17 +124,11 @@ class EditForm extends React.Component {
         <div
           className="edit-image__box"
           style={{
-            backgroundImage: paletteColors ? `linear-gradient(to bottom, ${paletteColors[0]} 500px, #ffffff 600px)` : null,
             height: `${this.props.height}px`,
           }}
         >
           <div className="edit-image__box-content">
-            <label
-              className="edit-image__header"
-              style={{
-                color: paletteColors ? paletteColors[3] : null,
-              }}
-            >
+            <label className="edit-image__header">
               <input
                 className="edit-image__header-edit"
                 placeholder="Add a title"

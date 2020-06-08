@@ -25,7 +25,12 @@ class RGBNDecoder extends Decoder {
     };
   }
 
-  getRGBValue({ r, g, b, n }, index) {
+  getRGBValue({ r, g, b, n }, index, tileIndex) {
+
+    if (this.lockFrame && this.tileIndexIsFramePart(tileIndex)) {
+      return super.getRGBValue(n, index, tileIndex);
+    }
+
     const valueN = this.palette.n[3 - n[index]];
     return {
       r: this.palette.r[3 - r[index]] * valueN / 0xff,

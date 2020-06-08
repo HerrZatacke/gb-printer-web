@@ -12,14 +12,17 @@ class Decoder {
     this.tiles = [];
     this.colors = [];
     this.rawImageData = [];
+    this.lockFrame = false;
+    this.bwPalette = [0xffffff, 0xaaaaaa, 0x555555, 0x000000];
   }
 
-  update(canvas, tiles, palette) {
+  update(canvas, tiles, palette, lockFrame) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
     const paletteChanged = this.setPalette(palette); // true/false
+    const lockFrameChanged = this.setLockFrame(lockFrame); // true/false
 
-    if (canvasChanged || paletteChanged || !this.tiles.length) {
+    if (canvasChanged || paletteChanged || lockFrameChanged || !this.tiles.length) {
       this.tiles = [];
     }
 
@@ -108,6 +111,15 @@ class Decoder {
     return true;
   }
 
+  setLockFrame(lockFrame) {
+    if (lockFrame !== this.lockFrame) {
+      this.lockFrame = lockFrame;
+      return true;
+    }
+
+    return false;
+  }
+
   setTiles(tiles) {
 
     const changedTiles = tiles
@@ -159,8 +171,11 @@ class Decoder {
     return pixels;
   }
 
-  getRGBValue(pixels, index) {
-    const value = this.colorData[pixels[index]];
+  getRGBValue(pixels, index, tileIndex) {
+
+    const palette = (this.lockFrame && this.tileIndexIsFramePart(tileIndex)) ? this.bwPalette : this.colorData;
+    const value = palette[pixels[index]];
+
     return {
       // eslint-disable-next-line no-bitwise
       r: (value & 0xff0000) >> 16,
@@ -169,6 +184,26 @@ class Decoder {
       // eslint-disable-next-line no-bitwise
       b: (value & 0x0000ff),
     };
+  }
+
+  tileIndexIsFramePart(tileIndex) {
+    if (tileIndex < 40) {
+      return true;
+    }
+
+    if (tileIndex >= 320) {
+      return true;
+    }
+
+    switch (tileIndex % 20) {
+      case 0:
+      case 1:
+      case 18:
+      case 19:
+        return true;
+      default:
+        return false;
+    }
   }
 
   // This paints the tile with a specified offset and pixel width
@@ -185,7 +220,7 @@ class Decoder {
         // pixels along the tile's y axis
 
         const rawIndex = (pixelXOffset + x + ((pixelYOffset + y) * 160)) * 4;
-        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x);
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index);
 
         this.rawImageData[rawIndex] = color.r;
         this.rawImageData[rawIndex + 1] = color.g;
