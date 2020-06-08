@@ -7,6 +7,7 @@
     background-color: $color-grey-70;
     border-radius: $default-border-radius;
     overflow: hidden;
+    pointer-events: all;
 
     &:last-child {
       margin-right: 0;
