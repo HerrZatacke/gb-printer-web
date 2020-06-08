@@ -11,6 +11,7 @@ const Gallery = (props) => {
       key={image.hash}
       hash={image.hash}
       index={index + props.indexOffset}
+      page={props.page}
     />
   ));
 
