@@ -132,6 +132,12 @@ const SVG = (props) => {
           <path d="M5.5 2.5l-3 3L17 20 2.5 34.5l3 3L20 23l14.5 14.5 3-3L23 20 37.5 5.5l-3-3L20 17z" />
         </svg>
       );
+    case 'filter':
+      return (
+        <svg className="svg" viewBox="0 0 40 40">
+          <path d="M34 10V6H6v4l12 12v12h4V22z" />
+        </svg>
+      );
     default:
       return null;
   }
