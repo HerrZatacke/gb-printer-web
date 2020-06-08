@@ -1,7 +1,7 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 import applyTagChanges from '../../../tools/applyTagChanges';
 
-const UPDATATABLES = ['frame', 'palette', 'title', 'tags'];
+const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'title', 'tags'];
 
 const collectTags = (batchImages) => {
   const allTags = batchImages.map(({ tags }) => tags).flat();
@@ -40,7 +40,7 @@ const batch = (store) => (next) => (action) => {
     const { editImage, images } = store.getState();
     if (editImage.batch && editImage.batch.selection && editImage.batch.selection.length) {
 
-      const updatedImagess = editImage.batch.selection.map((selcetionHash, selectionIndex) => {
+      const updatedImages = editImage.batch.selection.map((selcetionHash, selectionIndex) => {
         const updateImage = images.find(({ hash }) => hash === selcetionHash);
 
         if (!updateImage) {
@@ -79,6 +79,14 @@ const batch = (store) => (next) => (action) => {
               updates.frame = editImage.frame;
               break;
 
+            case 'lockFrame':
+              if (!editImage.batch.lockFrame) {
+                break;
+              }
+
+              updates.lockFrame = editImage.lockFrame;
+              break;
+
             case 'tags':
               tags = applyTagChanges({
                 ...editImage.tags,
@@ -100,7 +108,7 @@ const batch = (store) => (next) => (action) => {
 
       store.dispatch({
         type: 'UPDATE_IMAGES_BATCH',
-        payload: updatedImagess,
+        payload: updatedImages,
       });
 
       // Do not propagate update
@@ -136,6 +144,7 @@ const batch = (store) => (next) => (action) => {
                 title: false,
                 palette: false,
                 frame: false,
+                lockFrame: false,
               },
               tags: collectTags(batchImages),
             },

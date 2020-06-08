@@ -114,6 +114,7 @@ class EditForm extends React.Component {
         this.props.batch.title ||
         this.props.batch.palette ||
         this.props.batch.frame ||
+        this.props.batch.lockFrame ||
         willUpdateTags
       )
     );
@@ -164,6 +165,7 @@ class EditForm extends React.Component {
                         this.props.batch.title ? 'title' : null,
                         this.props.batch.palette ? 'palette' : null,
                         this.props.batch.frame ? 'frame' : null,
+                        this.props.batch.lockFrame ? 'framePalette' : null,
                         willUpdateTags ? 'tags' : null,
                       ]
                         .filter(Boolean)
