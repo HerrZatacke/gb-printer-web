@@ -102,6 +102,7 @@ class GalleryImage extends React.Component {
         <div className="gallery-image__image">
           { this.state.tiles ? (
             <GameBoyImage
+              lockFrame={this.props.lockFrame}
               tiles={this.state.tiles}
               palette={this.props.palette}
             />
@@ -153,6 +154,7 @@ class GalleryImage extends React.Component {
           <div className="gallery-list-image__image">
             { this.state.tiles ? (
               <GameBoyImage
+                lockFrame={this.props.lockFrame}
                 tiles={this.state.tiles}
                 palette={this.props.palette}
               />
@@ -202,6 +204,7 @@ GalleryImage.propTypes = {
   palette: PropTypes.object.isRequired,
   frame: PropTypes.string,
   frames: PropTypes.object,
+  lockFrame: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   setLightboxImageIndex: PropTypes.func.isRequired,

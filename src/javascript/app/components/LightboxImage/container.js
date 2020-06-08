@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
   if (!image) {
     return {
       isFullscreen: false,
+      lockFrame: false,
       index: 0,
       size: 0,
     };
@@ -35,6 +36,7 @@ const mapStateToProps = (state) => {
     frames,
     index: state.lightboxImage || 0,
     size: images.length || 0,
+    lockFrame: image.lockFrame || false,
   });
 };
 

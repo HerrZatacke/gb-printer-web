@@ -17,10 +17,10 @@ class GameBoyImage extends Component {
     try {
       if (this.props.palette.palette) {
         const decoder = new Decoder();
-        decoder.update(this.canvasRef, this.props.tiles, this.props.palette.palette);
+        decoder.update(this.canvasRef, this.props.tiles, this.props.palette.palette, this.props.lockFrame);
       } else {
         const decoder = new RGBNDecoder();
-        decoder.update(this.canvasRef, this.props.tiles, this.props.palette);
+        decoder.update(this.canvasRef, this.props.tiles, this.props.palette, this.props.lockFrame);
       }
     } catch (error) {
       console.error(`error in GameBoyImage: ${error.message}`);
@@ -49,6 +49,7 @@ GameBoyImage.propTypes = {
     PropTypes.arrayOf(PropTypes.object),
   ]).isRequired,
   palette: PropTypes.object.isRequired,
+  lockFrame: PropTypes.bool.isRequired,
 };
 
 GameBoyImage.defaultProps = {};

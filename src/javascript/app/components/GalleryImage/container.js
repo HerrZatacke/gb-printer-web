@@ -24,6 +24,7 @@ const mapStateToProps = (state, { hash }) => {
     isSelected: state.imageSelection.includes(hash),
     palette,
     frames,
+    lockFrame: image.lockFrame || false,
   });
 };
 

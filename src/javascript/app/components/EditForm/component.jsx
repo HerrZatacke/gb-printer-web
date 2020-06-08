@@ -147,6 +147,7 @@ class EditForm extends React.Component {
             <GameBoyImage
               tiles={this.state.tiles}
               palette={this.props.palette}
+              lockFrame={this.props.lockFrame}
             />
             { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
               <div
