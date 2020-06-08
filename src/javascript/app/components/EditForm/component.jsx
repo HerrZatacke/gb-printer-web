@@ -180,12 +180,14 @@ class EditForm extends React.Component {
             ) : null }
             <EditImageTabs
               regularImage={this.state.tiles.length === 360}
+              lockFrame={this.props.lockFrame}
               hashes={this.props.hashes}
               palette={this.props.palette}
               frame={this.props.frame}
               tags={this.props.tags}
               updatePalette={this.props.updatePalette}
               updateFrame={this.props.updateFrame}
+              updateFrameLock={this.props.updateFrameLock}
               updateTags={this.props.updateTags}
             />
           </div>
@@ -205,6 +207,7 @@ EditForm.propTypes = {
   hash: PropTypes.string,
   hashes: PropTypes.object,
   palette: PropTypes.object,
+  lockFrame: PropTypes.bool.isRequired,
   frame: PropTypes.string,
   frames: PropTypes.object,
   save: PropTypes.func.isRequired,
@@ -217,6 +220,7 @@ EditForm.propTypes = {
   updatePalette: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
+  updateFrameLock: PropTypes.func.isRequired,
   updateTags: PropTypes.func.isRequired,
   height: PropTypes.number.isRequired,
 };

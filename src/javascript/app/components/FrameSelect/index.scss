@@ -8,4 +8,39 @@
   border: 1px solid $color-grey-50;
   font-size: 16px;
   color: inherit;
+
+  &__check-label {
+    display: flex;
+    margin-top: 20px;
+    cursor: pointer;
+    line-height: 30px;
+    height: 30px;
+    padding: 0;
+    user-select: none;
+
+    .svg {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .tick {
+      display: none;
+    }
+
+    &--checked .tick {
+      display: block;
+    }
+  }
+
+  &__checkbox {
+    display: none;
+  }
+
+  &__check-label-text {
+    vertical-align: top;
+    line-height: 30px;
+    height: 30px;
+  }
+
 }

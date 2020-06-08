@@ -79,7 +79,9 @@ class EditImageTabs extends React.Component {
               </button>
               <FrameSelect
                 updateFrame={this.props.updateFrame}
+                updateFrameLock={this.props.updateFrameLock}
                 frame={this.props.frame || ''}
+                lockFrame={this.props.lockFrame}
               />
             </li>
           ) : null}
@@ -128,9 +130,11 @@ EditImageTabs.propTypes = {
   // save: PropTypes.func.isRequired,
   // title: PropTypes.string,
   regularImage: PropTypes.bool.isRequired,
+  lockFrame: PropTypes.bool.isRequired,
   updatePalette: PropTypes.func.isRequired,
   updateTags: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
+  updateFrameLock: PropTypes.func.isRequired,
 };
 
 EditImageTabs.defaultProps = {

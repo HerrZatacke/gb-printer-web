@@ -24,6 +24,7 @@ const mapStateToProps = (state) => {
     title: state.editImage.title,
     hashes: state.editImage.hashes,
     frame: state.editImage.frame,
+    lockFrame: state.editImage.lockFrame || false,
     palette,
     frames,
     height,
@@ -47,6 +48,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'UPDATE_EDIT_IMAGE',
       payload: { frame, confirmed: true },
+    });
+  },
+  updateFrameLock: (lockFrame) => {
+    dispatch({
+      type: 'UPDATE_EDIT_IMAGE',
+      payload: { lockFrame, confirmed: true },
     });
   },
   updateTags: (mode, tag) => {
