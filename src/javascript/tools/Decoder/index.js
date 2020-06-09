@@ -172,8 +172,10 @@ class Decoder {
   }
 
   getRGBValue(pixels, index, tileIndex) {
-
-    const palette = (this.lockFrame && this.tileIndexIsFramePart(tileIndex)) ? this.bwPalette : this.colorData;
+    const palette = (
+      this.lockFrame && // Must be actually locked
+      this.tileIndexIsFramePart(tileIndex) // Current tile must be in a "lockable" position
+    ) ? this.bwPalette : this.colorData;
     const value = palette[pixels[index]];
 
     return {
