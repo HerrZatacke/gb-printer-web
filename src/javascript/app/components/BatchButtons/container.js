@@ -20,6 +20,13 @@ const mapDispatchToProps = (dispatch) => ({
       page,
     });
   },
+  filter: () => {
+    // eslint-disable-next-line no-alert
+    alert('some patience please ;-)');
+    dispatch({
+      type: 'TOGGLE_FILTERS',
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);
