@@ -6,7 +6,9 @@ const GalleryIntroText = (props) => (
     <h1 className="app__content-headline">
       Gallery
       <span className="app__counter">
-        { props.selectedCount ? `(${props.selectedCount} of ${props.imageCount} images selected)` : `(${props.imageCount} images)` }
+        {`${props.imageCount} images`}
+        { props.filteredCount ? ` / ${props.filteredCount} filtered` : null}
+        { props.selectedCount ? ` / ${props.selectedCount} selected` : null}
       </span>
     </h1>
     <p className="app__content-hint">
@@ -21,6 +23,7 @@ const GalleryIntroText = (props) => (
 GalleryIntroText.propTypes = {
   imageCount: PropTypes.number.isRequired,
   selectedCount: PropTypes.number.isRequired,
+  filteredCount: PropTypes.number.isRequired,
 };
 
 export default GalleryIntroText;

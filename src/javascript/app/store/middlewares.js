@@ -3,6 +3,7 @@ import batch from './middlewares/batch';
 import confirmation from './middlewares/confirmation';
 import deleteImage from './middlewares/deleteImage';
 import fileDrop from './middlewares/fileDrop';
+import filters from './middlewares/filters';
 import handleErrors from './middlewares/error';
 import hideLiveImage from './middlewares/hideLiveImage';
 import lightbox from './middlewares/lightbox';
@@ -21,6 +22,7 @@ export default applyMiddleware(
   deleteImage,
   handleErrors,
   fileDrop,
+  filters,
   hideLiveImage,
   lightbox,
   plainText,

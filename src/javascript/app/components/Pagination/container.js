@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
+import getFilteredImages from '../../../tools/getFilteredImages';
 
 const mapStateToProps = (state) => ({
-  totalPages: state.pageSize ? Math.ceil(state.images.length / state.pageSize) : 0,
+  totalPages: state.pageSize ? Math.ceil(getFilteredImages(state).length / state.pageSize) : 0,
 });
 
 const mapDispatchToProps = () => ({});

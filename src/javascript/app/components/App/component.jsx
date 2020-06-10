@@ -15,6 +15,7 @@ import Home from '../Home';
 import DragOver from '../DragOver';
 import GalleryIntroText from './galleryInroText';
 import getValidPageIndex from '../../../tools/getValidPageIndex';
+import FilterForm from '../FilterForm';
 
 const App = (props) => (
   <Router>
@@ -31,7 +32,7 @@ const App = (props) => (
             const { valid, page } = getValidPageIndex({
               urlParam: match.params.page,
               pageSize: props.pageSize,
-              imageCount: props.imageCount,
+              imageCount: props.filteredCount,
             });
 
             return valid ? (
@@ -39,6 +40,7 @@ const App = (props) => (
                 <GalleryIntroText
                   imageCount={props.imageCount}
                   selectedCount={props.selectedCount}
+                  filteredCount={props.filteredCount}
                 />
                 <Gallery page={page} />
               </>
@@ -70,12 +72,14 @@ const App = (props) => (
     <LightboxImage />
     <RGBNImage />
     <DragOver />
+    <FilterForm />
   </Router>
 );
 
 App.propTypes = {
   imageCount: PropTypes.number.isRequired,
   selectedCount: PropTypes.number.isRequired,
+  filteredCount: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
 };
 

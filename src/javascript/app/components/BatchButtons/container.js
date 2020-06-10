@@ -21,10 +21,8 @@ const mapDispatchToProps = (dispatch) => ({
     });
   },
   filter: () => {
-    // eslint-disable-next-line no-alert
-    alert('some patience please ;-)');
     dispatch({
-      type: 'TOGGLE_FILTERS',
+      type: 'SHOW_FILTERS',
     });
   },
 });

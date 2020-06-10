@@ -37,7 +37,7 @@ const SVG = (props) => {
       );
     case 'checkmark':
       return (
-        <svg className="svg checked" viewBox="0 0 20 20">
+        <svg className="svg" viewBox="0 0 20 20">
           <path d="M15 5v10H5V5zM3 3v14h14V3z" />
           <path className="tick" d="M5.5 11l3 3 6-6.5L13 6l-4.5 5L7 9.5z" />
         </svg>

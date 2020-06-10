@@ -5,6 +5,7 @@ import confirmation from './reducers/confirmationReducer';
 import dragover from './reducers/dragoverReducer';
 import editImage from './reducers/editImageReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
+import filter from './reducers/filtersReducer';
 import galleryView from './reducers/galleryViewReducer';
 import globalIndex from './reducers/globalIndexReducer';
 import images from './reducers/imagesReducer';
@@ -28,6 +29,7 @@ export default combineReducers({
   dragover,
   editImage,
   exportScaleFactors,
+  filter,
   galleryView,
   globalIndex,
   images,

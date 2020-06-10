@@ -2,12 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
-
-const uniqeTags = (tags) => (
-  tags.filter((tag, index) => (
-    tags.findIndex((findTag) => findTag === tag) === index
-  ))
-);
+import uniqe from '../../../tools/unique';
 
 class TagsSelect extends React.Component {
   constructor(props) {
@@ -31,7 +26,7 @@ class TagsSelect extends React.Component {
 
   render() {
 
-    const tags = uniqeTags([...this.props.tags.initial, ...this.props.tags.add]);
+    const tags = uniqe([...this.props.tags.initial, ...this.props.tags.add]);
 
     return (
       <ul className="tags-select">

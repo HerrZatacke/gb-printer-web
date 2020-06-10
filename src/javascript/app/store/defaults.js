@@ -9,6 +9,7 @@ export default {
   imageSelection: [],
   rgbnImages: {},
   editImage: {},
+  filter: {},
   palettes: [
     {
       name: 'Black & White',
