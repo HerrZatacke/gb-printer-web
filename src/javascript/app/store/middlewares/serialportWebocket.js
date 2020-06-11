@@ -1,25 +1,50 @@
 import Sockette from '../../../libs/sockette';
 import handleLines from '../../../tools/handleLines';
 
-const newSocket = (dispatch, socketUrl) => (
-  new Sockette(socketUrl, {
-    timeout: 5000,
-    maxAttempts: 10,
-    onstatechange: (readyState) => {
-      dispatch({
-        type: 'SET_SOCKET_STATE',
-        payload: readyState,
-      });
-    },
-    onmessage: ({ data }) => {
-      data
-        .split('\n')
-        .map(handleLines)
-        .filter(Boolean)
-        .forEach(dispatch);
-    },
-  })
-);
+const newSocket = (dispatch, socketUrl) => {
+
+  let lineBuffer = [];
+
+  const flush = () => {
+    dispatch({
+      type: 'NEW_LINES',
+      payload: [...lineBuffer],
+    });
+    lineBuffer = [];
+  };
+
+  return (
+    new Sockette(socketUrl, {
+      timeout: 5000,
+      maxAttempts: 10,
+      onstatechange: (readyState) => {
+        dispatch({
+          type: 'SET_SOCKET_STATE',
+          payload: readyState,
+        });
+      },
+      onmessage: ({ data }) => {
+        data
+          .split('\n')
+          .map(handleLines)
+          .filter(Boolean)
+          .forEach((lineAction) => {
+            if (lineAction.type === 'NEW_LINES') {
+              lineBuffer.push(...lineAction.payload);
+
+              if (lineBuffer.length >= 40) {
+                flush();
+              }
+
+            } else {
+              flush();
+              dispatch(lineAction);
+            }
+          });
+      },
+    })
+  );
+};
 
 const serialportWebocket = (store) => {
 

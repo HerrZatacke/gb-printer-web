@@ -36,8 +36,8 @@ const handleLines = (rawLine) => {
   }
 
   return {
-    type: 'NEW_LINE',
-    payload: cleanLine,
+    type: 'NEW_LINES',
+    payload: [cleanLine],
   };
 };
 

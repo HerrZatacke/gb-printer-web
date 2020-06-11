@@ -2,7 +2,7 @@ let silenceTimeout = null;
 const hideLiveImage = (store) => (next) => (action) => {
 
 
-  if (['NEW_LINE', 'SET_ALL_LINES'].includes(action.type)) {
+  if (['NEW_LINES', 'SET_ALL_LINES'].includes(action.type)) {
     window.clearTimeout(silenceTimeout);
 
     // Let the live-image disappear after a few seconds

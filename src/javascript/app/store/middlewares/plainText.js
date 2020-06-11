@@ -41,8 +41,8 @@ const plainText = (store) => {
         .map((lineAction) => {
 
           switch (lineAction.type) {
-            case 'NEW_LINE':
-              dataLines.push(lineAction.payload);
+            case 'NEW_LINES':
+              dataLines.push(...lineAction.payload);
               return null;
 
             case 'IMAGE_COMPLETE':
