@@ -6,7 +6,11 @@ import RGBNDecoder from '../../../tools/RGBNDecoder';
 class GameBoyImage extends Component {
   constructor(props) {
     super(props);
-    this.canvasRef = null;
+    this.canvasRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.updateCanvasContent();
   }
 
   componentDidUpdate() {
@@ -17,10 +21,10 @@ class GameBoyImage extends Component {
     try {
       if (this.props.palette.palette) {
         const decoder = new Decoder();
-        decoder.update(this.canvasRef, this.props.tiles, this.props.palette.palette, this.props.lockFrame);
+        decoder.update(this.canvasRef.current, this.props.tiles, this.props.palette.palette, this.props.lockFrame);
       } else {
         const decoder = new RGBNDecoder();
-        decoder.update(this.canvasRef, this.props.tiles, this.props.palette, this.props.lockFrame);
+        decoder.update(this.canvasRef.current, this.props.tiles, this.props.palette, this.props.lockFrame);
       }
     } catch (error) {
       console.error(`error in GameBoyImage: ${error.message}`);
@@ -32,12 +36,7 @@ class GameBoyImage extends Component {
       <canvas
         className="gameboy-image"
         width={160}
-        ref={(node) => {
-          this.canvasRef = node;
-          if (node) {
-            this.updateCanvasContent();
-          }
-        }}
+        ref={this.canvasRef}
       />
     );
   }

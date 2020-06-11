@@ -9,12 +9,21 @@ import { defaultPalette } from '../../defaults';
 class RGBNImage extends Component {
   constructor(props) {
     super(props);
-    this.canvasRef = null;
+    this.canvasRef = React.createRef();
     this.rgbnDecoder = new RGBNDecoder();
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     this.updateCanvasContent();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      (JSON.stringify(prevProps.hashes) !== JSON.stringify(this.props.hashes)) ||
+      (JSON.stringify(prevProps.frames) !== JSON.stringify(this.props.frames))
+    ) {
+      this.updateCanvasContent();
+    }
   }
 
   updateCanvasContent() {
@@ -25,9 +34,9 @@ class RGBNImage extends Component {
       load(this.props.hashes.n, this.props.frames.n),
     ])
       .then((rgbn) => {
-        if (this.canvasRef) {
+        if (this.canvasRef.current) {
           const tiles = RGBNDecoder.rgbnTiles(rgbn);
-          this.rgbnDecoder.update(this.canvasRef, tiles, defaultPalette);
+          this.rgbnDecoder.update(this.canvasRef.current, tiles, defaultPalette);
         }
       });
   }
@@ -45,12 +54,7 @@ class RGBNImage extends Component {
         { hasTiles ? (
           <canvas
             width={160}
-            ref={(node) => {
-              this.canvasRef = node;
-              if (node) {
-                this.updateCanvasContent();
-              }
-            }}
+            ref={this.canvasRef}
           />
         ) : null }
         <GalleryImageButtons hash="newRGBN" buttons={['saveRGBNImage']} />
