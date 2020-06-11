@@ -5,10 +5,11 @@
   "scripts": {
     "start": "webpack-dev-server --config ./scripts/webpack.dev.js",
     "host": "npm run build && node ./scripts/host.js",
-    "build": "npm run build:clean && npm run build:webpack && npm run build:validate",
-    "build:validate": "node ./scripts/validatebuild.js",
+    "build": "npm run build:clean && npm run build:webpack && npm run build:validate && npm run build:deploy",
     "build:clean": "rimraf dist/*",
     "build:webpack": "webpack --config ./scripts/webpack.prod.js",
+    "build:validate": "node ./scripts/validatebuild.js",
+    "build:deploy": "node ./scripts/deploy.js",
     "deploy-gh-pages": "npm run build && cd dist && git add . && git commit -m \"pages update\" && git push",
     "svgo": "svgo ./src/assets/icons/"
   },
