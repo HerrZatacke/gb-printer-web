@@ -11,7 +11,7 @@ class Dump extends React.Component {
   }
 
   componentDidMount() {
-    import(/* webpackChunkName: "dummy" */ './dummy')
+    import(/* webpackChunkName: "dmy" */ './dummy')
       .then(({ default: dummyContent }) => {
         this.setState({
           text: dummyContent.join('\n'),

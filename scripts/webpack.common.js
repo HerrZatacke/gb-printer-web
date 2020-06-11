@@ -12,7 +12,7 @@ module.exports = () => ({
     main: [
       path.join(process.cwd(), 'src', 'javascript', 'index.js'),
     ],
-    polyfill: [
+    pf: [
       'babel-polyfill/dist/polyfill',
     ],
   },
@@ -95,6 +95,11 @@ module.exports = () => ({
   optimization: {
     splitChunks: {
       automaticNameDelimiter: '/',
+      cacheGroups: {
+        v: {
+          test: /[\\/]node_modules[\\/]/,
+        },
+      },
     },
   },
   output: {
@@ -107,7 +112,7 @@ module.exports = () => ({
       template: './src/assets/index.html',
       filename: 'index.html',
       favicon: './src/assets/images/favicon.png',
-      chunks: ['polyfill', 'main'],
+      chunks: ['pf', 'main'],
     }),
   ],
 });

@@ -7,7 +7,7 @@ const saveRGBNImage = (store) => (next) => (action) => {
 
     const state = store.getState();
 
-    import(/* webpackChunkName: "object-hash" */ 'object-hash')
+    import(/* webpackChunkName: "obh" */ 'object-hash')
       .then(({ default: hash }) => {
         const image = {
           palette: defaultPalette,

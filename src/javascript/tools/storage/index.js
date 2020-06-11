@@ -2,9 +2,9 @@ import dummyImage from './dummyImage';
 import applyFrame from '../applyFrame';
 
 const save = (lineBuffer) => (
-  import(/* webpackChunkName: "object-hash" */ 'object-hash')
+  import(/* webpackChunkName: "obh" */ 'object-hash')
     .then(({ default: hash }) => (
-      import(/* webpackChunkName: "pako" */ 'pako')
+      import(/* webpackChunkName: "pko" */ 'pako')
         .then(({ default: pako }) => {
           const imageData = lineBuffer
             .map((line) => (
@@ -40,7 +40,7 @@ const load = (dataHash, frame) => {
   }
 
   return (
-    import(/* webpackChunkName: "pako" */ 'pako')
+    import(/* webpackChunkName: "pko" */ 'pako')
       .then(({ default: pako }) => {
 
         try {

@@ -9,7 +9,7 @@ const download = (zipFileName) => (files) => {
     return;
   }
 
-  import(/* webpackChunkName: "jszip" */ 'jszip')
+  import(/* webpackChunkName: "jsz" */ 'jszip')
     .then(({ default: JSZip }) => {
       const zip = new JSZip();
 

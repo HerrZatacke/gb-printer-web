@@ -14,7 +14,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    import(/* webpackChunkName: "react-markdown" */ 'react-markdown')
+    import(/* webpackChunkName: "rmd" */ 'react-markdown')
       .then(({ default: MDComponent }) => {
         ReactMarkdown = MDComponent;
         this.setState({
