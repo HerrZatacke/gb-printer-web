@@ -27,27 +27,29 @@ You can run this app locally to directly use the gbp-emulator on your serial por
 * Install [node.js](https://nodejs.org/) if you haven't already.
 * Check out/clone/download [this repository](https://github.com/HerrZatacke/gb-printer-web)
 * Run `npm i` in the root directory via your commandline
-* Add a `ports.config.json` in the root dir (see below)
+* Add a `config.json` in the root dir (see below)
 * Run `npm start` via your commandline
 * Open [localhost:3000](http://localhost:3000)
 * Go to the 'Settings' page and change the 'Remote Socket URL' to `localhost:3001`
 * Print something
 
 
-## Serial Config with `ports.config.json`
-Create a file `ports.config.json` in the root dir and configure it like the following example (multiple ports are supported):
+## Serial Config with `config.json`
+Create a file `config.json` in the root dir and configure it like the following example (multiple ports are supported):
 ``` json
-[
-  {
-    "path": "COM19",
-    "baudRate": 115200,
-    "dataBits": 8,
-    "stopBits": 1,
-    "parity": "none",
-    "retry": false
-  },
-  ...
-]
+{
+  "ports": [
+    {
+      "path": "COM19",
+      "baudRate": 115200,
+      "dataBits": 8,
+      "stopBits": 1,
+      "parity": "none",
+      "retry": false
+    },
+    ...
+  ] 
+}
 ```
 you can set `retry` to a number of milliseconds after which a retry will be attempted to open the port.
 

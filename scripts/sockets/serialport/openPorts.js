@@ -9,7 +9,7 @@ const mkdirp = require('mkdirp');
 let ports;
 try {
   // eslint-disable-next-line global-require,import/no-unresolved
-  ports = require('../../../ports.config');
+  ports = require('../../../config').ports;
 } catch (error) {
   ports = [];
 }

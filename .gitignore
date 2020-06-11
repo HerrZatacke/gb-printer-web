@@ -9,7 +9,7 @@ yarn-error.log*
 .node_repl_history
 .yarn-integrity
 .idea
-ports.config.json
+config.json
 dumps/*
-!dumps/.gitkeep 
+!dumps/.gitkeep
 .DS_Store
