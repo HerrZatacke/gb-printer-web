@@ -34,7 +34,7 @@ You can run this app locally to directly use the gbp-emulator on your serial por
 * Print something
 
 
-## Serial Config with `config.json`
+## Serial config with `config.json`
 Create a file `config.json` in the root dir and configure it like the following example (multiple ports are supported):
 ``` json
 {
@@ -52,6 +52,19 @@ Create a file `config.json` in the root dir and configure it like the following 
 }
 ```
 you can set `retry` to a number of milliseconds after which a retry will be attempted to open the port.
+
+## Optional deployment config with `config.json`
+Add a `deploy` section in `config.json` to automatically copy the created files to another location.  
+If you set the option `gzip` to `true`, each file will be separately compressed. Useful for servers capable serving pre-zipped files. This saves ~1kB storage space which is very useful on [small systems](https://github.com/HerrZatacke/websocket-gbp-emulator).
+``` json
+{
+  "ports": [...], 
+  "deploy": {
+    "dir": "/copy/all/files/to/that/folder",
+    "gzip": true
+  }
+}
+```
 
 ## Future Plans
 This tool is meant to be integrated into the [Websocket GBP Emulator](https://github.com/HerrZatacke/websocket-gbp-emulator)
