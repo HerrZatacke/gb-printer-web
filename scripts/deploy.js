@@ -13,17 +13,26 @@ if (!conf || !conf.deploy || !conf.deploy.dir) {
 const deployDir = conf.deploy.dir;
 
 rimraf(`${deployDir}/*`, {}, () => {
-  walkdir.sync(outputPath, (filePath, stats) => {
-
+  const wd = walkdir(outputPath);
+  wd.on('file', (filePath, stats) => {
     const fileName = path.basename(filePath);
-
+    const destination = path.join(deployDir, path.relative(outputPath, filePath));
     if (fileName.startsWith('.') || !stats.size) {
       return;
     }
 
-    const destination = path.join(deployDir, path.relative(outputPath, filePath));
+    wd.pause();
 
-    mkdirp.sync(path.dirname(destination));
-    fs.copyFileSync(filePath, destination);
+    mkdirp(path.dirname(destination))
+      .then(() => {
+        fs.copyFile(filePath, destination, (error) => {
+          if (error) {
+            console.error(error);
+            return;
+          }
+
+          wd.resume();
+        });
+      });
   });
 });
