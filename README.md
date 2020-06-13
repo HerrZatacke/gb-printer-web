@@ -14,6 +14,8 @@ If it does not work, [please open an issue](https://github.com/HerrZatacke/gb-pr
 
 
 ## ToDos
+* Upload field (additionally to drag/drop) for mobile usage
+* User manual
 * Global Storage for images 
 * Allow rendering animated Gifs
 * Get it running [on the ESP](https://github.com/HerrZatacke/websocket-gbp-emulator)
