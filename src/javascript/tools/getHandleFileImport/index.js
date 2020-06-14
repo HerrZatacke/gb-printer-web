@@ -1,6 +1,18 @@
 import transformBin from '../transformBin';
 import transformSav from '../transformSav';
 
+// check for the header "GB-BIN01"
+const isBinType = (buffer) => (
+  buffer[0] === 71 && // G
+  buffer[1] === 66 && // B
+  buffer[2] === 45 && // -
+  buffer[3] === 66 && // B
+  buffer[4] === 73 && // I
+  buffer[5] === 78 && // N
+  buffer[6] === 48 && // 0
+  buffer[7] === 49 //    1
+);
+
 const getHandleFileImport = (dispatch) => (file) => {
 
   // roughly larger than 1MB is too much....
@@ -18,17 +30,15 @@ const getHandleFileImport = (dispatch) => (file) => {
 
     let dumpText;
 
-    switch (file.size) {
-      // for now let's assume all .sav files have the same size...
-      case 131072:
-        dumpText = transformSav(ev.target.result);
-        break;
-      // binaries from the esp-printer for now always have 5760 byte
-      case 5760:
-        dumpText = transformBin(ev.target.result);
-        break;
-      default:
-        dumpText = ev.target.result;
+    const data = Buffer.from(ev.target.result);
+
+    // for now let's assume all .sav files have the same size...
+    if (file.size === 131072) {
+      dumpText = transformSav(data);
+    } else if (isBinType(data)) {
+      dumpText = transformBin(data);
+    } else {
+      dumpText = data.toString('utf8');
     }
 
     let settingsDump = {};
@@ -62,11 +72,7 @@ const getHandleFileImport = (dispatch) => (file) => {
     });
   };
 
-  if ((file.size === 131072) || (file.size === 5760)) {
-    reader.readAsArrayBuffer(file);
-  } else {
-    reader.readAsText(file);
-  }
+  reader.readAsArrayBuffer(file);
 };
 
 export default getHandleFileImport;

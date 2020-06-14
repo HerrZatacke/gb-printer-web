@@ -1,5 +1,4 @@
-const transformBin = (binData) => {
-  const data = Buffer.from(binData);
+const transformBin = (data) => {
   const transformed = [];
 
   transformed.push('!{"command":"INIT"}\n');
@@ -7,7 +6,7 @@ const transformBin = (binData) => {
 
   // for (let i = 0; i < 16; i += 1) {
   for (let i = 0; i < 5760; i += 1) {
-    transformed.push(data[i].toString(16).padStart(2, '0'));
+    transformed.push(data[i + 8].toString(16).padStart(2, '0'));
 
     if (i % 16 === 15) {
       transformed.push('\n');

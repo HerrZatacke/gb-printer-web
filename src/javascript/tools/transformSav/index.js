@@ -1,8 +1,6 @@
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF\n';
 
-const transformSav = (raw) => {
-
-  const data = Buffer.from(raw);
+const transformSav = (data) => {
   const transformed = [];
 
   transformed.push('!{"command":"INIT"}\n');
