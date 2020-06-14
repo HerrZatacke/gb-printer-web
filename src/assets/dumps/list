@@ -1,0 +1,14 @@
+{
+  "dumps": [
+    "/dumps/00001.bin",
+    "/dumps/00002.bin",
+    "/dumps/00003.bin",
+    "/dumps/00004.bin"
+  ],
+  "fs": {
+    "total": 2072576,
+    "used": 786432,
+    "available": 1286144,
+    "dumpcount": 4
+  }
+}
