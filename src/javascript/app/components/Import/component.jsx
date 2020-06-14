@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import PrinterReport from '../PrinterReport';
 
 class Import extends React.Component {
 
@@ -23,6 +24,32 @@ class Import extends React.Component {
   render() {
     return (
       <div className="import">
+        <div className="import__inputgroup import__buttongroup">
+          <button
+            type="button"
+            className="import__button import__button"
+            onClick={this.props.checkPrinter}
+          >
+            Check Printer
+          </button>
+          <button
+            type="button"
+            className="import__button import__button"
+            disabled={this.props.dumpCount === 0}
+            onClick={this.props.downloadPrinter}
+          >
+            {`Download ${this.props.dumpCount ? this.props.dumpCount : ''} Dumps`}
+          </button>
+          <button
+            type="button"
+            className="import__button import__button"
+            disabled={this.props.dumpCount === 0}
+            onClick={this.props.clearPrinter}
+          >
+            Clear Printer
+          </button>
+        </div>
+        <PrinterReport />
         <div className="import__inputgroup">
           <label htmlFor="import-file" className="import__label">
             Select file for import
@@ -75,8 +102,12 @@ class Import extends React.Component {
 }
 
 Import.propTypes = {
+  dumpCount: PropTypes.number.isRequired,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
+  checkPrinter: PropTypes.func.isRequired,
+  downloadPrinter: PropTypes.func.isRequired,
+  clearPrinter: PropTypes.func.isRequired,
 };
 
 Import.defaultProps = {};

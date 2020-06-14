@@ -1,0 +1,31 @@
+.printer-report {
+  margin-bottom: 30px;
+
+  &__table {
+    width: 100%;
+    background-color: $color-grey-70;
+
+    tr {
+      border-bottom: 1px solid $color-grey-60;
+      border-top: 1px solid $color-grey-60;
+    }
+
+    td, th {
+      padding: 5px 10px;
+    }
+
+    th {
+      font-size: 18px;
+      text-align: left;
+    }
+  }
+
+  &__label {
+    text-align: right;
+  }
+
+  &__value {
+    text-align: left;
+  }
+
+}

@@ -8,6 +8,7 @@ import handleErrors from './middlewares/error';
 import hideLiveImage from './middlewares/hideLiveImage';
 import lightbox from './middlewares/lightbox';
 import plainText from './middlewares/plainText';
+import printer from './middlewares/printer';
 import saveEditImage from './middlewares/saveEditImage';
 import saveLineBuffer from './middlewares/saveLineBuffer';
 import saveRGBNImage from './middlewares/saveRGBNImage';
@@ -26,6 +27,7 @@ export default applyMiddleware(
   hideLiveImage,
   lightbox,
   plainText,
+  printer,
   saveEditImage,
   saveLineBuffer,
   saveRGBNImage,

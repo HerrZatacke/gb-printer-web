@@ -18,6 +18,16 @@
     }
   }
 
+  &__buttongroup {
+    flex-wrap: wrap;
+    margin: 0 -10px;
+  }
+
+  &__buttongroup &__button {
+    flex: 200px 1 0;
+    margin: 5px 10px 30px 5px;
+  }
+
   &__label {
     flex-basis: 30%;
     flex-grow: 0;
@@ -94,6 +104,12 @@
       text-align: center;
       line-height: 40px;
       font-size: 14px;
+    }
+
+    &:disabled {
+      background-color: $color-grey-60;
+      color: $color-grey-40;
+      cursor: default;
     }
   }
 
