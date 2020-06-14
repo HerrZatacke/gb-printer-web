@@ -65,7 +65,11 @@ class LightboxImage extends React.Component {
   render() {
     return (this.state.loaded) ? (
       <div className="lightbox-image">
-        <div className="lightbox-image__backdrop" />
+        <button
+          type="button"
+          className="lightbox-image__backdrop"
+          onClick={this.props.close}
+        />
         <div className="lightbox-image__box">
           <label className="lightbox-image__title">
             {this.props.title}
