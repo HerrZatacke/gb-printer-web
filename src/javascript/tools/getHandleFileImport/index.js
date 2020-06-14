@@ -1,3 +1,4 @@
+import transformBin from '../transformBin';
 import transformSav from '../transformSav';
 
 const getHandleFileImport = (dispatch) => (file) => {
@@ -15,8 +16,20 @@ const getHandleFileImport = (dispatch) => (file) => {
 
   reader.onload = (ev) => {
 
-    // for now let's assume all .sav files have the same size...
-    const dumpText = file.size === 131072 ? transformSav(ev.target.result) : ev.target.result;
+    let dumpText;
+
+    switch (file.size) {
+      // for now let's assume all .sav files have the same size...
+      case 131072:
+        dumpText = transformSav(ev.target.result);
+        break;
+      // binaries from the esp-printer for now always have 5760 byte
+      case 5760:
+        dumpText = transformBin(ev.target.result);
+        break;
+      default:
+        dumpText = ev.target.result;
+    }
 
     let settingsDump = {};
     try {
@@ -49,7 +62,7 @@ const getHandleFileImport = (dispatch) => (file) => {
     });
   };
 
-  if (file.size === 131072) {
+  if ((file.size === 131072) || (file.size === 5760)) {
     reader.readAsArrayBuffer(file);
   } else {
     reader.readAsText(file);
