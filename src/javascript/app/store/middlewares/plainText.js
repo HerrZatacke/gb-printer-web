@@ -1,3 +1,4 @@
+import getHandleFileImport from '../../../tools/getHandleFileImport';
 import handleLines from '../../../tools/handleLines';
 
 const plainText = (store) => {
@@ -28,6 +29,16 @@ const plainText = (store) => {
 
 
   return (next) => (action) => {
+    if (action.type === 'IMPORT_FILE') {
+
+      if (action.payload.files && action.payload.files.length === 1) {
+        getHandleFileImport(store.dispatch)(action.payload.files[0]);
+      }
+
+      // don't call next(action)
+      return;
+    }
+
     if (action.type === 'IMPORT_PLAIN_TEXT') {
 
       let dataLines = [];

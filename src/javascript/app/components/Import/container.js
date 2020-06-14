@@ -4,10 +4,16 @@ const mapStateToProps = (/* state */) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  dumpPlainText: (textDump) => {
+  importPlainText: (textDump) => {
     dispatch({
       type: 'IMPORT_PLAIN_TEXT',
       payload: textDump,
+    });
+  },
+  importFile: (file) => {
+    dispatch({
+      type: 'IMPORT_FILE',
+      payload: file,
     });
   },
 });

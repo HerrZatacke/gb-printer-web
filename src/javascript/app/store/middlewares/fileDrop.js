@@ -1,64 +1,8 @@
-import transformSav from '../../../tools/transformSav';
-
-const handleFile = (dispatch) => (file) => {
-
-  // roughly larger than 1MB is too much....
-  if (file.size > 0xfffff) {
-    dispatch({
-      type: 'ERROR',
-      payload: 'FILE_TOO_LARGE',
-    });
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = (ev) => {
-
-    // for now let's assume all .sav files have the same size...
-    const dumpText = file.size === 131072 ? transformSav(ev.target.result) : ev.target.result;
-
-    let settingsDump = {};
-    try {
-      settingsDump = JSON.parse(dumpText);
-    } catch (error) {
-      /* not a settings file */
-    }
-
-    if (settingsDump.state) {
-      dispatch({
-        type: 'SETTINGS_IMPORT',
-        payload: settingsDump,
-      });
-      return;
-    }
-
-    // file must contain something that resembles a gb printer command
-    if (dumpText.indexOf('!{"command"') === -1) {
-      dispatch({
-        type: 'ERROR',
-        payload: 'NOT_A_DUMP',
-      });
-      return;
-    }
-
-    dispatch({
-      type: 'IMPORT_PLAIN_TEXT',
-      payload: dumpText,
-      file: file.name,
-    });
-  };
-
-  if (file.size === 131072) {
-    reader.readAsArrayBuffer(file);
-  } else {
-    reader.readAsText(file);
-  }
-};
+import getHandleFileImport from '../../../tools/getHandleFileImport';
 
 const fileDrop = (store) => {
   const root = document.querySelector('#app');
-  const handleFileDispatch = handleFile(store.dispatch);
+  const handleFileDispatch = getHandleFileImport(store.dispatch);
   let dragoverTimeout;
   let dragging = false;
 

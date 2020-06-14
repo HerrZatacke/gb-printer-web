@@ -5,6 +5,7 @@ class Import extends React.Component {
 
   constructor(props) {
     super(props);
+    this.fileInputRef = React.createRef();
     this.state = {
       text: '',
     };
@@ -21,10 +22,36 @@ class Import extends React.Component {
 
   render() {
     return (
-      <>
-        <div className="dump">
+      <div className="import">
+        <div className="import__inputgroup">
+          <label htmlFor="import-file" className="import__label">
+            Select file for import
+          </label>
+          <input
+            id="import-file"
+            className="import__input"
+            type="file"
+            onChange={({ target }) => {
+              if (target.files && target.files.length === 1) {
+                this.props.importFile(target);
+              }
+            }}
+            ref={this.fileInputRef}
+          />
+          <label
+            htmlFor="import-file"
+            className="import__button import__button--label"
+          >
+            Select
+          </label>
+        </div>
+        <div className="import__inputgroup import__inputgroup--column">
+          <label htmlFor="import-plaintext" className="import__label">
+            Paste your plaintext
+          </label>
           <textarea
-            className="dump__data"
+            id="import-plaintext"
+            className="import__data"
             value={this.state.text}
             onChange={({ target }) => {
               this.setState({
@@ -32,23 +59,24 @@ class Import extends React.Component {
               });
             }}
           />
+          <button
+            className="import__button"
+            type="button"
+            onClick={() => {
+              this.props.importPlainText(this.state.text);
+            }}
+          >
+            Import
+          </button>
         </div>
-        <button
-          className="dump__submit"
-          type="button"
-          onClick={() => {
-            this.props.dumpPlainText(this.state.text);
-          }}
-        >
-          Import
-        </button>
-      </>
+      </div>
     );
   }
 }
 
 Import.propTypes = {
-  dumpPlainText: PropTypes.func.isRequired,
+  importPlainText: PropTypes.func.isRequired,
+  importFile: PropTypes.func.isRequired,
 };
 
 Import.defaultProps = {};
