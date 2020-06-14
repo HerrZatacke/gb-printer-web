@@ -1,5 +1,6 @@
 export default {
   socketUrl: 'localhost:3001',
+  printerUrl: '',
   activePalette: 'bw',
   images: [],
   galleryView: '1x',

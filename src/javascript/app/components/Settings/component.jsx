@@ -10,13 +10,15 @@ class Settings extends React.Component {
     this.state = {
       sync: true,
       socketUrl: props.socketUrl,
+      printerUrl: props.printerUrl,
       pageSize: props.pageSize,
     };
   }
 
   static getDerivedStateFromProps(props, state) {
     return {
-      url: state.sync ? props.socketUrl : state.socketUrl,
+      printerUrl: state.sync ? props.printerUrl : state.printerUrl,
+      socketUrl: state.sync ? props.socketUrl : state.socketUrl,
       sync: state.sync,
       pageSize: state.sync ? props.pageSize : state.pageSize,
     };
@@ -97,49 +99,86 @@ class Settings extends React.Component {
             </div>
           </div>
         ) : (
-          <div className="settings__inputgroup">
-            <label htmlFor="settings-url" className="settings__label">
-              Remote Socket URL
-              <SocketStateIndicator />
-            </label>
-            <input
-              id="settings-url"
-              className="settings__input"
-              value={this.state.socketUrl}
-              onChange={({ target }) => {
-                this.setState({
-                  sync: false,
-                  socketUrl: target.value,
-                });
-              }}
-              onKeyUp={(ev) => {
-                switch (ev.key) {
-                  case 'Enter':
-                    this.props.updateSocketUrl(this.state.socketUrl);
-                    break;
-                  case 'Escape':
-                    this.setState({
-                      socketUrl: this.props.socketUrl,
-                      sync: true,
-                    });
-                    break;
-                  default:
-                }
-              }}
-            />
-            <button
-              type="button"
-              className="settings__button"
-              onClick={() => {
-                this.setState({
-                  sync: true,
-                });
-                this.props.updateSocketUrl(this.state.socketUrl);
-              }}
-            >
-              Connect
-            </button>
-          </div>
+          <>
+            <div className="settings__inputgroup">
+              <label htmlFor="settings-socket-url" className="settings__label">
+                Remote Socket URL
+                <SocketStateIndicator />
+              </label>
+              <input
+                id="settings-socket-url"
+                className="settings__input"
+                value={this.state.socketUrl}
+                onChange={({ target }) => {
+                  this.setState({
+                    sync: false,
+                    socketUrl: target.value,
+                  });
+                }}
+                onKeyUp={(ev) => {
+                  switch (ev.key) {
+                    case 'Enter':
+                      this.props.updateSocketUrl(this.state.socketUrl);
+                      break;
+                    case 'Escape':
+                      this.setState({
+                        socketUrl: this.props.socketUrl,
+                        sync: true,
+                      });
+                      break;
+                    default:
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="settings__button"
+                onClick={() => {
+                  this.setState({
+                    sync: true,
+                  });
+                  this.props.updateSocketUrl(this.state.socketUrl);
+                }}
+              >
+                Connect
+              </button>
+            </div>
+
+
+            <div className="settings__inputgroup">
+              <label htmlFor="settings-printer-url" className="settings__label">
+                Printer URL
+              </label>
+              <input
+                id="settings-printer-url"
+                className="settings__input"
+                value={this.state.printerUrl}
+                onChange={({ target }) => {
+                  this.setState({
+                    sync: false,
+                    printerUrl: target.value,
+                  });
+                }}
+                onBlur={() => {
+                  this.props.updatePrinterUrl(this.state.printerUrl);
+                }}
+                onKeyUp={(ev) => {
+                  switch (ev.key) {
+                    case 'Enter':
+                      this.props.updatePrinterUrl(this.state.printerUrl);
+                      break;
+                    case 'Escape':
+                      this.setState({
+                        printerUrl: this.props.printerUrl,
+                        sync: true,
+                      });
+                      break;
+                    default:
+                  }
+                }}
+              />
+            </div>
+          </>
         )}
         <div className="settings__inputgroup settings__buttongroup">
           <button
@@ -172,8 +211,10 @@ class Settings extends React.Component {
 Settings.propTypes = {
   changeExportScaleFactors: PropTypes.func.isRequired,
   exportScaleFactors: PropTypes.array.isRequired,
+  printerUrl: PropTypes.string.isRequired,
   socketUrl: PropTypes.string.isRequired,
   updateSocketUrl: PropTypes.func.isRequired,
+  updatePrinterUrl: PropTypes.func.isRequired,
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
   exportSettings: PropTypes.func.isRequired,

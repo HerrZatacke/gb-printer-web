@@ -35,9 +35,9 @@ const getFetchDumps = (dispatch, printerUrl) => (dumps) => (
 
 const printer = (store) => (next) => (action) => {
 
-  const printerUrl = '';
   // const printerUrl = 'http://192.168.0.14';
   const state = store.getState();
+  const { printerUrl } = state;
 
   if (action.type === 'PRINTER_QUERY') {
     fetch(`${printerUrl}/dumps/list`)

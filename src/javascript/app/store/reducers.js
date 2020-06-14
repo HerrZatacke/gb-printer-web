@@ -17,7 +17,8 @@ import lightboxImage from './reducers/lightboxImageReducer';
 import lineBuffer from './reducers/lineBufferReducer';
 import pageSize from './reducers/pageSizeReducer';
 import palettes from './reducers/palettesReducer';
-import printerData from './reducers/printerData';
+import printerData from './reducers/printerDataReducer';
+import printerUrl from './reducers/printerUrlReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
@@ -43,6 +44,7 @@ export default combineReducers({
   pageSize,
   palettes,
   printerData,
+  printerUrl,
   rgbnImages,
   socketState,
   socketUrl,

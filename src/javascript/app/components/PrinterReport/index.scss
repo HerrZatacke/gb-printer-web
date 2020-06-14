@@ -4,20 +4,19 @@
   &__table {
     width: 100%;
     background-color: $color-grey-70;
+  }
 
-    tr {
-      border-bottom: 1px solid $color-grey-60;
-      border-top: 1px solid $color-grey-60;
-    }
+  tr {
+    border-bottom: 1px solid $color-grey-60;
+    border-top: 1px solid $color-grey-60;
+  }
 
-    td, th {
-      padding: 5px 10px;
-    }
+  td, th {
+    padding: 5px 10px;
+  }
 
-    th {
-      font-size: 18px;
-      text-align: left;
-    }
+  &__head {
+    font-size: 18px;
   }
 
   &__label {
@@ -26,6 +25,11 @@
 
   &__value {
     text-align: left;
+
+    &--url {
+      text-align: right;
+      font-size: 12px;
+    }
   }
 
 }

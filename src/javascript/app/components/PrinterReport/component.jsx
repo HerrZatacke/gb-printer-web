@@ -8,8 +8,8 @@ const PrinterReport = (props) => (
       <table className="printer-report__table">
         <thead>
           <tr>
-            <th />
-            <th>Printer Filesystem</th>
+            <th className="printer-report__label printer-report__head">Printer Filesystem</th>
+            <th className="printer-report__value printer-report__head printer-report__value--url">{props.printerUrl}</th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +45,7 @@ PrinterReport.propTypes = {
     }),
     dumps: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  printerUrl: PropTypes.string.isRequired,
 };
 
 PrinterReport.defaultProps = {};
