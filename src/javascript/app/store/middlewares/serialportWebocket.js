@@ -55,13 +55,13 @@ const serialportWebocket = (store) => {
   // Do not autoconnect when on prod
   if (socketUrl && window.location.protocol !== 'https:') {
     window.setTimeout(() => {
-      socket = newSocket(store.dispatch, `ws://${socketUrl}`);
+      socket = newSocket(store.dispatch, `${socketUrl}`);
     }, 1000);
   }
 
   return (next) => (action) => {
     if (action.type === 'SET_SOCKET_URL') {
-      const protocolSocketUrl = `ws://${action.payload}`;
+      const protocolSocketUrl = `${action.payload}`;
       if (socket) {
         socket.setUrl(protocolSocketUrl);
       } else {
