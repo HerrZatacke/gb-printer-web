@@ -7,12 +7,13 @@ const getFetchDumps = (dispatch, printerUrl) => (dumps) => (
 
     const fnFetch = (remainingDumps) => {
       const nextDump = remainingDumps.shift();
+
       if (!nextDump) {
         resolve();
         return;
       }
 
-      fetch(`${printerUrl}${nextDump}`)
+      fetch(`${printerUrl}${nextDump.replace(/^\//, '')}`)
         .then((res) => res.blob())
         .then((dump) => {
           handleFileImport(dump);
@@ -33,14 +34,16 @@ const getFetchDumps = (dispatch, printerUrl) => (dumps) => (
   }))
 );
 
+const getPrinterUrl = (store) => {
+  const { printerUrl } = store.getState();
+  return printerUrl || '/';
+};
+
 const printer = (store) => (next) => (action) => {
 
-  // const printerUrl = 'http://192.168.0.14';
-  const state = store.getState();
-  const { printerUrl } = state;
-
   if (action.type === 'PRINTER_QUERY') {
-    fetch(`${printerUrl}/dumps/list`)
+    const printerUrl = getPrinterUrl(store);
+    fetch(`${printerUrl}dumps/list`)
       .then((res) => res.json())
       .then((printerData) => {
 
@@ -64,7 +67,8 @@ const printer = (store) => (next) => (action) => {
   }
 
   if (action.type === 'PRINTER_DOWNLOAD') {
-    const { printerData: { dumps } } = state;
+    const printerUrl = getPrinterUrl(store);
+    const { printerData: { dumps } } = store.getState();
     const fetchDumps = getFetchDumps(store.dispatch, printerUrl);
 
     if (dumps && dumps.length) {
@@ -73,7 +77,8 @@ const printer = (store) => (next) => (action) => {
   }
 
   if (action.type === 'PRINTER_CLEAR') {
-    fetch(`${printerUrl}/dumps/clear`)
+    const printerUrl = getPrinterUrl(store);
+    fetch(`${printerUrl}dumps/clear`)
       .then((res) => res.json())
       .then(({ deleted }) => {
         if (deleted) {

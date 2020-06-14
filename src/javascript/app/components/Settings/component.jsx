@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SocketStateIndicator from '../SocketStateIndicator';
+import cleanUrl from '../../../tools/cleanUrl';
 
 class Settings extends React.Component {
   constructor(props) {
@@ -17,8 +18,8 @@ class Settings extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     return {
-      printerUrl: state.sync ? props.printerUrl : state.printerUrl,
-      socketUrl: state.sync ? props.socketUrl : state.socketUrl,
+      printerUrl: state.sync ? cleanUrl(props.printerUrl, 'http') : state.printerUrl,
+      socketUrl: state.sync ? cleanUrl(props.socketUrl, 'ws') : state.socketUrl,
       sync: state.sync,
       pageSize: state.sync ? props.pageSize : state.pageSize,
     };
@@ -119,6 +120,9 @@ class Settings extends React.Component {
                   switch (ev.key) {
                     case 'Enter':
                       this.props.updateSocketUrl(this.state.socketUrl);
+                      this.setState({
+                        sync: true,
+                      });
                       break;
                     case 'Escape':
                       this.setState({
@@ -138,6 +142,9 @@ class Settings extends React.Component {
                     sync: true,
                   });
                   this.props.updateSocketUrl(this.state.socketUrl);
+                  this.setState({
+                    sync: true,
+                  });
                 }}
               >
                 Connect
@@ -161,11 +168,17 @@ class Settings extends React.Component {
                 }}
                 onBlur={() => {
                   this.props.updatePrinterUrl(this.state.printerUrl);
+                  this.setState({
+                    sync: true,
+                  });
                 }}
                 onKeyUp={(ev) => {
                   switch (ev.key) {
                     case 'Enter':
                       this.props.updatePrinterUrl(this.state.printerUrl);
+                      this.setState({
+                        sync: true,
+                      });
                       break;
                     case 'Escape':
                       this.setState({

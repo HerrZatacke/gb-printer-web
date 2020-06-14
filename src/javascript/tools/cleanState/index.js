@@ -1,14 +1,11 @@
+import cleanUrl from '../cleanUrl';
 import { defaultPalette } from '../../app/defaults';
 
 const cleanState = (initialState) => {
   const palettesShorts = initialState.palettes.map(({ shortName }) => shortName);
 
-  const socketUrl = (
-    initialState.socketUrl &&
-    initialState.socketUrl.indexOf('://') !== -1
-  ) ?
-    initialState.socketUrl :
-    `ws://${initialState.socketUrl}`;
+  const socketUrl = cleanUrl(initialState.socketUrl, 'ws');
+  const printerUrl = cleanUrl(initialState.printerUrl, 'http');
 
   const images = initialState.images
     .map((image) => {
@@ -57,7 +54,7 @@ const cleanState = (initialState) => {
       initialState.globalIndex += 1;
     });
 
-  return { ...initialState, images, socketUrl };
+  return { ...initialState, images, socketUrl, printerUrl };
 };
 
 export default cleanState;
