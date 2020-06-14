@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class Dump extends React.Component {
+class Import extends React.Component {
 
   constructor(props) {
     super(props);
@@ -47,10 +47,10 @@ class Dump extends React.Component {
   }
 }
 
-Dump.propTypes = {
+Import.propTypes = {
   dumpPlainText: PropTypes.func.isRequired,
 };
 
-Dump.defaultProps = {};
+Import.defaultProps = {};
 
-export default Dump;
+export default Import;

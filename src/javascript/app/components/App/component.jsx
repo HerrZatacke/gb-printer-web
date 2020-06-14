@@ -9,7 +9,7 @@ import LightboxImage from '../LightboxImage';
 import RGBNImage from '../RGBNImage';
 import Settings from '../Settings';
 import Palettes from '../Palettes';
-import Dump from '../Dump';
+import Import from '../Import';
 import Gallery from '../Gallery';
 import Home from '../Home';
 import DragOver from '../DragOver';
@@ -57,9 +57,9 @@ const App = (props) => (
           <h1 className="app__content-headline">Settings</h1>
           <Settings />
         </Route>
-        <Route path="/dump">
-          <h1 className="app__content-headline">Paste your plaintext</h1>
-          <Dump />
+        <Route path="/import">
+          <h1 className="app__content-headline">Import</h1>
+          <Import />
         </Route>
         <Route path="/">
           <Home />

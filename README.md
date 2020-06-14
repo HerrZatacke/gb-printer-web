@@ -2,7 +2,7 @@
 
 ## Basic usage
 * choose a [color palette](#/palettes)
-* [paste your exports](#/dump) into a textfield (or simply drag and drop your dump(s) into this window)
+* [paste your exports](#/import) into a textfield (or simply drag and drop your dump(s) into this window)
 * check your images [in the gallery](#/gallery)
 * You can also try to drag/drop your cartridge dump into this window  
 
