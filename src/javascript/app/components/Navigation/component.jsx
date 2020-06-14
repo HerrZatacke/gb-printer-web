@@ -66,17 +66,6 @@ class Navigation extends React.Component {
           </li>
           <li className="navigation__entry">
             <NavLink
-              to="/palettes"
-              activeClassName="navigation__link--active"
-              className="navigation__link"
-              exact
-              onClick={this.closeMobileNav}
-            >
-              Palettes
-            </NavLink>
-          </li>
-          <li className="navigation__entry">
-            <NavLink
               to="/import"
               activeClassName="navigation__link--active"
               className="navigation__link"
@@ -84,6 +73,17 @@ class Navigation extends React.Component {
               onClick={this.closeMobileNav}
             >
               Import
+            </NavLink>
+          </li>
+          <li className="navigation__entry">
+            <NavLink
+              to="/palettes"
+              activeClassName="navigation__link--active"
+              className="navigation__link"
+              exact
+              onClick={this.closeMobileNav}
+            >
+              Palettes
             </NavLink>
           </li>
           <li className="navigation__entry">
