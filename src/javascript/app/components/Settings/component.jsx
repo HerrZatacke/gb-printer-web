@@ -150,8 +150,6 @@ class Settings extends React.Component {
                 Connect
               </button>
             </div>
-
-
             <div className="settings__inputgroup">
               <label htmlFor="settings-printer-url" className="settings__label">
                 Printer URL

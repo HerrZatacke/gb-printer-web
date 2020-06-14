@@ -24,31 +24,33 @@ class Import extends React.Component {
   render() {
     return (
       <div className="import">
-        <div className="import__inputgroup import__buttongroup">
-          <button
-            type="button"
-            className="import__button import__button"
-            onClick={this.props.checkPrinter}
-          >
-            Check Printer
-          </button>
-          <button
-            type="button"
-            className="import__button import__button"
-            disabled={this.props.dumpCount === 0}
-            onClick={this.props.downloadPrinter}
-          >
-            {`Download ${this.props.dumpCount ? this.props.dumpCount : ''} Dumps`}
-          </button>
-          <button
-            type="button"
-            className="import__button import__button"
-            disabled={this.props.dumpCount === 0}
-            onClick={this.props.clearPrinter}
-          >
-            Clear Printer
-          </button>
-        </div>
+        {(window.location.protocol === 'https:') ? null : (
+          <div className="import__inputgroup import__buttongroup">
+            <button
+              type="button"
+              className="import__button import__button"
+              onClick={this.props.checkPrinter}
+            >
+              Check Printer
+            </button>
+            <button
+              type="button"
+              className="import__button import__button"
+              disabled={this.props.dumpCount === 0}
+              onClick={this.props.downloadPrinter}
+            >
+              {`Download ${this.props.dumpCount ? this.props.dumpCount : ''} Dumps`}
+            </button>
+            <button
+              type="button"
+              className="import__button import__button"
+              disabled={this.props.dumpCount === 0}
+              onClick={this.props.clearPrinter}
+            >
+              Clear Printer
+            </button>
+          </div>
+        )}
         <PrinterReport />
         <div className="import__inputgroup">
           <label htmlFor="import-file" className="import__label">
