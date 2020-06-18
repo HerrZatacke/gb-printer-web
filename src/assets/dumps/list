@@ -9,6 +9,7 @@
     "total": 2072576,
     "used": 786432,
     "available": 1286144,
-    "dumpcount": 4
+    "dumpcount": 4,
+    "maximages": 180
   }
 }

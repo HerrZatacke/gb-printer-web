@@ -21,6 +21,7 @@ If it does not work, [please open an issue](https://github.com/HerrZatacke/gb-pr
 * Export without frame
 * Other blendmodes than multiply for RGB-Images
 * allow some gesture navigation on touch devices
+* trash bin for raw-data of deleted images
 
 ## Local Setup
 You can run this app locally to directly use the gbp-emulator on your serial port 

@@ -23,10 +23,10 @@ const PrinterReport = (props) => (
           </tr>
           <tr>
             <td className="printer-report__label">Free</td>
-            <td className="printer-report__value">{`${filesize(props.printerData.fs.available)} (~${Math.floor(props.printerData.fs.available / 5768)} dumps)`}</td>
+            <td className="printer-report__value">{`${Math.max(0, (props.printerData.fs.maximages - props.printerData.dumps.length))} images`}</td>
           </tr>
           <tr>
-            <td className="printer-report__label">Dumps</td>
+            <td className="printer-report__label">Images</td>
             <td className="printer-report__value">{props.printerData.dumps.length}</td>
           </tr>
         </tbody>
@@ -38,10 +38,10 @@ const PrinterReport = (props) => (
 PrinterReport.propTypes = {
   printerData: PropTypes.shape({
     fs: PropTypes.shape({
+      dumpcount: PropTypes.number,
+      maximages: PropTypes.number,
       total: PropTypes.number,
       used: PropTypes.number,
-      available: PropTypes.number,
-      dumpcount: PropTypes.number,
     }),
     dumps: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,

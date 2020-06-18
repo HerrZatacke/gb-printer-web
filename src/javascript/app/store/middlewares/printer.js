@@ -54,7 +54,10 @@ const printer = (store) => (next) => (action) => {
 
         store.dispatch({
           type: 'PRINTER_DATA',
-          payload: printerData,
+          payload: {
+            ...printerData,
+            dumps: [...printerData.dumps].sort(),
+          },
         });
 
       })
