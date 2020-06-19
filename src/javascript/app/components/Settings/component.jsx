@@ -214,6 +214,9 @@ class Settings extends React.Component {
             Export everything (including images)
           </button>
         </div>
+        <p className="settings__version">
+          { `You are currently using version ${VERSION}.` }
+        </p>
       </div>
     );
   }

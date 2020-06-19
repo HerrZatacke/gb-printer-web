@@ -94,4 +94,11 @@
       background: $color-secondary;
     }
   }
+
+  &__version {
+    margin-top: 40px;
+    font-size: 12px;
+    text-align: right;
+    color: $color-grey-60;
+  }
 }

@@ -68,7 +68,8 @@ If you set the option `gzip` to `true`, each file will be separately compressed.
 ```
 
 ## Future Plans
-This tool is meant to be integrated into the [Websocket GBP Emulator](https://github.com/HerrZatacke/websocket-gbp-emulator)
+This tool is partially integrated into the [Websocket GBP Emulator](https://github.com/HerrZatacke/websocket-gbp-emulator)  
+You for the tool, you'll best [use the latest release](https://github.com/HerrZatacke/gb-printer-web/releases)
 
 ## Links and research
 * The source to this project is [available on GitHub](https://github.com/HerrZatacke/gb-printer-web)

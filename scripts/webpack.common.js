@@ -1,8 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const pxtorem = require('postcss-pxtorem');
 const autoprefixer = require('autoprefixer');
+const { version } = require('../package');
 
 module.exports = () => ({
   resolve: {
@@ -113,6 +115,9 @@ module.exports = () => ({
       filename: 'index.html',
       favicon: './src/assets/images/favicon.png',
       chunks: ['pf', 'main'],
+    }),
+    new DefinePlugin({
+      VERSION: `'${version}'`,
     }),
   ],
 });
