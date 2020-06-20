@@ -18,6 +18,36 @@ export default {
       palette: ['#ffffff', '#aaaaaa', '#555555', '#000000'],
     },
     {
+      shortName: 'dmg',
+      name: 'Original Game Boy',
+      palette: ['#9bbc0f', '#77a112', '#306230', '#0f380f'],
+    },
+    {
+      shortName: 'gbpocket',
+      name: 'Game Boy Pocket',
+      palette: ['#c4cfa1', '#8b956d', '#4d533c', '#1f1f1f'],
+    },
+    {
+      shortName: 'bgb',
+      name: 'BGB Emulator',
+      palette: ['#e0f8d0', '#88c070', '#346856', '#081820'],
+    },
+    {
+      shortName: 'grafixkidgray',
+      name: 'Grafixkid Gray',
+      palette: ['#e0dbcd', '#a89f94', '#706b66', '#2b2b26'],
+    },
+    {
+      shortName: 'grafixkidgreen',
+      name: 'Grafixkid Green',
+      palette: ['#dbf4b4', '#abc396', '#7b9278', '#4c625a'],
+    },
+    {
+      shortName: 'blackzero',
+      name: 'Game Boy (Black Zero) palette',
+      palette: ['#7e8416', '#577b46', '#385d49', '#2e463d'],
+    },
+    {
       shortName: 'gbcjp',
       name: 'Game Boy Color Splash Up (PocketCamera, JP)',
       palette: ['#ffffff', '#FFAD63', '#833100', '#000000'],
@@ -76,36 +106,6 @@ export default {
       shortName: 'gbcrb',
       name: 'Game Boy Color Splash Right+B',
       palette: ['#000000', '#008486', '#ffde00', '#ffffff'],
-    },
-    {
-      shortName: 'dmg',
-      name: 'Original Game Boy',
-      palette: ['#9bbc0f', '#77a112', '#306230', '#0f380f'],
-    },
-    {
-      shortName: 'gbpocket',
-      name: 'Game Boy Pocket',
-      palette: ['#c4cfa1', '#8b956d', '#4d533c', '#1f1f1f'],
-    },
-    {
-      shortName: 'bgb',
-      name: 'BGB Emulator',
-      palette: ['#e0f8d0', '#88c070', '#346856', '#081820'],
-    },
-    {
-      shortName: 'grafixkidgray',
-      name: 'Grafixkid Gray',
-      palette: ['#e0dbcd', '#a89f94', '#706b66', '#2b2b26'],
-    },
-    {
-      shortName: 'grafixkidgreen',
-      name: 'Grafixkid Green',
-      palette: ['#dbf4b4', '#abc396', '#7b9278', '#4c625a'],
-    },
-    {
-      shortName: 'blackzero',
-      name: 'Game Boy (Black Zero) palette',
-      palette: ['#7e8416', '#577b46', '#385d49', '#2e463d'],
     },
     {
       name: 'Cyanide Blues',
