@@ -18,14 +18,64 @@ export default {
       palette: ['#ffffff', '#aaaaaa', '#555555', '#000000'],
     },
     {
-      shortName: 'gbceuus',
-      name: 'Game Boy Color (Game Boy Camera, EU/US)',
-      palette: ['#ffffff', '#7bff30', '#0163c6', '#000000'],
+      shortName: 'gbcjp',
+      name: 'Game Boy Color Splash Up (PocketCamera, JP)',
+      palette: ['#ffffff', '#FFAD63', '#833100', '#000000'],
     },
     {
-      shortName: 'gbcjp',
-      name: 'Game Boy Color (PocketCamera, JP)',
-      palette: ['#ffffff', '#ffad63', '#833100', '#000000'],
+      shortName: 'gbcua',
+      name: 'Game Boy Color Splash Up+A',
+      palette: ['#ffffff', '#ff8f84', '#943A3A', '#000000'],
+    },
+    {
+      shortName: 'gbcub',
+      name: 'Game Boy Color Splash Up+B',
+      palette: ['#ffe7c5', '#CE9C85', '#846B29', '#5B3109'],
+    },
+    {
+      shortName: 'gbcl',
+      name: 'Game Boy Color Splash Left',
+      palette: ['#ffffff', '#65A49B', '#0000FE', '#000000'],
+    },
+    {
+      shortName: 'gbcla',
+      name: 'Game Boy Color Splash Left+A',
+      palette: ['#FFFFFF', '#8B8CDE', '#53528C', '#000000'],
+    },
+    {
+      shortName: 'gbclb',
+      name: 'Game Boy Color Splash Left+B',
+      palette: ['#ffffff', '#A5A5A5', '#525252', '#000000'],
+    },
+    {
+      shortName: 'gbcd',
+      name: 'Game Boy Color Splash Down',
+      palette: ['#FFFFA5', '#FE9494', '#9394fe', '#000000'],
+    },
+    {
+      shortName: 'gbcda',
+      name: 'Game Boy Color Splash Down+A',
+      palette: ['#ffffff', '#ffff00', '#fe0000', '#000000'],
+    },
+    {
+      shortName: 'gbcdb',
+      name: 'Game Boy Color Splash Down+B',
+      palette: ['#ffffff', '#ffff00', '#7d4900', '#000000'],
+    },
+    {
+      shortName: 'gbcr',
+      name: 'Game Boy Color Splash Right',
+      palette: ['#ffffff', '#51ff00', '#ff4200', '#000000'],
+    },
+    {
+      shortName: 'gbceuus',
+      name: 'Game Boy Color Splash Right+A (Game Boy Camera, EU/US)',
+      palette: ['#ffffff', '#7bff30', '#0163C6', '#000000'],
+    },
+    {
+      shortName: 'gbcrb',
+      name: 'Game Boy Color Splash Right+B',
+      palette: ['#000000', '#008486', '#ffde00', '#ffffff'],
     },
     {
       shortName: 'dmg',
