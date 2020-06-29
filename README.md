@@ -68,7 +68,7 @@ If you set the option `gzip` to `true`, each file will be separately compressed.
 ```
 
 ## Future Plans
-This tool is partially integrated into the [WiFi GBP Emulator](https://github.com/HerrZatacke/wifi-gbp-emulator), for which, you'll best [use the latest release](https://github.com/HerrZatacke/gb-printer-web/releases)
+This tool is partially integrated into the [WiFi GBP Emulator](https://herrzatacke.github.io/wifi-gbp-emulator/), for which, you'll best [use the latest release](https://github.com/HerrZatacke/gb-printer-web/releases)
 
 ## Links and research
 * The source to this project is [available on GitHub](https://github.com/HerrZatacke/gb-printer-web)
