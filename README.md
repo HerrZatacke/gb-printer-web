@@ -56,7 +56,7 @@ you can set `retry` to a number of milliseconds after which a retry will be atte
 
 ## Optional deployment config with `config.json`
 Add a `deploy` section in `config.json` to automatically copy the created files to another location.  
-If you set the option `gzip` to `true`, each file will be separately compressed. Useful for servers capable serving pre-zipped files. This saves ~1kB storage space which is very useful on [small systems](https://github.com/HerrZatacke/websocket-gbp-emulator).
+If you set the option `gzip` to `true`, each file will be separately compressed. Useful for servers capable serving pre-zipped files. This saves ~1kB storage space which is very useful on [small systems](https://github.com/HerrZatacke/wifi-gbp-emulator).
 ``` json
 {
   "ports": [...], 
@@ -68,7 +68,7 @@ If you set the option `gzip` to `true`, each file will be separately compressed.
 ```
 
 ## Future Plans
-This tool is partially integrated into the [Websocket GBP Emulator](https://github.com/HerrZatacke/websocket-gbp-emulator)  
+This tool is partially integrated into the [WiFi GBP Emulator](https://github.com/HerrZatacke/wifi-gbp-emulator)  
 You for the tool, you'll best [use the latest release](https://github.com/HerrZatacke/gb-printer-web/releases)
 
 ## Links and research
@@ -77,7 +77,6 @@ You for the tool, you'll best [use the latest release](https://github.com/HerrZa
 * This project is meant to replace my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter)
 
 ### Research
-* [Websockets on an ESP8266](https://tttapa.github.io/ESP8266/Chap14%20-%20WebSocket.html)
+* Tutorial on how to work with an ESP8266 by [ttapa: ESP8266 Beginner's Guide](https://tttapa.github.io/ESP8266/Chap01%20-%20ESP8266.html)  
 * [Programming a standalone ESP8266](https://www.instructables.com/id/3-Simple-Ways-of-Programming-an-ESP8266-12X-Module/)
 * [Deploying your JS App to Github Pages the easy way (or not)](https://medium.com/linagora-engineering/1ef8c48424b7)
-* [SSL WebSockets for the Arduino currently not supported](https://github.com/gilmaimon/ArduinoWebsockets/issues/59) 
