@@ -93,6 +93,12 @@
     &:hover {
       background: $color-secondary;
     }
+
+    &:disabled {
+      color: $color-grey-40;
+      background: $color-grey-70;
+      cursor: default;
+    }
   }
 
   &__version {

@@ -1,1 +1,12 @@
-.wifi-settings {}
+.wifi-settings {
+
+  &__button {
+    flex-basis: auto;
+    align-self: flex-end;
+    padding: 1px 20px;
+  }
+
+  &__buttongroup {
+    justify-content: flex-end;
+  }
+}
