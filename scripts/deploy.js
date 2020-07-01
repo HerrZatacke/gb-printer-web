@@ -17,10 +17,19 @@ const coypFunc = gzip ? copyAndGZ : fs.copyFile;
 
 rimraf(`${dir}/*`, {}, () => {
   const wd = walkdir(outputPath);
+
+  const ignored = [
+    '.git',
+    'bundles.html',
+    'data_w.zip',
+    'env.json',
+  ];
+
   wd.on('file', (filePath, stats) => {
     const fileName = path.basename(filePath);
     const destination = path.join(dir, path.relative(outputPath, filePath));
-    if (fileName.startsWith('.') || !stats.size) {
+
+    if (!stats.size || ignored.includes(fileName)) {
       return;
     }
 

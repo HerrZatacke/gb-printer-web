@@ -25,6 +25,7 @@
     "babel-polyfill": "^6.26.0",
     "chalk": "^3.0.0",
     "classnames": "^2.2.6",
+    "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.6.0",
     "dayjs": "^1.8.28",
     "debounce": "^1.2.0",
