@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SocketStateIndicator from '../SocketStateIndicator';
 import cleanUrl from '../../../tools/cleanUrl';
+import { getEnv } from '../../../tools/getEnv';
 
 class Settings extends React.Component {
   constructor(props) {
@@ -14,6 +15,8 @@ class Settings extends React.Component {
       printerUrl: props.printerUrl,
       pageSize: props.pageSize,
     };
+
+    this.env = getEnv();
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -214,9 +217,15 @@ class Settings extends React.Component {
             Export everything (including images)
           </button>
         </div>
-        <p className="settings__version">
-          { `You are currently using version ${VERSION}.` }
-        </p>
+        <ul className="settings__version">
+          <li>{ `Web-App version: ${VERSION}` }</li>
+          <li>{ `Printer version: ${this.env.version}`}</li>
+          <li>{ `Max Images: ${this.env.maximages}`}</li>
+          <li>{ `Environment type: ${this.env.env}`}</li>
+          <li>{ `Compiled Filesystem: ${this.env.fstype}`}</li>
+          <li>{ `Compiled Bootmode: ${this.env.bootmode}`}</li>
+          <li>{ `Compiled for OLED: ${this.env.oled ? 'yes' : 'no'}`}</li>
+        </ul>
       </div>
     );
   }
