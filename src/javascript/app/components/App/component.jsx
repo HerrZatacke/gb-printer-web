@@ -16,6 +16,10 @@ import DragOver from '../DragOver';
 import GalleryIntroText from './galleryInroText';
 import getValidPageIndex from '../../../tools/getValidPageIndex';
 import FilterForm from '../FilterForm';
+import { getEnv } from '../../../tools/getEnv';
+import WiFiSettings from '../WiFiSettings';
+
+const env = getEnv();
 
 const App = (props) => (
   <Router>
@@ -56,6 +60,21 @@ const App = (props) => (
         <Route path="/settings">
           <h1 className="app__content-headline">Settings</h1>
           <Settings />
+          {(env.env !== 'esp8266') ? null : (
+            <>
+              <h1 className="app__content-headline">WiFi-Settings</h1>
+              <WiFiSettings />
+            </>
+          )}
+          <ul className="settings__version">
+            <li>{ `Web-App version: ${VERSION}` }</li>
+            <li>{ `Printer version: ${env.version}`}</li>
+            <li>{ `Max Images: ${env.maximages}`}</li>
+            <li>{ `Environment type: ${env.env}`}</li>
+            <li>{ `Compiled Filesystem: ${env.fstype}`}</li>
+            <li>{ `Compiled Bootmode: ${env.bootmode}`}</li>
+            <li>{ `Compiled for OLED: ${env.oled ? 'yes' : 'no'}`}</li>
+          </ul>
         </Route>
         <Route path="/import">
           <h1 className="app__content-headline">Import</h1>

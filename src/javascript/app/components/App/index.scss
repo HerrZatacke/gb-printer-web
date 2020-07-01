@@ -18,6 +18,10 @@
     font-size: 30px;
     margin-bottom: 30px;
     color: $color-primary;
+
+    &:not(:first-child) {
+      margin-top: 60px;
+    }
   }
 
   &__content-hint {

@@ -207,15 +207,6 @@ class Settings extends React.Component {
             Export everything (including images)
           </button>
         </div>
-        <ul className="settings__version">
-          <li>{ `Web-App version: ${VERSION}` }</li>
-          <li>{ `Printer version: ${this.env.version}`}</li>
-          <li>{ `Max Images: ${this.env.maximages}`}</li>
-          <li>{ `Environment type: ${this.env.env}`}</li>
-          <li>{ `Compiled Filesystem: ${this.env.fstype}`}</li>
-          <li>{ `Compiled Bootmode: ${this.env.bootmode}`}</li>
-          <li>{ `Compiled for OLED: ${this.env.oled ? 'yes' : 'no'}`}</li>
-        </ul>
       </div>
     );
   }
