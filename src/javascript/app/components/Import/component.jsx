@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PrinterReport from '../PrinterReport';
+import { getEnv } from '../../../tools/getEnv';
 
 class Import extends React.Component {
 
@@ -10,6 +11,8 @@ class Import extends React.Component {
     this.state = {
       text: '',
     };
+
+    this.env = getEnv();
   }
 
   componentDidMount() {
@@ -24,7 +27,7 @@ class Import extends React.Component {
   render() {
     return (
       <div className="import">
-        {(window.location.protocol === 'https:') ? null : (
+        {this.env.env !== 'esp8266' ? null : (
           <div className="import__inputgroup import__buttongroup">
             <button
               type="button"
