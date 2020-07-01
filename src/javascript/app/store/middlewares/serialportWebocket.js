@@ -1,5 +1,6 @@
 import Sockette from '../../../libs/sockette';
 import handleLines from '../../../tools/handleLines';
+import { getEnv } from '../../../tools/getEnv';
 
 const newSocket = (dispatch, socketUrl) => {
 
@@ -48,12 +49,18 @@ const newSocket = (dispatch, socketUrl) => {
 
 const serialportWebocket = (store) => {
 
+  if (getEnv().env !== 'webpack-dev') {
+    return (next) => (action) => {
+      next(action);
+    };
+  }
+
   const socketUrl = store.getState().socketUrl;
 
   let socket;
 
   // Do not autoconnect when on prod
-  if (socketUrl && window.location.protocol !== 'https:') {
+  if (socketUrl) {
     window.setTimeout(() => {
       socket = newSocket(store.dispatch, `${socketUrl}`);
     }, 1000);
@@ -69,7 +76,7 @@ const serialportWebocket = (store) => {
       }
     }
 
-    return next(action);
+    next(action);
   };
 };
 

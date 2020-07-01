@@ -92,17 +92,7 @@ class Settings extends React.Component {
             </label>
           ))}
         </div>
-        {(window.location.protocol === 'https:') ? (
-          <div className="settings__inputgroup">
-            <div className="settings__label">
-              SSL WebSockets are currently not supported by the
-              {' '}
-              <a href="https://github.com/gilmaimon/ArduinoWebsockets/issues/59">
-                ArduinoWebsockets library
-              </a>
-            </div>
-          </div>
-        ) : (
+        {(this.env.env !== 'webpack-dev') ? null : (
           <>
             <div className="settings__inputgroup">
               <label htmlFor="settings-socket-url" className="settings__label">
