@@ -14,7 +14,7 @@
     "svgo": "svgo ./src/assets/icons/"
   },
   "author": "Herr Zatacke",
-  "private": true,
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
