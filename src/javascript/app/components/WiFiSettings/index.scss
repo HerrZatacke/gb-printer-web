@@ -4,9 +4,54 @@
     flex-basis: auto;
     align-self: flex-end;
     padding: 1px 20px;
+
+    .svg {
+      height: auto;
+      width: auto;
+      fill: currentColor;
+      margin: 3px;
+    }
+
+    &--delete {
+      padding: 0;
+      min-height: 36px;
+      height: 36px;
+      width: 36px;
+    }
+
+    &--add {
+      padding: 0;
+      margin: 0 0 0 20px;
+      min-height: 24px;
+      width: 24px;
+      vertical-align: bottom;
+    }
   }
 
   &__buttongroup {
     justify-content: flex-end;
+  }
+
+  &__subheadline {
+    font-size: 20px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+
+  &__ap-groups {
+
+  }
+
+  &__ap-group {
+    &--delete {
+      .settings__inputgroup:first-child input {
+        background-color: $color-button-red;
+        color: $color-white;
+      }
+    }
+
+    .settings__inputgroup:first-child {
+      margin-bottom: 10px;
+    }
   }
 }
