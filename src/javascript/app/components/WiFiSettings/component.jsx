@@ -25,7 +25,7 @@ class WiFiSettings extends React.Component {
   }
 
   getSettings() {
-    fetch('http://192.168.0.14/wificonfig/get')
+    fetch('/wificonfig/get')
       .then((res) => res.json())
       .then((wifiConfig) => {
         this.setState({
@@ -42,7 +42,7 @@ class WiFiSettings extends React.Component {
   }
 
   saveSettings() {
-    fetch('http://192.168.0.14/wificonfig/set', {
+    fetch('/wificonfig/set', {
       method: 'post',
       body: JSON.stringify(this.state.wifiConfig),
     })
