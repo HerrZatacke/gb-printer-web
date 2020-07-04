@@ -30,6 +30,14 @@ class WiFiSettings extends React.Component {
     fetch('/wificonfig/get')
       .then((res) => res.json())
       .then((wifiConfig) => {
+
+        // eslint-disable-next-line no-param-reassign
+        wifiConfig.mdns = wifiConfig.mdns || '';
+        // eslint-disable-next-line no-param-reassign
+        wifiConfig.ap = wifiConfig.ap || { ssid: '', psk: '' };
+        // eslint-disable-next-line no-param-reassign
+        wifiConfig.networks = wifiConfig.networks || [];
+
         this.setState({
           sync: true,
           wifiConfig,
