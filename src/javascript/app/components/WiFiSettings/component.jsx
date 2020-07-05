@@ -126,6 +126,9 @@ class WiFiSettings extends React.Component {
             id="settings-mdns"
             className="settings__input"
             type="text"
+            autoCapitalize="off"
+            autoComplete="off"
+            autoCorrect="off"
             value={wifiConfig.mdns}
             onChange={({ target }) => {
               this.setState({
@@ -149,6 +152,9 @@ class WiFiSettings extends React.Component {
             id="settings-ap-ssid"
             className="settings__input"
             type="text"
+            autoCapitalize="off"
+            autoComplete="off"
+            autoCorrect="off"
             value={wifiConfig.ap.ssid}
             onChange={({ target }) => {
               this.setState({
@@ -175,6 +181,7 @@ class WiFiSettings extends React.Component {
             id="settings-ap-psk"
             className="settings__input"
             type="password"
+            autoComplete="off"
             placeholder="••••••••"
             value={wifiConfig.ap.psk || ''}
             onChange={({ target }) => {
