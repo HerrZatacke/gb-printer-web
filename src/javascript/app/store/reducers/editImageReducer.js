@@ -44,17 +44,30 @@ const editImageTags = (tags, payload) => {
   return { ...tags };
 };
 
+const updateImage = (initialValue, payload) => {
+
+  // payload should be cleaned of all properties not suitable to be stored on image
+  const cleanPayload = {
+    ...payload,
+  };
+
+  delete cleanPayload.tag;
+  delete cleanPayload.mode;
+
+  return {
+    ...initialValue,
+    ...cleanPayload,
+    batch: markUpdatedBatch(initialValue.batch, payload),
+    tags: payload.tag ? editImageTags(initialValue.tags, payload) : initialValue.tags,
+  };
+};
+
 const editImageReducer = (value = {}, action) => {
   switch (action.type) {
     case 'SET_EDIT_IMAGE':
       return action.payload;
     case 'UPDATE_EDIT_IMAGE':
-      return {
-        ...value,
-        ...action.payload,
-        batch: markUpdatedBatch(value.batch, action.payload),
-        tags: editImageTags(value.tags, action.payload),
-      };
+      return updateImage(value, action.payload);
     case 'CANCEL_EDIT_IMAGE':
     case 'UPDATE_IMAGE':
     case 'UPDATE_IMAGES_BATCH':
