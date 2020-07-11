@@ -4,17 +4,14 @@ import generateFileName from '../generateFileName';
 
 const getPrepareFiles = (exportScaleFactors) => (palette, image) => (tiles) => {
 
-  const canvas = document.createElement('canvas');
-  canvas.width = 160;
-
   const isRGBN = !!image.hashes;
   const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
   const lockFrame = image.lockFrame || false;
 
   if (isRGBN) {
-    decoder.update(canvas, RGBNDecoder.rgbnTiles(tiles), palette, lockFrame);
+    decoder.update(null, RGBNDecoder.rgbnTiles(tiles), palette, lockFrame);
   } else {
-    decoder.update(canvas, tiles, palette.palette, lockFrame);
+    decoder.update(null, tiles, palette.palette, lockFrame);
   }
 
   const images = exportScaleFactors.map((exportScaleFactor) => (

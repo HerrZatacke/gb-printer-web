@@ -35,6 +35,10 @@ class Decoder {
       return;
     }
 
+    if (!this.canvas) {
+      return;
+    }
+
     if (this.canvas.height !== newHeight || !this.rawImageData.length) {
       this.canvas.height = newHeight;
 
@@ -72,8 +76,8 @@ class Decoder {
   }
 
   getScaledCanvas(scaleFactor) {
-    const initialWidth = this.canvas.width;
-    const initialHeight = this.canvas.height;
+    const initialWidth = TILES_PER_LINE * TILE_PIXEL_WIDTH;
+    const initialHeight = this.getHeight();
 
     const scaledCanvas = document.createElement('canvas');
     const scaledContext = scaledCanvas.getContext('2d');
