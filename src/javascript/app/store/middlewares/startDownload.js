@@ -1,27 +1,8 @@
-import { load } from '../../../tools/storage';
 import { getPrepareFiles } from '../../../tools/download';
 import download from '../../../tools/download/download';
 import generateFileName from '../../../tools/generateFileName';
-import getRGBNFrames from '../../../tools/getRGBNFrames';
-
-const loadImageTiles = ({ hash, frame, hashes }, state) => {
-  if (!hashes) {
-    return load(hash, frame);
-  }
-
-  const frames = getRGBNFrames(state, hashes, frame);
-
-  return Promise.all([
-    load(hashes.r, frames.r || frame),
-    load(hashes.g, frames.g || frame),
-    load(hashes.b, frames.b || frame),
-    load(hashes.n, frames.n || frame),
-  ]);
-};
-
-const getImagePalette = ({ palettes }, { hashes, palette }) => (
-  (!hashes) ? palettes.find(({ shortName }) => shortName === palette) : palette
-);
+import loadImageTiles from '../../../tools/loadImageTiles';
+import getImagePalette from '../../../tools/getImagePalette';
 
 const handleSingleImage = (prepareFiles, state) => (imageHash) => {
   const image = state.images.find(({ hash }) => hash === imageHash);

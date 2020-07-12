@@ -1,26 +1,6 @@
-import { load } from '../../../tools/storage';
-import getRGBNFrames from '../../../tools/getRGBNFrames';
 import { getPrepareFiles } from '../../../tools/download';
-
-const getImagePalette = ({ palettes }, { hashes, palette }) => (
-  (!hashes) ? palettes.find(({ shortName }) => shortName === palette) : palette
-);
-
-const loadImageTiles = ({ hash, frame, hashes }, state) => {
-  if (!hashes) {
-    return load(hash, frame);
-  }
-
-  const frames = getRGBNFrames(state, hashes, frame);
-
-  return Promise.all([
-    load(hashes.r, frames.r || frame),
-    load(hashes.g, frames.g || frame),
-    load(hashes.b, frames.b || frame),
-    load(hashes.n, frames.n || frame),
-  ]);
-};
-
+import loadImageTiles from '../../../tools/loadImageTiles';
+import getImagePalette from '../../../tools/getImagePalette';
 
 const batch = (store) => (next) => (action) => {
 
