@@ -2,12 +2,12 @@ $ErrorActionPreference = "Stop"
 
 $ESPProjectPath = Get-Content ./config.json |
 ConvertFrom-JSON |
-Select -expand deploy |
-Select -expand dir
+Select-Object -expand deploy |
+Select-Object -expand dir
 
 $Version = Get-Content ./package.json |
 ConvertFrom-JSON |
-Select -expand version
+Select-Object -expand version
 
 New-Item -ItemType Directory -Force -Path "./releases/$($Version)"
 
