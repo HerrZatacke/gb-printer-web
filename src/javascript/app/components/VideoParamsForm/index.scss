@@ -1,2 +1,27 @@
-.video-params-form {
+.video-params {
+  .settings__inputgroup {
+    padding: 0 20px;
+  }
+
+  &__label-check {
+    width: 40px;
+    height: 40px;
+    flex: 40px 0 0;
+    margin-right: auto;
+
+    .tick {
+      display: none;
+    }
+
+    .svg {
+      width: inherit;
+      height: inherit;
+    }
+
+    &--selected {
+      .tick {
+        display: block;
+      }
+    }
+  }
 }

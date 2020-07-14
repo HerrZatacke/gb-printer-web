@@ -1,14 +1,16 @@
 import WebMWriter from 'webm-writer';
+import { saveAs } from 'file-saver';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import Decoder from '../../../tools/Decoder';
+import generateFileName from '../../../tools/generateFileName';
 
 const animate = (store) => (next) => (action) => {
 
   if (action.type === 'ANIMATE_IMAGES') {
     const state = store.getState();
-    const { scaleFactor, frameRate, imageSelection } = state.videoParams;
+    const { scaleFactor, frameRate, imageSelection, yoyo } = state.videoParams;
 
     const videoWriter = new WebMWriter({
       quality: 0.98,
@@ -42,12 +44,33 @@ const animate = (store) => (next) => (action) => {
           videoWriter.addFrame(canvas);
         });
 
+        if (yoyo) {
+          const reverseImages = [...images].reverse();
+
+          // remove first and last image, as they would
+          // appear dupliicated in the animation
+          reverseImages.shift();
+          reverseImages.pop();
+
+          reverseImages.forEach((canvas) => {
+            videoWriter.addFrame(canvas);
+          });
+        }
+
+        const videoFileName = generateFileName({
+          useCurrentDate: true,
+          exportScaleFactor: scaleFactor,
+          frameRate,
+          altTitle: 'video',
+        });
+
         videoWriter.complete().then((webMBlob) => {
-          const video = document.createElement('video');
-          video.src = URL.createObjectURL(webMBlob);
-          video.loop = true;
-          video.controls = true;
-          document.querySelector('body').appendChild(video);
+          saveAs(webMBlob, `${videoFileName}.webm`);
+          // const video = document.createElement('video');
+          // video.src = URL.createObjectURL(webMBlob);
+          // video.loop = true;
+          // video.controls = true;
+          // document.querySelector('body').appendChild(video);
         });
       });
   }
