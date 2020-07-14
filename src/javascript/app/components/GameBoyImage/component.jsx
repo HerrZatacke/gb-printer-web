@@ -18,6 +18,10 @@ class GameBoyImage extends Component {
   }
 
   updateCanvasContent() {
+    if (!this.props.palette) {
+      return;
+    }
+
     try {
       if (this.props.palette.palette) {
         const decoder = new Decoder();
@@ -47,10 +51,12 @@ GameBoyImage.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.arrayOf(PropTypes.object),
   ]).isRequired,
-  palette: PropTypes.object.isRequired,
+  palette: PropTypes.object,
   lockFrame: PropTypes.bool.isRequired,
 };
 
-GameBoyImage.defaultProps = {};
+GameBoyImage.defaultProps = {
+  palette: null,
+};
 
 export default GameBoyImage;

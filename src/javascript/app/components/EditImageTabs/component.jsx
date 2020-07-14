@@ -58,7 +58,7 @@ class EditImageTabs extends React.Component {
                   Select Palette
                 </button>
                 <PaletteSelect
-                  value={this.props.palette.shortName}
+                  value={this.props.palette ? this.props.palette.shortName : ''}
                   onChange={this.props.updatePalette}
                 />
               </>
