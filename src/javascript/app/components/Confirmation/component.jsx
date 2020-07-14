@@ -1,22 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Buttons from '../Buttons';
+import Lightbox from '../Lightbox';
 
 const Confirmation = (props) => (
   props.message ? (
-    <div className="confirmation">
-      <button
-        type="button"
-        className="confirmation__backdrop"
-        onClick={props.deny}
-      />
-      <div className="confirmation__box">
-        <div className="confirmation__message">
-          {props.message}
-        </div>
-        <Buttons confirm={props.confirm} deny={props.deny} />
-      </div>
-    </div>
+    <Lightbox
+      className="confirmation"
+      confirm={props.confirm}
+      deny={props.deny}
+      header={props.message}
+    />
   ) : null
 );
 

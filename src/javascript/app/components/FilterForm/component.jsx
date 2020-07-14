@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import uniqe from '../../../tools/unique';
-import Buttons from '../Buttons';
 import SVG from '../SVG';
+import Lightbox from '../Lightbox';
 
 class FilterForm extends React.Component {
 
@@ -40,49 +40,40 @@ class FilterForm extends React.Component {
     }
 
     return (
-      <div className="filter-form">
-        <div className="filter-form__backdrop" />
-        <div
-          className="filter-form__box"
+      <Lightbox
+        className="filter-form"
+        confirm={() => this.props.setActiveTags(this.state.activeTags)}
+        deny={() => this.props.hideFilters()}
+        header="Select Filters"
+      >
+        <ul
+          className="filter-form__tag-list"
         >
-          <div className="filter-form__box-content">
-            <span className="filter-form__header">
-              Select Filters
-            </span>
-            <ul
-              className="filter-form__tag-list"
-            >
-              {this.props.availableTags.map((tag) => {
-                const tagActive = this.state.activeTags.includes(tag);
-                return (
-                  <li
-                    key={tag}
-                    title={tag}
-                    className={
-                      classnames('filter-form__tag', {
-                        'filter-form__tag--active': tagActive,
-                      })
-                    }
-                  >
-                    <button
-                      className="filter-form__tag-button"
-                      type="button"
-                      onClick={() => this.updateActiveTags(tag, tagActive ? 'remove' : 'add')}
-                    >
-                      <SVG name="checkmark" />
-                      <span className="filter-form__tag-text">{tag}</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <Buttons
-            confirm={() => this.props.setActiveTags(this.state.activeTags)}
-            deny={() => this.props.hideFilters()}
-          />
-        </div>
-      </div>
+          {this.props.availableTags.map((tag) => {
+            const tagActive = this.state.activeTags.includes(tag);
+            return (
+              <li
+                key={tag}
+                title={tag}
+                className={
+                  classnames('filter-form__tag', {
+                    'filter-form__tag--active': tagActive,
+                  })
+                }
+              >
+                <button
+                  className="filter-form__tag-button"
+                  type="button"
+                  onClick={() => this.updateActiveTags(tag, tagActive ? 'remove' : 'add')}
+                >
+                  <SVG name="checkmark" />
+                  <span className="filter-form__tag-text">{tag}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </Lightbox>
     );
   }
 }
