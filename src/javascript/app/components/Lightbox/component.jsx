@@ -46,7 +46,7 @@ Lightbox.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
-  ]).isRequired,
+  ]),
   confirm: PropTypes.func,
   deny: PropTypes.func,
 };
@@ -56,6 +56,7 @@ Lightbox.defaultProps = {
   header: null,
   className: '',
   confirm: null,
+  children: null,
   deny: null,
 };
 

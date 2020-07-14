@@ -12,10 +12,18 @@ const BATCH_ACTIONS = [
 
 const BatchButtons = (props) => (
   <ul className="batch-buttons">
-    <li className="batch-buttons__action batch-buttons__action--enabled">
+    <li
+      className={
+        classnames('batch-buttons__action', {
+          'batch-buttons__action--disabled': !props.enableFilter,
+          'batch-buttons__action--enabled': props.enableFilter,
+        })
+      }
+    >
       <button
         type="button"
         onClick={props.filter}
+        disabled={!props.enableFilter}
       >
         <SVG name="filter" />
       </button>
@@ -61,6 +69,7 @@ const BatchButtons = (props) => (
 BatchButtons.propTypes = {
   batchTask: PropTypes.func.isRequired,
   enabled: PropTypes.bool.isRequired,
+  enableFilter: PropTypes.bool.isRequired,
   filter: PropTypes.func.isRequired,
   hasUnselected: PropTypes.bool.isRequired,
   page: PropTypes.number.isRequired,

@@ -35,7 +35,7 @@ class FilterForm extends React.Component {
   }
 
   render() {
-    if (!this.props.availableTags.length) {
+    if (!this.props.visible) {
       return null;
     }
 
@@ -79,6 +79,7 @@ class FilterForm extends React.Component {
 }
 
 FilterForm.propTypes = {
+  visible: PropTypes.bool.isRequired,
   availableTags: PropTypes.array.isRequired,
   activeTags: PropTypes.array.isRequired,
   setActiveTags: PropTypes.func.isRequired,

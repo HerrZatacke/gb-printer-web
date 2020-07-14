@@ -8,6 +8,7 @@ const mapStateToProps = (state, { page }) => {
 
   return ({
     enabled: state.imageSelection.length > 1,
+    enableFilter: state.filter.availableTags.length > 0,
     hasUnselected,
   });
 };

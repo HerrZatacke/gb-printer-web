@@ -1,24 +1,24 @@
 import uniqe from '../../../tools/unique';
 
+const updateAvailableTags = (store) => {
+  const state = store.getState();
+  store.dispatch({
+    type: 'SET_AVAILABLE_TAGS',
+    payload: uniqe(state.images.map(({ tags }) => tags).flat()),
+  });
+};
+
 const filters = (store) => (next) => (action) => {
 
-  const state = store.getState();
 
   switch (action.type) {
-    case 'SHOW_FILTERS':
-      next({
-        ...action,
-        payload: uniqe(state.images.map(({ tags }) => tags).flat())
-          .sort(),
-      });
-      return;
-
+    case 'ADD_IMAGE':
     case 'UPDATE_IMAGE':
-      next({
-        ...action,
-        activeTags: uniqe(state.images.map(({ tags }) => tags).flat())
-          .filter((tag) => state.filter.activeTags.includes(tag)),
-      });
+    case 'UPDATE_IMAGES_BATCH':
+    case 'DELETE_IMAGE':
+    case 'DELETE_IMAGES':
+      next(action);
+      updateAvailableTags(store);
       return;
 
     default:

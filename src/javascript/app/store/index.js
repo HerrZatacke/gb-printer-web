@@ -14,9 +14,11 @@ const enhancers = [
   applyMiddleware(saveState),
 ];
 
-const getStore = (config) => (
-  createStore(reducers, cleanState(config), composeEnhancers(...enhancers))
-);
+const getStore = (config) => {
+  const store = createStore(reducers, cleanState(config), composeEnhancers(...enhancers));
+  window.store = store;
+  return store;
+};
 
 
 export default getStore;

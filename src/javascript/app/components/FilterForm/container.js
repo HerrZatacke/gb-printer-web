@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => ({
   availableTags: state.filter.availableTags,
   activeTags: state.filter.activeTags,
+  visible: state.filter.visible,
 });
 
 const mapDispatchToProps = (dispatch) => ({
