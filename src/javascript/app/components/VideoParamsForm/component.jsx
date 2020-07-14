@@ -46,7 +46,10 @@ class VideoParamsForm extends React.Component {
     return (
       <Lightbox
         className="video-params"
-        confirm={this.props.animate}
+        confirm={() => {
+          this.callUpdate();
+          this.props.animate();
+        }}
         deny={this.props.cancel}
         header={`Create a video with ${this.props.imageCount} frames`}
       >
