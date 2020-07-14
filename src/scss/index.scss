@@ -26,3 +26,11 @@ pre {
   display: block;
   flex-grow: 1;
 }
+
+.init-error {
+  margin: 60px;
+  padding: 20px 30px;
+  border: 8px solid $color-primary;
+  background: $color-grey-30;
+  color: $color-text-bright;
+}
