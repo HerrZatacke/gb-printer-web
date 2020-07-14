@@ -1,4 +1,5 @@
 import { applyMiddleware } from 'redux';
+import animate from './middlewares/animate';
 import batch from './middlewares/batch';
 import confirmation from './middlewares/confirmation';
 import deleteImage from './middlewares/deleteImage';
@@ -18,6 +19,7 @@ import share from './middlewares/share';
 import startDownload from './middlewares/startDownload';
 
 export default applyMiddleware(
+  animate,
   batch,
   confirmation,
   deleteImage,

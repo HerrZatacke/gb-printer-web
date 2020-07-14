@@ -129,6 +129,14 @@ const batch = (store) => (next) => (action) => {
             payload: imageSelection,
           });
           break;
+        case 'animate':
+          store.dispatch({
+            type: 'SET_VIDEO_PARAMS',
+            payload: {
+              imageSelection,
+            },
+          });
+          break;
         case 'download':
           store.dispatch({
             type: 'DOWNLOAD_SELECTION',

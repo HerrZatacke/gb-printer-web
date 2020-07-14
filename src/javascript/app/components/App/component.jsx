@@ -18,6 +18,7 @@ import getValidPageIndex from '../../../tools/getValidPageIndex';
 import FilterForm from '../FilterForm';
 import { getEnv } from '../../../tools/getEnv';
 import WiFiSettings from '../WiFiSettings';
+import VideoParamsForm from '../VideoParamsForm';
 
 const env = getEnv();
 
@@ -87,6 +88,7 @@ const App = (props) => (
     </div>
     <Confirmation />
     <EditForm />
+    <VideoParamsForm />
     <LiveImage />
     <LightboxImage />
     <RGBNImage />

@@ -22,6 +22,7 @@ import printerUrl from './reducers/printerUrlReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
+import videoParams from './reducers/videoParamsReducer';
 import windowDimensions from './reducers/windowDimensionsReducer';
 
 export default combineReducers({
@@ -48,5 +49,6 @@ export default combineReducers({
   rgbnImages,
   socketState,
   socketUrl,
+  videoParams,
   windowDimensions,
 });

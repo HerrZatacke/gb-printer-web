@@ -7,6 +7,7 @@ const BATCH_ACTIONS = [
   'download',
   'delete',
   'edit',
+  'animate',
 ];
 
 const BatchButtons = (props) => (
