@@ -14,15 +14,14 @@ If it does not work, [please open an issue](https://github.com/HerrZatacke/gb-pr
 
 
 ## ToDos
+* Read and apply the used frame when importing .SAV files [as in this project](https://github.com/jkbenaim/gbcamextract/blob/master/gbcamextract.c)
 * User manual
 * Global Storage for images 
-* Allow rendering animated Gifs
 * Edit palettes
 * Export without frame
 * Other blendmodes than multiply for RGB-Images
-* allow some gesture navigation on touch devices
-* trash bin for raw-data of deleted images
-* Read and apply the used frame when importing .SAV files
+* trash bin for raw-data of deleted images (must implement global storage first for this)
+* Allow some gesture/swipe in gallery on touch devices
 
 ## Local Setup
 You can run this app locally to directly use the gbp-emulator on your serial port 
