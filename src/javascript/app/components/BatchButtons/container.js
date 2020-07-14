@@ -7,7 +7,7 @@ const mapStateToProps = (state, { page }) => {
   const hasUnselected = !!images.find(({ hash }) => !state.imageSelection.includes(hash));
 
   return ({
-    enabled: state.imageSelection.length > 0,
+    enabled: state.imageSelection.length > 1,
     hasUnselected,
   });
 };
