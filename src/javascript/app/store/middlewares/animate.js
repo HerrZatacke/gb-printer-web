@@ -10,7 +10,15 @@ const animate = (store) => (next) => (action) => {
 
   if (action.type === 'ANIMATE_IMAGES') {
     const state = store.getState();
-    const { scaleFactor, frameRate, imageSelection, yoyo } = state.videoParams;
+    const {
+      scaleFactor,
+      frameRate,
+      imageSelection,
+      yoyo,
+      frame: videoFrame,
+      lockFrame: videoLockFrame,
+      palette: videoPalette,
+    } = state.videoParams;
 
     const videoWriter = new WebMWriter({
       quality: 0.98,
@@ -22,13 +30,20 @@ const animate = (store) => (next) => (action) => {
     ))
       .filter(Boolean)
       .map((image) => (
+        {
+          ...image,
+          frame: videoFrame || image.frame,
+          palette: videoPalette || image.palette,
+        }
+      ))
+      .map((image) => (
         loadImageTiles(image, state)
           .then((tiles) => {
             const palette = getImagePalette(state, image);
 
             const isRGBN = !!image.hashes;
             const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
-            const lockFrame = image.lockFrame || false;
+            const lockFrame = videoLockFrame || image.lockFrame || false;
 
             if (isRGBN) {
               decoder.update(null, RGBNDecoder.rgbnTiles(tiles), palette, lockFrame);
@@ -62,6 +77,8 @@ const animate = (store) => (next) => (action) => {
           exportScaleFactor: scaleFactor,
           frameRate,
           altTitle: 'video',
+          frameName: videoFrame,
+          paletteShort: videoPalette,
         });
 
         videoWriter.complete().then((webMBlob) => {

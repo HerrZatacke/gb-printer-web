@@ -13,7 +13,7 @@ const FrameSelect = (props) => (
         props.updateFrame(ev.target.value);
       }}
     >
-      <option value="">As imported / No frame</option>
+      <option value="">{props.noFrameOption}</option>
       {
         frames.map(({ id, name }) => (
           <option key={id} value={id}>{ name }</option>
@@ -48,8 +48,11 @@ FrameSelect.propTypes = {
   updateFrame: PropTypes.func.isRequired,
   updateFrameLock: PropTypes.func.isRequired,
   lockFrame: PropTypes.bool.isRequired,
+  noFrameOption: PropTypes.string,
 };
 
-FrameSelect.defaultProps = {};
+FrameSelect.defaultProps = {
+  noFrameOption: 'As imported / No frame',
+};
 
 export default FrameSelect;

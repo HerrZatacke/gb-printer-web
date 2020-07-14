@@ -1,27 +1,41 @@
 .video-params {
-  .settings__inputgroup {
-    padding: 0 20px;
+  &__box-content {
+    padding: 0 20px 15px;
   }
 
-  &__label-check {
-    width: 40px;
-    height: 40px;
-    flex: 40px 0 0;
-    margin-right: auto;
+  &__header {
+    margin: 0 -20px 15px;
+  }
+
+  &__select-label {
+    margin: 25px 0 5px;
+  }
+
+  &__check-label {
+    display: flex;
+    margin-top: 20px;
+    cursor: pointer;
+    line-height: 30px;
+    height: 30px;
+    padding: 0;
+    user-select: none;
+
+    .svg {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
 
     .tick {
       display: none;
     }
 
-    .svg {
-      width: inherit;
-      height: inherit;
+    &--checked .tick {
+      display: block;
     }
+  }
 
-    &--selected {
-      .tick {
-        display: block;
-      }
-    }
+  &__checkbox {
+    display: none;
   }
 }

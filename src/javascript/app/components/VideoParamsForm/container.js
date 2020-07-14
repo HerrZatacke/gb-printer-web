@@ -2,9 +2,12 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   imageCount: state.videoParams.imageSelection ? state.videoParams.imageSelection.length : 0,
-  scaleFactor: state.videoParams.scaleFactor || null,
-  frameRate: state.videoParams.frameRate || 1,
+  scaleFactor: state.videoParams.scaleFactor || [...state.exportScaleFactors].pop(),
+  frameRate: state.videoParams.frameRate || 24,
   yoyo: state.videoParams.yoyo || false,
+  lockFrame: state.videoParams.lockFrame || false,
+  frame: state.videoParams.frame || '',
+  palette: state.videoParams.palette || '',
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,6 +1,4 @@
 const defaults = {
-  frameRate: 24,
-  scaleFactor: 4,
   imageSelection: [],
 };
 

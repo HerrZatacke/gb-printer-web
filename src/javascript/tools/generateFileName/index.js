@@ -25,10 +25,12 @@ const generateFileName = ({
   frameRate = false,
   altTitle = false,
   useCurrentDate = false,
+  frameName = false,
+  paletteShort = false,
 }) => {
   const date = useCurrentDate ? dayjs() : dayjs(image.created, dateFormat);
   const formattedDate = date.isValid() ? date.format(dateFormatFilename) : false;
-  const paletteName = palette ? (palette.shortName || rgbnPaletteName(palette)) : false;
+  const paletteName = paletteShort || (palette ? (palette.shortName || rgbnPaletteName(palette)) : false);
 
   return [
     formattedDate,
@@ -36,6 +38,7 @@ const generateFileName = ({
     image && image.title ? image.title : altTitle,
     exportScaleFactor ? `${exportScaleFactor}x` : null,
     frameRate ? `${frameRate}fps` : null,
+    frameName,
     paletteName,
   ]
     .filter(Boolean)
