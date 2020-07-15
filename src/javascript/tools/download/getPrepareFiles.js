@@ -72,8 +72,6 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes) => (palette, image
     ))
   ));
 
-  console.log(images);
-
   return Promise.all(images.flat());
 };
 
