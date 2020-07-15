@@ -2,13 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
+import supportsWebmWriter from '../../../tools/supportsWebmWriter';
 
 const BATCH_ACTIONS = [
   'download',
   'delete',
   'edit',
-  'animate',
 ];
+
+if (supportsWebmWriter()) {
+  BATCH_ACTIONS.push('animate');
+}
 
 const BatchButtons = (props) => (
   <ul className="batch-buttons">
