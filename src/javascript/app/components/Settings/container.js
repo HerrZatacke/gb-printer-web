@@ -4,6 +4,7 @@ const mapStateToProps = (state) => ({
   socketUrl: state.socketUrl,
   printerUrl: state.printerUrl,
   exportScaleFactors: state.exportScaleFactors,
+  exportFileTypes: state.exportFileTypes,
   pageSize: state.pageSize,
 });
 
@@ -37,6 +38,15 @@ const mapDispatchToProps = (dispatch) => ({
       type: 'UPDATE_EXPORT_SCALE_FACTORS',
       payload: {
         factor,
+        checked,
+      },
+    });
+  },
+  changeExportFileTypes(fileType, checked) {
+    dispatch({
+      type: 'UPDATE_EXPORT_FILE_TYPES',
+      payload: {
+        fileType,
         checked,
       },
     });

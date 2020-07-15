@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import SocketStateIndicator from '../SocketStateIndicator';
 import cleanUrl from '../../../tools/cleanUrl';
 import { getEnv } from '../../../tools/getEnv';
+import supportedCanvasImageFormats from '../../../tools/supportedCanvasImageFormats/îndex';
 
 class Settings extends React.Component {
   constructor(props) {
@@ -87,6 +88,31 @@ class Settings extends React.Component {
                 checked={this.props.exportScaleFactors.includes(factor)}
                 onChange={({ target }) => {
                   this.props.changeExportScaleFactors(factor, target.checked);
+                }}
+              />
+            </label>
+          ))}
+        </div>
+        <div className="settings__inputgroup">
+          <div className="settings__label">
+            Image export filetypes
+          </div>
+          {supportedCanvasImageFormats().map((fileType) => (
+            <label
+              key={fileType}
+              className={
+                classnames('settings__label-check', {
+                  'settings__label-check--selected': this.props.exportFileTypes.includes(fileType),
+                })
+              }
+              title={fileType}
+            >
+              {fileType}
+              <input
+                type="checkbox"
+                checked={this.props.exportFileTypes.includes(fileType)}
+                onChange={({ target }) => {
+                  this.props.changeExportFileTypes(fileType, target.checked);
                 }}
               />
             </label>
@@ -215,6 +241,8 @@ class Settings extends React.Component {
 Settings.propTypes = {
   changeExportScaleFactors: PropTypes.func.isRequired,
   exportScaleFactors: PropTypes.array.isRequired,
+  changeExportFileTypes: PropTypes.func.isRequired,
+  exportFileTypes: PropTypes.array.isRequired,
   printerUrl: PropTypes.string.isRequired,
   socketUrl: PropTypes.string.isRequired,
   updateSocketUrl: PropTypes.func.isRequired,
