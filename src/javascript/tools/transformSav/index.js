@@ -1,49 +1,63 @@
-const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF\n';
+import applyFrame from '../applyFrame';
+import mapCartFrameToName from './mapCartFrameToName';
 
-const transformSav = (data) => {
+const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
+
+const transformImage = (data, baseAddress) => {
   const transformed = [];
+  let currentLine = '';
 
-  transformed.push('!{"command":"INIT"}\n');
-  transformed.push('!{"command":"DATA","compressed":0,"more":1}\n');
-  // upper frame
+  // add black upper frame placeholder
   transformed.push(...[...Array(40)].map(() => black));
 
-  for (let i = 8192; i < 130560; i += 1) {
-    if (i % 4096 === 3584) {
-      // upper frame
-      transformed.push(...[...Array(40)].map(() => black));
+  for (let i = 0; i < 0x0E00; i += 1) {
+    if (i % 256 === 0) {
+      // add left frame placeholder
+      transformed.push(...[...Array(2)].map(() => black));
     }
 
-    if (i % 4096 <= 3583) {
-
-      if (i % 256 === 0) {
-        // left frame
-        transformed.push(...[...Array(2)].map(() => black));
-      }
-
-      transformed.push(data[i].toString(16).padStart(2, '0'));
-
-      if (i % 16 === 15) {
-        transformed.push('\n');
-      } else {
-        transformed.push(' ');
-      }
-
-      if (i % 256 === 255) {
-        // right frame
-        transformed.push(...[...Array(2)].map(() => black));
-      }
+    currentLine += ` ${data[baseAddress + i].toString(16)
+      .padStart(2, '0')}`;
+    if (i % 16 === 15) {
+      transformed.push(currentLine.trim());
+      currentLine = '';
     }
 
-    if (i % 4096 === 3583) {
-      // lower frame
-      transformed.push(...[...Array(40)].map(() => black));
-      transformed.push('!{"command":"DATA","compressed":0,"more":0}\n');
-      transformed.push('!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }\n');
+    if (i % 256 === 255) {
+      // add right frame placeholder
+      transformed.push(...[...Array(2)].map(() => black));
     }
   }
 
-  return transformed.join('');
+  // add lower frame placeholder
+  transformed.push(...[...Array(40)].map(() => black));
+
+  return transformed;
 };
 
-export default transformSav;
+const getTransformSav = (store) => (data, filename) => {
+  const { savFrameTypes } = store.getState();
+  const framed = [];
+
+  for (let i = 1; i <= 30; i += 1) {
+    const baseAddress = (i + 1) * 0x1000;
+    const frameNumber = data[baseAddress + 0xfb0];
+    const transformedData = transformImage(data, baseAddress);
+    framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, savFrameTypes)));
+  }
+
+  Promise.all(framed)
+    .then((framedImages) => {
+      framedImages.forEach((framedImage) => {
+        store.dispatch({
+          type: 'ADD_TO_QUEUE',
+          payload: [{
+            file: filename,
+            lines: framedImage,
+          }],
+        });
+      });
+    });
+};
+
+export default getTransformSav;

@@ -21,6 +21,7 @@ import palettes from './reducers/palettesReducer';
 import printerData from './reducers/printerDataReducer';
 import printerUrl from './reducers/printerUrlReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
+import savFrameTypes from './reducers/savFrameTypesReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
 import videoParams from './reducers/videoParamsReducer';
@@ -49,6 +50,7 @@ export default combineReducers({
   printerData,
   printerUrl,
   rgbnImages,
+  savFrameTypes,
   socketState,
   socketUrl,
   videoParams,

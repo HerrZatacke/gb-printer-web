@@ -2,7 +2,7 @@ import getHandleFileImport from '../../../tools/getHandleFileImport';
 
 const fileDrop = (store) => {
   const root = document.querySelector('#app');
-  const handleFileDispatch = getHandleFileImport(store.dispatch);
+  const handleFileImport = getHandleFileImport(store);
   let dragoverTimeout;
   let dragging = false;
 
@@ -41,7 +41,7 @@ const fileDrop = (store) => {
       files = [...ev.dataTransfer.files];
     }
 
-    files.forEach(handleFileDispatch);
+    files.forEach(handleFileImport);
   });
 
   return (next) => (action) => {

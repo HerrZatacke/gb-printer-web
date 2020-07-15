@@ -1,9 +1,9 @@
 import getHandleFileImport from '../../../tools/getHandleFileImport';
 
-const getFetchDumps = (dispatch, printerUrl) => (dumps) => (
+const getFetchDumps = (store, printerUrl) => (dumps) => (
   new Promise(((resolve) => {
 
-    const handleFileImport = getHandleFileImport(dispatch);
+    const handleFileImport = getHandleFileImport(store);
 
     const fnFetch = (remainingDumps) => {
       const nextDump = remainingDumps.shift();
@@ -23,7 +23,7 @@ const getFetchDumps = (dispatch, printerUrl) => (dumps) => (
           }, 200);
         })
         .catch((error) => {
-          dispatch({
+          store.dispatch({
             type: 'ERROR',
             payload: error.message,
           });
@@ -72,7 +72,7 @@ const printer = (store) => (next) => (action) => {
   if (action.type === 'PRINTER_DOWNLOAD') {
     const printerUrl = getPrinterUrl(store);
     const { printerData: { dumps } } = store.getState();
-    const fetchDumps = getFetchDumps(store.dispatch, printerUrl);
+    const fetchDumps = getFetchDumps(store, printerUrl);
 
     if (dumps && dumps.length) {
       fetchDumps([...dumps]);

@@ -7,6 +7,7 @@ import fileDrop from './middlewares/fileDrop';
 import filters from './middlewares/filters';
 import handleErrors from './middlewares/error';
 import hideLiveImage from './middlewares/hideLiveImage';
+import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
 import plainText from './middlewares/plainText';
 import printer from './middlewares/printer';
@@ -27,6 +28,7 @@ export default applyMiddleware(
   fileDrop,
   filters,
   hideLiveImage,
+  importQueue,
   lightbox,
   plainText,
   printer,

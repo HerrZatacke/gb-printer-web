@@ -1,24 +1,25 @@
-const transformBin = (data) => {
+const getTransformBin = (dispatch) => (data, filename) => {
   const transformed = [];
-
-  transformed.push('!{"command":"INIT"}\n');
-  transformed.push('!{"command":"DATA","compressed":0,"more":1}\n');
+  let currentLine = '';
 
   // for (let i = 0; i < 16; i += 1) {
   for (let i = 0; i < 5760; i += 1) {
-    transformed.push(data[i + 8].toString(16).padStart(2, '0'));
+    currentLine += ` ${data[i + 8].toString(16)
+      .padStart(2, '0')}`;
 
     if (i % 16 === 15) {
-      transformed.push('\n');
-    } else {
-      transformed.push(' ');
+      transformed.push(currentLine.trim());
+      currentLine = '';
     }
   }
 
-  transformed.push('!{"command":"DATA","compressed":0,"more":0}\n');
-  transformed.push('!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }\n');
-
-  return transformed.join('');
+  dispatch({
+    type: 'ADD_TO_QUEUE',
+    payload: [{
+      file: filename,
+      lines: transformed,
+    }],
+  });
 };
 
-export default transformBin;
+export default getTransformBin;

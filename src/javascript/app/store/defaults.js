@@ -13,6 +13,7 @@ export default {
   editImage: {},
   videoParams: {},
   filter: {},
+  savFrameTypes: 'int',
   palettes: [
     {
       name: 'Black & White',

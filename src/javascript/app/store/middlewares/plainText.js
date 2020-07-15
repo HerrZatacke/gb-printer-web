@@ -5,7 +5,7 @@ const plainText = (store) => (next) => (action) => {
   if (action.type === 'IMPORT_FILE') {
 
     if (action.payload.files && action.payload.files.length === 1) {
-      getHandleFileImport(store.dispatch)(action.payload.files[0]);
+      getHandleFileImport(store)(action.payload.files[0]);
     }
 
     // don't call next(action)
