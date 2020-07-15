@@ -33,7 +33,7 @@ const animate = (store) => (next) => (action) => {
         {
           ...image,
           frame: videoFrame || image.frame,
-          palette: videoPalette || image.palette,
+          palette: image.hashes ? image.palette : (videoPalette || image.palette),
         }
       ))
       .map((image) => (
