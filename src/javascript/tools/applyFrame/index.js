@@ -4,7 +4,7 @@ const applyFrame = (tiles, which) => {
 
   // image must be "default" dimensions
   if (tiles.length !== 360) {
-    return tiles;
+    return Promise.resolve(tiles);
   }
 
   const frameData = frames.find(({ id }) => id === which);
