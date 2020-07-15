@@ -14,7 +14,6 @@ If it does not work, [please open an issue](https://github.com/HerrZatacke/gb-pr
 
 
 ## ToDos
-* Read and apply the used frame when importing .SAV files [as in this project](https://github.com/jkbenaim/gbcamextract/blob/master/gbcamextract.c)
 * User manual
 * Global Storage for images 
 * Edit palettes
