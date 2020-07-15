@@ -5,11 +5,13 @@ export default {
   images: [],
   galleryView: '1x',
   exportScaleFactors: [4],
+  exportFileTypes: ['png'],
   globalIndex: 1,
   pageSize: 15,
   imageSelection: [],
   rgbnImages: {},
   editImage: {},
+  videoParams: {},
   filter: {},
   palettes: [
     {

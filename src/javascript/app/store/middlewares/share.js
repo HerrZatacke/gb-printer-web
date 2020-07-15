@@ -10,9 +10,10 @@ const batch = (store) => (next) => (action) => {
     const image = state.images.find(({ hash }) => hash === action.payload);
     const imagePalette = getImagePalette(state, image);
 
-    const shareScaleFactor = [...state.exportScaleFactors].pop();
+    const shareScaleFactor = [...state.exportScaleFactors].pop() || 4;
+    const shareFileType = [...state.exportFileTypes].pop() || 'png';
 
-    const prepareFiles = getPrepareFiles([shareScaleFactor]);
+    const prepareFiles = getPrepareFiles([shareScaleFactor], [shareFileType]);
 
     loadImageTiles(image, state)
       .then(prepareFiles(imagePalette, image))

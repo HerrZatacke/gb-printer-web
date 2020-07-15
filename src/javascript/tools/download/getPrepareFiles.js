@@ -2,7 +2,7 @@ import Decoder from '../Decoder';
 import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
 
-const getPrepareFiles = (exportScaleFactors) => (palette, image) => (tiles) => {
+const getPrepareFiles = (exportScaleFactors, exportFileTypes) => (palette, image) => (tiles) => {
 
   const isRGBN = !!image.hashes;
   const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
@@ -14,63 +14,67 @@ const getPrepareFiles = (exportScaleFactors) => (palette, image) => (tiles) => {
     decoder.update(null, tiles, palette.palette, lockFrame);
   }
 
-  const images = exportScaleFactors.map((exportScaleFactor) => (
-    new Promise((resolve, reject) => {
+  const validExportScaleFactors = [...exportScaleFactors];
+  const validExportFileTypes = [...exportFileTypes];
 
-      const fileType = 'png';
+  if (!validExportScaleFactors.length) {
+    validExportScaleFactors.push(4);
+  }
 
-      const filename = generateFileName({
-        image,
-        palette,
-        exportScaleFactor,
-      });
+  if (!validExportFileTypes.length) {
+    validExportFileTypes.push('png');
+  }
 
-      const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
+  const images = validExportScaleFactors.map((exportScaleFactor) => (
+    validExportFileTypes.map((fileType) => (
+      new Promise((resolve) => {
 
-      if (scaledCanvas.msToBlob) {
-        window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${filename}.png`);
-        return;
-      }
+        const filename = generateFileName({
+          image,
+          palette,
+          exportScaleFactor,
+        });
 
-      const onBlobComplete = (blob) => {
-        if (typeof blob.arrayBuffer === 'function') {
-          blob.arrayBuffer().then((arrayBuffer) => {
-            resolve({
-              filename: `${filename}.${fileType}`,
-              arrayBuffer,
-              blob,
-              title: image.title,
-            });
-          });
-        } else {
-          const fileReader = new FileReader();
-          fileReader.onload = (ev) => {
-            resolve({
-              filename: `${filename}.${fileType}`,
-              arrayBuffer: ev.target.result,
-              blob,
-            });
-          };
+        const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
 
-          fileReader.readAsArrayBuffer(blob);
+        if (scaledCanvas.msToBlob) {
+          window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${filename}.png`);
+          return;
         }
-      };
 
-      switch (fileType) {
-        case 'png':
-          scaledCanvas.toBlob(onBlobComplete, 'image/png');
-          break;
-        case 'jpg':
-          scaledCanvas.toBlob(onBlobComplete, 'image/jpeg', 1);
-          break;
-        default:
-          reject(new Error('could not export image'));
-          break;
-      }
-    })
+        const onBlobComplete = (blob) => {
+          if (typeof blob.arrayBuffer === 'function') {
+            blob.arrayBuffer().then((arrayBuffer) => {
+              resolve({
+                filename: `${filename}.${fileType}`,
+                arrayBuffer,
+                blob,
+                title: image.title,
+              });
+            });
+          } else {
+            const fileReader = new FileReader();
+            fileReader.onload = (ev) => {
+              resolve({
+                filename: `${filename}.${fileType}`,
+                arrayBuffer: ev.target.result,
+                blob,
+              });
+            };
+
+            fileReader.readAsArrayBuffer(blob);
+          }
+        };
+
+        scaledCanvas.toBlob(onBlobComplete, `image/${fileType}`, 1);
+
+      })
+    ))
   ));
 
-  return Promise.all(images);
+  console.log(images);
+
+  return Promise.all(images.flat());
 };
 
 export default getPrepareFiles;
