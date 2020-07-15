@@ -210,6 +210,21 @@ class Settings extends React.Component {
             </div>
           </>
         )}
+        <div className="settings__inputgroup">
+          <label htmlFor="settings-printer-url" className="settings__label">
+            Frames when importing Cartridge dumps
+          </label>
+          <select
+            className="settings__input settings__input--select"
+            value={this.props.savFrameTypes}
+            onChange={(ev) => {
+              this.props.setSavFrameTypes(ev.target.value);
+            }}
+          >
+            <option value="int">International Frames (GameBoy Camera)</option>
+            <option value="jp">Japanese Frames (Pocket Camera)</option>
+          </select>
+        </div>
         <div className="settings__inputgroup settings__buttongroup">
           <button
             type="button"
@@ -244,9 +259,11 @@ Settings.propTypes = {
   changeExportFileTypes: PropTypes.func.isRequired,
   exportFileTypes: PropTypes.array.isRequired,
   printerUrl: PropTypes.string.isRequired,
+  savFrameTypes: PropTypes.string.isRequired,
   socketUrl: PropTypes.string.isRequired,
   updateSocketUrl: PropTypes.func.isRequired,
   updatePrinterUrl: PropTypes.func.isRequired,
+  setSavFrameTypes: PropTypes.func.isRequired,
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
   exportSettings: PropTypes.func.isRequired,

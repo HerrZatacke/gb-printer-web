@@ -6,6 +6,7 @@ const mapStateToProps = (state) => ({
   exportScaleFactors: state.exportScaleFactors,
   exportFileTypes: state.exportFileTypes,
   pageSize: state.pageSize,
+  savFrameTypes: state.savFrameTypes,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -19,6 +20,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'SET_PRINTER_URL',
       payload: printerUrl,
+    });
+  },
+  setSavFrameTypes(savFrameTypes) {
+    dispatch({
+      type: 'SET_SAV_FRAME_TYPES',
+      payload: savFrameTypes,
     });
   },
   setPageSize(pageSize) {
