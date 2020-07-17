@@ -8,9 +8,7 @@
 
 ## Supported formats
 * This Project is mainly built around the serial output of the original [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)
-* Cart .SAV files are also supported experimentally  
-Currently I assume the size is exactly `131072 bytes`, as this is the only sample of a cartridge dump I have.  
-If it does not work, [please open an issue](https://github.com/HerrZatacke/gb-printer-web/issues) and attach your file.  
+* Cart .SAV files are also supported. The previously selected frame will be applied as well. If you're importing from a JP-Cartridge (Pocket Camera), you may want to change the "Frames when importing Cartridge dumps" option in the [settings page](#/settings)    
 
 
 ## ToDos
