@@ -1,7 +1,7 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 import applyTagChanges from '../../../tools/applyTagChanges';
 
-const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'title', 'tags'];
+const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags'];
 
 const collectTags = (batchImages) => {
   const allTags = batchImages.map(({ tags }) => tags).flat();
@@ -71,6 +71,15 @@ const batch = (store) => (next) => (action) => {
               }
 
               break;
+
+            case 'invertPalette':
+              if (!editImage.batch.invertPalette) {
+                break;
+              }
+
+              updates.invertPalette = editImage.invertPalette;
+              break;
+
             case 'frame':
               if (!editImage.batch.frame) {
                 break;
@@ -152,6 +161,7 @@ const batch = (store) => (next) => (action) => {
                 selection: imageSelection,
                 title: false,
                 palette: false,
+                invertPalette: false,
                 frame: false,
                 lockFrame: false,
               },

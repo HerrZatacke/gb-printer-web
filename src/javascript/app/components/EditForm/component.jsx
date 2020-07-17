@@ -113,6 +113,7 @@ class EditForm extends React.Component {
       (
         this.props.batch.title ||
         this.props.batch.palette ||
+        this.props.batch.invertPalette ||
         this.props.batch.frame ||
         this.props.batch.lockFrame ||
         willUpdateTags
@@ -161,6 +162,7 @@ class EditForm extends React.Component {
                   [
                     this.props.batch.title ? 'title' : null,
                     this.props.batch.palette ? 'palette' : null,
+                    this.props.batch.invertPalette ? 'invertPalette' : null,
                     this.props.batch.frame ? 'frame' : null,
                     this.props.batch.lockFrame ? 'framePalette' : null,
                     willUpdateTags ? 'tags' : null,
@@ -177,9 +179,11 @@ class EditForm extends React.Component {
           lockFrame={this.props.lockFrame}
           hashes={this.props.hashes}
           palette={this.props.palette}
+          invertPalette={this.props.invertPalette}
           frame={this.props.frame}
           tags={this.props.tags}
           updatePalette={this.props.updatePalette}
+          updateInvertPalette={this.props.updateInvertPalette}
           updateFrame={this.props.updateFrame}
           updateFrameLock={this.props.updateFrameLock}
           updateTags={this.props.updateTags}
@@ -195,6 +199,7 @@ EditForm.propTypes = {
   hash: PropTypes.string,
   hashes: PropTypes.object,
   palette: PropTypes.object,
+  invertPalette: PropTypes.bool.isRequired,
   lockFrame: PropTypes.bool.isRequired,
   frame: PropTypes.string,
   frames: PropTypes.object,
@@ -206,6 +211,7 @@ EditForm.propTypes = {
   }),
   title: PropTypes.string,
   updatePalette: PropTypes.func.isRequired,
+  updateInvertPalette: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
   updateFrameLock: PropTypes.func.isRequired,

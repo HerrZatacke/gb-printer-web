@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import SVG from '../SVG';
 
 class PaletteSelect extends React.Component {
 
@@ -47,6 +48,26 @@ class PaletteSelect extends React.Component {
             ))
           }
         </select>
+        <label
+          className={
+            classnames('palette-select__check-label', {
+              'palette-select__check-label--checked': this.props.invertPalette,
+            })
+          }
+        >
+          <input
+            type="checkbox"
+            className="palette-select__checkbox"
+            checked={this.props.invertPalette}
+            onChange={({ target }) => {
+              this.props.updateInvertPalette(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+          <span className="palette-select__check-label-text">
+            Invert Palette
+          </span>
+        </label>
         { this.props.noFancy ? null : (
           <ul className="fancy-palette-select">
             {
@@ -95,6 +116,8 @@ PaletteSelect.propTypes = {
   palettes: PropTypes.array.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  invertPalette: PropTypes.bool.isRequired,
+  updateInvertPalette: PropTypes.func.isRequired,
   noFancy: PropTypes.bool,
   allowEmpty: PropTypes.bool,
 };

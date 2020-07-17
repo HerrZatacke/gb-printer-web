@@ -6,6 +6,7 @@ const mapStateToProps = (state) => ({
   frameRate: state.videoParams.frameRate || 24,
   yoyo: state.videoParams.yoyo || false,
   lockFrame: state.videoParams.lockFrame || false,
+  invertPalette: state.videoParams.invertPalette || false,
   frame: state.videoParams.frame || '',
   palette: state.videoParams.palette || '',
 });

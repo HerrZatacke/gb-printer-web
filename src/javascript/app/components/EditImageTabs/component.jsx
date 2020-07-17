@@ -59,7 +59,9 @@ class EditImageTabs extends React.Component {
                 </button>
                 <PaletteSelect
                   value={this.props.palette ? this.props.palette.shortName : ''}
+                  invertPalette={this.props.invertPalette}
                   onChange={this.props.updatePalette}
+                  updateInvertPalette={this.props.updateInvertPalette}
                 />
               </>
             ) }
@@ -115,6 +117,7 @@ EditImageTabs.propTypes = {
   // hash: PropTypes.string,
   hashes: PropTypes.object,
   palette: PropTypes.object,
+  invertPalette: PropTypes.bool.isRequired,
   frame: PropTypes.string,
   tags: PropTypes.shape({
     initial: PropTypes.array.isRequired,
@@ -132,6 +135,7 @@ EditImageTabs.propTypes = {
   regularImage: PropTypes.bool.isRequired,
   lockFrame: PropTypes.bool.isRequired,
   updatePalette: PropTypes.func.isRequired,
+  updateInvertPalette: PropTypes.func.isRequired,
   updateTags: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
   updateFrameLock: PropTypes.func.isRequired,

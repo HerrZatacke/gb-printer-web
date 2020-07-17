@@ -26,6 +26,7 @@ const mapStateToProps = (state) => {
     frame: state.editImage.frame,
     lockFrame: state.editImage.lockFrame || false,
     palette,
+    invertPalette: state.editImage.invertPalette || false,
     frames,
     height,
   });
@@ -42,6 +43,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'UPDATE_EDIT_IMAGE',
       payload: { palette, confirmed },
+    });
+  },
+  updateInvertPalette: (invertPalette) => {
+    dispatch({
+      type: 'UPDATE_EDIT_IMAGE',
+      payload: { invertPalette, confirmed: true },
     });
   },
   updateFrame: (frame) => {

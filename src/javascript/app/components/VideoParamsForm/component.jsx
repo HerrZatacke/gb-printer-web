@@ -15,6 +15,7 @@ class VideoParamsForm extends React.Component {
       frameRate: props.frameRate,
       scaleFactor: props.scaleFactor,
       palette: props.palette,
+      invertPalette: props.invertPalette,
       yoyo: props.yoyo,
       frame: props.frame,
       lockFrame: props.lockFrame,
@@ -29,6 +30,7 @@ class VideoParamsForm extends React.Component {
       frameRate: Math.min(120, Math.max(1, parseInt(this.state.frameRate, 10))),
       scaleFactor: Math.min(12, Math.max(1, parseInt(this.state.scaleFactor, 10))),
       palette: this.state.palette,
+      invertPalette: this.state.invertPalette,
       yoyo: this.state.yoyo,
       frame: this.state.frame,
       lockFrame: this.state.lockFrame,
@@ -125,9 +127,15 @@ class VideoParamsForm extends React.Component {
           noFancy
           allowEmpty
           value={this.state.palette}
+          invertPalette={this.state.invertPalette}
           onChange={(palette) => {
             this.setState({
               palette,
+            }, this.callUpdate);
+          }}
+          updateInvertPalette={(invertPalette) => {
+            this.setState({
+              invertPalette,
             }, this.callUpdate);
           }}
         />
@@ -159,6 +167,7 @@ VideoParamsForm.propTypes = {
   frameRate: PropTypes.number.isRequired,
   scaleFactor: PropTypes.number.isRequired,
   palette: PropTypes.string.isRequired,
+  invertPalette: PropTypes.bool.isRequired,
   yoyo: PropTypes.bool.isRequired,
   lockFrame: PropTypes.bool.isRequired,
   frame: PropTypes.string.isRequired,
