@@ -7,11 +7,12 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes) => (palette, image
   const isRGBN = !!image.hashes;
   const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
   const lockFrame = image.lockFrame || false;
+  const invertPalette = image.invertPalette || false;
 
   if (isRGBN) {
     decoder.update(null, RGBNDecoder.rgbnTiles(tiles), palette, lockFrame);
   } else {
-    decoder.update(null, tiles, palette.palette, lockFrame);
+    decoder.update(null, tiles, palette.palette, lockFrame, invertPalette);
   }
 
   const validExportScaleFactors = [...exportScaleFactors];
