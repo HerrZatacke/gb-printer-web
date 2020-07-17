@@ -32,6 +32,10 @@
     z-index: $z-index-overlay-box;
     overflow: hidden;
 
+    body.is-touch & {
+      padding-bottom: 60px;
+    }
+
     @media (max-width: 480px) {
       width: 100vw;
       min-width: 320px;
