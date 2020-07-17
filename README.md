@@ -18,6 +18,7 @@
 * Other blendmodes than multiply for RGB-Images
 * trash bin for raw-data of deleted images (must implement global storage first for this)
 * Allow some gesture/swipe in gallery on touch devices
+* Translations
 
 ## Local Setup
 You can run this app locally to directly use the gbp-emulator on your serial port 
