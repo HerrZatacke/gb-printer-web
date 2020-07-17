@@ -17,6 +17,7 @@ const animate = (store) => (next) => (action) => {
       yoyo,
       frame: videoFrame,
       lockFrame: videoLockFrame,
+      invertPalette: videoInvertPalette,
       palette: videoPalette,
     } = state.videoParams;
 
@@ -44,11 +45,12 @@ const animate = (store) => (next) => (action) => {
             const isRGBN = !!image.hashes;
             const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
             const lockFrame = videoLockFrame || image.lockFrame || false;
+            const invertPalette = videoInvertPalette || image.invertPalette || false;
 
             if (isRGBN) {
               decoder.update(null, RGBNDecoder.rgbnTiles(tiles), palette, lockFrame);
             } else {
-              decoder.update(null, tiles, palette.palette, lockFrame);
+              decoder.update(null, tiles, palette.palette, lockFrame, invertPalette);
             }
 
             return decoder.getScaledCanvas(scaleFactor);
