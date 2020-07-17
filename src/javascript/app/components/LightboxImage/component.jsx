@@ -92,6 +92,7 @@ class LightboxImage extends React.Component {
           tiles={this.state.tiles}
           palette={this.props.palette}
           lockFrame={this.props.lockFrame}
+          invertPalette={this.props.invertPalette}
         />
         <div className="lightbox-image__navigation">
           { this.props.index > 0 ? (
@@ -126,6 +127,7 @@ LightboxImage.propTypes = {
   hash: PropTypes.string,
   hashes: PropTypes.object,
   palette: PropTypes.object,
+  invertPalette: PropTypes.bool.isRequired,
   frame: PropTypes.string,
   frames: PropTypes.object,
   lockFrame: PropTypes.bool.isRequired,

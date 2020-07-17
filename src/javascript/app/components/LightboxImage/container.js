@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     return {
       isFullscreen: false,
       lockFrame: false,
+      invertPalette: false,
       index: 0,
       size: 0,
     };
@@ -37,6 +38,7 @@ const mapStateToProps = (state) => {
     index: state.lightboxImage || 0,
     size: images.length || 0,
     lockFrame: image.lockFrame || false,
+    invertPalette: image.invertPalette || false,
   });
 };
 

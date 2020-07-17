@@ -103,6 +103,7 @@ class GalleryImage extends React.Component {
           { this.state.tiles ? (
             <GameBoyImage
               lockFrame={this.props.lockFrame}
+              invertPalette={this.props.invertPalette}
               tiles={this.state.tiles}
               palette={this.props.palette}
             />
@@ -155,6 +156,7 @@ class GalleryImage extends React.Component {
             { this.state.tiles ? (
               <GameBoyImage
                 lockFrame={this.props.lockFrame}
+                invertPalette={this.props.invertPalette}
                 tiles={this.state.tiles}
                 palette={this.props.palette}
               />
@@ -202,6 +204,7 @@ GalleryImage.propTypes = {
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
   palette: PropTypes.object.isRequired,
+  invertPalette: PropTypes.bool.isRequired,
   frame: PropTypes.string,
   frames: PropTypes.object,
   lockFrame: PropTypes.bool.isRequired,

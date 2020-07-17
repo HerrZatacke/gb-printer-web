@@ -25,6 +25,7 @@ const mapStateToProps = (state, { hash }) => {
     palette,
     frames,
     lockFrame: image.lockFrame || false,
+    invertPalette: image.invertPalette || false,
   });
 };
 

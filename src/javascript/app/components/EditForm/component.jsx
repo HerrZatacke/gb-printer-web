@@ -141,6 +141,7 @@ class EditForm extends React.Component {
           tiles={this.state.tiles}
           palette={this.props.palette}
           lockFrame={this.props.lockFrame}
+          invertPalette={this.props.invertPalette}
         />
         { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
           <div

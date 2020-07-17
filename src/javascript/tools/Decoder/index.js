@@ -13,13 +13,14 @@ class Decoder {
     this.colors = [];
     this.rawImageData = [];
     this.lockFrame = false;
+    this.invertPalette = false;
     this.bwPalette = [0xffffff, 0xaaaaaa, 0x555555, 0x000000];
   }
 
-  update(canvas, tiles, palette, lockFrame) {
+  update(canvas, tiles, palette, lockFrame, invertPalette = false) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
-    const paletteChanged = this.setPalette(palette); // true/false
+    const paletteChanged = this.setPalette(palette, invertPalette); // true/false
     const lockFrameChanged = this.setLockFrame(lockFrame); // true/false
 
     if (canvasChanged || paletteChanged || lockFrameChanged || !this.tiles.length) {
@@ -100,12 +101,16 @@ class Decoder {
     return true;
   }
 
-  setPalette(palette) {
-    if (JSON.stringify(this.colors) === JSON.stringify(palette)) {
+  setPalette(palette, invertPalette) {
+    if (
+      JSON.stringify(this.colors) === JSON.stringify(palette) &&
+      this.invertPalette === invertPalette
+    ) {
       return false;
     }
 
     this.colors = palette;
+    this.invertPalette = invertPalette;
 
     this.colorData = this.colors.map((color) => (
       // ensure correct hex string length
@@ -180,7 +185,7 @@ class Decoder {
       this.lockFrame && // Must be actually locked
       this.tileIndexIsFramePart(tileIndex) // Current tile must be in a "lockable" position
     ) ? this.bwPalette : this.colorData;
-    const value = palette[pixels[index]];
+    const value = this.invertPalette ? palette[3 - pixels[index]] : palette[pixels[index]];
 
     return {
       // eslint-disable-next-line no-bitwise

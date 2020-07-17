@@ -11,7 +11,7 @@ const LiveImage = (props) => (
       })
     }
   >
-    <GameBoyImage palette={props.palette} tiles={props.tiles} lockFrame={false} />
+    <GameBoyImage palette={props.palette} tiles={props.tiles} lockFrame={false} invertPalette={false} />
   </div>
 );
 
