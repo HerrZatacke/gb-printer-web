@@ -15,7 +15,6 @@
 * User manual
 * Global Storage for images 
 * Edit palettes
-* Export without frame
 * Other blendmodes than multiply for RGB-Images
 * trash bin for raw-data of deleted images (must implement global storage first for this)
 * Allow some gesture/swipe in gallery on touch devices
