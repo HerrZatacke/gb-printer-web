@@ -25,21 +25,21 @@ class GameBoyImage extends Component {
     try {
       if (this.props.palette.palette) {
         const decoder = new Decoder();
-        decoder.update(
-          this.canvasRef.current,
-          this.props.tiles,
-          this.props.palette.palette,
-          this.props.lockFrame,
-          this.props.invertPalette,
-        );
+        decoder.update({
+          canvas: this.canvasRef.current,
+          tiles: this.props.tiles,
+          palette: this.props.palette.palette,
+          lockFrame: this.props.lockFrame,
+          invertPalette: this.props.invertPalette,
+        });
       } else {
         const decoder = new RGBNDecoder();
-        decoder.update(
-          this.canvasRef.current,
-          this.props.tiles,
-          this.props.palette,
-          this.props.lockFrame,
-        );
+        decoder.update({
+          canvas: this.canvasRef.current,
+          tiles: this.props.tiles,
+          palette: this.props.palette,
+          lockFrame: this.props.lockFrame,
+        });
       }
     } catch (error) {
       console.error(`error in GameBoyImage: ${error.message}`);

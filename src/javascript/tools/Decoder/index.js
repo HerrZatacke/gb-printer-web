@@ -17,7 +17,13 @@ class Decoder {
     this.bwPalette = [0xffffff, 0xaaaaaa, 0x555555, 0x000000];
   }
 
-  update(canvas, tiles, palette, lockFrame, invertPalette = false) {
+  update({
+    canvas = null,
+    tiles = [],
+    palette = [],
+    lockFrame = false,
+    invertPalette = false,
+  }) {
 
     const canvasChanged = this.setCanvas(canvas); // true/false
     const paletteChanged = this.setPalette(palette, invertPalette); // true/false

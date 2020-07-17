@@ -36,7 +36,12 @@ class RGBNImage extends Component {
       .then((rgbn) => {
         if (this.canvasRef.current) {
           const tiles = RGBNDecoder.rgbnTiles(rgbn);
-          this.rgbnDecoder.update(this.canvasRef.current, tiles, defaultPalette, false);
+          this.rgbnDecoder.update({
+            canvas: this.canvasRef.current,
+            tiles,
+            palette: defaultPalette,
+            lockFrame: false,
+          });
         }
       });
   }

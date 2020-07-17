@@ -48,9 +48,18 @@ const animate = (store) => (next) => (action) => {
             const invertPalette = videoInvertPalette || image.invertPalette || false;
 
             if (isRGBN) {
-              decoder.update(null, RGBNDecoder.rgbnTiles(tiles), palette, lockFrame);
+              decoder.update({
+                tiles: RGBNDecoder.rgbnTiles(tiles),
+                palette,
+                lockFrame,
+              });
             } else {
-              decoder.update(null, tiles, palette.palette, lockFrame, invertPalette);
+              decoder.update({
+                tiles,
+                palette: palette.palette,
+                lockFrame,
+                invertPalette,
+              });
             }
 
             return decoder.getScaledCanvas(scaleFactor);

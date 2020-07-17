@@ -10,9 +10,18 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes) => (palette, image
   const invertPalette = image.invertPalette || false;
 
   if (isRGBN) {
-    decoder.update(null, RGBNDecoder.rgbnTiles(tiles), palette, lockFrame);
+    decoder.update({
+      tiles: RGBNDecoder.rgbnTiles(tiles),
+      palette,
+      lockFrame,
+    });
   } else {
-    decoder.update(null, tiles, palette.palette, lockFrame, invertPalette);
+    decoder.update({
+      tiles,
+      palette: palette.palette,
+      lockFrame,
+      invertPalette,
+    });
   }
 
   const validExportScaleFactors = [...exportScaleFactors];
@@ -45,14 +54,15 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes) => (palette, image
 
         const onBlobComplete = (blob) => {
           if (typeof blob.arrayBuffer === 'function') {
-            blob.arrayBuffer().then((arrayBuffer) => {
-              resolve({
-                filename: `${filename}.${fileType}`,
-                arrayBuffer,
-                blob,
-                title: image.title,
+            blob.arrayBuffer()
+              .then((arrayBuffer) => {
+                resolve({
+                  filename: `${filename}.${fileType}`,
+                  arrayBuffer,
+                  blob,
+                  title: image.title,
+                });
               });
-            });
           } else {
             const fileReader = new FileReader();
             fileReader.onload = (ev) => {
