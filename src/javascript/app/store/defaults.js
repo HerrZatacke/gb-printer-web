@@ -14,6 +14,7 @@ export default {
   videoParams: {},
   filter: {},
   savFrameTypes: 'int',
+  exportCropFrame: false,
   palettes: [
     {
       name: 'Black & White',

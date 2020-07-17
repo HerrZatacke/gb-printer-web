@@ -82,20 +82,30 @@ class Decoder {
     context.putImageData(imageData, 0, 0);
   }
 
-  getScaledCanvas(scaleFactor) {
-    const initialWidth = TILES_PER_LINE * TILE_PIXEL_WIDTH;
-    const initialHeight = this.getHeight();
+  getScaledCanvas(scaleFactor, cropFrame = false) {
+    // 2 tiles top/left/bottom/right -> 4 tiles to each side
+    const FRAME_TILES = 4;
 
-    const scaledCanvas = document.createElement('canvas');
-    const scaledContext = scaledCanvas.getContext('2d');
-    scaledCanvas.width = initialWidth * scaleFactor;
-    scaledCanvas.height = initialHeight * scaleFactor;
+    const initialHeight = this.getHeight() - (cropFrame ? TILE_PIXEL_HEIGHT * FRAME_TILES : 0);
+    const initialWidth = (TILES_PER_LINE * TILE_PIXEL_WIDTH) - (cropFrame ? TILE_PIXEL_WIDTH * FRAME_TILES : 0);
 
-    this.tiles.forEach((tile, index) => {
-      this.paintTileScaled(this.decodeTile(tile), index, scaledContext, scaleFactor);
-    });
+    const tilesPerLine = cropFrame ? TILES_PER_LINE - FRAME_TILES : TILES_PER_LINE;
 
-    return scaledCanvas;
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = initialWidth * scaleFactor;
+    canvas.height = initialHeight * scaleFactor;
+
+    this.tiles
+      .map((tile, index) => (
+        cropFrame && this.tileIndexIsFramePart(index) ? null : tile
+      ))
+      .filter(Boolean)
+      .forEach((tile, index) => {
+        this.paintTileScaled(this.decodeTile(tile), index, context, scaleFactor, tilesPerLine);
+      });
+
+    return canvas;
   }
 
   setCanvas(canvas) {
@@ -247,9 +257,9 @@ class Decoder {
     }
   }
 
-  paintTileScaled(pixels, index, canvasContext, pixelSize) {
-    const tileXOffset = index % TILES_PER_LINE;
-    const tileYOffset = Math.floor(index / TILES_PER_LINE);
+  paintTileScaled(pixels, index, canvasContext, pixelSize, tilesPerLine) {
+    const tileXOffset = index % tilesPerLine;
+    const tileYOffset = Math.floor(index / tilesPerLine);
 
     const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset * pixelSize;
     const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset * pixelSize;

@@ -7,6 +7,7 @@ const mapStateToProps = (state) => ({
   exportFileTypes: state.exportFileTypes,
   pageSize: state.pageSize,
   savFrameTypes: state.savFrameTypes,
+  exportCropFrame: state.exportCropFrame,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -26,6 +27,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'SET_SAV_FRAME_TYPES',
       payload: savFrameTypes,
+    });
+  },
+  setExportCropFrame(exportCropFrame) {
+    dispatch({
+      type: 'SET_EXPORT_CROP_FRAME',
+      payload: exportCropFrame,
     });
   },
   setPageSize(pageSize) {

@@ -2,7 +2,7 @@ import Decoder from '../Decoder';
 import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
 
-const getPrepareFiles = (exportScaleFactors, exportFileTypes) => (palette, image) => (tiles) => {
+const getPrepareFiles = (exportScaleFactors, exportFileTypes, exportCropFrame) => (palette, image) => (tiles) => {
 
   const isRGBN = !!image.hashes;
   const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
@@ -45,7 +45,7 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes) => (palette, image
           exportScaleFactor,
         });
 
-        const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor);
+        const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, exportCropFrame);
 
         if (scaledCanvas.msToBlob) {
           window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${filename}.png`);

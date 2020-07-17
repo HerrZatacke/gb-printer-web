@@ -19,6 +19,7 @@ const animate = (store) => (next) => (action) => {
       lockFrame: videoLockFrame,
       invertPalette: videoInvertPalette,
       palette: videoPalette,
+      cropFrame,
     } = state.videoParams;
 
     const videoWriter = new WebMWriter({
@@ -62,7 +63,7 @@ const animate = (store) => (next) => (action) => {
               });
             }
 
-            return decoder.getScaledCanvas(scaleFactor);
+            return decoder.getScaledCanvas(scaleFactor, cropFrame);
           })
       )))
       .then((images) => {

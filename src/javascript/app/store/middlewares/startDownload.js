@@ -38,9 +38,9 @@ const startDownload = (store) => (next) => (action) => {
 
   if ((action.type === 'START_DOWNLOAD') || (action.type === 'DOWNLOAD_SELECTION')) {
     const state = store.getState();
-    const { exportScaleFactors, exportFileTypes } = state;
+    const { exportScaleFactors, exportFileTypes, exportCropFrame } = state;
 
-    const prepareFiles = getPrepareFiles(exportScaleFactors, exportFileTypes);
+    const prepareFiles = getPrepareFiles(exportScaleFactors, exportFileTypes, exportCropFrame);
 
     switch (action.type) {
       case 'START_DOWNLOAD':

@@ -5,6 +5,7 @@ import SocketStateIndicator from '../SocketStateIndicator';
 import cleanUrl from '../../../tools/cleanUrl';
 import { getEnv } from '../../../tools/getEnv';
 import supportedCanvasImageFormats from '../../../tools/supportedCanvasImageFormats/îndex';
+import SVG from '../SVG';
 
 class Settings extends React.Component {
   constructor(props) {
@@ -118,6 +119,33 @@ class Settings extends React.Component {
             </label>
           ))}
         </div>
+        <label
+          className={
+            classnames('settings__inputgroup settings__check-group', {
+              'settings__check-group--checked': this.props.exportCropFrame,
+            })
+          }
+        >
+          <span
+            className="settings__label"
+            title="Enable Yoyo-Effect (loop back to the beginning)"
+          >
+            Crop/remove frame when exporting or sharing images
+          </span>
+          <span
+            className="settings__checkbox-wrap"
+          >
+            <input
+              type="checkbox"
+              className="settings__checkbox"
+              checked={this.props.exportCropFrame}
+              onChange={({ target }) => {
+                this.props.setExportCropFrame(target.checked);
+              }}
+            />
+            <SVG name="checkmark" />
+          </span>
+        </label>
         {(this.env.env !== 'webpack-dev') ? null : (
           <>
             <div className="settings__inputgroup">
@@ -267,6 +295,8 @@ Settings.propTypes = {
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
   exportSettings: PropTypes.func.isRequired,
+  setExportCropFrame: PropTypes.func.isRequired,
+  exportCropFrame: PropTypes.bool.isRequired,
 };
 
 Settings.defaultProps = {};

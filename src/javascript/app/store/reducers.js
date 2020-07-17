@@ -4,6 +4,7 @@ import canShare from './reducers/canShareReducer';
 import confirmation from './reducers/confirmationReducer';
 import dragover from './reducers/dragoverReducer';
 import editImage from './reducers/editImageReducer';
+import exportCropFrame from './reducers/exportCropFrameReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import filter from './reducers/filtersReducer';
@@ -33,6 +34,7 @@ export default combineReducers({
   confirmation,
   dragover,
   editImage,
+  exportCropFrame,
   exportFileTypes,
   exportScaleFactors,
   filter,

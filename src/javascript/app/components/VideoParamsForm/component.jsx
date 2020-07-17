@@ -19,6 +19,7 @@ class VideoParamsForm extends React.Component {
       yoyo: props.yoyo,
       frame: props.frame,
       lockFrame: props.lockFrame,
+      cropFrame: props.lockFrame,
     };
 
     this.callUpdate = this.callUpdate.bind(this);
@@ -34,6 +35,7 @@ class VideoParamsForm extends React.Component {
       yoyo: this.state.yoyo,
       frame: this.state.frame,
       lockFrame: this.state.lockFrame,
+      cropFrame: this.state.cropFrame,
     };
 
     this.setState(cleanState);
@@ -120,6 +122,28 @@ class VideoParamsForm extends React.Component {
           <SVG name="checkmark" />
           <span className="video-params__check-label-text">Yoyo-Effect</span>
         </label>
+        <label
+          className={
+            classnames('video-params__check-label', {
+              'video-params__check-label--checked': this.props.cropFrame,
+            })
+          }
+        >
+          <input
+            type="checkbox"
+            className="video-params__checkbox"
+            checked={this.state.cropFrame}
+            onChange={({ target }) => {
+              this.setState({
+                cropFrame: target.checked,
+              }, this.callUpdate);
+            }}
+          />
+          <SVG name="checkmark" />
+          <span className="video-params__check-label-text">
+            Crop/remove frame
+          </span>
+        </label>
         <div className="video-params__select-label">
           Palette
         </div>
@@ -139,24 +163,28 @@ class VideoParamsForm extends React.Component {
             }, this.callUpdate);
           }}
         />
-        <div className="video-params__select-label">
-          Frame
-        </div>
-        <FrameSelect
-          frame={this.state.frame}
-          lockFrame={this.state.lockFrame}
-          noFrameOption="As selected per image"
-          updateFrame={(frame) => {
-            this.setState({
-              frame,
-            }, this.callUpdate);
-          }}
-          updateFrameLock={(lockFrame) => {
-            this.setState({
-              lockFrame,
-            }, this.callUpdate);
-          }}
-        />
+        { this.state.cropFrame ? null : (
+          <>
+            <div className="video-params__select-label">
+              Frame
+            </div>
+            <FrameSelect
+              frame={this.state.frame}
+              lockFrame={this.state.lockFrame}
+              noFrameOption="As selected per image"
+              updateFrame={(frame) => {
+                this.setState({
+                  frame,
+                }, this.callUpdate);
+              }}
+              updateFrameLock={(lockFrame) => {
+                this.setState({
+                  lockFrame,
+                }, this.callUpdate);
+              }}
+            />
+          </>
+        )}
       </Lightbox>
     );
   }
@@ -170,6 +198,7 @@ VideoParamsForm.propTypes = {
   invertPalette: PropTypes.bool.isRequired,
   yoyo: PropTypes.bool.isRequired,
   lockFrame: PropTypes.bool.isRequired,
+  cropFrame: PropTypes.bool.isRequired,
   frame: PropTypes.string.isRequired,
   cancel: PropTypes.func.isRequired,
   animate: PropTypes.func.isRequired,

@@ -12,8 +12,9 @@ const batch = (store) => (next) => (action) => {
 
     const shareScaleFactor = [...state.exportScaleFactors].pop() || 4;
     const shareFileType = [...state.exportFileTypes].pop() || 'png';
+    const exportCropFrame = state.exportCropFrame;
 
-    const prepareFiles = getPrepareFiles([shareScaleFactor], [shareFileType]);
+    const prepareFiles = getPrepareFiles([shareScaleFactor], [shareFileType], exportCropFrame);
 
     loadImageTiles(image, state)
       .then(prepareFiles(imagePalette, image))
