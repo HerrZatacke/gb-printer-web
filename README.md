@@ -12,6 +12,7 @@
 
 
 ## ToDos
+* Click on image should "edit" not "view"
 * User manual
 * Global Storage for images 
 * Edit palettes
