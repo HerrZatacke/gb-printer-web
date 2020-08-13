@@ -1,5 +1,6 @@
 import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
+import getTransformCapture from '../transformCapture';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer) => (
@@ -13,11 +14,16 @@ const isBinType = (buffer) => (
   buffer[7] === 49 //    1
 );
 
+const isCapture = (dumpText) => (
+  dumpText.indexOf('/* GAMEBOY PRINTER EMULATION PROJECT (Packet Capture Mode) */') !== -1
+);
+
 const getHandleFileImport = (store) => {
   const { dispatch } = store;
 
   const transformSav = getTransformSav(store);
   const transformBin = getTransformBin(dispatch);
+  const transformCapture = getTransformCapture(dispatch);
 
   return (file) => {
 
@@ -60,6 +66,11 @@ const getHandleFileImport = (store) => {
           }
         } catch (error) {
           /* not a settings file */
+        }
+
+        if (isCapture(dumpText)) {
+          transformCapture(dumpText, file.name);
+          return;
         }
 
         // file must contain something that resembles a gb printer command
