@@ -2,8 +2,15 @@ import {
   parsePackets,
   getImageDataStream,
   decompressDataStream,
+  decodePrintCommands,
+  harmonizePalettes,
   transformToClassic,
 } from 'gbp-decode';
+
+// const lp = (d) => {
+//   console.log(d);
+//   return d;
+// };
 
 const getTransformCapture = (dispatch) => (dumpText, filename) => {
 
@@ -22,15 +29,21 @@ const getTransformCapture = (dispatch) => (dumpText, filename) => {
   parsePackets(bytes)
     .then(getImageDataStream)
     .then(decompressDataStream)
+    .then(decodePrintCommands)
+    .then(harmonizePalettes)
     .then(transformToClassic)
-    .then((data) => {
-      dispatch({
-        type: 'ADD_TO_QUEUE',
-        payload: [{
-          file: filename,
-          lines: data.split('\n'),
-        }],
+    .then((images) => {
+
+      images.forEach(({ transformed }) => {
+        dispatch({
+          type: 'ADD_TO_QUEUE',
+          payload: [{
+            file: filename,
+            lines: transformed,
+          }],
+        });
       });
+
     });
 
 
