@@ -7,7 +7,6 @@ const mapStateToProps = (state, { page }) => {
 
   return ({
     images,
-    indexOffset,
     currentView: state.galleryView,
   });
 };

@@ -88,6 +88,14 @@ const confirmation = (store) => {
         }
 
         break;
+
+      case 'SET_LIGHTBOX_IMAGE_HASH':
+        store.dispatch({
+          type: 'SET_LIGHTBOX_IMAGE_INDEX',
+          payload: state.images.findIndex(({ hash }) => hash === action.payload),
+        });
+
+        break;
       default:
         break;
     }

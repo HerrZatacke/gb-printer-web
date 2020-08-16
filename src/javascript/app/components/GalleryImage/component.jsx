@@ -84,7 +84,7 @@ class GalleryImage extends React.Component {
       ev.preventDefault();
       this.props.updateImageSelection(this.props.isSelected ? 'remove' : 'add', ev.shiftKey, this.props.page);
     } else {
-      this.props.setLightboxImageIndex();
+      this.props.editImage();
     }
   }
 
@@ -132,10 +132,7 @@ class GalleryImage extends React.Component {
             </li>
           ))}
         </ul>
-        <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'edit', 'share']} />
-        { /* this.props.hashes ? null : (
-          <RGBNSelect hash={this.props.hash} />
-        ) */ }
+        <GalleryImageButtons index={this.props.index} hash={this.props.hash} buttons={['select', 'download', 'delete', 'view', 'share']} />
       </li>
     );
   }
@@ -188,7 +185,7 @@ class GalleryImage extends React.Component {
         </td>
 
         <td className="gallery-list-image__cell-buttons">
-          <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'edit']} />
+          <GalleryImageButtons index={this.props.index} hash={this.props.hash} buttons={['select', 'download', 'delete', 'view']} />
         </td>
       </tr>
     );
@@ -210,7 +207,7 @@ GalleryImage.propTypes = {
   lockFrame: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setLightboxImageIndex: PropTypes.func.isRequired,
+  editImage: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['list', 'default']).isRequired,
   index: PropTypes.number.isRequired,
   isSelected: PropTypes.bool.isRequired,

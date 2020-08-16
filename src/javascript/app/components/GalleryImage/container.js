@@ -29,13 +29,7 @@ const mapStateToProps = (state, { hash }) => {
   });
 };
 
-const mapDispatchToProps = (dispatch, { index, hash }) => ({
-  setLightboxImageIndex: () => {
-    dispatch({
-      type: 'SET_LIGHTBOX_IMAGE_INDEX',
-      payload: index,
-    });
-  },
+const mapDispatchToProps = (dispatch, { hash }) => ({
   updateImageSelection: (mode, shift, page) => {
     if (shift) {
       dispatch({
@@ -54,6 +48,12 @@ const mapDispatchToProps = (dispatch, { index, hash }) => ({
         payload: hash,
       });
     }
+  },
+  editImage: () => {
+    dispatch({
+      type: 'EDIT_IMAGE',
+      payload: hash,
+    });
   },
 });
 

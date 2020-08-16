@@ -18,12 +18,6 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
       payload: hash,
     });
   } : null,
-  editImage: buttons.includes('edit') ? () => {
-    dispatch({
-      type: 'EDIT_IMAGE',
-      payload: hash,
-    });
-  } : null,
   shareImage: buttons.includes('share') ? () => {
     dispatch({
       type: 'SHARE_IMAGE',
@@ -48,6 +42,12 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
         payload: hash,
       });
     }
+  } : null,
+  setLightboxImageIndex: buttons.includes('view') ? () => {
+    dispatch({
+      type: 'SET_LIGHTBOX_IMAGE_HASH',
+      payload: hash,
+    });
   } : null,
 });
 

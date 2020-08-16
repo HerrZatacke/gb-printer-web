@@ -47,13 +47,13 @@ const GalleryImageButtons = (props) => (
         <SVG name="delete" />
       </button>
     ) : null }
-    { props.editImage ? (
+    { props.setLightboxImageIndex ? (
       <button
         type="button"
         className="gallery-image-buttons__button"
-        onClick={props.editImage}
+        onClick={props.setLightboxImageIndex}
       >
-        <SVG name="edit" />
+        <SVG name="view" />
       </button>
     ) : null }
     { props.saveRGBNImage ? (
@@ -80,7 +80,7 @@ const GalleryImageButtons = (props) => (
 GalleryImageButtons.propTypes = {
   canShare: PropTypes.bool.isRequired,
   deleteImage: PropTypes.func,
-  editImage: PropTypes.func,
+  setLightboxImageIndex: PropTypes.func,
   isSelected: PropTypes.bool.isRequired,
   saveRGBNImage: PropTypes.func,
   shareImage: PropTypes.func,
@@ -90,7 +90,7 @@ GalleryImageButtons.propTypes = {
 
 GalleryImageButtons.defaultProps = {
   deleteImage: null,
-  editImage: null,
+  setLightboxImageIndex: null,
   saveRGBNImage: null,
   shareImage: null,
   startDownload: null,

@@ -5,12 +5,11 @@ import GalleryImage from '../GalleryImage';
 import GalleryHeader from '../GalleryHeader';
 
 const Gallery = (props) => {
-  const content = props.images.map((image, index) => (
+  const content = props.images.map((image) => (
     <GalleryImage
       type={props.currentView === 'list' ? 'list' : 'default'}
       key={image.hash}
       hash={image.hash}
-      index={index + props.indexOffset}
       page={props.page}
     />
   ));
@@ -59,7 +58,6 @@ const Gallery = (props) => {
 
 Gallery.propTypes = {
   images: PropTypes.array.isRequired,
-  indexOffset: PropTypes.number.isRequired,
   currentView: PropTypes.string.isRequired,
   page: PropTypes.number.isRequired,
 };
