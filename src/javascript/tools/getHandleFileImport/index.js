@@ -14,10 +14,6 @@ const isBinType = (buffer) => (
   buffer[7] === 49 //    1
 );
 
-const isCapture = (dumpText) => (
-  dumpText.indexOf('/* GAMEBOY PRINTER EMULATION PROJECT (Packet Capture Mode) */') !== -1
-);
-
 const getHandleFileImport = (store) => {
   const { dispatch } = store;
 
@@ -68,17 +64,18 @@ const getHandleFileImport = (store) => {
           /* not a settings file */
         }
 
-        if (isCapture(dumpText)) {
-          transformCapture(dumpText, file.name);
-          return;
-        }
-
         // file must contain something that resembles a gb printer command
         if (dumpText.indexOf('!{"command"') === -1) {
-          dispatch({
-            type: 'ERROR',
-            payload: 'NOT_A_DUMP',
-          });
+
+          try {
+            transformCapture(dumpText, file.name);
+          } catch (error) {
+            dispatch({
+              type: 'ERROR',
+              payload: 'NOT_A_DUMP',
+            });
+          }
+
           return;
         }
 

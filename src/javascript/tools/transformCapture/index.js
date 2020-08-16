@@ -7,8 +7,6 @@ import {
 
 const getTransformCapture = (dispatch) => (dumpText, filename) => {
 
-  // const cleanedText = dumpText.replace(/\/\*\(\*\/.*\/\*\)\*\//gi, '');
-
   const bytes = dumpText
     .split('\n')
     .map((line) => line.trim())
