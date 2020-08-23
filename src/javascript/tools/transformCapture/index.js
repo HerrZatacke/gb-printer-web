@@ -34,12 +34,12 @@ const getTransformCapture = (dispatch) => (dumpText, filename) => {
     .then(transformToClassic)
     .then((images) => {
 
-      images.forEach(({ transformed }) => {
+      images.forEach((lines) => {
         dispatch({
           type: 'ADD_TO_QUEUE',
           payload: [{
             file: filename,
-            lines: transformed,
+            lines,
           }],
         });
       });
