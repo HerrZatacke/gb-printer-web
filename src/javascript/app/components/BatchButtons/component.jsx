@@ -17,19 +17,16 @@ if (supportsWebmWriter()) {
 const BatchButtons = (props) => (
   <ul className="batch-buttons">
     <li
-      className={
-        classnames('batch-buttons__action', {
-          'batch-buttons__action--disabled': !props.enableFilter,
-          'batch-buttons__action--enabled': props.enableFilter,
-        })
-      }
+      className="batch-buttons__action batch-buttons__action--enabled"
     >
       <button
         type="button"
         onClick={props.filter}
-        disabled={!props.enableFilter}
       >
         <SVG name="filter" />
+        { props.activeFilters === 0 ? null : (
+          <span className="batch-buttons__bubble">{props.activeFilters}</span>
+        )}
       </button>
     </li>
     <li
@@ -44,6 +41,9 @@ const BatchButtons = (props) => (
         onClick={() => props.batchTask(props.hasUnselected ? 'checkall' : 'uncheckall', props.page)}
       >
         <SVG name="checkmark" />
+        { props.selectedImages === 0 ? null : (
+          <span className="batch-buttons__bubble">{props.selectedImages}</span>
+        )}
       </button>
     </li>
     {
@@ -73,7 +73,8 @@ const BatchButtons = (props) => (
 BatchButtons.propTypes = {
   batchTask: PropTypes.func.isRequired,
   enabled: PropTypes.bool.isRequired,
-  enableFilter: PropTypes.bool.isRequired,
+  activeFilters: PropTypes.number.isRequired,
+  selectedImages: PropTypes.number.isRequired,
   filter: PropTypes.func.isRequired,
   hasUnselected: PropTypes.bool.isRequired,
   page: PropTypes.number.isRequired,

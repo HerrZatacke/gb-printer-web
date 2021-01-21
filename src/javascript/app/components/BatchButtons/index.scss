@@ -3,6 +3,7 @@
   margin-bottom: 20px;
 
   &__action {
+    position: relative;
     color: $color-white;
     background: $color-grey-70;
     flex-grow: 0;
@@ -57,6 +58,19 @@
         display: block;
       }
     }
+  }
+
+  &__bubble {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    height: 17px;
+    font-size: 11px;
+    line-height: 11px;
+    padding: 3px 6px;
+    border-radius: 9px;
+    background-color: $color-button-bubble;
+    color: $color-white;
   }
 }
 
