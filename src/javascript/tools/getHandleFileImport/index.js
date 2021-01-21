@@ -65,7 +65,7 @@ const getHandleFileImport = (store) => {
         }
 
         // file must contain something that resembles a gb printer command
-        if (dumpText.indexOf('!{"command"') === -1) {
+        if (dumpText.indexOf('{"command"') === -1) {
 
           try {
             transformCapture(dumpText, file.name);
