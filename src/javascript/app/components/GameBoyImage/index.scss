@@ -2,4 +2,8 @@
   width: 100%;
   display: block;
   image-rendering: pixelated;
+
+  .gallery--list & {
+    image-rendering: auto;
+  }
 }
