@@ -24,7 +24,10 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes, exportCropFrame) =
     });
   }
 
-  const validExportScaleFactors = [...exportScaleFactors];
+  const validExportScaleFactors = [...exportScaleFactors].filter((factor) => (
+    typeof factor === 'number'
+  ));
+
   const validExportFileTypes = [...exportFileTypes];
 
   if (!validExportScaleFactors.length) {
