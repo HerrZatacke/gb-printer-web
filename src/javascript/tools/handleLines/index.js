@@ -4,10 +4,13 @@ const handleLines = (rawLine) => {
     return null;
   }
 
-  // ! indicates a command
-  if ((rawLine.charAt(0) === '!')) {
+  // ! or { indicates a command
+  if (
+    (rawLine.charAt(0) === '!') ||
+    (rawLine.charAt(0) === '{')
+  ) {
     try {
-      const { command, margin_lower: marginLower } = JSON.parse(rawLine.slice(1).trim());
+      const { command, margin_lower: marginLower } = JSON.parse(rawLine.slice(rawLine.indexOf('{')).trim());
       // if (command === 'INIT') {
       //   return {
       //     type: 'CLEAR_LINES',
