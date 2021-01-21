@@ -1,0 +1,4 @@
+export const FILTER_UNTAGGED = '__filter:untagged__';
+export const FILTER_NEW = '__filter:new__';
+export const FILTER_MONOCHROME = '__filter:mono__';
+export const FILTER_RGB = '__filter:rgb__';

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import uniqe from '../../../tools/unique';
-import SVG from '../SVG';
 import Lightbox from '../Lightbox';
+import FilterFormTag from './filterFormTag';
+import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB } from '../../../consts/specialTags';
 
 class FilterForm extends React.Component {
 
@@ -49,29 +49,38 @@ class FilterForm extends React.Component {
         <ul
           className="filter-form__tag-list"
         >
-          {this.props.availableTags.map((tag) => {
-            const tagActive = this.state.activeTags.includes(tag);
-            return (
-              <li
-                key={tag}
-                title={tag}
-                className={
-                  classnames('filter-form__tag', {
-                    'filter-form__tag--active': tagActive,
-                  })
-                }
-              >
-                <button
-                  className="filter-form__tag-button"
-                  type="button"
-                  onClick={() => this.updateActiveTags(tag, tagActive ? 'remove' : 'add')}
-                >
-                  <SVG name="checkmark" />
-                  <span className="filter-form__tag-text">{tag}</span>
-                </button>
-              </li>
-            );
-          })}
+          <FilterFormTag
+            title="Untagged"
+            tagActive={this.state.activeTags.includes(FILTER_UNTAGGED)}
+            toggleTag={(active) => this.updateActiveTags(FILTER_UNTAGGED, active)}
+          />
+          <FilterFormTag
+            title="New"
+            tagActive={this.state.activeTags.includes(FILTER_NEW)}
+            toggleTag={(active) => this.updateActiveTags(FILTER_NEW, active)}
+          />
+          <FilterFormTag
+            title="Monochrome"
+            tagActive={this.state.activeTags.includes(FILTER_MONOCHROME)}
+            toggleTag={(active) => this.updateActiveTags(FILTER_MONOCHROME, active)}
+          />
+          <FilterFormTag
+            title="RGB"
+            tagActive={this.state.activeTags.includes(FILTER_RGB)}
+            toggleTag={(active) => this.updateActiveTags(FILTER_RGB, active)}
+          />
+        </ul>
+        <ul
+          className="filter-form__tag-list"
+        >
+          {this.props.availableTags.map((tag) => (
+            <FilterFormTag
+              key={tag}
+              title={tag}
+              tagActive={this.state.activeTags.includes(tag)}
+              toggleTag={(active) => this.updateActiveTags(tag, active)}
+            />
+          ))}
         </ul>
       </Lightbox>
     );
