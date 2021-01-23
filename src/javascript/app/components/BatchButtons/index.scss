@@ -48,14 +48,15 @@
     }
 
 
+
     // checkmark
     .tick {
-      display: none;
+      opacity: 1;
     }
 
-    &--has-unselected {
+    &--has-selected {
       .tick {
-        display: block;
+        opacity: $checkmark-tick-inactive-opacity;
       }
     }
   }

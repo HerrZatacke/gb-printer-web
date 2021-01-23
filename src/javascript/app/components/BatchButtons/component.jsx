@@ -32,13 +32,13 @@ const BatchButtons = (props) => (
     <li
       className={
         classnames('batch-buttons__action batch-buttons__action--enabled', {
-          'batch-buttons__action--has-unselected': props.hasUnselected,
+          'batch-buttons__action--has-selected': !props.hasSelected,
         })
       }
     >
       <button
         type="button"
-        onClick={() => props.batchTask(props.hasUnselected ? 'checkall' : 'uncheckall', props.page)}
+        onClick={() => props.batchTask(props.hasSelected ? 'uncheckall' : 'checkall', props.page)}
       >
         <SVG name="checkmark" />
         { props.selectedImages === 0 ? null : (
@@ -87,7 +87,7 @@ BatchButtons.propTypes = {
   selectedImages: PropTypes.number.isRequired,
   filter: PropTypes.func.isRequired,
   showSortOptions: PropTypes.func.isRequired,
-  hasUnselected: PropTypes.bool.isRequired,
+  hasSelected: PropTypes.bool.isRequired,
   page: PropTypes.number.isRequired,
 };
 

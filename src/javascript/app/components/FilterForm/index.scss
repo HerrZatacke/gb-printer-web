@@ -20,7 +20,7 @@
     user-select: none;
 
     .tick {
-      display: none;
+      opacity: $checkmark-tick-inactive-opacity;
     }
 
     &--active {
@@ -28,7 +28,7 @@
       color: $color-text-bright;
 
       .tick {
-        display: block
+        opacity: 1;
       }
     }
 

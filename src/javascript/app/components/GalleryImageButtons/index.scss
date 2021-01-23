@@ -18,6 +18,17 @@
     border-radius: $default-border-radius-small;
     outline: none;
 
+    .tick {
+      opacity: $checkmark-tick-inactive-opacity;
+    }
+
+    &--checked,
+    &:hover {
+      .tick {
+        opacity: 1;
+      }
+    }
+
     &--checked {
       fill: $color-grey-90;
       background: $color-tertiary;

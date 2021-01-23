@@ -4,13 +4,13 @@ import getFilteredImages from '../../../tools/getFilteredImages';
 const mapStateToProps = (state, { page }) => {
   const indexOffset = page * state.pageSize;
   const images = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
-  const hasUnselected = !!images.find(({ hash }) => !state.imageSelection.includes(hash));
+  const hasSelected = !!images.find(({ hash }) => state.imageSelection.includes(hash));
 
   return ({
     enabled: state.imageSelection.length > 1,
     activeFilters: state.filter.activeTags.length || 0,
     selectedImages: state.imageSelection.length,
-    hasUnselected,
+    hasSelected,
   });
 };
 

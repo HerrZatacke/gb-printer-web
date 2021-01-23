@@ -27,11 +27,11 @@
     }
 
     .tick {
-      display: none;
+      opacity: $checkmark-tick-inactive-opacity;
     }
 
     &--checked .tick {
-      display: block;
+      opacity: 1;
     }
   }
 
