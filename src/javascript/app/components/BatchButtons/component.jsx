@@ -46,6 +46,16 @@ const BatchButtons = (props) => (
         )}
       </button>
     </li>
+    <li
+      className="batch-buttons__action batch-buttons__action--enabled"
+    >
+      <button
+        type="button"
+        onClick={props.showSortOptions}
+      >
+        <SVG name="sort" />
+      </button>
+    </li>
     {
       BATCH_ACTIONS.map((action) => (
         <li
@@ -76,6 +86,7 @@ BatchButtons.propTypes = {
   activeFilters: PropTypes.number.isRequired,
   selectedImages: PropTypes.number.isRequired,
   filter: PropTypes.func.isRequired,
+  showSortOptions: PropTypes.func.isRequired,
   hasUnselected: PropTypes.bool.isRequired,
   page: PropTypes.number.isRequired,
 };

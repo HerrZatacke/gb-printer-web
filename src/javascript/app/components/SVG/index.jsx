@@ -78,6 +78,12 @@ const SVG = (props) => {
           <path d="M12 4v3h-2V4zM5 15v-4h10v4zm8-7H6l.01-4H4v12h12V6l-2-2h-1z" />
         </svg>
       );
+    case 'sort':
+      return (
+        <svg className="svg" viewBox="0 0 20 20">
+          <path d="M4.5 8.5L10 3l5.5 5.5zm0 3L10 17l5.5-5.5z" />
+        </svg>
+      );
     case 'list':
       return (
         <svg className="svg" viewBox="0 0 40 40">

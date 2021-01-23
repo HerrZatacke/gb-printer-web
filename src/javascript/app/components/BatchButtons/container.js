@@ -27,6 +27,11 @@ const mapDispatchToProps = (dispatch) => ({
       type: 'SHOW_FILTERS',
     });
   },
+  showSortOptions: () => {
+    dispatch({
+      type: 'SHOW_SORT_OPTIONS',
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);
