@@ -23,6 +23,7 @@ import printerData from './reducers/printerDataReducer';
 import printerUrl from './reducers/printerUrlReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
+import sortBy from './reducers/sortByReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
 import videoParams from './reducers/videoParamsReducer';
@@ -53,6 +54,7 @@ export default combineReducers({
   printerUrl,
   rgbnImages,
   savFrameTypes,
+  sortBy,
   socketState,
   socketUrl,
   videoParams,

@@ -16,6 +16,7 @@ export default {
   videoParams: {},
   filter: {},
   savFrameTypes: 'int',
+  sortBy: 'created_asc',
   exportCropFrame: false,
   palettes,
 };

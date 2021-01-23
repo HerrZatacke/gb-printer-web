@@ -3,7 +3,7 @@ import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB } from '../.
 import { dateFormat } from '../../app/defaults';
 
 const getFilteredImages = ({ images, filter: { activeTags } }) => (
-  images.filter((image) => {
+  [...images.filter((image) => {
 
     if (activeTags.length) {
 
@@ -36,7 +36,7 @@ const getFilteredImages = ({ images, filter: { activeTags } }) => (
     }
 
     return true;
-  })
+  })]
 );
 
 export default getFilteredImages;
