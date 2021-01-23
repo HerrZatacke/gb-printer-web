@@ -1,0 +1,43 @@
+.sort-form {
+  $spacing: 5px;
+
+  &__list {
+    display: flex;
+    margin: 0 -$spacing;
+    padding: 20px 20px 15px 20px;
+  }
+
+  &__button {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    line-height: 16px;
+    background-color: $color-grey-70;
+    color: $color-black;
+    margin: 0 $spacing 10px;
+    padding: 0 #{2 * $spacing};
+    height: 30px;
+    border-radius: 15px;
+    position: relative;
+    user-select: none;
+
+    &--selected {
+      background-color: $color-primary;
+      color: $color-text-bright;
+    }
+
+    &--order-asc {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-right: 0;
+      padding-right: $spacing;
+    }
+
+    &--order-desc {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      margin-left: 0;
+      padding-left: $spacing;
+    }
+  }
+}

@@ -19,6 +19,7 @@ import FilterForm from '../FilterForm';
 import { getEnv } from '../../../tools/getEnv';
 import WiFiSettings from '../WiFiSettings';
 import VideoParamsForm from '../VideoParamsForm';
+import SortForm from '../SortForm';
 
 const env = getEnv();
 
@@ -94,6 +95,7 @@ const App = (props) => (
     <RGBNImage />
     <DragOver />
     <FilterForm />
+    <SortForm />
   </Router>
 );
 
