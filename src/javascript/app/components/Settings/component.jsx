@@ -128,7 +128,7 @@ class Settings extends React.Component {
         >
           <span
             className="settings__label"
-            title="Enable Yoyo-Effect (loop back to the beginning)"
+            title="Crop/remove frame when exporting or sharing images"
           >
             Crop/remove frame when exporting or sharing images
           </span>
@@ -253,6 +253,9 @@ class Settings extends React.Component {
             <option value="jp">Japanese Frames (Pocket Camera)</option>
           </select>
         </div>
+
+        xxx
+
         <div className="settings__inputgroup settings__buttongroup">
           <button
             type="button"
