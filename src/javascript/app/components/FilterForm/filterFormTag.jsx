@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
 
-const FilterFormTag = ({ tagActive, toggleTag, title }) => (
+const FilterFormTag = ({ tagActive, toggleTag, title, icon }) => (
   <li
     title={title}
     className={
@@ -17,7 +17,7 @@ const FilterFormTag = ({ tagActive, toggleTag, title }) => (
       type="button"
       onClick={() => toggleTag(tagActive ? 'remove' : 'add')}
     >
-      <SVG name="checkmark" />
+      <SVG name={icon} />
       <span className="filter-form__tag-text">{title}</span>
     </button>
   </li>
@@ -27,6 +27,11 @@ FilterFormTag.propTypes = {
   title: PropTypes.string.isRequired,
   tagActive: PropTypes.bool.isRequired,
   toggleTag: PropTypes.func.isRequired,
+  icon: PropTypes.string,
+};
+
+FilterFormTag.defaultProps = {
+  icon: 'checkmark',
 };
 
 export default FilterFormTag;
