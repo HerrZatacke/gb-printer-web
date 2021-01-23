@@ -98,6 +98,7 @@
 
   // easy way for a parent with justify-content: space-between; to still align last row left.
   .gallery &--dummy {
+    cursor: default;
     padding-top: 0;
     padding-bottom: 0;
     margin-top: 0;
