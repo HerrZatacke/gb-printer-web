@@ -1,10 +1,13 @@
 import dayjs from 'dayjs';
+import sortImages from '../sortImages';
 import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB } from '../../consts/specialTags';
 import { dateFormat } from '../../app/defaults';
 
-const getFilteredImages = ({ images, filter: { activeTags } }) => (
-  [...images.filter((image) => {
+const getFilteredImages = ({ images: stateImages, filter: { activeTags }, sortBy }, performSorting) => {
 
+  const images = performSorting ? [...stateImages].sort(sortImages({ sortBy })) : [...stateImages];
+
+  return images.filter((image) => {
     if (activeTags.length) {
 
       if (activeTags.includes(FILTER_UNTAGGED) && image.tags.length === 0) {
@@ -12,8 +15,11 @@ const getFilteredImages = ({ images, filter: { activeTags } }) => (
       }
 
       if (activeTags.includes(FILTER_NEW)) {
-        const date = dayjs(image.created, dateFormat).unix();
-        const maxNew = dayjs().subtract('1', 'day').unix();
+        const date = dayjs(image.created, dateFormat)
+          .unix();
+        const maxNew = dayjs()
+          .subtract('1', 'day')
+          .unix();
 
         if (date > maxNew) {
           return true;
@@ -36,7 +42,7 @@ const getFilteredImages = ({ images, filter: { activeTags } }) => (
     }
 
     return true;
-  })]
-);
+  });
+};
 
 export default getFilteredImages;

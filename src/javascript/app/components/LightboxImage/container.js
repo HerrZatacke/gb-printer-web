@@ -3,7 +3,7 @@ import getRGBNFrames from '../../../tools/getRGBNFrames';
 import getFilteredImages from '../../../tools/getFilteredImages';
 
 const mapStateToProps = (state) => {
-  const images = getFilteredImages(state);
+  const images = getFilteredImages(state, false);
   const image = images.find((_, index) => index === state.lightboxImage);
   let palette;
   let frames;

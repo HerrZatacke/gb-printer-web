@@ -20,7 +20,7 @@ const batch = (store) => (next) => (action) => {
 
   if (action.type === 'IMAGE_SELECTION_SHIFTCLICK') {
     const state = store.getState();
-    const images = getFilteredImages(state);
+    const images = getFilteredImages(state, true);
     const { lastSelectedImage, pageSize } = state;
     const selectedIndex = images.findIndex(({ hash }) => hash === action.payload);
     let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);
@@ -184,7 +184,7 @@ const batch = (store) => (next) => (action) => {
       case 'checkall':
         store.dispatch({
           type: 'IMAGE_SELECTION_SET',
-          payload: getFilteredImages(state)
+          payload: getFilteredImages(state, true)
             .slice(action.page * pageSize, (action.page + 1) * pageSize)
             .map(({ hash }) => hash),
         });
