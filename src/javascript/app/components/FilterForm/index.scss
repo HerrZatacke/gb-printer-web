@@ -1,15 +1,4 @@
 .filter-form {
-  &__header {
-    color: $color-text;
-    display: block;
-    padding: 15px 20px 10px;
-    border: none;
-    width: 100%;
-    font-size: 18px;
-    background: none;
-    padding-left: 25px;
-  }
-
   $spacing: 5px;
 
   &__tag-list {
