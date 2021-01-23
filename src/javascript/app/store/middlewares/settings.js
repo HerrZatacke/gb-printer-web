@@ -7,7 +7,13 @@ const getSettings = (what) => {
     .map((key) => key.replace(/^gbp-web-/gi, ''));
 
   const state = JSON.parse(localStorage.getItem('gbp-web-state'));
+
   const images = {};
+  if (what === 'images' || what === 'full') {
+    storedImages.forEach((imageHash) => {
+      images[imageHash] = localStorage.getItem(`gbp-web-${imageHash}`);
+    });
+  }
 
   switch (what) {
     case 'debug':
@@ -18,13 +24,17 @@ const getSettings = (what) => {
       delete state.rgbnImages;
       delete state.activePalette;
       return JSON.stringify({ state }, null, 2);
+    case 'images':
+      return JSON.stringify({
+        state: {
+          images: state.images,
+        },
+        ...images,
+      }, null, 2);
     case 'full':
       delete state.imageSelection;
       delete state.rgbnImages;
       delete state.activePalette;
-      storedImages.forEach((imageHash) => {
-        images[imageHash] = localStorage.getItem(`gbp-web-${imageHash}`);
-      });
       return JSON.stringify({ state, ...images }, null, 2);
     default:
       return null;

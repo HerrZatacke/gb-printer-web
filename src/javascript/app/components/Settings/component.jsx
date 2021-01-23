@@ -271,6 +271,13 @@ class Settings extends React.Component {
           <button
             type="button"
             className="settings__button"
+            onClick={() => this.props.exportSettings('images')}
+          >
+            Export images
+          </button>
+          <button
+            type="button"
+            className="settings__button"
             onClick={() => this.props.exportSettings('full')}
           >
             Export everything (including images)
