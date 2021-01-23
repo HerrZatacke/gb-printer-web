@@ -111,6 +111,7 @@ class EditForm extends React.Component {
     const willUpdateBatch = (
       this.props.batch &&
       (
+        this.props.batch.created ||
         this.props.batch.title ||
         this.props.batch.palette ||
         this.props.batch.invertPalette ||
@@ -166,6 +167,7 @@ class EditForm extends React.Component {
                 {'Will update: '}
                 {
                   [
+                    this.props.batch.created ? 'date' : null,
                     this.props.batch.title ? 'title' : null,
                     this.props.batch.palette ? 'palette' : null,
                     this.props.batch.invertPalette ? 'invertPalette' : null,
@@ -181,6 +183,8 @@ class EditForm extends React.Component {
           </div>
         ) : null }
         <EditImageTabs
+          created={this.props.created}
+          updateCreated={this.props.updateCreated}
           regularImage={this.state.tiles.length === 360}
           lockFrame={this.props.lockFrame}
           hashes={this.props.hashes}
@@ -201,6 +205,7 @@ class EditForm extends React.Component {
 
 EditForm.propTypes = {
   batch: PropTypes.object,
+  created: PropTypes.string,
   cancel: PropTypes.func.isRequired,
   hash: PropTypes.string,
   hashes: PropTypes.object,
@@ -216,6 +221,7 @@ EditForm.propTypes = {
     remove: PropTypes.array.isRequired,
   }),
   title: PropTypes.string,
+  updateCreated: PropTypes.func.isRequired,
   updatePalette: PropTypes.func.isRequired,
   updateInvertPalette: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
@@ -227,6 +233,7 @@ EditForm.propTypes = {
 
 EditForm.defaultProps = {
   batch: null,
+  created: null,
   title: null,
   hash: null,
   hashes: null,

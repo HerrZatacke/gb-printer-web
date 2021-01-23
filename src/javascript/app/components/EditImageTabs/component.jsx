@@ -6,6 +6,7 @@ import FrameSelect from '../FrameSelect';
 import GreySelect from '../GreySelect';
 import PaletteSelect from '../PaletteSelect';
 import TagsSelect from '../TagsSelect';
+import ImageMeta from '../ImageMeta';
 
 class EditImageTabs extends React.Component {
   constructor(props) {
@@ -67,6 +68,7 @@ class EditImageTabs extends React.Component {
             ) }
           </li>
           {this.props.regularImage ? (
+            // if image does not have exact height of a gameboy-camera image, frame select is not avaliable
             <li
               className={
                 classnames('edit-image-tabs__tab', {
@@ -95,7 +97,6 @@ class EditImageTabs extends React.Component {
             }
             onFocus={this.focusEvent(this.props.regularImage ? 2 : 1)}
             onClick={this.focusEvent(this.props.regularImage ? 2 : 1)}
-
           >
             <button type="button" className="edit-image-tabs__button">
               Tags
@@ -104,6 +105,23 @@ class EditImageTabs extends React.Component {
               updateTags={this.props.updateTags}
               tags={this.props.tags}
               batchTags={this.props.batchTags}
+            />
+          </li>
+          <li
+            className={
+              classnames('edit-image-tabs__tab', {
+                'edit-image-tabs__tab--active': this.state.tabIndex === 3,
+              })
+            }
+            onFocus={this.focusEvent(this.props.regularImage ? 3 : 2)}
+            onClick={this.focusEvent(this.props.regularImage ? 3 : 2)}
+          >
+            <button type="button" className="edit-image-tabs__button">
+              Misc
+            </button>
+            <ImageMeta
+              created={this.props.created}
+              updatecreated={this.props.updateCreated}
             />
           </li>
         </ul>
@@ -116,6 +134,7 @@ EditImageTabs.propTypes = {
   // cancel: PropTypes.func.isRequired,
   // hash: PropTypes.string,
   hashes: PropTypes.object,
+  created: PropTypes.string,
   palette: PropTypes.object,
   invertPalette: PropTypes.bool.isRequired,
   frame: PropTypes.string,
@@ -134,6 +153,7 @@ EditImageTabs.propTypes = {
   // title: PropTypes.string,
   regularImage: PropTypes.bool.isRequired,
   lockFrame: PropTypes.bool.isRequired,
+  updateCreated: PropTypes.func.isRequired,
   updatePalette: PropTypes.func.isRequired,
   updateInvertPalette: PropTypes.func.isRequired,
   updateTags: PropTypes.func.isRequired,
@@ -148,6 +168,7 @@ EditImageTabs.defaultProps = {
   batchTags: null,
   palette: null,
   frame: null,
+  created: null,
   // frames: null,
 };
 

@@ -2,7 +2,7 @@ import getFilteredImages from '../../../tools/getFilteredImages';
 import applyTagChanges from '../../../tools/applyTagChanges';
 import sortImages from '../../../tools/sortImages';
 
-const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags'];
+const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags', 'created'];
 
 const collectTags = (batchImages) => {
   const allTags = batchImages.map(({ tags }) => tags).flat();
@@ -64,6 +64,14 @@ const batch = (store) => (next) => (action) => {
                 }
 
                 updates.title = editImage.title.replace(/%n/gi, selectionIndex + 1);
+                break;
+
+              case 'created':
+                if (!editImage.batch.created) {
+                  break;
+                }
+
+                updates.created = editImage.created;
                 break;
 
               case 'palette':
@@ -166,6 +174,7 @@ const batch = (store) => (next) => (action) => {
               batch: {
                 selection: imageSelection,
                 title: false,
+                created: false,
                 palette: false,
                 invertPalette: false,
                 frame: false,

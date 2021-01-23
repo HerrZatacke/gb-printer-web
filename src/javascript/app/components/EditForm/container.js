@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
 
   return ({
     batch: state.editImage.batch,
+    created: state.editImage.created || null,
     hash: state.editImage.hash,
     tags: state.editImage.tags,
     title: state.editImage.title,
@@ -43,6 +44,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'UPDATE_EDIT_IMAGE',
       payload: { palette, confirmed },
+    });
+  },
+  updateCreated: (created) => {
+    dispatch({
+      type: 'UPDATE_EDIT_IMAGE',
+      payload: { created, confirmed: true },
     });
   },
   updateInvertPalette: (invertPalette) => {

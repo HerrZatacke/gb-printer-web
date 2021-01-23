@@ -1,4 +1,5 @@
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
+const dateFormatInput = 'YYYY-MM-DDTHH:mm';
 const dateFormatFilename = 'YYYYMMDD-HHmmss';
 const dateFormatReadable = 'DD.MM.YYYY HH:mm';
 
@@ -13,6 +14,7 @@ const defaultPalette = {
 
 export {
   dateFormat,
+  dateFormatInput,
   dateFormatFilename,
   dateFormatReadable,
   defaultPalette,
