@@ -137,6 +137,11 @@ class EditForm extends React.Component {
             }}
           />
         </label>
+        {
+          !this.props.batch ? null : (
+            <span className="edit-image__title-hint">Use %n to add an index to the image titles</span>
+          )
+        }
         <GameBoyImage
           tiles={this.state.tiles}
           palette={this.props.palette}

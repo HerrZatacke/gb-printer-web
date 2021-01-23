@@ -11,6 +11,29 @@
     }
   }
 
+  &__title-hint {
+    display: block;
+    margin-top: -5px;
+    padding: 0 20px 0 38px;
+    font-size: 11px;
+    position: relative;
+
+    &:before {
+      font-size: 11px;
+      width: 15px;
+      height: 15px;
+      line-height: 15px;
+      position: absolute;
+      top: 1px;
+      left: 20px;
+      content: 'i';
+      border-radius: 50%;
+      text-align: center;
+      background-color: $color-button-bubble;
+      color: $color-white;
+    }
+  }
+
   &__header-edit {
     color: inherit;
     border: none;

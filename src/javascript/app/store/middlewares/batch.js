@@ -1,5 +1,6 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 import applyTagChanges from '../../../tools/applyTagChanges';
+import sortImages from '../../../tools/sortImages';
 
 const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags'];
 
@@ -37,82 +38,87 @@ const batch = (store) => (next) => (action) => {
   }
 
   if (action.type === 'UPDATE_IMAGE') {
-    const { editImage, images } = store.getState();
+    const state = store.getState();
+    const sortFunc = sortImages(state);
+    const { editImage, images } = state;
     if (editImage.batch && editImage.batch.selection && editImage.batch.selection.length) {
 
-      const updatedImages = editImage.batch.selection.map((selcetionHash, selectionIndex) => {
-        const updateImage = images.find(({ hash }) => hash === selcetionHash);
+      const updatedImages = editImage.batch.selection.map((selcetionHash) => (
+        images.find(({ hash }) => hash === selcetionHash)
+      ))
+        .sort(sortFunc)
+        .map((updateImage, selectionIndex) => {
 
-        if (!updateImage) {
-          return false;
-        }
-
-        const updates = {};
-        let tags = updateImage.tags;
-
-        UPDATATABLES.forEach((updatable) => {
-          switch (updatable) {
-            case 'title':
-              if (!editImage.batch.title) {
-                break;
-              }
-
-              updates.title = editImage.title.replace(/%n/gi, selectionIndex + 1);
-              break;
-
-            case 'palette':
-              if (!editImage.batch.palette) {
-                break;
-              }
-
-              // prevent palette from updating if types are incompatible
-              if (typeof updateImage.palette === typeof editImage.palette) {
-                updates.palette = editImage.palette;
-              }
-
-              break;
-
-            case 'invertPalette':
-              if (!editImage.batch.invertPalette) {
-                break;
-              }
-
-              updates.invertPalette = editImage.invertPalette;
-              break;
-
-            case 'frame':
-              if (!editImage.batch.frame) {
-                break;
-              }
-
-              updates.frame = editImage.frame;
-              break;
-
-            case 'lockFrame':
-              if (!editImage.batch.lockFrame) {
-                break;
-              }
-
-              updates.lockFrame = editImage.lockFrame;
-              break;
-
-            case 'tags':
-              tags = applyTagChanges({
-                ...editImage.tags,
-                initial: updateImage.tags,
-              });
-              break;
-            default:
-              break;
+          if (!updateImage) {
+            return false;
           }
-        });
 
-        return {
-          ...updateImage,
-          ...updates,
-          tags,
-        };
-      })
+          const updates = {};
+          let tags = updateImage.tags;
+
+          UPDATATABLES.forEach((updatable) => {
+            switch (updatable) {
+              case 'title':
+                if (!editImage.batch.title) {
+                  break;
+                }
+
+                updates.title = editImage.title.replace(/%n/gi, selectionIndex + 1);
+                break;
+
+              case 'palette':
+                if (!editImage.batch.palette) {
+                  break;
+                }
+
+                // prevent palette from updating if types are incompatible
+                if (typeof updateImage.palette === typeof editImage.palette) {
+                  updates.palette = editImage.palette;
+                }
+
+                break;
+
+              case 'invertPalette':
+                if (!editImage.batch.invertPalette) {
+                  break;
+                }
+
+                updates.invertPalette = editImage.invertPalette;
+                break;
+
+              case 'frame':
+                if (!editImage.batch.frame) {
+                  break;
+                }
+
+                updates.frame = editImage.frame;
+                break;
+
+              case 'lockFrame':
+                if (!editImage.batch.lockFrame) {
+                  break;
+                }
+
+                updates.lockFrame = editImage.lockFrame;
+                break;
+
+              case 'tags':
+                tags = applyTagChanges({
+                  ...editImage.tags,
+                  initial: updateImage.tags,
+                });
+                break;
+              default:
+                break;
+            }
+          });
+
+          return {
+            ...updateImage,
+            ...updates,
+            tags,
+          };
+        })
         .filter(Boolean);
 
       store.dispatch({
