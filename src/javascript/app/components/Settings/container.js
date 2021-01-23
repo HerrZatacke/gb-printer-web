@@ -8,6 +8,7 @@ const mapStateToProps = (state) => ({
   pageSize: state.pageSize,
   savFrameTypes: state.savFrameTypes,
   exportCropFrame: state.exportCropFrame,
+  hideDates: state.hideDates,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -33,6 +34,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'SET_EXPORT_CROP_FRAME',
       payload: exportCropFrame,
+    });
+  },
+  setHideDates(hideDates) {
+    dispatch({
+      type: 'SET_HIDE_DATES',
+      payload: hideDates,
     });
   },
   setPageSize(pageSize) {

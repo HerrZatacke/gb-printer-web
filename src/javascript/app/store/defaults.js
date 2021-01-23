@@ -18,5 +18,6 @@ export default {
   savFrameTypes: 'int',
   sortBy: 'created_asc',
   exportCropFrame: false,
+  hideDates: false,
   palettes,
 };

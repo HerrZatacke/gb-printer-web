@@ -254,7 +254,33 @@ class Settings extends React.Component {
           </select>
         </div>
 
-        xxx
+        <label
+          className={
+            classnames('settings__inputgroup settings__check-group', {
+              'settings__check-group--checked': this.props.hideDates,
+            })
+          }
+        >
+          <span
+            className="settings__label"
+            title="Hide dates in gallery"
+          >
+            Hide dates in gallery
+          </span>
+          <span
+            className="settings__checkbox-wrap"
+          >
+            <input
+              type="checkbox"
+              className="settings__checkbox"
+              checked={this.props.hideDates}
+              onChange={({ target }) => {
+                this.props.setHideDates(target.checked);
+              }}
+            />
+            <SVG name="checkmark" />
+          </span>
+        </label>
 
         <div className="settings__inputgroup settings__buttongroup">
           <button
@@ -307,6 +333,8 @@ Settings.propTypes = {
   exportSettings: PropTypes.func.isRequired,
   setExportCropFrame: PropTypes.func.isRequired,
   exportCropFrame: PropTypes.bool.isRequired,
+  setHideDates: PropTypes.func.isRequired,
+  hideDates: PropTypes.bool.isRequired,
 };
 
 Settings.defaultProps = {};

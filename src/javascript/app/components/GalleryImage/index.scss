@@ -23,10 +23,13 @@
   flex-shrink: 0;
   width: 0;
   max-width: 80vw; // ToDo: add real breakpoints for different gallery-size option
+  padding: 10px;
   margin: 0 5px 10px;
   position: relative;
   border-radius: $default-border-radius;
-  padding: 10px 10px 30px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   box-sizing: content-box;
 
   .gallery--1x & {
@@ -64,11 +67,11 @@
   }
 
   &__created {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
+    padding: 10px 0 0 0;
+    display: block;
+    text-align: right;
     font-size: 12px;
-    line-height: 14px;
+    line-height: 10px;
     color: $color-grey-80;
   }
 

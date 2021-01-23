@@ -10,6 +10,7 @@ import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import filter from './reducers/filtersReducer';
 import galleryView from './reducers/galleryViewReducer';
 import globalIndex from './reducers/globalIndexReducer';
+import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import imageSelection from './reducers/imageSelectionReducer';
 import importQueueSize from './reducers/importQueueSizeReducer';
@@ -42,6 +43,7 @@ export default combineReducers({
   filter,
   galleryView,
   globalIndex,
+  hideDates,
   images,
   imageSelection,
   importQueueSize,

@@ -75,8 +75,16 @@ class GalleryImage extends React.Component {
     }
   }
 
-  getDateText() {
-    return this.props.created ? dayjs(this.props.created, dateFormat).format(dateFormatReadable) : null;
+  getDateSpan(className) {
+    if (this.props.hideDate || !this.props.created) {
+      return null;
+    }
+
+    return (
+      <span className={className}>
+        { dayjs(this.props.created, dateFormat).format(dateFormatReadable) }
+      </span>
+    );
   }
 
   handleCellClick(ev) {
@@ -116,11 +124,6 @@ class GalleryImage extends React.Component {
             {this.props.title}
           </span>
         ) : null}
-        <span
-          className="gallery-image__created"
-        >
-          {this.getDateText()}
-        </span>
         <ul className="gallery-list-image__tags">
           {this.props.tags.map((tag) => (
             <li
@@ -132,6 +135,7 @@ class GalleryImage extends React.Component {
             </li>
           ))}
         </ul>
+        {this.getDateSpan('gallery-image__created')}
         <GalleryImageButtons index={this.props.index} hash={this.props.hash} buttons={['select', 'download', 'delete', 'view', 'share']} />
       </li>
     );
@@ -172,9 +176,7 @@ class GalleryImage extends React.Component {
             <span className="gallery-list-image__title">
               {this.props.title}
             </span>
-            <span className="gallery-list-image__created">
-              {this.getDateText()}
-            </span>
+            {this.getDateSpan('gallery-list-image__created')}
           </div>
         </td>
 
@@ -213,6 +215,7 @@ GalleryImage.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   updateImageSelection: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
+  hideDate: PropTypes.bool.isRequired,
 };
 
 GalleryImage.defaultProps = {
