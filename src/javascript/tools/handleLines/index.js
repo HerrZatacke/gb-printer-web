@@ -1,6 +1,9 @@
 const handleLines = (rawLine) => {
   // commented lines are not saved
-  if ((rawLine.charAt(0) === '#')) {
+  if (
+    (rawLine.charAt(0) === '#') ||
+    (rawLine.charAt(0) === '/')
+  ) {
     return null;
   }
 
