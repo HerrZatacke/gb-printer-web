@@ -1,41 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import docs from '../../../../../README.md';
 
-let ReactMarkdown = null;
+const Home = () => {
 
-class Home extends React.Component {
+  const [ReactMarkdown, setReactMarkdown] = useState(() => () => null);
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      mdComponentReady: false,
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     import(/* webpackChunkName: "rmd" */ 'react-markdown')
       .then(({ default: MDComponent }) => {
-        ReactMarkdown = MDComponent;
-        this.setState({
-          mdComponentReady: true,
-        });
+        setReactMarkdown(() => MDComponent);
       });
-  }
+  }, []);
 
-  render() {
-    return (
-      <div className="home">
-        { this.state.mdComponentReady ? (
-          <ReactMarkdown className="markdown-body" source={docs} />
-        ) : null }
-      </div>
-    );
-  }
-}
-
-Home.propTypes = {};
-
-Home.defaultProps = {};
+  return (
+    <div className="home">
+      <ReactMarkdown className="markdown-body" source={docs} />
+    </div>
+  );
+};
 
 export default Home;
