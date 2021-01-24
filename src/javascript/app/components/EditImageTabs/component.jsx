@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import FrameSelect from '../FrameSelect';
@@ -8,127 +8,116 @@ import PaletteSelect from '../PaletteSelect';
 import TagsSelect from '../TagsSelect';
 import ImageMeta from '../ImageMeta';
 
-class EditImageTabs extends React.Component {
-  constructor(props) {
-    super(props);
+const EditImageTabs = (props) => {
 
-    this.state = {
-      tabIndex: 0,
-    };
-  }
+  const [tabIndex, setTabIndex] = useState(0);
 
-  focusEvent(tabIndex) {
-    return () => {
-      this.setState({
-        tabIndex,
-      });
-    };
-  }
+  const focusEvent = (newTabIndex) => () => {
+    setTabIndex(newTabIndex);
+  };
 
-  render() {
-    return (
-      <div className="edit-image-tabs">
-        <ul
-          className="edit-image-tabs__list"
-          style={{
-            marginLeft: `-${this.state.tabIndex * 100}%`,
-          }}
+  return (
+    <div className="edit-image-tabs">
+      <ul
+        className="edit-image-tabs__list"
+        style={{
+          marginLeft: `-${tabIndex * 100}%`,
+        }}
+      >
+        <li
+          className={
+            classnames('edit-image-tabs__tab', {
+              'edit-image-tabs__tab--active': tabIndex === 0,
+            })
+          }
+          onFocus={focusEvent(0)}
+          onClick={focusEvent(0)}
         >
-          <li
-            className={
-              classnames('edit-image-tabs__tab', {
-                'edit-image-tabs__tab--active': this.state.tabIndex === 0,
-              })
-            }
-            onFocus={this.focusEvent(0)}
-            onClick={this.focusEvent(0)}
-          >
-            { this.props.hashes ? (
-              <>
-                <button type="button" className="edit-image-tabs__button">
-                  Edit Greytones
-                </button>
-                <GreySelect
-                  values={this.props.palette}
-                  onChange={this.props.updatePalette}
-                />
-              </>
-            ) : (
-              <>
-                <button type="button" className="edit-image-tabs__button">
-                  Select Palette
-                </button>
-                <PaletteSelect
-                  value={this.props.palette ? this.props.palette.shortName : ''}
-                  invertPalette={this.props.invertPalette}
-                  onChange={this.props.updatePalette}
-                  updateInvertPalette={this.props.updateInvertPalette}
-                />
-              </>
-            ) }
-          </li>
-          {this.props.regularImage ? (
-            // if image does not have exact height of a gameboy-camera image, frame select is not avaliable
-            <li
-              className={
-                classnames('edit-image-tabs__tab', {
-                  'edit-image-tabs__tab--active': this.state.tabIndex === 1,
-                })
-              }
-              onFocus={this.focusEvent(1)}
-              onClick={this.focusEvent(1)}
-            >
+          { props.hashes ? (
+            <>
               <button type="button" className="edit-image-tabs__button">
-                Select Frame
+                Edit Greytones
               </button>
-              <FrameSelect
-                updateFrame={this.props.updateFrame}
-                updateFrameLock={this.props.updateFrameLock}
-                frame={this.props.frame || ''}
-                lockFrame={this.props.lockFrame}
+              <GreySelect
+                values={props.palette}
+                onChange={props.updatePalette}
               />
-            </li>
-          ) : null}
+            </>
+          ) : (
+            <>
+              <button type="button" className="edit-image-tabs__button">
+                Select Palette
+              </button>
+              <PaletteSelect
+                value={props.palette ? props.palette.shortName : ''}
+                invertPalette={props.invertPalette}
+                onChange={props.updatePalette}
+                updateInvertPalette={props.updateInvertPalette}
+              />
+            </>
+          ) }
+        </li>
+        {props.regularImage ? (
+          // if image does not have exact height of a gameboy-camera image, frame select is not avaliable
           <li
             className={
               classnames('edit-image-tabs__tab', {
-                'edit-image-tabs__tab--active': this.state.tabIndex === 2,
+                'edit-image-tabs__tab--active': tabIndex === 1,
               })
             }
-            onFocus={this.focusEvent(this.props.regularImage ? 2 : 1)}
-            onClick={this.focusEvent(this.props.regularImage ? 2 : 1)}
+            onFocus={focusEvent(1)}
+            onClick={focusEvent(1)}
           >
             <button type="button" className="edit-image-tabs__button">
-              Tags
+              Select Frame
             </button>
-            <TagsSelect
-              updateTags={this.props.updateTags}
-              tags={this.props.tags}
-              batchTags={this.props.batchTags}
+            <FrameSelect
+              updateFrame={props.updateFrame}
+              updateFrameLock={props.updateFrameLock}
+              frame={props.frame || ''}
+              lockFrame={props.lockFrame}
             />
           </li>
-          <li
-            className={
-              classnames('edit-image-tabs__tab', {
-                'edit-image-tabs__tab--active': this.state.tabIndex === 3,
-              })
-            }
-            onFocus={this.focusEvent(this.props.regularImage ? 3 : 2)}
-            onClick={this.focusEvent(this.props.regularImage ? 3 : 2)}
-          >
-            <button type="button" className="edit-image-tabs__button">
-              Misc
-            </button>
-            <ImageMeta
-              created={this.props.created}
-              updatecreated={this.props.updateCreated}
-            />
-          </li>
-        </ul>
-      </div>
-    );
-  }
-}
+        ) : null}
+        <li
+          className={
+            classnames('edit-image-tabs__tab', {
+              'edit-image-tabs__tab--active': tabIndex === 2,
+            })
+          }
+          onFocus={focusEvent(props.regularImage ? 2 : 1)}
+          onClick={focusEvent(props.regularImage ? 2 : 1)}
+        >
+          <button type="button" className="edit-image-tabs__button">
+            Tags
+          </button>
+          <TagsSelect
+            updateTags={props.updateTags}
+            tags={props.tags}
+            batchTags={props.batchTags}
+          />
+        </li>
+        <li
+          className={
+            classnames('edit-image-tabs__tab', {
+              'edit-image-tabs__tab--active': tabIndex === 3,
+            })
+          }
+          onFocus={focusEvent(props.regularImage ? 3 : 2)}
+          onClick={focusEvent(props.regularImage ? 3 : 2)}
+        >
+          <button type="button" className="edit-image-tabs__button">
+            Misc
+          </button>
+          <ImageMeta
+            created={props.created}
+            updatecreated={props.updateCreated}
+          />
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 EditImageTabs.propTypes = {
   // cancel: PropTypes.func.isRequired,
