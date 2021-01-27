@@ -9,15 +9,24 @@
   }
 
   &__box {
-    width: calc(95vh - 80px);
+    width: calc(70vh - 80px);
     max-height: calc(100vh - 30px);
     background: $page-background;
     position: relative;
     overflow: visible;
 
     @media (max-aspect-ratio: 1/1) {
-      width: calc(95vw - 80px);
+      width: calc(70vw - 80px);
       border-radius: $default-border-radius;
+    }
+  }
+
+  .lightbox--fullscreen &__box {
+    width: calc(95vh - 30px);
+    max-height: calc(100vh - 30px);
+
+    @media (max-aspect-ratio: 1/1) {
+      width: calc(95vw - 30px);
     }
   }
 

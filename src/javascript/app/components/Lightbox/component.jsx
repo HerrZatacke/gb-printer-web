@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Buttons from '../Buttons';
 
 const Lightbox = (props) => (
   <div
-    className={`lightbox ${props.className}`}
+    className={
+      classNames(`lightbox ${props.className}`, {
+        'lightbox--fullscreen': props.isFullscreen,
+      })
+    }
   >
     <button
       type="button"
@@ -43,6 +48,7 @@ Lightbox.propTypes = {
   height: PropTypes.number,
   className: PropTypes.string,
   header: PropTypes.string,
+  isFullscreen: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -54,6 +60,7 @@ Lightbox.propTypes = {
 Lightbox.defaultProps = {
   height: null,
   header: null,
+  isFullscreen: false,
   className: '',
   confirm: null,
   children: null,
