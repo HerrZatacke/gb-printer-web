@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
       });
     }
   } : null,
-  setLightboxImageIndex: buttons.includes('view') ? () => {
+  setLightboxImage: buttons.includes('view') ? () => {
     dispatch({
       type: 'SET_LIGHTBOX_IMAGE_HASH',
       payload: hash,

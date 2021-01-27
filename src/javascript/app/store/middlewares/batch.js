@@ -20,7 +20,7 @@ const batch = (store) => (next) => (action) => {
 
   if (action.type === 'IMAGE_SELECTION_SHIFTCLICK') {
     const state = store.getState();
-    const images = getFilteredImages(state, true);
+    const images = getFilteredImages(state);
     const { lastSelectedImage, pageSize } = state;
     const selectedIndex = images.findIndex(({ hash }) => hash === action.payload);
     let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);

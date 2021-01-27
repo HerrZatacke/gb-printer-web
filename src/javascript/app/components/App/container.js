@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import getFilteredImages from '../../../tools/getFilteredImages';
+import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 
 const mapStateToProps = (state) => ({
   imageCount: state.images.length,
   pageSize: state.pageSize,
   selectedCount: state.imageSelection.length,
-  filteredCount: getFilteredImages(state, false).length,
+  filteredCount: getFilteredImagesCount(state),
 });
 
 const mapDispatchToProps = () => ({});

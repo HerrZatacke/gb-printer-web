@@ -3,7 +3,7 @@ import getFilteredImages from '../../../tools/getFilteredImages';
 
 const mapStateToProps = (state, { page }) => {
   const indexOffset = page * state.pageSize;
-  const images = getFilteredImages(state, true).splice(indexOffset, state.pageSize || Infinity);
+  const images = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
 
   return ({
     images,

@@ -1,4 +1,5 @@
 import screenfull from 'screenfull';
+import getFilteredImages from '../../../tools/getFilteredImages';
 
 const confirmation = (store) => {
 
@@ -92,7 +93,7 @@ const confirmation = (store) => {
       case 'SET_LIGHTBOX_IMAGE_HASH':
         store.dispatch({
           type: 'SET_LIGHTBOX_IMAGE_INDEX',
-          payload: state.images.findIndex(({ hash }) => hash === action.payload),
+          payload: getFilteredImages(state).findIndex(({ hash }) => hash === action.payload),
         });
 
         break;
