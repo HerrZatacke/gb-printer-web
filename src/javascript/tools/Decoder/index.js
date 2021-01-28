@@ -1,4 +1,6 @@
 // Tile Constants
+import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
+
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
 
 const TILE_PIXEL_WIDTH = 8;
@@ -15,6 +17,8 @@ class Decoder {
     this.lockFrame = false;
     this.invertPalette = false;
     this.bwPalette = [0xffffff, 0xaaaaaa, 0x555555, 0x000000];
+
+    this.tileIndexIsFramePart = tileIndexIsPartOfFrame;
   }
 
   update({
@@ -211,26 +215,6 @@ class Decoder {
       // eslint-disable-next-line no-bitwise
       b: (value & 0x0000ff),
     };
-  }
-
-  tileIndexIsFramePart(tileIndex) {
-    if (tileIndex < 40) {
-      return true;
-    }
-
-    if (tileIndex >= 320) {
-      return true;
-    }
-
-    switch (tileIndex % 20) {
-      case 0:
-      case 1:
-      case 18:
-      case 19:
-        return true;
-      default:
-        return false;
-    }
   }
 
   // This paints the tile with a specified offset and pixel width
