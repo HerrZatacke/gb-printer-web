@@ -1,6 +1,7 @@
 import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
 import getTransformCapture from '../transformCapture';
+import getTransformBitmap from '../transformBitmap';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer) => (
@@ -20,8 +21,14 @@ const getHandleFileImport = (store) => {
   const transformSav = getTransformSav(store);
   const transformBin = getTransformBin(dispatch);
   const transformCapture = getTransformCapture(dispatch);
+  const transformBitmap = getTransformBitmap(dispatch);
 
   return (file) => {
+
+    if (file.type.startsWith('image/')) {
+      transformBitmap(file);
+      return;
+    }
 
     // roughly larger than 1MB is too much....
     if (file.size > 0xfffff) {
