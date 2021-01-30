@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import getFrameGroups from '../../../tools/getFrameGroups';
 
 const mapStateToProps = (state) => ({
   socketUrl: state.socketUrl,
@@ -7,6 +8,7 @@ const mapStateToProps = (state) => ({
   exportFileTypes: state.exportFileTypes,
   pageSize: state.pageSize,
   savFrameTypes: state.savFrameTypes,
+  savFrameGroups: getFrameGroups(state.frames),
   exportCropFrame: state.exportCropFrame,
   hideDates: state.hideDates,
 });

@@ -1,24 +1,37 @@
-const mapCartFrameToName = (frameNumber, savFrameTypes) => (
-  [
-    savFrameTypes === 'jp' ? 'jp01' : 'int01',
-    savFrameTypes === 'jp' ? 'jp02' : 'int02',
-    'int03',
-    'int04',
-    'int05',
-    'int06',
-    savFrameTypes === 'jp' ? 'jp07' : 'int07',
-    'int08',
-    savFrameTypes === 'jp' ? 'jp09' : 'int09',
-    'int10',
-    'int11',
-    'int12',
-    'int13',
-    'int14',
-    'int15',
-    'int16',
-    'int17',
-    'int18',
-  ][frameNumber]
-);
+const mapCartFrameToName = (frameNumber, savFrameTypes, frames) => {
+
+  const frameIsDefined = (frameId) => frames.find(({ id }) => id === frameId);
+
+  const paddedFrameNumber = (frameNumber + 1).toString(10).padStart(2, '0');
+
+  const exactFrameId = `${savFrameTypes}${paddedFrameNumber}`;
+  if (frameIsDefined(exactFrameId)) {
+    return exactFrameId;
+  }
+
+  // for js frame, try to fall back to int frames, as jp/int share a lot
+  if (savFrameTypes === 'jp') {
+    const intFrameId = `int${paddedFrameNumber}`;
+    if (frameIsDefined(intFrameId)) {
+      return intFrameId;
+    }
+  }
+
+  // for custom frames first fall back to the xxx01 frame...
+  const firstFrameId = `${savFrameTypes}01`;
+  if (frameIsDefined(firstFrameId)) {
+    return firstFrameId;
+  }
+
+  // ... and try the int frames last
+  if (savFrameTypes !== 'jp') {
+    const intFrameId = `int${paddedFrameNumber}`;
+    if (frameIsDefined(intFrameId)) {
+      return intFrameId;
+    }
+  }
+
+  return 'int01';
+};
 
 export default mapCartFrameToName;

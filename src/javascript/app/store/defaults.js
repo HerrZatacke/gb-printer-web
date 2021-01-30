@@ -20,8 +20,5 @@ export default {
   exportCropFrame: false,
   hideDates: false,
   palettes,
-  frames: [{
-    id: 'int01',
-    name: 'GameBoy / Nintendo',
-  }],
+  frames: [],
 };

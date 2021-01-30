@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  frames: state.frames,
+});
 
 const mapDispatchToProps = () => ({});
 

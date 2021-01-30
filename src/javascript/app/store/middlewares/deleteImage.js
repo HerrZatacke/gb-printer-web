@@ -26,7 +26,11 @@ const deleteFromLocalStorage = (images, deleteHash) => {
 
 const cleanupLocalStorage = (images) => {
   Object.keys(localStorage)
-    .filter((key) => (key !== 'gbp-web-state' && key.startsWith('gbp-web-')))
+    .filter((key) => (
+      key !== 'gbp-web-state' &&
+      key.startsWith('gbp-web-') &&
+      !key.startsWith('gbp-web-frame-')
+    ))
     .map((key) => key.replace(/^gbp-web-/gi, ''))
     .forEach((hash) => {
       deleteFromLocalStorage(images, hash);

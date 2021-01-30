@@ -30,8 +30,8 @@ const getHandleFileImport = (store) => {
       return;
     }
 
-    // roughly larger than 1MB is too much....
-    if (file.size > 0xfffff) {
+    // roughly larger than 256MB is too much....
+    if (file.size > 0xfffffff) {
       dispatch({
         type: 'ERROR',
         payload: 'FILE_TOO_LARGE',

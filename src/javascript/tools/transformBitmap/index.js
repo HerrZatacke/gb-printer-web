@@ -1,3 +1,5 @@
+import { saveFrameData } from '../applyFrame/frameData';
+
 const getGreytone = ([r, g, b, a]) => {
   const greyTone = Math.floor((r + g + b) / 3 * (a / 255));
 
@@ -17,9 +19,6 @@ const getGreytone = ([r, g, b, a]) => {
   // White
   return 0b00000000000000000;
 };
-
-
-// FF 00 7E FF 85 81 89 83 93 85 A5 8B C9 97 7E FF
 
 const encodeTile = ({ data: imageData }) => {
 
@@ -67,6 +66,26 @@ const getTransformBitmap = (dispatch) => (file) => {
       for (let col = 0; col < canvas.width; col += 8) {
         tileLines.push(encodeTile(context.getImageData(col, row, 8, 8)));
       }
+    }
+
+    const [id, name, ext, empty] = file.name.split('.');
+
+    if (
+      name &&
+      ext &&
+      !empty &&
+      id.match(/^[a-z]{2,}\d{2}$/g)
+    ) {
+      saveFrameData(id, tileLines)
+        .then(() => {
+          dispatch({
+            type: 'ADD_FRAME',
+            payload: {
+              id,
+              name,
+            },
+          });
+        });
     }
 
     // This would import the file as gameboy image.

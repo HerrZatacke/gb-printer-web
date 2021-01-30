@@ -240,17 +240,21 @@ class Settings extends React.Component {
         )}
         <div className="settings__inputgroup">
           <label htmlFor="settings-printer-url" className="settings__label">
-            Frames when importing Cartridge dumps
+            Frames to be applied when importing Cartridge dumps
           </label>
           <select
             className="settings__input settings__input--select"
+            disabled={!this.props.savFrameGroups.length}
             value={this.props.savFrameTypes}
             onChange={(ev) => {
               this.props.setSavFrameTypes(ev.target.value);
             }}
           >
-            <option value="int">International Frames (GameBoy Camera)</option>
-            <option value="jp">Japanese Frames (Pocket Camera)</option>
+            {
+              this.props.savFrameGroups.map(({ id, name }) => (
+                <option value={id} key={id}>{ name }</option>
+              ))
+            }
           </select>
         </div>
 
@@ -307,9 +311,16 @@ class Settings extends React.Component {
           <button
             type="button"
             className="settings__button"
+            onClick={() => this.props.exportSettings('frames')}
+          >
+            Export frames
+          </button>
+          <button
+            type="button"
+            className="settings__button"
             onClick={() => this.props.exportSettings('full')}
           >
-            Export everything (including images)
+            Export everything
           </button>
         </div>
       </div>
@@ -324,6 +335,7 @@ Settings.propTypes = {
   exportFileTypes: PropTypes.array.isRequired,
   printerUrl: PropTypes.string.isRequired,
   savFrameTypes: PropTypes.string.isRequired,
+  savFrameGroups: PropTypes.array.isRequired,
   socketUrl: PropTypes.string.isRequired,
   updateSocketUrl: PropTypes.func.isRequired,
   updatePrinterUrl: PropTypes.func.isRequired,

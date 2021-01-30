@@ -36,14 +36,14 @@ const transformImage = (data, baseAddress) => {
 };
 
 const getTransformSav = (store) => (data, filename) => {
-  const { savFrameTypes } = store.getState();
+  const { savFrameTypes, frames } = store.getState();
   const framed = [];
 
   for (let i = 1; i <= 30; i += 1) {
     const baseAddress = (i + 1) * 0x1000;
     const frameNumber = data[baseAddress + 0xfb0];
     const transformedData = transformImage(data, baseAddress);
-    framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, savFrameTypes)));
+    framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, savFrameTypes, frames)));
   }
 
   Promise.all(framed)

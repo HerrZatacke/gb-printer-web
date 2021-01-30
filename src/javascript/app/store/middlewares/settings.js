@@ -3,8 +3,16 @@ import cleanState from '../../../tools/cleanState';
 
 const getSettings = (what) => {
   const storedImages = Object.keys(localStorage)
-    .filter((key) => (key !== 'gbp-web-state' && key.startsWith('gbp-web-')))
+    .filter((key) => (
+      key !== 'gbp-web-state' &&
+      key.startsWith('gbp-web-') &&
+      !key.startsWith('gbp-web-frame-')
+    ))
     .map((key) => key.replace(/^gbp-web-/gi, ''));
+
+  const storedFrames = Object.keys(localStorage)
+    .filter((key) => (key.startsWith('gbp-web-frame-')))
+    .map((key) => key.replace(/^gbp-web-frame-/gi, ''));
 
   const state = JSON.parse(localStorage.getItem('gbp-web-state'));
 
@@ -15,11 +23,19 @@ const getSettings = (what) => {
     });
   }
 
+  const frames = {};
+  if (what === 'frames' || what === 'full') {
+    storedFrames.forEach((frameId) => {
+      frames[`frame-${frameId}`] = localStorage.getItem(`gbp-web-frame-${frameId}`);
+    });
+  }
+
   switch (what) {
     case 'debug':
       return JSON.stringify({ state }, null, 2);
     case 'settings':
       delete state.images;
+      delete state.frames;
       delete state.imageSelection;
       delete state.rgbnImages;
       delete state.activePalette;
@@ -30,6 +46,13 @@ const getSettings = (what) => {
           images: state.images,
         },
         ...images,
+      }, null, 2);
+    case 'frames':
+      return JSON.stringify({
+        state: {
+          frames: state.frames,
+        },
+        ...frames,
       }, null, 2);
     case 'full':
       delete state.imageSelection;

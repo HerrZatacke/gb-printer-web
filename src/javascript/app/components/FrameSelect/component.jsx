@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import frames from '../../../tools/applyFrame/frames';
 import SVG from '../SVG';
 
 const FrameSelect = (props) => (
@@ -15,8 +14,10 @@ const FrameSelect = (props) => (
     >
       <option value="">{props.noFrameOption}</option>
       {
-        frames.map(({ id, name }) => (
-          <option key={id} value={id}>{ name }</option>
+        props.frames.map(({ id, name }) => (
+          <option key={id} value={id}>
+            { `${name} (${id})` }
+          </option>
         ))
       }
     </select>
@@ -45,6 +46,7 @@ const FrameSelect = (props) => (
 
 FrameSelect.propTypes = {
   frame: PropTypes.string.isRequired,
+  frames: PropTypes.array.isRequired,
   updateFrame: PropTypes.func.isRequired,
   updateFrameLock: PropTypes.func.isRequired,
   lockFrame: PropTypes.bool.isRequired,
