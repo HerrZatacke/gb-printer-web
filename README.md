@@ -10,16 +10,6 @@
 * This Project is mainly built around the serial output of the original [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)
 * Cart .SAV files are also supported. The previously selected frame will be applied as well. If you're importing from a JP-Cartridge (Pocket Camera), you may want to change the "Frames when importing Cartridge dumps" option in the [settings page](#/settings)    
 
-
-## ToDos
-* User manual
-* Global Storage for images 
-* Edit palettes
-* Other blendmodes than multiply for RGB-Images
-* trash bin for raw-data of deleted images (must implement global storage first for this)
-* Allow some gesture/swipe in gallery on touch devices
-* Translations
-
 ## Local Setup
 You can run this app locally to directly use the gbp-emulator on your serial port 
 * Install [node.js](https://nodejs.org/) if you haven't already.
@@ -31,6 +21,26 @@ You can run this app locally to directly use the gbp-emulator on your serial por
 * Go to the 'Settings' page and change the 'Remote Socket URL' to `localhost:3001`
 * Print something
 
+## Frames
+In a recent change the pre-compiled frames have been removed from this application.  
+The application now however gives you the opportunity to add all fames you like by yourself and also share them with others.  
+Maybe you have designed some frames by yourself, or you have aquired some previously unknown frames.
+
+### Uploading your own frames
+You can upload your own frames by dragging any image into this app.  
+Dimensions of 160x144 are highly recommended, otherwise the image will be automatically scaled to size.  
+A lossles filetype is also recommended (e.g `.png` or `.webp`)
+For the application to correctly recognize your frame you need to follow a specific filename pattern:  
+E.g. `int01.Nintendo + Gameboy.png` would be a good name for the first frame of the `int` set.  
+* The Filename needs to contain exactly two dots `.`
+* Before the first dot is the ID of your frame (uploading another image with the same ID will replace that one).  
+* The ID needs to be at least two letters and exactly two numbers.
+* Prevoiusly existing frames used `int01` to `int18` for the international frames, and `jp01` to `jp18` for the japanese ones.
+* The part after the frame ID will be the readable description shown in the frame selection dropdown when editing an image.  
+
+### Exporting/Importing your frames
+[In the settings tab](#/settings) you can find an "Export frames" button. The resulting `.json` file can be shared and will contain all of your frames.  
+This `.json` file can be dragged into the application and will add all frames from that export to your application.  
 
 ## Serial config with `config.json`
 Create a file `config.json` in the root dir and configure it like the following example (multiple ports are supported):
@@ -64,13 +74,23 @@ If you set the option `gzip` to `true`, each file will be separately compressed.
 }
 ```
 
+## ToDos
+* User manual
+* Global Storage for images 
+* Edit palettes
+* Other blendmodes than multiply for RGB-Images
+* trash bin for raw-data of deleted images (must implement global storage first for this)
+* Allow some gesture/swipe in gallery on touch devices
+* Translations
+
 ## Future Plans
 This tool is partially integrated into the [WiFi GBP Emulator](https://herrzatacke.github.io/wifi-gbp-emulator/), for which, you'll best [use the latest release](https://github.com/HerrZatacke/gb-printer-web/releases)
 
 ## Links and research
 * The source to this project is [available on GitHub](https://github.com/HerrZatacke/gb-printer-web)
 * A basic version of this tool is avaliable [on GitHub-pages](https://herrzatacke.github.io/gb-printer-web/#/)  
-* This project is meant to replace my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter)
+* This project has replaced my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter)
+* Also check out the [Gameboy Camera Discord](https://discord.gg/Kxhjg3qN) 
 
 ### Research
 * Tutorial on how to work with an ESP8266 by [ttapa: ESP8266 Beginner's Guide](https://tttapa.github.io/ESP8266/Chap01%20-%20ESP8266.html)  

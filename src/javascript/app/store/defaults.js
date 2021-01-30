@@ -20,5 +20,6 @@ export default {
   exportCropFrame: false,
   hideDates: false,
   palettes,
+  framesMessage: 0,
   frames: [],
 };

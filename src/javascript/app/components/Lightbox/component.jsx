@@ -34,7 +34,7 @@ const Lightbox = (props) => (
         ) : null}
         {props.children}
       </div>
-      { props.confirm && props.deny ? (
+      { props.confirm || props.deny ? (
         <Buttons
           confirm={props.confirm}
           deny={props.deny}

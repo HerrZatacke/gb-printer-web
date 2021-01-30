@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Navigation from '../Navigation';
+import InfoBox from '../InfoBox';
 import Confirmation from '../Confirmation';
 import EditForm from '../EditForm';
 import LiveImage from '../LiveImage';
@@ -87,6 +88,7 @@ const App = (props) => (
         </Route>
       </Switch>
     </div>
+    <InfoBox />
     <Confirmation />
     <EditForm />
     <VideoParamsForm />

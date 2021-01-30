@@ -2,32 +2,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Buttons = (props) => (
+const Buttons = ({ confirm, deny }) => (
   <div className="buttons">
-    <button
-      className="buttons__button buttons__button--deny"
-      type="button"
-      onClick={props.deny}
-    >
-      Cancel
-    </button>
-    <button
-      className="buttons__button buttons__button--confirm"
-      type="button"
-      onClick={props.confirm}
-      autoFocus
-    >
-      Ok
-    </button>
+    { deny ? (
+      <button
+        className="buttons__button buttons__button--deny"
+        type="button"
+        onClick={deny}
+      >
+        Cancel
+      </button>
+    ) : null }
+    { confirm ? (
+      <button
+        className="buttons__button buttons__button--confirm"
+        type="button"
+        onClick={confirm}
+        autoFocus
+      >
+        Ok
+      </button>
+    ) : null }
   </div>
 );
 
 Buttons.propTypes = {
-  confirm: PropTypes.func.isRequired,
-  deny: PropTypes.func.isRequired,
+  confirm: PropTypes.func,
+  deny: PropTypes.func,
 };
 
 Buttons.defaultProps = {
+  confirm: null,
+  deny: null,
 };
 
 export default Buttons;

@@ -1,0 +1,13 @@
+.info-box {
+  &__message {
+    padding: 15px 20px;
+
+    p {
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

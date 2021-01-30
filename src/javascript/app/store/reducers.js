@@ -9,6 +9,7 @@ import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import filter from './reducers/filtersReducer';
 import frames from './reducers/framesReducer';
+import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
 import globalIndex from './reducers/globalIndexReducer';
 import hideDates from './reducers/hideDatesReducer';
@@ -43,6 +44,7 @@ export default combineReducers({
   exportScaleFactors,
   filter,
   frames,
+  framesMessage,
   galleryView,
   globalIndex,
   hideDates,

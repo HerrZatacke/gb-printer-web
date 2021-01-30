@@ -3,9 +3,11 @@ import { defaultPalette } from '../../app/defaults';
 
 const cleanState = (initialState) => {
   const palettesShorts = initialState.palettes.map(({ shortName }) => shortName);
+  const frameIds = initialState.frames.map(({ id }) => id);
 
   const socketUrl = cleanUrl(initialState.socketUrl, 'ws');
   const printerUrl = cleanUrl(initialState.printerUrl, 'http');
+  let framesMessage = initialState.framesMessage;
 
   const images = initialState.images
     .map((image) => {
@@ -38,6 +40,16 @@ const cleanState = (initialState) => {
     })
     .filter(Boolean);
 
+  // If the user has at least one frame selected
+  // but the frames are not yet imported, show a message hint
+  images.forEach((image) => {
+    if (
+      !frameIds.includes(image.frame) &&
+      !framesMessage // message not seen yet
+    ) {
+      framesMessage = 1;
+    }
+  });
 
   // assign index to images with no or duplicate index
   images
@@ -54,7 +66,7 @@ const cleanState = (initialState) => {
       initialState.globalIndex += 1;
     });
 
-  return { ...initialState, images, socketUrl, printerUrl };
+  return { ...initialState, images, socketUrl, printerUrl, framesMessage };
 };
 
 export default cleanState;
