@@ -22,7 +22,7 @@ You can run this app locally to directly use the gbp-emulator on your serial por
 * Print something
 
 ## Frames
-In a recent change the pre-compiled frames have been removed from this application.  
+In a recent change (Version 1.7.0) the pre-compiled frames have been removed from this application.  
 The application now however gives you the opportunity to add all fames you like by yourself and also share them with others.  
 Maybe you have designed some frames by yourself, or you have aquired some previously unknown frames.
 
