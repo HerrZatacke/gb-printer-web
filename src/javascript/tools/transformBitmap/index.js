@@ -1,4 +1,5 @@
 import { saveFrameData } from '../applyFrame/frameData';
+import readFileAs from '../readFileAs';
 
 const getGreytone = ([r, g, b, a]) => {
   const greyTone = Math.floor((r + g + b) / 3 * (a / 255));
@@ -39,25 +40,13 @@ const encodeTile = ({ data: imageData }) => {
 };
 
 const getTransformBitmap = (dispatch) => (file) => {
-
-  const reader = new FileReader();
   const img = document.createElement('img');
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   const tileLines = [];
 
-  window.ctx = context;
-
   canvas.width = 160;
   canvas.height = 144;
-
-  // canvas.style.position = 'absolute';
-  // canvas.style.top = '70px';
-  // document.body.appendChild(canvas);
-
-  reader.onload = (ev) => {
-    img.src = ev.target.result;
-  };
 
   img.onload = () => {
     context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 160, 144);
@@ -98,8 +87,10 @@ const getTransformBitmap = (dispatch) => (file) => {
     // });
   };
 
-  reader.readAsDataURL(file);
-
+  readFileAs(file, 'dataURL')
+    .then((data) => {
+      img.src = data;
+    });
 };
 
 export default getTransformBitmap;

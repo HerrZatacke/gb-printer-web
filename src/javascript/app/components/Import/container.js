@@ -6,9 +6,16 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   importPlainText: (textDump) => {
+    let file;
+    try {
+      file = new File([...textDump], 'Text input.txt', { type: 'text/plain' });
+    } catch (error) {
+      file = new Blob([...textDump], { type: 'text/plain' });
+    }
+
     dispatch({
-      type: 'IMPORT_PLAIN_TEXT',
-      payload: textDump,
+      type: 'IMPORT_FILE',
+      payload: { files: [file] },
     });
   },
   importFile: (file) => {

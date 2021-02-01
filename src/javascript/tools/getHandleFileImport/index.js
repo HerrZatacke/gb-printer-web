@@ -2,6 +2,8 @@ import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
 import getTransformCapture from '../transformCapture';
 import getTransformBitmap from '../transformBitmap';
+import readFileAs from '../readFileAs';
+import getTransformClassic from '../transformClassic';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer) => (
@@ -22,6 +24,14 @@ const getHandleFileImport = (store) => {
   const transformBin = getTransformBin(dispatch);
   const transformCapture = getTransformCapture(dispatch);
   const transformBitmap = getTransformBitmap(dispatch);
+  const transformClassic = getTransformClassic(dispatch);
+
+  const onError = () => {
+    dispatch({
+      type: 'ERROR',
+      payload: 'FILE_NOT_READ',
+    });
+  };
 
   return (file) => {
 
@@ -39,62 +49,81 @@ const getHandleFileImport = (store) => {
       return;
     }
 
-    const reader = new FileReader();
+    if (file.type === 'application/json') {
+      readFileAs(file, 'text')
+        .catch(onError)
+        .then((data) => {
+          let settingsDump = {};
 
-    reader.onload = (ev) => {
+          try {
+            settingsDump = JSON.parse(data);
+          } catch (error) { /**/ }
 
-      const data = Buffer.from(ev.target.result);
-
-      if (file.size === 131072) {
-        transformSav(data, file.name);
-        return;
-      }
-
-      if (isBinType(data)) {
-        transformBin(data, file.name);
-        return;
-      }
-
-      Promise.resolve(data.toString('utf8')).then((dumpText) => {
-
-        try {
-          const settingsDump = JSON.parse(dumpText);
-
-          if (settingsDump.state) {
+          if (settingsDump && settingsDump.state) {
             dispatch({
               type: 'SETTINGS_IMPORT',
               payload: settingsDump,
             });
             return;
           }
-        } catch (error) {
-          /* not a settings file */
-        }
 
-        // file must contain something that resembles a gb printer command
-        if (dumpText.indexOf('{"command"') === -1) {
+          dispatch({
+            type: 'ERROR',
+            payload: 'NOT_A_SETTINGS_FILE',
+          });
+        });
+      return;
+    }
 
-          try {
-            transformCapture(dumpText, file.name);
-          } catch (error) {
-            dispatch({
-              type: 'ERROR',
-              payload: 'NOT_A_DUMP',
-            });
+    if (file.type === 'text/plain') {
+      readFileAs(file, 'text')
+        .catch(onError)
+        .then((data) => {
+
+          // file must contain something that resembles a gb printer command
+          if (data.indexOf('{"command"') === -1) {
+
+            try {
+              transformCapture(data, file.name);
+            } catch (error) {
+              dispatch({
+                type: 'ERROR',
+                payload: 'NOT_A_DUMP',
+              });
+            }
+
+            return;
           }
 
-          return;
-        }
-
-        dispatch({
-          type: 'IMPORT_PLAIN_TEXT',
-          payload: dumpText,
-          file: file.name,
+          transformClassic(data, file.name);
         });
-      });
-    };
+      return;
+    }
 
-    reader.readAsArrayBuffer(file);
+    if (
+      file.type.startsWith('application/') ||
+      !file.type
+    ) {
+      readFileAs(file, 'arrayBuffer')
+        .catch(onError)
+        .then((data) => {
+
+          if (file.size === 131072) {
+            transformSav(data, file.name);
+            return;
+          }
+
+          if (isBinType(data)) {
+            transformBin(data, file.name);
+          }
+        });
+      return;
+    }
+
+    dispatch({
+      type: 'ERROR',
+      payload: 'NOT_A_DUMP',
+    });
   };
 };
 
