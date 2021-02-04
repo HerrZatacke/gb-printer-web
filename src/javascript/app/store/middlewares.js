@@ -5,6 +5,7 @@ import confirmation from './middlewares/confirmation';
 import deleteImage from './middlewares/deleteImage';
 import fileDrop from './middlewares/fileDrop';
 import filters from './middlewares/filters';
+import gitStorage from './middlewares/gitStorage';
 import handleErrors from './middlewares/error';
 import hideLiveImage from './middlewares/hideLiveImage';
 import importFile from './middlewares/importFile';
@@ -27,6 +28,7 @@ export default applyMiddleware(
   handleErrors,
   fileDrop,
   filters,
+  gitStorage,
   hideLiveImage,
   importFile,
   importQueue,

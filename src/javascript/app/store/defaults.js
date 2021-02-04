@@ -22,4 +22,11 @@ export default {
   palettes,
   framesMessage: 0,
   frames: [],
+  gitStorage: {
+    use: false,
+    owner: '',
+    repo: '',
+    branch: '',
+    token: '',
+  },
 };

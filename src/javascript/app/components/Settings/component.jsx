@@ -14,6 +14,7 @@ const Settings = (props) => {
   const [socketUrl, setSocketUrl] = useState(props.socketUrl);
   const [printerUrl, setPrinterUrl] = useState(props.printerUrl);
   const [pageSize, setPageSize] = useState(props.pageSize);
+  const [gitStorage, setGitStorage] = useState(props.gitStorage);
 
   return (
     <div className="settings">
@@ -241,6 +242,136 @@ const Settings = (props) => {
           <SVG name="checkmark" />
         </span>
       </label>
+      <label
+        className={
+          classnames('settings__inputgroup settings__check-group', {
+            'settings__check-group--checked': gitStorage.use,
+          })
+        }
+      >
+        <span
+          className="settings__label"
+          title="Hide dates in gallery"
+        >
+          Use github as storage
+        </span>
+        <span
+          className="settings__checkbox-wrap"
+        >
+          <input
+            type="checkbox"
+            className="settings__checkbox"
+            checked={gitStorage.use}
+            onChange={({ target }) => {
+              setGitStorage({
+                ...gitStorage,
+                use: target.checked,
+              });
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
+
+      { !gitStorage.use ? null : (
+        <>
+          <div className="settings__inputgroup">
+            <label
+              htmlFor="settings-git-owner"
+              className="settings__label"
+            >
+              Owner
+            </label>
+            <input
+              id="settings-git-owner"
+              className="settings__input"
+              value={gitStorage.owner}
+              onChange={({ target }) => {
+                setGitStorage({
+                  ...gitStorage,
+                  owner: target.value,
+                });
+              }}
+              onBlur={() => {
+                props.setGitStorage(gitStorage);
+              }}
+            />
+          </div>
+          <div className="settings__inputgroup">
+            <label
+              htmlFor="settings-git-repo"
+              className="settings__label"
+            >
+              Repository name
+            </label>
+            <input
+              id="settings-git-repo"
+              className="settings__input"
+              value={gitStorage.repo}
+              onChange={({ target }) => {
+                setGitStorage({
+                  ...gitStorage,
+                  repo: target.value,
+                });
+              }}
+              onBlur={() => {
+                props.setGitStorage(gitStorage);
+              }}
+            />
+          </div>
+          <div className="settings__inputgroup">
+            <label
+              htmlFor="settings-git-branch"
+              className="settings__label"
+            >
+              Branch
+            </label>
+            <input
+              id="settings-git-branch"
+              className="settings__input"
+              value={gitStorage.branch}
+              onChange={({ target }) => {
+                setGitStorage({
+                  ...gitStorage,
+                  branch: target.value,
+                });
+              }}
+              onBlur={() => {
+                props.setGitStorage(gitStorage);
+              }}
+            />
+          </div>
+          <div className="settings__inputgroup">
+            <label
+              htmlFor="settings-git-token"
+              className="settings__label"
+            >
+              Token
+              <a
+                className="settings__note"
+                href="https://github.com/settings/tokens/new?scopes=repo"
+              >
+                How to obtain a token
+              </a>
+            </label>
+            <input
+              id="settings-git-token"
+              type="password"
+              className="settings__input"
+              value={gitStorage.token}
+              onChange={({ target }) => {
+                setGitStorage({
+                  ...gitStorage,
+                  token: target.value,
+                });
+              }}
+              onBlur={() => {
+                props.setGitStorage(gitStorage);
+              }}
+            />
+          </div>
+        </>
+      )}
 
       <div className="settings__inputgroup settings__buttongroup">
         <button
@@ -297,6 +428,8 @@ Settings.propTypes = {
   setSavFrameTypes: PropTypes.func.isRequired,
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
+  gitStorage: PropTypes.object.isRequired,
+  setGitStorage: PropTypes.func.isRequired,
   exportSettings: PropTypes.func.isRequired,
   setExportCropFrame: PropTypes.func.isRequired,
   exportCropFrame: PropTypes.bool.isRequired,

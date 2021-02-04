@@ -11,6 +11,7 @@ import filter from './reducers/filtersReducer';
 import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
+import gitStorage from './reducers/gitStorageReducer';
 import globalIndex from './reducers/globalIndexReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
@@ -46,6 +47,7 @@ export default combineReducers({
   frames,
   framesMessage,
   galleryView,
+  gitStorage,
   globalIndex,
   hideDates,
   images,
