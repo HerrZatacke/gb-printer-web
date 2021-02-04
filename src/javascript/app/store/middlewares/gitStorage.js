@@ -4,7 +4,9 @@ import { load } from '../../../tools/storage';
 import { dateFormatReadable } from '../../defaults';
 import getImagePalette from '../../../tools/getImagePalette';
 import getPrepareFiles from '../../../tools/download/getPrepareFiles';
+
 // https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
+// https://octokit.github.io/rest.js/v18
 
 const createNewTree = async (octo, owner, repo, blobs, paths, parentTreeSha) => {
   // My custom config. Could be taken as parameters
