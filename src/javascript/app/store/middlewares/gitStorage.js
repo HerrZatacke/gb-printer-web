@@ -82,12 +82,17 @@ const gitStorage = (store) => {
               `![](${destination})`
           )).join('\n');
 
-          toUpload.push({
+          // toUpload.push({
+          //   destination: 'readme.md',
+          //   blob: new Blob([...md], { type: 'text/plain' }),
+          // });
+
+          return [{
             destination: 'readme.md',
             blob: new Blob([...md], { type: 'text/plain' }),
-          });
+          }];
 
-          return toUpload.filter(Boolean);
+          // return toUpload.filter(Boolean);
         })
 
         .then((files) => (
