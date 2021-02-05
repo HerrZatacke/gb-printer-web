@@ -3,6 +3,7 @@ import OctoClient from '../../../tools/OctoClient';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import getPrepareFiles from '../../../tools/download/getPrepareFiles';
+import getSettings from '../../../tools/getSettings';
 
 const gitStorage = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();
@@ -80,10 +81,18 @@ const gitStorage = (store) => {
             ))
             .join('\n');
 
-          toUpload.push({
-            destination: 'readme.md',
-            blob: new Blob([...md], { type: 'text/plain' }),
-          });
+          const remoteSettings = getSettings('remote');
+
+          toUpload.push(
+            {
+              destination: 'readme.md',
+              blob: new Blob([...md], { type: 'text/plain' }),
+            },
+            {
+              destination: 'settings.json',
+              blob: new Blob([...remoteSettings], { type: 'application/json' }),
+            },
+          );
 
           return toUpload.filter(Boolean);
         })

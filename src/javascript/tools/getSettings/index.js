@@ -43,6 +43,7 @@ const getSettings = (what) => {
     case 'debug':
       return JSON.stringify({ state: localStorageState }, null, 2);
     case 'settings':
+    case 'remote':
       return JSON.stringify({ state: exportableState }, null, 2);
     case 'images':
       return JSON.stringify({
