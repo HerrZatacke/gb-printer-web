@@ -91,6 +91,8 @@ const gitStorage = (store) => {
         })
 
         .then((files) => (
+          // ToDo: Delete outdated images
+          // ToDo: Do not upload existing images
           octoClient.updateRemoteStore({ files })
             .then((result) => {
               // eslint-disable-next-line no-console
