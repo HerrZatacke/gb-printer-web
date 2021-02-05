@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
 import { Octokit } from '@octokit/rest';
-import mime from 'mime-types';
 
 import dayjs from 'dayjs';
 import { dateFormatReadable } from '../../app/defaults';
@@ -86,7 +85,7 @@ class OctoClient extends EventEmitter {
       ));
   }
 
-  createBlobForFile(file) {
+  createBlobForFile({ destination, blob }) {
     // eslint-disable-next-line brace-style
     try { this.progressTick(); } catch (error) { return Promise.reject(error); }
 
@@ -96,12 +95,11 @@ class OctoClient extends EventEmitter {
         resolve(target.result);
       };
 
-      reader.readAsDataURL(file.imageFile);
+      reader.readAsDataURL(blob);
     }))
       .then((content) => {
         const rawContentStart = content.indexOf(';base64,') + 8;
         const rawContent = content.substr(rawContentStart);
-        const extension = mime.extension(file.imageFile.type);
 
         return this.octoKit.git.createBlob({
           owner: this.owner,
@@ -110,7 +108,7 @@ class OctoClient extends EventEmitter {
           encoding: 'base64',
         })
           .then(({ data: blobData }) => ({
-            filename: `${file.hash}.${extension}`,
+            filename: destination,
             blobData,
           }));
       });
@@ -187,17 +185,22 @@ class OctoClient extends EventEmitter {
       ));
   }
 
-  updateRemoteStore({ images }) {
+  updateRemoteStore({ files }) {
     if (this.busy) {
       return Promise.reject(Error('currently busy'));
     }
 
-    this.progressStart(images.length);
-    return this.uploadToRepo(images)
-      .then((result) => {
+    // Temp
+    if (!files.length) {
+      return Promise.resolve({});
+    }
+
+    this.progressStart(files.length);
+    return this.uploadToRepo(files)
+      .then(() => {
         this.progressTick(true);
         this.busy = false;
-        return result;
+        return `https://github.com/${this.owner}/${this.repo}/tree/${this.branch}`;
       })
       .catch((error) => {
         this.busy = false;
