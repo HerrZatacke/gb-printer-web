@@ -61,9 +61,7 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
 
           load(image.hash, null)
             .then((plainTiles) => {
-
-              const encoder = new TextEncoder();
-              const arrayBuffer = encoder.encode(plainTiles.join('\n'));
+              const arrayBuffer = [...plainTiles.join('\n')];
               const blob = new Blob(arrayBuffer, { type: 'text/plain' });
 
               resolve({
