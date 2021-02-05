@@ -2,6 +2,7 @@ import Decoder from '../Decoder';
 import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
 import { load } from '../storage';
+import { terminatorLine } from '../../app/defaults';
 
 const getPrepareFiles = (state) => (palette, image) => (tiles) => {
   const { exportScaleFactors, exportFileTypes, exportCropFrame } = state;
@@ -61,9 +62,16 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
           // this loads the basic raw data without applying a frame
           load(image.hash, null)
             .then((plainTiles) => {
+
+              const textContent = [
+                ...plainTiles,
+                terminatorLine,
+              ].join('\n');
+
+              // toDownload
               resolve({
                 filename: `${filename}.${fileType}`,
-                blob: new Blob(new Array(plainTiles.join('\n')), { type: 'text/plain' }),
+                blob: new Blob(new Array(textContent), { type: 'text/plain' }),
                 title: image.title,
               });
             });
