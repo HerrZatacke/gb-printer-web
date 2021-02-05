@@ -73,6 +73,7 @@ class OctoClient extends EventEmitter {
       ref: `heads/${this.branch}`,
       path: 'images',
     })
+      .catch(() => ({ data: [] }))
       .then(({ data: images }) => (
         this.octoKit.repos.getContent({
           owner: this.owner,
@@ -80,6 +81,7 @@ class OctoClient extends EventEmitter {
           ref: `heads/${this.branch}`,
           path: 'png',
         })
+          .catch(() => ({ data: [] }))
           .then(({ data: png }) => ({ images, png }))
       ));
   }
@@ -135,21 +137,27 @@ class OctoClient extends EventEmitter {
       });
   }
 
-  createNewTree(filesData, parentTreeSha) {
+  createNewTree({ files, del }, parentTreeSha) {
     // eslint-disable-next-line brace-style
     try { this.progressTick(); } catch (error) { return Promise.reject(error); }
 
-    const tree = filesData.map(({ filename, blobData: { sha } }) => ({
+    const newFiles = files.map(({ filename, blobData: { sha } }) => ({
       path: filename,
       mode: '100644',
       type: 'blob',
       sha,
     }));
 
+    const deleteFiles = del.map(({ path }) => ({
+      path,
+      mode: '100644',
+      sha: null,
+    }));
+
     return this.octoKit.git.createTree({
       owner: this.owner,
       repo: this.repo,
-      tree,
+      tree: [...newFiles, ...deleteFiles],
       base_tree: parentTreeSha,
     })
       .then(({ data }) => data);
@@ -182,7 +190,7 @@ class OctoClient extends EventEmitter {
       .then(({ data }) => data);
   }
 
-  uploadToRepo(files) {
+  uploadToRepo({ files, del }) {
     // eslint-disable-next-line brace-style
     try { this.progressTick(); } catch (error) { return Promise.reject(error); }
 
@@ -195,7 +203,10 @@ class OctoClient extends EventEmitter {
           this.createBlobForFile(file)
         )))
           .then((filesData) => (
-            this.createNewTree(filesData, treeSha)
+            this.createNewTree({
+              files: filesData,
+              del,
+            }, treeSha)
           ))
           .then(({ sha }) => (
             this.createNewCommit(commitMessage, sha, commitSha)
@@ -206,24 +217,24 @@ class OctoClient extends EventEmitter {
       ));
   }
 
-  updateRemoteStore({ files, del }) {
+  updateRemoteStore({ files = [], del = [] }) {
     if (this.busy) {
       return Promise.reject(Error('currently busy'));
     }
 
     // Temp
-    if (!files.length) {
+    if (!files.length && !del.length) {
       return Promise.resolve({});
     }
 
     this.progressStart(files.length);
-    return this.uploadToRepo(files)
+    return this.uploadToRepo({ files, del })
       .then(() => {
         this.progressTick(true);
         this.busy = false;
         return {
-          uploaded: files,
-          'deleted - not yet': del,
+          uploaded: files.map(({ destination }) => destination),
+          deleted: del.map(({ path }) => path),
           repo: `https://github.com/${this.owner}/${this.repo}/tree/${this.branch}`,
         };
       })
