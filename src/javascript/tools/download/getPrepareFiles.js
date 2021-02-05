@@ -50,11 +50,6 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes, exportCropFrame) =
 
         const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, exportCropFrame);
 
-        if (scaledCanvas.msToBlob) {
-          window.navigator.msSaveBlob(scaledCanvas.msToBlob(), `${filename}.png`);
-          return;
-        }
-
         const onBlobComplete = (blob) => {
           if (typeof blob.arrayBuffer === 'function') {
             blob.arrayBuffer()
