@@ -1,11 +1,9 @@
 import handleLines from '../handleLines';
+import { terminatorLine } from '../../app/defaults';
 
 const getTransformClassic = (dispatch) => (data, filename) => {
 
   let dataLines = [];
-
-  // const terminatorLine = '';
-  const terminatorLine = '!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }';
 
   const imagesFromFile = `${data}\n${terminatorLine}`.split('\n')
     .map(handleLines)
