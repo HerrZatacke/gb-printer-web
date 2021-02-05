@@ -405,13 +405,6 @@ const Settings = (props) => {
         >
           Export frames
         </button>
-        <button
-          type="button"
-          className="settings__button"
-          onClick={() => props.exportSettings('full')}
-        >
-          Export everything
-        </button>
       </div>
     </div>
   );

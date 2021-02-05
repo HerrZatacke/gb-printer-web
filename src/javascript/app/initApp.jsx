@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import getStore from './store';
-import defaults from './store/defaults';
+import { defaults } from './store/defaults';
 
 const initApp = () => {
   const appRoot = document.getElementById('app');
