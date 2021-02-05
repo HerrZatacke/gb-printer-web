@@ -81,10 +81,31 @@
     line-height: 20px;
     color: $color-text-bright;
 
+    // For buttons in navi
+    background: none;
+    font-family: inherit;
+    font-size: inherit;
+    border: none;
+
     &--active,
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: $color-secondary;
       color: $color-text-bright;
+      cursor: pointer;
     }
+
+    &:disabled {
+      color: $color-grey-50;
+      opacity: 0.5;
+    }
+  }
+
+  &__progress {
+    position: absolute;
+    height: 100%;
+    background: rgba($color-secondary, 0.6);
+    top: 0;
+    left: 0;
+    transition: width 500ms ease-in-out;
   }
 }

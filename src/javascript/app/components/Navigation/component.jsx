@@ -97,6 +97,25 @@ class Navigation extends React.Component {
               Settings
             </NavLink>
           </li>
+          <li className="navigation__entry">
+            <button
+              type="button"
+              className="navigation__link"
+              onClick={this.props.startSync}
+              disabled={this.props.gitStatus.busy || !this.props.useGit}
+            >
+              Synchronize
+            </button>
+            { this.props.gitStatus.busy ? (
+              <div
+                className="navigation__progress"
+                role="progressbar"
+                style={{
+                  width: `${this.props.gitStatus.progress * 100}%`,
+                }}
+              />
+            ) : null }
+          </li>
         </ul>
         {this.props.importQueueSize > 0 ? (
           <div className="navigation__queuesize">
@@ -110,6 +129,12 @@ class Navigation extends React.Component {
 
 Navigation.propTypes = {
   importQueueSize: PropTypes.number.isRequired,
+  startSync: PropTypes.func.isRequired,
+  useGit: PropTypes.bool.isRequired,
+  gitStatus: PropTypes.shape({
+    busy: PropTypes.bool.isRequired,
+    progress: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 Navigation.defaultProps = {

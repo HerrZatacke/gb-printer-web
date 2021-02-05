@@ -196,10 +196,11 @@ const Settings = (props) => {
         </>
       )}
       <div className="settings__inputgroup">
-        <label htmlFor="settings-printer-url" className="settings__label">
+        <label htmlFor="settings-sav-frames" className="settings__label">
           Frames to be applied when importing Cartridge dumps
         </label>
         <select
+          id="settings-sav-frames"
           className="settings__input settings__input--select"
           disabled={!props.savFrameGroups.length}
           value={props.savFrameTypes}
@@ -263,10 +264,12 @@ const Settings = (props) => {
             className="settings__checkbox"
             checked={gitStorage.use}
             onChange={({ target }) => {
-              setGitStorage({
+              const newSettings = {
                 ...gitStorage,
                 use: target.checked,
-              });
+              };
+              setGitStorage(newSettings);
+              props.setGitStorage(newSettings);
             }}
           />
           <SVG name="checkmark" />
