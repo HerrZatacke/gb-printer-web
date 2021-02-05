@@ -1,4 +1,5 @@
 import { saveAs } from 'file-saver';
+import blobArrayBuffer from '../blobArrayBuffer';
 
 const download = (zipFileName) => (files) => {
 
@@ -13,17 +14,27 @@ const download = (zipFileName) => (files) => {
     .then(({ default: JSZip }) => {
       const zip = new JSZip();
 
-      files.forEach(({ filename, arrayBuffer }) => {
-        zip.file(filename, arrayBuffer);
-      });
-
-      zip.generateAsync({
-        type: 'blob',
-        compression: 'DEFLATE',
-      })
-        .then((content) => {
-          saveAs(content, `${zipFileName}.zip`);
-        });
+      Promise.all(files.map(({ filename, blob }) => (
+        blobArrayBuffer(blob)
+          .then((arrayBuffer) => ({
+            filename,
+            arrayBuffer,
+          }))
+      )))
+        .then((buffersFiles) => {
+          buffersFiles.forEach(({ filename, arrayBuffer }) => {
+            zip.file(filename, arrayBuffer);
+          });
+        })
+        .then(() => (
+          zip.generateAsync({
+            type: 'blob',
+            compression: 'DEFLATE',
+          })
+            .then((content) => {
+              saveAs(content, `${zipFileName}.zip`);
+            })
+        ));
     });
 };
 

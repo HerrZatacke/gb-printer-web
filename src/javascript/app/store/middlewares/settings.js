@@ -68,7 +68,6 @@ const downloadSettings = (what) => {
   const settings = getSettings(what);
   download(null)([{
     blob: new Blob(new Array(settings)),
-    arrayBuffer: null,
     filename: `${what}.json`,
   }]);
 };

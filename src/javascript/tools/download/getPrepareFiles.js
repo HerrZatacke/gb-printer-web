@@ -52,7 +52,6 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
 
         // export the raw tildata of an image
         if (fileType === 'txt') {
-
           // not for rgbn images
           if (image.hashes) {
             resolve(null);
@@ -61,47 +60,25 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
 
           load(image.hash, null)
             .then((plainTiles) => {
-              const arrayBuffer = [...plainTiles.join('\n')];
-              const blob = new Blob(arrayBuffer, { type: 'text/plain' });
-
               resolve({
                 filename: `${filename}.${fileType}`,
-                arrayBuffer, // used by download()
-                blob, // used by everything else
+                blob: new Blob(new Array(plainTiles.join('\n')), { type: 'text/plain' }),
                 title: image.title,
               });
             });
+        } else {
+          const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, exportCropFrame);
+
+          const onBlobComplete = (blob) => {
+            resolve({
+              filename: `${filename}.${fileType}`,
+              blob,
+              title: image.title,
+            });
+          };
+
+          scaledCanvas.toBlob(onBlobComplete, `image/${fileType}`, 1);
         }
-
-        const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, exportCropFrame);
-
-        const onBlobComplete = (blob) => {
-          if (typeof blob.arrayBuffer === 'function') {
-            blob.arrayBuffer()
-              .then((arrayBuffer) => {
-                resolve({
-                  filename: `${filename}.${fileType}`,
-                  arrayBuffer, // used by download()
-                  blob, // used by everything else
-                  title: image.title,
-                });
-              });
-          } else {
-            const fileReader = new FileReader();
-            fileReader.onload = (ev) => {
-              resolve({
-                filename: `${filename}.${fileType}`,
-                arrayBuffer: ev.target.result,
-                blob,
-              });
-            };
-
-            fileReader.readAsArrayBuffer(blob);
-          }
-        };
-
-        scaledCanvas.toBlob(onBlobComplete, `image/${fileType}`, 1);
-
       })
     ))
   ));
