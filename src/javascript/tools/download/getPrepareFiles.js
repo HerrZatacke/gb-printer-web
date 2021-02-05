@@ -58,6 +58,7 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
             return;
           }
 
+          // this loads the basic raw data without applying a frame
           load(image.hash, null)
             .then((plainTiles) => {
               resolve({
