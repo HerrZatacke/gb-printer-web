@@ -1,8 +1,10 @@
 import Decoder from '../Decoder';
 import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
+import { load } from '../storage';
 
-const getPrepareFiles = (exportScaleFactors, exportFileTypes, exportCropFrame) => (palette, image) => (tiles) => {
+const getPrepareFiles = (state) => (palette, image) => (tiles) => {
+  const { exportScaleFactors, exportFileTypes, exportCropFrame } = state;
 
   const isRGBN = !!image.hashes;
   const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
@@ -48,6 +50,31 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes, exportCropFrame) =
           exportScaleFactor,
         });
 
+        // export the raw tildata of an image
+        if (fileType === 'txt') {
+
+          // not for rgbn images
+          if (image.hashes) {
+            resolve(null);
+            return;
+          }
+
+          load(image.hash, null)
+            .then((plainTiles) => {
+
+              const encoder = new TextEncoder();
+              const arrayBuffer = encoder.encode(plainTiles.join('\n'));
+              const blob = new Blob(arrayBuffer, { type: 'text/plain' });
+
+              resolve({
+                filename: `${filename}.${fileType}`,
+                arrayBuffer, // used by download()
+                blob, // used by everything else
+                title: image.title,
+              });
+            });
+        }
+
         const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, exportCropFrame);
 
         const onBlobComplete = (blob) => {
@@ -56,8 +83,8 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes, exportCropFrame) =
               .then((arrayBuffer) => {
                 resolve({
                   filename: `${filename}.${fileType}`,
-                  arrayBuffer,
-                  blob,
+                  arrayBuffer, // used by download()
+                  blob, // used by everything else
                   title: image.title,
                 });
               });
@@ -81,7 +108,8 @@ const getPrepareFiles = (exportScaleFactors, exportFileTypes, exportCropFrame) =
     ))
   ));
 
-  return Promise.all(images.flat());
+  return Promise.all(images.flat())
+    .then((files) => files.filter(Boolean));
 };
 
 export default getPrepareFiles;

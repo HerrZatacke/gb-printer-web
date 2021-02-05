@@ -1,3 +1,4 @@
+import mime from 'mime-types';
 import OctoClient from '../../../tools/OctoClient';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
@@ -27,23 +28,22 @@ const gitStorage = (store) => {
 
     if (action.type === 'GITSTORAGE_STARTSYNC') {
 
-      // const prepareFiles = getPrepareFiles(exportScaleFactors, exportFileTypes, exportCropFrame);
-      const prepareFiles = getPrepareFiles([1], ['png'], false);
+      const prepareFiles = getPrepareFiles({
+        ...state,
+        exportScaleFactors: [1],
+        exportFileTypes: ['png', 'txt'],
+        exportCropFrame: false,
+      });
 
       Promise.all(
         state.images
-          // .filter(({ hashes }) => (!hashes))
           .map((image) => (
             loadImageTiles(image, state)
-              .then((tiles) => ({
-                ...image,
-                tiles,
-              }))
-              .then((img) => (
-                prepareFiles(getImagePalette(state, image), img)(img.tiles)
-                  .then((imageFiles) => ({
-                    ...img,
-                    imageFiles,
+              .then((tiles) => (
+                prepareFiles(getImagePalette(state, image), image)(tiles)
+                  .then((files) => ({
+                    ...image,
+                    files,
                   }))
               ))
           )),
@@ -51,36 +51,34 @@ const gitStorage = (store) => {
 
         .then((imageCollection) => {
           const toUpload = [];
-          const pngNames = [];
 
-          imageCollection.forEach(({ hash, hashes, tiles, imageFiles }) => {
-            if (!hashes) {
-              toUpload.push({
-                destination: `images/${hash}.txt`,
-                blob: new Blob([tiles.join('\n')], { type: 'text/plain' }),
+          imageCollection.forEach(({ hash, files, hashes }) => {
+            toUpload.push(...files.map(({ blob, title }) => {
+              const extension = mime.extension(blob.type);
+              const folder = extension === 'txt' ? 'images' : extension;
+
+              return ({
+                destination: `${folder}/${hash}.${extension}`,
+                blob,
+                extension,
+                title,
+                hash: hashes ? null : hash,
               });
-            }
-
-            const pngs = imageFiles.map(({ blob }) => ({
-              destination: `png/${hash}.png`,
-              blob,
             }));
-
-            toUpload.push(...pngs);
-            pngNames.push(...pngs.map(({ destination }) => ({
-              destination,
-              hash: !hashes ? hash : null,
-            })));
           });
 
-          const md = pngNames.map(({
-            destination,
-            hash,
-          }) => (
-            hash ?
-              `[![](${destination})](images/${hash}.txt)` :
-              `![](${destination})`
-          )).join('\n');
+          const md = toUpload
+            .filter(({ extension }) => extension === 'png')
+            .map(({
+              destination,
+              hash,
+              title,
+            }) => (
+              hash ?
+                `[![${title}](${destination} "${title}")](images/${hash}.txt)` :
+                `![${title}](${destination} "${title}")`
+            ))
+            .join('\n');
 
           toUpload.push({
             destination: 'readme.md',
@@ -93,12 +91,12 @@ const gitStorage = (store) => {
         .then((files) => (
           octoClient.getRepoContents()
             .then(({ images, png }) => ({
+              // ToDo: is an update possible for PNGs if palette has changed
               // remove all files from upload queue if they already exist remotely
               files: files.filter(({ destination }) => (
                 !images.find(({ path }) => path === destination) &&
                 !png.find(({ path }) => path === destination)
               )),
-              // ToDo: Delete outdated images
               del: [...images, ...png].filter(({ path }) => (
                 !files.find(({ destination }) => path === destination)
               )),
@@ -113,6 +111,7 @@ const gitStorage = (store) => {
             })
         ))
         .catch((error) => {
+          console.error(error);
           store.dispatch({
             type: 'ERROR',
             payload: error.message,

@@ -1,4 +1,4 @@
-import supportedCanvasImageFormats from '../supportedCanvasImageFormats/îndex';
+import supportedCanvasImageFormats from '../supportedCanvasImageFormats/index';
 
 const supportsWebmWriter = () => (
   supportedCanvasImageFormats().includes('webp')

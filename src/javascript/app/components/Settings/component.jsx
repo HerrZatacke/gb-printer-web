@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import SocketStateIndicator from '../SocketStateIndicator';
 import cleanUrl from '../../../tools/cleanUrl';
 import { getEnv } from '../../../tools/getEnv';
-import supportedCanvasImageFormats from '../../../tools/supportedCanvasImageFormats/îndex';
+import supportedCanvasImageFormats from '../../../tools/supportedCanvasImageFormats/index';
 import SVG from '../SVG';
 
 const Settings = (props) => {
@@ -77,7 +77,7 @@ const Settings = (props) => {
         <div className="settings__label">
           Image export filetypes
         </div>
-        {supportedCanvasImageFormats().map((fileType) => (
+        {[...supportedCanvasImageFormats(), 'txt'].map((fileType) => (
           <label
             key={fileType}
             className={
