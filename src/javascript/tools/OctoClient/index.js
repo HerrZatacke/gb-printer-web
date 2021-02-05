@@ -63,6 +63,27 @@ class OctoClient extends EventEmitter {
     });
   }
 
+  getRepoContents() {
+    // eslint-disable-next-line brace-style
+    try { this.progressTick(); } catch (error) { return Promise.reject(error); }
+
+    return this.octoKit.repos.getContent({
+      owner: this.owner,
+      repo: this.repo,
+      ref: `heads/${this.branch}`,
+      path: 'images',
+    })
+      .then(({ data: images }) => (
+        this.octoKit.repos.getContent({
+          owner: this.owner,
+          repo: this.repo,
+          ref: `heads/${this.branch}`,
+          path: 'png',
+        })
+          .then(({ data: png }) => ({ images, png }))
+      ));
+  }
+
   getCurrentCommit() {
     // eslint-disable-next-line brace-style
     try { this.progressTick(); } catch (error) { return Promise.reject(error); }
@@ -185,7 +206,7 @@ class OctoClient extends EventEmitter {
       ));
   }
 
-  updateRemoteStore({ files }) {
+  updateRemoteStore({ files, del }) {
     if (this.busy) {
       return Promise.reject(Error('currently busy'));
     }
@@ -200,7 +221,11 @@ class OctoClient extends EventEmitter {
       .then(() => {
         this.progressTick(true);
         this.busy = false;
-        return `https://github.com/${this.owner}/${this.repo}/tree/${this.branch}`;
+        return {
+          uploaded: files,
+          'deleted - not yet': del,
+          repo: `https://github.com/${this.owner}/${this.repo}/tree/${this.branch}`,
+        };
       })
       .catch((error) => {
         this.busy = false;

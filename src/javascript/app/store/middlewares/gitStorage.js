@@ -82,23 +82,31 @@ const gitStorage = (store) => {
               `![](${destination})`
           )).join('\n');
 
-          // toUpload.push({
-          //   destination: 'readme.md',
-          //   blob: new Blob([...md], { type: 'text/plain' }),
-          // });
-
-          return [{
+          toUpload.push({
             destination: 'readme.md',
             blob: new Blob([...md], { type: 'text/plain' }),
-          }];
+          });
 
-          // return toUpload.filter(Boolean);
+          return toUpload.filter(Boolean);
         })
 
         .then((files) => (
-          // ToDo: Delete outdated images
-          // ToDo: Do not upload existing images
-          octoClient.updateRemoteStore({ files })
+          octoClient.getRepoContents()
+            .then(({ images, png }) => ({
+              // remove all files from upload queue if they already exist remotely
+              files: files.filter(({ destination }) => (
+                !images.find(({ path }) => path === destination) &&
+                !png.find(({ path }) => path === destination)
+              )),
+              // ToDo: Delete outdated images
+              del: [...images, ...png].filter(({ path }) => (
+                !files.find(({ destination }) => path === destination)
+              )),
+            }))
+        ))
+
+        .then(({ files, del }) => (
+          octoClient.updateRemoteStore({ files, del })
             .then((result) => {
               // eslint-disable-next-line no-console
               console.info(result);
