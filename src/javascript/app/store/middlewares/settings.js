@@ -1,6 +1,7 @@
 import { download } from '../../../tools/download';
 import cleanState from '../../../tools/cleanState';
 import getSettings from '../../../tools/getSettings';
+import mergeStates from '../../../tools/mergeStates';
 
 const downloadSettings = (what) => {
   const settings = getSettings(what);
@@ -19,10 +20,7 @@ const mergeSettings = (dispatch, state, newSettings) => {
 
   dispatch({
     type: 'GLOBAL_UPDATE',
-    payload: cleanState({
-      ...state,
-      ...newSettings.state,
-    }),
+    payload: cleanState(mergeStates(state, newSettings.state)),
   });
 };
 
