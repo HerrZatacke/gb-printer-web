@@ -85,6 +85,7 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
 
               // toDownload
               resolve({
+                folder: 'images', // used for Git-Sync
                 filename: `${filename}.${fileType}`,
                 blob: new Blob(new Array(textContent), { type: 'text/plain' }),
                 title: image.title,

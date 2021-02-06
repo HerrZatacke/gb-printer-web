@@ -5,12 +5,11 @@ const prepareGitFiles = (imageCollection) => {
   const toUpload = [];
 
   imageCollection.forEach(({ hash, files, hashes }) => {
-    toUpload.push(...files.map(({ blob, title }) => {
+    toUpload.push(...files.map(({ blob, title, folder }) => {
       const extension = mime.extension(blob.type);
-      const folder = extension === 'txt' ? 'images' : extension;
 
       return ({
-        destination: `${folder}/${hash}.${extension}`,
+        destination: `${folder || extension}/${hash}.${extension}`,
         blob,
         extension,
         title,
