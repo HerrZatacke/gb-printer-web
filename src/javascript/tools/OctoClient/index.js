@@ -87,14 +87,24 @@ class OctoClient extends EventEmitter {
               owner: this.owner,
               repo: this.repo,
               ref: `heads/${this.branch}`,
-              path: 'settings.json',
+              path: 'palettes',
             })
               .catch(() => ({ data: {} }))
-              .then(({ data: { content: settings } }) => ({
-                images,
-                png,
-                settings: JSON.parse(atob(settings)),
-              }))
+              .then(({ data: palettes }) => (
+                this.octoKit.repos.getContent({
+                  owner: this.owner,
+                  repo: this.repo,
+                  ref: `heads/${this.branch}`,
+                  path: 'settings.json',
+                })
+                  .catch(() => ({ data: {} }))
+                  .then(({ data: { content: settings } }) => ({
+                    images,
+                    palettes,
+                    png,
+                    settings: JSON.parse(atob(settings)),
+                  }))
+              ))
           ))
       ));
   }
