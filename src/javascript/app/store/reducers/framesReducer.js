@@ -19,7 +19,7 @@ const framesReducer = (frames = [], action) => {
     case 'DELETE_FRAME':
       return frames.filter(({ id }) => id !== action.payload);
     case 'GLOBAL_UPDATE':
-      return uniqueBy('id')([...action.payload.frames, ...frames]).sort(sortFrames);
+      return uniqueBy('id')(action.payload.frames).sort(sortFrames);
     default:
       return frames;
   }
