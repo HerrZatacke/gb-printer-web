@@ -89,7 +89,7 @@ class OctoClient extends EventEmitter {
               ref: `heads/${this.branch}`,
               path: 'palettes',
             })
-              .catch(() => ({ data: {} }))
+              .catch(() => ({ data: [] }))
               .then(({ data: palettes }) => (
                 this.octoKit.repos.getContent({
                   owner: this.owner,
@@ -213,7 +213,7 @@ class OctoClient extends EventEmitter {
       .then(({ data }) => data);
   }
 
-  uploadToRepo({ files, del }) {
+  uploadToRepo({ upload, del }) {
     // eslint-disable-next-line brace-style
     try { this.progressTick(); } catch (error) { return Promise.reject(error); }
 
@@ -222,7 +222,7 @@ class OctoClient extends EventEmitter {
 
     return this.getCurrentCommit()
       .then(({ treeSha, commitSha }) => (
-        Promise.all(files.map((file) => (
+        Promise.all(upload.map((file) => (
           this.createBlobForFile(file)
         )))
           .then((filesData) => (
@@ -240,23 +240,23 @@ class OctoClient extends EventEmitter {
       ));
   }
 
-  updateRemoteStore({ files = [], del = [] }) {
+  updateRemoteStore({ upload = [], del = [] }) {
     if (this.busy) {
       return Promise.reject(Error('currently busy'));
     }
 
     // Temp
-    if (!files.length && !del.length) {
+    if (!upload.length && !del.length) {
       return Promise.resolve({});
     }
 
-    this.progressStart(files.length);
-    return this.uploadToRepo({ files, del })
+    this.progressStart(upload.length);
+    return this.uploadToRepo({ upload, del })
       .then(() => {
         this.progressTick(true);
         this.busy = false;
         return {
-          uploaded: files.map(({ destination }) => destination),
+          uploaded: upload.map(({ destination }) => destination),
           deleted: del.map(({ path }) => path),
           repo: `https://github.com/${this.owner}/${this.repo}/tree/${this.branch}`,
         };
