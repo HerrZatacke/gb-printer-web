@@ -2,6 +2,7 @@ import OctoClient from '../../../../tools/OctoClient';
 import getUploadImages from './getUploadImages';
 import prepareGitFiles from './prepareGitFiles';
 import filterDeleteNew from './filterDeleteNew';
+import saveLocalStorageItems from './saveLocalStorageItems';
 
 const gitStorage = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();
@@ -37,13 +38,15 @@ const gitStorage = (store) => {
                   octoClient.updateRemoteStore(changes)
                 ));
             case 'down':
-              store.dispatch({
-                type: 'SETTINGS_IMPORT',
-                payload: repoContents.settings,
-              });
-              return repoContents;
+              return saveLocalStorageItems(octoClient)(repoContents)
+                .then(() => {
+                  store.dispatch({
+                    type: 'SETTINGS_IMPORT',
+                    payload: repoContents.settings,
+                  });
+                });
             default:
-              return null;
+              return Promise.reject(new Error('wrong sync case'));
           }
         })
         .catch((error) => {
