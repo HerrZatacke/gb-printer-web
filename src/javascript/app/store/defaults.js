@@ -36,7 +36,7 @@ const definitions = [
     key: 'galleryView',
     saveLocally: true,
     saveRemote: false,
-    saveExport: ['settings', 'remote'],
+    saveExport: ['settings'],
     value: '1x',
   },
   {
