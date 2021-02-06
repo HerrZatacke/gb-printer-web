@@ -11,12 +11,15 @@ const getUploadImages = (state) => {
     exportCropFrame: false,
   });
 
+  const missingLocally = [];
+
   return Promise.all(
     state.images
       .map((image) => (
         loadImageTiles(image, state, true)
           .then((tiles) => {
             if (!tiles.length) {
+              missingLocally.push(image.hash);
               return Promise.resolve(null);
             }
 
@@ -30,7 +33,10 @@ const getUploadImages = (state) => {
           })
       )),
   )
-    .then((images) => images.filter(Boolean));
+    .then((images) => ({
+      imageCollection: images.filter(Boolean),
+      missingLocally,
+    }));
 };
 
 export default getUploadImages;

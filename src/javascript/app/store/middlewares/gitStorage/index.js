@@ -29,10 +29,10 @@ const gitStorage = (store) => {
           switch (action.payload) {
             case 'up':
               return getUploadImages(state)
-                .then(prepareGitFiles)
-                .then((files) => (
-                  filterDeleteNew(repoContents, files)
-                ))
+                .then(({ missingLocally, imageCollection }) => {
+                  const gitFiles = prepareGitFiles(imageCollection);
+                  return filterDeleteNew(repoContents, gitFiles, missingLocally);
+                })
                 .then((changes) => (
                   octoClient.updateRemoteStore(changes)
                 ));

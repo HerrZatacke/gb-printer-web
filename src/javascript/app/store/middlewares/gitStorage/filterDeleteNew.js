@@ -1,5 +1,5 @@
 // ToDo: is an update possible for PNGs if palette has changed
-const filterDeleteNew = ({ images, png, palettes }, files) => ({
+const filterDeleteNew = ({ images, png, palettes }, files, missingLocally) => ({
   // remove all files from upload queue if they already exist remotely
   upload: files.filter(({ destination }) => (
     !images.find(({ path }) => path === destination) &&
@@ -7,7 +7,8 @@ const filterDeleteNew = ({ images, png, palettes }, files) => ({
     !png.find(({ path }) => path === destination)
   )),
   del: [...images, ...png, ...palettes].filter(({ path }) => (
-    !files.find(({ destination }) => path === destination)
+    !files.find(({ destination }) => path === destination) &&
+    !missingLocally.find((hash) => path.indexOf(hash) >= -1)
   )),
 });
 
