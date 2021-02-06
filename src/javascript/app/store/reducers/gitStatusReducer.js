@@ -8,6 +8,8 @@ const gitStatusReducer = (value = { busy: false, progress: 0 }, action) => {
         busy: true,
       };
     case 'GITSTORAGE_SYNC_DONE':
+      // eslint-disable-next-line no-console
+      console.info(action.payload);
       return {
         ...value,
         busy: false,
