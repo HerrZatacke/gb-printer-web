@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
-import uniqe from '../../../tools/unique';
+import unique from '../../../tools/unique';
 
 class TagsSelect extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class TagsSelect extends React.Component {
 
   render() {
 
-    const tags = uniqe([...this.props.tags.initial, ...this.props.tags.add]);
+    const tags = unique([...this.props.tags.initial, ...this.props.tags.add]);
 
     return (
       <ul className="tags-select">

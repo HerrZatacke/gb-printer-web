@@ -1,7 +1,7 @@
-const uniqe = (arr) => (
+const unique = (arr) => (
   arr.filter((item, index) => (
     arr.findIndex((findTag) => findTag === item) === index
   ))
 );
 
-export default uniqe;
+export default unique;

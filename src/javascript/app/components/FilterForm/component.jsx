@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import uniqe from '../../../tools/unique';
+import unique from '../../../tools/unique';
 import Lightbox from '../Lightbox';
 import FilterFormTag from './filterFormTag';
 import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB } from '../../../consts/specialTags';
@@ -14,7 +14,7 @@ const FilterForm = (props) => {
   }, [props.availableTags]);
 
   const updateActiveTags = (tag, mode) => {
-    setActiveTags(mode === 'add' ? uniqe([...activeTags, tag]) : activeTags.filter((t) => t !== tag));
+    setActiveTags(mode === 'add' ? unique([...activeTags, tag]) : activeTags.filter((t) => t !== tag));
   };
 
   if (!props.visible) {
