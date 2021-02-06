@@ -33,16 +33,15 @@ const gitStorage = (store) => {
                 .then((files) => (
                   filterDeleteNew(repoContents, files)
                 ))
-                .then(({ upload, del }) => (
-                  octoClient.updateRemoteStore({ upload, del })
-                ))
-                .then((result) => {
-                  // eslint-disable-next-line no-console
-                  console.info(result);
-                });
+                .then((changes) => (
+                  octoClient.updateRemoteStore(changes)
+                ));
             case 'down':
-              console.log(repoContents);
-              return 'x';
+              store.dispatch({
+                type: 'SETTINGS_IMPORT',
+                payload: repoContents.settings,
+              });
+              return repoContents;
             default:
               return null;
           }
