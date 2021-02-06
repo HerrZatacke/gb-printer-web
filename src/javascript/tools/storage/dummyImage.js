@@ -1,6 +1,6 @@
 import getChars from '../chars';
 
-const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF\n';
+const black = 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\n';
 
 const dummyImage = (hash) => {
   const result = [];

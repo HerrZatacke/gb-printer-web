@@ -64,7 +64,7 @@ const getChars = (text) => {
   return [...Array(16)]
     .map((_, index) => (
       `${leftHex[index]}${rightHex[index]}`
-    )).join(' ');
+    )).join('');
 };
 
 export default getChars;
