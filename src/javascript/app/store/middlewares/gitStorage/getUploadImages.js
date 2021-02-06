@@ -14,16 +14,23 @@ const getUploadImages = (state) => {
   return Promise.all(
     state.images
       .map((image) => (
-        loadImageTiles(image, state)
-          .then((tiles) => (
-            prepareFiles(getImagePalette(state, image), image)(tiles)
-              .then((files) => ({
-                ...image,
-                files,
-              }))
-          ))
+        loadImageTiles(image, state, true)
+          .then((tiles) => {
+            if (!tiles.length) {
+              return Promise.resolve(null);
+            }
+
+            return (
+              prepareFiles(getImagePalette(state, image), image)(tiles)
+                .then((files) => ({
+                  ...image,
+                  files,
+                }))
+            );
+          })
       )),
-  );
+  )
+    .then((images) => images.filter(Boolean));
 };
 
 export default getUploadImages;
