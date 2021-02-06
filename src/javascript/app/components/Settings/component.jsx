@@ -15,6 +15,7 @@ const Settings = (props) => {
   const [printerUrl, setPrinterUrl] = useState(props.printerUrl);
   const [pageSize, setPageSize] = useState(props.pageSize);
   const [gitStorage, setGitStorage] = useState(props.gitStorage);
+  const [showPass, setShowPass] = useState(false);
 
   return (
     <div className="settings">
@@ -359,8 +360,8 @@ const Settings = (props) => {
             </label>
             <input
               id="settings-git-token"
-              type="password"
-              className="settings__input"
+              type={showPass ? 'text' : 'password'}
+              className="settings__input settings__input--password"
               value={gitStorage.token}
               onChange={({ target }) => {
                 setGitStorage({
@@ -370,8 +371,16 @@ const Settings = (props) => {
               }}
               onBlur={() => {
                 props.setGitStorage(gitStorage);
+                setShowPass(false);
               }}
             />
+            <button
+              type="button"
+              className="settings__show-password-button"
+              onClick={() => setShowPass(!showPass)}
+            >
+              <SVG name="view" />
+            </button>
           </div>
         </>
       )}
