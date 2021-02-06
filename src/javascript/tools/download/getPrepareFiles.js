@@ -2,7 +2,7 @@ import Decoder from '../Decoder';
 import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
 import { load } from '../storage';
-import { terminatorLine } from '../../app/defaults';
+import { finalLine, initLine, moreLine, terminatorLine } from '../../app/defaults';
 
 const getPrepareFiles = (state) => (palette, image) => (tiles) => {
   const { exportScaleFactors, exportFileTypes, exportCropFrame } = state;
@@ -63,8 +63,23 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
           load(image.hash, null)
             .then((plainTiles) => {
 
+              const transformedTiles = plainTiles
+                // add spaces between every second char
+                .map((line) => (
+                  line.match(/.{1,2}/g).join(' ')
+                ))
+                .reduce((acc, line, index) => {
+                  if (index % 40) {
+                    return [...acc, line];
+                  }
+
+                  return [...acc, moreLine, line];
+                }, []);
+
               const textContent = [
-                ...plainTiles,
+                initLine,
+                ...transformedTiles,
+                finalLine,
                 terminatorLine,
               ].join('\n');
 
