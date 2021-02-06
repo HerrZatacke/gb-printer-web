@@ -39,13 +39,32 @@
     }
   }
 
-  &--mobile-open &__list {
-    display: block;
+  @media (max-width: 480px) {
+    &--mobile-open &__list {
+      display: block;
+    }
   }
 
   &__entry{
     position: relative;
 
+    &--buttons {
+      display: flex;
+
+      > * {
+        flex: auto 1 1;
+        text-align: left;
+        outline: none;
+
+        &:first-child {
+          padding-right: 8px;
+        }
+
+        &:last-child {
+          padding-left: 8px;
+        }
+      }
+    }
   }
 
   &__queuesize {
@@ -102,9 +121,10 @@
 
   &__progress {
     position: absolute;
-    height: 100%;
-    background: rgba($color-secondary, 0.6);
-    top: 0;
+    height: 6px;
+    pointer-events: none;
+    background: $color-secondary;
+    bottom: 0;
     left: 0;
     transition: width 500ms ease-in-out;
   }
