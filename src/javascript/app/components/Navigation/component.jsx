@@ -5,14 +5,7 @@ import classnames from 'classnames';
 import SVG from '../SVG';
 
 const Navigation = (props) => {
-
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  //
-  // useEffect(() => {
-  //   if (props.windowWidth > 480) {
-  //     setMobileNavOpen(false);
-  //   }
-  // }, [props.windowWidth]);
 
   return (
     <nav
@@ -88,19 +81,21 @@ const Navigation = (props) => {
         <li className="navigation__entry navigation__entry--buttons">
           <button
             type="button"
-            className="navigation__link"
+            title="Synchronize to GitHub"
+            className="navigation__link navigation__link--icon"
             onClick={() => props.startSync('up')}
             disabled={props.gitStatus.busy || !props.useGit}
           >
-            Synchronize Up
+            <SVG name="sync" className="svg--180" />
           </button>
           <button
             type="button"
-            className="navigation__link"
+            title="Synchronize from GitHub"
+            className="navigation__link navigation__link--icon"
             onClick={() => props.startSync('down')}
             disabled={props.gitStatus.busy || !props.useGit}
           >
-            Synchronize Down
+            <SVG name="sync" />
           </button>
           { props.gitStatus.busy ? (
             <div

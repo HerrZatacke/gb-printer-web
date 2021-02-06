@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
     frames = null;
   }
 
-  const height = (state.windowDimensions.width <= 480) ?
+  const height = (state.windowDimensions.width <= 600) ?
     state.windowDimensions.height :
     Math.min(800, state.windowDimensions.height);
 

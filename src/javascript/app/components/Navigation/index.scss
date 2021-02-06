@@ -9,7 +9,7 @@
   &__burger-button {
     display: none;
 
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-mobile) {
       display: block;
       width: 60px;
       height: 60px;
@@ -33,13 +33,13 @@
     width: 100vw;
     display: flex;
 
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-mobile) {
       flex-direction: column;
       display: none;
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: $breakpoint-mobile) {
     &--mobile-open &__list {
       display: block;
     }
@@ -47,6 +47,8 @@
 
   &__entry{
     position: relative;
+    fill: $color-text-bright;
+    display: block;
 
     &--buttons {
       display: flex;
@@ -55,14 +57,8 @@
         flex: auto 1 1;
         text-align: left;
         outline: none;
-
-        &:first-child {
-          padding-right: 8px;
-        }
-
-        &:last-child {
-          padding-left: 8px;
-        }
+        padding-right: 8px;
+        padding-left: 8px;
       }
     }
   }
@@ -85,7 +81,7 @@
     top: 10px;
     background-color: rgba($color-white, 0.15);
 
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-mobile) {
       height: 1px;
       width: 100vw;
       right: unset;
@@ -116,6 +112,12 @@
     &:disabled {
       color: $color-grey-50;
       opacity: 0.5;
+    }
+
+    &--icon {
+      width: 60px;
+      height: 60px;
+      padding: 14px;
     }
   }
 
