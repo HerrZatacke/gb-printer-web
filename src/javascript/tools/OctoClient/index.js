@@ -67,45 +67,47 @@ class OctoClient extends EventEmitter {
     // eslint-disable-next-line brace-style
     try { this.progressTick(); } catch (error) { return Promise.reject(error); }
 
+    const get = [
+      { path: 'images', value: [] },
+      { path: 'palettes', value: [] },
+      { path: 'png', value: [] },
+      { path: 'frames', value: [] },
+      { path: 'settings.json', value: {} },
+    ];
+
     return this.octoKit.repos.getContent({
       owner: this.owner,
       repo: this.repo,
       ref: `heads/${this.branch}`,
-      path: 'images',
+      path: '',
     })
-      .catch(() => ({ data: [] }))
-      .then(({ data: images }) => (
-        this.octoKit.repos.getContent({
-          owner: this.owner,
-          repo: this.repo,
-          ref: `heads/${this.branch}`,
-          path: 'png',
-        })
-          .catch(() => ({ data: [] }))
-          .then(({ data: png }) => (
-            this.octoKit.repos.getContent({
-              owner: this.owner,
-              repo: this.repo,
-              ref: `heads/${this.branch}`,
-              path: 'palettes',
-            })
-              .catch(() => ({ data: [] }))
-              .then(({ data: palettes }) => (
-                this.octoKit.repos.getContent({
-                  owner: this.owner,
-                  repo: this.repo,
-                  ref: `heads/${this.branch}`,
-                  path: 'settings.json',
-                })
-                  .catch(() => ({ data: {} }))
-                  .then(({ data: { content: settings } }) => ({
-                    images,
-                    palettes,
-                    png,
-                    settings: JSON.parse(atob(settings)),
-                  }))
-              ))
-          ))
+      .then(({ data: root }) => (
+        Promise.all(get.map(({ path, value }) => {
+
+          if (!root.find(({ path: foundPath }) => foundPath === path)) {
+            return Promise.resolve({ path, value });
+          }
+
+          return this.octoKit.repos.getContent({
+            owner: this.owner,
+            repo: this.repo,
+            ref: `heads/${this.branch}`,
+            path,
+          })
+            .then(({ data }) => ({
+              path,
+              value: data.type === 'file' ? JSON.parse(atob(data.content)) : data,
+            }))
+            .catch(() => ({ path, value }));
+
+        }))
+          .then((received) => ({
+            images: received.find(({ path }) => path === 'images').value,
+            palettes: received.find(({ path }) => path === 'palettes').value,
+            png: received.find(({ path }) => path === 'png').value,
+            frames: received.find(({ path }) => path === 'frames').value,
+            settings: received.find(({ path }) => path === 'settings.json').value,
+          }))
       ));
   }
 
