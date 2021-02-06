@@ -111,6 +111,15 @@ class OctoClient extends EventEmitter {
       ));
   }
 
+  getBlob(sha) {
+    return this.octoKit.git.getBlob({
+      owner: this.owner,
+      repo: this.repo,
+      file_sha: sha,
+    })
+      .then(({ data: { content } }) => atob(content));
+  }
+
   getCurrentCommit() {
     // eslint-disable-next-line brace-style
     try { this.progressTick(); } catch (error) { return Promise.reject(error); }
