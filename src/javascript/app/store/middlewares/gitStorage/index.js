@@ -1,9 +1,9 @@
 import mime from 'mime-types';
-import OctoClient from '../../../tools/OctoClient';
-import loadImageTiles from '../../../tools/loadImageTiles';
-import getImagePalette from '../../../tools/getImagePalette';
-import getPrepareFiles from '../../../tools/download/getPrepareFiles';
-import getSettings from '../../../tools/getSettings';
+import OctoClient from '../../../../tools/OctoClient';
+import loadImageTiles from '../../../../tools/loadImageTiles';
+import getImagePalette from '../../../../tools/getImagePalette';
+import getPrepareFiles from '../../../../tools/download/getPrepareFiles';
+import getSettings from '../../../../tools/getSettings';
 
 const gitStorage = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();
