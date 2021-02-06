@@ -1,5 +1,5 @@
-const filterDeleteNew = (files) => ({ images, png, palettes }) => ({
-  // ToDo: is an update possible for PNGs if palette has changed
+// ToDo: is an update possible for PNGs if palette has changed
+const filterDeleteNew = ({ images, png, palettes }, files) => ({
   // remove all files from upload queue if they already exist remotely
   upload: files.filter(({ destination }) => (
     !images.find(({ path }) => path === destination) &&

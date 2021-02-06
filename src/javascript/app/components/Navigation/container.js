@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   startSync: (direction) => {
     dispatch({
-      type: 'GITSTORAGE_STARTSYNC',
+      type: 'GITSTORAGE_SYNC_START',
       payload: direction,
     });
   },

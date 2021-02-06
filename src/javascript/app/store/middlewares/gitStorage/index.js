@@ -21,28 +21,44 @@ const gitStorage = (store) => {
       octoClient.setOctokit(action.payload);
     }
 
-    if (action.type === 'GITSTORAGE_STARTSYNC') {
-
+    if (action.type === 'GITSTORAGE_SYNC_START') {
       const state = store.getState();
-      getUploadImages(state)
-        .then(prepareGitFiles)
 
-        .then((files) => (
-          octoClient.getRepoContents()
-            .then(filterDeleteNew(files))
-        ))
-        .then(({ upload, del }) => (
-          octoClient.updateRemoteStore({ upload, del })
-            .then((result) => {
-              // eslint-disable-next-line no-console
-              console.info(result);
-            })
-        ))
+      octoClient.getRepoContents()
+        .then((repoContents) => {
+          switch (action.payload) {
+            case 'up':
+              return getUploadImages(state)
+                .then(prepareGitFiles)
+                .then((files) => (
+                  filterDeleteNew(repoContents, files)
+                ))
+                .then(({ upload, del }) => (
+                  octoClient.updateRemoteStore({ upload, del })
+                ))
+                .then((result) => {
+                  // eslint-disable-next-line no-console
+                  console.info(result);
+                });
+            case 'down':
+              console.log(repoContents);
+              return 'x';
+            default:
+              return null;
+          }
+        })
         .catch((error) => {
           console.error(error);
           store.dispatch({
             type: 'ERROR',
             payload: error.message,
+          });
+          return error.message;
+        })
+        .then((syncResult) => {
+          store.dispatch({
+            type: 'GITSTORAGE_SYNC_DONE',
+            payload: syncResult,
           });
         });
     }
