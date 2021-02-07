@@ -15,6 +15,7 @@ class OctoClient extends EventEmitter {
     this.owner = null;
     this.repo = null;
     this.branch = null;
+    this.throttle = null;
     this.token = null;
     this.progress = 0;
     this.queueLength = 0;
@@ -22,12 +23,13 @@ class OctoClient extends EventEmitter {
     this.setOctokit(gitSetings);
   }
 
-  setOctokit({ use, owner, repo, branch, token }) {
-    if (this.busy || !use || !owner || !repo || !branch || !token) {
+  setOctokit({ use, owner, repo, branch, throttle, token }) {
+    if (this.busy || !use || !owner || !repo || !branch || !throttle || !token) {
       this.octoKit = null;
       this.owner = null;
       this.repo = null;
       this.branch = null;
+      this.throttle = null;
       this.token = null;
 
       return;
@@ -36,6 +38,7 @@ class OctoClient extends EventEmitter {
     this.owner = owner;
     this.repo = repo;
     this.branch = branch;
+    this.throttle = Math.max(parseInt(throttle, 10) || 0, 10);
     this.token = token;
 
     this.octoKit = new Octokit({ auth: token });
@@ -74,7 +77,7 @@ class OctoClient extends EventEmitter {
       { path: 'settings.json', value: {} },
     ];
 
-    return this.addToQueue('repos.getContent /', () => ( // queue wrapper
+    return this.addToQueue('repos.getContent /', this.throttle, () => ( // queue wrapper
       this.octoKit.repos.getContent({
         owner: this.owner,
         repo: this.repo,
@@ -89,7 +92,7 @@ class OctoClient extends EventEmitter {
             return Promise.resolve({ path, value });
           }
 
-          return this.addToQueue(`repos.getContent /${path}`, () => ( // queue wrapper
+          return this.addToQueue(`repos.getContent /${path}`, this.throttle, () => ( // queue wrapper
             this.octoKit.repos.getContent({
               owner: this.owner,
               repo: this.repo,
@@ -117,7 +120,7 @@ class OctoClient extends EventEmitter {
   getBlob(sha) {
     this.progressTick();
 
-    return this.addToQueue(`git.getBlob ${sha}`, () => ( // queue wrapper
+    return this.addToQueue(`git.getBlob ${sha}`, this.throttle, () => ( // queue wrapper
       this.octoKit.git.getBlob({
         owner: this.owner,
         repo: this.repo,
@@ -130,7 +133,7 @@ class OctoClient extends EventEmitter {
   getCurrentCommit() {
     this.progressTick();
 
-    return this.addToQueue(`git.getRef heads/${this.branch}`, () => ( // queue wrapper
+    return this.addToQueue(`git.getRef heads/${this.branch}`, this.throttle, () => ( // queue wrapper
       this.octoKit.git.getRef({
         owner: this.owner,
         repo: this.repo,
@@ -138,7 +141,7 @@ class OctoClient extends EventEmitter {
       })
     )) // queue wrapper
       .then(({ data: { object: { sha: commitSha } } }) => (
-        this.addToQueue(`git.getCommit ${commitSha}`, () => ( // queue wrapper
+        this.addToQueue(`git.getCommit ${commitSha}`, this.throttle, () => ( // queue wrapper
           this.octoKit.git.getCommit({
             owner: this.owner,
             repo: this.repo,
@@ -167,7 +170,7 @@ class OctoClient extends EventEmitter {
         const rawContentStart = content.indexOf(';base64,') + 8;
         const rawContent = content.substr(rawContentStart);
 
-        return this.addToQueue(`git.createBlob (${index + 1}/${total}) ${destination}`, () => ( // queue wrapper
+        return this.addToQueue(`git.createBlob (${index + 1}/${total}) ${destination}`, this.throttle, () => ( // queue wrapper
           this.octoKit.git.createBlob({
             owner: this.owner,
             repo: this.repo,
@@ -198,7 +201,7 @@ class OctoClient extends EventEmitter {
       sha: null,
     }));
 
-    return this.addToQueue(`git.createTree ${parentTreeSha}`, () => ( // queue wrapper
+    return this.addToQueue(`git.createTree ${parentTreeSha}`, this.throttle, () => ( // queue wrapper
       this.octoKit.git.createTree({
         owner: this.owner,
         repo: this.repo,
@@ -212,7 +215,7 @@ class OctoClient extends EventEmitter {
   createNewCommit(message, currentTreeSha, currentCommitSha) {
     this.progressTick();
 
-    return this.addToQueue(`git.createCommit ${message}`, () => ( // queue wrapper
+    return this.addToQueue(`git.createCommit ${message}`, this.throttle, () => ( // queue wrapper
       this.octoKit.git.createCommit({
         owner: this.owner,
         repo: this.repo,
@@ -227,7 +230,7 @@ class OctoClient extends EventEmitter {
   setBranchToCommit(commitSha) {
     this.progressTick();
 
-    return this.addToQueue(`git.updateRef ${commitSha}`, () => ( // queue wrapper
+    return this.addToQueue(`git.updateRef ${commitSha}`, this.throttle, () => ( // queue wrapper
       this.octoKit.git.updateRef({
         owner: this.owner,
         repo: this.repo,

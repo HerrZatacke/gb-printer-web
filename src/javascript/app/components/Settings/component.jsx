@@ -347,6 +347,31 @@ const Settings = (props) => {
           </div>
           <div className="settings__inputgroup">
             <label
+              htmlFor="settings-git-throttle"
+              className="settings__label"
+            >
+              Throttle (in ms)
+            </label>
+            <input
+              id="settings-git-throttle"
+              type="number"
+              min="10"
+              step="10"
+              className="settings__input"
+              value={gitStorage.throttle}
+              onChange={({ target }) => {
+                setGitStorage({
+                  ...gitStorage,
+                  throttle: target.value,
+                });
+              }}
+              onBlur={() => {
+                props.setGitStorage(gitStorage);
+              }}
+            />
+          </div>
+          <div className="settings__inputgroup">
+            <label
               htmlFor="settings-git-token"
               className="settings__label"
             >

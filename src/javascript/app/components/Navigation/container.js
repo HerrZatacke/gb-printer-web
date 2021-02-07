@@ -8,6 +8,7 @@ const mapStateToProps = (state) => ({
     state.gitStorage.owner &&
     state.gitStorage.repo &&
     state.gitStorage.branch &&
+    state.gitStorage.throttle &&
     state.gitStorage.token
   ),
 });

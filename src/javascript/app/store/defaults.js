@@ -179,6 +179,7 @@ const definitions = [
       repo: '',
       branch: '',
       token: '',
+      throttle: '330',
     },
   },
 ];

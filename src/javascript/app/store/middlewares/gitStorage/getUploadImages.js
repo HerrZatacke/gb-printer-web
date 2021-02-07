@@ -20,7 +20,7 @@ const getUploadImages = (state, addToQueue) => {
   return Promise.all([
     ...state.images
       .map((image, index) => (
-        addToQueue(`loadImageTiles (${index + 1}/${imagesLength}) ${image.title}`, () => (
+        addToQueue(`loadImageTiles (${index + 1}/${imagesLength}) ${image.title}`, 3, () => (
           loadImageTiles(image, state, true)
             .then((tiles) => {
               if (!tiles.length) {
@@ -40,7 +40,7 @@ const getUploadImages = (state, addToQueue) => {
       )),
     ...state.frames
       .map((frame, index) => (
-        addToQueue(`loadFrameData (${index + 1}/${framesLength}) ${frame.id}`, () => (
+        addToQueue(`loadFrameData (${index + 1}/${framesLength}) ${frame.id}`, 3, () => (
           loadFrameData(frame.id)
             .then((fd) => ({
               ...frame,

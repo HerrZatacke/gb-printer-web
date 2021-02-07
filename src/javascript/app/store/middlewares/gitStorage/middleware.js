@@ -12,11 +12,10 @@ const init = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();
 
   const queue = new Queue(1, Infinity);
-  addToQueue = (who, throttle) => (what, fn) => (
+  addToQueue = (who) => (what, throttle, fn) => (
     queue.add(() => (
       new Promise((resolve, reject) => {
         window.setTimeout(() => {
-
           store.dispatch({
             type: 'GITSTORAGE_LOG_ACTION',
             payload: {
@@ -33,7 +32,7 @@ const init = (store) => {
     ))
   );
 
-  octoClient = new OctoClient(gitStorageSettings, addToQueue('OctoClient', 333));
+  octoClient = new OctoClient(gitStorageSettings, addToQueue('OctoClient'));
 
   // octoClient.on('progress', (progress) => {});
 };
@@ -47,7 +46,7 @@ const middleware = (store) => (action) => {
       .then((repoContents) => {
         switch (action.payload) {
           case 'up':
-            return getUploadImages(state, addToQueue('GBPrinter', 2))
+            return getUploadImages(state, addToQueue('GBPrinter'))
               .then(({ missingLocally, imageCollection }) => {
                 const gitFiles = prepareGitFiles(imageCollection);
                 return filterDeleteNew(repoContents, gitFiles, missingLocally);
