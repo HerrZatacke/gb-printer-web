@@ -78,35 +78,37 @@ const Navigation = (props) => {
             Settings
           </NavLink>
         </li>
-        <li className="navigation__entry navigation__entry--buttons">
-          <button
-            type="button"
-            title="Synchronize to GitHub"
-            className="navigation__link navigation__link--icon"
-            onClick={() => props.startSync('up')}
-            disabled={props.gitStatus.busy || !props.useGit}
-          >
-            <SVG name="sync" className="svg--180" />
-          </button>
-          <button
-            type="button"
-            title="Synchronize from GitHub"
-            className="navigation__link navigation__link--icon"
-            onClick={() => props.startSync('down')}
-            disabled={props.gitStatus.busy || !props.useGit}
-          >
-            <SVG name="sync" />
-          </button>
-          { props.gitStatus.busy ? (
-            <div
-              className="navigation__progress"
-              role="progressbar"
-              style={{
-                width: `${props.gitStatus.progress * 100}%`,
-              }}
-            />
-          ) : null }
-        </li>
+        { props.useGit ? (
+          <li className="navigation__entry navigation__entry--buttons">
+            <button
+              type="button"
+              title="Synchronize to GitHub"
+              className="navigation__link navigation__link--icon"
+              onClick={() => props.startSync('up')}
+              disabled={props.gitStatus.busy}
+            >
+              <SVG name="sync" className="svg--180" />
+            </button>
+            <button
+              type="button"
+              title="Synchronize from GitHub"
+              className="navigation__link navigation__link--icon"
+              onClick={() => props.startSync('down')}
+              disabled={props.gitStatus.busy}
+            >
+              <SVG name="sync" />
+            </button>
+            { props.gitStatus.busy ? (
+              <div
+                className="navigation__progress"
+                role="progressbar"
+                style={{
+                  width: `${props.gitStatus.progress * 100}%`,
+                }}
+              />
+            ) : null }
+          </li>
+        ) : null}
       </ul>
       {props.importQueueSize > 0 ? (
         <div className="navigation__queuesize">
