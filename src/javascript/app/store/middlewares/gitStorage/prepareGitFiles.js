@@ -35,7 +35,7 @@ const prepareGitFiles = (imageCollection) => {
 
   toUpload.push(
     {
-      destination: 'readme.md',
+      destination: 'README.md',
       blob: new Blob([...md], { type: 'text/plain' }),
     },
     {
