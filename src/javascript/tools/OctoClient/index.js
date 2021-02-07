@@ -117,10 +117,10 @@ class OctoClient extends EventEmitter {
       ));
   }
 
-  getBlob(sha) {
+  getBlob(sha, index, total) {
     this.progressTick();
 
-    return this.addToQueue(`git.getBlob ${sha}`, this.throttle, () => ( // queue wrapper
+    return this.addToQueue(`git.getBlob (${index + 1}/${total}) ${sha}`, this.throttle, () => ( // queue wrapper
       this.octoKit.git.getBlob({
         owner: this.owner,
         repo: this.repo,
