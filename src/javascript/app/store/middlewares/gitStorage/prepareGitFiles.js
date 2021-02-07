@@ -1,12 +1,12 @@
 import mime from 'mime-types';
 import getSettings from '../../../../tools/getSettings';
 
-const prepareGitFiles = (imageCollection) => {
+const prepareGitFiles = (fileCollection) => {
   const toUpload = [];
 
   const stats = {};
 
-  imageCollection.forEach(({ hash, files, hashes }) => {
+  fileCollection.forEach(({ hash, files, hashes }) => {
     toUpload.push(...files.map(({ blob, title, folder }) => {
       const extension = mime.extension(blob.type);
 
