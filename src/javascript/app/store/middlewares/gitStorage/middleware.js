@@ -47,8 +47,8 @@ const middleware = (store) => (action) => {
         switch (action.payload) {
           case 'up':
             return getUploadImages(state, addToQueue('GBPrinter'))
-              .then(({ missingLocally, imageCollection }) => {
-                const gitFiles = prepareGitFiles(imageCollection);
+              .then(({ missingLocally, fileCollection }) => {
+                const gitFiles = prepareGitFiles(fileCollection);
                 return filterDeleteNew(repoContents, gitFiles, missingLocally);
               })
               .then((changes) => (
