@@ -29,7 +29,7 @@
     "copy-webpack-plugin": "^6.0.3",
     "core-js": "^3.6.5",
     "css-loader": "^3.6.0",
-    "dayjs": "^1.8.28",
+    "dayjs": "^1.10.4",
     "debounce": "^1.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",

@@ -1,3 +1,4 @@
+import Queue from 'promise-queue';
 import OctoClient from '../../../../tools/OctoClient';
 import getUploadImages from './getUploadImages';
 import prepareGitFiles from './prepareGitFiles';
@@ -5,17 +6,36 @@ import filterDeleteNew from './filterDeleteNew';
 import saveLocalStorageItems from './saveLocalStorageItems';
 
 let octoClient;
+let addToQueue = () => {};
 
 const init = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();
-  octoClient = new OctoClient(gitStorageSettings);
 
-  octoClient.on('progress', (progress) => {
-    store.dispatch({
-      type: 'GITSTORAGE_PROGRESS',
-      payload: progress,
-    });
-  });
+  const queue = new Queue(1, Infinity);
+  addToQueue = (who, throttle) => (what, fn) => (
+    queue.add(() => (
+      new Promise((resolve, reject) => {
+        window.setTimeout(() => {
+
+          store.dispatch({
+            type: 'GITSTORAGE_LOG_ACTION',
+            payload: {
+              timestamp: (new Date()).getTime() / 1000,
+              message: `${who} runs ${what}`,
+            },
+          });
+
+          fn()
+            .then(resolve)
+            .catch(reject);
+        }, throttle);
+      })
+    ))
+  );
+
+  octoClient = new OctoClient(gitStorageSettings, addToQueue('OctoClient', 333));
+
+  // octoClient.on('progress', (progress) => {});
 };
 
 
@@ -27,7 +47,7 @@ const middleware = (store) => (action) => {
       .then((repoContents) => {
         switch (action.payload) {
           case 'up':
-            return getUploadImages(state)
+            return getUploadImages(state, addToQueue('GBPrinter', 2))
               .then(({ missingLocally, imageCollection }) => {
                 const gitFiles = prepareGitFiles(imageCollection);
                 return filterDeleteNew(repoContents, gitFiles, missingLocally);

@@ -8,7 +8,7 @@ import { dateFormatReadable } from '../../app/defaults';
 // https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
 
 class OctoClient extends EventEmitter {
-  constructor(gitSetings = {}) {
+  constructor(gitSetings = {}, addToQueue) {
     super();
     this.octoKit = null;
     this.busy = false;
@@ -17,7 +17,8 @@ class OctoClient extends EventEmitter {
     this.branch = null;
     this.token = null;
     this.progress = 0;
-    this.expectedTicks = 0;
+    this.queueLength = 0;
+    this.addToQueue = addToQueue;
     this.setOctokit(gitSetings);
   }
 
@@ -41,31 +42,29 @@ class OctoClient extends EventEmitter {
   }
 
   progressStart(fileCount) {
-    this.busy = true;
+    this.queueLength = fileCount + 7;
     this.emit('starting', {
       progress: 0,
-      busy: this.busy,
+      queueLength: this.queueLength,
     });
-    this.expectedTicks = fileCount + 7;
     this.progressTick();
   }
 
   progressTick(done = false) {
-    if (!this.octoKit) {
-      throw new Error('not configured');
-    }
-
     this.progress = done ? 0 : this.progress + 1;
 
     this.emit('progress', {
-      progress: this.progress / this.expectedTicks,
-      busy: !done && this.busy,
+      progress: this.progress,
+      queueLength: this.queueLength,
     });
+
+    if (done) {
+      this.queueLength = 0;
+    }
   }
 
   getRepoContents() {
-    // eslint-disable-next-line brace-style
-    try { this.progressTick(); } catch (error) { return Promise.reject(error); }
+    this.progressTick();
 
     const get = [
       { path: 'images', value: [] },
@@ -75,12 +74,14 @@ class OctoClient extends EventEmitter {
       { path: 'settings.json', value: {} },
     ];
 
-    return this.octoKit.repos.getContent({
-      owner: this.owner,
-      repo: this.repo,
-      ref: `heads/${this.branch}`,
-      path: '',
-    })
+    return this.addToQueue('repos.getContent /', () => ( // queue wrapper
+      this.octoKit.repos.getContent({
+        owner: this.owner,
+        repo: this.repo,
+        ref: `heads/${this.branch}`,
+        path: '',
+      })
+    )) // queue wrapper
       .then(({ data: root }) => (
         Promise.all(get.map(({ path, value }) => {
 
@@ -88,12 +89,14 @@ class OctoClient extends EventEmitter {
             return Promise.resolve({ path, value });
           }
 
-          return this.octoKit.repos.getContent({
-            owner: this.owner,
-            repo: this.repo,
-            ref: `heads/${this.branch}`,
-            path,
-          })
+          return this.addToQueue(`repos.getContent /${path}`, () => ( // queue wrapper
+            this.octoKit.repos.getContent({
+              owner: this.owner,
+              repo: this.repo,
+              ref: `heads/${this.branch}`,
+              path,
+            })
+          )) // queue wrapper
             .then(({ data }) => ({
               path,
               value: data.type === 'file' ? JSON.parse(atob(data.content)) : data,
@@ -112,29 +115,36 @@ class OctoClient extends EventEmitter {
   }
 
   getBlob(sha) {
-    return this.octoKit.git.getBlob({
-      owner: this.owner,
-      repo: this.repo,
-      file_sha: sha,
-    })
+    this.progressTick();
+
+    return this.addToQueue(`git.getBlob ${sha}`, () => ( // queue wrapper
+      this.octoKit.git.getBlob({
+        owner: this.owner,
+        repo: this.repo,
+        file_sha: sha,
+      })
+    )) // queue wrapper
       .then(({ data: { content } }) => atob(content));
   }
 
   getCurrentCommit() {
-    // eslint-disable-next-line brace-style
-    try { this.progressTick(); } catch (error) { return Promise.reject(error); }
+    this.progressTick();
 
-    return this.octoKit.git.getRef({
-      owner: this.owner,
-      repo: this.repo,
-      ref: `heads/${this.branch}`,
-    })
+    return this.addToQueue(`git.getRef heads/${this.branch}`, () => ( // queue wrapper
+      this.octoKit.git.getRef({
+        owner: this.owner,
+        repo: this.repo,
+        ref: `heads/${this.branch}`,
+      })
+    )) // queue wrapper
       .then(({ data: { object: { sha: commitSha } } }) => (
-        this.octoKit.git.getCommit({
-          owner: this.owner,
-          repo: this.repo,
-          commit_sha: commitSha,
-        })
+        this.addToQueue(`git.getCommit ${commitSha}`, () => ( // queue wrapper
+          this.octoKit.git.getCommit({
+            owner: this.owner,
+            repo: this.repo,
+            commit_sha: commitSha,
+          })
+        )) // queue wrapper
           .then(({ data: commitData }) => ({
             commitSha,
             treeSha: commitData.tree.sha,
@@ -142,9 +152,8 @@ class OctoClient extends EventEmitter {
       ));
   }
 
-  createBlobForFile({ destination, blob }) {
-    // eslint-disable-next-line brace-style
-    try { this.progressTick(); } catch (error) { return Promise.reject(error); }
+  createBlobForFile({ destination, blob }, index, total) {
+    this.progressTick();
 
     return new Promise(((resolve) => {
       const reader = new FileReader();
@@ -158,12 +167,14 @@ class OctoClient extends EventEmitter {
         const rawContentStart = content.indexOf(';base64,') + 8;
         const rawContent = content.substr(rawContentStart);
 
-        return this.octoKit.git.createBlob({
-          owner: this.owner,
-          repo: this.repo,
-          content: rawContent,
-          encoding: 'base64',
-        })
+        return this.addToQueue(`git.createBlob (${index + 1}/${total}) ${destination}`, () => ( // queue wrapper
+          this.octoKit.git.createBlob({
+            owner: this.owner,
+            repo: this.repo,
+            content: rawContent,
+            encoding: 'base64',
+          })
+        )) // queue wrapper
           .then(({ data: blobData }) => ({
             filename: destination,
             blobData,
@@ -172,8 +183,7 @@ class OctoClient extends EventEmitter {
   }
 
   createNewTree({ files, del }, parentTreeSha) {
-    // eslint-disable-next-line brace-style
-    try { this.progressTick(); } catch (error) { return Promise.reject(error); }
+    this.progressTick();
 
     const newFiles = files.map(({ filename, blobData: { sha } }) => ({
       path: filename,
@@ -188,53 +198,59 @@ class OctoClient extends EventEmitter {
       sha: null,
     }));
 
-    return this.octoKit.git.createTree({
-      owner: this.owner,
-      repo: this.repo,
-      tree: [...newFiles, ...deleteFiles],
-      base_tree: parentTreeSha,
-    })
+    return this.addToQueue(`git.createTree ${parentTreeSha}`, () => ( // queue wrapper
+      this.octoKit.git.createTree({
+        owner: this.owner,
+        repo: this.repo,
+        tree: [...newFiles, ...deleteFiles],
+        base_tree: parentTreeSha,
+      })
+    )) // queue wrapper
       .then(({ data }) => data);
   }
 
   createNewCommit(message, currentTreeSha, currentCommitSha) {
-    // eslint-disable-next-line brace-style
-    try { this.progressTick(); } catch (error) { return Promise.reject(error); }
+    this.progressTick();
 
-    return this.octoKit.git.createCommit({
-      owner: this.owner,
-      repo: this.repo,
-      message,
-      tree: currentTreeSha,
-      parents: [currentCommitSha],
-    })
+    return this.addToQueue(`git.createCommit ${message}`, () => ( // queue wrapper
+      this.octoKit.git.createCommit({
+        owner: this.owner,
+        repo: this.repo,
+        message,
+        tree: currentTreeSha,
+        parents: [currentCommitSha],
+      })
+    )) // queue wrapper
       .then(({ data }) => data);
   }
 
   setBranchToCommit(commitSha) {
-    // eslint-disable-next-line brace-style
-    try { this.progressTick(); } catch (error) { return Promise.reject(error); }
+    this.progressTick();
 
-    return this.octoKit.git.updateRef({
-      owner: this.owner,
-      repo: this.repo,
-      ref: `heads/${this.branch}`,
-      sha: commitSha,
-    })
+    return this.addToQueue(`git.updateRef ${commitSha}`, () => ( // queue wrapper
+      this.octoKit.git.updateRef({
+        owner: this.owner,
+        repo: this.repo,
+        ref: `heads/${this.branch}`,
+        sha: commitSha,
+      })
+    )) // queue wrapper
       .then(({ data }) => data);
   }
 
   uploadToRepo({ upload, del }) {
-    // eslint-disable-next-line brace-style
-    try { this.progressTick(); } catch (error) { return Promise.reject(error); }
+    if (!this.octoKit) {
+      return Promise.reject(new Error('OctoClient not configured'));
+    }
 
-    const commitMessage = `Sync. ${dayjs()
-      .format(dateFormatReadable)}`;
+    const commitMessage = `Sync. ${dayjs().format(dateFormatReadable)}`;
+
+    const uploadLength = upload.length;
 
     return this.getCurrentCommit()
       .then(({ treeSha, commitSha }) => (
-        Promise.all(upload.map((file) => (
-          this.createBlobForFile(file)
+        Promise.all(upload.map((file, index) => (
+          this.createBlobForFile(file, index, uploadLength)
         )))
           .then((filesData) => (
             this.createNewTree({
@@ -262,6 +278,8 @@ class OctoClient extends EventEmitter {
     }
 
     this.progressStart(upload.length);
+    this.busy = true;
+
     return this.uploadToRepo({ upload, del })
       .then(() => {
         this.progressTick(true);

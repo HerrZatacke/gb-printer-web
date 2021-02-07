@@ -85,7 +85,7 @@ const Navigation = (props) => {
               title="Synchronize to GitHub"
               className="navigation__link navigation__link--icon"
               onClick={() => props.startSync('up')}
-              disabled={props.gitStatus.busy}
+              disabled={props.gitBusy}
             >
               <SVG name="sync" className="svg--180" />
             </button>
@@ -94,19 +94,10 @@ const Navigation = (props) => {
               title="Synchronize from GitHub"
               className="navigation__link navigation__link--icon"
               onClick={() => props.startSync('down')}
-              disabled={props.gitStatus.busy}
+              disabled={props.gitBusy}
             >
               <SVG name="sync" />
             </button>
-            { props.gitStatus.busy ? (
-              <div
-                className="navigation__progress"
-                role="progressbar"
-                style={{
-                  width: `${props.gitStatus.progress * 100}%`,
-                }}
-              />
-            ) : null }
           </li>
         ) : null}
       </ul>
@@ -123,10 +114,7 @@ Navigation.propTypes = {
   importQueueSize: PropTypes.number.isRequired,
   startSync: PropTypes.func.isRequired,
   useGit: PropTypes.bool.isRequired,
-  gitStatus: PropTypes.shape({
-    busy: PropTypes.bool.isRequired,
-    progress: PropTypes.number.isRequired,
-  }).isRequired,
+  gitBusy: PropTypes.bool.isRequired,
 };
 
 Navigation.defaultProps = {

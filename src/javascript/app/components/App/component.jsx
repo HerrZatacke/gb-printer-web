@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Navigation from '../Navigation';
+import GitLogBox from '../GitLogBox';
 import InfoBox from '../InfoBox';
 import Confirmation from '../Confirmation';
 import EditForm from '../EditForm';
@@ -88,6 +89,7 @@ const App = (props) => (
         </Route>
       </Switch>
     </div>
+    <GitLogBox />
     <InfoBox />
     <Confirmation />
     <EditForm />

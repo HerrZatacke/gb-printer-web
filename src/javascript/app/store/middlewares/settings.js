@@ -20,7 +20,7 @@ const mergeSettings = (dispatch, state, newSettings) => {
 
   dispatch({
     type: 'GLOBAL_UPDATE',
-    payload: cleanState(mergeStates(state, newSettings.state)),
+    payload: cleanState(mergeStates(state, newSettings.state || {})),
   });
 };
 

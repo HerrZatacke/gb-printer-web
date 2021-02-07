@@ -1,10 +1,9 @@
-import Queue from 'promise-queue';
 import getPrepareFiles from '../../../../tools/download/getPrepareFiles';
 import loadImageTiles from '../../../../tools/loadImageTiles';
 import getImagePalette from '../../../../tools/getImagePalette';
 import { loadFrameData } from '../../../../tools/applyFrame/frameData';
 
-const getUploadImages = (state) => {
+const getUploadImages = (state, addToQueue) => {
   // const { exportScaleFactors, exportFileTypes, exportCropFrame } = state;
   const prepareFiles = getPrepareFiles({
     ...state,
@@ -15,23 +14,13 @@ const getUploadImages = (state) => {
 
   const missingLocally = [];
 
-  const queue = new Queue(1, Infinity);
-  const qAdd = (fn) => (
-    queue.add(() => (
-      new Promise((resolve, reject) => {
-        window.setTimeout(() => {
-          fn()
-            .then(resolve)
-            .catch(reject);
-        }, 2);
-      })
-    ))
-  );
+  const imagesLength = state.images.length;
+  const framesLength = state.frames.length;
 
   return Promise.all([
     ...state.images
-      .map((image) => (
-        qAdd(() => (
+      .map((image, index) => (
+        addToQueue(`loadImageTiles (${index + 1}/${imagesLength}) ${image.title}`, () => (
           loadImageTiles(image, state, true)
             .then((tiles) => {
               if (!tiles.length) {
@@ -50,8 +39,8 @@ const getUploadImages = (state) => {
         ))
       )),
     ...state.frames
-      .map((frame) => (
-        qAdd(() => (
+      .map((frame, index) => (
+        addToQueue(`loadFrameData (${index + 1}/${framesLength}) ${frame.id}`, () => (
           loadFrameData(frame.id)
             .then((fd) => ({
               ...frame,

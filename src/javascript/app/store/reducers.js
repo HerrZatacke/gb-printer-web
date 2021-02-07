@@ -11,7 +11,8 @@ import filter from './reducers/filtersReducer';
 import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
-import gitStatus from './reducers/gitStatusReducer';
+import gitBusy from './reducers/gitBusyReducer';
+import gitLog from './reducers/gitLogReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import globalIndex from './reducers/globalIndexReducer';
 import hideDates from './reducers/hideDatesReducer';
@@ -48,7 +49,8 @@ export default combineReducers({
   frames,
   framesMessage,
   galleryView,
-  gitStatus,
+  gitBusy,
+  gitLog,
   gitStorage,
   globalIndex,
   hideDates,

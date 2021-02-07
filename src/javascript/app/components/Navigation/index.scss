@@ -120,14 +120,4 @@
       padding: 14px;
     }
   }
-
-  &__progress {
-    position: absolute;
-    height: 6px;
-    pointer-events: none;
-    background: $color-secondary;
-    bottom: 0;
-    left: 0;
-    transition: width 500ms ease-in-out;
-  }
 }

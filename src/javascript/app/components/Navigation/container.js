@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   importQueueSize: state.importQueueSize,
-  gitStatus: state.gitStatus,
+  gitBusy: state.gitBusy,
   useGit: !!(
     state.gitStorage.use &&
     state.gitStorage.owner &&

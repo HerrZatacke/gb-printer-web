@@ -1,0 +1,32 @@
+.git-log {
+
+  &__header {
+    margin-bottom: 0;
+  }
+
+  &__box-content {
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__messages {
+    flex-basis: 100%;
+    flex-grow: 2;
+    padding: 20px;
+    font-size: 12px;
+    line-height: 16px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  &__message {
+    white-space: nowrap;
+  }
+
+  &__duration {
+    padding: 10px 20px 0 20px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
