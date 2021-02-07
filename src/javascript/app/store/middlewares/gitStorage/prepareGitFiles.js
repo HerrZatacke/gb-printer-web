@@ -4,12 +4,18 @@ import getSettings from '../../../../tools/getSettings';
 const prepareGitFiles = (imageCollection) => {
   const toUpload = [];
 
+  const stats = {};
+
   imageCollection.forEach(({ hash, files, hashes }) => {
     toUpload.push(...files.map(({ blob, title, folder }) => {
       const extension = mime.extension(blob.type);
 
+      const repoFolder = folder || extension;
+
+      stats[repoFolder] = stats[repoFolder] ? stats[repoFolder] + 1 : 1;
+
       return ({
-        destination: `${folder || extension}/${hash}.${extension}`,
+        destination: `${repoFolder}/${hash}.${extension}`,
         blob,
         extension,
         title,
@@ -18,7 +24,7 @@ const prepareGitFiles = (imageCollection) => {
     }));
   });
 
-  const md = toUpload
+  const imagelist = toUpload
     .filter(({ extension }) => extension === 'png')
     .map(({
       destination,
@@ -29,6 +35,14 @@ const prepareGitFiles = (imageCollection) => {
         `[![${title}](${destination} "${title}")](images/${hash}.txt)` :
         `![${title}](${destination} "${title}")`
     ))
+    .join('\n');
+
+  const md = [
+    '## Files in this repo:',
+    ...Object.keys(stats).map((folder) => ` * ${folder}: [${stats[folder]}](/${folder})`),
+    '## Images:',
+    imagelist,
+  ]
     .join('\n');
 
   const remoteSettings = getSettings('remote');
