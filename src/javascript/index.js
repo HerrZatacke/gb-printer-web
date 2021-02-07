@@ -1,7 +1,5 @@
 import '../scss/index.scss';
 import isTouchDevice from './tools/isTouchDevice';
-
-import initApp from './app/initApp';
 import { loadEnv } from './tools/getEnv';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,7 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
           document.querySelector('body').classList.add('no-touch');
         }
 
-        initApp();
+        import(/* webpackChunkName: "iap" */'./app/initApp')
+          .then(({ default: initApp }) => {
+            initApp();
+          });
       });
   } catch (error) {
     // eslint-disable-next-line no-alert
