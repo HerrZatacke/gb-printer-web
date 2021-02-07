@@ -1,10 +1,10 @@
-import uniqe from '../../../tools/unique';
+import unique from '../../../tools/unique';
 
 const exportFileTypesReducer = (value = ['png'], action) => {
   switch (action.type) {
     case 'UPDATE_EXPORT_FILE_TYPES':
       if (action.payload.checked) {
-        return uniqe([...value, action.payload.fileType]);
+        return unique([...value, action.payload.fileType]);
       }
 
       return value.filter((fileType) => (

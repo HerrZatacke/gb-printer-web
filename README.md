@@ -74,15 +74,6 @@ If you set the option `gzip` to `true`, each file will be separately compressed.
 }
 ```
 
-## ToDos
-* User manual
-* Global Storage for images 
-* Edit palettes
-* Other blendmodes than multiply for RGB-Images
-* trash bin for raw-data of deleted images (must implement global storage first for this)
-* Allow some gesture/swipe in gallery on touch devices
-* Translations
-
 ## Future Plans
 This tool is partially integrated into the [WiFi GBP Emulator](https://herrzatacke.github.io/wifi-gbp-emulator/), for which, you'll best [use the latest release](https://github.com/HerrZatacke/gb-printer-web/releases)
 

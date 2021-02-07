@@ -1,11 +1,11 @@
-import uniqe from '../../../tools/unique';
+import unique from '../../../tools/unique';
 import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB } from '../../../consts/specialTags';
 
 const updateAvailableTags = (store) => {
   const state = store.getState();
   store.dispatch({
     type: 'SET_AVAILABLE_TAGS',
-    payload: uniqe(state.images.map(({ tags }) => tags).flat())
+    payload: unique(state.images.map(({ tags }) => tags).flat())
       .filter((tag) => (
         ![FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB].includes(tag)
       )),

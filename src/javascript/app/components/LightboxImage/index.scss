@@ -1,6 +1,6 @@
 .lightbox-image {
 
-  @media (max-width: 480px) {
+  @media (max-width: $breakpoint-mobile) {
     justify-content: center;
   }
 

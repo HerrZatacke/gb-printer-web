@@ -1,13 +1,9 @@
-const unique = (images) => (
-  images.filter((image, index) => (
-    images.findIndex(({ hash }) => hash === image.hash) === index
-  ))
-);
+import uniqueBy from '../../../tools/unique/by';
 
 const imagesReducer = (value = [], action) => {
   switch (action.type) {
     case 'ADD_IMAGE':
-      return unique([...value, action.payload]);
+      return uniqueBy('hash')([...value, action.payload]);
     case 'DELETE_IMAGE':
       return [...value.filter(({ hash }) => hash !== action.payload)];
     case 'DELETE_IMAGES':
@@ -22,7 +18,7 @@ const imagesReducer = (value = [], action) => {
         action.payload.find((changedImage) => (changedImage.hash === image.hash)) || image
       ));
     case 'GLOBAL_UPDATE':
-      return unique([...value, ...action.payload.images]);
+      return uniqueBy('hash')(action.payload.images);
     default:
       return value;
   }

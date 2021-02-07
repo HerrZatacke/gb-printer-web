@@ -1,74 +1,12 @@
 import { download } from '../../../tools/download';
 import cleanState from '../../../tools/cleanState';
-
-const getSettings = (what) => {
-  const storedImages = Object.keys(localStorage)
-    .filter((key) => (
-      key !== 'gbp-web-state' &&
-      key.startsWith('gbp-web-') &&
-      !key.startsWith('gbp-web-frame-')
-    ))
-    .map((key) => key.replace(/^gbp-web-/gi, ''));
-
-  const storedFrames = Object.keys(localStorage)
-    .filter((key) => (key.startsWith('gbp-web-frame-')))
-    .map((key) => key.replace(/^gbp-web-frame-/gi, ''));
-
-  const state = JSON.parse(localStorage.getItem('gbp-web-state'));
-
-  const images = {};
-  if (what === 'images' || what === 'full') {
-    storedImages.forEach((imageHash) => {
-      images[imageHash] = localStorage.getItem(`gbp-web-${imageHash}`);
-    });
-  }
-
-  const frames = {};
-  if (what === 'frames' || what === 'full') {
-    storedFrames.forEach((frameId) => {
-      frames[`frame-${frameId}`] = localStorage.getItem(`gbp-web-frame-${frameId}`);
-    });
-  }
-
-  switch (what) {
-    case 'debug':
-      return JSON.stringify({ state }, null, 2);
-    case 'settings':
-      delete state.images;
-      delete state.frames;
-      delete state.imageSelection;
-      delete state.rgbnImages;
-      delete state.activePalette;
-      return JSON.stringify({ state }, null, 2);
-    case 'images':
-      return JSON.stringify({
-        state: {
-          images: state.images,
-        },
-        ...images,
-      }, null, 2);
-    case 'frames':
-      return JSON.stringify({
-        state: {
-          frames: state.frames,
-        },
-        ...frames,
-      }, null, 2);
-    case 'full':
-      delete state.imageSelection;
-      delete state.rgbnImages;
-      delete state.activePalette;
-      return JSON.stringify({ state, ...images }, null, 2);
-    default:
-      return null;
-  }
-};
+import getSettings from '../../../tools/getSettings';
+import mergeStates from '../../../tools/mergeStates';
 
 const downloadSettings = (what) => {
   const settings = getSettings(what);
   download(null)([{
     blob: new Blob(new Array(settings)),
-    arrayBuffer: null,
     filename: `${what}.json`,
   }]);
 };
@@ -82,10 +20,7 @@ const mergeSettings = (dispatch, state, newSettings) => {
 
   dispatch({
     type: 'GLOBAL_UPDATE',
-    payload: cleanState({
-      ...state,
-      ...newSettings.state,
-    }),
+    payload: cleanState(mergeStates(state, newSettings.state)),
   });
 };
 

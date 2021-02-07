@@ -1,18 +1,18 @@
 import { load } from '../storage';
 import getRGBNFrames from '../getRGBNFrames';
 
-const loadImageTiles = ({ hash, frame, hashes }, state) => {
+const loadImageTiles = ({ hash, frame, hashes }, state, noDummy) => {
   if (!hashes) {
-    return load(hash, frame);
+    return load(hash, frame, noDummy);
   }
 
   const frames = getRGBNFrames(state, hashes, frame);
 
   return Promise.all([
-    load(hashes.r, frames.r || frame),
-    load(hashes.g, frames.g || frame),
-    load(hashes.b, frames.b || frame),
-    load(hashes.n, frames.n || frame),
+    load(hashes.r, frames.r || frame, noDummy),
+    load(hashes.g, frames.g || frame, noDummy),
+    load(hashes.b, frames.b || frame, noDummy),
+    load(hashes.n, frames.n || frame, noDummy),
   ]);
 };
 

@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: space-around;
 
-  @media (max-width: 480px) {
+  @media (max-width: $breakpoint-mobile) {
     justify-content: flex-start;
   }
 
@@ -36,7 +36,7 @@
       padding-bottom: 60px;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-mobile) {
       width: 100vw;
       min-width: 320px;
       border-radius: 0;

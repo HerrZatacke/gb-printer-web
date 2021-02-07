@@ -7,6 +7,7 @@ const mapStateToProps = (state) => ({
   exportScaleFactors: state.exportScaleFactors,
   exportFileTypes: state.exportFileTypes,
   pageSize: state.pageSize,
+  gitStorage: state.gitStorage,
   savFrameTypes: state.savFrameTypes,
   savFrameGroups: getFrameGroups(state.frames),
   exportCropFrame: state.exportCropFrame,
@@ -48,6 +49,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'SET_PAGESIZE',
       payload: pageSize,
+    });
+  },
+  setGitStorage(gitStorage) {
+    dispatch({
+      type: 'SET_GIT_STORAGE',
+      payload: gitStorage,
     });
   },
   exportSettings(what) {

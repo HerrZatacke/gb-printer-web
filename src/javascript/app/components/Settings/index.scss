@@ -84,8 +84,24 @@
     &:disabled {
       opacity: 0.3;
     }
+
+    &--password {
+      margin-right: 4px;
+    }
   }
 
+  &__show-password-button {
+    border: none;
+    background: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    fill: currentColor;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
 
   &__button {
     flex-basis: 80px;
@@ -94,10 +110,10 @@
     margin: 5px 0 5px 20px;
     min-height: 40px;
     color: $color-text-bright;
+    fill: currentColor;
     background: $color-primary;
     border: none;
     cursor: pointer;
-
 
     &:hover {
       background: $color-secondary;

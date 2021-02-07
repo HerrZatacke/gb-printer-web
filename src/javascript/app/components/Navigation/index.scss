@@ -9,7 +9,7 @@
   &__burger-button {
     display: none;
 
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-mobile) {
       display: block;
       width: 60px;
       height: 60px;
@@ -33,19 +33,34 @@
     width: 100vw;
     display: flex;
 
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-mobile) {
       flex-direction: column;
       display: none;
     }
   }
 
-  &--mobile-open &__list {
-    display: block;
+  @media (max-width: $breakpoint-mobile) {
+    &--mobile-open &__list {
+      display: block;
+    }
   }
 
   &__entry{
     position: relative;
+    fill: $color-text-bright;
+    display: block;
 
+    &--buttons {
+      display: flex;
+
+      > * {
+        flex: auto 1 1;
+        text-align: left;
+        outline: none;
+        padding-right: 8px;
+        padding-left: 8px;
+      }
+    }
   }
 
   &__queuesize {
@@ -66,7 +81,7 @@
     top: 10px;
     background-color: rgba($color-white, 0.15);
 
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-mobile) {
       height: 1px;
       width: 100vw;
       right: unset;
@@ -81,10 +96,38 @@
     line-height: 20px;
     color: $color-text-bright;
 
+    // For buttons in navi
+    background: none;
+    font-family: inherit;
+    font-size: inherit;
+    border: none;
+
     &--active,
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: $color-secondary;
       color: $color-text-bright;
+      cursor: pointer;
     }
+
+    &:disabled {
+      color: $color-grey-50;
+      opacity: 0.5;
+    }
+
+    &--icon {
+      width: 60px;
+      height: 60px;
+      padding: 14px;
+    }
+  }
+
+  &__progress {
+    position: absolute;
+    height: 6px;
+    pointer-events: none;
+    background: $color-secondary;
+    bottom: 0;
+    left: 0;
+    transition: width 500ms ease-in-out;
   }
 }

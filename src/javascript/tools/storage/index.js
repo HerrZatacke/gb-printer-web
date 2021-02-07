@@ -34,7 +34,7 @@ const save = (lineBuffer) => (
     ))
 );
 
-const load = (dataHash, frame) => {
+const load = (dataHash, frame, noDummy) => {
   if (!dataHash) {
     return Promise.resolve(null);
   }
@@ -55,7 +55,7 @@ const load = (dataHash, frame) => {
           const inflated = pako.inflate(binary, { to: 'string' });
           return inflated.split('\n');
         } catch (error) {
-          return dummyImage(dataHash);
+          return noDummy ? [] : dummyImage(dataHash);
         }
       })
   ).then((tiles) => {

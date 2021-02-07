@@ -1,4 +1,4 @@
-import defaults from '../defaults';
+import { definitions } from '../defaults';
 
 const saveState = (store) => (next) => (action) => {
   next(action);
@@ -6,9 +6,9 @@ const saveState = (store) => (next) => (action) => {
   const state = store.getState();
   const savedState = {};
 
-  Object.keys(defaults)
-    .forEach((key) => {
-      if (key === 'palettes') {
+  definitions
+    .forEach(({ key, saveLocally }) => {
+      if (!saveLocally) {
         return;
       }
 
