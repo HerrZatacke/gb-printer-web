@@ -14,7 +14,7 @@ const filterDeleteNew = ({ images, png, palettes, frames }, toUpload, toKeep, mi
       ...png,
     ]
       .filter(({ path }) => (
-        !toKeep.find(({ path: keepPath }) => path === keepPath) &&
+        !toKeep.find(({ destination }) => path === destination) &&
         !toUpload.find(({ destination }) => path === destination) &&
         !missingLocally.find((hash) => path.indexOf(hash) >= -1)
       )),
@@ -23,7 +23,7 @@ const filterDeleteNew = ({ images, png, palettes, frames }, toUpload, toKeep, mi
       ...palettes,
       ...frames,
     ].filter(({ path }) => (
-      !toKeep.find(({ path: keepPath }) => path === keepPath) &&
+      !toKeep.find(({ destination }) => path === destination) &&
       !toUpload.find(({ destination }) => path === destination)
     )),
 

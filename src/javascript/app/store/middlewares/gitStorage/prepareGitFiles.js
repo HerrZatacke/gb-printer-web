@@ -6,36 +6,33 @@ const prepareGitFiles = (fileCollection) => {
   const toKeep = [];
   const stats = {};
 
-  fileCollection.forEach(({ hash, files, hashes, inRepo }) => {
-    toKeep.push(...inRepo);
+  fileCollection.forEach(({ hash, files, inRepo }) => {
+    toKeep.push(...inRepo.map(({ path }) => {
+      const repoFolder = path.split('/')[0];
+      stats[repoFolder] = stats[repoFolder] ? stats[repoFolder] + 1 : 1;
 
-    toUpload.push(...files.map(({ blob, title, folder }) => {
+      return ({
+        destination: path,
+      });
+    }));
+
+    toUpload.push(...files.map(({ blob, folder }) => {
       const extension = mime.extension(blob.type);
       const repoFolder = folder || extension;
-
       stats[repoFolder] = stats[repoFolder] ? stats[repoFolder] + 1 : 1;
 
       return ({
         destination: `${repoFolder}/${hash}.${extension}`,
         blob,
-        extension,
-        title,
-        hash: hashes ? null : hash,
       });
     }));
   });
 
-  const imagelist = toUpload
-    .filter(({ extension }) => extension === 'png')
+  const imagelist = [...toUpload, ...toKeep]
+    .filter(({ destination }) => destination.endsWith('png'))
     .map(({
       destination,
-      hash,
-      title,
-    }) => (
-      hash ?
-        `[![${title}](${destination} "${title}")](images/${hash}.txt)` :
-        `![${title}](${destination} "${title}")`
-    ))
+    }) => (`![](${destination} "")`))
     .join('\n');
 
   const md = [
