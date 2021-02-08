@@ -1,7 +1,7 @@
 // ToDo: is an update possible for PNGs if palette has changed
-const filterDeleteNew = ({ images, png, palettes, frames }, files, missingLocally) => ({
+const filterDeleteNew = ({ images, png, palettes, frames }, toUpload, toKeep, missingLocally) => ({
   // remove all files from upload queue if they already exist remotely
-  upload: files.filter(({ destination }) => (
+  upload: toUpload.filter(({ destination }) => (
     !images.find(({ path }) => path === destination) &&
     !palettes.find(({ path }) => path === destination) &&
     !png.find(({ path }) => path === destination) &&
@@ -14,7 +14,8 @@ const filterDeleteNew = ({ images, png, palettes, frames }, files, missingLocall
       ...png,
     ]
       .filter(({ path }) => (
-        !files.find(({ destination }) => path === destination) &&
+        !toKeep.find(({ path: keepPath }) => path === keepPath) &&
+        !toUpload.find(({ destination }) => path === destination) &&
         !missingLocally.find((hash) => path.indexOf(hash) >= -1)
       )),
 
@@ -22,7 +23,8 @@ const filterDeleteNew = ({ images, png, palettes, frames }, files, missingLocall
       ...palettes,
       ...frames,
     ].filter(({ path }) => (
-      !files.find(({ destination }) => path === destination)
+      !toKeep.find(({ path: keepPath }) => path === keepPath) &&
+      !toUpload.find(({ destination }) => path === destination)
     )),
 
   ],

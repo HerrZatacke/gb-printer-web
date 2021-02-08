@@ -3,13 +3,14 @@ import getSettings from '../../../../tools/getSettings';
 
 const prepareGitFiles = (fileCollection) => {
   const toUpload = [];
-
+  const toKeep = [];
   const stats = {};
 
-  fileCollection.forEach(({ hash, files, hashes }) => {
+  fileCollection.forEach(({ hash, files, hashes, inRepo }) => {
+    toKeep.push(...inRepo);
+
     toUpload.push(...files.map(({ blob, title, folder }) => {
       const extension = mime.extension(blob.type);
-
       const repoFolder = folder || extension;
 
       stats[repoFolder] = stats[repoFolder] ? stats[repoFolder] + 1 : 1;
@@ -58,7 +59,10 @@ const prepareGitFiles = (fileCollection) => {
     },
   );
 
-  return toUpload.filter(Boolean);
+  return {
+    toUpload: toUpload.filter(Boolean),
+    toKeep: toKeep.filter(Boolean),
+  };
 };
 
 export default prepareGitFiles;
