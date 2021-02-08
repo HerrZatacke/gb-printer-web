@@ -82,7 +82,7 @@ const Navigation = (props) => {
           <li className="navigation__entry navigation__entry--buttons">
             <button
               type="button"
-              title="Synchronize to GitHub"
+              title={`Synchronize to GitHub\n${props.repoUrl}`}
               className="navigation__link navigation__link--icon"
               onClick={() => props.startSync('up')}
               disabled={props.gitBusy}
@@ -91,7 +91,7 @@ const Navigation = (props) => {
             </button>
             <button
               type="button"
-              title="Synchronize from GitHub"
+              title={`Synchronize from GitHub\n${props.repoUrl}`}
               className="navigation__link navigation__link--icon"
               onClick={() => props.startSync('down')}
               disabled={props.gitBusy}
@@ -115,6 +115,7 @@ Navigation.propTypes = {
   startSync: PropTypes.func.isRequired,
   useGit: PropTypes.bool.isRequired,
   gitBusy: PropTypes.bool.isRequired,
+  repoUrl: PropTypes.string.isRequired,
 };
 
 Navigation.defaultProps = {

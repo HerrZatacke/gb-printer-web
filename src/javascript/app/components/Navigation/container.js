@@ -11,6 +11,7 @@ const mapStateToProps = (state) => ({
     state.gitStorage.throttle &&
     state.gitStorage.token
   ),
+  repoUrl: `https://github.com/${state.gitStorage.owner}/${state.gitStorage.repo}/tree/${state.gitStorage.branch}`,
 });
 
 const mapDispatchToProps = (dispatch) => ({

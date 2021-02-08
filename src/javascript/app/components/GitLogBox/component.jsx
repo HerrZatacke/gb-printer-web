@@ -6,7 +6,7 @@ import Lightbox from '../Lightbox';
 
 dayjs.extend(duration);
 
-const GitLogBox = ({ messages, confirm }) => {
+const GitLogBox = ({ messages, confirm, repoUrl, repo, branch }) => {
   if (!messages.length) {
     return null;
   }
@@ -14,11 +14,13 @@ const GitLogBox = ({ messages, confirm }) => {
   const { timestamp: timeStart } = messages[messages.length - 1];
   const { timestamp: timeLatest, message: latestMessage } = messages[0];
 
+  const finished = latestMessage === '.';
+
   return (
     <Lightbox
       className="git-log"
-      header="Update Progress"
-      confirm={latestMessage === '.' ? confirm : null}
+      header={`${finished ? '✔️ Update done -' : '⏳ Updating...'} "${repo}/${branch}"`}
+      confirm={finished ? confirm : null}
     >
       <ul className="git-log__messages">
         {messages.map(({ message, timestamp }, index) => (
@@ -34,9 +36,19 @@ const GitLogBox = ({ messages, confirm }) => {
         ))}
       </ul>
       <div className="git-log__duration">
-        {`started: ${dayjs.unix(timeStart).format('HH:mm:ss')}`}
+        {`Started at: ${dayjs.unix(timeStart).format('HH:mm:ss')}`}
         <br />
-        {`running: ${dayjs.duration(timeLatest - timeStart, 'seconds').format('HH:mm:ss')}`}
+        {`${finished ? 'Finished after' : 'Running for'}: ${dayjs.duration(timeLatest - timeStart, 'seconds').format('HH:mm:ss')}`}
+        <br />
+        {'Repository: '}
+        <a
+          title={repoUrl}
+          href={repoUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open GitHub
+        </a>
       </div>
     </Lightbox>
   );
@@ -50,6 +62,9 @@ GitLogBox.propTypes = {
     }),
   ).isRequired,
   confirm: PropTypes.func.isRequired,
+  repoUrl: PropTypes.string.isRequired,
+  repo: PropTypes.string.isRequired,
+  branch: PropTypes.string.isRequired,
 };
 
 export default GitLogBox;
