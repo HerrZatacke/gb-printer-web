@@ -1,4 +1,5 @@
 import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
+import { localforageFrames } from '../localforageInstance';
 
 const saveFrameData = (frameId, imageTiles) => (
   import(/* webpackChunkName: "pko" */ 'pako')
@@ -16,14 +17,7 @@ const saveFrameData = (frameId, imageTiles) => (
         level: 8,
       });
 
-      try {
-        /* todo */localStorage.setItem(`gbp-web-frame-${frameId}`, compressed);
-      } catch (error) {
-        /* todo */localStorage.removeItem(`gbp-web-frame-${frameId}`, compressed);
-        /* todo */localStorage.setItem(`gbp-web-frame-base64-${frameId}`, btoa(compressed));
-      }
-
-      return true;
+      return localforageFrames.setItem(frameId, compressed);
     })
 );
 
