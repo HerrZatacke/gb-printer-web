@@ -95,7 +95,7 @@ class LightboxImage extends React.Component {
           invertPalette={this.props.invertPalette}
         />
         <div className="lightbox-image__navigation">
-          { this.props.index > 0 ? (
+          { this.props.lightboxIndex > 0 ? (
             <button
               type="button"
               className="lightbox-image__button lightbox-image__button--left"
@@ -104,7 +104,7 @@ class LightboxImage extends React.Component {
               <SVG name="left" />
             </button>
           ) : null }
-          { this.props.index < this.props.size - 1 ? (
+          { this.props.lightboxIndex < this.props.size - 1 ? (
             <button
               type="button"
               className="lightbox-image__button lightbox-image__button--right"
@@ -137,7 +137,7 @@ LightboxImage.propTypes = {
   next: PropTypes.func.isRequired,
   fullscreen: PropTypes.func.isRequired,
   isFullscreen: PropTypes.bool.isRequired,
-  index: PropTypes.number.isRequired,
+  lightboxIndex: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
 };
 

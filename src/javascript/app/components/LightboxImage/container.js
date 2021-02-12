@@ -4,7 +4,7 @@ import getFilteredImages from '../../../tools/getFilteredImages';
 
 const mapStateToProps = (state) => {
   const images = getFilteredImages(state);
-  const image = images.find((_, index) => index === state.lightboxImage);
+  const image = images.find((_, lightboxIndex) => lightboxIndex === state.lightboxImage);
   let palette;
   let frames;
 
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
       isFullscreen: false,
       lockFrame: false,
       invertPalette: false,
-      index: 0,
+      lightboxIndex: 0,
       size: 0,
     };
   }
@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
     isFullscreen: state.isFullscreen,
     palette,
     frames,
-    index: state.lightboxImage || 0,
+    lightboxIndex: state.lightboxImage || 0,
     size: images.length || 0,
     lockFrame: image.lockFrame || false,
     invertPalette: image.invertPalette || false,
