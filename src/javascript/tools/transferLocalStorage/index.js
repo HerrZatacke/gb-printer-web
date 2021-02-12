@@ -13,8 +13,8 @@ const transferLocalStorage = () => (
         newKey: key.replace(/^gbp-web-frame-/gi, ''),
       }))
       .forEach(({ key, newKey }) => {
-        localforageFrames.setItem(newKey, localStorage.getItem(key));
-        // localStorage.removeItem(key);
+        /* ok */localforageFrames.setItem(newKey, localStorage.getItem(key));
+        /* ok */// localStorage.removeItem(key);
       });
 
     // Migrate Images
@@ -29,8 +29,8 @@ const transferLocalStorage = () => (
         newKey: key.replace(/^gbp-web-/gi, ''),
       }))
       .forEach(({ key, newKey }) => {
-        localforageImages.setItem(newKey, localStorage.getItem(key));
-        // localStorage.removeItem(key);
+        /* ok */localforageImages.setItem(newKey, localStorage.getItem(key));
+        /* ok */// localStorage.removeItem(key);
       });
     resolve();
   }))

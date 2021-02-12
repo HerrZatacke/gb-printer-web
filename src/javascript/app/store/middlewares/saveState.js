@@ -15,7 +15,7 @@ const saveState = (store) => (next) => (action) => {
       savedState[key] = state[key];
     });
 
-  localStorage.setItem('gbp-web-state', JSON.stringify(savedState));
+  /* ok */localStorage.setItem('gbp-web-state', JSON.stringify(savedState));
 };
 
 export default saveState;

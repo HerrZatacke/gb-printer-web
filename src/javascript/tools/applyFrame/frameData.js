@@ -17,10 +17,10 @@ const saveFrameData = (frameId, imageTiles) => (
       });
 
       try {
-        localStorage.setItem(`gbp-web-frame-${frameId}`, compressed);
+        /* todo */localStorage.setItem(`gbp-web-frame-${frameId}`, compressed);
       } catch (error) {
-        localStorage.removeItem(`gbp-web-frame-${frameId}`, compressed);
-        localStorage.setItem(`gbp-web-frame-base64-${frameId}`, btoa(compressed));
+        /* todo */localStorage.removeItem(`gbp-web-frame-${frameId}`, compressed);
+        /* todo */localStorage.setItem(`gbp-web-frame-base64-${frameId}`, btoa(compressed));
       }
 
       return true;
@@ -32,10 +32,10 @@ const loadFrameData = (frameId) => {
     return Promise.resolve(null);
   }
 
-  let binary = localStorage.getItem(`gbp-web-frame-${frameId}`);
+  /* todo */let binary = localStorage.getItem(`gbp-web-frame-${frameId}`);
 
   if (!binary) {
-    binary = localStorage.getItem(`gbp-web-frame-base64-${frameId}`);
+    /* todo */binary = localStorage.getItem(`gbp-web-frame-base64-${frameId}`);
     if (binary) {
       binary = atob(binary);
     }
