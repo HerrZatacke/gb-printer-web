@@ -14,11 +14,12 @@ module.exports = () => ({
     fs: 'empty',
   },
   entry: {
-    main: [
-      path.join(process.cwd(), 'src', 'javascript', 'index.js'),
-    ],
     pf: [
       'babel-polyfill/dist/polyfill',
+      'whatwg-fetch',
+    ],
+    main: [
+      path.join(process.cwd(), 'src', 'javascript', 'index.js'),
     ],
   },
   module: {
