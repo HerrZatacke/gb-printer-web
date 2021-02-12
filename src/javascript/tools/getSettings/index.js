@@ -1,4 +1,6 @@
 import { definitions } from '../../app/store/defaults';
+import getImages from './getImages';
+import getFrames from './getFrames';
 
 const getSettings = (what) => {
   const storedImages = Object.keys(localStorage)
@@ -13,24 +15,10 @@ const getSettings = (what) => {
     .filter((key) => (key.startsWith('gbp-web-frame-')))
     .map((key) => key.replace(/^gbp-web-frame-/gi, ''));
 
-  const localStorageState = JSON.parse(localStorage.getItem('gbp-web-state'));
+  /* ok */const localStorageState = JSON.parse(localStorage.getItem('gbp-web-state'));
 
   // delete keys potentially containing passwords/tokens
   delete localStorageState.gitStorage;
-
-  const images = {};
-  if (what === 'images') {
-    storedImages.forEach((imageHash) => {
-      images[imageHash] = localStorage.getItem(`gbp-web-${imageHash}`);
-    });
-  }
-
-  const frames = {};
-  if (what === 'frames') {
-    storedFrames.forEach((frameId) => {
-      frames[`frame-${frameId}`] = localStorage.getItem(`gbp-web-frame-${frameId}`);
-    });
-  }
 
   const exportableState = {};
   definitions.forEach(({ saveExport, key }) => {
@@ -41,20 +29,26 @@ const getSettings = (what) => {
 
   switch (what) {
     case 'debug':
-      return JSON.stringify({ state: localStorageState }, null, 2);
+      return Promise.resolve(JSON.stringify({ state: localStorageState }, null, 2));
     case 'settings':
     case 'remote':
-      return JSON.stringify({ state: exportableState }, null, 2);
+      return Promise.resolve(JSON.stringify({ state: exportableState }, null, 2));
     case 'images':
-      return JSON.stringify({
-        state: exportableState,
-        ...images,
-      }, null, 2);
+      return getImages(storedImages)
+        .then((images) => (
+          JSON.stringify({
+            state: exportableState,
+            ...images,
+          }, null, 2)
+        ));
     case 'frames':
-      return JSON.stringify({
-        state: exportableState,
-        ...frames,
-      }, null, 2);
+      return getFrames(storedFrames)
+        .then((frames) => (
+          JSON.stringify({
+            state: exportableState,
+            ...frames,
+          }, null, 2)
+        ));
     default:
       return null;
   }
