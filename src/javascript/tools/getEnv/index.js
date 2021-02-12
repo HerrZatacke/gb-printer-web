@@ -1,9 +1,5 @@
-import localforage from 'localforage';
-
-localforage.config({
-  name: 'GB Printer Web',
-  storeName: 'gb-printer-web',
-});
+import { localforageImages } from '../localforageInstance';
+import transferLocalStorage from '../transferLocalStorage';
 
 let envData = null;
 
@@ -12,26 +8,29 @@ const loadEnv = () => {
     return Promise.resolve(envData);
   }
 
-  return localforage.ready()
+  return localforageImages.ready()
     .then(() => (
-      fetch('./env.json')
-        .then((res) => res.json())
-        .catch(() => ({
-          version: '0.0.0',
-          maximages: 0,
-          localforage: 'error',
-          env: 'error',
-          fstype: '-',
-          bootmode: '-',
-          oled: false,
-        }))
-        .then((env) => {
-          envData = {
-            ...env,
-            localforage: localforage.driver(), // localStorageWrapper or asyncStorage or webSQLStorage
-          };
-        })
-    ));
+      transferLocalStorage()
+        .then(() => (
+          fetch('./env.json')
+            .then((res) => res.json())
+            .catch(() => ({
+              version: '0.0.0',
+              maximages: 0,
+              localforage: 'error',
+              env: 'error',
+              fstype: '-',
+              bootmode: '-',
+              oled: false,
+            }))
+            .then((env) => {
+              envData = {
+                ...env,
+                localforage: localforageImages.driver(), // localStorageWrapper or asyncStorage or webSQLStorage
+              };
+            })
+        ))
+      ));
 };
 
 const getEnv = () => envData;

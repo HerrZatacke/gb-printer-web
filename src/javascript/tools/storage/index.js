@@ -1,11 +1,17 @@
 import dummyImage from './dummyImage';
 import applyFrame from '../applyFrame';
+import { localforageImages } from '../localforageInstance';
 
 const save = (lineBuffer) => (
   import(/* webpackChunkName: "obh" */ 'object-hash')
     .then(({ default: hash }) => (
       import(/* webpackChunkName: "pko" */ 'pako')
         .then(({ default: pako }) => {
+
+          // eslint-disable-next-line no-alert
+          alert('toDo');
+          throw new Error('öhöm!');
+          // eslint-disable-next-line no-unreachable
           const imageData = lineBuffer
             .map((line) => (
               line.replace(/ /gi, '')
@@ -44,16 +50,19 @@ const load = (dataHash, frame, noDummy) => {
       .then(({ default: pako }) => {
 
         try {
-          let binary;
+          let getBinary;
 
           if (dataHash.startsWith('base64-')) {
-            binary = atob(localStorage.getItem(`gbp-web-${dataHash}`));
+            getBinary = localforageImages.getItem(dataHash)
+              .then((base) => atob(base));
           } else {
-            binary = localStorage.getItem(`gbp-web-${dataHash}`);
+            getBinary = localforageImages.getItem(dataHash);
           }
 
-          const inflated = pako.inflate(binary, { to: 'string' });
-          return inflated.split('\n');
+          return getBinary.then((binary) => {
+            const inflated = pako.inflate(binary, { to: 'string' });
+            return inflated.split('\n');
+          });
         } catch (error) {
           return noDummy ? [] : dummyImage(dataHash);
         }
@@ -68,7 +77,7 @@ const load = (dataHash, frame, noDummy) => {
 };
 
 const del = (dataHash) => {
-  localStorage.removeItem(`gbp-web-${dataHash}`);
+  localforageImages.removeItem(dataHash);
 };
 
 export {
