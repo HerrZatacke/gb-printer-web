@@ -30,7 +30,7 @@ const loadEnv = () => {
               };
             })
         ))
-      ));
+    ));
 };
 
 const getEnv = () => envData;
