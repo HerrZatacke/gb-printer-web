@@ -1,0 +1,92 @@
+.gallery-image {
+  flex-shrink: 0;
+  width: 0;
+  max-width: 80vw; // ToDo: add real breakpoints for different gallery-size option
+  padding: 10px;
+  margin: 0 5px 10px;
+  position: relative;
+  border-radius: $default-border-radius;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: content-box;
+
+  .gallery--1x & {
+    width: 160px;
+  }
+
+  .gallery--2x & {
+    width: 320px;
+  }
+
+  .gallery--3x & {
+    width: 480px;
+  }
+
+  .gallery--4x & {
+    width: 100%;
+  }
+
+  &__image {
+    display: block;
+    min-height: 144px;
+    background-color: $color-grey-40;
+    width: 100%;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  &__title {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    display: block;
+    color: white;
+  }
+
+  &__created {
+    padding: 10px 0 0 0;
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    line-height: 10px;
+    color: $color-grey-80;
+  }
+
+  //.rgbn-select,
+  .gallery-image-buttons {
+    position: absolute;
+    left: -5px;
+    height: auto;
+
+    body.no-touch & {
+      display: none;
+    }
+  }
+
+  .gallery-image-buttons {
+    top: 5px;
+  }
+
+  //.rgbn-select {
+  //  bottom: 0;
+  //}
+
+  //&:hover .rgbn-select,
+  body.no-touch &:hover .gallery-image-buttons {
+    display: block;
+  }
+
+  // easy way for a parent with justify-content: space-between; to still align last row left.
+  .gallery &--dummy {
+    cursor: default;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    background: none;
+    //width: 1px;
+    //flex-grow: 2;
+  }
+}

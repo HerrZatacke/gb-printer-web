@@ -155,12 +155,14 @@ class GalleryImage extends React.Component {
         <td className="gallery-list-image__cell-image">
           <div className="gallery-list-image__image">
             { this.state.tiles ? (
-              <GameBoyImage
-                lockFrame={this.props.lockFrame}
-                invertPalette={this.props.invertPalette}
-                tiles={this.state.tiles}
-                palette={this.props.palette}
-              />
+              <div className="gallery-list-image__image--scale">
+                <GameBoyImage
+                  lockFrame={this.props.lockFrame}
+                  invertPalette={this.props.invertPalette}
+                  tiles={this.state.tiles}
+                  palette={this.props.palette}
+                />
+              </div>
             ) : null }
           </div>
         </td>
