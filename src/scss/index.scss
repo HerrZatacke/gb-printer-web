@@ -4,33 +4,5 @@
   box-sizing: border-box;
 }
 
-body {
-  @include font;
-
-  line-height: 1.3em;
-  background: $page-background;
-  color: $color-black;
-  min-width: 340px;
-
-  &.has-overlay {
-    position: fixed;
-    width: 100vw;
-  }
-}
-
-pre {
-  font-family: monospace;
-  font-size: 14px;
-  height: auto;
-  overflow-y: scroll;
-  display: block;
-  flex-grow: 1;
-}
-
-.init-error {
-  margin: 60px;
-  padding: 20px 30px;
-  border: 8px solid $color-primary;
-  background: $color-grey-30;
-  color: $color-text-bright;
-}
+@import './generics/app';
+@import './generics/buttongroup';

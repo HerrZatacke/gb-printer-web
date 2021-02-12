@@ -10,6 +10,7 @@ const Import = ({
   dumpCount,
   downloadPrinter,
   clearPrinter,
+  exportJson,
 }) => {
   const [text, setText] = useState('');
   const [env, setEnv] = useState('');
@@ -26,17 +27,17 @@ const Import = ({
   return (
     <div className="import">
       {(env && env.env !== 'esp8266') ? null : (
-        <div className="import__inputgroup import__buttongroup">
+        <div className="import__inputgroup buttongroup">
           <button
             type="button"
-            className="import__button import__button"
+            className="button"
             onClick={checkPrinter}
           >
             Check Printer
           </button>
           <button
             type="button"
-            className="import__button import__button"
+            className="button"
             disabled={dumpCount === 0}
             onClick={downloadPrinter}
           >
@@ -44,7 +45,7 @@ const Import = ({
           </button>
           <button
             type="button"
-            className="import__button import__button"
+            className="button"
             disabled={dumpCount === 0}
             onClick={clearPrinter}
           >
@@ -96,6 +97,22 @@ const Import = ({
           Import
         </button>
       </div>
+      <div className="import__inputgroup buttongroup">
+        <button
+          type="button"
+          className="button"
+          onClick={() => exportJson('images')}
+        >
+          Export images
+        </button>
+        <button
+          type="button"
+          className="button"
+          onClick={() => exportJson('frames')}
+        >
+          Export frames
+        </button>
+      </div>
     </div>
   );
 };
@@ -107,6 +124,7 @@ Import.propTypes = {
   checkPrinter: PropTypes.func.isRequired,
   downloadPrinter: PropTypes.func.isRequired,
   clearPrinter: PropTypes.func.isRequired,
+  exportJson: PropTypes.func.isRequired,
 };
 
 Import.defaultProps = {};

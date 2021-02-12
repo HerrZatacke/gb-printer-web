@@ -39,6 +39,12 @@ const mapDispatchToProps = (dispatch) => ({
       type: 'PRINTER_CLEAR',
     });
   },
+  exportJson(what) {
+    dispatch({
+      type: 'JSON_EXPORT',
+      payload: what,
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

@@ -17,6 +17,7 @@
       min-height: 36px;
       height: 36px;
       width: 36px;
+      flex: 36px 0 0;
     }
 
     &--add {
@@ -26,10 +27,6 @@
       width: 24px;
       vertical-align: bottom;
     }
-  }
-
-  &__buttongroup {
-    justify-content: flex-end;
   }
 
   &__subheadline {

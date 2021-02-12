@@ -157,7 +157,7 @@ const Settings = (props) => {
             />
             <button
               type="button"
-              className="settings__button"
+              className="button"
               onClick={() => {
                 props.updateSocketUrl(cleanUrl(socketUrl, 'ws'));
               }}
@@ -410,34 +410,20 @@ const Settings = (props) => {
         </>
       )}
 
-      <div className="settings__inputgroup settings__buttongroup">
+      <div className="settings__inputgroup buttongroup">
         <button
           type="button"
-          className="settings__button"
-          onClick={() => props.exportSettings('debug')}
+          className="button"
+          onClick={() => props.exportJson('debug')}
         >
           Export debug settings
         </button>
         <button
           type="button"
-          className="settings__button"
-          onClick={() => props.exportSettings('settings')}
+          className="button"
+          onClick={() => props.exportJson('settings')}
         >
           Export settings
-        </button>
-        <button
-          type="button"
-          className="settings__button"
-          onClick={() => props.exportSettings('images')}
-        >
-          Export images
-        </button>
-        <button
-          type="button"
-          className="settings__button"
-          onClick={() => props.exportSettings('frames')}
-        >
-          Export frames
         </button>
       </div>
     </div>
@@ -460,7 +446,7 @@ Settings.propTypes = {
   setPageSize: PropTypes.func.isRequired,
   gitStorage: PropTypes.object.isRequired,
   setGitStorage: PropTypes.func.isRequired,
-  exportSettings: PropTypes.func.isRequired,
+  exportJson: PropTypes.func.isRequired,
   setExportCropFrame: PropTypes.func.isRequired,
   exportCropFrame: PropTypes.bool.isRequired,
   setHideDates: PropTypes.func.isRequired,

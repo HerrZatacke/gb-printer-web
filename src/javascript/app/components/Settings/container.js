@@ -57,9 +57,9 @@ const mapDispatchToProps = (dispatch) => ({
       payload: gitStorage,
     });
   },
-  exportSettings(what) {
+  exportJson(what) {
     dispatch({
-      type: 'SETTINGS_EXPORT',
+      type: 'JSON_EXPORT',
       payload: what,
     });
   },

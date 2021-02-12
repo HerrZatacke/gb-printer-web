@@ -27,7 +27,7 @@ const mergeSettings = (dispatch, state, newSettings) => {
 const settings = (store) => (next) => (action) => {
 
   switch (action.type) {
-    case 'SETTINGS_EXPORT':
+    case 'JSON_EXPORT':
       downloadSettings(action.payload);
       break;
     case 'SETTINGS_IMPORT':

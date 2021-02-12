@@ -94,7 +94,7 @@ class WiFiSettings extends React.Component {
 
   emptyPassWordFields() {
     // this workaround should prevent all browsers form asking to "save password"
-    const pwFields = this.ref.current.querySelectorAll('[type=password');
+    const pwFields = this.ref.current.querySelectorAll('[type=password]');
     [...pwFields].forEach((field) => {
       // eslint-disable-next-line no-param-reassign
       field.value = '';
@@ -202,7 +202,7 @@ class WiFiSettings extends React.Component {
           Networks
           <button
             type="button"
-            className="settings__button wifi-settings__button wifi-settings__button--add"
+            className="button wifi-settings__button wifi-settings__button--add"
             onClick={() => {
               const { networks } = wifiConfig;
               networks.push({
@@ -256,11 +256,11 @@ class WiFiSettings extends React.Component {
             })
           }
         </ul>
-        <div className="settings__inputgroup wifi-settings__buttongroup">
+        <div className="settings__inputgroup buttongroup">
           <button
             type="button"
             disabled={sync}
-            className="settings__button wifi-settings__button"
+            className="button"
             onClick={this.saveSettings}
           >
             Save WiFi-Settings

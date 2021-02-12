@@ -1,0 +1,32 @@
+.buttongroup {
+  flex-wrap: wrap;
+  margin: 0 0 0 -20px;
+
+  &__button {
+    flex: 200px 1 0;
+    margin: 5px 10px 30px 5px;
+  }
+}
+
+.button {
+  flex-basis: 80px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  margin: 5px 0 5px 20px;
+  min-height: 40px;
+  color: $color-text-bright;
+  fill: currentColor;
+  background: $color-primary;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: $color-secondary;
+  }
+
+  &:disabled {
+    color: $color-grey-40;
+    background: $color-grey-70;
+    cursor: default;
+  }
+}

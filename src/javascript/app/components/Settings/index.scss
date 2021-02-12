@@ -13,16 +13,6 @@
     }
   }
 
-  &__buttongroup {
-    flex-wrap: wrap;
-    margin: 0 -10px;
-  }
-
-  &__buttongroup &__button {
-    flex: 200px 1 0;
-    margin: 5px 10px;
-  }
-
   &__label {
     flex-basis: 30%;
     flex-grow: 0;
@@ -100,29 +90,6 @@
 
     &:hover {
       color: $color-secondary;
-    }
-  }
-
-  &__button {
-    flex-basis: 80px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    margin: 5px 0 5px 20px;
-    min-height: 40px;
-    color: $color-text-bright;
-    fill: currentColor;
-    background: $color-primary;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-      background: $color-secondary;
-    }
-
-    &:disabled {
-      color: $color-grey-40;
-      background: $color-grey-70;
-      cursor: default;
     }
   }
 

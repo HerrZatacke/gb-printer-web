@@ -33,7 +33,7 @@ const APConfig = (props) => (
       />
       <button
         type="button"
-        className="settings__button wifi-settings__button wifi-settings__button--delete"
+        className="button wifi-settings__button wifi-settings__button--delete"
         onClick={() => {
           props.update({
             delete: !props.delete,
