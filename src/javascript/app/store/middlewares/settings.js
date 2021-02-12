@@ -2,6 +2,7 @@ import { download } from '../../../tools/download';
 import cleanState from '../../../tools/cleanState';
 import getSettings from '../../../tools/getSettings';
 import mergeStates from '../../../tools/mergeStates';
+import { localforageFrames, localforageImages } from '../../../tools/localforageInstance';
 
 const downloadSettings = (what) => {
   getSettings(what)
@@ -16,7 +17,11 @@ const downloadSettings = (what) => {
 const mergeSettings = (dispatch, state, newSettings, mergeImagesFrames = false) => {
   Object.keys(newSettings).forEach((key) => {
     if (key !== 'state') {
-      /* todo */localStorage.setItem(`gbp-web-${key}`, newSettings[key]);
+      if (key.match(/^[a-f0-9]{40}$/gi)) {
+        localforageImages.setItem(`${key}`, newSettings[key]);
+      } else if (key.startsWith('frame-')) {
+        localforageFrames.setItem(`${key.split('frame-').pop()}`, newSettings[key]);
+      }
     }
   });
 
