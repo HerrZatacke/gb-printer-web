@@ -12,7 +12,7 @@ const initApp = () => {
 
   let storedSettings;
   try {
-    /* ok */storedSettings = JSON.parse(localStorage.getItem('gbp-web-state'));
+    storedSettings = JSON.parse(localStorage.getItem('gbp-web-state'));
   } catch (error) {
     storedSettings = {};
   }

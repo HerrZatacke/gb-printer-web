@@ -15,7 +15,7 @@ const getSettings = (what) => {
     .filter((key) => (key.startsWith('gbp-web-frame-')))
     .map((key) => key.replace(/^gbp-web-frame-/gi, ''));
 
-  /* ok */const localStorageState = JSON.parse(localStorage.getItem('gbp-web-state'));
+  const localStorageState = JSON.parse(localStorage.getItem('gbp-web-state'));
 
   // delete keys potentially containing passwords/tokens
   delete localStorageState.gitStorage;
