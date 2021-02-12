@@ -23,85 +23,88 @@ import WiFiSettings from '../WiFiSettings';
 import VideoParamsForm from '../VideoParamsForm';
 import SortForm from '../SortForm';
 
-const env = getEnv();
+const App = (props) => {
+  const env = getEnv();
 
-const App = (props) => (
-  <Router>
-    <Navigation />
-    <div className="app__content">
-      <Switch>
-        <Route exact path="/gallery">
-          <Redirect to="/gallery/page/1" />
-        </Route>
-        <Route
-          path="/gallery/page/:page"
-          render={({ match }) => {
+  return (
+    <Router>
+      <Navigation />
+      <div className="app__content">
+        <Switch>
+          <Route exact path="/gallery">
+            <Redirect to="/gallery/page/1" />
+          </Route>
+          <Route
+            path="/gallery/page/:page"
+            render={({ match }) => {
 
-            const { valid, page } = getValidPageIndex({
-              urlParam: match.params.page,
-              pageSize: props.pageSize,
-              imageCount: props.filteredCount,
-            });
+              const { valid, page } = getValidPageIndex({
+                urlParam: match.params.page,
+                pageSize: props.pageSize,
+                imageCount: props.filteredCount,
+              });
 
-            return valid ? (
+              return valid ? (
+                <>
+                  <GalleryIntroText
+                    imageCount={props.imageCount}
+                    selectedCount={props.selectedCount}
+                    filteredCount={props.filteredCount}
+                  />
+                  <Gallery page={page} />
+                </>
+              ) : (
+                <Redirect to={`/gallery/page/${page + 1}`} />
+              );
+            }}
+          />
+          <Route path="/palettes">
+            <h1 className="app__content-headline">Palettes</h1>
+            <Palettes />
+          </Route>
+          <Route path="/settings">
+            <h1 className="app__content-headline">Settings</h1>
+            <Settings />
+            {(env.env !== 'esp8266') ? null : (
               <>
-                <GalleryIntroText
-                  imageCount={props.imageCount}
-                  selectedCount={props.selectedCount}
-                  filteredCount={props.filteredCount}
-                />
-                <Gallery page={page} />
+                <h1 className="app__content-headline">WiFi-Settings</h1>
+                <WiFiSettings />
               </>
-            ) : (
-              <Redirect to={`/gallery/page/${page + 1}`} />
-            );
-          }}
-        />
-        <Route path="/palettes">
-          <h1 className="app__content-headline">Palettes</h1>
-          <Palettes />
-        </Route>
-        <Route path="/settings">
-          <h1 className="app__content-headline">Settings</h1>
-          <Settings />
-          {(env.env !== 'esp8266') ? null : (
-            <>
-              <h1 className="app__content-headline">WiFi-Settings</h1>
-              <WiFiSettings />
-            </>
-          )}
-          <ul className="settings__version">
-            <li>{ `Web-App version: ${VERSION}` }</li>
-            <li>{ `Printer version: ${env.version}`}</li>
-            <li>{ `Max Images: ${env.maximages}`}</li>
-            <li>{ `Environment type: ${env.env}`}</li>
-            <li>{ `Compiled Filesystem: ${env.fstype}`}</li>
-            <li>{ `Compiled Bootmode: ${env.bootmode}`}</li>
-            <li>{ `Compiled for OLED: ${env.oled ? 'yes' : 'no'}`}</li>
-          </ul>
-        </Route>
-        <Route path="/import">
-          <h1 className="app__content-headline">Import</h1>
-          <Import />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </div>
-    <GitLogBox />
-    <InfoBox />
-    <Confirmation />
-    <EditForm />
-    <VideoParamsForm />
-    <LiveImage />
-    <LightboxImage />
-    <RGBNImage />
-    <DragOver />
-    <FilterForm />
-    <SortForm />
-  </Router>
-);
+            )}
+            <ul className="settings__version">
+              <li>{`Web-App version: ${VERSION}`}</li>
+              <li>{`Printer version: ${env.version}`}</li>
+              <li>{`Max Images: ${env.maximages}`}</li>
+              <li>{`Localforage driver: ${env.localforage}`}</li>
+              <li>{`Environment type: ${env.env}`}</li>
+              <li>{`Compiled Filesystem: ${env.fstype}`}</li>
+              <li>{`Compiled Bootmode: ${env.bootmode}`}</li>
+              <li>{`Compiled for OLED: ${env.oled ? 'yes' : 'no'}`}</li>
+            </ul>
+          </Route>
+          <Route path="/import">
+            <h1 className="app__content-headline">Import</h1>
+            <Import />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+      <GitLogBox />
+      <InfoBox />
+      <Confirmation />
+      <EditForm />
+      <VideoParamsForm />
+      <LiveImage />
+      <LightboxImage />
+      <RGBNImage />
+      <DragOver />
+      <FilterForm />
+      <SortForm />
+    </Router>
+  );
+};
 
 App.propTypes = {
   imageCount: PropTypes.number.isRequired,

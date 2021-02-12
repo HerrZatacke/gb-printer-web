@@ -3,7 +3,6 @@ import handleLines from '../../../tools/handleLines';
 import { getEnv } from '../../../tools/getEnv';
 
 const newSocket = (dispatch, socketUrl) => {
-
   let lineBuffer = [];
 
   const flush = () => {
@@ -48,8 +47,9 @@ const newSocket = (dispatch, socketUrl) => {
 };
 
 const serialportWebocket = (store) => {
+  const { env } = getEnv();
 
-  if (getEnv().env !== 'webpack-dev') {
+  if (env !== 'webpack-dev') {
     return (next) => (action) => {
       next(action);
     };

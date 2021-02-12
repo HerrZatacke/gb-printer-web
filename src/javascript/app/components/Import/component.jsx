@@ -13,11 +13,9 @@ const Import = ({
   exportJson,
 }) => {
   const [text, setText] = useState('');
-  const [env, setEnv] = useState('');
+  const { env } = getEnv();
 
   useEffect(() => {
-    setEnv(getEnv());
-
     import(/* webpackChunkName: "dmy" */ './dummy')
       .then(({ default: dummyContent }) => {
         setText(dummyContent.join('\n'));
@@ -26,7 +24,7 @@ const Import = ({
 
   return (
     <div className="import">
-      {(env && env.env !== 'esp8266') ? null : (
+      {(env !== 'esp8266') ? null : (
         <div className="import__inputgroup buttongroup">
           <button
             type="button"
