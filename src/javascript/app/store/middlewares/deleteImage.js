@@ -15,7 +15,7 @@ const hashIsUsedInDefault = (hash, images) => (
   !!images.find((image) => image.hash === hash)
 );
 
-const deleteFromLocalStorage = (images, deleteHash) => {
+const deleteFromStorage = (images, deleteHash) => {
   if (
     !hashIsUsedInRGBN(deleteHash, images) &&
     !hashIsUsedInDefault(deleteHash, images)
@@ -24,7 +24,7 @@ const deleteFromLocalStorage = (images, deleteHash) => {
   }
 };
 
-const cleanupLocalStorage = (images) => {
+const cleanupStorage = (images) => {
   Object.keys(localStorage)
     .filter((key) => (
       key !== 'gbp-web-state' &&
@@ -33,7 +33,7 @@ const cleanupLocalStorage = (images) => {
     ))
     .map((key) => key.replace(/^gbp-web-/gi, ''))
     .forEach((hash) => {
-      deleteFromLocalStorage(images, hash);
+      deleteFromStorage(images, hash);
     });
 };
 
@@ -45,7 +45,7 @@ const deleteImage = (store) => (next) => (action) => {
   switch (action.type) {
     case 'DELETE_IMAGE':
     case 'DELETE_IMAGES':
-      cleanupLocalStorage(store.getState().images);
+      cleanupStorage(store.getState().images);
       break;
     default:
       break;
