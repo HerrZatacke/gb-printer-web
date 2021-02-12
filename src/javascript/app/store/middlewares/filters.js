@@ -24,6 +24,7 @@ const filters = (store) => {
       case 'UPDATE_IMAGES_BATCH':
       case 'DELETE_IMAGE':
       case 'DELETE_IMAGES':
+      case 'GLOBAL_UPDATE':
         next(action);
         updateAvailableTags(store);
         return;
