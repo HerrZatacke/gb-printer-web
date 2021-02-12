@@ -58,7 +58,7 @@ const middleware = (store) => (action) => {
             return saveLocalStorageItems(octoClient)(repoContents)
               .then((result) => {
                 store.dispatch({
-                  type: 'SETTINGS_IMPORT',
+                  type: 'GIT_SETTINGS_IMPORT',
                   payload: repoContents.settings,
                 });
 

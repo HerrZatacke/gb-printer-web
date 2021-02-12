@@ -11,7 +11,7 @@ const downloadSettings = (what) => {
   }]);
 };
 
-const mergeSettings = (dispatch, state, newSettings) => {
+const mergeSettings = (dispatch, state, newSettings, mergeImagesFrames = false) => {
   Object.keys(newSettings).forEach((key) => {
     if (key !== 'state') {
       localStorage.setItem(`gbp-web-${key}`, newSettings[key]);
@@ -20,7 +20,7 @@ const mergeSettings = (dispatch, state, newSettings) => {
 
   dispatch({
     type: 'GLOBAL_UPDATE',
-    payload: cleanState(mergeStates(state, newSettings.state || {})),
+    payload: cleanState(mergeStates(state, newSettings.state || {}, mergeImagesFrames)),
   });
 };
 
@@ -30,7 +30,10 @@ const settings = (store) => (next) => (action) => {
     case 'JSON_EXPORT':
       downloadSettings(action.payload);
       break;
-    case 'SETTINGS_IMPORT':
+    case 'JSON_IMPORT':
+      mergeSettings(store.dispatch, store.getState(), action.payload, true);
+      break;
+    case 'GIT_SETTINGS_IMPORT':
       mergeSettings(store.dispatch, store.getState(), action.payload);
       break;
     default:

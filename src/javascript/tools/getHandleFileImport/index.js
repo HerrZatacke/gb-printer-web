@@ -61,7 +61,7 @@ const getHandleFileImport = (store) => {
 
           if (settingsDump && settingsDump.state) {
             dispatch({
-              type: 'SETTINGS_IMPORT',
+              type: 'JSON_IMPORT',
               payload: settingsDump,
             });
             return;
