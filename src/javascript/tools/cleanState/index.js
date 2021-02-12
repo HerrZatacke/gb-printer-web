@@ -44,6 +44,7 @@ const cleanState = (dirtyState) => {
   // but the frames are not yet imported, show a message hint
   images.forEach((image) => {
     if (
+      image.frame &&
       !frameIds.includes(image.frame) &&
       !framesMessage // message not seen yet
     ) {
