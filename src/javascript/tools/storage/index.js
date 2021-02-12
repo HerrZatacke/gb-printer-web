@@ -34,24 +34,16 @@ const load = (dataHash, frame, noDummy) => {
 
   return (
     import(/* webpackChunkName: "pko" */ 'pako')
-      .then(({ default: pako }) => {
-        let getBinary;
-
-        if (dataHash.startsWith('base64-')) {
-          getBinary = localforageImages.getItem(dataHash)
-            .then((base) => atob(base));
-        } else {
-          getBinary = localforageImages.getItem(dataHash);
-        }
-
-        return getBinary.then((binary) => {
-          const inflated = pako.inflate(binary, { to: 'string' });
-          return inflated.split('\n');
-        })
+      .then(({ default: pako }) => (
+        localforageImages.getItem(dataHash)
+          .then((binary) => {
+            const inflated = pako.inflate(binary, { to: 'string' });
+            return inflated.split('\n');
+          })
           .catch(() => (
             noDummy ? [] : dummyImage(dataHash)
-          ));
-      })
+          ))
+      ))
   ).then((tiles) => {
     if (!frame) {
       return tiles;
