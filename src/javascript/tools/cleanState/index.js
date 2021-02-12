@@ -1,15 +1,15 @@
 import cleanUrl from '../cleanUrl';
 import { defaultPalette } from '../../app/defaults';
 
-const cleanState = (initialState) => {
-  const palettesShorts = initialState.palettes.map(({ shortName }) => shortName);
-  const frameIds = initialState.frames.map(({ id }) => id);
+const cleanState = (dirtyState) => {
+  const palettesShorts = dirtyState.palettes.map(({ shortName }) => shortName);
+  const frameIds = dirtyState.frames.map(({ id }) => id);
 
-  const socketUrl = cleanUrl(initialState.socketUrl, 'ws');
-  const printerUrl = cleanUrl(initialState.printerUrl, 'http');
-  let framesMessage = initialState.framesMessage;
+  const socketUrl = cleanUrl(dirtyState.socketUrl, 'ws');
+  const printerUrl = cleanUrl(dirtyState.printerUrl, 'http');
+  let framesMessage = dirtyState.framesMessage;
 
-  const images = initialState.images
+  const images = dirtyState.images
     .map((image) => {
 
       // eslint-disable-next-line no-param-reassign
@@ -61,12 +61,12 @@ const cleanState = (initialState) => {
       return images.findIndex(({ index }) => index === image.index) !== imageIndex;
     }).forEach((image) => {
       // eslint-disable-next-line no-param-reassign
-      image.index = initialState.globalIndex;
+      image.index = dirtyState.globalIndex;
       // eslint-disable-next-line no-param-reassign
-      initialState.globalIndex += 1;
+      dirtyState.globalIndex += 1;
     });
 
-  return { ...initialState, images, socketUrl, printerUrl, framesMessage };
+  return { ...dirtyState, images, socketUrl, printerUrl, framesMessage };
 };
 
 export default cleanState;
