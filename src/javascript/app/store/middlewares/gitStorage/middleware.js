@@ -47,10 +47,12 @@ const middleware = (store) => (action) => {
         switch (action.payload) {
           case 'up':
             return getUploadImages(state, repoContents, addToQueue('GBPrinter'))
-              .then(({ missingLocally, fileCollection }) => {
-                const { toUpload, toKeep } = prepareGitFiles(fileCollection);
-                return filterDeleteNew(repoContents, toUpload, toKeep, missingLocally);
-              })
+              .then(({ missingLocally, fileCollection }) => (
+                prepareGitFiles(fileCollection)
+                  .then(({ toUpload, toKeep }) => (
+                    filterDeleteNew(repoContents, toUpload, toKeep, missingLocally)
+                  ))
+              ))
               .then((changes) => (
                 octoClient.updateRemoteStore(changes)
               ));

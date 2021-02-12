@@ -44,23 +44,24 @@ const prepareGitFiles = (fileCollection) => {
   ]
     .join('\n');
 
-  const remoteSettings = getSettings('remote');
+  return getSettings('remote')
+    .then((remoteSettings) => {
+      toUpload.push(
+        {
+          destination: 'README.md',
+          blob: new Blob([...md], { type: 'text/plain' }),
+        },
+        {
+          destination: 'settings.json',
+          blob: new Blob([...remoteSettings], { type: 'application/json' }),
+        },
+      );
 
-  toUpload.push(
-    {
-      destination: 'README.md',
-      blob: new Blob([...md], { type: 'text/plain' }),
-    },
-    {
-      destination: 'settings.json',
-      blob: new Blob([...remoteSettings], { type: 'application/json' }),
-    },
-  );
-
-  return {
-    toUpload: toUpload.filter(Boolean),
-    toKeep: toKeep.filter(Boolean),
-  };
+      return {
+        toUpload: toUpload.filter(Boolean),
+        toKeep: toKeep.filter(Boolean),
+      };
+    });
 };
 
 export default prepareGitFiles;
