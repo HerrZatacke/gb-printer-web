@@ -34,7 +34,7 @@ const settings = (store) => (next) => (action) => {
       mergeSettings(store.dispatch, store.getState(), action.payload, true);
       break;
     case 'GIT_SETTINGS_IMPORT':
-      mergeSettings(store.dispatch, store.getState(), action.payload);
+      mergeSettings(store.dispatch, store.getState(), action.payload, false);
       break;
     default:
       break;
