@@ -1,21 +1,21 @@
 const mergeStates = (currentState, updatedState, mergeImagesFrames) => {
 
-  let frames = [];
-  let images = [];
+  let frames = currentState.frames;
+  let images = currentState.images;
   // ToDo when palettes are editable
-  // let palettes = [];
+  // let palettes = currentState.palettes;
 
   if (mergeImagesFrames) {
-    if (updatedState.frames) {
-      frames = [...updatedState.frames, ...currentState.frames];
+    if (updatedState.frames && updatedState.frames.length) {
+      frames.push(...updatedState.frames);
     }
 
-    if (updatedState.images) {
-      images = [...updatedState.images, ...currentState.images];
+    if (updatedState.images && updatedState.images.length) {
+      images.push(...updatedState.images);
     }
 
-    // if (updatedState.palettes) {
-    //   palettes = [...updatedState.palettes, ...currentState.palettes];
+    // if (updatedState.palettes && updatedState.palettes.length) {
+    //   palettes.push(...updatedState.palettes);
     // }
   } else {
     frames = updatedState.frames || currentState.frames;
