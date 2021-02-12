@@ -1,12 +1,10 @@
 import React from 'react';
-import { getEnv } from '../../../tools/getEnv';
 import APConfig from './APConfig';
 import SVG from '../SVG';
 
 class WiFiSettings extends React.Component {
   constructor(props) {
     super(props);
-    this.env = getEnv();
 
     this.ref = React.createRef();
     this.saveSettings = this.saveSettings.bind(this);
