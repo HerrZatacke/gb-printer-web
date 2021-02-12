@@ -8,10 +8,6 @@ const save = (lineBuffer) => (
       import(/* webpackChunkName: "pko" */ 'pako')
         .then(({ default: pako }) => {
 
-          // eslint-disable-next-line no-alert
-          alert('toDo');
-          throw new Error('öhöm!');
-          // eslint-disable-next-line no-unreachable
           const imageData = lineBuffer
             .map((line) => (
               line.replace(/ /gi, '')
@@ -24,18 +20,9 @@ const save = (lineBuffer) => (
             level: 8,
           });
 
-          let dataHash = hash(compressed);
-
-          try {
-            localStorage.setItem(`gbp-web-${dataHash}`, compressed);
-          } catch (error) {
-            localStorage.removeItem(`gbp-web-${dataHash}`, compressed);
-            dataHash = `base64-${dataHash}`;
-            localStorage.setItem(`gbp-web-${dataHash}`, btoa(compressed));
-          }
-
-          return dataHash;
-
+          const dataHash = hash(compressed);
+          return localforageImages.setItem(dataHash, compressed)
+            .then(() => dataHash);
         })
     ))
 );
