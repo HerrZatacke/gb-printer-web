@@ -16,7 +16,6 @@ const saveRGBNImage = (store) => (next) => (action) => {
           created: dayjs().format(dateFormat),
           title: '',
           tags: [],
-          index: state.globalIndex,
         };
 
         store.dispatch({

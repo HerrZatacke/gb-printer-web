@@ -17,7 +17,6 @@ const mapStateToProps = (state, { hash }) => {
   return ({
     title: image.title,
     created: image.created,
-    index: image.index,
     frame: image.frame,
     hashes: image.hashes,
     tags: image.tags,

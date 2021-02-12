@@ -56,14 +56,6 @@ const definitions = [
     value: ['png'],
   },
   {
-    // iterator/global image counter
-    key: 'globalIndex',
-    saveLocally: true,
-    saveRemote: false,
-    saveExport: ['settings', 'remote'],
-    value: 1,
-  },
-  {
     // concurrently visible images in gallery
     key: 'pageSize',
     saveLocally: true,

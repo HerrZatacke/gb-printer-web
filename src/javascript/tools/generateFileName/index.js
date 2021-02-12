@@ -34,7 +34,6 @@ const generateFileName = ({
 
   return [
     formattedDate,
-    image ? (image.index || 0).toString(10).padStart(4, '0') : null,
     image && image.title ? image.title : altTitle,
     exportScaleFactor ? `${exportScaleFactor}x` : null,
     frameRate ? `${frameRate}fps` : null,

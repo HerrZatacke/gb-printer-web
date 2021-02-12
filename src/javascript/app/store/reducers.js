@@ -14,7 +14,6 @@ import galleryView from './reducers/galleryViewReducer';
 import gitBusy from './reducers/gitBusyReducer';
 import gitLog from './reducers/gitLogReducer';
 import gitStorage from './reducers/gitStorageReducer';
-import globalIndex from './reducers/globalIndexReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import imageSelection from './reducers/imageSelectionReducer';
@@ -52,7 +51,6 @@ export default combineReducers({
   gitBusy,
   gitLog,
   gitStorage,
-  globalIndex,
   hideDates,
   images,
   imageSelection,

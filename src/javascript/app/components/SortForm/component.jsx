@@ -5,10 +5,6 @@ import Lightbox from '../Lightbox';
 
 const sortables = [
   {
-    title: 'Index',
-    key: 'index',
-  },
-  {
     title: 'Title',
     key: 'title',
   },

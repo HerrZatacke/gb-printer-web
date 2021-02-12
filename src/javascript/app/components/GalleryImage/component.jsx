@@ -136,7 +136,7 @@ class GalleryImage extends React.Component {
           ))}
         </ul>
         {this.getDateSpan('gallery-image__created')}
-        <GalleryImageButtons index={this.props.index} hash={this.props.hash} buttons={['select', 'download', 'delete', 'view', 'share']} />
+        <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'view', 'share']} />
       </li>
     );
   }
@@ -165,12 +165,6 @@ class GalleryImage extends React.Component {
           </div>
         </td>
 
-        <td className="gallery-list-image__cell-index">
-          <div className="gallery-list-image__index">
-            {this.props.index}
-          </div>
-        </td>
-
         <td className="gallery-list-image__cell-description">
           <div className="gallery-list-image__description">
             <span className="gallery-list-image__title">
@@ -187,7 +181,7 @@ class GalleryImage extends React.Component {
         </td>
 
         <td className="gallery-list-image__cell-buttons">
-          <GalleryImageButtons index={this.props.index} hash={this.props.hash} buttons={['select', 'download', 'delete', 'view']} />
+          <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'view']} />
         </td>
       </tr>
     );
@@ -211,7 +205,6 @@ GalleryImage.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   editImage: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['list', 'default']).isRequired,
-  index: PropTypes.number.isRequired,
   isSelected: PropTypes.bool.isRequired,
   updateImageSelection: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,

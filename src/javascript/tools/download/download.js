@@ -23,7 +23,18 @@ const download = (zipFileName) => (files) => {
       )))
         .then((buffersFiles) => {
           buffersFiles.forEach(({ filename, arrayBuffer }) => {
-            zip.file(filename, arrayBuffer);
+            const fnParts = filename.split('.');
+            const ext = fnParts.pop();
+            const baseName = fnParts.join('.');
+            let uFilename = filename;
+            let tries = 1;
+
+            while (zip.files[uFilename]) {
+              uFilename = `${baseName}_(${tries}).${ext}`;
+              tries += 1;
+            }
+
+            zip.file(uFilename, arrayBuffer);
           });
         })
         .then(() => (
