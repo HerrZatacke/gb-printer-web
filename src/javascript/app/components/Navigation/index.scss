@@ -3,7 +3,7 @@
   @include theme-box-shadow(rgba($color-grey-20, 0.7), rgba($color-black, 0.7), 0 -6px 6px 6px);
   position: fixed;
   min-height: 60px;
-  width: 100vw;
+  width: 100%;
   z-index: $z-index-navigation;
 
   &__burger-button {
@@ -31,7 +31,7 @@
   }
 
   &__list {
-    width: 100vw;
+    width: 100%;
     display: flex;
 
     @media (max-width: $breakpoint-mobile) {
@@ -65,7 +65,6 @@
 
     &--right {
       margin-left: auto;
-      padding-right: 40px;
     }
   }
 
