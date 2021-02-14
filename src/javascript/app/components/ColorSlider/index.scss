@@ -4,8 +4,9 @@
 
   &__button {
     border: none;
-    background: $color-grey-90;
-    fill: $color-tertiary;
+    @include theme-background-color($color-grey-90, $color-grey-30);
+    @include theme-color($color-tertiary, $color-tertiary-bright);
+    fill: currentColor;
     border-radius: $default-border-radius-small;
     width: 20px;
     flex: 20px 0 0;
@@ -15,8 +16,8 @@
     cursor: pointer;
 
     &:hover {
-      background: $color-tertiary;
-      fill: $color-grey-90;
+      @include theme-background-color($color-tertiary, $color-tertiary-dark);
+      @include theme-color($color-grey-90, $color-icon-tertiary);
     }
   }
 
