@@ -113,10 +113,10 @@ class WiFiSettings extends React.Component {
         <h3 className="wifi-settings__subheadline">
           Host Settings
         </h3>
-        <div className="settings__inputgroup">
+        <div className="inputgroup">
           <label
             htmlFor="settings-mdns"
-            className="settings__label"
+            className="inputgroup__label"
           >
             mDNS Name (Bonjour/Avahi)
           </label>
@@ -139,10 +139,10 @@ class WiFiSettings extends React.Component {
             }}
           />
         </div>
-        <div className="settings__inputgroup">
+        <div className="inputgroup">
           <label
             htmlFor="settings-ap-ssid"
-            className="settings__label"
+            className="inputgroup__label"
           >
             Accesspoint SSID
           </label>
@@ -168,10 +168,10 @@ class WiFiSettings extends React.Component {
             }}
           />
         </div>
-        <div className="settings__inputgroup">
+        <div className="inputgroup">
           <label
             htmlFor="settings-ap-psk"
-            className="settings__label"
+            className="inputgroup__label"
           >
             Accesspoint Password
           </label>
@@ -254,7 +254,7 @@ class WiFiSettings extends React.Component {
             })
           }
         </ul>
-        <div className="settings__inputgroup buttongroup">
+        <div className="inputgroup buttongroup">
           <button
             type="button"
             disabled={sync}
