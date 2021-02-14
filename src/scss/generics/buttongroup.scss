@@ -29,4 +29,11 @@
     @include theme-background-color($color-grey-70, $color-grey-30);
     cursor: default;
   }
+
+  &--label {
+    flex-grow: 0;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+  }
 }
