@@ -1,7 +1,8 @@
 $block: #{'.gallery-list-image'};
 
 #{$block} {
-  border-bottom: 1px solid $color-page-background;
+  border-bottom: 1px solid;
+  @include theme-border-color($color-page-background, $color-page-background-dark);
 
   &:last-child {
     border: none;
@@ -42,7 +43,7 @@ $block: #{'.gallery-list-image'};
     width: 40px;
     margin: 10px 0;
     min-height: 36px;
-    background-color: rgba($color-grey-40, 0.5);
+    @include theme-background-color(rgba($color-grey-40, 0.5), rgba($color-grey-30, 0.5));
     border: none;
     padding: 0;
     pointer-events: none;
@@ -82,31 +83,13 @@ $block: #{'.gallery-list-image'};
   &__title {
     font-size: 14px;
     line-height: 16px;
-    color: white;
+    @include theme-color($color-white, $color-grey-70);
     display: block;
   }
 
   &__created {
     font-size: 12px;
     line-height: 14px;
-    color: $color-grey-80;
-  }
-
-  &__tags {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 5px -3px 0 -3px;
-  }
-
-  &__tag {
-    height: 18px;
-    border-radius: 9px;
-    font-size: 12px;
-    line-height: 14px;
-    margin: 0 3px 4px 3px;
-    padding: 2px 8px;
-    background-color: $color-secondary;
-    color: $color-text-bright;
-    overflow: hidden;
+    @include theme-color($color-grey-80, $color-grey-50);
   }
 }

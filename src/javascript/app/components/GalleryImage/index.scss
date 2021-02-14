@@ -1,6 +1,6 @@
 .gallery-image,
 .gallery-list-image {
-  background-color: $color-grey-50;
+  @include theme-background-color($color-grey-50, $color-grey-20);
   cursor: pointer;
   user-select: none;
 
@@ -15,7 +15,6 @@
       background-color: $color-selected-image-hover;
     }
   }
-
 }
 
 @import './gallery-image';
