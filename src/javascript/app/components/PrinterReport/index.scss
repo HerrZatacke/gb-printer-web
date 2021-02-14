@@ -3,12 +3,13 @@
 
   &__table {
     width: 100%;
-    background-color: $color-grey-70;
+    @include theme-background-color($color-grey-70, $color-grey-30);
   }
 
   tr {
-    border-bottom: 1px solid $color-grey-60;
-    border-top: 1px solid $color-grey-60;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    @include theme-border-color($color-grey-60, $color-grey-40)
   }
 
   td, th {
