@@ -85,7 +85,10 @@ const Navigation = (props) => {
               type="button"
               title={`Synchronize to GitHub\n${props.repoUrl}`}
               className="navigation__link navigation__link--icon"
-              onClick={() => props.startSync('up')}
+              onClick={() => {
+                setMobileNavOpen(false);
+                props.startSync('up');
+              }}
               disabled={props.gitBusy}
             >
               <SVG name="sync" className="svg--180" />
@@ -94,7 +97,10 @@ const Navigation = (props) => {
               type="button"
               title={`Synchronize from GitHub\n${props.repoUrl}`}
               className="navigation__link navigation__link--icon"
-              onClick={() => props.startSync('down')}
+              onClick={() => {
+                setMobileNavOpen(false);
+                props.startSync('down');
+              }}
               disabled={props.gitBusy}
             >
               <SVG name="sync" />
@@ -102,7 +108,9 @@ const Navigation = (props) => {
           </li>
         ) : null}
         <li className="navigation__entry navigation__entry--right">
-          <ThemeToggle />
+          <ThemeToggle
+            closeNavigation={() => setMobileNavOpen(false)}
+          />
         </li>
       </ul>
       {props.importQueueSize > 0 ? (
