@@ -10,11 +10,12 @@
     width: 20px;
     height: 20px;
     border: none;
-    background: $color-grey-90;
+    @include theme-background-color($color-grey-90, $color-grey-30);
     margin-right: 5px;
     padding: 0 ;
     cursor: pointer;
-    fill: $color-tertiary;
+    @include theme-color($color-tertiary, $color-tertiary-bright);
+    fill: currentColor;
     border-radius: $default-border-radius-small;
     outline: none;
 
@@ -30,14 +31,13 @@
     }
 
     &--checked {
-      fill: $color-grey-90;
-      background: $color-tertiary;
+      @include theme-color($color-tertiary-bright, $color-tertiary-bright);
+      @include theme-background-color($color-tertiary, $color-tertiary);
     }
 
     &:hover {
-      background: $color-tertiary;
-      color: $color-white;
-      fill: currentColor;
+      @include theme-color($color-white, $color-grey-80);
+      @include theme-background-color($color-tertiary, $color-tertiary);
     }
   }
 
