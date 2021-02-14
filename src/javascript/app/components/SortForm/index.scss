@@ -12,8 +12,8 @@
     outline: none;
     border: none;
     line-height: 16px;
-    background-color: $color-grey-70;
-    color: $color-black;
+    @include theme-background-color($color-grey-70, $color-grey-20);
+    @include theme-color($color-black, $color-text-bright);
     margin: 0 $spacing 10px;
     padding: 0 #{2 * $spacing};
     height: 30px;
@@ -21,9 +21,14 @@
     position: relative;
     user-select: none;
 
+    &:hover,
     &--selected {
-      background-color: $color-primary;
-      color: $color-text-bright;
+      @include theme-background-color($color-primary, $color-secondary);
+      @include theme-color($color-text-bright, $color-text-bright);
+    }
+
+    &:hover {
+      opacity: 0.7;
     }
 
     &--order-asc {
