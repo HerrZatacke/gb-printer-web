@@ -8,8 +8,8 @@
 
   &__tag {
     line-height: 16px;
-    background-color: $color-grey-70;
-    color: $color-black;
+    @include theme-background-color($color-grey-70, $color-grey-20);
+    @include theme-color($color-black, $color-text-bright);
     margin: 0 $spacing 10px;
     padding: 5px 15px 5px 55px;
     height: 30px;
@@ -25,17 +25,18 @@
   &__tag--input &__tag-name {
     border: none;
     outline: none;
-    background-color: $color-grey-80;
+    @include theme-background-color($color-grey-80, $color-grey-30);
+    @include theme-color($color-black, $color-text-bright);
     width: 100px;
     border-radius: $default-border-radius-small;
   }
 
   &__tag--add {
-    background-color: $color-tag-change-green;
+    @include theme-background-color($color-tag-change-green, $color-tag-change-green-dark);
   }
 
   &__tag--remove {
-    background-color: $color-tag-change-red;
+    @include theme-background-color($color-tag-change-red, $color-tag-change-red-dark);
   }
 
   &__button {
@@ -47,7 +48,7 @@
     height: 24px;
     width: 24px;
     border-radius: 50%;
-    color: $color-white;
+    @include theme-color($color-white, $color-white);
     opacity: 0.7;
     outline: none;
 
@@ -58,12 +59,12 @@
 
   &__button--add {
     left: 3px;
-    background-color: $color-button-green;
+    @include theme-background-color($color-button-green, $color-button-green-dark);
   }
 
   &__button--remove {
     left: 28px;
-    background-color: $color-button-red;
+    @include theme-background-color($color-button-red, $color-button-red-dark);
   }
 
   &__tag-name {
