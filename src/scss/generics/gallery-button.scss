@@ -43,8 +43,14 @@
     }
   }
 
+  &--selected {
+    @include theme-background-color($color-tertiary, $color-tertiary);
+    @include theme-color($color-icon-tertiary, $color-icon-tertiary);
+  }
+
   &--enabled:hover {
     @include theme-background-color($color-tertiary, $color-tertiary-dark);
+    @include theme-color($color-icon-tertiary, $color-icon-tertiary);
   }
 
   // checkmark
