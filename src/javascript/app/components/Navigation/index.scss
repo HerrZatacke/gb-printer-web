@@ -1,6 +1,6 @@
 .navigation {
-  background-color: $color-primary;
-  box-shadow: 0 -6px 6px 6px rgba($color-black, 0.7);
+  @include theme-background-color($color-primary, $color-primary);
+  @include theme-box-shadow(rgba($color-grey-20, 0.7), rgba($color-black, 0.7), 0 -6px 6px 6px);
   position: fixed;
   min-height: 60px;
   width: 100vw;
@@ -16,7 +16,8 @@
       background: none;
       border: none;
       cursor: pointer;
-      fill: $color-text-bright;
+      @include theme-color($color-text-bright, $color-text-bright);
+      fill: currentColor;
       padding: 10px;
 
       &:focus {
@@ -24,7 +25,7 @@
       }
 
       &:hover {
-        background: $color-secondary;
+        @include theme-background-color($color-secondary, $color-secondary);
       }
     }
   }
@@ -45,9 +46,9 @@
     }
   }
 
-  &__entry{
+  &__entry {
     position: relative;
-    fill: $color-text-bright;
+    fill: currentColor;
     display: block;
 
     &--buttons {
@@ -71,7 +72,7 @@
   &__queuesize {
     padding: 20px;
     line-height: 20px;
-    color: red;
+    @include theme-color($color-strong-red, $color-strong-red);
     position: absolute;
     right: 0;
     top: 0;
@@ -84,7 +85,7 @@
     width: 1px;
     right: 0;
     top: 10px;
-    background-color: rgba($color-white, 0.15);
+    @include theme-background-color(rgba($color-white, 0.15), rgba($color-white, 0.15));
 
     @media (max-width: $breakpoint-mobile) {
       height: 1px;
@@ -99,7 +100,7 @@
     display: block;
     padding: 20px;
     line-height: 20px;
-    color: $color-text-bright;
+    @include theme-color($color-text-bright, $color-text-bright);
 
     // For buttons in navi
     background: none;
@@ -109,13 +110,13 @@
 
     &--active,
     &:hover:not(:disabled) {
-      background-color: $color-secondary;
-      color: $color-text-bright;
+      @include theme-background-color($color-secondary, $color-secondary);
+      @include theme-color($color-text-bright, $color-text-bright);
       cursor: pointer;
     }
 
     &:disabled {
-      color: $color-grey-50;
+      @include theme-color($color-grey-50, $color-grey-50);
       opacity: 0.5;
     }
 
