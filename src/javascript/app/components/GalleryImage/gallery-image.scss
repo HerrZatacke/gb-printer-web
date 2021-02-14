@@ -30,7 +30,7 @@
   &__image {
     display: block;
     min-height: 144px;
-    background-color: $color-grey-40;
+    @include theme-background-color(rgba($color-grey-40, 0.5), rgba($color-grey-30, 0.5));
     width: 100%;
     border: none;
     padding: 0;
@@ -42,7 +42,7 @@
     font-size: 14px;
     line-height: 16px;
     display: block;
-    color: white;
+    @include theme-color($color-white, $color-grey-60);
   }
 
   &__created {
@@ -51,7 +51,7 @@
     text-align: right;
     font-size: 12px;
     line-height: 10px;
-    color: $color-grey-80;
+    @include theme-color($color-grey-80, $color-grey-40);
   }
 
   //.rgbn-select,
@@ -88,5 +88,23 @@
     background: none;
     //width: 1px;
     //flex-grow: 2;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5px -3px 0 -3px;
+  }
+
+  &__tag {
+    height: 18px;
+    border-radius: 9px;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0 3px 4px 3px;
+    padding: 2px 8px;
+    @include theme-background-color($color-secondary, $color-secondary);
+    @include theme-color($color-text-bright, $color-black);
+    overflow: hidden;
   }
 }
