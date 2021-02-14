@@ -1,7 +1,7 @@
 $block: #{'.gallery-list-image'};
 
 #{$block} {
-  border-bottom: 1px solid $page-background;
+  border-bottom: 1px solid $color-page-background;
 
   &:last-child {
     border: none;

@@ -2,7 +2,7 @@ body {
   @include font;
 
   line-height: 1.3em;
-  background: $page-background;
+  background: $color-page-background;
   color: $color-black;
   min-width: 340px;
 
