@@ -35,6 +35,33 @@
     }
   }
 
+  &__label-check {
+    cursor: pointer;
+    @include theme-background-color($color-grey-70, $color-grey-30);
+    @include theme-color($color-text, $color-text-bright);
+    flex-grow: 1;
+    margin-left: 20px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: $default-border-radius;
+    user-select: none;
+
+    &:hover,
+    &--selected {
+      @include theme-background-color($color-tertiary, $color-tertiary-bright);
+      @include theme-color($color-text-bright, $color-text);
+    }
+
+    input {
+      display: none;
+    }
+
+    @media (max-width: 740px) {
+      flex-basis: 20%;
+      margin-bottom: 10px;
+    }
+  }
+
   &__inputgroup--column &__button {
     height: 40px;
     width: 80px;
@@ -49,6 +76,15 @@
     height: 40px;
     line-height: 40px;
     text-align: left;
+  }
+
+  &__note {
+    padding-left: 10px;
+    font-size: 12px;
+
+    &--warn {
+      @include theme-color($color-warn-red, $color-warn-red);
+    }
   }
 }
 
