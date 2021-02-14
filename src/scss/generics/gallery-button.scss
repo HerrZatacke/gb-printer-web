@@ -1,0 +1,60 @@
+.gallery-button {
+  &__group {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  position: relative;
+  @include theme-color($color-icon-tertiary, $color-icon-tertiary-dark);
+  @include theme-background-color($color-grey-70, $color-grey-30);
+  flex-grow: 0;
+  margin-left: 5px;
+  line-height: 40px;
+  width: 40px;
+  text-align: center;
+  border-radius: $default-border-radius;
+  pointer-events: all;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  button {
+    color: inherit;
+    border: none;
+    background: none;
+    margin: 0;
+    padding: 0;
+    width: inherit;
+    line-height: inherit;
+    cursor: pointer;
+    display: block;
+  }
+
+  .svg {
+    fill: currentColor;
+  }
+
+  &--disabled {
+    @include theme-color($color-grey-60, $color-grey-40);
+
+    button {
+      cursor: default;
+    }
+  }
+
+  &--enabled:hover {
+    @include theme-background-color($color-tertiary, $color-tertiary-dark);
+  }
+
+  // checkmark
+  .tick {
+    opacity: 1;
+  }
+
+  &--has-selected {
+    .tick {
+      opacity: $checkmark-tick-inactive-opacity;
+    }
+  }
+}
