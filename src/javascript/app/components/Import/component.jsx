@@ -24,8 +24,8 @@ const Import = ({
 
   return (
     <div className="import">
-      {(env !== 'esp8266') ? null : (
-        <div className="import__inputgroup buttongroup">
+      {(env === 'esp8266') ? null : (
+        <div className="inputgroup buttongroup">
           <button
             type="button"
             className="button"
@@ -52,8 +52,8 @@ const Import = ({
         </div>
       )}
       <PrinterReport />
-      <div className="import__inputgroup">
-        <label htmlFor="import-file" className="import__label">
+      <div className="inputgroup">
+        <label htmlFor="import-file" className="inputgroup__label">
           Select file for import
         </label>
         <input
@@ -68,13 +68,13 @@ const Import = ({
         />
         <label
           htmlFor="import-file"
-          className="button import__button import__button--label"
+          className="button button--label"
         >
           Select
         </label>
       </div>
-      <div className="import__inputgroup import__inputgroup--column">
-        <label htmlFor="import-plaintext" className="import__label">
+      <div className="inputgroup inputgroup--column">
+        <label htmlFor="import-plaintext" className="inputgroup__label">
           Paste your plaintext
         </label>
         <textarea
@@ -86,7 +86,7 @@ const Import = ({
           }}
         />
         <button
-          className="button import__button"
+          className="button button--label"
           type="button"
           onClick={() => {
             importPlainText(text);
@@ -95,7 +95,7 @@ const Import = ({
           Import
         </button>
       </div>
-      <div className="import__inputgroup buttongroup">
+      <div className="inputgroup buttongroup">
         <button
           type="button"
           className="button"

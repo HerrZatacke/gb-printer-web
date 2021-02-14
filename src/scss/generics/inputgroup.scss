@@ -1,0 +1,55 @@
+.inputgroup {
+  display: flex;
+  min-height: 40px;
+  @include theme-color($color-text, $color-text-bright);
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  &--column {
+    flex-direction: column;
+
+    .button {
+      height: 40px;
+      width: 80px;
+      align-self: flex-end;
+      line-height: 40px;
+      flex-basis: 40px;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 740px) {
+    flex-wrap: wrap;
+    margin-left: -20px;
+  }
+
+  &__label {
+    flex-basis: 30%;
+    flex-grow: 0;
+
+    @media (max-width: 740px) {
+      flex-basis: 100%;
+      margin-bottom: 10px;
+      margin-left: 20px;
+    }
+  }
+
+  &__inputgroup--column &__button {
+    height: 40px;
+    width: 80px;
+    align-self: flex-end;
+    line-height: 40px;
+    flex-basis: 40px;
+    margin: 0;
+  }
+
+  &--column &__label {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+  }
+}
+
+
