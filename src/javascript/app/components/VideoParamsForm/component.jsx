@@ -57,10 +57,10 @@ class VideoParamsForm extends React.Component {
         deny={this.props.cancel}
         header={`Create a video with ${this.props.imageCount} frames`}
       >
-        <div className="settings__inputgroup">
+        <div className="inputgroup">
           <label
             htmlFor="video-params-frameRate"
-            className="settings__label"
+            className="inputgroup__label"
           >
             Framerate
           </label>
@@ -79,10 +79,10 @@ class VideoParamsForm extends React.Component {
             onBlur={this.callUpdate}
           />
         </div>
-        <div className="settings__inputgroup">
+        <div className="inputgroup">
           <label
             htmlFor="video-params-scaleFactor"
-            className="settings__label"
+            className="inputgroup__label"
           >
             Scale video
           </label>

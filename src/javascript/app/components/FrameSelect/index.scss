@@ -5,7 +5,10 @@
   height: 40px;
   background: none;
   margin-bottom: 10px;
-  border: 1px solid $color-grey-50;
+  border: 1px solid;
+  @include theme-border-color($color-grey-50, $color-grey-50);
+  @include theme-color($color-black, $color-text-bright);
+  @include theme-background-color($color-white, $color-grey-10);
   font-size: 16px;
   color: inherit;
 

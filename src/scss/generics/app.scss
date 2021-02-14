@@ -2,8 +2,8 @@ body {
   @include font;
 
   line-height: 1.3em;
-  background: $page-background;
-  color: $color-black;
+  @include theme-background-color($color-page-background, $color-page-background-dark);
+  @include theme-color($color-text, $color-text-bright);
   min-width: 340px;
 
   &.has-overlay {
@@ -24,9 +24,10 @@ pre {
 .init-error {
   margin: 60px;
   padding: 20px 30px;
-  border: 8px solid $color-primary;
-  background: $color-grey-30;
-  color: $color-text-bright;
+  border: 8px solid;
+  @include theme-border-color($color-primary, $color-secondary);
+  @include theme-background-color($color-grey-30, $color-grey-70);
+  @include theme-color($color-text-bright, $color-text);
 
   small {
     display: block;

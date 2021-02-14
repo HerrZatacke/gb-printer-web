@@ -12,14 +12,14 @@ const GALLERY_VIEWS = [
 ];
 
 const GalleryViewSelect = (props) => (
-  <ul className="gallery-view-select">
+  <ul className="gallery-view-select gallery-button__group">
     {
       GALLERY_VIEWS.map((view) => (
         <li
           key={view}
           className={
-            classnames('gallery-view-select__view', {
-              'gallery-view-select__view--selected': props.currentView === view,
+            classnames('gallery-button gallery-button--enabled', {
+              'gallery-button--selected': props.currentView === view,
             })
           }
         >

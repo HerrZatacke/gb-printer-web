@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
+import ThemeToggle from '../ThemeToggle';
 
 const Navigation = (props) => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -84,7 +85,10 @@ const Navigation = (props) => {
               type="button"
               title={`Synchronize to GitHub\n${props.repoUrl}`}
               className="navigation__link navigation__link--icon"
-              onClick={() => props.startSync('up')}
+              onClick={() => {
+                setMobileNavOpen(false);
+                props.startSync('up');
+              }}
               disabled={props.gitBusy}
             >
               <SVG name="sync" className="svg--180" />
@@ -93,13 +97,21 @@ const Navigation = (props) => {
               type="button"
               title={`Synchronize from GitHub\n${props.repoUrl}`}
               className="navigation__link navigation__link--icon"
-              onClick={() => props.startSync('down')}
+              onClick={() => {
+                setMobileNavOpen(false);
+                props.startSync('down');
+              }}
               disabled={props.gitBusy}
             >
               <SVG name="sync" />
             </button>
           </li>
         ) : null}
+        <li className="navigation__entry navigation__entry--right">
+          <ThemeToggle
+            closeNavigation={() => setMobileNavOpen(false)}
+          />
+        </li>
       </ul>
       {props.importQueueSize > 0 ? (
         <div className="navigation__queuesize">

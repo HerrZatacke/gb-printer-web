@@ -11,8 +11,8 @@
 
   &__tag {
     line-height: 30px;
-    background-color: $color-grey-70;
-    color: $color-black;
+    @include theme-background-color($color-grey-70, $color-grey-30);
+    @include theme-color($color-text, $color-text-bright);
     margin: 0 $spacing 10px;
     height: 30px;
     border-radius: 15px;
@@ -24,8 +24,8 @@
     }
 
     &--active {
-      background-color: $color-primary;
-      color: $color-text-bright;
+      @include theme-background-color($color-primary, $color-primary-dark);
+      @include theme-color($color-text-bright, $color-text-bright);
 
       .tick {
         opacity: 1;
@@ -33,8 +33,8 @@
     }
 
     &:hover {
-      background-color: $color-secondary;
-      color: $color-text-bright;
+      @include theme-background-color($color-secondary, $color-secondary-dark);
+      @include theme-color($color-text-bright, $color-text-bright);
     }
   }
 

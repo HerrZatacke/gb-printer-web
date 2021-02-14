@@ -42,8 +42,8 @@
   &__ap-group {
     &--delete {
       .settings__inputgroup:first-child input {
-        background-color: $color-button-red;
-        color: $color-white;
+        @include theme-background-color($color-button-red, $color-button-red);
+        @include theme-color($color-white, $color-grey-70);
       }
     }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import PaginationButton from '../PaginationButton';
 import SVG from '../SVG';
 
@@ -25,9 +24,7 @@ const Pagination = (props) => {
           <PaginationButton
             key={pageIndex}
             page={pageIndex}
-            className={classNames('pagination__list-item pagination__list-item--page', {
-              'pagination__list-item--page--active': pageIndex === page,
-            })}
+            active={pageIndex === page}
             title={`To page ${pageIndex + 1}`}
             disabled={pageIndex === page}
           >
@@ -37,7 +34,7 @@ const Pagination = (props) => {
       // ellipsis to indicate left out pages
       case page - 2:
       case page + 2:
-        return <li key={pageIndex} className="pagination__list-item pagination__list-item--ellipsis" />;
+        return <li key={pageIndex} className="gallery-button pagination__ellipsis" />;
       default:
         return null;
     }
@@ -47,7 +44,6 @@ const Pagination = (props) => {
     displayedPages.unshift((
       <PaginationButton
         key="back"
-        className="pagination__list-item pagination__list-item--prevnext pagination__list-item--prevnext-prev"
         title="To previous page"
         disabled={page < 1}
         page={page - 1}
@@ -61,7 +57,6 @@ const Pagination = (props) => {
     displayedPages.push((
       <PaginationButton
         key="next"
-        className="pagination__list-item pagination__list-item--prevnext"
         title="To next page"
         disabled={page >= pages.length - 1}
         page={page + 1}
@@ -72,7 +67,7 @@ const Pagination = (props) => {
   }
 
   return (
-    <ul className="pagination">
+    <ul className="pagination gallery-button__group">
       {displayedPages.filter(Boolean)}
     </ul>
   );

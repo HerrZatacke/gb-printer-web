@@ -1,5 +1,5 @@
 .socketstate-indicator {
-  border: 1px solid black;
+  border: 1px solid currentColor;
   border-radius: 50%;
   width: 10px;
   height: 10px;
@@ -8,19 +8,19 @@
   margin: 5px 0 5px 10px;
 
   &--closed {
-    background-color: #ff0000;
+    @include theme-background-color($color-strong-red, $color-strong-red);
   }
 
   &--closing {
-    background-color: #eeee00;
+    @include theme-background-color($color-strong-yellow, $color-strong-yellow);
   }
 
   &--open {
-    background-color: #00aa00;
+    @include theme-background-color($color-strong-green, $color-strong-green);
   }
 
   &--connecting {
-    background-color: #eeee00;
+    @include theme-background-color($color-strong-yellow, $color-strong-yellow);
   }
 
 }

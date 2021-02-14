@@ -11,10 +11,10 @@ const APConfig = (props) => (
       })
     }
   >
-    <div className="settings__inputgroup">
+    <div className="inputgroup">
       <label
         htmlFor={`${props.id}-settings-ap-ssid`}
-        className="settings__label"
+        className="inputgroup__label"
       >
         Network SSID
       </label>
@@ -43,10 +43,10 @@ const APConfig = (props) => (
         <SVG name="delete" />
       </button>
     </div>
-    <div className="settings__inputgroup">
+    <div className="inputgroup">
       <label
         htmlFor={`${props.id}-settings-ap-psk`}
-        className="settings__label"
+        className="inputgroup__label"
       >
         Network Password
       </label>

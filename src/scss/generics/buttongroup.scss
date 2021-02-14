@@ -14,19 +14,26 @@
   flex-shrink: 0;
   margin: 5px 0 5px 20px;
   min-height: 40px;
-  color: $color-text-bright;
+  @include theme-color($color-text-bright, $color-text);
+  @include theme-background-color($color-primary, $color-primary-bright);
   fill: currentColor;
-  background: $color-primary;
   border: none;
   cursor: pointer;
 
   &:hover {
-    background: $color-secondary;
+    @include theme-background-color($color-secondary, $color-secondary-bright);
   }
 
   &:disabled {
-    color: $color-grey-40;
-    background: $color-grey-70;
+    @include theme-color($color-grey-60, $color-grey-40);
+    @include theme-background-color($color-grey-70, $color-grey-30);
     cursor: default;
+  }
+
+  &--label {
+    flex-grow: 0;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
   }
 }

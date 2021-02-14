@@ -1,105 +1,25 @@
 .import {
 
-  &__inputgroup {
-    display: flex;
-    min-height: 40px;
-    color: $color-text;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-
-    &--column {
-      flex-direction: column;
-    }
-
-    @media (max-width: 740px) {
-      flex-wrap: wrap;
-      margin-left: -20px;
-    }
-  }
-
-  &__label {
-    flex-basis: 30%;
-    flex-grow: 0;
-
-    @media (max-width: 740px) {
-      flex-basis: 100%;
-      margin-bottom: 10px;
-      margin-left: 20px;
-    }
-  }
-
-  &__inputgroup--column &__label {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    text-align: left;
-  }
-
   &__data {
+    @include theme-color($color-grey-20, $color-grey-80);
+    @include theme-background-color($color-white, $color-black);
+    padding: 4px;
     width: 100%;
     height: 400px;
     min-height: 200px;
-    font-size: 12px;
+    font-size: 13px;
     margin-bottom: 20px;
     resize: none;
   }
 
-  &__inputgroup--column &__button {
-    height: 40px;
-    width: 80px;
-    align-self: flex-end;
-    line-height: 40px;
-    flex-basis: 40px;
+
+  &__input-file {
+    position: absolute;
+    width: 1px;
+    height: 1px;
     margin: 0;
+    padding: 0;
+    top: -10px;
+    left: 0;
   }
-
-  &__input {
-    flex-basis: auto;
-    flex-grow: 1;
-    margin-left: 20px;
-    padding: 10px 12px;
-    border: 1px solid $color-text-bright;
-    color: $color-text;
-
-    &[type=file] {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: 0;
-      padding: 0;
-      top: -10px;
-      left: 0;
-    }
-  }
-
-  &__button {
-    flex-basis: 80px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    margin: 5px 0 5px 20px;
-    min-height: 40px;
-    color: $color-text-bright;
-    background: $color-primary;
-    border: none;
-    cursor: pointer;
-
-
-    &:hover {
-      background: $color-secondary;
-    }
-
-    &--label {
-      text-align: center;
-      line-height: 40px;
-      font-size: 14px;
-    }
-
-    &:disabled {
-      background-color: $color-grey-60;
-      color: $color-grey-40;
-      cursor: default;
-    }
-  }
-
 }

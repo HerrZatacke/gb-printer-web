@@ -4,15 +4,16 @@
   left: 10vw;
   width: 80vw;
   height: 80vh;
-  border: 12px dashed $color-grey-70;
-  background: $color-grey-90;
+  border: 12px dashed;
+  @include theme-border-color($color-grey-70,  $color-grey-30);
+  @include theme-background-color($color-grey-90,  $color-grey-10);
   border-radius: 5vw;
 
   &:before {
     content: 'Drag your file(s)';
     font-size: 5vw;
     font-weight: bold;
-    color: $color-grey-60;
+    @include theme-color($color-grey-60,  $color-grey-40);
     line-height: 80vh;
     text-align: center;
     display: block;

@@ -5,13 +5,13 @@
   }
 
   &__backdrop {
-    background: rgba($color-black, 0.95);
+    @include theme-background-color(rgba($color-black, 0.9), rgba($color-black, 0.9));
   }
 
   &__box {
     width: calc(70vh - 80px);
     max-height: calc(100vh - 30px);
-    background: $page-background;
+    @include theme-background-color($color-page-background, $color-page-background-dark);
     position: relative;
     overflow: visible;
 
@@ -49,7 +49,8 @@
     background: none;
     border: none;
     position: absolute;
-    fill: $color-secondary;
+    @include theme-color($color-secondary, $color-secondary-bright);
+    fill: currentColor;
 
     &--fullscreen {
       right: 50px;
@@ -68,7 +69,7 @@
     }
 
     &:hover {
-      fill: $color-white;
+      @include theme-color($color-white, $color-grey-40);
     }
   }
 

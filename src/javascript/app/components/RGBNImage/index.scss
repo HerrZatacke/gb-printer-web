@@ -6,7 +6,7 @@
   height: 144px;
   display: block;
   image-rendering: pixelated;
-  background: $color-secondary;
+  @include theme-background-color($color-secondary, $color-primary);
   transition: top 300ms ease-in-out;
   z-index: $z-index-live-image;
 

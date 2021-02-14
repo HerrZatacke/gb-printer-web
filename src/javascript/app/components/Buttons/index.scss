@@ -4,7 +4,7 @@
   padding: 15px;
   margin-top: -15px;
   z-index: $z-index-overlay-buttons;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 1) 10px);
+  @include theme-background-image($color-white, $color-grey-10);
   pointer-events: none;
   border-radius: $default-border-radius;
 
@@ -14,7 +14,7 @@
     padding: 10px 20px;
     margin-left: 10px;
     cursor: pointer;
-    color: $color-white;
+    @include theme-color($color-white, $color-text-bright);
     pointer-events: all;
 
     &:hover {
@@ -22,11 +22,11 @@
     }
 
     &--confirm {
-      background: $color-button-green;
+      @include theme-background-color($color-button-green, $color-button-green-dark);
     }
 
     &--deny {
-      background: $color-button-red;
+      @include theme-background-color($color-button-red, $color-button-red-dark);
     }
   }
 }
