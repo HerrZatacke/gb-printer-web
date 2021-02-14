@@ -61,6 +61,11 @@
         padding-left: 8px;
       }
     }
+
+    &--right {
+      margin-left: auto;
+      padding-right: 40px;
+    }
   }
 
   &__queuesize {
