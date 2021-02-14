@@ -58,7 +58,7 @@ const Import = ({
         </label>
         <input
           id="import-file"
-          className="import__input"
+          className="import__input-file"
           type="file"
           onChange={({ target }) => {
             if (target.files && target.files.length === 1) {
@@ -68,7 +68,7 @@ const Import = ({
         />
         <label
           htmlFor="import-file"
-          className="import__button import__button--label"
+          className="button import__button import__button--label"
         >
           Select
         </label>
@@ -86,7 +86,7 @@ const Import = ({
           }}
         />
         <button
-          className="import__button"
+          className="button import__button"
           type="button"
           onClick={() => {
             importPlainText(text);
