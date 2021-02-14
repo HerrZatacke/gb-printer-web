@@ -62,13 +62,24 @@
     border-radius: 50%;
     box-shadow: 0 0 3px 1px $color-grey-40;
 
-    [data-color=r] & { background-color: $color-strong-red; }
-    [data-color=g] & { background-color: $color-strong-green; }
-    [data-color=b] & { background-color: $color-strong-blue; }
-    [data-color=n] & { background-color: $color-grey-40; }
+    [data-color=r] & {
+      @include theme-background-color($color-strong-red, $color-strong-red);
+    }
+
+    [data-color=g] & {
+      @include theme-background-color($color-strong-green, $color-strong-green);
+    }
+
+    [data-color=b] & {
+      @include theme-background-color($color-strong-blue, $color-strong-blue);
+    }
+
+    [data-color=n] & {
+      @include theme-background-color($color-black, $color-black);
+    }
 
     &:hover {
-      background-color: $color-grey-70;
+      @include theme-background-color($color-grey-70, $color-grey-40);
     }
   }
 }
