@@ -30,3 +30,11 @@
     border-color: $dark;
   }
 }
+
+@mixin theme-box-shadow($bright, $dark, $shadow) {
+  box-shadow: $bright $shadow;
+
+  html.theme-dark & {
+    box-shadow: $dark $shadow;
+  }
+}

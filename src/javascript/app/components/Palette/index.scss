@@ -6,16 +6,16 @@
   position: relative;
   margin: 10px;
   border-radius: $default-border-radius;
-  box-shadow: rgba($color-secondary, 0.4) 1px 2px 4px 0;
-  background: $color-white;
+  @include theme-box-shadow(rgba($color-secondary, 0.4), rgba($color-black, 0.4), 1px 2px 4px 0);
+  @include theme-background-color($color-white, $color-black);
   transition: transform 100ms ease-in-out;
 
   &--active {
-    background: $color-grey-50;
+    @include theme-background-color($color-grey-50, $color-grey-20);
   }
 
   &:hover {
-    background: $color-grey-50;
+    @include theme-background-color($color-grey-50, $color-grey-20);
     transform: scale(1.025);
   }
 
@@ -45,11 +45,11 @@
     top: 0;
     right: 0;
     font-size: 12px;
-    color: $color-secondary;
+    @include theme-color($color-secondary, $color-secondary-bright);
   }
 
   &--active &__shortname {
-    color: $color-primary;
+    @include theme-color($color-primary, $color-primary-bright);
   }
 
   &__colors {
