@@ -2,6 +2,10 @@
   &__group {
     display: flex;
     margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 40px;
+    height: 40px;
+    flex-wrap: nowrap;
   }
 
   position: relative;
