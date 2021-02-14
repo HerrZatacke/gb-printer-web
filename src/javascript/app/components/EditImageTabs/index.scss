@@ -18,7 +18,7 @@
     top: 0;
     width: calc(25% - 20px);
     margin: 20px 0 0 10px;
-    background: $color-primary;
+    @include theme-background-color($color-primary, $color-primary-dark);
     @include theme-color($color-white, $color-text-bright);
     border: none;
     padding: 0 5px;
