@@ -15,9 +15,9 @@ if (supportsWebmWriter()) {
 }
 
 const BatchButtons = (props) => (
-  <ul className="batch-buttons">
+  <ul className="batch-buttons gallery-button__group">
     <li
-      className="batch-buttons__action batch-buttons__action--enabled"
+      className="gallery-button gallery-button--enabled"
     >
       <button
         type="button"
@@ -31,8 +31,8 @@ const BatchButtons = (props) => (
     </li>
     <li
       className={
-        classnames('batch-buttons__action batch-buttons__action--enabled', {
-          'batch-buttons__action--has-selected': !props.hasSelected,
+        classnames('gallery-button gallery-button--enabled', {
+          'gallery-button--has-selected': !props.hasSelected,
         })
       }
     >
@@ -47,7 +47,7 @@ const BatchButtons = (props) => (
       </button>
     </li>
     <li
-      className="batch-buttons__action batch-buttons__action--enabled"
+      className="gallery-button gallery-button--enabled"
     >
       <button
         type="button"
@@ -61,9 +61,9 @@ const BatchButtons = (props) => (
         <li
           key={action}
           className={
-            classnames('batch-buttons__action', {
-              'batch-buttons__action--disabled': !props.enabled,
-              'batch-buttons__action--enabled': props.enabled,
+            classnames('gallery-button', {
+              'gallery-button--disabled': !props.enabled,
+              'gallery-button--enabled': props.enabled,
             })
           }
         >

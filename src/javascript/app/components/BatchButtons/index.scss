@@ -1,66 +1,4 @@
 .batch-buttons {
-  display: flex;
-  margin-bottom: 20px;
-
-  &__action {
-    position: relative;
-    color: $color-white;
-    background: $color-grey-70;
-    flex-grow: 0;
-    margin-left: 5px;
-    line-height: 40px;
-    width: 40px;
-    text-align: center;
-    border-radius: $default-border-radius;
-    pointer-events: all;
-
-    &:first-child {
-      margin-left: 0;
-    }
-
-    button {
-      border: none;
-      background: none;
-      margin: 0;
-      padding: 0;
-      width: inherit;
-      line-height: inherit;
-      cursor: pointer;
-      display: block;
-    }
-
-    .svg {
-      fill: $color-icon-tertiary;
-    }
-
-    &--disabled {
-      button {
-        cursor: default;
-      }
-
-      .svg {
-        fill: $color-grey-60;
-      }
-    }
-
-    &--enabled:hover {
-      background: $color-tertiary;
-    }
-
-
-
-    // checkmark
-    .tick {
-      opacity: 1;
-    }
-
-    &--has-selected {
-      .tick {
-        opacity: $checkmark-tick-inactive-opacity;
-      }
-    }
-  }
-
   &__bubble {
     position: absolute;
     bottom: -3px;
@@ -70,8 +8,8 @@
     line-height: 11px;
     padding: 3px 6px;
     border-radius: 9px;
-    background-color: $color-button-bubble;
-    color: $color-white;
+    @include theme-background-color($color-button-bubble, $color-button-bubble);
+    @include theme-color($color-white, $color-grey-70);
   }
 }
 
