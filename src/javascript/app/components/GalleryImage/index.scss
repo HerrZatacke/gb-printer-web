@@ -5,14 +5,14 @@
   user-select: none;
 
   &:hover{
-    background-color: $color-grey-60;
+    @include theme-background-color($color-grey-60, $color-grey-30);
   }
 
   &--selected {
-    background-color: $color-selected-image;
+    @include theme-background-color($color-selected-image, $color-selected-image-dark);
 
     &:hover {
-      background-color: $color-selected-image-hover;
+      @include theme-background-color($color-selected-image-hover, $color-selected-image-dark-hover);
     }
   }
 }
