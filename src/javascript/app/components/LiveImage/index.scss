@@ -2,7 +2,7 @@
   display: block;
   width: 160px;
   min-height: 144px;
-  background: $color-secondary;
+  @include theme-background-color($color-secondary, $color-primary);
   position: fixed;
   top: -100px;
   right: 0;
