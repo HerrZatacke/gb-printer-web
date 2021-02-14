@@ -1,0 +1,32 @@
+
+@mixin theme-color($bright, $dark) {
+  color: $bright;
+
+  html.theme-dark & {
+    color: $dark;
+  }
+}
+
+@mixin theme-background-color($bright, $dark) {
+  background-color: $bright;
+
+  html.theme-dark & {
+    background-color: $dark;
+  }
+}
+
+@mixin theme-fill($bright, $dark) {
+  fill: $bright;
+
+  html.theme-dark & {
+    fill: $dark;
+  }
+}
+
+@mixin theme-border-color($bright, $dark) {
+  border-color: $bright;
+
+  html.theme-dark & {
+    border-color: $dark;
+  }
+}
