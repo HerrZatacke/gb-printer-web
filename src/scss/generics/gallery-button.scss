@@ -35,6 +35,10 @@
     display: block;
   }
 
+  a {
+    @include theme-color($color-white, $color-text-bright);
+  }
+
   .svg {
     fill: currentColor;
   }
