@@ -23,14 +23,6 @@
   }
 }
 
-@mixin theme-fill($bright, $dark) {
-  fill: $bright;
-
-  html.theme-dark & {
-    fill: $dark;
-  }
-}
-
 @mixin theme-border-color($bright, $dark) {
   border-color: $bright;
 
