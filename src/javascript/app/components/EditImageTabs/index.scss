@@ -19,19 +19,19 @@
     width: calc(25% - 20px);
     margin: 20px 0 0 10px;
     background: $color-primary;
-    color: $color-white;
+    @include theme-color($color-white, $color-text-bright);
     border: none;
     padding: 0 5px;
     height: 40px;
     cursor: pointer;
 
     &:hover {
-      background-color: $color-secondary;
+      @include theme-background-color($color-secondary, $color-secondary-dark);
     }
   }
 
   &__tab--active &__button {
-    background-color: $color-secondary;
+    @include theme-background-color($color-secondary, $color-secondary-dark);
   }
 
   &__tab:nth-child(1) &__button {
