@@ -1,3 +1,4 @@
 @mixin font() {
   font-family: "Trebuchet MS", Helvetica, sans-serif;
+  @include theme-color($color-grey-30, $color-grey-70);
 }
