@@ -1,71 +1,13 @@
 .settings {
-  &__inputgroup {
-    display: flex;
-    min-height: 40px;
-    color: $color-text;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-
-    @media (max-width: 740px) {
-      flex-wrap: wrap;
-      margin-left: -20px;
-    }
-  }
-
-  &__label {
-    flex-basis: 30%;
-    flex-grow: 0;
-
-    @media (max-width: 740px) {
-      flex-basis: 100%;
-      margin-bottom: 10px;
-      margin-left: 20px;
-    }
-  }
-
-  &__note {
-    padding-left: 10px;
-    font-size: 12px;
-
-    &--warn {
-      color: $color-warn-red;
-    }
-  }
-
-  &__label-check {
-    cursor: pointer;
-    background: $color-grey-70;
-    flex-grow: 1;
-    margin-left: 20px;
-    line-height: 40px;
-    text-align: center;
-    border-radius: $default-border-radius;
-    user-select: none;
-
-    &:hover,
-    &--selected {
-      background: $color-tertiary;
-    }
-
-    input {
-      display: none;
-    }
-
-    @media (max-width: 740px) {
-      flex-basis: 20%;
-      margin-bottom: 10px;
-    }
-
-  }
-
   &__input {
     flex-basis: auto;
     flex-grow: 1;
     margin-left: 20px;
     padding: 10px 12px;
-    border: 1px solid $color-text-bright;
-    color: $color-text;
+    border: 1px solid;
+    @include theme-background-color($color-white, $color-black);
+    @include theme-border-color($color-grey-70, $color-grey-30);
+    @include theme-color($color-text, $color-text-bright);
 
     &--select {
       font-size: 16px;
@@ -87,9 +29,10 @@
     height: 40px;
     cursor: pointer;
     fill: currentColor;
+    @include theme-color($color-black, $color-grey-90);
 
     &:hover {
-      color: $color-secondary;
+      @include theme-color($color-secondary, $color-secondary-bright);
     }
   }
 
@@ -97,6 +40,7 @@
     .svg {
       width: 30px;
       height: 30px;
+      fill: currentColor;
     }
 
     .tick {
@@ -123,7 +67,7 @@
     margin-top: 40px;
     font-size: 12px;
     text-align: right;
-    color: $color-grey-60;
+    @include theme-color($color-grey-60, $color-grey-30);
     line-height: 14px;
   }
 }

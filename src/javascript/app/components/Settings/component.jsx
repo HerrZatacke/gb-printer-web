@@ -19,16 +19,16 @@ const Settings = (props) => {
 
   return (
     <div className="settings">
-      <div className="settings__inputgroup">
+      <div className="inputgroup">
         <label
           htmlFor="settings-pagesize"
-          className="settings__label"
+          className="inputgroup__label"
         >
           Page size
           <span
             className={
-              classnames('settings__note', {
-                'settings__note--warn': !props.pageSize,
+              classnames('inputgroup__note', {
+                'inputgroup__note--warn': !props.pageSize,
               })
             }
           >
@@ -49,16 +49,16 @@ const Settings = (props) => {
           }}
         />
       </div>
-      <div className="settings__inputgroup">
-        <div className="settings__label">
+      <div className="inputgroup">
+        <div className="inputgroup__label">
           Image export dimensions
         </div>
         {[1, 2, 3, 4, 6, 8, 10].map((factor) => (
           <label
             key={factor}
             className={
-              classnames('settings__label-check', {
-                'settings__label-check--selected': props.exportScaleFactors.includes(factor),
+              classnames('inputgroup__label-check', {
+                'inputgroup__label-check--selected': props.exportScaleFactors.includes(factor),
               })
             }
             title={`${factor * 160}×${factor * 144}`}
@@ -74,16 +74,16 @@ const Settings = (props) => {
           </label>
         ))}
       </div>
-      <div className="settings__inputgroup">
-        <div className="settings__label">
+      <div className="inputgroup">
+        <div className="inputgroup__label">
           Image export filetypes
         </div>
         {[...supportedCanvasImageFormats(), 'txt'].map((fileType) => (
           <label
             key={fileType}
             className={
-              classnames('settings__label-check', {
-                'settings__label-check--selected': props.exportFileTypes.includes(fileType),
+              classnames('inputgroup__label-check', {
+                'inputgroup__label-check--selected': props.exportFileTypes.includes(fileType),
               })
             }
             title={fileType}
@@ -101,13 +101,13 @@ const Settings = (props) => {
       </div>
       <label
         className={
-          classnames('settings__inputgroup settings__check-group', {
+          classnames('inputgroup settings__check-group', {
             'settings__check-group--checked': props.exportCropFrame,
           })
         }
       >
         <span
-          className="settings__label"
+          className="inputgroup__label"
           title="Crop/remove frame when exporting or sharing images"
         >
           Crop/remove frame when exporting or sharing images
@@ -128,8 +128,8 @@ const Settings = (props) => {
       </label>
       {(env !== 'webpack-dev') ? null : (
         <>
-          <div className="settings__inputgroup">
-            <label htmlFor="settings-socket-url" className="settings__label">
+          <div className="inputgroup">
+            <label htmlFor="settings-socket-url" className="inputgroup__label">
               Remote Socket URL
               <SocketStateIndicator />
             </label>
@@ -165,8 +165,8 @@ const Settings = (props) => {
               Connect
             </button>
           </div>
-          <div className="settings__inputgroup">
-            <label htmlFor="settings-printer-url" className="settings__label">
+          <div className="inputgroup">
+            <label htmlFor="settings-printer-url" className="inputgroup__label">
               Printer URL
             </label>
             <input
@@ -196,8 +196,8 @@ const Settings = (props) => {
           </div>
         </>
       )}
-      <div className="settings__inputgroup">
-        <label htmlFor="settings-sav-frames" className="settings__label">
+      <div className="inputgroup">
+        <label htmlFor="settings-sav-frames" className="inputgroup__label">
           Frames to be applied when importing Cartridge dumps
         </label>
         <select
@@ -219,13 +219,13 @@ const Settings = (props) => {
 
       <label
         className={
-          classnames('settings__inputgroup settings__check-group', {
+          classnames('inputgroup settings__check-group', {
             'settings__check-group--checked': props.hideDates,
           })
         }
       >
         <span
-          className="settings__label"
+          className="inputgroup__label"
           title="Hide dates in gallery"
         >
           Hide dates in gallery
@@ -246,13 +246,13 @@ const Settings = (props) => {
       </label>
       <label
         className={
-          classnames('settings__inputgroup settings__check-group', {
+          classnames('inputgroup settings__check-group', {
             'settings__check-group--checked': gitStorage.use,
           })
         }
       >
         <span
-          className="settings__label"
+          className="inputgroup__label"
           title="Hide dates in gallery"
         >
           Use github as storage
@@ -279,10 +279,10 @@ const Settings = (props) => {
 
       { !gitStorage.use ? null : (
         <>
-          <div className="settings__inputgroup">
+          <div className="inputgroup">
             <label
               htmlFor="settings-git-owner"
-              className="settings__label"
+              className="inputgroup__label"
             >
               Owner
             </label>
@@ -301,10 +301,10 @@ const Settings = (props) => {
               }}
             />
           </div>
-          <div className="settings__inputgroup">
+          <div className="inputgroup">
             <label
               htmlFor="settings-git-repo"
-              className="settings__label"
+              className="inputgroup__label"
             >
               Repository name
             </label>
@@ -323,10 +323,10 @@ const Settings = (props) => {
               }}
             />
           </div>
-          <div className="settings__inputgroup">
+          <div className="inputgroup">
             <label
               htmlFor="settings-git-branch"
-              className="settings__label"
+              className="inputgroup__label"
             >
               Branch
             </label>
@@ -345,10 +345,10 @@ const Settings = (props) => {
               }}
             />
           </div>
-          <div className="settings__inputgroup">
+          <div className="inputgroup">
             <label
               htmlFor="settings-git-throttle"
-              className="settings__label"
+              className="inputgroup__label"
             >
               Throttle (in ms)
             </label>
@@ -370,14 +370,14 @@ const Settings = (props) => {
               }}
             />
           </div>
-          <div className="settings__inputgroup">
+          <div className="inputgroup">
             <label
               htmlFor="settings-git-token"
-              className="settings__label"
+              className="inputgroup__label"
             >
               Token
               <a
-                className="settings__note"
+                className="inputgroup__note"
                 href="https://github.com/settings/tokens/new?scopes=repo"
               >
                 How to obtain a token
@@ -410,7 +410,7 @@ const Settings = (props) => {
         </>
       )}
 
-      <div className="settings__inputgroup buttongroup">
+      <div className="inputgroup buttongroup">
         <button
           type="button"
           className="button"
