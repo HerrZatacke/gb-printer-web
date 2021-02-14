@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
+import ThemeToggle from '../ThemeToggle';
 
 const Navigation = (props) => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -100,6 +101,9 @@ const Navigation = (props) => {
             </button>
           </li>
         ) : null}
+        <li className="navigation__entry navigation__entry--right">
+          <ThemeToggle />
+        </li>
       </ul>
       {props.importQueueSize > 0 ? (
         <div className="navigation__queuesize">
