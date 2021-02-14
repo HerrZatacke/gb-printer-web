@@ -60,7 +60,7 @@
     border: none;
     cursor: pointer;
     border-radius: 50%;
-    box-shadow: 0 0 3px 1px $color-grey-40;
+    @include theme-box-shadow($color-grey-40, $color-grey-60, 0 0 3px 1px);
 
     [data-color=r] & {
       @include theme-background-color($color-strong-red, $color-strong-red);
