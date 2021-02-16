@@ -106,6 +106,13 @@ const Import = ({
         <button
           type="button"
           className="button"
+          onClick={() => exportJson('selected_images')}
+        >
+          Export selected images
+        </button>
+        <button
+          type="button"
+          className="button"
           onClick={() => exportJson('frames')}
         >
           Export frames

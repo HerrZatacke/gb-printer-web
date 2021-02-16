@@ -3,8 +3,8 @@ import cleanState from '../../../tools/cleanState';
 import getSettings from '../../../tools/getSettings';
 import mergeStates from '../../../tools/mergeStates';
 
-const downloadSettings = (what) => {
-  const settings = getSettings(what);
+const downloadSettings = (what, imageSelection) => {
+  const settings = getSettings(what, imageSelection);
   download(null)([{
     blob: new Blob(new Array(settings)),
     filename: `${what}.json`,
@@ -28,7 +28,7 @@ const settings = (store) => (next) => (action) => {
 
   switch (action.type) {
     case 'JSON_EXPORT':
-      downloadSettings(action.payload);
+      downloadSettings(action.payload, store.getState().imageSelection);
       break;
     case 'JSON_IMPORT':
       mergeSettings(store.dispatch, store.getState(), action.payload, true);

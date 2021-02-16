@@ -1,9 +1,10 @@
 import { definitions } from '../../app/store/defaults';
 
-const getSettings = (what) => {
+const getSettings = (what, imageSelection = []) => {
   const storedImages = Object.keys(localStorage)
     .filter((key) => (
       key !== 'gbp-web-state' &&
+      key !== 'gbp-web-theme' &&
       key.startsWith('gbp-web-') &&
       !key.startsWith('gbp-web-frame-')
     ))
@@ -18,10 +19,24 @@ const getSettings = (what) => {
   // delete keys potentially containing passwords/tokens
   delete localStorageState.gitStorage;
 
+  const exportableState = {};
+  definitions.forEach(({ saveExport, key }) => {
+    if (saveExport.includes(what)) {
+      exportableState[key] = localStorageState[key];
+    }
+  });
+
   const images = {};
   if (what === 'images') {
     storedImages.forEach((imageHash) => {
       images[imageHash] = localStorage.getItem(`gbp-web-${imageHash}`);
+    });
+  }
+
+  if (what === 'selected_images') {
+    exportableState.images = imageSelection.map((imageHash) => {
+      images[imageHash] = localStorage.getItem(`gbp-web-${imageHash}`);
+      return exportableState.images.find(({ hash }) => hash === imageHash);
     });
   }
 
@@ -32,13 +47,6 @@ const getSettings = (what) => {
     });
   }
 
-  const exportableState = {};
-  definitions.forEach(({ saveExport, key }) => {
-    if (saveExport.includes(what)) {
-      exportableState[key] = localStorageState[key];
-    }
-  });
-
   switch (what) {
     case 'debug':
       return JSON.stringify({ state: localStorageState }, null, 2);
@@ -46,6 +54,7 @@ const getSettings = (what) => {
     case 'remote':
       return JSON.stringify({ state: exportableState }, null, 2);
     case 'images':
+    case 'selected_images':
       return JSON.stringify({
         state: exportableState,
         ...images,
