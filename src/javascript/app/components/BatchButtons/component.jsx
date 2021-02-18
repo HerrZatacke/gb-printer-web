@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gifshot from 'gifshot';
 import classnames from 'classnames';
 import SVG from '../SVG';
-import supportsWebmWriter from '../../../tools/supportsWebmWriter';
 
 const BATCH_ACTIONS = [
   'download',
@@ -10,7 +10,7 @@ const BATCH_ACTIONS = [
   'edit',
 ];
 
-if (supportsWebmWriter()) {
+if (gifshot.isSupported()) {
   BATCH_ACTIONS.push('animate');
 }
 
