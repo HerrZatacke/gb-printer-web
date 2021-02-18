@@ -10,9 +10,6 @@ module.exports = () => ({
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
   },
-  node: {
-    fs: 'empty',
-  },
   entry: {
     main: [
       path.join(process.cwd(), 'src', 'javascript', 'index.js'),
