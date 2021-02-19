@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gifshot from 'gifshot';
+// import gifshot from 'gifshot';
 import classnames from 'classnames';
 import SVG from '../SVG';
 
@@ -10,9 +10,9 @@ const BATCH_ACTIONS = [
   'edit',
 ];
 
-if (gifshot.isSupported()) {
-  BATCH_ACTIONS.push('animate');
-}
+// if (gifshot.isSupported()) {
+BATCH_ACTIONS.push('animate');
+// }
 
 const BatchButtons = (props) => (
   <ul className="batch-buttons gallery-button__group">
