@@ -1,10 +1,19 @@
-import gifshot from 'gifshot';
+import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import Decoder from '../../../tools/Decoder';
 import generateFileName from '../../../tools/generateFileName';
+
+const getAddImages = (gifWriter, frameRate) => (canvas) => {
+  const { data } = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+
+  gifWriter.addFrame(0, 0, canvas.width, canvas.height, data, {
+    delay: 100 / frameRate,
+    palette: [0xff0000, 0xff6666, 0xffaaaa, 0xffff00],
+  });
+};
 
 const animate = (store) => (next) => (action) => {
 
@@ -62,10 +71,18 @@ const animate = (store) => (next) => (action) => {
           })
       )))
       .then((images) => {
-        const ctxs = [];
-        images.forEach((canvas) => {
-          ctxs.push(canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
+
+        // const buf = Buffer.alloc(1024 * 1024 * 16); // ~ 16MB
+        // const buf = new Uint8Array(1024 * 1024 * 16);
+        const buf = [];
+
+        const gifWriter = new GifWriter(buf, images[0].width, images[0].height, {
+          loop: true,
         });
+
+        const addImages = getAddImages(gifWriter, frameRate);
+
+        images.forEach(addImages);
 
         if (yoyo) {
           const reverseImages = [...images].reverse();
@@ -75,9 +92,7 @@ const animate = (store) => (next) => (action) => {
           reverseImages.shift();
           reverseImages.pop();
 
-          reverseImages.forEach((canvas) => {
-            ctxs.push(canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
-          });
+          reverseImages.forEach(addImages);
         }
 
         const gifFileName = generateFileName({
@@ -89,28 +104,36 @@ const animate = (store) => (next) => (action) => {
           paletteShort: videoPalette,
         });
 
-        gifshot.createGIF({
-          gifWidth: images[0].width,
-          gifHeight: images[0].height,
-          frameDuration: 10 / frameRate,
-          progressCallback: (progress) => {
-            store.dispatch({
-              type: 'CREATE_GIF_PROGRESS',
-              payload: progress,
-            });
-          },
-          savedRenderingContexts: ctxs,
-        }, (result) => {
-          fetch(result.image)
-            .then((res) => res.blob())
-            .then((blob) => {
-              saveAs(blob, `${gifFileName}.gif`);
-              store.dispatch({
-                type: 'CREATE_GIF_PROGRESS',
-                payload: 0,
-              });
-            });
-        });
+        saveAs(
+          new Blob(
+            [new Uint8Array(buf.slice(0, gifWriter.end())).buffer],
+          ),
+          `${gifFileName}.gif`,
+        );
+
+
+        // gifshot.createGIF({
+        //   gifWidth: images[0].width,
+        //   gifHeight: images[0].height,
+        //   frameDuration: 10 / frameRate,
+        //   progressCallback: (progress) => {
+        //     store.dispatch({
+        //       type: 'CREATE_GIF_PROGRESS',
+        //       payload: progress,
+        //     });
+        //   },
+        //   savedRenderingContexts: ctxs,
+        // }, (result) => {
+        //   fetch(result.image)
+        //     .then((res) => res.blob())
+        //     .then((blob) => {
+        //       saveAs(blob, `${gifFileName}.gif`);
+        //       store.dispatch({
+        //         type: 'CREATE_GIF_PROGRESS',
+        //         payload: 0,
+        //       });
+        //     });
+        // });
       });
   }
 
