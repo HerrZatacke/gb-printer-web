@@ -55,7 +55,7 @@ class VideoParamsForm extends React.Component {
           this.props.animate();
         }}
         deny={this.props.cancel}
-        header={`Create a video with ${this.props.imageCount} frames`}
+        header={`Create an animated GIF with ${this.props.imageCount} frames`}
       >
         <div className="inputgroup">
           <label
