@@ -10,9 +10,6 @@ module.exports = () => ({
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
   },
-  node: {
-    fs: 'empty',
-  },
   entry: {
     pf: [
       'babel-polyfill/dist/polyfill',

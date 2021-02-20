@@ -22,6 +22,7 @@ import { getEnv } from '../../../tools/getEnv';
 import WiFiSettings from '../WiFiSettings';
 import VideoParamsForm from '../VideoParamsForm';
 import SortForm from '../SortForm';
+import ProgressBox from '../ProgressBox';
 
 const App = (props) => {
   const env = getEnv();
@@ -93,6 +94,7 @@ const App = (props) => {
       </div>
       <GitLogBox />
       <InfoBox />
+      <ProgressBox />
       <Confirmation />
       <EditForm />
       <VideoParamsForm />

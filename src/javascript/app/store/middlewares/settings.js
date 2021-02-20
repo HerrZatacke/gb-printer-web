@@ -4,8 +4,8 @@ import getSettings from '../../../tools/getSettings';
 import mergeStates from '../../../tools/mergeStates';
 import { localforageFrames, localforageImages } from '../../../tools/localforageInstance';
 
-const downloadSettings = (what) => {
-  getSettings(what)
+const downloadSettings = (what, imageSelection) => {
+  getSettings(what, imageSelection)
     .then((settings) => {
       download(null)([{
         blob: new Blob(new Array(settings)),
@@ -35,7 +35,7 @@ const settings = (store) => (next) => (action) => {
 
   switch (action.type) {
     case 'JSON_EXPORT':
-      downloadSettings(action.payload);
+      downloadSettings(action.payload, store.getState().imageSelection);
       break;
     case 'JSON_IMPORT':
       mergeSettings(store.dispatch, store.getState(), action.payload, true);

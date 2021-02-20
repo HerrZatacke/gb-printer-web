@@ -106,7 +106,7 @@ class Decoder {
       ))
       .filter(Boolean)
       .forEach((tile, index) => {
-        this.paintTileScaled(this.decodeTile(tile), index, context, scaleFactor, tilesPerLine);
+        this.paintTileScaled(this.decodeTile(tile), index, context, scaleFactor, tilesPerLine, cropFrame);
       });
 
     return canvas;
@@ -200,9 +200,10 @@ class Decoder {
     return pixels;
   }
 
-  getRGBValue(pixels, index, tileIndex) {
+  getRGBValue(pixels, index, tileIndex, cropFrame) {
     const palette = (
       this.lockFrame && // Must be actually locked
+      !cropFrame &&
       this.tileIndexIsFramePart(tileIndex) // Current tile must be in a "lockable" position
     ) ? this.bwPalette : this.colorData;
     const value = this.invertPalette ? palette[3 - pixels[index]] : palette[pixels[index]];
@@ -231,7 +232,7 @@ class Decoder {
         // pixels along the tile's y axis
 
         const rawIndex = (pixelXOffset + x + ((pixelYOffset + y) * 160)) * 4;
-        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index);
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index, false);
 
         this.rawImageData[rawIndex] = color.r;
         this.rawImageData[rawIndex + 1] = color.g;
@@ -241,7 +242,7 @@ class Decoder {
     }
   }
 
-  paintTileScaled(pixels, index, canvasContext, pixelSize, tilesPerLine) {
+  paintTileScaled(pixels, index, canvasContext, pixelSize, tilesPerLine, cropFrame = false) {
     const tileXOffset = index % tilesPerLine;
     const tileYOffset = Math.floor(index / tilesPerLine);
 
@@ -253,7 +254,7 @@ class Decoder {
       for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
         // pixels along the tile's y axis
 
-        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index);
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index, cropFrame);
         // eslint-disable-next-line no-param-reassign
         canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
 

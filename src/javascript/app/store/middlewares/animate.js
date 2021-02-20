@@ -1,4 +1,4 @@
-import WebMWriter from 'webm-writer';
+import gifshot from 'gifshot';
 import { saveAs } from 'file-saver';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
@@ -21,11 +21,6 @@ const animate = (store) => (next) => (action) => {
       palette: videoPalette,
       cropFrame,
     } = state.videoParams;
-
-    const videoWriter = new WebMWriter({
-      quality: 0.98,
-      frameRate,
-    });
 
     Promise.all(imageSelection.map((imageHash) => (
       state.images.find(({ hash }) => hash === imageHash)
@@ -67,8 +62,9 @@ const animate = (store) => (next) => (action) => {
           })
       )))
       .then((images) => {
+        const ctxs = [];
         images.forEach((canvas) => {
-          videoWriter.addFrame(canvas);
+          ctxs.push(canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
         });
 
         if (yoyo) {
@@ -80,26 +76,40 @@ const animate = (store) => (next) => (action) => {
           reverseImages.pop();
 
           reverseImages.forEach((canvas) => {
-            videoWriter.addFrame(canvas);
+            ctxs.push(canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
           });
         }
 
-        const videoFileName = generateFileName({
+        const gifFileName = generateFileName({
           useCurrentDate: true,
           exportScaleFactor: scaleFactor,
           frameRate,
-          altTitle: 'video',
+          altTitle: 'animated',
           frameName: videoFrame,
           paletteShort: videoPalette,
         });
 
-        videoWriter.complete().then((webMBlob) => {
-          saveAs(webMBlob, `${videoFileName}.webm`);
-          // const video = document.createElement('video');
-          // video.src = URL.createObjectURL(webMBlob);
-          // video.loop = true;
-          // video.controls = true;
-          // document.querySelector('body').appendChild(video);
+        gifshot.createGIF({
+          gifWidth: images[0].width,
+          gifHeight: images[0].height,
+          frameDuration: 10 / frameRate,
+          progressCallback: (progress) => {
+            store.dispatch({
+              type: 'CREATE_GIF_PROGRESS',
+              payload: progress,
+            });
+          },
+          savedRenderingContexts: ctxs,
+        }, (result) => {
+          fetch(result.image)
+            .then((res) => res.blob())
+            .then((blob) => {
+              saveAs(blob, `${gifFileName}.gif`);
+              store.dispatch({
+                type: 'CREATE_GIF_PROGRESS',
+                payload: 0,
+              });
+            });
         });
       });
   }

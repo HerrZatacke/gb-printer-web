@@ -2,10 +2,11 @@ import { definitions } from '../../app/store/defaults';
 import getImages from './getImages';
 import getFrames from './getFrames';
 
-const getSettings = (what) => {
+const getSettings = (what, imageSelection = []) => {
   const storedImages = Object.keys(localStorage)
     .filter((key) => (
       key !== 'gbp-web-state' &&
+      key !== 'gbp-web-theme' &&
       key.startsWith('gbp-web-') &&
       !key.startsWith('gbp-web-frame-')
     ))
@@ -34,6 +35,7 @@ const getSettings = (what) => {
     case 'remote':
       return Promise.resolve(JSON.stringify({ state: exportableState }, null, 2));
     case 'images':
+    case 'selected_images':
       return getImages(storedImages)
         .then((images) => (
           JSON.stringify({

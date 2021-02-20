@@ -28,7 +28,7 @@ const definitions = [
     key: 'images',
     saveLocally: true,
     saveRemote: false,
-    saveExport: ['images', 'remote'],
+    saveExport: ['selected_images', 'images', 'remote'],
     value: [],
   },
   {
@@ -68,7 +68,7 @@ const definitions = [
     key: 'imageSelection',
     saveLocally: true,
     saveRemote: false,
-    saveExport: [],
+    saveExport: ['selected_images'],
     value: [],
   },
   {

@@ -26,6 +26,7 @@ import pageSize from './reducers/pageSizeReducer';
 import palettes from './reducers/palettesReducer';
 import printerData from './reducers/printerDataReducer';
 import printerUrl from './reducers/printerUrlReducer';
+import progress from './reducers/progressReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
@@ -63,6 +64,7 @@ export default combineReducers({
   palettes,
   printerData,
   printerUrl,
+  progress,
   rgbnImages,
   savFrameTypes,
   sortBy,
