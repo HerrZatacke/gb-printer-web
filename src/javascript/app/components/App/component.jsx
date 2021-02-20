@@ -74,6 +74,7 @@ const App = (props) => {
             )}
             <ul className="settings__version">
               <li>{`Web-App version: ${VERSION}`}</li>
+              <li>{`Web-App branch: ${BRANCH}`}</li>
               <li>{`Printer version: ${env.version}`}</li>
               <li>{`Max Images: ${env.maximages}`}</li>
               <li>{`Localforage driver: ${env.localforage}`}</li>

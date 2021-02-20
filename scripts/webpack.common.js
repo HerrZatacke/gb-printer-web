@@ -4,6 +4,7 @@ const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const pxtorem = require('postcss-pxtorem');
 const autoprefixer = require('autoprefixer');
+const getBranch = require('./getBranch');
 const { version } = require('../package');
 
 module.exports = () => ({
@@ -119,6 +120,7 @@ module.exports = () => ({
     }),
     new DefinePlugin({
       VERSION: `'${version}'`,
+      BRANCH: `'${getBranch()}'`,
     }),
   ],
 });
