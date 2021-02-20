@@ -21,8 +21,9 @@ const transferLocalStorage = () => (
     Object.keys(localStorage)
       .filter((key) => (
         key !== 'gbp-web-state' &&
-        !key.startsWith('gbp-web-frame-') &&
-        key.startsWith('gbp-web-')
+        key !== 'gbp-web-theme' &&
+        key.startsWith('gbp-web-') &&
+        !key.startsWith('gbp-web-frame-')
       ))
       .map((key) => ({
         key,
