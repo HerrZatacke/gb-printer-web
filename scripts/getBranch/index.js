@@ -4,8 +4,7 @@ module.exports = () => {
   try {
     return execSync('git branch')
       .toString('ascii')
-      .split('*')
-      .pop()
+      .match(/[a-z0-9/ ]+/)[0]
       .trim();
   } catch (error) {
     return 'n/a';
