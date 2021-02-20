@@ -44,6 +44,7 @@ const prepareGitFiles = (fileCollection) => {
   ]
     .join('\n');
 
+  // querying only remote settings, so no state object needs to be provided
   return getSettings('remote')
     .then((remoteSettings) => {
       toUpload.push(
