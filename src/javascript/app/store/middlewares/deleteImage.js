@@ -1,4 +1,5 @@
 import { del } from '../../../tools/storage';
+import { localforageImages } from '../../../tools/localforageInstance';
 
 const hashIsUsedInRGBN = (hash, images) => (
   !!images.find(({ hashes }) => {
@@ -25,15 +26,11 @@ const deleteFromStorage = (images, deleteHash) => {
 };
 
 const cleanupStorage = (images) => {
-  Object.keys(localStorage)
-    .filter((key) => (
-      key !== 'gbp-web-state' &&
-      key.startsWith('gbp-web-') &&
-      !key.startsWith('gbp-web-frame-')
-    ))
-    .map((key) => key.replace(/^gbp-web-/gi, ''))
-    .forEach((hash) => {
-      deleteFromStorage(images, hash);
+  localforageImages.keys()
+    .then((storedHashes) => {
+      storedHashes.forEach((hash) => {
+        deleteFromStorage(images, hash);
+      });
     });
 };
 
