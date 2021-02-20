@@ -1,18 +1,8 @@
 import { download } from '../../../tools/download';
 import cleanState from '../../../tools/cleanState';
-import getSettings from '../../../tools/getSettings';
+import getGetSettings from '../../../tools/getGetSettings';
 import mergeStates from '../../../tools/mergeStates';
 import { localforageFrames, localforageImages } from '../../../tools/localforageInstance';
-
-const downloadSettings = (what, imageSelection) => {
-  getSettings(what, imageSelection)
-    .then((settings) => {
-      download(null)([{
-        blob: new Blob(new Array(settings)),
-        filename: `${what}.json`,
-      }]);
-    });
-};
 
 const mergeSettings = (dispatch, state, newSettings, mergeImagesFrames = false) => {
   Object.keys(newSettings).forEach((key) => {
@@ -31,23 +21,36 @@ const mergeSettings = (dispatch, state, newSettings, mergeImagesFrames = false) 
   });
 };
 
-const settings = (store) => (next) => (action) => {
+const settings = (store) => {
+  const getSettings = getGetSettings(store);
 
-  switch (action.type) {
-    case 'JSON_EXPORT':
-      downloadSettings(action.payload, store.getState().imageSelection);
-      break;
-    case 'JSON_IMPORT':
-      mergeSettings(store.dispatch, store.getState(), action.payload, true);
-      break;
-    case 'GIT_SETTINGS_IMPORT':
-      mergeSettings(store.dispatch, store.getState(), action.payload, false);
-      break;
-    default:
-      break;
-  }
+  const downloadSettings = (what) => {
+    getSettings(what)
+      .then((currentSettings) => {
+        download(null)([{
+          blob: new Blob(new Array(currentSettings)),
+          filename: `${what}.json`,
+        }]);
+      });
+  };
 
-  next(action);
+  return (next) => (action) => {
+    switch (action.type) {
+      case 'JSON_EXPORT':
+        downloadSettings(action.payload);
+        break;
+      case 'JSON_IMPORT':
+        mergeSettings(store.dispatch, store.getState(), action.payload, true);
+        break;
+      case 'GIT_SETTINGS_IMPORT':
+        mergeSettings(store.dispatch, store.getState(), action.payload, false);
+        break;
+      default:
+        break;
+    }
+
+    next(action);
+  };
 };
 
 export default settings;

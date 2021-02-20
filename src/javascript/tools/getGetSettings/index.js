@@ -1,20 +1,11 @@
 import { definitions } from '../../app/store/defaults';
 import getImages from './getImages';
 import getFrames from './getFrames';
+import getImageHashesForExport from './getImageHashesForExport';
 
-const getSettings = (what, imageSelection = []) => {
-  const storedImages = Object.keys(localStorage)
-    .filter((key) => (
-      key !== 'gbp-web-state' &&
-      key !== 'gbp-web-theme' &&
-      key.startsWith('gbp-web-') &&
-      !key.startsWith('gbp-web-frame-')
-    ))
-    .map((key) => key.replace(/^gbp-web-/gi, ''));
+const getGetSettings = (store) => (what) => {
 
-  const storedFrames = Object.keys(localStorage)
-    .filter((key) => (key.startsWith('gbp-web-frame-')))
-    .map((key) => key.replace(/^gbp-web-frame-/gi, ''));
+  const state = store.getState();
 
   const localStorageState = JSON.parse(localStorage.getItem('gbp-web-state'));
 
@@ -25,6 +16,12 @@ const getSettings = (what, imageSelection = []) => {
   definitions.forEach(({ saveExport, key }) => {
     if (saveExport.includes(what)) {
       exportableState[key] = localStorageState[key];
+
+      if (key === 'images' && what === 'selected_images') {
+        exportableState[key] = exportableState[key].filter(({ hash }) => (
+          getImageHashesForExport(what, state).includes(hash)
+        ));
+      }
     }
   });
 
@@ -36,7 +33,7 @@ const getSettings = (what, imageSelection = []) => {
       return Promise.resolve(JSON.stringify({ state: exportableState }, null, 2));
     case 'images':
     case 'selected_images':
-      return getImages(storedImages)
+      return getImages(what, getImageHashesForExport(what, state))
         .then((images) => (
           JSON.stringify({
             state: exportableState,
@@ -44,7 +41,7 @@ const getSettings = (what, imageSelection = []) => {
           }, null, 2)
         ));
     case 'frames':
-      return getFrames(storedFrames)
+      return getFrames(state.frames)
         .then((frames) => (
           JSON.stringify({
             state: exportableState,
@@ -56,4 +53,4 @@ const getSettings = (what, imageSelection = []) => {
   }
 };
 
-export default getSettings;
+export default getGetSettings;
