@@ -33,8 +33,6 @@ const init = (store) => {
   );
 
   octoClient = new OctoClient(gitStorageSettings, addToQueue('OctoClient'));
-
-  // octoClient.on('progress', (progress) => {});
 };
 
 
@@ -87,16 +85,13 @@ const middleware = (store) => {
             payload: syncResult,
           });
         });
+    } else if (action.type === 'SET_GIT_STORAGE') {
+      octoClient.setOctokit(action.payload);
     }
   };
-};
-
-const updateClient = (payload) => {
-  octoClient.setOctokit(payload);
 };
 
 export {
   init,
   middleware,
-  updateClient,
 };
