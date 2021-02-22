@@ -24,7 +24,7 @@ const Import = ({
 
   return (
     <div className="import">
-      {(env === 'esp8266') ? null : (
+      {(env !== 'esp8266') ? null : (
         <div className="inputgroup buttongroup">
           <button
             type="button"
