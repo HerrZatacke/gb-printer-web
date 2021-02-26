@@ -84,7 +84,7 @@ class VideoParamsForm extends React.Component {
             htmlFor="video-params-scaleFactor"
             className="inputgroup__label"
           >
-            Scale video
+            Scale GIF
           </label>
           <input
             id="video-params-scaleFactor"
