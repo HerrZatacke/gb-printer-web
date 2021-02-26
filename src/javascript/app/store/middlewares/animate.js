@@ -144,11 +144,11 @@ const animate = (store) => (next) => (action) => {
         // });
         // fr.readAsDataURL(file);
       })
-      .then((rr) => {
-        console.log({ rr });
-      })
       .catch((error) => {
-        console.log({ error });
+        store.dispatch({
+          type: 'ERROR',
+          payload: error.message,
+        });
       });
   }
 
