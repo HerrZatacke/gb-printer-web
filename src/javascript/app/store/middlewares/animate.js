@@ -1,5 +1,6 @@
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
+import chunk from 'chunk';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
@@ -9,9 +10,28 @@ import generateFileName from '../../../tools/generateFileName';
 const getAddImages = (gifWriter, frameRate) => (canvas) => {
   const { data } = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
 
-  gifWriter.addFrame(0, 0, canvas.width, canvas.height, data, {
-    delay: 100 / frameRate,
-    palette: [0xff0000, 0xff6666, 0xffaaaa, 0xffff00],
+  const palette = [];
+  const pixels = chunk(data, 4)
+    .map(([r, g, b]) => {
+      // eslint-disable-next-line no-bitwise
+      const color = (r << 16) + (g << 8) + b;
+      let colorIndex = palette.findIndex((c) => c === color);
+      if (colorIndex === -1) {
+        colorIndex = palette.length;
+        palette.push(color);
+      }
+
+      return colorIndex;
+    });
+
+  // Fix for RGB Images
+  while (palette.length < 256) {
+    palette.push(0);
+  }
+
+  gifWriter.addFrame(0, 0, canvas.width, canvas.height, pixels, {
+    delay: Math.round(100 / frameRate),
+    palette,
   });
 };
 
@@ -72,12 +92,10 @@ const animate = (store) => (next) => (action) => {
       )))
       .then((images) => {
 
-        // const buf = Buffer.alloc(1024 * 1024 * 16); // ~ 16MB
-        // const buf = new Uint8Array(1024 * 1024 * 16);
         const buf = [];
 
         const gifWriter = new GifWriter(buf, images[0].width, images[0].height, {
-          loop: true,
+          loop: 0xffff,
         });
 
         const addImages = getAddImages(gifWriter, frameRate);
@@ -104,36 +122,33 @@ const animate = (store) => (next) => (action) => {
           paletteShort: videoPalette,
         });
 
-        saveAs(
+        const bufferSize = gifWriter.end();
+
+        return saveAs(
           new Blob(
-            [new Uint8Array(buf.slice(0, gifWriter.end())).buffer],
+            [new Uint8Array(buf.slice(0, bufferSize)).buffer],
           ),
           `${gifFileName}.gif`,
         );
 
-
-        // gifshot.createGIF({
-        //   gifWidth: images[0].width,
-        //   gifHeight: images[0].height,
-        //   frameDuration: 10 / frameRate,
-        //   progressCallback: (progress) => {
-        //     store.dispatch({
-        //       type: 'CREATE_GIF_PROGRESS',
-        //       payload: progress,
-        //     });
-        //   },
-        //   savedRenderingContexts: ctxs,
-        // }, (result) => {
-        //   fetch(result.image)
-        //     .then((res) => res.blob())
-        //     .then((blob) => {
-        //       saveAs(blob, `${gifFileName}.gif`);
-        //       store.dispatch({
-        //         type: 'CREATE_GIF_PROGRESS',
-        //         payload: 0,
-        //       });
-        //     });
+        // const file = new File(
+        //   [new Uint8Array(buf.slice(0, bufferSize)).buffer],
+        //   `${gifFileName}.gif`,
+        //   { type: 'image/gif' },
+        // );
+        // const fr = new FileReader();
+        // fr.addEventListener('load', ({ target: { result } }) => {
+        //   const img = document.createElement('img');
+        //   img.src = result;
+        //   document.body.appendChild(img);
         // });
+        // fr.readAsDataURL(file);
+      })
+      .then((rr) => {
+        console.log({ rr });
+      })
+      .catch((error) => {
+        console.log({ error });
       });
   }
 
