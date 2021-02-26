@@ -25,6 +25,7 @@
     "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",
     "chalk": "^3.0.0",
+    "chunk": "0.0.3",
     "classnames": "^2.2.6",
     "copy-webpack-plugin": "^6.0.3",
     "core-js": "^3.6.5",
