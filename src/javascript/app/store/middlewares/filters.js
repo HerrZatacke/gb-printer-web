@@ -12,29 +12,23 @@ const updateAvailableTags = (store) => {
   });
 };
 
-const filters = (store) => {
-  window.requestAnimationFrame(() => {
-    updateAvailableTags(store);
-  });
+const filters = (store) => (next) => (action) => {
+  switch (action.type) {
+    case 'ADD_IMAGE':
+    case 'UPDATE_IMAGE':
+    case 'UPDATE_IMAGES_BATCH':
+    case 'DELETE_IMAGE':
+    case 'DELETE_IMAGES':
+    case 'GLOBAL_UPDATE':
+      next(action);
+      updateAvailableTags(store);
+      return;
 
-  return (next) => (action) => {
-    switch (action.type) {
-      case 'ADD_IMAGE':
-      case 'UPDATE_IMAGE':
-      case 'UPDATE_IMAGES_BATCH':
-      case 'DELETE_IMAGE':
-      case 'DELETE_IMAGES':
-      case 'GLOBAL_UPDATE':
-        next(action);
-        updateAvailableTags(store);
-        return;
+    default:
+      break;
+  }
 
-      default:
-        break;
-    }
-
-    next(action);
-  };
+  next(action);
 };
 
 export default filters;
