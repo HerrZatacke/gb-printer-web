@@ -1,4 +1,5 @@
 import { del } from '../../../tools/storage';
+import { localforageImages } from '../../../tools/localforageInstance';
 
 const hashIsUsedInRGBN = (hash, images) => (
   !!images.find(({ hashes }) => {
@@ -15,7 +16,7 @@ const hashIsUsedInDefault = (hash, images) => (
   !!images.find((image) => image.hash === hash)
 );
 
-const deleteFromLocalStorage = (images, deleteHash) => {
+const deleteFromStorage = (images, deleteHash) => {
   if (
     !hashIsUsedInRGBN(deleteHash, images) &&
     !hashIsUsedInDefault(deleteHash, images)
@@ -24,16 +25,12 @@ const deleteFromLocalStorage = (images, deleteHash) => {
   }
 };
 
-const cleanupLocalStorage = (images) => {
-  Object.keys(localStorage)
-    .filter((key) => (
-      key !== 'gbp-web-state' &&
-      key.startsWith('gbp-web-') &&
-      !key.startsWith('gbp-web-frame-')
-    ))
-    .map((key) => key.replace(/^gbp-web-/gi, ''))
-    .forEach((hash) => {
-      deleteFromLocalStorage(images, hash);
+const cleanupStorage = (images) => {
+  localforageImages.keys()
+    .then((storedHashes) => {
+      storedHashes.forEach((hash) => {
+        deleteFromStorage(images, hash);
+      });
     });
 };
 
@@ -45,7 +42,7 @@ const deleteImage = (store) => (next) => (action) => {
   switch (action.type) {
     case 'DELETE_IMAGE':
     case 'DELETE_IMAGES':
-      cleanupLocalStorage(store.getState().images);
+      cleanupStorage(store.getState().images);
       break;
     default:
       break;

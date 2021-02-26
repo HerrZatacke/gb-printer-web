@@ -28,4 +28,12 @@ pre {
   @include theme-border-color($color-primary, $color-secondary);
   @include theme-background-color($color-grey-30, $color-grey-70);
   @include theme-color($color-text-bright, $color-text);
+
+  small {
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 30px;
+    white-space: pre;
+  }
 }

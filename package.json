@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.8.8",
+  "version": "1.9.0",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack-dev-server --config ./scripts/webpack.dev.js",
@@ -84,7 +84,8 @@
     "webpack-bundle-analyzer": "^3.8.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "whatwg-fetch": "^3.5.0"
   },
   "browserslist": [
     ">1%",

@@ -1,11 +1,13 @@
 import dummyImage from './dummyImage';
 import applyFrame from '../applyFrame';
+import { localforageImages } from '../localforageInstance';
 
 const save = (lineBuffer) => (
   import(/* webpackChunkName: "obh" */ 'object-hash')
     .then(({ default: hash }) => (
       import(/* webpackChunkName: "pko" */ 'pako')
         .then(({ default: pako }) => {
+
           const imageData = lineBuffer
             .map((line) => (
               line.replace(/ /gi, '')
@@ -18,18 +20,9 @@ const save = (lineBuffer) => (
             level: 8,
           });
 
-          let dataHash = hash(compressed);
-
-          try {
-            localStorage.setItem(`gbp-web-${dataHash}`, compressed);
-          } catch (error) {
-            localStorage.removeItem(`gbp-web-${dataHash}`, compressed);
-            dataHash = `base64-${dataHash}`;
-            localStorage.setItem(`gbp-web-${dataHash}`, btoa(compressed));
-          }
-
-          return dataHash;
-
+          const dataHash = hash(compressed);
+          return localforageImages.setItem(dataHash, compressed)
+            .then(() => dataHash);
         })
     ))
 );
@@ -41,23 +34,16 @@ const load = (dataHash, frame, noDummy) => {
 
   return (
     import(/* webpackChunkName: "pko" */ 'pako')
-      .then(({ default: pako }) => {
-
-        try {
-          let binary;
-
-          if (dataHash.startsWith('base64-')) {
-            binary = atob(localStorage.getItem(`gbp-web-${dataHash}`));
-          } else {
-            binary = localStorage.getItem(`gbp-web-${dataHash}`);
-          }
-
-          const inflated = pako.inflate(binary, { to: 'string' });
-          return inflated.split('\n');
-        } catch (error) {
-          return noDummy ? [] : dummyImage(dataHash);
-        }
-      })
+      .then(({ default: pako }) => (
+        localforageImages.getItem(dataHash)
+          .then((binary) => {
+            const inflated = pako.inflate(binary, { to: 'string' });
+            return inflated.split('\n');
+          })
+          .catch(() => (
+            noDummy ? [] : dummyImage(dataHash)
+          ))
+      ))
   ).then((tiles) => {
     if (!frame) {
       return tiles;
@@ -68,7 +54,7 @@ const load = (dataHash, frame, noDummy) => {
 };
 
 const del = (dataHash) => {
-  localStorage.removeItem(`gbp-web-${dataHash}`);
+  localforageImages.removeItem(dataHash);
 };
 
 export {

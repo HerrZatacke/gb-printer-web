@@ -4,6 +4,7 @@ const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const pxtorem = require('postcss-pxtorem');
 const autoprefixer = require('autoprefixer');
+const getBranch = require('./getBranch');
 const { version } = require('../package');
 
 module.exports = () => ({
@@ -11,11 +12,12 @@ module.exports = () => ({
     extensions: ['.js', '.json', '.jsx'],
   },
   entry: {
-    main: [
-      path.join(process.cwd(), 'src', 'javascript', 'index.js'),
-    ],
     pf: [
       'babel-polyfill/dist/polyfill',
+      'whatwg-fetch',
+    ],
+    main: [
+      path.join(process.cwd(), 'src', 'javascript', 'index.js'),
     ],
   },
   module: {
@@ -118,6 +120,7 @@ module.exports = () => ({
     }),
     new DefinePlugin({
       VERSION: `'${version}'`,
+      BRANCH: `'${getBranch()}'`,
     }),
   ],
 });
