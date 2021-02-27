@@ -1,3 +1,4 @@
+import Queue from 'promise-queue';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
@@ -5,40 +6,40 @@ import Decoder from '../../../tools/Decoder';
 
 const pluginsMiddleware = (store) => {
   const registeredPlugins = {};
+  const queue = new Queue(1, Infinity);
 
-  window.requestAnimationFrame(() => {
-    const { plugins } = store.getState();
+  const initPlugin = ({ url }) => (
+    queue.add(() => (
+      new Promise((resolve) => {
+        window.gbpwRegisterPlugin = (Plugin) => {
+          window.gbpwRegisterPlugin = () => {};
 
-    plugins.forEach(({ url }) => {
+          try {
+            const instance = new Plugin({ store });
+            instance.init();
+            const { name, description } = instance;
+            registeredPlugins[url] = instance;
+            store.dispatch({
+              type: 'PLUGIN_UPDATE_PROPERTIES',
+              payload: {
+                url,
+                name,
+                description,
+              },
+            });
+            resolve(true);
+          } catch (error) {
+            resolve(false);
+          }
+        };
 
-      window.gbpwRegisterPlugin = (Plugin) => {
-        try {
-          const instance = new Plugin({ store });
-          instance.init();
-          const { name, description } = instance;
-          registeredPlugins[url] = instance;
-          store.dispatch({
-            type: 'PLUGIN_UPDATE_PROPERTIES',
-            payload: {
-              url,
-              name,
-              description,
-            },
-          });
-        } catch (error) {
-          store.dispatch({
-            type: 'ERROR',
-            payload: `Cound not create instance of plugin at "${url}"\n${error.message}\n${error.stack}`,
-          });
-        }
-      };
-
-      // init loading of external script.
-      const pluginScript = document.createElement('script');
-      document.head.appendChild(pluginScript);
-      pluginScript.src = url;
-    });
-  });
+        // init loading of external script.
+        const pluginScript = document.createElement('script');
+        document.head.appendChild(pluginScript);
+        pluginScript.src = url;
+      })
+    ))
+  );
 
   const collectImageData = (hash) => {
     const state = store.getState();
@@ -81,6 +82,19 @@ const pluginsMiddleware = (store) => {
     };
   };
 
+  window.requestAnimationFrame(() => {
+    const { plugins } = store.getState();
+
+    Promise.all(plugins.map(initPlugin))
+      .then((initializedPlugins) => {
+        // eslint-disable-next-line no-console
+        console.log(`${initializedPlugins.filter(Boolean).length} plugins initialized`);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+
   return (next) => (action) => {
 
     switch (action.type) {
@@ -91,6 +105,20 @@ const pluginsMiddleware = (store) => {
       }
 
       case 'PLUGIN_IMAGES':
+        // eslint-disable-next-line no-alert
+        alert('not yet implemented');
+        break;
+
+      case 'PLUGIN_ADD':
+        initPlugin({
+          url: action.payload,
+        });
+        break;
+
+      case 'PLUGIN_REMOVE':
+        delete registeredPlugins[action.payload];
+        break;
+
       default:
         break;
     }

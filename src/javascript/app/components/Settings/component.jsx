@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SocketStateIndicator from '../SocketStateIndicator';
+import PluginSettings from '../PluginSettings';
+import SVG from '../SVG';
 import cleanUrl from '../../../tools/cleanUrl';
 import { getEnv } from '../../../tools/getEnv';
 import supportedCanvasImageFormats from '../../../tools/supportedCanvasImageFormats/index';
-import SVG from '../SVG';
 
 const Settings = (props) => {
 
@@ -244,6 +245,7 @@ const Settings = (props) => {
           <SVG name="checkmark" />
         </span>
       </label>
+      <PluginSettings />
       <label
         className={
           classnames('inputgroup settings__check-group', {

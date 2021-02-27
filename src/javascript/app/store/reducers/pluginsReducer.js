@@ -9,7 +9,12 @@ const pluginsReducer = (plugins = [], action) => {
     case 'PLUGIN_REMOVE':
       return sortByUrl(uniqueByUrl([...plugins.filter(({ url }) => url !== action.payload)]));
     case 'PLUGIN_ADD':
-      return sortByUrl(uniqueByUrl([...plugins, action.payload]));
+      return sortByUrl(uniqueByUrl([
+        {
+          url: action.payload,
+        },
+        ...plugins,
+      ]));
     case 'PLUGIN_UPDATE_PROPERTIES':
       return sortByUrl(uniqueByUrl(plugins.map((plugin) => {
         if (plugin.url !== action.payload.url) {

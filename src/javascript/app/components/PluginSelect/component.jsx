@@ -26,6 +26,9 @@ const PluginSelect = ({ toPlugins, plugins }) => (
               onClick={() => toPlugins(url)}
             >
               {name}
+              <small>
+                {url}
+              </small>
             </button>
           </li>
         ))
