@@ -11,6 +11,7 @@ import hideLiveImage from './middlewares/hideLiveImage';
 import importFile from './middlewares/importFile';
 import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
+import pluginsMiddleware from './middlewares/plugins';
 import printer from './middlewares/printer';
 import saveEditImage from './middlewares/saveEditImage';
 import saveLineBuffer from './middlewares/saveLineBuffer';
@@ -33,6 +34,7 @@ export default applyMiddleware(
   importFile,
   importQueue,
   lightbox,
+  pluginsMiddleware,
   printer,
   saveEditImage,
   saveLineBuffer,
