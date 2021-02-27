@@ -21,6 +21,12 @@ const SVG = (props) => {
           <path d="M13 5v10h-1V5zM7 5v10H6V5zm4 0v10h-1V5zM9 5v10H8V5zM4 3v2h1v12h9V5h1V3h-4V2H8v1z" />
         </svg>
       );
+    case 'plug':
+      return (
+        <svg className={className} viewBox="0 0 20 20">
+          <path d="M13 9.4c0-2.485-2.204-3.9-5-3.9H5.5v1h-5v1.25h5v4.5H.524L.5 13.5h5v1H8c2.796 0 5-1.415 5-3.9 2.742-.837 3.586.996 6.5 0V9.4c-2.696 1.038-3.561-.896-6.5 0z" />
+        </svg>
+      );
     case 'share':
       return (
         <svg className={className} viewBox="0 0 20 20">
