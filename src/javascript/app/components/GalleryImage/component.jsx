@@ -136,7 +136,7 @@ class GalleryImage extends React.Component {
           ))}
         </ul>
         {this.getDateSpan('gallery-image__created')}
-        <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'view', 'share']} />
+        <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'view', 'share', 'plugins']} />
       </li>
     );
   }
@@ -183,7 +183,7 @@ class GalleryImage extends React.Component {
         </td>
 
         <td className="gallery-list-image__cell-buttons">
-          <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'view']} />
+          <GalleryImageButtons hash={this.props.hash} buttons={['select', 'download', 'delete', 'view', 'plugins']} />
         </td>
       </tr>
     );

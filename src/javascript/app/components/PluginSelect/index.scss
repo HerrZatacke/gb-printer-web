@@ -1,0 +1,53 @@
+.plugin-select {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 20px;
+
+  &:focus-within &__plugin-list {
+    display: flex;
+  }
+
+  &__plugin-list {
+    @include theme-background-color($color-grey-70, $color-grey-50);
+    position: absolute;
+    z-index: $z-index-blugin-buttons;
+    left: 0;
+    top: 0;
+    width: 250px;
+    display: none;
+    flex-direction: column;
+    border-radius: $default-border-radius;
+    padding: 4px;
+  }
+
+  &__plugin-list-entry {
+    display: block;
+    width: 100%;
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__button {
+    @include theme-color($color-tertiary, $color-tertiary-bright);
+    @include theme-background-color($color-grey-90, $color-grey-30);
+    @include font;
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: $default-border-radius-small;
+    text-align: left;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    &:hover {
+      @include theme-color($color-white, $color-grey-80);
+      @include theme-background-color($color-tertiary, $color-tertiary);
+    }
+  }
+
+}
