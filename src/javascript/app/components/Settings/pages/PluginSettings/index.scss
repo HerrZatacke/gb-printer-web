@@ -1,39 +1,46 @@
-.temp {
-  &__h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
+.plugin-settings {
+
+  &__plugin-list {
+    margin-bottom: 40px;
+    padding-top: 30px;
   }
 
-  &__items {
+  &__plugin {
+    display: flex;
     margin-bottom: 40px;
   }
 
-  &__item {
+  &__plugin-details {
     display: flex;
-
-    span {
-      padding-right: 20px;
-    }
-
-    code {
-      font-family: monospace;
-    }
-
-    small {
-      font-size: 12px;
-    }
-  }
-
-  &__item-label {
+    flex-direction: column;
     flex-grow: 1;
-    margin-left: 356px;
   }
+
+  &__plugin-name {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  &__plugin-url {
+    font-family: monospace;
+    margin-bottom: 10px;
+  }
+
+  &__plugin-description {
+    font-size: 12px;
+  }
+
 
   &__button {
     flex-grow: 0;
     flex-basis: 40px;
     width: 40px;
     height: 40px;
+
+    &--delete {
+      @include theme-background-color($color-button-red, $color-button-red);
+      @include theme-color($color-white, $color-grey-70);
+    }
   }
 
 }

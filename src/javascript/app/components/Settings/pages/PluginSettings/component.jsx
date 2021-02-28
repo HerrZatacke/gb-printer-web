@@ -23,7 +23,7 @@ const PluginSettings = ({ pluginAdd, pluginRemove, plugins }) => {
         />
         <button
           type="button"
-          className="button temp__button"
+          className="button plugin-settings__button"
           disabled={!pluginUrl}
           onClick={() => {
             pluginAdd(pluginUrl);
@@ -35,28 +35,35 @@ const PluginSettings = ({ pluginAdd, pluginRemove, plugins }) => {
       </div>
 
 
-      <ul className="temp__items">
+      <ul className="plugin-settings__plugin-list">
         {
           plugins.map(({ url, name, description }) => (
             <li
-              className="temp__item"
+              className="plugin-settings__plugin"
               key={url}
             >
-              <span
-                className="temp__item-label"
+              <div
+                className="plugin-settings__plugin-details"
               >
-                <span>
+                <span
+                  className="plugin-settings__plugin-name"
+                >
                   {name}
                 </span>
-                <code>{url}</code>
-                <br />
-                <small>
+                <code
+                  className="plugin-settings__plugin-url"
+                >
+                  {url}
+                </code>
+                <small
+                  className="plugin-settings__plugin-description"
+                >
                   {description}
                 </small>
-              </span>
+              </div>
               <button
                 type="button"
-                className="button temp__button"
+                className="button plugin-settings__button plugin-settings__button--delete"
                 onClick={() => pluginRemove(url)}
               >
                 <SVG name="delete" />
