@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../SVG';
+import SVG from '../../../SVG';
 
 const PluginSettings = ({ pluginAdd, pluginRemove, plugins }) => {
 
@@ -8,8 +8,6 @@ const PluginSettings = ({ pluginAdd, pluginRemove, plugins }) => {
 
   return (
     <>
-      <h2 className="temp__h2">Plugin-Settings</h2>
-
       <div className="inputgroup">
         <label
           htmlFor="settings-git-token"

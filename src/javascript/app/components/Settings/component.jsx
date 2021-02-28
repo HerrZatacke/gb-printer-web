@@ -5,7 +5,7 @@ import GenericSettings from './pages/GenericSettings';
 import ExportSettings from './pages/ExportSettings';
 import DevURLSettings from './pages/DevURLSettings';
 import WiFiSettings from './pages/WiFiSettings';
-import PluginSettings from '../PluginSettings';
+import PluginSettings from './pages/PluginSettings';
 import { getEnv } from '../../../tools/getEnv';
 
 const tabs = {
