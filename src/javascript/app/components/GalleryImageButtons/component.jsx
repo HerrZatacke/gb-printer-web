@@ -67,7 +67,14 @@ const GalleryImageButtons = (props) => (
       </button>
     ) : null }
     { props.hasPlugins ? (
-      <PluginSelect hash={props.hash} />
+      <PluginSelect hash={props.hash}>
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+        >
+          <SVG name="plug" />
+        </button>
+      </PluginSelect>
     ) : null }
     { props.shareImage && props.canShare ? (
       <button

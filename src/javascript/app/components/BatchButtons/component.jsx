@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // import gifshot from 'gifshot';
 import classnames from 'classnames';
 import SVG from '../SVG';
+import PluginSelect from '../PluginSelect';
 
 const BATCH_ACTIONS = [
   'download',
@@ -62,13 +63,13 @@ const BatchButtons = (props) => (
           key={action}
           className={
             classnames('gallery-button', {
-              'gallery-button--disabled': !props.enabled,
-              'gallery-button--enabled': props.enabled,
+              'gallery-button--disabled': !props.batchEnabled,
+              'gallery-button--enabled': props.batchEnabled,
             })
           }
         >
           <button
-            disabled={!props.enabled}
+            disabled={!props.batchEnabled}
             type="button"
             onClick={() => props.batchTask(action, props.page)}
           >
@@ -77,18 +78,37 @@ const BatchButtons = (props) => (
         </li>
       ))
     }
+    { props.hasPlugins ? (
+      <li
+        className={
+          classnames('gallery-button', {
+            'gallery-button--disabled': !props.batchEnabled,
+            'gallery-button--enabled': props.batchEnabled,
+          })
+        }
+      >
+        <PluginSelect>
+          <button
+            type="button"
+          >
+            <SVG name="plug" />
+          </button>
+        </PluginSelect>
+      </li>
+    ) : null }
   </ul>
 );
 
 BatchButtons.propTypes = {
   batchTask: PropTypes.func.isRequired,
-  enabled: PropTypes.bool.isRequired,
+  batchEnabled: PropTypes.bool.isRequired,
   activeFilters: PropTypes.number.isRequired,
   selectedImages: PropTypes.number.isRequired,
   filter: PropTypes.func.isRequired,
   showSortOptions: PropTypes.func.isRequired,
   hasSelected: PropTypes.bool.isRequired,
   page: PropTypes.number.isRequired,
+  hasPlugins: PropTypes.bool.isRequired,
 };
 
 BatchButtons.defaultProps = {

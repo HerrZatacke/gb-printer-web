@@ -1,18 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../SVG';
 
-const PluginSelect = ({ toPlugins, plugins }) => (
-  <span className="plugin-select">
-    <button
-      type="button"
-      className="gallery-image-buttons__button"
-    >
-      <SVG name="plug" />
-    </button>
-    <ul
-      className="plugin-select__plugin-list"
-    >
+const PluginSelect = ({ toPlugins, plugins, children }) => (
+  <span className="plugin-select__wrapper">
+    {children}
+    <ul className="plugin-select">
       {
         plugins.map(({ url, name, description }) => (
           <li
@@ -35,6 +27,7 @@ const PluginSelect = ({ toPlugins, plugins }) => (
 );
 
 PluginSelect.propTypes = {
+  children: PropTypes.node.isRequired,
   toPlugins: PropTypes.func.isRequired,
   plugins: PropTypes.array.isRequired,
 };
