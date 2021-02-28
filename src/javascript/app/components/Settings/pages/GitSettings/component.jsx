@@ -12,8 +12,8 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
     <>
       <label
         className={
-          classnames('inputgroup settings__check-group', {
-            'settings__check-group--checked': storage.use,
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': storage.use,
           })
         }
       >
@@ -24,11 +24,11 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
           Use github as storage
         </span>
         <span
-          className="settings__checkbox-wrap"
+          className="checkgroup__checkbox-wrapper"
         >
           <input
             type="checkbox"
-            className="settings__checkbox"
+            className="checkgroup__input"
             checked={storage.use}
             onChange={({ target }) => {
               const newSettings = {

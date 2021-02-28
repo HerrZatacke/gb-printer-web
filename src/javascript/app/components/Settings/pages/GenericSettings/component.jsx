@@ -93,8 +93,8 @@ const GenericSettings = (props) => {
       </div>
       <label
         className={
-          classnames('inputgroup settings__check-group', {
-            'settings__check-group--checked': props.exportCropFrame,
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.exportCropFrame,
           })
         }
       >
@@ -105,11 +105,11 @@ const GenericSettings = (props) => {
           Crop/remove frame when exporting or sharing images
         </span>
         <span
-          className="settings__checkbox-wrap"
+          className="checkgroup__checkbox-wrapper"
         >
           <input
             type="checkbox"
-            className="settings__checkbox"
+            className="checkgroup__input"
             checked={props.exportCropFrame}
             onChange={({ target }) => {
               props.setExportCropFrame(target.checked);
@@ -140,8 +140,8 @@ const GenericSettings = (props) => {
       </div>
       <label
         className={
-          classnames('inputgroup settings__check-group', {
-            'settings__check-group--checked': props.hideDates,
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.hideDates,
           })
         }
       >
@@ -152,11 +152,11 @@ const GenericSettings = (props) => {
           Hide dates in gallery
         </span>
         <span
-          className="settings__checkbox-wrap"
+          className="checkgroup__checkbox-wrapper"
         >
           <input
             type="checkbox"
-            className="settings__checkbox"
+            className="checkgroup__input"
             checked={props.hideDates}
             onChange={({ target }) => {
               props.setHideDates(target.checked);
