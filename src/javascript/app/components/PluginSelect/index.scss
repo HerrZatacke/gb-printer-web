@@ -48,11 +48,6 @@
       @include theme-color($color-white, $color-grey-80);
       @include theme-background-color($color-tertiary, $color-tertiary);
     }
-
-    small {
-      margin-left: 20px;
-      font-size: 11px;
-    }
   }
 
 }

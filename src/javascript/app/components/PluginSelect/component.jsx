@@ -22,13 +22,10 @@ const PluginSelect = ({ toPlugins, plugins }) => (
             <button
               type="button"
               className="plugin-select__button"
-              title={description}
+              title={`${description}\n${url}`}
               onClick={() => toPlugins(url)}
             >
               {name}
-              <small>
-                {url}
-              </small>
             </button>
           </li>
         ))
