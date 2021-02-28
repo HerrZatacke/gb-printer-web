@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../SVG';
+import SVG from '../../../SVG';
 
 const PluginSettings = ({ pluginAdd, pluginRemove, plugins }) => {
 

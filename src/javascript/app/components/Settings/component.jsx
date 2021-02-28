@@ -4,7 +4,7 @@ import GitSettings from './pages/GitSettings';
 import GenericSettings from './pages/GenericSettings';
 import ExportSettings from './pages/ExportSettings';
 import DevURLSettings from './pages/DevURLSettings';
-import PluginSettings from '../PluginSettings';
+import PluginSettings from './pages/PluginSettings';
 
 // eslint-disable-next-line arrow-body-style
 const Settings = () => {
