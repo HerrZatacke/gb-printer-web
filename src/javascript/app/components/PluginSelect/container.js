@@ -6,13 +6,22 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, { hash }) => ({
   toPlugins: (url) => {
-    dispatch({
-      type: 'PLUGIN_IMAGE',
-      payload: {
-        url,
-        hash,
-      },
-    });
+    if (hash) {
+      dispatch({
+        type: 'PLUGIN_IMAGE',
+        payload: {
+          url,
+          hash,
+        },
+      });
+    } else {
+      dispatch({
+        type: 'PLUGIN_IMAGES',
+        payload: {
+          url,
+        },
+      });
+    }
   },
 });
 

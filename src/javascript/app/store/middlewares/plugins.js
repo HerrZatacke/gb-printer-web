@@ -113,10 +113,12 @@ const pluginsMiddleware = (store) => {
         break;
       }
 
-      case 'PLUGIN_IMAGES':
-        // eslint-disable-next-line no-alert
-        alert('not yet implemented');
+      case 'PLUGIN_IMAGES': {
+        const { url } = action.payload;
+        const { imageSelection } = store.getState();
+        registeredPlugins[url].withSelection(imageSelection.map(collectImageData));
         break;
+      }
 
       case 'PLUGIN_UPDATE_CONFIG': {
         const { url, config } = action.payload;
