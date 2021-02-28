@@ -4,6 +4,7 @@ import GitSettings from './pages/GitSettings';
 import GenericSettings from './pages/GenericSettings';
 import ExportSettings from './pages/ExportSettings';
 import DevURLSettings from './pages/DevURLSettings';
+import WiFiSettings from './pages/WiFiSettings';
 
 // eslint-disable-next-line arrow-body-style
 const Settings = () => {
@@ -12,6 +13,7 @@ const Settings = () => {
       <GenericSettings />
       <DevURLSettings />
       <GitSettings />
+      <WiFiSettings />
       <ExportSettings />
     </div>
   );

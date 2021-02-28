@@ -1,6 +1,7 @@
 import React from 'react';
 import APConfig from './APConfig';
-import SVG from '../SVG';
+import SVG from '../../../SVG';
+import { getEnv } from '../../../../../tools/getEnv';
 
 class WiFiSettings extends React.Component {
   constructor(props) {
@@ -100,6 +101,10 @@ class WiFiSettings extends React.Component {
   }
 
   render() {
+    if (getEnv().env !== 'esp8266') {
+      return null;
+    }
+
     const { wifiConfig, sync } = this.state;
     if (!wifiConfig) {
       return null;

@@ -19,7 +19,6 @@ import GalleryIntroText from './galleryInroText';
 import getValidPageIndex from '../../../tools/getValidPageIndex';
 import FilterForm from '../FilterForm';
 import { getEnv } from '../../../tools/getEnv';
-import WiFiSettings from '../WiFiSettings';
 import VideoParamsForm from '../VideoParamsForm';
 import SortForm from '../SortForm';
 import ProgressBox from '../ProgressBox';
@@ -66,12 +65,6 @@ const App = (props) => {
           <Route path="/settings">
             <h1 className="app__content-headline">Settings</h1>
             <Settings />
-            {(env.env !== 'esp8266') ? null : (
-              <>
-                <h1 className="app__content-headline">WiFi-Settings</h1>
-                <WiFiSettings />
-              </>
-            )}
             <ul className="app__version">
               <li>{`Web-App version: ${VERSION}`}</li>
               <li>{`Web-App branch: ${BRANCH}`}</li>
