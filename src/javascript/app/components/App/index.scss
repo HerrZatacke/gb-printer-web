@@ -34,4 +34,12 @@
     font-size: 12px;
     padding-left: 10px;
   }
+
+  &__version {
+    margin-top: 40px;
+    font-size: 12px;
+    text-align: right;
+    @include theme-color($color-grey-60, $color-grey-30);
+    line-height: 14px;
+  }
 }

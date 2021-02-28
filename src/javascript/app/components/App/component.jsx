@@ -72,7 +72,7 @@ const App = (props) => {
                 <WiFiSettings />
               </>
             )}
-            <ul className="settings__version">
+            <ul className="app__version">
               <li>{`Web-App version: ${VERSION}`}</li>
               <li>{`Web-App branch: ${BRANCH}`}</li>
               <li>{`Printer version: ${env.version}`}</li>
