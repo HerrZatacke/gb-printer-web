@@ -26,6 +26,22 @@ const pluginsReducer = (plugins = [], action) => {
           ...action.payload,
         };
       })));
+    case 'PLUGIN_UPDATE_CONFIG':
+      return sortByUrl(uniqueByUrl(plugins.map((plugin) => {
+        if (plugin.url !== action.payload.url) {
+          return plugin;
+        }
+
+        const config = {
+          ...(plugin.config || {}),
+          ...(action.payload.config || {}),
+        };
+
+        return {
+          ...plugin,
+          config,
+        };
+      })));
     default:
       return plugins;
   }

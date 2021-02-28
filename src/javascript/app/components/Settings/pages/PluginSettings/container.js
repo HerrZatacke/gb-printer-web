@@ -17,6 +17,17 @@ const mapDispatchToProps = (dispatch) => ({
       payload: url,
     });
   },
+  pluginUpdateConfig: (url, key, value) => {
+    dispatch({
+      type: 'PLUGIN_UPDATE_CONFIG',
+      payload: {
+        url,
+        config: {
+          [key]: value,
+        },
+      },
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

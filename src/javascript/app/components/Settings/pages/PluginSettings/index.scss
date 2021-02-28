@@ -6,7 +6,11 @@
   }
 
   &__plugin {
+    border-top: 2px solid;
+    @include theme-border-color($color-grey-60, $color-grey-40);
     display: flex;
+    flex-wrap: wrap;
+    padding-top: 20px;
     margin-bottom: 40px;
   }
 
@@ -43,4 +47,7 @@
     }
   }
 
+  &__config-options {
+    flex: 100% 0 0;
+  }
 }

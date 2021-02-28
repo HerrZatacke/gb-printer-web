@@ -8,38 +8,47 @@ const pluginsMiddleware = (store) => {
   const registeredPlugins = {};
   const queue = new Queue(1, Infinity);
 
-  const initPlugin = ({ url }) => (
-    queue.add(() => (
-      new Promise((resolve) => {
-        window.gbpwRegisterPlugin = (Plugin) => {
-          window.gbpwRegisterPlugin = () => {};
+  const initPlugin = ({ url }) => {
 
-          try {
-            const instance = new Plugin({ store });
-            instance.init();
-            const { name, description } = instance;
-            registeredPlugins[url] = instance;
-            store.dispatch({
-              type: 'PLUGIN_UPDATE_PROPERTIES',
-              payload: {
-                url,
-                name,
-                description,
-              },
-            });
-            resolve(true);
-          } catch (error) {
-            resolve(false);
-          }
-        };
+    const pluginState = store.getState().plugins.find((plugin) => plugin.url === url) || {};
+    const { config: stateConfig = {} } = pluginState;
 
-        // init loading of external script.
-        const pluginScript = document.createElement('script');
-        document.head.appendChild(pluginScript);
-        pluginScript.src = url;
-      })
-    ))
-  );
+    return (
+      queue.add(() => (
+        new Promise((resolve) => {
+          window.gbpwRegisterPlugin = (Plugin) => {
+            window.gbpwRegisterPlugin = () => {
+            };
+
+            try {
+              const instance = new Plugin({ store }, stateConfig);
+              instance.init();
+              const { name, description = '', configParams = {}, config = {} } = instance;
+              registeredPlugins[url] = instance;
+              store.dispatch({
+                type: 'PLUGIN_UPDATE_PROPERTIES',
+                payload: {
+                  url,
+                  name,
+                  description,
+                  configParams,
+                  config,
+                },
+              });
+              resolve(true);
+            } catch (error) {
+              resolve(false);
+            }
+          };
+
+          // init loading of external script.
+          const pluginScript = document.createElement('script');
+          document.head.appendChild(pluginScript);
+          pluginScript.src = url;
+        })
+      ))
+    );
+  };
 
   const collectImageData = (hash) => {
     const state = store.getState();
@@ -75,8 +84,8 @@ const pluginsMiddleware = (store) => {
     );
 
     return {
-      meta,
-      palette,
+      getMeta: () => Promise.resolve(meta),
+      getPalette: () => Promise.resolve(palette),
       getTiles,
       getCanvas,
     };
@@ -108,6 +117,12 @@ const pluginsMiddleware = (store) => {
         // eslint-disable-next-line no-alert
         alert('not yet implemented');
         break;
+
+      case 'PLUGIN_UPDATE_CONFIG': {
+        const { url, config } = action.payload;
+        registeredPlugins[url].setConfig(config);
+        break;
+      }
 
       case 'PLUGIN_ADD':
         initPlugin({
