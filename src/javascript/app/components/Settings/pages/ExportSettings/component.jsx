@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ExportSettings = (props) => (
-  <div className="inputgroup buttongroup">
+  <div className="inputgroup buttongroup settings__export">
     <button
       type="button"
       className="button"
