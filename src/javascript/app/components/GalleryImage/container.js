@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import getRGBNFrames from '../../../tools/getRGBNFrames';
+import { missingGreyPalette } from '../../defaults';
 
 const mapStateToProps = (state, { hash }) => {
   const image = state.images.find((img) => img.hash === hash);
@@ -10,7 +11,7 @@ const mapStateToProps = (state, { hash }) => {
     palette = image.palette;
     frames = getRGBNFrames(state, image.hashes, image.frame);
   } else {
-    palette = state.palettes.find(({ shortName }) => shortName === image.palette);
+    palette = state.palettes.find(({ shortName }) => shortName === image.palette) || missingGreyPalette;
     frames = null;
   }
 
