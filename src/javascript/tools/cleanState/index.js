@@ -1,8 +1,19 @@
+import predefinedPalettes from 'gb-palettes';
+import { defaultRGBNPalette } from '../../app/defaults';
+import uniqueBy from '../unique/by';
 import cleanUrl from '../cleanUrl';
-import { defaultPalette } from '../../app/defaults';
 
 const cleanState = (dirtyState) => {
-  const palettesShorts = dirtyState.palettes.map(({ shortName }) => shortName);
+
+  const palettes = uniqueBy('shortName')([
+    ...predefinedPalettes.map((palette) => ({
+      ...palette,
+      isPredefined: true,
+    })),
+    ...dirtyState.palettes,
+  ]);
+
+  const palettesShorts = palettes.map(({ shortName }) => shortName);
   const frameIds = dirtyState.frames.map(({ id }) => id);
 
   const socketUrl = cleanUrl(dirtyState.socketUrl, 'ws');
@@ -20,7 +31,7 @@ const cleanState = (dirtyState) => {
         if (!image.palette) {
           return {
             ...image,
-            palette: defaultPalette,
+            palette: defaultRGBNPalette,
           };
         }
 
@@ -31,7 +42,10 @@ const cleanState = (dirtyState) => {
       if (image.palette) {
         // if palette does not exist, update image to use default (first of list)
         return (!palettesShorts.includes(image.palette)) ?
-          { ...image, palette: palettesShorts[0] } :
+          {
+            ...image,
+            palette: palettesShorts[0] || 'bw',
+          } :
           image;
       }
 
@@ -52,7 +66,14 @@ const cleanState = (dirtyState) => {
     }
   });
 
-  return { ...dirtyState, images, socketUrl, printerUrl, framesMessage };
+  return {
+    ...dirtyState,
+    images,
+    palettes,
+    socketUrl,
+    printerUrl,
+    framesMessage,
+  };
 };
 
 export default cleanState;
