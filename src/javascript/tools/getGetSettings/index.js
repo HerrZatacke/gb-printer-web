@@ -22,6 +22,10 @@ const getGetSettings = (store) => (what) => {
           getImageHashesForExport(what, state).includes(hash)
         ));
       }
+
+      if (key === 'palettes') {
+        exportableState[key] = localStorageState[key].filter(({ isPredefined }) => !isPredefined);
+      }
     }
   });
 
@@ -48,6 +52,16 @@ const getGetSettings = (store) => (what) => {
             ...frames,
           }, null, 2)
         ));
+    case 'palettes':
+      return Promise.resolve(exportableState.palettes)
+        .then((palettes) => (
+          JSON.stringify({
+            state: {
+              palettes,
+            },
+          }, null, 2)
+        ));
+
     default:
       return null;
   }

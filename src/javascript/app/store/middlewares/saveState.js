@@ -12,7 +12,14 @@ const saveState = (store) => (next) => (action) => {
         return;
       }
 
-      savedState[key] = state[key];
+      switch (key) {
+        case 'palettes':
+          savedState[key] = state.palettes.filter(({ isPredefined }) => !isPredefined);
+          break;
+        default:
+          savedState[key] = state[key];
+          break;
+      }
     });
 
   localStorage.setItem('gbp-web-state', JSON.stringify(savedState));
