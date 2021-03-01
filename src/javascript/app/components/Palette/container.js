@@ -17,6 +17,12 @@ const mapDispatchToProps = (dispatch, { shortName }) => ({
       payload: shortName,
     });
   },
+  editPalette: () => {
+    dispatch({
+      type: 'PALETTE_EDIT',
+      payload: shortName,
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);
