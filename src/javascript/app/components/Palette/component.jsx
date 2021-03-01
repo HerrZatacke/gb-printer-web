@@ -36,13 +36,22 @@ const Component = (props) => (
     </button>
     {
       props.isPredefined ? null : (
-        <button
-          type="button"
-          className="button palette__delete-button"
-          onClick={() => props.deletePalette()}
-        >
-          <SVG name="delete" />
-        </button>
+        <>
+          <button
+            type="button"
+            className="button palette__manage-button palette__manage-button--edit"
+            onClick={() => props.editPalette()}
+          >
+            <SVG name="edit" />
+          </button>
+          <button
+            type="button"
+            className="button palette__manage-button palette__manage-button--delete"
+            onClick={() => props.deletePalette()}
+          >
+            <SVG name="delete" />
+          </button>
+        </>
       )
     }
   </li>
@@ -55,6 +64,7 @@ Component.propTypes = {
   isPredefined: PropTypes.bool.isRequired,
   setActive: PropTypes.func.isRequired,
   deletePalette: PropTypes.func.isRequired,
+  editPalette: PropTypes.func.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
