@@ -10,11 +10,17 @@ const moreLine = '!{"command":"DATA", "compressed":0, "more":1}';
 const finalLine = '!{"command":"DATA","compressed":0,"more":0}';
 const terminatorLine = '!{"command":"PRNT","sheets":1,"margin_upper":1,"margin_lower":3,"pallet":228,"density":64 }';
 
-const defaultPalette = {
+const defaultRGBNPalette = {
   r: defaultGreys.slice(),
   g: defaultGreys.slice(),
   b: defaultGreys.slice(),
   n: defaultGreys.slice(),
+};
+
+const missingGreyPalette = {
+  shortName: '-',
+  name: 'Default',
+  palette: ['#aaaaaa', '#999999', '#888888', '#777777'],
 };
 
 export {
@@ -22,7 +28,8 @@ export {
   dateFormatInput,
   dateFormatFilename,
   dateFormatReadable,
-  defaultPalette,
+  defaultRGBNPalette,
+  missingGreyPalette,
   defaultGreys,
   initLine,
   moreLine,

@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import GalleryImageButtons from '../GalleryImageButtons';
 import { load } from '../../../tools/storage';
-import { defaultPalette } from '../../defaults';
+import { defaultRGBNPalette } from '../../defaults';
 
 class RGBNImage extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class RGBNImage extends Component {
           this.rgbnDecoder.update({
             canvas: this.canvasRef.current,
             tiles,
-            palette: defaultPalette,
+            palette: defaultRGBNPalette,
             lockFrame: false,
           });
         }
