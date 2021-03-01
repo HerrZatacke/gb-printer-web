@@ -41,21 +41,21 @@ const Settings = () => {
   return (
     <div className="settings">
       <ul
-        className="settings__tabs"
+        className="contenttabs__tabs"
       >
         {
           Object.keys(tabs).map((tabId) => {
             const { headline } = tabs[tabId];
             return (
               <li
-                className="settings__tab"
+                className="contenttabs__tab"
                 key={tabId}
               >
                 <button
                   type="button"
                   className={
-                    classnames('button settings__tabs-button', {
-                      'button settings__tabs-button--active': tabId === selectedTab,
+                    classnames('button contenttabs__tabs-button', {
+                      'button contenttabs__tabs-button--active': tabId === selectedTab,
                     })
                   }
                   onClick={() => setSelectedTab(tabId)}
