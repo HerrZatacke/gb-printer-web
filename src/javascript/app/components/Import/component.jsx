@@ -117,6 +117,13 @@ const Import = ({
         >
           Export frames
         </button>
+        <button
+          type="button"
+          className="button"
+          onClick={() => exportJson('palettes')}
+        >
+          Export palettes
+        </button>
       </div>
     </div>
   );
