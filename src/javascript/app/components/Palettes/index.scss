@@ -2,7 +2,22 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 0 -10px;
+
+  &__headline {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    @include theme-color($color-primary, $color-primary-bright);
+  }
+
+  &__add-button {
+    $size: 30px;
+    width: $size;
+    height: $size;
+    min-height: $size;
+    margin: 0 0 0 20px;
+    transform: translate(0, 5px);
+  }
 }
 
 

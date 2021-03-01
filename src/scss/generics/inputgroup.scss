@@ -6,6 +6,45 @@
   align-items: center;
   margin-bottom: 30px;
 
+  &__input {
+    flex-basis: auto;
+    flex-grow: 1;
+    margin-left: 20px;
+    padding: 10px 12px;
+    border: 1px solid;
+    @include theme-background-color($color-white, $color-black);
+    @include theme-border-color($color-grey-70, $color-grey-30);
+    @include theme-color($color-text, $color-text-bright);
+
+    &--select {
+      font-size: 16px;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+    }
+
+    &--password {
+      margin-right: 4px;
+    }
+
+    &--color {
+      height: 90px;
+      cursor: pointer;
+      margin-bottom: -25px;
+      padding: 0;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      &::-webkit-color-swatch {
+        border: none;
+      }
+    }
+
+  }
+
   &--column {
     flex-direction: column;
 

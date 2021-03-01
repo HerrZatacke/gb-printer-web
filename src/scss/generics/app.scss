@@ -5,6 +5,7 @@ body {
   @include theme-background-color($color-page-background, $color-page-background-dark);
   @include theme-color($color-text, $color-text-bright);
   min-width: 340px;
+  overflow-y: scroll;
 
   &.has-overlay {
     position: fixed;

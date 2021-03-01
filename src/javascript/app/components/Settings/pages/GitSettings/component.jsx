@@ -54,7 +54,7 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
             </label>
             <input
               id="settings-git-owner"
-              className="settings__input"
+              className="inputgroup__input"
               value={storage.owner}
               onChange={({ target }) => {
                 setStorage({
@@ -76,7 +76,7 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
             </label>
             <input
               id="settings-git-repo"
-              className="settings__input"
+              className="inputgroup__input"
               value={storage.repo}
               onChange={({ target }) => {
                 setStorage({
@@ -98,7 +98,7 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
             </label>
             <input
               id="settings-git-branch"
-              className="settings__input"
+              className="inputgroup__input"
               value={storage.branch}
               onChange={({ target }) => {
                 setStorage({
@@ -123,7 +123,7 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
               type="number"
               min="10"
               step="10"
-              className="settings__input"
+              className="inputgroup__input"
               value={storage.throttle}
               onChange={({ target }) => {
                 setStorage({
@@ -152,7 +152,7 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
             <input
               id="settings-git-token"
               type={showPass ? 'text' : 'password'}
-              className="settings__input settings__input--password"
+              className="inputgroup__input inputgroup__input--password"
               value={storage.token}
               onChange={({ target }) => {
                 setStorage({

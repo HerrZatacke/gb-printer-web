@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Buttons = ({ confirm, deny }) => (
+const Buttons = ({ confirm, deny, canConfirm }) => (
   <div className="buttons">
     { deny ? (
       <button
@@ -15,6 +15,7 @@ const Buttons = ({ confirm, deny }) => (
     ) : null }
     { confirm ? (
       <button
+        disabled={!canConfirm}
         className="buttons__button buttons__button--confirm"
         type="button"
         onClick={confirm}
@@ -28,11 +29,13 @@ const Buttons = ({ confirm, deny }) => (
 
 Buttons.propTypes = {
   confirm: PropTypes.func,
+  canConfirm: PropTypes.bool,
   deny: PropTypes.func,
 };
 
 Buttons.defaultProps = {
   confirm: null,
+  canConfirm: true,
   deny: null,
 };
 

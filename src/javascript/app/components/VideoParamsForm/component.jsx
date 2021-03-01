@@ -66,7 +66,7 @@ class VideoParamsForm extends React.Component {
           </label>
           <input
             id="video-params-frameRate"
-            className="settings__input"
+            className="inputgroup__input"
             type="number"
             min="1"
             max="120"
@@ -88,7 +88,7 @@ class VideoParamsForm extends React.Component {
           </label>
           <input
             id="video-params-scaleFactor"
-            className="settings__input"
+            className="inputgroup__input"
             type="number"
             min="1"
             max="12"

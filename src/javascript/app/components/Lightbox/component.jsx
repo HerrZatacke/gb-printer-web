@@ -14,7 +14,7 @@ const Lightbox = (props) => (
     <button
       type="button"
       className={`lightbox__backdrop ${props.className}__backdrop`}
-      onClick={props.deny}
+      onClick={props.denyOnOverlayClick ? props.deny : null}
     />
     <div
       className={`lightbox__box ${props.className}__box`}
@@ -37,6 +37,7 @@ const Lightbox = (props) => (
       { props.confirm || props.deny ? (
         <Buttons
           confirm={props.confirm}
+          canConfirm={props.canConfirm}
           deny={props.deny}
         />
       ) : null }
@@ -55,6 +56,8 @@ Lightbox.propTypes = {
   ]),
   confirm: PropTypes.func,
   deny: PropTypes.func,
+  canConfirm: PropTypes.bool,
+  denyOnOverlayClick: PropTypes.bool,
 };
 
 Lightbox.defaultProps = {
@@ -65,6 +68,8 @@ Lightbox.defaultProps = {
   confirm: null,
   children: null,
   deny: null,
+  canConfirm: true,
+  denyOnOverlayClick: true,
 };
 
 export default Lightbox;
