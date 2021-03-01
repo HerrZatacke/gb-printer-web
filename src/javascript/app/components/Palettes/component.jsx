@@ -9,6 +9,7 @@ const Palettes = (props) => (
         <Palette
           key={palette.shortName}
           name={palette.name}
+          isPredefined={palette.isPredefined || false}
           shortName={palette.shortName}
           palette={palette.palette}
         />

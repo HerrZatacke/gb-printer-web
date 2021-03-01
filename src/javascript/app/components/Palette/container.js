@@ -11,6 +11,12 @@ const mapDispatchToProps = (dispatch, { shortName }) => ({
       payload: shortName,
     });
   },
+  deletePalette: () => {
+    dispatch({
+      type: 'PALETTE_DELETE',
+      payload: shortName,
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);
