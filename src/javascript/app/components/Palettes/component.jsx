@@ -58,6 +58,7 @@ const Palettes = (props) => {
         { selectedTab === 'own' ? (
           <button
             type="button"
+            className="button"
             onClick={() => {
               props.newPalette();
             }}
