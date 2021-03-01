@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Palette from '../Palette';
+import SVG from '../SVG';
 
 const tabs = {
   all: {
@@ -58,12 +59,12 @@ const Palettes = (props) => {
         { selectedTab === 'own' ? (
           <button
             type="button"
-            className="button"
+            className="button palettes__add-button"
             onClick={() => {
               props.newPalette();
             }}
           >
-            New Palette
+            <SVG name="add" />
           </button>
         ) : null}
       </h2>
