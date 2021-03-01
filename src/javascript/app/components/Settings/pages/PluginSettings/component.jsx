@@ -49,7 +49,7 @@ const PluginSettings = ({
         <input
           id="plugin-settings-add-plugin"
           type="text"
-          className="settings__input"
+          className="inputgroup__input"
           value={pluginUrl}
           onChange={({ target: { value } }) => setPluginUrl(value)}
         />
