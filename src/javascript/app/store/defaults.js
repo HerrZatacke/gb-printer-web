@@ -1,17 +1,13 @@
-import palettes from 'gb-palettes';
-
 const definitions = [
   { // Holds the websocket url of a local webpack instance
     key: 'socketUrl',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings'],
     value: 'localhost:3001',
   },
   { // Url of a printer emulator to talk to
     key: 'printerUrl',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings'],
     value: '',
   },
@@ -19,7 +15,6 @@ const definitions = [
     // currently selected palette (used for new imports)
     key: 'activePalette',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: 'bw',
   },
@@ -27,7 +22,6 @@ const definitions = [
     // Metadata of all images
     key: 'images',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['selected_images', 'images', 'remote'],
     value: [],
   },
@@ -35,7 +29,6 @@ const definitions = [
     // displaymode of gallery page (list, 1x, 2x...)
     key: 'galleryView',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings'],
     value: '1x',
   },
@@ -43,7 +36,6 @@ const definitions = [
     // used scalings when exporting/downloading
     key: 'exportScaleFactors',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: [4],
   },
@@ -51,7 +43,6 @@ const definitions = [
     // used filetypes when exporting/downloading
     key: 'exportFileTypes',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: ['png'],
   },
@@ -59,7 +50,6 @@ const definitions = [
     // concurrently visible images in gallery
     key: 'pageSize',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: 15,
   },
@@ -67,7 +57,6 @@ const definitions = [
     // current selection of images
     key: 'imageSelection',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['selected_images'],
     value: [],
   },
@@ -75,7 +64,6 @@ const definitions = [
     // currently selected r,g,b,n images to create a combined image
     key: 'rgbnImages',
     saveLocally: true,
-    saveRemote: false,
     saveExport: [],
     value: {},
   },
@@ -83,7 +71,6 @@ const definitions = [
     // the image being edited currently
     key: 'editImage',
     saveLocally: true,
-    saveRemote: false,
     saveExport: [],
     value: {},
   },
@@ -91,7 +78,6 @@ const definitions = [
     // how to save videos (loop, crop, yoyo, palette)
     key: 'videoParams',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: {},
   },
@@ -99,7 +85,6 @@ const definitions = [
     // current filter for images
     key: 'filter',
     saveLocally: true,
-    saveRemote: false,
     saveExport: [],
     value: {},
   },
@@ -107,7 +92,6 @@ const definitions = [
     // framegoup to be applied when importing .sav files
     key: 'savFrameTypes',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: 'int',
   },
@@ -115,7 +99,6 @@ const definitions = [
     // sort criteria
     key: 'sortBy',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: 'created_asc',
   },
@@ -123,7 +106,6 @@ const definitions = [
     // if frame will be cropped when exporting
     key: 'exportCropFrame',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: false,
   },
@@ -131,17 +113,15 @@ const definitions = [
     // visiblility of dates in gallery
     key: 'hideDates',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: false,
   },
   {
     // list of predefined palettes
     key: 'palettes',
-    saveLocally: false, // do not save locally as they are a installed module
-    saveRemote: false,
-    saveExport: [],
-    value: palettes,
+    saveLocally: true,
+    saveExport: ['palettes', 'remote'],
+    value: [],
   },
   {
     // list of plugins
@@ -155,7 +135,6 @@ const definitions = [
     // user has seen the message about frames removal in version 1.7.0
     key: 'framesMessage',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['settings', 'remote'],
     value: 0,
   },
@@ -163,7 +142,6 @@ const definitions = [
     // set of usable frames
     key: 'frames',
     saveLocally: true,
-    saveRemote: false,
     saveExport: ['frames', 'remote'],
     value: [],
   },
@@ -171,7 +149,6 @@ const definitions = [
     // this key s being programatically removed even on a debug export due to possible stored tokens/passwords
     key: 'gitStorage',
     saveLocally: true,
-    saveRemote: false,
     saveExport: [],
     value: {
       use: false,

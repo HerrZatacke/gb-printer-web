@@ -1,4 +1,4 @@
-const dispatchDeleteConfirmation = (action, dispatch, images) => {
+const dispatchDeleteImageConfirmation = (action, dispatch, images) => {
   let message;
 
   if (typeof action.payload === 'string') {
@@ -15,6 +15,19 @@ const dispatchDeleteConfirmation = (action, dispatch, images) => {
     type: 'SET_CONFIRMATION',
     payload: {
       message,
+      originalAction: { confirmed: true, ...action },
+    },
+  });
+};
+
+const dispatchDeletePaletteConfirmation = (action, dispatch, palettes) => {
+
+  const palette = palettes.find(({ shortName }) => shortName === action.payload);
+
+  dispatch({
+    type: 'SET_CONFIRMATION',
+    payload: {
+      message: `Delete palette "${palette ? palette.name : 'no name'}"?`,
       originalAction: { confirmed: true, ...action },
     },
   });
@@ -47,7 +60,15 @@ const confirmation = (store) => {
           return;
         }
 
-        dispatchDeleteConfirmation(action, store.dispatch, state.images);
+        dispatchDeleteImageConfirmation(action, store.dispatch, state.images);
+        return;
+      case 'PALETTE_DELETE':
+        if (action.confirmed) {
+          next(action);
+          return;
+        }
+
+        dispatchDeletePaletteConfirmation(action, store.dispatch, state.palettes);
         return;
       case 'CONFIRM_CONFIRMATION':
         store.dispatch({

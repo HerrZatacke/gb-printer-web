@@ -127,7 +127,7 @@ class WiFiSettings extends React.Component {
           </label>
           <input
             id="settings-mdns"
-            className="settings__input"
+            className="inputgroup__input"
             type="text"
             autoCapitalize="off"
             autoComplete="off"
@@ -153,7 +153,7 @@ class WiFiSettings extends React.Component {
           </label>
           <input
             id="settings-ap-ssid"
-            className="settings__input"
+            className="inputgroup__input"
             type="text"
             autoCapitalize="off"
             autoComplete="off"
@@ -182,7 +182,7 @@ class WiFiSettings extends React.Component {
           </label>
           <input
             id="settings-ap-psk"
-            className="settings__input"
+            className="inputgroup__input"
             type="password"
             autoComplete="off"
             placeholder="••••••••"

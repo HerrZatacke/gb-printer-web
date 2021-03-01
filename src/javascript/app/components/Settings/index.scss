@@ -1,76 +1,9 @@
 .settings {
-
-  &__tabs {
-    display: flex;
-    flex-wrap: nowrap;
-
-    @media (max-width: $breakpoint-mobile) {
-      flex-direction: column;
-    }
-  }
-
-  &__tab {
-    flex-grow: 1;
-    padding-right: 2px;
-
-    @media (max-width: $breakpoint-mobile) {
-      padding-right: 0;
-      padding-bottom: 2px;
-    }
-
-    &:last-child {
-      padding: 0;
-    }
-  }
-
-  &__tabs-button {
-    width: 100%;
-    margin: 0;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    font-size: 18px;
-    white-space: nowrap;
-
-    &--active {
-      @include theme-background-color($color-secondary, $color-secondary-bright);
-      @include theme-color($color-white, $color-white);
-    }
-
-    @media (max-width: $breakpoint-mobile) {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      font-size: 14px;
-    }
-  }
-
   &__headline {
     font-size: 20px;
     margin-top: 20px;
     margin-bottom: 30px;
     @include theme-color($color-primary, $color-primary-bright);
-  }
-
-  &__input {
-    flex-basis: auto;
-    flex-grow: 1;
-    margin-left: 20px;
-    padding: 10px 12px;
-    border: 1px solid;
-    @include theme-background-color($color-white, $color-black);
-    @include theme-border-color($color-grey-70, $color-grey-30);
-    @include theme-color($color-text, $color-text-bright);
-
-    &--select {
-      font-size: 16px;
-    }
-
-    &:disabled {
-      opacity: 0.3;
-    }
-
-    &--password {
-      margin-right: 4px;
-    }
   }
 
   &__show-password-button {
