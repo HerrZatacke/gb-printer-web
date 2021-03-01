@@ -27,6 +27,22 @@
     &--password {
       margin-right: 4px;
     }
+
+    &--color {
+      height: 90px;
+      cursor: pointer;
+      margin-bottom: -25px;
+      padding: 0;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      &::-webkit-color-swatch {
+        border: none;
+      }
+    }
+
   }
 
   &--column {

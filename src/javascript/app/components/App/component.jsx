@@ -6,6 +6,7 @@ import GitLogBox from '../GitLogBox';
 import InfoBox from '../InfoBox';
 import Confirmation from '../Confirmation';
 import EditForm from '../EditForm';
+import EditPalette from '../EditPalette';
 import LiveImage from '../LiveImage';
 import LightboxImage from '../LightboxImage';
 import RGBNImage from '../RGBNImage';
@@ -91,6 +92,7 @@ const App = (props) => {
       <ProgressBox />
       <Confirmation />
       <EditForm />
+      <EditPalette />
       <VideoParamsForm />
       <LiveImage />
       <LightboxImage />

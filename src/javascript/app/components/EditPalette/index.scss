@@ -1,0 +1,25 @@
+.edit-palette {
+  &__header {
+    @include theme-color($color-text, $color-text-bright);
+    display: block;
+    padding: 15px 20px 10px;
+
+    &:before {
+      position: absolute;
+      content: '✎'
+    }
+  }
+
+  &__header-edit {
+    color: inherit;
+    border: none;
+    width: 100%;
+    font-size: 18px;
+    background: none;
+    padding-left: 25px;
+  }
+
+  &__content {
+    padding: 0 15px;
+  }
+}

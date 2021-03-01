@@ -53,7 +53,19 @@ const Palettes = (props) => {
             })
         }
       </ul>
-      <h2 className="palettes__headline">{currentHeadline}</h2>
+      <h2 className="palettes__headline">
+        {currentHeadline}
+        { selectedTab === 'own' ? (
+          <button
+            type="button"
+            onClick={() => {
+              props.newPalette();
+            }}
+          >
+            New Palette
+          </button>
+        ) : null}
+      </h2>
       <ul className="palettes">
         {
           props.palettes.filter(filter).map((palette) => (
@@ -73,6 +85,7 @@ const Palettes = (props) => {
 
 Palettes.propTypes = {
   palettes: PropTypes.array.isRequired,
+  newPalette: PropTypes.func.isRequired,
 };
 
 Palettes.defaultProps = {

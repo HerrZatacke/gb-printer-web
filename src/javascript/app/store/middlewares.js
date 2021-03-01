@@ -13,6 +13,7 @@ import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
 import printer from './middlewares/printer';
 import saveEditImage from './middlewares/saveEditImage';
+import saveEditPalette from './middlewares/saveEditPalette';
 import saveLineBuffer from './middlewares/saveLineBuffer';
 import saveRGBNImage from './middlewares/saveRGBNImage';
 import serialportWebocket from './middlewares/serialportWebocket';
@@ -35,6 +36,7 @@ export default applyMiddleware(
   lightbox,
   printer,
   saveEditImage,
+  saveEditPalette,
   saveLineBuffer,
   saveRGBNImage,
   serialportWebocket,
