@@ -64,5 +64,22 @@
     flex-basis: 25%;
     height: 40px;
   }
+
+  &__delete-button {
+    $size: 24px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: $size;
+    height: $size;
+    min-height: $size;
+    padding: 2px;
+    margin: 0;
+
+    &:hover {
+      @include theme-background-color($color-button-red, $color-button-red);
+      @include theme-color($color-white, $color-grey-70);
+    }
+  }
 }
 

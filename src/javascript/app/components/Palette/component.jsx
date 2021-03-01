@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import SVG from '../SVG';
 
 const GRADIENT_OPACITY = '36';
 
@@ -33,6 +34,17 @@ const Component = (props) => (
         <div className="palette__color" style={{ backgroundColor: props.palette[3] }} title={props.palette[3]}> </div>
       </div>
     </button>
+    {
+      props.isPredefined ? null : (
+        <button
+          type="button"
+          className="button palette__delete-button"
+          onClick={() => props.deletePalette()}
+        >
+          <SVG name="delete" />
+        </button>
+      )
+    }
   </li>
 );
 
@@ -40,7 +52,9 @@ Component.propTypes = {
   shortName: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
+  isPredefined: PropTypes.bool.isRequired,
   setActive: PropTypes.func.isRequired,
+  deletePalette: PropTypes.func.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
