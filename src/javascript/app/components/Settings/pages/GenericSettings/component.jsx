@@ -29,7 +29,7 @@ const GenericSettings = (props) => {
         </label>
         <input
           id="settings-pagesize"
-          className="settings__input"
+          className="inputgroup__input"
           type="number"
           min="0"
           value={pageSize}
@@ -124,7 +124,7 @@ const GenericSettings = (props) => {
         </label>
         <select
           id="settings-sav-frames"
-          className="settings__input settings__input--select"
+          className="inputgroup__input inputgroup__input--select"
           disabled={!props.savFrameGroups.length}
           value={props.savFrameTypes}
           onChange={(ev) => {

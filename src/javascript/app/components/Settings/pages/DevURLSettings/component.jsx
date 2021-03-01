@@ -21,7 +21,7 @@ const DevURLSettings = (props) => {
         </label>
         <input
           id="settings-socket-url"
-          className="settings__input"
+          className="inputgroup__input"
           value={socketUrl}
           onChange={({ target }) => {
             setSocketUrl(target.value);
@@ -57,7 +57,7 @@ const DevURLSettings = (props) => {
         </label>
         <input
           id="settings-printer-url"
-          className="settings__input"
+          className="inputgroup__input"
           value={printerUrl}
           onChange={({ target }) => {
             setPrinterUrl(target.value);
