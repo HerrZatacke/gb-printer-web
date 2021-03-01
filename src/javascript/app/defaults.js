@@ -19,7 +19,7 @@ const defaultRGBNPalette = {
 
 const missingGreyPalette = {
   shortName: '-',
-  name: 'Default',
+  name: 'Missing Palette',
   palette: ['#aaaaaa', '#999999', '#888888', '#777777'],
 };
 

@@ -1,11 +1,25 @@
 import applyTagChanges from '../../../tools/applyTagChanges';
 import { NEW_PALETTE_SHORT } from '../../../consts/specialTags';
 
+const randomColor = (max) => (
+  [
+    '#',
+    Math.ceil(Math.random() * max).toString(16).padStart(2, '0'),
+    Math.ceil(Math.random() * max).toString(16).padStart(2, '0'),
+    Math.ceil(Math.random() * max).toString(16).padStart(2, '0'),
+  ].join('')
+);
+
 const dispatchSetEditPalette = (dispatch, palettes, paletteShortName) => {
   const editPalette = (paletteShortName === NEW_PALETTE_SHORT) ? ({
     name: '',
     shortName: NEW_PALETTE_SHORT,
-    palette: ['#ffffff', '#b7b7b7', '#757575', '#002091'],
+    palette: [
+      randomColor(0x22),
+      randomColor(0x66),
+      randomColor(0xaa),
+      randomColor(0xff),
+    ],
     origin: 'Selfmade',
   }) : (
     palettes.find(({ shortName }) => shortName === paletteShortName)
