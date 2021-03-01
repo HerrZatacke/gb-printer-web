@@ -2,7 +2,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 0 -10px;
+
+  &__headline {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    @include theme-color($color-primary, $color-primary-bright);
+  }
 }
 
 
