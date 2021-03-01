@@ -9,6 +9,15 @@
     margin-bottom: 30px;
     @include theme-color($color-primary, $color-primary-bright);
   }
+
+  &__add-button {
+    $size: 30px;
+    width: $size;
+    height: $size;
+    min-height: $size;
+    margin: 0 0 0 20px;
+    transform: translate(0, 5px);
+  }
 }
 
 
