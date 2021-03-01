@@ -20,7 +20,7 @@ const APConfig = (props) => (
       </label>
       <input
         id={`${props.id}-settings-ap-ssid`}
-        className="settings__input"
+        className="inputgroup__input"
         type="text"
         value={props.ssid}
         readOnly={!props.isNew}
@@ -52,7 +52,7 @@ const APConfig = (props) => (
       </label>
       <input
         id={`${props.id}-settings-ap-psk`}
-        className="settings__input"
+        className="inputgroup__input"
         type="password"
         placeholder="••••••••"
         value={props.psk || ''}
