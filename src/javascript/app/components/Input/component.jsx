@@ -11,6 +11,7 @@ const Input = ({
   id,
   labelText,
   buttonIcon,
+  buttonLabel,
   buttonOnClick,
   type,
   min,
@@ -20,6 +21,7 @@ const Input = ({
   disabled,
   onChange,
   onBlur,
+  onKeyUp,
   children,
 }) => {
   const [showPass, setShowPass] = type === 'password' ? useState(false) : [false, false];
@@ -30,6 +32,8 @@ const Input = ({
       setColorVal(value);
     }, [value]);
   }
+
+  const keyUpListener = onKeyUp ? (({ key }) => onKeyUp(key)) : null;
 
   const blurListener = onBlur ? () => {
     if (setShowPass) {
@@ -63,6 +67,7 @@ const Input = ({
           onChange(files || newVal);
         }}
         onBlur={blurListener}
+        onKeyUp={keyUpListener}
       />
 
       {((type === 'file') ? (
@@ -74,13 +79,16 @@ const Input = ({
         </label>
       ) : null)}
 
-      {(buttonOnClick && buttonIcon) ? (
+      {(buttonOnClick && (buttonIcon || buttonLabel)) ? (
         <button
           type="button"
-          className={`inputgroup__button inputgroup__button--${buttonIcon}`}
+          className={classnames({
+            button: buttonLabel,
+            [`inputgroup__button inputgroup__button--${buttonIcon}`]: buttonIcon,
+          })}
           onClick={buttonOnClick}
         >
-          <SVG name={buttonIcon} />
+          { buttonIcon ? <SVG name={buttonIcon} /> : buttonLabel }
         </button>
       ) : null}
 
@@ -131,9 +139,11 @@ Input.propTypes = {
     PropTypes.number,
   ]),
   onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
   buttonOnClick: PropTypes.func,
   buttonIcon: PropTypes.string,
-  onBlur: PropTypes.func,
+  buttonLabel: PropTypes.string,
+  onKeyUp: PropTypes.func,
   disabled: PropTypes.bool,
   children: PropTypes.node,
 };
@@ -148,6 +158,8 @@ Input.defaultProps = {
   disabled: false,
   buttonOnClick: null,
   buttonIcon: null,
+  buttonLabel: null,
+  onKeyUp: null,
   children: null,
 };
 
