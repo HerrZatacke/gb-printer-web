@@ -5,6 +5,7 @@ import classnames from 'classnames';
 const Input = ({
   id,
   labelText,
+  buttonLabelText,
   type,
   min,
   max,
@@ -16,6 +17,7 @@ const Input = ({
   <div
     className={classnames('inputgroup', {
       'inputgroup--color': type === 'color',
+      'inputgroup--file': type === 'file',
     })}
   >
     <label
@@ -31,25 +33,34 @@ const Input = ({
       min={type === 'number' ? min : null}
       max={type === 'number' ? max : null}
       value={value}
-      disabled={!disabled}
-      onChange={({ target: { value: newVal } }) => {
-        onChange(newVal);
+      disabled={disabled}
+      onChange={({ target: { value: newVal, files } }) => {
+        onChange(files || newVal);
       }}
       onBlur={onBlur}
     />
+    {((type === 'file' && buttonLabelText) ? (
+      <label
+        htmlFor={id}
+        className="button button--label"
+      >
+        {buttonLabelText}
+      </label>
+    ) : null)}
   </div>
 );
 
 Input.propTypes = {
   id: PropTypes.string.isRequired,
   labelText: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['text', 'number', 'color']),
+  buttonLabelText: PropTypes.string,
+  type: PropTypes.oneOf(['text', 'number', 'color', 'file']),
   min: PropTypes.number,
   max: PropTypes.number,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-  ]).isRequired,
+  ]),
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func,
   disabled: PropTypes.bool,
@@ -59,8 +70,10 @@ Input.defaultProps = {
   type: 'text',
   min: null,
   max: null,
+  value: '',
   onBlur: null,
   disabled: false,
+  buttonLabelText: null,
 };
 
 export default Input;
