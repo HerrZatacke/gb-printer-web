@@ -5,6 +5,7 @@ import Lightbox from '../Lightbox/component';
 import SVG from '../SVG';
 import FrameSelect from '../FrameSelect';
 import PaletteSelect from '../PaletteSelect';
+import Input from '../Input';
 
 class VideoParamsForm extends React.Component {
 
@@ -57,50 +58,34 @@ class VideoParamsForm extends React.Component {
         deny={this.props.cancel}
         header={`Create an animated GIF with ${this.props.imageCount} frames`}
       >
-        <div className="inputgroup">
-          <label
-            htmlFor="video-params-frameRate"
-            className="inputgroup__label"
-          >
-            Framerate
-          </label>
-          <input
-            id="video-params-frameRate"
-            className="inputgroup__input"
-            type="number"
-            min="1"
-            max="120"
-            value={this.state.frameRate}
-            onChange={({ target }) => {
-              this.setState({
-                frameRate: target.value,
-              });
-            }}
-            onBlur={this.callUpdate}
-          />
-        </div>
-        <div className="inputgroup">
-          <label
-            htmlFor="video-params-scaleFactor"
-            className="inputgroup__label"
-          >
-            Scale GIF
-          </label>
-          <input
-            id="video-params-scaleFactor"
-            className="inputgroup__input"
-            type="number"
-            min="1"
-            max="12"
-            value={this.state.scaleFactor}
-            onChange={({ target }) => {
-              this.setState({
-                scaleFactor: target.value,
-              });
-            }}
-            onBlur={this.callUpdate}
-          />
-        </div>
+        <Input
+          id="video-params-frameRate"
+          labelText="Framerate"
+          type="number"
+          min={1}
+          max={120}
+          value={this.state.frameRate}
+          onChange={(frameRate) => {
+            this.setState({
+              frameRate,
+            });
+          }}
+          onBlur={this.callUpdate}
+        />
+        <Input
+          id="video-params-scaleFactor"
+          labelText="Scale GIF"
+          type="number"
+          min={1}
+          max={12}
+          value={this.state.scaleFactor}
+          onChange={(scaleFactor) => {
+            this.setState({
+              scaleFactor,
+            });
+          }}
+          onBlur={this.callUpdate}
+        />
         <label
           className={
             classnames('video-params__check-label', {
