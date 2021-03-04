@@ -6,20 +6,6 @@
     @include theme-color($color-primary, $color-primary-bright);
   }
 
-  &__show-password-button {
-    border: none;
-    background: none;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    fill: currentColor;
-    @include theme-color($color-black, $color-grey-90);
-
-    &:hover {
-      @include theme-color($color-secondary, $color-secondary-bright);
-    }
-  }
-
   &__export {
     margin-top: 120px;
   }

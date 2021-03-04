@@ -23,12 +23,24 @@
     &:disabled {
       opacity: 0.3;
     }
+  }
 
-    &--password {
-      margin-right: 4px;
+  &--password &__input {
+    margin-right: 4px;
+  }
+
+  &__show-password-button {
+    border: none;
+    background: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    fill: currentColor;
+    @include theme-color($color-black, $color-grey-90);
+
+    &:hover {
+      @include theme-color($color-secondary, $color-secondary-bright);
     }
-
-
   }
 
   &--color &__input {

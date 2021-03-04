@@ -7,7 +7,6 @@ import Input from '../../../Input';
 const GitSettings = ({ gitStorage, setGitStorage }) => {
 
   const [storage, setStorage] = useState(gitStorage);
-  const [showPass, setShowPass] = useState(false);
 
   return (
     <>
@@ -113,43 +112,28 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
             }}
           />
 
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-token"
-              className="inputgroup__label"
+          <Input
+            id="settings-git-token"
+            labelText="Token"
+            type="password"
+            value={storage.token}
+            onChange={(token) => {
+              setStorage({
+                ...storage,
+                token,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          >
+            <a
+              className="inputgroup__note"
+              href="https://github.com/settings/tokens/new?scopes=repo"
             >
-              Token
-              <a
-                className="inputgroup__note"
-                href="https://github.com/settings/tokens/new?scopes=repo"
-              >
-                How to obtain a token
-              </a>
-            </label>
-            <input
-              id="settings-git-token"
-              type={showPass ? 'text' : 'password'}
-              className="inputgroup__input inputgroup__input--password"
-              value={storage.token}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  token: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-                setShowPass(false);
-              }}
-            />
-            <button
-              type="button"
-              className="settings__show-password-button"
-              onClick={() => setShowPass(!showPass)}
-            >
-              <SVG name="view" />
-            </button>
-          </div>
+              How to obtain a token
+            </a>
+          </Input>
         </>
       )}
     </>
