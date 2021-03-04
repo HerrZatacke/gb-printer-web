@@ -12,6 +12,8 @@
     margin-left: 20px;
     padding: 10px 12px;
     border: 1px solid;
+    min-height: inherit;
+
     @include theme-background-color($color-white, $color-black);
     @include theme-border-color($color-grey-70, $color-grey-30);
     @include theme-color($color-text, $color-text-bright);
@@ -44,10 +46,25 @@
   }
 
   &--color &__input {
-    height: 90px;
-    cursor: pointer;
-    margin-bottom: -25px;
-    padding: 0;
+
+    &[type=color] {
+      cursor: pointer;
+      padding: 0;
+    }
+
+    &--colortext {
+      width: 100px;
+      text-align: center;
+      font-family: monospace;
+      flex-shrink: 1;
+      flex-grow: 0;
+      margin-left: -1px;
+    }
+
+    &--invalid-color {
+      @include theme-background-color($color-button-red, $color-button-red-dark);
+      @include theme-color($color-white, $color-tag-change-red);
+    }
 
     &::-webkit-color-swatch-wrapper {
       padding: 0;
@@ -57,7 +74,6 @@
       border: none;
     }
   }
-
 
   &--file &__input {
     position: absolute;

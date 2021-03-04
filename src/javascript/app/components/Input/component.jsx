@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import SVG from '../SVG';
+
+const colorIsValid = (color) => (
+  color.match(/^#[0-9a-f]{6}$/i)
+);
 
 const Input = ({
   id,
@@ -17,6 +22,21 @@ const Input = ({
   children,
 }) => {
   const [showPass, setShowPass] = type === 'password' ? useState(false) : [false, false];
+  const [colorVal, setColorVal] = type === 'color' ? useState(value) : [false, false];
+
+  if (type === 'color') {
+    useEffect(() => {
+      setColorVal(value);
+    }, [value]);
+  }
+
+  const blurListener = onBlur ? () => {
+    if (setShowPass) {
+      setShowPass(false);
+    }
+
+    onBlur();
+  } : null;
 
   return (
     <div
@@ -41,13 +61,7 @@ const Input = ({
         onChange={({ target: { value: newVal, files } }) => {
           onChange(files || newVal);
         }}
-        onBlur={() => {
-          if (setShowPass) {
-            setShowPass(false);
-          }
-
-          onBlur();
-        }}
+        onBlur={blurListener}
       />
 
       {((type === 'file' && buttonLabelText) ? (
@@ -57,6 +71,24 @@ const Input = ({
         >
           {buttonLabelText}
         </label>
+      ) : null)}
+
+      {((type === 'color') ? (
+        <input
+          type="text"
+          className={classnames('inputgroup__input inputgroup__input--colortext', {
+            'inputgroup__input--invalid-color': !colorIsValid(colorVal),
+          })}
+          value={colorVal}
+          disabled={disabled}
+          onChange={({ target: { value: newColorVal } }) => {
+            setColorVal(newColorVal);
+            if (colorIsValid(newColorVal)) {
+              onChange(newColorVal);
+            }
+          }}
+          onBlur={blurListener}
+        />
       ) : null)}
 
       {(setShowPass ? (
