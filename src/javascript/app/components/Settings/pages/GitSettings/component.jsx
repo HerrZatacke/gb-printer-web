@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
+import Input from '../../../Input';
 
 const GitSettings = ({ gitStorage, setGitStorage }) => {
 
@@ -45,97 +46,73 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
 
       { !storage.use ? null : (
         <>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-owner"
-              className="inputgroup__label"
-            >
-              Owner
-            </label>
-            <input
-              id="settings-git-owner"
-              className="inputgroup__input"
-              value={storage.owner}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  owner: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-              }}
-            />
-          </div>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-repo"
-              className="inputgroup__label"
-            >
-              Repository name
-            </label>
-            <input
-              id="settings-git-repo"
-              className="inputgroup__input"
-              value={storage.repo}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  repo: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-              }}
-            />
-          </div>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-branch"
-              className="inputgroup__label"
-            >
-              Branch
-            </label>
-            <input
-              id="settings-git-branch"
-              className="inputgroup__input"
-              value={storage.branch}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  branch: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-              }}
-            />
-          </div>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-throttle"
-              className="inputgroup__label"
-            >
-              Throttle (in ms)
-            </label>
-            <input
-              id="settings-git-throttle"
-              type="number"
-              min="10"
-              step="10"
-              className="inputgroup__input"
-              value={storage.throttle}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  throttle: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-              }}
-            />
-          </div>
+          <Input
+            id="settings-git-owner"
+            labelText="Owner"
+            type="text"
+            value={storage.owner}
+            onChange={(owner) => {
+              setStorage({
+                ...storage,
+                owner,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          />
+
+          <Input
+            id="settings-git-repo"
+            labelText="Repository name"
+            type="text"
+            value={storage.repo}
+            onChange={(repo) => {
+              setStorage({
+                ...storage,
+                repo,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          />
+
+          <Input
+            id="settings-git-branch"
+            labelText="Branch"
+            type="text"
+            value={storage.branch}
+            onChange={(branch) => {
+              setStorage({
+                ...storage,
+                branch,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          />
+
+          <Input
+            id="settings-git-throttle"
+            labelText="Throttle (in ms)"
+            type="number"
+            min={10}
+            max={5000}
+            step={25}
+            value={storage.throttle}
+            onChange={(throttle) => {
+              setStorage({
+                ...storage,
+                throttle,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          />
+
           <div className="inputgroup">
             <label
               htmlFor="settings-git-token"

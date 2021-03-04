@@ -9,6 +9,7 @@ const Input = ({
   type,
   min,
   max,
+  step,
   value,
   disabled,
   onChange,
@@ -32,6 +33,7 @@ const Input = ({
       type={type}
       min={type === 'number' ? min : null}
       max={type === 'number' ? max : null}
+      step={type === 'number' ? step : null}
       value={value}
       disabled={disabled}
       onChange={({ target: { value: newVal, files } }) => {
@@ -57,6 +59,7 @@ Input.propTypes = {
   type: PropTypes.oneOf(['text', 'number', 'color', 'file']),
   min: PropTypes.number,
   max: PropTypes.number,
+  step: PropTypes.number,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -70,6 +73,7 @@ Input.defaultProps = {
   type: 'text',
   min: null,
   max: null,
+  step: null,
   value: '',
   onBlur: null,
   disabled: false,
