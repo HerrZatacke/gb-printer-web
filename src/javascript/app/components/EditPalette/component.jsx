@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Lightbox from '../Lightbox';
 import { NEW_PALETTE_SHORT } from '../../../consts/specialTags';
+import Input from '../Input';
 
 const EditPalette = ({
   palette,
@@ -48,48 +49,30 @@ const EditPalette = ({
       <div
         className="edit-palette__content"
       >
-        <div className="inputgroup">
-          <label
-            htmlFor="palette-edit-shortname"
-            className="inputgroup__label"
-          >
-            ID/Short name
-          </label>
-          <input
-            type="text"
-            id="palette-edit-shortname"
-            className="inputgroup__input"
-            value={newShortName}
-            disabled={!canEditShortName}
-            onChange={({ target: { value } }) => {
-              setNewShortName(value.toLowerCase());
-            }}
-          />
-        </div>
+        <Input
+          id="palette-edit-shortname"
+          labelText="ID/Short name"
+          type="text"
+          value={newShortName}
+          disabled={!canEditShortName}
+          onChange={(value) => {
+            setNewShortName(value.toLowerCase());
+          }}
+        />
         {
           newPalette.map((color, index) => (
-            <div
+            <Input
               key={index}
-              className="inputgroup"
-            >
-              <label
-                htmlFor={`palette-color-${index}`}
-                className="inputgroup__label"
-              >
-                {`Color ${index + 1}`}
-              </label>
-              <input
-                type="color"
-                id={`palette-color-${index}`}
-                className="inputgroup__input inputgroup__input--color"
-                value={color}
-                onChange={({ target: { value } }) => {
-                  const np = [...newPalette];
-                  np[index] = value;
-                  setNewPalette(np);
-                }}
-              />
-            </div>
+              id={`palette-color-${index}`}
+              labelText={`Color ${index + 1}`}
+              type="color"
+              value={color}
+              onChange={(value) => {
+                const np = [...newPalette];
+                np[index] = value;
+                setNewPalette(np);
+              }}
+            />
           ))
         }
       </div>

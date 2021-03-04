@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 const Input = ({
   id,
@@ -8,10 +9,15 @@ const Input = ({
   min,
   max,
   value,
+  disabled,
   onChange,
   onBlur,
 }) => (
-  <div className="inputgroup">
+  <div
+    className={classnames('inputgroup', {
+      'inputgroup--color': type === 'color',
+    })}
+  >
     <label
       htmlFor={id}
       className="inputgroup__label"
@@ -25,6 +31,7 @@ const Input = ({
       min={type === 'number' ? min : null}
       max={type === 'number' ? max : null}
       value={value}
+      disabled={!disabled}
       onChange={({ target: { value: newVal } }) => {
         onChange(newVal);
       }}
@@ -36,7 +43,7 @@ const Input = ({
 Input.propTypes = {
   id: PropTypes.string.isRequired,
   labelText: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['text', 'number']),
+  type: PropTypes.oneOf(['text', 'number', 'color']),
   min: PropTypes.number,
   max: PropTypes.number,
   value: PropTypes.oneOfType([
@@ -45,6 +52,7 @@ Input.propTypes = {
   ]).isRequired,
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 Input.defaultProps = {
@@ -52,6 +60,7 @@ Input.defaultProps = {
   min: null,
   max: null,
   onBlur: null,
+  disabled: false,
 };
 
 export default Input;
