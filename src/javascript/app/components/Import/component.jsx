@@ -57,7 +57,6 @@ const Import = ({
       <Input
         id="import-file"
         labelText="Select file for import"
-        buttonLabelText="Select"
         type="file"
         onChange={(files) => {
           if (files && files.length === 1) {
@@ -65,7 +64,6 @@ const Import = ({
           }
         }}
       />
-
 
       <div className="inputgroup inputgroup--column">
         <label htmlFor="import-plaintext" className="inputgroup__label">

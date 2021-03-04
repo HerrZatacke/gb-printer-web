@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import SVG from '../../../SVG';
+import Input from '../../../Input';
 
 const APConfig = (props) => (
   <div
@@ -11,58 +11,35 @@ const APConfig = (props) => (
       })
     }
   >
-    <div className="inputgroup">
-      <label
-        htmlFor={`${props.id}-settings-ap-ssid`}
-        className="inputgroup__label"
-      >
-        Network SSID
-      </label>
-      <input
-        id={`${props.id}-settings-ap-ssid`}
-        className="inputgroup__input"
-        type="text"
-        value={props.ssid}
-        readOnly={!props.isNew}
-        disabled={!props.isNew}
-        onChange={({ target }) => {
-          props.update({
-            ssid: target.value,
-          });
-        }}
-      />
-      <button
-        type="button"
-        className="button wifi-settings__button wifi-settings__button--delete"
-        onClick={() => {
-          props.update({
-            delete: !props.delete,
-          });
-        }}
-      >
-        <SVG name="delete" />
-      </button>
-    </div>
-    <div className="inputgroup">
-      <label
-        htmlFor={`${props.id}-settings-ap-psk`}
-        className="inputgroup__label"
-      >
-        Network Password
-      </label>
-      <input
-        id={`${props.id}-settings-ap-psk`}
-        className="inputgroup__input"
-        type="password"
-        placeholder="••••••••"
-        value={props.psk || ''}
-        onChange={({ target }) => {
-          props.update({
-            psk: target.value,
-          });
-        }}
-      />
-    </div>
+    <Input
+      id={`${props.id}-settings-ap-ssid`}
+      labelText="Network SSID"
+      type="text"
+      value={props.ssid}
+      disabled={!props.isNew}
+      onChange={(ssid) => {
+        props.update({
+          ssid,
+        });
+      }}
+      buttonOnClick={() => {
+        props.update({
+          delete: !props.delete,
+        });
+      }}
+      buttonIcon="delete"
+    />
+    <Input
+      id={`${props.id}-settings-ap-psk`}
+      labelText="Network Password"
+      type="password"
+      value={props.psk}
+      onChange={(psk) => {
+        props.update({
+          psk,
+        });
+      }}
+    />
   </div>
 );
 

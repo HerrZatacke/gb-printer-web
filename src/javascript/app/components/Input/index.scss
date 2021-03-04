@@ -27,21 +27,36 @@
     }
   }
 
-  &--password &__input {
-    margin-right: 4px;
-  }
-
-  &__show-password-button {
+  &__button {
+    flex-basis: auto;
+    align-self: flex-end;
+    padding: 1px 20px;
     border: none;
-    background: none;
-    width: 40px;
+    min-height: 40px;
     height: 40px;
+    background-color: transparent;
     cursor: pointer;
     fill: currentColor;
     @include theme-color($color-black, $color-grey-90);
 
     &:hover {
       @include theme-color($color-secondary, $color-secondary-bright);
+    }
+
+    .svg {
+      height: auto;
+      width: auto;
+      fill: currentColor;
+      margin: 3px;
+    }
+
+    &--show-password,
+    &--delete {
+      width: 40px;
+      flex: 40px 0 0;
+      margin: 0;
+      padding: 0;
+      margin-left: 4px;
     }
   }
 

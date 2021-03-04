@@ -10,7 +10,8 @@ const colorIsValid = (color) => (
 const Input = ({
   id,
   labelText,
-  buttonLabelText,
+  buttonIcon,
+  buttonOnClick,
   type,
   min,
   max,
@@ -64,18 +65,31 @@ const Input = ({
         onBlur={blurListener}
       />
 
-      {((type === 'file' && buttonLabelText) ? (
+      {((type === 'file') ? (
         <label
           htmlFor={id}
           className="button button--label"
         >
-          {buttonLabelText}
+          Select
         </label>
       ) : null)}
+
+      {(buttonOnClick && buttonIcon) ? (
+        <button
+          type="button"
+          className={`inputgroup__button inputgroup__button--${buttonIcon}`}
+          onClick={buttonOnClick}
+        >
+          <SVG name={buttonIcon} />
+        </button>
+      ) : null}
 
       {((type === 'color') ? (
         <input
           type="text"
+          autoCapitalize="off"
+          autoComplete="off"
+          autoCorrect="off"
           className={classnames('inputgroup__input inputgroup__input--colortext', {
             'inputgroup__input--invalid-color': !colorIsValid(colorVal),
           })}
@@ -94,7 +108,7 @@ const Input = ({
       {(setShowPass ? (
         <button
           type="button"
-          className="inputgroup__show-password-button"
+          className="inputgroup__button inputgroup__button--show-password"
           onClick={() => setShowPass(!showPass)}
         >
           <SVG name="view" />
@@ -108,7 +122,6 @@ const Input = ({
 Input.propTypes = {
   id: PropTypes.string.isRequired,
   labelText: PropTypes.string.isRequired,
-  buttonLabelText: PropTypes.string,
   type: PropTypes.oneOf(['text', 'number', 'color', 'file', 'password']),
   min: PropTypes.number,
   max: PropTypes.number,
@@ -118,6 +131,8 @@ Input.propTypes = {
     PropTypes.number,
   ]),
   onChange: PropTypes.func.isRequired,
+  buttonOnClick: PropTypes.func,
+  buttonIcon: PropTypes.string,
   onBlur: PropTypes.func,
   disabled: PropTypes.bool,
   children: PropTypes.node,
@@ -131,7 +146,8 @@ Input.defaultProps = {
   value: '',
   onBlur: null,
   disabled: false,
-  buttonLabelText: null,
+  buttonOnClick: null,
+  buttonIcon: null,
   children: null,
 };
 
