@@ -18,7 +18,10 @@ const tabs = {
   },
 };
 
-if (getEnv().env === 'esp8266') {
+if (
+  (getEnv().env === 'esp8266') ||
+  (getEnv().env === 'webpack-dev')
+) {
   tabs.wifi = {
     Component: WiFiSettings,
     headline: 'WiFi Settings',
