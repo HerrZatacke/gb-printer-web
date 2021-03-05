@@ -15,10 +15,6 @@ const EditPalette = ({
   getPreviewImages,
 }) => {
 
-  if (!shortName) {
-    return null;
-  }
-
   const canEditShortName = shortName === NEW_PALETTE_SHORT;
 
   const [newName, setNewName] = useState(name);
@@ -29,6 +25,10 @@ const EditPalette = ({
   useEffect(() => {
     setPreviewImages(getPreviewImages());
   }, []);
+
+  if (!shortName) {
+    return null;
+  }
 
   return (
     <Lightbox

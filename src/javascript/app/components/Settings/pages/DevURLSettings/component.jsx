@@ -6,12 +6,13 @@ import cleanUrl from '../../../../../tools/cleanUrl';
 import Input from '../../../Input';
 
 const DevURLSettings = (props) => {
-  if (getEnv().env !== 'webpack-dev') {
-    return null;
-  }
 
   const [socketUrl, setSocketUrl] = useState(props.socketUrl);
   const [printerUrl, setPrinterUrl] = useState(props.printerUrl);
+
+  if (getEnv().env !== 'webpack-dev') {
+    return null;
+  }
 
   return (
     <>

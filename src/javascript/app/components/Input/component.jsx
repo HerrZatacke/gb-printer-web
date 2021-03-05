@@ -24,19 +24,19 @@ const Input = ({
   onKeyUp,
   children,
 }) => {
-  const [showPass, setShowPass] = type === 'password' ? useState(false) : [false, false];
-  const [colorVal, setColorVal] = type === 'color' ? useState(value) : [false, false];
+  const [showPass, setShowPass] = useState(false);
+  const [colorVal, setColorVal] = useState(value);
 
-  if (type === 'color') {
-    useEffect(() => {
+  useEffect(() => {
+    if (type === 'color') {
       setColorVal(value);
-    }, [value]);
-  }
+    }
+  }, [value]);
 
   const keyUpListener = onKeyUp ? (({ key }) => onKeyUp(key)) : null;
 
   const blurListener = onBlur ? () => {
-    if (setShowPass) {
+    if (type === 'password') {
       setShowPass(false);
     }
 
@@ -113,7 +113,7 @@ const Input = ({
         />
       ) : null)}
 
-      {(setShowPass ? (
+      {(type === 'password' ? (
         <button
           type="button"
           className="inputgroup__button inputgroup__button--show-password"
