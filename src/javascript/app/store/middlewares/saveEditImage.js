@@ -42,16 +42,6 @@ const saveEditImage = (store) => {
     }
   });
 
-  window.addEventListener('resize', () => {
-    store.dispatch({
-      type: 'WINDOW_DIMENSIONS',
-      payload: {
-        height: window.innerHeight,
-        width: window.innerWidth,
-      },
-    });
-  });
-
   return (next) => (action) => {
 
     switch (action.type) {
