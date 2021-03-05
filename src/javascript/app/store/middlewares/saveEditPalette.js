@@ -15,10 +15,10 @@ const dispatchSetEditPalette = (dispatch, palettes, paletteShortName) => {
     name: '',
     shortName: NEW_PALETTE_SHORT,
     palette: [
-      randomColor(0x22),
-      randomColor(0x66),
-      randomColor(0xaa),
       randomColor(0xff),
+      randomColor(0xaa),
+      randomColor(0x66),
+      randomColor(0x22),
     ],
     origin: 'Selfmade',
   }) : (
