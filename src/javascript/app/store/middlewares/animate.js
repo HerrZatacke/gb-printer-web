@@ -81,7 +81,7 @@ const animate = (store) => (next) => (action) => {
         }
       ))
       .map((image) => (
-        loadImageTiles(image, state)
+        loadImageTiles(state)(image)
           .then((tiles) => {
             const palette = getImagePalette(state, image);
 

@@ -40,7 +40,7 @@ const getUploadImages = (state, repoContents, addToQueue) => {
           files: [],
         }) : (
           addToQueue(`loadImageTiles (${index + 1}/${imagesLength}) ${image.title}`, 3, () => (
-            loadImageTiles(image, state, true)
+            loadImageTiles(state)(image, true)
               .then((tiles) => {
                 if (!tiles.length) {
                   missingLocally.push(image.hash);

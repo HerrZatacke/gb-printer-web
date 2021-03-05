@@ -1,7 +1,7 @@
 import { load } from '../storage';
 import getRGBNFrames from '../getRGBNFrames';
 
-const loadImageTiles = ({ hash, frame, hashes }, state, noDummy) => {
+const loadImageTiles = (state) => ({ hash, frame, hashes }, noDummy) => {
   if (!hashes) {
     return load(hash, frame, noDummy);
   }
