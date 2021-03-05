@@ -19,7 +19,7 @@ const batch = (store) => (next) => (action) => {
       exportFileTypes: [shareFileType],
     });
 
-    loadImageTiles(image, state)
+    loadImageTiles(state)(image)
       .then(prepareFiles(imagePalette, image))
       .then((res) => {
 
