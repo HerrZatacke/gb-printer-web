@@ -13,8 +13,9 @@ const ImageRender = ({
   invertPalette,
   palette,
 }) => {
-   const [tiles, setTiles] = useState(null);
+  const [tiles, setTiles] = useState(null);
 
+  // ToDo: use import loadImageTiles from '../../../tools/loadImageTiles';
   useEffect(() => {
     setTiles(null);
 
