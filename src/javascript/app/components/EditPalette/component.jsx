@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Lightbox from '../Lightbox';
 import { NEW_PALETTE_SHORT } from '../../../consts/specialTags';
 import Input from '../Input';
+import ImageRender from '../ImageRender';
 
 const EditPalette = ({
   palette,
@@ -11,6 +12,7 @@ const EditPalette = ({
   shortNameIsValid,
   savePalette,
   cancelEditPalette,
+  getPreviewImages,
 }) => {
 
   if (!shortName) {
@@ -22,6 +24,11 @@ const EditPalette = ({
   const [newName, setNewName] = useState(name);
   const [newPalette, setNewPalette] = useState(palette);
   const [newShortName, setNewShortName] = useState(canEditShortName ? '' : shortName);
+  const [previewImages, setPreviewImages] = useState([]);
+
+  useEffect(() => {
+    setPreviewImages(getPreviewImages());
+  }, []);
 
   return (
     <Lightbox
@@ -75,6 +82,23 @@ const EditPalette = ({
             />
           ))
         }
+        <ul className="edit-palette__previews">
+          {
+            previewImages.map((image) => (
+              <li
+                className="edit-palette__preview-image"
+                key={image.hash}
+              >
+                <ImageRender
+                  hash={image.hash}
+                  invertPalette={false}
+                  lockFrame={false}
+                  palette={newPalette}
+                />
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </Lightbox>
   );
@@ -87,6 +111,7 @@ EditPalette.propTypes = {
   name: PropTypes.string.isRequired,
   savePalette: PropTypes.func.isRequired,
   cancelEditPalette: PropTypes.func.isRequired,
+  getPreviewImages: PropTypes.func.isRequired,
 };
 
 EditPalette.defaultProps = {
