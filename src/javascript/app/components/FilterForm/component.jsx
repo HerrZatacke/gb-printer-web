@@ -11,7 +11,7 @@ const FilterForm = (props) => {
 
   useEffect(() => {
     setActiveTags(props.activeTags);
-  }, [props.availableTags]);
+  }, [props.activeTags]);
 
   const updateActiveTags = (tag, mode) => {
     setActiveTags(mode === 'add' ? unique([...activeTags, tag]) : activeTags.filter((t) => t !== tag));

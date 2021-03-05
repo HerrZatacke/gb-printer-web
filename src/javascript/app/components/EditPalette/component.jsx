@@ -24,7 +24,7 @@ const EditPalette = ({
 
   useEffect(() => {
     setPreviewImages(getPreviewImages());
-  }, []);
+  }, [getPreviewImages]);
 
   if (!shortName) {
     return null;
