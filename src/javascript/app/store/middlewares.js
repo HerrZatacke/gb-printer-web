@@ -12,7 +12,6 @@ import importFile from './middlewares/importFile';
 import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
 import printer from './middlewares/printer';
-import saveEditImage from './middlewares/saveEditImage';
 import saveEditPalette from './middlewares/saveEditPalette';
 import saveLineBuffer from './middlewares/saveLineBuffer';
 import saveRGBNImage from './middlewares/saveRGBNImage';
@@ -35,7 +34,6 @@ export default applyMiddleware(
   importQueue,
   lightbox,
   printer,
-  saveEditImage,
   saveEditPalette,
   saveLineBuffer,
   saveRGBNImage,
