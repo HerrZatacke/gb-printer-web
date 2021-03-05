@@ -2,27 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Navigation from '../Navigation';
-import GitLogBox from '../GitLogBox';
-import InfoBox from '../InfoBox';
-import Confirmation from '../Confirmation';
-import EditForm from '../EditForm';
-import EditPalette from '../EditPalette';
-import LiveImage from '../LiveImage';
-import LightboxImage from '../LightboxImage';
-import RGBNImage from '../RGBNImage';
-import Settings from '../Settings';
-import Palettes from '../Palettes';
-import Import from '../Import';
-import Gallery from '../Gallery';
 import Home from '../Home';
-import DragOver from '../DragOver';
+import Gallery from '../Gallery';
+import Import from '../Import';
+import Palettes from '../Palettes';
+import Settings from '../Settings';
+import Overlays from '../Overlays';
 import GalleryIntroText from './galleryInroText';
 import getValidPageIndex from '../../../tools/getValidPageIndex';
-import FilterForm from '../FilterForm';
 import { getEnv } from '../../../tools/getEnv';
-import VideoParamsForm from '../VideoParamsForm';
-import SortForm from '../SortForm';
-import ProgressBox from '../ProgressBox';
 
 const App = (props) => {
   const env = getEnv();
@@ -87,19 +75,8 @@ const App = (props) => {
           </Route>
         </Switch>
       </div>
-      <GitLogBox />
-      <InfoBox />
-      <ProgressBox />
-      <Confirmation />
-      <EditForm />
-      <EditPalette />
-      <VideoParamsForm />
-      <LiveImage />
-      <LightboxImage />
-      <RGBNImage />
-      <DragOver />
-      <FilterForm />
-      <SortForm />
+
+      <Overlays />
     </Router>
   );
 };
