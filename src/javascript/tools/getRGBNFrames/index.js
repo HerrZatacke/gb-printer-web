@@ -1,4 +1,4 @@
-const getRGBNFrames = (state, { r, g, b, n }, defaultFrame) => {
+const getRGBNFrames = ({ images }, { r, g, b, n }, defaultFrame) => {
 
   if (defaultFrame) {
     return {
@@ -9,10 +9,10 @@ const getRGBNFrames = (state, { r, g, b, n }, defaultFrame) => {
     };
   }
 
-  const imageR = state.images.find((img) => img.hash === r);
-  const imageG = state.images.find((img) => img.hash === g);
-  const imageB = state.images.find((img) => img.hash === b);
-  const imageN = state.images.find((img) => img.hash === n);
+  const imageR = images.find((img) => img.hash === r);
+  const imageG = images.find((img) => img.hash === g);
+  const imageB = images.find((img) => img.hash === b);
+  const imageN = images.find((img) => img.hash === n);
 
   return {
     r: imageR ? imageR.frame : null,
