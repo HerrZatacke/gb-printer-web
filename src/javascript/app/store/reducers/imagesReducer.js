@@ -10,7 +10,10 @@ const imagesReducer = (value = [], action) => {
       return [...value.filter(({ hash }) => !action.payload.includes(hash))];
     case 'UPDATE_IMAGE':
       return value.map((image) => (
-        image.hash === action.payload.hash ? action.payload : image
+        (image.hash === action.payload.hash) ? {
+          ...image,
+          ...action.payload,
+        } : image
       ));
     case 'UPDATE_IMAGES_BATCH':
       return value.map((image) => (

@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events,react/no-unused-prop-types,no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -33,13 +33,13 @@ const EditImageTabs = (props) => {
           onFocus={focusEvent(0)}
           onClick={focusEvent(0)}
         >
-          { props.hashes ? (
+          { props.paletteRGBN ? (
             <>
               <button type="button" className="edit-image-tabs__button">
                 Edit Greytones
               </button>
               <GreySelect
-                values={props.palette}
+                values={props.paletteRGBN}
                 onChange={props.updatePalette}
               />
             </>
@@ -49,7 +49,7 @@ const EditImageTabs = (props) => {
                 Select Palette
               </button>
               <PaletteSelect
-                value={props.palette ? props.palette.shortName : ''}
+                value={props.paletteShort}
                 invertPalette={props.invertPalette}
                 onChange={props.updatePalette}
                 updateInvertPalette={props.updateInvertPalette}
@@ -124,7 +124,8 @@ EditImageTabs.propTypes = {
   // hash: PropTypes.string,
   hashes: PropTypes.object,
   created: PropTypes.string,
-  palette: PropTypes.object,
+  paletteShort: PropTypes.string,
+  paletteRGBN: PropTypes.object,
   invertPalette: PropTypes.bool.isRequired,
   frame: PropTypes.string,
   tags: PropTypes.shape({
@@ -155,7 +156,8 @@ EditImageTabs.defaultProps = {
   // hash: null,
   hashes: null,
   batchTags: null,
-  palette: null,
+  paletteShort: '',
+  paletteRGBN: null,
   frame: null,
   created: null,
   // frames: null,

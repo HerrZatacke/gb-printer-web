@@ -22,13 +22,14 @@ class GameBoyImage extends Component {
       return;
     }
 
+
     try {
-      if (this.props.palette.palette) {
+      if (this.props.palette.length) {
         const decoder = new Decoder();
         decoder.update({
           canvas: this.canvasRef.current,
           tiles: this.props.tiles,
-          palette: this.props.palette.palette,
+          palette: this.props.palette,
           lockFrame: this.props.lockFrame,
           invertPalette: this.props.invertPalette,
         });
@@ -62,7 +63,10 @@ GameBoyImage.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.arrayOf(PropTypes.object),
   ]).isRequired,
-  palette: PropTypes.object,
+  palette: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
   lockFrame: PropTypes.bool.isRequired,
   invertPalette: PropTypes.bool.isRequired,
 };

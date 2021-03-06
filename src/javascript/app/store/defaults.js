@@ -72,7 +72,7 @@ const definitions = [
     key: 'editImage',
     saveLocally: true,
     saveExport: [],
-    value: {},
+    value: null,
   },
   {
     // how to save videos (loop, crop, yoyo, palette)

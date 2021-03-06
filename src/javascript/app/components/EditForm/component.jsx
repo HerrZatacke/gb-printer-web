@@ -1,250 +1,190 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import GameBoyImage from '../GameBoyImage';
+import ImageRender from '../ImageRender';
 import EditImageTabs from '../EditImageTabs';
-import RGBNDecoder from '../../../tools/RGBNDecoder';
-import { load } from '../../../tools/storage';
 import Lightbox from '../Lightbox';
+import modifyTagChanges from '../../../tools/modifyTagChanges';
 
-const body = document.querySelector('body');
+const willUpdate = (batch) => (
+  batch ? (
+    [
+      batch.created ? 'date' : null,
+      batch.title ? 'title' : null,
+      batch.palette ? 'palette' : null,
+      batch.invertPalette ? 'invertPalette' : null,
+      batch.frame ? 'frame' : null,
+      batch.lockFrame ? 'framePalette' : null,
+      batch.tags ? 'tags' : null,
+    ]
+      .filter(Boolean)
+      .join(', ')
+  ) : ''
+);
 
-class EditForm extends React.Component {
-  constructor(props) {
-    super(props);
+const EditForm = (props) => {
+  const [title, updateTitle] = useState(props.title);
+  const [created, updateCreated] = useState(props.created);
+  const [frame, updateFrame] = useState(props.frame);
+  const [lockFrame, updateFrameLock] = useState(props.lockFrame);
+  const [invertPalette, updateInvertPalette] = useState(props.invertPalette);
+  const [paletteShort, updatePaletteShort] = useState(props.paletteShort);
+  const [paletteRGBN, updatePaletteRGBN] = useState(props.paletteRGBN);
+  const [isRegularImage, setIsRegularImage] = useState(true);
+  const [tagChanges, updateTagChanges] = useState({
+    initial: props.tags,
+    add: [],
+    remove: [],
+  });
+  const [batch, updateBatch] = useState(props.batch ? {
+    created: false,
+    title: false,
+    palette: false,
+    invertPalette: false,
+    frame: false,
+    lockFrame: false,
+    tags: false,
+  } : false);
 
-    this.state = {
-      tiles: null,
-      loaded: false,
-      hash: props.hash,
-    };
-
-    this.restoreScroll = window.scrollY;
+  if (!props.hash) {
+    return null;
   }
 
-  static getDerivedStateFromProps(props, state) {
-    // same image
-    if (props.hash === state.hash) {
-      return state;
-    }
+  const usedPalette = paletteShort ? props.findPalette(paletteShort).palette : paletteRGBN;
 
-    // image changed or was unloaded
-    return {
-      tiles: null,
-      loaded: false,
-      hash: props.hash,
-    };
-  }
+  const willUpdateBatch = willUpdate(batch);
 
-  componentDidMount() {
-    if (this.props.hash) {
-      this.loadImage();
-    }
-  }
+  const onUpdate = (what, fn) => (value) => {
+    updateBatch({ ...batch, [what]: true });
+    fn(value);
+  };
 
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.hash &&
-      (
-        (prevProps.hash !== this.props.hash) ||
-        (prevProps.frame !== this.props.frame)
-      )
-    ) {
-      this.loadImage();
-    }
-  }
-
-  loadImage() {
-    if (this.props.hashes) {
-      Promise.all([
-        load(this.props.hashes.r, this.props.frames.r),
-        load(this.props.hashes.g, this.props.frames.g),
-        load(this.props.hashes.b, this.props.frames.b),
-        load(this.props.hashes.n, this.props.frames.n),
-      ])
-        .then((tiles) => {
-          this.setState({
-            tiles: RGBNDecoder.rgbnTiles(tiles),
-            loaded: true,
-          });
-        });
-    } else {
-      load(this.props.hash, this.props.frame)
-        .then((tiles) => {
-          this.setState({
-            tiles,
-            loaded: true,
-          });
-        });
-    }
-  }
-
-  applyOverlayScrolling() {
-    if (!this.state.loaded && body.classList.contains('has-overlay')) {
-      body.classList.remove('has-overlay');
-      window.scrollTo(0, this.restoreScroll);
-    }
-
-    if (this.state.loaded && !body.classList.contains('has-overlay')) {
-      this.restoreScroll = window.scrollY;
-      body.classList.add('has-overlay');
-    }
-  }
-
-  render() {
-
-    this.applyOverlayScrolling();
-
-    if (!this.state.loaded) {
-      return null;
-    }
-
-    const paletteColors = this.props.palette ? this.props.palette.palette : null;
-
-    const willUpdateTags = (
-      this.props.batch &&
-      !!(
-        this.props.tags.add.length ||
-        this.props.tags.remove.length
-      )
-    );
-
-    const willUpdateBatch = (
-      this.props.batch &&
-      (
-        this.props.batch.created ||
-        this.props.batch.title ||
-        this.props.batch.palette ||
-        this.props.batch.invertPalette ||
-        this.props.batch.frame ||
-        this.props.batch.lockFrame ||
-        willUpdateTags
-      )
-    );
-
-    return (
-      <Lightbox
-        height={this.props.height}
-        className="edit-image"
-        confirm={this.props.save}
-        deny={this.props.cancel}
-      >
-        <label className="edit-image__header">
-          <input
-            className="edit-image__header-edit"
-            placeholder="Add a title"
-            value={this.props.title}
-            onChange={(ev) => {
-              this.props.updateTitle(ev.target.value);
-            }}
-          />
-        </label>
-        {
-          !this.props.batch ? null : (
-            <span className="edit-image__title-hint">Use %n to add an index to the image titles</span>
-          )
-        }
-        <GameBoyImage
-          tiles={this.state.tiles}
-          palette={this.props.palette}
-          lockFrame={this.props.lockFrame}
-          invertPalette={this.props.invertPalette}
+  return (
+    <Lightbox
+      height={props.height}
+      className="edit-image"
+      confirm={() => props.save({
+        batch: props.batch ? batch : false,
+        tagChanges,
+      }, {
+        hash: props.hash,
+        title,
+        created,
+        frame,
+        invertPalette,
+        lockFrame,
+        palette: paletteShort || paletteRGBN,
+      })}
+      deny={props.cancel}
+    >
+      <label className="edit-image__header">
+        <input
+          className="edit-image__header-edit"
+          placeholder="Add a title"
+          value={title}
+          onChange={({ target: { value } }) => {
+            onUpdate('title', updateTitle)(value);
+          }}
         />
-        { this.props.batch && this.props.batch.selection && this.props.batch.selection.length ? (
-          <div
-            className="edit-image__batch-warn"
-            style={paletteColors ? {
-              borderLeftColor: paletteColors[1],
-              borderTopColor: paletteColors[1],
-              backgroundColor: paletteColors[2],
-              borderRightColor: paletteColors[3],
-              borderBottomColor: paletteColors[3],
-              color: paletteColors[0],
-            } : null}
-          >
-            { `You are editing ${this.props.batch.selection.length} images` }
-            { willUpdateBatch ? (
-              <p className="edit-image__batch-update-list">
-                {'Will update: '}
-                {
-                  [
-                    this.props.batch.created ? 'date' : null,
-                    this.props.batch.title ? 'title' : null,
-                    this.props.batch.palette ? 'palette' : null,
-                    this.props.batch.invertPalette ? 'invertPalette' : null,
-                    this.props.batch.frame ? 'frame' : null,
-                    this.props.batch.lockFrame ? 'framePalette' : null,
-                    willUpdateTags ? 'tags' : null,
-                  ]
-                    .filter(Boolean)
-                    .join(', ')
-                }
-              </p>
-            ) : null}
-          </div>
-        ) : null }
-        <EditImageTabs
-          created={this.props.created}
-          updateCreated={this.props.updateCreated}
-          regularImage={this.state.tiles.length === 360}
-          lockFrame={this.props.lockFrame}
-          hashes={this.props.hashes}
-          palette={this.props.palette}
-          invertPalette={this.props.invertPalette}
-          frame={this.props.frame}
-          tags={this.props.tags}
-          updatePalette={this.props.updatePalette}
-          updateInvertPalette={this.props.updateInvertPalette}
-          updateFrame={this.props.updateFrame}
-          updateFrameLock={this.props.updateFrameLock}
-          updateTags={this.props.updateTags}
-        />
-      </Lightbox>
-    );
-  }
-}
+      </label>
+      {
+        !props.batch ? null : (
+          <span className="edit-image__title-hint">Use %n to add an index to the image titles</span>
+        )
+      }
+      <ImageRender
+        lockFrame={lockFrame}
+        invertPalette={invertPalette}
+        palette={usedPalette}
+        frame={frame}
+        hash={props.hash}
+        hashes={props.hashes}
+        reportTileCount={(tileCount) => {
+          setIsRegularImage(tileCount === 360);
+        }}
+      />
+      { props.batch ? (
+        <div
+          className="edit-image__batch-warn"
+          style={usedPalette ? {
+            borderLeftColor: usedPalette[1],
+            borderTopColor: usedPalette[1],
+            backgroundColor: usedPalette[2],
+            borderRightColor: usedPalette[3],
+            borderBottomColor: usedPalette[3],
+            color: usedPalette[0],
+          } : null}
+        >
+          { `You are editing ${props.batch} images` }
+          { willUpdateBatch ? (
+            <p className="edit-image__batch-update-list">
+              {`Will update: ${willUpdateBatch}`}
+            </p>
+          ) : null}
+        </div>
+      ) : null }
+      <EditImageTabs
+        created={created}
+        updateCreated={onUpdate('created', updateCreated)}
+        regularImage={isRegularImage}
+        lockFrame={lockFrame}
+        hashes={props.hashes}
+        paletteShort={paletteShort}
+        paletteRGBN={paletteRGBN}
+        invertPalette={invertPalette}
+        frame={frame}
+        tags={tagChanges}
+        updatePalette={(paletteUpdate, confirm) => {
+          if (confirm) {
+            updateBatch({ ...batch, palette: true });
+          }
+
+          if (paletteShort) {
+            updatePaletteShort(paletteUpdate);
+          } else {
+            updatePaletteRGBN(paletteUpdate);
+          }
+        }}
+        updateInvertPalette={onUpdate('invertPalette', updateInvertPalette)}
+        updateFrame={onUpdate('frame', updateFrame)}
+        updateFrameLock={onUpdate('lockFrame', updateFrameLock)}
+        updateTags={(mode, tag) => {
+          updateBatch({ ...batch, tags: true });
+          updateTagChanges({
+            ...tagChanges,
+            ...modifyTagChanges(tagChanges, { mode, tag }),
+          });
+        }}
+      />
+    </Lightbox>
+  );
+};
 
 EditForm.propTypes = {
-  batch: PropTypes.object,
+  batch: PropTypes.number.isRequired,
   created: PropTypes.string,
   cancel: PropTypes.func.isRequired,
   hash: PropTypes.string,
   hashes: PropTypes.object,
-  palette: PropTypes.object,
+  paletteShort: PropTypes.string,
+  paletteRGBN: PropTypes.object,
   invertPalette: PropTypes.bool.isRequired,
   lockFrame: PropTypes.bool.isRequired,
   frame: PropTypes.string,
-  frames: PropTypes.object,
   save: PropTypes.func.isRequired,
-  tags: PropTypes.shape({
-    initial: PropTypes.array.isRequired,
-    add: PropTypes.array.isRequired,
-    remove: PropTypes.array.isRequired,
-  }),
+  tags: PropTypes.array.isRequired,
   title: PropTypes.string,
-  updateCreated: PropTypes.func.isRequired,
-  updatePalette: PropTypes.func.isRequired,
-  updateInvertPalette: PropTypes.func.isRequired,
-  updateTitle: PropTypes.func.isRequired,
-  updateFrame: PropTypes.func.isRequired,
-  updateFrameLock: PropTypes.func.isRequired,
-  updateTags: PropTypes.func.isRequired,
   height: PropTypes.number.isRequired,
+  findPalette: PropTypes.func.isRequired,
 };
 
 EditForm.defaultProps = {
-  batch: null,
   created: null,
   title: null,
   hash: null,
   hashes: null,
-  palette: null,
-  tags: {
-    initial: [],
-    add: [],
-    remove: [],
-  },
+  paletteShort: null,
+  paletteRGBN: null,
   frame: null,
-  frames: null,
 };
 
 export default EditForm;

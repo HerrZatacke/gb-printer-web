@@ -1,20 +1,13 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 import applyTagChanges from '../../../tools/applyTagChanges';
 import sortImages from '../../../tools/sortImages';
+import unique from '../../../tools/unique';
 
 const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags', 'created'];
 
-const collectTags = (batchImages) => {
-  const allTags = batchImages.map(({ tags }) => tags).flat();
-  return {
-    initial: allTags
-      .filter((tag, index) => (
-        allTags.findIndex((findTag) => findTag === tag) === index
-      )),
-    add: [],
-    remove: [],
-  };
-};
+const collectTags = (batchImages) => (
+  unique(batchImages.map(({ tags }) => tags).flat())
+);
 
 const batch = (store) => (next) => (action) => {
 
@@ -37,13 +30,19 @@ const batch = (store) => (next) => (action) => {
     });
   }
 
-  if (action.type === 'UPDATE_IMAGE') {
+  if (action.type === 'UPDATE_IMAGES_BATCH') {
     const state = store.getState();
     const sortFunc = sortImages(state);
     const { editImage, images } = state;
-    if (editImage.batch && editImage.batch.selection && editImage.batch.selection.length) {
+    const {
+      image: editedUpdates,
+      batch: updatedFields,
+      tagChanges,
+    } = action.payload;
 
-      const updatedImages = editImage.batch.selection.map((selcetionHash) => (
+    if (updatedFields && editImage.batch && editImage.batch.length) {
+
+      const updatedImages = editImage.batch.map((selcetionHash) => (
         images.find(({ hash }) => hash === selcetionHash)
       ))
         .sort(sortFunc)
@@ -59,60 +58,60 @@ const batch = (store) => (next) => (action) => {
           UPDATATABLES.forEach((updatable) => {
             switch (updatable) {
               case 'title':
-                if (!editImage.batch.title) {
+                if (!updatedFields.title) {
                   break;
                 }
 
-                updates.title = editImage.title.replace(/%n/gi, selectionIndex + 1);
+                updates.title = editedUpdates.title.replace(/%n/gi, selectionIndex + 1);
                 break;
 
               case 'created':
-                if (!editImage.batch.created) {
+                if (!updatedFields.created) {
                   break;
                 }
 
-                updates.created = editImage.created;
+                updates.created = editedUpdates.created;
                 break;
 
               case 'palette':
-                if (!editImage.batch.palette) {
+                if (!updatedFields.palette) {
                   break;
                 }
 
                 // prevent palette from updating if types are incompatible
-                if (typeof updateImage.palette === typeof editImage.palette) {
-                  updates.palette = editImage.palette;
+                if (typeof updateImage.palette === typeof editedUpdates.palette) {
+                  updates.palette = editedUpdates.palette;
                 }
 
                 break;
 
               case 'invertPalette':
-                if (!editImage.batch.invertPalette) {
+                if (!updatedFields.invertPalette) {
                   break;
                 }
 
-                updates.invertPalette = editImage.invertPalette;
+                updates.invertPalette = editedUpdates.invertPalette;
                 break;
 
               case 'frame':
-                if (!editImage.batch.frame) {
+                if (!updatedFields.frame) {
                   break;
                 }
 
-                updates.frame = editImage.frame;
+                updates.frame = editedUpdates.frame;
                 break;
 
               case 'lockFrame':
-                if (!editImage.batch.lockFrame) {
+                if (!updatedFields.lockFrame) {
                   break;
                 }
 
-                updates.lockFrame = editImage.lockFrame;
+                updates.lockFrame = editedUpdates.lockFrame;
                 break;
 
               case 'tags':
                 tags = applyTagChanges({
-                  ...editImage.tags,
+                  ...tagChanges,
                   initial: updateImage.tags,
                 });
                 break;
@@ -129,13 +128,7 @@ const batch = (store) => (next) => (action) => {
         })
         .filter(Boolean);
 
-      store.dispatch({
-        type: 'UPDATE_IMAGES_BATCH',
-        payload: updatedImages,
-      });
-
-      // Do not propagate update
-      return;
+      Object.assign(action, { payload: updatedImages });
     }
   }
 
@@ -168,19 +161,11 @@ const batch = (store) => (next) => (action) => {
           break;
         case 'edit':
           store.dispatch({
-            type: 'SET_EDIT_IMAGE',
+            type: 'EDIT_IMAGE_SELECTION',
             payload: {
-              ...batchImages[0],
-              batch: {
-                selection: imageSelection,
-                title: false,
-                created: false,
-                palette: false,
-                invertPalette: false,
-                frame: false,
-                lockFrame: false,
-              },
+              hash: batchImages[0].hash,
               tags: collectTags(batchImages),
+              batch: batchImages.map(({ hash }) => hash),
             },
           });
           break;
