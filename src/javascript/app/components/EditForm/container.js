@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import applyTagChanges from '../../../tools/applyTagChanges';
+import { missingGreyPalette } from '../../defaults';
 
 const mapStateToProps = (state) => {
 
@@ -8,7 +9,7 @@ const mapStateToProps = (state) => {
     Math.min(800, state.windowDimensions.height);
 
   const findPalette = (shortName) => (
-    state.palettes.find((palette) => shortName === palette.shortName)
+    state.palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
   );
 
   const image = state.images.find(({ hash }) => hash === state.editImage.hash);
