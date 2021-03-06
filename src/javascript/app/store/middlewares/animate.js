@@ -92,7 +92,7 @@ const animate = (store) => (next) => (action) => {
 
             if (isRGBN) {
               decoder.update({
-                tiles: RGBNDecoder.rgbnTiles(tiles),
+                tiles,
                 palette,
                 lockFrame,
               });
