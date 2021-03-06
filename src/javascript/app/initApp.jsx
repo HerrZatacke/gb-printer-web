@@ -21,7 +21,13 @@ const initApp = () => {
 
   import(/* webpackChunkName: "app" */ './components/App')
     .then(({ default: App }) => {
-      render(<Provider store={getStore(initialState)}><App /></Provider>, appRoot);
+      try {
+        const store = getStore(initialState);
+        render(<Provider store={store}><App /></Provider>, appRoot);
+      } catch (error) {
+        document.getElementById('app')
+          .innerHTML = `<p class="init-error">Error while initializing the app:<br>${error.message}<br><small>${error.stack}</small></p>`;
+      }
     });
 
 };

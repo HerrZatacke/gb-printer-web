@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PrinterReport from '../PrinterReport';
 import { getEnv } from '../../../tools/getEnv';
+import Input from '../Input';
 
 const Import = ({
   importPlainText,
@@ -52,27 +53,18 @@ const Import = ({
         </div>
       )}
       <PrinterReport />
-      <div className="inputgroup">
-        <label htmlFor="import-file" className="inputgroup__label">
-          Select file for import
-        </label>
-        <input
-          id="import-file"
-          className="import__input-file"
-          type="file"
-          onChange={({ target }) => {
-            if (target.files && target.files.length === 1) {
-              importFile(target);
-            }
-          }}
-        />
-        <label
-          htmlFor="import-file"
-          className="button button--label"
-        >
-          Select
-        </label>
-      </div>
+
+      <Input
+        id="import-file"
+        labelText="Select file for import"
+        type="file"
+        onChange={(files) => {
+          if (files && files.length === 1) {
+            importFile({ files });
+          }
+        }}
+      />
+
       <div className="inputgroup inputgroup--column">
         <label htmlFor="import-plaintext" className="inputgroup__label">
           Paste your plaintext

@@ -1,6 +1,9 @@
 {
   "parser": "babel-eslint",
   "extends": "airbnb",
+  "plugins": [
+    "react-hooks"
+  ],
   "env": {
     "browser": true,
     "jest": true
@@ -38,6 +41,8 @@
       }
     ],
     "react/no-array-index-key": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "class-methods-use-this": "off",
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/control-has-associated-label": "off",

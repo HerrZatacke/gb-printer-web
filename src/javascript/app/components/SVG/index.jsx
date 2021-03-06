@@ -15,6 +15,12 @@ const SVG = (props) => {
           <path d="M5 15v2l10 0V15z" />
         </svg>
       );
+    case 'clone':
+      return (
+        <svg className={className} viewBox="0 0 20 20">
+          <path d="M3 2v13h3v3h10V5h-3V2zm1 1h8v2H8.11l.78 1H15v11H7V9.639L6 8.36V14H4zm2.162.996L4.588 5.23l4.314 5.51-1.574 1.233 6.063 2.875-1.338-6.575-1.574 1.235z" />
+        </svg>
+      );
     case 'delete':
       return (
         <svg className={className} viewBox="0 0 20 20">

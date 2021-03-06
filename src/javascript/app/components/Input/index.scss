@@ -12,6 +12,8 @@
     margin-left: 20px;
     padding: 10px 12px;
     border: 1px solid;
+    min-height: inherit;
+
     @include theme-background-color($color-white, $color-black);
     @include theme-border-color($color-grey-70, $color-grey-30);
     @include theme-color($color-text, $color-text-bright);
@@ -23,26 +25,79 @@
     &:disabled {
       opacity: 0.3;
     }
+  }
 
-    &--password {
-      margin-right: 4px;
+  &__button {
+    flex-basis: auto;
+    align-self: flex-end;
+    padding: 1px 20px;
+    border: none;
+    min-height: 40px;
+    height: 40px;
+    background-color: transparent;
+    cursor: pointer;
+    fill: currentColor;
+    @include theme-color($color-black, $color-grey-90);
+
+    &:hover {
+      @include theme-color($color-secondary, $color-secondary-bright);
     }
 
-    &--color {
-      height: 90px;
-      cursor: pointer;
-      margin-bottom: -25px;
+    .svg {
+      height: auto;
+      width: auto;
+      fill: currentColor;
+      margin: 3px;
+    }
+
+    &--show-password,
+    &--delete {
+      width: 40px;
+      flex: 40px 0 0;
+      margin: 0;
       padding: 0;
+      margin-left: 4px;
+    }
+  }
 
-      &::-webkit-color-swatch-wrapper {
-        padding: 0;
-      }
+  &--color &__input {
 
-      &::-webkit-color-swatch {
-        border: none;
-      }
+    &[type=color] {
+      cursor: pointer;
+      padding: 0;
     }
 
+    &--colortext {
+      width: 100px;
+      text-align: center;
+      font-family: monospace;
+      flex-shrink: 1;
+      flex-grow: 0;
+      margin-left: -1px;
+    }
+
+    &--invalid-color {
+      @include theme-background-color($color-button-red, $color-button-red-dark);
+      @include theme-color($color-white, $color-tag-change-red);
+    }
+
+    &::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    &::-webkit-color-swatch {
+      border: none;
+    }
+  }
+
+  &--file &__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    top: -10px;
+    left: 0;
   }
 
   &--column {
@@ -126,5 +181,3 @@
     }
   }
 }
-
-

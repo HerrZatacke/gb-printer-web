@@ -1,7 +1,7 @@
 import React from 'react';
 import APConfig from './APConfig';
 import SVG from '../../../SVG';
-import { getEnv } from '../../../../../tools/getEnv';
+import Input from '../../../Input';
 
 class WiFiSettings extends React.Component {
   constructor(props) {
@@ -101,10 +101,6 @@ class WiFiSettings extends React.Component {
   }
 
   render() {
-    if (getEnv().env !== 'esp8266') {
-      return null;
-    }
-
     const { wifiConfig, sync } = this.state;
     if (!wifiConfig) {
       return null;
@@ -118,89 +114,61 @@ class WiFiSettings extends React.Component {
         <h3 className="wifi-settings__subheadline">
           Host Settings
         </h3>
-        <div className="inputgroup">
-          <label
-            htmlFor="settings-mdns"
-            className="inputgroup__label"
-          >
-            mDNS Name (Bonjour/Avahi)
-          </label>
-          <input
-            id="settings-mdns"
-            className="inputgroup__input"
-            type="text"
-            autoCapitalize="off"
-            autoComplete="off"
-            autoCorrect="off"
-            value={wifiConfig.mdns}
-            onChange={({ target }) => {
-              this.setState({
-                sync: false,
-                wifiConfig: {
-                  ...wifiConfig,
-                  mdns: target.value.trim(),
+
+        <Input
+          id="settings-mdns"
+          labelText="mDNS Name (Bonjour/Avahi)"
+          type="text"
+          value={wifiConfig.mdns}
+          onChange={(mdns) => {
+            this.setState({
+              sync: false,
+              wifiConfig: {
+                ...wifiConfig,
+                mdns: mdns.trim(),
+              },
+            });
+          }}
+        />
+
+        <Input
+          id="settings-ap-ssid"
+          labelText="Accesspoint SSID"
+          type="text"
+          value={wifiConfig.ap.ssid}
+          onChange={(ssid) => {
+            this.setState({
+              sync: false,
+              wifiConfig: {
+                ...wifiConfig,
+                ap: {
+                  ...wifiConfig.ap,
+                  ssid: ssid.trim(),
                 },
-              });
-            }}
-          />
-        </div>
-        <div className="inputgroup">
-          <label
-            htmlFor="settings-ap-ssid"
-            className="inputgroup__label"
-          >
-            Accesspoint SSID
-          </label>
-          <input
-            id="settings-ap-ssid"
-            className="inputgroup__input"
-            type="text"
-            autoCapitalize="off"
-            autoComplete="off"
-            autoCorrect="off"
-            value={wifiConfig.ap.ssid}
-            onChange={({ target }) => {
-              this.setState({
-                sync: false,
-                wifiConfig: {
-                  ...wifiConfig,
-                  ap: {
-                    ...wifiConfig.ap,
-                    ssid: target.value.trim(),
-                  },
+              },
+            });
+          }}
+        />
+
+        <Input
+          id="settings-ap-psk"
+          labelText="Accesspoint Password"
+          type="password"
+          value={wifiConfig.ap.psk}
+          onChange={(psk) => {
+            this.setState({
+              sync: false,
+              wifiConfig: {
+                ...wifiConfig,
+                ap: {
+                  ...wifiConfig.ap,
+                  psk: psk.trim(),
                 },
-              });
-            }}
-          />
-        </div>
-        <div className="inputgroup">
-          <label
-            htmlFor="settings-ap-psk"
-            className="inputgroup__label"
-          >
-            Accesspoint Password
-          </label>
-          <input
-            id="settings-ap-psk"
-            className="inputgroup__input"
-            type="password"
-            autoComplete="off"
-            placeholder="••••••••"
-            value={wifiConfig.ap.psk || ''}
-            onChange={({ target }) => {
-              this.setState({
-                sync: false,
-                wifiConfig: {
-                  ...wifiConfig,
-                  ap: {
-                    ...wifiConfig.ap,
-                    psk: target.value.trim(),
-                  },
-                },
-              });
-            }}
-          />
-        </div>
+              },
+            });
+          }}
+        />
+
         <h3 className="wifi-settings__subheadline">
           Networks
           <button

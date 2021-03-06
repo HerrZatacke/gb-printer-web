@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
-// import cleanUrl from '../../../tools/cleanUrl';
-// import { getEnv } from '../../../tools/getEnv';
+import Input from '../../../Input';
 import supportedCanvasImageFormats from '../../../../../tools/supportedCanvasImageFormats/index';
 
 const GenericSettings = (props) => {
@@ -11,36 +10,31 @@ const GenericSettings = (props) => {
 
   return (
     <>
-      <div className="inputgroup">
-        <label
-          htmlFor="settings-pagesize"
-          className="inputgroup__label"
+
+      <Input
+        id="settings-pagesize"
+        labelText="Page size"
+        type="number"
+        min={0}
+        value={pageSize}
+        onChange={(value) => {
+          setPageSize(value);
+        }}
+        onBlur={() => {
+          props.setPageSize(parseInt(pageSize, 10) || 0);
+        }}
+      >
+        <span
+          className={
+            classnames('inputgroup__note', {
+              'inputgroup__note--warn': !props.pageSize,
+            })
+          }
         >
-          Page size
-          <span
-            className={
-              classnames('inputgroup__note', {
-                'inputgroup__note--warn': !props.pageSize,
-              })
-            }
-          >
-            (set to 0 to disable pagination - might cause performance issues on large sets of images)
-          </span>
-        </label>
-        <input
-          id="settings-pagesize"
-          className="inputgroup__input"
-          type="number"
-          min="0"
-          value={pageSize}
-          onChange={({ target }) => {
-            setPageSize(target.value);
-          }}
-          onBlur={() => {
-            props.setPageSize(parseInt(pageSize, 10) || 0);
-          }}
-        />
-      </div>
+          (set to 0 to disable pagination - might cause performance issues on large sets of images)
+        </span>
+      </Input>
+
       <div className="inputgroup">
         <div className="inputgroup__label">
           Image export dimensions

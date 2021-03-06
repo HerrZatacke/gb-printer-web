@@ -25,7 +25,7 @@ const SortForm = (props) => {
   useEffect(() => {
     setSortBy(props.sortBy);
     setSortOrder(props.sortOrder);
-  }, [props.visible]);
+  }, [setSortBy, setSortOrder, props.visible, props.sortBy, props.sortOrder]);
 
   if (!props.visible) {
     return null;

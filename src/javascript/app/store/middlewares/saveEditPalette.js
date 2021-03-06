@@ -10,15 +10,15 @@ const randomColor = (max) => (
   ].join('')
 );
 
-const dispatchSetEditPalette = (dispatch, palettes, paletteShortName) => {
+const dispatchSetEditPalette = (dispatch, palettes, paletteShortName, clone) => {
   const editPalette = (paletteShortName === NEW_PALETTE_SHORT) ? ({
     name: '',
     shortName: NEW_PALETTE_SHORT,
     palette: [
-      randomColor(0x22),
-      randomColor(0x66),
-      randomColor(0xaa),
       randomColor(0xff),
+      randomColor(0xaa),
+      randomColor(0x66),
+      randomColor(0x22),
     ],
     origin: 'Selfmade',
   }) : (
@@ -29,6 +29,8 @@ const dispatchSetEditPalette = (dispatch, palettes, paletteShortName) => {
     type: 'SET_EDIT_PALETTE',
     payload: {
       ...editPalette,
+      name: clone ? `Copy of ${editPalette.name}` : editPalette.name,
+      shortName: clone ? NEW_PALETTE_SHORT : paletteShortName,
     },
   });
 };
@@ -67,7 +69,11 @@ const saveEditPalette = (store) => {
         return;
 
       case 'PALETTE_EDIT':
-        dispatchSetEditPalette(store.dispatch, store.getState().palettes, action.payload);
+        dispatchSetEditPalette(store.dispatch, store.getState().palettes, action.payload, false);
+        return;
+
+      case 'PALETTE_CLONE':
+        dispatchSetEditPalette(store.dispatch, store.getState().palettes, action.payload, true);
         return;
       default:
     }

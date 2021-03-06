@@ -23,6 +23,12 @@ const mapDispatchToProps = (dispatch, { shortName }) => ({
       payload: shortName,
     });
   },
+  clonePalette: () => {
+    dispatch({
+      type: 'PALETTE_CLONE',
+      payload: shortName,
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

@@ -26,9 +26,15 @@ pre {
   margin: 60px;
   padding: 20px 30px;
   border: 8px solid;
+  overflow-x: auto;
   @include theme-border-color($color-primary, $color-secondary);
   @include theme-background-color($color-grey-30, $color-grey-70);
   @include theme-color($color-text-bright, $color-text);
+
+  @media (max-width: $breakpoint-mobile) {
+    margin: 60px 10px;
+    padding: 20px 10px;
+  }
 
   small {
     display: block;

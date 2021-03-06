@@ -1,85 +1,73 @@
 import { connect } from 'react-redux';
-import getRGBNFrames from '../../../tools/getRGBNFrames';
+import applyTagChanges from '../../../tools/applyTagChanges';
+import { missingGreyPalette } from '../../defaults';
 
 const mapStateToProps = (state) => {
-  let palette;
-  let frames;
-
-  if (state.editImage.hashes) {
-    palette = state.editImage.palette;
-    frames = getRGBNFrames(state, state.editImage.hashes, state.editImage.frame);
-  } else {
-    palette = state.palettes.find(({ shortName }) => shortName === state.editImage.palette);
-    frames = null;
-  }
 
   const height = (state.windowDimensions.width <= 600) ?
     state.windowDimensions.height :
     Math.min(800, state.windowDimensions.height);
 
+  const findPalette = (shortName) => (
+    state.palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
+  );
+
+  const image = state.images.find(({ hash }) => hash === state.editImage.hash);
+  const { batch, tags: batchTags } = state.editImage;
+
+  if (!state.editImage || !image) {
+    return {
+      hash: null,
+      invertPalette: false,
+      lockFrame: false,
+      tags: [],
+      batch: 0,
+      height,
+      findPalette,
+    };
+  }
+
   return ({
-    batch: state.editImage.batch,
-    created: state.editImage.created || null,
-    hash: state.editImage.hash,
-    tags: state.editImage.tags,
-    title: state.editImage.title,
-    hashes: state.editImage.hashes,
-    frame: state.editImage.frame,
-    lockFrame: state.editImage.lockFrame || false,
-    palette,
-    invertPalette: state.editImage.invertPalette || false,
-    frames,
+    created: image.created || null,
+    hash: image.hash,
+    tags: batch ? batchTags : image.tags,
+    title: image.title,
+    hashes: image.hashes,
+    frame: image.frame,
+    lockFrame: image.lockFrame || false,
+    palette: image.palette,
+    invertPalette: image.invertPalette || false,
+    batch: batch ? batch.length : 0,
+    // frames,
+
+    paletteShort: typeof image.palette === 'string' ? image.palette : null,
+    paletteRGBN: typeof image.palette !== 'string' ? image.palette : null,
+
     height,
+    findPalette,
   });
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  updateTitle: (title) => {
-    dispatch({
-      type: 'UPDATE_EDIT_IMAGE',
-      payload: { title, confirmed: true },
-    });
-  },
-  updatePalette: (palette, confirmed) => {
-    dispatch({
-      type: 'UPDATE_EDIT_IMAGE',
-      payload: { palette, confirmed },
-    });
-  },
-  updateCreated: (created) => {
-    dispatch({
-      type: 'UPDATE_EDIT_IMAGE',
-      payload: { created, confirmed: true },
-    });
-  },
-  updateInvertPalette: (invertPalette) => {
-    dispatch({
-      type: 'UPDATE_EDIT_IMAGE',
-      payload: { invertPalette, confirmed: true },
-    });
-  },
-  updateFrame: (frame) => {
-    dispatch({
-      type: 'UPDATE_EDIT_IMAGE',
-      payload: { frame, confirmed: true },
-    });
-  },
-  updateFrameLock: (lockFrame) => {
-    dispatch({
-      type: 'UPDATE_EDIT_IMAGE',
-      payload: { lockFrame, confirmed: true },
-    });
-  },
-  updateTags: (mode, tag) => {
-    dispatch({
-      type: 'UPDATE_EDIT_IMAGE',
-      payload: { tag, mode, confirmed: true },
-    });
-  },
-  save: () => {
-    dispatch({
-      type: 'SAVE_EDIT_IMAGE',
-    });
+  save: ({ batch, tagChanges }, image) => {
+    if (batch) {
+      dispatch({
+        type: 'UPDATE_IMAGES_BATCH',
+        payload: {
+          image,
+          batch,
+          tagChanges,
+        },
+      });
+    } else {
+      dispatch({
+        type: 'UPDATE_IMAGE',
+        payload: {
+          ...image,
+          tags: applyTagChanges(tagChanges),
+        },
+      });
+    }
   },
   cancel: () => {
     dispatch({

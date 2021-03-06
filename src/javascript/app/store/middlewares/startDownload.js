@@ -12,7 +12,7 @@ const handleSingleImage = (prepareFiles, state) => (imageHash) => {
     palette: imagePalette,
   });
 
-  return loadImageTiles(image, state)
+  return loadImageTiles(state)(image)
     .then(prepareFiles(imagePalette, image))
     .then(download(zipFilename));
 };
@@ -27,7 +27,7 @@ const handleImageCollection = (prepareFiles, state) => (collection) => {
     const image = state.images.find(({ hash }) => hash === imageHash);
     const imagePalette = getImagePalette(state, image);
 
-    return loadImageTiles(image, state)
+    return loadImageTiles(state)(image)
       .then(prepareFiles(imagePalette, image));
   }))
     .then((resultImages) => resultImages.flat())

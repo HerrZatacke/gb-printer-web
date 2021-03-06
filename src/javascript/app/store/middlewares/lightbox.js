@@ -3,6 +3,16 @@ import getFilteredImages from '../../../tools/getFilteredImages';
 
 const confirmation = (store) => {
 
+  window.addEventListener('resize', () => {
+    store.dispatch({
+      type: 'WINDOW_DIMENSIONS',
+      payload: {
+        height: window.innerHeight,
+        width: window.innerWidth,
+      },
+    });
+  });
+
   if (screenfull.isEnabled) {
     screenfull.on('change', () => {
       store.dispatch({

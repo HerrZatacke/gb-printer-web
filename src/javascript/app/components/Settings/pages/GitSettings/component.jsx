@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
+import Input from '../../../Input';
 
 const GitSettings = ({ gitStorage, setGitStorage }) => {
 
   const [storage, setStorage] = useState(gitStorage);
-  const [showPass, setShowPass] = useState(false);
 
   return (
     <>
@@ -45,134 +45,95 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
 
       { !storage.use ? null : (
         <>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-owner"
-              className="inputgroup__label"
+          <Input
+            id="settings-git-owner"
+            labelText="Owner"
+            type="text"
+            value={storage.owner}
+            onChange={(owner) => {
+              setStorage({
+                ...storage,
+                owner,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          />
+
+          <Input
+            id="settings-git-repo"
+            labelText="Repository name"
+            type="text"
+            value={storage.repo}
+            onChange={(repo) => {
+              setStorage({
+                ...storage,
+                repo,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          />
+
+          <Input
+            id="settings-git-branch"
+            labelText="Branch"
+            type="text"
+            value={storage.branch}
+            onChange={(branch) => {
+              setStorage({
+                ...storage,
+                branch,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          />
+
+          <Input
+            id="settings-git-throttle"
+            labelText="Throttle (in ms)"
+            type="number"
+            min={10}
+            max={5000}
+            step={25}
+            value={storage.throttle}
+            onChange={(throttle) => {
+              setStorage({
+                ...storage,
+                throttle,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          />
+
+          <Input
+            id="settings-git-token"
+            labelText="Token"
+            type="password"
+            value={storage.token}
+            onChange={(token) => {
+              setStorage({
+                ...storage,
+                token,
+              });
+            }}
+            onBlur={() => {
+              setGitStorage(storage);
+            }}
+          >
+            <a
+              className="inputgroup__note"
+              href="https://github.com/settings/tokens/new?scopes=repo"
             >
-              Owner
-            </label>
-            <input
-              id="settings-git-owner"
-              className="inputgroup__input"
-              value={storage.owner}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  owner: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-              }}
-            />
-          </div>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-repo"
-              className="inputgroup__label"
-            >
-              Repository name
-            </label>
-            <input
-              id="settings-git-repo"
-              className="inputgroup__input"
-              value={storage.repo}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  repo: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-              }}
-            />
-          </div>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-branch"
-              className="inputgroup__label"
-            >
-              Branch
-            </label>
-            <input
-              id="settings-git-branch"
-              className="inputgroup__input"
-              value={storage.branch}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  branch: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-              }}
-            />
-          </div>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-throttle"
-              className="inputgroup__label"
-            >
-              Throttle (in ms)
-            </label>
-            <input
-              id="settings-git-throttle"
-              type="number"
-              min="10"
-              step="10"
-              className="inputgroup__input"
-              value={storage.throttle}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  throttle: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-              }}
-            />
-          </div>
-          <div className="inputgroup">
-            <label
-              htmlFor="settings-git-token"
-              className="inputgroup__label"
-            >
-              Token
-              <a
-                className="inputgroup__note"
-                href="https://github.com/settings/tokens/new?scopes=repo"
-              >
-                How to obtain a token
-              </a>
-            </label>
-            <input
-              id="settings-git-token"
-              type={showPass ? 'text' : 'password'}
-              className="inputgroup__input inputgroup__input--password"
-              value={storage.token}
-              onChange={({ target }) => {
-                setStorage({
-                  ...storage,
-                  token: target.value,
-                });
-              }}
-              onBlur={() => {
-                setGitStorage(storage);
-                setShowPass(false);
-              }}
-            />
-            <button
-              type="button"
-              className="settings__show-password-button"
-              onClick={() => setShowPass(!showPass)}
-            >
-              <SVG name="view" />
-            </button>
-          </div>
+              How to obtain a token
+            </a>
+          </Input>
         </>
       )}
     </>

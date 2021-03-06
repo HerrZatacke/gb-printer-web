@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Lightbox from '../Lightbox';
 import { NEW_PALETTE_SHORT } from '../../../consts/specialTags';
+import Input from '../Input';
+import ImageRender from '../ImageRender';
 
 const EditPalette = ({
   palette,
@@ -10,17 +12,23 @@ const EditPalette = ({
   shortNameIsValid,
   savePalette,
   cancelEditPalette,
+  getPreviewImages,
 }) => {
-
-  if (!shortName) {
-    return null;
-  }
 
   const canEditShortName = shortName === NEW_PALETTE_SHORT;
 
   const [newName, setNewName] = useState(name);
   const [newPalette, setNewPalette] = useState(palette);
   const [newShortName, setNewShortName] = useState(canEditShortName ? '' : shortName);
+  const [previewImages, setPreviewImages] = useState([]);
+
+  useEffect(() => {
+    setPreviewImages(getPreviewImages());
+  }, [getPreviewImages]);
+
+  if (!shortName) {
+    return null;
+  }
 
   return (
     <Lightbox
@@ -48,50 +56,49 @@ const EditPalette = ({
       <div
         className="edit-palette__content"
       >
-        <div className="inputgroup">
-          <label
-            htmlFor="palette-edit-shortname"
-            className="inputgroup__label"
-          >
-            ID/Short name
-          </label>
-          <input
-            type="text"
-            id="palette-edit-shortname"
-            className="inputgroup__input"
-            value={newShortName}
-            disabled={!canEditShortName}
-            onChange={({ target: { value } }) => {
-              setNewShortName(value.toLowerCase());
-            }}
-          />
-        </div>
+        <Input
+          id="palette-edit-shortname"
+          labelText="ID/Short name"
+          type="text"
+          value={newShortName}
+          disabled={!canEditShortName}
+          onChange={(value) => {
+            setNewShortName(value.toLowerCase());
+          }}
+        />
         {
           newPalette.map((color, index) => (
-            <div
+            <Input
               key={index}
-              className="inputgroup"
-            >
-              <label
-                htmlFor={`palette-color-${index}`}
-                className="inputgroup__label"
-              >
-                {`Color ${index + 1}`}
-              </label>
-              <input
-                type="color"
-                id={`palette-color-${index}`}
-                className="inputgroup__input inputgroup__input--color"
-                value={color}
-                onChange={({ target: { value } }) => {
-                  const np = [...newPalette];
-                  np[index] = value;
-                  setNewPalette(np);
-                }}
-              />
-            </div>
+              id={`palette-color-${index}`}
+              labelText={`Color ${index + 1}`}
+              type="color"
+              value={color}
+              onChange={(value) => {
+                const np = [...newPalette];
+                np[index] = value;
+                setNewPalette(np);
+              }}
+            />
           ))
         }
+        <ul className="edit-palette__previews">
+          {
+            previewImages.map((image) => (
+              <li
+                className="edit-palette__preview-image"
+                key={image.hash}
+              >
+                <ImageRender
+                  hash={image.hash}
+                  invertPalette={false}
+                  lockFrame={false}
+                  palette={newPalette}
+                />
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </Lightbox>
   );
@@ -104,6 +111,7 @@ EditPalette.propTypes = {
   name: PropTypes.string.isRequired,
   savePalette: PropTypes.func.isRequired,
   cancelEditPalette: PropTypes.func.isRequired,
+  getPreviewImages: PropTypes.func.isRequired,
 };
 
 EditPalette.defaultProps = {

@@ -22,4 +22,14 @@
   &__content {
     padding: 0 15px;
   }
+
+  &__previews {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__preview-image {
+    flex: 160px 0 0;
+    margin: 0 10px;
+  }
 }

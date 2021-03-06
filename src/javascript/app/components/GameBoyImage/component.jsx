@@ -1,68 +1,65 @@
-import React, { Component } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Decoder from '../../../tools/Decoder';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 
-class GameBoyImage extends Component {
-  constructor(props) {
-    super(props);
-    this.canvasRef = React.createRef();
-  }
+const GameBoyImage = ({
+  palette,
+  tiles,
+  lockFrame,
+  invertPalette,
+}) => {
 
-  componentDidMount() {
-    this.updateCanvasContent();
-  }
+  const canvas = useRef(null);
 
-  componentDidUpdate() {
-    this.updateCanvasContent();
-  }
-
-  updateCanvasContent() {
-    if (!this.props.palette) {
+  useEffect(() => {
+    if (!palette || !tiles) {
       return;
     }
 
     try {
-      if (this.props.palette.palette) {
+      if (palette.length) {
         const decoder = new Decoder();
         decoder.update({
-          canvas: this.canvasRef.current,
-          tiles: this.props.tiles,
-          palette: this.props.palette.palette,
-          lockFrame: this.props.lockFrame,
-          invertPalette: this.props.invertPalette,
+          canvas: canvas.current,
+          tiles,
+          palette,
+          lockFrame,
+          invertPalette,
         });
       } else {
         const decoder = new RGBNDecoder();
         decoder.update({
-          canvas: this.canvasRef.current,
-          tiles: this.props.tiles,
-          palette: this.props.palette,
-          lockFrame: this.props.lockFrame,
+          canvas: canvas.current,
+          tiles,
+          palette,
+          lockFrame,
         });
       }
     } catch (error) {
-      console.error(`error in GameBoyImage: ${error.message}`);
+      // eslint-disable-next-line no-console
+      console.log(`error in GameBoyImage: ${error.message}`);
     }
-  }
+  }, [tiles, palette, lockFrame, invertPalette]);
 
-  render() {
-    return (
-      <canvas
-        className="gameboy-image"
-        width={160}
-        ref={this.canvasRef}
-      />
-    );
-  }
-}
+  return (
+    <canvas
+      className="gameboy-image"
+      width={160}
+      ref={canvas}
+    />
+  );
+};
 
 GameBoyImage.propTypes = {
   tiles: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.arrayOf(PropTypes.object),
   ]).isRequired,
-  palette: PropTypes.object,
+  palette: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
   lockFrame: PropTypes.bool.isRequired,
   invertPalette: PropTypes.bool.isRequired,
 };

@@ -14,9 +14,9 @@ const updateAvailableTags = (store) => {
 
 const filters = (store) => (next) => (action) => {
   switch (action.type) {
+    // case 'UPDATE_IMAGES_BATCH':
     case 'ADD_IMAGE':
     case 'UPDATE_IMAGE':
-    case 'UPDATE_IMAGES_BATCH':
     case 'DELETE_IMAGE':
     case 'DELETE_IMAGES':
     case 'GLOBAL_UPDATE':

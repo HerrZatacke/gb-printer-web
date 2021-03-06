@@ -1,32 +1,10 @@
 .wifi-settings {
-
-  &__button {
-    flex-basis: auto;
-    align-self: flex-end;
-    padding: 1px 20px;
-
-    .svg {
-      height: auto;
-      width: auto;
-      fill: currentColor;
-      margin: 3px;
-    }
-
-    &--delete {
-      padding: 0;
-      min-height: 36px;
-      height: 36px;
-      width: 36px;
-      flex: 36px 0 0;
-    }
-
-    &--add {
-      padding: 0;
-      margin: 0 0 0 20px;
-      min-height: 24px;
-      width: 24px;
-      vertical-align: bottom;
-    }
+  &__button--add {
+    padding: 0;
+    margin: 0 0 0 20px;
+    min-height: 24px;
+    width: 24px;
+    vertical-align: bottom;
   }
 
   &__subheadline {
@@ -40,14 +18,16 @@
   }
 
   &__ap-group {
+    margin-bottom: 40px;
+
     &--delete {
-      .settings__inputgroup:first-child input {
+      .inputgroup__input {
         @include theme-background-color($color-button-red, $color-button-red);
         @include theme-color($color-white, $color-grey-70);
       }
     }
 
-    .settings__inputgroup:first-child {
+    .inputgroup {
       margin-bottom: 10px;
     }
   }
