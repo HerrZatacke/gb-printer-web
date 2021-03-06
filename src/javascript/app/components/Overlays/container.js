@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
   showConfirmation: !!state.confirmation.message,
   showEditForm: !!state.editImage,
   showEditPalette: !!state.editPalette.shortName,
-  showVideoForm: !!state.videoParams.imageSelection.length,
+  showVideoForm: !!state.videoParams.imageSelection && !!state.videoParams.imageSelection.length,
   showLiveImage: true, // animating ?
   showRGBNImage: true, // animating ?
   showLightbox: state.lightboxImage !== null,
