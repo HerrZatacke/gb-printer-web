@@ -92,6 +92,10 @@ class WiFiSettings extends React.Component {
   }
 
   emptyPassWordFields() {
+    if (!this.ref.current) {
+      return;
+    }
+
     // this workaround should prevent all browsers form asking to "save password"
     const pwFields = this.ref.current.querySelectorAll('[type=password]');
     [...pwFields].forEach((field) => {
