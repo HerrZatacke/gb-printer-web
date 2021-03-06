@@ -54,7 +54,7 @@ const pluginsMiddleware = (store) => {
     const state = store.getState();
     const meta = state.images.find((image) => image.hash === hash);
     const palette = getImagePalette(state, meta);
-    const getTiles = () => loadImageTiles(meta, state);
+    const getTiles = () => loadImageTiles(state)(meta);
 
     const getCanvas = (scaleFactor = 1, cropFrame = false) => (
       getTiles()
