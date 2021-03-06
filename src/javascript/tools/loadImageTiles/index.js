@@ -1,5 +1,6 @@
 import { load } from '../storage';
 import getRGBNFrames from '../getRGBNFrames';
+import RGBNDecoder from '../RGBNDecoder';
 
 const loadImageTiles = (state) => ({ hash, frame, hashes }, noDummy) => {
   if (!hashes) {
@@ -13,7 +14,8 @@ const loadImageTiles = (state) => ({ hash, frame, hashes }, noDummy) => {
     load(hashes.g, frames.g || frame, noDummy),
     load(hashes.b, frames.b || frame, noDummy),
     load(hashes.n, frames.n || frame, noDummy),
-  ]);
+  ])
+    .then(RGBNDecoder.rgbnTiles);
 };
 
 export default loadImageTiles;

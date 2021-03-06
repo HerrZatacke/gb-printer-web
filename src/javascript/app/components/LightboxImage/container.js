@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
     isFullscreen: state.isFullscreen,
     palette,
     frames,
-    lightboxIndex: state.lightboxImage || 0,
+    lightboxIndex: state.lightboxImage,
     size: images.length || 0,
     lockFrame: image.lockFrame || false,
     invertPalette: image.invertPalette || false,

@@ -113,7 +113,7 @@ class GalleryImage extends React.Component {
               lockFrame={this.props.lockFrame}
               invertPalette={this.props.invertPalette}
               tiles={this.state.tiles}
-              palette={this.props.palette}
+              palette={this.props.palette.palette || this.props.palette}
             />
           ) : null }
         </div>
@@ -160,7 +160,7 @@ class GalleryImage extends React.Component {
                   lockFrame={this.props.lockFrame}
                   invertPalette={this.props.invertPalette}
                   tiles={this.state.tiles}
-                  palette={this.props.palette}
+                  palette={this.props.palette.palette || this.props.palette}
                 />
               </div>
             ) : null }

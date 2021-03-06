@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
+import loadImageTiles from '../../../tools/loadImageTiles';
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  loadImageTiles: loadImageTiles(state),
+});
 
 const mapDispatchToProps = () => ({});
 

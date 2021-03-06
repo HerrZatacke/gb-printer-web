@@ -1,52 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import GameBoyImage from '../GameBoyImage';
-import { load } from '../../../tools/storage';
-import RGBNDecoder from '../../../tools/RGBNDecoder';
 
 const ImageRender = ({
   hash,
   hashes,
   frame,
-  frames,
   lockFrame,
   invertPalette,
   palette,
+  loadImageTiles,
+  reportTileCount,
 }) => {
   const [tiles, setTiles] = useState(null);
-
-  // ToDo: use import loadImageTiles from '../../../tools/loadImageTiles';
   useEffect(() => {
     setTiles(null);
-
-    if (hashes) {
-      Promise.all([
-        load(hashes.r, frames.r),
-        load(hashes.g, frames.g),
-        load(hashes.b, frames.b),
-        load(hashes.n, frames.n),
-      ])
-        .then((newTiles) => {
-          setTiles(RGBNDecoder.rgbnTiles(newTiles));
-        });
-    } else {
-      load(hash, frame)
-        .then(setTiles);
-    }
-  }, [hash, hashes]);
-
+    loadImageTiles({ hash, frame, hashes })
+      .then((loadedTiles) => {
+        reportTileCount(loadedTiles.length);
+        setTiles(loadedTiles);
+      });
+  }, [reportTileCount, loadImageTiles, hash, hashes, frame]);
 
   return tiles ? (
     <GameBoyImage
       lockFrame={lockFrame}
       invertPalette={invertPalette}
       tiles={tiles}
-      palette={{ palette }}
+      palette={palette}
     />
   ) : null;
 };
 
 ImageRender.propTypes = {
+  loadImageTiles: PropTypes.func.isRequired,
+  reportTileCount: PropTypes.func,
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
   palette: PropTypes.oneOfType([
@@ -55,14 +43,13 @@ ImageRender.propTypes = {
   ]).isRequired,
   invertPalette: PropTypes.bool.isRequired,
   frame: PropTypes.string,
-  frames: PropTypes.object,
   lockFrame: PropTypes.bool.isRequired,
 };
 
 ImageRender.defaultProps = {
   hashes: null,
   frame: null,
-  frames: null,
+  reportTileCount: () => {},
 };
 
 export default ImageRender;

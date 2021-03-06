@@ -90,7 +90,7 @@ class LightboxImage extends React.Component {
         </button>
         <GameBoyImage
           tiles={this.state.tiles}
-          palette={this.props.palette}
+          palette={this.props.palette.palette || this.props.palette}
           lockFrame={this.props.lockFrame}
           invertPalette={this.props.invertPalette}
         />
