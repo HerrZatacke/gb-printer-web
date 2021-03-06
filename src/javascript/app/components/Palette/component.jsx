@@ -34,26 +34,38 @@ const Component = (props) => (
         <div className="palette__color" style={{ backgroundColor: props.palette[3] }} title={props.palette[3]}> </div>
       </div>
     </button>
-    {
-      props.isPredefined ? null : (
-        <div className="palette__manage-buttons">
-          <button
-            type="button"
-            className="palette__manage-button palette__manage-button--edit"
-            onClick={() => props.editPalette()}
-          >
-            <SVG name="edit" />
-          </button>
-          <button
-            type="button"
-            className="palette__manage-button palette__manage-button--delete"
-            onClick={() => props.deletePalette()}
-          >
-            <SVG name="delete" />
-          </button>
-        </div>
-      )
-    }
+    <div className="palette__manage-buttons">
+      <button
+        type="button"
+        title="Clone palette"
+        className="palette__manage-button palette__manage-button--clone"
+        onClick={() => props.clonePalette()}
+      >
+        <SVG name="clone" />
+      </button>
+      {
+        props.isPredefined ? null : (
+          <>
+            <button
+              type="button"
+              title="Edit palette"
+              className="palette__manage-button palette__manage-button--edit"
+              onClick={() => props.editPalette()}
+            >
+              <SVG name="edit" />
+            </button>
+            <button
+              type="button"
+              title="Delete palette"
+              className="palette__manage-button palette__manage-button--delete"
+              onClick={() => props.deletePalette()}
+            >
+              <SVG name="delete" />
+            </button>
+          </>
+        )
+      }
+    </div>
   </li>
 );
 
@@ -65,6 +77,7 @@ Component.propTypes = {
   setActive: PropTypes.func.isRequired,
   deletePalette: PropTypes.func.isRequired,
   editPalette: PropTypes.func.isRequired,
+  clonePalette: PropTypes.func.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
