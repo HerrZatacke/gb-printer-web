@@ -31,7 +31,9 @@ const ImageRender = ({
       tiles={tiles}
       palette={palette}
     />
-  ) : null;
+  ) : (
+    <div className="image-render--loading" />
+  );
 };
 
 ImageRender.propTypes = {
