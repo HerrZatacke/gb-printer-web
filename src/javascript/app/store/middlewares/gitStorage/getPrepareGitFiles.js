@@ -1,5 +1,26 @@
-import mime from 'mime-types';
 import getGetSettings from '../../../../tools/getGetSettings';
+
+const extFromType = (type) => {
+  switch (type) {
+    case 'image/png':
+      return 'png';
+    case 'image/jpg':
+    case 'image/jpeg':
+      return 'jpg';
+    case 'image/webp':
+      return 'webp';
+    case 'text/plain':
+      return 'txt';
+    case 'text/markdown':
+      return 'md';
+    case 'application/json':
+    case 'text/json':
+      return 'json';
+    default:
+      console.warn(`unknown file extension for type "${type}"`);
+      return 'none';
+  }
+};
 
 const getPrepareGitFiles = (store) => {
   const getSettings = getGetSettings(store);
@@ -20,7 +41,7 @@ const getPrepareGitFiles = (store) => {
       }));
 
       toUpload.push(...files.map(({ blob, folder }) => {
-        const extension = mime.extension(blob.type);
+        const extension = extFromType(blob.type);
         const repoFolder = folder || extension;
         stats[repoFolder] = stats[repoFolder] ? stats[repoFolder] + 1 : 1;
 
