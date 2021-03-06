@@ -5,6 +5,7 @@ import GameBoyImage from '../GameBoyImage';
 const ImageRender = ({
   hash,
   hashes,
+  images,
   frame,
   lockFrame,
   invertPalette,
@@ -13,14 +14,15 @@ const ImageRender = ({
   reportTileCount,
 }) => {
   const [tiles, setTiles] = useState(null);
+
   useEffect(() => {
     setTiles(null);
-    loadImageTiles({ hash, frame, hashes })
+    loadImageTiles({ images })({ hash, frame, hashes })
       .then((loadedTiles) => {
-        reportTileCount(loadedTiles.length);
+        // reportTileCount(loadedTiles.length);
         setTiles(loadedTiles);
       });
-  }, [reportTileCount, loadImageTiles, hash, hashes, frame]);
+  }, [images, loadImageTiles, reportTileCount, hash, hashes, frame]);
 
   return tiles ? (
     <GameBoyImage
@@ -37,6 +39,7 @@ ImageRender.propTypes = {
   reportTileCount: PropTypes.func,
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
+  images: PropTypes.array.isRequired,
   palette: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
