@@ -7,5 +7,21 @@
   </head>
   <body>
     <div id="app" class="app"></div>
+    <!-- script>
+      window.setTimeout(function() {
+        var app = document.getElementById('app');
+
+        if (app.children.length) {
+          return;
+        }
+
+        try {
+          app.innerHTML = '<pre>' + JSON.stringify(store.getState(), null, 2) + '</pre>';
+        } catch (error) {
+          app.innerHTML = '<pre>' + JSON.stringify(JSON.parse(localStorage.getItem('gbp-web-state')), null, 2) + '</pre>';
+        }
+
+      }, 10000)
+    </script -->
   </body>
 </html>
