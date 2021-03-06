@@ -1,3 +1,5 @@
+import updateIfDefined from '../../../tools/updateIfDefined';
+
 const defaults = {
   imageSelection: [],
 };
@@ -17,7 +19,7 @@ const videoParamsReducer = (value = defaults, action) => {
         imageSelection: [],
       };
     case 'GLOBAL_UPDATE':
-      return action.payload.videoParams || value;
+      return updateIfDefined(action.payload.videoParams, value);
     default:
       return value;
   }

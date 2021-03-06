@@ -1,3 +1,5 @@
+import updateIfDefined from '../../../tools/updateIfDefined';
+
 const imageSelectionReducer = (value = [], action) => {
   switch (action.type) {
     case 'IMAGE_SELECTION_REMOVE':
@@ -10,7 +12,7 @@ const imageSelectionReducer = (value = [], action) => {
     case 'DELETE_IMAGES':
       return [];
     case 'GLOBAL_UPDATE':
-      return action.payload.imageSelection || value;
+      return updateIfDefined(action.payload.imageSelection, value);
     default:
       return value;
   }

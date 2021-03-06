@@ -1,4 +1,5 @@
 import unique from '../../../tools/unique';
+import updateIfDefined from '../../../tools/updateIfDefined';
 
 const exportFileTypesReducer = (value = ['png'], action) => {
   switch (action.type) {
@@ -11,7 +12,7 @@ const exportFileTypesReducer = (value = ['png'], action) => {
         fileType !== action.payload.fileType
       ));
     case 'GLOBAL_UPDATE':
-      return action.payload.exportFileTypes || value;
+      return updateIfDefined(action.payload.exportFileTypes, value);
     default:
       return value;
   }
