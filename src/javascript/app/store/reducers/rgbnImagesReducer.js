@@ -1,3 +1,5 @@
+import updateIfDefined from '../../../tools/updateIfDefined';
+
 const DEFAULT = {
   r: '',
   g: '',
@@ -15,7 +17,7 @@ const rgbnImagesReducer = (value = DEFAULT, action) => {
     case 'DELETE_IMAGES':
       return DEFAULT;
     case 'GLOBAL_UPDATE':
-      return action.payload.rgbnImages || value;
+      return updateIfDefined(action.payload.rgbnImages, value);
     default:
       return value;
   }

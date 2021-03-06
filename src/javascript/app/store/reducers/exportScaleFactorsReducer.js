@@ -1,3 +1,5 @@
+import updateIfDefined from '../../../tools/updateIfDefined';
+
 const exportScaleFactorsReducer = (value = [1], action) => {
   switch (action.type) {
     case 'UPDATE_EXPORT_SCALE_FACTORS':
@@ -13,7 +15,7 @@ const exportScaleFactorsReducer = (value = [1], action) => {
         factor !== action.payload.factor
       ));
     case 'GLOBAL_UPDATE':
-      return action.payload.exportScaleFactors || value;
+      return updateIfDefined(action.payload.exportScaleFactors, value);
     default:
       return value;
   }
