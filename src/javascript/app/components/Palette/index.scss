@@ -42,11 +42,12 @@
     margin-bottom: 10px;
     position: relative;
     padding-right: 40px;
+    padding-top: 5px;
   }
 
   &__shortname {
     position: absolute;
-    top: 0;
+    top: 8px;
     right: 0;
     font-size: 12px;
     @include theme-color($color-secondary, $color-secondary-bright);
@@ -68,29 +69,6 @@
     flex-basis: 25%;
     height: 40px;
   }
-
-  &__manage-button {
-    $size: 22px;
-    position: absolute;
-    top: 4px;
-    width: $size;
-    height: $size;
-    min-height: $size;
-    padding: 1px;
-    margin: 0;
-
-    &--edit {
-      right: 30px;
-    }
-
-    &--delete {
-      right: 4px;
-
-      &:hover {
-        @include theme-background-color($color-button-red, $color-button-red);
-        @include theme-color($color-white, $color-grey-70);
-      }
-    }
-  }
 }
 
+@import "buttons";

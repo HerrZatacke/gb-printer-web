@@ -1,0 +1,40 @@
+.palette {
+  &__manage-buttons {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: default;
+    padding: 0;
+  }
+
+  &:hover &__manage-buttons {
+    display: flex;
+  }
+
+  &__manage-button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    @include theme-background-color($color-grey-90, $color-grey-30);
+    margin-left: 5px;
+    padding: 0 ;
+    cursor: pointer;
+    @include theme-color($color-tertiary, $color-tertiary-bright);
+    fill: currentColor;
+    border-radius: $default-border-radius-small;
+    outline: none;
+
+    &:hover {
+      @include theme-color($color-white, $color-grey-80);
+      @include theme-background-color($color-tertiary, $color-tertiary);
+    }
+
+    body.is-touch & {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

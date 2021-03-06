@@ -36,22 +36,22 @@ const Component = (props) => (
     </button>
     {
       props.isPredefined ? null : (
-        <>
+        <div className="palette__manage-buttons">
           <button
             type="button"
-            className="button palette__manage-button palette__manage-button--edit"
+            className="palette__manage-button palette__manage-button--edit"
             onClick={() => props.editPalette()}
           >
             <SVG name="edit" />
           </button>
           <button
             type="button"
-            className="button palette__manage-button palette__manage-button--delete"
+            className="palette__manage-button palette__manage-button--delete"
             onClick={() => props.deletePalette()}
           >
             <SVG name="delete" />
           </button>
-        </>
+        </div>
       )
     }
   </li>
