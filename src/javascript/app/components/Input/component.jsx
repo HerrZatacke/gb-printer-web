@@ -31,7 +31,7 @@ const Input = ({
     if (type === 'color') {
       setColorVal(value);
     }
-  }, [value]);
+  }, [setColorVal, value, type]);
 
   const keyUpListener = onKeyUp ? (({ key }) => onKeyUp(key)) : null;
 
