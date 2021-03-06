@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Lightbox from '../Lightbox/component';
@@ -7,173 +7,135 @@ import FrameSelect from '../FrameSelect';
 import PaletteSelect from '../PaletteSelect';
 import Input from '../Input';
 
-class VideoParamsForm extends React.Component {
+const VideoParamsForm = (props) => {
 
-  constructor(props) {
-    super(props);
+  const {
+    update,
+    cancel,
+    imageCount,
+    animate,
+  } = props;
 
-    this.state = {
-      frameRate: props.frameRate,
-      scaleFactor: props.scaleFactor,
-      palette: props.palette,
-      invertPalette: props.invertPalette,
-      yoyo: props.yoyo,
-      frame: props.frame,
-      lockFrame: props.lockFrame,
-      cropFrame: props.lockFrame,
-    };
+  const [frameRate, setFrameRate] = useState(props.frameRate);
+  const [scaleFactor, setScaleFactor] = useState(props.scaleFactor);
+  const [palette, setPalette] = useState(props.palette);
+  const [invertPalette, setInvertPalette] = useState(props.invertPalette);
+  const [yoyo, setYoyo] = useState(props.yoyo);
+  const [frame, setFrame] = useState(props.frame);
+  const [lockFrame, setLockFrame] = useState(props.lockFrame);
+  const [cropFrame, setCropFrame] = useState(props.cropFrame);
 
-    this.callUpdate = this.callUpdate.bind(this);
-  }
-
-  callUpdate() {
-
+  useEffect(() => {
     const cleanState = {
-      frameRate: Math.min(120, Math.max(1, parseInt(this.state.frameRate, 10))),
-      scaleFactor: Math.min(12, Math.max(1, parseInt(this.state.scaleFactor, 10))),
-      palette: this.state.palette,
-      invertPalette: this.state.invertPalette,
-      yoyo: this.state.yoyo,
-      frame: this.state.frame,
-      lockFrame: this.state.lockFrame,
-      cropFrame: this.state.cropFrame,
+      frameRate: Math.min(120, Math.max(1, parseInt(frameRate, 10))),
+      scaleFactor: Math.min(12, Math.max(1, parseInt(scaleFactor, 10))),
+      palette,
+      invertPalette,
+      yoyo,
+      frame,
+      lockFrame,
+      cropFrame,
     };
 
-    this.setState(cleanState);
-    this.props.update(cleanState);
+    update(cleanState);
+  }, [frameRate, scaleFactor, palette, invertPalette, yoyo, frame, lockFrame, cropFrame, update]);
+
+  if (!imageCount) {
+    return null;
   }
 
-  render() {
-    if (!this.props.imageCount) {
-      return null;
-    }
-
-    return (
-      <Lightbox
-        className="video-params"
-        confirm={() => {
-          this.callUpdate();
-          this.props.animate();
-        }}
-        deny={this.props.cancel}
-        header={`Create an animated GIF with ${this.props.imageCount} frames`}
+  return (
+    <Lightbox
+      className="video-params"
+      confirm={animate}
+      deny={cancel}
+      header={`Create an animated GIF with ${imageCount} frames`}
+    >
+      <Input
+        id="video-params-frameRate"
+        labelText="Framerate"
+        type="number"
+        min={1}
+        max={120}
+        value={frameRate}
+        onChange={setFrameRate}
+      />
+      <Input
+        id="video-params-scaleFactor"
+        labelText="Scale GIF"
+        type="number"
+        min={1}
+        max={12}
+        value={scaleFactor}
+        onChange={setScaleFactor}
+      />
+      <label
+        className={
+          classnames('video-params__check-label', {
+            'video-params__check-label--checked': yoyo,
+          })
+        }
+        title="Enable Yoyo-Effect (loop back to the beginning)"
       >
-        <Input
-          id="video-params-frameRate"
-          labelText="Framerate"
-          type="number"
-          min={1}
-          max={120}
-          value={this.state.frameRate}
-          onChange={(frameRate) => {
-            this.setState({
-              frameRate,
-            });
+        <input
+          type="checkbox"
+          className="video-params__checkbox"
+          checked={yoyo}
+          onChange={(ev) => {
+            setYoyo(ev.target.checked);
           }}
-          onBlur={this.callUpdate}
         />
-        <Input
-          id="video-params-scaleFactor"
-          labelText="Scale GIF"
-          type="number"
-          min={1}
-          max={12}
-          value={this.state.scaleFactor}
-          onChange={(scaleFactor) => {
-            this.setState({
-              scaleFactor,
-            });
+        <SVG name="checkmark" />
+        <span className="video-params__check-label-text">Yoyo-Effect</span>
+      </label>
+      <div className="video-params__select-label">
+        Palette
+      </div>
+      <PaletteSelect
+        noFancy
+        allowEmpty
+        value={palette}
+        invertPalette={invertPalette}
+        onChange={setPalette}
+        updateInvertPalette={setInvertPalette}
+      />
+      <label
+        className={
+          classnames('video-params__check-label', {
+            'video-params__check-label--checked': cropFrame,
+          })
+        }
+      >
+        <input
+          type="checkbox"
+          className="video-params__checkbox"
+          checked={cropFrame}
+          onChange={(ev) => {
+            setCropFrame(ev.target.checked);
           }}
-          onBlur={this.callUpdate}
         />
-        <label
-          className={
-            classnames('video-params__check-label', {
-              'video-params__check-label--checked': this.state.yoyo,
-            })
-          }
-          title="Enable Yoyo-Effect (loop back to the beginning)"
-        >
-          <input
-            type="checkbox"
-            className="video-params__checkbox"
-            checked={this.state.yoyo}
-            onChange={({ target }) => {
-              this.setState({
-                yoyo: target.checked,
-              }, this.callUpdate);
-            }}
+        <SVG name="checkmark" />
+        <span className="video-params__check-label-text">
+          Crop/remove frame
+        </span>
+      </label>
+      { cropFrame ? null : (
+        <>
+          <div className="video-params__select-label">
+            Frame
+          </div>
+          <FrameSelect
+            frame={frame}
+            lockFrame={lockFrame}
+            noFrameOption="As selected per image"
+            updateFrame={setFrame}
+            updateFrameLock={setLockFrame}
           />
-          <SVG name="checkmark" />
-          <span className="video-params__check-label-text">Yoyo-Effect</span>
-        </label>
-        <label
-          className={
-            classnames('video-params__check-label', {
-              'video-params__check-label--checked': this.props.cropFrame,
-            })
-          }
-        >
-          <input
-            type="checkbox"
-            className="video-params__checkbox"
-            checked={this.state.cropFrame}
-            onChange={({ target }) => {
-              this.setState({
-                cropFrame: target.checked,
-              }, this.callUpdate);
-            }}
-          />
-          <SVG name="checkmark" />
-          <span className="video-params__check-label-text">
-            Crop/remove frame
-          </span>
-        </label>
-        <div className="video-params__select-label">
-          Palette
-        </div>
-        <PaletteSelect
-          noFancy
-          allowEmpty
-          value={this.state.palette}
-          invertPalette={this.state.invertPalette}
-          onChange={(palette) => {
-            this.setState({
-              palette,
-            }, this.callUpdate);
-          }}
-          updateInvertPalette={(invertPalette) => {
-            this.setState({
-              invertPalette,
-            }, this.callUpdate);
-          }}
-        />
-        { this.state.cropFrame ? null : (
-          <>
-            <div className="video-params__select-label">
-              Frame
-            </div>
-            <FrameSelect
-              frame={this.state.frame}
-              lockFrame={this.state.lockFrame}
-              noFrameOption="As selected per image"
-              updateFrame={(frame) => {
-                this.setState({
-                  frame,
-                }, this.callUpdate);
-              }}
-              updateFrameLock={(lockFrame) => {
-                this.setState({
-                  lockFrame,
-                }, this.callUpdate);
-              }}
-            />
-          </>
-        )}
-      </Lightbox>
-    );
-  }
-}
+        </>
+      )}
+    </Lightbox>
+  );
+};
 
 VideoParamsForm.propTypes = {
   imageCount: PropTypes.number.isRequired,
