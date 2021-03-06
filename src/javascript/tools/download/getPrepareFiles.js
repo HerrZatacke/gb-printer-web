@@ -14,7 +14,7 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
 
   if (isRGBN) {
     decoder.update({
-      tiles: RGBNDecoder.rgbnTiles(tiles),
+      tiles,
       palette,
       lockFrame,
     });
