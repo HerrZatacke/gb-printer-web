@@ -1,126 +1,86 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import GameBoyImage from '../GameBoyImage';
-import RGBNDecoder from '../../../tools/RGBNDecoder';
-import { load } from '../../../tools/storage';
 import { dateFormat, dateFormatReadable } from '../../defaults';
 import SVG from '../SVG';
 import Lightbox from '../Lightbox';
+import ImageRender from '../ImageRender';
 
-class LightboxImage extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      tiles: null,
-      loaded: false,
-      hash: props.hash,
-    };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    // same image
-    if (props.hash === state.hash) {
-      return state;
-    }
-
-    // image changed or was unloaded
-    return {
-      tiles: null,
-      loaded: false,
-      hash: props.hash,
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.hash !== this.props.hash && this.props.hash) {
-
-      if (this.props.hashes) {
-        Promise.all([
-          load(this.props.hashes.r, this.props.frames.r),
-          load(this.props.hashes.g, this.props.frames.g),
-          load(this.props.hashes.b, this.props.frames.b),
-          load(this.props.hashes.n, this.props.frames.n),
-        ])
-          .then((tiles) => {
-            this.setState({
-              tiles: RGBNDecoder.rgbnTiles(tiles),
-              loaded: true,
-            });
-          });
-      } else {
-        load(this.props.hash, this.props.frame)
-          .then((tiles) => {
-            this.setState({
-              tiles,
-              loaded: true,
-            });
-          });
-      }
-
-    }
-  }
-
-  render() {
-    return (this.state.loaded) ? (
-      <Lightbox
-        className="lightbox-image"
-        deny={this.props.close}
+const LightboxImage = ({
+  close,
+  title,
+  isFullscreen,
+  fullscreen,
+  lockFrame,
+  invertPalette,
+  palette,
+  frame,
+  frames,
+  hash,
+  hashes,
+  prev,
+  lightboxIndex,
+  size,
+  next,
+  created,
+}) => (
+  <Lightbox
+    className="lightbox-image"
+    deny={close}
+  >
+    <label className="lightbox-image__title">
+      {title}
+    </label>
+    { isFullscreen ? null : (
+      <button
+        type="button"
+        className="lightbox-image__button lightbox-image__button--fullscreen"
+        onClick={fullscreen}
       >
-        <label className="lightbox-image__title">
-          {this.props.title}
-        </label>
-        { this.props.isFullscreen ? null : (
-          <button
-            type="button"
-            className="lightbox-image__button lightbox-image__button--fullscreen"
-            onClick={this.props.fullscreen}
-          >
-            <SVG name="fullscreen" />
-          </button>
-        ) }
+        <SVG name="fullscreen" />
+      </button>
+    ) }
+    <button
+      type="button"
+      className="lightbox-image__button lightbox-image__button--close"
+      onClick={close}
+    >
+      <SVG name="close" />
+    </button>
+    <ImageRender
+      lockFrame={lockFrame}
+      invertPalette={invertPalette}
+      palette={palette.palette || palette}
+      frame={frame}
+      frames={frames}
+      hash={hash}
+      hashes={hashes}
+    />
+    <div className="lightbox-image__navigation">
+      { lightboxIndex > 0 ? (
         <button
           type="button"
-          className="lightbox-image__button lightbox-image__button--close"
-          onClick={this.props.close}
+          className="lightbox-image__button lightbox-image__button--left"
+          onClick={prev}
         >
-          <SVG name="close" />
+          <SVG name="left" />
         </button>
-        <GameBoyImage
-          tiles={this.state.tiles}
-          palette={this.props.palette.palette || this.props.palette}
-          lockFrame={this.props.lockFrame}
-          invertPalette={this.props.invertPalette}
-        />
-        <div className="lightbox-image__navigation">
-          { this.props.lightboxIndex > 0 ? (
-            <button
-              type="button"
-              className="lightbox-image__button lightbox-image__button--left"
-              onClick={this.props.prev}
-            >
-              <SVG name="left" />
-            </button>
-          ) : null }
-          { this.props.lightboxIndex < this.props.size - 1 ? (
-            <button
-              type="button"
-              className="lightbox-image__button lightbox-image__button--right"
-              onClick={this.props.next}
-            >
-              <SVG name="right" />
-            </button>
-          ) : null }
-        </div>
-        <div className="lightbox-image__created">
-          {dayjs(this.props.created, dateFormat).format(dateFormatReadable)}
-        </div>
-      </Lightbox>
-    ) : null;
-  }
-}
+      ) : null }
+      { lightboxIndex < size - 1 ? (
+        <button
+          type="button"
+          className="lightbox-image__button lightbox-image__button--right"
+          onClick={next}
+        >
+          <SVG name="right" />
+        </button>
+      ) : null }
+    </div>
+    <div className="lightbox-image__created">
+      {dayjs(created, dateFormat).format(dateFormatReadable)}
+    </div>
+  </Lightbox>
+);
 
 LightboxImage.propTypes = {
   created: PropTypes.string,
