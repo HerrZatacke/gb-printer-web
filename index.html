@@ -4,8 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>Gameboy Printer Web</title>
-  <link rel="shortcut icon" href="favicon.png"><link href="1b9c/main.css" rel="stylesheet"></head>
+  <link rel="shortcut icon" href="favicon.png"><link href="e1be/main.css" rel="stylesheet"></head>
   <body>
     <div id="app" class="app"></div>
-  <script type="text/javascript" src="1b9c/pf.js"></script><script type="text/javascript" src="1b9c/main.js"></script></body>
+    <!-- script>
+      window.setTimeout(function() {
+        var app = document.getElementById('app');
+
+        if (app.children.length) {
+          return;
+        }
+
+        try {
+          app.innerHTML = '<pre>' + JSON.stringify(store.getState(), null, 2) + '</pre>';
+        } catch (error) {
+          app.innerHTML = '<pre>' + JSON.stringify(JSON.parse(localStorage.getItem('gbp-web-state')), null, 2) + '</pre>';
+        }
+
+      }, 10000)
+    </script -->
+  <script type="text/javascript" src="e1be/pf.js"></script><script type="text/javascript" src="e1be/main.js"></script></body>
 </html>
