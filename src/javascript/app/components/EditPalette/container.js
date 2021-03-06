@@ -1,40 +1,5 @@
 import { connect } from 'react-redux';
-import getFilteredImages from '../../../tools/getFilteredImages';
-
-const getPreviewImages = (state) => () => {
-  const previewImages = [];
-
-  if (state.imageSelection.length > 0) {
-    previewImages.push(
-      state.images.find(({ hash }) => hash === state.imageSelection[0]),
-    );
-  }
-
-  if (state.imageSelection.length > 1) {
-    previewImages.push(
-      state.images.find(({ hash }) => hash === state.imageSelection[state.imageSelection.length - 1]),
-    );
-  }
-
-  if (previewImages.filter(Boolean).length === 2) {
-    return previewImages;
-  }
-
-  const filtered = getFilteredImages(state);
-
-  previewImages.push(
-    filtered[0],
-  );
-
-  if (previewImages.filter(Boolean).length === 2) {
-    return previewImages;
-  }
-
-  return [
-    ...previewImages,
-    filtered[filtered.length - 1],
-  ];
-};
+import getPreviewImages from '../../../tools/getPreviewImages';
 
 const mapStateToProps = (state) => ({
   shortName: state.editPalette.shortName,
