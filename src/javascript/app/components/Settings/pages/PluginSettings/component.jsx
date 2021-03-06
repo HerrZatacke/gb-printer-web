@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import SVG from '../../../SVG';
+import Input from '../../../Input';
 
 const inputTypeFromType = (type) => {
   switch (type) {
@@ -39,33 +40,18 @@ const PluginSettings = ({
 
   return (
     <>
-      <div className="inputgroup">
-        <label
-          htmlFor="plugin-settings-add-plugin"
-          className="inputgroup__label"
-        >
-          Add Plugin
-        </label>
-        <input
-          id="plugin-settings-add-plugin"
-          type="text"
-          className="inputgroup__input"
-          value={pluginUrl}
-          onChange={({ target: { value } }) => setPluginUrl(value)}
-        />
-        <button
-          type="button"
-          className="button plugin-settings__button"
-          disabled={!pluginUrl}
-          onClick={() => {
-            pluginAdd(pluginUrl);
-            setPluginUrl('');
-          }}
-        >
-          <SVG name="add" />
-        </button>
-      </div>
-
+      <Input
+        id="plugin-settings-add-plugin"
+        labelText="Add Plugin"
+        type="text"
+        value={pluginUrl}
+        onChange={(value) => setPluginUrl(value)}
+        buttonOnClick={() => {
+          pluginAdd(pluginUrl);
+          setPluginUrl('');
+        }}
+        buttonIcon={pluginUrl ? 'add' : null}
+      />
 
       <ul className="plugin-settings__plugin-list">
         {
@@ -110,30 +96,19 @@ const PluginSettings = ({
                 {Object.keys(configParams).map((fieldName) => {
                   const { type, label } = configParams[fieldName];
                   return (
-                    <div
-                      key={fieldName}
-                      className="inputgroup"
-                    >
-                      <label
-                        htmlFor={`${fieldName}-${pluginIndex}`}
-                        className="inputgroup__label"
-                      >
-                        {label}
-                      </label>
-                      <input
-                        id={`${fieldName}-${pluginIndex}`}
-                        type={inputTypeFromType(type)}
-                        className="settings__input"
-                        value={inputValueFromType(type, config[fieldName])}
-                        onChange={({ target: { value } }) => {
-                          pluginUpdateConfig(url, fieldName, inputValueFromType(type, value));
-                        }}
-                      />
-                    </div>
+                    <Input
+                      id={`${fieldName}-${pluginIndex}`}
+                      key={`${fieldName}-${pluginIndex}`}
+                      labelText={label}
+                      type={inputTypeFromType(type)}
+                      value={inputValueFromType(type, config[fieldName])}
+                      onChange={(value) => {
+                        pluginUpdateConfig(url, fieldName, inputValueFromType(type, value));
+                      }}
+                    />
                   );
                 })}
               </div>
-
             </li>
           ))
         }
