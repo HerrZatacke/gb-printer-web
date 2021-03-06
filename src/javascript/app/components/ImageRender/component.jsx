@@ -19,7 +19,7 @@ const ImageRender = ({
     setTiles(null);
     loadImageTiles({ images })({ hash, frame, hashes })
       .then((loadedTiles) => {
-        // reportTileCount(loadedTiles.length);
+        reportTileCount(loadedTiles.length);
         setTiles(loadedTiles);
       });
   }, [images, loadImageTiles, reportTileCount, hash, hashes, frame]);
