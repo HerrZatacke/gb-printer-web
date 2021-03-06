@@ -11,7 +11,10 @@ const mapStateToProps = (state) => {
     state.palettes.find((palette) => shortName === palette.shortName)
   );
 
-  if (!state.editImage) {
+  const image = state.images.find(({ hash }) => hash === state.editImage.hash);
+  const { batch, tags: batchTags } = state.editImage;
+
+  if (!state.editImage || !image) {
     return {
       hash: null,
       invertPalette: false,
@@ -22,9 +25,6 @@ const mapStateToProps = (state) => {
       findPalette,
     };
   }
-
-  const image = state.images.find(({ hash }) => hash === state.editImage.hash);
-  const { batch, tags: batchTags } = state.editImage;
 
   return ({
     created: image.created || null,
