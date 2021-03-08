@@ -3,6 +3,7 @@ import activePalette from './reducers/activePaletteReducer';
 import canShare from './reducers/canShareReducer';
 import confirmation from './reducers/confirmationReducer';
 import dragover from './reducers/dragoverReducer';
+import dropboxToken from './reducers/dropboxTokenReducer';
 import editImage from './reducers/editImageReducer';
 import editPalette from './reducers/editPaletteReducer';
 import exportCropFrame from './reducers/exportCropFrameReducer';
@@ -42,6 +43,7 @@ export default combineReducers({
   canShare,
   confirmation,
   dragover,
+  dropboxToken,
   editImage,
   editPalette,
   exportCropFrame,

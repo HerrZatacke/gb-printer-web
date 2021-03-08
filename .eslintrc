@@ -11,6 +11,7 @@
   "globals": {
     "ENV": true,
     "VERSION": true,
+    "DROPBOX_APP_KEY": true,
     "BRANCH": true
   },
   "rules": {

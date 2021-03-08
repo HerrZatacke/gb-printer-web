@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import GitSettings from './pages/GitSettings';
+import DropBoxSettings from './pages/DropBoxSettings';
 import GenericSettings from './pages/GenericSettings';
 import ExportSettings from './pages/ExportSettings';
 import DevURLSettings from './pages/DevURLSettings';
@@ -17,6 +18,13 @@ const tabs = {
     headline: 'Git Settings',
   },
 };
+
+if (DROPBOX_APP_KEY) {
+  tabs.dropbox = {
+    Component: DropBoxSettings,
+    headline: 'DropBox Settings',
+  };
+}
 
 if (
   (getEnv().env === 'esp8266') ||

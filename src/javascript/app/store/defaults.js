@@ -151,6 +151,13 @@ const definitions = [
       throttle: '330',
     },
   },
+  {
+    // this key s being programatically removed even on a debug export due to possible stored tokens/passwords
+    key: 'dropboxToken',
+    saveLocally: true,
+    saveExport: [],
+    value: null,
+  },
 ];
 
 const defaults = {};
