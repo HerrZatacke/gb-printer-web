@@ -1,9 +1,12 @@
-import getPrepareFiles from '../../../../tools/download/getPrepareFiles';
-import loadImageTiles from '../../../../tools/loadImageTiles';
-import getImagePalette from '../../../../tools/getImagePalette';
-import { loadFrameData } from '../../../../tools/applyFrame/frameData';
+import getPrepareFiles from '../download/getPrepareFiles';
+import loadImageTiles from '../loadImageTiles';
+import getImagePalette from '../getImagePalette';
+import { loadFrameData } from '../applyFrame/frameData';
+import filterDeleteNew from '../filterDeleteNew';
+import getPrepareGitFiles from '../getPrepareGitFiles';
 
-const getUploadImages = (state, repoContents, addToQueue) => {
+const getUploadImages = (store, repoContents, addToQueue) => {
+  const state = store.getState();
   const exportFileTypes = ['png', 'txt'];
   const exportScaleFactors = [1];
   const prepareFiles = getPrepareFiles({
@@ -12,6 +15,7 @@ const getUploadImages = (state, repoContents, addToQueue) => {
     exportFileTypes,
     exportCropFrame: false,
   });
+  const prepareGitFiles = getPrepareGitFiles(store);
   const missingLocally = [];
 
   const images = state.images.map((image) => ({
@@ -81,10 +85,12 @@ const getUploadImages = (state, repoContents, addToQueue) => {
         )
       )),
   ])
-    .then((files) => ({
-      fileCollection: files.filter(Boolean),
-      missingLocally,
-    }));
+    .then((files) => (
+      prepareGitFiles(files.filter(Boolean))
+    ))
+    .then(({ toUpload, toKeep }) => (
+      filterDeleteNew(repoContents, toUpload, toKeep, missingLocally)
+    ));
 };
 
 export default getUploadImages;

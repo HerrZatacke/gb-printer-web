@@ -1,9 +1,7 @@
 import Queue from 'promise-queue';
 import OctoClient from '../../../../tools/OctoClient';
-import getUploadImages from './getUploadImages';
-import getPrepareGitFiles from './getPrepareGitFiles';
-import filterDeleteNew from './filterDeleteNew';
-import saveLocalStorageItems from './saveLocalStorageItems';
+import getUploadImages from '../../../../tools/getUploadImages';
+import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
 
 let octoClient;
 let addToQueue = () => {};
@@ -36,59 +34,45 @@ const init = (store) => {
 };
 
 
-const middleware = (store) => {
-  const prepareGitFiles = getPrepareGitFiles(store);
-
-  return (action) => {
-    if (action.type === 'GITSTORAGE_SYNC_START') {
-      const state = store.getState();
-
-      octoClient.getRepoContents()
-        .then((repoContents) => {
-          switch (action.payload) {
-            case 'up':
-              return getUploadImages(state, repoContents, addToQueue('GBPrinter'))
-                .then(({ missingLocally, fileCollection }) => (
-                  prepareGitFiles(fileCollection)
-                    .then(({ toUpload, toKeep }) => (
-                      filterDeleteNew(repoContents, toUpload, toKeep, missingLocally)
-                    ))
-                ))
-                .then((changes) => (
-                  octoClient.updateRemoteStore(changes)
-                ));
-            case 'down':
-              return saveLocalStorageItems(repoContents)
-                .then((result) => {
-                  store.dispatch({
-                    type: 'GIT_SETTINGS_IMPORT',
-                    payload: repoContents.settings,
-                  });
-
-                  return result;
+const middleware = (store) => (action) => {
+  if (action.type === 'GITSTORAGE_SYNC_START') {
+    octoClient.getRepoContents()
+      .then((repoContents) => {
+        switch (action.payload) {
+          case 'up':
+            return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
+              .then(octoClient.updateRemoteStore.bind(octoClient));
+          case 'down':
+            return saveLocalStorageItems(repoContents)
+              .then((result) => {
+                store.dispatch({
+                  type: 'GIT_SETTINGS_IMPORT',
+                  payload: repoContents.settings,
                 });
-            default:
-              return Promise.reject(new Error('wrong sync case'));
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          store.dispatch({
-            type: 'ERROR',
-            payload: error.message,
-          });
-          return error.message;
-        })
-        .then((syncResult) => {
-          store.dispatch({
-            type: 'GITSTORAGE_SYNC_DONE',
-            payload: syncResult,
-          });
+
+                return result;
+              });
+          default:
+            return Promise.reject(new Error('wrong sync case'));
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        store.dispatch({
+          type: 'ERROR',
+          payload: error.message,
         });
-    } else if (action.type === 'SET_GIT_STORAGE') {
-      octoClient.setOctokit(action.payload);
-    }
-  };
+        return error.message;
+      })
+      .then((syncResult) => {
+        store.dispatch({
+          type: 'GITSTORAGE_SYNC_DONE',
+          payload: syncResult,
+        });
+      });
+  } else if (action.type === 'SET_GIT_STORAGE') {
+    octoClient.setOctokit(action.payload);
+  }
 };
 
 export {

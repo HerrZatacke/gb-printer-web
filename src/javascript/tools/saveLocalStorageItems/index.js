@@ -1,5 +1,5 @@
-import { load, save } from '../../../../tools/storage';
-import { loadFrameData, saveFrameData } from '../../../../tools/applyFrame/frameData';
+import { load, save } from '../storage';
+import { loadFrameData, saveFrameData } from '../applyFrame/frameData';
 
 const saveLocalStorageItems = ({ images, frames }) => {
 
