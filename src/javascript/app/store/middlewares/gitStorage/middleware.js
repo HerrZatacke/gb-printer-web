@@ -58,7 +58,7 @@ const middleware = (store) => {
                   octoClient.updateRemoteStore(changes)
                 ));
             case 'down':
-              return saveLocalStorageItems(octoClient)(repoContents)
+              return saveLocalStorageItems(repoContents)
                 .then((result) => {
                   store.dispatch({
                     type: 'GIT_SETTINGS_IMPORT',

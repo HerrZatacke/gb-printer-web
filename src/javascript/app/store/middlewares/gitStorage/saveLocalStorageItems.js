@@ -1,25 +1,23 @@
 import { load, save } from '../../../../tools/storage';
 import { loadFrameData, saveFrameData } from '../../../../tools/applyFrame/frameData';
 
-const saveLocalStorageItems = (octoClient) => ({ images, frames }) => {
+const saveLocalStorageItems = ({ images, frames }) => {
 
   const imagesTotal = images.length;
   const framesTotal = frames.length;
 
   return (
     Promise.all([
-      ...images.map((image, imageIndex) => {
-        const hash = image.name.substr(0, 40);
-
+      ...images.map((image, imageIndex) => (
         // check if item exists locally
-        return load(hash, null, true)
+        load(image.hash, null, true)
           .then((tiles) => {
-            // if image exists locally, don't query from Repo
+            // if image exists locally, don't download blob
             if (tiles.length) {
-              return hash;
+              return image.hash;
             }
 
-            return octoClient.getBlob(image.sha, imageIndex, imagesTotal)
+            return image.getBlob(image.sha, imageIndex, imagesTotal)
               .then((blob) => {
 
                 const lineBuffer = blob
@@ -28,20 +26,18 @@ const saveLocalStorageItems = (octoClient) => ({ images, frames }) => {
 
                 return save(lineBuffer);
               });
-          });
-      }),
-      ...frames.map((frame, frameIndex) => {
-        const frameId = frame.name.match(/^[a-z]+[0-9]+/gi)[0];
-
+          })
+      )),
+      ...frames.map((frame, frameIndex) => (
         // check if item exists locally
-        return loadFrameData(frameId)
+        loadFrameData(frame.id)
           .then((frameData) => {
-            // if frame exists locally, don't query from Repo
+            // if frame exists locally, don't download blob
             if (frameData) {
-              return frameId;
+              return frame.id;
             }
 
-            return octoClient.getBlob(frame.sha, frameIndex, framesTotal)
+            return frame.getBlob(frame.sha, frameIndex, framesTotal)
               .then((blob) => {
                 const tiles = JSON.parse(blob, null, 2);
                 const black = Array(32)
@@ -63,10 +59,10 @@ const saveLocalStorageItems = (octoClient) => ({ images, frames }) => {
                     .flat(),
                   ...tiles.lower,
                 ];
-                return saveFrameData(frameId, paddedFrameData);
+                return saveFrameData(frame.id, paddedFrameData);
               });
-          });
-      }),
+          })
+      )),
     ])
   );
 };
