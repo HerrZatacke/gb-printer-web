@@ -1,4 +1,4 @@
-import getGetSettings from '../../../../tools/getGetSettings';
+import getGetSettings from '../getGetSettings';
 
 const extFromType = (type) => {
   switch (type) {
