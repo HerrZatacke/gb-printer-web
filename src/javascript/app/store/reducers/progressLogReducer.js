@@ -1,4 +1,4 @@
-const gitBusyReducer = (value = [], action) => {
+const progressLogReducer = (value = [], action) => {
   switch (action.type) {
     case 'GITSTORAGE_LOG_ACTION':
       return [
@@ -20,4 +20,4 @@ const gitBusyReducer = (value = [], action) => {
   }
 };
 
-export default gitBusyReducer;
+export default progressLogReducer;

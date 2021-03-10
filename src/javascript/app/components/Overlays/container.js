@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  showGitLog: !!state.gitLog,
+  showProgressLog: !!state.progressLog,
   showInfoBox: state.framesMessage === 1,
   showProgressBox: !!state.progress.gif,
   showConfirmation: !!state.confirmation.message,

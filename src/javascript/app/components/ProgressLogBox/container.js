@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  messages: state.gitLog,
+  messages: state.progressLog,
   repoUrl: `https://github.com/${state.gitStorage.owner}/${state.gitStorage.repo}/tree/${state.gitStorage.branch}`,
   repo: state.gitStorage.repo,
   branch: state.gitStorage.branch,

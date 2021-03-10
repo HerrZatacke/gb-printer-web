@@ -6,7 +6,7 @@ import Lightbox from '../Lightbox';
 
 dayjs.extend(duration);
 
-const GitLogBox = ({ messages, confirm, repoUrl, repo, branch }) => {
+const ProgressLogBox = ({ messages, confirm, repoUrl, repo, branch }) => {
   if (!messages.length) {
     return null;
   }
@@ -18,16 +18,16 @@ const GitLogBox = ({ messages, confirm, repoUrl, repo, branch }) => {
 
   return (
     <Lightbox
-      className="git-log"
+      className="progress-log"
       header={`${finished ? '✔️ Update done -' : '⏳ Updating...'} "${repo}/${branch}"`}
       confirm={finished ? confirm : null}
     >
-      <ul className="git-log__messages">
+      <ul className="progress-log__messages">
         {messages.map(({ message, timestamp }, index) => (
           message === '.' ? null : (
             <li
               key={index}
-              className="git-log__message"
+              className="progress-log__message"
               title={dayjs.unix(timestamp).format('HH:mm:ss')}
             >
               {message}
@@ -35,7 +35,7 @@ const GitLogBox = ({ messages, confirm, repoUrl, repo, branch }) => {
           )
         ))}
       </ul>
-      <div className="git-log__duration">
+      <div className="progress-log__duration">
         {`Started at: ${dayjs.unix(timeStart).format('HH:mm:ss')}`}
         <br />
         {`${finished ? 'Finished after' : 'Running for'}: ${dayjs.duration(timeLatest - timeStart, 'seconds').format('HH:mm:ss')}`}
@@ -54,7 +54,7 @@ const GitLogBox = ({ messages, confirm, repoUrl, repo, branch }) => {
   );
 };
 
-GitLogBox.propTypes = {
+ProgressLogBox.propTypes = {
   messages: PropTypes.arrayOf(
     PropTypes.shape({
       timestamp: PropTypes.number.isRequired,
@@ -67,4 +67,4 @@ GitLogBox.propTypes = {
   branch: PropTypes.string.isRequired,
 };
 
-export default GitLogBox;
+export default ProgressLogBox;
