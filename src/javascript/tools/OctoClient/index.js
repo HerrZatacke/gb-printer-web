@@ -71,8 +71,6 @@ class OctoClient extends EventEmitter {
 
     const get = [
       { path: 'images', value: [] },
-      // { path: 'palettes', value: [] },
-      { path: 'png', value: [] },
       { path: 'frames', value: [] },
       { path: 'settings.json', value: {} },
     ];
@@ -109,8 +107,6 @@ class OctoClient extends EventEmitter {
         }))
           .then((received) => ({
             images: this.augmentFileList('images', received.find(({ path }) => path === 'images').value),
-            // palettes: this.augmentFileList('palettes', received.find(({ path }) => path === 'palettes').value),
-            png: this.augmentFileList('png', received.find(({ path }) => path === 'png').value),
             frames: this.augmentFileList('frames', received.find(({ path }) => path === 'frames').value),
             settings: received.find(({ path }) => path === 'settings.json').value,
           }))
@@ -133,7 +129,6 @@ class OctoClient extends EventEmitter {
           return Object.assign(augmentedFile, {
             id: file.name.match(/^[a-z]+[0-9]+/gi)[0],
           });
-        case 'png':
         default:
           return augmentedFile;
       }

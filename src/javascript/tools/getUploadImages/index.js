@@ -7,7 +7,7 @@ import getPrepareGitFiles from '../getPrepareGitFiles';
 
 const getUploadImages = (store, repoContents, addToQueue) => {
   const state = store.getState();
-  const exportFileTypes = ['png', 'txt'];
+  const exportFileTypes = ['txt'];
   const exportScaleFactors = [1];
   const prepareFiles = getPrepareFiles({
     ...state,
@@ -22,7 +22,6 @@ const getUploadImages = (store, repoContents, addToQueue) => {
     ...image,
     inRepo: [
       repoContents.images.find(({ name }) => name.substr(0, 40) === image.hash),
-      repoContents.png.find(({ name }) => name.substr(0, 40) === image.hash),
     ].filter(Boolean),
   }));
   const imagesLength = images.length;
