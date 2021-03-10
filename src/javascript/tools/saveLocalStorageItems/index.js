@@ -17,7 +17,7 @@ const saveLocalStorageItems = ({ images, frames }) => {
               return image.hash;
             }
 
-            return image.getBlob(image.sha, imageIndex, imagesTotal)
+            return image.getFileContent(image.sha, imageIndex, imagesTotal)
               .then((blob) => {
 
                 const lineBuffer = blob
@@ -37,7 +37,7 @@ const saveLocalStorageItems = ({ images, frames }) => {
               return frame.id;
             }
 
-            return frame.getBlob(frame.sha, frameIndex, framesTotal)
+            return frame.getFileContent(frame.sha, frameIndex, framesTotal)
               .then((blob) => {
                 const tiles = JSON.parse(blob, null, 2);
                 const black = Array(32)
