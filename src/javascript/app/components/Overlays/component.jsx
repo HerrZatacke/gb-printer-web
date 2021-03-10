@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import GitLogBox from '../GitLogBox';
+import ProgressLogBox from '../ProgressLogBox';
 import InfoBox from '../InfoBox';
 import ProgressBox from '../ProgressBox';
 import Confirmation from '../Confirmation';
@@ -15,7 +15,7 @@ import FilterForm from '../FilterForm';
 import SortForm from '../SortForm';
 
 const Overlays = ({
-  showGitLog,
+  showProgressLog,
   showInfoBox,
   showProgressBox,
   showConfirmation,
@@ -30,7 +30,7 @@ const Overlays = ({
   showSortForm,
 }) => (
   <>
-    {showGitLog ? <GitLogBox /> : null }
+    {showProgressLog ? <ProgressLogBox /> : null }
     {showInfoBox ? <InfoBox /> : null }
     {showProgressBox ? <ProgressBox /> : null }
     {showConfirmation ? <Confirmation /> : null }
@@ -47,7 +47,7 @@ const Overlays = ({
 );
 
 Overlays.propTypes = {
-  showGitLog: PropTypes.bool.isRequired,
+  showProgressLog: PropTypes.bool.isRequired,
   showInfoBox: PropTypes.bool.isRequired,
   showProgressBox: PropTypes.bool.isRequired,
   showConfirmation: PropTypes.bool.isRequired,
