@@ -117,7 +117,7 @@ class OctoClient extends EventEmitter {
     return files.map((file, index) => {
       const augmentedFile = {
         ...file,
-        getBlob: () => this.getBlob(file.sha, index, files.length),
+        getFileContent: () => this.getFileContent(file.sha, index, files.length),
       };
 
       switch (type) {
@@ -135,7 +135,7 @@ class OctoClient extends EventEmitter {
     });
   }
 
-  getBlob(sha, index, total) {
+  getFileContent(sha, index, total) {
     this.progressTick();
 
     return this.addToQueue(`git.getBlob (${index + 1}/${total}) ${sha}`, this.throttle, () => ( // queue wrapper

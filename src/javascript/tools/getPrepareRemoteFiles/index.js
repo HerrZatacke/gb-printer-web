@@ -22,7 +22,7 @@ const extFromType = (type) => {
   }
 };
 
-const getPrepareGitFiles = (store) => {
+const getPrepareRemoteFiles = (store) => {
   const getSettings = getGetSettings(store);
 
   return (fileCollection) => {
@@ -80,4 +80,4 @@ const getPrepareGitFiles = (store) => {
   };
 };
 
-export default getPrepareGitFiles;
+export default getPrepareRemoteFiles;

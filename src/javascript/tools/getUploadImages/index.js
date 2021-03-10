@@ -3,7 +3,7 @@ import loadImageTiles from '../loadImageTiles';
 import getImagePalette from '../getImagePalette';
 import { loadFrameData } from '../applyFrame/frameData';
 import filterDeleteNew from '../filterDeleteNew';
-import getPrepareGitFiles from '../getPrepareGitFiles';
+import getPrepareRemoteFiles from '../getPrepareRemoteFiles';
 
 const getUploadImages = (store, repoContents, addToQueue) => {
   const state = store.getState();
@@ -15,7 +15,7 @@ const getUploadImages = (store, repoContents, addToQueue) => {
     exportFileTypes,
     exportCropFrame: false,
   });
-  const prepareGitFiles = getPrepareGitFiles(store);
+  const prepareGitFiles = getPrepareRemoteFiles(store);
   const missingLocally = [];
 
   const images = state.images.map((image) => ({
