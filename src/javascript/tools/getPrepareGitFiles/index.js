@@ -52,19 +52,9 @@ const getPrepareGitFiles = (store) => {
       }));
     });
 
-    // ToDo: can the imagelist be created from the existing images in local state?
-    const imagelist = [...toUpload, ...toKeep]
-      .filter(({ destination }) => destination.endsWith('png'))
-      .map(({
-        destination,
-      }) => (`![](${destination} "")`))
-      .join('\n');
-
     const md = [
       '## Files in this repo:',
       ...Object.keys(stats).map((folder) => ` * ${folder}: [${stats[folder]}](/${folder})`),
-      '## Images:',
-      imagelist,
     ]
       .join('\n');
 
