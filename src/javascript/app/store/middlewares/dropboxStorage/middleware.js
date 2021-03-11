@@ -30,7 +30,7 @@ const init = (store) => {
     ))
   );
 
-  dropboxClient = new DropboxClient(dropboxToken);
+  dropboxClient = new DropboxClient(dropboxToken, addToQueue('Dropbox'));
 };
 
 
@@ -41,18 +41,17 @@ const middleware = (store) => (action) => {
         switch (action.payload) {
           case 'up':
             return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
-              .then(dropboxClient.upload.bind(dropboxClient));
+              .then((changes) => dropboxClient.upload(changes));
           case 'down':
-            // return saveLocalStorageItems(repoContents)
-            //   .then((result) => {
-            //     store.dispatch({
-            //       type: 'DROPBOX_SETTINGS_IMPORT',
-            //       payload: repoContents.settings,
-            //     });
-            //
-            //     return result;
-            //   });
-            return Promise.reject(new Error('To be implemented'));
+            return saveLocalStorageItems(repoContents)
+              .then((result) => {
+                store.dispatch({
+                  type: 'DROPBOX_SETTINGS_IMPORT',
+                  payload: repoContents.settings,
+                });
+
+                return result;
+              });
           default:
             return Promise.reject(new Error('wrong sync case'));
         }
