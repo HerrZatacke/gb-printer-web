@@ -11,23 +11,14 @@ class DropboxClient {
 
     window.dbx = this.dbx;
     this.requestError = this.requestError.bind(this);
-    this.logError = this.logError.bind(this);
-    this.log = this.log.bind(this);
   }
 
   requestError(error) {
-    console.log(error);
-    return null;
-  }
+    if (error.error.error_summary.startsWith('expired_access_token')) {
+      this.dbx = null;
+    }
 
-  logError(error) {
-    console.log(error);
-    return null;
-  }
-
-  log(data) {
-    console.log(data);
-    return data;
+    throw new Error(error);
   }
 
   getRemoteContents() {
@@ -35,6 +26,7 @@ class DropboxClient {
 
     return this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
       this.dbx.filesDownload({ path: '/settings.json' })
+        .catch(this.requestError)
     ))
       .catch(() => ({ result: { fileBlob: new Blob([...'{}'], { type: 'text/plain' }) } }))
       .then(({ result: { fileBlob } }) => (
@@ -48,6 +40,7 @@ class DropboxClient {
                   limit: 250,
                   recursive: true,
                 })
+                  .catch(this.requestError)
               ))
                 .catch(() => ({ result: { entries: [], has_more: false } }))
                 .then(({ result: { entries, has_more: hasMore, cursor } }) => (
@@ -75,8 +68,8 @@ class DropboxClient {
       this.dbx.filesListFolderContinue({
         cursor,
       })
+        .catch(this.requestError)
     ))
-      .catch(this.requestError)
       .then(({ result: { entries, has_more: hasMore, cursor: nextCursor } }) => {
         const allEntries = prevEntries.concat(entries);
         return hasMore ? this.getMoreContents(nextCursor, allEntries) : allEntries;
@@ -111,8 +104,8 @@ class DropboxClient {
       // ToDo: try:
       // filesDownloadZip
       this.dbx.filesDownload({ path })
+        .catch(this.requestError)
     ))
-      .catch(this.requestError)
       .then(({ result: { fileBlob } }) => readFileAs(fileBlob, 'text'));
   }
 
@@ -131,19 +124,28 @@ class DropboxClient {
           contents: file.blob,
           mode: 'overwrite',
         })
+          .catch(this.requestError)
       ))
-        .catch(this.requestError)
     )))
       .then(() => (
-        // ToDo: try:
-        // filesDeleteBatch
-        // filesDeleteBatchCheck
-        Promise.all(del.map(({ path }, index) => (
-          this.addToQueue(`dbx.filesDeleteV2 (${index + 1}/${del.length}) ${path}`, this.throttle, () => (
-            this.dbx.filesDeleteV2({ path })
-          ))
+        this.addToQueue(`dbx.filesDeleteBatch ${del.length} files`, this.throttle, () => (
+          this.dbx.filesDeleteBatch({
+            entries: del.map(({ path }) => ({ path })),
+          })
             .catch(this.requestError)
-        )))
+        ))
+          .then(({ result: { async_job_id: jobId } }) => {
+
+            const addBatchCheck = () => this.addToQueue(`dbx.filesDeleteBatchCheck ${jobId}`, 1000, () => (
+              this.dbx.filesDeleteBatchCheck({ async_job_id: jobId })
+                .catch(this.requestError)
+            ))
+              .then(({ result: { '.tag': progress } }) => (
+                progress === 'in_progress' ? addBatchCheck() : true
+              ));
+
+            return addBatchCheck();
+          })
       ));
   }
 }
