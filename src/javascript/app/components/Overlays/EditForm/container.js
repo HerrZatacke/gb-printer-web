@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import applyTagChanges from '../../../tools/applyTagChanges';
-import { missingGreyPalette } from '../../defaults';
+import applyTagChanges from '../../../../tools/applyTagChanges';
+import { missingGreyPalette } from '../../../defaults';
 
 const mapStateToProps = (state) => {
 

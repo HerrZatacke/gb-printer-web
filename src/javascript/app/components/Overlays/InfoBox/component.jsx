@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Lightbox from '../Lightbox';
+import Lightbox from '../../Lightbox';
 
 const InfoBox = ({ message, confirm }) => (
   message ? (

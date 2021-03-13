@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import { dateFormat, dateFormatReadable } from '../../defaults';
-import SVG from '../SVG';
-import Lightbox from '../Lightbox';
-import ImageRender from '../ImageRender';
+import { dateFormat, dateFormatReadable } from '../../../defaults';
+import SVG from '../../SVG';
+import Lightbox from '../../Lightbox';
+import ImageRender from '../../ImageRender';
 
 const LightboxImage = ({
   close,

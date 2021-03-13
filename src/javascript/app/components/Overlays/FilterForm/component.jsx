@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import unique from '../../../tools/unique';
-import Lightbox from '../Lightbox';
+import unique from '../../../../tools/unique';
+import Lightbox from '../../Lightbox';
 import FilterFormTag from './filterFormTag';
-import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB } from '../../../consts/specialTags';
+import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB } from '../../../../consts/specialTags';
 
 const FilterForm = (props) => {
 

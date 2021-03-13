@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import Lightbox from '../Lightbox';
+import Lightbox from '../../Lightbox';
 
 dayjs.extend(duration);
 

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import getRGBNFrames from '../../../tools/getRGBNFrames';
-import getFilteredImages from '../../../tools/getFilteredImages';
+import getRGBNFrames from '../../../../tools/getRGBNFrames';
+import getFilteredImages from '../../../../tools/getFilteredImages';
 
 const mapStateToProps = (state) => {
   const images = getFilteredImages(state);

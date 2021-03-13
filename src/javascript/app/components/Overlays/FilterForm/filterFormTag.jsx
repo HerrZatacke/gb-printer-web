@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import SVG from '../SVG';
+import SVG from '../../SVG';
 
 const FilterFormTag = ({ tagActive, toggleTag, title, icon }) => (
   <li

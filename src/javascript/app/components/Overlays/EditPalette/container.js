@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import getPreviewImages from '../../../tools/getPreviewImages';
+import getPreviewImages from '../../../../tools/getPreviewImages';
 
 const mapStateToProps = (state) => ({
   shortName: state.editPalette.shortName,
