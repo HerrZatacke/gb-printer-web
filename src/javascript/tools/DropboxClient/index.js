@@ -124,8 +124,6 @@ class DropboxClient {
 
   getFileContent(path, index, total) {
     return this.addToQueue(`dbx.filesDownload (${index + 1}/${total}) ${path}`, this.throttle, () => (
-      // ToDo: try:
-      // filesDownloadZip
       this.dbx.filesDownload({ path })
         .catch(this.requestError)
     ))
@@ -133,24 +131,28 @@ class DropboxClient {
   }
 
   upload({ upload = [], del = [] }) {
-    // eslint-disable-next-line no-console
-    console.log({ upload, del });
+    return Promise.all([
+      // Upload updated files
+      !upload.length ? [] : (
+        Promise.all(upload.map((file, index) => (
+          // ToDo: try:
+          // uploadSessionStart
+          // uploadSessionAppendV2
+          // filesUploadSessionFinishBatch
+          this.addToQueue(`dbx.filesUpload (${index + 1}/${upload.length}) ${file.destination}`, this.throttle, () => (
+            this.dbx.filesUpload({
+              path: `/${file.destination}`,
+              contents: file.blob,
+              mode: 'overwrite',
+            })
+              .catch(this.requestError)
+          ))
+            .then(({ result }) => result)
+        )))
+      ),
 
-    return Promise.all(upload.map((file, index) => (
-      // ToDo: try:
-      // uploadSessionStart
-      // uploadSessionAppendV2
-      // filesUploadSessionFinishBatch
-      this.addToQueue(`dbx.filesUpload (${index + 1}/${upload.length}) ${file.destination}`, this.throttle, () => (
-        this.dbx.filesUpload({
-          path: `/${file.destination}`,
-          contents: file.blob,
-          mode: 'overwrite',
-        })
-          .catch(this.requestError)
-      ))
-    )))
-      .then(() => (
+      // Delete unused files
+      !del.length ? [] : (
         this.addToQueue(`dbx.filesDeleteBatch ${del.length} files`, this.throttle, () => (
           this.dbx.filesDeleteBatch({
             entries: del.map(({ path }) => ({ path })),
@@ -159,17 +161,25 @@ class DropboxClient {
         ))
           .then(({ result: { async_job_id: jobId } }) => {
 
-            const addBatchCheck = () => this.addToQueue(`dbx.filesDeleteBatchCheck ${jobId}`, 1000, () => (
+            const addBatchCheck = () => this.addToQueue(`dbx.filesDeleteBatchCheck ${jobId}`, 2000, () => (
               this.dbx.filesDeleteBatchCheck({ async_job_id: jobId })
                 .catch(this.requestError)
             ))
-              .then(({ result: { '.tag': progress } }) => (
-                progress === 'in_progress' ? addBatchCheck() : true
+              .then(({ result: { '.tag': progress, entries } }) => (
+                progress === 'in_progress' ? addBatchCheck() : entries.map(({ metadata }) => metadata)
               ));
 
             return addBatchCheck();
           })
-      ));
+      ),
+    ])
+      .then(([uploaded, deleted]) => {
+        // eslint-disable-next-line no-console
+        console.log({
+          uploaded,
+          deleted,
+        });
+      });
   }
 }
 
