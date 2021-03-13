@@ -1,43 +1,38 @@
-import { Dropbox } from 'dropbox';
 import parseAuthParams from '../../../../tools/parseAuthParams';
 
 const dropboxStorage = (store) => {
-  const tokens = {
-    ...store.getState().dropboxStorage,
-    ...parseAuthParams(),
-  };
-
   let middleware;
 
-  if (tokens.accessToken) {
+  const authParams = parseAuthParams();
+  const { use } = store.getState().dropboxStorage;
+
+  if (authParams.accessToken && use) {
     import(/* webpackChunkName: "dmw" */ './middleware')
       .then(({ default: mw }) => {
-        middleware = mw(store, tokens);
+        middleware = mw(store, { ...authParams, use });
       });
   }
 
   return (next) => (action) => {
     next(action);
 
-    switch (action.type) {
-      case 'DROPBOX_SYNC_START':
-        middleware(action);
+    const storageSettings = store.getState().dropboxStorage;
 
-        break;
-      case 'DROPBOX_START_AUTH': {
-        // ToDo: danymic import
-        const dbx = new Dropbox({
-          clientId: DROPBOX_APP_KEY,
-        });
-        dbx.auth.getAuthenticationUrl(encodeURIComponent(`${window.location.protocol}//${window.location.host}/`))
-          .then((authUrl) => {
-            window.location.replace(authUrl);
-          });
-        break;
+    if (storageSettings.use) {
+      if (
+        action.type === 'DROPBOX_SYNC_START' ||
+        action.type === 'DROPBOX_START_AUTH'
+      ) {
+        if (!middleware) {
+          import(/* webpackChunkName: "dmw" */ './middleware')
+            .then(({ default: mw }) => {
+              middleware = mw(store, storageSettings);
+              middleware(action);
+            });
+        } else {
+          middleware(action);
+        }
       }
-
-      default:
-        break;
     }
   };
 };
