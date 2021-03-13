@@ -3,7 +3,7 @@ import parseAuthParams from '../../../../tools/parseAuthParams';
 
 const dropboxStorage = (store) => {
   const tokens = {
-    ...store.getState().dropboxTokens,
+    ...store.getState().dropboxStorage,
     ...parseAuthParams(),
   };
 

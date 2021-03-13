@@ -1,4 +1,4 @@
-const dropboxTokensReducer = (value = {}, action) => {
+const dropboxStorageReducer = (value = {}, action) => {
   switch (action.type) {
     case 'DROPBOX_LOGOUT':
       return {};
@@ -9,4 +9,4 @@ const dropboxTokensReducer = (value = {}, action) => {
   }
 };
 
-export default dropboxTokensReducer;
+export default dropboxStorageReducer;
