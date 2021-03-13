@@ -83,48 +83,9 @@ const Navigation = (props) => {
           <li className="navigation__entry navigation__entry--buttons">
             <button
               type="button"
-              title={`Synchronize to GitHub\n${props.repoUrl}`}
+              title="Synchronize"
               className="navigation__link navigation__link--icon"
-              onClick={() => {
-                setMobileNavOpen(false);
-                props.startSync('git', 'up');
-              }}
-              disabled={props.syncBusy}
-            >
-              <SVG name="sync" className="svg--180" />
-            </button>
-            <button
-              type="button"
-              title={`Synchronize from GitHub\n${props.repoUrl}`}
-              className="navigation__link navigation__link--icon"
-              onClick={() => {
-                setMobileNavOpen(false);
-                props.startSync('git', 'down');
-              }}
-              disabled={props.syncBusy}
-            >
-              <SVG name="sync" />
-            </button>
-            <button
-              type="button"
-              title="Synchronize to Dropbox"
-              className="navigation__link navigation__link--icon"
-              onClick={() => {
-                setMobileNavOpen(false);
-                props.startSync('dropbox', 'up');
-              }}
-              disabled={props.syncBusy}
-            >
-              <SVG name="sync" className="svg--180" />
-            </button>
-            <button
-              type="button"
-              title="Synchronize from Dropbox"
-              className="navigation__link navigation__link--icon"
-              onClick={() => {
-                setMobileNavOpen(false);
-                props.startSync('dropbox', 'down');
-              }}
+              onClick={props.selectSync}
               disabled={props.syncBusy}
             >
               <SVG name="sync" />
@@ -148,10 +109,9 @@ const Navigation = (props) => {
 
 Navigation.propTypes = {
   importQueueSize: PropTypes.number.isRequired,
-  startSync: PropTypes.func.isRequired,
+  selectSync: PropTypes.func.isRequired,
   useSync: PropTypes.bool.isRequired,
   syncBusy: PropTypes.bool.isRequired,
-  repoUrl: PropTypes.string.isRequired,
 };
 
 Navigation.defaultProps = {};
