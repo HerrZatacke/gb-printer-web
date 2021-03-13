@@ -153,10 +153,10 @@ const definitions = [
   },
   {
     // this key s being programatically removed even on a debug export due to possible stored tokens/passwords
-    key: 'dropboxToken',
+    key: 'dropboxTokens',
     saveLocally: true,
     saveExport: [],
-    value: null,
+    value: {},
   },
 ];
 

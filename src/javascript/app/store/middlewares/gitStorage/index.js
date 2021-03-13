@@ -19,7 +19,7 @@ const gitStorage = (store) => {
     if (use && owner && repo && branch && token) {
       if (
         action.type === 'SET_GIT_STORAGE' ||
-        action.type === 'GITSTORAGE_SYNC_START'
+        action.type === 'STORAGE_SYNC_START'
       ) {
 
         if (!middleware) {

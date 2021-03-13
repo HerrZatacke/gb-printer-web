@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DropBoxSettings = ({ dropboxToken, logout, startAuth, startSync }) => (
+const DropBoxSettings = ({ loggedIn, logout, startAuth, startSync }) => (
   <>
     <div>
       <button
         type="button"
         className="button"
-        disabled={!!dropboxToken}
+        disabled={loggedIn}
         onClick={startAuth}
       >
         Authenticate
@@ -15,7 +15,7 @@ const DropBoxSettings = ({ dropboxToken, logout, startAuth, startSync }) => (
       <button
         type="button"
         className="button"
-        disabled={!dropboxToken}
+        disabled={!loggedIn}
         onClick={logout}
       >
         Logout
@@ -23,7 +23,7 @@ const DropBoxSettings = ({ dropboxToken, logout, startAuth, startSync }) => (
       <button
         type="button"
         className="button"
-        disabled={!dropboxToken}
+        disabled={!loggedIn}
         onClick={() => {
           startSync('up');
         }}
@@ -33,7 +33,7 @@ const DropBoxSettings = ({ dropboxToken, logout, startAuth, startSync }) => (
       <button
         type="button"
         className="button"
-        disabled={!dropboxToken}
+        disabled={!loggedIn}
         onClick={() => {
           startSync('down');
         }}
@@ -48,11 +48,7 @@ DropBoxSettings.propTypes = {
   logout: PropTypes.func.isRequired,
   startSync: PropTypes.func.isRequired,
   startAuth: PropTypes.func.isRequired,
-  dropboxToken: PropTypes.string,
-};
-
-DropBoxSettings.defaultProps = {
-  dropboxToken: null,
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 export default DropBoxSettings;

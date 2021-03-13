@@ -2,15 +2,31 @@ import { Dropbox } from 'dropbox';
 import readFileAs from '../readFileAs';
 
 class DropboxClient {
-  constructor(dropboxToken, addToQueue) {
+  constructor(tokens, addToQueue) {
     this.addToQueue = addToQueue;
     this.throttle = 30; // ToDo: Settings?
+    this.tokens = tokens;
+
+    const { accessToken, accessTokenExpiresAt } = tokens;
+
     this.dbx = new Dropbox({
-      accessToken: dropboxToken,
+      clientId: DROPBOX_APP_KEY,
+      accessToken,
+      accessTokenExpiresAt: new Date(accessTokenExpiresAt),
     });
 
     window.dbx = this.dbx;
     this.requestError = this.requestError.bind(this);
+  }
+
+  checkLoginStatus() {
+    return this.dbx.auth.checkAndRefreshAccessToken()
+      .then(() => {
+        const accessToken = this.dbx.auth.getAccessToken();
+        const accessTokenExpiresAt = this.dbx.auth.getAccessTokenExpiresAt().getTime();
+        const expiresIn = accessTokenExpiresAt - (new Date()).getTime();
+        return accessToken && expiresIn > 1000;
+      });
   }
 
   requestError(error) {
