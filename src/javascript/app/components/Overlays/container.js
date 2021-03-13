@@ -14,6 +14,7 @@ const mapStateToProps = (state) => ({
   showDragOver: !!state.dragover,
   showFilters: !!state.filter.visible,
   showSortForm: !!state.sortOptionsVisible,
+  syncSelect: !!state.syncSelect,
 });
 
 const mapDispatchToProps = () => ({});

@@ -35,6 +35,7 @@ import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
 import syncBusy from './reducers/syncBusyReducer';
+import syncSelect from './reducers/syncSelectReducer';
 import videoParams from './reducers/videoParamsReducer';
 import windowDimensions from './reducers/windowDimensionsReducer';
 
@@ -75,6 +76,7 @@ export default combineReducers({
   socketState,
   socketUrl,
   syncBusy,
+  syncSelect,
   videoParams,
   windowDimensions,
 });
