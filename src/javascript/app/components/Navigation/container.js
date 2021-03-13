@@ -14,17 +14,12 @@ const mapStateToProps = (state) => ({
       state.gitStorage.token
     )
   ),
-  repoUrl: `https://github.com/${state.gitStorage.owner}/${state.gitStorage.repo}/tree/${state.gitStorage.branch}`,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  startSync: (storageType, direction) => {
+  selectSync: () => {
     dispatch({
-      type: 'STORAGE_SYNC_START',
-      payload: {
-        storageType,
-        direction,
-      },
+      type: 'STORAGE_SYNC_SELECT',
     });
   },
 });
