@@ -51,21 +51,29 @@ const App = (props) => {
             <h1 className="app__content-headline">Palettes</h1>
             <Palettes />
           </Route>
-          <Route path="/settings">
-            <h1 className="app__content-headline">Settings</h1>
-            <Settings />
-            <ul className="app__version">
-              <li>{`Web-App version: ${VERSION}`}</li>
-              <li>{`Web-App branch: ${BRANCH}`}</li>
-              <li>{`Printer version: ${env.version}`}</li>
-              <li>{`Max Images: ${env.maximages}`}</li>
-              <li>{`Localforage driver: ${env.localforage}`}</li>
-              <li>{`Environment type: ${env.env}`}</li>
-              <li>{`Compiled Filesystem: ${env.fstype}`}</li>
-              <li>{`Compiled Bootmode: ${env.bootmode}`}</li>
-              <li>{`Compiled for OLED: ${env.oled ? 'yes' : 'no'}`}</li>
-            </ul>
+          <Route exact path="/settings">
+            <Redirect to="/settings/generic" />
           </Route>
+          <Route
+            path="/settings/:tabName"
+            render={({ match: { params: { tabName } } }) => (
+              <>
+                <h1 className="app__content-headline">Settings</h1>
+                <Settings tabName={tabName} />
+                <ul className="app__version">
+                  <li>{`Web-App version: ${VERSION}`}</li>
+                  <li>{`Web-App branch: ${BRANCH}`}</li>
+                  <li>{`Printer version: ${env.version}`}</li>
+                  <li>{`Max Images: ${env.maximages}`}</li>
+                  <li>{`Localforage driver: ${env.localforage}`}</li>
+                  <li>{`Environment type: ${env.env}`}</li>
+                  <li>{`Compiled Filesystem: ${env.fstype}`}</li>
+                  <li>{`Compiled Bootmode: ${env.bootmode}`}</li>
+                  <li>{`Compiled for OLED: ${env.oled ? 'yes' : 'no'}`}</li>
+                </ul>
+              </>
+            )}
+          />
           <Route path="/import">
             <h1 className="app__content-headline">Import</h1>
             <Import />

@@ -23,6 +23,7 @@
 
   &__button {
     @include font;
+    @include font-color;
 
     transition: transform 100ms ease-in-out;
     line-height: 2em;
