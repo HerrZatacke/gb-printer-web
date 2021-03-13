@@ -1,15 +1,18 @@
 import { Dropbox } from 'dropbox';
+import parseAuthParams from '../../../../tools/parseAuthParams';
 
 const dropboxStorage = (store) => {
-  const { dropboxToken } = store.getState();
+  const tokens = {
+    ...store.getState().dropboxTokens,
+    ...parseAuthParams(),
+  };
 
   let middleware;
 
-  if (dropboxToken) {
-    import(/* webpackChunkName: "gmw" */ './middleware')
-      .then(({ init, middleware: mw }) => {
-        init(store);
-        middleware = mw(store);
+  if (tokens.accessToken) {
+    import(/* webpackChunkName: "dmw" */ './middleware')
+      .then(({ default: mw }) => {
+        middleware = mw(store, tokens);
       });
   }
 
@@ -18,9 +21,7 @@ const dropboxStorage = (store) => {
 
     switch (action.type) {
       case 'DROPBOX_SYNC_START':
-        if (dropboxToken) {
-          middleware(action);
-        }
+        middleware(action);
 
         break;
       case 'DROPBOX_START_AUTH': {
@@ -28,7 +29,7 @@ const dropboxStorage = (store) => {
         const dbx = new Dropbox({
           clientId: DROPBOX_APP_KEY,
         });
-        dbx.auth.getAuthenticationUrl(encodeURIComponent(`${window.location.protocol}//${window.location.host}/`), 'dropbox')
+        dbx.auth.getAuthenticationUrl(encodeURIComponent(`${window.location.protocol}//${window.location.host}/`))
           .then((authUrl) => {
             window.location.replace(authUrl);
           });

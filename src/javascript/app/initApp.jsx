@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import getStore from './store';
 import { defaults } from './store/defaults';
-import parseAuthParams from '../tools/parseAuthParams';
 
 const initApp = () => {
   const appRoot = document.getElementById('app');
@@ -18,7 +17,7 @@ const initApp = () => {
     storedSettings = {};
   }
 
-  const initialState = Object.assign(defaults, storedSettings, parseAuthParams());
+  const initialState = Object.assign(defaults, storedSettings);
 
   import(/* webpackChunkName: "app" */ './components/App')
     .then(({ default: App }) => {
