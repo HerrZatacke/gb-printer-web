@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  loggedIn: !!state.dropboxTokens.accessToken,
+  loggedIn: !!state.dropboxStorage.accessToken,
 });
 
 const mapDispatchToProps = (dispatch) => ({
