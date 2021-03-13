@@ -27,6 +27,7 @@ const ProgressLogBox = ({
   }
 
   const isGit = gitMessages.length > 0;
+  const isDropbox = dropboxMessages.length > 0;
 
   const { timestamp: gitTimeStart } = gitMessages[gitMessages.length - 1] || {};
   const { timestamp: gitTimeLatest, message: gitLatestMessage } = gitMessages[0] || {};
@@ -76,6 +77,19 @@ const ProgressLogBox = ({
               rel="noreferrer"
             >
               Open GitHub
+            </a>
+          </>
+        ) : null}
+        {isDropbox ? (
+          <>
+            <br />
+            <a
+              title="Open Dropbox folder"
+              href="https://www.dropbox.com/home/Apps/GameBoyPrinter"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Dropbox folder
             </a>
           </>
         ) : null}
