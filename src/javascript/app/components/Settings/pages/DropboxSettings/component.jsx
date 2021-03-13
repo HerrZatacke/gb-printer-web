@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DropBoxSettings = ({ loggedIn, logout, startAuth, startSync }) => (
+const DropboxSettings = ({ loggedIn, logout, startAuth, startSync }) => (
   <>
     <div>
       <button
@@ -44,11 +44,11 @@ const DropBoxSettings = ({ loggedIn, logout, startAuth, startSync }) => (
   </>
 );
 
-DropBoxSettings.propTypes = {
+DropboxSettings.propTypes = {
   logout: PropTypes.func.isRequired,
   startSync: PropTypes.func.isRequired,
   startAuth: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
 };
 
-export default DropBoxSettings;
+export default DropboxSettings;
