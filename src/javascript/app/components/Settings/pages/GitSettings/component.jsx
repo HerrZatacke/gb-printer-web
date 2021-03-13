@@ -19,7 +19,7 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
       >
         <span
           className="inputgroup__label"
-          title="Hide dates in gallery"
+          title="Use github as storage"
         >
           Use github as storage
         </span>
