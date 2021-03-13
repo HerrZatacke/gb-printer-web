@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import GitSettings from './pages/GitSettings';
-import DropBoxSettings from './pages/DropBoxSettings';
+import DropboxSettings from './pages/DropboxSettings';
 import GenericSettings from './pages/GenericSettings';
 import ExportSettings from './pages/ExportSettings';
 import DevURLSettings from './pages/DevURLSettings';
@@ -22,8 +22,8 @@ const tabs = {
 
 if (DROPBOX_APP_KEY) {
   tabs.dropbox = {
-    Component: DropBoxSettings,
-    headline: 'DropBox Settings',
+    Component: DropboxSettings,
+    headline: 'Dropbox Settings',
   };
 }
 
