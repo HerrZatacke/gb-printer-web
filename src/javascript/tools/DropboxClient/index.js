@@ -29,6 +29,13 @@ class DropboxClient {
       });
   }
 
+  startAuth() {
+    this.dbx.auth.getAuthenticationUrl(encodeURIComponent(`${window.location.protocol}//${window.location.host}/`))
+      .then((authUrl) => {
+        window.location.replace(authUrl);
+      });
+  }
+
   requestError(error) {
     if (error.error.error_summary.startsWith('expired_access_token')) {
       this.dbx = null;

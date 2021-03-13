@@ -35,7 +35,7 @@ const middleware = (store, tokens) => {
     .then((loggedIn) => {
       if (loggedIn) {
         store.dispatch({
-          type: 'DROPBOX_SET_TOKENS',
+          type: 'SET_DROPBOX_STORAGE',
           payload: tokens,
         });
       } else {
@@ -81,6 +81,8 @@ const middleware = (store, tokens) => {
             payload: syncResult,
           });
         });
+    } else if (action.type === 'DROPBOX_START_AUTH') {
+      dropboxClient.startAuth();
     }
   };
 };
