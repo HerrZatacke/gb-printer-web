@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import ImageRender from '../ImageRender';
-import EditImageTabs from '../EditImageTabs';
-import Lightbox from '../Lightbox';
-import modifyTagChanges from '../../../tools/modifyTagChanges';
+import ImageRender from '../../ImageRender';
+import EditImageTabs from '../../EditImageTabs';
+import Lightbox from '../../Lightbox';
+import modifyTagChanges from '../../../../tools/modifyTagChanges';
 
 const willUpdate = (batch) => (
   batch ? (

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Lightbox from '../Lightbox/component';
-import SVG from '../SVG';
-import FrameSelect from '../FrameSelect';
-import PaletteSelect from '../PaletteSelect';
-import Input from '../Input';
+import Lightbox from '../../Lightbox/component';
+import SVG from '../../SVG';
+import FrameSelect from '../../FrameSelect';
+import PaletteSelect from '../../PaletteSelect';
+import Input from '../../Input';
 
 const VideoParamsForm = (props) => {
 

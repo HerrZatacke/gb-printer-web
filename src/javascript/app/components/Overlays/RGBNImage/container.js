@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import getRGBNFrames from '../../../tools/getRGBNFrames';
+import getRGBNFrames from '../../../../tools/getRGBNFrames';
 
 const mapStateToProps = (state) => ({
   hashes: {
