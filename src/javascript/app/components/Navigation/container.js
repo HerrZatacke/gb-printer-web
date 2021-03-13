@@ -2,23 +2,29 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   importQueueSize: state.importQueueSize,
-  gitBusy: state.gitBusy,
-  useGit: !!(
-    state.gitStorage.use &&
-    state.gitStorage.owner &&
-    state.gitStorage.repo &&
-    state.gitStorage.branch &&
-    state.gitStorage.throttle &&
-    state.gitStorage.token
+  syncBusy: state.syncBusy,
+  useSync: !!(
+    state.dropboxStorage.use ||
+    (
+      state.gitStorage.use &&
+      state.gitStorage.owner &&
+      state.gitStorage.repo &&
+      state.gitStorage.branch &&
+      state.gitStorage.throttle &&
+      state.gitStorage.token
+    )
   ),
   repoUrl: `https://github.com/${state.gitStorage.owner}/${state.gitStorage.repo}/tree/${state.gitStorage.branch}`,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  startSync: (direction) => {
+  startSync: (storageType, direction) => {
     dispatch({
-      type: 'GITSTORAGE_SYNC_START',
-      payload: direction,
+      type: 'STORAGE_SYNC_START',
+      payload: {
+        storageType,
+        direction,
+      },
     });
   },
 });

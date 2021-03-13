@@ -8,18 +8,6 @@ const progressLogReducer = (value = { git: [], dropbox: [] }, action) => {
           ...value.git,
         ],
       };
-    case 'GITSTORAGE_SYNC_DONE':
-      return {
-        ...value,
-        git: [
-          {
-            timestamp: (new Date()).getTime() / 1000,
-            message: '.',
-          },
-          ...value.git,
-        ],
-      };
-
     case 'DROPBOX_LOG_ACTION':
       return {
         ...value,
@@ -28,17 +16,19 @@ const progressLogReducer = (value = { git: [], dropbox: [] }, action) => {
           ...value.dropbox,
         ],
       };
-    case 'DROPBOX_SYNC_DONE':
+
+    case 'STORAGE_SYNC_DONE':
       return {
         ...value,
-        dropbox: [
+        [action.payload.storageType]: [
           {
             timestamp: (new Date()).getTime() / 1000,
             message: '.',
           },
-          ...value.dropbox,
+          ...value[action.payload.storageType],
         ],
       };
+
     case 'LOG_CLEAR':
       return {
         git: [],

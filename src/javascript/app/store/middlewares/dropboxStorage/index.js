@@ -20,8 +20,11 @@ const dropboxStorage = (store) => {
 
     if (storageSettings.use) {
       if (
-        action.type === 'DROPBOX_SYNC_START' ||
-        action.type === 'DROPBOX_START_AUTH'
+        action.type === 'DROPBOX_START_AUTH' ||
+        (
+          action.type === 'STORAGE_SYNC_START' &&
+          action.payload.storageType === 'dropbox'
+        )
       ) {
         if (!middleware) {
           import(/* webpackChunkName: "dmw" */ './middleware')
