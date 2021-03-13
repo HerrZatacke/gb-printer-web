@@ -135,10 +135,6 @@ class DropboxClient {
       // Upload updated files
       !upload.length ? [] : (
         Promise.all(upload.map((file, index) => (
-          // ToDo: try:
-          // uploadSessionStart
-          // uploadSessionAppendV2
-          // filesUploadSessionFinishBatch
           this.addToQueue(`dbx.filesUpload (${index + 1}/${upload.length}) ${file.destination}`, this.throttle, () => (
             this.dbx.filesUpload({
               path: `/${file.destination}`,
