@@ -5,7 +5,11 @@ import Input from '../../../Input';
 
 const getSettings = (setWifiConfig, setStatus) => {
   setStatus('loading');
-  fetch('/wificonfig/get')
+
+  const controller = new AbortController();
+  const signal = controller.signal;
+
+  fetch('/wificonfig/get', { signal })
     .then((res) => res.json())
     .then((wifiConfig) => {
 
@@ -20,9 +24,17 @@ const getSettings = (setWifiConfig, setStatus) => {
       setWifiConfig(wifiConfig);
     })
     .catch(() => {
+      if (signal.aborted) {
+        return;
+      }
+
       setStatus('error');
       setWifiConfig(null);
     });
+
+  return () => {
+    controller.abort();
+  };
 };
 
 const saveSettings = (setWifiConfig, setStatus, wifiConfig) => {
@@ -71,9 +83,9 @@ const WiFiSettings = () => {
   const [wifiConfig, setWifiConfig] = useState(null);
   const [status, setStatus] = useState('loading');
 
-  useEffect(() => {
-    getSettings(setWifiConfig, setStatus);
-  }, [setWifiConfig, setStatus]);
+  useEffect(() => (
+    getSettings(setWifiConfig, setStatus)
+  ), [setWifiConfig, setStatus]);
 
   if (status === 'loading' || !wifiConfig) {
     return <div className="wifi-settings--loading" />;
