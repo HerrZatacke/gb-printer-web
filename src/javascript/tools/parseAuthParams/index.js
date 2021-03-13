@@ -5,7 +5,7 @@ const parseAuthParams = () => {
   const dropboxToken = searchParams.get('access_token');
 
   if (dropboxToken) {
-    window.location.replace('#/settings');
+    window.location.replace('#/settings/dropbox');
     return { dropboxToken };
   }
 
