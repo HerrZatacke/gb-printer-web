@@ -35,10 +35,13 @@ const init = (store) => {
 
 
 const middleware = (store) => (action) => {
-  if (action.type === 'GITSTORAGE_SYNC_START') {
+  if (
+    action.type === 'STORAGE_SYNC_START' &&
+    action.payload.storageType === 'git'
+  ) {
     octoClient.getRepoContents()
       .then((repoContents) => {
-        switch (action.payload) {
+        switch (action.payload.direction) {
           case 'up':
             return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
               .then(octoClient.updateRemoteStore.bind(octoClient));
@@ -53,7 +56,7 @@ const middleware = (store) => (action) => {
                 return result;
               });
           default:
-            return Promise.reject(new Error('wrong sync case'));
+            return Promise.reject(new Error('github sync: wrong sync case'));
         }
       })
       .catch((error) => {
@@ -66,8 +69,11 @@ const middleware = (store) => (action) => {
       })
       .then((syncResult) => {
         store.dispatch({
-          type: 'GITSTORAGE_SYNC_DONE',
-          payload: syncResult,
+          type: 'STORAGE_SYNC_DONE',
+          payload: {
+            syncResult,
+            storageType: 'git',
+          },
         });
       });
   } else if (action.type === 'SET_GIT_STORAGE') {

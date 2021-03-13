@@ -13,7 +13,6 @@ import filter from './reducers/filtersReducer';
 import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
-import gitBusy from './reducers/gitBusyReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
@@ -35,6 +34,7 @@ import sortBy from './reducers/sortByReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
+import syncBusy from './reducers/syncBusyReducer';
 import videoParams from './reducers/videoParamsReducer';
 import windowDimensions from './reducers/windowDimensionsReducer';
 
@@ -53,7 +53,6 @@ export default combineReducers({
   frames,
   framesMessage,
   galleryView,
-  gitBusy,
   gitStorage,
   hideDates,
   images,
@@ -75,6 +74,7 @@ export default combineReducers({
   sortOptionsVisible,
   socketState,
   socketUrl,
+  syncBusy,
   videoParams,
   windowDimensions,
 });

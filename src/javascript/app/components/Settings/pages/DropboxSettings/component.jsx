@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
 
-const DropboxSettings = ({ use, loggedIn, logout, startAuth, startSync, setDropboxStorage }) => (
+const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage }) => (
   <>
     <label
       className={
@@ -54,26 +54,6 @@ const DropboxSettings = ({ use, loggedIn, logout, startAuth, startSync, setDropb
             >
               Logout
             </button>
-            <button
-              type="button"
-              className="button"
-              disabled={!loggedIn}
-              onClick={() => {
-                startSync('up');
-              }}
-            >
-              Sync to Dropbox
-            </button>
-            <button
-              type="button"
-              className="button"
-              disabled={!loggedIn}
-              onClick={() => {
-                startSync('down');
-              }}
-            >
-              Sync from Dropbox
-            </button>
           </div>
         </>
       )
@@ -83,7 +63,6 @@ const DropboxSettings = ({ use, loggedIn, logout, startAuth, startSync, setDropb
 
 DropboxSettings.propTypes = {
   logout: PropTypes.func.isRequired,
-  startSync: PropTypes.func.isRequired,
   startAuth: PropTypes.func.isRequired,
   setDropboxStorage: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,

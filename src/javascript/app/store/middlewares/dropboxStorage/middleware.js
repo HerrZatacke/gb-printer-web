@@ -46,10 +46,13 @@ const middleware = (store, tokens) => {
     });
 
   return (action) => {
-    if (action.type === 'DROPBOX_SYNC_START') {
+    if (
+      action.type === 'STORAGE_SYNC_START' &&
+      action.payload.storageType === 'dropbox'
+    ) {
       dropboxClient.getRemoteContents()
         .then((repoContents) => {
-          switch (action.payload) {
+          switch (action.payload.direction) {
             case 'up':
               return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
                 .then((changes) => dropboxClient.upload(changes));
@@ -64,7 +67,7 @@ const middleware = (store, tokens) => {
                   return result;
                 });
             default:
-              return Promise.reject(new Error('wrong sync case'));
+              return Promise.reject(new Error('dropbox sync: wrong sync case'));
           }
         })
         .catch((error) => {
@@ -77,8 +80,11 @@ const middleware = (store, tokens) => {
         })
         .then((syncResult) => {
           store.dispatch({
-            type: 'DROPBOX_SYNC_DONE',
-            payload: syncResult,
+            type: 'STORAGE_SYNC_DONE',
+            payload: {
+              syncResult,
+              storageType: 'dropbox',
+            },
           });
         });
     } else if (action.type === 'DROPBOX_START_AUTH') {

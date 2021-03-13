@@ -79,7 +79,7 @@ const Navigation = (props) => {
             Settings
           </NavLink>
         </li>
-        { props.useGit ? (
+        { props.useSync ? (
           <li className="navigation__entry navigation__entry--buttons">
             <button
               type="button"
@@ -87,9 +87,9 @@ const Navigation = (props) => {
               className="navigation__link navigation__link--icon"
               onClick={() => {
                 setMobileNavOpen(false);
-                props.startSync('up');
+                props.startSync('git', 'up');
               }}
-              disabled={props.gitBusy}
+              disabled={props.syncBusy}
             >
               <SVG name="sync" className="svg--180" />
             </button>
@@ -99,9 +99,33 @@ const Navigation = (props) => {
               className="navigation__link navigation__link--icon"
               onClick={() => {
                 setMobileNavOpen(false);
-                props.startSync('down');
+                props.startSync('git', 'down');
               }}
-              disabled={props.gitBusy}
+              disabled={props.syncBusy}
+            >
+              <SVG name="sync" />
+            </button>
+            <button
+              type="button"
+              title="Synchronize to Dropbox"
+              className="navigation__link navigation__link--icon"
+              onClick={() => {
+                setMobileNavOpen(false);
+                props.startSync('dropbox', 'up');
+              }}
+              disabled={props.syncBusy}
+            >
+              <SVG name="sync" className="svg--180" />
+            </button>
+            <button
+              type="button"
+              title="Synchronize from Dropbox"
+              className="navigation__link navigation__link--icon"
+              onClick={() => {
+                setMobileNavOpen(false);
+                props.startSync('dropbox', 'down');
+              }}
+              disabled={props.syncBusy}
             >
               <SVG name="sync" />
             </button>
@@ -125,12 +149,11 @@ const Navigation = (props) => {
 Navigation.propTypes = {
   importQueueSize: PropTypes.number.isRequired,
   startSync: PropTypes.func.isRequired,
-  useGit: PropTypes.bool.isRequired,
-  gitBusy: PropTypes.bool.isRequired,
+  useSync: PropTypes.bool.isRequired,
+  syncBusy: PropTypes.bool.isRequired,
   repoUrl: PropTypes.string.isRequired,
 };
 
-Navigation.defaultProps = {
-};
+Navigation.defaultProps = {};
 
 export default Navigation;
