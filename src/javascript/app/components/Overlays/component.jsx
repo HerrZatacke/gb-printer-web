@@ -13,6 +13,7 @@ import RGBNImage from './RGBNImage';
 import DragOver from './DragOver';
 import FilterForm from './FilterForm';
 import SortForm from './SortForm';
+import SyncSelect from './SyncSelect';
 
 const Overlays = ({
   showProgressLog,
@@ -28,6 +29,7 @@ const Overlays = ({
   showDragOver,
   showFilters,
   showSortForm,
+  syncSelect,
 }) => (
   <>
     {showProgressLog ? <ProgressLogBox /> : null }
@@ -43,6 +45,7 @@ const Overlays = ({
     {showDragOver ? <DragOver /> : null }
     {showFilters ? <FilterForm /> : null }
     {showSortForm ? <SortForm /> : null }
+    {syncSelect ? <SyncSelect /> : null }
   </>
 );
 
@@ -60,6 +63,7 @@ Overlays.propTypes = {
   showDragOver: PropTypes.bool.isRequired,
   showFilters: PropTypes.bool.isRequired,
   showSortForm: PropTypes.bool.isRequired,
+  syncSelect: PropTypes.bool.isRequired,
 };
 
 Overlays.defaultProps = {};
