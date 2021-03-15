@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   dumpCount: state.printerData.dumps ? state.printerData.dumps.length : 0,
+  printerUrl: state.printerUrl ? `${state.printerUrl}#simple` : null,
 });
 
 const mapDispatchToProps = (dispatch) => ({

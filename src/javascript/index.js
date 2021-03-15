@@ -3,6 +3,28 @@ import isTouchDevice from './tools/isTouchDevice';
 import { loadEnv } from './tools/getEnv';
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  if (window.location.hash === '#simple') {
+    const targetWindow = window.opener || window.parent;
+
+    if (targetWindow) {
+      const button = document.createElement('button');
+      button.innerText = 'Pronter';
+      button.classList.add('button');
+      button.addEventListener('click', () => {
+
+        import(/* webpackChunkName: "dmy" */ './app/components/Import/dummy')
+          .then(({ default: dummyContent }) => {
+            targetWindow.postMessage({ remotePrinter: dummyContent.join('\n') }, '*');
+          });
+
+      });
+      document.body.appendChild(button);
+    }
+
+    return;
+  }
+
   loadEnv()
     .then(() => {
       if (isTouchDevice()) {
