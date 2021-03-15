@@ -70,14 +70,6 @@ const middleware = (store, tokens) => {
               return Promise.reject(new Error('dropbox sync: wrong sync case'));
           }
         })
-        .catch((error) => {
-          console.error(error);
-          store.dispatch({
-            type: 'ERROR',
-            payload: error.message,
-          });
-          return error.message;
-        })
         .then((syncResult) => {
           store.dispatch({
             type: 'STORAGE_SYNC_DONE',
@@ -85,6 +77,13 @@ const middleware = (store, tokens) => {
               syncResult,
               storageType: 'dropbox',
             },
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          store.dispatch({
+            type: 'ERROR',
+            payload: error.message,
           });
         });
     } else if (action.type === 'DROPBOX_START_AUTH') {

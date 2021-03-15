@@ -59,14 +59,6 @@ const middleware = (store) => (action) => {
             return Promise.reject(new Error('github sync: wrong sync case'));
         }
       })
-      .catch((error) => {
-        console.error(error);
-        store.dispatch({
-          type: 'ERROR',
-          payload: error.message,
-        });
-        return error.message;
-      })
       .then((syncResult) => {
         store.dispatch({
           type: 'STORAGE_SYNC_DONE',
@@ -74,6 +66,13 @@ const middleware = (store) => (action) => {
             syncResult,
             storageType: 'git',
           },
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        store.dispatch({
+          type: 'ERROR',
+          payload: error.message,
         });
       });
   } else if (action.type === 'SET_GIT_STORAGE') {
