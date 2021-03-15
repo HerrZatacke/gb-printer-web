@@ -20,6 +20,8 @@ const cleanState = (dirtyState) => {
   const printerUrl = cleanUrl(dirtyState.printerUrl, 'http');
   let framesMessage = dirtyState.framesMessage;
 
+  const activePalette = palettesShorts.includes(dirtyState.activePalette) ? dirtyState.activePalette : 'bw';
+
   const images = dirtyState.images
     .map((image) => {
 
@@ -73,6 +75,7 @@ const cleanState = (dirtyState) => {
     socketUrl,
     printerUrl,
     framesMessage,
+    activePalette,
   };
 };
 

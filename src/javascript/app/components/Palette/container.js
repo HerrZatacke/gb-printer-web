@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch, { shortName }) => ({
   deletePalette: () => {
     dispatch({
       type: 'PALETTE_DELETE',
-      payload: shortName,
+      payload: { shortName },
     });
   },
   editPalette: () => {

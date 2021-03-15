@@ -6,6 +6,8 @@ const activePaletteReducer = (value = 'cybl', action) => {
       return action.payload;
     case 'GLOBAL_UPDATE':
       return updateIfDefined(action.payload.activePalette, value);
+    case 'PALETTE_DELETE':
+      return action.payload.newSelectedPalette || value;
     default:
       return value;
   }
