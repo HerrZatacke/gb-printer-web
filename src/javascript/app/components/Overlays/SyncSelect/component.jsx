@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import Lightbox from '../../Lightbox';
 import SVG from '../../SVG';
 
-const SyncSelect = ({ startSync, repoUrl }) => (
+const SyncSelect = ({ startSync, cancelSync, repoUrl, dropboxActive, gitActive }) => (
   <Lightbox
     className="sync-select"
-    confirm={() => startSync()}
+    deny={cancelSync}
     header="Sync options"
   >
     <ul className="sync-select__list">
       <li className="sync-select__option">
         <button
           type="button"
+          disabled={!gitActive}
           className="sync-select__button button"
           title={`Synchronize to GitHub\n${repoUrl}`}
           onClick={() => {
@@ -28,6 +29,7 @@ const SyncSelect = ({ startSync, repoUrl }) => (
       <li className="sync-select__option">
         <button
           type="button"
+          disabled={!gitActive}
           className="sync-select__button button"
           title={`Synchronize from GitHub\n${repoUrl}`}
           onClick={() => {
@@ -43,6 +45,7 @@ const SyncSelect = ({ startSync, repoUrl }) => (
       <li className="sync-select__option">
         <button
           type="button"
+          disabled={!dropboxActive}
           className="sync-select__button button"
           title="Synchronize to Dropbox"
           onClick={() => {
@@ -58,6 +61,7 @@ const SyncSelect = ({ startSync, repoUrl }) => (
       <li className="sync-select__option">
         <button
           type="button"
+          disabled={!dropboxActive}
           className="sync-select__button button"
           title="Synchronize from Dropbox"
           onClick={() => {
@@ -76,7 +80,10 @@ const SyncSelect = ({ startSync, repoUrl }) => (
 
 SyncSelect.propTypes = {
   startSync: PropTypes.func.isRequired,
+  cancelSync: PropTypes.func.isRequired,
   repoUrl: PropTypes.string.isRequired,
+  dropboxActive: PropTypes.bool.isRequired,
+  gitActive: PropTypes.bool.isRequired,
 };
 
 SyncSelect.defaultProps = {};

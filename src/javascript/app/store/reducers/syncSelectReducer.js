@@ -4,6 +4,7 @@ const syncSelectReducer = (value = false, action) => {
       return true;
     case 'STORAGE_SYNC_START':
     case 'STORAGE_SYNC_DONE':
+    case 'STORAGE_SYNC_CANCEL':
       return false;
     default:
       return value;

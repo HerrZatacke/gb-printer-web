@@ -3,7 +3,7 @@ import readFileAs from '../readFileAs';
 
 class DropboxClient {
   constructor(tokens, addToQueue) {
-    this.addToQueue = addToQueue;
+    this.queueCallback = addToQueue;
     this.throttle = 30; // ToDo: Settings?
     this.tokens = tokens;
 
@@ -19,14 +19,24 @@ class DropboxClient {
     this.requestError = this.requestError.bind(this);
   }
 
+  addToQueue(...args) {
+    if (!this.dbx.auth.getAccessToken()) {
+      return Promise.reject();
+    }
+
+    return this.queueCallback(...args);
+  }
+
   checkLoginStatus() {
     return this.dbx.auth.checkAndRefreshAccessToken()
+      .catch(this.requestError)
       .then(() => {
         const accessToken = this.dbx.auth.getAccessToken();
         const accessTokenExpiresAt = this.dbx.auth.getAccessTokenExpiresAt().getTime();
         const expiresIn = accessTokenExpiresAt - (new Date()).getTime();
         return accessToken && expiresIn > 1000;
-      });
+      })
+      .catch(() => false);
   }
 
   startAuth() {
@@ -38,7 +48,8 @@ class DropboxClient {
 
   requestError(error) {
     if (error.error.error_summary.startsWith('expired_access_token')) {
-      this.dbx = null;
+      this.dbx.auth.setAccessTokenExpiresAt(new Date(0));
+      this.dbx.auth.setAccessToken(null);
     }
 
     throw new Error(error);
@@ -47,43 +58,50 @@ class DropboxClient {
   getRemoteContents() {
     const get = ['images', 'frames'];
 
-    return this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
-      this.dbx.filesDownload({ path: '/settings.json' })
-        .catch(this.requestError)
-    ))
-      .catch(() => ({ result: { fileBlob: new Blob([...'{}'], { type: 'text/plain' }) } }))
-      .then(({ result: { fileBlob } }) => (
-        readFileAs(fileBlob, 'text')
-          .then((settingsText) => JSON.parse(settingsText))
-          .then((settings) => (
-            Promise.all(get.map((folderPath) => (
-              this.addToQueue(`dbx.filesListFolder /${folderPath}`, this.throttle, () => (
-                this.dbx.filesListFolder({
-                  path: `/${folderPath}`,
-                  limit: 250,
-                  recursive: true,
-                })
-                  .catch(this.requestError)
-              ))
-                .catch(() => ({ result: { entries: [], has_more: false } }))
-                .then(({ result: { entries, has_more: hasMore, cursor } }) => (
-                  (
-                    hasMore ?
-                      this.getMoreContents(cursor, entries) :
-                      Promise.resolve(entries)
-                  )
-                    .then((allEntries) => (
-                      allEntries.filter(({ '.tag': tag }) => tag === 'file')
+    return this.checkLoginStatus()
+      .then((loggedIn) => {
+        if (!loggedIn) {
+          throw new Error('not logged in');
+        }
+
+        return this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
+          this.dbx.filesDownload({ path: '/settings.json' })
+            .catch(this.requestError)
+        ))
+          .catch(() => ({ result: { fileBlob: new Blob([...'{}'], { type: 'text/plain' }) } }))
+          .then(({ result: { fileBlob } }) => (
+            readFileAs(fileBlob, 'text')
+              .then((settingsText) => JSON.parse(settingsText))
+              .then((settings) => (
+                Promise.all(get.map((folderPath) => (
+                  this.addToQueue(`dbx.filesListFolder /${folderPath}`, this.throttle, () => (
+                    this.dbx.filesListFolder({
+                      path: `/${folderPath}`,
+                      limit: 250,
+                      recursive: true,
+                    })
+                      .catch(this.requestError)
+                  ))
+                    .catch(() => ({ result: { entries: [], has_more: false } }))
+                    .then(({ result: { entries, has_more: hasMore, cursor } }) => (
+                      (
+                        hasMore ?
+                          this.getMoreContents(cursor, entries) :
+                          Promise.resolve(entries)
+                      )
+                        .then((allEntries) => (
+                          allEntries.filter(({ '.tag': tag }) => tag === 'file')
+                        ))
                     ))
-                ))
-            )))
-              .then(([images, frames]) => ({
-                images: this.augmentFileList('images', images),
-                frames: this.augmentFileList('frames', frames),
-                settings,
-              }))
-          ))
-      ));
+                )))
+                  .then(([images, frames]) => ({
+                    images: this.augmentFileList('images', images),
+                    frames: this.augmentFileList('frames', frames),
+                    settings,
+                  }))
+              ))
+          ));
+      });
   }
 
   getMoreContents(cursor, prevEntries) {
