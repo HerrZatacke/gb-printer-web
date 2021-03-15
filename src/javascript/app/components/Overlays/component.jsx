@@ -1,21 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import GitLogBox from '../GitLogBox';
-import InfoBox from '../InfoBox';
-import ProgressBox from '../ProgressBox';
-import Confirmation from '../Confirmation';
-import EditForm from '../EditForm';
-import EditPalette from '../EditPalette';
-import VideoParamsForm from '../VideoParamsForm';
-import LiveImage from '../LiveImage';
-import LightboxImage from '../LightboxImage';
-import RGBNImage from '../RGBNImage';
-import DragOver from '../DragOver';
-import FilterForm from '../FilterForm';
-import SortForm from '../SortForm';
+import ProgressLogBox from './ProgressLogBox';
+import InfoBox from './InfoBox';
+import ProgressBox from './ProgressBox';
+import Confirmation from './Confirmation';
+import EditForm from './EditForm';
+import EditPalette from './EditPalette';
+import VideoParamsForm from './VideoParamsForm';
+import LiveImage from './LiveImage';
+import LightboxImage from './LightboxImage';
+import RGBNImage from './RGBNImage';
+import DragOver from './DragOver';
+import FilterForm from './FilterForm';
+import SortForm from './SortForm';
+import SyncSelect from './SyncSelect';
 
 const Overlays = ({
-  showGitLog,
+  showProgressLog,
   showInfoBox,
   showProgressBox,
   showConfirmation,
@@ -28,9 +29,10 @@ const Overlays = ({
   showDragOver,
   showFilters,
   showSortForm,
+  syncSelect,
 }) => (
   <>
-    {showGitLog ? <GitLogBox /> : null }
+    {showProgressLog ? <ProgressLogBox /> : null }
     {showInfoBox ? <InfoBox /> : null }
     {showProgressBox ? <ProgressBox /> : null }
     {showConfirmation ? <Confirmation /> : null }
@@ -43,11 +45,12 @@ const Overlays = ({
     {showDragOver ? <DragOver /> : null }
     {showFilters ? <FilterForm /> : null }
     {showSortForm ? <SortForm /> : null }
+    {syncSelect ? <SyncSelect /> : null }
   </>
 );
 
 Overlays.propTypes = {
-  showGitLog: PropTypes.bool.isRequired,
+  showProgressLog: PropTypes.bool.isRequired,
   showInfoBox: PropTypes.bool.isRequired,
   showProgressBox: PropTypes.bool.isRequired,
   showConfirmation: PropTypes.bool.isRequired,
@@ -60,6 +63,7 @@ Overlays.propTypes = {
   showDragOver: PropTypes.bool.isRequired,
   showFilters: PropTypes.bool.isRequired,
   showSortForm: PropTypes.bool.isRequired,
+  syncSelect: PropTypes.bool.isRequired,
 };
 
 Overlays.defaultProps = {};

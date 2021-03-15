@@ -1,17 +1,36 @@
-const proxy = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const conf = require('../../config');
+
+const mockResponse = {
+  mdns: 'mockprinter',
+  networks: [
+    {
+      delete: false,
+      ssid: 'mocknetwork',
+    },
+  ],
+  ap: {
+    ssid: 'mockprinter',
+  },
+};
 
 const initWifiProxy = (app) => {
   if (!conf || !conf.wifiproxy) {
     return;
   }
 
-  const wifiProxy = proxy('/wificonfig', {
+  const wifiProxy = createProxyMiddleware({
     target: conf.wifiproxy,
     changeOrigin: true,
+    onError: (error, req, res) => {
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+      });
+      res.end(JSON.stringify(mockResponse));
+    },
   });
 
-  app.use(wifiProxy);
+  app.use('/wificonfig', wifiProxy);
 };
 
 module.exports = initWifiProxy;

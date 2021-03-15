@@ -23,6 +23,11 @@
   }
 
   &__tabs-button {
+    @include font;
+
+    display: block;
+    text-decoration: none;
+    text-align: center;
     width: 100%;
     margin: 0;
     padding-top: 20px;

@@ -16,7 +16,7 @@ const ImageRender = ({
   const [tiles, setTiles] = useState(null);
 
   useEffect(() => {
-    setTiles(null);
+    // setTiles(null); // no need to clear before update?
     loadImageTiles({ images })({ hash, frame, hashes })
       .then((loadedTiles) => {
         reportTileCount(loadedTiles.length);

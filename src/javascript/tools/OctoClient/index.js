@@ -71,8 +71,6 @@ class OctoClient extends EventEmitter {
 
     const get = [
       { path: 'images', value: [] },
-      { path: 'palettes', value: [] },
-      { path: 'png', value: [] },
       { path: 'frames', value: [] },
       { path: 'settings.json', value: {} },
     ];
@@ -108,16 +106,36 @@ class OctoClient extends EventEmitter {
 
         }))
           .then((received) => ({
-            images: received.find(({ path }) => path === 'images').value,
-            palettes: received.find(({ path }) => path === 'palettes').value,
-            png: received.find(({ path }) => path === 'png').value,
-            frames: received.find(({ path }) => path === 'frames').value,
+            images: this.augmentFileList('images', received.find(({ path }) => path === 'images').value),
+            frames: this.augmentFileList('frames', received.find(({ path }) => path === 'frames').value),
             settings: received.find(({ path }) => path === 'settings.json').value,
           }))
       ));
   }
 
-  getBlob(sha, index, total) {
+  augmentFileList(type, files) {
+    return files.map((file, index) => {
+      const augmentedFile = {
+        ...file,
+        getFileContent: () => this.getFileContent(file.sha, index, files.length),
+      };
+
+      switch (type) {
+        case 'images':
+          return Object.assign(augmentedFile, {
+            hash: file.name.substr(0, 40),
+          });
+        case 'frames':
+          return Object.assign(augmentedFile, {
+            id: file.name.match(/^[a-z]+[0-9]+/gi)[0],
+          });
+        default:
+          return augmentedFile;
+      }
+    });
+  }
+
+  getFileContent(sha, index, total) {
     this.progressTick();
 
     return this.addToQueue(`git.getBlob (${index + 1}/${total}) ${sha}`, this.throttle, () => ( // queue wrapper

@@ -3,7 +3,7 @@ import uniqueBy from '../../../tools/unique/by';
 const palettesReducer = (value = [], action) => {
   switch (action.type) {
     case 'PALETTE_DELETE':
-      return [...value.filter(({ shortName }) => shortName !== action.payload)];
+      return [...value.filter(({ shortName }) => shortName !== action.payload.shortName)];
     case 'PALETTE_UPDATE':
       return uniqueBy('shortName')([
         ...value.map((palette) => (

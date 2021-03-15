@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  showGitLog: !!state.gitLog,
+  showProgressLog: !!state.progressLog,
   showInfoBox: state.framesMessage === 1,
   showProgressBox: !!state.progress.gif,
   showConfirmation: !!state.confirmation.message,
@@ -14,6 +14,7 @@ const mapStateToProps = (state) => ({
   showDragOver: !!state.dragover,
   showFilters: !!state.filter.visible,
   showSortForm: !!state.sortOptionsVisible,
+  syncSelect: !!state.syncSelect,
 });
 
 const mapDispatchToProps = () => ({});

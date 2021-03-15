@@ -3,6 +3,7 @@ import activePalette from './reducers/activePaletteReducer';
 import canShare from './reducers/canShareReducer';
 import confirmation from './reducers/confirmationReducer';
 import dragover from './reducers/dragoverReducer';
+import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
 import editPalette from './reducers/editPaletteReducer';
 import exportCropFrame from './reducers/exportCropFrameReducer';
@@ -12,8 +13,6 @@ import filter from './reducers/filtersReducer';
 import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
-import gitBusy from './reducers/gitBusyReducer';
-import gitLog from './reducers/gitLogReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
@@ -29,12 +28,15 @@ import plugins from './reducers/pluginsReducer';
 import printerData from './reducers/printerDataReducer';
 import printerUrl from './reducers/printerUrlReducer';
 import progress from './reducers/progressReducer';
+import progressLog from './reducers/progressLogReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import socketState from './reducers/socketStateReducer';
 import socketUrl from './reducers/socketUrlReducer';
+import syncBusy from './reducers/syncBusyReducer';
+import syncSelect from './reducers/syncSelectReducer';
 import videoParams from './reducers/videoParamsReducer';
 import windowDimensions from './reducers/windowDimensionsReducer';
 
@@ -43,6 +45,7 @@ export default combineReducers({
   canShare,
   confirmation,
   dragover,
+  dropboxStorage,
   editImage,
   editPalette,
   exportCropFrame,
@@ -52,8 +55,6 @@ export default combineReducers({
   frames,
   framesMessage,
   galleryView,
-  gitBusy,
-  gitLog,
   gitStorage,
   hideDates,
   images,
@@ -61,6 +62,7 @@ export default combineReducers({
   importQueueSize,
   isFullscreen,
   lastSelectedImage,
+  progressLog,
   lightboxImage,
   lineBuffer,
   pageSize,
@@ -75,6 +77,8 @@ export default combineReducers({
   sortOptionsVisible,
   socketState,
   socketUrl,
+  syncBusy,
+  syncSelect,
   videoParams,
   windowDimensions,
 });

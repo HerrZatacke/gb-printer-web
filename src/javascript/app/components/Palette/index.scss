@@ -10,7 +10,9 @@
   @include theme-background-color($color-white, $color-black);
 
   &--active {
+    border: 2px solid;
     @include theme-background-color($color-grey-50, $color-grey-20);
+    @include theme-border-color($color-grey-20, $color-grey-50);
   }
 
   &:hover {
@@ -23,6 +25,7 @@
 
   &__button {
     @include font;
+    @include font-color;
 
     transition: transform 100ms ease-in-out;
     line-height: 2em;

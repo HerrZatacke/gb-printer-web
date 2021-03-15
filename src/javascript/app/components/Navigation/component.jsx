@@ -79,29 +79,14 @@ const Navigation = (props) => {
             Settings
           </NavLink>
         </li>
-        { props.useGit ? (
+        { props.useSync ? (
           <li className="navigation__entry navigation__entry--buttons">
             <button
               type="button"
-              title={`Synchronize to GitHub\n${props.repoUrl}`}
+              title="Synchronize"
               className="navigation__link navigation__link--icon"
-              onClick={() => {
-                setMobileNavOpen(false);
-                props.startSync('up');
-              }}
-              disabled={props.gitBusy}
-            >
-              <SVG name="sync" className="svg--180" />
-            </button>
-            <button
-              type="button"
-              title={`Synchronize from GitHub\n${props.repoUrl}`}
-              className="navigation__link navigation__link--icon"
-              onClick={() => {
-                setMobileNavOpen(false);
-                props.startSync('down');
-              }}
-              disabled={props.gitBusy}
+              onClick={props.selectSync}
+              disabled={props.syncBusy}
             >
               <SVG name="sync" />
             </button>
@@ -124,13 +109,11 @@ const Navigation = (props) => {
 
 Navigation.propTypes = {
   importQueueSize: PropTypes.number.isRequired,
-  startSync: PropTypes.func.isRequired,
-  useGit: PropTypes.bool.isRequired,
-  gitBusy: PropTypes.bool.isRequired,
-  repoUrl: PropTypes.string.isRequired,
+  selectSync: PropTypes.func.isRequired,
+  useSync: PropTypes.bool.isRequired,
+  syncBusy: PropTypes.bool.isRequired,
 };
 
-Navigation.defaultProps = {
-};
+Navigation.defaultProps = {};
 
 export default Navigation;

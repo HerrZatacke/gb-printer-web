@@ -43,6 +43,7 @@ const settings = (store) => {
         mergeSettings(store.dispatch, store.getState(), action.payload, true);
         break;
       case 'GIT_SETTINGS_IMPORT':
+      case 'DROPBOX_SETTINGS_IMPORT':
         mergeSettings(store.dispatch, store.getState(), action.payload, false);
         break;
       default:

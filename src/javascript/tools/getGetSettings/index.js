@@ -11,6 +11,7 @@ const getGetSettings = (store) => (what) => {
 
   // delete keys potentially containing passwords/tokens
   delete localStorageState.gitStorage;
+  delete localStorageState.dropboxStorage;
 
   const exportableState = {};
   definitions.forEach(({ saveExport, key }) => {

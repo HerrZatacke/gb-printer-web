@@ -1,46 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { debounce } from 'debounce';
+import { useDebouncedCallback } from 'use-debounce';
 import ColorSlider from '../ColorSlider';
 
-class GreySelect extends React.Component {
+const GreySelect = (props) => {
 
-  constructor(props) {
-    super(props);
-    this.state = props.values;
-    this.sendUpdate = debounce(this.sendUpdate, 150, false);
-  }
+  const [values, setValues] = useState(props.values);
 
-  change(color, values) {
-    this.setState({
-      [color]: values,
-    }, this.sendUpdate);
-  }
+  const debounced = useDebouncedCallback((debouncedValues) => {
+    props.onChange(debouncedValues, true);
+  }, 150, { leading: true, trailing: true });
 
-  sendUpdate() {
-    this.props.onChange(this.state, true);
-  }
+  const change = (color, valueUpdate) => {
+    const nextValues = {
+      ...values,
+      [color]: valueUpdate,
+    };
+    setValues(nextValues);
+    debounced.callback(nextValues);
+  };
 
-  render() {
-    return (
-      <div className="grey-select">
-        {
-          ['r', 'g', 'b', 'n']
-            .map((color) => (
-              <ColorSlider
-                key={`slider-${color}`}
-                color={color}
-                values={this.state[color]}
-                onChange={(values) => {
-                  this.change(color, values);
-                }}
-              />
-            ))
-        }
-      </div>
-    );
-  }
-}
+  return (
+    <div className="grey-select">
+      {
+        ['r', 'g', 'b', 'n']
+          .map((color) => (
+            <ColorSlider
+              key={`slider-${color}`}
+              color={color}
+              values={values[color]}
+              onChange={(valueChange) => {
+                change(color, valueChange);
+              }}
+            />
+          ))
+      }
+    </div>
+  );
+};
 
 GreySelect.propTypes = {
   values: PropTypes.object.isRequired,

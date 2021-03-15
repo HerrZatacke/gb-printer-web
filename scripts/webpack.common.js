@@ -7,6 +7,14 @@ const autoprefixer = require('autoprefixer');
 const getBranch = require('./getBranch');
 const { version } = require('../package');
 
+let dropboxAppKey = null;
+
+try {
+  // eslint-disable-next-line global-require
+  const conf = require('../config');
+  dropboxAppKey = conf.dropboxAppKey;
+} catch (error) { /**/ }
+
 module.exports = () => ({
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
@@ -121,6 +129,7 @@ module.exports = () => ({
     new DefinePlugin({
       VERSION: `'${version}'`,
       BRANCH: `'${getBranch()}'`,
+      DROPBOX_APP_KEY: dropboxAppKey ? `'${dropboxAppKey}'` : 'null',
     }),
   ],
 });

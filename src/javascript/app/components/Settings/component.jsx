@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import classnames from 'classnames';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import GitSettings from './pages/GitSettings';
+import DropboxSettings from './pages/DropboxSettings';
 import GenericSettings from './pages/GenericSettings';
 import ExportSettings from './pages/ExportSettings';
 import DevURLSettings from './pages/DevURLSettings';
@@ -23,6 +25,13 @@ const tabs = {
   },
 };
 
+if (DROPBOX_APP_KEY) {
+  tabs.dropbox = {
+    Component: DropboxSettings,
+    headline: 'Dropbox Settings',
+  };
+}
+
 if (
   (getEnv().env === 'esp8266') ||
   (getEnv().env === 'webpack-dev')
@@ -40,11 +49,8 @@ if (getEnv().env === 'webpack-dev') {
   };
 }
 
-const Settings = () => {
-
-  const [selectedTab, setSelectedTab] = useState(Object.keys(tabs)[0]);
-
-  const { Component, headline: currentHeadline } = tabs[selectedTab];
+const Settings = ({ tabName }) => {
+  const { Component, headline: currentHeadline } = tabs[tabName];
 
   return (
     <div className="settings">
@@ -59,17 +65,14 @@ const Settings = () => {
                 className="contenttabs__tab"
                 key={tabId}
               >
-                <button
-                  type="button"
-                  className={
-                    classnames('button contenttabs__tabs-button', {
-                      'button contenttabs__tabs-button--active': tabId === selectedTab,
-                    })
-                  }
-                  onClick={() => setSelectedTab(tabId)}
+                <NavLink
+                  to={`/settings/${tabId}`}
+                  activeClassName="contenttabs__tabs-button--active"
+                  className="button contenttabs__tabs-button"
+                  exact
                 >
                   {headline}
-                </button>
+                </NavLink>
               </li>
             );
           })
@@ -82,8 +85,12 @@ const Settings = () => {
   );
 };
 
-Settings.propTypes = {};
+Settings.propTypes = {
+  tabName: PropTypes.string,
+};
 
-Settings.defaultProps = {};
+Settings.defaultProps = {
+  tabName: Object.keys(tabs)[0],
+};
 
 export default Settings;

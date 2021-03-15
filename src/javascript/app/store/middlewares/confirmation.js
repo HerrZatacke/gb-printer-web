@@ -22,7 +22,7 @@ const dispatchDeleteImageConfirmation = (action, dispatch, images) => {
 
 const dispatchDeletePaletteConfirmation = (action, dispatch, palettes) => {
 
-  const palette = palettes.find(({ shortName }) => shortName === action.payload);
+  const palette = palettes.find(({ shortName }) => shortName === action.payload.shortName);
 
   dispatch({
     type: 'SET_CONFIRMATION',
@@ -67,6 +67,13 @@ const confirmation = (store) => {
           next(action);
           return;
         }
+
+        // If deleting the current palette, set 'bw' as new selected
+        if (state.activePalette === action.payload.shortName) {
+          Object.assign(action.payload, { newSelectedPalette: 'bw' });
+        }
+
+        console.log(state.activePalette, action.payload);
 
         dispatchDeletePaletteConfirmation(action, store.dispatch, state.palettes);
         return;

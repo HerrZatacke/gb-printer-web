@@ -3,6 +3,7 @@ import animate from './middlewares/animate';
 import batch from './middlewares/batch';
 import confirmation from './middlewares/confirmation';
 import deleteImage from './middlewares/deleteImage';
+import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
 import filters from './middlewares/filters';
 import gitStorage from './middlewares/gitStorage';
@@ -26,6 +27,7 @@ export default applyMiddleware(
   batch,
   confirmation,
   deleteImage,
+  dropboxStorage,
   handleErrors,
   fileDrop,
   filters,

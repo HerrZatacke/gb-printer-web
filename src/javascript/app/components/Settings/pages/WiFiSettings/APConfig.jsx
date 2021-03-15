@@ -16,7 +16,7 @@ const APConfig = (props) => (
       labelText="Network SSID"
       type="text"
       value={props.ssid}
-      disabled={!props.isNew}
+      disabled={!props.isNew || props.disabled}
       onChange={(ssid) => {
         props.update({
           ssid,
@@ -34,6 +34,7 @@ const APConfig = (props) => (
       labelText="Network Password"
       type="password"
       value={props.psk}
+      disabled={props.disabled}
       onChange={(psk) => {
         props.update({
           psk,
@@ -50,6 +51,7 @@ APConfig.propTypes = {
   delete: PropTypes.bool.isRequired,
   psk: PropTypes.string.isRequired,
   update: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default APConfig;
