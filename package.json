@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack-dev-server --config ./scripts/webpack.dev.js",
@@ -10,7 +10,7 @@
     "build:webpack": "webpack --config ./scripts/webpack.prod.js",
     "build:validate": "node ./scripts/validatebuild.js",
     "build:deploy": "node ./scripts/deploy.js",
-    "deploy-gh-pages": "npm run build && cd dist && git add . && git commit -m \"pages update\" && git push",
+    "deploy-gh-pages": "npm i && npm run build && cd dist && git add . && git commit -m \"pages update\" && git push",
     "svgo": "svgo ./src/assets/icons/"
   },
   "author": "Herr Zatacke",
