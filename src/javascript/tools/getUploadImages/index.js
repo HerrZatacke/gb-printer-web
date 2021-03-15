@@ -18,12 +18,14 @@ const getUploadImages = (store, repoContents, addToQueue) => {
   const prepareGitFiles = getPrepareRemoteFiles(store);
   const missingLocally = [];
 
-  const images = state.images.map((image) => ({
-    ...image,
-    inRepo: [
-      repoContents.images.find(({ name }) => name.substr(0, 40) === image.hash),
-    ].filter(Boolean),
-  }));
+  const images = state.images
+    .filter(({ hashes }) => !hashes)
+    .map((image) => ({
+      ...image,
+      inRepo: [
+        repoContents.images.find(({ name }) => name.substr(0, 40) === image.hash),
+      ].filter(Boolean),
+    }));
   const imagesLength = images.length;
 
   const frames = state.frames.map((frame) => ({
