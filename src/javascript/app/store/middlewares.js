@@ -10,6 +10,7 @@ import gitStorage from './middlewares/gitStorage';
 import handleErrors from './middlewares/error';
 import hideLiveImage from './middlewares/hideLiveImage';
 import importFile from './middlewares/importFile';
+import importMessage from './middlewares/importMessage';
 import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
 import printer from './middlewares/printer';
@@ -33,6 +34,7 @@ export default applyMiddleware(
   gitStorage,
   hideLiveImage,
   importFile,
+  importMessage,
   importQueue,
   lightbox,
   printer,

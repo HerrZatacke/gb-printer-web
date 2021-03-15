@@ -4,11 +4,20 @@ import PrinterReport from '../PrinterReport';
 import { getEnv } from '../../../tools/getEnv';
 import Input from '../Input';
 
+const printerIsSameProtocol = (printerUrl) => {
+  return false;
+  // eslint-disable-next-line no-unreachable
+  const { protocol: printerProtocol } = new URL(printerUrl);
+  const { protocol: ownProtocol } = new URL(window.location.href);
+  return ownProtocol === printerProtocol;
+};
+
 const Import = ({
   importPlainText,
   importFile,
   checkPrinter,
   dumpCount,
+  printerUrl,
   downloadPrinter,
   clearPrinter,
   exportJson,
@@ -25,6 +34,25 @@ const Import = ({
 
   return (
     <div className="import">
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {!printerUrl ? null : (
+        printerIsSameProtocol(printerUrl) ? (
+          <iframe
+            title="Transfer window"
+            src={printerUrl}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              window.open(printerUrl, 'remoteprinter', 'width=400,height=800');
+            }}
+          >
+            Open printer page
+          </button>
+        )
+      )}
+
       {(env !== 'esp8266') ? null : (
         <div className="inputgroup buttongroup">
           <button
@@ -123,6 +151,7 @@ const Import = ({
 
 Import.propTypes = {
   dumpCount: PropTypes.number.isRequired,
+  printerUrl: PropTypes.string,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
   checkPrinter: PropTypes.func.isRequired,
@@ -131,6 +160,8 @@ Import.propTypes = {
   exportJson: PropTypes.func.isRequired,
 };
 
-Import.defaultProps = {};
+Import.defaultProps = {
+  printerUrl: null,
+};
 
 export default Import;
