@@ -40,7 +40,7 @@ class DropboxClient {
   }
 
   startAuth() {
-    this.dbx.auth.getAuthenticationUrl(encodeURIComponent(`${window.location.protocol}//${window.location.host}/`))
+    this.dbx.auth.getAuthenticationUrl(encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`))
       .then((authUrl) => {
         window.location.replace(authUrl);
       });
