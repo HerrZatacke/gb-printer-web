@@ -5,6 +5,10 @@ import Input from '../Input';
 import SVG from '../SVG';
 
 const iframeSupported = (printerUrl) => {
+  if (printerUrl.startsWith('/')) {
+    return true;
+  }
+
   const { protocol: printerProtocol } = new URL(printerUrl);
   const { protocol: ownProtocol } = new URL(window.location.href);
   return ownProtocol === 'http:' || ownProtocol === printerProtocol;
