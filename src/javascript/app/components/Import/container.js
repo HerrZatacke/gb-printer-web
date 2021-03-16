@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  dumpCount: state.printerData.dumps ? state.printerData.dumps.length : 0,
   printerUrl: state.printerUrl ? `${state.printerUrl}#simple` : null,
   printerConnected: state.printerHeartbeat,
 });
@@ -24,21 +23,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'IMPORT_FILE',
       payload: file,
-    });
-  },
-  checkPrinter: () => {
-    dispatch({
-      type: 'PRINTER_QUERY',
-    });
-  },
-  downloadPrinter: () => {
-    dispatch({
-      type: 'PRINTER_DOWNLOAD',
-    });
-  },
-  clearPrinter: () => {
-    dispatch({
-      type: 'PRINTER_CLEAR',
     });
   },
   exportJson(what) {

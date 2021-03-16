@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import PrinterReport from '../PrinterReport';
-import { getEnv } from '../../../tools/getEnv';
+import classnames from 'classnames';
 import Input from '../Input';
+import SVG from '../SVG';
 
 const iframeSupported = (printerUrl) => {
   const { protocol: printerProtocol } = new URL(printerUrl);
@@ -13,16 +13,11 @@ const iframeSupported = (printerUrl) => {
 const Import = ({
   importPlainText,
   importFile,
-  checkPrinter,
-  dumpCount,
   printerUrl,
   printerConnected,
-  downloadPrinter,
-  clearPrinter,
   exportJson,
 }) => {
   const [text, setText] = useState('');
-  const { env } = getEnv();
 
   useEffect(() => {
     import(/* webpackChunkName: "dmy" */ './dummy')
@@ -37,50 +32,35 @@ const Import = ({
       {!printerUrl ? null : (
         iframeSupported(printerUrl) ? (
           <iframe
-            style={{ border: printerConnected ? '3px solid #00aa55' : null }}
+            scrolling="no"
+            className="import__remote-printer-iframe"
             title="Transfer window"
             src={printerUrl}
           />
         ) : (
-          <button
-            type="button"
-            onClick={() => {
-              window.open(printerUrl, 'remoteprinter', 'width=400,height=800');
-            }}
-          >
-            {printerConnected ? 'Switch to printer page' : 'Open printer page'}
-          </button>
+          <div className="inputgroup buttongroup">
+            <button
+              type="button"
+              className="button import__connection-button"
+              onClick={() => {
+                window.open(printerUrl, 'remoteprinter', 'width=400,height=800');
+              }}
+            >
+              <SVG
+                name="plug"
+                className={classnames('import__connection-icon', {
+                  'import__connection-icon--connected': printerConnected,
+                })}
+              />
+              <span
+                className="import__connection-text"
+              >
+                {printerConnected ? 'Switch to printer page' : 'Open printer page'}
+              </span>
+            </button>
+          </div>
         )
       )}
-
-      {(env !== 'esp8266') ? null : (
-        <div className="inputgroup buttongroup">
-          <button
-            type="button"
-            className="button"
-            onClick={checkPrinter}
-          >
-            Check Printer
-          </button>
-          <button
-            type="button"
-            className="button"
-            disabled={dumpCount === 0}
-            onClick={downloadPrinter}
-          >
-            {`Download ${dumpCount || ''} Dumps`}
-          </button>
-          <button
-            type="button"
-            className="button"
-            disabled={dumpCount === 0}
-            onClick={clearPrinter}
-          >
-            Clear Printer
-          </button>
-        </div>
-      )}
-      <PrinterReport />
 
       <Input
         id="import-file"
@@ -150,14 +130,10 @@ const Import = ({
 };
 
 Import.propTypes = {
-  dumpCount: PropTypes.number.isRequired,
   printerUrl: PropTypes.string,
   printerConnected: PropTypes.bool.isRequired,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
-  checkPrinter: PropTypes.func.isRequired,
-  downloadPrinter: PropTypes.func.isRequired,
-  clearPrinter: PropTypes.func.isRequired,
   exportJson: PropTypes.func.isRequired,
 };
 

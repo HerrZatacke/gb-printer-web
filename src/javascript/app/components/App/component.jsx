@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import PrinterReport from '../PrinterReport';
 import Navigation from '../Navigation';
 import Home from '../Home';
 import Gallery from '../Gallery';
@@ -14,6 +15,10 @@ import { getEnv } from '../../../tools/getEnv';
 
 const App = (props) => {
   const env = getEnv();
+
+  if (props.simple) {
+    return <PrinterReport />;
+  }
 
   return (
     <Router>
@@ -94,6 +99,7 @@ App.propTypes = {
   selectedCount: PropTypes.number.isRequired,
   filteredCount: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
+  simple: PropTypes.bool.isRequired,
 };
 
 App.defaultProps = {
