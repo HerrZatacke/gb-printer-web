@@ -5,8 +5,6 @@ import { getEnv } from '../../../tools/getEnv';
 import Input from '../Input';
 
 const printerIsSameProtocol = (printerUrl) => {
-  return false;
-  // eslint-disable-next-line no-unreachable
   const { protocol: printerProtocol } = new URL(printerUrl);
   const { protocol: ownProtocol } = new URL(window.location.href);
   return ownProtocol === printerProtocol;
