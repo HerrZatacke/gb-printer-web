@@ -4,7 +4,13 @@ const importMessage = (store) => {
 
   window.addEventListener('message', (event) => {
     const { printerUrl } = store.getState();
-    const { origin } = new URL(printerUrl);
+    let origin;
+
+    try {
+      origin = new URL(printerUrl).origin;
+    } catch (error) {
+      origin = new URL(window.location.href).origin;
+    }
 
     if (event.origin !== origin) {
       return;
