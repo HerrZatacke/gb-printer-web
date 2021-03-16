@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import SVG from '../SVG';
-
-const themes = ['theme-bright', 'theme-dark'];
+import useTheme, { themes } from '../../../hooks/useTheme';
 
 const ThemeToggle = ({ closeNavigation }) => {
   const [theme, setTheme] = useState(localStorage.getItem('gbp-web-theme') || themes[0]);
 
-  useEffect(() => {
-    localStorage.setItem('gbp-web-theme', theme);
-    const classList = document.querySelector('html').classList;
-    themes.forEach(classList.remove.bind(classList));
-    classList.add(theme);
-  }, [theme]);
+  useTheme(theme);
 
   const title = theme === themes[0] ? 'Switch to dark mode' : 'Switch to bright mode';
 
