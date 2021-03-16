@@ -4,10 +4,10 @@ import PrinterReport from '../PrinterReport';
 import { getEnv } from '../../../tools/getEnv';
 import Input from '../Input';
 
-const printerIsSameProtocol = (printerUrl) => {
+const iframeSupported = (printerUrl) => {
   const { protocol: printerProtocol } = new URL(printerUrl);
   const { protocol: ownProtocol } = new URL(window.location.href);
-  return ownProtocol === printerProtocol;
+  return ownProtocol === 'http:' || ownProtocol === printerProtocol;
 };
 
 const Import = ({
@@ -16,6 +16,7 @@ const Import = ({
   checkPrinter,
   dumpCount,
   printerUrl,
+  printerConnected,
   downloadPrinter,
   clearPrinter,
   exportJson,
@@ -34,8 +35,9 @@ const Import = ({
     <div className="import">
       {/* eslint-disable-next-line no-nested-ternary */}
       {!printerUrl ? null : (
-        printerIsSameProtocol(printerUrl) ? (
+        iframeSupported(printerUrl) ? (
           <iframe
+            style={{ border: printerConnected ? '3px solid #00aa55' : null }}
             title="Transfer window"
             src={printerUrl}
           />
@@ -46,7 +48,7 @@ const Import = ({
               window.open(printerUrl, 'remoteprinter', 'width=400,height=800');
             }}
           >
-            Open printer page
+            {printerConnected ? 'Switch to printer page' : 'Open printer page'}
           </button>
         )
       )}
@@ -150,6 +152,7 @@ const Import = ({
 Import.propTypes = {
   dumpCount: PropTypes.number.isRequired,
   printerUrl: PropTypes.string,
+  printerConnected: PropTypes.bool.isRequired,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
   checkPrinter: PropTypes.func.isRequired,

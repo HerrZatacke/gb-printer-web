@@ -14,11 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
       button.addEventListener('click', () => {
 
         import(/* webpackChunkName: "dmy" */ './app/components/Import/dummy')
-          .then(({ default: dummyContent }) => {
-            targetWindow.postMessage({ remotePrinter: dummyContent.join('\n') }, '*');
+          .then(({ default: lines }) => {
+            targetWindow.postMessage({ remotePrinter: {
+              lines,
+            } }, '*');
           });
 
       });
+
+      window.setInterval(() => {
+        targetWindow.postMessage({ remotePrinter: { heartbeat: true } }, '*');
+      }, 500);
+
       document.body.appendChild(button);
     }
 
