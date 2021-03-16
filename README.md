@@ -83,7 +83,7 @@ This tool is partially integrated into the [WiFi GBP Emulator](https://herrzatac
 * This project has replaced my [GB printer direct serial to gif converter](https://github.com/HerrZatacke/direct-serial-to-gif-converter)
 * Also check out the [Gameboy Camera Discord](https://discord.gg/Kxhjg3qN) 
 * [Lots of helpful GameBoy and GameBoy Camera resources](https://github.com/gbdev/awesome-gbdev)
-* 
+
 ### Research
 * Tutorial on how to work with an ESP8266 by [ttapa: ESP8266 Beginner's Guide](https://tttapa.github.io/ESP8266/Chap01%20-%20ESP8266.html)  
 * [Programming a standalone ESP8266](https://www.instructables.com/id/3-Simple-Ways-of-Programming-an-ESP8266-12X-Module/)
