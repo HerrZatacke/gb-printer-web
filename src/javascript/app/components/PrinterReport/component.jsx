@@ -1,9 +1,13 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import filesize from 'filesize';
 import { getEnv } from '../../../tools/getEnv';
+import useTheme from '../../../hooks/useTheme';
+import useCheckPrinter from '../../../hooks/useCheckPrinter';
+import useFetchDumps from '../../../hooks/useFetchDumps';
+import useClearPrinter from '../../../hooks/useClearPrinter';
+import useHeartbeat from '../../../hooks/useHeartbeat';
 
 const targetWindow = window.opener || window.parent;
-let heartBeatInterval;
 
 const PrinterReport = () => {
 
@@ -11,88 +15,13 @@ const PrinterReport = () => {
   const [dumpCount, setDumpCount] = useState(0);
   const [printerData, setPrinterData] = useState({});
 
-  const checkPrinter = useCallback(() => {
-    setBusy(true);
-    setPrinterData({});
-    fetch('/dumps/list')
-      .then((res) => res.json())
-      .then((data) => {
-        // the ArduinoJSON library strangely sometimes did not include all items in the list, so this is a basic check.
-        if (data.fs.dumpcount !== data.dumps.length) {
-          // eslint-disable-next-line no-alert
-          alert('Inconststent image count received from printer.');
-        }
+  const checkPrinter = useCheckPrinter(setBusy, setPrinterData, setDumpCount);
+  const fetchDumps = useFetchDumps(setBusy, printerData.dumps, targetWindow);
+  const clearPrinter = useClearPrinter(setBusy, checkPrinter);
 
-        setPrinterData({
-          ...data,
-          dumps: [...data.dumps].sort(),
-        });
-        setDumpCount(data.fs.dumpcount);
-        setBusy(false);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-alert
-        alert(error.message);
-        setBusy(false);
-      });
-  }, [setPrinterData, setBusy]);
+  useTheme();
+  useHeartbeat(targetWindow);
 
-  const fetchDumps = useCallback(() => {
-    setBusy(true);
-    const fnFetch = (remainingDumps) => {
-      const nextDump = remainingDumps.shift();
-
-      if (!nextDump) {
-        setBusy(false);
-        return;
-      }
-
-      fetch(`/${nextDump.replace(/^\//, '')}`)
-        .then((res) => res.blob())
-        .then((blob) => {
-
-          targetWindow.postMessage({ remotePrinter: {
-            blob,
-          } }, '*');
-
-          window.setTimeout(() => {
-            fnFetch(remainingDumps);
-          }, 200);
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-alert
-          alert(error.message);
-          setBusy(false);
-        });
-    };
-
-    fnFetch([...printerData.dumps]);
-  }, [printerData.dumps, setBusy]);
-
-  const clearPrinter = useCallback(() => {
-    setBusy(true);
-    fetch('/dumps/clear')
-      .then((res) => res.json())
-      .then(({ deleted }) => {
-        if (deleted !== undefined) {
-          checkPrinter();
-          setBusy(false);
-        }
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-alert
-        alert(error.message);
-        setBusy(false);
-      });
-  }, [checkPrinter, setBusy]);
-
-  useEffect(() => {
-    heartBeatInterval = window.setInterval(() => {
-      targetWindow.postMessage({ remotePrinter: { heartbeat: true } }, '*');
-    }, 500);
-
-    return () => window.clearInterval(heartBeatInterval);
-  });
 
   const { env } = getEnv();
 
