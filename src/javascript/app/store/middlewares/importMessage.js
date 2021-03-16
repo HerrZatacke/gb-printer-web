@@ -1,5 +1,7 @@
 const importMessage = (store) => {
 
+  let heartbeatTimer = null;
+
   window.addEventListener('message', (event) => {
     const { printerUrl } = store.getState();
     const { origin } = new URL(printerUrl);
@@ -8,17 +10,34 @@ const importMessage = (store) => {
       return;
     }
 
-    const { remotePrinter: message } = event.data;
+    const { remotePrinter: { lines, heartbeat } = {} } = event.data;
 
-    if (!message) {
+    if (heartbeat) {
+
+      if (!heartbeatTimer) {
+        store.dispatch({
+          type: 'HEARTBEAT_RECEIVED',
+        });
+      }
+
+      window.clearTimeout(heartbeatTimer);
+      heartbeatTimer = window.setTimeout(() => {
+        heartbeatTimer = null;
+        store.dispatch({
+          type: 'HEARTBEAT_TIMED_OUT',
+        });
+      }, 800);
+    }
+
+    if (!lines) {
       return;
     }
 
     let file;
     try {
-      file = new File([...message], 'Text input.txt', { type: 'text/plain' });
+      file = new File([...lines.join('\n')], 'Text input.txt', { type: 'text/plain' });
     } catch (error) {
-      file = new Blob([...message], { type: 'text/plain' });
+      file = new Blob([...lines.join('\n')], { type: 'text/plain' });
     }
 
     store.dispatch({
