@@ -10,10 +10,9 @@ const importMessage = (store) => {
       return;
     }
 
-    const { remotePrinter: { lines, heartbeat } = {} } = event.data;
+    const { remotePrinter: { lines, heartbeat, blob } = {} } = event.data;
 
     if (heartbeat) {
-
       if (!heartbeatTimer) {
         store.dispatch({
           type: 'HEARTBEAT_RECEIVED',
@@ -29,21 +28,27 @@ const importMessage = (store) => {
       }, 800);
     }
 
-    if (!lines) {
-      return;
+    if (lines) {
+      let file;
+      try {
+        file = new File([...lines.join('\n')], 'Text input.txt', { type: 'text/plain' });
+      } catch (error) {
+        file = new Blob([...lines.join('\n')], { type: 'text/plain' });
+      }
+
+      store.dispatch({
+        type: 'IMPORT_FILE',
+        payload: { files: [file] },
+      });
     }
 
-    let file;
-    try {
-      file = new File([...lines.join('\n')], 'Text input.txt', { type: 'text/plain' });
-    } catch (error) {
-      file = new Blob([...lines.join('\n')], { type: 'text/plain' });
+    if (blob) {
+      store.dispatch({
+        type: 'IMPORT_FILE',
+        payload: { files: [blob] },
+      });
     }
 
-    store.dispatch({
-      type: 'IMPORT_FILE',
-      payload: { files: [file] },
-    });
   });
 
 
