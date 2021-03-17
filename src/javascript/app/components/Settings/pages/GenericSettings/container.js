@@ -9,6 +9,7 @@ const mapStateToProps = (state) => ({
   savFrameGroups: getFrameGroups(state.frames),
   exportCropFrame: state.exportCropFrame,
   hideDates: state.hideDates,
+  printerUrl: state.printerUrl,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -52,6 +53,12 @@ const mapDispatchToProps = (dispatch) => ({
         fileType,
         checked,
       },
+    });
+  },
+  updatePrinterUrl(printerUrl) {
+    dispatch({
+      type: 'SET_PRINTER_URL',
+      payload: printerUrl,
     });
   },
 });

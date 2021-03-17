@@ -8,7 +8,6 @@ import Input from '../../../Input';
 const DevURLSettings = (props) => {
 
   const [socketUrl, setSocketUrl] = useState(props.socketUrl);
-  const [printerUrl, setPrinterUrl] = useState(props.printerUrl);
 
   if (getEnv().env !== 'webpack-dev') {
     return null;
@@ -45,41 +44,13 @@ const DevURLSettings = (props) => {
       >
         <SocketStateIndicator />
       </Input>
-
-      <Input
-        id="settings-socket-url"
-        labelText="Printer URL"
-        type="text"
-        value={printerUrl}
-        onChange={(value) => {
-          setPrinterUrl(value);
-        }}
-        onBlur={() => {
-          setPrinterUrl(cleanUrl(printerUrl, 'http'));
-          props.updatePrinterUrl(printerUrl);
-        }}
-        onKeyUp={(key) => {
-          switch (key) {
-            case 'Enter':
-              setPrinterUrl(cleanUrl(printerUrl, 'http'));
-              props.updatePrinterUrl(printerUrl);
-              break;
-            case 'Escape':
-              setPrinterUrl(props.printerUrl);
-              break;
-            default:
-          }
-        }}
-      />
     </>
   );
 };
 
 DevURLSettings.propTypes = {
-  printerUrl: PropTypes.string.isRequired,
   socketUrl: PropTypes.string.isRequired,
   updateSocketUrl: PropTypes.func.isRequired,
-  updatePrinterUrl: PropTypes.func.isRequired,
 };
 
 DevURLSettings.defaultProps = {};

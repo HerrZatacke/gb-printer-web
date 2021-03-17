@@ -12,12 +12,6 @@ const mapDispatchToProps = (dispatch) => ({
       payload: socketUrl,
     });
   },
-  updatePrinterUrl(printerUrl) {
-    dispatch({
-      type: 'SET_PRINTER_URL',
-      payload: printerUrl,
-    });
-  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

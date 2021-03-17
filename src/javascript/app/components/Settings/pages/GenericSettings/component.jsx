@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
 import Input from '../../../Input';
 import supportedCanvasImageFormats from '../../../../../tools/supportedCanvasImageFormats/index';
+import cleanUrl from '../../../../../tools/cleanUrl';
+import { getEnv } from '../../../../../tools/getEnv';
 
 const GenericSettings = (props) => {
   const [pageSize, setPageSize] = useState(props.pageSize);
+  const [printerUrl, setPrinterUrl] = useState(props.printerUrl);
 
   return (
     <>
@@ -159,6 +163,39 @@ const GenericSettings = (props) => {
           <SVG name="checkmark" />
         </span>
       </label>
+
+      {(getEnv().env === 'esp8266') ? null : (
+        <Input
+          id="settings-printer-url"
+          labelText="Printer URL"
+          type="text"
+          value={printerUrl}
+          onChange={(value) => {
+            setPrinterUrl(value);
+          }}
+          onBlur={() => {
+            setPrinterUrl(cleanUrl(printerUrl, 'http'));
+            props.updatePrinterUrl(printerUrl);
+          }}
+          onKeyUp={(key) => {
+            switch (key) {
+              case 'Enter':
+                setPrinterUrl(cleanUrl(printerUrl, 'http'));
+                props.updatePrinterUrl(printerUrl);
+                break;
+              case 'Escape':
+                setPrinterUrl(props.printerUrl);
+                break;
+              default:
+            }
+          }}
+        >
+          <span className="inputgroup__note">
+            {'If you own a pysical wifi-printer, you can add it\'s URL here and check the '}
+            <Link to="/import">Import-tab</Link>
+          </span>
+        </Input>
+      )}
     </>
   );
 };
@@ -177,6 +214,8 @@ GenericSettings.propTypes = {
   exportCropFrame: PropTypes.bool.isRequired,
   setHideDates: PropTypes.func.isRequired,
   hideDates: PropTypes.bool.isRequired,
+  printerUrl: PropTypes.string.isRequired,
+  updatePrinterUrl: PropTypes.func.isRequired,
 };
 
 GenericSettings.defaultProps = {};
