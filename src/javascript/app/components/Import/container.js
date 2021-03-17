@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
   printerUrl: state.printerUrl ? `${state.printerUrl}#simple` : null,
-  printerConnected: state.printerHeartbeat,
+  printerConnected: state.printerHeartbeat > 0,
+  frameHeight: state.printerHeartbeat || 0,
 });
 
 const mapDispatchToProps = (dispatch) => ({

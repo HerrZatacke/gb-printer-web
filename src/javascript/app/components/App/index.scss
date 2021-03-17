@@ -42,4 +42,13 @@
     @include theme-color($color-grey-60, $color-grey-30);
     line-height: 14px;
   }
+
+  .is-simple-iframe &,
+  .is-simple-popup & {
+    min-height: 1px;
+  }
+
+  .is-simple-popup & {
+    padding: 20px;
+  }
 }
