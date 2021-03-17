@@ -20,6 +20,7 @@ const Import = ({
   printerUrl,
   printerConnected,
   exportJson,
+  frameHeight,
 }) => {
   const [text, setText] = useState('');
 
@@ -35,19 +36,31 @@ const Import = ({
       {/* eslint-disable-next-line no-nested-ternary */}
       {!printerUrl ? null : (
         iframeSupported(printerUrl) ? (
-          <iframe
-            scrolling="no"
-            className="import__remote-printer-iframe"
-            title="Transfer window"
-            src={printerUrl}
-          />
+          <>
+            <iframe
+              style={{ height: `${frameHeight}px` }}
+              scrolling="no"
+              className={classnames('import__remote-printer-iframe', {
+                'import__remote-printer-iframe--connected': printerConnected,
+              })}
+              title="Transfer window"
+              src={printerUrl}
+            />
+            {
+              printerConnected ? null : (
+                <div
+                  className="import__loader"
+                />
+              )
+            }
+          </>
         ) : (
           <div className="inputgroup buttongroup">
             <button
               type="button"
               className="button import__connection-button"
               onClick={() => {
-                window.open(printerUrl, 'remoteprinter', 'width=400,height=800');
+                window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
               }}
             >
               <SVG
@@ -136,6 +149,7 @@ const Import = ({
 Import.propTypes = {
   printerUrl: PropTypes.string,
   printerConnected: PropTypes.bool.isRequired,
+  frameHeight: PropTypes.number.isRequired,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
   exportJson: PropTypes.func.isRequired,

@@ -16,12 +16,13 @@ const importMessage = (store) => {
       return;
     }
 
-    const { remotePrinter: { lines, heartbeat, blob } = {} } = event.data;
+    const { remotePrinter: { lines, blob, height } = {} } = event.data;
 
-    if (heartbeat) {
-      if (!heartbeatTimer) {
+    if (height) {
+      if (!heartbeatTimer || store.getState().printerHeartbeat !== height) {
         store.dispatch({
           type: 'HEARTBEAT_RECEIVED',
+          payload: height,
         });
       }
 
@@ -31,7 +32,7 @@ const importMessage = (store) => {
         store.dispatch({
           type: 'HEARTBEAT_TIMED_OUT',
         });
-      }, 800);
+      }, 1500);
     }
 
     if (lines) {

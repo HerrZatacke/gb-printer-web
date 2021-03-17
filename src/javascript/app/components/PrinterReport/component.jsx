@@ -6,6 +6,7 @@ import useCheckPrinter from '../../../hooks/useCheckPrinter';
 import useFetchDumps from '../../../hooks/useFetchDumps';
 import useClearPrinter from '../../../hooks/useClearPrinter';
 import useHeartbeat from '../../../hooks/useHeartbeat';
+import useSetFrameClass from '../../../hooks/useSetFrameClass';
 
 const targetWindow = window.opener || window.parent;
 
@@ -21,13 +22,19 @@ const PrinterReport = () => {
 
   useTheme();
   useHeartbeat(targetWindow);
-
+  useSetFrameClass(targetWindow);
 
   const { env } = getEnv();
 
   return (
     (env === 'esp8266') ? (
-      <>
+      <div className="printer-report">
+        <p className="printer-report__info">
+          You are connected to a wifi-printer on
+          <span className="printer-report__info--ip">
+            {` ${window.location.host}`}
+          </span>
+        </p>
         <div className="inputgroup buttongroup">
           <button
             type="button"
@@ -56,38 +63,36 @@ const PrinterReport = () => {
         </div>
 
         {printerData.fs && printerData.dumps ? (
-          <div className="printer-report">
-            <table className="printer-report__table">
-              <thead>
-                <tr>
-                  <th className="printer-report__label printer-report__head">Printer Filesystem</th>
-                  <th className="printer-report__value printer-report__head printer-report__value--url" />
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="printer-report__label">Total</td>
-                  <td className="printer-report__value">{filesize(printerData.fs.total)}</td>
-                </tr>
-                <tr>
-                  <td className="printer-report__label">Used</td>
-                  <td className="printer-report__value">{filesize(printerData.fs.used)}</td>
-                </tr>
-                <tr>
-                  <td className="printer-report__label">Free</td>
-                  <td className="printer-report__value">
-                    {`${Math.max(0, (printerData.fs.maximages - printerData.dumps.length))} images`}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="printer-report__label">Images</td>
-                  <td className="printer-report__value">{printerData.dumps.length}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <table className="printer-report__table">
+            <thead>
+              <tr>
+                <th className="printer-report__label printer-report__head">Printer Filesystem</th>
+                <th className="printer-report__value printer-report__head printer-report__value--url" />
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="printer-report__label">Total</td>
+                <td className="printer-report__value">{filesize(printerData.fs.total)}</td>
+              </tr>
+              <tr>
+                <td className="printer-report__label">Used</td>
+                <td className="printer-report__value">{filesize(printerData.fs.used)}</td>
+              </tr>
+              <tr>
+                <td className="printer-report__label">Free</td>
+                <td className="printer-report__value">
+                  {`${Math.max(0, (printerData.fs.maximages - printerData.dumps.length))} images`}
+                </td>
+              </tr>
+              <tr>
+                <td className="printer-report__label">Images</td>
+                <td className="printer-report__value">{printerData.dumps.length}</td>
+              </tr>
+            </tbody>
+          </table>
         ) : null}
-      </>
+      </div>
     ) : (
       <div className="inputgroup buttongroup">
         <button

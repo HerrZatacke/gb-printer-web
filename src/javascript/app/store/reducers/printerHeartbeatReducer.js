@@ -1,9 +1,9 @@
-const printerHeartbeatReducer = (value = false, action) => {
+const printerHeartbeatReducer = (value = 0, action) => {
   switch (action.type) {
     case 'HEARTBEAT_RECEIVED':
-      return true;
+      return action.payload;
     case 'HEARTBEAT_TIMED_OUT':
-      return false;
+      return 0;
     default:
       return value;
   }
