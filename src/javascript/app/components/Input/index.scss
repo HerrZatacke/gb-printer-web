@@ -127,6 +127,14 @@
       margin-bottom: 10px;
       margin-left: 20px;
     }
+
+    a {
+      @include theme-color($color-text, $color-text-bright);
+
+      &:hover {
+        @include theme-color($color-grey-60, $color-grey-40);
+      }
+    }
   }
 
   &__label-check {
