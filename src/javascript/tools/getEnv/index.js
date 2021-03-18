@@ -28,6 +28,8 @@ const loadEnv = () => {
                 ...env,
                 localforage: localforageImages.driver(), // localStorageWrapper or asyncStorage or webSQLStorage
               };
+
+              return envData;
             })
         ))
     ));

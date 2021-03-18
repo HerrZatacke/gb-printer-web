@@ -24,7 +24,9 @@ import lightboxImage from './reducers/lightboxImageReducer';
 import lineBuffer from './reducers/lineBufferReducer';
 import pageSize from './reducers/pageSizeReducer';
 import palettes from './reducers/palettesReducer';
-import printerHeartbeat from './reducers/printerHeartbeatReducer';
+import printerBusy from './reducers/printerBusyReducer';
+import printerData from './reducers/printerDataReducer';
+import printerFunctions from './reducers/printerFunctionsReducer';
 import printerUrl from './reducers/printerUrlReducer';
 import progress from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
@@ -66,7 +68,9 @@ export default combineReducers({
   lineBuffer,
   pageSize,
   palettes,
-  printerHeartbeat,
+  printerBusy,
+  printerData,
+  printerFunctions,
   printerUrl,
   progress,
   rgbnImages,

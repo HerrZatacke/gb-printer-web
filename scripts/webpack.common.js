@@ -27,6 +27,9 @@ module.exports = () => ({
     main: [
       path.join(process.cwd(), 'src', 'javascript', 'index.js'),
     ],
+    remote: [
+      path.join(process.cwd(), 'src', 'javascript', 'remote.js'),
+    ],
   },
   module: {
     rules: [
@@ -125,6 +128,13 @@ module.exports = () => ({
       filename: 'index.html',
       favicon: './src/assets/images/favicon.png',
       chunks: ['pf', 'main'],
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Gameboy Printer Remote',
+      template: './src/assets/remote.html',
+      filename: 'remote.html',
+      favicon: './src/assets/images/favicon.png',
+      chunks: ['pf', 'remote'],
     }),
     new DefinePlugin({
       VERSION: `'${version}'`,

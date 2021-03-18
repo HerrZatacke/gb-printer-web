@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PrinterReport from '../PrinterReport';
 import Input from '../Input';
 import SVG from '../SVG';
 
@@ -14,13 +15,22 @@ const iframeSupported = (printerUrl) => {
   return ownProtocol === 'http:' || ownProtocol === printerProtocol;
 };
 
+const functionLabels = {
+  testFile: 'Print test image',
+  checkPrinter: 'Check Printer',
+  fetchImages: 'Fetch Images', // ToDo: Make formattable
+  clearPrinter: 'Clear Printer',
+};
+
 const Import = ({
   importPlainText,
   importFile,
   printerUrl,
   printerConnected,
   exportJson,
-  frameHeight,
+  printerFunctions,
+  callRemoteFunction,
+  printerBusy,
 }) => {
   const [text, setText] = useState('');
 
@@ -33,26 +43,42 @@ const Import = ({
 
   return (
     <div className="import">
+
+      <div className="inputgroup buttongroup">
+        {printerFunctions.map((name) => (
+          <button
+            key={name}
+            type="button"
+            className="button"
+            // ToDo: Disable based on state.printerData
+            disabled={printerBusy}
+            onClick={() => callRemoteFunction(name)}
+          >
+            {functionLabels[name]}
+          </button>
+        ))}
+      </div>
+
+      <PrinterReport />
+
       {/* eslint-disable-next-line no-nested-ternary */}
       {!printerUrl ? null : (
         iframeSupported(printerUrl) ? (
           <>
+            <SVG
+              // ToDo: move to headline of Import page
+              name="plug"
+              className={classnames('import__connection-icon', {
+                'import__connection-icon--connected': printerConnected,
+              })}
+            />
             <iframe
-              style={{ height: `${frameHeight}px` }}
-              scrolling="no"
               className={classnames('import__remote-printer-iframe', {
                 'import__remote-printer-iframe--connected': printerConnected,
               })}
               title="Transfer window"
               src={printerUrl}
             />
-            {
-              printerConnected ? null : (
-                <div
-                  className="import__loader"
-                />
-              )
-            }
           </>
         ) : (
           <div className="inputgroup buttongroup">
@@ -149,7 +175,9 @@ const Import = ({
 Import.propTypes = {
   printerUrl: PropTypes.string,
   printerConnected: PropTypes.bool.isRequired,
-  frameHeight: PropTypes.number.isRequired,
+  printerBusy: PropTypes.bool.isRequired,
+  printerFunctions: PropTypes.array.isRequired,
+  callRemoteFunction: PropTypes.func.isRequired,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
   exportJson: PropTypes.func.isRequired,
