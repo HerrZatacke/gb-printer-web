@@ -87,7 +87,7 @@ const importMessage = (store) => {
 
     switch (action.type) {
       case 'REMOTE_CALL_FUNCTION':
-        remotePrinterWindow.postMessage({ toRemotePrinter: { command: action.payload } });
+        remotePrinterWindow.postMessage({ toRemotePrinter: { command: action.payload } }, '*');
         break;
       default:
         break;
