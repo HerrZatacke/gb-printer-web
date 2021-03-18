@@ -1,12 +1,16 @@
 const startHeartbeat = ({ targetWindow }, commands) => {
-  window.setInterval(() => {
+
+  const heartBeat = () => {
     targetWindow.postMessage({
       fromRemotePrinter: {
         height: document.body.getBoundingClientRect().height,
         commands,
       },
     }, '*');
-  }, 500);
+  };
+
+  window.setInterval(heartBeat, 500);
+  heartBeat();
 };
 
 export default startHeartbeat;
