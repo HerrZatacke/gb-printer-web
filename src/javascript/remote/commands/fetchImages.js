@@ -1,39 +1,35 @@
-import checkPrinter from './checkPrinter';
+import Queue from 'promise-queue';
 
-const fetchImages = () => (
-  // ToDo: pass desired list of dumps from main window and use Queue
-  checkPrinter()
-    .then(({ printerData: { dumps } }) => (
-
-      new Promise((resolve, reject) => {
-        const blobs = [];
-
-        const fnFetch = (remainingDumps) => {
-          const nextDump = remainingDumps.shift();
-
-          if (!nextDump) {
-            resolve({ blobs });
-            return;
-          }
-
-          fetch(`/${nextDump.replace(/^\//, '')}`)
-            .then((res) => res.blob())
-            .then((blob) => {
-
-              blobs.push(blob);
-
-              window.setTimeout(() => {
-                fnFetch(remainingDumps);
-              }, 200);
-            })
-            .catch((error) => {
-              reject(error);
-            });
-        };
-
-        fnFetch([...dumps]);
-      })
-    ))
+const queue = new Queue(1, Infinity);
+const addToQueue = (fn) => (
+  queue.add(() => (
+    new Promise((resolve, reject) => {
+      window.setTimeout(() => {
+        fn()
+          .then(resolve)
+          .catch(reject);
+      }, 250);
+    })
+  ))
 );
+
+const fetchImages = (targetWindow, { dumps }) => (
+  Promise.all(dumps.map((dump) => (
+    addToQueue(
+      () => fetch(`/${dump.replace(/^\//, '')}`)
+        .then((res) => res.blob())
+        .then((blob) => {
+          targetWindow.postMessage({
+            fromRemotePrinter: {
+              blob,
+            },
+          }, '*');
+
+          return dump;
+        }),
+    )
+  )))
+)
+  .then((blobsdone) => ({ blobsdone }));
 
 export default fetchImages;

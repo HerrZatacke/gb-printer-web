@@ -17,7 +17,7 @@ const importMessage = (store) => {
       return;
     }
 
-    const { fromRemotePrinter: { lines, blobs, commands, printerData } = {} } = event.data;
+    const { fromRemotePrinter: { lines, blob, blobsdone, commands, printerData } = {} } = event.data;
     const sourceWindow = event.source;
 
     if (commands) {
@@ -55,19 +55,20 @@ const importMessage = (store) => {
         payload: { files: [file] },
       });
 
+      // IMPORT_FILE is intercepted so a second dispatch is required to enable printer buttons
       store.dispatch({
         type: 'PRINTER_READY',
       });
     }
 
-    if (blobs) {
-      blobs.forEach(((blob) => {
-        store.dispatch({
-          type: 'IMPORT_FILE',
-          payload: { files: [blob] },
-        });
-      }));
+    if (blob) {
+      store.dispatch({
+        type: 'IMPORT_FILE',
+        payload: { files: [blob] },
+      });
+    }
 
+    if (blobsdone) {
       store.dispatch({
         type: 'PRINTER_READY',
       });
@@ -86,9 +87,20 @@ const importMessage = (store) => {
   return (next) => (action) => {
 
     switch (action.type) {
-      case 'REMOTE_CALL_FUNCTION':
-        remotePrinterWindow.postMessage({ toRemotePrinter: { command: action.payload } }, '*');
+      case 'REMOTE_CALL_FUNCTION': {
+        const state = store.getState();
+        const params = (action.payload === 'fetchImages') ?
+          { dumps: state.printerData?.dumps } : undefined;
+
+        remotePrinterWindow.postMessage({
+          toRemotePrinter: {
+            command: action.payload,
+            params,
+          },
+        }, '*');
         break;
+      }
+
       default:
         break;
     }

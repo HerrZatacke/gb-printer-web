@@ -41,12 +41,12 @@ const initCommands = ({ targetWindow }, env) => {
       return;
     }
 
-    const { toRemotePrinter: { command } = {} } = event.data;
+    const { toRemotePrinter: { command, params } = {} } = event.data;
 
     const commandFn = commands.find(({ name }) => name === command);
 
     if (commandFn && typeof commandFn.fn === 'function') {
-      commandFn.fn(targetWindow)
+      commandFn.fn(targetWindow, params)
         .then((fromRemotePrinter) => {
           targetWindow.postMessage({
             fromRemotePrinter,
