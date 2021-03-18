@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import getStore from './store';
 import { defaults } from './store/defaults';
+import { getEnv } from '../tools/getEnv';
 
 const initApp = () => {
   const appRoot = document.getElementById('app');
@@ -15,6 +16,10 @@ const initApp = () => {
     storedSettings = JSON.parse(localStorage.getItem('gbp-web-state'));
   } catch (error) {
     storedSettings = {};
+  }
+
+  if (getEnv().env === 'esp8266') {
+    storedSettings.printerUrl = '/';
   }
 
   const initialState = Object.assign(defaults, storedSettings);
