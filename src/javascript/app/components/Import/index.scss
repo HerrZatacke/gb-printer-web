@@ -12,28 +12,6 @@
     resize: none;
   }
 
-  &__connection-button {
-    display: flex;
-    justify-content: center;
-  }
-
-  &__connection-icon {
-    width: 45px;
-    height: 45px;
-    margin-right: 10px;
-    fill: currentColor;
-    @include theme-color($color-button-red, $color-button-red);
-
-    &--connected {
-      @include theme-color($color-button-green, $color-button-green);
-    }
-  }
-
-  &__connection-text {
-    line-height: 45px;
-    margin-right: 55px;
-  }
-
   &__remote-printer-iframe {
     opacity: 0;
     width: 100%;

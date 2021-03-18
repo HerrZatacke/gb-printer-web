@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import PrinterReport from '../PrinterReport';
 import Input from '../Input';
-import SVG from '../SVG';
 
 const iframeSupported = (printerUrl) => {
   if (printerUrl.startsWith('/')) {
@@ -44,64 +43,53 @@ const Import = ({
   return (
     <div className="import">
 
-      <div className="inputgroup buttongroup">
-        {printerFunctions.map((name) => (
-          <button
-            key={name}
-            type="button"
-            className="button"
-            // ToDo: Disable based on state.printerData
-            disabled={printerBusy}
-            onClick={() => callRemoteFunction(name)}
-          >
-            {functionLabels[name]}
-          </button>
-        ))}
-      </div>
+      {!printerConnected ? null : (
+        <>
+          <div className="inputgroup buttongroup">
+            {printerFunctions.map((name) => (
+              <button
+                key={name}
+                type="button"
+                className="button"
+                // ToDo: Disable based on state.printerData
+                disabled={printerBusy}
+                onClick={() => callRemoteFunction(name)}
+              >
+                {functionLabels[name]}
+              </button>
+            ))}
+          </div>
 
-      <PrinterReport />
+          <PrinterReport />
+        </>
+      )}
 
       {/* eslint-disable-next-line no-nested-ternary */}
       {!printerUrl ? null : (
         iframeSupported(printerUrl) ? (
-          <>
-            <SVG
-              // ToDo: move to headline of Import page
-              name="plug"
-              className={classnames('import__connection-icon', {
-                'import__connection-icon--connected': printerConnected,
-              })}
-            />
-            <iframe
-              className={classnames('import__remote-printer-iframe', {
-                'import__remote-printer-iframe--connected': printerConnected,
-              })}
-              title="Transfer window"
-              src={printerUrl}
-            />
-          </>
+          <iframe
+            className={classnames('import__remote-printer-iframe', {
+              'import__remote-printer-iframe--connected': printerConnected,
+            })}
+            title="Transfer window"
+            src={printerUrl}
+          />
         ) : (
-          <div className="inputgroup buttongroup">
-            <button
-              type="button"
-              className="button import__connection-button"
-              onClick={() => {
-                window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
-              }}
-            >
-              <SVG
-                name="plug"
-                className={classnames('import__connection-icon', {
-                  'import__connection-icon--connected': printerConnected,
-                })}
-              />
-              <span
-                className="import__connection-text"
-              >
-                {printerConnected ? 'Switch to printer page' : 'Open printer page'}
-              </span>
-            </button>
-          </div>
+          <>
+            {printerConnected ? null : (
+              <div className="inputgroup buttongroup">
+                <button
+                  type="button"
+                  className="button"
+                  onClick={() => {
+                    window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
+                  }}
+                >
+                  Open printer page
+                </button>
+              </div>
+            )}
+          </>
         )
       )}
 

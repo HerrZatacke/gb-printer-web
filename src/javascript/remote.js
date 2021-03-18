@@ -11,12 +11,11 @@ const remoteEnv = getRemoteEnv();
 document.addEventListener('DOMContentLoaded', () => {
 
   showMessage(remoteEnv);
+  setClasses(remoteEnv);
 
   if (!remoteEnv.isRemote) {
     return;
   }
-
-  setClasses(remoteEnv);
 
   loadEnv()
     .then(({ env }) => {
