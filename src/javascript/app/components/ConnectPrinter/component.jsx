@@ -14,6 +14,8 @@ const iframeSupported = (printerUrl) => {
   return ownProtocol === 'http:' || ownProtocol === printerProtocol;
 };
 
+// const iframeSupported = () => false;
+
 const ConnectPrinter = ({ printerUrl, printerConnected }) => {
 
   const [failed, loaded, setLoaded] = useIframeLoaded(5000);
@@ -35,7 +37,7 @@ const ConnectPrinter = ({ printerUrl, printerConnected }) => {
             {!loaded && <div className="connect-printer__iframe-loading" />}
           </>
         ) : (
-          (printerConnected || failed) && (
+          (!printerConnected || failed) && (
             <div className="inputgroup buttongroup">
               <button
                 type="button"
