@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="robots" content="noindex" />
+  <title><%=htmlWebpackPlugin.options.title%></title>
+</head>
+<body>
+  <p class="remote-info" data-parent="none">
+    This window is missing the reference to your main app. It must be opened from the settings page of your main app.
+  </p>
+  <p class="remote-info" data-parent="iframe">
+    This is a remote window which is included in an iframe on your main page. You should not see this message.
+  </p>
+  <p class="remote-info" data-parent="popup">
+    This is the printer remote control on <span class="remote-info--ip"></span>. You can go back to your main app and leave this window open to start importing your images.
+  </p>
+</body>
+</html>

@@ -21,6 +21,7 @@
     width: 45px;
     height: 45px;
     margin-right: 10px;
+    fill: currentColor;
     @include theme-color($color-button-red, $color-button-red);
 
     &--connected {
@@ -36,48 +37,7 @@
   &__remote-printer-iframe {
     opacity: 0;
     width: 100%;
-    height: 300px;
-    margin-bottom: 20px;
-
-    &--connected {
-      opacity: 1;
-    }
-  }
-
-  &__loader {
-    width: 100%;
     height: 0;
-    padding-top: 75px;
     margin-bottom: 20px;
-    display: block;
-    background: transparent;
-    position: relative;
-
-    &:before,
-    &:after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      animation-name: pulse;
-      animation-duration: 1100ms;
-      animation-iteration-count: infinite;
-      animation-direction: alternate;
-      opacity: 0.6;
-    }
-
-    &:before {
-      transform: translate(-50%, -50%) scale(1.7);
-      @include theme-background-color($color-secondary-bright, $color-secondary-dark);
-    }
-
-    &:after {
-      animation-duration: 790ms;
-      transform: translate(-50%, -50%);
-      @include theme-background-color($color-primary-bright, $color-primary-dark);
-    }
   }
 }

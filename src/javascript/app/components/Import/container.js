@@ -1,12 +1,19 @@
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  printerUrl: state.printerUrl ? `${state.printerUrl}#simple` : null,
-  printerConnected: state.printerHeartbeat > 0,
-  frameHeight: state.printerHeartbeat || 0,
+  printerUrl: state.printerUrl ? `${state.printerUrl}remote.html` : null,
+  printerConnected: state.printerFunctions.length > 0,
+  printerFunctions: state.printerFunctions,
+  printerBusy: state.printerBusy,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  callRemoteFunction: (name) => {
+    dispatch({
+      type: 'REMOTE_CALL_FUNCTION',
+      payload: name,
+    });
+  },
   importPlainText: (textDump) => {
     let file;
     try {

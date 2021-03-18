@@ -1,6 +1,7 @@
 const importMessage = (store) => {
 
   let heartbeatTimer = null;
+  let remotePrinterWindow = null;
 
   window.addEventListener('message', (event) => {
     const { printerUrl } = store.getState();
@@ -16,19 +17,25 @@ const importMessage = (store) => {
       return;
     }
 
-    const { remotePrinter: { lines, blob, height } = {} } = event.data;
+    const { fromRemotePrinter: { lines, blobs, commands, printerData } = {} } = event.data;
+    const sourceWindow = event.source;
 
-    if (height) {
-      if (!heartbeatTimer || store.getState().printerHeartbeat !== height) {
+    if (commands) {
+      if (
+        !heartbeatTimer ||
+        JSON.stringify(commands) !== JSON.stringify(store.getState().printerFunctions)) {
         store.dispatch({
-          type: 'HEARTBEAT_RECEIVED',
-          payload: height,
+          type: 'PRINTER_FUNCTIONS_RECEIVED',
+          payload: commands,
         });
       }
+
+      remotePrinterWindow = sourceWindow;
 
       window.clearTimeout(heartbeatTimer);
       heartbeatTimer = window.setTimeout(() => {
         heartbeatTimer = null;
+        remotePrinterWindow = null;
         store.dispatch({
           type: 'HEARTBEAT_TIMED_OUT',
         });
@@ -47,12 +54,29 @@ const importMessage = (store) => {
         type: 'IMPORT_FILE',
         payload: { files: [file] },
       });
+
+      store.dispatch({
+        type: 'PRINTER_READY',
+      });
     }
 
-    if (blob) {
+    if (blobs) {
+      blobs.forEach(((blob) => {
+        store.dispatch({
+          type: 'IMPORT_FILE',
+          payload: { files: [blob] },
+        });
+      }));
+
       store.dispatch({
-        type: 'IMPORT_FILE',
-        payload: { files: [blob] },
+        type: 'PRINTER_READY',
+      });
+    }
+
+    if (printerData) {
+      store.dispatch({
+        type: 'PRINTER_DATA_RECEIVED',
+        payload: printerData,
       });
     }
 
@@ -60,6 +84,14 @@ const importMessage = (store) => {
 
 
   return (next) => (action) => {
+
+    switch (action.type) {
+      case 'REMOTE_CALL_FUNCTION':
+        remotePrinterWindow.postMessage({ toRemotePrinter: { command: action.payload } });
+        break;
+      default:
+        break;
+    }
 
     next(action);
   };
