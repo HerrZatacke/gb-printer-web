@@ -6,11 +6,6 @@
     flex: 200px 1 0;
     margin: 5px 10px 30px 5px;
   }
-
-  .is-simple-iframe &,
-  .is-simple-popup & {
-    margin-left: -20px;
-  }
 }
 
 .button {
@@ -40,11 +35,5 @@
     text-align: center;
     line-height: 40px;
     font-size: 14px;
-  }
-
-  .is-simple-iframe &,
-  .is-simple-popup & {
-    margin-top: 0;
-    margin-bottom: 0;
   }
 }
