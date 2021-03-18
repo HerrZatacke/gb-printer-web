@@ -1,5 +1,4 @@
 .printer-report {
-  margin-bottom: 30px;
 
   &__info {
     font-size: 12px;
@@ -11,6 +10,7 @@
   }
 
   &__table {
+    margin-top: 20px;
     width: 100%;
     @include theme-background-color($color-grey-70, $color-grey-30);
   }

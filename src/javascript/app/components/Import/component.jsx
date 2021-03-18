@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import ConnectPrinter from './ConnectPrinter';
+import ConnectPrinter from '../ConnectPrinter';
 import Input from '../Input';
 
 const Import = ({
   importPlainText,
   importFile,
   printerUrl,
-  printerConnected,
   exportJson,
 }) => {
   const [text, setText] = useState('');
@@ -23,10 +22,7 @@ const Import = ({
     <div className="import">
 
       {printerUrl && (
-        <ConnectPrinter
-          printerUrl={printerUrl}
-          printerConnected={printerConnected}
-        />
+        <ConnectPrinter />
       )}
 
       <Input
@@ -98,7 +94,6 @@ const Import = ({
 
 Import.propTypes = {
   printerUrl: PropTypes.string,
-  printerConnected: PropTypes.bool.isRequired,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
   exportJson: PropTypes.func.isRequired,

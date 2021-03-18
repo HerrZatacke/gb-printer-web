@@ -19,20 +19,20 @@ const ConnectPrinter = ({ printerUrl, printerConnected }) => {
   const [failed, loaded, setLoaded] = useIframeLoaded(5000);
 
   return (
-    <>
+    <div className="connect-printer">
       <PrinterReport />
       {
         iframeSupported(printerUrl) && !failed ? (
           <>
             <iframe
-              className={classnames('import__remote-printer-iframe', {
-                'import__remote-printer-iframe--connected': printerConnected,
+              className={classnames('connect-printer__remote-printer-iframe', {
+                'connect-printer__remote-printer-iframe--connected': printerConnected,
               })}
               title="Transfer window"
               src={printerUrl}
               onLoad={setLoaded}
             />
-            {!loaded && <div className="import__iframe-loading" />}
+            {!loaded && <div className="connect-printer__iframe-loading" />}
           </>
         ) : (
           (printerConnected || failed) && (
@@ -50,7 +50,7 @@ const ConnectPrinter = ({ printerUrl, printerConnected }) => {
           )
         )
       }
-    </>
+    </div>
   );
 };
 
