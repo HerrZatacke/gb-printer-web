@@ -5,7 +5,7 @@ import filesize from 'filesize';
 const functionLabels = {
   testFile: 'Print test image',
   checkPrinter: 'Check Printer',
-  fetchImages: 'Fetch Images', // ToDo: Make formattable
+  fetchImages: null,
   clearPrinter: 'Clear Printer',
 };
 
@@ -29,11 +29,20 @@ const PrinterReport = ({
             key={name}
             type="button"
             className="button"
-            // ToDo: Disable based on state.printerData
-            disabled={printerBusy}
+            disabled={
+              printerBusy ||
+              (
+                ['fetchImages', 'clearPrinter'].includes(name) &&
+                !printerData.dumps?.length
+              )
+            }
             onClick={() => callRemoteFunction(name)}
           >
-            {functionLabels[name]}
+            {
+              name === 'fetchImages' ?
+                `Fetch ${printerData.dumps?.length || 0} images` :
+                functionLabels[name]
+            }
           </button>
         ))}
       </div>
