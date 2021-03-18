@@ -19,4 +19,10 @@
     width: 480px;
     height: 90px;
   }
+
+  &__iframe-loading {
+    width: 100%;
+    padding-top: 80px;
+    @extend %LOADER;
+  }
 }
