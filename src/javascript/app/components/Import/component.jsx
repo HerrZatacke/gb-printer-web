@@ -1,25 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import PrinterReport from '../PrinterReport';
+import ConnectPrinter from './ConnectPrinter';
 import Input from '../Input';
-
-const iframeSupported = (printerUrl) => {
-  if (printerUrl.startsWith('/')) {
-    return true;
-  }
-
-  const { protocol: printerProtocol } = new URL(printerUrl);
-  const { protocol: ownProtocol } = new URL(window.location.href);
-  return ownProtocol === 'http:' || ownProtocol === printerProtocol;
-};
-
-const functionLabels = {
-  testFile: 'Print test image',
-  checkPrinter: 'Check Printer',
-  fetchImages: 'Fetch Images', // ToDo: Make formattable
-  clearPrinter: 'Clear Printer',
-};
 
 const Import = ({
   importPlainText,
@@ -27,9 +9,6 @@ const Import = ({
   printerUrl,
   printerConnected,
   exportJson,
-  printerFunctions,
-  callRemoteFunction,
-  printerBusy,
 }) => {
   const [text, setText] = useState('');
 
@@ -43,54 +22,11 @@ const Import = ({
   return (
     <div className="import">
 
-      {!printerConnected ? null : (
-        <>
-          <div className="inputgroup buttongroup">
-            {printerFunctions.map((name) => (
-              <button
-                key={name}
-                type="button"
-                className="button"
-                // ToDo: Disable based on state.printerData
-                disabled={printerBusy}
-                onClick={() => callRemoteFunction(name)}
-              >
-                {functionLabels[name]}
-              </button>
-            ))}
-          </div>
-
-          <PrinterReport />
-        </>
-      )}
-
-      {/* eslint-disable-next-line no-nested-ternary */}
-      {!printerUrl ? null : (
-        iframeSupported(printerUrl) ? (
-          <iframe
-            className={classnames('import__remote-printer-iframe', {
-              'import__remote-printer-iframe--connected': printerConnected,
-            })}
-            title="Transfer window"
-            src={printerUrl}
-          />
-        ) : (
-          <>
-            {printerConnected ? null : (
-              <div className="inputgroup buttongroup">
-                <button
-                  type="button"
-                  className="button"
-                  onClick={() => {
-                    window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
-                  }}
-                >
-                  Open printer page
-                </button>
-              </div>
-            )}
-          </>
-        )
+      {printerUrl && (
+        <ConnectPrinter
+          printerUrl={printerUrl}
+          printerConnected={printerConnected}
+        />
       )}
 
       <Input
@@ -163,9 +99,6 @@ const Import = ({
 Import.propTypes = {
   printerUrl: PropTypes.string,
   printerConnected: PropTypes.bool.isRequired,
-  printerBusy: PropTypes.bool.isRequired,
-  printerFunctions: PropTypes.array.isRequired,
-  callRemoteFunction: PropTypes.func.isRequired,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
   exportJson: PropTypes.func.isRequired,
