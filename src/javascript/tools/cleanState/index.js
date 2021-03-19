@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import predefinedPalettes from 'gb-palettes';
 import { defaultRGBNPalette } from '../../app/defaults';
 import uniqueBy from '../unique/by';
@@ -56,6 +57,8 @@ const cleanState = (dirtyState) => {
     })
     .filter(Boolean);
 
+  const imageHashes = images.map(({ hash }) => hash);
+
   // If the user has at least one frame selected
   // but the frames are not yet imported, show a message hint
   images.forEach((image) => {
@@ -68,6 +71,13 @@ const cleanState = (dirtyState) => {
     }
   });
 
+  // remove items older than 6 hours from "recent imports"
+  const yesterday = dayjs().subtract(6, 'hour').unix();
+  const recentImports = dirtyState.recentImports.filter(({ hash, timestamp }) => (
+    imageHashes.includes(hash) &&
+    timestamp > yesterday
+  ));
+
   return {
     ...dirtyState,
     images,
@@ -76,6 +86,7 @@ const cleanState = (dirtyState) => {
     printerUrl,
     framesMessage,
     activePalette,
+    recentImports,
   };
 };
 
