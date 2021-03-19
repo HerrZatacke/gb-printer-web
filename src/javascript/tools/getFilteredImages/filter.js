@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import { FILTER_MONOCHROME, FILTER_NEW, FILTER_RGB, FILTER_UNTAGGED } from '../../consts/specialTags';
+import { FILTER_MONOCHROME, FILTER_NEW, FILTER_RGB, FILTER_UNTAGGED, FILTER_RECENT } from '../../consts/specialTags';
 import { dateFormat } from '../../app/defaults';
 
-const filter = (activeTags) => (image) => {
+const filter = (activeTags, recentImports) => (image) => {
   if (activeTags.length) {
 
     if (activeTags.includes(FILTER_UNTAGGED) && image.tags.length === 0) {
@@ -19,6 +19,10 @@ const filter = (activeTags) => (image) => {
       if (date > maxNew) {
         return true;
       }
+    }
+
+    if (activeTags.includes(FILTER_RECENT)) {
+      return recentImports.map(({ hash }) => hash).includes(image.hash);
     }
 
     if (activeTags.includes(FILTER_RGB) && !!image.hashes) {
