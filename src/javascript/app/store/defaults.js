@@ -138,6 +138,12 @@ const definitions = [
     value: [],
   },
   {
+    key: 'recentImports',
+    saveLocally: true,
+    saveExport: [],
+    value: [],
+  },
+  {
     // this key s being programatically removed even on a debug export due to possible stored tokens/passwords
     key: 'gitStorage',
     saveLocally: true,
