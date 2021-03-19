@@ -2,6 +2,7 @@ import { definitions } from '../../app/store/defaults';
 import getImages from './getImages';
 import getFrames from './getFrames';
 import getImageHashesForExport from './getImageHashesForExport';
+import { getEnv } from '../getEnv';
 
 const getGetSettings = (store) => (what) => {
 
@@ -12,6 +13,11 @@ const getGetSettings = (store) => (what) => {
   // delete keys potentially containing passwords/tokens
   delete localStorageState.gitStorage;
   delete localStorageState.dropboxStorage;
+
+  // Do not export the default '/' printerUrl for printer devices
+  if (getEnv().env === 'esp8266') {
+    delete localStorageState.printerUrl;
+  }
 
   const exportableState = {};
   definitions.forEach(({ saveExport, key }) => {

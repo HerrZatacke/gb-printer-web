@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import PrinterReport from '../PrinterReport';
-import { getEnv } from '../../../tools/getEnv';
+import ConnectPrinter from '../ConnectPrinter';
 import Input from '../Input';
 
 const Import = ({
   importPlainText,
   importFile,
-  checkPrinter,
-  dumpCount,
-  downloadPrinter,
-  clearPrinter,
+  printerUrl,
   exportJson,
 }) => {
   const [text, setText] = useState('');
-  const { env } = getEnv();
 
   useEffect(() => {
     import(/* webpackChunkName: "dmy" */ './dummy')
@@ -25,34 +20,10 @@ const Import = ({
 
   return (
     <div className="import">
-      {(env !== 'esp8266') ? null : (
-        <div className="inputgroup buttongroup">
-          <button
-            type="button"
-            className="button"
-            onClick={checkPrinter}
-          >
-            Check Printer
-          </button>
-          <button
-            type="button"
-            className="button"
-            disabled={dumpCount === 0}
-            onClick={downloadPrinter}
-          >
-            {`Download ${dumpCount || ''} Dumps`}
-          </button>
-          <button
-            type="button"
-            className="button"
-            disabled={dumpCount === 0}
-            onClick={clearPrinter}
-          >
-            Clear Printer
-          </button>
-        </div>
+
+      {printerUrl && (
+        <ConnectPrinter />
       )}
-      <PrinterReport />
 
       <Input
         id="import-file"
@@ -122,15 +93,14 @@ const Import = ({
 };
 
 Import.propTypes = {
-  dumpCount: PropTypes.number.isRequired,
+  printerUrl: PropTypes.string,
   importPlainText: PropTypes.func.isRequired,
   importFile: PropTypes.func.isRequired,
-  checkPrinter: PropTypes.func.isRequired,
-  downloadPrinter: PropTypes.func.isRequired,
-  clearPrinter: PropTypes.func.isRequired,
   exportJson: PropTypes.func.isRequired,
 };
 
-Import.defaultProps = {};
+Import.defaultProps = {
+  printerUrl: null,
+};
 
 export default Import;

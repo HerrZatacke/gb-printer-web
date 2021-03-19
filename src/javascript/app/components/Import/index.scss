@@ -1,5 +1,4 @@
 .import {
-
   &__data {
     @include theme-color($color-grey-20, $color-grey-80);
     @include theme-background-color($color-white, $color-black);

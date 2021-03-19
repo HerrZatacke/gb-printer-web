@@ -4,7 +4,7 @@ import readFileAs from '../readFileAs';
 class DropboxClient {
   constructor(tokens, addToQueue) {
     this.queueCallback = addToQueue;
-    this.throttle = 30; // ToDo: Settings?
+    this.throttle = 30;
     this.tokens = tokens;
 
     const { accessToken, accessTokenExpiresAt } = tokens;

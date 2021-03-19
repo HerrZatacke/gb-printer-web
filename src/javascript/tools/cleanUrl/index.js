@@ -3,6 +3,10 @@ const cleanUrl = (dirtyUrl, protocol) => {
     return '';
   }
 
+  if (dirtyUrl === '/' && protocol !== 'ws') {
+    return dirtyUrl;
+  }
+
   const hasProtocol = !!dirtyUrl.match(new RegExp(`^${protocol}(s)?:\\/\\/`, 'gi'));
   return `${hasProtocol ? '' : `${protocol}://`}${dirtyUrl}${dirtyUrl.endsWith('/') ? '' : '/'}`;
 };

@@ -1,7 +1,16 @@
 .printer-report {
-  margin-bottom: 30px;
+
+  &__info {
+    font-size: 12px;
+    margin-bottom: 15px;
+
+    &--ip {
+      @include theme-color($color-grey-10, $color-grey-90);
+    }
+  }
 
   &__table {
+    margin-top: 20px;
     width: 100%;
     @include theme-background-color($color-grey-70, $color-grey-30);
   }

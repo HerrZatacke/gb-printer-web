@@ -73,8 +73,6 @@ const confirmation = (store) => {
           Object.assign(action.payload, { newSelectedPalette: 'bw' });
         }
 
-        console.log(state.activePalette, action.payload);
-
         dispatchDeletePaletteConfirmation(action, store.dispatch, state.palettes);
         return;
       case 'CONFIRM_CONFIRMATION':

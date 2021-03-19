@@ -1,0 +1,25 @@
+@import '~reset-css/sass/reset';
+
+* {
+  box-sizing: border-box;
+}
+
+@import './generics/app';
+
+.remote-info {
+  font-size: 16px;
+  margin-bottom: 15px;
+  display: none;
+
+  &--ip {
+    @include theme-color($color-grey-10, $color-grey-90);
+  }
+
+  &--em {
+    @include theme-color($color-strong-red, $color-warn-red);
+  }
+}
+
+body {
+  padding: 20px;
+}

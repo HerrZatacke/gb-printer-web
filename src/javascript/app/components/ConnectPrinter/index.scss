@@ -1,0 +1,22 @@
+.connect-printer {
+  min-height: 50px;
+  margin-bottom: 40px;
+
+  &__remote-printer-iframe {
+    position: absolute;
+    top: 80px;
+    left: -200vw;
+    width: 480px;
+    height: 90px;
+  }
+
+  &__iframe-loading {
+    width: 100%;
+    padding-top: 50px;
+    @extend %LOADER;
+  }
+
+  .buttongroup {
+    margin-bottom: 0;
+  }
+}
