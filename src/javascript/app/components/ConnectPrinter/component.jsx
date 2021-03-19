@@ -18,7 +18,7 @@ const iframeSupported = (printerUrl) => {
 
 const ConnectPrinter = ({ printerUrl, printerConnected }) => {
 
-  const [failed, loaded, setLoaded] = useIframeLoaded(5000);
+  const [failed, loaded] = useIframeLoaded(5000, printerConnected);
 
   return (
     <div className="connect-printer">
@@ -32,7 +32,6 @@ const ConnectPrinter = ({ printerUrl, printerConnected }) => {
               })}
               title="Transfer window"
               src={printerUrl}
-              onLoad={setLoaded}
             />
             {!loaded && <div className="connect-printer__iframe-loading" />}
           </>
