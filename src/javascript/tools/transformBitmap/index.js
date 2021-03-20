@@ -75,16 +75,16 @@ const getTransformBitmap = (dispatch) => (file) => {
             },
           });
         });
+    } else {
+      // This would import the file as gameboy image.
+      dispatch({
+        type: 'SET_ALL_LINES',
+        payload: {
+          lines: tileLines,
+          file: file.name.split('.').shift(),
+        },
+      });
     }
-
-    // This would import the file as gameboy image.
-    // dispatch({
-    //   type: 'SET_ALL_LINES',
-    //   payload: {
-    //     lines: tileLines,
-    //     file: file.name.split('.').shift(),
-    //   },
-    // });
   };
 
   readFileAs(file, 'dataURL')
