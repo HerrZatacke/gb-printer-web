@@ -27,6 +27,7 @@ const blendModeKeys = {
   GRAIN_EXTRACT_S: 'grainextract_s',
   GRAIN_MERGE: 'grainmerge',
   DIVIDE: 'divide',
+  DIVIDE_S: 'divide_s',
 
   // HSV Components Layer Modes
 
@@ -84,7 +85,9 @@ const blendModeFunctions = {
   [blendModeKeys.GRAIN_MERGE]: (i, m) => (
     i + m - 0.5
   ),
-  [blendModeKeys.DIVIDE]: (i, m) => (i),
+  [blendModeKeys.DIVIDE]: (i, m) => (
+    i / m
+  ),
 
   // asymetrtic calls
   [blendModeKeys.DODGE_S]: (i, m) => (
@@ -104,6 +107,9 @@ const blendModeFunctions = {
   ),
   [blendModeKeys.GRAIN_EXTRACT_S]: (i, m) => (
     blendModeFunctions[blendModeKeys.GRAIN_EXTRACT](m, i)
+  ),
+  [blendModeKeys.DIVIDE_S]: (i, m) => (
+    blendModeFunctions[blendModeKeys.DIVIDE](m, i)
   ),
 };
 
@@ -134,6 +140,7 @@ const blendModeLabels = {
   [blendModeKeys.GRAIN_EXTRACT_S]: 'Grain extract ⇵',
   [blendModeKeys.GRAIN_MERGE]: 'Grain merge',
   [blendModeKeys.DIVIDE]: 'Divide',
+  [blendModeKeys.DIVIDE_S]: 'Divide ⇵',
 
 };
 
