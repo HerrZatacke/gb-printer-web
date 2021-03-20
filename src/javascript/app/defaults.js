@@ -1,3 +1,5 @@
+import { blendModeKeys } from '../tools/RGBNDecoder/blendModes';
+
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 const dateFormatInput = 'YYYY-MM-DDTHH:mm';
 const dateFormatFilename = 'YYYYMMDD-HHmmss';
@@ -15,6 +17,7 @@ const defaultRGBNPalette = {
   g: defaultGreys.slice(),
   b: defaultGreys.slice(),
   n: defaultGreys.slice(),
+  blend: blendModeKeys.MULTIPLY,
 };
 
 const missingGreyPalette = {

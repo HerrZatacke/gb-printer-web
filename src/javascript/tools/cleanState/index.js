@@ -3,6 +3,7 @@ import predefinedPalettes from 'gb-palettes';
 import { defaultRGBNPalette } from '../../app/defaults';
 import uniqueBy from '../unique/by';
 import cleanUrl from '../cleanUrl';
+import { blendModeKeys } from '../RGBNDecoder/blendModes';
 
 const cleanState = (dirtyState) => {
 
@@ -35,6 +36,16 @@ const cleanState = (dirtyState) => {
           return {
             ...image,
             palette: defaultRGBNPalette,
+          };
+        }
+
+        if (!image.palette.blend) {
+          return {
+            ...image,
+            palette: {
+              ...image.palette,
+              blend: blendModeKeys.MULTIPLY,
+            },
           };
         }
 
