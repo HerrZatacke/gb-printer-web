@@ -13,8 +13,11 @@ const blendModeKeys = {
   DARKEN: 'darken',
   MULTIPLY: 'multiply',
   BURN: 'burn',
+  BURN_S: 'burn_s',
   OVERLAY: 'overlay',
+  OVERLAY_S: 'overlay_s',
   SOFTLIGHT: 'softlight',
+  SOFTLIGHT_S: 'softlight_s',
   HARDLIGHT: 'hardlight',
 
   // inversion modes
@@ -30,35 +33,64 @@ const blendModeKeys = {
 };
 
 const blendModeFunctions = {
-  [blendModeKeys.LIGHTEN]: (m, i) => (
+  [blendModeKeys.LIGHTEN]: (i, m) => (
     Math.max(m, i)
   ),
 
-  [blendModeKeys.SCREEN]: (m, i) => (
+  [blendModeKeys.SCREEN]: (i, m) => (
     1 - ((1 - m) * (1 - i))
   ),
-  [blendModeKeys.DODGE]: (m, i) => (
-    m / (1 - i)
-  ),
-  [blendModeKeys.DODGE_S]: (m, i) => (
+  [blendModeKeys.DODGE]: (i, m) => (
     i / (1 - m)
   ),
-  [blendModeKeys.ADDITION]: (m, i) => (
+  [blendModeKeys.ADDITION]: (i, m) => (
     m + i
   ),
-  [blendModeKeys.DARKEN]: (m, i) => (m),
-  [blendModeKeys.MULTIPLY]: (m, i) => (
+  [blendModeKeys.DARKEN]: (i, m) => (
+    Math.min(m, i)
+  ),
+  [blendModeKeys.MULTIPLY]: (i, m) => (
     m * i
   ),
-  [blendModeKeys.BURN]: (m, i) => (m),
-  [blendModeKeys.OVERLAY]: (m, i) => (m),
-  [blendModeKeys.SOFTLIGHT]: (m, i) => (m),
-  [blendModeKeys.HARDLIGHT]: (m, i) => (m),
-  [blendModeKeys.DIFFERENCE]: (m, i) => (m),
-  [blendModeKeys.SUBTRACT]: (m, i) => (m),
-  [blendModeKeys.GRAIN_EXTRACT]: (m, i) => (m),
-  [blendModeKeys.GRAIN_MERGE]: (m, i) => (m),
-  [blendModeKeys.DIVIDE]: (m, i) => (m),
+  [blendModeKeys.BURN]: (i, m) => (
+    1 - ((1 - i) / (m))
+    // to match GIMP exactly:
+    // 1 - ((1 - i) / (0.0039 + m))
+  ),
+  [blendModeKeys.OVERLAY]: (i, m) => (
+    i < 0.5 ? (
+      2 * i * m
+    ) : (
+      1 - (2 * (1 - m) * (1 - i))
+    )
+  ),
+  [blendModeKeys.SOFTLIGHT]: (i, m) => (
+    (
+      (1 - i) * blendModeFunctions[blendModeKeys.MULTIPLY](i, m)
+    ) + (
+      i * blendModeFunctions[blendModeKeys.SCREEN](i, m)
+    )
+  ),
+  [blendModeKeys.HARDLIGHT]: (i, m) => (i),
+  [blendModeKeys.DIFFERENCE]: (i, m) => (i),
+  [blendModeKeys.SUBTRACT]: (i, m) => (i),
+  [blendModeKeys.GRAIN_EXTRACT]: (i, m) => (i),
+  [blendModeKeys.GRAIN_MERGE]: (i, m) => (i),
+  [blendModeKeys.DIVIDE]: (i, m) => (i),
+
+  // asymetrtic calls
+  [blendModeKeys.DODGE_S]: (i, m) => (
+    blendModeFunctions[blendModeKeys.DODGE](m, i)
+  ),
+  [blendModeKeys.BURN_S]: (i, m) => (
+    blendModeFunctions[blendModeKeys.BURN](m, i)
+  ),
+  [blendModeKeys.OVERLAY_S]: (i, m) => (
+    blendModeFunctions[blendModeKeys.OVERLAY](m, i)
+  ),
+  [blendModeKeys.SOFTLIGHT_S]: (i, m) => (
+    blendModeFunctions[blendModeKeys.SOFTLIGHT](m, i)
+  ),
 };
 
 const blendModeLabels = {
@@ -74,8 +106,11 @@ const blendModeLabels = {
   [blendModeKeys.DARKEN]: 'Darken only',
   [blendModeKeys.MULTIPLY]: 'Multiply',
   [blendModeKeys.BURN]: 'Burn',
+  [blendModeKeys.BURN_S]: 'Burn ⇵',
   [blendModeKeys.OVERLAY]: 'Overlay',
+  [blendModeKeys.OVERLAY_S]: 'Overlay ⇵',
   [blendModeKeys.SOFTLIGHT]: 'Soft light',
+  [blendModeKeys.SOFTLIGHT_S]: 'Soft light ⇵',
   [blendModeKeys.HARDLIGHT]: 'Hard light',
 
   // inversion modes
