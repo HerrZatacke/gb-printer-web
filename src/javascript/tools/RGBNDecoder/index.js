@@ -1,4 +1,5 @@
 import Decoder from '../Decoder';
+import { blendModeFunctions, blendModeKeys } from './blendModes';
 
 class RGBNDecoder extends Decoder {
 
@@ -21,7 +22,7 @@ class RGBNDecoder extends Decoder {
       r: super.decodeTile(r),
       g: super.decodeTile(g),
       b: super.decodeTile(b),
-      n: super.decodeTile(n),
+      n: n ? super.decodeTile(n) : null, // neutral image not neccesarily required
     };
   }
 
@@ -35,12 +36,33 @@ class RGBNDecoder extends Decoder {
       return super.getRGBValue(n, index, tileIndex, cropFrame);
     }
 
-    const valueN = this.palette.n[3 - n[index]];
-    return {
-      r: this.palette.r[3 - r[index]] * valueN / 0xff,
-      g: this.palette.g[3 - g[index]] * valueN / 0xff,
-      b: this.palette.b[3 - b[index]] * valueN / 0xff,
+    return this.blendColors({
+      r: r[index],
+      g: g[index],
+      b: b[index],
+      n: n?.[index],
+    });
+  }
+
+  blendColors({ r, g, b, n }) {
+
+    const RGBValues = {
+      r: this.palette.r[3 - r],
+      g: this.palette.g[3 - g],
+      b: this.palette.b[3 - b],
     };
+
+    // no blending if neutral image is missing
+    if (!n) {
+      return RGBValues;
+    }
+
+    const blendMode = this.palette.blendmode || blendModeKeys.MULTIPLY;
+
+    return blendModeFunctions[blendMode]?.({
+      ...RGBValues,
+      n: this.palette.n[3 - n],
+    }) || RGBValues;
   }
 
   // RGBN image has always a height of 144
@@ -50,10 +72,10 @@ class RGBNDecoder extends Decoder {
 
   static rgbnTiles([r, g, b, n]) {
     return [...Array(360)].map((_, i) => ({
-      r: r ? r[i] : ''.padStart(32, '0'),
-      g: g ? g[i] : ''.padStart(32, '0'),
-      b: b ? b[i] : ''.padStart(32, '0'),
-      n: n ? n[i] : ''.padStart(32, '0'),
+      r: r?.[i],
+      g: g?.[i],
+      b: b?.[i],
+      n: n?.[i],
     }));
   }
 }
