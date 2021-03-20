@@ -15,7 +15,6 @@ const blendModeKeys = {
   BURN: 'burn',
   BURN_S: 'burn_s',
   OVERLAY: 'overlay',
-  OVERLAY_S: 'overlay_s',
   SOFTLIGHT: 'softlight',
   SOFTLIGHT_S: 'softlight_s',
   HARDLIGHT: 'hardlight',
@@ -71,7 +70,6 @@ const blendModeFunctions = {
       i * blendModeFunctions[blendModeKeys.SCREEN](i, m)
     )
   ),
-  [blendModeKeys.HARDLIGHT]: (i, m) => (i),
   [blendModeKeys.DIFFERENCE]: (i, m) => (i),
   [blendModeKeys.SUBTRACT]: (i, m) => (i),
   [blendModeKeys.GRAIN_EXTRACT]: (i, m) => (i),
@@ -85,7 +83,7 @@ const blendModeFunctions = {
   [blendModeKeys.BURN_S]: (i, m) => (
     blendModeFunctions[blendModeKeys.BURN](m, i)
   ),
-  [blendModeKeys.OVERLAY_S]: (i, m) => (
+  [blendModeKeys.HARDLIGHT]: (i, m) => (
     blendModeFunctions[blendModeKeys.OVERLAY](m, i)
   ),
   [blendModeKeys.SOFTLIGHT_S]: (i, m) => (
@@ -108,7 +106,6 @@ const blendModeLabels = {
   [blendModeKeys.BURN]: 'Burn',
   [blendModeKeys.BURN_S]: 'Burn ⇵',
   [blendModeKeys.OVERLAY]: 'Overlay',
-  [blendModeKeys.OVERLAY_S]: 'Overlay ⇵',
   [blendModeKeys.SOFTLIGHT]: 'Soft light',
   [blendModeKeys.SOFTLIGHT_S]: 'Soft light ⇵',
   [blendModeKeys.HARDLIGHT]: 'Hard light',
