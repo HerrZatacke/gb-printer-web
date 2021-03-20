@@ -6,7 +6,7 @@ const blendModeKeys = {
   SCREEN: 'screen',
   DODGE: 'dodge',
   DODGE_S: 'dodge_s',
-  ADDITION: 'add',
+  ADDITION: 'addition',
 
 
   // Darken Layer Modes
@@ -43,7 +43,9 @@ const blendModeFunctions = {
   [blendModeKeys.DODGE_S]: (m, i) => (
     i / (1 - m)
   ),
-  [blendModeKeys.ADDITION]: (m, i) => (m),
+  [blendModeKeys.ADDITION]: (m, i) => (
+    m + i
+  ),
   [blendModeKeys.DARKEN]: (m, i) => (m),
   [blendModeKeys.MULTIPLY]: (m, i) => (
     m * i
