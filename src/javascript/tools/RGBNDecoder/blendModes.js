@@ -22,7 +22,9 @@ const blendModeKeys = {
   // inversion modes
   DIFFERENCE: 'difference',
   SUBTRACT: 'subtract',
+  SUBTRACT_S: 'subtract_s',
   GRAIN_EXTRACT: 'grainextract',
+  GRAIN_EXTRACT_S: 'grainextract_s',
   GRAIN_MERGE: 'grainmerge',
   DIVIDE: 'divide',
 
@@ -73,9 +75,15 @@ const blendModeFunctions = {
   [blendModeKeys.DIFFERENCE]: (i, m) => (
     Math.abs(i - m)
   ),
-  [blendModeKeys.SUBTRACT]: (i, m) => (i),
-  [blendModeKeys.GRAIN_EXTRACT]: (i, m) => (i),
-  [blendModeKeys.GRAIN_MERGE]: (i, m) => (i),
+  [blendModeKeys.SUBTRACT]: (i, m) => (
+    i - m
+  ),
+  [blendModeKeys.GRAIN_EXTRACT]: (i, m) => (
+    i - m + 0.5
+  ),
+  [blendModeKeys.GRAIN_MERGE]: (i, m) => (
+    i + m - 0.5
+  ),
   [blendModeKeys.DIVIDE]: (i, m) => (i),
 
   // asymetrtic calls
@@ -90,6 +98,12 @@ const blendModeFunctions = {
   ),
   [blendModeKeys.SOFTLIGHT_S]: (i, m) => (
     blendModeFunctions[blendModeKeys.SOFTLIGHT](m, i)
+  ),
+  [blendModeKeys.SUBTRACT_S]: (i, m) => (
+    blendModeFunctions[blendModeKeys.SUBTRACT](m, i)
+  ),
+  [blendModeKeys.GRAIN_EXTRACT_S]: (i, m) => (
+    blendModeFunctions[blendModeKeys.GRAIN_EXTRACT](m, i)
   ),
 };
 
@@ -115,7 +129,9 @@ const blendModeLabels = {
   // inversion modes
   [blendModeKeys.DIFFERENCE]: 'Difference',
   [blendModeKeys.SUBTRACT]: 'Subtract',
+  [blendModeKeys.SUBTRACT_S]: 'Subtract ⇵',
   [blendModeKeys.GRAIN_EXTRACT]: 'Grain extract',
+  [blendModeKeys.GRAIN_EXTRACT_S]: 'Grain extract ⇵',
   [blendModeKeys.GRAIN_MERGE]: 'Grain merge',
   [blendModeKeys.DIVIDE]: 'Divide',
 
