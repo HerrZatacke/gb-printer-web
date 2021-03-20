@@ -105,34 +105,89 @@ const blendModeFunctions = {
   ),
 };
 
-const blendModeLabels = {
-
+const blendModeLabels = [
   // Lighten Layer Modes
-  [blendModeKeys.LIGHTEN]: 'Lighten only',
-  [blendModeKeys.SCREEN]: 'Screen',
-  [blendModeKeys.DODGE]: 'Dodge',
-  [blendModeKeys.DODGE_S]: 'Dodge ⇵',
-  [blendModeKeys.ADDITION]: 'Addition',
+  {
+    id: blendModeKeys.LIGHTEN,
+    label: 'Lighten only',
+  },
+  {
+    id: blendModeKeys.SCREEN,
+    label: 'Screen',
+  },
+  {
+    id: blendModeKeys.DODGE,
+    label: 'Dodge',
+  },
+  {
+    id: blendModeKeys.DODGE_S,
+    label: 'Dodge ⇵',
+  },
+  {
+    id: blendModeKeys.ADDITION,
+    label: 'Addition',
+  },
 
   // Darken Layer Modes
-  [blendModeKeys.DARKEN]: 'Darken only',
-  [blendModeKeys.MULTIPLY]: 'Multiply',
-  [blendModeKeys.BURN]: 'Burn',
-  [blendModeKeys.BURN_S]: 'Burn ⇵',
-  [blendModeKeys.OVERLAY]: 'Overlay',
-  [blendModeKeys.SOFTLIGHT]: 'Soft light',
-  [blendModeKeys.SOFTLIGHT_S]: 'Soft light ⇵',
-  [blendModeKeys.HARDLIGHT]: 'Hard light',
+  {
+    id: blendModeKeys.DARKEN,
+    label: 'Darken only',
+  },
+  {
+    id: blendModeKeys.MULTIPLY,
+    label: 'Multiply',
+  },
+  {
+    id: blendModeKeys.BURN,
+    label: 'Burn',
+  },
+  {
+    id: blendModeKeys.BURN_S,
+    label: 'Burn ⇵',
+  },
+  {
+    id: blendModeKeys.OVERLAY,
+    label: 'Overlay',
+  },
+  {
+    id: blendModeKeys.SOFTLIGHT,
+    label: 'Soft light',
+  },
+  {
+    id: blendModeKeys.SOFTLIGHT_S,
+    label: 'Soft light ⇵',
+  },
+  {
+    id: blendModeKeys.HARDLIGHT,
+    label: 'Hard light',
+  },
 
   // inversion modes
-  [blendModeKeys.DIFFERENCE]: 'Difference',
-  [blendModeKeys.SUBTRACT]: 'Subtract',
-  [blendModeKeys.SUBTRACT_S]: 'Subtract ⇵',
-  [blendModeKeys.GRAIN_EXTRACT]: 'Grain extract',
-  [blendModeKeys.GRAIN_EXTRACT_S]: 'Grain extract ⇵',
-  [blendModeKeys.GRAIN_MERGE]: 'Grain merge',
-
-};
+  {
+    id: blendModeKeys.DIFFERENCE,
+    label: 'Difference',
+  },
+  {
+    id: blendModeKeys.SUBTRACT,
+    label: 'Subtract',
+  },
+  {
+    id: blendModeKeys.SUBTRACT_S,
+    label: 'Subtract ⇵',
+  },
+  {
+    id: blendModeKeys.GRAIN_EXTRACT,
+    label: 'Grain extract',
+  },
+  {
+    id: blendModeKeys.GRAIN_EXTRACT_S,
+    label: 'Grain extract ⇵',
+  },
+  {
+    id: blendModeKeys.GRAIN_MERGE,
+    label: 'Grain merge',
+  },
+];
 
 
 export {
