@@ -40,29 +40,41 @@ class RGBNDecoder extends Decoder {
       r: r[index],
       g: g[index],
       b: b[index],
-      n: n?.[index],
+      n: n ? n[index] : false, // 'false' is required for blending if no neutral layer exists
     });
   }
 
   blendColors({ r, g, b, n }) {
-
     const RGBValues = {
       r: this.palette.r[3 - r],
       g: this.palette.g[3 - g],
       b: this.palette.b[3 - b],
     };
 
-    // no blending if neutral image is missing
-    if (!n) {
+    // no blending if neutral layer does not exist
+    if (n === false) {
       return RGBValues;
     }
 
     const blendMode = this.palette.blendmode || blendModeKeys.MULTIPLY;
 
-    return blendModeFunctions[blendMode]?.({
-      ...RGBValues,
-      n: this.palette.n[3 - n],
-    }) || RGBValues;
+    if (!blendModeFunctions[blendMode]) {
+      return RGBValues;
+    }
+
+    const result = blendModeFunctions[blendMode]({
+      r: this.palette.r[3 - r] / 255,
+      g: this.palette.g[3 - g] / 255,
+      b: this.palette.b[3 - b] / 255,
+      n: this.palette.n[3 - n] / 255,
+    });
+
+    return {
+      r: result.r * 255,
+      g: result.g * 255,
+      b: result.b * 255,
+      n: result.n * 255,
+    };
   }
 
   // RGBN image has always a height of 144
