@@ -62,18 +62,20 @@ class RGBNDecoder extends Decoder {
       return RGBValues;
     }
 
-    const result = blendModeFunctions[blendMode]({
-      r: this.palette.r[3 - r] / 255,
-      g: this.palette.g[3 - g] / 255,
-      b: this.palette.b[3 - b] / 255,
-      n: this.palette.n[3 - n] / 255,
-    });
+    const callBlendFunction = (value, neutral) => (
+      Math.max(
+        0,
+        Math.min(
+          1,
+          blendModeFunctions[blendMode](value / 255, neutral / 255),
+        ),
+      ) * 255
+    );
 
     return {
-      r: result.r * 255,
-      g: result.g * 255,
-      b: result.b * 255,
-      n: result.n * 255,
+      r: callBlendFunction(this.palette.r[3 - r], this.palette.r[3 - n]),
+      g: callBlendFunction(this.palette.r[3 - g], this.palette.r[3 - n]),
+      b: callBlendFunction(this.palette.r[3 - b], this.palette.r[3 - n]),
     };
   }
 
