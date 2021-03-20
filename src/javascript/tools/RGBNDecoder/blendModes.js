@@ -70,7 +70,9 @@ const blendModeFunctions = {
       i * blendModeFunctions[blendModeKeys.SCREEN](i, m)
     )
   ),
-  [blendModeKeys.DIFFERENCE]: (i, m) => (i),
+  [blendModeKeys.DIFFERENCE]: (i, m) => (
+    Math.abs(i - m)
+  ),
   [blendModeKeys.SUBTRACT]: (i, m) => (i),
   [blendModeKeys.GRAIN_EXTRACT]: (i, m) => (i),
   [blendModeKeys.GRAIN_MERGE]: (i, m) => (i),
