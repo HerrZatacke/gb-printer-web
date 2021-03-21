@@ -1,7 +1,6 @@
 import { applyMiddleware } from 'redux';
 import animate from './middlewares/animate';
 import batch from './middlewares/batch';
-import confirmation from './middlewares/confirmation';
 import deleteImage from './middlewares/deleteImage';
 import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
@@ -13,6 +12,7 @@ import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
 import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
+import overlay from './middlewares/overlay';
 import saveEditPalette from './middlewares/saveEditPalette';
 import saveLineBuffer from './middlewares/saveLineBuffer';
 import saveRGBNImage from './middlewares/saveRGBNImage';
@@ -24,7 +24,6 @@ import startDownload from './middlewares/startDownload';
 export default applyMiddleware(
   animate,
   batch,
-  confirmation,
   deleteImage,
   dropboxStorage,
   handleErrors,
@@ -36,6 +35,7 @@ export default applyMiddleware(
   importMessage,
   importQueue,
   lightbox,
+  overlay,
   saveEditPalette,
   saveLineBuffer,
   saveRGBNImage,

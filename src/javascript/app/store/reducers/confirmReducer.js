@@ -5,10 +5,11 @@ const confirmReducer = (value = [], action) => {
         action.payload,
         ...value,
       ];
+    case 'DELETE_IMAGE':
+    case 'DELETE_IMAGES':
     case 'PALETTE_DELETE':
-      return value.filter(({ id }) => id !== action.payload.shortName);
     case 'CONFIRM_ANSWERED':
-      return value.filter(({ id }) => id !== action.payload);
+      return value.filter(({ id }) => id !== action.confirmId);
     default:
       return value;
   }

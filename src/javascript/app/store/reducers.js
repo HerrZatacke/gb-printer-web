@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import activePalette from './reducers/activePaletteReducer';
 import canShare from './reducers/canShareReducer';
 import confirm from './reducers/confirmReducer';
-import confirmation from './reducers/confirmationReducer';
 import dragover from './reducers/dragoverReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
@@ -47,7 +46,6 @@ export default combineReducers({
   activePalette,
   canShare,
   confirm,
-  confirmation,
   dragover,
   dropboxStorage,
   editImage,

@@ -139,12 +139,33 @@ const batch = (store) => (next) => (action) => {
 
     if (imageSelection.length) {
       switch (action.payload) {
-        case 'delete':
+        case 'delete': {
+          const id = Math.random();
+
           store.dispatch({
-            type: 'DELETE_IMAGES',
-            payload: imageSelection,
+            type: 'CONFIRM_ASK',
+            payload: {
+              message: `Delete ${imageSelection.length} images?`,
+              id,
+              confirm: () => {
+                store.dispatch({
+                  type: 'DELETE_IMAGES',
+                  payload: imageSelection,
+                  confirmId: id,
+                });
+              },
+              deny: () => {
+                store.dispatch({
+                  type: 'CONFIRM_ANSWERED',
+                  confirmId: id,
+                });
+              },
+            },
           });
+
           break;
+        }
+
         case 'animate':
           store.dispatch({
             type: 'SET_VIDEO_PARAMS',
