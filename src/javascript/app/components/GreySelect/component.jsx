@@ -23,39 +23,44 @@ const GreySelect = (props) => {
 
   return (
     <div className="grey-select">
-      { props.useChannels.n ? (
-        <select
-          className="grey-select__select"
-          value={values.blend}
-          onChange={(ev) => {
-            change('blend', ev.target.value);
-          }}
-        >
-          {
-            blendModeLabels.map(({ id, label }) => (
-              <option
-                key={id}
-                value={id}
-              >
-                {label}
-              </option>
-            ))
-          }
-        </select>
-      ) : null }
       {
         ['r', 'g', 'b', 'n']
           .filter((channelName) => props.useChannels[channelName])
           .map((color) => (
-            <ColorSlider
-              key={`slider-${color}`}
-              color={color}
-              values={values[color]}
-              onChange={(valueChange) => {
-                change(color, valueChange);
-              }}
-            />
-          ))
+            [
+              color === 'n' ? (
+                <select
+                  key="blendmode"
+                  className="grey-select__select"
+                  value={values.blend}
+                  onChange={(ev) => {
+                    change('blend', ev.target.value);
+                  }}
+                >
+                  {
+                    blendModeLabels.map(({ id, label }) => (
+                      <option
+                        key={id}
+                        value={id}
+                      >
+                        {label}
+                      </option>
+                    ))
+                  }
+                </select>
+              ) : null,
+              (
+                <ColorSlider
+                  key={`slider-${color}`}
+                  color={color}
+                  values={values[color]}
+                  onChange={(valueChange) => {
+                    change(color, valueChange);
+                  }}
+                />
+              ),
+            ]
+          ).flat().filter(Boolean))
       }
     </div>
   );
