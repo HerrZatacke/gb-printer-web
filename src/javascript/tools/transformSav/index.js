@@ -44,15 +44,21 @@ const getTransformSav = (store) => (data, filename) => {
   store.dispatch({
     type: 'CONFIRM_ASK',
     payload: {
-      message: 'Select frameset to use with this import',
-      options: getFrameGroups(frames)
-        .map(({ id: value, name: label }) => ({
-          value,
-          label,
-          selected: savFrameTypes === value,
-        })),
+      message: `Importing '${filename}'`,
+      questions: [
+        {
+          label: 'Select frameset to use with this import',
+          key: 'selectedFrameset',
+          options: getFrameGroups(frames)
+            .map(({ id: value, name }) => ({
+              value,
+              name,
+              selected: savFrameTypes === value,
+            })),
+        },
+      ],
       id,
-      confirm: (result) => {
+      confirm: ({ selectedFrameset }) => {
         store.dispatch({
           type: 'CONFIRM_ANSWERED',
           payload: id,
@@ -63,7 +69,7 @@ const getTransformSav = (store) => (data, filename) => {
           const baseAddress = (i + 1) * 0x1000;
           const frameNumber = data[baseAddress + 0xfb0];
           const transformedData = transformImage(data, baseAddress);
-          framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, result, frames)));
+          framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
         }
 
         Promise.all(framed)
