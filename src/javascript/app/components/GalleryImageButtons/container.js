@@ -22,14 +22,11 @@ const mapDispatchToProps = (dispatch, { hash, buttons, title }) => ({
           dispatch({
             type: 'DELETE_IMAGE',
             payload: hash,
-            confirmId: hash,
           });
         },
         deny: () => {
           dispatch({
             type: 'CONFIRM_ANSWERED',
-            payload: hash,
-            confirmId: hash,
           });
         },
       },

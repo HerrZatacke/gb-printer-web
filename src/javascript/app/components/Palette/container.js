@@ -16,19 +16,15 @@ const mapDispatchToProps = (dispatch, { shortName, name }) => ({
       type: 'CONFIRM_ASK',
       payload: {
         message: `Delete palette "${name || 'no name'}"?`,
-        id: shortName,
         confirm: () => {
           dispatch({
             type: 'PALETTE_DELETE',
             payload: { shortName },
-            confirmId: shortName,
           });
         },
         deny: () => {
           dispatch({
             type: 'CONFIRM_ANSWERED',
-            payload: shortName,
-            confirmId: shortName,
           });
         },
       },
