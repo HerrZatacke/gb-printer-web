@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 const blendModeKeys = {
 
+  NORMAL: 'normal',
+  NORMAL_S: 'normal_s',
+
   // Lighten Layer Modes
   LIGHTEN: 'lighten',
   SCREEN: 'screen',
@@ -35,6 +38,10 @@ const blendModeKeys = {
 };
 
 const blendModeFunctions = {
+  [blendModeKeys.NORMAL]: (i, m) => (
+    i
+  ),
+
   [blendModeKeys.LIGHTEN]: (i, m) => (
     Math.max(m, i)
   ),
@@ -90,6 +97,9 @@ const blendModeFunctions = {
   ),
 
   // asymetrtic calls
+  [blendModeKeys.NORMAL_S]: (i, m) => (
+    blendModeFunctions[blendModeKeys.NORMAL](m, i)
+  ),
   [blendModeKeys.DODGE_S]: (i, m) => (
     blendModeFunctions[blendModeKeys.DODGE](m, i)
   ),
@@ -114,6 +124,15 @@ const blendModeFunctions = {
 };
 
 const blendModeLabels = [
+  {
+    id: blendModeKeys.NORMAL,
+    label: 'Normal (ignore neutral layer)',
+  },
+  {
+    id: blendModeKeys.NORMAL_S,
+    label: 'Normal ⇵ (only neutral layer)',
+  },
+
   // Lighten Layer Modes
   {
     id: blendModeKeys.LIGHTEN,
