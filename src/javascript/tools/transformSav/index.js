@@ -1,5 +1,6 @@
 import applyFrame from '../applyFrame';
 import mapCartFrameToName from './mapCartFrameToName';
+import getFrameGroups from '../getFrameGroups';
 
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
 
@@ -38,26 +39,55 @@ const transformImage = (data, baseAddress) => {
 const getTransformSav = (store) => (data, filename) => {
   const { savFrameTypes, frames } = store.getState();
   const framed = [];
+  const id = Math.random();
 
-  for (let i = 1; i <= 30; i += 1) {
-    const baseAddress = (i + 1) * 0x1000;
-    const frameNumber = data[baseAddress + 0xfb0];
-    const transformedData = transformImage(data, baseAddress);
-    framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, savFrameTypes, frames)));
-  }
-
-  Promise.all(framed)
-    .then((framedImages) => {
-      framedImages.forEach((framedImage) => {
+  store.dispatch({
+    type: 'CONFIRM_ASK',
+    payload: {
+      message: 'Select frameset to use with this import',
+      options: getFrameGroups(frames)
+        .map(({ id: value, name: label }) => ({
+          value,
+          label,
+          selected: savFrameTypes === value,
+        })),
+      id,
+      confirm: (result) => {
         store.dispatch({
-          type: 'ADD_TO_QUEUE',
-          payload: [{
-            file: filename,
-            lines: framedImage,
-          }],
+          type: 'CONFIRM_ANSWERED',
+          payload: id,
         });
-      });
-    });
+
+        // Perform actual import action
+        for (let i = 1; i <= 30; i += 1) {
+          const baseAddress = (i + 1) * 0x1000;
+          const frameNumber = data[baseAddress + 0xfb0];
+          const transformedData = transformImage(data, baseAddress);
+          framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, result, frames)));
+        }
+
+        Promise.all(framed)
+          .then((framedImages) => {
+            framedImages.forEach((framedImage) => {
+              store.dispatch({
+                type: 'ADD_TO_QUEUE',
+                payload: [{
+                  file: filename,
+                  lines: framedImage,
+                }],
+              });
+            });
+          });
+      },
+      deny: () => {
+        store.dispatch({
+          type: 'CONFIRM_ANSWERED',
+          payload: id,
+        });
+      },
+    },
+  });
+
 };
 
 export default getTransformSav;
