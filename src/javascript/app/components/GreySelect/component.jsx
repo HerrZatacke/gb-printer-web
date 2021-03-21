@@ -23,26 +23,29 @@ const GreySelect = (props) => {
 
   return (
     <div className="grey-select">
-      <select
-        className="grey-select__select"
-        value={values.blend}
-        onChange={(ev) => {
-          change('blend', ev.target.value);
-        }}
-      >
-        {
-          blendModeLabels.map(({ id, label }) => (
-            <option
-              key={id}
-              value={id}
-            >
-              {label}
-            </option>
-          ))
-        }
-      </select>
+      { props.useChannels.n ? (
+        <select
+          className="grey-select__select"
+          value={values.blend}
+          onChange={(ev) => {
+            change('blend', ev.target.value);
+          }}
+        >
+          {
+            blendModeLabels.map(({ id, label }) => (
+              <option
+                key={id}
+                value={id}
+              >
+                {label}
+              </option>
+            ))
+          }
+        </select>
+      ) : null }
       {
         ['r', 'g', 'b', 'n']
+          .filter((channelName) => props.useChannels[channelName])
           .map((color) => (
             <ColorSlider
               key={`slider-${color}`}
@@ -61,6 +64,12 @@ const GreySelect = (props) => {
 GreySelect.propTypes = {
   values: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  useChannels: PropTypes.shape({
+    r: PropTypes.bool.isRequired,
+    g: PropTypes.bool.isRequired,
+    b: PropTypes.bool.isRequired,
+    n: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 GreySelect.defaultProps = {};
