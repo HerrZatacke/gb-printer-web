@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDebouncedCallback } from 'use-debounce';
+import { blendModeLabels } from '../../../tools/RGBNDecoder/blendModes';
 import ColorSlider from '../ColorSlider';
 
 const GreySelect = (props) => {
@@ -22,6 +23,24 @@ const GreySelect = (props) => {
 
   return (
     <div className="grey-select">
+      <select
+        className="grey-select__select"
+        value={values.blend}
+        onChange={(ev) => {
+          change('blend', ev.target.value);
+        }}
+      >
+        {
+          blendModeLabels.map(({ id, label }) => (
+            <option
+              key={id}
+              value={id}
+            >
+              {label}
+            </option>
+          ))
+        }
+      </select>
       {
         ['r', 'g', 'b', 'n']
           .map((color) => (
