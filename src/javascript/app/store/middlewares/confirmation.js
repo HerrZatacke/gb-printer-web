@@ -20,19 +20,6 @@ const dispatchDeleteImageConfirmation = (action, dispatch, images) => {
   });
 };
 
-const dispatchDeletePaletteConfirmation = (action, dispatch, palettes) => {
-
-  const palette = palettes.find(({ shortName }) => shortName === action.payload.shortName);
-
-  dispatch({
-    type: 'SET_CONFIRMATION',
-    payload: {
-      message: `Delete palette "${palette ? palette.name : 'no name'}"?`,
-      originalAction: { confirmed: true, ...action },
-    },
-  });
-};
-
 const confirmation = (store) => {
 
   document.addEventListener('keydown', (ev) => {
@@ -61,19 +48,6 @@ const confirmation = (store) => {
         }
 
         dispatchDeleteImageConfirmation(action, store.dispatch, state.images);
-        return;
-      case 'PALETTE_DELETE':
-        if (action.confirmed) {
-          next(action);
-          return;
-        }
-
-        // If deleting the current palette, set 'bw' as new selected
-        if (state.activePalette === action.payload.shortName) {
-          Object.assign(action.payload, { newSelectedPalette: 'bw' });
-        }
-
-        dispatchDeletePaletteConfirmation(action, store.dispatch, state.palettes);
         return;
       case 'CONFIRM_CONFIRMATION':
         store.dispatch({
