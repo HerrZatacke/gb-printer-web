@@ -39,7 +39,6 @@ const transformImage = (data, baseAddress) => {
 const getTransformSav = (store) => (data, filename) => {
   const { savFrameTypes, frames } = store.getState();
   const framed = [];
-  const id = Math.random();
 
   store.dispatch({
     type: 'CONFIRM_ASK',
@@ -57,11 +56,9 @@ const getTransformSav = (store) => (data, filename) => {
             })),
         },
       ],
-      id,
       confirm: ({ selectedFrameset }) => {
         store.dispatch({
           type: 'CONFIRM_ANSWERED',
-          confirmId: id,
         });
 
         // Perform actual import action
@@ -88,7 +85,6 @@ const getTransformSav = (store) => (data, filename) => {
       deny: () => {
         store.dispatch({
           type: 'CONFIRM_ANSWERED',
-          confirmId: id,
         });
       },
     },
