@@ -18,7 +18,7 @@ const Confirm = ({
       deny={deny}
       header={message}
     >
-      {questions && questions.length && (
+      {
         questions.map(({ label, key, options }) => (
           options && options.length > 1 && (
             <div
@@ -50,7 +50,7 @@ const Confirm = ({
             </div>
           )
         ))
-      )}
+      }
     </Lightbox>
   );
 };
