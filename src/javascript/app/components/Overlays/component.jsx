@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ProgressLogBox from './ProgressLogBox';
 import InfoBox from './InfoBox';
 import ProgressBox from './ProgressBox';
+import Confirm from './Confirm';
 import Confirmation from './Confirmation';
 import EditForm from './EditForm';
 import EditPalette from './EditPalette';
@@ -19,6 +20,7 @@ const Overlays = ({
   showProgressLog,
   showInfoBox,
   showProgressBox,
+  showConfirm,
   showConfirmation,
   showEditForm,
   showEditPalette,
@@ -35,6 +37,7 @@ const Overlays = ({
     {showProgressLog ? <ProgressLogBox /> : null }
     {showInfoBox ? <InfoBox /> : null }
     {showProgressBox ? <ProgressBox /> : null }
+    {showConfirm ? <Confirm /> : null }
     {showConfirmation ? <Confirmation /> : null }
     {showEditForm ? <EditForm /> : null }
     {showEditPalette ? <EditPalette /> : null }
@@ -53,6 +56,7 @@ Overlays.propTypes = {
   showProgressLog: PropTypes.bool.isRequired,
   showInfoBox: PropTypes.bool.isRequired,
   showProgressBox: PropTypes.bool.isRequired,
+  showConfirm: PropTypes.bool.isRequired,
   showConfirmation: PropTypes.bool.isRequired,
   showEditForm: PropTypes.bool.isRequired,
   showEditPalette: PropTypes.bool.isRequired,
