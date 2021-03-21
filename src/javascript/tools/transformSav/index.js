@@ -61,7 +61,7 @@ const getTransformSav = (store) => (data, filename) => {
       confirm: ({ selectedFrameset }) => {
         store.dispatch({
           type: 'CONFIRM_ANSWERED',
-          payload: id,
+          confirmId: id,
         });
 
         // Perform actual import action
@@ -88,7 +88,7 @@ const getTransformSav = (store) => (data, filename) => {
       deny: () => {
         store.dispatch({
           type: 'CONFIRM_ANSWERED',
-          payload: id,
+          confirmId: id,
         });
       },
     },

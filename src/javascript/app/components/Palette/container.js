@@ -21,12 +21,14 @@ const mapDispatchToProps = (dispatch, { shortName, name }) => ({
           dispatch({
             type: 'PALETTE_DELETE',
             payload: { shortName },
+            confirmId: shortName,
           });
         },
         deny: () => {
           dispatch({
             type: 'CONFIRM_ANSWERED',
             payload: shortName,
+            confirmId: shortName,
           });
         },
       },
