@@ -6,7 +6,7 @@ const mapStateToProps = (state) => {
 
   const height = (state.windowDimensions.width <= 600) ?
     state.windowDimensions.height :
-    Math.min(800, state.windowDimensions.height);
+    Math.min(900, state.windowDimensions.height);
 
   const findPalette = (shortName) => (
     state.palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
