@@ -41,6 +41,12 @@ const EditImageTabs = (props) => {
               <GreySelect
                 values={props.paletteRGBN}
                 onChange={props.updatePalette}
+                useChannels={{
+                  r: !!props.hashes.r,
+                  g: !!props.hashes.g,
+                  b: !!props.hashes.b,
+                  n: !!props.hashes.n,
+                }}
               />
             </>
           ) : (

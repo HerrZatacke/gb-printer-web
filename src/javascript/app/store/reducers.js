@@ -31,6 +31,7 @@ import printerFunctions from './reducers/printerFunctionsReducer';
 import printerUrl from './reducers/printerUrlReducer';
 import progress from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
+import recentImports from './reducers/recentImportsReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
@@ -75,6 +76,7 @@ export default combineReducers({
   printerFunctions,
   printerUrl,
   progress,
+  recentImports,
   rgbnImages,
   savFrameTypes,
   sortBy,

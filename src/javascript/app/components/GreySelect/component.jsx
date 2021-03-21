@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDebouncedCallback } from 'use-debounce';
+import { blendModeLabels } from '../../../tools/RGBNDecoder/blendModes';
 import ColorSlider from '../ColorSlider';
 
 const GreySelect = (props) => {
@@ -24,16 +25,42 @@ const GreySelect = (props) => {
     <div className="grey-select">
       {
         ['r', 'g', 'b', 'n']
+          .filter((channelName) => props.useChannels[channelName])
           .map((color) => (
-            <ColorSlider
-              key={`slider-${color}`}
-              color={color}
-              values={values[color]}
-              onChange={(valueChange) => {
-                change(color, valueChange);
-              }}
-            />
-          ))
+            [
+              color === 'n' ? (
+                <select
+                  key="blendmode"
+                  className="grey-select__select"
+                  value={values.blend}
+                  onChange={(ev) => {
+                    change('blend', ev.target.value);
+                  }}
+                >
+                  {
+                    blendModeLabels.map(({ id, label }) => (
+                      <option
+                        key={id}
+                        value={id}
+                      >
+                        {label}
+                      </option>
+                    ))
+                  }
+                </select>
+              ) : null,
+              (
+                <ColorSlider
+                  key={`slider-${color}`}
+                  color={color}
+                  values={values[color]}
+                  onChange={(valueChange) => {
+                    change(color, valueChange);
+                  }}
+                />
+              ),
+            ]
+          ).flat().filter(Boolean))
       }
     </div>
   );
@@ -42,6 +69,12 @@ const GreySelect = (props) => {
 GreySelect.propTypes = {
   values: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  useChannels: PropTypes.shape({
+    r: PropTypes.bool.isRequired,
+    g: PropTypes.bool.isRequired,
+    b: PropTypes.bool.isRequired,
+    n: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 GreySelect.defaultProps = {};

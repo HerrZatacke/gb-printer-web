@@ -79,8 +79,7 @@
     margin-top: 0;
     margin-bottom: 0;
     background: none;
-    //width: 1px;
-    //flex-grow: 2;
+    @include theme-background-color(transparent, transparent);
   }
 
   &__tags {

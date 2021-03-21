@@ -16,12 +16,22 @@ const ImageRender = ({
   const [tiles, setTiles] = useState(null);
 
   useEffect(() => {
+    let aborted = false;
+
     // setTiles(null); // no need to clear before update?
     loadImageTiles({ images })({ hash, frame, hashes })
       .then((loadedTiles) => {
+        if (aborted) {
+          return;
+        }
+
         reportTileCount(loadedTiles.length);
         setTiles(loadedTiles);
       });
+
+    return () => {
+      aborted = true;
+    };
   }, [images, loadImageTiles, reportTileCount, hash, hashes, frame]);
 
   return tiles ? (
