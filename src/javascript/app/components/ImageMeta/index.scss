@@ -1,5 +1,20 @@
 .image-meta-form {
 
+  &__datetime {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__label {
+    &--date {
+      flex: calc(60% - 4px) 0 0;
+    }
+
+    &--time {
+      flex: calc(40% - 4px) 0 0;
+    }
+  }
+
   &__label-text {
     display: block;
     line-height: 32px;
