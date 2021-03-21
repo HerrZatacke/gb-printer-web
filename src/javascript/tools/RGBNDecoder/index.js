@@ -73,9 +73,9 @@ class RGBNDecoder extends Decoder {
     );
 
     return {
-      r: callBlendFunction(this.palette.r[3 - r], this.palette.r[3 - n]),
-      g: callBlendFunction(this.palette.r[3 - g], this.palette.r[3 - n]),
-      b: callBlendFunction(this.palette.r[3 - b], this.palette.r[3 - n]),
+      r: callBlendFunction(this.palette.r[3 - r], this.palette.n[3 - n]),
+      g: callBlendFunction(this.palette.g[3 - g], this.palette.n[3 - n]),
+      b: callBlendFunction(this.palette.b[3 - b], this.palette.n[3 - n]),
     };
   }
 
