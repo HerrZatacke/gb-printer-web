@@ -1,9 +1,15 @@
 .confirm {
   .inputgroup {
     margin: 20px;
-  }
+    flex-direction: column;
+    align-items: stretch;
 
-  .inputgroup__input--select {
-    margin: 0;
+    &__label {
+      margin-bottom: 10px;
+    }
+
+    &__input--select {
+      margin-left: 0;
+    }
   }
 }

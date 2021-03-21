@@ -8,7 +8,7 @@ const mapStateToProps = (state) => {
 
   return ({
     message: toConfirm.message,
-    options: toConfirm.options,
+    questions: toConfirm.questions,
     confirm: toConfirm.confirm,
     deny: toConfirm.deny,
   });
