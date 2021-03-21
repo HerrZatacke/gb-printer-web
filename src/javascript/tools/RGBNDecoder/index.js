@@ -56,7 +56,7 @@ class RGBNDecoder extends Decoder {
       return RGBValues;
     }
 
-    const blendMode = this.palette.blendmode || blendModeKeys.MULTIPLY;
+    const blendMode = this.palette.blend || blendModeKeys.MULTIPLY;
 
     if (!blendModeFunctions[blendMode]) {
       return RGBValues;
