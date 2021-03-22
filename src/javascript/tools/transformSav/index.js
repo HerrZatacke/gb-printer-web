@@ -40,6 +40,40 @@ const getTransformSav = (store) => (data, filename) => {
   const { savFrameTypes, frames } = store.getState();
   const framed = [];
 
+  const frameGroups = getFrameGroups(frames)
+    .map(({ id: value, name }) => ({
+      value,
+      name,
+      selected: savFrameTypes === value,
+    }));
+
+  const importSav = (selectedFrameset) => {
+    for (let i = 1; i <= 30; i += 1) {
+      const baseAddress = (i + 1) * 0x1000;
+      const frameNumber = data[baseAddress + 0xfb0];
+      const transformedData = transformImage(data, baseAddress);
+      framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
+    }
+
+    Promise.all(framed)
+      .then((framedImages) => {
+        framedImages.forEach((framedImage) => {
+          store.dispatch({
+            type: 'ADD_TO_QUEUE',
+            payload: [{
+              file: filename,
+              lines: framedImage,
+            }],
+          });
+        });
+      });
+  };
+
+  if (frameGroups.length < 2) {
+    importSav(savFrameTypes);
+    return;
+  }
+
   store.dispatch({
     type: 'CONFIRM_ASK',
     payload: {
@@ -48,12 +82,7 @@ const getTransformSav = (store) => (data, filename) => {
         {
           label: 'Select frameset to use with this import',
           key: 'selectedFrameset',
-          options: getFrameGroups(frames)
-            .map(({ id: value, name }) => ({
-              value,
-              name,
-              selected: savFrameTypes === value,
-            })),
+          options: frameGroups,
         },
       ],
       confirm: ({ selectedFrameset }) => {
@@ -62,25 +91,7 @@ const getTransformSav = (store) => (data, filename) => {
         });
 
         // Perform actual import action
-        for (let i = 1; i <= 30; i += 1) {
-          const baseAddress = (i + 1) * 0x1000;
-          const frameNumber = data[baseAddress + 0xfb0];
-          const transformedData = transformImage(data, baseAddress);
-          framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
-        }
-
-        Promise.all(framed)
-          .then((framedImages) => {
-            framedImages.forEach((framedImage) => {
-              store.dispatch({
-                type: 'ADD_TO_QUEUE',
-                payload: [{
-                  file: filename,
-                  lines: framedImage,
-                }],
-              });
-            });
-          });
+        importSav(selectedFrameset);
       },
       deny: () => {
         store.dispatch({
