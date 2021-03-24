@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
         headline: 'You might be temporarily missing some frames',
         text: [
           'In a recent change the pre-compiled frames have been removed from this application.',
-          'The application now however gives you the opportunity to add all fames you like by yourself and also share them with others.',
+          'The application now however gives you the opportunity to add all frames you like by yourself and also share them with others.',
           'Maybe you have designed some frames by yourself, or you have aquired some previously unknown frames.',
           'To see how you can add the frames, check the "Frames" explanation on the startpage of this app.',
         ],
