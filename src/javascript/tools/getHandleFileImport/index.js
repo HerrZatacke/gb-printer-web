@@ -23,7 +23,7 @@ const getHandleFileImport = (store) => {
   const transformSav = getTransformSav(store);
   const transformBin = getTransformBin(dispatch);
   const transformCapture = getTransformCapture(dispatch);
-  const transformBitmap = getTransformBitmap(dispatch);
+  const transformBitmap = getTransformBitmap(store);
   const transformClassic = getTransformClassic(dispatch);
 
   const onError = () => {

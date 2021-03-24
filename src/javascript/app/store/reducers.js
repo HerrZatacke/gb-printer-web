@@ -22,7 +22,6 @@ import importQueueSize from './reducers/importQueueSizeReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
-import lineBuffer from './reducers/lineBufferReducer';
 import pageSize from './reducers/pageSizeReducer';
 import palettes from './reducers/palettesReducer';
 import printerBusy from './reducers/printerBusyReducer';
@@ -36,8 +35,6 @@ import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
-import socketState from './reducers/socketStateReducer';
-import socketUrl from './reducers/socketUrlReducer';
 import syncBusy from './reducers/syncBusyReducer';
 import syncSelect from './reducers/syncSelectReducer';
 import videoParams from './reducers/videoParamsReducer';
@@ -68,7 +65,6 @@ export default combineReducers({
   lastSelectedImage,
   progressLog,
   lightboxImage,
-  lineBuffer,
   pageSize,
   palettes,
   printerBusy,
@@ -81,8 +77,6 @@ export default combineReducers({
   savFrameTypes,
   sortBy,
   sortOptionsVisible,
-  socketState,
-  socketUrl,
   syncBusy,
   syncSelect,
   videoParams,
