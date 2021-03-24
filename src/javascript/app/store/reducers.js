@@ -18,7 +18,6 @@ import gitStorage from './reducers/gitStorageReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import imageSelection from './reducers/imageSelectionReducer';
-import importQueueSize from './reducers/importQueueSizeReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
@@ -60,7 +59,6 @@ export default combineReducers({
   hideDates,
   images,
   imageSelection,
-  importQueueSize,
   isFullscreen,
   lastSelectedImage,
   progressLog,

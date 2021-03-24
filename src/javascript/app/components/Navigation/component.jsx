@@ -98,17 +98,11 @@ const Navigation = (props) => {
           />
         </li>
       </ul>
-      {props.importQueueSize > 0 ? (
-        <div className="navigation__queuesize">
-          {props.importQueueSize}
-        </div>
-      ) : null}
     </nav>
   );
 };
 
 Navigation.propTypes = {
-  importQueueSize: PropTypes.number.isRequired,
   selectSync: PropTypes.func.isRequired,
   useSync: PropTypes.bool.isRequired,
   syncBusy: PropTypes.bool.isRequired,

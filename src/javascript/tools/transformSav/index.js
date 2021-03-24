@@ -57,14 +57,12 @@ const getTransformSav = (store) => (data, filename) => {
 
     Promise.all(framed)
       .then((framedImages) => {
-        framedImages.forEach((framedImage) => {
-          store.dispatch({
-            type: 'ADD_TO_QUEUE',
-            payload: [{
-              file: filename,
-              lines: framedImage,
-            }],
-          });
+        store.dispatch({
+          type: 'ADD_TO_QUEUE',
+          payload: framedImages.map((lines) => ({
+            lines,
+            file: filename,
+          })),
         });
       });
   };

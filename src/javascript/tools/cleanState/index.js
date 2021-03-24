@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import predefinedPalettes from 'gb-palettes';
-import { defaultRGBNPalette } from '../../app/defaults';
+import { dateFormat, defaultRGBNPalette } from '../../app/defaults';
 import uniqueBy from '../unique/by';
 import cleanUrl from '../cleanUrl';
 import { blendModeKeys } from '../RGBNDecoder/blendModes';
@@ -24,11 +24,20 @@ const cleanState = (dirtyState) => {
   const activePalette = palettesShorts.includes(dirtyState.activePalette) ? dirtyState.activePalette : 'bw';
 
   const images = dirtyState.images
+    // clean the created date (add ms)
+    .map((image) => ({
+      ...image,
+      created: dayjs(image.created).format(dateFormat),
+    }))
+
+    // add tags array if missing
+    .map((image) => ({
+      ...image,
+      tags: image.tags || [],
+    }))
+
+    // clean palettes
     .map((image) => {
-
-      // eslint-disable-next-line no-param-reassign
-      image.tags = image.tags || [];
-
       // image is a rgbn image
       if (image.hashes) {
         if (!image.palette) {

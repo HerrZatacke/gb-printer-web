@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  importQueueSize: state.importQueueSize,
   syncBusy: state.syncBusy,
   useSync: !!(
     state.dropboxStorage.use ||

@@ -83,8 +83,13 @@ const getTransformBitmap = (store) => (file) => {
         lines: tileLines,
         filename: file.name.split('.').shift(),
         palette: store.getState().activePalette,
-        dispatch,
-      });
+      })
+        .then((image) => {
+          dispatch({
+            type: 'ADD_IMAGE',
+            payload: image,
+          });
+        });
     }
   };
 
