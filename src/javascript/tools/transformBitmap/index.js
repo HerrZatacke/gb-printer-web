@@ -78,16 +78,28 @@ const getTransformBitmap = (store) => (file) => {
           });
         });
     } else {
-      // This would import the file as gameboy image.
       saveNewImage({
         lines: tileLines,
         filename: file.name.split('.').shift(),
         palette: store.getState().activePalette,
       })
         .then((image) => {
-          dispatch({
-            type: 'ADD_IMAGE',
-            payload: image,
+          store.dispatch({
+            type: 'CONFIRM_ASK',
+            payload: {
+              message: 'Filename does not match frame naming scheme. Import as image?',
+              confirm: () => {
+                dispatch({
+                  type: 'ADD_IMAGE',
+                  payload: image,
+                });
+              },
+              deny: () => {
+                dispatch({
+                  type: 'CONFIRM_ANSWERED',
+                });
+              },
+            },
           });
         });
     }
