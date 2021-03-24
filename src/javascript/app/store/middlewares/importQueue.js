@@ -22,11 +22,13 @@ const importQueue = (store) => {
       .then((result) => {
 
         const uniqueResult = uniqueHash(result);
+        const duplicatesMsg = uniqueResult.length === result.length ? '' :
+          ` (${result.length - uniqueResult.length} duplicates found in import)`;
 
         store.dispatch({
           type: 'CONFIRM_ASK',
           payload: {
-            message: `Import ${uniqueResult.length} images?`,
+            message: `Import ${uniqueResult.length} images? ${duplicatesMsg}`,
             confirm: () => {
               store.dispatch({
                 type: 'ADD_IMAGES',
