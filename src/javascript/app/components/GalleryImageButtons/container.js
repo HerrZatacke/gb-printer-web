@@ -17,7 +17,6 @@ const mapDispatchToProps = (dispatch, { hash, buttons, title }) => ({
       type: 'CONFIRM_ASK',
       payload: {
         message: title ? `Delete image "${title}"?` : 'Delete this image?',
-        id: hash,
         confirm: () => {
           dispatch({
             type: 'DELETE_IMAGE',

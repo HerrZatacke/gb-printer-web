@@ -1,6 +1,6 @@
 import { blendModeKeys } from '../tools/RGBNDecoder/blendModes';
 
-const dateFormat = 'YYYY-MM-DD HH:mm:ss';
+const dateFormat = 'YYYY-MM-DD HH:mm:ss:SSS';
 const dateFormatInput = 'YYYY-MM-DD';
 const timeFormatInput = 'HH:mm';
 const dateFormatFilename = 'YYYYMMDD-HHmmss';
