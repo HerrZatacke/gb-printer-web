@@ -1,5 +1,5 @@
 import getFilteredImages from '../getFilteredImages';
-import sortImages from '../sortImages';
+import { addSortIndex, removeSortIndex, sortImages } from '../sortImages';
 import uniqueBy from '../unique/by';
 
 const filterRGB = (palette) => (
@@ -22,7 +22,11 @@ const getPreviewImages = (state) => () => {
 
   const allImages = ((selectedImages.length + filtered.length) > 1) ?
     [] :
-    [...state.images].sort(sortImages({ sortBy: state.sortBy })).filter(filterRGB);
+    [...state.images]
+      .map(addSortIndex)
+      .sort(sortImages({ sortBy: state.sortBy }))
+      .map(removeSortIndex)
+      .filter(filterRGB);
 
   const previewImages = uniqeHash(
     [

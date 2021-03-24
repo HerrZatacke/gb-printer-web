@@ -1,6 +1,6 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 import applyTagChanges from '../../../tools/applyTagChanges';
-import sortImages from '../../../tools/sortImages';
+import { addSortIndex, removeSortIndex, sortImages } from '../../../tools/sortImages';
 import unique from '../../../tools/unique';
 
 const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags', 'created'];
@@ -45,7 +45,9 @@ const batch = (store) => (next) => (action) => {
       const updatedImages = editImage.batch.map((selcetionHash) => (
         images.find(({ hash }) => hash === selcetionHash)
       ))
+        .map(addSortIndex)
         .sort(sortFunc)
+        .map(removeSortIndex)
         .map((updateImage, selectionIndex) => {
 
           if (!updateImage) {
