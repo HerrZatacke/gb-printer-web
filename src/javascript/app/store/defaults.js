@@ -83,10 +83,16 @@ const definitions = [
   },
   {
     // current filter for images
-    key: 'filter',
+    key: 'filtersActiveTags',
     saveLocally: true,
     saveExport: [],
-    value: {},
+    value: [],
+  },
+  {
+    key: 'filtersVisible',
+    saveLocally: true,
+    saveExport: [],
+    value: false,
   },
   {
     // framegoup to be applied when importing .sav files

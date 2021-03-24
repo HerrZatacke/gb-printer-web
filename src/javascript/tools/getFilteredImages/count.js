@@ -1,7 +1,7 @@
 import filter from './filter';
 
-const getFilteredImagesCount = ({ images: stateImages, filter: { activeTags }, recentImports }) => (
-  [...stateImages].filter(filter(activeTags, recentImports)).length
+const getFilteredImagesCount = ({ images: stateImages, filtersActiveTags, recentImports }) => (
+  [...stateImages].filter(filter(filtersActiveTags, recentImports)).length
 );
 
 export default getFilteredImagesCount;

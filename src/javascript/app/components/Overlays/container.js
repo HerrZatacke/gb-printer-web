@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
   showRGBNImage: true, // animating ?
   showLightbox: state.lightboxImage !== null,
   showDragOver: !!state.dragover,
-  showFilters: !!state.filter.visible,
+  showFilters: !!state.filtersVisible,
   showSortForm: !!state.sortOptionsVisible,
   syncSelect: !!state.syncSelect,
 });

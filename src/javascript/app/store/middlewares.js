@@ -4,7 +4,6 @@ import batch from './middlewares/batch';
 import deleteImage from './middlewares/deleteImage';
 import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
-import filters from './middlewares/filters';
 import gitStorage from './middlewares/gitStorage';
 import handleErrors from './middlewares/error';
 import hideLiveImage from './middlewares/hideLiveImage';
@@ -28,7 +27,6 @@ export default applyMiddleware(
   dropboxStorage,
   handleErrors,
   fileDrop,
-  filters,
   gitStorage,
   hideLiveImage,
   importFile,

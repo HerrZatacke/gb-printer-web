@@ -9,7 +9,8 @@ import editPalette from './reducers/editPaletteReducer';
 import exportCropFrame from './reducers/exportCropFrameReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
-import filter from './reducers/filtersReducer';
+import filtersActiveTags from './reducers/filtersActiveTagsReducer';
+import filtersVisible from './reducers/filtersVisibleReducer';
 import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
@@ -53,7 +54,8 @@ export default combineReducers({
   exportCropFrame,
   exportFileTypes,
   exportScaleFactors,
-  filter,
+  filtersActiveTags,
+  filtersVisible,
   frames,
   framesMessage,
   galleryView,
