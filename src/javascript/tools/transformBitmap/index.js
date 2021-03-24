@@ -1,5 +1,6 @@
 import { saveFrameData } from '../applyFrame/frameData';
 import readFileAs from '../readFileAs';
+import saveNewImage from '../saveNewImage';
 
 const getGreytone = ([r, g, b, a]) => {
   const greyTone = Math.floor((r + g + b) / 3 * (a / 255));
@@ -39,7 +40,8 @@ const encodeTile = ({ data: imageData }) => {
   return line.join(' ').toUpperCase();
 };
 
-const getTransformBitmap = (dispatch) => (file) => {
+const getTransformBitmap = (store) => (file) => {
+  const { dispatch } = store;
   const img = document.createElement('img');
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
@@ -77,12 +79,11 @@ const getTransformBitmap = (dispatch) => (file) => {
         });
     } else {
       // This would import the file as gameboy image.
-      dispatch({
-        type: 'SET_ALL_LINES',
-        payload: {
-          lines: tileLines,
-          file: file.name.split('.').shift(),
-        },
+      saveNewImage({
+        lines: tileLines,
+        filename: file.name.split('.').shift(),
+        palette: store.getState().activePalette,
+        dispatch,
       });
     }
   };

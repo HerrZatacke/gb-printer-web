@@ -18,7 +18,6 @@ const cleanState = (dirtyState) => {
   const palettesShorts = palettes.map(({ shortName }) => shortName);
   const frameIds = dirtyState.frames.map(({ id }) => id);
 
-  const socketUrl = cleanUrl(dirtyState.socketUrl, 'ws');
   const printerUrl = cleanUrl(dirtyState.printerUrl, 'http');
   let framesMessage = dirtyState.framesMessage;
 
@@ -93,7 +92,6 @@ const cleanState = (dirtyState) => {
     ...dirtyState,
     images,
     palettes,
-    socketUrl,
     printerUrl,
     framesMessage,
     activePalette,

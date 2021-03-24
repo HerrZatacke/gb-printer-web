@@ -10,17 +10,6 @@
 * This Project is mainly built around the serial output of the original [GBP Emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator)
 * Cart .SAV files are also supported. The previously selected frame will be applied as well. If you're importing from a JP-Cartridge (Pocket Camera), you may want to change the "Frames when importing Cartridge dumps" option in the [settings page](#/settings)    
 
-## Local Setup
-You can run this app locally to directly use the gbp-emulator on your serial port 
-* Install [node.js](https://nodejs.org/) if you haven't already.
-* Check out/clone/download [this repository](https://github.com/HerrZatacke/gb-printer-web)
-* Run `npm i` in the root directory via your commandline
-* Add a `config.json` in the root dir (see below)
-* Run `npm start` via your commandline
-* Open [localhost:3000](http://localhost:3000)
-* Go to the 'Settings' page and change the 'Remote Socket URL' to `localhost:3001`
-* Print something
-
 ## Frames
 In a recent change (Version 1.7.0) the pre-compiled frames have been removed from this application.  
 The application now however gives you the opportunity to add all frames you like by yourself and also share them with others.  
@@ -42,25 +31,6 @@ E.g. `int01.Nintendo + Gameboy.png` would be a good name for the first frame of 
 [In the settings tab](#/settings) you can find an "Export frames" button. The resulting `.json` file can be shared and will contain all of your frames.  
 This `.json` file can be dragged into the application and will add all frames from that export to your application.  
 
-## Serial config with `config.json`
-Create a file `config.json` in the root dir and configure it like the following example (multiple ports are supported):
-``` json
-{
-  "ports": [
-    {
-      "path": "COM19",
-      "baudRate": 115200,
-      "dataBits": 8,
-      "stopBits": 1,
-      "parity": "none",
-      "retry": false
-    },
-    ...
-  ] 
-}
-```
-you can set `retry` to a number of milliseconds after which a retry will be attempted to open the port.
-
 ## Optional deployment config with `config.json`
 Add a `deploy` section in `config.json` to automatically copy the created files to another location.  
 If you set the option `gzip` to `true`, each file will be separately compressed. Useful for servers capable serving pre-zipped files. This saves ~1kB storage space which is very useful on [small systems](https://github.com/HerrZatacke/wifi-gbp-emulator).
@@ -74,8 +44,14 @@ If you set the option `gzip` to `true`, each file will be separately compressed.
 }
 ```
 
-## Future Plans
-This tool is partially integrated into the [WiFi GBP Emulator](https://herrzatacke.github.io/wifi-gbp-emulator/), for which, you'll best [use the latest release](https://github.com/HerrZatacke/gb-printer-web/releases)
+## Local Setup
+(mostly required for development)
+* Install [node.js](https://nodejs.org/) if you haven't already.
+* Check out/clone/download [this repository](https://github.com/HerrZatacke/gb-printer-web)
+* Run `npm i` in the root directory via your commandline
+* Add a `config.json` in the root dir (see below)
+* Run `npm start` via your commandline
+* Open [localhost:3000](http://localhost:3000)
 
 ## Links and research
 * The source to this project is [available on GitHub](https://github.com/HerrZatacke/gb-printer-web)

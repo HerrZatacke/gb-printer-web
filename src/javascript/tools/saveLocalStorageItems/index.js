@@ -20,11 +20,11 @@ const saveLocalStorageItems = ({ images, frames }) => {
             return image.getFileContent(image.sha, imageIndex, imagesTotal)
               .then((blob) => {
 
-                const lineBuffer = blob
+                const lines = blob
                   .split('\n')
                   .filter((line) => line.match(/^[0-9a-f ]+$/gi));
 
-                return save(lineBuffer);
+                return save(lines);
               });
           })
       )),

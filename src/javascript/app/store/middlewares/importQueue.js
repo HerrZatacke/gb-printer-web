@@ -1,3 +1,5 @@
+import saveNewImage from '../../../tools/saveNewImage';
+
 const importQueue = (store) => {
 
   const images = [];
@@ -12,9 +14,13 @@ const importQueue = (store) => {
 
     window.setTimeout(() => {
       queueRunning = false;
-      store.dispatch({
-        type: 'SET_ALL_LINES',
-        payload: images.shift(),
+      const image = images.shift();
+
+      saveNewImage({
+        lines: image.lines,
+        filename: image.file,
+        palette: store.getState().activePalette,
+        dispatch: store.dispatch,
       });
     }, 50);
 

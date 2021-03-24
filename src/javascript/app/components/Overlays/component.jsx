@@ -7,7 +7,6 @@ import Confirm from './Confirm';
 import EditForm from './EditForm';
 import EditPalette from './EditPalette';
 import VideoParamsForm from './VideoParamsForm';
-import LiveImage from './LiveImage';
 import LightboxImage from './LightboxImage';
 import RGBNImage from './RGBNImage';
 import DragOver from './DragOver';
@@ -23,7 +22,6 @@ const Overlays = ({
   showEditForm,
   showEditPalette,
   showVideoForm,
-  showLiveImage,
   showRGBNImage,
   showLightbox,
   showDragOver,
@@ -39,7 +37,6 @@ const Overlays = ({
     {showEditForm ? <EditForm /> : null }
     {showEditPalette ? <EditPalette /> : null }
     {showVideoForm ? <VideoParamsForm /> : null }
-    {showLiveImage ? <LiveImage /> : null }
     {showRGBNImage ? <RGBNImage /> : null }
     {showLightbox ? <LightboxImage /> : null }
     {showDragOver ? <DragOver /> : null }
@@ -57,7 +54,6 @@ Overlays.propTypes = {
   showEditForm: PropTypes.bool.isRequired,
   showEditPalette: PropTypes.bool.isRequired,
   showVideoForm: PropTypes.bool.isRequired,
-  showLiveImage: PropTypes.bool.isRequired,
   showRGBNImage: PropTypes.bool.isRequired,
   showLightbox: PropTypes.bool.isRequired,
   showDragOver: PropTypes.bool.isRequired,

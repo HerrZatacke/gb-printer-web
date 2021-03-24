@@ -6,16 +6,13 @@ import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
 import gitStorage from './middlewares/gitStorage';
 import handleErrors from './middlewares/error';
-import hideLiveImage from './middlewares/hideLiveImage';
 import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
 import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
 import overlay from './middlewares/overlay';
 import saveEditPalette from './middlewares/saveEditPalette';
-import saveLineBuffer from './middlewares/saveLineBuffer';
 import saveRGBNImage from './middlewares/saveRGBNImage';
-import serialportWebocket from './middlewares/serialportWebocket';
 import settings from './middlewares/settings';
 import share from './middlewares/share';
 import startDownload from './middlewares/startDownload';
@@ -28,16 +25,13 @@ export default applyMiddleware(
   handleErrors,
   fileDrop,
   gitStorage,
-  hideLiveImage,
   importFile,
   importMessage,
   importQueue,
   lightbox,
   overlay,
   saveEditPalette,
-  saveLineBuffer,
   saveRGBNImage,
-  serialportWebocket,
   settings,
   share,
   startDownload,
