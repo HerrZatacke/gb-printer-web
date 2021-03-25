@@ -5,14 +5,11 @@ import { missingGreyPalette } from '../../defaults';
 const mapStateToProps = (state, { hash }) => {
   const image = state.images.find((img) => img.hash === hash);
   let palette;
-  let frames;
 
   if (image.hashes) {
     palette = image.palette;
-    frames = getRGBNFrames(state, image.hashes, image.frame);
   } else {
     palette = state.palettes.find(({ shortName }) => shortName === image.palette) || missingGreyPalette;
-    frames = null;
   }
 
   return ({
@@ -23,7 +20,6 @@ const mapStateToProps = (state, { hash }) => {
     tags: image.tags,
     isSelected: state.imageSelection.includes(hash),
     palette,
-    frames,
     lockFrame: image.lockFrame || false,
     invertPalette: image.invertPalette || false,
     hideDate: state.hideDates,
