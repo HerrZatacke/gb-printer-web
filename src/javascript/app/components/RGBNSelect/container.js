@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state, { hash }) => ({
-  isR: state.rgbnImages.r === hash,
-  isG: state.rgbnImages.g === hash,
-  isB: state.rgbnImages.b === hash,
-  isN: state.rgbnImages.n === hash,
+  isR: state.rgbnImages?.r === hash,
+  isG: state.rgbnImages?.g === hash,
+  isB: state.rgbnImages?.b === hash,
+  isN: state.rgbnImages?.n === hash,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
