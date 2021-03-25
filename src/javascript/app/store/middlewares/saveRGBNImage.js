@@ -19,8 +19,8 @@ const saveRGBNImage = (store) => (next) => (action) => {
         };
 
         store.dispatch({
-          type: 'ADD_IMAGE',
-          payload: image,
+          type: 'ADD_IMAGES',
+          payload: [image],
         });
       });
 
