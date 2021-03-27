@@ -1,19 +1,18 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-const useQuestions = (questionsProp) => {
-  const questions = useRef(questionsProp.map((question) => ({
-    ...question,
-    selected: question.options.find(({ selected }) => selected)?.value,
-  })));
+const updateSelection = (question) => ({
+  ...question,
+  selected: question.options?.find(({ selected }) => selected)?.value || '',
+});
 
-
-  const [values, setValues] = useState(questions.current.reduce((acc, { key, selected }) => ({
+const useQuestions = (questions) => {
+  const [values, setValues] = useState(questions({}).map(updateSelection).reduce((acc, { key, selected }) => ({
     ...acc,
     [key]: selected,
   }), {}));
 
   return [
-    questions.current,
+    questions(values),
     values,
     (key, value) => {
       setValues({

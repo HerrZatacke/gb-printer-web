@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Lightbox from '../../Lightbox';
 import useQuestions from './useQuestions';
+import Select from './types/Select';
+import Input from '../../Input';
 
 const Confirm = ({
   message,
@@ -9,47 +11,60 @@ const Confirm = ({
   confirm,
   deny,
 }) => {
-  const [questions, selected, setSelected] = useQuestions(questionsProp);
+  const [questions, values, setSelected] = useQuestions(questionsProp);
 
   return (
     <Lightbox
       className="confirm"
-      confirm={() => confirm(selected)}
+      confirm={() => confirm(values)}
       deny={deny}
       header={message}
     >
       {
-        questions.map(({ label, key, options }) => (
-          options && options.length > 1 && (
-            <div
-              key={key}
-              className="inputgroup"
-            >
-              <label htmlFor={`confirm-options-${key}`} className="inputgroup__label">
-                {label}
-              </label>
-              <select
-                id={`confirm-options-${key}`}
-                className="inputgroup__input inputgroup__input--select"
-                value={selected[key]}
-                onChange={({ target: { value } }) => {
-                  setSelected(key, value);
-                }}
-              >
-                {
-                  options.map(({ value, name }) => (
-                    <option
-                      value={value}
-                      key={value}
-                    >
-                      {name}
-                    </option>
-                  ))
-                }
-              </select>
-            </div>
-          )
-        ))
+        questions.map(({ label, key, type, options, disabled = false }) => {
+          switch (type) {
+            case 'select':
+              return (
+                <Select
+                  key={key}
+                  id={key}
+                  disabled={disabled}
+                  value={values[key] || ''}
+                  label={label}
+                  options={options}
+                  setSelected={({ target: { value } }) => {
+                    setSelected(key, value);
+                  }}
+                />
+              );
+            case 'text':
+            case 'number':
+              return (
+                <Input
+                  key={key}
+                  id={key}
+                  disabled={disabled}
+                  value={values[key] || ''}
+                  type={type}
+                  labelText={label}
+                  onChange={(update) => {
+                    setSelected(key, update);
+                  }}
+                />
+              );
+            case 'info':
+              return (
+                <p
+                  className="confirm__info-text"
+                  key={key}
+                >
+                  {label}
+                </p>
+              );
+            default:
+              return null;
+          }
+        }).filter(Boolean)
       }
     </Lightbox>
   );
@@ -57,13 +72,13 @@ const Confirm = ({
 
 Confirm.propTypes = {
   message: PropTypes.string.isRequired,
-  questions: PropTypes.array,
+  questions: PropTypes.func,
   confirm: PropTypes.func.isRequired,
   deny: PropTypes.func.isRequired,
 };
 
 Confirm.defaultProps = {
-  questions: [],
+  questions: () => [],
 };
 
 export default Confirm;

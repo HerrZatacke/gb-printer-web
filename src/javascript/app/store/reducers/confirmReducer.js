@@ -8,6 +8,7 @@ const confirmReducer = (value = [], action) => {
     }
 
     case 'ADD_IMAGES':
+    case 'ADD_FRAME':
     case 'DELETE_IMAGE':
     case 'DELETE_IMAGES':
     case 'PALETTE_DELETE':

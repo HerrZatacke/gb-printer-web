@@ -76,10 +76,11 @@ const getTransformSav = (store) => (data, filename) => {
     type: 'CONFIRM_ASK',
     payload: {
       message: `Importing '${filename}'`,
-      questions: [
+      questions: () => [
         {
           label: 'Select frameset to use with this import',
           key: 'selectedFrameset',
+          type: 'select',
           options: frameGroups,
         },
       ],

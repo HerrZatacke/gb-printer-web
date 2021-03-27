@@ -1,6 +1,7 @@
 import { saveFrameData } from '../applyFrame/frameData';
 import readFileAs from '../readFileAs';
 import saveNewImage from '../saveNewImage';
+import getFrameGroups from '../getFrameGroups';
 
 const getGreytone = ([r, g, b, a]) => {
   const greyTone = Math.floor((r + g + b) / 3 * (a / 255));
@@ -40,6 +41,11 @@ const encodeTile = ({ data: imageData }) => {
   return line.join(' ').toUpperCase();
 };
 
+const frameId = ({ frameSetNew, frameSet, frameIndex }) => {
+  const id = `${frameSetNew || frameSet}${frameIndex.padStart(2, '0')}`;
+  return id.match(/^[a-z]{2,}\d{2}$/g) ? id : '';
+};
+
 const getTransformBitmap = (store) => (file) => {
   const { dispatch } = store;
   const img = document.createElement('img');
@@ -59,50 +65,101 @@ const getTransformBitmap = (store) => (file) => {
       }
     }
 
-    const [id, name, ext, empty] = file.name.split('.');
+    const frameGroups = getFrameGroups(store.getState().frames)
+      .filter(({ id }) => !['int', 'jp', 'hk'].includes(id))
+      .map(({ id: value, name }) => ({
+        value,
+        name,
+      }));
 
-    if (
-      name &&
-      ext &&
-      !empty &&
-      id.match(/^[a-z]{2,}\d{2}$/g)
-    ) {
-      saveFrameData(id, tileLines)
-        .then(() => {
+    frameGroups.unshift({
+      value: '',
+      name: 'Select',
+      selected: true,
+    });
+
+    store.dispatch({
+      type: 'CONFIRM_ASK',
+      payload: {
+        message: `Choose how you want to import "${file.name}".`,
+        questions: ({
+          frameSet = '',
+          frameSetNew = '',
+          frameIndex = '',
+          frameName = '',
+        }) => (
+          [
+            {
+              label: 'Add as frame to existing frameset',
+              key: 'frameSet',
+              type: 'select',
+              options: frameGroups,
+              disabled: !!frameSetNew,
+            },
+            {
+              label: 'Create new frameset with ID (min. 2 chars)',
+              key: 'frameSetNew',
+              type: 'text',
+              disabled: !!frameSet,
+            },
+            {
+              label: 'Add or replace at index',
+              key: 'frameIndex',
+              type: 'number',
+              disabled: !(frameSet || frameSetNew.length > 1),
+            },
+            {
+              label: 'Name of frame',
+              key: 'frameName',
+              type: 'text',
+              disabled: !(frameSet || frameSetNew.length > 1),
+            },
+            {
+              label: frameId({ frameSet, frameSetNew, frameIndex }) && frameName ?
+                `"${file.name}" will be imported as frame "${frameId({ frameSet, frameSetNew, frameIndex })}" - "${frameName}"` :
+                `"${file.name}" will be imported as an image`,
+              key: 'info',
+              type: 'info',
+            },
+          ]
+        ),
+        confirm: ({ frameSet, frameSetNew, frameIndex, frameName }) => {
+
+          if (
+            frameName &&
+            frameId({ frameSet, frameSetNew, frameIndex })
+          ) {
+            saveFrameData(frameId({ frameSet, frameSetNew, frameIndex }), tileLines)
+              .then(() => {
+                dispatch({
+                  type: 'ADD_FRAME',
+                  payload: {
+                    id: frameId({ frameSet, frameSetNew, frameIndex }),
+                    name: frameName,
+                  },
+                });
+              });
+          } else {
+            saveNewImage({
+              lines: tileLines,
+              filename: file.name.split('.').shift(),
+              palette: store.getState().activePalette,
+            })
+              .then((image) => {
+                dispatch({
+                  type: 'ADD_IMAGES',
+                  payload: [image],
+                });
+              });
+          }
+        },
+        deny: () => {
           dispatch({
-            type: 'ADD_FRAME',
-            payload: {
-              id,
-              name,
-            },
+            type: 'CONFIRM_ANSWERED',
           });
-        });
-    } else {
-      saveNewImage({
-        lines: tileLines,
-        filename: file.name.split('.').shift(),
-        palette: store.getState().activePalette,
-      })
-        .then((image) => {
-          store.dispatch({
-            type: 'CONFIRM_ASK',
-            payload: {
-              message: 'Filename does not match frame naming scheme. Import as image?',
-              confirm: () => {
-                dispatch({
-                  type: 'ADD_IMAGE',
-                  payload: image,
-                });
-              },
-              deny: () => {
-                dispatch({
-                  type: 'CONFIRM_ANSWERED',
-                });
-              },
-            },
-          });
-        });
-    }
+        },
+      },
+    });
   };
 
   readFileAs(file, 'dataURL')
