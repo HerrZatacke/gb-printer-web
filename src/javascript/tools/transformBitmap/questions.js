@@ -30,8 +30,8 @@ const getQuestions = ({ frameIds, frameGroups, fileName }) => ({
     },
     {
       label: replaceFrame ?
-        `Frame #${frameIndex} will be replaced` :
-        `Frame will be added at #${frameIndex}`,
+        `Frame index - frame ${frameId} will be replaced` :
+        'Frame index',
       key: 'frameIndex',
       type: 'number',
       disabled: !(frameSet || frameSetNew.length > 1),
