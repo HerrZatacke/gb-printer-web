@@ -5,7 +5,7 @@ const rgbnImagesReducer = (value = null, action) => {
     case 'UPDATE_RGBN_PART':
       return { ...value, ...action.payload };
     case 'ADD_IMAGES':
-      return action.payload[0].hashes ? null : value;
+      return action.payload[0]?.hashes ? null : value;
     case 'DELETE_IMAGE':
     case 'DELETE_IMAGES':
       return null;

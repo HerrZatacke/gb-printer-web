@@ -25,10 +25,14 @@ const importQueue = (store) => {
         const duplicatesMsg = uniqueResult.length === result.length ? '' :
           ` (${result.length - uniqueResult.length} duplicates found in import)`;
 
+        const message = uniqueResult.length ?
+          `Import ${uniqueResult.length} images?` :
+          'This import contains no images';
+
         store.dispatch({
           type: 'CONFIRM_ASK',
           payload: {
-            message: `Import ${uniqueResult.length} images?${duplicatesMsg}`,
+            message: `${message}${duplicatesMsg}`,
             confirm: () => {
               store.dispatch({
                 type: 'ADD_IMAGES',

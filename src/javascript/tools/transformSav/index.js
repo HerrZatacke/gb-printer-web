@@ -3,10 +3,12 @@ import mapCartFrameToName from './mapCartFrameToName';
 import getFrameGroups from '../getFrameGroups';
 
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
+const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
 
 const transformImage = (data, baseAddress) => {
   const transformed = [];
   let currentLine = '';
+  let hasData = false;
 
   // add black upper frame placeholder
   transformed.push(...[...Array(40)].map(() => black));
@@ -21,6 +23,12 @@ const transformImage = (data, baseAddress) => {
       .padStart(2, '0')}`;
     if (i % 16 === 15) {
       transformed.push(currentLine.trim());
+
+      // track if an image has actual data inside to prevent iimporting the "white" image all the time
+      if (!hasData && currentLine.trim() !== white) {
+        hasData = true;
+      }
+
       currentLine = '';
     }
 
@@ -33,7 +41,7 @@ const transformImage = (data, baseAddress) => {
   // add lower frame placeholder
   transformed.push(...[...Array(40)].map(() => black));
 
-  return transformed;
+  return hasData ? transformed : null;
 };
 
 const getTransformSav = (store) => (data, filename) => {
@@ -52,7 +60,10 @@ const getTransformSav = (store) => (data, filename) => {
       const baseAddress = (i + 1) * 0x1000;
       const frameNumber = data[baseAddress + 0xfb0];
       const transformedData = transformImage(data, baseAddress);
-      framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
+
+      if (transformedData) {
+        framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
+      }
     }
 
     Promise.all(framed)
