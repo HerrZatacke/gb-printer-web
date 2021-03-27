@@ -1,18 +1,20 @@
 import { Dropbox } from 'dropbox';
 import { EventEmitter } from 'events';
 import readFileAs from '../readFileAs';
+import cleanPath from '../cleanPath';
 
 const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
 
 class DropboxClient extends EventEmitter {
-  constructor(tokens, addToQueue) {
+  constructor(settings, addToQueue) {
     super();
 
     this.queueCallback = addToQueue;
     this.throttle = 30;
-    this.tokens = tokens;
 
-    const { accessToken, expiresAt, refreshToken } = tokens;
+    const { accessToken, expiresAt, refreshToken, path } = settings;
+
+    this.setRootPath(path);
 
     this.dbx = new Dropbox({
       clientId: DROPBOX_APP_KEY,
@@ -31,6 +33,25 @@ class DropboxClient extends EventEmitter {
     }
 
     return this.queueCallback(...args);
+  }
+
+  setRootPath(path = '') {
+    this.rootPath = cleanPath(path).split('/');
+  }
+
+  toPath(path) {
+    const parts = [
+      ...this.rootPath,
+      ...path.split('/'),
+    ]
+      .filter(Boolean);
+
+    return `/${parts.join('/')}`;
+  }
+
+  inSettingsPath(path) {
+    const rootPath = this.toPath('settings');
+    return cleanPath(path.replace(rootPath, ''));
   }
 
   checkLoginStatus() {
@@ -104,7 +125,7 @@ class DropboxClient extends EventEmitter {
         }
 
         return this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
-          this.dbx.filesDownload({ path: '/settings.json' })
+          this.dbx.filesDownload({ path: this.toPath('/settings/settings.json') })
             .catch(this.requestError)
         ))
           .catch(() => ({ result: { fileBlob: new Blob([...'{}'], { type: 'text/plain' }) } }))
@@ -115,7 +136,7 @@ class DropboxClient extends EventEmitter {
                 Promise.all(get.map((folderPath) => (
                   this.addToQueue(`dbx.filesListFolder /${folderPath}`, this.throttle, () => (
                     this.dbx.filesListFolder({
-                      path: `/${folderPath}`,
+                      path: this.toPath(`/settings/${folderPath}`),
                       limit: 250,
                       recursive: true,
                     })
@@ -157,7 +178,8 @@ class DropboxClient extends EventEmitter {
   }
 
   augmentFileList(type, files) {
-    return files.map(({ path_lower: path, name }, index) => {
+    return files.map(({ path_lower: absolutePath, name }, index) => {
+      const path = this.inSettingsPath(absolutePath);
       const augmentedFile = {
         path,
         name,
@@ -181,7 +203,7 @@ class DropboxClient extends EventEmitter {
 
   getFileContent(path, index, total) {
     return this.addToQueue(`dbx.filesDownload (${index + 1}/${total}) ${path}`, this.throttle, () => (
-      this.dbx.filesDownload({ path })
+      this.dbx.filesDownload({ path: this.toPath(`/settings/${path}`) })
         .catch(this.requestError)
     ))
       .then(({ result: { fileBlob } }) => readFileAs(fileBlob, 'text'));
@@ -194,7 +216,7 @@ class DropboxClient extends EventEmitter {
         Promise.all(upload.map((file, index) => (
           this.addToQueue(`dbx.filesUpload (${index + 1}/${upload.length}) ${file.destination}`, this.throttle, () => (
             this.dbx.filesUpload({
-              path: `/${file.destination}`,
+              path: this.toPath(`/settings/${file.destination}`),
               contents: file.blob,
               mode: 'overwrite',
             })
@@ -208,7 +230,7 @@ class DropboxClient extends EventEmitter {
       !del.length ? [] : (
         this.addToQueue(`dbx.filesDeleteBatch ${del.length} files`, this.throttle, () => (
           this.dbx.filesDeleteBatch({
-            entries: del.map(({ path }) => ({ path })),
+            entries: del.map(({ path }) => ({ path: this.toPath(`/settings/${path}`) })),
           })
             .catch(this.requestError)
         ))

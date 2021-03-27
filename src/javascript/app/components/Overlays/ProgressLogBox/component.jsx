@@ -15,6 +15,7 @@ const ProgressLogBox = ({
   },
   dropbox: {
     messages: dropboxMessages,
+    path: dropboxPath,
   },
   confirm,
 }) => {
@@ -84,8 +85,8 @@ const ProgressLogBox = ({
           <>
             <br />
             <a
-              title="Open Dropbox folder"
-              href="https://www.dropbox.com/home/Apps/GameBoyPrinter"
+              title={`Open Dropbox folder:\nhttps://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
+              href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
               target="_blank"
               rel="noreferrer"
             >
@@ -117,6 +118,7 @@ ProgressLogBox.propTypes = {
         message: PropTypes.string.isRequired,
       }),
     ).isRequired,
+    path: PropTypes.string.isRequired,
   }).isRequired,
   confirm: PropTypes.func.isRequired,
 };
