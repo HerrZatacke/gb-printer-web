@@ -21,7 +21,6 @@ const GalleryImage = ({
   invertPalette,
   palette,
   frame,
-  frames,
   title,
   tags,
   hash,
@@ -108,7 +107,7 @@ const GalleryImage = ({
               lockFrame={lockFrame}
               invertPalette={invertPalette}
               palette={palette.palette || palette}
-              frames={frames}
+              frame={frame}
               hash={hash}
               hashes={hashes}
             />
@@ -145,7 +144,6 @@ GalleryImage.propTypes = {
   palette: PropTypes.object.isRequired,
   invertPalette: PropTypes.bool.isRequired,
   frame: PropTypes.string,
-  frames: PropTypes.object,
   lockFrame: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -161,7 +159,6 @@ GalleryImage.defaultProps = {
   created: null,
   hashes: null,
   frame: null,
-  frames: null,
 };
 
 export default GalleryImage;

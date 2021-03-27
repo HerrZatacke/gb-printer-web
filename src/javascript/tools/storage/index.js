@@ -2,13 +2,13 @@ import dummyImage from './dummyImage';
 import applyFrame from '../applyFrame';
 import { localforageImages } from '../localforageInstance';
 
-const save = (lineBuffer) => (
+const save = (lines) => (
   import(/* webpackChunkName: "obh" */ 'object-hash')
     .then(({ default: hash }) => (
       import(/* webpackChunkName: "pko" */ 'pako')
         .then(({ default: pako }) => {
 
-          const imageData = lineBuffer
+          const imageData = lines
             .map((line) => (
               line.replace(/ /gi, '')
             ))

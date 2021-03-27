@@ -4,7 +4,7 @@ import {
   FILTER_MONOCHROME,
   FILTER_RGB,
   FILTER_RECENT,
-} from '../../../../consts/specialTags';
+} from '../../../consts/specialTags';
 
 const specialTags = [
   FILTER_UNTAGGED,

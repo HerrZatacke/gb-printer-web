@@ -2,19 +2,25 @@ import dayjs from 'dayjs';
 
 const recentImportsReducer = (value = [], action) => {
   switch (action.type) {
-    case 'ADD_IMAGE': {
+    case 'ADD_IMAGES': {
 
-      // ignore RGBN images
-      if (action.payload.hashes) {
-        return value;
-      }
+      const imported = action.payload.map(({ hash, hashes }) => {
+
+        // ignore RGBN images
+        if (hashes) {
+          return null;
+        }
+
+        return {
+          hash,
+          timestamp: dayjs().unix(),
+        };
+      })
+        .filter(Boolean);
 
       return [
-        ...value.filter(({ hash }) => hash !== action.payload.hash),
-        {
-          hash: action.payload.hash,
-          timestamp: dayjs().unix(),
-        },
+        ...value.filter(({ hash }) => !imported.includes(hash)),
+        ...imported,
       ];
     }
 

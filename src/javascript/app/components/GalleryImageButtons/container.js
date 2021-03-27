@@ -7,7 +7,7 @@ const mapStateToProps = (state, { hash }) => ({
   hash,
 });
 
-const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
+const mapDispatchToProps = (dispatch, { hash, buttons, title }) => ({
   startDownload: buttons.includes('download') ? () => {
     dispatch({
       type: 'START_DOWNLOAD',
@@ -16,9 +16,23 @@ const mapDispatchToProps = (dispatch, { hash, buttons }) => ({
   } : null,
   deleteImage: buttons.includes('delete') ? () => {
     dispatch({
-      type: 'DELETE_IMAGE',
-      payload: hash,
+      type: 'CONFIRM_ASK',
+      payload: {
+        message: title ? `Delete image "${title}"?` : 'Delete this image?',
+        confirm: () => {
+          dispatch({
+            type: 'DELETE_IMAGE',
+            payload: hash,
+          });
+        },
+        deny: () => {
+          dispatch({
+            type: 'CONFIRM_ANSWERED',
+          });
+        },
+      },
     });
+
   } : null,
   shareImage: buttons.includes('share') ? () => {
     dispatch({

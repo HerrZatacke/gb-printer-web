@@ -1,3 +1,13 @@
+const addSortIndex = (image, sortIndex) => ({
+  ...image,
+  sortIndex,
+});
+
+const removeSortIndex = (image) => ({
+  ...image,
+  sortIndex: undefined,
+});
+
 const sortImages = ({ sortBy }) => (a, b) => {
 
   if (!sortBy) {
@@ -22,7 +32,12 @@ const sortImages = ({ sortBy }) => (a, b) => {
     return -sortDirection;
   }
 
-  return 0;
+  return a.sortIndex < b.sortIndex ? sortDirection : -sortDirection;
 };
 
-export default sortImages;
+
+export {
+  addSortIndex,
+  removeSortIndex,
+  sortImages,
+};

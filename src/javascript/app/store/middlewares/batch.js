@@ -1,6 +1,6 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 import applyTagChanges from '../../../tools/applyTagChanges';
-import sortImages from '../../../tools/sortImages';
+import { addSortIndex, removeSortIndex, sortImages } from '../../../tools/sortImages';
 import unique from '../../../tools/unique';
 
 const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags', 'created'];
@@ -45,7 +45,9 @@ const batch = (store) => (next) => (action) => {
       const updatedImages = editImage.batch.map((selcetionHash) => (
         images.find(({ hash }) => hash === selcetionHash)
       ))
+        .map(addSortIndex)
         .sort(sortFunc)
+        .map(removeSortIndex)
         .map((updateImage, selectionIndex) => {
 
           if (!updateImage) {
@@ -139,12 +141,28 @@ const batch = (store) => (next) => (action) => {
 
     if (imageSelection.length) {
       switch (action.payload) {
-        case 'delete':
+        case 'delete': {
           store.dispatch({
-            type: 'DELETE_IMAGES',
-            payload: imageSelection,
+            type: 'CONFIRM_ASK',
+            payload: {
+              message: `Delete ${imageSelection.length} images?`,
+              confirm: () => {
+                store.dispatch({
+                  type: 'DELETE_IMAGES',
+                  payload: imageSelection,
+                });
+              },
+              deny: () => {
+                store.dispatch({
+                  type: 'CONFIRM_ANSWERED',
+                });
+              },
+            },
           });
+
           break;
+        }
+
         case 'animate':
           store.dispatch({
             type: 'SET_VIDEO_PARAMS',

@@ -66,22 +66,6 @@ const EditPalette = ({
             setNewShortName(value.toLowerCase());
           }}
         />
-        {
-          newPalette.map((color, index) => (
-            <Input
-              key={index}
-              id={`palette-color-${index}`}
-              labelText={`Color ${index + 1}`}
-              type="color"
-              value={color}
-              onChange={(value) => {
-                const np = [...newPalette];
-                np[index] = value;
-                setNewPalette(np);
-              }}
-            />
-          ))
-        }
         <ul className="edit-palette__previews">
           {
             previewImages.map((image) => (
@@ -99,6 +83,22 @@ const EditPalette = ({
             ))
           }
         </ul>
+        {
+          newPalette.map((color, index) => (
+            <Input
+              key={index}
+              id={`palette-color-${index}`}
+              labelText={`Color ${index + 1}`}
+              type="color"
+              value={color}
+              onChange={(value) => {
+                const np = [...newPalette];
+                np[index] = value;
+                setNewPalette(np);
+              }}
+            />
+          ))
+        }
       </div>
     </Lightbox>
   );

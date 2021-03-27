@@ -191,7 +191,7 @@ const GenericSettings = (props) => {
           }}
         >
           <span className="inputgroup__note">
-            {'If you own a pysical wifi-printer, you can add it\'s URL here and check the '}
+            {'If you own a physical wifi-printer, you can add it\'s URL here and check the '}
             <Link to="/import">Import-tab</Link>
           </span>
         </Input>

@@ -5,7 +5,6 @@ import GitSettings from './pages/GitSettings';
 import DropboxSettings from './pages/DropboxSettings';
 import GenericSettings from './pages/GenericSettings';
 import ExportSettings from './pages/ExportSettings';
-import DevURLSettings from './pages/DevURLSettings';
 import WiFiSettings from './pages/WiFiSettings';
 import PluginSettings from './pages/PluginSettings';
 import { getEnv } from '../../../tools/getEnv';
@@ -42,15 +41,9 @@ if (
   };
 }
 
-if (getEnv().env === 'webpack-dev') {
-  tabs.devurls = {
-    Component: DevURLSettings,
-    headline: 'Dev Settings',
-  };
-}
-
 const Settings = ({ tabName }) => {
-  const { Component, headline: currentHeadline } = tabs[tabName];
+  const tab = tabs[tabName] || tabs.generic;
+  const { Component, headline: currentHeadline } = tab;
 
   return (
     <div className="settings">

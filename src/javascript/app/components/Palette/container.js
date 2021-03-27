@@ -4,7 +4,7 @@ const mapStateToProps = (state, { shortName }) => ({
   isActive: state.activePalette === shortName,
 });
 
-const mapDispatchToProps = (dispatch, { shortName }) => ({
+const mapDispatchToProps = (dispatch, { shortName, name }) => ({
   setActive: () => {
     dispatch({
       type: 'PALETTE_SET_ACTIVE',
@@ -13,8 +13,21 @@ const mapDispatchToProps = (dispatch, { shortName }) => ({
   },
   deletePalette: () => {
     dispatch({
-      type: 'PALETTE_DELETE',
-      payload: { shortName },
+      type: 'CONFIRM_ASK',
+      payload: {
+        message: `Delete palette "${name || 'no name'}"?`,
+        confirm: () => {
+          dispatch({
+            type: 'PALETTE_DELETE',
+            payload: { shortName },
+          });
+        },
+        deny: () => {
+          dispatch({
+            type: 'CONFIRM_ANSWERED',
+          });
+        },
+      },
     });
   },
   editPalette: () => {

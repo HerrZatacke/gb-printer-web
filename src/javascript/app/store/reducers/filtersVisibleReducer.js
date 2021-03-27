@@ -1,4 +1,4 @@
-const visibleReducer = (value = false, action) => {
+const filtersVisibleReducer = (value = false, action) => {
   switch (action.type) {
     case 'SHOW_FILTERS':
       return true;
@@ -11,4 +11,4 @@ const visibleReducer = (value = false, action) => {
   }
 };
 
-export default visibleReducer;
+export default filtersVisibleReducer;

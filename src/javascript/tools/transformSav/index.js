@@ -1,11 +1,14 @@
 import applyFrame from '../applyFrame';
 import mapCartFrameToName from './mapCartFrameToName';
+import getFrameGroups from '../getFrameGroups';
 
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
+const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
 
 const transformImage = (data, baseAddress) => {
   const transformed = [];
   let currentLine = '';
+  let hasData = false;
 
   // add black upper frame placeholder
   transformed.push(...[...Array(40)].map(() => black));
@@ -20,6 +23,12 @@ const transformImage = (data, baseAddress) => {
       .padStart(2, '0')}`;
     if (i % 16 === 15) {
       transformed.push(currentLine.trim());
+
+      // track if an image has actual data inside to prevent iimporting the "white" image all the time
+      if (!hasData && currentLine.trim() !== white) {
+        hasData = true;
+      }
+
       currentLine = '';
     }
 
@@ -32,32 +41,76 @@ const transformImage = (data, baseAddress) => {
   // add lower frame placeholder
   transformed.push(...[...Array(40)].map(() => black));
 
-  return transformed;
+  return hasData ? transformed : null;
 };
 
 const getTransformSav = (store) => (data, filename) => {
   const { savFrameTypes, frames } = store.getState();
   const framed = [];
 
-  for (let i = 1; i <= 30; i += 1) {
-    const baseAddress = (i + 1) * 0x1000;
-    const frameNumber = data[baseAddress + 0xfb0];
-    const transformedData = transformImage(data, baseAddress);
-    framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, savFrameTypes, frames)));
-  }
+  const frameGroups = getFrameGroups(frames)
+    .map(({ id: value, name }) => ({
+      value,
+      name,
+      selected: savFrameTypes === value,
+    }));
 
-  Promise.all(framed)
-    .then((framedImages) => {
-      framedImages.forEach((framedImage) => {
+  const importSav = (selectedFrameset) => {
+    for (let i = 1; i <= 30; i += 1) {
+      const baseAddress = (i + 1) * 0x1000;
+      const frameNumber = data[baseAddress + 0xfb0];
+      const transformedData = transformImage(data, baseAddress);
+
+      if (transformedData) {
+        framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
+      }
+    }
+
+    Promise.all(framed)
+      .then((framedImages) => {
         store.dispatch({
           type: 'ADD_TO_QUEUE',
-          payload: [{
+          payload: framedImages.map((lines) => ({
+            lines,
             file: filename,
-            lines: framedImage,
-          }],
+          })),
         });
       });
-    });
+  };
+
+  if (frameGroups.length < 2) {
+    importSav(savFrameTypes);
+    return;
+  }
+
+  store.dispatch({
+    type: 'CONFIRM_ASK',
+    payload: {
+      message: `Importing '${filename}'`,
+      questions: () => [
+        {
+          label: 'Select frameset to use with this import',
+          key: 'selectedFrameset',
+          type: 'select',
+          options: frameGroups,
+        },
+      ],
+      confirm: ({ selectedFrameset }) => {
+        store.dispatch({
+          type: 'CONFIRM_ANSWERED',
+        });
+
+        // Perform actual import action
+        importSav(selectedFrameset);
+      },
+      deny: () => {
+        store.dispatch({
+          type: 'CONFIRM_ANSWERED',
+        });
+      },
+    },
+  });
+
 };
 
 export default getTransformSav;

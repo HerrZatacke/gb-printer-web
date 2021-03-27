@@ -1,5 +1,9 @@
 import { saveFrameData } from '../applyFrame/frameData';
 import readFileAs from '../readFileAs';
+import saveNewImage from '../saveNewImage';
+import getFrameGroups from '../getFrameGroups';
+import getQuestions from './questions';
+import getFrameId from './getFrameId';
 
 const getGreytone = ([r, g, b, a]) => {
   const greyTone = Math.floor((r + g + b) / 3 * (a / 255));
@@ -39,7 +43,8 @@ const encodeTile = ({ data: imageData }) => {
   return line.join(' ').toUpperCase();
 };
 
-const getTransformBitmap = (dispatch) => (file) => {
+const getTransformBitmap = (store) => (file) => {
+  const { dispatch } = store;
   const img = document.createElement('img');
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
@@ -57,34 +62,63 @@ const getTransformBitmap = (dispatch) => (file) => {
       }
     }
 
-    const [id, name, ext, empty] = file.name.split('.');
+    const { frames } = store.getState();
 
-    if (
-      name &&
-      ext &&
-      !empty &&
-      id.match(/^[a-z]{2,}\d{2}$/g)
-    ) {
-      saveFrameData(id, tileLines)
-        .then(() => {
-          dispatch({
-            type: 'ADD_FRAME',
-            payload: {
-              id,
-              name,
-            },
-          });
-        });
-    } else {
-      // This would import the file as gameboy image.
-      dispatch({
-        type: 'SET_ALL_LINES',
-        payload: {
-          lines: tileLines,
-          file: file.name.split('.').shift(),
+    const frameGroups = getFrameGroups(frames)
+      .filter(({ id }) => !['int', 'jp', 'hk'].includes(id))
+      .map(({ id: value, name }) => ({
+        value,
+        name,
+      }));
+
+    frameGroups.unshift({
+      value: '',
+      name: 'Select',
+      selected: true,
+    });
+
+    const frameIds = frames.map(({ id }) => id);
+
+    store.dispatch({
+      type: 'CONFIRM_ASK',
+      payload: {
+        message: `Choose how you want to import "${file.name}".`,
+        questions: getQuestions({ frameIds, frameGroups, fileName: file.name }),
+        confirm: ({ frameSet, frameSetNew, frameIndex, frameName }) => {
+          const frameId = getFrameId({ frameSet, frameSetNew, frameIndex });
+
+          if (frameId && frameName) {
+            saveFrameData(frameId, tileLines)
+              .then(() => {
+                dispatch({
+                  type: 'ADD_FRAME',
+                  payload: {
+                    id: frameId,
+                    name: frameName,
+                  },
+                });
+              });
+          } else {
+            saveNewImage({
+              lines: tileLines,
+              filename: file.name.split('.').shift(),
+              palette: store.getState().activePalette,
+            })
+              .then((image) => {
+                dispatch({
+                  type: 'ADD_IMAGES',
+                  payload: [image],
+                });
+              });
+          }
         },
-      });
-    }
+        deny: () => {
+          dispatch({
+            type: 'CONFIRM_ANSWERED',
+          });
+        },
+      },
+    });
   };
 
   readFileAs(file, 'dataURL')

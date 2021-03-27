@@ -1,10 +1,4 @@
 const definitions = [
-  { // Holds the websocket url of a local webpack instance
-    key: 'socketUrl',
-    saveLocally: true,
-    saveExport: ['settings'],
-    value: 'localhost:3001',
-  },
   { // Url of a printer emulator to talk to
     key: 'printerUrl',
     saveLocally: true,
@@ -83,10 +77,16 @@ const definitions = [
   },
   {
     // current filter for images
-    key: 'filter',
+    key: 'filtersActiveTags',
     saveLocally: true,
     saveExport: [],
-    value: {},
+    value: [],
+  },
+  {
+    key: 'filtersVisible',
+    saveLocally: true,
+    saveExport: [],
+    value: false,
   },
   {
     // framegoup to be applied when importing .sav files

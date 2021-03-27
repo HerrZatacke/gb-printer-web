@@ -1,9 +1,12 @@
 import { connect } from 'react-redux';
+import unique from '../../../../tools/unique';
 
 const mapStateToProps = (state) => ({
-  availableTags: state.filter.availableTags,
-  activeTags: state.filter.activeTags,
-  visible: state.filter.visible,
+  availableTags: unique(state.images.map(({ tags }) => tags).flat()).sort((a, b) => (
+    a.toLowerCase().localeCompare(b.toLowerCase())
+  )),
+  activeTags: state.filtersActiveTags,
+  visible: state.filtersVisible,
 });
 
 const mapDispatchToProps = (dispatch) => ({

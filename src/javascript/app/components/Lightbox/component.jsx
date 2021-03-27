@@ -36,6 +36,7 @@ const Lightbox = (props) => (
       </div>
       { props.confirm || props.deny ? (
         <Buttons
+          focusConfirm={props.focusConfirm}
           confirm={props.confirm}
           canConfirm={props.canConfirm}
           deny={props.deny}
@@ -57,6 +58,7 @@ Lightbox.propTypes = {
   confirm: PropTypes.func,
   deny: PropTypes.func,
   canConfirm: PropTypes.bool,
+  focusConfirm: PropTypes.bool,
   denyOnOverlayClick: PropTypes.bool,
 };
 
@@ -69,6 +71,7 @@ Lightbox.defaultProps = {
   children: null,
   deny: null,
   canConfirm: true,
+  focusConfirm: true,
   denyOnOverlayClick: true,
 };
 
