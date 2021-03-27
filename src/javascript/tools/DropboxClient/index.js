@@ -1,18 +1,24 @@
 import { Dropbox } from 'dropbox';
+import { EventEmitter } from 'events';
 import readFileAs from '../readFileAs';
 
-class DropboxClient {
+const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
+
+class DropboxClient extends EventEmitter {
   constructor(tokens, addToQueue) {
+    super();
+
     this.queueCallback = addToQueue;
     this.throttle = 30;
     this.tokens = tokens;
 
-    const { accessToken, accessTokenExpiresAt } = tokens;
+    const { accessToken, expiresAt, refreshToken } = tokens;
 
     this.dbx = new Dropbox({
       clientId: DROPBOX_APP_KEY,
       accessToken,
-      accessTokenExpiresAt: new Date(accessTokenExpiresAt),
+      accessTokenExpiresAt: new Date(expiresAt),
+      refreshToken,
     });
 
     window.dbx = this.dbx;
@@ -32,17 +38,50 @@ class DropboxClient {
       .catch(this.requestError)
       .then(() => {
         const accessToken = this.dbx.auth.getAccessToken();
-        const accessTokenExpiresAt = this.dbx.auth.getAccessTokenExpiresAt().getTime();
-        const expiresIn = accessTokenExpiresAt - (new Date()).getTime();
+        const expiresAt = this.dbx.auth.getAccessTokenExpiresAt().getTime();
+        const expiresIn = expiresAt - (new Date()).getTime();
+
+        this.emit('loginDataUpdate', {
+          accessToken,
+          expiresAt,
+        });
+
         return accessToken && expiresIn > 1000;
       })
       .catch(() => false);
   }
 
   startAuth() {
-    this.dbx.auth.getAuthenticationUrl(encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`))
+    this.dbx.auth.getAuthenticationUrl(REDIRECT_URL, undefined, 'code', 'offline', undefined, undefined, true)
       .then((authUrl) => {
+        window.sessionStorage.setItem('dropboxCodeVerifier', this.dbx.auth.getCodeVerifier());
         window.location.replace(authUrl);
+      });
+  }
+
+  codeAuth(dropboxCode) {
+    this.dbx.auth.setCodeVerifier(window.sessionStorage.getItem('dropboxCodeVerifier'));
+    window.sessionStorage.removeItem('dropboxCodeVerifier');
+
+    this.dbx.auth.getAccessTokenFromCode(REDIRECT_URL, dropboxCode)
+      .then((response) => {
+
+        const {
+          refresh_token: refreshToken,
+          access_token: accessToken,
+          expires_in: expiresIn,
+        } = response.result;
+
+        const expiresAt = (new Date()).getTime() + (expiresIn * 1000);
+
+        this.dbx.auth.setAccessToken(response.result.access_token);
+        this.dbx.auth.setAccessTokenExpiresAt(new Date(expiresAt));
+
+        this.emit('loginDataUpdate', {
+          refreshToken,
+          accessToken,
+          expiresAt,
+        });
       });
   }
 
