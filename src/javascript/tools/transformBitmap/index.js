@@ -2,6 +2,8 @@ import { saveFrameData } from '../applyFrame/frameData';
 import readFileAs from '../readFileAs';
 import saveNewImage from '../saveNewImage';
 import getFrameGroups from '../getFrameGroups';
+import getQuestions from './questions';
+import getFrameId from './getFrameId';
 
 const getGreytone = ([r, g, b, a]) => {
   const greyTone = Math.floor((r + g + b) / 3 * (a / 255));
@@ -41,11 +43,6 @@ const encodeTile = ({ data: imageData }) => {
   return line.join(' ').toUpperCase();
 };
 
-const frameId = ({ frameSetNew, frameSet, frameIndex }) => {
-  const id = `${frameSetNew || frameSet}${frameIndex.padStart(2, '0')}`;
-  return id.match(/^[a-z]{2,}\d{2}$/g) ? id : '';
-};
-
 const getTransformBitmap = (store) => (file) => {
   const { dispatch } = store;
   const img = document.createElement('img');
@@ -82,59 +79,17 @@ const getTransformBitmap = (store) => (file) => {
       type: 'CONFIRM_ASK',
       payload: {
         message: `Choose how you want to import "${file.name}".`,
-        questions: ({
-          frameSet = '',
-          frameSetNew = '',
-          frameIndex = '',
-          frameName = '',
-        }) => (
-          [
-            {
-              label: 'Add as frame to existing frameset',
-              key: 'frameSet',
-              type: 'select',
-              options: frameGroups,
-              disabled: !!frameSetNew,
-            },
-            {
-              label: 'Create new frameset with ID (min. 2 chars)',
-              key: 'frameSetNew',
-              type: 'text',
-              disabled: !!frameSet,
-            },
-            {
-              label: 'Add or replace at index',
-              key: 'frameIndex',
-              type: 'number',
-              disabled: !(frameSet || frameSetNew.length > 1),
-            },
-            {
-              label: 'Name of frame',
-              key: 'frameName',
-              type: 'text',
-              disabled: !(frameSet || frameSetNew.length > 1),
-            },
-            {
-              label: frameId({ frameSet, frameSetNew, frameIndex }) && frameName ?
-                `"${file.name}" will be imported as frame "${frameId({ frameSet, frameSetNew, frameIndex })}" - "${frameName}"` :
-                `"${file.name}" will be imported as an image`,
-              key: 'info',
-              type: 'info',
-            },
-          ]
-        ),
+        questions: getQuestions({ frameGroups, fileName: file.name }),
         confirm: ({ frameSet, frameSetNew, frameIndex, frameName }) => {
+          const frameId = getFrameId({ frameSet, frameSetNew, frameIndex });
 
-          if (
-            frameName &&
-            frameId({ frameSet, frameSetNew, frameIndex })
-          ) {
-            saveFrameData(frameId({ frameSet, frameSetNew, frameIndex }), tileLines)
+          if (frameId && frameName) {
+            saveFrameData(frameId, tileLines)
               .then(() => {
                 dispatch({
                   type: 'ADD_FRAME',
                   payload: {
-                    id: frameId({ frameSet, frameSetNew, frameIndex }),
+                    id: frameId,
                     name: frameName,
                   },
                 });
