@@ -7,13 +7,15 @@ const useIframeLoaded = (timeout, isLoaded) => {
   const timer = useRef(null);
 
   useEffect(() => {
-    if (loaded || failed || timer.current) {
-      return;
+    if (
+      !(loaded || failed || timer.current)
+    ) {
+      timer.current = window.setTimeout(() => {
+        setFailed(true);
+      }, timeout);
     }
 
-    timer.current = window.setTimeout(() => {
-      setFailed(true);
-    }, timeout);
+    return () => window.clearTimeout(timer.current);
   });
 
   if (!loaded && isLoaded) {
