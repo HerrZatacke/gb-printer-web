@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import getRGBNFrames from '../../../tools/getRGBNFrames';
 import { missingGreyPalette } from '../../defaults';
 
 const mapStateToProps = (state, { hash }) => {
