@@ -2,11 +2,12 @@ import Queue from 'promise-queue';
 import getUploadImages from '../../../../tools/getUploadImages';
 import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
 import DropboxClient from '../../../../tools/DropboxClient';
+import parseAuthParams from '../../../../tools/parseAuthParams';
 
 let dropboxClient;
 let addToQueue = () => {};
 
-const middleware = (store, tokens) => {
+const middleware = (store, dropboxStorage) => {
 
   const queue = new Queue(1, Infinity);
   addToQueue = (who) => (what, throttle, fn) => (
@@ -29,21 +30,22 @@ const middleware = (store, tokens) => {
     ))
   );
 
-  dropboxClient = new DropboxClient(tokens, addToQueue('Dropbox'));
+  dropboxClient = new DropboxClient(dropboxStorage, addToQueue('Dropbox'));
 
-  dropboxClient.checkLoginStatus()
-    .then((loggedIn) => {
-      if (loggedIn) {
-        store.dispatch({
-          type: 'SET_DROPBOX_STORAGE',
-          payload: tokens,
-        });
-      } else {
-        store.dispatch({
-          type: 'DROPBOX_LOGOUT',
-        });
-      }
+  dropboxClient.on('loginDataUpdate', (data) => {
+    store.dispatch({
+      type: 'SET_DROPBOX_STORAGE',
+      payload: {
+        ...dropboxStorage,
+        ...data,
+      },
     });
+  });
+
+  const { dropboxCode } = parseAuthParams();
+  if (dropboxCode) {
+    dropboxClient.codeAuth(dropboxCode);
+  }
 
   return (action) => {
     if (

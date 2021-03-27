@@ -1,15 +1,13 @@
 const parseAuthParams = () => {
-  const searchParams = new URLSearchParams(window.location.hash.substr(1));
+  const searchParams = new URLSearchParams(window.location.search);
 
-  // for now there's only dropbox oauth support, so it's assumed "access_token" refers to dropbox
-  const dropboxAccessToken = searchParams.get('access_token');
-  const dropboxAccessTokenExpiresAt = searchParams.get('expires_in');
+  // for now there's only dropbox oauth support, and dropbox redirects with the param 'code'
+  const dropboxCode = searchParams.get('code');
 
-  if (dropboxAccessToken) {
-    window.location.replace('#/settings/dropbox');
+  if (dropboxCode) {
+    window.history.replaceState({}, document.title, './#/settings/dropbox');
     return {
-      accessToken: dropboxAccessToken,
-      accessTokenExpiresAt: (new Date()).getTime() + (dropboxAccessTokenExpiresAt * 1000),
+      dropboxCode,
     };
   }
 
