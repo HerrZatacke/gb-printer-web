@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Lightbox from '../../Lightbox';
-import useQuestions from './useQuestions';
+import useQuestions from '../../../../hooks/useQuestions';
 import Select from './types/Select';
 import Input from '../../Input';
 
