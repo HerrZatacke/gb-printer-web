@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Buttons = ({ confirm, deny, canConfirm }) => (
+const Buttons = ({ confirm, deny, canConfirm, focusConfirm }) => (
   <div className="buttons">
     { deny ? (
       <button
@@ -19,7 +19,7 @@ const Buttons = ({ confirm, deny, canConfirm }) => (
         className="buttons__button buttons__button--confirm"
         type="button"
         onClick={confirm}
-        autoFocus
+        autoFocus={focusConfirm}
       >
         Ok
       </button>
@@ -29,12 +29,14 @@ const Buttons = ({ confirm, deny, canConfirm }) => (
 
 Buttons.propTypes = {
   confirm: PropTypes.func,
+  focusConfirm: PropTypes.bool,
   canConfirm: PropTypes.bool,
   deny: PropTypes.func,
 };
 
 Buttons.defaultProps = {
   confirm: null,
+  focusConfirm: true,
   canConfirm: true,
   deny: null,
 };

@@ -62,7 +62,9 @@ const getTransformBitmap = (store) => (file) => {
       }
     }
 
-    const frameGroups = getFrameGroups(store.getState().frames)
+    const { frames } = store.getState();
+
+    const frameGroups = getFrameGroups(frames)
       .filter(({ id }) => !['int', 'jp', 'hk'].includes(id))
       .map(({ id: value, name }) => ({
         value,
@@ -75,11 +77,13 @@ const getTransformBitmap = (store) => (file) => {
       selected: true,
     });
 
+    const frameIds = frames.map(({ id }) => id);
+
     store.dispatch({
       type: 'CONFIRM_ASK',
       payload: {
         message: `Choose how you want to import "${file.name}".`,
-        questions: getQuestions({ frameGroups, fileName: file.name }),
+        questions: getQuestions({ frameIds, frameGroups, fileName: file.name }),
         confirm: ({ frameSet, frameSetNew, frameIndex, frameName }) => {
           const frameId = getFrameId({ frameSet, frameSetNew, frameIndex });
 

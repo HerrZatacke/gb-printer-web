@@ -13,12 +13,15 @@ const Confirm = ({
 }) => {
   const [questions, values, setSelected] = useQuestions(questionsProp);
 
+  const notComplete = questions.find(({ type }) => type === 'confirmForm')?.notComplete;
+
   return (
     <Lightbox
       className="confirm"
-      confirm={() => confirm(values)}
+      confirm={notComplete ? null : () => confirm(values)}
       deny={deny}
       header={message}
+      focusConfirm={!questions.length}
     >
       {
         questions.map(({ label, key, type, options, disabled = false }) => {

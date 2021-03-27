@@ -1,12 +1,18 @@
 import getFrameId from './getFrameId';
 
-const getQuestions = ({ frameGroups, fileName }) => ({
+const getQuestions = ({ frameIds, frameGroups, fileName }) => ({
   frameSet = '',
   frameSetNew = '',
   frameIndex = '',
   frameName = '',
 }) => {
   const frameId = getFrameId({ frameSet, frameSetNew, frameIndex });
+  const replaceFrame = frameIds.includes(frameId);
+
+  const notComplete = !(
+    (frameId && frameName) ||
+    (!frameId && !frameName)
+  );
 
   return [
     {
@@ -23,7 +29,9 @@ const getQuestions = ({ frameGroups, fileName }) => ({
       disabled: !!frameSet,
     },
     {
-      label: 'Add or replace at index',
+      label: replaceFrame ?
+        `Frame #${frameIndex} will be replaced` :
+        `Frame will be added at #${frameIndex}`,
       key: 'frameIndex',
       type: 'number',
       disabled: !(frameSet || frameSetNew.length > 1),
@@ -40,6 +48,10 @@ const getQuestions = ({ frameGroups, fileName }) => ({
         `"${fileName}" will be imported as an image`,
       key: 'info',
       type: 'info',
+    },
+    {
+      type: 'confirmForm',
+      notComplete,
     },
   ];
 };
