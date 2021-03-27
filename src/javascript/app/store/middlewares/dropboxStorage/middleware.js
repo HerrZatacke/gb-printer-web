@@ -52,6 +52,8 @@ const middleware = (store, dropboxStorage) => {
       action.type === 'STORAGE_SYNC_START' &&
       action.payload.storageType === 'dropbox'
     ) {
+
+      dropboxClient.setRootPath(store.getState().dropboxStorage.path || '/');
       dropboxClient.getRemoteContents()
         .then((repoContents) => {
           switch (action.payload.direction) {
