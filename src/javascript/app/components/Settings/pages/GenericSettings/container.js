@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
   pageSize: state.pageSize,
   savFrameTypes: state.savFrameTypes,
   savFrameGroups: getFrameGroups(state.frames),
-  exportCropFrame: state.exportCropFrame,
+  handleExportFrame: state.handleExportFrame,
   hideDates: state.hideDates,
   printerUrl: state.printerUrl,
 });
@@ -19,10 +19,10 @@ const mapDispatchToProps = (dispatch) => ({
       payload: savFrameTypes,
     });
   },
-  setExportCropFrame(exportCropFrame) {
+  setHandleExportFrame(handleExportFrame) {
     dispatch({
-      type: 'SET_EXPORT_CROP_FRAME',
-      payload: exportCropFrame,
+      type: 'SET_HANDLE_EXPORT_FRAME',
+      payload: handleExportFrame,
     });
   },
   setHideDates(hideDates) {

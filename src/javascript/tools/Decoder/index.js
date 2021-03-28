@@ -86,7 +86,10 @@ class Decoder {
     context.putImageData(imageData, 0, 0);
   }
 
-  getScaledCanvas(scaleFactor, cropFrame = false) {
+  getScaledCanvas(scaleFactor, handleExportFrame = 'keep') {
+
+    const cropFrame = handleExportFrame !== 'keep';
+
     // 2 tiles top/left/bottom/right -> 4 tiles to each side
     const FRAME_TILES = 4;
 
