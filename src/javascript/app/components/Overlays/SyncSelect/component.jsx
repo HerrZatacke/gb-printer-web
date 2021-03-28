@@ -74,6 +74,23 @@ const SyncSelect = ({ startSync, cancelSync, repoUrl, dropboxActive, gitActive }
           <SVG name="sync" />
         </button>
       </li>
+
+      <li className="sync-select__option">
+        <button
+          type="button"
+          disabled={!dropboxActive}
+          className="sync-select__button button"
+          title="Synchronize images to Dropbox"
+          onClick={() => {
+            startSync('dropboximages', 'up');
+          }}
+        >
+          <span className="sync-select__button-label">
+            Synchronize images to Dropbox
+          </span>
+          <SVG name="sync" className="svg--180" />
+        </button>
+      </li>
     </ul>
   </Lightbox>
 );
