@@ -94,7 +94,7 @@ class Decoder {
 
     // crop and square modes are only available for regular "camera" images
     const handleFrameMode = (this.tiles.length === 360) ? handleExportFrame : 'keep';
-    const { initialHeight, initialWidth, tilesPerLine, crop } = this.getScaleCanvasSize(handleFrameMode);
+    const { initialHeight, initialWidth, tilesPerLine } = this.getScaleCanvasSize(handleFrameMode);
 
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -103,7 +103,7 @@ class Decoder {
 
     this.getExportTiles(handleFrameMode)
       .forEach((tile, index) => {
-        this.paintTileScaled(this.decodeTile(tile), index, context, scaleFactor, tilesPerLine, crop);
+        this.paintTileScaled(this.decodeTile(tile), index, context, scaleFactor, tilesPerLine, handleExportFrame);
       });
 
     return canvas;
@@ -119,14 +119,12 @@ class Decoder {
           initialHeight: this.getHeight(),
           initialWidth: TILES_PER_LINE * TILE_PIXEL_WIDTH,
           tilesPerLine: TILES_PER_LINE,
-          crop: false,
         };
       case 'crop':
         return {
           initialHeight: this.getHeight() - (TILE_PIXEL_HEIGHT * FRAME_TILES),
           initialWidth: (TILES_PER_LINE * TILE_PIXEL_WIDTH) - (TILE_PIXEL_WIDTH * FRAME_TILES),
           tilesPerLine: TILES_PER_LINE - FRAME_TILES,
-          crop: true,
         };
       case 'square_black':
       case 'square_white':
@@ -135,7 +133,6 @@ class Decoder {
           initialHeight: this.getHeight() + (2 * TILE_PIXEL_HEIGHT),
           initialWidth: TILES_PER_LINE * TILE_PIXEL_WIDTH,
           tilesPerLine: TILES_PER_LINE,
-          crop: false,
         };
       default:
         throw new Error(`unknown export mode ${handleExportFrame}`);
@@ -149,7 +146,7 @@ class Decoder {
       case 'crop':
         return this.tiles
           .map((tile, index) => (
-            this.tileIndexIsFramePart(index) ? null : tile
+            this.tileIndexIsFramePart(index, 'keep') ? null : tile
           ))
           .filter(Boolean);
       case 'square_black':
@@ -283,11 +280,11 @@ class Decoder {
     return pixels;
   }
 
-  getRGBValue(pixels, index, tileIndex, cropFrame) {
+  getRGBValue(pixels, index, tileIndex, handleExportFrame) {
     const palette = (
       this.lockFrame && // Must be actually locked
-      !cropFrame &&
-      this.tileIndexIsFramePart(tileIndex) // Current tile must be in a "lockable" position
+      handleExportFrame !== 'crop' &&
+      this.tileIndexIsFramePart(tileIndex, handleExportFrame) // Current tile must be in a "lockable" position
     ) ? this.bwPalette : this.colorData;
     const value = this.invertPalette ? palette[3 - pixels[index]] : palette[pixels[index]];
 
@@ -315,7 +312,7 @@ class Decoder {
         // pixels along the tile's y axis
 
         const rawIndex = (pixelXOffset + x + ((pixelYOffset + y) * 160)) * 4;
-        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index, false);
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index, 'keep');
 
         this.rawImageData[rawIndex] = color.r;
         this.rawImageData[rawIndex + 1] = color.g;
@@ -325,7 +322,7 @@ class Decoder {
     }
   }
 
-  paintTileScaled(pixels, index, canvasContext, pixelSize, tilesPerLine, cropFrame = false) {
+  paintTileScaled(pixels, index, canvasContext, pixelSize, tilesPerLine, handleExportFrame) {
     const tileXOffset = index % tilesPerLine;
     const tileYOffset = Math.floor(index / tilesPerLine);
 
@@ -337,7 +334,7 @@ class Decoder {
       for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
         // pixels along the tile's y axis
 
-        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index, cropFrame);
+        const color = this.getRGBValue(pixels, (y * TILE_PIXEL_WIDTH) + x, index, handleExportFrame);
         // eslint-disable-next-line no-param-reassign
         canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
 

@@ -26,14 +26,14 @@ class RGBNDecoder extends Decoder {
     };
   }
 
-  getRGBValue({ r, g, b, n }, index, tileIndex, cropFrame) {
+  getRGBValue({ r, g, b, n }, index, tileIndex, handleExportFrame) {
 
     if (
       this.lockFrame &&
-      !cropFrame &&
-      this.tileIndexIsFramePart(tileIndex)
+      handleExportFrame !== 'crop' &&
+      this.tileIndexIsFramePart(tileIndex, handleExportFrame)
     ) {
-      return super.getRGBValue(n, index, tileIndex, cropFrame);
+      return super.getRGBValue(n, index, tileIndex, handleExportFrame);
     }
 
     return this.blendColors({

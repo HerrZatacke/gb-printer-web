@@ -5,7 +5,7 @@ const saveFrameData = (frameId, imageTiles) => (
   import(/* webpackChunkName: "pko" */ 'pako')
     .then(({ default: pako }) => {
       const frameData = imageTiles
-        .filter((_, index) => tileIndexIsPartOfFrame(index))
+        .filter((_, index) => tileIndexIsPartOfFrame(index, 'keep'))
         .map((line) => (
           line.replace(/ /gi, '')
         ))
