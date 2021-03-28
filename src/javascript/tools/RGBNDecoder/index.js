@@ -53,6 +53,31 @@ class RGBNDecoder extends Decoder {
     });
   }
 
+  smartTile(where) {
+    switch (where) {
+      case 'first':
+        return this.tiles.slice(0, 20)
+          .map((tile) => ({
+            r: tile.r ? Array(8).fill(tile.r.slice(0, 4)).join('') : super.smartTile(null),
+            g: tile.g ? Array(8).fill(tile.g.slice(0, 4)).join('') : super.smartTile(null),
+            b: tile.b ? Array(8).fill(tile.b.slice(0, 4)).join('') : super.smartTile(null),
+            n: tile.n ? Array(8).fill(tile.n.slice(0, 4)).join('') : super.smartTile(null),
+          }));
+
+      case 'last':
+        return this.tiles.slice(340, 360)
+          .map((tile) => ({
+            r: tile.r ? Array(8).fill(tile.r.slice(28, 32)).join('') : super.smartTile(null),
+            g: tile.g ? Array(8).fill(tile.g.slice(28, 32)).join('') : super.smartTile(null),
+            b: tile.b ? Array(8).fill(tile.b.slice(28, 32)).join('') : super.smartTile(null),
+            n: tile.n ? Array(8).fill(tile.n.slice(28, 32)).join('') : super.smartTile(null),
+          }));
+
+      default:
+        return super.smartTile(null);
+    }
+  }
+
   blendColors({ r, g, b, n }) {
     const RGBValues = {
       r: this.palette.r[3 - r],
