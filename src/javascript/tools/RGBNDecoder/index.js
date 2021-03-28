@@ -31,9 +31,18 @@ class RGBNDecoder extends Decoder {
     if (
       this.lockFrame &&
       handleExportFrame !== 'crop' &&
-      this.tileIndexIsFramePart(tileIndex, handleExportFrame)
+      this.tileIndexIsFramePart(tileIndex, handleExportFrame) &&
+      n
     ) {
-      return super.getRGBValue(n, index, tileIndex, handleExportFrame);
+      try {
+        return super.getRGBValue(n, index, tileIndex, handleExportFrame);
+      } catch (error) {
+        return {
+          r: Math.random() * 255,
+          g: Math.random() * 255,
+          b: Math.random() * 255,
+        };
+      }
     }
 
     return this.blendColors({
