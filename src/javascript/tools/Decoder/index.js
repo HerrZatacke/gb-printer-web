@@ -2,6 +2,10 @@
 import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
 
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
+const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
+
+const blackLine = Array(20).fill(black);
+const whiteLine = Array(20).fill(white);
 
 const TILE_PIXEL_WIDTH = 8;
 const TILE_PIXEL_HEIGHT = 8;
@@ -88,31 +92,106 @@ class Decoder {
 
   getScaledCanvas(scaleFactor, handleExportFrame = 'keep') {
 
-    const cropFrame = handleExportFrame !== 'keep';
-
-    // 2 tiles top/left/bottom/right -> 4 tiles to each side
-    const FRAME_TILES = 4;
-
-    const initialHeight = this.getHeight() - (cropFrame ? TILE_PIXEL_HEIGHT * FRAME_TILES : 0);
-    const initialWidth = (TILES_PER_LINE * TILE_PIXEL_WIDTH) - (cropFrame ? TILE_PIXEL_WIDTH * FRAME_TILES : 0);
-
-    const tilesPerLine = cropFrame ? TILES_PER_LINE - FRAME_TILES : TILES_PER_LINE;
+    // crop and square modes are only available for regular "camera" images
+    const handleFrameMode = (this.tiles.length === 360) ? handleExportFrame : 'keep';
+    const { initialHeight, initialWidth, tilesPerLine, crop } = this.getScaleCanvasSize(handleFrameMode);
 
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     canvas.width = initialWidth * scaleFactor;
     canvas.height = initialHeight * scaleFactor;
 
-    this.tiles
-      .map((tile, index) => (
-        cropFrame && this.tileIndexIsFramePart(index) ? null : tile
-      ))
-      .filter(Boolean)
+    this.getExportTiles(handleFrameMode)
       .forEach((tile, index) => {
-        this.paintTileScaled(this.decodeTile(tile), index, context, scaleFactor, tilesPerLine, cropFrame);
+        this.paintTileScaled(this.decodeTile(tile), index, context, scaleFactor, tilesPerLine, crop);
       });
 
     return canvas;
+  }
+
+  getScaleCanvasSize(handleExportFrame) {
+    // 2 tiles top/left/bottom/right -> 4 tiles to each side
+    const FRAME_TILES = 4;
+
+    switch (handleExportFrame) {
+      case 'keep':
+        return {
+          initialHeight: this.getHeight(),
+          initialWidth: TILES_PER_LINE * TILE_PIXEL_WIDTH,
+          tilesPerLine: TILES_PER_LINE,
+          crop: false,
+        };
+      case 'crop':
+        return {
+          initialHeight: this.getHeight() - (TILE_PIXEL_HEIGHT * FRAME_TILES),
+          initialWidth: (TILES_PER_LINE * TILE_PIXEL_WIDTH) - (TILE_PIXEL_WIDTH * FRAME_TILES),
+          tilesPerLine: TILES_PER_LINE - FRAME_TILES,
+          crop: true,
+        };
+      case 'square_black':
+      case 'square_white':
+      case 'square_smart':
+        return {
+          initialHeight: this.getHeight() + (2 * TILE_PIXEL_HEIGHT),
+          initialWidth: TILES_PER_LINE * TILE_PIXEL_WIDTH,
+          tilesPerLine: TILES_PER_LINE,
+          crop: false,
+        };
+      default:
+        throw new Error(`unknown export mode ${handleExportFrame}`);
+    }
+  }
+
+  getExportTiles(handleExportFrame) {
+    switch (handleExportFrame) {
+      case 'keep':
+        return this.tiles;
+      case 'crop':
+        return this.tiles
+          .map((tile, index) => (
+            this.tileIndexIsFramePart(index) ? null : tile
+          ))
+          .filter(Boolean);
+      case 'square_black':
+        return [
+          ...blackLine,
+          ...this.tiles,
+          ...blackLine,
+        ];
+      case 'square_white':
+        return [
+          ...whiteLine,
+          ...this.tiles,
+          ...whiteLine,
+        ];
+      case 'square_smart':
+        return [
+          ...this.smartTile('first'),
+          ...this.tiles,
+          ...this.smartTile('last'),
+        ];
+      default:
+        throw new Error(`unknown export mode ${handleExportFrame}`);
+    }
+  }
+
+  smartTile(where) {
+    switch (where) {
+      case 'first':
+        return this.tiles.slice(0, 20)
+          .map((tile) => (
+            Array(8).fill(tile.slice(0, 4)).join('')
+          ));
+
+      case 'last':
+        return this.tiles.slice(340, 360)
+          .map((tile) => (
+            Array(8).fill(tile.slice(28, 32)).join('')
+          ));
+
+      default:
+        return blackLine;
+    }
   }
 
   setCanvas(canvas) {
@@ -180,7 +259,8 @@ class Decoder {
 
   // Gameboy tile decoder function from http://www.huderlem.com/demos/gameboy2bpp.html
   decodeTile(rawBytes = black) {
-    const bytes = rawBytes.replace(/[^0-9A-F]/ig, '').padEnd(32, 'f');
+    const bytes = rawBytes.replace(/[^0-9A-F]/ig, '')
+      .padEnd(32, 'f');
 
     const byteArray = new Array(16);
     for (let i = 0; i < byteArray.length; i += 1) {
