@@ -164,6 +164,28 @@ class DropboxClient extends EventEmitter {
       });
   }
 
+  getImageContents() {
+    return this.addToQueue('dbx.filesListFolder /images', this.throttle, () => (
+      this.dbx.filesListFolder({
+        path: this.toPath('/images'),
+        limit: 250,
+        recursive: true,
+      })
+        .catch(this.requestError)
+    ))
+      .catch(() => ({ result: { entries: [], has_more: false } }))
+      .then(({ result: { entries, has_more: hasMore, cursor } }) => (
+        (
+          hasMore ?
+            this.getMoreContents(cursor, entries) :
+            Promise.resolve(entries)
+        )
+          .then((allEntries) => (
+            allEntries.filter(({ '.tag': tag }) => tag === 'file')
+          ))
+      ));
+  }
+
   getMoreContents(cursor, prevEntries) {
     return this.addToQueue(`dbx.filesListFolderContinue ${cursor}`, this.throttle, () => (
       this.dbx.filesListFolderContinue({
@@ -209,14 +231,14 @@ class DropboxClient extends EventEmitter {
       .then(({ result: { fileBlob } }) => readFileAs(fileBlob, 'text'));
   }
 
-  upload({ upload = [], del = [] }) {
+  upload({ upload = [], del = [] }, toPath) {
     return Promise.all([
       // Upload updated files
       !upload.length ? [] : (
         Promise.all(upload.map((file, index) => (
           this.addToQueue(`dbx.filesUpload (${index + 1}/${upload.length}) ${file.destination}`, this.throttle, () => (
             this.dbx.filesUpload({
-              path: this.toPath(`/settings/${file.destination}`),
+              path: this.toPath(`/${toPath}/${file.destination}`),
               contents: file.blob,
               mode: 'overwrite',
             })

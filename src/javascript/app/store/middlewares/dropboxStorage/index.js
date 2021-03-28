@@ -20,7 +20,10 @@ const dropboxStorage = (store) => {
         action.type === 'DROPBOX_START_AUTH' ||
         (
           action.type === 'STORAGE_SYNC_START' &&
-          action.payload.storageType === 'dropbox'
+          (
+            action.payload.storageType === 'dropbox' ||
+            action.payload.storageType === 'dropboximages'
+          )
         )
       ) {
         if (!middleware) {
