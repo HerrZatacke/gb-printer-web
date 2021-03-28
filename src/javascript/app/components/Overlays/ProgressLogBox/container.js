@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
   },
   dropbox: {
     messages: state.progressLog.dropbox || [],
-    path: state.dropboxStorage.path,
+    path: state.dropboxStorage.path || '',
   },
 });
 

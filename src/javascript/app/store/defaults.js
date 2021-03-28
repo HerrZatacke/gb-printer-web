@@ -162,7 +162,9 @@ const definitions = [
     key: 'dropboxStorage',
     saveLocally: true,
     saveExport: [],
-    value: {},
+    value: {
+      path: '',
+    },
   },
 ];
 
