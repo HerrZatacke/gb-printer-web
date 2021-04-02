@@ -7,6 +7,7 @@ import Input from '../../../Input';
 import supportedCanvasImageFormats from '../../../../../tools/supportedCanvasImageFormats/index';
 import cleanUrl from '../../../../../tools/cleanUrl';
 import { getEnv } from '../../../../../tools/getEnv';
+import exportFrameModes from '../../../../../consts/exportFrameModes';
 
 const GenericSettings = (props) => {
   const [pageSize, setPageSize] = useState(props.pageSize);
@@ -89,33 +90,27 @@ const GenericSettings = (props) => {
           </label>
         ))}
       </div>
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': props.exportCropFrame,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Crop/remove frame when exporting or sharing images"
+
+      <div className="inputgroup">
+        <label htmlFor="settings-handle-export-frames" className="inputgroup__label">
+          How to handle frames when exporting images
+        </label>
+        <select
+          id="settings-handle-export-frames"
+          className="inputgroup__input inputgroup__input--select"
+          value={props.handleExportFrame}
+          onChange={(ev) => {
+            props.setHandleExportFrame(ev.target.value);
+          }}
         >
-          Crop/remove frame when exporting or sharing images
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
-            checked={props.exportCropFrame}
-            onChange={({ target }) => {
-              props.setExportCropFrame(target.checked);
-            }}
-          />
-          <SVG name="checkmark" />
-        </span>
-      </label>
+          {
+            exportFrameModes.map(({ id, name }) => (
+              <option value={id} key={id}>{ name }</option>
+            ))
+          }
+        </select>
+      </div>
+
       <div className="inputgroup">
         <label htmlFor="settings-sav-frames" className="inputgroup__label">
           Frames to be applied when importing Cartridge dumps
@@ -210,8 +205,8 @@ GenericSettings.propTypes = {
   setSavFrameTypes: PropTypes.func.isRequired,
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
-  setExportCropFrame: PropTypes.func.isRequired,
-  exportCropFrame: PropTypes.bool.isRequired,
+  setHandleExportFrame: PropTypes.func.isRequired,
+  handleExportFrame: PropTypes.string.isRequired,
   setHideDates: PropTypes.func.isRequired,
   hideDates: PropTypes.bool.isRequired,
   printerUrl: PropTypes.string.isRequired,

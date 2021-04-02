@@ -66,7 +66,7 @@ const animate = (store) => (next) => (action) => {
       lockFrame: videoLockFrame,
       invertPalette: videoInvertPalette,
       palette: videoPalette,
-      cropFrame,
+      exportFrameMode,
     } = state.videoParams;
 
     Promise.all(imageSelection.map((imageHash) => (
@@ -105,7 +105,7 @@ const animate = (store) => (next) => (action) => {
               });
             }
 
-            return decoder.getScaledCanvas(scaleFactor, cropFrame);
+            return decoder.getScaledCanvas(scaleFactor, exportFrameMode);
           })
       )))
       .then((images) => {

@@ -103,11 +103,11 @@ const definitions = [
     value: 'created_asc',
   },
   {
-    // if frame will be cropped when exporting
-    key: 'exportCropFrame',
+    // how frame frame will be handled when exporting
+    key: 'handleExportFrame',
     saveLocally: true,
     saveExport: ['settings', 'remote'],
-    value: false,
+    value: 'keep',
   },
   {
     // visiblility of dates in gallery
@@ -170,7 +170,9 @@ const definitions = [
     key: 'dropboxStorage',
     saveLocally: true,
     saveExport: [],
-    value: {},
+    value: {
+      path: '',
+    },
   },
 ];
 

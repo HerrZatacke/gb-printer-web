@@ -1,13 +1,16 @@
-const tileIndexIsPartOfFrame = (tileIndex) => {
-  if (tileIndex < 40) {
+const tileIndexIsPartOfFrame = (tileIndex, handleExportFrame = 'keep') => {
+
+  const checkIndex = tileIndex - (handleExportFrame === 'keep' ? 0 : 20);
+
+  if (checkIndex < 40) {
     return true;
   }
 
-  if (tileIndex >= 320) {
+  if (checkIndex >= 320) {
     return true;
   }
 
-  switch (tileIndex % 20) {
+  switch (checkIndex % 20) {
     case 0:
     case 1:
     case 18:

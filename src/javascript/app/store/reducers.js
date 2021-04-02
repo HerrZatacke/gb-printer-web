@@ -6,7 +6,6 @@ import dragover from './reducers/dragoverReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
 import editPalette from './reducers/editPaletteReducer';
-import exportCropFrame from './reducers/exportCropFrameReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import filtersActiveTags from './reducers/filtersActiveTagsReducer';
@@ -15,6 +14,7 @@ import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
 import gitStorage from './reducers/gitStorageReducer';
+import handleExportFrame from './reducers/handleExportFrameReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import imageSelection from './reducers/imageSelectionReducer';
@@ -48,7 +48,6 @@ export default combineReducers({
   dropboxStorage,
   editImage,
   editPalette,
-  exportCropFrame,
   exportFileTypes,
   exportScaleFactors,
   filtersActiveTags,
@@ -57,6 +56,7 @@ export default combineReducers({
   framesMessage,
   galleryView,
   gitStorage,
+  handleExportFrame,
   hideDates,
   images,
   imageSelection,

@@ -22,7 +22,7 @@ A lossles filetype is also recommended (e.g `.png` or `.webp`)
 After dragging your image into the app, you will be asked on how to import the frame.
 
 ### Exporting/Importing your frames
-[In the settings tab](#/settings) you can find an "Export frames" button. The resulting `.json` file can be shared and will contain all of your frames.  
+[In the import tab](#/import) you can find an "Export frames" button. The resulting `.json` file can be shared and will contain all of your frames.  
 This `.json` file can be dragged into the application and will add all frames from that export to your application.  
 
 ## Development usage

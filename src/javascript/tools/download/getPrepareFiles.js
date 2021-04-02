@@ -5,7 +5,7 @@ import { load } from '../storage';
 import { finalLine, initLine, moreLine, terminatorLine } from '../../app/defaults';
 
 const getPrepareFiles = (state) => (palette, image) => (tiles) => {
-  const { exportScaleFactors, exportFileTypes, exportCropFrame } = state;
+  const { exportScaleFactors, exportFileTypes, handleExportFrame } = state;
 
   const isRGBN = !!image.hashes;
   const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
@@ -92,7 +92,7 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
               });
             });
         } else {
-          const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, exportCropFrame);
+          const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, handleExportFrame);
 
           const onBlobComplete = (blob) => {
             resolve({

@@ -196,7 +196,7 @@ const batch = (store) => (next) => (action) => {
       case 'checkall':
         store.dispatch({
           type: 'IMAGE_SELECTION_SET',
-          payload: getFilteredImages(state, true)
+          payload: getFilteredImages(state)
             .slice(action.page * pageSize, (action.page + 1) * pageSize)
             .map(({ hash }) => hash),
         });

@@ -1,5 +1,6 @@
 import { saveAs } from 'file-saver';
 import blobArrayBuffer from '../blobArrayBuffer';
+import replaceDuplicateFilenames from '../replaceDuplicateFilenames';
 
 const download = (zipFileName) => (files) => {
 
@@ -21,19 +22,9 @@ const download = (zipFileName) => (files) => {
             arrayBuffer,
           }))
       )))
+        .then(replaceDuplicateFilenames)
         .then((buffersFiles) => {
-          buffersFiles.forEach(({ filename, arrayBuffer }) => {
-            const fnParts = filename.split('.');
-            const ext = fnParts.pop();
-            const baseName = fnParts.join('.');
-            let uFilename = filename;
-            let tries = 1;
-
-            while (zip.files[uFilename]) {
-              uFilename = `${baseName}_(${tries}).${ext}`;
-              tries += 1;
-            }
-
+          buffersFiles.forEach(({ uFilename, arrayBuffer }) => {
             zip.file(uFilename, arrayBuffer);
           });
         })

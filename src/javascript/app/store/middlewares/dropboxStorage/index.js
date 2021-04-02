@@ -1,15 +1,12 @@
-import parseAuthParams from '../../../../tools/parseAuthParams';
-
 const dropboxStorage = (store) => {
   let middleware;
 
-  const authParams = parseAuthParams();
-  const { use } = store.getState().dropboxStorage;
+  const { dropboxStorage: dropboxStorageData } = store.getState();
 
-  if (authParams.accessToken && use) {
+  if (dropboxStorageData.use) {
     import(/* webpackChunkName: "dmw" */ './middleware')
       .then(({ default: mw }) => {
-        middleware = mw(store, { ...authParams, use });
+        middleware = mw(store, dropboxStorageData);
       });
   }
 
@@ -23,7 +20,10 @@ const dropboxStorage = (store) => {
         action.type === 'DROPBOX_START_AUTH' ||
         (
           action.type === 'STORAGE_SYNC_START' &&
-          action.payload.storageType === 'dropbox'
+          (
+            action.payload.storageType === 'dropbox' ||
+            action.payload.storageType === 'dropboximages'
+          )
         )
       ) {
         if (!middleware) {

@@ -3,6 +3,24 @@ import { blendModeFunctions, blendModeKeys } from './blendModes';
 
 class RGBNDecoder extends Decoder {
 
+  constructor() {
+    super();
+
+    this.blackLine = RGBNDecoder.rgbnTiles([
+      this.blackLine,
+      this.blackLine,
+      this.blackLine,
+      this.blackLine,
+    ]);
+
+    this.whiteLine = RGBNDecoder.rgbnTiles([
+      this.whiteLine,
+      this.whiteLine,
+      this.whiteLine,
+      this.whiteLine,
+    ]);
+  }
+
   // for the RGBN Image the "palette" does not exist and therefore never change
   setPalette(palette) {
     if (!palette) {
@@ -26,14 +44,23 @@ class RGBNDecoder extends Decoder {
     };
   }
 
-  getRGBValue({ r, g, b, n }, index, tileIndex, cropFrame) {
+  getRGBValue({ r, g, b, n }, index, tileIndex, handleExportFrame) {
 
     if (
       this.lockFrame &&
-      !cropFrame &&
-      this.tileIndexIsFramePart(tileIndex)
+      handleExportFrame !== 'crop' &&
+      this.tileIndexIsFramePart(tileIndex, handleExportFrame) &&
+      n
     ) {
-      return super.getRGBValue(n, index, tileIndex, cropFrame);
+      try {
+        return super.getRGBValue(n, index, tileIndex, handleExportFrame);
+      } catch (error) {
+        return {
+          r: Math.random() * 255,
+          g: Math.random() * 255,
+          b: Math.random() * 255,
+        };
+      }
     }
 
     return this.blendColors({
@@ -42,6 +69,31 @@ class RGBNDecoder extends Decoder {
       b: b[index],
       n: n ? n[index] : false, // 'false' is required for blending if no neutral layer exists
     });
+  }
+
+  smartTile(where) {
+    switch (where) {
+      case 'first':
+        return this.tiles.slice(0, 20)
+          .map((tile) => ({
+            r: tile.r ? Array(8).fill(tile.r.slice(0, 4)).join('') : super.smartTile(null),
+            g: tile.g ? Array(8).fill(tile.g.slice(0, 4)).join('') : super.smartTile(null),
+            b: tile.b ? Array(8).fill(tile.b.slice(0, 4)).join('') : super.smartTile(null),
+            n: tile.n ? Array(8).fill(tile.n.slice(0, 4)).join('') : super.smartTile(null),
+          }));
+
+      case 'last':
+        return this.tiles.slice(340, 360)
+          .map((tile) => ({
+            r: tile.r ? Array(8).fill(tile.r.slice(28, 32)).join('') : super.smartTile(null),
+            g: tile.g ? Array(8).fill(tile.g.slice(28, 32)).join('') : super.smartTile(null),
+            b: tile.b ? Array(8).fill(tile.b.slice(28, 32)).join('') : super.smartTile(null),
+            n: tile.n ? Array(8).fill(tile.n.slice(28, 32)).join('') : super.smartTile(null),
+          }));
+
+      default:
+        return super.smartTile(null);
+    }
   }
 
   blendColors({ r, g, b, n }) {
@@ -85,7 +137,14 @@ class RGBNDecoder extends Decoder {
   }
 
   static rgbnTiles([r, g, b, n]) {
-    return [...Array(360)].map((_, i) => ({
+    const lines = Math.max(
+      r?.length || 0,
+      g?.length || 0,
+      b?.length || 0,
+      n?.length || 0,
+    );
+
+    return [...Array(lines)].map((_, i) => ({
       r: r?.[i],
       g: g?.[i],
       b: b?.[i],

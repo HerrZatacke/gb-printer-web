@@ -13,7 +13,7 @@ const getUploadImages = (store, repoContents, addToQueue) => {
     ...state,
     exportScaleFactors,
     exportFileTypes,
-    exportCropFrame: false,
+    handleExportFrame: 'keep',
   });
   const prepareGitFiles = getPrepareRemoteFiles(store);
   const missingLocally = [];
