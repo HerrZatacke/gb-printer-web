@@ -3,6 +3,24 @@ import { blendModeFunctions, blendModeKeys } from './blendModes';
 
 class RGBNDecoder extends Decoder {
 
+  constructor() {
+    super();
+
+    this.blackLine = RGBNDecoder.rgbnTiles([
+      this.blackLine,
+      this.blackLine,
+      this.blackLine,
+      this.blackLine,
+    ]);
+
+    this.whiteLine = RGBNDecoder.rgbnTiles([
+      this.whiteLine,
+      this.whiteLine,
+      this.whiteLine,
+      this.whiteLine,
+    ]);
+  }
+
   // for the RGBN Image the "palette" does not exist and therefore never change
   setPalette(palette) {
     if (!palette) {
@@ -119,7 +137,14 @@ class RGBNDecoder extends Decoder {
   }
 
   static rgbnTiles([r, g, b, n]) {
-    return [...Array(360)].map((_, i) => ({
+    const lines = Math.max(
+      r?.length || 0,
+      g?.length || 0,
+      b?.length || 0,
+      n?.length || 0,
+    );
+
+    return [...Array(lines)].map((_, i) => ({
       r: r?.[i],
       g: g?.[i],
       b: b?.[i],

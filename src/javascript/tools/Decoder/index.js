@@ -1,11 +1,8 @@
 // Tile Constants
 import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
 
-const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
-const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
-
-const blackLine = Array(20).fill(black);
-const whiteLine = Array(20).fill(white);
+const black = 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
+const white = '00000000000000000000000000000000';
 
 const TILE_PIXEL_WIDTH = 8;
 const TILE_PIXEL_HEIGHT = 8;
@@ -21,6 +18,9 @@ class Decoder {
     this.lockFrame = false;
     this.invertPalette = false;
     this.bwPalette = [0xffffff, 0xaaaaaa, 0x555555, 0x000000];
+
+    this.blackLine = Array(20).fill(black);
+    this.whiteLine = Array(20).fill(white);
 
     this.tileIndexIsFramePart = tileIndexIsPartOfFrame;
   }
@@ -151,15 +151,15 @@ class Decoder {
           .filter(Boolean);
       case 'square_black':
         return [
-          ...blackLine,
+          ...this.blackLine,
           ...this.tiles,
-          ...blackLine,
+          ...this.blackLine,
         ];
       case 'square_white':
         return [
-          ...whiteLine,
+          ...this.whiteLine,
           ...this.tiles,
-          ...whiteLine,
+          ...this.whiteLine,
         ];
       case 'square_smart':
         return [
@@ -187,7 +187,7 @@ class Decoder {
           ));
 
       default:
-        return blackLine;
+        return this.blackLine;
     }
   }
 
