@@ -119,7 +119,7 @@ const VideoParamsForm = (props) => {
         }
       </select>
 
-      { exportFrameMode ? null : (
+      { exportFrameMode === 'crop' ? null : (
         <>
           <div className="video-params__select-label">
             Frame
