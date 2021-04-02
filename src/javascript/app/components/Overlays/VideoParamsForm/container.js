@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
   lockFrame: state.videoParams.lockFrame || false,
   invertPalette: state.videoParams.invertPalette || false,
   frame: state.videoParams.frame || '',
-  cropFrame: state.videoParams.cropFrame || false,
+  exportFrameMode: state.videoParams.exportFrameMode || 'keep',
   palette: state.videoParams.palette || '',
 });
 

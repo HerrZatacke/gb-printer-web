@@ -7,29 +7,7 @@ import Input from '../../../Input';
 import supportedCanvasImageFormats from '../../../../../tools/supportedCanvasImageFormats/index';
 import cleanUrl from '../../../../../tools/cleanUrl';
 import { getEnv } from '../../../../../tools/getEnv';
-
-const exportFrameModes = [
-  {
-    id: 'keep',
-    name: 'Keep frame',
-  },
-  {
-    id: 'crop',
-    name: 'Crop frame',
-  },
-  {
-    id: 'square_black',
-    name: 'Make image squared (add black)',
-  },
-  {
-    id: 'square_white',
-    name: 'Make image squared (add white)',
-  },
-  {
-    id: 'square_smart',
-    name: 'Make image squared (smart - repeats first/last line - works in most cases...)',
-  },
-];
+import exportFrameModes from '../../../../../consts/exportFrameModes';
 
 const GenericSettings = (props) => {
   const [pageSize, setPageSize] = useState(props.pageSize);

@@ -6,6 +6,7 @@ import SVG from '../../SVG';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
 import Input from '../../Input';
+import exportFrameModes from '../../../../consts/exportFrameModes';
 
 const VideoParamsForm = (props) => {
 
@@ -23,7 +24,7 @@ const VideoParamsForm = (props) => {
   const [yoyo, setYoyo] = useState(props.yoyo);
   const [frame, setFrame] = useState(props.frame);
   const [lockFrame, setLockFrame] = useState(props.lockFrame);
-  const [cropFrame, setCropFrame] = useState(props.cropFrame);
+  const [exportFrameMode, setExportFrameMode] = useState(props.exportFrameMode);
 
   useEffect(() => {
     const cleanState = {
@@ -34,11 +35,11 @@ const VideoParamsForm = (props) => {
       yoyo,
       frame,
       lockFrame,
-      cropFrame,
+      exportFrameMode,
     };
 
     update(cleanState);
-  }, [frameRate, scaleFactor, palette, invertPalette, yoyo, frame, lockFrame, cropFrame, update]);
+  }, [frameRate, scaleFactor, palette, invertPalette, yoyo, frame, lockFrame, exportFrameMode, update]);
 
   if (!imageCount) {
     return null;
@@ -99,27 +100,26 @@ const VideoParamsForm = (props) => {
         onChange={setPalette}
         updateInvertPalette={setInvertPalette}
       />
-      <label
-        className={
-          classnames('video-params__check-label', {
-            'video-params__check-label--checked': cropFrame,
-          })
-        }
-      >
-        <input
-          type="checkbox"
-          className="video-params__checkbox"
-          checked={cropFrame}
-          onChange={(ev) => {
-            setCropFrame(ev.target.checked);
-          }}
-        />
-        <SVG name="checkmark" />
-        <span className="video-params__check-label-text">
-          Crop/remove frame
-        </span>
+
+      <label htmlFor="settings-handle-export-frames" className="video-params__select-label">
+        How to handle frames when exporting images
       </label>
-      { cropFrame ? null : (
+      <select
+        id="settings-handle-export-frames"
+        className="video-params__frameexport-select"
+        value={exportFrameMode}
+        onChange={(ev) => {
+          setExportFrameMode(ev.target.value);
+        }}
+      >
+        {
+          exportFrameModes.map(({ id, name }) => (
+            <option value={id} key={id}>{ name }</option>
+          ))
+        }
+      </select>
+
+      { exportFrameMode ? null : (
         <>
           <div className="video-params__select-label">
             Frame
@@ -145,7 +145,7 @@ VideoParamsForm.propTypes = {
   invertPalette: PropTypes.bool.isRequired,
   yoyo: PropTypes.bool.isRequired,
   lockFrame: PropTypes.bool.isRequired,
-  cropFrame: PropTypes.bool.isRequired,
+  exportFrameMode: PropTypes.string.isRequired,
   frame: PropTypes.string.isRequired,
   cancel: PropTypes.func.isRequired,
   animate: PropTypes.func.isRequired,
