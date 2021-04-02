@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => ({
   imageCount: state.videoParams.imageSelection ? state.videoParams.imageSelection.length : 0,
   scaleFactor: state.videoParams.scaleFactor || [...state.exportScaleFactors].pop() || 4,
-  frameRate: state.videoParams.frameRate || 24,
+  frameRate: state.videoParams.frameRate || 12,
   yoyo: state.videoParams.yoyo || false,
   lockFrame: state.videoParams.lockFrame || false,
   invertPalette: state.videoParams.invertPalette || false,
