@@ -21,13 +21,8 @@ const ProgressBox = ({ message, progress }) => (
 );
 
 ProgressBox.propTypes = {
-  message: PropTypes.string,
-  progress: PropTypes.number,
-};
-
-ProgressBox.defaultProps = {
-  message: '',
-  progress: 0,
+  message: PropTypes.string.isRequired,
+  progress: PropTypes.number.isRequired,
 };
 
 export default ProgressBox;

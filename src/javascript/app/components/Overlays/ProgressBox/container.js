@@ -8,6 +8,13 @@ const mapStateToProps = (state) => {
     });
   }
 
+  if (state.progress.printer) {
+    return ({
+      progress: state.progress.printer,
+      message: 'Fetching images from printer...',
+    });
+  }
+
   return {};
 };
 
