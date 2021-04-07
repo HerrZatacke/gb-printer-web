@@ -75,7 +75,7 @@ const importMessage = (store) => {
       if (typeof blobsdone[0] === 'string') {
         window.setTimeout(() => {
           // eslint-disable-next-line no-alert
-          alert('You should update the web-app to a version > 1.15.5 on your printer for an optimized import experience :-)');
+          alert('You should update the web-app to a version > 1.16.0 on your printer for an optimized import experience :-)');
         }, 200);
         return;
       }
