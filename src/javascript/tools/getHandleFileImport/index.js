@@ -1,9 +1,9 @@
 import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
-import getTransformCapture from '../transformCapture';
+import transformCapture from '../transformCapture';
 import getTransformBitmap from '../transformBitmap';
 import readFileAs from '../readFileAs';
-import getTransformClassic from '../transformClassic';
+import transformClassic from '../transformClassic';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer) => (
@@ -22,9 +22,7 @@ const getHandleFileImport = (store) => {
 
   const transformSav = getTransformSav(store);
   const transformBin = getTransformBin(dispatch);
-  const transformCapture = getTransformCapture(dispatch);
   const transformBitmap = getTransformBitmap(store);
-  const transformClassic = getTransformClassic(dispatch);
 
   const onError = () => {
     dispatch({
@@ -97,14 +95,27 @@ const getHandleFileImport = (store) => {
             }
 
             return transformClassic(data, file.name);
-          });
+          })
+          .then((imagesLines) => (
+            imagesLines.map((lines) => ({
+              lines,
+              filename: file.name,
+            }))
+          ));
       }
 
+      // .sav files are always exactly 128kB
       if (file.size === 131072) {
         return readFileAs(file, 'arrayBuffer')
           .catch(onError)
           .then((data) => (
             transformSav(data, file.name)
+          ))
+          .then((imagesLines) => (
+            imagesLines.map((lines) => ({
+              lines,
+              filename: file.name,
+            }))
           ));
       }
 
@@ -117,7 +128,11 @@ const getHandleFileImport = (store) => {
           .then((data) => {
 
             if (isBinType(data)) {
-              return transformBin(data, file.name);
+              return transformBin(data, file.name)
+                .then((lines) => ({
+                  lines,
+                  filename: file.name,
+                }));
             }
 
             return [];
@@ -134,7 +149,15 @@ const getHandleFileImport = (store) => {
 
     Promise.all(groupImports)
       .then((imported) => {
-        console.log(imported.flat());
+        const toBeConfirmed = imported.flat().filter(Boolean);
+
+        if (toBeConfirmed.length) {
+          dispatch({
+            type: 'ADD_TO_QUEUE',
+            payload: toBeConfirmed,
+          });
+        }
+
       });
 
   };

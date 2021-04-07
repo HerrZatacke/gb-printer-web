@@ -18,16 +18,11 @@ const getTransformBin = (dispatch) => (data, filename) => {
       type: 'ERROR',
       payload: `ERROR_IN_LOADED_BIN\n${filename}`,
     });
-    return;
+
+    return Promise.resolve([]);
   }
 
-  dispatch({
-    type: 'ADD_TO_QUEUE',
-    payload: [{
-      file: filename,
-      lines: transformed,
-    }],
-  });
+  return Promise.resolve(transformed);
 };
 
 export default getTransformBin;

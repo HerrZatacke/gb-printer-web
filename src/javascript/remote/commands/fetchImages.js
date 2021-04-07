@@ -14,18 +14,18 @@ const addToQueue = (fn) => (
 );
 
 const fetchImages = (targetWindow, { dumps }) => (
-  Promise.all(dumps.map((dump) => (
+  Promise.all(dumps.map((dump, index) => (
     addToQueue(
       () => fetch(`/${dump.replace(/^\//, '')}`)
         .then((res) => res.blob())
         .then((blob) => {
           targetWindow.postMessage({
             fromRemotePrinter: {
-              blob,
+              progress: (index + 1) / dumps.length,
             },
           }, '*');
 
-          return dump;
+          return blob;
         }),
     )
   )))

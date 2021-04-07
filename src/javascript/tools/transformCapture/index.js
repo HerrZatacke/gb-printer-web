@@ -12,7 +12,7 @@ import {
 //   return d;
 // };
 
-const getTransformCapture = (dispatch) => (dumpText, filename) => {
+const transformCapture = (dumpText) => {
 
   const bytes = dumpText
     .split('\n')
@@ -26,27 +26,12 @@ const getTransformCapture = (dispatch) => (dumpText, filename) => {
     .flat()
     .map((cc) => parseInt(cc, 16));
 
-  parsePackets(bytes)
+  return parsePackets(bytes)
     .then(getImageDataStream)
     .then(decompressDataStream)
     .then(decodePrintCommands)
     .then(harmonizePalettes)
-    .then(transformToClassic)
-    .then((images) => {
-
-      images.forEach((lines) => {
-        dispatch({
-          type: 'ADD_TO_QUEUE',
-          payload: [{
-            file: filename,
-            lines,
-          }],
-        });
-      });
-
-    });
-
-
+    .then(transformToClassic);
 };
 
-export default getTransformCapture;
+export default transformCapture;

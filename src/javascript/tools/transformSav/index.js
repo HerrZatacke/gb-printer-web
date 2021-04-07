@@ -66,50 +66,44 @@ const getTransformSav = (store) => (data, filename) => {
       }
     }
 
-    Promise.all(framed)
-      .then((framedImages) => {
-        store.dispatch({
-          type: 'ADD_TO_QUEUE',
-          payload: framedImages.map((lines) => ({
-            lines,
-            file: filename,
-          })),
-        });
-      });
+    return Promise.all(framed);
   };
 
   if (frameGroups.length < 2) {
-    importSav(savFrameTypes);
-    return;
+    return importSav(savFrameTypes);
   }
 
-  store.dispatch({
-    type: 'CONFIRM_ASK',
-    payload: {
-      message: `Importing '${filename}'`,
-      questions: () => [
-        {
-          label: 'Select frameset to use with this import',
-          key: 'selectedFrameset',
-          type: 'select',
-          options: frameGroups,
-        },
-      ],
-      confirm: ({ selectedFrameset }) => {
-        store.dispatch({
-          type: 'CONFIRM_ANSWERED',
-        });
+  return new Promise(((resolve) => {
 
-        // Perform actual import action
-        importSav(selectedFrameset);
+    store.dispatch({
+      type: 'CONFIRM_ASK',
+      payload: {
+        message: `Importing '${filename}'`,
+        questions: () => [
+          {
+            label: 'Select frameset to use with this import',
+            key: 'selectedFrameset',
+            type: 'select',
+            options: frameGroups,
+          },
+        ],
+        confirm: ({ selectedFrameset }) => {
+          store.dispatch({
+            type: 'CONFIRM_ANSWERED',
+          });
+
+          // Perform actual import action
+          resolve(importSav(selectedFrameset));
+        },
+        deny: () => {
+          store.dispatch({
+            type: 'CONFIRM_ANSWERED',
+          });
+          resolve([]);
+        },
       },
-      deny: () => {
-        store.dispatch({
-          type: 'CONFIRM_ANSWERED',
-        });
-      },
-    },
-  });
+    });
+  }));
 
 };
 

@@ -17,7 +17,7 @@ const importMessage = (store) => {
       return;
     }
 
-    const { fromRemotePrinter: { lines, blob, blobsdone, commands, printerData } = {} } = event.data;
+    const { fromRemotePrinter: { lines, progress, blobsdone, commands, printerData } = {} } = event.data;
     const sourceWindow = event.source;
 
     if (commands) {
@@ -61,17 +61,21 @@ const importMessage = (store) => {
       });
     }
 
-    if (blob) {
+    if (progress !== undefined) {
       store.dispatch({
-        type: 'IMPORT_FILES',
-        payload: { files: [blob] },
+        type: 'PRINTER_PROGRESS',
+        payload: progress,
       });
     }
 
     if (blobsdone) {
       store.dispatch({
-        type: 'PRINTER_READY',
+        type: 'IMPORT_FILES',
+        payload: { files: blobsdone },
       });
+      // store.dispatch({
+      //   type: 'PRINTER_READY',
+      // });
     }
 
     if (printerData) {
