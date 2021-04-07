@@ -13,7 +13,7 @@ import getFilteredImages from '../../../../tools/getFilteredImages';
 let dropboxClient;
 let addToQueue = () => {};
 
-const middleware = (store, dropboxStorage) => {
+const middleware = (store) => {
 
   const queue = new Queue(1, Infinity);
   addToQueue = (who) => (what, throttle, fn) => (
@@ -36,13 +36,13 @@ const middleware = (store, dropboxStorage) => {
     ))
   );
 
-  dropboxClient = new DropboxClient(dropboxStorage, addToQueue('Dropbox'));
+  dropboxClient = new DropboxClient(store.getState().dropboxStorage, addToQueue('Dropbox'));
 
   dropboxClient.on('loginDataUpdate', (data) => {
     store.dispatch({
       type: 'SET_DROPBOX_STORAGE',
       payload: {
-        ...dropboxStorage,
+        ...store.getState().dropboxStorage,
         ...data,
       },
     });
@@ -54,8 +54,11 @@ const middleware = (store, dropboxStorage) => {
   }
 
   return (action) => {
-    if (action.type === 'STORAGE_SYNC_START') {
+    if (action.type === 'SET_DROPBOX_STORAGE') {
       dropboxClient.setRootPath(store.getState().dropboxStorage.path || '/');
+    }
+
+    if (action.type === 'STORAGE_SYNC_START') {
 
       if (action.payload.storageType === 'dropbox') {
 
@@ -64,7 +67,7 @@ const middleware = (store, dropboxStorage) => {
             switch (action.payload.direction) {
               case 'up':
                 return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
-                  .then((changes) => dropboxClient.upload(changes), 'settings');
+                  .then((changes) => dropboxClient.upload(changes, 'settings'));
               case 'down':
                 return saveLocalStorageItems(repoContents)
                   .then((result) => {
