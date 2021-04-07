@@ -41,7 +41,7 @@ const fileDrop = (store) => {
       files = [...ev.dataTransfer.files];
     }
 
-    files.forEach(handleFileImport);
+    handleFileImport(files);
   });
 
   return (next) => (action) => {

@@ -7,7 +7,7 @@ const importFile = (store) => {
     if (action.type === 'IMPORT_FILE') {
 
       if (action.payload.files && action.payload.files.length === 1) {
-        handleFileImport(action.payload.files[0]);
+        handleFileImport(action.payload.files);
       }
 
       // don't call next(action)
