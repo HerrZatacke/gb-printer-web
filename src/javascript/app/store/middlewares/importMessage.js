@@ -51,11 +51,11 @@ const importMessage = (store) => {
       }
 
       store.dispatch({
-        type: 'IMPORT_FILE',
+        type: 'IMPORT_FILES',
         payload: { files: [file] },
       });
 
-      // IMPORT_FILE is intercepted so a second dispatch is required to enable printer buttons
+      // IMPORT_FILES is intercepted so a second dispatch is required to enable printer buttons
       store.dispatch({
         type: 'PRINTER_READY',
       });
@@ -63,7 +63,7 @@ const importMessage = (store) => {
 
     if (blob) {
       store.dispatch({
-        type: 'IMPORT_FILE',
+        type: 'IMPORT_FILES',
         payload: { files: [blob] },
       });
     }

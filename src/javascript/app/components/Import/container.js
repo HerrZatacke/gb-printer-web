@@ -15,14 +15,14 @@ const mapDispatchToProps = (dispatch) => ({
     }
 
     dispatch({
-      type: 'IMPORT_FILE',
+      type: 'IMPORT_FILES',
       payload: { files: [file] },
     });
   },
-  importFile: (file) => {
+  importFile: (files) => {
     dispatch({
-      type: 'IMPORT_FILE',
-      payload: file,
+      type: 'IMPORT_FILES',
+      payload: files,
     });
   },
   exportJson(what) {
