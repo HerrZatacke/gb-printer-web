@@ -54,11 +54,6 @@ const importMessage = (store) => {
         type: 'IMPORT_FILES',
         payload: { files: [file] },
       });
-
-      // IMPORT_FILES is intercepted so a second dispatch is required to enable printer buttons
-      store.dispatch({
-        type: 'PRINTER_READY',
-      });
     }
 
     if (progress !== undefined) {
@@ -73,9 +68,6 @@ const importMessage = (store) => {
         type: 'IMPORT_FILES',
         payload: { files: blobsdone },
       });
-      // store.dispatch({
-      //   type: 'PRINTER_READY',
-      // });
     }
 
     if (printerData) {
