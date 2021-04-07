@@ -24,7 +24,8 @@ const getHandleFileImport = (store) => {
   const transformBin = getTransformBin(dispatch);
   const transformBitmap = getTransformBitmap(store);
 
-  const onError = () => {
+  const onError = (error) => {
+    console.error(error);
     dispatch({
       type: 'ERROR',
       payload: 'FILE_NOT_READ',
@@ -35,7 +36,7 @@ const getHandleFileImport = (store) => {
 
     const groupImports = files.map((file) => {
 
-      if (file.type.startsWith('image/')) {
+      if (file.type && file.type.startsWith('image/')) {
         transformBitmap(file);
         return Promise.resolve([]);
       }
@@ -120,8 +121,8 @@ const getHandleFileImport = (store) => {
       }
 
       if (
-        file.type.startsWith('application/') ||
-        !file.type
+        !file.type ||
+        file.type.startsWith('application/')
       ) {
         return readFileAs(file, 'arrayBuffer')
           .catch(onError)
