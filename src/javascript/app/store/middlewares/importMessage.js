@@ -17,7 +17,7 @@ const importMessage = (store) => {
       return;
     }
 
-    const { fromRemotePrinter: { lines, progress, blobsdone, commands, printerData } = {} } = event.data;
+    const { fromRemotePrinter: { lines, progress, blob, blobsdone, commands, printerData } = {} } = event.data;
     const sourceWindow = event.source;
 
     if (commands) {
@@ -63,7 +63,23 @@ const importMessage = (store) => {
       });
     }
 
+    // fallback for printers with web-app version < 1.15.5 to display some "fake" progress..
+    if (blob) {
+      store.dispatch({
+        type: 'IMPORT_FILES',
+        payload: { files: [blob] },
+      });
+    }
+
     if (blobsdone) {
+      if (typeof blobsdone[0] === 'string') {
+        window.setTimeout(() => {
+          // eslint-disable-next-line no-alert
+          alert('You should update the web-app to a version > 1.15.5 on your printer for an optimized import experience :-)');
+        }, 200);
+        return;
+      }
+
       store.dispatch({
         type: 'IMPORT_FILES',
         payload: { files: blobsdone },
