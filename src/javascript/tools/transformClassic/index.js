@@ -1,7 +1,7 @@
 import handleLines from '../handleLines';
 import { terminatorLine } from '../../app/defaults';
 
-const getTransformClassic = (dispatch) => (data, filename) => {
+const transformClassic = (data, filename) => {
 
   let dataLines = [];
 
@@ -19,10 +19,7 @@ const getTransformClassic = (dispatch) => (data, filename) => {
           // eslint-disable-next-line no-case-declarations
           const lines = dataLines.filter(Boolean);
           dataLines = [];
-          return lines.length ? {
-            lines,
-            file: filename ? filename.replace(/.txt$/gi, '') : false,
-          } : false;
+          return lines.length ? lines : false;
 
         default:
           return null;
@@ -35,10 +32,7 @@ const getTransformClassic = (dispatch) => (data, filename) => {
     console.warn(`File ${filename} did not contain images`);
   }
 
-  dispatch({
-    type: 'ADD_TO_QUEUE',
-    payload: [...imagesFromFile],
-  });
+  return Promise.resolve(imagesFromFile);
 };
 
-export default getTransformClassic;
+export default transformClassic;

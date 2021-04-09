@@ -17,7 +17,7 @@ const importMessage = (store) => {
       return;
     }
 
-    const { fromRemotePrinter: { lines, blob, blobsdone, commands, printerData } = {} } = event.data;
+    const { fromRemotePrinter: { lines, progress, blob, blobsdone, commands, printerData } = {} } = event.data;
     const sourceWindow = event.source;
 
     if (commands) {
@@ -51,26 +51,38 @@ const importMessage = (store) => {
       }
 
       store.dispatch({
-        type: 'IMPORT_FILE',
+        type: 'IMPORT_FILES',
         payload: { files: [file] },
-      });
-
-      // IMPORT_FILE is intercepted so a second dispatch is required to enable printer buttons
-      store.dispatch({
-        type: 'PRINTER_READY',
       });
     }
 
+    if (progress !== undefined) {
+      store.dispatch({
+        type: 'PRINTER_PROGRESS',
+        payload: progress,
+      });
+    }
+
+    // fallback for printers with web-app version < 1.15.5 to display some "fake" progress..
     if (blob) {
       store.dispatch({
-        type: 'IMPORT_FILE',
+        type: 'IMPORT_FILES',
         payload: { files: [blob] },
       });
     }
 
     if (blobsdone) {
+      if (typeof blobsdone[0] === 'string') {
+        window.setTimeout(() => {
+          // eslint-disable-next-line no-alert
+          alert('You should update the web-app to a version > 1.16.0 on your printer for an optimized import experience :-)');
+        }, 200);
+        return;
+      }
+
       store.dispatch({
-        type: 'PRINTER_READY',
+        type: 'IMPORT_FILES',
+        payload: { files: blobsdone },
       });
     }
 

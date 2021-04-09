@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => ({
   showProgressLog: !!state.progressLog,
   showInfoBox: state.framesMessage === 1,
-  showProgressBox: !!state.progress.gif,
+  showProgressBox: !!state.progress.gif || !!state.progress.printer,
   showConfirm: !!state.confirm.length,
   showEditForm: !!state.editImage,
   showEditPalette: !!state.editPalette.shortName,

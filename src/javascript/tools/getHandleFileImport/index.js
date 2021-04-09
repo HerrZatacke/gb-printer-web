@@ -1,9 +1,9 @@
 import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
-import getTransformCapture from '../transformCapture';
+import transformCapture from '../transformCapture';
 import getTransformBitmap from '../transformBitmap';
 import readFileAs from '../readFileAs';
-import getTransformClassic from '../transformClassic';
+import transformClassic from '../transformClassic';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer) => (
@@ -22,108 +22,145 @@ const getHandleFileImport = (store) => {
 
   const transformSav = getTransformSav(store);
   const transformBin = getTransformBin(dispatch);
-  const transformCapture = getTransformCapture(dispatch);
   const transformBitmap = getTransformBitmap(store);
-  const transformClassic = getTransformClassic(dispatch);
 
-  const onError = () => {
+  const onError = (error) => {
+    console.error(error);
     dispatch({
       type: 'ERROR',
       payload: 'FILE_NOT_READ',
     });
   };
 
-  return (file) => {
+  return (files) => {
 
-    if (file.type.startsWith('image/')) {
-      transformBitmap(file);
-      return;
-    }
+    const groupImports = files.map((file) => {
 
-    // roughly larger than 256MB is too much....
-    if (file.size > 0xfffffff) {
-      dispatch({
-        type: 'ERROR',
-        payload: 'FILE_TOO_LARGE',
-      });
-      return;
-    }
+      if (file.type && file.type.startsWith('image/')) {
+        transformBitmap(file);
+        return Promise.resolve([]);
+      }
 
-    if (file.type === 'application/json') {
-      readFileAs(file, 'text')
-        .catch(onError)
-        .then((data) => {
-          let settingsDump = {};
-
-          try {
-            settingsDump = JSON.parse(data);
-          } catch (error) { /**/ }
-
-          if (settingsDump && settingsDump.state) {
-            dispatch({
-              type: 'JSON_IMPORT',
-              payload: settingsDump,
-            });
-            return;
-          }
-
-          dispatch({
-            type: 'ERROR',
-            payload: 'NOT_A_SETTINGS_FILE',
-          });
+      // roughly larger than 256MB is too much....
+      if (file.size > 0xfffffff) {
+        dispatch({
+          type: 'ERROR',
+          payload: 'FILE_TOO_LARGE',
         });
-      return;
-    }
+        return Promise.resolve([]);
+      }
 
-    if (file.type === 'text/plain') {
-      readFileAs(file, 'text')
-        .catch(onError)
-        .then((data) => {
-
-          // file must contain something that resembles a gb printer command
-          if (data.indexOf('{"command"') === -1) {
+      if (file.type === 'application/json') {
+        readFileAs(file, 'text')
+          .catch(onError)
+          .then((data) => {
+            let settingsDump = {};
 
             try {
-              transformCapture(data, file.name);
-            } catch (error) {
+              settingsDump = JSON.parse(data);
+            } catch (error) { /**/ }
+
+            if (settingsDump && settingsDump.state) {
               dispatch({
-                type: 'ERROR',
-                payload: 'NOT_A_DUMP',
+                type: 'JSON_IMPORT',
+                payload: settingsDump,
               });
+              return;
             }
 
-            return;
-          }
+            dispatch({
+              type: 'ERROR',
+              payload: 'NOT_A_SETTINGS_FILE',
+            });
+          });
+        return Promise.resolve([]);
+      }
 
-          transformClassic(data, file.name);
-        });
-      return;
-    }
+      if (file.type === 'text/plain') {
+        return readFileAs(file, 'text')
+          .catch(onError)
+          .then((data) => {
 
-    if (
-      file.type.startsWith('application/') ||
-      !file.type
-    ) {
-      readFileAs(file, 'arrayBuffer')
-        .catch(onError)
-        .then((data) => {
+            // file must contain something that resembles a gb printer command
+            if (data.indexOf('{"command"') === -1) {
 
-          if (file.size === 131072) {
-            transformSav(data, file.name);
-            return;
-          }
+              try {
+                return transformCapture(data, file.name);
+              } catch (error) {
+                dispatch({
+                  type: 'ERROR',
+                  payload: 'NOT_A_DUMP',
+                });
+                return [];
+              }
+            }
 
-          if (isBinType(data)) {
-            transformBin(data, file.name);
-          }
-        });
-      return;
-    }
+            return transformClassic(data, file.name);
+          })
+          .then((imagesLines) => (
+            imagesLines.map((lines) => ({
+              lines,
+              filename: file.name,
+            }))
+          ));
+      }
 
-    dispatch({
-      type: 'ERROR',
-      payload: 'NOT_A_DUMP',
+      // .sav files are always exactly 128kB
+      if (file.size === 131072) {
+        return readFileAs(file, 'arrayBuffer')
+          .catch(onError)
+          .then((data) => (
+            transformSav(data, file.name)
+          ))
+          .then((imagesLines) => (
+            imagesLines.map((lines) => ({
+              lines,
+              filename: file.name,
+            }))
+          ));
+      }
+
+      if (
+        !file.type ||
+        file.type.startsWith('application/')
+      ) {
+        return readFileAs(file, 'arrayBuffer')
+          .catch(onError)
+          .then((data) => {
+
+            if (isBinType(data)) {
+              return transformBin(data, file.name)
+                .then((lines) => ({
+                  lines,
+                  filename: file.name,
+                }));
+            }
+
+            return [];
+          });
+      }
+
+      dispatch({
+        type: 'ERROR',
+        payload: 'NOT_A_DUMP',
+      });
+      return Promise.resolve([]);
     });
+
+
+    Promise.all(groupImports)
+      .then((imported) => {
+        const toBeConfirmed = imported.flat().filter(Boolean);
+
+        if (toBeConfirmed.length) {
+          dispatch({
+            type: 'ADD_TO_QUEUE',
+            payload: toBeConfirmed,
+          });
+        }
+
+      });
+
   };
 };
 

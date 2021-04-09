@@ -1,4 +1,4 @@
-const progressReducer = (progress = { gif: 0 }, action) => {
+const progressReducer = (progress = { gif: 0, printer: 0 }, action) => {
   switch (action.type) {
     case 'ANIMATE_IMAGES':
       return {
@@ -9,6 +9,16 @@ const progressReducer = (progress = { gif: 0 }, action) => {
       return {
         ...progress,
         gif: action.payload,
+      };
+    case 'PRINTER_PROGRESS':
+      return {
+        ...progress,
+        printer: action.payload,
+      };
+    case 'ADD_IMAGES':
+      return {
+        ...progress,
+        printer: 0,
       };
     default:
       return progress;

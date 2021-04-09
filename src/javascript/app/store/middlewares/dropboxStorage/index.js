@@ -6,7 +6,7 @@ const dropboxStorage = (store) => {
   if (dropboxStorageData.use) {
     import(/* webpackChunkName: "dmw" */ './middleware')
       .then(({ default: mw }) => {
-        middleware = mw(store, dropboxStorageData);
+        middleware = mw(store);
       });
   }
 
@@ -18,6 +18,7 @@ const dropboxStorage = (store) => {
     if (storageSettings.use) {
       if (
         action.type === 'DROPBOX_START_AUTH' ||
+        action.type === 'SET_DROPBOX_STORAGE' ||
         (
           action.type === 'STORAGE_SYNC_START' &&
           (
@@ -29,7 +30,7 @@ const dropboxStorage = (store) => {
         if (!middleware) {
           import(/* webpackChunkName: "dmw" */ './middleware')
             .then(({ default: mw }) => {
-              middleware = mw(store, storageSettings);
+              middleware = mw(store);
               middleware(action);
             });
         } else {
