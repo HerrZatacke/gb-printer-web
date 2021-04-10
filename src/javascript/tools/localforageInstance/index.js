@@ -1,11 +1,11 @@
-import localforage from 'localforage';
+import createWrappedInstance from './createWrappedInstance';
 
-const localforageImages = localforage.createInstance({
+const localforageImages = createWrappedInstance({
   name: 'GB Printer Web',
   storeName: 'gb-printer-web-images',
 });
 
-const localforageFrames = localforage.createInstance({
+const localforageFrames = createWrappedInstance({
   name: 'GB Printer Web',
   storeName: 'gb-printer-web-frames',
 });
@@ -13,7 +13,15 @@ const localforageFrames = localforage.createInstance({
 window.lfi = localforageImages;
 window.lff = localforageFrames;
 
+const localforageReady = () => (
+  localforageFrames.ready()
+    .then(() => (
+      localforageImages.ready()
+    ))
+);
+
 export {
   localforageImages,
   localforageFrames,
+  localforageReady,
 };

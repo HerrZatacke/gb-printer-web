@@ -1,4 +1,4 @@
-import { localforageImages } from '../localforageInstance';
+import { localforageReady, localforageImages } from '../localforageInstance';
 import transferLocalStorage from '../transferLocalStorage';
 
 let envData = null;
@@ -8,7 +8,7 @@ const loadEnv = () => {
     return Promise.resolve(envData);
   }
 
-  return localforageImages.ready()
+  return localforageReady()
     .then(() => (
       transferLocalStorage()
         .then(() => (
