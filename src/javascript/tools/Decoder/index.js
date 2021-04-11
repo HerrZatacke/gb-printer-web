@@ -18,6 +18,7 @@ class Decoder {
     this.lockFrame = false;
     this.invertPalette = false;
     this.bwPalette = [0xffffff, 0xaaaaaa, 0x555555, 0x000000];
+    this.colorData = this.bwPalette;
 
     this.blackLine = Array(20).fill(black);
     this.whiteLine = Array(20).fill(white);
