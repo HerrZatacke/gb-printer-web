@@ -56,13 +56,15 @@ const getTransformSav = (store) => (data, filename) => {
     }));
 
   const importSav = (selectedFrameset) => {
-    for (let i = 1; i <= 30; i += 1) {
-      const baseAddress = (i + 1) * 0x1000;
-      const frameNumber = data[baseAddress + 0xfb0];
-      const transformedData = transformImage(data, baseAddress);
+    for (let baseAddress = 0; baseAddress < 0x20000; baseAddress += 0x1000) {
 
-      if (transformedData) {
-        framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
+      if (baseAddress !== 0x1000) { // Ignore the "Game Face"
+        const frameNumber = data[baseAddress + 0xfb0];
+        const transformedData = transformImage(data, baseAddress);
+
+        if (transformedData) {
+          framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
+        }
       }
     }
 
