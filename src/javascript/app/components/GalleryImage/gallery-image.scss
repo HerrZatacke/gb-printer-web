@@ -43,6 +43,7 @@
     line-height: 16px;
     display: block;
     @include theme-color($color-white, $color-grey-60);
+    overflow-wrap: anywhere;
   }
 
   &__created {
