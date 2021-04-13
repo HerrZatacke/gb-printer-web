@@ -85,6 +85,7 @@ $block: #{'.gallery-list-image'};
     line-height: 16px;
     @include theme-color($color-white, $color-grey-70);
     display: block;
+    overflow-wrap: anywhere;
   }
 
   &__created {
