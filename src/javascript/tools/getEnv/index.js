@@ -29,6 +29,10 @@ const loadEnv = () => {
                 localforage: localforageImages.driver(), // localStorageWrapper or asyncStorage or webSQLStorage
               };
 
+              if (!env || !Object.keys(env).length) {
+                console.error('Environment data is missing from "/env.json"!');
+              }
+
               return envData;
             })
         ))
