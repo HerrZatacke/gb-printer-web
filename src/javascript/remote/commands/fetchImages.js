@@ -17,16 +17,20 @@ const fetchImages = (targetWindow, { dumps }) => (
   Promise.all(dumps.map((dump, index) => (
     addToQueue(
       () => fetch(`/${dump.replace(/^\//, '')}`)
-        .then((res) => res.blob())
-        .then((blob) => {
-          targetWindow.postMessage({
-            fromRemotePrinter: {
-              progress: (index + 1) / dumps.length,
-            },
-          }, '*');
+        .then((res) => (
+          res.blob()
+            .then((blob) => {
+              const contentType = res.headers.get('content-type');
 
-          return blob;
-        }),
+              targetWindow.postMessage({
+                fromRemotePrinter: {
+                  progress: (index + 1) / dumps.length,
+                },
+              }, '*');
+
+              return { blob, contentType };
+            })
+        )),
     )
   )))
 )

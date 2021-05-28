@@ -34,9 +34,18 @@ const getHandleFileImport = (store) => {
 
   return (files) => {
 
-    const groupImports = files.map((file) => {
+    const groupImports = files.map((fileData) => {
+      let file = fileData;
+      let contentType = fileData.type;
 
-      if (file.type && file.type.startsWith('image/')) {
+      // As of version 1.16.4 the filedata is an object like { blob, contentType }
+      // earlier versions directly provide a blob
+      if (fileData.blob) {
+        file = fileData.blob;
+        contentType = fileData.contentType;
+      }
+
+      if (contentType && contentType.startsWith('image/')) {
         transformBitmap(file);
         return Promise.resolve([]);
       }
@@ -50,7 +59,7 @@ const getHandleFileImport = (store) => {
         return Promise.resolve([]);
       }
 
-      if (file.type === 'application/json') {
+      if (contentType === 'application/json') {
         readFileAs(file, 'text')
           .catch(onError)
           .then((data) => {
@@ -76,7 +85,7 @@ const getHandleFileImport = (store) => {
         return Promise.resolve([]);
       }
 
-      if (file.type === 'text/plain') {
+      if (contentType === 'text/plain') {
         return readFileAs(file, 'text')
           .catch(onError)
           .then((data) => {
@@ -121,8 +130,8 @@ const getHandleFileImport = (store) => {
       }
 
       if (
-        !file.type ||
-        file.type.startsWith('application/')
+        !contentType ||
+        contentType.startsWith('application/')
       ) {
         return readFileAs(file, 'arrayBuffer')
           .catch(onError)
