@@ -80,10 +80,15 @@ const importMessage = (store) => {
         return;
       }
 
-      store.dispatch({
-        type: 'IMPORT_FILES',
-        payload: { files: blobsdone },
-      });
+      // allow the wifi printer a pause after sending all images
+      window.setTimeout(() => {
+        store.dispatch({
+          type: 'IMPORT_FILES',
+          payload: {
+            files: blobsdone,
+          },
+        });
+      }, 250);
     }
 
     if (printerData) {
@@ -104,12 +109,21 @@ const importMessage = (store) => {
         const params = (action.payload === 'fetchImages') ?
           { dumps: state.printerData?.dumps } : undefined;
 
-        remotePrinterWindow.postMessage({
-          toRemotePrinter: {
-            command: action.payload,
-            params,
-          },
-        }, '*');
+        // obh and oko need to be loaded here, as the trigger from
+        // the remote window might cause the files not to be loaded
+        import(/* webpackChunkName: "obh" */ 'object-hash')
+          .then(() => {
+            import(/* webpackChunkName: "pko" */ 'pako')
+              .then(() => {
+                remotePrinterWindow.postMessage({
+                  toRemotePrinter: {
+                    command: action.payload,
+                    params,
+                  },
+                }, '*');
+              });
+          });
+
         break;
       }
 
