@@ -101,6 +101,6 @@
   "dependencies": {
     "@serialport/parser-readline": "^8.0.6",
     "serialport": "^8.0.7",
-    "ws": "^7.3.0"
+    "ws": "^7.4.6"
   }
 }
