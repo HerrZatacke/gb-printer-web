@@ -77,11 +77,12 @@ Confirm.propTypes = {
   message: PropTypes.string.isRequired,
   questions: PropTypes.func,
   confirm: PropTypes.func.isRequired,
-  deny: PropTypes.func.isRequired,
+  deny: PropTypes.func,
 };
 
 Confirm.defaultProps = {
   questions: () => [],
+  deny: null,
 };
 
 export default Confirm;

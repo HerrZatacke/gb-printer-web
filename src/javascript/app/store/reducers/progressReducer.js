@@ -16,6 +16,7 @@ const progressReducer = (progress = { gif: 0, printer: 0 }, action) => {
         printer: action.payload,
       };
     case 'ADD_IMAGES':
+    case 'CONFIRM_ANSWERED':
       return {
         ...progress,
         printer: 0,
