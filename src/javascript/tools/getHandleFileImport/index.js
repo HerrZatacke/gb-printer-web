@@ -37,12 +37,20 @@ const getHandleFileImport = (store) => {
     const groupImports = files.map((fileData) => {
       let file = fileData;
       let contentType = fileData.type;
+      let ok = true;
 
       // As of version 1.16.4 the filedata is an object like { blob, contentType }
       // earlier versions directly provide a blob
       if (fileData.blob) {
         file = fileData.blob;
         contentType = fileData.contentType;
+        // v1.16.4 is missing the 'ok' property, hence the explicit check (may be removed in future versions if v0.3.5+ is successful)
+        ok = (fileData.ok !== undefined) ? fileData.ok : ok;
+      }
+
+      if (!ok || !file.size) {
+        console.error('Error in received data', fileData);
+        return Promise.resolve([]);
       }
 
       if (contentType && contentType.startsWith('image/')) {
@@ -165,6 +173,18 @@ const getHandleFileImport = (store) => {
           dispatch({
             type: 'ADD_TO_QUEUE',
             payload: toBeConfirmed,
+          });
+        } else {
+          store.dispatch({
+            type: 'CONFIRM_ASK',
+            payload: {
+              message: 'Nothing found to import',
+              confirm: () => {
+                store.dispatch({
+                  type: 'CONFIRM_ANSWERED',
+                });
+              },
+            },
           });
         }
 
