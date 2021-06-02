@@ -8,7 +8,7 @@ const addToQueue = (fn) => (
         fn()
           .then(resolve)
           .catch(reject);
-      }, 250);
+      }, 400);
     })
   ))
 );
@@ -28,7 +28,12 @@ const fetchImages = (targetWindow, { dumps }) => (
                 },
               }, '*');
 
-              return { blob, contentType };
+              return {
+                blob,
+                contentType,
+                status: res.status,
+                ok: res.ok,
+              };
             })
         )),
     )
