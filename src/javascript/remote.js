@@ -5,6 +5,7 @@ import setClasses from './remote/setClasses';
 import startHeartbeat from './remote/startHeartbeat';
 import initCommands from './remote/initCommands';
 import { loadEnv } from './tools/getEnv';
+import getParams from './remote/getParams';
 
 const remoteEnv = getRemoteEnv();
 
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadEnv()
     .then(({ env }) => {
 
-      const commands = initCommands(remoteEnv, env);
+      const commands = initCommands(remoteEnv, env, getParams());
       startHeartbeat(remoteEnv, commands.map(({ name }) => name));
     });
 

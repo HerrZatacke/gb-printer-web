@@ -12,6 +12,7 @@ import exportFrameModes from '../../../../../consts/exportFrameModes';
 const GenericSettings = (props) => {
   const [pageSize, setPageSize] = useState(props.pageSize);
   const [printerUrl, setPrinterUrl] = useState(props.printerUrl);
+  const [printerParams, setPrinterParams] = useState(props.printerParams);
 
   return (
     <>
@@ -191,6 +192,33 @@ const GenericSettings = (props) => {
           </span>
         </Input>
       )}
+      {(getEnv().env === 'esp8266' || printerUrl) ? (
+        <Input
+          id="settings-printer-settings"
+          labelText="Additional printer settings"
+          type="text"
+          value={printerParams}
+          onChange={(value) => {
+            setPrinterParams(value);
+          }}
+          onBlur={() => {
+            setPrinterParams(printerParams);
+            props.updatePrinterParams(printerParams);
+          }}
+          onKeyUp={(key) => {
+            switch (key) {
+              case 'Enter':
+                setPrinterParams(printerParams);
+                props.updatePrinterParams(printerParams);
+                break;
+              case 'Escape':
+                setPrinterParams(props.printerParams);
+                break;
+              default:
+            }
+          }}
+        />
+      ) : null}
     </>
   );
 };
@@ -211,6 +239,8 @@ GenericSettings.propTypes = {
   hideDates: PropTypes.bool.isRequired,
   printerUrl: PropTypes.string.isRequired,
   updatePrinterUrl: PropTypes.func.isRequired,
+  printerParams: PropTypes.string.isRequired,
+  updatePrinterParams: PropTypes.func.isRequired,
 };
 
 GenericSettings.defaultProps = {};

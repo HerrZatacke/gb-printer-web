@@ -3,7 +3,7 @@ import checkPrinter from './commands/checkPrinter';
 import fetchImages from './commands/fetchImages';
 import clearPrinter from './commands/clearPrinter';
 
-const initCommands = ({ targetWindow }, env) => {
+const initCommands = ({ targetWindow }, env, remoteParams) => {
   const commands = [];
 
   switch (env) {
@@ -46,7 +46,7 @@ const initCommands = ({ targetWindow }, env) => {
     const commandFn = commands.find(({ name }) => name === command);
 
     if (commandFn && typeof commandFn.fn === 'function') {
-      commandFn.fn(targetWindow, params)
+      commandFn.fn(targetWindow, params, remoteParams)
         .then((fromRemotePrinter) => {
           targetWindow.postMessage({
             fromRemotePrinter,

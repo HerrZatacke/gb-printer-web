@@ -5,6 +5,12 @@ const definitions = [
     saveExport: ['settings'],
     value: '',
   },
+  { // Optional additional parameters for the printer remote page (passed as hash)
+    key: 'printerParams',
+    saveLocally: true,
+    saveExport: ['settings'],
+    value: '',
+  },
   {
     // currently selected palette (used for new imports)
     key: 'activePalette',

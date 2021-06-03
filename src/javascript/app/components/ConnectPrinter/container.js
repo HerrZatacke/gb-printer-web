@@ -1,9 +1,12 @@
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state) => ({
-  printerUrl: state.printerUrl ? `${state.printerUrl}remote.html` : null,
-  printerConnected: state.printerFunctions.length > 0,
-});
+const mapStateToProps = (state) => {
+  const printerParams = state.printerParams ? `#${encodeURI(state.printerParams)}` : '';
+  return ({
+    printerUrl: state.printerUrl ? `${state.printerUrl}remote.html${printerParams}` : null,
+    printerConnected: state.printerFunctions.length > 0,
+  });
+};
 
 const mapDispatchToProps = () => ({});
 

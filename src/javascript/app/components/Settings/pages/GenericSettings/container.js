@@ -10,6 +10,7 @@ const mapStateToProps = (state) => ({
   handleExportFrame: state.handleExportFrame,
   hideDates: state.hideDates,
   printerUrl: state.printerUrl,
+  printerParams: state.printerParams,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -59,6 +60,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'SET_PRINTER_URL',
       payload: printerUrl,
+    });
+  },
+  updatePrinterParams(printerParams) {
+    dispatch({
+      type: 'SET_PRINTER_PARAMS',
+      payload: printerParams,
     });
   },
 });

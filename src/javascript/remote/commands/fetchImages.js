@@ -1,19 +1,19 @@
 import Queue from 'promise-queue';
 
 const queue = new Queue(1, Infinity);
-const addToQueue = (fn) => (
+const addToQueue = (fn, { delay = 250 }) => (
   queue.add(() => (
     new Promise((resolve, reject) => {
       window.setTimeout(() => {
         fn()
           .then(resolve)
           .catch(reject);
-      }, 400);
+      }, delay);
     })
   ))
 );
 
-const fetchImages = (targetWindow, { dumps }) => (
+const fetchImages = (targetWindow, { dumps }, remoteParams) => (
   Promise.all(dumps.map((dump, index) => (
     addToQueue(
       () => fetch(`/${dump.replace(/^\//, '')}`)
@@ -36,6 +36,7 @@ const fetchImages = (targetWindow, { dumps }) => (
               };
             })
         )),
+      remoteParams,
     )
   )))
 )
