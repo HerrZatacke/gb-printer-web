@@ -27,6 +27,7 @@ module.exports = merge(common(), {
     host: '0.0.0.0',
     before: setupServer,
   },
+  target: 'web',
   optimization: {
     moduleIds: 'named',
   },
