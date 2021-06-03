@@ -85,7 +85,7 @@
     "use-debounce": "^5.2.1",
     "walkdir": "^0.4.1",
     "webpack": "^4.42.0",
-    "webpack-bundle-analyzer": "^3.8.0",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2",
