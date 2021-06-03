@@ -1,4 +1,4 @@
-import Queue from 'promise-queue';
+import Queue from 'promise-queue/lib';
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';

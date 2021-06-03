@@ -1,4 +1,4 @@
-import Queue from 'promise-queue';
+import Queue from 'promise-queue/lib';
 
 const queue = new Queue(1, Infinity);
 const addToQueue = (fn, { delay = 250 }) => (

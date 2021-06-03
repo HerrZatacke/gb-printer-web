@@ -1,4 +1,4 @@
-import Queue from 'promise-queue';
+import Queue from 'promise-queue/lib';
 import OctoClient from '../../../../tools/OctoClient';
 import getUploadImages from '../../../../tools/getUploadImages';
 import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
@@ -9,7 +9,7 @@ let addToQueue = () => {};
 const init = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();
 
-  const queue = new Queue(1, Infinity);
+  const queue = new Queue({ concurrency: 1 });
   addToQueue = (who) => (what, throttle, fn) => (
     queue.add(() => (
       new Promise((resolve, reject) => {

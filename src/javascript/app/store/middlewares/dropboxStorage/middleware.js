@@ -1,4 +1,4 @@
-import Queue from 'promise-queue';
+import Queue from 'promise-queue/lib';
 import getUploadImages from '../../../../tools/getUploadImages';
 import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
 import DropboxClient from '../../../../tools/DropboxClient';
@@ -15,7 +15,7 @@ let addToQueue = () => {};
 
 const middleware = (store) => {
 
-  const queue = new Queue(1, Infinity);
+  const queue = new Queue({ concurrency: 1 });
   addToQueue = (who) => (what, throttle, fn) => (
     queue.add(() => (
       new Promise((resolve, reject) => {

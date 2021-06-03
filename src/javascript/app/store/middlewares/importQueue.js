@@ -1,4 +1,4 @@
-import Queue from 'promise-queue';
+import Queue from 'promise-queue/lib';
 import saveNewImage from '../../../tools/saveNewImage';
 import uniqueBy from '../../../tools/unique/by';
 
