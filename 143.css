@@ -92,5 +92,3 @@
 
 .app{position:relative;min-height:100vh}.app__content{width:90vw;max-width:72.5rem;margin:auto;padding:7.5rem 1.25rem 1.25rem 1.25rem;position:relative}@media (max-width: 23.75rem){.app__content{width:100%}}.app__content-headline{font-size:1.875rem;margin-bottom:1.875rem;color:#292037}html.theme-dark .app__content-headline{color:#b3acbe}.app__content-headline:not(:first-child){margin-top:3.75rem}.app__content-hint{font-size:0.75rem;line-height:0.875rem;margin-bottom:1.25rem}.app__counter{font-size:0.75rem;padding-left:0.625rem}.app__version{margin-top:2.5rem;font-size:0.75rem;text-align:right;color:#999;line-height:0.875rem}html.theme-dark .app__version{color:#4c4c4c}
 
-
-/*# sourceMappingURL=143.css.map*/
