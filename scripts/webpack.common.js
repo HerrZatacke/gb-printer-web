@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const getBranch = require('./getBranch');
@@ -16,14 +17,6 @@ try {
 module.exports = () => ({
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
-    fallback: {
-      stream: false,
-      // stream: require.resolve('stream-browserify'),
-      crypto: false,
-      // crypto: require.resolve('crypto-browserify'),
-      util: false,
-      // util: require.resolve('util/'),
-    },
   },
   entry: {
     pf: [
@@ -151,6 +144,7 @@ module.exports = () => ({
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
+    new NodePolyfillPlugin(),
     new DefinePlugin({
       VERSION: `'${version}'`,
       BRANCH: `'${getBranch()}'`,
