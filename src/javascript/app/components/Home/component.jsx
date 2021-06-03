@@ -14,7 +14,9 @@ const Home = () => {
 
   return (
     <div className="home">
-      <ReactMarkdown className="markdown-body" source={docs} />
+      <ReactMarkdown className="markdown-body">
+        {docs}
+      </ReactMarkdown>
     </div>
   );
 };
