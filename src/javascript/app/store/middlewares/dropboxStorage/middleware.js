@@ -15,7 +15,7 @@ let addToQueue = () => {};
 
 const middleware = (store) => {
 
-  const queue = new Queue({ concurrency: 1 });
+  const queue = new Queue(1, Infinity);
   addToQueue = (who) => (what, throttle, fn) => (
     queue.add(() => (
       new Promise((resolve, reject) => {
@@ -109,7 +109,7 @@ const middleware = (store) => {
         const loadTiles = loadImageTiles(state);
 
         Promise.all(images/* .slice(0, 5) */.map((image, index) => (
-          addToQueue('Generate images and hashes')(`${index}/${images.length}`, 0, () => {
+          addToQueue('Generate images and hashes')(`${index + 1}/${images.length}`, 10, () => {
             const imagePalette = getImagePalette(state, image);
             return loadTiles(image)
               .then(prepareFiles(imagePalette, image))

@@ -9,7 +9,7 @@ let addToQueue = () => {};
 const init = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();
 
-  const queue = new Queue({ concurrency: 1 });
+  const queue = new Queue(1, Infinity);
   addToQueue = (who) => (what, throttle, fn) => (
     queue.add(() => (
       new Promise((resolve, reject) => {
