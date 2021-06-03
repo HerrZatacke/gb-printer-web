@@ -176,16 +176,21 @@ const getHandleFileImport = (store) => {
           });
         } else {
           store.dispatch({
-            type: 'CONFIRM_ASK',
-            payload: {
-              message: 'Nothing found to import',
-              confirm: () => {
-                store.dispatch({
-                  type: 'CONFIRM_ANSWERED',
-                });
-              },
-            },
+            type: 'CONFIRM_ANSWERED',
           });
+
+          // ToDo: use promise returns for all import methods before displaying this message
+          // store.dispatch({
+          //   type: 'CONFIRM_ASK',
+          //   payload: {
+          //     message: 'Nothing found to import',
+          //     confirm: () => {
+          //       store.dispatch({
+          //         type: 'CONFIRM_ANSWERED',
+          //       });
+          //     },
+          //   },
+          // });
         }
 
       });
