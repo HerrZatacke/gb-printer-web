@@ -1,9 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { merge } = require('webpack-merge');
 const setupServer = require('./setupServer');
-const common = require('./webpack.common.js');
+const common = require('./webpack.common');
 
 module.exports = merge(common(), {
   mode: 'development',
@@ -29,12 +28,7 @@ module.exports = merge(common(), {
     before: setupServer,
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[name].css',
-    }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       ENV: '\'development\'',

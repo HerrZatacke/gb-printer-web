@@ -2,22 +2,28 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const pxtorem = require('postcss-pxtorem');
-const autoprefixer = require('autoprefixer');
 const getBranch = require('./getBranch');
-const { version } = require('../package');
+const { version } = require('../package.json');
 
 let dropboxAppKey = null;
 
 try {
   // eslint-disable-next-line global-require
-  const conf = require('../config');
+  const conf = require('../config.json');
   dropboxAppKey = conf.dropboxAppKey;
 } catch (error) { /**/ }
 
 module.exports = () => ({
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
+    fallback: {
+      stream: false,
+      // stream: require.resolve('stream-browserify'),
+      crypto: false,
+      // crypto: require.resolve('crypto-browserify'),
+      util: false,
+      // util: require.resolve('util/'),
+    },
   },
   entry: {
     pf: [
@@ -54,32 +60,37 @@ module.exports = () => ({
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: true,
-              reload: 'all', // Fallback
-            },
           },
           {
             loader: 'css-loader',
             options: {
               sourceMap: true,
+              importLoaders: 1,
             },
           },
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [
-                pxtorem({
-                  rootValue: 16,
-                  unitPrecision: 3,
-                  propList: ['*', '!border*'],
-                  selectorBlackList: [],
-                  replace: true,
-                  mediaQuery: true,
-                  minPixelValue: 2,
-                }),
-                autoprefixer(),
-              ],
+              postcssOptions: {
+                plugins: [
+                  [
+                    'postcss-preset-env',
+                    {},
+                  ],
+                  [
+                    'postcss-pxtorem',
+                    {
+                      rootValue: 16,
+                      unitPrecision: 3,
+                      propList: ['*', '!border*'],
+                      selectorBlackList: [],
+                      replace: true,
+                      mediaQuery: true,
+                      minPixelValue: 2,
+                    },
+                  ],
+                ],
+              },
             },
           },
           {
@@ -116,10 +127,11 @@ module.exports = () => ({
         },
       },
     },
+    moduleIds: 'named',
   },
   output: {
     path: path.resolve(process.cwd(), 'dist'),
-    filename: '[hash:4]/[name].js',
+    filename: '[fullhash:4]/[name].js',
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -135,6 +147,10 @@ module.exports = () => ({
       filename: 'remote.html',
       favicon: './src/assets/images/favicon.png',
       chunks: ['pf', 'remote'],
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
     new DefinePlugin({
       VERSION: `'${version}'`,
