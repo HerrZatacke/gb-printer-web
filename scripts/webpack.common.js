@@ -127,7 +127,6 @@ module.exports = () => ({
         },
       },
     },
-    moduleIds: 'named',
   },
   output: {
     path: path.resolve(process.cwd(), 'dist'),

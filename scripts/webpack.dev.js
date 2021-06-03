@@ -27,6 +27,9 @@ module.exports = merge(common(), {
     host: '0.0.0.0',
     before: setupServer,
   },
+  optimization: {
+    moduleIds: 'named',
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
