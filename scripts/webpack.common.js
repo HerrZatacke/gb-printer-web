@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const getBranch = require('./getBranch');
@@ -120,6 +121,20 @@ module.exports = () => ({
         },
       },
     },
+    minimizer: [
+      new TerserPlugin({
+        extractComments: {
+          condition: /^\**!|@preserve|@license|@cc_on/i,
+          filename: (fileData) => (
+            // The "fileData" argument contains object with "filename", "basename", "query" and "hash"
+            `${fileData.filename}.l.txt${fileData.query}`
+          ),
+          banner: (licenseFile) => (
+            `License information can be found in ${licenseFile}`
+          ),
+        },
+      }),
+    ],
   },
   output: {
     path: path.resolve(process.cwd(), 'dist'),
