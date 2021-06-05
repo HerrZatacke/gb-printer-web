@@ -4,8 +4,24 @@ const chalk = require('chalk');
 const { output: { path: outputPath } } = require('./webpack.prod');
 
 walkdir(outputPath, (filePath) => {
-  if (path.join('w', path.relative(outputPath, filePath)).length >= 32) {
-    console.error(chalk.red('Filename too large for SPIFFS'));
+
+  // Bad filename example
+  // /w/nnnn/remote.js.LICENSE.txt.gz
+
+  const relFilePath = path.relative(outputPath, filePath);
+  const posixRelFilePath = relFilePath.split(path.sep).join(path.posix.sep);
+  const spiffsPath = `/${path.posix.join('w', posixRelFilePath)}.gz`;
+
+  // console.log({
+  //   filePath,
+  //   relFilePath,
+  //   posixRelFilePath,
+  //   len: spiffsPath.length,
+  //   spiffsPath,
+  // });
+
+  if (spiffsPath.length >= 32) {
+    console.error(chalk.red(`Resulting filename "${spiffsPath}" will be too long for SPIFFS`));
     process.exit(-1);
   }
 });
