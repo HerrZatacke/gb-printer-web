@@ -56,7 +56,7 @@
     "mini-css-extract-plugin": "^1.6.0",
     "mkdirp": "^1.0.4",
     "node-polyfill-webpack-plugin": "^1.1.2",
-    "node-sass": "^6.0.0",
+    "node-sass": "^6.0.1",
     "node-watch": "^0.7.1",
     "nodemon": "^2.0.4",
     "object-hash": "^2.0.3",
@@ -97,10 +97,5 @@
     "Firefox ESR",
     "edge 18",
     "not ie <= 11"
-  ],
-  "dependencies": {
-    "@serialport/parser-readline": "^8.0.6",
-    "serialport": "^8.0.7",
-    "ws": "^7.4.6"
-  }
+  ]
 }
