@@ -1,4 +1,5 @@
 import Queue from 'promise-queue';
+import { saveAs } from 'file-saver';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
@@ -7,6 +8,13 @@ import Decoder from '../../../tools/Decoder';
 const pluginsMiddleware = (store) => {
   const registeredPlugins = {};
   const queue = new Queue(1, Infinity);
+
+  const progress = (progressValue) => {
+    store.dispatch({
+      type: 'CREATE_GIF_PROGRESS',
+      payload: progressValue % 1,
+    });
+  };
 
   const initPlugin = ({ url }) => {
 
@@ -22,7 +30,10 @@ const pluginsMiddleware = (store) => {
 
             try {
               const instance = new Plugin({ store }, stateConfig);
-              instance.init();
+              instance.init({
+                saveAs,
+                progress,
+              });
               const { name, description = '', configParams = {}, config = {} } = instance;
               registeredPlugins[url] = instance;
               store.dispatch({
@@ -57,15 +68,16 @@ const pluginsMiddleware = (store) => {
     const palette = getImagePalette(state, meta);
     const getTiles = () => loadImageTiles(state)(meta);
 
+    meta.isRGBN = !!meta.hashes;
+
     const getCanvas = (scaleFactor = 1) => (
       getTiles()
         .then((tiles) => {
-          const isRGBN = !!meta.hashes;
-          const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
+          const decoder = meta.isRGBN ? new RGBNDecoder() : new Decoder();
           const lockFrame = meta.lockFrame || false;
           const invertPalette = meta.invertPalette || false;
 
-          if (isRGBN) {
+          if (meta.isRGBN) {
             decoder.update({
               tiles: RGBNDecoder.rgbnTiles(tiles),
               palette,
