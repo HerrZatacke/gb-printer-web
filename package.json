@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.16.12",
+  "version": "1.17.1",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
@@ -28,6 +28,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-polyfill": "^6.26.0",
+    "buffer": "^6.0.3",
     "chalk": "^3.0.0",
     "chunk": "0.0.3",
     "classnames": "^2.2.6",
