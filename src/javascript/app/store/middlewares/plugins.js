@@ -52,11 +52,12 @@ const pluginsMiddleware = (store) => {
 
   const collectImageData = (hash) => {
     const state = store.getState();
+    const { handleExportFrame } = state;
     const meta = state.images.find((image) => image.hash === hash);
     const palette = getImagePalette(state, meta);
     const getTiles = () => loadImageTiles(state)(meta);
 
-    const getCanvas = (scaleFactor = 1, cropFrame = false) => (
+    const getCanvas = (scaleFactor = 1) => (
       getTiles()
         .then((tiles) => {
           const isRGBN = !!meta.hashes;
@@ -79,7 +80,7 @@ const pluginsMiddleware = (store) => {
             });
           }
 
-          return decoder.getScaledCanvas(scaleFactor, cropFrame);
+          return decoder.getScaledCanvas(scaleFactor, handleExportFrame);
         })
     );
 
