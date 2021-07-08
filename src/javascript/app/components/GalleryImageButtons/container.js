@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state, { hash }) => ({
   isSelected: state.imageSelection.includes(hash),
   canShare: state.canShare,
+  hasPlugins: !!state.plugins.length,
+  hash,
 });
 
 const mapDispatchToProps = (dispatch, { hash, buttons, title }) => ({

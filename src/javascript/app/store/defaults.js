@@ -130,6 +130,14 @@ const definitions = [
     value: [],
   },
   {
+    // list of plugins
+    key: 'plugins',
+    saveLocally: true,
+    saveRemote: false,
+    saveExport: ['settings', 'remote'],
+    value: [],
+  },
+  {
     // user has seen the message about frames removal in version 1.7.0
     key: 'framesMessage',
     saveLocally: true,

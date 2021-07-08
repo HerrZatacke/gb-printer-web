@@ -60,23 +60,16 @@
     position: absolute;
     left: -5px;
     height: auto;
+    top: 5px;
 
     body.no-touch & {
       display: none;
     }
   }
 
-  .gallery-image-buttons {
-    top: 5px;
-  }
-
-  //.rgbn-select {
-  //  bottom: 0;
-  //}
-
   //&:hover .rgbn-select,
   body.no-touch &:hover .gallery-image-buttons {
-    display: block;
+    display: flex;
   }
 
   // easy way for a parent with justify-content: space-between; to still align last row left.

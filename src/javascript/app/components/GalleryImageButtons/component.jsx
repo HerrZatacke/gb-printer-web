@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import SVG from '../SVG';
+import PluginSelect from '../PluginSelect';
 
 dayjs.extend(customParseFormat);
 
@@ -65,6 +66,16 @@ const GalleryImageButtons = (props) => (
         <SVG name="save" />
       </button>
     ) : null }
+    { props.hasPlugins ? (
+      <PluginSelect hash={props.hash}>
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+        >
+          <SVG name="plug" />
+        </button>
+      </PluginSelect>
+    ) : null }
     { props.shareImage && props.canShare ? (
       <button
         type="button"
@@ -86,6 +97,8 @@ GalleryImageButtons.propTypes = {
   shareImage: PropTypes.func,
   startDownload: PropTypes.func,
   updateImageToSelection: PropTypes.func,
+  hasPlugins: PropTypes.bool.isRequired,
+  hash: PropTypes.string.isRequired,
 };
 
 GalleryImageButtons.defaultProps = {

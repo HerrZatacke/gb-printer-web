@@ -1,0 +1,53 @@
+.plugin-settings {
+
+  &__plugin-list {
+    margin-bottom: 40px;
+    padding-top: 30px;
+  }
+
+  &__plugin {
+    border-top: 2px solid;
+    @include theme-border-color($color-grey-60, $color-grey-40);
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    margin-bottom: 40px;
+  }
+
+  &__plugin-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &__plugin-name {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  &__plugin-url {
+    font-family: monospace;
+    margin-bottom: 10px;
+  }
+
+  &__plugin-description {
+    font-size: 12px;
+  }
+
+
+  &__button {
+    flex-grow: 0;
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+
+    &--delete {
+      @include theme-background-color($color-button-red, $color-button-red);
+      @include theme-color($color-white, $color-grey-70);
+    }
+  }
+
+  &__config-options {
+    flex: 100% 0 0;
+  }
+}

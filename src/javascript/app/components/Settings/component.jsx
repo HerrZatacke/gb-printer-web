@@ -6,6 +6,7 @@ import DropboxSettings from './pages/DropboxSettings';
 import GenericSettings from './pages/GenericSettings';
 import ExportSettings from './pages/ExportSettings';
 import WiFiSettings from './pages/WiFiSettings';
+import PluginSettings from './pages/PluginSettings';
 import { getEnv } from '../../../tools/getEnv';
 
 const tabs = {
@@ -16,6 +17,10 @@ const tabs = {
   git: {
     Component: GitSettings,
     headline: 'Git Settings',
+  },
+  plugins: {
+    Component: PluginSettings,
+    headline: 'Plugin Settings',
   },
 };
 

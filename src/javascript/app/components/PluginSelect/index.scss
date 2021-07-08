@@ -1,0 +1,69 @@
+.plugin-select {
+  @include theme-background-color($color-grey-70, $color-grey-50);
+  position: absolute;
+  z-index: $z-index-blugin-buttons;
+  width: 250px;
+  display: none;
+  flex-direction: column;
+  border-radius: $default-border-radius;
+  padding: 4px;
+  top: 0;
+
+  &__wrapper {
+    position: relative;
+  }
+
+  .gallery-image-buttons & {
+    left: 0;
+  }
+
+  .batch-buttons & {
+    right: 0;
+  }
+
+  .gallery-image-buttons &__wrapper {
+    width: 20px;
+    height: 20px;
+  }
+
+  .batch-buttons &__wrapper {
+    width: 40px;
+    height: 40px;
+    display: block;
+  }
+
+  &__wrapper:focus-within & {
+    display: flex;
+  }
+
+  &__plugin-list-entry {
+    display: block;
+    width: 100%;
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .batch-buttons &__button,
+  &__button {
+    @include theme-color($color-tertiary, $color-tertiary-bright);
+    @include theme-background-color($color-grey-90, $color-grey-30);
+    @include font;
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: $default-border-radius-small;
+    text-align: left;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    &:hover {
+      @include theme-color($color-white, $color-grey-80);
+      @include theme-background-color($color-tertiary, $color-tertiary);
+    }
+  }
+
+}

@@ -88,7 +88,7 @@ const GalleryImage = ({
         ))}
       </ul>
       {getDateSpan('gallery-image__created')}
-      <GalleryImageButtons hash={hash} buttons={['select', 'download', 'delete', 'view', 'share']} />
+      <GalleryImageButtons hash={hash} buttons={['select', 'download', 'delete', 'view', 'share', 'plugins']} />
     </li>
   ) : (
     <tr
@@ -131,7 +131,7 @@ const GalleryImage = ({
       </td>
 
       <td className="gallery-list-image__cell-buttons">
-        <GalleryImageButtons hash={hash} buttons={['select', 'download', 'delete', 'view']} />
+        <GalleryImageButtons hash={hash} buttons={['select', 'download', 'delete', 'view', 'plugins']} />
       </td>
     </tr>
   );
