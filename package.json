@@ -24,6 +24,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-polyfill": "^6.26.0",
+    "buffer": "^6.0.3",
     "chalk": "^3.0.0",
     "chunk": "0.0.3",
     "classnames": "^2.2.6",
