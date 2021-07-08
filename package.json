@@ -15,6 +15,10 @@
   },
   "author": "Herr Zatacke",
   "license": "MIT",
+  "respository": {
+    "type": "git",
+    "url": "https://github.com/HerrZatacke/gb-printer-web.git"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",
