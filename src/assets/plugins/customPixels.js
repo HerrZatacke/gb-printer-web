@@ -79,10 +79,15 @@ PluginSkeleton.prototype.withImage = function withImage(image) {
     const x = 0;
     const y = 0;
 
+    const streakMatrix = this.generateStreakMatrix(sourceCanvas.height, sourceCanvas.width);
+
+    console.log(streakMatrix);
+
     const setPixelInContext = this.setPixel({
       sourceContext,
       sourcePalette,
       targetContext,
+      streakMatrix,
     });
 
     const setNextPx = (x) => {
@@ -114,6 +119,7 @@ PluginSkeleton.prototype.setPixel = function setPixel({
   sourceContext,
   sourcePalette,
   targetContext,
+  streakMatrix,
 }) {
   return (x, y) => {
     const color = sourceContext.getImageData(x, y, 1, 1);
@@ -130,9 +136,36 @@ PluginSkeleton.prototype.setPixel = function setPixel({
       this.config.pixelSize,
       this.config.pixelSize
     );
+
+    const brightness = streakMatrix[y][x] ? 170 : 255;
+    for (let i = 3; i < pixel.data.length; i += 4) {
+      pixel.data[i] = brightness;
+    }
+
     targetContext.putImageData(pixel, x * this.config.pixelSize, y * this.config.pixelSize);
   }
 }
+
+PluginSkeleton.prototype.generateStreakMatrix = function generateStreakMatrix(width, height) {
+  // create 2d array
+  const matrix = [...Array(height)].fill(0).map(() => ([...Array(width)].fill(false)));
+
+  const maxLen = 20;
+
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+      if (Math.random() < 0.125) {
+        for (k = j; k < j + Math.random() * maxLen; k += 1) {
+          try {
+            matrix[k - maxLen / 2][i] = true;
+          } catch (err) {}
+        }
+      }
+    }
+  }
+
+  return matrix;
+};
 
 PluginSkeleton.prototype.saveImage = function saveImage(targetCanvas, meta) {
   const targetContext = targetCanvas.getContext('2d');
@@ -141,6 +174,8 @@ PluginSkeleton.prototype.saveImage = function saveImage(targetCanvas, meta) {
   saveCanvas.height = targetCanvas.height * this.config.outputScale;
 
   const saveContext = saveCanvas.getContext('2d');
+  saveContext.fillStyle = '#ffffff';
+  saveContext.fillRect(0, 0, saveCanvas.width, saveCanvas.height);
 
   const img = new Image();
   img.addEventListener('load', () => {
