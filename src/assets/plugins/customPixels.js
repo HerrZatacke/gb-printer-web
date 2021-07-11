@@ -15,6 +15,10 @@ function PluginSkeleton(env, config) {
       label: 'Scale output image',
       type: 'number'
     },
+    'exportAs': {
+      label: 'Export filetype',
+      type: 'string'
+    },
   };
   this.config = config;
   this.sampleContext = null;
@@ -26,12 +30,14 @@ function PluginSkeleton(env, config) {
 PluginSkeleton.prototype.init = function init({ saveAs, progress }) {
   this.saveAs = saveAs;
   this.progress = progress;
+  this.loadImage();
+};
 
+
+PluginSkeleton.prototype.loadImage = function loadImage() {
   const image = new Image();
   image.crossOrigin = 'Anonymous';
   image.src = this.config.imageUrl;
-
-  console.log(this.config);
 
   image.addEventListener('load', () => {
     const sampleCanvas = document.createElement('canvas');
@@ -49,6 +55,7 @@ PluginSkeleton.prototype.init = function init({ saveAs, progress }) {
 
 PluginSkeleton.prototype.setConfig = function setConfig(configUpdate) {
   Object.assign(this.config, configUpdate);
+  this.loadImage();
 };
 
 PluginSkeleton.prototype.withImage = function withImage(image) {
@@ -168,6 +175,8 @@ PluginSkeleton.prototype.generateStreakMatrix = function generateStreakMatrix(wi
 };
 
 PluginSkeleton.prototype.saveImage = function saveImage(targetCanvas, meta) {
+  const exportParams = this.config.exportAs === 'png' ? ['image/png'] : ['image/jpeg', 0.8];
+  const exportExtension = this.config.exportAs === 'png' ? 'png' : 'jpg';
   const targetContext = targetCanvas.getContext('2d');
   const saveCanvas = document.createElement('canvas');
   saveCanvas.width = targetCanvas.width * this.config.outputScale;
@@ -182,11 +191,11 @@ PluginSkeleton.prototype.saveImage = function saveImage(targetCanvas, meta) {
     saveContext.drawImage(img, 0, 0, saveCanvas.width, saveCanvas.height);
 
     saveCanvas.toBlob((finalBlob) => {
-      this.saveAs(finalBlob, 'CustomPixels.' + (meta.title ? meta.title + '.' : '') + 'jpg');
+      this.saveAs(finalBlob, 'CustomPixels.' + (meta.title ? meta.title + '.' : '') + exportExtension);
 
       // close overlay
       this.progress(0);
-    }, 'image/jpeg', 0.8);
+    }, ...exportParams);
   });
   img.src = targetCanvas.toDataURL('image/png');
 };
