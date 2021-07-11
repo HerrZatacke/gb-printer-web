@@ -11,6 +11,10 @@ function PluginSkeleton(env, config) {
       label: 'Side length of a pixel',
       type: 'number'
     },
+    'outputScale': {
+      label: 'Scale output image',
+      type: 'number'
+    },
   };
   this.config = config;
   this.sampleContext = null;
@@ -33,8 +37,6 @@ PluginSkeleton.prototype.init = function init({ saveAs, progress }) {
     const sampleCanvas = document.createElement('canvas');
     sampleCanvas.width = image.naturalWidth;
     sampleCanvas.height = this.config.pixelSize * 4;
-    sampleCanvas.style.position = 'absolute';
-    sampleCanvas.style.top = '80px';
 
     this.sampleCount = Math.floor(sampleCanvas.width / this.config.pixelSize);
 
@@ -69,8 +71,6 @@ PluginSkeleton.prototype.withImage = function withImage(image) {
     const targetCanvas = document.createElement('canvas');
     targetCanvas.width = pxWidth;
     targetCanvas.height = pxHeight;
-    targetCanvas.style.width = (4 * sourceCanvas.width) + 'px';
-    targetCanvas.style.height = (4 * sourceCanvas.height) + 'px';
 
     const targetContext = targetCanvas.getContext('2d');
     targetContext.fillStyle = '#ffffff';
@@ -103,13 +103,7 @@ PluginSkeleton.prototype.withImage = function withImage(image) {
         return;
       }
 
-      // download image
-      targetCanvas.toBlob((blob) => {
-        this.saveAs(blob, 'CustomPixels.' + (meta.title ? meta.title + '.' : '') + 'jpg');
-      }, 'image/jpeg', 0.8);
-
-      // close overlay
-      this.progress(0);
+      this.saveImage(targetCanvas, meta);
     }
 
     setNextPx(0);
@@ -139,6 +133,28 @@ PluginSkeleton.prototype.setPixel = function setPixel({
     targetContext.putImageData(pixel, x * this.config.pixelSize, y * this.config.pixelSize);
   }
 }
+
+PluginSkeleton.prototype.saveImage = function saveImage(targetCanvas, meta) {
+  const targetContext = targetCanvas.getContext('2d');
+  const saveCanvas = document.createElement('canvas');
+  saveCanvas.width = targetCanvas.width * this.config.outputScale;
+  saveCanvas.height = targetCanvas.height * this.config.outputScale;
+
+  const saveContext = saveCanvas.getContext('2d');
+
+  const img = new Image();
+  img.addEventListener('load', () => {
+    saveContext.drawImage(img, 0, 0, saveCanvas.width, saveCanvas.height);
+
+    saveCanvas.toBlob((finalBlob) => {
+      this.saveAs(finalBlob, 'CustomPixels.' + (meta.title ? meta.title + '.' : '') + 'jpg');
+
+      // close overlay
+      this.progress(0);
+    }, 'image/jpeg', 0.8);
+  });
+  img.src = targetCanvas.toDataURL('image/png');
+};
 
 PluginSkeleton.prototype.withSelection = function withSelection(images) {
 };
