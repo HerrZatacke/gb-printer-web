@@ -22,39 +22,15 @@ const batch = (store) => (next) => (action) => {
     loadImageTiles(state)(image)
       .then(prepareFiles(imagePalette, image))
       .then((res) => {
-
         const { blob, filename, title } = res[0];
 
-        let shareData;
-
-        try {
-          shareData = {
+        if (window.navigator.share) {
+          window.navigator.share({
             files: [new File([blob], filename, { type: 'image/png', lastModified: new Date() })],
             title,
-          };
-        } catch (error) {
-          // eslint-disable-next-line no-alert
-          alert(JSON.stringify({ s: 1, error }));
+          })
+            .catch(() => ('¯\\_(ツ)_/¯'));
         }
-
-        if (shareData && window.navigator.share) {
-          try {
-            window.navigator.share(shareData)
-              // eslint-disable-next-line no-alert
-              .catch((error) => alert(JSON.stringify({ s: 3, error })));
-          } catch (error) {
-            // eslint-disable-next-line no-alert
-            alert(JSON.stringify({ s: 4, error }));
-          }
-        } else {
-          // eslint-disable-next-line no-alert
-          alert(`sharing not enabled in your browser... because:
-share is: ${typeof window.navigator.share}
-shareData is: ${typeof shareData}
-canShare is: ${typeof window.navigator.canShare}
-canShare says: ${window.navigator.canShare ? window.navigator.canShare(shareData) : ''}`);
-        }
-
       });
   }
 
