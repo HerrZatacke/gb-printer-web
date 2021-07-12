@@ -11,7 +11,7 @@ const pluginsMiddleware = (store) => {
 
   const progress = (progressValue) => {
     store.dispatch({
-      type: 'CREATE_GIF_PROGRESS',
+      type: 'EXECUTE_PLUGIN_PROGRESS',
       payload: progressValue % 1,
     });
   };

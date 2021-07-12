@@ -8,6 +8,13 @@ const mapStateToProps = (state) => {
     });
   }
 
+  if (state.progress.plugin) {
+    return ({
+      progress: state.progress.plugin,
+      message: 'Executing plugin...',
+    });
+  }
+
   if (state.progress.printer) {
     return ({
       progress: state.progress.printer,

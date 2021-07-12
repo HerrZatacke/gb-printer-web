@@ -10,6 +10,11 @@ const progressReducer = (progress = { gif: 0, printer: 0 }, action) => {
         ...progress,
         gif: action.payload,
       };
+    case 'EXECUTE_PLUGIN_PROGRESS':
+      return {
+        ...progress,
+        plugin: action.payload,
+      };
     case 'PRINTER_PROGRESS':
       return {
         ...progress,
