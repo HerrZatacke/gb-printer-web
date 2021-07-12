@@ -48,6 +48,7 @@ const pluginsMiddleware = (store) => {
               });
               resolve(true);
             } catch (error) {
+              console.warn(error);
               resolve(false);
             }
           };
