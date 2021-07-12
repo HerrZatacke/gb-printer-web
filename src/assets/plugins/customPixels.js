@@ -1,5 +1,5 @@
 /* eslint-disable */
-function PluginSkeleton(env, config) {
+function CustomPixelsPlugin(env, config) {
   this.name = 'Custom Pixels Plugin';
   this.description = 'Select any external image with pixel representations';
   this.configParams = {
@@ -19,67 +19,110 @@ function PluginSkeleton(env, config) {
       label: 'Export filetype',
       type: 'string'
     },
+    'streakIntensity': {
+      label: 'Intensity of streaks (0-100)',
+      type: 'number'
+    },
+    'flipRotate': {
+      label: 'Flip and rotate sample pixels (set to !=0 to activate)',
+      type: 'number'
+    },
   };
+
+  this.canRun = false;
   this.config = config;
-  this.samples = [];
-  this.pixelTransitions = [];
+  this.samples = null;
+  this.pixelTransitions = null;
   this.saveAs = () => null
   this.progress = () => null
 }
 
-PluginSkeleton.prototype.init = function init({ saveAs, progress }) {
+CustomPixelsPlugin.prototype.init = function init({ saveAs, progress }) {
   this.saveAs = saveAs;
   this.progress = progress;
-  this.setPixelTransitions();
-  this.loadImage();
+  this.checkConfig();
 };
 
+CustomPixelsPlugin.prototype.checkConfig = function checkConfig() {
+  const {
+    imageUrl,
+    pixelSize,
+    outputScale,
+    exportAs,
+    streakIntensity,
+    flipRotate,
+  } = this.config;
 
-PluginSkeleton.prototype.setPixelTransitions = function setPixelTransitions() {
+  this.canRun = (
+    Boolean(imageUrl) &&
+    Boolean(pixelSize) &&
+    Boolean(outputScale)
+  );
+
+  this.config.exportAs = exportAs || 'jpg';
+  this.config.streakIntensity = streakIntensity || 0;
+};
+
+CustomPixelsPlugin.prototype.setPixelTransitions = function setPixelTransitions() {
   const ps = this.config.pixelSize;
-  this.pixelTransitions = [
-    [1, 0, 0, 1, 0, 0],
-    [0, 1, -1, 0, ps, 0],
-    [-1, 0, 0, -1, ps, ps],
-    [0, -1, 1, 0, 0, ps],
-    [-1, 0, 0, 1, ps, 0],
-    [0, -1, -1, 0, ps, ps],
-    [1, 0, 0, -1, 0, ps],
-    [0, 1, 1, 0, 0, 0]
-  ];
+  if (ps && this.config.flipRotate) {
+    this.pixelTransitions = [
+      [1, 0, 0, 1, 0, 0],
+      [0, 1, -1, 0, ps, 0],
+      [-1, 0, 0, -1, ps, ps],
+      [0, -1, 1, 0, 0, ps],
+      [-1, 0, 0, 1, ps, 0],
+      [0, -1, -1, 0, ps, ps],
+      [1, 0, 0, -1, 0, ps],
+      [0, 1, 1, 0, 0, 0]
+    ];
+  } else {
+    this.pixelTransitions = [
+      [1, 0, 0, 1, 0, 0],
+    ];
+  }
 };
 
-PluginSkeleton.prototype.loadImage = function loadImage() {
+CustomPixelsPlugin.prototype.loadImage = function loadImage() {
+  if (this.samples) {
+    return Promise.resolve();
+  }
+
   const image = new Image();
   image.crossOrigin = 'Anonymous';
-  image.src = this.config.imageUrl;
 
-  image.addEventListener('load', () => {
-    const sampleCount = Math.floor(image.naturalWidth / this.config.pixelSize);
+  return new Promise((resolve, reject) => {
+    image.addEventListener('load', () => {
+      const sampleCount = Math.floor(image.naturalWidth / this.config.pixelSize);
 
-    this.samples = [...Array(4)]
-      .fill(null)
-      .map((__, sampleY) => (
-        [...Array(sampleCount)]
-          .fill(null)
-          .map((_, sampleX) => (
-            this.pixelTransitions.map((matrix) => (
-              this.generateSample({
-                image,
-                sampleY,
-                sampleX,
-                matrix,
-              })
+      this.samples = [...Array(4)]
+        .fill(null)
+        .map((__, sampleY) => (
+          [...Array(sampleCount)]
+            .fill(null)
+            .map((_, sampleX) => (
+              this.pixelTransitions.map((matrix) => (
+                this.generateSample({
+                  image,
+                  sampleY,
+                  sampleX,
+                  matrix,
+                })
+              ))
             ))
-          ))
-          .flat()
-      ));
+            .flat()
+        ));
 
-    console.log(this.samples);
+      resolve();
+    });
+
+    image.addEventListener('error', reject);
+
+    image.src = this.config.imageUrl;
   });
 };
 
-PluginSkeleton.prototype.generateSample = function generateSample({ image, sampleX, sampleY, matrix }) {
+CustomPixelsPlugin.prototype.generateSample = function generateSample({ image, sampleX, sampleY, matrix }) {
   const pixelSize = this.config.pixelSize;
   const canvas = document.createElement('canvas');
   canvas.width = this.config.pixelSize;
@@ -95,18 +138,26 @@ PluginSkeleton.prototype.generateSample = function generateSample({ image, sampl
   return context.getImageData(0, 0, pixelSize, pixelSize);
 };
 
-PluginSkeleton.prototype.setConfig = function setConfig(configUpdate) {
+CustomPixelsPlugin.prototype.setConfig = function setConfig(configUpdate) {
+  this.samples = null;
+  this.pixelTransitions = null;
   Object.assign(this.config, configUpdate);
-  this.setPixelTransitions();
-  this.loadImage();
+  this.checkConfig();
 };
 
-PluginSkeleton.prototype.withImage = function withImage(image) {
+CustomPixelsPlugin.prototype.withImage = function withImage(image) {
+  if (!this.canRun) {
+    alert(this.name + ' is missing config settings');
+    return;
+  }
+
+  this.setPixelTransitions();
 
   Promise.all([
     image.getMeta(),
     image.getPalette(),
     image.getCanvas(),
+    this.loadImage(),
   ]).then(([meta, {palette: sourcePalette}, sourceCanvas]) => {
 
     if (meta.isRGBN) {
@@ -163,7 +214,7 @@ PluginSkeleton.prototype.withImage = function withImage(image) {
   });
 };
 
-PluginSkeleton.prototype.setPixel = function setPixel({
+CustomPixelsPlugin.prototype.setPixel = function setPixel({
   sourceContext,
   sourcePalette,
   targetContext,
@@ -181,16 +232,19 @@ PluginSkeleton.prototype.setPixel = function setPixel({
     const sampleType = this.samples?.[rowIndex] || [[]];
     const pixel = sampleType?.[Math.floor(Math.random() * sampleType.length)] || sampleType[0];
 
-    const brightness = streaks[y][x] ? 192 : 255;
-    for (let i = 3; i < pixel.data.length; i += 4) {
-      pixel.data[i] = brightness;
+    if (this.config.streakIntensity) {
+      const intensity = Math.min(255, Math.max(0, 255 - (this.config.streakIntensity * 2.55)));
+      const brightness = streaks[y][x] ? intensity : 255;
+      for (let i = 3; i < pixel.data.length; i += 4) {
+        pixel.data[i] = brightness;
+      }
     }
 
     targetContext.putImageData(pixel, x * this.config.pixelSize, y * this.config.pixelSize);
   }
 }
 
-PluginSkeleton.prototype.generateStreaks = function generateStreaks(width, height) {
+CustomPixelsPlugin.prototype.generateStreaks = function generateStreaks(width, height) {
   // create 2d array
   const grid = [...Array(height)].fill(0).map(() => ([...Array(width)].fill(false)));
 
@@ -211,7 +265,7 @@ PluginSkeleton.prototype.generateStreaks = function generateStreaks(width, heigh
   return grid;
 };
 
-PluginSkeleton.prototype.saveImage = function saveImage(targetCanvas, meta) {
+CustomPixelsPlugin.prototype.saveImage = function saveImage(targetCanvas, meta) {
   const exportParams = this.config.exportAs === 'png' ? ['image/png'] : ['image/jpeg', 0.8];
   const exportExtension = this.config.exportAs === 'png' ? 'png' : 'jpg';
   const targetContext = targetCanvas.getContext('2d');
@@ -237,7 +291,7 @@ PluginSkeleton.prototype.saveImage = function saveImage(targetCanvas, meta) {
   img.src = targetCanvas.toDataURL('image/png');
 };
 
-PluginSkeleton.prototype.withSelection = function withSelection(images) {
+CustomPixelsPlugin.prototype.withSelection = function withSelection(images) {
 };
 
-gbpwRegisterPlugin(PluginSkeleton);
+gbpwRegisterPlugin(CustomPixelsPlugin);
