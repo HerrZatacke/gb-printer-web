@@ -1,4 +1,16 @@
 /* eslint-disable */
+
+/*
+ * Custom Pixels Plugin
+ *
+ * This plugin is a plain JS implementation of the original GameboyPrinterPaperSimulation by Raphaël Boichot
+ * https://github.com/Raphael-Boichot/GameboyPrinterPaperSimulation
+ *
+ * It's recommended to use a service like jsdelivr to add it to the Gameboy Printer Web App
+ * https://herrzatacke.github.io/gb-printer-web/#/settings/plugins
+ *
+ */
+
 function CustomPixelsPlugin(env, config) {
   this.name = 'Custom Pixels Plugin';
   this.description = 'Select any external image with pixel representations';
