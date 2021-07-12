@@ -22,8 +22,11 @@
   }
 
   .gallery-image-buttons &__wrapper {
-    width: 20px;
     height: 20px;
+
+    body.is-touch & {
+      height: 30px;
+    }
   }
 
   .batch-buttons &__wrapper {
