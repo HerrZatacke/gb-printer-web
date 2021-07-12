@@ -21,8 +21,8 @@ function PluginSkeleton(env, config) {
     },
   };
   this.config = config;
-  this.sampleContext = null;
-  this.sampleCount = 1;
+  this.samples = [];
+  this.pixelTransitions = [];
   this.saveAs = () => null
   this.progress = () => null
 }
@@ -30,9 +30,24 @@ function PluginSkeleton(env, config) {
 PluginSkeleton.prototype.init = function init({ saveAs, progress }) {
   this.saveAs = saveAs;
   this.progress = progress;
+  this.setPixelTransitions();
   this.loadImage();
 };
 
+
+PluginSkeleton.prototype.setPixelTransitions = function setPixelTransitions() {
+  const ps = this.config.pixelSize;
+  this.pixelTransitions = [
+    [1, 0, 0, 1, 0, 0],
+    [0, 1, -1, 0, ps, 0],
+    [-1, 0, 0, -1, ps, ps],
+    [0, -1, 1, 0, 0, ps],
+    [-1, 0, 0, 1, ps, 0],
+    [0, -1, -1, 0, ps, ps],
+    [1, 0, 0, -1, 0, ps],
+    [0, 1, 1, 0, 0, 0]
+  ];
+};
 
 PluginSkeleton.prototype.loadImage = function loadImage() {
   const image = new Image();
@@ -40,21 +55,49 @@ PluginSkeleton.prototype.loadImage = function loadImage() {
   image.src = this.config.imageUrl;
 
   image.addEventListener('load', () => {
-    const sampleCanvas = document.createElement('canvas');
-    sampleCanvas.width = image.naturalWidth;
-    sampleCanvas.height = this.config.pixelSize * 4;
+    const sampleCount = Math.floor(image.naturalWidth / this.config.pixelSize);
 
-    this.sampleCount = Math.floor(sampleCanvas.width / this.config.pixelSize);
+    this.samples = [...Array(4)]
+      .fill(null)
+      .map((__, sampleY) => (
+        [...Array(sampleCount)]
+          .fill(null)
+          .map((_, sampleX) => (
+            this.pixelTransitions.map((matrix) => (
+              this.generateSample({
+                image,
+                sampleY,
+                sampleX,
+                matrix,
+              })
+            ))
+          ))
+          .flat()
+      ));
 
-    this.sampleContext = sampleCanvas.getContext('2d');
-    this.sampleContext.fillStyle = '#ffffff';
-    this.sampleContext.fillRect(0, 0, sampleCanvas.width, sampleCanvas.height);
-    this.sampleContext.drawImage(image, 0, 0);
+    console.log(this.samples);
   });
+};
+
+PluginSkeleton.prototype.generateSample = function generateSample({ image, sampleX, sampleY, matrix }) {
+  const pixelSize = this.config.pixelSize;
+  const canvas = document.createElement('canvas');
+  canvas.width = this.config.pixelSize;
+  canvas.height = this.config.pixelSize;
+  const context = canvas.getContext('2d');
+
+  context.setTransform(...matrix);
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  context.drawImage(image, sampleX * pixelSize, sampleY * pixelSize, pixelSize, pixelSize, 0, 0, pixelSize, pixelSize);
+
+  return context.getImageData(0, 0, pixelSize, pixelSize);
 };
 
 PluginSkeleton.prototype.setConfig = function setConfig(configUpdate) {
   Object.assign(this.config, configUpdate);
+  this.setPixelTransitions();
   this.loadImage();
 };
 
@@ -86,15 +129,13 @@ PluginSkeleton.prototype.withImage = function withImage(image) {
     const x = 0;
     const y = 0;
 
-    const streakMatrix = this.generateStreakMatrix(sourceCanvas.height, sourceCanvas.width);
-
-    console.log(streakMatrix);
+    const streaks = this.generateStreaks(sourceCanvas.height, sourceCanvas.width);
 
     const setPixelInContext = this.setPixel({
       sourceContext,
       sourcePalette,
       targetContext,
-      streakMatrix,
+      streaks,
     });
 
     const setNextPx = (x) => {
@@ -126,7 +167,7 @@ PluginSkeleton.prototype.setPixel = function setPixel({
   sourceContext,
   sourcePalette,
   targetContext,
-  streakMatrix,
+  streaks,
 }) {
   return (x, y) => {
     const color = sourceContext.getImageData(x, y, 1, 1);
@@ -137,14 +178,10 @@ PluginSkeleton.prototype.setPixel = function setPixel({
     }`;
     const rowIndex = 3 - sourcePalette.findIndex((color) => color === hex);
 
-    const pixel = this.sampleContext.getImageData(
-      Math.floor(Math.random() * this.sampleCount) * this.config.pixelSize,
-      rowIndex * this.config.pixelSize,
-      this.config.pixelSize,
-      this.config.pixelSize
-    );
+    const sampleType = this.samples?.[rowIndex] || [[]];
+    const pixel = sampleType?.[Math.floor(Math.random() * sampleType.length)] || sampleType[0];
 
-    const brightness = streakMatrix[y][x] ? 170 : 255;
+    const brightness = streaks[y][x] ? 192 : 255;
     for (let i = 3; i < pixel.data.length; i += 4) {
       pixel.data[i] = brightness;
     }
@@ -153,25 +190,25 @@ PluginSkeleton.prototype.setPixel = function setPixel({
   }
 }
 
-PluginSkeleton.prototype.generateStreakMatrix = function generateStreakMatrix(width, height) {
+PluginSkeleton.prototype.generateStreaks = function generateStreaks(width, height) {
   // create 2d array
-  const matrix = [...Array(height)].fill(0).map(() => ([...Array(width)].fill(false)));
+  const grid = [...Array(height)].fill(0).map(() => ([...Array(width)].fill(false)));
 
   const maxLen = 20;
 
   for (let i = 0; i < height; i++) {
-    for (let j = 0; j < width; j++) {
+    for (let j = -maxLen; j < width + maxLen; j++) {
       if (Math.random() < 0.125) {
         for (k = j; k < j + Math.random() * maxLen; k += 1) {
           try {
-            matrix[k - maxLen / 2][i] = true;
+            grid[k][i] = true;
           } catch (err) {}
         }
       }
     }
   }
 
-  return matrix;
+  return grid;
 };
 
 PluginSkeleton.prototype.saveImage = function saveImage(targetCanvas, meta) {
