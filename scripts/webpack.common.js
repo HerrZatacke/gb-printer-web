@@ -30,6 +30,9 @@ module.exports = () => ({
     remote: [
       path.join(process.cwd(), 'src', 'javascript', 'remote.js'),
     ],
+    customPixelsPlugin: [
+      path.join(process.cwd(), 'src', 'assets', 'plugins', 'customPixels.js'),
+    ],
   },
   module: {
     rules: [
@@ -135,10 +138,6 @@ module.exports = () => ({
         },
       }),
     ],
-  },
-  output: {
-    path: path.resolve(process.cwd(), 'dist'),
-    filename: '[fullhash:4]/[name].js',
   },
   plugins: [
     new HtmlWebpackPlugin({
