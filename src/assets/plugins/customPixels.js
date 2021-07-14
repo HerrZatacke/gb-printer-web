@@ -179,13 +179,13 @@ class CustomPixelsPlugin {
     Promise.all([
       image.getMeta(),
       image.getPalette(),
-      image.getCanvas(),
+      image.getCanvas({ lockFrame: false }),
       this.loadImage(),
     ]).then(([meta, { palette: sourcePalette }, sourceCanvas]) => {
 
-      if (meta.isRGBN || meta.lockFrame) {
+      if (meta.isRGBN) {
         // eslint-disable-next-line no-alert
-        alert(`${this.name} does not work with RGBN images or images with \`color-locked frame\``);
+        alert(`${this.name} does not work with RGBN images`);
         this.progress(0);
         return;
       }
