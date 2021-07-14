@@ -31,6 +31,10 @@ module.exports = merge(common(), {
   optimization: {
     moduleIds: 'named',
   },
+  output: {
+    path: path.resolve(process.cwd(), 'dist'),
+    filename: '[name].js',
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

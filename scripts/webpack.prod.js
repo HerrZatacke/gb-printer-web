@@ -13,6 +13,10 @@ module.exports = merge(common(), {
     maxEntrypointSize: 300000,
     maxAssetSize: 300000,
   },
+  output: {
+    path: path.resolve(process.cwd(), 'dist'),
+    filename: '[fullhash:4]/[name].js',
+  },
   plugins: [
     new CopyPlugin({
       patterns: [
