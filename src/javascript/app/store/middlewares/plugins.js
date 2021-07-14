@@ -66,17 +66,20 @@ const pluginsMiddleware = (store) => {
     const state = store.getState();
     const { handleExportFrame } = state;
     const meta = state.images.find((image) => image.hash === hash);
-    const palette = getImagePalette(state, meta);
+    const selectedPalette = getImagePalette(state, meta);
     const getTiles = () => loadImageTiles(state)(meta);
 
     meta.isRGBN = !!meta.hashes;
 
-    const getCanvas = (scaleFactor = 1) => (
+    const getCanvas = ({
+      scaleFactor = 1,
+      palette = selectedPalette,
+      lockFrame = meta.lockFrame || false,
+      invertPalette = meta.invertPalette || false,
+    } = {}) => (
       getTiles()
         .then((tiles) => {
           const decoder = meta.isRGBN ? new RGBNDecoder() : new Decoder();
-          const lockFrame = meta.lockFrame || false;
-          const invertPalette = meta.invertPalette || false;
 
           if (meta.isRGBN) {
             decoder.update({
@@ -99,7 +102,7 @@ const pluginsMiddleware = (store) => {
 
     return {
       getMeta: () => Promise.resolve(meta),
-      getPalette: () => Promise.resolve(palette),
+      getPalette: () => Promise.resolve(selectedPalette),
       getTiles,
       getCanvas,
     };
