@@ -12,7 +12,7 @@
 class CustomPixelsPlugin {
   constructor(env, config) {
     this.name = 'Custom Pixels Plugin';
-    this.description = 'Select any external image with pixel representations';
+    this.description = 'Select any external image with pixel representationx';
     this.configParams = {
       imageUrl: {
         label: 'External URL of the image file containing custom pixels',
@@ -179,13 +179,13 @@ class CustomPixelsPlugin {
     Promise.all([
       image.getMeta(),
       image.getPalette(),
-      image.getCanvas({ lockFrame: false }),
+      image.getCanvas(),
       this.loadImage(),
     ]).then(([meta, { palette: sourcePalette }, sourceCanvas]) => {
 
-      if (meta.isRGBN) {
+      if (meta.isRGBN || meta.lockFrame) {
         // eslint-disable-next-line no-alert
-        alert(`${this.name} does not work with RGBN images`);
+        alert(`${this.name} does not work with RGBN images or images with \`color-locked frame\``);
         this.progress(0);
         return;
       }
