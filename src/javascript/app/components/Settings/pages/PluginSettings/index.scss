@@ -18,22 +18,23 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    margin-bottom: 10px;
   }
 
   &__plugin-name {
     font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  &__plugin-description {
+    font-size: 14px;
     margin-bottom: 10px;
   }
 
   &__plugin-url {
     font-family: monospace;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
-
-  &__plugin-description {
-    font-size: 12px;
-  }
-
 
   &__button {
     flex-grow: 0;
