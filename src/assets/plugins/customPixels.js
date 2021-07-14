@@ -12,7 +12,7 @@
 class CustomPixelsPlugin {
   constructor(env, config) {
     this.name = 'Custom Pixels Plugin';
-    this.description = 'Select any external image with pixel representationx';
+    this.description = 'Select any external image with pixel representations';
     this.configParams = {
       imageUrl: {
         label: 'External URL of the image file containing custom pixels',
