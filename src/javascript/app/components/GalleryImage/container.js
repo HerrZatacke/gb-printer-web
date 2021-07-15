@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { missingGreyPalette } from '../../defaults';
+import { FILTER_FAVOURITE } from '../../../consts/specialTags';
 
 const mapStateToProps = (state, { hash }) => {
   const image = state.images.find((img) => img.hash === hash);
@@ -17,6 +18,7 @@ const mapStateToProps = (state, { hash }) => {
     frame: image.frame,
     hashes: image.hashes,
     tags: image.tags,
+    isFavourite: image.tags.includes(FILTER_FAVOURITE),
     isSelected: state.imageSelection.includes(hash),
     palette,
     lockFrame: image.lockFrame || false,

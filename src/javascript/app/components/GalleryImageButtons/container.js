@@ -65,6 +65,15 @@ const mapDispatchToProps = (dispatch, { hash, buttons, title }) => ({
       payload: hash,
     });
   } : null,
+  updateFavouriteTag: buttons.includes('favourite') ? (isFavourite) => {
+    dispatch({
+      type: 'IMAGE_FAVOURITE_TAG',
+      payload: {
+        hash,
+        isFavourite,
+      },
+    });
+  } : null,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

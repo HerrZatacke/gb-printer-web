@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import unique from '../../../tools/unique';
+import { FILTER_FAVOURITE } from '../../../consts/specialTags';
 
 const TagsSelect = (props) => {
 
@@ -49,7 +50,7 @@ const TagsSelect = (props) => {
             <span
               className="tags-select__tag-name"
             >
-              {tag}
+              {tag === FILTER_FAVOURITE ? '❤️' : tag}
             </span>
           </li>
         ))

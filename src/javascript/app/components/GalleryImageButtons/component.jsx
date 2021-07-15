@@ -85,6 +85,20 @@ const GalleryImageButtons = (props) => (
         <SVG name="share" />
       </button>
     ) : null }
+    { props.updateFavouriteTag ? (
+      <button
+        type="button"
+        className={
+          classnames('gallery-image-buttons__button', {
+            'gallery-image-buttons__button--unchecked': !props.isFavourite,
+            'gallery-image-buttons__button--favourite': props.isFavourite,
+          })
+        }
+        onClick={() => props.updateFavouriteTag(!props.isFavourite)}
+      >
+        { props.isFavourite ? '❤️' : '❤'}
+      </button>
+    ) : null }
   </div>
 );
 
@@ -93,10 +107,12 @@ GalleryImageButtons.propTypes = {
   deleteImage: PropTypes.func,
   setLightboxImage: PropTypes.func,
   isSelected: PropTypes.bool.isRequired,
+  isFavourite: PropTypes.bool.isRequired,
   saveRGBNImage: PropTypes.func,
   shareImage: PropTypes.func,
   startDownload: PropTypes.func,
   updateImageToSelection: PropTypes.func,
+  updateFavouriteTag: PropTypes.func,
   hasPlugins: PropTypes.bool.isRequired,
   hash: PropTypes.string.isRequired,
 };
@@ -108,6 +124,7 @@ GalleryImageButtons.defaultProps = {
   shareImage: null,
   startDownload: null,
   updateImageToSelection: null,
+  updateFavouriteTag: null,
 };
 
 export default GalleryImageButtons;

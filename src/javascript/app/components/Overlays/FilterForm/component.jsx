@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import unique from '../../../../tools/unique';
 import Lightbox from '../../Lightbox';
 import FilterFormTag from './filterFormTag';
-import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB, FILTER_RECENT } from '../../../../consts/specialTags';
+import {
+  FILTER_NEW,
+  FILTER_UNTAGGED,
+  FILTER_MONOCHROME,
+  FILTER_RGB,
+  FILTER_RECENT,
+  FILTER_FAVOURITE,
+} from '../../../../consts/specialTags';
 
 const FilterForm = (props) => {
 
@@ -35,6 +42,11 @@ const FilterForm = (props) => {
           title="Untagged"
           tagActive={activeTags.includes(FILTER_UNTAGGED)}
           toggleTag={(active) => updateActiveTags(FILTER_UNTAGGED, active)}
+        />
+        <FilterFormTag
+          title="Favourite"
+          tagActive={activeTags.includes(FILTER_FAVOURITE)}
+          toggleTag={(active) => updateActiveTags(FILTER_FAVOURITE, active)}
         />
         <FilterFormTag
           title="New"
