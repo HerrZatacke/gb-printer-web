@@ -1,10 +1,13 @@
 import { connect } from 'react-redux';
 import unique from '../../../../tools/unique';
+import { FILTER_FAVOURITE } from '../../../../consts/specialTags';
 
 const mapStateToProps = (state) => ({
-  availableTags: unique(state.images.map(({ tags }) => tags).flat()).sort((a, b) => (
-    a.toLowerCase().localeCompare(b.toLowerCase())
-  )),
+  availableTags: unique(state.images.map(({ tags }) => tags).flat())
+    .filter((tag) => tag !== FILTER_FAVOURITE)
+    .sort((a, b) => (
+      a.toLowerCase().localeCompare(b.toLowerCase())
+    )),
   activeTags: state.filtersActiveTags,
   visible: state.filtersVisible,
 });

@@ -44,7 +44,7 @@ const FilterForm = (props) => {
           toggleTag={(active) => updateActiveTags(FILTER_UNTAGGED, active)}
         />
         <FilterFormTag
-          title="Favourite"
+          title="❤️ Favourite"
           tagActive={activeTags.includes(FILTER_FAVOURITE)}
           toggleTag={(active) => updateActiveTags(FILTER_FAVOURITE, active)}
         />
