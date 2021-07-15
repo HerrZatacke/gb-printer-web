@@ -168,14 +168,14 @@ CustomPixelsPlugin.prototype.withImage = function withImage(image) {
   Promise.all([
     image.getMeta(),
     image.getPalette(),
-    image.getCanvas(),
+    image.getCanvas({ lockFrame: false }),
     this.loadImage(),
   ]).then(([meta, {palette: sourcePalette}, sourceCanvas]) => {
 
     console.log(meta);
 
-    if (meta.isRGBN || meta.lockFrame) {
-      alert(this.name + ' does not work with RGBN images or images with `color-locked frame`');
+    if (meta.isRGBN) {
+      alert(this.name + ' does not work with RGBN images');
       return;
     }
 
