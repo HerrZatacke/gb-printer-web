@@ -116,6 +116,13 @@ const definitions = [
     value: 'keep',
   },
   {
+    // if the "last seen" image from a .sav will be imported too
+    key: 'importLastSeen',
+    saveLocally: true,
+    saveExport: ['settings', 'remote'],
+    value: true,
+  },
+  {
     // visiblility of dates in gallery
     key: 'hideDates',
     saveLocally: true,

@@ -49,7 +49,8 @@ const transformImage = (data, baseAddress) => {
 };
 
 const getTransformSav = (store) => (data, filename) => {
-  const { savFrameTypes, frames } = store.getState();
+  const { savFrameTypes, frames, importLastSeen } = store.getState();
+
   const framed = [];
 
   const frameGroups = getFrameGroups(frames)
@@ -74,7 +75,10 @@ const getTransformSav = (store) => (data, filename) => {
   const importSav = (selectedFrameset) => {
     for (let baseAddress = 0; baseAddress < 0x20000; baseAddress += 0x1000) {
 
-      if (baseAddress !== 0x1000) { // Ignore the "Game Face"
+      if (
+        (importLastSeen && baseAddress === 0) ||
+        (baseAddress >= 0x2000) // Ignore the "Game Face" at 0x1000
+      ) {
         const frameNumber = data[baseAddress + 0xfb0];
         const transformedData = transformImage(data, baseAddress);
 

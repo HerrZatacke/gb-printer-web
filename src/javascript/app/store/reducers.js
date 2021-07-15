@@ -18,6 +18,7 @@ import handleExportFrame from './reducers/handleExportFrameReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import imageSelection from './reducers/imageSelectionReducer';
+import importLastSeen from './reducers/importLastSeenReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
@@ -61,6 +62,7 @@ export default combineReducers({
   hideDates,
   images,
   imageSelection,
+  importLastSeen,
   isFullscreen,
   lastSelectedImage,
   progressLog,
