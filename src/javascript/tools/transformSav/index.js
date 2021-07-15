@@ -1,9 +1,12 @@
 import applyFrame from '../applyFrame';
 import mapCartFrameToName from './mapCartFrameToName';
 import getFrameGroups from '../getFrameGroups';
+import sortBy from '../sortby';
 
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
 const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
+
+const sortBySortIndex = sortBy('sortIndex');
 
 const transformImage = (data, baseAddress) => {
   const transformed = [];
@@ -55,6 +58,31 @@ const getTransformSav = (store) => (data, filename) => {
       selected: savFrameTypes === value,
     }));
 
+
+  let metaIndex = 0;
+  const getFileMeta = (baseAddress) => {
+    const imageBaseIndex = (baseAddress / 0x1000) - 2;
+
+    let sortIndex = data[0x11B2 + imageBaseIndex];
+    let indexText;
+
+    if (baseAddress === 0) {
+      indexText = '[last seen]';
+      sortIndex = 64;
+    } else if (sortIndex === 255) {
+      indexText = '[deleted]';
+      sortIndex = imageBaseIndex + 32;
+    } else {
+      metaIndex += 1;
+      indexText = metaIndex.toString(10).padStart(2, '0');
+    }
+
+    return {
+      file: `${filename} ${indexText}`,
+      sortIndex,
+    };
+  };
+
   const importSav = (selectedFrameset) => {
     for (let baseAddress = 0; baseAddress < 0x20000; baseAddress += 0x1000) {
 
@@ -63,12 +91,19 @@ const getTransformSav = (store) => (data, filename) => {
         const transformedData = transformImage(data, baseAddress);
 
         if (transformedData) {
-          framed.push(applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames)));
+          framed.push(
+            applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames))
+              .then((lines) => ({
+                lines,
+                ...getFileMeta(baseAddress),
+              })),
+          );
         }
       }
     }
 
-    return Promise.all(framed);
+    return Promise.all(framed)
+      .then(sortBySortIndex);
   };
 
   if (frameGroups.length < 2) {

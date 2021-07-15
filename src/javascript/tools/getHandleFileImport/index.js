@@ -128,12 +128,6 @@ const getHandleFileImport = (store) => {
           .catch(onError)
           .then((data) => (
             transformSav(data, file.name)
-          ))
-          .then((imagesLines) => (
-            imagesLines.map((lines) => ({
-              lines,
-              filename: file.name,
-            }))
           ));
       }
 
@@ -163,7 +157,6 @@ const getHandleFileImport = (store) => {
       });
       return Promise.resolve([]);
     });
-
 
     Promise.all(groupImports)
       .then((imported) => {
