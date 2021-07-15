@@ -1,15 +1,20 @@
-const sortBy = (key) => (arr) => (
-  arr.sort((a, b) => {
-    if (a[key] > b[key]) {
-      return -1;
-    }
+const sortBy = (key, direction = 'asc') => (arr) => {
 
-    if (a[key] < b[key]) {
-      return 1;
-    }
+  const dir = direction === 'desc' ? -1 : 1;
 
-    return 0;
-  })
-);
+  return (
+    arr.sort((a, b) => {
+      if (a[key] > b[key]) {
+        return dir;
+      }
+
+      if (a[key] < b[key]) {
+        return -dir;
+      }
+
+      return 0;
+    })
+  );
+};
 
 export default sortBy;

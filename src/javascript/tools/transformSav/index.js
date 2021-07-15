@@ -6,7 +6,7 @@ import sortBy from '../sortby';
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
 const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
 
-const sortBySortIndex = sortBy('sortIndex');
+const sortByAlbumIndex = sortBy('albumIndex');
 
 const transformImage = (data, baseAddress) => {
   const transformed = [];
@@ -24,6 +24,7 @@ const transformImage = (data, baseAddress) => {
 
     currentLine += ` ${data[baseAddress + i].toString(16)
       .padStart(2, '0')}`;
+
     if (i % 16 === 15) {
       transformed.push(currentLine.trim());
 
@@ -59,27 +60,14 @@ const getTransformSav = (store) => (data, filename) => {
     }));
 
 
-  let metaIndex = 0;
   const getFileMeta = (baseAddress) => {
-    const imageBaseIndex = (baseAddress / 0x1000) - 2;
-
-    let sortIndex = data[0x11B2 + imageBaseIndex];
-    let indexText;
-
-    if (baseAddress === 0) {
-      indexText = '[last seen]';
-      sortIndex = 64;
-    } else if (sortIndex === 255) {
-      indexText = '[deleted]';
-      sortIndex = imageBaseIndex + 32;
-    } else {
-      metaIndex += 1;
-      indexText = metaIndex.toString(10).padStart(2, '0');
-    }
+    const cartIndex = (baseAddress / 0x1000) - 2;
+    const albumIndex = cartIndex >= 0 ? data[0x11b2 + cartIndex] : 64;
 
     return {
-      file: `${filename} ${indexText}`,
-      sortIndex,
+      cartIndex,
+      albumIndex,
+      baseAddress,
     };
   };
 
@@ -103,7 +91,30 @@ const getTransformSav = (store) => (data, filename) => {
     }
 
     return Promise.all(framed)
-      .then(sortBySortIndex);
+      .then(sortByAlbumIndex)
+      .then((sortedImages) => {
+        let displayIndex = 0;
+        return sortedImages.map(({ albumIndex, lines }) => {
+          let indexText;
+          switch (albumIndex) {
+            case 64:
+              indexText = '[last seen]';
+              break;
+            case 255:
+              indexText = '[deleted]';
+              break;
+            default:
+              displayIndex += 1;
+              indexText = displayIndex.toString(10).padStart(2, '0');
+              break;
+          }
+
+          return {
+            lines,
+            file: `${filename} ${indexText}`,
+          };
+        });
+      });
   };
 
   if (frameGroups.length < 2) {
