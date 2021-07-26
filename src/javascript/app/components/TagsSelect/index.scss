@@ -19,6 +19,7 @@
 
     &--input {
       padding: 5px 15px;
+      width: 85%;
     }
   }
 
@@ -27,7 +28,7 @@
     outline: none;
     @include theme-background-color($color-grey-80, $color-grey-30);
     @include theme-color($color-black, $color-text-bright);
-    width: 100px;
+    width: 100%;
     border-radius: $default-border-radius-small;
   }
 
@@ -71,6 +72,29 @@
     display: block;
     height: 20px;
     line-height: 20px;
+  }
 
+  &__combo-box {
+    display: none;
+    flex-direction: column;
+    @include theme-background-color($color-black, $color-grey-30);
+    margin-top: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+
+    &--open {
+      display: flex;
+    }
+  }
+
+  &__combo-box-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    @include theme-color($color-grey-20, $color-text-bright);
+
+    &--selected {
+      @include theme-background-color($color-primary, $color-primary);
+      @include theme-color($color-text-bright, $color-primary-bright);
+    }
   }
 }

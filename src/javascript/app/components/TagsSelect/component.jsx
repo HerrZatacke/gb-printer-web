@@ -45,13 +45,10 @@ const TagsSelect = (props) => {
           </li>
         ))
       }
-      <li
-        className="tags-select__tag tags-select__tag--input"
-      >
-        <InputNewTag
-          updateTags={props.updateTags}
-        />
-      </li>
+      <InputNewTag
+        updateTags={props.updateTags}
+        selectedTags={tags}
+      />
     </ul>
   );
 };
