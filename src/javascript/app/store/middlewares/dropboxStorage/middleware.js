@@ -99,7 +99,7 @@ const middleware = (store) => {
             });
           });
 
-      } else
+      }
 
       if (action.payload.storageType === 'dropboximages') {
 
@@ -178,7 +178,9 @@ const middleware = (store) => {
 
       }
 
-    } else if (action.type === 'DROPBOX_START_AUTH') {
+    }
+
+    if (action.type === 'DROPBOX_START_AUTH') {
       dropboxClient.startAuth();
     }
   };
