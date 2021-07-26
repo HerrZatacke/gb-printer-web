@@ -20,6 +20,8 @@
     &--input {
       padding: 5px 15px;
       width: 85%;
+      display: flex;
+      flex-wrap: wrap;
     }
   }
 
@@ -28,7 +30,7 @@
     outline: none;
     @include theme-background-color($color-grey-80, $color-grey-30);
     @include theme-color($color-black, $color-text-bright);
-    width: 100%;
+    width: calc(100% - 24px);
     border-radius: $default-border-radius-small;
   }
 
@@ -74,10 +76,11 @@
     line-height: 20px;
   }
 
-  &__combo-box {
+  &__combo-box-list {
     display: none;
     flex-direction: column;
-    @include theme-background-color($color-black, $color-grey-30);
+    width: 100%;
+    @include theme-background-color($color-grey-90, $color-grey-30);
     margin-top: 4px;
     max-height: 150px;
     overflow-y: auto;
@@ -90,11 +93,27 @@
   &__combo-box-item {
     padding: 5px 10px;
     cursor: pointer;
-    @include theme-color($color-grey-20, $color-text-bright);
+    @include theme-color($color-text, $color-text-bright);
 
     &--selected {
-      @include theme-background-color($color-primary, $color-primary);
-      @include theme-color($color-text-bright, $color-primary-bright);
+      @include theme-background-color($color-primary-bright, $color-primary);
+    }
+  }
+
+  &__combo-box-toggle-button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    padding: 3px;
+    margin-left: 4px;
+    fill: currentColor;
+    border-radius: $default-border-radius-small;
+    @include theme-background-color($color-grey-60, $color-grey-40);
+    @include theme-color($color-text, $color-text-bright);
+
+    &:hover {
+      @include theme-background-color($color-grey-80, $color-grey-60);
     }
   }
 }

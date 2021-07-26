@@ -2,17 +2,20 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useCombobox } from 'downshift';
+import SVG from '../SVG';
 import { useAvailableTags } from '../../../hooks/useAvailableTags';
 
 const InputNewTag = ({ updateTags, selectedTags }) => {
   const { availableTags } = useAvailableTags();
-  const [inputItems, setInputItems] = useState([]);
+  const selectableTags = availableTags.filter((tag) => !selectedTags.includes(tag));
+  const [inputItems, setInputItems] = useState(selectableTags);
 
   const {
     isOpen,
     getMenuProps,
     getInputProps,
     getComboboxProps,
+    getToggleButtonProps,
     highlightedIndex,
     getItemProps,
     reset,
@@ -20,11 +23,10 @@ const InputNewTag = ({ updateTags, selectedTags }) => {
     items: inputItems,
     onInputValueChange: ({ inputValue }) => {
       setInputItems(
-        availableTags
+        selectableTags
           .filter((tag) => (
             tag.toLowerCase().startsWith(inputValue.trim().toLowerCase())
-          ))
-          .filter((tag) => !selectedTags.includes(tag)),
+          )),
       );
     },
   });
@@ -59,12 +61,21 @@ const InputNewTag = ({ updateTags, selectedTags }) => {
           }
         }}
       />
+      <button
+        type="button"
+        className="tags-select__combo-box-toggle-button"
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...getToggleButtonProps()}
+        aria-label="toggle tag select menu"
+      >
+        <SVG name="arrowdown" />
+      </button>
       <ul
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...getMenuProps()}
         className={
-          classnames('tags-select__combo-box', {
-            'tags-select__combo-box--open': isOpen,
+          classnames('tags-select__combo-box-list', {
+            'tags-select__combo-box-list--open': isOpen,
           })
         }
       >
