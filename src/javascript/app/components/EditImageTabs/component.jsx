@@ -100,7 +100,6 @@ const EditImageTabs = (props) => {
           <TagsSelect
             updateTags={props.updateTags}
             tags={props.tags}
-            batchTags={props.batchTags}
           />
         </li>
         <li
@@ -139,11 +138,6 @@ EditImageTabs.propTypes = {
     add: PropTypes.array.isRequired,
     remove: PropTypes.array.isRequired,
   }).isRequired,
-  batchTags: PropTypes.shape({
-    initial: PropTypes.array.isRequired,
-    add: PropTypes.array.isRequired,
-    remove: PropTypes.array.isRequired,
-  }),
   // frames: PropTypes.object,
   // save: PropTypes.func.isRequired,
   // title: PropTypes.string,
@@ -161,7 +155,6 @@ EditImageTabs.defaultProps = {
   // title: null,
   // hash: null,
   hashes: null,
-  batchTags: null,
   paletteShort: '',
   paletteRGBN: null,
   frame: null,
