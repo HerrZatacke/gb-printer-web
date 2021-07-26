@@ -6,6 +6,13 @@ const mapStateToProps = (state) => ({
   images: state.images,
 });
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = (dispatch) => ({
+  recover: (hash) => {
+    dispatch({
+      type: 'TRY_RECOVER_IMAGE_DATA',
+      payload: hash,
+    });
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps);

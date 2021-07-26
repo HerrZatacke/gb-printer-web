@@ -12,6 +12,7 @@ const ImageRender = ({
   palette,
   loadImageTiles,
   reportTileCount,
+  recover,
 }) => {
   const [tiles, setTiles] = useState(null);
 
@@ -19,7 +20,7 @@ const ImageRender = ({
     let aborted = false;
 
     // setTiles(null); // no need to clear before update?
-    loadImageTiles({ images })({ hash, frame, hashes })
+    loadImageTiles({ images })({ hash, frame, hashes }, false, recover)
       .then((loadedTiles) => {
         if (aborted) {
           return;
@@ -32,7 +33,7 @@ const ImageRender = ({
     return () => {
       aborted = true;
     };
-  }, [images, loadImageTiles, reportTileCount, hash, hashes, frame]);
+  }, [images, loadImageTiles, reportTileCount, hash, hashes, frame, recover]);
 
   return tiles ? (
     <GameBoyImage
@@ -59,6 +60,7 @@ ImageRender.propTypes = {
   invertPalette: PropTypes.bool.isRequired,
   frame: PropTypes.string,
   lockFrame: PropTypes.bool.isRequired,
+  recover: PropTypes.func.isRequired,
 };
 
 ImageRender.defaultProps = {
