@@ -55,9 +55,12 @@ class DropboxClient extends EventEmitter {
   }
 
   checkLoginStatus() {
+    // noinspection JSVoidFunctionReturnValueUsed
     return this.dbx.auth.checkAndRefreshAccessToken()
       .catch(this.requestError)
       .then(() => {
+        // eslint-disable-next-line no-alert
+        alert(1);
         const accessToken = this.dbx.auth.getAccessToken();
         const expiresAt = this.dbx.auth.getAccessTokenExpiresAt().getTime();
         const expiresIn = expiresAt - (new Date()).getTime();
@@ -223,8 +226,9 @@ class DropboxClient extends EventEmitter {
     });
   }
 
-  getFileContent(path, index, total) {
-    return this.addToQueue(`dbx.filesDownload (${index + 1}/${total}) ${path}`, this.throttle, () => (
+  getFileContent(path, index, total, silent = false) {
+    const message = silent ? '' : `dbx.filesDownload (${index + 1}/${total}) ${path}`;
+    return this.addToQueue(message, this.throttle, () => (
       this.dbx.filesDownload({ path: this.toPath(`/settings/${path}`) })
         .catch(this.requestError)
     ))

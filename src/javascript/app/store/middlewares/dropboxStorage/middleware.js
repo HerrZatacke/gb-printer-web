@@ -1,6 +1,6 @@
 import Queue from 'promise-queue/lib';
 import getUploadImages from '../../../../tools/getUploadImages';
-import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
+import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
 import DropboxClient from '../../../../tools/DropboxClient';
 import createDropboxContentHasher from '../../../../tools/DropboxClient/createDropboxContentHasher';
 import parseAuthParams from '../../../../tools/parseAuthParams';
@@ -20,13 +20,15 @@ const middleware = (store) => {
     queue.add(() => (
       new Promise((resolve, reject) => {
         window.setTimeout(() => {
-          store.dispatch({
-            type: 'DROPBOX_LOG_ACTION',
-            payload: {
-              timestamp: (new Date()).getTime() / 1000,
-              message: `${who} runs ${what}`,
-            },
-          });
+          if (what) {
+            store.dispatch({
+              type: 'DROPBOX_LOG_ACTION',
+              payload: {
+                timestamp: (new Date()).getTime() / 1000,
+                message: `${who} runs ${what}`,
+              },
+            });
+          }
 
           fn()
             .then(resolve)
@@ -183,6 +185,19 @@ const middleware = (store) => {
     if (action.type === 'DROPBOX_START_AUTH') {
       dropboxClient.startAuth();
     }
+
+    if (action.type === 'TRY_RECOVER_IMAGE_DATA') {
+      dropboxClient.getFileContent(`images/${action.payload}.txt`, 0, 1, true)
+        .then(saveImageFileContent)
+        .then(() => {
+          // This forces an update of the complete images array
+          store.dispatch({
+            type: 'UPDATE_IMAGES_BATCH',
+            payload: [],
+          });
+        });
+    }
+
   };
 };
 
