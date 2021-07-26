@@ -32,6 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch((error) => {
       document.getElementById('app')
-        .innerHTML = `<p class="init-error">This browser is not supported.<br/>This App is being optimized for chromnium-based browsers.<small>${error.stack}</small></p>`;
+        .innerHTML = `<p class="init-error">This browser is not supported.<br/>This App is being optimized for chromium-based browsers.<small>${error.stack}</small></p>`;
     });
 });
