@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import unique from '../../../../tools/unique';
+import { useAvailableTags } from '../../../../hooks/useAvailableTags';
 import Lightbox from '../../Lightbox';
 import FilterFormTag from './filterFormTag';
 import {
@@ -15,6 +16,8 @@ import {
 const FilterForm = (props) => {
 
   const [activeTags, setActiveTags] = useState(props.activeTags);
+
+  const { availableTags } = useAvailableTags();
 
   useEffect(() => {
     setActiveTags(props.activeTags);
@@ -72,7 +75,7 @@ const FilterForm = (props) => {
       <ul
         className="filter-form__tag-list"
       >
-        {props.availableTags.map((tag) => (
+        {availableTags.map((tag) => (
           <FilterFormTag
             key={tag}
             title={tag}
@@ -99,7 +102,6 @@ const FilterForm = (props) => {
 
 FilterForm.propTypes = {
   visible: PropTypes.bool.isRequired,
-  availableTags: PropTypes.array.isRequired,
   activeTags: PropTypes.array.isRequired,
   setActiveTags: PropTypes.func.isRequired,
   hideFilters: PropTypes.func.isRequired,
