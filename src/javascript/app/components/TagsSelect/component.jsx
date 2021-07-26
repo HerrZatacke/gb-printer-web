@@ -1,22 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
+import InputNewTag from './InputNewTag';
 import unique from '../../../tools/unique';
 import { FILTER_FAVOURITE } from '../../../consts/specialTags';
 
 const TagsSelect = (props) => {
-
-  const [newTag, setNewTag] = useState('');
-
-  const addNewTag = (tag) => {
-    if (!tag) {
-      return;
-    }
-
-    props.updateTags('add', tag);
-    setNewTag('');
-  };
 
   const tags = unique([...props.tags.initial, ...props.tags.add]);
 
@@ -58,26 +48,8 @@ const TagsSelect = (props) => {
       <li
         className="tags-select__tag tags-select__tag--input"
       >
-        <input
-          type="text"
-          className="tags-select__tag-name"
-          onChange={({ target: { value } }) => {
-            setNewTag(value);
-          }}
-          onBlur={({ target: { value } }) => {
-            addNewTag(value);
-          }}
-          onKeyUp={(ev) => {
-            switch (ev.key) {
-              case 'Tab':
-              case 'Enter':
-                addNewTag(ev.target.value);
-                break;
-              default:
-                break;
-            }
-          }}
-          value={newTag}
+        <InputNewTag
+          updateTags={props.updateTags}
         />
       </li>
     </ul>
