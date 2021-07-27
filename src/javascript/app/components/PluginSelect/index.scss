@@ -61,11 +61,39 @@
     border-radius: $default-border-radius-small;
     text-align: left;
     padding: 5px 10px;
-    cursor: pointer;
+    overflow: hidden;
+    position: relative;
 
-    &:hover {
+    &:not(:disabled):hover {
+      cursor: pointer;
       @include theme-color($color-white, $color-grey-80);
       @include theme-background-color($color-tertiary, $color-tertiary);
+    }
+
+    &:disabled {
+      padding-left: 30px;
+      cursor: default;
+      @include theme-color($color-grey-50, $color-grey-50);
+      @include theme-background-color($color-grey-60, $color-grey-40);
+    }
+
+    .svg--warn,
+    .svg--loading {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      fill: $color-warn-yellow;
+    }
+
+    .svg--warn {
+      fill: $color-warn-yellow;
+    }
+
+    .svg--loading {
+      fill: currentColor;
     }
   }
 

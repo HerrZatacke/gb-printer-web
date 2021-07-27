@@ -61,6 +61,8 @@ const PluginSettings = ({
             description,
             configParams = {},
             config = {},
+            error,
+            loading,
           }, pluginIndex) => (
             <li
               className="plugin-settings__plugin"
@@ -85,6 +87,22 @@ const PluginSettings = ({
                   {description}
                 </small>
               </div>
+              {error && (
+                <span
+                  className="plugin-settings__plugin-warning"
+                  title={error}
+                >
+                  <SVG name="warn" />
+                </span>
+              )}
+              {loading && (
+                <span
+                  className="plugin-settings__plugin-loading"
+                  title="Loading plugin"
+                >
+                  <SVG name="loading" />
+                </span>
+              )}
               <button
                 type="button"
                 className="button plugin-settings__button plugin-settings__button--delete"

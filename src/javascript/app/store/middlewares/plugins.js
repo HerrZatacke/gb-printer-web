@@ -16,24 +16,24 @@ const pluginsMiddleware = (store) => {
     });
   };
 
-  const initPlugin = ({ url }) => {
+  const initPlugin = (plugin) => {
 
-    const pluginState = store.getState().plugins.find((plugin) => plugin.url === url) || {};
+    const pluginState = store.getState().plugins.find(({ url }) => plugin.url === url) || {};
     const { config: stateConfig = {} } = pluginState;
+    const { url } = plugin;
 
     return (
       queue.add(() => (
         new Promise((resolve) => {
           window.gbpwRegisterPlugin = (Plugin) => {
-            window.gbpwRegisterPlugin = () => {
-            };
+            window.gbpwRegisterPlugin = () => {};
 
             try {
-              const instance = new Plugin({ store }, stateConfig);
-              instance.init({
+              const instance = new Plugin({
                 saveAs,
                 progress,
-              });
+                store,
+              }, stateConfig);
               const { name, description = '', configParams = {}, config = {} } = instance;
               registeredPlugins[url] = instance;
               store.dispatch({
@@ -44,11 +44,20 @@ const pluginsMiddleware = (store) => {
                   description,
                   configParams,
                   config,
+                  loading: false,
+                  error: false,
                 },
               });
               resolve(true);
             } catch (error) {
-              console.warn(error);
+              store.dispatch({
+                type: 'PLUGIN_UPDATE_PROPERTIES',
+                payload: {
+                  url,
+                  loading: false,
+                  error: error.message,
+                },
+              });
               resolve(false);
             }
           };
@@ -56,6 +65,21 @@ const pluginsMiddleware = (store) => {
           // init loading of external script.
           const pluginScript = document.createElement('script');
           document.head.appendChild(pluginScript);
+
+          pluginScript.addEventListener('error', () => {
+            window.gbpwRegisterPlugin = () => {};
+
+            store.dispatch({
+              type: 'PLUGIN_UPDATE_PROPERTIES',
+              payload: {
+                url,
+                loading: false,
+                error: 'Loading error',
+              },
+            });
+            resolve(false);
+          });
+
           pluginScript.src = url;
         })
       ))

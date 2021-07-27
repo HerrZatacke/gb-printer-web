@@ -36,6 +36,31 @@
     margin-bottom: 5px;
   }
 
+  &__plugin-loading,
+  &__plugin-warning {
+    margin: 5px 0;
+    flex-grow: 0;
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+    fill: currentColor;
+    padding: 1px 6px;
+
+  }
+
+  &__plugin-loading {
+    @include theme-color($color-text, $color-text-bright);
+
+    .svg {
+      animation: spin 1200ms infinite linear;
+    }
+  }
+
+  &__plugin-warning {
+    @include theme-background-color($color-warn-yellow, $color-warn-yellow);
+    @include theme-color($color-white, $color-grey-70);
+  }
+
   &__button {
     flex-grow: 0;
     flex-basis: 40px;

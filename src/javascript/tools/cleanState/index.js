@@ -97,10 +97,17 @@ const cleanState = (dirtyState) => {
     timestamp > yesterday
   ));
 
+  const plugins = dirtyState.plugins.map((plugin) => ({
+    ...plugin,
+    loading: true,
+    error: undefined,
+  }));
+
   return {
     ...dirtyState,
     images,
     palettes,
+    plugins,
     printerUrl,
     framesMessage,
     activePalette,
