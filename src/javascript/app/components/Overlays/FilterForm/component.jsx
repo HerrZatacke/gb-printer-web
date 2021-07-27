@@ -73,18 +73,6 @@ const FilterForm = (props) => {
         />
       </ul>
       <ul
-        className="filter-form__tag-list"
-      >
-        {availableTags.map((tag) => (
-          <FilterFormTag
-            key={tag}
-            title={tag}
-            tagActive={activeTags.includes(tag)}
-            toggleTag={(active) => updateActiveTags(tag, active)}
-          />
-        ))}
-      </ul>
-      <ul
         className="filter-form__tag-list filter-form__tag-list--clear"
       >
         <FilterFormTag
@@ -95,6 +83,18 @@ const FilterForm = (props) => {
             setActiveTags([]);
           }}
         />
+      </ul>
+      <ul
+        className="filter-form__tag-list"
+      >
+        {availableTags.map((tag) => (
+          <FilterFormTag
+            key={tag}
+            title={tag}
+            tagActive={activeTags.includes(tag)}
+            toggleTag={(active) => updateActiveTags(tag, active)}
+          />
+        ))}
       </ul>
     </Lightbox>
   );
