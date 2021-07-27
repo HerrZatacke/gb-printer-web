@@ -59,8 +59,6 @@ class DropboxClient extends EventEmitter {
     return this.dbx.auth.checkAndRefreshAccessToken()
       .catch(this.requestError)
       .then(() => {
-        // eslint-disable-next-line no-alert
-        alert(1);
         const accessToken = this.dbx.auth.getAccessToken();
         const expiresAt = this.dbx.auth.getAccessTokenExpiresAt().getTime();
         const expiresIn = expiresAt - (new Date()).getTime();
