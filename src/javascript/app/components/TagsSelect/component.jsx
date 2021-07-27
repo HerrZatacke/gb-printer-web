@@ -23,13 +23,11 @@ const TagsSelect = (props) => {
             }
             key={tag}
           >
-            <button
-              type="button"
-              className="tags-select__button tags-select__button--add"
-              onClick={() => props.updateTags('add', tag)}
+            <span
+              className="tags-select__tag-name"
             >
-              <SVG name="add" />
-            </button>
+              {tag === FILTER_FAVOURITE ? '❤️' : tag}
+            </span>
             <button
               type="button"
               className="tags-select__button tags-select__button--remove"
@@ -37,11 +35,13 @@ const TagsSelect = (props) => {
             >
               <SVG name="remove" />
             </button>
-            <span
-              className="tags-select__tag-name"
+            <button
+              type="button"
+              className="tags-select__button tags-select__button--add"
+              onClick={() => props.updateTags('add', tag)}
             >
-              {tag === FILTER_FAVOURITE ? '❤️' : tag}
-            </span>
+              <SVG name="add" />
+            </button>
           </li>
         ))
       }

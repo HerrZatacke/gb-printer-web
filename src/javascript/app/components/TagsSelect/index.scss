@@ -5,13 +5,22 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   margin: 0 -$spacing;
+  margin-top: 5px;
+
+  @media (max-width: $breakpoint-mobile) {
+    .is-touch & {
+      transform: scale(1.5);
+      width: 68.2%;
+      transform-origin: top left;
+    }
+  }
 
   &__tag {
     line-height: 16px;
     @include theme-background-color($color-grey-70, $color-grey-20);
     @include theme-color($color-black, $color-text-bright);
     margin: 0 $spacing 10px;
-    padding: 5px 15px 5px 55px;
+    padding: 5px 60px 5px 15px;
     height: 30px;
     border-radius: 15px;
     position: relative;
@@ -32,6 +41,10 @@
     @include theme-color($color-black, $color-text-bright);
     width: calc(100% - 24px);
     border-radius: $default-border-radius-small;
+
+    .is-touch & {
+      width: calc(100% - 40px);
+    }
   }
 
   &__tag--add {
@@ -61,13 +74,19 @@
   }
 
   &__button--add {
-    left: 3px;
+    right: 3px;
     @include theme-background-color($color-button-green, $color-button-green-dark);
   }
 
   &__button--remove {
-    left: 28px;
+    right: 30px;
     @include theme-background-color($color-button-red, $color-button-red-dark);
+  }
+
+  &__button--only-touch {
+    .no-touch & {
+      display: none;
+    }
   }
 
   &__tag-name {

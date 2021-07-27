@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import isTouchDevice from '../tools/isTouchDevice';
 
 const useAutoFocus = () => {
   const ref = useRef();
@@ -9,7 +10,7 @@ const useAutoFocus = () => {
       ...ref.current.querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]'),
     ];
 
-    if (focusables.length) {
+    if (focusables.length && !isTouchDevice()) {
       focusables[0].focus();
     }
 

@@ -19,8 +19,17 @@ const InputNewTag = ({ updateTags, selectedTags }) => {
     highlightedIndex,
     getItemProps,
     reset,
+    inputValue: currentValue,
   } = useCombobox({
     items: inputItems,
+
+    onSelectedItemChange: ({ inputValue }) => {
+      if (inputValue.trim()) {
+        updateTags('add', inputValue.trim());
+        reset();
+      }
+    },
+
     onInputValueChange: ({ inputValue }) => {
       setInputItems(
         selectableTags
@@ -31,13 +40,11 @@ const InputNewTag = ({ updateTags, selectedTags }) => {
     },
   });
 
-  const addNewTag = (tag) => {
-    if (!tag) {
-      return;
+  const addNewTag = () => {
+    if (currentValue.trim()) {
+      updateTags('add', currentValue.trim());
+      reset();
     }
-
-    updateTags('add', tag);
-    reset();
   };
 
   return (
@@ -54,13 +61,20 @@ const InputNewTag = ({ updateTags, selectedTags }) => {
         onKeyUp={(ev) => {
           switch (ev.key) {
             case 'Enter':
-              addNewTag(ev.target.value);
+              addNewTag();
               break;
             default:
               break;
           }
         }}
       />
+      <button
+        type="button"
+        className="tags-select__button tags-select__button--add tags-select__button--only-touch"
+        onClick={addNewTag}
+      >
+        <SVG name="add" />
+      </button>
       <button
         type="button"
         className="tags-select__combo-box-toggle-button"
