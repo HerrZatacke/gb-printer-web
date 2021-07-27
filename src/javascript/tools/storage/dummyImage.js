@@ -14,8 +14,9 @@ Either you imported a debug dump
 or your browser decided to do a
 cleanup.
 
-This image might be recovered if
-you set up git or dropbox sync.
+This image might be able to be
+recovered if you have set up git
+or dropbox sync.
 `.trim();
 
   const lines = text.split('\n')
