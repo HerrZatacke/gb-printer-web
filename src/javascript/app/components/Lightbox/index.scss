@@ -61,6 +61,12 @@
     z-index: $z-index-overlay-content;
     -ms-overflow-style: none;
 
+    // for <dialog> tag
+    width: 100%;
+    display: block;
+    background: none;
+    border: none;
+
     &::-webkit-scrollbar {
       display: none;
     }

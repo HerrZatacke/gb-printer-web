@@ -2,49 +2,65 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Buttons from '../Buttons';
+import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
+import useAutoFocus from '../../../hooks/useAutoFocus';
 
-const Lightbox = (props) => (
-  <div
-    className={
-      classNames(`lightbox ${props.className}`, {
-        'lightbox--fullscreen': props.isFullscreen,
-      })
-    }
-  >
-    <button
-      type="button"
-      className={`lightbox__backdrop ${props.className}__backdrop`}
-      onClick={props.denyOnOverlayClick ? props.deny : null}
-    />
+const Lightbox = (props) => {
+
+  useOverlayGlobalKeys({
+    confirm: props.confirm,
+    canConfirm: props.canConfirm,
+    deny: props.deny,
+  });
+
+  const focusRef = useAutoFocus();
+
+  return (
     <div
-      className={`lightbox__box ${props.className}__box`}
-      style={{
-        height: props.height ? `${props.height}px` : null,
-      }}
+      className={
+        classNames(`lightbox ${props.className}`, {
+          'lightbox--fullscreen': props.isFullscreen,
+        })
+      }
     >
+      <button
+        type="button"
+        className={`lightbox__backdrop ${props.className}__backdrop`}
+        onClick={props.denyOnOverlayClick ? props.deny : null}
+      />
       <div
-        className={`lightbox__box-content ${props.className}__box-content`}
+        className={`lightbox__box ${props.className}__box`}
+        style={{
+          height: props.height ? `${props.height}px` : null,
+        }}
       >
-        { props.header ? (
-          <div
-            className={`lightbox__header ${props.className}__header`}
-          >
-            {props.header}
-          </div>
+        <dialog
+          className={`lightbox__box-content ${props.className}__box-content`}
+          aria-labelledby="lightbox-header"
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          ref={focusRef}
+        >
+          {props.header ? (
+            <div
+              id="lightbox-header"
+              className={`lightbox__header ${props.className}__header`}
+            >
+              {props.header}
+            </div>
+          ) : null}
+          {props.children}
+        </dialog>
+        {props.confirm || props.deny ? (
+          <Buttons
+            confirm={props.confirm}
+            canConfirm={props.canConfirm}
+            deny={props.deny}
+          />
         ) : null}
-        {props.children}
       </div>
-      { props.confirm || props.deny ? (
-        <Buttons
-          focusConfirm={props.focusConfirm}
-          confirm={props.confirm}
-          canConfirm={props.canConfirm}
-          deny={props.deny}
-        />
-      ) : null }
     </div>
-  </div>
-);
+  );
+};
 
 Lightbox.propTypes = {
   height: PropTypes.number,
@@ -58,7 +74,6 @@ Lightbox.propTypes = {
   confirm: PropTypes.func,
   deny: PropTypes.func,
   canConfirm: PropTypes.bool,
-  focusConfirm: PropTypes.bool,
   denyOnOverlayClick: PropTypes.bool,
 };
 
@@ -71,7 +86,6 @@ Lightbox.defaultProps = {
   children: null,
   deny: null,
   canConfirm: true,
-  focusConfirm: true,
   denyOnOverlayClick: true,
 };
 
