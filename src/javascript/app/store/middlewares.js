@@ -10,7 +10,6 @@ import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
 import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
-import overlay from './middlewares/overlay';
 import pluginsMiddleware from './middlewares/plugins';
 import saveEditPalette from './middlewares/saveEditPalette';
 import saveRGBNImage from './middlewares/saveRGBNImage';
@@ -30,7 +29,6 @@ export default applyMiddleware(
   importMessage,
   importQueue,
   lightbox,
-  overlay,
   pluginsMiddleware,
   saveEditPalette,
   saveRGBNImage,

@@ -3,7 +3,6 @@ const sortOptionsVisibleReducer = (value = false, action) => {
     case 'SHOW_SORT_OPTIONS':
       return true;
     case 'HIDE_SORT_OPTIONS':
-    case 'CLOSE_OVERLAY':
     case 'SET_SORT_BY':
       return false;
     default:

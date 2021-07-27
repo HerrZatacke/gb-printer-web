@@ -13,7 +13,6 @@ const videoParamsReducer = (value = defaults, action) => {
       };
     case 'ANIMATE_IMAGES':
     case 'CANCEL_ANIMATE_IMAGES':
-    case 'CLOSE_OVERLAY':
       return {
         ...value,
         imageSelection: [],
