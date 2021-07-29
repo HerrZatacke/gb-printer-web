@@ -88,7 +88,7 @@ const pluginsMiddleware = (store) => {
 
   const collectImageData = (hash) => {
     const state = store.getState();
-    const { handleExportFrame } = state;
+    const { handleExportFrame: handleExportFrameState } = state;
     const meta = state.images.find((image) => image.hash === hash);
     const selectedPalette = getImagePalette(state, meta);
     const getTiles = () => loadImageTiles(state)(meta);
@@ -100,6 +100,7 @@ const pluginsMiddleware = (store) => {
       palette = selectedPalette,
       lockFrame = meta.lockFrame || false,
       invertPalette = meta.invertPalette || false,
+      handleExportFrame = handleExportFrameState,
     } = {}) => (
       getTiles()
         .then((tiles) => {
