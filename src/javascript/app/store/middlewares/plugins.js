@@ -16,6 +16,53 @@ const pluginsMiddleware = (store) => {
     });
   };
 
+  const collectImageData = (hash) => {
+    const state = store.getState();
+    const { handleExportFrame: handleExportFrameState } = state;
+    const meta = state.images.find((image) => image.hash === hash);
+    const selectedPalette = getImagePalette(state, meta);
+    const getTiles = () => loadImageTiles(state)(meta);
+
+    meta.isRGBN = !!meta.hashes;
+
+    const getCanvas = ({
+      scaleFactor = 1,
+      palette = selectedPalette,
+      lockFrame = meta.lockFrame || false,
+      invertPalette = meta.invertPalette || false,
+      handleExportFrame = handleExportFrameState,
+    } = {}) => (
+      getTiles()
+        .then((tiles) => {
+          const decoder = meta.isRGBN ? new RGBNDecoder() : new Decoder();
+
+          if (meta.isRGBN) {
+            decoder.update({
+              tiles: RGBNDecoder.rgbnTiles(tiles),
+              palette,
+              lockFrame,
+            });
+          } else {
+            decoder.update({
+              tiles,
+              palette: palette.palette,
+              lockFrame,
+              invertPalette,
+            });
+          }
+
+          return decoder.getScaledCanvas(scaleFactor, handleExportFrame);
+        })
+    );
+
+    return {
+      getMeta: () => Promise.resolve(meta),
+      getPalette: () => Promise.resolve(selectedPalette),
+      getTiles,
+      getCanvas,
+    };
+  };
+
   const initPlugin = (plugin) => {
 
     const pluginState = store.getState().plugins.find(({ url }) => plugin.url === url) || {};
@@ -33,6 +80,7 @@ const pluginsMiddleware = (store) => {
                 saveAs,
                 progress,
                 store,
+                collectImageData,
               }, stateConfig);
               const { name, description = '', configParams = {}, config = {} } = instance;
               registeredPlugins[url] = instance;
@@ -84,53 +132,6 @@ const pluginsMiddleware = (store) => {
         })
       ))
     );
-  };
-
-  const collectImageData = (hash) => {
-    const state = store.getState();
-    const { handleExportFrame: handleExportFrameState } = state;
-    const meta = state.images.find((image) => image.hash === hash);
-    const selectedPalette = getImagePalette(state, meta);
-    const getTiles = () => loadImageTiles(state)(meta);
-
-    meta.isRGBN = !!meta.hashes;
-
-    const getCanvas = ({
-      scaleFactor = 1,
-      palette = selectedPalette,
-      lockFrame = meta.lockFrame || false,
-      invertPalette = meta.invertPalette || false,
-      handleExportFrame = handleExportFrameState,
-    } = {}) => (
-      getTiles()
-        .then((tiles) => {
-          const decoder = meta.isRGBN ? new RGBNDecoder() : new Decoder();
-
-          if (meta.isRGBN) {
-            decoder.update({
-              tiles: RGBNDecoder.rgbnTiles(tiles),
-              palette,
-              lockFrame,
-            });
-          } else {
-            decoder.update({
-              tiles,
-              palette: palette.palette,
-              lockFrame,
-              invertPalette,
-            });
-          }
-
-          return decoder.getScaledCanvas(scaleFactor, handleExportFrame);
-        })
-    );
-
-    return {
-      getMeta: () => Promise.resolve(meta),
-      getPalette: () => Promise.resolve(selectedPalette),
-      getTiles,
-      getCanvas,
-    };
   };
 
   window.requestAnimationFrame(() => {
