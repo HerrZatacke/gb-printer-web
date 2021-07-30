@@ -17,7 +17,7 @@ const useAutoFocus = () => {
     return () => {
       lastFocussedElement.focus();
     };
-  });
+  }, []);
 
   return ref;
 };

@@ -30,6 +30,8 @@ const Lightbox = (props) => {
       />
       <div
         className={`lightbox__box ${props.className}__box`}
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        ref={focusRef}
         style={{
           height: props.height ? `${props.height}px` : null,
         }}
@@ -37,8 +39,6 @@ const Lightbox = (props) => {
         <dialog
           className={`lightbox__box-content ${props.className}__box-content`}
           aria-labelledby="lightbox-header"
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          ref={focusRef}
         >
           {props.header ? (
             <div
