@@ -123,7 +123,7 @@ const getHandleFileImport = (store) => {
       }
 
       // .sav files are always exactly 128kB
-      if (file.size === 131072) {
+      if (file.size === 0x20000) {
         return readFileAs(file, 'arrayBuffer')
           .catch(onError)
           .then((data) => (
