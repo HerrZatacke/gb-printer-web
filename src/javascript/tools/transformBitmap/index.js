@@ -103,7 +103,13 @@ const getTransformBitmap = (store) => (file) => {
 
   img.onload = () => {
     context.filter = 'grayscale(1)';
-    context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 160, 144);
+
+    // if an image has the "sensor" resolution of 128x112, import it inside a black frame
+    if (img.naturalWidth === 128 && img.naturalHeight === 112) {
+      context.drawImage(img, 16, 16);
+    } else {
+      context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 160, 144);
+    }
 
     const thresholds = getThresholds(context.getImageData(0, 0, 160, 144));
 
