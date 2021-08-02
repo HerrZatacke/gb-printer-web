@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.19.2",
+  "version": "1.20.0",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
