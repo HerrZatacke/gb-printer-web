@@ -5,8 +5,8 @@ import getFrameGroups from '../getFrameGroups';
 import getQuestions from './questions';
 import getFrameId from './getFrameId';
 
-const getGreytone = ([r, g, b, a]) => {
-  const greyTone = Math.floor((r + g + b) / 3 * (a / 255));
+const getGreytone = ([r,,, a]) => {
+  const greyTone = Math.floor(r * (a / 255));
 
   // Black
   if (greyTone < 64) {
@@ -54,6 +54,7 @@ const getTransformBitmap = (store) => (file) => {
   canvas.height = 144;
 
   img.onload = () => {
+    context.filter = 'grayscale(1)';
     context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 160, 144);
 
     for (let row = 0; row < canvas.height; row += 8) {
