@@ -1,23 +1,31 @@
+import chunk from 'chunk';
 import { saveFrameData } from '../applyFrame/frameData';
 import readFileAs from '../readFileAs';
 import saveNewImage from '../saveNewImage';
 import getFrameGroups from '../getFrameGroups';
 import getQuestions from './questions';
 import getFrameId from './getFrameId';
+import sortBy from '../sortby';
 
-const getGreytone = ([r,,, a]) => {
+const sortByCount = sortBy('count', 'desc');
+const sortByThreshold = sortBy('threshold');
+
+// bins to detect several grey levels (histogram analysis)
+const BINS = 7;
+
+const getGreytoneTh = (thresholds) => ([r,,, a]) => {
   const greyTone = Math.floor(r * (a / 255));
 
   // Black
-  if (greyTone < 64) {
+  if (greyTone < thresholds[0]) {
     return 0b0000000100000001;
   }
 
-  if (greyTone < 128) {
+  if (greyTone < thresholds[1]) {
     return 0b0000000000000001;
   }
 
-  if (greyTone < 192) {
+  if (greyTone < thresholds[2]) {
     return 0b0000000100000000;
   }
 
@@ -25,22 +33,62 @@ const getGreytone = ([r,,, a]) => {
   return 0b00000000000000000;
 };
 
-const encodeTile = ({ data: imageData }) => {
+const getThresholds = ({ data }) => {
+  const tones = chunk(data, 4)
+    .map(([r,,, a]) => (
+      Math.floor(r * (a / 255))
+    ));
 
-  const line = [];
-  for (let row = 0; row < 8; row += 1) {
-    let rowData = 0;
-    for (let col = 0; col < 8; col += 1) {
-      const pixel = getGreytone(imageData.slice(((row * 8) + col) * 4));
+  const min = Math.min(...tones);
+  const max = Math.max(...tones);
+
+  const conditions = [...new Array(BINS)]
+    .map((_, index) => ({
+      threshold: Math.ceil((max - min) / (BINS / (index + 1))) + min,
+      count: 0,
+    }));
+
+  tones.forEach((tone) => {
+    for (let i = 0; i < BINS; i += 1) {
+      if (
+        (tone > (conditions?.[i - 1]?.threshold || -1)) &&
+        (tone <= conditions[i].threshold)
+      ) {
+        conditions[i].count += 1;
+      }
+    }
+  });
+
+  const thresholds = sortByThreshold(
+    // get 4 largest thresholds
+    sortByCount(conditions).slice(0, 4),
+  // and in the end remove the highest one
+  ).slice(0, 3);
+
+  return thresholds.map(({ threshold }) => threshold);
+};
+
+const encodeTileTh = (thresholds) => {
+  const getGreytone = getGreytoneTh(thresholds);
+
+  return ({ data: imageData }) => {
+
+    const line = [];
+    for (let row = 0; row < 8; row += 1) {
+      let rowData = 0;
+      for (let col = 0; col < 8; col += 1) {
+        const pixel = getGreytone(imageData.slice(((row * 8) + col) * 4));
+        // eslint-disable-next-line no-bitwise
+        rowData += pixel << (7 - col);
+      }
+
       // eslint-disable-next-line no-bitwise
-      rowData += pixel << (7 - col);
+      line.push((rowData >> 8).toString(16).padStart(2, '0'), (rowData & 255).toString(16).padStart(2, '0'));
     }
 
-    // eslint-disable-next-line no-bitwise
-    line.push((rowData >> 8).toString(16).padStart(2, '0'), (rowData & 255).toString(16).padStart(2, '0'));
-  }
-
-  return line.join(' ').toUpperCase();
+    return line.join(' ')
+      .toUpperCase();
+  };
 };
 
 const getTransformBitmap = (store) => (file) => {
@@ -56,6 +104,10 @@ const getTransformBitmap = (store) => (file) => {
   img.onload = () => {
     context.filter = 'grayscale(1)';
     context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 160, 144);
+
+    const thresholds = getThresholds(context.getImageData(0, 0, 160, 144));
+
+    const encodeTile = encodeTileTh(thresholds);
 
     for (let row = 0; row < canvas.height; row += 8) {
       for (let col = 0; col < canvas.width; col += 8) {
