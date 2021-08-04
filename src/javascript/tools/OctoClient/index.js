@@ -69,66 +69,74 @@ class OctoClient extends EventEmitter {
   getRepoContents() {
     this.progressTick();
 
-    const get = [
-      { path: 'images', value: [] },
-      { path: 'frames', value: [] },
-      { path: 'settings.json', value: {} },
-    ];
-
-    return this.addToQueue('repos.getContent /', this.throttle, () => ( // queue wrapper
-      this.octoKit.repos.getContent({
+    return this.addToQueue(`repos.getBranch ${this.branch}`, this.throttle, () => ( // queue wrapper
+      this.octoKit.repos.getBranch({
         owner: this.owner,
         repo: this.repo,
-        ref: `heads/${this.branch}`,
-        path: '',
+        branch: this.branch,
       })
     )) // queue wrapper
-      .then(({ data: root }) => (
-        Promise.all(get.map(({ path, value }) => {
+      .then(({ data: { commit: { sha: commitSha } } }) => (
+        this.addToQueue(`git.getCommit ${commitSha}`, this.throttle, () => ( // queue wrapper
+          this.octoKit.git.getCommit({
+            owner: this.owner,
+            repo: this.repo,
+            commit_sha: commitSha,
+          })
+        )) // queue wrapper
+          .then(({ data: { tree: { sha: treeSha } } }) => (
+            this.addToQueue(`git.getTree ${treeSha}`, this.throttle, () => ( // queue wrapper
+              this.octoKit.git.getTree({
+                owner: this.owner,
+                repo: this.repo,
+                tree_sha: treeSha,
+                recursive: 1,
+              })
+            )) // queue wrapper
+              .then(({ data: { tree } }) => {
+                const settingsFile = tree.find(({ path }) => path === 'settings.json');
+                const images = this.augmentFileList('images', tree.filter(({ path }) => path.startsWith('images/')));
+                const frames = this.augmentFileList('frames', tree.filter(({ path }) => path.startsWith('frames/')));
 
-          if (!root.find(({ path: foundPath }) => foundPath === path)) {
-            return Promise.resolve({ path, value });
-          }
+                if (!settingsFile) {
+                  return {
+                    images,
+                    frames,
+                    settings: {},
+                  };
+                }
 
-          return this.addToQueue(`repos.getContent /${path}`, this.throttle, () => ( // queue wrapper
-            this.octoKit.repos.getContent({
-              owner: this.owner,
-              repo: this.repo,
-              ref: `heads/${this.branch}`,
-              path,
-            })
-          )) // queue wrapper
-            .then(({ data }) => ({
-              path,
-              value: data.type === 'file' ? JSON.parse(atob(data.content)) : data,
-            }))
-            .catch(() => ({ path, value }));
-
-        }))
-          .then((received) => ({
-            images: this.augmentFileList('images', received.find(({ path }) => path === 'images').value),
-            frames: this.augmentFileList('frames', received.find(({ path }) => path === 'frames').value),
-            settings: received.find(({ path }) => path === 'settings.json').value,
-          }))
+                return this.getFileContent(settingsFile.sha, 0, 1)
+                  .then((settingsContent) => ({
+                    images,
+                    frames,
+                    settings: JSON.parse(settingsContent),
+                  }));
+              })
+          ))
       ));
   }
 
   augmentFileList(type, files) {
     return files.map((file, index) => {
+      const name = file.path.split('/').pop();
       const augmentedFile = {
         ...file,
+        name,
         getFileContent: () => this.getFileContent(file.sha, index, files.length),
       };
 
       switch (type) {
         case 'images':
-          return Object.assign(augmentedFile, {
-            hash: file.name.substr(0, 40),
-          });
+          return {
+            ...augmentedFile,
+            hash: name.substr(0, 40),
+          };
         case 'frames':
-          return Object.assign(augmentedFile, {
-            id: file.name.match(/^[a-z]+[0-9]+/gi)[0],
-          });
+          return {
+            ...augmentedFile,
+            id: name.match(/^[a-z]+[0-9]+/gi)[0],
+          };
         default:
           return augmentedFile;
       }
