@@ -80,16 +80,19 @@ const getTransformSav = (store) => (data, filename) => {
         (baseAddress >= 0x2000) // Ignore the "Game Face" at 0x1000
       ) {
         const frameNumber = data[baseAddress + 0xfb0];
-        const transformedData = transformImage(data, baseAddress);
 
-        if (transformedData) {
-          framed.push(
-            applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames))
-              .then((lines) => ({
-                lines,
-                ...getFileMeta(baseAddress),
-              })),
-          );
+        if (data.length > baseAddress) {
+          const transformedData = transformImage(data, baseAddress);
+
+          if (transformedData) {
+            framed.push(
+              applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames))
+                .then((lines) => ({
+                  lines,
+                  ...getFileMeta(baseAddress),
+                })),
+            );
+          }
         }
       }
     }
