@@ -116,6 +116,13 @@ const definitions = [
     value: 'keep',
   },
   {
+    // if the "last seen" image from a .sav will be imported too
+    key: 'importLastSeen',
+    saveLocally: true,
+    saveExport: ['settings', 'remote'],
+    value: true,
+  },
+  {
     // visiblility of dates in gallery
     key: 'hideDates',
     saveLocally: true,
@@ -127,6 +134,14 @@ const definitions = [
     key: 'palettes',
     saveLocally: true,
     saveExport: ['palettes', 'remote'],
+    value: [],
+  },
+  {
+    // list of plugins
+    key: 'plugins',
+    saveLocally: true,
+    saveRemote: false,
+    saveExport: ['settings', 'remote'],
     value: [],
   },
   {

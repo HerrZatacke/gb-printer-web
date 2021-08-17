@@ -4,7 +4,6 @@ const editPaletteReducer = (value = {}, action) => {
       return action.payload;
     case 'PALETTE_CANCEL_EDIT':
     case 'PALETTE_UPDATE':
-    case 'CLOSE_OVERLAY':
       return {};
     default:
       return value;

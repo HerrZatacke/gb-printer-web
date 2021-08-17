@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import unique from '../../../../tools/unique';
+import { useAvailableTags } from '../../../../hooks/useAvailableTags';
 import Lightbox from '../../Lightbox';
 import FilterFormTag from './filterFormTag';
-import { FILTER_NEW, FILTER_UNTAGGED, FILTER_MONOCHROME, FILTER_RGB, FILTER_RECENT } from '../../../../consts/specialTags';
+import {
+  FILTER_NEW,
+  FILTER_UNTAGGED,
+  FILTER_MONOCHROME,
+  FILTER_RGB,
+  FILTER_RECENT,
+  FILTER_FAVOURITE,
+} from '../../../../consts/specialTags';
 
 const FilterForm = (props) => {
 
   const [activeTags, setActiveTags] = useState(props.activeTags);
+
+  const { availableTags } = useAvailableTags();
 
   useEffect(() => {
     setActiveTags(props.activeTags);
@@ -37,6 +47,11 @@ const FilterForm = (props) => {
           toggleTag={(active) => updateActiveTags(FILTER_UNTAGGED, active)}
         />
         <FilterFormTag
+          title="❤️ Favourite"
+          tagActive={activeTags.includes(FILTER_FAVOURITE)}
+          toggleTag={(active) => updateActiveTags(FILTER_FAVOURITE, active)}
+        />
+        <FilterFormTag
           title="New"
           tagActive={activeTags.includes(FILTER_NEW)}
           toggleTag={(active) => updateActiveTags(FILTER_NEW, active)}
@@ -58,18 +73,6 @@ const FilterForm = (props) => {
         />
       </ul>
       <ul
-        className="filter-form__tag-list"
-      >
-        {props.availableTags.map((tag) => (
-          <FilterFormTag
-            key={tag}
-            title={tag}
-            tagActive={activeTags.includes(tag)}
-            toggleTag={(active) => updateActiveTags(tag, active)}
-          />
-        ))}
-      </ul>
-      <ul
         className="filter-form__tag-list filter-form__tag-list--clear"
       >
         <FilterFormTag
@@ -81,13 +84,24 @@ const FilterForm = (props) => {
           }}
         />
       </ul>
+      <ul
+        className="filter-form__tag-list"
+      >
+        {availableTags.map((tag) => (
+          <FilterFormTag
+            key={tag}
+            title={tag}
+            tagActive={activeTags.includes(tag)}
+            toggleTag={(active) => updateActiveTags(tag, active)}
+          />
+        ))}
+      </ul>
     </Lightbox>
   );
 };
 
 FilterForm.propTypes = {
   visible: PropTypes.bool.isRequired,
-  availableTags: PropTypes.array.isRequired,
   activeTags: PropTypes.array.isRequired,
   setActiveTags: PropTypes.func.isRequired,
   hideFilters: PropTypes.func.isRequired,

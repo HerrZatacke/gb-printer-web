@@ -7,6 +7,7 @@ import GalleryImageButtons from '../GalleryImageButtons';
 import RGBNSelect from '../RGBNSelect';
 import { dateFormat, dateFormatReadable } from '../../defaults';
 import ImageRender from '../ImageRender';
+import { FILTER_FAVOURITE } from '../../../consts/specialTags';
 
 dayjs.extend(customParseFormat);
 
@@ -23,6 +24,7 @@ const GalleryImage = ({
   frame,
   title,
   tags,
+  isFavourite,
   hash,
   hashes,
   type,
@@ -80,15 +82,19 @@ const GalleryImage = ({
         {tags.map((tag) => (
           <li
             key={tag}
-            title={tag}
+            title={tag === FILTER_FAVOURITE ? 'Favourite' : tag}
             className="gallery-image__tag"
           >
-            {tag}
+            {tag === FILTER_FAVOURITE ? '❤️' : tag}
           </li>
         ))}
       </ul>
       {getDateSpan('gallery-image__created')}
-      <GalleryImageButtons hash={hash} buttons={['select', 'download', 'delete', 'view', 'share']} />
+      <GalleryImageButtons
+        isFavourite={isFavourite}
+        hash={hash}
+        buttons={['select', 'favourite', 'download', 'delete', 'view', 'share', 'plugins']}
+      />
     </li>
   ) : (
     <tr
@@ -131,7 +137,11 @@ const GalleryImage = ({
       </td>
 
       <td className="gallery-list-image__cell-buttons">
-        <GalleryImageButtons hash={hash} buttons={['select', 'download', 'delete', 'view']} />
+        <GalleryImageButtons
+          isFavourite={isFavourite}
+          hash={hash}
+          buttons={['select', 'favourite', 'download', 'delete', 'view', 'plugins']}
+        />
       </td>
     </tr>
   );
@@ -147,6 +157,7 @@ GalleryImage.propTypes = {
   lockFrame: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isFavourite: PropTypes.bool.isRequired,
   editImage: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['list', 'default']).isRequired,
   isSelected: PropTypes.bool.isRequired,

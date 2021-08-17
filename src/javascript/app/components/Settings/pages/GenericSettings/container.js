@@ -8,6 +8,7 @@ const mapStateToProps = (state) => ({
   savFrameTypes: state.savFrameTypes,
   savFrameGroups: getFrameGroups(state.frames),
   handleExportFrame: state.handleExportFrame,
+  importLastSeen: state.importLastSeen,
   hideDates: state.hideDates,
   printerUrl: state.printerUrl,
   printerParams: state.printerParams,
@@ -24,6 +25,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'SET_HANDLE_EXPORT_FRAME',
       payload: handleExportFrame,
+    });
+  },
+  setImportLastSeen(importLastSeen) {
+    dispatch({
+      type: 'SET_IMPORT_LAST_SEEN',
+      payload: importLastSeen,
     });
   },
   setHideDates(hideDates) {

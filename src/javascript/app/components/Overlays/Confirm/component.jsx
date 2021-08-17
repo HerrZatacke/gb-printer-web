@@ -21,7 +21,6 @@ const Confirm = ({
       confirm={notComplete ? null : () => confirm(values)}
       deny={deny}
       header={message}
-      focusConfirm={!questions.length}
     >
       {
         questions.map(({ label, key, type, options, disabled = false }) => {

@@ -1,4 +1,6 @@
 import uniqueBy from '../../../tools/unique/by';
+import unique from '../../../tools/unique';
+import { FILTER_FAVOURITE } from '../../../consts/specialTags';
 
 const imagesReducer = (value = [], action) => {
   switch (action.type) {
@@ -13,6 +15,17 @@ const imagesReducer = (value = [], action) => {
         (image.hash === action.payload.hash) ? {
           ...image,
           ...action.payload,
+        } : image
+      ));
+    case 'IMAGE_FAVOURITE_TAG':
+      return value.map((image) => (
+        (image.hash === action.payload.hash) ? {
+          ...image,
+          tags: unique(
+            action.payload.isFavourite ?
+              [FILTER_FAVOURITE, ...image.tags] :
+              image.tags.filter((tag) => tag !== FILTER_FAVOURITE),
+          ),
         } : image
       ));
     case 'UPDATE_IMAGES_BATCH':

@@ -24,6 +24,7 @@
     }
 
     &--checked,
+    &--favourite,
     &:hover {
       .tick {
         opacity: 1;
@@ -33,6 +34,10 @@
     &--checked {
       @include theme-color($color-tertiary-bright, $color-tertiary-bright);
       @include theme-background-color($color-tertiary, $color-tertiary);
+    }
+
+    &--favourite {
+      @include theme-background-color($color-favourite-bg, $color-favourite-bg);
     }
 
     &:hover {

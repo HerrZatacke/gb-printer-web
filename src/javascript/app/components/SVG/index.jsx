@@ -27,6 +27,24 @@ const SVG = (props) => {
           <path d="M13 5v10h-1V5zM7 5v10H6V5zm4 0v10h-1V5zM9 5v10H8V5zM4 3v2h1v12h9V5h1V3h-4V2H8v1z" />
         </svg>
       );
+    case 'loading':
+      return (
+        <svg className={className} viewBox="0 0 20 20">
+          <path d="M10 2 4 5l6 3V6c3.15 0 4.911 3.369 3.535 5.89l1.8.881C17.337 8.996 14.7 4 10 4zm-.001 16 6-3-6-3v2c-3.15 0-4.911-3.369-3.535-5.89l-1.8-.881C2.662 11.004 5.299 16 9.999 16z" />
+        </svg>
+      );
+    case 'warn':
+      return (
+        <svg className={className} viewBox="0 0 20 20">
+          <path d="M10.75 16v-1.5h-1.5V16zm0-3V6h-1.5v7zM2 17c.192-.312 8-14 8-14l8 14z" />
+        </svg>
+      );
+    case 'arrowdown':
+      return (
+        <svg className={className} viewBox="0 0 20 20">
+          <path d="m3 5 7 10 7-10z" />
+        </svg>
+      );
     case 'plug':
       return (
         <svg className={className} viewBox="0 0 20 20">

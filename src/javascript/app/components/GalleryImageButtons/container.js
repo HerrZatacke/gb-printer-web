@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state, { hash }) => ({
   isSelected: state.imageSelection.includes(hash),
   canShare: state.canShare,
+  hasPlugins: !!state.plugins.length,
+  hash,
 });
 
 const mapDispatchToProps = (dispatch, { hash, buttons, title }) => ({
@@ -61,6 +63,15 @@ const mapDispatchToProps = (dispatch, { hash, buttons, title }) => ({
     dispatch({
       type: 'SET_LIGHTBOX_IMAGE_HASH',
       payload: hash,
+    });
+  } : null,
+  updateFavouriteTag: buttons.includes('favourite') ? (isFavourite) => {
+    dispatch({
+      type: 'IMAGE_FAVOURITE_TAG',
+      payload: {
+        hash,
+        isFavourite,
+      },
     });
   } : null,
 });

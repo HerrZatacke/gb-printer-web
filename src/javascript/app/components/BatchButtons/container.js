@@ -7,7 +7,8 @@ const mapStateToProps = (state, { page }) => {
   const hasSelected = !!images.find(({ hash }) => state.imageSelection.includes(hash));
 
   return ({
-    enabled: state.imageSelection.length > 1,
+    hasPlugins: !!state.plugins.length,
+    batchEnabled: state.imageSelection.length > 1,
     activeFilters: state.filtersActiveTags.length || 0,
     selectedImages: state.imageSelection.length,
     hasSelected,

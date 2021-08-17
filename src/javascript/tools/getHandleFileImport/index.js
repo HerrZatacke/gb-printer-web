@@ -122,18 +122,12 @@ const getHandleFileImport = (store) => {
           ));
       }
 
-      // .sav files are always exactly 128kB
-      if (file.size === 131072) {
+      // .sav files are always exactly 128kB, but we allow any multiple of 4kB
+      if (file.name.toLowerCase().endsWith('.sav') && file.size % 0x1000 === 0) {
         return readFileAs(file, 'arrayBuffer')
           .catch(onError)
           .then((data) => (
             transformSav(data, file.name)
-          ))
-          .then((imagesLines) => (
-            imagesLines.map((lines) => ({
-              lines,
-              filename: file.name,
-            }))
           ));
       }
 
@@ -163,7 +157,6 @@ const getHandleFileImport = (store) => {
       });
       return Promise.resolve([]);
     });
-
 
     Promise.all(groupImports)
       .then((imported) => {

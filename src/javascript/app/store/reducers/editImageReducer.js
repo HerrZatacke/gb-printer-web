@@ -7,7 +7,6 @@ const editImageReducer = (value = null, action) => {
     case 'CANCEL_EDIT_IMAGE':
     case 'UPDATE_IMAGE':
     case 'UPDATE_IMAGES_BATCH':
-    case 'CLOSE_OVERLAY':
     case 'GLOBAL_UPDATE':
       return null;
     default:

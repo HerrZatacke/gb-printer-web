@@ -1,21 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
+import InputNewTag from './InputNewTag';
 import unique from '../../../tools/unique';
+import { FILTER_FAVOURITE } from '../../../consts/specialTags';
 
 const TagsSelect = (props) => {
-
-  const [newTag, setNewTag] = useState('');
-
-  const addNewTag = (tag) => {
-    if (!tag) {
-      return;
-    }
-
-    props.updateTags('add', tag);
-    setNewTag('');
-  };
 
   const tags = unique([...props.tags.initial, ...props.tags.add]);
 
@@ -32,13 +23,11 @@ const TagsSelect = (props) => {
             }
             key={tag}
           >
-            <button
-              type="button"
-              className="tags-select__button tags-select__button--add"
-              onClick={() => props.updateTags('add', tag)}
+            <span
+              className="tags-select__tag-name"
             >
-              <SVG name="add" />
-            </button>
+              {tag === FILTER_FAVOURITE ? '❤️' : tag}
+            </span>
             <button
               type="button"
               className="tags-select__button tags-select__button--remove"
@@ -46,39 +35,20 @@ const TagsSelect = (props) => {
             >
               <SVG name="remove" />
             </button>
-            <span
-              className="tags-select__tag-name"
+            <button
+              type="button"
+              className="tags-select__button tags-select__button--add"
+              onClick={() => props.updateTags('add', tag)}
             >
-              {tag}
-            </span>
+              <SVG name="add" />
+            </button>
           </li>
         ))
       }
-      <li
-        className="tags-select__tag tags-select__tag--input"
-      >
-        <input
-          type="text"
-          className="tags-select__tag-name"
-          onChange={({ target: { value } }) => {
-            setNewTag(value);
-          }}
-          onBlur={({ target: { value } }) => {
-            addNewTag(value);
-          }}
-          onKeyUp={(ev) => {
-            switch (ev.key) {
-              case 'Tab':
-              case 'Enter':
-                addNewTag(ev.target.value);
-                break;
-              default:
-                break;
-            }
-          }}
-          value={newTag}
-        />
-      </li>
+      <InputNewTag
+        updateTags={props.updateTags}
+        selectedTags={tags}
+      />
     </ul>
   );
 };

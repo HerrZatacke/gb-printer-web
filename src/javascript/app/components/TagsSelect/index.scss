@@ -5,13 +5,22 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   margin: 0 -$spacing;
+  margin-top: 5px;
+
+  @media (max-width: $breakpoint-mobile) {
+    .is-touch & {
+      transform: scale(1.5);
+      width: 68.2%;
+      transform-origin: top left;
+    }
+  }
 
   &__tag {
     line-height: 16px;
     @include theme-background-color($color-grey-70, $color-grey-20);
     @include theme-color($color-black, $color-text-bright);
     margin: 0 $spacing 10px;
-    padding: 5px 15px 5px 55px;
+    padding: 5px 60px 5px 15px;
     height: 30px;
     border-radius: 15px;
     position: relative;
@@ -19,6 +28,9 @@
 
     &--input {
       padding: 5px 15px;
+      width: 85%;
+      display: flex;
+      flex-wrap: wrap;
     }
   }
 
@@ -27,8 +39,12 @@
     outline: none;
     @include theme-background-color($color-grey-80, $color-grey-30);
     @include theme-color($color-black, $color-text-bright);
-    width: 100px;
+    width: calc(100% - 24px);
     border-radius: $default-border-radius-small;
+
+    .is-touch & {
+      width: calc(100% - 40px);
+    }
   }
 
   &__tag--add {
@@ -58,19 +74,65 @@
   }
 
   &__button--add {
-    left: 3px;
+    right: 3px;
     @include theme-background-color($color-button-green, $color-button-green-dark);
   }
 
   &__button--remove {
-    left: 28px;
+    right: 30px;
     @include theme-background-color($color-button-red, $color-button-red-dark);
+  }
+
+  &__button--only-touch {
+    .no-touch & {
+      display: none;
+    }
   }
 
   &__tag-name {
     display: block;
     height: 20px;
     line-height: 20px;
+  }
 
+  &__combo-box-list {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    @include theme-background-color($color-grey-90, $color-grey-30);
+    margin-top: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+
+    &--open {
+      display: flex;
+    }
+  }
+
+  &__combo-box-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    @include theme-color($color-text, $color-text-bright);
+
+    &--selected {
+      @include theme-background-color($color-primary-bright, $color-primary);
+    }
+  }
+
+  &__combo-box-toggle-button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    padding: 3px;
+    margin-left: 4px;
+    fill: currentColor;
+    border-radius: $default-border-radius-small;
+    @include theme-background-color($color-grey-60, $color-grey-40);
+    @include theme-color($color-text, $color-text-bright);
+
+    &:hover {
+      @include theme-background-color($color-grey-80, $color-grey-60);
+    }
   }
 }

@@ -25,6 +25,10 @@ const dropboxStorage = (store) => {
             action.payload.storageType === 'dropbox' ||
             action.payload.storageType === 'dropboximages'
           )
+        ) ||
+        (
+          dropboxStorageData.use &&
+          action.type === 'TRY_RECOVER_IMAGE_DATA'
         )
       ) {
         if (!middleware) {

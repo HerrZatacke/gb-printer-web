@@ -8,7 +8,6 @@
   border-radius: $default-border-radius;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   box-sizing: content-box;
 
   .gallery--1x & {
@@ -60,23 +59,16 @@
     position: absolute;
     left: -5px;
     height: auto;
+    top: 5px;
 
     body.no-touch & {
       display: none;
     }
   }
 
-  .gallery-image-buttons {
-    top: 5px;
-  }
-
-  //.rgbn-select {
-  //  bottom: 0;
-  //}
-
   //&:hover .rgbn-select,
   body.no-touch &:hover .gallery-image-buttons {
-    display: block;
+    display: flex;
   }
 
   // easy way for a parent with justify-content: space-between; to still align last row left.
@@ -94,6 +86,8 @@
     display: flex;
     flex-wrap: wrap;
     margin: 5px -3px 0 -3px;
+    flex-grow: 1;
+    align-content: flex-start;
   }
 
   &__tag {

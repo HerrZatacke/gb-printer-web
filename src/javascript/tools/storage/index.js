@@ -27,7 +27,7 @@ const save = (lines) => (
     ))
 );
 
-const load = (dataHash, frame, noDummy) => {
+const load = (dataHash, frame, noDummy, recover = false) => {
   if (!dataHash) {
     return Promise.resolve(null);
   }
@@ -40,9 +40,15 @@ const load = (dataHash, frame, noDummy) => {
             const inflated = pako.inflate(binary, { to: 'string' });
             return inflated.split('\n');
           })
-          .catch(() => (
-            noDummy ? [] : dummyImage(dataHash)
-          ))
+          .catch(() => {
+            if (typeof recover === 'function') {
+              // Recovery function is only used by <ImageRender> component
+              // it dispatches so that data might get re-loaded from sync storage
+              recover(dataHash);
+            }
+
+            return noDummy ? [] : dummyImage(dataHash);
+          })
       ))
   ).then((tiles) => {
     if (!frame) {

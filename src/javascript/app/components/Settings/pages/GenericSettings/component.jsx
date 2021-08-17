@@ -135,6 +135,34 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.importLastSeen,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Import ‘last seen’ image when importing Cartridge dumps"
+        >
+          Import &lsquo;last seen&rsquo; image when importing Cartridge dumps
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={props.importLastSeen}
+            onChange={({ target }) => {
+              props.setImportLastSeen(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
+
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
             'checkgroup--checked': props.hideDates,
           })
         }
@@ -235,6 +263,8 @@ GenericSettings.propTypes = {
   setPageSize: PropTypes.func.isRequired,
   setHandleExportFrame: PropTypes.func.isRequired,
   handleExportFrame: PropTypes.string.isRequired,
+  setImportLastSeen: PropTypes.func.isRequired,
+  importLastSeen: PropTypes.bool.isRequired,
   setHideDates: PropTypes.func.isRequired,
   hideDates: PropTypes.bool.isRequired,
   printerUrl: PropTypes.string.isRequired,

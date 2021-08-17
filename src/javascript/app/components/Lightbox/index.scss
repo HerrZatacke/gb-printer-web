@@ -57,9 +57,16 @@
     position: relative;
     max-height: calc(100% - 50px);
     height: calc(100% - 50px);
-    padding-bottom: 15px;
+    padding: 0 0 15px 0;
     z-index: $z-index-overlay-content;
     -ms-overflow-style: none;
+
+    // for <dialog> tag
+    width: 100%;
+    display: block;
+    background: none;
+    color: inherit;
+    border: none;
 
     &::-webkit-scrollbar {
       display: none;

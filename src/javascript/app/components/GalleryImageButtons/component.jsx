@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import SVG from '../SVG';
+import PluginSelect from '../PluginSelect';
 
 dayjs.extend(customParseFormat);
 
@@ -65,6 +66,16 @@ const GalleryImageButtons = (props) => (
         <SVG name="save" />
       </button>
     ) : null }
+    { props.hasPlugins ? (
+      <PluginSelect hash={props.hash}>
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+        >
+          <SVG name="plug" />
+        </button>
+      </PluginSelect>
+    ) : null }
     { props.shareImage && props.canShare ? (
       <button
         type="button"
@@ -72,6 +83,20 @@ const GalleryImageButtons = (props) => (
         onClick={props.shareImage}
       >
         <SVG name="share" />
+      </button>
+    ) : null }
+    { props.updateFavouriteTag ? (
+      <button
+        type="button"
+        className={
+          classnames('gallery-image-buttons__button', {
+            'gallery-image-buttons__button--unchecked': !props.isFavourite,
+            'gallery-image-buttons__button--favourite': props.isFavourite,
+          })
+        }
+        onClick={() => props.updateFavouriteTag(!props.isFavourite)}
+      >
+        { props.isFavourite ? '❤️' : '❤'}
       </button>
     ) : null }
   </div>
@@ -82,10 +107,14 @@ GalleryImageButtons.propTypes = {
   deleteImage: PropTypes.func,
   setLightboxImage: PropTypes.func,
   isSelected: PropTypes.bool.isRequired,
+  isFavourite: PropTypes.bool.isRequired,
   saveRGBNImage: PropTypes.func,
   shareImage: PropTypes.func,
   startDownload: PropTypes.func,
   updateImageToSelection: PropTypes.func,
+  updateFavouriteTag: PropTypes.func,
+  hasPlugins: PropTypes.bool.isRequired,
+  hash: PropTypes.string.isRequired,
 };
 
 GalleryImageButtons.defaultProps = {
@@ -95,6 +124,7 @@ GalleryImageButtons.defaultProps = {
   shareImage: null,
   startDownload: null,
   updateImageToSelection: null,
+  updateFavouriteTag: null,
 };
 
 export default GalleryImageButtons;

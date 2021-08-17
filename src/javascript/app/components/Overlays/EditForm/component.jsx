@@ -88,7 +88,7 @@ const EditForm = (props) => {
       </label>
       {
         !props.batch ? null : (
-          <span className="edit-image__title-hint">Use %n to add an index to the image titles</span>
+          <span className="edit-image__title-hint">Use %n (or %nn, %nnn, ...) to add an index to the image titles</span>
         )
       }
       <ImageRender

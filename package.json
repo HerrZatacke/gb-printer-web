@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.16.12",
+  "version": "1.20.1",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
@@ -15,6 +15,10 @@
   },
   "author": "Herr Zatacke",
   "license": "MIT",
+  "respository": {
+    "type": "git",
+    "url": "https://github.com/HerrZatacke/gb-printer-web.git"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",
@@ -32,6 +36,7 @@
     "core-js": "^3.13.1",
     "css-loader": "^5.2.6",
     "dayjs": "^1.10.4",
+    "downshift": "^6.1.3",
     "dropbox": "^9.8.6",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -45,7 +50,7 @@
     "file-saver": "^2.0.2",
     "filesize": "^6.1.0",
     "flatten": "^1.0.3",
-    "gb-palettes": "^1.0.7",
+    "gb-palettes": "^1.0.8",
     "gbp-decode": "^1.0.8",
     "github-markdown-css": "^4.0.0",
     "html-webpack-plugin": "^5.3.1",

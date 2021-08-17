@@ -64,7 +64,11 @@ const batch = (store) => (next) => (action) => {
                   break;
                 }
 
-                updates.title = editedUpdates.title.replace(/%n/gi, selectionIndex + 1);
+                updates.title = editedUpdates.title.replace(/%(n+)/gi, (_, group) => (
+                  (selectionIndex + 1)
+                    .toString(10)
+                    .padStart(group.length, '0')
+                ));
                 break;
 
               case 'created':
