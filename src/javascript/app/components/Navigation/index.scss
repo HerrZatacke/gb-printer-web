@@ -66,6 +66,10 @@
     &--right {
       margin-left: auto;
     }
+
+    &--right + &--right {
+      margin-left: 0;
+    }
   }
 
   &__queuesize {

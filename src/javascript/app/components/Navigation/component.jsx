@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
+import ConnectUSBSerial from '../ConnectUSBSerial';
+import ConnectWebSerial from '../ConnectWebSerial';
 import ThemeToggle from '../ThemeToggle';
 
 const Navigation = (props) => {
@@ -96,6 +98,12 @@ const Navigation = (props) => {
           <ThemeToggle
             closeNavigation={() => setMobileNavOpen(false)}
           />
+        </li>
+        <li className="navigation__entry navigation__entry--right">
+          <ConnectUSBSerial />
+        </li>
+        <li className="navigation__entry navigation__entry--right">
+          <ConnectWebSerial />
         </li>
       </ul>
     </nav>

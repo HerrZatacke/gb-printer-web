@@ -11,7 +11,7 @@ const useWebserial = () => {
   const openWebSerial = () => {
     navigator.serial.requestPort()
       .then((port) => (
-        port.open({ baudRate: 9600 })
+        port.open({ baudRate: 38400 })
           .then(() => {
             const textDecoder = new window.TextDecoderStream();
             port.readable.pipeTo(textDecoder.writable);
