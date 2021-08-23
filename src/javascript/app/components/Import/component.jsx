@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ConnectPrinter from '../ConnectPrinter';
 import Input from '../Input';
-import useWebserial from './useWebSerial';
 
 const Import = ({
   importPlainText,
@@ -10,35 +9,20 @@ const Import = ({
   printerUrl,
   exportJson,
 }) => {
-  // const [text, setText] = useState('');
+  const [text, setText] = useState('');
 
-  // useEffect(() => {
-  //   import(/* webpackChunkName: "dmy" */ './dummy')
-  //     .then(({ default: dummyContent }) => {
-  //       setText(dummyContent.join('\n'));
-  //     });
-  // }, []);
-
-  const { webSerialEnabled, openWebSerial, receivedData } = useWebserial();
+  useEffect(() => {
+    import(/* webpackChunkName: "dmy" */ './dummy')
+      .then(({ default: dummyContent }) => {
+        setText(dummyContent.join('\n'));
+      });
+  }, []);
 
   return (
     <div className="import">
 
       {printerUrl && (
         <ConnectPrinter />
-      )}
-
-      {webSerialEnabled && (
-        <div className="inputgroup buttongroup">
-          <button
-            id="web-serial"
-            className="button"
-            type="button"
-            onClick={openWebSerial}
-          >
-            Connect to serial device
-          </button>
-        </div>
       )}
 
       <Input
@@ -59,18 +43,17 @@ const Import = ({
         <textarea
           id="import-plaintext"
           className="import__data"
-          // value={text}
-          value={receivedData}
-          // onChange={({ target }) => {
-          //   setText(target.value);
-          // }}
+          value={text}
+          onChange={({ target }) => {
+            setText(target.value);
+          }}
         />
         <button
           className="button button--label"
           type="button"
           onClick={() => {
-            importPlainText(receivedData);
-            // importPlainText(text);
+            // importPlainText(receivedData);
+            importPlainText(text);
           }}
         >
           Import
