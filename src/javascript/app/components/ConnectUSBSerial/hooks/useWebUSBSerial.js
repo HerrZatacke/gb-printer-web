@@ -1,11 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
-import webUSBSerial from '../../../../tools/webUSBSerial';
+import WebUSBSerial from '../../../../tools/WebUSBSerial';
 import useImportPlainText from '../../../../hooks/useImportPlainText';
 
-window.webUSBSerial = webUSBSerial;
-
 const useWebUSBSerial = () => {
-  const webUSBEnabled = webUSBSerial.enabled;
+  const webUSBEnabled = WebUSBSerial.enabled;
 
   const importPlainText = useImportPlainText();
 
@@ -29,25 +27,25 @@ const useWebUSBSerial = () => {
       receivedData.current = `${receivedData.current}${data}`;
     };
 
-    setActivePorts(webUSBSerial.getActivePorts());
-    webUSBSerial.addListener('activePortsChange', setActivePorts);
-    webUSBSerial.addListener('data', handleReceivedData);
+    setActivePorts(WebUSBSerial.getActivePorts());
+    WebUSBSerial.addListener('activePortsChange', setActivePorts);
+    WebUSBSerial.addListener('data', handleReceivedData);
 
     return () => {
-      webUSBSerial.removeListener('activePortsChange', setActivePorts);
-      webUSBSerial.removeListener('data', handleReceivedData);
+      WebUSBSerial.removeListener('activePortsChange', setActivePorts);
+      WebUSBSerial.removeListener('data', handleReceivedData);
     };
   }, [importPlainText]);
 
   const openWebUSBSerial = () => {
-    webUSBSerial.requestPort();
+    WebUSBSerial.requestPort();
   };
 
   return {
-    isReceiving,
     activePorts: activePorts.map(({ productName }) => productName),
     webUSBEnabled,
     openWebUSBSerial,
+    isReceiving,
   };
 };
 
