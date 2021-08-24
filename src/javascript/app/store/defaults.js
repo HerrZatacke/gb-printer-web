@@ -187,6 +187,12 @@ const definitions = [
       path: '',
     },
   },
+  {
+    key: 'useSerials',
+    saveLocally: true,
+    saveExport: [],
+    value: false,
+  },
 ];
 
 const defaults = {};

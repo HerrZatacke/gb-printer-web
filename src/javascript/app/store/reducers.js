@@ -39,6 +39,7 @@ import sortBy from './reducers/sortByReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import syncBusy from './reducers/syncBusyReducer';
 import syncSelect from './reducers/syncSelectReducer';
+import useSerials from './reducers/useSerialsReducer';
 import videoParams from './reducers/videoParamsReducer';
 import windowDimensions from './reducers/windowDimensionsReducer';
 
@@ -83,6 +84,7 @@ export default combineReducers({
   sortOptionsVisible,
   syncBusy,
   syncSelect,
+  useSerials,
   videoParams,
   windowDimensions,
 });

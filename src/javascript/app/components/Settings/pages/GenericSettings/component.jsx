@@ -188,6 +188,39 @@ const GenericSettings = (props) => {
         </span>
       </label>
 
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.useSerials,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Hide dates in gallery"
+        >
+          Enable WebUSB / Serial ports
+          <span
+            className="inputgroup__note inputgroup__note--warn"
+          >
+            This is currently an experimental feature
+          </span>
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={props.useSerials}
+            onChange={({ target }) => {
+              props.setUseSerials(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
+
       {(getEnv().env === 'esp8266') ? null : (
         <Input
           id="settings-printer-url"
@@ -271,6 +304,8 @@ GenericSettings.propTypes = {
   updatePrinterUrl: PropTypes.func.isRequired,
   printerParams: PropTypes.string.isRequired,
   updatePrinterParams: PropTypes.func.isRequired,
+  useSerials: PropTypes.bool.isRequired,
+  setUseSerials: PropTypes.func.isRequired,
 };
 
 GenericSettings.defaultProps = {};

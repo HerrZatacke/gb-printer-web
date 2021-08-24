@@ -12,6 +12,7 @@ const mapStateToProps = (state) => ({
   hideDates: state.hideDates,
   printerUrl: state.printerUrl,
   printerParams: state.printerParams,
+  useSerials: state.useSerials,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -73,6 +74,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: 'SET_PRINTER_PARAMS',
       payload: printerParams,
+    });
+  },
+  setUseSerials(useSerials) {
+    dispatch({
+      type: 'USE_SERIALS',
+      payload: useSerials,
     });
   },
 });

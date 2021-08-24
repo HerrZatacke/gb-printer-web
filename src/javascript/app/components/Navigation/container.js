@@ -13,6 +13,7 @@ const mapStateToProps = (state) => ({
       state.gitStorage.token
     )
   ),
+  useSerials: state.useSerials,
 });
 
 const mapDispatchToProps = (dispatch) => ({

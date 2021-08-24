@@ -98,9 +98,11 @@ const Navigation = (props) => {
             closeNavigation={() => setMobileNavOpen(false)}
           />
         </li>
-        <li className="navigation__entry navigation__entry--right">
-          <ConnectSerial />
-        </li>
+        { props.useSerials ? (
+          <li className="navigation__entry navigation__entry--right">
+            <ConnectSerial />
+          </li>
+        ) : null}
       </ul>
     </nav>
   );
@@ -110,6 +112,7 @@ Navigation.propTypes = {
   selectSync: PropTypes.func.isRequired,
   useSync: PropTypes.bool.isRequired,
   syncBusy: PropTypes.bool.isRequired,
+  useSerials: PropTypes.bool.isRequired,
 };
 
 Navigation.defaultProps = {};
