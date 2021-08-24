@@ -1,10 +1,10 @@
 @keyframes blink {
   0% {
-    @include theme-color($color-strong-red, $color-strong-red)
+    @include theme-color($color-strong-red, $color-strong-red);
   }
 
   49% {
-    @include theme-color($color-strong-red, $color-strong-red)
+    @include theme-color($color-strong-red, $color-strong-red);
   }
 
   50% {
@@ -16,7 +16,7 @@
   }
 
   100% {
-    @include theme-color($color-strong-red, $color-strong-red)
+    @include theme-color($color-strong-red, $color-strong-red);
   }
 }
 
