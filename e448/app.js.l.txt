@@ -1,0 +1,4 @@
+/*!
+  Port function taken from here
+  https://github.com/webusb/arduino/blob/gh-pages/demos/serial.js
+ */
