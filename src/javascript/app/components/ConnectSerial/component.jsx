@@ -50,14 +50,15 @@ const ConnectSerial = () => {
           <button
             type="button"
             className={classnames('connect-usb-serial-overlay__button button', {
-              'connect-usb-serial--is-receiving': usbSerialIsReceiving,
-              'connect-usb-serial--disabled': !webUSBEnabled,
+              'connect-usb-serial-overlay__button--is-receiving': usbSerialIsReceiving,
+              'connect-usb-serial-overlay__button--disabled': !webUSBEnabled,
             })}
             title={title}
             onClick={openWebUSBSerial}
-            disabled={!webUSBEnabled}
+            disabled={!webUSBEnabled || usbSerialIsReceiving}
           >
             Open WebUSB device
+            {usbSerialIsReceiving ? ' (receiving)' : null}
           </button>
           <div
             className="connect-usb-serial-overlay__info connect-usb-serial-overlay__info--spaced"
@@ -72,9 +73,10 @@ const ConnectSerial = () => {
             })}
             title={title}
             onClick={openWebSerial}
-            disabled={!webSerialEnabled}
+            disabled={!webSerialEnabled || webSerialIsReceiving}
           >
             Open Web Serial device
+            {webSerialIsReceiving ? ' (receiving)' : null}
           </button>
           <div
             className="connect-usb-serial-overlay__info"
