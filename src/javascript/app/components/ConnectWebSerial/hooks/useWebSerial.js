@@ -1,61 +1,88 @@
 import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import SerialPort, { baudRates } from '../../../../tools/webSerial/SerialPort';
+import useImportPlainText from '../../../../hooks/useImportPlainText';
 
 const useWebserial = () => {
   const webSerialEnabled = !!navigator.serial && !!window.TextDecoderStream;
-  const reader = useRef(null);
-  const received = useRef('');
-  const pollTimeout = useRef(null);
-  const completedTimeout = useRef(null);
-  const [receivedData, setReceivedData] = useState('');
+
+  const dispatch = useDispatch();
+  const importPlainText = useImportPlainText();
+
+  const [isConnected, setIsConnected] = useState(false);
+  const [isReceiving, setIsReceiving] = useState(false);
+
+  const receivedData = useRef('');
+  const receiveTimeOut = useRef(null);
 
   const openWebSerial = () => {
     navigator.serial.requestPort()
-      .then((port) => (
-        port.open({ baudRate: 38400 })
-          .then(() => {
-            const textDecoder = new window.TextDecoderStream();
-            port.readable.pipeTo(textDecoder.writable);
-            reader.current = textDecoder.readable.getReader();
-          })
-      ));
+      .then((device) => {
 
-    window.clearTimeout(pollTimeout.current);
-    pollTimeout.current = window.setInterval(() => {
-      if (reader?.current?.read) {
-        reader.current.read()
-          .then(({ value, done }) => {
-            if (done) {
-              reader.releaseLock();
-              // setReceivedData(received.current);
-              // received.current = '';
-              return;
-            }
+        const handleReceivedData = (data) => {
+          window.clearTimeout(receiveTimeOut.current);
+          receiveTimeOut.current = window.setTimeout(() => {
+            setIsReceiving(false);
+            importPlainText(receivedData.current);
+            receivedData.current = '';
+          }, 1000);
 
-            if (!value.length) {
-              return;
-            }
+          setIsReceiving(true);
 
-            received.current += value;
-            // eslint-disable-next-line no-console
-            console.log(received.current.length);
+          receivedData.current = `${receivedData.current}${data}`;
+        };
 
-            window.clearTimeout(completedTimeout.current);
-            completedTimeout.current = window.setTimeout(() => {
-              // eslint-disable-next-line no-console
-              console.log('complete');
-              setReceivedData(received.current);
-              received.current = '';
-            }, 800);
+        dispatch({
+          type: 'CONFIRM_ASK',
+          payload: {
+            message: 'Nothing found to import',
+            questions: () => ([
+              {
+                label: 'Baudrate',
+                key: 'baudRate',
+                type: 'select',
+                options: baudRates.map((rate) => ({
+                  value: rate.toString(10),
+                  name: rate.toString(10),
+                  selected: rate === 38400,
+                })),
+              },
+            ]),
+            confirm: ({ baudRate }) => {
+              dispatch({
+                type: 'CONFIRM_ANSWERED',
+              });
 
-          });
-      }
-    }, 5);
+              const port = new SerialPort({ device, baudRate });
+
+              port.addListener('data', handleReceivedData);
+
+              port.addListener('error', (error) => {
+                console.warn(error);
+                setIsConnected(false);
+                setIsReceiving(false);
+                receivedData.current = '';
+              });
+
+              port.connect()
+                .then(() => {
+                  receivedData.current = '';
+                  setIsConnected(true);
+                });
+
+            },
+          },
+        });
+
+      });
+
   };
 
   return {
     webSerialEnabled,
     openWebSerial,
-    receivedData,
+    isConnected,
+    isReceiving,
   };
 };
 
