@@ -5,7 +5,7 @@
 
 import EventEmitter from 'events';
 
-class Port extends EventEmitter {
+class USBSerialPort extends EventEmitter {
   constructor(device) {
     super();
     this.device = device;
@@ -91,4 +91,4 @@ class Port extends EventEmitter {
   }
 }
 
-export default Port;
+export default USBSerialPort;

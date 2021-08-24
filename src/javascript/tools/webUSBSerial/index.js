@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import Port from './Port';
+import USBSerialPort from './USBSerialPort';
 
 class WebUSBSerial extends EventEmitter {
   constructor() {
@@ -18,7 +18,7 @@ class WebUSBSerial extends EventEmitter {
         devices
           .filter(({ opened }) => !opened)
           .map((device) => (
-            new Port(device)
+            new USBSerialPort(device)
           ))
       ));
   }
@@ -80,7 +80,7 @@ class WebUSBSerial extends EventEmitter {
           throw new Error('device already opened');
         }
 
-        return new Port(device);
+        return new USBSerialPort(device);
       })
       .catch(() => null /* no device selected */)
       .then((port) => {
