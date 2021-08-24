@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import SerialPort, { baudRates } from '../../../../tools/webSerial/SerialPort';
 import useImportPlainText from '../../../../hooks/useImportPlainText';
 
-const useWebserial = () => {
+const useWebSerial = () => {
   const webSerialEnabled = !!navigator.serial && !!window.TextDecoderStream;
 
   const dispatch = useDispatch();
@@ -86,4 +86,4 @@ const useWebserial = () => {
   };
 };
 
-export default useWebserial;
+export default useWebSerial;
