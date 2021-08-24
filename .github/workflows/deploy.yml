@@ -21,8 +21,15 @@ jobs:
         run: npm install
 
       - name: Create config.json
+        env:
+          CONF_JSON_FILE: ${{ secrets.configjson }}
+          CONF_JSON: ${{ secrets.CONFIG_JSON }}
+          TEST_VAR: '{"TestVar":true}'
         run: |
-          echo $CONF_JSON_FILE > config.json
+          echo $CONF_JSON_FILE
+          echo $CONF_JSON
+          echo $TESTVAR
+          echo $TESTVAR > config.json
           pwd
           ls
           cat config.json
