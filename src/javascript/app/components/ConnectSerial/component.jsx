@@ -8,7 +8,7 @@ import SVG from '../SVG';
 const ConnectSerial = () => {
   const title = 'WebUSB Serial devices';
 
-  const [showOverlay, setShowOverlay] = useState(true);
+  const [lightBoxOpen, setLightBoxOpen] = useState(false);
 
   const {
     activePorts: usbSerialActivePorts,
@@ -24,17 +24,16 @@ const ConnectSerial = () => {
     openWebSerial,
   } = useWebSerial();
 
+  const showOverlay = lightBoxOpen || usbSerialIsReceiving || webSerialIsReceiving;
+
   return (
     <>
       <button
         title={title}
         type="button"
-        className={classnames('connect-usb-serial navigation__link', {
-          'connect-usb-serial--is-receiving': usbSerialIsReceiving || webSerialIsReceiving,
-          'connect-usb-serial--disabled': !webUSBEnabled && !webSerialEnabled,
-        })}
+        className="connect-usb-serial navigation__link"
         disabled={!webUSBEnabled && !webSerialEnabled}
-        onClick={() => setShowOverlay(true)}
+        onClick={() => setLightBoxOpen(true)}
       >
         <SVG name="usb" />
         <span className="connect-usb-serial__title">
@@ -44,39 +43,44 @@ const ConnectSerial = () => {
       {!showOverlay ? null : (
         <Lightbox
           header="WebUSB / Serial devices"
-          confirm={() => setShowOverlay(false)}
+          confirm={() => setLightBoxOpen(false)}
+          canConfirm={!usbSerialIsReceiving && !webSerialIsReceiving}
+          className="connect-usb-serial-overlay"
         >
           <button
             type="button"
+            className={classnames('connect-usb-serial-overlay__button button', {
+              'connect-usb-serial--is-receiving': usbSerialIsReceiving,
+              'connect-usb-serial--disabled': !webUSBEnabled,
+            })}
             title={title}
             onClick={openWebUSBSerial}
             disabled={!webUSBEnabled}
           >
             Open WebUSB device
           </button>
-          <ul>
-            {usbSerialActivePorts.map((port, index) => (
-              <li key={index}>
-                {`${index + 1}. ${port}`}
-              </li>
-            ))}
-          </ul>
-          <hr />
+          <div
+            className="connect-usb-serial-overlay__info connect-usb-serial-overlay__info--spaced"
+          >
+            {`${usbSerialActivePorts.length} devices connected`}
+          </div>
           <button
             type="button"
+            className={classnames('connect-usb-serial-overlay__button button', {
+              'connect-usb-serial-overlay__button--is-receiving': webSerialIsReceiving,
+              'connect-usb-serial-overlay__button--disabled': !webSerialEnabled,
+            })}
             title={title}
             onClick={openWebSerial}
             disabled={!webSerialEnabled}
           >
             Open Web Serial device
           </button>
-          <ul>
-            {webSerialActivePorts.map((port, index) => (
-              <li key={index}>
-                {`${index + 1}. ${port}`}
-              </li>
-            ))}
-          </ul>
+          <div
+            className="connect-usb-serial-overlay__info"
+          >
+            {`${webSerialActivePorts.length} devices connected`}
+          </div>
         </Lightbox>
       )}
     </>

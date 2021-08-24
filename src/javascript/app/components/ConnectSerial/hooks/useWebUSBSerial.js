@@ -42,7 +42,7 @@ const useWebUSBSerial = () => {
   };
 
   return {
-    activePorts: activePorts.map(({ productName }) => productName),
+    activePorts,
     webUSBEnabled,
     openWebUSBSerial,
     isReceiving,

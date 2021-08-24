@@ -5,6 +5,9 @@ class SerialPort extends EventEmitter {
     super();
     this.device = device;
     this.baudRate = baudRate;
+    const { usbProductId, usbVendorId } = device.getInfo();
+    this.usbProductId = usbProductId;
+    this.usbVendorId = usbVendorId;
     this.reader = null;
   }
 
@@ -30,13 +33,30 @@ class SerialPort extends EventEmitter {
 
   }
 
-  disconnect() {
-    return this.device.close();
-  }
-
-  send(data) {
-    console.warn('not implemented yet', data);
-  }
+  // HOW !?!?!?
+  // disconnect() {
+  //   this.isClosing = true;
+  //
+  //   this.reader.cancel();
+  //
+  //   return this.reader.closed.then(() => {
+  //     window.requestAnimationFrame(() => {
+  //       this.reader.releaseLock();
+  //       window.requestAnimationFrame(() => {
+  //         this.device.readable.cancel();
+  //         window.requestAnimationFrame(() => {
+  //           this.device.close();
+  //           this.emit('closed');
+  //         });
+  //       });
+  //     });
+  //
+  //   });
+  // }
+  //
+  // send(data) {
+  //   console.warn('not implemented yet', data);
+  // }
 }
 
 export default SerialPort;

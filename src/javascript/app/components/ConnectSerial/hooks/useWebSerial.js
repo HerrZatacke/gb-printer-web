@@ -46,7 +46,7 @@ const useWebSerial = () => {
   };
 
   return {
-    activePorts: activePorts.map(({ productName }) => productName),
+    activePorts,
     webSerialEnabled,
     openWebSerial,
     isReceiving,
