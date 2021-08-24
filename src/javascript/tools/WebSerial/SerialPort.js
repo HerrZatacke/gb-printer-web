@@ -12,7 +12,6 @@ class SerialPort extends EventEmitter {
     const readLoop = () => {
       this.reader.read()
         .then(({ value }) => {
-
           this.emit('data', value);
           readLoop();
         })
@@ -30,8 +29,14 @@ class SerialPort extends EventEmitter {
       });
 
   }
-}
 
-export const baudRates = [2400, 4800, 9600, 19200, 28800, 38400, 57600, 76800, 115200, 230400, 460800, 576000, 921600];
+  disconnect() {
+    return this.device.close();
+  }
+
+  send(data) {
+    console.warn('not implemented yet', data);
+  }
+}
 
 export default SerialPort;

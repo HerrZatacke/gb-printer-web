@@ -9,7 +9,6 @@ const ConnectWebSerial = () => {
     webSerialEnabled,
     openWebSerial,
     isReceiving,
-    isConnected,
   } = useWebSerial();
 
   const title = 'Web Serial devices';
@@ -19,7 +18,6 @@ const ConnectWebSerial = () => {
       type="button"
       className={classnames('connect-usb-serial navigation__link', {
         'connect-usb-serial--is-receiving': isReceiving,
-        'connect-usb-serial--is-connected': isConnected,
         'connect-usb-serial--disabled': !webSerialEnabled,
       })}
       title={title}

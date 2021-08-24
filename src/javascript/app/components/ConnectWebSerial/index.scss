@@ -61,10 +61,6 @@
     animation: blink 300ms infinite linear;
   }
 
-  &--is-connected.navigation__link {
-    @include theme-color($color-button-green, $color-button-green);
-  }
-
   &--disabled {
     cursor: default;
   }

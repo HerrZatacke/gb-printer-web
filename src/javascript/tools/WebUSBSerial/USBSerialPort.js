@@ -76,7 +76,7 @@ class USBSerialPort extends EventEmitter {
   disconnect() {
     // This request sets the DTR (data terminal ready) signal low to
     // indicate to the device that the host has disconnected.
-    this.device.controlTransferOut({
+    return this.device.controlTransferOut({
       requestType: 'class',
       recipient: 'interface',
       request: 0x22,
