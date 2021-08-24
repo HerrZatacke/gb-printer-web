@@ -20,6 +20,9 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
+      - name: Create config.json
+        run: echo $CONF_JSON_FILE > config.json
+
       - name: Build
         run: npm run build
 
