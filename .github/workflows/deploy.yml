@@ -28,8 +28,8 @@ jobs:
         run: |
           echo $CONF_JSON_FILE
           echo $CONF_JSON
-          echo $TESTVAR
-          echo $TESTVAR > config.json
+          echo $TEST_VAR
+          echo $TEST_VAR > config.json
           pwd
           ls
           cat config.json
