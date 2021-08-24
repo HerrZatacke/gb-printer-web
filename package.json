@@ -57,7 +57,7 @@
     "http-proxy-middleware": "^1.0.6",
     "is-color": "^1.0.2",
     "is-css-length": "^0.2.0",
-    "jszip": "^3.4.0",
+    "jszip": "^3.7.1",
     "localforage": "^1.9.0",
     "mini-css-extract-plugin": "^1.6.0",
     "mkdirp": "^1.0.4",
