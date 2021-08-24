@@ -3,15 +3,7 @@
     @include theme-background-color($color-button-green, $color-button-green);
   }
 
-  49% {
-    @include theme-background-color($color-button-green, $color-button-green);
-  }
-
   50% {
-    @include theme-background-color($color-text-bright, $color-text-bright);
-  }
-
-  99% {
     @include theme-background-color($color-text-bright, $color-text-bright);
   }
 
@@ -66,7 +58,7 @@
     display: block;
 
     &--is-receiving.button {
-      animation: blink 300ms infinite linear;
+      animation: blink 500ms infinite linear;
     }
 
     &--disabled.button {
