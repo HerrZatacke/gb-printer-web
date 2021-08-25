@@ -1,18 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import WebSerial from '../../../../tools/WebSerial';
-import useImportPlainText from '../../../../hooks/useImportPlainText';
+import { useEffect, useState, useRef } from 'react';
+import WebUSBSerial from '../../../../../tools/WebUSBSerial';
+import useImportPlainText from '../../../../../hooks/useImportPlainText';
 
-const useWebSerial = () => {
-  const webSerialEnabled = WebSerial.enabled;
-
-  // useSelector....
-  const baudRate = 115200;
+const useWebUSBSerial = () => {
+  const webUSBEnabled = WebUSBSerial.enabled;
 
   const importPlainText = useImportPlainText();
 
   const [activePorts, setActivePorts] = useState([]);
   const [isReceiving, setIsReceiving] = useState(false);
-
   const receivedData = useRef('');
   const receiveTimeOut = useRef(null);
 
@@ -31,26 +27,26 @@ const useWebSerial = () => {
       receivedData.current = `${receivedData.current}${data}`;
     };
 
-    setActivePorts(WebSerial.getActivePorts());
-    WebSerial.addListener('activePortsChange', setActivePorts);
-    WebSerial.addListener('data', handleReceivedData);
+    setActivePorts(WebUSBSerial.getActivePorts());
+    WebUSBSerial.addListener('activePortsChange', setActivePorts);
+    WebUSBSerial.addListener('data', handleReceivedData);
 
     return () => {
-      WebSerial.removeListener('activePortsChange', setActivePorts);
-      WebSerial.removeListener('data', handleReceivedData);
+      WebUSBSerial.removeListener('activePortsChange', setActivePorts);
+      WebUSBSerial.removeListener('data', handleReceivedData);
     };
   }, [importPlainText]);
 
-  const openWebSerial = () => {
-    WebSerial.requestPort(baudRate);
+  const openWebUSBSerial = () => {
+    WebUSBSerial.requestPort();
   };
 
   return {
     activePorts,
-    webSerialEnabled,
-    openWebSerial,
+    webUSBEnabled,
+    openWebUSBSerial,
     isReceiving,
   };
 };
 
-export default useWebSerial;
+export default useWebUSBSerial;

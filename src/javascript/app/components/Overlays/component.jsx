@@ -13,6 +13,7 @@ import DragOver from './DragOver';
 import FilterForm from './FilterForm';
 import SortForm from './SortForm';
 import SyncSelect from './SyncSelect';
+import ConnectSerial from './ConnectSerial';
 
 const Overlays = ({
   showProgressLog,
@@ -28,23 +29,38 @@ const Overlays = ({
   showFilters,
   showSortForm,
   syncSelect,
-}) => (
-  <>
-    {showProgressLog ? <ProgressLogBox /> : null }
-    {showInfoBox ? <InfoBox /> : null }
-    {showProgressBox ? <ProgressBox /> : null }
-    {showConfirm ? <Confirm /> : null }
-    {showEditForm ? <EditForm /> : null }
-    {showEditPalette ? <EditPalette /> : null }
-    {showVideoForm ? <VideoParamsForm /> : null }
-    {showRGBNImage ? <RGBNImage /> : null }
-    {showLightbox ? <LightboxImage /> : null }
-    {showDragOver ? <DragOver /> : null }
-    {showFilters ? <FilterForm /> : null }
-    {showSortForm ? <SortForm /> : null }
-    {syncSelect ? <SyncSelect /> : null }
-  </>
-);
+}) => {
+  switch (true) {
+    case showProgressLog:
+      return <ProgressLogBox />;
+    case showInfoBox:
+      return <InfoBox />;
+    case showProgressBox:
+      return <ProgressBox />;
+    case showConfirm:
+      return <Confirm />;
+    case showEditForm:
+      return <EditForm />;
+    case showEditPalette:
+      return <EditPalette />;
+    case showVideoForm:
+      return <VideoParamsForm />;
+    case showRGBNImage:
+      return <RGBNImage />;
+    case showLightbox:
+      return <LightboxImage />;
+    case showDragOver:
+      return <DragOver />;
+    case showFilters:
+      return <FilterForm />;
+    case showSortForm:
+      return <SortForm />;
+    case syncSelect:
+      return <SyncSelect />;
+    default: // Default: Components which control their show/hide status themselves (e.g. through a hook)
+      return <ConnectSerial />;
+  }
+};
 
 Overlays.propTypes = {
   showProgressLog: PropTypes.bool.isRequired,
