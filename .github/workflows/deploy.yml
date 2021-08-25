@@ -2,8 +2,7 @@ name: Build 🧱 and Deploy 🛳
 
 on:
   push:
-    tags:
-      - '*'
+    branches: [ master ]
 
 jobs:
   build-and-deploy:
