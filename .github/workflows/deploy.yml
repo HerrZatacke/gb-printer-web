@@ -23,9 +23,7 @@ jobs:
       - name: Create config.json
         env:
           CONF_JSON: ${{ secrets.CONF_JSON }}
-        run: |
-          echo $CONF_JSON | base64 --decode > config.json
-          cat config.json
+        run: echo $CONF_JSON | base64 --decode > config.json
 
       - name: Build
         run: npm run build
