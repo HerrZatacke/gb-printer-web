@@ -46,5 +46,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: data_w.zip
+          body: Automatic release?
           tag_name: ${{ github.ref }}
           name: Version ${{ github.ref }}
