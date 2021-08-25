@@ -36,9 +36,16 @@ jobs:
           branch: gh-pages
           folder: dist
 
-      - name: Create release .zip
+      - name: Create data_w.zip for release
         run: |
           cd dist
           zip -r ../data_w.zip *
           cd ..
-          ls
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: data_w.zip
+          tag_name: ${{ github.ref }}
+          name: Version ${{ github.ref }}
