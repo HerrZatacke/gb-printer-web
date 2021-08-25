@@ -17,23 +17,6 @@ jobs:
         with:
           node-version: '12.x'
 
-      - name: Install npm dependencies 🔗
-        run: npm install
-
-      - name: Create config.json 📃
-        env:
-          CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
-        run: echo $CONFIG_JSON | base64 --decode > config.json
-
-      - name: Build 🧱
-        run: npm run build
-
-      - name: Create data_w.zip for release 🗄
-        run: |
-          cd release
-          zip -r ../data_w.zip *
-          cd ..
-
       - name: Add release version to environment variables 🌍
         run: |
           node -e "console.log('RELEASE_VERSION=' + require('./package.json').version)" >> $GITHUB_ENV
@@ -45,7 +28,28 @@ jobs:
           tag: ${{ env.RELEASE_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo Tag ${{ env.RELEASE_VERSION }} exists - ${{ steps.checkTag.outputs.exists }}
+        run: echo Tag ${{ env.RELEASE_VERSION }} exists - ${{ steps.checkTag.outputs.exists }}
+
+      - name: Install npm dependencies 🔗
+        if: steps.checkTag.outputs.exists == 'false'
+        run: npm install
+
+      - name: Create config.json 📃
+        if: steps.checkTag.outputs.exists == 'false'
+        env:
+          CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
+        run: echo $CONFIG_JSON | base64 --decode > config.json
+
+      - name: Build 🧱
+        if: steps.checkTag.outputs.exists == 'false'
+        run: npm run build
+
+      - name: Create data_w.zip for release 🗄
+        if: steps.checkTag.outputs.exists == 'false'
+        run: |
+          cd release
+          zip -r ../data_w.zip *
+          cd ..
 
       - name: Deploy to GitHub-Pages 🛳
         uses: JamesIves/github-pages-deploy-action@4.1.4
