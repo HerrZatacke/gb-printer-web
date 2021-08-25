@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
-import ConnectSerial from '../ConnectSerial';
 import ThemeToggle from '../ThemeToggle';
 
 const Navigation = (props) => {
@@ -100,7 +99,21 @@ const Navigation = (props) => {
         </li>
         { props.useSerials ? (
           <li className="navigation__entry navigation__entry--right">
-            <ConnectSerial />
+            <button
+              title="WebUSB Serial devices"
+              type="button"
+              className="connect-usb-serial navigation__link"
+              disabled={props.disableSerials}
+              onClick={() => {
+                setMobileNavOpen(false);
+                props.setShowSerials();
+              }}
+            >
+              <SVG name="usb" />
+              <span className="connect-usb-serial__title">
+                WebUSB Serial devices
+              </span>
+            </button>
           </li>
         ) : null}
       </ul>
@@ -113,6 +126,8 @@ Navigation.propTypes = {
   useSync: PropTypes.bool.isRequired,
   syncBusy: PropTypes.bool.isRequired,
   useSerials: PropTypes.bool.isRequired,
+  disableSerials: PropTypes.bool.isRequired,
+  setShowSerials: PropTypes.func.isRequired,
 };
 
 Navigation.defaultProps = {};
