@@ -43,7 +43,7 @@ jobs:
           cd ..
 
       - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        run: node -e "console.log('RELEASE_VERSION=' + require('./package.json').version)" >> $GITHUB_ENV
 
       - name: Release
         uses: softprops/action-gh-release@v1
