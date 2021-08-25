@@ -10,7 +10,6 @@
     "build:webpack": "webpack --config ./scripts/webpack.prod.js",
     "build:validate": "node ./scripts/validatebuild.js",
     "build:deploy": "node ./scripts/deploy.js",
-    "deploy-gh-pages": "npm i && npm run build && cd dist && git add . && git commit -m \"pages update\" && git push",
     "svgo": "svgo ./src/assets/icons/"
   },
   "author": "Herr Zatacke",
