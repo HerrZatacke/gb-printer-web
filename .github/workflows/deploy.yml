@@ -2,7 +2,9 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ master ]
+    tags:
+      - '*'
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -33,3 +35,10 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
+
+      - name: Create release .zip
+        run: |
+          cd dist
+          zip -r ../data_w.zip *
+          cd ..
+          ls
