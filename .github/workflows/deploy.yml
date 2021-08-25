@@ -28,7 +28,6 @@ jobs:
           tag: ${{ env.RELEASE_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo Tag ${{ env.RELEASE_VERSION }} exists - ${{ steps.checkTag.outputs.exists }}
 
       - name: Install npm dependencies 🔗
         if: steps.checkTag.outputs.exists == 'false'
