@@ -1,44 +1,54 @@
-name: Build and Deploy
+name: Build 🧱 and Deploy 🛳
 
 on:
   push:
     tags:
       - '*'
-  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout 💳
         uses: actions/checkout@v2.3.1
 
-      - name: Setup node 12
+      - name: Setup node 12 💻
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
 
-      - name: Install npm dependencies
+      - name: Install npm dependencies 🔗
         run: npm install
 
-      - name: Create config.json
+      - name: Create config.json 📃
         env:
-          CONF_JSON: ${{ secrets.CONF_JSON }}
-        run: echo $CONF_JSON | base64 --decode > config.json
+          CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
+        run: echo $CONFIG_JSON | base64 --decode > config.json
 
-      - name: Build
+      - name: Build 🧱
         run: npm run build
 
-      - name: Deploy
+      - name: Create data_w.zip for release 🗄
+        run: |
+          cd release
+          zip -r ../data_w.zip *
+          cd ..
+
+      - name: Add release version to environment variables 🌍
+        run: |
+          node -e "console.log('RELEASE_VERSION=' + require('./package.json').version)" >> $GITHUB_ENV
+          echo Release version is ${{ env.RELEASE_VERSION }}
+
+      - name: Deploy to GitHub-Pages 🛳
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
           folder: dist
 
-      - name: Create release .zip
-        run: |
-          cd dist
-          zip -r ../data_w.zip *
-          cd ..
-          ls
+      - name: Create Release 🎉 🥳
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.RELEASE_VERSION }}
+          name: Version ${{ env.RELEASE_VERSION }}
+          files: data_w.zip
