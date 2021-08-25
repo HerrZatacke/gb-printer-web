@@ -38,7 +38,7 @@ jobs:
 
       - name: Create data_w.zip for release
         run: |
-          cd dist
+          cd release
           zip -r ../data_w.zip *
           cd ..
 
@@ -49,6 +49,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.RELEASE_VERSION }}
-          body: Version ${{ env.RELEASE_VERSION }}
           name: Version ${{ env.RELEASE_VERSION }}
           files: data_w.zip
