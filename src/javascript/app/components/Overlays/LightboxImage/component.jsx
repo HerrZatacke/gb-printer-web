@@ -50,7 +50,7 @@ const LightboxImage = ({
     <ImageRender
       lockFrame={lockFrame}
       invertPalette={invertPalette}
-      palette={palette.palette || palette}
+      palette={palette?.palette || palette}
       frame={frame}
       frames={frames}
       hash={hash}

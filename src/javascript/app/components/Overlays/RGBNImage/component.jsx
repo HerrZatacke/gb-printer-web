@@ -26,7 +26,11 @@ const RGBNImage = ({ hashes, frames }) => (
       hash="newRGBN"
       hashes={hashes}
     />
-    <GalleryImageButtons hash="newRGBN" buttons={['saveRGBNImage']} />
+    <GalleryImageButtons
+      hash="newRGBN"
+      buttons={['saveRGBNImage']}
+      isFavourite={false}
+    />
   </div>
 );
 
