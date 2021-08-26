@@ -17,6 +17,9 @@ const useWebSerial = () => {
   const receiveTimeOut = useRef(null);
 
   useEffect(() => {
+    if (!WebSerial.enabled) {
+      return () => {};
+    }
 
     const handleReceivedData = (data) => {
       window.clearTimeout(receiveTimeOut.current);
@@ -42,7 +45,9 @@ const useWebSerial = () => {
   }, [importPlainText]);
 
   const openWebSerial = () => {
-    WebSerial.requestPort(baudRate);
+    if (WebSerial.enabled) {
+      WebSerial.requestPort(baudRate);
+    }
   };
 
   return {

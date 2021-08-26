@@ -14,6 +14,10 @@ class WebSerial extends EventEmitter {
 
   // lists existing/known ports
   getPorts() {
+    if (!this.enabled) {
+      return Promise.resolve([]);
+    }
+
     return navigator.serial.getPorts()
       .then((devices) => (
         devices
@@ -62,6 +66,10 @@ class WebSerial extends EventEmitter {
 
   // returns a list of devices
   requestPort() {
+    if (!this.enabled) {
+      return;
+    }
+
     navigator.serial.requestPort()
       .then((device) => {
         if (device.readable) { // opened devices have a ReadableStream as device.readable

@@ -13,6 +13,9 @@ const useWebUSBSerial = () => {
   const receiveTimeOut = useRef(null);
 
   useEffect(() => {
+    if (!WebUSBSerial.enabled) {
+      return () => {};
+    }
 
     const handleReceivedData = (data) => {
       window.clearTimeout(receiveTimeOut.current);
@@ -38,7 +41,9 @@ const useWebUSBSerial = () => {
   }, [importPlainText]);
 
   const openWebUSBSerial = () => {
-    WebUSBSerial.requestPort();
+    if (WebUSBSerial.enabled) {
+      WebUSBSerial.requestPort();
+    }
   };
 
   return {
