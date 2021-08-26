@@ -13,6 +13,10 @@ class WebUSBSerial extends EventEmitter {
 
   // lists existing/known ports
   getPorts() {
+    if (!this.enabled) {
+      return Promise.resolve([]);
+    }
+
     return navigator.usb.getDevices()
       .then((devices) => (
         devices
@@ -58,6 +62,10 @@ class WebUSBSerial extends EventEmitter {
 
   // returns a list of devices
   requestPort() {
+    if (!this.enabled) {
+      return;
+    }
+
     const filters = [
       { vendorId: 0x2341, productId: 0x8036 }, // Arduino Leonardo
       { vendorId: 0x2341, productId: 0x8037 }, // Arduino Micro
