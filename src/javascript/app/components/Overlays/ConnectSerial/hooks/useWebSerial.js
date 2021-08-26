@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import WebSerial from '../../../../../tools/WebSerial';
 import useImportPlainText from '../../../../../hooks/useImportPlainText';
 
-const useWebSerial = () => {
+const useWebSerial = (passive) => {
   const webSerialEnabled = WebSerial.enabled;
 
   // useSelector....
@@ -36,13 +36,16 @@ const useWebSerial = () => {
 
     setActivePorts(WebSerial.getActivePorts());
     WebSerial.addListener('activePortsChange', setActivePorts);
-    WebSerial.addListener('data', handleReceivedData);
+
+    if (!passive) {
+      WebSerial.addListener('data', handleReceivedData);
+    }
 
     return () => {
       WebSerial.removeListener('activePortsChange', setActivePorts);
       WebSerial.removeListener('data', handleReceivedData);
     };
-  }, [importPlainText]);
+  }, [importPlainText, passive]);
 
   const openWebSerial = () => {
     if (WebSerial.enabled) {

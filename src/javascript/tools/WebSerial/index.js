@@ -58,7 +58,8 @@ class WebSerial extends EventEmitter {
                 .then(() => {
                   this.activePorts.push(port);
                   this.emit('activePortsChange', [...this.activePorts]);
-                });
+                })
+                .catch(() => { /* silence! */ });
             });
         });
     }, 1000);

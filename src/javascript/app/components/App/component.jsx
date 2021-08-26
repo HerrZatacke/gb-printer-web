@@ -8,6 +8,7 @@ import Import from '../Import';
 import Palettes from '../Palettes';
 import Settings from '../Settings';
 import Overlays from '../Overlays';
+import WebUSBGreeting from '../WebUSBGreeting';
 import GalleryIntroText from './galleryInroText';
 import getValidPageIndex from '../../../tools/getValidPageIndex';
 import { getEnv } from '../../../tools/getEnv';
@@ -77,6 +78,9 @@ const App = (props) => {
           <Route path="/import">
             <h1 className="app__content-headline">Import</h1>
             <Import />
+          </Route>
+          <Route path="/webusb">
+            <WebUSBGreeting />
           </Route>
           <Route path="/">
             <Home />

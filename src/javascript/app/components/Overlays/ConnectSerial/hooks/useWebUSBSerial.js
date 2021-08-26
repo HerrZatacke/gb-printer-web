@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import WebUSBSerial from '../../../../../tools/WebUSBSerial';
 import useImportPlainText from '../../../../../hooks/useImportPlainText';
 
-const useWebUSBSerial = () => {
+const useWebUSBSerial = (passive) => {
   const webUSBEnabled = WebUSBSerial.enabled;
 
   const importPlainText = useImportPlainText();
@@ -32,13 +32,16 @@ const useWebUSBSerial = () => {
 
     setActivePorts(WebUSBSerial.getActivePorts());
     WebUSBSerial.addListener('activePortsChange', setActivePorts);
-    WebUSBSerial.addListener('data', handleReceivedData);
+
+    if (!passive) {
+      WebUSBSerial.addListener('data', handleReceivedData);
+    }
 
     return () => {
       WebUSBSerial.removeListener('activePortsChange', setActivePorts);
       WebUSBSerial.removeListener('data', handleReceivedData);
     };
-  }, [importPlainText]);
+  }, [importPlainText, passive]);
 
   const openWebUSBSerial = () => {
     if (WebUSBSerial.enabled) {

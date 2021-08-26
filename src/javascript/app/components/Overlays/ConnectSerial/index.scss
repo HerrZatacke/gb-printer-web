@@ -51,10 +51,12 @@
 }
 
 
-  .connect-usb-serial-overlay {
+.connect-usb-serial-overlay {
 
   &__button {
-    width: calc(100% - 40px);
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
     display: block;
 
     &--is-receiving.button {
@@ -67,10 +69,15 @@
   }
 
   &__info {
-    padding: 5px 20px;
+    padding: 5px 0;
 
     &--spaced {
       padding-bottom: 30px;
     }
   }
+
+  & &__content {
+    margin: 0 20px;
+  }
 }
+

@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import useWebUSBSerial from './hooks/useWebUSBSerial';
 import useWebSerial from './hooks/useWebSerial';
 import Lightbox from '../../Lightbox';
 import useContainer from './hooks/useContainer';
 
-const ConnectSerial = () => {
+const ConnectSerial = ({ inline, passive }) => {
   const title = 'WebUSB Serial devices';
 
   const {
@@ -13,29 +14,23 @@ const ConnectSerial = () => {
     isReceiving: usbSerialIsReceiving,
     webUSBEnabled,
     openWebUSBSerial,
-  } = useWebUSBSerial();
+  } = useWebUSBSerial(passive);
 
   const {
     activePorts: webSerialActivePorts,
     isReceiving: webSerialIsReceiving,
     webSerialEnabled,
     openWebSerial,
-  } = useWebSerial();
+  } = useWebSerial(passive);
 
   const {
     lightBoxOpen,
     setHideSerials,
   } = useContainer();
 
-  const showOverlay = lightBoxOpen || usbSerialIsReceiving || webSerialIsReceiving;
 
-  return !showOverlay ? null : (
-    <Lightbox
-      header="WebUSB / Serial devices"
-      confirm={() => setHideSerials()}
-      canConfirm={!usbSerialIsReceiving && !webSerialIsReceiving}
-      className="connect-usb-serial-overlay"
-    >
+  const content = (
+    <div className="connect-usb-serial-overlay__content">
       <button
         type="button"
         className={classnames('connect-usb-serial-overlay__button button', {
@@ -52,7 +47,12 @@ const ConnectSerial = () => {
       <div
         className="connect-usb-serial-overlay__info connect-usb-serial-overlay__info--spaced"
       >
-        {`${usbSerialActivePorts.length} devices connected`}
+        <h4>
+          {`Connected devices (${usbSerialActivePorts.length}):`}
+        </h4>
+        <ul>
+          {usbSerialActivePorts.map(({ productName }, index) => <li key={index}>{productName}</li>)}
+        </ul>
       </div>
       <button
         type="button"
@@ -72,8 +72,35 @@ const ConnectSerial = () => {
       >
         {`${webSerialActivePorts.length} devices connected`}
       </div>
+    </div>
+  );
+
+  if (inline) {
+    return content;
+  }
+
+  const showOverlay = lightBoxOpen || usbSerialIsReceiving || webSerialIsReceiving;
+
+  return !showOverlay ? null : (
+    <Lightbox
+      header="WebUSB / Serial devices"
+      confirm={() => setHideSerials()}
+      canConfirm={!usbSerialIsReceiving && !webSerialIsReceiving}
+      className="connect-usb-serial-overlay"
+    >
+      {content}
     </Lightbox>
   );
+};
+
+ConnectSerial.propTypes = {
+  inline: PropTypes.bool,
+  passive: PropTypes.bool,
+};
+
+ConnectSerial.defaultProps = {
+  inline: false,
+  passive: false,
 };
 
 export default ConnectSerial;
