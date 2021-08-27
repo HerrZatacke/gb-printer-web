@@ -31,32 +31,32 @@ const Overlays = ({
   syncSelect,
 }) => {
   switch (true) {
-    case showProgressLog:
-      return <ProgressLogBox />;
     case showInfoBox:
-      return <InfoBox />;
-    case showProgressBox:
-      return <ProgressBox />;
+      return <InfoBox />; // interactive
     case showConfirm:
-      return <Confirm />;
+      return <Confirm />; // interactive
     case showEditForm:
-      return <EditForm />;
+      return <EditForm />; // interactive
     case showEditPalette:
-      return <EditPalette />;
+      return <EditPalette />; // interactive
     case showVideoForm:
-      return <VideoParamsForm />;
+      return <VideoParamsForm />; // interactive
     case showRGBNImage:
-      return <RGBNImage />;
+      return <RGBNImage />; // interactive
     case showLightbox:
-      return <LightboxImage />;
-    case showDragOver:
-      return <DragOver />;
+      return <LightboxImage />; // interactive
     case showFilters:
-      return <FilterForm />;
+      return <FilterForm />; // interactive
     case showSortForm:
-      return <SortForm />;
+      return <SortForm />; // interactive
     case syncSelect:
-      return <SyncSelect />;
+      return <SyncSelect />; // interactive
+    case showProgressLog:
+      return <ProgressLogBox />; // non-interactive
+    case showProgressBox:
+      return <ProgressBox />; // non-interactive
+    case showDragOver:
+      return <DragOver />; // non-interactive
     default: // Default: Components which control their show/hide status themselves (e.g. through a hook)
       return <ConnectSerial />;
   }
