@@ -52,7 +52,6 @@ const Import = ({
           className="button button--label"
           type="button"
           onClick={() => {
-            // importPlainText(receivedData);
             importPlainText(text);
           }}
         >
