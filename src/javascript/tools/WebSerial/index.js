@@ -56,6 +56,41 @@ class WebSerial extends EventEmitter {
 
               port.connect()
                 .then(() => {
+
+                  // port.send('\u00A1')
+                  //   .then(() => {
+                  //     console.log('QUERY_FW_INFO');
+                  //   });
+
+                  // document.addEventListener('click', () => {
+                  port.send('\u0068')
+                    .then(() => {
+                      console.log('OFW_PCB_VER');
+                    });
+                  //
+                  //
+                  // port.send('\u0056')
+                  //   .then(() => {
+                  //     console.log('OFW_FW_VER');
+                  //   });
+
+                  //   // port.send('\u00A3\u00A5')
+                  //   //   .then(() => {
+                  //   //     console.log('SET_MODE_DMG / SET_VOLTAGE_5V');
+                  //   //   });
+                  //
+                  //   // port.send('\u00A2\u00A4')
+                  //   //   .then(() => {
+                  //   //     console.log('SET_MODE_AGB / SET_VOLTAGE_3_3V');
+                  //   //   });
+                  //
+                  //   // port.send('?')
+                  //   //   .then(() => {
+                  //   //     console.log('sent');
+                  //   //   });
+                  // });
+
+
                   this.activePorts.push(port);
                   this.emit('activePortsChange', [...this.activePorts]);
                 })

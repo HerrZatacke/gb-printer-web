@@ -12,25 +12,30 @@ class SerialPort extends EventEmitter {
   }
 
   connect() {
-    const readLoop = () => {
-      this.reader.read()
-        .then(({ value }) => {
-          this.emit('data', value);
-          readLoop();
-        })
-        .catch((error) => {
-          this.emit('error', error);
-        });
-    };
 
-    return this.device.open({ baudRate: this.baudRate })
+    return this.device.open({ baudRate: 1000000 })
+    // return this.device.open({ baudRate: this.baudRate })
       .then(() => {
-        const textDecoder = new window.TextDecoderStream();
-        this.device.readable.pipeTo(textDecoder.writable);
-        this.reader = textDecoder.readable.getReader();
-        readLoop();
+        // const textDecoder = new window.TextDecoderStream();
+        // this.device.readable.pipeTo(textDecoder.writable);
+        // this.reader = textDecoder.readable.getReader();
+        this.reader = this.device.readable.getReader();
+        this.readLoop();
       });
 
+  }
+
+  readLoop() {
+    this.reader.read()
+      .then(({ value }) => {
+        // this.emit('data', value);
+        console.log(value);
+        // console.log([...value].map((char) => char.charCodeAt(0)));
+        this.readLoop();
+      })
+      .catch((error) => {
+        this.emit('error', error);
+      });
   }
 
   // HOW !?!?!?
@@ -53,10 +58,19 @@ class SerialPort extends EventEmitter {
   //
   //   });
   // }
-  //
-  // send(data) {
-  //   console.warn('not implemented yet', data);
-  // }
+
+  send(data) {
+    const writer = this.device.writable.getWriter();
+
+    const bytes = new Uint8Array([...data].map((char) => (
+      char.charCodeAt(0)
+    )));
+
+    return writer.write(bytes)
+      .then(() => {
+        writer.releaseLock();
+      });
+  }
 }
 
 export default SerialPort;
