@@ -36,6 +36,8 @@ const getGetSettings = (store) => (what) => {
     }
   });
 
+  exportableState.lastUpdateUTC = Math.floor((new Date()).getTime() / 1000);
+
   switch (what) {
     case 'debug':
       return Promise.resolve(JSON.stringify({ state: localStorageState }, null, 2));

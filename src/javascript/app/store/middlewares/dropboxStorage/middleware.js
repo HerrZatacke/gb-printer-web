@@ -67,6 +67,9 @@ const middleware = (store) => {
         dropboxClient.getRemoteContents()
           .then((repoContents) => {
             switch (action.payload.direction) {
+              case 'diff':
+                console.log('lastUpdateUTC', repoContents.settings.state.lastUpdateUTC);
+                return Promise.resolve(null);
               case 'up':
                 return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
                   .then((changes) => dropboxClient.upload(changes, 'settings'));

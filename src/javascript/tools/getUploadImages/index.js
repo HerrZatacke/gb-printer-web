@@ -15,7 +15,7 @@ const getUploadImages = (store, repoContents, addToQueue) => {
     exportFileTypes,
     handleExportFrame: 'keep',
   });
-  const prepareGitFiles = getPrepareRemoteFiles(store);
+  const prepareRemoteFiles = getPrepareRemoteFiles(store);
   const missingLocally = [];
 
   const images = state.images
@@ -87,7 +87,7 @@ const getUploadImages = (store, repoContents, addToQueue) => {
       )),
   ])
     .then((files) => (
-      prepareGitFiles(files.filter(Boolean))
+      prepareRemoteFiles(files.filter(Boolean))
     ))
     .then(({ toUpload, toKeep }) => (
       filterDeleteNew(repoContents, toUpload, toKeep, missingLocally)
