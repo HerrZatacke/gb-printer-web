@@ -116,8 +116,9 @@ class DropboxClient extends EventEmitter {
     throw new Error(error);
   }
 
-  getRemoteContents() {
+  getRemoteContents(direction) {
     const get = ['images', 'frames'];
+    const isSilent = direction === 'diff';
 
     return this.checkLoginStatus()
       .then((loggedIn) => {
@@ -128,7 +129,7 @@ class DropboxClient extends EventEmitter {
         return this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
           this.dbx.filesDownload({ path: this.toPath('/settings/settings.json') })
             .catch(this.requestError)
-        ))
+        ), isSilent)
           .catch(() => ({ result: { fileBlob: new Blob([...'{}'], { type: 'text/plain' }) } }))
           .then(({ result: { fileBlob } }) => (
             readFileAs(fileBlob, 'text')
@@ -142,7 +143,7 @@ class DropboxClient extends EventEmitter {
                       recursive: true,
                     })
                       .catch(this.requestError)
-                  ))
+                  ), isSilent)
                     .catch(() => ({ result: { entries: [], has_more: false } }))
                     .then(({ result: { entries, has_more: hasMore, cursor } }) => (
                       (

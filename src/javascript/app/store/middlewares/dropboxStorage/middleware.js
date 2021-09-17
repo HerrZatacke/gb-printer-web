@@ -16,11 +16,11 @@ let addToQueue = () => {};
 const middleware = (store) => {
 
   const queue = new Queue(1, Infinity);
-  addToQueue = (who) => (what, throttle, fn) => (
+  addToQueue = (who) => (what, throttle, fn, isSilent) => (
     queue.add(() => (
       new Promise((resolve, reject) => {
         window.setTimeout(() => {
-          if (what) {
+          if (what && !isSilent) {
             store.dispatch({
               type: 'DROPBOX_LOG_ACTION',
               payload: {
@@ -64,7 +64,7 @@ const middleware = (store) => {
 
       if (action.payload.storageType === 'dropbox') {
 
-        dropboxClient.getRemoteContents()
+        dropboxClient.getRemoteContents(action.payload.direction)
           .then((repoContents) => {
             switch (action.payload.direction) {
               case 'diff':
@@ -89,7 +89,7 @@ const middleware = (store) => {
           })
           .then((syncResult) => {
             store.dispatch({
-              type: 'STORAGE_SYNC_DONE',
+              type: action.payload.direction === 'diff' ? 'STORAGE_DIFF_DONE' : 'STORAGE_SYNC_DONE',
               payload: {
                 syncResult,
                 storageType: 'dropbox',
