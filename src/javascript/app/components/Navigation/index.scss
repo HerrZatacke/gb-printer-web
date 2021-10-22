@@ -130,4 +130,17 @@
       padding: 14px;
     }
   }
+
+  &__link-bubble {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    height: 17px;
+    font-size: 11px;
+    line-height: 11px;
+    padding: 3px 6px;
+    border-radius: 9px;
+    @include theme-background-color($color-button-red, $color-button-red);
+    @include theme-color($color-white, $color-grey-70);
+  }
 }

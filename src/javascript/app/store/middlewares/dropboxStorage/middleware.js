@@ -68,7 +68,11 @@ const middleware = (store) => {
           .then((repoContents) => {
             switch (action.payload.direction) {
               case 'diff':
-                console.log('lastUpdateUTC', repoContents.settings.state.lastUpdateUTC);
+                store.dispatch({
+                  type: 'LAST_UPDATE_DROPBOX_REMOTE',
+                  payload: repoContents.settings.state.lastUpdateUTC,
+                });
+
                 return Promise.resolve(null);
               case 'up':
                 return getUploadImages(store, repoContents, addToQueue('GBPrinter'))

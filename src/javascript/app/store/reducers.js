@@ -38,6 +38,7 @@ import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import syncBusy from './reducers/syncBusyReducer';
+import syncLastUpdate from './reducers/syncLastUpdateReducer';
 import syncSelect from './reducers/syncSelectReducer';
 import useSerials from './reducers/useSerialsReducer';
 import showSerials from './reducers/showSerialsReducer';
@@ -84,6 +85,7 @@ export default combineReducers({
   sortBy,
   sortOptionsVisible,
   syncBusy,
+  syncLastUpdate,
   syncSelect,
   useSerials,
   showSerials,

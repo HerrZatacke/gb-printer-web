@@ -17,6 +17,7 @@ const mapStateToProps = (state) => ({
   ),
   useSerials: state.useSerials,
   disableSerials: !WebUSBSerial.enabled && !WebSerial.enabled,
+  syncLastUpdate: state.syncLastUpdate,
 });
 
 const mapDispatchToProps = (dispatch) => ({
