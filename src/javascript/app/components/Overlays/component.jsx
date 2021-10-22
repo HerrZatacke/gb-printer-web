@@ -41,8 +41,6 @@ const Overlays = ({
       return <EditPalette />; // interactive
     case showVideoForm:
       return <VideoParamsForm />; // interactive
-    case showRGBNImage:
-      return <RGBNImage />; // interactive
     case showLightbox:
       return <LightboxImage />; // interactive
     case showFilters:
@@ -51,12 +49,14 @@ const Overlays = ({
       return <SortForm />; // interactive
     case syncSelect:
       return <SyncSelect />; // interactive
+    case showDragOver:
+      return <DragOver />; // semi-interactive
     case showProgressLog:
       return <ProgressLogBox />; // non-interactive
     case showProgressBox:
       return <ProgressBox />; // non-interactive
-    case showDragOver:
-      return <DragOver />; // non-interactive
+    case showRGBNImage:
+      return <RGBNImage />; // non-interactive
     default: // Default: Components which control their show/hide status themselves (e.g. through a hook)
       return <ConnectSerial />;
   }
