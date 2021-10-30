@@ -89,8 +89,17 @@ const Navigation = (props) => {
               disabled={props.syncBusy}
             >
               <SVG name="sync" />
-              { (props.syncLastUpdate.local > props.syncLastUpdate.dropbox) ? (
-                <span className="navigation__link-bubble">!</span>
+              { (props.syncLastUpdate.local !== props.syncLastUpdate.dropbox) ? (
+                <span
+                  className="navigation__link-bubble"
+                  title={(
+                    (props.syncLastUpdate.local > props.syncLastUpdate.dropbox) ?
+                      'There are local changes not synched to dropbox yet' :
+                      'There are remote changes not synched yet'
+                  )}
+                >
+                  !
+                </span>
               ) : null }
             </button>
           </li>
