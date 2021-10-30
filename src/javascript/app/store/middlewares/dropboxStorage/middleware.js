@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import Queue from 'promise-queue/lib';
 import getUploadImages from '../../../../tools/getUploadImages';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
@@ -9,6 +10,7 @@ import getImagePalette from '../../../../tools/getImagePalette';
 import loadImageTiles from '../../../../tools/loadImageTiles';
 import replaceDuplicateFilenames from '../../../../tools/replaceDuplicateFilenames';
 import getFilteredImages from '../../../../tools/getFilteredImages';
+import { dateFormatReadable } from '../../../defaults';
 
 let dropboxClient;
 let addToQueue = () => {};
@@ -88,10 +90,47 @@ const middleware = (store) => {
           .then((repoContents) => {
             switch (action.payload.direction) {
               case 'diff': {
-                store.dispatch({
-                  type: 'LAST_UPDATE_DROPBOX_REMOTE',
-                  payload: repoContents.settings.state.lastUpdateUTC,
-                });
+                if (repoContents.settings.state.lastUpdateUTC > state?.syncLastUpdate?.local) {
+
+                  store.dispatch({
+                    type: 'CONFIRM_ASK',
+                    payload: {
+                      message: 'There is newer content in your dropbox!',
+                      questions: () => [
+                        `Your dropbox contains changes from ${dayjs(repoContents.settings.state.lastUpdateUTC * 1000).format(dateFormatReadable)}`,
+                        `Your last local update was ${dayjs(state?.syncLastUpdate?.local * 1000).format(dateFormatReadable)}.`,
+                        'Do you want to load the changes?',
+                      ]
+                        .map((label, index) => ({
+                          label,
+                          key: `info${index}`,
+                          type: 'info',
+                        })),
+                      confirm: () => {
+                        store.dispatch({
+                          type: 'CONFIRM_ANSWERED',
+                        });
+                        store.dispatch({
+                          type: 'STORAGE_SYNC_START',
+                          payload: {
+                            storageType: 'dropbox',
+                            direction: 'down',
+                          },
+                        });
+                      },
+                      deny: () => {
+                        store.dispatch({
+                          type: 'CONFIRM_ANSWERED',
+                        });
+                      },
+                    },
+                  });
+                } else {
+                  store.dispatch({
+                    type: 'LAST_UPDATE_DROPBOX_REMOTE',
+                    payload: repoContents.settings.state.lastUpdateUTC,
+                  });
+                }
 
                 return Promise.resolve(null);
               }
