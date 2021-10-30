@@ -4,7 +4,7 @@ import getFrames from './getFrames';
 import getImageHashesForExport from './getImageHashesForExport';
 import { getEnv } from '../getEnv';
 
-const getGetSettings = (store) => (what) => {
+const getGetSettings = (store) => (what, lastUpdateUTC) => {
 
   const state = store.getState();
 
@@ -36,7 +36,7 @@ const getGetSettings = (store) => (what) => {
     }
   });
 
-  exportableState.lastUpdateUTC = Math.floor((new Date()).getTime() / 1000);
+  exportableState.lastUpdateUTC = lastUpdateUTC || Math.floor((new Date()).getTime() / 1000);
 
   switch (what) {
     case 'debug':
