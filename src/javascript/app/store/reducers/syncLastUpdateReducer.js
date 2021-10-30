@@ -9,10 +9,9 @@ const syncLastUpdateReducer = (value = {}, action) => {
       return {
         ...value,
         dropbox: action.payload.state.lastUpdateUTC,
+        local: action.payload.state.lastUpdateUTC,
       };
     case 'STORAGE_SYNC_DONE':
-      // eslint-disable-next-line no-console
-      console.log(action.syncResult);
       return {
         ...value,
       };
