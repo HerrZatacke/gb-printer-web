@@ -25,7 +25,7 @@ const extFromType = (type) => {
 const getPrepareRemoteFiles = (store) => {
   const getSettings = getGetSettings(store);
 
-  return (fileCollection) => {
+  return (fileCollection, lastUpdateUTC) => {
     const toUpload = [];
     const toKeep = [];
     const stats = {};
@@ -59,7 +59,7 @@ const getPrepareRemoteFiles = (store) => {
       .join('\n');
 
     // querying only remote settings, so no state object needs to be provided
-    return getSettings('remote')
+    return getSettings('remote', lastUpdateUTC)
       .then((remoteSettings) => {
         toUpload.push(
           {

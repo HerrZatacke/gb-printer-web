@@ -38,7 +38,23 @@ const middleware = (store) => {
     ))
   );
 
+  const checkDropboxStatus = () => {
+    store.dispatch({
+      type: 'STORAGE_SYNC_START',
+      payload: {
+        storageType: 'dropbox',
+        direction: 'diff',
+      },
+    });
+  };
+
   dropboxClient = new DropboxClient(store.getState().dropboxStorage, addToQueue('Dropbox'));
+
+  // check dropbox for updates
+  checkDropboxStatus();
+
+  // check dropbox for updates every 5 minutes
+  window.setInterval(checkDropboxStatus, 2 * 60 * 1000);
 
   dropboxClient.on('loginDataUpdate', (data) => {
     store.dispatch({
@@ -56,8 +72,10 @@ const middleware = (store) => {
   }
 
   return (action) => {
+    const state = store.getState();
+
     if (action.type === 'SET_DROPBOX_STORAGE') {
-      dropboxClient.setRootPath(store.getState().dropboxStorage.path || '/');
+      dropboxClient.setRootPath(state.dropboxStorage.path || '/');
     }
 
     if (action.type === 'STORAGE_SYNC_START') {
@@ -67,17 +85,30 @@ const middleware = (store) => {
         dropboxClient.getRemoteContents(action.payload.direction)
           .then((repoContents) => {
             switch (action.payload.direction) {
-              case 'diff':
+              case 'diff': {
                 store.dispatch({
                   type: 'LAST_UPDATE_DROPBOX_REMOTE',
                   payload: repoContents.settings.state.lastUpdateUTC,
                 });
 
                 return Promise.resolve(null);
-              case 'up':
-                return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
-                  .then((changes) => dropboxClient.upload(changes, 'settings'));
-              case 'down':
+              }
+
+              case 'up': {
+                const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
+                return getUploadImages(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'))
+                  .then((changes) => dropboxClient.upload(changes, 'settings'))
+                  .then((result) => {
+                    store.dispatch({
+                      type: 'LAST_UPDATE_DROPBOX_REMOTE',
+                      payload: lastUpdateUTC,
+                    });
+
+                    return result;
+                  });
+              }
+
+              case 'down': {
                 return saveLocalStorageItems(repoContents)
                   .then((result) => {
                     store.dispatch({
@@ -87,6 +118,8 @@ const middleware = (store) => {
 
                     return result;
                   });
+              }
+
               default:
                 return Promise.reject(new Error('dropbox sync: wrong sync case'));
             }
@@ -112,7 +145,6 @@ const middleware = (store) => {
 
       if (action.payload.storageType === 'dropboximages') {
 
-        const state = store.getState();
         const images = getFilteredImages(state);
         const prepareFiles = getPrepareFiles(state);
         const loadTiles = loadImageTiles(state);

@@ -5,7 +5,7 @@ import { loadFrameData } from '../applyFrame/frameData';
 import filterDeleteNew from '../filterDeleteNew';
 import getPrepareRemoteFiles from '../getPrepareRemoteFiles';
 
-const getUploadImages = (store, repoContents, addToQueue) => {
+const getUploadImages = (store, repoContents, lastUpdateUTC, addToQueue) => {
   const state = store.getState();
   const exportFileTypes = ['txt'];
   const exportScaleFactors = [1];
@@ -87,7 +87,7 @@ const getUploadImages = (store, repoContents, addToQueue) => {
       )),
   ])
     .then((files) => (
-      prepareRemoteFiles(files.filter(Boolean))
+      prepareRemoteFiles(files.filter(Boolean), lastUpdateUTC)
     ))
     .then(({ toUpload, toKeep }) => (
       filterDeleteNew(repoContents, toUpload, toKeep, missingLocally)
