@@ -53,8 +53,10 @@ const middleware = (store) => {
   // check dropbox for updates
   checkDropboxStatus();
 
-  // check dropbox for updates every 5 minutes
-  window.setInterval(checkDropboxStatus, 2 * 60 * 1000);
+  // check dropbox for updates
+  dropboxClient.on('settingsChanged', () => {
+    checkDropboxStatus();
+  });
 
   dropboxClient.on('loginDataUpdate', (data) => {
     store.dispatch({

@@ -25,6 +25,8 @@ class DropboxClient extends EventEmitter {
 
     window.dbx = this.dbx;
     this.requestError = this.requestError.bind(this);
+
+    this.startLongPollSettings();
   }
 
   addToQueue(...args) {
@@ -279,6 +281,37 @@ class DropboxClient extends EventEmitter {
           uploaded,
           deleted,
         });
+      });
+  }
+
+  startLongPollSettings() {
+    this.dbx.filesListFolderGetLatestCursor({
+      path: this.toPath('/settings'),
+      recursive: false,
+      include_media_info: false,
+      include_deleted: false,
+      include_has_explicit_shared_members: false,
+    })
+      .then(({ result: { cursor } }) => {
+
+        const longPoll = () => this.dbx.filesListFolderLongpoll({
+          cursor,
+          timeout: 480,
+        });
+
+        return longPoll()
+          .then(({ result: { changes } }) => {
+
+            if (changes) {
+              this.emit('settingsChanged');
+              return this.startLongPollSettings();
+            }
+
+            return longPoll();
+          });
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 }
