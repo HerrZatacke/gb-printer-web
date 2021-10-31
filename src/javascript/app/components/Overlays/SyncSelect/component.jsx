@@ -47,22 +47,6 @@ const SyncSelect = ({ startSync, cancelSync, repoUrl, dropboxActive, gitActive }
           type="button"
           disabled={!dropboxActive}
           className="sync-select__button button"
-          title="Dropbox Difference"
-          onClick={() => {
-            startSync('dropbox', 'diff');
-          }}
-        >
-          <span className="sync-select__button-label">
-            Dropbox Difference
-          </span>
-          <SVG name="sync" className="svg--180" />
-        </button>
-      </li>
-      <li className="sync-select__option">
-        <button
-          type="button"
-          disabled={!dropboxActive}
-          className="sync-select__button button"
           title="Synchronize to Dropbox"
           onClick={() => {
             startSync('dropbox', 'up');
