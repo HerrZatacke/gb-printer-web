@@ -52,44 +52,44 @@ const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage, 
         }}
         labelText="Subfolder"
       />
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': autoDropboxSync,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Enable enhanced dropbox sync (experimental)"
-        >
-          Enable enhanced dropbox sync
-          <span className="inputgroup__note inputgroup__note--warn">This is currently an experimental feature.</span>
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
-            checked={autoDropboxSync}
-            onChange={({ target }) => {
-              setDropboxStorage({
-                autoDropboxSync: target.checked,
-              });
-
-              // Temporary refresh to start/stop polling in dropbox client
-              window.setTimeout(() => {
-                window.location.reload();
-              }, 300);
-            }}
-          />
-          <SVG name="checkmark" />
-        </span>
-      </label>
       {
         !use ? null : (
           <>
+            <label
+              className={
+                classnames('inputgroup checkgroup', {
+                  'checkgroup--checked': autoDropboxSync,
+                })
+              }
+            >
+              <span
+                className="inputgroup__label"
+                title="Enable enhanced dropbox sync (experimental)"
+              >
+                Enable enhanced dropbox sync
+                <span className="inputgroup__note inputgroup__note--warn">This is currently an experimental feature.</span>
+              </span>
+              <span
+                className="checkgroup__checkbox-wrapper"
+              >
+                <input
+                  type="checkbox"
+                  className="checkgroup__input"
+                  checked={autoDropboxSync}
+                  onChange={({ target }) => {
+                    setDropboxStorage({
+                      autoDropboxSync: target.checked,
+                    });
+
+                    // Temporary refresh to start/stop polling in dropbox client
+                    window.setTimeout(() => {
+                      window.location.reload();
+                    }, 300);
+                  }}
+                />
+                <SVG name="checkmark" />
+              </span>
+            </label>
             <div className="inputgroup buttongroup">
               <button
                 type="button"

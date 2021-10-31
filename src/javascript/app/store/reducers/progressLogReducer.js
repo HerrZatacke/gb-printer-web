@@ -29,6 +29,7 @@ const progressLogReducer = (value = { git: [], dropbox: [] }, action) => {
         ],
       };
 
+    case 'STORAGE_DIFF_DONE':
     case 'LOG_CLEAR':
       return {
         git: [],
