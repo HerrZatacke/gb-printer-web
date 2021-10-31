@@ -89,7 +89,7 @@ const Navigation = (props) => {
               disabled={props.syncBusy}
             >
               <SVG name="sync" />
-              { (props.syncLastUpdate.local !== props.syncLastUpdate.dropbox) ? (
+              { props.autoDropboxSync && (props.syncLastUpdate.local !== props.syncLastUpdate.dropbox) ? (
                 <span
                   className="navigation__link-bubble"
                   title={(
@@ -144,6 +144,7 @@ Navigation.propTypes = {
     dropbox: PropTypes.number.isRequired,
     local: PropTypes.number.isRequired,
   }).isRequired,
+  autoDropboxSync: PropTypes.bool.isRequired,
 };
 
 Navigation.defaultProps = {};

@@ -18,6 +18,7 @@ const mapStateToProps = (state) => ({
   useSerials: state.useSerials,
   disableSerials: !WebUSBSerial.enabled && !WebSerial.enabled,
   syncLastUpdate: state.syncLastUpdate,
+  autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
 });
 
 const mapDispatchToProps = (dispatch) => ({
