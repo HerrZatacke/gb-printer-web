@@ -12,6 +12,7 @@
 
   &__button {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     height: inherit;
     margin: 0;
@@ -30,4 +31,16 @@
     line-height: 40px;
   }
 
+  &__button-hint {
+    display: block;
+    width: 100%;
+    flex-basis: 100%;
+    font-size: 12px;
+    margin-bottom: 6px;
+    @include theme-color($color-button-green, $color-button-green-dark);
+
+    &--warn {
+      @include theme-color($color-warn-red, $color-warn-red);
+    }
+  }
 }

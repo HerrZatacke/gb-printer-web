@@ -12,7 +12,7 @@ class DropboxClient extends EventEmitter {
     this.queueCallback = addToQueue;
     this.throttle = 30;
 
-    const { accessToken, expiresAt, refreshToken, path } = settings;
+    const { accessToken, expiresAt, refreshToken, path, autoDropboxSync } = settings;
 
     this.setRootPath(path);
 
@@ -25,6 +25,10 @@ class DropboxClient extends EventEmitter {
 
     window.dbx = this.dbx;
     this.requestError = this.requestError.bind(this);
+
+    if (autoDropboxSync) {
+      this.startLongPollSettings();
+    }
   }
 
   addToQueue(...args) {
@@ -116,8 +120,9 @@ class DropboxClient extends EventEmitter {
     throw new Error(error);
   }
 
-  getRemoteContents() {
+  getRemoteContents(direction) {
     const get = ['images', 'frames'];
+    const isSilent = direction === 'diff';
 
     return this.checkLoginStatus()
       .then((loggedIn) => {
@@ -128,7 +133,7 @@ class DropboxClient extends EventEmitter {
         return this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
           this.dbx.filesDownload({ path: this.toPath('/settings/settings.json') })
             .catch(this.requestError)
-        ))
+        ), isSilent)
           .catch(() => ({ result: { fileBlob: new Blob([...'{}'], { type: 'text/plain' }) } }))
           .then(({ result: { fileBlob } }) => (
             readFileAs(fileBlob, 'text')
@@ -142,7 +147,7 @@ class DropboxClient extends EventEmitter {
                       recursive: true,
                     })
                       .catch(this.requestError)
-                  ))
+                  ), isSilent)
                     .catch(() => ({ result: { entries: [], has_more: false } }))
                     .then(({ result: { entries, has_more: hasMore, cursor } }) => (
                       (
@@ -278,6 +283,42 @@ class DropboxClient extends EventEmitter {
           uploaded,
           deleted,
         });
+      });
+  }
+
+  startLongPollSettings() {
+    // eslint-disable-next-line no-console
+    console.info('Start dropbox longpolling');
+
+    this.dbx.filesListFolderGetLatestCursor({
+      path: this.toPath('/settings'),
+      recursive: false,
+      include_media_info: false,
+      include_deleted: false,
+      include_has_explicit_shared_members: false,
+    })
+      .then(({ result: { cursor } }) => {
+
+        const longPoll = () => this.dbx.filesListFolderLongpoll({
+          cursor,
+          timeout: 480,
+        });
+
+        return longPoll()
+          .then(({ result: { changes } }) => {
+            // eslint-disable-next-line no-console
+            console.info('Longpoll info. Changes: ', changes);
+
+            if (changes) {
+              this.emit('settingsChanged');
+              return this.startLongPollSettings();
+            }
+
+            return longPoll();
+          });
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 }

@@ -4,6 +4,7 @@ const mapStateToProps = (state) => ({
   use: !!state.dropboxStorage.use,
   loggedIn: !!state.dropboxStorage.refreshToken,
   path: state.dropboxStorage.path || '',
+  autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
 });
 
 const mapDispatchToProps = (dispatch) => ({

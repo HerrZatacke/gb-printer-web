@@ -34,7 +34,8 @@ const dropboxStorage = (store) => {
         if (!middleware) {
           import(/* webpackChunkName: "dmw" */ './middleware')
             .then(({ default: mw }) => {
-              middleware = mw(store);
+              // import is async so check for existing mw _again_!!
+              middleware = middleware || mw(store);
               middleware(action);
             });
         } else {

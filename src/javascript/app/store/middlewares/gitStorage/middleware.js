@@ -39,13 +39,18 @@ const middleware = (store) => (action) => {
     action.type === 'STORAGE_SYNC_START' &&
     action.payload.storageType === 'git'
   ) {
+    const state = store.getState();
+
     octoClient.getRepoContents()
       .then((repoContents) => {
         switch (action.payload.direction) {
-          case 'up':
-            return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
+          case 'up': {
+            const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
+            return getUploadImages(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'))
               .then(octoClient.updateRemoteStore.bind(octoClient));
-          case 'down':
+          }
+
+          case 'down': {
             return saveLocalStorageItems(repoContents)
               .then((result) => {
                 store.dispatch({
@@ -55,6 +60,8 @@ const middleware = (store) => (action) => {
 
                 return result;
               });
+          }
+
           default:
             return Promise.reject(new Error('github sync: wrong sync case'));
         }

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import Queue from 'promise-queue/lib';
 import getUploadImages from '../../../../tools/getUploadImages';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
@@ -9,6 +10,7 @@ import getImagePalette from '../../../../tools/getImagePalette';
 import loadImageTiles from '../../../../tools/loadImageTiles';
 import replaceDuplicateFilenames from '../../../../tools/replaceDuplicateFilenames';
 import getFilteredImages from '../../../../tools/getFilteredImages';
+import { dateFormatReadable } from '../../../defaults';
 
 let dropboxClient;
 let addToQueue = () => {};
@@ -16,11 +18,11 @@ let addToQueue = () => {};
 const middleware = (store) => {
 
   const queue = new Queue(1, Infinity);
-  addToQueue = (who) => (what, throttle, fn) => (
+  addToQueue = (who) => (what, throttle, fn, isSilent) => (
     queue.add(() => (
       new Promise((resolve, reject) => {
         window.setTimeout(() => {
-          if (what) {
+          if (what && !isSilent) {
             store.dispatch({
               type: 'DROPBOX_LOG_ACTION',
               payload: {
@@ -38,7 +40,25 @@ const middleware = (store) => {
     ))
   );
 
+  const checkDropboxStatus = () => {
+    store.dispatch({
+      type: 'STORAGE_SYNC_START',
+      payload: {
+        storageType: 'dropbox',
+        direction: 'diff',
+      },
+    });
+  };
+
   dropboxClient = new DropboxClient(store.getState().dropboxStorage, addToQueue('Dropbox'));
+
+  // check dropbox for updates
+  checkDropboxStatus();
+
+  // check dropbox for updates
+  dropboxClient.on('settingsChanged', () => {
+    checkDropboxStatus();
+  });
 
   dropboxClient.on('loginDataUpdate', (data) => {
     store.dispatch({
@@ -56,21 +76,81 @@ const middleware = (store) => {
   }
 
   return (action) => {
+    const state = store.getState();
+
     if (action.type === 'SET_DROPBOX_STORAGE') {
-      dropboxClient.setRootPath(store.getState().dropboxStorage.path || '/');
+      dropboxClient.setRootPath(state.dropboxStorage.path || '/');
     }
 
     if (action.type === 'STORAGE_SYNC_START') {
 
       if (action.payload.storageType === 'dropbox') {
 
-        dropboxClient.getRemoteContents()
+        dropboxClient.getRemoteContents(action.payload.direction)
           .then((repoContents) => {
             switch (action.payload.direction) {
-              case 'up':
-                return getUploadImages(store, repoContents, addToQueue('GBPrinter'))
-                  .then((changes) => dropboxClient.upload(changes, 'settings'));
-              case 'down':
+              case 'diff': {
+
+                store.dispatch({
+                  type: 'LAST_UPDATE_DROPBOX_REMOTE',
+                  payload: repoContents.settings.state.lastUpdateUTC,
+                });
+
+                if (repoContents.settings.state.lastUpdateUTC > state?.syncLastUpdate?.local) {
+
+                  store.dispatch({
+                    type: 'CONFIRM_ASK',
+                    payload: {
+                      message: 'There is newer content in your dropbox!',
+                      questions: () => [
+                        `Your dropbox contains changes from ${dayjs(repoContents.settings.state.lastUpdateUTC * 1000).format(dateFormatReadable)}`,
+                        `Your last local update was ${dayjs(state?.syncLastUpdate?.local * 1000).format(dateFormatReadable)}.`,
+                        'Do you want to load the changes?',
+                      ]
+                        .map((label, index) => ({
+                          label,
+                          key: `info${index}`,
+                          type: 'info',
+                        })),
+                      confirm: () => {
+                        store.dispatch({
+                          type: 'CONFIRM_ANSWERED',
+                        });
+                        store.dispatch({
+                          type: 'STORAGE_SYNC_START',
+                          payload: {
+                            storageType: 'dropbox',
+                            direction: 'down',
+                          },
+                        });
+                      },
+                      deny: () => {
+                        store.dispatch({
+                          type: 'CONFIRM_ANSWERED',
+                        });
+                      },
+                    },
+                  });
+                }
+
+                return Promise.resolve(null);
+              }
+
+              case 'up': {
+                const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
+                return getUploadImages(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'))
+                  .then((changes) => dropboxClient.upload(changes, 'settings'))
+                  .then((result) => {
+                    store.dispatch({
+                      type: 'LAST_UPDATE_DROPBOX_REMOTE',
+                      payload: lastUpdateUTC,
+                    });
+
+                    return result;
+                  });
+              }
+
+              case 'down': {
                 return saveLocalStorageItems(repoContents)
                   .then((result) => {
                     store.dispatch({
@@ -80,13 +160,15 @@ const middleware = (store) => {
 
                     return result;
                   });
+              }
+
               default:
                 return Promise.reject(new Error('dropbox sync: wrong sync case'));
             }
           })
           .then((syncResult) => {
             store.dispatch({
-              type: 'STORAGE_SYNC_DONE',
+              type: action.payload.direction === 'diff' ? 'STORAGE_DIFF_DONE' : 'STORAGE_SYNC_DONE',
               payload: {
                 syncResult,
                 storageType: 'dropbox',
@@ -105,7 +187,6 @@ const middleware = (store) => {
 
       if (action.payload.storageType === 'dropboximages') {
 
-        const state = store.getState();
         const images = getFilteredImages(state);
         const prepareFiles = getPrepareFiles(state);
         const loadTiles = loadImageTiles(state);

@@ -89,6 +89,18 @@ const Navigation = (props) => {
               disabled={props.syncBusy}
             >
               <SVG name="sync" />
+              { (props.syncLastUpdate.local !== props.syncLastUpdate.dropbox) ? (
+                <span
+                  className="navigation__link-bubble"
+                  title={(
+                    (props.syncLastUpdate.local > props.syncLastUpdate.dropbox) ?
+                      'There are local changes not synched to dropbox yet' :
+                      'There are remote changes not synched yet'
+                  )}
+                >
+                  !
+                </span>
+              ) : null }
             </button>
           </li>
         ) : null}
@@ -128,6 +140,10 @@ Navigation.propTypes = {
   useSerials: PropTypes.bool.isRequired,
   disableSerials: PropTypes.bool.isRequired,
   setShowSerials: PropTypes.func.isRequired,
+  syncLastUpdate: PropTypes.shape({
+    dropbox: PropTypes.number.isRequired,
+    local: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 Navigation.defaultProps = {};

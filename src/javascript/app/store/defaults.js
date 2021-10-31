@@ -193,6 +193,15 @@ const definitions = [
     saveExport: [],
     value: false,
   },
+  {
+    key: 'syncLastUpdate',
+    saveLocally: true,
+    saveExport: [],
+    value: {
+      dropbox: 0,
+      local: 0,
+    },
+  },
 ];
 
 const defaults = {};

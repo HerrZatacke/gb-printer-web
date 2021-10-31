@@ -3,6 +3,7 @@ const syncBusyReducer = (value = false, action) => {
     case 'STORAGE_SYNC_START':
       return true;
     case 'STORAGE_SYNC_DONE':
+    case 'STORAGE_DIFF_DONE':
       return false;
     default:
       return value;
