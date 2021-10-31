@@ -52,13 +52,15 @@ const middleware = (store) => {
 
   dropboxClient = new DropboxClient(store.getState().dropboxStorage, addToQueue('Dropbox'));
 
-  // check dropbox for updates
-  checkDropboxStatus();
-
-  // check dropbox for updates
-  dropboxClient.on('settingsChanged', () => {
+  if (store.getState().dropboxStorage.autoDropboxSync) {
+    // check dropbox for updates
     checkDropboxStatus();
-  });
+
+    // check dropbox for updates
+    dropboxClient.on('settingsChanged', () => {
+      checkDropboxStatus();
+    });
+  }
 
   dropboxClient.on('loginDataUpdate', (data) => {
     store.dispatch({
