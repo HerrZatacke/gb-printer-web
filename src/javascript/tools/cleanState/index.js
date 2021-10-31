@@ -103,8 +103,15 @@ const cleanState = (dirtyState) => {
     error: undefined,
   }));
 
+  const syncLastUpdate = {
+    ...dirtyState.syncLastUpdate,
+    dropbox: dirtyState.syncLastUpdate?.dropbox || 0,
+    local: dirtyState.syncLastUpdate?.local || 0,
+  };
+
   return {
     ...dirtyState,
+    syncLastUpdate,
     images,
     palettes,
     plugins,
