@@ -90,6 +90,12 @@ const middleware = (store) => {
           .then((repoContents) => {
             switch (action.payload.direction) {
               case 'diff': {
+
+                store.dispatch({
+                  type: 'LAST_UPDATE_DROPBOX_REMOTE',
+                  payload: repoContents.settings.state.lastUpdateUTC,
+                });
+
                 if (repoContents.settings.state.lastUpdateUTC > state?.syncLastUpdate?.local) {
 
                   store.dispatch({
@@ -124,11 +130,6 @@ const middleware = (store) => {
                         });
                       },
                     },
-                  });
-                } else {
-                  store.dispatch({
-                    type: 'LAST_UPDATE_DROPBOX_REMOTE',
-                    payload: repoContents.settings.state.lastUpdateUTC,
                   });
                 }
 
