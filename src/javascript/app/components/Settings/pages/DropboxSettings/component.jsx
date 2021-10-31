@@ -5,7 +5,7 @@ import SVG from '../../../SVG';
 import Input from '../../../Input';
 import cleanPath from '../../../../../tools/cleanPath';
 
-const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage, path: propsPath }) => {
+const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage, path: propsPath, autoDropboxSync }) => {
 
   const [path, setPath] = useState(propsPath);
 
@@ -52,6 +52,41 @@ const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage, 
         }}
         labelText="Subfolder"
       />
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': autoDropboxSync,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Enable enhanced dropbox sync (experimental)"
+        >
+          Enable enhanced dropbox sync
+          <span className="inputgroup__note inputgroup__note--warn">This is currently an experimental feature.</span>
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={autoDropboxSync}
+            onChange={({ target }) => {
+              setDropboxStorage({
+                autoDropboxSync: target.checked,
+              });
+
+              // Temporary refresh to start/stop polling in dropbox client
+              window.setTimeout(() => {
+                window.location.reload();
+              }, 300);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
       {
         !use ? null : (
           <>
@@ -87,6 +122,7 @@ DropboxSettings.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   use: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
+  autoDropboxSync: PropTypes.bool.isRequired,
 };
 
 export default DropboxSettings;

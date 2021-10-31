@@ -15,6 +15,7 @@ const mapStateToProps = (state) => ({
     state.gitStorage.token
   ),
   syncLastUpdate: state.syncLastUpdate,
+  autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -12,7 +12,7 @@ class DropboxClient extends EventEmitter {
     this.queueCallback = addToQueue;
     this.throttle = 30;
 
-    const { accessToken, expiresAt, refreshToken, path } = settings;
+    const { accessToken, expiresAt, refreshToken, path, autoDropboxSync } = settings;
 
     this.setRootPath(path);
 
@@ -26,7 +26,9 @@ class DropboxClient extends EventEmitter {
     window.dbx = this.dbx;
     this.requestError = this.requestError.bind(this);
 
-    this.startLongPollSettings();
+    if (autoDropboxSync) {
+      this.startLongPollSettings();
+    }
   }
 
   addToQueue(...args) {
@@ -285,6 +287,9 @@ class DropboxClient extends EventEmitter {
   }
 
   startLongPollSettings() {
+    // eslint-disable-next-line no-console
+    console.info('Start dropbox longpolling');
+
     this.dbx.filesListFolderGetLatestCursor({
       path: this.toPath('/settings'),
       recursive: false,
@@ -301,6 +306,8 @@ class DropboxClient extends EventEmitter {
 
         return longPoll()
           .then(({ result: { changes } }) => {
+            // eslint-disable-next-line no-console
+            console.info('Longpoll info. Changes: ', changes);
 
             if (changes) {
               this.emit('settingsChanged');

@@ -38,5 +38,9 @@
     font-size: 12px;
     margin-bottom: 6px;
     @include theme-color($color-button-green, $color-button-green-dark);
+
+    &--warn {
+      @include theme-color($color-warn-red, $color-warn-red);
+    }
   }
 }
