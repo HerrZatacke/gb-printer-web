@@ -311,7 +311,10 @@ class DropboxClient extends EventEmitter {
 
             if (changes) {
               this.emit('settingsChanged');
-              return this.startLongPollSettings();
+              return this.addToQueue('Restart longpolling', this.throttle, () => {
+                this.startLongPollSettings();
+                return Promise.resolve(null);
+              }, true);
             }
 
             return longPoll();
