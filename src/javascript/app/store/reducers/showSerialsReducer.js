@@ -1,6 +1,8 @@
+import { SHOW_SERIALS } from '../actions';
+
 const showSerialsReducer = (value = false, action) => {
   switch (action.type) {
-    case 'SHOW_SERIALS':
+    case SHOW_SERIALS:
       return action.payload;
     default:
       return value;

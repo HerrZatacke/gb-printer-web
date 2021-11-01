@@ -1,5 +1,6 @@
 import handleLines from '../handleLines';
 import { terminatorLine } from '../../app/defaults';
+import { IMAGE_COMPLETE, NEW_LINES } from '../handleLines/types';
 
 const transformClassic = (data, filename) => {
 
@@ -11,11 +12,11 @@ const transformClassic = (data, filename) => {
     .map((lineAction) => {
 
       switch (lineAction.type) {
-        case 'NEW_LINES':
+        case NEW_LINES:
           dataLines.push(...lineAction.payload);
           return null;
 
-        case 'IMAGE_COMPLETE':
+        case IMAGE_COMPLETE:
           // eslint-disable-next-line no-case-declarations
           const lines = dataLines.filter(Boolean);
           dataLines = [];

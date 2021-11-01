@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import getPreviewImages from '../../../../tools/getPreviewImages';
+import { PALETTE_CANCEL_EDIT, PALETTE_UPDATE } from '../../../store/actions';
 
 const mapStateToProps = (state) => ({
   shortName: state.editPalette.shortName,
@@ -18,13 +19,13 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   savePalette: (palette) => {
     dispatch({
-      type: 'PALETTE_UPDATE',
+      type: PALETTE_UPDATE,
       payload: palette,
     });
   },
   cancelEditPalette: () => {
     dispatch({
-      type: 'PALETTE_CANCEL_EDIT',
+      type: PALETTE_CANCEL_EDIT,
     });
   },
 });

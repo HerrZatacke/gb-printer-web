@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
+import { ADD_IMAGES, GLOBAL_UPDATE } from '../actions';
 
 const recentImportsReducer = (value = [], action) => {
   switch (action.type) {
-    case 'ADD_IMAGES': {
+    case ADD_IMAGES: {
 
       const imported = action.payload.map(({ hash, hashes }) => {
 
@@ -24,7 +25,7 @@ const recentImportsReducer = (value = [], action) => {
       ];
     }
 
-    case 'GLOBAL_UPDATE': {
+    case GLOBAL_UPDATE: {
       if (action.payload?.imageSelection?.length) {
         return [
 

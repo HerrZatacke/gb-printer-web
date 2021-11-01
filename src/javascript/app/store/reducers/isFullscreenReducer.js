@@ -1,6 +1,8 @@
+import { SET_IS_FULLSCREEN } from '../actions';
+
 const isFullscreenReducer = (value = false, action) => {
   switch (action.type) {
-    case 'SET_IS_FULLSCREEN':
+    case SET_IS_FULLSCREEN:
       return action.payload;
     default:
       return value;

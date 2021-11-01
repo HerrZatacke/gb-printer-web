@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { STORAGE_SYNC_CANCEL, STORAGE_SYNC_START } from '../../../store/actions';
 
 const mapStateToProps = (state) => ({
   repoUrl: `https://github.com/${state.gitStorage.owner}/${state.gitStorage.repo}/tree/${state.gitStorage.branch}`,
@@ -21,7 +22,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   startSync: (storageType, direction) => {
     dispatch({
-      type: 'STORAGE_SYNC_START',
+      type: STORAGE_SYNC_START,
       payload: {
         storageType,
         direction,
@@ -30,7 +31,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   cancelSync: (storageType, direction) => {
     dispatch({
-      type: 'STORAGE_SYNC_CANCEL',
+      type: STORAGE_SYNC_CANCEL,
       payload: {
         storageType,
         direction,

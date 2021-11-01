@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { SET_PRINTER_URL } from '../../store/actions';
 
 const mapStateToProps = (state) => ({
   printerUrl: state.printerUrl,
@@ -7,7 +8,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updatePrinterUrl(printerUrl) {
     dispatch({
-      type: 'SET_PRINTER_URL',
+      type: SET_PRINTER_URL,
       payload: printerUrl,
     });
   },

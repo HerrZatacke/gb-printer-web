@@ -6,6 +6,7 @@ import getFrameGroups from '../getFrameGroups';
 import getQuestions from './questions';
 import getFrameId from './getFrameId';
 import sortBy from '../sortby';
+import { ADD_FRAME, ADD_IMAGES, CONFIRM_ANSWERED, CONFIRM_ASK } from '../../app/store/actions';
 
 const sortByCount = sortBy('count', 'desc');
 const sortByThreshold = sortBy('threshold');
@@ -139,7 +140,7 @@ const getTransformBitmap = (store) => (file) => {
     const frameIds = frames.map(({ id }) => id);
 
     store.dispatch({
-      type: 'CONFIRM_ASK',
+      type: CONFIRM_ASK,
       payload: {
         message: `Choose how you want to import "${file.name}".`,
         questions: getQuestions({ frameIds, frameGroups, fileName: file.name }),
@@ -150,7 +151,7 @@ const getTransformBitmap = (store) => (file) => {
             saveFrameData(frameId, tileLines)
               .then(() => {
                 dispatch({
-                  type: 'ADD_FRAME',
+                  type: ADD_FRAME,
                   payload: {
                     id: frameId,
                     name: frameName,
@@ -165,7 +166,7 @@ const getTransformBitmap = (store) => (file) => {
             })
               .then((image) => {
                 dispatch({
-                  type: 'ADD_IMAGES',
+                  type: ADD_IMAGES,
                   payload: [image],
                 });
               });
@@ -173,7 +174,7 @@ const getTransformBitmap = (store) => (file) => {
         },
         deny: () => {
           dispatch({
-            type: 'CONFIRM_ANSWERED',
+            type: CONFIRM_ANSWERED,
           });
         },
       },

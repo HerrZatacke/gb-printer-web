@@ -1,4 +1,5 @@
 import uniqueBy from '../../../tools/unique/by';
+import { ADD_FRAME, DELETE_FRAME, GLOBAL_UPDATE } from '../actions';
 
 const sortFrames = (a, b) => {
   if (a.id < b.id) {
@@ -14,11 +15,11 @@ const sortFrames = (a, b) => {
 
 const framesReducer = (frames = [], action) => {
   switch (action.type) {
-    case 'ADD_FRAME':
+    case ADD_FRAME:
       return uniqueBy('id')([action.payload, ...frames]).sort(sortFrames);
-    case 'DELETE_FRAME':
+    case DELETE_FRAME:
       return frames.filter(({ id }) => id !== action.payload);
-    case 'GLOBAL_UPDATE':
+    case GLOBAL_UPDATE:
       return uniqueBy('id')(action.payload.frames).sort(sortFrames);
     default:
       return frames;

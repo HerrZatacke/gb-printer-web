@@ -1,6 +1,8 @@
+import { SET_GIT_STORAGE } from '../actions';
+
 const gitStorageReducer = (value = {}, action) => {
   switch (action.type) {
-    case 'SET_GIT_STORAGE':
+    case SET_GIT_STORAGE:
       return {
         ...value,
         ...action.payload,

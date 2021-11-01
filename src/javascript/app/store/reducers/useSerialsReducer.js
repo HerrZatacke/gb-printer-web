@@ -1,6 +1,8 @@
+import { USE_SERIALS } from '../actions';
+
 const useSerialsReducer = (value = false, action) => {
   switch (action.type) {
-    case 'USE_SERIALS':
+    case USE_SERIALS:
       return action.payload;
     default:
       return value;

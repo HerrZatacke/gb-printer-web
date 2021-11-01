@@ -1,11 +1,20 @@
 import screenfull from 'screenfull';
 import getFilteredImages from '../../../tools/getFilteredImages';
+import {
+  LIGHTBOX_FULLSCREEN,
+  LIGHTBOX_NEXT,
+  LIGHTBOX_PREV,
+  SET_IS_FULLSCREEN,
+  SET_LIGHTBOX_IMAGE_HASH,
+  SET_LIGHTBOX_IMAGE_INDEX,
+  WINDOW_DIMENSIONS,
+} from '../actions';
 
 const confirmation = (store) => {
 
   window.addEventListener('resize', () => {
     store.dispatch({
-      type: 'WINDOW_DIMENSIONS',
+      type: WINDOW_DIMENSIONS,
       payload: {
         height: window.innerHeight,
         width: window.innerWidth,
@@ -16,7 +25,7 @@ const confirmation = (store) => {
   if (screenfull.isEnabled) {
     screenfull.on('change', () => {
       store.dispatch({
-        type: 'SET_IS_FULLSCREEN',
+        type: SET_IS_FULLSCREEN,
         payload: !!screenfull.element,
       });
     });
@@ -32,7 +41,7 @@ const confirmation = (store) => {
       case 'Esc':
       case 'Escape':
         store.dispatch({
-          type: 'SET_LIGHTBOX_IMAGE_INDEX',
+          type: SET_LIGHTBOX_IMAGE_INDEX,
           payload: null,
         });
         ev.preventDefault();
@@ -41,7 +50,7 @@ const confirmation = (store) => {
       case 'Right':
       case 'ArrowRight':
         store.dispatch({
-          type: 'LIGHTBOX_NEXT',
+          type: LIGHTBOX_NEXT,
         });
         ev.preventDefault();
         break;
@@ -49,7 +58,7 @@ const confirmation = (store) => {
       case 'Left':
       case 'ArrowLeft':
         store.dispatch({
-          type: 'LIGHTBOX_PREV',
+          type: LIGHTBOX_PREV,
         });
         ev.preventDefault();
         break;
@@ -63,27 +72,27 @@ const confirmation = (store) => {
     const state = store.getState();
 
     switch (action.type) {
-      case 'LIGHTBOX_NEXT':
+      case LIGHTBOX_NEXT:
         if (state.lightboxImage === null) {
           return;
         }
 
         store.dispatch({
-          type: 'SET_LIGHTBOX_IMAGE_INDEX',
+          type: SET_LIGHTBOX_IMAGE_INDEX,
           payload: Math.min(state.lightboxImage + 1, state.images.length - 1),
         });
         return;
-      case 'LIGHTBOX_PREV':
+      case LIGHTBOX_PREV:
         if (state.lightboxImage === null) {
           return;
         }
 
         store.dispatch({
-          type: 'SET_LIGHTBOX_IMAGE_INDEX',
+          type: SET_LIGHTBOX_IMAGE_INDEX,
           payload: Math.max(state.lightboxImage - 1, 0),
         });
         return;
-      case 'LIGHTBOX_FULLSCREEN':
+      case LIGHTBOX_FULLSCREEN:
         if (screenfull.isEnabled) {
           if (!screenfull.element) {
             screenfull.request(document.querySelector('body'));
@@ -93,16 +102,16 @@ const confirmation = (store) => {
         }
 
         break;
-      case 'SET_LIGHTBOX_IMAGE_INDEX':
+      case SET_LIGHTBOX_IMAGE_INDEX:
         if (screenfull.isEnabled && !action.payload && screenfull.element) {
           screenfull.exit();
         }
 
         break;
 
-      case 'SET_LIGHTBOX_IMAGE_HASH':
+      case SET_LIGHTBOX_IMAGE_HASH:
         store.dispatch({
-          type: 'SET_LIGHTBOX_IMAGE_INDEX',
+          type: SET_LIGHTBOX_IMAGE_INDEX,
           payload: getFilteredImages(state).findIndex(({ hash }) => hash === action.payload),
         });
 

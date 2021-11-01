@@ -2,6 +2,7 @@ import applyFrame from '../applyFrame';
 import mapCartFrameToName from './mapCartFrameToName';
 import getFrameGroups from '../getFrameGroups';
 import sortBy from '../sortby';
+import { CONFIRM_ANSWERED, CONFIRM_ASK } from '../../app/store/actions';
 
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
 const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
@@ -131,7 +132,7 @@ const getTransformSav = (store) => (data, filename) => {
   return new Promise(((resolve) => {
 
     store.dispatch({
-      type: 'CONFIRM_ASK',
+      type: CONFIRM_ASK,
       payload: {
         message: `Importing '${filename}'`,
         questions: () => [
@@ -144,7 +145,7 @@ const getTransformSav = (store) => (data, filename) => {
         ],
         confirm: ({ selectedFrameset }) => {
           store.dispatch({
-            type: 'CONFIRM_ANSWERED',
+            type: CONFIRM_ANSWERED,
           });
 
           // Perform actual import action
@@ -152,7 +153,7 @@ const getTransformSav = (store) => (data, filename) => {
         },
         deny: () => {
           store.dispatch({
-            type: 'CONFIRM_ANSWERED',
+            type: CONFIRM_ANSWERED,
           });
           resolve([]);
         },

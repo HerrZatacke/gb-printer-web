@@ -1,3 +1,5 @@
+import { ERROR } from '../../app/store/actions';
+
 const getTransformBin = (dispatch) => (data, filename) => {
   const transformed = [];
   let currentLine = '';
@@ -15,7 +17,7 @@ const getTransformBin = (dispatch) => (data, filename) => {
     }
   } catch (error) {
     dispatch({
-      type: 'ERROR',
+      type: ERROR,
       payload: `ERROR_IN_LOADED_BIN\n${filename}`,
     });
 

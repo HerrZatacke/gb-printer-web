@@ -1,3 +1,5 @@
+import { IMAGE_COMPLETE, NEW_LINES, PARSE_ERROR } from './types';
+
 const handleLines = (rawLine) => {
   // commented lines are not saved
   if (
@@ -16,18 +18,18 @@ const handleLines = (rawLine) => {
       const { command, margin_lower: marginLower } = JSON.parse(rawLine.slice(rawLine.indexOf('{')).trim());
       // if (command === 'INIT') {
       //   return {
-      //     type: 'CLEAR_LINES',
+      //     type: CLEAR_LINES,
       //   };
       // }
 
       if (command === 'PRNT' && marginLower > 0) {
         return {
-          type: 'IMAGE_COMPLETE',
+          type: IMAGE_COMPLETE,
         };
       }
     } catch (error) {
       return {
-        type: 'PARSE_ERROR',
+        type: PARSE_ERROR,
         payload: 'Error while trying to parse JSON data command block',
       };
     }
@@ -42,7 +44,7 @@ const handleLines = (rawLine) => {
   }
 
   return {
-    type: 'NEW_LINES',
+    type: NEW_LINES,
     payload: [cleanLine],
   };
 };

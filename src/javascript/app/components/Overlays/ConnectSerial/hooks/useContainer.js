@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { SHOW_SERIALS } from '../../../../store/actions';
 
 const useContainer = () => {
 
@@ -6,7 +7,7 @@ const useContainer = () => {
   const dispatch = useDispatch();
   const setHideSerials = () => {
     dispatch({
-      type: 'SHOW_SERIALS',
+      type: SHOW_SERIALS,
       payload: false,
     });
   };

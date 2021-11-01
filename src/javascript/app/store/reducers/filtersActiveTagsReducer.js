@@ -5,6 +5,7 @@ import {
   FILTER_RGB,
   FILTER_RECENT,
 } from '../../../consts/specialTags';
+import { SET_ACTIVE_TAGS, SET_AVAILABLE_TAGS } from '../actions';
 
 const specialTags = [
   FILTER_UNTAGGED,
@@ -16,9 +17,9 @@ const specialTags = [
 
 const activeTags = (value = [], action) => {
   switch (action.type) {
-    case 'SET_ACTIVE_TAGS':
+    case SET_ACTIVE_TAGS:
       return action.payload;
-    case 'SET_AVAILABLE_TAGS':
+    case SET_AVAILABLE_TAGS:
       return value.filter((tag) => (
         specialTags.includes(tag) ||
         action.payload.includes(tag)

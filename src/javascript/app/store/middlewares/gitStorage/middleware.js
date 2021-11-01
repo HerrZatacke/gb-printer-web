@@ -2,6 +2,14 @@ import Queue from 'promise-queue/lib';
 import OctoClient from '../../../../tools/OctoClient';
 import getUploadImages from '../../../../tools/getUploadImages';
 import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
+import {
+  ERROR,
+  GIT_SETTINGS_IMPORT,
+  GITSTORAGE_LOG_ACTION,
+  SET_GIT_STORAGE,
+  STORAGE_SYNC_DONE,
+  STORAGE_SYNC_START,
+} from '../../actions';
 
 let octoClient;
 let addToQueue = () => {};
@@ -15,7 +23,7 @@ const init = (store) => {
       new Promise((resolve, reject) => {
         window.setTimeout(() => {
           store.dispatch({
-            type: 'GITSTORAGE_LOG_ACTION',
+            type: GITSTORAGE_LOG_ACTION,
             payload: {
               timestamp: (new Date()).getTime() / 1000,
               message: `${who} runs ${what}`,
@@ -36,7 +44,7 @@ const init = (store) => {
 
 const middleware = (store) => (action) => {
   if (
-    action.type === 'STORAGE_SYNC_START' &&
+    action.type === STORAGE_SYNC_START &&
     action.payload.storageType === 'git'
   ) {
     const state = store.getState();
@@ -54,7 +62,7 @@ const middleware = (store) => (action) => {
             return saveLocalStorageItems(repoContents)
               .then((result) => {
                 store.dispatch({
-                  type: 'GIT_SETTINGS_IMPORT',
+                  type: GIT_SETTINGS_IMPORT,
                   payload: repoContents.settings,
                 });
 
@@ -68,7 +76,7 @@ const middleware = (store) => (action) => {
       })
       .then((syncResult) => {
         store.dispatch({
-          type: 'STORAGE_SYNC_DONE',
+          type: STORAGE_SYNC_DONE,
           payload: {
             syncResult,
             storageType: 'git',
@@ -78,11 +86,11 @@ const middleware = (store) => (action) => {
       .catch((error) => {
         console.error(error);
         store.dispatch({
-          type: 'ERROR',
+          type: ERROR,
           payload: error.message,
         });
       });
-  } else if (action.type === 'SET_GIT_STORAGE') {
+  } else if (action.type === SET_GIT_STORAGE) {
     octoClient.setOctokit(action.payload);
   }
 };

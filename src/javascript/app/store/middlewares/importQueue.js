@@ -1,6 +1,7 @@
 import Queue from 'promise-queue/lib';
 import saveNewImage from '../../../tools/saveNewImage';
 import uniqueBy from '../../../tools/unique/by';
+import { ADD_IMAGES, ADD_TO_QUEUE, CONFIRM_ANSWERED, CONFIRM_ASK } from '../actions';
 
 const importQueue = (store) => {
 
@@ -25,18 +26,18 @@ const importQueue = (store) => {
           ` (${result.length - uniqueResult.length} duplicates found in import)`;
 
         store.dispatch({
-          type: 'CONFIRM_ASK',
+          type: CONFIRM_ASK,
           payload: {
             message: `Import ${uniqueResult.length} images?${duplicatesMsg}`,
             confirm: () => {
               store.dispatch({
-                type: 'ADD_IMAGES',
+                type: ADD_IMAGES,
                 payload: uniqueResult,
               });
             },
             deny: () => {
               store.dispatch({
-                type: 'CONFIRM_ANSWERED',
+                type: CONFIRM_ANSWERED,
               });
             },
           },
@@ -46,7 +47,7 @@ const importQueue = (store) => {
 
   return (next) => (action) => {
 
-    if (action.type === 'ADD_TO_QUEUE') {
+    if (action.type === ADD_TO_QUEUE) {
       addToQueue(action.payload);
       return;
     }

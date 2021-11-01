@@ -3,6 +3,7 @@ import download from '../../../tools/download/download';
 import generateFileName from '../../../tools/generateFileName';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
+import { DOWNLOAD_SELECTION, START_DOWNLOAD } from '../actions';
 
 const handleSingleImage = (prepareFiles, state) => (imageHash) => {
   const image = state.images.find(({ hash }) => hash === imageHash);
@@ -36,17 +37,17 @@ const handleImageCollection = (prepareFiles, state) => (collection) => {
 
 const startDownload = (store) => (next) => (action) => {
 
-  if ((action.type === 'START_DOWNLOAD') || (action.type === 'DOWNLOAD_SELECTION')) {
+  if ((action.type === START_DOWNLOAD) || (action.type === DOWNLOAD_SELECTION)) {
     const state = store.getState();
 
     const prepareFiles = getPrepareFiles(state);
 
     switch (action.type) {
-      case 'START_DOWNLOAD':
+      case START_DOWNLOAD:
         handleSingleImage(prepareFiles, state)(action.payload);
         break;
 
-      case 'DOWNLOAD_SELECTION':
+      case DOWNLOAD_SELECTION:
         handleImageCollection(prepareFiles, state)(action.payload);
         break;
 
