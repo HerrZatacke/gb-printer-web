@@ -51,7 +51,17 @@ const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage, 
           });
         }}
         labelText="Subfolder"
-      />
+      >
+        <a
+          className="inputgroup__note"
+          title={`Open Dropbox folder:\nhttps://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`}
+          href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          open
+        </a>
+      </Input>
       {
         !use ? null : (
           <>
