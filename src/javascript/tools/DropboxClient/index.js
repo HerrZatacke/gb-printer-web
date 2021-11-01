@@ -152,7 +152,7 @@ class DropboxClient extends EventEmitter {
                     .then(({ result: { entries, has_more: hasMore, cursor } }) => (
                       (
                         hasMore ?
-                          this.getMoreContents(cursor, entries) :
+                          this.getMoreContents(cursor, entries, isSilent) :
                           Promise.resolve(entries)
                       )
                         .then((allEntries) => (
@@ -161,8 +161,8 @@ class DropboxClient extends EventEmitter {
                     ))
                 )))
                   .then(([images, frames]) => ({
-                    images: this.augmentFileList('images', images),
-                    frames: this.augmentFileList('frames', frames),
+                    images: this.augmentFileList('images', images, isSilent),
+                    frames: this.augmentFileList('frames', frames, isSilent),
                     settings,
                   }))
               ))
@@ -192,26 +192,26 @@ class DropboxClient extends EventEmitter {
       ));
   }
 
-  getMoreContents(cursor, prevEntries) {
+  getMoreContents(cursor, prevEntries, isSilent) {
     return this.addToQueue(`dbx.filesListFolderContinue ${cursor}`, this.throttle, () => (
       this.dbx.filesListFolderContinue({
         cursor,
       })
         .catch(this.requestError)
-    ))
+    ), isSilent)
       .then(({ result: { entries, has_more: hasMore, cursor: nextCursor } }) => {
         const allEntries = prevEntries.concat(entries);
-        return hasMore ? this.getMoreContents(nextCursor, allEntries) : allEntries;
+        return hasMore ? this.getMoreContents(nextCursor, allEntries, isSilent) : allEntries;
       });
   }
 
-  augmentFileList(type, files) {
+  augmentFileList(type, files, isSilent) {
     return files.map(({ path_lower: absolutePath, name }, index) => {
       const path = this.inSettingsPath(absolutePath);
       const augmentedFile = {
         path,
         name,
-        getFileContent: () => this.getFileContent(path, index, files.length),
+        getFileContent: () => this.getFileContent(path, index, files.length, isSilent),
       };
 
       switch (type) {
@@ -229,12 +229,12 @@ class DropboxClient extends EventEmitter {
     });
   }
 
-  getFileContent(path, index, total, silent = false) {
-    const message = silent ? '' : `dbx.filesDownload (${index + 1}/${total}) ${path}`;
+  getFileContent(path, index, total, isSilent = false) {
+    const message = `dbx.filesDownload (${index + 1}/${total}) ${path}`;
     return this.addToQueue(message, this.throttle, () => (
       this.dbx.filesDownload({ path: this.toPath(`/settings/${path}`) })
         .catch(this.requestError)
-    ))
+    ), isSilent)
       .then(({ result: { fileBlob } }) => readFileAs(fileBlob, 'text'));
   }
 

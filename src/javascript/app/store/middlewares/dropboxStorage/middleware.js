@@ -22,7 +22,7 @@ const middleware = (store) => {
     queue.add(() => (
       new Promise((resolve, reject) => {
         window.setTimeout(() => {
-          if (what && !isSilent) {
+          if (!isSilent) {
             store.dispatch({
               type: 'DROPBOX_LOG_ACTION',
               payload: {
