@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
+import { BATCH_TASK, SHOW_FILTERS, SHOW_SORT_OPTIONS } from '../../store/actions';
 
 const mapStateToProps = (state, { page }) => {
   const indexOffset = page * state.pageSize;
@@ -18,19 +19,19 @@ const mapStateToProps = (state, { page }) => {
 const mapDispatchToProps = (dispatch) => ({
   batchTask: (action, page) => {
     dispatch({
-      type: 'BATCH_TASK',
+      type: BATCH_TASK,
       payload: action,
       page,
     });
   },
   filter: () => {
     dispatch({
-      type: 'SHOW_FILTERS',
+      type: SHOW_FILTERS,
     });
   },
   showSortOptions: () => {
     dispatch({
-      type: 'SHOW_SORT_OPTIONS',
+      type: SHOW_SORT_OPTIONS,
     });
   },
 });

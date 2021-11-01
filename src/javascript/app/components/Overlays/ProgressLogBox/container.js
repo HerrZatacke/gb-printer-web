@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { LOG_CLEAR } from '../../../store/actions';
 
 const mapStateToProps = (state) => ({
   git: {
@@ -16,7 +17,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   confirm: () => {
     dispatch({
-      type: 'LOG_CLEAR',
+      type: LOG_CLEAR,
     });
   },
 });

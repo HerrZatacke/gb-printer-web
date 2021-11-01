@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import WebUSBSerial from '../../../tools/WebUSBSerial';
 import WebSerial from '../../../tools/WebSerial';
+import { SHOW_SERIALS, STORAGE_SYNC_SELECT } from '../../store/actions';
 
 const mapStateToProps = (state) => ({
   syncBusy: state.syncBusy,
@@ -24,12 +25,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   selectSync: () => {
     dispatch({
-      type: 'STORAGE_SYNC_SELECT',
+      type: STORAGE_SYNC_SELECT,
     });
   },
   setShowSerials: () => {
     dispatch({
-      type: 'SHOW_SERIALS',
+      type: SHOW_SERIALS,
       payload: true,
     });
   },

@@ -4,6 +4,7 @@ import transformCapture from '../transformCapture';
 import getTransformBitmap from '../transformBitmap';
 import readFileAs from '../readFileAs';
 import transformClassic from '../transformClassic';
+import { ADD_TO_QUEUE, CONFIRM_ANSWERED, ERROR, JSON_IMPORT } from '../../app/store/actions';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer) => (
@@ -27,7 +28,7 @@ const getHandleFileImport = (store) => {
   const onError = (error) => {
     console.error(error);
     dispatch({
-      type: 'ERROR',
+      type: ERROR,
       payload: 'FILE_NOT_READ',
     });
   };
@@ -61,7 +62,7 @@ const getHandleFileImport = (store) => {
       // roughly larger than 256MB is too much....
       if (file.size > 0xfffffff) {
         dispatch({
-          type: 'ERROR',
+          type: ERROR,
           payload: 'FILE_TOO_LARGE',
         });
         return Promise.resolve([]);
@@ -79,14 +80,14 @@ const getHandleFileImport = (store) => {
 
             if (settingsDump && settingsDump.state) {
               dispatch({
-                type: 'JSON_IMPORT',
+                type: JSON_IMPORT,
                 payload: settingsDump,
               });
               return;
             }
 
             dispatch({
-              type: 'ERROR',
+              type: ERROR,
               payload: 'NOT_A_SETTINGS_FILE',
             });
           });
@@ -105,7 +106,7 @@ const getHandleFileImport = (store) => {
                 return transformCapture(data, file.name);
               } catch (error) {
                 dispatch({
-                  type: 'ERROR',
+                  type: ERROR,
                   payload: 'NOT_A_DUMP',
                 });
                 return [];
@@ -152,7 +153,7 @@ const getHandleFileImport = (store) => {
       }
 
       dispatch({
-        type: 'ERROR',
+        type: ERROR,
         payload: 'NOT_A_DUMP',
       });
       return Promise.resolve([]);
@@ -164,22 +165,22 @@ const getHandleFileImport = (store) => {
 
         if (toBeConfirmed.length) {
           dispatch({
-            type: 'ADD_TO_QUEUE',
+            type: ADD_TO_QUEUE,
             payload: toBeConfirmed,
           });
         } else {
           store.dispatch({
-            type: 'CONFIRM_ANSWERED',
+            type: CONFIRM_ANSWERED,
           });
 
           // ToDo: use promise returns for all import methods before displaying this message
           // store.dispatch({
-          //   type: 'CONFIRM_ASK',
+          //   type: CONFIRM_ASK,
           //   payload: {
           //     message: 'Nothing found to import',
           //     confirm: () => {
           //       store.dispatch({
-          //         type: 'CONFIRM_ANSWERED',
+          //         type: CONFIRM_ANSWERED,
           //       });
           //     },
           //   },

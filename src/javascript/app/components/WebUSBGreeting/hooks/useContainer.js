@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { USE_SERIALS } from '../../../store/actions';
 
 const useContainer = () => {
   const useSerials = useSelector((state) => state.useSerials);
@@ -6,7 +7,7 @@ const useContainer = () => {
 
   const setUseSerials = (payload) => {
     dispatch({
-      type: 'USE_SERIALS',
+      type: USE_SERIALS,
       payload,
     });
   };

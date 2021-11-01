@@ -1,5 +1,6 @@
 import { del } from '../../../tools/storage';
 import { localforageImages } from '../../../tools/localforageInstance';
+import { DELETE_IMAGE, DELETE_IMAGES } from '../actions';
 
 const hashIsUsedInRGBN = (hash, images) => (
   !!images.find(({ hashes }) => {
@@ -40,8 +41,8 @@ const deleteImage = (store) => (next) => (action) => {
   next(action);
 
   switch (action.type) {
-    case 'DELETE_IMAGE':
-    case 'DELETE_IMAGES':
+    case DELETE_IMAGE:
+    case DELETE_IMAGES:
       cleanupStorage(store.getState().images);
       break;
     default:

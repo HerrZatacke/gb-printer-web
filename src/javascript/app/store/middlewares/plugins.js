@@ -4,6 +4,15 @@ import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import Decoder from '../../../tools/Decoder';
+import {
+  EXECUTE_PLUGIN_PROGRESS,
+  PLUGIN_ADD,
+  PLUGIN_IMAGE,
+  PLUGIN_IMAGES,
+  PLUGIN_REMOVE,
+  PLUGIN_UPDATE_CONFIG,
+  PLUGIN_UPDATE_PROPERTIES,
+} from '../actions';
 
 const pluginsMiddleware = (store) => {
   const registeredPlugins = {};
@@ -11,7 +20,7 @@ const pluginsMiddleware = (store) => {
 
   const progress = (progressValue) => {
     store.dispatch({
-      type: 'EXECUTE_PLUGIN_PROGRESS',
+      type: EXECUTE_PLUGIN_PROGRESS,
       payload: progressValue % 1,
     });
   };
@@ -85,7 +94,7 @@ const pluginsMiddleware = (store) => {
               const { name, description = '', configParams = {}, config = {} } = instance;
               registeredPlugins[url] = instance;
               store.dispatch({
-                type: 'PLUGIN_UPDATE_PROPERTIES',
+                type: PLUGIN_UPDATE_PROPERTIES,
                 payload: {
                   url,
                   name,
@@ -99,7 +108,7 @@ const pluginsMiddleware = (store) => {
               resolve(true);
             } catch (error) {
               store.dispatch({
-                type: 'PLUGIN_UPDATE_PROPERTIES',
+                type: PLUGIN_UPDATE_PROPERTIES,
                 payload: {
                   url,
                   loading: false,
@@ -118,7 +127,7 @@ const pluginsMiddleware = (store) => {
             window.gbpwRegisterPlugin = () => {};
 
             store.dispatch({
-              type: 'PLUGIN_UPDATE_PROPERTIES',
+              type: PLUGIN_UPDATE_PROPERTIES,
               payload: {
                 url,
                 loading: false,
@@ -150,32 +159,32 @@ const pluginsMiddleware = (store) => {
   return (next) => (action) => {
 
     switch (action.type) {
-      case 'PLUGIN_IMAGE': {
+      case PLUGIN_IMAGE: {
         const { url, hash } = action.payload;
         registeredPlugins[url].withImage(collectImageData(hash));
         break;
       }
 
-      case 'PLUGIN_IMAGES': {
+      case PLUGIN_IMAGES: {
         const { url } = action.payload;
         const { imageSelection } = store.getState();
         registeredPlugins[url].withSelection(imageSelection.map(collectImageData));
         break;
       }
 
-      case 'PLUGIN_UPDATE_CONFIG': {
+      case PLUGIN_UPDATE_CONFIG: {
         const { url, config } = action.payload;
         registeredPlugins[url].setConfig(config);
         break;
       }
 
-      case 'PLUGIN_ADD':
+      case PLUGIN_ADD:
         initPlugin({
           url: action.payload,
         });
         break;
 
-      case 'PLUGIN_REMOVE':
+      case PLUGIN_REMOVE:
         delete registeredPlugins[action.payload];
         break;
 

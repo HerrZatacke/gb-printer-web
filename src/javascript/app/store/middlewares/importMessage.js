@@ -1,3 +1,12 @@
+import {
+  HEARTBEAT_TIMED_OUT,
+  IMPORT_FILES,
+  PRINTER_DATA_RECEIVED,
+  PRINTER_FUNCTIONS_RECEIVED,
+  PRINTER_PROGRESS,
+  REMOTE_CALL_FUNCTION,
+} from '../actions';
+
 const importMessage = (store) => {
 
   let heartbeatTimer = null;
@@ -25,7 +34,7 @@ const importMessage = (store) => {
         !heartbeatTimer ||
         JSON.stringify(commands) !== JSON.stringify(store.getState().printerFunctions)) {
         store.dispatch({
-          type: 'PRINTER_FUNCTIONS_RECEIVED',
+          type: PRINTER_FUNCTIONS_RECEIVED,
           payload: commands,
         });
       }
@@ -37,7 +46,7 @@ const importMessage = (store) => {
         heartbeatTimer = null;
         remotePrinterWindow = null;
         store.dispatch({
-          type: 'HEARTBEAT_TIMED_OUT',
+          type: HEARTBEAT_TIMED_OUT,
         });
       }, 1500);
     }
@@ -51,14 +60,14 @@ const importMessage = (store) => {
       }
 
       store.dispatch({
-        type: 'IMPORT_FILES',
+        type: IMPORT_FILES,
         payload: { files: [file] },
       });
     }
 
     if (progress !== undefined) {
       store.dispatch({
-        type: 'PRINTER_PROGRESS',
+        type: PRINTER_PROGRESS,
         payload: progress,
       });
     }
@@ -66,7 +75,7 @@ const importMessage = (store) => {
     // fallback for printers with web-app version < 1.15.5 to display some "fake" progress..
     if (blob) {
       store.dispatch({
-        type: 'IMPORT_FILES',
+        type: IMPORT_FILES,
         payload: { files: [blob] },
       });
     }
@@ -83,7 +92,7 @@ const importMessage = (store) => {
       // allow the wifi printer a pause after sending all images
       window.setTimeout(() => {
         store.dispatch({
-          type: 'IMPORT_FILES',
+          type: IMPORT_FILES,
           payload: {
             files: blobsdone,
           },
@@ -93,7 +102,7 @@ const importMessage = (store) => {
 
     if (printerData) {
       store.dispatch({
-        type: 'PRINTER_DATA_RECEIVED',
+        type: PRINTER_DATA_RECEIVED,
         payload: printerData,
       });
     }
@@ -104,7 +113,7 @@ const importMessage = (store) => {
   return (next) => (action) => {
 
     switch (action.type) {
-      case 'REMOTE_CALL_FUNCTION': {
+      case REMOTE_CALL_FUNCTION: {
         const state = store.getState();
         const params = (action.payload === 'fetchImages') ?
           { dumps: state.printerData?.dumps } : undefined;

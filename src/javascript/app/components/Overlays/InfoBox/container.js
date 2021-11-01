@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
+import { FRAMES_MESSAGE_HIDE } from '../../../store/actions';
 
 const mapStateToProps = (state) => {
 
   if (state.framesMessage === 1) {
     return {
       message: {
-        type: 'FRAMES_MESSAGE_HIDE',
+        type: FRAMES_MESSAGE_HIDE,
         headline: 'You might be temporarily missing some frames',
         text: [
           'In a recent change the pre-compiled frames have been removed from this application.',

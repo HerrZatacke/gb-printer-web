@@ -1,6 +1,12 @@
 import { connect } from 'react-redux';
 import { missingGreyPalette } from '../../defaults';
 import { FILTER_FAVOURITE } from '../../../consts/specialTags';
+import {
+  EDIT_IMAGE,
+  IMAGE_SELECTION_ADD,
+  IMAGE_SELECTION_REMOVE,
+  IMAGE_SELECTION_SHIFTCLICK,
+} from '../../store/actions';
 
 const mapStateToProps = (state, { hash }) => {
   const image = state.images.find((img) => img.hash === hash);
@@ -31,25 +37,25 @@ const mapDispatchToProps = (dispatch, { hash }) => ({
   updateImageSelection: (mode, shift, page) => {
     if (shift) {
       dispatch({
-        type: 'IMAGE_SELECTION_SHIFTCLICK',
+        type: IMAGE_SELECTION_SHIFTCLICK,
         payload: hash,
         page,
       });
     } else if (mode === 'add') {
       dispatch({
-        type: 'IMAGE_SELECTION_ADD',
+        type: IMAGE_SELECTION_ADD,
         payload: hash,
       });
     } else {
       dispatch({
-        type: 'IMAGE_SELECTION_REMOVE',
+        type: IMAGE_SELECTION_REMOVE,
         payload: hash,
       });
     }
   },
   editImage: () => {
     dispatch({
-      type: 'EDIT_IMAGE',
+      type: EDIT_IMAGE,
       payload: hash,
     });
   },

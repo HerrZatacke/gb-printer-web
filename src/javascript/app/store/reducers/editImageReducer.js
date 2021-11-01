@@ -1,13 +1,22 @@
+import {
+  CANCEL_EDIT_IMAGE,
+  EDIT_IMAGE,
+  EDIT_IMAGE_SELECTION,
+  GLOBAL_UPDATE,
+  UPDATE_IMAGE,
+  UPDATE_IMAGES_BATCH,
+} from '../actions';
+
 const editImageReducer = (value = null, action) => {
   switch (action.type) {
-    case 'EDIT_IMAGE':
+    case EDIT_IMAGE:
       return { hash: action.payload };
-    case 'EDIT_IMAGE_SELECTION':
+    case EDIT_IMAGE_SELECTION:
       return action.payload;
-    case 'CANCEL_EDIT_IMAGE':
-    case 'UPDATE_IMAGE':
-    case 'UPDATE_IMAGES_BATCH':
-    case 'GLOBAL_UPDATE':
+    case CANCEL_EDIT_IMAGE:
+    case UPDATE_IMAGE:
+    case UPDATE_IMAGES_BATCH:
+    case GLOBAL_UPDATE:
       return null;
     default:
       return value;

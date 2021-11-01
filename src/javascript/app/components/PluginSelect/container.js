@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { PLUGIN_IMAGE, PLUGIN_IMAGES } from '../../store/actions';
 
 const mapStateToProps = (state) => ({
   plugins: state.plugins,
@@ -8,7 +9,7 @@ const mapDispatchToProps = (dispatch, { hash }) => ({
   toPlugins: (url) => {
     if (hash) {
       dispatch({
-        type: 'PLUGIN_IMAGE',
+        type: PLUGIN_IMAGE,
         payload: {
           url,
           hash,
@@ -16,7 +17,7 @@ const mapDispatchToProps = (dispatch, { hash }) => ({
       });
     } else {
       dispatch({
-        type: 'PLUGIN_IMAGES',
+        type: PLUGIN_IMAGES,
         payload: {
           url,
         },

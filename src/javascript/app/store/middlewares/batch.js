@@ -2,6 +2,18 @@ import getFilteredImages from '../../../tools/getFilteredImages';
 import applyTagChanges from '../../../tools/applyTagChanges';
 import { addSortIndex, removeSortIndex, sortImages } from '../../../tools/sortImages';
 import unique from '../../../tools/unique';
+import {
+  BATCH_TASK,
+  CONFIRM_ANSWERED,
+  CONFIRM_ASK,
+  DELETE_IMAGES,
+  DOWNLOAD_SELECTION,
+  EDIT_IMAGE_SELECTION,
+  IMAGE_SELECTION_SET,
+  IMAGE_SELECTION_SHIFTCLICK,
+  SET_VIDEO_PARAMS,
+  UPDATE_IMAGES_BATCH,
+} from '../actions';
 
 const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags', 'created'];
 
@@ -11,7 +23,7 @@ const collectTags = (batchImages) => (
 
 const batch = (store) => (next) => (action) => {
 
-  if (action.type === 'IMAGE_SELECTION_SHIFTCLICK') {
+  if (action.type === IMAGE_SELECTION_SHIFTCLICK) {
     const state = store.getState();
     const images = getFilteredImages(state);
     const { lastSelectedImage, pageSize } = state;
@@ -25,12 +37,12 @@ const batch = (store) => (next) => (action) => {
     const to = Math.max(prevSelectedIndex, selectedIndex);
 
     store.dispatch({
-      type: 'IMAGE_SELECTION_SET',
+      type: IMAGE_SELECTION_SET,
       payload: images.slice(from, to + 1).map(({ hash }) => hash),
     });
   }
 
-  if (action.type === 'UPDATE_IMAGES_BATCH') {
+  if (action.type === UPDATE_IMAGES_BATCH) {
     const state = store.getState();
     const sortFunc = sortImages(state);
     const { editImage, images } = state;
@@ -138,7 +150,7 @@ const batch = (store) => (next) => (action) => {
     }
   }
 
-  if (action.type === 'BATCH_TASK') {
+  if (action.type === BATCH_TASK) {
     const state = store.getState();
     const { images, imageSelection, pageSize } = state;
     const batchImages = images.filter(({ hash }) => imageSelection.includes(hash));
@@ -147,18 +159,18 @@ const batch = (store) => (next) => (action) => {
       switch (action.payload) {
         case 'delete': {
           store.dispatch({
-            type: 'CONFIRM_ASK',
+            type: CONFIRM_ASK,
             payload: {
               message: `Delete ${imageSelection.length} images?`,
               confirm: () => {
                 store.dispatch({
-                  type: 'DELETE_IMAGES',
+                  type: DELETE_IMAGES,
                   payload: imageSelection,
                 });
               },
               deny: () => {
                 store.dispatch({
-                  type: 'CONFIRM_ANSWERED',
+                  type: CONFIRM_ANSWERED,
                 });
               },
             },
@@ -169,7 +181,7 @@ const batch = (store) => (next) => (action) => {
 
         case 'animate':
           store.dispatch({
-            type: 'SET_VIDEO_PARAMS',
+            type: SET_VIDEO_PARAMS,
             payload: {
               imageSelection,
             },
@@ -177,13 +189,13 @@ const batch = (store) => (next) => (action) => {
           break;
         case 'download':
           store.dispatch({
-            type: 'DOWNLOAD_SELECTION',
+            type: DOWNLOAD_SELECTION,
             payload: imageSelection,
           });
           break;
         case 'edit':
           store.dispatch({
-            type: 'EDIT_IMAGE_SELECTION',
+            type: EDIT_IMAGE_SELECTION,
             payload: {
               hash: batchImages[0].hash,
               tags: collectTags(batchImages),
@@ -199,7 +211,7 @@ const batch = (store) => (next) => (action) => {
     switch (action.payload) {
       case 'checkall':
         store.dispatch({
-          type: 'IMAGE_SELECTION_SET',
+          type: IMAGE_SELECTION_SET,
           payload: getFilteredImages(state)
             .slice(action.page * pageSize, (action.page + 1) * pageSize)
             .map(({ hash }) => hash),
@@ -208,7 +220,7 @@ const batch = (store) => (next) => (action) => {
 
       case 'uncheckall':
         store.dispatch({
-          type: 'IMAGE_SELECTION_SET',
+          type: IMAGE_SELECTION_SET,
           payload: [],
         });
         break;

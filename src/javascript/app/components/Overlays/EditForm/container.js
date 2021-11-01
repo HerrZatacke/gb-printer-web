@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import applyTagChanges from '../../../../tools/applyTagChanges';
 import { missingGreyPalette } from '../../../defaults';
+import { CANCEL_EDIT_IMAGE, UPDATE_IMAGE, UPDATE_IMAGES_BATCH } from '../../../store/actions';
 
 const mapStateToProps = (state) => {
 
@@ -52,7 +53,7 @@ const mapDispatchToProps = (dispatch) => ({
   save: ({ batch, tagChanges }, image) => {
     if (batch) {
       dispatch({
-        type: 'UPDATE_IMAGES_BATCH',
+        type: UPDATE_IMAGES_BATCH,
         payload: {
           image,
           batch,
@@ -61,7 +62,7 @@ const mapDispatchToProps = (dispatch) => ({
       });
     } else {
       dispatch({
-        type: 'UPDATE_IMAGE',
+        type: UPDATE_IMAGE,
         payload: {
           ...image,
           tags: applyTagChanges(tagChanges),
@@ -71,7 +72,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   cancel: () => {
     dispatch({
-      type: 'CANCEL_EDIT_IMAGE',
+      type: CANCEL_EDIT_IMAGE,
     });
   },
 });
