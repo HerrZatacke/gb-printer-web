@@ -18,9 +18,14 @@ const syncLastUpdateReducer = (value = {}, action) => {
 
 
     // ToDo: check for more action types which cause syncable data to be updated
+    // case 'SET_DROPBOX_STORAGE': // Don't use!
     case 'UPDATE_IMAGE':
+    case 'UPDATE_IMAGES_BATCH':
+    case 'DELETE_IMAGE':
     case 'PALETTE_UPDATE':
-    case 'ADD_FDAME':
+    case 'PALETTE_DELETE':
+    case 'ADD_IMAGES':
+    case 'ADD_FRAME':
       return {
         ...value,
         local: Math.floor((new Date()).getTime() / 1000),
