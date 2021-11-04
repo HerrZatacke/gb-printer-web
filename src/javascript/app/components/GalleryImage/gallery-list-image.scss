@@ -55,13 +55,18 @@ $block: #{'.gallery-list-image'};
       left: 0;
       width: inherit;
       min-height: inherit;
+      max-height: 36px;
+      overflow: hidden;
       transition:
         width ease-in-out 150ms,
         left ease-in-out 150ms,
-        top ease-in-out 150ms;
+        top ease-in-out 150ms,
+        max-height ease-in-out 150ms;
+
 
       #{$block}:hover & {
         @media (min-width: $breakpoint-mobile) {
+          max-height: 10000px;
           width: 160px;
           left: 25px;
           top: -54px;

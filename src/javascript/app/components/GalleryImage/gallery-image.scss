@@ -12,14 +12,17 @@
 
   .gallery--1x & {
     width: 160px;
+    max-height: 350px;
   }
 
   .gallery--2x & {
     width: 320px;
+    max-height: 650px;
   }
 
   .gallery--3x & {
     width: 480px;
+    max-height: 850px;
   }
 
   .gallery--4x & {
@@ -34,6 +37,12 @@
     border: none;
     padding: 0;
     cursor: pointer;
+    overflow: hidden;
+
+    &:hover {
+      z-index: $z-index-hover-image;
+      overflow: visible;
+    }
   }
 
   &__title {
@@ -60,6 +69,7 @@
     left: -5px;
     height: auto;
     top: 5px;
+    z-index: $z-index-gallery-image-buttons;
 
     body.no-touch & {
       display: none;
