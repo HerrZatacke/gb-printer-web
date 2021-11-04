@@ -1,9 +1,11 @@
 import {
+  CONFIRM_ANSWERED,
+  CONFIRM_ASK,
   HEARTBEAT_TIMED_OUT,
   IMPORT_FILES,
   PRINTER_DATA_RECEIVED,
   PRINTER_FUNCTIONS_RECEIVED,
-  PRINTER_PROGRESS,
+  PRINTER_PROGRESS, PRINTER_RESET,
   REMOTE_CALL_FUNCTION,
 } from '../actions';
 
@@ -89,15 +91,32 @@ const importMessage = (store) => {
         return;
       }
 
-      // allow the wifi printer a pause after sending all images
-      window.setTimeout(() => {
+      const files = blobsdone.filter((response) => (response.blob && response.ok));
+
+      if (files.length) {
         store.dispatch({
           type: IMPORT_FILES,
           payload: {
-            files: blobsdone,
+            files,
           },
         });
-      }, 250);
+      } else {
+
+        store.dispatch({
+          type: CONFIRM_ASK,
+          payload: {
+            message: 'No valid files received from WiFi-Printer',
+            confirm: () => {
+              store.dispatch({
+                type: CONFIRM_ANSWERED,
+              });
+              store.dispatch({
+                type: PRINTER_RESET,
+              });
+            },
+          },
+        });
+      }
     }
 
     if (printerData) {

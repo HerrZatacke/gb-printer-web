@@ -1,4 +1,5 @@
 import Queue from 'promise-queue/lib';
+import fetchDumpRetry from '../fetchDumpRetry';
 
 const queue = new Queue(1, Infinity);
 const addToQueue = (fn, { delay = 250 }) => (
@@ -16,26 +17,25 @@ const addToQueue = (fn, { delay = 250 }) => (
 const fetchImages = (targetWindow, { dumps }, remoteParams) => (
   Promise.all(dumps.map((dump, index) => (
     addToQueue(
-      () => fetch(`/${dump.replace(/^\//, '')}`)
-        .then((res) => (
-          res.blob()
-            .then((blob) => {
-              const contentType = res.headers.get('content-type');
+      () => fetchDumpRetry(`/${dump.replace(/^\//, '')}`, 3)
+        .then(({ blob, contentType, status, ok }) => {
+          targetWindow.postMessage({
+            fromRemotePrinter: {
+              progress: (index + 1) / dumps.length,
+            },
+          }, '*');
 
-              targetWindow.postMessage({
-                fromRemotePrinter: {
-                  progress: (index + 1) / dumps.length,
-                },
-              }, '*');
-
-              return {
-                blob,
-                contentType,
-                status: res.status,
-                ok: res.ok,
-              };
-            })
-        )),
+          return { blob, contentType, status, ok };
+        })
+        .catch((error) => {
+          console.warn(error);
+          return {
+            blob: null,
+            contentType: null,
+            status: null,
+            ok: false,
+          };
+        }),
       remoteParams,
     )
   )))
