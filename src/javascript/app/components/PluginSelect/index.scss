@@ -1,7 +1,7 @@
 .plugin-select {
   @include theme-background-color($color-grey-70, $color-grey-50);
   position: absolute;
-  z-index: $z-index-blugin-buttons;
+  z-index: $z-index-plugin-buttons;
   width: 250px;
   display: none;
   flex-direction: column;
