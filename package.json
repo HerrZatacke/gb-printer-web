@@ -62,7 +62,6 @@
     "node-polyfill-webpack-plugin": "^1.1.2",
     "node-sass": "^6.0.1",
     "node-watch": "^0.7.1",
-    "nodemon": "^2.0.4",
     "object-hash": "^2.0.3",
     "omggif": "^1.0.10",
     "pako": "^1.0.11",
