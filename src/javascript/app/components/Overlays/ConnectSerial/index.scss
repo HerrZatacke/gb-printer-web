@@ -1,14 +1,14 @@
 @keyframes blink {
   0% {
-    @include theme-background-color($color-button-green, $color-button-green);
+    background-color: $color-button-green;
   }
 
   50% {
-    @include theme-background-color($color-text-bright, $color-text-bright);
+    background-color: $color-text-bright;
   }
 
   100% {
-    @include theme-background-color($color-button-green, $color-button-green);
+    background-color: $color-button-green;
   }
 }
 
