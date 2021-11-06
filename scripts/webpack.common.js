@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -29,12 +30,6 @@ module.exports = () => ({
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.(js|jsx)$/,
-        loader: 'eslint-loader',
-        include: path.join(process.cwd(), 'src'),
-      },
       {
         test: /\.(js|jsx)$/,
         use: {
@@ -137,6 +132,9 @@ module.exports = () => ({
     filename: '[fullhash:4]/[name].js',
   },
   plugins: [
+    new ESLintPlugin({
+      extensions: ['js', 'jsx'],
+    }),
     new HtmlWebpackPlugin({
       title: 'Gameboy Printer Web',
       template: './src/assets/index.html',

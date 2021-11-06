@@ -8,31 +8,20 @@ module.exports = merge(common(), {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   devServer: {
-    inline: true,
     hot: true,
-    disableHostCheck: true,
-    stats: {
-      colors: true,
-      assets: false,
-      entrypoints: false,
-      modules: false,
+    allowedHosts: 'all',
+    static: {
+      directory: path.join(process.cwd(), 'src', 'assets'),
     },
-    overlay: {
-      warnings: false,
-      errors: true,
-    },
-    contentBase: path.join(process.cwd(), 'src', 'assets'),
     port: 3000,
-    watchContentBase: true,
     host: '0.0.0.0',
-    before: setupServer,
+    onBeforeSetupMiddleware: ({ app }) => setupServer(app),
   },
   target: 'web',
   optimization: {
     moduleIds: 'named',
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       ENV: '\'development\'',
