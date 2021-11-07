@@ -16,10 +16,13 @@ const mergeSettings = (dispatch, state, newSettings, mergeImagesFrames = false) 
     }
   });
 
-  dispatch({
-    type: GLOBAL_UPDATE,
-    payload: cleanState(mergeStates(state, newSettings.state || {}, mergeImagesFrames)),
-  });
+  cleanState(mergeStates(state, newSettings.state || {}, mergeImagesFrames))
+    .then((cleanedState) => {
+      dispatch({
+        type: GLOBAL_UPDATE,
+        payload: cleanedState,
+      });
+    });
 };
 
 const settings = (store) => {

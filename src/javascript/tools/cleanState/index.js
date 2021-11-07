@@ -4,6 +4,7 @@ import { dateFormat, defaultRGBNPalette } from '../../app/defaults';
 import uniqueBy from '../unique/by';
 import cleanUrl from '../cleanUrl';
 import { blendModeKeys } from '../RGBNDecoder/blendModes';
+import hashFrames from './hashFrames';
 
 const cleanState = (dirtyState) => {
 
@@ -109,17 +110,23 @@ const cleanState = (dirtyState) => {
     local: dirtyState.syncLastUpdate?.local || 0,
   };
 
-  return {
-    ...dirtyState,
-    syncLastUpdate,
-    images,
-    palettes,
-    plugins,
-    printerUrl,
-    framesMessage,
-    activePalette,
-    recentImports,
-  };
+  return new Promise((resolve) => {
+    hashFrames(dirtyState.frames)
+      .then((frames) => {
+        resolve({
+          ...dirtyState,
+          frames,
+          syncLastUpdate,
+          images,
+          palettes,
+          plugins,
+          printerUrl,
+          framesMessage,
+          activePalette,
+          recentImports,
+        });
+      });
+  });
 };
 
 export default cleanState;

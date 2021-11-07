@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import reducers from './reducers';
-import cleanState from '../../tools/cleanState';
 import saveState from './middlewares/saveState';
 import middlewares from './middlewares';
 
@@ -15,7 +14,7 @@ const enhancers = [
 ];
 
 const getStore = (config) => {
-  const store = createStore(reducers, cleanState(config), composeEnhancers(...enhancers));
+  const store = createStore(reducers, config, composeEnhancers(...enhancers));
   window.store = store;
   return store;
 };

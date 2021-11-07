@@ -206,11 +206,12 @@ class DropboxClient extends EventEmitter {
   }
 
   augmentFileList(type, files, isSilent) {
-    return files.map(({ path_lower: absolutePath, name }, index) => {
+    return files.map(({ path_lower: absolutePath, content_hash: contentHash, name }, index) => {
       const path = this.inSettingsPath(absolutePath);
       const augmentedFile = {
         path,
         name,
+        contentHash,
         getFileContent: () => this.getFileContent(path, index, files.length, isSilent),
       };
 
