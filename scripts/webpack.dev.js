@@ -13,6 +13,11 @@ module.exports = merge(common(), {
     static: {
       directory: path.join(process.cwd(), 'src', 'assets'),
     },
+    client: {
+      overlay: {
+        warnings: false,
+      },
+    },
     port: 3000,
     host: '0.0.0.0',
     onBeforeSetupMiddleware: ({ app }) => setupServer(app),
