@@ -47,7 +47,7 @@ const useFrames = () => {
 
     setFrameGroups(groups);
 
-  }, [frames, selectedFrameGroup]);
+  }, [frames]);
 
   const deleteFrame = (id) => dispatch({
     type: DELETE_FRAME,
