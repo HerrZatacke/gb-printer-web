@@ -6,6 +6,7 @@ import Home from '../Home';
 import Gallery from '../Gallery';
 import Import from '../Import';
 import Palettes from '../Palettes';
+import Frames from '../Frames';
 import Settings from '../Settings';
 import Overlays from '../Overlays';
 import WebUSBGreeting from '../WebUSBGreeting';
@@ -48,6 +49,10 @@ const App = (props) => {
               );
             }}
           />
+          <Route path="/frames">
+            <h1 className="app__content-headline">Frames</h1>
+            <Frames />
+          </Route>
           <Route path="/palettes">
             <h1 className="app__content-headline">Palettes</h1>
             <Palettes />

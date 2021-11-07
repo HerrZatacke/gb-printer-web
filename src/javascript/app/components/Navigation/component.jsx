@@ -70,6 +70,17 @@ const Navigation = (props) => {
         </li>
         <li className="navigation__entry">
           <NavLink
+            to="/frames"
+            activeClassName="navigation__link--active"
+            className="navigation__link"
+            exact
+            onClick={() => setMobileNavOpen(false)}
+          >
+            Frames
+          </NavLink>
+        </li>
+        <li className="navigation__entry">
+          <NavLink
             to="/settings"
             activeClassName="navigation__link--active"
             className="navigation__link"
