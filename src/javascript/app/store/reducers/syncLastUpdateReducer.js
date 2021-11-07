@@ -1,6 +1,7 @@
 import {
   ADD_FRAME,
   ADD_IMAGES,
+  DELETE_FRAME,
   DELETE_IMAGE,
   DROPBOX_SETTINGS_IMPORT,
   LAST_UPDATE_DROPBOX_REMOTE,
@@ -39,6 +40,7 @@ const syncLastUpdateReducer = (value = {}, action) => {
     case PALETTE_DELETE:
     case ADD_IMAGES:
     case ADD_FRAME:
+    case DELETE_FRAME:
       return {
         ...value,
         local: Math.floor((new Date()).getTime() / 1000),

@@ -11,6 +11,7 @@ const Frames = () => {
     selectedFrameGroup,
     setSelectedFrameGroup,
     palette,
+    deleteFrame,
   } = useFrames();
 
   const activeGroup = frameGroups.find(({ id }) => selectedFrameGroup === id);
@@ -50,6 +51,17 @@ const Frames = () => {
                 name={frame.name}
                 palette={palette}
               />
+              <button
+                type="button"
+                onClick={() => {
+                  // eslint-disable-next-line no-alert
+                  if (window.confirm('really delete?')) {
+                    deleteFrame(frame.id);
+                  }
+                }}
+              >
+                DELETE!!
+              </button>
             </div>
           ))
         )}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import getFrameGroups from '../../../tools/getFrameGroups';
+import { DELETE_FRAME } from '../../store/actions';
 
 const prioId = (id) => {
   switch (id) {
@@ -16,6 +17,7 @@ const prioId = (id) => {
 };
 
 const useFrames = () => {
+  const dispatch = useDispatch();
   const frames = useSelector((state) => state.frames);
   const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === state.activePalette));
   const [frameGroups, setFrameGroups] = useState([]);
@@ -47,11 +49,17 @@ const useFrames = () => {
 
   }, [frames, selectedFrameGroup]);
 
+  const deleteFrame = (id) => dispatch({
+    type: DELETE_FRAME,
+    payload: id,
+  });
+
   return {
     selectedFrameGroup,
     setSelectedFrameGroup,
     frameGroups,
     palette: palette.palette,
+    deleteFrame,
   };
 };
 
