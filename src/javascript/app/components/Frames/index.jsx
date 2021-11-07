@@ -12,9 +12,8 @@ const Frames = () => {
     setSelectedFrameGroup,
     palette,
     deleteFrame,
+    groupFrames,
   } = useFrames();
-
-  const activeGroup = frameGroups.find(({ id }) => selectedFrameGroup === id);
 
   return (
     <div className="frames">
@@ -41,7 +40,7 @@ const Frames = () => {
 
       <ul className="frames__list">
         {(
-          activeGroup?.frames?.map((frame) => (
+          groupFrames?.map((frame) => (
             <div
               className="frame"
               key={`frame-${frame.id}`}

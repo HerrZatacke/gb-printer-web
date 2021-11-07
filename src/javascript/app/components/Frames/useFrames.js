@@ -18,10 +18,12 @@ const prioId = (id) => {
 
 const useFrames = () => {
   const dispatch = useDispatch();
+  const savFrameTypes = useSelector((state) => state.savFrameTypes);
   const frames = useSelector((state) => state.frames);
   const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === state.activePalette));
   const [frameGroups, setFrameGroups] = useState([]);
-  const [selectedFrameGroup, setSelectedFrameGroup] = useState('');
+  const [groupFrames, setGroupFrames] = useState([]);
+  const [selectedFrameGroup, setSelectedFrameGroup] = useState(savFrameTypes);
 
   useEffect(() => {
     const groups = getFrameGroups(frames)
@@ -40,22 +42,27 @@ const useFrames = () => {
         return 0;
       });
 
-    groups.forEach((group) => {
-      // eslint-disable-next-line no-param-reassign
-      group.frames = frames.filter(({ id }) => id.startsWith(group.id));
-    });
-
     setFrameGroups(groups);
 
   }, [frames]);
+
+  useEffect(() => {
+    if (selectedFrameGroup) {
+      setGroupFrames(frames.filter(({ id }) => id.startsWith(selectedFrameGroup)));
+    } else {
+      setGroupFrames([]);
+    }
+  }, [frames, selectedFrameGroup]);
 
   const deleteFrame = (id) => dispatch({
     type: DELETE_FRAME,
     payload: id,
   });
 
+
   return {
     selectedFrameGroup,
+    groupFrames,
     setSelectedFrameGroup,
     frameGroups,
     palette: palette.palette,
