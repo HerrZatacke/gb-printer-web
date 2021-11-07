@@ -11,7 +11,6 @@ const Frames = () => {
     selectedFrameGroup,
     setSelectedFrameGroup,
     palette,
-    deleteFrame,
     groupFrames,
   } = useFrames();
 
@@ -41,29 +40,19 @@ const Frames = () => {
       <ul className="frames__list">
         {(
           groupFrames?.map((frame) => (
-            <div
-              className="frame"
+            <Frame
+              id={frame.id}
               key={`frame-${frame.id}`}
-            >
-              <Frame
-                id={frame.id}
-                name={frame.name}
-                palette={palette}
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  // eslint-disable-next-line no-alert
-                  if (window.confirm('really delete?')) {
-                    deleteFrame(frame.id);
-                  }
-                }}
-              >
-                DELETE!!
-              </button>
-            </div>
+              name={frame.name}
+              palette={palette}
+            />
           ))
         )}
+        <li className="frame frame--dummy" key="dummy1" />
+        <li className="frame frame--dummy" key="dummy2" />
+        <li className="frame frame--dummy" key="dummy3" />
+        <li className="frame frame--dummy" key="dummy4" />
+        <li className="frame frame--dummy" key="dummy5" />
       </ul>
     </div>
   );

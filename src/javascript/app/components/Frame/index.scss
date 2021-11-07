@@ -1,0 +1,40 @@
+.frame {
+  flex-shrink: 0;
+  max-width: 80vw;
+  padding: 10px;
+  margin: 0 5px 10px;
+  position: relative;
+  border-radius: $default-border-radius;
+  display: flex;
+  flex-direction: column;
+  box-sizing: content-box;
+  width: 160px;
+  max-height: 350px;
+  @include theme-background-color(rgba($color-grey-40, 0.5), rgba($color-grey-30, 0.5));
+
+  &:hover{
+    @include theme-background-color($color-grey-60, $color-grey-30);
+  }
+
+  &__image {
+    display: block;
+    min-height: 144px;
+    width: 100%;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  &--dummy {
+    height: 0;
+    cursor: default;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    background: none;
+    @include theme-background-color(transparent, transparent);
+  }
+}
+
