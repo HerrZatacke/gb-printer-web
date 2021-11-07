@@ -2,23 +2,29 @@ import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
 import { localforageFrames } from '../localforageInstance';
 
 const saveFrameData = (frameId, imageTiles) => (
-  import(/* webpackChunkName: "pko" */ 'pako')
-    .then(({ default: pako }) => {
-      const frameData = imageTiles
-        .filter((_, index) => tileIndexIsPartOfFrame(index, 'keep'))
-        .map((line) => (
-          line.replace(/ /gi, '')
-        ))
-        .join('\n');
+  import(/* webpackChunkName: "obh" */ 'object-hash')
+    .then(({ default: hash }) => (
+      import(/* webpackChunkName: "pko" */ 'pako')
+        .then(({ default: pako }) => {
+          const frameData = imageTiles
+            .filter((_, index) => tileIndexIsPartOfFrame(index, 'keep'))
+            .map((line) => (
+              line.replace(/ /gi, '')
+            ))
+            .join('\n');
 
-      const compressed = pako.deflate(frameData, {
-        to: 'string',
-        strategy: 1,
-        level: 8,
-      });
+          const compressed = pako.deflate(frameData, {
+            to: 'string',
+            strategy: 1,
+            level: 8,
+          });
 
-      return localforageFrames.setItem(frameId, compressed);
-    })
+          const dataHash = hash(compressed);
+
+          return localforageFrames.setItem(frameId, compressed)
+            .then(() => dataHash);
+        })
+    ))
 );
 
 const loadFrameData = (frameId) => {
