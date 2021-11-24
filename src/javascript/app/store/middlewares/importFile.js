@@ -8,7 +8,9 @@ const importFile = (store) => {
     if (action.type === IMPORT_FILES) {
 
       if (action.payload.files && action.payload.files.length) {
-        handleFileImport([...action.payload.files]);
+        handleFileImport([...action.payload.files], {
+          fromPrinter: action.payload.fromPrinter || false,
+        });
       }
 
       // don't call next(action)

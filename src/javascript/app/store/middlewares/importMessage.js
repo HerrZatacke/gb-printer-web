@@ -98,6 +98,7 @@ const importMessage = (store) => {
           type: IMPORT_FILES,
           payload: {
             files,
+            fromPrinter: true,
           },
         });
       } else {

@@ -92,7 +92,7 @@ const encodeTileTh = (thresholds) => {
   };
 };
 
-const getTransformBitmap = (store) => (file) => {
+const getTransformBitmap = (store) => (file, fromPrinter = false) => {
   const { dispatch } = store;
   const img = document.createElement('img');
   const canvas = document.createElement('canvas');
@@ -120,6 +120,25 @@ const getTransformBitmap = (store) => (file) => {
       for (let col = 0; col < canvas.width; col += 8) {
         tileLines.push(encodeTile(context.getImageData(col, row, 8, 8)));
       }
+    }
+
+    const saveImage = () => {
+      saveNewImage({
+        lines: tileLines,
+        filename: file.name?.split('.').shift() || '',
+        palette: store.getState().activePalette,
+      })
+        .then((image) => {
+          dispatch({
+            type: ADD_IMAGES,
+            payload: [image],
+          });
+        });
+    };
+
+    if (fromPrinter) {
+      saveImage();
+      return;
     }
 
     const { frames } = store.getState();
@@ -159,17 +178,7 @@ const getTransformBitmap = (store) => (file) => {
                 });
               });
           } else {
-            saveNewImage({
-              lines: tileLines,
-              filename: file.name.split('.').shift(),
-              palette: store.getState().activePalette,
-            })
-              .then((image) => {
-                dispatch({
-                  type: ADD_IMAGES,
-                  payload: [image],
-                });
-              });
+            saveImage();
           }
         },
         deny: () => {

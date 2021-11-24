@@ -33,7 +33,7 @@ const getHandleFileImport = (store) => {
     });
   };
 
-  return (files) => {
+  return (files, { fromPrinter } = { fromPrinter: false }) => {
 
     const groupImports = files.map((fileData) => {
       let file = fileData;
@@ -55,7 +55,7 @@ const getHandleFileImport = (store) => {
       }
 
       if (contentType && contentType.startsWith('image/')) {
-        transformBitmap(file);
+        transformBitmap(file, fromPrinter);
         return Promise.resolve([]);
       }
 
