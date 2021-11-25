@@ -40,8 +40,11 @@ const getThresholds = ({ data }) => {
       Math.floor(r * (a / 255))
     ));
 
-  const min = Math.min(...tones);
-  const max = Math.max(...tones);
+  // not possible due to max callstack size
+  // const min = Math.min(...tones);
+  // const max = Math.max(...tones);
+  const min = tones.reduce((prev, current) => (prev < current ? prev : current), 255);
+  const max = tones.reduce((prev, current) => (prev > current ? prev : current), 0);
 
   const conditions = [...new Array(BINS)]
     .map((_, index) => ({
