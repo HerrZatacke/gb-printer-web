@@ -1,7 +1,7 @@
 import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
 import { localforageFrames } from '../localforageInstance';
 
-const saveFrameData = (frameId, imageTiles) => (
+const saveFrameData = (imageTiles) => (
   import(/* webpackChunkName: "obh" */ 'object-hash')
     .then(({ default: hash }) => (
       import(/* webpackChunkName: "pko" */ 'pako')
@@ -21,18 +21,18 @@ const saveFrameData = (frameId, imageTiles) => (
 
           const dataHash = hash(compressed);
 
-          return localforageFrames.setItem(frameId, compressed)
+          return localforageFrames.setItem(dataHash, compressed)
             .then(() => dataHash);
         })
     ))
 );
 
-const loadFrameData = (frameId) => {
-  if (!frameId) {
+const loadFrameData = (frameHash) => {
+  if (!frameHash) {
     return Promise.resolve(null);
   }
 
-  return localforageFrames.getItem(frameId)
+  return localforageFrames.getItem(frameHash)
     .then((binary) => {
       if (!binary) {
         return null;
