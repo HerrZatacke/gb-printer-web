@@ -18,7 +18,7 @@ const framesReducer = (frames = [], action) => {
     case ADD_FRAME:
       return uniqueBy('id')([action.payload, ...frames]).sort(sortFrames);
     case DELETE_FRAME:
-      return frames.filter(({ id }) => id !== action.payload);
+      return frames.filter(({ hash }) => hash !== action.payload);
     case GLOBAL_UPDATE:
       return uniqueBy('id')(action.payload.frames).sort(sortFrames);
     default:

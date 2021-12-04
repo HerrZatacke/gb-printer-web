@@ -28,7 +28,7 @@ const Frame = ({ frameId, name, palette }) => {
         onClick={() => {
           // eslint-disable-next-line no-alert
           if (window.confirm('really delete?')) {
-            deleteFrame(frameId);
+            deleteFrame();
           }
         }}
       >

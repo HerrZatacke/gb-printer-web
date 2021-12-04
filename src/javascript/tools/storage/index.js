@@ -1,6 +1,6 @@
 import dummyImage from './dummyImage';
 import applyFrame from '../applyFrame';
-import { localforageImages } from '../localforageInstance';
+import { localforageFrames, localforageImages } from '../localforageInstance';
 
 const save = (lines) => (
   import(/* webpackChunkName: "obh" */ 'object-hash')
@@ -63,8 +63,13 @@ const del = (dataHash) => {
   localforageImages.removeItem(dataHash);
 };
 
+const delFrame = (dataHash) => {
+  localforageFrames.removeItem(dataHash);
+};
+
 export {
   save,
   load,
   del,
+  delFrame,
 };
