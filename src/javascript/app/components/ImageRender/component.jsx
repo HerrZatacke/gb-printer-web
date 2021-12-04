@@ -5,8 +5,7 @@ import GameBoyImage from '../GameBoyImage';
 const ImageRender = ({
   hash,
   hashes,
-  images,
-  frame,
+  frameId,
   lockFrame,
   invertPalette,
   palette,
@@ -20,7 +19,7 @@ const ImageRender = ({
     let aborted = false;
 
     // setTiles(null); // no need to clear before update?
-    loadImageTiles({ images })({ hash, frame, hashes }, false, recover)
+    loadImageTiles({ hash, frame: frameId, hashes }, false, recover)
       .then((loadedTiles) => {
         if (aborted) {
           return;
@@ -33,7 +32,7 @@ const ImageRender = ({
     return () => {
       aborted = true;
     };
-  }, [images, loadImageTiles, reportTileCount, hash, hashes, frame, recover]);
+  }, [loadImageTiles, reportTileCount, hash, hashes, frameId, recover]);
 
   return tiles ? (
     <GameBoyImage
@@ -52,20 +51,19 @@ ImageRender.propTypes = {
   reportTileCount: PropTypes.func,
   hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
-  images: PropTypes.array.isRequired,
   palette: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
   ]).isRequired,
   invertPalette: PropTypes.bool.isRequired,
-  frame: PropTypes.string,
+  frameId: PropTypes.string,
   lockFrame: PropTypes.bool.isRequired,
   recover: PropTypes.func.isRequired,
 };
 
 ImageRender.defaultProps = {
   hashes: null,
-  frame: null,
+  frameId: null,
   reportTileCount: () => {},
 };
 

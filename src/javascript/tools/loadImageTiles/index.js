@@ -3,17 +3,20 @@ import getRGBNFrames from '../getRGBNFrames';
 import RGBNDecoder from '../RGBNDecoder';
 
 const loadImageTiles = (state) => ({ hash, frame, hashes }, noDummy, recover) => {
+
+  const frameHash = state.frames.find(({ id }) => id === frame)?.hash || null;
+
   if (!hashes) {
-    return load(hash, frame, noDummy, recover);
+    return load(hash, frameHash, noDummy, recover);
   }
 
-  const frames = getRGBNFrames(state, hashes, frame);
+  const frames = getRGBNFrames(state, hashes, frameHash);
 
   return Promise.all([
-    load(hashes.r, frames.r || frame, noDummy, recover),
-    load(hashes.g, frames.g || frame, noDummy, recover),
-    load(hashes.b, frames.b || frame, noDummy, recover),
-    load(hashes.n, frames.n || frame, noDummy, recover),
+    load(hashes.r, frames.r || frameHash, noDummy, recover),
+    load(hashes.g, frames.g || frameHash, noDummy, recover),
+    load(hashes.b, frames.b || frameHash, noDummy, recover),
+    load(hashes.n, frames.n || frameHash, noDummy, recover),
   ])
     .then(RGBNDecoder.rgbnTiles);
 };

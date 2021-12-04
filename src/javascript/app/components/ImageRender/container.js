@@ -3,8 +3,7 @@ import loadImageTiles from '../../../tools/loadImageTiles';
 import { TRY_RECOVER_IMAGE_DATA } from '../../store/actions';
 
 const mapStateToProps = (state) => ({
-  loadImageTiles,
-  images: state.images,
+  loadImageTiles: loadImageTiles(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

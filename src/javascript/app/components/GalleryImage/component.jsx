@@ -66,7 +66,7 @@ const GalleryImage = ({
           lockFrame={lockFrame}
           invertPalette={invertPalette}
           palette={palette.palette || palette}
-          frame={frame}
+          frameId={frame}
           hash={hash}
           hashes={hashes}
         />
@@ -113,7 +113,7 @@ const GalleryImage = ({
               lockFrame={lockFrame}
               invertPalette={invertPalette}
               palette={palette.palette || palette}
-              frame={frame}
+              frameId={frame}
               hash={hash}
               hashes={hashes}
             />

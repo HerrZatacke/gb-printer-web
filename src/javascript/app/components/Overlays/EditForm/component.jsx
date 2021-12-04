@@ -95,7 +95,7 @@ const EditForm = (props) => {
         lockFrame={lockFrame}
         invertPalette={invertPalette}
         palette={usedPalette}
-        frame={frame}
+        frameId={frame}
         hash={props.hash}
         hashes={props.hashes}
         reportTileCount={(tileCount) => {
