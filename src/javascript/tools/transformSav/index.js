@@ -1,5 +1,5 @@
 import applyFrame from '../applyFrame';
-import mapCartFrameToName from './mapCartFrameToName';
+import mapCartFrameToHash from './mapCartFrameToHash';
 import getFrameGroups from '../getFrameGroups';
 import sortBy from '../sortby';
 import { CONFIRM_ANSWERED, CONFIRM_ASK } from '../../app/store/actions';
@@ -87,7 +87,7 @@ const getTransformSav = (store) => (data, filename) => {
 
           if (transformedData) {
             framed.push(
-              applyFrame(transformedData, mapCartFrameToName(frameNumber, selectedFrameset, frames))
+              applyFrame(transformedData, mapCartFrameToHash(frameNumber, selectedFrameset, frames))
                 .then((lines) => ({
                   lines,
                   ...getFileMeta(baseAddress),
