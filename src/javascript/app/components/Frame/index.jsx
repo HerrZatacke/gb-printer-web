@@ -5,8 +5,8 @@ import './index.scss';
 import useFrame from './useFrame';
 
 
-const Frame = ({ id, name, palette }) => {
-  const { deleteFrame, tiles } = useFrame({ id, name });
+const Frame = ({ frameId, name, palette }) => {
+  const { deleteFrame, tiles } = useFrame({ frameId, name });
 
   if (!tiles) {
     return null;
@@ -28,7 +28,7 @@ const Frame = ({ id, name, palette }) => {
         onClick={() => {
           // eslint-disable-next-line no-alert
           if (window.confirm('really delete?')) {
-            deleteFrame(id);
+            deleteFrame(frameId);
           }
         }}
       >
@@ -39,7 +39,7 @@ const Frame = ({ id, name, palette }) => {
 };
 
 Frame.propTypes = {
-  id: PropTypes.string.isRequired,
+  frameId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   palette: PropTypes.array.isRequired,
 };

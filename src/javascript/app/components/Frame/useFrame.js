@@ -1,23 +1,24 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { DELETE_FRAME } from '../../store/actions';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
 
-const getTiles = ({ id, name }) => {
-  const text = `\n  ID: ${id}\n\n  ${name}`;
-  return applyFrame(textToTiles(text), id);
+const getTiles = ({ frameId, frameHash, name }) => {
+  const text = `\n  frameId: ${frameId}\n\n  ${name}`;
+  return applyFrame(textToTiles(text), frameHash);
 };
 
-const useFrame = ({ id, name }) => {
+const useFrame = ({ frameId, name }) => {
   const dispatch = useDispatch();
   const [tiles, setTiles] = useState(null);
-
+  const frameHash = useSelector(({ frames }) => frames.find(({ id }) => id === frameId).hash);
 
   useEffect(() => {
     let mounted = true;
     getTiles({
-      id,
+      frameId,
+      frameHash,
       name,
     }).then((t) => {
       if (mounted) {
@@ -28,11 +29,11 @@ const useFrame = ({ id, name }) => {
     return () => {
       mounted = false;
     };
-  }, [id, name]);
+  }, [frameId, frameHash, name]);
 
-  const deleteFrame = (frameId) => dispatch({
+  const deleteFrame = (deleteFrameId) => dispatch({
     type: DELETE_FRAME,
-    payload: frameId,
+    payload: deleteFrameId,
   });
 
   return {

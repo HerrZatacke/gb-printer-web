@@ -41,7 +41,7 @@ const Frames = () => {
         {(
           groupFrames?.map((frame) => (
             <Frame
-              id={frame.id}
+              frameId={frame.id}
               key={`frame-${frame.id}`}
               name={frame.name}
               palette={palette}
