@@ -1,13 +1,13 @@
 import { loadFrameData } from './frameData';
 
-const applyFrame = (tiles, which) => {
+const applyFrame = (tiles, frameHash) => {
 
   // image must be "default" dimensions
   if (tiles.length !== 360) {
     return Promise.resolve(tiles);
   }
 
-  return loadFrameData(which)
+  return loadFrameData(frameHash)
     .then((frameData) => {
 
       const result = [...tiles];

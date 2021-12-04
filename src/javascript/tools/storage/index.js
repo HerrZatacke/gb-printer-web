@@ -27,7 +27,7 @@ const save = (lines) => (
     ))
 );
 
-const load = (dataHash, frame, noDummy, recover = false) => {
+const load = (dataHash, frameHash, noDummy, recover = false) => {
   if (!dataHash) {
     return Promise.resolve(null);
   }
@@ -51,11 +51,11 @@ const load = (dataHash, frame, noDummy, recover = false) => {
           })
       ))
   ).then((tiles) => {
-    if (!frame) {
+    if (!frameHash) {
       return tiles;
     }
 
-    return applyFrame(tiles, frame);
+    return applyFrame(tiles, frameHash);
   });
 };
 
