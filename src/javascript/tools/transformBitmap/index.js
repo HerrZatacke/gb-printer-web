@@ -170,7 +170,7 @@ const getTransformBitmap = (store) => (file, fromPrinter = false) => {
           const frameId = getFrameId({ frameSet, frameSetNew, frameIndex });
 
           if (frameId && frameName) {
-            saveFrameData(frameId, tileLines)
+            saveFrameData(tileLines)
               .then((hash) => {
                 dispatch({
                   type: ADD_FRAME,
