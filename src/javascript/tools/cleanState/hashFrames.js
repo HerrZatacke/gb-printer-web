@@ -6,17 +6,24 @@ const hashFrames = async (dirtyStateFrames) => {
 
   if (hasUnhashedFrames) {
     return import(/* webpackChunkName: "obh" */ 'object-hash')
-      .then(({ default: hash }) => (
+      .then(({ default: hasher }) => (
         Promise.all(dirtyStateFrames.map((frame) => {
           if (frame.hash) {
             return frame;
           }
 
           return localforageFrames.getItem(frame.id)
-            .then((frameData) => ({
-              ...frame,
-              hash: hash(frameData),
-            }));
+            .then((frameData) => {
+              const hash = hasher(frameData);
+              return localforageFrames.removeItem(frame.id)
+                .then(() => (
+                  localforageFrames.setItem(hash, frameData)
+                ))
+                .then(() => ({
+                  ...frame,
+                  hash,
+                }));
+            });
         }))
       ));
   }
