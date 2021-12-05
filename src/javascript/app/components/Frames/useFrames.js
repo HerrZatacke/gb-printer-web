@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import getFrameGroups from '../../../tools/getFrameGroups';
+import { JSON_EXPORT } from '../../store/actions';
 
 const prioId = (id) => {
   switch (id) {
@@ -16,6 +17,7 @@ const prioId = (id) => {
 };
 
 const useFrames = () => {
+  const dispatch = useDispatch();
   const savFrameTypes = useSelector((state) => state.savFrameTypes);
   const frames = useSelector((state) => state.frames);
   const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === state.activePalette));
@@ -57,11 +59,19 @@ const useFrames = () => {
     }
   }, [frames, selectedFrameGroup]);
 
+  const exportJson = (what) => {
+    dispatch({
+      type: JSON_EXPORT,
+      payload: what,
+    });
+  };
+
   return {
     selectedFrameGroup,
     groupFrames,
     setSelectedFrameGroup,
     frameGroups,
+    exportJson,
     palette: palette.palette,
   };
 };

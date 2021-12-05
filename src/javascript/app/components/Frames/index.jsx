@@ -12,6 +12,7 @@ const Frames = () => {
     setSelectedFrameGroup,
     palette,
     groupFrames,
+    exportJson,
   } = useFrames();
 
   return (
@@ -54,6 +55,15 @@ const Frames = () => {
         <li className="frame frame--dummy" key="dummy4" />
         <li className="frame frame--dummy" key="dummy5" />
       </ul>
+      <div className="inputgroup buttongroup">
+        <button
+          type="button"
+          className="button"
+          onClick={() => exportJson('frames')}
+        >
+          Export frames
+        </button>
+      </div>
     </div>
   );
 };

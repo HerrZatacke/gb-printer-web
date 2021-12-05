@@ -76,13 +76,6 @@ const Import = ({
         <button
           type="button"
           className="button"
-          onClick={() => exportJson('frames')}
-        >
-          Export frames
-        </button>
-        <button
-          type="button"
-          className="button"
           onClick={() => exportJson('palettes')}
         >
           Export palettes
