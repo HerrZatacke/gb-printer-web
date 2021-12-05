@@ -38,7 +38,7 @@ const useFrame = ({ frameId, name }) => {
     mounted.current = false;
     dispatch({
       type: DELETE_FRAME,
-      payload: frameHash,
+      payload: frameId,
     });
   };
 
