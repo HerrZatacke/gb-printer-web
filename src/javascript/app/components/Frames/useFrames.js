@@ -63,6 +63,7 @@ const useFrames = () => {
     dispatch({
       type: JSON_EXPORT,
       payload: what,
+      selectedFrameGroup,
     });
   };
 

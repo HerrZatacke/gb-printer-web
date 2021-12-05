@@ -63,6 +63,13 @@ const Frames = () => {
         >
           Export frames
         </button>
+        <button
+          type="button"
+          className="button"
+          onClick={() => exportJson('framegroup')}
+        >
+          {`Export current framegroup (${selectedFrameGroup})`}
+        </button>
       </div>
     </div>
   );

@@ -2,9 +2,13 @@ import { definitions } from '../../app/store/defaults';
 import getImages from './getImages';
 import getFrames from './getFrames';
 import getImageHashesForExport from './getImageHashesForExport';
+import getFrameHashesForExport from './getFrameHashesForExport';
 import { getEnv } from '../getEnv';
 
 const getGetSettings = (store) => (what, lastUpdateUTC) => {
+
+  // ToDo: Best way to get this from....?
+  const frameSetID = 'nsh';
 
   const state = store.getState();
 
@@ -30,6 +34,12 @@ const getGetSettings = (store) => (what, lastUpdateUTC) => {
         ));
       }
 
+      if (key === 'frames' && what === 'framegroup') {
+        exportableState[key] = exportableState[key].filter(({ hash }) => (
+          getFrameHashesForExport(what, state, frameSetID).includes(hash)
+        ));
+      }
+
       if (key === 'palettes') {
         exportableState[key] = localStorageState[key].filter(({ isPredefined }) => !isPredefined);
       }
@@ -46,7 +56,7 @@ const getGetSettings = (store) => (what, lastUpdateUTC) => {
       return Promise.resolve(JSON.stringify({ state: exportableState }, null, 2));
     case 'images':
     case 'selected_images':
-      return getImages(what, getImageHashesForExport(what, state))
+      return getImages(getImageHashesForExport(what, state))
         .then((images) => (
           JSON.stringify({
             state: exportableState,
@@ -54,7 +64,8 @@ const getGetSettings = (store) => (what, lastUpdateUTC) => {
           }, null, 2)
         ));
     case 'frames':
-      return getFrames(state.frames)
+    case 'framegroup':
+      return getFrames(getFrameHashesForExport(what, state, frameSetID))
         .then((frames) => (
           JSON.stringify({
             state: exportableState,

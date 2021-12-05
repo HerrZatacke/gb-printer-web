@@ -155,7 +155,7 @@ const definitions = [
     // set of usable frames
     key: 'frames',
     saveLocally: true,
-    saveExport: ['frames', 'remote'],
+    saveExport: ['frames', 'remote', 'framegroup'],
     value: [],
   },
   {

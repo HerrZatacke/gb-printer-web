@@ -1,25 +1,21 @@
 import { localforageFrames } from '../localforageInstance';
 
-const getFrames = (frames) => {
-  const frameHashes = frames.map(({ hash }) => hash);
+const getFrames = (exportFrameHashes) => (
+  Promise.all(exportFrameHashes.map((hash) => (
+    localforageFrames.getItem(hash)
+      .then((data) => ({
+        hash,
+        data,
+      }))
+  )))
+    .then((result) => {
+      const resultFrames = {};
+      result.forEach(({ hash, data }) => {
+        resultFrames[`frame-${hash}`] = data;
+      });
 
-  return (
-    Promise.all(frameHashes.map((frameHash) => (
-      localforageFrames.getItem(frameHash)
-        .then((data) => ({
-          frameHash,
-          data,
-        }))
-    )))
-      .then((result) => {
-        const resultFrames = {};
-        result.forEach(({ frameHash, data }) => {
-          resultFrames[`frame-${frameHash}`] = data;
-        });
-
-        return resultFrames;
-      })
-  );
-};
+      return resultFrames;
+    })
+);
 
 export default getFrames;
