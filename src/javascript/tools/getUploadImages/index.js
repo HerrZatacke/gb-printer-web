@@ -31,7 +31,7 @@ const getUploadImages = (store, repoContents, lastUpdateUTC, addToQueue) => {
   const frames = state.frames.map((frame) => ({
     ...frame,
     inRepo: [
-      repoContents.frames.find(({ name }) => name.match(/^[a-z]+[0-9]+/gi)[0] === frame.id),
+      repoContents.frames.find(({ name }) => name.substr(0, 40) === frame.hash),
     ].filter(Boolean),
   }));
   const framesLength = frames.length;
@@ -71,14 +71,13 @@ const getUploadImages = (store, repoContents, lastUpdateUTC, addToQueue) => {
           files: [],
         }) : (
           addToQueue(`loadFrameData (${index + 1}/${framesLength}) ${frame.id}`, 3, () => (
-            loadFrameData(frame.id)
-              .then((fd) => ({
+            loadFrameData(frame.hash)
+              .then((frameData) => ({
                 ...frame,
-                hash: frame.id,
                 files: [{
                   folder: 'frames',
                   filename: '',
-                  blob: new Blob(new Array(JSON.stringify(fd || '{}', null, 2)), { type: 'application/json' }),
+                  blob: new Blob(new Array(JSON.stringify(frameData || '{}', null, 2)), { type: 'application/json' }),
                   title: frame.name,
                 }],
               }))

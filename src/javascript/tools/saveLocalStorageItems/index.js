@@ -10,7 +10,7 @@ export const saveImageFileContent = (blob) => {
   return save(lines);
 };
 
-export const saveFrameFileContent = (frame) => (blob) => {
+export const saveFrameFileContent = (blob) => {
   const tiles = JSON.parse(blob, null, 2);
   const black = Array(32)
     .fill('f')
@@ -31,7 +31,7 @@ export const saveFrameFileContent = (frame) => (blob) => {
       .flat(),
     ...tiles.lower,
   ];
-  return saveFrameData(frame.id, paddedFrameData);
+  return saveFrameData(paddedFrameData);
 };
 
 const saveLocalStorageItems = ({ images, frames }) => {
@@ -56,15 +56,15 @@ const saveLocalStorageItems = ({ images, frames }) => {
       )),
       ...frames.map((frame, frameIndex) => (
         // check if item exists locally
-        loadFrameData(frame.id)
+        loadFrameData(frame.hash)
           .then((frameData) => {
             // if frame exists locally, don't download blob
             if (frameData) {
-              return frame.id;
+              return frame.hash;
             }
 
             return frame.getFileContent(frame.sha, frameIndex, framesTotal)
-              .then(saveFrameFileContent(frame));
+              .then(saveFrameFileContent);
           })
       )),
     ])
