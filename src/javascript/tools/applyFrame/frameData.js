@@ -1,12 +1,30 @@
 import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
 import { localforageFrames } from '../localforageInstance';
 
+const padCropTiles = (tiles) => {
+  // image too large - cut away the rest
+  if (tiles.length > 360) {
+    return tiles.slice(0, 360);
+  }
+
+  // fill rest of image with content of the last tile.
+  if (tiles.length < 360) {
+    const lastTile = tiles.pop();
+    return [
+      ...tiles,
+      ...(Array(360 - tiles.length).fill(lastTile)),
+    ];
+  }
+
+  return tiles;
+};
+
 const saveFrameData = (imageTiles) => (
   import(/* webpackChunkName: "obh" */ 'object-hash')
     .then(({ default: hash }) => (
       import(/* webpackChunkName: "pko" */ 'pako')
         .then(({ default: pako }) => {
-          const frameData = imageTiles
+          const frameData = padCropTiles(imageTiles)
             .filter((_, index) => tileIndexIsPartOfFrame(index, 'keep'))
             .map((line) => (
               line.replace(/ /gi, '')
