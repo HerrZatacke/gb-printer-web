@@ -40,9 +40,14 @@ const useFrames = () => {
         return 0;
       });
 
+    // if globally selected group does not exist, switch to the first existing
+    if (!groups.find(({ id }) => id === savFrameTypes)) {
+      setSelectedFrameGroup(groups[0].id);
+    }
+
     setFrameGroups(groups);
 
-  }, [frames]);
+  }, [frames, savFrameTypes]);
 
   useEffect(() => {
     if (selectedFrameGroup) {
