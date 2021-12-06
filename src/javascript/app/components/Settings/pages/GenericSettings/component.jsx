@@ -126,6 +126,7 @@ const GenericSettings = (props) => {
             props.setSavFrameTypes(ev.target.value);
           }}
         >
+          <option value="">None</option>
           {
             props.savFrameGroups.map(({ id, name }) => (
               <option value={id} key={id}>{ name }</option>

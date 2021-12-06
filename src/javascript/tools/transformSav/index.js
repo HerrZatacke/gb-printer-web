@@ -61,6 +61,7 @@ const getTransformSav = (store) => (data, filename) => {
       selected: savFrameTypes === value,
     }));
 
+  frameGroups.unshift({ value: '', name: 'None (Black frame)' });
 
   const getFileMeta = (baseAddress) => {
     const cartIndex = (baseAddress / 0x1000) - 2;
