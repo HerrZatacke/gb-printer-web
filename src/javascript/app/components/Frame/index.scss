@@ -55,5 +55,10 @@
     background: none;
     @include theme-background-color(transparent, transparent);
   }
+
+  //&:hover .rgbn-select,
+  body.no-touch &:hover .frame-buttons {
+    display: flex;
+  }
 }
 

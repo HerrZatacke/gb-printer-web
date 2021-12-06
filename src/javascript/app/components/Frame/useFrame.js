@@ -24,14 +24,16 @@ const useFrame = ({ frameId, name }) => {
   }, []);
 
   useEffect(() => {
-    if (mounted.current) {
-      getTiles({
-        frameId,
-        frameHash,
-        name,
-      })
-        .then(setTiles);
-    }
+    getTiles({
+      frameId,
+      frameHash,
+      name,
+    })
+      .then((newTiles) => {
+        if (mounted.current) {
+          setTiles(newTiles);
+        }
+      });
   }, [frameId, frameHash, name]);
 
   const deleteFrame = () => {
