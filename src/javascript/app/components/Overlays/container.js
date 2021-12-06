@@ -6,6 +6,7 @@ const mapStateToProps = (state) => ({
   showProgressBox: !!state.progress.gif || !!state.progress.printer || !!state.progress.plugin,
   showConfirm: !!state.confirm.length,
   showEditForm: !!state.editImage,
+  showEditFrame: !!state.editFrame,
   showEditPalette: !!state.editPalette.shortName,
   showVideoForm: !!state.videoParams.imageSelection && !!state.videoParams.imageSelection.length,
   showRGBNImage: !!state.rgbnImages && Object.keys(state.rgbnImages).length > 0,

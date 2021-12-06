@@ -6,7 +6,11 @@ import useFrame from './useFrame';
 
 
 const Frame = ({ frameId, name, palette }) => {
-  const { deleteFrame, tiles } = useFrame({ frameId, name });
+  const {
+    tiles,
+    deleteFrame,
+    editFrame,
+  } = useFrame({ frameId, name });
 
   if (!tiles) {
     return null;
@@ -22,17 +26,23 @@ const Frame = ({ frameId, name, palette }) => {
           tiles={tiles}
         />
       </div>
-
+      <code className="frame__id">
+        {frameId}
+      </code>
+      <span className="frame__name">
+        {name}
+      </span>
       <button
         type="button"
-        onClick={() => {
-          // eslint-disable-next-line no-alert
-          if (window.confirm('really delete?')) {
-            deleteFrame();
-          }
-        }}
+        onClick={deleteFrame}
       >
         DELETE!!
+      </button>
+      <button
+        type="button"
+        onClick={editFrame}
+      >
+        Edit
       </button>
     </li>
   );

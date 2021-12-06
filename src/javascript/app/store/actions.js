@@ -28,6 +28,9 @@ export const FRAMES_MESSAGE_HIDE = 'FRAMES_MESSAGE_HIDE';
 // Frames
 export const ADD_FRAME = 'ADD_FRAME';
 export const DELETE_FRAME = 'DELETE_FRAME';
+export const EDIT_FRAME = 'EDIT_FRAME';
+export const CANCEL_EDIT_FRAME = 'CANCEL_EDIT_FRAME';
+export const UPDATE_FRAME = 'UPDATE_FRAME';
 
 // Generic config
 export const SET_HANDLE_EXPORT_FRAME = 'SET_HANDLE_EXPORT_FRAME';

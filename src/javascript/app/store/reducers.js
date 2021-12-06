@@ -5,6 +5,7 @@ import confirm from './reducers/confirmReducer';
 import dragover from './reducers/dragoverReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
+import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
@@ -52,6 +53,7 @@ export default combineReducers({
   dragover,
   dropboxStorage,
   editImage,
+  editFrame,
   editPalette,
   exportFileTypes,
   exportScaleFactors,

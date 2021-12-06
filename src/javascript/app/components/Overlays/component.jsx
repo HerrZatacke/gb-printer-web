@@ -5,6 +5,7 @@ import InfoBox from './InfoBox';
 import ProgressBox from './ProgressBox';
 import Confirm from './Confirm';
 import EditForm from './EditForm';
+import EditFrame from './EditFrame';
 import EditPalette from './EditPalette';
 import VideoParamsForm from './VideoParamsForm';
 import LightboxImage from './LightboxImage';
@@ -21,6 +22,7 @@ const Overlays = ({
   showProgressBox,
   showConfirm,
   showEditForm,
+  showEditFrame,
   showEditPalette,
   showVideoForm,
   showRGBNImage,
@@ -37,6 +39,8 @@ const Overlays = ({
       return <Confirm />; // interactive
     case showEditForm:
       return <EditForm />; // interactive
+    case showEditFrame:
+      return <EditFrame />; // interactive
     case showEditPalette:
       return <EditPalette />; // interactive
     case showVideoForm:
@@ -68,6 +72,7 @@ Overlays.propTypes = {
   showProgressBox: PropTypes.bool.isRequired,
   showConfirm: PropTypes.bool.isRequired,
   showEditForm: PropTypes.bool.isRequired,
+  showEditFrame: PropTypes.bool.isRequired,
   showEditPalette: PropTypes.bool.isRequired,
   showVideoForm: PropTypes.bool.isRequired,
   showRGBNImage: PropTypes.bool.isRequired,

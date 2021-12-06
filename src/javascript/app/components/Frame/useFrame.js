@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
-import { DELETE_FRAME } from '../../store/actions';
+import { CONFIRM_ANSWERED, CONFIRM_ASK, DELETE_FRAME, EDIT_FRAME } from '../../store/actions';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
 
@@ -17,6 +17,10 @@ const useFrame = ({ frameId, name }) => {
 
   useEffect(() => {
     mounted.current = true;
+
+    return () => {
+      mounted.current = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -28,16 +32,33 @@ const useFrame = ({ frameId, name }) => {
       })
         .then(setTiles);
     }
-
-    return () => {
-      mounted.current = false;
-    };
   }, [frameId, frameHash, name]);
 
   const deleteFrame = () => {
     mounted.current = false;
+
     dispatch({
-      type: DELETE_FRAME,
+      type: CONFIRM_ASK,
+      payload: {
+        message: `Delete frame "${name}" (${frameId})?`,
+        confirm: () => {
+          dispatch({
+            type: DELETE_FRAME,
+            payload: frameId,
+          });
+        },
+        deny: () => {
+          dispatch({
+            type: CONFIRM_ANSWERED,
+          });
+        },
+      },
+    });
+  };
+
+  const editFrame = () => {
+    dispatch({
+      type: EDIT_FRAME,
       payload: frameId,
     });
   };
@@ -46,6 +67,7 @@ const useFrame = ({ frameId, name }) => {
     tiles,
     setTiles,
     deleteFrame,
+    editFrame,
   };
 };
 

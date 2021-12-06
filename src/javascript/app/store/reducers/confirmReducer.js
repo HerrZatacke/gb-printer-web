@@ -3,6 +3,7 @@ import {
   ADD_IMAGES,
   CONFIRM_ANSWERED,
   CONFIRM_ASK,
+  DELETE_FRAME,
   DELETE_IMAGE,
   DELETE_IMAGES,
   PALETTE_DELETE,
@@ -21,6 +22,7 @@ const confirmReducer = (value = [], action) => {
     case ADD_IMAGES:
     case DELETE_IMAGE:
     case DELETE_IMAGES:
+    case DELETE_FRAME:
     case PALETTE_DELETE:
     case CONFIRM_ANSWERED:
       return value.filter((_, index) => index);
