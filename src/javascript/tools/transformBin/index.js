@@ -2,19 +2,31 @@ import { ERROR } from '../../app/store/actions';
 
 const getTransformBin = (dispatch) => (data, filename) => {
   const transformed = [];
-  let currentLine = '';
+  let currentLine = [];
+
+  const binOffsetLength = 8;
 
   try {
-    // for (let i = 0; i < 16; i += 1) {
-    for (let i = 0; i < 5760; i += 1) {
-      currentLine += ` ${data[i + 8].toString(16)
-        .padStart(2, '0')}`;
+    for (let i = binOffsetLength; i < data.length; i += 1) {
+      const value = data[i];
+      currentLine.push(value.toString(16).padStart(2, '0'));
 
-      if (i % 16 === 15) {
-        transformed.push(currentLine.trim());
-        currentLine = '';
+      if (currentLine.length === 16) {
+        transformed.push(currentLine.join(' '));
+        currentLine = [];
       }
     }
+
+    // only part of a tile?
+    // -> fill the of it in white
+    if (currentLine.length) {
+      while (currentLine.length < 16) {
+        currentLine.push('00');
+      }
+
+      transformed.push(currentLine.join(' '));
+    }
+
   } catch (error) {
     dispatch({
       type: ERROR,
