@@ -5,10 +5,9 @@ import getImageHashesForExport from './getImageHashesForExport';
 import getFrameHashesForExport from './getFrameHashesForExport';
 import { getEnv } from '../getEnv';
 
-const getGetSettings = (store) => (what, lastUpdateUTC) => {
+const getGetSettings = (store) => (what, { lastUpdateUTC, selectedFrameGroup } = {}) => {
 
-  // ToDo: Best way to get this from....?
-  const frameSetID = 'nsh';
+  const frameSetID = selectedFrameGroup;
 
   const state = store.getState();
 

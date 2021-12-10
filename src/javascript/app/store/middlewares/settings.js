@@ -28,12 +28,14 @@ const mergeSettings = (dispatch, state, newSettings, mergeImagesFrames = false) 
 const settings = (store) => {
   const getSettings = getGetSettings(store);
 
-  const downloadSettings = (what) => {
-    getSettings(what)
+  const downloadSettings = (what, selectedFrameGroup = '') => {
+    getSettings(what, { selectedFrameGroup })
       .then((currentSettings) => {
+        const filename = [what, selectedFrameGroup].filter(Boolean).join('_');
+
         download(null)([{
           blob: new Blob(new Array(currentSettings)),
-          filename: `${what}.json`,
+          filename: `${filename}.json`,
         }]);
       });
   };
@@ -41,7 +43,7 @@ const settings = (store) => {
   return (next) => (action) => {
     switch (action.type) {
       case JSON_EXPORT:
-        downloadSettings(action.payload);
+        downloadSettings(action.payload, action.selectedFrameGroup);
         break;
       case JSON_IMPORT:
         mergeSettings(store.dispatch, store.getState(), action.payload, true);

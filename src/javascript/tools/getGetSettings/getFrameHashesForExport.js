@@ -1,4 +1,4 @@
-const getFrameHashesForExport = (what, { frames }, frameSetID) => {
+const getFrameHashesForExport = (what, { frames }, frameSetID = '') => {
 
   switch (what) {
     case 'frames':

@@ -59,7 +59,7 @@ const getPrepareRemoteFiles = (store) => {
       .join('\n');
 
     // querying only remote settings, so no state object needs to be provided
-    return getSettings('remote', lastUpdateUTC)
+    return getSettings('remote', { lastUpdateUTC })
       .then((remoteSettings) => {
         toUpload.push(
           {
