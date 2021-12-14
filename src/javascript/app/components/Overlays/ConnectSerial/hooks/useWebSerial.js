@@ -53,11 +53,23 @@ const useWebSerial = (passive) => {
     }
   };
 
+  const setModeGBA = () => {
+    console.log(123);
+    WebSerial.changeMode(true);
+  };
+
+  const setModeDMG = () => {
+    console.log(456);
+    WebSerial.changeMode(false);
+  };
+
   return {
     activePorts,
     webSerialEnabled,
     openWebSerial,
     isReceiving,
+    setModeDMG,
+    setModeGBA,
   };
 };
 

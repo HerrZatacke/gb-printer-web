@@ -7,7 +7,7 @@ class WebSerial extends EventEmitter {
     this.enabled = !!navigator.serial && !!window.TextDecoderStream;
     this.activePorts = [];
     this.baudRate = 115200;
-
+    this.port = null;
     // instantly connect to known existing ports
     this.watchPorts();
   }
@@ -56,6 +56,8 @@ class WebSerial extends EventEmitter {
 
               port.connect()
                 .then(() => {
+                  this.port = port;
+                  console.log('port set');
 
                   // port.send('\u00A1')
                   //   .then(() => {
@@ -63,10 +65,10 @@ class WebSerial extends EventEmitter {
                   //   });
 
                   // document.addEventListener('click', () => {
-                  port.send('\u0068')
-                    .then(() => {
-                      console.log('OFW_PCB_VER');
-                    });
+                  // port.send('\u0068')
+                  //   .then(() => {
+                  //     console.log('OFW_PCB_VER');
+                  //   });
                   //
                   //
                   // port.send('\u0056')
@@ -74,15 +76,6 @@ class WebSerial extends EventEmitter {
                   //     console.log('OFW_FW_VER');
                   //   });
 
-                  //   // port.send('\u00A3\u00A5')
-                  //   //   .then(() => {
-                  //   //     console.log('SET_MODE_DMG / SET_VOLTAGE_5V');
-                  //   //   });
-                  //
-                  //   // port.send('\u00A2\u00A4')
-                  //   //   .then(() => {
-                  //   //     console.log('SET_MODE_AGB / SET_VOLTAGE_3_3V');
-                  //   //   });
                   //
                   //   // port.send('?')
                   //   //   .then(() => {
@@ -94,10 +87,26 @@ class WebSerial extends EventEmitter {
                   this.activePorts.push(port);
                   this.emit('activePortsChange', [...this.activePorts]);
                 })
-                .catch(() => { /* silence! */ });
+                .catch(() => { /* silence! */
+                });
             });
         });
     }, 1000);
+  }
+
+  changeMode(isGBA) {
+    console.log(this.port);
+    if (isGBA) {
+      this.port.send('\u00A2\u00A4')
+        .then(() => {
+          console.log('SET_MODE_AGB / SET_VOLTAGE_3_3V');
+        });
+    } else {
+      this.port.send('\u00A3\u00A5')
+        .then(() => {
+          console.log('SET_MODE_DMG / SET_VOLTAGE_5V');
+        });
+    }
   }
 
   // returns a list of devices

@@ -21,6 +21,8 @@ const ConnectSerial = ({ inline, passive }) => {
     isReceiving: webSerialIsReceiving,
     webSerialEnabled,
     openWebSerial,
+    setModeDMG,
+    setModeGBA,
   } = useWebSerial(passive);
 
   const {
@@ -72,6 +74,18 @@ const ConnectSerial = ({ inline, passive }) => {
       >
         {`${webSerialActivePorts.length} devices connected`}
       </div>
+      <button
+        type="button"
+        onClick={setModeGBA}
+      >
+        Mode: GBA
+      </button>
+      <button
+        type="button"
+        onClick={setModeDMG}
+      >
+        Mode: DMG
+      </button>
     </div>
   );
 
