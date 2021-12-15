@@ -56,31 +56,40 @@ class WebSerial extends EventEmitter {
 
               port.connect()
                 .then(() => {
-                  this.port = port;
-                  console.log('port set');
-
-                  // port.send('\u00A1')
-                  //   .then(() => {
-                  //     console.log('QUERY_FW_INFO');
-                  //   });
-
                   // document.addEventListener('click', () => {
-                  // port.send('\u0068')
-                  //   .then(() => {
-                  //     console.log('OFW_PCB_VER');
-                  //   });
                   //
+                  //   // if (window.toggl) {
+                  //   //   window.toggl = false;
+                  //   //   port.send('\u00A2\u00A4')
+                  //   //     .then(() => {
+                  //   //       console.log('SET_MODE_AGB / SET_VOLTAGE_3_3V --- \u00A2\u00A4');
+                  //   //     });
+                  //   // } else {
+                  //   //   window.toggl = true;
+                  //   //   port.send('\u00A3\u00A5')
+                  //   //     .then(() => {
+                  //   //       console.log('SET_MODE_DMG / SET_VOLTAGE_5V --- \u00A3\u00A5');
+                  //   //     });
+                  //   // }
                   //
-                  // port.send('\u0056')
-                  //   .then(() => {
-                  //     console.log('OFW_FW_VER');
-                  //   });
-
-                  //
-                  //   // port.send('?')
+                  //   // port.send('\u0068')
                   //   //   .then(() => {
-                  //   //     console.log('sent');
+                  //   //     console.log('OFW_PCB_VER');
                   //   //   });
+                  //   //
+                  //
+                  //   // //
+                  //   //
+                  //   // port.send('\u0056')
+                  //   //   .then(() => {
+                  //   //     console.log('OFW_FW_VER');
+                  //   //   });
+                  //
+                  //   //
+                  //   //   port.send('?')
+                  //   //     .then(() => {
+                  //   //       console.log('sent');
+                  //   //     });
                   // });
 
 
@@ -95,18 +104,39 @@ class WebSerial extends EventEmitter {
   }
 
   changeMode(isGBA) {
-    console.log(this.port);
+    const port = this.activePorts[0];
+    if (!port) {
+      console.error('Active ports', this.activePorts);
+      return;
+    }
+
     if (isGBA) {
-      this.port.send('\u00A2\u00A4')
+      port.send('\u00A2\u00A4')
         .then(() => {
-          console.log('SET_MODE_AGB / SET_VOLTAGE_3_3V');
+          // eslint-disable-next-line no-console
+          console.info('SET_MODE_AGB / SET_VOLTAGE_3_3V --- \u00A2\u00A4');
         });
     } else {
-      this.port.send('\u00A3\u00A5')
+      port.send('\u00A3\u00A5')
         .then(() => {
-          console.log('SET_MODE_DMG / SET_VOLTAGE_5V');
+          // eslint-disable-next-line no-console
+          console.info('SET_MODE_DMG / SET_VOLTAGE_5V --- \u00A3\u00A5');
         });
     }
+  }
+
+  fwinq() {
+    const port = this.activePorts[0];
+    if (!port) {
+      console.error('Active ports', this.activePorts);
+      return;
+    }
+
+    port.send('\u00A1')
+      .then(() => {
+        // eslint-disable-next-line no-console
+        console.info('QUERY_FW_INFO');
+      });
   }
 
   // returns a list of devices

@@ -9,6 +9,9 @@ class SerialPort extends EventEmitter {
     this.usbProductId = usbProductId;
     this.usbVendorId = usbVendorId;
     this.reader = null;
+
+    this.dataBuffer = [];
+    this.dataBufferTimeout = null;
   }
 
   connect() {
@@ -28,9 +31,20 @@ class SerialPort extends EventEmitter {
   readLoop() {
     this.reader.read()
       .then(({ value }) => {
-        // this.emit('data', value);
-        console.log(value);
-        // console.log([...value].map((char) => char.charCodeAt(0)));
+        this.dataBuffer.push(...value);
+
+        window.clearTimeout(this.dataBufferTimeout);
+        this.dataBufferTimeout = window.setTimeout(() => {
+          try {
+            // eslint-disable-next-line no-alert
+            alert([...this.dataBuffer].join(','));
+            // console.log([...value].map(String.fromCharCode).join(''));
+          } catch (error) { /**/ }
+
+          this.dataBuffer = [];
+          // this.emit('data', value);
+        }, 10);
+
         this.readLoop();
       })
       .catch((error) => {

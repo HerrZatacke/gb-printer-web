@@ -54,13 +54,15 @@ const useWebSerial = (passive) => {
   };
 
   const setModeGBA = () => {
-    console.log(123);
     WebSerial.changeMode(true);
   };
 
   const setModeDMG = () => {
-    console.log(456);
     WebSerial.changeMode(false);
+  };
+
+  const fwinq = () => {
+    WebSerial.fwinq();
   };
 
   return {
@@ -70,6 +72,7 @@ const useWebSerial = (passive) => {
     isReceiving,
     setModeDMG,
     setModeGBA,
+    fwinq,
   };
 };
 

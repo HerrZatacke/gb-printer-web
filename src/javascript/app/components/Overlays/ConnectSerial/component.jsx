@@ -23,6 +23,7 @@ const ConnectSerial = ({ inline, passive }) => {
     openWebSerial,
     setModeDMG,
     setModeGBA,
+    fwinq,
   } = useWebSerial(passive);
 
   const {
@@ -74,18 +75,33 @@ const ConnectSerial = ({ inline, passive }) => {
       >
         {`${webSerialActivePorts.length} devices connected`}
       </div>
-      <button
-        type="button"
-        onClick={setModeGBA}
-      >
-        Mode: GBA
-      </button>
-      <button
-        type="button"
-        onClick={setModeDMG}
-      >
-        Mode: DMG
-      </button>
+
+      { webSerialActivePorts.length > 0 ? (
+        <>
+          <br />
+          <button
+            className="connect-usb-serial-overlay__button button"
+            type="button"
+            onClick={setModeGBA}
+          >
+            Mode: GBA
+          </button>
+          <button
+            className="connect-usb-serial-overlay__button button"
+            type="button"
+            onClick={setModeDMG}
+          >
+            Mode: DMG
+          </button>
+          <button
+            className="connect-usb-serial-overlay__button button"
+            type="button"
+            onClick={fwinq}
+          >
+            FWINQ
+          </button>
+        </>
+      ) : null }
     </div>
   );
 
