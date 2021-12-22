@@ -1,12 +1,14 @@
 
 // Sort by index
 $z-index-overlay-content: -1;
+$z-index-content: 0;
 $z-index-plugin-buttons: 1;
 $z-index-hover-image: 1;
 $z-index-live-image: 1;
 $z-index-navigation: 2;
 $z-index-overlay-buttons: 2;
 $z-index-gallery-image-buttons: 2;
+$z-index-gallery-header-sticky: 3;
 $z-index-overlay: 3;
 $z-index-overlay-box: 4;
 
