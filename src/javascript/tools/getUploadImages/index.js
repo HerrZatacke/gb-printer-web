@@ -31,7 +31,7 @@ const getUploadImages = (store, repoContents, lastUpdateUTC, addToQueue) => {
   const frames = state.frames.map((frame) => ({
     ...frame,
     inRepo: [
-      repoContents.frames.find(({ name }) => name.match(/^[a-z]+[0-9]+/gi)[0] === frame.id),
+      repoContents.frames.find(({ name }) => name.match(/^[a-z]+[0-9]+/gi)?.[0] === frame.id),
     ].filter(Boolean),
   }));
   const framesLength = frames.length;

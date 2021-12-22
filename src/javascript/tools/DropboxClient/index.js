@@ -221,7 +221,7 @@ class DropboxClient extends EventEmitter {
           });
         case 'frames':
           return Object.assign(augmentedFile, {
-            id: name.match(/^[a-z]+[0-9]+/gi)[0],
+            id: name.match(/^[a-z]+[0-9]+/gi)?.[0],
           });
         default:
           return augmentedFile;

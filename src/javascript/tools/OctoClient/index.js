@@ -135,7 +135,7 @@ class OctoClient extends EventEmitter {
         case 'frames':
           return {
             ...augmentedFile,
-            id: name.match(/^[a-z]+[0-9]+/gi)[0],
+            id: name.match(/^[a-z]+[0-9]+/gi)?.[0],
           };
         default:
           return augmentedFile;
