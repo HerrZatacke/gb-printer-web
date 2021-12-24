@@ -71,7 +71,7 @@ const GenericSettings = (props) => {
         <div className="inputgroup__label">
           Image export filetypes
         </div>
-        {[...supportedCanvasImageFormats(), 'txt'].map((fileType) => (
+        {[...supportedCanvasImageFormats(), 'txt', 'pgm'].map((fileType) => (
           <label
             key={fileType}
             className={
