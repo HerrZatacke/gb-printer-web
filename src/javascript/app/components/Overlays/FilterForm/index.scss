@@ -1,12 +1,26 @@
 .filter-form {
   $spacing: 5px;
 
+  &__box {
+    min-width: 480px;
+    width: 80vw;
+
+    @media (max-width: $breakpoint-mobile) {
+      min-width: initial;
+      width: 100vw;
+    }
+  }
+
+  &__hint {
+    padding: 20px 20px 10px 20px;
+  }
+
   &__tag-list {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     margin: 0 -$spacing;
-    padding: 20px 20px 15px 20px;
+    padding: 10px 20px 25px 20px;
   }
 
   &__tag {
