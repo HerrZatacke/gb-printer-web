@@ -25,6 +25,7 @@ import lightboxImage from './reducers/lightboxImageReducer';
 import pageSize from './reducers/pageSizeReducer';
 import palettes from './reducers/palettesReducer';
 import plugins from './reducers/pluginsReducer';
+import preferredLocale from './reducers/preferredLocaleReducer';
 import printerBusy from './reducers/printerBusyReducer';
 import printerData from './reducers/printerDataReducer';
 import printerFunctions from './reducers/printerFunctionsReducer';
@@ -73,6 +74,7 @@ export default combineReducers({
   pageSize,
   palettes,
   plugins,
+  preferredLocale,
   printerBusy,
   printerData,
   printerFunctions,

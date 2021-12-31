@@ -202,6 +202,12 @@ const definitions = [
       local: 0,
     },
   },
+  {
+    key: 'preferredLocale',
+    saveLocally: true,
+    saveExport: ['settings'],
+    value: navigator.language,
+  },
 ];
 
 const defaults = {};
