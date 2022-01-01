@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.22.16",
+  "version": "1.22.17",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
@@ -54,6 +54,7 @@
     "html-webpack-plugin": "^5.3.1",
     "http-proxy-middleware": "^1.0.6",
     "is-color": "^1.0.2",
+    "locale-codes": "^1.3.1",
     "is-css-length": "^0.2.0",
     "jszip": "^3.7.1",
     "localforage": "^1.9.0",

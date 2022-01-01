@@ -10,7 +10,8 @@ import getImagePalette from '../../../../tools/getImagePalette';
 import loadImageTiles from '../../../../tools/loadImageTiles';
 import replaceDuplicateFilenames from '../../../../tools/replaceDuplicateFilenames';
 import getFilteredImages from '../../../../tools/getFilteredImages';
-import { dateFormatReadable } from '../../../defaults';
+import dateFormatLocale from '../../../../tools/dateFormatLocale';
+
 import {
   CONFIRM_ANSWERED,
   CONFIRM_ASK,
@@ -120,8 +121,8 @@ const middleware = (store) => {
                     payload: {
                       message: 'There is newer content in your dropbox!',
                       questions: () => [
-                        `Your dropbox contains changes from ${dayjs(repoContents.settings.state.lastUpdateUTC * 1000).format(dateFormatReadable)}`,
-                        `Your last local update was ${dayjs(state?.syncLastUpdate?.local * 1000).format(dateFormatReadable)}.`,
+                        `Your dropbox contains changes from ${dateFormatLocale(dayjs(repoContents.settings.state.lastUpdateUTC * 1000), state.preferredLocale)}`,
+                        `Your last local update was ${dateFormatLocale(dayjs(state?.syncLastUpdate?.local * 1000), state.preferredLocale)}.`,
                         'Do you want to load the changes?',
                       ]
                         .map((label, index) => ({

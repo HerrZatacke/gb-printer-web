@@ -17,6 +17,10 @@ let addToQueue = () => {};
 const init = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();
 
+  const getPreferredLocale = () => (
+    store.getState().preferredLocale
+  );
+
   const queue = new Queue(1, Infinity);
   addToQueue = (who) => (what, throttle, fn) => (
     queue.add(() => (
@@ -38,7 +42,7 @@ const init = (store) => {
     ))
   );
 
-  octoClient = new OctoClient(gitStorageSettings, addToQueue('OctoClient'));
+  octoClient = new OctoClient(gitStorageSettings, getPreferredLocale, addToQueue('OctoClient'));
 };
 
 

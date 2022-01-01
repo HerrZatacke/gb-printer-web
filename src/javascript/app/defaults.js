@@ -4,7 +4,6 @@ const dateFormat = 'YYYY-MM-DD HH:mm:ss:SSS';
 const dateFormatInput = 'YYYY-MM-DD';
 const timeFormatInput = 'HH:mm';
 const dateFormatFilename = 'YYYYMMDD-HHmmss';
-const dateFormatReadable = 'DD.MM.YYYY HH:mm';
 
 const defaultGreys = [0x00, 0x55, 0xaa, 0xff];
 
@@ -32,7 +31,6 @@ export {
   dateFormatInput,
   timeFormatInput,
   dateFormatFilename,
-  dateFormatReadable,
   defaultRGBNPalette,
   missingGreyPalette,
   defaultGreys,

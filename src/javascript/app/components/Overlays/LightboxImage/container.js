@@ -45,6 +45,7 @@ const mapStateToProps = (state) => {
     size: images.length || 0,
     lockFrame: image.lockFrame || false,
     invertPalette: image.invertPalette || false,
+    preferredLocale: state.preferredLocale,
   });
 };
 

@@ -188,5 +188,10 @@
     &--warn {
       @include theme-color($color-warn-red, $color-warn-red);
     }
+
+    &--newline {
+      padding-left: 0;
+      display: block;
+    }
   }
 }
