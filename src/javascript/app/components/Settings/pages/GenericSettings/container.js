@@ -5,6 +5,7 @@ import {
   SET_HIDE_DATES,
   SET_IMPORT_LAST_SEEN,
   SET_PAGESIZE,
+  SET_PREFERRED_LOCALE,
   SET_PRINTER_PARAMS,
   SET_PRINTER_URL,
   SET_SAV_FRAME_TYPES,
@@ -23,6 +24,7 @@ const mapStateToProps = (state) => ({
   hideDates: state.hideDates,
   printerUrl: state.printerUrl,
   printerParams: state.printerParams,
+  preferredLocale: state.preferredLocale,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -48,6 +50,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: SET_HIDE_DATES,
       payload: hideDates,
+    });
+  },
+  setPreferredLocale(preferredLocale) {
+    dispatch({
+      type: SET_PREFERRED_LOCALE,
+      payload: preferredLocale,
     });
   },
   setPageSize(pageSize) {
