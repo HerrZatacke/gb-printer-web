@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import ThemeToggle from '../ThemeToggle';
+import useScrolling from './useScrolling';
 
 const Navigation = (props) => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  useScrolling();
 
   return (
     <nav
