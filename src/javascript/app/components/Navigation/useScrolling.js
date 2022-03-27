@@ -8,7 +8,16 @@ const useScrolling = () => {
 
   useEffect(() => {
     const scrollListener = () => {
-      scrollPositions.current[history.location.pathname] = window.scrollY;
+      let path = history.location.pathname;
+
+      if (path.startsWith('/gallery')) {
+        path = '/gallery';
+      }
+
+      scrollPositions.current[path] = window.scrollY;
+
+      // eslint-disable-next-line no-console
+      console.log(JSON.stringify(scrollPositions));
     };
 
     window.addEventListener('scroll', scrollListener);
@@ -20,6 +29,10 @@ const useScrolling = () => {
 
   useEffect(() => (
     history.listen((location) => {
+      if (location.pathname.startsWith('/gallery/page')) {
+        return;
+      }
+
       const scrollPos = scrollPositions.current[location.pathname] || 0;
       window.setImmediate(() => {
         window.scroll(0, scrollPos);
