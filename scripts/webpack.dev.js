@@ -16,6 +16,12 @@ module.exports = merge(common(), {
     port: 3000,
     host: '0.0.0.0',
     onBeforeSetupMiddleware: ({ app }) => setupServer(app),
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
   },
   target: 'web',
   optimization: {
