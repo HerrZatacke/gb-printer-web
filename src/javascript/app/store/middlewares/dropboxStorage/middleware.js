@@ -109,6 +109,10 @@ const middleware = (store) => {
             switch (action.payload.direction) {
               case 'diff': {
 
+                if (repoContents?.settings?.state?.lastUpdateUTC === null) {
+                  return Promise.resolve(null);
+                }
+
                 store.dispatch({
                   type: LAST_UPDATE_DROPBOX_REMOTE,
                   payload: repoContents.settings.state.lastUpdateUTC,
