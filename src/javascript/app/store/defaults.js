@@ -50,8 +50,8 @@ const definitions = [
     // concurrently visible images in gallery
     key: 'pageSize',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
-    value: 15,
+    saveExport: ['settings'],
+    value: 30,
   },
   {
     // current selection of images
