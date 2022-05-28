@@ -6,7 +6,12 @@ import Pagination from '../Pagination';
 import BatchButtons from '../BatchButtons';
 
 const GalleryHeader = (props) => (
-  <div className={classnames('gallery-header', { 'gallery-header--sticky': props.isSticky })}>
+  <div
+    className={classnames('gallery-header', {
+      'gallery-header--sticky': props.isSticky,
+      'gallery-header--bottom': props.isBottom,
+    })}
+  >
     <GalleryViewSelect />
     <Pagination page={props.page} />
     <BatchButtons page={props.page} />
@@ -16,10 +21,12 @@ const GalleryHeader = (props) => (
 GalleryHeader.propTypes = {
   page: PropTypes.number.isRequired,
   isSticky: PropTypes.bool,
+  isBottom: PropTypes.bool,
 };
 
 GalleryHeader.defaultProps = {
   isSticky: false,
+  isBottom: false,
 };
 
 export default GalleryHeader;

@@ -49,7 +49,7 @@ const Gallery = (props) => {
       }
       {
         props.images.length < 3 ? null : (
-          <GalleryHeader page={props.page} />
+          <GalleryHeader page={props.page} isBottom />
         )
       }
     </>
