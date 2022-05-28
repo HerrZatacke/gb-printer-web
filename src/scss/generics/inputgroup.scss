@@ -1,0 +1,7 @@
+.inputgroup {
+  &__input {
+    max-width: -webkit-fill-available;
+    max-width: -moz-available;
+    max-width: fill-available;
+  }
+}
