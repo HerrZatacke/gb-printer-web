@@ -101,6 +101,15 @@ module.exports = () => ({
         test: /\.(txt|md)$/i,
         use: 'raw-loader',
       },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: 'images/',
+          publicPath: 'images/',
+        },
+      },
     ],
   },
   optimization: {
@@ -141,6 +150,11 @@ module.exports = () => ({
       filename: 'index.html',
       favicon: './src/assets/images/favicon.png',
       chunks: ['pf', 'main'],
+      meta: {
+        'apple-mobile-web-app-title': 'GBC Gallery',
+        'apple-mobile-web-app-capable': 'yes',
+        'apple-mobile-web-app-status-bar-style': 'black'
+      },
     }),
     new HtmlWebpackPlugin({
       title: 'Gameboy Printer Remote',
