@@ -22,6 +22,7 @@ const VideoParamsForm = (props) => {
   const [palette, setPalette] = useState(props.palette);
   const [invertPalette, setInvertPalette] = useState(props.invertPalette);
   const [yoyo, setYoyo] = useState(props.yoyo);
+  const [reverse, setReverse] = useState(props.reverse);
   const [frame, setFrame] = useState(props.frame);
   const [lockFrame, setLockFrame] = useState(props.lockFrame);
   const [exportFrameMode, setExportFrameMode] = useState(props.exportFrameMode);
@@ -33,13 +34,14 @@ const VideoParamsForm = (props) => {
       palette,
       invertPalette,
       yoyo,
+      reverse,
       frame,
       lockFrame,
       exportFrameMode,
     };
 
     update(cleanState);
-  }, [frameRate, scaleFactor, palette, invertPalette, yoyo, frame, lockFrame, exportFrameMode, update]);
+  }, [frameRate, scaleFactor, palette, invertPalette, yoyo, reverse, frame, lockFrame, exportFrameMode, update]);
 
   if (!imageCount) {
     return null;
@@ -88,6 +90,25 @@ const VideoParamsForm = (props) => {
         />
         <SVG name="checkmark" />
         <span className="video-params__check-label-text">Yoyo-Effect</span>
+      </label>
+      <label
+        className={
+          classnames('video-params__check-label', {
+            'video-params__check-label--checked': reverse,
+          })
+        }
+        title="Reverse animation direction"
+      >
+        <input
+          type="checkbox"
+          className="video-params__checkbox"
+          checked={reverse}
+          onChange={(ev) => {
+            setReverse(ev.target.checked);
+          }}
+        />
+        <SVG name="checkmark" />
+        <span className="video-params__check-label-text">Reverse Direction</span>
       </label>
       <div className="video-params__select-label">
         Palette
@@ -144,6 +165,7 @@ VideoParamsForm.propTypes = {
   palette: PropTypes.string.isRequired,
   invertPalette: PropTypes.bool.isRequired,
   yoyo: PropTypes.bool.isRequired,
+  reverse: PropTypes.bool.isRequired,
   lockFrame: PropTypes.bool.isRequired,
   exportFrameMode: PropTypes.string.isRequired,
   frame: PropTypes.string.isRequired,
