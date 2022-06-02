@@ -1,4 +1,4 @@
-# [Game Boy Printer Web](https://github.com/HerrZatacke/gb-printer-web)
+# [Game Boy Camera Gallery](https://github.com/HerrZatacke/gb-printer-web)
 
 ## Basic usage
 * choose a [color palette](#/palettes)
