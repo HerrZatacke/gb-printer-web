@@ -144,16 +144,20 @@ module.exports = () => ({
       chunks: ['pf', 'main'],
     }),
     new FaviconsWebpackPlugin({
-      logo: './src/assets/images/favicon.svg',
-      inject: htmlPlugin => 
-        basename(htmlPlugin.options.filename) === 'index.html',
+      logo: './src/assets/images/favicon.png',
+      inject: (htmlPlugin) => (
+        basename(htmlPlugin.options.filename) === 'index.html'
+      ),
       mode: 'auto',
+      prefix: 'fav/',
+      outputPath: 'fav/',
       favicons: {
         appName: 'GBC Gallery',
         background: '#d6d3dc',
         theme_color: '#000000',
         appleStatusBarStyle: 'black',
-        start_url: '../#/gallery/',
+        start_url: '/gb-printer-web/#/gallery',
+        scope: '/gb-printer-web/',
         icons: {
           android: { offset: 10 },
           appleIcon: { offset: 10 },
@@ -161,8 +165,8 @@ module.exports = () => ({
           coast: false,
           yandex: false,
           appleStartup: false,
-        }
-      }
+        },
+      },
     }),
     new HtmlWebpackPlugin({
       title: 'Game Boy Printer Remote',
