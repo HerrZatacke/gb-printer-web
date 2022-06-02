@@ -6,6 +6,7 @@ const mapStateToProps = (state) => ({
   scaleFactor: state.videoParams.scaleFactor || [...state.exportScaleFactors].pop() || 4,
   frameRate: state.videoParams.frameRate || 12,
   yoyo: state.videoParams.yoyo || false,
+  reverse: state.videoParams.reverse || false,
   lockFrame: state.videoParams.lockFrame || false,
   invertPalette: state.videoParams.invertPalette || false,
   frame: state.videoParams.frame || '',

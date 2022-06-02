@@ -63,6 +63,7 @@ const animate = (store) => (next) => (action) => {
       frameRate,
       imageSelection,
       yoyo,
+      reverse,
       frame: videoFrame,
       lockFrame: videoLockFrame,
       invertPalette: videoInvertPalette,
@@ -128,6 +129,10 @@ const animate = (store) => (next) => (action) => {
           reverseImages.pop();
 
           allImages.push(...reverseImages);
+        }
+
+        if (reverse) {
+          allImages.reverse();
         }
 
         const addImages = getAddImages(store.dispatch, gifWriter, queue, frameRate, allImages.length);
