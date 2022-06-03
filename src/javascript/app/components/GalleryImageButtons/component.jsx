@@ -96,7 +96,7 @@ const GalleryImageButtons = (props) => (
         }
         onClick={() => props.updateFavouriteTag(!props.isFavourite)}
       >
-        { props.isFavourite ? '❤️' : '❤'}
+        { props.isFavourite ? '❤️' : <SVG name="fav" /> }
       </button>
     ) : null }
   </div>
