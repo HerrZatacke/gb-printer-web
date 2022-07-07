@@ -124,7 +124,12 @@ const getHandleFileImport = (store) => {
       }
 
       // .sav files are always exactly 128kB, but we allow any multiple of 4kB
-      if (file.name?.toLowerCase().endsWith('.sav') && file.size % 0x1000 === 0) {
+      if (
+        file.name?.toLowerCase().endsWith('.sav') && (
+          file.size % 0x1000 === 0 ||
+          file.size === 3584 // Special case: PicNRec .sav
+        )
+      ) {
         return readFileAs(file, 'arrayBuffer')
           .catch(onError)
           .then((data) => (
