@@ -2,15 +2,7 @@ import Queue from 'promise-queue/lib';
 import saveNewImage from '../../../tools/saveNewImage';
 import uniqueBy from '../../../tools/unique/by';
 import { ADD_IMAGES, ADD_TO_QUEUE, CONFIRM_ANSWERED, CONFIRM_ASK } from '../actions';
-
-const padToHeight = (tiles) => {
-  while (tiles.length < 360) {
-    tiles.push(tiles[0]);
-    tiles.unshift(tiles[0]);
-  }
-
-  return tiles;
-};
+import padToHeight from '../../../tools/padToHeight';
 
 const importQueue = (store) => {
 
