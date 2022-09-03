@@ -185,6 +185,34 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.importPad,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Pad images up to 144px height on import"
+        >
+          Pad images up to 144px height on import
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={props.importPad}
+            onChange={({ target }) => {
+              props.setImportPad(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
+
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
             'checkgroup--checked': props.hideDates,
           })
         }
@@ -316,6 +344,8 @@ GenericSettings.propTypes = {
   handleExportFrame: PropTypes.string.isRequired,
   setImportLastSeen: PropTypes.func.isRequired,
   importLastSeen: PropTypes.bool.isRequired,
+  setImportPad: PropTypes.func.isRequired,
+  importPad: PropTypes.bool.isRequired,
   setHideDates: PropTypes.func.isRequired,
   hideDates: PropTypes.bool.isRequired,
   printerUrl: PropTypes.string.isRequired,

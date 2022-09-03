@@ -3,6 +3,15 @@ import saveNewImage from '../../../tools/saveNewImage';
 import uniqueBy from '../../../tools/unique/by';
 import { ADD_IMAGES, ADD_TO_QUEUE, CONFIRM_ANSWERED, CONFIRM_ASK } from '../actions';
 
+const padToHeight = (tiles) => {
+  while (tiles.length < 360) {
+    tiles.push(tiles[0]);
+    tiles.unshift(tiles[0]);
+  }
+
+  return tiles;
+};
+
 const importQueue = (store) => {
 
   const uniqueHash = uniqueBy('hash');
@@ -10,10 +19,12 @@ const importQueue = (store) => {
 
   const addToQueue = (images) => {
 
+    const { importPad } = store.getState();
+
     Promise.all(images.map((image) => (
       queue.add(() => (
         saveNewImage({
-          lines: image.lines,
+          lines: importPad ? padToHeight(image.lines) : image.lines,
           filename: image.file,
           palette: store.getState().activePalette,
           dispatch: store.dispatch,
