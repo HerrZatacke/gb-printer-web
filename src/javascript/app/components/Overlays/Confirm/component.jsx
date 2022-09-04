@@ -23,7 +23,7 @@ const Confirm = ({
       header={message}
     >
       {
-        questions.map(({ label, key, type, options, disabled = false }) => {
+        questions.map(({ label, key, type, options, disabled = false, min, max }) => {
           switch (type) {
             case 'select':
               return (
@@ -49,6 +49,8 @@ const Confirm = ({
                   value={values[key] || ''}
                   type={type}
                   labelText={label}
+                  min={min}
+                  max={max}
                   onChange={(update) => {
                     setSelected(key, update);
                   }}

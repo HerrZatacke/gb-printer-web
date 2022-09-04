@@ -34,6 +34,8 @@ const getQuestions = ({ frameIds, frameGroups, fileName }) => ({
         'Frame index',
       key: 'frameIndex',
       type: 'number',
+      min: 1,
+      max: 99,
       disabled: !(frameSet || frameSetNew.length > 1),
     },
     {
