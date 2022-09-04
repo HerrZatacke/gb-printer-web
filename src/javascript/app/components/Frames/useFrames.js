@@ -26,7 +26,15 @@ const useFrames = () => {
 
   useEffect(() => {
     if (selectedFrameGroup) {
-      setGroupFrames(frames.filter(({ id }) => id.startsWith(selectedFrameGroup)));
+      setGroupFrames(frames.filter(({ id }) => {
+        try {
+          const frameGroupIdRegex = /^(?<group>[a-z]+)(?<id>[0-9]+)/g;
+          const { groups: { group } } = frameGroupIdRegex.exec(id);
+          return selectedFrameGroup === group;
+        } catch (error) {
+          return false;
+        }
+      }));
     } else {
       setGroupFrames([]);
     }
