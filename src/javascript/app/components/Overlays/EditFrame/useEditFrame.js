@@ -16,6 +16,11 @@ const useEditFrame = () => {
   const dispatch = useDispatch();
   const fullId = `${frameGroup}${frameIndex.toString(10).padStart(2, '0')}`;
 
+  const idExists = (
+    (fullId !== updateId) &&
+    frames.find((findFrame) => (fullId === findFrame.id))
+  );
+
   const cancelEdit = () => {
     dispatch({
       type: CANCEL_EDIT_FRAME,
@@ -48,6 +53,7 @@ const useEditFrame = () => {
     setFrameGroup,
     frameName,
     setFrameName,
+    idExists,
   };
 };
 

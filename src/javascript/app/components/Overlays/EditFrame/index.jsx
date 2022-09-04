@@ -18,6 +18,7 @@ const EditFrame = () => {
     frameGroup,
     setFrameGroup,
     setFrameName,
+    idExists,
   } = useEditFrame();
 
   const updateHead = updateId !== fullId ? ` -> "${fullId}"` : '';
@@ -28,7 +29,7 @@ const EditFrame = () => {
     <Lightbox
       className="edit-frame"
       confirm={saveFrame}
-      canConfirm
+      canConfirm={!idExists}
       header={`Editing frame "${updateId}"${updateHead}`}
       deny={cancelEdit}
       denyOnOverlayClick={false}
@@ -81,6 +82,9 @@ const EditFrame = () => {
           value={frameName}
           onChange={setFrameName}
         />
+        <p className="edit-frame__warning">
+          { !idExists ? '\u00A0' : 'This frame id already exists!' }
+        </p>
       </div>
     </Lightbox>
   );

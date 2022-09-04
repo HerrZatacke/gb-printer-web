@@ -25,4 +25,8 @@
       width: calc(70% - 1.25rem);
     }
   }
+
+  &__warning {
+    @include theme-color($color-warn-red, $color-warn-red);
+  }
 }
