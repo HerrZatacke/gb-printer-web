@@ -102,5 +102,6 @@
     "Firefox ESR",
     "edge 18",
     "not ie <= 11"
-  ]
+  ],
+  "dependencies": {}
 }
