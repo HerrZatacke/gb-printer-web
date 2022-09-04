@@ -17,4 +17,12 @@
   &__content {
     padding: 0 15px;
   }
+
+  .inputgroup__label {
+    flex-shrink: 0;
+
+    & + * {
+      width: calc(70% - 1.25rem);
+    }
+  }
 }
