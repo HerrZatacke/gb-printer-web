@@ -5,11 +5,18 @@ const { output: { path: outputPath } } = require('./webpack.prod');
 
 walkdir(outputPath, (filePath) => {
 
+
   // Bad filename example
   // /w/nnnn/remote.js.LICENSE.txt.gz
 
   const relFilePath = path.relative(outputPath, filePath);
   const posixRelFilePath = relFilePath.split(path.sep).join(path.posix.sep);
+
+  // Ignore files inside fav folder
+  if (posixRelFilePath.startsWith('fav/')) {
+    return;
+  }
+
   const spiffsPath = `/${path.posix.join('w', posixRelFilePath)}.gz`;
 
   // console.log({

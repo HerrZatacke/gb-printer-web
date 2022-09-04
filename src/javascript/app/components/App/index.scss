@@ -8,6 +8,7 @@
     margin: auto;
     padding: 120px 20px 20px 20px;
     position: relative;
+    z-index: $z-index-content;
 
     @media (max-width: 380px) {
       width: 100%;

@@ -5,7 +5,8 @@ import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GalleryImageButtons from '../GalleryImageButtons';
 import RGBNSelect from '../RGBNSelect';
-import { dateFormat, dateFormatReadable } from '../../defaults';
+import { dateFormat } from '../../defaults';
+import dateFormatLocale from '../../../tools/dateFormatLocale';
 import ImageRender from '../ImageRender';
 import { FILTER_FAVOURITE } from '../../../consts/specialTags';
 
@@ -28,6 +29,7 @@ const GalleryImage = ({
   hash,
   hashes,
   type,
+  preferredLocale,
 }) => {
 
   const getDateSpan = (className) => {
@@ -37,7 +39,7 @@ const GalleryImage = ({
 
     return (
       <span className={className}>
-        { dayjs(created, dateFormat).format(dateFormatReadable) }
+        { dateFormatLocale(dayjs(created, dateFormat), preferredLocale) }
       </span>
     );
   };
@@ -164,12 +166,14 @@ GalleryImage.propTypes = {
   updateImageSelection: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   hideDate: PropTypes.bool.isRequired,
+  preferredLocale: PropTypes.string,
 };
 
 GalleryImage.defaultProps = {
   created: null,
   hashes: null,
   frame: null,
+  preferredLocale: null,
 };
 
 export default GalleryImage;

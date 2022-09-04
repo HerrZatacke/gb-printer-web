@@ -27,7 +27,7 @@ const Gallery = (props) => {
 
   return (
     <>
-      <GalleryHeader page={props.page} />
+      <GalleryHeader page={props.page} isSticky />
       {
         (props.currentView === 'list') ? (
           <table className="gallery gallery--list">
@@ -49,7 +49,7 @@ const Gallery = (props) => {
       }
       {
         props.images.length < 3 ? null : (
-          <GalleryHeader page={props.page} />
+          <GalleryHeader page={props.page} isBottom />
         )
       }
     </>

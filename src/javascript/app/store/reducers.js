@@ -20,12 +20,14 @@ import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import imageSelection from './reducers/imageSelectionReducer';
 import importLastSeen from './reducers/importLastSeenReducer';
+import importPad from './reducers/importPadReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import pageSize from './reducers/pageSizeReducer';
 import palettes from './reducers/palettesReducer';
 import plugins from './reducers/pluginsReducer';
+import preferredLocale from './reducers/preferredLocaleReducer';
 import printerBusy from './reducers/printerBusyReducer';
 import printerData from './reducers/printerDataReducer';
 import printerFunctions from './reducers/printerFunctionsReducer';
@@ -68,6 +70,7 @@ export default combineReducers({
   images,
   imageSelection,
   importLastSeen,
+  importPad,
   isFullscreen,
   lastSelectedImage,
   progressLog,
@@ -75,6 +78,7 @@ export default combineReducers({
   pageSize,
   palettes,
   plugins,
+  preferredLocale,
   printerBusy,
   printerData,
   printerFunctions,

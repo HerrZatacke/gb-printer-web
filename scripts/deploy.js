@@ -4,7 +4,7 @@ const walkdir = require('walkdir');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const copyAndGZ = require('./copyAndGZ');
-const conf = require('../config');
+const conf = require('../config.json');
 const { output: { path: outputPath } } = require('./webpack.prod');
 
 if (!conf || !conf.deploy || !conf.deploy.dir) {
@@ -28,6 +28,14 @@ rimraf(`${dir}/*`, {}, () => {
   wd.on('file', (filePath, stats) => {
     const fileName = path.basename(filePath);
     const destination = path.join(dir, path.relative(outputPath, filePath));
+
+    const relFilePath = path.relative(outputPath, filePath);
+    const posixRelFilePath = relFilePath.split(path.sep).join(path.posix.sep);
+
+    // Ignore files inside fav folder
+    if (posixRelFilePath.startsWith('fav/')) {
+      return;
+    }
 
     if (!stats.size || ignored.includes(fileName)) {
       return;

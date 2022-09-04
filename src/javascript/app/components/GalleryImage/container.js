@@ -30,6 +30,7 @@ const mapStateToProps = (state, { hash }) => {
     lockFrame: image.lockFrame || false,
     invertPalette: image.invertPalette || false,
     hideDate: state.hideDates,
+    preferredLocale: state.preferredLocale,
   });
 };
 

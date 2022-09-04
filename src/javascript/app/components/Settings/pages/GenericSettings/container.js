@@ -4,7 +4,9 @@ import {
   SET_HANDLE_EXPORT_FRAME,
   SET_HIDE_DATES,
   SET_IMPORT_LAST_SEEN,
+  SET_IMPORT_PAD,
   SET_PAGESIZE,
+  SET_PREFERRED_LOCALE,
   SET_PRINTER_PARAMS,
   SET_PRINTER_URL,
   SET_SAV_FRAME_TYPES,
@@ -20,9 +22,11 @@ const mapStateToProps = (state) => ({
   savFrameGroups: getFrameGroups(state.frames),
   handleExportFrame: state.handleExportFrame,
   importLastSeen: state.importLastSeen,
+  importPad: state.importPad,
   hideDates: state.hideDates,
   printerUrl: state.printerUrl,
   printerParams: state.printerParams,
+  preferredLocale: state.preferredLocale,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -44,10 +48,22 @@ const mapDispatchToProps = (dispatch) => ({
       payload: importLastSeen,
     });
   },
+  setImportPad(importPad) {
+    dispatch({
+      type: SET_IMPORT_PAD,
+      payload: importPad,
+    });
+  },
   setHideDates(hideDates) {
     dispatch({
       type: SET_HIDE_DATES,
       payload: hideDates,
+    });
+  },
+  setPreferredLocale(preferredLocale) {
+    dispatch({
+      type: SET_PREFERRED_LOCALE,
+      payload: preferredLocale,
     });
   },
   setPageSize(pageSize) {

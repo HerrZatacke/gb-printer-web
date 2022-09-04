@@ -7,6 +7,7 @@ import getQuestions from './questions';
 import getFrameId from './getFrameId';
 import sortBy from '../sortby';
 import { ADD_FRAME, ADD_IMAGES, CONFIRM_ANSWERED, CONFIRM_ASK } from '../../app/store/actions';
+import padToHeight from '../padToHeight';
 
 const sortByCount = sortBy('count', 'desc');
 const sortByThreshold = sortBy('threshold');
@@ -126,8 +127,10 @@ const getTransformBitmap = (store) => (file, fromPrinter = false) => {
     }
 
     const saveImage = () => {
+      const { importPad } = store.getState();
+
       saveNewImage({
-        lines: tileLines,
+        lines: importPad ? padToHeight(tileLines) : tileLines,
         filename: file.name?.split('.').shift() || '',
         palette: store.getState().activePalette,
       })

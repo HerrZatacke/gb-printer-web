@@ -2,13 +2,13 @@ import EventEmitter from 'events';
 import { Octokit } from '@octokit/rest';
 
 import dayjs from 'dayjs';
-import { dateFormatReadable } from '../../app/defaults';
+import dateFormatLocale from '../dateFormatLocale';
 
 // Description of whole commit/upload process found here
 // https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
 
 class OctoClient extends EventEmitter {
-  constructor(gitSetings = {}, addToQueue) {
+  constructor(gitSetings = {}, getPreferredLocale, addToQueue) {
     super();
     this.octoKit = null;
     this.busy = false;
@@ -20,6 +20,7 @@ class OctoClient extends EventEmitter {
     this.progress = 0;
     this.queueLength = 0;
     this.addToQueue = addToQueue;
+    this.getPreferredLocale = getPreferredLocale;
     this.setOctokit(gitSetings);
   }
 
@@ -272,7 +273,7 @@ class OctoClient extends EventEmitter {
       return Promise.reject(new Error('OctoClient not configured'));
     }
 
-    const commitMessage = `Sync. ${dayjs().format(dateFormatReadable)}`;
+    const commitMessage = `Sync. ${dateFormatLocale(dayjs(), this.getPreferredLocale())}`;
 
     const uploadLength = upload.length;
 

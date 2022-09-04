@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import Lightbox from '../../Lightbox';
 
 dayjs.extend(duration);
+
+const messagesCutOff = 15;
 
 const ProgressLogBox = ({
   git: {
@@ -19,6 +21,9 @@ const ProgressLogBox = ({
   },
   confirm,
 }) => {
+
+  const [cutOffMessages, setCutOffMessages] = useState(true);
+
   if (
     !gitMessages.length &&
     !dropboxMessages.length
@@ -44,6 +49,10 @@ const ProgressLogBox = ({
   const timeLatest = isGit ? gitTimeLatest : dropboxTimeLatest;
   const messages = gitMessages.concat(dropboxMessages);
 
+  const shownMessages = messages.filter((_, index) => (
+    cutOffMessages ? index < messagesCutOff : true
+  ));
+
   return (
     <Lightbox
       className="progress-log"
@@ -51,7 +60,7 @@ const ProgressLogBox = ({
       confirm={finished ? confirm : null}
     >
       <ul className="progress-log__messages">
-        {messages.map(({ message, timestamp }, index) => (
+        {shownMessages.map(({ message, timestamp }, index) => (
           message === '.' ? null : (
             <li
               key={index}
@@ -63,6 +72,19 @@ const ProgressLogBox = ({
           )
         ))}
       </ul>
+      {messages.length > messagesCutOff ? (
+        <button
+          type="button"
+          className="progress-log__button"
+          onClick={() => setCutOffMessages(!cutOffMessages)}
+        >
+          {
+            cutOffMessages ?
+              `Show all ${messages.length} messages` :
+              'Reduce messages'
+          }
+        </button>
+      ) : null}
       <div className="progress-log__duration">
         {`Started at: ${dayjs.unix(timeStart).format('HH:mm:ss')}`}
         <br />

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
 import Input from '../../../Input';
@@ -9,11 +10,31 @@ import supportedCanvasImageFormats from '../../../../../tools/supportedCanvasIma
 import cleanUrl from '../../../../../tools/cleanUrl';
 import { getEnv } from '../../../../../tools/getEnv';
 import exportFrameModes from '../../../../../consts/exportFrameModes';
+import dateFormatLocale from '../../../../../tools/dateFormatLocale';
 
 const GenericSettings = (props) => {
   const [pageSize, setPageSize] = useState(props.pageSize);
   const [printerUrl, setPrinterUrl] = useState(props.printerUrl);
   const [printerParams, setPrinterParams] = useState(props.printerParams);
+  const [localeCodes, setLocaleCodes] = useState([]);
+  const [now] = useState(dayjs());
+
+  useEffect(() => {
+    import(/* webpackChunkName: "loc" */ 'locale-codes')
+      .then(({ default: locale }) => {
+
+        const filteredLocales = locale.all.filter(({ tag }) => {
+          try {
+            dateFormatLocale(dayjs(), tag);
+            return true;
+          } catch (error) {
+            return false;
+          }
+        });
+
+        setLocaleCodes(filteredLocales);
+      });
+  }, []);
 
   return (
     <>
@@ -71,7 +92,7 @@ const GenericSettings = (props) => {
         <div className="inputgroup__label">
           Image export filetypes
         </div>
-        {[...supportedCanvasImageFormats(), 'txt'].map((fileType) => (
+        {[...supportedCanvasImageFormats(), 'txt', 'pgm'].map((fileType) => (
           <label
             key={fileType}
             className={
@@ -165,6 +186,34 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.importPad,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Pad images up to 144px height on import"
+        >
+          Pad images up to 144px height on import
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={props.importPad}
+            onChange={({ target }) => {
+              props.setImportPad(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
+
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
             'checkgroup--checked': props.hideDates,
           })
         }
@@ -189,6 +238,31 @@ const GenericSettings = (props) => {
           <SVG name="checkmark" />
         </span>
       </label>
+
+      <div className="inputgroup">
+        <label htmlFor="settings-preferred-locale" className="inputgroup__label">
+          Preferred locale
+          <span className="inputgroup__note inputgroup__note--newline">
+            { `Example date format: ${dateFormatLocale(now, props.preferredLocale)}`}
+          </span>
+        </label>
+        <select
+          id="settings-preferred-locale"
+          className="inputgroup__input inputgroup__input--select"
+          value={props.preferredLocale}
+          onChange={(ev) => {
+            props.setPreferredLocale(ev.target.value);
+          }}
+        >
+          {
+            localeCodes.map(({ name, local, location, tag }) => (
+              <option value={tag} key={tag}>
+                {`${local || name}${location ? ` - ${location}` : ''} (${tag})`}
+              </option>
+            ))
+          }
+        </select>
+      </div>
 
       <EnableWebUSB />
 
@@ -265,10 +339,14 @@ GenericSettings.propTypes = {
   setSavFrameTypes: PropTypes.func.isRequired,
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
+  preferredLocale: PropTypes.string,
+  setPreferredLocale: PropTypes.func.isRequired,
   setHandleExportFrame: PropTypes.func.isRequired,
   handleExportFrame: PropTypes.string.isRequired,
   setImportLastSeen: PropTypes.func.isRequired,
   importLastSeen: PropTypes.bool.isRequired,
+  setImportPad: PropTypes.func.isRequired,
+  importPad: PropTypes.bool.isRequired,
   setHideDates: PropTypes.func.isRequired,
   hideDates: PropTypes.bool.isRequired,
   printerUrl: PropTypes.string.isRequired,
@@ -277,6 +355,8 @@ GenericSettings.propTypes = {
   updatePrinterParams: PropTypes.func.isRequired,
 };
 
-GenericSettings.defaultProps = {};
+GenericSettings.defaultProps = {
+  preferredLocale: null,
+};
 
 export default GenericSettings;

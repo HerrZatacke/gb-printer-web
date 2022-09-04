@@ -13,6 +13,7 @@
     padding: 10px 12px;
     border: 1px solid;
     min-height: inherit;
+    max-width: fill-available;
 
     @include theme-background-color($color-white, $color-black);
     @include theme-border-color($color-grey-70, $color-grey-30);
@@ -187,6 +188,11 @@
 
     &--warn {
       @include theme-color($color-warn-red, $color-warn-red);
+    }
+
+    &--newline {
+      padding-left: 0;
+      display: block;
     }
   }
 }

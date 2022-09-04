@@ -38,6 +38,11 @@ const FilterForm = (props) => {
       deny={() => props.hideFilters()}
       header="Select Filters"
     >
+      <span
+        className="filter-form__hint"
+      >
+        If set, all must be met
+      </span>
       <ul
         className="filter-form__tag-list"
       >
@@ -84,6 +89,11 @@ const FilterForm = (props) => {
           }}
         />
       </ul>
+      <span
+        className="filter-form__hint"
+      >
+        If set, one must be met
+      </span>
       <ul
         className="filter-form__tag-list"
       >

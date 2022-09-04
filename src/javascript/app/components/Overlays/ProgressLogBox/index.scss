@@ -29,4 +29,18 @@
     font-size: 14px;
     line-height: 18px;
   }
+
+  &__button {
+    @include theme-color($color-text, $color-text-bright);
+    padding: 10px 20px 0 20px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.7;
+    }
+  }
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import { dateFormat, dateFormatReadable } from '../../../defaults';
+import { dateFormat } from '../../../defaults';
+import dateFormatLocale from '../../../../tools/dateFormatLocale';
 import SVG from '../../SVG';
 import Lightbox from '../../Lightbox';
 import ImageRender from '../../ImageRender';
@@ -23,6 +24,7 @@ const LightboxImage = ({
   size,
   next,
   created,
+  preferredLocale,
 }) => (
   <Lightbox
     className="lightbox-image"
@@ -77,7 +79,7 @@ const LightboxImage = ({
       ) : null }
     </div>
     <div className="lightbox-image__created">
-      {dayjs(created, dateFormat).format(dateFormatReadable)}
+      {dateFormatLocale(dayjs(created, dateFormat), preferredLocale)}
     </div>
   </Lightbox>
 );
@@ -99,6 +101,7 @@ LightboxImage.propTypes = {
   isFullscreen: PropTypes.bool.isRequired,
   lightboxIndex: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
+  preferredLocale: PropTypes.string,
 };
 
 LightboxImage.defaultProps = {
@@ -109,6 +112,7 @@ LightboxImage.defaultProps = {
   title: null,
   frame: null,
   frames: null,
+  preferredLocale: null,
 };
 
 export default LightboxImage;

@@ -50,8 +50,8 @@ const definitions = [
     // concurrently visible images in gallery
     key: 'pageSize',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
-    value: 15,
+    saveExport: ['settings'],
+    value: 30,
   },
   {
     // current selection of images
@@ -121,6 +121,13 @@ const definitions = [
     saveLocally: true,
     saveExport: ['settings', 'remote'],
     value: true,
+  },
+  {
+    // if images will get padded up to 144px on import
+    key: 'importPad',
+    saveLocally: true,
+    saveExport: ['settings', 'remote'],
+    value: false,
   },
   {
     // visiblility of dates in gallery
@@ -201,6 +208,12 @@ const definitions = [
       dropbox: 0,
       local: 0,
     },
+  },
+  {
+    key: 'preferredLocale',
+    saveLocally: true,
+    saveExport: ['settings'],
+    value: navigator.language,
   },
 ];
 

@@ -2,6 +2,26 @@
   display: flex;
   justify-content: space-between;
 
+  &--sticky {
+    position: sticky;
+    top: 60px;
+    z-index: $z-index-gallery-header-sticky;
+    @include theme-background-color($color-page-background, $color-page-background-dark);
+    padding-top: 15px;
+    padding-bottom: 0;
+
+    @media (max-width: 640px) {
+      margin-left: -10vw;
+      width: 100vw;
+    }
+  }
+
+  &--bottom {
+    @media (max-height: 900px) {
+      display: none;
+    }
+  }
+
   .gallery-view-select,
   .pagination,
   .batch-buttons {

@@ -5,6 +5,8 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const { basename } = require('path');
 const getBranch = require('./getBranch');
 const { version } = require('../package.json');
 
@@ -136,17 +138,40 @@ module.exports = () => ({
       extensions: ['js', 'jsx'],
     }),
     new HtmlWebpackPlugin({
-      title: 'Gameboy Printer Web',
+      title: 'Game Boy Camera Gallery',
       template: './src/assets/index.html',
       filename: 'index.html',
-      favicon: './src/assets/images/favicon.png',
       chunks: ['pf', 'main'],
     }),
+    new FaviconsWebpackPlugin({
+      logo: './src/assets/images/favicon.png',
+      inject: (htmlPlugin) => (
+        basename(htmlPlugin.options.filename) === 'index.html'
+      ),
+      mode: 'auto',
+      prefix: 'fav/',
+      outputPath: 'fav/',
+      favicons: {
+        appName: 'GBC Gallery',
+        background: '#d6d3dc',
+        theme_color: '#000000',
+        appleStatusBarStyle: 'black',
+        start_url: '/gb-printer-web/#/gallery',
+        scope: '/gb-printer-web/',
+        icons: {
+          android: { offset: 10 },
+          appleIcon: { offset: 10 },
+          windows: { offset: 10 },
+          coast: false,
+          yandex: false,
+          appleStartup: false,
+        },
+      },
+    }),
     new HtmlWebpackPlugin({
-      title: 'Gameboy Printer Remote',
+      title: 'Game Boy Printer Remote',
       template: './src/assets/remote.html',
       filename: 'remote.html',
-      favicon: './src/assets/images/favicon.png',
       chunks: ['pf', 'remote'],
     }),
     new MiniCssExtractPlugin({
