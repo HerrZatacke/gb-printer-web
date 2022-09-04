@@ -30,7 +30,7 @@ const getFrameGroups = (frames) => (
       let groupId;
 
       try {
-        groupId = id.match(/^[a-z]{2,}/g)[0];
+        groupId = id.match(/^[a-z]+/g)[0];
       } catch (error) {
         return result;
       }

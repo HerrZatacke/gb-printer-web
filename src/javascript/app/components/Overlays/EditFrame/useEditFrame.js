@@ -8,7 +8,7 @@ const useEditFrame = () => {
   const updateId = frame.id;
   const frames = useSelector((state) => state.frames);
   const groups = getFrameGroups(frames);
-  const frameGroupIdRegex = /^(?<group>[a-z]{2,})(?<id>[0-9]+)/g;
+  const frameGroupIdRegex = /^(?<group>[a-z]+)(?<id>[0-9]+)/g;
   const { groups: { group, id } } = frameGroupIdRegex.exec(frame.id);
   const [frameGroup, setFrameGroup] = useState(group);
   const [frameIndex, setFrameIndex] = useState(parseInt(id, 10));
