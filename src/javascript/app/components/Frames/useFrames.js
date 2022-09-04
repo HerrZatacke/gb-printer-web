@@ -3,19 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import getFrameGroups from '../../../tools/getFrameGroups';
 import { JSON_EXPORT } from '../../store/actions';
 
-const prioId = (id) => {
-  switch (id) {
-    case 'int':
-      return '_1';
-    case 'jp':
-      return '_2';
-    case 'hk':
-      return '_3';
-    default:
-      return id;
-  }
-};
-
 const useFrames = () => {
   const dispatch = useDispatch();
   const savFrameTypes = useSelector((state) => state.savFrameTypes);
@@ -26,21 +13,7 @@ const useFrames = () => {
   const [selectedFrameGroup, setSelectedFrameGroup] = useState(savFrameTypes);
 
   useEffect(() => {
-    const groups = getFrameGroups(frames)
-      .sort(({ id: ida }, { id: idb }) => {
-        const sorta = prioId(ida);
-        const sortb = prioId(idb);
-
-        if (sorta > sortb) {
-          return 1;
-        }
-
-        if (sorta < sortb) {
-          return -1;
-        }
-
-        return 0;
-      });
+    const groups = getFrameGroups(frames);
 
     // if globally selected group does not exist, switch to the first existing
     if (!groups.find(({ id }) => id === savFrameTypes)) {

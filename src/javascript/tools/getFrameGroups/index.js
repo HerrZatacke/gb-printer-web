@@ -11,6 +11,19 @@ const getGroupName = (id, name) => {
   }
 };
 
+const prioId = (id) => {
+  switch (id) {
+    case 'int':
+      return '_1';
+    case 'jp':
+      return '_2';
+    case 'hk':
+      return '_3';
+    default:
+      return id;
+  }
+};
+
 const getFrameGroups = (frames) => (
   frames
     .reduce((result, { id, name }) => {
@@ -31,6 +44,20 @@ const getFrameGroups = (frames) => (
 
       return result;
     }, [])
+    .sort(({ id: ida }, { id: idb }) => {
+      const sorta = prioId(ida);
+      const sortb = prioId(idb);
+
+      if (sorta > sortb) {
+        return 1;
+      }
+
+      if (sorta < sortb) {
+        return -1;
+      }
+
+      return 0;
+    })
 );
 
 export default getFrameGroups;
