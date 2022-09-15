@@ -1,6 +1,7 @@
 import testFile from './commands/testFile';
 import checkPrinter from './commands/checkPrinter';
 import fetchImages from './commands/fetchImages';
+import tear from './commands/tear';
 import clearPrinter from './commands/clearPrinter';
 
 const initCommands = ({ targetWindow }, env, remoteParams) => {
@@ -8,12 +9,30 @@ const initCommands = ({ targetWindow }, env, remoteParams) => {
 
   switch (env) {
     case 'webpack-dev':
-      commands.push({
-        name: 'testFile',
-        fn: testFile,
-      });
+      commands.push(
+        {
+          name: 'testFile',
+          fn: testFile,
+        },
+        {
+          name: 'checkPrinter',
+          fn: checkPrinter,
+        },
+        {
+          name: 'fetchImages',
+          fn: fetchImages,
+        },
+        {
+          name: 'clearPrinter',
+          fn: clearPrinter,
+        },
+        {
+          name: 'tear',
+          fn: tear,
+        },
+      );
+      break;
 
-    // eslint-disable-next-line no-fallthrough
     case 'esp8266':
       commands.push(
         {
@@ -40,6 +59,10 @@ const initCommands = ({ targetWindow }, env, remoteParams) => {
         {
           name: 'fetchImages',
           fn: fetchImages,
+        },
+        {
+          name: 'tear',
+          fn: tear,
         },
       );
       break;
