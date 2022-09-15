@@ -48,7 +48,7 @@ const PrinterReport = ({
       </div>
 
       {
-        (printerData && printerData.fs && printerData.dumps) ? (
+        (printerData?.fs && printerData?.dumps) ? (
           <table className="printer-report__table">
             <thead>
               <tr>
@@ -77,6 +77,13 @@ const PrinterReport = ({
               </tr>
             </tbody>
           </table>
+        ) : null
+      }
+      {
+        (printerData?.message) ? (
+          <p className="printer-report__message">
+            { printerData?.message }
+          </p>
         ) : null
       }
     </div>
