@@ -31,6 +31,19 @@ const initCommands = ({ targetWindow }, env, remoteParams) => {
       );
       break;
 
+    case 'pico-gb':
+      commands.push(
+        {
+          name: 'checkPrinter',
+          fn: checkPrinter,
+        },
+        {
+          name: 'fetchImages',
+          fn: fetchImages,
+        },
+      );
+      break;
+
     default:
       break;
   }
