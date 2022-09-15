@@ -38,6 +38,7 @@ const getHandleFileImport = (store) => {
     const groupImports = files.map((fileData) => {
       let file = fileData;
       let contentType = fileData.type;
+      let meta = null;
       let ok = true;
 
       // As of version 1.16.4 the filedata is an object like { blob, contentType }
@@ -45,6 +46,7 @@ const getHandleFileImport = (store) => {
       if (fileData.blob) {
         file = fileData.blob;
         contentType = fileData.contentType;
+        meta = fileData.meta;
         // v1.16.4 is missing the 'ok' property, hence the explicit check (may be removed in future versions if v0.3.5+ is successful)
         ok = (fileData.ok !== undefined) ? fileData.ok : ok;
       }
