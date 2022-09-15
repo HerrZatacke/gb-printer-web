@@ -15,6 +15,8 @@ const useFrame = ({ frameId, name }) => {
   const frameHash = useSelector(({ frames }) => frames.find(({ id }) => id === frameId))?.hash;
   const mounted = useRef(false);
 
+  console.log({ frameHash });
+
   useEffect(() => {
     mounted.current = true;
 

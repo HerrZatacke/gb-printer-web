@@ -39,6 +39,8 @@ const saveLocalStorageItems = ({ images, frames }) => {
   const imagesTotal = images.length;
   const framesTotal = frames.length;
 
+  console.log('ööööö', frames);
+
   return (
     Promise.all([
       ...images.map((image, imageIndex) => (
@@ -54,19 +56,25 @@ const saveLocalStorageItems = ({ images, frames }) => {
               .then(saveImageFileContent);
           })
       )),
-      ...frames.map((frame, frameIndex) => (
-        // check if item exists locally
-        loadFrameData(frame.hash)
-          .then((frameData) => {
-            // if frame exists locally, don't download blob
-            if (frameData) {
-              return frame.hash;
-            }
+      ...frames.map((frame, frameIndex) => {
+        console.log('äääää', frame);
+        return (
+          // check if item exists locally
+          loadFrameData(frame.hash)
+            .then((frameData) => {
+              // if frame exists locally, don't download blob
+              if (frameData) {
+                console.log('!!! hash', frame.hash);
+                return frame.hash;
+              }
 
-            return frame.getFileContent(frame.sha, frameIndex, framesTotal)
-              .then(saveFrameFileContent);
-          })
-      )),
+              console.log(frame);
+
+              return frame.getFileContent(frame.contentHash, frameIndex, framesTotal)
+                .then(saveFrameFileContent);
+            })
+        );
+      }),
     ])
   );
 };

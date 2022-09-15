@@ -12,6 +12,8 @@ const useFrames = () => {
   const [groupFrames, setGroupFrames] = useState([]);
   const [selectedFrameGroup, setSelectedFrameGroup] = useState(savFrameTypes);
 
+  console.log(frames);
+
   useEffect(() => {
     const groups = getFrameGroups(frames);
 
