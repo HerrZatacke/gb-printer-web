@@ -51,7 +51,7 @@
     "filesize": "^6.1.0",
     "flatten": "^1.0.3",
     "gb-palettes": "^1.0.8",
-    "gbp-decode": "^1.0.8",
+    "gbp-decode": "^1.1.0",
     "github-markdown-css": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "http-proxy-middleware": "^1.0.6",
