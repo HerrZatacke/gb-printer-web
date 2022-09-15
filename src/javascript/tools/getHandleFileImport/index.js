@@ -1,6 +1,7 @@
 import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
 import transformCapture from '../transformCapture';
+import transformReduced from '../transformReduced';
 import getTransformBitmap from '../transformBitmap';
 import readFileAs from '../readFileAs';
 import transformClassic from '../transformClassic';
@@ -136,6 +137,20 @@ const getHandleFileImport = (store) => {
           .catch(onError)
           .then((data) => (
             transformSav(data, file.name)
+          ));
+      }
+
+      if (contentType === 'application/pico-gb-printer') {
+        return readFileAs(file, 'arrayBuffer')
+          .catch(onError)
+          .then((data) => (
+            transformReduced(data)
+              .then((imagesLines) => (
+                imagesLines.map((lines) => ({
+                  lines,
+                  filename: file.name,
+                }))
+              ))
           ));
       }
 
