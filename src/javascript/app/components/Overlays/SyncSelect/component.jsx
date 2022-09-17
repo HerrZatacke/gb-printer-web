@@ -73,19 +73,17 @@ const SyncSelect = ({
                 </span>
                 <SVG name="sync" className="svg--180" />
                 {showSyncHints && (
-                  <>
-                    <span
-                      className={classnames('sync-select__button-hint', {
-                        'sync-select__button-hint--warn': syncLastUpdate.local < syncLastUpdate.dropbox,
-                      })}
-                    >
-                      {
-                        syncLastUpdate.local < syncLastUpdate.dropbox ?
-                          'There are pending remote changes. If you synchronize to dropbox now, these will be lost.' :
-                          'Upload changes to dropbox'
-                      }
-                    </span>
-                  </>
+                  <span
+                    className={classnames('sync-select__button-hint', {
+                      'sync-select__button-hint--warn': syncLastUpdate.local < syncLastUpdate.dropbox,
+                    })}
+                  >
+                    {
+                      syncLastUpdate.local < syncLastUpdate.dropbox ?
+                        'There are pending remote changes. If you synchronize to dropbox now, these will be lost.' :
+                        'Upload changes to dropbox'
+                    }
+                  </span>
                 )}
               </button>
             </li>
@@ -103,19 +101,17 @@ const SyncSelect = ({
                 </span>
                 <SVG name="sync" />
                 {showSyncHints && (
-                  <>
-                    <span
-                      className={classnames('sync-select__button-hint', {
-                        'sync-select__button-hint--warn': syncLastUpdate.local > syncLastUpdate.dropbox,
-                      })}
-                    >
-                      {
-                        syncLastUpdate.local > syncLastUpdate.dropbox ?
-                          'There are local changes not synched to dropbox yet. If you synchronize from dropbox now, these will be lost.' :
-                          'Download changes from dropbox'
-                      }
-                    </span>
-                  </>
+                  <span
+                    className={classnames('sync-select__button-hint', {
+                      'sync-select__button-hint--warn': syncLastUpdate.local > syncLastUpdate.dropbox,
+                    })}
+                  >
+                    {
+                      syncLastUpdate.local > syncLastUpdate.dropbox ?
+                        'There are local changes not synched to dropbox yet. If you synchronize from dropbox now, these will be lost.' :
+                        'Download changes from dropbox'
+                    }
+                  </span>
                 )}
               </button>
             </li>
