@@ -47,6 +47,7 @@ const getHandleFileImport = (store) => {
       if (fileData.blob) {
         file = fileData.blob;
         contentType = fileData.contentType;
+        // eslint-disable-next-line no-unused-vars
         meta = fileData.meta;
         // v1.16.4 is missing the 'ok' property, hence the explicit check (may be removed in future versions if v0.3.5+ is successful)
         ok = (fileData.ok !== undefined) ? fileData.ok : ok;
