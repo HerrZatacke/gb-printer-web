@@ -6,7 +6,6 @@ const functionLabels = {
   testFile: 'Print test image',
   checkPrinter: 'Check Printer',
   fetchImages: null,
-  fetchDump: 'Fetch images',
   clearPrinter: 'Clear Printer',
   tear: 'Tear',
 };
@@ -34,7 +33,7 @@ const PrinterReport = ({
             disabled={
               printerBusy ||
               (
-                ['fetchImages', 'clearPrinter', 'tear', 'fetchDump'].includes(name) &&
+                ['fetchImages', 'clearPrinter', 'tear'].includes(name) &&
                 !printerData.dumps?.length
               )
             }

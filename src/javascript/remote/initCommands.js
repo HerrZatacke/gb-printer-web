@@ -23,10 +23,6 @@ const initCommands = ({ targetWindow }, env, remoteParams) => {
           fn: fetchImages,
         },
         {
-          name: 'fetchDump',
-          fn: fetchImages,
-        },
-        {
           name: 'clearPrinter',
           fn: clearPrinter,
         },
@@ -61,7 +57,7 @@ const initCommands = ({ targetWindow }, env, remoteParams) => {
           fn: checkPrinter,
         },
         {
-          name: 'fetchDump',
+          name: 'fetchImages',
           fn: fetchImages,
         },
         {
