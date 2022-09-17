@@ -76,6 +76,7 @@ const VideoParamsForm = (props) => {
         className={
           classnames('video-params__check-label', {
             'video-params__check-label--checked': yoyo,
+            'video-params__check-label--disabled': reverse,
           })
         }
         title="Enable Yoyo-Effect (loop back to the beginning)"
@@ -84,6 +85,7 @@ const VideoParamsForm = (props) => {
           type="checkbox"
           className="video-params__checkbox"
           checked={yoyo}
+          disabled={reverse}
           onChange={(ev) => {
             setYoyo(ev.target.checked);
           }}
@@ -95,6 +97,7 @@ const VideoParamsForm = (props) => {
         className={
           classnames('video-params__check-label', {
             'video-params__check-label--checked': reverse,
+            'video-params__check-label--disabled': yoyo,
           })
         }
         title="Reverse animation direction"
@@ -103,6 +106,7 @@ const VideoParamsForm = (props) => {
           type="checkbox"
           className="video-params__checkbox"
           checked={reverse}
+          disabled={yoyo}
           onChange={(ev) => {
             setReverse(ev.target.checked);
           }}
