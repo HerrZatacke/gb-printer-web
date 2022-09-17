@@ -6,7 +6,7 @@ const functionLabels = {
   testFile: 'Print test image',
   checkPrinter: 'Check Printer',
   fetchImages: null,
-  fetchDump: 'Fetch Images',
+  fetchDump: 'Fetch images',
   clearPrinter: 'Clear Printer',
   tear: 'Tear',
 };
