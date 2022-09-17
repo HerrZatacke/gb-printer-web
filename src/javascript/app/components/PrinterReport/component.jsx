@@ -10,6 +10,14 @@ const functionLabels = {
   tear: 'Tear',
 };
 
+const getFetchImagesLabel = (printerFunctions, dumpsLength) => {
+  if (printerFunctions.includes('tear')) {
+    return 'Fetch images';
+  }
+
+  return `Fetch ${dumpsLength || 0} images`;
+};
+
 const PrinterReport = ({
   printerData,
   printerFunctions,
@@ -41,7 +49,7 @@ const PrinterReport = ({
           >
             {
               name === 'fetchImages' ?
-                `Fetch ${printerData.dumps?.length || 0} images` :
+                getFetchImagesLabel(printerFunctions, printerData.dumps?.length) :
                 functionLabels[name]
             }
           </button>
