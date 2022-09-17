@@ -140,7 +140,7 @@ const getHandleFileImport = (store) => {
           ));
       }
 
-      if (contentType === 'application/x-pico-printer-binary-log') {
+      if (contentType === 'application/pico-printer-binary-log') {
         return readFileAs(file, 'arrayBuffer')
           .catch(onError)
           .then((data) => (
