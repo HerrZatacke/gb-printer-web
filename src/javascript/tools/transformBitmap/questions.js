@@ -20,8 +20,13 @@ const getQuestions = ({ frameIds, frameGroups, fileName, scaleFactor = 1 }) => (
     (!frameId && !frameName)
   );
 
+  const isGoodScaleFactor = (
+    isPowerOfTwo(scaleFactor) &&
+    Math.floor(scaleFactor) === scaleFactor
+  );
+
   return [
-    isPowerOfTwo(scaleFactor) ? null : {
+    isGoodScaleFactor ? null : {
       label: `The scale factor of your image is ${scaleFactor.toPrecision(3)}. To get a clean result without artifacts, use images with factors being powers of two. (1, 2, 4, 8 ...)`,
       key: 'badScaleFactor',
       type: 'info',
