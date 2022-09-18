@@ -1,6 +1,12 @@
 import getFrameId from './getFrameId';
 
-const getQuestions = ({ frameIds, frameGroups, fileName }) => ({
+// noinspection JSBitwiseOperatorUsage
+const isPowerOfTwo = (v) => (
+  // eslint-disable-next-line no-bitwise
+  v && !(v & (v - 1))
+);
+
+const getQuestions = ({ frameIds, frameGroups, fileName, scaleFactor = 1 }) => ({
   frameSet = '',
   frameSetNew = '',
   frameIndex = '',
@@ -15,6 +21,12 @@ const getQuestions = ({ frameIds, frameGroups, fileName }) => ({
   );
 
   return [
+    isPowerOfTwo(scaleFactor) ? null : {
+      label: `The scale factor of your image is ${scaleFactor.toPrecision(3)}. To get a clean result without artifacts, use images with factors being powers of two. (1, 2, 4, 8 ...)`,
+      key: 'badScaleFactor',
+      type: 'info',
+      themes: ['warning'],
+    },
     {
       label: 'Add as frame to existing frameset',
       key: 'frameSet',
@@ -53,7 +65,7 @@ const getQuestions = ({ frameIds, frameGroups, fileName }) => ({
       type: 'confirmForm',
       notComplete,
     },
-  ];
+  ].filter(Boolean);
 };
 
 export default getQuestions;

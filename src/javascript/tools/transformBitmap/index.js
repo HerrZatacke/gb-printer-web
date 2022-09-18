@@ -105,13 +105,23 @@ const getTransformBitmap = (store) => (file, fromPrinter = false) => {
 
   img.onload = () => {
     context.filter = 'grayscale(1)';
-
+    context.imageSmoothingEnabled = false;
     canvas.width = 160;
-    canvas.height = canvas.width * img.naturalHeight / img.naturalWidth;
 
-    // if an image has the "sensor" resolution of 128x112, import it inside a black frame
-    if (img.naturalWidth === 128 && img.naturalHeight === 112) {
-      context.drawImage(img, 16, 16);
+    const ratio = img.naturalHeight / img.naturalWidth;
+    let scaleFactor = 0;
+
+    if (ratio === 112 / 128) {
+      canvas.height = 144;
+      scaleFactor = img.naturalWidth / 128;
+    } else {
+      canvas.height = canvas.width * img.naturalHeight / img.naturalWidth;
+      scaleFactor = img.naturalWidth / 160;
+    }
+
+    // if an image has the ratio of the "sensor" resolution of 128x112, import it inside a black frame
+    if (ratio === 112 / 128) {
+      context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 16, 16, canvas.width - 32, canvas.height - 32);
     } else {
       context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, canvas.width, canvas.height);
     }
@@ -168,7 +178,7 @@ const getTransformBitmap = (store) => (file, fromPrinter = false) => {
       type: CONFIRM_ASK,
       payload: {
         message: `Choose how you want to import "${file.name}".`,
-        questions: getQuestions({ frameIds, frameGroups, fileName: file.name }),
+        questions: getQuestions({ frameIds, frameGroups, fileName: file.name, scaleFactor }),
         confirm: ({ frameSet, frameSetNew, frameIndex, frameName }) => {
           const frameId = getFrameId({ frameSet, frameSetNew, frameIndex });
 
