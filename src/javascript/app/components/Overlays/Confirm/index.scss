@@ -13,5 +13,23 @@
   &__info-text {
     margin: 20px;
     @include theme-color($color-black, $color-white);
+
+    &--warning {
+      position: relative;
+      padding: 16px;
+      overflow: hidden;
+      @include theme-background-color($color-warn-yellow, $color-warn-yellow);
+      border-radius: $default-border-radius;
+
+      &:before {
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 100%;
+        @include theme-background-color($color-black, $color-strong-yellow);
+        top: 0;
+        left: 0;
+      }
+    }
   }
 }

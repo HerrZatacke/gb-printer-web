@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import useQuestions from '../../../../hooks/useQuestions';
 import Select from './types/Select';
@@ -23,7 +24,7 @@ const Confirm = ({
       header={message}
     >
       {
-        questions.map(({ label, key, type, options, disabled = false }) => {
+        questions.map(({ label, key, type, options, disabled = false, themes = [] }) => {
           switch (type) {
             case 'select':
               return (
@@ -57,7 +58,12 @@ const Confirm = ({
             case 'info':
               return (
                 <p
-                  className="confirm__info-text"
+                  className={
+                    classnames(
+                      'confirm__info-text',
+                      themes.map((name) => `confirm__info-text--${name}`),
+                    )
+                  }
                   key={key}
                 >
                   {label}
