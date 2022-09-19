@@ -123,6 +123,13 @@ const definitions = [
     value: true,
   },
   {
+    // if the "deleted" images from a .sav will be imported too
+    key: 'importDeleted',
+    saveLocally: true,
+    saveExport: ['settings', 'remote'],
+    value: true,
+  },
+  {
     // if images will get padded up to 144px on import
     key: 'importPad',
     saveLocally: true,

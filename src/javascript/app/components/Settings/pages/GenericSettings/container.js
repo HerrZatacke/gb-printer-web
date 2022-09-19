@@ -4,6 +4,7 @@ import {
   SET_HANDLE_EXPORT_FRAME,
   SET_HIDE_DATES,
   SET_IMPORT_LAST_SEEN,
+  SET_IMPORT_DELETED,
   SET_IMPORT_PAD,
   SET_PAGESIZE,
   SET_PREFERRED_LOCALE,
@@ -21,6 +22,7 @@ const mapStateToProps = (state) => ({
   savFrameTypes: state.savFrameTypes,
   savFrameGroups: getFrameGroups(state.frames),
   handleExportFrame: state.handleExportFrame,
+  importDeleted: state.importDeleted,
   importLastSeen: state.importLastSeen,
   importPad: state.importPad,
   hideDates: state.hideDates,
@@ -46,6 +48,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: SET_IMPORT_LAST_SEEN,
       payload: importLastSeen,
+    });
+  },
+  setImportDeleted(importDeleted) {
+    dispatch({
+      type: SET_IMPORT_DELETED,
+      payload: importDeleted,
     });
   },
   setImportPad(importPad) {

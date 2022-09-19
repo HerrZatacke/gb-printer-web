@@ -181,6 +181,33 @@ const GenericSettings = (props) => {
           <SVG name="checkmark" />
         </span>
       </label>
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.importDeleted,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Import deleted images when importing Cartridge dumps"
+        >
+          Import deleted images when importing Cartridge dumps
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={props.importDeleted}
+            onChange={({ target }) => {
+              props.setImportDeleted(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
 
       <label
         className={
@@ -344,6 +371,8 @@ GenericSettings.propTypes = {
   handleExportFrame: PropTypes.string.isRequired,
   setImportLastSeen: PropTypes.func.isRequired,
   importLastSeen: PropTypes.bool.isRequired,
+  setImportDeleted: PropTypes.func.isRequired,
+  importDeleted: PropTypes.bool.isRequired,
   setImportPad: PropTypes.func.isRequired,
   importPad: PropTypes.bool.isRequired,
   setHideDates: PropTypes.func.isRequired,
