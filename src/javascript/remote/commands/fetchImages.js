@@ -18,14 +18,14 @@ const fetchImages = (targetWindow, { dumps }, remoteParams) => (
   Promise.all(dumps.map((dump, index) => (
     addToQueue(
       () => fetchDumpRetry(`/${dump.replace(/^\//, '')}`, 3)
-        .then(({ blob, contentType, status, ok }) => {
+        .then(({ blob, contentType, status, ok, meta }) => {
           targetWindow.postMessage({
             fromRemotePrinter: {
               progress: (index + 1) / dumps.length,
             },
           }, '*');
 
-          return { blob, contentType, status, ok };
+          return { blob, contentType, status, ok, meta };
         })
         .catch((error) => {
           console.warn(error);

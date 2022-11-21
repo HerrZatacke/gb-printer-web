@@ -75,7 +75,7 @@ const definitions = [
     value: null,
   },
   {
-    // how to save videos (loop, crop, yoyo, palette)
+    // how to save videos (loop, crop, yoyo, reverse, palette)
     key: 'videoParams',
     saveLocally: true,
     saveExport: ['settings', 'remote'],
@@ -118,6 +118,13 @@ const definitions = [
   {
     // if the "last seen" image from a .sav will be imported too
     key: 'importLastSeen',
+    saveLocally: true,
+    saveExport: ['settings', 'remote'],
+    value: true,
+  },
+  {
+    // if the "deleted" images from a .sav will be imported too
+    key: 'importDeleted',
     saveLocally: true,
     saveExport: ['settings', 'remote'],
     value: true,

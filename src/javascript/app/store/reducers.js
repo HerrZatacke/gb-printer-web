@@ -18,6 +18,7 @@ import gitStorage from './reducers/gitStorageReducer';
 import handleExportFrame from './reducers/handleExportFrameReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
+import importDeleted from './reducers/importDeletedReducer';
 import imageSelection from './reducers/imageSelectionReducer';
 import importLastSeen from './reducers/importLastSeenReducer';
 import importPad from './reducers/importPadReducer';
@@ -69,6 +70,7 @@ export default combineReducers({
   hideDates,
   images,
   imageSelection,
+  importDeleted,
   importLastSeen,
   importPad,
   isFullscreen,

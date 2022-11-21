@@ -7,6 +7,15 @@ const functionLabels = {
   checkPrinter: 'Check Printer',
   fetchImages: null,
   clearPrinter: 'Clear Printer',
+  tear: 'Tear',
+};
+
+const getFetchImagesLabel = (printerFunctions, dumpsLength) => {
+  if (printerFunctions.includes('tear')) {
+    return 'Fetch images';
+  }
+
+  return `Fetch ${dumpsLength || 0} images`;
 };
 
 const PrinterReport = ({
@@ -32,7 +41,7 @@ const PrinterReport = ({
             disabled={
               printerBusy ||
               (
-                ['fetchImages', 'clearPrinter'].includes(name) &&
+                ['fetchImages', 'clearPrinter', 'tear'].includes(name) &&
                 !printerData.dumps?.length
               )
             }
@@ -40,7 +49,7 @@ const PrinterReport = ({
           >
             {
               name === 'fetchImages' ?
-                `Fetch ${printerData.dumps?.length || 0} images` :
+                getFetchImagesLabel(printerFunctions, printerData.dumps?.length) :
                 functionLabels[name]
             }
           </button>
@@ -48,7 +57,7 @@ const PrinterReport = ({
       </div>
 
       {
-        (printerData && printerData.fs && printerData.dumps) ? (
+        (printerData?.fs && printerData?.dumps) ? (
           <table className="printer-report__table">
             <thead>
               <tr>
@@ -77,6 +86,13 @@ const PrinterReport = ({
               </tr>
             </tbody>
           </table>
+        ) : null
+      }
+      {
+        (printerData?.message) ? (
+          <p className="printer-report__message">
+            { printerData?.message }
+          </p>
         ) : null
       }
     </div>

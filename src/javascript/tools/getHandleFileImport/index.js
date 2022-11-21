@@ -1,6 +1,7 @@
 import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
 import transformCapture from '../transformCapture';
+import transformReduced from '../transformReduced';
 import getTransformBitmap from '../transformBitmap';
 import readFileAs from '../readFileAs';
 import transformClassic from '../transformClassic';
@@ -38,6 +39,7 @@ const getHandleFileImport = (store) => {
     const groupImports = files.map((fileData) => {
       let file = fileData;
       let contentType = fileData.type;
+      let meta = null;
       let ok = true;
 
       // As of version 1.16.4 the filedata is an object like { blob, contentType }
@@ -45,6 +47,8 @@ const getHandleFileImport = (store) => {
       if (fileData.blob) {
         file = fileData.blob;
         contentType = fileData.contentType;
+        // eslint-disable-next-line no-unused-vars
+        meta = fileData.meta;
         // v1.16.4 is missing the 'ok' property, hence the explicit check (may be removed in future versions if v0.3.5+ is successful)
         ok = (fileData.ok !== undefined) ? fileData.ok : ok;
       }
@@ -134,6 +138,20 @@ const getHandleFileImport = (store) => {
           .catch(onError)
           .then((data) => (
             transformSav(data, file.name)
+          ));
+      }
+
+      if (contentType === 'application/pico-printer-binary-log') {
+        return readFileAs(file, 'arrayBuffer')
+          .catch(onError)
+          .then((data) => (
+            transformReduced(data)
+              .then((imagesLines) => (
+                imagesLines.map((lines) => ({
+                  lines,
+                  filename: file.name,
+                }))
+              ))
           ));
       }
 

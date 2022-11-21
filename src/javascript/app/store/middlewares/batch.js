@@ -213,7 +213,7 @@ const batch = (store) => (next) => (action) => {
         store.dispatch({
           type: IMAGE_SELECTION_SET,
           payload: getFilteredImages(state)
-            .slice(action.page * pageSize, (action.page + 1) * pageSize)
+            .slice(action.page * pageSize, (action.page + 1) * pageSize || undefined)
             .map(({ hash }) => hash),
         });
         break;

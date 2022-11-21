@@ -126,7 +126,7 @@ const middleware = (store) => {
                       message: 'There is newer content in your dropbox!',
                       questions: () => [
                         `Your dropbox contains changes from ${dateFormatLocale(dayjs(repoContents.settings.state.lastUpdateUTC * 1000), state.preferredLocale)}`,
-                        `Your last local update was ${dateFormatLocale(dayjs(state?.syncLastUpdate?.local * 1000), state.preferredLocale)}.`,
+                        `Your last local update was ${state?.syncLastUpdate?.local ? (dateFormatLocale(dayjs(state.syncLastUpdate.local * 1000), state.preferredLocale)) : 'never'}.`,
                         'Do you want to load the changes?',
                       ]
                         .map((label, index) => ({

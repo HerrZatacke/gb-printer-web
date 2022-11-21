@@ -50,7 +50,7 @@ const transformImage = (data, baseAddress) => {
 };
 
 const getTransformSav = (store) => (data, filename) => {
-  const { savFrameTypes, frames, importLastSeen } = store.getState();
+  const { savFrameTypes, frames, importLastSeen, importDeleted } = store.getState();
 
   const framed = [];
 
@@ -121,8 +121,12 @@ const getTransformSav = (store) => (data, filename) => {
           return {
             lines,
             file: `${filename} ${indexText}`,
+            deleted: albumIndex === 255,
           };
-        });
+        })
+          .filter(({ deleted }) => (
+            importDeleted || !deleted
+          ));
       });
   };
 

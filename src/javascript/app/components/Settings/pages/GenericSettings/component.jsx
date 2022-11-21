@@ -67,7 +67,7 @@ const GenericSettings = (props) => {
         <div className="inputgroup__label">
           Image export dimensions
         </div>
-        {[1, 2, 3, 4, 6, 8, 10].map((factor) => (
+        {[1, 2, 3, 4, 5, 6, 8, 10].map((factor) => (
           <label
             key={factor}
             className={
@@ -177,6 +177,33 @@ const GenericSettings = (props) => {
             checked={props.importLastSeen}
             onChange={({ target }) => {
               props.setImportLastSeen(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.importDeleted,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Import deleted images when importing Cartridge dumps"
+        >
+          Import deleted images when importing Cartridge dumps
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={props.importDeleted}
+            onChange={({ target }) => {
+              props.setImportDeleted(target.checked);
             }}
           />
           <SVG name="checkmark" />
@@ -345,6 +372,8 @@ GenericSettings.propTypes = {
   handleExportFrame: PropTypes.string.isRequired,
   setImportLastSeen: PropTypes.func.isRequired,
   importLastSeen: PropTypes.bool.isRequired,
+  setImportDeleted: PropTypes.func.isRequired,
+  importDeleted: PropTypes.bool.isRequired,
   setImportPad: PropTypes.func.isRequired,
   importPad: PropTypes.bool.isRequired,
   setHideDates: PropTypes.func.isRequired,
