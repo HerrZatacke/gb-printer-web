@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.24.7",
+  "version": "1.24.8",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
@@ -10,7 +10,8 @@
     "build:webpack": "webpack --config ./scripts/webpack.prod.js",
     "build:validate": "node ./scripts/validatebuild.js",
     "build:deploy": "node ./scripts/deploy.js",
-    "svgo": "svgo ./src/assets/icons/"
+    "svgo": "svgo ./src/assets/icons/",
+    "audit": "npm audit fix"
   },
   "author": "Herr Zatacke",
   "license": "MIT",
