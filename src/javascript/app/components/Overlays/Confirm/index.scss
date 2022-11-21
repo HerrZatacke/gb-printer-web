@@ -14,21 +14,37 @@
     margin: 20px;
     @include theme-color($color-black, $color-white);
 
-    &--warning {
+    &--warning,
+    &--error {
       position: relative;
       padding: 16px;
       overflow: hidden;
-      @include theme-background-color($color-warn-yellow, $color-warn-yellow);
       border-radius: $default-border-radius;
+      @include theme-color($color-white, $color-white);
 
       &:before {
         content: '';
         position: absolute;
         width: 4px;
         height: 100%;
-        @include theme-background-color($color-black, $color-strong-yellow);
         top: 0;
         left: 0;
+      }
+    }
+
+    &--warning {
+      @include theme-background-color($color-warn-yellow, $color-warn-yellow);
+
+      &:before {
+        @include theme-background-color($color-strong-yellow, $color-strong-yellow);
+      }
+    }
+
+    &--error {
+      @include theme-background-color($color-button-red-dark, $color-button-red-dark);
+
+      &:before {
+        @include theme-background-color($color-warn-red, $color-warn-red);
       }
     }
   }

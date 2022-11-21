@@ -15,10 +15,15 @@ const getQuestions = ({ frameIds, frameGroups, fileName, scaleFactor = 1 }) => (
   const frameId = getFrameId({ frameSet, frameSetNew, frameIndex });
   const replaceFrame = frameIds.includes(frameId);
 
+  const frameSetNewFormatOk = (
+    frameSetNew.length !== 1 &&
+    frameSetNew === frameSetNew.toLocaleLowerCase()
+  );
+
   const notComplete = !(
     (frameId && frameName) ||
     (!frameId && !frameName)
-  );
+  ) || !frameSetNewFormatOk;
 
   const isGoodScaleFactor = (
     isPowerOfTwo(scaleFactor) &&
@@ -31,6 +36,12 @@ const getQuestions = ({ frameIds, frameGroups, fileName, scaleFactor = 1 }) => (
       key: 'badScaleFactor',
       type: 'info',
       themes: ['warning'],
+    },
+    frameSetNewFormatOk ? null : {
+      label: 'The ID of a frameset may only contain lowercase letters and must have at least a length of 2',
+      key: 'badNewFrameSet',
+      type: 'info',
+      themes: ['error'],
     },
     {
       label: 'Add as frame to existing frameset',
