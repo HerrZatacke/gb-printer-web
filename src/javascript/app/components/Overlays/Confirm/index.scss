@@ -14,6 +14,7 @@
     margin: 20px;
     @include theme-color($color-black, $color-white);
 
+    &--info,
     &--warning,
     &--error {
       position: relative;
@@ -45,6 +46,14 @@
 
       &:before {
         @include theme-background-color($color-warn-red, $color-warn-red);
+      }
+    }
+
+    &--info {
+      @include theme-background-color($color-button-green-dark, $color-button-green-dark);
+
+      &:before {
+        @include theme-background-color($color-strong-green, $color-strong-green);
       }
     }
   }

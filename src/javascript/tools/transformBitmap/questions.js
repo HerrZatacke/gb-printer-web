@@ -59,7 +59,7 @@ const getQuestions = ({ frameIds, frameGroups, fileName, scaleFactor = 1 }) => (
     {
       label: replaceFrame ?
         `Frame index - frame ${frameId} will be replaced` :
-        'Frame index',
+        'Frame index (must be > 0)',
       key: 'frameIndex',
       type: 'number',
       min: 1,
@@ -78,6 +78,7 @@ const getQuestions = ({ frameIds, frameGroups, fileName, scaleFactor = 1 }) => (
         `"${fileName}" will be imported as an image`,
       key: 'info',
       type: 'info',
+      themes: frameId && frameName ? ['info'] : ['warning'],
     },
     {
       type: 'confirmForm',
