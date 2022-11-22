@@ -5,8 +5,6 @@ const hashFrames = async (dirtyStateFrames) => {
 
   const hasUnhashedFrames = Boolean(dirtyStateFrames.find(({ hash }) => !hash));
 
-  console.log({ hasUnhashedFrames });
-
   if (!hasUnhashedFrames) {
     return null;
   }
