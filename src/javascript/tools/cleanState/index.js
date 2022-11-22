@@ -6,7 +6,7 @@ import cleanUrl from '../cleanUrl';
 import { blendModeKeys } from '../RGBNDecoder/blendModes';
 import hashFrames from './hashFrames';
 
-const cleanState = (dirtyState) => {
+const cleanState = async (dirtyState) => {
 
   const palettes = uniqueBy('shortName')([
     ...predefinedPalettes.map((palette) => ({
@@ -110,23 +110,26 @@ const cleanState = (dirtyState) => {
     local: dirtyState.syncLastUpdate?.local || 0,
   };
 
-  return new Promise((resolve) => {
-    hashFrames(dirtyState.frames)
-      .then((frames) => {
-        resolve({
-          ...dirtyState,
-          frames,
-          syncLastUpdate,
-          images,
-          palettes,
-          plugins,
-          printerUrl,
-          framesMessage,
-          activePalette,
-          recentImports,
-        });
-      });
-  });
+  const hashedFrames = await hashFrames(dirtyState.frames);
+
+  const cleanedState = {
+    ...dirtyState,
+    frames: hashedFrames || dirtyState.frames,
+    syncLastUpdate,
+    images,
+    palettes,
+    plugins,
+    printerUrl,
+    framesMessage,
+    activePalette,
+    recentImports,
+  };
+
+  if (hashedFrames?.length) {
+    localStorage.setItem('gbp-web-state', JSON.stringify(cleanedState));
+  }
+
+  return cleanedState;
 };
 
 export default cleanState;
