@@ -21,6 +21,16 @@ const useEditFrame = () => {
     frames.find((findFrame) => (fullId === findFrame.id))
   );
 
+  const groupIdValid = frameGroup.match(/^[a-z]{2,}$/g);
+
+  const frameIndexValid = frameIndex > 0;
+
+  const formValid = (
+    !idExists &&
+    groupIdValid &&
+    frameIndexValid
+  );
+
   const cancelEdit = () => {
     dispatch({
       type: CANCEL_EDIT_FRAME,
@@ -54,6 +64,9 @@ const useEditFrame = () => {
     frameName,
     setFrameName,
     idExists,
+    formValid,
+    groupIdValid,
+    frameIndexValid,
   };
 };
 

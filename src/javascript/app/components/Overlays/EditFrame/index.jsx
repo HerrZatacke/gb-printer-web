@@ -19,6 +19,9 @@ const EditFrame = () => {
     setFrameGroup,
     setFrameName,
     idExists,
+    formValid,
+    groupIdValid,
+    frameIndexValid,
   } = useEditFrame();
 
   const updateHead = updateId !== fullId ? ` -> "${fullId}"` : '';
@@ -29,7 +32,7 @@ const EditFrame = () => {
     <Lightbox
       className="edit-frame"
       confirm={saveFrame}
-      canConfirm={!idExists}
+      canConfirm={!formValid}
       header={`Editing frame "${updateId}"${updateHead}`}
       deny={cancelEdit}
       denyOnOverlayClick={false}
@@ -61,11 +64,17 @@ const EditFrame = () => {
         </div>
         <Input
           id="frame-edit-new-group"
-          labelText="New group"
+          labelText={groupExists ? 'Frameset id' : 'New frameset id'}
           type="text"
-          value={groupExists ? '' : frameGroup}
+          value={frameGroup}
           onChange={setFrameGroup}
-        />
+        >
+          {groupIdValid ? null : (
+            <span className="inputgroup__note inputgroup__note--warn">
+              Must have at least two characters, only lowercase
+            </span>
+          )}
+        </Input>
         <Input
           id="frame-edit-index"
           labelText="Frame Index"
@@ -74,7 +83,13 @@ const EditFrame = () => {
           max={99}
           value={frameIndex}
           onChange={setFrameIndex}
-        />
+        >
+          {frameIndexValid ? null : (
+            <span className="inputgroup__note inputgroup__note--warn">
+              Integer, must be greater 0
+            </span>
+          )}
+        </Input>
         <Input
           id="frame-edit-shortname"
           labelText="Frame name"
