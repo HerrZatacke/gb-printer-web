@@ -1,15 +1,12 @@
 import { localforageFrames } from '../localforageInstance';
-import backupFrames from './backupFrames';
 
 const hashFrames = async (dirtyStateFrames) => {
 
   const hasUnhashedFrames = Boolean(dirtyStateFrames.find(({ hash }) => !hash));
 
   if (!hasUnhashedFrames) {
-    return null;
+    return dirtyStateFrames;
   }
-
-  await backupFrames(dirtyStateFrames);
 
   return import(/* webpackChunkName: "obh" */ 'object-hash')
     .then(({ default: hasher }) => (

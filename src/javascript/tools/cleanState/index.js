@@ -5,6 +5,7 @@ import uniqueBy from '../unique/by';
 import cleanUrl from '../cleanUrl';
 import { blendModeKeys } from '../RGBNDecoder/blendModes';
 import hashFrames from './hashFrames';
+import backupFrames from './backupFrames';
 
 const cleanState = async (dirtyState) => {
 
@@ -110,9 +111,11 @@ const cleanState = async (dirtyState) => {
     local: dirtyState.syncLastUpdate?.local || 0,
   };
 
+  await backupFrames(dirtyState.frames);
+
   const hashedFrames = await hashFrames(dirtyState.frames);
 
-  const cleanedState = {
+  return {
     ...dirtyState,
     frames: hashedFrames || dirtyState.frames,
     syncLastUpdate,
@@ -124,12 +127,6 @@ const cleanState = async (dirtyState) => {
     activePalette,
     recentImports,
   };
-
-  if (hashedFrames?.length) {
-    localStorage.setItem('gbp-web-state', JSON.stringify(cleanedState));
-  }
-
-  return cleanedState;
 };
 
 export default cleanState;

@@ -29,6 +29,10 @@ const initApp = () => {
     .then(({ default: App }) => {
       cleanState(initialState)
         .then((state) => {
+          // Write the cleaned state to local storage.
+          // This is important because `cleanState` may modify indexedDb entries (e.g. Frames) the initial state relies on.
+          localStorage.setItem('gbp-web-state', JSON.stringify(state));
+
           try {
             const store = getStore(state);
             render(<Provider store={store}><App /></Provider>, appRoot);
