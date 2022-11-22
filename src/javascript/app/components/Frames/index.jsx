@@ -29,7 +29,7 @@ const Frames = () => {
             setSelectedFrameGroup(ev.target.value);
           }}
         >
-          <option value="">Select Frameset</option>
+          <option value="">Select frame group</option>
           {
             frameGroups.map(({ id, name }) => (
               <option value={id} key={id}>{ name }</option>

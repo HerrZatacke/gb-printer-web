@@ -142,7 +142,7 @@ const getTransformSav = (store) => (data, filename) => {
         message: `Importing '${filename}'`,
         questions: () => [
           {
-            label: 'Select frameset to use with this import',
+            label: 'Select frame group to use with this import',
             key: 'selectedFrameset',
             type: 'select',
             options: frameGroups,

@@ -53,7 +53,7 @@ const EditFrame = () => {
             }}
           >
             <option value="">
-              {groupExists ? 'Select Frameset' : 'New Frameset'}
+              {groupExists ? 'Select frame group' : 'New frame group'}
             </option>
             {
               groups.map(({ id, name }) => (
@@ -64,7 +64,7 @@ const EditFrame = () => {
         </div>
         <Input
           id="frame-edit-new-group"
-          labelText={groupExists ? 'Frameset id' : 'New frameset id'}
+          labelText={groupExists ? 'Frame group id' : 'New frame group id'}
           type="text"
           value={frameGroup}
           onChange={setFrameGroup}
