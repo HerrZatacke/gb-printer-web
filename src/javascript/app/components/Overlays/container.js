@@ -5,6 +5,8 @@ const mapStateToProps = (state) => ({
   showInfoBox: state.framesMessage === 1,
   showProgressBox: !!state.progress.gif || !!state.progress.printer || !!state.progress.plugin,
   showConfirm: !!state.confirm.length,
+  showBitmapQueue: !!state.bitmapQueue.length,
+  showImportQueue: !!state.importQueue.length,
   showEditForm: !!state.editImage,
   showEditFrame: !!state.editFrame,
   showEditPalette: !!state.editPalette.shortName,

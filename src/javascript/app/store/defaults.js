@@ -222,6 +222,18 @@ const definitions = [
     saveExport: ['settings'],
     value: navigator.language,
   },
+  {
+    key: 'bitmapQueue',
+    saveLocally: false,
+    saveExport: [],
+    value: [],
+  },
+  {
+    key: 'importQueue',
+    saveLocally: false,
+    saveExport: [],
+    value: [],
+  },
 ];
 
 const defaults = {};

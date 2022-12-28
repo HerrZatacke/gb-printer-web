@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import activePalette from './reducers/activePaletteReducer';
+import bitmapQueue from './reducers/bitmapQueueReducer';
 import canShare from './reducers/canShareReducer';
 import confirm from './reducers/confirmReducer';
 import dragover from './reducers/dragoverReducer';
@@ -19,6 +20,7 @@ import handleExportFrame from './reducers/handleExportFrameReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import importDeleted from './reducers/importDeletedReducer';
+import importQueue from './reducers/importQueueReducer';
 import imageSelection from './reducers/imageSelectionReducer';
 import importLastSeen from './reducers/importLastSeenReducer';
 import importPad from './reducers/importPadReducer';
@@ -51,6 +53,7 @@ import windowDimensions from './reducers/windowDimensionsReducer';
 
 export default combineReducers({
   activePalette,
+  bitmapQueue,
   canShare,
   confirm,
   dragover,
@@ -71,6 +74,7 @@ export default combineReducers({
   images,
   imageSelection,
   importDeleted,
+  importQueue,
   importLastSeen,
   importPad,
   isFullscreen,

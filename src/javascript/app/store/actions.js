@@ -141,3 +141,9 @@ export const ERROR = 'ERROR';
 export const TRY_RECOVER_IMAGE_DATA = 'TRY_RECOVER_IMAGE_DATA';
 export const IMPORT_FILES = 'IMPORT_FILES';
 export const ADD_TO_QUEUE = 'ADD_TO_QUEUE';
+
+// New import workflow
+export const BITMAPQUEUE_ADD = 'BITMAPQUEUE_ADD';
+export const BITMAPQUEUE_CANCEL = 'BITMAPQUEUE_CANCEL';
+export const IMPORTQUEUE_ADD = 'IMPORTQUEUE_ADD';
+export const IMPORTQUEUE_CANCEL = 'IMPORTQUEUE_CANCEL';

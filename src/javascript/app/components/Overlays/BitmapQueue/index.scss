@@ -1,0 +1,41 @@
+.bitmap-import-overlay {
+  &__content {
+    margin: 0 20px;
+  }
+
+  &__dither-check {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    line-height: 30px;
+    height: 30px;
+    padding: 0;
+    user-select: none;
+
+    .svg {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      fill: currentColor;
+    }
+
+    .tick {
+      opacity: $checkmark-tick-inactive-opacity;
+    }
+
+    &--checked .tick {
+      opacity: 1;
+    }
+  }
+
+  &__dither {
+    display: none;
+  }
+
+  &__dither-text {
+    vertical-align: top;
+    line-height: 30px;
+    height: 30px;
+  }
+}
