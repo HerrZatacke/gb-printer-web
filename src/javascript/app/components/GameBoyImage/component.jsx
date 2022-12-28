@@ -8,6 +8,7 @@ const GameBoyImage = ({
   tiles,
   lockFrame,
   invertPalette,
+  asThumb,
 }) => {
 
   const canvas = useRef(null);
@@ -44,7 +45,7 @@ const GameBoyImage = ({
 
   return (
     <canvas
-      className="gameboy-image"
+      className={`gameboy-image ${asThumb ? 'gameboy-image--as-thumb' : ''}`}
       width={160}
       ref={canvas}
     />
@@ -62,10 +63,12 @@ GameBoyImage.propTypes = {
   ]),
   lockFrame: PropTypes.bool.isRequired,
   invertPalette: PropTypes.bool.isRequired,
+  asThumb: PropTypes.bool,
 };
 
 GameBoyImage.defaultProps = {
   palette: null,
+  asThumb: false,
 };
 
 export default GameBoyImage;

@@ -3,6 +3,10 @@
   display: block;
   image-rendering: pixelated;
 
+  &--as-thumb {
+    image-rendering: auto;
+  }
+
   .gallery--list & {
     image-rendering: auto;
   }
