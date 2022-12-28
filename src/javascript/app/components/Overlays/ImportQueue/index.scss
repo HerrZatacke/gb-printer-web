@@ -1,10 +1,82 @@
 .import-overlay {
+  th, td {
+    text-align: left;
+  }
+
   &__content {
     margin: 0 20px;
   }
 
-  &__code {
-    font-family: monospace;
-    display: block;
+  &__images {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 50px;
+  }
+}
+
+.import-image {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  &__image-zoom {
+    flex: 60px 0 0;
+    height: 54px;
+    position: relative;
+  }
+
+  &__image {
+    top: 0;
+    left: 0;
+    width: 60px;
+    transition:
+      width 150ms ease-in-out,
+      left 150ms ease-in-out,
+      top 150ms ease-in-out;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &__image-zoom:hover &__image {
+    width: 160px;
+    z-index: 50;
+    top: -40px;
+    left: -20px;
+  }
+
+  &__buttons {
+    flex: 90px 0 0;
+    display: flex;
+    gap: 10px;
+  }
+
+  &__name {
+    flex: auto 1 1;
+    font-size: 12px;
+    padding: 10px 0;
+  }
+
+  &__button {
+    @include theme-color($color-white, $color-text-bright);
+    display: inline-block;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: $default-border-radius;
+
+    &--delete {
+      @include theme-background-color($color-button-red, $color-button-red-dark);
+    }
+
+    &--frame {
+      @include theme-background-color($color-button-green, $color-button-green-dark);
+    }
+  }
+
+  &__icon {
+    fill: currentcolor;
   }
 }

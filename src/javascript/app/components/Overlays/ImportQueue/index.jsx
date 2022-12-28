@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from '../../Lightbox';
+import ImportRow from './ImportRow';
 import { IMPORTQUEUE_CANCEL } from '../../../store/actions';
 import './index.scss';
 
@@ -23,18 +24,19 @@ const ImportQueue = () => {
       <div
         className="import-overlay__content"
       >
-        {
-          importQueue.map((image, index) => (
-            <code
-              key={index}
-              className="import-overlay__code"
-            >
-              { index }
-              .
-              { image.fileName }
-            </code>
-          ))
-        }
+        <ul
+          className="import-overlay__images"
+        >
+          {
+            importQueue.map((image, index) => (
+              <ImportRow
+                key={index}
+                tiles={image.tiles}
+                fileName={image.fileName}
+              />
+            ))
+          }
+        </ul>
       </div>
     </Lightbox>
   );
