@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import useQuestions from '../../../../hooks/useQuestions';
 import Select from './types/Select';
 import Input from '../../Input';
+import InfoText from '../../InfoText';
 
 const Confirm = ({
   message,
@@ -59,17 +59,11 @@ const Confirm = ({
               );
             case 'info':
               return (
-                <p
-                  className={
-                    classnames(
-                      'confirm__info-text',
-                      themes.map((name) => `confirm__info-text--${name}`),
-                    )
-                  }
+                <InfoText
+                  label={label}
+                  themes={themes}
                   key={key}
-                >
-                  {label}
-                </p>
+                />
               );
             default:
               return null;
