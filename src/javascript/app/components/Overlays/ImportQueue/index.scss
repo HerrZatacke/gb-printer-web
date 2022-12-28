@@ -40,7 +40,7 @@
 
   &__image-zoom:hover &__image {
     width: 160px;
-    z-index: 50;
+    z-index: $z-index-hover-image;
     top: -40px;
     left: -20px;
   }
@@ -51,10 +51,25 @@
     gap: 10px;
   }
 
-  &__name {
+  &__meta {
     flex: auto 1 1;
     font-size: 12px;
     padding: 10px 0;
+  }
+
+  &__duplicate-icons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  &__duplicate-icon {
+    @include theme-color($color-warn-yellow, $color-strong-yellow);
+    fill: currentcolor;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
   }
 
   &__button {

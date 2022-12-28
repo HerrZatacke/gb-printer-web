@@ -12,7 +12,7 @@ const importQueueReducer = (importQueue = [], action) => {
       return [];
 
     case IMPORTQUEUE_CANCEL_ONE:
-      return importQueue.filter(({ fileName }) => fileName !== action.payload);
+      return importQueue.filter(({ tempId }) => tempId !== action.payload);
 
     default:
       return importQueue;

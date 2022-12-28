@@ -2,30 +2,38 @@ import dummyImage from './dummyImage';
 import applyFrame from '../applyFrame';
 import { localforageFrames, localforageImages } from '../localforageInstance';
 
-const save = (lines) => (
-  import(/* webpackChunkName: "obh" */ 'object-hash')
-    .then(({ default: hash }) => (
-      import(/* webpackChunkName: "pko" */ 'pako')
-        .then(({ default: pako }) => {
+const compressAndHash = async (lines) => {
+  const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
+  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
 
-          const imageData = lines
-            .map((line) => (
-              line.replace(/ /gi, '')
-            ))
-            .join('\n');
-
-          const compressed = pako.deflate(imageData, {
-            to: 'string',
-            strategy: 1,
-            level: 8,
-          });
-
-          const dataHash = hash(compressed);
-          return localforageImages.setItem(dataHash, compressed)
-            .then(() => dataHash);
-        })
+  const imageData = lines
+    .map((line) => (
+      line.replace(/ /gi, '')
     ))
-);
+    .join('\n');
+
+  const compressed = pako.deflate(imageData, {
+    to: 'string',
+    strategy: 1,
+    level: 8,
+  });
+
+  const dataHash = hash(compressed);
+
+  return {
+    dataHash,
+    compressed,
+  };
+};
+
+const save = async (lines) => {
+  const {
+    dataHash,
+    compressed,
+  } = await compressAndHash(lines);
+  await localforageImages.setItem(dataHash, compressed);
+  return dataHash;
+};
 
 const load = (dataHash, frameHash, noDummy, recover = false) => {
   if (!dataHash) {
@@ -68,6 +76,7 @@ const delFrame = (dataHash) => {
 };
 
 export {
+  compressAndHash,
   save,
   load,
   del,

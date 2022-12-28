@@ -31,8 +31,8 @@ const ImportQueue = () => {
             importQueue.map((image, index) => (
               <ImportRow
                 key={index}
-                tiles={image.tiles}
-                fileName={image.fileName}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...image}
               />
             ))
           }
