@@ -1,4 +1,4 @@
-import { IMPORTQUEUE_ADD, IMPORTQUEUE_CANCEL, IMPORTQUEUE_CANCEL_ONE } from '../actions';
+import { ADD_IMAGES, IMPORTQUEUE_ADD, IMPORTQUEUE_CANCEL, IMPORTQUEUE_CANCEL_ONE } from '../actions';
 
 const importQueueReducer = (importQueue = [], action) => {
   switch (action.type) {
@@ -9,6 +9,7 @@ const importQueueReducer = (importQueue = [], action) => {
       ];
 
     case IMPORTQUEUE_CANCEL:
+    case ADD_IMAGES:
       return [];
 
     case IMPORTQUEUE_CANCEL_ONE:

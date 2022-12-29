@@ -6,6 +6,9 @@ import { IMPORTQUEUE_CANCEL } from '../../../store/actions';
 import './index.scss';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
+import useRunImport from './useRunImport';
+import TagsSelect from '../../TagsSelect';
+import modifyTagChanges from '../../../../tools/modifyTagChanges';
 
 const ImportQueue = () => {
   const importQueue = useSelector((store) => store.importQueue);
@@ -13,12 +16,23 @@ const ImportQueue = () => {
   const activePalette = useSelector((state) => (state.activePalette));
   const [frame, setFrame] = useState('');
   const [palette, setPalette] = useState(activePalette);
+  const [tagChanges, updateTagChanges] = useState({
+    initial: [],
+    add: [],
+    remove: [],
+  });
+  const { runImport } = useRunImport();
 
   return (
     <Lightbox
       className="import-overlay"
       header="Image Import"
-      confirm={() => {}}
+      confirm={() => runImport({
+        importQueue,
+        palette,
+        frame,
+        tags: tagChanges.add,
+      })}
       deny={() => {
         dispatch({ type: IMPORTQUEUE_CANCEL });
       }}
@@ -33,24 +47,36 @@ const ImportQueue = () => {
             importQueue.map((image, index) => (
               <ImportRow
                 key={index}
+                paletteShort={palette}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...image}
               />
             ))
           }
         </ul>
-        <FrameSelect
-          selectLabel="Use frame for import"
-          frame={frame}
-          lockFrame={false}
-          noFrameOption="No frame / import as is"
-          updateFrame={setFrame}
-        />
         <PaletteSelect
           selectLabel="Palette"
           noFancy
           value={palette}
           onChange={setPalette}
+        />
+        <FrameSelect
+          selectLabel="Modify Frame"
+          frame={frame}
+          lockFrame={false}
+          noFrameOption="No frame / import as is"
+          updateFrame={setFrame}
+        />
+        <TagsSelect
+          label="Tags"
+          tags={tagChanges}
+          listDirection="up"
+          updateTags={(mode, tag) => {
+            updateTagChanges({
+              ...tagChanges,
+              ...modifyTagChanges(tagChanges, { mode, tag }),
+            });
+          }}
         />
       </div>
     </Lightbox>
