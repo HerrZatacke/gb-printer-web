@@ -15,6 +15,11 @@
     }
   }
 
+  &__label {
+    margin: 25px 0 5px;
+    display: block;
+  }
+
   &__tag {
     line-height: 16px;
     @include theme-background-color($color-grey-70, $color-grey-20);

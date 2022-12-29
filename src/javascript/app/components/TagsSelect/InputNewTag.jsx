@@ -56,6 +56,7 @@ const InputNewTag = ({ updateTags, selectedTags }) => {
       <input
         type="text"
         className="tags-select__tag-name"
+        id="tags-select-new-tag"
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...getInputProps()}
         onKeyUp={(ev) => {
