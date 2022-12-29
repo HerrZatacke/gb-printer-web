@@ -22,7 +22,12 @@ function ImportRow({
 
   return (
     <li className="import-image">
-      <span className="import-image__image-zoom">
+      <span
+        className="import-image__image-zoom"
+        style={{
+          height: `${tiles.length / 2.5 / 2.66}px`,
+        }}
+      >
         <span className="import-image__image">
           <GameBoyImage
             tiles={tiles}
@@ -61,25 +66,29 @@ function ImportRow({
         </div>
       </div>
       <div className="import-image__buttons">
-        <button
-          className="import-image__button import-image__button--frame"
-          type="button"
-          title="Import as Frame"
-          onClick={() => {
-            dispatch({
-              type: FRAMEQUEUE_ADD,
-              payload: {
-                fileName,
-                tiles,
-              },
-            });
-          }}
-        >
-          <SVG
-            className="import-image__icon"
-            name="frame"
-          />
-        </button>
+        { tiles.length === 360 ? (
+          <button
+            className="import-image__button import-image__button--frame"
+            type="button"
+            title="Import as Frame"
+            onClick={() => {
+              dispatch({
+                type: FRAMEQUEUE_ADD,
+                payload: {
+                  fileName,
+                  tiles,
+                  dataHash,
+                  tempId,
+                },
+              });
+            }}
+          >
+            <SVG
+              className="import-image__icon"
+              name="frame"
+            />
+          </button>
+        ) : null }
         <button
           className="import-image__button import-image__button--delete"
           type="button"
