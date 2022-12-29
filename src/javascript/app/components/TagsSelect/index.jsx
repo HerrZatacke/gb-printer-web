@@ -83,7 +83,7 @@ TagsSelect.propTypes = {
 };
 
 TagsSelect.defaultProps = {
-  label: false,
+  label: null,
   listDirection: 'down',
 };
 

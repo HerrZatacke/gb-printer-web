@@ -83,7 +83,7 @@ FrameSelect.propTypes = {
 
 FrameSelect.defaultProps = {
   noFrameOption: 'As imported / No frame',
-  selectLabel: false,
+  selectLabel: null,
   lockFrame: false,
   updateFrameLock: null,
 };

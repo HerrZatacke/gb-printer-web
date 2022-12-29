@@ -135,7 +135,7 @@ PaletteSelect.propTypes = {
 };
 
 PaletteSelect.defaultProps = {
-  selectLabel: false,
+  selectLabel: null,
   noFancy: false,
   allowEmpty: false,
   invertPalette: false,
