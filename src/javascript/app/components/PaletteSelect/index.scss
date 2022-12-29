@@ -8,6 +8,11 @@
 }
 
 .palette-select {
+  &__select-label {
+    margin: 25px 0 5px;
+    display: block;
+  }
+
   display: block;
   width: 100%;
   line-height: 24px;

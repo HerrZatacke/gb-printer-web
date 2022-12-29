@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
+import './index.scss';
 
-const PaletteSelect = (props) => {
+const PaletteSelect = ({
+  value,
+  allowEmpty,
+  onChange,
+  invertPalette,
+  updateInvertPalette,
+  noFancy,
+  selectLabel,
+}) => {
+  const [initiallySelected, setInitiallySelected] = useState(value);
 
-  const [initiallySelected, setInitiallySelected] = useState(props.value);
-
-  const palettes = [...props.palettes];
+  const palettes = [...useSelector((state) => (state.palettes))];
 
   // this option is used for assigning a single palette to an animation
-  if (props.allowEmpty) {
+  if (allowEmpty) {
     palettes.unshift({
       shortName: '',
       name: 'As selected per image',
@@ -20,11 +29,22 @@ const PaletteSelect = (props) => {
 
   return (
     <>
+      {(
+        selectLabel ? (
+          <label
+            className="palette-select__select-label"
+            htmlFor="palette-select-select"
+          >
+            { selectLabel }
+          </label>
+        ) : null
+      )}
       <select
+        id="palette-select-select"
         className="palette-select"
-        value={props.value}
+        value={value}
         onChange={(ev) => {
-          props.onChange(ev.target.value, true);
+          onChange(ev.target.value, true);
           setInitiallySelected(ev.target.value);
         }}
       >
@@ -39,27 +59,31 @@ const PaletteSelect = (props) => {
           ))
         }
       </select>
-      <label
-        className={
-          classnames('palette-select__check-label', {
-            'palette-select__check-label--checked': props.invertPalette,
-          })
-        }
-      >
-        <input
-          type="checkbox"
-          className="palette-select__checkbox"
-          checked={props.invertPalette}
-          onChange={({ target }) => {
-            props.updateInvertPalette(target.checked);
-          }}
-        />
-        <SVG name="checkmark" />
-        <span className="palette-select__check-label-text">
-          Invert Palette
-        </span>
-      </label>
-      { props.noFancy ? null : (
+      {
+        updateInvertPalette ? (
+          <label
+            className={
+              classnames('palette-select__check-label', {
+                'palette-select__check-label--checked': invertPalette,
+              })
+            }
+          >
+            <input
+              type="checkbox"
+              className="palette-select__checkbox"
+              checked={invertPalette}
+              onChange={({ target }) => {
+                updateInvertPalette(target.checked);
+              }}
+            />
+            <SVG name="checkmark" />
+            <span className="palette-select__check-label-text">
+              Invert Palette
+            </span>
+          </label>
+        ) : null
+      }
+      { noFancy ? null : (
         <ul className="fancy-palette-select">
           {
             palettes.map(({ shortName, name, palette }) => (
@@ -76,14 +100,14 @@ const PaletteSelect = (props) => {
                   className="fancy-palette-select__button"
                   title={name}
                   onClick={() => {
-                    props.onChange(shortName, true);
+                    onChange(shortName, true);
                     setInitiallySelected(shortName);
                   }}
                   onMouseEnter={() => {
-                    props.onChange(shortName, false);
+                    onChange(shortName, false);
                   }}
                   onMouseLeave={() => {
-                    props.onChange(initiallySelected);
+                    onChange(initiallySelected);
                   }}
                 >
                   <span className="fancy-palette-select__color" style={{ backgroundColor: palette[0] }} />
@@ -101,18 +125,21 @@ const PaletteSelect = (props) => {
 };
 
 PaletteSelect.propTypes = {
-  palettes: PropTypes.array.isRequired,
   value: PropTypes.string.isRequired,
+  selectLabel: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  invertPalette: PropTypes.bool.isRequired,
-  updateInvertPalette: PropTypes.func.isRequired,
+  invertPalette: PropTypes.bool,
+  updateInvertPalette: PropTypes.func,
   noFancy: PropTypes.bool,
   allowEmpty: PropTypes.bool,
 };
 
 PaletteSelect.defaultProps = {
+  selectLabel: false,
   noFancy: false,
   allowEmpty: false,
+  invertPalette: false,
+  updateInvertPalette: null,
 };
 
 export default PaletteSelect;
