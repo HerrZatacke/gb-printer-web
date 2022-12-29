@@ -8,14 +8,16 @@ import { FRAMEQUEUE_ADD, IMPORTQUEUE_CANCEL_ONE } from '../../../store/actions';
 function ImportRow({
   tiles,
   fileName,
-  dataHash,
+  imageHash,
+  frameHash,
   tempId,
   paletteShort,
 }) {
   const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === paletteShort));
-  const storeDuplicate = useSelector((state) => state.images.find(({ hash }) => hash === dataHash));
+  const storeDuplicateImage = useSelector((state) => state.images.find(({ hash }) => hash === imageHash));
+  const storeDuplicateFrame = useSelector((state) => state.frames.find(({ hash }) => hash === frameHash));
   const { length: queueDuplicates } = useSelector((state) => (
-    state.importQueue.filter((item) => item.dataHash === dataHash)
+    state.importQueue.filter((item) => item.imageHash === imageHash)
   ));
 
   const dispatch = useDispatch();
@@ -38,14 +40,29 @@ function ImportRow({
           />
         </span>
       </span>
+      <div className="import-image__meta">
+        <div className="import-image__name">
+          { fileName }
+        </div>
+      </div>
       <div className="import-image__duplicate-icons">
         { (
-          storeDuplicate ? (
+          storeDuplicateImage ? (
             <div
               className="import-image__duplicate-icon"
-              title={`This image has already been imported${storeDuplicate.title ? ` as "${storeDuplicate.title}"` : ''}`}
+              title={`This image has already been imported${storeDuplicateImage.title ? ` as "${storeDuplicateImage.title}"` : ''}`}
             >
-              <SVG name="warn" />
+              I
+            </div>
+          ) : null
+        ) }
+        { (
+          storeDuplicateFrame ? (
+            <div
+              className="import-image__duplicate-icon"
+              title={`This frame has already been imported${storeDuplicateFrame.name ? ` as "${storeDuplicateFrame.name}"` : ''}`}
+            >
+              F
             </div>
           ) : null
         ) }
@@ -55,15 +72,10 @@ function ImportRow({
               className="import-image__duplicate-icon"
               title="This image exists multiple times within this queue"
             >
-              <SVG name="warn" />
+              D
             </div>
           ) : null
         ) }
-      </div>
-      <div className="import-image__meta">
-        <div className="import-image__name">
-          { fileName }
-        </div>
       </div>
       <div className="import-image__buttons">
         { tiles.length === 360 ? (
@@ -77,7 +89,7 @@ function ImportRow({
                 payload: {
                   fileName,
                   tiles,
-                  dataHash,
+                  imageHash,
                   tempId,
                 },
               });
@@ -113,7 +125,8 @@ function ImportRow({
 ImportRow.propTypes = {
   tiles: PropTypes.array.isRequired,
   fileName: PropTypes.string.isRequired,
-  dataHash: PropTypes.string.isRequired,
+  imageHash: PropTypes.string.isRequired,
+  frameHash: PropTypes.string.isRequired,
   paletteShort: PropTypes.string.isRequired,
   tempId: PropTypes.string.isRequired,
 };
