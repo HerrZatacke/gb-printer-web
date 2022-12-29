@@ -19,33 +19,41 @@ const padCropTiles = (tiles) => {
   return tiles;
 };
 
-const saveFrameData = (imageTiles) => (
-  import(/* webpackChunkName: "obh" */ 'object-hash')
-    .then(({ default: hash }) => (
-      import(/* webpackChunkName: "pko" */ 'pako')
-        .then(({ default: pako }) => {
-          const frameData = padCropTiles(imageTiles)
-            .filter((_, index) => tileIndexIsPartOfFrame(index, 'keep'))
-            .map((line) => (
-              line.replace(/ /gi, '').toUpperCase()
-            ))
-            .join('\n');
+export const compressAndHashFrame = async (lines) => {
+  const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
+  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
 
-          const compressed = pako.deflate(frameData, {
-            to: 'string',
-            strategy: 1,
-            level: 8,
-          });
-
-          const dataHash = hash(compressed);
-
-          return localforageFrames.setItem(dataHash, compressed)
-            .then(() => dataHash);
-        })
+  const frameData = padCropTiles(lines)
+    .filter((_, index) => tileIndexIsPartOfFrame(index, 'keep'))
+    .map((line) => (
+      line.replace(/ /gi, '').toUpperCase()
     ))
-);
+    .join('\n');
 
-const loadFrameData = (frameHash) => {
+  const compressed = pako.deflate(frameData, {
+    to: 'string',
+    strategy: 1,
+    level: 8,
+  });
+
+  const dataHash = hash(compressed);
+
+  return {
+    dataHash,
+    compressed,
+  };
+};
+
+export const saveFrameData = async (lines) => {
+  const {
+    dataHash,
+    compressed,
+  } = await compressAndHashFrame(lines);
+  await localforageFrames.setItem(dataHash, compressed);
+  return dataHash;
+};
+
+export const loadFrameData = (frameHash) => {
   if (!frameHash) {
     return Promise.resolve(null);
   }
@@ -73,9 +81,4 @@ const loadFrameData = (frameHash) => {
         });
     });
 
-};
-
-export {
-  loadFrameData,
-  saveFrameData,
 };
