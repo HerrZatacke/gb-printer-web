@@ -7,6 +7,7 @@ import {
   DELETE_IMAGES,
   GLOBAL_UPDATE,
   IMAGE_FAVOURITE_TAG,
+  REHASH_IMAGE,
   UPDATE_IMAGE,
   UPDATE_IMAGES_BATCH,
 } from '../actions';
@@ -25,6 +26,10 @@ const imagesReducer = (value = [], action) => {
           ...image,
           ...action.payload,
         } : image
+      ));
+    case REHASH_IMAGE:
+      return value.map((image) => (
+        (image.hash === action.payload.oldHash) ? action.payload.image : image
       ));
     case IMAGE_FAVOURITE_TAG:
       return value.map((image) => (

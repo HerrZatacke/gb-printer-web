@@ -3,6 +3,7 @@ import {
   EDIT_IMAGE,
   EDIT_IMAGE_SELECTION,
   GLOBAL_UPDATE,
+  REHASH_IMAGE,
   UPDATE_IMAGE,
   UPDATE_IMAGES_BATCH,
 } from '../actions';
@@ -15,6 +16,7 @@ const editImageReducer = (value = null, action) => {
       return action.payload;
     case CANCEL_EDIT_IMAGE:
     case UPDATE_IMAGE:
+    case REHASH_IMAGE:
     case UPDATE_IMAGES_BATCH:
     case GLOBAL_UPDATE:
       return null;

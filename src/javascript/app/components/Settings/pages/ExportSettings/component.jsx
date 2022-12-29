@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useStoragePersist from './useStoragePersist';
+import useHashCleanup from '../../../../../tools/hashCleanup';
 
 const ExportSettings = (props) => {
+  const { hashCleanup, cleanupBusy } = useHashCleanup();
 
   const {
     persistAPIAvailable,
@@ -34,6 +36,14 @@ const ExportSettings = (props) => {
         onClick={() => props.exportJson('settings')}
       >
         Export settings
+      </button>
+      <button
+        disabled={cleanupBusy}
+        type="button"
+        className="button button--tiny"
+        onClick={hashCleanup}
+      >
+        Hash Cleanup
       </button>
     </div>
   );

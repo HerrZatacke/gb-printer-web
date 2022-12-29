@@ -36,4 +36,9 @@
     line-height: 40px;
     font-size: 14px;
   }
+
+  &--tiny {
+    flex-basis: 120px;
+    flex-grow: 0;
+  }
 }

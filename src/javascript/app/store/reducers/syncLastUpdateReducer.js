@@ -7,6 +7,7 @@ import {
   LAST_UPDATE_DROPBOX_REMOTE,
   PALETTE_DELETE,
   PALETTE_UPDATE,
+  REHASH_IMAGE,
   STORAGE_SYNC_DONE,
   UPDATE_IMAGE,
   UPDATE_IMAGES_BATCH,
@@ -34,6 +35,7 @@ const syncLastUpdateReducer = (value = {}, action) => {
     // ToDo: check for more action types which cause syncable data to be updated
     // case SET_DROPBOX_STORAGE: // Don't use!
     case UPDATE_IMAGE:
+    case REHASH_IMAGE:
     case UPDATE_IMAGES_BATCH:
     case DELETE_IMAGE:
     case PALETTE_UPDATE:
