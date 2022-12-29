@@ -1,6 +1,7 @@
 import { ditherFilter } from '../../../../tools/applyBitmapFilter';
 import { IMPORTQUEUE_ADD } from '../../../store/actions';
 import { compressAndHash } from '../../../../tools/storage';
+import { compressAndHashFrame } from '../../../../tools/applyFrame/frameData';
 
 const sliceTile = (pixelData) => (tileIndex) => {
   const tileX = tileIndex % 20;
@@ -67,13 +68,15 @@ const moveBitmapsToImport = (dispatch) => ({
       .map((_, tileIndex) => getTileSlice(tileIndex))
       .map(encodeTile);
 
-    const { dataHash } = await compressAndHash(tiles);
+    const { dataHash: imageHash } = await compressAndHash(tiles);
+    const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
     dispatch({
       type: IMPORTQUEUE_ADD,
       payload: {
         fileName,
-        dataHash,
+        imageHash,
+        frameHash,
         tiles,
         tempId: Math.random().toString(16).split('.').pop(),
       },
