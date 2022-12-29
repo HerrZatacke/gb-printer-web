@@ -39,7 +39,6 @@ const contrasts = [
 
 const BitmapQueue = () => {
   const bitmapQueue = useSelector((store) => store.bitmapQueue);
-  const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === state.activePalette));
   const dispatch = useDispatch();
   const [dither, setDither] = useState(true);
   const [contrast, setContrast] = useState('wide'); // 'wide' covers the complete greyscale range from 00 tro FF. The thresholds are optimal for already dithered imports
@@ -76,7 +75,7 @@ const BitmapQueue = () => {
               {...image}
               // eslint-disable-next-line react/jsx-props-no-spreading
               {...conversionSettings}
-              palette={palette.palette}
+              palette={['#ffffff', '#aaaaaa', '#555555', '#000000']}
             />
           ))
         }

@@ -7,10 +7,7 @@ import './index.scss';
 
 const ImportQueue = () => {
   const importQueue = useSelector((store) => store.importQueue);
-  // const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === state.activePalette));
   const dispatch = useDispatch();
-  // const [dither, setDither] = useState(true);
-  // const [contrast, setContrast] = useState('wide'); // 'wide' covers the complete greyscale range from 00 tro FF. The thresholds are optimal for already dithered imports
 
   return (
     <Lightbox

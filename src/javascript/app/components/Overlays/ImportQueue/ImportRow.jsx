@@ -11,7 +11,6 @@ function ImportRow({
   dataHash,
   tempId,
 }) {
-  const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === state.activePalette));
   const storeDuplicate = useSelector((state) => state.images.find(({ hash }) => hash === dataHash));
   const { length: queueDuplicates } = useSelector((state) => (
     state.importQueue.filter((item) => item.dataHash === dataHash)
@@ -27,7 +26,7 @@ function ImportRow({
             tiles={tiles}
             invertPalette={false}
             lockFrame={false}
-            palette={palette.palette}
+            palette={['#ffffff', '#aaaaaa', '#555555', '#000000']}
             asThumb
           />
         </span>
