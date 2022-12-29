@@ -103,14 +103,24 @@
   &__combo-box-list {
     display: none;
     flex-direction: column;
-    width: 100%;
-    @include theme-background-color($color-grey-90, $color-grey-30);
-    margin-top: 4px;
-    max-height: 150px;
+    width: 350px;
+    max-width: calc(100% - 54px);
+    max-height: 156px;
     overflow-y: auto;
+    @include theme-background-color($color-grey-90, $color-grey-30);
 
     &--open {
       display: flex;
+    }
+
+    &--down {
+      top: 28px;
+      position: absolute;
+    }
+
+    &--up {
+      bottom: 28px;
+      position: absolute;
     }
   }
 

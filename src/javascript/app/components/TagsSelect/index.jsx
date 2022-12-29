@@ -11,6 +11,7 @@ const TagsSelect = ({
   label,
   tags,
   updateTags,
+  listDirection,
 }) => {
   const activeTags = unique([...tags.initial, ...tags.add]);
 
@@ -63,6 +64,7 @@ const TagsSelect = ({
         <InputNewTag
           updateTags={updateTags}
           selectedTags={activeTags}
+          direction={listDirection}
         />
       </ul>
     </>
@@ -77,10 +79,12 @@ TagsSelect.propTypes = {
   }).isRequired,
   updateTags: PropTypes.func.isRequired,
   label: PropTypes.string,
+  listDirection: PropTypes.string,
 };
 
 TagsSelect.defaultProps = {
   label: false,
+  listDirection: 'down',
 };
 
 export default TagsSelect;

@@ -5,7 +5,7 @@ import { useCombobox } from 'downshift';
 import SVG from '../SVG';
 import { useAvailableTags } from '../../../hooks/useAvailableTags';
 
-const InputNewTag = ({ updateTags, selectedTags }) => {
+const InputNewTag = ({ updateTags, selectedTags, direction }) => {
   const { availableTags } = useAvailableTags();
   const selectableTags = availableTags.filter((tag) => !selectedTags.includes(tag));
   const [inputItems, setInputItems] = useState(selectableTags);
@@ -91,6 +91,7 @@ const InputNewTag = ({ updateTags, selectedTags }) => {
         className={
           classnames('tags-select__combo-box-list', {
             'tags-select__combo-box-list--open': isOpen,
+            [`tags-select__combo-box-list--${direction}`]: direction,
           })
         }
       >
@@ -118,6 +119,7 @@ const InputNewTag = ({ updateTags, selectedTags }) => {
 InputNewTag.propTypes = {
   updateTags: PropTypes.func.isRequired,
   selectedTags: PropTypes.array.isRequired,
+  direction: PropTypes.string.isRequired,
 };
 
 export default InputNewTag;
