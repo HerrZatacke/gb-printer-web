@@ -8,7 +8,7 @@ const compressAndHash = async (lines) => {
 
   const imageData = lines
     .map((line) => (
-      line.replace(/ /gi, '')
+      line.replace(/ /gi, '').toUpperCase()
     ))
     .join('\n');
 

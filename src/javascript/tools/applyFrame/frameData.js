@@ -27,7 +27,7 @@ const saveFrameData = (imageTiles) => (
           const frameData = padCropTiles(imageTiles)
             .filter((_, index) => tileIndexIsPartOfFrame(index, 'keep'))
             .map((line) => (
-              line.replace(/ /gi, '')
+              line.replace(/ /gi, '').toUpperCase()
             ))
             .join('\n');
 
