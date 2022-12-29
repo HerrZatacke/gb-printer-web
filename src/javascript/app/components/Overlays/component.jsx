@@ -17,6 +17,7 @@ import SyncSelect from './SyncSelect';
 import ConnectSerial from './ConnectSerial';
 import BitmapQueue from './BitmapQueue';
 import ImportQueue from './ImportQueue';
+import FrameQueue from './FrameQueue';
 
 const Overlays = ({
   showProgressLog,
@@ -25,6 +26,7 @@ const Overlays = ({
   showConfirm,
   showBitmapQueue,
   showImportQueue,
+  showFrameQueue,
   showEditForm,
   showEditFrame,
   showEditPalette,
@@ -41,6 +43,8 @@ const Overlays = ({
       return <InfoBox />; // interactive
     case showConfirm:
       return <Confirm />; // interactive
+    case showFrameQueue:
+      return <FrameQueue />; // interactive
     case showBitmapQueue:
       return <BitmapQueue />; // interactive
     case showImportQueue:
@@ -81,6 +85,7 @@ Overlays.propTypes = {
   showConfirm: PropTypes.bool.isRequired,
   showBitmapQueue: PropTypes.bool.isRequired,
   showImportQueue: PropTypes.bool.isRequired,
+  showFrameQueue: PropTypes.bool.isRequired,
   showEditForm: PropTypes.bool.isRequired,
   showEditFrame: PropTypes.bool.isRequired,
   showEditPalette: PropTypes.bool.isRequired,

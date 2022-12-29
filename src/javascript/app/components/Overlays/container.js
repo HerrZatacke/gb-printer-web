@@ -7,6 +7,7 @@ const mapStateToProps = (state) => ({
   showConfirm: !!state.confirm.length,
   showBitmapQueue: !!state.bitmapQueue.length,
   showImportQueue: !!state.importQueue.length,
+  showFrameQueue: !!state.frameQueue.length,
   showEditForm: !!state.editImage,
   showEditFrame: !!state.editFrame,
   showEditPalette: !!state.editPalette.shortName,

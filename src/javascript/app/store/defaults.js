@@ -234,6 +234,12 @@ const definitions = [
     saveExport: [],
     value: [],
   },
+  {
+    key: 'frameQueue',
+    saveLocally: false,
+    saveExport: [],
+    value: [],
+  },
 ];
 
 const defaults = {};
