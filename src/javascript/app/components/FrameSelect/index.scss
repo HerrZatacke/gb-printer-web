@@ -12,6 +12,11 @@
   font-size: 16px;
   color: inherit;
 
+  &__select-label {
+    margin: 25px 0 5px;
+    display: block;
+  }
+
   &__check-label {
     display: flex;
     margin-top: 20px;
