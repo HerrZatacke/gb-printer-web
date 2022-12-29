@@ -17,7 +17,7 @@ const useScrolling = () => {
       scrollPositions.current[path] = window.scrollY;
 
       // eslint-disable-next-line no-console
-      console.log(JSON.stringify(scrollPositions));
+      // console.log(JSON.stringify(scrollPositions));
     };
 
     window.addEventListener('scroll', scrollListener);
