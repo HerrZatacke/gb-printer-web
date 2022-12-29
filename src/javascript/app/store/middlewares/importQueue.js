@@ -19,7 +19,6 @@ const importQueue = (store) => {
           lines: importPad ? padToHeight(image.lines) : image.lines,
           filename: image.file,
           palette: store.getState().activePalette,
-          dispatch: store.dispatch,
         })
       ))
     )))
