@@ -11,7 +11,7 @@ const FrameQueue = () => {
   return (
     <Lightbox
       className="import-overlay"
-      header="Import Frame"
+      header={`Import Frame "${frame.fileName}"`}
       confirm={() => {}}
       deny={() => {
         dispatch({
@@ -24,7 +24,7 @@ const FrameQueue = () => {
         className="import-overlay__content"
       >
         <pre>
-          { JSON.stringify(frame) }
+          ay
         </pre>
       </div>
     </Lightbox>

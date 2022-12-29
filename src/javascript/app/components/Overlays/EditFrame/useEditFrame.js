@@ -3,30 +3,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CANCEL_EDIT_FRAME, UPDATE_FRAME } from '../../../store/actions';
 import getFrameGroups from '../../../../tools/getFrameGroups';
 
-const useEditFrame = () => {
-  const frame = useSelector((state) => state.frames.find(({ id }) => id === state.editFrame));
+const useEditFrame = (frame) => {
   const updateId = frame.id;
   const frames = useSelector((state) => state.frames);
   const groups = getFrameGroups(frames);
-  const frameGroupIdRegex = /^(?<group>[a-z]+)(?<id>[0-9]+)/g;
-  const { groups: { group, id } } = frameGroupIdRegex.exec(frame.id);
-  const [frameGroup, setFrameGroup] = useState(group);
+  const frameGroupIdRegex = /^(?<groupName>[a-z]+)(?<id>[0-9]+)/g;
+  const dispatch = useDispatch();
+
+  const match = frameGroupIdRegex.exec(frame.id);
+  const groupName = match?.groups?.groupName || '';
+  const id = match?.groups?.id || '0';
+
+  const [frameGroup, setFrameGroup] = useState(groupName);
   const [frameIndex, setFrameIndex] = useState(parseInt(id, 10));
   const [frameName, setFrameName] = useState(frame.name);
-  const dispatch = useDispatch();
   const fullId = `${frameGroup}${frameIndex.toString(10).padStart(2, '0')}`;
 
-  const idExists = (
-    (fullId !== updateId) &&
-    frames.find((findFrame) => (fullId === findFrame.id))
-  );
+  const idIsSelf = fullId === updateId;
+  const idValid = idIsSelf || !(frames.find((findFrame) => (fullId === findFrame.id)));
 
-  const groupIdValid = frameGroup.match(/^[a-z]{2,}$/g);
+  const groupIdValid = Boolean(frameGroup.match(/^[a-z]{2,}$/g));
 
   const frameIndexValid = frameIndex > 0;
 
   const formValid = (
-    !idExists &&
+    idValid &&
     groupIdValid &&
     frameIndexValid
   );
@@ -58,12 +59,12 @@ const useEditFrame = () => {
     updateId,
     fullId,
     frameIndex,
-    setFrameIndex,
+    setFrameIndex: (fi) => setFrameIndex(parseInt(fi, 10)),
     frameGroup,
     setFrameGroup,
     frameName,
     setFrameName,
-    idExists,
+    idValid,
     formValid,
     groupIdValid,
     frameIndexValid,
