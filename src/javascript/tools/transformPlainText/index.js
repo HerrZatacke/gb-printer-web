@@ -21,7 +21,7 @@ const getTransformPlainText = ({ dispatch }) => async (file) => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
     const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
-    const indexCount = result.length < 2 ? '' : ` (${index + 1})`;
+    const indexCount = result.length < 2 ? '' : ` ${(index + 1).toString(10).padStart(2, '0')}`;
 
     dispatch({
       type: IMPORTQUEUE_ADD,
