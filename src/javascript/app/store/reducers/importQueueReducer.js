@@ -1,4 +1,10 @@
-import { ADD_IMAGES, IMPORTQUEUE_ADD, IMPORTQUEUE_CANCEL, IMPORTQUEUE_CANCEL_ONE } from '../actions';
+import {
+  ADD_FRAME,
+  ADD_IMAGES,
+  IMPORTQUEUE_ADD,
+  IMPORTQUEUE_CANCEL,
+  IMPORTQUEUE_CANCEL_ONE,
+} from '../actions';
 
 const importQueueReducer = (importQueue = [], action) => {
   switch (action.type) {
@@ -13,7 +19,8 @@ const importQueueReducer = (importQueue = [], action) => {
       return [];
 
     case IMPORTQUEUE_CANCEL_ONE:
-      return importQueue.filter(({ tempId }) => tempId !== action.payload);
+    case ADD_FRAME:
+      return importQueue.filter(({ tempId }) => tempId !== action.payload.tempId);
 
     default:
       return importQueue;

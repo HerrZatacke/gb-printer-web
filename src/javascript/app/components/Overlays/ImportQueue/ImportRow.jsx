@@ -108,7 +108,7 @@ function ImportRow({
           onClick={() => {
             dispatch({
               type: IMPORTQUEUE_CANCEL_ONE,
-              payload: tempId,
+              payload: { tempId },
             });
           }}
         >
