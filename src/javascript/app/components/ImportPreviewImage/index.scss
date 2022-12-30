@@ -9,6 +9,7 @@
   &__canvas {
     flex: 160px 0 0;
     border: 2px solid;
+    @include theme-border-color($color-tertiary, $color-tertiary);
   }
 
   &__arrow {
