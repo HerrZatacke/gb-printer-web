@@ -1,130 +1,39 @@
 import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
-import transformCapture from '../transformCapture';
-import transformReduced from '../transformReduced';
-import getTransformBitmap from '../transformBitmap';
-import readFileAs from '../readFileAs';
-import transformClassic from '../transformClassic';
-import { ADD_TO_QUEUE, CONFIRM_ANSWERED, ERROR, JSON_IMPORT } from '../../app/store/actions';
-
-// check for the header "GB-BIN01"
-const isBinType = (buffer) => (
-  buffer[0] === 71 && // G
-  buffer[1] === 66 && // B
-  buffer[2] === 45 && // -
-  buffer[3] === 66 && // B
-  buffer[4] === 73 && // I
-  buffer[5] === 78 && // N
-  buffer[6] === 48 && // 0
-  buffer[7] === 49 //    1
-);
+import getTransformReduced from '../transformReduced';
+import getTransformBitmaps from '../transformBitmaps';
+import getTransformPlainText from '../transformPlainText';
+import getImportJSON from '../importJSON';
+import prepareFile from './prepareFile';
 
 const getHandleFileImport = (store) => {
-  const { dispatch } = store;
-
   const transformSav = getTransformSav(store);
-  const transformBin = getTransformBin(dispatch);
-  const transformBitmap = getTransformBitmap(store);
+  const transformBin = getTransformBin(store);
+  const transformBitmaps = getTransformBitmaps(store);
+  const transformPlainText = getTransformPlainText(store);
+  const transformReduced = getTransformReduced(store);
+  const importJSON = getImportJSON(store);
 
-  const onError = (error) => {
-    console.error(error);
-    dispatch({
-      type: ERROR,
-      payload: 'FILE_NOT_READ',
-    });
-  };
+  return async (files, { fromPrinter } = { fromPrinter: false }) => {
 
-  return (files, { fromPrinter } = { fromPrinter: false }) => {
-
-    const groupImports = files.map((fileData) => {
-      let file = fileData;
-      let contentType = fileData.type;
-      let meta = null;
-      let ok = true;
-
-      // As of version 1.16.4 the filedata is an object like { blob, contentType }
-      // earlier versions directly provide a blob
-      if (fileData.blob) {
-        file = fileData.blob;
-        contentType = fileData.contentType;
-        // eslint-disable-next-line no-unused-vars
-        meta = fileData.meta;
-        // v1.16.4 is missing the 'ok' property, hence the explicit check (may be removed in future versions if v0.3.5+ is successful)
-        ok = (fileData.ok !== undefined) ? fileData.ok : ok;
-      }
-
-      if (!ok || !file.size) {
-        console.error('Error in received data', fileData);
-        return Promise.resolve([]);
-      }
+    await Promise.all(files.map((fileData) => {
+      const { file, contentType } = prepareFile(fileData);
 
       if (contentType && contentType.startsWith('image/')) {
-        transformBitmap(file, fromPrinter);
-        return Promise.resolve([]);
+        return transformBitmaps(file, fromPrinter);
       }
 
       // roughly larger than 256MB is too much....
       if (file.size > 0xfffffff) {
-        dispatch({
-          type: ERROR,
-          payload: 'FILE_TOO_LARGE',
-        });
-        return Promise.resolve([]);
-      }
-
-      if (contentType === 'application/json') {
-        readFileAs(file, 'text')
-          .catch(onError)
-          .then((data) => {
-            let settingsDump = {};
-
-            try {
-              settingsDump = JSON.parse(data);
-            } catch (error) { /**/ }
-
-            if (settingsDump && settingsDump.state) {
-              dispatch({
-                type: JSON_IMPORT,
-                payload: settingsDump,
-              });
-              return;
-            }
-
-            dispatch({
-              type: ERROR,
-              payload: 'NOT_A_SETTINGS_FILE',
-            });
-          });
-        return Promise.resolve([]);
+        throw new Error('File too large');
       }
 
       if (contentType === 'text/plain') {
-        return readFileAs(file, 'text')
-          .catch(onError)
-          .then((data) => {
+        return transformPlainText(file);
+      }
 
-            // file must contain something that resembles a gb printer command
-            if (data.indexOf('{"command"') === -1) {
-
-              try {
-                return transformCapture(data, file.name);
-              } catch (error) {
-                dispatch({
-                  type: ERROR,
-                  payload: 'NOT_A_DUMP',
-                });
-                return [];
-              }
-            }
-
-            return transformClassic(data, file.name);
-          })
-          .then((imagesLines) => (
-            imagesLines.map((lines) => ({
-              lines,
-              filename: file.name,
-            }))
-          ));
+      if (contentType === 'application/json') {
+        return importJSON(file);
       }
 
       // .sav files are always exactly 128kB, but we allow any multiple of 4kB
@@ -134,84 +43,21 @@ const getHandleFileImport = (store) => {
           file.size === 3584 // Special case: PicNRec .sav
         )
       ) {
-        return readFileAs(file, 'arrayBuffer')
-          .catch(onError)
-          .then((data) => (
-            transformSav(data, file.name)
-          ));
+        return transformSav(file);
       }
 
       if (contentType === 'application/pico-printer-binary-log') {
-        return readFileAs(file, 'arrayBuffer')
-          .catch(onError)
-          .then((data) => (
-            transformReduced(data)
-              .then((imagesLines) => (
-                imagesLines.map((lines) => ({
-                  lines,
-                  filename: file.name,
-                }))
-              ))
-          ));
+        return transformReduced(file);
       }
 
-      if (
-        !contentType ||
-        contentType.startsWith('application/')
-      ) {
-        return readFileAs(file, 'arrayBuffer')
-          .catch(onError)
-          .then((data) => {
-
-            if (isBinType(data)) {
-              return transformBin(data, file.name)
-                .then((lines) => ({
-                  lines,
-                  filename: file.name,
-                }));
-            }
-
-            return [];
-          });
+      if (contentType.startsWith('application/')) {
+        return transformBin(file);
       }
 
-      dispatch({
-        type: ERROR,
-        payload: 'NOT_A_DUMP',
-      });
-      return Promise.resolve([]);
-    });
+      throw new Error('Not a dump');
+    }));
 
-    Promise.all(groupImports)
-      .then((imported) => {
-        const toBeConfirmed = imported.flat().filter(Boolean);
-
-        if (toBeConfirmed.length) {
-          dispatch({
-            type: ADD_TO_QUEUE,
-            payload: toBeConfirmed,
-          });
-        } else {
-          store.dispatch({
-            type: CONFIRM_ANSWERED,
-          });
-
-          // ToDo: use promise returns for all import methods before displaying this message
-          // store.dispatch({
-          //   type: CONFIRM_ASK,
-          //   payload: {
-          //     message: 'Nothing found to import',
-          //     confirm: () => {
-          //       store.dispatch({
-          //         type: CONFIRM_ANSWERED,
-          //       });
-          //     },
-          //   },
-          // });
-        }
-
-      });
-
+    // ToDo: display some import counter?
   };
 };
 

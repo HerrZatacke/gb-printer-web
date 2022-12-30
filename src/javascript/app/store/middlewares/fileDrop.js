@@ -1,5 +1,5 @@
 import getHandleFileImport from '../../../tools/getHandleFileImport';
-import { IMPORT_DRAGOVER_END, IMPORT_DRAGOVER_START } from '../actions';
+import { ERROR, IMPORT_DRAGOVER_END, IMPORT_DRAGOVER_START } from '../actions';
 
 const fileDrop = (store) => {
   const root = document.querySelector('#app');
@@ -29,7 +29,7 @@ const fileDrop = (store) => {
     }, 250);
   });
 
-  root.addEventListener('drop', (ev) => {
+  root.addEventListener('drop', async (ev) => {
     ev.preventDefault();
 
     let files;
@@ -42,7 +42,14 @@ const fileDrop = (store) => {
       files = [...ev.dataTransfer.files];
     }
 
-    handleFileImport(files);
+    try {
+      await handleFileImport(files);
+    } catch (error) {
+      store.dispatch({
+        type: ERROR,
+        payload: error.message,
+      });
+    }
   });
 
   return (next) => (action) => {

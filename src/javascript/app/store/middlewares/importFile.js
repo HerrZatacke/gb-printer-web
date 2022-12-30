@@ -1,5 +1,5 @@
 import getHandleFileImport from '../../../tools/getHandleFileImport';
-import { IMPORT_FILES } from '../actions';
+import { ERROR, IMPORT_FILES } from '../actions';
 
 const importFile = (store) => {
   const handleFileImport = getHandleFileImport(store);
@@ -8,9 +8,20 @@ const importFile = (store) => {
     if (action.type === IMPORT_FILES) {
 
       if (action.payload.files && action.payload.files.length) {
-        handleFileImport([...action.payload.files], {
-          fromPrinter: action.payload.fromPrinter || false,
-        });
+        const importFiles = async () => {
+          try {
+            await handleFileImport([...action.payload.files], {
+              fromPrinter: action.payload.fromPrinter || false,
+            });
+          } catch (error) {
+            store.dispatch({
+              type: ERROR,
+              payload: error.message,
+            });
+          }
+        };
+
+        importFiles();
       }
 
       // don't call next(action)
