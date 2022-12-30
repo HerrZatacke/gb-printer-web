@@ -19,10 +19,9 @@ const getTransformBitmaps = ({ dispatch }) => {
         type: BITMAPQUEUE_ADD,
         payload: image,
       });
-      return [];
     }
 
-    return [];
+    return true;
   };
 };
 

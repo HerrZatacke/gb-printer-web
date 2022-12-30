@@ -17,7 +17,7 @@ const getTransformPlainText = ({ dispatch }) => async (file) => {
     result = await transformCapture(data, file.name);
   }
 
-  result.forEach(async (tiles, index) => {
+  await Promise.all(result.map(async (tiles, index) => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
     const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
@@ -33,7 +33,11 @@ const getTransformPlainText = ({ dispatch }) => async (file) => {
         tempId: Math.random().toString(16).split('.').pop(),
       },
     });
-  });
+
+    return true;
+  }));
+
+  return true;
 };
 
 export default getTransformPlainText;

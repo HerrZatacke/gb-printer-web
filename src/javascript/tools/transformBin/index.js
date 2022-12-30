@@ -60,6 +60,8 @@ const getTransformBin = ({ dispatch }) => async (file) => {
       tempId: Math.random().toString(16).split('.').pop(),
     },
   });
+
+  return true;
 };
 
 export default getTransformBin;
