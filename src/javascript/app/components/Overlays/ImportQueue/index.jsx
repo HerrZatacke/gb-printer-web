@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
-import { IMPORTQUEUE_CANCEL } from '../../../store/actions';
+import { IMPORTQUEUE_CANCEL, PALETTE_SET_ACTIVE } from '../../../store/actions';
 import './index.scss';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
@@ -13,9 +13,16 @@ import modifyTagChanges from '../../../../tools/modifyTagChanges';
 const ImportQueue = () => {
   const importQueue = useSelector((store) => store.importQueue);
   const dispatch = useDispatch();
-  const activePalette = useSelector((state) => (state.activePalette));
+  const palette = useSelector((state) => (state.activePalette));
   const [frame, setFrame] = useState('');
-  const [palette, setPalette] = useState(activePalette);
+
+  const setPalette = (payload) => {
+    dispatch({
+      type: PALETTE_SET_ACTIVE,
+      payload,
+    });
+  };
+
   const [tagChanges, updateTagChanges] = useState({
     initial: [],
     add: [],
