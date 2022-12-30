@@ -45,7 +45,7 @@ const getImportSav = ({
     return null;
   }));
 
-  const sortedImages = sortByAlbumIndex(images);
+  const sortedImages = sortByAlbumIndex(images.filter(Boolean));
 
   let displayIndex = 0;
   await Promise.all(sortedImages.map(async ({ albumIndex, tiles }) => {
