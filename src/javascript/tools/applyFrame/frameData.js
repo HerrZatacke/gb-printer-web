@@ -23,7 +23,7 @@ export const compressAndHashFrame = async (lines) => {
   const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
   const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
 
-  const frameData = padCropTiles(lines)
+  const frameData = padCropTiles([...lines])
     .filter((_, index) => tileIndexIsPartOfFrame(index, 'keep'))
     .map((line) => (
       line.replace(/ /gi, '').toUpperCase()
