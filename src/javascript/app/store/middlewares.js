@@ -9,7 +9,6 @@ import gitStorage from './middlewares/gitStorage';
 import handleErrors from './middlewares/error';
 import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
-import importQueue from './middlewares/importQueue';
 import lightbox from './middlewares/lightbox';
 import pluginsMiddleware from './middlewares/plugins';
 import saveEditPalette from './middlewares/saveEditPalette';
@@ -29,7 +28,6 @@ export default applyMiddleware(
   gitStorage,
   importFile,
   importMessage,
-  importQueue,
   lightbox,
   pluginsMiddleware,
   saveEditPalette,
