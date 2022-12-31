@@ -55,7 +55,8 @@
   }
 
   &__created {
-    padding: 10px 0 0 0;
+    flex: auto 1 1;
+    align-self: flex-end;
     display: block;
     text-align: right;
     font-size: 12px;
@@ -111,4 +112,51 @@
     @include theme-color($color-text-bright, $color-black);
     overflow: hidden;
   }
+
+  &__created-meta {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__meta {
+    padding-top: 10px;
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    line-height: 10px;
+    @include theme-color($color-grey-80, $color-grey-40);
+
+    .svg--meta {
+      color: inherit;
+      fill: currentcolor;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__meta-pre {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    @include theme-background-color($color-grey-30, $color-grey-50);
+    @include theme-color($color-text-bright, $color-black);
+    border-radius: $default-border-radius;
+    border: 1px solid;
+    min-width: 100%;
+    padding: 8px;
+    white-space: pre;
+    font-family: monospace;
+    overflow: auto;
+    z-index: $z-index-content;
+    font-size: 11px;
+    line-height: 14px;
+  }
+
+  &__meta:hover + &__meta-pre,
+  &__meta-pre:hover {
+    z-index: $z-index-hover-image;
+    display: block;
+  }
+
 }

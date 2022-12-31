@@ -9,6 +9,7 @@ import { dateFormat } from '../../defaults';
 import dateFormatLocale from '../../../tools/dateFormatLocale';
 import ImageRender from '../ImageRender';
 import { FILTER_FAVOURITE } from '../../../consts/specialTags';
+import SVG from '../SVG';
 
 dayjs.extend(customParseFormat);
 
@@ -30,6 +31,7 @@ const GalleryImage = ({
   hashes,
   type,
   preferredLocale,
+  meta,
 }) => {
 
   const getDateSpan = (className) => {
@@ -91,7 +93,21 @@ const GalleryImage = ({
           </li>
         ))}
       </ul>
-      {getDateSpan('gallery-image__created')}
+      <div className="gallery-image__created-meta">
+        {(
+          meta ? (
+            <>
+              <div className="gallery-image__meta">
+                <SVG name="meta" />
+              </div>
+              <pre className="gallery-image__meta-pre">
+                { JSON.stringify(meta, null, 2) }
+              </pre>
+            </>
+          ) : null
+        )}
+        {getDateSpan('gallery-image__created')}
+      </div>
       <GalleryImageButtons
         isFavourite={isFavourite}
         hash={hash}
@@ -167,6 +183,7 @@ GalleryImage.propTypes = {
   page: PropTypes.number.isRequired,
   hideDate: PropTypes.bool.isRequired,
   preferredLocale: PropTypes.string,
+  meta: PropTypes.object,
 };
 
 GalleryImage.defaultProps = {
@@ -174,6 +191,7 @@ GalleryImage.defaultProps = {
   hashes: null,
   frame: null,
   preferredLocale: null,
+  meta: null,
 };
 
 export default GalleryImage;

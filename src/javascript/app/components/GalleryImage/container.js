@@ -31,6 +31,7 @@ const mapStateToProps = (state, { hash }) => {
     invertPalette: image.invertPalette || false,
     hideDate: state.hideDates,
     preferredLocale: state.preferredLocale,
+    meta: image.meta || null,
   });
 };
 
