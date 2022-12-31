@@ -16,17 +16,22 @@ const useRunImport = () => {
     tags,
   }) => {
 
-    const savedImages = await Promise.all(importQueue.map(({ tiles, fileName }) => (
-      queue.add(() => (
-        saveNewImage({
-          lines: importPad ? padToHeight(tiles) : tiles,
-          filename: fileName,
-          palette,
-          frame,
-          tags,
-        })
-      ))
-    )));
+    const savedImages = await Promise.all(importQueue.map((image) => {
+      const { tiles, fileName, meta } = image;
+
+      return (
+        queue.add(() => (
+          saveNewImage({
+            lines: importPad ? padToHeight(tiles) : tiles,
+            filename: fileName,
+            palette,
+            frame,
+            tags,
+            meta,
+          })
+        ))
+      );
+    }));
 
     dispatch({
       type: ADD_IMAGES,

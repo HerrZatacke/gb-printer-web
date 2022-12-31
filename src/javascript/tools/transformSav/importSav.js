@@ -48,7 +48,7 @@ const getImportSav = ({
   const sortedImages = sortByAlbumIndex(images.filter(Boolean));
 
   let displayIndex = 0;
-  await Promise.all(sortedImages.map(async ({ albumIndex, tiles }) => {
+  await Promise.all(sortedImages.map(async ({ albumIndex, tiles, meta }) => {
     let indexText;
     switch (albumIndex) {
       case 64:
@@ -77,6 +77,7 @@ const getImportSav = ({
         imageHash,
         frameHash,
         tiles,
+        meta,
         tempId: Math.random().toString(16).split('.').pop(),
       },
     });
