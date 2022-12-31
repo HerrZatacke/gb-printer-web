@@ -63,8 +63,8 @@ const getFileMeta = (data, baseAddress) => {
   // 0x00F0E-0x00F11: Birthdate (year, 2x2 bytes, day, 2 bytes, month, 2 bytes, each 2 bytes + 11).
   const birthDate = data.slice(baseAddress + 0x00F0E, baseAddress + 0x00F11 + 1);
 
-  // 0x00F15-0x00F2F: Contains comments (0x56 = A to 0xC8 = @, same tileset as first character stamps).
-  const comments = data.slice(baseAddress + 0x00F15, baseAddress + 0x00F2F + 1);
+  // 0x00F15-0x00F2F: Contains comment (0x56 = A to 0xC8 = @, same tileset as first character stamps).
+  const comment = data.slice(baseAddress + 0x00F15, baseAddress + 0x00F2F + 1);
 
   // 0x00F33: 0x00 if image is original, 0x01 if image is a copy.
   const isCopy = Boolean(data[baseAddress + 0x00F33]);
@@ -78,11 +78,11 @@ const getFileMeta = (data, baseAddress) => {
     albumIndex,
     baseAddress,
     meta: {
-      birthDate, // ToDo: Parse
+      birthDate: [...birthDate], // ToDo: Parse
       userName: convertToReadable(userName),
       gender: parseGender(genderAndBloodType),
       bloodType: parseBloodType(genderAndBloodType),
-      comments: convertToReadable(comments),
+      comment: convertToReadable(comment),
       isCopy,
     },
     frameNumber,
