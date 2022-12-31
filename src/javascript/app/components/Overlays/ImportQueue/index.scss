@@ -75,11 +75,24 @@
     line-height: 16px;
     text-align: center;
     font-family: monospace;
-    @include theme-background-color($color-strong-yellow, $color-warn-yellow);
-    @include theme-color($color-warn-yellow, $color-white);
     width: 15px;
     height: 15px;
     cursor: default;
+
+    &--queue {
+      @include theme-background-color($color-strong-red, $color-strong-red);
+      @include theme-color($color-white, $color-white);
+    }
+
+    &--image {
+      @include theme-background-color($color-warn-yellow, $color-strong-yellow);
+      @include theme-color($color-white, $color-black);
+    }
+
+    &--frame {
+      @include theme-background-color($color-strong-blue, $color-strong-blue);
+      @include theme-color($color-white, $color-white);
+    }
   }
 
   &__button {

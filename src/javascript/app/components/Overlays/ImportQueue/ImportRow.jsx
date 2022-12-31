@@ -47,9 +47,19 @@ function ImportRow({
       </div>
       <div className="import-image__duplicate-icons">
         { (
+          queueDuplicates > 1 ? (
+            <div
+              className="import-image__duplicate-icon import-image__duplicate-icon--queue"
+              title="This image exists multiple times within this queue"
+            >
+              D
+            </div>
+          ) : null
+        ) }
+        { (
           storeDuplicateImage ? (
             <div
-              className="import-image__duplicate-icon"
+              className="import-image__duplicate-icon import-image__duplicate-icon--image"
               title={`This image has already been imported${storeDuplicateImage.title ? ` as "${storeDuplicateImage.title}"` : ''}`}
             >
               I
@@ -59,20 +69,10 @@ function ImportRow({
         { (
           storeDuplicateFrame ? (
             <div
-              className="import-image__duplicate-icon"
+              className="import-image__duplicate-icon import-image__duplicate-icon--frame"
               title={`This frame has already been imported${storeDuplicateFrame.name ? ` as "${storeDuplicateFrame.name}"` : ''}`}
             >
               F
-            </div>
-          ) : null
-        ) }
-        { (
-          queueDuplicates > 1 ? (
-            <div
-              className="import-image__duplicate-icon"
-              title="This image exists multiple times within this queue"
-            >
-              D
             </div>
           ) : null
         ) }
