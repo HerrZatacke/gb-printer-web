@@ -40,6 +40,28 @@ const parseBloodType = (byte) => {
   }
 };
 
+const parseBirthDate = (birthDate, cartIsJP) => {
+  const baseValues = [...birthDate]
+    .filter(Boolean)
+    .map((value) => (
+      [...value.toString(16)]
+        .map((value2) => parseInt(value2, 16) - 1)
+        .join('')
+    ));
+
+  if (baseValues.length < 4) {
+    return '-';
+  }
+
+  const [year1, year2, month, day] = baseValues;
+
+  if (cartIsJP) {
+    return `${year1}${year2}年${month}月${day}日`;
+  }
+
+  return `${day}/${month}/${year1}${year2}`;
+};
+
 const getFileMeta = (data, baseAddress, cartIsJP) => {
   const cartIndex = (baseAddress / 0x1000) - 2;
   const albumIndex = cartIndex >= 0 ? data[0x11b2 + cartIndex] : 64;
@@ -71,7 +93,7 @@ const getFileMeta = (data, baseAddress, cartIsJP) => {
     albumIndex,
     baseAddress,
     meta: {
-      birthDate: [...birthDate], // ToDo: Parse
+      birthDate: parseBirthDate(birthDate, cartIsJP),
       userName: convertToReadable(userName, cartIsJP),
       gender: parseGender(genderAndBloodType),
       bloodType: parseBloodType(genderAndBloodType),
