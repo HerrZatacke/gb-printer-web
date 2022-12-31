@@ -1,5 +1,5 @@
 import { BITMAPQUEUE_ADD } from '../../app/store/actions';
-import getImageData from '../transformBitmap/getImageData';
+import getImageData from './getImageData';
 import moveBitmapsToImport from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
 
 const getTransformBitmaps = ({ dispatch }) => {
