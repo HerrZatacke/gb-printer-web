@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useDateTime from '../../../hooks/useDateTime';
+import './index.scss';
 
-const ImageMeta = (props) => {
-  const [date, time, setDate, setTime, updateDate, updateTime] = useDateTime(props.created, props.updatecreated);
+const ImageMeta = ({
+  created,
+  updatecreated,
+  meta,
+}) => {
+  const [date, time, setDate, setTime, updateDate, updateTime] = useDateTime(created, updatecreated);
 
   return (
     <div className="image-meta-form__datetime">
@@ -43,6 +48,13 @@ const ImageMeta = (props) => {
           }}
         />
       </label>
+      {
+        (meta ? (
+          <pre className="image-meta-form__pre">
+            { JSON.stringify(meta, null, 2) }
+          </pre>
+        ) : null)
+      }
     </div>
   );
 };
@@ -50,10 +62,12 @@ const ImageMeta = (props) => {
 ImageMeta.propTypes = {
   created: PropTypes.string,
   updatecreated: PropTypes.func.isRequired,
+  meta: PropTypes.object,
 };
 
 ImageMeta.defaultProps = {
   created: null,
+  meta: {},
 };
 
 export default ImageMeta;

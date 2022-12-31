@@ -133,6 +133,7 @@ const EditForm = (props) => {
         invertPalette={invertPalette}
         frame={frame}
         tags={tagChanges}
+        meta={props.meta}
         updatePalette={(paletteUpdate, confirm) => {
           if (confirm) {
             updateBatch({ ...batch, palette: true });
@@ -175,6 +176,7 @@ EditForm.propTypes = {
   title: PropTypes.string,
   height: PropTypes.number.isRequired,
   findPalette: PropTypes.func.isRequired,
+  meta: PropTypes.object,
 };
 
 EditForm.defaultProps = {
@@ -185,6 +187,7 @@ EditForm.defaultProps = {
   paletteShort: null,
   paletteRGBN: null,
   frame: null,
+  meta: null,
 };
 
 export default EditForm;

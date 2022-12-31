@@ -3,15 +3,17 @@
   &__datetime {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px 8px;
   }
 
   &__label {
     &--date {
-      flex: calc(60% - 4px) 0 0;
+      flex: 59% 1 0;
     }
 
     &--time {
-      flex: calc(40% - 4px) 0 0;
+      flex: 25% 1 0;
     }
   }
 
@@ -24,5 +26,13 @@
     display: block;
     width: 100%;
     height: 40px;
+  }
+
+  &__pre {
+    flex: 100% 1 0;
+    display: block;
+    white-space: pre;
+    font-family: monospace;
+    overflow: auto;
   }
 }

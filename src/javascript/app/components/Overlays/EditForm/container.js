@@ -36,6 +36,7 @@ const mapStateToProps = (state) => {
     hashes: image.hashes,
     frame: image.frame,
     lockFrame: image.lockFrame || false,
+    meta: image.meta || null,
     palette: image.palette,
     invertPalette: image.invertPalette || false,
     batch: batch ? batch.length : 0,

@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events,react/no-unused-prop-types,no-unused-vars */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -7,6 +7,7 @@ import GreySelect from '../GreySelect';
 import PaletteSelect from '../PaletteSelect';
 import TagsSelect from '../TagsSelect';
 import ImageMeta from '../ImageMeta';
+import './index.scss';
 
 const EditImageTabs = (props) => {
 
@@ -117,6 +118,7 @@ const EditImageTabs = (props) => {
           <ImageMeta
             created={props.created}
             updatecreated={props.updateCreated}
+            meta={props.meta}
           />
         </li>
       </ul>
@@ -149,6 +151,7 @@ EditImageTabs.propTypes = {
   updateTags: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
   updateFrameLock: PropTypes.func.isRequired,
+  meta: PropTypes.object,
 };
 
 EditImageTabs.defaultProps = {
@@ -160,6 +163,7 @@ EditImageTabs.defaultProps = {
   frame: null,
   created: null,
   // frames: null,
+  meta: null,
 };
 
 export default EditImageTabs;
