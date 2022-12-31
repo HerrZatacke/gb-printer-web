@@ -1,20 +1,13 @@
 /* eslint-disable prefer-template */
 import { charMapInt, charMapJp } from './charMap';
 
-const convertToReadable = (data) => {
+const convertToReadable = (data, cartIsJP) => {
   const values = [...data].filter(Boolean);
+  const charMap = cartIsJP ? charMapJp : charMapInt;
 
-  const int = values.map((value) => (
-    charMapInt[value] || ''
-    // charMapInt[value] || value.toString(16).padStart(2, '0')
+  return values.map((value) => (
+    charMap[value] || ''
   )).join('');
-
-  const jp = values.map((value) => (
-    charMapJp[value] || ''
-    // charMapJp[value] || value.toString(16).padStart(2, '0')
-  )).join('');
-
-  return { int, jp };
 };
 
 const parseGender = (byte) => {
@@ -47,7 +40,7 @@ const parseBloodType = (byte) => {
   }
 };
 
-const getFileMeta = (data, baseAddress) => {
+const getFileMeta = (data, baseAddress, cartIsJP) => {
   const cartIndex = (baseAddress / 0x1000) - 2;
   const albumIndex = cartIndex >= 0 ? data[0x11b2 + cartIndex] : 64;
 
@@ -79,10 +72,10 @@ const getFileMeta = (data, baseAddress) => {
     baseAddress,
     meta: {
       birthDate: [...birthDate], // ToDo: Parse
-      userName: convertToReadable(userName),
+      userName: convertToReadable(userName, cartIsJP),
       gender: parseGender(genderAndBloodType),
       bloodType: parseBloodType(genderAndBloodType),
-      comment: convertToReadable(comment),
+      comment: convertToReadable(comment, cartIsJP),
       isCopy,
     },
     frameNumber,

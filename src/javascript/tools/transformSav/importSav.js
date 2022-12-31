@@ -16,7 +16,7 @@ const getImportSav = ({
   fileName,
   importDeleted,
   dispatch,
-}) => async (selectedFrameset) => {
+}) => async (selectedFrameset, cartIsJP) => {
 
   const adresses = (new Array(30)).fill(null)
     .map((_, index) => (
@@ -29,7 +29,7 @@ const getImportSav = ({
   }
 
   const images = await Promise.all(adresses.map(async (address) => {
-    const meta = getFileMeta(data, address);
+    const meta = getFileMeta(data, address, cartIsJP);
     const { frameNumber } = meta;
 
     const transformedData = transformImage(data, address);

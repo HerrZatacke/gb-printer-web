@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import useQuestions from '../../../../hooks/useQuestions';
 import Select from './types/Select';
 import Input from '../../Input';
 import InfoText from '../../InfoText';
+import SVG from '../../SVG';
 
 const Confirm = ({
   message,
@@ -56,6 +58,32 @@ const Confirm = ({
                     setSelected(key, update);
                   }}
                 />
+              );
+            case 'checkbox':
+              return (
+                <label
+                  key={key}
+                  id={key}
+                  className={
+                    classnames('confirm__check-label', {
+                      'confirm__check-label--checked': values[key],
+                    })
+                  }
+                >
+                  <input
+                    type="checkbox"
+                    className="confirm__checkbox"
+                    checked={values[key]}
+                    disabled={disabled}
+                    onChange={({ target }) => {
+                      setSelected(key, target.checked);
+                    }}
+                  />
+                  <SVG name="checkmark" />
+                  <span className="confirm__check-label-text">
+                    { label }
+                  </span>
+                </label>
               );
             case 'info':
               return (

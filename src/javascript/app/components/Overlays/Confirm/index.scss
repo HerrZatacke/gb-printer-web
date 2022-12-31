@@ -13,4 +13,33 @@
   .info-text {
     margin: 20px;
   }
+
+  &__check-label {
+    display: flex;
+    margin: 20px 20px 0 20px;
+    cursor: pointer;
+    line-height: 30px;
+    height: 30px;
+    padding: 0;
+    user-select: none;
+
+    .svg {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      fill: currentColor;
+    }
+
+    .tick {
+      opacity: $checkmark-tick-inactive-opacity;
+    }
+
+    &--checked .tick {
+      opacity: 1;
+    }
+  }
+
+  &__checkbox {
+    display: none;
+  }
 }

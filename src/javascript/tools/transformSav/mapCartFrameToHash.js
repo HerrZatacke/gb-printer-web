@@ -1,4 +1,7 @@
 const mapCartFrameToHash = (frameNumber, savFrameTypes, frames) => {
+  if (!savFrameTypes) {
+    return null;
+  }
 
   const findFrame = (frameId) => frames.find(({ id }) => id === frameId);
 

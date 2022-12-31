@@ -26,31 +26,31 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
     dispatch,
   });
 
-  if (frameGroups.length < 2) {
-    return importSav(selectedFrameset);
-  }
-
   return new Promise(((resolve) => {
-
     dispatch({
       type: CONFIRM_ASK,
       payload: {
         message: `Importing '${file.name}'`,
         questions: () => [
           {
+            label: 'Import is from a Japanese Cart (PocketCamera)',
+            key: 'cartIsJP',
+            type: 'checkbox',
+          },
+          frameGroups.length > 1 ? {
             label: 'Select frame group to use with this import',
             key: 'chosenFrameset',
             type: 'select',
             options: frameGroups,
-          },
-        ],
-        confirm: async ({ chosenFrameset }) => {
+          } : null,
+        ].filter(Boolean),
+        confirm: async ({ chosenFrameset, cartIsJP }) => {
           dispatch({
             type: CONFIRM_ANSWERED,
           });
 
           // Perform actual import action
-          await importSav(chosenFrameset);
+          await importSav(chosenFrameset || '', Boolean(cartIsJP));
           resolve(true);
         },
         deny: () => {
