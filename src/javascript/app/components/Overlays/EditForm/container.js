@@ -13,8 +13,8 @@ const mapStateToProps = (state) => {
     state.palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
   );
 
-  const image = state.images.find(({ hash }) => hash === state.editImage.hash);
-  const { batch, tags: batchTags } = state.editImage;
+  const image = state.images.find(({ hash }) => hash === state.editImage?.hash);
+  const { batch, tags: batchTags } = state?.editImage || {};
 
   if (!state.editImage || !image) {
     return {

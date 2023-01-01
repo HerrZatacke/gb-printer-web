@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import ProgressLogBox from './ProgressLogBox';
 import InfoBox from './InfoBox';
 import ProgressBox from './ProgressBox';
@@ -19,25 +19,45 @@ import BitmapQueue from './BitmapQueue';
 import ImportQueue from './ImportQueue';
 import FrameQueue from './FrameQueue';
 
-const Overlays = ({
-  showProgressLog,
-  showInfoBox,
-  showProgressBox,
-  showConfirm,
-  showBitmapQueue,
-  showImportQueue,
-  showFrameQueue,
-  showEditForm,
-  showEditFrame,
-  showEditPalette,
-  showVideoForm,
-  showRGBNImage,
-  showLightbox,
-  showDragOver,
-  showFilters,
-  showSortForm,
-  syncSelect,
-}) => {
+const Overlays = () => {
+  const {
+    showProgressLog,
+    showInfoBox,
+    showProgressBox,
+    showConfirm,
+    showBitmapQueue,
+    showImportQueue,
+    showFrameQueue,
+    showEditForm,
+    showEditFrame,
+    showEditPalette,
+    showVideoForm,
+    showRGBNImage,
+    showLightbox,
+    showDragOver,
+    showFilters,
+    showSortForm,
+    syncSelect,
+  } = useSelector((state) => ({
+    showProgressLog: !!state.progressLog.git.length || !!state.progressLog.dropbox.length,
+    showInfoBox: state.framesMessage === 1,
+    showProgressBox: !!state.progress.gif || !!state.progress.printer || !!state.progress.plugin,
+    showConfirm: !!state.confirm.length,
+    showBitmapQueue: !!state.bitmapQueue.length,
+    showImportQueue: !!state.importQueue.length,
+    showFrameQueue: !!state.frameQueue.length,
+    showEditForm: !!state.editImage,
+    showEditFrame: !!state.editFrame,
+    showEditPalette: !!state.editPalette.shortName,
+    showVideoForm: !!state.videoParams.imageSelection && !!state.videoParams.imageSelection.length,
+    showRGBNImage: !!state.rgbnImages && Object.keys(state.rgbnImages).length > 0,
+    showLightbox: state.lightboxImage !== null,
+    showDragOver: !!state.dragover,
+    showFilters: !!state.filtersVisible,
+    showSortForm: !!state.sortOptionsVisible,
+    syncSelect: !!state.syncSelect,
+  }));
+
   switch (true) {
     case showInfoBox:
       return <InfoBox />; // interactive
@@ -77,27 +97,5 @@ const Overlays = ({
       return <ConnectSerial />;
   }
 };
-
-Overlays.propTypes = {
-  showProgressLog: PropTypes.bool.isRequired,
-  showInfoBox: PropTypes.bool.isRequired,
-  showProgressBox: PropTypes.bool.isRequired,
-  showConfirm: PropTypes.bool.isRequired,
-  showBitmapQueue: PropTypes.bool.isRequired,
-  showImportQueue: PropTypes.bool.isRequired,
-  showFrameQueue: PropTypes.bool.isRequired,
-  showEditForm: PropTypes.bool.isRequired,
-  showEditFrame: PropTypes.bool.isRequired,
-  showEditPalette: PropTypes.bool.isRequired,
-  showVideoForm: PropTypes.bool.isRequired,
-  showRGBNImage: PropTypes.bool.isRequired,
-  showLightbox: PropTypes.bool.isRequired,
-  showDragOver: PropTypes.bool.isRequired,
-  showFilters: PropTypes.bool.isRequired,
-  showSortForm: PropTypes.bool.isRequired,
-  syncSelect: PropTypes.bool.isRequired,
-};
-
-Overlays.defaultProps = {};
 
 export default Overlays;
