@@ -1,15 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import PaginationButton from '../PaginationButton';
 import SVG from '../SVG';
+import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
+import './index.scss';
 
 const Pagination = (props) => {
+  const totalPages = useSelector((state) => (
+    state.pageSize ? Math.ceil(getFilteredImagesCount(state) / state.pageSize) : 0
+  ));
 
-  if (props.totalPages < 2) {
+  if (totalPages < 2) {
     return null;
   }
 
-  const pages = [...new Array(props.totalPages)].map((undef, index) => index);
+  const pages = [...new Array(totalPages)].map((undef, index) => index);
   const { page } = props;
 
   const displayedPages = pages.map((pageIndex) => {
@@ -75,7 +81,6 @@ const Pagination = (props) => {
 
 
 Pagination.propTypes = {
-  totalPages: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
 };
 
