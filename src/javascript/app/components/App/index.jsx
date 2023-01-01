@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Home from '../Home';
@@ -10,12 +10,26 @@ import Frames from '../Frames';
 import Settings from '../Settings';
 import Overlays from '../Overlays';
 import WebUSBGreeting from '../WebUSBGreeting';
-import GalleryIntroText from './galleryInroText';
+import GalleryIntroText from './galleryIntroText';
 import getValidPageIndex from '../../../tools/getValidPageIndex';
 import { getEnv } from '../../../tools/getEnv';
+import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
+import './index.scss';
 
-const App = (props) => {
+const App = () => {
   const env = getEnv();
+
+  const {
+    imageCount,
+    selectedCount,
+    filteredCount,
+    pageSize,
+  } = useSelector((state) => ({
+    imageCount: state.images.length,
+    pageSize: state.pageSize,
+    selectedCount: state.imageSelection.length,
+    filteredCount: getFilteredImagesCount(state),
+  }));
 
   return (
     <Router>
@@ -31,16 +45,16 @@ const App = (props) => {
 
               const { valid, page } = getValidPageIndex({
                 urlParam: match.params.page,
-                pageSize: props.pageSize,
-                imageCount: props.filteredCount,
+                pageSize,
+                imageCount: filteredCount,
               });
 
               return valid ? (
                 <>
                   <GalleryIntroText
-                    imageCount={props.imageCount}
-                    selectedCount={props.selectedCount}
-                    filteredCount={props.filteredCount}
+                    imageCount={imageCount}
+                    selectedCount={selectedCount}
+                    filteredCount={filteredCount}
                   />
                   <Gallery page={page} />
                 </>
@@ -96,16 +110,6 @@ const App = (props) => {
       <Overlays />
     </Router>
   );
-};
-
-App.propTypes = {
-  imageCount: PropTypes.number.isRequired,
-  selectedCount: PropTypes.number.isRequired,
-  filteredCount: PropTypes.number.isRequired,
-  pageSize: PropTypes.number.isRequired,
-};
-
-App.defaultProps = {
 };
 
 export default App;
