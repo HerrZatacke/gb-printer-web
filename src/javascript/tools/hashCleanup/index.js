@@ -90,6 +90,7 @@ const useHashCleanup = () => {
       }));
 
       setCleanupBusy(false);
+      // eslint-disable-next-line no-console
       console.info({
         iCounterRGBN,
         iCounterMono,
