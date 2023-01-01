@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
+import './index.scss';
 
 const PaginationButton = (props) => (
   <li

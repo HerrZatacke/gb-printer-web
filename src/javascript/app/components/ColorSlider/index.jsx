@@ -4,6 +4,7 @@ import { Slider, Rail, Handles } from 'react-compound-slider';
 import Handle from './Handle';
 import SliderRail from './Rail';
 import SVG from '../SVG';
+import './index.scss';
 
 const COLOR_RANGE = [0, 255];
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import SVG from '../SVG';
 import useTheme, { themes } from '../../../hooks/useTheme';
+import './index.scss';
 
 const ThemeToggle = ({ closeNavigation }) => {
   const [theme, setTheme] = useState(localStorage.getItem('gbp-web-theme') || themes[0]);

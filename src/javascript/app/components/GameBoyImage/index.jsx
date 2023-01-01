@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Decoder from '../../../tools/Decoder';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
+import './index.scss';
 
 const GameBoyImage = ({
   palette,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDebouncedCallback } from 'use-debounce';
 import { blendModeLabels } from '../../../tools/RGBNDecoder/blendModes';
 import ColorSlider from '../ColorSlider';
+import './index.scss';
 
 const GreySelect = (props) => {
 

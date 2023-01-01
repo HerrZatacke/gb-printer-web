@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import docs from '../../../../../README.md';
+import './index.scss';
 
 const Home = () => {
 

@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import GalleryViewSelect from '../GalleryViewSelect';
 import Pagination from '../Pagination';
 import BatchButtons from '../BatchButtons';
+import './index.scss';
 
 const GalleryHeader = (props) => (
   <div
