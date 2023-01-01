@@ -70,16 +70,18 @@ const getImportSav = ({
     const { dataHash: imageHash } = await compressAndHash(tiles);
     const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
-    dispatch({
-      type: IMPORTQUEUE_ADD,
-      payload: {
-        fileName: `${fileName} ${indexText}`,
-        imageHash,
-        frameHash,
-        tiles,
-        meta,
-        tempId: Math.random().toString(16).split('.').pop(),
-      },
+    window.setImmediate(() => {
+      dispatch({
+        type: IMPORTQUEUE_ADD,
+        payload: {
+          fileName: `${fileName} ${indexText}`,
+          imageHash,
+          frameHash,
+          tiles,
+          meta,
+          tempId: Math.random().toString(16).split('.').pop(),
+        },
+      });
     });
 
     return true;
