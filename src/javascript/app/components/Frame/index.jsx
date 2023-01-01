@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import GameBoyImage from '../GameBoyImage/component';
+import GameBoyImage from '../GameBoyImage';
 import FrameButtons from '../FrameButtons';
 import './index.scss';
 import useFrame from './useFrame';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import GameBoyImage from '../../GameBoyImage/component';
+import GameBoyImage from '../../GameBoyImage';
 import SVG from '../../SVG';
 import { FRAMEQUEUE_ADD, IMPORTQUEUE_CANCEL_ONE } from '../../../store/actions';
 
