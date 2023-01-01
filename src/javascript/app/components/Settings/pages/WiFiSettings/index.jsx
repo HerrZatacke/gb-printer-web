@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import APConfig from './APConfig';
 import SVG from '../../../SVG';
 import Input from '../../../Input';
+import './index.scss';
 
 const getSettings = (setWifiConfig, setStatus) => {
   setStatus('loading');
