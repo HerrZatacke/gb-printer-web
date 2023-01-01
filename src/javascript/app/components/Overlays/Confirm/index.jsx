@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import useQuestions from '../../../../hooks/useQuestions';
@@ -7,14 +7,29 @@ import Select from './types/Select';
 import Input from '../../Input';
 import InfoText from '../../InfoText';
 import SVG from '../../SVG';
+import './index.scss';
 
-const Confirm = ({
-  message,
-  questions: questionsProp,
-  confirm,
-  deny,
-}) => {
-  const [questions, values, setSelected] = useQuestions(questionsProp);
+const Confirm = () => {
+  const {
+    message,
+    questionsState,
+    confirm,
+    deny,
+  } = useSelector((state) => {
+    const toConfirm = state.confirm[0];
+    if (!toConfirm) {
+      return {};
+    }
+
+    return ({
+      message: toConfirm.message,
+      questionsState: toConfirm.questions || (() => ([])),
+      confirm: toConfirm.confirm,
+      deny: toConfirm?.deny,
+    });
+  });
+
+  const [questions, values, setSelected] = useQuestions(questionsState);
 
   const notComplete = questions.find(({ type }) => type === 'confirmForm')?.notComplete;
 
@@ -100,18 +115,6 @@ const Confirm = ({
       }
     </Lightbox>
   );
-};
-
-Confirm.propTypes = {
-  message: PropTypes.string.isRequired,
-  questions: PropTypes.func,
-  confirm: PropTypes.func.isRequired,
-  deny: PropTypes.func,
-};
-
-Confirm.defaultProps = {
-  questions: () => [],
-  deny: null,
 };
 
 export default Confirm;
