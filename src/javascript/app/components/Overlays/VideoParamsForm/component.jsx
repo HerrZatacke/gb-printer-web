@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Lightbox from '../../Lightbox/component';
+import Lightbox from '../../Lightbox';
 import SVG from '../../SVG';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';

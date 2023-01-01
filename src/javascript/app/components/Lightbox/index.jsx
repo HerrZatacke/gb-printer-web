@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Buttons from '../Buttons';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
 import useAutoFocus from '../../../hooks/useAutoFocus';
+import './index.scss';
 
 const Lightbox = (props) => {
+  const isFullscreen = useSelector((state) => (state.isFullscreen));
 
   useOverlayGlobalKeys({
     confirm: props.confirm,
@@ -19,7 +22,7 @@ const Lightbox = (props) => {
     <div
       className={
         classNames(`lightbox ${props.className}`, {
-          'lightbox--fullscreen': props.isFullscreen,
+          'lightbox--fullscreen': isFullscreen,
         })
       }
     >
@@ -66,7 +69,6 @@ Lightbox.propTypes = {
   height: PropTypes.number,
   className: PropTypes.string,
   header: PropTypes.string,
-  isFullscreen: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -80,7 +82,6 @@ Lightbox.propTypes = {
 Lightbox.defaultProps = {
   height: null,
   header: null,
-  isFullscreen: false,
   className: '',
   confirm: null,
   children: null,
