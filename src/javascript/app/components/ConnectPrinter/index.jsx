@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import PrinterReport from '../PrinterReport';
 import useIframeLoaded from '../../../hooks/useIframeLoaded';
+import './index.scss';
 
 const iframeSupported = (printerUrl) => {
   if (printerUrl.startsWith('/')) {
@@ -16,9 +16,8 @@ const iframeSupported = (printerUrl) => {
 
 // const iframeSupported = () => false;
 
-const ConnectPrinter = ({ printerUrl, printerConnected }) => {
-
-  const [failed, loaded] = useIframeLoaded(5000, printerConnected);
+const ConnectPrinter = () => {
+  const { printerUrl, failed, loaded, printerConnected } = useIframeLoaded(5000);
 
   return (
     <div className="connect-printer">
@@ -53,11 +52,6 @@ const ConnectPrinter = ({ printerUrl, printerConnected }) => {
       }
     </div>
   );
-};
-
-ConnectPrinter.propTypes = {
-  printerUrl: PropTypes.string.isRequired,
-  printerConnected: PropTypes.bool.isRequired,
 };
 
 export default ConnectPrinter;
