@@ -1,6 +1,6 @@
 import {
   ADD_IMAGES,
-  HEARTBEAT_TIMED_OUT,
+  HEARTBEAT_TIMED_OUT, IMPORTQUEUE_CANCEL,
   PRINTER_DATA_RECEIVED,
   PRINTER_FUNCTIONS_RECEIVED, PRINTER_RESET,
   REMOTE_CALL_FUNCTION,
@@ -15,6 +15,7 @@ const printerBusyReducer = (value = false, action) => {
     case PRINTER_FUNCTIONS_RECEIVED:
     case PRINTER_DATA_RECEIVED:
     case PRINTER_RESET:
+    case IMPORTQUEUE_CANCEL:
       return false;
     default:
       return value;

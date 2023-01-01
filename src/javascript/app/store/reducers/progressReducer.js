@@ -3,6 +3,7 @@ import {
   CONFIRM_ANSWERED,
   CREATE_GIF_PROGRESS,
   EXECUTE_PLUGIN_PROGRESS,
+  IMPORTQUEUE_CANCEL,
   PRINTER_PROGRESS,
 } from '../actions';
 
@@ -29,6 +30,7 @@ const progressReducer = (progress = { gif: 0, printer: 0 }, action) => {
         printer: action.payload,
       };
     case ADD_IMAGES:
+    case IMPORTQUEUE_CANCEL:
     case CONFIRM_ANSWERED:
       return {
         ...progress,

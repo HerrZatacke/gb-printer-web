@@ -93,11 +93,20 @@ const importMessage = (store) => {
 
       const files = blobsdone.filter((response) => (response.blob && response.ok));
 
+      const namedFiles = files.map((file, index) => {
+        const indexText = files.length > 1 ? (index + 1).toString(10).padStart(2, '0') : '';
+        return ({
+          ...file,
+          blobName: `Printer ${indexText}`.trim(),
+        });
+      });
+
+
       if (files.length) {
         store.dispatch({
           type: IMPORT_FILES,
           payload: {
-            files,
+            files: namedFiles,
             fromPrinter: true,
           },
         });

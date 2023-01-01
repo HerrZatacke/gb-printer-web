@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { save } from '../storage';
 import { dateFormat } from '../../app/defaults';
 
-const saveNewImage = ({ lines, filename, palette, frame = null, tags = [], meta = {} }) => (
+const saveNewImage = ({ lines, filename, palette, frame = null, tags = [], meta }) => (
   save(lines)
     .then((dataHash) => ({
       hash: dataHash,
