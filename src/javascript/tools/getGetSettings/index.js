@@ -39,6 +39,10 @@ const getGetSettings = (store) => (what, { lastUpdateUTC, selectedFrameGroup } =
         ));
       }
 
+      if (key === 'frameGroupNames' && what === 'framegroup') {
+        exportableState[key] = exportableState[key].filter((group) => group.id === frameSetID);
+      }
+
       if (key === 'palettes') {
         exportableState[key] = localStorageState[key].filter(({ isPredefined }) => !isPredefined);
       }

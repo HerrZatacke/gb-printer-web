@@ -6,7 +6,8 @@ import getFrameGroups from '../../../../tools/getFrameGroups';
 const useEditFrame = (frame) => {
   const updateId = frame.id;
   const frames = useSelector((state) => state.frames);
-  const groups = getFrameGroups(frames);
+  const frameGroupNames = useSelector((state) => state.frameGroupNames);
+  const groups = getFrameGroups(frames, frameGroupNames);
   const frameGroupIdRegex = /^(?<groupName>[a-z]+)(?<id>[0-9]+)/g;
   const dispatch = useDispatch();
 

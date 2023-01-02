@@ -31,7 +31,7 @@ const settings = (store) => {
   const downloadSettings = (what, selectedFrameGroup = '') => {
     getSettings(what, { selectedFrameGroup })
       .then((currentSettings) => {
-        const filename = [what, selectedFrameGroup].filter(Boolean).join('_');
+        const filename = what === 'frames' ? 'frames' : [what, selectedFrameGroup].filter(Boolean).join('_');
 
         download(null)([{
           blob: new Blob(new Array(currentSettings)),

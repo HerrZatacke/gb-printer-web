@@ -6,9 +6,9 @@ import getImportSav from './importSav';
 const getTransformSav = ({ getState, dispatch }) => async (file) => {
   const data = await readFileAs(file, 'arrayBuffer');
 
-  const { savFrameTypes: selectedFrameset, frames, importLastSeen, importDeleted } = getState();
+  const { savFrameTypes: selectedFrameset, frames, frameGroupNames, importLastSeen, importDeleted } = getState();
 
-  const frameGroups = getFrameGroups(frames)
+  const frameGroups = getFrameGroups(frames, frameGroupNames)
     .map(({ id: value, name }) => ({
       value,
       name,

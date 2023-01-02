@@ -3,6 +3,7 @@ import useFrames from './useFrames';
 import Frame from '../Frame';
 
 import './index.scss';
+import Input from '../Input';
 
 const Frames = () => {
 
@@ -13,6 +14,8 @@ const Frames = () => {
     palette,
     groupFrames,
     exportJson,
+    setActiveFrameGroupName,
+    activeFrameGroup,
   } = useFrames();
 
   return (
@@ -37,7 +40,18 @@ const Frames = () => {
           }
         </select>
       </div>
-
+      {
+        activeFrameGroup?.name ? (
+          <Input
+            id="frames-edit-group-name"
+            onChange={(x) => {
+              setActiveFrameGroupName(x);
+            }}
+            value={activeFrameGroup.name}
+            labelText="Rename Framegroup"
+          />
+        ) : null
+      }
       <ul className="frames__list">
         {(
           groupFrames?.map((frame) => (

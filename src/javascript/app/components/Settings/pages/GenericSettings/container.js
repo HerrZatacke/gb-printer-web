@@ -20,7 +20,7 @@ const mapStateToProps = (state) => ({
   exportFileTypes: state.exportFileTypes,
   pageSize: state.pageSize,
   savFrameTypes: state.savFrameTypes,
-  savFrameGroups: getFrameGroups(state.frames),
+  savFrameGroups: getFrameGroups(state.frames, state.frameGroupNames),
   handleExportFrame: state.handleExportFrame,
   importDeleted: state.importDeleted,
   importLastSeen: state.importLastSeen,

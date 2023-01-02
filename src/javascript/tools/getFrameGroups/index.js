@@ -1,4 +1,9 @@
-const getGroupName = (id, name) => {
+const getGroupName = (id, name, frameGroupNames) => {
+  const namedGroup = frameGroupNames.find((group) => (group.id === id));
+  if (namedGroup) {
+    return namedGroup.name;
+  }
+
   switch (id) {
     case 'hk':
       return 'Hallo Katze!';
@@ -24,7 +29,7 @@ const prioId = (id) => {
   }
 };
 
-const getFrameGroups = (frames) => (
+const getFrameGroups = (frames, frameGroupNames) => (
   frames
     .reduce((result, { id, name }) => {
       let groupId;
@@ -38,7 +43,7 @@ const getFrameGroups = (frames) => (
       if (!result.find((group) => group.id === groupId)) {
         result.push({
           id: groupId,
-          name: getGroupName(groupId, name),
+          name: getGroupName(groupId, name, frameGroupNames),
         });
       }
 

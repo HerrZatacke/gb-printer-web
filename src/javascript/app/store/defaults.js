@@ -173,6 +173,13 @@ const definitions = [
     value: [],
   },
   {
+    // set of usable frames
+    key: 'frameGroupNames',
+    saveLocally: true,
+    saveExport: ['frames', 'remote', 'framegroup'],
+    value: [],
+  },
+  {
     key: 'recentImports',
     saveLocally: true,
     saveExport: [],

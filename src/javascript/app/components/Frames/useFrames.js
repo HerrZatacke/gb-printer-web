@@ -1,19 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import getFrameGroups from '../../../tools/getFrameGroups';
-import { JSON_EXPORT } from '../../store/actions';
+import { JSON_EXPORT, NAME_FRAMEGROUP } from '../../store/actions';
 
 const useFrames = () => {
   const dispatch = useDispatch();
   const savFrameTypes = useSelector((state) => state.savFrameTypes);
   const frames = useSelector((state) => state.frames);
+  const frameGroupNames = useSelector((state) => state.frameGroupNames);
   const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === state.activePalette));
   const [frameGroups, setFrameGroups] = useState([]);
   const [groupFrames, setGroupFrames] = useState([]);
   const [selectedFrameGroup, setSelectedFrameGroup] = useState(savFrameTypes);
 
   useEffect(() => {
-    const groups = getFrameGroups(frames);
+    const groups = getFrameGroups(frames, frameGroupNames);
 
     // if globally selected group does not exist, switch to the first existing
     if (!groups.find(({ id }) => id === savFrameTypes)) {
@@ -22,7 +23,7 @@ const useFrames = () => {
 
     setFrameGroups(groups);
 
-  }, [frames, savFrameTypes]);
+  }, [frameGroupNames, frames, savFrameTypes]);
 
   useEffect(() => {
     if (selectedFrameGroup) {
@@ -40,6 +41,18 @@ const useFrames = () => {
     }
   }, [frames, selectedFrameGroup]);
 
+  const activeFrameGroup = frameGroups.find(({ id }) => (id === selectedFrameGroup));
+
+  const setActiveFrameGroupName = (name) => {
+    dispatch({
+      type: NAME_FRAMEGROUP,
+      payload: {
+        ...activeFrameGroup,
+        name,
+      },
+    });
+  };
+
   const exportJson = (what) => {
     dispatch({
       type: JSON_EXPORT,
@@ -55,6 +68,8 @@ const useFrames = () => {
     frameGroups,
     exportJson,
     palette: palette.palette,
+    setActiveFrameGroupName,
+    activeFrameGroup,
   };
 };
 
