@@ -41,4 +41,9 @@
     flex-basis: 120px;
     flex-grow: 0;
   }
+
+  &--active {
+    @include theme-color($color-text-bright, $color-text);
+    @include theme-background-color($color-icon-tertiary-dark, $color-icon-tertiary);
+  }
 }
