@@ -4,8 +4,6 @@ const prepareFile = (fileData) => {
   let meta = null;
   let ok = true;
 
-  console.log(file);
-
   // As of version 1.16.4 the filedata is an object like { blob, contentType }
   // earlier versions directly provide a blob
   if (fileData.blob) {

@@ -50,8 +50,6 @@ const getTransformBin = ({ dispatch }) => async (file) => {
   const { dataHash: imageHash } = await compressAndHash(tiles);
   const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
-  console.log(file);
-
   dispatch({
     type: IMPORTQUEUE_ADD,
     payload: {
