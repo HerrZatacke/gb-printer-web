@@ -68,6 +68,7 @@ const FrameQueue = () => {
           frameIndexValid={frameIndexValid}
           setFrameIndex={setFrameIndex}
           groups={groups}
+          fullId={fullId}
         />
       </div>
     </Lightbox>

@@ -13,6 +13,7 @@ function EditFrameForm({
   frameIndexValid,
   frameGroup,
   groups,
+  fullId,
 }) {
   const groupExists = Boolean(groups.find(({ id }) => (frameGroup === id)));
 
@@ -76,7 +77,7 @@ function EditFrameForm({
         onChange={setFrameName}
       />
       <p className="edit-frame__warning">
-        { idValid ? '\u00A0' : 'This frame id already exists!' }
+        { idValid ? '\u00A0' : `Specified frame index/identifier "${fullId}" is already in use, please try another one.` }
       </p>
     </>
   );
@@ -93,6 +94,7 @@ EditFrameForm.propTypes = {
   frameIndexValid: PropTypes.bool.isRequired,
   frameGroup: PropTypes.string.isRequired,
   groups: PropTypes.array.isRequired,
+  fullId: PropTypes.string.isRequired,
 };
 
 export default EditFrameForm;

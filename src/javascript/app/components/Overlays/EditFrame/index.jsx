@@ -52,6 +52,7 @@ const EditFrame = () => {
           frameIndexValid={frameIndexValid}
           frameGroup={frameGroup}
           groups={groups}
+          fullId={fullId}
         />
       </div>
     </Lightbox>
