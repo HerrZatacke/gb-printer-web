@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from '../../Lightbox';
-import { ADD_FRAME, FRAMEQUEUE_CANCEL_ONE } from '../../../store/actions';
+import { ADD_FRAME, FRAMEQUEUE_CANCEL_ONE, NAME_FRAMEGROUP } from '../../../store/actions';
 import './index.scss';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
@@ -9,6 +9,7 @@ import { saveFrameData } from '../../../../tools/applyFrame/frameData';
 
 const FrameQueue = () => {
   const frame = useSelector((store) => store.frameQueue[0]);
+  const [newGroupName, setNewGroupName] = useState('');
   const dispatch = useDispatch();
 
   const {
@@ -46,6 +47,14 @@ const FrameQueue = () => {
             tempId: frame.tempId,
           },
         });
+
+        dispatch({
+          type: NAME_FRAMEGROUP,
+          payload: {
+            id: frameGroup,
+            name: newGroupName,
+          },
+        });
       }}
       deny={() => {
         dispatch({
@@ -69,6 +78,8 @@ const FrameQueue = () => {
           setFrameIndex={setFrameIndex}
           groups={groups}
           fullId={fullId}
+          frameGroupName={newGroupName}
+          setFrameGroupName={setNewGroupName}
         />
       </div>
     </Lightbox>

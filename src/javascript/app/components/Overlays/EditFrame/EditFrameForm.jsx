@@ -14,6 +14,8 @@ function EditFrameForm({
   frameGroup,
   groups,
   fullId,
+  frameGroupName,
+  setFrameGroupName,
 }) {
   const groupExists = Boolean(groups.find(({ id }) => (frameGroup === id)));
 
@@ -54,6 +56,16 @@ function EditFrameForm({
           </span>
         )}
       </Input>
+      { setFrameGroupName ? (
+        <Input
+          id="frame-edit-new-group-name"
+          labelText="New frame group name"
+          disabled={groupExists}
+          type="text"
+          value={groupExists ? '' : frameGroupName}
+          onChange={setFrameGroupName}
+        />
+      ) : null }
       <Input
         id="frame-edit-index"
         labelText="Frame Index"
@@ -95,6 +107,13 @@ EditFrameForm.propTypes = {
   frameGroup: PropTypes.string.isRequired,
   groups: PropTypes.array.isRequired,
   fullId: PropTypes.string.isRequired,
+  frameGroupName: PropTypes.string,
+  setFrameGroupName: PropTypes.func,
+};
+
+EditFrameForm.defaultProps = {
+  frameGroupName: '',
+  setFrameGroupName: null,
 };
 
 export default EditFrameForm;
