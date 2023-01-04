@@ -17,7 +17,7 @@ const useFrames = () => {
     const groups = getFrameGroups(frames, frameGroupNames);
 
     // if globally selected group does not exist, switch to the first existing
-    if (!groups.find(({ id }) => id === savFrameTypes)) {
+    if (!groups.find(({ id }) => id === selectedFrameGroup)) {
       setSelectedFrameGroup(groups[0]?.id || '');
     }
 
