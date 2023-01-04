@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import Decoder from '../../../tools/Decoder';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import './index.scss';
+import applyRotation from '../../../tools/applyRotation';
 
 const GameBoyImage = ({
   palette,
@@ -21,11 +22,16 @@ const GameBoyImage = ({
       return;
     }
 
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = 160;
+    tempCanvas.height = 144;
+
     try {
+
       if (palette.length) {
         const decoder = new Decoder();
         decoder.update({
-          canvas: canvas.current,
+          canvas: tempCanvas,
           tiles,
           palette,
           lockFrame,
@@ -34,7 +40,7 @@ const GameBoyImage = ({
       } else {
         const decoder = new RGBNDecoder();
         decoder.update({
-          canvas: canvas.current,
+          canvas: tempCanvas,
           tiles,
           palette,
           lockFrame,
@@ -44,7 +50,10 @@ const GameBoyImage = ({
       // eslint-disable-next-line no-console
       console.log(`error in GameBoyImage: ${error.message}`);
     }
-  }, [tiles, palette, lockFrame, invertPalette]);
+
+    applyRotation(tempCanvas, canvas.current, rotation);
+
+  }, [tiles, palette, lockFrame, invertPalette, rotation]);
 
   return (
     <div
@@ -57,7 +66,10 @@ const GameBoyImage = ({
       }
     >
       <canvas
-        className={`gameboy-image__image ${asThumb ? 'gameboy-image__image--as-thumb' : ''}`}
+        className={classnames('gameboy-image__image', {
+          'gameboy-image__image--as-thumb': asThumb,
+          'gameboy-image__image--min-size': tiles.length <= 360,
+        })}
         width={160}
         ref={canvas}
       />

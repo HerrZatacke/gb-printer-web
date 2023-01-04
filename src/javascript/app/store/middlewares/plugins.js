@@ -13,6 +13,7 @@ import {
   PLUGIN_UPDATE_CONFIG,
   PLUGIN_UPDATE_PROPERTIES,
 } from '../actions';
+import applyRotation from '../../../tools/applyRotation';
 
 const pluginsMiddleware = (store) => {
   const registeredPlugins = {};
@@ -60,7 +61,11 @@ const pluginsMiddleware = (store) => {
             });
           }
 
-          return decoder.getScaledCanvas(scaleFactor, handleExportFrame);
+          const tempCanvas = decoder.getScaledCanvas(scaleFactor, handleExportFrame);
+          const canvas = document.createElement('canvas');
+          applyRotation(tempCanvas, canvas, meta.rotation);
+
+          return canvas;
         })
     );
 

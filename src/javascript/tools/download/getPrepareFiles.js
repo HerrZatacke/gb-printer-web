@@ -3,6 +3,7 @@ import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
 import { load } from '../storage';
 import { finalLine, initLine, moreLine, terminatorLine } from '../../app/defaults';
+import applyRotation from '../applyRotation';
 
 const getPrepareFiles = (state) => (palette, image) => (tiles) => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame } = state;
@@ -11,6 +12,7 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
   const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
   const lockFrame = image.lockFrame || false;
   const invertPalette = image.invertPalette || false;
+  const rotation = image.rotation || 0;
 
   if (isRGBN) {
     decoder.update({
@@ -103,7 +105,9 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
               return;
             }
 
-            const canvas = decoder.getScaledCanvas(1, handleExportFrame);
+            const tempCanvas = decoder.getScaledCanvas(1, handleExportFrame);
+            const canvas = document.createElement('canvas');
+            applyRotation(tempCanvas, canvas, rotation);
 
             const pgm = [
               'P2',
@@ -161,6 +165,8 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
 
           default: {
             const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, handleExportFrame);
+            const canvas = document.createElement('canvas');
+            applyRotation(scaledCanvas, canvas, rotation);
 
             const onBlobComplete = (blob) => {
               resolve({
@@ -170,7 +176,7 @@ const getPrepareFiles = (state) => (palette, image) => (tiles) => {
               });
             };
 
-            scaledCanvas.toBlob(onBlobComplete, `image/${fileType}`, 1);
+            canvas.toBlob(onBlobComplete, `image/${fileType}`, 1);
             break;
           }
         }

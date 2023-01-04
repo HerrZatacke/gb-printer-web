@@ -9,4 +9,10 @@
       image-rendering: auto;
     }
   }
+
+  &--rot-90 &__image--min-size,
+  &--rot-270 &__image--min-size {
+    margin: 0 5%;
+    width: 90%;
+  }
 }

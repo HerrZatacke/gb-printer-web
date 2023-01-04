@@ -8,6 +8,7 @@ import RGBNDecoder from '../../../tools/RGBNDecoder';
 import Decoder from '../../../tools/Decoder';
 import generateFileName from '../../../tools/generateFileName';
 import { ANIMATE_IMAGES, CREATE_GIF_PROGRESS, ERROR } from '../actions';
+import applyRotation from '../../../tools/applyRotation';
 
 const getAddImages = (dispatch, gifWriter, queue, frameRate, total) => (canvas, index) => (
   queue.add(() => (
@@ -91,6 +92,7 @@ const animate = (store) => (next) => (action) => {
             const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
             const lockFrame = videoLockFrame || image.lockFrame || false;
             const invertPalette = videoInvertPalette || image.invertPalette || false;
+            const rotation = image.rotation || 0;
 
             if (isRGBN) {
               decoder.update({
@@ -107,7 +109,12 @@ const animate = (store) => (next) => (action) => {
               });
             }
 
-            return decoder.getScaledCanvas(scaleFactor, exportFrameMode);
+            const tempCanvas = decoder.getScaledCanvas(scaleFactor, exportFrameMode);
+            const canvas = document.createElement('canvas');
+            // Rotating is not consistent if different aspect ratio images are used.
+            applyRotation(tempCanvas, canvas, rotation);
+
+            return canvas;
           })
       )))
       .then((images) => {
