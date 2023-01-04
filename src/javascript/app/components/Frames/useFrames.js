@@ -23,7 +23,7 @@ const useFrames = () => {
 
     setFrameGroups(groups);
 
-  }, [frameGroupNames, frames, savFrameTypes]);
+  }, [frameGroupNames, frames, selectedFrameGroup]);
 
   useEffect(() => {
     if (selectedFrameGroup) {
