@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useDateTime from '../../../hooks/useDateTime';
 import './index.scss';
+import Input from '../Input';
 
 const ImageMeta = ({
   created,
   updatecreated,
   meta,
+  rotation,
+  updateRotation,
 }) => {
   const [date, time, setDate, setTime, updateDate, updateTime] = useDateTime(created, updatecreated);
 
@@ -48,6 +51,15 @@ const ImageMeta = ({
           }}
         />
       </label>
+      <Input
+        type="number"
+        min={0}
+        max={3}
+        value={rotation || 0}
+        onChange={(value) => updateRotation(parseInt(value, 10))}
+        labelText="Rotation"
+        id="rotation"
+      />
       {
         (meta ? (
           <pre className="image-meta-form__pre">
@@ -63,11 +75,14 @@ ImageMeta.propTypes = {
   created: PropTypes.string,
   updatecreated: PropTypes.func.isRequired,
   meta: PropTypes.object,
+  rotation: PropTypes.number,
+  updateRotation: PropTypes.func.isRequired,
 };
 
 ImageMeta.defaultProps = {
   created: null,
   meta: {},
+  rotation: null,
 };
 
 export default ImageMeta;

@@ -12,6 +12,7 @@ const ImageRender = ({
   loadImageTiles,
   reportTileCount,
   recover,
+  rotation,
 }) => {
   const [tiles, setTiles] = useState(null);
 
@@ -40,6 +41,7 @@ const ImageRender = ({
       invertPalette={invertPalette}
       tiles={tiles}
       palette={palette}
+      rotation={rotation}
     />
   ) : (
     <div className="image-render--loading" />
@@ -59,12 +61,14 @@ ImageRender.propTypes = {
   frameId: PropTypes.string,
   lockFrame: PropTypes.bool.isRequired,
   recover: PropTypes.func.isRequired,
+  rotation: PropTypes.number,
 };
 
 ImageRender.defaultProps = {
   hashes: null,
   frameId: null,
   reportTileCount: () => {},
+  rotation: null,
 };
 
 export default ImageRender;

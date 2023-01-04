@@ -32,6 +32,7 @@ const GalleryImage = ({
   type,
   preferredLocale,
   meta,
+  rotation,
 }) => {
 
   const getDateSpan = (className) => {
@@ -73,6 +74,7 @@ const GalleryImage = ({
           frameId={frame}
           hash={hash}
           hashes={hashes}
+          rotation={rotation}
         />
       </div>
       {title ? (
@@ -134,6 +136,7 @@ const GalleryImage = ({
               frameId={frame}
               hash={hash}
               hashes={hashes}
+              rotation={rotation}
             />
           </div>
         </div>
@@ -184,6 +187,7 @@ GalleryImage.propTypes = {
   hideDate: PropTypes.bool.isRequired,
   preferredLocale: PropTypes.string,
   meta: PropTypes.object,
+  rotation: PropTypes.number,
 };
 
 GalleryImage.defaultProps = {
@@ -192,6 +196,7 @@ GalleryImage.defaultProps = {
   frame: null,
   preferredLocale: null,
   meta: null,
+  rotation: 0,
 };
 
 export default GalleryImage;

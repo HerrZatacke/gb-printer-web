@@ -40,6 +40,7 @@ const mapStateToProps = (state) => {
     palette: image.palette,
     invertPalette: image.invertPalette || false,
     batch: batch ? batch.length : 0,
+    rotation: image.rotation || null,
     // frames,
 
     paletteShort: typeof image.palette === 'string' ? image.palette : null,

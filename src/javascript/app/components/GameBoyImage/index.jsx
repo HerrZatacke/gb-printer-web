@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Decoder from '../../../tools/Decoder';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import './index.scss';
@@ -10,6 +11,7 @@ const GameBoyImage = ({
   lockFrame,
   invertPalette,
   asThumb,
+  rotation,
 }) => {
 
   const canvas = useRef(null);
@@ -45,11 +47,21 @@ const GameBoyImage = ({
   }, [tiles, palette, lockFrame, invertPalette]);
 
   return (
-    <canvas
-      className={`gameboy-image ${asThumb ? 'gameboy-image--as-thumb' : ''}`}
-      width={160}
-      ref={canvas}
-    />
+    <div
+      className={
+        classnames('gameboy-image', {
+          'gameboy-image--rot-90': rotation === 1,
+          'gameboy-image--rot-180': rotation === 2,
+          'gameboy-image--rot-270': rotation === 3,
+        })
+      }
+    >
+      <canvas
+        className={`gameboy-image__image ${asThumb ? 'gameboy-image__image--as-thumb' : ''}`}
+        width={160}
+        ref={canvas}
+      />
+    </div>
   );
 };
 
@@ -65,11 +77,13 @@ GameBoyImage.propTypes = {
   lockFrame: PropTypes.bool.isRequired,
   invertPalette: PropTypes.bool.isRequired,
   asThumb: PropTypes.bool,
+  rotation: PropTypes.number,
 };
 
 GameBoyImage.defaultProps = {
   palette: null,
   asThumb: false,
+  rotation: null,
 };
 
 export default GameBoyImage;

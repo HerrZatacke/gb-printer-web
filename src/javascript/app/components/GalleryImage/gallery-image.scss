@@ -30,7 +30,6 @@
   }
 
   &__image {
-    display: block;
     min-height: 144px;
     @include theme-background-color(rgba($color-grey-40, 0.5), rgba($color-grey-30, 0.5));
     width: 100%;

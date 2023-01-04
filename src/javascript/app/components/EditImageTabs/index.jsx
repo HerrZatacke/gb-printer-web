@@ -119,6 +119,8 @@ const EditImageTabs = (props) => {
             created={props.created}
             updatecreated={props.updateCreated}
             meta={props.meta}
+            rotation={props.rotation}
+            updateRotation={props.updateRotation}
           />
         </li>
       </ul>
@@ -151,7 +153,9 @@ EditImageTabs.propTypes = {
   updateTags: PropTypes.func.isRequired,
   updateFrame: PropTypes.func.isRequired,
   updateFrameLock: PropTypes.func.isRequired,
+  updateRotation: PropTypes.func.isRequired,
   meta: PropTypes.object,
+  rotation: PropTypes.number,
 };
 
 EditImageTabs.defaultProps = {
@@ -164,6 +168,7 @@ EditImageTabs.defaultProps = {
   created: null,
   // frames: null,
   meta: null,
+  rotation: null,
 };
 
 export default EditImageTabs;

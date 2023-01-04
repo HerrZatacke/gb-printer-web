@@ -15,6 +15,7 @@ const willUpdate = (batch) => (
       batch.frame ? 'frame' : null,
       batch.lockFrame ? 'framePalette' : null,
       batch.tags ? 'tags' : null,
+      batch.rotation ? 'rotation' : null,
     ]
       .filter(Boolean)
       .join(', ')
@@ -26,6 +27,7 @@ const EditForm = (props) => {
   const [created, updateCreated] = useState(props.created);
   const [frame, updateFrame] = useState(props.frame);
   const [lockFrame, updateFrameLock] = useState(props.lockFrame);
+  const [rotation, updateRotation] = useState(props.rotation);
   const [invertPalette, updateInvertPalette] = useState(props.invertPalette);
   const [paletteShort, updatePaletteShort] = useState(props.paletteShort);
   const [paletteRGBN, updatePaletteRGBN] = useState(props.paletteRGBN);
@@ -43,6 +45,7 @@ const EditForm = (props) => {
     frame: false,
     lockFrame: false,
     tags: false,
+    rotation: false,
   } : false);
 
   if (!props.hash) {
@@ -73,6 +76,7 @@ const EditForm = (props) => {
         invertPalette,
         lockFrame,
         palette: paletteShort || paletteRGBN,
+        rotation,
       })}
       deny={props.cancel}
     >
@@ -98,6 +102,7 @@ const EditForm = (props) => {
         frameId={frame}
         hash={props.hash}
         hashes={props.hashes}
+        rotation={rotation}
         reportTileCount={(tileCount) => {
           setIsRegularImage(tileCount === 360);
         }}
@@ -134,6 +139,7 @@ const EditForm = (props) => {
         frame={frame}
         tags={tagChanges}
         meta={props.meta}
+        rotation={rotation}
         updatePalette={(paletteUpdate, confirm) => {
           if (confirm) {
             updateBatch({ ...batch, palette: true });
@@ -148,6 +154,7 @@ const EditForm = (props) => {
         updateInvertPalette={onUpdate('invertPalette', updateInvertPalette)}
         updateFrame={onUpdate('frame', updateFrame)}
         updateFrameLock={onUpdate('lockFrame', updateFrameLock)}
+        updateRotation={onUpdate('rotation', updateRotation)}
         updateTags={(mode, tag) => {
           updateBatch({ ...batch, tags: true });
           updateTagChanges({
@@ -177,6 +184,7 @@ EditForm.propTypes = {
   height: PropTypes.number.isRequired,
   findPalette: PropTypes.func.isRequired,
   meta: PropTypes.object,
+  rotation: PropTypes.number,
 };
 
 EditForm.defaultProps = {
@@ -188,6 +196,7 @@ EditForm.defaultProps = {
   paletteRGBN: null,
   frame: null,
   meta: null,
+  rotation: null,
 };
 
 export default EditForm;

@@ -25,6 +25,7 @@ const LightboxImage = ({
   next,
   created,
   preferredLocale,
+  rotation,
 }) => (
   <Lightbox
     className="lightbox-image"
@@ -57,6 +58,7 @@ const LightboxImage = ({
       frames={frames}
       hash={hash}
       hashes={hashes}
+      rotation={rotation}
     />
     <div className="lightbox-image__navigation">
       { lightboxIndex > 0 ? (
@@ -102,6 +104,7 @@ LightboxImage.propTypes = {
   lightboxIndex: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
   preferredLocale: PropTypes.string,
+  rotation: PropTypes.number,
 };
 
 LightboxImage.defaultProps = {
@@ -113,6 +116,7 @@ LightboxImage.defaultProps = {
   frame: null,
   frames: null,
   preferredLocale: null,
+  rotation: null,
 };
 
 export default LightboxImage;

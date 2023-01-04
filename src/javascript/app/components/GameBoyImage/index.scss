@@ -1,13 +1,12 @@
 .gameboy-image {
-  width: 100%;
-  display: block;
-  image-rendering: pixelated;
+  &__image {
+    width: 100%;
+    display: block;
+    image-rendering: pixelated;
 
-  &--as-thumb {
-    image-rendering: auto;
-  }
-
-  .gallery--list & {
-    image-rendering: auto;
+    &--as-thumb,
+    .gallery--list & {
+      image-rendering: auto;
+    }
   }
 }
