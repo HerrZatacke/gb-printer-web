@@ -92,14 +92,14 @@ const getFileMeta = (data, baseAddress, cartIsJP) => {
     cartIndex,
     albumIndex,
     baseAddress,
-    meta: {
+    meta: baseAddress ? {
       birthDate: parseBirthDate(birthDate, cartIsJP),
       userName: convertToReadable(userName, cartIsJP),
       gender: parseGender(genderAndBloodType),
       bloodType: parseBloodType(genderAndBloodType),
       comment: convertToReadable(comment, cartIsJP),
       isCopy,
-    },
+    } : null,
     frameNumber,
   };
 };
