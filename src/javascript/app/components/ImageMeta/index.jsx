@@ -80,6 +80,7 @@ const ImageMeta = ({
           {
             rotations.map(({ value, label }) => (
               <button
+                key={label}
                 type="button"
                 className={classnames('button image-meta-form__rotation-button', {
                   'button--active': value === (rotation || 0),
