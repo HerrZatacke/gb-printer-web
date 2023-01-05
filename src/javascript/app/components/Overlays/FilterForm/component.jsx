@@ -11,6 +11,8 @@ import {
   FILTER_RGB,
   FILTER_RECENT,
   FILTER_FAVOURITE,
+  FILTER_COMMENTS,
+  FILTER_USERNAME,
 } from '../../../../consts/specialTags';
 
 const FilterForm = (props) => {
@@ -75,6 +77,16 @@ const FilterForm = (props) => {
           title="Recent Imports"
           tagActive={activeTags.includes(FILTER_RECENT)}
           toggleTag={(active) => updateActiveTags(FILTER_RECENT, active)}
+        />
+        <FilterFormTag
+          title="Image has comments"
+          tagActive={activeTags.includes(FILTER_COMMENTS)}
+          toggleTag={(active) => updateActiveTags(FILTER_COMMENTS, active)}
+        />
+        <FilterFormTag
+          title="Image has username"
+          tagActive={activeTags.includes(FILTER_USERNAME)}
+          toggleTag={(active) => updateActiveTags(FILTER_USERNAME, active)}
         />
       </ul>
       <ul

@@ -6,13 +6,24 @@ import {
   FILTER_UNTAGGED,
   FILTER_RECENT,
   FILTER_FAVOURITE,
+  FILTER_COMMENTS,
+  FILTER_USERNAME,
 } from '../../consts/specialTags';
 import { dateFormat } from '../../app/defaults';
 
 const filterSpecial = (activeTags, recentImports) => (image) => {
 
   const activeSpecialTags = activeTags.filter((tag) => (
-    [FILTER_MONOCHROME, FILTER_NEW, FILTER_RGB, FILTER_UNTAGGED, FILTER_RECENT, FILTER_FAVOURITE]
+    [
+      FILTER_MONOCHROME,
+      FILTER_NEW,
+      FILTER_RGB,
+      FILTER_UNTAGGED,
+      FILTER_RECENT,
+      FILTER_FAVOURITE,
+      FILTER_COMMENTS,
+      FILTER_USERNAME,
+    ]
       .includes(tag)
   ));
 
@@ -53,6 +64,16 @@ const filterSpecial = (activeTags, recentImports) => (image) => {
 
     // 6) Keep favourited images
     if (activeSpecialTags.includes(FILTER_FAVOURITE) && !image.tags.includes(FILTER_FAVOURITE)) {
+      return false;
+    }
+
+    // 7) Keep images with comments
+    if (activeSpecialTags.includes(FILTER_COMMENTS) && !image.meta?.comment) {
+      return false;
+    }
+
+    // 8) Keep images with set username
+    if (activeSpecialTags.includes(FILTER_USERNAME) && !image.meta?.userName) {
       return false;
     }
 
