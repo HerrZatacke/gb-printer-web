@@ -41,13 +41,13 @@ const Frames = () => {
         </select>
       </div>
       {
-        activeFrameGroup?.name ? (
+        activeFrameGroup ? (
           <Input
             id="frames-edit-group-name"
             onChange={(name) => {
               setActiveFrameGroupName(name);
             }}
-            value={activeFrameGroup.name}
+            value={activeFrameGroup.name || ''}
             labelText="Rename Framegroup"
           />
         ) : null
