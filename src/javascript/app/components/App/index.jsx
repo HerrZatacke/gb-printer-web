@@ -101,12 +101,14 @@ const App = () => {
           <Route path="/webusb">
             <WebUSBGreeting />
           </Route>
-          <Route path="/">
+          <Route path="/home">
             <Home />
+          </Route>
+          <Route path="/">
+            <Redirect to="/gallery/page/1" />
           </Route>
         </Switch>
       </div>
-
       <Overlays />
     </Router>
   );

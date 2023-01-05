@@ -29,7 +29,7 @@ const Navigation = (props) => {
       <ul className="navigation__list">
         <li className="navigation__entry">
           <NavLink
-            to="/"
+            to="/home"
             activeClassName="navigation__link--active"
             className="navigation__link"
             exact
