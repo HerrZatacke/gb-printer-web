@@ -1,9 +1,9 @@
 import React from 'react';
 import useFrames from './useFrames';
 import Frame from '../Frame';
+import Input from '../Input';
 
 import './index.scss';
-import Input from '../Input';
 
 const Frames = () => {
 
