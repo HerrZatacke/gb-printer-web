@@ -1,0 +1,13 @@
+.gallery-intro {
+  &__content-hint {
+    font-size: 12px;
+    line-height: 14px;
+    margin-bottom: 20px;
+  }
+
+  &__counter {
+    display: block;
+    margin: -20px 0 20px 0;
+    font-size: 12px;
+  }
+}

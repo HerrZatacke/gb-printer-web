@@ -1,49 +1,51 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
-import GitSettings from './pages/GitSettings';
-import DropboxSettings from './pages/DropboxSettings';
-import GenericSettings from './pages/GenericSettings';
+import { Outlet, NavLink, useMatches, Navigate } from 'react-router-dom';
 import ExportSettings from './pages/ExportSettings';
-import WiFiSettings from './pages/WiFiSettings';
-import PluginSettings from './pages/PluginSettings';
 import { getEnv } from '../../../tools/getEnv';
 
-const tabs = {
-  generic: {
-    Component: GenericSettings,
+const env = getEnv();
+
+const tabs = [
+  {
+    path: '/settings/generic',
     headline: 'Generic Settings',
   },
-  git: {
-    Component: GitSettings,
+  {
+    path: '/settings/git',
     headline: 'Git Settings',
   },
-  plugins: {
-    Component: PluginSettings,
+  {
+    path: '/settings/plugins',
     headline: 'Plugin Settings',
   },
-};
+];
 
 if (DROPBOX_APP_KEY) {
-  tabs.dropbox = {
-    Component: DropboxSettings,
+  tabs.push({
+    path: '/settings/dropbox',
     headline: 'Dropbox Settings',
-  };
+  });
 }
 
 if (
   (getEnv().env === 'esp8266') ||
   (getEnv().env === 'webpack-dev')
 ) {
-  tabs.wifi = {
-    Component: WiFiSettings,
+  tabs.push({
+    path: '/settings/wifi',
     headline: 'WiFi Settings',
-  };
+  });
 }
 
-const Settings = ({ tabName }) => {
-  const tab = tabs[tabName] || tabs.generic;
-  const { Component, headline: currentHeadline } = tab;
+const Settings = () => {
+  const matches = useMatches();
+  const pathname = matches[2]?.pathname;
+
+  const tab = tabs.find(({ path }) => path === pathname);
+
+  if (!tab) {
+    return <Navigate to={tabs[0].path} replace />;
+  }
 
   return (
     <div className="settings">
@@ -51,39 +53,37 @@ const Settings = ({ tabName }) => {
         className="contenttabs__tabs"
       >
         {
-          Object.keys(tabs).map((tabId) => {
-            const { headline } = tabs[tabId];
-            return (
-              <li
-                className="contenttabs__tab"
-                key={tabId}
+          tabs.map(({ headline, path }) => (
+            <li
+              className="contenttabs__tab"
+              key={path}
+            >
+              <NavLink
+                to={path}
+                className={({ isActive }) => (`button contenttabs__tabs-button ${isActive ? 'contenttabs__tabs-button--active' : ''}`)}
               >
-                <NavLink
-                  to={`/settings/${tabId}`}
-                  activeClassName="contenttabs__tabs-button--active"
-                  className="button contenttabs__tabs-button"
-                  exact
-                >
-                  {headline}
-                </NavLink>
-              </li>
-            );
-          })
+                {headline}
+              </NavLink>
+            </li>
+          ))
         }
       </ul>
-      <h2 className="settings__headline">{currentHeadline}</h2>
-      <Component />
+      <h2 className="settings__headline">{tab.headline}</h2>
+      <Outlet />
       <ExportSettings />
+      <ul className="settings__version">
+        <li>{`Web-App version: ${VERSION}`}</li>
+        <li>{`Web-App branch: ${BRANCH}`}</li>
+        <li>{`Printer version: ${env.version}`}</li>
+        <li>{`Max Images: ${env.maximages}`}</li>
+        <li>{`Localforage driver: ${env.localforage}`}</li>
+        <li>{`Environment type: ${env.env}`}</li>
+        <li>{`Compiled Filesystem: ${env.fstype}`}</li>
+        <li>{`Compiled Bootmode: ${env.bootmode}`}</li>
+        <li>{`Compiled for OLED: ${env.oled ? 'yes' : 'no'}`}</li>
+      </ul>
     </div>
   );
-};
-
-Settings.propTypes = {
-  tabName: PropTypes.string,
-};
-
-Settings.defaultProps = {
-  tabName: Object.keys(tabs)[0],
 };
 
 export default Settings;

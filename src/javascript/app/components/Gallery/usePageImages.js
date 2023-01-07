@@ -1,7 +1,8 @@
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
 
-const mapStateToProps = (state, { page }) => {
+const usePageImages = (page) => {
+  const state = useSelector((currentState) => currentState);
   const indexOffset = page * state.pageSize;
   const images = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
 
@@ -11,6 +12,4 @@ const mapStateToProps = (state, { page }) => {
   });
 };
 
-const mapDispatchToProps = () => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps);
+export default usePageImages;

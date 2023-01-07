@@ -9,4 +9,12 @@
   &__export {
     margin-top: 120px;
   }
+
+  &__version {
+    margin-top: 40px;
+    font-size: 12px;
+    text-align: right;
+    @include theme-color($color-grey-60, $color-grey-30);
+    line-height: 14px;
+  }
 }

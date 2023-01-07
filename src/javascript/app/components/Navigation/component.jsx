@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import ThemeToggle from '../ThemeToggle';
-import useScrolling from './useScrolling';
 
 const Navigation = (props) => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-  useScrolling();
+  const className = ({ isActive }) => `navigation__link ${isActive ? 'navigation__link--active' : ''}`;
 
   return (
     <nav
@@ -30,9 +29,7 @@ const Navigation = (props) => {
         <li className="navigation__entry">
           <NavLink
             to="/home"
-            activeClassName="navigation__link--active"
-            className="navigation__link"
-            exact
+            className={className}
             onClick={() => setMobileNavOpen(false)}
           >
             Home
@@ -41,9 +38,7 @@ const Navigation = (props) => {
         <li className="navigation__entry">
           <NavLink
             to="/gallery"
-            activeClassName="navigation__link--active"
-            className="navigation__link"
-            exact
+            className={className}
             onClick={() => setMobileNavOpen(false)}
           >
             Gallery
@@ -52,9 +47,7 @@ const Navigation = (props) => {
         <li className="navigation__entry">
           <NavLink
             to="/import"
-            activeClassName="navigation__link--active"
-            className="navigation__link"
-            exact
+            className={className}
             onClick={() => setMobileNavOpen(false)}
           >
             Import
@@ -63,9 +56,7 @@ const Navigation = (props) => {
         <li className="navigation__entry">
           <NavLink
             to="/palettes"
-            activeClassName="navigation__link--active"
-            className="navigation__link"
-            exact
+            className={className}
             onClick={() => setMobileNavOpen(false)}
           >
             Palettes
@@ -74,9 +65,7 @@ const Navigation = (props) => {
         <li className="navigation__entry">
           <NavLink
             to="/frames"
-            activeClassName="navigation__link--active"
-            className="navigation__link"
-            exact
+            className={className}
             onClick={() => setMobileNavOpen(false)}
           >
             Frames
@@ -85,9 +74,7 @@ const Navigation = (props) => {
         <li className="navigation__entry">
           <NavLink
             to="/settings"
-            activeClassName="navigation__link--active"
-            className="navigation__link"
-            exact
+            className={className}
             onClick={() => setMobileNavOpen(false)}
           >
             Settings
