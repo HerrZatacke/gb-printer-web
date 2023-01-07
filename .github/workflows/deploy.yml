@@ -50,7 +50,7 @@ jobs:
           cd ..
 
       - name: Deploy to GitHub-Pages 🛳
-        uses: JamesIves/github-pages-deploy-action@4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         if: steps.checkTag.outputs.exists == 'false'
         with:
           branch: gh-pages
