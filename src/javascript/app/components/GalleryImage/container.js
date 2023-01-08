@@ -12,6 +12,10 @@ const mapStateToProps = (state, { hash }) => {
   const image = state.images.find((img) => img.hash === hash);
   let palette;
 
+  if (!image) {
+    return {};
+  }
+
   if (image.hashes) {
     palette = image.palette;
   } else {
