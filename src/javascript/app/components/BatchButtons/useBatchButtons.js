@@ -1,8 +1,11 @@
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
 import { BATCH_TASK, SHOW_FILTERS, SHOW_SORT_OPTIONS } from '../../store/actions';
 
-const mapStateToProps = (state, { page }) => {
+const useBatchButtons = (page) => {
+  const state = useSelector((currentState) => currentState);
+  const dispatch = useDispatch();
+
   const indexOffset = page * state.pageSize;
   const images = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
   const hasSelected = !!images.find(({ hash }) => state.imageSelection.includes(hash));
@@ -13,27 +16,24 @@ const mapStateToProps = (state, { page }) => {
     activeFilters: state.filtersActiveTags.length || 0,
     selectedImages: state.imageSelection.length,
     hasSelected,
+    batchTask: (action) => {
+      dispatch({
+        type: BATCH_TASK,
+        payload: action,
+        page,
+      });
+    },
+    filter: () => {
+      dispatch({
+        type: SHOW_FILTERS,
+      });
+    },
+    showSortOptions: () => {
+      dispatch({
+        type: SHOW_SORT_OPTIONS,
+      });
+    },
   });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  batchTask: (action, page) => {
-    dispatch({
-      type: BATCH_TASK,
-      payload: action,
-      page,
-    });
-  },
-  filter: () => {
-    dispatch({
-      type: SHOW_FILTERS,
-    });
-  },
-  showSortOptions: () => {
-    dispatch({
-      type: SHOW_SORT_OPTIONS,
-    });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps);
+export default useBatchButtons;
