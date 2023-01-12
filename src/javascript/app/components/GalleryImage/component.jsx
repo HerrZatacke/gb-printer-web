@@ -47,6 +47,20 @@ const GalleryImage = ({
     );
   };
 
+  const getTagsList = () => (
+    <ul className="gallery-image__tags">
+      {tags.map((tag) => (
+        <li
+          key={tag}
+          title={tag === FILTER_FAVOURITE ? 'Favourite' : tag}
+          className="gallery-image__tag"
+        >
+          {tag === FILTER_FAVOURITE ? '❤️' : tag}
+        </li>
+      ))}
+    </ul>
+  );
+
   const handleCellClick = (ev) => {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
@@ -84,17 +98,7 @@ const GalleryImage = ({
           {title}
         </span>
       ) : null}
-      <ul className="gallery-image__tags">
-        {tags.map((tag) => (
-          <li
-            key={tag}
-            title={tag === FILTER_FAVOURITE ? 'Favourite' : tag}
-            className="gallery-image__tag"
-          >
-            {tag === FILTER_FAVOURITE ? '❤️' : tag}
-          </li>
-        ))}
-      </ul>
+      { getTagsList() }
       <div className="gallery-image__created-meta">
         {(
           meta ? (
@@ -117,7 +121,7 @@ const GalleryImage = ({
       />
     </li>
   ) : (
-    <tr
+    <li
       className={
         classnames('gallery-list-image', {
           'gallery-list-image--selected': isSelected,
@@ -126,7 +130,7 @@ const GalleryImage = ({
       onClick={handleCellClick}
       role="presentation"
     >
-      <td className="gallery-list-image__cell-image">
+      <div className="gallery-list-image__cell gallery-list-image__cell-image">
         <div className="gallery-list-image__image">
           <div className="gallery-list-image__image--scale">
             <ImageRender
@@ -140,31 +144,35 @@ const GalleryImage = ({
             />
           </div>
         </div>
-      </td>
+      </div>
 
-      <td className="gallery-list-image__cell-description">
+      <div className="gallery-list-image__cell gallery-list-image__cell-description">
         <div className="gallery-list-image__description">
           <span className="gallery-list-image__title">
             {title}
           </span>
           {getDateSpan('gallery-list-image__created')}
         </div>
-      </td>
+      </div>
 
-      <td className="gallery-list-image__cell-rgbn">
+      <div className="gallery-list-image__cell gallery-list-image__cell-tags">
+        { getTagsList() }
+      </div>
+
+      <div className="gallery-list-image__cell gallery-list-image__cell-rgbn">
         { hashes ? null : (
           <RGBNSelect hash={hash} />
         )}
-      </td>
+      </div>
 
-      <td className="gallery-list-image__cell-buttons">
+      <div className="gallery-list-image__cell gallery-list-image__cell-buttons">
         <GalleryImageButtons
           isFavourite={isFavourite}
           hash={hash}
           buttons={['select', 'favourite', 'download', 'delete', 'view', 'plugins']}
         />
-      </td>
-    </tr>
+      </div>
+    </li>
   );
 };
 

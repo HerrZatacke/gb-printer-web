@@ -68,11 +68,9 @@ const Gallery = () => {
       <GalleryHeader page={page} isSticky />
       {
         (currentView === 'list') ? (
-          <table className="gallery gallery--list">
-            <tbody>
-              {content}
-            </tbody>
-          </table>
+          <ul className="gallery gallery--list">
+            {content}
+          </ul>
         ) : (
           <ul
             className={
