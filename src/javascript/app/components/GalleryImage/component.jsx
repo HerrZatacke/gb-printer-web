@@ -49,15 +49,21 @@ const GalleryImage = ({
 
   const getTagsList = () => (
     <ul className="gallery-image__tags">
-      {tags.map((tag) => (
-        <li
-          key={tag}
-          title={tag === FILTER_FAVOURITE ? 'Favourite' : tag}
-          className="gallery-image__tag"
-        >
-          {tag === FILTER_FAVOURITE ? '❤️' : tag}
-        </li>
-      ))}
+      {
+        tags
+          .sort((a, b) => (
+            a.toLowerCase().localeCompare(b.toLowerCase())
+          ))
+          .map((tag) => (
+            <li
+              key={tag}
+              title={tag === FILTER_FAVOURITE ? 'Favourite' : tag}
+              className="gallery-image__tag"
+            >
+              {tag === FILTER_FAVOURITE ? '❤️' : tag}
+            </li>
+          ))
+      }
     </ul>
   );
 
