@@ -13,12 +13,15 @@ const localforageFrames = createWrappedInstance({
 window.lfi = localforageImages;
 window.lff = localforageFrames;
 
-const localforageReady = () => (
-  localforageFrames.ready()
-    .then(() => (
-      localforageImages.ready()
-    ))
-);
+const localforageReady = async () => {
+  await localforageFrames.ready();
+  await localforageImages.ready();
+
+  // Wait 5ms until "dummy" item is possibly removed
+  await new Promise(((resolve) => {
+    window.setTimeout(resolve, 5);
+  }));
+};
 
 export {
   localforageImages,
