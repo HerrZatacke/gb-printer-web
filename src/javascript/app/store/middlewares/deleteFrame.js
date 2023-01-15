@@ -1,24 +1,21 @@
 import { delFrame } from '../../../tools/storage';
-import { localforageFrames } from '../../../tools/localforageInstance';
+import { localforageFrames, localforageReady } from '../../../tools/localforageInstance';
 import { DELETE_FRAME } from '../actions';
 
 const frameIsUsed = (hash, frames) => (
   !!frames.find((frame) => frame.hash === hash)
 );
 
-const deleteFromStorage = (frames, deleteHash) => {
+const deleteFromStorage = (frames) => (deleteHash) => {
   if (!frameIsUsed(deleteHash, frames)) {
     delFrame(deleteHash);
   }
 };
 
-const cleanupStorage = (frames) => {
-  localforageFrames.keys()
-    .then((storedHashes) => {
-      storedHashes.forEach((hash) => {
-        deleteFromStorage(frames, hash);
-      });
-    });
+const cleanupStorage = async (frames) => {
+  await localforageReady();
+  const storedHashes = await localforageFrames.keys();
+  storedHashes.forEach(deleteFromStorage(frames));
 };
 
 const deleteImage = (store) => (next) => (action) => {

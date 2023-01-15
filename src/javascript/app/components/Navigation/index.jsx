@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import ThemeToggle from '../ThemeToggle';
+import './index.scss';
+import useNavigation from './useNavigation';
 
-const Navigation = (props) => {
+const Navigation = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  const {
+    disableSerials,
+    syncBusy,
+    useSync,
+    useSerials,
+    syncLastUpdate,
+    autoDropboxSync,
+    selectSync,
+    setShowSerials,
+  } = useNavigation();
 
   const className = ({ isActive }) => `navigation__link ${isActive ? 'navigation__link--active' : ''}`;
 
@@ -80,21 +92,21 @@ const Navigation = (props) => {
             Settings
           </NavLink>
         </li>
-        { props.useSync ? (
+        { useSync ? (
           <li className="navigation__entry navigation__entry--buttons">
             <button
               type="button"
               title="Synchronize"
               className="navigation__link navigation__link--icon"
-              onClick={props.selectSync}
-              disabled={props.syncBusy}
+              onClick={selectSync}
+              disabled={syncBusy}
             >
               <SVG name="sync" />
-              { props.autoDropboxSync && (props.syncLastUpdate.local !== props.syncLastUpdate.dropbox) ? (
+              { autoDropboxSync && (syncLastUpdate.local !== syncLastUpdate.dropbox) ? (
                 <span
                   className="navigation__link-bubble"
                   title={(
-                    (props.syncLastUpdate.local > props.syncLastUpdate.dropbox) ?
+                    (syncLastUpdate.local > syncLastUpdate.dropbox) ?
                       'There are local changes not synched to dropbox yet' :
                       'There are remote changes not synched yet'
                   )}
@@ -110,16 +122,16 @@ const Navigation = (props) => {
             closeNavigation={() => setMobileNavOpen(false)}
           />
         </li>
-        { props.useSerials ? (
+        { useSerials ? (
           <li className="navigation__entry navigation__entry--right">
             <button
               title="WebUSB Serial devices"
               type="button"
               className="connect-usb-serial navigation__link"
-              disabled={props.disableSerials}
+              disabled={disableSerials}
               onClick={() => {
                 setMobileNavOpen(false);
-                props.setShowSerials();
+                setShowSerials();
               }}
             >
               <SVG name="usb" />
@@ -133,21 +145,5 @@ const Navigation = (props) => {
     </nav>
   );
 };
-
-Navigation.propTypes = {
-  selectSync: PropTypes.func.isRequired,
-  useSync: PropTypes.bool.isRequired,
-  syncBusy: PropTypes.bool.isRequired,
-  useSerials: PropTypes.bool.isRequired,
-  disableSerials: PropTypes.bool.isRequired,
-  setShowSerials: PropTypes.func.isRequired,
-  syncLastUpdate: PropTypes.shape({
-    dropbox: PropTypes.number.isRequired,
-    local: PropTypes.number.isRequired,
-  }).isRequired,
-  autoDropboxSync: PropTypes.bool.isRequired,
-};
-
-Navigation.defaultProps = {};
 
 export default Navigation;

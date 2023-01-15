@@ -1,5 +1,5 @@
 import { del } from '../../../tools/storage';
-import { localforageImages } from '../../../tools/localforageInstance';
+import { localforageImages, localforageReady } from '../../../tools/localforageInstance';
 import { DELETE_IMAGE, DELETE_IMAGES } from '../actions';
 
 const hashIsUsedInRGBN = (hash, images) => (
@@ -17,7 +17,7 @@ const hashIsUsedInDefault = (hash, images) => (
   !!images.find((image) => image.hash === hash)
 );
 
-const deleteFromStorage = (images, deleteHash) => {
+const deleteFromStorage = (images) => (deleteHash) => {
   if (
     !hashIsUsedInRGBN(deleteHash, images) &&
     !hashIsUsedInDefault(deleteHash, images)
@@ -26,13 +26,10 @@ const deleteFromStorage = (images, deleteHash) => {
   }
 };
 
-const cleanupStorage = (images) => {
-  localforageImages.keys()
-    .then((storedHashes) => {
-      storedHashes.forEach((hash) => {
-        deleteFromStorage(images, hash);
-      });
-    });
+const cleanupStorage = async (images) => {
+  await localforageReady();
+  const storedHashes = await localforageImages.keys();
+  storedHashes.forEach(deleteFromStorage(images));
 };
 
 const deleteImage = (store) => (next) => (action) => {
