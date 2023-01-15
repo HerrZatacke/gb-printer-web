@@ -1,50 +1,46 @@
-import { del } from '../../../tools/storage';
-import { localforageImages, localforageReady } from '../../../tools/localforageInstance';
-import { DELETE_IMAGE, DELETE_IMAGES } from '../actions';
+import {
+  ADD_IMAGES,
+  DELETE_IMAGE,
+  DELETE_IMAGES,
+  GLOBAL_UPDATE,
+  REHASH_IMAGE,
+  SET_TRASH_COUNT_IMAGES,
+  UPDATE_TRASH_COUNT,
+} from '../actions';
+import { getTrashImages } from '../../../tools/getTrash';
 
-const hashIsUsedInRGBN = (hash, images) => (
-  !!images.find(({ hashes }) => {
-    if (!hashes) {
-      return false;
+const deleteImage = (store) => {
+  (async () => {
+    store.dispatch({
+      type: SET_TRASH_COUNT_IMAGES,
+      payload: (await getTrashImages(store.getState().images)).length,
+    });
+  })();
+
+  return (next) => (action) => {
+
+    // first delete object data, then do a localStorage cleanup
+    next(action);
+
+    switch (action.type) {
+      case DELETE_IMAGE:
+      case DELETE_IMAGES:
+      case ADD_IMAGES:
+      case GLOBAL_UPDATE:
+      case REHASH_IMAGE:
+      case UPDATE_TRASH_COUNT:
+        (async () => {
+          store.dispatch({
+            type: SET_TRASH_COUNT_IMAGES,
+            payload: (await getTrashImages(store.getState().images)).length,
+          });
+        })();
+
+        break;
+      default:
+        break;
     }
-
-    const { r, g, b, n } = hashes;
-    return [r, g, b, n].includes(hash);
-  })
-);
-
-const hashIsUsedInDefault = (hash, images) => (
-  !!images.find((image) => image.hash === hash)
-);
-
-const deleteFromStorage = (images) => (deleteHash) => {
-  if (
-    !hashIsUsedInRGBN(deleteHash, images) &&
-    !hashIsUsedInDefault(deleteHash, images)
-  ) {
-    del(deleteHash);
-  }
-};
-
-const cleanupStorage = async (images) => {
-  await localforageReady();
-  const storedHashes = await localforageImages.keys();
-  storedHashes.forEach(deleteFromStorage(images));
-};
-
-const deleteImage = (store) => (next) => (action) => {
-
-  // first delete object data, then do a localStorage cleanup
-  next(action);
-
-  switch (action.type) {
-    case DELETE_IMAGE:
-    case DELETE_IMAGES:
-      cleanupStorage(store.getState().images);
-      break;
-    default:
-      break;
-  }
+  };
 };
 
 export default deleteImage;

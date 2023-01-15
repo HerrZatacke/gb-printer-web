@@ -5,6 +5,7 @@ import SVG from '../SVG';
 import ThemeToggle from '../ThemeToggle';
 import './index.scss';
 import useNavigation from './useNavigation';
+import useTrashbin from '../../../hooks/useTrashbin';
 
 const Navigation = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -19,6 +20,11 @@ const Navigation = () => {
     selectSync,
     setShowSerials,
   } = useNavigation();
+
+  const {
+    showTrash,
+    trashCount,
+  } = useTrashbin();
 
   const className = ({ isActive }) => `navigation__link ${isActive ? 'navigation__link--active' : ''}`;
 
@@ -91,6 +97,21 @@ const Navigation = () => {
           >
             Settings
           </NavLink>
+        </li>
+        <li className="navigation__entry navigation__entry--buttons">
+          <button
+            type="button"
+            title="Trash Bin"
+            className="navigation__link navigation__link--icon"
+            onClick={() => showTrash(true)}
+          >
+            <SVG name="delete" />
+            { trashCount.sum > 0 ? (
+              <span className="navigation__link-bubble">
+                { trashCount.sum }
+              </span>
+            ) : null }
+          </button>
         </li>
         { useSync ? (
           <li className="navigation__entry navigation__entry--buttons">

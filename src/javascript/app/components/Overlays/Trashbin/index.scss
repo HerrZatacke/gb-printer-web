@@ -1,0 +1,44 @@
+.trashbin {
+
+  &__content {
+    padding: 10px 20px 25px 20px;
+  }
+
+  &__list  {
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  &__option {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  &__button {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: inherit;
+    margin: 0;
+    justify-content: space-between;
+    padding: 5px 20px;
+
+    &:not(:disabled):hover {
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    &--sum, &--sum:hover {
+      margin-top: 25px;
+      @include theme-background-color($color-button-red, $color-button-red-dark);
+      @include theme-color($color-white, $color-text-bright);
+    }
+  }
+
+  &__button-label {
+    flex: auto 0 1;
+    display: block;
+    height: 100%;
+    line-height: 40px;
+  }
+}

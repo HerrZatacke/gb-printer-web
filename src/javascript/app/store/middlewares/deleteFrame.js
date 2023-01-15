@@ -1,35 +1,42 @@
-import { delFrame } from '../../../tools/storage';
-import { localforageFrames, localforageReady } from '../../../tools/localforageInstance';
-import { DELETE_FRAME } from '../actions';
+import {
+  ADD_FRAME,
+  DELETE_FRAME,
+  GLOBAL_UPDATE,
+  SET_TRASH_COUNT_FRAMES,
+  UPDATE_TRASH_COUNT,
+} from '../actions';
+import { getTrashFrames } from '../../../tools/getTrash';
 
-const frameIsUsed = (hash, frames) => (
-  !!frames.find((frame) => frame.hash === hash)
-);
+const deleteImage = (store) => {
+  (async () => {
+    store.dispatch({
+      type: SET_TRASH_COUNT_FRAMES,
+      payload: (await getTrashFrames(store.getState().frames)).length,
+    });
+  })();
 
-const deleteFromStorage = (frames) => (deleteHash) => {
-  if (!frameIsUsed(deleteHash, frames)) {
-    delFrame(deleteHash);
-  }
-};
+  return (next) => (action) => {
 
-const cleanupStorage = async (frames) => {
-  await localforageReady();
-  const storedHashes = await localforageFrames.keys();
-  storedHashes.forEach(deleteFromStorage(frames));
-};
+    // first delete object data, then do a localStorage cleanup
+    next(action);
 
-const deleteImage = (store) => (next) => (action) => {
+    switch (action.type) {
+      case DELETE_FRAME:
+      case ADD_FRAME:
+      case GLOBAL_UPDATE:
+      case UPDATE_TRASH_COUNT:
+        (async () => {
+          store.dispatch({
+            type: SET_TRASH_COUNT_FRAMES,
+            payload: (await getTrashFrames(store.getState().frames)).length,
+          });
+        })();
 
-  // first delete object data, then do a localStorage cleanup
-  next(action);
-
-  switch (action.type) {
-    case DELETE_FRAME:
-      cleanupStorage(store.getState().frames);
-      break;
-    default:
-      break;
-  }
+        break;
+      default:
+        break;
+    }
+  };
 };
 
 export default deleteImage;

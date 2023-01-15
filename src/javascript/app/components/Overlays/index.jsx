@@ -18,6 +18,7 @@ import ConnectSerial from './ConnectSerial';
 import BitmapQueue from './BitmapQueue';
 import ImportQueue from './ImportQueue';
 import FrameQueue from './FrameQueue';
+import Trashbin from './Trashbin';
 
 const Overlays = () => {
   const {
@@ -37,6 +38,7 @@ const Overlays = () => {
     showDragOver,
     showFilters,
     showSortForm,
+    showTrashbin,
     syncSelect,
   } = useSelector((state) => ({
     showProgressLog: !!state.progressLog.git.length || !!state.progressLog.dropbox.length,
@@ -55,6 +57,7 @@ const Overlays = () => {
     showDragOver: !!state.dragover,
     showFilters: !!state.filtersVisible,
     showSortForm: !!state.sortOptionsVisible,
+    showTrashbin: !!state.trashCount.show,
     syncSelect: !!state.syncSelect,
   }));
 
@@ -85,6 +88,8 @@ const Overlays = () => {
       return <SortForm />; // interactive
     case syncSelect:
       return <SyncSelect />; // interactive
+    case showTrashbin:
+      return <Trashbin />; // interactive
     case showDragOver:
       return <DragOver />; // semi-interactive
     case showProgressLog:

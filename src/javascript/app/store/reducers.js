@@ -50,6 +50,7 @@ import syncLastUpdate from './reducers/syncLastUpdateReducer';
 import syncSelect from './reducers/syncSelectReducer';
 import useSerials from './reducers/useSerialsReducer';
 import showSerials from './reducers/showSerialsReducer';
+import trashCount from './reducers/trashCountReducer';
 import videoParams from './reducers/videoParamsReducer';
 import windowDimensions from './reducers/windowDimensionsReducer';
 
@@ -105,6 +106,7 @@ export default combineReducers({
   syncSelect,
   useSerials,
   showSerials,
+  trashCount,
   videoParams,
   windowDimensions,
 });
