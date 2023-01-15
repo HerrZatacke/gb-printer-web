@@ -29,9 +29,6 @@ module.exports = () => ({
     remote: [
       path.join(process.cwd(), 'src', 'javascript', 'remote.js'),
     ],
-    db: [
-      path.join(process.cwd(), 'src', 'javascript', 'db.js'),
-    ],
   },
   module: {
     rules: [
@@ -176,12 +173,6 @@ module.exports = () => ({
       template: './src/assets/remote.html',
       filename: 'remote.html',
       chunks: ['pf', 'remote'],
-    }),
-    new HtmlWebpackPlugin({
-      title: 'Game Boy Printer DB',
-      template: './src/assets/db.html',
-      filename: 'db.html',
-      chunks: ['pf', 'db'],
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
