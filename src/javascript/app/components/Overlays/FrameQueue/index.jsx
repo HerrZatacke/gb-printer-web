@@ -48,13 +48,15 @@ const FrameQueue = () => {
           },
         });
 
-        dispatch({
-          type: NAME_FRAMEGROUP,
-          payload: {
-            id: frameGroup,
-            name: newGroupName,
-          },
-        });
+        if (newGroupName?.trim()) {
+          dispatch({
+            type: NAME_FRAMEGROUP,
+            payload: {
+              id: frameGroup,
+              name: newGroupName,
+            },
+          });
+        }
       }}
       deny={() => {
         dispatch({
