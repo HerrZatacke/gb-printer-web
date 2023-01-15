@@ -85,10 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
             created: dayjs().format(dateFormat),
             title: `Backup export ${image.hash}`,
             lines: image.lines.length,
-            tags: [],
+            tags: ['backup'],
             palette: 'bw',
             frame: '',
-            meta: {},
           };
         } catch (error) {
           return null;
