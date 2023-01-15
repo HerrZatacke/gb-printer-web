@@ -1,0 +1,55 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/><link rel="apple-touch-icon" href="images/app-icon.png"><title>Game Boy Printer DB</title><style>.app {
+      position: relative;
+      min-height: 100vh; }
+    .app__content {
+      width: 90vw;
+      max-width: 72.5rem;
+      margin: auto;
+      padding: 1.25rem;
+      position: relative; }
+    @media (max-width: 23.75rem) {
+      .app__content {
+        width: 100%; } }
+    .app__content-headline {
+      font-size: 1.875rem;
+      margin-bottom: 1.875rem;
+      color: #292037; }
+    html.theme-dark .app__content-headline {
+      color: #b3acbe; }
+    .app__content-headline:not(:first-child) {
+      margin-top: 3.75rem; }
+    #loading-log {
+      list-style: circle;
+      padding-left: 20px;}
+    .loader {
+      height: 16px;
+      width: 16px;
+      margin: -19px 0 0 -2px;
+      display: block;
+      position: relative;}
+    .loader:before,
+    .loader:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      animation-name: pulse-load;
+      animation-duration: 1100ms;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      opacity: 0.9;}
+    .loader:before {
+      -webkit-transform: translate(-50%, -50%) scale(1.7);
+      transform: translate(-50%, -50%) scale(1.7);
+      background-color: #95adb5;}
+    html.theme-dark .loader:before {
+      background-color: #283539;}
+    .loader:after {
+      background-color: #b3acbe;
+      -webkit-animation-duration: 790ms;
+      animation-duration: 790ms;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);}
+    html.theme-dark .loader:after { background-color: #3d3053; }
+    @keyframes pulse-load { from {width: 9px;height: 9px; } to {width: 17px;height: 17px;} }</style><script defer="defer" src="83f7/db.js"></script><link href="db.css" rel="stylesheet"></head><body><div id="app" class="app"><div class="app__content"></div></div></body></html>
