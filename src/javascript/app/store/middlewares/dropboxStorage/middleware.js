@@ -33,6 +33,8 @@ let addToQueue = () => {};
 
 const middleware = (store) => {
 
+  const recoveryAttempts = [];
+
   const queue = new Queue(1, Infinity);
   addToQueue = (who) => (what, throttle, fn, isSilent) => (
     queue.add(() => (
@@ -290,15 +292,25 @@ const middleware = (store) => {
     }
 
     if (action.type === TRY_RECOVER_IMAGE_DATA) {
-      dropboxClient.getFileContent(`images/${action.payload}.txt`, 0, 1, true)
-        .then(saveImageFileContent)
-        .then(() => {
-          // This forces an update of the complete images array
-          store.dispatch({
-            type: UPDATE_IMAGES_BATCH,
-            payload: [],
+      if (!recoveryAttempts.includes(action.payload)) {
+
+        // only attempt once to recover file
+        recoveryAttempts.push(action.payload);
+
+        dropboxClient.getFileContent(`images/${action.payload}.txt`, 0, 1, true)
+          .then(saveImageFileContent)
+          .then(() => {
+            // This forces an update of the complete images array
+            store.dispatch({
+              type: UPDATE_IMAGES_BATCH,
+              payload: [],
+            });
+          })
+          .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.log(`Dropbox responded: "${error.message}" when recovering "images/${action.payload}.txt"`);
           });
-        });
+      }
     }
 
   };
