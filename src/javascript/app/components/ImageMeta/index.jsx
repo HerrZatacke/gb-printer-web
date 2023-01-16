@@ -25,12 +25,38 @@ const rotations = [
 
 const ImageMeta = ({
   created,
+  hash,
   updatecreated,
   meta,
   rotation,
   updateRotation,
 }) => {
   const [date, time, setDate, setTime, updateDate, updateTime] = useDateTime(created, updatecreated);
+
+  const tableData = {
+    ...meta,
+    hash,
+  };
+
+  const table = Object.keys(tableData)
+    .reduce((data, key) => {
+      let value = tableData[key];
+
+      // Possibly nested or boolean properties
+      if (typeof value !== 'number' && typeof value !== 'string') {
+        value = JSON.stringify(value);
+      }
+
+      const row = {
+        key,
+        value,
+      };
+
+      return [
+        ...data,
+        row,
+      ];
+    }, []);
 
   return (
     <div className="image-meta-form">
@@ -95,19 +121,35 @@ const ImageMeta = ({
           }
         </div>
       </div>
-      {
-        (meta ? (
-          <pre className="image-meta-form__pre">
-            { JSON.stringify(meta, null, 2) }
-          </pre>
-        ) : null)
-      }
+      <table
+        className="image-meta-form__meta-table"
+      >
+        <tbody>
+          {
+            table.map(({ key, value }) => (
+              <tr key={key}>
+                <td
+                  className="image-meta-form__meta-cell image-meta-form__meta-cell--key"
+                >
+                  { key }
+                </td>
+                <td
+                  className="image-meta-form__meta-cell image-meta-form__meta-cell--value"
+                >
+                  { value }
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     </div>
   );
 };
 
 ImageMeta.propTypes = {
   created: PropTypes.string,
+  hash: PropTypes.string.isRequired,
   updatecreated: PropTypes.func.isRequired,
   meta: PropTypes.object,
   rotation: PropTypes.number,

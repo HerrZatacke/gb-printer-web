@@ -117,6 +117,7 @@ const EditImageTabs = (props) => {
           </button>
           <ImageMeta
             created={props.created}
+            hash={props.hash}
             updatecreated={props.updateCreated}
             meta={props.meta}
             rotation={props.rotation}
@@ -130,7 +131,7 @@ const EditImageTabs = (props) => {
 
 EditImageTabs.propTypes = {
   // cancel: PropTypes.func.isRequired,
-  // hash: PropTypes.string,
+  hash: PropTypes.string.isRequired,
   hashes: PropTypes.object,
   created: PropTypes.string,
   paletteShort: PropTypes.string,

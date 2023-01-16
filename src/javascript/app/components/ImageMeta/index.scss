@@ -37,11 +37,24 @@
     margin-bottom: 0;
   }
 
-  &__pre {
-    flex: 100% 1 0;
-    display: block;
+  &__meta-table {
+    width: 100%;
+  }
+
+  &__meta-cell {
     white-space: pre;
     font-family: monospace;
-    overflow: auto;
+    overflow-x: auto;
+    border: none;
+    border-bottom: 1px solid;
+    @include theme-border-color( $color-grey-80, $color-grey-20);
+
+    &--key {
+      padding-right: 4px;
+    }
+
+    &--value {
+      padding-left: 4px;
+    }
   }
 }

@@ -132,6 +132,7 @@ const EditForm = (props) => {
         updateCreated={onUpdate('created', updateCreated)}
         regularImage={isRegularImage}
         lockFrame={lockFrame}
+        hash={props.hash}
         hashes={props.hashes}
         paletteShort={paletteShort}
         paletteRGBN={paletteRGBN}
