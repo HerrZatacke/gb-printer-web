@@ -117,7 +117,7 @@ class DropboxClient extends EventEmitter {
       this.dbx.auth.setAccessToken(null);
     }
 
-    throw new Error(error);
+    throw new Error(error?.error?.error_summary || error?.error || error);
   }
 
   getRemoteContents(direction) {
