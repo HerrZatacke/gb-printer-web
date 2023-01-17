@@ -26,6 +26,7 @@ const rotations = [
 const ImageMeta = ({
   created,
   hash,
+  hashes,
   updatecreated,
   meta,
   rotation,
@@ -57,6 +58,22 @@ const ImageMeta = ({
         row,
       ];
     }, []);
+
+  if (hashes) {
+    const channelHashes = ['r', 'g', 'b', 'n']
+      .map((channel) => {
+        if (!hashes[channel]) {
+          return null;
+        }
+
+        return ({
+          key: `hash ${channel}`,
+          value: hashes[channel],
+        });
+      })
+      .filter(Boolean);
+    table.push(...channelHashes);
+  }
 
   return (
     <div className="image-meta-form">
@@ -150,6 +167,7 @@ const ImageMeta = ({
 ImageMeta.propTypes = {
   created: PropTypes.string,
   hash: PropTypes.string.isRequired,
+  hashes: PropTypes.object,
   updatecreated: PropTypes.func.isRequired,
   meta: PropTypes.object,
   rotation: PropTypes.number,
@@ -160,6 +178,7 @@ ImageMeta.defaultProps = {
   created: null,
   meta: {},
   rotation: null,
+  hashes: null,
 };
 
 export default ImageMeta;

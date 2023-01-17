@@ -118,6 +118,7 @@ const EditImageTabs = (props) => {
           <ImageMeta
             created={props.created}
             hash={props.hash}
+            hashes={props.hashes}
             updatecreated={props.updateCreated}
             meta={props.meta}
             rotation={props.rotation}
