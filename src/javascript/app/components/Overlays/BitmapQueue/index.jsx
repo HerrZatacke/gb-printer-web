@@ -35,6 +35,12 @@ const contrasts = [
     baseValues: [0x55, 0x71, 0x8D, 0xAA],
     value: 'narrower',
   },
+  {
+    // Using src/assets/images/greys.png for reference
+    name: 'From Emulator',
+    baseValues: [0x40, 0x90, 0xE0, 0xFF],
+    value: 'emulator',
+  },
 ];
 
 const BitmapQueue = () => {
