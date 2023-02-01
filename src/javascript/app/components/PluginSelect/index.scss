@@ -11,6 +11,11 @@
 
   &__wrapper {
     position: relative;
+
+  }
+
+  &--active {
+    display: flex;
   }
 
   .gallery-image-buttons & {
@@ -33,10 +38,6 @@
     width: 40px;
     height: 40px;
     display: block;
-  }
-
-  &__wrapper:focus-within & {
-    display: flex;
   }
 
   &__plugin-list-entry {

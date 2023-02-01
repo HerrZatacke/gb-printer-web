@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
@@ -8,99 +8,108 @@ import PluginSelect from '../PluginSelect';
 
 dayjs.extend(customParseFormat);
 
-const GalleryImageButtons = (props) => (
-  <div
-    className="gallery-image-buttons"
-    onClick={(ev) => {
-      ev.stopPropagation();
-    }}
-    role="presentation"
-  >
-    { props.updateImageToSelection ? (
-      <button
-        type="button"
-        className={
-          classnames('gallery-image-buttons__button', {
-            'gallery-image-buttons__button--unchecked': !props.isSelected,
-            'gallery-image-buttons__button--checked': props.isSelected,
-          })
-        }
-        onClick={() => props.updateImageToSelection(props.isSelected ? 'remove' : 'add')}
-      >
-        <SVG name="checkmark" />
-      </button>
-    ) : null }
-    { props.startDownload ? (
-      <button
-        type="button"
-        className="gallery-image-buttons__button"
-        onClick={props.startDownload}
-      >
-        <SVG name="download" />
-      </button>
-    ) : null }
-    { props.deleteImage ? (
-      <button
-        type="button"
-        className="gallery-image-buttons__button"
-        onClick={props.deleteImage}
-      >
-        <SVG name="delete" />
-      </button>
-    ) : null }
-    { props.setLightboxImage ? (
-      <button
-        type="button"
-        className="gallery-image-buttons__button"
-        onClick={props.setLightboxImage}
-      >
-        <SVG name="view" />
-      </button>
-    ) : null }
-    { props.saveRGBNImage ? (
-      <button
-        type="button"
-        className="gallery-image-buttons__button"
-        onClick={props.saveRGBNImage}
-      >
-        <SVG name="save" />
-      </button>
-    ) : null }
-    { props.hasPlugins ? (
-      <PluginSelect hash={props.hash}>
+const GalleryImageButtons = (props) => {
+  const [pluginsActive, setPluginsActive] = useState(false);
+
+  return (
+    <div
+      className="gallery-image-buttons"
+      onClick={(ev) => {
+        ev.stopPropagation();
+      }}
+      role="presentation"
+      onMouseLeave={() => setPluginsActive(false)}
+    >
+      {props.updateImageToSelection ? (
+        <button
+          type="button"
+          className={
+            classnames('gallery-image-buttons__button', {
+              'gallery-image-buttons__button--unchecked': !props.isSelected,
+              'gallery-image-buttons__button--checked': props.isSelected,
+            })
+          }
+          onClick={() => props.updateImageToSelection(props.isSelected ? 'remove' : 'add')}
+        >
+          <SVG name="checkmark" />
+        </button>
+      ) : null}
+      {props.startDownload ? (
         <button
           type="button"
           className="gallery-image-buttons__button"
+          onClick={props.startDownload}
         >
-          <SVG name="plug" />
+          <SVG name="download" />
         </button>
-      </PluginSelect>
-    ) : null }
-    { props.shareImage && props.canShare ? (
-      <button
-        type="button"
-        className="gallery-image-buttons__button"
-        onClick={props.shareImage}
-      >
-        <SVG name="share" />
-      </button>
-    ) : null }
-    { props.updateFavouriteTag ? (
-      <button
-        type="button"
-        className={
-          classnames('gallery-image-buttons__button', {
-            'gallery-image-buttons__button--unchecked': !props.isFavourite,
-            'gallery-image-buttons__button--favourite': props.isFavourite,
-          })
-        }
-        onClick={() => props.updateFavouriteTag(!props.isFavourite)}
-      >
-        { props.isFavourite ? '❤️' : <SVG name="fav" /> }
-      </button>
-    ) : null }
-  </div>
-);
+      ) : null}
+      {props.deleteImage ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={props.deleteImage}
+        >
+          <SVG name="delete" />
+        </button>
+      ) : null}
+      {props.setLightboxImage ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={props.setLightboxImage}
+        >
+          <SVG name="view" />
+        </button>
+      ) : null}
+      {props.saveRGBNImage ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={props.saveRGBNImage}
+        >
+          <SVG name="save" />
+        </button>
+      ) : null}
+      {props.hasPlugins ? (
+        <PluginSelect
+          pluginsActive={pluginsActive}
+          hash={props.hash}
+        >
+          <button
+            type="button"
+            className="gallery-image-buttons__button"
+            onClick={() => setPluginsActive(true)}
+          >
+            <SVG name="plug" />
+          </button>
+        </PluginSelect>
+      ) : null}
+      {props.shareImage && props.canShare ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={props.shareImage}
+        >
+          <SVG name="share" />
+        </button>
+      ) : null}
+      {props.updateFavouriteTag ? (
+        <button
+          type="button"
+          className={
+            classnames('gallery-image-buttons__button', {
+              'gallery-image-buttons__button--unchecked': !props.isFavourite,
+              'gallery-image-buttons__button--favourite': props.isFavourite,
+            })
+          }
+          onClick={() => props.updateFavouriteTag(!props.isFavourite)}
+        >
+          {props.isFavourite ? '❤️' : <SVG name="fav" />}
+        </button>
+      ) : null}
+    </div>
+  );
+};
 
 GalleryImageButtons.propTypes = {
   canShare: PropTypes.bool.isRequired,

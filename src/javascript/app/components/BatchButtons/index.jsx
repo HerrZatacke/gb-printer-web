@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
@@ -28,6 +28,8 @@ const BatchButtons = ({ page }) => {
     filter,
     showSortOptions,
   } = useBatchButtons(page);
+
+  const [pluginsActive, setPluginsActive] = useState(false);
 
   return (
     <ul className="batch-buttons gallery-button__group">
@@ -100,10 +102,14 @@ const BatchButtons = ({ page }) => {
               'gallery-button--enabled': batchEnabled,
             })
           }
+          onMouseLeave={() => setPluginsActive(false)}
         >
-          <PluginSelect>
+          <PluginSelect
+            pluginsActive={pluginsActive}
+          >
             <button
               type="button"
+              onClick={() => setPluginsActive(true)}
             >
               <SVG name="plug" />
             </button>

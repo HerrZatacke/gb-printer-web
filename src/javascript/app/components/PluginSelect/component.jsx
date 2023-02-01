@@ -1,11 +1,17 @@
 import React from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import SVG from '../SVG';
 
-const PluginSelect = ({ toPlugins, plugins, children }) => (
+const PluginSelect = ({
+  toPlugins,
+  plugins,
+  children,
+  pluginsActive,
+}) => (
   <span className="plugin-select__wrapper">
     {children}
-    <ul className="plugin-select">
+    <ul className={classnames('plugin-select', { 'plugin-select--active': pluginsActive })}>
       {
         plugins.map(({ url, name, description, loading, error }) => (
           <li
@@ -38,6 +44,7 @@ PluginSelect.propTypes = {
   children: PropTypes.node.isRequired,
   toPlugins: PropTypes.func.isRequired,
   plugins: PropTypes.array.isRequired,
+  pluginsActive: PropTypes.bool.isRequired,
 };
 
 export default PluginSelect;
