@@ -1,24 +1,37 @@
+import chunk from 'chunk';
 import dummyImage from './dummyImage';
 import applyFrame from '../applyFrame';
 import { localforageFrames, localforageImages } from '../localforageInstance';
+
+const sha256Hash = async (lines) => {
+  const bytes = lines.map((line) => (
+    chunk(line, 2).map((byte) => (
+      parseInt(byte, 16)
+    ))
+  )).flat();
+
+  const testHash = await window.crypto.subtle.digest('SHA-256', new Uint8Array(bytes));
+  const testArray = new Uint8Array(testHash);
+  return [...testArray].map((x) => (x.toString(16).padStart(2, '0'))).join('');
+};
 
 const compressAndHash = async (lines) => {
   const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
   const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
 
-  const imageData = lines
+  const imageDataLines = lines
     .map((line) => (
       line.replace(/ /gi, '').toUpperCase()
-    ))
-    .join('\n');
+    ));
 
-  const compressed = pako.deflate(imageData, {
+  const compressed = pako.deflate(imageDataLines.join('\n'), {
     to: 'string',
     strategy: 1,
     level: 8,
   });
 
-  const dataHash = hash(compressed);
+
+  const dataHash = await sha256Hash(imageDataLines);
 
   return {
     dataHash,
