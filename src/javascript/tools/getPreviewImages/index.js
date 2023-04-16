@@ -43,7 +43,8 @@ const getPreviewImages = (state) => () => {
   return [
     previewImages.shift(),
     previewImages.pop(),
-  ];
+  ]
+    .filter(Boolean);
 };
 
 export default getPreviewImages;
