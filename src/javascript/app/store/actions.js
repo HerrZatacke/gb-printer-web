@@ -46,6 +46,7 @@ export const SET_IMPORT_PAD = 'SET_IMPORT_PAD';
 export const SET_PAGESIZE = 'SET_PAGESIZE';
 export const SHOW_SERIALS = 'SHOW_SERIALS';
 export const USE_SERIALS = 'USE_SERIALS';
+export const SET_DEBUG = 'SET_DEBUG';
 
 // Images
 export const ADD_IMAGES = 'ADD_IMAGES';

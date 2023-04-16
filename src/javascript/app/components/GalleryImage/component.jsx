@@ -33,6 +33,7 @@ const GalleryImage = ({
   preferredLocale,
   meta,
   rotation,
+  enableDebug,
 }) => {
 
   const getDateSpan = (className) => {
@@ -120,6 +121,9 @@ const GalleryImage = ({
         )}
         {getDateSpan('gallery-image__created')}
       </div>
+      { enableDebug ? (
+        <span className="gallery-image__hash-debug">{ hash }</span>
+      ) : null }
       <GalleryImageButtons
         isFavourite={isFavourite}
         hash={hash}
@@ -202,6 +206,7 @@ GalleryImage.propTypes = {
   preferredLocale: PropTypes.string,
   meta: PropTypes.object,
   rotation: PropTypes.number,
+  enableDebug: PropTypes.bool.isRequired,
 };
 
 GalleryImage.defaultProps = {

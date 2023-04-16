@@ -37,6 +37,7 @@ const mapStateToProps = (state, { hash }) => {
     preferredLocale: state.preferredLocale,
     meta: image.meta || null,
     rotation: image.rotation || null,
+    enableDebug: state.enableDebug,
   });
 };
 

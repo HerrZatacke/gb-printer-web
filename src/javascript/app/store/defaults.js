@@ -144,6 +144,13 @@ const definitions = [
     value: false,
   },
   {
+    // general debug option
+    key: 'enableDebug',
+    saveLocally: true,
+    saveExport: ['settings'],
+    value: false,
+  },
+  {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,

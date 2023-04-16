@@ -352,6 +352,34 @@ const GenericSettings = (props) => {
           }}
         />
       ) : null}
+
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.enableDebug,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Show debug info"
+        >
+          Show debug info
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={props.enableDebug}
+            onChange={({ target }) => {
+              props.setEnableDebug(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
     </>
   );
 };
@@ -382,6 +410,8 @@ GenericSettings.propTypes = {
   updatePrinterUrl: PropTypes.func.isRequired,
   printerParams: PropTypes.string.isRequired,
   updatePrinterParams: PropTypes.func.isRequired,
+  enableDebug: PropTypes.bool.isRequired,
+  setEnableDebug: PropTypes.func.isRequired,
 };
 
 GenericSettings.defaultProps = {

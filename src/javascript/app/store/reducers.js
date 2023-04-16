@@ -8,6 +8,7 @@ import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
 import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
+import enableDebug from './reducers/enableDebugReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import filtersActiveTags from './reducers/filtersActiveTagsReducer';
@@ -64,6 +65,7 @@ export default combineReducers({
   editImage,
   editFrame,
   editPalette,
+  enableDebug,
   exportFileTypes,
   exportScaleFactors,
   filtersActiveTags,

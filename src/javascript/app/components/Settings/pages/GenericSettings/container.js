@@ -13,6 +13,7 @@ import {
   SET_SAV_FRAME_TYPES,
   UPDATE_EXPORT_FILE_TYPES,
   UPDATE_EXPORT_SCALE_FACTORS,
+  SET_DEBUG,
 } from '../../../../store/actions';
 
 const mapStateToProps = (state) => ({
@@ -29,6 +30,7 @@ const mapStateToProps = (state) => ({
   printerUrl: state.printerUrl,
   printerParams: state.printerParams,
   preferredLocale: state.preferredLocale,
+  enableDebug: state.enableDebug,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -66,6 +68,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: SET_HIDE_DATES,
       payload: hideDates,
+    });
+  },
+  setEnableDebug(enableDebug) {
+    dispatch({
+      type: SET_DEBUG,
+      payload: enableDebug,
     });
   },
   setPreferredLocale(preferredLocale) {
