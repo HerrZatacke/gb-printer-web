@@ -56,6 +56,18 @@
     @include theme-background-color(transparent, transparent);
   }
 
+  &__hash-debug {
+    margin: 6px -4px 0;
+    font-size: 10px;
+    line-height: 12px;
+    font-family: monospace;
+    overflow: hidden;
+    word-break: break-all;
+    background-color: #272822;
+    color: #ffc66d;
+    padding: 4px;
+  }
+
   //&:hover .rgbn-select,
   body.no-touch &:hover .frame-buttons {
     display: flex;
