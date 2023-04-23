@@ -13,7 +13,7 @@
     padding: 10px 12px;
     border: 1px solid;
     min-height: inherit;
-    max-width: fill-available;
+    max-width: stretch;
 
     @include theme-background-color($color-white, $color-black);
     @include theme-border-color($color-grey-70, $color-grey-30);
