@@ -15,7 +15,7 @@ import {
   UPDATE_IMAGES_BATCH,
 } from '../actions';
 
-const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags', 'created'];
+const UPDATATABLES = ['lockFrame', 'frame', 'palette', 'invertPalette', 'title', 'tags', 'created', 'rotation'];
 
 const collectTags = (batchImages) => (
   unique(batchImages.map(({ tags }) => tags).flat())
@@ -132,6 +132,13 @@ const batch = (store) => (next) => (action) => {
                   ...tagChanges,
                   initial: updateImage.tags,
                 });
+                break;
+              case 'rotation':
+                if (!updatedFields.rotation) {
+                  break;
+                }
+
+                updates.rotation = editedUpdates.rotation;
                 break;
               default:
                 break;
