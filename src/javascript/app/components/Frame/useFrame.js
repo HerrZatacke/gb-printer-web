@@ -68,6 +68,7 @@ const useFrame = ({ frameId, name }) => {
   return {
     tiles,
     setTiles,
+    frameHash,
     deleteFrame,
     editFrame,
   };

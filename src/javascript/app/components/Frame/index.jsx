@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameBoyImage from '../GameBoyImage';
 import FrameButtons from '../FrameButtons';
@@ -11,7 +12,10 @@ const Frame = ({ frameId, name, palette }) => {
     tiles,
     deleteFrame,
     editFrame,
+    frameHash,
   } = useFrame({ frameId, name });
+
+  const enableDebug = useSelector((state) => state.enableDebug);
 
   if (!tiles) {
     return null;
@@ -37,6 +41,9 @@ const Frame = ({ frameId, name, palette }) => {
       <span className="frame__name">
         {name}
       </span>
+      { enableDebug ? (
+        <span className="frame__hash-debug">{ frameHash }</span>
+      ) : null }
       <FrameButtons
         deleteFrame={deleteFrame}
         editFrame={editFrame}
