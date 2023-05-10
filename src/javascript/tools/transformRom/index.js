@@ -10,9 +10,9 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
   const banks = chunk(data, 0x20000);
 
   let displayIndex = 0;
-  return Promise.all(banks.map(async (bankData, bankIndex) => {
+  const result = await Promise.all(banks.map(async (bankData, bankIndex) => {
     if (bankIndex === 0) {
-      return true;
+      return false;
     }
 
     const fileName = ({ albumIndex }) => {
@@ -38,11 +38,17 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
     });
 
     if (!importSav) {
-      return null;
+      return false;
     }
 
     return importSav('', false);
   }));
+
+  if (!result.filter(Boolean).length) {
+    throw new Error('File does not contain any recognizable images');
+  }
+
+  return result;
 };
 
 export default getTransformSav;
