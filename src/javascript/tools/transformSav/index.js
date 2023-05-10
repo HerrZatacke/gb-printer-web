@@ -26,6 +26,10 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
     dispatch,
   });
 
+  if (!importSav) {
+    throw new Error('.sav file seems to be invalid');
+  }
+
   return new Promise(((resolve) => {
     dispatch({
       type: CONFIRM_ASK,

@@ -37,6 +37,10 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
       dispatch,
     });
 
+    if (!importSav) {
+      return null;
+    }
+
     return importSav('', false);
   }));
 };
