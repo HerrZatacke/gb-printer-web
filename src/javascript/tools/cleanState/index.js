@@ -18,7 +18,7 @@ const cleanState = async (dirtyState) => {
   ]);
 
   const palettesShorts = palettes.map(({ shortName }) => shortName);
-  const frameIds = dirtyState.frames.map(({ id }) => id);
+  const frameIds = dirtyState.frames.filter(Boolean).map(({ id }) => id);
 
   const printerUrl = cleanUrl(dirtyState.printerUrl, 'http');
   let framesMessage = dirtyState.framesMessage;
@@ -113,7 +113,7 @@ const cleanState = async (dirtyState) => {
 
   await backupFrames(dirtyState.frames);
 
-  const hashedFrames = await hashFrames(dirtyState.frames);
+  const hashedFrames = await hashFrames(dirtyState.frames.filter(Boolean));
 
   return {
     ...dirtyState,

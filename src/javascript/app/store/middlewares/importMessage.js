@@ -147,19 +147,16 @@ const importMessage = (store) => {
         const params = (action.payload === 'fetchImages') ?
           { dumps: state.printerData?.dumps } : undefined;
 
-        // obh and oko need to be loaded here, as the trigger from
+        // pako need to be loaded here, as the trigger from
         // the remote window might cause the files not to be loaded
-        import(/* webpackChunkName: "obh" */ 'object-hash')
+        import(/* webpackChunkName: "pko" */ 'pako')
           .then(() => {
-            import(/* webpackChunkName: "pko" */ 'pako')
-              .then(() => {
-                remotePrinterWindow.postMessage({
-                  toRemotePrinter: {
-                    command: action.payload,
-                    params,
-                  },
-                }, '*');
-              });
+            remotePrinterWindow.postMessage({
+              toRemotePrinter: {
+                command: action.payload,
+                params,
+              },
+            }, '*');
           });
 
         break;

@@ -16,6 +16,10 @@ const reHash = async (state, hash) => {
   return null;
 };
 
+const objectHash = () => {
+  throw new Error('Temporarily deactivated');
+};
+
 const useHashCleanup = () => {
   const store = useStore();
   const dispatch = useDispatch();
@@ -31,12 +35,10 @@ const useHashCleanup = () => {
       let iCounterMono = 0;
       const state = store.getState();
 
-      const { default: objectHash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
-
       await Promise.all(store.getState().images.map(async (image) => {
         const { hash, hashes } = image;
 
-        if (hashes) {
+        if (hashes) { // RGBN Image
           const channels = await Promise.all(Object.keys(hashes).map(async (key) => {
             const channelHash = hashes[key];
             let newHash = null;
@@ -70,7 +72,7 @@ const useHashCleanup = () => {
             });
           }
 
-        } else {
+        } else { // Normal image
           const savedHash = await reHash(state, hash);
 
           if (savedHash) {
