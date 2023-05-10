@@ -71,10 +71,13 @@ const getImportSav = ({
     const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
     window.setImmediate(() => {
+      const fName = typeof fileName === 'function' ?
+        fileName({ indexText, albumIndex, displayIndex }) :
+        `${fileName} ${indexText}`;
       dispatch({
         type: IMPORTQUEUE_ADD,
         payload: {
-          fileName: `${fileName} ${indexText}`,
+          fileName: fName,
           imageHash,
           frameHash,
           tiles,

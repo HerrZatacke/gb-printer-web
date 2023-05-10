@@ -1,5 +1,6 @@
 import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
+import getTransformRom from '../transformRom';
 import getTransformReduced from '../transformReduced';
 import getTransformBitmaps from '../transformBitmaps';
 import getTransformPlainText from '../transformPlainText';
@@ -8,6 +9,7 @@ import prepareFile from './prepareFile';
 
 const getHandleFileImport = (store) => {
   const transformSav = getTransformSav(store);
+  const transformRom = getTransformRom(store);
   const transformBin = getTransformBin(store);
   const transformBitmaps = getTransformBitmaps(store);
   const transformPlainText = getTransformPlainText(store);
@@ -44,6 +46,16 @@ const getHandleFileImport = (store) => {
         )
       ) {
         return transformSav(file);
+      }
+
+      // .extracting 7 banks of a photo rom
+      if ((
+        file.name?.toLowerCase().endsWith('.gb') ||
+        file.name?.toLowerCase().endsWith('.gbc')
+      ) && (
+        file.size === 0x100000
+      )) {
+        return transformRom(file);
       }
 
       if (contentType === 'application/pico-printer-binary-log') {
