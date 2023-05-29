@@ -260,6 +260,12 @@ const definitions = [
     saveExport: [],
     value: { frames: 0, images: 0, show: false },
   },
+  {
+    key: 'forceMagicCheck',
+    saveLocally: true,
+    saveExport: ['settings'],
+    value: true,
+  },
 ];
 
 const defaults = {};

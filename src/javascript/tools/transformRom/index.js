@@ -5,7 +5,7 @@ import getImportSav from '../transformSav/importSav';
 const getTransformSav = ({ getState, dispatch }) => async (file) => {
   const data = await readFileAs(file, 'arrayBuffer');
 
-  const { importLastSeen, importDeleted } = getState();
+  const { importLastSeen, importDeleted, forceMagicCheck } = getState();
 
   const banks = chunk(data, 0x20000);
 
@@ -35,6 +35,7 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
       fileName,
       importDeleted,
       dispatch,
+      forceMagicCheck,
     });
 
     if (!importSav) {

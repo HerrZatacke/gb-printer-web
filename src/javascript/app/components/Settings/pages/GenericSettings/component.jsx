@@ -209,6 +209,33 @@ const GenericSettings = (props) => {
           <SVG name="checkmark" />
         </span>
       </label>
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': props.forceMagicCheck,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Force valid .sav file when importing"
+        >
+          Force valid .sav file when importing
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={props.forceMagicCheck}
+            onChange={({ target }) => {
+              props.setForceMagicCheck(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
 
       <label
         className={
@@ -402,6 +429,8 @@ GenericSettings.propTypes = {
   importLastSeen: PropTypes.bool.isRequired,
   setImportDeleted: PropTypes.func.isRequired,
   importDeleted: PropTypes.bool.isRequired,
+  setForceMagicCheck: PropTypes.func.isRequired,
+  forceMagicCheck: PropTypes.bool.isRequired,
   setImportPad: PropTypes.func.isRequired,
   importPad: PropTypes.bool.isRequired,
   setHideDates: PropTypes.func.isRequired,

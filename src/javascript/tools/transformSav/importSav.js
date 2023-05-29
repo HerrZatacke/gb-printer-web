@@ -16,23 +16,26 @@ const getImportSav = ({
   fileName,
   importDeleted,
   dispatch,
+  forceMagicCheck,
 }) => {
-  const magicPlaces = [
-    0x10D2,
-    0x11AB,
-    0x11D0,
-    0x11F5,
-  ];
+  if (forceMagicCheck) {
+    const magicPlaces = [
+      0x10D2,
+      0x11AB,
+      0x11D0,
+      0x11F5,
+    ];
 
-  const notMagic = magicPlaces.some((index) => (
-    [...data.subarray(index, index + 5)]
-      .map((ch) => (
-        String.fromCharCode(ch)
-      )).join('') !== 'Magic'
-  ));
+    const notMagic = magicPlaces.some((index) => (
+      [...data.subarray(index, index + 5)]
+        .map((ch) => (
+          String.fromCharCode(ch)
+        )).join('') !== 'Magic'
+    ));
 
-  if (notMagic) {
-    return null;
+    if (notMagic) {
+      return null;
+    }
   }
 
   return async (selectedFrameset, cartIsJP) => {

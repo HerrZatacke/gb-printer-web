@@ -6,7 +6,14 @@ import getImportSav from './importSav';
 const getTransformSav = ({ getState, dispatch }) => async (file) => {
   const data = await readFileAs(file, 'arrayBuffer');
 
-  const { savFrameTypes: selectedFrameset, frames, frameGroupNames, importLastSeen, importDeleted } = getState();
+  const {
+    savFrameTypes: selectedFrameset,
+    frames,
+    frameGroupNames,
+    importLastSeen,
+    importDeleted,
+    forceMagicCheck,
+  } = getState();
 
   const frameGroups = getFrameGroups(frames, frameGroupNames)
     .map(({ id: value, name }) => ({
@@ -24,6 +31,7 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
     fileName: file.name,
     importDeleted,
     dispatch,
+    forceMagicCheck,
   });
 
   if (!importSav) {

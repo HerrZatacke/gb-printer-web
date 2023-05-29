@@ -13,6 +13,7 @@ import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import filtersActiveTags from './reducers/filtersActiveTagsReducer';
 import filtersVisible from './reducers/filtersVisibleReducer';
+import forceMagicCheck from './reducers/forceMagicCheckReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frameQueue from './reducers/frameQueueReducer';
 import frames from './reducers/framesReducer';
@@ -70,6 +71,7 @@ export default combineReducers({
   exportScaleFactors,
   filtersActiveTags,
   filtersVisible,
+  forceMagicCheck,
   frameGroupNames,
   frameQueue,
   frames,
