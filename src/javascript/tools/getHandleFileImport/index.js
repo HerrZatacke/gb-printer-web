@@ -53,7 +53,7 @@ const getHandleFileImport = (store) => {
         file.name?.toLowerCase().endsWith('.gb') ||
         file.name?.toLowerCase().endsWith('.gbc')
       ) && (
-        file.size === 0x100000
+        file.size % 0x100000 === 0
       )) {
         return transformRom(file);
       }
