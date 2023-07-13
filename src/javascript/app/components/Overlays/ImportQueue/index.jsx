@@ -33,7 +33,7 @@ const ImportQueue = () => {
   return (
     <Lightbox
       className="import-overlay"
-      header="Image Import"
+      header={`Image Import (${importQueue.length} images)`}
       confirm={() => runImport({
         importQueue,
         palette,
