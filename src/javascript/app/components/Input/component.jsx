@@ -54,22 +54,35 @@ const Input = ({
         {labelText}
         {children}
       </label>
-      <input
-        id={id}
-        className="inputgroup__input"
-        type={showPass ? 'text' : type}
-        min={type === 'number' ? min : null}
-        max={type === 'number' ? max : null}
-        step={type === 'number' ? step : null}
-        value={value}
-        disabled={disabled}
-        onChange={({ target: { value: newVal, files } }) => {
-          onChange(files || newVal);
-        }}
-        onBlur={blurListener}
-        onKeyUp={keyUpListener}
-      />
-
+      { type === 'textarea' ? (
+        <textarea
+          id={id}
+          className="inputgroup__input inputgroup__input--textarea"
+          value={value}
+          disabled={disabled}
+          onChange={({ target: { value: newVal, files } }) => {
+            onChange(files || newVal);
+          }}
+          onBlur={blurListener}
+          onKeyUp={keyUpListener}
+        />
+      ) : (
+        <input
+          id={id}
+          className="inputgroup__input"
+          type={showPass ? 'text' : type}
+          min={type === 'number' ? min : null}
+          max={type === 'number' ? max : null}
+          step={type === 'number' ? step : null}
+          value={value}
+          disabled={disabled}
+          onChange={({ target: { value: newVal, files } }) => {
+            onChange(files || newVal);
+          }}
+          onBlur={blurListener}
+          onKeyUp={keyUpListener}
+        />
+      )}
       {((type === 'file') ? (
         <label
           htmlFor={id}

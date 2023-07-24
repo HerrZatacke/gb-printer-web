@@ -9,6 +9,8 @@ const inputTypeFromType = (type) => {
       return 'number';
     case 'string':
       return 'text';
+    case 'multiline':
+      return 'textarea';
     default:
       return 'text';
   }

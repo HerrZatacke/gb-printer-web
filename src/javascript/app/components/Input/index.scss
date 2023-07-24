@@ -19,6 +19,13 @@
     @include theme-border-color($color-grey-70, $color-grey-30);
     @include theme-color($color-text, $color-text-bright);
 
+    &--textarea {
+      font-family: monospace;
+      font-size: 14px;
+      min-height: 160px;
+      overflow-y: auto;
+    }
+
     &--select {
       font-size: 16px;
     }
