@@ -27,6 +27,7 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
   const importSav = getImportSav({
     importLastSeen,
     data,
+    lastModified: file.lastModified,
     frames,
     fileName: file.name,
     importDeleted,

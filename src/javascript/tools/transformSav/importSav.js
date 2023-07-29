@@ -12,6 +12,7 @@ const sortByAlbumIndex = sortBy('albumIndex');
 const getImportSav = ({
   importLastSeen,
   data,
+  lastModified,
   frames,
   fileName,
   importDeleted,
@@ -102,6 +103,7 @@ const getImportSav = ({
             imageHash,
             frameHash,
             tiles,
+            lastModified,
             meta,
             tempId: Math.random().toString(16).split('.').pop(),
           },

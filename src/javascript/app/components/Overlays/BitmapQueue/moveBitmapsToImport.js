@@ -48,7 +48,7 @@ const moveBitmapsToImport = (dispatch) => ({
   dither,
   contrastBaseValues,
 }) => {
-  bitmapQueue.forEach(async ({ imageData, height, fileName }) => {
+  bitmapQueue.forEach(async ({ imageData, height, fileName, lastModified }) => {
     const { data } = ditherFilter(imageData, contrastBaseValues, dither, [
       { r: 0, g: 0, b: 0 },
       { r: 1, g: 0, b: 0 },
@@ -78,6 +78,7 @@ const moveBitmapsToImport = (dispatch) => ({
         imageHash,
         frameHash,
         tiles,
+        lastModified,
         tempId: Math.random().toString(16).split('.').pop(),
       },
     });

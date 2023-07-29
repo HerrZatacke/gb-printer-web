@@ -47,6 +47,7 @@ const getImageData = (file) => (
         width: srcCanvas.width,
         height: srcCanvas.height,
         fileName: file.name,
+        lastModified: file.lastModified || null,
       });
     };
 

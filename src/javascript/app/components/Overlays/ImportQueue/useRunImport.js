@@ -1,8 +1,10 @@
+import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import Queue from 'promise-queue/lib';
 import { ADD_IMAGES } from '../../../store/actions';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
+import { dateFormat } from '../../../defaults';
 
 const useRunImport = () => {
   const dispatch = useDispatch();
@@ -16,8 +18,8 @@ const useRunImport = () => {
     tags,
   }) => {
 
-    const savedImages = await Promise.all(importQueue.map((image) => {
-      const { tiles, fileName, meta } = image;
+    const savedImages = await Promise.all(importQueue.map((image, index) => {
+      const { tiles, fileName, meta, lastModified } = image;
 
       return (
         queue.add(() => (
@@ -27,6 +29,8 @@ const useRunImport = () => {
             palette,
             frame,
             tags,
+            // Adding index to milliseconds to ensure better sorting
+            created: lastModified ? dayjs(lastModified + index).format(dateFormat) : null,
             meta,
           })
         ))

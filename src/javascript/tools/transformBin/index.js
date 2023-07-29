@@ -57,6 +57,7 @@ const getTransformBin = ({ dispatch }) => async (file) => {
       imageHash,
       frameHash,
       tiles,
+      lastModified: file.lastModified || null,
       tempId: Math.random().toString(16).split('.').pop(),
     },
   });

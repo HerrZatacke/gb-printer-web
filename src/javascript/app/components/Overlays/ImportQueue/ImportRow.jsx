@@ -1,19 +1,23 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import GameBoyImage from '../../GameBoyImage';
 import SVG from '../../SVG';
 import { FRAMEQUEUE_ADD, IMPORTQUEUE_CANCEL_ONE } from '../../../store/actions';
+import dateFormatLocale from '../../../../tools/dateFormatLocale';
 
 function ImportRow({
   tiles,
   fileName,
+  lastModified,
   imageHash,
   frameHash,
   tempId,
   paletteShort,
 }) {
   const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === paletteShort));
+  const locale = useSelector(({ preferredLocale }) => preferredLocale);
   const storeDuplicateImage = useSelector((state) => state.images.find(({ hash }) => hash === imageHash));
   const storeDuplicateFrame = useSelector((state) => state.frames.find(({ hash }) => hash === frameHash));
   const { length: queueDuplicates } = useSelector((state) => (
@@ -44,6 +48,13 @@ function ImportRow({
         <div className="import-image__name">
           { fileName }
         </div>
+        {
+          lastModified ? (
+            <div className="import-image__date">
+              { dateFormatLocale(dayjs(lastModified), locale) }
+            </div>
+          ) : null
+        }
       </div>
       <div className="import-image__duplicate-icons">
         { (
@@ -125,10 +136,15 @@ function ImportRow({
 ImportRow.propTypes = {
   tiles: PropTypes.array.isRequired,
   fileName: PropTypes.string.isRequired,
+  lastModified: PropTypes.number,
   imageHash: PropTypes.string.isRequired,
   frameHash: PropTypes.string.isRequired,
   paletteShort: PropTypes.string.isRequired,
   tempId: PropTypes.string.isRequired,
+};
+
+ImportRow.defaultProps = {
+  lastModified: null,
 };
 
 export default ImportRow;

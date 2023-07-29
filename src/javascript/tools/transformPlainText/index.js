@@ -30,6 +30,7 @@ const getTransformPlainText = ({ dispatch }) => async (file) => {
         imageHash,
         frameHash,
         tiles,
+        lastModified: file.lastModified ? (file.lastModified + index) : null,
         tempId: Math.random().toString(16).split('.').pop(),
       },
     });
