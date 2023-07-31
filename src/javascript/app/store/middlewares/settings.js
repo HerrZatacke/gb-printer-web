@@ -8,7 +8,7 @@ import { DROPBOX_SETTINGS_IMPORT, GIT_SETTINGS_IMPORT, GLOBAL_UPDATE, JSON_EXPOR
 const mergeSettings = (dispatch, state, newSettings, mergeImagesFrames = false) => {
   Object.keys(newSettings).forEach((key) => {
     if (key !== 'state') {
-      if (key.match(/^[a-f0-9]{40}$/gi)) {
+      if (key.match(/^[a-f0-9]{40,}$/gi)) {
         localforageImages.setItem(`${key}`, newSettings[key]);
       } else if (key.startsWith('frame-')) {
         localforageFrames.setItem(`${key.split('frame-').pop()}`, newSettings[key]);
