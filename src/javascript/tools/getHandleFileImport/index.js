@@ -45,7 +45,7 @@ const getHandleFileImport = (store) => {
           file.size === 3584 // Special case: PicNRec .sav
         )
       ) {
-        return transformSav(file);
+        return transformSav(file, file.size === 3584);
       }
 
       // .extracting 7 banks of a photo rom

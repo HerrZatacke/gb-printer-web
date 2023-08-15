@@ -3,7 +3,7 @@ import { CONFIRM_ANSWERED, CONFIRM_ASK } from '../../app/store/actions';
 import readFileAs from '../readFileAs';
 import getImportSav from './importSav';
 
-const getTransformSav = ({ getState, dispatch }) => async (file) => {
+const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) => {
   const data = await readFileAs(file, 'arrayBuffer');
 
   const {
@@ -32,11 +32,16 @@ const getTransformSav = ({ getState, dispatch }) => async (file) => {
     fileName: file.name,
     importDeleted,
     dispatch,
-    forceMagicCheck,
+    forceMagicCheck: skipDialogs ? false : forceMagicCheck,
   });
 
   if (!importSav) {
     throw new Error('.sav file seems to be invalid');
+  }
+
+  if (skipDialogs) {
+    await importSav('', false);
+    return true;
   }
 
   return new Promise(((resolve) => {
