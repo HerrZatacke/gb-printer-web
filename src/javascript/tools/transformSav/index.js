@@ -25,12 +25,12 @@ const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) =>
   frameGroups.unshift({ value: '', name: 'None (Black frame)' });
 
   const importSav = getImportSav({
-    importLastSeen,
+    importLastSeen: skipDialogs ? true : importLastSeen,
     data,
     lastModified: file.lastModified,
     frames,
     fileName: file.name,
-    importDeleted,
+    importDeleted: skipDialogs ? true : importDeleted,
     dispatch,
     forceMagicCheck: skipDialogs ? false : forceMagicCheck,
   });
