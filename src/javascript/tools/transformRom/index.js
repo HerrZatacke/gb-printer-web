@@ -2,6 +2,10 @@ import chunk from 'chunk';
 import readFileAs from '../readFileAs';
 import getImportSav from '../transformSav/importSav';
 
+const pad2 = (number) => (
+  number.toString(10).padStart(2, '0')
+);
+
 const getTransformRom = ({ getState, dispatch }) => async (file) => {
   const { default: objectHash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
   const data = await readFileAs(file, 'arrayBuffer');
@@ -19,7 +23,6 @@ const getTransformRom = ({ getState, dispatch }) => async (file) => {
     banks.findIndex(({ hash }) => (hash === bank.hash)) === index
   ));
 
-  let displayIndex = 0;
   const result = await Promise.all(banks.map(async ({
     bankData,
     bankIndex,
@@ -30,20 +33,20 @@ const getTransformRom = ({ getState, dispatch }) => async (file) => {
 
     const fileName = ({ albumIndex }) => {
       if (albumIndex === 64) {
-        return `${file.name} [last seen in bank ${bankIndex}]`;
+        return `${file.name} - bank ${pad2(bankIndex)} [last seen]`;
       }
 
       if (albumIndex === 255) {
-        return `${file.name} [deleted in bank ${bankIndex}]`;
+        return `${file.name} - bank ${pad2(bankIndex)} [deleted]`;
       }
 
-      displayIndex += 1;
-      return `${file.name} ${displayIndex.toString(10).padStart(3, '0')} in bank ${bankIndex}`;
+      return `${file.name} - bank ${pad2(bankIndex)} - image ${pad2(albumIndex + 1)}`;
     };
 
     const importSav = getImportSav({
       importLastSeen,
       data: bankData,
+      lastModified: file.lastModified,
       frames: [],
       fileName,
       importDeleted,

@@ -30,7 +30,7 @@ const useRunImport = () => {
             frame,
             tags,
             // Adding index to milliseconds to ensure better sorting
-            created: lastModified ? dayjs(lastModified + index).format(dateFormat) : null,
+            created: lastModified ? dayjs(lastModified + index).format(dateFormat) : undefined,
             meta,
           })
         ))
