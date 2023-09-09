@@ -46,6 +46,7 @@ const getTransformRom = ({ getState, dispatch }) => async (file) => {
     const importSav = getImportSav({
       importLastSeen,
       data: bankData,
+      lastModified: file.lastModified,
       frames: [],
       fileName,
       importDeleted,
