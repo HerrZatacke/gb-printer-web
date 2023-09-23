@@ -1,3 +1,4 @@
+import Queue from 'promise-queue/lib';
 import applyFrame from '../applyFrame';
 import mapCartFrameToHash from './mapCartFrameToHash';
 import getFileMeta from './getFileMeta';
@@ -5,7 +6,7 @@ import sortBy from '../sortby';
 import transformImage from './transformImage';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
-import { IMPORTQUEUE_ADD } from '../../app/store/actions';
+import { IMPORTQUEUE_ADD_MULTI } from '../../app/store/actions';
 
 const sortByAlbumIndex = sortBy('albumIndex');
 
@@ -69,49 +70,53 @@ const getImportSav = ({
 
     const sortedImages = sortByAlbumIndex(images.filter(Boolean));
 
+    const queue = new Queue(1, Infinity);
+
     let displayIndex = 0;
-    await Promise.all(sortedImages.map(async ({ albumIndex, tiles, meta }) => {
-      let indexText;
-      switch (albumIndex) {
-        case 64:
-          indexText = '[last seen]';
-          break;
-        case 255:
-          if (!importDeleted) {
-            return null;
-          }
 
-          indexText = '[deleted]';
-          break;
-        default:
-          displayIndex += 1;
-          indexText = displayIndex.toString(10).padStart(2, '0');
-          break;
-      }
+    const imageData = await Promise.all(sortedImages.map(async ({ albumIndex, tiles, meta }) => (
+      queue.add(async () => {
+        let indexText;
+        switch (albumIndex) {
+          case 64:
+            indexText = '[last seen]';
+            break;
+          case 255:
+            if (!importDeleted) {
+              return null;
+            }
 
-      const { dataHash: imageHash } = await compressAndHash(tiles);
-      const { dataHash: frameHash } = await compressAndHashFrame(tiles);
+            indexText = '[deleted]';
+            break;
+          default:
+            displayIndex += 1;
+            indexText = displayIndex.toString(10).padStart(2, '0');
+            break;
+        }
 
-      window.setImmediate(() => {
+        const { dataHash: imageHash } = await compressAndHash(tiles);
+        const { dataHash: frameHash } = await compressAndHashFrame(tiles);
+
         const fName = typeof fileName === 'function' ?
           fileName({ indexText, albumIndex, displayIndex }) :
           `${fileName} ${indexText}`;
-        dispatch({
-          type: IMPORTQUEUE_ADD,
-          payload: {
-            fileName: fName,
-            imageHash,
-            frameHash,
-            tiles,
-            lastModified,
-            meta,
-            tempId: Math.random().toString(16).split('.').pop(),
-          },
-        });
-      });
 
-      return true;
-    }));
+        return {
+          fileName: fName,
+          imageHash,
+          frameHash,
+          tiles,
+          lastModified,
+          meta,
+          tempId: Math.random().toString(16).split('.').pop(),
+        };
+      })
+    )));
+
+    dispatch({
+      type: IMPORTQUEUE_ADD_MULTI,
+      payload: imageData.filter(Boolean),
+    });
 
     return true;
   };
