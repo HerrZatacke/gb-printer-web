@@ -2,6 +2,7 @@ import {
   ADD_FRAME,
   ADD_IMAGES,
   IMPORTQUEUE_ADD,
+  IMPORTQUEUE_ADD_MULTI,
   IMPORTQUEUE_CANCEL,
   IMPORTQUEUE_CANCEL_ONE,
 } from '../actions';
@@ -12,6 +13,12 @@ const importQueueReducer = (importQueue = [], action) => {
       return [
         ...importQueue,
         action.payload,
+      ];
+
+    case IMPORTQUEUE_ADD_MULTI:
+      return [
+        ...importQueue,
+        ...action.payload,
       ];
 
     case IMPORTQUEUE_CANCEL:
