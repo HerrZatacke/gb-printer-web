@@ -16,7 +16,15 @@ const prepareFile = (fileData) => {
   }
 
   if (!ok || !file.size) {
-    throw new Error('Error in received data');
+    throw new Error(
+      `Error in received data:
+Filesize: ${file.size}
+Filename: ${file.name}
+Content Type: ${contentType}
+Meta: ${JSON.stringify(meta)}
+OK: ${ok ? 'yes' : 'no'}
+`,
+    );
   }
 
   return {
