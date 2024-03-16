@@ -380,3 +380,5 @@ export const charMapJp = {
   0xf4: '"',
   0xf5: '@',
 };
+
+export const charMapDateDigit = '00123456789?????';

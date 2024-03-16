@@ -1,13 +1,11 @@
-/* eslint-disable prefer-template */
-import { charMapInt, charMapJp } from './charMap';
+import { charMapInt, charMapJp, charMapDateDigit } from './charMap';
 
 const convertToReadable = (data, cartIsJP) => {
-  const values = [...data].filter(Boolean);
   const charMap = cartIsJP ? charMapJp : charMapInt;
 
-  return values.map((value) => (
-    charMap[value] || ''
-  )).join('');
+  return [...data].map((value) => (
+    charMap[value] || ' '
+  )).join('').trim();
 };
 
 const parseGender = (byte) => {
@@ -40,26 +38,40 @@ const parseBloodType = (byte) => {
   }
 };
 
-const parseBirthDate = (birthDate, cartIsJP) => {
-  const baseValues = [...birthDate]
-    .filter(Boolean)
-    .map((value) => (
-      [...value.toString(16)]
-        .map((value2) => parseInt(value2, 16) - 1)
-        .join('')
-    ));
-
-  if (baseValues.length < 4) {
-    return '-';
+const convertDateDigit = (byteValue) => {
+  if (!byteValue) {
+    return '--';
   }
 
-  const [year1, year2, month, day] = baseValues;
+  // eslint-disable-next-line no-bitwise
+  const upperFormat = charMapDateDigit[byteValue >> 4];
+  // eslint-disable-next-line no-bitwise
+  const lowerFormat = charMapDateDigit[byteValue & 0b00001111];
+  return `${upperFormat}${lowerFormat}`;
+};
+
+const concatYear = (year1, year2) => {
+  if (year1 === '--' && year2 !== '--') {
+    return `00${year2}`;
+  }
+
+  if (year1 !== '--' && year2 === '--') {
+    return `${year1}00`;
+  }
+
+  return `${year1}${year2}`;
+};
+
+const parseBirthDate = (birthDate, cartIsJP) => {
+  const [year1, year2, date1, date2] = [...birthDate].map(convertDateDigit);
+
+  const fullYear = concatYear(year1, year2);
 
   if (cartIsJP) {
-    return `${year1}${year2}年${month}月${day}日`;
+    return `${fullYear}年${date1}月${date2}日`;
   }
 
-  return `${day}/${month}/${year1}${year2}`;
+  return `${date1}/${date2}/${fullYear}`;
 };
 
 const getFileMeta = (data, baseAddress, cartIsJP) => {
