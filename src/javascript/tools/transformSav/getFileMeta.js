@@ -38,7 +38,7 @@ const parseBloodType = (byte) => {
   }
 };
 
-const convertDateDigit = (byteValue) => {
+const convertDigit = (byteValue) => {
   if (!byteValue) {
     return '--';
   }
@@ -63,7 +63,7 @@ const concatYear = (year1, year2) => {
 };
 
 const parseBirthDate = (birthDate, cartIsJP) => {
-  const [year1, year2, date1, date2] = [...birthDate].map(convertDateDigit);
+  const [year1, year2, date1, date2] = [...birthDate].map(convertDigit);
 
   const fullYear = concatYear(year1, year2);
 
@@ -74,12 +74,25 @@ const parseBirthDate = (birthDate, cartIsJP) => {
   return `${date1}/${date2}/${fullYear}`;
 };
 
+const parseUserId = (userId, cartIsJP) => {
+  const digits =
+    [...userId]
+      .map(convertDigit)
+      .map((digit) => (digit === '--' ? '00' : digit));
+  const prefix = cartIsJP ? 'PC-' : 'GC-';
+
+  return `${prefix}${digits.join('')}`;
+};
+
 const getFileMeta = (data, baseAddress, cartIsJP) => {
   const cartIndex = (baseAddress / 0x1000) - 2;
   const albumIndex = cartIndex >= 0 ? data[0x11b2 + cartIndex] : 64;
 
   // For all adresses see:
   // https://funtography.online/wiki/Structure_of_the_Game_Boy_Camera_Save_Data
+
+  // 0x02F00-0x02F03: user ID, 4 bytes sequence (equal to 11 + series of two digits among 8 in reading order).
+  const userId = data.slice(baseAddress + 0x00F00, baseAddress + 0x00F03 + 1);
 
   // 0x00F04-0x00F0C: username (0x56 = A to 0xC8 = @, same tileset as first character stamps).
   const userName = data.slice(baseAddress + 0x00F04, baseAddress + 0x00F0C + 1);
@@ -105,6 +118,7 @@ const getFileMeta = (data, baseAddress, cartIsJP) => {
     albumIndex,
     baseAddress,
     meta: baseAddress ? {
+      userId: parseUserId(userId, cartIsJP),
       birthDate: parseBirthDate(birthDate, cartIsJP),
       userName: convertToReadable(userName, cartIsJP),
       gender: parseGender(genderAndBloodType),
