@@ -1,4 +1,5 @@
 import { charMapInt, charMapJp, charMapDateDigit } from './charMap';
+import parsePXLRMetadata from './parsePXLRMetadata';
 
 const convertToReadable = (data, cartIsJP) => {
   const charMap = cartIsJP ? charMapJp : charMapInt;
@@ -112,6 +113,14 @@ const getFileMeta = (data, baseAddress, cartIsJP) => {
   // 0x00F54: border number associated to the image.
   const frameNumber = data[baseAddress + 0x00F54];
 
+  // 0x00E00-0x00EFF: image thumbnail (32x32, 16 tiles, black borders and 4 white lines on the bottom to not hide the hand). Image exchanged displays a small distinctive badge.
+  const thumbnail = data.slice(baseAddress + 0x00E00, baseAddress + 0x00EFF + 1);
+
+  const pxlrMeta = albumIndex < 64 ? parsePXLRMetadata(thumbnail) : {};
+
+  // if (albumIndex < 64) {
+  //   console.log(pxlrMeta);
+  // }
 
   return {
     cartIndex,
@@ -125,6 +134,7 @@ const getFileMeta = (data, baseAddress, cartIsJP) => {
       bloodType: parseBloodType(genderAndBloodType),
       comment: convertToReadable(comment, cartIsJP),
       isCopy,
+      ...pxlrMeta,
     } : null,
     frameNumber,
   };
