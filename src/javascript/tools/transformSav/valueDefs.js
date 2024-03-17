@@ -161,12 +161,3 @@ export const thumbnailByteEdmovolt = 0xC6;
 export const thumbnailByteVoutzero = 0xD6;
 export const thumbnailByteDitherset = 0xE6;
 export const thumbnailByteContrast = 0xF6;
-
-// export const thumbnailByteCapture = 0xC8;
-// export const thumbnailByteEdgegains = 0xC9;
-// export const thumbnailByteExposureHigh = 0xCA;
-// export const thumbnailByteExposureLow = 0xCB;
-// export const thumbnailByteEdmovolt = 0xCC;
-// export const thumbnailByteVoutzero = 0xCD;
-// export const thumbnailByteDitherset = 0xCE;
-// export const thumbnailByteContrast = 0xCF;
