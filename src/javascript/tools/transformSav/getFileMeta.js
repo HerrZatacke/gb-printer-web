@@ -119,7 +119,7 @@ const getFileMeta = (data, baseAddress, cartIsJP) => {
   const pxlrMeta = albumIndex < 64 ? parsePXLRMetadata(thumbnail) : {};
 
   // if (albumIndex < 64) {
-  //   console.log(albumIndex, pxlrMeta.exposure);
+  //   console.log(albumIndex, pxlrMeta);
   // }
 
   return {
