@@ -153,11 +153,25 @@ export const valueDitherOn = 0x00000000;
 export const valueDitherOff = 0x00000010;
 
 
-export const thumbnailByteCapture = 0x00;
-export const thumbnailByteEdgegains = 0x10;
-export const thumbnailByteExposureHigh = 0x20;
-export const thumbnailByteExposureLow = 0x30;
-export const thumbnailByteEdmovolt = 0xC6;
-export const thumbnailByteVoutzero = 0xD6;
-export const thumbnailByteDitherset = 0xE6;
-export const thumbnailByteContrast = 0xF6;
+export const byteOffsetsPXLR = {
+  thumbnailByteCapture: 0x00,
+  thumbnailByteEdgegains: 0x10,
+  thumbnailByteExposureHigh: 0x20,
+  thumbnailByteExposureLow: 0x30,
+  thumbnailByteEdmovolt: 0xC6,
+  thumbnailByteVoutzero: 0xD6,
+  thumbnailByteDitherset: 0xE6,
+  thumbnailByteContrast: 0xF6,
+};
+
+
+export const byteOffsetsPhoto = {
+  thumbnailByteCapture: 0xC8,
+  thumbnailByteEdgegains: 0xC9,
+  thumbnailByteExposureHigh: 0xCB, // Photo seems to "swap" the bytes only when sending to the sensor
+  thumbnailByteExposureLow: 0xCA, // So for metadata just flip them back
+  thumbnailByteEdmovolt: 0xCC,
+  thumbnailByteVoutzero: 0xCD,
+  thumbnailByteDitherset: 0xCE,
+  thumbnailByteContrast: 0xCF,
+};

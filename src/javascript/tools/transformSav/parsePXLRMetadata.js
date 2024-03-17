@@ -1,14 +1,8 @@
 /* eslint-disable no-bitwise */
 import {
   // Addresses
-  thumbnailByteExposureHigh,
-  thumbnailByteExposureLow,
-  thumbnailByteCapture,
-  thumbnailByteEdgegains,
-  thumbnailByteEdmovolt,
-  thumbnailByteVoutzero,
-  thumbnailByteContrast,
-  thumbnailByteDitherset,
+  byteOffsetsPXLR,
+  byteOffsetsPhoto,
 
   // Masks
   maskCapture,
@@ -379,23 +373,21 @@ const isPhoto = (thumb) => {
 };
 
 const parsePXLRMetadata = (thumbnail) => {
-  if (isPhoto(thumbnail)) {
-    return {};
-  }
+  const offsets = isPhoto(thumbnail) ? byteOffsetsPhoto : byteOffsetsPXLR;
 
-  const exposureHigh = thumbnail[thumbnailByteExposureHigh];
-  const exposureLow = thumbnail[thumbnailByteExposureLow];
-  const captureMode = thumbnail[thumbnailByteCapture] & maskCapture;
-  const edgeExclusive = thumbnail[thumbnailByteEdgegains] & maskEdgeExclusive;
-  const edgeOperation = thumbnail[thumbnailByteEdgegains] & maskEdgeOpMode;
-  const gain = thumbnail[thumbnailByteEdgegains] & maskGain;
-  const edgeMode = thumbnail[thumbnailByteEdmovolt] & maskEdgeRatio;
-  const invertOut = thumbnail[thumbnailByteEdmovolt] & maskInvertOutput;
-  const vRef = thumbnail[thumbnailByteEdmovolt] & maskVoltageRef;
-  const zeroPoint = thumbnail[thumbnailByteVoutzero] & maskZeroPoint;
-  const vOut = thumbnail[thumbnailByteVoutzero] & maskVoltageOut;
-  const ditherset = thumbnail[thumbnailByteDitherset];
-  const contrast = thumbnail[thumbnailByteContrast];
+  const exposureHigh = thumbnail[offsets.thumbnailByteExposureHigh];
+  const exposureLow = thumbnail[offsets.thumbnailByteExposureLow];
+  const captureMode = thumbnail[offsets.thumbnailByteCapture] & maskCapture;
+  const edgeExclusive = thumbnail[offsets.thumbnailByteEdgegains] & maskEdgeExclusive;
+  const edgeOperation = thumbnail[offsets.thumbnailByteEdgegains] & maskEdgeOpMode;
+  const gain = thumbnail[offsets.thumbnailByteEdgegains] & maskGain;
+  const edgeMode = thumbnail[offsets.thumbnailByteEdmovolt] & maskEdgeRatio;
+  const invertOut = thumbnail[offsets.thumbnailByteEdmovolt] & maskInvertOutput;
+  const vRef = thumbnail[offsets.thumbnailByteEdmovolt] & maskVoltageRef;
+  const zeroPoint = thumbnail[offsets.thumbnailByteVoutzero] & maskZeroPoint;
+  const vOut = thumbnail[offsets.thumbnailByteVoutzero] & maskVoltageOut;
+  const ditherset = thumbnail[offsets.thumbnailByteDitherset];
+  const contrast = thumbnail[offsets.thumbnailByteContrast];
 
   const originalRomValues = [255, 255, 3, 128, 96, 31, 112, 8, 7, 192, 63, 255, 255].join('_');
   const parsedValues = [exposureHigh, exposureLow, captureMode, edgeExclusive, edgeOperation, gain, edgeMode, invertOut, vRef, zeroPoint, vOut, ditherset, contrast].join('_');
