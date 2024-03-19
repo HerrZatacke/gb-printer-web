@@ -190,6 +190,6 @@ export const byteOffsetsPhoto = {
   thumbnailByteExposureLow: 0xCA, // So for metadata just flip them back
   thumbnailByteEdmovolt: 0xCC,
   thumbnailByteVoutzero: 0xCD,
-  thumbnailByteDitherset: 0x00, // currently not supported
-  thumbnailByteContrast: 0x00, // currently not supported
+  thumbnailByteDitherset: 0xC8, // currently not supported
+  thumbnailByteContrast: 0xC8, // currently not supported
 };
