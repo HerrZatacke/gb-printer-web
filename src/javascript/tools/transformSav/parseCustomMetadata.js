@@ -240,22 +240,51 @@ const getDitherSet = (ditherSet) => {
   return `${set}/${onoff}`;
 };
 
-const isPhoto = (thumb) => {
-  const whiteLines = [
+export const getRomType = (thumb) => {
+  // The unused lines below the thumbnail-image are:
+  // * all white in the stock rom (0x00)
+  // * all black in PXLR (0xff)
+  // * containing the metadata in Photo
+  const unusedLines = [
     0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF,
     0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF,
     0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
     0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
-  ]
-    .map((addr) => thumb[addr])
-    .filter((value) => value !== 0xFF);
+  ];
 
-  return Boolean(whiteLines.length);
+  // const photoData = unusedLines
+  const all0x00 = unusedLines
+    .map((addr) => thumb[addr])
+    .filter((value) => value === 0x00);
+
+  if (all0x00.length === unusedLines.length) {
+    return 'stock';
+  }
+
+  const all0xff = unusedLines
+    .map((addr) => thumb[addr])
+    .filter((value) => value === 0xFF);
+
+  if (all0xff.length === unusedLines.length) {
+    return 'pxlr';
+  }
+
+  return 'photo';
 };
 
-const parsePXLRMetadata = (thumbnail) => {
-  const isPhotoRom = isPhoto(thumbnail);
-  const offsets = isPhotoRom ? byteOffsetsPhoto : byteOffsetsPXLR;
+export const parseCustomMetadata = (thumbnail, romType) => {
+  let offsets;
+
+  switch (romType) {
+    case 'photo':
+      offsets = byteOffsetsPhoto;
+      break;
+    case 'pxlr':
+      offsets = byteOffsetsPXLR;
+      break;
+    default:
+      return {};
+  }
 
   const exposureHigh = thumbnail[offsets.thumbnailByteExposureHigh];
   const exposureLow = thumbnail[offsets.thumbnailByteExposureLow];
@@ -271,14 +300,24 @@ const parsePXLRMetadata = (thumbnail) => {
   const ditherset = thumbnail[offsets.thumbnailByteDitherset];
   const contrast = thumbnail[offsets.thumbnailByteContrast];
 
-  const originalRomValues = [255, 255, 3, 128, 96, 31, 112, 8, 7, 192, 63, 255, 255].join('_');
-  const parsedValues = [exposureHigh, exposureLow, captureMode, edgeExclusive, edgeOperation, gain, edgeMode, invertOut, vRef, zeroPoint, vOut, ditherset, contrast].join('_');
-
-  if (originalRomValues === parsedValues) {
-    return {};
+  if (romType === 'photo') {
+    return {
+      romType,
+      exposure: getExposureTime(exposureHigh, exposureLow),
+      captureMode: getCaptureMode(captureMode),
+      edgeExclusive: getEdgeExclusive(edgeExclusive),
+      edgeOperation: getEdgeOpMode(edgeOperation),
+      gain: getGain(gain),
+      edgeMode: getEdgeMode(edgeMode),
+      invertOut: getInvertOut(invertOut),
+      voltageRef: getVoltageRef(vRef),
+      zeroPoint: getZeroPoint(zeroPoint),
+      vOut: getVoltageOut(vOut),
+    };
   }
 
-  const result = {
+  return {
+    romType,
     exposure: getExposureTime(exposureHigh, exposureLow),
     captureMode: getCaptureMode(captureMode),
     edgeExclusive: getEdgeExclusive(edgeExclusive),
@@ -293,12 +332,4 @@ const parsePXLRMetadata = (thumbnail) => {
     contrast: contrast + 1,
   };
 
-  if (isPhotoRom) {
-    delete result.ditherset;
-    delete result.contrast;
-  }
-
-  return result;
 };
-
-export default parsePXLRMetadata;

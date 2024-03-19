@@ -9,7 +9,7 @@ export const maskVoltageRef = 0b00000111;
 export const maskZeroPoint = 0b11000000;
 export const maskVoltageOut = 0b00111111;
 export const maskDitherSet = 0b00000001;
-export const maskDitherOnOff = 0x00000010;
+export const maskDitherOnOff = 0b00000010;
 
 
 export const valuesCapture = {
@@ -21,7 +21,7 @@ export const valuesGain = {
   140: 0b00000000, // 14.0 (gbcam gain:  5.01)
   155: 0b00000001, // 15.5
   170: 0b00000010, // 17.0
-  185: 0b00000010, // 18.5
+  185: 0b00000011, // 18.5
   200: 0b00000100, // 20.0 (gbcam gain: 10.00)
   '200Dup': 0b00010000, // 20.0 (d)
   215: 0b00000101, // 21.5
@@ -29,7 +29,7 @@ export const valuesGain = {
   230: 0b00000110, // 23.0
   '230Dup': 0b00010010, // 23.0 (d)
   245: 0b00000111, // 24.5
-  '245Dup': 0b00010010, // 24.5 (d)
+  '245Dup': 0b00010011, // 24.5 (d)
   260: 0b00001000, // 26.0 (gbcam gain: 19.95)
   '260Dup': 0b00010100, // 26.0 (d)
   275: 0b00010101, // 27.5
@@ -190,6 +190,6 @@ export const byteOffsetsPhoto = {
   thumbnailByteExposureLow: 0xCA, // So for metadata just flip them back
   thumbnailByteEdmovolt: 0xCC,
   thumbnailByteVoutzero: 0xCD,
-  thumbnailByteDitherset: 0x00, // currently not supported
-  thumbnailByteContrast: 0x00, // currently not supported
+  thumbnailByteDitherset: 0xC8, // currently not supported
+  thumbnailByteContrast: 0xC8, // currently not supported
 };

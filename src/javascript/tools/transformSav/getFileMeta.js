@@ -1,5 +1,5 @@
 import { charMapInt, charMapJp, charMapDateDigit } from './charMap';
-import parsePXLRMetadata from './parsePXLRMetadata';
+import { getRomType, parseCustomMetadata } from './parseCustomMetadata';
 
 const convertToReadable = (data, cartIsJP) => {
   const charMap = cartIsJP ? charMapJp : charMapInt;
@@ -85,10 +85,7 @@ const parseUserId = (userId, cartIsJP) => {
   return `${prefix}${digits.join('')}`;
 };
 
-const getFileMeta = (data, baseAddress, cartIsJP) => {
-  const cartIndex = (baseAddress / 0x1000) - 2;
-  const albumIndex = cartIndex >= 0 ? data[0x11b2 + cartIndex] : 64;
-
+const parseBasicMetadata = (data, baseAddress, cartIsJP) => {
   // For all adresses see:
   // https://funtography.online/wiki/Structure_of_the_Game_Boy_Camera_Save_Data
 
@@ -110,32 +107,70 @@ const getFileMeta = (data, baseAddress, cartIsJP) => {
   // 0x00F33: 0x00 if image is original, 0x01 if image is a copy.
   const isCopy = Boolean(data[baseAddress + 0x00F33]);
 
+  return {
+    userId: parseUserId(userId, cartIsJP),
+    birthDate: parseBirthDate(birthDate, cartIsJP),
+    userName: convertToReadable(userName, cartIsJP),
+    gender: parseGender(genderAndBloodType),
+    bloodType: parseBloodType(genderAndBloodType),
+    comment: convertToReadable(comment, cartIsJP),
+    isCopy,
+  };
+};
+
+// function describeAlbumIndex(albumIndex) {
+//   switch (albumIndex) {
+//     case 64:
+//       return 'last seen';
+//     case 255:
+//       return 'deleted';
+//     default:
+//       return albumIndex;
+//   }
+// }
+
+const getFileMeta = (data, baseAddress, cartIsJP) => {
+  const cartIndex = (baseAddress / 0x1000) - 2;
+  const albumIndex = cartIndex >= 0 ? data[0x11b2 + cartIndex] : 64;
+
   // 0x00F54: border number associated to the image.
   const frameNumber = data[baseAddress + 0x00F54];
 
   // 0x00E00-0x00EFF: image thumbnail (32x32, 16 tiles, black borders and 4 white lines on the bottom to not hide the hand). Image exchanged displays a small distinctive badge.
   const thumbnail = data.slice(baseAddress + 0x00E00, baseAddress + 0x00EFF + 1);
 
-  const pxlrMeta = albumIndex < 64 ? parsePXLRMetadata(thumbnail) : {};
 
-  // if (albumIndex < 64) {
-  //   console.log(albumIndex, pxlrMeta);
-  // }
+  let meta;
+
+  // not deleted or last seen
+  if (albumIndex < 64) {
+    const romType = getRomType(thumbnail);
+    // console.log(`albumIndex: ${describeAlbumIndex(albumIndex)} - ${romType}`);
+
+    meta = { romType };
+
+    if (romType !== 'stock') {
+      meta = {
+        ...meta,
+        ...parseCustomMetadata(thumbnail, romType),
+      };
+    }
+
+    if (romType === 'stock') { // ToDo: later support Photo! once userdata is implemented
+      meta = {
+        ...meta,
+        ...parseBasicMetadata(data, baseAddress, cartIsJP),
+      };
+    }
+  // } else {
+  //   console.log(`albumIndex: ${describeAlbumIndex(albumIndex)}`);
+  }
 
   return {
     cartIndex,
     albumIndex,
     baseAddress,
-    meta: baseAddress ? {
-      userId: parseUserId(userId, cartIsJP),
-      birthDate: parseBirthDate(birthDate, cartIsJP),
-      userName: convertToReadable(userName, cartIsJP),
-      gender: parseGender(genderAndBloodType),
-      bloodType: parseBloodType(genderAndBloodType),
-      comment: convertToReadable(comment, cartIsJP),
-      isCopy,
-      ...pxlrMeta,
-    } : null,
+    meta,
     frameNumber,
   };
 };
