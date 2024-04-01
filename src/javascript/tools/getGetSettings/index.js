@@ -4,6 +4,7 @@ import getFrames from './getFrames';
 import getImageHashesForExport from './getImageHashesForExport';
 import getFrameHashesForExport from './getFrameHashesForExport';
 import { getEnv } from '../getEnv';
+import getFrameGroups from '../getFrameGroups';
 
 const getGetSettings = (store) => (what, { lastUpdateUTC, selectedFrameGroup } = {}) => {
 
@@ -37,6 +38,11 @@ const getGetSettings = (store) => (what, { lastUpdateUTC, selectedFrameGroup } =
         exportableState[key] = exportableState[key].filter(({ hash }) => (
           getFrameHashesForExport(what, state, frameSetID).includes(hash)
         ));
+      }
+
+      // Remove unused framegroups from export
+      if (key === 'frameGroupNames' && what !== 'debug') {
+        exportableState[key] = getFrameGroups(exportableState.frames, exportableState[key]);
       }
 
       if (key === 'frameGroupNames' && what === 'framegroup') {
