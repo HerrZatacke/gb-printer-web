@@ -1,10 +1,10 @@
-let canShare = null;
+let canShare: boolean | null = null;
 
-const canShareReducer = () => {
+const canShareReducer = (): boolean => {
   if (canShare === null) {
     try {
       canShare = window.navigator.canShare({
-        files: [new File([new Blob([...'test'])], 'test.txt', { type: 'text/plain', lastModified: new Date() })],
+        files: [new File([new Blob(['t', 'e', 's', 't'])], 'test.txt', { type: 'text/plain', lastModified: Date.now() })],
       });
     } catch (error) {
       canShare = false;

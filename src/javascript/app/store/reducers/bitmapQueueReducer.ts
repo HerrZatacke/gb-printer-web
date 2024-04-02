@@ -1,7 +1,21 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-const bitmapQueueReducer = (bitmapQueue = [], action) => {
+interface QueueImage {
+  imageData: ImageData,
+  scaleFactor: number,
+  width: number,
+  height: number,
+  fileName: string,
+  lastModified: number | null,
+}
+
+interface BitmapQueueAction {
+  type: Actions.BITMAPQUEUE_ADD | Actions.BITMAPQUEUE_CANCEL | Actions.IMPORTQUEUE_ADD,
+  payload: QueueImage,
+}
+
+const bitmapQueueReducer = (bitmapQueue: QueueImage[] = [], action: BitmapQueueAction): QueueImage[] => {
   switch (action.type) {
     case Actions.BITMAPQUEUE_ADD:
       return [

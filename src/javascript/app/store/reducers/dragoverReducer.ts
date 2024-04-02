@@ -1,7 +1,11 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-const dragoverReducer = (value = false, action) => {
+interface DragoverAction {
+  type: Actions.IMPORT_DRAGOVER_START | Actions.IMPORT_DRAGOVER_END,
+}
+
+const dragoverReducer = (value = false, action: DragoverAction): boolean => {
   switch (action.type) {
     case Actions.IMPORT_DRAGOVER_START:
       return true;

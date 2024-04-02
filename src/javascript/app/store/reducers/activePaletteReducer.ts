@@ -2,15 +2,18 @@
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 
-interface ActivePaletteAction {
-  type: Actions.PALETTE_SET_ACTIVE | Actions.GLOBAL_UPDATE | Actions.PALETTE_DELETE,
-  payload: {
+type ActivePaletteAction = {
+  type: Actions.PALETTE_SET_ACTIVE,
+  payload: string,
+} | {
+  type: Actions.GLOBAL_UPDATE | Actions.PALETTE_DELETE,
+    payload: {
     activePalette?: string,
     newSelectedPalette?: string,
   }
 }
 
-const activePaletteReducer = (value = 'cybl', action: ActivePaletteAction) => {
+const activePaletteReducer = (value = 'cybl', action: ActivePaletteAction): string | undefined => {
   switch (action.type) {
     case Actions.PALETTE_SET_ACTIVE:
       return action.payload;
