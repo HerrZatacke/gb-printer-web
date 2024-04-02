@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import loadImageTiles from '../../../tools/loadImageTiles';
-import { TRY_RECOVER_IMAGE_DATA } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const mapStateToProps = (state) => ({
   loadImageTiles: loadImageTiles(state),
@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   recover: (hash) => {
     dispatch({
-      type: TRY_RECOVER_IMAGE_DATA,
+      type: Actions.TRY_RECOVER_IMAGE_DATA,
       payload: hash,
     });
   },

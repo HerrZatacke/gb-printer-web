@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import GameBoyImage from '../../GameBoyImage';
 import SVG from '../../SVG';
-import { FRAMEQUEUE_ADD, IMPORTQUEUE_CANCEL_ONE } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 
 function ImportRow({
@@ -96,7 +96,7 @@ function ImportRow({
             title="Import as Frame"
             onClick={() => {
               dispatch({
-                type: FRAMEQUEUE_ADD,
+                type: Actions.FRAMEQUEUE_ADD,
                 payload: {
                   fileName,
                   tiles,
@@ -118,7 +118,7 @@ function ImportRow({
           title="Delete"
           onClick={() => {
             dispatch({
-              type: IMPORTQUEUE_CANCEL_ONE,
+              type: Actions.IMPORTQUEUE_CANCEL_ONE,
               payload: { tempId },
             });
           }}

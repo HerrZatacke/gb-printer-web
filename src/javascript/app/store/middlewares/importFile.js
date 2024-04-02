@@ -1,11 +1,11 @@
 import getHandleFileImport from '../../../tools/getHandleFileImport';
-import { ERROR, IMPORT_FILES } from '../actions';
+import { Actions } from '../actions';
 
 const importFile = (store) => {
   const handleFileImport = getHandleFileImport(store);
 
   return (next) => (action) => {
-    if (action.type === IMPORT_FILES) {
+    if (action.type === Actions.IMPORT_FILES) {
 
       if (action.payload.files && action.payload.files.length) {
         const importFiles = async () => {
@@ -15,7 +15,7 @@ const importFile = (store) => {
             });
           } catch (error) {
             store.dispatch({
-              type: ERROR,
+              type: Actions.ERROR,
               payload: error.message,
             });
           }

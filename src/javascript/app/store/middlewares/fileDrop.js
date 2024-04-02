@@ -1,5 +1,5 @@
 import getHandleFileImport from '../../../tools/getHandleFileImport';
-import { ERROR, IMPORT_DRAGOVER_END, IMPORT_DRAGOVER_START } from '../actions';
+import { Actions } from '../actions';
 
 const fileDrop = (store) => {
   const root = document.querySelector('#app');
@@ -13,7 +13,7 @@ const fileDrop = (store) => {
 
     if (!dragging) {
       store.dispatch({
-        type: IMPORT_DRAGOVER_START,
+        type: Actions.IMPORT_DRAGOVER_START,
       });
     }
 
@@ -24,7 +24,7 @@ const fileDrop = (store) => {
     dragoverTimeout = window.setTimeout(() => {
       dragging = false;
       store.dispatch({
-        type: IMPORT_DRAGOVER_END,
+        type: Actions.IMPORT_DRAGOVER_END,
       });
     }, 250);
   });
@@ -46,7 +46,7 @@ const fileDrop = (store) => {
       await handleFileImport(files);
     } catch (error) {
       store.dispatch({
-        type: ERROR,
+        type: Actions.ERROR,
         payload: error.message,
       });
     }

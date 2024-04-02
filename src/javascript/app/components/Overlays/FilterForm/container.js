@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { HIDE_FILTERS, SET_ACTIVE_TAGS } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 
 const mapStateToProps = (state) => ({
   activeTags: state.filtersActiveTags,
@@ -9,13 +9,13 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setActiveTags: (activeTags) => {
     dispatch({
-      type: SET_ACTIVE_TAGS,
+      type: Actions.SET_ACTIVE_TAGS,
       payload: activeTags,
     });
   },
   hideFilters: (activeTags) => {
     dispatch({
-      type: HIDE_FILTERS,
+      type: Actions.HIDE_FILTERS,
       payload: activeTags,
     });
   },

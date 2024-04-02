@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { ANIMATE_IMAGES, CANCEL_ANIMATE_IMAGES, SET_VIDEO_PARAMS } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 
 const mapStateToProps = (state) => ({
   imageCount: state.videoParams.imageSelection ? state.videoParams.imageSelection.length : 0,
@@ -17,18 +17,18 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   update: (changedValue) => {
     dispatch({
-      type: SET_VIDEO_PARAMS,
+      type: Actions.SET_VIDEO_PARAMS,
       payload: changedValue,
     });
   },
   cancel: () => {
     dispatch({
-      type: CANCEL_ANIMATE_IMAGES,
+      type: Actions.CANCEL_ANIMATE_IMAGES,
     });
   },
   animate: () => {
     dispatch({
-      type: ANIMATE_IMAGES,
+      type: Actions.ANIMATE_IMAGES,
     });
   },
 });

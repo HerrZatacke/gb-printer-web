@@ -7,7 +7,7 @@ import getImagePalette from '../../../tools/getImagePalette';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import Decoder from '../../../tools/Decoder';
 import generateFileName from '../../../tools/generateFileName';
-import { ANIMATE_IMAGES, CREATE_GIF_PROGRESS, ERROR } from '../actions';
+import { Actions } from '../actions';
 import applyRotation from '../../../tools/applyRotation';
 
 const getAddImages = (dispatch, gifWriter, queue, frameRate, total) => (canvas, index) => (
@@ -36,7 +36,7 @@ const getAddImages = (dispatch, gifWriter, queue, frameRate, total) => (canvas, 
 
       try {
         dispatch({
-          type: CREATE_GIF_PROGRESS,
+          type: Actions.CREATE_GIF_PROGRESS,
           payload: (index + 1) / total,
         });
 
@@ -57,7 +57,7 @@ const getAddImages = (dispatch, gifWriter, queue, frameRate, total) => (canvas, 
 
 const animate = (store) => (next) => (action) => {
 
-  if (action.type === ANIMATE_IMAGES) {
+  if (action.type === Actions.ANIMATE_IMAGES) {
     const state = store.getState();
     const {
       scaleFactor,
@@ -174,7 +174,7 @@ const animate = (store) => (next) => (action) => {
             saveAs(file, `${gifFileName}.gif`);
 
             store.dispatch({
-              type: CREATE_GIF_PROGRESS,
+              type: Actions.CREATE_GIF_PROGRESS,
               payload: 0,
             });
 
@@ -189,7 +189,7 @@ const animate = (store) => (next) => (action) => {
       })
       .catch((error) => {
         store.dispatch({
-          type: ERROR,
+          type: Actions.ERROR,
           payload: error.message,
         });
       });

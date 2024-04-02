@@ -1,5 +1,5 @@
 import getFrameGroups from '../getFrameGroups';
-import { CONFIRM_ANSWERED, CONFIRM_ASK } from '../../app/store/actions';
+import { Actions } from '../../app/store/actions';
 import readFileAs from '../readFileAs';
 import getImportSav from './importSav';
 
@@ -46,7 +46,7 @@ const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) =>
 
   return new Promise(((resolve) => {
     dispatch({
-      type: CONFIRM_ASK,
+      type: Actions.CONFIRM_ASK,
       payload: {
         message: `Importing '${file.name}'`,
         questions: () => [
@@ -64,7 +64,7 @@ const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) =>
         ].filter(Boolean),
         confirm: async ({ chosenFrameset, cartIsJP }) => {
           dispatch({
-            type: CONFIRM_ANSWERED,
+            type: Actions.CONFIRM_ANSWERED,
           });
 
           // Perform actual import action
@@ -73,7 +73,7 @@ const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) =>
         },
         deny: () => {
           dispatch({
-            type: CONFIRM_ANSWERED,
+            type: Actions.CONFIRM_ANSWERED,
           });
           resolve(true);
         },

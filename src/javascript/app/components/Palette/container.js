@@ -1,12 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  CONFIRM_ANSWERED,
-  CONFIRM_ASK,
-  PALETTE_CLONE,
-  PALETTE_DELETE,
-  PALETTE_EDIT,
-  PALETTE_SET_ACTIVE,
-} from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const mapStateToProps = (state, { shortName }) => ({
   isActive: state.activePalette === shortName,
@@ -15,24 +8,24 @@ const mapStateToProps = (state, { shortName }) => ({
 const mapDispatchToProps = (dispatch, { shortName, name }) => ({
   setActive: () => {
     dispatch({
-      type: PALETTE_SET_ACTIVE,
+      type: Actions.PALETTE_SET_ACTIVE,
       payload: shortName,
     });
   },
   deletePalette: () => {
     dispatch({
-      type: CONFIRM_ASK,
+      type: Actions.CONFIRM_ASK,
       payload: {
         message: `Delete palette "${name || 'no name'}"?`,
         confirm: () => {
           dispatch({
-            type: PALETTE_DELETE,
+            type: Actions.PALETTE_DELETE,
             payload: { shortName },
           });
         },
         deny: () => {
           dispatch({
-            type: CONFIRM_ANSWERED,
+            type: Actions.CONFIRM_ANSWERED,
           });
         },
       },
@@ -40,13 +33,13 @@ const mapDispatchToProps = (dispatch, { shortName, name }) => ({
   },
   editPalette: () => {
     dispatch({
-      type: PALETTE_EDIT,
+      type: Actions.PALETTE_EDIT,
       payload: shortName,
     });
   },
   clonePalette: () => {
     dispatch({
-      type: PALETTE_CLONE,
+      type: Actions.PALETTE_CLONE,
       payload: shortName,
     });
   },

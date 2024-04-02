@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CANCEL_EDIT_FRAME, UPDATE_FRAME } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 import getFrameGroups from '../../../../tools/getFrameGroups';
 
 const useEditFrame = (frame) => {
@@ -35,13 +35,13 @@ const useEditFrame = (frame) => {
 
   const cancelEdit = () => {
     dispatch({
-      type: CANCEL_EDIT_FRAME,
+      type: Actions.CANCEL_EDIT_FRAME,
     });
   };
 
   const saveFrame = () => {
     dispatch({
-      type: UPDATE_FRAME,
+      type: Actions.UPDATE_FRAME,
       payload: {
         updateId,
         data: {

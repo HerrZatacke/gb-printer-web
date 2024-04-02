@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { IMPORT_FILES, JSON_EXPORT } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const mapStateToProps = (state) => ({
   printerUrl: state.printerUrl ? `${state.printerUrl}remote.html` : null,
@@ -16,19 +16,19 @@ const mapDispatchToProps = (dispatch) => ({
     }
 
     dispatch({
-      type: IMPORT_FILES,
+      type: Actions.IMPORT_FILES,
       payload: { files: [file] },
     });
   },
   importFile: (files) => {
     dispatch({
-      type: IMPORT_FILES,
+      type: Actions.IMPORT_FILES,
       payload: files,
     });
   },
   exportJson(what) {
     dispatch({
-      type: JSON_EXPORT,
+      type: Actions.JSON_EXPORT,
       payload: what,
     });
   },

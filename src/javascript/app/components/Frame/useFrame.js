@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
-import { CONFIRM_ANSWERED, CONFIRM_ASK, DELETE_FRAME, EDIT_FRAME } from '../../store/actions';
+import { Actions } from '../../store/actions';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
 
@@ -40,18 +40,18 @@ const useFrame = ({ frameId, name }) => {
     mounted.current = false;
 
     dispatch({
-      type: CONFIRM_ASK,
+      type: Actions.CONFIRM_ASK,
       payload: {
         message: `Delete frame "${name}" (${frameId})?`,
         confirm: () => {
           dispatch({
-            type: DELETE_FRAME,
+            type: Actions.DELETE_FRAME,
             payload: frameId,
           });
         },
         deny: () => {
           dispatch({
-            type: CONFIRM_ANSWERED,
+            type: Actions.CONFIRM_ANSWERED,
           });
         },
       },
@@ -60,7 +60,7 @@ const useFrame = ({ frameId, name }) => {
 
   const editFrame = () => {
     dispatch({
-      type: EDIT_FRAME,
+      type: Actions.EDIT_FRAME,
       payload: frameId,
     });
   };

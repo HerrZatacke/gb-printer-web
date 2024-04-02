@@ -1,4 +1,4 @@
-import { IMPORTQUEUE_ADD } from '../../app/store/actions';
+import { Actions } from '../../app/store/actions';
 import readFileAs from '../readFileAs';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
@@ -51,7 +51,7 @@ const getTransformBin = ({ dispatch }) => async (file) => {
   const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
   dispatch({
-    type: IMPORTQUEUE_ADD,
+    type: Actions.IMPORTQUEUE_ADD,
     payload: {
       fileName: file.name,
       imageHash,

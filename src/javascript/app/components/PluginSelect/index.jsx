@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
-import { PLUGIN_IMAGE, PLUGIN_IMAGES } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const PluginSelect = ({ children, pluginsActive, hash }) => {
   const plugins = useSelector((state) => state.plugins);
@@ -13,7 +13,7 @@ const PluginSelect = ({ children, pluginsActive, hash }) => {
   const toPlugins = (url) => {
     if (hash) {
       dispatch({
-        type: PLUGIN_IMAGE,
+        type: Actions.PLUGIN_IMAGE,
         payload: {
           url,
           hash,
@@ -21,7 +21,7 @@ const PluginSelect = ({ children, pluginsActive, hash }) => {
       });
     } else {
       dispatch({
-        type: PLUGIN_IMAGES,
+        type: Actions.PLUGIN_IMAGES,
         payload: {
           url,
         },

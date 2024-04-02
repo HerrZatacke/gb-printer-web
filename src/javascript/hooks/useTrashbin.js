@@ -2,7 +2,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 import dayjs from 'dayjs';
 import { saveAs } from 'file-saver';
 import { localforageReady, localforageImages, localforageFrames } from '../tools/localforageInstance';
-import { SHOW_HIDE_TRASH, UPDATE_TRASH_COUNT } from '../app/store/actions';
+import { Actions } from '../app/store/actions';
 import { dateFormat } from '../app/defaults';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTrash';
 
@@ -34,7 +34,7 @@ const useTrashbin = () => {
 
   const showTrash = (show) => {
     dispatch({
-      type: SHOW_HIDE_TRASH,
+      type: Actions.SHOW_HIDE_TRASH,
       payload: show,
     });
   };
@@ -100,7 +100,7 @@ const useTrashbin = () => {
     await cleanupStorage(store.getState());
 
     dispatch({
-      type: UPDATE_TRASH_COUNT,
+      type: Actions.UPDATE_TRASH_COUNT,
     });
 
     showTrash(false);

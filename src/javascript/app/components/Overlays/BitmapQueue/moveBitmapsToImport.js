@@ -1,5 +1,5 @@
 import { ditherFilter } from '../../../../tools/applyBitmapFilter';
-import { IMPORTQUEUE_ADD } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 import { compressAndHash } from '../../../../tools/storage';
 import { compressAndHashFrame } from '../../../../tools/applyFrame/frameData';
 
@@ -72,7 +72,7 @@ const moveBitmapsToImport = (dispatch) => ({
     const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
     dispatch({
-      type: IMPORTQUEUE_ADD,
+      type: Actions.IMPORTQUEUE_ADD,
       payload: {
         fileName,
         imageHash,

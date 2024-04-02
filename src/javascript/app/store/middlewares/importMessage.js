@@ -1,13 +1,4 @@
-import {
-  CONFIRM_ANSWERED,
-  CONFIRM_ASK,
-  HEARTBEAT_TIMED_OUT,
-  IMPORT_FILES,
-  PRINTER_DATA_RECEIVED,
-  PRINTER_FUNCTIONS_RECEIVED,
-  PRINTER_PROGRESS, PRINTER_RESET,
-  REMOTE_CALL_FUNCTION,
-} from '../actions';
+import { Actions } from '../actions';
 
 const importMessage = (store) => {
 
@@ -36,7 +27,7 @@ const importMessage = (store) => {
         !heartbeatTimer ||
         JSON.stringify(commands) !== JSON.stringify(store.getState().printerFunctions)) {
         store.dispatch({
-          type: PRINTER_FUNCTIONS_RECEIVED,
+          type: Actions.PRINTER_FUNCTIONS_RECEIVED,
           payload: commands,
         });
       }
@@ -48,7 +39,7 @@ const importMessage = (store) => {
         heartbeatTimer = null;
         remotePrinterWindow = null;
         store.dispatch({
-          type: HEARTBEAT_TIMED_OUT,
+          type: Actions.HEARTBEAT_TIMED_OUT,
         });
       }, 1500);
     }
@@ -62,14 +53,14 @@ const importMessage = (store) => {
       }
 
       store.dispatch({
-        type: IMPORT_FILES,
+        type: Actions.IMPORT_FILES,
         payload: { files: [file] },
       });
     }
 
     if (progress !== undefined) {
       store.dispatch({
-        type: PRINTER_PROGRESS,
+        type: Actions.PRINTER_PROGRESS,
         payload: progress,
       });
     }
@@ -77,7 +68,7 @@ const importMessage = (store) => {
     // fallback for printers with web-app version < 1.15.5 to display some "fake" progress..
     if (blob) {
       store.dispatch({
-        type: IMPORT_FILES,
+        type: Actions.IMPORT_FILES,
         payload: { files: [blob] },
       });
     }
@@ -104,7 +95,7 @@ const importMessage = (store) => {
 
       if (files.length) {
         store.dispatch({
-          type: IMPORT_FILES,
+          type: Actions.IMPORT_FILES,
           payload: {
             files: namedFiles,
             fromPrinter: true,
@@ -113,15 +104,15 @@ const importMessage = (store) => {
       } else {
 
         store.dispatch({
-          type: CONFIRM_ASK,
+          type: Actions.CONFIRM_ASK,
           payload: {
             message: 'No valid files received from WiFi-Printer',
             confirm: () => {
               store.dispatch({
-                type: CONFIRM_ANSWERED,
+                type: Actions.CONFIRM_ANSWERED,
               });
               store.dispatch({
-                type: PRINTER_RESET,
+                type: Actions.PRINTER_RESET,
               });
             },
           },
@@ -131,7 +122,7 @@ const importMessage = (store) => {
 
     if (printerData) {
       store.dispatch({
-        type: PRINTER_DATA_RECEIVED,
+        type: Actions.PRINTER_DATA_RECEIVED,
         payload: printerData,
       });
     }
@@ -142,7 +133,7 @@ const importMessage = (store) => {
   return (next) => (action) => {
 
     switch (action.type) {
-      case REMOTE_CALL_FUNCTION: {
+      case Actions.REMOTE_CALL_FUNCTION: {
         const state = store.getState();
         const params = (action.payload === 'fetchImages') ?
           { dumps: state.printerData?.dumps } : undefined;

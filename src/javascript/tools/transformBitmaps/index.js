@@ -1,4 +1,4 @@
-import { BITMAPQUEUE_ADD } from '../../app/store/actions';
+import { Actions } from '../../app/store/actions';
 import getImageData from './getImageData';
 import moveBitmapsToImport from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
 
@@ -16,7 +16,7 @@ const getTransformBitmaps = ({ dispatch }) => {
       });
     } else {
       dispatch({
-        type: BITMAPQUEUE_ADD,
+        type: Actions.BITMAPQUEUE_ADD,
         payload: image,
       });
     }

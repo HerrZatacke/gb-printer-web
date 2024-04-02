@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { REMOTE_CALL_FUNCTION } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const mapStateToProps = (state) => ({
   printerData: state.printerData,
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   callRemoteFunction: (name) => {
     dispatch({
-      type: REMOTE_CALL_FUNCTION,
+      type: Actions.REMOTE_CALL_FUNCTION,
       payload: name,
     });
   },

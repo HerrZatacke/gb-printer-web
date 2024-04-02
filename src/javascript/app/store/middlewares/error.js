@@ -1,8 +1,8 @@
-import { ERROR } from '../actions';
+import { Actions } from '../actions';
 
 const handleErrors = () => (next) => (action) => {
 
-  if (action.type === ERROR) {
+  if (action.type === Actions.ERROR) {
     // eslint-disable-next-line no-alert
     alert(action.payload);
   }

@@ -1,12 +1,7 @@
 import { connect } from 'react-redux';
 import getRGBNFrames from '../../../../tools/getRGBNFrames';
 import getFilteredImages from '../../../../tools/getFilteredImages';
-import {
-  LIGHTBOX_FULLSCREEN,
-  LIGHTBOX_NEXT,
-  LIGHTBOX_PREV,
-  SET_LIGHTBOX_IMAGE_INDEX,
-} from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 
 const mapStateToProps = (state) => {
   const images = getFilteredImages(state);
@@ -53,23 +48,23 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   close: () => {
     dispatch({
-      type: SET_LIGHTBOX_IMAGE_INDEX,
+      type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
       payload: null,
     });
   },
   prev: () => {
     dispatch({
-      type: LIGHTBOX_PREV,
+      type: Actions.LIGHTBOX_PREV,
     });
   },
   next: () => {
     dispatch({
-      type: LIGHTBOX_NEXT,
+      type: Actions.LIGHTBOX_NEXT,
     });
   },
   fullscreen: () => {
     dispatch({
-      type: LIGHTBOX_FULLSCREEN,
+      type: Actions.LIGHTBOX_FULLSCREEN,
     });
   },
 });

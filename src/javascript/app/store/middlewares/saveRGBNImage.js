@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { dateFormat, defaultRGBNPalette } from '../../defaults';
-import { ADD_IMAGES, SAVE_RGBN_IMAGE } from '../actions';
+import { Actions } from '../actions';
 
 const saveRGBNImage = (store) => (next) => (action) => {
 
-  if (action.type === SAVE_RGBN_IMAGE) {
+  if (action.type === Actions.SAVE_RGBN_IMAGE) {
 
     const state = store.getState();
 
@@ -20,7 +20,7 @@ const saveRGBNImage = (store) => (next) => (action) => {
         };
 
         store.dispatch({
-          type: ADD_IMAGES,
+          type: Actions.ADD_IMAGES,
           payload: [image],
         });
       });

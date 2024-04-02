@@ -6,7 +6,7 @@ import sortBy from '../sortby';
 import transformImage from './transformImage';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
-import { IMPORTQUEUE_ADD_MULTI } from '../../app/store/actions';
+import { Actions } from '../../app/store/actions';
 
 const sortByAlbumIndex = sortBy('albumIndex');
 
@@ -114,7 +114,7 @@ const getImportSav = ({
     )));
 
     dispatch({
-      type: IMPORTQUEUE_ADD_MULTI,
+      type: Actions.IMPORTQUEUE_ADD_MULTI,
       payload: imageData.filter(Boolean),
     });
 

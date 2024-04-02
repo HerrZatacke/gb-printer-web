@@ -1,11 +1,11 @@
 import { getPrepareFiles } from '../../../tools/download';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
-import { SHARE_IMAGE } from '../actions';
+import { Actions } from '../actions';
 
 const batch = (store) => (next) => (action) => {
 
-  if (action.type === SHARE_IMAGE) {
+  if (action.type === Actions.SHARE_IMAGE) {
     const state = store.getState();
 
     const image = state.images.find(({ hash }) => hash === action.payload);

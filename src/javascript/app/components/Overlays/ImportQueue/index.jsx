@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
-import { IMPORTQUEUE_CANCEL, PALETTE_SET_ACTIVE } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 import './index.scss';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
@@ -18,7 +18,7 @@ const ImportQueue = () => {
 
   const setPalette = (payload) => {
     dispatch({
-      type: PALETTE_SET_ACTIVE,
+      type: Actions.PALETTE_SET_ACTIVE,
       payload,
     });
   };
@@ -41,7 +41,7 @@ const ImportQueue = () => {
         tags: tagChanges.add,
       })}
       deny={() => {
-        dispatch({ type: IMPORTQUEUE_CANCEL });
+        dispatch({ type: Actions.IMPORTQUEUE_CANCEL });
       }}
     >
       <div

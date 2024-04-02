@@ -2,7 +2,7 @@ import { useDispatch, useStore } from 'react-redux';
 import { useState } from 'react';
 import loadImageTiles from '../loadImageTiles';
 import { compressAndHash, save } from '../storage';
-import { REHASH_IMAGE } from '../../app/store/actions';
+import { Actions } from '../../app/store/actions';
 
 const reHash = async (state, hash) => {
   const loadedTiles = await loadImageTiles(state)({ hash }, false, true);
@@ -58,7 +58,7 @@ const useHashCleanup = () => {
           if (newHash !== hash) {
             iCounterRGBN += 1;
             dispatch({
-              type: REHASH_IMAGE,
+              type: Actions.REHASH_IMAGE,
               payload: {
                 oldHash: hash,
                 image: {
@@ -76,7 +76,7 @@ const useHashCleanup = () => {
           if (savedHash) {
             iCounterMono += 1;
             dispatch({
-              type: REHASH_IMAGE,
+              type: Actions.REHASH_IMAGE,
               payload: {
                 oldHash: hash,
                 image: {

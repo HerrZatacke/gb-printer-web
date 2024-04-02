@@ -1,12 +1,6 @@
 import applyTagChanges from '../../../tools/applyTagChanges';
 import { NEW_PALETTE_SHORT } from '../../../consts/specialTags';
-import {
-  PALETTE_CLONE,
-  PALETTE_EDIT,
-  PALETTE_UPDATE,
-  SAVE_EDIT_PALETTE,
-  SET_EDIT_PALETTE,
-} from '../actions';
+import { Actions } from '../actions';
 
 const randomColor = (max) => (
   [
@@ -33,7 +27,7 @@ const dispatchSetEditPalette = (dispatch, palettes, paletteShortName, clone) => 
   );
 
   dispatch({
-    type: SET_EDIT_PALETTE,
+    type: Actions.SET_EDIT_PALETTE,
     payload: {
       ...editPalette,
       name: clone ? `Copy of ${editPalette.name}` : editPalette.name,
@@ -44,7 +38,7 @@ const dispatchSetEditPalette = (dispatch, palettes, paletteShortName, clone) => 
 
 const dispatchSaveEditPalette = (dispatch, state) => {
   dispatch({
-    type: PALETTE_UPDATE,
+    type: Actions.PALETTE_UPDATE,
     payload: {
       ...state.editPalette,
       tags: applyTagChanges(state.editPalette.tags),
@@ -59,7 +53,7 @@ const saveEditPalette = (store) => {
       const state = store.getState();
 
       store.dispatch({
-        type: SAVE_EDIT_PALETTE,
+        type: Actions.SAVE_EDIT_PALETTE,
       });
 
       if (state.editPalette) {
@@ -71,15 +65,15 @@ const saveEditPalette = (store) => {
   return (next) => (action) => {
 
     switch (action.type) {
-      case SAVE_EDIT_PALETTE:
+      case Actions.SAVE_EDIT_PALETTE:
         dispatchSaveEditPalette(store.dispatch, store.getState());
         return;
 
-      case PALETTE_EDIT:
+      case Actions.PALETTE_EDIT:
         dispatchSetEditPalette(store.dispatch, store.getState().palettes, action.payload, false);
         return;
 
-      case PALETTE_CLONE:
+      case Actions.PALETTE_CLONE:
         dispatchSetEditPalette(store.dispatch, store.getState().palettes, action.payload, true);
         return;
       default:

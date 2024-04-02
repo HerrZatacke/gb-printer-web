@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import getFrameGroups from '../../../tools/getFrameGroups';
-import { JSON_EXPORT, NAME_FRAMEGROUP } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const getValidFrameGroupId = (groups, byId) => {
   const group = groups.find(({ id }) => id === byId);
@@ -42,7 +42,7 @@ const useFrames = () => {
 
   const setActiveFrameGroupName = (name) => {
     dispatch({
-      type: NAME_FRAMEGROUP,
+      type: Actions.NAME_FRAMEGROUP,
       payload: {
         ...activeFrameGroup,
         name,
@@ -52,7 +52,7 @@ const useFrames = () => {
 
   const exportJson = (what) => {
     dispatch({
-      type: JSON_EXPORT,
+      type: Actions.JSON_EXPORT,
       payload: what,
       selectedFrameGroup,
     });

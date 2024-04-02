@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
-import { BATCH_TASK, SHOW_FILTERS, SHOW_SORT_OPTIONS } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const useBatchButtons = (page) => {
   const state = useSelector((currentState) => currentState);
@@ -18,19 +18,19 @@ const useBatchButtons = (page) => {
     hasSelected,
     batchTask: (action) => {
       dispatch({
-        type: BATCH_TASK,
+        type: Actions.BATCH_TASK,
         payload: action,
         page,
       });
     },
     filter: () => {
       dispatch({
-        type: SHOW_FILTERS,
+        type: Actions.SHOW_FILTERS,
       });
     },
     showSortOptions: () => {
       dispatch({
-        type: SHOW_SORT_OPTIONS,
+        type: Actions.SHOW_SORT_OPTIONS,
       });
     },
   });

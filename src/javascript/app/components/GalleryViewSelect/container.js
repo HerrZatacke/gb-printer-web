@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { SET_CURRENT_GALLERY_VIEW } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const mapStateToProps = (state) => ({
   currentView: state.galleryView,
@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateView: (view) => {
     dispatch({
-      type: SET_CURRENT_GALLERY_VIEW,
+      type: Actions.SET_CURRENT_GALLERY_VIEW,
       payload: view,
     });
   },

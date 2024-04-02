@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { UPDATE_RGBN_PART } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const mapStateToProps = (state, { hash }) => ({
   isR: state.rgbnImages?.r === hash,
@@ -11,7 +11,7 @@ const mapStateToProps = (state, { hash }) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   updateRGBN: (part, checked) => {
     dispatch({
-      type: UPDATE_RGBN_PART,
+      type: Actions.UPDATE_RGBN_PART,
       payload: {
         [part]: checked ? ownProps.hash : '',
       },

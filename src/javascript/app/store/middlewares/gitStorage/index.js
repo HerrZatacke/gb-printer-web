@@ -1,4 +1,4 @@
-import { SET_GIT_STORAGE, STORAGE_SYNC_START } from '../../actions';
+import { Actions } from '../../actions';
 
 const gitStorage = (store) => {
 
@@ -20,9 +20,9 @@ const gitStorage = (store) => {
 
     if (use && owner && repo && branch && token) {
       if (
-        action.type === SET_GIT_STORAGE ||
+        action.type === Actions.SET_GIT_STORAGE ||
         (
-          action.type === STORAGE_SYNC_START &&
+          action.type === Actions.STORAGE_SYNC_START &&
           action.payload.storageType === 'git'
         )
       ) {

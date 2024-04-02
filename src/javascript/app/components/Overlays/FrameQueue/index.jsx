@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from '../../Lightbox';
-import { ADD_FRAME, FRAMEQUEUE_CANCEL_ONE, NAME_FRAMEGROUP } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 import './index.scss';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
@@ -39,7 +39,7 @@ const FrameQueue = () => {
         const hash = await saveFrameData(frame.tiles);
 
         dispatch({
-          type: ADD_FRAME,
+          type: Actions.ADD_FRAME,
           payload: {
             id: fullId,
             name: frameName,
@@ -50,7 +50,7 @@ const FrameQueue = () => {
 
         if (newGroupName?.trim()) {
           dispatch({
-            type: NAME_FRAMEGROUP,
+            type: Actions.NAME_FRAMEGROUP,
             payload: {
               id: frameGroup,
               name: newGroupName,
@@ -60,7 +60,7 @@ const FrameQueue = () => {
       }}
       deny={() => {
         dispatch({
-          type: FRAMEQUEUE_CANCEL_ONE,
+          type: Actions.FRAMEQUEUE_CANCEL_ONE,
           payload: frame,
         });
       }}

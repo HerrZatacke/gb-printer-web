@@ -11,7 +11,7 @@ import {
 import readFileAs from '../readFileAs';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
-import { IMPORTQUEUE_ADD } from '../../app/store/actions';
+import { Actions } from '../../app/store/actions';
 
 const transformReduced = ({ dispatch }) => async (file) => {
   const data = await readFileAs(file, 'arrayBuffer');
@@ -32,7 +32,7 @@ const transformReduced = ({ dispatch }) => async (file) => {
     const indexCount = result.length < 2 ? '' : ` (${index + 1})`;
 
     dispatch({
-      type: IMPORTQUEUE_ADD,
+      type: Actions.IMPORTQUEUE_ADD,
       payload: {
         fileName: `${file.name}${indexCount}`,
         imageHash,

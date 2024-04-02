@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import WebUSBSerial from '../../../tools/WebUSBSerial';
 import WebSerial from '../../../tools/WebSerial';
-import { SHOW_SERIALS, STORAGE_SYNC_SELECT } from '../../store/actions';
+import { Actions } from '../../store/actions';
 
 const useNavigation = () => {
   const {
@@ -34,13 +34,13 @@ const useNavigation = () => {
 
   const selectSync = () => {
     dispatch({
-      type: STORAGE_SYNC_SELECT,
+      type: Actions.STORAGE_SYNC_SELECT,
     });
   };
 
   const setShowSerials = () => {
     dispatch({
-      type: SHOW_SERIALS,
+      type: Actions.SHOW_SERIALS,
       payload: true,
     });
   };

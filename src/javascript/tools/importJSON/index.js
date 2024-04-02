@@ -1,5 +1,5 @@
 import readFileAs from '../readFileAs';
-import { JSON_IMPORT } from '../../app/store/actions';
+import { Actions } from '../../app/store/actions';
 
 const getImportJSON = ({ dispatch }) => async (file) => {
   const data = await readFileAs(file, 'text');
@@ -16,7 +16,7 @@ const getImportJSON = ({ dispatch }) => async (file) => {
   }
 
   dispatch({
-    type: JSON_IMPORT,
+    type: Actions.JSON_IMPORT,
     payload: settingsDump,
   });
 

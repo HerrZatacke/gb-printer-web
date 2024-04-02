@@ -3,7 +3,7 @@ import transformCapture from '../transformCapture';
 import transformClassic from '../transformClassic';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
-import { IMPORTQUEUE_ADD } from '../../app/store/actions';
+import { Actions } from '../../app/store/actions';
 
 const getTransformPlainText = ({ dispatch }) => async (file) => {
 
@@ -24,7 +24,7 @@ const getTransformPlainText = ({ dispatch }) => async (file) => {
     const indexCount = result.length < 2 ? '' : ` ${(index + 1).toString(10).padStart(2, '0')}`;
 
     dispatch({
-      type: IMPORTQUEUE_ADD,
+      type: Actions.IMPORTQUEUE_ADD,
       payload: {
         fileName: `${file.name}${indexCount}`,
         imageHash,

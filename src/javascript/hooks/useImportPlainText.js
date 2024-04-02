@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { IMPORT_FILES } from '../app/store/actions';
+import { Actions } from '../app/store/actions';
 
 const useImportPlainText = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const useImportPlainText = () => {
     }
 
     dispatch({
-      type: IMPORT_FILES,
+      type: Actions.IMPORT_FILES,
       payload: { files: [file] },
     });
   });

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { JSON_EXPORT } from '../../../../store/actions';
+import { Actions } from '../../../../store/actions';
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   exportJson(what) {
     dispatch({
-      type: JSON_EXPORT,
+      type: Actions.JSON_EXPORT,
       payload: what,
     });
   },

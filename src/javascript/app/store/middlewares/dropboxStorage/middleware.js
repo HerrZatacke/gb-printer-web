@@ -12,21 +12,7 @@ import replaceDuplicateFilenames from '../../../../tools/replaceDuplicateFilenam
 import getFilteredImages from '../../../../tools/getFilteredImages';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 
-import {
-  CONFIRM_ANSWERED,
-  CONFIRM_ASK,
-  DROPBOX_LOG_ACTION,
-  DROPBOX_SETTINGS_IMPORT,
-  DROPBOX_START_AUTH,
-  ERROR,
-  LAST_UPDATE_DROPBOX_REMOTE,
-  SET_DROPBOX_STORAGE,
-  STORAGE_DIFF_DONE,
-  STORAGE_SYNC_DONE,
-  STORAGE_SYNC_START,
-  TRY_RECOVER_IMAGE_DATA,
-  UPDATE_IMAGES_BATCH,
-} from '../../actions';
+import { Actions } from '../../actions';
 
 let dropboxClient;
 let addToQueue = () => {};
@@ -42,7 +28,7 @@ const middleware = (store) => {
         window.setTimeout(() => {
           if (!isSilent) {
             store.dispatch({
-              type: DROPBOX_LOG_ACTION,
+              type: Actions.DROPBOX_LOG_ACTION,
               payload: {
                 timestamp: (new Date()).getTime() / 1000,
                 message: `${who} runs ${what}`,
@@ -60,7 +46,7 @@ const middleware = (store) => {
 
   const checkDropboxStatus = () => {
     store.dispatch({
-      type: STORAGE_SYNC_START,
+      type: Actions.STORAGE_SYNC_START,
       payload: {
         storageType: 'dropbox',
         direction: 'diff',
@@ -82,7 +68,7 @@ const middleware = (store) => {
 
   dropboxClient.on('loginDataUpdate', (data) => {
     store.dispatch({
-      type: SET_DROPBOX_STORAGE,
+      type: Actions.SET_DROPBOX_STORAGE,
       payload: {
         ...store.getState().dropboxStorage,
         ...data,
@@ -98,11 +84,11 @@ const middleware = (store) => {
   return (action) => {
     const state = store.getState();
 
-    if (action.type === SET_DROPBOX_STORAGE) {
+    if (action.type === Actions.SET_DROPBOX_STORAGE) {
       dropboxClient.setRootPath(state.dropboxStorage.path || '/');
     }
 
-    if (action.type === STORAGE_SYNC_START) {
+    if (action.type === Actions.STORAGE_SYNC_START) {
 
       if (action.payload.storageType === 'dropbox') {
 
@@ -116,14 +102,14 @@ const middleware = (store) => {
                 }
 
                 store.dispatch({
-                  type: LAST_UPDATE_DROPBOX_REMOTE,
+                  type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
                   payload: repoContents.settings.state.lastUpdateUTC,
                 });
 
                 if (repoContents.settings.state.lastUpdateUTC > state?.syncLastUpdate?.local) {
 
                   store.dispatch({
-                    type: CONFIRM_ASK,
+                    type: Actions.CONFIRM_ASK,
                     payload: {
                       message: 'There is newer content in your dropbox!',
                       questions: () => [
@@ -138,10 +124,10 @@ const middleware = (store) => {
                         })),
                       confirm: () => {
                         store.dispatch({
-                          type: CONFIRM_ANSWERED,
+                          type: Actions.CONFIRM_ANSWERED,
                         });
                         store.dispatch({
-                          type: STORAGE_SYNC_START,
+                          type: Actions.STORAGE_SYNC_START,
                           payload: {
                             storageType: 'dropbox',
                             direction: 'down',
@@ -150,7 +136,7 @@ const middleware = (store) => {
                       },
                       deny: () => {
                         store.dispatch({
-                          type: CONFIRM_ANSWERED,
+                          type: Actions.CONFIRM_ANSWERED,
                         });
                       },
                     },
@@ -166,7 +152,7 @@ const middleware = (store) => {
                   .then((changes) => dropboxClient.upload(changes, 'settings'))
                   .then((result) => {
                     store.dispatch({
-                      type: LAST_UPDATE_DROPBOX_REMOTE,
+                      type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
                       payload: lastUpdateUTC,
                     });
 
@@ -178,7 +164,7 @@ const middleware = (store) => {
                 return saveLocalStorageItems(repoContents)
                   .then((result) => {
                     store.dispatch({
-                      type: DROPBOX_SETTINGS_IMPORT,
+                      type: Actions.DROPBOX_SETTINGS_IMPORT,
                       payload: repoContents.settings,
                     });
 
@@ -192,7 +178,7 @@ const middleware = (store) => {
           })
           .then((syncResult) => {
             store.dispatch({
-              type: action.payload.direction === 'diff' ? STORAGE_DIFF_DONE : STORAGE_SYNC_DONE,
+              type: action.payload.direction === 'diff' ? Actions.STORAGE_DIFF_DONE : Actions.STORAGE_SYNC_DONE,
               payload: {
                 syncResult,
                 storageType: 'dropbox',
@@ -202,7 +188,7 @@ const middleware = (store) => {
           .catch((error) => {
             console.error(error);
             store.dispatch({
-              type: ERROR,
+              type: Actions.ERROR,
               payload: error.message,
             });
           });
@@ -268,7 +254,7 @@ const middleware = (store) => {
 
           .then((syncResult) => {
             store.dispatch({
-              type: STORAGE_SYNC_DONE,
+              type: Actions.STORAGE_SYNC_DONE,
               payload: {
                 syncResult,
                 storageType: 'dropbox',
@@ -278,7 +264,7 @@ const middleware = (store) => {
           .catch((error) => {
             console.error(error);
             store.dispatch({
-              type: ERROR,
+              type: Actions.ERROR,
               payload: error.message,
             });
           });
@@ -287,11 +273,11 @@ const middleware = (store) => {
 
     }
 
-    if (action.type === DROPBOX_START_AUTH) {
+    if (action.type === Actions.DROPBOX_START_AUTH) {
       dropboxClient.startAuth();
     }
 
-    if (action.type === TRY_RECOVER_IMAGE_DATA) {
+    if (action.type === Actions.TRY_RECOVER_IMAGE_DATA) {
       if (!recoveryAttempts.includes(action.payload)) {
 
         // only attempt once to recover file
@@ -302,7 +288,7 @@ const middleware = (store) => {
           .then(() => {
             // This forces an update of the complete images array
             store.dispatch({
-              type: UPDATE_IMAGES_BATCH,
+              type: Actions.UPDATE_IMAGES_BATCH,
               payload: [],
             });
           })

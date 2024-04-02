@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import ImportPreviewImage from '../../ImportPreviewImage';
-import { BITMAPQUEUE_CANCEL } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 import SVG from '../../SVG';
 import './index.scss';
 import Select from '../Confirm/types/Select';
@@ -67,7 +67,7 @@ const BitmapQueue = () => {
         });
       }}
       deny={() => {
-        dispatch({ type: BITMAPQUEUE_CANCEL });
+        dispatch({ type: Actions.BITMAPQUEUE_CANCEL });
       }}
     >
       <div

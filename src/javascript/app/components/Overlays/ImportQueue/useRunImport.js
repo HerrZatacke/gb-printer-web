@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import Queue from 'promise-queue/lib';
-import { ADD_IMAGES } from '../../../store/actions';
+import { Actions } from '../../../store/actions';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
 import { dateFormat } from '../../../defaults';
@@ -38,7 +38,7 @@ const useRunImport = () => {
     }));
 
     dispatch({
-      type: ADD_IMAGES,
+      type: Actions.ADD_IMAGES,
       payload: savedImages,
     });
   };

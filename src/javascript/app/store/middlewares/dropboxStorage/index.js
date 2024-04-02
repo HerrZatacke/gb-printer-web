@@ -1,9 +1,4 @@
-import {
-  DROPBOX_START_AUTH,
-  SET_DROPBOX_STORAGE,
-  STORAGE_SYNC_START,
-  TRY_RECOVER_IMAGE_DATA,
-} from '../../actions';
+import { Actions } from '../../actions';
 
 const dropboxStorage = (store) => {
   let middleware;
@@ -24,10 +19,10 @@ const dropboxStorage = (store) => {
 
     if (storageSettings.use) {
       if (
-        action.type === DROPBOX_START_AUTH ||
-        action.type === SET_DROPBOX_STORAGE ||
+        action.type === Actions.DROPBOX_START_AUTH ||
+        action.type === Actions.SET_DROPBOX_STORAGE ||
         (
-          action.type === STORAGE_SYNC_START &&
+          action.type === Actions.STORAGE_SYNC_START &&
           (
             action.payload.storageType === 'dropbox' ||
             action.payload.storageType === 'dropboximages'
@@ -35,7 +30,7 @@ const dropboxStorage = (store) => {
         ) ||
         (
           dropboxStorageData.use &&
-          action.type === TRY_RECOVER_IMAGE_DATA
+          action.type === Actions.TRY_RECOVER_IMAGE_DATA
         )
       ) {
         if (!middleware) {
