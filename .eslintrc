@@ -17,7 +17,10 @@
     "jest": true
   },
   "globals": {
-    "CONFIG": true
+    "ENV": true,
+    "VERSION": true,
+    "DROPBOX_APP_KEY": true,
+    "BRANCH": true
   },
   "rules": {
     "no-shadow": "off",
@@ -42,6 +45,7 @@
       1,
       {
         "extensions": [
+          ".jsx",
           ".tsx"
         ]
       }
@@ -49,6 +53,7 @@
     "react/no-array-index-key": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "react/function-component-definition": "off",
     "class-methods-use-this": "off",
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/control-has-associated-label": "off",
