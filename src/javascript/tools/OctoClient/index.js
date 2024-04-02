@@ -8,6 +8,7 @@ import dateFormatLocale from '../dateFormatLocale';
 // https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
 
 class OctoClient extends EventEmitter {
+  // eslint-disable-next-line default-param-last
   constructor(gitSetings = {}, getPreferredLocale, addToQueue) {
     super();
     this.octoKit = null;

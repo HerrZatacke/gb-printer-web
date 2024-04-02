@@ -38,6 +38,7 @@ const blendModeKeys = {
 };
 
 const blendModeFunctions = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [blendModeKeys.NORMAL]: (i, m) => (
     i
   ),
