@@ -1,24 +1,30 @@
 {
-  "parser": "@babel/eslint-parser",
-  "extends": "airbnb",
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "ignorePatterns": ["dist/**/*"],
   "plugins": [
-    "react-hooks"
+    "import",
+    "react-hooks",
+    "@typescript-eslint"
   ],
   "env": {
     "browser": true,
     "jest": true
   },
   "globals": {
-    "ENV": true,
-    "VERSION": true,
-    "DROPBOX_APP_KEY": true,
-    "BRANCH": true
+    "CONFIG": true
   },
   "rules": {
-    // Airbnb overwrites
-    "import/no-extraneous-dependencies": [
-      "off"
-    ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
     "arrow-body-style": [
       "error",
       "as-needed"
@@ -36,16 +42,13 @@
       1,
       {
         "extensions": [
-          ".js",
-          ".jsx"
+          ".tsx"
         ]
       }
     ],
     "react/no-array-index-key": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "react/function-component-definition": "off",
-    "default-param-last": "off",
     "class-methods-use-this": "off",
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/control-has-associated-label": "off",
@@ -116,7 +119,8 @@
       "error",
       "1tbs"
     ],
-    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "no-mixed-spaces-and-tabs": "error",
     "no-multiple-empty-lines": [
       "error",
@@ -281,5 +285,15 @@
       "toolbar",
       "top"
     ]
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
   }
 }

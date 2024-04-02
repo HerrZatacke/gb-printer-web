@@ -20,7 +20,7 @@ try {
 
 module.exports = () => ({
   resolve: {
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
   entry: {
     main: [
@@ -32,6 +32,11 @@ module.exports = () => ({
   },
   module: {
     rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: 'ts-loader',
+      },
       {
         test: /\.(js|jsx)$/,
         use: {
