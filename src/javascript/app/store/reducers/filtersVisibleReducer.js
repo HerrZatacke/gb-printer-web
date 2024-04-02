@@ -1,11 +1,12 @@
-import { HIDE_FILTERS, SET_ACTIVE_TAGS, SHOW_FILTERS } from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const filtersVisibleReducer = (value = false, action) => {
   switch (action.type) {
-    case SHOW_FILTERS:
+    case Actions.SHOW_FILTERS:
       return true;
-    case HIDE_FILTERS:
-    case SET_ACTIVE_TAGS:
+    case Actions.HIDE_FILTERS:
+    case Actions.SET_ACTIVE_TAGS:
       return false;
     default:
       return value;

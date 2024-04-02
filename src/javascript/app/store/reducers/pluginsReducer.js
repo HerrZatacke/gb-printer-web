@@ -1,27 +1,23 @@
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import sortBy from '../../../tools/sortby';
-import {
-  PLUGIN_ADD,
-  PLUGIN_REMOVE,
-  PLUGIN_UPDATE_CONFIG,
-  PLUGIN_UPDATE_PROPERTIES,
-} from '../actions';
 
 const uniqueByUrl = uniqueBy('url');
 const sortByUrl = sortBy('url');
 
 const pluginsReducer = (plugins = [], action) => {
   switch (action.type) {
-    case PLUGIN_REMOVE:
+    case Actions.PLUGIN_REMOVE:
       return sortByUrl(uniqueByUrl([...plugins.filter(({ url }) => url !== action.payload)]));
-    case PLUGIN_ADD:
+    case Actions.PLUGIN_ADD:
       return sortByUrl(uniqueByUrl([
         {
           url: action.payload,
         },
         ...plugins,
       ]));
-    case PLUGIN_UPDATE_PROPERTIES:
+    case Actions.PLUGIN_UPDATE_PROPERTIES:
       return sortByUrl(uniqueByUrl(plugins.map((plugin) => {
         if (plugin.url !== action.payload.url) {
           return plugin;
@@ -32,7 +28,7 @@ const pluginsReducer = (plugins = [], action) => {
           ...action.payload,
         };
       })));
-    case PLUGIN_UPDATE_CONFIG:
+    case Actions.PLUGIN_UPDATE_CONFIG:
       return sortByUrl(uniqueByUrl(plugins.map((plugin) => {
         if (plugin.url !== action.payload.url) {
           return plugin;

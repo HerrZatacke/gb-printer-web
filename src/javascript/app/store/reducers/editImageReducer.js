@@ -1,24 +1,17 @@
-import {
-  CANCEL_EDIT_IMAGE,
-  EDIT_IMAGE,
-  EDIT_IMAGE_SELECTION,
-  GLOBAL_UPDATE,
-  REHASH_IMAGE,
-  UPDATE_IMAGE,
-  UPDATE_IMAGES_BATCH,
-} from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const editImageReducer = (value = null, action) => {
   switch (action.type) {
-    case EDIT_IMAGE:
+    case Actions.EDIT_IMAGE:
       return { hash: action.payload };
-    case EDIT_IMAGE_SELECTION:
+    case Actions.EDIT_IMAGE_SELECTION:
       return action.payload;
-    case CANCEL_EDIT_IMAGE:
-    case UPDATE_IMAGE:
-    case REHASH_IMAGE:
-    case UPDATE_IMAGES_BATCH:
-    case GLOBAL_UPDATE:
+    case Actions.CANCEL_EDIT_IMAGE:
+    case Actions.UPDATE_IMAGE:
+    case Actions.REHASH_IMAGE:
+    case Actions.UPDATE_IMAGES_BATCH:
+    case Actions.GLOBAL_UPDATE:
       return null;
     default:
       return value;

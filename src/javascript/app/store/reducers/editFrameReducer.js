@@ -1,17 +1,13 @@
-import {
-  EDIT_FRAME,
-  GLOBAL_UPDATE,
-  CANCEL_EDIT_FRAME,
-  UPDATE_FRAME,
-} from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const editFrameReducer = (value = null, action) => {
   switch (action.type) {
-    case EDIT_FRAME:
+    case Actions.EDIT_FRAME:
       return action.payload;
-    case GLOBAL_UPDATE:
-    case CANCEL_EDIT_FRAME:
-    case UPDATE_FRAME:
+    case Actions.GLOBAL_UPDATE:
+    case Actions.CANCEL_EDIT_FRAME:
+    case Actions.UPDATE_FRAME:
       return null;
     default:
       return value;

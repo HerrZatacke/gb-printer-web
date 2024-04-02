@@ -1,14 +1,10 @@
-import {
-  DROPBOX_LOG_ACTION,
-  GITSTORAGE_LOG_ACTION,
-  LOG_CLEAR,
-  STORAGE_DIFF_DONE,
-  STORAGE_SYNC_DONE,
-} from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
+
 
 const progressLogReducer = (value = { git: [], dropbox: [] }, action) => {
   switch (action.type) {
-    case GITSTORAGE_LOG_ACTION:
+    case Actions.GITSTORAGE_LOG_ACTION:
       return {
         ...value,
         git: [
@@ -16,7 +12,7 @@ const progressLogReducer = (value = { git: [], dropbox: [] }, action) => {
           ...value.git,
         ],
       };
-    case DROPBOX_LOG_ACTION:
+    case Actions.DROPBOX_LOG_ACTION:
       return {
         ...value,
         dropbox: [
@@ -25,7 +21,7 @@ const progressLogReducer = (value = { git: [], dropbox: [] }, action) => {
         ],
       };
 
-    case STORAGE_SYNC_DONE:
+    case Actions.STORAGE_SYNC_DONE:
       return {
         ...value,
         [action.payload.storageType]: [
@@ -37,8 +33,8 @@ const progressLogReducer = (value = { git: [], dropbox: [] }, action) => {
         ],
       };
 
-    case STORAGE_DIFF_DONE:
-    case LOG_CLEAR:
+    case Actions.STORAGE_DIFF_DONE:
+    case Actions.LOG_CLEAR:
       return {
         git: [],
         dropbox: [],

@@ -1,8 +1,9 @@
-import { SET_GIT_STORAGE } from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const gitStorageReducer = (value = {}, action) => {
   switch (action.type) {
-    case SET_GIT_STORAGE:
+    case Actions.SET_GIT_STORAGE:
       return {
         ...value,
         ...action.payload,

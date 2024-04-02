@@ -1,11 +1,12 @@
+/* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GLOBAL_UPDATE, SET_CURRENT_GALLERY_VIEW } from '../actions';
+import { Actions } from '../actions';
 
 const galleryViewReducer = (value = '1x', action) => {
   switch (action.type) {
-    case SET_CURRENT_GALLERY_VIEW:
+    case Actions.SET_CURRENT_GALLERY_VIEW:
       return action.payload;
-    case GLOBAL_UPDATE:
+    case Actions.GLOBAL_UPDATE:
       return updateIfDefined(action.payload.galleryView, value);
     default:
       return value;

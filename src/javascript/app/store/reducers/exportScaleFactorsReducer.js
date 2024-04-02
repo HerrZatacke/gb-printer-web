@@ -1,9 +1,10 @@
+/* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GLOBAL_UPDATE, UPDATE_EXPORT_SCALE_FACTORS } from '../actions';
+import { Actions } from '../actions';
 
 const exportScaleFactorsReducer = (value = [1], action) => {
   switch (action.type) {
-    case UPDATE_EXPORT_SCALE_FACTORS:
+    case Actions.UPDATE_EXPORT_SCALE_FACTORS:
       if (action.payload.checked) {
         if (window.navigator.msSaveBlob) {
           return [action.payload.factor];
@@ -15,7 +16,7 @@ const exportScaleFactorsReducer = (value = [1], action) => {
       return value.filter((factor) => (
         factor !== action.payload.factor
       ));
-    case GLOBAL_UPDATE:
+    case Actions.GLOBAL_UPDATE:
       return updateIfDefined(action.payload.exportScaleFactors, value);
     default:
       return value;

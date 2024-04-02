@@ -1,18 +1,19 @@
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
-import { GLOBAL_UPDATE, PALETTE_DELETE, PALETTE_UPDATE } from '../actions';
 
 const palettesReducer = (value = [], action) => {
   switch (action.type) {
-    case PALETTE_DELETE:
+    case Actions.PALETTE_DELETE:
       return [...value.filter(({ shortName }) => shortName !== action.payload.shortName)];
-    case PALETTE_UPDATE:
+    case Actions.PALETTE_UPDATE:
       return uniqueBy('shortName')([
         ...value.map((palette) => (
           palette.shortName !== action.payload.shortName ? palette : action.payload
         )),
         action.payload, // append as last one in case it's a new palette (duplicates will be removed by uniqueBy)
       ]);
-    case GLOBAL_UPDATE:
+    case Actions.GLOBAL_UPDATE:
       return uniqueBy('shortName')(action.payload.palettes, ...value);
     default:
       return value;

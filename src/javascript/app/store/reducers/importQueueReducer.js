@@ -1,32 +1,27 @@
-import {
-  ADD_FRAME,
-  ADD_IMAGES,
-  IMPORTQUEUE_ADD,
-  IMPORTQUEUE_ADD_MULTI,
-  IMPORTQUEUE_CANCEL,
-  IMPORTQUEUE_CANCEL_ONE,
-} from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
+
 
 const importQueueReducer = (importQueue = [], action) => {
   switch (action.type) {
-    case IMPORTQUEUE_ADD:
+    case Actions.IMPORTQUEUE_ADD:
       return [
         ...importQueue,
         action.payload,
       ];
 
-    case IMPORTQUEUE_ADD_MULTI:
+    case Actions.IMPORTQUEUE_ADD_MULTI:
       return [
         ...importQueue,
         ...action.payload,
       ];
 
-    case IMPORTQUEUE_CANCEL:
-    case ADD_IMAGES:
+    case Actions.IMPORTQUEUE_CANCEL:
+    case Actions.ADD_IMAGES:
       return [];
 
-    case IMPORTQUEUE_CANCEL_ONE:
-    case ADD_FRAME:
+    case Actions.IMPORTQUEUE_CANCEL_ONE:
+    case Actions.ADD_FRAME:
       return importQueue.filter(({ tempId }) => tempId !== action.payload.tempId);
 
     default:

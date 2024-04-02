@@ -1,5 +1,6 @@
+/* eslint-disable default-param-last */
 import uniqueBy from '../../../tools/unique/by';
-import { ADD_FRAME, DELETE_FRAME, GLOBAL_UPDATE, UPDATE_FRAME } from '../actions';
+import { Actions } from '../actions';
 
 const sortFrames = (a, b) => {
   if (a.id < b.id) {
@@ -15,16 +16,16 @@ const sortFrames = (a, b) => {
 
 const framesReducer = (frames = [], action) => {
   switch (action.type) {
-    case ADD_FRAME:
+    case Actions.ADD_FRAME:
       return uniqueBy('id')([action.payload, ...frames]).sort(sortFrames);
-    case DELETE_FRAME:
+    case Actions.DELETE_FRAME:
       return frames.filter(({ id }) => id !== action.payload);
-    case UPDATE_FRAME:
+    case Actions.UPDATE_FRAME:
       return [
         ...frames.filter(({ id }) => id !== action.payload.updateId),
         action.payload.data,
       ].sort(sortFrames);
-    case GLOBAL_UPDATE:
+    case Actions.GLOBAL_UPDATE:
       return uniqueBy('id')(action.payload.frames).sort(sortFrames);
     default:
       return frames;

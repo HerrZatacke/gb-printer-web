@@ -1,37 +1,29 @@
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import unique from '../../../tools/unique';
 import { FILTER_FAVOURITE } from '../../../consts/specialTags';
-import {
-  ADD_IMAGES,
-  DELETE_IMAGE,
-  DELETE_IMAGES,
-  GLOBAL_UPDATE,
-  IMAGE_FAVOURITE_TAG,
-  REHASH_IMAGE,
-  UPDATE_IMAGE,
-  UPDATE_IMAGES_BATCH,
-} from '../actions';
 
 const imagesReducer = (value = [], action) => {
   switch (action.type) {
-    case ADD_IMAGES:
+    case Actions.ADD_IMAGES:
       return uniqueBy('hash')([...value, ...action.payload]);
-    case DELETE_IMAGE:
+    case Actions.DELETE_IMAGE:
       return [...value.filter(({ hash }) => hash !== action.payload)];
-    case DELETE_IMAGES:
+    case Actions.DELETE_IMAGES:
       return [...value.filter(({ hash }) => !action.payload.includes(hash))];
-    case UPDATE_IMAGE:
+    case Actions.UPDATE_IMAGE:
       return value.map((image) => (
         (image.hash === action.payload.hash) ? {
           ...image,
           ...action.payload,
         } : image
       ));
-    case REHASH_IMAGE:
+    case Actions.REHASH_IMAGE:
       return value.map((image) => (
         (image.hash === action.payload.oldHash) ? action.payload.image : image
       ));
-    case IMAGE_FAVOURITE_TAG:
+    case Actions.IMAGE_FAVOURITE_TAG:
       return value.map((image) => (
         (image.hash === action.payload.hash) ? {
           ...image,
@@ -42,12 +34,12 @@ const imagesReducer = (value = [], action) => {
           ),
         } : image
       ));
-    case UPDATE_IMAGES_BATCH:
+    case Actions.UPDATE_IMAGES_BATCH:
       return value.map((image) => (
         // return changed image if existent in payload
         action.payload.find((changedImage) => (changedImage.hash === image.hash)) || image
       ));
-    case GLOBAL_UPDATE:
+    case Actions.GLOBAL_UPDATE:
       return uniqueBy('hash')(action.payload.images);
     default:
       return value;

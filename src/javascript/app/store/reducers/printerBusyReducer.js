@@ -1,21 +1,17 @@
-import {
-  ADD_IMAGES,
-  HEARTBEAT_TIMED_OUT, IMPORTQUEUE_CANCEL,
-  PRINTER_DATA_RECEIVED,
-  PRINTER_FUNCTIONS_RECEIVED, PRINTER_RESET,
-  REMOTE_CALL_FUNCTION,
-} from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
+
 
 const printerBusyReducer = (value = false, action) => {
   switch (action.type) {
-    case REMOTE_CALL_FUNCTION:
-    case HEARTBEAT_TIMED_OUT:
+    case Actions.REMOTE_CALL_FUNCTION:
+    case Actions.HEARTBEAT_TIMED_OUT:
       return true;
-    case ADD_IMAGES:
-    case PRINTER_FUNCTIONS_RECEIVED:
-    case PRINTER_DATA_RECEIVED:
-    case PRINTER_RESET:
-    case IMPORTQUEUE_CANCEL:
+    case Actions.ADD_IMAGES:
+    case Actions.PRINTER_FUNCTIONS_RECEIVED:
+    case Actions.PRINTER_DATA_RECEIVED:
+    case Actions.PRINTER_RESET:
+    case Actions.IMPORTQUEUE_CANCEL:
       return false;
     default:
       return value;

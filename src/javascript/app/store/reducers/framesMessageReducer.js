@@ -1,10 +1,11 @@
-import { FRAMES_MESSAGE_HIDE, FRAMES_MESSAGE_SHOW } from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const framesMessageReducer = (framesMessage = 0, action) => {
   switch (action.type) {
-    case FRAMES_MESSAGE_SHOW:
+    case Actions.FRAMES_MESSAGE_SHOW:
       return 1;
-    case FRAMES_MESSAGE_HIDE:
+    case Actions.FRAMES_MESSAGE_HIDE:
       return 2;
     default:
       return framesMessage;

@@ -1,17 +1,18 @@
-import { BITMAPQUEUE_ADD, BITMAPQUEUE_CANCEL, IMPORTQUEUE_ADD } from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const bitmapQueueReducer = (bitmapQueue = [], action) => {
   switch (action.type) {
-    case BITMAPQUEUE_ADD:
+    case Actions.BITMAPQUEUE_ADD:
       return [
         ...bitmapQueue,
         action.payload,
       ];
 
-    case BITMAPQUEUE_CANCEL:
+    case Actions.BITMAPQUEUE_CANCEL:
       return [];
 
-    case IMPORTQUEUE_ADD:
+    case Actions.IMPORTQUEUE_ADD:
       return bitmapQueue.filter(({ fileName }) => (
         fileName !== action.payload.fileName
       ));

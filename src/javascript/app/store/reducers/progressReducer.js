@@ -1,37 +1,31 @@
-import {
-  ADD_IMAGES, ANIMATE_IMAGES,
-  CONFIRM_ANSWERED,
-  CREATE_GIF_PROGRESS,
-  EXECUTE_PLUGIN_PROGRESS,
-  IMPORTQUEUE_CANCEL,
-  PRINTER_PROGRESS,
-} from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const progressReducer = (progress = { gif: 0, printer: 0 }, action) => {
   switch (action.type) {
-    case ANIMATE_IMAGES:
+    case Actions.ANIMATE_IMAGES:
       return {
         ...progress,
         gif: 0.01,
       };
-    case CREATE_GIF_PROGRESS:
+    case Actions.CREATE_GIF_PROGRESS:
       return {
         ...progress,
         gif: action.payload,
       };
-    case EXECUTE_PLUGIN_PROGRESS:
+    case Actions.EXECUTE_PLUGIN_PROGRESS:
       return {
         ...progress,
         plugin: action.payload,
       };
-    case PRINTER_PROGRESS:
+    case Actions.PRINTER_PROGRESS:
       return {
         ...progress,
         printer: action.payload,
       };
-    case ADD_IMAGES:
-    case IMPORTQUEUE_CANCEL:
-    case CONFIRM_ANSWERED:
+    case Actions.ADD_IMAGES:
+    case Actions.IMPORTQUEUE_CANCEL:
+    case Actions.CONFIRM_ANSWERED:
       return {
         ...progress,
         printer: 0,

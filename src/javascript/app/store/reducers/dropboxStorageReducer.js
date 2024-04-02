@@ -1,12 +1,13 @@
-import { DROPBOX_LOGOUT, SET_DROPBOX_STORAGE } from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const dropboxStorageReducer = (value = {}, action) => {
   switch (action.type) {
-    case DROPBOX_LOGOUT:
+    case Actions.DROPBOX_LOGOUT:
       return {
         use: value.use,
       };
-    case SET_DROPBOX_STORAGE:
+    case Actions.SET_DROPBOX_STORAGE:
       return {
         ...value,
         ...action.payload,

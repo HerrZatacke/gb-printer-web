@@ -1,4 +1,4 @@
-const updateIfDefined = (update, oldval) => (
+const updateIfDefined = <T>(update?: T, oldval?: T): T | undefined => (
   (typeof update !== 'undefined') ? update : oldval
 );
 

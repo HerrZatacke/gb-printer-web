@@ -1,11 +1,12 @@
-import { WINDOW_DIMENSIONS } from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const windowDimensionsReducer = (value = {
   height: window.innerHeight,
   width: window.innerWidth,
 }, action) => {
   switch (action.type) {
-    case WINDOW_DIMENSIONS:
+    case Actions.WINDOW_DIMENSIONS:
       return action.payload;
     default:
       return value;

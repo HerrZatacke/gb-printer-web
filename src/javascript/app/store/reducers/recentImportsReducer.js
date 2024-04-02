@@ -1,9 +1,10 @@
+/* eslint-disable default-param-last */
 import dayjs from 'dayjs';
-import { ADD_IMAGES, GLOBAL_UPDATE } from '../actions';
+import { Actions } from '../actions';
 
 const recentImportsReducer = (value = [], action) => {
   switch (action.type) {
-    case ADD_IMAGES: {
+    case Actions.ADD_IMAGES: {
 
       const imported = action.payload.map(({ hash, hashes }) => {
 
@@ -25,7 +26,7 @@ const recentImportsReducer = (value = [], action) => {
       ];
     }
 
-    case GLOBAL_UPDATE: {
+    case Actions.GLOBAL_UPDATE: {
       if (action.payload?.imageSelection?.length) {
         return [
 

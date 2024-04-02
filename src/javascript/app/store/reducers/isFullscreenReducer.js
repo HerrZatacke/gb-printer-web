@@ -1,8 +1,9 @@
-import { SET_IS_FULLSCREEN } from '../actions';
+/* eslint-disable default-param-last */
+import { Actions } from '../actions';
 
 const isFullscreenReducer = (value = false, action) => {
   switch (action.type) {
-    case SET_IS_FULLSCREEN:
+    case Actions.SET_IS_FULLSCREEN:
       return action.payload;
     default:
       return value;
