@@ -12,7 +12,8 @@
     "build:validate": "node ./scripts/validatebuild.js",
     "build:deploy": "node ./scripts/deploy.js",
     "svgo": "svgo ./src/assets/icons/",
-    "audit": "npm audit fix"
+    "audit": "npm audit fix",
+    "browserlist": "npx update-browserslist-db@latest"
   },
   "author": "Herr Zatacke",
   "license": "MIT",
