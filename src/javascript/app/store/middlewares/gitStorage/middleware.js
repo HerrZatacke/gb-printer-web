@@ -5,7 +5,7 @@ import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
 import { Actions } from '../../actions';
 
 let octoClient;
-let addToQueue = () => {};
+let addToQueue = () => { /* noop */ };
 
 const init = (store) => {
   const { gitStorage: gitStorageSettings } = store.getState();

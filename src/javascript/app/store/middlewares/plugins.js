@@ -79,7 +79,7 @@ const pluginsMiddleware = (store) => {
       queue.add(() => (
         new Promise((resolve) => {
           window.gbpwRegisterPlugin = (Plugin) => {
-            window.gbpwRegisterPlugin = () => {};
+            window.gbpwRegisterPlugin = () => { /* noop */ };
 
             try {
               const instance = new Plugin({
@@ -121,7 +121,7 @@ const pluginsMiddleware = (store) => {
           document.head.appendChild(pluginScript);
 
           pluginScript.addEventListener('error', () => {
-            window.gbpwRegisterPlugin = () => {};
+            window.gbpwRegisterPlugin = () => { /* noop */ };
 
             store.dispatch({
               type: Actions.PLUGIN_UPDATE_PROPERTIES,

@@ -67,7 +67,7 @@ ImageRender.propTypes = {
 ImageRender.defaultProps = {
   hashes: null,
   frameId: null,
-  reportTileCount: () => {},
+  reportTileCount: () => { /* noop */ },
   rotation: null,
 };
 

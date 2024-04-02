@@ -15,7 +15,7 @@ import dateFormatLocale from '../../../../tools/dateFormatLocale';
 import { Actions } from '../../actions';
 
 let dropboxClient;
-let addToQueue = () => {};
+let addToQueue = () => { /* noop */ };
 
 const middleware = (store) => {
 

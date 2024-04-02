@@ -14,7 +14,7 @@ const useWebUSBSerial = (passive) => {
 
   useEffect(() => {
     if (!WebUSBSerial.enabled) {
-      return () => {};
+      return () => { /* noop */ };
     }
 
     const handleReceivedData = (data) => {

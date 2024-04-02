@@ -18,7 +18,7 @@ const useWebSerial = (passive) => {
 
   useEffect(() => {
     if (!WebSerial.enabled) {
-      return () => {};
+      return () => { /* noop */ };
     }
 
     const handleReceivedData = (data) => {
