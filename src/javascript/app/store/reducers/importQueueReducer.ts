@@ -1,9 +1,27 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { AddImagesAction } from '../../../../types/actions/ImageActions';
+import { AddFrameAction } from '../../../../types/actions/FrameActions';
+import {
+  ImportQueueAddAction,
+  ImportQueueAddMultiAction,
+  ImportQueueCancelAction,
+  ImportQueueCancelOneAction,
+} from '../../../../types/actions/ImportQueueActions';
+import { ImportItem } from '../../../../types/ImportItem';
 
-
-const importQueueReducer = (importQueue = [], action: GlobalUpdateAction) => {
+const importQueueReducer = (
+  importQueue: ImportItem[] = [],
+  action:
+    AddImagesAction |
+    AddFrameAction |
+    ImportQueueAddAction |
+    ImportQueueAddMultiAction |
+    ImportQueueCancelAction |
+    ImportQueueCancelOneAction |
+    GlobalUpdateAction,
+): ImportItem[] => {
   switch (action.type) {
     case Actions.IMPORTQUEUE_ADD:
       return [
