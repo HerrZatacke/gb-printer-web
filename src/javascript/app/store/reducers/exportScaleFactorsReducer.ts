@@ -2,14 +2,23 @@
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 
-const exportScaleFactorsReducer = (value = [1], action) => {
+type ExportScaleFactorsAction = {
+  type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
+  payload: {
+    checked: boolean,
+    factor: number,
+  }
+} | {
+  type: Actions.GLOBAL_UPDATE,
+  payload: {
+    exportScaleFactors: number[],
+  }
+}
+
+const exportScaleFactorsReducer = (value = [1], action: ExportScaleFactorsAction): number[] => {
   switch (action.type) {
     case Actions.UPDATE_EXPORT_SCALE_FACTORS:
       if (action.payload.checked) {
-        if (window.navigator.msSaveBlob) {
-          return [action.payload.factor];
-        }
-
         return [...value, action.payload.factor];
       }
 
