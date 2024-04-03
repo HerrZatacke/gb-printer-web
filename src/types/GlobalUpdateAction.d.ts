@@ -4,6 +4,7 @@ import { Frame } from './Frame';
 import { GalleryViews } from '../javascript/consts/GalleryViews';
 import { ExportFrameMode } from '../javascript/consts/exportFrameModes';
 import { Image } from './Image';
+import { Palette } from './Palette';
 
 export type GlobalUpdateAction = {
   type: Actions.GLOBAL_UPDATE,
@@ -23,6 +24,8 @@ export type GlobalUpdateAction = {
     images?: Image[],
     importDeleted?: boolean,
     importLastSeen?: boolean,
-    importPad ?: boolean,
+    importPad?: boolean,
+    pageSize?: number,
+    palettes?: Palette[],
   }
 }
