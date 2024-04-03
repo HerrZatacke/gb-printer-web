@@ -1,8 +1,14 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-const importPadReducer = (value = false, action) => {
+interface ImportPadAction {
+  type: Actions.SET_IMPORT_PAD,
+  payload: boolean,
+}
+
+const importPadReducer = (value = false, action: ImportPadAction | GlobalUpdateAction): boolean => {
   switch (action.type) {
     case Actions.SET_IMPORT_PAD:
       return action.payload;

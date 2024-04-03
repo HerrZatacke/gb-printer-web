@@ -1,8 +1,14 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-const importDeletedReducer = (value = false, action) => {
+interface ImportDeletedAction {
+  type: Actions.SET_IMPORT_DELETED,
+  payload: boolean,
+}
+
+const importDeletedReducer = (value = false, action: ImportDeletedAction | GlobalUpdateAction): boolean => {
   switch (action.type) {
     case Actions.SET_IMPORT_DELETED:
       return action.payload;

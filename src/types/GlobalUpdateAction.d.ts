@@ -21,5 +21,8 @@ export type GlobalUpdateAction = {
     hideDates?: boolean,
     imageSelection?: string[],
     images?: Image[],
+    importDeleted?: boolean,
+    importLastSeen?: boolean,
+    importPad ?: boolean,
   }
 }
