@@ -42,12 +42,12 @@ interface RGBNHashes {
   n?: string,
 }
 
-interface RGBNImage extends CommonImage {
+export interface RGBNImage extends CommonImage {
   palette: RGBNPalette,
   hashes: RGBNHashes,
 }
 
-interface MonochromeImage extends CommonImage {
+export interface MonochromeImage extends CommonImage {
   lines: number,
   palette: string,
   frame: string,
