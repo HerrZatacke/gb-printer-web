@@ -5,6 +5,7 @@ import { GalleryViews } from '../javascript/consts/GalleryViews';
 import { ExportFrameMode } from '../javascript/consts/exportFrameModes';
 import { Image, RGBNHashes } from './Image';
 import { Palette } from './Palette';
+import { VideoParams } from './VideoParams';
 
 export type GlobalUpdateAction = {
   type: Actions.GLOBAL_UPDATE,
@@ -32,5 +33,6 @@ export type GlobalUpdateAction = {
     rgbnImages?: RGBNHashes,
     savFrameTypes?: string,
     sortBy?: string,
+    videoParams?: VideoParams,
   }
 }
