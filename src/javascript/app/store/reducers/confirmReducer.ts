@@ -1,27 +1,16 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
+import {
+  ComfirmAction,
+  ComfirmAskAction,
+  ComfirmAnsweredAction,
+  Dialog,
+} from '../../../../types/actions/ConfirmActions';
 
-interface Dialog {
-  message: string,
-  questions: () => object[],
-  confirm: () => void,
-  deny: () => void,
-}
-
-interface ComfirmAction {
-  type:
-    Actions.CONFIRM_ASK |
-    Actions.ADD_FRAME |
-    Actions.ADD_IMAGES |
-    Actions.DELETE_IMAGE |
-    Actions.DELETE_IMAGES |
-    Actions.DELETE_FRAME |
-    Actions.PALETTE_DELETE |
-    Actions.CONFIRM_ANSWERED,
-  payload: Dialog,
-}
-
-const confirmReducer = (value: Dialog[] = [], action: ComfirmAction): Dialog[] => {
+const confirmReducer = (
+  value: Dialog[] = [],
+  action: ComfirmAskAction | ComfirmAction | ComfirmAnsweredAction,
+): Dialog[] => {
   switch (action.type) {
     case Actions.CONFIRM_ASK: {
       return [

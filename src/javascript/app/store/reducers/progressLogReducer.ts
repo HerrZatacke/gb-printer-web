@@ -1,8 +1,22 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
+import {
+  LogClearAction,
+  LogDropboxAction,
+  LogGitStorageAction,
+  LogStorageDiffDoneAction,
+  LogStorageSyncDoneAction, ProgressLog,
+} from '../../../../types/actions/LogActions';
 
-
-const progressLogReducer = (value = { git: [], dropbox: [] }, action) => {
+const progressLogReducer = (
+  value: ProgressLog = { git: [], dropbox: [] },
+  action:
+    LogGitStorageAction |
+    LogDropboxAction |
+    LogStorageSyncDoneAction |
+    LogStorageDiffDoneAction |
+    LogClearAction,
+) => {
   switch (action.type) {
     case Actions.GITSTORAGE_LOG_ACTION:
       return {
