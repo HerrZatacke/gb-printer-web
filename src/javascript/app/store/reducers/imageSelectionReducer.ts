@@ -3,18 +3,17 @@ import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
+import { ImageSelectionActionAddRemove, ImageSelectionSet } from '../../../../types/actions/ImageSelectionActions';
 
-type ImageSelectionAction = {
-  type: Actions.IMAGE_SELECTION_REMOVE | Actions.IMAGE_SELECTION_ADD,
-  payload: string,
-} | {
-  type: Actions.IMAGE_SELECTION_SET
-  payload: string[],
-}
 
 const imageSelectionReducer = (
   value: string[] = [],
-  action: ImageSelectionAction | DeleteImageAction | DeleteImagesAction | GlobalUpdateAction,
+  action:
+    ImageSelectionActionAddRemove |
+    ImageSelectionSet |
+    DeleteImageAction |
+    DeleteImagesAction |
+    GlobalUpdateAction,
 ): string[] => {
   switch (action.type) {
     case Actions.IMAGE_SELECTION_REMOVE:

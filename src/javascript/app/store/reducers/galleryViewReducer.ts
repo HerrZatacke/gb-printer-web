@@ -3,11 +3,7 @@ import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { GalleryViews } from '../../../consts/GalleryViews';
-
-interface GalleryViewAction {
-  type: Actions.SET_CURRENT_GALLERY_VIEW,
-  payload: GalleryViews
-}
+import { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
 
 const galleryViewReducer = (
   value: GalleryViews = GalleryViews.GALLERY_VIEW_1X,
