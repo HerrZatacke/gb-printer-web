@@ -3,11 +3,57 @@ import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import unique from '../../../tools/unique';
 import { SpecialTags } from '../../../consts/SpecialTags';
+import { DeleteImageAction } from '../../../../types/DeleteImageAction';
+import { DeleteImagesAction } from '../../../../types/DeleteImagesAction';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { Image } from '../../../../types/Image';
 
-const imagesReducer = (value = [], action) => {
+interface AddImagesAction {
+  type: Actions.ADD_IMAGES,
+  payload: Image[],
+}
+
+interface UpdateImageAction {
+  type: Actions.UPDATE_IMAGE,
+  payload: Image,
+}
+
+interface RehashImageAction {
+  type: Actions.REHASH_IMAGE,
+  payload: {
+    oldHash: string,
+    image: Image,
+  },
+}
+
+interface ImageFavouriteAction {
+  type: Actions.IMAGE_FAVOURITE_TAG,
+  payload: {
+    isFavourite: boolean,
+    hash: string,
+  },
+}
+
+interface ImagesBatchUpdateAction {
+  type: Actions.UPDATE_IMAGES_BATCH,
+  payload: Image[],
+}
+
+const imagesReducer = (
+  value: Image[] = [],
+  action:
+    AddImagesAction |
+    DeleteImageAction |
+    DeleteImagesAction |
+    GlobalUpdateAction |
+    RehashImageAction |
+    ImageFavouriteAction |
+    ImagesBatchUpdateAction |
+    UpdateImageAction,
+): Image[] => {
   switch (action.type) {
     case Actions.ADD_IMAGES:
-      return uniqueBy('hash')([...value, ...action.payload]);
+      return uniqueBy<Image>('hash')([...value, ...action.payload]);
     case Actions.DELETE_IMAGE:
       return [...value.filter(({ hash }) => hash !== action.payload)];
     case Actions.DELETE_IMAGES:
@@ -40,7 +86,7 @@ const imagesReducer = (value = [], action) => {
         action.payload.find((changedImage) => (changedImage.hash === image.hash)) || image
       ));
     case Actions.GLOBAL_UPDATE:
-      return uniqueBy('hash')(action.payload.images);
+      return uniqueBy<Image>('hash')(action.payload.images || []);
     default:
       return value;
   }

@@ -1,8 +1,22 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { DeleteImageAction } from '../../../../types/DeleteImageAction';
+import { DeleteImagesAction } from '../../../../types/DeleteImagesAction';
 
-const imageSelectionReducer = (value = [], action) => {
+type ImageSelectionAction = {
+  type: Actions.IMAGE_SELECTION_REMOVE | Actions.IMAGE_SELECTION_ADD,
+  payload: string,
+} | {
+  type: Actions.IMAGE_SELECTION_SET
+  payload: string[],
+}
+
+const imageSelectionReducer = (
+  value: string[] = [],
+  action: ImageSelectionAction | DeleteImageAction | DeleteImagesAction | GlobalUpdateAction,
+): string[] => {
   switch (action.type) {
     case Actions.IMAGE_SELECTION_REMOVE:
     case Actions.DELETE_IMAGE:

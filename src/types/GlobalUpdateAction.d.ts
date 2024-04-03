@@ -3,6 +3,7 @@ import { FrameGroup } from './FrameGroup';
 import { Frame } from './Frame';
 import { GalleryViews } from '../javascript/consts/GalleryViews';
 import { ExportFrameMode } from '../javascript/consts/exportFrameModes';
+import { Image } from './Image';
 
 export type GlobalUpdateAction = {
   type: Actions.GLOBAL_UPDATE,
@@ -19,5 +20,6 @@ export type GlobalUpdateAction = {
     handleExportFrame?: ExportFrameMode,
     hideDates?: boolean,
     imageSelection?: string[],
+    images?: Image[],
   }
 }
