@@ -2,7 +2,7 @@
 import { Actions } from '../actions';
 import unique from '../../../tools/unique';
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GlobalUpdateAction } from './GlobalUpdateAction';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
 interface ExportFileTypesAction {
   type: Actions.UPDATE_EXPORT_FILE_TYPES,

@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GlobalUpdateAction } from './GlobalUpdateAction';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
 interface ForceMagicCheckAction {
   type: Actions.SET_FORCE_MAGIC_CHECK,

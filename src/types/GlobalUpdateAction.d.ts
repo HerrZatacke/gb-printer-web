@@ -1,4 +1,5 @@
-import { Actions } from '../actions';
+import { Actions } from '../javascript/app/store/actions';
+import { FrameGroup } from './FrameGroup';
 
 export type GlobalUpdateAction = {
   type: Actions.GLOBAL_UPDATE,
@@ -9,5 +10,6 @@ export type GlobalUpdateAction = {
     exportFileTypes?: string[],
     exportScaleFactors?: number[],
     forceMagicCheck?: boolean,
+    frameGroupNames?: FrameGroup[],
   }
 }

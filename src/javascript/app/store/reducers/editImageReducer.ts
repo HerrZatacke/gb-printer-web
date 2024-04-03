@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from './GlobalUpdateAction';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
 interface CurrentEditSingleImage {
   hash: string,

@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from './GlobalUpdateAction';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
 type ActivePaletteAction = {
   type: Actions.PALETTE_SET_ACTIVE,

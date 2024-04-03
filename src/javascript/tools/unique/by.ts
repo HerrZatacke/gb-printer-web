@@ -1,4 +1,4 @@
-const uniqueBy = <T>(key: string) => (arr: Record<string, T>[]): Record<string, T>[] => (
+const uniqueBy = <T>(key: keyof T) => (arr: T[]): T[] => (
   arr.filter((item, index) => (
     arr.findIndex((find) => find[key] === item[key]) === index
   ))
