@@ -3,6 +3,9 @@ import { Actions } from '../actions';
 
 interface DropBoxSettings {
   use?: boolean,
+  refreshToken?: string,
+  accessToken?: string,
+  expiresAt?: number,
   path?: string,
   autoDropboxSync?: boolean,
 }

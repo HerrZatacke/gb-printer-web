@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import SVG from '../SVG';
 import InputNewTag from './InputNewTag';
 import unique from '../../../tools/unique';
-import { SpecialTags } from '../../../consts/specialTags';
+import { SpecialTags } from '../../../consts/SpecialTags';
 import './index.scss';
 
 const TagsSelect = ({

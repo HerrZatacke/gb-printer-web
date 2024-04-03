@@ -4,7 +4,7 @@ import unique from '../../../../tools/unique';
 import { useAvailableTags } from '../../../../hooks/useAvailableTags';
 import Lightbox from '../../Lightbox';
 import FilterFormTag from './filterFormTag';
-import { SpecialTags } from '../../../../consts/specialTags';
+import { SpecialTags } from '../../../../consts/SpecialTags';
 
 const FilterForm = (props) => {
 

@@ -2,7 +2,7 @@
 import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import unique from '../../../tools/unique';
-import { SpecialTags } from '../../../consts/specialTags';
+import { SpecialTags } from '../../../consts/SpecialTags';
 
 const imagesReducer = (value = [], action) => {
   switch (action.type) {

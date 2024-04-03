@@ -1,5 +1,5 @@
 import applyTagChanges from '../../../tools/applyTagChanges';
-import { NEW_PALETTE_SHORT } from '../../../consts/specialTags';
+import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
 import { Actions } from '../actions';
 
 const randomColor = (max) => (

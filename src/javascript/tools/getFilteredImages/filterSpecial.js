@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { SpecialTags } from '../../consts/specialTags';
+import { SpecialTags } from '../../consts/SpecialTags';
 import { dateFormat } from '../../app/defaults';
 
 const filterSpecial = (activeTags, recentImports) => (image) => {

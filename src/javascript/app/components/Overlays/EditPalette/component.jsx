@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Lightbox from '../../Lightbox';
-import { NEW_PALETTE_SHORT } from '../../../../consts/specialTags';
+import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 import Input from '../../Input';
 import ImageRender from '../../ImageRender';
 

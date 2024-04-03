@@ -1,4 +1,4 @@
-import { SpecialTags } from '../../consts/specialTags';
+import { SpecialTags } from '../../consts/SpecialTags';
 
 const filterTags = (activeTags) => (image) => {
 

@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { SpecialTags } from '../../../consts/specialTags';
+import { SpecialTags } from '../../../consts/SpecialTags';
 
 const specialTags: string[] = [
   SpecialTags.FILTER_UNTAGGED,

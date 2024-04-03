@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { NEW_PALETTE_SHORT } from '../../../consts/specialTags';
+import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
 import { Actions } from '../../store/actions';
 
 const mapStateToProps = (state) => ({

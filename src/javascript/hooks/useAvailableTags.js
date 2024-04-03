@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import unique from '../tools/unique';
-import { SpecialTags } from '../consts/specialTags';
+import { SpecialTags } from '../consts/SpecialTags';
 
 export const getAvailableTags = (images) => unique(images.map(({ tags }) => tags).flat())
   .filter((tag) => tag !== SpecialTags.FILTER_FAVOURITE)

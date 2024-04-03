@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { missingGreyPalette } from '../../defaults';
-import { SpecialTags } from '../../../consts/specialTags';
+import { SpecialTags } from '../../../consts/SpecialTags';
 import { Actions } from '../../store/actions';
 
 const mapStateToProps = (state, { hash }) => {

@@ -8,7 +8,7 @@ import RGBNSelect from '../RGBNSelect';
 import { dateFormat } from '../../defaults';
 import dateFormatLocale from '../../../tools/dateFormatLocale';
 import ImageRender from '../ImageRender';
-import { SpecialTags } from '../../../consts/specialTags';
+import { SpecialTags } from '../../../consts/SpecialTags';
 import SVG from '../SVG';
 
 dayjs.extend(customParseFormat);
