@@ -41,3 +41,8 @@ export interface DeleteImagesAction {
   type: Actions.DELETE_IMAGES,
   payload: string[],
 }
+
+export interface NewRGBNImageAction {
+  type: Actions.SAVE_RGBN_IMAGE,
+  payload: 'newRGBN',
+}

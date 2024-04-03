@@ -35,7 +35,7 @@ interface RGBNPalette {
   blend?: string,
 }
 
-interface RGBNHashes {
+export interface RGBNHashes {
   r?: string,
   g?: string,
   b?: string,

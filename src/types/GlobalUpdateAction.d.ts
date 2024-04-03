@@ -3,7 +3,7 @@ import { FrameGroup } from './FrameGroup';
 import { Frame } from './Frame';
 import { GalleryViews } from '../javascript/consts/GalleryViews';
 import { ExportFrameMode } from '../javascript/consts/exportFrameModes';
-import { Image } from './Image';
+import { Image, RGBNHashes } from './Image';
 import { Palette } from './Palette';
 
 export type GlobalUpdateAction = {
@@ -29,5 +29,6 @@ export type GlobalUpdateAction = {
     palettes?: Palette[],
     printerParams?: string,
     printerUrl?: string,
+    rgbnImages?: RGBNHashes,
   }
 }
