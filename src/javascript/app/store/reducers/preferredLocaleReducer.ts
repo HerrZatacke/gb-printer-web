@@ -3,7 +3,12 @@ import dayjs from 'dayjs';
 import { Actions } from '../actions';
 import dateFormatLocale from '../../../tools/dateFormatLocale';
 
-const preferredLocaleReducer = (value = navigator.language, action) => {
+interface PreferredLocaleAction {
+  type: Actions.SET_PREFERRED_LOCALE,
+  payload: string,
+}
+
+const preferredLocaleReducer = (value = navigator.language, action: PreferredLocaleAction) => {
   switch (action.type) {
     case Actions.SET_PREFERRED_LOCALE:
 
