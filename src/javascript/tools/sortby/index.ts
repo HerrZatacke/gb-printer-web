@@ -1,6 +1,11 @@
-const sortBy = (key, direction = 'asc') => (arr) => {
+export enum SortDirection {
+  ASC = 'asc',
+  DESC = 'desc',
+}
 
-  const dir = direction === 'desc' ? -1 : 1;
+const sortBy = <T>(key: keyof T, direction = SortDirection.ASC) => (arr: T[]): T[] => {
+
+  const dir = direction === SortDirection.DESC ? -1 : 1;
 
   return (
     arr.sort((a, b) => {

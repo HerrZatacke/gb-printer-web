@@ -2,11 +2,25 @@
 import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import sortBy from '../../../tools/sortby';
+import { Plugin } from '../../../../types/Plugin';
+import {
+  PluginAddAction,
+  PluginRemoveAction,
+  PluginUpdateConfigAction,
+  PluginUpdatePropertiesAction,
+} from '../../../../types/actions/PluginActions';
 
-const uniqueByUrl = uniqueBy('url');
-const sortByUrl = sortBy('url');
+const uniqueByUrl = uniqueBy<Plugin>('url');
+const sortByUrl = sortBy<Plugin>('url');
 
-const pluginsReducer = (plugins = [], action) => {
+const pluginsReducer = (
+  plugins: Plugin[] = [],
+  action:
+    PluginRemoveAction |
+    PluginAddAction |
+    PluginUpdatePropertiesAction |
+    PluginUpdateConfigAction,
+): Plugin[] => {
   switch (action.type) {
     case Actions.PLUGIN_REMOVE:
       return sortByUrl(uniqueByUrl([...plugins.filter(({ url }) => url !== action.payload)]));
