@@ -1,4 +1,4 @@
-const cleanUrl = (dirtyUrl, protocol) => {
+const cleanUrl = (dirtyUrl: string, protocol: string): string => {
   if (!dirtyUrl.trim()) {
     return '';
   }

@@ -1,7 +1,17 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-const printerFunctionsReducer = (value = [], action) => {
+import {
+  PrinterFunctionsReceivedAction,
+  PrinterTimedOutAction,
+} from '../../../../types/actions/PrinterActions';
+
+const printerFunctionsReducer = (
+  value: object[] = [],
+  action:
+    PrinterTimedOutAction |
+    PrinterFunctionsReceivedAction,
+): object[] => {
   switch (action.type) {
     case Actions.PRINTER_FUNCTIONS_RECEIVED:
       return action.payload;

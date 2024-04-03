@@ -27,5 +27,7 @@ export type GlobalUpdateAction = {
     importPad?: boolean,
     pageSize?: number,
     palettes?: Palette[],
+    printerParams?: string,
+    printerUrl?: string,
   }
 }
