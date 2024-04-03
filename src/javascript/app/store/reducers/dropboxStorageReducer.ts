@@ -1,19 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-
-interface DropBoxSettings {
-  use?: boolean,
-  refreshToken?: string,
-  accessToken?: string,
-  expiresAt?: number,
-  path?: string,
-  autoDropboxSync?: boolean,
-}
-
-interface DropboxStorageAction {
-  type: Actions.DROPBOX_LOGOUT | Actions.SET_DROPBOX_STORAGE,
-  payload: DropBoxSettings
-}
+import { DropBoxSettings, DropboxStorageAction } from '../../../../types/actions/StorageActions';
 
 const dropboxStorageReducer = (value: DropBoxSettings = {}, action: DropboxStorageAction): DropBoxSettings => {
   switch (action.type) {

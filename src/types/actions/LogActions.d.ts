@@ -21,6 +21,18 @@ export interface LogDropboxAction {
   payload: LogItem,
 }
 
+export interface LogStorageSyncSelectAction {
+  type: Actions.STORAGE_SYNC_SELECT,
+}
+
+export interface LogStorageSyncStartAction {
+  type: Actions.STORAGE_SYNC_START,
+}
+
+export interface LogStorageSyncCancelAction {
+  type: Actions.STORAGE_SYNC_CANCEL,
+}
+
 export interface LogStorageSyncDoneAction {
   type: Actions.STORAGE_SYNC_DONE,
   payload: {

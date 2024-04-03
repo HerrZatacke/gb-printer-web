@@ -1,7 +1,24 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
+import {
+  TrashCountFramesAction,
+  TrashCountImagesAction,
+  TrashShowHideAction,
+} from '../../../../types/actions/TrashActions';
 
-const trashCountReducer = (value = { frames: 0, images: 0, show: false }, action) => {
+interface TrashCount {
+  frames: number,
+  images: number,
+  show: boolean,
+}
+
+const trashCountReducer = (
+  value: TrashCount = { frames: 0, images: 0, show: false },
+  action:
+    TrashShowHideAction |
+    TrashCountFramesAction |
+    TrashCountImagesAction,
+): TrashCount => {
   switch (action.type) {
     case Actions.SHOW_HIDE_TRASH:
       return {

@@ -30,5 +30,7 @@ export type GlobalUpdateAction = {
     printerParams?: string,
     printerUrl?: string,
     rgbnImages?: RGBNHashes,
+    savFrameTypes?: string,
+    sortBy?: string,
   }
 }
