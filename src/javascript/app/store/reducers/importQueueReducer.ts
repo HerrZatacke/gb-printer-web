@@ -1,8 +1,9 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
 
-const importQueueReducer = (importQueue = [], action) => {
+const importQueueReducer = (importQueue = [], action: GlobalUpdateAction) => {
   switch (action.type) {
     case Actions.IMPORTQUEUE_ADD:
       return [

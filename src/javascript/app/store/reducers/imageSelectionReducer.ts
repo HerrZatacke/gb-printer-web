@@ -2,8 +2,7 @@
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { DeleteImageAction } from '../../../../types/DeleteImageAction';
-import { DeleteImagesAction } from '../../../../types/DeleteImagesAction';
+import { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
 
 type ImageSelectionAction = {
   type: Actions.IMAGE_SELECTION_REMOVE | Actions.IMAGE_SELECTION_ADD,

@@ -3,6 +3,7 @@ import uniqueBy from '../../../tools/unique/by';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { Frame } from '../../../../types/Frame';
+import { AddFrameAction, DeleteFrameAction, UpdateFrameAction } from '../../../../types/actions/FrameActions';
 
 const sortFrames = (a: Frame, b: Frame) => {
   if (a.id < b.id) {
@@ -16,21 +17,10 @@ const sortFrames = (a: Frame, b: Frame) => {
   return 0;
 };
 
-type FramesAction = {
-  type: Actions.ADD_FRAME,
-  payload: Frame,
-} | {
-  type: Actions.UPDATE_FRAME,
-  payload: {
-    updateId: string,
-    data: Frame,
-  }
-} | {
-  type: Actions.DELETE_FRAME,
-  payload: string,
-}
-
-const framesReducer = (frames = [], action: FramesAction | GlobalUpdateAction) => {
+const framesReducer = (
+  frames = [],
+  action: AddFrameAction | UpdateFrameAction | DeleteFrameAction | GlobalUpdateAction,
+) => {
   switch (action.type) {
     case Actions.ADD_FRAME:
       return uniqueBy<Frame>('id')([action.payload, ...frames]).sort(sortFrames);

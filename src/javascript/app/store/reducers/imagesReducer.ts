@@ -3,41 +3,18 @@ import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import unique from '../../../tools/unique';
 import { SpecialTags } from '../../../consts/SpecialTags';
-import { DeleteImageAction } from '../../../../types/DeleteImageAction';
-import { DeleteImagesAction } from '../../../../types/DeleteImagesAction';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { Image } from '../../../../types/Image';
+import {
+  AddImagesAction,
+  DeleteImageAction,
+  DeleteImagesAction,
+  ImageFavouriteAction,
+  ImagesBatchUpdateAction,
+  RehashImageAction,
+  UpdateImageAction,
+} from '../../../../types/actions/ImageActions';
 
-interface AddImagesAction {
-  type: Actions.ADD_IMAGES,
-  payload: Image[],
-}
-
-interface UpdateImageAction {
-  type: Actions.UPDATE_IMAGE,
-  payload: Image,
-}
-
-interface RehashImageAction {
-  type: Actions.REHASH_IMAGE,
-  payload: {
-    oldHash: string,
-    image: Image,
-  },
-}
-
-interface ImageFavouriteAction {
-  type: Actions.IMAGE_FAVOURITE_TAG,
-  payload: {
-    isFavourite: boolean,
-    hash: string,
-  },
-}
-
-interface ImagesBatchUpdateAction {
-  type: Actions.UPDATE_IMAGES_BATCH,
-  payload: Image[],
-}
 
 const imagesReducer = (
   value: Image[] = [],
@@ -45,11 +22,11 @@ const imagesReducer = (
     AddImagesAction |
     DeleteImageAction |
     DeleteImagesAction |
-    GlobalUpdateAction |
-    RehashImageAction |
     ImageFavouriteAction |
     ImagesBatchUpdateAction |
-    UpdateImageAction,
+    RehashImageAction |
+    UpdateImageAction |
+    GlobalUpdateAction,
 ): Image[] => {
   switch (action.type) {
     case Actions.ADD_IMAGES:
