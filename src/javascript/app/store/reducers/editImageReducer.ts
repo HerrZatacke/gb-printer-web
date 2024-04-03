@@ -1,5 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
+import { GlobalUpdateAction } from './GlobalUpdateAction';
 
 interface CurrentEditSingleImage {
   hash: string,
@@ -22,13 +23,12 @@ type EditImageAction = {
     Actions.CANCEL_EDIT_IMAGE |
     Actions.UPDATE_IMAGE |
     Actions.REHASH_IMAGE |
-    Actions.UPDATE_IMAGES_BATCH |
-    Actions.GLOBAL_UPDATE,
+    Actions.UPDATE_IMAGES_BATCH,
 }
 
 const editImageReducer = (
   value: CurrentEditSingleImage | null = null,
-  action: EditImageAction,
+  action: EditImageAction | GlobalUpdateAction,
 ): CurrentEditSingleImage | CurrentEditBatch | null => {
   switch (action.type) {
     case Actions.EDIT_IMAGE:

@@ -1,19 +1,20 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
+import { GlobalUpdateAction } from './GlobalUpdateAction';
 
 type ActivePaletteAction = {
   type: Actions.PALETTE_SET_ACTIVE,
   payload: string,
 } | {
-  type: Actions.GLOBAL_UPDATE | Actions.PALETTE_DELETE,
-    payload: {
+  type: Actions.PALETTE_DELETE,
+  payload: {
     activePalette?: string,
     newSelectedPalette?: string,
   }
 }
 
-const activePaletteReducer = (value = 'cybl', action: ActivePaletteAction): string | undefined => {
+const activePaletteReducer = (value = 'cybl', action: ActivePaletteAction | GlobalUpdateAction): string | undefined => {
   switch (action.type) {
     case Actions.PALETTE_SET_ACTIVE:
       return action.payload;

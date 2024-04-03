@@ -2,21 +2,17 @@
 import { Actions } from '../actions';
 import unique from '../../../tools/unique';
 import updateIfDefined from '../../../tools/updateIfDefined';
+import { GlobalUpdateAction } from './GlobalUpdateAction';
 
-type ExportFileTypesAction = {
+interface ExportFileTypesAction {
   type: Actions.UPDATE_EXPORT_FILE_TYPES,
   payload: {
     checked: boolean,
     fileType: string,
   }
-} | {
-  type: Actions.GLOBAL_UPDATE,
-  payload: {
-    exportFileTypes: string[],
-  }
 }
 
-const exportFileTypesReducer = (value = ['png'], action: ExportFileTypesAction): string[] => {
+const exportFileTypesReducer = (value = ['png'], action: ExportFileTypesAction | GlobalUpdateAction): string[] => {
   switch (action.type) {
     case Actions.UPDATE_EXPORT_FILE_TYPES:
       if (action.payload.checked) {

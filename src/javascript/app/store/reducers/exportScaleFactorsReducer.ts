@@ -1,21 +1,17 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
+import { GlobalUpdateAction } from './GlobalUpdateAction';
 
-type ExportScaleFactorsAction = {
+interface ExportScaleFactorsAction {
   type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
   payload: {
     checked: boolean,
     factor: number,
   }
-} | {
-  type: Actions.GLOBAL_UPDATE,
-  payload: {
-    exportScaleFactors: number[],
-  }
 }
 
-const exportScaleFactorsReducer = (value = [1], action: ExportScaleFactorsAction): number[] => {
+const exportScaleFactorsReducer = (value = [1], action: ExportScaleFactorsAction | GlobalUpdateAction): number[] => {
   switch (action.type) {
     case Actions.UPDATE_EXPORT_SCALE_FACTORS:
       if (action.payload.checked) {

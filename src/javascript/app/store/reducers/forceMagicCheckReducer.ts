@@ -1,8 +1,14 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
+import { GlobalUpdateAction } from './GlobalUpdateAction';
 
-const forceMagicCheckReducer = (value = true, action) => {
+interface ForceMagicCheckAction {
+  type: Actions.SET_FORCE_MAGIC_CHECK,
+  payload: boolean,
+}
+
+const forceMagicCheckReducer = (value = true, action: ForceMagicCheckAction | GlobalUpdateAction): boolean => {
   switch (action.type) {
     case Actions.SET_FORCE_MAGIC_CHECK:
       return action.payload;
