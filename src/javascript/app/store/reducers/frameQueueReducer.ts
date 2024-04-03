@@ -1,7 +1,13 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
+import { Frame } from '../../../../types/Frame';
 
-const frameQueueReducer = (frameQueue = [], action) => {
+interface FrameQueueAction {
+  type: Actions.FRAMEQUEUE_ADD | Actions.FRAMEQUEUE_CANCEL_ONE | Actions.ADD_FRAME,
+  payload: Frame,
+}
+
+const frameQueueReducer = (frameQueue: Frame[] = [], action: FrameQueueAction): Frame[] => {
   switch (action.type) {
     case Actions.FRAMEQUEUE_ADD:
       return [

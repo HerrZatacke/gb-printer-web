@@ -1,8 +1,10 @@
 /* eslint-disable default-param-last */
 import uniqueBy from '../../../tools/unique/by';
 import { Actions } from '../actions';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { Frame } from '../../../../types/Frame';
 
-const sortFrames = (a, b) => {
+const sortFrames = (a: Frame, b: Frame) => {
   if (a.id < b.id) {
     return -1;
   }
@@ -14,10 +16,24 @@ const sortFrames = (a, b) => {
   return 0;
 };
 
-const framesReducer = (frames = [], action) => {
+type FramesAction = {
+  type: Actions.ADD_FRAME,
+  payload: Frame,
+} | {
+  type: Actions.UPDATE_FRAME,
+  payload: {
+    updateId: string,
+    data: Frame,
+  }
+} | {
+  type: Actions.DELETE_FRAME,
+  payload: string,
+}
+
+const framesReducer = (frames = [], action: FramesAction | GlobalUpdateAction) => {
   switch (action.type) {
     case Actions.ADD_FRAME:
-      return uniqueBy('id')([action.payload, ...frames]).sort(sortFrames);
+      return uniqueBy<Frame>('id')([action.payload, ...frames]).sort(sortFrames);
     case Actions.DELETE_FRAME:
       return frames.filter(({ id }) => id !== action.payload);
     case Actions.UPDATE_FRAME:
@@ -26,7 +42,7 @@ const framesReducer = (frames = [], action) => {
         action.payload.data,
       ].sort(sortFrames);
     case Actions.GLOBAL_UPDATE:
-      return uniqueBy('id')(action.payload.frames).sort(sortFrames);
+      return uniqueBy<Frame>('id')(action.payload.frames || []).sort(sortFrames);
     default:
       return frames;
   }
