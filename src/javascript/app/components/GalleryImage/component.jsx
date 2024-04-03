@@ -8,7 +8,7 @@ import RGBNSelect from '../RGBNSelect';
 import { dateFormat } from '../../defaults';
 import dateFormatLocale from '../../../tools/dateFormatLocale';
 import ImageRender from '../ImageRender';
-import { FILTER_FAVOURITE } from '../../../consts/specialTags';
+import { SpecialTags } from '../../../consts/specialTags';
 import SVG from '../SVG';
 
 dayjs.extend(customParseFormat);
@@ -58,10 +58,10 @@ const GalleryImage = ({
           .map((tag) => (
             <li
               key={tag}
-              title={tag === FILTER_FAVOURITE ? 'Favourite' : tag}
+              title={tag === SpecialTags.FILTER_FAVOURITE ? 'Favourite' : tag}
               className="gallery-image__tag"
             >
-              {tag === FILTER_FAVOURITE ? '❤️' : tag}
+              {tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
             </li>
           ))
       }

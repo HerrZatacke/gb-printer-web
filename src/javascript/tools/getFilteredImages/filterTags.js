@@ -1,26 +1,17 @@
-import {
-  FILTER_COMMENTS,
-  FILTER_FAVOURITE,
-  FILTER_MONOCHROME,
-  FILTER_NEW,
-  FILTER_RECENT,
-  FILTER_RGB,
-  FILTER_UNTAGGED,
-  FILTER_USERNAME,
-} from '../../consts/specialTags';
+import { SpecialTags } from '../../consts/specialTags';
 
 const filterTags = (activeTags) => (image) => {
 
   const normalTags = activeTags.filter((tag) => (
     ![
-      FILTER_MONOCHROME,
-      FILTER_NEW,
-      FILTER_RGB,
-      FILTER_UNTAGGED,
-      FILTER_RECENT,
-      FILTER_FAVOURITE,
-      FILTER_COMMENTS,
-      FILTER_USERNAME,
+      SpecialTags.FILTER_MONOCHROME,
+      SpecialTags.FILTER_NEW,
+      SpecialTags.FILTER_RGB,
+      SpecialTags.FILTER_UNTAGGED,
+      SpecialTags.FILTER_RECENT,
+      SpecialTags.FILTER_FAVOURITE,
+      SpecialTags.FILTER_COMMENTS,
+      SpecialTags.FILTER_USERNAME,
     ]
       .includes(tag)
   ));

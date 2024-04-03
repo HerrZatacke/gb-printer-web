@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import SVG from '../SVG';
 import InputNewTag from './InputNewTag';
 import unique from '../../../tools/unique';
-import { FILTER_FAVOURITE } from '../../../consts/specialTags';
+import { SpecialTags } from '../../../consts/specialTags';
 import './index.scss';
 
 const TagsSelect = ({
@@ -42,7 +42,7 @@ const TagsSelect = ({
               <span
                 className="tags-select__tag-name"
               >
-                {tag === FILTER_FAVOURITE ? '❤️' : tag}
+                {tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
               </span>
               <button
                 type="button"

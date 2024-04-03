@@ -4,16 +4,7 @@ import unique from '../../../../tools/unique';
 import { useAvailableTags } from '../../../../hooks/useAvailableTags';
 import Lightbox from '../../Lightbox';
 import FilterFormTag from './filterFormTag';
-import {
-  FILTER_NEW,
-  FILTER_UNTAGGED,
-  FILTER_MONOCHROME,
-  FILTER_RGB,
-  FILTER_RECENT,
-  FILTER_FAVOURITE,
-  FILTER_COMMENTS,
-  FILTER_USERNAME,
-} from '../../../../consts/specialTags';
+import { SpecialTags } from '../../../../consts/specialTags';
 
 const FilterForm = (props) => {
 
@@ -50,43 +41,43 @@ const FilterForm = (props) => {
       >
         <FilterFormTag
           title="Untagged"
-          tagActive={activeTags.includes(FILTER_UNTAGGED)}
-          toggleTag={(active) => updateActiveTags(FILTER_UNTAGGED, active)}
+          tagActive={activeTags.includes(SpecialTags.FILTER_UNTAGGED)}
+          toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_UNTAGGED, active)}
         />
         <FilterFormTag
           title="❤️ Favourite"
-          tagActive={activeTags.includes(FILTER_FAVOURITE)}
-          toggleTag={(active) => updateActiveTags(FILTER_FAVOURITE, active)}
+          tagActive={activeTags.includes(SpecialTags.FILTER_FAVOURITE)}
+          toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_FAVOURITE, active)}
         />
         <FilterFormTag
           title="New"
-          tagActive={activeTags.includes(FILTER_NEW)}
-          toggleTag={(active) => updateActiveTags(FILTER_NEW, active)}
+          tagActive={activeTags.includes(SpecialTags.FILTER_NEW)}
+          toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_NEW, active)}
         />
         <FilterFormTag
           title="Monochrome"
-          tagActive={activeTags.includes(FILTER_MONOCHROME)}
-          toggleTag={(active) => updateActiveTags(FILTER_MONOCHROME, active)}
+          tagActive={activeTags.includes(SpecialTags.FILTER_MONOCHROME)}
+          toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_MONOCHROME, active)}
         />
         <FilterFormTag
           title="RGB"
-          tagActive={activeTags.includes(FILTER_RGB)}
-          toggleTag={(active) => updateActiveTags(FILTER_RGB, active)}
+          tagActive={activeTags.includes(SpecialTags.FILTER_RGB)}
+          toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_RGB, active)}
         />
         <FilterFormTag
           title="Recent Imports"
-          tagActive={activeTags.includes(FILTER_RECENT)}
-          toggleTag={(active) => updateActiveTags(FILTER_RECENT, active)}
+          tagActive={activeTags.includes(SpecialTags.FILTER_RECENT)}
+          toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_RECENT, active)}
         />
         <FilterFormTag
           title="Image has comments"
-          tagActive={activeTags.includes(FILTER_COMMENTS)}
-          toggleTag={(active) => updateActiveTags(FILTER_COMMENTS, active)}
+          tagActive={activeTags.includes(SpecialTags.FILTER_COMMENTS)}
+          toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_COMMENTS, active)}
         />
         <FilterFormTag
           title="Image has username"
-          tagActive={activeTags.includes(FILTER_USERNAME)}
-          toggleTag={(active) => updateActiveTags(FILTER_USERNAME, active)}
+          tagActive={activeTags.includes(SpecialTags.FILTER_USERNAME)}
+          toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_USERNAME, active)}
         />
       </ul>
       <ul
