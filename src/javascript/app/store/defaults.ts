@@ -1,63 +1,82 @@
-const definitions = [
+import { Reducers } from './reducers';
+
+export enum ExportTypes {
+  SETTINGS = 'settings',
+  SELECTED_IMAGES = 'selected_images',
+  IMAGES = 'images',
+  REMOTE = 'remote',
+  PALETTES = 'palettes',
+  FRAMES = 'frames',
+  FRAMEGROUP = 'framegroup',
+}
+
+interface StorePropertyDefault {
+  key: keyof Reducers,
+  saveLocally: boolean,
+  saveExport: ExportTypes[],
+  value: ReturnType<keyof Reducers>,
+}
+
+const definitions: StorePropertyDefault[] = [
   { // Url of a printer emulator to talk to
     key: 'printerUrl',
     saveLocally: true,
-    saveExport: ['settings'],
+    saveExport: [ExportTypes.SETTINGS],
     value: '',
   },
   { // Optional additional parameters for the printer remote page (passed as hash)
     key: 'printerParams',
     saveLocally: true,
-    saveExport: ['settings'],
+    saveExport: [ExportTypes.SETTINGS],
     value: '',
   },
   {
     // currently selected palette (used for new imports)
     key: 'activePalette',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: 'bw',
   },
   {
     // Metadata of all images
     key: 'images',
     saveLocally: true,
-    saveExport: ['selected_images', 'images', 'remote'],
+    saveExport: [ExportTypes.SELECTED_IMAGES, ExportTypes.IMAGES, ExportTypes.REMOTE],
     value: [],
   },
   {
     // displaymode of gallery page (list, 1x, 2x...)
     key: 'galleryView',
     saveLocally: true,
-    saveExport: ['settings'],
+    saveExport: [ExportTypes.SETTINGS],
     value: '1x',
   },
   {
     // used scalings when exporting/downloading
     key: 'exportScaleFactors',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: [4],
   },
   {
     // used filetypes when exporting/downloading
     key: 'exportFileTypes',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: ['png'],
   },
   {
     // concurrently visible images in gallery
     key: 'pageSize',
     saveLocally: true,
-    saveExport: ['settings'],
+    saveExport: [ExportTypes.SETTINGS],
     value: 30,
   },
   {
     // current selection of images
     key: 'imageSelection',
     saveLocally: true,
-    saveExport: ['selected_images'],
+    saveExport: [ExportTypes.SELECTED_IMAGES],
     value: [],
   },
   {
@@ -78,7 +97,7 @@ const definitions = [
     // how to save videos (loop, crop, yoyo, reverse, palette)
     key: 'videoParams',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: {},
   },
   {
@@ -98,92 +117,91 @@ const definitions = [
     // framegoup to be applied when importing .sav files
     key: 'savFrameTypes',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: 'int',
   },
   {
     // sort criteria
     key: 'sortBy',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: 'created_asc',
   },
   {
     // how frame frame will be handled when exporting
     key: 'handleExportFrame',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: 'keep',
   },
   {
     // if the "last seen" image from a .sav will be imported too
     key: 'importLastSeen',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: true,
   },
   {
     // if the "deleted" images from a .sav will be imported too
     key: 'importDeleted',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: true,
   },
   {
     // if images will get padded up to 144px on import
     key: 'importPad',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: false,
   },
   {
     // visiblility of dates in gallery
     key: 'hideDates',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: false,
   },
   {
     // general debug option
     key: 'enableDebug',
     saveLocally: true,
-    saveExport: ['settings'],
+    saveExport: [ExportTypes.SETTINGS],
     value: false,
   },
   {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,
-    saveExport: ['palettes', 'remote'],
+    saveExport: [ExportTypes.PALETTES, ExportTypes.REMOTE],
     value: [],
   },
   {
     // list of plugins
     key: 'plugins',
     saveLocally: true,
-    saveRemote: false,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: [],
   },
   {
     // user has seen the message about frames removal in version 1.7.0
     key: 'framesMessage',
     saveLocally: true,
-    saveExport: ['settings', 'remote'],
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: 0,
   },
   {
     // set of usable frames
     key: 'frames',
     saveLocally: true,
-    saveExport: ['frames', 'remote', 'framegroup'],
+    saveExport: [ExportTypes.FRAMES, ExportTypes.REMOTE, ExportTypes.FRAMEGROUP],
     value: [],
   },
   {
     // set of usable frames
     key: 'frameGroupNames',
     saveLocally: true,
-    saveExport: ['frames', 'remote', 'framegroup'],
+    saveExport: [ExportTypes.FRAMES, ExportTypes.REMOTE, ExportTypes.FRAMEGROUP],
     value: [],
   },
   {
@@ -233,7 +251,7 @@ const definitions = [
   {
     key: 'preferredLocale',
     saveLocally: true,
-    saveExport: ['settings'],
+    saveExport: [ExportTypes.SETTINGS],
     value: navigator.language,
   },
   {
@@ -263,12 +281,12 @@ const definitions = [
   {
     key: 'forceMagicCheck',
     saveLocally: true,
-    saveExport: ['settings'],
+    saveExport: [ExportTypes.SETTINGS],
     value: true,
   },
 ];
 
-const defaults = {};
+const defaults: Partial<Record<keyof Reducers, unknown>> = {};
 definitions.forEach(({ key, value }) => {
   defaults[key] = value;
 });
