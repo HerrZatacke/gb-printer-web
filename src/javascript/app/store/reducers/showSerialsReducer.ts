@@ -3,13 +3,13 @@ import { Actions } from '../actions';
 
 interface ShowSerialsAction {
   type: Actions.SHOW_SERIALS,
-  payload: boolean,
+  payload?: boolean,
 }
 
 const showSerialsReducer = (value = false, action: ShowSerialsAction): boolean => {
   switch (action.type) {
     case Actions.SHOW_SERIALS:
-      return action.payload;
+      return !!action.payload;
     default:
       return value;
   }

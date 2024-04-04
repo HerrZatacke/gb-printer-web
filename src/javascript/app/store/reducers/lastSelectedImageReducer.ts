@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { ImageSelectionActionAddRemove, ImageSelectionSet } from '../../../../types/actions/ImageSelectionActions';
+import { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
 import { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
 import { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
 
@@ -9,8 +9,8 @@ const lastSelectedImageReducer = (
   action:
     DeleteImageAction |
     DeleteImagesAction |
-    ImageSelectionActionAddRemove |
-    ImageSelectionSet |
+    ImageSelectionAddAction |
+    ImageSelectionRemoveAction |
     GalleryViewAction,
 ): string | null => {
   switch (action.type) {

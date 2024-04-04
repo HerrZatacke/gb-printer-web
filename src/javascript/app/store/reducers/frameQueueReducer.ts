@@ -1,13 +1,16 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import { Frame } from '../../../../types/Frame';
+import { FrameQueueAddAction, FrameQueueCancelOneAction } from '../../../../types/actions/QueueActions';
+import { AddFrameAction } from '../../../../types/actions/FrameActions';
 
-interface FrameQueueAction {
-  type: Actions.FRAMEQUEUE_ADD | Actions.FRAMEQUEUE_CANCEL_ONE | Actions.ADD_FRAME,
-  payload: Frame,
-}
-
-const frameQueueReducer = (frameQueue: Frame[] = [], action: FrameQueueAction): Frame[] => {
+const frameQueueReducer = (
+  frameQueue: Frame[] = [],
+  action:
+    FrameQueueAddAction |
+    FrameQueueCancelOneAction |
+    AddFrameAction,
+): Frame[] => {
   switch (action.type) {
     case Actions.FRAMEQUEUE_ADD:
       return [
@@ -17,7 +20,7 @@ const frameQueueReducer = (frameQueue: Frame[] = [], action: FrameQueueAction): 
 
     case Actions.FRAMEQUEUE_CANCEL_ONE:
     case Actions.ADD_FRAME:
-      return frameQueue.filter(({ tempId }) => tempId !== action.payload.tempId);
+      return frameQueue.filter(({ tempId }) => tempId !== action.payload?.tempId);
 
     default:
       return frameQueue;

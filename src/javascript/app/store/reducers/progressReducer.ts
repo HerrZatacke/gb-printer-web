@@ -7,7 +7,7 @@ import {
   ProgressPrinterProgressAction,
 } from '../../../../types/actions/ProgressActions';
 import { AddImagesAction } from '../../../../types/actions/ImageActions';
-import { ImportQueueCancelAction } from '../../../../types/actions/ImportQueueActions';
+import { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 import { ComfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
 
 export interface Progress {

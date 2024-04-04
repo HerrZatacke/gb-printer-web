@@ -11,7 +11,7 @@ const galleryViewReducer = (
 ): GalleryViews => {
   switch (action.type) {
     case Actions.SET_CURRENT_GALLERY_VIEW:
-      return action.payload;
+      return action.payload || value;
     case Actions.GLOBAL_UPDATE:
       return updateIfDefined<GalleryViews>(action.payload?.galleryView, value);
     default:

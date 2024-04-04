@@ -14,7 +14,7 @@ interface StorePropertyDefault {
   key: keyof Reducers,
   saveLocally: boolean,
   saveExport: ExportTypes[],
-  value: ReturnType<keyof Reducers>,
+  value: unknown,
 }
 
 const definitions: StorePropertyDefault[] = [

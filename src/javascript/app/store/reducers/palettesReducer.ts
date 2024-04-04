@@ -23,7 +23,7 @@ const palettesReducer = (
         action.payload, // append as last one in case it's a new palette (duplicates will be removed by uniqueBy)
       ]);
     case Actions.GLOBAL_UPDATE:
-      return uniqueBy<Palette>('shortName')([...(action.payload.palettes || []), ...value]);
+      return uniqueBy<Palette>('shortName')([...(action.payload?.palettes || []), ...value]);
     default:
       return value;
   }

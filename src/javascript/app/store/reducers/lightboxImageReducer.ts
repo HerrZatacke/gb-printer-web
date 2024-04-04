@@ -1,15 +1,15 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-interface LightboxImageAction {
+interface SetLightboxImageAction {
   type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-  payload: number,
+  payload?: number,
 }
 
-const lightboxImageReducer = (value: number | null = null, action: LightboxImageAction): number | null => {
+const lightboxImageReducer = (value: number | null = null, action: SetLightboxImageAction): number | null => {
   switch (action.type) {
     case Actions.SET_LIGHTBOX_IMAGE_INDEX:
-      return action.payload;
+      return action.payload !== undefined ? action.payload : value;
 
     // on some filters reset this to null?
     default:

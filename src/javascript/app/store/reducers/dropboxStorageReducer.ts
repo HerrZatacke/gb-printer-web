@@ -1,8 +1,15 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { DropBoxSettings, DropboxStorageAction } from '../../../../types/actions/StorageActions';
+import {
+  DropboxLogoutAction,
+  DropboxSetStorageAction,
+  DropBoxSettings,
+} from '../../../../types/actions/StorageActions';
 
-const dropboxStorageReducer = (value: DropBoxSettings = {}, action: DropboxStorageAction): DropBoxSettings => {
+const dropboxStorageReducer = (
+  value: DropBoxSettings = {},
+  action: DropboxLogoutAction | DropboxSetStorageAction,
+): DropBoxSettings => {
   switch (action.type) {
     case Actions.DROPBOX_LOGOUT:
       return {

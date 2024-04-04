@@ -20,3 +20,11 @@ export interface PaletteUpdateAction {
   payload: Palette,
 }
 
+export interface PaletteSetEditAction {
+  type: Actions.SET_EDIT_PALETTE,
+  payload: Palette,
+}
+
+export interface PaletteCancelEditAction {
+  type: Actions.PALETTE_CANCEL_EDIT,
+}

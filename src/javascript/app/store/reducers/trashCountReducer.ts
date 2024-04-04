@@ -15,15 +15,15 @@ export interface TrashCount {
 const trashCountReducer = (
   value: TrashCount = { frames: 0, images: 0, show: false },
   action:
-    TrashShowHideAction |
+    TrashCountImagesAction |
     TrashCountFramesAction |
-    TrashCountImagesAction,
+    TrashShowHideAction,
 ): TrashCount => {
   switch (action.type) {
     case Actions.SHOW_HIDE_TRASH:
       return {
         ...value,
-        show: action.payload,
+        show: !!action.payload,
       };
     case Actions.SET_TRASH_COUNT_FRAMES:
       return {

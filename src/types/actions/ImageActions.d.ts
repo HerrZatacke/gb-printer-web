@@ -1,5 +1,5 @@
 import { Actions } from '../../javascript/app/store/actions';
-import { CurrentEditBatch, CurrentEditSingleImage, Image } from '../Image';
+import { CurrentEditBatch, Image } from '../Image';
 
 export interface AddImagesAction {
   type: Actions.ADD_IMAGES,

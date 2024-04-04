@@ -1,13 +1,15 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import { Palette } from '../../../../types/Palette';
+import { PaletteCancelEditAction, PaletteSetEditAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 
-interface EditPaletteAction {
-  type: Actions.SET_EDIT_PALETTE | Actions.PALETTE_CANCEL_EDIT | Actions.PALETTE_UPDATE,
-  payload: Palette,
-}
-
-const editPaletteReducer = (value: Palette = {}, action: EditPaletteAction): Palette => {
+const editPaletteReducer = (
+  value: Palette = {},
+  action:
+    PaletteSetEditAction |
+    PaletteCancelEditAction |
+    PaletteUpdateAction,
+): Palette => {
   switch (action.type) {
     case Actions.SET_EDIT_PALETTE:
       return action.payload;

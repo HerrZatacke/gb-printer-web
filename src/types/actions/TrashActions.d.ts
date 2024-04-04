@@ -2,7 +2,7 @@ import { Actions } from '../../javascript/app/store/actions';
 
 export interface TrashShowHideAction {
   type: Actions.SHOW_HIDE_TRASH,
-  payload: boolean,
+  payload?: boolean,
 }
 
 export interface TrashCountFramesAction {

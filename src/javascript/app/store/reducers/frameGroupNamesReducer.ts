@@ -21,7 +21,7 @@ const frameGroupNamesReducer = (
       ]);
     case Actions.GLOBAL_UPDATE:
       return uniqueBy<FrameGroup>('id')([
-        ...(action.payload.frameGroupNames || []),
+        ...(action.payload?.frameGroupNames || []),
         ...frameGroupNames,
       ]);
     default:

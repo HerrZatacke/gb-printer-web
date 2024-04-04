@@ -3,7 +3,7 @@ import { Actions } from '../actions';
 
 interface UseSerialsAction {
   type: Actions.USE_SERIALS,
-  payload: boolean,
+  payload?: boolean,
 }
 
 const useSerialsReducer = (
@@ -12,7 +12,7 @@ const useSerialsReducer = (
 ): boolean => {
   switch (action.type) {
     case Actions.USE_SERIALS:
-      return action.payload;
+      return !!action.payload;
     default:
       return value;
   }

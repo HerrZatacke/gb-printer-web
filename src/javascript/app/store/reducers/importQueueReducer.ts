@@ -8,7 +8,7 @@ import {
   ImportQueueAddMultiAction,
   ImportQueueCancelAction,
   ImportQueueCancelOneAction,
-} from '../../../../types/actions/ImportQueueActions';
+} from '../../../../types/actions/QueueActions';
 import { ImportItem } from '../../../../types/ImportItem';
 
 const importQueueReducer = (
@@ -41,7 +41,7 @@ const importQueueReducer = (
 
     case Actions.IMPORTQUEUE_CANCEL_ONE:
     case Actions.ADD_FRAME:
-      return importQueue.filter(({ tempId }) => tempId !== action.payload.tempId);
+      return importQueue.filter(({ tempId }) => tempId !== action.payload?.tempId);
 
     default:
       return importQueue;

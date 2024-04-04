@@ -3,7 +3,7 @@ import { Frame } from '../Frame';
 
 export interface AddFrameAction {
   type: Actions.ADD_FRAME,
-  payload: Frame,
+  payload?: Frame,
 }
 
 export interface UpdateFrameAction {

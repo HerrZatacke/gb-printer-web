@@ -3,14 +3,15 @@ import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
-import { ImageSelectionActionAddRemove, ImageSelectionSet } from '../../../../types/actions/ImageSelectionActions';
+import { ImageSelectionAddAction, ImageSelectionRemoveAction, ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
 
 
 const imageSelectionReducer = (
   value: string[] = [],
   action:
-    ImageSelectionActionAddRemove |
-    ImageSelectionSet |
+    ImageSelectionAddAction |
+    ImageSelectionRemoveAction |
+    ImageSelectionSetAction |
     DeleteImageAction |
     DeleteImagesAction |
     GlobalUpdateAction,
@@ -22,7 +23,7 @@ const imageSelectionReducer = (
     case Actions.IMAGE_SELECTION_ADD:
       return [...value, action.payload];
     case Actions.IMAGE_SELECTION_SET:
-      return action.payload;
+      return action.payload || value;
     case Actions.DELETE_IMAGES:
       return [];
     case Actions.GLOBAL_UPDATE:

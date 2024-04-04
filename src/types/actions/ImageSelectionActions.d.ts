@@ -1,11 +1,16 @@
 import { Actions } from '../../javascript/app/store/actions';
 
-export interface ImageSelectionActionAddRemove {
-  type: Actions.IMAGE_SELECTION_REMOVE | Actions.IMAGE_SELECTION_ADD,
+export interface ImageSelectionAddAction {
+  type: Actions.IMAGE_SELECTION_ADD,
   payload: string,
 }
 
-export interface ImageSelectionSet {
+export interface ImageSelectionRemoveAction {
+  type: Actions.IMAGE_SELECTION_REMOVE,
+  payload: string,
+}
+
+export interface ImageSelectionSetAction {
   type: Actions.IMAGE_SELECTION_SET
-  payload: string[],
+  payload?: string[],
 }

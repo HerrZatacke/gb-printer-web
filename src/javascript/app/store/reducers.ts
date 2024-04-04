@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer, ReducersMapObject } from 'redux';
 import activePalette from './reducers/activePaletteReducer';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import canShare from './reducers/canShareReducer';
@@ -40,9 +40,9 @@ import printerData from './reducers/printerDataReducer';
 import printerFunctions from './reducers/printerFunctionsReducer';
 import printerUrl from './reducers/printerUrlReducer';
 import printerParams from './reducers/printerParamsReducer';
-import progress from './reducers/progressReducer';
+import progress, { Progress } from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
-import recentImports from './reducers/recentImportsReducer';
+import recentImports, { RecentImport } from './reducers/recentImportsReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
@@ -52,11 +52,83 @@ import syncLastUpdate from './reducers/syncLastUpdateReducer';
 import syncSelect from './reducers/syncSelectReducer';
 import useSerials from './reducers/useSerialsReducer';
 import showSerials from './reducers/showSerialsReducer';
-import trashCount from './reducers/trashCountReducer';
+import trashCount, { TrashCount } from './reducers/trashCountReducer';
 import videoParams from './reducers/videoParamsReducer';
-import windowDimensions from './reducers/windowDimensionsReducer';
+import windowDimensions, { WindowDimensions } from './reducers/windowDimensionsReducer';
+import { Dialog } from '../../../types/actions/ConfirmActions';
+import { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/actions/StorageActions';
+import { FrameGroup } from '../../../types/FrameGroup';
+import { Frame } from '../../../types/Frame';
+import { GalleryViews } from '../../consts/GalleryViews';
+import { ExportFrameMode } from '../../consts/exportFrameModes';
+import { CurrentEditBatch, CurrentEditSingleImage, Image, RGBNHashes } from '../../../types/Image';
+import { ImportItem } from '../../../types/ImportItem';
+import { Palette } from '../../../types/Palette';
+import { ProgressLog } from '../../../types/actions/LogActions';
+import { Plugin } from '../../../types/Plugin';
+import { VideoParams } from '../../../types/VideoParams';
+import { QueueImage } from '../../../types/QueueImage';
 
-export default combineReducers({
+export interface Reducers extends ReducersMapObject {
+  activePalette: Reducer<string | undefined>,
+  bitmapQueue: Reducer<QueueImage[]>,
+  canShare: Reducer<boolean>,
+  confirm: Reducer<Dialog[]>,
+  dragover: Reducer<boolean>,
+  dropboxStorage: Reducer<DropBoxSettings>,
+  editImage: Reducer<CurrentEditSingleImage | CurrentEditBatch | null>,
+  editFrame: Reducer<string | null>,
+  editPalette: Reducer<Palette>,
+  enableDebug: Reducer<boolean>,
+  exportFileTypes: Reducer<string[]>,
+  exportScaleFactors: Reducer<number[]>,
+  filtersActiveTags: Reducer<string[]>,
+  filtersVisible: Reducer<boolean>,
+  forceMagicCheck: Reducer<boolean>,
+  frameGroupNames: Reducer<FrameGroup[]>,
+  frameQueue: Reducer<Frame[]>,
+  frames: Reducer<Frame[]>,
+  framesMessage: Reducer<number>,
+  galleryView: Reducer<GalleryViews>,
+  gitStorage: Reducer<GitStorageSettings>,
+  handleExportFrame: Reducer<ExportFrameMode>,
+  hideDates: Reducer<boolean>,
+  images: Reducer<Image[]>,
+  imageSelection: Reducer<string[]>,
+  importDeleted: Reducer<boolean>,
+  importQueue: Reducer<ImportItem[]>,
+  importLastSeen: Reducer<boolean>,
+  importPad: Reducer<boolean>,
+  isFullscreen: Reducer<boolean>,
+  lastSelectedImage: Reducer<string | null>,
+  progressLog: Reducer<ProgressLog>,
+  lightboxImage: Reducer<number | null>,
+  pageSize: Reducer<number>,
+  palettes: Reducer<Palette[]>,
+  plugins: Reducer<Plugin[]>,
+  preferredLocale: Reducer<string>,
+  printerBusy: Reducer<boolean>,
+  printerData: Reducer<object>, // ToDo !!
+  printerFunctions: Reducer<object[]>, // ToDo !!
+  printerUrl: Reducer<string>,
+  printerParams: Reducer<string>,
+  progress: Reducer<Progress>,
+  recentImports: Reducer<RecentImport[]>,
+  rgbnImages: Reducer<RGBNHashes | null>,
+  savFrameTypes: Reducer<string>,
+  sortBy: Reducer<string>,
+  sortOptionsVisible: Reducer<boolean>,
+  syncBusy: Reducer<boolean>,
+  syncLastUpdate: Reducer<SyncLastUpdate>,
+  syncSelect: Reducer<boolean>,
+  useSerials: Reducer<boolean>,
+  showSerials: Reducer<boolean>,
+  trashCount: Reducer<TrashCount>,
+  videoParams: Reducer<VideoParams>,
+  windowDimensions: Reducer<WindowDimensions>,
+}
+
+const reducers: ReducersMapObject = {
   activePalette,
   bitmapQueue,
   canShare,
@@ -113,4 +185,6 @@ export default combineReducers({
   trashCount,
   videoParams,
   windowDimensions,
-});
+};
+
+export default combineReducers(reducers);

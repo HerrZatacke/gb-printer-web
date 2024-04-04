@@ -1,6 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import { SpecialTags } from '../../../consts/SpecialTags';
+import { SetActiveTagsAction, SetAvailableTagsAction } from '../../../../types/actions/TagsActions';
 
 const specialTags: string[] = [
   SpecialTags.FILTER_UNTAGGED,
@@ -10,19 +11,14 @@ const specialTags: string[] = [
   SpecialTags.FILTER_RECENT,
 ];
 
-type ActiveTagsAction = {
-  type: Actions.SET_ACTIVE_TAGS | Actions.SET_AVAILABLE_TAGS,
-  payload: string[],
-}
-
-const activeTagsReducer = (value: string[] = [], action: ActiveTagsAction): string[] => {
+const activeTagsReducer = (value: string[] = [], action: SetActiveTagsAction | SetAvailableTagsAction): string[] => {
   switch (action.type) {
     case Actions.SET_ACTIVE_TAGS:
-      return action.payload;
+      return action.payload || value;
     case Actions.SET_AVAILABLE_TAGS:
       return value.filter((tag) => (
         specialTags.includes(tag) ||
-        action.payload.includes(tag)
+        action.payload?.includes(tag)
       ));
     default:
       return value;

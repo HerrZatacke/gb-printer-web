@@ -3,7 +3,7 @@ import { Plugin } from '../Plugin';
 
 export interface PluginRemoveAction {
   type: Actions.PLUGIN_REMOVE,
-  payload: string,
+  payload?: string,
 }
 
 export interface PluginAddAction {

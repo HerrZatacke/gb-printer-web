@@ -8,7 +8,7 @@ export interface WindowDimensions {
 
 interface UpdateWindowDimensionsAction {
   type: Actions.WINDOW_DIMENSIONS,
-  payload: WindowDimensions,
+  payload?: WindowDimensions,
 }
 
 const windowDimensionsReducer = (
@@ -20,7 +20,7 @@ const windowDimensionsReducer = (
 ): WindowDimensions => {
   switch (action.type) {
     case Actions.WINDOW_DIMENSIONS:
-      return action.payload;
+      return action.payload || value;
     default:
       return value;
   }

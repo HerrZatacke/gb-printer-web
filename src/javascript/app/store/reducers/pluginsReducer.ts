@@ -16,10 +16,10 @@ const sortByUrl = sortBy<Plugin>('url');
 const pluginsReducer = (
   plugins: Plugin[] = [],
   action:
-    PluginRemoveAction |
     PluginAddAction |
     PluginUpdatePropertiesAction |
-    PluginUpdateConfigAction,
+    PluginUpdateConfigAction |
+    PluginRemoveAction,
 ): Plugin[] => {
   switch (action.type) {
     case Actions.PLUGIN_REMOVE:

@@ -8,7 +8,7 @@ import {
   PrinterTimedOutAction,
 } from '../../../../types/actions/PrinterActions';
 import { AddImagesAction } from '../../../../types/actions/ImageActions';
-import { ImportQueueCancelAction } from '../../../../types/actions/ImportQueueActions';
+import { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 
 
 const printerBusyReducer = (
