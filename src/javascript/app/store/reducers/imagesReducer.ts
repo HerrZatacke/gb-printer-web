@@ -63,7 +63,7 @@ const imagesReducer = (
         action.payload.find((changedImage) => (changedImage.hash === image.hash)) || image
       ));
     case Actions.GLOBAL_UPDATE:
-      return uniqueBy<Image>('hash')(action.payload.images || []);
+      return uniqueBy<Image>('hash')(action.payload?.images || []);
     default:
       return value;
   }

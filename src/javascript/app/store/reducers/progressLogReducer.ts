@@ -16,7 +16,7 @@ const progressLogReducer = (
     LogStorageSyncDoneAction |
     LogStorageDiffDoneAction |
     LogClearAction,
-) => {
+): ProgressLog => {
   switch (action.type) {
     case Actions.GITSTORAGE_LOG_ACTION:
       return {

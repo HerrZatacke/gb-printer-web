@@ -13,7 +13,7 @@ const printerParamsReducer = (
       return action.payload;
 
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.printerParams, value);
+      return updateIfDefined<string>(action.payload?.printerParams, value);
     default:
       return value;
   }

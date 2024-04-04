@@ -13,7 +13,7 @@ const pageSizeReducer = (value = 0, action: PageSizeAction | GlobalUpdateAction)
     case Actions.SET_PAGESIZE:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.pageSize, value);
+      return updateIfDefined<number>(action.payload?.pageSize, value);
     default:
       return value;
   }

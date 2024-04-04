@@ -13,7 +13,7 @@ const importDeletedReducer = (value = false, action: ImportDeletedAction | Globa
     case Actions.SET_IMPORT_DELETED:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.importDeleted, value);
+      return updateIfDefined<boolean>(action.payload?.importDeleted, value);
     default:
       return value;
   }

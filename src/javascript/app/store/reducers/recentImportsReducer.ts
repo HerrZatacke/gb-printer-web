@@ -6,7 +6,7 @@ import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { Image, RGBNImage } from '../../../../types/Image';
 import uniqueBy from '../../../tools/unique/by';
 
-interface RecentImport {
+export interface RecentImport {
   hash: string,
   timestamp: number,
 }

@@ -28,7 +28,7 @@ const videoParamsReducer = (
         imageSelection: [],
       };
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined<VideoParams>(action.payload.videoParams, value);
+      return updateIfDefined<VideoParams>(action.payload?.videoParams, value);
     default:
       return value;
   }

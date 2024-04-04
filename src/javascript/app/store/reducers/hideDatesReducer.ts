@@ -13,7 +13,7 @@ const hideDatesReducer = (value = false, action: HideDatesAction | GlobalUpdateA
     case Actions.SET_HIDE_DATES:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.hideDates, value);
+      return updateIfDefined<boolean>(action.payload?.hideDates, value);
     default:
       return value;
   }

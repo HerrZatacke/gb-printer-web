@@ -23,7 +23,7 @@ const exportFileTypesReducer = (value = ['png'], action: ExportFileTypesAction |
         fileType !== action.payload.fileType
       ));
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.exportFileTypes, value);
+      return updateIfDefined<string[]>(action.payload?.exportFileTypes, value);
     default:
       return value;
   }

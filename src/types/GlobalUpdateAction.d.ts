@@ -9,7 +9,7 @@ import { VideoParams } from './VideoParams';
 
 export type GlobalUpdateAction = {
   type: Actions.GLOBAL_UPDATE,
-  payload: {
+  payload?: {
     activePalette?: string,
     newSelectedPalette?: string,
     enableDebug?: boolean,

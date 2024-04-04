@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-interface GitStorageSettings {
+export interface GitStorageSettings {
   use?: boolean,
   owner?: string,
   repo?: string,

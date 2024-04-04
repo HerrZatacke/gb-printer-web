@@ -12,7 +12,7 @@ const importLastSeenReducer = (value = false, action: ImportLastSeenAction | Glo
     case Actions.SET_IMPORT_LAST_SEEN:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.importLastSeen, value);
+      return updateIfDefined<boolean>(action.payload?.importLastSeen, value);
     default:
       return value;
   }

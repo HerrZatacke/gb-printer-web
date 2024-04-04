@@ -10,7 +10,7 @@ import { AddImagesAction } from '../../../../types/actions/ImageActions';
 import { ImportQueueCancelAction } from '../../../../types/actions/ImportQueueActions';
 import { ComfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
 
-interface Progress {
+export interface Progress {
   gif: number,
   printer: number,
   plugin: number,

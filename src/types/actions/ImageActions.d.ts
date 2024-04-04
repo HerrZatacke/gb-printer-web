@@ -1,5 +1,5 @@
 import { Actions } from '../../javascript/app/store/actions';
-import { Image } from '../Image';
+import { CurrentEditBatch, CurrentEditSingleImage, Image } from '../Image';
 
 export interface AddImagesAction {
   type: Actions.ADD_IMAGES,
@@ -45,4 +45,18 @@ export interface DeleteImagesAction {
 export interface NewRGBNImageAction {
   type: Actions.SAVE_RGBN_IMAGE,
   payload: 'newRGBN',
+}
+
+export interface EditImageAction {
+  type: Actions.EDIT_IMAGE
+  payload: string,
+}
+
+export interface EditImageSelectionAction {
+  type: Actions.EDIT_IMAGE_SELECTION,
+  payload: CurrentEditBatch,
+}
+
+export interface CancelEditImageAction {
+  type: Actions.CANCEL_EDIT_IMAGE,
 }

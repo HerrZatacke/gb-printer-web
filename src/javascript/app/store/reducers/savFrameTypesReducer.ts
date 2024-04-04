@@ -13,7 +13,7 @@ const savFrameTypesReducer = (value = 'int', action: SavFrameTypesAction | Globa
     case Actions.SET_SAV_FRAME_TYPES:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined<string>(action.payload.savFrameTypes, value);
+      return updateIfDefined<string>(action.payload?.savFrameTypes, value);
     default:
       return value;
   }

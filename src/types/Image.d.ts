@@ -54,3 +54,14 @@ export interface MonochromeImage extends CommonImage {
 }
 
 export type Image = MonochromeImage | RGBNImage
+
+
+export interface CurrentEditSingleImage {
+  hash: string,
+}
+
+export interface CurrentEditBatch {
+  hash: string,
+  batch: string[],
+  tags: string[],
+}

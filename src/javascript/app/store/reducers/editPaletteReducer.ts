@@ -1,12 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-
-interface Palette {
-  name?: string,
-  shortName?: string,
-  palette?: string[],
-  origin?: string,
-}
+import { Palette } from '../../../../types/Palette';
 
 interface EditPaletteAction {
   type: Actions.SET_EDIT_PALETTE | Actions.PALETTE_CANCEL_EDIT | Actions.PALETTE_UPDATE,

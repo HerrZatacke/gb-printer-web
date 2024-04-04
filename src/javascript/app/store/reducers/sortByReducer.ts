@@ -13,7 +13,7 @@ const sortByReducer = (value = '', action: SetSortByAction | GlobalUpdateAction)
     case Actions.SET_SORT_BY:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.sortBy, value);
+      return updateIfDefined<string>(action.payload?.sortBy, value);
     default:
       return value;
   }

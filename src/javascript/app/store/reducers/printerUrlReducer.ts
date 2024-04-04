@@ -14,7 +14,7 @@ const printerUrlReducer = (
       return cleanUrl(action.payload, 'http');
 
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.printerUrl, value);
+      return updateIfDefined<string>(action.payload?.printerUrl, value);
     default:
       return value;
   }

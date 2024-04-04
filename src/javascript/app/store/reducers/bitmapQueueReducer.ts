@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-interface QueueImage {
+export interface QueueImage {
   imageData: ImageData,
   scaleFactor: number,
   width: number,

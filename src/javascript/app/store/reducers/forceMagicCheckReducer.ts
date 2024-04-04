@@ -13,7 +13,7 @@ const forceMagicCheckReducer = (value = true, action: ForceMagicCheckAction | Gl
     case Actions.SET_FORCE_MAGIC_CHECK:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.forceMagicCheck, value);
+      return updateIfDefined<boolean>(action.payload?.forceMagicCheck, value);
     default:
       return value;
   }

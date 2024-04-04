@@ -22,7 +22,7 @@ const exportScaleFactorsReducer = (value = [1], action: ExportScaleFactorsAction
         factor !== action.payload.factor
       ));
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.exportScaleFactors, value);
+      return updateIfDefined<number[]>(action.payload?.exportScaleFactors, value);
     default:
       return value;
   }

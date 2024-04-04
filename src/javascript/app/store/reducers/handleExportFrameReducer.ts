@@ -17,7 +17,7 @@ const handleExportFrameReducer = (
     case Actions.SET_HANDLE_EXPORT_FRAME:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.handleExportFrame, value);
+      return updateIfDefined<ExportFrameMode>(action.payload?.handleExportFrame, value);
     default:
       return value;
   }

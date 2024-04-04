@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-interface WindowDimensions {
+export interface WindowDimensions {
   width: number,
   height: number,
 }

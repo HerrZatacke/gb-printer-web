@@ -10,9 +10,9 @@ const uniqueById = uniqueBy<Frame>('id');
 const sortById = sortBy<Frame>('id');
 
 const framesReducer = (
-  frames = [],
+  frames: Frame[] = [],
   action: AddFrameAction | UpdateFrameAction | DeleteFrameAction | GlobalUpdateAction,
-) => {
+): Frame[] => {
   switch (action.type) {
     case Actions.ADD_FRAME:
       return sortById(uniqueById([action.payload, ...frames]));

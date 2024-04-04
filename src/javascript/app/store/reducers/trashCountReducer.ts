@@ -6,7 +6,7 @@ import {
   TrashShowHideAction,
 } from '../../../../types/actions/TrashActions';
 
-interface TrashCount {
+export interface TrashCount {
   frames: number,
   images: number,
   show: boolean,

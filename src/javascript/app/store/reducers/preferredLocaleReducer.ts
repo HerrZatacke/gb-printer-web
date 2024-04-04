@@ -8,7 +8,7 @@ interface PreferredLocaleAction {
   payload: string,
 }
 
-const preferredLocaleReducer = (value = navigator.language, action: PreferredLocaleAction) => {
+const preferredLocaleReducer = (value = navigator.language, action: PreferredLocaleAction): string => {
   switch (action.type) {
     case Actions.SET_PREFERRED_LOCALE:
 

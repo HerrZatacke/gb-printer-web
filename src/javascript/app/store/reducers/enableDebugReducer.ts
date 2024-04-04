@@ -13,7 +13,7 @@ const enableDebugReducer = (value = false, action: EnableDebugAction | GlobalUpd
     case Actions.SET_DEBUG:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.enableDebug, value);
+      return updateIfDefined<boolean>(action.payload?.enableDebug, value);
     default:
       return value;
   }

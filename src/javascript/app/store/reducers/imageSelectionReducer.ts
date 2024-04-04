@@ -26,7 +26,7 @@ const imageSelectionReducer = (
     case Actions.DELETE_IMAGES:
       return [];
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined(action.payload.imageSelection, value);
+      return updateIfDefined<string[]>(action.payload?.imageSelection, value);
     default:
       return value;
   }
