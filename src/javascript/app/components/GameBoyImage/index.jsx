@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Decoder from '../../../tools/Decoder';
@@ -16,6 +16,7 @@ const GameBoyImage = ({
 }) => {
 
   const canvas = useRef(null);
+  const [decoderError, setDecoderError] = useState('');
 
   useEffect(() => {
     if (!palette || !tiles) {
@@ -46,12 +47,13 @@ const GameBoyImage = ({
           lockFrame,
         });
       }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(`error in GameBoyImage: ${error.message}`);
-    }
 
-    applyRotation(tempCanvas, canvas.current, rotation);
+      applyRotation(tempCanvas, canvas.current, rotation);
+      setDecoderError('');
+    } catch (error) {
+      console.error(error);
+      setDecoderError(error.message);
+    }
 
   }, [tiles, palette, lockFrame, invertPalette, rotation]);
 
@@ -65,14 +67,18 @@ const GameBoyImage = ({
         })
       }
     >
-      <canvas
-        className={classnames('gameboy-image__image', {
-          'gameboy-image__image--as-thumb': asThumb,
-          'gameboy-image__image--min-size': tiles.length <= 360,
-        })}
-        width={160}
-        ref={canvas}
-      />
+      { decoderError ? (
+        <p className="gameboy-image__error">{ decoderError }</p>
+      ) : (
+        <canvas
+          className={classnames('gameboy-image__image', {
+            'gameboy-image__image--as-thumb': asThumb,
+            'gameboy-image__image--min-size': tiles.length <= 360,
+          })}
+          width={160}
+          ref={canvas}
+        />
+      ) }
     </div>
   );
 };
