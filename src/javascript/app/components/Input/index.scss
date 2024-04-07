@@ -32,6 +32,7 @@
 
     &:disabled {
       opacity: 0.3;
+      cursor: default;
     }
   }
 
@@ -201,5 +202,9 @@
       padding-left: 0;
       display: block;
     }
+  }
+
+  &--disabled {
+    opacity: 50%;
   }
 }

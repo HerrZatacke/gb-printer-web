@@ -23,5 +23,13 @@
   &__input {
     display: none;
   }
+
+  &--disabled {
+    opacity: 33%;
+  }
+
+  &--disabled &__checkbox-wrapper {
+    cursor: default;
+  }
 }
 
