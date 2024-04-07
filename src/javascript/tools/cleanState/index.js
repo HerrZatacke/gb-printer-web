@@ -3,7 +3,7 @@ import predefinedPalettes from 'gb-palettes';
 import { dateFormat, defaultRGBNPalette } from '../../app/defaults';
 import uniqueBy from '../unique/by';
 import cleanUrl from '../cleanUrl';
-import { blendModeKeys } from '../RGBNDecoder/blendModes';
+import { BlendMode } from '../RGBNDecoder/blendModes';
 import hashFrames from './hashFrames';
 import backupFrames from './backupFrames';
 
@@ -54,7 +54,7 @@ const cleanState = async (dirtyState) => {
             ...image,
             palette: {
               ...image.palette,
-              blend: blendModeKeys.MULTIPLY,
+              blend: BlendMode.MULTIPLY,
             },
           };
         }

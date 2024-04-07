@@ -1,18 +1,28 @@
-import React, { useRef, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import Decoder from '../../../tools/Decoder';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
+import applyRotation, { Rotation } from '../../../tools/applyRotation';
+import { RGBNPalette } from '../../../../types/Image';
+import { RGBNTile } from '../../../tools/Decoder/types';
 import './index.scss';
-import applyRotation from '../../../tools/applyRotation';
 
-const GameBoyImage = ({
-  palette,
+interface GameBoyImageProps {
+  palette?: string[] | RGBNPalette | null,
+  tiles: string[] | RGBNTile[],
+  lockFrame: boolean,
+  invertPalette: boolean,
+  asThumb?: boolean,
+  rotation?: Rotation,
+}
+
+const GameBoyImage: React.FC<GameBoyImageProps> = ({
+  palette = null,
   tiles,
   lockFrame,
   invertPalette,
-  asThumb,
-  rotation,
+  asThumb = false,
+  rotation = Rotation.DEG_0,
 }) => {
 
   const canvas = useRef(null);
@@ -28,12 +38,11 @@ const GameBoyImage = ({
     tempCanvas.height = 144;
 
     try {
-
-      if (palette.length) {
+      if (palette instanceof Array) {
         const decoder = new Decoder();
         decoder.update({
           canvas: tempCanvas,
-          tiles,
+          tiles: tiles as string[],
           palette,
           lockFrame,
           invertPalette,
@@ -42,17 +51,22 @@ const GameBoyImage = ({
         const decoder = new RGBNDecoder();
         decoder.update({
           canvas: tempCanvas,
-          tiles,
+          tiles: tiles as RGBNTile[],
           palette,
           lockFrame,
         });
       }
 
-      applyRotation(tempCanvas, canvas.current, rotation);
+      if (canvas.current) {
+        applyRotation(tempCanvas, canvas.current, rotation || Rotation.DEG_0);
+      }
+
       setDecoderError('');
     } catch (error) {
-      console.error(error);
-      setDecoderError(error.message);
+      if (error instanceof Error) {
+        console.error(error);
+        setDecoderError(error.message);
+      }
     }
 
   }, [tiles, palette, lockFrame, invertPalette, rotation]);
@@ -61,9 +75,9 @@ const GameBoyImage = ({
     <div
       className={
         classnames('gameboy-image', {
-          'gameboy-image--rot-90': rotation === 1,
-          'gameboy-image--rot-180': rotation === 2,
-          'gameboy-image--rot-270': rotation === 3,
+          'gameboy-image--rot-90': rotation === Rotation.DEG_90,
+          'gameboy-image--rot-180': rotation === Rotation.DEG_180,
+          'gameboy-image--rot-270': rotation === Rotation.DEG_270,
         })
       }
     >
@@ -81,27 +95,6 @@ const GameBoyImage = ({
       ) }
     </div>
   );
-};
-
-GameBoyImage.propTypes = {
-  tiles: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.string),
-    PropTypes.arrayOf(PropTypes.object),
-  ]).isRequired,
-  palette: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
-  ]),
-  lockFrame: PropTypes.bool.isRequired,
-  invertPalette: PropTypes.bool.isRequired,
-  asThumb: PropTypes.bool,
-  rotation: PropTypes.number,
-};
-
-GameBoyImage.defaultProps = {
-  palette: null,
-  asThumb: false,
-  rotation: null,
 };
 
 export default GameBoyImage;

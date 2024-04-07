@@ -1,3 +1,5 @@
+import { BlendMode } from '../javascript/tools/RGBNDecoder/blendModes';
+
 export interface ImageMetadata extends Record<string, unknown>{
   romType?: string,
   userId?: string,
@@ -27,12 +29,12 @@ interface CommonImage {
   meta?: ImageMetadata
 }
 
-interface RGBNPalette {
-  r?: number[],
+export interface RGBNPalette {
+  r?: number[], // ToDo BWPalette??
   g?: number[],
   b?: number[],
   n?: number[],
-  blend?: string,
+  blend?: BlendMode,
 }
 
 export interface RGBNHashes {
@@ -49,7 +51,7 @@ export interface RGBNImage extends CommonImage {
 
 export interface MonochromeImage extends CommonImage {
   lines: number,
-  palette: string,
+  palette: string, // ToDo BWPalette??
   frame: string,
 }
 

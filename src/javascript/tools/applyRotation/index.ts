@@ -1,7 +1,18 @@
-// noinspection JSSuspiciousNameCombination
 /* eslint-disable no-param-reassign */
-const applyRotation = (srcCanvas, targetCanvas, rotation) => {
+
+export enum Rotation {
+  DEG_0 = 0,
+  DEG_90 = 1,
+  DEG_180 = 2,
+  DEG_270 = 3,
+}
+
+const applyRotation = (srcCanvas: HTMLCanvasElement, targetCanvas: HTMLCanvasElement, rotation: Rotation): void => {
   const context = targetCanvas.getContext('2d');
+  if (!context) {
+    return;
+  }
+
   context.resetTransform();
 
   if (rotation % 2) {
