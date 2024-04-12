@@ -215,7 +215,7 @@
     "prefer-destructuring": "off",
     "comma-spacing": "warn",
     "no-implicit-globals": "error",
-    "no-undef": "error",
+    "no-undef": "off",
     "no-underscore-dangle": [
       "error",
       {

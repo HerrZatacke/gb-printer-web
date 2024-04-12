@@ -5,13 +5,22 @@
 
 import EventEmitter from 'events';
 
-class USBSerialPort extends EventEmitter {
-  constructor(device) {
+class USBSerialPortEE extends EventEmitter {
+  private device: USBDevice;
+  private manufacturerName: string;
+  private productName: string;
+  private serialNumber: string;
+  private interfaceNumber: number;
+  private endpointIn: number;
+  private endpointOut: number;
+  private textDecoder: TextDecoder;
+
+  constructor(device: USBDevice) {
     super();
     this.device = device;
-    this.manufacturerName = device.manufacturerName;
-    this.productName = device.productName;
-    this.serialNumber = device.serialNumber;
+    this.manufacturerName = device.manufacturerName || '';
+    this.productName = device.productName || '';
+    this.serialNumber = device.serialNumber || '';
 
     this.interfaceNumber = 2; // original interface number of WebUSB Arduino demo
     this.endpointIn = 5; // original in endpoint ID of WebUSB Arduino demo
@@ -37,7 +46,11 @@ class USBSerialPort extends EventEmitter {
         this.device?.selectConfiguration?.(1)
       ))
       .then(() => {
-        const configurationInterfaces = this.device.configuration.interfaces;
+        const configurationInterfaces = this.device.configuration?.interfaces;
+        if (!configurationInterfaces) {
+          return;
+        }
+
         configurationInterfaces.forEach((element) => {
           element.alternates.forEach((elementalt) => {
             if (elementalt.interfaceClass === 0xff) {
@@ -86,9 +99,9 @@ class USBSerialPort extends EventEmitter {
       .then(() => this.device.close());
   }
 
-  send(data) {
+  send(data: BufferSource) {
     return this.device.transferOut(this.endpointOut, data);
   }
 }
 
-export default USBSerialPort;
+export default USBSerialPortEE;

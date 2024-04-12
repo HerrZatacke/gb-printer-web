@@ -1,33 +1,41 @@
 import EventEmitter from 'events';
-import USBSerialPort from './USBSerialPort';
+import SerialPortEE from './SerialPort';
 
-class WebUSBSerial extends EventEmitter {
+class WebSerialEE extends EventEmitter {
+  private enabled: boolean;
+  private activePorts: SerialPortEE[];
+  private baudRate: number;
+
   constructor() {
     super();
-    this.enabled = !!navigator.usb && !!navigator.usb.getDevices;
+    this.enabled = !!navigator.serial && !!window.TextDecoderStream;
     this.activePorts = [];
+    this.baudRate = 115200;
 
     // instantly connect to known existing ports
     this.watchPorts();
   }
 
   // lists existing/known ports
-  getPorts() {
+  getPorts(): Promise<SerialPortEE[]> {
     if (!this.enabled) {
       return Promise.resolve([]);
     }
 
-    return navigator.usb.getDevices()
+    return navigator.serial.getPorts()
       .then((devices) => (
         devices
-          .filter(({ opened }) => !opened)
+          .filter(({ readable }) => !readable) // opened devices have a ReadableStream as device.readable
           .map((device) => (
-            new USBSerialPort(device)
+            new SerialPortEE({
+              device,
+              baudRate: this.baudRate,
+            })
           ))
       ));
   }
 
-  getActivePorts() {
+  getActivePorts(): SerialPortEE[] {
     return this.activePorts;
   }
 
@@ -36,11 +44,11 @@ class WebUSBSerial extends EventEmitter {
       this.getPorts()
         .then((ports) => {
           ports
-            .forEach((port) => {
+            .forEach((port: SerialPortEE) => {
               port.addListener('error', (error) => {
                 console.warn(error);
                 this.activePorts = this.activePorts
-                  .filter((activePort) => (
+                  .filter((activePort: SerialPortEE) => (
                     activePort !== port
                   ));
                 this.emit('activePortsChange', [...this.activePorts]);
@@ -54,7 +62,8 @@ class WebUSBSerial extends EventEmitter {
                 .then(() => {
                   this.activePorts.push(port);
                   this.emit('activePortsChange', [...this.activePorts]);
-                });
+                })
+                .catch(() => { /* silence! */ });
             });
         });
     }, 1000);
@@ -66,29 +75,16 @@ class WebUSBSerial extends EventEmitter {
       return;
     }
 
-    const filters = [
-      { vendorId: 0x2341, productId: 0x8036 }, // Arduino Leonardo
-      { vendorId: 0x2341, productId: 0x8037 }, // Arduino Micro
-      { vendorId: 0x2341, productId: 0x804d }, // Arduino/Genuino Zero
-      { vendorId: 0x2341, productId: 0x804e }, // Arduino/Genuino MKR1000
-      { vendorId: 0x2341, productId: 0x804f }, // Arduino MKRZERO
-      { vendorId: 0x2341, productId: 0x8050 }, // Arduino MKR FOX 1200
-      { vendorId: 0x2341, productId: 0x8052 }, // Arduino MKR GSM 1400
-      { vendorId: 0x2341, productId: 0x8053 }, // Arduino MKR WAN 1300
-      { vendorId: 0x2341, productId: 0x8054 }, // Arduino MKR WiFi 1010
-      { vendorId: 0x2341, productId: 0x8055 }, // Arduino MKR NB 1500
-      { vendorId: 0x2341, productId: 0x8056 }, // Arduino MKR Vidor 4000
-      { vendorId: 0x2341, productId: 0x8057 }, // Arduino NANO 33 IoT
-      { vendorId: 0x239A }, // Adafruit Boards!
-    ];
-
-    navigator.usb.requestDevice({ filters })
-      .then((device) => {
-        if (device.opened) {
+    navigator.serial.requestPort()
+      .then((device: SerialPort) => {
+        if (device.readable) { // opened devices have a ReadableStream as device.readable
           throw new Error('device already opened');
         }
 
-        return new USBSerialPort(device);
+        return new SerialPortEE({
+          device,
+          baudRate: this.baudRate,
+        });
       })
       .catch(() => null /* no device selected */)
       .then((port) => {
@@ -103,4 +99,6 @@ class WebUSBSerial extends EventEmitter {
   }
 }
 
-export default new WebUSBSerial();
+export const baudRates = [2400, 4800, 9600, 19200, 28800, 38400, 57600, 76800, 115200, 230400, 460800, 576000, 921600];
+
+export default new WebSerialEE();

@@ -1,7 +1,18 @@
 import EventEmitter from 'events';
 
-class SerialPort extends EventEmitter {
-  constructor({ device, baudRate }) {
+interface Options {
+  device: SerialPort,
+  baudRate: number,
+}
+
+class SerialPortEE extends EventEmitter {
+  private device: SerialPort;
+  private baudRate: number;
+  private usbProductId: number | undefined;
+  private usbVendorId: number | undefined;
+  private reader: ReadableStreamDefaultReader | null;
+
+  constructor({ device, baudRate }: Options) {
     super();
     this.device = device;
     this.baudRate = baudRate;
@@ -13,7 +24,7 @@ class SerialPort extends EventEmitter {
 
   connect() {
     const readLoop = () => {
-      this.reader.read()
+      this.reader?.read()
         .then(({ value }) => {
           this.emit('data', value);
           readLoop();
@@ -59,4 +70,4 @@ class SerialPort extends EventEmitter {
   // }
 }
 
-export default SerialPort;
+export default SerialPortEE;
