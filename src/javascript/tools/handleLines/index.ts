@@ -1,6 +1,7 @@
-import { IMAGE_COMPLETE, NEW_LINES, PARSE_ERROR } from './types';
+import { HandleLine, ImportLine } from './types';
 
-const handleLines = (rawLine) => {
+
+const handleLines = (rawLine: string): ImportLine | null => {
   // commented lines are not saved
   if (
     (rawLine.charAt(0) === '#') ||
@@ -24,12 +25,12 @@ const handleLines = (rawLine) => {
 
       if (command === 'PRNT' && marginLower > 0) {
         return {
-          type: IMAGE_COMPLETE,
+          type: HandleLine.IMAGE_COMPLETE,
         };
       }
     } catch (error) {
       return {
-        type: PARSE_ERROR,
+        type: HandleLine.PARSE_ERROR,
         payload: 'Error while trying to parse JSON data command block',
       };
     }
@@ -44,7 +45,7 @@ const handleLines = (rawLine) => {
   }
 
   return {
-    type: NEW_LINES,
+    type: HandleLine.NEW_LINES,
     payload: [cleanLine],
   };
 };
