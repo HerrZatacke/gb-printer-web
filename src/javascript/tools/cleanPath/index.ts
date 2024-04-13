@@ -1,4 +1,4 @@
-const cleanPath = (path) => (
+const cleanPath = (path: string): string => (
   path
     .replace(/[^a-z0-9/\\._-]/gi, '') // remove invalid chars
     .replace(/[\\/]+/gi, '/') // replace '\' with '/'
