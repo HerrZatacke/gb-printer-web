@@ -1,6 +1,6 @@
+const pad = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
 
-const padToHeight = (tiles) => {
-  const pad = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
+const padToHeight = (tiles: string[]): string[] => {
 
   // Fill up to a full line
   while (tiles.length % 20) {
