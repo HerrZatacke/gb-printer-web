@@ -1,11 +1,18 @@
-const replaceDuplicateFilenames = (files) => {
+import { DownloadArrayBuffer, UniqueFilenameDownloadArrayBuffer } from '../download/types';
 
-  const filenames = [];
+const replaceDuplicateFilenames = (files: DownloadArrayBuffer[]): UniqueFilenameDownloadArrayBuffer[] => {
+
+  const filenames: string[] = [];
 
   return files.map((file) => {
     const { filename } = file;
     const fnParts = filename.split('.');
     const ext = fnParts.pop();
+
+    if (!ext) {
+      throw new Error('unknown file type');
+    }
+
     const baseName = fnParts.join('.');
     let uFilename = filename;
     let tries = 0;
