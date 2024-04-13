@@ -62,6 +62,7 @@ ImageRender.propTypes = {
   lockFrame: PropTypes.bool.isRequired,
   recover: PropTypes.func.isRequired,
   rotation: PropTypes.number,
+  // ToDo: frames: used in <RGBNImage> and <LightboxImage> but not handled here?
 };
 
 ImageRender.defaultProps = {
