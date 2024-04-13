@@ -1,5 +1,5 @@
 /* eslint-disable quote-props */
-const chars = {
+const chars: Record<string, string> = {
   '': '006666666600FFFF',
   ' ': 'FFFFFFFFFFFFFFFF',
   '0': 'FFDDAAAAAADDFFFF',
@@ -50,13 +50,13 @@ const chars = {
   ':': 'FFFFDDFFDDFFFFFF',
 };
 
-const getChars = (text) => {
+const getChars = (text: string | number): string => {
 
   // convert to array of strings if necessary
-  const textParts = [...text.toString(10).toLowerCase(), ' ', ' '];
+  const textParts = [...text.toString(10).toLowerCase().split(''), ' ', ' '];
 
-  const leftChar = textParts.shift();
-  const rightChar = textParts.shift();
+  const leftChar = textParts.shift() || '';
+  const rightChar = textParts.shift() || '';
 
   const leftHex = chars[leftChar] || chars[''];
   const rightHex = chars[rightChar] || chars[''];

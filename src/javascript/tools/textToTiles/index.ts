@@ -2,14 +2,18 @@ import getChars from '../chars';
 
 const black = 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\n';
 
-const textToTiles = (text) => {
+const textToTiles = (text: string): string[] => {
   const result = [];
   const lines = text.split('\n')
     .map((line) => line.match(/.{1,32}/g))
     .flat()
     .map((line) => line || '')
     .map((line = '') => line.padEnd(32, ' '))
-    .map((line) => line.match(/.{1,2}/g).map((chars) => getChars(chars)))
+    .map((line) => (
+      line.match(/.{1,2}/g)
+        ?.map((chars) => getChars(chars)) ||
+      []
+    ))
     .map((line) => [black, black, ...line, black, black])
     .flat();
 

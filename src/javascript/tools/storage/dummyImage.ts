@@ -1,6 +1,6 @@
 import textToTiles from '../textToTiles';
 
-const dummyImage = (hash) => {
+const dummyImage = (hash: string): string[] => {
   const text = `
 The following hash is missing in
 your indexedDb:
