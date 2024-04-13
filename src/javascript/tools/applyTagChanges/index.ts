@@ -1,4 +1,10 @@
-const applyTagChanges = ({ initial, add, remove }) => {
+interface TagChange {
+  initial: string[],
+  add: string[],
+  remove: string[],
+}
+
+const applyTagChanges = ({ initial, add, remove }: TagChange): string[] => {
   const tagsAdded = [...initial, ...add];
 
   return tagsAdded
