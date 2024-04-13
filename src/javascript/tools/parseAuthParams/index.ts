@@ -1,4 +1,4 @@
-const parseAuthParams = () => {
+const parseAuthParams = (): { dropboxCode?: string } => {
   const searchParams = new URLSearchParams(window.location.search);
 
   // for now there's only dropbox oauth support, and dropbox redirects with the param 'code'
