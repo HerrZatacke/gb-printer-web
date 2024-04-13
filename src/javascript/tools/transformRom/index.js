@@ -8,7 +8,7 @@ const pad2 = (number) => (
 
 const getTransformRom = ({ getState, dispatch }) => async (file) => {
   const { default: objectHash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
-  const data = await readFileAs(file, 'arrayBuffer');
+  const data = await readFileAs(file, 'uint8array');
 
   const { importLastSeen, importDeleted, forceMagicCheck } = getState();
 

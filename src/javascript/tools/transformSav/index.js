@@ -4,7 +4,7 @@ import readFileAs from '../readFileAs';
 import getImportSav from './importSav';
 
 const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) => {
-  const data = await readFileAs(file, 'arrayBuffer');
+  const data = await readFileAs(file, 'uint8array');
 
   const {
     savFrameTypes: selectedFrameset,

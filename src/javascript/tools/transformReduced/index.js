@@ -14,7 +14,7 @@ import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
 
 const transformReduced = ({ dispatch }) => async (file) => {
-  const data = await readFileAs(file, 'arrayBuffer');
+  const data = await readFileAs(file, 'uint8array');
 
   const result = await parseReducedPackets(data)
     .then(inflateTransferPackages)

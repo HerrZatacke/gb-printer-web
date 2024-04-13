@@ -16,7 +16,7 @@ const isBinType = (buffer) => (
 );
 
 const getTransformBin = ({ dispatch }) => async (file) => {
-  const data = await readFileAs(file, 'arrayBuffer');
+  const data = await readFileAs(file, 'uint8array');
   //
   if (!isBinType(data)) {
     throw new Error('Not a valid .bin file - is it missing the "GB-BIN01" header?');
