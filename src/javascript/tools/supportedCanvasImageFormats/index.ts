@@ -1,6 +1,6 @@
-const supports = {};
+const supports: Record<string, boolean> = {};
 
-const supportsFileType = (fileType) => {
+const supportsFileType = (fileType: string) => {
   if (supports[fileType] !== undefined) {
     return supports[fileType];
   }
