@@ -25,6 +25,7 @@ interface CommonImage {
   hash: string,
   created: string,
   title: string,
+  frame: string | null,
   tags: string[],
   meta?: ImageMetadata
 }
@@ -52,7 +53,6 @@ export interface RGBNImage extends CommonImage {
 export interface MonochromeImage extends CommonImage {
   lines: number,
   palette: string, // ToDo BWPalette??
-  frame: string,
 }
 
 export type Image = MonochromeImage | RGBNImage
