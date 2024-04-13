@@ -5,15 +5,19 @@ const localforageImages = createWrappedInstance({
   storeName: 'gb-printer-web-images',
 });
 
-const localforageFrames = createWrappedInstance({
+const localforageFrames = createWrappedInstance<Uint8Array>({
   name: 'GB Printer Web',
   storeName: 'gb-printer-web-frames',
 });
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 window.lfi = localforageImages;
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 window.lff = localforageFrames;
 
-const localforageReady = async () => {
+const localforageReady = async (): Promise<void> => {
   await localforageFrames.ready();
   await localforageImages.ready();
 
