@@ -1,4 +1,4 @@
-const isTouchDevice = () => {
+const isTouchDevice = (): boolean => {
   try {
     document.createEvent('TouchEvent');
     return true;

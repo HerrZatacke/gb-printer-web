@@ -1,10 +1,10 @@
 // noinspection JSBitwiseOperatorUsage
-const isPowerOfTwo = (v) => (
+const isPowerOfTwo = (v: number): boolean => (
   // eslint-disable-next-line no-bitwise
-  v && !(v & (v - 1))
+  Boolean(v && !(v & (v - 1)))
 );
 
-const isGoodScaleFactor = (scaleFactor) => (
+const isGoodScaleFactor = (scaleFactor: number): boolean => (
   Math.floor(scaleFactor) === scaleFactor &&
   isPowerOfTwo(scaleFactor)
 );
