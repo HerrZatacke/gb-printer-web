@@ -64,7 +64,7 @@
     "file-saver": "^2.0.2",
     "filesize": "^6.1.0",
     "flatten": "^1.0.3",
-    "gb-palettes": "^1.0.8",
+    "gb-palettes": "^1.0.11",
     "gbp-decode": "^1.2.0",
     "github-markdown-css": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
