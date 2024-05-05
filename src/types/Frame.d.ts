@@ -1,7 +1,9 @@
 export interface Frame {
   id: string,
-  fileName: string,
-  tiles: string[],
-  imageHash: string,
-  tempId: string,
+  hash: string,
+  name: string,
+  // fileName: string, // ToDo: why did I add these?
+  // tiles: string[],
+  // imageHash: string,
+  tempId?: string,
 }
