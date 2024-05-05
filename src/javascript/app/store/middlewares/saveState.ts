@@ -1,10 +1,12 @@
 import { definitions } from '../defaults';
+import { State } from '../State';
+import { MiddlewareWithState } from '../../../../types/BasicMiddleware';
 
-const saveState = (store) => (next) => (action) => {
+const saveState: MiddlewareWithState = (store) => (next) => (action) => {
   next(action);
 
   const state = store.getState();
-  const savedState = {};
+  const savedState: Partial<State> = {};
 
   definitions
     .forEach(({ key, saveLocally }) => {
@@ -14,10 +16,10 @@ const saveState = (store) => (next) => (action) => {
 
       switch (key) {
         case 'palettes':
-          savedState[key] = state.palettes.filter(({ isPredefined }) => !isPredefined);
+          Object.assign(savedState, { [key]: state.palettes.filter(({ isPredefined }) => !isPredefined) });
           break;
         default:
-          savedState[key] = state[key];
+          Object.assign(savedState, { [key]: state[key] });
           break;
       }
     });
