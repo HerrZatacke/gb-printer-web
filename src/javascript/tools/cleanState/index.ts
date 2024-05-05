@@ -6,12 +6,19 @@ import cleanUrl from '../cleanUrl';
 import { BlendMode } from '../RGBNDecoder/blendModes';
 import hashFrames from './hashFrames';
 import backupFrames from './backupFrames';
+import { State } from '../../app/store/State';
+import { Palette } from '../../../types/Palette';
+import { isRGBNImage } from '../isRGBNImage';
+import { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 
-const cleanState = async (dirtyState) => {
+const cleanState = async (dirtyState: State) => {
 
-  const palettes = uniqueBy('shortName')([
-    ...predefinedPalettes.map((palette) => ({
-      ...palette,
+  const palettes: Palette[] = uniqueBy<Palette>('shortName')([
+    ...predefinedPalettes.map((gbPalette): Palette => ({
+      shortName: gbPalette.shortName,
+      palette: gbPalette.palette,
+      name: gbPalette.name,
+      origin: gbPalette.origin,
       isPredefined: true,
     })),
     ...dirtyState.palettes,
@@ -23,10 +30,10 @@ const cleanState = async (dirtyState) => {
   const printerUrl = cleanUrl(dirtyState.printerUrl, 'http');
   let framesMessage = dirtyState.framesMessage;
 
-  const activePalette = palettesShorts.includes(dirtyState.activePalette) ? dirtyState.activePalette : 'bw';
+  const activePalette = palettesShorts.includes(dirtyState.activePalette || '') ? dirtyState.activePalette : 'bw';
 
-  const images = dirtyState.images
-    // clean the created date (add ms)
+  const images: Image[] = dirtyState.images
+    // clean the created date (add ms) (e.g. "2021-01-30 18:16:09" -> "2021-01-30 18:16:09:000")
     .map((image) => ({
       ...image,
       created: dayjs(image.created).format(dateFormat),
@@ -39,44 +46,31 @@ const cleanState = async (dirtyState) => {
     }))
 
     // clean palettes
-    .map((image) => {
+    .map((image): Image => {
       // image is a rgbn image
-      if (image.hashes) {
-        if (!image.palette) {
-          return {
-            ...image,
-            palette: defaultRGBNPalette,
-          };
+      if (isRGBNImage(image)) {
+        const rgbnImage = { ...image as RGBNImage };
+
+        if (!rgbnImage.palette) {
+          Object.assign(rgbnImage, { palette: defaultRGBNPalette });
         }
 
-        if (!image.palette.blend) {
-          return {
-            ...image,
-            palette: {
-              ...image.palette,
-              blend: BlendMode.MULTIPLY,
-            },
-          };
+        if (!rgbnImage.palette.blend) {
+          Object.assign(rgbnImage.palette, { blend: BlendMode.MULTIPLY });
         }
 
-        return image;
+        return rgbnImage as Image;
       }
 
       // image is a greyscale image
-      if (image.palette) {
-        // if palette does not exist, update image to use default (first of list)
-        return (!palettesShorts.includes(image.palette)) ?
-          {
-            ...image,
-            palette: palettesShorts[0] || 'bw',
-          } :
-          image;
+      const monoImage = { ...image as MonochromeImage };
+      // if palette does not exist, update image to use default (first of list)
+      if (!palettesShorts.includes(monoImage.palette) && !monoImage.palette) {
+        Object.assign(monoImage, { palette: palettesShorts[0] || 'bw' });
       }
 
-      // image is neither rgbn nor default???
-      return null;
-    })
-    .filter(Boolean);
+      return monoImage;
+    });
 
   const imageHashes = images.map(({ hash }) => hash);
 
