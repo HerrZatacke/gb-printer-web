@@ -3,7 +3,7 @@ import { localforageFrames } from '../localforageInstance';
 import { Frame } from '../../../types/Frame';
 
 interface BackupFrame extends Frame {
-  data: Uint8Array | null,
+  data: string | null,
 }
 
 const backupFrames = async (oldFrames: Frame[]): Promise<void> => {

@@ -1,17 +1,17 @@
 import dummyImage from './dummyImage';
 import applyFrame from '../applyFrame';
 import { localforageFrames, localforageImages } from '../localforageInstance';
+import { deflate, inflate } from '../pack';
 
 export interface HashedCompressed {
   dataHash: string,
-  compressed: Uint8Array,
+  compressed: string,
 }
 
 export type RecoverFn = (hash: string) => void;
 
 const compressAndHash = async (lines: string[]): Promise<HashedCompressed> => {
   const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
-  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
 
   const imageData = lines
     .map((line: string) => (
@@ -19,10 +19,7 @@ const compressAndHash = async (lines: string[]): Promise<HashedCompressed> => {
     ))
     .join('\n');
 
-  const compressed: Uint8Array = pako.deflate(imageData, {
-    strategy: 1,
-    level: 8,
-  });
+  const compressed = await deflate(imageData);
 
   const dataHash: string = hash(compressed);
 
@@ -51,8 +48,6 @@ const load = async (
     return null;
   }
 
-  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
-
   try {
     const binary = await localforageImages.getItem(dataHash);
 
@@ -60,7 +55,7 @@ const load = async (
       throw new Error('missing imagedata');
     }
 
-    const inflated = pako.inflate(binary, { to: 'string' });
+    const inflated = await inflate(binary);
     const tiles = inflated.split('\n');
     if (!frameHash) {
       return tiles;

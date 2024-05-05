@@ -142,6 +142,7 @@ const importMessage = (store) => {
         // the remote window might cause the files not to be loaded
         import(/* webpackChunkName: "obh" */ 'object-hash')
           .then(() => {
+            // ToDo: investigate and maybe relace with "import { deflate, inflate } from '../../../tools/pack';"
             import(/* webpackChunkName: "pko" */ 'pako')
               .then(() => {
                 remotePrinterWindow.postMessage({

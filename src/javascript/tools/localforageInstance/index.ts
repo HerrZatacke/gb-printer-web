@@ -1,11 +1,11 @@
 import createWrappedInstance from './createWrappedInstance';
 
-const localforageImages = createWrappedInstance<Uint8Array>({
+const localforageImages = createWrappedInstance<string>({
   name: 'GB Printer Web',
   storeName: 'gb-printer-web-images',
 });
 
-const localforageFrames = createWrappedInstance<Uint8Array>({
+const localforageFrames = createWrappedInstance<string>({
   name: 'GB Printer Web',
   storeName: 'gb-printer-web-frames',
 });

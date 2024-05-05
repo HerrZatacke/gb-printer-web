@@ -5,23 +5,20 @@ import { localforageReady, localforageImages, localforageFrames } from '../tools
 import { Actions } from '../app/store/actions';
 import { dateFormat } from '../app/defaults';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTrash';
+import { inflate } from '../tools/pack';
 
 const getItems = async (keys, storage) => {
   await localforageReady();
-  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
   return (
-    Promise.all(keys.map((hash) => (
-      storage.getItem(hash)
-        .then((binary) => {
-          const inflated = pako.inflate(binary, { to: 'string' });
-          return {
-            hash,
-            lines: inflated.split('\n'),
-            binary,
-          };
-        })
-        .catch(() => null)
-    )))
+    Promise.all(keys.map(async (hash) => {
+      const binary = await storage.getItem(hash);
+      const inflated = await inflate(binary);
+      return {
+        hash,
+        lines: inflated.split('\n'),
+        binary,
+      };
+    }))
   );
 };
 

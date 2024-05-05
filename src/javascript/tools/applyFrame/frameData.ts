@@ -1,6 +1,7 @@
 import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
 import { localforageFrames } from '../localforageInstance';
 import { ExportFrameMode } from '../../consts/exportFrameModes';
+import { deflate, inflate } from '../pack';
 
 export interface FrameData {
   upper: string[],
@@ -29,7 +30,6 @@ const padCropTiles = (tiles: string[]) => {
 
 export const compressAndHashFrame = async (lines: string[]) => {
   const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
-  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
 
   const frameData = padCropTiles([...lines])
     .filter((_, index) => tileIndexIsPartOfFrame(index, ExportFrameMode.FRAMEMODE_KEEP))
@@ -38,11 +38,7 @@ export const compressAndHashFrame = async (lines: string[]) => {
     ))
     .join('\n');
 
-  const compressed = pako.deflate(frameData, {
-    strategy: 1,
-    level: 8,
-  });
-
+  const compressed = await deflate(frameData);
   const dataHash = hash(compressed);
 
   return {
@@ -71,10 +67,8 @@ export const loadFrameData = async (frameHash: string): Promise<null | FrameData
     return null;
   }
 
-  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
-
   try {
-    const tiles = pako.inflate(binary, { to: 'string' }).split('\n');
+    const tiles = (await inflate(binary)).split('\n');
 
     return {
       upper: tiles.slice(0, 40),
