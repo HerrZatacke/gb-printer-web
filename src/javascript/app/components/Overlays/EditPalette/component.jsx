@@ -22,9 +22,30 @@ const EditPalette = ({
   const [newShortName, setNewShortName] = useState(canEditShortName ? '' : shortName);
   const [previewImages, setPreviewImages] = useState([]);
 
+  const canConfirm = !canEditShortName || shortNameIsValid(newShortName);
+
+  const save = () => savePalette({
+    shortName: canEditShortName ? newShortName : shortName,
+    name: newName,
+    palette: newPalette,
+    origin: 'Made with the webapp',
+    isPredefined: false,
+  });
+
   useEffect(() => {
     setPreviewImages(getPreviewImages());
   }, [getPreviewImages]);
+
+  useEffect(() => {
+    const keydownHandler = (ev) => {
+      if (ev.key === 'Enter' && ev.ctrlKey && canConfirm) {
+        save();
+      }
+    };
+
+    document.addEventListener('keydown', keydownHandler);
+    return () => document.removeEventListener('keydown', keydownHandler);
+  });
 
   if (!shortName) {
     return null;
@@ -33,13 +54,8 @@ const EditPalette = ({
   return (
     <Lightbox
       className="edit-palette"
-      confirm={() => savePalette({
-        shortName: canEditShortName ? newShortName : shortName,
-        name: newName,
-        palette: newPalette,
-        origin: '',
-      })}
-      canConfirm={!canEditShortName || shortNameIsValid(newShortName)}
+      confirm={save}
+      canConfirm={canConfirm}
       deny={() => cancelEditPalette()}
       denyOnOverlayClick={false}
     >
