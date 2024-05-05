@@ -9,6 +9,7 @@ import Decoder from '../../../tools/Decoder';
 import generateFileName from '../../../tools/generateFileName';
 import { Actions } from '../actions';
 import applyRotation from '../../../tools/applyRotation';
+import { isRGBNImage } from '../../../tools/isRGBNImage';
 
 const getAddImages = (dispatch, gifWriter, queue, frameRate, total) => (canvas, index) => (
   queue.add(() => (
@@ -88,7 +89,7 @@ const animate = (store) => (next) => (action) => {
           .then((tiles) => {
             const palette = getImagePalette(state, image);
 
-            const isRGBN = !!image.hashes;
+            const isRGBN = isRGBNImage(image);
             const decoder = isRGBN ? new RGBNDecoder() : new Decoder();
             const lockFrame = videoLockFrame || image.lockFrame || false;
             const invertPalette = videoInvertPalette || image.invertPalette || false;

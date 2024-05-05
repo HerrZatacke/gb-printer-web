@@ -6,6 +6,7 @@ import RGBNDecoder from '../../../tools/RGBNDecoder';
 import Decoder from '../../../tools/Decoder';
 import { Actions } from '../actions';
 import applyRotation from '../../../tools/applyRotation';
+import { isRGBNImage } from '../../../tools/isRGBNImage';
 
 const pluginsMiddleware = (store) => {
   const registeredPlugins = {};
@@ -25,7 +26,7 @@ const pluginsMiddleware = (store) => {
     const selectedPalette = getImagePalette(state, meta);
     const getTiles = () => loadImageTiles(state)(meta);
 
-    meta.isRGBN = !!meta.hashes;
+    meta.isRGBN = isRGBNImage(meta);
 
     const getCanvas = ({
       scaleFactor = 1,
