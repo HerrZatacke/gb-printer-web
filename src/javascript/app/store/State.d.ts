@@ -27,7 +27,7 @@ export interface State {
   dropboxStorage: DropBoxSettings,
   editImage: CurrentEditSingleImage | CurrentEditBatch | null,
   editFrame: string | null,
-  editPalette: Palette,
+  editPalette: Palette | null,
   enableDebug: boolean,
   exportFileTypes: string[],
   exportScaleFactors: number[],

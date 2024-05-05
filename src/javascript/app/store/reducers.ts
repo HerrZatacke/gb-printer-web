@@ -78,7 +78,7 @@ export interface Reducers extends ReducersMapObject {
   dropboxStorage: Reducer<DropBoxSettings>,
   editImage: Reducer<CurrentEditSingleImage | CurrentEditBatch | null>,
   editFrame: Reducer<string | null>,
-  editPalette: Reducer<Palette>,
+  editPalette: Reducer<Palette | null>,
   enableDebug: Reducer<boolean>,
   exportFileTypes: Reducer<string[]>,
   exportScaleFactors: Reducer<number[]>,

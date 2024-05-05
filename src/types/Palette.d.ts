@@ -1,7 +1,5 @@
-export interface Palette {
-  shortName?: string,
-  name?: string,
-  origin?: string,
-  isPredefined?: boolean,
-  palette?: string[],
+import { GbPalette } from 'gb-palettes';
+
+export interface Palette extends GbPalette {
+  isPredefined: boolean,
 }

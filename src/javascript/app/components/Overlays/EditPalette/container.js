@@ -3,9 +3,9 @@ import getPreviewImages from '../../../../tools/getPreviewImages';
 import { Actions } from '../../../store/actions';
 
 const mapStateToProps = (state) => ({
-  shortName: state.editPalette.shortName,
-  palette: state.editPalette.palette || [],
-  name: state.editPalette.name || '',
+  shortName: state.editPalette?.shortName || '',
+  palette: state.editPalette?.palette || [],
+  name: state.editPalette?.name || '',
   getPreviewImages: getPreviewImages(state),
   shortNameIsValid: (shortName) => {
     if (!shortName.match(/^[a-z]+[a-z0-9]*$/gi)) {

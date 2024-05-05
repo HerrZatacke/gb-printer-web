@@ -50,7 +50,7 @@ const Overlays = () => {
     showFrameQueue: !!state.frameQueue.length,
     showEditForm: !!state.editImage,
     showEditFrame: !!state.editFrame,
-    showEditPalette: !!state.editPalette.shortName,
+    showEditPalette: !!state.editPalette,
     showVideoForm: !!state.videoParams.imageSelection && !!state.videoParams.imageSelection.length,
     showRGBNImage: !!state.rgbnImages && Object.keys(state.rgbnImages).length > 0,
     showLightbox: state.lightboxImage !== null,
