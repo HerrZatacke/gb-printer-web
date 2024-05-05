@@ -27,6 +27,9 @@ interface CommonImage {
   title: string,
   frame: string | null,
   tags: string[],
+  lockFrame?: boolean,
+  invertPalette?: boolean,
+  rotation?: number,
   meta?: ImageMetadata
 }
 
