@@ -1,4 +1,4 @@
-import { Reducers } from './reducers';
+import { State } from './State';
 
 export enum ExportTypes {
   SETTINGS = 'settings',
@@ -11,7 +11,7 @@ export enum ExportTypes {
 }
 
 interface StorePropertyDefault {
-  key: keyof Reducers,
+  key: keyof State,
   saveLocally: boolean,
   saveExport: ExportTypes[],
   value: unknown,
@@ -286,9 +286,9 @@ const definitions: StorePropertyDefault[] = [
   },
 ];
 
-const defaults: Partial<Record<keyof Reducers, unknown>> = {};
+const defaults: Partial<State> = {};
 definitions.forEach(({ key, value }) => {
-  defaults[key] = value;
+  Object.assign(defaults, { [key]: value });
 });
 
 export {
