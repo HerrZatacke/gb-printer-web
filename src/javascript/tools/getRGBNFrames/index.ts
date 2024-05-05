@@ -1,8 +1,9 @@
-import { Image, RGBNHashes } from '../../../types/Image';
+import { RGBNHashes } from '../../../types/Image';
+import { State } from '../../app/store/State';
 
 const getRGBNFrames = (
-  { images }: { images: Image[] }, // ToDo: should be "state"
-  { r, g, b, n }: RGBNHashes,
+  { images }: State,
+  hashes: RGBNHashes,
   defaultFrame: string | null,
 ): RGBNHashes => {
 
@@ -15,10 +16,10 @@ const getRGBNFrames = (
     };
   }
 
-  const imageR = images.find((img) => img.hash === r);
-  const imageG = images.find((img) => img.hash === g);
-  const imageB = images.find((img) => img.hash === b);
-  const imageN = images.find((img) => img.hash === n);
+  const imageR = images.find((img) => img.hash === hashes?.r);
+  const imageG = images.find((img) => img.hash === hashes?.g);
+  const imageB = images.find((img) => img.hash === hashes?.b);
+  const imageN = images.find((img) => img.hash === hashes?.n);
 
   return {
     r: imageR?.frame || undefined,
