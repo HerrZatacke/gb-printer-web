@@ -1,8 +1,12 @@
 import uniqueBy from '../unique/by';
+import { State } from '../../app/store/State';
+import { Frame } from '../../../types/Frame';
+import { Image } from '../../../types/Image';
+import { Palette } from '../../../types/Palette';
 
-const mergeBy = (by) => {
-  const unique = uniqueBy(by);
-  return (current, update) => {
+const mergeBy = <T>(by: keyof T) => {
+  const unique = uniqueBy<T>(by);
+  return (current: T[], update: T[]) => {
     const mergedUpdate = update.map((item) => {
       const existingItem = current.find((storeItem) => storeItem[by] === item[by]);
       if (!existingItem) {
@@ -19,11 +23,11 @@ const mergeBy = (by) => {
   };
 };
 
-const mergeByHash = mergeBy('hash');
-const mergeById = mergeBy('id');
-const mergeByShortName = mergeBy('shortName');
+const mergeImages = mergeBy<Image>('hash');
+const mergeFrames = mergeBy<Frame>('id');
+const mergePalettes = mergeBy<Palette>('shortName');
 
-const mergeStates = (currentState, updatedState, mergeImagesFrames) => {
+const mergeStates = (currentState: State, updatedState: State, mergeImagesFrames: boolean) => {
 
   let frames = currentState.frames;
   let images = currentState.images;
@@ -31,15 +35,15 @@ const mergeStates = (currentState, updatedState, mergeImagesFrames) => {
 
   if (mergeImagesFrames) {
     if (updatedState.frames && updatedState.frames.length) {
-      frames = mergeById(frames, updatedState.frames);
+      frames = mergeFrames(frames, updatedState.frames);
     }
 
     if (updatedState.images && updatedState.images.length) {
-      images = mergeByHash(images, updatedState.images);
+      images = mergeImages(images, updatedState.images);
     }
 
     if (updatedState.palettes && updatedState.palettes.length) {
-      palettes = mergeByShortName(palettes, updatedState.palettes);
+      palettes = mergePalettes(palettes, updatedState.palettes);
     }
   } else {
     frames = updatedState.frames || currentState.frames;
