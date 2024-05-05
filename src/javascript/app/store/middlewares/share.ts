@@ -2,14 +2,22 @@ import { getPrepareFiles } from '../../../tools/download';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
+import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 
-const batch = (store) => (next) => (action) => {
+const batch: MiddlewareWithState = (store) => (next) => async (action) => {
 
   if (action.type === Actions.SHARE_IMAGE) {
     const state = store.getState();
 
     const image = state.images.find(({ hash }) => hash === action.payload);
+    if (!image) {
+      throw new Error('image not found');
+    }
+
     const imagePalette = getImagePalette(state, image);
+    if (!imagePalette) {
+      throw new Error('imagePalette not found');
+    }
 
     const shareScaleFactor = [...state.exportScaleFactors].pop() || 4;
     const shareFileType = [...state.exportFileTypes].pop() || 'png';
@@ -20,19 +28,19 @@ const batch = (store) => (next) => (action) => {
       exportFileTypes: [shareFileType],
     });
 
-    loadImageTiles(state)(image)
-      .then(prepareFiles(imagePalette, image))
-      .then((res) => {
-        const { blob, filename, title } = res[0];
+    const tiles = await loadImageTiles(state)(image);
 
-        if (window.navigator.share) {
-          window.navigator.share({
-            files: [new File([blob], filename, { type: 'image/png', lastModified: new Date() })],
-            title,
-          })
-            .catch(() => ('¯\\_(ツ)_/¯'));
-        }
-      });
+    const downloadInfo = await prepareFiles(imagePalette, image)(tiles || []);
+
+    const { blob, filename, title } = downloadInfo[0];
+
+    if (window.navigator.share) {
+      window.navigator.share({
+        files: [new File([blob], filename, { type: 'image/png', lastModified: Date.now() })],
+        title,
+      })
+        .catch(() => ('¯\\_(ツ)_/¯'));
+    }
   }
 
   next(action);
