@@ -1,4 +1,6 @@
-const getFrameHashesForExport = (what, { frames }, frameSetID = '') => {
+import { State } from '../../app/store/State';
+
+const getFrameHashesForExport = (what: 'frames' | 'framegroup', { frames }: State, frameSetID = ''): string[] => {
 
   switch (what) {
     case 'frames':
