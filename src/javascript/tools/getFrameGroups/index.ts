@@ -1,4 +1,11 @@
-const getGroupName = (id, name, frameGroupNames) => {
+import { Frame } from '../../../types/Frame';
+
+interface FrameGroup {
+  id: string,
+  name: string,
+}
+
+const getGroupName = (id: string, name: string, frameGroupNames: FrameGroup[]): string => {
   const namedGroup = frameGroupNames.find((group) => (group.id === id));
   if (namedGroup) {
     return namedGroup.name;
@@ -16,7 +23,7 @@ const getGroupName = (id, name, frameGroupNames) => {
   }
 };
 
-const prioId = (id) => {
+const prioId = (id: string): string => {
   switch (id) {
     case 'int':
       return '_1';
@@ -29,26 +36,29 @@ const prioId = (id) => {
   }
 };
 
-const getFrameGroups = (frames, frameGroupNames) => (
-  frames
-    .reduce((result, { id, name }) => {
-      let groupId;
-
+const getFrameGroups = (frames: Frame[], frameGroupNames: FrameGroup[]): FrameGroup[] => {
+  const usedGroups: FrameGroup[] = frames
+    .reduce((result: FrameGroup[], { id, name }): FrameGroup[] => {
       try {
-        groupId = id.match(/^[a-z]+/g)[0];
+        const groupId = id.match(/^[a-z]+/g)?.[0];
+        if (!groupId) {
+          return result;
+        }
+
+        if (!result.find((group) => group.id === groupId)) {
+          result.push({
+            id: groupId,
+            name: getGroupName(groupId, name, frameGroupNames),
+          });
+        }
+
+        return result;
       } catch (error) {
         return result;
       }
+    }, []);
 
-      if (!result.find((group) => group.id === groupId)) {
-        result.push({
-          id: groupId,
-          name: getGroupName(groupId, name, frameGroupNames),
-        });
-      }
-
-      return result;
-    }, [])
+  return usedGroups
     .sort(({ id: ida }, { id: idb }) => {
       const sorta = prioId(ida);
       const sortb = prioId(idb);
@@ -62,7 +72,7 @@ const getFrameGroups = (frames, frameGroupNames) => (
       }
 
       return 0;
-    })
-);
+    });
+};
 
 export default getFrameGroups;
