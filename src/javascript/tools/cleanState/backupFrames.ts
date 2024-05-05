@@ -1,9 +1,15 @@
 import { localforageFrames } from '../localforageInstance';
 
-const backupFrames = async (oldFrames) => {
+import { Frame } from '../../../types/Frame';
+
+interface BackupFrame extends Frame {
+  data: Uint8Array | null,
+}
+
+const backupFrames = async (oldFrames: Frame[]): Promise<void> => {
   if (!localStorage.getItem('gbp-backup-frames')) {
-    const backup = await Promise.all(
-      oldFrames.map(async (frame) => ({
+    const backup: BackupFrame[] = await Promise.all(
+      oldFrames.map(async (frame): Promise<BackupFrame> => ({
         ...frame,
         data: await localforageFrames.getItem(frame.id),
       })),
@@ -11,7 +17,7 @@ const backupFrames = async (oldFrames) => {
 
     localStorage.setItem('gbp-backup-frames', JSON.stringify(backup));
     // eslint-disable-next-line no-console
-    console.log('Frame backup created', JSON.parse(localStorage.getItem('gbp-backup-frames')));
+    console.log('Frame backup created', backup);
   }
 };
 
