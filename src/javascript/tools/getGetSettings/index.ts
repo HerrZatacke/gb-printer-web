@@ -12,7 +12,7 @@ import { Image } from '../../../types/Image';
 import { Frame } from '../../../types/Frame';
 import { Palette } from '../../../types/Palette';
 
-const getGetSettings = (store: MiddlewareAPI<Dispatch, State>) => (
+const getGetSettings = (store: MiddlewareAPI<Dispatch, State>) => async (
   what: ExportTypes,
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {
@@ -76,40 +76,39 @@ const getGetSettings = (store: MiddlewareAPI<Dispatch, State>) => (
 
   switch (what) {
     case ExportTypes.DEBUG:
-      return Promise.resolve(JSON.stringify({ state: localStorageState }, null, 2));
+      return JSON.stringify({ state: localStorageState }, null, 2);
     case ExportTypes.SETTINGS:
     case ExportTypes.REMOTE:
-      return Promise.resolve(JSON.stringify({ state: exportableState }, null, 2));
+      return JSON.stringify({ state: exportableState }, null, 2);
     case ExportTypes.IMAGES:
-    case ExportTypes.SELECTED_IMAGES:
-      return getImages(getImageHashesForExport(what, state))
-        .then((images) => (
-          JSON.stringify({
-            state: exportableState,
-            ...images,
-          }, null, 2)
-        ));
+    case ExportTypes.SELECTED_IMAGES: {
+      const images = await getImages(getImageHashesForExport(what, state));
+      return JSON.stringify({
+        state: exportableState,
+        ...images,
+      }, null, 2);
+    }
+
     case ExportTypes.FRAMES:
-    case ExportTypes.FRAMEGROUP:
-      return getFrames(getFrameHashesForExport(what, state, frameSetID))
-        .then((frames) => (
-          JSON.stringify({
-            state: exportableState,
-            ...frames,
-          }, null, 2)
-        ));
-    case ExportTypes.PALETTES:
-      return Promise.resolve(exportableState.palettes)
-        .then((palettes) => (
-          JSON.stringify({
-            state: {
-              palettes,
-            },
-          }, null, 2)
-        ));
+    case ExportTypes.FRAMEGROUP: {
+      const frames = await getFrames(getFrameHashesForExport(what, state, frameSetID));
+      return JSON.stringify({
+        state: exportableState,
+        ...frames,
+      }, null, 2);
+    }
+
+    case ExportTypes.PALETTES: {
+      const palettes = await Promise.resolve(exportableState.palettes);
+      return JSON.stringify({
+        state: {
+          palettes,
+        },
+      }, null, 2);
+    }
 
     default:
-      return Promise.resolve('{}');
+      return '{}';
   }
 };
 
