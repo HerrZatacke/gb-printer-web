@@ -1,4 +1,5 @@
 import { State } from './State';
+import { ExportableState } from '../../tools/getGetSettings/types';
 
 export enum ExportTypes {
   SETTINGS = 'settings',
@@ -8,13 +9,18 @@ export enum ExportTypes {
   PALETTES = 'palettes',
   FRAMES = 'frames',
   FRAMEGROUP = 'framegroup',
+  DEBUG = 'debug',
 }
 
-interface StorePropertyDefault {
+export interface StorePropertyDefault {
   key: keyof State,
   saveLocally: boolean,
   saveExport: ExportTypes[],
   value: unknown,
+}
+
+export interface StorePropertyExportable extends Omit<StorePropertyDefault, 'key'> {
+  key: keyof ExportableState,
 }
 
 const definitions: StorePropertyDefault[] = [

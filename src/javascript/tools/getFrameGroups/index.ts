@@ -1,6 +1,6 @@
 import { Frame } from '../../../types/Frame';
 
-interface FrameGroup {
+export interface FrameGroup {
   id: string,
   name: string,
 }
