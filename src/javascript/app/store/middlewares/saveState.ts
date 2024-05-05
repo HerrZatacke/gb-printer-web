@@ -1,6 +1,6 @@
 import { definitions } from '../defaults';
 import { State } from '../State';
-import { MiddlewareWithState } from '../../../../types/BasicMiddleware';
+import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 
 const saveState: MiddlewareWithState = (store) => (next) => (action) => {
   next(action);
