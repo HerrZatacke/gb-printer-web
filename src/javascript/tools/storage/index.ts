@@ -7,6 +7,8 @@ export interface HashedCompressed {
   compressed: Uint8Array,
 }
 
+export type RecoverFn = (hash: string) => void;
+
 const compressAndHash = async (lines: string[]): Promise<HashedCompressed> => {
   const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
   const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
@@ -41,9 +43,9 @@ const save = async (lines: string[]): Promise<string> => {
 
 const load = async (
   dataHash: string,
-  frameHash: string,
-  noDummy: boolean,
-  recover?: (hash: string) => void,
+  frameHash: string | null,
+  noDummy?: boolean,
+  recover?: RecoverFn,
 ): Promise<string[] | null> => {
   if (!dataHash) {
     return null;
