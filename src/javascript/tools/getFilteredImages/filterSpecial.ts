@@ -1,22 +1,30 @@
 import dayjs from 'dayjs';
 import { SpecialTags } from '../../consts/SpecialTags';
 import { dateFormat } from '../../app/defaults';
+import { RecentImport } from '../../app/store/reducers/recentImportsReducer';
+import { Image } from '../../../types/Image';
+import { isRGBNImage } from '../isRGBNImage';
 
-const filterSpecial = (activeTags, recentImports) => (image) => {
+const filterSpecial = (
+  activeTags: string[],
+  recentImports: RecentImport[],
+) => (image: Image): boolean => {
+  const activeSpecialTags: SpecialTags[] = activeTags
+    .reduce((acc: SpecialTags[], tag: string): SpecialTags[] => {
+      const included = [
+        SpecialTags.FILTER_MONOCHROME,
+        SpecialTags.FILTER_NEW,
+        SpecialTags.FILTER_RGB,
+        SpecialTags.FILTER_UNTAGGED,
+        SpecialTags.FILTER_RECENT,
+        SpecialTags.FILTER_FAVOURITE,
+        SpecialTags.FILTER_COMMENTS,
+        SpecialTags.FILTER_USERNAME,
+      ]
+        .includes(tag as SpecialTags);
 
-  const activeSpecialTags = activeTags.filter((tag) => (
-    [
-      SpecialTags.FILTER_MONOCHROME,
-      SpecialTags.FILTER_NEW,
-      SpecialTags.FILTER_RGB,
-      SpecialTags.FILTER_UNTAGGED,
-      SpecialTags.FILTER_RECENT,
-      SpecialTags.FILTER_FAVOURITE,
-      SpecialTags.FILTER_COMMENTS,
-      SpecialTags.FILTER_USERNAME,
-    ]
-      .includes(tag)
-  ));
+      return included ? [...acc, tag as SpecialTags] : acc;
+    }, []);
 
   if (activeSpecialTags.length) {
 
@@ -30,7 +38,7 @@ const filterSpecial = (activeTags, recentImports) => (image) => {
       const date = dayjs(image.created, dateFormat)
         .unix();
       const maxNew = dayjs()
-        .subtract('1', 'day')
+        .subtract(1, 'day')
         .unix();
 
       if (date <= maxNew) {
@@ -47,12 +55,12 @@ const filterSpecial = (activeTags, recentImports) => (image) => {
     }
 
     // 4) Keep rgb images
-    if (activeSpecialTags.includes(SpecialTags.FILTER_RGB) && !image.hashes) {
+    if (activeSpecialTags.includes(SpecialTags.FILTER_RGB) && !isRGBNImage(image)) {
       return false;
     }
 
     // 5) Keep monochrome images
-    if (activeSpecialTags.includes(SpecialTags.FILTER_MONOCHROME) && !!image.hashes) {
+    if (activeSpecialTags.includes(SpecialTags.FILTER_MONOCHROME) && isRGBNImage(image)) {
       return false;
     }
 

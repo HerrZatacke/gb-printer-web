@@ -1,8 +1,9 @@
 import screenfull from 'screenfull';
 import getFilteredImages from '../../../tools/getFilteredImages';
 import { Actions } from '../actions';
+import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 
-const confirmation = (store) => {
+const confirmation: MiddlewareWithState = (store) => {
 
   window.addEventListener('resize', () => {
     store.dispatch({
@@ -87,7 +88,7 @@ const confirmation = (store) => {
       case Actions.LIGHTBOX_FULLSCREEN:
         if (screenfull.isEnabled) {
           if (!screenfull.element) {
-            screenfull.request(document.querySelector('body'));
+            screenfull.request(document.body);
           } else {
             screenfull.exit();
           }

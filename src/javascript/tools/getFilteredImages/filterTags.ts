@@ -1,6 +1,7 @@
 import { SpecialTags } from '../../consts/SpecialTags';
+import { Image } from '../../../types/Image';
 
-const filterTags = (activeTags) => (image) => {
+const filterTags = (activeTags: (SpecialTags | string)[]) => (image: Image): boolean => {
 
   const normalTags = activeTags.filter((tag) => (
     ![
@@ -13,11 +14,11 @@ const filterTags = (activeTags) => (image) => {
       SpecialTags.FILTER_COMMENTS,
       SpecialTags.FILTER_USERNAME,
     ]
-      .includes(tag)
+      .includes(tag as SpecialTags)
   ));
 
   if (normalTags.length) {
-    return image.tags.find((tag) => normalTags.includes(tag));
+    return !!image.tags.find((tag) => normalTags.includes(tag));
   }
 
   // Not filtering for tags
