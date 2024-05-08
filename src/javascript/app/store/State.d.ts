@@ -15,7 +15,7 @@ import { RecentImport } from './reducers/recentImportsReducer';
 import { TrashCount } from './reducers/trashCountReducer';
 import { VideoParams } from '../../../types/VideoParams';
 import { WindowDimensions } from './reducers/windowDimensionsReducer';
-
+import { PrinterInfo } from '../../../types/Printer';
 
 // ToDo: infer from store somehow...?
 export interface State {
@@ -57,7 +57,7 @@ export interface State {
   plugins: Plugin[],
   preferredLocale: string,
   printerBusy: boolean,
-  printerData: object, // ToDo !!
+  printerData: PrinterInfo,
   printerFunctions: object[], // ToDo !!
   printerUrl: string,
   printerParams: string,

@@ -5,21 +5,21 @@ import {
   PrinterResetAction,
   PrinterTimedOutAction,
 } from '../../../../types/actions/PrinterActions';
-
+import { PrinterInfo } from '../../../../types/Printer';
 
 const printerDataReducer = (
-  value: object = {},
+  value: PrinterInfo | null = null,
   action:
     PrinterDataReceivedAction |
     PrinterResetAction |
     PrinterTimedOutAction,
-): object => {
+): PrinterInfo | null => {
   switch (action.type) {
     case Actions.PRINTER_DATA_RECEIVED:
       return action.payload;
     case Actions.PRINTER_RESET:
     case Actions.HEARTBEAT_TIMED_OUT:
-      return {};
+      return null;
     default:
       return value;
   }

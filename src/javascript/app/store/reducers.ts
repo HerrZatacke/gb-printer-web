@@ -68,6 +68,7 @@ import { ProgressLog } from '../../../types/actions/LogActions';
 import { Plugin } from '../../../types/Plugin';
 import { VideoParams } from '../../../types/VideoParams';
 import { QueueImage } from '../../../types/QueueImage';
+import { PrinterInfo } from '../../../types/Printer';
 
 export interface Reducers extends ReducersMapObject {
   activePalette: Reducer<string | undefined>,
@@ -108,7 +109,7 @@ export interface Reducers extends ReducersMapObject {
   plugins: Reducer<Plugin[]>,
   preferredLocale: Reducer<string>,
   printerBusy: Reducer<boolean>,
-  printerData: Reducer<object>, // ToDo !!
+  printerData: Reducer<PrinterInfo>,
   printerFunctions: Reducer<object[]>, // ToDo !!
   printerUrl: Reducer<string>,
   printerParams: Reducer<string>,

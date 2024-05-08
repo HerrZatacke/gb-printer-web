@@ -1,4 +1,5 @@
 import { Actions } from '../../javascript/app/store/actions';
+import { PrinterInfo } from '../Printer';
 
 export interface PrinterRemoteCallAction {
   type: Actions.REMOTE_CALL_FUNCTION,
@@ -15,7 +16,7 @@ export interface PrinterFunctionsReceivedAction {
 
 export interface PrinterDataReceivedAction {
   type: Actions.PRINTER_DATA_RECEIVED,
-  payload: object,
+  payload: PrinterInfo,
 }
 
 export interface PrinterResetAction {

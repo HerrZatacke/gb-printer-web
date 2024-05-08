@@ -3,6 +3,7 @@ import checkPrinter from './commands/checkPrinter';
 import fetchImages from './commands/fetchImages';
 import tear from './commands/tear';
 import clearPrinter from './commands/clearPrinter';
+// import { RemotePrinterEvent } from '../app/store/middlewares/importMessage';
 
 const initCommands = ({ targetWindow }, env, remoteParams) => {
   const commands = [];
@@ -72,7 +73,7 @@ const initCommands = ({ targetWindow }, env, remoteParams) => {
   }
 
 
-  window.addEventListener('message', (event) => {
+  window.addEventListener('message', (event/* : MessageEvent<RemotePrinterEvent> */) => {
     if (event.source !== targetWindow) {
       return;
     }
