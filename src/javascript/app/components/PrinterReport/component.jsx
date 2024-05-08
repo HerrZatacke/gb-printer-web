@@ -42,14 +42,14 @@ const PrinterReport = ({
               printerBusy ||
               (
                 ['fetchImages', 'clearPrinter', 'tear'].includes(name) &&
-                !printerData.dumps?.length
+                !printerData?.dumps?.length
               )
             }
             onClick={() => callRemoteFunction(name)}
           >
             {
               name === 'fetchImages' ?
-                getFetchImagesLabel(printerFunctions, printerData.dumps?.length) :
+                getFetchImagesLabel(printerFunctions, printerData?.dumps?.length) :
                 functionLabels[name]
             }
           </button>
@@ -68,21 +68,21 @@ const PrinterReport = ({
             <tbody>
               <tr>
                 <td className="printer-report__label">Total</td>
-                <td className="printer-report__value">{filesize(printerData.fs.total)}</td>
+                <td className="printer-report__value">{filesize(printerData?.fs.total)}</td>
               </tr>
               <tr>
                 <td className="printer-report__label">Used</td>
-                <td className="printer-report__value">{filesize(printerData.fs.used)}</td>
+                <td className="printer-report__value">{filesize(printerData?.fs.used)}</td>
               </tr>
               <tr>
                 <td className="printer-report__label">Free</td>
                 <td className="printer-report__value">
-                  {`${Math.max(0, (printerData.fs.maximages - printerData.dumps.length))} images`}
+                  {`${Math.max(0, ((printerData?.fs.maximages || 0) - (printerData?.dumps.length || 0)))} images`}
                 </td>
               </tr>
               <tr>
                 <td className="printer-report__label">Images</td>
-                <td className="printer-report__value">{printerData.dumps.length}</td>
+                <td className="printer-report__value">{printerData?.dumps.length}</td>
               </tr>
             </tbody>
           </table>
@@ -100,11 +100,15 @@ const PrinterReport = ({
 };
 
 PrinterReport.propTypes = {
-  printerData: PropTypes.object.isRequired,
+  printerData: PropTypes.object,
   printerBusy: PropTypes.bool.isRequired,
   printerFunctions: PropTypes.array.isRequired,
   printerConnected: PropTypes.bool.isRequired,
   callRemoteFunction: PropTypes.func.isRequired,
+};
+
+PrinterReport.defaultProps = {
+  printerData: null,
 };
 
 export default PrinterReport;
