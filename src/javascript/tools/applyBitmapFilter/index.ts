@@ -1,9 +1,15 @@
-import generatePattern from './generatePattern.mjs';
-import { orderPatternDither, orderPatternNoDither } from './orderPatterns.mjs';
-import generateBaseValues from './generateBaseValues.mjs';
+import generatePattern from './generatePattern';
+import { orderPatternDither, orderPatternNoDither } from './orderPatterns';
+import generateBaseValues from './generateBaseValues';
+import { ApplyBitmapFilterOptions, DitherFilterOptions, FilterColor } from './Types';
 
 let pixelCount = 0;
-export const ditherFilter = (imageData, contrastBaseValues, dither, colors) => {
+export const ditherFilter = ({
+  imageData,
+  contrastBaseValues,
+  dither,
+  colors,
+}: DitherFilterOptions): ImageData => {
   const ditheredImageData = new ImageData(imageData.width, imageData.height);
 
   const contrastMatrix = generatePattern({
@@ -53,15 +59,26 @@ export const applyBitmapFilter = ({
   palette,
   dither,
   contrastBaseValues,
-}) => {
-  const colors = palette.map((hexVal) => ({
+}: ApplyBitmapFilterOptions): void => {
+  const colors = palette.map((hexVal: string): FilterColor => ({
     r: parseInt(hexVal.slice(1, 3), 16),
     g: parseInt(hexVal.slice(3, 5), 16),
     b: parseInt(hexVal.slice(5, 7), 16),
   }));
 
   const context = targetCanvas.getContext('2d');
-  context.putImageData(ditherFilter(imageData, contrastBaseValues, dither, colors), 0, 0);
   const originalContext = originalCanvas.getContext('2d');
+
+  if (!context || !originalContext) {
+    console.error('canvas context is missing');
+    return;
+  }
+
+  context.putImageData(ditherFilter({
+    imageData,
+    contrastBaseValues,
+    dither,
+    colors,
+  }), 0, 0);
   originalContext.putImageData(imageData, 0, 0);
 };

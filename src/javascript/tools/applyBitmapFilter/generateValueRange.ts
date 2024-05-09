@@ -1,4 +1,4 @@
-const generateValueRange = (start, end) => {
+const generateValueRange = (start: number, end: number): number[] => {
   const step = (end - start) / 16;
   return (new Array(16))
     .fill(null)

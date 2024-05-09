@@ -1,7 +1,8 @@
-import readFileAs from '../readFileAs';
+import readFileAs, { ReadAs } from '../readFileAs';
+import { QueueImage } from '../../../types/QueueImage';
 
 /* eslint-disable no-param-reassign */
-const prepareContext = (context) => {
+const prepareContext = (context: CanvasRenderingContext2D) => {
   context.fillStyle = '#000';
   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
   context.filter = 'grayscale(1)';
@@ -9,7 +10,7 @@ const prepareContext = (context) => {
 };
 /* eslint-enable no-param-reassign */
 
-const getImageData = (file) => (
+const getImageData = (file: File): Promise<QueueImage> => (
   new Promise((resolve, reject) => {
     const img = document.createElement('img');
 
@@ -17,6 +18,11 @@ const getImageData = (file) => (
     srcCanvas.width = 160;
 
     const context = srcCanvas.getContext('2d');
+
+    if (!context) {
+      reject(new Error('No canvas context'));
+      return;
+    }
 
     img.onerror = reject;
 
@@ -48,10 +54,10 @@ const getImageData = (file) => (
         height: srcCanvas.height,
         fileName: file.name,
         lastModified: file.lastModified || null,
-      });
+      } as QueueImage);
     };
 
-    readFileAs(file, 'dataURL')
+    readFileAs(file, ReadAs.DATA_URL)
       .then((data) => {
         img.src = data;
       });

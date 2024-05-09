@@ -1,9 +1,21 @@
+import { AnyAction, Dispatch } from 'redux';
 import { ditherFilter } from '../../../../tools/applyBitmapFilter';
 import { Actions } from '../../../store/actions';
 import { compressAndHash } from '../../../../tools/storage';
 import { compressAndHashFrame } from '../../../../tools/applyFrame/frameData';
+import { QueueImage } from '../../../../../types/QueueImage';
+import { ImportQueueAddAction } from '../../../../../types/actions/QueueActions';
 
-const sliceTile = (pixelData) => (tileIndex) => {
+export interface DispatchBitmapsToImportOptions {
+  bitmapQueue: QueueImage[],
+  dither: boolean,
+  contrastBaseValues: [number, number, number, number],
+}
+
+export type DispatchBitmapsToImportFn = (options: DispatchBitmapsToImportOptions) => void;
+
+
+const sliceTile = (pixelData: number[]) => (tileIndex: number): number[] => {
   const tileX = tileIndex % 20;
   const tileY = Math.floor(tileIndex / 20);
 
@@ -25,8 +37,8 @@ const greyTones = [
   0b0000000100000001,
 ];
 
-const encodeTile = (tileData) => {
-  const line = [];
+const encodeTile = (tileData: number[]): string => {
+  const line: string[] = [];
   for (let row = 0; row < 8; row += 1) {
     let rowData = 0;
     for (let col = 0; col < 8; col += 1) {
@@ -43,18 +55,23 @@ const encodeTile = (tileData) => {
     .toUpperCase();
 };
 
-const moveBitmapsToImport = (dispatch) => ({
+const moveBitmapsToImport = (dispatch: Dispatch<AnyAction>): DispatchBitmapsToImportFn => ({
   bitmapQueue,
   dither,
   contrastBaseValues,
-}) => {
-  bitmapQueue.forEach(async ({ imageData, height, fileName, lastModified }) => {
-    const { data } = ditherFilter(imageData, contrastBaseValues, dither, [
-      { r: 0, g: 0, b: 0 },
-      { r: 1, g: 0, b: 0 },
-      { r: 2, g: 0, b: 0 },
-      { r: 3, g: 0, b: 0 },
-    ]);
+}): void => {
+  bitmapQueue.forEach(async ({ imageData, height, fileName, lastModified }: QueueImage): Promise<void> => {
+    const { data } = ditherFilter({
+      imageData,
+      contrastBaseValues,
+      dither,
+      colors: [
+        { r: 0, g: 0, b: 0 },
+        { r: 1, g: 0, b: 0 },
+        { r: 2, g: 0, b: 0 },
+        { r: 3, g: 0, b: 0 },
+      ],
+    });
 
     // Use red value only to reduce aray complexity
     const pixelData = Array.from(data).filter((_, index) => !(index % 4));
@@ -63,7 +80,7 @@ const moveBitmapsToImport = (dispatch) => ({
 
     const getTileSlice = sliceTile(pixelData);
 
-    const tiles = (new Array(tileCount))
+    const tiles: string[] = (new Array(tileCount))
       .fill(null)
       .map((_, tileIndex) => getTileSlice(tileIndex))
       .map(encodeTile);
@@ -78,10 +95,11 @@ const moveBitmapsToImport = (dispatch) => ({
         imageHash,
         frameHash,
         tiles,
+        test: 2,
         lastModified,
         tempId: Math.random().toString(16).split('.').pop(),
       },
-    });
+    } as ImportQueueAddAction);
   });
 };
 
