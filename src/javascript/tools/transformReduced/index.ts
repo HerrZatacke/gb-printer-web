@@ -7,16 +7,21 @@ import {
   parseReducedPackets,
   inflateTransferPackages,
   completeFrame,
+  // ToDo: Types for 'gbp-decode'
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
 } from 'gbp-decode';
-import readFileAs from '../readFileAs';
+import readFileAs, { ReadAs } from '../readFileAs';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
+import { TypedStore } from '../../app/store/State';
 
-const transformReduced = ({ dispatch }) => async (file) => {
-  const data = await readFileAs(file, 'uint8array');
+const transformReduced = ({ dispatch }: TypedStore) => async (file: File): Promise<boolean> => {
+  const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
-  const result = await parseReducedPackets(data)
+  // ToDo: Types for 'gbp-decode'
+  const result: string[][] = await parseReducedPackets(data)
     .then(inflateTransferPackages)
     .then(getImageDataStream)
     .then(decompressDataStream)
@@ -25,7 +30,7 @@ const transformReduced = ({ dispatch }) => async (file) => {
     .then(transformToClassic)
     .then(completeFrame);
 
-  await Promise.all(result.map(async (tiles, index) => {
+  await Promise.all(result.map(async (tiles: string[], index: number) => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
     const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 

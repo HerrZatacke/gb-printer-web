@@ -1,23 +1,25 @@
-import readFileAs from '../readFileAs';
+import readFileAs, { ReadAs } from '../readFileAs';
 import transformCapture from '../transformCapture';
 import transformClassic from '../transformClassic';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
+import { TypedStore } from '../../app/store/State';
+import { ImportQueueAddAction } from '../../../types/actions/QueueActions';
 
-const getTransformPlainText = ({ dispatch }) => async (file) => {
+const getTransformPlainText = ({ dispatch }: TypedStore) => async (file: File) => {
 
-  const data = await readFileAs(file, 'text');
-  let result;
+  const data: string = await readFileAs(file, ReadAs.TEXT);
+  let result: string[][];
 
   // file must contain something that resembles a gb printer command
   if (data.indexOf('{"command"') !== -1) {
     result = await transformClassic(data, file.name);
   } else {
-    result = await transformCapture(data, file.name);
+    result = await transformCapture(data);
   }
 
-  await Promise.all(result.map(async (tiles, index) => {
+  await Promise.all(result.map(async (tiles: string[], index: number): Promise<boolean> => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
     const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
@@ -33,7 +35,7 @@ const getTransformPlainText = ({ dispatch }) => async (file) => {
         lastModified: file.lastModified ? (file.lastModified + index) : null,
         tempId: Math.random().toString(16).split('.').pop(),
       },
-    });
+    } as ImportQueueAddAction);
 
     return true;
   }));
