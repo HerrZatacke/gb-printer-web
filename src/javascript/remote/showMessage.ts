@@ -1,7 +1,10 @@
-const showMessage = ({ isIframe, isPopup, isRemote }) => {
-  const messages = [...document.querySelectorAll('.remote-info')];
+import { RemoteEnv } from '../../types/Printer';
 
-  [...document.querySelectorAll('.remote-info--ip')].forEach((node) => {
+const showMessage = ({ isIframe, isPopup, isRemote }: RemoteEnv): void => {
+  const messages: NodeListOf<HTMLElement> = document.querySelectorAll('p.remote-info');
+  const hostMessages: NodeListOf<HTMLElement> = document.querySelectorAll('.remote-info--ip');
+
+  hostMessages.forEach((node) => {
     // eslint-disable-next-line no-param-reassign
     node.innerText = window.location.host;
   });

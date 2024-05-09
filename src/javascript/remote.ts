@@ -9,8 +9,7 @@ import getParams from './remote/getParams';
 
 const remoteEnv = getRemoteEnv();
 
-document.addEventListener('DOMContentLoaded', () => {
-
+document.addEventListener('DOMContentLoaded', async () => {
   showMessage(remoteEnv);
   setClasses(remoteEnv);
 
@@ -18,11 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  loadEnv()
-    .then(({ env }) => {
-
-      const commands = initCommands(remoteEnv, env, getParams());
-      startHeartbeat(remoteEnv, commands.map(({ name }) => name));
-    });
-
+  const { env } = await loadEnv();
+  const commands = initCommands(remoteEnv, env, getParams());
+  startHeartbeat(remoteEnv, commands.map(({ name }) => name));
 });

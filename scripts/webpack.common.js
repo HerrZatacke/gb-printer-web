@@ -28,7 +28,7 @@ module.exports = () => ({
       path.join(process.cwd(), 'src', 'javascript', 'index.js'),
     ],
     remote: [
-      path.join(process.cwd(), 'src', 'javascript', 'remote.js'),
+      path.join(process.cwd(), 'src', 'javascript', 'remote.ts'),
     ],
   },
   module: {

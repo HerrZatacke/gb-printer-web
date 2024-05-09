@@ -1,5 +1,11 @@
-const setClasses = ({ isIframe, isPopup }) => {
-  const classList = document.querySelector('html').classList;
+import { RemoteEnv } from '../../types/Printer';
+
+const setClasses = ({ isIframe, isPopup }: RemoteEnv) => {
+  const classList = document.querySelector('html')?.classList;
+  if (!classList) {
+    return;
+  }
+
   const theme = localStorage.getItem('gbp-web-theme');
 
   if (isIframe) {
