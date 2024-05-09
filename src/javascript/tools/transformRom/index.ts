@@ -1,29 +1,44 @@
 import chunk from 'chunk';
-import readFileAs from '../readFileAs';
+import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from '../transformSav/importSav';
+import { TypedStore } from '../../app/store/State';
+import { GenerateFilenameFn } from '../transformSav/types';
 
-const pad2 = (number) => (
+interface RomBank {
+  bankData: Uint8Array,
+  bankIndex: number,
+  hash: string,
+}
+
+const pad2 = (number: number) => (
   number.toString(10).padStart(2, '0')
 );
 
-const getTransformRom = ({ getState, dispatch }) => async (file) => {
+const getTransformRom = ({ getState, dispatch }: TypedStore) => async (file: File): Promise<boolean[]> => {
   const { default: objectHash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
-  const data = await readFileAs(file, 'uint8array');
+  const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
   const { importLastSeen, importDeleted, forceMagicCheck } = getState();
 
-  let banks = chunk(data, 0x20000)
-    .map((bankData, bankIndex) => ({
-      bankData,
-      bankIndex,
-      hash: objectHash(bankData),
-    }));
+  const banks = (chunk(data, 0x20000) as unknown as Uint8Array[])
+    .reduce((acc: RomBank[], bankData, bankIndex: number): RomBank[] => {
+      const bankHash = objectHash(bankData);
 
-  banks = banks.filter((bank, index) => (
-    banks.findIndex(({ hash }) => (hash === bank.hash)) === index
-  ));
+      if (acc.findIndex(({ hash }) => (hash === bankHash)) !== -1) {
+        return acc;
+      }
 
-  const result = await Promise.all(banks.map(async ({
+      return [
+        ...acc,
+        {
+          bankData,
+          bankIndex,
+          hash: bankHash,
+        },
+      ];
+    }, []);
+
+  const result: boolean[] = await Promise.all(banks.map(async ({
     bankData,
     bankIndex,
   }) => {
@@ -31,7 +46,7 @@ const getTransformRom = ({ getState, dispatch }) => async (file) => {
       return false;
     }
 
-    const fileName = ({ albumIndex }) => {
+    const fileName: GenerateFilenameFn = ({ albumIndex }) => {
       if (albumIndex === 64) {
         return `${file.name} - bank ${pad2(bankIndex)} [last seen]`;
       }
