@@ -1,9 +1,11 @@
-import readFileAs from '../readFileAs';
+import readFileAs, { ReadAs } from '../readFileAs';
 import { Actions } from '../../app/store/actions';
+import { TypedStore } from '../../app/store/State';
+import { JSONExportState } from '../../app/store/middlewares/settings';
 
-const getImportJSON = ({ dispatch }) => async (file) => {
-  const data = await readFileAs(file, 'text');
-  let settingsDump = {};
+const getImportJSON = ({ dispatch }: TypedStore) => async (file: File) => {
+  const data = await readFileAs(file, ReadAs.TEXT);
+  let settingsDump: Partial<JSONExportState> = {};
 
   try {
     settingsDump = JSON.parse(data);

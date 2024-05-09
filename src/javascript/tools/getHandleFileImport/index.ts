@@ -5,9 +5,16 @@ import getTransformReduced from '../transformReduced';
 import getTransformBitmaps from '../transformBitmaps';
 import getTransformPlainText from '../transformPlainText';
 import getImportJSON from '../importJSON';
-import prepareFile from './prepareFile';
+import prepareFile, { PreparedFile } from './prepareFile';
+import { TypedStore } from '../../app/store/State';
 
-const getHandleFileImport = (store) => {
+export interface HandeFileImportOptions {
+  fromPrinter: boolean
+}
+
+export type HandeFileImportFn = (files: File[], options: HandeFileImportOptions) => Promise<void>;
+
+const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
   const transformSav = getTransformSav(store);
   const transformRom = getTransformRom(store);
   const transformBin = getTransformBin(store);
@@ -16,10 +23,10 @@ const getHandleFileImport = (store) => {
   const transformReduced = getTransformReduced(store);
   const importJSON = getImportJSON(store);
 
-  return async (files, { fromPrinter } = { fromPrinter: false }) => {
+  return async (files, { fromPrinter } = { fromPrinter: false }): Promise<void> => {
 
     await Promise.all(files.map((fileData) => {
-      const { file, contentType } = prepareFile(fileData);
+      const { file, contentType }: PreparedFile = prepareFile(fileData);
 
       if (contentType && contentType.startsWith('image/')) {
         return transformBitmaps(file, fromPrinter);

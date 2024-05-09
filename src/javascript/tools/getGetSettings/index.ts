@@ -1,4 +1,3 @@
-import { Dispatch, MiddlewareAPI } from 'redux';
 import { definitions, ExportTypes, StorePropertyExportable } from '../../app/store/defaults';
 import getImages from './getImages';
 import getFrames from './getFrames';
@@ -6,14 +5,14 @@ import getImageHashesForExport from './getImageHashesForExport';
 import getFrameHashesForExport from './getFrameHashesForExport';
 import { getEnv } from '../getEnv';
 import getFrameGroups from '../getFrameGroups';
-import { State } from '../../app/store/State';
+import { TypedStore } from '../../app/store/State';
 import { ExportableState, GetSettingsOptions, NoExport } from './types';
 import { Image } from '../../../types/Image';
 import { Frame } from '../../../types/Frame';
 import { Palette } from '../../../types/Palette';
 import { FrameGroup } from '../../../types/FrameGroup';
 
-const getGetSettings = (store: MiddlewareAPI<Dispatch, State>) => async (
+const getGetSettings = (store: TypedStore) => async (
   what: ExportTypes,
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {

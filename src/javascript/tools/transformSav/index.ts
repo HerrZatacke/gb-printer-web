@@ -1,13 +1,12 @@
-import { Dispatch, MiddlewareAPI } from 'redux';
 import getFrameGroups from '../getFrameGroups';
 import { Actions } from '../../app/store/actions';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
-import { State } from '../../app/store/State';
+import { TypedStore } from '../../app/store/State';
 import { DialogOption } from '../../../types/actions/ConfirmActions';
 
 const getTransformSav = (
-  { getState, dispatch }: MiddlewareAPI<Dispatch, State>,
+  { getState, dispatch }: TypedStore,
 ) => async (file: File, skipDialogs: boolean): Promise<boolean> => {
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 

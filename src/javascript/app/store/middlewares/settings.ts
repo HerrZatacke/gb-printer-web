@@ -10,7 +10,7 @@ import { ExportTypes } from '../defaults';
 import { State } from '../State';
 import { ExportableState } from '../../../tools/getGetSettings/types';
 
-interface JSONExportState {
+export interface JSONExportState {
   state: ExportableState,
 }
 

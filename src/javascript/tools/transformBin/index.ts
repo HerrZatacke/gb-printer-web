@@ -1,10 +1,9 @@
-import { Dispatch, MiddlewareAPI } from 'redux';
 import { Actions } from '../../app/store/actions';
 import readFileAs, { ReadAs } from '../readFileAs';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { ImportQueueAddAction } from '../../../types/actions/QueueActions';
-import { State } from '../../app/store/State';
+import { TypedStore } from '../../app/store/State';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer: Uint8Array) => (
@@ -18,7 +17,7 @@ const isBinType = (buffer: Uint8Array) => (
   buffer[7] === 49 //    1
 );
 
-const getTransformBin = ({ dispatch }: MiddlewareAPI<Dispatch, State>) => async (file: File): Promise<boolean> => {
+const getTransformBin = ({ dispatch }: TypedStore) => async (file: File): Promise<boolean> => {
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
   //
   if (!isBinType(data)) {
