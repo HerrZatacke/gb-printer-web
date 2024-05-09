@@ -12,7 +12,7 @@ export interface HandeFileImportOptions {
   fromPrinter: boolean
 }
 
-export type HandeFileImportFn = (files: File[], options: HandeFileImportOptions) => Promise<void>;
+export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
 
 const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
   const transformSav = getTransformSav(store);

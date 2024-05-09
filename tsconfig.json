@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["es2019", "dom"],
+    "lib": ["es6", "dom", "dom.iterable"],
     "module": "commonjs",
     "jsx": "react",
     "outDir": "./dist",

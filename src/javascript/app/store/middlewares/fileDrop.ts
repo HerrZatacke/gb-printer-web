@@ -1,10 +1,15 @@
 import getHandleFileImport from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
+import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 
-const fileDrop = (store) => {
+const fileDrop: MiddlewareWithState = (store) => {
   const root = document.querySelector('#app');
+  if (!root) {
+    throw new Error('dafuq?');
+  }
+
   const handleFileImport = getHandleFileImport(store);
-  let dragoverTimeout;
+  let dragoverTimeout: number;
   let dragging = false;
 
   // detect start and end of dragover as there is no native dragend ecent for files
@@ -29,25 +34,26 @@ const fileDrop = (store) => {
     }, 250);
   });
 
-  root.addEventListener('drop', async (ev) => {
+  root.addEventListener('drop', async (ev: Event) => {
     ev.preventDefault();
-
     let files;
+    const items = ((ev as DragEvent).dataTransfer as DataTransfer).items as DataTransferItemList;
 
-    if (ev.dataTransfer.items) {
-      files = [...ev.dataTransfer.items]
+    if (items) {
+      files = [...items]
         .filter(({ kind }) => kind === 'file')
         .map((item) => item.getAsFile());
     } else {
-      files = [...ev.dataTransfer.files];
+      const fileList = ((ev as DragEvent).dataTransfer as DataTransfer).files as FileList;
+      files = [...fileList];
     }
 
     try {
-      await handleFileImport(files);
+      await handleFileImport(files as File[]);
     } catch (error) {
       store.dispatch({
         type: Actions.ERROR,
-        payload: error.message,
+        payload: (error as Error).message,
       });
     }
   });
