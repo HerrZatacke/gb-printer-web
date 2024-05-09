@@ -1,4 +1,5 @@
 /* eslint-disable no-bitwise */
+import { CustomMetaData, RomByteOffsets, RomTypes } from './types';
 import {
   // Addresses
   byteOffsetsPXLR,
@@ -30,7 +31,7 @@ import {
   valuesDither,
 } from './valueDefs';
 
-const getExposureTime = (exposureHigh, exposureLow) => {
+const getExposureTime = (exposureHigh: number, exposureLow: number): string => {
   const exposureTimeMultiplierHigh = 0.016;
   const exposureTimeMultiplierLow = 4.096;
 
@@ -42,7 +43,7 @@ const getExposureTime = (exposureHigh, exposureLow) => {
   return timeMs < 10 ? `${timeMs.toFixed(1)}ms` : `${Math.floor(timeMs)}ms`;
 };
 
-const getCaptureMode = (captureMode) => {
+const getCaptureMode = (captureMode: number): string => {
   switch (captureMode) {
     case valuesCapture.positive: return 'positive';
     case valuesCapture.negative: return 'negative';
@@ -50,7 +51,7 @@ const getCaptureMode = (captureMode) => {
   }
 };
 
-const getEdgeExclusive = (edgeExclusive) => {
+const getEdgeExclusive = (edgeExclusive: number): string => {
   switch (edgeExclusive) {
     case valuesEdgeExclusive.on: return 'on';
     case valuesEdgeExclusive.off: return 'off';
@@ -58,7 +59,7 @@ const getEdgeExclusive = (edgeExclusive) => {
   }
 };
 
-const getEdgeOpMode = (edgeOpMode) => {
+const getEdgeOpMode = (edgeOpMode: number): string => {
   switch (edgeOpMode) {
     case valuesEdgeOpMode.none: return 'none';
     case valuesEdgeOpMode.horizontal: return 'horizontal';
@@ -68,7 +69,7 @@ const getEdgeOpMode = (edgeOpMode) => {
   }
 };
 
-const getGain = (gain) => {
+const getGain = (gain: number): string => {
   switch (gain) {
     case valuesGain['140']: return '14.0';
     case valuesGain['155']: return '15.5';
@@ -106,7 +107,7 @@ const getGain = (gain) => {
   }
 };
 
-const getEdgeMode = (edgeMode) => {
+const getEdgeMode = (edgeMode: number): string => {
   switch (edgeMode) {
     case valuesEdgeRatio['050']: return '50%';
     case valuesEdgeRatio['075']: return '75%';
@@ -120,7 +121,7 @@ const getEdgeMode = (edgeMode) => {
   }
 };
 
-const getInvertOut = (invertOut) => {
+const getInvertOut = (invertOut: number): string => {
   switch (invertOut) {
     case valuesInvertOutput.on: return 'on';
     case valuesInvertOutput.off: return 'off';
@@ -128,7 +129,7 @@ const getInvertOut = (invertOut) => {
   }
 };
 
-const getVoltageRef = (vRef) => {
+const getVoltageRef = (vRef: number): string => {
   switch (vRef) {
     case valuesVoltageRef['00v']: return '0.0V';
     case valuesVoltageRef['05v']: return '0.5V';
@@ -142,7 +143,7 @@ const getVoltageRef = (vRef) => {
   }
 };
 
-const getZeroPoint = (zeroPoint) => {
+const getZeroPoint = (zeroPoint: number): string => {
   switch (zeroPoint) {
     case valuesZeroPoint.disabled: return 'none';
     case valuesZeroPoint.positive: return 'positive';
@@ -151,7 +152,7 @@ const getZeroPoint = (zeroPoint) => {
   }
 };
 
-const getVoltageOut = (vOut) => {
+const getVoltageOut = (vOut: number): string => {
   switch (vOut) {
     case valuesVoltageOut.neg992: return '-0.992mV';
     case valuesVoltageOut.neg960: return '-0.960mV';
@@ -221,7 +222,7 @@ const getVoltageOut = (vOut) => {
   }
 };
 
-const getDitherSet = (ditherSet) => {
+const getDitherSet = (ditherSet: number): string => {
   let set;
   let onoff;
 
@@ -240,12 +241,12 @@ const getDitherSet = (ditherSet) => {
   return `${set}/${onoff}`;
 };
 
-export const getRomType = (thumb) => {
+export const getRomType = (thumb: Uint8Array): RomTypes => {
   // The unused lines below the thumbnail-image are:
   // * all white in the stock rom (0x00)
   // * all black in PXLR (0xff)
   // * containing the metadata in Photo
-  const unusedLines = [
+  const unusedLines: number[] = [
     0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF,
     0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF,
     0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
@@ -253,37 +254,37 @@ export const getRomType = (thumb) => {
   ];
 
   // const photoData = unusedLines
-  const all0x00 = unusedLines
+  const all0x00: number[] = unusedLines
     .map((addr) => thumb[addr])
     .filter((value) => value === 0x00);
 
   if (all0x00.length === unusedLines.length) {
-    return 'stock';
+    return RomTypes.STOCK;
   }
 
-  const all0xff = unusedLines
+  const all0xff: number[] = unusedLines
     .map((addr) => thumb[addr])
     .filter((value) => value === 0xFF);
 
   if (all0xff.length === unusedLines.length) {
-    return 'pxlr';
+    return RomTypes.PXLR;
   }
 
-  return 'photo';
+  return RomTypes.PHOTO;
 };
 
-export const parseCustomMetadata = (thumbnail, romType) => {
-  let offsets;
+export const parseCustomMetadata = (thumbnail: Uint8Array, romType: RomTypes): CustomMetaData | null => {
+  let offsets: RomByteOffsets;
 
   switch (romType) {
-    case 'photo':
+    case RomTypes.PHOTO:
       offsets = byteOffsetsPhoto;
       break;
-    case 'pxlr':
+    case RomTypes.PXLR:
       offsets = byteOffsetsPXLR;
       break;
     default:
-      return {};
+      return null;
   }
 
   const exposureHigh = thumbnail[offsets.thumbnailByteExposureHigh];
@@ -300,7 +301,7 @@ export const parseCustomMetadata = (thumbnail, romType) => {
   const ditherset = thumbnail[offsets.thumbnailByteDitherset];
   const contrast = thumbnail[offsets.thumbnailByteContrast];
 
-  if (romType === 'photo') {
+  if (romType === RomTypes.PHOTO) {
     return {
       romType,
       exposure: getExposureTime(exposureHigh, exposureLow),

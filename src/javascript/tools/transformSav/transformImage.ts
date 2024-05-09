@@ -1,8 +1,8 @@
 const black = 'FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF';
 const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
 
-const transformImage = (data, baseAddress) => {
-  const transformed = [];
+const transformImage = (data: Uint8Array, baseAddress: number): string[] | null => {
+  const transformed: string[] = [];
   let currentLine = '';
   let hasData = false;
 
@@ -21,7 +21,7 @@ const transformImage = (data, baseAddress) => {
     if (i % 16 === 15) {
       transformed.push(currentLine.trim());
 
-      // track if an image has actual data inside to prevent iimporting the "white" image all the time
+      // track if an image has actual data inside to prevent importing the "white" image all the time
       if (!hasData && currentLine.trim() !== white) {
         hasData = true;
       }

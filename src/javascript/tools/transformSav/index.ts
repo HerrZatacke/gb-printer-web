@@ -1,10 +1,15 @@
+import { Dispatch, MiddlewareAPI } from 'redux';
 import getFrameGroups from '../getFrameGroups';
 import { Actions } from '../../app/store/actions';
-import readFileAs from '../readFileAs';
+import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
+import { State } from '../../app/store/State';
+import { DialogOption } from '../../../types/actions/ConfirmActions';
 
-const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) => {
-  const data = await readFileAs(file, 'uint8array');
+const getTransformSav = (
+  { getState, dispatch }: MiddlewareAPI<Dispatch, State>,
+) => async (file: File, skipDialogs: boolean): Promise<boolean> => {
+  const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
   const {
     savFrameTypes: selectedFrameset,
@@ -15,14 +20,14 @@ const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) =>
     forceMagicCheck,
   } = getState();
 
-  const frameGroups = getFrameGroups(frames, frameGroupNames)
+  const frameGroupOptions: DialogOption[] = getFrameGroups(frames, frameGroupNames)
     .map(({ id: value, name }) => ({
       value,
       name,
       selected: selectedFrameset === value,
     }));
 
-  frameGroups.unshift({ value: '', name: 'None (Black frame)' });
+  frameGroupOptions.unshift({ value: '', name: 'None (Black frame)' });
 
   const importSav = getImportSav({
     importLastSeen: skipDialogs ? true : importLastSeen,
@@ -55,14 +60,14 @@ const getTransformSav = ({ getState, dispatch }) => async (file, skipDialogs) =>
             key: 'cartIsJP',
             type: 'checkbox',
           },
-          frameGroups.length > 1 ? {
+          frameGroupOptions.length > 1 ? {
             label: 'Select frame group to use with this import',
             key: 'chosenFrameset',
             type: 'select',
-            options: frameGroups,
+            options: frameGroupOptions,
           } : null,
         ].filter(Boolean),
-        confirm: async ({ chosenFrameset, cartIsJP }) => {
+        confirm: async ({ chosenFrameset, cartIsJP }: { chosenFrameset: string, cartIsJP: boolean }): Promise<void> => {
           dispatch({
             type: Actions.CONFIRM_ANSWERED,
           });

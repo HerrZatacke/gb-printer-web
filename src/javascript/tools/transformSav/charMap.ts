@@ -1,4 +1,4 @@
-export const charMapInt = {
+export const charMapInt: Record<number, string> = {
   0x56: 'A',
   0x57: 'B',
   0x58: 'C',
@@ -116,7 +116,7 @@ export const charMapInt = {
   0xc8: '@',
 };
 
-export const charMapJp = {
+export const charMapJp: Record<number, string> = {
   0x01: 'あ',
   0x02: 'い',
   0x03: 'う',

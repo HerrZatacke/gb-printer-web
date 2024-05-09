@@ -1,9 +1,11 @@
-const mapCartFrameToHash = (frameNumber, savFrameTypes, frames) => {
+import { Frame } from '../../../types/Frame';
+
+const mapCartFrameToHash = (frameNumber: number, savFrameTypes: string, frames: Frame[]): string => {
   if (!savFrameTypes) {
-    return null;
+    return '';
   }
 
-  const findFrame = (frameId) => frames.find(({ id }) => id === frameId);
+  const findFrame = (frameId: string) => frames.find(({ id }) => id === frameId);
 
   const paddedFrameNumber = (frameNumber + 1).toString(10).padStart(2, '0');
 
@@ -13,7 +15,7 @@ const mapCartFrameToHash = (frameNumber, savFrameTypes, frames) => {
     return foundExactFrame.hash;
   }
 
-  // for js frame, try to fall back to int frames, as jp/int share a lot
+  // for jp frame, try to fall back to int frames, as jp/int share a lot
   if (savFrameTypes === 'jp') {
     const intFrameId = `int${paddedFrameNumber}`;
     const foundIntframe = findFrame(intFrameId);
@@ -38,7 +40,7 @@ const mapCartFrameToHash = (frameNumber, savFrameTypes, frames) => {
     }
   }
 
-  return findFrame('int01')?.hash || null;
+  return findFrame('int01')?.hash || '';
 };
 
 export default mapCartFrameToHash;

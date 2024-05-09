@@ -1,4 +1,3 @@
-import { MiddlewareAPI } from 'redux';
 import FileSaver from 'file-saver';
 import { Image, RGBNPalette } from './Image';
 import { Palette } from './Palette';
@@ -45,9 +44,9 @@ export interface PluginClassInstance {
   setConfig: (config: PluginConfigValues) => void,
 }
 
-export interface PluginArgs {
+export interface PluginArgs<TypedStore> {
   saveAs: typeof FileSaver,
   progress: (progressValue: number) => void,
-  store: MiddlewareAPI,
+  store: TypedStore,
   collectImageData: (hash: string) => PluginImageData,
 }

@@ -1,9 +1,5 @@
 import { Frame } from '../../../types/Frame';
-
-export interface FrameGroup {
-  id: string,
-  name: string,
-}
+import { FrameGroup } from '../../../types/FrameGroup';
 
 const getGroupName = (id: string, name: string, frameGroupNames: FrameGroup[]): string => {
   const namedGroup = frameGroupNames.find((group) => (group.id === id));

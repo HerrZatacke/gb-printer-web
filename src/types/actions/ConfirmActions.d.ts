@@ -25,3 +25,9 @@ export interface ComfirmAction {
 export interface ComfirmAnsweredAction {
   type: Actions.CONFIRM_ANSWERED,
 }
+
+export interface DialogOption {
+  value: string,
+  name: string,
+  selected?: boolean,
+}

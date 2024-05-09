@@ -1,3 +1,4 @@
+import { Dispatch, MiddlewareAPI } from 'redux';
 import { QueueImage } from '../../../types/QueueImage';
 import { Dialog } from '../../../types/actions/ConfirmActions';
 import { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/actions/StorageActions';
@@ -76,3 +77,5 @@ export interface State {
   videoParams: VideoParams,
   windowDimensions: WindowDimensions,
 }
+
+export type TypedStore = MiddlewareAPI<Dispatch, State>;

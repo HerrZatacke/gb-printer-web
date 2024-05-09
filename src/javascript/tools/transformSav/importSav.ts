@@ -1,4 +1,4 @@
-import Queue from 'promise-queue/lib';
+import Queue from 'promise-queue';
 import applyFrame from '../applyFrame';
 import mapCartFrameToHash from './mapCartFrameToHash';
 import getFileMeta from './getFileMeta';
@@ -7,8 +7,9 @@ import transformImage from './transformImage';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
+import { FileMetaData, ImportSavFn, ImportSavParams, WithTiles } from './types';
 
-const sortByAlbumIndex = sortBy('albumIndex');
+const sortByAlbumIndex = sortBy<(FileMetaData & WithTiles)>('albumIndex');
 
 const getImportSav = ({
   importLastSeen,
@@ -19,7 +20,7 @@ const getImportSav = ({
   importDeleted,
   dispatch,
   forceMagicCheck,
-}) => {
+}: ImportSavParams): ImportSavFn | null => {
   if (forceMagicCheck) {
     const magicPlaces = [
       0x10D2,
@@ -51,24 +52,26 @@ const getImportSav = ({
       adresses.unshift(0);
     }
 
-    const images = await Promise.all(adresses.map(async (address) => {
-      const meta = getFileMeta(data, address, cartIsJP);
-      const { frameNumber } = meta;
+    const images: ((FileMetaData & WithTiles) | null)[] = await Promise.all(
+      adresses.map(async (address): Promise<(FileMetaData & WithTiles) | null> => {
+        const meta = getFileMeta(data, address, cartIsJP);
+        const { frameNumber } = meta;
 
-      const transformedData = transformImage(data, address);
+        const transformedData = transformImage(data, address);
 
-      if (transformedData) {
-        const tiles = await applyFrame(transformedData, mapCartFrameToHash(frameNumber, selectedFrameset, frames));
-        return {
-          tiles,
-          ...meta,
-        };
-      }
+        if (transformedData) {
+          const tiles = await applyFrame(transformedData, mapCartFrameToHash(frameNumber, selectedFrameset, frames));
+          return {
+            tiles,
+            ...meta,
+          };
+        }
 
-      return null;
-    }));
+        return null;
+      }),
+    );
 
-    const sortedImages = sortByAlbumIndex(images.filter(Boolean));
+    const sortedImages = sortByAlbumIndex(images.filter(Boolean) as (FileMetaData & WithTiles)[]);
 
     const queue = new Queue(1, Infinity);
 

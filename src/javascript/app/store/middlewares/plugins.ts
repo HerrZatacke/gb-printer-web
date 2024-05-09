@@ -12,6 +12,7 @@ import { RGBNPalette } from '../../../../types/Image';
 import { Palette } from '../../../../types/Palette';
 import { RGBNTile } from '../../../tools/Decoder/types';
 import { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
+import { TypedStore } from '../State';
 
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,
@@ -19,8 +20,10 @@ interface RegisteredPlugins {
 
 declare global {
   interface Window {
-    gbpwRegisterPlugin:
-      (PluginClass: { new (config: PluginArgs, stateConfig: PluginConfigValues): PluginClassInstance }) => void;
+    gbpwRegisterPlugin: (PluginClass: { new (
+      config: PluginArgs<TypedStore>,
+      stateConfig: PluginConfigValues,
+    ): PluginClassInstance }) => void;
   }
 }
 

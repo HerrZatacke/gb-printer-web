@@ -1,3 +1,4 @@
+import { RomByteOffsets } from './types';
 
 export const maskCapture = 0b00000010;
 export const maskEdgeExclusive = 0b10000000;
@@ -172,7 +173,7 @@ export const valuesDither = {
 };
 
 
-export const byteOffsetsPXLR = {
+export const byteOffsetsPXLR: RomByteOffsets = {
   thumbnailByteCapture: 0x00,
   thumbnailByteEdgegains: 0x10,
   thumbnailByteExposureHigh: 0x20,
@@ -183,7 +184,7 @@ export const byteOffsetsPXLR = {
   thumbnailByteContrast: 0xF6,
 };
 
-export const byteOffsetsPhoto = {
+export const byteOffsetsPhoto: RomByteOffsets = {
   thumbnailByteCapture: 0xC8,
   thumbnailByteEdgegains: 0xC9,
   thumbnailByteExposureHigh: 0xCB, // Photo seems to "swap" the bytes only when sending to the sensor

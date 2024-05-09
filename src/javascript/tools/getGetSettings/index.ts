@@ -5,12 +5,13 @@ import getFrames from './getFrames';
 import getImageHashesForExport from './getImageHashesForExport';
 import getFrameHashesForExport from './getFrameHashesForExport';
 import { getEnv } from '../getEnv';
-import getFrameGroups, { FrameGroup } from '../getFrameGroups';
+import getFrameGroups from '../getFrameGroups';
 import { State } from '../../app/store/State';
 import { ExportableState, GetSettingsOptions, NoExport } from './types';
 import { Image } from '../../../types/Image';
 import { Frame } from '../../../types/Frame';
 import { Palette } from '../../../types/Palette';
+import { FrameGroup } from '../../../types/FrameGroup';
 
 const getGetSettings = (store: MiddlewareAPI<Dispatch, State>) => async (
   what: ExportTypes,
