@@ -4,7 +4,9 @@
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
-    "lint": "eslint -c .eslintrc --ext .js,.jsx,.ts,.tsx .",
+    "lint": "npm run lint:tsc && npm run lint:eslint",
+    "lint:tsc": "tsc --noemit",
+    "lint:eslint": "eslint -c .eslintrc --ext .js,.jsx,.ts,.tsx .",
     "host": "npm run build && node ./scripts/host.js",
     "build": "npm run build:clean && npm run build:webpack && npm run build:validate && npm run build:deploy",
     "build:clean": "rimraf dist/*",
