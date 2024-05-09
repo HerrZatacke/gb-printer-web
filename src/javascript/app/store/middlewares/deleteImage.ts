@@ -1,13 +1,17 @@
 import { Actions } from '../actions';
 import { getTrashImages } from '../../../tools/getTrash';
+import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { MonochromeImage } from '../../../../types/Image';
 
-const deleteImage = (store) => {
-  (async () => {
+const deleteImage: MiddlewareWithState = (store) => {
+  const check = async () => {
     store.dispatch({
       type: Actions.SET_TRASH_COUNT_IMAGES,
-      payload: (await getTrashImages(store.getState().images)).length,
+      payload: (await getTrashImages(store.getState().images as MonochromeImage[])).length,
     });
-  })();
+  };
+
+  check();
 
   return (next) => (action) => {
 
@@ -21,12 +25,7 @@ const deleteImage = (store) => {
       case Actions.GLOBAL_UPDATE:
       case Actions.REHASH_IMAGE:
       case Actions.UPDATE_TRASH_COUNT:
-        (async () => {
-          store.dispatch({
-            type: Actions.SET_TRASH_COUNT_IMAGES,
-            payload: (await getTrashImages(store.getState().images)).length,
-          });
-        })();
+        check();
 
         break;
       default:
