@@ -1,20 +1,4 @@
-import {
-  parsePackets,
-  getImageDataStream,
-  decompressDataStream,
-  decodePrintCommands,
-  harmonizePalettes,
-  transformToClassic,
-  // ToDo: Types for 'gbp-decode'
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-
-} from 'gbp-decode';
-
-// const lp = (d) => {
-//   console.log(d);
-//   return d;
-// };
+import { parseDefaultToClassic } from 'gbp-decode';
 
 const transformCapture = (dumpText: string): string[][] => {
 
@@ -31,14 +15,7 @@ const transformCapture = (dumpText: string): string[][] => {
     .map((cc) => parseInt(cc, 16))
     .filter((n) => !isNaN(n));
 
-
-  // ToDo: Types for 'gbp-decode'
-  return parsePackets(bytes)
-    .then(getImageDataStream)
-    .then(decompressDataStream)
-    .then(decodePrintCommands)
-    .then(harmonizePalettes)
-    .then(transformToClassic);
+  return parseDefaultToClassic(bytes);
 };
 
 export default transformCapture;

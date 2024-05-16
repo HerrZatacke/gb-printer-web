@@ -65,7 +65,7 @@ const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
         return transformRom(file);
       }
 
-      if (contentType === 'application/pico-printer-binary-log' /*  || file.name === 'pico-printer-reduced.bin' */) {
+      if (contentType === 'application/pico-printer-binary-log' /*  || file.name.endsWith('pico.bin') */) {
         return transformReduced(file);
       }
 
