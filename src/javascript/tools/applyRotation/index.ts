@@ -7,10 +7,14 @@ export enum Rotation {
   DEG_270 = 3,
 }
 
-const applyRotation = (srcCanvas: HTMLCanvasElement, targetCanvas: HTMLCanvasElement, rotation: Rotation): void => {
+export const applyRotation = (
+  srcCanvas: HTMLCanvasElement,
+  targetCanvas: HTMLCanvasElement,
+  rotation: Rotation,
+): void => {
   const context = targetCanvas.getContext('2d');
   if (!context) {
-    return;
+    throw new Error('No canvas context');
   }
 
   context.resetTransform();
@@ -41,4 +45,8 @@ const applyRotation = (srcCanvas: HTMLCanvasElement, targetCanvas: HTMLCanvasEle
   context.drawImage(srcCanvas, 0, 0);
 };
 
-export default applyRotation;
+export const getRotatedCanvas = (srcCanvas: HTMLCanvasElement, rotation: Rotation): HTMLCanvasElement => {
+  const targetCanvas = document.createElement('canvas');
+  applyRotation(srcCanvas, targetCanvas, rotation);
+  return targetCanvas;
+};

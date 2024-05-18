@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import Decoder from '../../../tools/Decoder';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
-import applyRotation, { Rotation } from '../../../tools/applyRotation';
+import { applyRotation, Rotation } from '../../../tools/applyRotation';
 import { RGBNPalette } from '../../../../types/Image';
 import { RGBNTile } from '../../../tools/Decoder/types';
 import './index.scss';

@@ -3,7 +3,7 @@ import RGBNDecoder from '../RGBNDecoder';
 import generateFileName from '../generateFileName';
 import { load } from '../storage';
 import { finalLine, initLine, moreLine, terminatorLine } from '../../app/defaults';
-import applyRotation from '../applyRotation';
+import { getRotatedCanvas } from '../applyRotation';
 import { State } from '../../app/store/State';
 import { Palette } from '../../../types/Palette';
 import { Image, RGBNPalette } from '../../../types/Image';
@@ -130,9 +130,7 @@ const getPrepareFiles =
                 return;
               }
 
-              const tempCanvas = decoder.getScaledCanvas(1, handleExportFrame);
-              const canvas = document.createElement('canvas');
-              applyRotation(tempCanvas, canvas, rotation);
+              const canvas = getRotatedCanvas(decoder.getScaledCanvas(1, handleExportFrame), rotation);
 
               const pgm = [
                 'P2',
@@ -194,9 +192,7 @@ const getPrepareFiles =
             }
 
             default: {
-              const scaledCanvas = decoder.getScaledCanvas(exportScaleFactor, handleExportFrame);
-              const canvas = document.createElement('canvas');
-              applyRotation(scaledCanvas, canvas, rotation);
+              const canvas = getRotatedCanvas(decoder.getScaledCanvas(exportScaleFactor, handleExportFrame), rotation);
 
               const onBlobComplete = (blob: Blob | null) => {
                 if (!blob) {

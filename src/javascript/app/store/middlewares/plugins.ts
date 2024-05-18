@@ -5,7 +5,7 @@ import getImagePalette from '../../../tools/getImagePalette';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
 import Decoder from '../../../tools/Decoder';
 import { Actions } from '../actions';
-import applyRotation from '../../../tools/applyRotation';
+import { getRotatedCanvas } from '../../../tools/applyRotation';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { RGBNPalette } from '../../../../types/Image';
@@ -85,9 +85,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
         });
       }
 
-      const tempCanvas = decoder.getScaledCanvas(scaleFactor, handleExportFrame);
-      const canvas = document.createElement('canvas');
-      applyRotation(tempCanvas, canvas, meta.rotation || 0);
+      const canvas = getRotatedCanvas(decoder.getScaledCanvas(scaleFactor, handleExportFrame), meta.rotation || 0);
 
       return canvas;
     };

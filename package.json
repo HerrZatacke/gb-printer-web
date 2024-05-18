@@ -35,6 +35,7 @@
     "@types/file-saver": "^2.0.7",
     "@types/node": "^20.12.8",
     "@types/object-hash": "^3.0.6",
+    "@types/omggif": "^1.0.5",
     "@types/pako": "^2.0.3",
     "@types/promise-queue": "^2.2.3",
     "@types/react": "^18.2.0",

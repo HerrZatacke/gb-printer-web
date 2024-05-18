@@ -1,8 +1,8 @@
+import { ExportFrameMode } from '../javascript/consts/exportFrameModes';
 
 export interface VideoParams {
   imageSelection?: string[],
-  cropFrame?: boolean,
-  exportFrameMode?: string,
+  exportFrameMode?: ExportFrameMode,
   frame?: string,
   frameRate?: number,
   invertPalette?: boolean,
