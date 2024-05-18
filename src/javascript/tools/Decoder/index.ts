@@ -95,7 +95,11 @@ class Decoder {
 
     // crop and square modes are only available for regular "camera" images
     const handleFrameMode = (this.tiles.length === 360) ? handleExportFrame : ExportFrameMode.FRAMEMODE_KEEP;
-    const { initialHeight, initialWidth, tilesPerLine } = this.getScaleCanvasSize(handleFrameMode);
+    const {
+      initialHeight,
+      initialWidth,
+      tilesPerLine,
+    } = Decoder.getScaledCanvasSize(handleFrameMode, this.getHeight());
 
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -114,27 +118,27 @@ class Decoder {
     return canvas;
   }
 
-  private getScaleCanvasSize(handleExportFrame: ExportFrameMode): ScaledCanvasSize {
+  static getScaledCanvasSize(handleExportFrame: ExportFrameMode, height: number): ScaledCanvasSize {
     // 2 tiles top/left/bottom/right -> 4 tiles to each side
     const FRAME_TILES = 4;
 
     switch (handleExportFrame) {
       case ExportFrameMode.FRAMEMODE_KEEP:
         return {
-          initialHeight: this.getHeight(),
+          initialHeight: height,
           initialWidth: TILES_PER_LINE * TILE_PIXEL_WIDTH,
           tilesPerLine: TILES_PER_LINE,
         };
       case ExportFrameMode.FRAMEMODE_CROP:
         return {
-          initialHeight: this.getHeight() - (TILE_PIXEL_HEIGHT * FRAME_TILES),
+          initialHeight: height - (TILE_PIXEL_HEIGHT * FRAME_TILES),
           initialWidth: (TILES_PER_LINE * TILE_PIXEL_WIDTH) - (TILE_PIXEL_WIDTH * FRAME_TILES),
           tilesPerLine: TILES_PER_LINE - FRAME_TILES,
         };
       case ExportFrameMode.FRAMEMODE_SQUARE_BLACK:
       case ExportFrameMode.FRAMEMODE_SQUARE_WHITE:
         return {
-          initialHeight: this.getHeight() + (2 * TILE_PIXEL_HEIGHT),
+          initialHeight: height + (2 * TILE_PIXEL_HEIGHT),
           initialWidth: TILES_PER_LINE * TILE_PIXEL_WIDTH,
           tilesPerLine: TILES_PER_LINE,
         };

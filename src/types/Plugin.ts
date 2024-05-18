@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 import { Image, RGBNPalette } from './Image';
 import { Palette } from './Palette';
-import { RGBNTile } from '../javascript/tools/Decoder/types';
+import { RGBNTiles } from '../javascript/tools/RGBNDecoder/types';
 
 enum ConfigParamType {
   NUMBER = 'number',
@@ -30,7 +30,7 @@ export interface Plugin {
 export interface PluginImageData {
   getMeta: () => Promise<Image & { isRGBN: boolean }>,
   getPalette: () => Promise<Palette | RGBNPalette>,
-  getTiles: () => Promise<string[] | RGBNTile[] | void>,
+  getTiles: () => Promise<string[] | RGBNTiles | void>,
   getCanvas: () => Promise<HTMLCanvasElement>,
 }
 

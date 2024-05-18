@@ -15,7 +15,7 @@ import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { Image, MonochromeImage, RGBNImage, RGBNPalette } from '../../../../types/Image';
 import { VideoParams } from '../../../../types/VideoParams';
 import { ExportFrameMode } from '../../../consts/exportFrameModes';
-import { RGBNTile } from '../../../tools/Decoder/types';
+import { RGBNTiles } from '../../../tools/RGBNDecoder/types';
 import { Palette } from '../../../../types/Palette';
 import { State } from '../State';
 import unique from '../../../tools/unique';
@@ -155,7 +155,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
       decoder = new RGBNDecoder();
       decoder.update({
         canvas: null,
-        tiles: tiles as RGBNTile[],
+        tiles: tiles as RGBNTiles,
         palette: palette as RGBNPalette,
         lockFrame,
       });

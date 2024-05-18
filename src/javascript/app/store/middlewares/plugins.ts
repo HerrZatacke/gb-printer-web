@@ -10,7 +10,7 @@ import { isRGBNImage } from '../../../tools/isRGBNImage';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { RGBNPalette } from '../../../../types/Image';
 import { Palette } from '../../../../types/Palette';
-import { RGBNTile } from '../../../tools/Decoder/types';
+import { RGBNTiles } from '../../../tools/RGBNDecoder/types';
 import { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
 import { TypedStore } from '../State';
 
@@ -70,7 +70,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
         decoder = new RGBNDecoder();
         decoder.update({
           canvas: null,
-          tiles: tiles as RGBNTile[],
+          tiles: tiles as RGBNTiles,
           palette: palette as RGBNPalette,
           lockFrame,
         });

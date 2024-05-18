@@ -7,7 +7,7 @@ import { getRotatedCanvas } from '../applyRotation';
 import { State } from '../../app/store/State';
 import { Palette } from '../../../types/Palette';
 import { Image, RGBNPalette } from '../../../types/Image';
-import { RGBNTile } from '../Decoder/types';
+import { RGBNTiles } from '../RGBNDecoder/types';
 import { BW_PALETTE } from '../Decoder/constants';
 import { isRGBNImage } from '../isRGBNImage';
 
@@ -25,7 +25,7 @@ const getPrepareFiles =
     palette: RGBNPalette | Palette,
     image: Image,
   ) => async (
-    tiles: string[] | RGBNTile[],
+    tiles: string[] | RGBNTiles,
   ): Promise<DownloadInfo[]> => {
     const { exportScaleFactors, exportFileTypes, handleExportFrame } = state;
 
@@ -35,11 +35,12 @@ const getPrepareFiles =
     const invertPalette = image.invertPalette || false;
     const rotation = image.rotation || 0;
 
+
     if (isRGBN) {
       decoder = new RGBNDecoder();
       decoder.update({
         canvas: null,
-        tiles: tiles as RGBNTile[],
+        tiles: tiles as RGBNTiles,
         palette: palette as RGBNPalette,
         lockFrame,
       });

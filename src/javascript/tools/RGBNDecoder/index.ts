@@ -1,25 +1,18 @@
-import { blendModeFunctions, BlendMode } from './blendModes';
-import {
-  BLACK_LINE,
-  BW_PALETTE,
-  TILE_PIXEL_HEIGHT,
-  TILE_PIXEL_WIDTH,
-  TILES_PER_LINE,
-  WHITE_LINE,
-} from '../Decoder/constants';
-import { BWPalette } from '../../../types/FixedArray';
-import { decodeTile, getRGBValue } from '../Decoder/functions';
-import { ExportFrameMode } from '../../consts/exportFrameModes';
-import tileIndexIsPartOfFrame from '../tileIndexIsPartOfFrame';
 import { RGBNPalette } from '../../../types/Image';
-import {
-  ChangedRGBNTile,
-  IndexedRGBNValue,
-  RGBNIndexedTilePixels,
-  RGBNTile,
-  RGBValue,
-  ScaledCanvasSize,
-} from '../Decoder/types';
+import { BlendMode, blendModeNewName } from './blendModes';
+import Decoder from '../Decoder';
+import { Channel, ChannelKey, Channels, RGBNTiles, SourceCanvases } from './types';
+import { ExportFrameMode } from '../../consts/exportFrameModes';
+import { TILE_PIXEL_HEIGHT, TILES_PER_LINE } from '../Decoder/constants';
+
+const hx2 = (n?: number) => (n || 0).toString(16).padStart(2, '0');
+
+const paletteFunctions: Record<ChannelKey, ((n: number) => string)> = {
+  r: (v?: number) => `#${hx2(v)}0000`,
+  g: (v?: number) => `#00${hx2(v)}00`,
+  b: (v?: number) => `#0000${hx2(v)}`,
+  n: (v?: number) => `#${hx2(v)}${hx2(v)}${hx2(v)}`,
+};
 
 const defaultPalette: RGBNPalette = {
   r: [0, 84, 172, 255],
@@ -29,52 +22,54 @@ const defaultPalette: RGBNPalette = {
   blend: BlendMode.MULTIPLY,
 };
 
-class RGBNDecoder {
-  private blackLine: RGBNTile[];
-  private whiteLine: RGBNTile[];
+const channels = [ChannelKey.R, ChannelKey.G, ChannelKey.B, ChannelKey.N];
 
+const createChannel = (key: ChannelKey): Channel => {
+  const canvas = document.createElement('canvas');
+  const decoder = new Decoder();
+
+  decoder.update({
+    canvas,
+    tiles: [],
+    palette: [],
+    lockFrame: false,
+    invertPalette: false,
+  });
+
+  return {
+    key,
+    decoder,
+    canvas,
+  };
+};
+
+class RGBNDecoder {
   private canvas: HTMLCanvasElement | null;
-  private tiles: RGBNTile[];
-  // private colors: string[];
-  private rawImageData: Uint8ClampedArray | null;
-  private lockFrame: boolean;
-  private invertPalette: boolean;
-  private colorData: BWPalette;
   private palette: RGBNPalette;
+  private lockFrame: boolean;
+  private channels: Channels;
 
   constructor() {
     this.canvas = null;
-    this.tiles = [];
-    // this.colors = [];
-    this.rawImageData = null;
-    this.lockFrame = false;
-    this.invertPalette = false;
-    this.colorData = [...BW_PALETTE];
     this.palette = defaultPalette;
+    this.lockFrame = false;
 
-    this.blackLine = RGBNDecoder.rgbnTiles([
-      BLACK_LINE,
-      BLACK_LINE,
-      BLACK_LINE,
-      BLACK_LINE,
-    ]);
-
-    this.whiteLine = RGBNDecoder.rgbnTiles([
-      WHITE_LINE,
-      WHITE_LINE,
-      WHITE_LINE,
-      WHITE_LINE,
-    ]);
+    this.channels = {
+      r: createChannel(ChannelKey.R),
+      g: createChannel(ChannelKey.G),
+      b: createChannel(ChannelKey.B),
+      n: createChannel(ChannelKey.N),
+    };
   }
 
   public update({
     canvas = null,
-    tiles = [],
+    tiles = {},
     palette,
     lockFrame = false,
   }: {
     canvas: HTMLCanvasElement | null,
-    tiles: RGBNTile[],
+    tiles: RGBNTiles,
     palette: RGBNPalette
     lockFrame: boolean,
   }) {
@@ -82,11 +77,13 @@ class RGBNDecoder {
     const paletteChanged = this.setPalette(palette);
     const lockFrameChanged = this.setLockFrame(lockFrame); // true/false
 
-    if (canvasChanged || paletteChanged || lockFrameChanged || !this.tiles.length) {
-      this.tiles = [];
+    const shouldUpdate = canvasChanged || paletteChanged || lockFrameChanged;
+
+    if (!shouldUpdate) {
+      return;
     }
 
-    const tilesChanged: ChangedRGBNTile[] = this.setTiles(tiles); // returns actual list of tiles that have changed
+    const canvases: SourceCanvases = this.setTiles(tiles);
 
     const newHeight = this.getHeight();
 
@@ -99,26 +96,19 @@ class RGBNDecoder {
       return;
     }
 
-
-    if (this.canvas.height !== newHeight || !this.rawImageData?.length) {
+    if (this.canvas.height !== newHeight) {
       this.canvas.height = newHeight;
-
-      // copy existing image data and add the missing space for additional height
-      const newRawImageData = new Uint8ClampedArray(160 * newHeight * 4);
-      this.rawImageData?.forEach((value, index) => {
-        newRawImageData[index] = value;
-      });
-      this.rawImageData = newRawImageData;
     }
 
-    tilesChanged.forEach(({ index, newTile }) => {
-      this.renderTile(index, newTile);
-    });
+    const context = this.canvas?.getContext('2d');
+    if (!context) {
+      return;
+    }
 
-    this.updateCanvas(newHeight);
+    this.blendCanvases(context, canvases);
   }
 
-  setPalette(palette: RGBNPalette) {
+  private setPalette(palette: RGBNPalette) {
     if (!palette) {
       return false;
     }
@@ -140,16 +130,6 @@ class RGBNDecoder {
     return true;
   }
 
-  private updateCanvas(newHeight: number) {
-    if (!this.canvas || !this.rawImageData?.length) {
-      return;
-    }
-
-    const context = this.canvas.getContext('2d');
-    const imageData = new ImageData(this.rawImageData, 160, newHeight);
-    context?.putImageData(imageData, 0, 0);
-  }
-
   private setLockFrame(lockFrame: boolean): boolean {
     if (lockFrame !== this.lockFrame) {
       this.lockFrame = lockFrame;
@@ -159,323 +139,105 @@ class RGBNDecoder {
     return false;
   }
 
-  private setTiles(tiles: RGBNTile[]): ChangedRGBNTile[] {
+  private setTiles(tiles: RGBNTiles): SourceCanvases {
+    const canvases: SourceCanvases = channels.reduce((acc, key): SourceCanvases => {
+      const channel = this.channels[key];
+      channel.tiles = tiles[key];
+      const channelColors = this.palette[key];
+      const paletteFunction = paletteFunctions[key];
 
-    const changedTiles = tiles
-      .reduce((acc: ChangedRGBNTile[], newTile: RGBNTile, index: number) => {
+      if (!channel.tiles || !channelColors) {
+        return acc;
+      }
 
-        const changed =
-          newTile.r !== this.tiles[index]?.r ||
-          newTile.g !== this.tiles[index]?.g ||
-          newTile.b !== this.tiles[index]?.b ||
-          newTile.n !== this.tiles[index]?.n;
+      const palette = [
+        paletteFunction(channelColors[3]),
+        paletteFunction(channelColors[2]),
+        paletteFunction(channelColors[1]),
+        paletteFunction(channelColors[0]),
+      ];
 
-        if (!changed) {
-          return acc;
+      channel.decoder.update({
+        invertPalette: false,
+        canvas: channel.canvas,
+        tiles: channel.tiles,
+        lockFrame: this.lockFrame,
+        palette,
+      });
+
+      return {
+        ...acc,
+        [key]: channel.canvas,
+      };
+    }, {});
+
+    return canvases;
+  }
+
+  private blendCanvases(targetContext: CanvasRenderingContext2D, sourceCanvases: SourceCanvases) {
+    channels.forEach((key) => {
+      const sourceCanvas = sourceCanvases[key];
+      if (sourceCanvas && sourceCanvas.width && sourceCanvas.height) {
+        if (key === ChannelKey.N) {
+
+          // Normal blendmode means: skip N-Layer
+          if (this.palette.blend === BlendMode.NORMAL) {
+            return;
+          }
+
+          // eslint-disable-next-line no-param-reassign
+          targetContext.globalCompositeOperation = blendModeNewName(this.palette.blend);
+        } else {
+          // eslint-disable-next-line no-param-reassign
+          targetContext.globalCompositeOperation = 'lighter';
         }
 
-        return [
-          ...acc,
-          {
-            index,
-            newTile,
-          },
-        ];
-      }, []);
-
-    this.tiles = tiles;
-    return changedTiles;
-  }
-
-  private renderTile(tileIndex: number, rgbnTile: RGBNTile) {
-    const tile = this.decodeRGBNTile(rgbnTile);
-    this.paintTile(tile, tileIndex);
-  }
-
-  private decodeRGBNTile({ r, g, b, n }: RGBNTile): RGBNIndexedTilePixels {
-    return {
-      r: decodeTile(r),
-      g: decodeTile(g),
-      b: decodeTile(b),
-      n: n ? decodeTile(n) : undefined, // neutral image not neccesarily required
-    };
-  }
-
-  private getRGBNRGBValue({
-    pixels: { r, g, b, n },
-    index,
-    tileIndex,
-    handleExportFrame,
-    lockFrame,
-    invertPalette,
-    colorData,
-  }: {
-    pixels: RGBNIndexedTilePixels,
-    index: number,
-    tileIndex: number,
-    handleExportFrame: ExportFrameMode,
-    lockFrame: boolean,
-    invertPalette: boolean,
-    colorData: BWPalette,
-  }): RGBValue {
-    if (
-      lockFrame &&
-      handleExportFrame !== ExportFrameMode.FRAMEMODE_CROP &&
-      tileIndexIsPartOfFrame(tileIndex, handleExportFrame) &&
-      n
-    ) {
-      try {
-        return getRGBValue({
-          pixels: n,
-          index,
-          tileIndex,
-          handleExportFrame,
-          lockFrame,
-          invertPalette,
-          colorData,
-        });
-      } catch (error) {
-        return { r: 0, g: 0, b: 0 };
+        targetContext.drawImage(sourceCanvas, 0, 0);
       }
-    }
-
-    const indexedRGBN: IndexedRGBNValue = {
-      r: r[index],
-      g: g[index],
-      b: b[index],
-      n: n ? n[index] : undefined, // 'undefined' is required for blending if no neutral layer exists
-    };
-
-    return this.blendColors(indexedRGBN);
-  }
-
-  private paintTile(pixels: RGBNIndexedTilePixels, index: number) {
-    if (!this.rawImageData) {
-      return;
-    }
-
-    const tileXOffset = index % TILES_PER_LINE;
-    const tileYOffset = Math.floor(index / TILES_PER_LINE);
-
-    const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset;
-    const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset;
-
-    // pixels along the tile's x axis
-    for (let x = 0; x < TILE_PIXEL_WIDTH; x += 1) {
-      for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
-        // pixels along the tile's y axis
-
-        const rawIndex = (pixelXOffset + x + ((pixelYOffset + y) * 160)) * 4;
-        const color = this.getRGBNRGBValue({
-          pixels,
-          index: (y * TILE_PIXEL_WIDTH) + x,
-          tileIndex: index,
-          handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
-          lockFrame: this.lockFrame,
-          invertPalette: this.invertPalette,
-          colorData: this.colorData,
-        });
-
-        this.rawImageData[rawIndex] = color.r;
-        this.rawImageData[rawIndex + 1] = color.g;
-        this.rawImageData[rawIndex + 2] = color.b;
-        this.rawImageData[rawIndex + 3] = 255;
-      }
-    }
-  }
-
-  private blendColors({ r, g, b, n }: IndexedRGBNValue): RGBValue {
-
-    const getPaletteValue = (key: 'r'|'g'|'b'|'n', colorIndex: number) => (
-      this.palette[key]?.[3 - colorIndex] || defaultPalette[key]?.[3 - colorIndex] || 0
-    );
-
-    const rgbValues: RGBValue = {
-      r: getPaletteValue('r', r),
-      g: getPaletteValue('g', g),
-      b: getPaletteValue('b', b),
-    };
-
-    // no blending if neutral layer does not exist
-    if (typeof n === 'undefined') {
-      return rgbValues;
-    }
-
-    const blendMode = this.palette.blend || BlendMode.MULTIPLY;
-
-    if (!blendModeFunctions[blendMode]) {
-      return rgbValues;
-    }
-
-    const callBlendFunction = (value: number, neutral: number) => (
-      Math.max(
-        0,
-        Math.min(
-          1,
-          blendModeFunctions[blendMode](value / 255, neutral / 255),
-        ),
-      ) * 255
-    );
-
-    const nValue = getPaletteValue('n', n);
-
-    return {
-      r: callBlendFunction(rgbValues.r, nValue),
-      g: callBlendFunction(rgbValues.g, nValue),
-      b: callBlendFunction(rgbValues.b, nValue),
-    };
+    });
   }
 
   public getScaledCanvas(
     scaleFactor: number,
     handleExportFrame: ExportFrameMode = ExportFrameMode.FRAMEMODE_KEEP,
   ): HTMLCanvasElement {
-
-    // crop and square modes are only available for regular "camera" images
-    const handleFrameMode = (this.tiles.length === 360) ? handleExportFrame : ExportFrameMode.FRAMEMODE_KEEP;
-    const { initialHeight, initialWidth, tilesPerLine } = this.getScaleCanvasSize(handleFrameMode);
-
     const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    if (!context) {
-      throw new Error('no canvas context');
-    }
+
+    const handleFrameMode = (this.maxTiles() === 360) ? handleExportFrame : ExportFrameMode.FRAMEMODE_KEEP;
+    const { initialHeight, initialWidth } = Decoder.getScaledCanvasSize(handleFrameMode, this.getHeight());
 
     canvas.width = initialWidth * scaleFactor;
     canvas.height = initialHeight * scaleFactor;
 
-    this.getExportTiles(handleFrameMode)
-      .forEach((tile, index) => {
-        this.paintTileScaled(this.decodeRGBNTile(tile), index, context, scaleFactor, tilesPerLine, handleExportFrame);
-      });
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      throw new Error('no canvas context');
+    }
+
+    const canvases: SourceCanvases = channels.reduce((acc: SourceCanvases, key: ChannelKey): SourceCanvases => {
+      const channel = this.channels[key];
+      const channelCanvas = channel.decoder.getScaledCanvas(scaleFactor, handleExportFrame);
+
+      return {
+        ...acc,
+        [key]: channelCanvas,
+      };
+    }, {});
+
+    this.blendCanvases(context, canvases);
 
     return canvas;
   }
 
-  private getScaleCanvasSize(handleExportFrame: ExportFrameMode): ScaledCanvasSize {
-    // 2 tiles top/left/bottom/right -> 4 tiles to each side
-    const FRAME_TILES = 4;
-
-    switch (handleExportFrame) {
-      case ExportFrameMode.FRAMEMODE_KEEP:
-        return {
-          initialHeight: this.getHeight(),
-          initialWidth: TILES_PER_LINE * TILE_PIXEL_WIDTH,
-          tilesPerLine: TILES_PER_LINE,
-        };
-      case ExportFrameMode.FRAMEMODE_CROP:
-        return {
-          initialHeight: this.getHeight() - (TILE_PIXEL_HEIGHT * FRAME_TILES),
-          initialWidth: (TILES_PER_LINE * TILE_PIXEL_WIDTH) - (TILE_PIXEL_WIDTH * FRAME_TILES),
-          tilesPerLine: TILES_PER_LINE - FRAME_TILES,
-        };
-      case ExportFrameMode.FRAMEMODE_SQUARE_BLACK:
-      case ExportFrameMode.FRAMEMODE_SQUARE_WHITE:
-        return {
-          initialHeight: this.getHeight() + (2 * TILE_PIXEL_HEIGHT),
-          initialWidth: TILES_PER_LINE * TILE_PIXEL_WIDTH,
-          tilesPerLine: TILES_PER_LINE,
-        };
-      default:
-        throw new Error(`unknown export mode ${handleExportFrame}`);
-    }
+  private maxTiles() {
+    return Math.max(...channels.map((key) => (
+      this.channels[key].tiles?.length || 0
+    )));
   }
 
-  private getExportTiles(handleExportFrame: ExportFrameMode): RGBNTile[] {
-    if (!this.tiles) {
-      throw new Error('no tiles to export');
-    }
-
-    switch (handleExportFrame) {
-      case ExportFrameMode.FRAMEMODE_KEEP:
-        return this.tiles;
-      case ExportFrameMode.FRAMEMODE_CROP:
-        return this.tiles
-          .reduce((acc: RGBNTile[], tile: RGBNTile, index: number) => (
-            tileIndexIsPartOfFrame(index, ExportFrameMode.FRAMEMODE_KEEP) ?
-              acc :
-              [...acc, tile]
-          ), []);
-      case ExportFrameMode.FRAMEMODE_SQUARE_BLACK:
-        return [
-          ...this.blackLine,
-          ...this.tiles,
-          ...this.blackLine,
-        ];
-      case ExportFrameMode.FRAMEMODE_SQUARE_WHITE:
-        return [
-          ...this.whiteLine,
-          ...this.tiles,
-          ...this.whiteLine,
-        ];
-      default:
-        throw new Error(`unknown export mode ${handleExportFrame}`);
-    }
-  }
-
-  private paintTileScaled(
-    pixels: RGBNIndexedTilePixels,
-    index: number,
-    canvasContext: CanvasRenderingContext2D,
-    pixelSize: number,
-    tilesPerLine: number,
-    handleExportFrame: ExportFrameMode,
-  ) {
-    const tileXOffset = index % tilesPerLine;
-    const tileYOffset = Math.floor(index / tilesPerLine);
-
-    const pixelXOffset = TILE_PIXEL_WIDTH * tileXOffset * pixelSize;
-    const pixelYOffset = TILE_PIXEL_HEIGHT * tileYOffset * pixelSize;
-
-    // pixels along the tile's x axis
-    for (let x = 0; x < TILE_PIXEL_WIDTH; x += 1) {
-      for (let y = 0; y < TILE_PIXEL_HEIGHT; y += 1) {
-        // pixels along the tile's y axis
-
-        const color = this.getRGBNRGBValue({
-          pixels,
-          index: (y * TILE_PIXEL_WIDTH) + x,
-          tileIndex: index,
-          handleExportFrame,
-          lockFrame: this.lockFrame,
-          invertPalette: this.invertPalette,
-          colorData: this.colorData,
-        });
-
-
-        // eslint-disable-next-line no-param-reassign
-        canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
-
-        // Pixel Position (Needed to add +1 to pixel width and height to fill in a gap)
-        canvasContext.fillRect(
-          pixelXOffset + (x * pixelSize),
-          pixelYOffset + (y * pixelSize),
-          pixelSize + 1,
-          pixelSize + 1,
-        );
-      }
-    }
-  }
-
-  // RGBN image has always a height of 144
   private getHeight() {
-    return 144;
-  }
-
-  public static rgbnTiles([r, g, b, n]: [string[], string[], string[], string[]]): RGBNTile[] {
-    const lines = Math.max(
-      r?.length || 0,
-      g?.length || 0,
-      b?.length || 0,
-      n?.length || 0,
-    );
-
-    return [...Array(lines)].map((_, i): RGBNTile => ({
-      r: r?.[i],
-      g: g?.[i],
-      b: b?.[i],
-      n: n?.[i],
-    }));
+    return TILE_PIXEL_HEIGHT * Math.ceil(this.maxTiles() / TILES_PER_LINE);
   }
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import Decoder from '../../../tools/Decoder';
 import RGBNDecoder from '../../../tools/RGBNDecoder';
+import { RGBNTiles } from '../../../tools/RGBNDecoder/types';
 import { applyRotation, Rotation } from '../../../tools/applyRotation';
 import { RGBNPalette } from '../../../../types/Image';
 import { RGBNTile } from '../../../tools/Decoder/types';
@@ -51,7 +52,7 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
         const decoder = new RGBNDecoder();
         decoder.update({
           canvas: tempCanvas,
-          tiles: tiles as RGBNTile[],
+          tiles: tiles as RGBNTiles,
           palette,
           lockFrame,
         });
