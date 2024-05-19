@@ -1,16 +1,13 @@
 import Queue from 'promise-queue';
 import { saveAs } from 'file-saver';
+import { RGBNDecoder, Decoder, RGBNTiles, RGBNPalette } from 'gb-image-decoder';
 import loadImageTiles from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
-import RGBNDecoder from '../../../tools/RGBNDecoder';
-import Decoder from '../../../tools/Decoder';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { RGBNPalette } from '../../../../types/Image';
 import { Palette } from '../../../../types/Palette';
-import { RGBNTiles } from '../../../tools/RGBNDecoder/types';
 import { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
 import { TypedStore } from '../State';
 

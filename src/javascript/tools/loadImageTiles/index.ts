@@ -1,9 +1,9 @@
+import { RGBNTiles } from 'gb-image-decoder';
 import { load, RecoverFn } from '../storage';
 import getRGBNFrames from '../getRGBNFrames';
 import { State } from '../../app/store/State';
 import { Image, RGBNImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
-import { RGBNTiles } from '../RGBNDecoder/types';
 
 const loadImageTiles = (state: State) => async (
   image: Image,

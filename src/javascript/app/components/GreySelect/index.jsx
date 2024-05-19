@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDebouncedCallback } from 'use-debounce';
-import { blendModeLabels } from '../../../tools/RGBNDecoder/blendModes';
+import { blendModeLabels } from '../../../consts/blendModes';
 import ColorSlider from '../ColorSlider';
 import './index.scss';
 

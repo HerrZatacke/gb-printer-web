@@ -70,6 +70,7 @@
     "file-saver": "^2.0.2",
     "filesize": "^6.1.0",
     "flatten": "^1.0.3",
+    "gb-image-decoder": "^0.1.0",
     "gb-palettes": "^1.0.14",
     "gbp-decode": "^1.4.1",
     "github-markdown-css": "^4.0.0",

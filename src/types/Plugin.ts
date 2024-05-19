@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
-import { Image, RGBNPalette } from './Image';
+import { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import { Image } from './Image';
 import { Palette } from './Palette';
-import { RGBNTiles } from '../javascript/tools/RGBNDecoder/types';
 
 enum ConfigParamType {
   NUMBER = 'number',

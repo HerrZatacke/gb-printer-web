@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
-import Decoder from '../../../tools/Decoder';
-import RGBNDecoder from '../../../tools/RGBNDecoder';
-import { RGBNTiles } from '../../../tools/RGBNDecoder/types';
+import { RGBNDecoder, Decoder, RGBNTiles, maxTiles, RGBNPalette } from 'gb-image-decoder';
 import { applyRotation, Rotation } from '../../../tools/applyRotation';
-import { RGBNPalette } from '../../../../types/Image';
-import { RGBNTile } from '../../../tools/Decoder/types';
 import './index.scss';
 
 interface GameBoyImageProps {
   palette?: string[] | RGBNPalette | null,
-  tiles: string[] | RGBNTile[],
+  tiles: string[] | RGBNTiles,
   lockFrame: boolean,
   invertPalette: boolean,
   asThumb?: boolean,
@@ -26,8 +22,11 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
   rotation = Rotation.DEG_0,
 }) => {
 
+  const isRGBN = !(palette instanceof Array);
   const canvas = useRef(null);
   const [decoderError, setDecoderError] = useState('');
+
+  const isMinSize = (isRGBN ? maxTiles(tiles as RGBNTiles) : (tiles as string[]).length) <= 360;
 
   useEffect(() => {
     if (!palette || !tiles) {
@@ -39,7 +38,15 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
     tempCanvas.height = 144;
 
     try {
-      if (palette instanceof Array) {
+      if (isRGBN) {
+        const decoder = new RGBNDecoder();
+        decoder.update({
+          canvas: tempCanvas,
+          tiles: tiles as RGBNTiles,
+          palette,
+          lockFrame,
+        });
+      } else {
         const decoder = new Decoder();
         decoder.update({
           canvas: tempCanvas,
@@ -47,14 +54,6 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
           palette,
           lockFrame,
           invertPalette,
-        });
-      } else {
-        const decoder = new RGBNDecoder();
-        decoder.update({
-          canvas: tempCanvas,
-          tiles: tiles as RGBNTiles,
-          palette,
-          lockFrame,
         });
       }
 
@@ -70,7 +69,7 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
       }
     }
 
-  }, [tiles, palette, lockFrame, invertPalette, rotation]);
+  }, [tiles, palette, lockFrame, invertPalette, rotation, isRGBN]);
 
   return (
     <div
@@ -88,7 +87,7 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
         <canvas
           className={classnames('gameboy-image__image', {
             'gameboy-image__image--as-thumb': asThumb,
-            'gameboy-image__image--min-size': tiles.length <= 360,
+            'gameboy-image__image--min-size': isMinSize,
           })}
           width={160}
           ref={canvas}

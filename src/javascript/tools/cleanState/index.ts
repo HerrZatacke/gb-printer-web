@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import predefinedPalettes from 'gb-palettes';
+import { BlendMode } from 'gb-image-decoder';
 import { dateFormat, defaultRGBNPalette } from '../../app/defaults';
 import uniqueBy from '../unique/by';
 import cleanUrl from '../cleanUrl';
-import { BlendMode } from '../RGBNDecoder/blendModes';
 import hashFrames from './hashFrames';
 import backupFrames from './backupFrames';
 import { State } from '../../app/store/State';

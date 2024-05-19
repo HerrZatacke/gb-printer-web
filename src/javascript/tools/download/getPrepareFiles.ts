@@ -1,14 +1,11 @@
-import Decoder from '../Decoder';
-import RGBNDecoder from '../RGBNDecoder';
+import { BW_PALETTE, Decoder, RGBNDecoder, RGBNTiles, RGBNPalette } from 'gb-image-decoder';
 import generateFileName from '../generateFileName';
 import { load } from '../storage';
 import { finalLine, initLine, moreLine, terminatorLine } from '../../app/defaults';
 import { getRotatedCanvas } from '../applyRotation';
 import { State } from '../../app/store/State';
 import { Palette } from '../../../types/Palette';
-import { Image, RGBNPalette } from '../../../types/Image';
-import { RGBNTiles } from '../RGBNDecoder/types';
-import { BW_PALETTE } from '../Decoder/constants';
+import { Image } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 
 export interface DownloadInfo {

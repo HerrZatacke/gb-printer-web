@@ -1,5 +1,6 @@
+import { RGBNPalette } from 'gb-image-decoder';
 import { State } from '../../app/store/State';
-import { Image, RGBNPalette } from '../../../types/Image';
+import { Image } from '../../../types/Image';
 import { Palette } from '../../../types/Palette';
 import { isRGBNImage } from '../isRGBNImage';
 

@@ -1,4 +1,4 @@
-import { BlendMode } from '../javascript/tools/RGBNDecoder/blendModes';
+import { RGBNPalette } from 'gb-image-decoder';
 
 export interface ImageMetadata extends Record<string, unknown>{
   romType?: string,
@@ -31,14 +31,6 @@ interface CommonImage {
   invertPalette?: boolean,
   rotation?: number,
   meta?: ImageMetadata
-}
-
-export interface RGBNPalette {
-  r?: number[], // ToDo BWPalette??
-  g?: number[],
-  b?: number[],
-  n?: number[],
-  blend?: BlendMode,
 }
 
 export interface RGBNHashes {
