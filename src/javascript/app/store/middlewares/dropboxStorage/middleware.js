@@ -101,19 +101,21 @@ const middleware = (store) => {
                   return Promise.resolve(null);
                 }
 
+                const lastUpdate = (typeof repoContents.settings.state?.lastUpdateUTC === 'undefined') ? (Date.now() / 1000) : repoContents.settings.state.lastUpdateUTC;
+
                 store.dispatch({
                   type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
-                  payload: repoContents.settings.state.lastUpdateUTC,
+                  payload: lastUpdate,
                 });
 
-                if (repoContents.settings.state.lastUpdateUTC > state?.syncLastUpdate?.local) {
+                if (lastUpdate > state?.syncLastUpdate?.local) {
 
                   store.dispatch({
                     type: Actions.CONFIRM_ASK,
                     payload: {
                       message: 'There is newer content in your dropbox!',
                       questions: () => [
-                        `Your dropbox contains changes from ${dateFormatLocale(dayjs(repoContents.settings.state.lastUpdateUTC * 1000), state.preferredLocale)}`,
+                        `Your dropbox contains changes from ${dateFormatLocale(dayjs(lastUpdate * 1000), state.preferredLocale)}`,
                         `Your last local update was ${state?.syncLastUpdate?.local ? (dateFormatLocale(dayjs(state.syncLastUpdate.local * 1000), state.preferredLocale)) : 'never'}.`,
                         'Do you want to load the changes?',
                       ]
