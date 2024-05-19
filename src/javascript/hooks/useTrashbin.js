@@ -9,8 +9,8 @@ import { inflate } from '../tools/pack';
 
 const getItems = async (keys, storage) => {
   await localforageReady();
-  return (
-    Promise.all(keys.map(async (hash) => {
+  const items = await Promise.all(keys.map(async (hash) => {
+    try {
       const binary = await storage.getItem(hash);
       const inflated = await inflate(binary);
       return {
@@ -18,8 +18,12 @@ const getItems = async (keys, storage) => {
         lines: inflated.split('\n'),
         binary,
       };
-    }))
-  );
+    } catch (error) {
+      return null;
+    }
+  }));
+
+  return items.filter(Boolean);
 };
 
 const useTrashbin = () => {
