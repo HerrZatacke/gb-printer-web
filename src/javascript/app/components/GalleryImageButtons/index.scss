@@ -2,16 +2,21 @@
   height: 100%;
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   align-items: center;
   cursor: default;
   padding: 0 10px;
+  gap: 4px;
+
+  body.is-touch & {
+    gap: 8px;
+  }
 
   &__button {
     width: 20px;
     height: 20px;
     border: none;
     @include theme-background-color($color-grey-90, $color-grey-30);
-    margin-right: 5px;
     padding: 0 ;
     cursor: pointer;
     @include theme-color($color-tertiary, $color-tertiary-bright);
