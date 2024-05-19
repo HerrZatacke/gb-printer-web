@@ -1,6 +1,6 @@
 import Queue from 'promise-queue/lib';
 import OctoClient from '../../../../tools/OctoClient';
-import getUploadImages from '../../../../tools/getUploadImages';
+import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
 import { Actions } from '../../actions';
 
@@ -51,7 +51,7 @@ const middleware = (store) => (action) => {
         switch (action.payload.direction) {
           case 'up': {
             const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
-            return getUploadImages(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'))
+            return getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'))
               .then(octoClient.updateRemoteStore.bind(octoClient));
           }
 

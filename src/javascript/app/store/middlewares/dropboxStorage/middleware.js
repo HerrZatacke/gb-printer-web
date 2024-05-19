@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue/lib';
-import getUploadImages from '../../../../tools/getUploadImages';
+import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
 import DropboxClient from '../../../../tools/DropboxClient';
 import createDropboxContentHasher from '../../../../tools/DropboxClient/createDropboxContentHasher';
@@ -150,7 +150,7 @@ const middleware = (store) => {
 
               case 'up': {
                 const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
-                return getUploadImages(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'))
+                return getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'))
                   .then((changes) => dropboxClient.upload(changes, 'settings'))
                   .then((result) => {
                     store.dispatch({

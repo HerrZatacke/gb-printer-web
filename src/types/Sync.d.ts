@@ -1,19 +1,29 @@
 import { Frame } from './Frame';
-import { Image, MonochromeImage, RGBNImage } from './Image';
-import { JSONExportState } from '../javascript/app/store/middlewares/settings';
+import { MonochromeImage, RGBNImage } from './Image';
+import { ExportableState } from '../javascript/tools/getGetSettings/types';
 
-export interface RepoContents {
-  images: Image[],
-  frames: Frame[],
-  settings: JSONExportState
+export interface JSONExportState {
+  state: ExportableState,
 }
 
-interface RepoFile {
+export interface JSONExportBinary {
+  [k: string]: string,
+}
+
+export type JSONExport = JSONExportState & JSONExportBinary;
+
+export interface RepoFile {
   contentHash: string,
   hash: string,
   name: string,
   path: string,
   getFileContent: () => Promise<string>,
+}
+
+export interface RepoContents {
+  images: RepoFile[],
+  frames: RepoFile[],
+  settings: JSONExportState
 }
 
 export interface UploadFile {
@@ -25,15 +35,17 @@ export interface KeepFile {
   destination: string,
 }
 
-export interface WhateverFile {
+export interface DownloadInfo {
+  folder?: 'images' | 'frames',
+  filename: string,
   blob: Blob,
-  folder: string,
+  title: string,
 }
 
 export interface SyncFile extends Partial<MonochromeImage & RGBNImage & Frame> {
   hash: string,
-  files: WhateverFile[],
-  inRepo: RepoFile[]
+  files: DownloadInfo[],
+  inRepo: RepoFile[],
 }
 
 export interface RemoteFiles {
@@ -44,3 +56,8 @@ export interface RemoteFiles {
 export type ExportStats = Record<string, number>;
 
 export type AddToQueueFn<T> = (what: string, throttle: number, fn: () => Promise<T>, isSilent?: boolean) => Promise<T>
+
+export interface RepoTasks {
+  upload: UploadFile[],
+  del: RepoFile[],
+}

@@ -7,13 +7,7 @@ import { State } from '../../app/store/State';
 import { Palette } from '../../../types/Palette';
 import { Image } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
-
-export interface DownloadInfo {
-  folder?: 'images', // used for Git-Sync
-  filename: string,
-  blob: Blob,
-  title: string,
-}
+import { DownloadInfo } from '../../../types/Sync';
 
 const getPrepareFiles =
   (

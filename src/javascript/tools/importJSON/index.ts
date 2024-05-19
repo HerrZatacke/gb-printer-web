@@ -1,7 +1,7 @@
 import readFileAs, { ReadAs } from '../readFileAs';
 import { Actions } from '../../app/store/actions';
 import { TypedStore } from '../../app/store/State';
-import { JSONExportState } from '../../app/store/middlewares/settings';
+import { JSONExportState } from '../../../types/Sync';
 
 const getImportJSON = ({ dispatch }: TypedStore) => async (file: File) => {
   const data = await readFileAs(file, ReadAs.TEXT);

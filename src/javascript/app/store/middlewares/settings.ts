@@ -8,17 +8,7 @@ import { Actions } from '../actions';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { ExportTypes } from '../defaults';
 import { State } from '../State';
-import { ExportableState } from '../../../tools/getGetSettings/types';
-
-export interface JSONExportState {
-  state: ExportableState,
-}
-
-interface JSONExportBinary {
-  [k: string]: string,
-}
-
-type JSONExport = JSONExportState & JSONExportBinary;
+import { JSONExport } from '../../../../types/Sync';
 
 const mergeSettings = (
   dispatch: Dispatch<AnyAction>,
