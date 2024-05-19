@@ -1,6 +1,11 @@
 import getGetSettings from '../getGetSettings';
+import { TypedStore } from '../../app/store/State';
+import { ExportStats, KeepFile, RemoteFiles, SyncFile, UploadFile } from '../../../types/Sync';
+import { ExportTypes } from '../../app/store/defaults';
 
-const extFromType = (type) => {
+type PrepareRemoteFilesFn = (fileCollection: SyncFile[], lastUpdateUTC: number) => Promise<RemoteFiles>;
+
+const extFromType = (type: string): string => {
   switch (type) {
     case 'image/png':
       return 'png';
@@ -22,13 +27,13 @@ const extFromType = (type) => {
   }
 };
 
-const getPrepareRemoteFiles = (store) => {
+const getPrepareRemoteFiles = (store: TypedStore): PrepareRemoteFilesFn => {
   const getSettings = getGetSettings(store);
 
-  return (fileCollection, lastUpdateUTC) => {
-    const toUpload = [];
-    const toKeep = [];
-    const stats = {};
+  return async (fileCollection: SyncFile[], lastUpdateUTC: number): Promise<RemoteFiles> => {
+    const toUpload: UploadFile[] = [];
+    const toKeep: KeepFile[] = [];
+    const stats: ExportStats = {};
 
     fileCollection.forEach(({ hash, files, inRepo }) => {
       toKeep.push(...inRepo.map(({ path }) => {
@@ -59,24 +64,23 @@ const getPrepareRemoteFiles = (store) => {
       .join('\n');
 
     // querying only remote settings, so no state object needs to be provided
-    return getSettings('remote', { lastUpdateUTC })
-      .then((remoteSettings) => {
-        toUpload.push(
-          {
-            destination: 'README.md',
-            blob: new Blob([...md], { type: 'text/plain' }),
-          },
-          {
-            destination: 'settings.json',
-            blob: new Blob([...remoteSettings], { type: 'application/json' }),
-          },
-        );
+    const remoteSettings: string = await getSettings(ExportTypes.REMOTE, { lastUpdateUTC });
 
-        return {
-          toUpload: toUpload.filter(Boolean),
-          toKeep: toKeep.filter(Boolean),
-        };
-      });
+    toUpload.push(
+      {
+        destination: 'README.md',
+        blob: new Blob([...md], { type: 'text/plain' }),
+      },
+      {
+        destination: 'settings.json',
+        blob: new Blob([...remoteSettings], { type: 'application/json' }),
+      },
+    );
+
+    return {
+      toUpload: toUpload.filter(Boolean),
+      toKeep: toKeep.filter(Boolean),
+    };
   };
 };
 
