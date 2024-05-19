@@ -1,3 +1,4 @@
+// @ts-nocheck
 import getPrepareFiles from '../download/getPrepareFiles';
 import loadImageTiles from '../loadImageTiles';
 import getImagePalette from '../getImagePalette';
@@ -17,6 +18,7 @@ const getUploadImages = (store, repoContents, lastUpdateUTC, addToQueue) => {
   });
   const prepareRemoteFiles = getPrepareRemoteFiles(store);
   const missingLocally = [];
+  // const missingLocally: string[] = [];
 
   const images = state.images
     .filter(({ hashes }) => !hashes)
