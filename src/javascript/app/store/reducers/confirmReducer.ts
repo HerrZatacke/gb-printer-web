@@ -1,15 +1,15 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import {
-  ComfirmAction,
-  ComfirmAskAction,
-  ComfirmAnsweredAction,
-  Dialog,
+  ConfirmAction,
+  ConfirmAskAction,
+  ConfirmAnsweredAction,
 } from '../../../../types/actions/ConfirmActions';
+import { Dialog } from '../../../../types/Dialog';
 
 const confirmReducer = (
   value: Dialog[] = [],
-  action: ComfirmAskAction | ComfirmAction | ComfirmAnsweredAction,
+  action: ConfirmAskAction | ConfirmAction | ConfirmAnsweredAction,
 ): Dialog[] => {
   switch (action.type) {
     case Actions.CONFIRM_ASK: {

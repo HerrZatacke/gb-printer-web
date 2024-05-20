@@ -1,6 +1,7 @@
 import { Actions } from '../actions';
 import { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 
 const importMessage: MiddlewareWithState = (store) => {
 
@@ -124,7 +125,7 @@ const importMessage: MiddlewareWithState = (store) => {
               });
             },
           },
-        });
+        } as ConfirmAskAction);
       }
     }
 

@@ -1,18 +1,12 @@
 import { Actions } from '../../javascript/app/store/actions';
+import { Dialog } from '../Dialog';
 
-export interface Dialog {
-  message: string,
-  questions: () => object[],
-  confirm: () => void,
-  deny: () => void,
-}
-
-export interface ComfirmAskAction {
+export interface ConfirmAskAction {
   type: Actions.CONFIRM_ASK,
   payload: Dialog,
 }
 
-export interface ComfirmAction {
+export interface ConfirmAction {
   type:
     Actions.ADD_FRAME |
     Actions.ADD_IMAGES |
@@ -22,12 +16,6 @@ export interface ComfirmAction {
     Actions.PALETTE_DELETE,
 }
 
-export interface ComfirmAnsweredAction {
+export interface ConfirmAnsweredAction {
   type: Actions.CONFIRM_ANSWERED,
-}
-
-export interface DialogOption {
-  value: string,
-  name: string,
-  selected?: boolean,
 }

@@ -55,7 +55,7 @@ import showSerials from './reducers/showSerialsReducer';
 import trashCount, { TrashCount } from './reducers/trashCountReducer';
 import videoParams from './reducers/videoParamsReducer';
 import windowDimensions, { WindowDimensions } from './reducers/windowDimensionsReducer';
-import { Dialog } from '../../../types/actions/ConfirmActions';
+import { Dialog } from '../../../types/Dialog';
 import { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/actions/StorageActions';
 import { FrameGroup } from '../../../types/FrameGroup';
 import { Frame } from '../../../types/Frame';

@@ -1,8 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
-import useQuestions from '../../../../hooks/useQuestions';
+import useDialog from '../../../../hooks/useDialog';
 import Select from './types/Select';
 import Input from '../../Input';
 import InfoText from '../../InfoText';
@@ -10,26 +9,8 @@ import SVG from '../../SVG';
 import './index.scss';
 
 const Confirm = () => {
-  const {
-    message,
-    questionsState,
-    confirm,
-    deny,
-  } = useSelector((state) => {
-    const toConfirm = state.confirm[0];
-    if (!toConfirm) {
-      return {};
-    }
 
-    return ({
-      message: toConfirm.message,
-      questionsState: toConfirm.questions || (() => ([])),
-      confirm: toConfirm.confirm,
-      deny: toConfirm?.deny,
-    });
-  });
-
-  const [questions, values, setSelected] = useQuestions(questionsState);
+  const { dialog: { message, confirm, deny }, questions, values, setSelected } = useDialog();
 
   const notComplete = questions.find(({ type }) => type === 'confirmForm')?.notComplete;
 
@@ -53,7 +34,7 @@ const Confirm = () => {
                   label={label}
                   options={options}
                   setSelected={({ target: { value } }) => {
-                    setSelected(key, value);
+                    setSelected({ [key]: value });
                   }}
                 />
               );
@@ -70,7 +51,7 @@ const Confirm = () => {
                   min={min}
                   max={max}
                   onChange={(update) => {
-                    setSelected(key, update);
+                    setSelected({ [key]: update });
                   }}
                 />
               );
@@ -91,7 +72,7 @@ const Confirm = () => {
                     checked={values[key]}
                     disabled={disabled}
                     onChange={({ target }) => {
-                      setSelected(key, target.checked);
+                      setSelected({ [key]: target.checked });
                     }}
                   />
                   <SVG name="checkmark" />
