@@ -3,15 +3,22 @@ import dayjs from 'dayjs';
 import { dateFormatInput, timeFormatInput, dateFormat } from '../app/defaults';
 
 
-window.dayjs = dayjs;
+export interface UseDateTime {
+  date: string,
+  time: string,
+  setDate: (date: string) => void,
+  setTime: (time: string) => void,
+  updateDate: (date: string) => void,
+  updateTime: (time: string) => void,
+}
 
-const useDateTime = (created, updateCreated) => {
+const useDateTime = (created: string, updateCreated: (value: string) => void): UseDateTime => {
 
   const dateObject = dayjs(created);
   const [date, setDate] = useState(created ? dateObject.format(dateFormatInput) : '');
   const [time, setTime] = useState(created ? dateObject.format(timeFormatInput) : '');
 
-  const updateDate = (value) => {
+  const updateDate = (value: string) => {
     const [y, m, d] = value.split('-');
 
     const year = parseInt(y, 10);
@@ -24,13 +31,13 @@ const useDateTime = (created, updateCreated) => {
     }
 
     const newDate = dayjs(created)
-      .date(d)
-      .month(m - 1)
-      .year(y);
+      .date(day)
+      .month(month - 1)
+      .year(year);
     updateCreated(newDate.format(dateFormat));
   };
 
-  const updateTime = (value) => {
+  const updateTime = (value: string) => {
     const [h, m] = value.split(':');
 
     const hour = parseInt(h, 10);
@@ -42,22 +49,19 @@ const useDateTime = (created, updateCreated) => {
     }
 
     const newDate = dayjs(created)
-      .hour(h)
-      .minute(m);
+      .hour(hour)
+      .minute(minute);
     updateCreated(newDate.format(dateFormat));
   };
 
-  // props.updatecreated(dayjs(target.value).format(dateFormat));
-
-
-  return [
+  return {
     date,
     time,
     setDate,
     setTime,
     updateDate,
     updateTime,
-  ];
+  };
 };
 
 export default useDateTime;

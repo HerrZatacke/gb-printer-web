@@ -32,7 +32,7 @@ const ImageMeta = ({
   rotation,
   updateRotation,
 }) => {
-  const [date, time, setDate, setTime, updateDate, updateTime] = useDateTime(created, updatecreated);
+  const { date, time, setDate, setTime, updateDate, updateTime } = useDateTime(created, updatecreated);
 
   const tableData = {
     ...meta,
