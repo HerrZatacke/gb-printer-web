@@ -26,6 +26,8 @@ const Navigation = () => {
     trashCount,
   } = useTrashbin();
 
+  const sum = trashCount.frames + trashCount.images;
+
   const className = ({ isActive }) => `navigation__link ${isActive ? 'navigation__link--active' : ''}`;
 
   return (
@@ -106,9 +108,9 @@ const Navigation = () => {
             onClick={() => showTrash(true)}
           >
             <SVG name="delete" />
-            { trashCount.sum > 0 ? (
+            { sum > 0 ? (
               <span className="navigation__link-bubble">
-                { trashCount.sum }
+                { sum }
               </span>
             ) : null }
           </button>

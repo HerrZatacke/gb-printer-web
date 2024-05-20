@@ -12,13 +12,15 @@ const Trashbin = () => {
     trashCount,
   } = useTrashbin();
 
+  const sum = trashCount.frames + trashCount.images;
+
   return (
     <Lightbox
       className="trashbin"
       confirm={() => {
         showTrash(false);
       }}
-      header={`Trash (${trashCount.sum} items)`}
+      header={`Trash (${sum} items)`}
     >
       <ul className="trashbin__list">
         <li className="trashbin__option">
@@ -52,11 +54,11 @@ const Trashbin = () => {
             type="button"
             className="trashbin__button trashbin__button--sum button"
             title="Purge all"
-            disabled={trashCount.sum === 0}
+            disabled={sum === 0}
             onClick={purgeTrash}
           >
             <span className="trashbin__button-label">
-              { `Purge all (${trashCount.sum})` }
+              { `Purge all (${sum})` }
             </span>
           </button>
         </li>
