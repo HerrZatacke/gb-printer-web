@@ -1,12 +1,18 @@
 import { useEffect } from 'react';
 
+export interface OverlayGlobalKeysParams {
+  confirm?: () => void,
+  canConfirm: boolean,
+  deny?: () => void,
+}
+
 const useOverlayGlobalKeys = ({
-  confirm = null,
-  canConfirm = null,
-  deny = null,
-}) => {
+  confirm,
+  canConfirm,
+  deny,
+}: OverlayGlobalKeysParams): void => {
   useEffect(() => {
-    const listener = (ev) => {
+    const listener = (ev: KeyboardEvent) => {
       if (ev.key === 'Escape') {
         if (deny) {
           deny();
