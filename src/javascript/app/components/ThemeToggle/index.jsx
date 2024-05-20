@@ -1,31 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import SVG from '../SVG';
-import useTheme, { themes } from '../../../hooks/useTheme';
+import { useTheme, Theme } from '../../../hooks/useTheme';
 import './index.scss';
 
 const ThemeToggle = ({ closeNavigation }) => {
-  const [theme, setTheme] = useState(localStorage.getItem('gbp-web-theme') || themes[0]);
+  const { theme, setTheme } = useTheme();
 
-  useTheme(theme);
-
-  const title = theme === themes[0] ? 'Switch to dark mode' : 'Switch to bright mode';
+  const title = theme === Theme.BRIGHT ? 'Switch to dark mode' : 'Switch to bright mode';
 
   return (
     <label
       className="theme-toggle navigation__link"
       title={title}
     >
-      <SVG name={theme === themes[0] ? 'sun' : 'moon'} />
+      <SVG name={theme === Theme.BRIGHT ? 'sun' : 'moon'} />
       <span className="theme-toggle__title">
         {title}
       </span>
       <input
         type="checkbox"
-        checked={theme === themes[0]}
+        checked={theme === Theme.BRIGHT}
         onChange={({ target }) => {
           closeNavigation();
-          setTheme(target.checked ? themes[0] : themes[1]);
+          setTheme(target.checked ? Theme.BRIGHT : Theme.DARK);
         }}
       />
     </label>
