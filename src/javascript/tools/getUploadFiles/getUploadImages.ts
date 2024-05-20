@@ -1,6 +1,6 @@
 import { RGBNTiles } from 'gb-image-decoder';
 import { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
-import { isRGBNImage } from '../isRGBNImage';
+import { isRGBNImage, reduceImagesMonochrome } from '../isRGBNImage';
 import { AddToQueueFn, RepoContents, RepoFile, SyncFile } from '../../../types/Sync';
 import getImagePalette from '../getImagePalette';
 import { State } from '../../app/store/State';
@@ -38,9 +38,7 @@ export const getUploadImages = async (
   const images: TmpInfo[] = state.images
 
     // ToDo: This removes RGBN images - can we handle this?
-    .reduce((acc: MonochromeImage[], image: Image): MonochromeImage[] => (
-      isRGBNImage(image) ? acc : [...acc, (image as MonochromeImage)]
-    ), [])
+    .reduce(reduceImagesMonochrome, [])
 
     .map((image: Image): TmpInfo => {
       const searchHashes: string[] = isRGBNImage(image) ? Object.values((image as RGBNImage).hashes) : [image.hash];

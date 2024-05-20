@@ -3,11 +3,7 @@ import { addSortIndex, removeSortIndex, sortImages } from '../sortImages';
 import uniqueBy from '../unique/by';
 import { State } from '../../app/store/State';
 import { Image, MonochromeImage } from '../../../types/Image';
-import { isRGBNImage } from '../isRGBNImage';
-
-const filterRGB = (acc: MonochromeImage[], image?: Image): MonochromeImage[] => (
-  (!image || isRGBNImage(image)) ? acc : [...acc, (image as MonochromeImage)]
-);
+import { reduceImagesMonochrome } from '../isRGBNImage';
 
 const uniqeHash = uniqueBy<Image>('hash');
 
@@ -17,11 +13,11 @@ const getPreviewImages = (state: State) => (): MonochromeImage[] => {
     .map((imageHash) => (
       state.images.find(({ hash }) => hash === imageHash)
     ))
-    .reduce(filterRGB, []);
+    .reduce(reduceImagesMonochrome, []);
 
   const filtered = (selectedImages.length > 1) ?
     [] :
-    getFilteredImages(state).reduce(filterRGB, []);
+    getFilteredImages(state).reduce(reduceImagesMonochrome, []);
 
   const allImages = ((selectedImages.length + filtered.length) > 1) ?
     [] :
@@ -29,7 +25,7 @@ const getPreviewImages = (state: State) => (): MonochromeImage[] => {
       .map(addSortIndex)
       .sort(sortImages({ sortBy: state.sortBy }))
       .map(removeSortIndex)
-      .reduce(filterRGB, []);
+      .reduce(reduceImagesMonochrome, []);
 
   const previewImages = uniqeHash([
     selectedImages.shift(),
@@ -38,12 +34,12 @@ const getPreviewImages = (state: State) => (): MonochromeImage[] => {
     allImages.pop(),
     filtered.pop(),
     selectedImages.pop(),
-  ].reduce(filterRGB, []));
+  ].reduce(reduceImagesMonochrome, []));
 
   return [
     previewImages.shift(),
     previewImages.pop(),
-  ].reduce(filterRGB, []);
+  ].reduce(reduceImagesMonochrome, []);
 };
 
 export default getPreviewImages;
