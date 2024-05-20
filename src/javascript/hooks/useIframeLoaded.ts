@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { State } from '../app/store/State';
 
 
-const useIframeLoaded = (timeout) => {
-  const { printerUrl, printerConnected } = useSelector((state) => {
+export interface UseIframeLoaded {
+  failed: boolean,
+  loaded: boolean,
+  printerUrl: string | null,
+  printerConnected: boolean,
+}
+
+const useIframeLoaded = (timeout: number): UseIframeLoaded => {
+  const { printerUrl, printerConnected } = useSelector((state: State) => {
     const printerParams = state.printerParams ? `#${encodeURI(state.printerParams)}` : '';
     return ({
       printerUrl: state.printerUrl ? `${state.printerUrl}remote.html${printerParams}` : null,
@@ -11,9 +19,9 @@ const useIframeLoaded = (timeout) => {
     });
   });
 
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const timer = useRef(null);
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [failed, setFailed] = useState<boolean>(false);
+  const timer = useRef<number>();
 
   useEffect(() => {
     if (!loaded && !failed && !timer.current) {
