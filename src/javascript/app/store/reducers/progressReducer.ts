@@ -8,7 +8,7 @@ import {
 } from '../../../../types/actions/ProgressActions';
 import { AddImagesAction } from '../../../../types/actions/ImageActions';
 import { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
-import { ComfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
+import { ConfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
 
 export interface Progress {
   gif: number,
@@ -24,7 +24,7 @@ const progressReducer = (
     ProgressExecutePluginAction |
     ProgressPrinterProgressAction |
     AddImagesAction |
-    ComfirmAnsweredAction |
+    ConfirmAnsweredAction |
     ImportQueueCancelAction,
 ): Progress => {
   switch (action.type) {
