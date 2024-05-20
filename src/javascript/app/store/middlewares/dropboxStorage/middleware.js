@@ -3,7 +3,7 @@ import Queue from 'promise-queue/lib';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
 import DropboxClient from '../../../../tools/DropboxClient';
-import createDropboxContentHasher from '../../../../tools/DropboxClient/createDropboxContentHasher';
+import { hasher } from '../../../../tools/DropboxClient/dropboxContentHasher';
 import parseAuthParams from '../../../../tools/parseAuthParams';
 import { getPrepareFiles } from '../../../../tools/download';
 import getImagePalette from '../../../../tools/getImagePalette';
@@ -208,17 +208,13 @@ const middleware = (store) => {
             const imagePalette = getImagePalette(state, image);
             return loadTiles(image)
               .then(prepareFiles(imagePalette, image))
-              .then((imageBlobs) => Promise.all(imageBlobs.map((imageB) => {
-                const hasher = createDropboxContentHasher();
-                return imageB.blob.arrayBuffer()
-                  .then((arrayBuffer) => {
-                    hasher.update(arrayBuffer);
-                    return ({
-                      ...imageB,
-                      dropboxContentHash: hasher.digest('hex'),
-                    });
-                  });
-              })));
+              .then((imageBlobs) => Promise.all(imageBlobs.map((imageB) => (
+                imageB.blob.arrayBuffer()
+                  .then(async (arrayBuffer) => ({
+                    ...imageB,
+                    dropboxContentHash: await hasher(arrayBuffer),
+                  }))
+              ))));
           })
         )))
           .then((resultImages) => resultImages.flat())
@@ -270,9 +266,7 @@ const middleware = (store) => {
               payload: error.message,
             });
           });
-
       }
-
     }
 
     if (action.type === Actions.DROPBOX_START_AUTH) {
