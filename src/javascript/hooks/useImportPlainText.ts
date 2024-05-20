@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Actions } from '../app/store/actions';
 
 const useImportPlainText = () => {
   const dispatch = useDispatch();
-  const importPlainText = useRef((textDump) => {
+  const importPlainText = useCallback((textDump: string) => {
     let file;
     try {
       file = new File([...textDump], 'Text input.txt', { type: 'text/plain' });
@@ -16,9 +16,9 @@ const useImportPlainText = () => {
       type: Actions.IMPORT_FILES,
       payload: { files: [file] },
     });
-  });
+  }, [dispatch]);
 
-  return importPlainText.current;
+  return importPlainText;
 };
 
 export default useImportPlainText;
