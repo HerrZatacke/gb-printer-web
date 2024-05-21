@@ -5,12 +5,12 @@ export enum ReadAs {
   BINARY_STRING = 'binaryString',
 }
 
-function readFileAs(file: File, readAs: ReadAs.UINT8_ARRAY): Promise<Uint8Array>;
-function readFileAs(file: File, readAs: ReadAs.TEXT): Promise<string>;
-function readFileAs(file: File, readAs: ReadAs.DATA_URL): Promise<string>;
-function readFileAs(file: File, readAs: ReadAs.BINARY_STRING): Promise<string>;
+function readFileAs(file: File | Blob, readAs: ReadAs.UINT8_ARRAY): Promise<Uint8Array>;
+function readFileAs(file: File | Blob, readAs: ReadAs.TEXT): Promise<string>;
+function readFileAs(file: File | Blob, readAs: ReadAs.DATA_URL): Promise<string>;
+function readFileAs(file: File | Blob, readAs: ReadAs.BINARY_STRING): Promise<string>;
 
-function readFileAs(file: File, readAs: ReadAs): Promise<Uint8Array | string> {
+function readFileAs(file: File | Blob, readAs: ReadAs): Promise<Uint8Array | string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
