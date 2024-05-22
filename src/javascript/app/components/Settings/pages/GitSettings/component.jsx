@@ -130,6 +130,8 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
             <a
               className="inputgroup__note"
               href="https://github.com/settings/tokens/new?scopes=repo"
+              target="_blank"
+              rel="noreferrer"
             >
               How to obtain a token
             </a>
