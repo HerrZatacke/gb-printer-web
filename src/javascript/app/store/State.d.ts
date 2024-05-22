@@ -2,7 +2,7 @@ import { Dispatch, MiddlewareAPI } from 'redux';
 import { QueueImage } from '../../../types/QueueImage';
 import { Dialog } from '../../../types/Dialog';
 import { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/actions/StorageActions';
-import { CurrentEditBatch, CurrentEditSingleImage, Image, RGBNHashes } from '../../../types/Image';
+import { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
 import { Palette } from '../../../types/Palette';
 import { FrameGroup } from '../../../types/FrameGroup';
 import { Frame } from '../../../types/Frame';
@@ -26,7 +26,7 @@ export interface State {
   confirm: Dialog[],
   dragover: boolean,
   dropboxStorage: DropBoxSettings,
-  editImage: CurrentEditSingleImage | CurrentEditBatch | null,
+  editImage: CurrentEditBatch | null,
   editFrame: string | null,
   editPalette: Palette | null,
   enableDebug: boolean,

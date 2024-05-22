@@ -47,18 +47,13 @@ export interface NewRGBNImageAction {
   payload: 'newRGBN',
 }
 
-export interface EditImageAction {
-  type: Actions.EDIT_IMAGE
-  payload: string,
-}
-
 export interface EditImageSelectionAction {
   type: Actions.EDIT_IMAGE_SELECTION,
   payload: CurrentEditBatch,
 }
 
-export interface CancelEditImageAction {
-  type: Actions.CANCEL_EDIT_IMAGE,
+export interface CancelEditImagesAction {
+  type: Actions.CANCEL_EDIT_IMAGES,
 }
 
 export interface DownloadImageSelectionAction {

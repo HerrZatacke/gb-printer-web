@@ -56,11 +56,14 @@ const mapDispatchToProps = (dispatch, { hash }) => ({
       });
     }
   },
-  editImage: () => {
+  editImage: (tags) => {
     dispatch({
-      type: Actions.EDIT_IMAGE,
-      payload: hash,
-    });
+      type: Actions.EDIT_IMAGE_SELECTION,
+      payload: {
+        tags,
+        batch: [hash],
+      },
+    }); // as EditImageSelectionAction
   },
 });
 

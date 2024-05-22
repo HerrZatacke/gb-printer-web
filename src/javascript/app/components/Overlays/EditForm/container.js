@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import applyTagChanges from '../../../../tools/applyTagChanges';
 import { missingGreyPalette } from '../../../defaults';
 import { Actions } from '../../../store/actions';
+import { isRGBNImage } from '../../../../tools/isRGBNImage';
 
 const mapStateToProps = (state) => {
 
@@ -13,25 +14,36 @@ const mapStateToProps = (state) => {
     state.palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
   );
 
-  const image = state.images.find(({ hash }) => hash === state.editImage?.hash);
-  const { batch, tags: batchTags } = state?.editImage || {};
-
-  if (!state.editImage || !image) {
+  if (!state.editImage?.batch?.length) {
     return {
       hash: null,
       invertPalette: false,
       lockFrame: false,
       tags: [],
-      batch: 0,
+      imageCount: 0,
       height,
       findPalette,
     };
   }
 
+  const typeCount = state.editImage.batch.reduce((acc, selHash) => {
+    const image = state.images.find(({ hash }) => hash === selHash);
+    const isRGB = isRGBNImage(image);
+    return {
+      mono: acc.mono || !isRGB,
+      rgb: acc.rgb || isRGB,
+    };
+  }, { mono: false, rgb: false });
+
+  const mixedTypes = typeCount.mono && typeCount.rgb;
+
+  const { batch, tags } = state.editImage;
+  const image = state.images.find(({ hash }) => hash === batch[0]);
+
   return ({
     created: image.created || null,
     hash: image.hash,
-    tags: batch ? batchTags : image.tags,
+    tags,
     title: image.title,
     hashes: image.hashes,
     frame: image.frame,
@@ -39,8 +51,9 @@ const mapStateToProps = (state) => {
     meta: image.meta || null,
     palette: image.palette,
     invertPalette: image.invertPalette || false,
-    batch: batch ? batch.length : 0,
+    imageCount: batch?.length || 0,
     rotation: image.rotation || null,
+    mixedTypes,
     // frames,
 
     paletteShort: typeof image.palette === 'string' ? image.palette : null,
@@ -74,7 +87,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   cancel: () => {
     dispatch({
-      type: Actions.CANCEL_EDIT_IMAGE,
+      type: Actions.CANCEL_EDIT_IMAGES,
     });
   },
 });

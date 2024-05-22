@@ -11,69 +11,80 @@ import './index.scss';
 
 const EditImageTabs = (props) => {
 
+  const tabs = [
+    props.mixedTypes ? '' : 'pal',
+    props.regularImage ? 'frame' : '',
+    'tags',
+    'misc',
+  ].filter(Boolean);
+
+  const [tab, setTab] = useState(tabs[0]);
   const [tabIndex, setTabIndex] = useState(0);
 
-  const focusEvent = (newTabIndex) => () => {
-    setTabIndex(newTabIndex);
+  const focusEvent = (newTab) => () => {
+    setTab(newTab);
+    setTabIndex(tabs.findIndex((key) => key === newTab));
   };
 
   return (
     <div className="edit-image-tabs">
+      {tabs.join(' ')}
       <ul
         className="edit-image-tabs__list"
         style={{
           marginLeft: `-${tabIndex * 100}%`,
         }}
       >
-        <li
-          className={
-            classnames('edit-image-tabs__tab', {
-              'edit-image-tabs__tab--active': tabIndex === 0,
-            })
-          }
-          onFocus={focusEvent(0)}
-          onClick={focusEvent(0)}
-        >
-          { props.paletteRGBN ? (
-            <>
-              <button type="button" className="edit-image-tabs__button">
-                Edit Greytones
-              </button>
-              <GreySelect
-                values={props.paletteRGBN}
-                onChange={props.updatePalette}
-                useChannels={{
-                  r: !!props.hashes.r,
-                  g: !!props.hashes.g,
-                  b: !!props.hashes.b,
-                  n: !!props.hashes.n,
-                }}
-              />
-            </>
-          ) : (
-            <>
-              <button type="button" className="edit-image-tabs__button">
-                Select Palette
-              </button>
-              <PaletteSelect
-                value={props.paletteShort}
-                invertPalette={props.invertPalette}
-                onChange={props.updatePalette}
-                updateInvertPalette={props.updateInvertPalette}
-              />
-            </>
-          ) }
-        </li>
-        {props.regularImage ? (
-          // if image does not have exact height of a gameboy-camera image, frame select is not avaliable
+        { tabs.includes('pal') ? (
           <li
             className={
               classnames('edit-image-tabs__tab', {
-                'edit-image-tabs__tab--active': tabIndex === 1,
+                'edit-image-tabs__tab--active': tab === 'pal',
               })
             }
-            onFocus={focusEvent(1)}
-            onClick={focusEvent(1)}
+            onFocus={focusEvent('pal')}
+            onClick={focusEvent('pal')}
+          >
+            {props.paletteRGBN ? (
+              <>
+                <button type="button" className="edit-image-tabs__button">
+                  Edit Greytones
+                </button>
+                <GreySelect
+                  values={props.paletteRGBN}
+                  onChange={props.updatePalette}
+                  useChannels={{
+                    r: !!props.hashes.r,
+                    g: !!props.hashes.g,
+                    b: !!props.hashes.b,
+                    n: !!props.hashes.n,
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                <button type="button" className="edit-image-tabs__button">
+                  Select Palette
+                </button>
+                <PaletteSelect
+                  value={props.paletteShort}
+                  invertPalette={props.invertPalette}
+                  onChange={props.updatePalette}
+                  updateInvertPalette={props.updateInvertPalette}
+                />
+              </>
+            )}
+          </li>
+        ) : null}
+        { tabs.includes('frame') ? (
+          <li
+            className={
+              classnames('edit-image-tabs__tab', {
+                'edit-image-tabs__tab--active': tab === 'frame',
+              })
+            }
+            onFocus={focusEvent('frame')}
+            onClick={focusEvent('frame')}
           >
             <button type="button" className="edit-image-tabs__button">
               Select Frame
@@ -86,45 +97,49 @@ const EditImageTabs = (props) => {
             />
           </li>
         ) : null}
-        <li
-          className={
-            classnames('edit-image-tabs__tab', {
-              'edit-image-tabs__tab--active': tabIndex === 2,
-            })
-          }
-          onFocus={focusEvent(props.regularImage ? 2 : 1)}
-          onClick={focusEvent(props.regularImage ? 2 : 1)}
-        >
-          <button type="button" className="edit-image-tabs__button">
-            Tags
-          </button>
-          <TagsSelect
-            updateTags={props.updateTags}
-            tags={props.tags}
-          />
-        </li>
-        <li
-          className={
-            classnames('edit-image-tabs__tab', {
-              'edit-image-tabs__tab--active': tabIndex === 3,
-            })
-          }
-          onFocus={focusEvent(props.regularImage ? 3 : 2)}
-          onClick={focusEvent(props.regularImage ? 3 : 2)}
-        >
-          <button type="button" className="edit-image-tabs__button">
-            Misc
-          </button>
-          <ImageMeta
-            created={props.created}
-            hash={props.hash}
-            hashes={props.hashes}
-            updatecreated={props.updateCreated}
-            meta={props.meta}
-            rotation={props.rotation}
-            updateRotation={props.updateRotation}
-          />
-        </li>
+        { tabs.includes('tags') ? (
+          <li
+            className={
+              classnames('edit-image-tabs__tab', {
+                'edit-image-tabs__tab--active': tab === 'tags',
+              })
+            }
+            onFocus={focusEvent('tags')}
+            onClick={focusEvent('tags')}
+          >
+            <button type="button" className="edit-image-tabs__button">
+              Tags
+            </button>
+            <TagsSelect
+              updateTags={props.updateTags}
+              tags={props.tags}
+            />
+          </li>
+        ) : null}
+        { tabs.includes('misc') ? (
+          <li
+            className={
+              classnames('edit-image-tabs__tab', {
+                'edit-image-tabs__tab--active': tab === 'misc',
+              })
+            }
+            onFocus={focusEvent('misc')}
+            onClick={focusEvent('misc')}
+          >
+            <button type="button" className="edit-image-tabs__button">
+              Misc
+            </button>
+            <ImageMeta
+              created={props.created}
+              hash={props.hash}
+              hashes={props.hashes}
+              updatecreated={props.updateCreated}
+              meta={props.meta}
+              rotation={props.rotation}
+              updateRotation={props.updateRotation}
+            />
+          </li>
+        ) : null}
       </ul>
     </div>
   );
@@ -158,6 +173,7 @@ EditImageTabs.propTypes = {
   updateRotation: PropTypes.func.isRequired,
   meta: PropTypes.object,
   rotation: PropTypes.number,
+  mixedTypes: PropTypes.bool,
 };
 
 EditImageTabs.defaultProps = {
@@ -171,6 +187,7 @@ EditImageTabs.defaultProps = {
   // frames: null,
   meta: null,
   rotation: null,
+  mixedTypes: null,
 };
 
 export default EditImageTabs;

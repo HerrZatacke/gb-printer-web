@@ -39,7 +39,12 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
   if (action.type === Actions.BATCH_TASK) {
     const state = store.getState();
     const { images, imageSelection, pageSize } = state;
-    const batchImages = images.filter(({ hash }) => imageSelection.includes(hash));
+    // const batchImages = images.filter(({ hash }) => imageSelection.includes(hash));
+
+    const batchImages = imageSelection.reduce((acc: Image[], selHash: string): Image[] => {
+      const image = images.find(({ hash }) => hash === selHash);
+      return image ? [image, ...acc] : acc;
+    }, []);
 
     if (imageSelection.length) {
       switch (action.payload) {

@@ -61,7 +61,7 @@ import { FrameGroup } from '../../../types/FrameGroup';
 import { Frame } from '../../../types/Frame';
 import { GalleryViews } from '../../consts/GalleryViews';
 import { ExportFrameMode } from '../../consts/exportFrameModes';
-import { CurrentEditBatch, CurrentEditSingleImage, Image, RGBNHashes } from '../../../types/Image';
+import { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
 import { ImportItem } from '../../../types/ImportItem';
 import { Palette } from '../../../types/Palette';
 import { ProgressLog } from '../../../types/actions/LogActions';
@@ -77,7 +77,7 @@ export interface Reducers extends ReducersMapObject {
   confirm: Reducer<Dialog[]>,
   dragover: Reducer<boolean>,
   dropboxStorage: Reducer<DropBoxSettings>,
-  editImage: Reducer<CurrentEditSingleImage | CurrentEditBatch | null>,
+  editImage: Reducer<CurrentEditBatch | null>,
   editFrame: Reducer<string | null>,
   editPalette: Reducer<Palette | null>,
   enableDebug: Reducer<boolean>,

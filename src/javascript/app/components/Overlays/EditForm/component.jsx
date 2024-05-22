@@ -37,7 +37,7 @@ const EditForm = (props) => {
     add: [],
     remove: [],
   });
-  const [batch, updateBatch] = useState(props.batch ? {
+  const [batch, updateBatch] = useState(props.imageCount ? {
     created: false,
     title: false,
     palette: false,
@@ -66,7 +66,7 @@ const EditForm = (props) => {
       height={props.height}
       className="edit-image"
       confirm={() => props.save({
-        batch: props.batch ? batch : false,
+        batch: props.imageCount ? batch : false,
         tagChanges,
       }, {
         hash: props.hash,
@@ -91,7 +91,7 @@ const EditForm = (props) => {
         />
       </label>
       {
-        !props.batch ? null : (
+        !props.imageCount ? null : (
           <span className="edit-image__title-hint">Use %n (or %nn, %nnn, ...) to add an index to the image titles</span>
         )
       }
@@ -107,7 +107,7 @@ const EditForm = (props) => {
           setIsRegularImage(tileCount === 360);
         }}
       />
-      { props.batch ? (
+      { props.imageCount > 1 ? (
         <div
           className="edit-image__batch-warn"
           style={usedPalette ? {
@@ -119,7 +119,7 @@ const EditForm = (props) => {
             color: usedPalette[0],
           } : null}
         >
-          { `You are editing ${props.batch} images` }
+          { `You are editing ${props.imageCount} images` }
           { willUpdateBatch ? (
             <p className="edit-image__batch-update-list">
               {`Will update: ${willUpdateBatch}`}
@@ -127,10 +127,13 @@ const EditForm = (props) => {
           ) : null}
         </div>
       ) : null }
+      <p>{ props.mixedTypes ? 'mixxxx' : 'singletype'}</p>
+      <p>{ isRegularImage ? 'isRegularImage' : 'not regular'}</p>
       <EditImageTabs
         created={created}
         updateCreated={onUpdate('created', updateCreated)}
         regularImage={isRegularImage}
+        mixedTypes={props.mixedTypes}
         lockFrame={lockFrame}
         hash={props.hash}
         hashes={props.hashes}
@@ -169,7 +172,7 @@ const EditForm = (props) => {
 };
 
 EditForm.propTypes = {
-  batch: PropTypes.number.isRequired,
+  imageCount: PropTypes.number.isRequired,
   created: PropTypes.string,
   cancel: PropTypes.func.isRequired,
   hash: PropTypes.string,
@@ -186,6 +189,7 @@ EditForm.propTypes = {
   findPalette: PropTypes.func.isRequired,
   meta: PropTypes.object,
   rotation: PropTypes.number,
+  mixedTypes: PropTypes.bool,
 };
 
 EditForm.defaultProps = {
@@ -198,6 +202,7 @@ EditForm.defaultProps = {
   frame: null,
   meta: null,
   rotation: null,
+  mixedTypes: null,
 };
 
 export default EditForm;

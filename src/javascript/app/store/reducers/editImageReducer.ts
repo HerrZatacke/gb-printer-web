@@ -1,10 +1,9 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { CurrentEditBatch, CurrentEditSingleImage } from '../../../../types/Image';
+import { CurrentEditBatch } from '../../../../types/Image';
 import {
-  CancelEditImageAction,
-  EditImageAction,
+  CancelEditImagesAction,
   EditImageSelectionAction,
   ImagesBatchUpdateAction,
   RehashImageAction,
@@ -12,22 +11,19 @@ import {
 } from '../../../../types/actions/ImageActions';
 
 const editImageReducer = (
-  value: CurrentEditSingleImage | null = null,
+  value: CurrentEditBatch | null = null,
   action:
-    EditImageAction |
     EditImageSelectionAction |
-    CancelEditImageAction |
+    CancelEditImagesAction |
     UpdateImageAction |
     RehashImageAction |
     ImagesBatchUpdateAction |
     GlobalUpdateAction,
-): CurrentEditSingleImage | CurrentEditBatch | null => {
+): CurrentEditBatch | null => {
   switch (action.type) {
-    case Actions.EDIT_IMAGE:
-      return { hash: action.payload };
     case Actions.EDIT_IMAGE_SELECTION:
       return action.payload;
-    case Actions.CANCEL_EDIT_IMAGE:
+    case Actions.CANCEL_EDIT_IMAGES:
     case Actions.UPDATE_IMAGE:
     case Actions.REHASH_IMAGE:
     case Actions.UPDATE_IMAGES_BATCH:

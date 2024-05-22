@@ -73,7 +73,7 @@ const GalleryImage = ({
       ev.preventDefault();
       updateImageSelection(isSelected ? 'remove' : 'add', ev.shiftKey, page);
     } else {
-      editImage();
+      editImage(tags);
     }
   };
 

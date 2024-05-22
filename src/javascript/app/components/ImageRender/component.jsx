@@ -26,7 +26,13 @@ const ImageRender = ({
           return;
         }
 
-        reportTileCount(loadedTiles.length);
+        reportTileCount(
+          loadedTiles.length ||
+          loadedTiles.r.length ||
+          loadedTiles.g.length ||
+          loadedTiles.b.length ||
+          loadedTiles.n.length,
+        );
         setTiles(loadedTiles);
       });
 
