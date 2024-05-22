@@ -1,6 +1,6 @@
 import { Dispatch, MiddlewareAPI } from 'redux';
 import { QueueImage } from '../../../types/QueueImage';
-import { Dialog } from '../../../types/actions/ConfirmActions';
+import { Dialog } from '../../../types/Dialog';
 import { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/actions/StorageActions';
 import { CurrentEditBatch, CurrentEditSingleImage, Image, RGBNHashes } from '../../../types/Image';
 import { Palette } from '../../../types/Palette';
