@@ -4,19 +4,12 @@ import { EventEmitter } from 'events';
 import readFileAs, { ReadAs } from '../readFileAs';
 import cleanPath from '../cleanPath';
 import { DropBoxSettings } from '../../../types/actions/StorageActions';
-import { AddToQueueFn, RepoFile, RepoTasks } from '../../../types/Sync';
-import { ExportableState } from '../getGetSettings/types';
+import { AddToQueueFn, JSONExportState, RepoContents, RepoFile, RepoTasks } from '../../../types/Sync';
 
 type DBFolderAll = Files.FileMetadataReference | Files.FolderMetadataReference | Files.DeletedMetadataReference;
 type DBFolderFile = Files.FileMetadataReference;
 
 const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
-
-interface RemoteContents {
-  images: RepoFile[],
-  frames: RepoFile[],
-  settings: Partial<ExportableState>,
-}
 
 interface UploadDeleteResult {
   uploaded: Files.FileMetadata[],
@@ -164,7 +157,7 @@ class DropboxClient extends EventEmitter {
     });
   }
 
-  async getRemoteContents(direction: 'diff' | 'up' | 'down'): Promise<RemoteContents> {
+  async getRemoteContents(direction: 'diff' | 'up' | 'down'): Promise<RepoContents> {
     const get = ['images', 'frames'];
     const isSilent = direction === 'diff';
 
@@ -180,7 +173,7 @@ class DropboxClient extends EventEmitter {
     const result = response.result as (Files.FileMetadata & { fileBlob: Blob });
 
     const settingsText = await readFileAs(result.fileBlob, ReadAs.TEXT);
-    const settings = JSON.parse(settingsText) as Partial<ExportableState>;
+    const settings = JSON.parse(settingsText) as JSONExportState;
 
     const [images, frames] = await Promise.all(get.map(async (folderPath) => {
       let entries: DBFolderAll[];
