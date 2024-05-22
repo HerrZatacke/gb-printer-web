@@ -60,3 +60,8 @@ export interface EditImageSelectionAction {
 export interface CancelEditImageAction {
   type: Actions.CANCEL_EDIT_IMAGE,
 }
+
+export interface DownloadImageSelectionAction {
+  type: Actions.DOWNLOAD_SELECTION,
+  payload: string[],
+}

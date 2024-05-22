@@ -1,12 +1,21 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 import unique from '../../../tools/unique';
 import { Actions } from '../actions';
+import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { Image } from '../../../../types/Image';
+import {
+  DeleteImagesAction,
+  DownloadImageSelectionAction,
+  EditImageSelectionAction,
+} from '../../../../types/actions/ImageActions';
+import { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
+import { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
 
-const collectTags = (batchImages) => (
+const collectTags = (batchImages: Image[]): string[] => (
   unique(batchImages.map(({ tags }) => tags).flat())
 );
 
-const batch = (store) => (next) => (action) => {
+const batch: MiddlewareWithState = (store) => (next) => (action) => {
 
   if (action.type === Actions.IMAGE_SELECTION_SHIFTCLICK) {
     const state = store.getState();
@@ -43,7 +52,7 @@ const batch = (store) => (next) => (action) => {
                 store.dispatch({
                   type: Actions.DELETE_IMAGES,
                   payload: imageSelection,
-                });
+                } as DeleteImagesAction);
               },
               deny: () => {
                 store.dispatch({
@@ -62,13 +71,13 @@ const batch = (store) => (next) => (action) => {
             payload: {
               imageSelection,
             },
-          });
+          } as SetVideoParamsAction);
           break;
         case 'download':
           store.dispatch({
             type: Actions.DOWNLOAD_SELECTION,
             payload: imageSelection,
-          });
+          } as DownloadImageSelectionAction);
           break;
         case 'edit':
           store.dispatch({
@@ -78,7 +87,7 @@ const batch = (store) => (next) => (action) => {
               tags: collectTags(batchImages),
               batch: batchImages.map(({ hash }) => hash),
             },
-          });
+          } as EditImageSelectionAction);
           break;
         default:
           break;
@@ -92,14 +101,14 @@ const batch = (store) => (next) => (action) => {
           payload: getFilteredImages(state)
             .slice(action.page * pageSize, (action.page + 1) * pageSize || undefined)
             .map(({ hash }) => hash),
-        });
+        } as ImageSelectionSetAction);
         break;
 
       case 'uncheckall':
         store.dispatch({
           type: Actions.IMAGE_SELECTION_SET,
           payload: [],
-        });
+        } as ImageSelectionSetAction);
         break;
 
       default:
