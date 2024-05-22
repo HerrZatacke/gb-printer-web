@@ -1,10 +1,12 @@
+import { AnyAction } from 'redux';
 import { Actions } from '../../actions';
+import { MiddlewareWithState } from '../../../../../types/MiddlewareWithState';
 
-const gitStorage = (store) => {
+const gitStorage: MiddlewareWithState = (store) => {
 
-  let middleware = null;
+  let middleware: (action: AnyAction) => Promise<void>;
 
-  return (next) => (action) => {
+  return (next) => async (action) => {
 
     next(action);
 
@@ -28,15 +30,12 @@ const gitStorage = (store) => {
       ) {
 
         if (!middleware) {
-          import(/* webpackChunkName: "gmw" */ './middleware')
-            .then(({ init, middleware: mw }) => {
-              init(store);
-              middleware = mw(store);
-              middleware(action);
-            });
-        } else {
-          middleware(action);
+          const { init, middleware: mw } = await import(/* webpackChunkName: "gmw" */ './middleware');
+          init(store);
+          middleware = mw(store);
         }
+
+        middleware(action);
       }
     }
 
