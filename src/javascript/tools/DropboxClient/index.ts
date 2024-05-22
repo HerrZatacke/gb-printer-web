@@ -4,7 +4,7 @@ import { EventEmitter } from 'events';
 import readFileAs, { ReadAs } from '../readFileAs';
 import cleanPath from '../cleanPath';
 import { DropBoxSettings } from '../../../types/actions/StorageActions';
-import { AddToQueueFn, JSONExportState, RepoContents, RepoFile, RepoTasks } from '../../../types/Sync';
+import { AddToQueueFn, JSONExportState, RepoContents, DropBoxRepoFile, RepoTasks } from '../../../types/Sync';
 
 type DBFolderAll = Files.FileMetadataReference | Files.FolderMetadataReference | Files.DeletedMetadataReference;
 export type DBFolderFile = Files.FileMetadataReference;
@@ -273,8 +273,8 @@ class DropboxClient extends EventEmitter {
     return entries;
   }
 
-  augmentFileList(type: 'images' | 'frames', files: DBFolderFile[], isSilent: boolean): RepoFile[] {
-    return files.map((fileMetaReference, index): RepoFile => {
+  augmentFileList(type: 'images' | 'frames', files: DBFolderFile[], isSilent: boolean): DropBoxRepoFile[] {
+    return files.map((fileMetaReference, index): DropBoxRepoFile => {
       const {
         path_lower: absolutePath,
         content_hash:

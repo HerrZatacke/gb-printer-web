@@ -13,11 +13,14 @@ export interface JSONExportBinary {
 export type JSONExport = JSONExportState & JSONExportBinary;
 
 export interface RepoFile {
-  contentHash: string,
   hash: string,
   name: string,
   path: string,
   getFileContent: () => Promise<string>,
+}
+
+export interface DropBoxRepoFile extends RepoFile {
+  contentHash: string,
 }
 
 export interface RepoContents {
