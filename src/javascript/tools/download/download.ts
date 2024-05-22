@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver';
 import blobToArrayBuffer from '../blobToArrayBuffer';
 import replaceDuplicateFilenames from '../replaceDuplicateFilenames';
-import { DownloadArrayBuffer, DownloadBlob, UniqueFilenameDownloadArrayBuffer } from './types';
+import { DownloadBlob, DownloadArrayBuffer } from './types';
 
 const download = (zipFileName: string | null) => async (files: DownloadBlob[]): Promise<void> => {
 
@@ -23,12 +23,11 @@ const download = (zipFileName: string | null) => async (files: DownloadBlob[]): 
       }))
   )));
 
-  const uniqueBufferFiles: UniqueFilenameDownloadArrayBuffer[] = replaceDuplicateFilenames(buffers);
+  const uniqueBufferFiles: DownloadArrayBuffer[] = replaceDuplicateFilenames(buffers);
 
-  uniqueBufferFiles.forEach(({ uFilename, arrayBuffer }: UniqueFilenameDownloadArrayBuffer) => {
-    zip.file(uFilename, arrayBuffer);
+  uniqueBufferFiles.forEach(({ filename, arrayBuffer }: DownloadArrayBuffer) => {
+    zip.file(filename, arrayBuffer);
   });
-
 
   const content: Blob = await zip.generateAsync({
     type: 'blob',

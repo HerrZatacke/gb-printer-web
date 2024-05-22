@@ -7,7 +7,7 @@ import { DropBoxSettings } from '../../../types/actions/StorageActions';
 import { AddToQueueFn, JSONExportState, RepoContents, RepoFile, RepoTasks } from '../../../types/Sync';
 
 type DBFolderAll = Files.FileMetadataReference | Files.FolderMetadataReference | Files.DeletedMetadataReference;
-type DBFolderFile = Files.FileMetadataReference;
+export type DBFolderFile = Files.FileMetadataReference;
 
 const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
 
@@ -23,10 +23,10 @@ class DropboxClient extends EventEmitter {
   private auth: DropboxAuth;
   private rootPath: string[];
 
-  constructor(settings: DropBoxSettings, addToQueue: AddToQueueFn<DropboxResponse<unknown>>) {
+  constructor(settings: DropBoxSettings, addToQueue: AddToQueueFn<unknown>) {
     super();
 
-    this.queueCallback = addToQueue;
+    this.queueCallback = addToQueue as AddToQueueFn<DropboxResponse<unknown>>;
     this.throttle = 30;
     this.rootPath = [];
 
@@ -213,7 +213,7 @@ class DropboxClient extends EventEmitter {
     };
   }
 
-  async getImageContents() {
+  async getImageContents(): Promise<DBFolderFile[]> {
     let entries: DBFolderAll[];
     let hasMore: boolean;
     let cursor = '';
@@ -240,7 +240,9 @@ class DropboxClient extends EventEmitter {
       entries = entries.concat(await this.getMoreContents(cursor));
     }
 
-    return entries.filter(({ '.tag': tag }) => tag === 'file');
+    return entries.reduce((acc: DBFolderFile[], item: DBFolderAll): DBFolderFile[] => (
+      (item['.tag'] === 'file') ? [...acc, item as DBFolderFile] : acc
+    ), []);
   }
 
   async getMoreContents(cursor: string, isSilent?: boolean): Promise<DBFolderAll[]> {

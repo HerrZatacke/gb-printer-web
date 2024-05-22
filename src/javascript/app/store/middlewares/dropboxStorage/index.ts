@@ -1,15 +1,21 @@
+import { AnyAction } from 'redux';
 import { Actions } from '../../actions';
+import { MiddlewareWithState } from '../../../../../types/MiddlewareWithState';
 
-const dropboxStorage = (store) => {
-  let middleware;
-
+const dropboxStorage: MiddlewareWithState = (store) => {
+  let middleware: (action: AnyAction) => Promise<void>;
   const { dropboxStorage: dropboxStorageData } = store.getState();
 
+  const loadAndInitMiddleware = async (action?: AnyAction) => {
+    const { default: mw } = await import(/* webpackChunkName: "dmw" */ './middleware');
+    middleware = middleware || mw(store);
+    if (action) {
+      middleware(action);
+    }
+  };
+
   if (dropboxStorageData.use) {
-    import(/* webpackChunkName: "dmw" */ './middleware')
-      .then(({ default: mw }) => {
-        middleware = mw(store);
-      });
+    loadAndInitMiddleware();
   }
 
   return (next) => (action) => {
@@ -34,12 +40,7 @@ const dropboxStorage = (store) => {
         )
       ) {
         if (!middleware) {
-          import(/* webpackChunkName: "dmw" */ './middleware')
-            .then(({ default: mw }) => {
-              // import is async so check for existing mw _again_!!
-              middleware = middleware || mw(store);
-              middleware(action);
-            });
+          loadAndInitMiddleware(action);
         } else {
           middleware(action);
         }

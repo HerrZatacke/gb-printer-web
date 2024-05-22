@@ -1,10 +1,10 @@
-import { DownloadArrayBuffer, UniqueFilenameDownloadArrayBuffer } from '../download/types';
+import { DownloadArrayBuffer } from '../download/types';
 
-const replaceDuplicateFilenames = (files: DownloadArrayBuffer[]): UniqueFilenameDownloadArrayBuffer[] => {
+const replaceDuplicateFilenames = (files: DownloadArrayBuffer[]): DownloadArrayBuffer[] => {
 
   const filenames: string[] = [];
 
-  return files.map((file) => {
+  return files.map((file): DownloadArrayBuffer => {
     const { filename } = file;
     const fnParts = filename.split('.');
     const ext = fnParts.pop();
@@ -28,7 +28,7 @@ const replaceDuplicateFilenames = (files: DownloadArrayBuffer[]): UniqueFilename
 
     return {
       ...file,
-      uFilename,
+      filename: uFilename,
     };
   });
 };

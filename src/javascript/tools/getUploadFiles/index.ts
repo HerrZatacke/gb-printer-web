@@ -10,7 +10,7 @@ const getUploadFiles = async (
   store: TypedStore,
   repoContents: RepoContents,
   lastUpdateUTC: number,
-  addToQueue: AddToQueueFn<SyncFile | null>,
+  addToQueue: AddToQueueFn<unknown>,
 ): Promise<RepoTasks> => {
   const state = store.getState();
 
@@ -21,14 +21,14 @@ const getUploadFiles = async (
   const {
     syncImages,
     missingLocally: missingImageHashes,
-  } = await getUploadImages(state, repoContents, addToQueue);
+  } = await getUploadImages(state, repoContents, addToQueue as AddToQueueFn<SyncFile | null>);
 
   missingLocally.push(...missingImageHashes);
 
   const {
     syncFrames,
     missingLocally: missingFrameHashes,
-  } = await getUploadFrames(state, repoContents, addToQueue);
+  } = await getUploadFrames(state, repoContents, addToQueue as AddToQueueFn<SyncFile | null>);
 
   missingLocally.push(...missingFrameHashes);
 
