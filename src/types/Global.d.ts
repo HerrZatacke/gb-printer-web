@@ -1,4 +1,10 @@
-declare const ENV: string;
-declare const VERSION: string;
-declare const DROPBOX_APP_KEY: string;
-declare const BRANCH: string;
+import { TypedStore } from '../javascript/app/store/State';
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: <R>(a: R) => R,
+    store: TypedStore,
+  }
+}
+
+export {};

@@ -2,19 +2,24 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import reducers from './reducers';
 import saveState from './middlewares/saveState';
 import middlewares from './middlewares';
+import { State } from './State';
 
 // eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const enhancers = [
   middlewares,
-
-  // should be the last mw
-  applyMiddleware(saveState),
+  applyMiddleware(saveState), // should be the last mw
 ];
 
-const getStore = (config) => {
-  const store = createStore(reducers, config, composeEnhancers(...enhancers));
+const getStore = (initialState: State) => {
+  const store = createStore(
+    reducers,
+    initialState,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    composeEnhancers(...enhancers),
+  );
   window.store = store;
   return store;
 };
