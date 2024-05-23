@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-interface ShowSerialsAction {
+export interface ShowSerialsAction {
   type: Actions.SHOW_SERIALS,
   payload?: boolean,
 }

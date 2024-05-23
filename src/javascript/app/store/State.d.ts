@@ -59,7 +59,7 @@ export interface State {
   preferredLocale: string,
   printerBusy: boolean,
   printerData: PrinterInfo,
-  printerFunctions: object[], // ToDo !!
+  printerFunctions: object[],
   printerUrl: string,
   printerParams: string,
   progress: Progress,

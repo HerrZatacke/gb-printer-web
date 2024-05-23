@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import SerialPortEE from './SerialPort';
 
 class WebSerialEE extends EventEmitter {
-  private enabled: boolean;
+  public enabled: boolean;
   private activePorts: SerialPortEE[];
   private baudRate: number;
 

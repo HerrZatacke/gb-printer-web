@@ -1,9 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './index.scss';
 
-const SVG = (props) => {
+interface Props {
+  name: string,
+  className?: string,
+}
+
+const SVG = (props: Props) => {
 
   const className = classNames('svg', `svg--${props.name}`, props.className);
 
@@ -235,15 +239,6 @@ const SVG = (props) => {
     default:
       return null;
   }
-};
-
-SVG.propTypes = {
-  name: PropTypes.string.isRequired,
-  className: PropTypes.string,
-};
-
-SVG.defaultProps = {
-  className: null,
 };
 
 export default SVG;

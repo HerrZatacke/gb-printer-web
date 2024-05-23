@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import USBSerialPortEE from './USBSerialPort';
 
 class WebUSBSerialEE extends EventEmitter {
-  private enabled: boolean;
+  public enabled: boolean;
   private activePorts: USBSerialPortEE[];
 
   constructor() {

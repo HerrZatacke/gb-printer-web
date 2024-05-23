@@ -1,27 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
 import WebSerial from '../../../../../tools/WebSerial';
 import useImportPlainText from '../../../../../hooks/useImportPlainText';
+import SerialPortEE from '../../../../../tools/WebSerial/SerialPort';
 
-const useWebSerial = (passive) => {
+interface UseWebSerial {
+  activePorts: SerialPortEE[]
+  webSerialEnabled: boolean,
+  openWebSerial: () => void,
+  isReceiving: boolean,
+}
+
+const useWebSerial = (passive: boolean): UseWebSerial => {
   const webSerialEnabled = WebSerial.enabled;
-
-  // useSelector....
-  const baudRate = 115200;
 
   const importPlainText = useImportPlainText();
 
-  const [activePorts, setActivePorts] = useState([]);
-  const [isReceiving, setIsReceiving] = useState(false);
+  const [activePorts, setActivePorts] = useState<SerialPortEE[]>([]);
+  const [isReceiving, setIsReceiving] = useState<boolean>(false);
 
-  const receivedData = useRef('');
-  const receiveTimeOut = useRef(null);
+  const receivedData = useRef<string>('');
+  const receiveTimeOut = useRef<number>();
 
   useEffect(() => {
     if (!WebSerial.enabled) {
       return () => { /* noop */ };
     }
 
-    const handleReceivedData = (data) => {
+    const handleReceivedData = (data: string) => {
       window.clearTimeout(receiveTimeOut.current);
       receiveTimeOut.current = window.setTimeout(() => {
         setIsReceiving(false);
@@ -49,7 +54,7 @@ const useWebSerial = (passive) => {
 
   const openWebSerial = () => {
     if (WebSerial.enabled) {
-      WebSerial.requestPort(baudRate);
+      WebSerial.requestPort();
     }
   };
 

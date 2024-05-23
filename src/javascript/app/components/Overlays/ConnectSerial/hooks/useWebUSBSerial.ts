@@ -1,23 +1,31 @@
 import { useEffect, useState, useRef } from 'react';
 import WebUSBSerial from '../../../../../tools/WebUSBSerial';
 import useImportPlainText from '../../../../../hooks/useImportPlainText';
+import USBSerialPortEE from '../../../../../tools/WebUSBSerial/USBSerialPort';
 
-const useWebUSBSerial = (passive) => {
+interface UseWebUSBSerial {
+  activePorts: USBSerialPortEE[],
+  webUSBEnabled: boolean,
+  openWebUSBSerial: () => void,
+  isReceiving: boolean,
+}
+
+const useWebUSBSerial = (passive: boolean): UseWebUSBSerial => {
   const webUSBEnabled = WebUSBSerial.enabled;
 
   const importPlainText = useImportPlainText();
 
-  const [activePorts, setActivePorts] = useState([]);
+  const [activePorts, setActivePorts] = useState<USBSerialPortEE[]>([]);
   const [isReceiving, setIsReceiving] = useState(false);
-  const receivedData = useRef('');
-  const receiveTimeOut = useRef(null);
+  const receivedData = useRef<string>('');
+  const receiveTimeOut = useRef<number>();
 
   useEffect(() => {
     if (!WebUSBSerial.enabled) {
       return () => { /* noop */ };
     }
 
-    const handleReceivedData = (data) => {
+    const handleReceivedData = (data: string) => {
       window.clearTimeout(receiveTimeOut.current);
       receiveTimeOut.current = window.setTimeout(() => {
         setIsReceiving(false);

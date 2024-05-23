@@ -1,12 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import useWebUSBSerial from './hooks/useWebUSBSerial';
 import useWebSerial from './hooks/useWebSerial';
 import Lightbox from '../../Lightbox';
-import useContainer from './hooks/useContainer';
+import useWithStore from './hooks/useWithStore';
 
-const ConnectSerial = ({ inline, passive }) => {
+import './index.scss';
+
+interface Props {
+  inline?: boolean,
+  passive?: boolean,
+}
+
+const ConnectSerial = ({ inline, passive }: Props) => {
   const title = 'WebUSB Serial devices';
 
   const {
@@ -14,19 +20,19 @@ const ConnectSerial = ({ inline, passive }) => {
     isReceiving: usbSerialIsReceiving,
     webUSBEnabled,
     openWebUSBSerial,
-  } = useWebUSBSerial(passive);
+  } = useWebUSBSerial(passive || false);
 
   const {
     activePorts: webSerialActivePorts,
     isReceiving: webSerialIsReceiving,
     webSerialEnabled,
     openWebSerial,
-  } = useWebSerial(passive);
+  } = useWebSerial(passive || false);
 
   const {
     lightBoxOpen,
-    setHideSerials,
-  } = useContainer();
+    hideSerials,
+  } = useWithStore();
 
 
   const content = (
@@ -84,23 +90,13 @@ const ConnectSerial = ({ inline, passive }) => {
   return !showOverlay ? null : (
     <Lightbox
       header="WebUSB / Serial devices"
-      confirm={() => setHideSerials()}
+      confirm={hideSerials}
       canConfirm={!usbSerialIsReceiving && !webSerialIsReceiving}
       className="connect-usb-serial-overlay"
     >
       {content}
     </Lightbox>
   );
-};
-
-ConnectSerial.propTypes = {
-  inline: PropTypes.bool,
-  passive: PropTypes.bool,
-};
-
-ConnectSerial.defaultProps = {
-  inline: false,
-  passive: false,
 };
 
 export default ConnectSerial;

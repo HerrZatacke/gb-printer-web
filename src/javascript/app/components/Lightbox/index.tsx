@@ -1,22 +1,35 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Buttons from '../Buttons';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
 import useAutoFocus from '../../../hooks/useAutoFocus';
 import './index.scss';
+import { State } from '../../store/State';
 
-const Lightbox = (props) => {
-  const isFullscreen = useSelector((state) => (state.isFullscreen));
+interface Props {
+  height?: number,
+  className?: string,
+  header?: string,
+  children?: React.ReactNode,
+  confirm?: () => void,
+  deny?: () => void,
+  canConfirm?: boolean,
+  denyOnOverlayClick?: boolean,
+}
+
+const Lightbox = (props: Props) => {
+  const isFullscreen = useSelector((state: State) => (state.isFullscreen));
 
   useOverlayGlobalKeys({
     confirm: props.confirm,
-    canConfirm: props.canConfirm,
+    canConfirm: props.canConfirm || false,
     deny: props.deny,
   });
 
-  const focusRef = useAutoFocus();
+  const {
+    autofocusRef,
+  } = useAutoFocus();
 
   return (
     <div
@@ -29,14 +42,13 @@ const Lightbox = (props) => {
       <button
         type="button"
         className={`lightbox__backdrop ${props.className}__backdrop`}
-        onClick={props.denyOnOverlayClick ? props.deny : null}
+        onClick={props.denyOnOverlayClick ? props.deny : undefined}
       />
       <div
         className={`lightbox__box ${props.className}__box`}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        ref={focusRef}
+        ref={autofocusRef as React.MutableRefObject<HTMLDivElement>}
         style={{
-          height: props.height ? `${props.height}px` : null,
+          height: props.height ? `${props.height}px` : undefined,
         }}
       >
         <dialog
@@ -63,31 +75,6 @@ const Lightbox = (props) => {
       </div>
     </div>
   );
-};
-
-Lightbox.propTypes = {
-  height: PropTypes.number,
-  className: PropTypes.string,
-  header: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
-  confirm: PropTypes.func,
-  deny: PropTypes.func,
-  canConfirm: PropTypes.bool,
-  denyOnOverlayClick: PropTypes.bool,
-};
-
-Lightbox.defaultProps = {
-  height: null,
-  header: null,
-  className: '',
-  confirm: null,
-  children: null,
-  deny: null,
-  canConfirm: true,
-  denyOnOverlayClick: true,
 };
 
 export default Lightbox;

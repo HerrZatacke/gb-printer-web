@@ -1,8 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './index.scss';
 
-const Buttons = ({ confirm, deny, canConfirm }) => (
+interface Props {
+  confirm?: () => void,
+  deny?: () => void,
+  canConfirm?: boolean,
+}
+
+const Buttons = ({ confirm, deny, canConfirm }: Props) => (
   <div className="buttons">
     { deny ? (
       <button
@@ -25,17 +30,5 @@ const Buttons = ({ confirm, deny, canConfirm }) => (
     ) : null }
   </div>
 );
-
-Buttons.propTypes = {
-  confirm: PropTypes.func,
-  canConfirm: PropTypes.bool,
-  deny: PropTypes.func,
-};
-
-Buttons.defaultProps = {
-  confirm: null,
-  canConfirm: true,
-  deny: null,
-};
 
 export default Buttons;

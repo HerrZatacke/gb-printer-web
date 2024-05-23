@@ -110,7 +110,7 @@ export interface Reducers extends ReducersMapObject {
   preferredLocale: Reducer<string>,
   printerBusy: Reducer<boolean>,
   printerData: Reducer<PrinterInfo>,
-  printerFunctions: Reducer<object[]>, // ToDo !!
+  printerFunctions: Reducer<object[]>,
   printerUrl: Reducer<string>,
   printerParams: Reducer<string>,
   progress: Reducer<Progress>,

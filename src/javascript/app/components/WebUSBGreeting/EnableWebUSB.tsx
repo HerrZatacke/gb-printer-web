@@ -1,16 +1,16 @@
 import React from 'react';
 import classnames from 'classnames';
 import SVG from '../SVG';
-import useContainer from './hooks/useContainer';
+import useContainer from './hooks/useSerials';
 
 const EnableWebUSB = () => {
-  const { useSerials, setUseSerials } = useContainer();
+  const { enabled, enableSerials } = useContainer();
 
   return (
     <label
       className={
         classnames('inputgroup checkgroup', {
-          'checkgroup--checked': useSerials,
+          'checkgroup--checked': enabled,
         })
       }
     >
@@ -31,9 +31,9 @@ const EnableWebUSB = () => {
         <input
           type="checkbox"
           className="checkgroup__input"
-          checked={useSerials}
+          checked={enabled}
           onChange={({ target }) => {
-            setUseSerials(target.checked);
+            enableSerials(target.checked);
           }}
         />
         <SVG name="checkmark" />

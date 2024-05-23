@@ -8,7 +8,7 @@ import EventEmitter from 'events';
 class USBSerialPortEE extends EventEmitter {
   private device: USBDevice;
   private manufacturerName: string;
-  private productName: string;
+  public productName: string;
   private serialNumber: string;
   private interfaceNumber: number;
   private endpointIn: number;
