@@ -28,7 +28,6 @@ const EditImageTabs = (props) => {
 
   return (
     <div className="edit-image-tabs">
-      {tabs.join(' ')}
       <ul
         className="edit-image-tabs__list"
         style={{

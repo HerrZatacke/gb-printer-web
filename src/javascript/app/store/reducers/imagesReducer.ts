@@ -10,9 +10,8 @@ import {
   DeleteImageAction,
   DeleteImagesAction,
   ImageFavouriteAction,
-  ImagesBatchUpdateAction,
+  ImagesUpdateAction,
   RehashImageAction,
-  UpdateImageAction,
 } from '../../../../types/actions/ImageActions';
 
 
@@ -23,9 +22,8 @@ const imagesReducer = (
     DeleteImageAction |
     DeleteImagesAction |
     ImageFavouriteAction |
-    ImagesBatchUpdateAction |
+    ImagesUpdateAction |
     RehashImageAction |
-    UpdateImageAction |
     GlobalUpdateAction,
 ): Image[] => {
   switch (action.type) {
@@ -35,13 +33,6 @@ const imagesReducer = (
       return [...value.filter(({ hash }) => hash !== action.payload)];
     case Actions.DELETE_IMAGES:
       return [...value.filter(({ hash }) => !action.payload.includes(hash))];
-    case Actions.UPDATE_IMAGE:
-      return value.map((image) => (
-        (image.hash === action.payload.hash) ? {
-          ...image,
-          ...action.payload,
-        } : image
-      ));
     case Actions.REHASH_IMAGE:
       return value.map((image) => (
         (image.hash === action.payload.oldHash) ? action.payload.image : image
@@ -57,7 +48,7 @@ const imagesReducer = (
           ),
         } : image
       ));
-    case Actions.UPDATE_IMAGES_BATCH:
+    case Actions.UPDATE_IMAGES:
       return value.map((image) => (
         // return changed image if existent in payload
         action.payload.find((changedImage) => (changedImage.hash === image.hash)) || image

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import applyTagChanges from '../../../../tools/applyTagChanges';
 import { missingGreyPalette } from '../../../defaults';
 import { Actions } from '../../../store/actions';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
@@ -65,25 +64,15 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  save: ({ batch, tagChanges }, image) => {
-    if (batch) {
-      dispatch({
-        type: Actions.UPDATE_IMAGES_BATCH,
-        payload: {
-          image,
-          batch,
-          tagChanges,
-        },
-      });
-    } else {
-      dispatch({
-        type: Actions.UPDATE_IMAGE,
-        payload: {
-          ...image,
-          tags: applyTagChanges(tagChanges),
-        },
-      });
-    }
+  save: (shouldUpdate, updates, tagChanges) => {
+    dispatch({
+      type: Actions.UPDATE_IMAGES_BATCH_CHANGES,
+      payload: {
+        shouldUpdate,
+        updates,
+        tagChanges,
+      },
+    });
   },
   cancel: () => {
     dispatch({

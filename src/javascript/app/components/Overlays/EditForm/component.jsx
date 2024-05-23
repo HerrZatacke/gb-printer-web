@@ -5,21 +5,18 @@ import EditImageTabs from '../../EditImageTabs';
 import Lightbox from '../../Lightbox';
 import modifyTagChanges from '../../../../tools/modifyTagChanges';
 
-const willUpdate = (batch) => (
-  batch ? (
-    [
-      batch.created ? 'date' : null,
-      batch.title ? 'title' : null,
-      batch.palette ? 'palette' : null,
-      batch.invertPalette ? 'invertPalette' : null,
-      batch.frame ? 'frame' : null,
-      batch.lockFrame ? 'framePalette' : null,
-      batch.tags ? 'tags' : null,
-      batch.rotation ? 'rotation' : null,
-    ]
-      .filter(Boolean)
-      .join(', ')
-  ) : ''
+const willUpdate = (batch) => ([
+  batch.created ? 'date' : null,
+  batch.title ? 'title' : null,
+  batch.palette ? 'palette' : null,
+  batch.invertPalette ? 'invertPalette' : null,
+  batch.frame ? 'frame' : null,
+  batch.lockFrame ? 'framePalette' : null,
+  batch.tags ? 'tags' : null,
+  batch.rotation ? 'rotation' : null,
+]
+  .filter(Boolean)
+  .join(', ')
 );
 
 const EditForm = (props) => {
@@ -37,7 +34,7 @@ const EditForm = (props) => {
     add: [],
     remove: [],
   });
-  const [batch, updateBatch] = useState(props.imageCount ? {
+  const [shouldUpdate, updateShouldUpdate] = useState({
     created: false,
     title: false,
     palette: false,
@@ -46,7 +43,7 @@ const EditForm = (props) => {
     lockFrame: false,
     tags: false,
     rotation: false,
-  } : false);
+  });
 
   if (!props.hash) {
     return null;
@@ -54,10 +51,10 @@ const EditForm = (props) => {
 
   const usedPalette = paletteShort ? props.findPalette(paletteShort).palette : paletteRGBN;
 
-  const willUpdateBatch = willUpdate(batch);
+  const willUpdateBatch = willUpdate(shouldUpdate);
 
   const onUpdate = (what, fn) => (value) => {
-    updateBatch({ ...batch, [what]: true });
+    updateShouldUpdate({ ...shouldUpdate, [what]: true });
     fn(value);
   };
 
@@ -65,19 +62,19 @@ const EditForm = (props) => {
     <Lightbox
       height={props.height}
       className="edit-image"
-      confirm={() => props.save({
-        batch: props.imageCount ? batch : false,
+      confirm={() => props.save(
+        shouldUpdate,
+        {
+          title,
+          created,
+          frame,
+          invertPalette,
+          lockFrame,
+          palette: paletteShort || paletteRGBN,
+          rotation,
+        },
         tagChanges,
-      }, {
-        hash: props.hash,
-        title,
-        created,
-        frame,
-        invertPalette,
-        lockFrame,
-        palette: paletteShort || paletteRGBN,
-        rotation,
-      })}
+      )}
       deny={props.cancel}
     >
       <label className="edit-image__header">
@@ -120,15 +117,11 @@ const EditForm = (props) => {
           } : null}
         >
           { `You are editing ${props.imageCount} images` }
-          { willUpdateBatch ? (
-            <p className="edit-image__batch-update-list">
-              {`Will update: ${willUpdateBatch}`}
-            </p>
-          ) : null}
+          <p className="edit-image__batch-update-list">
+            {`Will update: ${willUpdateBatch}`}
+          </p>
         </div>
       ) : null }
-      <p>{ props.mixedTypes ? 'mixxxx' : 'singletype'}</p>
-      <p>{ isRegularImage ? 'isRegularImage' : 'not regular'}</p>
       <EditImageTabs
         created={created}
         updateCreated={onUpdate('created', updateCreated)}
@@ -146,7 +139,7 @@ const EditForm = (props) => {
         rotation={rotation}
         updatePalette={(paletteUpdate, confirm) => {
           if (confirm) {
-            updateBatch({ ...batch, palette: true });
+            updateShouldUpdate({ ...shouldUpdate, palette: true });
           }
 
           if (paletteShort) {
@@ -160,7 +153,7 @@ const EditForm = (props) => {
         updateFrameLock={onUpdate('lockFrame', updateFrameLock)}
         updateRotation={onUpdate('rotation', updateRotation)}
         updateTags={(mode, tag) => {
-          updateBatch({ ...batch, tags: true });
+          updateShouldUpdate({ ...shouldUpdate, tags: true });
           updateTagChanges({
             ...tagChanges,
             ...modifyTagChanges(tagChanges, { mode, tag }),

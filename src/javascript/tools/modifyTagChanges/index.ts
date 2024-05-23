@@ -3,7 +3,7 @@ enum TagUpdateMode {
   REMOVE = 'remove',
 }
 
-interface TagUpdates {
+export interface TagUpdates {
   add: string[],
   remove: string[],
 }

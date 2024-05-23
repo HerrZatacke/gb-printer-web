@@ -292,7 +292,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
             await saveImageFileContent(remoteFileContent);
 
             store.dispatch({
-              type: Actions.UPDATE_IMAGES_BATCH,
+              type: Actions.UPDATE_IMAGES,
               payload: [],
             });
           }

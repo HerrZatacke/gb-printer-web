@@ -1,14 +1,26 @@
 import { Actions } from '../../javascript/app/store/actions';
 import { CurrentEditBatch, Image } from '../Image';
+import { TagUpdates } from '../../javascript/tools/modifyTagChanges';
 
 export interface AddImagesAction {
   type: Actions.ADD_IMAGES,
   payload: Image[],
 }
 
-export interface UpdateImageAction {
-  type: Actions.UPDATE_IMAGE,
-  payload: Image,
+export type ImageUpdates = Pick<Image, 'title' | 'created' | 'palette' | 'invertPalette' | 'frame' | 'lockFrame' | 'rotation'>;
+
+export interface ImagesBatchUpdateAction {
+  type: Actions.UPDATE_IMAGES_BATCH_CHANGES,
+  payload: {
+    shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>,
+    updates: ImageUpdates,
+    tagChanges: TagUpdates,
+  },
+}
+
+export interface ImagesUpdateAction {
+  type: Actions.UPDATE_IMAGES,
+  payload: Image[],
 }
 
 export interface RehashImageAction {
@@ -25,11 +37,6 @@ export interface ImageFavouriteAction {
     isFavourite: boolean,
     hash: string,
   },
-}
-
-export interface ImagesBatchUpdateAction {
-  type: Actions.UPDATE_IMAGES_BATCH,
-  payload: Image[],
 }
 
 export interface DeleteImageAction {

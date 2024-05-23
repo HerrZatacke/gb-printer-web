@@ -9,9 +9,8 @@ import { LogStorageSyncDoneAction } from '../../../../types/actions/LogActions';
 import {
   AddImagesAction,
   DeleteImageAction, ImageFavouriteAction,
-  ImagesBatchUpdateAction,
+  ImagesUpdateAction,
   RehashImageAction,
-  UpdateImageAction,
 } from '../../../../types/actions/ImageActions';
 import { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 import { AddFrameAction, DeleteFrameAction } from '../../../../types/actions/FrameActions';
@@ -19,9 +18,8 @@ import { AddFrameAction, DeleteFrameAction } from '../../../../types/actions/Fra
 const syncLastUpdateReducer = (
   value: SyncLastUpdate = { dropbox: 0, local: 0 },
   action:
-    UpdateImageAction |
     RehashImageAction |
-    ImagesBatchUpdateAction |
+    ImagesUpdateAction |
     DeleteImageAction |
     PaletteUpdateAction |
     PaletteDeleteAction |
@@ -53,9 +51,8 @@ const syncLastUpdateReducer = (
 
     // ToDo: check for more action types which cause syncable data to be updated
     // case Actions.SET_DROPBOX_STORAGE: // Don't use!
-    case Actions.UPDATE_IMAGE:
     case Actions.REHASH_IMAGE:
-    case Actions.UPDATE_IMAGES_BATCH:
+    case Actions.UPDATE_IMAGES:
     case Actions.DELETE_IMAGE:
     case Actions.PALETTE_UPDATE:
     case Actions.PALETTE_DELETE:

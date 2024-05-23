@@ -7,7 +7,6 @@ import {
   EditImageSelectionAction,
   ImagesBatchUpdateAction,
   RehashImageAction,
-  UpdateImageAction,
 } from '../../../../types/actions/ImageActions';
 
 const editImageReducer = (
@@ -15,7 +14,6 @@ const editImageReducer = (
   action:
     EditImageSelectionAction |
     CancelEditImagesAction |
-    UpdateImageAction |
     RehashImageAction |
     ImagesBatchUpdateAction |
     GlobalUpdateAction,
@@ -24,9 +22,8 @@ const editImageReducer = (
     case Actions.EDIT_IMAGE_SELECTION:
       return action.payload;
     case Actions.CANCEL_EDIT_IMAGES:
-    case Actions.UPDATE_IMAGE:
     case Actions.REHASH_IMAGE:
-    case Actions.UPDATE_IMAGES_BATCH:
+    case Actions.UPDATE_IMAGES_BATCH_CHANGES:
     case Actions.GLOBAL_UPDATE:
       return null;
     default:
