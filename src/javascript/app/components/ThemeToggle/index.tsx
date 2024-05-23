@@ -1,10 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SVG from '../SVG';
 import { useTheme, Theme } from '../../../hooks/useTheme';
 import './index.scss';
 
-const ThemeToggle = ({ closeNavigation }) => {
+interface Props {
+  closeNavigation: () => void,
+}
+
+const ThemeToggle = ({ closeNavigation }: Props) => {
   const { theme, setTheme } = useTheme();
 
   const title = theme === Theme.BRIGHT ? 'Switch to dark mode' : 'Switch to bright mode';
@@ -29,11 +32,5 @@ const ThemeToggle = ({ closeNavigation }) => {
     </label>
   );
 };
-
-ThemeToggle.propTypes = {
-  closeNavigation: PropTypes.func.isRequired,
-};
-
-ThemeToggle.defaultProps = {};
 
 export default ThemeToggle;

@@ -1,18 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import InputNewTag from './InputNewTag';
 import unique from '../../../tools/unique';
 import { SpecialTags } from '../../../consts/SpecialTags';
 import './index.scss';
+import { TagChange } from '../../../tools/applyTagChanges';
+
+interface Props {
+  label?: string,
+  tags: TagChange
+  updateTags: (mode: string, tag: string) => void,
+  listDirection?: string,
+}
 
 const TagsSelect = ({
   label,
   tags,
   updateTags,
   listDirection,
-}) => {
+}: Props) => {
   const activeTags = unique([...tags.initial, ...tags.add]);
 
   return (
@@ -69,22 +76,6 @@ const TagsSelect = ({
       </ul>
     </>
   );
-};
-
-TagsSelect.propTypes = {
-  tags: PropTypes.shape({
-    initial: PropTypes.array.isRequired,
-    add: PropTypes.array.isRequired,
-    remove: PropTypes.array.isRequired,
-  }).isRequired,
-  updateTags: PropTypes.func.isRequired,
-  label: PropTypes.string,
-  listDirection: PropTypes.string,
-};
-
-TagsSelect.defaultProps = {
-  label: null,
-  listDirection: 'down',
 };
 
 export default TagsSelect;

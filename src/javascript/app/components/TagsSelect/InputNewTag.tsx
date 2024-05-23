@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useCombobox } from 'downshift';
 import SVG from '../SVG';
 import { useAvailableTags } from '../../../hooks/useAvailableTags';
 
-const InputNewTag = ({ updateTags, selectedTags, direction }) => {
+interface Props {
+  updateTags: (mode: string, value: string) => void,
+  selectedTags: string[],
+  direction?: string,
+}
+
+const InputNewTag = ({ updateTags, selectedTags, direction }: Props) => {
   const { availableTags } = useAvailableTags();
   const selectableTags = availableTags.filter((tag) => !selectedTags.includes(tag));
   const [inputItems, setInputItems] = useState(selectableTags);
@@ -24,7 +29,7 @@ const InputNewTag = ({ updateTags, selectedTags, direction }) => {
     items: inputItems,
 
     onSelectedItemChange: ({ inputValue }) => {
-      if (inputValue.trim()) {
+      if (inputValue?.trim()) {
         updateTags('add', inputValue.trim());
         reset();
       }
@@ -34,7 +39,7 @@ const InputNewTag = ({ updateTags, selectedTags, direction }) => {
       setInputItems(
         selectableTags
           .filter((tag) => (
-            tag.toLowerCase().startsWith(inputValue.trim().toLowerCase())
+            tag.toLowerCase().startsWith(inputValue?.trim().toLowerCase() || '')
           )),
       );
     },
@@ -114,12 +119,6 @@ const InputNewTag = ({ updateTags, selectedTags, direction }) => {
       </ul>
     </li>
   );
-};
-
-InputNewTag.propTypes = {
-  updateTags: PropTypes.func.isRequired,
-  selectedTags: PropTypes.array.isRequired,
-  direction: PropTypes.string.isRequired,
 };
 
 export default InputNewTag;

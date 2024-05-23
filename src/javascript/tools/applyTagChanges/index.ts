@@ -1,9 +1,8 @@
 import unique from '../unique';
+import { TagUpdates } from '../modifyTagChanges';
 
-interface TagChange {
+export interface TagChange extends TagUpdates {
   initial: string[],
-  add: string[],
-  remove: string[],
 }
 
 const applyTagChanges = ({ initial, add, remove }: TagChange): string[] => (
