@@ -1,44 +1,68 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import APConfig from './APConfig';
 import SVG from '../../../SVG';
-import Input from '../../../Input';
+import Input, { InputType } from '../../../Input';
 import './index.scss';
 
-const getSettings = (setWifiConfig, setStatus) => {
+interface WiFiNetwork {
+  psk: string,
+  ssid: string,
+  delete?: boolean,
+  isNew?: boolean,
+}
+
+interface WiFiConfig {
+  networks: WiFiNetwork[]
+  mdns: string,
+  ap: {
+    ssid: string,
+    psk: string,
+  }
+}
+
+const getSettings = (
+  setWifiConfig: (value: WiFiConfig | undefined) => void,
+  setStatus: (status: string) => void,
+): (() => void) => {
   setStatus('loading');
 
   const controller = new AbortController();
   const signal = controller.signal;
 
-  fetch('/wificonfig/get', { signal })
-    .then((res) => res.json())
-    .then((wifiConfig) => {
+  const wificonfigGet = async () => {
+    const res = await fetch('/wificonfig/get', { signal });
+    const wifiConfig = await res.json();
 
-      // eslint-disable-next-line no-param-reassign
-      wifiConfig.mdns = wifiConfig.mdns || '';
-      // eslint-disable-next-line no-param-reassign
-      wifiConfig.ap = wifiConfig.ap || { ssid: '', psk: '' };
-      // eslint-disable-next-line no-param-reassign
-      wifiConfig.networks = wifiConfig.networks || [];
+    // eslint-disable-next-line no-param-reassign
+    wifiConfig.mdns = wifiConfig.mdns || '';
+    // eslint-disable-next-line no-param-reassign
+    wifiConfig.ap = wifiConfig.ap || { ssid: '', psk: '' };
+    // eslint-disable-next-line no-param-reassign
+    wifiConfig.networks = wifiConfig.networks || [];
 
-      setStatus('');
-      setWifiConfig(wifiConfig);
-    })
-    .catch(() => {
-      if (signal.aborted) {
-        return;
-      }
+    setStatus('');
+    setWifiConfig(wifiConfig);
+  };
 
+  try {
+    wificonfigGet();
+  } catch (error) {
+    if (!signal.aborted) {
       setStatus('error');
-      setWifiConfig(null);
-    });
+      setWifiConfig(undefined);
+    }
+  }
 
   return () => {
     controller.abort();
   };
 };
 
-const saveSettings = (setWifiConfig, setStatus, wifiConfig) => {
+const saveSettings = async (
+  setWifiConfig: (value: WiFiConfig | undefined) => void,
+  setStatus: (status: string) => void,
+  wifiConfig: WiFiConfig,
+) => {
   const configUpdate = {
     ...wifiConfig,
     networks: wifiConfig.networks
@@ -57,31 +81,31 @@ const saveSettings = (setWifiConfig, setStatus, wifiConfig) => {
   };
 
   setStatus('loading');
-  fetch('/wificonfig/set', {
-    method: 'post',
-    body: JSON.stringify(configUpdate),
-  })
-    .then((res) => res.json())
-    .then((resJson) => {
-      if (resJson.error) {
-        throw new Error(resJson.error);
-      }
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-alert
-      alert(error);
-      setStatus('error');
-      setWifiConfig(null);
-    })
-    .then(() => {
-      getSettings(setWifiConfig, setStatus);
+
+  try {
+    const res = await fetch('/wificonfig/set', {
+      method: 'post',
+      body: JSON.stringify(configUpdate),
     });
+    const resJson = await res.json();
+
+    if (resJson.error) {
+      throw new Error(resJson.error);
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-alert
+    alert(error);
+    setStatus('error');
+    setWifiConfig(undefined);
+  }
+
+  getSettings(setWifiConfig, setStatus);
 };
 
 const WiFiSettings = () => {
 
   const ref = useRef(null);
-  const [wifiConfig, setWifiConfig] = useState(null);
+  const [wifiConfig, setWifiConfig] = useState<WiFiConfig>();
   const [status, setStatus] = useState('loading');
 
   useEffect(() => (
@@ -106,14 +130,14 @@ const WiFiSettings = () => {
       <Input
         id="settings-mdns"
         labelText="mDNS Name (Bonjour/Avahi)"
-        type="text"
+        type={InputType.TEXT}
         disabled={disabled}
         value={wifiConfig.mdns}
         onChange={(mdns) => {
           setStatus('updated');
           setWifiConfig({
             ...wifiConfig,
-            mdns: mdns.trim(),
+            mdns: (mdns as string).trim(),
           });
         }}
       />
@@ -121,7 +145,7 @@ const WiFiSettings = () => {
       <Input
         id="settings-ap-ssid"
         labelText="Accesspoint SSID"
-        type="text"
+        type={InputType.TEXT}
         disabled={disabled}
         value={wifiConfig.ap.ssid}
         onChange={(ssid) => {
@@ -130,7 +154,7 @@ const WiFiSettings = () => {
             ...wifiConfig,
             ap: {
               ...wifiConfig.ap,
-              ssid: ssid.trim(),
+              ssid: (ssid as string).trim(),
             },
           });
         }}
@@ -139,7 +163,7 @@ const WiFiSettings = () => {
       <Input
         id="settings-ap-psk"
         labelText="Accesspoint Password"
-        type="password"
+        type={InputType.PASSWORD}
         disabled={disabled}
         value={wifiConfig.ap.psk}
         onChange={(psk) => {
@@ -148,7 +172,7 @@ const WiFiSettings = () => {
             ...wifiConfig,
             ap: {
               ...wifiConfig.ap,
-              psk: psk.trim(),
+              psk: (psk as string).trim(),
             },
           });
         }}

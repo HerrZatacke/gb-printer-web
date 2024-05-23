@@ -1,9 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Input from '../../../Input';
+import Input, { InputType } from '../../../Input';
 
-const APConfig = (props) => (
+interface APConfig {
+  ssid: string,
+  psk: string,
+  delete: boolean,
+}
+
+interface Props extends APConfig {
+  id: string,
+  isNew: boolean,
+  update: (value: Partial<APConfig>) => void,
+  disabled: boolean,
+}
+
+const APConfig = (props: Props) => (
   <div
     className={
       classnames('wifi-settings__ap-group', {
@@ -14,12 +26,12 @@ const APConfig = (props) => (
     <Input
       id={`${props.id}-settings-ap-ssid`}
       labelText="Network SSID"
-      type="text"
+      type={InputType.TEXT}
       value={props.ssid}
       disabled={!props.isNew || props.disabled}
       onChange={(ssid) => {
         props.update({
-          ssid,
+          ssid: ssid as string,
         });
       }}
       buttonOnClick={() => {
@@ -32,26 +44,16 @@ const APConfig = (props) => (
     <Input
       id={`${props.id}-settings-ap-psk`}
       labelText="Network Password"
-      type="password"
+      type={InputType.PASSWORD}
       value={props.psk}
       disabled={props.disabled}
       onChange={(psk) => {
         props.update({
-          psk,
+          psk: psk as string,
         });
       }}
     />
   </div>
 );
-
-APConfig.propTypes = {
-  id: PropTypes.string.isRequired,
-  ssid: PropTypes.string.isRequired,
-  isNew: PropTypes.bool.isRequired,
-  delete: PropTypes.bool.isRequired,
-  psk: PropTypes.string.isRequired,
-  update: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
-};
 
 export default APConfig;

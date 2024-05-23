@@ -1,11 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
 
-const colorIsValid = (color) => (
+import './index.scss';
+
+const colorIsValid = (color: string) => (
   color.match(/^#[0-9a-f]{6}$/i)
 );
+
+export enum InputType {
+  TEXT = 'text',
+  TEXTAREA = 'textarea',
+  NUMBER = 'number',
+  COLOR = 'color',
+  FILE = 'file',
+  PASSWORD = 'password',
+}
+
+interface Props {
+  id: string,
+  labelText: string,
+  type: InputType,
+  min?: number,
+  max?: number,
+  step?: number,
+  value?: string | number,
+  onChange: (value: string | number | FileList) => void,
+  onBlur?: () => void,
+  buttonOnClick?: () => void,
+  buttonIcon?: string,
+  buttonLabel?: string,
+  onKeyUp?: (key: string) => void,
+  disabled?: boolean,
+  children?: React.ReactNode,
+}
 
 const Input = ({
   id,
@@ -23,25 +51,25 @@ const Input = ({
   onBlur,
   onKeyUp,
   children,
-}) => {
-  const [showPass, setShowPass] = useState(false);
-  const [colorVal, setColorVal] = useState(value);
+}: Props) => {
+  const [showPass, setShowPass] = useState<boolean>(false);
+  const [colorVal, setColorVal] = useState<string>();
 
   useEffect(() => {
-    if (type === 'color') {
-      setColorVal(value);
+    if (type === InputType.COLOR) {
+      setColorVal(value as string);
     }
   }, [setColorVal, value, type]);
 
-  const keyUpListener = onKeyUp ? (({ key }) => onKeyUp(key)) : null;
+  const keyUpListener = onKeyUp ? (({ key }: React.KeyboardEvent) => onKeyUp(key)) : undefined;
 
   const blurListener = onBlur ? () => {
-    if (type === 'password') {
+    if (type === InputType.PASSWORD) {
       setShowPass(false);
     }
 
     onBlur();
-  } : null;
+  } : undefined;
 
   return (
     <div
@@ -54,14 +82,14 @@ const Input = ({
         {labelText}
         {children}
       </label>
-      { type === 'textarea' ? (
+      { type === InputType.TEXTAREA ? (
         <textarea
           id={id}
           className="inputgroup__input inputgroup__input--textarea"
           value={value}
           disabled={disabled}
-          onChange={({ target: { value: newVal, files } }) => {
-            onChange(files || newVal);
+          onChange={({ target: { value: newVal } }) => {
+            onChange(newVal);
           }}
           onBlur={blurListener}
           onKeyUp={keyUpListener}
@@ -70,10 +98,10 @@ const Input = ({
         <input
           id={id}
           className="inputgroup__input"
-          type={showPass ? 'text' : type}
-          min={type === 'number' ? min : null}
-          max={type === 'number' ? max : null}
-          step={type === 'number' ? step : null}
+          type={(showPass ? InputType.TEXT : type)}
+          min={type === InputType.NUMBER ? min : undefined}
+          max={type === InputType.NUMBER ? max : undefined}
+          step={type === InputType.NUMBER ? step : undefined}
           value={value}
           disabled={disabled}
           onChange={({ target: { value: newVal, files } }) => {
@@ -83,7 +111,7 @@ const Input = ({
           onKeyUp={keyUpListener}
         />
       )}
-      {((type === 'file') ? (
+      {((type === InputType.FILE) ? (
         <label
           htmlFor={id}
           className="button button--label"
@@ -105,14 +133,14 @@ const Input = ({
         </button>
       ) : null}
 
-      {((type === 'color') ? (
+      {((type === InputType.COLOR) ? (
         <input
           type="text"
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
           className={classnames('inputgroup__input inputgroup__input--colortext', {
-            'inputgroup__input--invalid-color': !colorIsValid(colorVal),
+            'inputgroup__input--invalid-color': !colorVal || !colorIsValid(colorVal),
           })}
           value={colorVal}
           disabled={disabled}
@@ -126,7 +154,7 @@ const Input = ({
         />
       ) : null)}
 
-      {(type === 'password' ? (
+      {(type === InputType.PASSWORD ? (
         <button
           type="button"
           className="inputgroup__button inputgroup__button--show-password"
@@ -137,43 +165,6 @@ const Input = ({
       ) : null)}
     </div>
   );
-};
-
-
-Input.propTypes = {
-  id: PropTypes.string.isRequired,
-  labelText: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['text', 'number', 'color', 'file', 'password']),
-  min: PropTypes.number,
-  max: PropTypes.number,
-  step: PropTypes.number,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  onChange: PropTypes.func.isRequired,
-  onBlur: PropTypes.func,
-  buttonOnClick: PropTypes.func,
-  buttonIcon: PropTypes.string,
-  buttonLabel: PropTypes.string,
-  onKeyUp: PropTypes.func,
-  disabled: PropTypes.bool,
-  children: PropTypes.node,
-};
-
-Input.defaultProps = {
-  type: 'text',
-  min: null,
-  max: null,
-  step: null,
-  value: '',
-  onBlur: null,
-  disabled: false,
-  buttonOnClick: null,
-  buttonIcon: null,
-  buttonLabel: null,
-  onKeyUp: null,
-  children: null,
 };
 
 export default Input;
