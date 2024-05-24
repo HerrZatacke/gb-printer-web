@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import SVG from '../../../SVG';
-import Input from '../../../Input';
+import Input, { InputType } from '../../../Input';
+import { usePlugins } from './usePlugins';
 
-const inputTypeFromType = (type) => {
+import './index.scss';
+
+const inputTypeFromType = (type: string): InputType => {
   switch (type) {
     case 'number':
-      return 'number';
+      return InputType.NUMBER;
     case 'string':
-      return 'text';
+      return InputType.TEXT;
     case 'multiline':
-      return 'textarea';
+      return InputType.TEXTAREA;
     default:
-      return 'text';
+      return InputType.TEXT;
   }
 };
 
-const inputValueFromType = (type, value) => {
+const inputValueFromType = (type: string, value: string): string | number => {
   switch (type) {
     case 'number': {
       const num = parseFloat(value);
-      return isNaN(num) ? '' : num;
+      return isNaN(num) ? 0 : num;
     }
 
     case 'string':
@@ -31,28 +33,25 @@ const inputValueFromType = (type, value) => {
   }
 };
 
-const PluginSettings = ({
-  pluginAdd,
-  pluginRemove,
-  pluginUpdateConfig,
-  plugins,
-}) => {
+const PluginSettings = () => {
 
   const [pluginUrl, setPluginUrl] = useState('');
+
+  const { pluginAdd, pluginRemove, pluginUpdateConfig, plugins } = usePlugins();
 
   return (
     <>
       <Input
         id="plugin-settings-add-plugin"
         labelText="Add Plugin"
-        type="text"
+        type={InputType.TEXT}
         value={pluginUrl}
-        onChange={(value) => setPluginUrl(value)}
+        onChange={(value) => setPluginUrl(value as string)}
         buttonOnClick={() => {
           pluginAdd(pluginUrl);
           setPluginUrl('');
         }}
-        buttonIcon={pluginUrl ? 'add' : null}
+        buttonIcon={pluginUrl ? 'add' : undefined}
       />
 
       <ul className="plugin-settings__plugin-list">
@@ -121,9 +120,9 @@ const PluginSettings = ({
                       key={`${fieldName}-${pluginIndex}`}
                       labelText={label}
                       type={inputTypeFromType(type)}
-                      value={inputValueFromType(type, config[fieldName])}
+                      value={inputValueFromType(type, config[fieldName] as string)}
                       onChange={(value) => {
-                        pluginUpdateConfig(url, fieldName, inputValueFromType(type, value));
+                        pluginUpdateConfig(url, fieldName, inputValueFromType(type, value.toString()));
                       }}
                     />
                   );
@@ -135,13 +134,6 @@ const PluginSettings = ({
       </ul>
     </>
   );
-};
-
-PluginSettings.propTypes = {
-  pluginAdd: PropTypes.func.isRequired,
-  pluginRemove: PropTypes.func.isRequired,
-  pluginUpdateConfig: PropTypes.func.isRequired,
-  plugins: PropTypes.array.isRequired,
 };
 
 export default PluginSettings;
