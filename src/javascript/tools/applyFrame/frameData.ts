@@ -1,6 +1,5 @@
-import { tileIndexIsPartOfFrame } from 'gb-image-decoder';
+import { ExportFrameMode, tileIndexIsPartOfFrame } from 'gb-image-decoder';
 import { localforageFrames } from '../localforageInstance';
-import { ExportFrameMode } from '../../consts/exportFrameModes';
 import { deflate, inflate } from '../pack';
 
 export interface FrameData {

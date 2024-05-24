@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Actions } from '../actions';
 import dateFormatLocale from '../../../tools/dateFormatLocale';
 
-interface PreferredLocaleAction {
+export interface PreferredLocaleAction {
   type: Actions.SET_PREFERRED_LOCALE,
   payload?: string,
 }

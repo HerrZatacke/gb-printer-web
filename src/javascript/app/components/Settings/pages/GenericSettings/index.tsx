@@ -1,39 +1,74 @@
+import { ExportFrameMode } from 'gb-image-decoder';
+import { ILocale } from 'locale-codes';
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
-import Input from '../../../Input';
+import Input, { InputType } from '../../../Input';
 import EnableWebUSB from '../../../WebUSBGreeting/EnableWebUSB';
 import supportedCanvasImageFormats from '../../../../../tools/supportedCanvasImageFormats/index';
 import cleanUrl from '../../../../../tools/cleanUrl';
 import { getEnv } from '../../../../../tools/getEnv';
 import exportFrameModes from '../../../../../consts/exportFrameModes';
 import dateFormatLocale from '../../../../../tools/dateFormatLocale';
+import { useGenericSettings } from './useGenericSettings';
 
-const GenericSettings = (props) => {
-  const [pageSize, setPageSize] = useState(props.pageSize);
-  const [printerUrl, setPrinterUrl] = useState(props.printerUrl);
-  const [printerParams, setPrinterParams] = useState(props.printerParams);
-  const [localeCodes, setLocaleCodes] = useState([]);
+const GenericSettings = () => {
+  const {
+    enableDebug,
+    exportFileTypes,
+    exportScaleFactors,
+    forceMagicCheck,
+    handleExportFrame,
+    hideDates,
+    importDeleted,
+    importLastSeen,
+    importPad,
+    pageSize: statePageSize,
+    preferredLocale,
+    printerParams: statePrinterParams,
+    printerUrl: statePrinterUrl,
+    savFrameGroups,
+    savFrameTypes,
+    changeExportFileTypes,
+    changeExportScaleFactors,
+    setEnableDebug,
+    setForceMagicCheck,
+    setHandleExportFrame,
+    setHideDates,
+    setImportDeleted,
+    setImportLastSeen,
+    setImportPad,
+    setPageSize: stateSetPageSize,
+    setPreferredLocale,
+    setSavFrameTypes,
+    updatePrinterParams,
+    updatePrinterUrl,
+  } = useGenericSettings();
+
+  const [pageSize, setPageSize] = useState<string>(statePageSize.toString(10));
+  const [printerUrl, setPrinterUrl] = useState<string>(statePrinterUrl);
+  const [printerParams, setPrinterParams] = useState<string>(statePrinterParams);
+  const [localeCodes, setLocaleCodes] = useState<ILocale[]>([]);
   const [now] = useState(dayjs());
 
   useEffect(() => {
-    import(/* webpackChunkName: "loc" */ 'locale-codes')
-      .then(({ default: locale }) => {
-
-        const filteredLocales = locale.all.filter(({ tag }) => {
-          try {
-            dateFormatLocale(dayjs(), tag);
-            return true;
-          } catch (error) {
-            return false;
-          }
-        });
-
-        setLocaleCodes(filteredLocales);
+    const setLocales = async () => {
+      const { default: locale } = await import(/* webpackChunkName: "loc" */ 'locale-codes');
+      const filteredLocales: ILocale[] = locale.all.filter(({ tag }) => {
+        try {
+          dateFormatLocale(dayjs(), tag);
+          return true;
+        } catch (error) {
+          return false;
+        }
       });
+
+      setLocaleCodes(filteredLocales);
+    };
+
+    setLocales();
   }, []);
 
   return (
@@ -42,20 +77,20 @@ const GenericSettings = (props) => {
       <Input
         id="settings-pagesize"
         labelText="Page size"
-        type="number"
+        type={InputType.NUMBER}
         min={0}
         value={pageSize}
         onChange={(value) => {
-          setPageSize(value);
+          setPageSize(value as string);
         }}
         onBlur={() => {
-          props.setPageSize(parseInt(pageSize, 10) || 0);
+          stateSetPageSize(parseInt(pageSize, 10) || 0);
         }}
       >
         <span
           className={
             classnames('inputgroup__note', {
-              'inputgroup__note--warn': !props.pageSize,
+              'inputgroup__note--warn': !statePageSize,
             })
           }
         >
@@ -72,7 +107,7 @@ const GenericSettings = (props) => {
             key={factor}
             className={
               classnames('inputgroup__label-check', {
-                'inputgroup__label-check--selected': props.exportScaleFactors.includes(factor),
+                'inputgroup__label-check--selected': exportScaleFactors.includes(factor),
               })
             }
             title={`${factor * 160}×${factor * 144}`}
@@ -80,9 +115,9 @@ const GenericSettings = (props) => {
             {`${factor}×`}
             <input
               type="checkbox"
-              checked={props.exportScaleFactors.includes(factor)}
+              checked={exportScaleFactors.includes(factor)}
               onChange={({ target }) => {
-                props.changeExportScaleFactors(factor, target.checked);
+                changeExportScaleFactors(factor, target.checked);
               }}
             />
           </label>
@@ -97,7 +132,7 @@ const GenericSettings = (props) => {
             key={fileType}
             className={
               classnames('inputgroup__label-check', {
-                'inputgroup__label-check--selected': props.exportFileTypes.includes(fileType),
+                'inputgroup__label-check--selected': exportFileTypes.includes(fileType),
               })
             }
             title={fileType}
@@ -105,9 +140,9 @@ const GenericSettings = (props) => {
             {fileType}
             <input
               type="checkbox"
-              checked={props.exportFileTypes.includes(fileType)}
+              checked={exportFileTypes.includes(fileType)}
               onChange={({ target }) => {
-                props.changeExportFileTypes(fileType, target.checked);
+                changeExportFileTypes(fileType, target.checked);
               }}
             />
           </label>
@@ -121,9 +156,9 @@ const GenericSettings = (props) => {
         <select
           id="settings-handle-export-frames"
           className="inputgroup__input inputgroup__input--select"
-          value={props.handleExportFrame}
+          value={handleExportFrame}
           onChange={(ev) => {
-            props.setHandleExportFrame(ev.target.value);
+            setHandleExportFrame(ev.target.value as ExportFrameMode);
           }}
         >
           {
@@ -141,15 +176,15 @@ const GenericSettings = (props) => {
         <select
           id="settings-sav-frames"
           className="inputgroup__input inputgroup__input--select"
-          disabled={!props.savFrameGroups.length}
-          value={props.savFrameTypes}
+          disabled={!savFrameGroups.length}
+          value={savFrameTypes}
           onChange={(ev) => {
-            props.setSavFrameTypes(ev.target.value);
+            setSavFrameTypes(ev.target.value);
           }}
         >
           <option value="">None</option>
           {
-            props.savFrameGroups.map(({ id, name }) => (
+            savFrameGroups.map(({ id, name }) => (
               <option value={id} key={id}>{ name }</option>
             ))
           }
@@ -158,7 +193,7 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
-            'checkgroup--checked': props.importLastSeen,
+            'checkgroup--checked': importLastSeen,
           })
         }
       >
@@ -174,9 +209,9 @@ const GenericSettings = (props) => {
           <input
             type="checkbox"
             className="checkgroup__input"
-            checked={props.importLastSeen}
+            checked={importLastSeen}
             onChange={({ target }) => {
-              props.setImportLastSeen(target.checked);
+              setImportLastSeen(target.checked);
             }}
           />
           <SVG name="checkmark" />
@@ -185,7 +220,7 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
-            'checkgroup--checked': props.importDeleted,
+            'checkgroup--checked': importDeleted,
           })
         }
       >
@@ -201,9 +236,9 @@ const GenericSettings = (props) => {
           <input
             type="checkbox"
             className="checkgroup__input"
-            checked={props.importDeleted}
+            checked={importDeleted}
             onChange={({ target }) => {
-              props.setImportDeleted(target.checked);
+              setImportDeleted(target.checked);
             }}
           />
           <SVG name="checkmark" />
@@ -212,7 +247,7 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
-            'checkgroup--checked': props.forceMagicCheck,
+            'checkgroup--checked': forceMagicCheck,
           })
         }
       >
@@ -228,9 +263,9 @@ const GenericSettings = (props) => {
           <input
             type="checkbox"
             className="checkgroup__input"
-            checked={props.forceMagicCheck}
+            checked={forceMagicCheck}
             onChange={({ target }) => {
-              props.setForceMagicCheck(target.checked);
+              setForceMagicCheck(target.checked);
             }}
           />
           <SVG name="checkmark" />
@@ -240,7 +275,7 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
-            'checkgroup--checked': props.importPad,
+            'checkgroup--checked': importPad,
           })
         }
       >
@@ -256,9 +291,9 @@ const GenericSettings = (props) => {
           <input
             type="checkbox"
             className="checkgroup__input"
-            checked={props.importPad}
+            checked={importPad}
             onChange={({ target }) => {
-              props.setImportPad(target.checked);
+              setImportPad(target.checked);
             }}
           />
           <SVG name="checkmark" />
@@ -268,7 +303,7 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
-            'checkgroup--checked': props.hideDates,
+            'checkgroup--checked': hideDates,
           })
         }
       >
@@ -284,9 +319,9 @@ const GenericSettings = (props) => {
           <input
             type="checkbox"
             className="checkgroup__input"
-            checked={props.hideDates}
+            checked={hideDates}
             onChange={({ target }) => {
-              props.setHideDates(target.checked);
+              setHideDates(target.checked);
             }}
           />
           <SVG name="checkmark" />
@@ -297,15 +332,15 @@ const GenericSettings = (props) => {
         <label htmlFor="settings-preferred-locale" className="inputgroup__label">
           Preferred locale
           <span className="inputgroup__note inputgroup__note--newline">
-            { `Example date format: ${dateFormatLocale(now, props.preferredLocale)}`}
+            { `Example date format: ${dateFormatLocale(now, preferredLocale)}`}
           </span>
         </label>
         <select
           id="settings-preferred-locale"
           className="inputgroup__input inputgroup__input--select"
-          value={props.preferredLocale}
+          value={preferredLocale}
           onChange={(ev) => {
-            props.setPreferredLocale(ev.target.value);
+            setPreferredLocale(ev.target.value);
           }}
         >
           {
@@ -320,27 +355,27 @@ const GenericSettings = (props) => {
 
       <EnableWebUSB />
 
-      {(getEnv().env === 'esp8266') ? null : (
+      {(getEnv()?.env === 'esp8266') ? null : (
         <Input
           id="settings-printer-url"
           labelText="Printer URL"
-          type="text"
+          type={InputType.TEXT}
           value={printerUrl}
           onChange={(value) => {
-            setPrinterUrl(value);
+            setPrinterUrl(value as string);
           }}
           onBlur={() => {
             setPrinterUrl(cleanUrl(printerUrl, 'http'));
-            props.updatePrinterUrl(printerUrl);
+            updatePrinterUrl(printerUrl);
           }}
           onKeyUp={(key) => {
             switch (key) {
               case 'Enter':
                 setPrinterUrl(cleanUrl(printerUrl, 'http'));
-                props.updatePrinterUrl(printerUrl);
+                updatePrinterUrl(printerUrl);
                 break;
               case 'Escape':
-                setPrinterUrl(props.printerUrl);
+                setPrinterUrl(printerUrl);
                 break;
               default:
             }
@@ -352,27 +387,27 @@ const GenericSettings = (props) => {
           </span>
         </Input>
       )}
-      {(getEnv().env === 'esp8266' || printerUrl) ? (
+      {(getEnv()?.env === 'esp8266' || printerUrl) ? (
         <Input
           id="settings-printer-settings"
           labelText="Additional printer settings"
-          type="text"
+          type={InputType.TEXT}
           value={printerParams}
           onChange={(value) => {
-            setPrinterParams(value);
+            setPrinterParams(value as string);
           }}
           onBlur={() => {
             setPrinterParams(printerParams);
-            props.updatePrinterParams(printerParams);
+            updatePrinterParams(printerParams);
           }}
           onKeyUp={(key) => {
             switch (key) {
               case 'Enter':
                 setPrinterParams(printerParams);
-                props.updatePrinterParams(printerParams);
+                updatePrinterParams(printerParams);
                 break;
               case 'Escape':
-                setPrinterParams(props.printerParams);
+                setPrinterParams(printerParams);
                 break;
               default:
             }
@@ -383,7 +418,7 @@ const GenericSettings = (props) => {
       <label
         className={
           classnames('inputgroup checkgroup', {
-            'checkgroup--checked': props.enableDebug,
+            'checkgroup--checked': enableDebug,
           })
         }
       >
@@ -399,9 +434,9 @@ const GenericSettings = (props) => {
           <input
             type="checkbox"
             className="checkgroup__input"
-            checked={props.enableDebug}
+            checked={enableDebug}
             onChange={({ target }) => {
-              props.setEnableDebug(target.checked);
+              setEnableDebug(target.checked);
             }}
           />
           <SVG name="checkmark" />
@@ -409,42 +444,6 @@ const GenericSettings = (props) => {
       </label>
     </>
   );
-};
-
-GenericSettings.propTypes = {
-  changeExportScaleFactors: PropTypes.func.isRequired,
-  exportScaleFactors: PropTypes.array.isRequired,
-  changeExportFileTypes: PropTypes.func.isRequired,
-  exportFileTypes: PropTypes.array.isRequired,
-  savFrameTypes: PropTypes.string.isRequired,
-  savFrameGroups: PropTypes.array.isRequired,
-  setSavFrameTypes: PropTypes.func.isRequired,
-  pageSize: PropTypes.number.isRequired,
-  setPageSize: PropTypes.func.isRequired,
-  preferredLocale: PropTypes.string,
-  setPreferredLocale: PropTypes.func.isRequired,
-  setHandleExportFrame: PropTypes.func.isRequired,
-  handleExportFrame: PropTypes.string.isRequired,
-  setImportLastSeen: PropTypes.func.isRequired,
-  importLastSeen: PropTypes.bool.isRequired,
-  setImportDeleted: PropTypes.func.isRequired,
-  importDeleted: PropTypes.bool.isRequired,
-  setForceMagicCheck: PropTypes.func.isRequired,
-  forceMagicCheck: PropTypes.bool.isRequired,
-  setImportPad: PropTypes.func.isRequired,
-  importPad: PropTypes.bool.isRequired,
-  setHideDates: PropTypes.func.isRequired,
-  hideDates: PropTypes.bool.isRequired,
-  printerUrl: PropTypes.string.isRequired,
-  updatePrinterUrl: PropTypes.func.isRequired,
-  printerParams: PropTypes.string.isRequired,
-  updatePrinterParams: PropTypes.func.isRequired,
-  enableDebug: PropTypes.bool.isRequired,
-  setEnableDebug: PropTypes.func.isRequired,
-};
-
-GenericSettings.defaultProps = {
-  preferredLocale: null,
 };
 
 export default GenericSettings;

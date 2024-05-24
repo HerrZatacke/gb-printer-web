@@ -1,4 +1,5 @@
 import { combineReducers, Reducer, ReducersMapObject } from 'redux';
+import { ExportFrameMode } from 'gb-image-decoder';
 import activePalette from './reducers/activePaletteReducer';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import canShare from './reducers/canShareReducer';
@@ -60,7 +61,6 @@ import { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../ty
 import { FrameGroup } from '../../../types/FrameGroup';
 import { Frame } from '../../../types/Frame';
 import { GalleryViews } from '../../consts/GalleryViews';
-import { ExportFrameMode } from '../../consts/exportFrameModes';
 import { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
 import { ImportItem } from '../../../types/ImportItem';
 import { Palette } from '../../../types/Palette';

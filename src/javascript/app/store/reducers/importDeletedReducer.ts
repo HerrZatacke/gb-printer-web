@@ -3,7 +3,7 @@ import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface ImportDeletedAction {
+export interface ImportDeletedAction {
   type: Actions.SET_IMPORT_DELETED,
   payload: boolean,
 }

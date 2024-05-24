@@ -1,10 +1,10 @@
 /* eslint-disable default-param-last */
+import { ExportFrameMode } from 'gb-image-decoder';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { ExportFrameMode } from '../../../consts/exportFrameModes';
 
-interface HandleExportFrameAction {
+export interface HandleExportFrameAction {
   type: Actions.SET_HANDLE_EXPORT_FRAME,
   payload: ExportFrameMode,
 }

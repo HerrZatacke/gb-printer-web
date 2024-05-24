@@ -1,6 +1,6 @@
 import Queue from 'promise-queue';
 import { AnyAction, Dispatch } from 'redux';
-import { RGBNDecoder, Decoder, RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import { RGBNDecoder, Decoder, RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
@@ -13,7 +13,6 @@ import { isRGBNImage } from '../../../tools/isRGBNImage';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { Image, MonochromeImage, RGBNImage } from '../../../../types/Image';
 import { VideoParams } from '../../../../types/VideoParams';
-import { ExportFrameMode } from '../../../consts/exportFrameModes';
 import { Palette } from '../../../../types/Palette';
 import { State } from '../State';
 import unique from '../../../tools/unique';

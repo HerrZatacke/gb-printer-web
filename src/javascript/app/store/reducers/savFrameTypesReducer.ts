@@ -3,7 +3,7 @@ import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface SavFrameTypesAction {
+export interface SavFrameTypesAction {
   type: Actions.SET_SAV_FRAME_TYPES,
   payload: string,
 }

@@ -1,4 +1,5 @@
 import { Dispatch, MiddlewareAPI } from 'redux';
+import { ExportFrameMode } from 'gb-image-decoder';
 import { QueueImage } from '../../../types/QueueImage';
 import { Dialog } from '../../../types/Dialog';
 import { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/actions/StorageActions';
@@ -7,7 +8,6 @@ import { Palette } from '../../../types/Palette';
 import { FrameGroup } from '../../../types/FrameGroup';
 import { Frame } from '../../../types/Frame';
 import { GalleryViews } from '../../consts/GalleryViews';
-import { ExportFrameMode } from '../../consts/exportFrameModes';
 import { ImportItem } from '../../../types/ImportItem';
 import { ProgressLog } from '../../../types/actions/LogActions';
 import { Plugin } from '../../../types/Plugin';

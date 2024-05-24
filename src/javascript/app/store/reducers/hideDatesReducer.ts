@@ -3,7 +3,7 @@ import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface HideDatesAction {
+export interface HideDatesAction {
   type: Actions.SET_HIDE_DATES,
   payload: boolean,
 }

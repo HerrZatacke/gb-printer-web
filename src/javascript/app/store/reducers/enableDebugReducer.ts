@@ -3,7 +3,7 @@ import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface EnableDebugAction {
+export interface EnableDebugAction {
   type: Actions.SET_DEBUG,
   payload: boolean,
 }

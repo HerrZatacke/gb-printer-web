@@ -3,7 +3,7 @@ import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface ForceMagicCheckAction {
+export interface ForceMagicCheckAction {
   type: Actions.SET_FORCE_MAGIC_CHECK,
   payload: boolean,
 }

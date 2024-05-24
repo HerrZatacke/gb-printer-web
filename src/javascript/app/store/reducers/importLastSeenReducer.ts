@@ -3,7 +3,7 @@ import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface ImportLastSeenAction {
+export interface ImportLastSeenAction {
   type: Actions.SET_IMPORT_LAST_SEEN,
   payload: boolean,
 }

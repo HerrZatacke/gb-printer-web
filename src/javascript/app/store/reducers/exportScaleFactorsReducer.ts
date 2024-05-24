@@ -3,7 +3,7 @@ import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface ExportScaleFactorsAction {
+export interface ExportScaleFactorsAction {
   type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
   payload: {
     checked: boolean,

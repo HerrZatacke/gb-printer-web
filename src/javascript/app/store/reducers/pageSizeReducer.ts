@@ -3,7 +3,7 @@ import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface PageSizeAction {
+export interface PageSizeAction {
   type: Actions.SET_PAGESIZE,
   payload: number,
 }

@@ -1,4 +1,4 @@
-import { ExportFrameMode } from '../javascript/consts/exportFrameModes';
+import { ExportFrameMode } from 'gb-image-decoder';
 
 export interface VideoParams {
   imageSelection?: string[],

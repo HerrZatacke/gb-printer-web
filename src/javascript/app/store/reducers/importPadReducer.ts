@@ -3,7 +3,7 @@ import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface ImportPadAction {
+export interface ImportPadAction {
   type: Actions.SET_IMPORT_PAD,
   payload: boolean,
 }

@@ -1,8 +1,8 @@
+import { ExportFrameMode } from 'gb-image-decoder';
 import { Actions } from '../javascript/app/store/actions';
 import { FrameGroup } from './FrameGroup';
 import { Frame } from './Frame';
 import { GalleryViews } from '../javascript/consts/GalleryViews';
-import { ExportFrameMode } from '../javascript/consts/exportFrameModes';
 import { Image, RGBNHashes } from './Image';
 import { Palette } from './Palette';
 import { VideoParams } from './VideoParams';

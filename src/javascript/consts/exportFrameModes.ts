@@ -1,9 +1,4 @@
-export enum ExportFrameMode {
-  FRAMEMODE_KEEP = 'keep',
-  FRAMEMODE_CROP = 'crop',
-  FRAMEMODE_SQUARE_BLACK = 'square_black',
-  FRAMEMODE_SQUARE_WHITE = 'square_white',
-}
+import { ExportFrameMode } from 'gb-image-decoder';
 
 const exportFrameModes = [
   {

@@ -4,7 +4,7 @@ import unique from '../../../tools/unique';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
-interface ExportFileTypesAction {
+export interface ExportFileTypesAction {
   type: Actions.UPDATE_EXPORT_FILE_TYPES,
   payload: {
     checked: boolean,
