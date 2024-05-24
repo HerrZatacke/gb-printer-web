@@ -1,16 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import useStoragePersist from './useStoragePersist';
 import useHashCleanup from '../../../../../tools/hashCleanup';
+import { Actions } from '../../../../store/actions';
+import { ExportTypes } from '../../../../store/defaults';
 
-const ExportSettings = (props) => {
+const ExportSettings = () => {
+  const dispatch = useDispatch();
   const { hashCleanup, cleanupBusy } = useHashCleanup();
+
+  const exportJson = (what: ExportTypes) => {
+    dispatch({
+      type: Actions.JSON_EXPORT,
+      payload: what,
+    });
+  };
 
   const {
     persistAPIAvailable,
     persisted,
     requestPersist,
   } = useStoragePersist();
+
   return (
     <div className="inputgroup buttongroup settings__export">
       { persistAPIAvailable ? (
@@ -26,14 +37,14 @@ const ExportSettings = (props) => {
       <button
         type="button"
         className="button"
-        onClick={() => props.exportJson('debug')}
+        onClick={() => exportJson(ExportTypes.DEBUG)}
       >
         Export debug settings
       </button>
       <button
         type="button"
         className="button"
-        onClick={() => props.exportJson('settings')}
+        onClick={() => exportJson(ExportTypes.SETTINGS)}
       >
         Export settings
       </button>
@@ -48,11 +59,5 @@ const ExportSettings = (props) => {
     </div>
   );
 };
-
-ExportSettings.propTypes = {
-  exportJson: PropTypes.func.isRequired,
-};
-
-ExportSettings.defaultProps = {};
 
 export default ExportSettings;

@@ -1,8 +1,14 @@
 import { useState } from 'react';
 
-const useStoragePersist = () => {
+interface UseStoragePersist {
+  persistAPIAvailable: boolean,
+  persisted: boolean,
+  requestPersist: () => void,
+}
+
+const useStoragePersist = (): UseStoragePersist => {
   const [persisted, setPersisted] = useState(false);
-  const persistAPIAvailable = !!(navigator.storage && navigator.storage.persisted && navigator.storage.persist);
+  const persistAPIAvailable = !!(navigator.storage && navigator.storage.persist);
 
   if (persistAPIAvailable) {
     navigator.storage.persisted().then(setPersisted);
