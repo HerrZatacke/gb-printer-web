@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
-import Input from '../../../Input';
+import Input, { InputType } from '../../../Input';
 
-const GitSettings = ({ gitStorage, setGitStorage }) => {
+import './index.scss';
+import { useGitStorage } from './useGitStorage';
 
+const GitSettings = () => {
+  const { gitStorage, setGitStorage } = useGitStorage();
   const [storage, setStorage] = useState(gitStorage);
 
   return (
@@ -48,12 +50,12 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
           <Input
             id="settings-git-owner"
             labelText="Owner"
-            type="text"
+            type={InputType.TEXT}
             value={storage.owner}
             onChange={(owner) => {
               setStorage({
                 ...storage,
-                owner,
+                owner: owner as string,
               });
             }}
             onBlur={() => {
@@ -64,12 +66,12 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
           <Input
             id="settings-git-repo"
             labelText="Repository name"
-            type="text"
+            type={InputType.TEXT}
             value={storage.repo}
             onChange={(repo) => {
               setStorage({
                 ...storage,
-                repo,
+                repo: repo as string,
               });
             }}
             onBlur={() => {
@@ -80,12 +82,12 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
           <Input
             id="settings-git-branch"
             labelText="Branch"
-            type="text"
+            type={InputType.TEXT}
             value={storage.branch}
             onChange={(branch) => {
               setStorage({
                 ...storage,
-                branch,
+                branch: branch as string,
               });
             }}
             onBlur={() => {
@@ -96,7 +98,7 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
           <Input
             id="settings-git-throttle"
             labelText="Throttle (in ms)"
-            type="number"
+            type={InputType.NUMBER}
             min={10}
             max={5000}
             step={25}
@@ -104,7 +106,7 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
             onChange={(throttle) => {
               setStorage({
                 ...storage,
-                throttle,
+                throttle: throttle as number,
               });
             }}
             onBlur={() => {
@@ -115,12 +117,12 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
           <Input
             id="settings-git-token"
             labelText="Token"
-            type="password"
+            type={InputType.PASSWORD}
             value={storage.token}
             onChange={(token) => {
               setStorage({
                 ...storage,
-                token,
+                token: token as string,
               });
             }}
             onBlur={() => {
@@ -140,11 +142,6 @@ const GitSettings = ({ gitStorage, setGitStorage }) => {
       )}
     </>
   );
-};
-
-GitSettings.propTypes = {
-  gitStorage: PropTypes.object.isRequired,
-  setGitStorage: PropTypes.func.isRequired,
 };
 
 export default GitSettings;
