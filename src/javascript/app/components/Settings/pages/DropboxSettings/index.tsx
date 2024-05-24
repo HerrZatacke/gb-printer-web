@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
-import Input from '../../../Input';
+import Input, { InputType } from '../../../Input';
 import cleanPath from '../../../../../tools/cleanPath';
+import { useDropboxSettings } from './useDropboxSettings';
 
-const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage, path: propsPath, autoDropboxSync }) => {
-
-  const [path, setPath] = useState(propsPath);
+const DropboxSettings = () => {
+  const {
+    use,
+    loggedIn,
+    logout,
+    startAuth,
+    setDropboxStorage,
+    path: propsPath,
+    autoDropboxSync,
+  } = useDropboxSettings();
+  const [path, setPath] = useState<string>(propsPath);
 
   return (
     <>
@@ -43,7 +51,10 @@ const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage, 
       <Input
         id="dropbox-settings-path"
         value={path}
-        onChange={setPath}
+        type={InputType.TEXT}
+        onChange={(value) => {
+          setPath(value as string);
+        }}
         onBlur={() => {
           setPath(cleanPath(path));
           setDropboxStorage({
@@ -123,16 +134,6 @@ const DropboxSettings = ({ use, loggedIn, logout, startAuth, setDropboxStorage, 
       }
     </>
   );
-};
-
-DropboxSettings.propTypes = {
-  logout: PropTypes.func.isRequired,
-  startAuth: PropTypes.func.isRequired,
-  setDropboxStorage: PropTypes.func.isRequired,
-  loggedIn: PropTypes.bool.isRequired,
-  use: PropTypes.bool.isRequired,
-  path: PropTypes.string.isRequired,
-  autoDropboxSync: PropTypes.bool.isRequired,
 };
 
 export default DropboxSettings;
