@@ -11,6 +11,21 @@ import { Palette } from '../../../../types/Palette';
 import { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
 import { TypedStore } from '../State';
 
+export interface PluginImageSingleAction {
+  type: Actions.PLUGIN_IMAGE,
+  payload: {
+    url: string,
+    hash: string,
+  },
+}
+
+export interface PluginImageBatchAction {
+type: Actions.PLUGIN_IMAGES,
+  payload: {
+    url: string,
+  },
+}
+
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,
 }

@@ -5,12 +5,20 @@ import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
 import { Actions } from '../../store/actions';
+import { State } from '../../store/State';
+import { PluginImageBatchAction, PluginImageSingleAction } from '../../store/middlewares/plugins';
 
-const PluginSelect = ({ children, pluginsActive, hash }) => {
-  const plugins = useSelector((state) => state.plugins);
+interface Props {
+  children: React.ReactNode,
+  pluginsActive: boolean,
+  hash?: string,
+}
+
+const PluginSelect = ({ children, pluginsActive, hash }: Props) => {
+  const plugins = useSelector((state: State) => state.plugins);
   const dispatch = useDispatch();
 
-  const toPlugins = (url) => {
+  const dispatchToPlugin = (url: string) => {
     if (hash) {
       dispatch({
         type: Actions.PLUGIN_IMAGE,
@@ -18,14 +26,14 @@ const PluginSelect = ({ children, pluginsActive, hash }) => {
           url,
           hash,
         },
-      });
+      } as PluginImageSingleAction);
     } else {
       dispatch({
         type: Actions.PLUGIN_IMAGES,
         payload: {
           url,
         },
-      });
+      } as PluginImageBatchAction);
     }
   };
 
@@ -44,7 +52,7 @@ const PluginSelect = ({ children, pluginsActive, hash }) => {
                 className="plugin-select__button"
                 disabled={Boolean(loading || error)}
                 title={`${error || description || ''}\n${url}`}
-                onClick={() => toPlugins(url)}
+                onClick={() => dispatchToPlugin(url)}
               >
                 {error && (
                   <SVG name="warn" />
@@ -60,16 +68,6 @@ const PluginSelect = ({ children, pluginsActive, hash }) => {
       </ul>
     </span>
   );
-};
-
-PluginSelect.propTypes = {
-  children: PropTypes.node.isRequired,
-  pluginsActive: PropTypes.bool.isRequired,
-  hash: PropTypes.string,
-};
-
-PluginSelect.defaultProps = {
-  hash: null,
 };
 
 export default PluginSelect;
