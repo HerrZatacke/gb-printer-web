@@ -7,11 +7,11 @@ import {
 } from '../../../../types/actions/PrinterActions';
 
 const printerFunctionsReducer = (
-  value: object[] = [],
+  value: string[] = [],
   action:
     PrinterTimedOutAction |
     PrinterFunctionsReceivedAction,
-): object[] => {
+): string[] => {
   switch (action.type) {
     case Actions.PRINTER_FUNCTIONS_RECEIVED:
       return action.payload;

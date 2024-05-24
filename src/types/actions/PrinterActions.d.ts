@@ -1,8 +1,11 @@
 import { Actions } from '../../javascript/app/store/actions';
 import { PrinterInfo } from '../Printer';
 
+export type PrinterFunctionName = 'testFile' | 'checkPrinter' | 'fetchImages' | 'clearPrinter' | 'tear';
+
 export interface PrinterRemoteCallAction {
   type: Actions.REMOTE_CALL_FUNCTION,
+  payload: PrinterFunctionName,
 }
 
 export interface PrinterTimedOutAction {
@@ -11,7 +14,7 @@ export interface PrinterTimedOutAction {
 
 export interface PrinterFunctionsReceivedAction {
   type: Actions.PRINTER_FUNCTIONS_RECEIVED,
-  payload: object[]
+  payload: PrinterFunctionName[]
 }
 
 export interface PrinterDataReceivedAction {

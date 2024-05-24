@@ -69,6 +69,7 @@ import { Plugin } from '../../../types/Plugin';
 import { VideoParams } from '../../../types/VideoParams';
 import { QueueImage } from '../../../types/QueueImage';
 import { PrinterInfo } from '../../../types/Printer';
+import { PrinterFunctionName } from '../../../types/actions/PrinterActions';
 
 export interface Reducers extends ReducersMapObject {
   activePalette: Reducer<string | undefined>,
@@ -110,7 +111,7 @@ export interface Reducers extends ReducersMapObject {
   preferredLocale: Reducer<string>,
   printerBusy: Reducer<boolean>,
   printerData: Reducer<PrinterInfo>,
-  printerFunctions: Reducer<object[]>,
+  printerFunctions: Reducer<PrinterFunctionName[]>,
   printerUrl: Reducer<string>,
   printerParams: Reducer<string>,
   progress: Reducer<Progress>,

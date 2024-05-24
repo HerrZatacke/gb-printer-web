@@ -17,6 +17,7 @@ export interface PrinterInfo {
     dumpcount: number,
   },
   dumps: string[], // sent by checkPrinter
+  message?: string,
 }
 
 // sent by testFile (Deprecated?)

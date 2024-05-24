@@ -1,16 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import filesize from 'filesize';
+import { usePrinter } from './usePrinter';
+import { PrinterFunctionName } from '../../../../types/actions/PrinterActions';
 
-const functionLabels = {
+import './index.scss';
+
+const functionLabels: Record<PrinterFunctionName, string> = {
   testFile: 'Print test image',
   checkPrinter: 'Check Printer',
-  fetchImages: null,
+  fetchImages: '',
   clearPrinter: 'Clear Printer',
   tear: 'Tear',
 };
 
-const getFetchImagesLabel = (printerFunctions, dumpsLength) => {
+const getFetchImagesLabel = (printerFunctions: PrinterFunctionName[], dumpsLength: number): string => {
   if (printerFunctions.includes('tear')) {
     return 'Fetch images';
   }
@@ -18,13 +21,14 @@ const getFetchImagesLabel = (printerFunctions, dumpsLength) => {
   return `Fetch ${dumpsLength || 0} images`;
 };
 
-const PrinterReport = ({
-  printerData,
-  printerFunctions,
-  printerConnected,
-  callRemoteFunction,
-  printerBusy,
-}) => {
+const PrinterReport = () => {
+  const {
+    printerData,
+    printerFunctions,
+    printerConnected,
+    callRemoteFunction,
+    printerBusy,
+  } = usePrinter();
 
   if (!printerConnected) {
     return null;
@@ -97,18 +101,6 @@ const PrinterReport = ({
       }
     </div>
   );
-};
-
-PrinterReport.propTypes = {
-  printerData: PropTypes.object,
-  printerBusy: PropTypes.bool.isRequired,
-  printerFunctions: PropTypes.array.isRequired,
-  printerConnected: PropTypes.bool.isRequired,
-  callRemoteFunction: PropTypes.func.isRequired,
-};
-
-PrinterReport.defaultProps = {
-  printerData: null,
 };
 
 export default PrinterReport;

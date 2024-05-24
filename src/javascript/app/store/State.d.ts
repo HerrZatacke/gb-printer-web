@@ -17,6 +17,7 @@ import { TrashCount } from './reducers/trashCountReducer';
 import { VideoParams } from '../../../types/VideoParams';
 import { WindowDimensions } from './reducers/windowDimensionsReducer';
 import { PrinterInfo } from '../../../types/Printer';
+import { PrinterFunctionName } from '../../../types/actions/PrinterActions';
 
 // ToDo: infer from store somehow...?
 export interface State {
@@ -59,7 +60,7 @@ export interface State {
   preferredLocale: string,
   printerBusy: boolean,
   printerData: PrinterInfo,
-  printerFunctions: object[],
+  printerFunctions: PrinterFunctionName[],
   printerUrl: string,
   printerParams: string,
   progress: Progress,
