@@ -3,6 +3,8 @@ import { Outlet, NavLink, useMatches, Navigate } from 'react-router-dom';
 import ExportSettings from './pages/ExportSettings';
 import { getEnv } from '../../../tools/getEnv';
 
+import './index.scss';
+
 const env = getEnv();
 
 const tabs = [
@@ -28,8 +30,8 @@ if (DROPBOX_APP_KEY) {
 }
 
 if (
-  (getEnv().env === 'esp8266') ||
-  (getEnv().env === 'webpack-dev')
+  (getEnv()?.env === 'esp8266') ||
+  (getEnv()?.env === 'webpack-dev')
 ) {
   tabs.push({
     path: '/settings/wifi',
@@ -74,13 +76,13 @@ const Settings = () => {
       <ul className="settings__version">
         <li>{`Web-App version: ${VERSION}`}</li>
         <li>{`Web-App branch: ${BRANCH}`}</li>
-        <li>{`Printer version: ${env.version}`}</li>
-        <li>{`Max Images: ${env.maximages}`}</li>
-        <li>{`Localforage driver: ${env.localforage}`}</li>
-        <li>{`Environment type: ${env.env}`}</li>
-        <li>{`Compiled Filesystem: ${env.fstype}`}</li>
-        <li>{`Compiled Bootmode: ${env.bootmode}`}</li>
-        <li>{`Compiled for OLED: ${env.oled ? 'yes' : 'no'}`}</li>
+        <li>{`Printer version: ${env?.version}`}</li>
+        <li>{`Max Images: ${env?.maximages}`}</li>
+        <li>{`Localforage driver: ${env?.localforage}`}</li>
+        <li>{`Environment type: ${env?.env}`}</li>
+        <li>{`Compiled Filesystem: ${env?.fstype}`}</li>
+        <li>{`Compiled Bootmode: ${env?.bootmode}`}</li>
+        <li>{`Compiled for OLED: ${env?.oled ? 'yes' : 'no'}`}</li>
       </ul>
     </div>
   );
