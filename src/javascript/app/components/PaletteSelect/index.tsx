@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
+import { State } from '../../store/State';
+import { Palette } from '../../../../types/Palette';
+
+interface Props {
+  value: string,
+  selectLabel?: string,
+  invertPalette?: boolean,
+  noFancy?: boolean,
+  allowEmpty?: boolean,
+  // `confirm` param is required for direct preview of hovered palettes in edit form
+  onChange: (value: string, confirm?: boolean) => void,
+  updateInvertPalette?: (invert: boolean) => void,
+}
 
 const PaletteSelect = ({
   value,
   allowEmpty,
-  onChange,
   invertPalette,
-  updateInvertPalette,
   noFancy,
   selectLabel,
-}) => {
-  const [initiallySelected, setInitiallySelected] = useState(value);
+  onChange,
+  updateInvertPalette,
+}: Props) => {
+  const [initiallySelected, setInitiallySelected] = useState<string>(value);
 
-  const palettes = [...useSelector((state) => (state.palettes))];
+  const palettes: Palette[] = [...useSelector((state: State) => (state.palettes))];
 
   // this option is used for assigning a single palette to an animation
   if (allowEmpty) {
@@ -24,6 +36,8 @@ const PaletteSelect = ({
       shortName: '',
       name: 'As selected per image',
       palette: [],
+      isPredefined: false,
+      origin: '',
     });
   }
 
@@ -122,24 +136,6 @@ const PaletteSelect = ({
       )}
     </>
   );
-};
-
-PaletteSelect.propTypes = {
-  value: PropTypes.string.isRequired,
-  selectLabel: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  invertPalette: PropTypes.bool,
-  updateInvertPalette: PropTypes.func,
-  noFancy: PropTypes.bool,
-  allowEmpty: PropTypes.bool,
-};
-
-PaletteSelect.defaultProps = {
-  selectLabel: null,
-  noFancy: false,
-  allowEmpty: false,
-  invertPalette: false,
-  updateInvertPalette: null,
 };
 
 export default PaletteSelect;
