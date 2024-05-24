@@ -1,5 +1,19 @@
 .palette {
+
+  --gradient-1: #FFFFFF00;
+  --gradient-2: #FFFFFF00;
+  --gradient-3: #FFFFFF00;
+  --gradient-4: #FFFFFF00;
+
   $palette-padding: 20px;
+
+  background-image: linear-gradient(
+    to right,
+    var(--gradient-1) 0%,
+    var(--gradient-2) 33.3%,
+    var(--gradient-3) 66.6%,
+    var(--gradient-4) 100%
+  );
 
   flex-basis: 270px;
   flex-grow: 1;

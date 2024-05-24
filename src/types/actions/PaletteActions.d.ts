@@ -25,6 +25,16 @@ export interface PaletteSetEditAction {
   payload: Palette,
 }
 
+export interface PaletteEditAction {
+  type: Actions.PALETTE_EDIT,
+  payload: string,
+}
+
 export interface PaletteCancelEditAction {
   type: Actions.PALETTE_CANCEL_EDIT,
+}
+
+export interface PaletteCloneAction {
+  type: Actions.PALETTE_CLONE,
+  payload: string,
 }

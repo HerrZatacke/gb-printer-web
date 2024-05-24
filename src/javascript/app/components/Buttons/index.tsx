@@ -20,7 +20,7 @@ const Buttons = ({ confirm, deny, canConfirm }: Props) => (
     ) : null }
     { confirm ? (
       <button
-        disabled={!canConfirm}
+        disabled={canConfirm === false}
         className="buttons__button buttons__button--confirm"
         type="button"
         onClick={confirm}
