@@ -1,13 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import PaginationButton from '../PaginationButton';
 import SVG from '../SVG';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import './index.scss';
+import { State } from '../../store/State';
 
-const Pagination = (props) => {
-  const totalPages = useSelector((state) => (
+interface Props {
+  page: number
+}
+
+const Pagination = ({ page }: Props): React.ReactNode => {
+  const totalPages = useSelector((state: State) => (
     state.pageSize ? Math.ceil(getFilteredImagesCount(state) / state.pageSize) : 0
   ));
 
@@ -16,7 +20,6 @@ const Pagination = (props) => {
   }
 
   const pages = [...new Array(totalPages)].map((undef, index) => index);
-  const { page } = props;
 
   const displayedPages = pages.map((pageIndex) => {
     switch (pageIndex) {
@@ -32,7 +35,6 @@ const Pagination = (props) => {
             page={pageIndex}
             active={pageIndex === page}
             title={`To page ${pageIndex + 1}`}
-            disabled={pageIndex === page}
           >
             {pageIndex + 1}
           </PaginationButton>
@@ -51,7 +53,6 @@ const Pagination = (props) => {
       <PaginationButton
         key="back"
         title="To previous page"
-        disabled={page < 1}
         page={page - 1}
       >
         <SVG name="left" />
@@ -64,7 +65,6 @@ const Pagination = (props) => {
       <PaginationButton
         key="next"
         title="To next page"
-        disabled={page >= pages.length - 1}
         page={page + 1}
       >
         <SVG name="right" />
@@ -77,11 +77,6 @@ const Pagination = (props) => {
       {displayedPages.filter(Boolean)}
     </ul>
   );
-};
-
-
-Pagination.propTypes = {
-  page: PropTypes.number.isRequired,
 };
 
 export default Pagination;
