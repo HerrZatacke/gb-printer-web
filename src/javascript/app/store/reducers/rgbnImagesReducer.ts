@@ -5,7 +5,7 @@ import { DeleteImageAction, DeleteImagesAction, NewRGBNImageAction } from '../..
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { RGBNHashes } from '../../../../types/Image';
 
-interface UpdateRGBNPartAction {
+export interface UpdateRGBNPartAction {
   type: Actions.UPDATE_RGBN_PART,
   payload: RGBNHashes,
 }
