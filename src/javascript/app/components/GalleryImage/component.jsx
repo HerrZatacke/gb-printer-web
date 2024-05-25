@@ -127,6 +127,7 @@ const GalleryImage = ({
       <GalleryImageButtons
         isFavourite={isFavourite}
         hash={hash}
+        imageTitle={title}
         buttons={['select', 'favourite', 'download', 'delete', 'view', 'share', 'plugins']}
       />
     </li>
@@ -179,6 +180,7 @@ const GalleryImage = ({
         <GalleryImageButtons
           isFavourite={isFavourite}
           hash={hash}
+          imageTitle={title}
           buttons={['select', 'favourite', 'download', 'delete', 'view', 'plugins']}
         />
       </div>

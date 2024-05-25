@@ -67,3 +67,19 @@ export interface DownloadImageSelectionAction {
   type: Actions.DOWNLOAD_SELECTION,
   payload: string[],
 }
+
+export interface DownloadImageStartAction {
+  type: Actions.START_DOWNLOAD
+  payload: string,
+}
+
+
+export interface ShareImageStartAction {
+  type: Actions.SHARE_IMAGE
+  payload: string,
+}
+
+export interface LightboxImageSetAction {
+  type: Actions.SET_LIGHTBOX_IMAGE_HASH,
+  payload: string,
+}
