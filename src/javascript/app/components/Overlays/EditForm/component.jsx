@@ -100,7 +100,7 @@ const EditForm = (props) => {
         hash={props.hash}
         hashes={props.hashes}
         rotation={rotation}
-        reportTileCount={(tileCount) => {
+        reportTileCount={(tileCount) => { // ToDo: remove here and from <ImageRender>
           setIsRegularImage(tileCount === 360);
         }}
       />
