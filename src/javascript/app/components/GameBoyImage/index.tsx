@@ -40,21 +40,25 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
     try {
       if (isRGBN) {
         const decoder = new RGBNDecoder();
-        decoder.update({
-          canvas: tempCanvas,
-          tiles: tiles as RGBNTiles,
-          palette,
-          lockFrame,
-        });
+        if (tiles as RGBNTiles || undefined) {
+          decoder.update({
+            canvas: tempCanvas,
+            tiles: tiles as RGBNTiles,
+            palette,
+            lockFrame,
+          });
+        }
       } else {
         const decoder = new Decoder();
-        decoder.update({
-          canvas: tempCanvas,
-          tiles: tiles as string[],
-          palette,
-          lockFrame,
-          invertPalette,
-        });
+        if ((tiles as string[] | undefined)?.length) {
+          decoder.update({
+            canvas: tempCanvas,
+            tiles: tiles as string[],
+            palette,
+            lockFrame,
+            invertPalette,
+          });
+        }
       }
 
       if (canvas.current) {
