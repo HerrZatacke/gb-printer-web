@@ -2,8 +2,11 @@ import { connect } from 'react-redux';
 import { missingGreyPalette } from '../../../defaults';
 import { Actions } from '../../../store/actions';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
+import { getImageTileCount } from '../../../../tools/loadImageTiles';
 
 const mapStateToProps = (state) => {
+
+  const tileCounter = getImageTileCount(state);
 
   const height = (state.windowDimensions.width <= 600) ?
     state.windowDimensions.height :
@@ -15,6 +18,7 @@ const mapStateToProps = (state) => {
 
   if (!state.editImage?.batch?.length) {
     return {
+      tileCounter,
       hash: null,
       invertPalette: false,
       lockFrame: false,
@@ -40,6 +44,7 @@ const mapStateToProps = (state) => {
   const image = state.images.find(({ hash }) => hash === batch[0]);
 
   return ({
+    tileCounter,
     created: image.created || null,
     hash: image.hash,
     tags,

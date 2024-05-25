@@ -14,7 +14,6 @@ interface Props {
   lockFrame: boolean,
   frameId?: string,
   rotation?: number,
-  reportTileCount?: (count: number) => void, // ToDo: remove...
 }
 
 const ImageRender = ({
@@ -24,7 +23,6 @@ const ImageRender = ({
   lockFrame,
   invertPalette,
   palette,
-  reportTileCount,
   rotation,
 }: Props) => {
   const [tiles, setTiles] = useState<string[] | RGBNTiles>();
@@ -41,20 +39,6 @@ const ImageRender = ({
           return;
         }
 
-        if (reportTileCount) {
-          if (loadedTiles) {
-            reportTileCount(
-              (loadedTiles as string[])?.length ||
-              (loadedTiles as RGBNTiles).r?.length ||
-              (loadedTiles as RGBNTiles).g?.length ||
-              (loadedTiles as RGBNTiles).b?.length ||
-              (loadedTiles as RGBNTiles).n?.length || 0,
-            );
-          } else {
-            reportTileCount(0);
-          }
-        }
-
         if (loadedTiles) {
           setTiles(loadedTiles);
         }
@@ -63,7 +47,7 @@ const ImageRender = ({
     return () => {
       aborted = true;
     };
-  }, [loadImageTiles, reportTileCount, hash, hashes, frameId]);
+  }, [loadImageTiles, hash, hashes, frameId]);
 
   return tiles ? (
     <GameBoyImage

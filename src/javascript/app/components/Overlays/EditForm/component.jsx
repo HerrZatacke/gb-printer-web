@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ImageRender from '../../ImageRender';
 import EditImageTabs from '../../EditImageTabs';
@@ -28,7 +28,7 @@ const EditForm = (props) => {
   const [invertPalette, updateInvertPalette] = useState(props.invertPalette);
   const [paletteShort, updatePaletteShort] = useState(props.paletteShort);
   const [paletteRGBN, updatePaletteRGBN] = useState(props.paletteRGBN);
-  const [isRegularImage, setIsRegularImage] = useState(true);
+  const [isRegularImage, setIsRegularImage] = useState(false);
   const [tagChanges, updateTagChanges] = useState({
     initial: props.tags,
     add: [],
@@ -45,7 +45,25 @@ const EditForm = (props) => {
     rotation: false,
   });
 
-  if (!props.hash) {
+  const {
+    tileCounter,
+    hash,
+  } = props;
+
+  useEffect(() => {
+    const updateIsRegular = async () => {
+      if (!hash) {
+        return;
+      }
+
+      const tileCount = await tileCounter({ hash });
+      setIsRegularImage(tileCount === 360);
+    };
+
+    updateIsRegular();
+  }, [tileCounter, hash]);
+
+  if (!hash) {
     return null;
   }
 
@@ -97,12 +115,9 @@ const EditForm = (props) => {
         invertPalette={invertPalette}
         palette={usedPalette}
         frameId={frame}
-        hash={props.hash}
+        hash={hash}
         hashes={props.hashes}
         rotation={rotation}
-        reportTileCount={(tileCount) => { // ToDo: remove here and from <ImageRender>
-          setIsRegularImage(tileCount === 360);
-        }}
       />
       { props.imageCount > 1 ? (
         <div
@@ -128,7 +143,7 @@ const EditForm = (props) => {
         regularImage={isRegularImage}
         mixedTypes={props.mixedTypes}
         lockFrame={lockFrame}
-        hash={props.hash}
+        hash={hash}
         hashes={props.hashes}
         paletteShort={paletteShort}
         paletteRGBN={paletteRGBN}
@@ -168,6 +183,7 @@ EditForm.propTypes = {
   imageCount: PropTypes.number.isRequired,
   created: PropTypes.string,
   cancel: PropTypes.func.isRequired,
+  tileCounter: PropTypes.func.isRequired,
   hash: PropTypes.string,
   hashes: PropTypes.object,
   paletteShort: PropTypes.string,

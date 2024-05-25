@@ -7,7 +7,7 @@ import { isRGBNImage } from '../isRGBNImage';
 
 export type PImage = {
   hash: Image['hash'],
-  frame: Image['frame'],
+  frame?: Image['frame'],
   hashes?: RGBNImage['hashes'],
 }
 
@@ -32,5 +32,24 @@ const loadImageTiles = (state: State, recover?: RecoverFn) => (
     return { r, g, b, n };
   }
 );
+
+export const getImageTileCount = (state: State) => {
+  const tileLoader = loadImageTiles(state);
+  return async (hash: string): Promise<number> => {
+    const loadedTiles = await tileLoader({ hash });
+
+    if (loadedTiles) {
+      return (
+        (loadedTiles as string[])?.length ||
+        (loadedTiles as RGBNTiles).r?.length ||
+        (loadedTiles as RGBNTiles).g?.length ||
+        (loadedTiles as RGBNTiles).b?.length ||
+        (loadedTiles as RGBNTiles).n?.length || 0
+      );
+    }
+
+    return 0;
+  };
+};
 
 export default loadImageTiles;
