@@ -24,7 +24,7 @@ const framesReducer = (
         action.payload.data,
       ]);
     case Actions.GLOBAL_UPDATE:
-      return sortById(uniqueById(action.payload?.frames || []));
+      return sortById(uniqueById([...frames, ...(action.payload?.frames || [])]));
     default:
       return frames;
   }
