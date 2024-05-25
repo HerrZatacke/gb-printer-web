@@ -10,4 +10,5 @@ export interface SortOptionsHideAction {
 
 export interface SortOptionsSetSortByAction {
   type: Actions.SET_SORT_BY,
+  payload: string,
 }

@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Lightbox from '../../Lightbox';
 
-const sortables = [
+import './index.scss';
+import { useSortForm } from './useSortForm';
+import { SortDirection } from '../../../../tools/sortby';
+
+interface Sortable {
+  title: string,
+  key: string,
+}
+
+const sortables: Sortable[] = [
   {
     title: 'Title',
     key: 'title',
@@ -18,30 +26,32 @@ const sortables = [
   },
 ];
 
-const SortForm = (props) => {
-  const [sortBy, setSortBy] = useState(props.sortBy);
-  const [sortOrder, setSortOrder] = useState(props.sortOrder);
+const SortForm = () => {
+  const sortForm = useSortForm();
+
+  const [sortBy, setSortBy] = useState<string>(sortForm.sortBy);
+  const [sortOrder, setSortOrder] = useState<SortDirection>(sortForm.sortOrder);
 
   useEffect(() => {
-    setSortBy(props.sortBy);
-    setSortOrder(props.sortOrder);
-  }, [setSortBy, setSortOrder, props.visible, props.sortBy, props.sortOrder]);
+    setSortBy(sortForm.sortBy);
+    setSortOrder(sortForm.sortOrder);
+  }, [setSortBy, setSortOrder, sortForm.visible, sortForm.sortBy, sortForm.sortOrder]);
 
-  if (!props.visible) {
+  if (!sortForm.visible) {
     return null;
   }
 
-  const currentSortBy = sortables.find(({ key }) => (key === sortBy));
-  const currentOrderTitle = sortOrder === 'asc' ? 'ascending' : 'descending';
+  const currentSortBy = sortables.find(({ key }) => (key === sortBy)) || sortables[0];
+  const currentOrderLabel = sortOrder === SortDirection.ASC ? 'ascending' : 'descending';
 
   return (
     <Lightbox
       className="sort-form"
-      confirm={() => props.setSortBy(`${sortBy}_${sortOrder}`)}
+      confirm={() => sortForm.setSortBy(`${sortBy}_${sortOrder}`)}
       deny={() => {
-        props.hideSortForm();
+        sortForm.hideSortForm();
       }}
-      header={`Sort by: ${currentSortBy.title}/${currentOrderTitle}`}
+      header={`Sort by: ${currentSortBy.title}/${currentOrderLabel}`}
     >
       <ul
         className="sort-form__list"
@@ -74,7 +84,7 @@ const SortForm = (props) => {
               })
             }
             type="button"
-            onClick={() => setSortOrder('asc')}
+            onClick={() => setSortOrder(SortDirection.ASC)}
           >
             Ascending
           </button>
@@ -87,7 +97,7 @@ const SortForm = (props) => {
               })
             }
             type="button"
-            onClick={() => setSortOrder('desc')}
+            onClick={() => setSortOrder(SortDirection.DESC)}
           >
             Descending
           </button>
@@ -96,15 +106,5 @@ const SortForm = (props) => {
     </Lightbox>
   );
 };
-
-SortForm.propTypes = {
-  visible: PropTypes.bool.isRequired,
-  sortBy: PropTypes.string.isRequired,
-  sortOrder: PropTypes.string.isRequired,
-  setSortBy: PropTypes.func.isRequired,
-  hideSortForm: PropTypes.func.isRequired,
-};
-
-SortForm.defaultProps = {};
 
 export default SortForm;
