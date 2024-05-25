@@ -79,8 +79,8 @@ const getAddImages = (
   }))
 );
 
-const withDefaults = (params: VideoParams): Required<VideoParams> => ({
-  scaleFactor: params.scaleFactor || 4,
+export const videoParamsWithDefaults = (params: VideoParams, scaleFactors: number[]): Required<VideoParams> => ({
+  scaleFactor: params.scaleFactor || scaleFactors[scaleFactors.length - 1] || 4,
   frameRate: params.frameRate || 12,
   imageSelection: params.imageSelection || [],
   yoyo: params.yoyo || false,
@@ -104,7 +104,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
     invertPalette: videoInvertPalette,
     palette: videoPalette,
     exportFrameMode,
-  } = withDefaults(state.videoParams);
+  } = videoParamsWithDefaults(state.videoParams, state.exportScaleFactors);
 
   if (!imageSelection.length) {
     return;

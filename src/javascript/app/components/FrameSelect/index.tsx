@@ -1,9 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
+import { State } from '../../store/State';
+
+interface Props {
+  frame: string,
+  updateFrame: (frame: string) => void,
+  updateFrameLock?: (lockFame: boolean) => void,
+  lockFrame?: boolean,
+  noFrameOption?: string,
+  selectLabel?: string,
+}
 
 const FrameSelect = ({
   frame,
@@ -12,8 +21,8 @@ const FrameSelect = ({
   updateFrameLock,
   lockFrame,
   selectLabel,
-}) => {
-  const frames = useSelector((state) => (state.frames));
+}: Props) => {
+  const frames = useSelector((state: State) => (state.frames));
 
   return (
     <>
@@ -35,7 +44,7 @@ const FrameSelect = ({
           updateFrame(ev.target.value);
         }}
       >
-        <option value="">{noFrameOption}</option>
+        <option value="">{noFrameOption || 'As imported / No frame'}</option>
         {
           frames.map(({ id, name }) => (
             <option key={id} value={id}>
@@ -70,22 +79,6 @@ const FrameSelect = ({
       }
     </>
   );
-};
-
-FrameSelect.propTypes = {
-  frame: PropTypes.string.isRequired,
-  updateFrame: PropTypes.func.isRequired,
-  updateFrameLock: PropTypes.func,
-  lockFrame: PropTypes.bool,
-  noFrameOption: PropTypes.string,
-  selectLabel: PropTypes.string,
-};
-
-FrameSelect.defaultProps = {
-  noFrameOption: 'As imported / No frame',
-  selectLabel: null,
-  lockFrame: false,
-  updateFrameLock: null,
 };
 
 export default FrameSelect;
