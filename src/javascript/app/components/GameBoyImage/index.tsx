@@ -4,7 +4,7 @@ import { RGBNDecoder, Decoder, RGBNTiles, maxTiles, RGBNPalette } from 'gb-image
 import { applyRotation, Rotation } from '../../../tools/applyRotation';
 import './index.scss';
 
-interface GameBoyImageProps {
+export interface GameBoyImageProps {
   palette?: string[] | RGBNPalette | null,
   tiles: string[] | RGBNTiles,
   lockFrame: boolean,

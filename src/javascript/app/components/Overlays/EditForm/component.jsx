@@ -56,7 +56,7 @@ const EditForm = (props) => {
         return;
       }
 
-      const tileCount = await tileCounter({ hash });
+      const tileCount = await tileCounter(hash);
       setIsRegularImage(tileCount === 360);
     };
 

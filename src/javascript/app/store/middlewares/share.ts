@@ -1,5 +1,5 @@
 import { getPrepareFiles } from '../../../tools/download';
-import loadImageTiles from '../../../tools/loadImageTiles';
+import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
@@ -28,7 +28,7 @@ const batch: MiddlewareWithState = (store) => (next) => async (action) => {
       exportFileTypes: [shareFileType],
     });
 
-    const tiles = await loadImageTiles(state)(image);
+    const tiles = await loadImageTiles(state)(image.hash);
 
     const downloadInfo = await prepareFiles(imagePalette, image)(tiles || []);
 

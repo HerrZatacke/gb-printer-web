@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { RGBNPalette, RGBNTiles } from 'gb-image-decoder';
+import React from 'react';
+import { RGBNPalette } from 'gb-image-decoder';
 import GameBoyImage from '../GameBoyImage';
 import { useImageRender } from './useImageRender';
+import { RGBNHashes } from '../../../../types/Image';
+import { Rotation } from '../../../tools/applyRotation';
 
 import './index.scss';
-import { RGBNHashes } from '../../../../types/Image';
 
 interface Props {
   hash: string,
@@ -13,8 +14,7 @@ interface Props {
   invertPalette: boolean,
   lockFrame: boolean,
   frameId?: string,
-  rotation?: number,
-  frames?: RGBNHashes,
+  rotation?: Rotation,
 }
 
 const ImageRender = ({
@@ -25,42 +25,25 @@ const ImageRender = ({
   invertPalette,
   palette,
   rotation,
-  frames,
 }: Props) => {
-  const [tiles, setTiles] = useState<string[] | RGBNTiles>();
 
-  const { loadImageTiles } = useImageRender(hash);
+  const { gbImageProps } = useImageRender({
+    hash,
+    hashes,
+    frameId,
+    lockFrame,
+    invertPalette,
+    palette,
+    rotation,
+  });
 
-  // ToDo:
-  console.log(frames);
-
-  useEffect(() => {
-    let aborted = false;
-
-    // setTiles(null); // no need to clear before update?
-    loadImageTiles({ hash, frame: frameId || '', hashes }, false)
-      .then((loadedTiles) => {
-        if (aborted) {
-          return;
-        }
-
-        if (loadedTiles) {
-          setTiles(loadedTiles);
-        }
-      });
-
-    return () => {
-      aborted = true;
-    };
-  }, [loadImageTiles, hash, hashes, frameId]);
-
-  return tiles ? (
+  return gbImageProps ? (
     <GameBoyImage
-      lockFrame={lockFrame}
-      invertPalette={invertPalette}
-      tiles={tiles}
-      palette={palette}
-      rotation={rotation}
+      lockFrame={gbImageProps.lockFrame}
+      invertPalette={gbImageProps.invertPalette}
+      tiles={gbImageProps.tiles}
+      palette={gbImageProps.palette}
+      rotation={gbImageProps.rotation}
     />
   ) : (
     <div className="image-render--loading" />

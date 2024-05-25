@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useStore } from 'react-redux';
 import { RGBNTiles } from 'gb-image-decoder';
-import loadImageTiles from '../loadImageTiles';
+import { loadImageTiles } from '../loadImageTiles';
 import { compressAndHash, save } from '../storage';
 import { Actions } from '../../app/store/actions';
 import { State, TypedStore } from '../../app/store/State';
@@ -10,7 +10,7 @@ import { isRGBNImage } from '../isRGBNImage';
 import { RehashImageAction } from '../../../types/actions/ImageActions';
 
 const reHash = async (state: State, hash: string): Promise<string | null> => {
-  const loadedTiles: string[] | RGBNTiles | void = await loadImageTiles(state)({ hash } as MonochromeImage, false);
+  const loadedTiles: string[] | RGBNTiles | void = await loadImageTiles(state)(hash, false);
 
   if (!loadedTiles) {
     return null;

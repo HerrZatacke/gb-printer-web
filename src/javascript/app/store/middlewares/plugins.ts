@@ -1,7 +1,7 @@
 import Queue from 'promise-queue';
 import { saveAs } from 'file-saver';
 import { RGBNDecoder, Decoder, RGBNTiles, RGBNPalette } from 'gb-image-decoder';
-import loadImageTiles from '../../../tools/loadImageTiles';
+import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
@@ -64,7 +64,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
       throw new Error('selectedPalette not found');
     }
 
-    const getTiles = () => loadImageTiles(state)(meta);
+    const getTiles = () => loadImageTiles(state)(meta.hash);
 
     const isRGBN = isRGBNImage(meta);
 

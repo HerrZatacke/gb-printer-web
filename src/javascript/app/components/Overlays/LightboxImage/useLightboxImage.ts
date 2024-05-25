@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RGBNPalette } from 'gb-image-decoder';
-import getRGBNFrames from '../../../../tools/getRGBNFrames';
 import getFilteredImages from '../../../../tools/getFilteredImages';
 import { Actions } from '../../../store/actions';
 import { State } from '../../../store/State';
@@ -15,7 +14,6 @@ interface UseLightboxImage {
   created: string,
   frame: string,
   hashes?: RGBNHashes,
-  frames?: RGBNHashes,
   palette: RGBNPalette | string[],
   isFullscreen: boolean,
   lightboxIndex: number,
@@ -35,7 +33,6 @@ export const useLightboxImage = (): UseLightboxImage => {
     image,
     size,
     palette,
-    frames,
     isFullscreen,
     lightboxIndex,
     preferredLocale,
@@ -43,12 +40,10 @@ export const useLightboxImage = (): UseLightboxImage => {
     const filteredImages = getFilteredImages(state);
     const sImage = filteredImages.find((_, lbIndex) => lbIndex === state.lightboxImage);
     let pal: RGBNPalette | string[] | undefined;
-    let rgbnFrames: RGBNHashes | undefined;
 
     if (sImage) {
       if (isRGBNImage(sImage)) {
         pal = (sImage as RGBNImage).palette;
-        rgbnFrames = getRGBNFrames(state, (sImage as RGBNImage).hashes, sImage.frame || undefined);
       } else {
         pal = state.palettes.find(({ shortName }) => shortName === sImage.palette)?.palette;
       }
@@ -58,7 +53,6 @@ export const useLightboxImage = (): UseLightboxImage => {
       image: sImage,
       size: filteredImages.length,
       palette: pal || missingGreyPalette.palette,
-      frames: rgbnFrames,
       isFullscreen: state.isFullscreen,
       lightboxIndex: state.lightboxImage || 0,
       preferredLocale: state.preferredLocale,
@@ -75,7 +69,6 @@ export const useLightboxImage = (): UseLightboxImage => {
     frame: image?.frame || '',
     isFullscreen,
     palette,
-    frames,
     lightboxIndex,
     size,
     lockFrame: image?.lockFrame || false,

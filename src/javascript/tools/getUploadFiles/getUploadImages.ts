@@ -4,7 +4,7 @@ import { isRGBNImage, reduceImagesMonochrome } from '../isRGBNImage';
 import { AddToQueueFn, RepoContents, RepoFile, SyncFile } from '../../../types/Sync';
 import getImagePalette from '../getImagePalette';
 import { State } from '../../app/store/State';
-import getLoadImageTiles from '../loadImageTiles';
+import { loadImageTiles as getLoadImageTiles } from '../loadImageTiles';
 import getPrepareFiles from '../download/getPrepareFiles';
 import { Palette } from '../../../types/Palette';
 
@@ -66,7 +66,7 @@ export const getUploadImages = async (
       }
 
       return addToQueue(`loadImageTiles (${index + 1}/${imagesLength}) ${image.title}`, 3, async (): Promise<SyncFile | null> => {
-        const tiles = await loadImageTiles(image, true);
+        const tiles = await loadImageTiles(image.hash, true);
 
         if (
           !(tiles as string[]).length ||

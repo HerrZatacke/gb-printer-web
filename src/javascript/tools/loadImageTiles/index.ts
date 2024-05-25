@@ -1,6 +1,5 @@
 import { RGBNTiles } from 'gb-image-decoder';
 import { load, RecoverFn } from '../storage';
-import getRGBNFrames, { ReducedPickState } from '../getRGBNFrames';
 import { State } from '../../app/store/State';
 import { Image, RGBNImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
@@ -11,9 +10,16 @@ export type PImage = {
   hashes?: RGBNImage['hashes'],
 }
 
-const loadImageTiles = (state: State | ReducedPickState, recover?: RecoverFn) => (
-  async (image: PImage | Image, noDummy?: boolean): Promise<string[] | RGBNTiles | void> => {
-    const { hash, frame } = image;
+export type ReducedPickState = Pick<State, 'frames' | 'images'>
+
+export const loadImageTiles = (state: State | ReducedPickState, recover?: RecoverFn) => {
+  const loader = async (hash: string, noDummy?: boolean, overrideFrame?: string): Promise<string[] | RGBNTiles> => {
+    const image = state.images.find(((img) => hash === img.hash));
+    if (!image) {
+      return [];
+    }
+
+    const frame = overrideFrame || image.frame || undefined;
     const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
 
     if (!isRGBNImage(image as Image)) {
@@ -22,22 +28,22 @@ const loadImageTiles = (state: State | ReducedPickState, recover?: RecoverFn) =>
     }
 
     const { hashes } = image as RGBNImage;
-    const frames = getRGBNFrames(state, hashes, frameHash);
 
-    const r = (hashes.r && await load(hashes.r, frames.r || frameHash, noDummy, recover)) || [];
-    const g = (hashes.g && await load(hashes.g, frames.g || frameHash, noDummy, recover)) || [];
-    const b = (hashes.b && await load(hashes.b, frames.b || frameHash, noDummy, recover)) || [];
-    const n = (hashes.n && await load(hashes.n, frames.n || frameHash, noDummy, recover)) || [];
+    const r = hashes.r ? await loader(hashes.r, noDummy, frame) as string[] : [];
+    const g = hashes.g ? await loader(hashes.g, noDummy, frame) as string[] : [];
+    const b = hashes.b ? await loader(hashes.b, noDummy, frame) as string[] : [];
+    const n = hashes.n ? await loader(hashes.n, noDummy, frame) as string[] : [];
 
     return { r, g, b, n };
-  }
-);
+  };
+
+  return loader;
+};
 
 export const getImageTileCount = (state: State) => {
   const tileLoader = loadImageTiles(state);
   return async (hash: string): Promise<number> => {
-    const loadedTiles = await tileLoader({ hash });
-
+    const loadedTiles = await tileLoader(hash);
     if (loadedTiles) {
       return (
         (loadedTiles as string[])?.length ||
@@ -51,5 +57,3 @@ export const getImageTileCount = (state: State) => {
     return 0;
   };
 };
-
-export default loadImageTiles;

@@ -4,7 +4,7 @@ import { RGBNDecoder, Decoder, RGBNTiles, RGBNPalette, ExportFrameMode } from 'g
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
-import loadImageTiles from '../../../tools/loadImageTiles';
+import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import generateFileName from '../../../tools/generateFileName';
 import { Actions } from '../actions';
@@ -135,7 +135,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
   const tileLoader = loadImageTiles(state);
 
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
-    const tiles = await tileLoader(image);
+    const tiles = await tileLoader(image.hash);
     const palette = getImagePalette(state, image);
 
     if (!tiles || !palette) {

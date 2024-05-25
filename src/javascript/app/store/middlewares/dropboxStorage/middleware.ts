@@ -8,7 +8,7 @@ import { hasher } from '../../../../tools/DropboxClient/dropboxContentHasher';
 import parseAuthParams from '../../../../tools/parseAuthParams';
 import { getPrepareFiles } from '../../../../tools/download';
 import getImagePalette from '../../../../tools/getImagePalette';
-import loadImageTiles from '../../../../tools/loadImageTiles';
+import { loadImageTiles } from '../../../../tools/loadImageTiles';
 import replaceDuplicateFilenames from '../../../../tools/replaceDuplicateFilenames';
 import getFilteredImages from '../../../../tools/getFilteredImages';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
@@ -208,7 +208,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                 images.map(async (image, index): Promise<unknown> => (
                   addToQueue('Generate images and hashes')(`${index + 1}/${images.length}`, 10, async () => {
                     const imagePalette = getImagePalette(state, image);
-                    const tiles = await loadTiles(image);
+                    const tiles = await loadTiles(image.hash);
 
                     if (!imagePalette || !tiles) {
                       throw new Error('palette or tiles missing');

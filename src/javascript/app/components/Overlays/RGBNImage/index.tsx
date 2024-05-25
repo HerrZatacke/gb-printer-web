@@ -8,13 +8,9 @@ import { State } from '../../../store/State';
 import { ButtonOption } from '../../GalleryImageButtons/useGalleryImageButtons';
 
 import './index.scss';
-import getRGBNFrames from '../../../../tools/getRGBNFrames';
 
 const RGBNImage = () => {
-  const { hashes, frames } = useSelector((state: State) => ({
-    hashes: state.rgbnImages,
-    frames: getRGBNFrames(state, state.rgbnImages || undefined),
-  }));
+  const hashes = useSelector((state: State) => state.rgbnImages);
 
   return hashes ? (
     <div
@@ -33,7 +29,6 @@ const RGBNImage = () => {
         lockFrame={false}
         invertPalette={false}
         palette={defaultRGBNPalette}
-        frames={frames}
         hash="newRGBN"
         hashes={hashes}
       />

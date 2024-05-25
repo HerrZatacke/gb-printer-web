@@ -1,7 +1,7 @@
 import { getPrepareFiles } from '../../../tools/download';
 import download from '../../../tools/download/download';
 import generateFileName from '../../../tools/generateFileName';
-import loadImageTiles from '../../../tools/loadImageTiles';
+import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
 import { State } from '../State';
@@ -27,7 +27,7 @@ const handleSingleImage = (
     palette: imagePalette,
   });
 
-  const tiles = await loadImageTiles(state)(image);
+  const tiles = await loadImageTiles(state)(image.hash);
 
   if (!tiles) {
     throw new Error('no tiles');
@@ -55,7 +55,7 @@ const handleImageCollection =
         throw new Error('imagePalette not found');
       }
 
-      const tiles = await loadImageTiles(state)(image);
+      const tiles = await loadImageTiles(state)(image.hash);
       return prepareFiles(imagePalette, image)(tiles || []);
     }))
       .then((resultImages) => resultImages.flat())

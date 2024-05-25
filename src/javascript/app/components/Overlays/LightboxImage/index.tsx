@@ -17,7 +17,6 @@ const LightboxImage = () => {
     invertPalette,
     palette,
     frame,
-    frames,
     hash,
     hashes,
     lightboxIndex,
@@ -60,7 +59,6 @@ const LightboxImage = () => {
         invertPalette={invertPalette}
         palette={palette}
         frameId={frame}
-        frames={frames}
         hash={hash}
         hashes={hashes}
         rotation={rotation}
