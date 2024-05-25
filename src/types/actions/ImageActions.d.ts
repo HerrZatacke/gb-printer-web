@@ -83,3 +83,8 @@ export interface LightboxImageSetAction {
   type: Actions.SET_LIGHTBOX_IMAGE_HASH,
   payload: string,
 }
+
+export interface TryRecoverImageAction {
+  type: Actions.TRY_RECOVER_IMAGE_DATA,
+  payload: string,
+}

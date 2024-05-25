@@ -14,6 +14,7 @@ interface Props {
   lockFrame: boolean,
   frameId?: string,
   rotation?: number,
+  frames?: RGBNHashes,
 }
 
 const ImageRender = ({
@@ -24,10 +25,14 @@ const ImageRender = ({
   invertPalette,
   palette,
   rotation,
+  frames,
 }: Props) => {
   const [tiles, setTiles] = useState<string[] | RGBNTiles>();
 
   const { loadImageTiles } = useImageRender(hash);
+
+  // ToDo:
+  console.log(frames);
 
   useEffect(() => {
     let aborted = false;

@@ -1,4 +1,5 @@
 import { RGBNPalette } from 'gb-image-decoder';
+import { Rotation } from '../javascript/tools/applyRotation';
 
 export interface ImageMetadata extends Record<string, unknown>{
   romType?: string,
@@ -29,7 +30,7 @@ interface CommonImage {
   tags: string[],
   lockFrame?: boolean,
   invertPalette?: boolean,
-  rotation?: number,
+  rotation?: Rotation,
   meta?: ImageMetadata
 }
 

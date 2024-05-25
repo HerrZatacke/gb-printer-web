@@ -1,6 +1,6 @@
 import { RGBNTiles } from 'gb-image-decoder';
 import { load, RecoverFn } from '../storage';
-import getRGBNFrames from '../getRGBNFrames';
+import getRGBNFrames, { ReducedPickState } from '../getRGBNFrames';
 import { State } from '../../app/store/State';
 import { Image, RGBNImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
@@ -11,7 +11,7 @@ export type PImage = {
   hashes?: RGBNImage['hashes'],
 }
 
-const loadImageTiles = (state: State, recover?: RecoverFn) => (
+const loadImageTiles = (state: State | ReducedPickState, recover?: RecoverFn) => (
   async (image: PImage | Image, noDummy?: boolean): Promise<string[] | RGBNTiles | void> => {
     const { hash, frame } = image;
     const frameHash = state.frames.find(({ id }) => id === frame)?.hash;

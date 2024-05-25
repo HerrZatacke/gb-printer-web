@@ -1,8 +1,10 @@
 import { RGBNHashes } from '../../../types/Image';
 import { State } from '../../app/store/State';
 
+export type ReducedPickState = Pick<State, 'frames' | 'images'>
+
 const getRGBNFrames = (
-  { images }: State,
+  { images }: State | ReducedPickState,
   hashes?: RGBNHashes,
   defaultFrame?: string,
 ): RGBNHashes => {
