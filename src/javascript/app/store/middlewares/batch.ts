@@ -10,6 +10,7 @@ import {
 } from '../../../../types/actions/ImageActions';
 import { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
 import { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
+import { ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 
 const collectTags = (batchImages: Image[]): string[] => (
   unique(batchImages.map(({ tags }) => tags).flat())
@@ -65,7 +66,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
                 });
               },
             },
-          });
+          } as ConfirmAskAction);
 
           break;
         }

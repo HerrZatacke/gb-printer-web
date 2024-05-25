@@ -19,6 +19,7 @@ import { AddToQueueFn, DownloadInfo, RepoContents, UploadFile } from '../../../.
 import { delay } from '../../../../tools/delay';
 import { Image } from '../../../../../types/Image';
 import { DownloadArrayBuffer } from '../../../../tools/download/types';
+import { ConfirmAskAction } from '../../../../../types/actions/ConfirmActions';
 
 interface WithContentHash {
   dropboxContentHash: string,
@@ -156,7 +157,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                           });
                         },
                       },
-                    });
+                    } as ConfirmAskAction);
                   }
 
                   syncResult = null;
