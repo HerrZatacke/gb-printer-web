@@ -1,4 +1,4 @@
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../../store/actions';
 import { State } from '../../../../store/State';
 import { DropBoxSettings } from '../../../../../../types/actions/StorageActions';
