@@ -3,12 +3,12 @@ import { Actions } from '../actions';
 import {
   LogStorageDiffDoneAction,
   LogStorageSyncDoneAction,
-  LogStorageSyncStartAction,
+  StorageSyncStartAction,
 } from '../../../../types/actions/LogActions';
 
 const syncBusyReducer = (
   value = false,
-  action: LogStorageSyncStartAction | LogStorageSyncDoneAction | LogStorageDiffDoneAction,
+  action: StorageSyncStartAction | LogStorageSyncDoneAction | LogStorageDiffDoneAction,
 ): boolean => {
   switch (action.type) {
     case Actions.STORAGE_SYNC_START:

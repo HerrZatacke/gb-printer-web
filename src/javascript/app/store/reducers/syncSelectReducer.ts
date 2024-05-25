@@ -1,17 +1,18 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import {
-  LogStorageSyncCancelAction,
-  LogStorageSyncDoneAction, LogStorageSyncSelectAction,
-  LogStorageSyncStartAction,
+  LogStorageSyncDoneAction,
+  StorageSyncCancelAction,
+  StorageSyncSelectAction,
+  StorageSyncStartAction,
 } from '../../../../types/actions/LogActions';
 
 const syncSelectReducer = (
   value = false,
   action:
-    LogStorageSyncSelectAction |
-    LogStorageSyncStartAction |
-    LogStorageSyncCancelAction |
+    StorageSyncSelectAction |
+    StorageSyncStartAction |
+    StorageSyncCancelAction |
     LogStorageSyncDoneAction,
 ): boolean => {
   switch (action.type) {

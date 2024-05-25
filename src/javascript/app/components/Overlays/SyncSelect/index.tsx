@@ -1,18 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import SVG from '../../SVG';
+import { useSyncSelect } from './useSyncSelect';
 
-const SyncSelect = ({
-  startSync,
-  cancelSync,
-  repoUrl,
-  dropboxActive,
-  gitActive,
-  syncLastUpdate,
-  autoDropboxSync,
-}) => {
+import './index.scss';
+
+const SyncSelect = () => {
+  const {
+    repoUrl,
+    dropboxActive,
+    gitActive,
+    syncLastUpdate,
+    autoDropboxSync,
+    startSync,
+    cancelSync,
+  } = useSyncSelect();
 
   const showSyncHints = autoDropboxSync && (syncLastUpdate.local !== syncLastUpdate.dropbox);
 
@@ -136,20 +139,5 @@ const SyncSelect = ({
     </Lightbox>
   );
 };
-
-SyncSelect.propTypes = {
-  startSync: PropTypes.func.isRequired,
-  cancelSync: PropTypes.func.isRequired,
-  repoUrl: PropTypes.string.isRequired,
-  dropboxActive: PropTypes.bool.isRequired,
-  autoDropboxSync: PropTypes.bool.isRequired,
-  gitActive: PropTypes.bool.isRequired,
-  syncLastUpdate: PropTypes.shape({
-    dropbox: PropTypes.number.isRequired,
-    local: PropTypes.number.isRequired,
-  }).isRequired,
-};
-
-SyncSelect.defaultProps = {};
 
 export default SyncSelect;
