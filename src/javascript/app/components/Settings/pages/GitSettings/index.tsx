@@ -106,7 +106,7 @@ const GitSettings = () => {
             onChange={(throttle) => {
               setStorage({
                 ...storage,
-                throttle: throttle as number,
+                throttle: parseInt(throttle as string, 10),
               });
             }}
             onBlur={() => {

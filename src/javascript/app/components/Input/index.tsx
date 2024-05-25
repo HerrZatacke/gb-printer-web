@@ -25,7 +25,7 @@ interface Props {
   max?: number,
   step?: number,
   value?: string | number,
-  onChange: (value: string | number | FileList) => void,
+  onChange: (value: string | FileList) => void,
   onBlur?: () => void,
   buttonOnClick?: () => void,
   buttonIcon?: string,
