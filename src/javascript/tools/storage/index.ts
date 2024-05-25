@@ -40,7 +40,7 @@ const save = async (lines: string[]): Promise<string> => {
 
 const load = async (
   dataHash: string,
-  frameHash: string | null,
+  frameHash?: string,
   noDummy?: boolean,
   recover?: RecoverFn,
 ): Promise<string[] | null> => {

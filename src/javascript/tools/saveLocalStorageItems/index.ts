@@ -37,7 +37,7 @@ export const saveFrameFileContent = async (fileContent: string): Promise<string>
 
 const saveLocalStorageItems = async ({ images, frames }: RepoContents): Promise<string[]> => {
   const imagesDone = await Promise.all(images.map(async (image): Promise<string> => {
-    const tiles = await load(image.hash, null, true);
+    const tiles = await load(image.hash, undefined, true);
     if (tiles?.length) {
       return image.hash;
     }

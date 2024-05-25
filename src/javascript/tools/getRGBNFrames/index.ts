@@ -3,8 +3,8 @@ import { State } from '../../app/store/State';
 
 const getRGBNFrames = (
   { images }: State,
-  hashes: RGBNHashes,
-  defaultFrame: string | null,
+  hashes?: RGBNHashes,
+  defaultFrame?: string,
 ): RGBNHashes => {
 
   if (defaultFrame) {

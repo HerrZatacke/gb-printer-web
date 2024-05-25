@@ -80,7 +80,7 @@ const getPrepareFiles =
               }
 
               // this loads the basic raw data without applying a frame
-              load(image.hash, null)
+              load(image.hash)
                 .then((plainTiles) => {
 
                   const transformedTiles = (plainTiles || [])

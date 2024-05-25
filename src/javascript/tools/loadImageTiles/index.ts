@@ -14,7 +14,7 @@ export type PImage = {
 const loadImageTiles = (state: State, recover?: RecoverFn) => (
   async (image: PImage | Image, noDummy?: boolean): Promise<string[] | RGBNTiles | void> => {
     const { hash, frame } = image;
-    const frameHash = state.frames.find(({ id }) => id === frame)?.hash || null;
+    const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
 
     if (!isRGBNImage(image as Image)) {
       const tiles = await load(hash, frameHash, noDummy, recover);

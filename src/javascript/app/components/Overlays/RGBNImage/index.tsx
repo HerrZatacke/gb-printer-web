@@ -4,22 +4,15 @@ import classnames from 'classnames';
 import GalleryImageButtons from '../../GalleryImageButtons';
 import ImageRender from '../../ImageRender';
 import { defaultRGBNPalette } from '../../../defaults';
-import getRGBNFrames from '../../../../tools/getRGBNFrames';
+import { State } from '../../../store/State';
+import { ButtonOption } from '../../GalleryImageButtons/useGalleryImageButtons';
+
 import './index.scss';
 
 const RGBNImage = () => {
+  const hashes = useSelector((state: State) => state.rgbnImages);
 
-  const { hashes, frames } = useSelector((state) => ({
-    hashes: {
-      r: state.rgbnImages.r,
-      g: state.rgbnImages.g,
-      b: state.rgbnImages.b,
-      n: state.rgbnImages.n,
-    },
-    frames: getRGBNFrames(state, state.rgbnImages, null),
-  }));
-
-  return (
+  return hashes ? (
     <div
       className={
         classnames('rgbn-image', {
@@ -36,17 +29,16 @@ const RGBNImage = () => {
         lockFrame={false}
         invertPalette={false}
         palette={defaultRGBNPalette}
-        frames={frames}
         hash="newRGBN"
         hashes={hashes}
       />
       <GalleryImageButtons
         hash="newRGBN"
-        buttons={['saveRGBNImage']}
+        buttons={[ButtonOption.SAVE_RGBN_IMAGE]}
         isFavourite={false}
       />
     </div>
-  );
+  ) : null;
 };
 
 export default RGBNImage;
