@@ -6,10 +6,11 @@ import {
   ConfirmAnsweredAction,
 } from '../../../../types/actions/ConfirmActions';
 import { Dialog } from '../../../../types/Dialog';
+import { DeleteFrameAction } from '../../../../types/actions/FrameActions';
 
 const confirmReducer = (
   value: Dialog[] = [],
-  action: ConfirmAskAction | ConfirmAction | ConfirmAnsweredAction,
+  action: ConfirmAskAction | ConfirmAction | ConfirmAnsweredAction | DeleteFrameAction,
 ): Dialog[] => {
   switch (action.type) {
     case Actions.CONFIRM_ASK: {

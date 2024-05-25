@@ -1,9 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SVG from '../SVG';
 import './index.scss';
 
-const FrameButtons = ({ deleteFrame, editFrame }) => (
+interface Props {
+  deleteFrame: () => void,
+  editFrame: () => void,
+}
+
+const FrameButtons = ({ deleteFrame, editFrame }: Props) => (
   <div
     className="frame-buttons"
     onClick={(ev) => {
@@ -27,10 +31,5 @@ const FrameButtons = ({ deleteFrame, editFrame }) => (
     </button>
   </div>
 );
-
-FrameButtons.propTypes = {
-  deleteFrame: PropTypes.func.isRequired,
-  editFrame: PropTypes.func.isRequired,
-};
 
 export default FrameButtons;

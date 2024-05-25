@@ -1,21 +1,25 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import { RGBNPalette } from 'gb-image-decoder';
 import GameBoyImage from '../GameBoyImage';
 import FrameButtons from '../FrameButtons';
-import './index.scss';
 import useFrame from './useFrame';
 
+import './index.scss';
 
-const Frame = ({ frameId, name, palette }) => {
+interface Props {
+  frameId: string,
+  name: string,
+  palette: string[] | RGBNPalette,
+}
+
+const Frame = ({ frameId, name, palette }: Props) => {
   const {
     tiles,
     deleteFrame,
     editFrame,
     frameHash,
+    enableDebug,
   } = useFrame({ frameId, name });
-
-  const enableDebug = useSelector((state) => state.enableDebug);
 
   if (!tiles) {
     return null;
@@ -28,12 +32,14 @@ const Frame = ({ frameId, name, palette }) => {
       role="presentation"
     >
       <div className="frame__image">
-        <GameBoyImage
-          lockFrame={false}
-          invertPalette={false}
-          palette={palette}
-          tiles={tiles}
-        />
+        { tiles.length ? (
+          <GameBoyImage
+            lockFrame={false}
+            invertPalette={false}
+            palette={palette}
+            tiles={tiles}
+          />
+        ) : null }
       </div>
       <code className="frame__id">
         {frameId}
@@ -50,12 +56,6 @@ const Frame = ({ frameId, name, palette }) => {
       />
     </li>
   );
-};
-
-Frame.propTypes = {
-  frameId: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  palette: PropTypes.array.isRequired,
 };
 
 export default Frame;

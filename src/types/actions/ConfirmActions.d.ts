@@ -12,7 +12,6 @@ export interface ConfirmAction {
     Actions.ADD_IMAGES |
     Actions.DELETE_IMAGE |
     Actions.DELETE_IMAGES |
-    Actions.DELETE_FRAME |
     Actions.PALETTE_DELETE,
 }
 
