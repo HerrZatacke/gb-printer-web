@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import Lightbox from '../../Lightbox';
+
+import './index.scss';
+import { useProgress } from './useProgress';
 
 dayjs.extend(duration);
 
 const messagesCutOff = 15;
 
-const ProgressLogBox = ({
-  git: {
-    messages: gitMessages,
-    repoUrl,
-    repo,
-    branch,
-  },
-  dropbox: {
-    messages: dropboxMessages,
-    path: dropboxPath,
-  },
-  confirm,
-}) => {
+const ProgressLogBox = () => {
+
+  const {
+    git: {
+      messages: gitMessages,
+      repoUrl,
+      repo,
+      branch,
+    },
+    dropbox: {
+      messages: dropboxMessages,
+      path: dropboxPath,
+    },
+    confirm,
+  } = useProgress();
 
   const [cutOffMessages, setCutOffMessages] = useState(true);
 
@@ -57,7 +61,7 @@ const ProgressLogBox = ({
     <Lightbox
       className="progress-log"
       header={`${finished ? '✔️ Update done' : '⏳ Updating...'} ${isGit ? ` - "${repo}/${branch}"` : ''}`}
-      confirm={finished ? confirm : null}
+      confirm={finished ? confirm : undefined}
     >
       <ul className="progress-log__messages">
         {shownMessages.map(({ message, timestamp }, index) => (
@@ -119,30 +123,6 @@ const ProgressLogBox = ({
       </div>
     </Lightbox>
   );
-};
-
-ProgressLogBox.propTypes = {
-  git: PropTypes.shape({
-    messages: PropTypes.arrayOf(
-      PropTypes.shape({
-        timestamp: PropTypes.number.isRequired,
-        message: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-    repoUrl: PropTypes.string.isRequired,
-    repo: PropTypes.string.isRequired,
-    branch: PropTypes.string.isRequired,
-  }).isRequired,
-  dropbox: PropTypes.shape({
-    messages: PropTypes.arrayOf(
-      PropTypes.shape({
-        timestamp: PropTypes.number.isRequired,
-        message: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-    path: PropTypes.string.isRequired,
-  }).isRequired,
-  confirm: PropTypes.func.isRequired,
 };
 
 export default ProgressLogBox;
