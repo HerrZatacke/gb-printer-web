@@ -24,7 +24,9 @@ interface UseEditFrame {
   saveFrame: () => void,
 }
 
-const useEditFrame = (frame?: Frame): UseEditFrame => {
+type NewEditFrame = Pick<Frame, 'id' | 'name'>;
+
+const useEditFrame = (frame?: Frame | NewEditFrame): UseEditFrame => {
   const updateId = frame?.id || '';
 
   const { frames, frameGroupNames } = useSelector((state: State) => ({
