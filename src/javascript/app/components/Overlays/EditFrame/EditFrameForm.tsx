@@ -1,6 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Input from '../../Input';
+import Input, { InputType } from '../../Input';
+import { FrameGroup } from '../../../../../types/FrameGroup';
+
+interface Props {
+  frameIndex: number,
+  frameName: string,
+  idValid: boolean,
+  groupIdValid: boolean,
+  frameIndexValid: boolean,
+  frameGroup: string,
+  groups: FrameGroup[],
+  fullId: string,
+  frameGroupName?: string,
+  setFrameGroupName?: (frameGroupName: string) => void,
+  setFrameIndex: (frameIndex: number) => void,
+  setFrameGroup: (frameGroup: string) => void,
+  setFrameName: (frameName: string) => void,
+}
 
 function EditFrameForm({
   frameIndex,
@@ -16,7 +32,7 @@ function EditFrameForm({
   fullId,
   frameGroupName,
   setFrameGroupName,
-}) {
+}: Props) {
   const groupExists = Boolean(groups.find(({ id }) => (frameGroup === id)));
 
   return (
@@ -46,9 +62,9 @@ function EditFrameForm({
       <Input
         id="frame-edit-new-group"
         labelText={groupExists ? 'Frame group id' : 'New frame group id'}
-        type="text"
+        type={InputType.TEXT}
         value={frameGroup}
-        onChange={setFrameGroup}
+        onChange={(value) => setFrameGroup(value as string)}
       >
         {groupIdValid ? null : (
           <span className="inputgroup__note inputgroup__note--warn">
@@ -61,19 +77,19 @@ function EditFrameForm({
           id="frame-edit-new-group-name"
           labelText="New frame group name"
           disabled={groupExists}
-          type="text"
+          type={InputType.TEXT}
           value={groupExists ? '' : frameGroupName}
-          onChange={setFrameGroupName}
+          onChange={(value) => setFrameGroupName(value as string)}
         />
       ) : null }
       <Input
         id="frame-edit-index"
         labelText="Frame Index"
-        type="number"
+        type={InputType.NUMBER}
         min={1}
         max={99}
         value={frameIndex}
-        onChange={setFrameIndex}
+        onChange={(value) => setFrameIndex(parseInt(value as string, 10))}
       >
         {frameIndexValid ? null : (
           <span className="inputgroup__note inputgroup__note--warn">
@@ -84,9 +100,9 @@ function EditFrameForm({
       <Input
         id="frame-edit-shortname"
         labelText="Frame name"
-        type="text"
+        type={InputType.TEXT}
         value={frameName}
-        onChange={setFrameName}
+        onChange={(value) => setFrameName(value as string)}
       />
       <p className="edit-frame__warning">
         { idValid ? '\u00A0' : `Specified frame index/identifier "${fullId}" is already in use, please try another one.` }
@@ -94,27 +110,6 @@ function EditFrameForm({
     </>
   );
 }
-
-EditFrameForm.propTypes = {
-  frameIndex: PropTypes.number.isRequired,
-  setFrameIndex: PropTypes.func.isRequired,
-  frameName: PropTypes.string.isRequired,
-  setFrameGroup: PropTypes.func.isRequired,
-  setFrameName: PropTypes.func.isRequired,
-  idValid: PropTypes.bool.isRequired,
-  groupIdValid: PropTypes.bool.isRequired,
-  frameIndexValid: PropTypes.bool.isRequired,
-  frameGroup: PropTypes.string.isRequired,
-  groups: PropTypes.array.isRequired,
-  fullId: PropTypes.string.isRequired,
-  frameGroupName: PropTypes.string,
-  setFrameGroupName: PropTypes.func,
-};
-
-EditFrameForm.defaultProps = {
-  frameGroupName: '',
-  setFrameGroupName: null,
-};
 
 export default EditFrameForm;
 

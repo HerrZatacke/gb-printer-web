@@ -4,10 +4,14 @@ import Lightbox from '../../Lightbox';
 import './index.scss';
 import useEditFrame from './useEditFrame';
 import EditFrameForm from './EditFrameForm';
+import { State } from '../../../store/State';
 
 // eslint-disable-next-line
 const EditFrame = () => {
-  const frame = useSelector((state) => state.frames.find(({ id }) => id === state.editFrame));
+  const { frame, editId } = useSelector((state: State) => ({
+    frame: state.frames.find(({ id }) => id === state.editFrame),
+    editId: state.editFrame,
+  }));
 
   const {
     cancelEdit,
@@ -34,26 +38,30 @@ const EditFrame = () => {
       className="edit-frame"
       confirm={saveFrame}
       canConfirm={formValid}
-      header={`Editing frame "${updateId}"${updateHead}`}
+      header={frame ? `Editing frame "${updateId}"${updateHead}` : `Error editing '${editId}'`}
       deny={cancelEdit}
       denyOnOverlayClick={false}
     >
       <div
         className="edit-frame__content"
       >
-        <EditFrameForm
-          frameIndex={frameIndex}
-          setFrameIndex={setFrameIndex}
-          frameName={frameName}
-          setFrameGroup={setFrameGroup}
-          setFrameName={setFrameName}
-          idValid={idValid}
-          groupIdValid={groupIdValid}
-          frameIndexValid={frameIndexValid}
-          frameGroup={frameGroup}
-          groups={groups}
-          fullId={fullId}
-        />
+        { frame ? (
+          <EditFrameForm
+            groups={groups}
+            fullId={fullId}
+            frameIndex={frameIndex}
+            frameGroup={frameGroup}
+            frameName={frameName}
+            idValid={idValid}
+            groupIdValid={groupIdValid}
+            frameIndexValid={frameIndexValid}
+            setFrameIndex={setFrameIndex}
+            setFrameGroup={setFrameGroup}
+            setFrameName={setFrameName}
+          />
+        ) : (
+          <p>{ `A frame with the ID '${editId}' does not exist!` }</p>
+        ) }
       </div>
     </Lightbox>
   );
