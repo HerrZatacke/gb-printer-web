@@ -1,12 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import GalleryViewSelect from '../GalleryViewSelect';
 import Pagination from '../Pagination';
 import BatchButtons from '../BatchButtons';
 import './index.scss';
 
-const GalleryHeader = (props) => (
+interface Props {
+  page: number,
+  isSticky?: boolean,
+  isBottom?: boolean,
+}
+
+const GalleryHeader = (props: Props) => (
   <div
     className={classnames('gallery-header', {
       'gallery-header--sticky': props.isSticky,
@@ -18,16 +23,5 @@ const GalleryHeader = (props) => (
     <BatchButtons page={props.page} />
   </div>
 );
-
-GalleryHeader.propTypes = {
-  page: PropTypes.number.isRequired,
-  isSticky: PropTypes.bool,
-  isBottom: PropTypes.bool,
-};
-
-GalleryHeader.defaultProps = {
-  isSticky: false,
-  isBottom: false,
-};
 
 export default GalleryHeader;

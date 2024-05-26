@@ -1,9 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
 import { Actions } from '../../store/actions';
+import { State } from '../../store/State';
+import { BatchTaskAction } from '../../../../types/actions/ImageActions';
+import { BatchActionType } from '../../../consts/batchActionTypes';
+import { ShowFiltersAction } from '../../../../types/actions/TagsActions';
+import { SortOptionsSetAction } from '../../../../types/actions/SortOptionsActions';
 
-const useBatchButtons = (page) => {
-  const state = useSelector((currentState) => currentState);
+const useBatchButtons = (page: number) => {
+  const state = useSelector((currentState: State) => currentState);
   const dispatch = useDispatch();
 
   const indexOffset = page * state.pageSize;
@@ -16,20 +21,20 @@ const useBatchButtons = (page) => {
     activeFilters: state.filtersActiveTags.length || 0,
     selectedImages: state.imageSelection.length,
     hasSelected,
-    batchTask: (action) => {
-      dispatch({
+    batchTask: (action: BatchActionType) => {
+      dispatch<BatchTaskAction>({
         type: Actions.BATCH_TASK,
         payload: action,
         page,
       });
     },
     filter: () => {
-      dispatch({
+      dispatch<ShowFiltersAction>({
         type: Actions.SHOW_FILTERS,
       });
     },
     showSortOptions: () => {
-      dispatch({
+      dispatch<SortOptionsSetAction>({
         type: Actions.SHOW_SORT_OPTIONS,
       });
     },

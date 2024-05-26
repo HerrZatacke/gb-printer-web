@@ -11,6 +11,7 @@ import {
 import { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
 import { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
 import { ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import { BatchActionType } from '../../../consts/batchActionTypes';
 
 const collectTags = (batchImages: Image[]): string[] => (
   unique(batchImages.map(({ tags }) => tags).flat())
@@ -48,8 +49,8 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
     }, []);
 
     if (imageSelection.length) {
-      switch (action.payload) {
-        case 'delete': {
+      switch (action.payload as BatchActionType) {
+        case BatchActionType.DELETE: {
           store.dispatch({
             type: Actions.CONFIRM_ASK,
             payload: {
@@ -71,7 +72,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
           break;
         }
 
-        case 'animate':
+        case BatchActionType.ANIMATE:
           store.dispatch({
             type: Actions.SET_VIDEO_PARAMS,
             payload: {
@@ -79,13 +80,13 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
             },
           } as SetVideoParamsAction);
           break;
-        case 'download':
+        case BatchActionType.DOWNLOAD:
           store.dispatch({
             type: Actions.DOWNLOAD_SELECTION,
             payload: imageSelection,
           } as DownloadImageSelectionAction);
           break;
-        case 'edit':
+        case BatchActionType.EDIT:
           store.dispatch({
             type: Actions.EDIT_IMAGE_SELECTION,
             payload: {
@@ -101,7 +102,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
     }
 
     switch (action.payload) {
-      case 'checkall':
+      case BatchActionType.CHECKALL:
         store.dispatch({
           type: Actions.IMAGE_SELECTION_SET,
           payload: getFilteredImages(state)
@@ -110,7 +111,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
         } as ImageSelectionSetAction);
         break;
 
-      case 'uncheckall':
+      case BatchActionType.UNCHECKALL:
         store.dispatch({
           type: Actions.IMAGE_SELECTION_SET,
           payload: [],

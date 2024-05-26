@@ -1,8 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './index.scss';
 
-const GalleryIntroText = (props) => (
+interface Props {
+  imageCount: number,
+  selectedCount: number,
+  filteredCount: number,
+}
+
+const GalleryIntroText = (props: Props) => (
   <>
     <h2 className="gallery-intro__counter">
       {`${props.imageCount} images`}
@@ -17,11 +22,5 @@ const GalleryIntroText = (props) => (
     </p>
   </>
 );
-
-GalleryIntroText.propTypes = {
-  imageCount: PropTypes.number.isRequired,
-  selectedCount: PropTypes.number.isRequired,
-  filteredCount: PropTypes.number.isRequired,
-};
 
 export default GalleryIntroText;

@@ -10,7 +10,7 @@ interface Props {
   page: number
 }
 
-const Pagination = ({ page }: Props): React.ReactNode => {
+const Pagination = ({ page }: Props) => {
   const totalPages = useSelector((state: State) => (
     state.pageSize ? Math.ceil(getFilteredImagesCount(state) / state.pageSize) : 0
   ));

@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import PluginSelect from '../PluginSelect';
 import './index.scss';
 import useBatchButtons from './useBatchButtons';
+import { BatchActionType } from '../../../consts/batchActionTypes';
 
-const BATCH_ACTIONS = [
-  'download',
-  'delete',
-  'edit',
+const BATCH_ACTIONS: BatchActionType[] = [
+  BatchActionType.DOWNLOAD,
+  BatchActionType.DELETE,
+  BatchActionType.EDIT,
+  BatchActionType.ANIMATE,
 ];
 
-// if (gifshot.isSupported()) {
-BATCH_ACTIONS.push('animate');
-// }
+interface Props {
+  page: number,
+}
 
-const BatchButtons = ({ page }) => {
+const BatchButtons = ({ page }: Props) => {
 
   const {
     hasPlugins,
@@ -65,7 +66,7 @@ const BatchButtons = ({ page }) => {
       >
         <button
           type="button"
-          onClick={() => batchTask(hasSelected ? 'uncheckall' : 'checkall')}
+          onClick={() => batchTask(hasSelected ? BatchActionType.UNCHECKALL : BatchActionType.CHECKALL)}
         >
           <SVG name="checkmark" />
           {selectedImages === 0 ? null : (
@@ -118,13 +119,6 @@ const BatchButtons = ({ page }) => {
       ) : null}
     </ul>
   );
-};
-
-BatchButtons.propTypes = {
-  page: PropTypes.number.isRequired,
-};
-
-BatchButtons.defaultProps = {
 };
 
 export default BatchButtons;

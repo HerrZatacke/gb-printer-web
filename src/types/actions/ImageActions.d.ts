@@ -1,6 +1,7 @@
 import { Actions } from '../../javascript/app/store/actions';
 import { CurrentEditBatch, Image } from '../Image';
 import { TagUpdates } from '../../javascript/tools/modifyTagChanges';
+import { BatchActionType } from '../../javascript/consts/batchActionTypes';
 
 export interface AddImagesAction {
   type: Actions.ADD_IMAGES,
@@ -87,4 +88,10 @@ export interface LightboxImageSetAction {
 export interface TryRecoverImageAction {
   type: Actions.TRY_RECOVER_IMAGE_DATA,
   payload: string,
+}
+
+export interface BatchTaskAction {
+  type: Actions.BATCH_TASK,
+  payload: BatchActionType,
+  page: number,
 }
