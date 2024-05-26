@@ -10,7 +10,7 @@ import './index.scss';
 interface Props {
   values: RGBNPalette,
   onChange: (values: RGBNPalette, confirm: boolean) => void,
-  useChannels: Record<keyof RGBNPalette, boolean>,
+  useChannels: Record<keyof RGBNHashes, boolean>,
 }
 
 const GreySelect = (props: Props) => {
@@ -30,8 +30,8 @@ const GreySelect = (props: Props) => {
     debounced.callback(nextValues);
   };
 
-  const usedChannels = (['r', 'g', 'b', 'n'] as (keyof RGBNPalette)[])
-    .reduce((acc: (keyof RGBNPalette)[], channelName: keyof RGBNPalette): (keyof RGBNPalette)[] => {
+  const usedChannels = (['r', 'g', 'b', 'n'] as (keyof RGBNHashes)[])
+    .reduce((acc: (keyof RGBNHashes)[], channelName: keyof RGBNHashes): (keyof RGBNHashes)[] => {
       if (props.useChannels[channelName]) {
         return [...acc, channelName];
       }

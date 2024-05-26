@@ -1,27 +1,61 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { RGBNPalette } from 'gb-image-decoder';
 import FrameSelect from '../FrameSelect';
 import GreySelect from '../GreySelect';
 import PaletteSelect from '../PaletteSelect';
 import TagsSelect from '../TagsSelect';
 import ImageMeta from '../ImageMeta';
 import './index.scss';
+import { TagChange } from '../../../tools/applyTagChanges';
+import { reduceItems } from '../../../tools/reduceArray';
+import { ImageMetadata, RGBNHashes } from '../../../../types/Image';
 
-const EditImageTabs = (props) => {
+enum Tab {
+  PALETTE = 'pal',
+  FRAME = 'frame',
+  TAGS = 'tags',
+  MISC = 'misc',
+}
 
-  const tabs = [
-    props.mixedTypes ? '' : 'pal',
-    props.regularImage ? 'frame' : '',
-    'tags',
-    'misc',
-  ].filter(Boolean);
+interface Props {
+  hash: string,
+  invertPalette: boolean,
+  tags: TagChange,
+  regularImage: boolean,
+  lockFrame: boolean,
+  updateCreated: () => void,
+  updatePalette: () => void,
+  updateInvertPalette: () => void,
+  updateTags: () => void,
+  updateFrame: () => void,
+  updateFrameLock: () => void,
+  updateRotation: () => void,
+
+  hashes?: RGBNHashes,
+  created?: string,
+  paletteShort?: string,
+  paletteRGBN?: RGBNPalette,
+  frame?: string,
+  meta?: ImageMetadata,
+  rotation?: number,
+  mixedTypes?: boolean,
+}
+
+const EditImageTabs = (props: Props) => {
+
+  const tabs: Tab[] = [
+    props.mixedTypes ? null : Tab.PALETTE,
+    props.regularImage ? Tab.FRAME : null,
+    Tab.TAGS,
+    Tab.MISC,
+  ].reduce(reduceItems<Tab>, []);
 
   const [tab, setTab] = useState(tabs[0]);
   const [tabIndex, setTabIndex] = useState(0);
 
-  const focusEvent = (newTab) => () => {
+  const focusEvent = (newTab: Tab) => () => {
     setTab(newTab);
     setTabIndex(tabs.findIndex((key) => key === newTab));
   };
@@ -34,15 +68,15 @@ const EditImageTabs = (props) => {
           marginLeft: `-${tabIndex * 100}%`,
         }}
       >
-        { tabs.includes('pal') ? (
+        { tabs.includes(Tab.PALETTE) ? (
           <li
             className={
               classnames('edit-image-tabs__tab', {
                 'edit-image-tabs__tab--active': tab === 'pal',
               })
             }
-            onFocus={focusEvent('pal')}
-            onClick={focusEvent('pal')}
+            onFocus={focusEvent(Tab.PALETTE)}
+            onClick={focusEvent(Tab.PALETTE)}
           >
             {props.paletteRGBN ? (
               <>
@@ -53,10 +87,10 @@ const EditImageTabs = (props) => {
                   values={props.paletteRGBN}
                   onChange={props.updatePalette}
                   useChannels={{
-                    r: !!props.hashes.r,
-                    g: !!props.hashes.g,
-                    b: !!props.hashes.b,
-                    n: !!props.hashes.n,
+                    r: !!props.hashes?.r,
+                    g: !!props.hashes?.g,
+                    b: !!props.hashes?.b,
+                    n: !!props.hashes?.n,
                   }}
                 />
               </>
@@ -66,7 +100,7 @@ const EditImageTabs = (props) => {
                   Select Palette
                 </button>
                 <PaletteSelect
-                  value={props.paletteShort}
+                  value={props.paletteShort || ''}
                   invertPalette={props.invertPalette}
                   onChange={props.updatePalette}
                   updateInvertPalette={props.updateInvertPalette}
@@ -75,15 +109,15 @@ const EditImageTabs = (props) => {
             )}
           </li>
         ) : null}
-        { tabs.includes('frame') ? (
+        { tabs.includes(Tab.FRAME) ? (
           <li
             className={
               classnames('edit-image-tabs__tab', {
-                'edit-image-tabs__tab--active': tab === 'frame',
+                'edit-image-tabs__tab--active': tab === Tab.FRAME,
               })
             }
-            onFocus={focusEvent('frame')}
-            onClick={focusEvent('frame')}
+            onFocus={focusEvent(Tab.FRAME)}
+            onClick={focusEvent(Tab.FRAME)}
           >
             <button type="button" className="edit-image-tabs__button">
               Select Frame
@@ -96,15 +130,15 @@ const EditImageTabs = (props) => {
             />
           </li>
         ) : null}
-        { tabs.includes('tags') ? (
+        { tabs.includes(Tab.TAGS) ? (
           <li
             className={
               classnames('edit-image-tabs__tab', {
-                'edit-image-tabs__tab--active': tab === 'tags',
+                'edit-image-tabs__tab--active': tab === Tab.TAGS,
               })
             }
-            onFocus={focusEvent('tags')}
-            onClick={focusEvent('tags')}
+            onFocus={focusEvent(Tab.TAGS)}
+            onClick={focusEvent(Tab.TAGS)}
           >
             <button type="button" className="edit-image-tabs__button">
               Tags
@@ -115,78 +149,35 @@ const EditImageTabs = (props) => {
             />
           </li>
         ) : null}
-        { tabs.includes('misc') ? (
+        { tabs.includes(Tab.MISC) ? (
           <li
             className={
               classnames('edit-image-tabs__tab', {
-                'edit-image-tabs__tab--active': tab === 'misc',
+                'edit-image-tabs__tab--active': tab === Tab.MISC,
               })
             }
-            onFocus={focusEvent('misc')}
-            onClick={focusEvent('misc')}
+            onFocus={focusEvent(Tab.MISC)}
+            onClick={focusEvent(Tab.MISC)}
           >
             <button type="button" className="edit-image-tabs__button">
               Misc
             </button>
-            <ImageMeta
-              created={props.created}
-              hash={props.hash}
-              hashes={props.hashes}
-              updateCreated={props.updateCreated}
-              meta={props.meta}
-              rotation={props.rotation}
-              updateRotation={props.updateRotation}
-            />
+            { props.meta ? (
+              <ImageMeta
+                created={props.created}
+                hash={props.hash}
+                hashes={props.hashes}
+                updateCreated={props.updateCreated}
+                meta={props.meta}
+                rotation={props.rotation}
+                updateRotation={props.updateRotation}
+              />
+            ) : null }
           </li>
         ) : null}
       </ul>
     </div>
   );
-};
-
-EditImageTabs.propTypes = {
-  // cancel: PropTypes.func.isRequired,
-  hash: PropTypes.string.isRequired,
-  hashes: PropTypes.object,
-  created: PropTypes.string,
-  paletteShort: PropTypes.string,
-  paletteRGBN: PropTypes.object,
-  invertPalette: PropTypes.bool.isRequired,
-  frame: PropTypes.string,
-  tags: PropTypes.shape({
-    initial: PropTypes.array.isRequired,
-    add: PropTypes.array.isRequired,
-    remove: PropTypes.array.isRequired,
-  }).isRequired,
-  // frames: PropTypes.object,
-  // save: PropTypes.func.isRequired,
-  // title: PropTypes.string,
-  regularImage: PropTypes.bool.isRequired,
-  lockFrame: PropTypes.bool.isRequired,
-  updateCreated: PropTypes.func.isRequired,
-  updatePalette: PropTypes.func.isRequired,
-  updateInvertPalette: PropTypes.func.isRequired,
-  updateTags: PropTypes.func.isRequired,
-  updateFrame: PropTypes.func.isRequired,
-  updateFrameLock: PropTypes.func.isRequired,
-  updateRotation: PropTypes.func.isRequired,
-  meta: PropTypes.object,
-  rotation: PropTypes.number,
-  mixedTypes: PropTypes.bool,
-};
-
-EditImageTabs.defaultProps = {
-  // title: null,
-  // hash: null,
-  hashes: null,
-  paletteShort: '',
-  paletteRGBN: null,
-  frame: null,
-  created: null,
-  // frames: null,
-  meta: null,
-  rotation: null,
-  mixedTypes: null,
 };
 
 export default EditImageTabs;
