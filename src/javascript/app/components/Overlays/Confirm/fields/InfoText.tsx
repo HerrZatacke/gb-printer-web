@@ -1,12 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import './index.scss';
+import './infoText.scss';
+
+export enum InfoTextTheme {
+  INFO = 'info',
+  WARNING = 'warning',
+  ERROR = 'error',
+}
+
+interface Props {
+  label: string,
+  themes: InfoTextTheme[],
+}
 
 function InfoText({
   label,
   themes,
-}) {
+}: Props) {
   return (
     <p
       className={
@@ -20,10 +30,5 @@ function InfoText({
     </p>
   );
 }
-
-InfoText.propTypes = {
-  label: PropTypes.string.isRequired,
-  themes: PropTypes.array.isRequired,
-};
 
 export default InfoText;

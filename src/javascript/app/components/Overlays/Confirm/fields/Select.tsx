@@ -1,7 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { DialogOption } from '../../../../../../types/Dialog';
 
-const Select = ({ id, label, disabled, value, setSelected, options }) => (
+interface Props {
+  id: string,
+  label: string,
+  disabled: boolean,
+  value: string,
+  setSelected: (value: string) => void,
+  options: DialogOption[],
+}
+
+const Select = ({ id, label, disabled, value, setSelected, options }: Props) => (
   <div
     className="inputgroup"
   >
@@ -13,7 +22,7 @@ const Select = ({ id, label, disabled, value, setSelected, options }) => (
       disabled={disabled}
       className="inputgroup__input inputgroup__input--select"
       value={value}
-      onChange={setSelected}
+      onChange={({ target }) => setSelected(target.value)}
     >
       {
         options.map(({ value: val, name }) => (
@@ -28,17 +37,5 @@ const Select = ({ id, label, disabled, value, setSelected, options }) => (
     </select>
   </div>
 );
-
-Select.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  value: PropTypes.string.isRequired,
-  setSelected: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  })).isRequired,
-};
 
 export default Select;

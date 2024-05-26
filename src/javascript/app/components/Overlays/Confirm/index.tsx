@@ -2,60 +2,84 @@ import React from 'react';
 import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import useDialog from '../../../../hooks/useDialog';
-import Select from './types/Select';
-import Input from '../../Input';
-import InfoText from '../../InfoText';
+import Select from './fields/Select';
+import Input, { InputType } from '../../Input';
+import InfoText from './fields/InfoText';
 import SVG from '../../SVG';
 import './index.scss';
+import {
+  DialogQuestionCheckbox,
+  DialogQuestionInfo,
+  DialogQuestionNumber,
+  DialogQuestionSelect,
+  DialogQuestionText,
+  DialoqQuestionType,
+} from '../../../../../types/Dialog';
 
 const Confirm = () => {
 
   const { dialog: { message, confirm, deny }, questions, values, setSelected } = useDialog();
 
-  const notComplete = questions.find(({ type }) => type === 'confirmForm')?.notComplete;
-
   return (
     <Lightbox
       className="confirm"
-      confirm={notComplete ? null : () => confirm(values)}
+      confirm={confirm}
       deny={deny}
       header={message}
     >
       {
-        questions.map(({ label, key, type, options, disabled = false, themes = [], min, max }) => {
-          switch (type) {
-            case 'select':
+        questions.map((question) => {
+          switch (question.type) {
+            case DialoqQuestionType.SELECT: {
+              const { label, key, options, disabled = false } = question as DialogQuestionSelect;
               return (
                 <Select
                   key={key}
                   id={key}
                   disabled={disabled}
-                  value={values[key] || ''}
+                  value={values[key] as string || ''}
                   label={label}
                   options={options}
-                  setSelected={({ target: { value } }) => {
-                    setSelected({ [key]: value });
-                  }}
+                  setSelected={(value) => setSelected({ [key]: value })}
                 />
               );
-            case 'text':
-            case 'number':
+            }
+
+            case DialoqQuestionType.TEXT: {
+              const { label, key, disabled = false } = question as DialogQuestionText;
               return (
                 <Input
                   key={key}
                   id={key}
                   disabled={disabled}
-                  value={values[key] || ''}
-                  type={type}
+                  value={values[key] as string || ''}
+                  type={InputType.TEXT}
+                  labelText={label}
+                  onChange={(update) => setSelected({ [key]: update as string })}
+                />
+              );
+            }
+
+            case DialoqQuestionType.NUMBER: {
+              const { label, key, min, max, disabled = false } = question as DialogQuestionNumber;
+              return (
+                <Input
+                  key={key}
+                  id={key}
+                  disabled={disabled}
+                  value={values[key] as string || ''}
+                  type={InputType.NUMBER}
                   labelText={label}
                   min={min}
                   max={max}
-                  onChange={(update) => {
-                    setSelected({ [key]: update });
-                  }}
+                  onChange={(update) => setSelected({ [key]: update as string })}
                 />
               );
-            case 'checkbox':
+            }
+
+            case DialoqQuestionType.CHECKBOX: {
+              const { label, key, disabled = false } = question as DialogQuestionCheckbox;
+
               return (
                 <label
                   key={key}
@@ -69,7 +93,7 @@ const Confirm = () => {
                   <input
                     type="checkbox"
                     className="confirm__checkbox"
-                    checked={values[key]}
+                    checked={values[key] as boolean}
                     disabled={disabled}
                     onChange={({ target }) => {
                       setSelected({ [key]: target.checked });
@@ -77,11 +101,14 @@ const Confirm = () => {
                   />
                   <SVG name="checkmark" />
                   <span className="confirm__check-label-text">
-                    { label }
+                    {label}
                   </span>
                 </label>
               );
-            case 'info':
+            }
+
+            case DialoqQuestionType.INFO: {
+              const { label, key, themes } = question as DialogQuestionInfo;
               return (
                 <InfoText
                   label={label}
@@ -89,6 +116,8 @@ const Confirm = () => {
                   key={key}
                 />
               );
+            }
+
             default:
               return null;
           }

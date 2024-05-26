@@ -1,3 +1,5 @@
+import { InfoTextTheme } from '../javascript/app/components/Overlays/Confirm/fields/InfoText';
+
 export enum DialoqQuestionType {
   CHECKBOX = 'checkbox',
   SELECT = 'select',
@@ -46,7 +48,7 @@ export interface DialogQuestionCheckbox extends DialogQuestionBase {
 
 export interface DialogQuestionInfo extends DialogQuestionBase {
   type: DialoqQuestionType.INFO,
-  themes: string[]
+  themes: InfoTextTheme[]
 }
 
 export type DialogQuestion =

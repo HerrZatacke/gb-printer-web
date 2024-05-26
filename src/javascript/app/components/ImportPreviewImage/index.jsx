@@ -4,7 +4,7 @@ import isGoodScaleFactor from '../../../tools/isGoodScaleFactor';
 import { applyBitmapFilter } from '../../../tools/applyBitmapFilter';
 import SVG from '../SVG';
 import './index.scss';
-import InfoText from '../InfoText';
+import InfoText, { InfoTextTheme } from '../Overlays/Confirm/fields/InfoText';
 
 const ImportPreviewImage = ({
   imageData,
@@ -57,7 +57,7 @@ const ImportPreviewImage = ({
         isGoodScaleFactor(scaleFactor) ? null : (
           <InfoText
             label={`The scale factor of your image is ${scaleFactor.toPrecision(3)}. To get a clean result without artifacts, use images with factors being powers of two. (1, 2, 4, 8 ...)`}
-            themes={['warning']}
+            themes={[InfoTextTheme.WARNING]}
           />
         )
       }

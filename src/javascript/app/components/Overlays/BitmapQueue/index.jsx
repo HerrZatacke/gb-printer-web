@@ -6,7 +6,7 @@ import ImportPreviewImage from '../../ImportPreviewImage';
 import { Actions } from '../../../store/actions';
 import SVG from '../../SVG';
 import './index.scss';
-import Select from '../Confirm/types/Select';
+import Select from '../Confirm/fields/Select';
 import moveBitmapsToImport from './moveBitmapsToImport';
 
 const contrasts = [
@@ -109,7 +109,7 @@ const BitmapQueue = () => {
           id="contasts"
           label="Contrast preset"
           options={contrasts}
-          setSelected={({ target: { value } }) => setContrast(value)}
+          setSelected={setContrast}
           value={contrast}
           disabled={false}
         />
