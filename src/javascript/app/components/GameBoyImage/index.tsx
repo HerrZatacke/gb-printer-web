@@ -5,7 +5,7 @@ import { applyRotation, Rotation } from '../../../tools/applyRotation';
 import './index.scss';
 
 export interface GameBoyImageProps {
-  palette?: string[] | RGBNPalette | null,
+  palette?: string[] | RGBNPalette,
   tiles: string[] | RGBNTiles,
   lockFrame: boolean,
   invertPalette: boolean,
