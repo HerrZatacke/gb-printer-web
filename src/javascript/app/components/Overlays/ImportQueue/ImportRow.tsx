@@ -1,28 +1,42 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import GameBoyImage from '../../GameBoyImage';
 import SVG from '../../SVG';
 import { Actions } from '../../../store/actions';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
+import { State } from '../../../store/State';
+import { ImportItem } from '../../../../../types/ImportItem';
+
+interface Props {
+  importItem: ImportItem,
+  paletteShort: string,
+}
 
 function ImportRow({
-  tiles,
-  fileName,
-  lastModified,
-  imageHash,
-  frameHash,
-  tempId,
+  importItem: {
+    tiles,
+    fileName,
+    lastModified,
+    imageHash,
+    frameHash,
+    tempId,
+  },
   paletteShort,
-}) {
-  const palette = useSelector((state) => state.palettes.find(({ shortName }) => shortName === paletteShort));
-  const locale = useSelector(({ preferredLocale }) => preferredLocale);
-  const storeDuplicateImage = useSelector((state) => state.images.find(({ hash }) => hash === imageHash));
-  const storeDuplicateFrame = useSelector((state) => state.frames.find(({ hash }) => hash === frameHash));
-  const { length: queueDuplicates } = useSelector((state) => (
-    state.importQueue.filter((item) => item.imageHash === imageHash)
-  ));
+}: Props) {
+  const {
+    palette,
+    locale,
+    storeDuplicateImage,
+    storeDuplicateFrame,
+    queueDuplicates,
+  } = useSelector((state: State) => ({
+    palette: state.palettes.find(({ shortName }) => shortName === paletteShort),
+    locale: state.preferredLocale,
+    storeDuplicateImage: state.images.find(({ hash }) => hash === imageHash),
+    storeDuplicateFrame: state.frames.find(({ hash }) => hash === frameHash),
+    queueDuplicates: state.importQueue.filter((item) => item.imageHash === imageHash).length,
+  }));
 
   const dispatch = useDispatch();
 
@@ -39,7 +53,7 @@ function ImportRow({
             tiles={tiles}
             invertPalette={false}
             lockFrame={false}
-            palette={palette.palette}
+            palette={palette?.palette}
             asThumb
           />
         </span>
@@ -132,19 +146,5 @@ function ImportRow({
     </li>
   );
 }
-
-ImportRow.propTypes = {
-  tiles: PropTypes.array.isRequired,
-  fileName: PropTypes.string.isRequired,
-  lastModified: PropTypes.number,
-  imageHash: PropTypes.string.isRequired,
-  frameHash: PropTypes.string.isRequired,
-  paletteShort: PropTypes.string.isRequired,
-  tempId: PropTypes.string.isRequired,
-};
-
-ImportRow.defaultProps = {
-  lastModified: null,
-};
 
 export default ImportRow;

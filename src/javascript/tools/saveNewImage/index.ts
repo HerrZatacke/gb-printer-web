@@ -3,10 +3,11 @@ import { save } from '../storage';
 import { dateFormat } from '../../app/defaults';
 import { MonochromeImage } from '../../../types/Image';
 
-interface ImageRawData {
+interface ImageRawData extends Pick<MonochromeImage, 'palette' | 'frame' | 'tags' | 'meta' | 'created'> {
   lines: string[],
   filename: string,
 }
+
 
 const saveNewImage = async ({
   lines,
@@ -16,7 +17,7 @@ const saveNewImage = async ({
   tags = [],
   meta,
   created = dayjs().format(dateFormat),
-}: MonochromeImage & ImageRawData): Promise<MonochromeImage> => {
+}: ImageRawData): Promise<MonochromeImage> => {
   const dataHash = await save(lines);
 
   return {

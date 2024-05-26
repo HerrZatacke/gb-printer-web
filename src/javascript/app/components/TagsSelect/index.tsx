@@ -6,11 +6,12 @@ import unique from '../../../tools/unique';
 import { SpecialTags } from '../../../consts/SpecialTags';
 import './index.scss';
 import { TagChange } from '../../../tools/applyTagChanges';
+import { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 interface Props {
   label?: string,
   tags: TagChange
-  updateTags: (mode: string, tag: string) => void,
+  updateTags: (mode: TagUpdateMode, tag: string) => void,
   listDirection?: string,
 }
 
@@ -54,14 +55,14 @@ const TagsSelect = ({
               <button
                 type="button"
                 className="tags-select__button tags-select__button--remove"
-                onClick={() => updateTags('remove', tag)}
+                onClick={() => updateTags(TagUpdateMode.REMOVE, tag)}
               >
                 <SVG name="remove" />
               </button>
               <button
                 type="button"
                 className="tags-select__button tags-select__button--add"
-                onClick={() => updateTags('add', tag)}
+                onClick={() => updateTags(TagUpdateMode.ADD, tag)}
               >
                 <SVG name="add" />
               </button>

@@ -3,9 +3,10 @@ import classnames from 'classnames';
 import { useCombobox } from 'downshift';
 import SVG from '../SVG';
 import { useAvailableTags } from '../../../hooks/useAvailableTags';
+import { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 interface Props {
-  updateTags: (mode: string, value: string) => void,
+  updateTags: (mode: TagUpdateMode, value: string) => void,
   selectedTags: string[],
   direction?: string,
 }
@@ -30,7 +31,7 @@ const InputNewTag = ({ updateTags, selectedTags, direction }: Props) => {
 
     onSelectedItemChange: ({ inputValue }) => {
       if (inputValue?.trim()) {
-        updateTags('add', inputValue.trim());
+        updateTags(TagUpdateMode.ADD, inputValue.trim());
         reset();
       }
     },
@@ -47,7 +48,7 @@ const InputNewTag = ({ updateTags, selectedTags, direction }: Props) => {
 
   const addNewTag = () => {
     if (currentValue.trim()) {
-      updateTags('add', currentValue.trim());
+      updateTags(TagUpdateMode.ADD, currentValue.trim());
       reset();
     }
   };

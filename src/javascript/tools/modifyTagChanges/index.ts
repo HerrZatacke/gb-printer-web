@@ -1,4 +1,4 @@
-enum TagUpdateMode {
+export enum TagUpdateMode {
   ADD = 'add',
   REMOVE = 'remove',
 }
