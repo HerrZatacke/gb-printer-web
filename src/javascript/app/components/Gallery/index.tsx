@@ -1,38 +1,24 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import GalleryImage from '../GalleryImage';
 import GalleryHeader from '../GalleryHeader';
 import GalleryIntro from '../GalleryIntro';
-import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
-import useGetValidPageIndex from '../../../tools/useGetValidPageIndex';
+import { useGallery } from './useGallery';
 
 import './index.scss';
-import usePageImages from './usePageImages';
+import { GalleryViews } from '../../../consts/GalleryViews';
 
 const Gallery = () => {
   const {
     imageCount,
     selectedCount,
     filteredCount,
-    pageSize,
-  } = useSelector((state) => ({
-    imageCount: state.images.length,
-    pageSize: state.pageSize,
-    selectedCount: state.imageSelection.length,
-    filteredCount: getFilteredImagesCount(state),
-  }));
-
-  const { valid, page } = useGetValidPageIndex({
-    pageSize,
-    imageCount: filteredCount,
-  });
-
-  const {
+    valid,
+    page,
     images,
     currentView,
-  } = usePageImages(page);
+  } = useGallery();
 
   if (!valid) {
     return <Navigate to={`/gallery/page/${page + 1}`} replace />;
@@ -40,7 +26,7 @@ const Gallery = () => {
 
   const content = images.map((image) => (
     <GalleryImage
-      type={currentView === 'list' ? 'list' : 'default'}
+      type={currentView === GalleryViews.GALLERY_VIEW_LIST ? 'list' : 'default'}
       key={image.hash}
       hash={image.hash}
       page={page}
@@ -56,7 +42,6 @@ const Gallery = () => {
       <li className="gallery-image gallery-image--dummy" key="dummy5" />,
     );
   }
-
 
   return (
     <>
