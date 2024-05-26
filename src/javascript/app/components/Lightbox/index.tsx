@@ -15,11 +15,13 @@ interface Props {
   confirm?: () => void,
   deny?: () => void,
   canConfirm?: boolean,
-  denyOnOverlayClick?: boolean,
+  closeOnOverlayClick?: boolean,
 }
 
 const Lightbox = (props: Props) => {
   const isFullscreen = useSelector((state: State) => (state.isFullscreen));
+
+  const closeOnOverlayClick = typeof props.closeOnOverlayClick !== 'boolean' ? true : props.closeOnOverlayClick;
 
   useOverlayGlobalKeys({
     confirm: props.confirm,
@@ -42,7 +44,7 @@ const Lightbox = (props: Props) => {
       <button
         type="button"
         className={`lightbox__backdrop ${props.className}__backdrop`}
-        onClick={props.denyOnOverlayClick ? props.deny : undefined}
+        onClick={closeOnOverlayClick ? props.deny : undefined}
       />
       <div
         className={`lightbox__box ${props.className}__box`}

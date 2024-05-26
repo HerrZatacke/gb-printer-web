@@ -40,7 +40,6 @@ const EditFrame = () => {
       canConfirm={formValid}
       header={frame ? `Editing frame "${updateId}"${updateHead}` : `Error editing '${editId}'`}
       deny={cancelEdit}
-      denyOnOverlayClick={false}
     >
       <div
         className="edit-frame__content"
