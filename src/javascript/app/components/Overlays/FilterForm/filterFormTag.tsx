@@ -1,9 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SVG from '../../SVG';
+import { ActiveTagUpdateMode } from './useFilterForm';
 
-const FilterFormTag = ({ tagActive, toggleTag, title, icon }) => (
+interface Props {
+  title: string,
+  tagActive: boolean,
+  toggleTag: (mode: ActiveTagUpdateMode) => void,
+  icon?: string,
+}
+
+const FilterFormTag = ({ tagActive, toggleTag, title, icon }: Props) => (
   <li
     title={title}
     className={
@@ -15,23 +22,12 @@ const FilterFormTag = ({ tagActive, toggleTag, title, icon }) => (
     <button
       className="filter-form__tag-button"
       type="button"
-      onClick={() => toggleTag(tagActive ? 'remove' : 'add')}
+      onClick={() => toggleTag(tagActive ? ActiveTagUpdateMode.REMOVE : ActiveTagUpdateMode.ADD)}
     >
-      <SVG name={icon} />
+      <SVG name={icon || 'checkmark'} />
       <span className="filter-form__tag-text">{title}</span>
     </button>
   </li>
 );
-
-FilterFormTag.propTypes = {
-  title: PropTypes.string.isRequired,
-  tagActive: PropTypes.bool.isRequired,
-  toggleTag: PropTypes.func.isRequired,
-  icon: PropTypes.string,
-};
-
-FilterFormTag.defaultProps = {
-  icon: 'checkmark',
-};
 
 export default FilterFormTag;

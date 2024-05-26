@@ -1,11 +1,11 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
+import { HideFiltersAction, SetActiveTagsAction, ShowFiltersAction } from '../../../../types/actions/TagsActions';
 
-interface FiltersVisibleAction {
-  type: Actions.SHOW_FILTERS | Actions.HIDE_FILTERS | Actions.SET_ACTIVE_TAGS,
-}
-
-const filtersVisibleReducer = (value = false, action: FiltersVisibleAction): boolean => {
+const filtersVisibleReducer = (
+  value = false,
+  action: HideFiltersAction | ShowFiltersAction | SetActiveTagsAction,
+): boolean => {
   switch (action.type) {
     case Actions.SHOW_FILTERS:
       return true;

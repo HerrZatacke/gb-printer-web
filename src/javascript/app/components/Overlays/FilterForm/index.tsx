@@ -1,34 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import unique from '../../../../tools/unique';
-import { useAvailableTags } from '../../../../hooks/useAvailableTags';
+import React from 'react';
 import Lightbox from '../../Lightbox';
 import FilterFormTag from './filterFormTag';
 import { SpecialTags } from '../../../../consts/SpecialTags';
+import { useFilterForm } from './useFilterForm';
 
-const FilterForm = (props) => {
+import './index.scss';
 
-  const [activeTags, setActiveTags] = useState(props.activeTags);
+const FilterForm = () => {
 
-  const { availableTags } = useAvailableTags();
+  const {
+    visible,
+    availableTags,
+    activeTags,
+    updateActiveTags,
+    clearTags,
+    confirm,
+    cancel,
+  } = useFilterForm();
 
-  useEffect(() => {
-    setActiveTags(props.activeTags);
-  }, [props.activeTags]);
-
-  const updateActiveTags = (tag, mode) => {
-    setActiveTags(mode === 'add' ? unique([...activeTags, tag]) : activeTags.filter((t) => t !== tag));
-  };
-
-  if (!props.visible) {
+  if (!visible) {
     return null;
   }
 
   return (
     <Lightbox
       className="filter-form"
-      confirm={() => props.setActiveTags(activeTags)}
-      deny={() => props.hideFilters()}
+      confirm={confirm}
+      deny={cancel}
       header="Select Filters"
     >
       <span
@@ -87,9 +85,7 @@ const FilterForm = (props) => {
           title="Clear Filters"
           tagActive={false}
           icon="delete"
-          toggleTag={() => {
-            setActiveTags([]);
-          }}
+          toggleTag={clearTags}
         />
       </ul>
       <span
@@ -112,14 +108,5 @@ const FilterForm = (props) => {
     </Lightbox>
   );
 };
-
-FilterForm.propTypes = {
-  visible: PropTypes.bool.isRequired,
-  activeTags: PropTypes.array.isRequired,
-  setActiveTags: PropTypes.func.isRequired,
-  hideFilters: PropTypes.func.isRequired,
-};
-
-FilterForm.defaultProps = {};
 
 export default FilterForm;
