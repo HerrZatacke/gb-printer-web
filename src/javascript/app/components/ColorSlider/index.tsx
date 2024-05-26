@@ -1,20 +1,26 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Slider, Rail, Handles } from 'react-compound-slider';
 import Handle from './Handle';
 import SliderRail from './Rail';
 import SVG from '../SVG';
 import './index.scss';
+import { RGBNHashes } from '../../../../types/Image';
 
 const COLOR_RANGE = [0, 255];
 
-const ColorSlider = (props) => (
-  <div className="color-slider" data-color={props.color}>
+interface Props {
+  color: keyof RGBNHashes,
+  onChange: (values: readonly number[]) => void,
+  values: number[],
+}
+
+const ColorSlider = ({ color, onChange, values }: Props) => (
+  <div className="color-slider" data-color={color}>
     <button
       className="color-slider__button color-slider__button--reset"
       type="button"
       onClick={() => {
-        props.onChange([0x00, 0x55, 0xaa, 0xff]);
+        onChange([0x00, 0x55, 0xaa, 0xff]);
       }}
     >
       <SVG name="reset" />
@@ -24,9 +30,9 @@ const ColorSlider = (props) => (
       mode={2}
       step={4}
       domain={COLOR_RANGE}
-      onUpdate={props.onChange}
-      onChange={props.onChange}
-      values={props.values}
+      onUpdate={onChange}
+      onChange={onChange}
+      values={values}
     >
       <Rail>
         {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
@@ -48,11 +54,5 @@ const ColorSlider = (props) => (
     </Slider>
   </div>
 );
-
-ColorSlider.propTypes = {
-  color: PropTypes.oneOf(['r', 'g', 'b', 'n']).isRequired,
-  onChange: PropTypes.func.isRequired,
-  values: PropTypes.array.isRequired,
-};
 
 export default ColorSlider;

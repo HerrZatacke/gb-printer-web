@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useDebouncedCallback } from 'use-debounce';
+import { BlendMode, RGBNPalette } from 'gb-image-decoder';
 import { blendModeLabels } from '../../../consts/blendModes';
 import ColorSlider from '../ColorSlider';
+import { RGBNHashes } from '../../../../types/Image';
+
 import './index.scss';
 
-const GreySelect = (props) => {
+interface Props {
+  values: RGBNPalette,
+  onChange: (values: RGBNPalette, confirm: boolean) => void,
+  useChannels: Record<keyof RGBNPalette, boolean>,
+}
 
-  const [values, setValues] = useState(props.values);
+const GreySelect = (props: Props) => {
+
+  const [values, setValues] = useState<RGBNPalette>(props.values);
 
   const debounced = useDebouncedCallback((debouncedValues) => {
     props.onChange(debouncedValues, true);
   }, 150, { leading: true, trailing: true });
 
-  const change = (color, valueUpdate) => {
+  const change = (color: keyof RGBNPalette, valueUpdate: readonly number[] | string) => {
     const nextValues = {
       ...values,
       [color]: valueUpdate,
@@ -22,11 +30,20 @@ const GreySelect = (props) => {
     debounced.callback(nextValues);
   };
 
+  const usedChannels = (['r', 'g', 'b', 'n'] as (keyof RGBNPalette)[])
+    .reduce((acc: (keyof RGBNPalette)[], channelName: keyof RGBNPalette): (keyof RGBNPalette)[] => {
+      if (props.useChannels[channelName]) {
+        return [...acc, channelName];
+      }
+
+      return acc;
+    }, []);
+
+
   return (
     <div className="grey-select">
       {
-        ['r', 'g', 'b', 'n']
-          .filter((channelName) => props.useChannels[channelName])
+        usedChannels
           .map((color) => (
             [
               color === 'n' ? (
@@ -35,7 +52,7 @@ const GreySelect = (props) => {
                   className="grey-select__select"
                   value={values.blend}
                   onChange={(ev) => {
-                    change('blend', ev.target.value);
+                    change('blend', ev.target.value as BlendMode);
                   }}
                 >
                   {
@@ -53,8 +70,8 @@ const GreySelect = (props) => {
               (
                 <ColorSlider
                   key={`slider-${color}`}
-                  color={color}
-                  values={values[color]}
+                  color={color as keyof RGBNHashes}
+                  values={values[color] as number[]}
                   onChange={(valueChange) => {
                     change(color, valueChange);
                   }}
@@ -66,18 +83,5 @@ const GreySelect = (props) => {
     </div>
   );
 };
-
-GreySelect.propTypes = {
-  values: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
-  useChannels: PropTypes.shape({
-    r: PropTypes.bool.isRequired,
-    g: PropTypes.bool.isRequired,
-    b: PropTypes.bool.isRequired,
-    n: PropTypes.bool.isRequired,
-  }).isRequired,
-};
-
-GreySelect.defaultProps = {};
 
 export default GreySelect;
