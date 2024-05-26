@@ -9,7 +9,7 @@ import { ImportQueueAddAction } from '../../../../../types/actions/QueueActions'
 export interface DispatchBitmapsToImportOptions {
   bitmapQueue: QueueImage[],
   dither: boolean,
-  contrastBaseValues: [number, number, number, number],
+  contrastBaseValues: number[],
 }
 
 export type DispatchBitmapsToImportFn = (options: DispatchBitmapsToImportOptions) => void;

@@ -9,14 +9,14 @@ export interface ApplyBitmapFilterOptions{
   targetCanvas: HTMLCanvasElement,
   originalCanvas: HTMLCanvasElement,
   imageData: ImageData,
-  contrastBaseValues: [number, number, number, number],
+  contrastBaseValues: number[],
   dither: boolean,
   palette: string[],
 }
 
 export interface DitherFilterOptions {
   imageData: ImageData,
-  contrastBaseValues: [number, number, number, number],
+  contrastBaseValues: number[],
   dither: boolean,
   colors: FilterColor[],
 }

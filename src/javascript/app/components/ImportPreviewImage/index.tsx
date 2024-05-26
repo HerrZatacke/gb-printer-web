@@ -1,10 +1,20 @@
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import isGoodScaleFactor from '../../../tools/isGoodScaleFactor';
 import { applyBitmapFilter } from '../../../tools/applyBitmapFilter';
 import SVG from '../SVG';
 import './index.scss';
 import InfoText, { InfoTextTheme } from '../Overlays/Confirm/fields/InfoText';
+
+interface Props {
+  imageData: ImageData, // From QueueImage
+  scaleFactor: number, // From QueueImage
+  width: number, // From QueueImage
+  height: number, // From QueueImage
+  fileName: string, // From QueueImage
+  dither: boolean,
+  contrastBaseValues: number[],
+  palette: string[],
+}
 
 const ImportPreviewImage = ({
   imageData,
@@ -15,7 +25,7 @@ const ImportPreviewImage = ({
   palette,
   dither,
   contrastBaseValues,
-}) => {
+}: Props) => {
 
   const canvas = useRef(null);
   const originalCanvas = useRef(null);
@@ -63,17 +73,6 @@ const ImportPreviewImage = ({
       }
     </div>
   );
-};
-
-ImportPreviewImage.propTypes = {
-  imageData: PropTypes.object.isRequired,
-  scaleFactor: PropTypes.number.isRequired,
-  fileName: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  palette: PropTypes.array.isRequired,
-  dither: PropTypes.bool.isRequired,
-  contrastBaseValues: PropTypes.array.isRequired,
 };
 
 export default ImportPreviewImage;

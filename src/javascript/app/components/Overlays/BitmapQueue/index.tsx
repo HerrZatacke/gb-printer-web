@@ -8,8 +8,15 @@ import SVG from '../../SVG';
 import './index.scss';
 import Select from '../Confirm/fields/Select';
 import moveBitmapsToImport from './moveBitmapsToImport';
+import { State } from '../../../store/State';
 
-const contrasts = [
+interface ImportContrast {
+  name: string,
+  baseValues: number[],
+  value: string,
+}
+
+const contrasts: ImportContrast[] = [
   {
     name: 'Wider',
     baseValues: [0x00, 0x44, 0xBB, 0xFF],
@@ -44,15 +51,12 @@ const contrasts = [
 ];
 
 const BitmapQueue = () => {
-  const bitmapQueue = useSelector((store) => store.bitmapQueue);
+  const bitmapQueue = useSelector((state: State) => state.bitmapQueue);
   const dispatch = useDispatch();
   const [dither, setDither] = useState(true);
   const [contrast, setContrast] = useState('wide'); // 'wide' covers the complete greyscale range from 00 tro FF. The thresholds are optimal for already dithered imports
 
-  const conversionSettings = {
-    dither,
-    contrastBaseValues: contrasts.find(({ value }) => (value === contrast))?.baseValues,
-  };
+  const contrastBaseValues = (contrasts.find(({ value }) => (value === contrast)) || contrasts[1]).baseValues;
 
   const dispatchBitmapsToImport = moveBitmapsToImport(dispatch);
 
@@ -63,7 +67,8 @@ const BitmapQueue = () => {
       confirm={() => {
         dispatchBitmapsToImport({
           bitmapQueue,
-          ...conversionSettings,
+          dither,
+          contrastBaseValues,
         });
       }}
       deny={() => {
@@ -77,10 +82,13 @@ const BitmapQueue = () => {
           bitmapQueue.map((image, index) => (
             <ImportPreviewImage
               key={index}
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              {...image}
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              {...conversionSettings}
+              imageData={image.imageData}
+              scaleFactor={image.scaleFactor}
+              width={image.width}
+              height={image.height}
+              fileName={image.fileName}
+              dither={dither}
+              contrastBaseValues={contrastBaseValues}
               palette={['#ffffff', '#aaaaaa', '#555555', '#000000']}
             />
           ))
