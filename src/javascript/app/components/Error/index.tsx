@@ -8,10 +8,10 @@ const Error = () => {
   return (
     <div id="error-page">
       <p>
-        {error.statusText || error.message}
+        { (error as { statusText: string})?.statusText || (error as Error).message }
       </p>
       <pre>
-        { error.stack }
+        { (error as Error).stack }
       </pre>
     </div>
   );
