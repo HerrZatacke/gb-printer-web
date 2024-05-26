@@ -59,6 +59,7 @@ const cleanState = async (dirtyState: State) => {
           Object.assign(rgbnImage.palette, { blend: BlendMode.MULTIPLY });
         }
 
+        rgbnImage.frame = image.frame || undefined;
         return rgbnImage as Image;
       }
 
@@ -69,6 +70,7 @@ const cleanState = async (dirtyState: State) => {
         Object.assign(monoImage, { palette: palettesShorts[0] || 'bw' });
       }
 
+      monoImage.frame = image.frame || undefined;
       return monoImage;
     });
 

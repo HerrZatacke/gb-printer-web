@@ -13,7 +13,7 @@ const saveNewImage = async ({
   lines,
   filename,
   palette,
-  frame = null,
+  frame,
   tags = [],
   meta,
   created = dayjs().format(dateFormat),

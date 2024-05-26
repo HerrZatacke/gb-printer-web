@@ -26,7 +26,7 @@ interface CommonImage {
   hash: string,
   created: string,
   title: string,
-  frame: string | null,
+  frame?: string,
   tags: string[],
   lockFrame?: boolean,
   invertPalette?: boolean,

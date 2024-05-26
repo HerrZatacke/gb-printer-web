@@ -19,7 +19,7 @@ export const loadImageTiles = (state: State | ReducedPickState, recover?: Recove
       return [];
     }
 
-    const frame = overrideFrame || image.frame || undefined;
+    const frame = typeof overrideFrame === 'string' ? overrideFrame : image.frame || undefined;
     const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
 
     if (!isRGBNImage(image as Image)) {
