@@ -1,10 +1,32 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import useDateTime from '../../../hooks/useDateTime';
+import { Rotation } from '../../../tools/applyRotation';
+import { ImageMetadata, RGBNHashes } from '../../../../types/Image';
+
 import './index.scss';
 
-const rotations = [
+interface RotationLabel {
+  value: Rotation,
+  label: string,
+}
+
+interface Props {
+  hash: string,
+  updateCreated: (value: string) => void,
+  updateRotation: (value: Rotation) => void,
+  created?: string,
+  hashes?: RGBNHashes,
+  meta?: ImageMetadata,
+  rotation?: Rotation,
+}
+
+interface TableRow {
+  key: string,
+  value: string,
+}
+
+const rotations: RotationLabel[] = [
   {
     value: 0,
     label: '0°',
@@ -27,51 +49,45 @@ const ImageMeta = ({
   created,
   hash,
   hashes,
-  updatecreated,
+  updateCreated,
   meta,
   rotation,
   updateRotation,
-}) => {
-  const { date, time, setDate, setTime, updateDate, updateTime } = useDateTime(created, updatecreated);
+}: Props) => {
+  const { date, time, setDate, setTime, updateDate, updateTime } = useDateTime(updateCreated, created);
 
-  const tableData = {
+  const tableData: ImageMetadata & { hash: string } = {
     ...meta,
     hash,
   };
 
   const table = Object.keys(tableData)
-    .reduce((data, key) => {
-      let value = tableData[key];
+    .reduce((acc: TableRow[], key): TableRow[] => {
+      let value: string;
 
       // Possibly nested or boolean properties
-      if (typeof value !== 'number' && typeof value !== 'string') {
-        value = JSON.stringify(value);
+      if (typeof tableData[key] !== 'number' && typeof tableData[key] !== 'string') {
+        value = JSON.stringify(tableData[key]);
+      } else {
+        value = tableData[key] as string;
       }
 
-      const row = {
+      const row: TableRow = {
         key,
         value,
       };
-
-      return [
-        ...data,
-        row,
-      ];
+      return [...acc, row];
     }, []);
 
   if (hashes) {
-    const channelHashes = ['r', 'g', 'b', 'n']
-      .map((channel) => {
-        if (!hashes[channel]) {
-          return null;
-        }
-
-        return ({
+    const channelHashes = (Object.keys(hashes) as (keyof RGBNHashes)[])
+      .reduce((acc: TableRow[], channel: keyof RGBNHashes): TableRow[] => {
+        const row: TableRow = {
           key: `hash ${channel}`,
-          value: hashes[channel],
-        });
-      })
-      .filter(Boolean);
+          value: hashes[channel] as string,
+        };
+        return [...acc, row];
+      }, []);
     table.push(...channelHashes);
   }
 
@@ -162,23 +178,6 @@ const ImageMeta = ({
       </table>
     </div>
   );
-};
-
-ImageMeta.propTypes = {
-  created: PropTypes.string,
-  hash: PropTypes.string.isRequired,
-  hashes: PropTypes.object,
-  updatecreated: PropTypes.func.isRequired,
-  meta: PropTypes.object,
-  rotation: PropTypes.number,
-  updateRotation: PropTypes.func.isRequired,
-};
-
-ImageMeta.defaultProps = {
-  created: null,
-  meta: {},
-  rotation: null,
-  hashes: null,
 };
 
 export default ImageMeta;

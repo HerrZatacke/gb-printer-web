@@ -12,7 +12,7 @@ export interface UseDateTime {
   updateTime: (time: string) => void,
 }
 
-const useDateTime = (created: string, updateCreated: (value: string) => void): UseDateTime => {
+const useDateTime = (updateCreated: (value: string) => void, created?: string): UseDateTime => {
 
   const dateObject = dayjs(created);
   const [date, setDate] = useState(created ? dateObject.format(dateFormatInput) : '');
