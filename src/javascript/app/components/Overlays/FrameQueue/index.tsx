@@ -8,7 +8,7 @@ import useEditFrame from '../EditFrame/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
 import { State } from '../../../store/State';
 import { AddFrameAction } from '../../../../../types/actions/FrameActions';
-import { FrageGroupNamesAction } from '../../../store/reducers/frameGroupNamesReducer';
+import { FrameGroupNamesAction } from '../../../store/reducers/frameGroupNamesReducer';
 import { FrameQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
 
 const FrameQueue = () => {
@@ -55,7 +55,7 @@ const FrameQueue = () => {
         });
 
         if (newGroupName?.trim()) {
-          dispatch<FrageGroupNamesAction>({
+          dispatch<FrameGroupNamesAction>({
             type: Actions.NAME_FRAMEGROUP,
             payload: {
               id: frameGroup,

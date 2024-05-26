@@ -16,6 +16,7 @@ export enum ExportTypes {
 export interface ExportJSONAction {
   type: Actions.JSON_EXPORT,
   payload: ExportTypes,
+  selectedFrameGroup?: string,
 }
 
 export interface StorePropertyDefault {
