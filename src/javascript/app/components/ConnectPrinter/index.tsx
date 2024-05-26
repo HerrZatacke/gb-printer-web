@@ -4,7 +4,11 @@ import PrinterReport from '../PrinterReport';
 import useIframeLoaded from '../../../hooks/useIframeLoaded';
 import './index.scss';
 
-const iframeSupported = (printerUrl) => {
+const iframeSupported = (printerUrl?: string) => {
+  if (!printerUrl) {
+    return false;
+  }
+
   if (printerUrl.startsWith('/')) {
     return true;
   }

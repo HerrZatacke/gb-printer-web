@@ -6,7 +6,7 @@ import { State } from '../app/store/State';
 export interface UseIframeLoaded {
   failed: boolean,
   loaded: boolean,
-  printerUrl: string | null,
+  printerUrl?: string,
   printerConnected: boolean,
 }
 
@@ -14,7 +14,7 @@ const useIframeLoaded = (timeout: number): UseIframeLoaded => {
   const { printerUrl, printerConnected } = useSelector((state: State) => {
     const printerParams = state.printerParams ? `#${encodeURI(state.printerParams)}` : '';
     return ({
-      printerUrl: state.printerUrl ? `${state.printerUrl}remote.html${printerParams}` : null,
+      printerUrl: state.printerUrl ? `${state.printerUrl}remote.html${printerParams}` : undefined,
       printerConnected: state.printerFunctions.length > 0,
     });
   });

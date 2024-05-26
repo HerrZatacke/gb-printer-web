@@ -3,14 +3,14 @@ import { useDispatch } from 'react-redux';
 import useStoragePersist from './useStoragePersist';
 import useHashCleanup from '../../../../../tools/hashCleanup';
 import { Actions } from '../../../../store/actions';
-import { ExportTypes } from '../../../../store/defaults';
+import { ExportJSONAction, ExportTypes } from '../../../../store/defaults';
 
 const ExportSettings = () => {
   const dispatch = useDispatch();
   const { hashCleanup, cleanupBusy } = useHashCleanup();
 
   const exportJson = (what: ExportTypes) => {
-    dispatch({
+    dispatch<ExportJSONAction>({
       type: Actions.JSON_EXPORT,
       payload: what,
     });

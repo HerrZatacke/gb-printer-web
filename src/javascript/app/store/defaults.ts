@@ -1,5 +1,6 @@
 import { State } from './State';
 import { ExportableState } from '../../tools/getGetSettings/types';
+import { Actions } from './actions';
 
 export enum ExportTypes {
   SETTINGS = 'settings',
@@ -10,6 +11,11 @@ export enum ExportTypes {
   FRAMES = 'frames',
   FRAMEGROUP = 'framegroup',
   DEBUG = 'debug',
+}
+
+export interface ExportJSONAction {
+  type: Actions.JSON_EXPORT,
+  payload: ExportTypes,
 }
 
 export interface StorePropertyDefault {

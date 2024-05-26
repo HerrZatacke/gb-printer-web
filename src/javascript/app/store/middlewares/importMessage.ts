@@ -2,6 +2,7 @@ import { Actions } from '../actions';
 import { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import { ImportFilesAction } from '../../../../types/actions/ImportActions';
 
 const importMessage: MiddlewareWithState = (store) => {
 
@@ -62,7 +63,7 @@ const importMessage: MiddlewareWithState = (store) => {
         file = new Blob([lines.join('\n')], { type: 'text/plain' });
       }
 
-      store.dispatch({
+      store.dispatch<ImportFilesAction>({
         type: Actions.IMPORT_FILES,
         payload: { files: [file] },
       });
@@ -77,7 +78,7 @@ const importMessage: MiddlewareWithState = (store) => {
 
     // fallback for printers with web-app version < 1.15.5 to display some "fake" progress..
     if (blob) {
-      store.dispatch({
+      store.dispatch<ImportFilesAction>({
         type: Actions.IMPORT_FILES,
         payload: { files: [blob] },
       });
@@ -104,7 +105,7 @@ const importMessage: MiddlewareWithState = (store) => {
 
 
       if (namedFiles.length) {
-        store.dispatch({
+        store.dispatch<ImportFilesAction>({
           type: Actions.IMPORT_FILES,
           payload: {
             files: namedFiles,

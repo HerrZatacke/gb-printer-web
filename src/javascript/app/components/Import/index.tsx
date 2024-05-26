@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import ConnectPrinter from '../ConnectPrinter';
-import Input from '../Input';
+import Input, { InputType } from '../Input';
 
-const Import = ({
-  importPlainText,
-  importFile,
-  printerUrl,
-  exportJson,
-}) => {
+import './index.scss';
+import { useImport } from './useImport';
+import { ExportTypes } from '../../store/defaults';
+
+const Import = () => {
   const [text, setText] = useState('');
+
+  const {
+    importPlainText,
+    importFiles,
+    printerUrl,
+    exportJson,
+  } = useImport();
 
   useEffect(() => {
     import(/* webpackChunkName: "dmy" */ './dummy')
@@ -28,10 +33,10 @@ const Import = ({
       <Input
         id="import-file"
         labelText="Select file for import"
-        type="file"
-        onChange={(files) => {
-          if (files && files.length === 1) {
-            importFile({ files });
+        type={InputType.FILE}
+        onChangeFiles={(files) => {
+          if (files && files.length) {
+            importFiles(files);
           }
         }}
       />
@@ -62,38 +67,27 @@ const Import = ({
         <button
           type="button"
           className="button"
-          onClick={() => exportJson('images')}
+          onClick={() => exportJson(ExportTypes.IMAGES)}
         >
           Export images
         </button>
         <button
           type="button"
           className="button"
-          onClick={() => exportJson('selected_images')}
+          onClick={() => exportJson(ExportTypes.SELECTED_IMAGES)}
         >
           Export selected images
         </button>
         <button
           type="button"
           className="button"
-          onClick={() => exportJson('palettes')}
+          onClick={() => exportJson(ExportTypes.PALETTES)}
         >
           Export palettes
         </button>
       </div>
     </div>
   );
-};
-
-Import.propTypes = {
-  printerUrl: PropTypes.string,
-  importPlainText: PropTypes.func.isRequired,
-  importFile: PropTypes.func.isRequired,
-  exportJson: PropTypes.func.isRequired,
-};
-
-Import.defaultProps = {
-  printerUrl: null,
 };
 
 export default Import;

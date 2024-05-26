@@ -36,20 +36,26 @@ const fileDrop: MiddlewareWithState = (store) => {
 
   root.addEventListener('drop', async (ev: Event) => {
     ev.preventDefault();
-    let files;
+    let files: File[];
     const items = ((ev as DragEvent).dataTransfer as DataTransfer).items as DataTransferItemList;
 
     if (items) {
-      files = [...items]
-        .filter(({ kind }) => kind === 'file')
-        .map((item) => item.getAsFile());
+      files = ([...items] as DataTransferItem[])
+        .reduce((acc: File[], item: DataTransferItem): File[] => {
+          if (item.kind === 'file') {
+            const file = item.getAsFile();
+            return file ? [...acc, file] : acc;
+          }
+
+          return acc;
+        }, []);
     } else {
       const fileList = ((ev as DragEvent).dataTransfer as DataTransfer).files as FileList;
       files = [...fileList];
     }
 
     try {
-      await handleFileImport(files as File[]);
+      await handleFileImport(files);
     } catch (error) {
       store.dispatch({
         type: Actions.ERROR,

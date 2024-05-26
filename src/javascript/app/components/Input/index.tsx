@@ -25,7 +25,8 @@ interface Props {
   max?: number,
   step?: number,
   value?: string | number,
-  onChange: (value: string | FileList) => void,
+  onChange?: (value: string) => void,
+  onChangeFiles?: (value: File[]) => void,
   onBlur?: () => void,
   buttonOnClick?: () => void,
   buttonIcon?: string,
@@ -48,6 +49,7 @@ const Input = ({
   value,
   disabled,
   onChange,
+  onChangeFiles,
   onBlur,
   onKeyUp,
   children,
@@ -88,9 +90,9 @@ const Input = ({
           className="inputgroup__input inputgroup__input--textarea"
           value={value}
           disabled={disabled}
-          onChange={({ target: { value: newVal } }) => {
-            onChange(newVal);
-          }}
+          onChange={({ target: { value: newVal } }) => (
+            onChange && onChange(newVal)
+          )}
           onBlur={blurListener}
           onKeyUp={keyUpListener}
         />
@@ -104,9 +106,12 @@ const Input = ({
           step={type === InputType.NUMBER ? step : undefined}
           value={value}
           disabled={disabled}
-          onChange={({ target: { value: newVal, files } }) => {
-            onChange(files || newVal);
-          }}
+          onChange={type === InputType.FILE ? ({ target: { files } }) => (
+            files && onChangeFiles && onChangeFiles([...files] as File[])
+          ) : ({ target: { value: newVal } }) => (
+            onChange && onChange(newVal)
+          )}
+          multiple
           onBlur={blurListener}
           onKeyUp={keyUpListener}
         />
@@ -146,7 +151,7 @@ const Input = ({
           disabled={disabled}
           onChange={({ target: { value: newColorVal } }) => {
             setColorVal(newColorVal);
-            if (colorIsValid(newColorVal)) {
+            if (onChange && colorIsValid(newColorVal)) {
               onChange(newColorVal);
             }
           }}

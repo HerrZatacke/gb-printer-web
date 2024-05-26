@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Actions } from '../app/store/actions';
+import { ImportFilesAction } from '../../types/actions/ImportActions';
 
 const useImportPlainText = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const useImportPlainText = () => {
       file = new Blob([...textDump], { type: 'text/plain' });
     }
 
-    dispatch({
+    dispatch<ImportFilesAction>({
       type: Actions.IMPORT_FILES,
       payload: { files: [file] },
     });
