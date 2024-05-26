@@ -1,4 +1,4 @@
-import getFilteredImages from '../getFilteredImages';
+import getFilteredImages, { FilteredImagesState } from '../getFilteredImages';
 import { addSortIndex, removeSortIndex, sortImages } from '../sortImages';
 import uniqueBy from '../unique/by';
 import { State } from '../../app/store/State';
@@ -7,7 +7,7 @@ import { reduceImagesMonochrome } from '../isRGBNImage';
 
 const uniqeHash = uniqueBy<Image>('hash');
 
-const getPreviewImages = (state: State) => (): MonochromeImage[] => {
+const getPreviewImages = (state: State | FilteredImagesState) => (): MonochromeImage[] => {
 
   const selectedImages = state.imageSelection
     .map((imageHash) => (
