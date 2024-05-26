@@ -33,6 +33,7 @@ export enum ButtonOption {
   SELECT = 'select',
   VIEW = 'view',
   FAVOURITE = 'favourite',
+  PLUGINS = 'plugins',
 }
 
 interface UseGalleryImageButtonsParams {

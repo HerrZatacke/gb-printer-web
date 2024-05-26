@@ -1,9 +1,10 @@
 import React from 'react';
 import useFrames from './useFrames';
 import Frame from '../Frame';
-import Input from '../Input';
+import Input, { InputType } from '../Input';
 
 import './index.scss';
+import { ExportTypes } from '../../store/defaults';
 
 const Frames = () => {
 
@@ -43,6 +44,7 @@ const Frames = () => {
       {
         activeFrameGroup ? (
           <Input
+            type={InputType.TEXT}
             id="frames-edit-group-name"
             onChange={(name) => {
               setActiveFrameGroupName(name);
@@ -73,14 +75,14 @@ const Frames = () => {
         <button
           type="button"
           className="button"
-          onClick={() => exportJson('frames')}
+          onClick={() => exportJson(ExportTypes.FRAMES)}
         >
           Export frames
         </button>
         <button
           type="button"
           className="button"
-          onClick={() => exportJson('framegroup')}
+          onClick={() => exportJson(ExportTypes.FRAMEGROUP)}
         >
           {`Export current framegroup (${selectedFrameGroup})`}
         </button>
@@ -88,9 +90,5 @@ const Frames = () => {
     </div>
   );
 };
-
-Frames.propTypes = {};
-
-Frames.defaultProps = {};
 
 export default Frames;

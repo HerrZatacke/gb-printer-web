@@ -1,77 +1,69 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GalleryImageButtons from '../GalleryImageButtons';
 import RGBNSelect from '../RGBNSelect';
-import { dateFormat } from '../../defaults';
-import dateFormatLocale from '../../../tools/dateFormatLocale';
 import ImageRender from '../ImageRender';
-import { SpecialTags } from '../../../consts/SpecialTags';
+import DateSpan from './DateSpan';
+import TagsList from './TagsList';
 import SVG from '../SVG';
+import { SelectionEditMode, useGalleryImage } from './useGalleryImage';
+import { ButtonOption } from '../GalleryImageButtons/useGalleryImageButtons';
+
+import './index.scss';
 
 dayjs.extend(customParseFormat);
 
-const GalleryImage = ({
-  hideDate,
-  created,
-  updateImageSelection,
-  isSelected,
-  page,
-  editImage,
-  lockFrame,
-  invertPalette,
-  palette,
-  frame,
-  title,
-  tags,
-  isFavourite,
-  hash,
-  hashes,
-  type,
-  preferredLocale,
-  meta,
-  rotation,
-  enableDebug,
-}) => {
+interface Props {
+  type: 'list' | 'default',
+  hash: string,
+  page: number,
+}
 
-  const getDateSpan = (className) => {
-    if (hideDate || !created) {
-      return null;
-    }
+const buttons = [
+  ButtonOption.SELECT,
+  ButtonOption.FAVOURITE,
+  ButtonOption.DOWNLOAD,
+  ButtonOption.DELETE,
+  ButtonOption.VIEW,
+  ButtonOption.SHARE,
+  ButtonOption.PLUGINS,
+];
 
-    return (
-      <span className={className}>
-        { dateFormatLocale(dayjs(created, dateFormat), preferredLocale) }
-      </span>
-    );
-  };
+const GalleryImage = ({ page, hash, type }: Props) => {
+  const {
+    galleryImageData,
+    updateImageSelection,
+    editImage,
+  } = useGalleryImage(hash);
 
-  const getTagsList = () => (
-    <ul className="gallery-image__tags">
-      {
-        tags
-          .sort((a, b) => (
-            a.toLowerCase().localeCompare(b.toLowerCase())
-          ))
-          .map((tag) => (
-            <li
-              key={tag}
-              title={tag === SpecialTags.FILTER_FAVOURITE ? 'Favourite' : tag}
-              className="gallery-image__tag"
-            >
-              {tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
-            </li>
-          ))
-      }
-    </ul>
-  );
+  if (!galleryImageData) {
+    return null;
+  }
 
-  const handleCellClick = (ev) => {
+  const {
+    created,
+    hashes,
+    palette,
+    invertPalette,
+    frame,
+    lockFrame,
+    title,
+    tags,
+    isFavourite,
+    isSelected,
+    hideDate,
+    preferredLocale,
+    meta,
+    rotation,
+    enableDebug,
+  } = galleryImageData;
+
+  const handleCellClick = (ev: React.MouseEvent) => {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
-      updateImageSelection(isSelected ? 'remove' : 'add', ev.shiftKey, page);
+      updateImageSelection(isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD, ev.shiftKey, page);
     } else {
       editImage(tags);
     }
@@ -91,7 +83,7 @@ const GalleryImage = ({
         <ImageRender
           lockFrame={lockFrame}
           invertPalette={invertPalette}
-          palette={palette.palette || palette}
+          palette={palette}
           frameId={frame}
           hash={hash}
           hashes={hashes}
@@ -105,7 +97,7 @@ const GalleryImage = ({
           {title}
         </span>
       ) : null}
-      { getTagsList() }
+      <TagsList tags={tags} />
       <div className="gallery-image__created-meta">
         {(
           meta ? (
@@ -119,7 +111,12 @@ const GalleryImage = ({
             </>
           ) : null
         )}
-        {getDateSpan('gallery-image__created')}
+        <DateSpan
+          className="gallery-image__created"
+          hideDate={hideDate}
+          created={created}
+          preferredLocale={preferredLocale}
+        />
       </div>
       { enableDebug ? (
         <span className="gallery-image__hash-debug">{ hash }</span>
@@ -128,7 +125,7 @@ const GalleryImage = ({
         isFavourite={isFavourite}
         hash={hash}
         imageTitle={title}
-        buttons={['select', 'favourite', 'download', 'delete', 'view', 'share', 'plugins']}
+        buttons={buttons}
       />
     </li>
   ) : (
@@ -147,7 +144,7 @@ const GalleryImage = ({
             <ImageRender
               lockFrame={lockFrame}
               invertPalette={invertPalette}
-              palette={palette.palette || palette}
+              palette={palette}
               frameId={frame}
               hash={hash}
               hashes={hashes}
@@ -162,12 +159,17 @@ const GalleryImage = ({
           <span className="gallery-list-image__title">
             {title}
           </span>
-          {getDateSpan('gallery-list-image__created')}
+          <DateSpan
+            className="gallery-image__created"
+            hideDate={hideDate}
+            created={created}
+            preferredLocale={preferredLocale}
+          />
         </div>
       </div>
 
       <div className="gallery-list-image__cell gallery-list-image__cell-tags">
-        { getTagsList() }
+        <TagsList tags={tags} />
       </div>
 
       <div className="gallery-list-image__cell gallery-list-image__cell-rgbn">
@@ -181,43 +183,11 @@ const GalleryImage = ({
           isFavourite={isFavourite}
           hash={hash}
           imageTitle={title}
-          buttons={['select', 'favourite', 'download', 'delete', 'view', 'plugins']}
+          buttons={buttons}
         />
       </div>
     </li>
   );
-};
-
-GalleryImage.propTypes = {
-  created: PropTypes.string,
-  hash: PropTypes.string.isRequired,
-  hashes: PropTypes.object,
-  palette: PropTypes.object.isRequired,
-  invertPalette: PropTypes.bool.isRequired,
-  frame: PropTypes.string,
-  lockFrame: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isFavourite: PropTypes.bool.isRequired,
-  editImage: PropTypes.func.isRequired,
-  type: PropTypes.oneOf(['list', 'default']).isRequired,
-  isSelected: PropTypes.bool.isRequired,
-  updateImageSelection: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  hideDate: PropTypes.bool.isRequired,
-  preferredLocale: PropTypes.string,
-  meta: PropTypes.object,
-  rotation: PropTypes.number,
-  enableDebug: PropTypes.bool.isRequired,
-};
-
-GalleryImage.defaultProps = {
-  created: null,
-  hashes: null,
-  frame: null,
-  preferredLocale: null,
-  meta: null,
-  rotation: 0,
 };
 
 export default GalleryImage;

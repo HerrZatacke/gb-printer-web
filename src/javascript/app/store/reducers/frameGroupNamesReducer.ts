@@ -4,14 +4,14 @@ import uniqueBy from '../../../tools/unique/by';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { FrameGroup } from '../../../../types/FrameGroup';
 
-export interface FrageGroupNamesAction {
+export interface FrameGroupNamesAction {
   type: Actions.NAME_FRAMEGROUP,
   payload: FrameGroup,
 }
 
 const frameGroupNamesReducer = (
   frameGroupNames: FrameGroup[] = [],
-  action: FrageGroupNamesAction | GlobalUpdateAction,
+  action: FrameGroupNamesAction | GlobalUpdateAction,
 ): FrameGroup[] => {
   switch (action.type) {
     case Actions.NAME_FRAMEGROUP:
