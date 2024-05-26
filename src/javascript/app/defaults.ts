@@ -1,4 +1,5 @@
 import { BlendMode } from 'gb-image-decoder';
+import { Palette } from '../../types/Palette';
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss:SSS';
 const dateFormatInput = 'YYYY-MM-DD';
@@ -20,10 +21,12 @@ const defaultRGBNPalette = {
   blend: BlendMode.MULTIPLY,
 };
 
-const missingGreyPalette = {
+const missingGreyPalette: Palette = {
   shortName: '-',
   name: 'Missing Palette',
   palette: ['#aaaaaa', '#999999', '#888888', '#777777'],
+  isPredefined: true,
+  origin: 'technical',
 };
 
 export {

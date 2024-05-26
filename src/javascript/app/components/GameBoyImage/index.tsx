@@ -7,8 +7,8 @@ import './index.scss';
 export interface GameBoyImageProps {
   palette?: string[] | RGBNPalette,
   tiles: string[] | RGBNTiles,
-  lockFrame: boolean,
-  invertPalette: boolean,
+  lockFrame?: boolean,
+  invertPalette?: boolean,
   asThumb?: boolean,
   rotation?: Rotation,
 }
@@ -45,7 +45,7 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
             canvas: tempCanvas,
             tiles: tiles as RGBNTiles,
             palette,
-            lockFrame,
+            lockFrame: lockFrame || false, // ToDo: Update package to allow optional param
           });
         }
       } else {
@@ -55,8 +55,8 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
             canvas: tempCanvas,
             tiles: tiles as string[],
             palette,
-            lockFrame,
-            invertPalette,
+            lockFrame: lockFrame || false, // ToDo: Update package to allow optional param
+            invertPalette: invertPalette || false, // ToDo: Update package to allow optional param
           });
         }
       }

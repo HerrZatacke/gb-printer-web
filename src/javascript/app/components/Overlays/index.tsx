@@ -19,6 +19,7 @@ import BitmapQueue from './BitmapQueue';
 import ImportQueue from './ImportQueue';
 import FrameQueue from './FrameQueue';
 import Trashbin from './Trashbin';
+import { State } from '../../store/State';
 
 const Overlays = () => {
   const {
@@ -40,7 +41,7 @@ const Overlays = () => {
     showSortForm,
     showTrashbin,
     syncSelect,
-  } = useSelector((state) => ({
+  } = useSelector((state: State) => ({
     showProgressLog: !!state.progressLog.git.length || !!state.progressLog.dropbox.length,
     showInfoBox: state.framesMessage === 1,
     showProgressBox: !!state.progress.gif || !!state.progress.printer || !!state.progress.plugin,
@@ -54,11 +55,11 @@ const Overlays = () => {
     showVideoForm: !!state.videoParams.imageSelection && !!state.videoParams.imageSelection.length,
     showRGBNImage: !!state.rgbnImages && Object.keys(state.rgbnImages).length > 0,
     showLightbox: state.lightboxImage !== null,
-    showDragOver: !!state.dragover,
-    showFilters: !!state.filtersVisible,
-    showSortForm: !!state.sortOptionsVisible,
-    showTrashbin: !!state.trashCount.show,
-    syncSelect: !!state.syncSelect,
+    showDragOver: state.dragover,
+    showFilters: state.filtersVisible,
+    showSortForm: state.sortOptionsVisible,
+    showTrashbin: state.trashCount.show,
+    syncSelect: state.syncSelect,
   }));
 
   switch (true) {

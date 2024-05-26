@@ -11,6 +11,8 @@ import './index.scss';
 import { TagChange } from '../../../tools/applyTagChanges';
 import { reduceItems } from '../../../tools/reduceArray';
 import { ImageMetadata, RGBNHashes } from '../../../../types/Image';
+import { Rotation } from '../../../tools/applyRotation';
+import { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 enum Tab {
   PALETTE = 'pal',
@@ -21,17 +23,18 @@ enum Tab {
 
 interface Props {
   hash: string,
-  invertPalette: boolean,
+  invertPalette?: boolean,
   tags: TagChange,
   regularImage: boolean,
-  lockFrame: boolean,
-  updateCreated: () => void,
-  updatePalette: () => void,
-  updateInvertPalette: () => void,
-  updateTags: () => void,
-  updateFrame: () => void,
-  updateFrameLock: () => void,
-  updateRotation: () => void,
+  lockFrame?: boolean,
+
+  updateCreated: (value: string) => void,
+  updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void,
+  updateInvertPalette: (value: boolean) => void,
+  updateTags: (mode: TagUpdateMode, tag: string) => void,
+  updateFrame: (value: string) => void,
+  updateFrameLock: (value: boolean) => void,
+  updateRotation: (value: Rotation) => void,
 
   hashes?: RGBNHashes,
   created?: string,

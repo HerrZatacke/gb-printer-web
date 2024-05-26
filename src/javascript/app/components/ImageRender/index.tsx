@@ -11,8 +11,8 @@ interface Props {
   hash: string,
   hashes?: RGBNHashes,
   palette: string[] | RGBNPalette,
-  invertPalette: boolean,
-  lockFrame: boolean,
+  invertPalette?: boolean,
+  lockFrame?: boolean,
   frameId?: string,
   rotation?: Rotation,
 }
