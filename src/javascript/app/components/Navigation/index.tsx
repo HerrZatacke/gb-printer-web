@@ -28,7 +28,7 @@ const Navigation = () => {
 
   const sum = trashCount.frames + trashCount.images;
 
-  const className = ({ isActive }) => `navigation__link ${isActive ? 'navigation__link--active' : ''}`;
+  const className = ({ isActive }: { isActive: boolean }) => `navigation__link ${isActive ? 'navigation__link--active' : ''}`;
 
   return (
     <nav
