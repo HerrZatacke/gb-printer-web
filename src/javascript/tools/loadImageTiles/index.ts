@@ -1,7 +1,7 @@
 import { RGBNTiles } from 'gb-image-decoder';
 import { load, RecoverFn } from '../storage';
 import { State } from '../../app/store/State';
-import { Image, RGBNImage } from '../../../types/Image';
+import { Image, RGBNHashes, RGBNImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 
 export type PImage = {
@@ -13,21 +13,30 @@ export type PImage = {
 export type ReducedPickState = Pick<State, 'frames' | 'images'>
 
 export const loadImageTiles = (state: State | ReducedPickState, recover?: RecoverFn) => {
-  const loader = async (hash: string, noDummy?: boolean, overrideFrame?: string): Promise<string[] | RGBNTiles> => {
+  const loader = async (
+    hash: string,
+    noDummy?: boolean,
+    overrideFrame?: string,
+    hashesOverride?: RGBNHashes,
+  ): Promise<string[] | RGBNTiles> => {
     const image = state.images.find(((img) => hash === img.hash));
-    if (!image) {
-      return [];
+    let frame: string | undefined;
+
+    if (!hashesOverride) {
+      if (!image) {
+        return [];
+      }
+
+      frame = typeof overrideFrame === 'string' ? overrideFrame : image.frame || undefined;
+      const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
+
+      if (!isRGBNImage(image as Image)) {
+        const tiles = await load(hash, frameHash, noDummy, recover);
+        return tiles || [];
+      }
     }
 
-    const frame = typeof overrideFrame === 'string' ? overrideFrame : image.frame || undefined;
-    const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
-
-    if (!isRGBNImage(image as Image)) {
-      const tiles = await load(hash, frameHash, noDummy, recover);
-      return tiles || [];
-    }
-
-    const { hashes } = image as RGBNImage;
+    const hashes = hashesOverride || (image as RGBNImage).hashes;
 
     const r = hashes.r ? await loader(hashes.r, noDummy, frame) as string[] : [];
     const g = hashes.g ? await loader(hashes.g, noDummy, frame) as string[] : [];

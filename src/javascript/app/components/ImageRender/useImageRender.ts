@@ -52,9 +52,9 @@ export const useImageRender = ({
 
       const imageLoader = getLoadImageTiles({ images: allImages, frames: allFrames }, recoverFn);
 
-      return imageLoader(imgHash, noDummy, overrideFrame);
+      return imageLoader(imgHash, noDummy, overrideFrame, hashes);
     },
-    [allImages, allFrames, dispatch],
+    [allImages, allFrames, dispatch, hashes],
   );
 
 
@@ -86,7 +86,7 @@ export const useImageRender = ({
     return () => {
       aborted = true;
     };
-  }, [loadImageTiles, hash, hashes, frameId, palette, invertPalette, lockFrame, rotation]);
+  }, [loadImageTiles, hash, frameId, palette, invertPalette, lockFrame, rotation]);
 
   return {
     gbImageProps,
