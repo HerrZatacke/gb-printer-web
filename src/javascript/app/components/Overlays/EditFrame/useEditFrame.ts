@@ -5,6 +5,7 @@ import getFrameGroups from '../../../../tools/getFrameGroups';
 import { State } from '../../../store/State';
 import { Frame } from '../../../../../types/Frame';
 import { FrameGroup } from '../../../../../types/FrameGroup';
+import { UpdateFrameAction } from '../../../../../types/actions/FrameActions';
 
 interface UseEditFrame {
   groups: FrameGroup[],
@@ -77,7 +78,7 @@ const useEditFrame = (frame?: Frame | NewEditFrame): UseEditFrame => {
           name: frameName,
         },
       },
-    });
+    } as UpdateFrameAction);
   };
 
   return {

@@ -37,7 +37,7 @@ export interface State {
   filtersVisible: boolean,
   forceMagicCheck: boolean,
   frameGroupNames: FrameGroup[],
-  frameQueue: Frame[],
+  frameQueue: ImportItem[],
   frames: Frame[],
   framesMessage: number,
   galleryView: GalleryViews,

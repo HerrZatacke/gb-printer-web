@@ -6,9 +6,13 @@ import './index.scss';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
+import { State } from '../../../store/State';
+import { AddFrameAction } from '../../../../../types/actions/FrameActions';
+import { FrageGroupNamesAction } from '../../../store/reducers/frameGroupNamesReducer';
+import { FrameQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
 
 const FrameQueue = () => {
-  const frame = useSelector((store) => store.frameQueue[0]);
+  const frame = useSelector((state: State) => state.frameQueue[0]);
   const [newGroupName, setNewGroupName] = useState('');
   const dispatch = useDispatch();
 
@@ -38,18 +42,20 @@ const FrameQueue = () => {
       confirm={async () => {
         const hash = await saveFrameData(frame.tiles);
 
-        dispatch({
+        dispatch<AddFrameAction>({
           type: Actions.ADD_FRAME,
           payload: {
-            id: fullId,
-            name: frameName,
-            hash,
+            frame: {
+              id: fullId,
+              name: frameName,
+              hash,
+            },
             tempId: frame.tempId,
           },
         });
 
         if (newGroupName?.trim()) {
-          dispatch({
+          dispatch<FrageGroupNamesAction>({
             type: Actions.NAME_FRAMEGROUP,
             payload: {
               id: frameGroup,
@@ -59,7 +65,7 @@ const FrameQueue = () => {
         }
       }}
       deny={() => {
-        dispatch({
+        dispatch<FrameQueueCancelOneAction>({
           type: Actions.FRAMEQUEUE_CANCEL_ONE,
           payload: frame,
         });

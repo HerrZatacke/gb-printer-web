@@ -40,8 +40,8 @@ const syncLastUpdateReducer = (
     case Actions.DROPBOX_SETTINGS_IMPORT:
       return {
         ...value,
-        dropbox: action.payload.state.lastUpdateUTC,
-        local: action.payload.state.lastUpdateUTC,
+        dropbox: action.payload?.state.lastUpdateUTC || value.dropbox,
+        local: action.payload?.state.lastUpdateUTC || value.local,
       };
     case Actions.STORAGE_SYNC_DONE:
       return {

@@ -34,7 +34,7 @@ export interface DropboxSetStorageAction {
 
 export interface DropboxSettingsImportAction {
   type: Actions.DROPBOX_SETTINGS_IMPORT,
-  payload: {
+  payload?: {
     state: {
       lastUpdateUTC: number,
     }

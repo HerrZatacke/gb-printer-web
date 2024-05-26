@@ -88,7 +88,7 @@ export interface Reducers extends ReducersMapObject {
   filtersVisible: Reducer<boolean>,
   forceMagicCheck: Reducer<boolean>,
   frameGroupNames: Reducer<FrameGroup[]>,
-  frameQueue: Reducer<Frame[]>,
+  frameQueue: Reducer<ImportItem[]>,
   frames: Reducer<Frame[]>,
   framesMessage: Reducer<number>,
   galleryView: Reducer<GalleryViews>,

@@ -1,16 +1,16 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { Frame } from '../../../../types/Frame';
+import { ImportItem } from '../../../../types/ImportItem';
 import { FrameQueueAddAction, FrameQueueCancelOneAction } from '../../../../types/actions/QueueActions';
 import { AddFrameAction } from '../../../../types/actions/FrameActions';
 
 const frameQueueReducer = (
-  frameQueue: Frame[] = [],
+  frameQueue: ImportItem[] = [],
   action:
     FrameQueueAddAction |
     FrameQueueCancelOneAction |
     AddFrameAction,
-): Frame[] => {
+): ImportItem[] => {
   switch (action.type) {
     case Actions.FRAMEQUEUE_ADD:
       return [

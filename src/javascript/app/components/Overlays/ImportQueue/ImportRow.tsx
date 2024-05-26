@@ -7,6 +7,7 @@ import { Actions } from '../../../store/actions';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 import { State } from '../../../store/State';
 import { ImportItem } from '../../../../../types/ImportItem';
+import { FrameQueueAddAction, ImportQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
 
 interface Props {
   importItem: ImportItem,
@@ -14,16 +15,18 @@ interface Props {
 }
 
 function ImportRow({
-  importItem: {
+  importItem,
+  paletteShort,
+}: Props) {
+  const {
     tiles,
     fileName,
     lastModified,
     imageHash,
     frameHash,
     tempId,
-  },
-  paletteShort,
-}: Props) {
+  } = importItem;
+
   const {
     palette,
     locale,
@@ -109,14 +112,9 @@ function ImportRow({
             type="button"
             title="Import as Frame"
             onClick={() => {
-              dispatch({
+              dispatch<FrameQueueAddAction>({
                 type: Actions.FRAMEQUEUE_ADD,
-                payload: {
-                  fileName,
-                  tiles,
-                  imageHash,
-                  tempId,
-                },
+                payload: importItem,
               });
             }}
           >
@@ -131,7 +129,7 @@ function ImportRow({
           type="button"
           title="Delete"
           onClick={() => {
-            dispatch({
+            dispatch<ImportQueueCancelOneAction>({
               type: Actions.IMPORTQUEUE_CANCEL_ONE,
               payload: { tempId },
             });

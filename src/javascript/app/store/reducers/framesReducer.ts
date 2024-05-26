@@ -15,7 +15,7 @@ const framesReducer = (
 ): Frame[] => {
   switch (action.type) {
     case Actions.ADD_FRAME:
-      return action.payload ? sortById(uniqueById([action.payload, ...frames])) : frames;
+      return action.payload ? sortById(uniqueById([action.payload.frame, ...frames])) : frames;
     case Actions.DELETE_FRAME:
       return frames.filter(({ id }) => id !== action.payload);
     case Actions.UPDATE_FRAME:

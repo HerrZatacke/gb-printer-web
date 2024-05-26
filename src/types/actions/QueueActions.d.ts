@@ -1,7 +1,5 @@
 import { Actions } from '../../javascript/app/store/actions';
 import { QueueImage } from '../QueueImage';
-import { Frame } from '../Frame';
-
 import { ImportItem } from '../ImportItem';
 
 export interface ImportQueueAddAction {
@@ -35,10 +33,10 @@ export interface BitmapQueueCancelAction {
 }
 export interface FrameQueueAddAction {
   type: Actions.FRAMEQUEUE_ADD,
-  payload: Frame,
+  payload: ImportItem,
 }
 
 export interface FrameQueueCancelOneAction {
   type: Actions.FRAMEQUEUE_CANCEL_ONE,
-  payload: Frame,
+  payload: ImportItem,
 }

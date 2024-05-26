@@ -4,7 +4,7 @@ import uniqueBy from '../../../tools/unique/by';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { FrameGroup } from '../../../../types/FrameGroup';
 
-interface FrageGroupNamesAction {
+export interface FrageGroupNamesAction {
   type: Actions.NAME_FRAMEGROUP,
   payload: FrameGroup,
 }
