@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-interface FramesMessageAction {
+export interface FramesMessageAction {
   type: Actions.FRAMES_MESSAGE_SHOW | Actions.FRAMES_MESSAGE_HIDE
 }
 
