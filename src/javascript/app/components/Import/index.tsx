@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ConnectPrinter from '../ConnectPrinter';
 import Input, { InputType } from '../Input';
+import { useImport } from './useImport';
+import { ExportTypes } from '../../../consts/exportTypes';
 
 import './index.scss';
-import { useImport } from './useImport';
-import { ExportTypes } from '../../store/defaults';
 
 const Import = () => {
   const [text, setText] = useState('');

@@ -10,13 +10,15 @@ import {
 } from '../../types/Dialog';
 
 export interface UseDialog {
-  dialog: Dialog,
+  message: string,
+  confirm: () => Promise<void>,
+  deny?: () => Promise<void>,
   questions: DialogQuestion[],
   values: DialogResult,
   setSelected: (result: DialogResult) => void,
 }
 
-const getInitialValues = (questions?: (values?: DialogResult) => DialogQuestion[]): DialogResult => {
+const getInitialValues = (questions?: (values: DialogResult) => DialogQuestion[]): DialogResult => {
   if (!questions) {
     return {};
   }
@@ -69,7 +71,9 @@ const useDialog = (): UseDialog => {
   const [values, setValues] = useState<DialogResult>(getInitialValues(questions));
 
   return {
-    dialog,
+    message: dialog.message,
+    confirm: () => dialog.confirm(values),
+    deny: dialog.deny,
     questions: questions ? questions(values) : [],
     values,
     setSelected: (result: DialogResult) => {

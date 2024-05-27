@@ -1,5 +1,6 @@
 import { State } from '../../app/store/State';
-import { AddToQueueFn, RepoContents, RepoFile, SyncFile } from '../../../types/Sync';
+import { AddToQueueFn } from '../../../types/Sync';
+import { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
 import { loadFrameData } from '../applyFrame/frameData';
 import { Frame } from '../../../types/Frame';
 

@@ -18,7 +18,7 @@ import {
 
 const Confirm = () => {
 
-  const { dialog: { message, confirm, deny }, questions, values, setSelected } = useDialog();
+  const { message, questions, values, setSelected, confirm, deny } = useDialog();
 
   return (
     <Lightbox

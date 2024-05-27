@@ -10,6 +10,8 @@ import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { Palette } from '../../../../types/Palette';
 import { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
 import { TypedStore } from '../State';
+import { ProgressExecutePluginAction } from '../../../../types/actions/ProgressActions';
+import { PluginUpdatePropertiesAction } from '../../../../types/actions/PluginActions';
 
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,
@@ -29,7 +31,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
   const queue = new Queue(1, Infinity);
 
   const progress = (progressValue: number): void => {
-    store.dispatch({
+    store.dispatch<ProgressExecutePluginAction>({
       type: Actions.EXECUTE_PLUGIN_PROGRESS,
       payload: progressValue % 1,
     });
@@ -128,7 +130,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
 
               registeredPlugins[url] = instance;
 
-              store.dispatch({
+              store.dispatch<PluginUpdatePropertiesAction>({
                 type: Actions.PLUGIN_UPDATE_PROPERTIES,
                 payload: {
                   url,
@@ -142,7 +144,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
               });
               resolve(true);
             } catch (error: unknown) {
-              store.dispatch({
+              store.dispatch<PluginUpdatePropertiesAction>({
                 type: Actions.PLUGIN_UPDATE_PROPERTIES,
                 payload: {
                   url,
@@ -161,7 +163,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
           pluginScript.addEventListener('error', () => {
             window.gbpwRegisterPlugin = () => { /* noop */ };
 
-            store.dispatch({
+            store.dispatch<PluginUpdatePropertiesAction>({
               type: Actions.PLUGIN_UPDATE_PROPERTIES,
               payload: {
                 url,

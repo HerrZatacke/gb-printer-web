@@ -1,12 +1,13 @@
-import { definitions, ExportTypes, StorePropertyExportable } from '../../app/store/defaults';
+import { definitions, StorePropertyExportable } from '../../app/store/defaults';
+import { ExportTypes } from '../../consts/exportTypes';
 import getImages from './getImages';
 import getFrames from './getFrames';
 import getImageHashesForExport from './getImageHashesForExport';
 import getFrameHashesForExport from './getFrameHashesForExport';
 import { getEnv } from '../getEnv';
 import getFrameGroups from '../getFrameGroups';
-import { TypedStore } from '../../app/store/State';
-import { ExportableState, GetSettingsOptions, NoExport } from './types';
+import { ExportableState, NoExport, TypedStore } from '../../app/store/State';
+import { GetSettingsOptions } from '../../../types/Sync';
 import { Image } from '../../../types/Image';
 import { Frame } from '../../../types/Frame';
 import { Palette } from '../../../types/Palette';

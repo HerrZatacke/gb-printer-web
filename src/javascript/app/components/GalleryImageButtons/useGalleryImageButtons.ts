@@ -54,70 +54,70 @@ export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButt
   return {
     ...stateData,
     startDownload: () => {
-      dispatch({
+      dispatch<DownloadImageStartAction>({
         type: Actions.START_DOWNLOAD,
         payload: hash,
-      } as DownloadImageStartAction);
+      });
     },
     deleteImage: () => {
-      dispatch({
+      dispatch<ConfirmAskAction>({
         type: Actions.CONFIRM_ASK,
         payload: {
           message: imageTitle ? `Delete image "${imageTitle}"?` : 'Delete this image?',
-          confirm: () => {
-            dispatch({
+          confirm: async () => {
+            dispatch<DeleteImageAction>({
               type: Actions.DELETE_IMAGE,
               payload: hash,
-            } as DeleteImageAction);
+            });
           },
-          deny: () => {
-            dispatch({
+          deny: async () => {
+            dispatch<ConfirmAnsweredAction>({
               type: Actions.CONFIRM_ANSWERED,
-            } as ConfirmAnsweredAction);
+            });
           },
         },
-      } as ConfirmAskAction);
+      });
 
     },
     shareImage: () => {
-      dispatch({
+      dispatch<ShareImageStartAction>({
         type: Actions.SHARE_IMAGE,
         payload: hash,
-      } as ShareImageStartAction);
+      });
     },
     saveRGBNImage: () => {
-      dispatch({
+      dispatch<NewRGBNImageAction>({
         type: Actions.SAVE_RGBN_IMAGE,
         payload: 'newRGBN',
-      } as NewRGBNImageAction);
+      });
     },
     updateImageToSelection: (mode) => {
       if (mode === 'add') {
-        dispatch({
+        dispatch<ImageSelectionAddAction>({
           type: Actions.IMAGE_SELECTION_ADD,
           payload: hash,
-        } as ImageSelectionAddAction);
+        });
       } else {
-        dispatch({
+        dispatch<ImageSelectionRemoveAction>({
           type: Actions.IMAGE_SELECTION_REMOVE,
           payload: hash,
-        } as ImageSelectionRemoveAction);
+        });
       }
     },
     setLightboxImage: () => {
-      dispatch({
+      dispatch<LightboxImageSetAction>({
         type: Actions.SET_LIGHTBOX_IMAGE_HASH,
         payload: hash,
-      } as LightboxImageSetAction);
+      });
     },
     updateFavouriteTag: (isFavourite: boolean) => {
-      dispatch({
+      dispatch<ImageFavouriteAction>({
         type: Actions.IMAGE_FAVOURITE_TAG,
         payload: {
           hash,
           isFavourite,
         },
-      } as ImageFavouriteAction);
+      });
     },
   };
 };

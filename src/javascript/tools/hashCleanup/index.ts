@@ -78,7 +78,7 @@ const useHashCleanup = (): UseHashCleanup => {
 
           if (newHash !== hash) {
             iCounterRGBN += 1;
-            dispatch({
+            dispatch<RehashImageAction>({
               type: Actions.REHASH_IMAGE,
               payload: {
                 oldHash: hash,
@@ -88,7 +88,7 @@ const useHashCleanup = (): UseHashCleanup => {
                   hashes: newHashes,
                 } as RGBNImage,
               },
-            } as RehashImageAction);
+            });
           }
 
         } else {
@@ -96,7 +96,7 @@ const useHashCleanup = (): UseHashCleanup => {
 
           if (savedHash) {
             iCounterMono += 1;
-            dispatch({
+            dispatch<RehashImageAction>({
               type: Actions.REHASH_IMAGE,
               payload: {
                 oldHash: hash,
@@ -105,7 +105,7 @@ const useHashCleanup = (): UseHashCleanup => {
                   hash: savedHash,
                 } as MonochromeImage,
               },
-            } as RehashImageAction);
+            });
           }
         }
       }));

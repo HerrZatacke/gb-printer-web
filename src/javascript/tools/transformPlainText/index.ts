@@ -6,6 +6,7 @@ import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
 import { TypedStore } from '../../app/store/State';
 import { ImportQueueAddAction } from '../../../types/actions/QueueActions';
+import { randomId } from '../randomId';
 
 const getTransformPlainText = ({ dispatch }: TypedStore) => async (file: File) => {
 
@@ -25,17 +26,17 @@ const getTransformPlainText = ({ dispatch }: TypedStore) => async (file: File) =
 
     const indexCount = result.length < 2 ? '' : ` ${(index + 1).toString(10).padStart(2, '0')}`;
 
-    dispatch({
+    dispatch<ImportQueueAddAction>({
       type: Actions.IMPORTQUEUE_ADD,
       payload: {
         fileName: `${file.name}${indexCount}`,
         imageHash,
         frameHash,
         tiles,
-        lastModified: file.lastModified ? (file.lastModified + index) : null,
-        tempId: Math.random().toString(16).split('.').pop(),
+        lastModified: file.lastModified ? (file.lastModified + index) : undefined,
+        tempId: randomId(),
       },
-    } as ImportQueueAddAction);
+    });
 
     return true;
   }));

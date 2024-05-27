@@ -1,28 +1,8 @@
 import { Actions } from '../../javascript/app/store/actions';
 import { ExportTypes } from '../../javascript/consts/exportTypes';
-
-export interface DropBoxSettings {
-  use?: boolean,
-  refreshToken?: string,
-  accessToken?: string,
-  expiresAt?: number,
-  path?: string,
-  autoDropboxSync?: boolean,
-}
-
-export interface GitStorageSettings {
-  use?: boolean,
-  owner?: string,
-  repo?: string,
-  branch?: string,
-  token?: string,
-  throttle?: number,
-}
-
-export interface SyncLastUpdate {
-  dropbox: number,
-  local: number,
-}
+import { RepoContents } from '../Export';
+import { DropBoxSettings, GitStorageSettings } from '../Sync';
+import { JSONExportState } from '../../javascript/app/store/State';
 
 export interface DropboxLogoutAction {
   type: Actions.DROPBOX_LOGOUT,
@@ -35,11 +15,7 @@ export interface DropboxSetStorageAction {
 
 export interface DropboxSettingsImportAction {
   type: Actions.DROPBOX_SETTINGS_IMPORT,
-  payload?: {
-    state: {
-      lastUpdateUTC: number,
-    }
-  }
+  payload: JSONExportState
 }
 
 export interface DropboxLastUpdateAction {
@@ -47,10 +23,25 @@ export interface DropboxLastUpdateAction {
   payload: number,
 }
 
+export interface DropboxStartAuthAction {
+  type: Actions.DROPBOX_START_AUTH,
+}
+
 export interface GitStorageAction {
   type: Actions.SET_GIT_STORAGE,
   payload?: GitStorageSettings
 }
+
+export interface GitSettingsImportAction {
+  type: Actions.GIT_SETTINGS_IMPORT,
+  payload: RepoContents,
+}
+
+export interface ImportJSONAction {
+  type: Actions.JSON_IMPORT,
+  payload: Partial<JSONExportState>,
+}
+
 export interface ExportJSONAction {
   type: Actions.JSON_EXPORT,
   payload: ExportTypes,

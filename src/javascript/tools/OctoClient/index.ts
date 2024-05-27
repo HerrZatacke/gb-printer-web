@@ -3,8 +3,8 @@ import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
 
 import dayjs from 'dayjs';
 import dateFormatLocale from '../dateFormatLocale';
-import { GitStorageSettings } from '../../../types/actions/StorageActions';
-import { AddToQueueFn, RepoFile, RepoTasks, UploadFile } from '../../../types/Sync';
+import { AddToQueueFn, GitStorageSettings, GitUploadResult, UploadFile } from '../../../types/Sync';
+import { RepoFile, RepoTasks } from '../../../types/Export';
 import readFileAs, { ReadAs } from '../readFileAs';
 
 interface GitFile {
@@ -27,12 +27,6 @@ interface GitBlobFile {
     url: string,
     sha: string,
   }
-}
-
-interface GitUploadResult {
-  uploaded?: string[],
-  deleted?: string[],
-  repo?: string,
 }
 
 interface GitCreateTree {

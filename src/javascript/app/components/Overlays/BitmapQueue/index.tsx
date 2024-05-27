@@ -9,6 +9,7 @@ import './index.scss';
 import Select from '../Confirm/fields/Select';
 import moveBitmapsToImport from './moveBitmapsToImport';
 import { State } from '../../../store/State';
+import { BitmapQueueCancelAction } from '../../../../../types/actions/QueueActions';
 
 interface ImportContrast {
   name: string,
@@ -72,7 +73,9 @@ const BitmapQueue = () => {
         });
       }}
       deny={() => {
-        dispatch({ type: Actions.BITMAPQUEUE_CANCEL });
+        dispatch<BitmapQueueCancelAction>({
+          type: Actions.BITMAPQUEUE_CANCEL,
+        });
       }}
     >
       <div

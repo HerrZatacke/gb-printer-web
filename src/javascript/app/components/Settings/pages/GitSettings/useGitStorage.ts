@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../../../store/State';
-import { GitStorageAction, GitStorageSettings } from '../../../../../../types/actions/StorageActions';
+import { GitStorageAction } from '../../../../../../types/actions/StorageActions';
 import { Actions } from '../../../../store/actions';
+import { GitStorageSettings } from '../../../../../../types/Sync';
 
 interface UseGitStorage {
   gitStorage: GitStorageSettings,
@@ -13,10 +14,10 @@ export const useGitStorage = (): UseGitStorage => {
   const dispatch = useDispatch();
 
   const setGitStorage = (settings: GitStorageSettings) => {
-    dispatch({
+    dispatch<GitStorageAction>({
       type: Actions.SET_GIT_STORAGE,
       payload: settings,
-    } as GitStorageAction);
+    });
   };
 
   return {

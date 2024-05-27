@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { dateFormat, defaultRGBNPalette } from '../../defaults';
 import { Actions } from '../actions';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { AddImagesAction } from '../../../../types/actions/ImageActions';
 
 const saveRGBNImage: MiddlewareWithState = (store) => (next) => async (action) => {
 
@@ -20,7 +21,7 @@ const saveRGBNImage: MiddlewareWithState = (store) => (next) => async (action) =
       tags: [],
     };
 
-    store.dispatch({
+    store.dispatch<AddImagesAction>({
       type: Actions.ADD_IMAGES,
       payload: [image],
     });

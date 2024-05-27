@@ -3,13 +3,9 @@ import dayjs from 'dayjs';
 import { Actions } from '../actions';
 import { AddImagesAction } from '../../../../types/actions/ImageActions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { RecentImport } from '../../../../types/Sync';
 import { Image, RGBNImage } from '../../../../types/Image';
 import uniqueBy from '../../../tools/unique/by';
-
-export interface RecentImport {
-  hash: string,
-  timestamp: number,
-}
 
 const recentImportsReducer = (
   value: RecentImport[] = [],

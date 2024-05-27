@@ -7,6 +7,12 @@ import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import { RGBNHashes, RGBNImage } from '../../../../../types/Image';
 import { Rotation } from '../../../../tools/applyRotation';
 import { missingGreyPalette } from '../../../defaults';
+import {
+  SetLightboxFullscreenAction,
+  SetLightboxImageAction,
+  SetLightboxNextAction,
+  SetLightboxPrevAction,
+} from '../../../../../types/actions/GlobalActions';
 
 interface UseLightboxImage {
   hash: string,
@@ -76,23 +82,23 @@ export const useLightboxImage = (): UseLightboxImage => {
     preferredLocale,
     rotation: image?.rotation || Rotation.DEG_0,
     close: () => {
-      dispatch({
+      dispatch<SetLightboxImageAction>({
         type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-        payload: null,
+        // No payload means "close"
       });
     },
     prev: () => {
-      dispatch({
+      dispatch<SetLightboxPrevAction>({
         type: Actions.LIGHTBOX_PREV,
       });
     },
     next: () => {
-      dispatch({
+      dispatch<SetLightboxNextAction>({
         type: Actions.LIGHTBOX_NEXT,
       });
     },
     fullscreen: () => {
-      dispatch({
+      dispatch<SetLightboxFullscreenAction>({
         type: Actions.LIGHTBOX_FULLSCREEN,
       });
     },

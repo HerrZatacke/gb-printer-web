@@ -29,20 +29,20 @@ export const useVideoForm = (): UseVideoForm => {
     imageCount,
     videoParams,
     update: (params: Partial<VideoParams>) => {
-      dispatch({
+      dispatch<SetVideoParamsAction>({
         type: Actions.SET_VIDEO_PARAMS,
         payload: params,
-      } as SetVideoParamsAction);
+      });
     },
     cancel: () => {
-      dispatch({
+      dispatch<CancelAnimateImagesAction>({
         type: Actions.CANCEL_ANIMATE_IMAGES,
-      } as CancelAnimateImagesAction);
+      });
     },
     animate: () => {
-      dispatch({
+      dispatch<AnimateImagesAction>({
         type: Actions.ANIMATE_IMAGES,
-      } as AnimateImagesAction);
+      });
     },
   };
 };

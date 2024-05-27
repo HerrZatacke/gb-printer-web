@@ -1,9 +1,8 @@
 import uniqueBy from '../unique/by';
-import { State } from '../../app/store/State';
+import { ExportableState, State } from '../../app/store/State';
 import { Frame } from '../../../types/Frame';
 import { Image } from '../../../types/Image';
 import { Palette } from '../../../types/Palette';
-import { ExportableState } from '../getGetSettings/types';
 
 const mergeBy = <T>(by: keyof T) => {
   const unique = uniqueBy<T>(by);

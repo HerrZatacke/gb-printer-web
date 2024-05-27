@@ -4,19 +4,22 @@ import getFrameGroups from '../../../../../tools/getFrameGroups';
 import { Actions } from '../../../../store/actions';
 import { State } from '../../../../store/State';
 import { FrameGroup } from '../../../../../../types/FrameGroup';
-import { ExportScaleFactorsAction } from '../../../../store/reducers/exportScaleFactorsReducer';
-import { ExportFileTypesAction } from '../../../../store/reducers/exportFileTypesReducer';
-import { PageSizeAction } from '../../../../store/reducers/pageSizeReducer';
-import { SavFrameTypesAction } from '../../../../store/reducers/savFrameTypesReducer';
-import { HandleExportFrameAction } from '../../../../store/reducers/handleExportFrameReducer';
-import { ImportDeletedAction } from '../../../../store/reducers/importDeletedReducer';
-import { ForceMagicCheckAction } from '../../../../store/reducers/forceMagicCheckReducer';
-import { ImportLastSeenAction } from '../../../../store/reducers/importLastSeenReducer';
-import { ImportPadAction } from '../../../../store/reducers/importPadReducer';
-import { HideDatesAction } from '../../../../store/reducers/hideDatesReducer';
 import { PrinterSetParamsAction, PrinterSetUrlAction } from '../../../../../../types/actions/PrinterActions';
-import { PreferredLocaleAction } from '../../../../store/reducers/preferredLocaleReducer';
-import { EnableDebugAction } from '../../../../store/reducers/enableDebugReducer';
+import {
+  ExportScaleFactorsAction,
+  ExportFileTypesAction,
+  ForceMagicCheckAction,
+} from '../../../../../../types/actions/StorageActions';
+import {
+  EnableDebugAction,
+  HideDatesAction,
+  ImportDeletedAction,
+  ImportLastSeenAction,
+  ImportPadAction,
+  PageSizeAction,
+  PreferredLocaleAction,
+} from '../../../../../../types/actions/GlobalActions';
+import { HandleExportFrameAction, SavFrameTypesAction } from '../../../../../../types/actions/FrameActions';
 
 interface UseGenericSettings {
   exportScaleFactors: number[],
@@ -74,94 +77,94 @@ export const useGenericSettings = (): UseGenericSettings => {
   return {
     ...fromState,
     changeExportScaleFactors(factor: number, checked: boolean) {
-      dispatch({
+      dispatch<ExportScaleFactorsAction>({
         type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
         payload: {
           factor,
           checked,
         },
-      } as ExportScaleFactorsAction);
+      });
     },
     changeExportFileTypes(fileType: string, checked: boolean) {
-      dispatch({
+      dispatch<ExportFileTypesAction>({
         type: Actions.UPDATE_EXPORT_FILE_TYPES,
         payload: {
           fileType,
           checked,
         },
-      } as ExportFileTypesAction);
+      });
     },
     setPageSize(pageSize: number) {
-      dispatch({
+      dispatch<PageSizeAction>({
         type: Actions.SET_PAGESIZE,
         payload: pageSize,
-      } as PageSizeAction);
+      });
     },
     setSavFrameTypes(savFrameTypes: string) {
-      dispatch({
+      dispatch<SavFrameTypesAction>({
         type: Actions.SET_SAV_FRAME_TYPES,
         payload: savFrameTypes,
-      } as SavFrameTypesAction);
+      });
     },
     setHandleExportFrame(handleExportFrame: ExportFrameMode) {
-      dispatch({
+      dispatch<HandleExportFrameAction>({
         type: Actions.SET_HANDLE_EXPORT_FRAME,
         payload: handleExportFrame,
-      } as HandleExportFrameAction);
+      });
     },
     setImportDeleted(importDeleted: boolean) {
-      dispatch({
+      dispatch<ImportDeletedAction>({
         type: Actions.SET_IMPORT_DELETED,
         payload: importDeleted,
-      } as ImportDeletedAction);
+      });
     },
     setForceMagicCheck(forceMagicCheck: boolean) {
-      dispatch({
+      dispatch<ForceMagicCheckAction>({
         type: Actions.SET_FORCE_MAGIC_CHECK,
         payload: forceMagicCheck,
-      } as ForceMagicCheckAction);
+      });
     },
     setImportLastSeen(importLastSeen: boolean) {
-      dispatch({
+      dispatch<ImportLastSeenAction>({
         type: Actions.SET_IMPORT_LAST_SEEN,
         payload: importLastSeen,
-      } as ImportLastSeenAction);
+      });
     },
     setImportPad(importPad: boolean) {
-      dispatch({
+      dispatch<ImportPadAction>({
         type: Actions.SET_IMPORT_PAD,
         payload: importPad,
-      } as ImportPadAction);
+      });
     },
     setHideDates(hideDates: boolean) {
-      dispatch({
+      dispatch<HideDatesAction>({
         type: Actions.SET_HIDE_DATES,
         payload: hideDates,
-      } as HideDatesAction);
+      });
     },
     updatePrinterUrl(printerUrl: string) {
-      dispatch({
+      dispatch<PrinterSetUrlAction>({
         type: Actions.SET_PRINTER_URL,
         payload: printerUrl,
-      } as PrinterSetUrlAction);
+      });
     },
     updatePrinterParams(printerParams: string) {
-      dispatch({
+      dispatch<PrinterSetParamsAction>({
         type: Actions.SET_PRINTER_PARAMS,
         payload: printerParams,
-      } as PrinterSetParamsAction);
+      });
     },
     setPreferredLocale(preferredLocale: string) {
-      dispatch({
+      dispatch<PreferredLocaleAction>({
         type: Actions.SET_PREFERRED_LOCALE,
         payload: preferredLocale,
-      } as PreferredLocaleAction);
+      });
     },
     setEnableDebug(enableDebug: boolean) {
-      dispatch({
+      dispatch<EnableDebugAction>({
         type: Actions.SET_DEBUG,
         payload: enableDebug,
-      } as EnableDebugAction);
+      });
     },
   };
 };

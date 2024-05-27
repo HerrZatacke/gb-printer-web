@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
 import { State } from '../../store/State';
-import { ExportJSONAction, ExportTypes } from '../../store/defaults';
+import { ExportJSONAction } from '../../../../types/actions/StorageActions';
+import { ExportTypes } from '../../../consts/exportTypes';
 import { ImportFilesAction } from '../../../../types/actions/ImportActions';
 
 interface UseImport {

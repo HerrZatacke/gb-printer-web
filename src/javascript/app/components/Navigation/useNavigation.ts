@@ -3,9 +3,9 @@ import WebUSBSerial from '../../../tools/WebUSBSerial';
 import WebSerial from '../../../tools/WebSerial';
 import { Actions } from '../../store/actions';
 import { State } from '../../store/State';
-import { SyncLastUpdate } from '../../../../types/actions/StorageActions';
+import { SyncLastUpdate } from '../../../../types/Sync';
 import { StorageSyncSelectAction } from '../../../../types/actions/LogActions';
-import { ShowSerialsAction } from '../../store/reducers/showSerialsReducer';
+import { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
 
 interface UseNavigation {
   disableSerials: boolean,

@@ -1,5 +1,5 @@
 import { Actions } from '../../javascript/app/store/actions';
-
+import { GitUploadResult, UploadDeleteResult } from '../Sync';
 
 export interface LogItem {
   timestamp: number,
@@ -25,6 +25,7 @@ export interface LogStorageSyncDoneAction {
   type: Actions.STORAGE_SYNC_DONE,
   payload: {
     storageType: keyof ProgressLog,
+    syncResult?: GitUploadResult | UploadDeleteResult | string[],
   }
 }
 

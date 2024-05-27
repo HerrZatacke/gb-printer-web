@@ -3,7 +3,12 @@ import { Actions } from '../../app/store/actions';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
 import { TypedStore } from '../../app/store/State';
-import { DialogOption, DialogQuestionBase, DialoqQuestionType } from '../../../types/Dialog';
+import {
+  DialogOption,
+  DialogQuestion,
+  DialogResult,
+  DialoqQuestionType,
+} from '../../../types/Dialog';
 import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../types/actions/ConfirmActions';
 import { reduceItems } from '../reduceArray';
 
@@ -51,7 +56,7 @@ const getTransformSav = (
   }
 
   return new Promise(((resolve) => {
-    dispatch({
+    dispatch<ConfirmAskAction>({
       type: Actions.CONFIRM_ASK,
       payload: {
         message: `Importing '${file.name}'`,
@@ -66,25 +71,26 @@ const getTransformSav = (
             label: 'Select frame group to use with this import',
             key: 'chosenFrameset',
             options: frameGroupOptions,
-          } : null,
-        ].reduce(reduceItems<DialogQuestionBase>, [])),
-        confirm: async ({ chosenFrameset, cartIsJP }: { chosenFrameset: string, cartIsJP: boolean }): Promise<void> => {
-          dispatch({
+          } : undefined,
+        ].reduce(reduceItems<DialogQuestion>, [])),
+        confirm: async (result: DialogResult): Promise<void> => {
+          const { chosenFrameset, cartIsJP } = result as { chosenFrameset: string, cartIsJP: boolean };
+          dispatch<ConfirmAnsweredAction>({
             type: Actions.CONFIRM_ANSWERED,
-          } as ConfirmAnsweredAction);
+          });
 
           // Perform actual import action
           await importSav(chosenFrameset || '', Boolean(cartIsJP));
           resolve(true);
         },
-        deny: () => {
-          dispatch({
+        deny: async () => {
+          dispatch<ConfirmAnsweredAction>({
             type: Actions.CONFIRM_ANSWERED,
-          } as ConfirmAnsweredAction);
+          });
           resolve(true);
         },
       },
-    } as ConfirmAskAction);
+    });
   }));
 };
 

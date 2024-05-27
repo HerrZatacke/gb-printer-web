@@ -2,11 +2,18 @@ import screenfull from 'screenfull';
 import getFilteredImages from '../../../tools/getFilteredImages';
 import { Actions } from '../actions';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import {
+  IsFullscreenAction,
+  SetLightboxImageAction,
+  SetLightboxNextAction,
+  SetLightboxPrevAction,
+  UpdateWindowDimensionsAction,
+} from '../../../../types/actions/GlobalActions';
 
 const confirmation: MiddlewareWithState = (store) => {
 
   window.addEventListener('resize', () => {
-    store.dispatch({
+    store.dispatch<UpdateWindowDimensionsAction>({
       type: Actions.WINDOW_DIMENSIONS,
       payload: {
         height: window.innerHeight,
@@ -17,7 +24,7 @@ const confirmation: MiddlewareWithState = (store) => {
 
   if (screenfull.isEnabled) {
     screenfull.on('change', () => {
-      store.dispatch({
+      store.dispatch<IsFullscreenAction>({
         type: Actions.SET_IS_FULLSCREEN,
         payload: !!screenfull.element,
       });
@@ -33,16 +40,16 @@ const confirmation: MiddlewareWithState = (store) => {
     switch (ev.key) {
       case 'Esc':
       case 'Escape':
-        store.dispatch({
+        store.dispatch<SetLightboxImageAction>({
           type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-          payload: null,
+          // No payload means "close"
         });
         ev.preventDefault();
         break;
 
       case 'Right':
       case 'ArrowRight':
-        store.dispatch({
+        store.dispatch<SetLightboxNextAction>({
           type: Actions.LIGHTBOX_NEXT,
         });
         ev.preventDefault();
@@ -50,7 +57,7 @@ const confirmation: MiddlewareWithState = (store) => {
 
       case 'Left':
       case 'ArrowLeft':
-        store.dispatch({
+        store.dispatch<SetLightboxPrevAction>({
           type: Actions.LIGHTBOX_PREV,
         });
         ev.preventDefault();
@@ -70,7 +77,7 @@ const confirmation: MiddlewareWithState = (store) => {
           return;
         }
 
-        store.dispatch({
+        store.dispatch<SetLightboxImageAction>({
           type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
           payload: Math.min(state.lightboxImage + 1, state.images.length - 1),
         });
@@ -80,7 +87,7 @@ const confirmation: MiddlewareWithState = (store) => {
           return;
         }
 
-        store.dispatch({
+        store.dispatch<SetLightboxImageAction>({
           type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
           payload: Math.max(state.lightboxImage - 1, 0),
         });
@@ -103,7 +110,7 @@ const confirmation: MiddlewareWithState = (store) => {
         break;
 
       case Actions.SET_LIGHTBOX_IMAGE_HASH:
-        store.dispatch({
+        store.dispatch<SetLightboxImageAction>({
           type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
           payload: getFilteredImages(state).findIndex(({ hash }) => hash === action.payload),
         });

@@ -1,8 +1,16 @@
 import { Actions } from '../actions';
 import { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { ImportFilesAction } from '../../../../types/actions/ImportActions';
+import {
+  PrinterDataReceivedAction,
+  PrinterFunctionsReceivedAction,
+  PrinterResetAction,
+  PrinterTimedOutAction,
+} from '../../../../types/actions/PrinterActions';
+import { ProgressPrinterProgressAction } from '../../../../types/actions/ProgressActions';
+import { PrinterFunction } from '../../../consts/printerFunction';
 
 const importMessage: MiddlewareWithState = (store) => {
 
@@ -37,7 +45,7 @@ const importMessage: MiddlewareWithState = (store) => {
       if (
         !heartbeatTimer ||
         JSON.stringify(commands) !== JSON.stringify(store.getState().printerFunctions)) {
-        store.dispatch({
+        store.dispatch<PrinterFunctionsReceivedAction>({
           type: Actions.PRINTER_FUNCTIONS_RECEIVED,
           payload: commands,
         });
@@ -49,7 +57,7 @@ const importMessage: MiddlewareWithState = (store) => {
       heartbeatTimer = window.setTimeout(() => {
         heartbeatTimer = null;
         remotePrinterWindow = null;
-        store.dispatch({
+        store.dispatch<PrinterTimedOutAction>({
           type: Actions.HEARTBEAT_TIMED_OUT,
         });
       }, 1500);
@@ -70,7 +78,7 @@ const importMessage: MiddlewareWithState = (store) => {
     }
 
     if (progress !== undefined) {
-      store.dispatch({
+      store.dispatch<ProgressPrinterProgressAction>({
         type: Actions.PRINTER_PROGRESS,
         payload: progress,
       });
@@ -113,25 +121,25 @@ const importMessage: MiddlewareWithState = (store) => {
           },
         });
       } else {
-        store.dispatch({
+        store.dispatch<ConfirmAskAction>({
           type: Actions.CONFIRM_ASK,
           payload: {
             message: 'No valid files received from WiFi-Printer',
-            confirm: () => {
-              store.dispatch({
+            confirm: async () => {
+              store.dispatch<ConfirmAnsweredAction>({
                 type: Actions.CONFIRM_ANSWERED,
               });
-              store.dispatch({
+              store.dispatch<PrinterResetAction>({
                 type: Actions.PRINTER_RESET,
               });
             },
           },
-        } as ConfirmAskAction);
+        });
       }
     }
 
     if (printerData) {
-      store.dispatch({
+      store.dispatch<PrinterDataReceivedAction>({
         type: Actions.PRINTER_DATA_RECEIVED,
         payload: printerData,
       });
@@ -145,7 +153,7 @@ const importMessage: MiddlewareWithState = (store) => {
     switch (action.type) {
       case Actions.REMOTE_CALL_FUNCTION: {
         const state = store.getState();
-        const params: PrinterParams | undefined = (action.payload === 'fetchImages') ?
+        const params: PrinterParams | undefined = (action.payload === PrinterFunction.FETCHIMAGES) ?
           { dumps: state.printerData?.dumps } : undefined;
 
         // obh and pako need to be loaded here, as the trigger from the

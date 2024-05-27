@@ -5,7 +5,7 @@ import getFrameGroups from '../../../../tools/getFrameGroups';
 import { State } from '../../../store/State';
 import { Frame } from '../../../../../types/Frame';
 import { FrameGroup } from '../../../../../types/FrameGroup';
-import { UpdateFrameAction } from '../../../../../types/actions/FrameActions';
+import { CancelEditFrameAction, UpdateFrameAction } from '../../../../../types/actions/FrameActions';
 
 interface UseEditFrame {
   groups: FrameGroup[],
@@ -25,9 +25,7 @@ interface UseEditFrame {
   saveFrame: () => void,
 }
 
-type NewEditFrame = Pick<Frame, 'id' | 'name'>;
-
-const useEditFrame = (frame?: Frame | NewEditFrame): UseEditFrame => {
+const useEditFrame = (frame?: Frame): UseEditFrame => {
   const updateId = frame?.id || '';
 
   const { frames, frameGroupNames } = useSelector((state: State) => ({
@@ -62,23 +60,23 @@ const useEditFrame = (frame?: Frame | NewEditFrame): UseEditFrame => {
   );
 
   const cancelEdit = () => {
-    dispatch({
+    dispatch<CancelEditFrameAction>({
       type: Actions.CANCEL_EDIT_FRAME,
     });
   };
 
   const saveFrame = () => {
-    dispatch({
+    dispatch<UpdateFrameAction>({
       type: Actions.UPDATE_FRAME,
       payload: {
         updateId,
         data: {
-          ...frame,
+          hash: frame?.hash || '',
           id: fullId,
           name: frameName,
         },
       },
-    } as UpdateFrameAction);
+    });
   };
 
   return {

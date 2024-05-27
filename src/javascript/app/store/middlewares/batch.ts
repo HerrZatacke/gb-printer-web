@@ -10,7 +10,7 @@ import {
 } from '../../../../types/actions/ImageActions';
 import { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
 import { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
-import { ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 
 const collectTags = (batchImages: Image[]): string[] => (
@@ -32,7 +32,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
     const from = Math.min(prevSelectedIndex, selectedIndex);
     const to = Math.max(prevSelectedIndex, selectedIndex);
 
-    store.dispatch({
+    store.dispatch<ImageSelectionSetAction>({
       type: Actions.IMAGE_SELECTION_SET,
       payload: images.slice(from, to + 1).map(({ hash }) => hash),
     });
@@ -51,50 +51,49 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
     if (imageSelection.length) {
       switch (action.payload as BatchActionType) {
         case BatchActionType.DELETE: {
-          store.dispatch({
+          store.dispatch<ConfirmAskAction>({
             type: Actions.CONFIRM_ASK,
             payload: {
               message: `Delete ${imageSelection.length} images?`,
-              confirm: () => {
-                store.dispatch({
+              confirm: async () => {
+                store.dispatch<DeleteImagesAction>({
                   type: Actions.DELETE_IMAGES,
                   payload: imageSelection,
-                } as DeleteImagesAction);
+                });
               },
-              deny: () => {
-                store.dispatch({
+              deny: async () => {
+                store.dispatch<ConfirmAnsweredAction>({
                   type: Actions.CONFIRM_ANSWERED,
                 });
               },
             },
-          } as ConfirmAskAction);
+          });
 
           break;
         }
 
         case BatchActionType.ANIMATE:
-          store.dispatch({
+          store.dispatch<SetVideoParamsAction>({
             type: Actions.SET_VIDEO_PARAMS,
             payload: {
               imageSelection,
             },
-          } as SetVideoParamsAction);
+          });
           break;
         case BatchActionType.DOWNLOAD:
-          store.dispatch({
+          store.dispatch<DownloadImageSelectionAction>({
             type: Actions.DOWNLOAD_SELECTION,
             payload: imageSelection,
-          } as DownloadImageSelectionAction);
+          });
           break;
         case BatchActionType.EDIT:
-          store.dispatch({
+          store.dispatch<EditImageSelectionAction>({
             type: Actions.EDIT_IMAGE_SELECTION,
             payload: {
-              hash: batchImages[0].hash,
               tags: collectTags(batchImages),
               batch: batchImages.map(({ hash }) => hash),
             },
-          } as EditImageSelectionAction);
+          });
           break;
         default:
           break;
@@ -103,7 +102,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
 
     switch (action.payload) {
       case BatchActionType.CHECKALL:
-        store.dispatch({
+        store.dispatch<ImageSelectionSetAction>({
           type: Actions.IMAGE_SELECTION_SET,
           payload: getFilteredImages(state)
             .slice(action.page * pageSize, (action.page + 1) * pageSize || undefined)
@@ -112,10 +111,10 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
         break;
 
       case BatchActionType.UNCHECKALL:
-        store.dispatch({
+        store.dispatch<ImageSelectionSetAction>({
           type: Actions.IMAGE_SELECTION_SET,
           payload: [],
-        } as ImageSelectionSetAction);
+        });
         break;
 
       default:

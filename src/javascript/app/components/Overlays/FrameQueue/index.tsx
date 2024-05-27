@@ -7,8 +7,7 @@ import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
 import { State } from '../../../store/State';
-import { AddFrameAction } from '../../../../../types/actions/FrameActions';
-import { FrameGroupNamesAction } from '../../../store/reducers/frameGroupNamesReducer';
+import { AddFrameAction, FrameGroupNamesAction } from '../../../../../types/actions/FrameActions';
 import { FrameQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
 
 const FrameQueue = () => {
@@ -31,6 +30,7 @@ const FrameQueue = () => {
     frameIndexValid,
   } = useEditFrame({
     id: '',
+    hash: frame.frameHash,
     name: frame.fileName,
   });
 

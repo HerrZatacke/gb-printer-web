@@ -10,8 +10,8 @@ export interface EnableDebugAction {
   payload: boolean,
 }
 
-export interface FramesMessageAction {
-  type: Actions.FRAMES_MESSAGE_SHOW | Actions.FRAMES_MESSAGE_HIDE
+export interface FramesMessageHideAction {
+  type: Actions.FRAMES_MESSAGE_HIDE
 }
 
 export interface HideDatesAction {
@@ -44,6 +44,18 @@ export interface SetLightboxImageAction {
   payload?: number,
 }
 
+export interface SetLightboxPrevAction {
+  type: Actions.LIGHTBOX_PREV,
+}
+
+export interface SetLightboxNextAction {
+  type: Actions.LIGHTBOX_NEXT,
+}
+
+export interface SetLightboxFullscreenAction {
+  type: Actions.LIGHTBOX_FULLSCREEN,
+}
+
 export interface PageSizeAction {
   type: Actions.SET_PAGESIZE,
   payload: number,
@@ -67,4 +79,9 @@ export interface UseSerialsAction {
 export interface UpdateWindowDimensionsAction {
   type: Actions.WINDOW_DIMENSIONS,
   payload?: WindowDimensions,
+}
+
+export interface ErrorAction {
+  type: Actions.ERROR,
+  payload: string,
 }

@@ -31,7 +31,11 @@ const rgbnImagesReducer = (
     case Actions.DELETE_IMAGES:
       return null;
     case Actions.GLOBAL_UPDATE:
-      return value && updateIfDefined<RGBNHashes>(action.payload?.rgbnImages, value);
+      if (action.payload?.rgbnImages) {
+        return value && updateIfDefined<RGBNHashes>(action.payload.rgbnImages, value);
+      }
+
+      return value;
     default:
       return value;
   }

@@ -3,6 +3,7 @@ import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
 import { Actions } from '../actions';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { Palette } from '../../../../types/Palette';
+import { PaletteSetEditAction } from '../../../../types/actions/PaletteActions';
 
 const randomColor = (max: number): string => (
   [
@@ -36,7 +37,7 @@ const dispatchSetEditPalette = (
     palettes.find(({ shortName }) => shortName === paletteShortName) || randomPalette()
   );
 
-  dispatch({
+  dispatch<PaletteSetEditAction>({
     type: Actions.SET_EDIT_PALETTE,
     payload: {
       ...editPalette,

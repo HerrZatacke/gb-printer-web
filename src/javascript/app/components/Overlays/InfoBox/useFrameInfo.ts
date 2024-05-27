@@ -1,15 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
 import { State } from '../../../store/State';
-import { FramesMessageAction } from '../../../store/reducers/framesMessageReducer';
+import { FramesMessageHideAction } from '../../../../../types/actions/GlobalActions';
 
 interface UseFrameInfo {
   message?: {
-    dismissType: string,
     headline: string,
     text: string[],
   }
-  dismiss: (type: string) => void,
+  dismiss: () => void,
 }
 
 export const useFrameInfo = (): UseFrameInfo => {
@@ -17,7 +16,6 @@ export const useFrameInfo = (): UseFrameInfo => {
   const dispatch = useDispatch();
 
   const message = framesMessage === 1 ? {
-    dismissType: Actions.FRAMES_MESSAGE_HIDE,
     headline: 'You might be temporarily missing some frames',
     text: [
       'In a recent change the pre-compiled frames have been removed from this application.',
@@ -29,10 +27,10 @@ export const useFrameInfo = (): UseFrameInfo => {
 
   return {
     message,
-    dismiss: (type: string) => {
-      dispatch({
-        type,
-      } as FramesMessageAction);
+    dismiss: () => {
+      dispatch<FramesMessageHideAction>({
+        type: Actions.FRAMES_MESSAGE_HIDE,
+      });
     },
   };
 };

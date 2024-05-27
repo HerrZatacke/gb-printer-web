@@ -43,7 +43,7 @@ import printerUrl from './reducers/printerUrlReducer';
 import printerParams from './reducers/printerParamsReducer';
 import progress, { Progress } from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
-import recentImports, { RecentImport } from './reducers/recentImportsReducer';
+import recentImports from './reducers/recentImportsReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
@@ -55,9 +55,10 @@ import useSerials from './reducers/useSerialsReducer';
 import showSerials from './reducers/showSerialsReducer';
 import trashCount, { TrashCount } from './reducers/trashCountReducer';
 import videoParams from './reducers/videoParamsReducer';
-import windowDimensions, { WindowDimensions } from './reducers/windowDimensionsReducer';
+import windowDimensions from './reducers/windowDimensionsReducer';
+import { WindowDimensions } from '../../../types/WindowDimensions';
 import { Dialog } from '../../../types/Dialog';
-import { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/actions/StorageActions';
+import { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
 import { FrameGroup } from '../../../types/FrameGroup';
 import { Frame } from '../../../types/Frame';
 import { GalleryViews } from '../../consts/GalleryViews';
@@ -69,7 +70,7 @@ import { Plugin } from '../../../types/Plugin';
 import { VideoParams } from '../../../types/VideoParams';
 import { QueueImage } from '../../../types/QueueImage';
 import { PrinterInfo } from '../../../types/Printer';
-import { PrinterFunctionName } from '../../../types/actions/PrinterActions';
+import { PrinterFunction } from '../../consts/printerFunction';
 
 export interface Reducers extends ReducersMapObject {
   activePalette: Reducer<string | undefined>,
@@ -111,7 +112,7 @@ export interface Reducers extends ReducersMapObject {
   preferredLocale: Reducer<string>,
   printerBusy: Reducer<boolean>,
   printerData: Reducer<PrinterInfo>,
-  printerFunctions: Reducer<PrinterFunctionName[]>,
+  printerFunctions: Reducer<PrinterFunction[]>,
   printerUrl: Reducer<string>,
   printerParams: Reducer<string>,
   progress: Reducer<Progress>,

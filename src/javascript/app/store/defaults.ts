@@ -1,5 +1,4 @@
-import { State } from './State';
-import { ExportableState } from '../../tools/getGetSettings/types';
+import { ExportableState, State } from './State';
 import { ExportTypes } from '../../consts/exportTypes';
 
 export interface StorePropertyDefault {

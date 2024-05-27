@@ -2,9 +2,9 @@ import React from 'react';
 import useFrames from './useFrames';
 import Frame from '../Frame';
 import Input, { InputType } from '../Input';
+import { ExportTypes } from '../../../consts/exportTypes';
 
 import './index.scss';
-import { ExportTypes } from '../../store/defaults';
 
 const Frames = () => {
 

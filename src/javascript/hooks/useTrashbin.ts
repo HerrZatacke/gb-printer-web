@@ -7,10 +7,9 @@ import { dateFormat } from '../app/defaults';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTrash';
 import { inflate } from '../tools/pack';
 import { WrappedLocalForageInstance } from '../tools/localforageInstance/createWrappedInstance';
-import { TrashShowHideAction } from '../../types/actions/TrashActions';
-import { State, TypedStore } from '../app/store/State';
+import { TrashShowHideAction, UpdateTrashcountAction } from '../../types/actions/TrashActions';
 import { reduceImagesMonochrome } from '../tools/isRGBNImage';
-import { JSONExportBinary, JSONExportState } from '../../types/Sync';
+import { JSONExportBinary, JSONExportState, State, TypedStore } from '../app/store/State';
 import { Image } from '../../types/Image';
 import { reduceItems } from '../tools/reduceArray';
 import { Frame } from '../../types/Frame';
@@ -61,10 +60,10 @@ const useTrashbin = (): UseTrashbin => {
   const dispatch = useDispatch();
 
   const showTrash = (show: boolean): void => {
-    dispatch({
+    dispatch<TrashShowHideAction>({
       type: Actions.SHOW_HIDE_TRASH,
       payload: show,
-    } as TrashShowHideAction);
+    });
   };
 
   const downloadImages = async (): Promise<void> => {
@@ -131,7 +130,7 @@ const useTrashbin = (): UseTrashbin => {
   const purgeTrash = async (): Promise<void> => {
     await cleanupStorage(store.getState());
 
-    dispatch({
+    dispatch<UpdateTrashcountAction>({
       type: Actions.UPDATE_TRASH_COUNT,
     });
 

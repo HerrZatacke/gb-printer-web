@@ -25,8 +25,12 @@ export interface DeleteFrameAction {
 }
 
 export interface EditFrameAction {
-  type: Actions.EDIT_FRAME | Actions.CANCEL_EDIT_FRAME,
-  payload: string, // frameId
+  type: Actions.EDIT_FRAME,
+  payload: string,
+}
+
+export interface CancelEditFrameAction {
+  type: Actions.CANCEL_EDIT_FRAME,
 }
 
 export interface FrameGroupNamesAction {

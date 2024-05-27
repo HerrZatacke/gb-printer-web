@@ -3,18 +3,17 @@ import { files as Files, async as Async } from 'dropbox/types/dropbox_types';
 import { EventEmitter } from 'events';
 import readFileAs, { ReadAs } from '../readFileAs';
 import cleanPath from '../cleanPath';
-import { DropBoxSettings } from '../../../types/actions/StorageActions';
-import { AddToQueueFn, JSONExportState, RepoContents, DropBoxRepoFile, RepoTasks } from '../../../types/Sync';
-
-type DBFolderAll = Files.FileMetadataReference | Files.FolderMetadataReference | Files.DeletedMetadataReference;
-export type DBFolderFile = Files.FileMetadataReference;
+import {
+  AddToQueueFn,
+  UploadDeleteResult,
+  DBFolderAll,
+  DBFolderFile,
+  DropBoxSettings,
+} from '../../../types/Sync';
+import { DropBoxRepoFile, RepoContents, RepoTasks } from '../../../types/Export';
+import { JSONExportState } from '../../app/store/State';
 
 const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
-
-interface UploadDeleteResult {
-  uploaded: Files.FileMetadata[],
-  deleted: DBFolderFile[],
-}
 
 class DropboxClient extends EventEmitter {
   private queueCallback: AddToQueueFn<DropboxResponse<unknown>>;

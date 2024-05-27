@@ -1,6 +1,6 @@
 import { load, save } from '../storage';
 import { loadFrameData, saveFrameData } from '../applyFrame/frameData';
-import { RepoContents } from '../../../types/Sync';
+import { RepoContents } from '../../../types/Export';
 
 export const saveImageFileContent = async (fileContent: string): Promise<string> => {
 

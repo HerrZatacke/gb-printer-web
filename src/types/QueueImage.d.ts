@@ -4,5 +4,5 @@ export interface QueueImage {
   width: number,
   height: number,
   fileName: string,
-  lastModified: number | null,
+  lastModified?: number,
 }

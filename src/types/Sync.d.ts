@@ -1,32 +1,17 @@
-import { Frame } from './Frame';
-import { MonochromeImage, RGBNImage } from './Image';
-import { ExportableState } from '../javascript/tools/getGetSettings/types';
+import { files as Files } from 'dropbox/types/dropbox_types';
 
-export interface JSONExportState {
-  state: ExportableState,
+export type DBFolderAll = Files.FileMetadataReference | Files.FolderMetadataReference | Files.DeletedMetadataReference;
+export type DBFolderFile = Files.FileMetadataReference;
+
+export interface UploadDeleteResult {
+  uploaded: Files.FileMetadata[],
+  deleted: DBFolderFile[],
 }
 
-export interface JSONExportBinary {
-  [k: string]: string,
-}
-
-export type JSONExport = JSONExportState & JSONExportBinary;
-
-export interface RepoFile {
-  hash: string,
-  name: string,
-  path: string,
-  getFileContent: () => Promise<string>,
-}
-
-export interface DropBoxRepoFile extends RepoFile {
-  contentHash: string,
-}
-
-export interface RepoContents {
-  images: RepoFile[],
-  frames: RepoFile[],
-  settings: JSONExportState
+export interface GitUploadResult {
+  uploaded?: string[],
+  deleted?: string[],
+  repo?: string,
 }
 
 export interface UploadFile {
@@ -45,12 +30,6 @@ export interface DownloadInfo {
   title: string,
 }
 
-export interface SyncFile extends Partial<MonochromeImage & RGBNImage & Frame> {
-  hash: string,
-  files: DownloadInfo[],
-  inRepo: RepoFile[],
-}
-
 export interface RemoteFiles {
   toUpload: UploadFile[],
   toKeep: KeepFile[],
@@ -60,7 +39,35 @@ export type ExportStats = Record<string, number>;
 
 export type AddToQueueFn<T> = (what: string, throttle: number, fn: () => Promise<T>, isSilent?: boolean) => Promise<T>
 
-export interface RepoTasks {
-  upload: UploadFile[],
-  del: RepoFile[],
+export interface GetSettingsOptions {
+  lastUpdateUTC?: number,
+  selectedFrameGroup?: string,
+}
+
+export interface RecentImport {
+  hash: string,
+  timestamp: number,
+}
+
+export interface DropBoxSettings {
+  use?: boolean,
+  refreshToken?: string,
+  accessToken?: string,
+  expiresAt?: number,
+  path?: string,
+  autoDropboxSync?: boolean,
+}
+
+export interface GitStorageSettings {
+  use?: boolean,
+  owner?: string,
+  repo?: string,
+  branch?: string,
+  token?: string,
+  throttle?: number,
+}
+
+export interface SyncLastUpdate {
+  dropbox: number,
+  local: number,
 }

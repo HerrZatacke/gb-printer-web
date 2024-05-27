@@ -11,6 +11,7 @@ import { PaletteSetActiveAction } from '../../../../../types/actions/PaletteActi
 import { ImportItem } from '../../../../../types/ImportItem';
 import { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import { TagChange } from '../../../../tools/applyTagChanges';
+import { AddImagesAction } from '../../../../../types/actions/ImageActions';
 
 interface UseRunImport {
   importQueue: ImportItem[],
@@ -63,7 +64,7 @@ const useRunImport = (): UseRunImport => {
       );
     }));
 
-    dispatch({
+    dispatch<AddImagesAction>({
       type: Actions.ADD_IMAGES,
       payload: savedImages,
     });
@@ -79,15 +80,15 @@ const useRunImport = (): UseRunImport => {
     setFrame,
     runImport,
     cancelImport: () => {
-      dispatch({
+      dispatch<ImportQueueCancelAction>({
         type: Actions.IMPORTQUEUE_CANCEL,
-      } as ImportQueueCancelAction);
+      });
     },
     setPalette: (payload: string) => {
-      dispatch({
+      dispatch<PaletteSetActiveAction>({
         type: Actions.PALETTE_SET_ACTIVE,
         payload,
-      } as PaletteSetActiveAction);
+      });
     },
   };
 };

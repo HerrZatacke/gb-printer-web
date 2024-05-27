@@ -5,7 +5,7 @@ import SVG from '../SVG';
 import './index.scss';
 import { Actions } from '../../store/actions';
 import { State } from '../../store/State';
-import { PluginImageBatchAction, PluginImageSingleAction } from '../../store/middlewares/plugins';
+import { PluginImageBatchAction, PluginImageSingleAction } from '../../../../types/actions/PluginActions';
 
 interface Props {
   children: React.ReactNode,
@@ -19,20 +19,20 @@ const PluginSelect = ({ children, pluginsActive, hash }: Props) => {
 
   const dispatchToPlugin = (url: string) => {
     if (hash) {
-      dispatch({
+      dispatch<PluginImageSingleAction>({
         type: Actions.PLUGIN_IMAGE,
         payload: {
           url,
           hash,
         },
-      } as PluginImageSingleAction);
+      });
     } else {
-      dispatch({
+      dispatch<PluginImageBatchAction>({
         type: Actions.PLUGIN_IMAGES,
         payload: {
           url,
         },
-      } as PluginImageBatchAction);
+      });
     }
   };
 

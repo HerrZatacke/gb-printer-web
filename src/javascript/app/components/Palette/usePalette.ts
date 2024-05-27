@@ -2,11 +2,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
 import { State } from '../../store/State';
 import {
+  PaletteCloneAction,
   PaletteDeleteAction,
   PaletteEditAction,
   PaletteSetActiveAction,
 } from '../../../../types/actions/PaletteActions';
-import { ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 
 interface UsePalette {
   isActive: boolean
@@ -23,38 +24,38 @@ export const usePalette = (shortName: string, name: string): UsePalette => {
   return {
     isActive,
     setActive: () => {
-      dispatch({
+      dispatch<PaletteSetActiveAction>({
         type: Actions.PALETTE_SET_ACTIVE,
         payload: shortName,
-      } as PaletteSetActiveAction);
+      });
     },
     deletePalette: () => {
-      dispatch({
+      dispatch<ConfirmAskAction>({
         type: Actions.CONFIRM_ASK,
         payload: {
           message: `Delete palette "${name || 'no name'}"?`,
-          confirm: () => {
-            dispatch({
+          confirm: async () => {
+            dispatch<PaletteDeleteAction>({
               type: Actions.PALETTE_DELETE,
               payload: { shortName },
-            } as PaletteDeleteAction);
+            });
           },
-          deny: () => {
-            dispatch({
+          deny: async () => {
+            dispatch<ConfirmAnsweredAction>({
               type: Actions.CONFIRM_ANSWERED,
             });
           },
         },
-      } as ConfirmAskAction);
+      });
     },
     editPalette: () => {
-      dispatch({
+      dispatch<PaletteEditAction>({
         type: Actions.PALETTE_EDIT,
         payload: shortName,
-      } as PaletteEditAction);
+      });
     },
     clonePalette: () => {
-      dispatch({
+      dispatch<PaletteCloneAction>({
         type: Actions.PALETTE_CLONE,
         payload: shortName,
       });

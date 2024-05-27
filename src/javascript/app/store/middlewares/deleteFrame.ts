@@ -1,10 +1,11 @@
 import { Actions } from '../actions';
 import { getTrashFrames } from '../../../tools/getTrash';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { TrashCountFramesAction } from '../../../../types/actions/TrashActions';
 
 const deleteImage: MiddlewareWithState = (store) => {
   const check = async () => {
-    store.dispatch({
+    store.dispatch<TrashCountFramesAction>({
       type: Actions.SET_TRASH_COUNT_FRAMES,
       payload: (await getTrashFrames(store.getState().frames)).length,
     });

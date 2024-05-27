@@ -1,7 +1,8 @@
 import { ExportFrameMode, RGBNTiles } from 'gb-image-decoder';
 import { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 import { isRGBNImage, reduceImagesMonochrome } from '../isRGBNImage';
-import { AddToQueueFn, RepoContents, RepoFile, SyncFile } from '../../../types/Sync';
+import { AddToQueueFn } from '../../../types/Sync';
+import { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
 import getImagePalette from '../getImagePalette';
 import { State } from '../../app/store/State';
 import { loadImageTiles as getLoadImageTiles } from '../loadImageTiles';

@@ -1,9 +1,9 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
+import { DropBoxSettings } from '../../../../types/Sync';
 import {
   DropboxLogoutAction,
   DropboxSetStorageAction,
-  DropBoxSettings,
 } from '../../../../types/actions/StorageActions';
 
 const dropboxStorageReducer = (

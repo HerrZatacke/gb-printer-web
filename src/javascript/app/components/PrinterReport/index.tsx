@@ -1,11 +1,11 @@
 import React from 'react';
 import filesize from 'filesize';
 import { usePrinter } from './usePrinter';
-import { PrinterFunctionName } from '../../../../types/actions/PrinterActions';
+import { PrinterFunction } from '../../../consts/printerFunction';
 
 import './index.scss';
 
-const functionLabels: Record<PrinterFunctionName, string> = {
+const functionLabels: Record<PrinterFunction, string> = {
   testFile: 'Print test image',
   checkPrinter: 'Check Printer',
   fetchImages: '',
@@ -13,8 +13,8 @@ const functionLabels: Record<PrinterFunctionName, string> = {
   tear: 'Tear',
 };
 
-const getFetchImagesLabel = (printerFunctions: PrinterFunctionName[], dumpsLength: number): string => {
-  if (printerFunctions.includes('tear')) {
+const getFetchImagesLabel = (printerFunctions: PrinterFunction[], dumpsLength: number): string => {
+  if (printerFunctions.includes(PrinterFunction.TEAR)) {
     return 'Fetch images';
   }
 
@@ -45,16 +45,16 @@ const PrinterReport = () => {
             disabled={
               printerBusy ||
               (
-                ['fetchImages', 'clearPrinter', 'tear'].includes(name) &&
+                [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER, PrinterFunction.TEAR].includes(name) &&
                 !printerData?.dumps?.length
               )
             }
             onClick={() => callRemoteFunction(name)}
           >
             {
-              name === 'fetchImages' ?
+              name === PrinterFunction.FETCHIMAGES ?
                 getFetchImagesLabel(printerFunctions, printerData?.dumps?.length) :
-                functionLabels[name]
+                functionLabels[name as PrinterFunction]
             }
           </button>
         ))}

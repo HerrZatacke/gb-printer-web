@@ -1,7 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../../store/actions';
 import { State } from '../../../../store/State';
-import { DropBoxSettings } from '../../../../../../types/actions/StorageActions';
+import {
+  DropboxLogoutAction,
+  DropboxSetStorageAction,
+  DropboxStartAuthAction,
+} from '../../../../../../types/actions/StorageActions';
+import { DropBoxSettings } from '../../../../../../types/Sync';
 
 interface UseDropboxSettings {
   use: boolean,
@@ -26,18 +31,18 @@ export const useDropboxSettings = (): UseDropboxSettings => {
   return {
     ...dbSettings,
     logout: () => {
-      dispatch({
+      dispatch<DropboxLogoutAction>({
         type: Actions.DROPBOX_LOGOUT,
       });
     },
     setDropboxStorage: (dropboxStorage: DropBoxSettings) => {
-      dispatch({
+      dispatch<DropboxSetStorageAction>({
         type: Actions.SET_DROPBOX_STORAGE,
         payload: dropboxStorage,
       });
     },
     startAuth: () => {
-      dispatch({
+      dispatch<DropboxStartAuthAction>({
         type: Actions.DROPBOX_START_AUTH,
       });
     },

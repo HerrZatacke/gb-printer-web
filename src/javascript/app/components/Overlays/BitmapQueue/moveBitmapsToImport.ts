@@ -5,6 +5,7 @@ import { compressAndHash } from '../../../../tools/storage';
 import { compressAndHashFrame } from '../../../../tools/applyFrame/frameData';
 import { QueueImage } from '../../../../../types/QueueImage';
 import { ImportQueueAddAction } from '../../../../../types/actions/QueueActions';
+import { randomId } from '../../../../tools/randomId';
 
 export interface DispatchBitmapsToImportOptions {
   bitmapQueue: QueueImage[],
@@ -88,18 +89,17 @@ const moveBitmapsToImport = (dispatch: Dispatch<AnyAction>): DispatchBitmapsToIm
     const { dataHash: imageHash } = await compressAndHash(tiles);
     const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
-    dispatch({
+    dispatch<ImportQueueAddAction>({
       type: Actions.IMPORTQUEUE_ADD,
       payload: {
         fileName,
         imageHash,
         frameHash,
         tiles,
-        test: 2,
         lastModified,
-        tempId: Math.random().toString(16).split('.').pop(),
+        tempId: randomId(),
       },
-    } as ImportQueueAddAction);
+    });
   });
 };
 

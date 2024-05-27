@@ -1,6 +1,7 @@
 import getHandleFileImport from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { DragoverAction, ErrorAction } from '../../../../types/actions/GlobalActions';
 
 const fileDrop: MiddlewareWithState = (store) => {
   const root = document.querySelector('#app');
@@ -17,7 +18,7 @@ const fileDrop: MiddlewareWithState = (store) => {
     ev.preventDefault();
 
     if (!dragging) {
-      store.dispatch({
+      store.dispatch<DragoverAction>({
         type: Actions.IMPORT_DRAGOVER_START,
       });
     }
@@ -28,7 +29,7 @@ const fileDrop: MiddlewareWithState = (store) => {
 
     dragoverTimeout = window.setTimeout(() => {
       dragging = false;
-      store.dispatch({
+      store.dispatch<DragoverAction>({
         type: Actions.IMPORT_DRAGOVER_END,
       });
     }, 250);
@@ -57,7 +58,7 @@ const fileDrop: MiddlewareWithState = (store) => {
     try {
       await handleFileImport(files);
     } catch (error) {
-      store.dispatch({
+      store.dispatch<ErrorAction>({
         type: Actions.ERROR,
         payload: (error as Error).message,
       });

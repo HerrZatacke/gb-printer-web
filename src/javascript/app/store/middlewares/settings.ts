@@ -6,9 +6,9 @@ import mergeStates from '../../../tools/mergeStates';
 import { localforageFrames, localforageImages } from '../../../tools/localforageInstance';
 import { Actions } from '../actions';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { ExportTypes } from '../defaults';
-import { State } from '../State';
-import { JSONExport } from '../../../../types/Sync';
+import { JSONExport, State } from '../State';
+import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { ExportTypes } from '../../../consts/exportTypes';
 
 const mergeSettings = (
   dispatch: Dispatch<AnyAction>,
@@ -32,7 +32,7 @@ const mergeSettings = (
 
   cleanState(mergeStates(currentState, newSettings.state || {}, mergeImagesFrames))
     .then((cleanedState) => {
-      dispatch({
+      dispatch<GlobalUpdateAction>({
         type: Actions.GLOBAL_UPDATE,
         payload: cleanedState,
       });

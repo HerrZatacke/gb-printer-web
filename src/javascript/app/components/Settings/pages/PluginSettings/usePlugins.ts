@@ -20,21 +20,21 @@ export const usePlugins = (): UsePlugins => {
   const dispatch = useDispatch();
 
   const pluginAdd = (url: string) => {
-    dispatch({
+    dispatch<PluginAddAction>({
       type: Actions.PLUGIN_ADD,
       payload: url,
-    } as PluginAddAction);
+    });
   };
 
   const pluginRemove = (url: string) => {
-    dispatch({
+    dispatch<PluginRemoveAction>({
       type: Actions.PLUGIN_REMOVE,
       payload: url,
-    } as PluginRemoveAction);
+    });
   };
 
   const pluginUpdateConfig = (url: string, key: string, value: string | number) => {
-    dispatch({
+    dispatch<PluginUpdateConfigAction>({
       type: Actions.PLUGIN_UPDATE_CONFIG,
       payload: {
         url,
@@ -42,7 +42,7 @@ export const usePlugins = (): UsePlugins => {
           [key]: value,
         },
       },
-    } as PluginUpdateConfigAction);
+    });
   };
 
   return {

@@ -44,10 +44,10 @@ export const useImageRender = ({
   const loadImageTiles = useCallback(
     (imgHash: string, noDummy?: boolean, overrideFrame?: string) => {
       const recoverFn = () => {
-        dispatch({
+        dispatch<TryRecoverImageAction>({
           type: Actions.TRY_RECOVER_IMAGE_DATA,
           payload: imgHash,
-        } as TryRecoverImageAction);
+        });
       };
 
       const imageLoader = getLoadImageTiles({ images: allImages, frames: allFrames }, recoverFn);

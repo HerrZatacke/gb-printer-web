@@ -3,8 +3,8 @@ import { Actions } from '../actions';
 import {
   DropboxLastUpdateAction,
   DropboxSettingsImportAction,
-  SyncLastUpdate,
 } from '../../../../types/actions/StorageActions';
+import { SyncLastUpdate } from '../../../../types/Sync';
 import { LogStorageSyncDoneAction } from '../../../../types/actions/LogActions';
 import {
   AddImagesAction,

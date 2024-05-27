@@ -8,6 +8,10 @@ import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
 import { FileMetaData, ImportSavFn, ImportSavParams, WithTiles } from './types';
+import { ImportQueueAddMultiAction } from '../../../types/actions/QueueActions';
+import { reduceItems } from '../reduceArray';
+import { ImportItem } from '../../../types/ImportItem';
+import { randomId } from '../randomId';
 
 const sortByAlbumIndex = sortBy<(FileMetaData & WithTiles)>('albumIndex');
 
@@ -78,7 +82,7 @@ const getImportSav = ({
     let displayIndex = 0;
 
     const imageData = await Promise.all(sortedImages.map(async ({ albumIndex, tiles, meta }) => (
-      queue.add(async () => {
+      queue.add(async (): Promise<ImportItem | undefined> => {
         let indexText;
         switch (albumIndex) {
           case 64:
@@ -86,7 +90,7 @@ const getImportSav = ({
             break;
           case 255:
             if (!importDeleted) {
-              return null;
+              return undefined;
             }
 
             indexText = '[deleted]';
@@ -111,14 +115,14 @@ const getImportSav = ({
           tiles,
           lastModified,
           meta,
-          tempId: Math.random().toString(16).split('.').pop(),
+          tempId: randomId(),
         };
       })
     )));
 
-    dispatch({
+    dispatch<ImportQueueAddMultiAction>({
       type: Actions.IMPORTQUEUE_ADD_MULTI,
-      payload: imageData.filter(Boolean),
+      payload: imageData.reduce(reduceItems<ImportItem>, []),
     });
 
     return true;

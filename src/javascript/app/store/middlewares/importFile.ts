@@ -1,6 +1,7 @@
 import getHandleFileImport, { HandeFileImportFn } from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { ErrorAction } from '../../../../types/actions/GlobalActions';
 
 const importFile: MiddlewareWithState = (store) => {
   const handleFileImport: HandeFileImportFn = getHandleFileImport(store);
@@ -14,7 +15,7 @@ const importFile: MiddlewareWithState = (store) => {
             fromPrinter: action.payload.fromPrinter || false,
           });
         } catch (error) {
-          store.dispatch({
+          store.dispatch<ErrorAction>({
             type: Actions.ERROR,
             payload: (error as Error).message,
           });

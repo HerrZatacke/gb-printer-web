@@ -16,6 +16,7 @@ import {
   RemotePrinterEvent,
   RemotePrinterParams,
 } from '../../types/Printer';
+import { PrinterFunction } from '../consts/printerFunction';
 
 const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: RemotePrinterParams) => {
   const commands: PrinterCommand[] = [];
@@ -24,23 +25,23 @@ const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: Re
     case 'webpack-dev':
       commands.push(
         {
-          name: 'testFile',
+          name: PrinterFunction.TESTFILE,
           fn: testFile,
         },
         {
-          name: 'checkPrinter',
+          name: PrinterFunction.CHECKPRINTER,
           fn: checkPrinter,
         },
         {
-          name: 'fetchImages',
+          name: PrinterFunction.FETCHIMAGES,
           fn: fetchImages,
         },
         {
-          name: 'clearPrinter',
+          name: PrinterFunction.CLEARPRINTER,
           fn: clearPrinter,
         },
         {
-          name: 'tear',
+          name: PrinterFunction.TEAR,
           fn: tear,
         },
       );
@@ -49,15 +50,15 @@ const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: Re
     case 'esp8266':
       commands.push(
         {
-          name: 'checkPrinter',
+          name: PrinterFunction.CHECKPRINTER,
           fn: checkPrinter,
         },
         {
-          name: 'fetchImages',
+          name: PrinterFunction.FETCHIMAGES,
           fn: fetchImages,
         },
         {
-          name: 'clearPrinter',
+          name: PrinterFunction.CLEARPRINTER,
           fn: clearPrinter,
         },
       );
@@ -66,15 +67,15 @@ const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: Re
     case 'pico-gb':
       commands.push(
         {
-          name: 'checkPrinter',
+          name: PrinterFunction.CHECKPRINTER,
           fn: checkPrinter,
         },
         {
-          name: 'fetchImages',
+          name: PrinterFunction.FETCHIMAGES,
           fn: fetchImages,
         },
         {
-          name: 'tear',
+          name: PrinterFunction.TEAR,
           fn: tear,
         },
       );
@@ -98,21 +99,21 @@ const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: Re
     let fromRemotePrinter: CheckPrinterStatus | PrinterTestFile | PrinterImages | null;
 
     switch (printerCommand.command) {
-      case 'fetchImages': {
+      case PrinterFunction.FETCHIMAGES: {
         const commandFn = commands.find(({ name }) => name === printerCommand.command) as PrinterFetchImagesCommand;
         fromRemotePrinter = await commandFn.fn(targetWindow, printerCommand.params as PrinterParams, remoteParams);
         break;
       }
 
-      case 'tear':
-      case 'clearPrinter':
-      case 'checkPrinter': {
+      case PrinterFunction.TEAR:
+      case PrinterFunction.CLEARPRINTER:
+      case PrinterFunction.CHECKPRINTER: {
         const commandFn = commands.find(({ name }) => name === printerCommand.command) as PrinterStatusCommand;
         fromRemotePrinter = await commandFn.fn();
         break;
       }
 
-      case 'testFile': {
+      case PrinterFunction.TESTFILE: {
         const commandFn = commands.find(({ name }) => name === printerCommand.command) as PrinterTestfileCommand;
         fromRemotePrinter = await commandFn.fn();
         break;

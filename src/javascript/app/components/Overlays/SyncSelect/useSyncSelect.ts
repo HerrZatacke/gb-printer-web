@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
 import { State } from '../../../store/State';
-import { SyncLastUpdate } from '../../../../../types/actions/StorageActions';
+import { SyncLastUpdate } from '../../../../../types/Sync';
 import { StorageSyncCancelAction, StorageSyncStartAction } from '../../../../../types/actions/LogActions';
 
 
@@ -39,18 +39,18 @@ export const useSyncSelect = (): UseSyncSelect => {
   return {
     ...data,
     startSync: (storageType: string, direction: string) => {
-      dispatch({
+      dispatch<StorageSyncStartAction>({
         type: Actions.STORAGE_SYNC_START,
         payload: {
           storageType,
           direction,
         },
-      } as StorageSyncStartAction);
+      });
     },
     cancelSync: () => {
-      dispatch({
+      dispatch<StorageSyncCancelAction>({
         type: Actions.STORAGE_SYNC_CANCEL,
-      } as StorageSyncCancelAction);
+      });
     },
   };
 };

@@ -1,7 +1,7 @@
 import readFileAs, { ReadAs } from '../readFileAs';
 import { Actions } from '../../app/store/actions';
-import { TypedStore } from '../../app/store/State';
-import { JSONExportState } from '../../../types/Sync';
+import { JSONExportState, TypedStore } from '../../app/store/State';
+import { ImportJSONAction } from '../../../types/actions/StorageActions';
 
 const getImportJSON = ({ dispatch }: TypedStore) => async (file: File) => {
   const data = await readFileAs(file, ReadAs.TEXT);
@@ -17,7 +17,7 @@ const getImportJSON = ({ dispatch }: TypedStore) => async (file: File) => {
     throw new Error('Not a settings .json file');
   }
 
-  dispatch({
+  dispatch<ImportJSONAction>({
     type: Actions.JSON_IMPORT,
     payload: settingsDump,
   });

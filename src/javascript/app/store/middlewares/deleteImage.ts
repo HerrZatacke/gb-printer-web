@@ -2,10 +2,11 @@ import { Actions } from '../actions';
 import { getTrashImages } from '../../../tools/getTrash';
 import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import { MonochromeImage } from '../../../../types/Image';
+import { TrashCountImagesAction } from '../../../../types/actions/TrashActions';
 
 const deleteImage: MiddlewareWithState = (store) => {
   const check = async () => {
-    store.dispatch({
+    store.dispatch<TrashCountImagesAction>({
       type: Actions.SET_TRASH_COUNT_IMAGES,
       payload: (await getTrashImages(store.getState().images as MonochromeImage[])).length,
     });

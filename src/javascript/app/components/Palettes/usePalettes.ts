@@ -17,10 +17,10 @@ export const usePalettes = (): UsePalettes => {
   return {
     palettes,
     newPalette: () => {
-      dispatch({
+      dispatch<PaletteEditAction>({
         type: Actions.PALETTE_EDIT,
         payload: NEW_PALETTE_SHORT,
-      } as PaletteEditAction);
+      });
     },
   };
 };

@@ -12,7 +12,7 @@ const InfoBox = () => {
     message ? (
       <Lightbox
         className="info-box"
-        confirm={() => dismiss(message.dismissType)}
+        confirm={() => dismiss()}
         header={message.headline}
       >
         <div className="info-box__message">

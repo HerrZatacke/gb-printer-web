@@ -17,50 +17,43 @@ export interface DialogOption {
   selected?: boolean,
 }
 
-export interface DialogQuestionBase {
+export interface DialogQuestion {
   type: DialoqQuestionType,
   label: string,
   key: string,
 }
 
-export interface DialogQuestionText extends DialogQuestionBase {
+export interface DialogQuestionText extends DialogQuestion {
   type: DialoqQuestionType.TEXT,
   disabled?: boolean,
 }
 
-export interface DialogQuestionNumber extends DialogQuestionBase {
+export interface DialogQuestionNumber extends DialogQuestion {
   type: DialoqQuestionType.NUMBER,
   min: number,
   max: number,
   disabled?: boolean,
 }
 
-export interface DialogQuestionSelect extends DialogQuestionBase {
+export interface DialogQuestionSelect extends DialogQuestion {
   type: DialoqQuestionType.SELECT,
   options: DialogOption[],
   disabled?: boolean,
 }
 
-export interface DialogQuestionCheckbox extends DialogQuestionBase {
+export interface DialogQuestionCheckbox extends DialogQuestion {
   type: DialoqQuestionType.CHECKBOX,
   disabled?: boolean,
 }
 
-export interface DialogQuestionInfo extends DialogQuestionBase {
+export interface DialogQuestionInfo extends DialogQuestion {
   type: DialoqQuestionType.INFO,
   themes: InfoTextTheme[]
 }
 
-export type DialogQuestion =
-  DialogQuestionCheckbox |
-  DialogQuestionText |
-  DialogQuestionSelect |
-  DialogQuestionInfo |
-  DialogQuestionNumber;
-
 export interface Dialog {
   message: string,
-  questions?: (values?: DialogResult) => DialogQuestion[],
-  confirm: () => Promise<void>,
-  deny: () => Promise<void>,
+  questions?: (values: DialogResult) => DialogQuestion[],
+  confirm: (values: DialogResult) => Promise<void>,
+  deny?: () => Promise<void>,
 }

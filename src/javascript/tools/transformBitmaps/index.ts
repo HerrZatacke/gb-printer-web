@@ -19,10 +19,10 @@ const getTransformBitmaps = ({ dispatch }: TypedStore) => {
         contrastBaseValues: [0x00, 0x55, 0xAA, 0xFF],
       });
     } else {
-      dispatch({
+      dispatch<BitmapQueueAddAction>({
         type: Actions.BITMAPQUEUE_ADD,
         payload: image,
-      } as BitmapQueueAddAction);
+      });
     }
 
     return true;

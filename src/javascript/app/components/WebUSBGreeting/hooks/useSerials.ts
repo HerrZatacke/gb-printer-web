@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
 import { State } from '../../../store/State';
-import { UseSerialsAction } from '../../../store/reducers/useSerialsReducer';
+import { UseSerialsAction } from '../../../../../types/actions/GlobalActions';
 
 export interface UseSerials {
   enabled: boolean,
@@ -13,10 +13,10 @@ const useSerials = (): UseSerials => {
   const dispatch = useDispatch();
 
   const enableSerials = (enable: boolean) => {
-    dispatch({
+    dispatch<UseSerialsAction>({
       type: Actions.USE_SERIALS,
       payload: enable,
-    } as UseSerialsAction);
+    });
   };
 
   return {

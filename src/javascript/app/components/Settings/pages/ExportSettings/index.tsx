@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import useStoragePersist from './useStoragePersist';
 import useHashCleanup from '../../../../../tools/hashCleanup';
 import { Actions } from '../../../../store/actions';
-import { ExportJSONAction, ExportTypes } from '../../../../store/defaults';
+import { ExportJSONAction } from '../../../../../../types/actions/StorageActions';
+import { ExportTypes } from '../../../../../consts/exportTypes';
 
 const ExportSettings = () => {
   const dispatch = useDispatch();

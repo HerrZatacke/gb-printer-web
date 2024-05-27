@@ -16,6 +16,8 @@ import { VideoParams } from '../../../../types/VideoParams';
 import { Palette } from '../../../../types/Palette';
 import { State } from '../State';
 import unique from '../../../tools/unique';
+import { ProgressCreateGifAction } from '../../../../types/actions/ProgressActions';
+import { ErrorAction } from '../../../../types/actions/GlobalActions';
 
 interface GifFrameData {
   palette: number[],
@@ -60,7 +62,7 @@ const getAddImages = (
     }
 
     try {
-      dispatch({
+      dispatch<ProgressCreateGifAction>({
         type: Actions.CREATE_GIF_PROGRESS,
         payload: (index + 1) / total,
       });
@@ -173,12 +175,12 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
   if (unique(
     canvases.map((canvas) => (`${canvas.width}*${canvas.height}`)),
   ).length !== 1) {
-    dispatch({
+    dispatch<ProgressCreateGifAction>({
       type: Actions.CREATE_GIF_PROGRESS,
       payload: 0,
     });
 
-    dispatch({
+    dispatch<ErrorAction>({
       type: Actions.ERROR,
       payload: 'All images need to have same dimensions',
     });
@@ -238,7 +240,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
 
   saveAs(file, `${gifFileName}.gif`);
 
-  dispatch({
+  dispatch<ProgressCreateGifAction>({
     type: Actions.CREATE_GIF_PROGRESS,
     payload: 0,
   });

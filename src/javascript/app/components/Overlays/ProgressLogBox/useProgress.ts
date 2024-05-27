@@ -36,9 +36,9 @@ export const useProgress = (): UseProgress => {
   return {
     ...progressState,
     confirm: () => {
-      dispatch({
+      dispatch<LogClearAction>({
         type: Actions.LOG_CLEAR,
-      } as LogClearAction);
+      });
     },
   };
 };

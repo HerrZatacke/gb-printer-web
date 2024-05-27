@@ -1,11 +1,12 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { FramesMessageAction } from '../../../../types/actions/GlobalActions';
+import { FramesMessageHideAction } from '../../../../types/actions/GlobalActions';
 
-const framesMessageReducer = (framesMessage = 0, action: FramesMessageAction): number => {
+const framesMessageReducer = (framesMessage = 0, action: FramesMessageHideAction): number => {
   switch (action.type) {
-    case Actions.FRAMES_MESSAGE_SHOW:
-      return 1;
+    // value 1 is being set by cleanState
+    // case Actions.FRAMES_MESSAGE_SHOW:
+    //   return 1;
     case Actions.FRAMES_MESSAGE_HIDE:
       return 2;
     default:

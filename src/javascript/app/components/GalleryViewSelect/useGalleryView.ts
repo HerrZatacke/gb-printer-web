@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
 import { State } from '../../store/State';
 import { GalleryViews } from '../../../consts/GalleryViews';
+import { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
 
 interface UseGalleryView {
   currentView: GalleryViews,
@@ -13,7 +14,7 @@ export const useGalleryView = (): UseGalleryView => {
   const dispatch = useDispatch();
 
   const updateView = (view: GalleryViews) => {
-    dispatch({
+    dispatch<GalleryViewAction>({
       type: Actions.SET_CURRENT_GALLERY_VIEW,
       payload: view,
     });

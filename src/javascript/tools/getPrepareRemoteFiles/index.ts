@@ -1,7 +1,8 @@
 import getGetSettings from '../getGetSettings';
 import { TypedStore } from '../../app/store/State';
-import { ExportStats, KeepFile, RemoteFiles, SyncFile, UploadFile } from '../../../types/Sync';
-import { ExportTypes } from '../../app/store/defaults';
+import { ExportStats, KeepFile, RemoteFiles, UploadFile } from '../../../types/Sync';
+import { SyncFile } from '../../../types/Export';
+import { ExportTypes } from '../../consts/exportTypes';
 
 type PrepareRemoteFilesFn = (fileCollection: SyncFile[], lastUpdateUTC: number) => Promise<RemoteFiles>;
 

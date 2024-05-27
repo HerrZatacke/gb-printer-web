@@ -1,4 +1,5 @@
-import { KeepFile, RepoContents, RepoTasks, UploadFile } from '../../../types/Sync';
+import { KeepFile, UploadFile } from '../../../types/Sync';
+import { RepoContents, RepoTasks } from '../../../types/Export';
 
 const filterDeleteNew = (
   { images, frames }: RepoContents,

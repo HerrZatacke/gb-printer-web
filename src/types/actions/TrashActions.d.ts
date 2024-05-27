@@ -5,6 +5,10 @@ export interface TrashShowHideAction {
   payload?: boolean,
 }
 
+export interface UpdateTrashcountAction {
+  type: Actions.UPDATE_TRASH_COUNT,
+}
+
 export interface TrashCountFramesAction {
   type: Actions.SET_TRASH_COUNT_FRAMES,
   payload: number,

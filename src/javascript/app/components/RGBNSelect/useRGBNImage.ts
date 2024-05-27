@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
 import { State } from '../../store/State';
-import { UpdateRGBNPartAction } from '../../store/reducers/rgbnImagesReducer';
+import { UpdateRGBNPartAction } from '../../../../types/actions/ImageActions';
 import { RGBNHashes } from '../../../../types/Image';
 
 interface UseRGBNImage {
@@ -22,12 +22,12 @@ export const useRGBNImage = (hash: string): UseRGBNImage => {
     isB: rgbnImages?.b === hash,
     isN: rgbnImages?.n === hash,
     updateRGBN: (part: keyof RGBNHashes, checked: boolean) => {
-      dispatch({
+      dispatch<UpdateRGBNPartAction>({
         type: Actions.UPDATE_RGBN_PART,
         payload: {
           [part]: checked ? hash : '',
         },
-      } as UpdateRGBNPartAction);
+      });
     },
   };
 };

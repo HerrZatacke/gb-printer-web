@@ -4,6 +4,8 @@ import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
 import { TypedStore } from '../../app/store/State';
+import { ImportQueueAddAction } from '../../../types/actions/QueueActions';
+import { randomId } from '../randomId';
 
 const transformReduced = ({ dispatch }: TypedStore) => async (file: File): Promise<boolean> => {
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
@@ -16,15 +18,15 @@ const transformReduced = ({ dispatch }: TypedStore) => async (file: File): Promi
 
     const indexCount = result.length < 2 ? '' : ` (${index + 1})`;
 
-    dispatch({
+    dispatch<ImportQueueAddAction>({
       type: Actions.IMPORTQUEUE_ADD,
       payload: {
         fileName: `${file.name}${indexCount}`,
         imageHash,
         frameHash,
         tiles,
-        lastModified: file.lastModified ? (file.lastModified + index) : null,
-        tempId: Math.random().toString(16).split('.').pop(),
+        lastModified: file.lastModified ? (file.lastModified + index) : undefined,
+        tempId: randomId(),
       },
     });
 

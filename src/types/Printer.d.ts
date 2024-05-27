@@ -1,3 +1,5 @@
+import { PrinterFunction } from '../javascript/consts/printerFunction';
+
 export interface BlobResponse {
   ok: boolean // Sent by fetchImages,
   blob?: Blob // Sent by fetchImages,
@@ -35,7 +37,7 @@ export interface PrinterImages {
 
 export type FromPrinterEvent = Partial<CheckPrinterStatus & PrinterTestFile & PrinterImages & {
   progress: number,
-  commands: string[],
+  commands: PrinterFunction[],
   height: number,
   blob: Blob // fallback for printers with web-app version < 1.15.5 to display some "fake" progress (Deprecated)
 }>
@@ -71,17 +73,17 @@ export interface RemoteEnv {
 }
 
 export interface PrinterStatusCommand {
-  name: 'tear' | 'clearPrinter' | 'checkPrinter',
+  name: PrinterFunction.TEAR | PrinterFunction.CLEARPRINTER | PrinterFunction.CHECKPRINTER,
   fn: () => Promise<CheckPrinterStatus>,
 }
 
 export interface PrinterTestfileCommand {
-  name: 'testFile',
+  name: PrinterFunction.TESTFILE,
   fn: () => Promise<PrinterTestFile>,
 }
 
 export interface PrinterFetchImagesCommand {
-  name: 'fetchImages',
+  name: PrinterFunction.FETCHIMAGES,
   fn: (targetWindow: Window, params: PrinterParams, remoteParams: RemotePrinterParams) => Promise<PrinterImages>,
 }
 

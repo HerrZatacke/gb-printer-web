@@ -3,7 +3,7 @@ import Queue from 'promise-queue';
 import { AnyAction } from 'redux';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
-import DropboxClient, { DBFolderFile } from '../../../../tools/DropboxClient';
+import DropboxClient from '../../../../tools/DropboxClient';
 import { hasher } from '../../../../tools/DropboxClient/dropboxContentHasher';
 import parseAuthParams from '../../../../tools/parseAuthParams';
 import { getPrepareFiles } from '../../../../tools/download';
@@ -15,11 +15,26 @@ import dateFormatLocale from '../../../../tools/dateFormatLocale';
 
 import { Actions } from '../../actions';
 import { TypedStore } from '../../State';
-import { AddToQueueFn, DownloadInfo, RepoContents, UploadFile } from '../../../../../types/Sync';
+import { AddToQueueFn, DBFolderFile, DownloadInfo, UploadFile } from '../../../../../types/Sync';
 import { delay } from '../../../../tools/delay';
 import { Image } from '../../../../../types/Image';
 import { DownloadArrayBuffer } from '../../../../tools/download/types';
-import { ConfirmAskAction } from '../../../../../types/actions/ConfirmActions';
+import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../../types/actions/ConfirmActions';
+import { ErrorAction } from '../../../../../types/actions/GlobalActions';
+import {
+  LogDropboxAction,
+  LogStorageDiffDoneAction,
+  LogStorageSyncDoneAction,
+  StorageSyncStartAction,
+} from '../../../../../types/actions/LogActions';
+import {
+  DropboxLastUpdateAction,
+  DropboxSetStorageAction,
+  DropboxSettingsImportAction,
+} from '../../../../../types/actions/StorageActions';
+import { ImagesUpdateAction } from '../../../../../types/actions/ImageActions';
+import { DialoqQuestionType } from '../../../../../types/Dialog';
+import { RepoContents } from '../../../../../types/Export';
 
 interface WithContentHash {
   dropboxContentHash: string,
@@ -39,7 +54,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
     queue.add(async () => {
       await delay(throttle);
       if (!isSilent) {
-        store.dispatch({
+        store.dispatch<LogDropboxAction>({
           type: Actions.DROPBOX_LOG_ACTION,
           payload: {
             timestamp: (new Date()).getTime() / 1000,
@@ -53,7 +68,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
   );
 
   const checkDropboxStatus = (): void => {
-    store.dispatch({
+    store.dispatch<StorageSyncStartAction>({
       type: Actions.STORAGE_SYNC_START,
       payload: {
         storageType: 'dropbox',
@@ -75,7 +90,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
   }
 
   dropboxClient.on('loginDataUpdate', (data) => {
-    store.dispatch({
+    store.dispatch<DropboxSetStorageAction>({
       type: Actions.SET_DROPBOX_STORAGE,
       payload: {
         ...store.getState().dropboxStorage,
@@ -104,14 +119,14 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
 
           switch (action.payload.storageType) {
             case 'dropbox': {
-              const repoContents: RepoContents = await dropboxClient.getRemoteContents(action.payload.direction);
+              const repoContents: RepoContents =
+                await dropboxClient.getRemoteContents(action.payload.direction);
 
               let syncResult;
 
               switch (action.payload.direction) {
                 case 'diff': {
                   if (repoContents?.settings?.state?.lastUpdateUTC === null) {
-                    syncResult = null;
                     break;
                   }
 
@@ -119,13 +134,13 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                     (Date.now() / 1000) :
                     repoContents.settings.state.lastUpdateUTC;
 
-                  store.dispatch({
+                  store.dispatch<DropboxLastUpdateAction>({
                     type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
                     payload: lastUpdate,
                   });
 
                   if (lastUpdate > state?.syncLastUpdate?.local) {
-                    store.dispatch({
+                    store.dispatch<ConfirmAskAction>({
                       type: Actions.CONFIRM_ASK,
                       payload: {
                         message: 'There is newer content in your dropbox!',
@@ -137,13 +152,13 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                           .map((label, index) => ({
                             label,
                             key: `info${index}`,
-                            type: 'info',
+                            type: DialoqQuestionType.INFO,
                           })),
-                        confirm: () => {
-                          store.dispatch({
+                        confirm: async () => {
+                          store.dispatch<ConfirmAnsweredAction>({
                             type: Actions.CONFIRM_ANSWERED,
                           });
-                          store.dispatch({
+                          store.dispatch<StorageSyncStartAction>({
                             type: Actions.STORAGE_SYNC_START,
                             payload: {
                               storageType: 'dropbox',
@@ -151,16 +166,15 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                             },
                           });
                         },
-                        deny: () => {
-                          store.dispatch({
+                        deny: async () => {
+                          store.dispatch<ConfirmAnsweredAction>({
                             type: Actions.CONFIRM_ANSWERED,
                           });
                         },
                       },
-                    } as ConfirmAskAction);
+                    });
                   }
 
-                  syncResult = null;
                   break;
                 }
 
@@ -169,7 +183,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                   const changes = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
                   syncResult = await dropboxClient.upload(changes, 'settings');
 
-                  store.dispatch({
+                  store.dispatch<DropboxLastUpdateAction>({
                     type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
                     payload: lastUpdateUTC,
                   });
@@ -178,7 +192,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
 
                 case 'down': {
                   syncResult = await saveLocalStorageItems(repoContents);
-                  store.dispatch({
+                  store.dispatch<DropboxSettingsImportAction>({
                     type: Actions.DROPBOX_SETTINGS_IMPORT,
                     payload: repoContents.settings,
                   });
@@ -189,13 +203,21 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                   throw new Error('dropbox sync: wrong sync case');
               }
 
-              store.dispatch({
-                type: action.payload.direction === 'diff' ? Actions.STORAGE_DIFF_DONE : Actions.STORAGE_SYNC_DONE,
-                payload: {
-                  syncResult,
-                  storageType: 'dropbox',
-                },
-              });
+              if (action.payload.direction === 'diff') {
+                store.dispatch<LogStorageDiffDoneAction>({
+                  type: Actions.STORAGE_DIFF_DONE,
+                });
+              } else {
+                store.dispatch<LogStorageSyncDoneAction>({
+                  type: Actions.STORAGE_SYNC_DONE,
+                  payload: {
+                    syncResult,
+                    storageType: 'dropbox',
+                  },
+                });
+              }
+
+
               break;
             }
 
@@ -257,7 +279,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                   }, []);
 
                 const syncResult = await dropboxClient.upload({ upload: toUpload, del: [] }, 'images');
-                store.dispatch({
+                store.dispatch<LogStorageSyncDoneAction>({
                   type: Actions.STORAGE_SYNC_DONE,
                   payload: {
                     syncResult,
@@ -292,7 +314,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
             const remoteFileContent = await dropboxClient.getFileContent(`images/${action.payload}.txt`, 0, 1, true);
             await saveImageFileContent(remoteFileContent);
 
-            store.dispatch({
+            store.dispatch<ImagesUpdateAction>({
               type: Actions.UPDATE_IMAGES,
               payload: [],
             });
@@ -305,7 +327,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
       }
     } catch (error) {
       console.error(error);
-      store.dispatch({
+      store.dispatch<ErrorAction>({
         type: Actions.ERROR,
         payload: (error as Error).message,
       });

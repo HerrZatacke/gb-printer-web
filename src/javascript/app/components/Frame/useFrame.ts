@@ -5,8 +5,7 @@ import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
 import { State } from '../../store/State';
 import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
-import { EditFrameAction } from '../../store/reducers/editFrameReducer';
-import { DeleteFrameAction } from '../../../../types/actions/FrameActions';
+import { DeleteFrameAction, EditFrameAction } from '../../../../types/actions/FrameActions';
 
 
 interface GetTilesParams {
@@ -64,29 +63,29 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
     enableDebug,
     setTiles,
     deleteFrame: () => {
-      dispatch({
+      dispatch<ConfirmAskAction>({
         type: Actions.CONFIRM_ASK,
         payload: {
           message: `Delete frame "${name}" (${frameId})?`,
-          confirm: () => {
-            dispatch({
+          confirm: async () => {
+            dispatch<DeleteFrameAction>({
               type: Actions.DELETE_FRAME,
               payload: frameId,
-            } as DeleteFrameAction);
+            });
           },
-          deny: () => {
-            dispatch({
+          deny: async () => {
+            dispatch<ConfirmAnsweredAction>({
               type: Actions.CONFIRM_ANSWERED,
-            } as ConfirmAnsweredAction);
+            });
           },
         },
-      } as ConfirmAskAction);
+      });
     },
     editFrame: () => {
-      dispatch({
+      dispatch<EditFrameAction>({
         type: Actions.EDIT_FRAME,
         payload: frameId,
-      } as EditFrameAction);
+      });
     },
   };
 };

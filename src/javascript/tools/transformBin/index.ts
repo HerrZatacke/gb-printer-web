@@ -4,6 +4,7 @@ import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { ImportQueueAddAction } from '../../../types/actions/QueueActions';
 import { TypedStore } from '../../app/store/State';
+import { randomId } from '../randomId';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer: Uint8Array) => (
@@ -52,17 +53,17 @@ const getTransformBin = ({ dispatch }: TypedStore) => async (file: File): Promis
   const { dataHash: imageHash } = await compressAndHash(tiles);
   const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
-  dispatch({
+  dispatch<ImportQueueAddAction>({
     type: Actions.IMPORTQUEUE_ADD,
     payload: {
       fileName: file.name,
       imageHash,
       frameHash,
       tiles,
-      lastModified: file.lastModified || null,
-      tempId: Math.random().toString(16).split('.').pop(),
+      lastModified: file.lastModified,
+      tempId: randomId(),
     },
-  } as ImportQueueAddAction);
+  });
 
   return true;
 };

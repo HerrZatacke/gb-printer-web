@@ -27,15 +27,15 @@ export const useSortForm = (): UseSortForm => {
   return {
     ...data,
     setSortBy: (sortBy: string) => {
-      dispatch({
+      dispatch<SortOptionsSetSortByAction>({
         type: Actions.SET_SORT_BY,
         payload: sortBy,
-      } as SortOptionsSetSortByAction);
+      });
     },
     hideSortForm: () => {
-      dispatch({
+      dispatch<SortOptionsHideAction>({
         type: Actions.HIDE_SORT_OPTIONS,
-      } as SortOptionsHideAction);
+      });
     },
   };
 };
