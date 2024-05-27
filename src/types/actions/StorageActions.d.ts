@@ -1,4 +1,5 @@
 import { Actions } from '../../javascript/app/store/actions';
+import { ExportTypes } from '../../javascript/consts/exportTypes';
 
 export interface DropBoxSettings {
   use?: boolean,
@@ -49,4 +50,30 @@ export interface DropboxLastUpdateAction {
 export interface GitStorageAction {
   type: Actions.SET_GIT_STORAGE,
   payload?: GitStorageSettings
+}
+export interface ExportJSONAction {
+  type: Actions.JSON_EXPORT,
+  payload: ExportTypes,
+  selectedFrameGroup?: string,
+}
+
+export interface ExportFileTypesAction {
+  type: Actions.UPDATE_EXPORT_FILE_TYPES,
+  payload: {
+    checked: boolean,
+    fileType: string,
+  }
+}
+
+export interface ExportScaleFactorsAction {
+  type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
+  payload: {
+    checked: boolean,
+    factor: number,
+  }
+}
+
+export interface ForceMagicCheckAction {
+  type: Actions.SET_FORCE_MAGIC_CHECK,
+  payload: boolean,
 }

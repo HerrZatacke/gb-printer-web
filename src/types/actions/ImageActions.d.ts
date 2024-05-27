@@ -1,5 +1,5 @@
 import { Actions } from '../../javascript/app/store/actions';
-import { CurrentEditBatch, Image } from '../Image';
+import { CurrentEditBatch, Image, RGBNHashes } from '../Image';
 import { TagUpdates } from '../../javascript/tools/modifyTagChanges';
 import { BatchActionType } from '../../javascript/consts/batchActionTypes';
 
@@ -94,4 +94,9 @@ export interface BatchTaskAction {
   type: Actions.BATCH_TASK,
   payload: BatchActionType,
   page: number,
+}
+
+export interface UpdateRGBNPartAction {
+  type: Actions.UPDATE_RGBN_PART,
+  payload: RGBNHashes,
 }
