@@ -5,6 +5,10 @@ import Overlays from '../Overlays';
 
 import './index.scss';
 
+export interface Handle {
+  headline: string,
+}
+
 const Layout = () => {
   const matches = useMatches();
 
@@ -12,7 +16,7 @@ const Layout = () => {
     return <Navigate to="/gallery/page/1" replace />;
   }
 
-  const mainHeadline = matches[1]?.handle?.headline;
+  const mainHeadline = (matches[1]?.handle as Handle | undefined)?.headline;
 
   return (
     <>
