@@ -2,11 +2,7 @@
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface ImportDeletedAction {
-  type: Actions.SET_IMPORT_DELETED,
-  payload: boolean,
-}
+import { ImportDeletedAction } from '../../../../types/actions/GlobalActions';
 
 const importDeletedReducer = (value = false, action: ImportDeletedAction | GlobalUpdateAction): boolean => {
   switch (action.type) {

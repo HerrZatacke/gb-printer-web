@@ -1,14 +1,14 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { DeleteImageAction, DeleteImagesAction, NewRGBNImageAction } from '../../../../types/actions/ImageActions';
+import {
+  DeleteImageAction,
+  DeleteImagesAction,
+  NewRGBNImageAction,
+  UpdateRGBNPartAction,
+} from '../../../../types/actions/ImageActions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { RGBNHashes } from '../../../../types/Image';
-
-export interface UpdateRGBNPartAction {
-  type: Actions.UPDATE_RGBN_PART,
-  payload: RGBNHashes,
-}
 
 const rgbnImagesReducer = (
   value: RGBNHashes | null = null,

@@ -2,11 +2,8 @@
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { ImportLastSeenAction } from '../../../../types/actions/GlobalActions';
 
-export interface ImportLastSeenAction {
-  type: Actions.SET_IMPORT_LAST_SEEN,
-  payload: boolean,
-}
 const importLastSeenReducer = (value = false, action: ImportLastSeenAction | GlobalUpdateAction): boolean => {
   switch (action.type) {
     case Actions.SET_IMPORT_LAST_SEEN:

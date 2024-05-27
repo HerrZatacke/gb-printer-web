@@ -2,11 +2,7 @@
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface SavFrameTypesAction {
-  type: Actions.SET_SAV_FRAME_TYPES,
-  payload: string,
-}
+import { SavFrameTypesAction } from '../../../../types/actions/FrameActions';
 
 const savFrameTypesReducer = (value = 'int', action: SavFrameTypesAction | GlobalUpdateAction): string => {
   switch (action.type) {

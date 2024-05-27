@@ -1,9 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-
-export interface FramesMessageAction {
-  type: Actions.FRAMES_MESSAGE_SHOW | Actions.FRAMES_MESSAGE_HIDE
-}
+import { FramesMessageAction } from '../../../../types/actions/GlobalActions';
 
 const framesMessageReducer = (framesMessage = 0, action: FramesMessageAction): number => {
   switch (action.type) {

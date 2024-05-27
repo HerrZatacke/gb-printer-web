@@ -2,13 +2,9 @@
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { SortOptionsSetSortByAction } from '../../../../types/actions/SortOptionsActions';
 
-interface SetSortByAction {
-  type: Actions.SET_SORT_BY,
-  payload: string,
-}
-
-const sortByReducer = (value = '', action: SetSortByAction | GlobalUpdateAction): string => {
+const sortByReducer = (value = '', action: SortOptionsSetSortByAction | GlobalUpdateAction): string => {
   switch (action.type) {
     case Actions.SET_SORT_BY:
       return action.payload;

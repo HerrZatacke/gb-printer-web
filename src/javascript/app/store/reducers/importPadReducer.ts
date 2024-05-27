@@ -2,11 +2,7 @@
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface ImportPadAction {
-  type: Actions.SET_IMPORT_PAD,
-  payload: boolean,
-}
+import { ImportPadAction } from '../../../../types/actions/GlobalActions';
 
 const importPadReducer = (value = false, action: ImportPadAction | GlobalUpdateAction): boolean => {
   switch (action.type) {

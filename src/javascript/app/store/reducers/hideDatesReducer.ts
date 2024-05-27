@@ -2,11 +2,7 @@
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface HideDatesAction {
-  type: Actions.SET_HIDE_DATES,
-  payload: boolean,
-}
+import { HideDatesAction } from '../../../../types/actions/GlobalActions';
 
 const hideDatesReducer = (value = false, action: HideDatesAction | GlobalUpdateAction): boolean => {
   switch (action.type) {

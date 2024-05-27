@@ -3,14 +3,7 @@ import { Actions } from '../actions';
 import unique from '../../../tools/unique';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface ExportFileTypesAction {
-  type: Actions.UPDATE_EXPORT_FILE_TYPES,
-  payload: {
-    checked: boolean,
-    fileType: string,
-  }
-}
+import { ExportFileTypesAction } from '../../../../types/actions/StorageActions';
 
 const exportFileTypesReducer = (value = ['png'], action: ExportFileTypesAction | GlobalUpdateAction): string[] => {
   switch (action.type) {

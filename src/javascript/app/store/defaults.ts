@@ -1,23 +1,6 @@
 import { State } from './State';
 import { ExportableState } from '../../tools/getGetSettings/types';
-import { Actions } from './actions';
-
-export enum ExportTypes {
-  SETTINGS = 'settings',
-  SELECTED_IMAGES = 'selected_images',
-  IMAGES = 'images',
-  REMOTE = 'remote',
-  PALETTES = 'palettes',
-  FRAMES = 'frames',
-  FRAMEGROUP = 'framegroup',
-  DEBUG = 'debug',
-}
-
-export interface ExportJSONAction {
-  type: Actions.JSON_EXPORT,
-  payload: ExportTypes,
-  selectedFrameGroup?: string,
-}
+import { ExportTypes } from '../../consts/exportTypes';
 
 export interface StorePropertyDefault {
   key: keyof State,

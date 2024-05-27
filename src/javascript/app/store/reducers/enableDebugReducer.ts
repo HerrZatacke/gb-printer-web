@@ -2,11 +2,7 @@
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface EnableDebugAction {
-  type: Actions.SET_DEBUG,
-  payload: boolean,
-}
+import { EnableDebugAction } from '../../../../types/actions/GlobalActions';
 
 const enableDebugReducer = (value = false, action: EnableDebugAction | GlobalUpdateAction): boolean => {
   switch (action.type) {

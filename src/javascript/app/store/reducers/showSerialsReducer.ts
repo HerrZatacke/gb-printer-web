@@ -1,10 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-
-export interface ShowSerialsAction {
-  type: Actions.SHOW_SERIALS,
-  payload?: boolean,
-}
+import { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
 
 const showSerialsReducer = (value = false, action: ShowSerialsAction): boolean => {
   switch (action.type) {

@@ -1,13 +1,12 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { EditFrameAction, UpdateFrameAction } from '../../../../types/actions/FrameActions';
 
-export interface EditFrameAction {
-  type: Actions.EDIT_FRAME | Actions.CANCEL_EDIT_FRAME | Actions.UPDATE_FRAME,
-  payload: string, // frameId
-}
-
-const editFrameReducer = (value: string | null = null, action: EditFrameAction | GlobalUpdateAction): string | null => {
+const editFrameReducer = (
+  value: string | null = null,
+  action: EditFrameAction | GlobalUpdateAction | UpdateFrameAction,
+): string | null => {
   switch (action.type) {
     case Actions.EDIT_FRAME:
       return action.payload;

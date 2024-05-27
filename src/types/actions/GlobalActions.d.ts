@@ -1,5 +1,5 @@
 import { Actions } from '../../javascript/app/store/actions';
-import { WindowDimensions } from '../../javascript/app/store/reducers/windowDimensionsReducer';
+import { WindowDimensions } from '../WindowDimensions';
 
 export interface DragoverAction {
   type: Actions.IMPORT_DRAGOVER_START | Actions.IMPORT_DRAGOVER_END,
@@ -62,11 +62,6 @@ export interface ShowSerialsAction {
 export interface UseSerialsAction {
   type: Actions.USE_SERIALS,
   payload?: boolean,
-}
-
-export interface SetSortByAction {
-  type: Actions.SET_SORT_BY,
-  payload: string,
 }
 
 export interface UpdateWindowDimensionsAction {

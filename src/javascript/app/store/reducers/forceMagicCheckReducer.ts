@@ -2,11 +2,7 @@
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface ForceMagicCheckAction {
-  type: Actions.SET_FORCE_MAGIC_CHECK,
-  payload: boolean,
-}
+import { ForceMagicCheckAction } from '../../../../types/actions/StorageActions';
 
 const forceMagicCheckReducer = (value = true, action: ForceMagicCheckAction | GlobalUpdateAction): boolean => {
   switch (action.type) {

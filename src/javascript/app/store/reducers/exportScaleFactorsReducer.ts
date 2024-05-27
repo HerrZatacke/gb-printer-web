@@ -2,14 +2,7 @@
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface ExportScaleFactorsAction {
-  type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
-  payload: {
-    checked: boolean,
-    factor: number,
-  }
-}
+import { ExportScaleFactorsAction } from '../../../../types/actions/StorageActions';
 
 const exportScaleFactorsReducer = (value = [1], action: ExportScaleFactorsAction | GlobalUpdateAction): number[] => {
   switch (action.type) {

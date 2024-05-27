@@ -1,10 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-
-export interface UseSerialsAction {
-  type: Actions.USE_SERIALS,
-  payload?: boolean,
-}
+import { UseSerialsAction } from '../../../../types/actions/GlobalActions';
 
 const useSerialsReducer = (
   value = false,

@@ -2,11 +2,7 @@
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-
-export interface PageSizeAction {
-  type: Actions.SET_PAGESIZE,
-  payload: number,
-}
+import { PageSizeAction } from '../../../../types/actions/GlobalActions';
 
 const pageSizeReducer = (value = 0, action: PageSizeAction | GlobalUpdateAction): number => {
   switch (action.type) {
