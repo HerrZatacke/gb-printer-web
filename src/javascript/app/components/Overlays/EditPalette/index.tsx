@@ -55,7 +55,7 @@ const EditPalette = () => {
           value={newShortName}
           disabled={!canEditShortName}
           onChange={(value) => {
-            setNewShortName((value as string).toLowerCase());
+            setNewShortName(value.toLowerCase());
           }}
         />
         <ul className="edit-palette__previews">
@@ -85,7 +85,7 @@ const EditPalette = () => {
               value={color}
               onChange={(value) => {
                 const np = [...palette];
-                np[index] = value as string;
+                np[index] = value;
                 setPalette(np);
               }}
             />

@@ -52,9 +52,7 @@ const DropboxSettings = () => {
         id="dropbox-settings-path"
         value={path}
         type={InputType.TEXT}
-        onChange={(value) => {
-          setPath(value as string);
-        }}
+        onChange={setPath}
         onBlur={() => {
           setPath(cleanPath(path));
           setDropboxStorage({

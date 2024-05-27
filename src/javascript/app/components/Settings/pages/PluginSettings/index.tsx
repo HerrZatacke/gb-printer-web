@@ -46,7 +46,7 @@ const PluginSettings = () => {
         labelText="Add Plugin"
         type={InputType.TEXT}
         value={pluginUrl}
-        onChange={(value) => setPluginUrl(value as string)}
+        onChange={setPluginUrl}
         buttonOnClick={() => {
           pluginAdd(pluginUrl);
           setPluginUrl('');
@@ -122,7 +122,7 @@ const PluginSettings = () => {
                       type={inputTypeFromType(type)}
                       value={inputValueFromType(type, config[fieldName] as string)}
                       onChange={(value) => {
-                        pluginUpdateConfig(url, fieldName, inputValueFromType(type, value.toString()));
+                        pluginUpdateConfig(url, fieldName, inputValueFromType(type, value));
                       }}
                     />
                   );

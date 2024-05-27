@@ -46,9 +46,7 @@ const Frames = () => {
           <Input
             type={InputType.TEXT}
             id="frames-edit-group-name"
-            onChange={(name) => {
-              setActiveFrameGroupName(name);
-            }}
+            onChange={setActiveFrameGroupName}
             value={activeFrameGroup.name || ''}
             labelText="Rename Framegroup"
           />

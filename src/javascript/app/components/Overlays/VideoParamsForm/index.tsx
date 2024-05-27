@@ -41,7 +41,7 @@ const VideoParamsForm = () => {
         max={120}
         value={videoParams.frameRate}
         onChange={(value) => {
-          update({ frameRate: parseInt(value as string, 10) });
+          update({ frameRate: parseInt(value, 10) });
         }}
       />
       <Input
@@ -52,7 +52,7 @@ const VideoParamsForm = () => {
         max={12}
         value={videoParams.scaleFactor}
         onChange={(value) => {
-          update({ scaleFactor: parseInt(value as string, 10) });
+          update({ scaleFactor: parseInt(value, 10) });
         }}
       />
       <label

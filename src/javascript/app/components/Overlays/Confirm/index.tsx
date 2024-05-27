@@ -55,7 +55,7 @@ const Confirm = () => {
                   value={values[key] as string || ''}
                   type={InputType.TEXT}
                   labelText={label}
-                  onChange={(update) => setSelected({ [key]: update as string })}
+                  onChange={(update) => setSelected({ [key]: update })}
                 />
               );
             }
@@ -72,7 +72,7 @@ const Confirm = () => {
                   labelText={label}
                   min={min}
                   max={max}
-                  onChange={(update) => setSelected({ [key]: update as string })}
+                  onChange={(update) => setSelected({ [key]: update })}
                 />
               );
             }

@@ -30,9 +30,7 @@ const APConfig = (props: Props) => (
       value={props.ssid}
       disabled={!props.isNew || props.disabled}
       onChange={(ssid) => {
-        props.update({
-          ssid: ssid as string,
-        });
+        props.update({ ssid });
       }}
       buttonOnClick={() => {
         props.update({
@@ -48,9 +46,7 @@ const APConfig = (props: Props) => (
       value={props.psk}
       disabled={props.disabled}
       onChange={(psk) => {
-        props.update({
-          psk: psk as string,
-        });
+        props.update({ psk });
       }}
     />
   </div>

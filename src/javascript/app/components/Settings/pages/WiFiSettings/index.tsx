@@ -137,7 +137,7 @@ const WiFiSettings = () => {
           setStatus('updated');
           setWifiConfig({
             ...wifiConfig,
-            mdns: (mdns as string).trim(),
+            mdns: mdns.trim(),
           });
         }}
       />
@@ -154,7 +154,7 @@ const WiFiSettings = () => {
             ...wifiConfig,
             ap: {
               ...wifiConfig.ap,
-              ssid: (ssid as string).trim(),
+              ssid: ssid.trim(),
             },
           });
         }}
@@ -172,7 +172,7 @@ const WiFiSettings = () => {
             ...wifiConfig,
             ap: {
               ...wifiConfig.ap,
-              psk: (psk as string).trim(),
+              psk: psk.trim(),
             },
           });
         }}

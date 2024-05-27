@@ -80,9 +80,7 @@ const GenericSettings = () => {
         type={InputType.NUMBER}
         min={0}
         value={pageSize}
-        onChange={(value) => {
-          setPageSize(value as string);
-        }}
+        onChange={setPageSize}
         onBlur={() => {
           stateSetPageSize(parseInt(pageSize, 10) || 0);
         }}
@@ -361,9 +359,7 @@ const GenericSettings = () => {
           labelText="Printer URL"
           type={InputType.TEXT}
           value={printerUrl}
-          onChange={(value) => {
-            setPrinterUrl(value as string);
-          }}
+          onChange={setPrinterUrl}
           onBlur={() => {
             setPrinterUrl(cleanUrl(printerUrl, 'http'));
             updatePrinterUrl(printerUrl);
@@ -393,9 +389,7 @@ const GenericSettings = () => {
           labelText="Additional printer settings"
           type={InputType.TEXT}
           value={printerParams}
-          onChange={(value) => {
-            setPrinterParams(value as string);
-          }}
+          onChange={setPrinterParams}
           onBlur={() => {
             setPrinterParams(printerParams);
             updatePrinterParams(printerParams);

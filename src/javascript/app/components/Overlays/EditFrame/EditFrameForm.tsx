@@ -64,7 +64,7 @@ function EditFrameForm({
         labelText={groupExists ? 'Frame group id' : 'New frame group id'}
         type={InputType.TEXT}
         value={frameGroup}
-        onChange={(value) => setFrameGroup(value as string)}
+        onChange={setFrameGroup}
       >
         {groupIdValid ? null : (
           <span className="inputgroup__note inputgroup__note--warn">
@@ -79,7 +79,7 @@ function EditFrameForm({
           disabled={groupExists}
           type={InputType.TEXT}
           value={groupExists ? '' : frameGroupName}
-          onChange={(value) => setFrameGroupName(value as string)}
+          onChange={setFrameGroupName}
         />
       ) : null }
       <Input
@@ -89,7 +89,7 @@ function EditFrameForm({
         min={1}
         max={99}
         value={frameIndex}
-        onChange={(value) => setFrameIndex(parseInt(value as string, 10))}
+        onChange={(value) => setFrameIndex(parseInt(value, 10))}
       >
         {frameIndexValid ? null : (
           <span className="inputgroup__note inputgroup__note--warn">
@@ -102,7 +102,7 @@ function EditFrameForm({
         labelText="Frame name"
         type={InputType.TEXT}
         value={frameName}
-        onChange={(value) => setFrameName(value as string)}
+        onChange={setFrameName}
       />
       <p className="edit-frame__warning">
         { idValid ? '\u00A0' : `Specified frame index/identifier "${fullId}" is already in use, please try another one.` }

@@ -55,7 +55,7 @@ const GitSettings = () => {
             onChange={(owner) => {
               setStorage({
                 ...storage,
-                owner: owner as string,
+                owner,
               });
             }}
             onBlur={() => {
@@ -71,7 +71,7 @@ const GitSettings = () => {
             onChange={(repo) => {
               setStorage({
                 ...storage,
-                repo: repo as string,
+                repo,
               });
             }}
             onBlur={() => {
@@ -87,7 +87,7 @@ const GitSettings = () => {
             onChange={(branch) => {
               setStorage({
                 ...storage,
-                branch: branch as string,
+                branch,
               });
             }}
             onBlur={() => {
@@ -106,7 +106,7 @@ const GitSettings = () => {
             onChange={(throttle) => {
               setStorage({
                 ...storage,
-                throttle: parseInt(throttle as string, 10),
+                throttle: parseInt(throttle, 10),
               });
             }}
             onBlur={() => {
@@ -122,7 +122,7 @@ const GitSettings = () => {
             onChange={(token) => {
               setStorage({
                 ...storage,
-                token: token as string,
+                token,
               });
             }}
             onBlur={() => {
