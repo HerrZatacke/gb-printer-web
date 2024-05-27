@@ -25,7 +25,7 @@ module.exports = () => ({
   },
   entry: {
     main: [
-      path.join(process.cwd(), 'src', 'javascript', 'index.js'),
+      path.join(process.cwd(), 'src', 'javascript', 'index.ts'),
     ],
     remote: [
       path.join(process.cwd(), 'src', 'javascript', 'remote.ts'),

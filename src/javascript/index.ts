@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // set the theme class as quick as possible
   const theme = localStorage.getItem('gbp-web-theme');
   if (theme) {
-    document.querySelector('html').classList.add(theme);
+    document.querySelector('html')?.classList.add(theme);
   }
 
   if (isTouchDevice()) {
-    document.querySelector('body').classList.add('is-touch');
+    document.querySelector('body')?.classList.add('is-touch');
   } else {
-    document.querySelector('body').classList.add('no-touch');
+    document.querySelector('body')?.classList.add('no-touch');
   }
 
   initLog('Loading environment information');
@@ -31,7 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })
     .catch((error) => {
-      document.getElementById('app')
-        .innerHTML = `<p class="init-error">This browser is not supported.<br/>This App is being optimized for chromium-based browsers.<small>${error.stack}</small></p>`;
+      const appNode = document.getElementById('app');
+
+      if (appNode) {
+        appNode.innerHTML =
+          `<p class="init-error">This browser is not supported.<br/>This App is being optimized for chromium-based browsers.<small>${error.stack}</small></p>`;
+      }
     });
 });

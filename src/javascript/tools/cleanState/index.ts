@@ -11,7 +11,7 @@ import { Palette } from '../../../types/Palette';
 import { isRGBNImage } from '../isRGBNImage';
 import { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 
-const cleanState = async (dirtyState: State) => {
+const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> => {
 
   const palettes: Palette[] = uniqueBy<Palette>('shortName')([
     ...predefinedPalettes.map((gbPalette): Palette => ({
@@ -21,18 +21,18 @@ const cleanState = async (dirtyState: State) => {
       origin: gbPalette.origin,
       isPredefined: true,
     })),
-    ...dirtyState.palettes,
+    ...(dirtyState.palettes || []),
   ]);
 
   const palettesShorts = palettes.map(({ shortName }) => shortName);
-  const frameIds = dirtyState.frames.map(({ id }) => id);
+  const frameIds = (dirtyState.frames || []).map(({ id }) => id);
 
-  const printerUrl = cleanUrl(dirtyState.printerUrl, 'http');
+  const printerUrl = cleanUrl(dirtyState.printerUrl || '', 'http');
   let framesMessage = dirtyState.framesMessage;
 
   const activePalette = palettesShorts.includes(dirtyState.activePalette || '') ? dirtyState.activePalette : 'bw';
 
-  const images: Image[] = dirtyState.images
+  const images: Image[] = (dirtyState.images || [])
     // clean the created date (add ms) (e.g. "2021-01-30 18:16:09" -> "2021-01-30 18:16:09:000")
     .map((image) => ({
       ...image,
@@ -90,12 +90,12 @@ const cleanState = async (dirtyState: State) => {
 
   // remove items older than 6 hours from "recent imports"
   const yesterday = dayjs().subtract(6, 'hour').unix();
-  const recentImports = dirtyState.recentImports.filter(({ hash, timestamp }) => (
+  const recentImports = (dirtyState.recentImports || []).filter(({ hash, timestamp }) => (
     imageHashes.includes(hash) &&
     timestamp > yesterday
   ));
 
-  const plugins = dirtyState.plugins.map((plugin) => ({
+  const plugins = (dirtyState.plugins || []).map((plugin) => ({
     ...plugin,
     loading: true,
     error: undefined,
@@ -107,9 +107,11 @@ const cleanState = async (dirtyState: State) => {
     local: dirtyState.syncLastUpdate?.local || 0,
   };
 
-  await backupFrames(dirtyState.frames);
+  if (dirtyState.frames) {
+    await backupFrames(dirtyState.frames);
+  }
 
-  const hashedFrames = await hashFrames(dirtyState.frames);
+  const hashedFrames = await hashFrames(dirtyState.frames || []);
 
   return {
     ...dirtyState,
@@ -119,7 +121,7 @@ const cleanState = async (dirtyState: State) => {
     palettes,
     plugins,
     printerUrl,
-    framesMessage,
+    framesMessage: framesMessage || 0,
     activePalette,
     recentImports,
   };

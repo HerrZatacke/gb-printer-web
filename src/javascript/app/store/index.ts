@@ -12,7 +12,7 @@ const enhancers = [
   applyMiddleware(saveState), // should be the last mw
 ];
 
-const getStore = (initialState: State) => {
+const getStore = (initialState: Partial<State>) => {
   const store = createStore(
     reducers,
     initialState,
