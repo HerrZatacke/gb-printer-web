@@ -31,6 +31,7 @@ const Component = (props) => {
         <div className="palette__name">
           {props.name}
           <span className="palette__shortname">{props.shortName}</span>
+          <span className="palette__usage">{props.usage ? `Used ${props.usage} times` : 'Not used'}</span>
         </div>
         <div className="palette__colors">
           <div className="palette__color" style={{ backgroundColor: props.palette[0] }} title={props.palette[0]}> </div>
@@ -85,6 +86,7 @@ Component.propTypes = {
   editPalette: PropTypes.func.isRequired,
   clonePalette: PropTypes.func.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string).isRequired,
+  usage: PropTypes.number.isRequired,
 };
 
 Component.defaultProps = {};

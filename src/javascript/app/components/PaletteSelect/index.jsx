@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
+import usePaletteSort from '../../../hooks/usePaletteSort';
 
 const PaletteSelect = ({
   value,
@@ -16,7 +17,11 @@ const PaletteSelect = ({
 }) => {
   const [initiallySelected, setInitiallySelected] = useState(value);
 
-  const palettes = [...useSelector((state) => (state.palettes))];
+  const palettesUnsorted = [...useSelector((state) => (state.palettes))];
+
+  const { sortFn } = usePaletteSort();
+
+  const palettes = palettesUnsorted.toSorted(sortFn);
 
   // this option is used for assigning a single palette to an animation
   if (allowEmpty) {

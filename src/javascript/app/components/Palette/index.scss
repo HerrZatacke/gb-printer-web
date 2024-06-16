@@ -56,6 +56,11 @@
     @include theme-color($color-secondary, $color-secondary-bright);
   }
 
+  &__usage {
+    display: block;
+    font-size: 12px;
+  }
+
   &--active &__shortname {
     @include theme-color($color-primary, $color-primary-bright);
   }
