@@ -9,7 +9,7 @@ const prepareContext = (context) => {
 };
 /* eslint-enable no-param-reassign */
 
-const getImageData = (file) => (
+const getImageData = (file, keepColor = false) => (
   new Promise((resolve, reject) => {
     const img = document.createElement('img');
 
@@ -30,12 +30,18 @@ const getImageData = (file) => (
       if (ratio === 112 / 128) {
         srcCanvas.height = 144;
         scaleFactor = img.naturalWidth / 128;
-        prepareContext(context);
+        if (!keepColor) {
+          prepareContext(context);
+        }
+
         context.drawImage(img, 0, 0, srcWidth, srcHeight, 16, 16, srcCanvas.width - 32, srcCanvas.height - 32);
       } else {
         srcCanvas.height = srcCanvas.width * srcHeight / srcWidth;
         scaleFactor = srcWidth / 160;
-        prepareContext(context);
+        if (!keepColor) {
+          prepareContext(context);
+        }
+
         context.drawImage(img, 0, 0, srcWidth, srcHeight, 0, 0, srcCanvas.width, srcCanvas.height);
       }
 

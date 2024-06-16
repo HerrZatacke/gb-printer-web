@@ -33,6 +33,7 @@ import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import pageSize from './reducers/pageSizeReducer';
 import palettes from './reducers/palettesReducer';
+import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
 import preferredLocale from './reducers/preferredLocaleReducer';
 import printerBusy from './reducers/printerBusyReducer';
@@ -92,6 +93,7 @@ export default combineReducers({
   lightboxImage,
   pageSize,
   palettes,
+  pickColors,
   plugins,
   preferredLocale,
   printerBusy,
