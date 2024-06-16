@@ -17,6 +17,7 @@ import { VideoParams } from '../../../types/VideoParams';
 import { WindowDimensions } from '../../../types/WindowDimensions';
 import { PrinterInfo } from '../../../types/Printer';
 import { PrinterFunction } from '../../consts/printerFunction';
+import { PickColors } from '../../../types/PickColors';
 
 // ToDo: infer from store somehow...?
 export interface State {
@@ -55,6 +56,7 @@ export interface State {
   lightboxImage: number | null,
   pageSize: number,
   palettes: Palette[],
+  pickColors: PickColors | null,
   plugins: Plugin[],
   preferredLocale: string,
   printerBusy: boolean,

@@ -116,6 +116,12 @@ const SVG = (props: Props) => {
           <path d="M8 2v6H2v4h6v6h4v-6h6V8h-6V2z" />
         </svg>
       );
+    case 'file-add':
+      return (
+        <svg className={className} viewBox="0 0 20 20">
+          <path d="M9 6.5v3.52l-3.5-.04v2l3.5.04v3.48h2v-3.48h3.5v-2H11V6.5ZM1 17V3h6l2 2h10v12z" />
+        </svg>
+      );
     case 'remove':
       return (
         <svg className={className} viewBox="0 0 20 20">

@@ -17,6 +17,9 @@
     min-height: $size;
     margin: 0 0 0 20px;
     transform: translate(0, 5px);
+    display: inline-block;
+    padding: 2px;
+    vertical-align: bottom;
   }
 }
 

@@ -6,6 +6,7 @@ import { Palette as PaletteT } from '../../../../types/Palette';
 
 import './index.scss';
 import { usePalettes } from './usePalettes';
+import usePaletteFromFile from '../../../hooks/usePaletteFromFile';
 
 interface Tab {
   id: string,
@@ -32,7 +33,7 @@ const tabs: Tab[] = [
 ];
 
 const Palettes = () => {
-
+  const { onInputChange } = usePaletteFromFile();
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const { filter, headline: currentHeadline, id } = tabs[selectedTabIndex || 0];
 
@@ -71,15 +72,29 @@ const Palettes = () => {
       <h2 className="palettes__headline">
         {currentHeadline}
         { id === 'own' ? (
-          <button
-            type="button"
-            className="button palettes__add-button"
-            onClick={() => {
-              newPalette();
-            }}
-          >
-            <SVG name="add" />
-          </button>
+          <>
+            <button
+              type="button"
+              title="New palette"
+              className="button palettes__add-button"
+              onClick={() => {
+                newPalette();
+              }}
+            >
+              <SVG name="add" />
+            </button>
+            <label
+              title="New palette from file"
+              className="button palettes__add-button"
+            >
+              <SVG name="file-add" />
+              <input
+                type="file"
+                hidden
+                onChange={onInputChange}
+              />
+            </label>
+          </>
         ) : null}
       </h2>
       <ul className="palettes">
