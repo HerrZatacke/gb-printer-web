@@ -33,7 +33,7 @@ const tabs: Tab[] = [
 ];
 
 const Palettes = () => {
-  const { onInputChange } = usePaletteFromFile();
+  const { onInputChange, busy } = usePaletteFromFile();
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const { filter, headline: currentHeadline, id } = tabs[selectedTabIndex || 0];
 
@@ -75,6 +75,7 @@ const Palettes = () => {
           <>
             <button
               type="button"
+              disabled={busy}
               title="New palette"
               className="button palettes__add-button"
               onClick={() => {
@@ -85,10 +86,13 @@ const Palettes = () => {
             </button>
             <label
               title="New palette from file"
-              className="button palettes__add-button"
+              className={classnames('button palettes__add-button', {
+                'button--disabled': busy,
+              })}
             >
               <SVG name="file-add" />
               <input
+                disabled={busy}
                 type="file"
                 hidden
                 onChange={onInputChange}

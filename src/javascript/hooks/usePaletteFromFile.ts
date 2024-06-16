@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import kmeans from 'node-kmeans';
 import quantize, { RgbPixel } from 'quantize';
 import chunk from 'chunk';
@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import getImageData from '../tools/transformBitmaps/getImageData';
 import { Actions } from '../app/store/actions';
 import { SetPickColorsAction } from '../../types/actions/PickColorsActions';
+import { ErrorAction } from '../../types/actions/GlobalActions';
 
 export const toHexColor = ([r, g, b]: number[]): string => ([
   '#',
@@ -30,14 +31,17 @@ const sortColor = (a: number[], b: number[]): number => {
 };
 
 interface UsePaletteFromFile {
-  onInputChange: (ev: ChangeEvent<HTMLInputElement>) => void
+  onInputChange: (ev: ChangeEvent<HTMLInputElement>) => void,
+  busy: boolean,
 }
 
 const usePaletteFromFile = (): UsePaletteFromFile => {
   const dispatch = useDispatch();
+  const [busy, setBusy] = useState<boolean>(false);
 
   const onInputChange = async ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.[0]) {
+      setBusy(true);
       const { imageData, fileName } = await getImageData(target.files[0], true);
 
       const pixels = chunk(imageData.data, 4);
@@ -46,7 +50,10 @@ const usePaletteFromFile = (): UsePaletteFromFile => {
 
       kmeans.clusterize(image, { k: 6 }, (error, res) => {
         if (error) {
-          console.error(error);
+          dispatch<ErrorAction>({
+            type: Actions.ERROR,
+            payload: error.message,
+          });
         } else {
 
           const colorMap = quantize(image, 4);
@@ -74,6 +81,8 @@ const usePaletteFromFile = (): UsePaletteFromFile => {
             },
           });
         }
+
+        setBusy(false);
       });
     }
 
@@ -83,6 +92,7 @@ const usePaletteFromFile = (): UsePaletteFromFile => {
 
   return {
     onInputChange,
+    busy,
   };
 };
 
