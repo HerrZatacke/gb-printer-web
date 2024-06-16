@@ -19,6 +19,9 @@ export const SAVE_EDIT_PALETTE = 'SAVE_EDIT_PALETTE';
 export const PALETTE_EDIT = 'PALETTE_EDIT';
 export const PALETTE_CLONE = 'PALETTE_CLONE';
 
+export const SET_PICK_COLORS = 'SET_PICK_COLORS';
+export const CANCEL_PICK_COLORS = 'CANCEL_PICK_COLORS';
+
 // Dialogs
 export const CONFIRM_ASK = 'CONFIRM_ASK';
 export const CONFIRM_ANSWERED = 'CONFIRM_ANSWERED';

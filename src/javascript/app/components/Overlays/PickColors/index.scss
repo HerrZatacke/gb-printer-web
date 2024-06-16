@@ -1,0 +1,50 @@
+.pick-colors {
+  &__list {
+    display: grid;
+    margin: 24px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  &__item {
+    width: 100%;
+    height: 60px;
+    --color: rgb(0, 0, 0);
+  }
+
+  &__button {
+    cursor: pointer;
+    width: inherit;
+    height: inherit;
+    border-radius: $default-border-radius;
+    background-color: var(--color);
+    border: 2px solid;
+    position: relative;
+    @include theme-border-color($color-grey-30, $color-grey-60);
+  }
+
+  &__index {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    height: 17px;
+    font-size: 11px;
+    line-height: 11px;
+    padding: 3px 6px;
+    border-radius: 9px;
+    @include theme-background-color($color-white, $color-black);
+    @include theme-color($color-grey-20, $color-grey-70);
+  }
+
+  &__preview {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    border-radius: $default-border-radius-small;
+    margin: 0 24px 24px 24px;
+  }
+
+  &__preview-item {
+    flex-grow: 1;
+  }
+}

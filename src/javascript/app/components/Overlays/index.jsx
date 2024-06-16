@@ -19,6 +19,7 @@ import BitmapQueue from './BitmapQueue';
 import ImportQueue from './ImportQueue';
 import FrameQueue from './FrameQueue';
 import Trashbin from './Trashbin';
+import PickColors from './PickColors';
 
 const Overlays = () => {
   const {
@@ -33,6 +34,7 @@ const Overlays = () => {
     showEditFrame,
     showEditPalette,
     showVideoForm,
+    showPickColors,
     showRGBNImage,
     showLightbox,
     showDragOver,
@@ -52,6 +54,7 @@ const Overlays = () => {
     showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette.shortName,
     showVideoForm: !!state.videoParams.imageSelection && !!state.videoParams.imageSelection.length,
+    showPickColors: !!state.pickColors,
     showRGBNImage: !!state.rgbnImages && Object.keys(state.rgbnImages).length > 0,
     showLightbox: state.lightboxImage !== null,
     showDragOver: !!state.dragover,
@@ -80,6 +83,8 @@ const Overlays = () => {
       return <EditPalette />; // interactive
     case showVideoForm:
       return <VideoParamsForm />; // interactive
+    case showPickColors:
+      return <PickColors />; // interactive
     case showLightbox:
       return <LightboxImage />; // interactive
     case showFilters:

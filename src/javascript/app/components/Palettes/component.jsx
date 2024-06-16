@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Palette from '../Palette';
 import SVG from '../SVG';
+import usePaletteFromFile from '../../../hooks/usePaletteFromFile';
 
 const tabs = {
   all: {
@@ -20,7 +21,7 @@ const tabs = {
 };
 
 const Palettes = (props) => {
-
+  const { onInputChange } = usePaletteFromFile();
   const [selectedTab, setSelectedTab] = useState(Object.keys(tabs)[0]);
   const { filter, headline: currentHeadline } = tabs[selectedTab];
 
@@ -57,15 +58,29 @@ const Palettes = (props) => {
       <h2 className="palettes__headline">
         {currentHeadline}
         { selectedTab === 'own' ? (
-          <button
-            type="button"
-            className="button palettes__add-button"
-            onClick={() => {
-              props.newPalette();
-            }}
-          >
-            <SVG name="add" />
-          </button>
+          <>
+            <button
+              type="button"
+              title="New palette"
+              className="button palettes__add-button"
+              onClick={() => {
+                props.newPalette();
+              }}
+            >
+              <SVG name="add" />
+            </button>
+            <label
+              title="New palette from file"
+              className="button palettes__add-button"
+            >
+              <SVG name="file-add" />
+              <input
+                type="file"
+                hidden
+                onChange={onInputChange}
+              />
+            </label>
+          </>
         ) : null}
       </h2>
       <ul className="palettes">

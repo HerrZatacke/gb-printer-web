@@ -158,6 +158,13 @@ const definitions = [
     value: [],
   },
   {
+    // list of predefined palettes
+    key: 'pickColors',
+    saveLocally: false,
+    saveExport: [],
+    value: null,
+  },
+  {
     // list of plugins
     key: 'plugins',
     saveLocally: true,
