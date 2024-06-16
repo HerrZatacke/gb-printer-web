@@ -33,7 +33,7 @@ const Palettes = (props) => {
     paletteUsages,
   } = usePaletteSort();
 
-  const palettes = props.palettes.toSorted(sortFn);
+  const palettes = [...props.palettes].sort(sortFn);
 
   return (
     <>

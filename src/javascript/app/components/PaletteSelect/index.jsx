@@ -21,7 +21,7 @@ const PaletteSelect = ({
 
   const { sortFn } = usePaletteSort();
 
-  const palettes = palettesUnsorted.toSorted(sortFn);
+  const palettes = [...palettesUnsorted].sort(sortFn);
 
   // this option is used for assigning a single palette to an animation
   if (allowEmpty) {
