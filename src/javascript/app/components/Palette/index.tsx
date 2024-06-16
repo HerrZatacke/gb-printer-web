@@ -13,6 +13,7 @@ interface Props {
   name: string,
   isPredefined: boolean,
   palette: string[],
+  usage: number,
 }
 
 const Component = ({
@@ -20,6 +21,7 @@ const Component = ({
   name,
   isPredefined,
   palette,
+  usage,
 }: Props) => {
 
   const {
@@ -58,6 +60,7 @@ const Component = ({
         <div className="palette__name">
           {name}
           <span className="palette__shortname">{shortName}</span>
+          <span className="palette__usage">{usage ? `Used ${usage} times` : 'Not used'}</span>
         </div>
         <div className="palette__colors">
           <div className="palette__color" style={{ backgroundColor: palette[0] }} title={palette[0]}> </div>

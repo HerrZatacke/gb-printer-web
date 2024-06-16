@@ -13,6 +13,8 @@ import { getEnv } from '../../../../../tools/getEnv';
 import exportFrameModes from '../../../../../consts/exportFrameModes';
 import dateFormatLocale from '../../../../../tools/dateFormatLocale';
 import { useGenericSettings } from './useGenericSettings';
+import usePaletteSort from '../../../../../hooks/usePaletteSort';
+import { PaletteSortMode } from '../../../../../consts/paletteSortModes';
 
 const GenericSettings = () => {
   const {
@@ -52,6 +54,12 @@ const GenericSettings = () => {
   const [printerParams, setPrinterParams] = useState<string>(statePrinterParams);
   const [localeCodes, setLocaleCodes] = useState<ILocale[]>([]);
   const [now] = useState(dayjs());
+
+  const {
+    sortPalettes,
+    setSortPalettes,
+    paletteSortOptions,
+  } = usePaletteSort();
 
   useEffect(() => {
     const setLocales = async () => {
@@ -325,6 +333,28 @@ const GenericSettings = () => {
           <SVG name="checkmark" />
         </span>
       </label>
+
+      <div className="inputgroup">
+        <label htmlFor="settings-sort-palettes" className="inputgroup__label">
+          Sort Palettes
+        </label>
+        <select
+          id="settings-sort-palettes"
+          className="inputgroup__input inputgroup__input--select"
+          value={sortPalettes}
+          onChange={(ev) => {
+            setSortPalettes(ev.target.value as PaletteSortMode);
+          }}
+        >
+          {
+            paletteSortOptions.map(({ label, value }) => (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            ))
+          }
+        </select>
+      </div>
 
       <div className="inputgroup">
         <label htmlFor="settings-preferred-locale" className="inputgroup__label">

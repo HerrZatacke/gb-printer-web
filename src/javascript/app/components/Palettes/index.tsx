@@ -7,6 +7,8 @@ import { Palette as PaletteT } from '../../../../types/Palette';
 import './index.scss';
 import { usePalettes } from './usePalettes';
 import usePaletteFromFile from '../../../hooks/usePaletteFromFile';
+import usePaletteSort from '../../../hooks/usePaletteSort';
+import { PaletteSortMode } from '../../../consts/paletteSortModes';
 
 interface Tab {
   id: string,
@@ -38,9 +40,19 @@ const Palettes = () => {
   const { filter, headline: currentHeadline, id } = tabs[selectedTabIndex || 0];
 
   const {
-    palettes,
+    palettes: palettesUnsorted,
     newPalette,
   } = usePalettes();
+
+  const {
+    sortFn,
+    sortPalettes,
+    setSortPalettes,
+    paletteSortOptions,
+    paletteUsages,
+  } = usePaletteSort();
+
+  const palettes = [...palettesUnsorted].sort(sortFn);
 
   return (
     <>
@@ -101,6 +113,29 @@ const Palettes = () => {
           </>
         ) : null}
       </h2>
+
+      <div className="inputgroup">
+        <label htmlFor="settings-sort-palettes" className="inputgroup__label">
+          Sort Palettes
+        </label>
+        <select
+          id="settings-sort-palettes"
+          className="inputgroup__input inputgroup__input--select"
+          value={sortPalettes}
+          onChange={(ev) => {
+            setSortPalettes(ev.target.value as PaletteSortMode);
+          }}
+        >
+          {
+            paletteSortOptions.map(({ label, value }) => (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+
       <ul className="palettes">
         {
           palettes.filter(filter).map((palette) => (
@@ -110,6 +145,7 @@ const Palettes = () => {
               isPredefined={palette.isPredefined || false}
               shortName={palette.shortName}
               palette={palette.palette}
+              usage={paletteUsages[palette.shortName] || 0}
             />
           ))
         }

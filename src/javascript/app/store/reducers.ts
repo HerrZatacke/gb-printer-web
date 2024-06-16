@@ -48,6 +48,7 @@ import recentImports from './reducers/recentImportsReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
+import sortPalettes from './reducers/sortPalettesReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import syncBusy from './reducers/syncBusyReducer';
 import syncLastUpdate from './reducers/syncLastUpdateReducer';
@@ -72,6 +73,7 @@ import { VideoParams } from '../../../types/VideoParams';
 import { QueueImage } from '../../../types/QueueImage';
 import { PrinterInfo } from '../../../types/Printer';
 import { PrinterFunction } from '../../consts/printerFunction';
+import { PaletteSortMode } from '../../consts/paletteSortModes';
 
 export interface Reducers extends ReducersMapObject {
   activePalette: Reducer<string | undefined>,
@@ -121,6 +123,7 @@ export interface Reducers extends ReducersMapObject {
   rgbnImages: Reducer<RGBNHashes | null>,
   savFrameTypes: Reducer<string>,
   sortBy: Reducer<string>,
+  sortPalettes: Reducer<PaletteSortMode>
   sortOptionsVisible: Reducer<boolean>,
   syncBusy: Reducer<boolean>,
   syncLastUpdate: Reducer<SyncLastUpdate>,
@@ -181,6 +184,7 @@ const reducers: ReducersMapObject = {
   rgbnImages,
   savFrameTypes,
   sortBy,
+  sortPalettes,
   sortOptionsVisible,
   syncBusy,
   syncLastUpdate,

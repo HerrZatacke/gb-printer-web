@@ -18,6 +18,7 @@ import { WindowDimensions } from '../../../types/WindowDimensions';
 import { PrinterInfo } from '../../../types/Printer';
 import { PrinterFunction } from '../../consts/printerFunction';
 import { PickColors } from '../../../types/PickColors';
+import { PaletteSortMode } from '../../consts/paletteSortModes';
 
 // ToDo: infer from store somehow...?
 export interface State {
@@ -69,6 +70,7 @@ export interface State {
   rgbnImages: RGBNHashes | null,
   savFrameTypes: string,
   sortBy: string,
+  sortPalettes: PaletteSortMode,
   sortOptionsVisible: boolean,
   syncBusy: boolean,
   syncLastUpdate: SyncLastUpdate,

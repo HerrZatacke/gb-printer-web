@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
 import { State } from '../../store/State';
-import { Palette } from '../../../../types/Palette';
+import usePaletteSort from '../../../hooks/usePaletteSort';
 
 interface Props {
   value: string,
@@ -28,7 +28,11 @@ const PaletteSelect = ({
 }: Props) => {
   const [initiallySelected, setInitiallySelected] = useState<string>(value);
 
-  const palettes: Palette[] = [...useSelector((state: State) => (state.palettes))];
+  const palettesUnsorted = useSelector((state: State) => (state.palettes));
+
+  const { sortFn } = usePaletteSort();
+
+  const palettes = [...palettesUnsorted].sort(sortFn);
 
   // this option is used for assigning a single palette to an animation
   if (allowEmpty) {

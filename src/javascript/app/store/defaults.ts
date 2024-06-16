@@ -123,6 +123,13 @@ const definitions: StorePropertyDefault[] = [
     value: 'created_asc',
   },
   {
+    // sort criteria
+    key: 'sortPalettes',
+    saveLocally: true,
+    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
+    value: 'default_desc',
+  },
+  {
     // how frame frame will be handled when exporting
     key: 'handleExportFrame',
     saveLocally: true,
