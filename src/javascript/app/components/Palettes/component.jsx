@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import Palette from '../Palette';
 import SVG from '../SVG';
 import usePaletteFromFile from '../../../hooks/usePaletteFromFile';
+import usePaletteSort from '../../../hooks/usePaletteSort';
 
 const tabs = {
   all: {
@@ -24,6 +25,15 @@ const Palettes = (props) => {
   const { onInputChange } = usePaletteFromFile();
   const [selectedTab, setSelectedTab] = useState(Object.keys(tabs)[0]);
   const { filter, headline: currentHeadline } = tabs[selectedTab];
+  const {
+    sortFn,
+    sortPalettes,
+    setSortPalettes,
+    paletteSortOptions,
+    paletteUsages,
+  } = usePaletteSort();
+
+  const palettes = props.palettes.toSorted(sortFn);
 
   return (
     <>
@@ -83,15 +93,39 @@ const Palettes = (props) => {
           </>
         ) : null}
       </h2>
+
+      <div className="inputgroup">
+        <label htmlFor="settings-sort-palettes" className="inputgroup__label">
+          Sort Palettes
+        </label>
+        <select
+          id="settings-sort-palettes"
+          className="inputgroup__input inputgroup__input--select"
+          value={sortPalettes}
+          onChange={(ev) => {
+            setSortPalettes(ev.target.value);
+          }}
+        >
+          {
+            paletteSortOptions.map(({ label, value }) => (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+
       <ul className="palettes">
         {
-          props.palettes.filter(filter).map((palette) => (
+          palettes.filter(filter).map((palette) => (
             <Palette
               key={palette.shortName}
               name={palette.name}
               isPredefined={palette.isPredefined || false}
               shortName={palette.shortName}
               palette={palette.palette}
+              usage={paletteUsages[palette.shortName] || 0}
             />
           ))
         }

@@ -47,6 +47,7 @@ import recentImports from './reducers/recentImportsReducer';
 import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
+import sortPalettes from './reducers/sortPalettesReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import syncBusy from './reducers/syncBusyReducer';
 import syncLastUpdate from './reducers/syncLastUpdateReducer';
@@ -106,6 +107,7 @@ export default combineReducers({
   rgbnImages,
   savFrameTypes,
   sortBy,
+  sortPalettes,
   sortOptionsVisible,
   syncBusy,
   syncLastUpdate,

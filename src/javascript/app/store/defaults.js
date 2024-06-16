@@ -109,6 +109,13 @@ const definitions = [
     value: 'created_asc',
   },
   {
+    // sort criteria
+    key: 'sortPalettes',
+    saveLocally: true,
+    saveExport: ['settings', 'remote'],
+    value: 'default_desc',
+  },
+  {
     // how frame frame will be handled when exporting
     key: 'handleExportFrame',
     saveLocally: true,
