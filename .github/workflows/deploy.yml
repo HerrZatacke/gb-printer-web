@@ -30,7 +30,7 @@ jobs:
 
       - name: Install npm dependencies 🔗
         if: steps.checkTag.outputs.exists == 'false'
-        run: npm clear cache -f && npm install
+        run: npm cache clear -f && npm install
 
       - name: Create config.json 📃
         if: steps.checkTag.outputs.exists == 'false'
