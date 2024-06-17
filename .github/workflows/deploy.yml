@@ -10,13 +10,13 @@ jobs:
 
     steps:
       - name: Checkout 💳
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v4.1.7
 
       - name: Setup node 💻
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v4.0.1
         with:
           node-version: '20.x'
-          cache: 'npm'
+#          cache: 'npm'
 
       - name: Add release version to environment variables 🌍
         run: |
@@ -24,7 +24,7 @@ jobs:
 
       - name: Check if tag already exists 🏷
         id: checkTag
-        uses: mukunku/tag-exists-action@v1.2.0
+        uses: mukunku/tag-exists-action@v1.6.0
         with:
           tag: ${{ env.RELEASE_VERSION }}
 
@@ -50,14 +50,14 @@ jobs:
           cd ..
 
       - name: Deploy to GitHub-Pages 🛳
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
         if: steps.checkTag.outputs.exists == 'false'
         with:
           branch: gh-pages
           folder: dist
 
       - name: Create Release 🎉 🥳
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2.0.5
         if: steps.checkTag.outputs.exists == 'false'
         with:
           tag_name: ${{ env.RELEASE_VERSION }}
