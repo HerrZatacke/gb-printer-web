@@ -1,6 +1,0 @@
-/*!
-  Port function taken from here
-  https://github.com/webusb/arduino/blob/gh-pages/demos/serial.js
- */
-
-/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
