@@ -10,7 +10,7 @@
     "host": "npm run build && node ./scripts/host.js",
     "build": "npm run build:clean && npm run build:webpack && npm run build:validate && npm run build:deploy",
     "build:clean": "rimraf dist/*",
-    "build:webpack": "webpack --display-error-details --config ./scripts/webpack.prod.js",
+    "build:webpack": "webpack --config ./scripts/webpack.prod.js",
     "build:validate": "node ./scripts/validatebuild.js",
     "build:deploy": "node ./scripts/deploy.js",
     "svgo": "svgo ./src/assets/icons/",
