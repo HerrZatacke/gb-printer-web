@@ -7,10 +7,10 @@ import transformImage from './transformImage';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
-import { FileMetaData, ImportSavFn, ImportSavParams, WithTiles } from './types';
-import { ImportQueueAddMultiAction } from '../../../types/actions/QueueActions';
+import type { FileMetaData, ImportSavFn, ImportSavParams, WithTiles } from './types';
+import type { ImportQueueAddMultiAction } from '../../../types/actions/QueueActions';
+import type { ImportItem } from '../../../types/ImportItem';
 import { reduceItems } from '../reduceArray';
-import { ImportItem } from '../../../types/ImportItem';
 import { randomId } from '../randomId';
 
 const sortByAlbumIndex = sortBy<(FileMetaData & WithTiles)>('albumIndex');

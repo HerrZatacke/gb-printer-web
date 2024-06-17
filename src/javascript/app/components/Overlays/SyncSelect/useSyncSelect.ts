@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
-import { State } from '../../../store/State';
-import { SyncLastUpdate } from '../../../../../types/Sync';
-import { StorageSyncCancelAction, StorageSyncStartAction } from '../../../../../types/actions/LogActions';
+import type { State } from '../../../store/State';
+import type { SyncLastUpdate } from '../../../../../types/Sync';
+import type { StorageSyncCancelAction, StorageSyncStartAction } from '../../../../../types/actions/LogActions';
 
 
 interface UseSyncSelect {

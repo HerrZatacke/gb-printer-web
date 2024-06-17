@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import useStoragePersist from './useStoragePersist';
 import useHashCleanup from '../../../../../tools/hashCleanup';
 import { Actions } from '../../../../store/actions';
-import { ExportJSONAction } from '../../../../../../types/actions/StorageActions';
+import type { ExportJSONAction } from '../../../../../../types/actions/StorageActions';
 import { ExportTypes } from '../../../../../consts/exportTypes';
 
-const ExportSettings = () => {
+function ExportSettings() {
   const dispatch = useDispatch();
   const { hashCleanup, cleanupBusy } = useHashCleanup();
 
@@ -59,6 +59,6 @@ const ExportSettings = () => {
       </button>
     </div>
   );
-};
+}
 
 export default ExportSettings;

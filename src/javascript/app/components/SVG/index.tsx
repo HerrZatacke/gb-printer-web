@@ -7,7 +7,7 @@ interface Props {
   className?: string,
 }
 
-const SVG = (props: Props) => {
+function SVG(props: Props) {
 
   const className = classNames('svg', `svg--${props.name}`, props.className);
 
@@ -245,6 +245,6 @@ const SVG = (props: Props) => {
     default:
       return null;
   }
-};
+}
 
 export default SVG;

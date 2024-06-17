@@ -5,7 +5,7 @@ import Input, { InputType } from '../../../Input';
 import cleanPath from '../../../../../tools/cleanPath';
 import { useDropboxSettings } from './useDropboxSettings';
 
-const DropboxSettings = () => {
+function DropboxSettings() {
   const {
     use,
     loggedIn,
@@ -132,6 +132,6 @@ const DropboxSettings = () => {
       }
     </>
   );
-};
+}
 
 export default DropboxSettings;

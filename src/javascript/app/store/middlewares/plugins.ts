@@ -1,17 +1,18 @@
 import Queue from 'promise-queue';
 import { saveAs } from 'file-saver';
-import { RGBNDecoder, Decoder, RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import { RGBNDecoder, Decoder } from 'gb-image-decoder';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { Palette } from '../../../../types/Palette';
-import { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
-import { TypedStore } from '../State';
-import { ProgressExecutePluginAction } from '../../../../types/actions/ProgressActions';
-import { PluginUpdatePropertiesAction } from '../../../../types/actions/PluginActions';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { Palette } from '../../../../types/Palette';
+import type { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
+import type { TypedStore } from '../State';
+import type { ProgressExecutePluginAction } from '../../../../types/actions/ProgressActions';
+import type { PluginUpdatePropertiesAction } from '../../../../types/actions/PluginActions';
 
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,

@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { SavFrameTypesAction } from '../../../../types/actions/FrameActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { SavFrameTypesAction } from '../../../../types/actions/FrameActions';
 
 const savFrameTypesReducer = (value = 'int', action: SavFrameTypesAction | GlobalUpdateAction): string => {
   switch (action.type) {

@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import useDateTime from '../../../hooks/useDateTime';
-import { Rotation } from '../../../tools/applyRotation';
-import { ImageMetadata, RGBNHashes } from '../../../../types/Image';
+import type { Rotation } from '../../../tools/applyRotation';
+import type { ImageMetadata, RGBNHashes } from '../../../../types/Image';
 
 import './index.scss';
 
@@ -45,7 +45,7 @@ const rotations: RotationLabel[] = [
   },
 ];
 
-const ImageMeta = ({
+function ImageMeta({
   created,
   hash,
   hashes,
@@ -53,7 +53,7 @@ const ImageMeta = ({
   meta,
   rotation,
   updateRotation,
-}: Props) => {
+}: Props) {
   const { date, time, setDate, setTime, updateDate, updateTime } = useDateTime(updateCreated, created);
 
   const tableData: ImageMetadata & { hash: string } = {
@@ -178,6 +178,6 @@ const ImageMeta = ({
       </table>
     </div>
   );
-};
+}
 
 export default ImageMeta;

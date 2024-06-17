@@ -1,10 +1,11 @@
 import EventEmitter from 'events';
-import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
+import type { RestEndpointMethodTypes } from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 
 import dayjs from 'dayjs';
 import dateFormatLocale from '../dateFormatLocale';
-import { AddToQueueFn, GitStorageSettings, GitUploadResult, UploadFile } from '../../../types/Sync';
-import { RepoFile, RepoTasks } from '../../../types/Export';
+import type { AddToQueueFn, GitStorageSettings, GitUploadResult, UploadFile } from '../../../types/Sync';
+import type { RepoFile, RepoTasks } from '../../../types/Export';
 import readFileAs, { ReadAs } from '../readFileAs';
 
 interface GitFile {

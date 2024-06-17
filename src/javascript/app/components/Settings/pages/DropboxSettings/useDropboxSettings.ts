@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../../store/actions';
-import { State } from '../../../../store/State';
-import {
+import type { State } from '../../../../store/State';
+import type {
   DropboxLogoutAction,
   DropboxSetStorageAction,
   DropboxStartAuthAction,
 } from '../../../../../../types/actions/StorageActions';
-import { DropBoxSettings } from '../../../../../../types/Sync';
+import type { DropBoxSettings } from '../../../../../../types/Sync';
 
 interface UseDropboxSettings {
   use: boolean,

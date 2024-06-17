@@ -1,5 +1,5 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { PickColors } from '../PickColors';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { PickColors } from '../PickColors';
 
 export interface SetPickColorsAction {
   type: Actions.SET_PICK_COLORS,

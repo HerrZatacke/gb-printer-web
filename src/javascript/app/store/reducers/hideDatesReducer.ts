@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { HideDatesAction } from '../../../../types/actions/GlobalActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { HideDatesAction } from '../../../../types/actions/GlobalActions';
 
 const hideDatesReducer = (value = false, action: HideDatesAction | GlobalUpdateAction): boolean => {
   switch (action.type) {

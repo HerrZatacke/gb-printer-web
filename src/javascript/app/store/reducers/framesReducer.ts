@@ -1,9 +1,9 @@
 /* eslint-disable default-param-last */
 import uniqueBy from '../../../tools/unique/by';
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { Frame } from '../../../../types/Frame';
-import { AddFrameAction, DeleteFrameAction, UpdateFrameAction } from '../../../../types/actions/FrameActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { Frame } from '../../../../types/Frame';
+import type { AddFrameAction, DeleteFrameAction, UpdateFrameAction } from '../../../../types/actions/FrameActions';
 import sortBy from '../../../tools/sortby';
 
 const uniqueById = uniqueBy<Frame>('id');

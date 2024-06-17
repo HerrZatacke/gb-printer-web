@@ -6,7 +6,7 @@ import ImageRender from '../../ImageRender';
 import './index.scss';
 import { useEditPalette } from './useEditPalette';
 
-const EditPalette = () => {
+function EditPalette() {
 
   const {
     canConfirm,
@@ -94,6 +94,6 @@ const EditPalette = () => {
       </div>
     </Lightbox>
   );
-};
+}
 
 export default EditPalette;

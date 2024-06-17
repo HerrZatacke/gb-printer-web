@@ -6,10 +6,10 @@ import uniqueBy from '../unique/by';
 import cleanUrl from '../cleanUrl';
 import hashFrames from './hashFrames';
 import backupFrames from './backupFrames';
-import { State } from '../../app/store/State';
-import { Palette } from '../../../types/Palette';
+import type { State } from '../../app/store/State';
+import type { Palette } from '../../../types/Palette';
 import { isRGBNImage } from '../isRGBNImage';
-import { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
+import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 
 const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> => {
 

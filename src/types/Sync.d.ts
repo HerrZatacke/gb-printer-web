@@ -1,4 +1,4 @@
-import { files as Files } from 'dropbox/types/dropbox_types';
+import type { files as Files } from 'dropbox/types/dropbox_types';
 
 export type DBFolderAll = Files.FileMetadataReference | Files.FolderMetadataReference | Files.DeletedMetadataReference;
 export type DBFolderFile = Files.FileMetadataReference;

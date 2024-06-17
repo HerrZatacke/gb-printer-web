@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import { UpdateRGBNPartAction } from '../../../../types/actions/ImageActions';
-import { RGBNHashes } from '../../../../types/Image';
+import type { State } from '../../store/State';
+import type { UpdateRGBNPartAction } from '../../../../types/actions/ImageActions';
+import type { RGBNHashes } from '../../../../types/Image';
 
 interface UseRGBNImage {
   isR: boolean,

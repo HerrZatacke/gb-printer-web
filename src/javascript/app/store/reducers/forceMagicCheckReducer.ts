@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { ForceMagicCheckAction } from '../../../../types/actions/StorageActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { ForceMagicCheckAction } from '../../../../types/actions/StorageActions';
 
 const forceMagicCheckReducer = (value = true, action: ForceMagicCheckAction | GlobalUpdateAction): boolean => {
   switch (action.type) {

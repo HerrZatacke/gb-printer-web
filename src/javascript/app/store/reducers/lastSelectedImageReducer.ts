@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
-import { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
-import { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
+import type { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
+import type { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
+import type { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
 
 const lastSelectedImageReducer = (
   value: string | null = null,

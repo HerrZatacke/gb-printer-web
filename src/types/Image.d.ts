@@ -1,5 +1,5 @@
-import { RGBNPalette } from 'gb-image-decoder';
-import { Rotation } from '../javascript/tools/applyRotation';
+import type { RGBNPalette } from 'gb-image-decoder';
+import type { Rotation } from '../javascript/tools/applyRotation';
 
 export interface ImageMetadata extends Record<string, unknown>{
   romType?: string,

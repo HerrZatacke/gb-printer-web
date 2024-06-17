@@ -1,7 +1,7 @@
 import getHandleFileImport from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { DragoverAction, ErrorAction } from '../../../../types/actions/GlobalActions';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { DragoverAction, ErrorAction } from '../../../../types/actions/GlobalActions';
 
 const fileDrop: MiddlewareWithState = (store) => {
   const root = document.querySelector('#app');

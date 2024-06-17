@@ -1,5 +1,5 @@
 import { BlendMode } from 'gb-image-decoder';
-import { Palette } from '../../types/Palette';
+import type { Palette } from '../../types/Palette';
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss:SSS';
 const dateFormatInput = 'YYYY-MM-DD';

@@ -16,7 +16,7 @@ interface Props {
   palette: string[],
 }
 
-const ImportPreviewImage = ({
+function ImportPreviewImage({
   imageData,
   scaleFactor,
   width,
@@ -25,7 +25,7 @@ const ImportPreviewImage = ({
   palette,
   dither,
   contrastBaseValues,
-}: Props) => {
+}: Props) {
 
   const canvas = useRef(null);
   const originalCanvas = useRef(null);
@@ -73,6 +73,6 @@ const ImportPreviewImage = ({
       }
     </div>
   );
-};
+}
 
 export default ImportPreviewImage;

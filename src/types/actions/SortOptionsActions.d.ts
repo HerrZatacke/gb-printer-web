@@ -1,4 +1,4 @@
-import { Actions } from '../../javascript/app/store/actions';
+import type { Actions } from '../../javascript/app/store/actions';
 
 export interface SortOptionsSetAction {
   type: Actions.SHOW_SORT_OPTIONS,

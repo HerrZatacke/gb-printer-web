@@ -1,4 +1,4 @@
-import { State } from '../../app/store/State';
+import type { State } from '../../app/store/State';
 
 const getFrameHashesForExport = (what: 'frames' | 'framegroup', { frames }: State, frameSetID = ''): string[] => {
 

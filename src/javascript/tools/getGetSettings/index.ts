@@ -1,4 +1,4 @@
-import { definitions, StorePropertyExportable } from '../../app/store/defaults';
+import { definitions } from '../../app/store/defaults';
 import { ExportTypes } from '../../consts/exportTypes';
 import getImages from './getImages';
 import getFrames from './getFrames';
@@ -6,12 +6,13 @@ import getImageHashesForExport from './getImageHashesForExport';
 import getFrameHashesForExport from './getFrameHashesForExport';
 import { getEnv } from '../getEnv';
 import getFrameGroups from '../getFrameGroups';
-import { ExportableState, NoExport, TypedStore } from '../../app/store/State';
-import { GetSettingsOptions } from '../../../types/Sync';
-import { Image } from '../../../types/Image';
-import { Frame } from '../../../types/Frame';
-import { Palette } from '../../../types/Palette';
-import { FrameGroup } from '../../../types/FrameGroup';
+import type { StorePropertyExportable } from '../../app/store/defaults';
+import type { ExportableState, NoExport, TypedStore } from '../../app/store/State';
+import type { GetSettingsOptions } from '../../../types/Sync';
+import type { Image } from '../../../types/Image';
+import type { Frame } from '../../../types/Frame';
+import type { Palette } from '../../../types/Palette';
+import type { FrameGroup } from '../../../types/FrameGroup';
 
 const getGetSettings = (store: TypedStore) => async (
   what: ExportTypes,

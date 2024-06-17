@@ -12,7 +12,7 @@ interface Props {
   passive?: boolean,
 }
 
-const ConnectSerial = ({ inline, passive }: Props) => {
+function ConnectSerial({ inline, passive }: Props) {
   const title = 'WebUSB Serial devices';
 
   const {
@@ -97,6 +97,6 @@ const ConnectSerial = ({ inline, passive }: Props) => {
       {content}
     </Lightbox>
   );
-};
+}
 
 export default ConnectSerial;

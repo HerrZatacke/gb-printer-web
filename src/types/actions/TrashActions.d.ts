@@ -1,4 +1,4 @@
-import { Actions } from '../../javascript/app/store/actions';
+import type { Actions } from '../../javascript/app/store/actions';
 
 export interface TrashShowHideAction {
   type: Actions.SHOW_HIDE_TRASH,

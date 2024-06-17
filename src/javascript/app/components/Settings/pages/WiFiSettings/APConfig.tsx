@@ -15,41 +15,43 @@ interface Props extends APConfig {
   disabled: boolean,
 }
 
-const APConfig = (props: Props) => (
-  <div
-    className={
-      classnames('wifi-settings__ap-group', {
-        'wifi-settings__ap-group--delete': props.delete,
-      })
-    }
-  >
-    <Input
-      id={`${props.id}-settings-ap-ssid`}
-      labelText="Network SSID"
-      type={InputType.TEXT}
-      value={props.ssid}
-      disabled={!props.isNew || props.disabled}
-      onChange={(ssid) => {
-        props.update({ ssid });
-      }}
-      buttonOnClick={() => {
-        props.update({
-          delete: !props.delete,
-        });
-      }}
-      buttonIcon="delete"
-    />
-    <Input
-      id={`${props.id}-settings-ap-psk`}
-      labelText="Network Password"
-      type={InputType.PASSWORD}
-      value={props.psk}
-      disabled={props.disabled}
-      onChange={(psk) => {
-        props.update({ psk });
-      }}
-    />
-  </div>
-);
+function APConfig(props: Props) {
+  return (
+    <div
+      className={
+        classnames('wifi-settings__ap-group', {
+          'wifi-settings__ap-group--delete': props.delete,
+        })
+      }
+    >
+      <Input
+        id={`${props.id}-settings-ap-ssid`}
+        labelText="Network SSID"
+        type={InputType.TEXT}
+        value={props.ssid}
+        disabled={!props.isNew || props.disabled}
+        onChange={(ssid) => {
+          props.update({ ssid });
+        }}
+        buttonOnClick={() => {
+          props.update({
+            delete: !props.delete,
+          });
+        }}
+        buttonIcon="delete"
+      />
+      <Input
+        id={`${props.id}-settings-ap-psk`}
+        labelText="Network Password"
+        type={InputType.PASSWORD}
+        value={props.psk}
+        disabled={props.disabled}
+        onChange={(psk) => {
+          props.update({ psk });
+        }}
+      />
+    </div>
+  );
+}
 
 export default APConfig;

@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
 import { videoParamsWithDefaults } from '../../../store/middlewares/animate';
-import { State } from '../../../store/State';
-import { VideoParams } from '../../../../../types/VideoParams';
-import {
+import type { State } from '../../../store/State';
+import type { VideoParams } from '../../../../../types/VideoParams';
+import type {
   AnimateImagesAction,
   CancelAnimateImagesAction,
   SetVideoParamsAction,

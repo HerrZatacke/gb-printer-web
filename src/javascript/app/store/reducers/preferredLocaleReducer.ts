@@ -2,7 +2,7 @@
 import dayjs from 'dayjs';
 import { Actions } from '../actions';
 import dateFormatLocale from '../../../tools/dateFormatLocale';
-import { PreferredLocaleAction } from '../../../../types/actions/GlobalActions';
+import type { PreferredLocaleAction } from '../../../../types/actions/GlobalActions';
 
 const preferredLocaleReducer = (value = navigator.language, action: PreferredLocaleAction): string => {
   switch (action.type) {

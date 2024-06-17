@@ -1,8 +1,8 @@
 import screenfull from 'screenfull';
 import getFilteredImages from '../../../tools/getFilteredImages';
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import {
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type {
   IsFullscreenAction,
   SetLightboxImageAction,
   SetLightboxNextAction,

@@ -102,7 +102,7 @@ const saveSettings = async (
   getSettings(setWifiConfig, setStatus);
 };
 
-const WiFiSettings = () => {
+function WiFiSettings() {
 
   const ref = useRef(null);
   const [wifiConfig, setWifiConfig] = useState<WiFiConfig>();
@@ -246,6 +246,6 @@ const WiFiSettings = () => {
       </div>
     </div>
   );
-};
+}
 
 export default WiFiSettings;

@@ -2,9 +2,9 @@ import { Actions } from '../../app/store/actions';
 import readFileAs, { ReadAs } from '../readFileAs';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
-import { ImportQueueAddAction } from '../../../types/actions/QueueActions';
-import { TypedStore } from '../../app/store/State';
 import { randomId } from '../randomId';
+import type { ImportQueueAddAction } from '../../../types/actions/QueueActions';
+import type { TypedStore } from '../../app/store/State';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer: Uint8Array) => (

@@ -1,6 +1,6 @@
 import Queue from 'promise-queue';
 import fetchDumpRetry from '../fetchDumpRetry';
-import {
+import type {
   PrinterImages,
   PrinterParams,
   BlobResponse,

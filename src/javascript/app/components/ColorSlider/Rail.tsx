@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { GetRailProps } from 'react-compound-slider';
+import type { GetRailProps } from 'react-compound-slider';
 
 interface Props {
   getRailProps: GetRailProps,
 }
 
-const Rail = ({ getRailProps }: Props) => {
+function Rail({ getRailProps }: Props) {
   const { onMouseDown, onTouchStart } = getRailProps();
   return (
     <button
@@ -19,7 +19,7 @@ const Rail = ({ getRailProps }: Props) => {
       <div className="color-slider__rail-inner" />
     </button>
   );
-};
+}
 
 Rail.propTypes = {
   getRailProps: PropTypes.func.isRequired,

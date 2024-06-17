@@ -7,29 +7,31 @@ interface Props {
   editFrame: () => void,
 }
 
-const FrameButtons = ({ deleteFrame, editFrame }: Props) => (
-  <div
-    className="frame-buttons"
-    onClick={(ev) => {
-      ev.stopPropagation();
-    }}
-    role="presentation"
-  >
-    <button
-      type="button"
-      className="frame-buttons__button"
-      onClick={deleteFrame}
+function FrameButtons({ deleteFrame, editFrame }: Props) {
+  return (
+    <div
+      className="frame-buttons"
+      onClick={(ev) => {
+        ev.stopPropagation();
+      }}
+      role="presentation"
     >
-      <SVG name="delete" />
-    </button>
-    <button
-      type="button"
-      className="frame-buttons__button"
-      onClick={editFrame}
-    >
-      <SVG name="edit" />
-    </button>
-  </div>
-);
+      <button
+        type="button"
+        className="frame-buttons__button"
+        onClick={deleteFrame}
+      >
+        <SVG name="delete" />
+      </button>
+      <button
+        type="button"
+        className="frame-buttons__button"
+        onClick={editFrame}
+      >
+        <SVG name="edit" />
+      </button>
+    </div>
+  );
+}
 
 export default FrameButtons;

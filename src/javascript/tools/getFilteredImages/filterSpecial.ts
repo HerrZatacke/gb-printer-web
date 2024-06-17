@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { SpecialTags } from '../../consts/SpecialTags';
 import { dateFormat } from '../../app/defaults';
-import { RecentImport } from '../../../types/Sync';
-import { Image } from '../../../types/Image';
+import type { RecentImport } from '../../../types/Sync';
+import type { Image } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 
 const filterSpecial = (

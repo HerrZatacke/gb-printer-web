@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
+import type { MutableRefObject } from 'react';
 import isTouchDevice from '../tools/isTouchDevice';
 
 interface UseAutoFocus {
-  autofocusRef: React.MutableRefObject<HTMLElement | undefined>
+  autofocusRef: MutableRefObject<HTMLElement | undefined>
 }
 
 const useAutoFocus = (): UseAutoFocus => {

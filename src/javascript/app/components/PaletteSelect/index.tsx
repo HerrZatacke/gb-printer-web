@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
-import { State } from '../../store/State';
+import type { State } from '../../store/State';
 import usePaletteSort from '../../../hooks/usePaletteSort';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
   updateInvertPalette?: (invert: boolean) => void,
 }
 
-const PaletteSelect = ({
+function PaletteSelect({
   value,
   allowEmpty,
   invertPalette,
@@ -25,7 +25,7 @@ const PaletteSelect = ({
   selectLabel,
   onChange,
   updateInvertPalette,
-}: Props) => {
+}: Props) {
   const [initiallySelected, setInitiallySelected] = useState<string>(value);
 
   const palettesUnsorted = useSelector((state: State) => (state.palettes));
@@ -140,6 +140,6 @@ const PaletteSelect = ({
       )}
     </>
   );
-};
+}
 
 export default PaletteSelect;

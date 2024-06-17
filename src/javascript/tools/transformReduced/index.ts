@@ -3,9 +3,9 @@ import readFileAs, { ReadAs } from '../readFileAs';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
-import { TypedStore } from '../../app/store/State';
-import { ImportQueueAddAction } from '../../../types/actions/QueueActions';
 import { randomId } from '../randomId';
+import type { TypedStore } from '../../app/store/State';
+import type { ImportQueueAddAction } from '../../../types/actions/QueueActions';
 
 const transformReduced = ({ dispatch }: TypedStore) => async (file: File): Promise<boolean> => {
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);

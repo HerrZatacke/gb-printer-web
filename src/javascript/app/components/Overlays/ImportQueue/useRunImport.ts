@@ -6,12 +6,12 @@ import { Actions } from '../../../store/actions';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
 import { dateFormat } from '../../../defaults';
-import { State } from '../../../store/State';
-import { PaletteSetActiveAction } from '../../../../../types/actions/PaletteActions';
-import { ImportItem } from '../../../../../types/ImportItem';
-import { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
-import { TagChange } from '../../../../tools/applyTagChanges';
-import { AddImagesAction } from '../../../../../types/actions/ImageActions';
+import type { State } from '../../../store/State';
+import type { PaletteSetActiveAction } from '../../../../../types/actions/PaletteActions';
+import type { ImportItem } from '../../../../../types/ImportItem';
+import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
+import type { TagChange } from '../../../../tools/applyTagChanges';
+import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
 
 interface UseRunImport {
   importQueue: ImportItem[],

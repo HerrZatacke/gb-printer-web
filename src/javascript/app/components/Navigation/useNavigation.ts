@@ -2,10 +2,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import WebUSBSerial from '../../../tools/WebUSBSerial';
 import WebSerial from '../../../tools/WebSerial';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import { SyncLastUpdate } from '../../../../types/Sync';
-import { StorageSyncSelectAction } from '../../../../types/actions/LogActions';
-import { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
+import type { State } from '../../store/State';
+import type { SyncLastUpdate } from '../../../../types/Sync';
+import type { StorageSyncSelectAction } from '../../../../types/actions/LogActions';
+import type { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
 
 interface UseNavigation {
   disableSerials: boolean,

@@ -1,9 +1,9 @@
-import { AnyAction, Dispatch } from 'redux';
+import type { AnyAction, Dispatch } from 'redux';
 import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { Palette } from '../../../../types/Palette';
-import { PaletteSetEditAction } from '../../../../types/actions/PaletteActions';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { Palette } from '../../../../types/Palette';
+import type { PaletteSetEditAction } from '../../../../types/actions/PaletteActions';
 
 const randomColor = (max: number): string => (
   [

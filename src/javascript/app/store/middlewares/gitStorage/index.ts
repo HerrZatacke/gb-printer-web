@@ -1,6 +1,6 @@
-import { AnyAction } from 'redux';
+import type { AnyAction } from 'redux';
 import { Actions } from '../../actions';
-import { MiddlewareWithState } from '../../../../../types/MiddlewareWithState';
+import type { MiddlewareWithState } from '../../../../../types/MiddlewareWithState';
 
 const gitStorage: MiddlewareWithState = (store) => {
 

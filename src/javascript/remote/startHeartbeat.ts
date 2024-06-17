@@ -1,4 +1,4 @@
-import { RemoteEnv, RemotePrinterEvent } from '../../types/Printer';
+import type { RemoteEnv, RemotePrinterEvent } from '../../types/Printer';
 
 const startHeartbeat = ({ targetWindow }: RemoteEnv, commands: string[]) => {
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette } from 'gb-image-decoder';
 import GameBoyImage from '../GameBoyImage';
 import FrameButtons from '../FrameButtons';
 import useFrame from './useFrame';
@@ -12,7 +12,7 @@ interface Props {
   palette: string[] | RGBNPalette,
 }
 
-const Frame = ({ frameId, name, palette }: Props) => {
+function Frame({ frameId, name, palette }: Props) {
   const {
     tiles,
     deleteFrame,
@@ -56,6 +56,6 @@ const Frame = ({ frameId, name, palette }: Props) => {
       />
     </li>
   );
-};
+}
 
 export default Frame;

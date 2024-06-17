@@ -1,6 +1,6 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { Palette } from '../Palette';
-import { PaletteSortMode } from '../../javascript/consts/paletteSortModes';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { Palette } from '../Palette';
+import type { PaletteSortMode } from '../../javascript/consts/paletteSortModes';
 
 export interface PaletteSetActiveAction {
   type: Actions.PALETTE_SET_ACTIVE,

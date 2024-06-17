@@ -1,6 +1,6 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { QueueImage } from '../QueueImage';
-import { ImportItem } from '../ImportItem';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { QueueImage } from '../QueueImage';
+import type { ImportItem } from '../ImportItem';
 
 export interface ImportQueueAddAction {
   type: Actions.IMPORTQUEUE_ADD,

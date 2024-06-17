@@ -3,7 +3,7 @@ import Lightbox from '../../Lightbox';
 import useTrashbin from '../../../../hooks/useTrashbin';
 import './index.scss';
 
-const Trashbin = () => {
+function Trashbin() {
   const {
     showTrash,
     purgeTrash,
@@ -65,6 +65,6 @@ const Trashbin = () => {
       </ul>
     </Lightbox>
   );
-};
+}
 
 export default Trashbin;

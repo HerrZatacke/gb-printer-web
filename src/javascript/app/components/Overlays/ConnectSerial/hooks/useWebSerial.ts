@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import WebSerial from '../../../../../tools/WebSerial';
 import useImportPlainText from '../../../../../hooks/useImportPlainText';
-import SerialPortEE from '../../../../../tools/WebSerial/SerialPort';
+import type SerialPortEE from '../../../../../tools/WebSerial/SerialPort';
 
 interface UseWebSerial {
   activePorts: SerialPortEE[]

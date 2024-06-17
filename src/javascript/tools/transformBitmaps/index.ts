@@ -1,10 +1,9 @@
 import { Actions } from '../../app/store/actions';
 import getImageData from './getImageData';
-import moveBitmapsToImport, {
-  DispatchBitmapsToImportFn,
-} from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
-import { TypedStore } from '../../app/store/State';
-import { BitmapQueueAddAction } from '../../../types/actions/QueueActions';
+import moveBitmapsToImport from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
+import type { DispatchBitmapsToImportFn } from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
+import type { TypedStore } from '../../app/store/State';
+import type { BitmapQueueAddAction } from '../../../types/actions/QueueActions';
 
 const getTransformBitmaps = ({ dispatch }: TypedStore) => {
   const dispatchBitmapsToImport: DispatchBitmapsToImportFn = moveBitmapsToImport(dispatch);

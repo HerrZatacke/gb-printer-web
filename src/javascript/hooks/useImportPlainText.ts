@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Actions } from '../app/store/actions';
-import { ImportFilesAction } from '../../types/actions/ImportActions';
+import type { ImportFilesAction } from '../../types/actions/ImportActions';
 
 const useImportPlainText = () => {
   const dispatch = useDispatch();

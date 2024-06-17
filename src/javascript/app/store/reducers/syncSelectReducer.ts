@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import {
+import type {
   LogStorageSyncDoneAction,
   StorageSyncCancelAction,
   StorageSyncSelectAction,

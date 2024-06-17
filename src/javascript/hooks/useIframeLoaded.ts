@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { State } from '../app/store/State';
+import type { State } from '../app/store/State';
 
 
 export interface UseIframeLoaded {

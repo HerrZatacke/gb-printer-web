@@ -1,14 +1,14 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import {
+import type {
   ProgressAnimateImagesAction,
   ProgressCreateGifAction,
   ProgressExecutePluginAction,
   ProgressPrinterProgressAction,
 } from '../../../../types/actions/ProgressActions';
-import { AddImagesAction } from '../../../../types/actions/ImageActions';
-import { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
-import { ConfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
+import type { AddImagesAction } from '../../../../types/actions/ImageActions';
+import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
+import type { ConfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
 
 export interface Progress {
   gif: number,

@@ -39,7 +39,7 @@ if (
   });
 }
 
-const Settings = () => {
+function Settings() {
   const matches = useMatches();
   const pathname = matches[2]?.pathname;
 
@@ -86,6 +86,6 @@ const Settings = () => {
       </ul>
     </div>
   );
-};
+}
 
 export default Settings;

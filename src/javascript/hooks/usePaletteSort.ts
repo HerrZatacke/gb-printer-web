@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../app/store/actions';
-import { PaletteSetSortOrderAction } from '../../types/actions/PaletteActions';
+import type { PaletteSetSortOrderAction } from '../../types/actions/PaletteActions';
 import { PaletteSortMode } from '../consts/paletteSortModes';
-import { State } from '../app/store/State';
-import { Palette } from '../../types/Palette';
+import type { State } from '../app/store/State';
+import type { Palette } from '../../types/Palette';
 import { isRGBNImage } from '../tools/isRGBNImage';
-import { Image, MonochromeImage } from '../../types/Image';
+import type { Image, MonochromeImage } from '../../types/Image';
 
 export interface PaletteSortOption {
   label: string,

@@ -17,7 +17,7 @@ interface Props {
   imageTitle?: string,
 }
 
-const GalleryImageButtons = ({ hash, buttons, isFavourite, imageTitle }: Props) => {
+function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) {
   const [pluginsActive, setPluginsActive] = useState(false);
 
   const {
@@ -131,6 +131,6 @@ const GalleryImageButtons = ({ hash, buttons, isFavourite, imageTitle }: Props) 
       ) : null}
     </div>
   );
-};
+}
 
 export default GalleryImageButtons;

@@ -2,14 +2,14 @@ import getFrameGroups from '../getFrameGroups';
 import { Actions } from '../../app/store/actions';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
-import { TypedStore } from '../../app/store/State';
-import {
-  DialogOption,
+import type { TypedStore } from '../../app/store/State';
+import type { DialogOption,
   DialogQuestion,
-  DialogResult,
+  DialogResult } from '../../../types/Dialog';
+import {
   DialoqQuestionType,
 } from '../../../types/Dialog';
-import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../types/actions/ConfirmActions';
+import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../types/actions/ConfirmActions';
 import { reduceItems } from '../reduceArray';
 
 const getTransformSav = (

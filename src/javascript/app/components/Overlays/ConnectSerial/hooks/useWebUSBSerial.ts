@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import WebUSBSerial from '../../../../../tools/WebUSBSerial';
 import useImportPlainText from '../../../../../hooks/useImportPlainText';
-import USBSerialPortEE from '../../../../../tools/WebUSBSerial/USBSerialPort';
+import type USBSerialPortEE from '../../../../../tools/WebUSBSerial/USBSerialPort';
 
 interface UseWebUSBSerial {
   activePorts: USBSerialPortEE[],

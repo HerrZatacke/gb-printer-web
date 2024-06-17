@@ -5,9 +5,9 @@ import GameBoyImage from '../../GameBoyImage';
 import SVG from '../../SVG';
 import { Actions } from '../../../store/actions';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
-import { State } from '../../../store/State';
-import { ImportItem } from '../../../../../types/ImportItem';
-import { FrameQueueAddAction, ImportQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
+import type { State } from '../../../store/State';
+import type { ImportItem } from '../../../../../types/ImportItem';
+import type { FrameQueueAddAction, ImportQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
 
 interface Props {
   importItem: ImportItem,

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../../store/State';
-import { GitStorageAction } from '../../../../../../types/actions/StorageActions';
+import type { State } from '../../../../store/State';
+import type { GitStorageAction } from '../../../../../../types/actions/StorageActions';
 import { Actions } from '../../../../store/actions';
-import { GitStorageSettings } from '../../../../../../types/Sync';
+import type { GitStorageSettings } from '../../../../../../types/Sync';
 
 interface UseGitStorage {
   gitStorage: GitStorageSettings,

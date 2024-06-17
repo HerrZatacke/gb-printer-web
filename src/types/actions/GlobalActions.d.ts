@@ -1,5 +1,5 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { WindowDimensions } from '../WindowDimensions';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { WindowDimensions } from '../WindowDimensions';
 
 export interface DragoverAction {
   type: Actions.IMPORT_DRAGOVER_START | Actions.IMPORT_DRAGOVER_END,

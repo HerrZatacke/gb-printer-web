@@ -1,6 +1,6 @@
 import React from 'react';
 import Input, { InputType } from '../../Input';
-import { FrameGroup } from '../../../../../types/FrameGroup';
+import type { FrameGroup } from '../../../../../types/FrameGroup';
 
 interface Props {
   frameIndex: number,

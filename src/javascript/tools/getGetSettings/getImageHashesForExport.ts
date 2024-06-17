@@ -1,4 +1,4 @@
-import { State } from '../../app/store/State';
+import type { State } from '../../app/store/State';
 
 const getImageHashesForExport = (what: 'images' | 'selected_images', { images, imageSelection }: State): string[] => {
 

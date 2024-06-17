@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import reducers from './reducers';
 import saveState from './middlewares/saveState';
 import middlewares from './middlewares';
-import { State } from './State';
+import type { State } from './State';
 
 // eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

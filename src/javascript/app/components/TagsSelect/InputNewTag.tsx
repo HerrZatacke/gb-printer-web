@@ -11,7 +11,7 @@ interface Props {
   direction?: string,
 }
 
-const InputNewTag = ({ updateTags, selectedTags, direction }: Props) => {
+function InputNewTag({ updateTags, selectedTags, direction }: Props) {
   const { availableTags } = useAvailableTags();
   const selectableTags = availableTags.filter((tag) => !selectedTags.includes(tag));
   const [inputItems, setInputItems] = useState(selectableTags);
@@ -120,6 +120,6 @@ const InputNewTag = ({ updateTags, selectedTags, direction }: Props) => {
       </ul>
     </li>
   );
-};
+}
 
 export default InputNewTag;

@@ -1,5 +1,5 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { VideoParams } from '../VideoParams';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { VideoParams } from '../VideoParams';
 
 export interface SetVideoParamsAction {
   type: Actions.SET_VIDEO_PARAMS,

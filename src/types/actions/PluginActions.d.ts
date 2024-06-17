@@ -1,5 +1,5 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { Plugin } from '../Plugin';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { Plugin } from '../Plugin';
 
 export interface PluginRemoveAction {
   type: Actions.PLUGIN_REMOVE,

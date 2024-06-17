@@ -5,8 +5,9 @@ import getTransformReduced from '../transformReduced';
 import getTransformBitmaps from '../transformBitmaps';
 import getTransformPlainText from '../transformPlainText';
 import getImportJSON from '../importJSON';
-import prepareFile, { PreparedFile } from './prepareFile';
-import { TypedStore } from '../../app/store/State';
+import prepareFile from './prepareFile';
+import type { PreparedFile } from './prepareFile';
+import type { TypedStore } from '../../app/store/State';
 
 export interface HandeFileImportOptions {
   fromPrinter: boolean

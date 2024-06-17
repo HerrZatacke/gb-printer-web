@@ -1,6 +1,6 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { PrinterInfo } from '../Printer';
-import { PrinterFunction } from '../../javascript/consts/printerFunction';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { PrinterInfo } from '../Printer';
+import type { PrinterFunction } from '../../javascript/consts/printerFunction';
 
 export interface PrinterRemoteCallAction {
   type: Actions.REMOTE_CALL_FUNCTION,

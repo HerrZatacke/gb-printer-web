@@ -6,7 +6,7 @@ import { useFilterForm } from './useFilterForm';
 
 import './index.scss';
 
-const FilterForm = () => {
+function FilterForm() {
 
   const {
     visible,
@@ -107,6 +107,6 @@ const FilterForm = () => {
       </ul>
     </Lightbox>
   );
-};
+}
 
 export default FilterForm;

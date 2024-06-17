@@ -1,4 +1,4 @@
-import { TypedStore } from '../javascript/app/store/State';
+import type { TypedStore } from '../javascript/app/store/State';
 
 declare global {
   interface Window {

@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { CurrentEditBatch } from '../../../../types/Image';
-import {
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { CurrentEditBatch } from '../../../../types/Image';
+import type {
   CancelEditImagesAction,
   EditImageSelectionAction,
   ImagesBatchUpdateAction,

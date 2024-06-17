@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import SVG from '../SVG';
 import useContainer from './hooks/useSerials';
 
-const EnableWebUSB = () => {
+function EnableWebUSB() {
   const { enabled, enableSerials } = useContainer();
 
   return (
@@ -40,6 +40,6 @@ const EnableWebUSB = () => {
       </span>
     </label>
   );
-};
+}
 
 export default EnableWebUSB;

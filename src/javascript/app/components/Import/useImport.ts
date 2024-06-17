@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import { ExportJSONAction } from '../../../../types/actions/StorageActions';
-import { ExportTypes } from '../../../consts/exportTypes';
-import { ImportFilesAction } from '../../../../types/actions/ImportActions';
+import type { State } from '../../store/State';
+import type { ExportJSONAction } from '../../../../types/actions/StorageActions';
+import type { ExportTypes } from '../../../consts/exportTypes';
+import type { ImportFilesAction } from '../../../../types/actions/ImportActions';
 
 interface UseImport {
   printerUrl?: string,

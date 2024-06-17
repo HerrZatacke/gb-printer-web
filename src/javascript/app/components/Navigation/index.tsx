@@ -7,7 +7,7 @@ import './index.scss';
 import useNavigation from './useNavigation';
 import useTrashbin from '../../../hooks/useTrashbin';
 
-const Navigation = () => {
+function Navigation() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const {
@@ -167,6 +167,6 @@ const Navigation = () => {
       </ul>
     </nav>
   );
-};
+}
 
 export default Navigation;

@@ -1,9 +1,9 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { FrameGroup } from '../../../../types/FrameGroup';
-import { FrameGroupNamesAction } from '../../../../types/actions/FrameActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { FrameGroup } from '../../../../types/FrameGroup';
+import type { FrameGroupNamesAction } from '../../../../types/actions/FrameActions';
 
 const frameGroupNamesReducer = (
   frameGroupNames: FrameGroup[] = [],

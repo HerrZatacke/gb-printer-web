@@ -1,12 +1,14 @@
-import { ChangeEvent, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useState } from 'react';
 import kmeans from 'node-kmeans';
-import quantize, { RgbPixel } from 'quantize';
+import type { RgbPixel } from 'quantize';
+import quantize from 'quantize';
 import chunk from 'chunk';
 import { useDispatch } from 'react-redux';
 import getImageData from '../tools/transformBitmaps/getImageData';
 import { Actions } from '../app/store/actions';
-import { SetPickColorsAction } from '../../types/actions/PickColorsActions';
-import { ErrorAction } from '../../types/actions/GlobalActions';
+import type { SetPickColorsAction } from '../../types/actions/PickColorsActions';
+import type { ErrorAction } from '../../types/actions/GlobalActions';
 
 export const toHexColor = ([r, g, b]: number[]): string => ([
   '#',

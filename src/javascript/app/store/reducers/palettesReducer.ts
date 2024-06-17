@@ -1,9 +1,9 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
-import { Palette } from '../../../../types/Palette';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
+import type { Palette } from '../../../../types/Palette';
 
 const palettesReducer = (
   value: Palette[] = [],

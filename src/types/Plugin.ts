@@ -1,7 +1,7 @@
-import FileSaver from 'file-saver';
-import { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
-import { Image } from './Image';
-import { Palette } from './Palette';
+import type FileSaver from 'file-saver';
+import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import type { Image } from './Image';
+import type { Palette } from './Palette';
 
 enum ConfigParamType {
   NUMBER = 'number',

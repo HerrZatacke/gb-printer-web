@@ -1,9 +1,9 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { VideoParams } from '../../../../types/VideoParams';
-import { AnimateImagesAction, CancelAnimateImagesAction, SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { VideoParams } from '../../../../types/VideoParams';
+import type { AnimateImagesAction, CancelAnimateImagesAction, SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
 
 const videoParamsReducer = (
   value: VideoParams = {

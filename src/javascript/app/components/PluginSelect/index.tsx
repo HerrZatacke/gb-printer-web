@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import { PluginImageBatchAction, PluginImageSingleAction } from '../../../../types/actions/PluginActions';
+import type { State } from '../../store/State';
+import type { PluginImageBatchAction, PluginImageSingleAction } from '../../../../types/actions/PluginActions';
 
 interface Props {
   children: React.ReactNode,
@@ -13,7 +13,7 @@ interface Props {
   hash?: string,
 }
 
-const PluginSelect = ({ children, pluginsActive, hash }: Props) => {
+function PluginSelect({ children, pluginsActive, hash }: Props) {
   const plugins = useSelector((state: State) => state.plugins);
   const dispatch = useDispatch();
 
@@ -67,6 +67,6 @@ const PluginSelect = ({ children, pluginsActive, hash }: Props) => {
       </ul>
     </span>
   );
-};
+}
 
 export default PluginSelect;

@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 
-import {
+import type {
   PrinterFunctionsReceivedAction,
   PrinterTimedOutAction,
 } from '../../../../types/actions/PrinterActions';

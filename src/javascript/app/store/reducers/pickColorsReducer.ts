@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { PickColors } from '../../../../types/PickColors';
-import { CancelPickColorsAction, SetPickColorsAction } from '../../../../types/actions/PickColorsActions';
-import { PaletteSetEditAction } from '../../../../types/actions/PaletteActions';
+import type { PickColors } from '../../../../types/PickColors';
+import type { CancelPickColorsAction, SetPickColorsAction } from '../../../../types/actions/PickColorsActions';
+import type { PaletteSetEditAction } from '../../../../types/actions/PaletteActions';
 
 
 const pickColorsReducer = (

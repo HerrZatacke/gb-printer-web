@@ -17,7 +17,7 @@ interface Props {
   page: number,
 }
 
-const BatchButtons = ({ page }: Props) => {
+function BatchButtons({ page }: Props) {
 
   const {
     hasPlugins,
@@ -119,6 +119,6 @@ const BatchButtons = ({ page }: Props) => {
       ) : null}
     </ul>
   );
-};
+}
 
 export default BatchButtons;

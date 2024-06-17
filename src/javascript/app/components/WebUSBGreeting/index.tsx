@@ -8,7 +8,7 @@ import WebUSBSerial from '../../../tools/WebUSBSerial';
 
 import './index.scss';
 
-const WebUSBGreeting = () => {
+function WebUSBGreeting() {
   const { enabled } = useContainer();
 
   return (
@@ -59,6 +59,6 @@ const WebUSBGreeting = () => {
       )}
     </>
   );
-};
+}
 
 export default WebUSBGreeting;

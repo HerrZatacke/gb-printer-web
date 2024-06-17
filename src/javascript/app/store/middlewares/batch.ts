@@ -1,16 +1,16 @@
 import getFilteredImages from '../../../tools/getFilteredImages';
 import unique from '../../../tools/unique';
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { Image } from '../../../../types/Image';
-import {
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { Image } from '../../../../types/Image';
+import type {
   DeleteImagesAction,
   DownloadImageSelectionAction,
   EditImageSelectionAction,
 } from '../../../../types/actions/ImageActions';
-import { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
-import { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
-import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import type { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
+import type { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
+import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 
 const collectTags = (batchImages: Image[]): string[] => (

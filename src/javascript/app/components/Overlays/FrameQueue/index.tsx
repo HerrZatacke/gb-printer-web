@@ -6,11 +6,11 @@ import './index.scss';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
-import { State } from '../../../store/State';
-import { AddFrameAction, FrameGroupNamesAction } from '../../../../../types/actions/FrameActions';
-import { FrameQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
+import type { State } from '../../../store/State';
+import type { AddFrameAction, FrameGroupNamesAction } from '../../../../../types/actions/FrameActions';
+import type { FrameQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
 
-const FrameQueue = () => {
+function FrameQueue() {
   const frame = useSelector((state: State) => state.frameQueue[0]);
   const [newGroupName, setNewGroupName] = useState('');
   const dispatch = useDispatch();
@@ -92,6 +92,6 @@ const FrameQueue = () => {
       </div>
     </Lightbox>
   );
-};
+}
 
 export default FrameQueue;

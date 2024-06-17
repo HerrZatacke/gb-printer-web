@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import unique from '../tools/unique';
 import { SpecialTags } from '../consts/SpecialTags';
-import { State } from '../app/store/State';
-import { Image } from '../../types/Image';
+import type { State } from '../app/store/State';
+import type { Image } from '../../types/Image';
 
 export const getAvailableTags = (images: Image[]): string[] => {
   const allTags = unique(images.map(({ tags }) => tags).flat());

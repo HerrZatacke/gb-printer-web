@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette } from 'gb-image-decoder';
 import { loadImageTiles as getLoadImageTiles } from '../../../tools/loadImageTiles';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import { RGBNHashes } from '../../../../types/Image';
-import { TryRecoverImageAction } from '../../../../types/actions/ImageActions';
-import { GameBoyImageProps } from '../GameBoyImage';
-import { Rotation } from '../../../tools/applyRotation';
+import type { State } from '../../store/State';
+import type { RGBNHashes } from '../../../../types/Image';
+import type { TryRecoverImageAction } from '../../../../types/actions/ImageActions';
+import type { GameBoyImageProps } from '../GameBoyImage';
+import type { Rotation } from '../../../tools/applyRotation';
 
 interface UseImageRender {
   gbImageProps: GameBoyImageProps | null,

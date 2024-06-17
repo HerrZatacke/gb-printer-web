@@ -1,13 +1,14 @@
-import { ExportFrameMode, RGBNTiles } from 'gb-image-decoder';
-import { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
+import type { RGBNTiles } from 'gb-image-decoder';
+import { ExportFrameMode } from 'gb-image-decoder';
+import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 import { isRGBNImage, reduceImagesMonochrome } from '../isRGBNImage';
-import { AddToQueueFn } from '../../../types/Sync';
-import { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
+import type { AddToQueueFn } from '../../../types/Sync';
+import type { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
 import getImagePalette from '../getImagePalette';
-import { State } from '../../app/store/State';
+import type { State } from '../../app/store/State';
 import { loadImageTiles as getLoadImageTiles } from '../loadImageTiles';
 import getPrepareFiles from '../download/getPrepareFiles';
-import { Palette } from '../../../types/Palette';
+import type { Palette } from '../../../types/Palette';
 
 interface TmpInfo {
   file: Image,

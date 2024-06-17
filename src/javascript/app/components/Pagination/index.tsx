@@ -4,13 +4,13 @@ import PaginationButton from '../PaginationButton';
 import SVG from '../SVG';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import './index.scss';
-import { State } from '../../store/State';
+import type { State } from '../../store/State';
 
 interface Props {
   page: number
 }
 
-const Pagination = ({ page }: Props) => {
+function Pagination({ page }: Props) {
   const totalPages = useSelector((state: State) => (
     state.pageSize ? Math.ceil(getFilteredImagesCount(state) / state.pageSize) : 0
   ));
@@ -77,6 +77,6 @@ const Pagination = ({ page }: Props) => {
       {displayedPages.filter(Boolean)}
     </ul>
   );
-};
+}
 
 export default Pagination;

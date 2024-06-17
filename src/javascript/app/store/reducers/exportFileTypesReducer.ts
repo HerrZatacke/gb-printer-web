@@ -2,8 +2,8 @@
 import { Actions } from '../actions';
 import unique from '../../../tools/unique';
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { ExportFileTypesAction } from '../../../../types/actions/StorageActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { ExportFileTypesAction } from '../../../../types/actions/StorageActions';
 
 const exportFileTypesReducer = (value = ['png'], action: ExportFileTypesAction | GlobalUpdateAction): string[] => {
   switch (action.type) {

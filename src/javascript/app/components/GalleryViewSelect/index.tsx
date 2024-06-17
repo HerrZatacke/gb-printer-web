@@ -14,7 +14,7 @@ const GALLERY_VIEWS = [
   GalleryViews.GALLERY_VIEW_4X,
 ];
 
-const GalleryViewSelect = () => {
+function GalleryViewSelect() {
   const {
     currentView,
     updateView,
@@ -45,6 +45,6 @@ const GalleryViewSelect = () => {
       }
     </ul>
   );
-};
+}
 
 export default GalleryViewSelect;

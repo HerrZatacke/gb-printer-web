@@ -20,9 +20,9 @@ import ImportQueue from './ImportQueue';
 import FrameQueue from './FrameQueue';
 import Trashbin from './Trashbin';
 import PickColors from './PickColors';
-import { State } from '../../store/State';
+import type { State } from '../../store/State';
 
-const Overlays = () => {
+function Overlays() {
   const {
     showProgressLog,
     showInfoBox,
@@ -107,6 +107,6 @@ const Overlays = () => {
     default: // Default: Components which control their show/hide status themselves (e.g. through a hook)
       return <ConnectSerial />;
   }
-};
+}
 
 export default Overlays;

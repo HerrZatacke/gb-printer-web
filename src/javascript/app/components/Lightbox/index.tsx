@@ -5,7 +5,7 @@ import Buttons from '../Buttons';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
 import useAutoFocus from '../../../hooks/useAutoFocus';
 import './index.scss';
-import { State } from '../../store/State';
+import type { State } from '../../store/State';
 
 interface Props {
   height?: number,
@@ -18,7 +18,7 @@ interface Props {
   closeOnOverlayClick?: boolean,
 }
 
-const Lightbox = (props: Props) => {
+function Lightbox(props: Props) {
   const isFullscreen = useSelector((state: State) => (state.isFullscreen));
 
   const closeOnOverlayClick = typeof props.closeOnOverlayClick !== 'boolean' ? true : props.closeOnOverlayClick;
@@ -77,6 +77,6 @@ const Lightbox = (props: Props) => {
       </div>
     </div>
   );
-};
+}
 
 export default Lightbox;

@@ -1,8 +1,8 @@
-import { State } from '../../app/store/State';
-import { AddToQueueFn } from '../../../types/Sync';
-import { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
+import type { State } from '../../app/store/State';
+import type { AddToQueueFn } from '../../../types/Sync';
+import type { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
 import { loadFrameData } from '../applyFrame/frameData';
-import { Frame } from '../../../types/Frame';
+import type { Frame } from '../../../types/Frame';
 
 interface TmpInfo {
   file: Frame,

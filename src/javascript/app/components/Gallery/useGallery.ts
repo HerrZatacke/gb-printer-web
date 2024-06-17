@@ -2,9 +2,9 @@ import { useSelector } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import useGetValidPageIndex from '../../../tools/useGetValidPageIndex';
-import { State } from '../../store/State';
-import { GalleryViews } from '../../../consts/GalleryViews';
-import { Image } from '../../../../types/Image';
+import type { State } from '../../store/State';
+import type { GalleryViews } from '../../../consts/GalleryViews';
+import type { Image } from '../../../../types/Image';
 
 interface UseGallery {
   imageCount: number,

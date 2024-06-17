@@ -2,8 +2,8 @@
 import cleanUrl from '../../../tools/cleanUrl';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { PrinterSetUrlAction } from '../../../../types/actions/PrinterActions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { PrinterSetUrlAction } from '../../../../types/actions/PrinterActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
 const printerUrlReducer = (
   value = '',

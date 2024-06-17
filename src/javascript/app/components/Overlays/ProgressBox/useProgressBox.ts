@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { State } from '../../../store/State';
+import type { State } from '../../../store/State';
 
 interface UseProgressBox {
   progress: number,

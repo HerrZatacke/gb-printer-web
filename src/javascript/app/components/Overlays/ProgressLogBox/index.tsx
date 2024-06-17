@@ -10,7 +10,7 @@ dayjs.extend(duration);
 
 const messagesCutOff = 15;
 
-const ProgressLogBox = () => {
+function ProgressLogBox() {
 
   const {
     git: {
@@ -123,6 +123,6 @@ const ProgressLogBox = () => {
       </div>
     </Lightbox>
   );
-};
+}
 
 export default ProgressLogBox;

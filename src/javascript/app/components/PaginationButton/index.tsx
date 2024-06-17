@@ -11,20 +11,22 @@ interface Props {
   title: string,
 }
 
-const PaginationButton = (props: Props) => (
-  <li
-    className={classNames('gallery-button pagination__button', {
-      'gallery-button--selected': props.active,
-    })}
-  >
-    <NavLink
-      className="pagination__link"
-      to={`/gallery/page/${props.page + 1}`}
-      title={props.title}
+function PaginationButton(props: Props) {
+  return (
+    <li
+      className={classNames('gallery-button pagination__button', {
+        'gallery-button--selected': props.active,
+      })}
     >
-      {props.children}
-    </NavLink>
-  </li>
-);
+      <NavLink
+        className="pagination__link"
+        to={`/gallery/page/${props.page + 1}`}
+        title={props.title}
+      >
+        {props.children}
+      </NavLink>
+    </li>
+  );
+}
 
 export default PaginationButton;

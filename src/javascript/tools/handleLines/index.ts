@@ -1,4 +1,5 @@
-import { HandleLine, ImportLine } from './types';
+import type { ImportLine } from './types';
+import { HandleLine } from './types';
 
 
 const handleLines = (rawLine: string): ImportLine | null => {

@@ -1,5 +1,5 @@
 import { localforageFrames } from '../localforageInstance';
-import { Frame } from '../../../types/Frame';
+import type { Frame } from '../../../types/Frame';
 
 const hashFrames = async (dirtyStateFrames: Frame[]): Promise<Frame[]> => {
   const hasUnhashedFrames = Boolean(dirtyStateFrames.find(({ hash }) => !hash));

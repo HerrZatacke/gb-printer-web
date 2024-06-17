@@ -1,5 +1,5 @@
-import { RGBNPalette } from 'gb-image-decoder';
-import { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
+import type { RGBNPalette } from 'gb-image-decoder';
+import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 
 export const isRGBNImage = (image: Image): boolean => Boolean(
   image.hasOwnProperty('hashes') && (image as RGBNImage).hashes,

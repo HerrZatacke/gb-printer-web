@@ -1,4 +1,5 @@
-import React, { CSSProperties, useMemo, useState } from 'react';
+import type { CSSProperties } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from '../../Lightbox';
 import './index.scss';
@@ -7,9 +8,9 @@ import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 import { toHexColor } from '../../../../hooks/usePaletteFromFile';
 import ImageRender from '../../ImageRender';
 import getGetPreviewImages from '../../../../tools/getPreviewImages';
-import { State } from '../../../store/State';
+import type { State } from '../../../store/State';
 
-const PickColors = () => {
+function PickColors() {
   const state = useSelector((s: State) => s);
   const dispatch = useDispatch();
   const [selected, setSelected] = useState<number[]>([0, 3, 6, 9]);
@@ -141,6 +142,6 @@ const PickColors = () => {
       </>
     </Lightbox>
   );
-};
+}
 
 export default PickColors;

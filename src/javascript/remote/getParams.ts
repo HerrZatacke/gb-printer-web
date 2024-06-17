@@ -1,4 +1,4 @@
-import { RemotePrinterParams } from '../../types/Printer';
+import type { RemotePrinterParams } from '../../types/Printer';
 
 const getParams = (): RemotePrinterParams => {
   if (window.location.hash?.length <= 1) {

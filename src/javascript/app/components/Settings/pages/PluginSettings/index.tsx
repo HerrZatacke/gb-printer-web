@@ -33,7 +33,7 @@ const inputValueFromType = (type: string, value: string): string | number => {
   }
 };
 
-const PluginSettings = () => {
+function PluginSettings() {
 
   const [pluginUrl, setPluginUrl] = useState('');
 
@@ -134,6 +134,6 @@ const PluginSettings = () => {
       </ul>
     </>
   );
-};
+}
 
 export default PluginSettings;

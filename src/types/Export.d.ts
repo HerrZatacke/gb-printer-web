@@ -1,7 +1,7 @@
-import { MonochromeImage, RGBNImage } from './Image';
-import { Frame } from './Frame';
-import { DownloadInfo, UploadFile } from './Sync';
-import { JSONExportState } from '../javascript/app/store/State';
+import type { MonochromeImage, RGBNImage } from './Image';
+import type { Frame } from './Frame';
+import type { DownloadInfo, UploadFile } from './Sync';
+import type { JSONExportState } from '../javascript/app/store/State';
 
 
 export interface RepoFile {

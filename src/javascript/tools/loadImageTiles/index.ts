@@ -1,8 +1,9 @@
-import { RGBNTiles } from 'gb-image-decoder';
-import { load, RecoverFn } from '../storage';
-import { State } from '../../app/store/State';
-import { Image, RGBNHashes, RGBNImage } from '../../../types/Image';
+import type { RGBNTiles } from 'gb-image-decoder';
+import { load } from '../storage';
 import { isRGBNImage } from '../isRGBNImage';
+import type { RecoverFn } from '../storage';
+import type { State } from '../../app/store/State';
+import type { Image, RGBNHashes, RGBNImage } from '../../../types/Image';
 
 export type PImage = {
   hash: Image['hash'],

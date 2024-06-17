@@ -1,14 +1,14 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import {
+import type {
   PrinterDataReceivedAction,
   PrinterFunctionsReceivedAction,
   PrinterRemoteCallAction,
   PrinterResetAction,
   PrinterTimedOutAction,
 } from '../../../../types/actions/PrinterActions';
-import { AddImagesAction } from '../../../../types/actions/ImageActions';
-import { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
+import type { AddImagesAction } from '../../../../types/actions/ImageActions';
+import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 
 
 const printerBusyReducer = (
