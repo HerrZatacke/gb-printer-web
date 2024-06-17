@@ -33,6 +33,7 @@ jobs:
           rm package-lock.json
           npm cache clear -f
           npm install
+          npm run lint
 
       - name: Create config.json 📃
         if: steps.checkTag.outputs.exists == 'false'
