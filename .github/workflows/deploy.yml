@@ -30,7 +30,10 @@ jobs:
 
       - name: Install npm dependencies 🔗
         if: steps.checkTag.outputs.exists == 'false'
-        run: npm cache clear -f && npm install
+        run: |
+          rm package-lock.json
+          npm cache clear -f
+          npm install
 
       - name: Create config.json 📃
         if: steps.checkTag.outputs.exists == 'false'
