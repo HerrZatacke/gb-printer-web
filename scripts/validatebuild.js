@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
-const walkdir = require('walkdir');
-const chalk = require('chalk');
-const { output: { path: outputPath } } = require('./webpack.prod');
+import path from 'path';
+import walkdir from 'walkdir';
+import chalk from 'chalk';
+import webpackConfig from './webpack.prod.js';
+
+const { output: { path: outputPath } } = webpackConfig;
 
 walkdir(outputPath, (filePath) => {
 

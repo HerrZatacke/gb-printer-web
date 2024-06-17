@@ -24,6 +24,7 @@
     "type": "git",
     "url": "https://github.com/HerrZatacke/gb-printer-web.git"
   },
+  "type": "module",
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/eslint-parser": "^7.16.0",

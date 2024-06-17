@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { createGzip } = require('zlib');
-const { pipeline } = require('stream');
-const { createReadStream, createWriteStream } = require('fs');
+import { createGzip } from 'zlib';
+import { pipeline } from 'stream';
+import { createReadStream, createWriteStream } from 'fs';
 
 const copyAndGZ = (source, destination, done) => {
   pipeline(
@@ -12,4 +11,4 @@ const copyAndGZ = (source, destination, done) => {
   );
 };
 
-module.exports = copyAndGZ;
+export default copyAndGZ;

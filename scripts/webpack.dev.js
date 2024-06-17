@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
-const webpack = require('webpack');
-const { merge } = require('webpack-merge');
-const setupServer = require('./setupServer');
-const common = require('./webpack.common');
+import path from 'path';
+import webpack from 'webpack';
+import { merge } from 'webpack-merge';
+import setupServer from './setupServer.js';
+import common from './webpack.common.js';
 
-module.exports = merge(common(), {
+const config = merge(await common(), {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   devServer: {
@@ -35,3 +34,5 @@ module.exports = merge(common(), {
     }),
   ],
 });
+
+export default config;

@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
-const express = require('express');
-const chalk = require('chalk');
-const setupServer = require('./setupServer');
+import path from 'path';
+import express from 'express';
+import chalk from 'chalk';
+import setupServer from './setupServer.js';
 
 const port = 3000;
 const app = express();

@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const conf = require('../../config');
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import conf from '../../config.json' assert { type: 'json' };
 
 const mockResponse = {
   mdns: 'mockprinter',
@@ -34,4 +33,4 @@ const initWifiProxy = (app) => {
   app.use('/wificonfig', wifiProxy);
 };
 
-module.exports = initWifiProxy;
+export default initWifiProxy;
