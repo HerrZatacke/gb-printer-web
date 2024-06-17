@@ -9,7 +9,7 @@ import modifyTagChanges from '../../../../tools/modifyTagChanges';
 
 import './index.scss';
 
-const ImportQueue = () => {
+function ImportQueue() {
   const {
     frame,
     palette,
@@ -72,6 +72,6 @@ const ImportQueue = () => {
       </div>
     </Lightbox>
   );
-};
+}
 
 export default ImportQueue;

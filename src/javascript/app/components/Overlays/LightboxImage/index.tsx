@@ -9,7 +9,7 @@ import { useLightboxImage } from './useLightboxImage';
 
 import './index.scss';
 
-const LightboxImage = () => {
+function LightboxImage() {
   const {
     title,
     isFullscreen,
@@ -88,6 +88,6 @@ const LightboxImage = () => {
       </div>
     </Lightbox>
   );
-};
+}
 
 export default LightboxImage;

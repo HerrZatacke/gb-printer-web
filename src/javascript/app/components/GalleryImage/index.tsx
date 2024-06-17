@@ -31,7 +31,7 @@ const buttons = [
   ButtonOption.PLUGINS,
 ];
 
-const GalleryImage = ({ page, hash, type }: Props) => {
+function GalleryImage({ page, hash, type }: Props) {
   const {
     galleryImageData,
     updateImageSelection,
@@ -188,6 +188,6 @@ const GalleryImage = ({ page, hash, type }: Props) => {
       </div>
     </li>
   );
-};
+}
 
 export default GalleryImage;

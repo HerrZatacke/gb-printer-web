@@ -1,12 +1,12 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import {
+import type {
   ConfirmAction,
   ConfirmAskAction,
   ConfirmAnsweredAction,
 } from '../../../../types/actions/ConfirmActions';
-import { Dialog } from '../../../../types/Dialog';
-import { DeleteFrameAction } from '../../../../types/actions/FrameActions';
+import type { Dialog } from '../../../../types/Dialog';
+import type { DeleteFrameAction } from '../../../../types/actions/FrameActions';
 
 const confirmReducer = (
   value: Dialog[] = [],

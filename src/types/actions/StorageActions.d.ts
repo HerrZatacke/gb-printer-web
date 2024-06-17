@@ -1,8 +1,8 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { ExportTypes } from '../../javascript/consts/exportTypes';
-import { RepoContents } from '../Export';
-import { DropBoxSettings, GitStorageSettings } from '../Sync';
-import { JSONExportState } from '../../javascript/app/store/State';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { ExportTypes } from '../../javascript/consts/exportTypes';
+import type { RepoContents } from '../Export';
+import type { DropBoxSettings, GitStorageSettings } from '../Sync';
+import type { JSONExportState } from '../../javascript/app/store/State';
 
 export interface DropboxLogoutAction {
   type: Actions.DROPBOX_LOGOUT,

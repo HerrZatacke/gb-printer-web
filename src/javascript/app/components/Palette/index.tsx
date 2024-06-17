@@ -1,4 +1,5 @@
-import React, { CSSPropertiesVars } from 'react';
+import type { CSSPropertiesVars } from 'react';
+import React from 'react';
 
 import classnames from 'classnames';
 import SVG from '../SVG';
@@ -16,13 +17,13 @@ interface Props {
   usage: number,
 }
 
-const Component = ({
+function Component({
   shortName,
   name,
   isPredefined,
   palette,
   usage,
-}: Props) => {
+}: Props) {
 
   const {
     isActive,
@@ -103,7 +104,7 @@ const Component = ({
       </div>
     </li>
   );
-};
+}
 
 
 export default Component;

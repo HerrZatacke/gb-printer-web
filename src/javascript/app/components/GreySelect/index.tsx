@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { BlendMode, RGBNPalette } from 'gb-image-decoder';
+import type { BlendMode, RGBNPalette } from 'gb-image-decoder';
 import { blendModeLabels } from '../../../consts/blendModes';
 import ColorSlider from '../ColorSlider';
-import { RGBNHashes } from '../../../../types/Image';
+import type { RGBNHashes } from '../../../../types/Image';
 
 import './index.scss';
 
@@ -13,7 +13,7 @@ interface Props {
   useChannels: Record<keyof RGBNHashes, boolean>,
 }
 
-const GreySelect = (props: Props) => {
+function GreySelect(props: Props) {
 
   const [values, setValues] = useState<RGBNPalette>(props.values);
 
@@ -82,6 +82,6 @@ const GreySelect = (props: Props) => {
       }
     </div>
   );
-};
+}
 
 export default GreySelect;

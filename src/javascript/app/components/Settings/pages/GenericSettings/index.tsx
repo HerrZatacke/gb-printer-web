@@ -1,5 +1,5 @@
-import { ExportFrameMode } from 'gb-image-decoder';
-import { ILocale } from 'locale-codes';
+import type { ExportFrameMode } from 'gb-image-decoder';
+import type { ILocale } from 'locale-codes';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -14,9 +14,9 @@ import exportFrameModes from '../../../../../consts/exportFrameModes';
 import dateFormatLocale from '../../../../../tools/dateFormatLocale';
 import { useGenericSettings } from './useGenericSettings';
 import usePaletteSort from '../../../../../hooks/usePaletteSort';
-import { PaletteSortMode } from '../../../../../consts/paletteSortModes';
+import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
 
-const GenericSettings = () => {
+function GenericSettings() {
   const {
     enableDebug,
     exportFileTypes,
@@ -468,6 +468,6 @@ const GenericSettings = () => {
       </label>
     </>
   );
-};
+}
 
 export default GenericSettings;

@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { PaletteSetSortOrderAction } from '../../../../types/actions/PaletteActions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { PaletteSetSortOrderAction } from '../../../../types/actions/PaletteActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { PaletteSortMode } from '../../../consts/paletteSortModes';
 
 const sortPalettesReducer = (

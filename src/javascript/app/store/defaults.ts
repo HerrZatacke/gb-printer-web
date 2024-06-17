@@ -1,4 +1,4 @@
-import { ExportableState, State } from './State';
+import type { ExportableState, State } from './State';
 import { ExportTypes } from '../../consts/exportTypes';
 
 export interface StorePropertyDefault {

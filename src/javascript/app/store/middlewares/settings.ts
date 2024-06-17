@@ -1,14 +1,14 @@
-import { AnyAction, Dispatch } from 'redux';
+import type { AnyAction, Dispatch } from 'redux';
 import { download } from '../../../tools/download';
 import cleanState from '../../../tools/cleanState';
 import getGetSettings from '../../../tools/getGetSettings';
 import mergeStates from '../../../tools/mergeStates';
 import { localforageFrames, localforageImages } from '../../../tools/localforageInstance';
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { JSONExport, State } from '../State';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { ExportTypes } from '../../../consts/exportTypes';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { JSONExport, State } from '../State';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { ExportTypes } from '../../../consts/exportTypes';
 
 const mergeSettings = (
   dispatch: Dispatch<AnyAction>,

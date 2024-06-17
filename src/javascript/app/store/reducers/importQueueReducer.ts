@@ -1,15 +1,15 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { AddImagesAction } from '../../../../types/actions/ImageActions';
-import { AddFrameAction } from '../../../../types/actions/FrameActions';
-import {
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { AddImagesAction } from '../../../../types/actions/ImageActions';
+import type { AddFrameAction } from '../../../../types/actions/FrameActions';
+import type {
   ImportQueueAddAction,
   ImportQueueAddMultiAction,
   ImportQueueCancelAction,
   ImportQueueCancelOneAction,
 } from '../../../../types/actions/QueueActions';
-import { ImportItem } from '../../../../types/ImportItem';
+import type { ImportItem } from '../../../../types/ImportItem';
 
 const importQueueReducer = (
   importQueue: ImportItem[] = [],

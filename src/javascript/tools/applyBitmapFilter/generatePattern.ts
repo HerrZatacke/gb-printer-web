@@ -1,4 +1,4 @@
-import { GeneratePatternOptions } from './Types';
+import type { GeneratePatternOptions } from './Types';
 
 const generatePattern = ({
   baseValues,

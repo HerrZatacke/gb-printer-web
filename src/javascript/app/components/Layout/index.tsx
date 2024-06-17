@@ -9,7 +9,7 @@ export interface Handle {
   headline: string,
 }
 
-const Layout = () => {
+function Layout() {
   const matches = useMatches();
 
   if (!matches[1]) {
@@ -28,6 +28,6 @@ const Layout = () => {
       <Overlays />
     </>
   );
-};
+}
 
 export default Layout;

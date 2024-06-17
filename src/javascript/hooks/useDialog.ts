@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { State } from '../app/store/State';
-import {
-  Dialog,
+import type { State } from '../app/store/State';
+import type { Dialog,
   DialogQuestion,
   DialogQuestionSelect,
-  DialogResult,
+  DialogResult } from '../../types/Dialog';
+import {
   DialoqQuestionType,
 } from '../../types/Dialog';
 

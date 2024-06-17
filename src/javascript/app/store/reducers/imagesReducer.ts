@@ -3,9 +3,9 @@ import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import unique from '../../../tools/unique';
 import { SpecialTags } from '../../../consts/SpecialTags';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { Image } from '../../../../types/Image';
-import {
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { Image } from '../../../../types/Image';
+import type {
   AddImagesAction,
   DeleteImageAction,
   DeleteImagesAction,

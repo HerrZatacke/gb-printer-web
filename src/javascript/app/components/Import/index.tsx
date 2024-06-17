@@ -6,7 +6,7 @@ import { ExportTypes } from '../../../consts/exportTypes';
 
 import './index.scss';
 
-const Import = () => {
+function Import() {
   const [text, setText] = useState('');
 
   const {
@@ -88,6 +88,6 @@ const Import = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Import;

@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import {
+import type { State } from '../../store/State';
+import type {
   PaletteCloneAction,
   PaletteDeleteAction,
   PaletteEditAction,
   PaletteSetActiveAction,
 } from '../../../../types/actions/PaletteActions';
-import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 
 interface UsePalette {
   isActive: boolean

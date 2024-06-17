@@ -1,7 +1,8 @@
-import getHandleFileImport, { HandeFileImportFn } from '../../../tools/getHandleFileImport';
+import type { HandeFileImportFn } from '../../../tools/getHandleFileImport';
+import getHandleFileImport from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { ErrorAction } from '../../../../types/actions/GlobalActions';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { ErrorAction } from '../../../../types/actions/GlobalActions';
 
 const importFile: MiddlewareWithState = (store) => {
   const handleFileImport: HandeFileImportFn = getHandleFileImport(store);

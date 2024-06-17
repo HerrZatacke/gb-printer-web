@@ -1,5 +1,5 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { Dialog } from '../Dialog';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { Dialog } from '../Dialog';
 
 export interface ConfirmAskAction {
   type: Actions.CONFIRM_ASK,

@@ -1,18 +1,18 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import classnames from 'classnames';
-import { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette } from 'gb-image-decoder';
 import FrameSelect from '../FrameSelect';
 import GreySelect from '../GreySelect';
 import PaletteSelect from '../PaletteSelect';
 import TagsSelect from '../TagsSelect';
 import ImageMeta from '../ImageMeta';
 import './index.scss';
-import { TagChange } from '../../../tools/applyTagChanges';
+import type { TagChange } from '../../../tools/applyTagChanges';
 import { reduceItems } from '../../../tools/reduceArray';
-import { ImageMetadata, RGBNHashes } from '../../../../types/Image';
-import { Rotation } from '../../../tools/applyRotation';
-import { TagUpdateMode } from '../../../tools/modifyTagChanges';
+import type { ImageMetadata, RGBNHashes } from '../../../../types/Image';
+import type { Rotation } from '../../../tools/applyRotation';
+import type { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 enum Tab {
   PALETTE = 'pal',
@@ -46,7 +46,7 @@ interface Props {
   mixedTypes?: boolean,
 }
 
-const EditImageTabs = (props: Props) => {
+function EditImageTabs(props: Props) {
 
   const tabs: Tab[] = [
     props.mixedTypes ? null : Tab.PALETTE,
@@ -181,6 +181,6 @@ const EditImageTabs = (props: Props) => {
       </ul>
     </div>
   );
-};
+}
 
 export default EditImageTabs;

@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import getFrameGroups from '../../../tools/getFrameGroups';
 import { Actions } from '../../store/actions';
-import { FrameGroup } from '../../../../types/FrameGroup';
-import { FrameGroupNamesAction } from '../../../../types/actions/FrameActions';
-import { State } from '../../store/State';
-import { Frame } from '../../../../types/Frame';
-import { ExportJSONAction } from '../../../../types/actions/StorageActions';
-import { ExportTypes } from '../../../consts/exportTypes';
+import type { FrameGroup } from '../../../../types/FrameGroup';
+import type { FrameGroupNamesAction } from '../../../../types/actions/FrameActions';
+import type { State } from '../../store/State';
+import type { Frame } from '../../../../types/Frame';
+import type { ExportJSONAction } from '../../../../types/actions/StorageActions';
+import type { ExportTypes } from '../../../consts/exportTypes';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   const group = groups.find(({ id }) => id === byId);

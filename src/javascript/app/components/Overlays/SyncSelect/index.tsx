@@ -6,7 +6,7 @@ import { useSyncSelect } from './useSyncSelect';
 
 import './index.scss';
 
-const SyncSelect = () => {
+function SyncSelect() {
   const {
     repoUrl,
     dropboxActive,
@@ -138,6 +138,6 @@ const SyncSelect = () => {
       </ul>
     </Lightbox>
   );
-};
+}
 
 export default SyncSelect;

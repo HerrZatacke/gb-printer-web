@@ -1,9 +1,9 @@
 import React from 'react';
-import { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette } from 'gb-image-decoder';
 import GameBoyImage from '../GameBoyImage';
 import { useImageRender } from './useImageRender';
-import { RGBNHashes } from '../../../../types/Image';
-import { Rotation } from '../../../tools/applyRotation';
+import type { RGBNHashes } from '../../../../types/Image';
+import type { Rotation } from '../../../tools/applyRotation';
 
 import './index.scss';
 
@@ -17,7 +17,7 @@ interface Props {
   rotation?: Rotation,
 }
 
-const ImageRender = ({
+function ImageRender({
   hash,
   hashes,
   frameId,
@@ -25,7 +25,7 @@ const ImageRender = ({
   invertPalette,
   palette,
   rotation,
-}: Props) => {
+}: Props) {
 
   const { gbImageProps } = useImageRender({
     hash,
@@ -48,6 +48,6 @@ const ImageRender = ({
   ) : (
     <div className="image-render--loading" />
   );
-};
+}
 
 export default ImageRender;

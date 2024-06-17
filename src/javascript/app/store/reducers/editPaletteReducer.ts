@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { Palette } from '../../../../types/Palette';
-import { PaletteCancelEditAction, PaletteSetEditAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
+import type { Palette } from '../../../../types/Palette';
+import type { PaletteCancelEditAction, PaletteSetEditAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 
 const editPaletteReducer = (
   value: Palette | null = null,

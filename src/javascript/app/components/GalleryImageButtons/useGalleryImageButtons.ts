@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import {
+import type { State } from '../../store/State';
+import type {
   DeleteImageAction,
   DownloadImageStartAction,
   ImageFavouriteAction,
@@ -9,8 +9,8 @@ import {
   NewRGBNImageAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
-import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
-import { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
+import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import type { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
 
 interface UseGalleryImageButtons {
   isSelected: boolean,

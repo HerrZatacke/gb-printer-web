@@ -5,7 +5,7 @@ import getStore from './store';
 import { defaults } from './store/defaults';
 import { getEnv } from '../tools/getEnv';
 import cleanState from '../tools/cleanState';
-import { State } from './store/State';
+import type { State } from './store/State';
 
 const initApp = async () => {
   const appRoot = document.getElementById('app');

@@ -1,4 +1,4 @@
-import { RomByteOffsets } from './types';
+import type { RomByteOffsets } from './types';
 
 export const maskCapture = 0b00000010;
 export const maskEdgeExclusive = 0b10000000;

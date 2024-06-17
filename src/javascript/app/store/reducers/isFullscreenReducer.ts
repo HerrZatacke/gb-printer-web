@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { IsFullscreenAction } from '../../../../types/actions/GlobalActions';
+import type { IsFullscreenAction } from '../../../../types/actions/GlobalActions';
 
 const isFullscreenReducer = (value = false, action: IsFullscreenAction): boolean => {
   switch (action.type) {

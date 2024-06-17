@@ -1,6 +1,7 @@
 import React from 'react';
+import type { RouteObject } from 'react-router-dom';
 import {
-  createHashRouter as createRouter, RouteObject,
+  createHashRouter as createRouter,
   RouterProvider,
 } from 'react-router-dom';
 import Home from '../Home';
@@ -11,7 +12,8 @@ import Frames from '../Frames';
 import Settings from '../Settings';
 import WebUSBGreeting from '../WebUSBGreeting';
 import { getEnv } from '../../../tools/getEnv';
-import Layout, { Handle } from '../Layout';
+import type { Handle } from '../Layout';
+import Layout from '../Layout';
 import Error from '../Error';
 import GenericSettings from '../Settings/pages/GenericSettings';
 import GitSettings from '../Settings/pages/GitSettings';
@@ -20,7 +22,7 @@ import DropboxSettings from '../Settings/pages/DropboxSettings';
 import WiFiSettings from '../Settings/pages/WiFiSettings';
 import { reduceItems } from '../../../tools/reduceArray';
 
-const App = () => {
+function App() {
   const router = createRouter([
     {
       path: '/',
@@ -121,6 +123,6 @@ const App = () => {
   ]);
 
   return <RouterProvider router={router} />;
-};
+}
 
 export default App;

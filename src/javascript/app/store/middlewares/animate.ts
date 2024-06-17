@@ -1,6 +1,7 @@
 import Queue from 'promise-queue';
-import { AnyAction, Dispatch } from 'redux';
-import { RGBNDecoder, Decoder, RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
+import type { AnyAction, Dispatch } from 'redux';
+import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import { RGBNDecoder, Decoder, ExportFrameMode } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
@@ -10,14 +11,14 @@ import generateFileName from '../../../tools/generateFileName';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { Image, MonochromeImage, RGBNImage } from '../../../../types/Image';
-import { VideoParams } from '../../../../types/VideoParams';
-import { Palette } from '../../../../types/Palette';
-import { State } from '../State';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { Image, MonochromeImage, RGBNImage } from '../../../../types/Image';
+import type { VideoParams } from '../../../../types/VideoParams';
+import type { Palette } from '../../../../types/Palette';
+import type { State } from '../State';
 import unique from '../../../tools/unique';
-import { ProgressCreateGifAction } from '../../../../types/actions/ProgressActions';
-import { ErrorAction } from '../../../../types/actions/GlobalActions';
+import type { ProgressCreateGifAction } from '../../../../types/actions/ProgressActions';
+import type { ErrorAction } from '../../../../types/actions/GlobalActions';
 
 interface GifFrameData {
   palette: number[],

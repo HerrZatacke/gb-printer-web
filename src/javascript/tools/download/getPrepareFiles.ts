@@ -1,13 +1,14 @@
-import { BW_PALETTE, Decoder, RGBNDecoder, RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import { BW_PALETTE, Decoder, RGBNDecoder } from 'gb-image-decoder';
 import generateFileName from '../generateFileName';
 import { load } from '../storage';
 import { finalLine, initLine, moreLine, terminatorLine } from '../../app/defaults';
 import { getRotatedCanvas } from '../applyRotation';
-import { State } from '../../app/store/State';
-import { Palette } from '../../../types/Palette';
-import { Image } from '../../../types/Image';
+import type { State } from '../../app/store/State';
+import type { Palette } from '../../../types/Palette';
+import type { Image } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
-import { DownloadInfo } from '../../../types/Sync';
+import type { DownloadInfo } from '../../../types/Sync';
 
 const getPrepareFiles =
   (

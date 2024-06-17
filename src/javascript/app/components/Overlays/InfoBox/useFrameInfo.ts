@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
-import { State } from '../../../store/State';
-import { FramesMessageHideAction } from '../../../../../types/actions/GlobalActions';
+import type { State } from '../../../store/State';
+import type { FramesMessageHideAction } from '../../../../../types/actions/GlobalActions';
 
 interface UseFrameInfo {
   message?: {

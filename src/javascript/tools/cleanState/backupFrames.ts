@@ -1,6 +1,6 @@
 import { localforageFrames } from '../localforageInstance';
 
-import { Frame } from '../../../types/Frame';
+import type { Frame } from '../../../types/Frame';
 
 interface BackupFrame extends Frame {
   data: string | null,

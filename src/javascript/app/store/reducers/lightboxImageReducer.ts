@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { SetLightboxImageAction } from '../../../../types/actions/GlobalActions';
+import type { SetLightboxImageAction } from '../../../../types/actions/GlobalActions';
 
 const lightboxImageReducer = (value: number | null = null, action: SetLightboxImageAction): number | null => {
   switch (action.type) {

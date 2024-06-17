@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { HideFiltersAction, SetActiveTagsAction, ShowFiltersAction } from '../../../../types/actions/TagsActions';
+import type { HideFiltersAction, SetActiveTagsAction, ShowFiltersAction } from '../../../../types/actions/TagsActions';
 
 const filtersVisibleReducer = (
   value = false,

@@ -4,7 +4,7 @@ import Lightbox from '../../Lightbox';
 import './index.scss';
 import useEditFrame from './useEditFrame';
 import EditFrameForm from './EditFrameForm';
-import { State } from '../../../store/State';
+import type { State } from '../../../store/State';
 
 // eslint-disable-next-line
 const EditFrame = () => {

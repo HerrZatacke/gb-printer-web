@@ -20,7 +20,7 @@ const iframeSupported = (printerUrl?: string) => {
 
 // const iframeSupported = () => false;
 
-const ConnectPrinter = () => {
+function ConnectPrinter() {
   const { printerUrl, failed, loaded, printerConnected } = useIframeLoaded(5000);
 
   return (
@@ -56,6 +56,6 @@ const ConnectPrinter = () => {
       }
     </div>
   );
-};
+}
 
 export default ConnectPrinter;

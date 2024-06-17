@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { ImportDeletedAction } from '../../../../types/actions/GlobalActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { ImportDeletedAction } from '../../../../types/actions/GlobalActions';
 
 const importDeletedReducer = (value = false, action: ImportDeletedAction | GlobalUpdateAction): boolean => {
   switch (action.type) {

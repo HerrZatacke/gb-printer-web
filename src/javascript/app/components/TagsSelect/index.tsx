@@ -5,7 +5,7 @@ import InputNewTag from './InputNewTag';
 import unique from '../../../tools/unique';
 import { SpecialTags } from '../../../consts/SpecialTags';
 import './index.scss';
-import { TagChange } from '../../../tools/applyTagChanges';
+import type { TagChange } from '../../../tools/applyTagChanges';
 import { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 interface Props {
@@ -15,12 +15,12 @@ interface Props {
   listDirection?: string,
 }
 
-const TagsSelect = ({
+function TagsSelect({
   label,
   tags,
   updateTags,
   listDirection,
-}: Props) => {
+}: Props) {
   const activeTags = unique([...tags.initial, ...tags.add]);
 
   return (
@@ -77,6 +77,6 @@ const TagsSelect = ({
       </ul>
     </>
   );
-};
+}
 
 export default TagsSelect;

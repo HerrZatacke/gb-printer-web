@@ -21,7 +21,7 @@ const getFetchImagesLabel = (printerFunctions: PrinterFunction[], dumpsLength: n
   return `Fetch ${dumpsLength || 0} images`;
 };
 
-const PrinterReport = () => {
+function PrinterReport() {
   const {
     printerData,
     printerFunctions,
@@ -101,6 +101,6 @@ const PrinterReport = () => {
       }
     </div>
   );
-};
+}
 
 export default PrinterReport;

@@ -1,4 +1,4 @@
-import { RemoteEnv } from '../../types/Printer';
+import type { RemoteEnv } from '../../types/Printer';
 
 const showMessage = ({ isIframe, isPopup, isRemote }: RemoteEnv): void => {
   const messages: NodeListOf<HTMLElement> = document.querySelectorAll('p.remote-info');

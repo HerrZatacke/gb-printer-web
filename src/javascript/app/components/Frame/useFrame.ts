@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { Actions } from '../../store/actions';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
-import { State } from '../../store/State';
-import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
-import { DeleteFrameAction, EditFrameAction } from '../../../../types/actions/FrameActions';
+import type { State } from '../../store/State';
+import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import type { DeleteFrameAction, EditFrameAction } from '../../../../types/actions/FrameActions';
 
 
 interface GetTilesParams {

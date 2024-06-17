@@ -1,7 +1,7 @@
 import generatePattern from './generatePattern';
 import { orderPatternDither, orderPatternNoDither } from './orderPatterns';
 import generateBaseValues from './generateBaseValues';
-import { ApplyBitmapFilterOptions, DitherFilterOptions, FilterColor } from './Types';
+import type { ApplyBitmapFilterOptions, DitherFilterOptions, FilterColor } from './Types';
 
 let pixelCount = 0;
 export const ditherFilter = ({

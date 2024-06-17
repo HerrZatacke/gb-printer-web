@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import { PrinterFunction } from '../../../consts/printerFunction';
-import { PrinterInfo } from '../../../../types/Printer';
-import { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
+import type { State } from '../../store/State';
+import type { PrinterFunction } from '../../../consts/printerFunction';
+import type { PrinterInfo } from '../../../../types/Printer';
+import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
 
 interface UsePrinter {
   printerData: PrinterInfo,

@@ -1,15 +1,15 @@
 import { Actions } from '../actions';
-import { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
-import { ImportFilesAction } from '../../../../types/actions/ImportActions';
-import {
+import type { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import type { ImportFilesAction } from '../../../../types/actions/ImportActions';
+import type {
   PrinterDataReceivedAction,
   PrinterFunctionsReceivedAction,
   PrinterResetAction,
   PrinterTimedOutAction,
 } from '../../../../types/actions/PrinterActions';
-import { ProgressPrinterProgressAction } from '../../../../types/actions/ProgressActions';
+import type { ProgressPrinterProgressAction } from '../../../../types/actions/ProgressActions';
 import { PrinterFunction } from '../../../consts/printerFunction';
 
 const importMessage: MiddlewareWithState = (store) => {

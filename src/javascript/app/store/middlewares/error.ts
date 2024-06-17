@@ -1,5 +1,5 @@
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 
 const handleErrors: MiddlewareWithState = () => (next) => (action) => {
 

@@ -1,8 +1,8 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { PaletteDeleteAction, PaletteSetActiveAction } from '../../../../types/actions/PaletteActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { PaletteDeleteAction, PaletteSetActiveAction } from '../../../../types/actions/PaletteActions';
 
 const activePaletteReducer = (
   value = 'cybl',

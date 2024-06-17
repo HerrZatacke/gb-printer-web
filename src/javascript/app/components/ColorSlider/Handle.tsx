@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetHandleProps, SliderItem } from 'react-compound-slider';
+import type { GetHandleProps, SliderItem } from 'react-compound-slider';
 
 interface Props {
   domain: number[],
@@ -7,7 +7,7 @@ interface Props {
   getHandleProps: GetHandleProps,
 }
 
-const Handle = ({ domain, handle, getHandleProps }: Props) => {
+function Handle({ domain, handle, getHandleProps }: Props) {
   const {
     onKeyDown,
     onMouseDown,
@@ -30,6 +30,6 @@ const Handle = ({ domain, handle, getHandleProps }: Props) => {
       onTouchStart={onTouchStart}
     />
   );
-};
+}
 
 export default Handle;

@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver';
 import blobToArrayBuffer from '../blobToArrayBuffer';
 import replaceDuplicateFilenames from '../replaceDuplicateFilenames';
-import { DownloadBlob, DownloadArrayBuffer } from './types';
+import type { DownloadBlob, DownloadArrayBuffer } from './types';
 
 const download = (zipFileName: string | null) => async (files: DownloadBlob[]): Promise<void> => {
 

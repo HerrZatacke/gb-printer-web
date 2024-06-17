@@ -1,7 +1,7 @@
 import { Actions } from '../actions';
 import { getTrashFrames } from '../../../tools/getTrash';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { TrashCountFramesAction } from '../../../../types/actions/TrashActions';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { TrashCountFramesAction } from '../../../../types/actions/TrashActions';
 
 const deleteImage: MiddlewareWithState = (store) => {
   const check = async () => {

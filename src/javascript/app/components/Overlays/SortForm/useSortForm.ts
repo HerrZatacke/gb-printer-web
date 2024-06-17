@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
-import { State } from '../../../store/State';
-import { SortOptionsHideAction, SortOptionsSetSortByAction } from '../../../../../types/actions/SortOptionsActions';
-import { SortDirection } from '../../../../tools/sortby';
+import type { State } from '../../../store/State';
+import type { SortOptionsHideAction, SortOptionsSetSortByAction } from '../../../../../types/actions/SortOptionsActions';
+import type { SortDirection } from '../../../../tools/sortby';
 
 interface UseSortForm {
   visible: boolean,

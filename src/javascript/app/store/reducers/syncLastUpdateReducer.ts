@@ -1,19 +1,19 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import {
+import type {
   DropboxLastUpdateAction,
   DropboxSettingsImportAction,
 } from '../../../../types/actions/StorageActions';
-import { SyncLastUpdate } from '../../../../types/Sync';
-import { LogStorageSyncDoneAction } from '../../../../types/actions/LogActions';
-import {
+import type { SyncLastUpdate } from '../../../../types/Sync';
+import type { LogStorageSyncDoneAction } from '../../../../types/actions/LogActions';
+import type {
   AddImagesAction,
   DeleteImageAction, ImageFavouriteAction,
   ImagesUpdateAction,
   RehashImageAction,
 } from '../../../../types/actions/ImageActions';
-import { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
-import { AddFrameAction, DeleteFrameAction } from '../../../../types/actions/FrameActions';
+import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
+import type { AddFrameAction, DeleteFrameAction } from '../../../../types/actions/FrameActions';
 
 const syncLastUpdateReducer = (
   value: SyncLastUpdate = { dropbox: 0, local: 0 },

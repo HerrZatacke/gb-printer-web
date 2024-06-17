@@ -26,7 +26,7 @@ const sortables: Sortable[] = [
   },
 ];
 
-const SortForm = () => {
+function SortForm() {
   const sortForm = useSortForm();
 
   const [sortBy, setSortBy] = useState<string>(sortForm.sortBy);
@@ -105,6 +105,6 @@ const SortForm = () => {
       </ul>
     </Lightbox>
   );
-};
+}
 
 export default SortForm;

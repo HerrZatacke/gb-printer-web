@@ -1,7 +1,7 @@
 import { Actions } from '../../actions';
-import { MiddlewareWithState } from '../../../../../types/MiddlewareWithState';
+import type { MiddlewareWithState } from '../../../../../types/MiddlewareWithState';
 import { createUpdateAction } from './createUpdateAction';
-import { ImagesUpdateAction } from '../../../../../types/actions/ImageActions';
+import type { ImagesUpdateAction } from '../../../../../types/actions/ImageActions';
 
 const batch: MiddlewareWithState = (store) => (next) => (action) => {
 

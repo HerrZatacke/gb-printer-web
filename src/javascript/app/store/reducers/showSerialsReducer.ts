@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
+import type { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
 
 const showSerialsReducer = (value = false, action: ShowSerialsAction): boolean => {
   switch (action.type) {

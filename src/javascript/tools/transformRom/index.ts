@@ -1,8 +1,8 @@
 import chunk from 'chunk';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from '../transformSav/importSav';
-import { TypedStore } from '../../app/store/State';
-import { GenerateFilenameFn } from '../transformSav/types';
+import type { TypedStore } from '../../app/store/State';
+import type { GenerateFilenameFn } from '../transformSav/types';
 
 interface RomBank {
   bankData: Uint8Array,

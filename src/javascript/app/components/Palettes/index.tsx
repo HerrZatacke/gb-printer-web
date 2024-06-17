@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import Palette from '../Palette';
 import SVG from '../SVG';
-import { Palette as PaletteT } from '../../../../types/Palette';
+import type { Palette as PaletteT } from '../../../../types/Palette';
 
 import './index.scss';
 import { usePalettes } from './usePalettes';
 import usePaletteFromFile from '../../../hooks/usePaletteFromFile';
 import usePaletteSort from '../../../hooks/usePaletteSort';
-import { PaletteSortMode } from '../../../consts/paletteSortModes';
+import type { PaletteSortMode } from '../../../consts/paletteSortModes';
 
 interface Tab {
   id: string,
@@ -34,7 +34,7 @@ const tabs: Tab[] = [
   },
 ];
 
-const Palettes = () => {
+function Palettes() {
   const { onInputChange, busy } = usePaletteFromFile();
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const { filter, headline: currentHeadline, id } = tabs[selectedTabIndex || 0];
@@ -152,6 +152,6 @@ const Palettes = () => {
       </ul>
     </>
   );
-};
+}
 
 export default Palettes;

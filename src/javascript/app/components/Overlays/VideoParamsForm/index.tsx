@@ -1,7 +1,7 @@
 // @ ts-nocheck
 import React from 'react';
 import classnames from 'classnames';
-import { ExportFrameMode } from 'gb-image-decoder';
+import type { ExportFrameMode } from 'gb-image-decoder';
 import Lightbox from '../../Lightbox';
 import SVG from '../../SVG';
 import FrameSelect from '../../FrameSelect';
@@ -12,7 +12,7 @@ import { useVideoForm } from './useVideoForm';
 
 import './index.scss';
 
-const VideoParamsForm = () => {
+function VideoParamsForm() {
 
   const {
     update,
@@ -147,6 +147,6 @@ const VideoParamsForm = () => {
       )}
     </Lightbox>
   );
-};
+}
 
 export default VideoParamsForm;

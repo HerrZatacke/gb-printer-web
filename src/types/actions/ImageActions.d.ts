@@ -1,7 +1,7 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { CurrentEditBatch, Image, RGBNHashes } from '../Image';
-import { TagUpdates } from '../../javascript/tools/modifyTagChanges';
-import { BatchActionType } from '../../javascript/consts/batchActionTypes';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { CurrentEditBatch, Image, RGBNHashes } from '../Image';
+import type { TagUpdates } from '../../javascript/tools/modifyTagChanges';
+import type { BatchActionType } from '../../javascript/consts/batchActionTypes';
 
 export interface AddImagesAction {
   type: Actions.ADD_IMAGES,

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../../store/State';
-import { Plugin } from '../../../../../../types/Plugin';
+import type { State } from '../../../../store/State';
+import type { Plugin } from '../../../../../../types/Plugin';
 import { Actions } from '../../../../store/actions';
-import {
+import type {
   PluginAddAction,
   PluginRemoveAction,
   PluginUpdateConfigAction,

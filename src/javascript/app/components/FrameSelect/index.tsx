@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
-import { State } from '../../store/State';
+import type { State } from '../../store/State';
 
 interface Props {
   frame: string,
@@ -14,14 +14,14 @@ interface Props {
   selectLabel?: string,
 }
 
-const FrameSelect = ({
+function FrameSelect({
   frame,
   updateFrame,
   noFrameOption,
   updateFrameLock,
   lockFrame,
   selectLabel,
-}: Props) => {
+}: Props) {
   const frames = useSelector((state: State) => (state.frames));
 
   return (
@@ -79,6 +79,6 @@ const FrameSelect = ({
       }
     </>
   );
-};
+}
 
 export default FrameSelect;

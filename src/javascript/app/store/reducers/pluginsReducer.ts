@@ -2,8 +2,8 @@
 import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import sortBy from '../../../tools/sortby';
-import { Plugin } from '../../../../types/Plugin';
-import {
+import type { Plugin } from '../../../../types/Plugin';
+import type {
   PluginAddAction,
   PluginRemoveAction,
   PluginUpdateConfigAction,

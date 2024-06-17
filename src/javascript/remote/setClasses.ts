@@ -1,4 +1,4 @@
-import { RemoteEnv } from '../../types/Printer';
+import type { RemoteEnv } from '../../types/Printer';
 
 const setClasses = ({ isIframe, isPopup }: RemoteEnv) => {
   const classList = document.querySelector('html')?.classList;

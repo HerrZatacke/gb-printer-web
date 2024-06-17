@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
-import { State } from '../../../store/State';
-import { LogClearAction, LogItem } from '../../../../../types/actions/LogActions';
+import type { State } from '../../../store/State';
+import type { LogClearAction, LogItem } from '../../../../../types/actions/LogActions';
 
 interface UseProgress {
   git: {

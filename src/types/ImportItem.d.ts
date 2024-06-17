@@ -1,4 +1,4 @@
-import { ImageMetadata } from './Image';
+import type { ImageMetadata } from './Image';
 
 export interface ImportItem {
   fileName:string,

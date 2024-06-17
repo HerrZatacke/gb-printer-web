@@ -6,7 +6,7 @@ import Lightbox from '../../Lightbox';
 import './index.scss';
 import { useEditForm } from './useEditForm';
 
-const EditForm = () => {
+function EditForm() {
   const {
     toEdit,
     form,
@@ -109,6 +109,6 @@ const EditForm = () => {
       />
     </Lightbox>
   );
-};
+}
 
 export default EditForm;

@@ -1,4 +1,4 @@
-import { InfoTextTheme } from '../javascript/app/components/Overlays/Confirm/fields/InfoText';
+import type { InfoTextTheme } from '../javascript/app/components/Overlays/Confirm/fields/InfoText';
 
 export enum DialoqQuestionType {
   CHECKBOX = 'checkbox',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouteError } from 'react-router-dom';
 
-const Error = () => {
+function Error() {
   const error = useRouteError();
   console.error(error);
 
@@ -15,6 +15,6 @@ const Error = () => {
       </pre>
     </div>
   );
-};
+}
 
 export default Error;

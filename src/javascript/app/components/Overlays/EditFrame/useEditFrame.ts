@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
 import getFrameGroups from '../../../../tools/getFrameGroups';
-import { State } from '../../../store/State';
-import { Frame } from '../../../../../types/Frame';
-import { FrameGroup } from '../../../../../types/FrameGroup';
-import { CancelEditFrameAction, UpdateFrameAction } from '../../../../../types/actions/FrameActions';
+import type { State } from '../../../store/State';
+import type { Frame } from '../../../../../types/Frame';
+import type { FrameGroup } from '../../../../../types/FrameGroup';
+import type { CancelEditFrameAction, UpdateFrameAction } from '../../../../../types/actions/FrameActions';
 
 interface UseEditFrame {
   groups: FrameGroup[],

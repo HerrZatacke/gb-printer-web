@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { CancelEditFrameAction, EditFrameAction, UpdateFrameAction } from '../../../../types/actions/FrameActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { CancelEditFrameAction, EditFrameAction, UpdateFrameAction } from '../../../../types/actions/FrameActions';
 
 const editFrameReducer = (
   value: string | null = null,

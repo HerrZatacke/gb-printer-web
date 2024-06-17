@@ -1,15 +1,15 @@
 import Queue from 'promise-queue';
-import { AnyAction } from 'redux';
+import type { AnyAction } from 'redux';
 import OctoClient from '../../../../tools/OctoClient';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
 import { Actions } from '../../actions';
-import { AddToQueueFn } from '../../../../../types/Sync';
-import { TypedStore } from '../../State';
+import type { AddToQueueFn } from '../../../../../types/Sync';
+import type { TypedStore } from '../../State';
 import { delay } from '../../../../tools/delay';
-import { ErrorAction } from '../../../../../types/actions/GlobalActions';
-import { LogGitStorageAction, LogStorageSyncDoneAction } from '../../../../../types/actions/LogActions';
-import { GitSettingsImportAction } from '../../../../../types/actions/StorageActions';
+import type { ErrorAction } from '../../../../../types/actions/GlobalActions';
+import type { LogGitStorageAction, LogStorageSyncDoneAction } from '../../../../../types/actions/LogActions';
+import type { GitSettingsImportAction } from '../../../../../types/actions/StorageActions';
 
 let octoClient: OctoClient;
 let addToQueue: (who: string) => AddToQueueFn<unknown>;

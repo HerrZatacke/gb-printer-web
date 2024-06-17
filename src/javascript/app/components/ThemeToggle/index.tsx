@@ -7,7 +7,7 @@ interface Props {
   closeNavigation: () => void,
 }
 
-const ThemeToggle = ({ closeNavigation }: Props) => {
+function ThemeToggle({ closeNavigation }: Props) {
   const { theme, setTheme } = useTheme();
 
   const title = theme === Theme.BRIGHT ? 'Switch to dark mode' : 'Switch to bright mode';
@@ -31,6 +31,6 @@ const ThemeToggle = ({ closeNavigation }: Props) => {
       />
     </label>
   );
-};
+}
 
 export default ThemeToggle;

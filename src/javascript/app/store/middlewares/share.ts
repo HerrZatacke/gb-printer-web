@@ -2,7 +2,7 @@ import { getPrepareFiles } from '../../../tools/download';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 
 const batch: MiddlewareWithState = (store) => (next) => async (action) => {
 

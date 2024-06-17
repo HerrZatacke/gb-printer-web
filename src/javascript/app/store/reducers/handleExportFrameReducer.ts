@@ -2,8 +2,8 @@
 import { ExportFrameMode } from 'gb-image-decoder';
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { HandleExportFrameAction } from '../../../../types/actions/FrameActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { HandleExportFrameAction } from '../../../../types/actions/FrameActions';
 
 const handleExportFrameReducer = (
   value = ExportFrameMode.FRAMEMODE_KEEP,

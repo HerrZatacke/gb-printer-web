@@ -1,24 +1,24 @@
-import { Dispatch, MiddlewareAPI } from 'redux';
-import { ExportFrameMode } from 'gb-image-decoder';
-import { QueueImage } from '../../../types/QueueImage';
-import { Dialog } from '../../../types/Dialog';
-import { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
-import { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
-import { Palette } from '../../../types/Palette';
-import { FrameGroup } from '../../../types/FrameGroup';
-import { Frame } from '../../../types/Frame';
-import { GalleryViews } from '../../consts/GalleryViews';
-import { ImportItem } from '../../../types/ImportItem';
-import { ProgressLog } from '../../../types/actions/LogActions';
-import { Plugin } from '../../../types/Plugin';
-import { Progress } from './reducers/progressReducer';
-import { TrashCount } from './reducers/trashCountReducer';
-import { VideoParams } from '../../../types/VideoParams';
-import { WindowDimensions } from '../../../types/WindowDimensions';
-import { PrinterInfo } from '../../../types/Printer';
-import { PrinterFunction } from '../../consts/printerFunction';
-import { PickColors } from '../../../types/PickColors';
-import { PaletteSortMode } from '../../consts/paletteSortModes';
+import type { Dispatch, MiddlewareAPI } from 'redux';
+import type { ExportFrameMode } from 'gb-image-decoder';
+import type { QueueImage } from '../../../types/QueueImage';
+import type { Dialog } from '../../../types/Dialog';
+import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
+import type { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
+import type { Palette } from '../../../types/Palette';
+import type { FrameGroup } from '../../../types/FrameGroup';
+import type { Frame } from '../../../types/Frame';
+import type { GalleryViews } from '../../consts/GalleryViews';
+import type { ImportItem } from '../../../types/ImportItem';
+import type { ProgressLog } from '../../../types/actions/LogActions';
+import type { Plugin } from '../../../types/Plugin';
+import type { Progress } from './reducers/progressReducer';
+import type { TrashCount } from './reducers/trashCountReducer';
+import type { VideoParams } from '../../../types/VideoParams';
+import type { WindowDimensions } from '../../../types/WindowDimensions';
+import type { PrinterInfo } from '../../../types/Printer';
+import type { PrinterFunction } from '../../consts/printerFunction';
+import type { PickColors } from '../../../types/PickColors';
+import type { PaletteSortMode } from '../../consts/paletteSortModes';
 
 // ToDo: infer from store somehow...?
 export interface State {

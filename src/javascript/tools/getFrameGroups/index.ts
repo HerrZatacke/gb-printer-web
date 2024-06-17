@@ -1,5 +1,5 @@
-import { Frame } from '../../../types/Frame';
-import { FrameGroup } from '../../../types/FrameGroup';
+import type { Frame } from '../../../types/Frame';
+import type { FrameGroup } from '../../../types/FrameGroup';
 
 const getGroupName = (id: string, name: string, frameGroupNames: FrameGroup[]): string => {
   const namedGroup = frameGroupNames.find((group) => (group.id === id));

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue';
-import { AnyAction } from 'redux';
+import type { AnyAction } from 'redux';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
 import DropboxClient from '../../../../tools/DropboxClient';
@@ -14,27 +14,27 @@ import getFilteredImages from '../../../../tools/getFilteredImages';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 
 import { Actions } from '../../actions';
-import { TypedStore } from '../../State';
-import { AddToQueueFn, DBFolderFile, DownloadInfo, UploadFile } from '../../../../../types/Sync';
+import type { TypedStore } from '../../State';
+import type { AddToQueueFn, DBFolderFile, DownloadInfo, UploadFile } from '../../../../../types/Sync';
 import { delay } from '../../../../tools/delay';
-import { Image } from '../../../../../types/Image';
-import { DownloadArrayBuffer } from '../../../../tools/download/types';
-import { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../../types/actions/ConfirmActions';
-import { ErrorAction } from '../../../../../types/actions/GlobalActions';
-import {
+import type { Image } from '../../../../../types/Image';
+import type { DownloadArrayBuffer } from '../../../../tools/download/types';
+import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../../types/actions/ConfirmActions';
+import type { ErrorAction } from '../../../../../types/actions/GlobalActions';
+import type {
   LogDropboxAction,
   LogStorageDiffDoneAction,
   LogStorageSyncDoneAction,
   StorageSyncStartAction,
 } from '../../../../../types/actions/LogActions';
-import {
+import type {
   DropboxLastUpdateAction,
   DropboxSetStorageAction,
   DropboxSettingsImportAction,
 } from '../../../../../types/actions/StorageActions';
-import { ImagesUpdateAction } from '../../../../../types/actions/ImageActions';
+import type { ImagesUpdateAction } from '../../../../../types/actions/ImageActions';
 import { DialoqQuestionType } from '../../../../../types/Dialog';
-import { RepoContents } from '../../../../../types/Export';
+import type { RepoContents } from '../../../../../types/Export';
 
 interface WithContentHash {
   dropboxContentHash: string,

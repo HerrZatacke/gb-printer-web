@@ -7,16 +7,16 @@ import Input, { InputType } from '../../Input';
 import InfoText from './fields/InfoText';
 import SVG from '../../SVG';
 import './index.scss';
-import {
-  DialogQuestionCheckbox,
+import type { DialogQuestionCheckbox,
   DialogQuestionInfo,
   DialogQuestionNumber,
   DialogQuestionSelect,
-  DialogQuestionText,
+  DialogQuestionText } from '../../../../../types/Dialog';
+import {
   DialoqQuestionType,
 } from '../../../../../types/Dialog';
 
-const Confirm = () => {
+function Confirm() {
 
   const { message, questions, values, setSelected, confirm, deny } = useDialog();
 
@@ -125,6 +125,6 @@ const Confirm = () => {
       }
     </Lightbox>
   );
-};
+}
 
 export default Confirm;

@@ -1,7 +1,7 @@
-import { ExportFrameMode } from 'gb-image-decoder';
-import { Actions } from '../../javascript/app/store/actions';
-import { Frame } from '../Frame';
-import { FrameGroup } from '../FrameGroup';
+import type { ExportFrameMode } from 'gb-image-decoder';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { Frame } from '../Frame';
+import type { FrameGroup } from '../FrameGroup';
 
 export interface AddFrameAction {
   type: Actions.ADD_FRAME,

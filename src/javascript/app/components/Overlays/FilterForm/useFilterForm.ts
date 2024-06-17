@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAvailableTags } from '../../../../hooks/useAvailableTags';
 import unique from '../../../../tools/unique';
-import { State } from '../../../store/State';
+import type { State } from '../../../store/State';
 import { Actions } from '../../../store/actions';
-import { HideFiltersAction, SetActiveTagsAction } from '../../../../../types/actions/TagsActions';
+import type { HideFiltersAction, SetActiveTagsAction } from '../../../../../types/actions/TagsActions';
 
 export enum ActiveTagUpdateMode {
   ADD = 'add',

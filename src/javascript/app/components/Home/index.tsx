@@ -1,4 +1,5 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { ReactMarkdownOptions } from 'react-markdown';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -6,9 +7,11 @@ import docs from '../../../../../README.md';
 
 import './index.scss';
 
-const X = () => <p />;
+function X() {
+  return <p />;
+}
 
-const Home = () => {
+function Home() {
 
   const [ReactMarkdown, setReactMarkdown] = useState<(options: ReactMarkdownOptions) => ReactElement>(() => X);
 
@@ -28,6 +31,6 @@ const Home = () => {
       </ReactMarkdown>
     </div>
   );
-};
+}
 
 export default Home;

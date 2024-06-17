@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import { GalleryViews } from '../../../consts/GalleryViews';
-import { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
+import type { State } from '../../store/State';
+import type { GalleryViews } from '../../../consts/GalleryViews';
+import type { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
 
 interface UseGalleryView {
   currentView: GalleryViews,

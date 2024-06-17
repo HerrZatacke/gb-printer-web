@@ -4,7 +4,7 @@ import { useProgressBox } from './useProgressBox';
 
 import './index.scss';
 
-const ProgressBox = () => {
+function ProgressBox() {
   const { message, progress } = useProgressBox();
 
   return (
@@ -23,6 +23,6 @@ const ProgressBox = () => {
       </Lightbox>
     ) : null
   );
-};
+}
 
 export default ProgressBox;

@@ -4,8 +4,8 @@ import transformClassic from '../transformClassic';
 import { compressAndHash } from '../storage';
 import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
-import { TypedStore } from '../../app/store/State';
-import { ImportQueueAddAction } from '../../../types/actions/QueueActions';
+import type { TypedStore } from '../../app/store/State';
+import type { ImportQueueAddAction } from '../../../types/actions/QueueActions';
 import { randomId } from '../randomId';
 
 const getTransformPlainText = ({ dispatch }: TypedStore) => async (file: File) => {

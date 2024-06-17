@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette } from 'gb-image-decoder';
 import { missingGreyPalette } from '../../defaults';
 import { SpecialTags } from '../../../consts/SpecialTags';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
+import type { State } from '../../store/State';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
-import { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
-import { Rotation } from '../../../tools/applyRotation';
-import { EditImageSelectionAction } from '../../../../types/actions/ImageActions';
-import {
+import type { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
+import type { Rotation } from '../../../tools/applyRotation';
+import type { EditImageSelectionAction } from '../../../../types/actions/ImageActions';
+import type {
   ImageSelectionAddAction,
   ImageSelectionRemoveAction,
   ImageSelectionShiftClickAction,

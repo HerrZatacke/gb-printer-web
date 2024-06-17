@@ -1,10 +1,10 @@
-import { AnyAction, Dispatch } from 'redux';
+import type { AnyAction, Dispatch } from 'redux';
 import { ditherFilter } from '../../../../tools/applyBitmapFilter';
 import { Actions } from '../../../store/actions';
 import { compressAndHash } from '../../../../tools/storage';
 import { compressAndHashFrame } from '../../../../tools/applyFrame/frameData';
-import { QueueImage } from '../../../../../types/QueueImage';
-import { ImportQueueAddAction } from '../../../../../types/actions/QueueActions';
+import type { QueueImage } from '../../../../../types/QueueImage';
+import type { ImportQueueAddAction } from '../../../../../types/actions/QueueActions';
 import { randomId } from '../../../../tools/randomId';
 
 export interface DispatchBitmapsToImportOptions {

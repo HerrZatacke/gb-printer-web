@@ -6,14 +6,14 @@ import { Actions } from '../app/store/actions';
 import { dateFormat } from '../app/defaults';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTrash';
 import { inflate } from '../tools/pack';
-import { WrappedLocalForageInstance } from '../tools/localforageInstance/createWrappedInstance';
-import { TrashShowHideAction, UpdateTrashcountAction } from '../../types/actions/TrashActions';
+import type { WrappedLocalForageInstance } from '../tools/localforageInstance/createWrappedInstance';
+import type { TrashShowHideAction, UpdateTrashcountAction } from '../../types/actions/TrashActions';
 import { reduceImagesMonochrome } from '../tools/isRGBNImage';
-import { JSONExportBinary, JSONExportState, State, TypedStore } from '../app/store/State';
-import { Image } from '../../types/Image';
+import type { JSONExportBinary, JSONExportState, State, TypedStore } from '../app/store/State';
+import type { Image } from '../../types/Image';
 import { reduceItems } from '../tools/reduceArray';
-import { Frame } from '../../types/Frame';
-import { TrashCount } from '../app/store/reducers/trashCountReducer';
+import type { Frame } from '../../types/Frame';
+import type { TrashCount } from '../app/store/reducers/trashCountReducer';
 
 export interface UseTrashbin {
   showTrash: (show: boolean) => void

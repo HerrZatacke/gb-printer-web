@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { DragoverAction } from '../../../../types/actions/GlobalActions';
+import type { DragoverAction } from '../../../../types/actions/GlobalActions';
 
 const dragoverReducer = (value = false, action: DragoverAction): boolean => {
   switch (action.type) {

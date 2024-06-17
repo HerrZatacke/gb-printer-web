@@ -1,11 +1,11 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import {
+import type {
   PrinterDataReceivedAction,
   PrinterResetAction,
   PrinterTimedOutAction,
 } from '../../../../types/actions/PrinterActions';
-import { PrinterInfo } from '../../../../types/Printer';
+import type { PrinterInfo } from '../../../../types/Printer';
 
 const printerDataReducer = (
   value: PrinterInfo | null = null,

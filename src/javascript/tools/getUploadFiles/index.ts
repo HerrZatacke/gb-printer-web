@@ -1,8 +1,8 @@
 import filterDeleteNew from '../filterDeleteNew';
 import getPrepareRemoteFiles from '../getPrepareRemoteFiles';
-import { AddToQueueFn } from '../../../types/Sync';
-import { RepoContents, RepoTasks, SyncFile } from '../../../types/Export';
-import { TypedStore } from '../../app/store/State';
+import type { AddToQueueFn } from '../../../types/Sync';
+import type { RepoContents, RepoTasks, SyncFile } from '../../../types/Export';
+import type { TypedStore } from '../../app/store/State';
 import { getUploadImages } from './getUploadImages';
 import { getUploadFrames } from './getUpladFrames';
 

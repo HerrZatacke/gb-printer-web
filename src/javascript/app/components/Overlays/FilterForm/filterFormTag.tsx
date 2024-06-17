@@ -10,24 +10,26 @@ interface Props {
   icon?: string,
 }
 
-const FilterFormTag = ({ tagActive, toggleTag, title, icon }: Props) => (
-  <li
-    title={title}
-    className={
-      classnames('filter-form__tag', {
-        'filter-form__tag--active': tagActive,
-      })
-    }
-  >
-    <button
-      className="filter-form__tag-button"
-      type="button"
-      onClick={() => toggleTag(tagActive ? ActiveTagUpdateMode.REMOVE : ActiveTagUpdateMode.ADD)}
+function FilterFormTag({ tagActive, toggleTag, title, icon }: Props) {
+  return (
+    <li
+      title={title}
+      className={
+        classnames('filter-form__tag', {
+          'filter-form__tag--active': tagActive,
+        })
+      }
     >
-      <SVG name={icon || 'checkmark'} />
-      <span className="filter-form__tag-text">{title}</span>
-    </button>
-  </li>
-);
+      <button
+        className="filter-form__tag-button"
+        type="button"
+        onClick={() => toggleTag(tagActive ? ActiveTagUpdateMode.REMOVE : ActiveTagUpdateMode.ADD)}
+      >
+        <SVG name={icon || 'checkmark'} />
+        <span className="filter-form__tag-text">{title}</span>
+      </button>
+    </li>
+  );
+}
 
 export default FilterFormTag;

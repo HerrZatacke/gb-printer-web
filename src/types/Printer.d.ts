@@ -1,4 +1,4 @@
-import { PrinterFunction } from '../javascript/consts/printerFunction';
+import type { PrinterFunction } from '../javascript/consts/printerFunction';
 
 export interface BlobResponse {
   ok: boolean // Sent by fetchImages,

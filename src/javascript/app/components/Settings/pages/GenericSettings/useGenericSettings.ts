@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { ExportFrameMode } from 'gb-image-decoder';
+import type { ExportFrameMode } from 'gb-image-decoder';
 import getFrameGroups from '../../../../../tools/getFrameGroups';
 import { Actions } from '../../../../store/actions';
-import { State } from '../../../../store/State';
-import { FrameGroup } from '../../../../../../types/FrameGroup';
-import { PrinterSetParamsAction, PrinterSetUrlAction } from '../../../../../../types/actions/PrinterActions';
-import {
+import type { State } from '../../../../store/State';
+import type { FrameGroup } from '../../../../../../types/FrameGroup';
+import type { PrinterSetParamsAction, PrinterSetUrlAction } from '../../../../../../types/actions/PrinterActions';
+import type {
   ExportScaleFactorsAction,
   ExportFileTypesAction,
   ForceMagicCheckAction,
 } from '../../../../../../types/actions/StorageActions';
-import {
+import type {
   EnableDebugAction,
   HideDatesAction,
   ImportDeletedAction,
@@ -19,7 +19,7 @@ import {
   PageSizeAction,
   PreferredLocaleAction,
 } from '../../../../../../types/actions/GlobalActions';
-import { HandleExportFrameAction, SavFrameTypesAction } from '../../../../../../types/actions/FrameActions';
+import type { HandleExportFrameAction, SavFrameTypesAction } from '../../../../../../types/actions/FrameActions';
 
 interface UseGenericSettings {
   exportScaleFactors: number[],

@@ -4,12 +4,12 @@ import classnames from 'classnames';
 import GalleryImageButtons from '../../GalleryImageButtons';
 import ImageRender from '../../ImageRender';
 import { defaultRGBNPalette } from '../../../defaults';
-import { State } from '../../../store/State';
+import type { State } from '../../../store/State';
 import { ButtonOption } from '../../GalleryImageButtons/useGalleryImageButtons';
 
 import './index.scss';
 
-const RGBNImage = () => {
+function RGBNImage() {
   const hashes = useSelector((state: State) => state.rgbnImages);
 
   return hashes ? (
@@ -39,6 +39,6 @@ const RGBNImage = () => {
       />
     </div>
   ) : null;
-};
+}
 
 export default RGBNImage;

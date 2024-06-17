@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { UpdateWindowDimensionsAction } from '../../../../types/actions/GlobalActions';
-import { WindowDimensions } from '../../../../types/WindowDimensions';
+import type { UpdateWindowDimensionsAction } from '../../../../types/actions/GlobalActions';
+import type { WindowDimensions } from '../../../../types/WindowDimensions';
 
 const windowDimensionsReducer = (
   value: WindowDimensions = {

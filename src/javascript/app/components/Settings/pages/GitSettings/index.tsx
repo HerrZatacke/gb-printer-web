@@ -6,7 +6,7 @@ import Input, { InputType } from '../../../Input';
 import './index.scss';
 import { useGitStorage } from './useGitStorage';
 
-const GitSettings = () => {
+function GitSettings() {
   const { gitStorage, setGitStorage } = useGitStorage();
   const [storage, setStorage] = useState(gitStorage);
 
@@ -142,6 +142,6 @@ const GitSettings = () => {
       )}
     </>
   );
-};
+}
 
 export default GitSettings;

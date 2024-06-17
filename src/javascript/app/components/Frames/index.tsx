@@ -6,7 +6,7 @@ import { ExportTypes } from '../../../consts/exportTypes';
 
 import './index.scss';
 
-const Frames = () => {
+function Frames() {
 
   const {
     frameGroups,
@@ -87,6 +87,6 @@ const Frames = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Frames;

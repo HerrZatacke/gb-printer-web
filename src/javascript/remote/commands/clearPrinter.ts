@@ -1,5 +1,5 @@
 import checkPrinter from './checkPrinter';
-import { CheckPrinterStatus } from '../../../types/Printer';
+import type { CheckPrinterStatus } from '../../../types/Printer';
 
 const clearPrinter = async (): Promise<CheckPrinterStatus> => {
   const res = await fetch('/dumps/clear');

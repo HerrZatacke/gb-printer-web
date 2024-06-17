@@ -4,7 +4,7 @@ import Lightbox from '../../Lightbox';
 import './index.scss';
 import { useFrameInfo } from './useFrameInfo';
 
-const InfoBox = () => {
+function InfoBox() {
 
   const { message, dismiss } = useFrameInfo();
 
@@ -21,6 +21,6 @@ const InfoBox = () => {
       </Lightbox>
     ) : null
   );
-};
+}
 
 export default InfoBox;

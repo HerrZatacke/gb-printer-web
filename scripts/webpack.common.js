@@ -21,10 +21,6 @@ try {
 
 module.exports = () => ({
   resolve: {
-    modules: [
-      __dirname,
-      'node_modules'
-    ],
     extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
   entry: {
@@ -145,7 +141,7 @@ module.exports = () => ({
   },
   plugins: [
     new ESLintPlugin({
-      extensions: ['js', 'jsx'],
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
     }),
     new HtmlWebpackPlugin({
       title: 'Game Boy Camera Gallery',

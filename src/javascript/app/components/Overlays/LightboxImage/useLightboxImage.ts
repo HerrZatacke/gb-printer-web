@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette } from 'gb-image-decoder';
 import getFilteredImages from '../../../../tools/getFilteredImages';
 import { Actions } from '../../../store/actions';
-import { State } from '../../../store/State';
+import type { State } from '../../../store/State';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
-import { RGBNHashes, RGBNImage } from '../../../../../types/Image';
+import type { RGBNHashes, RGBNImage } from '../../../../../types/Image';
 import { Rotation } from '../../../../tools/applyRotation';
 import { missingGreyPalette } from '../../../defaults';
-import {
+import type {
   SetLightboxFullscreenAction,
   SetLightboxImageAction,
   SetLightboxNextAction,

@@ -10,7 +10,7 @@ interface Props {
   preferredLocale?: string,
 }
 
-const DateSpan = ({ hideDate, created, className, preferredLocale }: Props) => {
+function DateSpan({ hideDate, created, className, preferredLocale }: Props) {
   if (hideDate || !created) {
     return null;
   }
@@ -20,6 +20,6 @@ const DateSpan = ({ hideDate, created, className, preferredLocale }: Props) => {
       { dateFormatLocale(dayjs(created, dateFormat), preferredLocale) }
     </span>
   );
-};
+}
 
 export default DateSpan;

@@ -1,8 +1,9 @@
-import getFilteredImages, { FilteredImagesState } from '../getFilteredImages';
+import type { FilteredImagesState } from '../getFilteredImages';
+import getFilteredImages from '../getFilteredImages';
 import { addSortIndex, removeSortIndex, sortImages } from '../sortImages';
 import uniqueBy from '../unique/by';
-import { State } from '../../app/store/State';
-import { Image, MonochromeImage } from '../../../types/Image';
+import type { State } from '../../app/store/State';
+import type { Image, MonochromeImage } from '../../../types/Image';
 import { reduceImagesMonochrome } from '../isRGBNImage';
 
 const uniqeHash = uniqueBy<Image>('hash');

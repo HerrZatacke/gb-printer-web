@@ -1,10 +1,10 @@
 /* eslint-disable default-param-last */
 import dayjs from 'dayjs';
 import { Actions } from '../actions';
-import { AddImagesAction } from '../../../../types/actions/ImageActions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { RecentImport } from '../../../../types/Sync';
-import { Image, RGBNImage } from '../../../../types/Image';
+import type { AddImagesAction } from '../../../../types/actions/ImageActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { RecentImport } from '../../../../types/Sync';
+import type { Image, RGBNImage } from '../../../../types/Image';
 import uniqueBy from '../../../tools/unique/by';
 
 const recentImportsReducer = (

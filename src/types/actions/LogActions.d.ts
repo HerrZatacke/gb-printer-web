@@ -1,5 +1,5 @@
-import { Actions } from '../../javascript/app/store/actions';
-import { GitUploadResult, UploadDeleteResult } from '../Sync';
+import type { Actions } from '../../javascript/app/store/actions';
+import type { GitUploadResult, UploadDeleteResult } from '../Sync';
 
 export interface LogItem {
   timestamp: number,

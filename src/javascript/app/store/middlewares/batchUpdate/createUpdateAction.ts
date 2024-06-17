@@ -1,11 +1,11 @@
-import { RGBNPalette } from 'gb-image-decoder';
-import { ImagesBatchUpdateAction, ImagesUpdateAction, ImageUpdates } from '../../../../../types/actions/ImageActions';
+import type { RGBNPalette } from 'gb-image-decoder';
+import type { ImagesBatchUpdateAction, ImagesUpdateAction, ImageUpdates } from '../../../../../types/actions/ImageActions';
 import { Actions } from '../../actions';
 import { addSortIndex, removeSortIndex, sortImages } from '../../../../tools/sortImages';
-import { Image, MonochromeImage, RGBNImage } from '../../../../../types/Image';
-import { TagUpdates } from '../../../../tools/modifyTagChanges';
+import type { Image, MonochromeImage, RGBNImage } from '../../../../../types/Image';
+import type { TagUpdates } from '../../../../tools/modifyTagChanges';
 import applyTagChanges from '../../../../tools/applyTagChanges';
-import { State } from '../../State';
+import type { State } from '../../State';
 import { Updatable, UPDATATABLES } from './const';
 import { isRGBNImage, isRGBNPalette } from '../../../../tools/isRGBNImage';
 

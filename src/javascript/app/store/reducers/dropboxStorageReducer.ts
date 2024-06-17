@@ -1,7 +1,7 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { DropBoxSettings } from '../../../../types/Sync';
-import {
+import type { DropBoxSettings } from '../../../../types/Sync';
+import type {
   DropboxLogoutAction,
   DropboxSetStorageAction,
 } from '../../../../types/actions/StorageActions';

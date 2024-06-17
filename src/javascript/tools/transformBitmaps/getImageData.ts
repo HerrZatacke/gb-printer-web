@@ -1,5 +1,5 @@
 import readFileAs, { ReadAs } from '../readFileAs';
-import { QueueImage } from '../../../types/QueueImage';
+import type { QueueImage } from '../../../types/QueueImage';
 
 /* eslint-disable no-param-reassign */
 const prepareContext = (context: CanvasRenderingContext2D) => {

@@ -1,4 +1,4 @@
-import { Image } from '../../../types/Image';
+import type { Image } from '../../../types/Image';
 
 interface Sortable {
   sortIndex: number,

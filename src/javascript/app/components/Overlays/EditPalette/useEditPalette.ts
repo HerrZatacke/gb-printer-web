@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PaletteCancelEditAction, PaletteUpdateAction } from '../../../../../types/actions/PaletteActions';
+import type { PaletteCancelEditAction, PaletteUpdateAction } from '../../../../../types/actions/PaletteActions';
 import { Actions } from '../../../store/actions';
-import { State } from '../../../store/State';
-import { Palette } from '../../../../../types/Palette';
+import type { State } from '../../../store/State';
+import type { Palette } from '../../../../../types/Palette';
 import getPreviewImages from '../../../../tools/getPreviewImages';
-import { MonochromeImage } from '../../../../../types/Image';
+import type { MonochromeImage } from '../../../../../types/Image';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 
 interface UseEditPalette {

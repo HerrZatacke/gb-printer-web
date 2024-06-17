@@ -4,9 +4,9 @@ import generateFileName from '../../../tools/generateFileName';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
-import { State } from '../State';
-import { PrepareFilesReturnType } from '../../../tools/download/getPrepareFiles';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { State } from '../State';
+import type { PrepareFilesReturnType } from '../../../tools/download/getPrepareFiles';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 
 const handleSingleImage = (
   prepareFiles: PrepareFilesReturnType,

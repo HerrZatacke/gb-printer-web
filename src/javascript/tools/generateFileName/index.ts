@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette } from 'gb-image-decoder';
 import { dateFormat, dateFormatFilename } from '../../app/defaults';
-import { Image } from '../../../types/Image';
-import { Palette } from '../../../types/Palette';
+import type { Image } from '../../../types/Image';
+import type { Palette } from '../../../types/Palette';
 
 dayjs.extend(customParseFormat);
 

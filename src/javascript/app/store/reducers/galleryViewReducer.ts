@@ -1,9 +1,9 @@
 /* eslint-disable default-param-last */
 import updateIfDefined from '../../../tools/updateIfDefined';
 import { Actions } from '../actions';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { GalleryViews } from '../../../consts/GalleryViews';
-import { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
+import type { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
 
 const galleryViewReducer = (
   value: GalleryViews = GalleryViews.GALLERY_VIEW_1X,

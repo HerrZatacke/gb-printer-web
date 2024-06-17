@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { dateFormat, defaultRGBNPalette } from '../../defaults';
 import { Actions } from '../actions';
-import { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import { AddImagesAction } from '../../../../types/actions/ImageActions';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import type { AddImagesAction } from '../../../../types/actions/ImageActions';
 
 const saveRGBNImage: MiddlewareWithState = (store) => (next) => async (action) => {
 

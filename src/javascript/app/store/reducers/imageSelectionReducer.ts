@@ -1,9 +1,9 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
 import updateIfDefined from '../../../tools/updateIfDefined';
-import { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
-import { ImageSelectionAddAction, ImageSelectionRemoveAction, ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import type { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
+import type { ImageSelectionAddAction, ImageSelectionRemoveAction, ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
 
 
 const imageSelectionReducer = (

@@ -1,5 +1,5 @@
 import unique from '../unique';
-import { TagUpdates } from '../modifyTagChanges';
+import type { TagUpdates } from '../modifyTagChanges';
 
 export interface TagChange extends TagUpdates {
   initial: string[],

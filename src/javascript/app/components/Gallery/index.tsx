@@ -9,7 +9,7 @@ import { useGallery } from './useGallery';
 import './index.scss';
 import { GalleryViews } from '../../../consts/GalleryViews';
 
-const Gallery = () => {
+function Gallery() {
   const {
     imageCount,
     selectedCount,
@@ -75,6 +75,6 @@ const Gallery = () => {
       }
     </>
   );
-};
+}
 
 export default Gallery;

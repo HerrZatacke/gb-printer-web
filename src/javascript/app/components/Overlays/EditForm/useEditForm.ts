@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
-import { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette } from 'gb-image-decoder';
 import { useDispatch, useSelector } from 'react-redux';
 import { missingGreyPalette } from '../../../defaults';
 import { Actions } from '../../../store/actions';
 import { getImageTileCount } from '../../../../tools/loadImageTiles';
-import { State } from '../../../store/State';
-import {
+import type { State } from '../../../store/State';
+import type {
   CancelEditImagesAction,
   ImagesBatchUpdateAction,
   ImageUpdates,
 } from '../../../../../types/actions/ImageActions';
-import modifyTagChanges, { TagUpdateMode } from '../../../../tools/modifyTagChanges';
-import { ImageMetadata, MonochromeImage, RGBNImage } from '../../../../../types/Image';
-import { Rotation } from '../../../../tools/applyRotation';
-import { Palette } from '../../../../../types/Palette';
+import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
+import modifyTagChanges from '../../../../tools/modifyTagChanges';
+import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../../../../types/Image';
+import type { Rotation } from '../../../../tools/applyRotation';
+import type { Palette } from '../../../../../types/Palette';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
-import { TagChange } from '../../../../tools/applyTagChanges';
+import type { TagChange } from '../../../../tools/applyTagChanges';
 
 interface Batch {
   created: boolean,

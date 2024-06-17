@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import { UseSerialsAction } from '../../../../types/actions/GlobalActions';
+import type { UseSerialsAction } from '../../../../types/actions/GlobalActions';
 
 const useSerialsReducer = (
   value = false,

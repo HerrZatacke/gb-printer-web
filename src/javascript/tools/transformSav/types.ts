@@ -1,5 +1,5 @@
-import { AnyAction, Dispatch } from 'redux';
-import { Frame } from '../../../types/Frame';
+import type { AnyAction, Dispatch } from 'redux';
+import type { Frame } from '../../../types/Frame';
 
 export enum RomTypes {
   PHOTO = 'photo',

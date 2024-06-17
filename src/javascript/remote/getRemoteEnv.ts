@@ -1,4 +1,4 @@
-import { RemoteEnv } from '../../types/Printer';
+import type { RemoteEnv } from '../../types/Printer';
 
 const getRemoteEnv = (): RemoteEnv => {
   const targetWindow: Window = window.opener || window.parent;

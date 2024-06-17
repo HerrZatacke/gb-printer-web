@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
 import { Actions } from '../../store/actions';
-import { State } from '../../store/State';
-import { Palette } from '../../../../types/Palette';
-import { PaletteEditAction } from '../../../../types/actions/PaletteActions';
+import type { State } from '../../store/State';
+import type { Palette } from '../../../../types/Palette';
+import type { PaletteEditAction } from '../../../../types/actions/PaletteActions';
 
 interface UsePalettes {
   palettes: Palette[],

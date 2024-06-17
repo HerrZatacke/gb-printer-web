@@ -36,7 +36,7 @@ interface Props {
   children?: React.ReactNode,
 }
 
-const Input = ({
+function Input({
   id,
   labelText,
   buttonIcon,
@@ -53,7 +53,7 @@ const Input = ({
   onBlur,
   onKeyUp,
   children,
-}: Props) => {
+}: Props) {
   const [showPass, setShowPass] = useState<boolean>(false);
   const [colorVal, setColorVal] = useState<string>();
 
@@ -170,6 +170,6 @@ const Input = ({
       ) : null)}
     </div>
   );
-};
+}
 
 export default Input;

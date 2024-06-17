@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
-import { RGBNDecoder, Decoder, RGBNTiles, maxTiles, RGBNPalette } from 'gb-image-decoder';
+import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import { RGBNDecoder, Decoder, maxTiles } from 'gb-image-decoder';
 import { applyRotation, Rotation } from '../../../tools/applyRotation';
 import './index.scss';
 
@@ -13,14 +14,14 @@ export interface GameBoyImageProps {
   rotation?: Rotation,
 }
 
-const GameBoyImage: React.FC<GameBoyImageProps> = ({
-  palette = null,
+function GameBoyImage({
+  palette,
   tiles,
   lockFrame,
   invertPalette,
   asThumb = false,
   rotation = Rotation.DEG_0,
-}) => {
+}: GameBoyImageProps) {
 
   const isRGBN = !(palette instanceof Array);
   const canvas = useRef(null);
@@ -99,6 +100,6 @@ const GameBoyImage: React.FC<GameBoyImageProps> = ({
       ) }
     </div>
   );
-};
+}
 
 export default GameBoyImage;

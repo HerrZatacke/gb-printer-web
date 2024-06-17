@@ -3,7 +3,7 @@ import checkPrinter from './commands/checkPrinter';
 import fetchImages from './commands/fetchImages';
 import tear from './commands/tear';
 import clearPrinter from './commands/clearPrinter';
-import {
+import type {
   CheckPrinterStatus,
   PrinterCommand,
   PrinterFetchImagesCommand,

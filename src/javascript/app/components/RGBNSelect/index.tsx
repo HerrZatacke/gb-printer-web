@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import { useRGBNImage } from './useRGBNImage';
-import { RGBNHashes } from '../../../../types/Image';
+import type { RGBNHashes } from '../../../../types/Image';
 
 import './index.scss';
 
@@ -16,7 +16,7 @@ interface Props {
   hash: string,
 }
 
-const RGBNSelect = ({ hash }: Props) => {
+function RGBNSelect({ hash }: Props) {
   const { isR, isG, isB, isN, updateRGBN } = useRGBNImage(hash);
 
   const BOXES: RGBNCheckbox[] = [
@@ -74,6 +74,6 @@ const RGBNSelect = ({ hash }: Props) => {
       }
     </div>
   );
-};
+}
 
 export default RGBNSelect;

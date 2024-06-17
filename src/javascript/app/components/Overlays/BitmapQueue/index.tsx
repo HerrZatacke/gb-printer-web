@@ -8,8 +8,8 @@ import SVG from '../../SVG';
 import './index.scss';
 import Select from '../Confirm/fields/Select';
 import moveBitmapsToImport from './moveBitmapsToImport';
-import { State } from '../../../store/State';
-import { BitmapQueueCancelAction } from '../../../../../types/actions/QueueActions';
+import type { State } from '../../../store/State';
+import type { BitmapQueueCancelAction } from '../../../../../types/actions/QueueActions';
 
 interface ImportContrast {
   name: string,
@@ -51,7 +51,7 @@ const contrasts: ImportContrast[] = [
   },
 ];
 
-const BitmapQueue = () => {
+function BitmapQueue() {
   const bitmapQueue = useSelector((state: State) => state.bitmapQueue);
   const dispatch = useDispatch();
   const [dither, setDither] = useState(true);
@@ -127,6 +127,6 @@ const BitmapQueue = () => {
       </div>
     </Lightbox>
   );
-};
+}
 
 export default BitmapQueue;

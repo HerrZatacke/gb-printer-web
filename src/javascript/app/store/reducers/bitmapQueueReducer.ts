@@ -1,11 +1,11 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import {
+import type {
   BitmapQueueAddAction,
   BitmapQueueCancelAction,
   ImportQueueAddAction,
 } from '../../../../types/actions/QueueActions';
-import { QueueImage } from '../../../../types/QueueImage';
+import type { QueueImage } from '../../../../types/QueueImage';
 
 
 const bitmapQueueReducer = (
