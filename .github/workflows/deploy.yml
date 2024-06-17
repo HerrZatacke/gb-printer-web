@@ -33,7 +33,6 @@ jobs:
           rm package-lock.json
           npm cache clear -f
           npm install
-          npm run lint
 
       - name: Create config.json 📃
         if: steps.checkTag.outputs.exists == 'false'
@@ -43,7 +42,9 @@ jobs:
 
       - name: Build 🧱
         if: steps.checkTag.outputs.exists == 'false'
-        run: npm run build
+        run: |
+          npm run lint
+          npm run build
 
       - name: Create data_w.zip for release 🗄
         if: steps.checkTag.outputs.exists == 'false'
