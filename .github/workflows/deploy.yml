@@ -30,7 +30,7 @@ jobs:
 
       - name: Install npm dependencies 🔗
         if: steps.checkTag.outputs.exists == 'false'
-        run:
+        script:
           - npm clear cache -f
           - npm install
 
