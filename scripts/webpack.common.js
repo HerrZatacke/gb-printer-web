@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
@@ -20,18 +21,23 @@ try {
 
 module.exports = () => ({
   resolve: {
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
   entry: {
     main: [
-      path.join(process.cwd(), 'src', 'javascript', 'index.js'),
+      path.join(process.cwd(), 'src', 'javascript', 'index.ts'),
     ],
     remote: [
-      path.join(process.cwd(), 'src', 'javascript', 'remote.js'),
+      path.join(process.cwd(), 'src', 'javascript', 'remote.ts'),
     ],
   },
   module: {
     rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: 'ts-loader',
+      },
       {
         test: /\.(js|jsx)$/,
         use: {

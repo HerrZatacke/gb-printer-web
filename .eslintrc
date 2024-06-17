@@ -1,8 +1,16 @@
 {
-  "parser": "@babel/eslint-parser",
-  "extends": "airbnb",
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "ignorePatterns": ["dist/**/*"],
   "plugins": [
-    "react-hooks"
+    "import",
+    "react-hooks",
+    "@typescript-eslint"
   ],
   "env": {
     "browser": true,
@@ -15,10 +23,13 @@
     "BRANCH": true
   },
   "rules": {
-    // Airbnb overwrites
-    "import/no-extraneous-dependencies": [
-      "off"
-    ],
+    "lines-between-class-members": "off",
+    "react/require-default-props": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
     "arrow-body-style": [
       "error",
       "as-needed"
@@ -36,8 +47,8 @@
       1,
       {
         "extensions": [
-          ".js",
-          ".jsx"
+          ".jsx",
+          ".tsx"
         ]
       }
     ],
@@ -45,7 +56,6 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/function-component-definition": "off",
-    "default-param-last": "off",
     "class-methods-use-this": "off",
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/control-has-associated-label": "off",
@@ -116,7 +126,8 @@
       "error",
       "1tbs"
     ],
-    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "no-mixed-spaces-and-tabs": "error",
     "no-multiple-empty-lines": [
       "error",
@@ -204,7 +215,7 @@
     "prefer-destructuring": "off",
     "comma-spacing": "warn",
     "no-implicit-globals": "error",
-    "no-undef": "error",
+    "no-undef": "off",
     "no-underscore-dangle": [
       "error",
       {
@@ -281,5 +292,15 @@
       "toolbar",
       "top"
     ]
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
   }
 }

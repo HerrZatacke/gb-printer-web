@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { createGzip } = require('zlib');
 const { pipeline } = require('stream');
 const { createReadStream, createWriteStream } = require('fs');
