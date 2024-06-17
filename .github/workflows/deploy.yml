@@ -16,7 +16,6 @@ jobs:
         uses: actions/setup-node@v4.0.1
         with:
           node-version: '20.x'
-#          cache: 'npm'
 
       - name: Add release version to environment variables 🌍
         run: |
