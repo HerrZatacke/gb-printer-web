@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import { merge } from 'webpack-merge';
+import ESLintPlugin from 'eslint-webpack-plugin';
 import setupServer from './setupServer.js';
 import common from './webpack.common.js';
 
@@ -28,6 +29,9 @@ const config = merge(await common(), {
     moduleIds: 'named',
   },
   plugins: [
+    new ESLintPlugin({
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
+    }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       ENV: '\'development\'',

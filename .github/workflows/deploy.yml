@@ -16,7 +16,6 @@ jobs:
         uses: actions/setup-node@v4.0.1
         with:
           node-version: '20.x'
-#          cache: 'npm'
 
       - name: Add release version to environment variables 🌍
         run: |
@@ -34,6 +33,7 @@ jobs:
           rm package-lock.json
           npm cache clear -f
           npm install
+          npm run lint
 
       - name: Create config.json 📃
         if: steps.checkTag.outputs.exists == 'false'

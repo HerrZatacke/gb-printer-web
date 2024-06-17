@@ -1,7 +1,6 @@
 import path, { basename } from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
-import ESLintPlugin from 'eslint-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
@@ -141,9 +140,6 @@ const config = async () => {
       filename: '[fullhash:4]/[name].js',
     },
     plugins: [
-      new ESLintPlugin({
-        extensions: ['js', 'jsx', 'ts', 'tsx'],
-      }),
       new HtmlWebpackPlugin({
         title: 'Game Boy Camera Gallery',
         template: './src/assets/index.html',
