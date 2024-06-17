@@ -24,6 +24,7 @@
     @include theme-background-color($color-secondary, $color-secondary-bright);
   }
 
+  &--disabled,
   &:disabled {
     @include theme-color($color-grey-60, $color-grey-40);
     @include theme-background-color($color-grey-70, $color-grey-30);

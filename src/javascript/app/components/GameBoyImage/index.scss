@@ -14,5 +14,12 @@
   &--rot-270 &__image--min-size {
     margin: 0 5%;
     width: 90%;
+    // 90% of 160px is exactly 144 :)
+  }
+
+  &__error {
+    font-size: 10px;
+    line-height: 12px;
+    padding: 4px 8px;
   }
 }

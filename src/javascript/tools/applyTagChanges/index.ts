@@ -1,0 +1,13 @@
+import unique from '../unique';
+import { TagUpdates } from '../modifyTagChanges';
+
+export interface TagChange extends TagUpdates {
+  initial: string[],
+}
+
+const applyTagChanges = ({ initial, add, remove }: TagChange): string[] => (
+  unique([...initial, ...add])
+    .filter((tag) => !remove.includes(tag))
+);
+
+export default applyTagChanges;

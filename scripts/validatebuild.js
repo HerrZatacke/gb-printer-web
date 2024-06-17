@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const walkdir = require('walkdir');
 const chalk = require('chalk');
