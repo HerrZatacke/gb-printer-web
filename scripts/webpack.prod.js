@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
-const { DefinePlugin } = require('webpack');
-const { merge } = require('webpack-merge');
-const CopyPlugin = require('copy-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const common = require('./webpack.common');
+import path from 'path';
+import webpack from 'webpack';
+import { merge } from 'webpack-merge';
+import CopyPlugin from 'copy-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import common from './webpack.common.js';
 
-module.exports = merge(common(), {
+const config = merge(await common(), {
   mode: 'production',
   devtool: false,
   stats: 'errors-warnings',
@@ -23,7 +22,7 @@ module.exports = merge(common(), {
         },
       ],
     }),
-    new DefinePlugin({
+    new webpack.DefinePlugin({
       ENV: '\'production\'',
     }),
     new BundleAnalyzerPlugin({
@@ -33,3 +32,5 @@ module.exports = merge(common(), {
     }),
   ],
 });
+
+export default config;

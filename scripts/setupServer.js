@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const initWifiProxy = require('./wifi-proxy-middleware');
+import initWifiProxy from './wifi-proxy-middleware/index.js';
 
-module.exports = (app) => {
+const setupServer = (app) => {
   initWifiProxy(app);
 };
+
+export default setupServer;

@@ -1,12 +1,13 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const fs = require('fs');
-const path = require('path');
-const walkdir = require('walkdir');
-const rimraf = require('rimraf');
-const mkdirp = require('mkdirp');
-const copyAndGZ = require('./copyAndGZ');
-const conf = require('../config.json');
-const { output: { path: outputPath } } = require('./webpack.prod');
+import fs from 'fs';
+import path from 'path';
+import walkdir from 'walkdir';
+import rimraf from 'rimraf';
+import mkdirp from 'mkdirp';
+import copyAndGZ from './copyAndGZ.js';
+import conf from '../config.json' assert { type: 'json' };
+import config from './webpack.prod.js';
+
+const { output: { path: outputPath } } = config;
 
 if (!conf || !conf.deploy || !conf.deploy.dir) {
   process.exit(0);
