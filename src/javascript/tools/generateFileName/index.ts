@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
-import filenamify from 'filenamify';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import filenamify from 'filenamify/browser';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { dateFormat, dateFormatFilename } from '../../app/defaults';
@@ -87,7 +89,7 @@ const generateFileName = (options: FileNameOptions): string => {
     paletteName,
   ]);
 
-  return filenamify(joined, { replacement: '' });
+  return filenamify(joined, { replacement: '' }) as string;
 };
 
 export default generateFileName;
