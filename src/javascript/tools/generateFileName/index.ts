@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import filenamify from 'filenamify';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { dateFormat, dateFormatFilename } from '../../app/defaults';
@@ -77,7 +78,7 @@ const generateFileName = (options: FileNameOptions): string => {
   const paletteName = paletteShort ||
     (palette ? ((palette as Palette).shortName || rgbnPaletteName(palette as RGBNPalette)) : '');
 
-  return joinNonNullish([
+  const joined = joinNonNullish([
     formattedDate,
     image && image.title ? image.title : altTitle,
     exportScaleFactor ? `${exportScaleFactor}x` : '',
@@ -85,6 +86,8 @@ const generateFileName = (options: FileNameOptions): string => {
     frameName,
     paletteName,
   ]);
+
+  return filenamify(joined, { replacement: '' });
 };
 
 export default generateFileName;
