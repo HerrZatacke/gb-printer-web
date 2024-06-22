@@ -2,18 +2,18 @@
 import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import type { ImageGroup } from '../../../../types/ImageGroup';
+import type { SerializableImageGroup } from '../../../../types/ImageGroup';
 import type { AddImageGroupAction, DeleteImageGroupAction } from '../../../../types/actions/GroupActions';
 
-const uniqueById = uniqueBy<ImageGroup>('id');
+const uniqueById = uniqueBy<SerializableImageGroup>('id');
 
 const imageGroupReducer = (
-  value: ImageGroup[] = [],
+  value: SerializableImageGroup[] = [],
   action:
     AddImageGroupAction |
     DeleteImageGroupAction |
     GlobalUpdateAction,
-): ImageGroup[] => {
+): SerializableImageGroup[] => {
   switch (action.type) {
     case Actions.ADD_IMAGE_GROUP:
       return uniqueById([...value, action.payload]);

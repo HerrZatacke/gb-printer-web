@@ -69,7 +69,7 @@ import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { GalleryViews } from '../../consts/GalleryViews';
 import type { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
-import type { ImageGroup } from '../../../types/ImageGroup';
+import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Palette } from '../../../types/Palette';
 import type { ProgressLog } from '../../../types/actions/LogActions';
@@ -105,7 +105,7 @@ export interface Reducers extends ReducersMapObject {
   handleExportFrame: Reducer<ExportFrameMode>,
   hideDates: Reducer<boolean>,
   images: Reducer<Image[]>,
-  imageGroups: Reducer<ImageGroup>,
+  imageGroups: Reducer<SerializableImageGroup>,
   imageSelection: Reducer<string[]>,
   importDeleted: Reducer<boolean>,
   importQueue: Reducer<ImportItem[]>,

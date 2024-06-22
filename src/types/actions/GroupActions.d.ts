@@ -1,9 +1,9 @@
 import type { Actions } from '../../javascript/app/store/actions';
-import type { ImageGroup } from '../ImageGroup';
+import type { SerializableImageGroup } from '../ImageGroup';
 
 export interface AddImageGroupAction {
   type: Actions.ADD_IMAGE_GROUP,
-  payload: ImageGroup,
+  payload: SerializableImageGroup,
 }
 
 export interface DeleteImageGroupAction {
