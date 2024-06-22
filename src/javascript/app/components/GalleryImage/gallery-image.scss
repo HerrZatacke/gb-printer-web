@@ -78,9 +78,9 @@
   //.rgbn-select,
   .gallery-image-buttons {
     position: absolute;
-    left: -4px;
     height: auto;
-    top: 5px;
+    top: 0;
+    left: 0;
     z-index: $z-index-gallery-image-buttons;
 
     body.no-touch & {
@@ -90,7 +90,7 @@
 
   //&:hover .rgbn-select,
   body.no-touch &:hover .gallery-image-buttons {
-    display: flex;
+    display: grid;
   }
 
   // easy way for a parent with justify-content: space-between; to still align last row left.

@@ -1,4 +1,12 @@
 
+@mixin theme-color-variable($varName, $bright, $dark) {
+  --#{$varName}: #{$bright};
+
+  html.theme-dark & {
+    --#{$varName}: #{$dark};
+  }
+}
+
 @mixin theme-color($bright, $dark) {
   color: $bright;
 
