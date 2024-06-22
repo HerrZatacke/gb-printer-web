@@ -31,6 +31,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
     startDownload,
     updateImageToSelection,
     updateFavouriteTag,
+    createGroup,
   } = useGalleryImageButtons({ hash, imageTitle });
 
   return (
@@ -91,6 +92,15 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
               onClick={setLightboxImage}
             >
               <SVG name="view" />
+            </button>
+          ) : null}
+          {isSelected ? (
+            <button
+              type="button"
+              className="gallery-image-buttons__button"
+              onClick={createGroup}
+            >
+              <SVG name="file-add" />
             </button>
           ) : null}
           {hasPlugins ? (

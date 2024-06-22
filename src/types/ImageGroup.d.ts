@@ -3,4 +3,6 @@ export interface ImageGroup {
   created: string,
   title: string,
   coverImage: string,
+  images: string[],
+  groups: string[],
 }

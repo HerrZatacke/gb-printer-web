@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
@@ -11,6 +12,9 @@ import type {
 } from '../../../../types/actions/ImageActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import type { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
+import type { AddImageGroupAction } from '../../../../types/actions/GroupActions';
+import { dateFormat } from '../../defaults';
+import { randomId } from '../../../tools/randomId';
 
 interface UseGalleryImageButtons {
   isSelected: boolean,
@@ -23,6 +27,7 @@ interface UseGalleryImageButtons {
   updateImageToSelection: (mode: string) => void,
   setLightboxImage: () => void,
   updateFavouriteTag: (isFavourite: boolean) => void,
+  createGroup: () => void,
 }
 
 export enum ButtonOption {
@@ -42,17 +47,24 @@ interface UseGalleryImageButtonsParams {
 }
 
 export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButtonsParams): UseGalleryImageButtons => {
-  const stateData = useSelector((state: State) => ({
+  const {
+    selection,
+    isSelected,
+    canShare,
+    hasPlugins,
+  } = useSelector((state: State) => ({
+    selection: state.imageSelection,
     isSelected: state.imageSelection.includes(hash),
     canShare: state.canShare,
     hasPlugins: !!state.plugins.length,
-    hash,
   }));
 
   const dispatch = useDispatch();
 
   return {
-    ...stateData,
+    isSelected,
+    canShare,
+    hasPlugins,
     startDownload: () => {
       dispatch<DownloadImageStartAction>({
         type: Actions.START_DOWNLOAD,
@@ -116,6 +128,19 @@ export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButt
         payload: {
           hash,
           isFavourite,
+        },
+      });
+    },
+    createGroup: () => {
+      dispatch<AddImageGroupAction>({
+        type: Actions.ADD_IMAGE_GROUP,
+        payload: {
+          id: randomId(),
+          title: imageTitle?.trim() ? `Group - ${imageTitle}` : 'New group',
+          created: dayjs(Date.now()).format(dateFormat),
+          coverImage: hash,
+          images: selection,
+          groups: [],
         },
       });
     },
