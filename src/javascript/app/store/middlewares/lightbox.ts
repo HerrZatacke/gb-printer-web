@@ -112,7 +112,7 @@ const confirmation: MiddlewareWithState = (store) => {
       case Actions.SET_LIGHTBOX_IMAGE_HASH:
         store.dispatch<SetLightboxImageAction>({
           type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-          payload: getFilteredImages(state).findIndex(({ hash }) => hash === action.payload),
+          payload: getFilteredImages(state, state.images).findIndex(({ hash }) => hash === action.payload),
         });
 
         break;

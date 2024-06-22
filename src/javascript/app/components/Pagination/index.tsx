@@ -12,7 +12,7 @@ interface Props {
 
 function Pagination({ page }: Props) {
   const totalPages = useSelector((state: State) => (
-    state.pageSize ? Math.ceil(getFilteredImagesCount(state) / state.pageSize) : 0
+    state.pageSize ? Math.ceil(getFilteredImagesCount(state, state.images) / state.pageSize) : 0
   ));
 
   if (totalPages < 2) {

@@ -21,7 +21,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
 
   if (action.type === Actions.IMAGE_SELECTION_SHIFTCLICK) {
     const state = store.getState();
-    const images = getFilteredImages(state);
+    const images = getFilteredImages(state, state.images);
     const { lastSelectedImage, pageSize } = state;
     const selectedIndex = images.findIndex(({ hash }) => hash === action.payload);
     let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);
@@ -104,7 +104,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
       case BatchActionType.CHECKALL:
         store.dispatch<ImageSelectionSetAction>({
           type: Actions.IMAGE_SELECTION_SET,
-          payload: getFilteredImages(state)
+          payload: getFilteredImages(state, state.images)
             .slice(action.page * pageSize, (action.page + 1) * pageSize || undefined)
             .map(({ hash }) => hash),
         } as ImageSelectionSetAction);

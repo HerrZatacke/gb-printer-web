@@ -18,7 +18,7 @@ const getPreviewImages = (state: State | FilteredImagesState) => (): MonochromeI
 
   const filtered = (selectedImages.length > 1) ?
     [] :
-    getFilteredImages(state).reduce(reduceImagesMonochrome, []);
+    getFilteredImages(state, state.images).reduce(reduceImagesMonochrome, []);
 
   const allImages = ((selectedImages.length + filtered.length) > 1) ?
     [] :

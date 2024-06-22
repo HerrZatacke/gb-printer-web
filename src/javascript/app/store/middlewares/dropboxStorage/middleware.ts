@@ -222,7 +222,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
             }
 
             case 'dropboximages': {
-              const images: Image[] = getFilteredImages(state);
+              const images: Image[] = getFilteredImages(state, state.images);
               const prepareFiles = getPrepareFiles(state);
               const loadTiles = loadImageTiles(state);
 

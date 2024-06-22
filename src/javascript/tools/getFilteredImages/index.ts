@@ -6,12 +6,14 @@ import type { Image } from '../../../types/Image';
 
 export type FilteredImagesState = Pick<State, 'imageSelection' | 'images' | 'sortBy' | 'filtersActiveTags' | 'recentImports'>
 
-const getFilteredImages = ({
-  images,
-  filtersActiveTags,
-  sortBy,
-  recentImports,
-}: State | FilteredImagesState): Image[] => (
+const getFilteredImages = (
+  {
+    filtersActiveTags,
+    sortBy,
+    recentImports,
+  }: State | FilteredImagesState,
+  images: Image[],
+): Image[] => (
   [...images]
     .map(addSortIndex)
     .sort(sortImages({ sortBy }))

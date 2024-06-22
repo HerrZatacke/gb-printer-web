@@ -43,7 +43,7 @@ export const useLightboxImage = (): UseLightboxImage => {
     lightboxIndex,
     preferredLocale,
   } = useSelector((state: State) => {
-    const filteredImages = getFilteredImages(state);
+    const filteredImages = getFilteredImages(state, state.images);
     const sImage = filteredImages.find((_, lbIndex) => lbIndex === state.lightboxImage);
     let pal: RGBNPalette | string[] | undefined;
 

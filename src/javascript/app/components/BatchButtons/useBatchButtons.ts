@@ -12,7 +12,7 @@ const useBatchButtons = (page: number) => {
   const dispatch = useDispatch();
 
   const indexOffset = page * state.pageSize;
-  const images = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
+  const images = getFilteredImages(state, state.images).splice(indexOffset, state.pageSize || Infinity);
   const hasSelected = !!images.find(({ hash }) => state.imageSelection.includes(hash));
 
   return ({
