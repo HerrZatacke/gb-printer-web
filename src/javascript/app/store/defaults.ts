@@ -40,6 +40,13 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
+    // Groups/Folders
+    key: 'imageGroups',
+    saveLocally: true,
+    saveExport: [ExportTypes.REMOTE],
+    value: [],
+  },
+  {
     // displaymode of gallery page (list, 1x, 2x...)
     key: 'galleryView',
     saveLocally: true,

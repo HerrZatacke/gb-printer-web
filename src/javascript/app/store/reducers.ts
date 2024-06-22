@@ -25,6 +25,7 @@ import gitStorage from './reducers/gitStorageReducer';
 import handleExportFrame from './reducers/handleExportFrameReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
+import imageGroups from './reducers/imageGroupsReducer';
 import importDeleted from './reducers/importDeletedReducer';
 import importQueue from './reducers/importQueueReducer';
 import imageSelection from './reducers/imageSelectionReducer';
@@ -68,6 +69,7 @@ import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { GalleryViews } from '../../consts/GalleryViews';
 import type { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
+import type { ImageGroup } from '../../../types/ImageGroup';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Palette } from '../../../types/Palette';
 import type { ProgressLog } from '../../../types/actions/LogActions';
@@ -103,6 +105,7 @@ export interface Reducers extends ReducersMapObject {
   handleExportFrame: Reducer<ExportFrameMode>,
   hideDates: Reducer<boolean>,
   images: Reducer<Image[]>,
+  imageGroups: Reducer<ImageGroup>,
   imageSelection: Reducer<string[]>,
   importDeleted: Reducer<boolean>,
   importQueue: Reducer<ImportItem[]>,
@@ -163,6 +166,7 @@ const reducers: ReducersMapObject = {
   handleExportFrame,
   hideDates,
   images,
+  imageGroups,
   imageSelection,
   importDeleted,
   importQueue,

@@ -4,6 +4,7 @@ import type { QueueImage } from '../../../types/QueueImage';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
 import type { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
+import type { ImageGroup } from '../../../types/ImageGroup';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
@@ -46,6 +47,7 @@ export interface State {
   handleExportFrame: ExportFrameMode,
   hideDates: boolean,
   images: Image[],
+  imageGroups: ImageGroup[],
   imageSelection: string[],
   importDeleted: boolean,
   importQueue: ImportItem[],
