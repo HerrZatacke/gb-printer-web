@@ -46,6 +46,10 @@ function PluginSettings() {
         labelText="Add Plugin"
         type={InputType.TEXT}
         value={pluginUrl}
+        autoComplete="url"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         onChange={setPluginUrl}
         buttonOnClick={() => {
           pluginAdd(pluginUrl);
@@ -121,6 +125,10 @@ function PluginSettings() {
                       labelText={label}
                       type={inputTypeFromType(type)}
                       value={inputValueFromType(type, config[fieldName] as string)}
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck={false}
                       onChange={(value) => {
                         pluginUpdateConfig(url, fieldName, inputValueFromType(type, value));
                       }}
