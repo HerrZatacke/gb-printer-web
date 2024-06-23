@@ -52,6 +52,10 @@ function DropboxSettings() {
         id="dropbox-settings-path"
         value={path}
         type={InputType.TEXT}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         onChange={setPath}
         onBlur={() => {
           setPath(cleanPath(path));

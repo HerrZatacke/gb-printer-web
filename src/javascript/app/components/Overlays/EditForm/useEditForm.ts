@@ -113,8 +113,8 @@ export const useEditForm = (): UseEditForm => {
       return undefined;
     }
 
-    const batch = state.editImage.batch;
-    const stateTags = state.editImage.tags;
+    const batch = state.editImage.batch || [];
+    const stateTags = state.editImage.tags || [];
 
     if (!batch[0]) {
       return undefined;
@@ -130,7 +130,7 @@ export const useEditForm = (): UseEditForm => {
       state.windowDimensions.height :
       Math.min(900, state.windowDimensions.height);
 
-    const typeCount = state.editImage.batch.reduce((acc, selHash) => {
+    const typeCount = batch.reduce((acc, selHash) => {
       const tcImage = state.images.find(({ hash }) => hash === selHash);
       if (!tcImage) {
         return acc;

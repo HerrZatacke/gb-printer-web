@@ -133,6 +133,10 @@ function WiFiSettings() {
         type={InputType.TEXT}
         disabled={disabled}
         value={wifiConfig.mdns}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         onChange={(mdns) => {
           setStatus('updated');
           setWifiConfig({
@@ -148,6 +152,10 @@ function WiFiSettings() {
         type={InputType.TEXT}
         disabled={disabled}
         value={wifiConfig.ap.ssid}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         onChange={(ssid) => {
           setStatus('updated');
           setWifiConfig({
@@ -166,6 +174,10 @@ function WiFiSettings() {
         type={InputType.PASSWORD}
         disabled={disabled}
         value={wifiConfig.ap.psk}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         onChange={(psk) => {
           setStatus('updated');
           setWifiConfig({

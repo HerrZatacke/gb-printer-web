@@ -30,6 +30,10 @@ function APConfig(props: Props) {
         type={InputType.TEXT}
         value={props.ssid}
         disabled={!props.isNew || props.disabled}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         onChange={(ssid) => {
           props.update({ ssid });
         }}
@@ -46,6 +50,10 @@ function APConfig(props: Props) {
         type={InputType.PASSWORD}
         value={props.psk}
         disabled={props.disabled}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         onChange={(psk) => {
           props.update({ psk });
         }}

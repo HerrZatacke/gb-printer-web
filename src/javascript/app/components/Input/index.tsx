@@ -34,6 +34,10 @@ interface Props {
   onKeyUp?: (key: string) => void,
   disabled?: boolean,
   children?: React.ReactNode,
+  autoComplete?: string,
+  autoCorrect?: 'on' | 'off',
+  autoCapitalize?: 'off' | 'on' | 'words' | 'characters',
+  spellCheck?: boolean,
 }
 
 function Input({
@@ -53,6 +57,10 @@ function Input({
   onBlur,
   onKeyUp,
   children,
+  autoComplete,
+  autoCorrect,
+  autoCapitalize,
+  spellCheck,
 }: Props) {
   const [showPass, setShowPass] = useState<boolean>(false);
   const [colorVal, setColorVal] = useState<string>();
@@ -93,6 +101,10 @@ function Input({
           onChange={({ target: { value: newVal } }) => (
             onChange && onChange(newVal)
           )}
+          autoComplete={autoComplete}
+          autoCorrect={autoCorrect}
+          autoCapitalize={autoCapitalize}
+          spellCheck={spellCheck}
           onBlur={blurListener}
           onKeyUp={keyUpListener}
         />
@@ -111,7 +123,11 @@ function Input({
           ) : ({ target: { value: newVal } }) => (
             onChange && onChange(newVal)
           )}
-          multiple
+          multiple={type === InputType.FILE ? true : undefined}
+          autoComplete={autoComplete}
+          autoCorrect={autoCorrect}
+          autoCapitalize={autoCapitalize}
+          spellCheck={spellCheck}
           onBlur={blurListener}
           onKeyUp={keyUpListener}
         />
