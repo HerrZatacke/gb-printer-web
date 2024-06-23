@@ -23,6 +23,7 @@ function EditForm() {
   } = useEditForm();
 
   if (!toEdit) {
+    console.warn('Editform should be open, but "toEdit" is undefined', toEdit);
     return null;
   }
 
