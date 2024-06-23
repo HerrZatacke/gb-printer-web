@@ -52,6 +52,10 @@ function GitSettings() {
             labelText="Owner"
             type={InputType.TEXT}
             value={storage.owner}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
             onChange={(owner) => {
               setStorage({
                 ...storage,
@@ -68,6 +72,10 @@ function GitSettings() {
             labelText="Repository name"
             type={InputType.TEXT}
             value={storage.repo}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
             onChange={(repo) => {
               setStorage({
                 ...storage,
@@ -84,6 +92,10 @@ function GitSettings() {
             labelText="Branch"
             type={InputType.TEXT}
             value={storage.branch}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
             onChange={(branch) => {
               setStorage({
                 ...storage,
@@ -125,6 +137,10 @@ function GitSettings() {
                 token,
               });
             }}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
             onBlur={() => {
               setGitStorage(storage);
             }}

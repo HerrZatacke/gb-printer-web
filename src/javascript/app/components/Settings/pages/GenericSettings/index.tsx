@@ -390,6 +390,10 @@ function GenericSettings() {
           type={InputType.TEXT}
           value={printerUrl}
           onChange={setPrinterUrl}
+          autoComplete="url"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
           onBlur={() => {
             setPrinterUrl(cleanUrl(printerUrl, 'http'));
             updatePrinterUrl(printerUrl);
@@ -420,6 +424,10 @@ function GenericSettings() {
           type={InputType.TEXT}
           value={printerParams}
           onChange={setPrinterParams}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
           onBlur={() => {
             setPrinterParams(printerParams);
             updatePrinterParams(printerParams);
