@@ -1,0 +1,22 @@
+.folder-navi {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  &__entry {
+
+  }
+
+  &__link {
+    @include theme-color($color-text, $color-text-bright);
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__entry + &__entry:before {
+    content: '>';
+    margin-right: 8px;
+  }
+}

@@ -72,7 +72,7 @@ function GalleryImage({ page, hash, type }: Props) {
   return type === 'default' ? (
     <li
       className={
-        classnames('gallery-image', {
+        classnames('gallery-image gallery-item', {
           'gallery-image--selected': isSelected,
         })
       }

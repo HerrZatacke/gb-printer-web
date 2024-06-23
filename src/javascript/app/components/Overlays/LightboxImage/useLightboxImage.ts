@@ -13,6 +13,8 @@ import type {
   SetLightboxNextAction,
   SetLightboxPrevAction,
 } from '../../../../../types/actions/GlobalActions';
+import { useGalleryTreeContext } from '../../../contexts/galleryTree';
+
 
 interface UseLightboxImage {
   hash: string,
@@ -35,6 +37,7 @@ interface UseLightboxImage {
 }
 
 export const useLightboxImage = (): UseLightboxImage => {
+  const { view } = useGalleryTreeContext();
   const {
     image,
     size,
@@ -43,7 +46,7 @@ export const useLightboxImage = (): UseLightboxImage => {
     lightboxIndex,
     preferredLocale,
   } = useSelector((state: State) => {
-    const filteredImages = getFilteredImages(state, state.images);
+    const filteredImages = getFilteredImages(state, view.images);
     const sImage = filteredImages.find((_, lbIndex) => lbIndex === state.lightboxImage);
     let pal: RGBNPalette | string[] | undefined;
 

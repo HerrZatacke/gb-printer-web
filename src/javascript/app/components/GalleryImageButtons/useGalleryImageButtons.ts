@@ -132,10 +132,17 @@ export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButt
       });
     },
     createGroup: () => {
+      // eslint-disable-next-line no-alert
+      const slug = window.prompt('Slug');
+      if (!slug) {
+        return;
+      }
+
       dispatch<AddImageGroupAction>({
         type: Actions.ADD_IMAGE_GROUP,
         payload: {
           id: randomId(),
+          slug,
           title: imageTitle?.trim() ? `Group - ${imageTitle}` : 'New group',
           created: dayjs(Date.now()).format(dateFormat),
           coverImage: hash,

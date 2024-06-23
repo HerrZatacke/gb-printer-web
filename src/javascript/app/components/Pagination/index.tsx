@@ -5,14 +5,17 @@ import SVG from '../SVG';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import './index.scss';
 import type { State } from '../../store/State';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
+
 
 interface Props {
   page: number
 }
 
 function Pagination({ page }: Props) {
+  const { view } = useGalleryTreeContext();
   const totalPages = useSelector((state: State) => (
-    state.pageSize ? Math.ceil(getFilteredImagesCount(state, state.images) / state.pageSize) : 0
+    state.pageSize ? Math.ceil(getFilteredImagesCount(state, view.images) / state.pageSize) : 0
   ));
 
   if (totalPages < 2) {

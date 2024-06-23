@@ -9,6 +9,7 @@
   height: 100%;
   width: 100%;
   cursor: default;
+  pointer-events: none;
   padding: 8px 8px 16px;
 
   display: grid;
@@ -60,6 +61,7 @@
     @include theme-color-variable('glow-outline', rgba($color-grey-40, 0.6), rgba($color-black, 0.6));
     @include theme-color($color-tertiary, $color-tertiary-bright);
     box-shadow: 0 0 3px 1px var(--glow-outline);
+    pointer-events: auto;
 
     width: var(--button-size-no-touch);
     height: var(--button-size-no-touch);

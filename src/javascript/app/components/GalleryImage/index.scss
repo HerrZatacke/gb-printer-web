@@ -1,6 +1,5 @@
 .gallery-image,
 .gallery-list-image {
-  @include theme-background-color($color-grey-50, $color-grey-20);
   cursor: pointer;
   user-select: none;
 

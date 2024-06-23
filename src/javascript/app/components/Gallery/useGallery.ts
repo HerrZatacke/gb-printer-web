@@ -1,10 +1,12 @@
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import getFilteredImages from '../../../tools/getFilteredImages';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
-import useGetValidPageIndex from '../../../tools/useGetValidPageIndex';
+import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import type { State } from '../../store/State';
 import type { GalleryViews } from '../../../consts/GalleryViews';
 import type { Image } from '../../../../types/Image';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
 interface UseGallery {
   imageCount: number,
@@ -12,11 +14,13 @@ interface UseGallery {
   images: Image[],
   currentView: GalleryViews,
   filteredCount: number,
-  valid: boolean,
   page: number,
+  covers: string[],
 }
 
 export const useGallery = (): UseGallery => {
+  const { view, covers } = useGalleryTreeContext();
+
   const {
     imageCount,
     pageSize,
@@ -24,10 +28,19 @@ export const useGallery = (): UseGallery => {
   } = useSelector((state: State) => ({
     pageSize: state.pageSize,
     imageCount: state.images.length,
-    filteredCount: getFilteredImagesCount(state),
+    filteredCount: getFilteredImagesCount(state, view.images),
   }));
 
-  const { valid, page } = useGetValidPageIndex({ pageSize, imageCount: filteredCount });
+  const { pageIndex, path } = useGalleryParams();
+  const navigate = useNavigate();
+
+  const totalPages = pageSize ? Math.ceil(imageCount / pageSize) : 1;
+  const maxPage = Math.max(0, totalPages - 1);
+  const page = Math.max(0, Math.min(pageIndex, maxPage));
+
+  if (page !== pageIndex) {
+    navigate(`/gallery/${path}page/${page + 1}`);
+  }
 
   const {
     selectedCount,
@@ -40,7 +53,7 @@ export const useGallery = (): UseGallery => {
     return ({
       selectedCount: state.imageSelection.length,
       currentView: state.galleryView,
-      images: getFilteredImages(state).splice(iOffset, pSize || Infinity),
+      images: getFilteredImages(state, view.images).splice(iOffset, pSize || Infinity),
     });
   });
 
@@ -48,9 +61,9 @@ export const useGallery = (): UseGallery => {
     imageCount,
     selectedCount,
     filteredCount,
-    valid,
     page,
     images,
     currentView,
+    covers,
   });
 };

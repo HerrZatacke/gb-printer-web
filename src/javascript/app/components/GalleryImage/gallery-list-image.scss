@@ -7,6 +7,7 @@ $block: #{'.gallery-list-image'};
   justify-content: space-around;
   border-bottom: 1px solid;
   @include theme-border-color($color-page-background, $color-page-background-dark);
+  @include theme-background-color($color-grey-50, $color-grey-20);
 
   &__cell {
     vertical-align: middle;
