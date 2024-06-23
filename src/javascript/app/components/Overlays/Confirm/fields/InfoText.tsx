@@ -10,7 +10,7 @@ export enum InfoTextTheme {
 
 interface Props {
   label: string,
-  themes: InfoTextTheme[],
+  themes?: InfoTextTheme[],
 }
 
 function InfoText({
@@ -22,7 +22,7 @@ function InfoText({
       className={
         classnames(
           'info-text',
-          themes.map((name) => `info-text--${name}`),
+          (themes || []).map((name) => `info-text--${name}`),
         )
       }
     >
