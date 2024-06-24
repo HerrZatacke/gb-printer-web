@@ -41,7 +41,7 @@ function GameBoyImage({
     try {
       if (isRGBN) {
         const decoder = new RGBNDecoder();
-        if (tiles as RGBNTiles || undefined) {
+        if (tiles) {
           decoder.update({
             canvas: tempCanvas,
             tiles: tiles as RGBNTiles,
