@@ -1,5 +1,6 @@
 .inputgroup {
   display: flex;
+  gap: 20px;
   min-height: 40px;
   @include theme-color($color-text, $color-text-bright);
   justify-content: space-between;
@@ -9,7 +10,6 @@
   &__input {
     flex-basis: auto;
     flex-grow: 1;
-    margin-left: 20px;
     padding: 10px 12px;
     border: 1px solid;
     min-height: inherit;

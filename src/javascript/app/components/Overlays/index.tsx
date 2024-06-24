@@ -7,6 +7,7 @@ import Confirm from './Confirm';
 import EditForm from './EditForm';
 import EditFrame from './EditFrame';
 import EditPalette from './EditPalette';
+import EditRGBN from './EditRGBN';
 import VideoParamsForm from './VideoParamsForm';
 import LightboxImage from './LightboxImage';
 import RGBNImage from './RGBNImage';
@@ -34,6 +35,7 @@ function Overlays() {
     showEditForm,
     showEditFrame,
     showEditPalette,
+    showEditRGBN,
     showVideoForm,
     showPickColors,
     showRGBNImage,
@@ -54,6 +56,7 @@ function Overlays() {
     showEditForm: !!state.editImage?.batch?.length,
     showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette,
+    showEditRGBN: state.editRGBNImages.length > 0,
     showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
     showRGBNImage: !!state.rgbnImages && Object.keys(state.rgbnImages).length > 0,
@@ -82,6 +85,8 @@ function Overlays() {
       return <EditFrame />; // interactive
     case showEditPalette:
       return <EditPalette />; // interactive
+    case showEditRGBN:
+      return <EditRGBN />; // interactive
     case showVideoForm:
       return <VideoParamsForm />; // interactive
     case showPickColors:
