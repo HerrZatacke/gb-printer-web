@@ -24,14 +24,11 @@ export const loadImageTiles = (state: State | ReducedPickState, recover?: Recove
     let frame: string | undefined;
 
     if (!hashesOverride) {
-      if (!image) {
-        return [];
-      }
-
-      frame = typeof overrideFrame === 'string' ? overrideFrame : image.frame || undefined;
+      // Image may not exist when loading RGBN-channels where original image has been deleted.
+      frame = typeof overrideFrame === 'string' ? overrideFrame : image?.frame || undefined;
       const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
 
-      if (!isRGBNImage(image as Image)) {
+      if (!image || !isRGBNImage(image)) {
         const tiles = await load(hash, frameHash, noDummy, recover);
         return tiles || [];
       }
