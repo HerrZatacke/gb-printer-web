@@ -11,9 +11,16 @@ import type {
   DeleteImageAction, ImageFavouriteAction,
   ImagesUpdateAction,
   RehashImageAction,
+  DeleteImagesAction,
 } from '../../../../types/actions/ImageActions';
 import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
-import type { AddFrameAction, DeleteFrameAction } from '../../../../types/actions/FrameActions';
+import type {
+  AddFrameAction,
+  DeleteFrameAction,
+  FrameGroupNamesAction,
+  UpdateFrameAction,
+} from '../../../../types/actions/FrameActions';
+
 
 const syncLastUpdateReducer = (
   value: SyncLastUpdate = { dropbox: 0, local: 0 },
@@ -21,10 +28,13 @@ const syncLastUpdateReducer = (
     RehashImageAction |
     ImagesUpdateAction |
     DeleteImageAction |
+    DeleteImagesAction |
     PaletteUpdateAction |
     PaletteDeleteAction |
     AddImagesAction |
     AddFrameAction |
+    UpdateFrameAction |
+    FrameGroupNamesAction |
     DeleteFrameAction |
     ImageFavouriteAction |
     DropboxLastUpdateAction |
@@ -54,10 +64,13 @@ const syncLastUpdateReducer = (
     case Actions.REHASH_IMAGE:
     case Actions.UPDATE_IMAGES:
     case Actions.DELETE_IMAGE:
+    case Actions.DELETE_IMAGES:
     case Actions.PALETTE_UPDATE:
     case Actions.PALETTE_DELETE:
     case Actions.ADD_IMAGES:
     case Actions.ADD_FRAME:
+    case Actions.UPDATE_FRAME:
+    case Actions.NAME_FRAMEGROUP:
     case Actions.DELETE_FRAME:
     case Actions.IMAGE_FAVOURITE_TAG:
       return {
