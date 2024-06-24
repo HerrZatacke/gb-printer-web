@@ -5,4 +5,5 @@ export enum BatchActionType {
   EDIT = 'edit',
   CHECKALL = 'checkall',
   UNCHECKALL = 'uncheckall',
+  RGB = 'rgb',
 }

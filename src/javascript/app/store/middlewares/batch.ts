@@ -3,15 +3,16 @@ import unique from '../../../tools/unique';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { Image } from '../../../../types/Image';
-import type {
-  DeleteImagesAction,
+import type { DeleteImagesAction,
   DownloadImageSelectionAction,
   EditImageSelectionAction,
-} from '../../../../types/actions/ImageActions';
+  StartCreateRGBImagesAction } from '../../../../types/actions/ImageActions';
 import type { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
 import type { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { BatchActionType } from '../../../consts/batchActionTypes';
+import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
+
 
 const collectTags = (batchImages: Image[]): string[] => (
   unique(batchImages.map(({ tags }) => tags).flat())
@@ -72,7 +73,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
           break;
         }
 
-        case BatchActionType.ANIMATE:
+        case BatchActionType.ANIMATE: {
           store.dispatch<SetVideoParamsAction>({
             type: Actions.SET_VIDEO_PARAMS,
             payload: {
@@ -80,13 +81,17 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
             },
           });
           break;
-        case BatchActionType.DOWNLOAD:
+        }
+
+        case BatchActionType.DOWNLOAD: {
           store.dispatch<DownloadImageSelectionAction>({
             type: Actions.DOWNLOAD_SELECTION,
             payload: imageSelection,
           });
           break;
-        case BatchActionType.EDIT:
+        }
+
+        case BatchActionType.EDIT: {
           store.dispatch<EditImageSelectionAction>({
             type: Actions.EDIT_IMAGE_SELECTION,
             payload: {
@@ -95,6 +100,16 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
             },
           });
           break;
+        }
+
+        case BatchActionType.RGB: {
+          store.dispatch<StartCreateRGBImagesAction>({
+            type: Actions.START_CREATE_RGB_IMAGES,
+            payload: batchImages.reduce(reduceImagesMonochrome, []).map(({ hash }) => hash),
+          });
+          break;
+        }
+
         default:
           break;
       }

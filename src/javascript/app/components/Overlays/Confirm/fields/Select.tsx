@@ -3,7 +3,7 @@ import type { DialogOption } from '../../../../../../types/Dialog';
 
 interface Props {
   id: string,
-  label: string,
+  label?: string,
   disabled: boolean,
   value: string,
   setSelected: (value: string) => void,
@@ -15,9 +15,11 @@ function Select({ id, label, disabled, value, setSelected, options }: Props) {
     <div
       className="inputgroup"
     >
-      <label htmlFor={`confirm-options-${id}`} className="inputgroup__label">
-        {label}
-      </label>
+      { label ? (
+        <label htmlFor={`confirm-options-${id}`} className="inputgroup__label">
+          {label}
+        </label>
+      ) : null }
       <select
         id={`confirm-options-${id}`}
         disabled={disabled}

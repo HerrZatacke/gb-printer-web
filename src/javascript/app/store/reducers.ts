@@ -10,6 +10,7 @@ import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
 import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
+import editRGBNImages from './reducers/editRGBNImagesReducer';
 import enableDebug from './reducers/enableDebugReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
@@ -88,6 +89,7 @@ export interface Reducers extends ReducersMapObject {
   editImage: Reducer<CurrentEditBatch | null>,
   editFrame: Reducer<string | null>,
   editPalette: Reducer<Palette | null>,
+  editRGBNImages: Reducer<string[]>,
   enableDebug: Reducer<boolean>,
   exportFileTypes: Reducer<string[]>,
   exportScaleFactors: Reducer<number[]>,
@@ -148,6 +150,7 @@ const reducers: ReducersMapObject = {
   editImage,
   editFrame,
   editPalette,
+  editRGBNImages,
   enableDebug,
   exportFileTypes,
   exportScaleFactors,
