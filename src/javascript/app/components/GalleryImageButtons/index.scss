@@ -9,7 +9,8 @@
   gap: 4px;
 
   body.is-touch & {
-    gap: 8px;
+    gap: 6px;
+    padding: 0 0 5px 0;
   }
 
   &__button {

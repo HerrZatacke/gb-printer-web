@@ -146,6 +146,12 @@ function SVG(props: Props) {
           <path d="M6 6v4h28V6zm0 8v4h28v-4zm0 8v4h28v-4zm0 8v4h28V30z" />
         </svg>
       );
+    case '0x':
+      return (
+        <svg className={className} viewBox="-20 -20 80 80">
+          <path d="M5 5v6h6V5zm8 0v6h6V5zm8 0v6h6V5zm8 0v6h6V5zM5 13v6h6v-6zm8 0v6h6v-6zm8 0v6h6v-6zm8 0v6h6v-6zM5 21v6h6v-6zm8 0v6h6v-6zm8 0v6h6v-6zm8 0v6h6v-6zM5 29v6h6v-6zm8 0v6h6v-6zm8 0v6h6v-6zm8 0v6h6v-6z" />
+        </svg>
+      );
     case '1x':
       return (
         <svg className={className} viewBox="0 0 40 40">

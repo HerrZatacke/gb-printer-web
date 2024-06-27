@@ -8,6 +8,7 @@ import { useGalleryView } from './useGalleryView';
 
 const GALLERY_VIEWS = [
   GalleryViews.GALLERY_VIEW_LIST,
+  GalleryViews.GALLERY_VIEW_0X,
   GalleryViews.GALLERY_VIEW_1X,
   GalleryViews.GALLERY_VIEW_2X,
   GalleryViews.GALLERY_VIEW_3X,

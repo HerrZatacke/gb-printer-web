@@ -1,4 +1,5 @@
 import React from 'react';
+import type { CSSPropertiesVars } from 'react';
 import { Outlet, Navigate, useMatches } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Overlays from '../Overlays';
@@ -18,10 +19,14 @@ function Layout() {
 
   const mainHeadline = (matches[1]?.handle as Handle | undefined)?.headline;
 
+  const ddpx: CSSPropertiesVars = {
+    '--ddpx': devicePixelRatio >= 4 ? devicePixelRatio / 2 : devicePixelRatio,
+  };
+
   return (
     <>
       <Navigation />
-      <div className="layout">
+      <div className="layout" style={ddpx}>
         { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
         <Outlet />
       </div>

@@ -79,6 +79,12 @@ function GalleryImage({ page, hash, type }: Props) {
       onClick={handleCellClick}
       role="presentation"
     >
+      <GalleryImageButtons
+        isFavourite={isFavourite}
+        hash={hash}
+        imageTitle={title}
+        buttons={buttons}
+      />
       <div className="gallery-image__image">
         <ImageRender
           lockFrame={lockFrame}
@@ -121,12 +127,6 @@ function GalleryImage({ page, hash, type }: Props) {
       { enableDebug ? (
         <span className="gallery-image__hash-debug">{ hash }</span>
       ) : null }
-      <GalleryImageButtons
-        isFavourite={isFavourite}
-        hash={hash}
-        imageTitle={title}
-        buttons={buttons}
-      />
     </li>
   ) : (
     <li

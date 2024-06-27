@@ -10,6 +10,13 @@
   flex-direction: column;
   box-sizing: content-box;
 
+  .gallery--0x & {
+    width: calc(160px / var(--ddpx));
+    min-width: 80px;
+    padding: 4px;
+    margin: 0 2px 10px;
+  }
+
   .gallery--1x & {
     width: 160px;
     max-height: 350px;
@@ -20,7 +27,7 @@
     }
 
     body.is-touch & {
-      padding-top: 60px;
+      padding-top: 80px;
     }
   }
 
@@ -42,7 +49,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    min-height: 144px;
+    //min-height: 144px;
     @include theme-background-color(rgba($color-grey-40, 0.5), rgba($color-grey-30, 0.5));
     width: 100%;
     border: none;
@@ -77,7 +84,7 @@
 
   //.rgbn-select,
   .gallery-image-buttons {
-    position: absolute;
+    //position: absolute;
     left: -4px;
     height: auto;
     top: 5px;
