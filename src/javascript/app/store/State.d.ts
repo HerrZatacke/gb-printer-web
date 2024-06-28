@@ -3,6 +3,7 @@ import type { ExportFrameMode } from 'gb-image-decoder';
 import type { QueueImage } from '../../../types/QueueImage';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
+import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
@@ -33,6 +34,7 @@ export interface State {
   editPalette: Palette | null,
   editRGBNImages: string[],
   enableDebug: boolean,
+  errors: ErrorMessage[],
   exportFileTypes: string[],
   exportScaleFactors: number[],
   filtersActiveTags: string[],

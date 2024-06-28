@@ -7,7 +7,6 @@ import deleteImage from './middlewares/deleteImage';
 import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
 import gitStorage from './middlewares/gitStorage';
-import handleErrors from './middlewares/error';
 import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
 import lightbox from './middlewares/lightbox';
@@ -25,7 +24,6 @@ export default applyMiddleware(
   deleteFrame,
   deleteImage,
   dropboxStorage,
-  handleErrors,
   fileDrop,
   gitStorage,
   importFile,

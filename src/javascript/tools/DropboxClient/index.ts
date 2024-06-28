@@ -2,6 +2,8 @@ import type { DropboxAuth, DropboxOptions, DropboxResponse } from 'dropbox';
 import { Dropbox } from 'dropbox';
 import type { files as Files, async as Async } from 'dropbox/types/dropbox_types';
 import { EventEmitter } from 'events';
+import type { Dispatch } from 'redux';
+import dayjs from 'dayjs';
 import readFileAs, { ReadAs } from '../readFileAs';
 import cleanPath from '../cleanPath';
 import type {
@@ -13,6 +15,8 @@ import type {
 } from '../../../types/Sync';
 import type { DropBoxRepoFile, RepoContents, RepoTasks } from '../../../types/Export';
 import type { JSONExportState } from '../../app/store/State';
+import type { ErrorAction } from '../../../types/actions/GlobalActions';
+import { Actions } from '../../app/store/actions';
 
 const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
 
@@ -23,7 +27,7 @@ class DropboxClient extends EventEmitter {
   private auth: DropboxAuth;
   private rootPath: string[];
 
-  constructor(settings: DropBoxSettings, addToQueue: AddToQueueFn<unknown>) {
+  constructor(settings: DropBoxSettings, addToQueue: AddToQueueFn<unknown>, dispatch: Dispatch) {
     super();
 
     this.queueCallback = addToQueue as AddToQueueFn<DropboxResponse<unknown>>;
@@ -49,7 +53,7 @@ class DropboxClient extends EventEmitter {
     this.auth = auth;
 
     if (autoDropboxSync) {
-      this.startLongPollSettings();
+      this.startLongPollSettings(dispatch);
     }
 
   }
@@ -166,14 +170,21 @@ class DropboxClient extends EventEmitter {
       throw new Error('not logged in');
     }
 
-    const response: DropboxResponse<unknown> = await this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
-      this.dbx.filesDownload({ path: this.toPath('/settings/settings.json') })
-    ), isSilent);
 
-    const result = response.result as (Files.FileMetadata & { fileBlob: Blob });
+    let settings: JSONExportState;
 
-    const settingsText = await readFileAs(result.fileBlob, ReadAs.TEXT);
-    const settings = JSON.parse(settingsText) as JSONExportState;
+    try {
+      const response: DropboxResponse<unknown> = await this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
+        this.dbx.filesDownload({ path: this.toPath('/settings/settings.json') })
+      ), isSilent);
+      const result = response.result as (Files.FileMetadata & { fileBlob: Blob });
+
+      const settingsText = await readFileAs(result.fileBlob, ReadAs.TEXT);
+      settings = JSON.parse(settingsText) as JSONExportState;
+    } catch (error) {
+      settings = { state: { lastUpdateUTC: 0 } };
+    }
+
 
     const [images, frames] = await Promise.all(get.map(async (folderPath) => {
       let entries: DBFolderAll[];
@@ -369,7 +380,7 @@ class DropboxClient extends EventEmitter {
     };
   }
 
-  startLongPollSettings() {
+  startLongPollSettings(dispatch: Dispatch) {
     // eslint-disable-next-line no-console
     console.info('Start dropbox longpolling');
 
@@ -395,7 +406,7 @@ class DropboxClient extends EventEmitter {
             if (changes) {
               this.emit('settingsChanged');
               return this.addToQueue('Restart longpolling', this.throttle, () => {
-                this.startLongPollSettings();
+                this.startLongPollSettings(dispatch);
                 return Promise.resolve(null as unknown as DropboxResponse<unknown>);
               }, true);
             }
@@ -404,7 +415,13 @@ class DropboxClient extends EventEmitter {
           });
       })
       .catch((error) => {
-        console.error(error);
+        dispatch<ErrorAction>({
+          type: Actions.ERROR,
+          payload: {
+            error,
+            timestamp: dayjs().unix(),
+          },
+        });
       });
   }
 }

@@ -71,11 +71,11 @@ function EditRGBN() {
           options={[
             {
               value: RGBGrouping.BY_COLOR,
-              name: 'Selection is grouped by colors',
+              name: 'Selection is grouped by colors (RRR GGG BBB)',
             },
             {
               value: RGBGrouping.BY_IMAGE,
-              name: 'Selection is grouped by image',
+              name: 'Selection is grouped by image (RGB RGB RGB)',
             },
           ]}
           setSelected={(value) => setGrouping(value as RGBGrouping)}
