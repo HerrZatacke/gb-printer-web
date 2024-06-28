@@ -1,5 +1,3 @@
-import type { MonochromeImage, RGBNImage } from './Image';
-import type { Frame } from './Frame';
 import type { DownloadInfo, UploadFile } from './Sync';
 import type { JSONExportState } from '../javascript/app/store/State';
 
@@ -21,7 +19,7 @@ export interface RepoContents {
   settings: JSONExportState
 }
 
-export interface SyncFile extends Partial<MonochromeImage & RGBNImage & Frame> {
+export interface SyncFile {
   hash: string,
   files: DownloadInfo[],
   inRepo: RepoFile[],

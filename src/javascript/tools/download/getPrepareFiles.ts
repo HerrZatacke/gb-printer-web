@@ -1,8 +1,7 @@
 import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
 import { BW_PALETTE, Decoder, RGBNDecoder } from 'gb-image-decoder';
 import generateFileName from '../generateFileName';
-import { load } from '../storage';
-import { finalLine, initLine, moreLine, terminatorLine } from '../../app/defaults';
+import { getTxtFile } from './getTxtFile';
 import { getRotatedCanvas } from '../applyRotation';
 import type { State } from '../../app/store/State';
 import type { Palette } from '../../../types/Palette';
@@ -81,38 +80,7 @@ const getPrepareFiles =
               }
 
               // this loads the basic raw data without applying a frame
-              load(image.hash)
-                .then((plainTiles) => {
-
-                  const transformedTiles = (plainTiles || [])
-                    // add spaces between every second char
-                    .map((line) => (
-                      line.match(/.{1,2}/g)
-                        ?.join(' ') || ''
-                    ))
-                    .reduce((acc: string[], line: string, index: number): string[] => {
-                      if (index % 40) {
-                        return [...acc, line];
-                      }
-
-                      return [...acc, moreLine, line];
-                    }, []);
-
-                  const textContent = [
-                    initLine,
-                    ...transformedTiles,
-                    finalLine,
-                    terminatorLine,
-                  ].join('\n');
-
-                  // toDownload
-                  resolve({
-                    folder: 'images', // used for Git-Sync
-                    filename: `${filename}.${fileType}`,
-                    blob: new Blob(new Array(textContent), { type: 'text/plain' }),
-                    title: image.title,
-                  });
-                });
+              getTxtFile(image.hash, image.title, filename).then(resolve);
               break;
             }
 

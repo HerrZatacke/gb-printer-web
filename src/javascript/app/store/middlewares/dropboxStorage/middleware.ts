@@ -77,7 +77,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
     });
   };
 
-  const dropboxClient = new DropboxClient(store.getState().dropboxStorage, addToQueue('Dropbox'));
+  const dropboxClient = new DropboxClient(store.getState().dropboxStorage, addToQueue('Dropbox'), store.dispatch);
 
   if (store.getState().dropboxStorage.autoDropboxSync) {
     // check dropbox for updates

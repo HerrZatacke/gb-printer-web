@@ -48,7 +48,7 @@ export const getUploadFrames = async (
               inRepo: tmpInfo.inRepo,
               files: [{
                 folder: 'frames',
-                filename: '',
+                filename: `${frame.hash}.json`,
                 blob: new Blob(new Array(JSON.stringify(frameData || '{}', null, 2)), { type: 'application/json' }),
                 title: frame.name,
               }],
