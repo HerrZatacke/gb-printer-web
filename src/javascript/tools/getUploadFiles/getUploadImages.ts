@@ -25,13 +25,13 @@ export const getUploadImages = async (
     .map((image: Image): TmpInfo => {
       const searchHashes: string[] = isRGBNImage(image) ? Object.values((image as RGBNImage).hashes) : [image.hash];
 
-      return ({
+      return {
         file: image,
         searchHashes,
-        inRepo: ([
-          repoContents.images.find(({ hash }: RepoFile) => searchHashes.includes(hash)),
-        ].filter(Boolean) as RepoFile[]),
-      });
+        inRepo: repoContents.images.reduce((acc: RepoFile[], repoFile: RepoFile): RepoFile[] => (
+          searchHashes.includes(repoFile.hash) ? [...acc, repoFile] : acc
+        ), []),
+      };
     });
   const imagesLength = images.length;
 
