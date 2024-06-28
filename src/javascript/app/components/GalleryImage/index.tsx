@@ -123,10 +123,10 @@ function GalleryImage({ page, hash, type }: Props) {
         <span className="gallery-image__hash-debug">
           { hash }
           { hashes ? Object.keys(hashes).map((channel) => (
-            <>
+            <span key={channel}>
               <br />
               {`${channel.toUpperCase()}: ${hashes[channel as keyof RGBNHashes]}`}
-            </>
+            </span>
           )) : null }
         </span>
       ) : null }
