@@ -36,28 +36,39 @@ export const getUploadImages = async (
   const imagesLength = images.length;
 
   const syncImages: (SyncFile | null)[] = await Promise.all(
-    images.map(async (tmpInfo: TmpInfo, index: number): Promise<SyncFile | null> => (
-      addToQueue(`loadImageTiles (${index + 1}/${imagesLength}) ${tmpInfo.file.title}`, 3, async (): Promise<SyncFile | null> => {
-
-        let files: DownloadInfo[];
-
-        if (isRGBNImage(tmpInfo.file)) {
-          const rgbnImage = tmpInfo.file as RGBNImage;
-          files = await Promise.all(Object.values((rgbnImage).hashes).map((channelHash) => (
-            getTxtFile(channelHash, rgbnImage.title, channelHash)
-          )));
-        } else {
-          const monoImage = tmpInfo.file as MonochromeImage;
-          files = [await getTxtFile(monoImage.hash, monoImage.title, monoImage.hash)];
-        }
-
+    images.map(async (tmpInfo: TmpInfo, index: number): Promise<SyncFile | null> => {
+      if (tmpInfo.inRepo.length === tmpInfo.searchHashes.length) {
         return {
-          hash: tmpInfo.file.hash, // string
-          files, // DownloadInfo[]
-          inRepo: tmpInfo.inRepo, // RepoFile[]
+          hash: tmpInfo.file.hash,
+          inRepo: tmpInfo.inRepo,
+          files: [],
         };
-      })
-    )),
+      }
+
+      return (
+        addToQueue(`loadImageTiles (${index + 1}/${imagesLength}) ${tmpInfo.file.title}`, 3, async (): Promise<SyncFile | null> => {
+
+          let files: DownloadInfo[];
+
+          if (isRGBNImage(tmpInfo.file)) {
+            const rgbnImage = tmpInfo.file as RGBNImage;
+            files = await Promise.all(Object.values((rgbnImage).hashes)
+              .map((channelHash) => (
+                getTxtFile(channelHash, rgbnImage.title, channelHash)
+              )));
+          } else {
+            const monoImage = tmpInfo.file as MonochromeImage;
+            files = [await getTxtFile(monoImage.hash, monoImage.title, monoImage.hash)];
+          }
+
+          return {
+            hash: tmpInfo.file.hash, // string
+            files, // DownloadInfo[]
+            inRepo: tmpInfo.inRepo, // RepoFile[]
+          };
+        })
+      );
+    }),
   );
 
   return {
