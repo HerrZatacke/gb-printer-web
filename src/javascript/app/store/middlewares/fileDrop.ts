@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import getHandleFileImport from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
@@ -60,7 +61,10 @@ const fileDrop: MiddlewareWithState = (store) => {
     } catch (error) {
       store.dispatch<ErrorAction>({
         type: Actions.ERROR,
-        payload: (error as Error).message,
+        payload: {
+          error: error as Error,
+          timestamp: dayjs().unix(),
+        },
       });
     }
   });

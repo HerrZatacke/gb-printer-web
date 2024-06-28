@@ -329,7 +329,10 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
       console.error(error);
       store.dispatch<ErrorAction>({
         type: Actions.ERROR,
-        payload: (error as Error).message,
+        payload: {
+          error: error as Error,
+          timestamp: dayjs().unix(),
+        },
       });
     }
   };

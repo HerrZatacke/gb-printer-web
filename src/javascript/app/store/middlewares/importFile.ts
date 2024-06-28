@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import type { HandeFileImportFn } from '../../../tools/getHandleFileImport';
 import getHandleFileImport from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
@@ -18,7 +19,10 @@ const importFile: MiddlewareWithState = (store) => {
         } catch (error) {
           store.dispatch<ErrorAction>({
             type: Actions.ERROR,
-            payload: (error as Error).message,
+            payload: {
+              error: error as Error,
+              timestamp: dayjs().unix(),
+            },
           });
         }
       }

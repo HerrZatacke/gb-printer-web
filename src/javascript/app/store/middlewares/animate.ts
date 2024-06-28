@@ -5,6 +5,7 @@ import { RGBNDecoder, Decoder, ExportFrameMode } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
+import dayjs from 'dayjs';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import generateFileName from '../../../tools/generateFileName';
@@ -183,7 +184,10 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
 
     dispatch<ErrorAction>({
       type: Actions.ERROR,
-      payload: 'All images need to have same dimensions',
+      payload: {
+        error: new Error('All images need to have same dimensions'),
+        timestamp: dayjs().unix(),
+      },
     });
 
     return;
