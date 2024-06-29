@@ -84,7 +84,11 @@ const getGetSettings = (store: TypedStore) => async (
       return JSON.stringify({ state: exportableState }, null, 2);
     case ExportTypes.IMAGES:
     case ExportTypes.SELECTED_IMAGES: {
-      const images = await getImages(getImageHashesForExport(what, state));
+      if (!exportableState.images) {
+        return JSON.stringify({ state: exportableState }, null, 2);
+      }
+
+      const images = await getImages(exportableState.images);
       return JSON.stringify({
         state: exportableState,
         ...images,
