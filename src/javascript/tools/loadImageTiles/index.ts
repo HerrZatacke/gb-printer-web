@@ -21,13 +21,12 @@ export const loadImageTiles = (state: State | ReducedPickState, recover?: Recove
     hashesOverride?: RGBNHashes,
   ): Promise<string[] | RGBNTiles> => {
     const image = state.images.find(((img) => hash === img.hash));
-    let frame: string | undefined;
+
+    // Image may not exist when loading RGBN-channels where original image has been deleted.
+    const frame = (typeof overrideFrame === 'string' ? overrideFrame : image?.frame) || undefined;
+    const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
 
     if (!hashesOverride) {
-      // Image may not exist when loading RGBN-channels where original image has been deleted.
-      frame = typeof overrideFrame === 'string' ? overrideFrame : image?.frame || undefined;
-      const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
-
       if (!image || !isRGBNImage(image)) {
         const tiles = await load(hash, frameHash, noDummy, recover);
         return tiles || [];
