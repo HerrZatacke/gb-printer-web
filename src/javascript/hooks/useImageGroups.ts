@@ -2,7 +2,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import type { State } from '../app/store/State';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../types/actions/ConfirmActions';
-import type { SetImageGroupsAction, AddImageGroupAction } from '../../types/actions/GroupActions';
+import type {
+  SetImageGroupsAction,
+  AddImageGroupAction,
+  DeleteImageGroupAction,
+} from '../../types/actions/GroupActions';
 import { Actions } from '../app/store/actions';
 import type { DialogResult } from '../../types/Dialog';
 import { DialoqQuestionType } from '../../types/Dialog';
@@ -13,6 +17,7 @@ import { useGalleryTreeContext } from '../app/contexts/galleryTree';
 interface UseImageGroups {
   resetGroups: () => void,
   createGroup: (hash: string, imageTitle?: string) => void,
+  deleteGroup: (id: string) => void,
 }
 
 export const useImageGroups = (): UseImageGroups => {
@@ -98,6 +103,38 @@ export const useImageGroups = (): UseImageGroups => {
                   groups: [],
                 },
               },
+            });
+          },
+          deny: async () => {
+            dispatch<ConfirmAnsweredAction>({
+              type: Actions.CONFIRM_ANSWERED,
+            });
+          },
+        },
+      });
+    },
+    deleteGroup: (id: string) => {
+      const deleteGroup = view.groups.find((group) => group.id === id);
+      if (!deleteGroup) {
+        return;
+      }
+
+      dispatch<ConfirmAskAction>({
+        type: Actions.CONFIRM_ASK,
+        payload: {
+          message: 'Delete image group?',
+          questions: () => [{
+            key: 'info',
+            type: DialoqQuestionType.INFO,
+            label: `This will delete this group "${deleteGroup.title || deleteGroup.slug}" and move all children (images & groups) to the current level.`,
+          }],
+          confirm: async () => {
+            dispatch<ConfirmAnsweredAction>({
+              type: Actions.CONFIRM_ANSWERED,
+            });
+            dispatch<DeleteImageGroupAction>({
+              type: Actions.DELETE_IMAGE_GROUP,
+              payload: id,
             });
           },
           deny: async () => {

@@ -3,6 +3,7 @@ import React from 'react';
 import { useGalleryGroup } from './useGalleryGroup';
 import ImageRender from '../ImageRender';
 import { useGalleryImage } from '../GalleryImage/useGalleryImage';
+import { useImageGroups } from '../../../hooks/useImageGroups';
 
 import './index.scss';
 
@@ -14,6 +15,8 @@ function GalleryGroup({ hash }: Props) {
   const { group, path } = useGalleryGroup(hash);
 
   const { galleryImageData } = useGalleryImage(hash);
+
+  const { deleteGroup } = useImageGroups();
 
   if (!galleryImageData || !group) {
     return null;
@@ -50,6 +53,12 @@ function GalleryGroup({ hash }: Props) {
         <p className="gallery-group__title">{ group.title }</p>
         <div className="gallery-group__temp">FOLDER</div>
       </Link>
+      <button
+        type="button"
+        onClick={() => deleteGroup(group?.id)}
+      >
+        Delete Group
+      </button>
     </li>
   );
 }

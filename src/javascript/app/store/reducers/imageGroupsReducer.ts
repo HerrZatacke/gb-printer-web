@@ -27,8 +27,38 @@ const imageGroupReducer = (
       return uniqueById([...groups, action.payload.group]);
     }
 
-    case Actions.DELETE_IMAGE_GROUP:
-      return [...value.filter(({ id }) => id !== action.payload)];
+    case Actions.DELETE_IMAGE_GROUP: {
+      const deleteGroup = value.find(({ id }) => id === action.payload);
+
+      if (!deleteGroup) {
+        return value;
+      }
+
+      const groups = value.reduce((
+        acc: SerializableImageGroup[],
+        reduceGroup: SerializableImageGroup,
+      ): SerializableImageGroup[] => {
+        if (reduceGroup.id === action.payload) {
+          return acc;
+        }
+
+        if (reduceGroup.groups.includes(action.payload)) { // group to be deleted is child of reduceGroup
+          return [
+            ...acc,
+            {
+              ...reduceGroup,
+              images: [...reduceGroup.images, ...deleteGroup.images],
+              groups: [...reduceGroup.groups, ...deleteGroup.groups].filter((id) => id !== deleteGroup.id),
+            },
+          ];
+        }
+
+        return [...acc, reduceGroup];
+      }, []);
+
+      return groups;
+    }
+
     case Actions.SET_IMAGE_GROUPS:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
