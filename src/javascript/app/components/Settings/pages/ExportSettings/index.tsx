@@ -5,13 +5,13 @@ import useHashCleanup from '../../../../../tools/hashCleanup';
 import { Actions } from '../../../../store/actions';
 import type { ExportJSONAction } from '../../../../../../types/actions/StorageActions';
 import { ExportTypes } from '../../../../../consts/exportTypes';
-import { useResetGroups } from './useResetGroups';
+import { useImageGroups } from '../../../../../hooks/useImageGroups';
 
 function ExportSettings() {
   const dispatch = useDispatch();
   const { hashCleanup, cleanupBusy } = useHashCleanup();
 
-  const { resetGroups } = useResetGroups();
+  const { resetGroups } = useImageGroups();
 
   const exportJson = (what: ExportTypes) => {
     dispatch<ExportJSONAction>({

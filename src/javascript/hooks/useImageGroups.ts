@@ -1,14 +1,14 @@
 import { useDispatch } from 'react-redux';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../../../types/actions/ConfirmActions';
-import type { SetImageGroupsAction } from '../../../../../../types/actions/GroupActions';
-import { Actions } from '../../../../store/actions';
-import { DialoqQuestionType } from '../../../../../../types/Dialog';
+import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../types/actions/ConfirmActions';
+import type { SetImageGroupsAction } from '../../types/actions/GroupActions';
+import { Actions } from '../app/store/actions';
+import { DialoqQuestionType } from '../../types/Dialog';
 
-interface UseResetGroups {
+interface UseImageGroups {
   resetGroups: () => void,
 }
 
-export const useResetGroups = (): UseResetGroups => {
+export const useImageGroups = (): UseImageGroups => {
   const dispatch = useDispatch();
 
   return {
