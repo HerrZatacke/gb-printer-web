@@ -4,6 +4,7 @@ import type { AddToQueueFn, DownloadInfo } from '../../../types/Sync';
 import type { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
 import type { State } from '../../app/store/State';
 import { getTxtFile } from '../download/getTxtFile';
+import unique from '../unique';
 
 interface TmpInfo {
   file: Image,
@@ -23,7 +24,9 @@ export const getUploadImages = async (
 
   const images: TmpInfo[] = state.images
     .map((image: Image): TmpInfo => {
-      const searchHashes: string[] = isRGBNImage(image) ? Object.values((image as RGBNImage).hashes) : [image.hash];
+      const searchHashes: string[] = isRGBNImage(image) ?
+        unique(Object.values((image as RGBNImage).hashes)) :
+        [image.hash];
 
       return {
         file: image,
