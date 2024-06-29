@@ -8,7 +8,7 @@ import type { DeleteImagesAction,
   EditImageSelectionAction,
   StartCreateRGBImagesAction } from '../../../../types/actions/ImageActions';
 import type { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
-import type { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
+import type { ImageSelectionSetAction, ImageSelectionShiftClickAction } from '../../../../types/actions/ImageSelectionActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
@@ -21,13 +21,14 @@ const collectTags = (batchImages: Image[]): string[] => (
 const batch: MiddlewareWithState = (store) => (next) => (action) => {
 
   if (action.type === Actions.IMAGE_SELECTION_SHIFTCLICK) {
+    const imageSelectionShiftClickAction: ImageSelectionShiftClickAction = action;
     const state = store.getState();
-    const images = getFilteredImages(state, state.images);
+    const images = getFilteredImages(state, imageSelectionShiftClickAction.payload.images);
     const { lastSelectedImage, pageSize } = state;
-    const selectedIndex = images.findIndex(({ hash }) => hash === action.payload);
+    const selectedIndex = images.findIndex(({ hash }) => hash === imageSelectionShiftClickAction.payload.hash);
     let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);
     if (prevSelectedIndex === -1) {
-      prevSelectedIndex = action.page * pageSize;
+      prevSelectedIndex = imageSelectionShiftClickAction.payload.page * pageSize;
     }
 
     const from = Math.min(prevSelectedIndex, selectedIndex);
@@ -37,6 +38,8 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
       type: Actions.IMAGE_SELECTION_SET,
       payload: images.slice(from, to + 1).map(({ hash }) => hash),
     });
+
+    return;
   }
 
   if (action.type === Actions.BATCH_TASK) {

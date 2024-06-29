@@ -75,10 +75,10 @@ const reduceImages = (
 export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   const {
     imageGroups,
-    images,
+    stateImages,
   } = useSelector((state: State) => ({
     imageGroups: state.imageGroups,
-    images: state.images,
+    stateImages: state.images,
   }));
 
   const { path } = useGalleryParams();
@@ -111,7 +111,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
         title: imageGroup.title,
         coverImage: imageGroup.coverImage,
         groups: childGroups,
-        images: images.reduce(reduceImages(imageGroup.images, childGroups), []),
+        images: stateImages.reduce(reduceImages(imageGroup.images, childGroups), []),
       });
     };
 
@@ -120,27 +120,27 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
       .reduce(reduceEmptyGroups, []) // remove groups without images_and_groups
       .filter(({ id }) => !singleUsageResult.usedGroupIDs.includes(id)); // remove groups which are children of other groups
 
-    const rootImageHashes = images.reduce((acc: string[], { hash }: Image): string[] => (
+    const rootImageHashes = stateImages.reduce((acc: string[], { hash }: Image): string[] => (
       !singleUsageResult.usedImageHashes.includes(hash) ? [...acc, hash] : acc
     ), []); // remove images which are children of other groups
 
     const newRoot = {
       ...createRoot(),
       groups: rootChildGroups,
-      images: images.reduce(reduceImages(rootImageHashes, rootChildGroups), []),
+      images: stateImages.reduce(reduceImages(rootImageHashes, rootChildGroups), []),
     };
 
     return newRoot;
-  }, [images, singleUsageResult]);
+  }, [stateImages, singleUsageResult]);
 
   const paths = useMemo<PathMap>((): PathMap => reducePaths('', root.groups), [root]);
 
   const result = useMemo<GalleryTreeContext>((): GalleryTreeContext => {
-    console.log('calculating result');
     const view = paths[path] || root;
     const covers = view.groups.map(({ coverImage }) => coverImage);
+    const images = view.images.filter((image: Image) => !covers.includes(image.hash));
 
-    return { view, covers, paths };
+    return { view, covers, paths, images };
   }, [path, paths, root]);
 
   return result;
