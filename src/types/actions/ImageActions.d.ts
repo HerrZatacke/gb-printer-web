@@ -107,8 +107,11 @@ export interface TryRecoverImageAction {
 
 export interface BatchTaskAction {
   type: Actions.BATCH_TASK,
-  payload: BatchActionType,
-  page: number,
+  payload: {
+    actionType: BatchActionType,
+    images: Image[], // list of images which can currently be batched,
+    page: number,
+  },
 }
 
 export interface UpdateRGBNPartAction {

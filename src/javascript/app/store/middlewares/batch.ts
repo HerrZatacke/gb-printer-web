@@ -54,7 +54,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
     }, []);
 
     if (imageSelection.length) {
-      switch (batchTaskAction.payload as BatchActionType) {
+      switch (batchTaskAction.payload.actionType) {
         case BatchActionType.DELETE: {
           store.dispatch<ConfirmAskAction>({
             type: Actions.CONFIRM_ASK,
@@ -119,12 +119,12 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
       }
     }
 
-    switch (batchTaskAction.payload) {
+    switch (batchTaskAction.payload.actionType) {
       case BatchActionType.CHECKALL:
         store.dispatch<ImageSelectionSetAction>({
           type: Actions.IMAGE_SELECTION_SET,
-          payload: getFilteredImages(state, state.images)
-            .slice(batchTaskAction.page * pageSize, (batchTaskAction.page + 1) * pageSize || undefined)
+          payload: getFilteredImages(state, action.payload.images)
+            .slice(batchTaskAction.payload.page * pageSize, (batchTaskAction.payload.page + 1) * pageSize || undefined)
             .map(({ hash }) => hash),
         } as ImageSelectionSetAction);
         break;
