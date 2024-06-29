@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import type { State } from '../app/store/State';
-import type { Dialog,
+import type {
+  Dialog,
   DialogQuestion,
   DialogQuestionSelect,
-  DialogResult } from '../../types/Dialog';
+  DialogResult,
+  DialogQuestionText,
+} from '../../types/Dialog';
 import {
   DialoqQuestionType,
 } from '../../types/Dialog';
@@ -42,7 +45,7 @@ const getInitialValues = (questions?: (values: DialogResult) => DialogQuestion[]
           }
 
           case DialoqQuestionType.TEXT:
-            initialValue = '';
+            initialValue = (question as DialogQuestionText).initialValue || '';
             break;
 
           case DialoqQuestionType.NUMBER:

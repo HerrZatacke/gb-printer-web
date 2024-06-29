@@ -3,7 +3,10 @@ import type { SerializableImageGroup } from '../ImageGroup';
 
 export interface AddImageGroupAction {
   type: Actions.ADD_IMAGE_GROUP,
-  payload: SerializableImageGroup,
+  payload: {
+    group: SerializableImageGroup,
+    parentId: string,
+  },
 }
 
 export interface SetImageGroupsAction {

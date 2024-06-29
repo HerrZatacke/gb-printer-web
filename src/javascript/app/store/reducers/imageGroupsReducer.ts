@@ -16,8 +16,17 @@ const imageGroupReducer = (
     GlobalUpdateAction,
 ): SerializableImageGroup[] => {
   switch (action.type) {
-    case Actions.ADD_IMAGE_GROUP:
-      return uniqueById([...value, action.payload]);
+    case Actions.ADD_IMAGE_GROUP: {
+      const groups = value.map((group: SerializableImageGroup) => (
+        group.id !== action.payload.parentId ? group : {
+          ...group,
+          groups: [...group.groups, action.payload.group.id],
+          images: group.images.filter((hash: string) => !action.payload.group.images.includes(hash)),
+        }
+      ));
+      return uniqueById([...groups, action.payload.group]);
+    }
+
     case Actions.DELETE_IMAGE_GROUP:
       return [...value.filter(({ id }) => id !== action.payload)];
     case Actions.SET_IMAGE_GROUPS:

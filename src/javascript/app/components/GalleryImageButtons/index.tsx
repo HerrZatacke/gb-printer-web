@@ -7,6 +7,7 @@ import PluginSelect from '../PluginSelect';
 import { ButtonOption, useGalleryImageButtons } from './useGalleryImageButtons';
 
 import './index.scss';
+import { useImageGroups } from '../../../hooks/useImageGroups';
 
 dayjs.extend(customParseFormat);
 
@@ -31,8 +32,9 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
     startDownload,
     updateImageToSelection,
     updateFavouriteTag,
-    createGroup,
   } = useGalleryImageButtons({ hash, imageTitle });
+
+  const { createGroup } = useImageGroups();
 
   return (
     <div
@@ -98,7 +100,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
             <button
               type="button"
               className="gallery-image-buttons__button"
-              onClick={createGroup}
+              onClick={() => createGroup(hash, imageTitle)}
             >
               <SVG name="file-add" />
             </button>

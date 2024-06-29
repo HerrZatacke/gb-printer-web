@@ -25,6 +25,7 @@ export interface DialogQuestion {
 
 export interface DialogQuestionText extends DialogQuestion {
   type: DialoqQuestionType.TEXT,
+  initialValue?: string,
   disabled?: boolean,
 }
 

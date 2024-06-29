@@ -1,12 +1,17 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import unique from '../tools/unique';
+import { Actions } from '../app/store/actions';
 import { createRoot } from '../app/contexts/galleryTree';
 import { useGalleryParams } from './useGalleryParams';
 import type { SerializableImageGroup, TreeImageGroup } from '../../types/ImageGroup';
 import type { GalleryTreeContext, PathMap } from '../app/contexts/galleryTree';
 import type { State } from '../app/store/State';
 import type { Image } from '../../types/Image';
+import type { ErrorAction } from '../../types/actions/GlobalActions';
+
+const MAX_INFLATE_DEPTH = 20;
 
 const arrayDifference = (arrayA: string[], arrayB: string[]): string[] => (
   arrayA.filter((x) => !arrayB.includes(x))
@@ -83,6 +88,8 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
 
   const { path } = useGalleryParams();
 
+  const dispatch = useDispatch();
+
   // the .images property of any cleaned group will contain an image only once across all groups.
   // e.g.: if an image is a child of multiple groups, it will be removed from every group but one.
   // -> an image can only ever be member of a single group
@@ -91,7 +98,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   ), [imageGroups]);
 
   const root = useMemo<TreeImageGroup>((): TreeImageGroup => {
-    const inflateImageGroup = (imageGroup: SerializableImageGroup): TreeImageGroup => {
+    const inflateImageGroup = (depth: number) => (imageGroup: SerializableImageGroup): TreeImageGroup => {
       // return an array of all _found_ imagegroups and completely
       // omit groups if their ID is not found (possibly deleted)
       const getImageGroups = (acc: SerializableImageGroup[], groupId: string): SerializableImageGroup[] => {
@@ -99,10 +106,27 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
         return found ? [...acc, found] : acc;
       };
 
-      const childGroups = imageGroup.groups
-        .reduce(getImageGroups, [])
-        .map(inflateImageGroup)
-        .reduce(reduceEmptyGroups, []);
+      let childGroups: TreeImageGroup[];
+
+      if (depth > MAX_INFLATE_DEPTH) {
+        dispatch<ErrorAction>({
+          type: Actions.ERROR,
+          payload: {
+            error: new Error(`Reached maximum inflate depth at group "${imageGroup.title || imageGroup.slug}" (${imageGroup.id})`),
+            timestamp: dayjs().unix(),
+          },
+        });
+        childGroups = [];
+      } else {
+        try {
+          childGroups = imageGroup.groups
+            .reduce(getImageGroups, [])
+            .map(inflateImageGroup(depth + 1))
+            .reduce(reduceEmptyGroups, []);
+        } catch (error) {
+          childGroups = [];
+        }
+      }
 
       return ({
         id: imageGroup.id,
@@ -116,7 +140,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
     };
 
     const rootChildGroups = singleUsageResult.groups
-      .map(inflateImageGroup) // convert serializable to tree
+      .map(inflateImageGroup(0)) // convert serializable to tree
       .reduce(reduceEmptyGroups, []) // remove groups without images_and_groups
       .filter(({ id }) => !singleUsageResult.usedGroupIDs.includes(id)); // remove groups which are children of other groups
 
@@ -131,7 +155,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
     };
 
     return newRoot;
-  }, [stateImages, singleUsageResult]);
+  }, [singleUsageResult, stateImages, dispatch]);
 
   const paths = useMemo<PathMap>((): PathMap => reducePaths('', root.groups), [root]);
 
