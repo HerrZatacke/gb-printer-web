@@ -9,6 +9,7 @@ import type {
   PluginUpdateConfigAction,
   PluginUpdatePropertiesAction,
 } from '../../../../types/actions/PluginActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
 const uniqueByUrl = uniqueBy<Plugin>('url');
 const sortByUrl = sortBy<Plugin>('url');
@@ -19,7 +20,8 @@ const pluginsReducer = (
     PluginAddAction |
     PluginUpdatePropertiesAction |
     PluginUpdateConfigAction |
-    PluginRemoveAction,
+    PluginRemoveAction |
+    GlobalUpdateAction,
 ): Plugin[] => {
   switch (action.type) {
     case Actions.PLUGIN_REMOVE:
@@ -58,6 +60,8 @@ const pluginsReducer = (
           config,
         };
       })));
+    case Actions.GLOBAL_UPDATE:
+      return uniqueBy<Plugin>('url')([...(action.payload?.plugins || []), ...plugins]);
     default:
       return plugins;
   }
