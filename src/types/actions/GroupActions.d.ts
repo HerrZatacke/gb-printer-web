@@ -6,6 +6,11 @@ export interface AddImageGroupAction {
   payload: SerializableImageGroup,
 }
 
+export interface SetImageGroupsAction {
+  type: Actions.SET_IMAGE_GROUPS,
+  payload: SerializableImageGroup[],
+}
+
 export interface DeleteImageGroupAction {
   type: Actions.DELETE_IMAGE_GROUP,
   payload: string,
