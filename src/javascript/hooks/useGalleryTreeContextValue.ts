@@ -52,12 +52,14 @@ const ensureSingleUsage = (groups: SerializableImageGroup[]): SingleUsageResult 
 
 const reducePaths = (prefix: string, groups: TreeImageGroup[]): PathMap => (
   groups.reduce((acc: PathMap, group: TreeImageGroup): PathMap => {
+    const cleanSlug = group.slug.replace(/[^A-Z0-9_-]+/gi, '_');
+
     let count = 0;
-    let absolute = `${prefix}${group.slug}/`;
+    let absolute = `${prefix}${cleanSlug}/`;
 
     while (acc[absolute]) {
       count += 1;
-      absolute = `${prefix}${group.slug}_${count}/`;
+      absolute = `${prefix}${cleanSlug}_${count}/`;
     }
 
     return ({
@@ -164,11 +166,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
     return newRoot;
   }, [singleUsageResult, stateImages, dispatch]);
 
-  const paths = useMemo<PathMap>((): PathMap => {
-    const p = reducePaths('', root.groups);
-    console.log(p);
-    return p;
-  }, [root]);
+  const paths = useMemo<PathMap>((): PathMap => (reducePaths('', root.groups)), [root]);
 
   const result = useMemo<GalleryTreeContext>((): GalleryTreeContext => {
     const view = paths[path] || root;
