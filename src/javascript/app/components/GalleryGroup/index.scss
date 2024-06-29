@@ -31,12 +31,12 @@
     @include theme-color($color-warn-red, $color-warn-red);
     @include theme-background-color(rgba($color-white, 0.5), rgba($color-white, 0.5));
     @include theme-border-color($color-warn-red, $color-warn-red);
-    padding: 8px 12px;
-    font-size: 28px;
+    padding: 4px 8px;
+    font-size: 18px;
     font-weight: bold;
     border: 2px solid;
-    left: 50%;
-    top: 45px;
-    transform: translate(-50%) rotate(-25deg);
+    left: 25%;
+    top: 125px;
+    transform: translate(-50%) rotate(25deg);
   }
 }
