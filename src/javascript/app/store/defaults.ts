@@ -96,6 +96,19 @@ const definitions: StorePropertyDefault[] = [
     value: null,
   },
   {
+    // hashes used in the RGBN creation dialog
+    key: 'editRGBNImages',
+    saveLocally: true,
+    saveExport: [],
+    value: [],
+  },
+  {
+    key: 'errors',
+    saveLocally: false,
+    saveExport: [],
+    value: [],
+  },
+  {
     // how to save videos (loop, crop, yoyo, reverse, palette)
     key: 'videoParams',
     saveLocally: true,

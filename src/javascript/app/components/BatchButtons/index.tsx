@@ -13,6 +13,10 @@ const BATCH_ACTIONS: BatchActionType[] = [
   BatchActionType.ANIMATE,
 ];
 
+const BATCH_ACTIONS_MONOCHROME: BatchActionType[] = [
+  BatchActionType.RGB,
+];
+
 interface Props {
   page: number,
 }
@@ -22,6 +26,7 @@ function BatchButtons({ page }: Props) {
   const {
     hasPlugins,
     batchEnabled,
+    monochromeBatchEnabled,
     activeFilters,
     selectedImages,
     hasSelected,
@@ -87,6 +92,27 @@ function BatchButtons({ page }: Props) {
           >
             <button
               disabled={!batchEnabled}
+              type="button"
+              onClick={() => batchTask(action)}
+            >
+              <SVG name={action} />
+            </button>
+          </li>
+        ))
+      }
+      {
+        BATCH_ACTIONS_MONOCHROME.map((action) => (
+          <li
+            key={action}
+            className={
+              classnames('gallery-button', {
+                'gallery-button--disabled': !monochromeBatchEnabled,
+                'gallery-button--enabled': monochromeBatchEnabled,
+              })
+            }
+          >
+            <button
+              disabled={!monochromeBatchEnabled}
               type="button"
               onClick={() => batchTask(action)}
             >

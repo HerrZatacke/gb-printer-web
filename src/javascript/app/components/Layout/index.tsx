@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, Navigate, useMatches } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Overlays from '../Overlays';
+import Errors from '../Errors';
 import GalleryTreeContextProvider from '../../contexts/GalleryTreeContextProvider';
 
 import './index.scss';
@@ -27,6 +28,7 @@ function Layout() {
         <Outlet />
       </div>
       <Overlays />
+      <Errors />
     </GalleryTreeContextProvider>
   );
 }

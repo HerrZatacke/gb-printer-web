@@ -64,6 +64,21 @@ export interface CancelEditImagesAction {
   type: Actions.CANCEL_EDIT_IMAGES,
 }
 
+export interface StartCreateRGBImagesAction {
+  type: Actions.START_CREATE_RGB_IMAGES,
+  payload: string[],
+}
+
+export interface SaveNewRGBImagesAction {
+  type: Actions.SAVE_NEW_RGB_IMAGES,
+  payload: RGBNHashes[],
+}
+
+export interface CancelCreateRGBImagesAction {
+  type: Actions.CANCEL_CREATE_RGB_IMAGES,
+}
+
+
 export interface DownloadImageSelectionAction {
   type: Actions.DOWNLOAD_SELECTION,
   payload: string[],

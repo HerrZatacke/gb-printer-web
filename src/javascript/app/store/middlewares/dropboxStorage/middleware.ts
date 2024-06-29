@@ -77,7 +77,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
     });
   };
 
-  const dropboxClient = new DropboxClient(store.getState().dropboxStorage, addToQueue('Dropbox'));
+  const dropboxClient = new DropboxClient(store.getState().dropboxStorage, addToQueue('Dropbox'), store.dispatch);
 
   if (store.getState().dropboxStorage.autoDropboxSync) {
     // check dropbox for updates
@@ -329,7 +329,10 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
       console.error(error);
       store.dispatch<ErrorAction>({
         type: Actions.ERROR,
-        payload: (error as Error).message,
+        payload: {
+          error: error as Error,
+          timestamp: dayjs().unix(),
+        },
       });
     }
   };

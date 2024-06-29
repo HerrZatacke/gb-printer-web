@@ -1,6 +1,6 @@
 import getGetSettings from '../getGetSettings';
 import type { TypedStore } from '../../app/store/State';
-import type { ExportStats, KeepFile, RemoteFiles, UploadFile } from '../../../types/Sync';
+import type { DownloadInfo, ExportStats, KeepFile, RemoteFiles, UploadFile } from '../../../types/Sync';
 import type { SyncFile } from '../../../types/Export';
 import { ExportTypes } from '../../consts/exportTypes';
 
@@ -36,7 +36,7 @@ const getPrepareRemoteFiles = (store: TypedStore): PrepareRemoteFilesFn => {
     const toKeep: KeepFile[] = [];
     const stats: ExportStats = {};
 
-    fileCollection.forEach(({ hash, files, inRepo }) => {
+    fileCollection.forEach(({ files, inRepo }) => {
       toKeep.push(...inRepo.map(({ path }) => {
         const repoFolder = path.split('/')[0];
         stats[repoFolder] = stats[repoFolder] ? stats[repoFolder] + 1 : 1;
@@ -46,13 +46,14 @@ const getPrepareRemoteFiles = (store: TypedStore): PrepareRemoteFilesFn => {
         });
       }));
 
-      toUpload.push(...files.map(({ blob, folder }) => {
+      toUpload.push(...files.map((file: DownloadInfo) => {
+        const { blob, folder, filename } = file;
         const extension = extFromType(blob.type);
         const repoFolder = folder || extension;
         stats[repoFolder] = stats[repoFolder] ? stats[repoFolder] + 1 : 1;
 
         return ({
-          destination: `${repoFolder}/${hash}.${extension}`,
+          destination: `${repoFolder}/${filename}`,
           blob,
         });
       }));

@@ -5,6 +5,7 @@ import type { RgbPixel } from 'quantize';
 import quantize from 'quantize';
 import chunk from 'chunk';
 import { useDispatch } from 'react-redux';
+import dayjs from 'dayjs';
 import getImageData from '../tools/transformBitmaps/getImageData';
 import { Actions } from '../app/store/actions';
 import type { SetPickColorsAction } from '../../types/actions/PickColorsActions';
@@ -54,7 +55,10 @@ const usePaletteFromFile = (): UsePaletteFromFile => {
         if (error) {
           dispatch<ErrorAction>({
             type: Actions.ERROR,
-            payload: error.message,
+            payload: {
+              error,
+              timestamp: dayjs().unix(),
+            },
           });
         } else {
 

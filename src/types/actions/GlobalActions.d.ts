@@ -1,5 +1,6 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { WindowDimensions } from '../WindowDimensions';
+import type { ErrorMessage } from '../../javascript/app/components/Errors/useErrors';
 
 export interface DragoverAction {
   type: Actions.IMPORT_DRAGOVER_START | Actions.IMPORT_DRAGOVER_END,
@@ -83,5 +84,10 @@ export interface UpdateWindowDimensionsAction {
 
 export interface ErrorAction {
   type: Actions.ERROR,
-  payload: string,
+  payload?: ErrorMessage,
+}
+
+export interface DismissErrorAction {
+  type: Actions.DISMISS_ERROR,
+  payload: number,
 }
