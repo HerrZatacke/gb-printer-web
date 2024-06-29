@@ -43,6 +43,8 @@ export const applyRotation = (
 
   context.rotate(rotation * 90 * Math.PI / 180);
   context.drawImage(srcCanvas, 0, 0);
+
+  context.resetTransform();
 };
 
 export const getRotatedCanvas = (srcCanvas: HTMLCanvasElement, rotation: Rotation): HTMLCanvasElement => {
