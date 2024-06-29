@@ -40,11 +40,11 @@ function Gallery() {
 
   if (currentView !== 'list') {
     content.push(
-      <li className="gallery-image gallery-item gallery-image--dummy" key="dummy1" />,
-      <li className="gallery-image gallery-item gallery-image--dummy" key="dummy2" />,
-      <li className="gallery-image gallery-item gallery-image--dummy" key="dummy3" />,
-      <li className="gallery-image gallery-item gallery-image--dummy" key="dummy4" />,
-      <li className="gallery-image gallery-item gallery-image--dummy" key="dummy5" />,
+      <li className="gallery-image gallery-item gallery-item--dummy" key="dummy1" />,
+      <li className="gallery-image gallery-item gallery-item--dummy" key="dummy2" />,
+      <li className="gallery-image gallery-item gallery-item--dummy" key="dummy3" />,
+      <li className="gallery-image gallery-item gallery-item--dummy" key="dummy4" />,
+      <li className="gallery-image gallery-item gallery-item--dummy" key="dummy5" />,
     );
   }
 

@@ -62,7 +62,6 @@
     margin-top: 0;
     margin-bottom: 0;
     background: none;
-    @include theme-background-color(transparent, transparent);
   }
 
   &__tags {

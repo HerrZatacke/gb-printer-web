@@ -3,18 +3,6 @@
   cursor: pointer;
   user-select: none;
 
-  &:hover{
-    @include theme-background-color($color-grey-60, $color-grey-30);
-  }
-
-  &--selected {
-    @include theme-background-color($color-selected-image, $color-selected-image-dark);
-
-    &:hover {
-      @include theme-background-color($color-selected-image-hover, $color-selected-image-dark-hover);
-    }
-  }
-
   &__hash-debug {
     margin: 6px -4px 0;
     font-size: 10px;

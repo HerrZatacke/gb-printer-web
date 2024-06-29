@@ -74,7 +74,7 @@ function GalleryImage({ page, hash, type }: Props) {
     <li
       className={
         classnames('gallery-image gallery-item', {
-          'gallery-image--selected': isSelected,
+          'gallery-item--selected': isSelected,
         })
       }
       onClick={handleCellClick}
@@ -141,7 +141,7 @@ function GalleryImage({ page, hash, type }: Props) {
     <li
       className={
         classnames('gallery-list-image', {
-          'gallery-list-image--selected': isSelected,
+          'gallery-list-item--selected': isSelected,
         })
       }
       onClick={handleCellClick}

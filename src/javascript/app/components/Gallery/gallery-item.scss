@@ -11,6 +11,23 @@
   box-sizing: content-box;
   @include theme-background-color($color-grey-50, $color-grey-20);
 
+  &:hover {
+    @include theme-background-color($color-grey-60, $color-grey-30);
+  }
+
+  &--selected {
+    @include theme-background-color($color-selected-image, $color-selected-image-dark);
+
+    &:hover {
+      @include theme-background-color($color-selected-image-hover, $color-selected-image-dark-hover);
+    }
+  }
+
+  &--dummy,
+  &--dummy:hover {
+    @include theme-background-color(transparent, transparent);
+  }
+
   .gallery--1x & {
     width: 160px;
     max-height: 350px;
