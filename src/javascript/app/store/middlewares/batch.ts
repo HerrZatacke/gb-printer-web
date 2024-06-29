@@ -6,7 +6,7 @@ import type { Image } from '../../../../types/Image';
 import type { DeleteImagesAction,
   DownloadImageSelectionAction,
   EditImageSelectionAction,
-  StartCreateRGBImagesAction } from '../../../../types/actions/ImageActions';
+  StartCreateRGBImagesAction, BatchTaskAction } from '../../../../types/actions/ImageActions';
 import type { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
 import type { ImageSelectionSetAction, ImageSelectionShiftClickAction } from '../../../../types/actions/ImageSelectionActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
@@ -43,6 +43,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
   }
 
   if (action.type === Actions.BATCH_TASK) {
+    const batchTaskAction: BatchTaskAction = action;
     const state = store.getState();
     const { images, imageSelection, pageSize } = state;
     // const batchImages = images.filter(({ hash }) => imageSelection.includes(hash));
@@ -53,7 +54,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
     }, []);
 
     if (imageSelection.length) {
-      switch (action.payload as BatchActionType) {
+      switch (batchTaskAction.payload as BatchActionType) {
         case BatchActionType.DELETE: {
           store.dispatch<ConfirmAskAction>({
             type: Actions.CONFIRM_ASK,
@@ -118,12 +119,12 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
       }
     }
 
-    switch (action.payload) {
+    switch (batchTaskAction.payload) {
       case BatchActionType.CHECKALL:
         store.dispatch<ImageSelectionSetAction>({
           type: Actions.IMAGE_SELECTION_SET,
           payload: getFilteredImages(state, state.images)
-            .slice(action.page * pageSize, (action.page + 1) * pageSize || undefined)
+            .slice(batchTaskAction.page * pageSize, (batchTaskAction.page + 1) * pageSize || undefined)
             .map(({ hash }) => hash),
         } as ImageSelectionSetAction);
         break;
