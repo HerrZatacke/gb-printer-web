@@ -31,6 +31,7 @@ export interface State {
   dragover: boolean,
   dropboxStorage: DropBoxSettings,
   editImage: CurrentEditBatch | null,
+  editImageGroup: string | null,
   editFrame: string | null,
   editPalette: Palette | null,
   editRGBNImages: string[],

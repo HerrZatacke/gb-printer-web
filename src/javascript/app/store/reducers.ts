@@ -28,6 +28,7 @@ import confirm from './reducers/confirmReducer';
 import dragover from './reducers/dragoverReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
+import editImageGroup from './reducers/editImageGroupReducer';
 import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
@@ -91,6 +92,7 @@ export interface Reducers extends ReducersMapObject {
   dragover: Reducer<boolean>,
   dropboxStorage: Reducer<DropBoxSettings>,
   editImage: Reducer<CurrentEditBatch | null>,
+  editImageGroup: Reducer<string | null>,
   editFrame: Reducer<string | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
@@ -154,6 +156,7 @@ const reducers: ReducersMapObject = {
   dragover,
   dropboxStorage,
   editImage,
+  editImageGroup,
   editFrame,
   editPalette,
   editRGBNImages,

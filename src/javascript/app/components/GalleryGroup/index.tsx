@@ -16,7 +16,7 @@ function GalleryGroup({ hash }: Props) {
 
   const { galleryImageData } = useGalleryImage(hash);
 
-  const { deleteGroup } = useImageGroups();
+  const { deleteGroup, editGroup } = useImageGroups();
 
   if (!galleryImageData || !group) {
     return null;
@@ -51,13 +51,19 @@ function GalleryGroup({ hash }: Props) {
         />
         <p className="gallery-group__info">{ `${group.images.length} images` }</p>
         <p className="gallery-group__title">{ group.title }</p>
-        <div className="gallery-group__temp">FOLDER</div>
+        <div className="gallery-group__temp">GROUP</div>
       </Link>
       <button
         type="button"
-        onClick={() => deleteGroup(group?.id)}
+        onClick={() => deleteGroup(group.id)}
       >
         Delete Group
+      </button>
+      <button
+        type="button"
+        onClick={() => editGroup(group.id)}
+      >
+        Edit Group
       </button>
     </li>
   );

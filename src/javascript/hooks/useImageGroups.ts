@@ -6,6 +6,7 @@ import type {
   SetImageGroupsAction,
   AddImageGroupAction,
   DeleteImageGroupAction,
+  EditImageGroupAction,
 } from '../../types/actions/GroupActions';
 import { Actions } from '../app/store/actions';
 import type { DialogResult } from '../../types/Dialog';
@@ -14,9 +15,11 @@ import { randomId } from '../tools/randomId';
 import { dateFormat } from '../app/defaults';
 import { useGalleryTreeContext } from '../app/contexts/galleryTree';
 
+
 interface UseImageGroups {
   resetGroups: () => void,
   createGroup: (hash: string, imageTitle?: string) => void,
+  editGroup: (id: string) => void,
   deleteGroup: (id: string) => void,
 }
 
@@ -111,6 +114,12 @@ export const useImageGroups = (): UseImageGroups => {
             });
           },
         },
+      });
+    },
+    editGroup: (id: string) => {
+      dispatch<EditImageGroupAction>({
+        type: Actions.EDIT_IMAGE_GROUP,
+        payload: id,
       });
     },
     deleteGroup: (id: string) => {
