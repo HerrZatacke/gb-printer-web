@@ -6,6 +6,7 @@ import type { TrashCount } from './reducers/trashCountReducer';
 import type { WindowDimensions } from '../../../types/WindowDimensions';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
+import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
@@ -92,7 +93,7 @@ export interface Reducers extends ReducersMapObject {
   dragover: Reducer<boolean>,
   dropboxStorage: Reducer<DropBoxSettings>,
   editImage: Reducer<CurrentEditBatch | null>,
-  editImageGroup: Reducer<string | null>,
+  editImageGroup: Reducer<EditGroupInfo | null>,
   editFrame: Reducer<string | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,

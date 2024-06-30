@@ -53,18 +53,22 @@ function GalleryGroup({ hash }: Props) {
         <p className="gallery-group__title">{ group.title }</p>
         <div className="gallery-group__temp">GROUP</div>
       </Link>
-      <button
-        type="button"
-        onClick={() => deleteGroup(group.id)}
-      >
-        Delete Group
-      </button>
-      <button
-        type="button"
-        onClick={() => editGroup(group.id)}
-      >
-        Edit Group
-      </button>
+      <div className="gallery-group__buttons">
+        <button
+          className="gallery-group__button button"
+          type="button"
+          onClick={() => editGroup(group.id)}
+        >
+          Edit Group
+        </button>
+        <button
+          className="gallery-group__button button"
+          type="button"
+          onClick={() => deleteGroup(group.id)}
+        >
+          Delete Group
+        </button>
+      </div>
     </li>
   );
 }

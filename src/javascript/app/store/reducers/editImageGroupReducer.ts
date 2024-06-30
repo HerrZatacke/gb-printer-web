@@ -1,18 +1,27 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import type { EditImageGroupAction, CancelEditImageGroupAction } from '../../../../types/actions/GroupActions';
-
+import type {
+  AddImageGroupAction,
+  UpdateImageGroupAction,
+  EditImageGroupAction,
+  CancelEditImageGroupAction,
+  EditGroupInfo,
+} from '../../../../types/actions/GroupActions';
 
 const editImageGroupReducer = (
-  value: string | null = null,
+  value: EditGroupInfo | null = null,
   action:
+    AddImageGroupAction |
+    UpdateImageGroupAction |
     EditImageGroupAction |
     CancelEditImageGroupAction,
-): string | null => {
+): EditGroupInfo | null => {
   switch (action.type) {
     case Actions.EDIT_IMAGE_GROUP:
       return action.payload;
+    case Actions.ADD_IMAGE_GROUP:
     case Actions.CANCEL_EDIT_IMAGE_GROUP:
+    case Actions.UPDATE_IMAGE_GROUP:
       return null;
     default:
       return value;

@@ -3,7 +3,12 @@ import { Actions } from '../actions';
 import uniqueBy from '../../../tools/unique/by';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import type { SerializableImageGroup } from '../../../../types/ImageGroup';
-import type { AddImageGroupAction, DeleteImageGroupAction, SetImageGroupsAction } from '../../../../types/actions/GroupActions';
+import type {
+  AddImageGroupAction,
+  DeleteImageGroupAction,
+  SetImageGroupsAction,
+  UpdateImageGroupAction,
+} from '../../../../types/actions/GroupActions';
 
 const uniqueById = uniqueBy<SerializableImageGroup>('id');
 
@@ -11,6 +16,7 @@ const imageGroupReducer = (
   value: SerializableImageGroup[] = [],
   action:
     AddImageGroupAction |
+    UpdateImageGroupAction |
     SetImageGroupsAction |
     DeleteImageGroupAction |
     GlobalUpdateAction,
@@ -57,6 +63,12 @@ const imageGroupReducer = (
       }, []);
 
       return groups;
+    }
+
+    case Actions.UPDATE_IMAGE_GROUP: {
+      return value.map((group) => (
+        group.id === action.payload.group.id ? action.payload.group : group
+      ));
     }
 
     case Actions.SET_IMAGE_GROUPS:

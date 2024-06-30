@@ -5,6 +5,7 @@ import InfoBox from './InfoBox';
 import ProgressBox from './ProgressBox';
 import Confirm from './Confirm';
 import EditForm from './EditForm';
+import EditImageGroup from './EditImageGroup';
 import EditFrame from './EditFrame';
 import EditPalette from './EditPalette';
 import EditRGBN from './EditRGBN';
@@ -33,6 +34,7 @@ function Overlays() {
     showImportQueue,
     showFrameQueue,
     showEditForm,
+    showEditImageGroup,
     showEditFrame,
     showEditPalette,
     showEditRGBN,
@@ -54,6 +56,7 @@ function Overlays() {
     showImportQueue: !!state.importQueue.length,
     showFrameQueue: !!state.frameQueue.length,
     showEditForm: !!state.editImage?.batch?.length,
+    showEditImageGroup: !!state.editImageGroup,
     showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette,
     showEditRGBN: state.editRGBNImages.length > 0,
@@ -81,6 +84,8 @@ function Overlays() {
       return <ImportQueue />; // interactive
     case showEditForm:
       return <EditForm />; // interactive
+    case showEditImageGroup:
+      return <EditImageGroup />; // interactive
     case showEditFrame:
       return <EditFrame />; // interactive
     case showEditPalette:

@@ -21,6 +21,7 @@ import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
 import type { PickColors } from '../../../types/PickColors';
 import type { PaletteSortMode } from '../../consts/paletteSortModes';
+import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 
 // ToDo: infer from store somehow...?
 export interface State {
@@ -31,7 +32,7 @@ export interface State {
   dragover: boolean,
   dropboxStorage: DropBoxSettings,
   editImage: CurrentEditBatch | null,
-  editImageGroup: string | null,
+  editImageGroup: EditGroupInfo | null,
   editFrame: string | null,
   editPalette: Palette | null,
   editRGBNImages: string[],

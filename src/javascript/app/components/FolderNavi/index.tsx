@@ -29,16 +29,18 @@ function FolderNavi() {
       ] : acc
     ), []);
 
-  const options: DialogOption[] = Object.keys(paths).map((path) => {
-    const group = paths[path];
-    const depth = path.split('/').length - 1;
+  const options: DialogOption[] = paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
+    const depth = absolutePath.split('/').length - 1;
     const indent = Array(depth).fill('\u2007').join('');
 
-    return ({
-      value: path,
-      name: `${indent}${group.title} (/${path.replace(/\/$/, '')})`,
-    });
-  });
+    return [
+      ...acc,
+      {
+        value: absolutePath,
+        name: `${indent}${group.title} (/${absolutePath.replace(/\/$/, '')})`,
+      },
+    ];
+  }, []);
 
   if (!options.length) {
     return null;

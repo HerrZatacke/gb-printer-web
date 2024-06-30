@@ -13,20 +13,23 @@ export const createRoot = (): TreeImageGroup => ({
   groups: [],
 });
 
-export type PathMap = Record<string, TreeImageGroup>;
+export interface PathMap {
+  absolutePath: string
+  group: TreeImageGroup,
+}
 
 export interface GalleryTreeContext {
   view: TreeImageGroup, // 'view' contains images and coverImages (=groups)
   images: Image[], // 'images' contains only actual images (without covers/groups)
   covers: string[],
-  paths: PathMap,
+  paths: PathMap[],
 }
 
 export const galleryTreeContext: Context<GalleryTreeContext> = createContext<GalleryTreeContext>({
   view: createRoot(),
   images: [],
   covers: [],
-  paths: {},
+  paths: [],
 });
 
 export const useGalleryTreeContext = (): GalleryTreeContext => useContext<GalleryTreeContext>(galleryTreeContext);

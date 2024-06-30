@@ -1,6 +1,12 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { SerializableImageGroup } from '../ImageGroup';
 
+export interface EditGroupInfo {
+  groupId: string,
+  newGroupCover?: string,
+  newGroupTitle?: string,
+}
+
 export interface AddImageGroupAction {
   type: Actions.ADD_IMAGE_GROUP,
   payload: {
@@ -21,14 +27,16 @@ export interface DeleteImageGroupAction {
 
 export interface EditImageGroupAction {
   type: Actions.EDIT_IMAGE_GROUP,
-  payload: string,
+  payload: EditGroupInfo,
 }
 
 export interface CancelEditImageGroupAction {
   type: Actions.CANCEL_EDIT_IMAGE_GROUP,
 }
 
-// export interface UpdateImageGroupsAction {
-//   type: Actions.UPDATE_IMAGE_GROUPS,
-//   payload: ImageGroup[],
-// }
+export interface UpdateImageGroupAction {
+  type: Actions.UPDATE_IMAGE_GROUP,
+  payload: {
+    group: SerializableImageGroup,
+  },
+}

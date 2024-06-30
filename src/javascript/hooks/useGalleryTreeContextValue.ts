@@ -50,24 +50,31 @@ const ensureSingleUsage = (groups: SerializableImageGroup[]): SingleUsageResult 
   };
 };
 
-const reducePaths = (prefix: string, groups: TreeImageGroup[]): PathMap => (
-  groups.reduce((acc: PathMap, group: TreeImageGroup): PathMap => {
+const reducePaths = (prefix: string, groups: TreeImageGroup[]): PathMap[] => (
+  groups.reduce((acc: PathMap[], group: TreeImageGroup): PathMap[] => {
     const cleanSlug = group.slug.replace(/[^A-Z0-9_-]+/gi, '_');
 
     let count = 0;
     let absolute = `${prefix}${cleanSlug}/`;
 
-    while (acc[absolute]) {
+    const pathExists = (test: string): boolean => (
+      acc.findIndex(({ absolutePath }) => absolutePath === test) !== -1
+    );
+
+    while (pathExists(absolute)) {
       count += 1;
       absolute = `${prefix}${cleanSlug}_${count}/`;
     }
 
-    return ({
+    return ([
       ...acc,
-      [absolute]: group,
+      {
+        absolutePath: absolute,
+        group,
+      },
       ...reducePaths(absolute, group.groups),
-    });
-  }, {})
+    ]);
+  }, [])
 );
 
 const reduceEmptyGroups = (acc: TreeImageGroup[], group: TreeImageGroup): TreeImageGroup[] => (
@@ -166,10 +173,10 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
     return newRoot;
   }, [singleUsageResult, stateImages, dispatch]);
 
-  const paths = useMemo<PathMap>((): PathMap => (reducePaths('', root.groups)), [root]);
+  const paths = useMemo<PathMap[]>((): PathMap[] => (reducePaths('', root.groups)), [root]);
 
   const result = useMemo<GalleryTreeContext>((): GalleryTreeContext => {
-    const view = paths[path] || root;
+    const view = paths.find(({ absolutePath }) => absolutePath === path)?.group || root;
     const covers = view.groups.map(({ coverImage }) => coverImage);
     const images = view.images.filter((image: Image) => !covers.includes(image.hash));
 

@@ -5,6 +5,7 @@
     flex-direction: column;
     text-decoration: none;
     position: relative;
+    margin-bottom: 8px;
   }
 
   &__title {
@@ -24,6 +25,17 @@
     line-height: 10px;
     margin-top: 10px;
     @include theme-color($color-grey-80, $color-grey-40);
+  }
+
+  &__buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  &__button {
+    margin: 0;
+    padding: 8px;
   }
 
   &__temp {

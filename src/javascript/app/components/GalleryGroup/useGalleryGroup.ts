@@ -11,8 +11,8 @@ export const useGalleryGroup = (hash: string): UseGalleryGroup => {
   const { paths } = useGalleryTreeContext();
   const { path: viewPath } = useGalleryParams();
 
-  const path = Object.keys(paths)
-    .reduce((acc: string | null, reducePath: string): string | null => {
+  const path = paths
+    .reduce((acc: string | null, { absolutePath, group }): string | null => {
       if (acc) {
         return acc;
       }
@@ -20,14 +20,15 @@ export const useGalleryGroup = (hash: string): UseGalleryGroup => {
       // if two groups use the same coverimage, this may
       // cause the wrong link to be generated. Maybe a ToDo?
       // depending on order of creation of the groups
-      if (paths[reducePath].coverImage === hash && reducePath !== viewPath) {
-        return reducePath;
+      if (group.coverImage === hash && absolutePath !== viewPath) {
+        return absolutePath;
       }
 
       return null;
     }, null);
 
-  const group = path ? paths[path] : null;
+
+  const group = paths.find(({ absolutePath }) => absolutePath === path)?.group || null;
 
   return { group, path };
 };
