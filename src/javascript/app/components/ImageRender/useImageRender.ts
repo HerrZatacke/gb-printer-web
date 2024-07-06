@@ -64,11 +64,17 @@ export const useImageRender = ({
     setGbImageProps(null);
 
     const loadTiles = async () => {
+      // check before async call
       if (aborted) {
         return;
       }
 
       const loadedTiles = await loadImageTiles(hash, false, frameId);
+
+      // check after async call
+      if (aborted) {
+        return;
+      }
 
       if (loadedTiles) {
         setGbImageProps({
