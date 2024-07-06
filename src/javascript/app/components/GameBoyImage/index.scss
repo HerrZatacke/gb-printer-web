@@ -1,8 +1,10 @@
 .gameboy-image {
+  image-rendering: pixelated;
+
   &__image {
     width: 100%;
     display: block;
-    image-rendering: pixelated;
+    image-rendering: inherit;
 
     &--as-thumb,
     .gallery--list & {

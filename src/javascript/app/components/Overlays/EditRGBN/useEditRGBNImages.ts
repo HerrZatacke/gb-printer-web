@@ -14,6 +14,7 @@ type RGBOrder = ColorKey[];
 export enum RGBGrouping {
   BY_COLOR = 'BY_COLOR',
   BY_IMAGE = 'BY_IMAGE',
+  MANUAL = 'MANUAL',
 }
 
 interface UseEditRGBNImages {
@@ -22,7 +23,9 @@ interface UseEditRGBNImages {
   canConfirm: boolean,
   lengthWarning: boolean,
   rgbnHashes: RGBNHashes[],
+  sortedImages: MonochromeImage[],
   updateOrder: (color: ColorKey, direction: number) => void,
+  toggleSingleChannel: (channel: keyof RGBNHashes, hash: string) => void
   setGrouping: (value: RGBGrouping) => void,
   save: () => void,
   cancelEditRGBN: () => void,
@@ -64,7 +67,28 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   }, [editRGBNImages, globalSortDirection, images, sortBy]);
 
   const [order, setOrder] = useState<RGBOrder>(['r', 'g', 'b', 's', 'n']);
-  const [grouping, setGrouping] = useState<RGBGrouping>(RGBGrouping.BY_COLOR);
+  const [grouping, setGrouping] = useState<RGBGrouping>(
+    sortedImages.length <= 4 ?
+      RGBGrouping.MANUAL :
+      RGBGrouping.BY_COLOR,
+  );
+  const [manualHashes, setManualHashes] = useState<RGBNHashes>({
+    r: sortedImages[0]?.hash || undefined,
+    g: sortedImages[Math.floor(sortedImages.length / 3)]?.hash || undefined,
+    b: sortedImages[Math.floor(sortedImages.length / 3) * 2]?.hash || undefined,
+  });
+
+  const toggleSingleChannel = (channel: keyof RGBNHashes, hash: string) => {
+    const nextRGBNHashes: RGBNHashes = { ...manualHashes };
+
+    if (nextRGBNHashes[channel] === hash) {
+      delete nextRGBNHashes[channel];
+    } else {
+      nextRGBNHashes[channel] = hash;
+    }
+
+    setManualHashes(nextRGBNHashes);
+  };
 
   const updateOrder = (colorKey: ColorKey, newPosition: number) => {
     if (newPosition < 0 || newPosition > order.length) {
@@ -82,38 +106,49 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const lengthWarning = usedColorCount * blockLength !== editRGBNImages.length;
 
-  const rgbnHashes: RGBNHashes[] = useMemo<RGBNHashes[]>(() => {
-    const usedColors = order.slice(0, usedColorCount);
+  const rgbnHashes: RGBNHashes[] = useMemo<RGBNHashes[]>((): RGBNHashes[] => {
+    switch (grouping) {
+      case RGBGrouping.MANUAL: {
+        return Object.keys(manualHashes).length ? [manualHashes] : [];
+      }
 
-    const hashes = Array(blockLength)
-      .fill('')
-      .map((_, imageIndex): RGBNHashes => (
-        usedColors.reduce((acc: RGBNHashes, colorKey: ColorKey, colorIndex: number): RGBNHashes => {
-          const sourceIndex = grouping === RGBGrouping.BY_COLOR ? (
-            imageIndex + (blockLength * colorIndex)
-          ) : (
-            colorIndex + (usedColorCount * imageIndex)
-          );
+      case RGBGrouping.BY_COLOR:
+      case RGBGrouping.BY_IMAGE:
+      default: {
 
-          const channelHash = sortedImages[sourceIndex]?.hash;
+        const usedColors = order.slice(0, usedColorCount);
 
-          if (!channelHash) {
-            return acc;
-          }
+        const hashes = Array(blockLength)
+          .fill('')
+          .map((_, imageIndex): RGBNHashes => (
+            usedColors.reduce((acc: RGBNHashes, colorKey: ColorKey, colorIndex: number): RGBNHashes => {
+              const sourceIndex = grouping === RGBGrouping.BY_COLOR ? (
+                imageIndex + (blockLength * colorIndex)
+              ) : (
+                colorIndex + (usedColorCount * imageIndex)
+              );
 
-          return {
-            ...acc,
-            [colorKey]: channelHash,
-          };
-        }, {})
-      ));
+              const channelHash = sortedImages[sourceIndex]?.hash;
 
-    if (globalSortDirection === 'desc') {
-      hashes.reverse();
+              if (!channelHash) {
+                return acc;
+              }
+
+              return {
+                ...acc,
+                [colorKey]: channelHash,
+              };
+            }, {})
+          ));
+
+        if (globalSortDirection === 'desc') {
+          hashes.reverse();
+        }
+
+        return hashes;
+      }
     }
-
-    return hashes;
-  }, [blockLength, globalSortDirection, grouping, order, sortedImages, usedColorCount]);
+  }, [blockLength, globalSortDirection, grouping, manualHashes, order, sortedImages, usedColorCount]);
 
   const save = () => {
     dispatch<SaveNewRGBImagesAction>({
@@ -122,13 +157,17 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     });
   };
 
+  const singleMode = grouping === RGBGrouping.MANUAL;
+
   return {
     order,
     grouping,
-    canConfirm: order.length > 1,
-    lengthWarning,
+    canConfirm: singleMode ? rgbnHashes.length > 0 : order.length > 1,
+    lengthWarning: singleMode ? false : lengthWarning,
     rgbnHashes,
+    sortedImages,
     updateOrder,
+    toggleSingleChannel,
     setGrouping,
     save,
     cancelEditRGBN: () => {
