@@ -61,7 +61,9 @@ export const useImageRender = ({
   useEffect(() => {
     let aborted = false;
 
-    setGbImageProps(null);
+    if (!hash) {
+      setGbImageProps(null);
+    }
 
     const loadTiles = async () => {
       // check before async call
