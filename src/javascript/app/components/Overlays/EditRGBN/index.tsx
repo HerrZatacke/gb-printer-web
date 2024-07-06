@@ -62,12 +62,11 @@ function EditRGBN() {
             </li>
           )))}
         </ul>
-        <p className="edit-rgbn__info-text">Select how your selection is grouped.</p>
         <Select
           id="select-grouping"
           disabled={false}
           value={grouping}
-          label=""
+          label="Select how your selection is grouped."
           options={[
             {
               value: RGBGrouping.BY_COLOR,
