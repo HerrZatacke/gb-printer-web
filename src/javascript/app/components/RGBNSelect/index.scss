@@ -1,16 +1,13 @@
 .rgbn-select {
-  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: default;
-  padding: 0 10px;
 
   &__button {
     width: 20px;
     height: 20px;
     border: none;
-    margin-right: 5px;
     padding: 0 ;
     cursor: pointer;
     fill: currentColor;
