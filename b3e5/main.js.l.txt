@@ -66,7 +66,7 @@ object-assign
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /**
- * @remix-run/router v1.17.0
+ * @remix-run/router v1.17.1
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -77,7 +77,7 @@ object-assign
  */
 
 /**
- * React Router DOM v6.24.0
+ * React Router DOM v6.24.1
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -88,7 +88,7 @@ object-assign
  */
 
 /**
- * React Router v6.24.0
+ * React Router v6.24.1
  *
  * Copyright (c) Remix Software Inc.
  *
