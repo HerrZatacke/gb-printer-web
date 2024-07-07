@@ -10,6 +10,7 @@ import type { GalleryTreeContext, PathMap } from '../app/contexts/galleryTree';
 import type { State } from '../app/store/State';
 import type { Image } from '../../types/Image';
 import type { ErrorAction } from '../../types/actions/GlobalActions';
+import type { DialogOption } from '../../types/Dialog';
 
 const MAX_INFLATE_DEPTH = 20;
 
@@ -175,13 +176,31 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
 
   const paths = useMemo<PathMap[]>((): PathMap[] => (reducePaths('', root.groups)), [root]);
 
+  const pathsOptions = useMemo<DialogOption[]>((): DialogOption[] => (
+    paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
+      const depth = absolutePath.split('/').length - 1;
+      const indent = Array(depth).fill('\u2007').join('');
+
+      return [
+        ...acc,
+        {
+          value: absolutePath,
+          name: `${indent}${group.title} (/${absolutePath.replace(/\/$/, '')})`,
+        },
+      ];
+    }, [{
+      value: '/',
+      name: '/',
+    }])
+  ), [paths]);
+
   const result = useMemo<GalleryTreeContext>((): GalleryTreeContext => {
     const view = paths.find(({ absolutePath }) => absolutePath === path)?.group || root;
     const covers = view.groups.map(({ coverImage }) => coverImage);
     const images = view.images.filter((image: Image) => !covers.includes(image.hash));
 
-    return { view, covers, paths, images };
-  }, [path, paths, root]);
+    return { view, covers, paths, images, pathsOptions };
+  }, [path, paths, pathsOptions, root]);
 
   return result;
 };

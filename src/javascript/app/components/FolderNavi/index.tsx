@@ -5,7 +5,6 @@ import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import Select from '../Overlays/Confirm/fields/Select';
 import { Actions } from '../../store/actions';
-import type { DialogOption } from '../../../../types/Dialog';
 import type { EditImageGroupAction } from '../../../../types/actions/GroupActions';
 
 import './index.scss';
@@ -20,7 +19,7 @@ interface Segment {
 function FolderNavi() {
   const navigate = useNavigate();
   const { path: currentPath } = useGalleryParams();
-  const { paths } = useGalleryTreeContext();
+  const { paths, pathsOptions } = useGalleryTreeContext();
   const dispatch = useDispatch();
 
   const segments = useMemo<Segment[]>(() => (
@@ -52,27 +51,9 @@ function FolderNavi() {
       }, [])
   ), [currentPath, paths]);
 
-  const options: DialogOption[] = paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
-    const depth = absolutePath.split('/').length - 1;
-    const indent = Array(depth).fill('\u2007').join('');
-
-    return [
-      ...acc,
-      {
-        value: absolutePath,
-        name: `${indent}${group.title} (/${absolutePath.replace(/\/$/, '')})`,
-      },
-    ];
-  }, []);
-
-  if (!options.length) {
+  if (pathsOptions.length < 2) {
     return null;
   }
-
-  options.unshift({
-    value: '/',
-    name: '/',
-  });
 
   return (
     <div className="folder-navi">
@@ -94,7 +75,7 @@ function FolderNavi() {
           >
             <Link
               className="folder-navi__link"
-              to={`/gallery/${path}/page/1`}
+              to={`/gallery/${path}page/1`}
             >
               { label }
             </Link>
@@ -121,7 +102,7 @@ function FolderNavi() {
       <Select
         id="paths"
         label="Your current location"
-        options={options}
+        options={pathsOptions}
         setSelected={(path) => navigate(`/gallery/${path}page/1`)}
         value={currentPath}
         disabled={false}
