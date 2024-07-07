@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import Select from '../Overlays/Confirm/fields/Select';
+import { Actions } from '../../store/actions';
 import type { DialogOption } from '../../../../types/Dialog';
+import type { EditImageGroupAction } from '../../../../types/actions/GroupActions';
 
 import './index.scss';
+import SVG from '../SVG';
 
 interface Segment {
+  groupId: string,
   label: string,
   path: string,
 }
@@ -16,18 +21,36 @@ function FolderNavi() {
   const navigate = useNavigate();
   const { path: currentPath } = useGalleryParams();
   const { paths } = useGalleryTreeContext();
+  const dispatch = useDispatch();
 
-  const segments = currentPath
-    .split('/')
-    .reduce((acc: Segment[], segment: string): Segment[] => (
-      segment ? [
-        ...acc,
-        {
-          label: segment,
-          path: acc.map(({ label }) => label).concat(segment).join('/'),
-        },
-      ] : acc
-    ), []);
+  const segments = useMemo<Segment[]>(() => (
+    currentPath
+      .split('/')
+      .reduce((acc: Segment[], segment: string): Segment[] => {
+        if (!segment) {
+          return acc;
+        }
+
+        const path = acc.map(({ label }) => label)
+          .concat(segment, '') // the empty string creates the trailing '/'
+          .join('/');
+
+        const groupId = paths.find(({ absolutePath }) => absolutePath === path)?.group.id || '';
+
+        if (!groupId) {
+          return acc;
+        }
+
+        return [
+          ...acc,
+          {
+            groupId,
+            label: segment,
+            path,
+          },
+        ];
+      }, [])
+  ), [currentPath, paths]);
 
   const options: DialogOption[] = paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
     const depth = absolutePath.split('/').length - 1;
@@ -64,7 +87,7 @@ function FolderNavi() {
             🏠
           </Link>
         </li>
-        { segments.map(({ label, path }) => (
+        { segments.map(({ label, path, groupId }) => (
           <li
             key={path}
             className="folder-navi__entry"
@@ -75,6 +98,23 @@ function FolderNavi() {
             >
               { label }
             </Link>
+            <button
+              type="button"
+              className="folder-navi__edit-button"
+              onClick={() => {
+                dispatch<EditImageGroupAction>({
+                  type: Actions.EDIT_IMAGE_GROUP,
+                  payload: {
+                    groupId,
+                  },
+                });
+              }}
+            >
+              <SVG
+                name="edit"
+                className="folder-navi__edit-icon"
+              />
+            </button>
           </li>
         )) }
       </ul>

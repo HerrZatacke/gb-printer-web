@@ -3,6 +3,7 @@
   grid-template-columns: 2fr 2fr;
   gap: 40px;
 
+  &__edit-button,
   &__link {
     @include theme-color($color-text, $color-text-bright);
     text-decoration: none;
@@ -12,13 +13,33 @@
     }
   }
 
+  &__edit-button {
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  &__edit-icon {
+    width: 20px;
+    fill: currentColor;
+    @include theme-background-color($color-grey-10, $color-grey-80);
+    @include theme-color($color-grey-80, $color-grey-10);
+    border-radius: $default-border-radius-small;
+  }
+
   &__segments {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 10px;
   }
 
-  &__entry {}
+  &__entry {
+    display: flex;
+    gap: 6px;
+  }
 
   &__entry + &__entry:before {
     content: '>';
