@@ -1,11 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import classNames from 'classnames';
 import Buttons from '../Buttons';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
 import useAutoFocus from '../../../hooks/useAutoFocus';
 import './index.scss';
-import type { State } from '../../store/State';
 
 interface Props {
   height?: number,
@@ -19,8 +16,6 @@ interface Props {
 }
 
 function Lightbox(props: Props) {
-  const isFullscreen = useSelector((state: State) => (state.isFullscreen));
-
   const closeOnOverlayClick = typeof props.closeOnOverlayClick !== 'boolean' ? true : props.closeOnOverlayClick;
 
   useOverlayGlobalKeys({
@@ -34,13 +29,7 @@ function Lightbox(props: Props) {
   } = useAutoFocus();
 
   return (
-    <div
-      className={
-        classNames(`lightbox ${props.className}`, {
-          'lightbox--fullscreen': isFullscreen,
-        })
-      }
-    >
+    <div className={`lightbox ${props.className}`}>
       <button
         type="button"
         className={`lightbox__backdrop ${props.className}__backdrop`}

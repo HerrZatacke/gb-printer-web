@@ -4,12 +4,12 @@ import batch from './middlewares/batch';
 import batchUpdate from './middlewares/batchUpdate';
 import deleteFrame from './middlewares/deleteFrame';
 import deleteImage from './middlewares/deleteImage';
+import dimensions from './middlewares/dimensions';
 import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
 import gitStorage from './middlewares/gitStorage';
 import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
-import lightbox from './middlewares/lightbox';
 import pluginsMiddleware from './middlewares/plugins';
 import saveEditPalette from './middlewares/saveEditPalette';
 import saveRGBNImage from './middlewares/saveRGBNImage';
@@ -23,12 +23,12 @@ export default applyMiddleware(
   batchUpdate,
   deleteFrame,
   deleteImage,
+  dimensions,
   dropboxStorage,
   fileDrop,
   gitStorage,
   importFile,
   importMessage,
-  lightbox,
   pluginsMiddleware,
   saveEditPalette,
   saveRGBNImage,

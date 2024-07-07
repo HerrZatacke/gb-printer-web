@@ -35,28 +35,6 @@ export interface ImportPadAction {
   payload: boolean,
 }
 
-export interface IsFullscreenAction {
-  type: Actions.SET_IS_FULLSCREEN,
-  payload?: boolean,
-}
-
-export interface SetLightboxImageAction {
-  type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-  payload?: number,
-}
-
-export interface SetLightboxPrevAction {
-  type: Actions.LIGHTBOX_PREV,
-}
-
-export interface SetLightboxNextAction {
-  type: Actions.LIGHTBOX_NEXT,
-}
-
-export interface SetLightboxFullscreenAction {
-  type: Actions.LIGHTBOX_FULLSCREEN,
-}
-
 export interface PageSizeAction {
   type: Actions.SET_PAGESIZE,
   payload: number,

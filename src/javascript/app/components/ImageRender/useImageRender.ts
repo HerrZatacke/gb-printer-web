@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { loadImageTiles as getLoadImageTiles } from '../../../tools/loadImageTiles';
 import { Actions } from '../../store/actions';
+import { missingGreyPalette } from '../../defaults';
 import type { State } from '../../store/State';
 import type { RGBNHashes } from '../../../../types/Image';
 import type { TryRecoverImageAction } from '../../../../types/actions/ImageActions';
@@ -16,7 +17,7 @@ interface UseImageRender {
 interface UseImageRenderParams {
   hash: string,
   hashes?: RGBNHashes,
-  palette: string[] | RGBNPalette,
+  palette: string | string[] | RGBNPalette,
   invertPalette?: boolean,
   lockFrame?: boolean,
   frameId?: string,
@@ -36,9 +37,10 @@ export const useImageRender = ({
 
   const dispatch = useDispatch();
 
-  const { allImages, allFrames } = useSelector((state: State) => ({
+  const { allImages, allFrames, allPalettes } = useSelector((state: State) => ({
     allImages: state.images,
     allFrames: state.frames,
+    allPalettes: state.palettes,
   }));
 
   const loadImageTiles = useCallback(
@@ -57,6 +59,13 @@ export const useImageRender = ({
     [allImages, allFrames, dispatch, hashes],
   );
 
+  const usedPalette = useMemo<string[] | RGBNPalette>(() => {
+    if (typeof palette === 'string') {
+      return (allPalettes.find(({ shortName }) => shortName === palette) || missingGreyPalette).palette;
+    }
+
+    return palette;
+  }, [allPalettes, palette]);
 
   useEffect(() => {
     let aborted = false;
@@ -81,7 +90,7 @@ export const useImageRender = ({
       if (loadedTiles) {
         setGbImageProps({
           tiles: loadedTiles,
-          palette,
+          palette: usedPalette,
           invertPalette,
           lockFrame,
           rotation,
@@ -94,7 +103,7 @@ export const useImageRender = ({
     return () => {
       aborted = true;
     };
-  }, [loadImageTiles, hash, frameId, palette, invertPalette, lockFrame, rotation]);
+  }, [loadImageTiles, hash, frameId, palette, invertPalette, lockFrame, rotation, usedPalette]);
 
   return {
     gbImageProps,

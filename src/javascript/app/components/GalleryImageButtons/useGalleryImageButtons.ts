@@ -5,10 +5,10 @@ import type {
   DeleteImageAction,
   DownloadImageStartAction,
   ImageFavouriteAction,
-  LightboxImageSetAction,
   NewRGBNImageAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
+import type { LightboxImageSetAction } from '../../../../types/actions/LightboxActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import type { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
 

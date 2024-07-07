@@ -10,7 +10,8 @@ import './index.scss';
 interface Props {
   hash: string,
   hashes?: RGBNHashes,
-  palette: string[] | RGBNPalette,
+  // ToDo: refactor so that whatever the image uses can be passed directly
+  palette: string | string[] | RGBNPalette,
   invertPalette?: boolean,
   lockFrame?: boolean,
   frameId?: string,

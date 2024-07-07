@@ -55,7 +55,6 @@ import importQueue from './reducers/importQueueReducer';
 import imageSelection from './reducers/imageSelectionReducer';
 import importLastSeen from './reducers/importLastSeenReducer';
 import importPad from './reducers/importPadReducer';
-import isFullscreen from './reducers/isFullscreenReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import pageSize from './reducers/pageSizeReducer';
@@ -119,10 +118,9 @@ export interface Reducers extends ReducersMapObject {
   importQueue: Reducer<ImportItem[]>,
   importLastSeen: Reducer<boolean>,
   importPad: Reducer<boolean>,
-  isFullscreen: Reducer<boolean>,
   lastSelectedImage: Reducer<string | null>,
   progressLog: Reducer<ProgressLog>,
-  lightboxImage: Reducer<number | null>,
+  lightboxImage: Reducer<string | null>,
   pageSize: Reducer<number>,
   palettes: Reducer<Palette[]>,
   plugins: Reducer<Plugin[]>,
@@ -183,7 +181,6 @@ const reducers: ReducersMapObject = {
   importQueue,
   importLastSeen,
   importPad,
-  isFullscreen,
   lastSelectedImage,
   progressLog,
   lightboxImage,

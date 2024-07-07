@@ -1,35 +1,23 @@
+import screenfull from 'screenfull';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { RGBNPalette } from 'gb-image-decoder';
 import getFilteredImages from '../../../../tools/getFilteredImages';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
-import { isRGBNImage } from '../../../../tools/isRGBNImage';
-import type { RGBNHashes, RGBNImage } from '../../../../../types/Image';
-import { Rotation } from '../../../../tools/applyRotation';
-import { missingGreyPalette } from '../../../defaults';
-import type {
-  SetLightboxFullscreenAction,
-  SetLightboxImageAction,
-  SetLightboxNextAction,
-  SetLightboxPrevAction,
-} from '../../../../../types/actions/GlobalActions';
+import type { Image } from '../../../../../types/Image';
+import type { CloseLightboxAction, LightboxImageSetAction } from '../../../../../types/actions/LightboxActions';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 
-
 interface UseLightboxImage {
-  hash: string,
   title: string,
   created: string,
-  frame: string,
-  hashes?: RGBNHashes,
-  palette: RGBNPalette | string[],
+  image?: Image,
   isFullscreen: boolean,
-  lightboxIndex: number,
+  currentIndex: number,
   size: number,
-  lockFrame: boolean,
-  invertPalette: boolean,
+  canPrev: boolean,
+  canNext: boolean,
   preferredLocale: string,
-  rotation: Rotation,
   close: () => void,
   prev: () => void,
   next: () => void,
@@ -37,73 +25,121 @@ interface UseLightboxImage {
 }
 
 export const useLightboxImage = (): UseLightboxImage => {
-  const { view } = useGalleryTreeContext();
-  const {
-    image,
-    size,
-    palette,
-    isFullscreen,
-    lightboxIndex,
-    preferredLocale,
-  } = useSelector((state: State) => {
-    const filteredImages = getFilteredImages(state, view.images);
-    const sImage = filteredImages.find((_, lbIndex) => lbIndex === state.lightboxImage);
-    let pal: RGBNPalette | string[] | undefined;
+  const { view, covers } = useGalleryTreeContext();
+  const dispatch = useDispatch();
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-    if (sImage) {
-      if (isRGBNImage(sImage)) {
-        pal = (sImage as RGBNImage).palette;
-      } else {
-        pal = state.palettes.find(({ shortName }) => shortName === sImage.palette)?.palette;
-      }
+  const {
+    viewImages,
+    preferredLocale,
+    lightboxImage,
+  } = useSelector((state: State) => ({
+    viewImages: getFilteredImages(state, view.images),
+    preferredLocale: state.preferredLocale,
+    lightboxImage: state.lightboxImage,
+  }));
+
+  const filteredImages = useMemo<Image[]>(() => (
+    viewImages.filter(({ hash }) => !covers.includes(hash))
+  ), [covers, viewImages]);
+
+  const currentIndex = filteredImages.findIndex(({ hash }) => hash === lightboxImage);
+  const image = filteredImages[currentIndex];
+
+  const close = () => {
+    if (screenfull.isEnabled && screenfull.element) {
+      screenfull.exit();
     }
 
-    return ({
-      image: sImage,
-      size: filteredImages.length,
-      palette: pal || missingGreyPalette.palette,
-      isFullscreen: state.isFullscreen,
-      lightboxIndex: state.lightboxImage || 0,
-      preferredLocale: state.preferredLocale,
+    dispatch<CloseLightboxAction>({
+      type: Actions.CLOSE_LIGHTBOX,
     });
+  };
+
+  const prev = () => {
+    const nextHash = filteredImages[Math.max(0, currentIndex - 1)].hash;
+
+    if (nextHash) {
+      dispatch<LightboxImageSetAction>({
+        type: Actions.SET_LIGHTBOX_IMAGE_HASH,
+        payload: nextHash,
+      });
+    }
+  };
+
+  const next = () => {
+    const nextHash = filteredImages[Math.min(filteredImages.length, currentIndex + 1)].hash;
+
+    if (nextHash) {
+      dispatch<LightboxImageSetAction>({
+        type: Actions.SET_LIGHTBOX_IMAGE_HASH,
+        payload: nextHash,
+      });
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!screenfull.element);
+    };
+
+    const keyboardHandler = (ev: KeyboardEvent) => {
+      switch (ev.key) {
+        case 'Esc':
+        case 'Escape':
+          close();
+          ev.preventDefault();
+          break;
+
+        case 'Right':
+        case 'ArrowRight':
+          next();
+          ev.preventDefault();
+          break;
+
+        case 'Left':
+        case 'ArrowLeft':
+          prev();
+          ev.preventDefault();
+          break;
+
+        default:
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', keyboardHandler);
+    if (screenfull.isEnabled) {
+      screenfull.on('change', handleFullscreenChange);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', keyboardHandler);
+      screenfull.off('change', handleFullscreenChange);
+    };
   });
 
-  const dispatch = useDispatch();
-
   return {
-    hash: image?.hash || '',
     title: image?.title || '',
     created: image?.created || '',
-    hashes: (image as RGBNImage).hashes || null,
-    frame: image?.frame || '',
+    image,
     isFullscreen,
-    palette,
-    lightboxIndex,
-    size,
-    lockFrame: image?.lockFrame || false,
-    invertPalette: image?.invertPalette || false,
+    currentIndex,
+    size: filteredImages.length,
+    canPrev: currentIndex > 0,
+    canNext: currentIndex < filteredImages.length - 1,
     preferredLocale,
-    rotation: image?.rotation || Rotation.DEG_0,
-    close: () => {
-      dispatch<SetLightboxImageAction>({
-        type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-        // No payload means "close"
-      });
-    },
-    prev: () => {
-      dispatch<SetLightboxPrevAction>({
-        type: Actions.LIGHTBOX_PREV,
-      });
-    },
-    next: () => {
-      dispatch<SetLightboxNextAction>({
-        type: Actions.LIGHTBOX_NEXT,
-      });
-    },
+    prev,
+    next,
+    close,
     fullscreen: () => {
-      dispatch<SetLightboxFullscreenAction>({
-        type: Actions.LIGHTBOX_FULLSCREEN,
-      });
+      if (screenfull.isEnabled) {
+        if (!screenfull.element) {
+          screenfull.request(document.body);
+        } else {
+          screenfull.exit();
+        }
+      }
     },
   };
 };

@@ -41,7 +41,7 @@ function Overlays() {
     showVideoForm,
     showPickColors,
     showRGBNImage,
-    showLightbox,
+    showLightboxImage,
     showDragOver,
     showFilters,
     showSortForm,
@@ -63,7 +63,7 @@ function Overlays() {
     showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
     showRGBNImage: !!state.rgbnImages && Object.keys(state.rgbnImages).length > 0,
-    showLightbox: state.lightboxImage !== null,
+    showLightboxImage: state.lightboxImage !== null,
     showDragOver: state.dragover,
     showFilters: state.filtersVisible,
     showSortForm: state.sortOptionsVisible,
@@ -96,7 +96,7 @@ function Overlays() {
       return <VideoParamsForm />; // interactive
     case showPickColors:
       return <PickColors />; // interactive
-    case showLightbox:
+    case showLightboxImage:
       return <LightboxImage />; // interactive
     case showFilters:
       return <FilterForm />; // interactive
