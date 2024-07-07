@@ -7,7 +7,7 @@
   align-items: center;
   margin-bottom: 30px;
 
-  .lightbox &:not(.buttongroup) {
+  .lightbox &:not(.buttongroup,.checkgroup) {
     flex-direction: column;
     align-items: stretch;
     gap: 5px;

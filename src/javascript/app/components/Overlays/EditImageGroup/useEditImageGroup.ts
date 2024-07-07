@@ -29,7 +29,7 @@ interface UseEditImageGroup {
   cancelEdit: () => void,
 }
 
-const toSlug = (title: string): string => (
+export const toSlug = (title: string): string => (
   title.trim().replace(/[^A-Z0-9_-]+/gi, '_').toLowerCase()
 );
 

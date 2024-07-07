@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Queue from 'promise-queue';
+import { useNavigate } from 'react-router-dom';
 import { Actions } from '../../../store/actions';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
@@ -12,14 +13,21 @@ import type { ImportItem } from '../../../../../types/ImportItem';
 import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
 import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
+import type { AddImageGroupAction } from '../../../../../types/actions/GroupActions';
+import type { ImageSelectionSetAction } from '../../../../../types/actions/ImageSelectionActions';
+import { randomId } from '../../../../tools/randomId';
+import { useGalleryTreeContext } from '../../../contexts/galleryTree';
+import { toSlug } from '../EditImageGroup/useEditImageGroup';
 
 interface UseRunImport {
   importQueue: ImportItem[],
   palette: string,
   importPad: boolean,
   frame: string,
+  createGroup: boolean,
   setFrame: (frame: string) => void,
   setPalette: (palette: string) => void,
+  setCreateGroup: (createGroup: boolean) => void,
   runImport: () => Promise<void>,
   cancelImport: () => void,
   tagChanges: TagChange,
@@ -29,6 +37,8 @@ interface UseRunImport {
 const useRunImport = (): UseRunImport => {
   const dispatch = useDispatch();
   const queue = new Queue(1, Infinity);
+  const { view } = useGalleryTreeContext();
+  const navigate = useNavigate();
 
   const { importQueue, palette, importPad } = useSelector((state: State) => ({
     importPad: state.importPad,
@@ -37,6 +47,7 @@ const useRunImport = (): UseRunImport => {
   }));
 
   const [frame, setFrame] = useState('');
+  const [createGroup, setCreateGroup] = useState<boolean>(importQueue.length > 3);
 
   const [tagChanges, updateTagChanges] = useState<TagChange>({
     initial: [],
@@ -64,9 +75,39 @@ const useRunImport = (): UseRunImport => {
       );
     }));
 
+    const imageHashes = savedImages.map(({ hash }) => hash);
+
     dispatch<AddImagesAction>({
       type: Actions.ADD_IMAGES,
       payload: savedImages,
+    });
+
+    if (createGroup) {
+      const title = `Import ${dayjs().format(dateFormat)}`;
+      const slug = toSlug(title);
+
+      dispatch<AddImageGroupAction>({
+        type: Actions.ADD_IMAGE_GROUP,
+        payload: {
+          parentId: view.id,
+          group: {
+            id: randomId(),
+            slug,
+            title,
+            created: dayjs(Date.now()).format(dateFormat),
+            coverImage: savedImages[0].hash,
+            images: imageHashes,
+            groups: [],
+          },
+        },
+      });
+
+      navigate(`/gallery/${view.slug}${slug}/page/1`);
+    }
+
+    dispatch<ImageSelectionSetAction>({
+      type: Actions.IMAGE_SELECTION_SET,
+      payload: imageHashes,
     });
   };
 
@@ -76,8 +117,10 @@ const useRunImport = (): UseRunImport => {
     palette,
     frame,
     tagChanges,
+    createGroup,
     updateTagChanges,
     setFrame,
+    setCreateGroup,
     runImport,
     cancelImport: () => {
       dispatch<ImportQueueCancelAction>({
