@@ -66,9 +66,17 @@ const imageGroupReducer = (
     }
 
     case Actions.UPDATE_IMAGE_GROUP: {
-      return value.map((group) => (
-        group.id === action.payload.group.id ? action.payload.group : group
-      ));
+      return value.map((group) => {
+        const updateGroup = { ...group };
+
+        updateGroup.groups = updateGroup.groups.filter((childGroupId) => childGroupId !== action.payload.group.id);
+
+        if (action.payload.parentGroupId === updateGroup.id) {
+          updateGroup.groups = [...updateGroup.groups, action.payload.group.id];
+        }
+
+        return updateGroup.id === action.payload.group.id ? action.payload.group : updateGroup;
+      });
     }
 
     case Actions.SET_IMAGE_GROUPS:

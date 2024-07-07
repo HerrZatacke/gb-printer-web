@@ -5,17 +5,20 @@ import useEditImageGroup, { NEW_GROUP } from './useEditImageGroup';
 import Input, { InputType } from '../../Input';
 
 import './index.scss';
+import Select from '../Confirm/fields/Select';
 
 function EditImageGroup() {
-
   const {
     editId,
     absoluteSlug,
+    possibleParents,
     slug,
     title,
     canConfirm,
+    parentSlug,
     setSlug,
     setTitle,
+    setParentSlug,
     confirm,
     cancelEdit,
   } = useEditImageGroup();
@@ -55,6 +58,16 @@ function EditImageGroup() {
                 {`Full Path: "${absoluteSlug}"`}
               </p>
             </Input>
+            { editId === NEW_GROUP ? null : (
+              <Select
+                id="paths"
+                label="Parent group"
+                options={possibleParents}
+                setSelected={setParentSlug}
+                value={parentSlug}
+                disabled={false}
+              />
+            ) }
           </>
         ) : (
           <p>{ `A group with the ID '${editId}' does not exist!` }</p>

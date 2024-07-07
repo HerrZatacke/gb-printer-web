@@ -9,24 +9,36 @@ import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { useGalleryParams } from '../../../../hooks/useGalleryParams';
 import type { State } from '../../../store/State';
 import type { CancelEditImageGroupAction, AddImageGroupAction, UpdateImageGroupAction } from '../../../../../types/actions/GroupActions';
-
+import type { DialogOption } from '../../../../../types/Dialog';
+import type { PathMap } from '../../../contexts/galleryTree';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
 interface UseEditImageGroup {
   editId: string | null,
   absoluteSlug: string,
+  possibleParents: DialogOption[],
   slug: string,
   title: string,
   canConfirm: boolean,
+  parentSlug: string,
   setSlug: (slug: string) => void,
   setTitle: (title: string) => void,
+  setParentSlug: (slug: string) => void
   confirm: () => void,
   cancelEdit: () => void,
 }
 
 const toSlug = (title: string): string => (
   title.trim().replace(/[^A-Z0-9_-]+/gi, '_').toLowerCase()
+);
+
+const findParentGroup = (paths: PathMap[], groupId: string): PathMap | null => (
+  paths.find(({ group: { groups } }) => (
+    groups.find(({ id }) => (
+      id === groupId
+    ))
+  )) || null
 );
 
 const useEditImageGroup = (): UseEditImageGroup => {
@@ -40,7 +52,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     selection: state.imageSelection,
   }));
 
-  const { view, paths } = useGalleryTreeContext();
+  const { view, paths, pathsOptions } = useGalleryTreeContext();
   const { path: currentPath } = useGalleryParams();
 
   const navigate = useNavigate();
@@ -49,6 +61,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
   const [title, setTitle] = useState<string>(imageGroup?.title || editImageGroup?.newGroupTitle || '');
   const [slug, setSlug] = useState<string>(imageGroup?.slug || toSlug(title));
   const [slugTouched, setSlugTouched] = useState<boolean>(Boolean(imageGroup));
+
+  const [parentSlug, setParentSlug] = useState<string>(findParentGroup(paths, editImageGroup?.groupId || '')?.absolutePath || '');
 
   const absoluteSlug = useMemo(() => {
     if (!editImageGroup?.groupId) {
@@ -59,11 +73,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
       return `${currentPath}${slug}/`;
     }
 
-    const parentGroup = paths.find(({ group: { groups } }) => (
-      groups.find(({ id }) => (
-        id === editImageGroup.groupId
-      ))
-    ));
+    const parentGroup = findParentGroup(paths, editImageGroup.groupId);
 
     const parentPath = parentGroup?.absolutePath || '';
 
@@ -78,12 +88,16 @@ const useEditImageGroup = (): UseEditImageGroup => {
     )
   );
 
+  const possibleParents = pathsOptions.filter(({ value }) => !value.startsWith(absoluteSlug));
+
   return {
     editId: editImageGroup?.groupId || null,
     absoluteSlug,
+    possibleParents,
     slug,
     title,
     canConfirm,
+    parentSlug,
     setSlug: (newSlug: string) => {
       setSlug(newSlug);
       setSlugTouched(true);
@@ -95,6 +109,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         setSlug(toSlug(newTitle));
       }
     },
+    setParentSlug,
     confirm: () => {
       if (!canConfirm) {
         return;
@@ -125,6 +140,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
           return;
         }
 
+        const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
+
         dispatch<UpdateImageGroupAction>({
           type: Actions.UPDATE_IMAGE_GROUP,
           payload: {
@@ -133,11 +150,12 @@ const useEditImageGroup = (): UseEditImageGroup => {
               slug,
               title,
             },
+            parentGroupId,
           },
         });
       }
 
-      navigate(`/gallery/${absoluteSlug}page/1`);
+      navigate(`/gallery/${parentSlug}${slug}/page/1`);
     },
     cancelEdit: () => {
       dispatch<CancelEditImageGroupAction>({

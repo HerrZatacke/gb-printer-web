@@ -189,7 +189,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
         },
       ];
     }, [{
-      value: '/',
+      value: '',
       name: '/',
     }])
   ), [paths]);

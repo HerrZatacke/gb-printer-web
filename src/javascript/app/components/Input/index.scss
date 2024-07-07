@@ -14,11 +14,18 @@
   }
 
   &__input {
-    flex-basis: auto;
+    flex-basis: calc(70% - 20px);
+    max-width: calc(70% - 20px);
     flex-grow: 1;
+    flex-shrink: 1;
     padding: 10px 12px;
     border: 1px solid;
     min-height: inherit;
+
+    .lightbox & {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
 
     @include theme-background-color($color-white, $color-black);
     @include theme-border-color($color-grey-70, $color-grey-30);
@@ -134,7 +141,9 @@
   }
 
   &__label {
-    flex: 30% 0 0;
+    flex-basis: 30%;
+    flex-grow: 0;
+    flex-shrink: 0;
 
     @media (max-width: 740px) {
       flex-basis: 100%;

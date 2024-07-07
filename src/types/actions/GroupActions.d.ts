@@ -38,5 +38,6 @@ export interface UpdateImageGroupAction {
   type: Actions.UPDATE_IMAGE_GROUP,
   payload: {
     group: SerializableImageGroup,
+    parentGroupId: string,
   },
 }
