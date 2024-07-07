@@ -1,11 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
+import objectHash from 'object-hash';
 import { Actions } from '../../../store/actions';
 import getFilteredImages from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
+import { dateFormat } from '../../../defaults';
+import { toSlug } from '../EditImageGroup/useEditImageGroup';
+import { randomId } from '../../../../tools/randomId';
 import type { CancelCreateRGBImagesAction, SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
 import type { State } from '../../../store/State';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
+import type { AddImageGroupAction } from '../../../../../types/actions/GroupActions';
+import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -24,21 +32,27 @@ interface UseEditRGBNImages {
   lengthWarning: boolean,
   rgbnHashes: RGBNHashes[],
   sortedImages: MonochromeImage[],
+  createGroup: boolean,
   updateOrder: (color: ColorKey, direction: number) => void,
   toggleSingleChannel: (channel: keyof RGBNHashes, hash: string) => void
   setGrouping: (value: RGBGrouping) => void,
   save: () => void,
   cancelEditRGBN: () => void,
+  setCreateGroup: (value: boolean) => void,
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { view } = useGalleryTreeContext();
 
   const { editRGBNImages, images, sortBy } = useSelector((state: State) => ({
     editRGBNImages: state.editRGBNImages,
     images: state.images,
     sortBy: state.sortBy,
   }));
+
+  const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5);
 
   const globalSortDirection = sortBy.split('_')[1];
 
@@ -155,6 +169,32 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
       type: Actions.SAVE_NEW_RGB_IMAGES,
       payload: rgbnHashes,
     });
+
+    if (createGroup) {
+      const title = `RGB ${dayjs().format(dateFormat)}`;
+      const slug = toSlug(title);
+
+      const createdImageHashes: string[] = rgbnHashes.map((hashes) => objectHash(hashes));
+
+      dispatch<AddImageGroupAction>({
+        type: Actions.ADD_IMAGE_GROUP,
+        payload: {
+          parentId: view.id,
+          group: {
+            id: randomId(),
+            slug,
+            title,
+            created: dayjs(Date.now()).format(dateFormat),
+            coverImage: createdImageHashes[0],
+            images: createdImageHashes,
+            groups: [],
+          },
+        },
+      });
+
+      navigate(`/gallery/${view.slug}${slug}/page/1`);
+    }
+
   };
 
   const singleMode = grouping === RGBGrouping.MANUAL;
@@ -166,10 +206,12 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     lengthWarning: singleMode ? false : lengthWarning,
     rgbnHashes,
     sortedImages,
+    createGroup,
     updateOrder,
     toggleSingleChannel,
     setGrouping,
     save,
+    setCreateGroup,
     cancelEditRGBN: () => {
       dispatch<CancelCreateRGBImagesAction>({
         type: Actions.CANCEL_CREATE_RGB_IMAGES,

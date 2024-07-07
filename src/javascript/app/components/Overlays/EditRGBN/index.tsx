@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import { RGBGrouping, useEditRGBNImages } from './useEditRGBNImages';
 import SVG from '../../SVG';
@@ -50,9 +51,11 @@ function EditRGBN() {
     lengthWarning,
     rgbnHashes,
     sortedImages,
+    createGroup,
     updateOrder,
     toggleSingleChannel,
     setGrouping,
+    setCreateGroup,
     save,
     cancelEditRGBN,
   } = useEditRGBNImages();
@@ -180,6 +183,34 @@ function EditRGBN() {
             </li>
           ))}
         </ul>
+
+        <label
+          className={
+            classnames('import-overlay__checkgroup inputgroup checkgroup', {
+              'checkgroup--checked': createGroup,
+            })
+          }
+        >
+          <span
+            className="inputgroup__label"
+            title="Create group from images"
+          >
+            Create group from created images
+          </span>
+          <span
+            className="checkgroup__checkbox-wrapper"
+          >
+            <input
+              type="checkbox"
+              className="checkgroup__input"
+              checked={createGroup}
+              onChange={({ target }) => {
+                setCreateGroup(target.checked);
+              }}
+            />
+            <SVG name="checkmark" />
+          </span>
+        </label>
       </div>
     </Lightbox>
   );
