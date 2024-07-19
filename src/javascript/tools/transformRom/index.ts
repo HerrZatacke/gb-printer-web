@@ -38,12 +38,17 @@ const getTransformRom = ({ getState, dispatch }: TypedStore) => async (file: Fil
       ];
     }, []);
 
-  const result: boolean[] = await Promise.all(banks.map(async ({
-    bankData,
-    bankIndex,
-  }) => {
+  const result: boolean[] = await banks.reduce(async (
+    acc: Promise<boolean[]>,
+    {
+      bankData,
+      bankIndex,
+    }: RomBank,
+  ): Promise<boolean[]> => {
+    const nAcc = await acc;
+
     if (bankIndex === 0) {
-      return false;
+      return [...nAcc, false];
     }
 
     const fileName: GenerateFilenameFn = ({ albumIndex }) => {
@@ -70,11 +75,15 @@ const getTransformRom = ({ getState, dispatch }: TypedStore) => async (file: Fil
     });
 
     if (!importSav) {
-      return false;
+      return [...nAcc, false];
     }
 
-    return importSav('', false);
-  }));
+    return [
+      ...nAcc,
+      await importSav('', false),
+    ];
+
+  }, Promise.resolve([]));
 
   if (!result.filter(Boolean).length) {
     throw new Error('File does not contain any recognizable images');
