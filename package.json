@@ -117,6 +117,7 @@
     "style-loader": "^2.0.0",
     "ts-loader": "^9.4.2",
     "typescript": "<5.2.0",
+    "ufo": "^1.5.4",
     "use-debounce": "^5.2.1",
     "walkdir": "^0.4.1",
     "webpack": "^5.80.0",
