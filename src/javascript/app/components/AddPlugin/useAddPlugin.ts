@@ -6,10 +6,10 @@ import { usePlugins } from '../Settings/pages/PluginSettings/usePlugins';
 
 const trustedSources = [
   'https://herrzatacke.github.io',
-  'https://localhost:3000',
-  'https://127.0.01:3000',
-  'http://localhost:3000',
-  'http://127.0.01:3000',
+  'https://localhost:5000',
+  'https://127.0.01:5000',
+  'http://localhost:5000',
+  'http://127.0.01:5000',
 ];
 
 interface UseAddPlugin {
