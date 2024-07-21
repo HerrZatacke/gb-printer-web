@@ -67,7 +67,6 @@ import printerParams from './reducers/printerParamsReducer';
 import progress from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
 import recentImports from './reducers/recentImportsReducer';
-import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
 import sortPalettes from './reducers/sortPalettesReducer';
@@ -128,7 +127,6 @@ export interface Reducers extends ReducersMapObject {
   printerParams: Reducer<string>,
   progress: Reducer<Progress>,
   recentImports: Reducer<RecentImport[]>,
-  rgbnImages: Reducer<RGBNHashes | null>,
   savFrameTypes: Reducer<string>,
   sortBy: Reducer<string>,
   sortPalettes: Reducer<PaletteSortMode>
@@ -191,7 +189,6 @@ const reducers: ReducersMapObject = {
   printerParams,
   progress,
   recentImports,
-  rgbnImages,
   savFrameTypes,
   sortBy,
   sortPalettes,

@@ -110,8 +110,3 @@ export interface BatchTaskAction {
   payload: BatchActionType,
   page: number,
 }
-
-export interface UpdateRGBNPartAction {
-  type: Actions.UPDATE_RGBN_PART,
-  payload: RGBNHashes,
-}

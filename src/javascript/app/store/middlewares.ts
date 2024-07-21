@@ -12,7 +12,6 @@ import importMessage from './middlewares/importMessage';
 import lightbox from './middlewares/lightbox';
 import pluginsMiddleware from './middlewares/plugins';
 import saveEditPalette from './middlewares/saveEditPalette';
-import saveRGBNImage from './middlewares/saveRGBNImage';
 import settings from './middlewares/settings';
 import share from './middlewares/share';
 import startDownload from './middlewares/startDownload';
@@ -31,7 +30,6 @@ export default applyMiddleware(
   lightbox,
   pluginsMiddleware,
   saveEditPalette,
-  saveRGBNImage,
   settings,
   share,
   startDownload,
