@@ -10,7 +10,7 @@ import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { GalleryViews } from '../../consts/GalleryViews';
-import type { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
+import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Palette } from '../../../types/Palette';
 import type { ProgressLog } from '../../../types/actions/LogActions';

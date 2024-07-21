@@ -19,7 +19,7 @@ interface Props {
   toggleChannel: (channel: keyof RGBNHashes) => void
 }
 
-function NewRGBNSelect({ isR, isG, isB, isN, toggleChannel }: Props) {
+function RGBNSelect({ isR, isG, isB, isN, toggleChannel }: Props) {
 
   const BOXES: RGBNCheckbox[] = [
     {
@@ -76,4 +76,4 @@ function NewRGBNSelect({ isR, isG, isB, isN, toggleChannel }: Props) {
   );
 }
 
-export default NewRGBNSelect;
+export default RGBNSelect;
