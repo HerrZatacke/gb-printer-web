@@ -5,6 +5,7 @@ import Navigation from '../Navigation';
 import Overlays from '../Overlays';
 
 import './index.scss';
+import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 
 export interface Handle {
   headline: string,
@@ -12,6 +13,7 @@ export interface Handle {
 
 function Layout() {
   const matches = useMatches();
+  const screenDimensions = useScreenDimensions();
 
   if (!matches[1]) {
     return <Navigate to="/gallery/page/1" replace />;
@@ -20,7 +22,7 @@ function Layout() {
   const mainHeadline = (matches[1]?.handle as Handle | undefined)?.headline;
 
   const ddpx: CSSPropertiesVars = {
-    '--ddpx': devicePixelRatio >= 4 ? devicePixelRatio / 2 : devicePixelRatio,
+    '--ddpx': screenDimensions.ddpx,
   };
 
   return (

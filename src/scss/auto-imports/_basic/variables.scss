@@ -19,3 +19,17 @@ $checkmark-tick-inactive-opacity: 0.25;
 
 $breakpoint-mobile: 600px;
 $breakpoint-tags-in-list: 768px;
+
+// Sizes for 1x layout and grid columns
+$layout-width-6-cols: 1195px;
+$layout-width-5-cols: 1000px;
+$layout-width-4-cols: 805px;
+$layout-width-3-cols: 610px;
+$layout-width-2-cols: 415px;
+$layout-width-1-cols: 100%;
+
+$breakpoint-5-cols: $layout-width-6-cols + 25px;
+$breakpoint-4-cols: $layout-width-5-cols + 25px;
+$breakpoint-3-cols: $layout-width-4-cols + 25px;
+$breakpoint-2-cols: $layout-width-3-cols + 25px;
+$breakpoint-1-cols: $layout-width-2-cols + 25px;

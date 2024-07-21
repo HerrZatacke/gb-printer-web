@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GalleryImageButtons from '../GalleryImageButtons';
-import RGBNSelect from '../RGBNSelect';
 import ImageRender from '../ImageRender';
 import DateSpan from './DateSpan';
 import TagsList from './TagsList';
@@ -16,7 +15,6 @@ import './index.scss';
 dayjs.extend(customParseFormat);
 
 interface Props {
-  type: 'list' | 'default',
   hash: string,
   page: number,
 }
@@ -31,7 +29,7 @@ const buttons = [
   ButtonOption.PLUGINS,
 ];
 
-function GalleryImage({ page, hash, type }: Props) {
+function GalleryImage({ page, hash }: Props) {
   const {
     galleryImageData,
     updateImageSelection,
@@ -69,7 +67,7 @@ function GalleryImage({ page, hash, type }: Props) {
     }
   };
 
-  return type === 'default' ? (
+  return (
     <li
       className={
         classnames('gallery-image', {
@@ -127,65 +125,6 @@ function GalleryImage({ page, hash, type }: Props) {
       { enableDebug ? (
         <span className="gallery-image__hash-debug">{ hash }</span>
       ) : null }
-    </li>
-  ) : (
-    <li
-      className={
-        classnames('gallery-list-image', {
-          'gallery-list-image--selected': isSelected,
-        })
-      }
-      onClick={handleCellClick}
-      role="presentation"
-    >
-      <div className="gallery-list-image__cell gallery-list-image__cell-image">
-        <div className="gallery-list-image__image">
-          <div className="gallery-list-image__image--scale">
-            <ImageRender
-              lockFrame={lockFrame}
-              invertPalette={invertPalette}
-              palette={palette}
-              frameId={frame}
-              hash={hash}
-              hashes={hashes}
-              rotation={rotation}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="gallery-list-image__cell gallery-list-image__cell-description">
-        <div className="gallery-list-image__description">
-          <span className="gallery-list-image__title">
-            {title}
-          </span>
-          <DateSpan
-            className="gallery-image__created"
-            hideDate={hideDate}
-            created={created}
-            preferredLocale={preferredLocale}
-          />
-        </div>
-      </div>
-
-      <div className="gallery-list-image__cell gallery-list-image__cell-tags">
-        <TagsList tags={tags} />
-      </div>
-
-      <div className="gallery-list-image__cell gallery-list-image__cell-rgbn">
-        { hashes ? null : (
-          <RGBNSelect hash={hash} />
-        )}
-      </div>
-
-      <div className="gallery-list-image__cell gallery-list-image__cell-buttons">
-        <GalleryImageButtons
-          isFavourite={isFavourite}
-          hash={hash}
-          imageTitle={title}
-          buttons={buttons}
-        />
-      </div>
     </li>
   );
 }

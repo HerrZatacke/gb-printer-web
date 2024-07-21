@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import GalleryViewSelect from '../GalleryViewSelect';
-import Pagination from '../Pagination';
 import BatchButtons from '../BatchButtons';
 import './index.scss';
 
@@ -20,7 +19,6 @@ function GalleryHeader(props: Props) {
       })}
     >
       <GalleryViewSelect />
-      <Pagination page={props.page} />
       <BatchButtons page={props.page} />
     </div>
   );

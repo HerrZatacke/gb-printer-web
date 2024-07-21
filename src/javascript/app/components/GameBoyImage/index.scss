@@ -4,8 +4,7 @@
     display: block;
     image-rendering: pixelated;
 
-    &--as-thumb,
-    .gallery--list & {
+    &--as-thumb {
       image-rendering: auto;
     }
   }

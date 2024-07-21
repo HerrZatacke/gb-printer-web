@@ -7,6 +7,7 @@
   cursor: default;
   padding: 0 10px;
   gap: 4px;
+  pointer-events: none;
 
   body.is-touch & {
     gap: 6px;
@@ -24,6 +25,7 @@
     fill: currentColor;
     border-radius: $default-border-radius-small;
     outline: none;
+    pointer-events: all;
 
     .tick {
       opacity: $checkmark-tick-inactive-opacity;
