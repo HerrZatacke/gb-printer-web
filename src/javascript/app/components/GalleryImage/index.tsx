@@ -9,6 +9,7 @@ import TagsList from './TagsList';
 import SVG from '../SVG';
 import { SelectionEditMode, useGalleryImage } from './useGalleryImage';
 import { ButtonOption } from '../GalleryImageButtons/useGalleryImageButtons';
+import type { RGBNHashes } from '../../../../types/Image';
 
 import './index.scss';
 
@@ -123,7 +124,15 @@ function GalleryImage({ page, hash }: Props) {
         />
       </div>
       { enableDebug ? (
-        <span className="gallery-image__hash-debug">{ hash }</span>
+        <span className="gallery-image__hash-debug">
+          { hash }
+          { hashes ? Object.keys(hashes).map((channel) => (
+            <span key={channel}>
+              <br />
+              {`${channel.toUpperCase()}: ${hashes[channel as keyof RGBNHashes]}`}
+            </span>
+          )) : null }
+        </span>
       ) : null }
     </li>
   );

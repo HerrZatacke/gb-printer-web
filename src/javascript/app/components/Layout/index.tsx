@@ -3,6 +3,7 @@ import type { CSSPropertiesVars } from 'react';
 import { Outlet, Navigate, useMatches } from 'react-router-dom';
 import Navigation from '../Navigation';
 import Overlays from '../Overlays';
+import Errors from '../Errors';
 
 import './index.scss';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
@@ -33,6 +34,7 @@ function Layout() {
         <Outlet />
       </div>
       <Overlays />
+      <Errors />
     </>
   );
 }

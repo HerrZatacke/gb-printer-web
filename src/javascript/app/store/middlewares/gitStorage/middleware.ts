@@ -1,5 +1,6 @@
 import Queue from 'promise-queue';
 import type { AnyAction } from 'redux';
+import dayjs from 'dayjs';
 import OctoClient from '../../../../tools/OctoClient';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
@@ -85,7 +86,10 @@ export const middleware = (store: TypedStore) => async (action: AnyAction) => {
       console.error(error);
       store.dispatch<ErrorAction>({
         type: Actions.ERROR,
-        payload: (error as Error).message,
+        payload: {
+          error: error as Error,
+          timestamp: dayjs().unix(),
+        },
       });
     }
 

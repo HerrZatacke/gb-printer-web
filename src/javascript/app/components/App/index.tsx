@@ -11,6 +11,7 @@ import Palettes from '../Palettes';
 import Frames from '../Frames';
 import Settings from '../Settings';
 import WebUSBGreeting from '../WebUSBGreeting';
+import AddPlugin from '../AddPlugin';
 import { getEnv } from '../../../tools/getEnv';
 import type { Handle } from '../Layout';
 import Layout from '../Layout';
@@ -117,6 +118,13 @@ function App() {
         {
           path: '/webusb',
           element: <WebUSBGreeting />,
+        },
+        {
+          path: '/add-plugin/:pluginUrl?',
+          element: <AddPlugin />,
+          handle: {
+            headline: 'Add Plugin',
+          } as Handle,
         },
       ],
     },

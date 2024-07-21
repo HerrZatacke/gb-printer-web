@@ -5,6 +5,7 @@ import Queue from 'promise-queue';
 import { Actions } from '../../../store/actions';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
+import sortBy from '../../../../tools/sortby';
 import { dateFormat } from '../../../defaults';
 import type { State } from '../../../store/State';
 import type { PaletteSetActiveAction } from '../../../../../types/actions/PaletteActions';
@@ -12,6 +13,8 @@ import type { ImportItem } from '../../../../../types/ImportItem';
 import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
 import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
+
+const sortByFilename = sortBy<ImportItem>('fileName');
 
 interface UseRunImport {
   importQueue: ImportItem[],
@@ -45,7 +48,7 @@ const useRunImport = (): UseRunImport => {
   });
 
   const runImport = async () => {
-    const savedImages = await Promise.all(importQueue.map((image, index) => {
+    const savedImages = await Promise.all(sortByFilename(importQueue).map((image, index) => {
       const { tiles, fileName, meta, lastModified } = image;
 
       return (
