@@ -41,6 +41,14 @@ function PluginSettings() {
 
   return (
     <>
+      <a
+        rel="noreferrer noopener nofollow"
+        href="https://herrzatacke.github.io/gb-printer-web-plugins/"
+        className="plugin-settings__ext-link"
+        target="_blank"
+      >
+        🔗 Some plugins can be found here
+      </a>
       <Input
         id="plugin-settings-add-plugin"
         labelText="Add Plugin"

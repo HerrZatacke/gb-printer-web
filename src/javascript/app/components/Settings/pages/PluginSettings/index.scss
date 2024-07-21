@@ -1,5 +1,17 @@
 .plugin-settings {
 
+  &__ext-link {
+    display: inline-block;
+    margin: -10px 0 20px;
+    font-size: 13px;
+    color: currentColor;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 60%;
+    }
+  }
+
   &__plugin-list {
     margin-bottom: 40px;
     padding-top: 30px;
