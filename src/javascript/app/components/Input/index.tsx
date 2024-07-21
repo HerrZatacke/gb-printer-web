@@ -63,7 +63,7 @@ function Input({
   spellCheck,
 }: Props) {
   const [showPass, setShowPass] = useState<boolean>(false);
-  const [colorVal, setColorVal] = useState<string>();
+  const [colorVal, setColorVal] = useState<string>(value as string);
 
   useEffect(() => {
     if (type === InputType.COLOR) {
