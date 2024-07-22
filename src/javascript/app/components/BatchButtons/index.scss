@@ -1,4 +1,8 @@
 .batch-buttons {
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+
   &__bubble {
     position: absolute;
     bottom: -3px;
@@ -12,5 +16,3 @@
     @include theme-color($color-white, $color-grey-70);
   }
 }
-
-

@@ -3,10 +3,9 @@ import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import type {
   DeleteImageAction,
-  DownloadImageStartAction,
+  DownloadImageStartAction, EditImageSelectionAction,
   ImageFavouriteAction,
   LightboxImageSetAction,
-  NewRGBNImageAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
@@ -19,17 +18,17 @@ interface UseGalleryImageButtons {
   startDownload: () => void,
   deleteImage: () => void,
   shareImage: () => void,
-  saveRGBNImage: () => void,
   updateImageToSelection: (mode: string) => void,
   setLightboxImage: () => void,
   updateFavouriteTag: (isFavourite: boolean) => void,
+  editImage: () => void,
 }
 
 export enum ButtonOption {
+  EDIT = 'edit',
   DOWNLOAD = 'download',
   DELETE = 'delete',
   SHARE = 'share',
-  SAVE_RGBN_IMAGE = 'saveRGBNImage',
   SELECT = 'select',
   VIEW = 'view',
   FAVOURITE = 'favourite',
@@ -38,10 +37,13 @@ export enum ButtonOption {
 
 interface UseGalleryImageButtonsParams {
   hash: string,
+  tags: string[],
   imageTitle?: string,
 }
 
-export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButtonsParams): UseGalleryImageButtons => {
+export const useGalleryImageButtons = (
+  { hash, imageTitle, tags }: UseGalleryImageButtonsParams,
+): UseGalleryImageButtons => {
   const stateData = useSelector((state: State) => ({
     isSelected: state.imageSelection.includes(hash),
     canShare: state.canShare,
@@ -85,12 +87,6 @@ export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButt
         payload: hash,
       });
     },
-    saveRGBNImage: () => {
-      dispatch<NewRGBNImageAction>({
-        type: Actions.SAVE_RGBN_IMAGE,
-        payload: 'newRGBN',
-      });
-    },
     updateImageToSelection: (mode) => {
       if (mode === 'add') {
         dispatch<ImageSelectionAddAction>({
@@ -116,6 +112,15 @@ export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButt
         payload: {
           hash,
           isFavourite,
+        },
+      });
+    },
+    editImage: () => {
+      dispatch<EditImageSelectionAction>({
+        type: Actions.EDIT_IMAGE_SELECTION,
+        payload: {
+          tags,
+          batch: [hash],
         },
       });
     },

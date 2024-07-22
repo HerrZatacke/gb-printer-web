@@ -4,8 +4,8 @@ import { RGBGrouping, useEditRGBNImages } from './useEditRGBNImages';
 import SVG from '../../SVG';
 import Select from '../Confirm/fields/Select';
 import ImageRender from '../../ImageRender';
+import RGBNSelect from '../../RGBNSelect';
 import { defaultRGBNPalette } from '../../../defaults';
-import NewRGBNSelect from '../../RGBNSelect/new';
 import type { RGBNHashes } from '../../../../../types/Image';
 
 import './index.scss';
@@ -112,7 +112,7 @@ function EditRGBN() {
                       palette={previewPalette(isR, isG, isB, isN)}
                       hash={hash}
                     />
-                    <NewRGBNSelect
+                    <RGBNSelect
                       isR={isR}
                       isG={isG}
                       isB={isB}

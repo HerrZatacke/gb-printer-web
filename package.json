@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.40.3",
+  "version": "1.41.0",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
@@ -119,6 +119,7 @@
     "typescript": "<5.2.0",
     "ufo": "^1.5.4",
     "use-debounce": "^5.2.1",
+    "use-long-press": "^3.2.0",
     "walkdir": "^0.4.1",
     "webpack": "^5.80.0",
     "webpack-bundle-analyzer": "^4.5.0",

@@ -1,13 +1,34 @@
 import React from 'react';
+import type { CSSPropertiesVars } from 'react';
 import { Navigate } from 'react-router-dom';
 import classnames from 'classnames';
 import GalleryImage from '../GalleryImage';
 import GalleryHeader from '../GalleryHeader';
 import GalleryIntro from '../GalleryIntro';
 import { useGallery } from './useGallery';
+import { GalleryViews } from '../../../consts/GalleryViews';
+import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
+import type { ScreenDimensions } from '../../../hooks/useScreenDimensions';
 
 import './index.scss';
-import { GalleryViews } from '../../../consts/GalleryViews';
+import Pagination from '../Pagination';
+
+const getSmallStyleVars = (screenDimensions: ScreenDimensions): CSSPropertiesVars => {
+  const smallTilePadding = 10;
+  const smallGap = 10 / screenDimensions.ddpx; // keep "10" aligned with '--1x-gap' in 'Layout/index.scss'
+  const smallImageSize = 160 / screenDimensions.ddpx;
+  const colSize = (2 * smallTilePadding) + smallImageSize;
+  const columns = Math.floor((screenDimensions.layoutWidth + smallGap) / (colSize + smallGap));
+
+  return {
+    '--tile-padding': `${smallTilePadding}px`,
+    '--image-size': `${smallImageSize}px`,
+    '--gap': `${smallGap}px`,
+    '--columns': columns.toString(10),
+    '--col-size': `${colSize}px`,
+    '--layout-width': `${screenDimensions.layoutWidth}px`,
+  };
+};
 
 function Gallery() {
   const {
@@ -20,27 +41,10 @@ function Gallery() {
     currentView,
   } = useGallery();
 
+  const screenDimensions = useScreenDimensions();
+
   if (!valid) {
     return <Navigate to={`/gallery/page/${page + 1}`} replace />;
-  }
-
-  const content = images.map((image) => (
-    <GalleryImage
-      type={currentView === GalleryViews.GALLERY_VIEW_LIST ? 'list' : 'default'}
-      key={image.hash}
-      hash={image.hash}
-      page={page}
-    />
-  ));
-
-  if (currentView !== 'list') {
-    content.push(
-      <li className="gallery-image gallery-image--dummy" key="dummy1" />,
-      <li className="gallery-image gallery-image--dummy" key="dummy2" />,
-      <li className="gallery-image gallery-image--dummy" key="dummy3" />,
-      <li className="gallery-image gallery-image--dummy" key="dummy4" />,
-      <li className="gallery-image gallery-image--dummy" key="dummy5" />,
-    );
   }
 
   return (
@@ -51,26 +55,29 @@ function Gallery() {
         filteredCount={filteredCount}
       />
       <GalleryHeader page={page} isSticky />
-      {
-        (currentView === 'list') ? (
-          <ul className="gallery gallery--list">
-            {content}
-          </ul>
-        ) : (
-          <ul
-            className={
-              classnames('gallery', {
-                [`gallery--${currentView}`]: true,
-              })
-            }
-          >
-            {content}
-          </ul>
-        )
-      }
+      <Pagination page={page} />
+      <ul
+        className={
+          classnames('gallery', {
+            [`gallery--${currentView}`]: true,
+          })
+        }
+        style={currentView === GalleryViews.GALLERY_VIEW_SMALL ? getSmallStyleVars(screenDimensions) : undefined}
+      >
+        { images.map((image) => (
+          <GalleryImage
+            key={image.hash}
+            hash={image.hash}
+            page={page}
+          />
+        )) }
+      </ul>
       {
         images.length < 3 ? null : (
-          <GalleryHeader page={page} isBottom />
+          <>
+            <Pagination page={page} />
+            <GalleryHeader page={page} isBottom />
+          </>
         )
       }
     </>

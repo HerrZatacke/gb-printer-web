@@ -75,13 +75,6 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
-    // currently selected r,g,b,n images to create a combined image
-    key: 'rgbnImages',
-    saveLocally: true,
-    saveExport: [],
-    value: {},
-  },
-  {
     // the image being edited currently
     key: 'editImage',
     saveLocally: true,

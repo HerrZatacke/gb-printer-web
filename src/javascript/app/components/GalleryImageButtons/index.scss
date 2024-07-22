@@ -1,28 +1,32 @@
 .gallery-image-buttons {
-  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: $z-index-gallery-image-buttons;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  flex-direction: row;
+  width: calc((var(--padding) * 2) + (var(--item-size) * var(--items-per-row)) + (var(--gap) * (var(--items-per-row) - 1)));
   align-items: center;
   cursor: default;
-  padding: 0 10px;
-  gap: 4px;
-
-  body.is-touch & {
-    gap: 8px;
-  }
+  padding: var(--padding);
+  gap: var(--gap);
+  @include theme-background-color($color-grey-70, $color-grey-10);
+  border-radius: $default-border-radius;
 
   &__button {
-    width: 20px;
-    height: 20px;
+    width: var(--item-size);
+    height: var(--item-size);
     border: none;
-    @include theme-background-color($color-grey-90, $color-grey-30);
     padding: 0 ;
     cursor: pointer;
+    @include theme-background-color($color-grey-90, $color-grey-30);
     @include theme-color($color-tertiary, $color-tertiary-bright);
     fill: currentColor;
     border-radius: $default-border-radius-small;
     outline: none;
+    pointer-events: all;
 
     .tick {
       opacity: $checkmark-tick-inactive-opacity;
@@ -51,11 +55,41 @@
     }
   }
 
-  body.is-touch .gallery-image &__button {
-    width: 30px;
-    height: 30px;
+  .gallery--small &,
+  .gallery--1x & {
+    --items-per-row: 3;
+    --item-size: 24px;
+    --gap: 5px;
+    --padding: 8px;
   }
 
+  .gallery--2x & {
+    --items-per-row: 4;
+    --item-size: 32px;
+    --gap: 8px;
+    --padding: 12px;
+  }
+
+  .gallery--max & {
+    --items-per-row: 4;
+    --item-size: 40px;
+    --padding: 12px;
+    --gap: 12px;
+  }
+
+  .is-touch .gallery--small &,
+  .is-touch .gallery--1x & {
+    --items-per-row: 2;
+    --item-size: 40px;
+    --gap: 8px;
+    --padding: 12px;
+  }
+
+  .is-touch .gallery--2x &,
+  .is-touch .gallery--max & {
+    --items-per-row: 4;
+    --item-size: 40px;
+    --gap: 12px;
+    --padding: 16px;
+  }
 }
-
-

@@ -4,7 +4,7 @@ import type { QueueImage } from '../../../types/QueueImage';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
 import type { ErrorMessage } from '../components/Errors/useErrors';
-import type { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
+import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
@@ -70,7 +70,6 @@ export interface State {
   printerParams: string,
   progress: Progress,
   recentImports: RecentImport[],
-  rgbnImages: RGBNHashes | null,
   savFrameTypes: string,
   sortBy: string,
   sortPalettes: PaletteSortMode,

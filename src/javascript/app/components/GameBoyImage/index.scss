@@ -6,8 +6,7 @@
     display: block;
     image-rendering: inherit;
 
-    &--as-thumb,
-    .gallery--list & {
+    &--as-thumb {
       image-rendering: auto;
     }
   }

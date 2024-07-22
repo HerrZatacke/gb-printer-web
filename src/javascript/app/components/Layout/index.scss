@@ -1,14 +1,45 @@
 .layout {
-  width: 90vw;
-  max-width: 1160px;
-  margin: auto;
+  width: $layout-width-6-cols; // Size is based on padding/gap/imagesize of gallery grid with 6 images scaled 1x
+  margin: 0 auto;
   padding: 120px 20px 20px 20px;
   position: relative;
   z-index: $z-index-content;
   min-height: 100vh;
 
-  @media (max-width: 380px) {
-    width: 100%;
+  --1x-columns: 6;
+  --2x-columns: 3;
+  --max-columns: 1;
+
+  --1x-gap: 10px;
+  --2x-gap: 20px;
+  --max-gap: 20px;
+
+  @media (max-width: $breakpoint-5-cols) {
+    width: $layout-width-5-cols;
+    --1x-columns: 5;
+    --2x-columns: 2;
+  }
+
+  @media (max-width: $breakpoint-4-cols) {
+    width: $layout-width-4-cols;
+    --1x-columns: 4;
+    --2x-columns: 2;
+  }
+
+  @media (max-width: $breakpoint-3-cols) {
+    width: $layout-width-3-cols;
+    --1x-columns: 3;
+    --2x-columns: 1;
+  }
+
+  @media (max-width: $breakpoint-2-cols) {
+    width: $layout-width-2-cols;
+    --1x-columns: 2;
+  }
+
+  @media (max-width: $breakpoint-1-cols) {
+    width: $layout-width-1-cols;
+    --1x-columns: 1;
   }
 
   &__main-headline {
