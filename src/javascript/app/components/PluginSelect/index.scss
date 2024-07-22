@@ -11,7 +11,6 @@
 
   &__wrapper {
     position: relative;
-
   }
 
   &--active {
@@ -27,11 +26,7 @@
   }
 
   .gallery-image-buttons &__wrapper {
-    height: 20px;
-
-    body.is-touch & {
-      height: 30px;
-    }
+    height: var(--item-size);
   }
 
   .batch-buttons &__wrapper {

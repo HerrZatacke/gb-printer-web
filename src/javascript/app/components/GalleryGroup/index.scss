@@ -38,6 +38,10 @@
     padding: 8px;
   }
 
+  &__image {
+    position: relative;
+  }
+
   &__temp {
     position: absolute;
     @include theme-color($color-warn-red, $color-warn-red);
@@ -45,10 +49,21 @@
     @include theme-border-color($color-warn-red, $color-warn-red);
     padding: 4px 8px;
     font-size: 18px;
+    line-height: 16px;
     font-weight: bold;
     border: 2px solid;
-    left: 25%;
-    top: 125px;
-    transform: translate(-50%) rotate(25deg);
+    left: 0;
+    bottom: 0;
+    transform: rotate(25deg);
+
+    .gallery--2x & {
+      font-size: 40px;
+      line-height: 36px;
+    }
+
+    .gallery--max & {
+      font-size: 160px;
+      line-height: 150px;
+    }
   }
 }

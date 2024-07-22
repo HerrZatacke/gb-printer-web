@@ -54,6 +54,7 @@ function Pagination({ page }: Props) {
   if (page > 0) {
     displayedPages.unshift((
       <PaginationButton
+        className="pagination__button--start"
         key="back"
         title="To previous page"
         page={page - 1}
@@ -66,6 +67,7 @@ function Pagination({ page }: Props) {
   if (page < pages.length - 1) {
     displayedPages.push((
       <PaginationButton
+        className="pagination__button--end"
         key="next"
         title="To next page"
         page={page + 1}

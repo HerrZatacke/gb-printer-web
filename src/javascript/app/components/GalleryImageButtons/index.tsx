@@ -5,9 +5,9 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import SVG from '../SVG';
 import PluginSelect from '../PluginSelect';
 import { ButtonOption, useGalleryImageButtons } from './useGalleryImageButtons';
+import { useImageGroups } from '../../../hooks/useImageGroups';
 
 import './index.scss';
-import { useImageGroups } from '../../../hooks/useImageGroups';
 
 dayjs.extend(customParseFormat);
 
@@ -16,9 +16,10 @@ interface Props {
   buttons: ButtonOption[],
   isFavourite: boolean,
   imageTitle?: string,
+  tags: string[],
 }
 
-function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) {
+function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: Props) {
   const [pluginsActive, setPluginsActive] = useState(false);
 
   const {
@@ -27,12 +28,12 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
     hasPlugins,
     deleteImage,
     setLightboxImage,
-    saveRGBNImage,
     shareImage,
     startDownload,
     updateImageToSelection,
     updateFavouriteTag,
-  } = useGalleryImageButtons({ hash, imageTitle });
+    editImage,
+  } = useGalleryImageButtons({ hash, imageTitle, tags });
 
   const { createGroup } = useImageGroups();
 
@@ -42,108 +43,115 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
       onClick={(ev) => {
         ev.stopPropagation();
       }}
-      role="presentation"
       onMouseLeave={() => setPluginsActive(false)}
+      role="presentation"
     >
-      {buttons.includes(ButtonOption.SAVE_RGBN_IMAGE) ? (
+      {buttons.includes(ButtonOption.SELECT) ? (
+        <button
+          type="button"
+          className={
+            classnames('gallery-image-buttons__button', {
+              'gallery-image-buttons__button--unchecked': !isSelected,
+              'gallery-image-buttons__button--checked': isSelected,
+            })
+          }
+          onClick={() => updateImageToSelection(isSelected ? 'remove' : 'add')}
+          title={isSelected ? 'Remove from selection' : 'Add to selection'}
+        >
+          <SVG name="checkmark" />
+        </button>
+      ) : null}
+      {buttons.includes(ButtonOption.EDIT) ? (
         <button
           type="button"
           className="gallery-image-buttons__button"
-          onClick={saveRGBNImage}
+          onClick={editImage}
+          title="Edit"
         >
-          <SVG name="save" />
+          <SVG name="edit" />
         </button>
-      ) : (
-        <>
-          {buttons.includes(ButtonOption.SELECT) ? (
-            <button
-              type="button"
-              className={
-                classnames('gallery-image-buttons__button', {
-                  'gallery-image-buttons__button--unchecked': !isSelected,
-                  'gallery-image-buttons__button--checked': isSelected,
-                })
-              }
-              onClick={() => updateImageToSelection(isSelected ? 'remove' : 'add')}
-            >
-              <SVG name="checkmark" />
-            </button>
-          ) : null}
-          {buttons.includes(ButtonOption.DOWNLOAD) ? (
-            <button
-              type="button"
-              className="gallery-image-buttons__button"
-              onClick={startDownload}
-            >
-              <SVG name="download" />
-            </button>
-          ) : null}
-          {buttons.includes(ButtonOption.DELETE) ? (
-            <button
-              type="button"
-              className="gallery-image-buttons__button"
-              onClick={deleteImage}
-            >
-              <SVG name="delete" />
-            </button>
-          ) : null}
-          {buttons.includes(ButtonOption.VIEW) ? (
-            <button
-              type="button"
-              className="gallery-image-buttons__button"
-              onClick={setLightboxImage}
-            >
-              <SVG name="view" />
-            </button>
-          ) : null}
-          {isSelected ? (
-            <button
-              type="button"
-              className="gallery-image-buttons__button"
-              onClick={() => createGroup(hash, imageTitle)}
-            >
-              <SVG name="file-add" />
-            </button>
-          ) : null}
-          {hasPlugins ? (
-            <PluginSelect
-              pluginsActive={pluginsActive}
-              hash={hash}
-            >
-              <button
-                type="button"
-                className="gallery-image-buttons__button"
-                onClick={() => setPluginsActive(true)}
-              >
-                <SVG name="plug" />
-              </button>
-            </PluginSelect>
-          ) : null}
-          {buttons.includes(ButtonOption.SHARE) && canShare ? (
-            <button
-              type="button"
-              className="gallery-image-buttons__button"
-              onClick={shareImage}
-            >
-              <SVG name="share" />
-            </button>
-          ) : null}
-          {buttons.includes(ButtonOption.FAVOURITE) ? (
-            <button
-              type="button"
-              className={
-                classnames('gallery-image-buttons__button', {
-                  'gallery-image-buttons__button--unchecked': !isFavourite,
-                  'gallery-image-buttons__button--favourite': isFavourite,
-                })
-              }
-              onClick={() => updateFavouriteTag(!isFavourite)}
-            >
-              {isFavourite ? '❤️' : <SVG name="fav" />}
-            </button>
-          ) : null}
-        </>
-      )}
+      ) : null}
+      {buttons.includes(ButtonOption.DOWNLOAD) ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={startDownload}
+          title="Download"
+        >
+          <SVG name="download" />
+        </button>
+      ) : null}
+      {buttons.includes(ButtonOption.DELETE) ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={deleteImage}
+          title="Delete"
+        >
+          <SVG name="delete" />
+        </button>
+      ) : null}
+      {buttons.includes(ButtonOption.VIEW) ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={setLightboxImage}
+          title="View in Lightbox"
+        >
+          <SVG name="view" />
+        </button>
+      ) : null}
+      {hasPlugins ? (
+        <PluginSelect
+          pluginsActive={pluginsActive}
+          hash={hash}
+        >
+          <button
+            type="button"
+            className="gallery-image-buttons__button"
+            onClick={() => {
+              setPluginsActive(true);
+            }}
+            title="Use Plugin"
+          >
+            <SVG name="plug" />
+          </button>
+        </PluginSelect>
+      ) : null}
+      {buttons.includes(ButtonOption.SHARE) && canShare ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={shareImage}
+          title="Share"
+        >
+          <SVG name="share" />
+        </button>
+      ) : null}
+      {buttons.includes(ButtonOption.FAVOURITE) ? (
+        <button
+          type="button"
+          className={
+            classnames('gallery-image-buttons__button', {
+              'gallery-image-buttons__button--unchecked': !isFavourite,
+              'gallery-image-buttons__button--favourite': isFavourite,
+            })
+          }
+          onClick={() => updateFavouriteTag(!isFavourite)}
+          title={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
+        >
+          {isFavourite ? '❤️' : <SVG name="fav" />}
+        </button>
+      ) : null}
+      {isSelected ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={() => createGroup(hash, imageTitle)}
+        >
+          <SVG name="file-add" />
+        </button>
+      ) : null}
     </div>
   );
 }

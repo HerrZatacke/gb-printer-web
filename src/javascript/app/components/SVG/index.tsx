@@ -146,6 +146,12 @@ function SVG(props: Props) {
           <path d="M6 6v4h28V6zm0 8v4h28v-4zm0 8v4h28v-4zm0 8v4h28V30z" />
         </svg>
       );
+    case 'small':
+      return (
+        <svg className={className} viewBox="0 0 40 40">
+          <path d="M8.407 9v3.5h3.66V9Zm4.881 0v3.5h3.661V9Zm4.881 0v3.5h3.662V9Zm4.882 0v3.5h3.66V9Zm4.881 0v3.5h3.661V9ZM8.407 13.667v3.5h3.66v-3.5zm4.881 0v3.5h3.661v-3.5zm4.881 0v3.5h3.662v-3.5zm4.882 0v3.5h3.66v-3.5zm4.881 0v3.5h3.661v-3.5ZM7 18.333V16l-5 3.5L7 23v-2.333h26V23l5-3.5-5-3.5v2.333zm1.407 3.5v3.5h3.66v-3.5zm4.881 0v3.5h3.661v-3.5zm4.881 0v3.5h3.662v-3.5zm4.882 0v3.5h3.66v-3.5zm4.881 0v3.5h3.661v-3.5ZM8.407 26.5V30h3.66v-3.5zm4.881 0V30h3.661v-3.5zm4.881 0V30h3.662v-3.5zm4.882 0V30h3.66v-3.5zm4.881 0V30h3.661v-3.5z" />
+        </svg>
+      );
     case '1x':
       return (
         <svg className={className} viewBox="0 0 40 40">
@@ -158,13 +164,7 @@ function SVG(props: Props) {
           <path d="M22 6v12h12V6zm0 16v12h12V22zM6 6v12h12V6zm0 16v12h12V22z" />
         </svg>
       );
-    case '3x':
-      return (
-        <svg className={className} viewBox="0 0 40 40">
-          <path d="M30 30V10H10v20" />
-        </svg>
-      );
-    case '4x':
+    case 'max':
       return (
         <svg className={className} viewBox="0 0 40 40">
           <path d="M34 34V6H6v28z" />

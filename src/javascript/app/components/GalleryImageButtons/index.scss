@@ -1,76 +1,32 @@
 .gallery-image-buttons {
-  --button-gap-no-touch: 6px;
-  --button-size-no-touch: 28px;
-
-  --button-gap-touch: 12px;
-  --button-size-touch: 32px;
-
-
-  height: 100%;
-  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: $z-index-gallery-image-buttons;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: calc((var(--padding) * 2) + (var(--item-size) * var(--items-per-row)) + (var(--gap) * (var(--items-per-row) - 1)));
+  align-items: center;
   cursor: default;
-  pointer-events: none;
-  padding: 8px 8px 16px;
-
-  display: grid;
-  gap: var(--button-gap-no-touch);
-
-  .gallery--list & {
-    grid-template-columns: repeat(8, var(--button-size-no-touch));
-    background-image: none;
-  }
-
-  .gallery--1x & {
-    grid-template-columns: repeat(5, var(--button-size-no-touch));
-  }
-
-  .gallery--2x & {
-    grid-template-columns: repeat(9, var(--button-size-no-touch));
-  }
-
-  .gallery--3x & {
-    grid-template-columns: repeat(14, var(--button-size-no-touch));
-  }
-
-  .gallery--4x & {
-    grid-template-columns: repeat(25, var(--button-size-no-touch));
-  }
-
-
-  body.is-touch & {
-    gap: var(--button-gap-touch);
-
-  }
-
- body.is-touch .gallery--list & {
-    grid-template-columns: repeat(8, var(--button-size-no-touch));
-  }
-
-  body.is-touch .gallery--1x & {
-    grid-template-columns: repeat(4, var(--button-size-no-touch));
-  }
-
-  body.is-touch .gallery--2x &,
-  body.is-touch .gallery--3x &,
-  body.is-touch .gallery--4x & {
-    grid-template-columns: repeat(7, var(--button-size-no-touch));
-  }
+  padding: var(--padding);
+  gap: var(--gap);
+  @include theme-background-color($color-grey-70, $color-grey-10);
+  border-radius: $default-border-radius;
 
   &__button {
-    @include theme-background-color($color-grey-90, $color-grey-30);
-    @include theme-color-variable('glow-outline', rgba($color-grey-40, 0.6), rgba($color-black, 0.6));
-    @include theme-color($color-tertiary, $color-tertiary-bright);
-    box-shadow: 0 0 3px 1px var(--glow-outline);
-    pointer-events: auto;
-
-    width: var(--button-size-no-touch);
-    height: var(--button-size-no-touch);
+    width: var(--item-size);
+    height: var(--item-size);
     border: none;
     padding: 0 ;
     cursor: pointer;
+    @include theme-background-color($color-grey-90, $color-grey-30);
+    @include theme-color($color-tertiary, $color-tertiary-bright);
     fill: currentColor;
     border-radius: $default-border-radius-small;
     outline: none;
+    pointer-events: all;
 
     .tick {
       opacity: $checkmark-tick-inactive-opacity;
@@ -99,11 +55,41 @@
     }
   }
 
-  body.is-touch .gallery-image &__button {
-    width: var(--button-size-touch);
-    height: var(--button-size-touch);
+  .gallery--small &,
+  .gallery--1x & {
+    --items-per-row: 3;
+    --item-size: 24px;
+    --gap: 5px;
+    --padding: 8px;
   }
 
+  .gallery--2x & {
+    --items-per-row: 4;
+    --item-size: 32px;
+    --gap: 8px;
+    --padding: 12px;
+  }
+
+  .gallery--max & {
+    --items-per-row: 4;
+    --item-size: 40px;
+    --padding: 12px;
+    --gap: 12px;
+  }
+
+  .is-touch .gallery--small &,
+  .is-touch .gallery--1x & {
+    --items-per-row: 2;
+    --item-size: 40px;
+    --gap: 8px;
+    --padding: 12px;
+  }
+
+  .is-touch .gallery--2x &,
+  .is-touch .gallery--max & {
+    --items-per-row: 4;
+    --item-size: 40px;
+    --gap: 12px;
+    --padding: 16px;
+  }
 }
-
-

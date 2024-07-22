@@ -11,7 +11,6 @@ import EditPalette from './EditPalette';
 import EditRGBN from './EditRGBN';
 import VideoParamsForm from './VideoParamsForm';
 import LightboxImage from './LightboxImage';
-import RGBNImage from './RGBNImage';
 import DragOver from './DragOver';
 import FilterForm from './FilterForm';
 import SortForm from './SortForm';
@@ -40,7 +39,6 @@ function Overlays() {
     showEditRGBN,
     showVideoForm,
     showPickColors,
-    showRGBNImage,
     showLightboxImage,
     showDragOver,
     showFilters,
@@ -62,7 +60,6 @@ function Overlays() {
     showEditRGBN: state.editRGBNImages.length > 0,
     showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
-    showRGBNImage: !!state.rgbnImages && Object.keys(state.rgbnImages).length > 0,
     showLightboxImage: state.lightboxImage !== null,
     showDragOver: state.dragover,
     showFilters: state.filtersVisible,
@@ -112,8 +109,6 @@ function Overlays() {
       return <ProgressLogBox />; // non-interactive
     case showProgressBox:
       return <ProgressBox />; // non-interactive
-    case showRGBNImage:
-      return <RGBNImage />; // non-interactive
     default: // Default: Components which control their show/hide status themselves (e.g. through a hook)
       return <ConnectSerial />;
   }

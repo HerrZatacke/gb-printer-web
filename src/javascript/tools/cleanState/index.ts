@@ -10,6 +10,7 @@ import type { State } from '../../app/store/State';
 import type { Palette } from '../../../types/Palette';
 import { isRGBNImage } from '../isRGBNImage';
 import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
+import { GalleryViews } from '../../consts/GalleryViews';
 
 const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> => {
 
@@ -23,6 +24,12 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
     })),
     ...(dirtyState.palettes || []),
   ]);
+
+  const galleryView = (
+    dirtyState.galleryView &&
+    Object.values(GalleryViews).includes(dirtyState.galleryView)
+  ) ?
+    dirtyState.galleryView : GalleryViews.GALLERY_VIEW_1X;
 
   const palettesShorts = palettes.map(({ shortName }) => shortName);
   const frameIds = (dirtyState.frames || []).map(({ id }) => id);
@@ -117,6 +124,7 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
     ...dirtyState,
     frames: hashedFrames || dirtyState.frames,
     syncLastUpdate,
+    galleryView,
     images,
     palettes,
     plugins,

@@ -40,18 +40,20 @@ function GalleryGroup({ hash }: Props) {
         className="gallery-group__link"
         to={`/gallery/${path}page/1`}
       >
-        <ImageRender
-          lockFrame={lockFrame}
-          invertPalette={invertPalette}
-          palette={palette}
-          frameId={frame}
-          hash={hash}
-          hashes={hashes}
-          rotation={rotation}
-        />
+        <div className="gallery-group__image">
+          <ImageRender
+            lockFrame={lockFrame}
+            invertPalette={invertPalette}
+            palette={palette}
+            frameId={frame}
+            hash={hash}
+            hashes={hashes}
+            rotation={rotation}
+          />
+          <div className="gallery-group__temp">GROUP</div>
+        </div>
         <p className="gallery-group__info">{ `${group.images.length} images` }</p>
         <p className="gallery-group__title">{ group.title }</p>
-        <div className="gallery-group__temp">GROUP</div>
       </Link>
       <div className="gallery-group__buttons">
         <button

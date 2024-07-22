@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import { useLongPress } from 'use-long-press';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GalleryImageButtons from '../GalleryImageButtons';
-import RGBNSelect from '../RGBNSelect';
 import ImageRender from '../ImageRender';
 import DateSpan from './DateSpan';
 import TagsList from './TagsList';
@@ -11,19 +11,20 @@ import SVG from '../SVG';
 import { SelectionEditMode, useGalleryImage } from './useGalleryImage';
 import { ButtonOption } from '../GalleryImageButtons/useGalleryImageButtons';
 import type { RGBNHashes } from '../../../../types/Image';
+import isTouchDevice from '../../../tools/isTouchDevice';
 
 import './index.scss';
 
 dayjs.extend(customParseFormat);
 
 interface Props {
-  type: 'list' | 'default',
   hash: string,
   page: number,
 }
 
 const buttons = [
   ButtonOption.SELECT,
+  ButtonOption.EDIT,
   ButtonOption.FAVOURITE,
   ButtonOption.DOWNLOAD,
   ButtonOption.DELETE,
@@ -32,12 +33,29 @@ const buttons = [
   ButtonOption.PLUGINS,
 ];
 
-function GalleryImage({ page, hash, type }: Props) {
+function GalleryImage({ page, hash }: Props) {
+  const [showButtons, setShowButtons] = useState<boolean>(false);
+
   const {
     galleryImageData,
     updateImageSelection,
     editImage,
   } = useGalleryImage(hash);
+
+  const bindLongPress = useLongPress(() => {
+    if (isTouchDevice()) {
+      updateImageSelection(
+        galleryImageData?.isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD,
+        false,
+        page,
+      );
+    }
+  });
+
+  const globalClickListener = useCallback(() => {
+    window.removeEventListener('click', globalClickListener);
+    setShowButtons(false);
+  }, []);
 
   if (!galleryImageData) {
     return null;
@@ -65,21 +83,52 @@ function GalleryImage({ page, hash, type }: Props) {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
       updateImageSelection(isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD, ev.shiftKey, page);
+    } else if (isTouchDevice()) {
+      if (!showButtons) {
+        setShowButtons(true);
+        window.requestAnimationFrame(() => {
+          window.addEventListener('click', globalClickListener);
+        });
+      }
     } else {
+      ev.preventDefault();
       editImage(tags);
     }
   };
 
-  return type === 'default' ? (
+  return (
     <li
       className={
         classnames('gallery-image gallery-item', {
           'gallery-item--selected': isSelected,
         })
       }
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...bindLongPress()}
       onClick={handleCellClick}
+      onMouseEnter={() => {
+        if (!isTouchDevice()) {
+          setShowButtons(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!isTouchDevice()) {
+          setShowButtons(false);
+        }
+      }}
       role="presentation"
     >
+      {
+        showButtons ? (
+          <GalleryImageButtons
+            isFavourite={isFavourite}
+            hash={hash}
+            imageTitle={title}
+            buttons={buttons}
+            tags={tags}
+          />
+        ) : null
+      }
       <div className="gallery-image__image">
         <ImageRender
           lockFrame={lockFrame}
@@ -130,71 +179,6 @@ function GalleryImage({ page, hash, type }: Props) {
           )) : null }
         </span>
       ) : null }
-      <GalleryImageButtons
-        isFavourite={isFavourite}
-        hash={hash}
-        imageTitle={title}
-        buttons={buttons}
-      />
-    </li>
-  ) : (
-    <li
-      className={
-        classnames('gallery-list-image', {
-          'gallery-list-item--selected': isSelected,
-        })
-      }
-      onClick={handleCellClick}
-      role="presentation"
-    >
-      <div className="gallery-list-image__cell gallery-list-image__cell-image">
-        <div className="gallery-list-image__image">
-          <div className="gallery-list-image__image--scale">
-            <ImageRender
-              lockFrame={lockFrame}
-              invertPalette={invertPalette}
-              palette={palette}
-              frameId={frame}
-              hash={hash}
-              hashes={hashes}
-              rotation={rotation}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="gallery-list-image__cell gallery-list-image__cell-description">
-        <div className="gallery-list-image__description">
-          <span className="gallery-list-image__title">
-            {title}
-          </span>
-          <DateSpan
-            className="gallery-image__created"
-            hideDate={hideDate}
-            created={created}
-            preferredLocale={preferredLocale}
-          />
-        </div>
-      </div>
-
-      <div className="gallery-list-image__cell gallery-list-image__cell-tags">
-        <TagsList tags={tags} />
-      </div>
-
-      <div className="gallery-list-image__cell gallery-list-image__cell-rgbn">
-        { hashes ? null : (
-          <RGBNSelect hash={hash} />
-        )}
-      </div>
-
-      <div className="gallery-list-image__cell gallery-list-image__cell-buttons">
-        <GalleryImageButtons
-          isFavourite={isFavourite}
-          hash={hash}
-          imageTitle={title}
-          buttons={buttons}
-        />
-      </div>
     </li>
   );
 }

@@ -1,6 +1,7 @@
 .gallery-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   &--sticky {
     position: sticky;
@@ -9,11 +10,6 @@
     @include theme-background-color($color-page-background, $color-page-background-dark);
     padding-top: 15px;
     padding-bottom: 0;
-
-    @media (max-width: 640px) {
-      margin-left: -10vw;
-      width: 100vw;
-    }
   }
 
   &--bottom {
@@ -22,50 +18,7 @@
     }
   }
 
-  .gallery-view-select,
-  .pagination,
-  .batch-buttons {
-    flex: 33% 1 0;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .gallery-view-select {
-    justify-content: flex-start;
-
-  }
-
-  .pagination {
-    justify-content: center;
-  }
-
-  .batch-buttons {
-    justify-content: flex-end;
-  }
-
-  @media (max-width: 1200px) {
-    flex-wrap: wrap;
-    justify-content: space-between;
-
-    .gallery-view-select,
-    .batch-buttons {
-      flex: auto 1 1;
-    }
-
-    .pagination {
-      flex-basis: 100%;
-      order: 3;
-    }
-  }
-
-  @media (max-width: 640px) {
-    flex-wrap: wrap;
-
-    .gallery-view-select,
-    .pagination,
-    .batch-buttons {
-      flex: 100% 0 0;
-      justify-content: center;
-    }
+  @media (max-width: $breakpoint-3-cols) {
+    flex-direction: column;
   }
 }

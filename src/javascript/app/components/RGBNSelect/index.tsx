@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import SVG from '../SVG';
-import { useRGBNImage } from './useRGBNImage';
 import type { RGBNHashes } from '../../../../types/Image';
 
 import './index.scss';
@@ -13,11 +12,14 @@ interface RGBNCheckbox {
 }
 
 interface Props {
-  hash: string,
+  isR: boolean,
+  isG: boolean,
+  isB: boolean,
+  isN: boolean,
+  toggleChannel: (channel: keyof RGBNHashes) => void
 }
 
-function RGBNSelect({ hash }: Props) {
-  const { isR, isG, isB, isN, updateRGBN } = useRGBNImage(hash);
+function RGBNSelect({ isR, isG, isB, isN, toggleChannel }: Props) {
 
   const BOXES: RGBNCheckbox[] = [
     {
@@ -64,9 +66,7 @@ function RGBNSelect({ hash }: Props) {
                 'rgbn-select__button--selected': value,
               })
             }
-            onClick={() => {
-              updateRGBN(updateKey, !value);
-            }}
+            onClick={() => toggleChannel(updateKey)}
           >
             <SVG name="circle" />
           </button>

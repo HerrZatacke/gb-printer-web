@@ -11,7 +11,7 @@ import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { GalleryViews } from '../../consts/GalleryViews';
-import type { CurrentEditBatch, Image, RGBNHashes } from '../../../types/Image';
+import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Palette } from '../../../types/Palette';
 import type { ProgressLog } from '../../../types/actions/LogActions';
@@ -70,7 +70,6 @@ import printerParams from './reducers/printerParamsReducer';
 import progress from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
 import recentImports from './reducers/recentImportsReducer';
-import rgbnImages from './reducers/rgbnImagesReducer';
 import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
 import sortPalettes from './reducers/sortPalettesReducer';
@@ -132,7 +131,6 @@ export interface Reducers extends ReducersMapObject {
   printerParams: Reducer<string>,
   progress: Reducer<Progress>,
   recentImports: Reducer<RecentImport[]>,
-  rgbnImages: Reducer<RGBNHashes | null>,
   savFrameTypes: Reducer<string>,
   sortBy: Reducer<string>,
   sortPalettes: Reducer<PaletteSortMode>
@@ -196,7 +194,6 @@ const reducers: ReducersMapObject = {
   printerParams,
   progress,
   recentImports,
-  rgbnImages,
   savFrameTypes,
   sortBy,
   sortPalettes,
