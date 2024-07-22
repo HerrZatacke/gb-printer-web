@@ -1,7 +1,4 @@
 .gallery-image-buttons {
-  --item-size: 24px;
-  --padding: 8px;
-  --gap: 5px;
   position: absolute;
   left: 0;
   top: 0;
@@ -10,7 +7,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   flex-direction: row;
-  width: calc(((var(--padding) + var(--item-size)) * 2) + var(--gap));
+  width: calc((var(--padding) * 2) + (var(--item-size) * var(--items-per-row)) + (var(--gap) * (var(--items-per-row) - 1)));
   align-items: center;
   cursor: default;
   padding: var(--padding);
@@ -58,8 +55,41 @@
     }
   }
 
-  body.is-touch & {
-    --gap: 8px;
+  .gallery--small &,
+  .gallery--1x & {
+    --items-per-row: 3;
+    --item-size: 24px;
+    --gap: 5px;
+    --padding: 8px;
+  }
+
+  .gallery--2x & {
+    --items-per-row: 4;
     --item-size: 32px;
+    --gap: 8px;
+    --padding: 12px;
+  }
+
+  .gallery--max & {
+    --items-per-row: 4;
+    --item-size: 40px;
+    --padding: 12px;
+    --gap: 12px;
+  }
+
+  .is-touch .gallery--small &,
+  .is-touch .gallery--1x & {
+    --items-per-row: 2;
+    --item-size: 40px;
+    --gap: 8px;
+    --padding: 12px;
+  }
+
+  .is-touch .gallery--2x &,
+  .is-touch .gallery--max & {
+    --items-per-row: 4;
+    --item-size: 40px;
+    --gap: 12px;
+    --padding: 16px;
   }
 }
