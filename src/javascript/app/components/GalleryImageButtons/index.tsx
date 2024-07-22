@@ -27,7 +27,6 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
     hasPlugins,
     deleteImage,
     setLightboxImage,
-    saveRGBNImage,
     shareImage,
     startDownload,
     updateImageToSelection,
@@ -50,6 +49,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
             })
           }
           onClick={() => updateImageToSelection(isSelected ? 'remove' : 'add')}
+          title={isSelected ? 'Remove from selection' : 'Add to selection'}
         >
           <SVG name="checkmark" />
         </button>
@@ -59,6 +59,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
           type="button"
           className="gallery-image-buttons__button"
           onClick={editImage}
+          title="Edit"
         >
           <SVG name="edit" />
         </button>
@@ -68,6 +69,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
           type="button"
           className="gallery-image-buttons__button"
           onClick={startDownload}
+          title="Download"
         >
           <SVG name="download" />
         </button>
@@ -77,6 +79,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
           type="button"
           className="gallery-image-buttons__button"
           onClick={deleteImage}
+          title="Delete"
         >
           <SVG name="delete" />
         </button>
@@ -86,17 +89,9 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
           type="button"
           className="gallery-image-buttons__button"
           onClick={setLightboxImage}
+          title="View in Lightbox"
         >
           <SVG name="view" />
-        </button>
-      ) : null}
-      {buttons.includes(ButtonOption.SAVE_RGBN_IMAGE) ? (
-        <button
-          type="button"
-          className="gallery-image-buttons__button"
-          onClick={saveRGBNImage}
-        >
-          <SVG name="save" />
         </button>
       ) : null}
       {hasPlugins ? (
@@ -111,6 +106,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
               ev.stopPropagation();
               setPluginsActive(true);
             }}
+            title="Use Plugin"
           >
             <SVG name="plug" />
           </button>
@@ -121,6 +117,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
           type="button"
           className="gallery-image-buttons__button"
           onClick={shareImage}
+          title="Share"
         >
           <SVG name="share" />
         </button>
@@ -135,6 +132,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
             })
           }
           onClick={() => updateFavouriteTag(!isFavourite)}
+          title={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
         >
           {isFavourite ? '❤️' : <SVG name="fav" />}
         </button>

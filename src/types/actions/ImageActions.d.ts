@@ -50,11 +50,6 @@ export interface DeleteImagesAction {
   payload: string[],
 }
 
-export interface NewRGBNImageAction {
-  type: Actions.SAVE_RGBN_IMAGE,
-  payload: 'newRGBN',
-}
-
 export interface EditImageSelectionAction {
   type: Actions.EDIT_IMAGE_SELECTION,
   payload: CurrentEditBatch,

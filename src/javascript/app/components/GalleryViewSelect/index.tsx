@@ -2,10 +2,25 @@ import React from 'react';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import { GalleryViews } from '../../../consts/GalleryViews';
-
-import './index.scss';
 import { useGalleryView } from './useGalleryView';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
+
+import './index.scss';
+
+const viewName = (id: GalleryViews): string => {
+  switch (id) {
+    case GalleryViews.GALLERY_VIEW_SMALL:
+      return 'Smallest';
+    case GalleryViews.GALLERY_VIEW_1X:
+      return 'Original Size';
+    case GalleryViews.GALLERY_VIEW_2X:
+      return 'Double Size';
+    case GalleryViews.GALLERY_VIEW_MAX:
+      return 'Maximum Size';
+    default:
+      return '';
+  }
+};
 
 function GalleryViewSelect() {
   const {
@@ -43,6 +58,7 @@ function GalleryViewSelect() {
               onClick={() => {
                 updateView(view);
               }}
+              title={viewName(view)}
             >
               <SVG name={view} />
             </button>

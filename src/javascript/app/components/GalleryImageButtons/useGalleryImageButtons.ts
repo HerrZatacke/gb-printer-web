@@ -6,7 +6,6 @@ import type {
   DownloadImageStartAction, EditImageSelectionAction,
   ImageFavouriteAction,
   LightboxImageSetAction,
-  NewRGBNImageAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
@@ -19,7 +18,6 @@ interface UseGalleryImageButtons {
   startDownload: () => void,
   deleteImage: () => void,
   shareImage: () => void,
-  saveRGBNImage: () => void,
   updateImageToSelection: (mode: string) => void,
   setLightboxImage: () => void,
   updateFavouriteTag: (isFavourite: boolean) => void,
@@ -31,7 +29,6 @@ export enum ButtonOption {
   DOWNLOAD = 'download',
   DELETE = 'delete',
   SHARE = 'share',
-  SAVE_RGBN_IMAGE = 'saveRGBNImage',
   SELECT = 'select',
   VIEW = 'view',
   FAVOURITE = 'favourite',
@@ -88,12 +85,6 @@ export const useGalleryImageButtons = (
       dispatch<ShareImageStartAction>({
         type: Actions.SHARE_IMAGE,
         payload: hash,
-      });
-    },
-    saveRGBNImage: () => {
-      dispatch<NewRGBNImageAction>({
-        type: Actions.SAVE_RGBN_IMAGE,
-        payload: 'newRGBN',
       });
     },
     updateImageToSelection: (mode) => {

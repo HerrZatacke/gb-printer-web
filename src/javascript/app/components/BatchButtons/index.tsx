@@ -17,6 +17,24 @@ const BATCH_ACTIONS_MONOCHROME: BatchActionType[] = [
   BatchActionType.RGB,
 ];
 
+const batchActionTitle = (id: BatchActionType) => {
+  switch (id) {
+    case BatchActionType.DELETE:
+      return 'Delete';
+    case BatchActionType.ANIMATE:
+      return 'Animate';
+    case BatchActionType.DOWNLOAD:
+      return 'Download';
+    case BatchActionType.EDIT:
+      return 'Edit';
+    case BatchActionType.RGB:
+      return 'Create RGB Images';
+    default:
+      return '';
+  }
+};
+
+
 interface Props {
   page: number,
 }
@@ -45,6 +63,7 @@ function BatchButtons({ page }: Props) {
         <button
           type="button"
           onClick={showSortOptions}
+          title="Sort"
         >
           <SVG name="sort" />
         </button>
@@ -55,6 +74,7 @@ function BatchButtons({ page }: Props) {
         <button
           type="button"
           onClick={filter}
+          title="Manage Filters"
         >
           <SVG name="filter" />
           {activeFilters === 0 ? null : (
@@ -72,6 +92,7 @@ function BatchButtons({ page }: Props) {
         <button
           type="button"
           onClick={() => batchTask(hasSelected ? BatchActionType.UNCHECKALL : BatchActionType.CHECKALL)}
+          title={hasSelected ? 'Uncheck All' : 'Check All'}
         >
           <SVG name="checkmark" />
           {selectedImages === 0 ? null : (
@@ -94,6 +115,7 @@ function BatchButtons({ page }: Props) {
               disabled={!batchEnabled}
               type="button"
               onClick={() => batchTask(action)}
+              title={batchActionTitle(action)}
             >
               <SVG name={action} />
             </button>
@@ -115,6 +137,7 @@ function BatchButtons({ page }: Props) {
               disabled={!monochromeBatchEnabled}
               type="button"
               onClick={() => batchTask(action)}
+              title={batchActionTitle(action)}
             >
               <SVG name={action} />
             </button>
@@ -137,6 +160,7 @@ function BatchButtons({ page }: Props) {
             <button
               type="button"
               onClick={() => setPluginsActive(true)}
+              title="Use Plugin"
             >
               <SVG name="plug" />
             </button>
