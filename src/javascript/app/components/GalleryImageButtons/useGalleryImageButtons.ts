@@ -3,7 +3,7 @@ import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import type {
   DeleteImageAction,
-  DownloadImageStartAction,
+  DownloadImageStartAction, EditImageSelectionAction,
   ImageFavouriteAction,
   LightboxImageSetAction,
   NewRGBNImageAction,
@@ -23,9 +23,11 @@ interface UseGalleryImageButtons {
   updateImageToSelection: (mode: string) => void,
   setLightboxImage: () => void,
   updateFavouriteTag: (isFavourite: boolean) => void,
+  editImage: () => void,
 }
 
 export enum ButtonOption {
+  EDIT = 'edit',
   DOWNLOAD = 'download',
   DELETE = 'delete',
   SHARE = 'share',
@@ -38,10 +40,13 @@ export enum ButtonOption {
 
 interface UseGalleryImageButtonsParams {
   hash: string,
+  tags: string[],
   imageTitle?: string,
 }
 
-export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButtonsParams): UseGalleryImageButtons => {
+export const useGalleryImageButtons = (
+  { hash, imageTitle, tags }: UseGalleryImageButtonsParams,
+): UseGalleryImageButtons => {
   const stateData = useSelector((state: State) => ({
     isSelected: state.imageSelection.includes(hash),
     canShare: state.canShare,
@@ -116,6 +121,15 @@ export const useGalleryImageButtons = ({ hash, imageTitle }: UseGalleryImageButt
         payload: {
           hash,
           isFavourite,
+        },
+      });
+    },
+    editImage: () => {
+      dispatch<EditImageSelectionAction>({
+        type: Actions.EDIT_IMAGE_SELECTION,
+        payload: {
+          tags,
+          batch: [hash],
         },
       });
     },

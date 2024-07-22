@@ -5,19 +5,26 @@ import { GalleryViews } from '../../../consts/GalleryViews';
 
 import './index.scss';
 import { useGalleryView } from './useGalleryView';
-
-const GALLERY_VIEWS = [
-  GalleryViews.GALLERY_VIEW_SMALL,
-  GalleryViews.GALLERY_VIEW_1X,
-  GalleryViews.GALLERY_VIEW_2X,
-  GalleryViews.GALLERY_VIEW_MAX,
-];
+import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 
 function GalleryViewSelect() {
   const {
     currentView,
     updateView,
   } = useGalleryView();
+
+  const { ddpx } = useScreenDimensions();
+
+  const GALLERY_VIEWS = ddpx >= 1 ? [
+    GalleryViews.GALLERY_VIEW_SMALL,
+    GalleryViews.GALLERY_VIEW_1X,
+    GalleryViews.GALLERY_VIEW_2X,
+    GalleryViews.GALLERY_VIEW_MAX,
+  ] : [
+    GalleryViews.GALLERY_VIEW_1X,
+    GalleryViews.GALLERY_VIEW_2X,
+    GalleryViews.GALLERY_VIEW_MAX,
+  ];
 
   return (
     <ul className="gallery-view-select gallery-button__group">

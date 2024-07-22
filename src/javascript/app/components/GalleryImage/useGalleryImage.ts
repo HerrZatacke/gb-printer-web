@@ -7,7 +7,7 @@ import type { State } from '../../store/State';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
 import type { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
-import type { EditImageSelectionAction } from '../../../../types/actions/ImageActions';
+// import type { EditImageSelectionAction } from '../../../../types/actions/ImageActions';
 import type {
   ImageSelectionAddAction,
   ImageSelectionRemoveAction,
@@ -40,7 +40,6 @@ interface GalleryImageData {
 interface UseGalleryImage {
   galleryImageData?: GalleryImageData
   updateImageSelection: (mode: SelectionEditMode, shift: boolean, page: number) => void,
-  editImage: (tags: string[]) => void,
 }
 
 export const useGalleryImage = (hash: string): UseGalleryImage => {
@@ -101,15 +100,6 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
           payload: hash,
         });
       }
-    },
-    editImage: (tags: string[]) => {
-      dispatch<EditImageSelectionAction>({
-        type: Actions.EDIT_IMAGE_SELECTION,
-        payload: {
-          tags,
-          batch: [hash],
-        },
-      });
     },
   };
 };

@@ -15,9 +15,10 @@ interface Props {
   buttons: ButtonOption[],
   isFavourite: boolean,
   imageTitle?: string,
+  tags: string[],
 }
 
-function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) {
+function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: Props) {
   const [pluginsActive, setPluginsActive] = useState(false);
 
   const {
@@ -31,15 +32,12 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
     startDownload,
     updateImageToSelection,
     updateFavouriteTag,
-  } = useGalleryImageButtons({ hash, imageTitle });
+    editImage,
+  } = useGalleryImageButtons({ hash, imageTitle, tags });
 
   return (
     <div
       className="gallery-image-buttons"
-      onClick={(ev) => {
-        ev.stopPropagation();
-      }}
-      role="presentation"
       onMouseLeave={() => setPluginsActive(false)}
     >
       {buttons.includes(ButtonOption.SELECT) ? (
@@ -54,6 +52,15 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
           onClick={() => updateImageToSelection(isSelected ? 'remove' : 'add')}
         >
           <SVG name="checkmark" />
+        </button>
+      ) : null}
+      {buttons.includes(ButtonOption.EDIT) ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={editImage}
+        >
+          <SVG name="edit" />
         </button>
       ) : null}
       {buttons.includes(ButtonOption.DOWNLOAD) ? (
@@ -100,7 +107,10 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle }: Props) 
           <button
             type="button"
             className="gallery-image-buttons__button"
-            onClick={() => setPluginsActive(true)}
+            onClick={(ev) => {
+              ev.stopPropagation();
+              setPluginsActive(true);
+            }}
           >
             <SVG name="plug" />
           </button>

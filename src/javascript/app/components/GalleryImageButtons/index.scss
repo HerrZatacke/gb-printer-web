@@ -1,26 +1,30 @@
 .gallery-image-buttons {
-  height: 100%;
+  --item-size: 24px;
+  --padding: 8px;
+  --gap: 5px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: $z-index-gallery-image-buttons;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  flex-direction: row;
+  width: calc(((var(--padding) + var(--item-size)) * 2) + var(--gap));
   align-items: center;
   cursor: default;
-  padding: 0 10px;
-  gap: 4px;
-  pointer-events: none;
-
-  body.is-touch & {
-    gap: 6px;
-    padding: 0 0 5px 0;
-  }
+  padding: var(--padding);
+  gap: var(--gap);
+  @include theme-background-color($color-grey-70, $color-grey-10);
+  border-radius: $default-border-radius;
 
   &__button {
-    width: 20px;
-    height: 20px;
+    width: var(--item-size);
+    height: var(--item-size);
     border: none;
-    @include theme-background-color($color-grey-90, $color-grey-30);
     padding: 0 ;
     cursor: pointer;
+    @include theme-background-color($color-grey-90, $color-grey-30);
     @include theme-color($color-tertiary, $color-tertiary-bright);
     fill: currentColor;
     border-radius: $default-border-radius-small;
@@ -54,11 +58,8 @@
     }
   }
 
-  body.is-touch .gallery-image &__button {
-    width: 30px;
-    height: 30px;
+  body.is-touch & {
+    --gap: 8px;
+    --item-size: 32px;
   }
-
 }
-
-

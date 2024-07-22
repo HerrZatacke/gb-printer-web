@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import { useLongPress } from 'use-long-press';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -10,6 +11,7 @@ import SVG from '../SVG';
 import { SelectionEditMode, useGalleryImage } from './useGalleryImage';
 import { ButtonOption } from '../GalleryImageButtons/useGalleryImageButtons';
 import type { RGBNHashes } from '../../../../types/Image';
+import isTouchDevice from '../../../tools/isTouchDevice';
 
 import './index.scss';
 
@@ -22,6 +24,7 @@ interface Props {
 
 const buttons = [
   ButtonOption.SELECT,
+  ButtonOption.EDIT,
   ButtonOption.FAVOURITE,
   ButtonOption.DOWNLOAD,
   ButtonOption.DELETE,
@@ -31,11 +34,27 @@ const buttons = [
 ];
 
 function GalleryImage({ page, hash }: Props) {
+  const [showButtons, setShowButtons] = useState<boolean>(false);
+
   const {
     galleryImageData,
     updateImageSelection,
-    editImage,
   } = useGalleryImage(hash);
+
+  const bindLongPress = useLongPress(() => {
+    if (isTouchDevice()) {
+      updateImageSelection(
+        galleryImageData?.isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD,
+        false,
+        page,
+      );
+    }
+  });
+
+  const globalClickListener = useCallback(() => {
+    window.removeEventListener('click', globalClickListener);
+    setShowButtons(false);
+  }, []);
 
   if (!galleryImageData) {
     return null;
@@ -63,8 +82,11 @@ function GalleryImage({ page, hash }: Props) {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
       updateImageSelection(isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD, ev.shiftKey, page);
-    } else {
-      editImage(tags);
+    } else if (!showButtons) {
+      setShowButtons(true);
+      window.requestAnimationFrame(() => {
+        window.addEventListener('click', globalClickListener);
+      });
     }
   };
 
@@ -75,15 +97,22 @@ function GalleryImage({ page, hash }: Props) {
           'gallery-image--selected': isSelected,
         })
       }
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...bindLongPress()}
       onClick={handleCellClick}
       role="presentation"
     >
-      <GalleryImageButtons
-        isFavourite={isFavourite}
-        hash={hash}
-        imageTitle={title}
-        buttons={buttons}
-      />
+      {
+        showButtons ? (
+          <GalleryImageButtons
+            isFavourite={isFavourite}
+            hash={hash}
+            imageTitle={title}
+            buttons={buttons}
+            tags={tags}
+          />
+        ) : null
+      }
       <div className="gallery-image__image">
         <ImageRender
           lockFrame={lockFrame}

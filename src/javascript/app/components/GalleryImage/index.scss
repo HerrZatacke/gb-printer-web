@@ -12,11 +12,6 @@
 
   .gallery--1x & {
     max-height: 350px;
-
-  }
-
-  body.is-touch & {
-    padding-top: 80px;
   }
 
   .gallery--2x & {
@@ -57,23 +52,6 @@
     font-size: 12px;
     line-height: 10px;
     @include theme-color($color-grey-80, $color-grey-40);
-  }
-
-  //.rgbn-select,
-  .gallery-image-buttons {
-    position: absolute;
-    left: -4px;
-    height: auto;
-    top: 5px;
-    z-index: $z-index-gallery-image-buttons;
-
-    body.no-touch & {
-      display: none;
-    }
-  }
-
-  body.no-touch &:hover .gallery-image-buttons {
-    display: flex;
   }
 
   &__tags {
