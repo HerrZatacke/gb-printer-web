@@ -37,7 +37,11 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
   return (
     <div
       className="gallery-image-buttons"
+      onClick={(ev) => {
+        ev.stopPropagation();
+      }}
       onMouseLeave={() => setPluginsActive(false)}
+      role="presentation"
     >
       {buttons.includes(ButtonOption.SELECT) ? (
         <button

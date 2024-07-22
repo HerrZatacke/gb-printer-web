@@ -39,6 +39,7 @@ function GalleryImage({ page, hash }: Props) {
   const {
     galleryImageData,
     updateImageSelection,
+    editImage,
   } = useGalleryImage(hash);
 
   const bindLongPress = useLongPress(() => {
@@ -82,11 +83,16 @@ function GalleryImage({ page, hash }: Props) {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
       updateImageSelection(isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD, ev.shiftKey, page);
-    } else if (!showButtons && isTouchDevice()) {
-      setShowButtons(true);
-      window.requestAnimationFrame(() => {
-        window.addEventListener('click', globalClickListener);
-      });
+    } else if (isTouchDevice()) {
+      if (!showButtons) {
+        setShowButtons(true);
+        window.requestAnimationFrame(() => {
+          window.addEventListener('click', globalClickListener);
+        });
+      }
+    } else {
+      ev.preventDefault();
+      editImage(tags);
     }
   };
 
