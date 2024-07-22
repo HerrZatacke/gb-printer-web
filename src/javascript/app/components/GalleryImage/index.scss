@@ -77,6 +77,7 @@
   &__created-meta {
     display: flex;
     justify-content: space-between;
+    z-index: $z-index-meta-pre;
   }
 
   &__meta {
@@ -109,7 +110,6 @@
     white-space: pre;
     font-family: monospace;
     overflow: auto;
-    z-index: $z-index-content;
     font-size: 11px;
     line-height: 14px;
   }
