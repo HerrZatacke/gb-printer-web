@@ -82,7 +82,7 @@ function GalleryImage({ page, hash }: Props) {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
       updateImageSelection(isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD, ev.shiftKey, page);
-    } else if (!showButtons) {
+    } else if (!showButtons && isTouchDevice()) {
       setShowButtons(true);
       window.requestAnimationFrame(() => {
         window.addEventListener('click', globalClickListener);
@@ -100,6 +100,16 @@ function GalleryImage({ page, hash }: Props) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...bindLongPress()}
       onClick={handleCellClick}
+      onMouseEnter={() => {
+        if (!isTouchDevice()) {
+          setShowButtons(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!isTouchDevice()) {
+          setShowButtons(false);
+        }
+      }}
       role="presentation"
     >
       {
