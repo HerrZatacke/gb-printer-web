@@ -15,7 +15,7 @@ import Pagination from '../Pagination';
 
 const getSmallStyleVars = (screenDimensions: ScreenDimensions): CSSPropertiesVars => {
   const smallTilePadding = 10;
-  const smallGap = 15 / screenDimensions.ddpx;
+  const smallGap = 10 / screenDimensions.ddpx; // keep "10" aligned with '--1x-gap' in 'Layout/index.scss'
   const smallImageSize = 160 / screenDimensions.ddpx;
   const colSize = (2 * smallTilePadding) + smallImageSize;
   const columns = Math.floor((screenDimensions.layoutWidth + smallGap) / (colSize + smallGap));

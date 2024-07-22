@@ -15,7 +15,7 @@ function GalleryViewSelect() {
 
   const { ddpx } = useScreenDimensions();
 
-  const GALLERY_VIEWS = ddpx >= 1 ? [
+  const GALLERY_VIEWS = ddpx > 1 ? [
     GalleryViews.GALLERY_VIEW_SMALL,
     GalleryViews.GALLERY_VIEW_1X,
     GalleryViews.GALLERY_VIEW_2X,
