@@ -1,3 +1,17 @@
+html {
+  @supports (scrollbar-width: auto) {
+    --scrollbar-color: #{$color-grey-30};
+
+    &.theme-bright {
+      --scrollbar-color: #{$color-grey-70};
+    }
+
+    scrollbar-gutter: stable;
+    scrollbar-color: var(--scrollbar-color) transparent;
+    scrollbar-width: thin;
+  }
+}
+
 body {
   @include font;
 

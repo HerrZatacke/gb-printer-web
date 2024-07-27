@@ -99,8 +99,8 @@
   &__meta-pre {
     display: none;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: -55%;
+    right: 0;
     @include theme-background-color($color-grey-30, $color-grey-50);
     @include theme-color($color-text-bright, $color-black);
     border-radius: $default-border-radius;
