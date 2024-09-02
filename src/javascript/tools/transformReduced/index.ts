@@ -14,7 +14,7 @@ const transformReduced = ({ dispatch }: TypedStore) => async (file: File): Promi
 
   await Promise.all(result.map(async (tiles: string[], index: number) => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
-    const { dataHash: frameHash } = await compressAndHashFrame(tiles);
+    const { dataHash: frameHash } = await compressAndHashFrame(tiles, 2);
 
     const indexCount = result.length < 2 ? '' : ` (${index + 1})`;
 

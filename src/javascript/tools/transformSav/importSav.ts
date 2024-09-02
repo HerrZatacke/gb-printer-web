@@ -102,7 +102,7 @@ const getImportSav = ({
         }
 
         const { dataHash: imageHash } = await compressAndHash(tiles);
-        const { dataHash: frameHash } = await compressAndHashFrame(tiles);
+        const { dataHash: frameHash } = await compressAndHashFrame(tiles, 2);
 
         const fName = typeof fileName === 'function' ?
           fileName({ indexText, albumIndex, displayIndex }) :

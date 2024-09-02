@@ -87,7 +87,7 @@ const moveBitmapsToImport = (dispatch: Dispatch<AnyAction>): DispatchBitmapsToIm
       .map(encodeTile);
 
     const { dataHash: imageHash } = await compressAndHash(tiles);
-    const { dataHash: frameHash } = await compressAndHashFrame(tiles);
+    const { dataHash: frameHash } = await compressAndHashFrame(tiles, 2);
 
     dispatch<ImportQueueAddAction>({
       type: Actions.IMPORTQUEUE_ADD,

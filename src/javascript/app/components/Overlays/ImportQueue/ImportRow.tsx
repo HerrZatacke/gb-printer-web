@@ -106,24 +106,22 @@ function ImportRow({
         ) }
       </div>
       <div className="import-image__buttons">
-        { tiles.length === 360 ? (
-          <button
-            className="import-image__button import-image__button--frame"
-            type="button"
-            title="Import as Frame"
-            onClick={() => {
-              dispatch<FrameQueueAddAction>({
-                type: Actions.FRAMEQUEUE_ADD,
-                payload: importItem,
-              });
-            }}
-          >
-            <SVG
-              className="import-image__icon"
-              name="frame"
-            />
-          </button>
-        ) : null }
+        <button
+          className="import-image__button import-image__button--frame"
+          type="button"
+          title="Import as Frame"
+          onClick={() => {
+            dispatch<FrameQueueAddAction>({
+              type: Actions.FRAMEQUEUE_ADD,
+              payload: importItem,
+            });
+          }}
+        >
+          <SVG
+            className="import-image__icon"
+            name="frame"
+          />
+        </button>
         <button
           className="import-image__button import-image__button--delete"
           type="button"

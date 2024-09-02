@@ -1,0 +1,22 @@
+import type { FrameData } from '../applyFrame/frameData';
+
+export const getFrameFromFullTiles = (tiles: string[], imageStartLine: number): FrameData => {
+
+  const upper = tiles.slice(0, imageStartLine * 20);
+  const lower = tiles.slice((imageStartLine + 14) * 20);
+  const left = Array(14).fill(0).map((_, line) => {
+    const offsetStart = (line + imageStartLine) * 20;
+    return tiles.slice(offsetStart, offsetStart + 2);
+  });
+  const right = Array(14).fill(0).map((_, line) => {
+    const offsetStart = (line + imageStartLine) * 20;
+    return tiles.slice(offsetStart + 18, offsetStart + 20);
+  });
+
+  return {
+    upper,
+    left,
+    right,
+    lower,
+  };
+};

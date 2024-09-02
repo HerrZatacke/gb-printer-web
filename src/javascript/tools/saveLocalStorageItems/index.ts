@@ -32,7 +32,7 @@ export const saveFrameFileContent = async (fileContent: string): Promise<string>
       .flat(),
     ...tiles.lower,
   ];
-  return saveFrameData(paddedFrameData);
+  return saveFrameData(paddedFrameData, 2);
 };
 
 const saveLocalStorageItems = async ({ images, frames }: RepoContents): Promise<string[]> => {
