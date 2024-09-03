@@ -32,7 +32,7 @@ function FrameQueue() {
     frameIndexValid,
   } = useEditFrame({
     id: '',
-    hash: frame.frameHash,
+    hash: '',
     name: frame.fileName,
   });
 

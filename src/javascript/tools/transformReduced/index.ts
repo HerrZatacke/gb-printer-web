@@ -1,7 +1,6 @@
 import { parsePicoToClassic } from 'gbp-decode';
 import readFileAs, { ReadAs } from '../readFileAs';
 import { compressAndHash } from '../storage';
-import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
 import { randomId } from '../randomId';
 import type { TypedStore } from '../../app/store/State';
@@ -14,7 +13,6 @@ const transformReduced = ({ dispatch }: TypedStore) => async (file: File): Promi
 
   await Promise.all(result.map(async (tiles: string[], index: number) => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
-    const { dataHash: frameHash } = await compressAndHashFrame(tiles, 2);
 
     const indexCount = result.length < 2 ? '' : ` (${index + 1})`;
 
@@ -23,7 +21,6 @@ const transformReduced = ({ dispatch }: TypedStore) => async (file: File): Promi
       payload: {
         fileName: `${file.name}${indexCount}`,
         imageHash,
-        frameHash,
         tiles,
         lastModified: file.lastModified ? (file.lastModified + index) : undefined,
         tempId: randomId(),

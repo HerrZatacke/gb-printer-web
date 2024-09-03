@@ -2,7 +2,6 @@ import type { AnyAction, Dispatch } from 'redux';
 import { ditherFilter } from '../../../../tools/applyBitmapFilter';
 import { Actions } from '../../../store/actions';
 import { compressAndHash } from '../../../../tools/storage';
-import { compressAndHashFrame } from '../../../../tools/applyFrame/frameData';
 import type { QueueImage } from '../../../../../types/QueueImage';
 import type { ImportQueueAddAction } from '../../../../../types/actions/QueueActions';
 import { randomId } from '../../../../tools/randomId';
@@ -87,14 +86,12 @@ const moveBitmapsToImport = (dispatch: Dispatch<AnyAction>): DispatchBitmapsToIm
       .map(encodeTile);
 
     const { dataHash: imageHash } = await compressAndHash(tiles);
-    const { dataHash: frameHash } = await compressAndHashFrame(tiles, 2);
 
     dispatch<ImportQueueAddAction>({
       type: Actions.IMPORTQUEUE_ADD,
       payload: {
         fileName,
         imageHash,
-        frameHash,
         tiles,
         lastModified,
         tempId: randomId(),

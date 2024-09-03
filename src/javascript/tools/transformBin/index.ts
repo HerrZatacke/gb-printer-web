@@ -1,7 +1,6 @@
 import { Actions } from '../../app/store/actions';
 import readFileAs, { ReadAs } from '../readFileAs';
 import { compressAndHash } from '../storage';
-import { compressAndHashFrame } from '../applyFrame/frameData';
 import { randomId } from '../randomId';
 import type { ImportQueueAddAction } from '../../../types/actions/QueueActions';
 import type { TypedStore } from '../../app/store/State';
@@ -51,14 +50,12 @@ const getTransformBin = ({ dispatch }: TypedStore) => async (file: File): Promis
   }
 
   const { dataHash: imageHash } = await compressAndHash(tiles);
-  const { dataHash: frameHash } = await compressAndHashFrame(tiles, 2);
 
   dispatch<ImportQueueAddAction>({
     type: Actions.IMPORTQUEUE_ADD,
     payload: {
       fileName: file.name,
       imageHash,
-      frameHash,
       tiles,
       lastModified: file.lastModified,
       tempId: randomId(),

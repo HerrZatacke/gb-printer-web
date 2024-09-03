@@ -23,7 +23,6 @@ function ImportRow({
     fileName,
     lastModified,
     imageHash,
-    frameHash,
     tempId,
   } = importItem;
 
@@ -31,13 +30,11 @@ function ImportRow({
     palette,
     locale,
     storeDuplicateImage,
-    storeDuplicateFrame,
     queueDuplicates,
   } = useSelector((state: State) => ({
     palette: state.palettes.find(({ shortName }) => shortName === paletteShort),
     locale: state.preferredLocale,
     storeDuplicateImage: state.images.find(({ hash }) => hash === imageHash),
-    storeDuplicateFrame: state.frames.find(({ hash }) => hash === frameHash),
     queueDuplicates: state.importQueue.filter((item) => item.imageHash === imageHash).length,
   }));
 
@@ -91,16 +88,6 @@ function ImportRow({
               title={`This image has already been imported${storeDuplicateImage.title ? ` as "${storeDuplicateImage.title}"` : ''}`}
             >
               I
-            </div>
-          ) : null
-        ) }
-        { (
-          storeDuplicateFrame ? (
-            <div
-              className="import-image__duplicate-icon import-image__duplicate-icon--frame"
-              title={`This frame has already been imported${storeDuplicateFrame.name ? ` as "${storeDuplicateFrame.name}"` : ''}`}
-            >
-              F
             </div>
           ) : null
         ) }

@@ -14,7 +14,9 @@ interface Props {
 
 function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
 
-  const palette = useSelector((state: State) => (state.palettes.find(({ shortName }) => shortName === state.activePalette)?.palette));
+  const palette = useSelector((state: State) => (
+    state.palettes.find(({ shortName }) => shortName === state.activePalette)?.palette
+  ));
 
   const previewTiles = useMemo<string[]>(() => {
     const pt: string[] = [];
@@ -25,12 +27,6 @@ function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
       const frameSpliceLeftIndex = (line + startLine) * 20;
       const frameSpliceRightIndex = frameSpliceLeftIndex + 18;
       const posTilesSpliceIndex = line * 16;
-
-      console.log({
-        frameSpliceLeftIndex,
-        frameSpliceRightIndex,
-        posTilesSpliceIndex,
-      });
 
       pt.push(
         ...tiles.slice(frameSpliceLeftIndex, frameSpliceLeftIndex + 2),
