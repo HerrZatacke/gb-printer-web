@@ -49,7 +49,7 @@ export const loadImageTiles = (state: State | ReducedPickState, recover?: Recove
 export const getImageTileCount = (state: State) => {
   const tileLoader = loadImageTiles(state);
   return async (hash: string): Promise<number> => {
-    const loadedTiles = await tileLoader(hash);
+    const loadedTiles = await tileLoader(hash, true, '');
     if (loadedTiles) {
       return (
         (loadedTiles as string[])?.length ||

@@ -2,7 +2,6 @@ import readFileAs, { ReadAs } from '../readFileAs';
 import transformCapture from '../transformCapture';
 import transformClassic from '../transformClassic';
 import { compressAndHash } from '../storage';
-import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
 import type { TypedStore } from '../../app/store/State';
 import type { ImportQueueAddAction } from '../../../types/actions/QueueActions';
@@ -22,7 +21,6 @@ const getTransformPlainText = ({ dispatch }: TypedStore) => async (file: File) =
 
   await Promise.all(result.map(async (tiles: string[], index: number): Promise<boolean> => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
-    const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
     const indexCount = result.length < 2 ? '' : ` ${(index + 1).toString(10).padStart(2, '0')}`;
 
@@ -31,7 +29,6 @@ const getTransformPlainText = ({ dispatch }: TypedStore) => async (file: File) =
       payload: {
         fileName: `${file.name}${indexCount}`,
         imageHash,
-        frameHash,
         tiles,
         lastModified: file.lastModified ? (file.lastModified + index) : undefined,
         tempId: randomId(),
