@@ -20,7 +20,7 @@ const applyFrame = async (tiles: string[], frameHash: string): Promise<string[]>
   }
 
   const unframedImage: string[] = tiles.reduce((acc: string[], tile: string, index: number): string[] => (
-    tileIndexIsPartOfFrame(index) ? acc : [...acc, tile]
+    tileIndexIsPartOfFrame(index, 2) ? acc : [...acc, tile]
   ), []);
 
   const result: string[] = [...frameData.upper];

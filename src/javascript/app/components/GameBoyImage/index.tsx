@@ -8,6 +8,7 @@ import './index.scss';
 export interface GameBoyImageProps {
   palette?: string[] | RGBNPalette,
   tiles: string[] | RGBNTiles,
+  imageStartLine: number,
   lockFrame?: boolean,
   invertPalette?: boolean,
   asThumb?: boolean,
@@ -17,6 +18,7 @@ export interface GameBoyImageProps {
 function GameBoyImage({
   palette,
   tiles,
+  imageStartLine,
   lockFrame,
   invertPalette,
   asThumb = false,
@@ -46,7 +48,7 @@ function GameBoyImage({
             canvas: tempCanvas,
             tiles: tiles as RGBNTiles,
             palette,
-            lockFrame: lockFrame || false, // ToDo: Update package to allow optional param
+            lockFrame,
           });
         }
       } else {
@@ -56,8 +58,9 @@ function GameBoyImage({
             canvas: tempCanvas,
             tiles: tiles as string[],
             palette,
-            lockFrame: lockFrame || false, // ToDo: Update package to allow optional param
-            invertPalette: invertPalette || false, // ToDo: Update package to allow optional param
+            lockFrame,
+            invertPalette,
+            imageStartLine,
           });
         }
       }
@@ -74,7 +77,7 @@ function GameBoyImage({
       }
     }
 
-  }, [tiles, palette, lockFrame, invertPalette, rotation, isRGBN]);
+  }, [tiles, palette, lockFrame, invertPalette, rotation, isRGBN, imageStartLine]);
 
   return (
     <div

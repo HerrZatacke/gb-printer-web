@@ -12,7 +12,7 @@
   max-height: 350px;
   @include theme-background-color(rgba($color-grey-40, 0.5), rgba($color-grey-30, 0.5));
 
-  &:hover{
+  &:hover {
     @include theme-background-color($color-grey-60, $color-grey-30);
   }
 
@@ -26,14 +26,24 @@
     overflow: hidden;
   }
 
-  &__id {
+  &__row {
+    display: flex;
+    justify-content: space-between;
     margin-top: 6px;
-    font-size: 12px;
     line-height: 14px;
+  }
+
+  &__id {
+    font-size: 12px;
     display: block;
     @include theme-color($color-tertiary-dark, $color-tertiary-bright);
     white-space: pre;
     font-family: monospace;
+  }
+
+  &__usage {
+    display: block;
+    font-size: 12px;
   }
 
   &__name {
