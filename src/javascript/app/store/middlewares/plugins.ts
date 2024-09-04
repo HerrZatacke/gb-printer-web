@@ -13,6 +13,7 @@ import type { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, Plugi
 import type { TypedStore } from '../State';
 import type { ProgressExecutePluginAction } from '../../../../types/actions/ProgressActions';
 import type { PluginUpdatePropertiesAction } from '../../../../types/actions/PluginActions';
+import { loadFrameData } from '../../../tools/applyFrame/frameData';
 
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,
@@ -66,6 +67,10 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
       const tiles = await getTiles();
       let decoder: RGBNDecoder | Decoder;
 
+      const frame = state.frames.find(({ id }) => id === meta.frame);
+      const frameData = frame ? await loadFrameData(frame.hash) : null;
+      const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
+
       if (isRGBN) {
         decoder = new RGBNDecoder();
         decoder.update({
@@ -81,6 +86,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
           tiles: tiles as string[],
           palette: (palette as Palette).palette as string[],
           lockFrame,
+          imageStartLine,
           invertPalette,
         });
       }

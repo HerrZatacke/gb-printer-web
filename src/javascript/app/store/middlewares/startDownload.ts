@@ -7,6 +7,7 @@ import { Actions } from '../actions';
 import type { State } from '../State';
 import type { PrepareFilesReturnType } from '../../../tools/download/getPrepareFiles';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { loadFrameData } from '../../../tools/applyFrame/frameData';
 
 const handleSingleImage = (
   prepareFiles: PrepareFilesReturnType,
@@ -16,6 +17,8 @@ const handleSingleImage = (
   if (!image) {
     throw new Error('image not found');
   }
+
+  const frame = state.frames.find(({ id }) => id === image.frame);
 
   const imagePalette = getImagePalette(state, image);
   if (!imagePalette) {
@@ -29,11 +32,15 @@ const handleSingleImage = (
 
   const tiles = await loadImageTiles(state)(image.hash);
 
+  const frameData = frame ? await loadFrameData(frame?.hash) : null;
+
+  const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
+
   if (!tiles) {
     throw new Error('no tiles');
   }
 
-  const files = await prepareFiles(imagePalette, image)(tiles);
+  const files = await prepareFiles(imagePalette, image)(tiles, imageStartLine);
   return download(zipFilename)(files);
 };
 
@@ -50,13 +57,20 @@ const handleImageCollection =
         throw new Error('image not found');
       }
 
+      const frame = state.frames.find(({ id }) => id === image.frame);
+
       const imagePalette = getImagePalette(state, image);
       if (!imagePalette) {
         throw new Error('imagePalette not found');
       }
 
       const tiles = await loadImageTiles(state)(image.hash);
-      return prepareFiles(imagePalette, image)(tiles || []);
+
+      const frameData = frame ? await loadFrameData(frame?.hash) : null;
+
+      const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
+
+      return prepareFiles(imagePalette, image)(tiles || [], imageStartLine);
     }))
       .then((resultImages) => resultImages.flat())
       .then(download(zipFilename));
