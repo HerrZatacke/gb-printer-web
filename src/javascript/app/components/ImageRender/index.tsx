@@ -43,6 +43,7 @@ function ImageRender({
       invertPalette={gbImageProps.invertPalette}
       tiles={gbImageProps.tiles}
       palette={gbImageProps.palette}
+      imageStartLine={gbImageProps.imageStartLine}
       rotation={gbImageProps.rotation}
     />
   ) : (

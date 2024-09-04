@@ -42,7 +42,11 @@ function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
 
   return (
     <div className="edit-frame-start-line">
-      <GameBoyImage tiles={previewTiles} palette={palette} />
+      <GameBoyImage
+        tiles={previewTiles}
+        palette={palette}
+        imageStartLine={startLine}
+      />
       <div className="edit-frame-start-line__buttons">
         <button
           className="button edit-frame-start-line__button"

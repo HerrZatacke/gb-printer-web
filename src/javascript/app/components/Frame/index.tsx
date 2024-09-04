@@ -19,6 +19,8 @@ function Frame({ frameId, name, palette }: Props) {
     editFrame,
     frameHash,
     enableDebug,
+    imageStartLine,
+    usage,
   } = useFrame({ frameId, name });
 
   if (!tiles) {
@@ -37,13 +39,19 @@ function Frame({ frameId, name, palette }: Props) {
             lockFrame={false}
             invertPalette={false}
             palette={palette}
+            imageStartLine={imageStartLine}
             tiles={tiles}
           />
         ) : null }
       </div>
-      <code className="frame__id">
-        {frameId}
-      </code>
+      <div className="frame__row">
+        <code className="frame__id">
+          {frameId}
+        </code>
+        <span className="frame__usage">
+          {usage ? `Used ${usage} times` : 'Not used'}
+        </span>
+      </div>
       <span className="frame__name">
         {name}
       </span>

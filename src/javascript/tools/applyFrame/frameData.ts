@@ -53,8 +53,7 @@ export const loadFrameData = async (frameHash: string): Promise<null | FrameData
   try {
     return JSON.parse(raw);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('rawData is not in JSON format');
+    /* frame is not in new format */
   }
 
   try {

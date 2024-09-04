@@ -54,6 +54,7 @@ function ImportRow({
             invertPalette={false}
             lockFrame={false}
             palette={palette?.palette}
+            imageStartLine={2}
             asThumb
           />
         </span>
