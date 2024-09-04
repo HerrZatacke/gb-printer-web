@@ -3,6 +3,7 @@ import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
+import { loadFrameData } from '../../../tools/applyFrame/frameData';
 
 const batch: MiddlewareWithState = (store) => (next) => async (action) => {
 
@@ -13,6 +14,8 @@ const batch: MiddlewareWithState = (store) => (next) => async (action) => {
     if (!image) {
       throw new Error('image not found');
     }
+
+    const frame = state.frames.find(({ id }) => id === image.frame);
 
     const imagePalette = getImagePalette(state, image);
     if (!imagePalette) {
@@ -30,7 +33,11 @@ const batch: MiddlewareWithState = (store) => (next) => async (action) => {
 
     const tiles = await loadImageTiles(state)(image.hash);
 
-    const downloadInfo = await prepareFiles(imagePalette, image)(tiles || []);
+    const frameData = frame ? await loadFrameData(frame?.hash) : null;
+
+    const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
+
+    const downloadInfo = await prepareFiles(imagePalette, image)(tiles || [], imageStartLine);
 
     const { blob, filename, title } = downloadInfo[0];
 
