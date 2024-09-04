@@ -1,5 +1,6 @@
 import { load, save } from '../storage';
 import { loadFrameData, saveFrameData } from '../applyFrame/frameData';
+import type { FrameData } from '../applyFrame/frameData';
 import type { RepoContents } from '../../../types/Export';
 
 export const saveImageFileContent = async (fileContent: string): Promise<string> => {
@@ -12,7 +13,9 @@ export const saveImageFileContent = async (fileContent: string): Promise<string>
 };
 
 export const saveFrameFileContent = async (fileContent: string): Promise<string> => {
-  const tiles = JSON.parse(fileContent);
+  const tiles = JSON.parse(fileContent) as FrameData;
+  const imageStartLine = tiles.upper.length / 20;
+
   const black = Array(32)
     .fill('f')
     .join('');
@@ -32,7 +35,7 @@ export const saveFrameFileContent = async (fileContent: string): Promise<string>
       .flat(),
     ...tiles.lower,
   ];
-  return saveFrameData(paddedFrameData, 2);
+  return saveFrameData(paddedFrameData, imageStartLine);
 };
 
 const saveLocalStorageItems = async ({ images, frames }: RepoContents): Promise<string[]> => {
