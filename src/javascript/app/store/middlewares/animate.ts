@@ -20,6 +20,7 @@ import type { State } from '../State';
 import unique from '../../../tools/unique';
 import type { ProgressCreateGifAction } from '../../../../types/actions/ProgressActions';
 import type { ErrorAction } from '../../../../types/actions/GlobalActions';
+import { loadFrameData } from '../../../tools/applyFrame/frameData';
 
 interface GifFrameData {
   palette: number[],
@@ -142,6 +143,10 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
     const tiles = await tileLoader(image.hash);
     const palette = getImagePalette(state, image);
 
+    const frame = state.frames.find(({ id }) => id === image.frame);
+    const frameData = frame ? await loadFrameData(frame.hash) : null;
+    const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
+
     if (!tiles || !palette) {
       throw new Error('missing tiles or palette');
     }
@@ -167,6 +172,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
         tiles: tiles as string[],
         palette: (palette as Palette).palette as string[],
         lockFrame,
+        imageStartLine,
         invertPalette,
       });
     }

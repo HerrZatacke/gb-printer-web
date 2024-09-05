@@ -17,6 +17,7 @@ const getPrepareFiles =
     image: Image,
   ) => async (
     tiles: string[] | RGBNTiles,
+    imageStartLine: number,
   ): Promise<DownloadInfo[]> => {
     const { exportScaleFactors, exportFileTypes, handleExportFrame } = state;
 
@@ -42,6 +43,7 @@ const getPrepareFiles =
         tiles: tiles as string[],
         palette: (palette as Palette).palette as string[],
         lockFrame,
+        imageStartLine,
         invertPalette,
       });
     }

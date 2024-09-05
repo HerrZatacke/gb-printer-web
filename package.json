@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.41.1",
+  "version": "1.42.2",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
@@ -76,7 +76,7 @@
     "filenamify": "^6.0.0",
     "filesize": "^6.1.0",
     "flatten": "^1.0.3",
-    "gb-image-decoder": "^1.0.0",
+    "gb-image-decoder": "^1.1.0",
     "gb-palettes": "^1.0.14",
     "gbp-decode": "^1.4.1",
     "github-markdown-css": "^4.0.0",

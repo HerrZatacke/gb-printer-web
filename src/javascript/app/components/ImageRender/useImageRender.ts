@@ -9,6 +9,7 @@ import type { RGBNHashes } from '../../../../types/Image';
 import type { TryRecoverImageAction } from '../../../../types/actions/ImageActions';
 import type { GameBoyImageProps } from '../GameBoyImage';
 import type { Rotation } from '../../../tools/applyRotation';
+import { loadFrameData } from '../../../tools/applyFrame/frameData';
 
 interface UseImageRender {
   gbImageProps: GameBoyImageProps | null,
@@ -37,9 +38,10 @@ export const useImageRender = ({
 
   const dispatch = useDispatch();
 
-  const { allImages, allFrames, allPalettes } = useSelector((state: State) => ({
+  const { allImages, allFrames, allPalettes, frameHash } = useSelector((state: State) => ({
     allImages: state.images,
     allFrames: state.frames,
+    frameHash: state.frames.find(({ id }) => id === frameId)?.hash,
     allPalettes: state.palettes,
   }));
 
@@ -82,6 +84,10 @@ export const useImageRender = ({
 
       const loadedTiles = await loadImageTiles(hash, false, frameId);
 
+      const frameData = frameHash ? await loadFrameData(frameHash) : null;
+
+      const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
+
       // check after async call
       if (aborted) {
         return;
@@ -92,6 +98,7 @@ export const useImageRender = ({
           tiles: loadedTiles,
           palette: usedPalette,
           invertPalette,
+          imageStartLine,
           lockFrame,
           rotation,
         });
@@ -103,7 +110,7 @@ export const useImageRender = ({
     return () => {
       aborted = true;
     };
-  }, [loadImageTiles, hash, frameId, palette, invertPalette, lockFrame, rotation, usedPalette]);
+  }, [loadImageTiles, hash, frameId, palette, invertPalette, lockFrame, rotation, usedPalette, frameHash]);
 
   return {
     gbImageProps,

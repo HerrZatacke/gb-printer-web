@@ -52,7 +52,7 @@ function EditImageTabs(props: Props) {
     props.mixedTypes ? null : Tab.PALETTE,
     props.regularImage ? Tab.FRAME : null,
     Tab.TAGS,
-    Tab.MISC,
+    props.meta ? Tab.MISC : null,
   ].reduce(reduceItems<Tab>, []);
 
   const [tab, setTab] = useState(tabs[0]);

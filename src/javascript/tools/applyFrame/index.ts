@@ -1,3 +1,4 @@
+import { tileIndexIsPartOfFrame } from 'gb-image-decoder';
 import { loadFrameData } from './frameData';
 
 const applyFrame = async (tiles: string[], frameHash: string): Promise<string[]> => {
@@ -13,25 +14,22 @@ const applyFrame = async (tiles: string[], frameHash: string): Promise<string[]>
     return tiles;
   }
 
-  const result = [...tiles];
+  if (frameData.left.length !== 14 || frameData.right.length !== 14) {
+    console.error('Invalid frameData');
+    return tiles;
+  }
 
-  frameData.upper.forEach((tile, index) => {
-    result[index] = tile;
-  });
+  const unframedImage: string[] = tiles.reduce((acc: string[], tile: string, index: number): string[] => (
+    tileIndexIsPartOfFrame(index, 2) ? acc : [...acc, tile]
+  ), []);
 
-  frameData.lower.forEach((tile, index) => {
-    result[index + 320] = tile;
-  });
+  const result: string[] = [...frameData.upper];
 
-  frameData.left.forEach((frameTiles, index) => {
-    result[(20 * index) + 40] = frameTiles[0];
-    result[(20 * index) + 41] = frameTiles[1];
-  });
+  for (let line = 0; line < 14; line += 1) {
+    result.push(...frameData.left[line], ...unframedImage.slice(line * 16, (line + 1) * 16), ...frameData.right[line]);
+  }
 
-  frameData.right.forEach((frameTiles, index) => {
-    result[(20 * index) + 58] = frameTiles[0];
-    result[(20 * index) + 59] = frameTiles[1];
-  });
+  result.push(...frameData.lower);
 
   return result;
 };

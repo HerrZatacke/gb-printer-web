@@ -5,7 +5,6 @@ import getFileMeta from './getFileMeta';
 import sortBy from '../sortby';
 import transformImage from './transformImage';
 import { compressAndHash } from '../storage';
-import { compressAndHashFrame } from '../applyFrame/frameData';
 import { Actions } from '../../app/store/actions';
 import type { FileMetaData, ImportSavFn, ImportSavParams, WithTiles } from './types';
 import type { ImportQueueAddMultiAction } from '../../../types/actions/QueueActions';
@@ -102,7 +101,6 @@ const getImportSav = ({
         }
 
         const { dataHash: imageHash } = await compressAndHash(tiles);
-        const { dataHash: frameHash } = await compressAndHashFrame(tiles);
 
         const fName = typeof fileName === 'function' ?
           fileName({ indexText, albumIndex, displayIndex }) :
@@ -111,7 +109,6 @@ const getImportSav = ({
         return {
           fileName: fName,
           imageHash,
-          frameHash,
           tiles,
           lastModified,
           meta,

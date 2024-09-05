@@ -36,7 +36,7 @@ const getLayoutWidth = (windowWidth: number): number => {
 const getScreenDimensions = (): ScreenDimensions => ({
   width: window.innerWidth,
   height: window.innerHeight,
-  ddpx: window.devicePixelRatio,
+  ddpx: window.devicePixelRatio < 3 ? window.devicePixelRatio : window.devicePixelRatio / 2,
   layoutWidth: getLayoutWidth(window.innerWidth),
 });
 

@@ -9,10 +9,12 @@ import { saveFrameData } from '../../../../tools/applyFrame/frameData';
 import type { State } from '../../../store/State';
 import type { AddFrameAction, FrameGroupNamesAction } from '../../../../../types/actions/FrameActions';
 import type { FrameQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
+import EditFrameStartLine from '../EditFrameStartLine';
 
 function FrameQueue() {
   const frame = useSelector((state: State) => state.frameQueue[0]);
   const [newGroupName, setNewGroupName] = useState('');
+  const [startLine, setStartLine] = useState<number>(2);
   const dispatch = useDispatch();
 
   const {
@@ -30,7 +32,7 @@ function FrameQueue() {
     frameIndexValid,
   } = useEditFrame({
     id: '',
-    hash: frame.frameHash,
+    hash: '',
     name: frame.fileName,
   });
 
@@ -40,7 +42,7 @@ function FrameQueue() {
       header={`Import new Frame as "${fullId}"`}
       canConfirm={formValid}
       confirm={async () => {
-        const hash = await saveFrameData(frame.tiles);
+        const hash = await saveFrameData(frame.tiles, startLine);
 
         dispatch<AddFrameAction>({
           type: Actions.ADD_FRAME,
@@ -74,6 +76,11 @@ function FrameQueue() {
       <div
         className="import-overlay__content"
       >
+        <EditFrameStartLine
+          tiles={frame.tiles}
+          startLine={startLine}
+          setStartLine={setStartLine}
+        />
         <EditFrameForm
           frameIndex={frameIndex}
           setFrameGroup={setFrameGroup}

@@ -9,7 +9,7 @@
   &__burger-button {
     display: none;
 
-    @media (max-width: $breakpoint-mobile) {
+    @media (max-width: $breakpoint-navigation) {
       display: block;
       width: 60px;
       height: 60px;
@@ -34,13 +34,13 @@
     width: 100%;
     display: flex;
 
-    @media (max-width: $breakpoint-mobile) {
+    @media (max-width: $breakpoint-navigation) {
       flex-direction: column;
       display: none;
     }
   }
 
-  @media (max-width: $breakpoint-mobile) {
+  @media (max-width: $breakpoint-navigation) {
     &--mobile-open &__list {
       display: block;
     }
@@ -90,7 +90,7 @@
     top: 10px;
     @include theme-background-color(rgba($color-white, 0.15), rgba($color-white, 0.15));
 
-    @media (max-width: $breakpoint-mobile) {
+    @media (max-width: $breakpoint-navigation) {
       height: 1px;
       width: 100vw;
       right: unset;

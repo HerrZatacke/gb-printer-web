@@ -35,6 +35,7 @@ import type {
 import type { ImagesUpdateAction } from '../../../../../types/actions/ImageActions';
 import { DialoqQuestionType } from '../../../../../types/Dialog';
 import type { RepoContents } from '../../../../../types/Export';
+import { loadFrameData } from '../../../../tools/applyFrame/frameData';
 
 interface WithContentHash {
   dropboxContentHash: string,
@@ -232,11 +233,15 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                     const imagePalette = getImagePalette(state, image);
                     const tiles = await loadTiles(image.hash);
 
+                    const frame = state.frames.find(({ id }) => id === image.frame);
+                    const frameData = frame ? await loadFrameData(frame?.hash) : null;
+                    const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
+
                     if (!imagePalette || !tiles) {
                       throw new Error('palette or tiles missing');
                     }
 
-                    const imageBlobs = await prepareFiles(imagePalette, image)(tiles);
+                    const imageBlobs = await prepareFiles(imagePalette, image)(tiles, imageStartLine);
 
                     const result = await Promise.all(
                       imageBlobs.map(async (dlInfo: DownloadInfo): Promise<DownloadArrayBuffer> => ({
