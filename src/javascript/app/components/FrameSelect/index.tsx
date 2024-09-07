@@ -72,7 +72,7 @@ function FrameSelect({
             />
             <SVG name="checkmark" />
             <span className="frame-select__check-label-text">
-              Palette does not affect frame
+              Use separate color settings for frame
             </span>
           </label>
         ) : null
