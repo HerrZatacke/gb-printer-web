@@ -14,7 +14,7 @@ import EditFrameStartLine from '../EditFrameStartLine';
 function FrameQueue() {
   const frame = useSelector((state: State) => state.frameQueue[0]);
   const [newGroupName, setNewGroupName] = useState('');
-  const [startLine, setStartLine] = useState<number>(2);
+  const [startLine, setStartLine] = useState<number>(Math.floor((frame.tiles.length - 280) / 40));
   const dispatch = useDispatch();
 
   const {
