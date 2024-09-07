@@ -119,7 +119,7 @@ function GalleryImage({ page, hash }: Props) {
         }
       }}
       role="presentation"
-      title={JSON.stringify(galleryImageData, null, 2)}
+      title={enableDebug ? JSON.stringify(galleryImageData, null, 2) : undefined}
     >
       {
         showButtons ? (
