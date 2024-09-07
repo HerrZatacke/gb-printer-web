@@ -56,7 +56,7 @@ function EditImageTabs(props: Props) {
     props.mixedTypes ? null : Tab.PALETTE,
     props.regularImage ? Tab.FRAME : null,
     Tab.TAGS,
-    props.meta ? Tab.MISC : null,
+    Tab.MISC,
   ].reduce(reduceItems<Tab>, []);
 
   const [tab, setTab] = useState(tabs[0]);
@@ -179,17 +179,15 @@ function EditImageTabs(props: Props) {
             <button type="button" className="edit-image-tabs__button">
               Misc
             </button>
-            { props.meta ? (
-              <ImageMeta
-                created={props.created}
-                hash={props.hash}
-                hashes={props.hashes}
-                updateCreated={props.updateCreated}
-                meta={props.meta}
-                rotation={props.rotation}
-                updateRotation={props.updateRotation}
-              />
-            ) : null }
+            <ImageMeta
+              created={props.created}
+              hash={props.hash}
+              hashes={props.hashes}
+              updateCreated={props.updateCreated}
+              meta={props.meta}
+              rotation={props.rotation}
+              updateRotation={props.updateRotation}
+            />
           </li>
         ) : null}
       </ul>
