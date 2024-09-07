@@ -4,7 +4,7 @@ import getFilteredImages from '../../../../tools/getFilteredImages';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
-import type { RGBNHashes, RGBNImage } from '../../../../../types/Image';
+import type { MonochromeImage, RGBNHashes, RGBNImage } from '../../../../../types/Image';
 import { Rotation } from '../../../../tools/applyRotation';
 import { missingGreyPalette } from '../../../defaults';
 import type {
@@ -21,6 +21,8 @@ interface UseLightboxImage {
   frame: string,
   hashes?: RGBNHashes,
   palette: RGBNPalette | string[],
+  invertFramePalette: boolean,
+  framePalette: string[],
   isFullscreen: boolean,
   lightboxIndex: number,
   size: number,
@@ -39,6 +41,7 @@ export const useLightboxImage = (): UseLightboxImage => {
     image,
     size,
     palette,
+    framePalette,
     isFullscreen,
     lightboxIndex,
     preferredLocale,
@@ -46,12 +49,14 @@ export const useLightboxImage = (): UseLightboxImage => {
     const filteredImages = getFilteredImages(state);
     const sImage = filteredImages.find((_, lbIndex) => lbIndex === state.lightboxImage);
     let pal: RGBNPalette | string[] | undefined;
+    let fPal: string[] | undefined;
 
     if (sImage) {
       if (isRGBNImage(sImage)) {
         pal = (sImage as RGBNImage).palette;
       } else {
         pal = state.palettes.find(({ shortName }) => shortName === sImage.palette)?.palette;
+        fPal = state.palettes.find(({ shortName }) => shortName === (sImage as MonochromeImage).framePalette)?.palette;
       }
     }
 
@@ -59,6 +64,7 @@ export const useLightboxImage = (): UseLightboxImage => {
       image: sImage,
       size: filteredImages.length,
       palette: pal || missingGreyPalette.palette,
+      framePalette: fPal || missingGreyPalette.palette,
       isFullscreen: state.isFullscreen,
       lightboxIndex: state.lightboxImage || 0,
       preferredLocale: state.preferredLocale,
@@ -75,10 +81,12 @@ export const useLightboxImage = (): UseLightboxImage => {
     frame: image?.frame || '',
     isFullscreen,
     palette,
+    framePalette,
     lightboxIndex,
     size,
     lockFrame: image?.lockFrame || false,
-    invertPalette: image?.invertPalette || false,
+    invertPalette: (image as MonochromeImage)?.invertPalette || false,
+    invertFramePalette: (image as MonochromeImage)?.invertFramePalette || false,
     preferredLocale,
     rotation: image?.rotation || Rotation.DEG_0,
     close: () => {

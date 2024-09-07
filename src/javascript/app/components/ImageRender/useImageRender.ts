@@ -19,6 +19,8 @@ interface UseImageRenderParams {
   hashes?: RGBNHashes,
   palette: string[] | RGBNPalette,
   invertPalette?: boolean,
+  framePalette?: string[],
+  invertFramePalette?: boolean,
   lockFrame?: boolean,
   frameId?: string,
   rotation?: Rotation,
@@ -29,6 +31,8 @@ export const useImageRender = ({
   hashes,
   palette,
   invertPalette,
+  framePalette,
+  invertFramePalette,
   lockFrame,
   frameId,
   rotation,
@@ -92,6 +96,11 @@ export const useImageRender = ({
           imageStartLine,
           lockFrame,
           rotation,
+          // This must/should be the only place where the `lockFrame`-attribute
+          // affects the actually used palette and invert option
+          // it must/should affect also the animation/plugin/save/share features
+          framePalette: lockFrame ? framePalette : (palette as string[]),
+          invertFramePalette: lockFrame ? invertFramePalette : invertPalette,
         });
       }
     };
@@ -101,7 +110,18 @@ export const useImageRender = ({
     return () => {
       aborted = true;
     };
-  }, [loadImageTiles, hash, frameId, palette, invertPalette, lockFrame, rotation, frameHash]);
+  }, [
+    loadImageTiles,
+    hash,
+    frameId,
+    palette,
+    invertPalette,
+    lockFrame,
+    rotation,
+    frameHash,
+    framePalette,
+    invertFramePalette,
+  ]);
 
   return {
     gbImageProps,

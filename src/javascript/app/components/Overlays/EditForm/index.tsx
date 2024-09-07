@@ -15,8 +15,10 @@ function EditForm() {
     willUpdateBatch,
     tagChanges,
     usedPalette,
+    usedFramePalette,
     updateForm,
     updatePalette,
+    updateFramePalette,
     updateTags,
     save,
     cancel,
@@ -34,6 +36,8 @@ function EditForm() {
     lockFrame,
     rotation,
     invertPalette,
+    invertFramePalette,
+    framePaletteShort,
     paletteShort,
     paletteRGBN,
   } = form;
@@ -64,6 +68,8 @@ function EditForm() {
         lockFrame={lockFrame}
         invertPalette={invertPalette}
         palette={usedPalette}
+        invertFramePalette={invertFramePalette}
+        framePalette={usedFramePalette}
         frameId={frame}
         hash={toEdit.hash}
         hashes={toEdit.hashes}
@@ -81,10 +87,23 @@ function EditForm() {
           //   color: usedPalette[0],
           // } : null}
         >
-          { `You are editing ${toEdit.imageCount} images` }
-          <p className="edit-image__batch-update-list">
-            {`Will update: ${willUpdateBatch}`}
-          </p>
+          <h2 className="edit-image__batch-update-title">
+            { `You are editing ${toEdit.imageCount} images` }
+          </h2>
+          {
+            willUpdateBatch.length ? (
+              <>
+                <p className="edit-image__batch-update-list">
+                  Will update:
+                </p>
+                <ul className="edit-image__batch-update-list">
+                  { willUpdateBatch.map((txt, index) => (
+                    <li key={index}>{ txt }</li>
+                  )) }
+                </ul>
+              </>
+            ) : null
+          }
         </div>
       ) : null }
       <EditImageTabs
@@ -96,14 +115,18 @@ function EditForm() {
         hash={toEdit.hash}
         hashes={toEdit.hashes}
         paletteShort={paletteShort}
+        framePaletteShort={framePaletteShort}
         paletteRGBN={paletteRGBN}
         invertPalette={invertPalette}
+        invertFramePalette={invertFramePalette}
         frame={frame}
         tags={tagChanges}
         meta={toEdit.meta}
         rotation={rotation}
         updatePalette={updatePalette}
         updateInvertPalette={updateForm('invertPalette')}
+        updateFramePalette={updateFramePalette}
+        updateInvertFramePalette={updateForm('invertFramePalette')}
         updateFrame={updateForm('frame')}
         updateFrameLock={updateForm('lockFrame')}
         updateRotation={updateForm('rotation')}

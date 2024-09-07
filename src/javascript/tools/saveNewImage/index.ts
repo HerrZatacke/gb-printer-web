@@ -27,6 +27,9 @@ const saveNewImage = async ({
     lines: lines.length,
     tags,
     palette,
+    framePalette: palette,
+    invertFramePalette: false,
+    invertPalette: false,
     frame,
     meta,
   };

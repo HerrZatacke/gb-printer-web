@@ -75,7 +75,7 @@
     "filenamify": "^6.0.0",
     "filesize": "^6.1.0",
     "flatten": "^1.0.3",
-    "gb-image-decoder": "^1.1.0",
+    "gb-image-decoder": "^1.2.0",
     "gb-palettes": "^1.0.14",
     "gbp-decode": "^1.4.1",
     "github-markdown-css": "^4.0.0",

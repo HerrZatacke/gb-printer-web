@@ -16,6 +16,8 @@ function LightboxImage() {
     lockFrame,
     invertPalette,
     palette,
+    invertFramePalette,
+    framePalette,
     frame,
     hash,
     hashes,
@@ -57,7 +59,9 @@ function LightboxImage() {
       <ImageRender
         lockFrame={lockFrame}
         invertPalette={invertPalette}
+        invertFramePalette={invertFramePalette}
         palette={palette}
+        framePalette={framePalette}
         frameId={frame}
         hash={hash}
         hashes={hashes}

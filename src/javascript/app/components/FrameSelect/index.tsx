@@ -25,7 +25,7 @@ function FrameSelect({
   const frames = useSelector((state: State) => (state.frames));
 
   return (
-    <>
+    <div className="frame-select">
       {(
         selectLabel ? (
           <label
@@ -37,7 +37,7 @@ function FrameSelect({
         ) : null
       )}
       <select
-        className="frame-select"
+        className="frame-select__select"
         id="frame-select-select"
         value={frame}
         onChange={(ev) => {
@@ -77,7 +77,7 @@ function FrameSelect({
           </label>
         ) : null
       }
-    </>
+    </div>
   );
 }
 

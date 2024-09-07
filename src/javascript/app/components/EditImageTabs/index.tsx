@@ -24,6 +24,7 @@ enum Tab {
 interface Props {
   hash: string,
   invertPalette?: boolean,
+  invertFramePalette?: boolean,
   tags: TagChange,
   regularImage: boolean,
   lockFrame?: boolean,
@@ -31,6 +32,8 @@ interface Props {
   updateCreated: (value: string) => void,
   updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void,
   updateInvertPalette: (value: boolean) => void,
+  updateFramePalette: (paletteUpdate: string, confirm?: boolean) => void,
+  updateInvertFramePalette: (value: boolean) => void,
   updateTags: (mode: TagUpdateMode, tag: string) => void,
   updateFrame: (value: string) => void,
   updateFrameLock: (value: boolean) => void,
@@ -39,6 +42,7 @@ interface Props {
   hashes?: RGBNHashes,
   created?: string,
   paletteShort?: string,
+  framePaletteShort?: string,
   paletteRGBN?: RGBNPalette,
   frame?: string,
   meta?: ImageMetadata,
@@ -131,6 +135,16 @@ function EditImageTabs(props: Props) {
               frame={props.frame || ''}
               lockFrame={props.lockFrame}
             />
+            {
+              props.lockFrame && !props.paletteRGBN ? (
+                <PaletteSelect
+                  value={props.framePaletteShort || ''}
+                  invertPalette={props.invertFramePalette}
+                  onChange={props.updateFramePalette}
+                  updateInvertPalette={props.updateInvertFramePalette}
+                />
+              ) : null
+            }
           </li>
         ) : null}
         { tabs.includes(Tab.TAGS) ? (

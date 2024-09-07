@@ -4,10 +4,11 @@ import { Actions } from '../../actions';
 import { addSortIndex, removeSortIndex, sortImages } from '../../../../tools/sortImages';
 import type { Image, MonochromeImage, RGBNImage } from '../../../../../types/Image';
 import type { TagUpdates } from '../../../../tools/modifyTagChanges';
+import type { ImageUpdatable } from './const';
 import applyTagChanges from '../../../../tools/applyTagChanges';
 import type { State } from '../../State';
-import { Updatable, UPDATATABLES } from './const';
-import { isRGBNImage, isRGBNPalette } from '../../../../tools/isRGBNImage';
+import { Updatable, UpdatableMonochrome, UPDATATABLES } from './const';
+import { isRGBNImage } from '../../../../tools/isRGBNImage';
 
 export const createUpdateAction = (action: ImagesBatchUpdateAction, state: State): ImagesUpdateAction | null => {
   const sortFunc = sortImages(state);
@@ -32,11 +33,12 @@ export const createUpdateAction = (action: ImagesBatchUpdateAction, state: State
 
     const updatedImages = imagesInBatch
       .map((updateImage, selectionIndex): Image => (
-        UPDATATABLES.reduce((image: Image, updatable: keyof Image): Image => {
+        UPDATATABLES.reduce((image: Image, updatable: ImageUpdatable): Image => {
           if (!shouldUpdate[updatable as keyof ImageUpdates]) {
             return image;
           }
 
+          // First handle "common properties" ...
           switch (updatable) {
             case Updatable.TITLE: {
               return {
@@ -47,27 +49,6 @@ export const createUpdateAction = (action: ImagesBatchUpdateAction, state: State
                     .padStart(group.length, '0')
                 )),
               };
-            }
-
-            case Updatable.PALETTE: {
-              const imageIsRGBN = isRGBNImage(image);
-              const paletteIsRGBN = isRGBNPalette(editedUpdates.palette);
-
-              if (imageIsRGBN && paletteIsRGBN) {
-                return {
-                  ...image as RGBNImage,
-                  palette: editedUpdates.palette as RGBNPalette,
-                };
-              }
-
-              if (!imageIsRGBN && !paletteIsRGBN) {
-                return {
-                  ...image as MonochromeImage,
-                  palette: editedUpdates.palette as string,
-                };
-              }
-
-              return image;
             }
 
             case Updatable.TAGS: {
@@ -85,7 +66,6 @@ export const createUpdateAction = (action: ImagesBatchUpdateAction, state: State
             case Updatable.ROTATION:
             case Updatable.LOCK_FRAME:
             case Updatable.FRAME:
-            case Updatable.INVERT_PALETTE:
             case Updatable.CREATED: {
               return {
                 ...image,
@@ -94,8 +74,41 @@ export const createUpdateAction = (action: ImagesBatchUpdateAction, state: State
             }
 
             default:
-              return image;
+              break;
           }
+
+          // ... then handle type-specific properties
+          if (isRGBNImage(image)) {
+            const img = image as RGBNImage;
+            switch (updatable) {
+              case Updatable.PALETTE: {
+                return {
+                  ...img,
+                  palette: editedUpdates.palette as RGBNPalette,
+                };
+              }
+
+              default:
+                return img;
+            }
+          } else {
+            const img = image as MonochromeImage;
+            switch (updatable) {
+              case Updatable.PALETTE:
+              case UpdatableMonochrome.FRAME_PALETTE:
+              case UpdatableMonochrome.INVERT_FRAME_PALETTE:
+              case UpdatableMonochrome.INVERT_PALETTE: {
+                return {
+                  ...img,
+                  [updatable]: editedUpdates[updatable],
+                };
+              }
+
+              default:
+                return img;
+            }
+          }
+
         }, updateImage)
       ));
 

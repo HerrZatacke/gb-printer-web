@@ -1,7 +1,7 @@
 import Queue from 'promise-queue';
 import { saveAs } from 'file-saver';
 import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
-import { RGBNDecoder, Decoder } from 'gb-image-decoder';
+import { RGBNDecoder, Decoder, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
 import { Actions } from '../actions';
@@ -13,7 +13,9 @@ import type { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, Plugi
 import type { TypedStore } from '../State';
 import type { ProgressExecutePluginAction } from '../../../../types/actions/ProgressActions';
 import type { PluginUpdatePropertiesAction } from '../../../../types/actions/PluginActions';
+import type { MonochromeImage } from '../../../../types/Image';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
+import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
 
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,
@@ -61,7 +63,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
       scaleFactor = 1,
       palette = selectedPalette,
       lockFrame = meta.lockFrame || false,
-      invertPalette = meta.invertPalette || false,
+      invertPalette = (meta as MonochromeImage).invertPalette || false,
       handleExportFrame = handleExportFrameState,
     } = {}): Promise<HTMLCanvasElement> => {
       const tiles = await getTiles();
@@ -81,13 +83,23 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
         });
       } else {
         decoder = new Decoder();
+        const pal = (palette as Palette).palette;
+
+        const invertFramePalette = invertPalette;
+        const framePalette = lockFrame ? BW_PALETTE_HEX : pal;
+
+        const updateParams = getDecoderUpdateParams({
+          palette: pal,
+          framePalette,
+          invertPalette,
+          invertFramePalette,
+        });
+
         decoder.update({
           canvas: null,
           tiles: tiles as string[],
-          palette: (palette as Palette).palette as string[],
-          lockFrame,
+          ...updateParams,
           imageStartLine,
-          invertPalette,
         });
       }
 
