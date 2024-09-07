@@ -4,6 +4,7 @@ import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
 import { RGBNDecoder, Decoder, maxTiles } from 'gb-image-decoder';
 import { applyRotation, Rotation } from '../../../tools/applyRotation';
 import './index.scss';
+import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
 
 export interface GameBoyImageProps {
   palette?: string[] | RGBNPalette,
@@ -11,6 +12,8 @@ export interface GameBoyImageProps {
   imageStartLine: number,
   lockFrame?: boolean,
   invertPalette?: boolean,
+  framePalette?: string[],
+  invertFramePalette?: boolean,
   asThumb?: boolean,
   rotation?: Rotation,
 }
@@ -21,6 +24,8 @@ function GameBoyImage({
   imageStartLine,
   lockFrame,
   invertPalette,
+  framePalette,
+  invertFramePalette,
   asThumb = false,
   rotation = Rotation.DEG_0,
 }: GameBoyImageProps) {
@@ -54,12 +59,17 @@ function GameBoyImage({
       } else {
         const decoder = new Decoder();
         if ((tiles as string[] | undefined)?.length) {
+          const updateParams = getDecoderUpdateParams({
+            palette,
+            framePalette,
+            invertPalette,
+            invertFramePalette,
+          });
+
           decoder.update({
             canvas: tempCanvas,
             tiles: tiles as string[],
-            palette,
-            lockFrame,
-            invertPalette,
+            ...updateParams,
             imageStartLine,
           });
         }
@@ -77,7 +87,17 @@ function GameBoyImage({
       }
     }
 
-  }, [tiles, palette, lockFrame, invertPalette, rotation, isRGBN, imageStartLine]);
+  }, [
+    tiles,
+    palette,
+    lockFrame,
+    invertPalette,
+    rotation,
+    isRGBN,
+    imageStartLine,
+    framePalette,
+    invertFramePalette,
+  ]);
 
   return (
     <div

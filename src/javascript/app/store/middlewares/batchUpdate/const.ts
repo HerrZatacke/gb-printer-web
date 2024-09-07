@@ -1,23 +1,32 @@
-import type { Image } from '../../../../../types/Image';
+import type { MonochromeImage, Image } from '../../../../../types/Image';
 
 export enum Updatable {
   LOCK_FRAME = 'lockFrame',
   FRAME = 'frame',
   PALETTE = 'palette',
-  INVERT_PALETTE = 'invertPalette',
   TITLE = 'title',
   TAGS = 'tags',
   CREATED = 'created',
   ROTATION = 'rotation'
 }
 
-export const UPDATATABLES: (keyof Image)[] = [
+export enum UpdatableMonochrome {
+  INVERT_PALETTE = 'invertPalette',
+  FRAME_PALETTE = 'framePalette',
+  INVERT_FRAME_PALETTE = 'invertFramePalette',
+}
+
+export type ImageUpdatable = (keyof Image | keyof MonochromeImage);
+
+export const UPDATATABLES: ImageUpdatable[] = [
   Updatable.LOCK_FRAME,
   Updatable.FRAME,
-  Updatable.PALETTE,
-  Updatable.INVERT_PALETTE,
   Updatable.TITLE,
   Updatable.TAGS,
   Updatable.CREATED,
   Updatable.ROTATION,
+  Updatable.PALETTE,
+  UpdatableMonochrome.INVERT_PALETTE,
+  UpdatableMonochrome.FRAME_PALETTE,
+  UpdatableMonochrome.INVERT_FRAME_PALETTE,
 ];

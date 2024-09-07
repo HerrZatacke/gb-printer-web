@@ -81,6 +81,9 @@ const useTrashbin = (): UseTrashbin => {
           lines: image.lines.length,
           tags: ['backup'],
           palette: 'bw',
+          framePalette: 'bw',
+          invertPalette: false,
+          invertFramePalette: false,
           frame: '',
         };
       } catch (error) {

@@ -66,6 +66,8 @@ function GalleryImage({ page, hash }: Props) {
     hashes,
     palette,
     invertPalette,
+    invertFramePalette,
+    framePalette,
     frame,
     lockFrame,
     title,
@@ -117,6 +119,7 @@ function GalleryImage({ page, hash }: Props) {
         }
       }}
       role="presentation"
+      title={JSON.stringify(galleryImageData, null, 2)}
     >
       {
         showButtons ? (
@@ -134,6 +137,8 @@ function GalleryImage({ page, hash }: Props) {
           lockFrame={lockFrame}
           invertPalette={invertPalette}
           palette={palette}
+          framePalette={framePalette}
+          invertFramePalette={invertFramePalette}
           frameId={frame}
           hash={hash}
           hashes={hashes}

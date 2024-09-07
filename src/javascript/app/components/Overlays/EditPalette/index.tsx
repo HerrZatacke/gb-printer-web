@@ -69,8 +69,10 @@ function EditPalette() {
                 <ImageRender
                   hash={image.hash}
                   invertPalette={false}
+                  invertFramePalette={false}
                   lockFrame={false}
                   palette={palette}
+                  framePalette={palette}
                 />
               </li>
             ))

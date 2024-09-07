@@ -28,8 +28,10 @@ interface GalleryImageData {
   isFavourite: boolean,
   isSelected: boolean,
   palette: RGBNPalette | string[],
+  framePalette: string[],
   lockFrame?: boolean,
   invertPalette?: boolean,
+  invertFramePalette?: boolean,
   hideDate: boolean,
   preferredLocale: string,
   meta?: ImageMetadata,
@@ -60,6 +62,10 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       )) || missingGreyPalette).palette;
     }
 
+    const framePalette = (state.palettes.find(({ shortName }) => (
+      shortName === (image as MonochromeImage).framePalette
+    )) || missingGreyPalette).palette;
+
     return ({
       title: image.title,
       created: image.created,
@@ -69,8 +75,10 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       isFavourite: image.tags.includes(SpecialTags.FILTER_FAVOURITE),
       isSelected: state.imageSelection.includes(hash),
       palette,
+      framePalette,
       lockFrame: image.lockFrame,
-      invertPalette: image.invertPalette,
+      invertPalette: (image as MonochromeImage).invertPalette,
+      invertFramePalette: (image as MonochromeImage).invertFramePalette,
       hideDate: state.hideDates,
       preferredLocale: state.preferredLocale,
       meta: image.meta,
