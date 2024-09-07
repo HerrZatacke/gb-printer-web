@@ -7,7 +7,6 @@ import DropboxClient from '../../../../tools/DropboxClient';
 import { hasher } from '../../../../tools/DropboxClient/dropboxContentHasher';
 import parseAuthParams from '../../../../tools/parseAuthParams';
 import { getPrepareFiles } from '../../../../tools/download';
-import getImagePalette from '../../../../tools/getImagePalette';
 import { loadImageTiles } from '../../../../tools/loadImageTiles';
 import replaceDuplicateFilenames from '../../../../tools/replaceDuplicateFilenames';
 import getFilteredImages from '../../../../tools/getFilteredImages';
@@ -230,18 +229,17 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
               const downloadInfos = (await Promise.all(
                 images.map(async (image, index): Promise<unknown> => (
                   addToQueue('Generate images and hashes')(`${index + 1}/${images.length}`, 10, async () => {
-                    const imagePalette = getImagePalette(state, image);
                     const tiles = await loadTiles(image.hash);
 
                     const frame = state.frames.find(({ id }) => id === image.frame);
                     const frameData = frame ? await loadFrameData(frame?.hash) : null;
                     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
-                    if (!imagePalette || !tiles) {
-                      throw new Error('palette or tiles missing');
+                    if (!tiles) {
+                      throw new Error('tiles missing');
                     }
 
-                    const imageBlobs = await prepareFiles(imagePalette, image)(tiles, imageStartLine);
+                    const imageBlobs = await prepareFiles(image)(tiles, imageStartLine);
 
                     const result = await Promise.all(
                       imageBlobs.map(async (dlInfo: DownloadInfo): Promise<DownloadArrayBuffer> => ({

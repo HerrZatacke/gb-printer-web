@@ -142,7 +142,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
 
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
     const tiles = await tileLoader(image.hash);
-    const palette = getImagePalette(state, image);
+    const { palette, framePalette } = getImagePalette(state, image);
 
     const frame = state.frames.find(({ id }) => id === image.frame);
     const frameData = frame ? await loadFrameData(frame.hash) : null;
@@ -155,7 +155,6 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
     const isRGBN = isRGBNImage(image);
     let decoder: RGBNDecoder | Decoder;
     const lockFrame = videoLockFrame || image.lockFrame || false;
-    const invertPalette = videoInvertPalette || (image as MonochromeImage).invertPalette || false;
     const rotation = image.rotation || 0;
 
     if (isRGBN) {
@@ -168,16 +167,16 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
       });
     } else {
       decoder = new Decoder();
-      const pal = (palette as Palette).palette;
-
-      const invertFramePalette = invertPalette;
-      const framePalette = lockFrame ? BW_PALETTE_HEX : pal;
+      const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
+      const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
+      const invertPalette = videoInvertPalette || (image as MonochromeImage).invertPalette || false;
+      const invertFramePalette = videoInvertPalette || (image as MonochromeImage).invertFramePalette || false;
 
       const updateParams = getDecoderUpdateParams({
         palette: pal,
-        framePalette,
         invertPalette,
-        invertFramePalette,
+        framePalette: lockFrame ? framePal : pal,
+        invertFramePalette: lockFrame ? invertFramePalette : invertPalette,
       });
 
       decoder.update({

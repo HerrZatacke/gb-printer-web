@@ -9,12 +9,12 @@ import type { Image, MonochromeImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 import type { DownloadInfo } from '../../../types/Sync';
 import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
+import getImagePalette from '../getImagePalette';
 
 const getPrepareFiles =
   (
     state: State,
   ) => (
-    palette: RGBNPalette | Palette,
     image: Image,
   ) => async (
     tiles: string[] | RGBNTiles,
@@ -25,9 +25,13 @@ const getPrepareFiles =
     let decoder: Decoder | RGBNDecoder;
     const isRGBN = isRGBNImage(image);
     const lockFrame = image.lockFrame || false;
-    const invertPalette = (image as MonochromeImage).invertPalette || false;
     const rotation = image.rotation || 0;
 
+    const { palette, framePalette } = getImagePalette(state, image);
+
+    if (!palette) {
+      throw new Error('Palette missing?');
+    }
 
     if (isRGBN) {
       decoder = new RGBNDecoder();
@@ -39,14 +43,14 @@ const getPrepareFiles =
       });
     } else {
       decoder = new Decoder();
-      const pal = (palette as Palette).palette;
-
-      const invertFramePalette = invertPalette;
-      const framePalette = lockFrame ? BW_PALETTE_HEX : pal;
+      const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
+      const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
+      const invertPalette = (image as MonochromeImage).invertPalette || false;
+      const invertFramePalette = (image as MonochromeImage).invertFramePalette || false;
 
       const updateParams = getDecoderUpdateParams({
         palette: pal,
-        framePalette,
+        framePalette: framePal,
         invertPalette,
         invertFramePalette,
       });

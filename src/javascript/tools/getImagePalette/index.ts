@@ -1,14 +1,26 @@
 import type { RGBNPalette } from 'gb-image-decoder';
 import type { State } from '../../app/store/State';
-import type { Image } from '../../../types/Image';
+import type { Image, MonochromeImage } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import { isRGBNImage } from '../isRGBNImage';
 
-const getImagePalette = ({ palettes }: State, image: Image): RGBNPalette | Palette | undefined => {
-  const { palette } = image;
-  return isRGBNImage(image) ?
-    palette as RGBNPalette :
-    (palettes.find(({ shortName }) => shortName === palette));
+interface GetImagePalettes {
+  palette?: RGBNPalette | Palette,
+  framePalette?: Palette
+}
+
+const getImagePalettes = ({ palettes }: State, image: Image): GetImagePalettes => {
+  if (isRGBNImage(image)) {
+    const { palette } = image;
+    return {
+      palette: palette as RGBNPalette,
+    };
+  }
+
+  return {
+    palette: palettes.find(({ shortName }) => shortName === image.palette),
+    framePalette: palettes.find(({ shortName }) => shortName === (image as MonochromeImage).framePalette),
+  };
 };
 
-export default getImagePalette;
+export default getImagePalettes;

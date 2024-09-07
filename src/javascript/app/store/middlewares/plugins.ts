@@ -1,6 +1,6 @@
 import Queue from 'promise-queue';
 import { saveAs } from 'file-saver';
-import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import { RGBNDecoder, Decoder, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import getImagePalette from '../../../tools/getImagePalette';
@@ -30,6 +30,16 @@ declare global {
   }
 }
 
+export interface GetCanvasOptions {
+  scaleFactor?: number,
+  palette?: Palette | RGBNPalette,
+  framePalette?: Palette,
+  lockFrame?: boolean,
+  invertPalette?: boolean,
+  invertFramePalette?: boolean,
+  handleExportFrame?: ExportFrameMode,
+}
+
 const pluginsMiddleware: MiddlewareWithState = (store) => {
   const registeredPlugins: RegisteredPlugins = {};
   const queue = new Queue(1, Infinity);
@@ -50,7 +60,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
       throw new Error('image not found');
     }
 
-    const selectedPalette = getImagePalette(state, meta);
+    const { palette: selectedPalette, framePalette: selectedFramePalette } = getImagePalette(state, meta);
     if (!selectedPalette) {
       throw new Error('selectedPalette not found');
     }
@@ -59,13 +69,17 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
 
     const isRGBN = isRGBNImage(meta);
 
-    const getCanvas = async ({
-      scaleFactor = 1,
-      palette = selectedPalette,
-      lockFrame = meta.lockFrame || false,
-      invertPalette = (meta as MonochromeImage).invertPalette || false,
-      handleExportFrame = handleExportFrameState,
-    } = {}): Promise<HTMLCanvasElement> => {
+    const getCanvas = async (options: GetCanvasOptions = {}): Promise<HTMLCanvasElement> => {
+      const {
+        scaleFactor = 1,
+        palette = selectedPalette,
+        framePalette = selectedFramePalette,
+        lockFrame = meta.lockFrame || false,
+        invertPalette = (meta as MonochromeImage).invertPalette || false,
+        invertFramePalette = (meta as MonochromeImage).invertFramePalette || false,
+        handleExportFrame = handleExportFrameState,
+      } = options;
+
       const tiles = await getTiles();
       let decoder: RGBNDecoder | Decoder;
 
@@ -83,14 +97,12 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
         });
       } else {
         decoder = new Decoder();
-        const pal = (palette as Palette).palette;
-
-        const invertFramePalette = invertPalette;
-        const framePalette = lockFrame ? BW_PALETTE_HEX : pal;
+        const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
+        const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
 
         const updateParams = getDecoderUpdateParams({
           palette: pal,
-          framePalette,
+          framePalette: framePal,
           invertPalette,
           invertFramePalette,
         });
