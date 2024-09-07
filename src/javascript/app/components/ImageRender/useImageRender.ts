@@ -96,9 +96,6 @@ export const useImageRender = ({
           imageStartLine,
           lockFrame,
           rotation,
-          // This must/should be the only place where the `lockFrame`-attribute
-          // affects the actually used palette and invert option
-          // it must/should affect also the animation/plugin/save/share features
           framePalette: lockFrame ? framePalette : (palette as string[]),
           invertFramePalette: lockFrame ? invertFramePalette : invertPalette,
         });

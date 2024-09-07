@@ -20,7 +20,7 @@ const handleSingleImage = (
 
   const frame = state.frames.find(({ id }) => id === image.frame);
 
-  const imagePalette = getImagePalette(state, image);
+  const { palette: imagePalette } = getImagePalette(state, image);
   if (!imagePalette) {
     throw new Error('imagePalette not found');
   }
@@ -40,7 +40,7 @@ const handleSingleImage = (
     throw new Error('no tiles');
   }
 
-  const files = await prepareFiles(imagePalette, image)(tiles, imageStartLine);
+  const files = await prepareFiles(image)(tiles, imageStartLine);
   return download(zipFilename)(files);
 };
 
@@ -59,18 +59,13 @@ const handleImageCollection =
 
       const frame = state.frames.find(({ id }) => id === image.frame);
 
-      const imagePalette = getImagePalette(state, image);
-      if (!imagePalette) {
-        throw new Error('imagePalette not found');
-      }
-
       const tiles = await loadImageTiles(state)(image.hash);
 
       const frameData = frame ? await loadFrameData(frame?.hash) : null;
 
       const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
-      return prepareFiles(imagePalette, image)(tiles || [], imageStartLine);
+      return prepareFiles(image)(tiles || [], imageStartLine);
     }))
       .then((resultImages) => resultImages.flat())
       .then(download(zipFilename));
