@@ -8,6 +8,9 @@ import type { State } from '../../store/State';
 import type { Frame } from '../../../../types/Frame';
 import type { ExportJSONAction } from '../../../../types/actions/StorageActions';
 import type { ExportTypes } from '../../../consts/exportTypes';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { compressAndHashFrame, loadFrameData, saveFrameData } from '../../../tools/applyFrame/frameData';
+import { padFrameData } from '../../../tools/saveLocalStorageItems';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   const group = groups.find(({ id }) => id === byId);
@@ -27,16 +30,25 @@ interface UseFrames {
   palette: string[],
   setActiveFrameGroupName: (name: string) => void,
   activeFrameGroup: FrameGroup,
+  convertFormat: () => void,
+  enableDebug: boolean,
 }
 
 const useFrames = (): UseFrames => {
   const dispatch = useDispatch();
 
-  const { savFrameTypes, frames, frameGroupNames, palette } = useSelector((state: State) => ({
+  const {
+    savFrameTypes,
+    frames,
+    frameGroupNames,
+    palette,
+    enableDebug,
+  } = useSelector((state: State) => ({
     savFrameTypes: state.savFrameTypes,
     frames: state.frames,
     frameGroupNames: state.frameGroupNames,
     palette: state.palettes.find(({ shortName }) => shortName === state.activePalette) || state.palettes[0],
+    enableDebug: state.enableDebug,
   }));
 
   const frameGroups = getFrameGroups(frames, frameGroupNames);
@@ -75,6 +87,40 @@ const useFrames = (): UseFrames => {
     });
   };
 
+  const convertFormat = async () => {
+    const updatedFrames = await Promise.all(frames.map(async (frame): Promise<Frame> => {
+      const stateData = await loadFrameData(frame.hash);
+
+      if (!stateData) {
+        return frame;
+      }
+
+      const imageStartLine = stateData.upper.length / 20;
+      const tileData = padFrameData(stateData);
+
+      const { dataHash: newHash } = await compressAndHashFrame(tileData, imageStartLine);
+
+
+      if (frame.hash === newHash) {
+        return frame;
+      }
+
+      const saveHash = await saveFrameData(tileData, imageStartLine);
+
+      return {
+        ...frame,
+        hash: saveHash,
+      };
+    }));
+
+    dispatch<GlobalUpdateAction>({
+      type: Actions.GLOBAL_UPDATE,
+      payload: {
+        frames: updatedFrames,
+      },
+    });
+  };
+
   return {
     selectedFrameGroup,
     groupFrames,
@@ -84,6 +130,8 @@ const useFrames = (): UseFrames => {
     palette: palette?.palette,
     setActiveFrameGroupName,
     activeFrameGroup,
+    convertFormat,
+    enableDebug,
   };
 };
 

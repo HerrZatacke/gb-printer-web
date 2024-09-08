@@ -17,6 +17,8 @@ function Frames() {
     exportJson,
     setActiveFrameGroupName,
     activeFrameGroup,
+    convertFormat,
+    enableDebug,
   } = useFrames();
 
   return (
@@ -84,6 +86,17 @@ function Frames() {
         >
           {`Export current framegroup (${selectedFrameGroup})`}
         </button>
+        {
+          enableDebug ? (
+            <button
+              type="button"
+              className="button"
+              onClick={convertFormat}
+            >
+              Convert frames to new format
+            </button>
+          ) : null
+        }
       </div>
     </div>
   );
