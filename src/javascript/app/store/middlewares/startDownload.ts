@@ -2,7 +2,7 @@ import { getPrepareFiles } from '../../../tools/download';
 import download from '../../../tools/download/download';
 import generateFileName from '../../../tools/generateFileName';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
-import getImagePalette from '../../../tools/getImagePalette';
+import { getImagePalettes } from '../../../tools/getImagePalettes';
 import { Actions } from '../actions';
 import type { State } from '../State';
 import type { PrepareFilesReturnType } from '../../../tools/download/getPrepareFiles';
@@ -20,7 +20,7 @@ const handleSingleImage = (
 
   const frame = state.frames.find(({ id }) => id === image.frame);
 
-  const { palette: imagePalette } = getImagePalette(state, image);
+  const { palette: imagePalette } = getImagePalettes(state, image);
   if (!imagePalette) {
     throw new Error('imagePalette not found');
   }

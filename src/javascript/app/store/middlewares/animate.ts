@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import chunk from 'chunk';
 import dayjs from 'dayjs';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
-import getImagePalette from '../../../tools/getImagePalette';
+import { getImagePalettes } from '../../../tools/getImagePalettes';
 import generateFileName from '../../../tools/generateFileName';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
@@ -142,7 +142,10 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
 
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
     const tiles = await tileLoader(image.hash);
-    const { palette, framePalette } = getImagePalette(state, image);
+    const lockFrame = videoLockFrame || image.lockFrame || false;
+    const rotation = image.rotation || 0;
+
+    const { palette, framePalette } = getImagePalettes(state, { ...image, lockFrame }); // set Lockframe to value set by global animate settings
 
     const frame = state.frames.find(({ id }) => id === image.frame);
     const frameData = frame ? await loadFrameData(frame.hash) : null;
@@ -154,8 +157,6 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
 
     const isRGBN = isRGBNImage(image);
     let decoder: RGBNDecoder | Decoder;
-    const lockFrame = videoLockFrame || image.lockFrame || false;
-    const rotation = image.rotation || 0;
 
     if (isRGBN) {
       decoder = new RGBNDecoder();

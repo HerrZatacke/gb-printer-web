@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import { RGBNDecoder, Decoder, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
-import getImagePalette from '../../../tools/getImagePalette';
+import { getImagePalettes } from '../../../tools/getImagePalettes';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
@@ -60,7 +60,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
       throw new Error('image not found');
     }
 
-    const { palette: selectedPalette, framePalette: selectedFramePalette } = getImagePalette(state, meta);
+    const { palette: selectedPalette, framePalette: selectedFramePalette } = getImagePalettes(state, meta);
     if (!selectedPalette) {
       throw new Error('selectedPalette not found');
     }

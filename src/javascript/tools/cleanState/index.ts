@@ -85,6 +85,10 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
         }
       }
 
+      if (typeof monoImage.lockFrame === 'undefined') {
+        Object.assign(monoImage, { lockFrame: false });
+      }
+
       if (typeof monoImage.invertFramePalette === 'undefined') {
         Object.assign(monoImage, { invertFramePalette: monoImage.invertPalette });
       }
