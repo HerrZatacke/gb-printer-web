@@ -9,7 +9,7 @@ interface GetImagePalettes {
   framePalette?: Palette
 }
 
-const getImagePalettes = ({ palettes }: State, image: Image): GetImagePalettes => {
+export const getImagePalettes = ({ palettes }: State, image: Image): GetImagePalettes => {
   if (isRGBNImage(image)) {
     const { palette } = image;
     return {
@@ -25,5 +25,3 @@ const getImagePalettes = ({ palettes }: State, image: Image): GetImagePalettes =
     framePalette: image.lockFrame ? framePalette : palette,
   };
 };
-
-export default getImagePalettes;

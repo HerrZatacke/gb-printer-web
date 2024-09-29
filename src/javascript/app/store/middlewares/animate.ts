@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import chunk from 'chunk';
 import dayjs from 'dayjs';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
-import getImagePalette from '../../../tools/getImagePalette';
+import { getImagePalettes } from '../../../tools/getImagePalettes';
 import generateFileName from '../../../tools/generateFileName';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
@@ -145,7 +145,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
     const lockFrame = videoLockFrame || image.lockFrame || false;
     const rotation = image.rotation || 0;
 
-    const { palette, framePalette } = getImagePalette(state, { ...image, lockFrame }); // set Lockframe to value set by global animate settings
+    const { palette, framePalette } = getImagePalettes(state, { ...image, lockFrame }); // set Lockframe to value set by global animate settings
 
     const frame = state.frames.find(({ id }) => id === image.frame);
     const frameData = frame ? await loadFrameData(frame.hash) : null;

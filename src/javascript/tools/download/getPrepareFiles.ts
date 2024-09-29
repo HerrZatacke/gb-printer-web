@@ -9,7 +9,7 @@ import type { Image, MonochromeImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 import type { DownloadInfo } from '../../../types/Sync';
 import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
-import getImagePalette from '../getImagePalette';
+import { getImagePalettes } from '../getImagePalettes';
 
 const getPrepareFiles =
   (
@@ -27,7 +27,7 @@ const getPrepareFiles =
     const lockFrame = image.lockFrame || false;
     const rotation = image.rotation || 0;
 
-    const { palette, framePalette } = getImagePalette(state, image);
+    const { palette, framePalette } = getImagePalettes(state, image);
 
     if (!palette) {
       throw new Error('Palette missing?');
