@@ -17,9 +17,12 @@ const getImagePalettes = ({ palettes }: State, image: Image): GetImagePalettes =
     };
   }
 
+  const palette = palettes.find(({ shortName }) => shortName === image.palette);
+  const framePalette = palettes.find(({ shortName }) => shortName === (image as MonochromeImage).framePalette);
+
   return {
-    palette: palettes.find(({ shortName }) => shortName === image.palette),
-    framePalette: palettes.find(({ shortName }) => shortName === (image as MonochromeImage).framePalette),
+    palette,
+    framePalette: image.lockFrame ? framePalette : palette,
   };
 };
 
