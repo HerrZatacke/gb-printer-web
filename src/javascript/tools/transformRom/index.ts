@@ -4,7 +4,7 @@ import getImportSav from '../transformSav/importSav';
 import type { TypedStore } from '../../app/store/State';
 import type { GenerateFilenameFn } from '../transformSav/types';
 
-interface RomBank {
+export interface RomBank {
   bankData: Uint8Array,
   bankIndex: number,
   hash: string,

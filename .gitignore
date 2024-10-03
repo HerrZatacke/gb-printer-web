@@ -16,3 +16,4 @@ dumps/*
 !dumps/.gitkeep
 .DS_Store
 *.iml
+cli-out
