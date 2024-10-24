@@ -1,4 +1,5 @@
 import type { Canvas } from 'canvas';
+import { createCanvas, createImageData } from 'canvas';
 import { ChannelKey, RGBNDecoder, ExportFrameMode } from 'gb-image-decoder';
 import type { ImportItem } from '../../../types/ImportItem';
 
@@ -8,7 +9,14 @@ export type RGBNBrackets = Partial<Record<ChannelKey, ImportItem[]>>
 
 export const rgbToCanvas = async (images: RGBNImportItem): Promise<Canvas> => {
 
-  const decoder = new RGBNDecoder();
+  const decoder = new RGBNDecoder({
+    canvasCreator: () => (
+      createCanvas(1, 1) as unknown as HTMLCanvasElement
+    ),
+    imageDataCreator: (rawImageData, width, height) => (
+      createImageData(rawImageData, width, height) as unknown as ImageData
+    ),
+  });
 
   await decoder.update({
     canvas: null,
