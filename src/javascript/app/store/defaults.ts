@@ -13,18 +13,6 @@ export interface StorePropertyExportable extends Omit<StorePropertyDefault, 'key
 }
 
 const definitions: StorePropertyDefault[] = [
-  { // Url of a printer emulator to talk to
-    key: 'printerUrl',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS],
-    value: '',
-  },
-  { // Optional additional parameters for the printer remote page (passed as hash)
-    key: 'printerParams',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS],
-    value: '',
-  },
   {
     // currently selected palette (used for new imports)
     key: 'activePalette',
@@ -213,12 +201,6 @@ const definitions: StorePropertyDefault[] = [
       dropbox: 0,
       local: 0,
     },
-  },
-  {
-    key: 'preferredLocale',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS],
-    value: navigator.language,
   },
   {
     key: 'bitmapQueue',

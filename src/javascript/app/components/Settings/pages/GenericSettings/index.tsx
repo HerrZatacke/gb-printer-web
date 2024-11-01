@@ -1,6 +1,7 @@
 import type { ExportFrameMode } from 'gb-image-decoder';
 import type { ILocale } from 'locale-codes';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
@@ -12,9 +13,11 @@ import cleanUrl from '../../../../../tools/cleanUrl';
 import { getEnv } from '../../../../../tools/getEnv';
 import exportFrameModes from '../../../../../consts/exportFrameModes';
 import dateFormatLocale from '../../../../../tools/dateFormatLocale';
-import { useGenericSettings } from './useGenericSettings';
+import getFrameGroups from '../../../../../tools/getFrameGroups';
+import useSettingsStore from '../../../../stores/settingsStore';
 import usePaletteSort from '../../../../../hooks/usePaletteSort';
 import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
+import type { State } from '../../../../store/State';
 
 function GenericSettings() {
   const {
@@ -28,11 +31,10 @@ function GenericSettings() {
     importDeleted,
     importLastSeen,
     importPad,
-    pageSize: statePageSize,
+    pageSize,
     preferredLocale,
-    printerParams: statePrinterParams,
-    printerUrl: statePrinterUrl,
-    savFrameGroups,
+    printerParams,
+    printerUrl,
     savFrameTypes,
     setExportFileTypes,
     setExportScaleFactors,
@@ -44,16 +46,20 @@ function GenericSettings() {
     setImportDeleted,
     setImportLastSeen,
     setImportPad,
-    setPageSize: stateSetPageSize,
+    setPageSize,
     setPreferredLocale,
     setSavFrameTypes,
-    updatePrinterParams,
-    updatePrinterUrl,
-  } = useGenericSettings();
+    setPrinterParams,
+    setPrinterUrl,
+  } = useSettingsStore();
 
-  const [pageSize, setPageSize] = useState<string>(statePageSize.toString(10));
-  const [printerUrl, setPrinterUrl] = useState<string>(statePrinterUrl);
-  const [printerParams, setPrinterParams] = useState<string>(statePrinterParams);
+  const savFrameGroups = useSelector((state: State) => (
+    getFrameGroups(state.frames, state.frameGroupNames)
+  ));
+
+  const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
+  const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);
+  const [printerParamsState, setPrinterParamsState] = useState<string>(printerParams);
   const [localeCodes, setLocaleCodes] = useState<ILocale[]>([]);
   const [now] = useState(dayjs());
 
@@ -89,16 +95,16 @@ function GenericSettings() {
         labelText="Page size"
         type={InputType.NUMBER}
         min={0}
-        value={pageSize}
-        onChange={setPageSize}
+        value={pageSizeState}
+        onChange={setPageSizeState}
         onBlur={() => {
-          stateSetPageSize(parseInt(pageSize, 10) || 0);
+          setPageSize(parseInt(pageSizeState, 10) || 0);
         }}
       >
         <span
           className={
             classnames('inputgroup__note', {
-              'inputgroup__note--warn': !statePageSize,
+              'inputgroup__note--warn': !pageSize,
             })
           }
         >
@@ -390,24 +396,28 @@ function GenericSettings() {
           id="settings-printer-url"
           labelText="Printer URL"
           type={InputType.TEXT}
-          value={printerUrl}
-          onChange={setPrinterUrl}
+          value={printerUrlState}
+          onChange={setPrinterUrlState}
           autoComplete="url"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck={false}
           onBlur={() => {
-            setPrinterUrl(cleanUrl(printerUrl, 'http'));
-            updatePrinterUrl(printerUrl);
+            const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
+            setPrinterUrlState(cleanPrinterUrl);
+            setPrinterUrl(cleanPrinterUrl);
           }}
           onKeyUp={(key) => {
             switch (key) {
-              case 'Enter':
-                setPrinterUrl(cleanUrl(printerUrl, 'http'));
-                updatePrinterUrl(printerUrl);
+              case 'Enter': {
+                const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
+                setPrinterUrlState(cleanPrinterUrl);
+                setPrinterUrl(cleanPrinterUrl);
                 break;
+              }
+
               case 'Escape':
-                setPrinterUrl(printerUrl);
+                setPrinterUrlState(printerUrl);
                 break;
               default:
             }
@@ -424,24 +434,22 @@ function GenericSettings() {
           id="settings-printer-settings"
           labelText="Additional printer settings"
           type={InputType.TEXT}
-          value={printerParams}
-          onChange={setPrinterParams}
+          value={printerParamsState}
+          onChange={setPrinterParamsState}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck={false}
           onBlur={() => {
-            setPrinterParams(printerParams);
-            updatePrinterParams(printerParams);
+            setPrinterParams(printerParamsState);
           }}
           onKeyUp={(key) => {
             switch (key) {
               case 'Enter':
-                setPrinterParams(printerParams);
-                updatePrinterParams(printerParams);
+                setPrinterParams(printerParamsState);
                 break;
               case 'Escape':
-                setPrinterParams(printerParams);
+                setPrinterParamsState(printerParams);
                 break;
               default:
             }

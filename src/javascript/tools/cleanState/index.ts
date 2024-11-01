@@ -3,7 +3,6 @@ import predefinedPalettes from 'gb-palettes';
 import { BlendMode } from 'gb-image-decoder';
 import { dateFormat, defaultRGBNPalette } from '../../app/defaults';
 import uniqueBy from '../unique/by';
-import cleanUrl from '../cleanUrl';
 import hashFrames from './hashFrames';
 import backupFrames from './backupFrames';
 import type { State } from '../../app/store/State';
@@ -34,7 +33,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
   const palettesShorts = palettes.map(({ shortName }) => shortName);
   const frameIds = (dirtyState.frames || []).map(({ id }) => id);
 
-  const printerUrl = cleanUrl(dirtyState.printerUrl || '', 'http');
   let framesMessage = dirtyState.framesMessage;
 
   const activePalette = palettesShorts.includes(dirtyState.activePalette || '') ? dirtyState.activePalette : 'bw';
@@ -144,7 +142,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
     images,
     palettes,
     plugins,
-    printerUrl,
     framesMessage: framesMessage || 0,
     activePalette,
     recentImports,

@@ -24,14 +24,3 @@ export interface PrinterDataReceivedAction {
 export interface PrinterResetAction {
   type: Actions.PRINTER_RESET,
 }
-
-export interface PrinterSetParamsAction {
-  type: Actions.SET_PRINTER_PARAMS,
-  payload: string,
-}
-
-export interface PrinterSetUrlAction {
-  type: Actions.SET_PRINTER_URL,
-  payload: string,
-}
-
