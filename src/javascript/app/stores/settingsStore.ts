@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { PROJECT_PREFIX } from './constants';
 import cleanUrl from '../../tools/cleanUrl';
 import dateFormatLocale from '../../tools/dateFormatLocale';
+import { PaletteSortMode } from '../../consts/paletteSortModes';
 
 interface Values {
   enableDebug: boolean,
@@ -22,6 +23,7 @@ interface Values {
   printerUrl: string,
   savFrameTypes: string,
   enableImageGroups: boolean,
+  sortPalettes: PaletteSortMode,
 }
 
 interface Actions {
@@ -40,6 +42,7 @@ interface Actions {
   setPrinterUrl: (printerUrl: string) => void,
   setSavFrameTypes: (savFrameTypes: string) => void,
   setEnableImageGroups: (enableImageGroups: boolean) => void,
+  setSortPalettes: (sortPalettes: PaletteSortMode) => void,
 }
 
 export type SettingsState = Values & Actions;
@@ -67,6 +70,7 @@ const useSettingsStore = create(
       printerUrl: '',
       savFrameTypes: 'int',
       enableImageGroups: false,
+      sortPalettes: PaletteSortMode.DEFAULT_DESC,
 
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
       setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),
@@ -80,6 +84,7 @@ const useSettingsStore = create(
       setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
       setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
       setEnableImageGroups: (enableImageGroups: boolean) => set({ enableImageGroups }),
+      setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),
 
       setExportScaleFactors: (updateFactor: number, checked: boolean) => {
         const { exportScaleFactors } = get();
