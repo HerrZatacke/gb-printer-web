@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue';
 import type { AnyAction } from 'redux';
+import useSettingsStore from '../../../stores/settingsStore';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
 import DropboxClient from '../../../../tools/DropboxClient';
@@ -222,8 +223,14 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
             }
 
             case 'dropboximages': {
+              const { exportScaleFactors } = useSettingsStore.getState();
               const images: Image[] = getFilteredImages(state, state.images);
-              const prepareFiles = getPrepareFiles(state);
+              const prepareFiles = getPrepareFiles(
+                exportScaleFactors,
+                state.exportFileTypes,
+                state.handleExportFrame,
+                state,
+              );
               const loadTiles = loadImageTiles(state);
 
               const downloadInfos = (await Promise.all(

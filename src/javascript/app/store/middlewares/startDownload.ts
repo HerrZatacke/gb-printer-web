@@ -1,3 +1,4 @@
+import useSettingsStore from '../../stores/settingsStore';
 import { getPrepareFiles } from '../../../tools/download';
 import download from '../../../tools/download/download';
 import generateFileName from '../../../tools/generateFileName';
@@ -72,11 +73,17 @@ const handleImageCollection =
   };
 
 const startDownload: MiddlewareWithState = (store) => (next) => (action) => {
+  const { exportScaleFactors } = useSettingsStore.getState();
 
   if ((action.type === Actions.START_DOWNLOAD) || (action.type === Actions.DOWNLOAD_SELECTION)) {
     const state = store.getState();
 
-    const prepareFiles = getPrepareFiles(state);
+    const prepareFiles = getPrepareFiles(
+      exportScaleFactors,
+      state.exportFileTypes,
+      state.handleExportFrame,
+      state,
+    );
 
     switch (action.type) {
       case Actions.START_DOWNLOAD:

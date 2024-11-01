@@ -40,7 +40,6 @@ export interface State {
   enableImageGroups: boolean,
   errors: ErrorMessage[],
   exportFileTypes: string[],
-  exportScaleFactors: number[],
   filtersActiveTags: string[],
   filtersVisible: boolean,
   forceMagicCheck: boolean,

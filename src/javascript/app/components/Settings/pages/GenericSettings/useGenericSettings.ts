@@ -7,7 +7,6 @@ import type { State } from '../../../../store/State';
 import type { FrameGroup } from '../../../../../../types/FrameGroup';
 import type { PrinterSetParamsAction, PrinterSetUrlAction } from '../../../../../../types/actions/PrinterActions';
 import type {
-  ExportScaleFactorsAction,
   ExportFileTypesAction,
   ForceMagicCheckAction,
 } from '../../../../../../types/actions/StorageActions';
@@ -39,7 +38,7 @@ interface UseGenericSettings {
   preferredLocale: string,
   enableDebug: boolean,
   enableImageGroups: boolean,
-  changeExportScaleFactors: (factor: number, checked: boolean) => void
+  setExportScaleFactors: (factor: number, checked: boolean) => void
   changeExportFileTypes: (fileType: string, checked: boolean) => void
   setPageSize: (pageSize: number) => void
   setSavFrameTypes: (savFrameTypes: string) => void
@@ -57,10 +56,9 @@ interface UseGenericSettings {
 }
 
 export const useGenericSettings = (): UseGenericSettings => {
-  const { pageSize, setPageSize } = useSettingsStore();
+  const fromZState = useSettingsStore();
 
   const fromState = useSelector((state: State) => ({
-    exportScaleFactors: state.exportScaleFactors,
     exportFileTypes: state.exportFileTypes,
     savFrameTypes: state.savFrameTypes,
     savFrameGroups: getFrameGroups(state.frames, state.frameGroupNames),
@@ -81,16 +79,7 @@ export const useGenericSettings = (): UseGenericSettings => {
 
   return {
     ...fromState,
-    pageSize,
-    changeExportScaleFactors(factor: number, checked: boolean) {
-      dispatch<ExportScaleFactorsAction>({
-        type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
-        payload: {
-          factor,
-          checked,
-        },
-      });
-    },
+    ...fromZState,
     changeExportFileTypes(fileType: string, checked: boolean) {
       dispatch<ExportFileTypesAction>({
         type: Actions.UPDATE_EXPORT_FILE_TYPES,
@@ -100,7 +89,6 @@ export const useGenericSettings = (): UseGenericSettings => {
         },
       });
     },
-    setPageSize,
     setSavFrameTypes(savFrameTypes: string) {
       dispatch<SavFrameTypesAction>({
         type: Actions.SET_SAV_FRAME_TYPES,

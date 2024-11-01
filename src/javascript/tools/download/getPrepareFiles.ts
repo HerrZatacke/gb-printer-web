@@ -1,4 +1,4 @@
-import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import { BW_PALETTE, BW_PALETTE_HEX, Decoder, RGBNDecoder } from 'gb-image-decoder';
 import generateFileName from '../generateFileName';
 import { getTxtFile } from './getTxtFile';
@@ -13,6 +13,9 @@ import { getImagePalettes } from '../getImagePalettes';
 
 const getPrepareFiles =
   (
+    exportScaleFactors: number[],
+    exportFileTypes: string[],
+    handleExportFrame: ExportFrameMode,
     state: State,
   ) => (
     image: Image,
@@ -20,7 +23,6 @@ const getPrepareFiles =
     tiles: string[] | RGBNTiles,
     imageStartLine: number,
   ): Promise<DownloadInfo[]> => {
-    const { exportScaleFactors, exportFileTypes, handleExportFrame } = state;
 
     let decoder: Decoder | RGBNDecoder;
     const isRGBN = isRGBNImage(image);

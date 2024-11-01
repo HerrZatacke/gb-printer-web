@@ -37,7 +37,6 @@ import enableDebug from './reducers/enableDebugReducer';
 import enableImageGroups from './reducers/enableImageGroupsReducer';
 import errors from './reducers/errorsReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
-import exportScaleFactors from './reducers/exportScaleFactorsReducer';
 import filtersActiveTags from './reducers/filtersActiveTagsReducer';
 import filtersVisible from './reducers/filtersVisibleReducer';
 import forceMagicCheck from './reducers/forceMagicCheckReducer';
@@ -162,7 +161,6 @@ const reducers: ReducersMapObject = {
   enableImageGroups,
   errors,
   exportFileTypes,
-  exportScaleFactors,
   filtersActiveTags,
   filtersVisible,
   forceMagicCheck,
