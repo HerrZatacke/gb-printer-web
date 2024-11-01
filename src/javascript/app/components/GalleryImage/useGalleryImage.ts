@@ -48,7 +48,7 @@ interface UseGalleryImage {
 }
 
 export const useGalleryImage = (hash: string): UseGalleryImage => {
-  const { enableDebug, hideDates } = useSettingsStore();
+  const { enableDebug, hideDates, preferredLocale } = useSettingsStore();
   const galleryImageData = useSelector((state: State): GalleryImageData | undefined => {
     const image = state.images.find((img) => img.hash === hash);
     let palette: RGBNPalette | string[];
@@ -83,9 +83,9 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       invertPalette: (image as MonochromeImage).invertPalette,
       invertFramePalette: (image as MonochromeImage).invertFramePalette,
       hideDate: hideDates,
-      preferredLocale: state.preferredLocale,
       meta: image.meta,
       rotation: image.rotation,
+      preferredLocale,
       enableDebug,
     });
   });

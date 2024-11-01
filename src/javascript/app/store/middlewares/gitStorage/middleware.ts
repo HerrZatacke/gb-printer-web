@@ -1,6 +1,7 @@
 import Queue from 'promise-queue';
 import type { AnyAction } from 'redux';
 import dayjs from 'dayjs';
+import useSettingsStore from '../../../stores/settingsStore';
 import OctoClient from '../../../../tools/OctoClient';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
@@ -19,7 +20,7 @@ export const init = (store: TypedStore) => {
   const { gitStorage: gitStorageSettings } = store.getState();
 
   const getPreferredLocale = () => (
-    store.getState().preferredLocale
+    useSettingsStore.getState().preferredLocale
   );
 
   const queue = new Queue(1, Infinity);

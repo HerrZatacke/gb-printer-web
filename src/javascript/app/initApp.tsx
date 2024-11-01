@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
 import getStore from './store';
 import { defaults } from './store/defaults';
-import { getEnv } from '../tools/getEnv';
 import cleanState from '../tools/cleanState';
 import type { State } from './store/State';
 
@@ -19,10 +18,6 @@ const initApp = async () => {
     storedSettings = JSON.parse(lsJson || '{}') as Partial<State>;
   } catch (error) {
     storedSettings = {};
-  }
-
-  if (getEnv()?.env === 'esp8266') {
-    storedSettings.printerUrl = '/';
   }
 
   const initialState: Partial<State> = Object.assign(defaults, storedSettings);

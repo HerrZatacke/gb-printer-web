@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import useSettingsStore from '../../stores/settingsStore';
 import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import type { ExportJSONAction } from '../../../../types/actions/StorageActions';
@@ -14,18 +15,20 @@ interface UseImport {
 }
 
 export const useImport = (): UseImport => {
+  const { printerUrl } = useSettingsStore();
+
+  const fullPrinterUrl = printerUrl ? `${printerUrl}remote.html` : undefined;
+
   const {
-    printerUrl,
     printerConnected,
   } = useSelector((state: State) => ({
-    printerUrl: state.printerUrl ? `${state.printerUrl}remote.html` : undefined,
     printerConnected: state.printerFunctions.length > 0,
   }));
 
   const dispatch = useDispatch();
 
   return {
-    printerUrl,
+    printerUrl: fullPrinterUrl,
     printerConnected,
     importPlainText: (textDump) => {
       let file;

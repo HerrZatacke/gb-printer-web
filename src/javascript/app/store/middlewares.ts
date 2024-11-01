@@ -4,7 +4,6 @@ import batch from './middlewares/batch';
 import batchUpdate from './middlewares/batchUpdate';
 import deleteFrame from './middlewares/deleteFrame';
 import deleteImage from './middlewares/deleteImage';
-import dimensions from './middlewares/dimensions';
 import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
 import gitStorage from './middlewares/gitStorage';
@@ -23,7 +22,6 @@ export default applyMiddleware(
   batchUpdate,
   deleteFrame,
   deleteImage,
-  dimensions,
   dropboxStorage,
   fileDrop,
   gitStorage,

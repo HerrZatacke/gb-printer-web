@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { PROJECT_PREFIX } from './constants';
 import cleanUrl from '../../tools/cleanUrl';
 import dateFormatLocale from '../../tools/dateFormatLocale';
+import { getEnv } from '../../tools/getEnv';
 import { PaletteSortMode } from '../../consts/paletteSortModes';
 
 interface Values {
@@ -70,7 +71,7 @@ const useSettingsStore = create(
       pageSize: 30,
       preferredLocale: getDefaultLocale(),
       printerParams: '',
-      printerUrl: '',
+      printerUrl: getEnv()?.env === 'esp8266' ? '/' : '',
       savFrameTypes: 'int',
       enableImageGroups: false,
       sortPalettes: PaletteSortMode.DEFAULT_DESC,

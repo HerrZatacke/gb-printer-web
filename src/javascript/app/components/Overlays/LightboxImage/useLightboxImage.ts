@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
 import getFilteredImages from '../../../../tools/getFilteredImages';
+import useSettingsStore from '../../../stores/settingsStore';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
 import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../../types/Image';
@@ -82,14 +83,14 @@ export const useLightboxImage = (): UseLightboxImage => {
   const dispatch = useDispatch();
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
+  const { preferredLocale } = useSettingsStore();
+
   const {
     viewImages,
-    preferredLocale,
     lightboxImage,
     palettes,
   } = useSelector((state: State) => ({
     viewImages: getFilteredImages(state, view.images),
-    preferredLocale: state.preferredLocale,
     lightboxImage: state.lightboxImage,
     palettes: state.palettes,
   }));

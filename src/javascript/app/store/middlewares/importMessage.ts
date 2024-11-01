@@ -1,4 +1,5 @@
 import { Actions } from '../actions';
+import useSettingsStore from '../../stores/settingsStore';
 import type { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
@@ -18,7 +19,7 @@ const importMessage: MiddlewareWithState = (store) => {
   let remotePrinterWindow: Window | null;
 
   window.addEventListener('message', (event: MessageEvent<RemotePrinterEvent>) => {
-    const { printerUrl } = store.getState();
+    const { printerUrl } = useSettingsStore.getState();
     let origin: string;
 
     try {

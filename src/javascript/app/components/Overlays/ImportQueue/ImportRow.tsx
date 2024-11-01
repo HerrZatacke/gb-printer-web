@@ -8,6 +8,7 @@ import dateFormatLocale from '../../../../tools/dateFormatLocale';
 import type { State } from '../../../store/State';
 import type { ImportItem } from '../../../../../types/ImportItem';
 import type { FrameQueueAddAction, ImportQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
+import useSettingsStore from '../../../stores/settingsStore';
 
 interface Props {
   importItem: ImportItem,
@@ -28,15 +29,15 @@ function ImportRow({
 
   const {
     palette,
-    locale,
     storeDuplicateImage,
     queueDuplicates,
   } = useSelector((state: State) => ({
     palette: state.palettes.find(({ shortName }) => shortName === paletteShort),
-    locale: state.preferredLocale,
     storeDuplicateImage: state.images.find(({ hash }) => hash === imageHash),
     queueDuplicates: state.importQueue.filter((item) => item.imageHash === imageHash).length,
   }));
+
+  const { preferredLocale } = useSettingsStore();
 
   const dispatch = useDispatch();
 
@@ -66,7 +67,7 @@ function ImportRow({
         {
           lastModified ? (
             <div className="import-image__date">
-              { dateFormatLocale(dayjs(lastModified), locale) }
+              { dateFormatLocale(dayjs(lastModified), preferredLocale) }
             </div>
           ) : null
         }
