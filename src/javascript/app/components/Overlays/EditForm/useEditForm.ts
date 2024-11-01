@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { useDispatch, useSelector } from 'react-redux';
+import { useWindowDimensions } from '../../../../hooks/useWindowDimensions';
 import { missingGreyPalette } from '../../../defaults';
 import { Actions } from '../../../store/actions';
 import { getImageTileCount } from '../../../../tools/loadImageTiles';
@@ -117,6 +118,8 @@ export const useEditForm = (): UseEditForm => {
     ),
   }));
 
+  const windowDimensions = useWindowDimensions();
+
   const toEdit = useSelector((state: State): ToEdit | undefined => {
     if (!state.editImage) {
       return undefined;
@@ -135,9 +138,9 @@ export const useEditForm = (): UseEditForm => {
       return undefined;
     }
 
-    const height = (state.windowDimensions.width <= 600) ?
-      state.windowDimensions.height :
-      Math.min(900, state.windowDimensions.height);
+    const height = (windowDimensions.width <= 600) ?
+      windowDimensions.height :
+      Math.min(900, windowDimensions.height);
 
     const typeCount = batch.reduce((acc, selHash) => {
       const tcImage = state.images.find(({ hash }) => hash === selHash);

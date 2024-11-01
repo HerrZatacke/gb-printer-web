@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import useSettingsStore from '../app/stores/settingsStore';
 import type { State } from '../app/store/State';
 
 
@@ -11,13 +12,14 @@ export interface UseIframeLoaded {
 }
 
 const useIframeLoaded = (timeout: number): UseIframeLoaded => {
-  const { printerUrl, printerConnected } = useSelector((state: State) => {
-    const printerParams = state.printerParams ? `#${encodeURI(state.printerParams)}` : '';
-    return ({
-      printerUrl: state.printerUrl ? `${state.printerUrl}remote.html${printerParams}` : undefined,
-      printerConnected: state.printerFunctions.length > 0,
-    });
-  });
+  const { printerUrl, printerParams } = useSettingsStore();
+
+  const encodedPrinterParams = printerParams ? `#${encodeURI(printerParams)}` : '';
+  const fullPrinterUrl = printerUrl ? `${printerUrl}remote.html${encodedPrinterParams}` : undefined;
+
+  const printerConnected = useSelector((state: State) => (
+    state.printerFunctions.length > 0
+  ));
 
   const [loaded, setLoaded] = useState<boolean>(false);
   const [failed, setFailed] = useState<boolean>(false);
@@ -43,7 +45,7 @@ const useIframeLoaded = (timeout: number): UseIframeLoaded => {
   return {
     failed,
     loaded,
-    printerUrl,
+    printerUrl: fullPrinterUrl,
     printerConnected,
   };
 };

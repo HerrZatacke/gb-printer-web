@@ -7,20 +7,9 @@ import type {
   SetLightboxImageAction,
   SetLightboxNextAction,
   SetLightboxPrevAction,
-  UpdateWindowDimensionsAction,
 } from '../../../../types/actions/GlobalActions';
 
 const confirmation: MiddlewareWithState = (store) => {
-
-  window.addEventListener('resize', () => {
-    store.dispatch<UpdateWindowDimensionsAction>({
-      type: Actions.WINDOW_DIMENSIONS,
-      payload: {
-        height: window.innerHeight,
-        width: window.innerWidth,
-      },
-    });
-  });
 
   if (screenfull.isEnabled) {
     screenfull.on('change', () => {

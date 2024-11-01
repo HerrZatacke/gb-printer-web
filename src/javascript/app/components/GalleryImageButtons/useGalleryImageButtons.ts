@@ -10,6 +10,7 @@ import type {
 } from '../../../../types/actions/ImageActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import type { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
+import { canShare } from '../../../tools/canShare';
 
 interface UseGalleryImageButtons {
   isSelected: boolean,
@@ -46,7 +47,6 @@ export const useGalleryImageButtons = (
 ): UseGalleryImageButtons => {
   const stateData = useSelector((state: State) => ({
     isSelected: state.imageSelection.includes(hash),
-    canShare: state.canShare,
     hasPlugins: !!state.plugins.length,
     hash,
   }));
@@ -55,6 +55,7 @@ export const useGalleryImageButtons = (
 
   return {
     ...stateData,
+    canShare: canShare(),
     startDownload: () => {
       dispatch<DownloadImageStartAction>({
         type: Actions.START_DOWNLOAD,

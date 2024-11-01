@@ -2,7 +2,6 @@ import type { Reducer, ReducersMapObject } from 'redux';
 import { combineReducers } from 'redux';
 import type { Progress } from './reducers/progressReducer';
 import type { TrashCount } from './reducers/trashCountReducer';
-import type { WindowDimensions } from '../../../types/WindowDimensions';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
 import type { ErrorMessage } from '../components/Errors/useErrors';
@@ -19,7 +18,6 @@ import type { QueueImage } from '../../../types/QueueImage';
 import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
 import bitmapQueue from './reducers/bitmapQueueReducer';
-import canShare from './reducers/canShareReducer';
 import confirm from './reducers/confirmReducer';
 import dragover from './reducers/dragoverReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
@@ -60,11 +58,9 @@ import useSerials from './reducers/useSerialsReducer';
 import showSerials from './reducers/showSerialsReducer';
 import trashCount from './reducers/trashCountReducer';
 import videoParams from './reducers/videoParamsReducer';
-import windowDimensions from './reducers/windowDimensionsReducer';
 
 export interface Reducers extends ReducersMapObject {
   bitmapQueue: Reducer<QueueImage[]>,
-  canShare: Reducer<boolean>,
   confirm: Reducer<Dialog[]>,
   dragover: Reducer<boolean>,
   dropboxStorage: Reducer<DropBoxSettings>,
@@ -104,12 +100,10 @@ export interface Reducers extends ReducersMapObject {
   showSerials: Reducer<boolean>,
   trashCount: Reducer<TrashCount>,
   videoParams: Reducer<VideoParams>,
-  windowDimensions: Reducer<WindowDimensions>,
 }
 
 const reducers: ReducersMapObject = {
   bitmapQueue,
-  canShare,
   confirm,
   dragover,
   dropboxStorage,
@@ -150,7 +144,6 @@ const reducers: ReducersMapObject = {
   showSerials,
   trashCount,
   videoParams,
-  windowDimensions,
 };
 
 export default combineReducers(reducers);

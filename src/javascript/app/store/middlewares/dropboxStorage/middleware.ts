@@ -107,6 +107,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
 
   return async (action: AnyAction): Promise<void> => {
     const state = store.getState();
+    const { preferredLocale } = useSettingsStore.getState();
 
     try {
 
@@ -146,8 +147,8 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                       payload: {
                         message: 'There is newer content in your dropbox!',
                         questions: () => [
-                          `Your dropbox contains changes from ${dateFormatLocale(dayjs(lastUpdate * 1000), state.preferredLocale)}`,
-                          `Your last local update was ${state?.syncLastUpdate?.local ? (dateFormatLocale(dayjs(state.syncLastUpdate.local * 1000), state.preferredLocale)) : 'never'}.`,
+                          `Your dropbox contains changes from ${dateFormatLocale(dayjs(lastUpdate * 1000), preferredLocale)}`,
+                          `Your last local update was ${state?.syncLastUpdate?.local ? (dateFormatLocale(dayjs(state.syncLastUpdate.local * 1000), preferredLocale)) : 'never'}.`,
                           'Do you want to load the changes?',
                         ]
                           .map((label, index) => ({

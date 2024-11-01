@@ -1,5 +1,4 @@
 import type { Actions } from '../../javascript/app/store/actions';
-import type { WindowDimensions } from '../WindowDimensions';
 import type { ErrorMessage } from '../../javascript/app/components/Errors/useErrors';
 
 export interface DragoverAction {
@@ -40,11 +39,6 @@ export interface ShowSerialsAction {
 export interface UseSerialsAction {
   type: Actions.USE_SERIALS,
   payload?: boolean,
-}
-
-export interface UpdateWindowDimensionsAction {
-  type: Actions.WINDOW_DIMENSIONS,
-  payload?: WindowDimensions,
 }
 
 export interface ErrorAction {
