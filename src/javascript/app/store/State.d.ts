@@ -18,7 +18,6 @@ import type { WindowDimensions } from '../../../types/WindowDimensions';
 import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
 import type { PickColors } from '../../../types/PickColors';
-import type { PaletteSortMode } from '../../consts/paletteSortModes';
 
 // ToDo: infer from store somehow...?
 export interface State {
@@ -60,7 +59,6 @@ export interface State {
   progress: Progress,
   recentImports: RecentImport[],
   sortBy: string,
-  sortPalettes: PaletteSortMode,
   sortOptionsVisible: boolean,
   syncBusy: boolean,
   syncLastUpdate: SyncLastUpdate,

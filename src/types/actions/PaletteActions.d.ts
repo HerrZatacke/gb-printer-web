@@ -1,6 +1,5 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { Palette } from '../Palette';
-import type { PaletteSortMode } from '../../javascript/consts/paletteSortModes';
 
 export interface PaletteSetActiveAction {
   type: Actions.PALETTE_SET_ACTIVE,
@@ -24,11 +23,6 @@ export interface PaletteUpdateAction {
 export interface PaletteSetEditAction {
   type: Actions.SET_EDIT_PALETTE,
   payload: Palette,
-}
-
-export interface PaletteSetSortOrderAction {
-  type: Actions.SET_PALETTE_SORT,
-  payload: PaletteSortMode,
 }
 
 export interface PaletteEditAction {

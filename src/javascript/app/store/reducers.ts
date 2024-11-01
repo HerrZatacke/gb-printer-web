@@ -1,6 +1,5 @@
 import type { Reducer, ReducersMapObject } from 'redux';
 import { combineReducers } from 'redux';
-import type { ExportFrameMode } from 'gb-image-decoder';
 import type { Progress } from './reducers/progressReducer';
 import type { TrashCount } from './reducers/trashCountReducer';
 import type { WindowDimensions } from '../../../types/WindowDimensions';
@@ -19,7 +18,6 @@ import type { VideoParams } from '../../../types/VideoParams';
 import type { QueueImage } from '../../../types/QueueImage';
 import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
-import type { PaletteSortMode } from '../../consts/paletteSortModes';
 import activePalette from './reducers/activePaletteReducer';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import canShare from './reducers/canShareReducer';
@@ -55,7 +53,6 @@ import progress from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
 import recentImports from './reducers/recentImportsReducer';
 import sortBy from './reducers/sortByReducer';
-import sortPalettes from './reducers/sortPalettesReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import syncBusy from './reducers/syncBusyReducer';
 import syncLastUpdate from './reducers/syncLastUpdateReducer';
@@ -77,45 +74,30 @@ export interface Reducers extends ReducersMapObject {
   editFrame: Reducer<string | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
-  enableDebug: Reducer<boolean>,
   errors: Reducer<ErrorMessage[]>,
-  exportFileTypes: Reducer<string[]>,
-  exportScaleFactors: Reducer<number[]>,
   filtersActiveTags: Reducer<string[]>,
   filtersVisible: Reducer<boolean>,
-  forceMagicCheck: Reducer<boolean>,
   frameGroupNames: Reducer<FrameGroup[]>,
   frameQueue: Reducer<ImportItem[]>,
   frames: Reducer<Frame[]>,
   framesMessage: Reducer<number>,
   galleryView: Reducer<GalleryViews>,
   gitStorage: Reducer<GitStorageSettings>,
-  handleExportFrame: Reducer<ExportFrameMode>,
-  hideDates: Reducer<boolean>,
   images: Reducer<Image[]>,
   imageSelection: Reducer<string[]>,
-  importDeleted: Reducer<boolean>,
   importQueue: Reducer<ImportItem[]>,
-  importLastSeen: Reducer<boolean>,
-  importPad: Reducer<boolean>,
   isFullscreen: Reducer<boolean>,
   lastSelectedImage: Reducer<string | null>,
   progressLog: Reducer<ProgressLog>,
   lightboxImage: Reducer<number | null>,
-  pageSize: Reducer<number>,
   palettes: Reducer<Palette[]>,
   plugins: Reducer<Plugin[]>,
-  preferredLocale: Reducer<string>,
   printerBusy: Reducer<boolean>,
   printerData: Reducer<PrinterInfo>,
   printerFunctions: Reducer<PrinterFunction[]>,
-  printerUrl: Reducer<string>,
-  printerParams: Reducer<string>,
   progress: Reducer<Progress>,
   recentImports: Reducer<RecentImport[]>,
-  savFrameTypes: Reducer<string>,
   sortBy: Reducer<string>,
-  sortPalettes: Reducer<PaletteSortMode>
   sortOptionsVisible: Reducer<boolean>,
   syncBusy: Reducer<boolean>,
   syncLastUpdate: Reducer<SyncLastUpdate>,
@@ -163,7 +145,6 @@ const reducers: ReducersMapObject = {
   progress,
   recentImports,
   sortBy,
-  sortPalettes,
   sortOptionsVisible,
   syncBusy,
   syncLastUpdate,

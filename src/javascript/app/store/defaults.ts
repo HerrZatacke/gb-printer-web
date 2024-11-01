@@ -89,13 +89,6 @@ const definitions: StorePropertyDefault[] = [
     value: 'created_asc',
   },
   {
-    // sort criteria
-    key: 'sortPalettes',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: 'default_desc',
-  },
-  {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,
