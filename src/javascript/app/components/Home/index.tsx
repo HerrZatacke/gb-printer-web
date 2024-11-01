@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import React, { useEffect, useState } from 'react';
-import type { ReactMarkdownOptions } from 'react-markdown';
+import type { Options as ReactMarkdownOptions } from 'react-markdown';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import docs from '../../../../../README.md';
