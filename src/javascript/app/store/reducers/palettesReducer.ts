@@ -14,7 +14,7 @@ const palettesReducer = (
 ): Palette[] => {
   switch (action.type) {
     case Actions.PALETTE_DELETE:
-      return [...value.filter(({ shortName }) => shortName !== action.payload.shortName)];
+      return [...value.filter(({ shortName }) => shortName !== action.payload)];
     case Actions.PALETTE_UPDATE:
       return uniqueBy<Palette>('shortName')([
         ...value.map((palette) => (

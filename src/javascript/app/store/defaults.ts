@@ -14,13 +14,6 @@ export interface StorePropertyExportable extends Omit<StorePropertyDefault, 'key
 
 const definitions: StorePropertyDefault[] = [
   {
-    // currently selected palette (used for new imports)
-    key: 'activePalette',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: 'bw',
-  },
-  {
     // Metadata of all images
     key: 'images',
     saveLocally: true,

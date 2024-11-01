@@ -16,7 +16,7 @@ function ImportQueue() {
     importQueue,
     tagChanges,
     setFrame,
-    setPalette,
+    setActivePalette,
     updateTagChanges,
     runImport,
     cancelImport,
@@ -49,7 +49,7 @@ function ImportQueue() {
           selectLabel="Palette"
           noFancy
           value={palette}
-          onChange={setPalette}
+          onChange={setActivePalette}
         />
         <FrameSelect
           selectLabel="Modify Frame"

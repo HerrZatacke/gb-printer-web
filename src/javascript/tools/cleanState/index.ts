@@ -35,8 +35,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
 
   let framesMessage = dirtyState.framesMessage;
 
-  const activePalette = palettesShorts.includes(dirtyState.activePalette || '') ? dirtyState.activePalette : 'bw';
-
   const images: Image[] = (dirtyState.images || [])
     // clean the created date (add ms) (e.g. "2021-01-30 18:16:09" -> "2021-01-30 18:16:09:000")
     .map((image) => ({
@@ -143,7 +141,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
     palettes,
     plugins,
     framesMessage: framesMessage || 0,
-    activePalette,
     recentImports,
   };
 };

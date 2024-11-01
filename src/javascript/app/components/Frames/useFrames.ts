@@ -37,7 +37,7 @@ interface UseFrames {
 
 const useFrames = (): UseFrames => {
   const dispatch = useDispatch();
-  const { enableDebug, savFrameTypes } = useSettingsStore();
+  const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
 
   const {
     frames,
@@ -46,7 +46,7 @@ const useFrames = (): UseFrames => {
   } = useSelector((state: State) => ({
     frames: state.frames,
     frameGroupNames: state.frameGroupNames,
-    palette: state.palettes.find(({ shortName }) => shortName === state.activePalette) || state.palettes[0],
+    palette: state.palettes.find(({ shortName }) => shortName === activePalette) || state.palettes[0],
   }));
 
   const frameGroups = getFrameGroups(frames, frameGroupNames);

@@ -1,13 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
 import type {
   PaletteCloneAction,
   PaletteDeleteAction,
   PaletteEditAction,
-  PaletteSetActiveAction,
 } from '../../../../types/actions/PaletteActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import useSettingsStore from '../../stores/settingsStore';
 
 interface UsePalette {
   isActive: boolean
@@ -18,26 +17,26 @@ interface UsePalette {
 }
 
 export const usePalette = (shortName: string, name: string): UsePalette => {
-  const isActive = useSelector((state: State) => state.activePalette === shortName);
+  const { activePalette, setActivePalette } = useSettingsStore();
+  const isActive = activePalette === shortName;
   const dispatch = useDispatch();
 
   return {
     isActive,
-    setActive: () => {
-      dispatch<PaletteSetActiveAction>({
-        type: Actions.PALETTE_SET_ACTIVE,
-        payload: shortName,
-      });
-    },
+    setActive: () => setActivePalette(shortName),
     deletePalette: () => {
       dispatch<ConfirmAskAction>({
         type: Actions.CONFIRM_ASK,
         payload: {
           message: `Delete palette "${name || 'no name'}"?`,
           confirm: async () => {
+            if (isActive) {
+              setActivePalette('dsh');
+            }
+
             dispatch<PaletteDeleteAction>({
               type: Actions.PALETTE_DELETE,
-              payload: { shortName },
+              payload: shortName,
             });
           },
           deny: async () => {

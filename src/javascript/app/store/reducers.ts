@@ -18,7 +18,6 @@ import type { VideoParams } from '../../../types/VideoParams';
 import type { QueueImage } from '../../../types/QueueImage';
 import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
-import activePalette from './reducers/activePaletteReducer';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import canShare from './reducers/canShareReducer';
 import confirm from './reducers/confirmReducer';
@@ -64,7 +63,6 @@ import videoParams from './reducers/videoParamsReducer';
 import windowDimensions from './reducers/windowDimensionsReducer';
 
 export interface Reducers extends ReducersMapObject {
-  activePalette: Reducer<string | undefined>,
   bitmapQueue: Reducer<QueueImage[]>,
   canShare: Reducer<boolean>,
   confirm: Reducer<Dialog[]>,
@@ -110,7 +108,6 @@ export interface Reducers extends ReducersMapObject {
 }
 
 const reducers: ReducersMapObject = {
-  activePalette,
   bitmapQueue,
   canShare,
   confirm,

@@ -21,7 +21,6 @@ import type { PickColors } from '../../../types/PickColors';
 
 // ToDo: infer from store somehow...?
 export interface State {
-  activePalette: string | undefined,
   bitmapQueue: QueueImage[],
   canShare: boolean,
   confirm: Dialog[],
