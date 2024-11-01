@@ -6,33 +6,8 @@ export interface DragoverAction {
   type: Actions.IMPORT_DRAGOVER_START | Actions.IMPORT_DRAGOVER_END,
 }
 
-export interface EnableDebugAction {
-  type: Actions.SET_DEBUG,
-  payload: boolean,
-}
-
 export interface FramesMessageHideAction {
   type: Actions.FRAMES_MESSAGE_HIDE
-}
-
-export interface HideDatesAction {
-  type: Actions.SET_HIDE_DATES,
-  payload: boolean,
-}
-
-export interface ImportDeletedAction {
-  type: Actions.SET_IMPORT_DELETED,
-  payload: boolean,
-}
-
-export interface ImportLastSeenAction {
-  type: Actions.SET_IMPORT_LAST_SEEN,
-  payload: boolean,
-}
-
-export interface ImportPadAction {
-  type: Actions.SET_IMPORT_PAD,
-  payload: boolean,
 }
 
 export interface IsFullscreenAction {

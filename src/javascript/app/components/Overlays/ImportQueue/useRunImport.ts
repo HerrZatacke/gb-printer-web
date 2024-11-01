@@ -13,6 +13,7 @@ import type { ImportItem } from '../../../../../types/ImportItem';
 import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
 import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
+import useSettingsStore from '../../../stores/settingsStore';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -30,11 +31,11 @@ interface UseRunImport {
 }
 
 const useRunImport = (): UseRunImport => {
+  const { importPad } = useSettingsStore();
   const dispatch = useDispatch();
   const queue = new Queue(1, Infinity);
 
-  const { importQueue, palette, importPad } = useSelector((state: State) => ({
-    importPad: state.importPad,
+  const { importQueue, palette } = useSelector((state: State) => ({
     palette: state.activePalette || '',
     importQueue: state.importQueue,
   }));

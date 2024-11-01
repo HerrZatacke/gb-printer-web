@@ -108,41 +108,6 @@ const definitions: StorePropertyDefault[] = [
     value: 'default_desc',
   },
   {
-    // if the "last seen" image from a .sav will be imported too
-    key: 'importLastSeen',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: true,
-  },
-  {
-    // if the "deleted" images from a .sav will be imported too
-    key: 'importDeleted',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: true,
-  },
-  {
-    // if images will get padded up to 144px on import
-    key: 'importPad',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: false,
-  },
-  {
-    // visiblility of dates in gallery
-    key: 'hideDates',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: false,
-  },
-  {
-    // general debug option
-    key: 'enableDebug',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS],
-    value: false,
-  },
-  {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,
@@ -257,12 +222,6 @@ const definitions: StorePropertyDefault[] = [
     saveLocally: false,
     saveExport: [],
     value: { frames: 0, images: 0, show: false },
-  },
-  {
-    key: 'forceMagicCheck',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS],
-    value: true,
   },
 ];
 

@@ -13,6 +13,7 @@ import type {
   ImageSelectionRemoveAction,
   ImageSelectionShiftClickAction,
 } from '../../../../types/actions/ImageSelectionActions';
+import useSettingsStore from '../../stores/settingsStore';
 
 export enum SelectionEditMode {
   ADD = 'add',
@@ -46,6 +47,7 @@ interface UseGalleryImage {
 }
 
 export const useGalleryImage = (hash: string): UseGalleryImage => {
+  const { enableDebug, hideDates } = useSettingsStore();
   const galleryImageData = useSelector((state: State): GalleryImageData | undefined => {
     const image = state.images.find((img) => img.hash === hash);
     let palette: RGBNPalette | string[];
@@ -79,11 +81,11 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       lockFrame: image.lockFrame,
       invertPalette: (image as MonochromeImage).invertPalette,
       invertFramePalette: (image as MonochromeImage).invertFramePalette,
-      hideDate: state.hideDates,
+      hideDate: hideDates,
       preferredLocale: state.preferredLocale,
       meta: image.meta,
       rotation: image.rotation,
-      enableDebug: state.enableDebug,
+      enableDebug,
     });
   });
 

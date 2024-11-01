@@ -30,24 +30,18 @@ import editImage from './reducers/editImageReducer';
 import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
-import enableDebug from './reducers/enableDebugReducer';
 import errors from './reducers/errorsReducer';
 import filtersActiveTags from './reducers/filtersActiveTagsReducer';
 import filtersVisible from './reducers/filtersVisibleReducer';
-import forceMagicCheck from './reducers/forceMagicCheckReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frameQueue from './reducers/frameQueueReducer';
 import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
 import gitStorage from './reducers/gitStorageReducer';
-import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
-import importDeleted from './reducers/importDeletedReducer';
 import importQueue from './reducers/importQueueReducer';
 import imageSelection from './reducers/imageSelectionReducer';
-import importLastSeen from './reducers/importLastSeenReducer';
-import importPad from './reducers/importPadReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
@@ -147,24 +141,18 @@ const reducers: ReducersMapObject = {
   editFrame,
   editPalette,
   editRGBNImages,
-  enableDebug,
   errors,
   filtersActiveTags,
   filtersVisible,
-  forceMagicCheck,
   frameGroupNames,
   frameQueue,
   frames,
   framesMessage,
   galleryView,
   gitStorage,
-  hideDates,
   images,
   imageSelection,
-  importDeleted,
   importQueue,
-  importLastSeen,
-  importPad,
   isFullscreen,
   lastSelectedImage,
   progressLog,
