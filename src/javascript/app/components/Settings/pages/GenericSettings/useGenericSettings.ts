@@ -7,14 +7,6 @@ import type { State } from '../../../../store/State';
 import type { FrameGroup } from '../../../../../../types/FrameGroup';
 import type { PrinterSetParamsAction, PrinterSetUrlAction } from '../../../../../../types/actions/PrinterActions';
 import type {
-  ForceMagicCheckAction,
-} from '../../../../../../types/actions/StorageActions';
-import type {
-  EnableDebugAction,
-  HideDatesAction,
-  ImportDeletedAction,
-  ImportLastSeenAction,
-  ImportPadAction,
   PreferredLocaleAction,
   EnableImageGroupsAction,
 } from '../../../../../../types/actions/GlobalActions';
@@ -58,15 +50,9 @@ export const useGenericSettings = (): UseGenericSettings => {
 
   const fromState = useSelector((state: State) => ({
     savFrameGroups: getFrameGroups(state.frames, state.frameGroupNames),
-    importDeleted: state.importDeleted,
-    forceMagicCheck: state.forceMagicCheck,
-    importLastSeen: state.importLastSeen,
-    importPad: state.importPad,
-    hideDates: state.hideDates,
     printerUrl: state.printerUrl,
     printerParams: state.printerParams,
     preferredLocale: state.preferredLocale,
-    enableDebug: state.enableDebug,
     enableImageGroups: state.enableImageGroups,
   }));
 
@@ -75,36 +61,6 @@ export const useGenericSettings = (): UseGenericSettings => {
   return {
     ...fromState,
     ...fromZState,
-    setImportDeleted(importDeleted: boolean) {
-      dispatch<ImportDeletedAction>({
-        type: Actions.SET_IMPORT_DELETED,
-        payload: importDeleted,
-      });
-    },
-    setForceMagicCheck(forceMagicCheck: boolean) {
-      dispatch<ForceMagicCheckAction>({
-        type: Actions.SET_FORCE_MAGIC_CHECK,
-        payload: forceMagicCheck,
-      });
-    },
-    setImportLastSeen(importLastSeen: boolean) {
-      dispatch<ImportLastSeenAction>({
-        type: Actions.SET_IMPORT_LAST_SEEN,
-        payload: importLastSeen,
-      });
-    },
-    setImportPad(importPad: boolean) {
-      dispatch<ImportPadAction>({
-        type: Actions.SET_IMPORT_PAD,
-        payload: importPad,
-      });
-    },
-    setHideDates(hideDates: boolean) {
-      dispatch<HideDatesAction>({
-        type: Actions.SET_HIDE_DATES,
-        payload: hideDates,
-      });
-    },
     updatePrinterUrl(printerUrl: string) {
       dispatch<PrinterSetUrlAction>({
         type: Actions.SET_PRINTER_URL,
@@ -121,12 +77,6 @@ export const useGenericSettings = (): UseGenericSettings => {
       dispatch<PreferredLocaleAction>({
         type: Actions.SET_PREFERRED_LOCALE,
         payload: preferredLocale,
-      });
-    },
-    setEnableDebug(enableDebug: boolean) {
-      dispatch<EnableDebugAction>({
-        type: Actions.SET_DEBUG,
-        payload: enableDebug,
       });
     },
     setEnableImageGroups(enableImageGroups: boolean) {

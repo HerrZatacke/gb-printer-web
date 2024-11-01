@@ -19,6 +19,7 @@ import type { ImageSelectionSetAction } from '../../../../../types/actions/Image
 import { randomId } from '../../../../tools/randomId';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
+import useSettingsStore from '../../../stores/settingsStore';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -38,13 +39,13 @@ interface UseRunImport {
 }
 
 const useRunImport = (): UseRunImport => {
+  const { importPad } = useSettingsStore();
   const dispatch = useDispatch();
   const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
   const navigate = useNavigate();
 
-  const { importQueue, palette, importPad } = useSelector((state: State) => ({
-    importPad: state.importPad,
+  const { importQueue, palette } = useSelector((state: State) => ({
     palette: state.activePalette || '',
     importQueue: state.importQueue,
   }));

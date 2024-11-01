@@ -33,26 +33,20 @@ import editImageGroup from './reducers/editImageGroupReducer';
 import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
-import enableDebug from './reducers/enableDebugReducer';
 import enableImageGroups from './reducers/enableImageGroupsReducer';
 import errors from './reducers/errorsReducer';
 import filtersActiveTags from './reducers/filtersActiveTagsReducer';
 import filtersVisible from './reducers/filtersVisibleReducer';
-import forceMagicCheck from './reducers/forceMagicCheckReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frameQueue from './reducers/frameQueueReducer';
 import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
 import gitStorage from './reducers/gitStorageReducer';
-import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import imageGroups from './reducers/imageGroupsReducer';
-import importDeleted from './reducers/importDeletedReducer';
 import importQueue from './reducers/importQueueReducer';
 import imageSelection from './reducers/imageSelectionReducer';
-import importLastSeen from './reducers/importLastSeenReducer';
-import importPad from './reducers/importPadReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import palettes from './reducers/palettesReducer';
@@ -154,26 +148,20 @@ const reducers: ReducersMapObject = {
   editFrame,
   editPalette,
   editRGBNImages,
-  enableDebug,
   enableImageGroups,
   errors,
   filtersActiveTags,
   filtersVisible,
-  forceMagicCheck,
   frameGroupNames,
   frameQueue,
   frames,
   framesMessage,
   galleryView,
   gitStorage,
-  hideDates,
   images,
   imageGroups,
   imageSelection,
-  importDeleted,
   importQueue,
-  importLastSeen,
-  importPad,
   lastSelectedImage,
   progressLog,
   lightboxImage,

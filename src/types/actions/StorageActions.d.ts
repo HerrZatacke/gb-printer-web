@@ -47,8 +47,3 @@ export interface ExportJSONAction {
   payload: ExportTypes,
   selectedFrameGroup?: string,
 }
-
-export interface ForceMagicCheckAction {
-  type: Actions.SET_FORCE_MAGIC_CHECK,
-  payload: boolean,
-}

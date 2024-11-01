@@ -7,6 +7,7 @@ import type { State } from '../../store/State';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import type { DeleteFrameAction, EditFrameAction } from '../../../../types/actions/FrameActions';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
+import useSettingsStore from '../../stores/settingsStore';
 
 
 interface GetTilesParams {
@@ -41,13 +42,13 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const [tiles, setTiles] = useState<string[]>([]);
   const [imageStartLine, setImageStartLine] = useState<number>(2);
 
+  const { enableDebug } = useSettingsStore();
+
   const {
     frameHash,
-    enableDebug,
     usage,
   } = useSelector((state: State) => ({
     frameHash: state.frames.find(({ id }) => id === frameId)?.hash || '',
-    enableDebug: state.enableDebug,
     usage: state.images.filter(({ frame }) => frame === frameId).length,
   }));
 

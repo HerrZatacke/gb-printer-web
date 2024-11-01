@@ -22,10 +22,13 @@ const getTransformSav = (
   const {
     frames,
     frameGroupNames,
+  } = getState();
+
+  const {
     importLastSeen,
     importDeleted,
     forceMagicCheck,
-  } = getState();
+  } = useSettingsStore.getState();
 
   const frameGroupOptions: DialogOption[] = getFrameGroups(frames, frameGroupNames)
     .map(({ id: value, name }) => ({

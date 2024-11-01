@@ -3,6 +3,7 @@ import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from '../transformSav/importSav';
 import type { TypedStore } from '../../app/store/State';
 import type { GenerateFilenameFn } from '../transformSav/types';
+import useSettingsStore from '../../app/stores/settingsStore';
 
 interface RomBank {
   bankData: Uint8Array,
@@ -14,11 +15,15 @@ const pad2 = (number: number) => (
   number.toString(10).padStart(2, '0')
 );
 
-const getTransformRom = ({ getState, dispatch }: TypedStore) => async (file: File): Promise<boolean[]> => {
+const getTransformRom = ({ dispatch }: TypedStore) => async (file: File): Promise<boolean[]> => {
   const { default: objectHash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
-  const { importLastSeen, importDeleted, forceMagicCheck } = getState();
+  const {
+    importLastSeen,
+    importDeleted,
+    forceMagicCheck,
+  } = useSettingsStore.getState();
 
   const banks = (chunk(data, 0x20000) as unknown as Uint8Array[])
     .reduce((acc: RomBank[], bankData, bankIndex: number): RomBank[] => {
