@@ -45,6 +45,11 @@ export interface PageSizeAction {
   payload: number,
 }
 
+export interface IsFullscreenAction {
+  type: Actions.SET_IS_FULLSCREEN,
+  payload?: boolean,
+}
+
 export interface PreferredLocaleAction {
   type: Actions.SET_PREFERRED_LOCALE,
   payload?: string,

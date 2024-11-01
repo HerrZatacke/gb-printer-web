@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import useSettingsStore from '../../stores/settingsStore';
 import getFilteredImages from '../../../tools/getFilteredImages';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
@@ -20,13 +21,12 @@ interface UseGallery {
 
 export const useGallery = (): UseGallery => {
   const { view, covers } = useGalleryTreeContext();
+  const { pageSize } = useSettingsStore();
 
   const {
     imageCount,
-    pageSize,
     filteredCount,
   } = useSelector((state: State) => ({
-    pageSize: state.pageSize,
     imageCount: state.images.length,
     filteredCount: getFilteredImagesCount(state, view.images),
   }));
@@ -47,8 +47,8 @@ export const useGallery = (): UseGallery => {
     currentView,
     images,
   } = useSelector((state: State) => {
-    const iOffset = page * state.pageSize;
-    const pSize = state.pageSize;
+    const iOffset = page * pageSize;
+    const pSize = pageSize;
 
     return ({
       selectedCount: state.imageSelection.length,

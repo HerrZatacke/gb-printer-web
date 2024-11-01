@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
+import useSettingsStore from '../../stores/settingsStore';
 import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import type { BatchTaskAction } from '../../../../types/actions/ImageActions';
@@ -24,13 +25,14 @@ interface UseBatchButtons {
 
 const useBatchButtons = (page: number): UseBatchButtons => {
   const state = useSelector((currentState: State) => currentState);
+  const { pageSize } = useSettingsStore();
   const dispatch = useDispatch();
 
   const { view, covers } = useGalleryTreeContext();
 
-  const indexOffset = page * state.pageSize;
+  const indexOffset = page * pageSize;
   const images: Image[] = getFilteredImages(state, view.images) // take images from current VIEW (including covers)
-    .splice(indexOffset, state.pageSize || Infinity) // use images of the current PAGE
+    .splice(indexOffset, pageSize || Infinity) // use images of the current PAGE
     .filter((image: Image) => !covers.includes(image.hash)); // And remove covers AFTERWARDS
   const selectedImages = images.filter(({ hash }) => state.imageSelection.includes(hash));
   const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
