@@ -1,1 +1,1 @@
-export const PROJECT_PREFIX = 'gbp-web';
+export const PROJECT_PREFIX = 'gbp-z-web';

@@ -67,7 +67,6 @@ import printerParams from './reducers/printerParamsReducer';
 import progress from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
 import recentImports from './reducers/recentImportsReducer';
-import savFrameTypes from './reducers/savFrameTypesReducer';
 import sortBy from './reducers/sortByReducer';
 import sortPalettes from './reducers/sortPalettesReducer';
 import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
@@ -189,7 +188,6 @@ const reducers: ReducersMapObject = {
   printerParams,
   progress,
   recentImports,
-  savFrameTypes,
   sortBy,
   sortPalettes,
   sortOptionsVisible,

@@ -69,7 +69,6 @@ export interface State {
   printerParams: string,
   progress: Progress,
   recentImports: RecentImport[],
-  savFrameTypes: string,
   sortBy: string,
   sortPalettes: PaletteSortMode,
   sortOptionsVisible: boolean,
