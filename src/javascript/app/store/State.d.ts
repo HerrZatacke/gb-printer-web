@@ -58,7 +58,6 @@ export interface State {
   lastSelectedImage: string | null,
   progressLog: ProgressLog,
   lightboxImage: number | null,
-  pageSize: number,
   palettes: Palette[],
   pickColors: PickColors | null,
   plugins: Plugin[],

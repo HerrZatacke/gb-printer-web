@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import getFilteredImages from '../../../tools/getFilteredImages';
+import useSettingsStore from '../../stores/settingsStore';
 import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import type { BatchTaskAction } from '../../../../types/actions/ImageActions';
@@ -23,10 +24,11 @@ interface UseBatchButtons {
 
 const useBatchButtons = (page: number): UseBatchButtons => {
   const state = useSelector((currentState: State) => currentState);
+  const { pageSize } = useSettingsStore();
   const dispatch = useDispatch();
 
-  const indexOffset = page * state.pageSize;
-  const images: Image[] = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
+  const indexOffset = page * pageSize;
+  const images: Image[] = getFilteredImages(state).splice(indexOffset, pageSize || Infinity);
   const selectedImages = images.filter(({ hash }) => state.imageSelection.includes(hash));
   const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
 

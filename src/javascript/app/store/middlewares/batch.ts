@@ -10,6 +10,7 @@ import type { DeleteImagesAction,
 import type { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
 import type { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import useSettingsStore from '../../stores/settingsStore';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 
@@ -19,11 +20,12 @@ const collectTags = (batchImages: Image[]): string[] => (
 );
 
 const batch: MiddlewareWithState = (store) => (next) => (action) => {
+  const { pageSize } = useSettingsStore.getState();
 
   if (action.type === Actions.IMAGE_SELECTION_SHIFTCLICK) {
     const state = store.getState();
     const images = getFilteredImages(state);
-    const { lastSelectedImage, pageSize } = state;
+    const { lastSelectedImage } = state;
     const selectedIndex = images.findIndex(({ hash }) => hash === action.payload);
     let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);
     if (prevSelectedIndex === -1) {
@@ -41,7 +43,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
 
   if (action.type === Actions.BATCH_TASK) {
     const state = store.getState();
-    const { images, imageSelection, pageSize } = state;
+    const { images, imageSelection } = state;
     // const batchImages = images.filter(({ hash }) => imageSelection.includes(hash));
 
     const batchImages = imageSelection.reduce((acc: Image[], selHash: string): Image[] => {

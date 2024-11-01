@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import useSettingsStore from '../../stores/settingsStore';
 import PaginationButton from '../PaginationButton';
 import SVG from '../SVG';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
@@ -11,8 +12,10 @@ interface Props {
 }
 
 function Pagination({ page }: Props) {
+  const { pageSize } = useSettingsStore();
+
   const totalPages = useSelector((state: State) => (
-    state.pageSize ? Math.ceil(getFilteredImagesCount(state) / state.pageSize) : 0
+    pageSize ? Math.ceil(getFilteredImagesCount(state) / pageSize) : 0
   ));
 
   if (totalPages < 2) {

@@ -57,11 +57,6 @@ export interface SetLightboxFullscreenAction {
   type: Actions.LIGHTBOX_FULLSCREEN,
 }
 
-export interface PageSizeAction {
-  type: Actions.SET_PAGESIZE,
-  payload: number,
-}
-
 export interface PreferredLocaleAction {
   type: Actions.SET_PREFERRED_LOCALE,
   payload?: string,

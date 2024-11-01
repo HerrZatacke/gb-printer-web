@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import type { ExportFrameMode } from 'gb-image-decoder';
+import useSettingsStore from '../../../../stores/settingsStore';
 import getFrameGroups from '../../../../../tools/getFrameGroups';
 import { Actions } from '../../../../store/actions';
 import type { State } from '../../../../store/State';
@@ -16,7 +17,6 @@ import type {
   ImportDeletedAction,
   ImportLastSeenAction,
   ImportPadAction,
-  PageSizeAction,
   PreferredLocaleAction,
 } from '../../../../../../types/actions/GlobalActions';
 import type { HandleExportFrameAction, SavFrameTypesAction } from '../../../../../../types/actions/FrameActions';
@@ -54,10 +54,11 @@ interface UseGenericSettings {
 }
 
 export const useGenericSettings = (): UseGenericSettings => {
+  const { pageSize, setPageSize } = useSettingsStore();
+
   const fromState = useSelector((state: State) => ({
     exportScaleFactors: state.exportScaleFactors,
     exportFileTypes: state.exportFileTypes,
-    pageSize: state.pageSize,
     savFrameTypes: state.savFrameTypes,
     savFrameGroups: getFrameGroups(state.frames, state.frameGroupNames),
     handleExportFrame: state.handleExportFrame,
@@ -76,6 +77,7 @@ export const useGenericSettings = (): UseGenericSettings => {
 
   return {
     ...fromState,
+    pageSize,
     changeExportScaleFactors(factor: number, checked: boolean) {
       dispatch<ExportScaleFactorsAction>({
         type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
@@ -94,12 +96,7 @@ export const useGenericSettings = (): UseGenericSettings => {
         },
       });
     },
-    setPageSize(pageSize: number) {
-      dispatch<PageSizeAction>({
-        type: Actions.SET_PAGESIZE,
-        payload: pageSize,
-      });
-    },
+    setPageSize,
     setSavFrameTypes(savFrameTypes: string) {
       dispatch<SavFrameTypesAction>({
         type: Actions.SET_SAV_FRAME_TYPES,

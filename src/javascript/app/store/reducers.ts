@@ -54,7 +54,6 @@ import importPad from './reducers/importPadReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
-import pageSize from './reducers/pageSizeReducer';
 import palettes from './reducers/palettesReducer';
 import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
@@ -177,7 +176,6 @@ const reducers: ReducersMapObject = {
   lastSelectedImage,
   progressLog,
   lightboxImage,
-  pageSize,
   palettes,
   pickColors,
   plugins,

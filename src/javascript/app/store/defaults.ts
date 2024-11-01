@@ -61,13 +61,6 @@ const definitions: StorePropertyDefault[] = [
     value: ['png'],
   },
   {
-    // concurrently visible images in gallery
-    key: 'pageSize',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS],
-    value: 30,
-  },
-  {
     // current selection of images
     key: 'imageSelection',
     saveLocally: true,
