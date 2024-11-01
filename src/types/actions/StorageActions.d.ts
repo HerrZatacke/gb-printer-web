@@ -56,14 +56,6 @@ export interface ExportFileTypesAction {
   }
 }
 
-export interface ExportScaleFactorsAction {
-  type: Actions.UPDATE_EXPORT_SCALE_FACTORS,
-  payload: {
-    checked: boolean,
-    factor: number,
-  }
-}
-
 export interface ForceMagicCheckAction {
   type: Actions.SET_FORCE_MAGIC_CHECK,
   payload: boolean,

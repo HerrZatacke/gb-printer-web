@@ -34,7 +34,7 @@ function GenericSettings() {
     savFrameGroups,
     savFrameTypes,
     changeExportFileTypes,
-    changeExportScaleFactors,
+    setExportScaleFactors,
     setEnableDebug,
     setForceMagicCheck,
     setHandleExportFrame,
@@ -123,7 +123,7 @@ function GenericSettings() {
               type="checkbox"
               checked={exportScaleFactors.includes(factor)}
               onChange={({ target }) => {
-                changeExportScaleFactors(factor, target.checked);
+                setExportScaleFactors(factor, target.checked);
               }}
             />
           </label>

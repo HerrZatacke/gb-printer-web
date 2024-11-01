@@ -47,13 +47,6 @@ const definitions: StorePropertyDefault[] = [
     value: '1x',
   },
   {
-    // used scalings when exporting/downloading
-    key: 'exportScaleFactors',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: [4],
-  },
-  {
     // used filetypes when exporting/downloading
     key: 'exportFileTypes',
     saveLocally: true,

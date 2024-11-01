@@ -19,7 +19,7 @@ interface UseVideoForm {
 
 export const useVideoForm = (): UseVideoForm => {
   const videoParams = useSelector((state: State): VideoParams => (
-    videoParamsWithDefaults(state.videoParams, state.exportScaleFactors)
+    videoParamsWithDefaults(state.videoParams)
   ));
   const dispatch = useDispatch();
 
