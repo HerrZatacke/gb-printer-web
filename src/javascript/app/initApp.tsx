@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import getStore from './store';
 import { defaults } from './store/defaults';
 import { getEnv } from '../tools/getEnv';
@@ -35,8 +35,9 @@ const initApp = async () => {
   localStorage.setItem('gbp-web-state', JSON.stringify(state));
 
   try {
+    const root = createRoot(appRoot);
     const store = getStore(state);
-    render(<Provider store={store}><App /></Provider>, appRoot);
+    root.render(<Provider store={store}><App /></Provider>);
   } catch (error) {
     const appNode = document.getElementById('app');
 
