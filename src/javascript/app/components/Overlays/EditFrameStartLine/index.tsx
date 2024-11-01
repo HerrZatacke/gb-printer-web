@@ -5,6 +5,7 @@ import type { State } from '../../../store/State';
 import { posTiles } from './posTiles';
 
 import './index.scss';
+import useSettingsStore from '../../../stores/settingsStore';
 
 interface Props {
   tiles: string[],
@@ -13,9 +14,10 @@ interface Props {
 }
 
 function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
+  const { activePalette } = useSettingsStore();
 
   const palette = useSelector((state: State) => (
-    state.palettes.find(({ shortName }) => shortName === state.activePalette)?.palette
+    state.palettes.find(({ shortName }) => shortName === activePalette)?.palette
   ));
 
   const previewTiles = useMemo<string[]>(() => {

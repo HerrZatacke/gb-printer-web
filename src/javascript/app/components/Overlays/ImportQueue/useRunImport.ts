@@ -9,7 +9,6 @@ import padToHeight from '../../../../tools/padToHeight';
 import sortBy from '../../../../tools/sortby';
 import { dateFormat } from '../../../defaults';
 import type { State } from '../../../store/State';
-import type { PaletteSetActiveAction } from '../../../../../types/actions/PaletteActions';
 import type { ImportItem } from '../../../../../types/ImportItem';
 import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
@@ -30,7 +29,7 @@ interface UseRunImport {
   frame: string,
   createGroup: boolean,
   setFrame: (frame: string) => void,
-  setPalette: (palette: string) => void,
+  setActivePalette: (palette: string) => void,
   setCreateGroup: (createGroup: boolean) => void,
   runImport: () => Promise<void>,
   cancelImport: () => void,
@@ -39,14 +38,13 @@ interface UseRunImport {
 }
 
 const useRunImport = (): UseRunImport => {
-  const { importPad } = useSettingsStore();
+  const { importPad, setActivePalette, activePalette } = useSettingsStore();
   const dispatch = useDispatch();
   const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
   const navigate = useNavigate();
 
-  const { importQueue, palette } = useSelector((state: State) => ({
-    palette: state.activePalette || '',
+  const { importQueue } = useSelector((state: State) => ({
     importQueue: state.importQueue,
   }));
 
@@ -68,7 +66,7 @@ const useRunImport = (): UseRunImport => {
           saveNewImage({
             lines: importPad ? padToHeight(tiles) : tiles,
             filename: fileName,
-            palette,
+            palette: activePalette,
             frame,
             tags: tagChanges.add,
             // Adding index to milliseconds to ensure better sorting
@@ -118,7 +116,7 @@ const useRunImport = (): UseRunImport => {
   return {
     importQueue,
     importPad,
-    palette,
+    palette: activePalette,
     frame,
     tagChanges,
     createGroup,
@@ -131,12 +129,7 @@ const useRunImport = (): UseRunImport => {
         type: Actions.IMPORTQUEUE_CANCEL,
       });
     },
-    setPalette: (payload: string) => {
-      dispatch<PaletteSetActiveAction>({
-        type: Actions.PALETTE_SET_ACTIVE,
-        payload,
-      });
-    },
+    setActivePalette,
   };
 };
 

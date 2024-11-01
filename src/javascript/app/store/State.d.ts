@@ -23,7 +23,6 @@ import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 
 // ToDo: infer from store somehow...?
 export interface State {
-  activePalette: string | undefined,
   bitmapQueue: QueueImage[],
   canShare: boolean,
   confirm: Dialog[],

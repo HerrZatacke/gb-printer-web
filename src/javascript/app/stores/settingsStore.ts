@@ -8,6 +8,7 @@ import dateFormatLocale from '../../tools/dateFormatLocale';
 import { PaletteSortMode } from '../../consts/paletteSortModes';
 
 interface Values {
+  activePalette: string,
   enableDebug: boolean,
   exportFileTypes: string[],
   exportScaleFactors: number[],
@@ -27,6 +28,7 @@ interface Values {
 }
 
 interface Actions {
+  setActivePalette: (activePalette: string) => void,
   setEnableDebug: (enableDebug: boolean) => void,
   setExportFileTypes: (updateFileType: string, checked: boolean) => void,
   setExportScaleFactors: (factor: number, checked: boolean) => void
@@ -55,6 +57,7 @@ const getDefaultLocale = (): string => {
 const useSettingsStore = create(
   persist<SettingsState>(
     (set, get) => ({
+      activePalette: 'bw',
       enableDebug: false,
       exportFileTypes: ['png'],
       exportScaleFactors: [4],
@@ -72,6 +75,7 @@ const useSettingsStore = create(
       enableImageGroups: false,
       sortPalettes: PaletteSortMode.DEFAULT_DESC,
 
+      setActivePalette: (activePalette: string) => set({ activePalette }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
       setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),
       setHandleExportFrame: (handleExportFrame: ExportFrameMode) => set({ handleExportFrame }),
