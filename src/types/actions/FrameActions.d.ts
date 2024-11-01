@@ -1,4 +1,3 @@
-import type { ExportFrameMode } from 'gb-image-decoder';
 import type { Actions } from '../../javascript/app/store/actions';
 import type { Frame } from '../Frame';
 import type { FrameGroup } from '../FrameGroup';
@@ -41,9 +40,4 @@ export interface FrameGroupNamesAction {
 export interface SavFrameTypesAction {
   type: Actions.SET_SAV_FRAME_TYPES,
   payload: string,
-}
-
-export interface HandleExportFrameAction {
-  type: Actions.SET_HANDLE_EXPORT_FRAME,
-  payload: ExportFrameMode,
 }

@@ -1,5 +1,4 @@
 import type { Dispatch, MiddlewareAPI } from 'redux';
-import type { ExportFrameMode } from 'gb-image-decoder';
 import type { QueueImage } from '../../../types/QueueImage';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
@@ -48,7 +47,6 @@ export interface State {
   framesMessage: number,
   galleryView: GalleryViews,
   gitStorage: GitStorageSettings,
-  handleExportFrame: ExportFrameMode,
   hideDates: boolean,
   images: Image[],
   imageGroups: SerializableImageGroup[],

@@ -45,7 +45,6 @@ import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
 import galleryView from './reducers/galleryViewReducer';
 import gitStorage from './reducers/gitStorageReducer';
-import handleExportFrame from './reducers/handleExportFrameReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
 import imageGroups from './reducers/imageGroupsReducer';
@@ -168,7 +167,6 @@ const reducers: ReducersMapObject = {
   framesMessage,
   galleryView,
   gitStorage,
-  handleExportFrame,
   hideDates,
   images,
   imageGroups,

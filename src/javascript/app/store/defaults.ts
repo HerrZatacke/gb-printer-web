@@ -129,13 +129,6 @@ const definitions: StorePropertyDefault[] = [
     value: 'default_desc',
   },
   {
-    // how frame frame will be handled when exporting
-    key: 'handleExportFrame',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: 'keep',
-  },
-  {
     // if the "last seen" image from a .sav will be imported too
     key: 'importLastSeen',
     saveLocally: true,

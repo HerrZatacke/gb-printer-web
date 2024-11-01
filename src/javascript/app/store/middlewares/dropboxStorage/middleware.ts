@@ -223,12 +223,12 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
             }
 
             case 'dropboximages': {
-              const { exportScaleFactors, exportFileTypes } = useSettingsStore.getState();
+              const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore.getState();
               const images: Image[] = getFilteredImages(state, state.images);
               const prepareFiles = getPrepareFiles(
                 exportScaleFactors,
                 exportFileTypes,
-                state.handleExportFrame,
+                handleExportFrame,
                 state,
               );
               const loadTiles = loadImageTiles(state);

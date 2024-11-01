@@ -6,7 +6,7 @@ import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState'
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 
 const batch: MiddlewareWithState = (store) => (next) => async (action) => {
-  const { exportScaleFactors, exportFileTypes } = useSettingsStore.getState();
+  const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore.getState();
 
   if (action.type === Actions.SHARE_IMAGE) {
     const state = store.getState();
@@ -24,7 +24,7 @@ const batch: MiddlewareWithState = (store) => (next) => async (action) => {
     const prepareFiles = getPrepareFiles(
       [shareScaleFactor],
       [shareFileType],
-      state.handleExportFrame,
+      handleExportFrame,
       state,
     );
 
