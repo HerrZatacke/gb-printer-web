@@ -7,7 +7,6 @@ import type { State } from '../../../../store/State';
 import type { FrameGroup } from '../../../../../../types/FrameGroup';
 import type { PrinterSetParamsAction, PrinterSetUrlAction } from '../../../../../../types/actions/PrinterActions';
 import type {
-  ExportFileTypesAction,
   ForceMagicCheckAction,
 } from '../../../../../../types/actions/StorageActions';
 import type {
@@ -37,7 +36,7 @@ interface UseGenericSettings {
   preferredLocale: string,
   enableDebug: boolean,
   setExportScaleFactors: (factor: number, checked: boolean) => void
-  changeExportFileTypes: (fileType: string, checked: boolean) => void
+  setExportFileTypes: (fileType: string, checked: boolean) => void
   setPageSize: (pageSize: number) => void
   setSavFrameTypes: (savFrameTypes: string) => void
   setHandleExportFrame: (handleExportFrame: ExportFrameMode) => void
@@ -56,7 +55,6 @@ export const useGenericSettings = (): UseGenericSettings => {
   const fromZState = useSettingsStore();
 
   const fromState = useSelector((state: State) => ({
-    exportFileTypes: state.exportFileTypes,
     savFrameTypes: state.savFrameTypes,
     savFrameGroups: getFrameGroups(state.frames, state.frameGroupNames),
     handleExportFrame: state.handleExportFrame,
@@ -76,15 +74,6 @@ export const useGenericSettings = (): UseGenericSettings => {
   return {
     ...fromState,
     ...fromZState,
-    changeExportFileTypes(fileType: string, checked: boolean) {
-      dispatch<ExportFileTypesAction>({
-        type: Actions.UPDATE_EXPORT_FILE_TYPES,
-        payload: {
-          fileType,
-          checked,
-        },
-      });
-    },
     setSavFrameTypes(savFrameTypes: string) {
       dispatch<SavFrameTypesAction>({
         type: Actions.SET_SAV_FRAME_TYPES,

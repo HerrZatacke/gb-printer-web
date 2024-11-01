@@ -35,7 +35,6 @@ export interface State {
   editRGBNImages: string[],
   enableDebug: boolean,
   errors: ErrorMessage[],
-  exportFileTypes: string[],
   filtersActiveTags: string[],
   filtersVisible: boolean,
   forceMagicCheck: boolean,

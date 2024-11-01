@@ -6,7 +6,7 @@ import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState'
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 
 const batch: MiddlewareWithState = (store) => (next) => async (action) => {
-  const { exportScaleFactors } = useSettingsStore.getState();
+  const { exportScaleFactors, exportFileTypes } = useSettingsStore.getState();
 
   if (action.type === Actions.SHARE_IMAGE) {
     const state = store.getState();
@@ -19,7 +19,7 @@ const batch: MiddlewareWithState = (store) => (next) => async (action) => {
     const frame = state.frames.find(({ id }) => id === image.frame);
 
     const shareScaleFactor = [...exportScaleFactors].pop() || 4;
-    const shareFileType = [...state.exportFileTypes].pop() || 'png';
+    const shareFileType = [...exportFileTypes].pop() || 'png';
 
     const prepareFiles = getPrepareFiles(
       [shareScaleFactor],

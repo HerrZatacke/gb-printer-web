@@ -32,7 +32,6 @@ import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
 import enableDebug from './reducers/enableDebugReducer';
 import errors from './reducers/errorsReducer';
-import exportFileTypes from './reducers/exportFileTypesReducer';
 import filtersActiveTags from './reducers/filtersActiveTagsReducer';
 import filtersVisible from './reducers/filtersVisibleReducer';
 import forceMagicCheck from './reducers/forceMagicCheckReducer';
@@ -152,7 +151,6 @@ const reducers: ReducersMapObject = {
   editRGBNImages,
   enableDebug,
   errors,
-  exportFileTypes,
   filtersActiveTags,
   filtersVisible,
   forceMagicCheck,

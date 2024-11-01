@@ -5,11 +5,13 @@ import { PROJECT_PREFIX } from './constants';
 interface Values {
   pageSize: number,
   exportScaleFactors: number[],
+  exportFileTypes: string[],
 }
 
 interface Actions {
   setPageSize: (pageSize: number) => void
   setExportScaleFactors: (factor: number, checked: boolean) => void
+  setExportFileTypes: (updateFileType: string, checked: boolean) => void,
 }
 
 export type SettingsState = Values & Actions;
@@ -19,6 +21,7 @@ const useSettingsStore = create(
     (set, get) => ({
       pageSize: 30,
       exportScaleFactors: [4],
+      exportFileTypes: ['png'],
 
       setPageSize: (pageSize: number) => set({ pageSize }),
 
@@ -29,6 +32,16 @@ const useSettingsStore = create(
           exportScaleFactors: checked ?
             [...exportScaleFactors, updateFactor] :
             exportScaleFactors.filter((factor) => (factor !== updateFactor)),
+        });
+      },
+
+      setExportFileTypes: (updateFileType: string, checked: boolean) => {
+        const { exportFileTypes } = get();
+
+        set({
+          exportFileTypes: checked ?
+            [...exportFileTypes, updateFileType] :
+            exportFileTypes.filter((fileType) => (fileType !== updateFileType)),
         });
       },
     }),

@@ -47,13 +47,6 @@ const definitions: StorePropertyDefault[] = [
     value: '1x',
   },
   {
-    // used filetypes when exporting/downloading
-    key: 'exportFileTypes',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: ['png'],
-  },
-  {
     // current selection of images
     key: 'imageSelection',
     saveLocally: true,
