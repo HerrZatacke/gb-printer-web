@@ -2,6 +2,7 @@ import Queue from 'promise-queue';
 import { saveAs } from 'file-saver';
 import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import { RGBNDecoder, Decoder, BW_PALETTE_HEX } from 'gb-image-decoder';
+import useSettingsStore from '../../stores/settingsStore';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import { getImagePalettes } from '../../../tools/getImagePalettes';
 import { Actions } from '../actions';
@@ -53,7 +54,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
 
   const collectImageData = (hash: string): PluginImageData => {
     const state = store.getState();
-    const { handleExportFrame: handleExportFrameState } = state;
+    const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
 
     const meta = state.images.find((image) => image.hash === hash);
     if (!meta) {

@@ -17,7 +17,7 @@ import type {
   ImportPadAction,
   PreferredLocaleAction,
 } from '../../../../../../types/actions/GlobalActions';
-import type { HandleExportFrameAction, SavFrameTypesAction } from '../../../../../../types/actions/FrameActions';
+import type { SavFrameTypesAction } from '../../../../../../types/actions/FrameActions';
 
 interface UseGenericSettings {
   exportScaleFactors: number[],
@@ -57,7 +57,6 @@ export const useGenericSettings = (): UseGenericSettings => {
   const fromState = useSelector((state: State) => ({
     savFrameTypes: state.savFrameTypes,
     savFrameGroups: getFrameGroups(state.frames, state.frameGroupNames),
-    handleExportFrame: state.handleExportFrame,
     importDeleted: state.importDeleted,
     forceMagicCheck: state.forceMagicCheck,
     importLastSeen: state.importLastSeen,
@@ -78,12 +77,6 @@ export const useGenericSettings = (): UseGenericSettings => {
       dispatch<SavFrameTypesAction>({
         type: Actions.SET_SAV_FRAME_TYPES,
         payload: savFrameTypes,
-      });
-    },
-    setHandleExportFrame(handleExportFrame: ExportFrameMode) {
-      dispatch<HandleExportFrameAction>({
-        type: Actions.SET_HANDLE_EXPORT_FRAME,
-        payload: handleExportFrame,
       });
     },
     setImportDeleted(importDeleted: boolean) {

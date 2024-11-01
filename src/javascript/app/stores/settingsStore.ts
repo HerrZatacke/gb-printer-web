@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { ExportFrameMode } from 'gb-image-decoder';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { PROJECT_PREFIX } from './constants';
 
@@ -6,12 +7,14 @@ interface Values {
   pageSize: number,
   exportScaleFactors: number[],
   exportFileTypes: string[],
+  handleExportFrame: ExportFrameMode,
 }
 
 interface Actions {
   setPageSize: (pageSize: number) => void
   setExportScaleFactors: (factor: number, checked: boolean) => void
   setExportFileTypes: (updateFileType: string, checked: boolean) => void,
+  setHandleExportFrame: (handleExportFrame: ExportFrameMode) => void,
 }
 
 export type SettingsState = Values & Actions;
@@ -22,6 +25,7 @@ const useSettingsStore = create(
       pageSize: 30,
       exportScaleFactors: [4],
       exportFileTypes: ['png'],
+      handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
 
       setPageSize: (pageSize: number) => set({ pageSize }),
 
@@ -44,6 +48,7 @@ const useSettingsStore = create(
             exportFileTypes.filter((fileType) => (fileType !== updateFileType)),
         });
       },
+      setHandleExportFrame: (handleExportFrame: ExportFrameMode) => set({ handleExportFrame }),
     }),
     {
       name: `${PROJECT_PREFIX}-settings`,

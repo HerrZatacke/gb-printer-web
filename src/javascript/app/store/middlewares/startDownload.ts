@@ -73,7 +73,7 @@ const handleImageCollection =
   };
 
 const startDownload: MiddlewareWithState = (store) => (next) => (action) => {
-  const { exportScaleFactors, exportFileTypes } = useSettingsStore.getState();
+  const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore.getState();
 
   if ((action.type === Actions.START_DOWNLOAD) || (action.type === Actions.DOWNLOAD_SELECTION)) {
     const state = store.getState();
@@ -81,7 +81,7 @@ const startDownload: MiddlewareWithState = (store) => (next) => (action) => {
     const prepareFiles = getPrepareFiles(
       exportScaleFactors,
       exportFileTypes,
-      state.handleExportFrame,
+      handleExportFrame,
       state,
     );
 
