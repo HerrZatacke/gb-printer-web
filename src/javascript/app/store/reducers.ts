@@ -48,12 +48,9 @@ import lightboxImage from './reducers/lightboxImageReducer';
 import palettes from './reducers/palettesReducer';
 import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
-import preferredLocale from './reducers/preferredLocaleReducer';
 import printerBusy from './reducers/printerBusyReducer';
 import printerData from './reducers/printerDataReducer';
 import printerFunctions from './reducers/printerFunctionsReducer';
-import printerUrl from './reducers/printerUrlReducer';
-import printerParams from './reducers/printerParamsReducer';
 import progress from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
 import recentImports from './reducers/recentImportsReducer';
@@ -160,12 +157,9 @@ const reducers: ReducersMapObject = {
   palettes,
   pickColors,
   plugins,
-  preferredLocale,
   printerBusy,
   printerData,
   printerFunctions,
-  printerUrl,
-  printerParams,
   progress,
   recentImports,
   sortBy,

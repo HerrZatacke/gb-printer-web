@@ -32,11 +32,6 @@ export interface SetLightboxFullscreenAction {
   type: Actions.LIGHTBOX_FULLSCREEN,
 }
 
-export interface PreferredLocaleAction {
-  type: Actions.SET_PREFERRED_LOCALE,
-  payload?: string,
-}
-
 export interface ShowSerialsAction {
   type: Actions.SHOW_SERIALS,
   payload?: boolean,

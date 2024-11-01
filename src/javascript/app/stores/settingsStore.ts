@@ -1,7 +1,10 @@
 import { create } from 'zustand';
-import { ExportFrameMode } from 'gb-image-decoder';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { ExportFrameMode } from 'gb-image-decoder';
+import dayjs from 'dayjs';
 import { PROJECT_PREFIX } from './constants';
+import cleanUrl from '../../tools/cleanUrl';
+import dateFormatLocale from '../../tools/dateFormatLocale';
 
 interface Values {
   enableDebug: boolean,
@@ -14,6 +17,9 @@ interface Values {
   importLastSeen: boolean,
   importPad: boolean,
   pageSize: number,
+  preferredLocale: string,
+  printerParams: string,
+  printerUrl: string,
   savFrameTypes: string,
 }
 
@@ -28,10 +34,18 @@ interface Actions {
   setImportLastSeen: (importLastSeen: boolean) => void,
   setImportPad: (importPad: boolean) => void,
   setPageSize: (pageSize: number) => void
+  setPreferredLocale: (preferredLocale: string) => void,
+  setPrinterParams: (printerParams: string) => void,
+  setPrinterUrl: (printerUrl: string) => void,
   setSavFrameTypes: (savFrameTypes: string) => void,
 }
 
 export type SettingsState = Values & Actions;
+
+const getDefaultLocale = (): string => {
+  const [lang, country] = navigator.language.split('-');
+  return [lang, country].filter(Boolean).join('-');
+};
 
 const useSettingsStore = create(
   persist<SettingsState>(
@@ -46,6 +60,9 @@ const useSettingsStore = create(
       importLastSeen: true,
       importPad: false,
       pageSize: 30,
+      preferredLocale: getDefaultLocale(),
+      printerParams: '',
+      printerUrl: '',
       savFrameTypes: 'int',
 
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
@@ -56,6 +73,8 @@ const useSettingsStore = create(
       setImportLastSeen: (importLastSeen: boolean) => set({ importLastSeen }),
       setImportPad: (importPad: boolean) => set({ importPad }),
       setPageSize: (pageSize: number) => set({ pageSize }),
+      setPrinterParams: (printerParams: string) => set({ printerParams }),
+      setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
       setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
 
       setExportScaleFactors: (updateFactor: number, checked: boolean) => {
@@ -76,6 +95,16 @@ const useSettingsStore = create(
             [...exportFileTypes, updateFileType] :
             exportFileTypes.filter((fileType) => (fileType !== updateFileType)),
         });
+      },
+
+      setPreferredLocale: (preferredLocale: string) => {
+        // Try if provided locale can be used without throwing an error
+        try {
+          dateFormatLocale(dayjs(), preferredLocale);
+          set({ preferredLocale });
+        } catch (error) {
+          console.error(error);
+        }
       },
     }),
     {
