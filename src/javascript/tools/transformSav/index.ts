@@ -1,4 +1,5 @@
 import getFrameGroups from '../getFrameGroups';
+import useSettingsStore from '../../app/stores/settingsStore';
 import { Actions } from '../../app/store/actions';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
@@ -15,10 +16,10 @@ import { reduceItems } from '../reduceArray';
 const getTransformSav = (
   { getState, dispatch }: TypedStore,
 ) => async (file: File, skipDialogs: boolean): Promise<boolean> => {
+  const { savFrameTypes, setSavFrameTypes } = useSettingsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
   const {
-    savFrameTypes: selectedFrameset,
     frames,
     frameGroupNames,
     importLastSeen,
@@ -30,7 +31,7 @@ const getTransformSav = (
     .map(({ id: value, name }) => ({
       value,
       name,
-      selected: selectedFrameset === value,
+      selected: savFrameTypes === value,
     }));
 
   frameGroupOptions.unshift({ value: '', name: 'None (Black frame)' });
@@ -78,6 +79,8 @@ const getTransformSav = (
           dispatch<ConfirmAnsweredAction>({
             type: Actions.CONFIRM_ANSWERED,
           });
+
+          setSavFrameTypes(chosenFrameset);
 
           // Perform actual import action
           await importSav(chosenFrameset || '', Boolean(cartIsJP));

@@ -36,8 +36,3 @@ export interface FrameGroupNamesAction {
   type: Actions.NAME_FRAMEGROUP,
   payload: FrameGroup,
 }
-
-export interface SavFrameTypesAction {
-  type: Actions.SET_SAV_FRAME_TYPES,
-  payload: string,
-}

@@ -94,13 +94,6 @@ const definitions: StorePropertyDefault[] = [
     value: false,
   },
   {
-    // framegoup to be applied when importing .sav files
-    key: 'savFrameTypes',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: 'int',
-  },
-  {
     // sort criteria
     key: 'sortBy',
     saveLocally: true,

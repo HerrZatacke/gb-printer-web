@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useSettingsStore from '../../stores/settingsStore';
 import getFrameGroups from '../../../tools/getFrameGroups';
 import { Actions } from '../../store/actions';
 import type { FrameGroup } from '../../../../types/FrameGroup';
@@ -36,15 +37,14 @@ interface UseFrames {
 
 const useFrames = (): UseFrames => {
   const dispatch = useDispatch();
+  const { savFrameTypes } = useSettingsStore();
 
   const {
-    savFrameTypes,
     frames,
     frameGroupNames,
     palette,
     enableDebug,
   } = useSelector((state: State) => ({
-    savFrameTypes: state.savFrameTypes,
     frames: state.frames,
     frameGroupNames: state.frameGroupNames,
     palette: state.palettes.find(({ shortName }) => shortName === state.activePalette) || state.palettes[0],

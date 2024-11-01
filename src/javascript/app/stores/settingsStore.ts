@@ -8,6 +8,7 @@ interface Values {
   exportScaleFactors: number[],
   exportFileTypes: string[],
   handleExportFrame: ExportFrameMode,
+  savFrameTypes: string,
 }
 
 interface Actions {
@@ -15,6 +16,7 @@ interface Actions {
   setExportScaleFactors: (factor: number, checked: boolean) => void
   setExportFileTypes: (updateFileType: string, checked: boolean) => void,
   setHandleExportFrame: (handleExportFrame: ExportFrameMode) => void,
+  setSavFrameTypes: (savFrameTypes: string) => void,
 }
 
 export type SettingsState = Values & Actions;
@@ -26,6 +28,7 @@ const useSettingsStore = create(
       exportScaleFactors: [4],
       exportFileTypes: ['png'],
       handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
+      savFrameTypes: 'int',
 
       setPageSize: (pageSize: number) => set({ pageSize }),
 
@@ -49,6 +52,7 @@ const useSettingsStore = create(
         });
       },
       setHandleExportFrame: (handleExportFrame: ExportFrameMode) => set({ handleExportFrame }),
+      setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
     }),
     {
       name: `${PROJECT_PREFIX}-settings`,
