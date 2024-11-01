@@ -34,7 +34,7 @@ function GenericSettings() {
     printerUrl: statePrinterUrl,
     savFrameGroups,
     savFrameTypes,
-    changeExportFileTypes,
+    setExportFileTypes,
     setExportScaleFactors,
     setEnableDebug,
     setEnableImageGroups,
@@ -150,7 +150,7 @@ function GenericSettings() {
               type="checkbox"
               checked={exportFileTypes.includes(fileType)}
               onChange={({ target }) => {
-                changeExportFileTypes(fileType, target.checked);
+                setExportFileTypes(fileType, target.checked);
               }}
             />
           </label>

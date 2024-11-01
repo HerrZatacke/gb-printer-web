@@ -39,7 +39,6 @@ export interface State {
   enableDebug: boolean,
   enableImageGroups: boolean,
   errors: ErrorMessage[],
-  exportFileTypes: string[],
   filtersActiveTags: string[],
   filtersVisible: boolean,
   forceMagicCheck: boolean,

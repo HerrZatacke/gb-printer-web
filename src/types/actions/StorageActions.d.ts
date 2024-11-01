@@ -48,14 +48,6 @@ export interface ExportJSONAction {
   selectedFrameGroup?: string,
 }
 
-export interface ExportFileTypesAction {
-  type: Actions.UPDATE_EXPORT_FILE_TYPES,
-  payload: {
-    checked: boolean,
-    fileType: string,
-  }
-}
-
 export interface ForceMagicCheckAction {
   type: Actions.SET_FORCE_MAGIC_CHECK,
   payload: boolean,
