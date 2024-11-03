@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useFiltersStore from '../../../stores/filtersStore';
 import Lightbox from '../../Lightbox';
 import './index.scss';
 import { Actions } from '../../../store/actions';
@@ -11,11 +12,20 @@ import getGetPreviewImages from '../../../../tools/getPreviewImages';
 import type { State } from '../../../store/State';
 
 function PickColors() {
-  const state = useSelector((s: State) => s);
+  const { images, pickColors } = useSelector((state: State) => ({
+    images: state.images,
+    pickColors: state.pickColors,
+  }));
+  const {
+    imageSelection,
+    sortBy,
+    filtersActiveTags,
+    recentImports,
+  } = useFiltersStore();
+
   const dispatch = useDispatch();
   const [selected, setSelected] = useState<number[]>([0, 3, 6, 9]);
-  const getPreviewImages = getGetPreviewImages(state, state.images);
-  const { pickColors } = state;
+  const getPreviewImages = getGetPreviewImages(images, { sortBy, filtersActiveTags, recentImports }, imageSelection);
 
   const palette = useMemo<string[]>((): string[] => {
     if (!pickColors) {

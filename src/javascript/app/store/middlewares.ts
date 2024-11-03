@@ -15,6 +15,7 @@ import saveRGBNImage from './middlewares/saveRGBNImage';
 import settings from './middlewares/settings';
 import share from './middlewares/share';
 import startDownload from './middlewares/startDownload';
+import { zustandMigrationMiddleware } from './middlewares/zustandMigration';
 
 export default applyMiddleware(
   animate,
@@ -33,4 +34,5 @@ export default applyMiddleware(
   settings,
   share,
   startDownload,
+  zustandMigrationMiddleware,
 );

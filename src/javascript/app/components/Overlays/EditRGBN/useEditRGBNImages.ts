@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import objectHash from 'object-hash';
+import useFiltersStore from '../../../stores/filtersStore';
 import { Actions } from '../../../store/actions';
-import getFilteredImages from '../../../../tools/getFilteredImages';
+import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
 import { dateFormat } from '../../../defaults';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
@@ -46,10 +47,10 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   const navigate = useNavigate();
   const { view } = useGalleryTreeContext();
 
-  const { editRGBNImages, images, sortBy } = useSelector((state: State) => ({
+  const { sortBy } = useFiltersStore();
+  const { editRGBNImages, images } = useSelector((state: State) => ({
     editRGBNImages: state.editRGBNImages,
     images: state.images,
-    sortBy: state.sortBy,
   }));
 
   const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5);
@@ -58,12 +59,11 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const sortedImages = useMemo<MonochromeImage[]>(() => {
 
-    const filtered = getFilteredImages({
+    const filtered = getFilteredImages(images, {
       filtersActiveTags: [],
       sortBy,
       recentImports: [],
-      imageSelection: [],
-    }, images);
+    });
 
     if (globalSortDirection === 'desc') {
       filtered.reverse();

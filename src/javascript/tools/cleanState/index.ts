@@ -93,8 +93,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
       return monoImage;
     });
 
-  const imageHashes = images.map(({ hash }) => hash);
-
   // If the user has at least one frame selected
   // but the frames are not yet imported, show a message hint
   images.forEach((image) => {
@@ -106,13 +104,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
       framesMessage = 1;
     }
   });
-
-  // remove items older than 6 hours from "recent imports"
-  const yesterday = dayjs().subtract(6, 'hour').unix();
-  const recentImports = (dirtyState.recentImports || []).filter(({ hash, timestamp }) => (
-    imageHashes.includes(hash) &&
-    timestamp > yesterday
-  ));
 
   const plugins = (dirtyState.plugins || []).map((plugin) => ({
     ...plugin,
@@ -141,7 +132,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
     palettes,
     plugins,
     framesMessage: framesMessage || 0,
-    recentImports,
   };
 };
 

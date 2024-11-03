@@ -14,7 +14,6 @@ import type { ImportQueueCancelAction } from '../../../../../types/actions/Queue
 import type { TagChange } from '../../../../tools/applyTagChanges';
 import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
 import type { AddImageGroupAction } from '../../../../../types/actions/GroupActions';
-import type { ImageSelectionSetAction } from '../../../../../types/actions/ImageSelectionActions';
 import { randomId } from '../../../../tools/randomId';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
@@ -107,10 +106,7 @@ const useRunImport = (): UseRunImport => {
       navigate(`/gallery/${view.slug}${slug}/page/1`);
     }
 
-    dispatch<ImageSelectionSetAction>({
-      type: Actions.IMAGE_SELECTION_SET,
-      payload: imageHashes,
-    });
+    // ToDo: which images should become selected? setSelection(imageHahses)??
   };
 
   return {

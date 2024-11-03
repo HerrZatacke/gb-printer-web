@@ -1,6 +1,6 @@
-import getFilteredImages from '../../../tools/getFilteredImages';
 import unique from '../../../tools/unique';
 import { Actions } from '../actions';
+import useFiltersStore from '../../stores/filtersStore';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { Image } from '../../../../types/Image';
 import type { DeleteImagesAction,
@@ -8,9 +8,7 @@ import type { DeleteImagesAction,
   EditImageSelectionAction,
   StartCreateRGBImagesAction, BatchTaskAction } from '../../../../types/actions/ImageActions';
 import type { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
-import type { ImageSelectionSetAction, ImageSelectionShiftClickAction } from '../../../../types/actions/ImageSelectionActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
-import useSettingsStore from '../../stores/settingsStore';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 
@@ -20,34 +18,12 @@ const collectTags = (batchImages: Image[]): string[] => (
 );
 
 const batch: MiddlewareWithState = (store) => (next) => (action) => {
-  const { pageSize } = useSettingsStore.getState();
-
-  if (action.type === Actions.IMAGE_SELECTION_SHIFTCLICK) {
-    const imageSelectionShiftClickAction: ImageSelectionShiftClickAction = action;
-    const state = store.getState();
-    const images = getFilteredImages(state, imageSelectionShiftClickAction.payload.images);
-    const { lastSelectedImage } = state;
-    const selectedIndex = images.findIndex(({ hash }) => hash === imageSelectionShiftClickAction.payload.hash);
-    let prevSelectedIndex = images.findIndex(({ hash }) => hash === lastSelectedImage);
-    if (prevSelectedIndex === -1) {
-      prevSelectedIndex = imageSelectionShiftClickAction.payload.page * pageSize;
-    }
-
-    const from = Math.min(prevSelectedIndex, selectedIndex);
-    const to = Math.max(prevSelectedIndex, selectedIndex);
-
-    store.dispatch<ImageSelectionSetAction>({
-      type: Actions.IMAGE_SELECTION_SET,
-      payload: images.slice(from, to + 1).map(({ hash }) => hash),
-    });
-
-    return;
-  }
+  const { imageSelection } = useFiltersStore.getState();
 
   if (action.type === Actions.BATCH_TASK) {
     const batchTaskAction: BatchTaskAction = action;
     const state = store.getState();
-    const { images, imageSelection } = state;
+    const { images } = state;
     // const batchImages = images.filter(({ hash }) => imageSelection.includes(hash));
 
     const batchImages = imageSelection.reduce((acc: Image[], selHash: string): Image[] => {
@@ -119,27 +95,6 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
         default:
           break;
       }
-    }
-
-    switch (batchTaskAction.payload.actionType) {
-      case BatchActionType.CHECKALL:
-        store.dispatch<ImageSelectionSetAction>({
-          type: Actions.IMAGE_SELECTION_SET,
-          payload: getFilteredImages(state, action.payload.images)
-            .slice(batchTaskAction.payload.page * pageSize, (batchTaskAction.payload.page + 1) * pageSize || undefined)
-            .map(({ hash }) => hash),
-        } as ImageSelectionSetAction);
-        break;
-
-      case BatchActionType.UNCHECKALL:
-        store.dispatch<ImageSelectionSetAction>({
-          type: Actions.IMAGE_SELECTION_SET,
-          payload: [],
-        });
-        break;
-
-      default:
-        break;
     }
 
     return;

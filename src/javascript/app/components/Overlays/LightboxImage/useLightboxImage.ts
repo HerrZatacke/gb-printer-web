@@ -2,7 +2,8 @@ import screenfull from 'screenfull';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
-import getFilteredImages from '../../../../tools/getFilteredImages';
+import { getFilteredImages } from '../../../../tools/getFilteredImages';
+import useFiltersStore from '../../../stores/filtersStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
@@ -79,6 +80,8 @@ const toLightBoxImage = (image: Image, palettes: Palette[]): LightboxImageData |
 };
 
 export const useLightboxImage = (): UseLightboxImage => {
+  const filtersState = useFiltersStore();
+
   const { view, covers } = useGalleryTreeContext();
   const dispatch = useDispatch();
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
@@ -90,7 +93,7 @@ export const useLightboxImage = (): UseLightboxImage => {
     lightboxImage,
     palettes,
   } = useSelector((state: State) => ({
-    viewImages: getFilteredImages(state, view.images),
+    viewImages: getFilteredImages(view.images, filtersState),
     lightboxImage: state.lightboxImage,
     palettes: state.palettes,
   }));

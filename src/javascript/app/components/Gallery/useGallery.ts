@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import useFiltersStore from '../../stores/filtersStore';
 import useSettingsStore from '../../stores/settingsStore';
-import getFilteredImages from '../../../tools/getFilteredImages';
+import { getFilteredImages } from '../../../tools/getFilteredImages';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import type { State } from '../../store/State';
@@ -24,12 +25,15 @@ export const useGallery = (): UseGallery => {
   const { pageSize } = useSettingsStore();
 
   const {
-    imageCount,
-    filteredCount,
-  } = useSelector((state: State) => ({
-    imageCount: state.images.length,
-    filteredCount: getFilteredImagesCount(state, view.images),
-  }));
+    imageSelection,
+    filtersActiveTags,
+    recentImports,
+    sortBy,
+  } = useFiltersStore();
+
+  const stateImages = useSelector((state: State) => (state.images));
+  const imageCount = stateImages.length;
+  const filteredCount = getFilteredImagesCount(view.images, filtersActiveTags, recentImports);
 
   const { pageIndex, path } = useGalleryParams();
   const navigate = useNavigate();
@@ -51,9 +55,13 @@ export const useGallery = (): UseGallery => {
     const pSize = pageSize;
 
     return ({
-      selectedCount: state.imageSelection.length,
+      selectedCount: imageSelection.length,
       currentView: state.galleryView,
-      images: getFilteredImages(state, view.images).splice(iOffset, pSize || Infinity),
+      images: getFilteredImages(
+        view.images,
+        { filtersActiveTags, recentImports, sortBy },
+      )
+        .splice(iOffset, pSize || Infinity),
     });
   });
 

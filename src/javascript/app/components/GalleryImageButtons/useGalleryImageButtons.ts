@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
+import useFiltersStore from '../../stores/filtersStore';
+import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { State } from '../../store/State';
 import type {
   DeleteImageAction,
@@ -10,7 +12,6 @@ import type {
 } from '../../../../types/actions/ImageActions';
 import type { LightboxImageSetAction } from '../../../../types/actions/LightboxActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
-import type { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
 import { canShare } from '../../../tools/canShare';
 
 interface UseGalleryImageButtons {
@@ -20,7 +21,7 @@ interface UseGalleryImageButtons {
   startDownload: () => void,
   deleteImage: () => void,
   shareImage: () => void,
-  updateImageToSelection: (mode: string) => void,
+  updateImageToSelection: (mode: ImageSelectionMode) => void,
   setLightboxImage: () => void,
   updateFavouriteTag: (isFavourite: boolean) => void,
   editImage: () => void,
@@ -46,15 +47,15 @@ interface UseGalleryImageButtonsParams {
 export const useGalleryImageButtons = (
   { hash, imageTitle, tags }: UseGalleryImageButtonsParams,
 ): UseGalleryImageButtons => {
-  const stateData = useSelector((state: State) => ({
-    isSelected: state.imageSelection.includes(hash),
-    hasPlugins: !!state.plugins.length,
-  }));
+  const { imageSelection, updateImageSelection } = useFiltersStore();
+  const isSelected = imageSelection.includes(hash);
+  const hasPlugins = useSelector((state: State) => !!state.plugins.length);
 
   const dispatch = useDispatch();
 
   return {
-    ...stateData,
+    hasPlugins,
+    isSelected,
     canShare: canShare(),
     startDownload: () => {
       dispatch<DownloadImageStartAction>({
@@ -88,18 +89,8 @@ export const useGalleryImageButtons = (
         payload: hash,
       });
     },
-    updateImageToSelection: (mode) => {
-      if (mode === 'add') {
-        dispatch<ImageSelectionAddAction>({
-          type: Actions.IMAGE_SELECTION_ADD,
-          payload: hash,
-        });
-      } else {
-        dispatch<ImageSelectionRemoveAction>({
-          type: Actions.IMAGE_SELECTION_REMOVE,
-          payload: hash,
-        });
-      }
+    updateImageToSelection: (mode: ImageSelectionMode) => {
+      updateImageSelection(mode, hash);
     },
     setLightboxImage: () => {
       dispatch<LightboxImageSetAction>({

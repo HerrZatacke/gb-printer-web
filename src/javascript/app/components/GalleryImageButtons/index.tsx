@@ -7,6 +7,7 @@ import SVG from '../SVG';
 import PluginSelect from '../PluginSelect';
 import { ButtonOption, useGalleryImageButtons } from './useGalleryImageButtons';
 import { useImageGroups } from '../../../hooks/useImageGroups';
+import { ImageSelectionMode } from '../../stores/filtersStore';
 import type { State } from '../../store/State';
 
 import './index.scss';
@@ -59,7 +60,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
               'gallery-image-buttons__button--checked': isSelected,
             })
           }
-          onClick={() => updateImageToSelection(isSelected ? 'remove' : 'add')}
+          onClick={() => updateImageToSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD)}
           title={isSelected ? 'Remove from selection' : 'Add to selection'}
         >
           <SVG name="checkmark" />
