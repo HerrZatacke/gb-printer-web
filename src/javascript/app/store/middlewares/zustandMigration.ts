@@ -3,15 +3,6 @@ import useFiltersStore, { ImageSelectionMode } from '../../stores/filtersStore';
 import { Actions } from '../actions';
 import type { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
 import type { GalleryViewAction } from '../../../../types/actions/GalleryViewAction';
-// import { SpecialTags } from '../../../consts/SpecialTags';
-
-// const specialTags: string[] = [
-//   SpecialTags.FILTER_UNTAGGED,
-//   SpecialTags.FILTER_NEW,
-//   SpecialTags.FILTER_MONOCHROME,
-//   SpecialTags.FILTER_RGB,
-//   SpecialTags.FILTER_RECENT,
-// ];
 
 export const zustandMigrationMiddleware: MiddlewareWithState = () => (next) => (
   action:
