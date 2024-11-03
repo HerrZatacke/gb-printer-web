@@ -11,6 +11,7 @@ import type { State } from '../../../store/State';
 import type { CancelEditImageGroupAction, AddImageGroupAction, UpdateImageGroupAction } from '../../../../../types/actions/GroupActions';
 import type { DialogOption } from '../../../../../types/Dialog';
 import type { PathMap } from '../../../contexts/galleryTree';
+import useFiltersStore from '../../../stores/filtersStore';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -42,14 +43,14 @@ const findParentGroup = (paths: PathMap[], groupId: string): PathMap | null => (
 );
 
 const useEditImageGroup = (): UseEditImageGroup => {
+  const { imageSelection: selection } = useFiltersStore();
+
   const {
     imageGroup,
     editImageGroup,
-    selection,
   } = useSelector((state: State) => ({
     imageGroup: state.imageGroups.find(({ id }) => id === state.editImageGroup?.groupId) || null,
     editImageGroup: state.editImageGroup,
-    selection: state.imageSelection,
   }));
 
   const { view, paths, pathsOptions } = useGalleryTreeContext();

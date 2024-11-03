@@ -1,10 +1,11 @@
 import screenfull from 'screenfull';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import useFiltersStore from '../../../stores/filtersStore';
 import useSettingsStore from '../../../stores/settingsStore';
+import useInteractionsStore from '../../../stores/interactionsStore';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
 import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../../types/Image';
@@ -84,7 +85,9 @@ export const useLightboxImage = (): UseLightboxImage => {
 
   const { view, covers } = useGalleryTreeContext();
   const dispatch = useDispatch();
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  // ToDo: zustand or useState??
+  const { isFullscreen, setIsFullscreen } = useInteractionsStore();
+  // const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const { preferredLocale } = useSettingsStore();
 

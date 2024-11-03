@@ -10,11 +10,6 @@ export interface FramesMessageHideAction {
   type: Actions.FRAMES_MESSAGE_HIDE
 }
 
-export interface IsFullscreenAction {
-  type: Actions.SET_IS_FULLSCREEN,
-  payload?: boolean,
-}
-
 export interface ShowSerialsAction {
   type: Actions.SHOW_SERIALS,
   payload?: boolean,
