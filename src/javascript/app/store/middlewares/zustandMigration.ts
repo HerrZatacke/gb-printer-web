@@ -1,9 +1,12 @@
 import screenfull from 'screenfull';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import useFiltersStore, { ImageSelectionMode } from '../../stores/filtersStore';
-import { Actions } from '../actions';
-import type { DeleteImageAction, DeleteImagesAction, AddImagesAction } from '../../../../types/actions/ImageActions';
 import useInteractionsStore from '../../stores/interactionsStore';
+import { Actions } from '../actions';
+import type { DeleteImageAction, DeleteImagesAction, AddImagesAction, RehashImageAction } from '../../../../types/actions/ImageActions';
+import type { AddFrameAction, DeleteFrameAction } from '../../../../types/actions/FrameActions';
+import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
+import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
 
 export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const {
@@ -19,6 +22,8 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     setLightboxImagePrev,
     setIsFullscreen,
   } = useInteractionsStore.getState();
+
+  checkUpdateTrashCount(store.getState());
 
   window.addEventListener('resize', setWindowDimensions);
 
@@ -63,7 +68,11 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     action:
       AddImagesAction |
       DeleteImageAction |
-      DeleteImagesAction,
+      DeleteImagesAction |
+      RehashImageAction |
+      AddFrameAction |
+      DeleteFrameAction |
+      GlobalUpdateAction,
   ) => {
     switch (action.type) {
       case Actions.DELETE_IMAGE:
@@ -79,6 +88,22 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       default:
     }
 
-    return next(action);
+    // first delete object data, then do a localStorage cleanup
+    next(action);
+
+    switch (action.type) {
+      case Actions.DELETE_IMAGE:
+      case Actions.DELETE_IMAGES:
+      case Actions.ADD_IMAGES:
+      case Actions.GLOBAL_UPDATE:
+      case Actions.REHASH_IMAGE:
+      case Actions.DELETE_FRAME:
+      case Actions.ADD_FRAME:
+        checkUpdateTrashCount(store.getState());
+
+        break;
+      default:
+        break;
+    }
   };
 };

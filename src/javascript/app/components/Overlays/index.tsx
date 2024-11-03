@@ -44,7 +44,6 @@ function Overlays() {
     showEditRGBN,
     showVideoForm,
     showPickColors,
-    showTrashbin,
     syncSelect,
   } = useSelector((state: State) => ({
     showProgressLog: !!state.progressLog.git.length || !!state.progressLog.dropbox.length,
@@ -61,7 +60,6 @@ function Overlays() {
     showEditRGBN: state.editRGBNImages.length > 0,
     showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
-    showTrashbin: state.trashCount.show,
     syncSelect: state.syncSelect,
   }));
 
@@ -73,6 +71,7 @@ function Overlays() {
   const {
     lightboxImage,
     dragover: showDragOver,
+    trashCount: { show: showTrashbin },
   } = useInteractionsStore();
 
   switch (true) {

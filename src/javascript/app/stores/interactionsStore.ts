@@ -3,7 +3,12 @@ import screenfull from 'screenfull';
 import dayjs from 'dayjs';
 import type { ProgressLog } from '../../../types/actions/LogActions';
 import type { Progress } from '../store/reducers/progressReducer';
-import type { TrashCount } from '../store/reducers/trashCountReducer';
+
+export interface TrashCount {
+  frames: number,
+  images: number,
+  show: boolean,
+}
 
 interface WindowDimensions {
   width: number,
@@ -36,6 +41,8 @@ interface Actions {
   setLightboxImageNext: (maxImages: number) => void,
   setLightboxImagePrev: () => void,
   setWindowDimensions: () => void,
+  showTrashCount: (show: boolean) => void,
+  updateTrashCount: (frames: number, images: number) => void,
 }
 
 export type InteractionsState = Values & Actions;
@@ -56,6 +63,8 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix() }] }),
   setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
   setWindowDimensions: () => set({ windowDimensions: { width: window.innerWidth, height: window.innerHeight } }),
+  showTrashCount: (show: boolean) => set({ trashCount: { ...get().trashCount, show } }),
+  updateTrashCount: (frames: number, images: number) => set({ trashCount: { show: false, frames, images } }),
 
   setLightboxImage: (lightboxImage: number | null) => {
     if (lightboxImage === null) {
