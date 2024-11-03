@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { useDispatch, useSelector } from 'react-redux';
-import { useWindowDimensions } from '../../../../hooks/useWindowDimensions';
 import { missingGreyPalette } from '../../../defaults';
 import { Actions } from '../../../store/actions';
 import { getImageTileCount } from '../../../../tools/loadImageTiles';
@@ -18,6 +17,7 @@ import type { Rotation } from '../../../../tools/applyRotation';
 import type { Palette } from '../../../../../types/Palette';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import type { TagChange } from '../../../../tools/applyTagChanges';
+import useInteractionsStore from '../../../stores/interactionsStore';
 
 interface Batch {
   created: boolean,
@@ -118,7 +118,7 @@ export const useEditForm = (): UseEditForm => {
     ),
   }));
 
-  const windowDimensions = useWindowDimensions();
+  const { windowDimensions } = useInteractionsStore();
 
   const toEdit = useSelector((state: State): ToEdit | undefined => {
     if (!state.editImage) {
