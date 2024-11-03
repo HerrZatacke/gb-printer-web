@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
+import useFiltersStore from '../../stores/filtersStore';
 import { dateFormat, defaultRGBNPalette } from '../../defaults';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { AddImagesAction } from '../../../../types/actions/ImageActions';
 import type { RGBNHashes, RGBNImage } from '../../../../types/Image';
-import type { ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
 
 const saveRGBNImage: MiddlewareWithState = (store) => (next) => async (action) => {
   if (action.type === Actions.SAVE_NEW_RGB_IMAGES) {
@@ -32,10 +32,8 @@ const saveRGBNImage: MiddlewareWithState = (store) => (next) => async (action) =
       payload: images,
     });
 
-    store.dispatch<ImageSelectionSetAction>({
-      type: Actions.IMAGE_SELECTION_SET,
-      payload: images.map((i) => i.hash),
-    });
+    const { setImageSelection } = useFiltersStore.getState();
+    setImageSelection(images.map((i) => i.hash));
   }
 
   next(action);

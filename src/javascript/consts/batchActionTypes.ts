@@ -3,7 +3,5 @@ export enum BatchActionType {
   ANIMATE = 'animate',
   DOWNLOAD = 'download',
   EDIT = 'edit',
-  CHECKALL = 'checkall',
-  UNCHECKALL = 'uncheckall',
   RGB = 'rgb',
 }

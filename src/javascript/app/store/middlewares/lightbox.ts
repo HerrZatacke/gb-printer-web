@@ -1,5 +1,6 @@
 import screenfull from 'screenfull';
-import getFilteredImages from '../../../tools/getFilteredImages';
+import useFiltersStore from '../../stores/filtersStore';
+import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type {
@@ -59,6 +60,7 @@ const confirmation: MiddlewareWithState = (store) => {
 
   return (next) => (action) => {
     const state = store.getState();
+    const filtersState = useFiltersStore.getState();
 
     switch (action.type) {
       case Actions.LIGHTBOX_NEXT:
@@ -101,7 +103,7 @@ const confirmation: MiddlewareWithState = (store) => {
       case Actions.SET_LIGHTBOX_IMAGE_HASH:
         store.dispatch<SetLightboxImageAction>({
           type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-          payload: getFilteredImages(state).findIndex(({ hash }) => hash === action.payload),
+          payload: getFilteredImages(state.images, filtersState).findIndex(({ hash }) => hash === action.payload),
         });
 
         break;

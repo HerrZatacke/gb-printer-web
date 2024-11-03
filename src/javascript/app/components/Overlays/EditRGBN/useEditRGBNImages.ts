@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useMemo, useState } from 'react';
+import useFiltersStore from '../../../stores/filtersStore';
 import { Actions } from '../../../store/actions';
-import getFilteredImages from '../../../../tools/getFilteredImages';
+import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
 import type { CancelCreateRGBImagesAction, SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
 import type { State } from '../../../store/State';
@@ -33,23 +34,20 @@ interface UseEditRGBNImages {
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
   const dispatch = useDispatch();
-
-  const { editRGBNImages, images, sortBy } = useSelector((state: State) => ({
+  const { sortBy } = useFiltersStore();
+  const { editRGBNImages, images } = useSelector((state: State) => ({
     editRGBNImages: state.editRGBNImages,
     images: state.images,
-    sortBy: state.sortBy,
   }));
 
   const globalSortDirection = sortBy.split('_')[1];
 
   const sortedImages = useMemo<MonochromeImage[]>(() => {
 
-    const filtered = getFilteredImages({
-      images,
+    const filtered = getFilteredImages(images, {
       filtersActiveTags: [],
       sortBy,
       recentImports: [],
-      imageSelection: [],
     });
 
     if (globalSortDirection === 'desc') {

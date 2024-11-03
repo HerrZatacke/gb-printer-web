@@ -1,4 +1,5 @@
 import type { RGBNPalette } from 'gb-image-decoder';
+import useFiltersStore from '../../../stores/filtersStore';
 import type { ImagesBatchUpdateAction, ImagesUpdateAction, ImageUpdates } from '../../../../../types/actions/ImageActions';
 import { Actions } from '../../actions';
 import { addSortIndex, removeSortIndex, sortImages } from '../../../../tools/sortImages';
@@ -11,7 +12,8 @@ import { Updatable, UpdatableMonochrome, UPDATATABLES } from './const';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
 
 export const createUpdateAction = (action: ImagesBatchUpdateAction, state: State): ImagesUpdateAction | null => {
-  const sortFunc = sortImages(state);
+  const { sortBy } = useFiltersStore.getState();
+  const sortFunc = sortImages(sortBy);
 
   const currentEditHashes: string[] | undefined = state.editImage?.batch;
   // const initialTags: string[] | undefined = state.editImage?.tags || [];

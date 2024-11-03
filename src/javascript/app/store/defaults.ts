@@ -28,13 +28,6 @@ const definitions: StorePropertyDefault[] = [
     value: '1x',
   },
   {
-    // current selection of images
-    key: 'imageSelection',
-    saveLocally: true,
-    saveExport: [ExportTypes.SELECTED_IMAGES],
-    value: [],
-  },
-  {
     // the image being edited currently
     key: 'editImage',
     saveLocally: true,
@@ -60,26 +53,6 @@ const definitions: StorePropertyDefault[] = [
     saveLocally: true,
     saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: {},
-  },
-  {
-    // current filter for images
-    key: 'filtersActiveTags',
-    saveLocally: true,
-    saveExport: [],
-    value: [],
-  },
-  {
-    key: 'filtersVisible',
-    saveLocally: true,
-    saveExport: [],
-    value: false,
-  },
-  {
-    // sort criteria
-    key: 'sortBy',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: 'created_asc',
   },
   {
     // list of predefined palettes
@@ -121,12 +94,6 @@ const definitions: StorePropertyDefault[] = [
     key: 'frameGroupNames',
     saveLocally: true,
     saveExport: [ExportTypes.FRAMES, ExportTypes.REMOTE, ExportTypes.FRAMEGROUP],
-    value: [],
-  },
-  {
-    key: 'recentImports',
-    saveLocally: true,
-    saveExport: [],
     value: [],
   },
   {

@@ -1,3 +1,4 @@
+import useFiltersStore from '../../app/stores/filtersStore';
 import { definitions } from '../../app/store/defaults';
 import { ExportTypes } from '../../consts/exportTypes';
 import getImages from './getImages';
@@ -23,6 +24,8 @@ const getGetSettings = (store: TypedStore) => async (
 
   const state = store.getState();
 
+  const { imageSelection } = useFiltersStore.getState();
+
   const localStorageState: ExportableState = JSON.parse(localStorage.getItem('gbp-web-state') || '{}');
 
   // delete keys potentially containing passwords/tokens
@@ -43,7 +46,7 @@ const getGetSettings = (store: TypedStore) => async (
 
         if (key === 'images' && what === ExportTypes.SELECTED_IMAGES) {
           outProp = (outProp as Image[]).filter(({ hash }) => (
-            getImageHashesForExport(what, state).includes(hash)
+            getImageHashesForExport(what, state, imageSelection).includes(hash)
           ));
         }
 

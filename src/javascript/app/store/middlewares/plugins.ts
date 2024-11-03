@@ -3,6 +3,7 @@ import { saveAs } from 'file-saver';
 import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import { RGBNDecoder, Decoder, BW_PALETTE_HEX } from 'gb-image-decoder';
 import useSettingsStore from '../../stores/settingsStore';
+import useFiltersStore from '../../stores/filtersStore';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import { getImagePalettes } from '../../../tools/getImagePalettes';
 import { Actions } from '../actions';
@@ -236,7 +237,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
 
       case Actions.PLUGIN_IMAGES: {
         const { url } = action.payload;
-        const { imageSelection } = store.getState();
+        const { imageSelection } = useFiltersStore.getState();
         registeredPlugins[url].withSelection(imageSelection.map(collectImageData));
         break;
       }

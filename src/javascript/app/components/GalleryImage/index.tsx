@@ -8,7 +8,8 @@ import ImageRender from '../ImageRender';
 import DateSpan from './DateSpan';
 import TagsList from './TagsList';
 import SVG from '../SVG';
-import { SelectionEditMode, useGalleryImage } from './useGalleryImage';
+import { useGalleryImage } from './useGalleryImage';
+import { ImageSelectionMode } from '../../stores/filtersStore';
 import { ButtonOption } from '../GalleryImageButtons/useGalleryImageButtons';
 import type { RGBNHashes } from '../../../../types/Image';
 import isTouchDevice from '../../../tools/isTouchDevice';
@@ -45,7 +46,7 @@ function GalleryImage({ page, hash }: Props) {
   const bindLongPress = useLongPress(() => {
     if (isTouchDevice()) {
       updateImageSelection(
-        galleryImageData?.isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD,
+        galleryImageData?.isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
         false,
         page,
       );
@@ -84,7 +85,7 @@ function GalleryImage({ page, hash }: Props) {
   const handleCellClick = (ev: React.MouseEvent) => {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
-      updateImageSelection(isSelected ? SelectionEditMode.REMOVE : SelectionEditMode.ADD, ev.shiftKey, page);
+      updateImageSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD, ev.shiftKey, page);
     } else if (isTouchDevice()) {
       if (!showButtons) {
         setShowButtons(true);

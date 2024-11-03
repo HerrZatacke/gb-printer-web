@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue';
 import type { AnyAction } from 'redux';
+import useFiltersStore from '../../../stores/filtersStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
@@ -10,7 +11,7 @@ import parseAuthParams from '../../../../tools/parseAuthParams';
 import { getPrepareFiles } from '../../../../tools/download';
 import { loadImageTiles } from '../../../../tools/loadImageTiles';
 import replaceDuplicateFilenames from '../../../../tools/replaceDuplicateFilenames';
-import getFilteredImages from '../../../../tools/getFilteredImages';
+import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 
 import { Actions } from '../../actions';
@@ -225,7 +226,8 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
 
             case 'dropboximages': {
               const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore.getState();
-              const images: Image[] = getFilteredImages(state);
+              const filtersState = useFiltersStore.getState();
+              const images: Image[] = getFilteredImages(state.images, filtersState);
               const prepareFiles = getPrepareFiles(
                 exportScaleFactors,
                 exportFileTypes,

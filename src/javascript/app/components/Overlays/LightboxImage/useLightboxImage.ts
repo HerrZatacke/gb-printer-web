@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
-import getFilteredImages from '../../../../tools/getFilteredImages';
+import { getFilteredImages } from '../../../../tools/getFilteredImages';
+import useFiltersStore from '../../../stores/filtersStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
@@ -38,6 +39,7 @@ interface UseLightboxImage {
 }
 
 export const useLightboxImage = (): UseLightboxImage => {
+  const filtersState = useFiltersStore();
   const {
     image,
     size,
@@ -46,7 +48,7 @@ export const useLightboxImage = (): UseLightboxImage => {
     isFullscreen,
     lightboxIndex,
   } = useSelector((state: State) => {
-    const filteredImages = getFilteredImages(state);
+    const filteredImages = getFilteredImages(state.images, filtersState);
     const sImage = filteredImages.find((_, lbIndex) => lbIndex === state.lightboxImage);
     let pal: RGBNPalette | string[] | undefined;
     let fPal: string[] | undefined;

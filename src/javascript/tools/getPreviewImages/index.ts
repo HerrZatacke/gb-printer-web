@@ -1,30 +1,32 @@
 import type { FilteredImagesState } from '../getFilteredImages';
-import getFilteredImages from '../getFilteredImages';
+import { getFilteredImages } from '../getFilteredImages';
 import { addSortIndex, removeSortIndex, sortImages } from '../sortImages';
 import uniqueBy from '../unique/by';
-import type { State } from '../../app/store/State';
 import type { Image, MonochromeImage } from '../../../types/Image';
 import { reduceImagesMonochrome } from '../isRGBNImage';
 
 const uniqeHash = uniqueBy<Image>('hash');
 
-const getPreviewImages = (state: State | FilteredImagesState) => (): MonochromeImage[] => {
-
-  const selectedImages = state.imageSelection
+const getPreviewImages = (
+  images: Image[],
+  filterState: FilteredImagesState,
+  imageSelection: string[],
+) => (): MonochromeImage[] => {
+  const selectedImages = imageSelection
     .map((imageHash) => (
-      state.images.find(({ hash }) => hash === imageHash)
+      images.find(({ hash }) => hash === imageHash)
     ))
     .reduce(reduceImagesMonochrome, []);
 
   const filtered = (selectedImages.length > 1) ?
     [] :
-    getFilteredImages(state).reduce(reduceImagesMonochrome, []);
+    getFilteredImages(images, filterState).reduce(reduceImagesMonochrome, []);
 
   const allImages = ((selectedImages.length + filtered.length) > 1) ?
     [] :
-    [...state.images]
+    [...images]
       .map(addSortIndex)
-      .sort(sortImages({ sortBy: state.sortBy }))
+      .sort(sortImages(filterState.sortBy))
       .map(removeSortIndex)
       .reduce(reduceImagesMonochrome, []);
 

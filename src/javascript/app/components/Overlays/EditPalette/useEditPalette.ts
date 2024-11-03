@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useFiltersStore from '../../../stores/filtersStore';
 import type { PaletteCancelEditAction, PaletteUpdateAction } from '../../../../../types/actions/PaletteActions';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
@@ -25,26 +26,24 @@ interface UseEditPalette {
 
 export const useEditPalette = (): UseEditPalette => {
   const {
+    imageSelection,
+    sortBy,
+    filtersActiveTags,
+    recentImports,
+  } = useFiltersStore();
+
+  const {
     shortName,
     statePalette,
     name,
     palettes,
     images,
-    imageSelection,
-    sortBy,
-    filtersActiveTags,
-    recentImports,
   } = useSelector((state: State) => ({
     shortName: state.editPalette?.shortName || '',
     statePalette: state.editPalette?.palette || [],
     name: state.editPalette?.name || '',
     palettes: state.palettes,
-
     images: state.images,
-    imageSelection: state.imageSelection,
-    sortBy: state.sortBy,
-    filtersActiveTags: state.filtersActiveTags,
-    recentImports: state.recentImports,
   }));
 
   const shortNameIsValid = (pShortName: string) => {
@@ -64,7 +63,7 @@ export const useEditPalette = (): UseEditPalette => {
   const canConfirm = !canEditShortName || shortNameIsValid(newShortName);
 
   const previewImages = useMemo<MonochromeImage[]>(() => (
-    getPreviewImages({ images, imageSelection, sortBy, filtersActiveTags, recentImports })()
+    getPreviewImages(images, { sortBy, filtersActiveTags, recentImports }, imageSelection)()
   ), [filtersActiveTags, imageSelection, images, recentImports, sortBy]);
 
   const dispatch = useDispatch();

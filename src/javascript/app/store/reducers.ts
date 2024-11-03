@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import type { Progress } from './reducers/progressReducer';
 import type { TrashCount } from './reducers/trashCountReducer';
 import type { Dialog } from '../../../types/Dialog';
-import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
+import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/Sync';
 import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
@@ -26,8 +26,6 @@ import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
 import errors from './reducers/errorsReducer';
-import filtersActiveTags from './reducers/filtersActiveTagsReducer';
-import filtersVisible from './reducers/filtersVisibleReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frameQueue from './reducers/frameQueueReducer';
 import frames from './reducers/framesReducer';
@@ -36,9 +34,7 @@ import galleryView from './reducers/galleryViewReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import images from './reducers/imagesReducer';
 import importQueue from './reducers/importQueueReducer';
-import imageSelection from './reducers/imageSelectionReducer';
 import isFullscreen from './reducers/isFullscreenReducer';
-import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import palettes from './reducers/palettesReducer';
 import pickColors from './reducers/pickColorsReducer';
@@ -48,9 +44,6 @@ import printerData from './reducers/printerDataReducer';
 import printerFunctions from './reducers/printerFunctionsReducer';
 import progress from './reducers/progressReducer';
 import progressLog from './reducers/progressLogReducer';
-import recentImports from './reducers/recentImportsReducer';
-import sortBy from './reducers/sortByReducer';
-import sortOptionsVisible from './reducers/sortOptionsVisibleReducer';
 import syncBusy from './reducers/syncBusyReducer';
 import syncLastUpdate from './reducers/syncLastUpdateReducer';
 import syncSelect from './reducers/syncSelectReducer';
@@ -69,8 +62,6 @@ export interface Reducers extends ReducersMapObject {
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
   errors: Reducer<ErrorMessage[]>,
-  filtersActiveTags: Reducer<string[]>,
-  filtersVisible: Reducer<boolean>,
   frameGroupNames: Reducer<FrameGroup[]>,
   frameQueue: Reducer<ImportItem[]>,
   frames: Reducer<Frame[]>,
@@ -78,10 +69,8 @@ export interface Reducers extends ReducersMapObject {
   galleryView: Reducer<GalleryViews>,
   gitStorage: Reducer<GitStorageSettings>,
   images: Reducer<Image[]>,
-  imageSelection: Reducer<string[]>,
   importQueue: Reducer<ImportItem[]>,
   isFullscreen: Reducer<boolean>,
-  lastSelectedImage: Reducer<string | null>,
   progressLog: Reducer<ProgressLog>,
   lightboxImage: Reducer<number | null>,
   palettes: Reducer<Palette[]>,
@@ -90,9 +79,6 @@ export interface Reducers extends ReducersMapObject {
   printerData: Reducer<PrinterInfo>,
   printerFunctions: Reducer<PrinterFunction[]>,
   progress: Reducer<Progress>,
-  recentImports: Reducer<RecentImport[]>,
-  sortBy: Reducer<string>,
-  sortOptionsVisible: Reducer<boolean>,
   syncBusy: Reducer<boolean>,
   syncLastUpdate: Reducer<SyncLastUpdate>,
   syncSelect: Reducer<boolean>,
@@ -112,8 +98,6 @@ const reducers: ReducersMapObject = {
   editPalette,
   editRGBNImages,
   errors,
-  filtersActiveTags,
-  filtersVisible,
   frameGroupNames,
   frameQueue,
   frames,
@@ -121,10 +105,8 @@ const reducers: ReducersMapObject = {
   galleryView,
   gitStorage,
   images,
-  imageSelection,
   importQueue,
   isFullscreen,
-  lastSelectedImage,
   progressLog,
   lightboxImage,
   palettes,
@@ -134,9 +116,6 @@ const reducers: ReducersMapObject = {
   printerData,
   printerFunctions,
   progress,
-  recentImports,
-  sortBy,
-  sortOptionsVisible,
   syncBusy,
   syncLastUpdate,
   syncSelect,
