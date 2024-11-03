@@ -1,17 +1,35 @@
 import screenfull from 'screenfull';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import type { RGBNPalette } from 'gb-image-decoder';
 import getFilteredImages from '../../../../tools/getFilteredImages';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
-import type { Image } from '../../../../../types/Image';
+import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../../types/Image';
 import type { CloseLightboxAction, LightboxImageSetAction } from '../../../../../types/actions/LightboxActions';
+import type { Rotation } from '../../../../tools/applyRotation';
+import type { Palette } from '../../../../../types/Palette';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
+import { isRGBNImage } from '../../../../tools/isRGBNImage';
+import { missingGreyPalette } from '../../../defaults';
 
-interface UseLightboxImage {
+interface LightboxImageData {
   title: string,
   created: string,
-  image?: Image,
+  frame?: string,
+  hash: string,
+  hashes?: RGBNHashes,
+  tags: string[],
+  palette: RGBNPalette | string[],
+  framePalette: string[],
+  lockFrame?: boolean,
+  invertPalette?: boolean,
+  invertFramePalette?: boolean,
+  rotation?: Rotation,
+}
+
+interface UseLightboxImage {
+  image: LightboxImageData | null,
   isFullscreen: boolean,
   currentIndex: number,
   size: number,
@@ -24,6 +42,41 @@ interface UseLightboxImage {
   fullscreen: () => void,
 }
 
+const toLightBoxImage = (image: Image, palettes: Palette[]): LightboxImageData | null => {
+  let palette: RGBNPalette | string[];
+
+  if (!image?.hash) {
+    return null;
+  }
+
+  if (isRGBNImage(image)) {
+    palette = (image as RGBNImage).palette;
+  } else {
+    palette = (palettes.find(({ shortName }) => (
+      shortName === (image as MonochromeImage).palette
+    )) || missingGreyPalette).palette;
+  }
+
+  const framePalette = (palettes.find(({ shortName }) => (
+    shortName === (image as MonochromeImage).framePalette
+  )) || missingGreyPalette).palette;
+
+  return ({
+    title: image?.title || '',
+    created: image?.created || '',
+    frame: image.frame,
+    hash: image.hash,
+    hashes: (image as RGBNImage).hashes || undefined,
+    tags: image.tags,
+    palette,
+    framePalette,
+    lockFrame: image.lockFrame,
+    invertPalette: (image as MonochromeImage).invertPalette,
+    invertFramePalette: (image as MonochromeImage).invertFramePalette,
+    rotation: image.rotation,
+  });
+};
+
 export const useLightboxImage = (): UseLightboxImage => {
   const { view, covers } = useGalleryTreeContext();
   const dispatch = useDispatch();
@@ -33,10 +86,12 @@ export const useLightboxImage = (): UseLightboxImage => {
     viewImages,
     preferredLocale,
     lightboxImage,
+    palettes,
   } = useSelector((state: State) => ({
     viewImages: getFilteredImages(state, view.images),
     preferredLocale: state.preferredLocale,
     lightboxImage: state.lightboxImage,
+    palettes: state.palettes,
   }));
 
   const filteredImages = useMemo<Image[]>(() => (
@@ -44,7 +99,7 @@ export const useLightboxImage = (): UseLightboxImage => {
   ), [covers, viewImages]);
 
   const currentIndex = filteredImages.findIndex(({ hash }) => hash === lightboxImage);
-  const image = filteredImages[currentIndex];
+  const image = toLightBoxImage(filteredImages[currentIndex], palettes);
 
   const close = () => {
     if (screenfull.isEnabled && screenfull.element) {
@@ -57,7 +112,7 @@ export const useLightboxImage = (): UseLightboxImage => {
   };
 
   const prev = () => {
-    const nextHash = filteredImages[Math.max(0, currentIndex - 1)].hash;
+    const nextHash = filteredImages[Math.max(0, currentIndex - 1)]?.hash;
 
     if (nextHash) {
       dispatch<LightboxImageSetAction>({
@@ -68,7 +123,7 @@ export const useLightboxImage = (): UseLightboxImage => {
   };
 
   const next = () => {
-    const nextHash = filteredImages[Math.min(filteredImages.length, currentIndex + 1)].hash;
+    const nextHash = filteredImages[Math.min(filteredImages.length, currentIndex + 1)]?.hash;
 
     if (nextHash) {
       dispatch<LightboxImageSetAction>({
@@ -120,8 +175,6 @@ export const useLightboxImage = (): UseLightboxImage => {
   });
 
   return {
-    title: image?.title || '',
-    created: image?.created || '',
     image,
     isFullscreen,
     currentIndex,

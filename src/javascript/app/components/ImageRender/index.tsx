@@ -10,9 +10,10 @@ import './index.scss';
 interface Props {
   hash: string,
   hashes?: RGBNHashes,
-  // ToDo: refactor so that whatever the image uses can be passed directly
-  palette: string | string[] | RGBNPalette,
+  palette: string[] | RGBNPalette,
+  framePalette: string[],
   invertPalette?: boolean,
+  invertFramePalette?: boolean,
   lockFrame?: boolean,
   frameId?: string,
   rotation?: Rotation,
@@ -24,7 +25,9 @@ function ImageRender({
   frameId,
   lockFrame,
   invertPalette,
+  invertFramePalette,
   palette,
+  framePalette,
   rotation,
 }: Props) {
 
@@ -34,7 +37,9 @@ function ImageRender({
     frameId,
     lockFrame,
     invertPalette,
+    invertFramePalette,
     palette,
+    framePalette,
     rotation,
   });
 
@@ -42,8 +47,10 @@ function ImageRender({
     <GameBoyImage
       lockFrame={gbImageProps.lockFrame}
       invertPalette={gbImageProps.invertPalette}
+      invertFramePalette={gbImageProps.invertFramePalette}
       tiles={gbImageProps.tiles}
       palette={gbImageProps.palette}
+      framePalette={gbImageProps.framePalette}
       imageStartLine={gbImageProps.imageStartLine}
       rotation={gbImageProps.rotation}
     />

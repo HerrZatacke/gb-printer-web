@@ -98,6 +98,7 @@ function ImportRow({
           className="import-image__button import-image__button--frame"
           type="button"
           title="Import as Frame"
+          disabled={tiles.length / 20 < 14}
           onClick={() => {
             dispatch<FrameQueueAddAction>({
               type: Actions.FRAMEQUEUE_ADD,

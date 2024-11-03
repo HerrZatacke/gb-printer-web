@@ -25,7 +25,7 @@ function FrameSelect({
   const frames = useSelector((state: State) => (state.frames));
 
   return (
-    <>
+    <div className="frame-select">
       {(
         selectLabel ? (
           <label
@@ -37,7 +37,7 @@ function FrameSelect({
         ) : null
       )}
       <select
-        className="frame-select"
+        className="frame-select__select"
         id="frame-select-select"
         value={frame}
         onChange={(ev) => {
@@ -72,12 +72,12 @@ function FrameSelect({
             />
             <SVG name="checkmark" />
             <span className="frame-select__check-label-text">
-              Palette does not affect frame
+              Use separate color settings for frame
             </span>
           </label>
         ) : null
       }
-    </>
+    </div>
   );
 }
 

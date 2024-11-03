@@ -16,7 +16,10 @@ const config = merge(await common(), {
     },
     port: 3000,
     host: '0.0.0.0',
-    onBeforeSetupMiddleware: ({ app }) => setupServer(app),
+    setupMiddlewares: (mw, { app }) => {
+      setupServer(app);
+      return mw;
+    },
     client: {
       overlay: {
         errors: true,

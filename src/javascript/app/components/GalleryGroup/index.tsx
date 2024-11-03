@@ -26,6 +26,7 @@ function GalleryGroup({ hash }: Props) {
     hashes,
     palette,
     invertPalette,
+    framePalette,
     frame,
     lockFrame,
     rotation,
@@ -44,6 +45,7 @@ function GalleryGroup({ hash }: Props) {
           <ImageRender
             lockFrame={lockFrame}
             invertPalette={invertPalette}
+            framePalette={framePalette}
             palette={palette}
             frameId={frame}
             hash={hash}

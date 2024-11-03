@@ -20,6 +20,8 @@ interface UseImageRenderParams {
   hashes?: RGBNHashes,
   palette: string | string[] | RGBNPalette,
   invertPalette?: boolean,
+  framePalette?: string[],
+  invertFramePalette?: boolean,
   lockFrame?: boolean,
   frameId?: string,
   rotation?: Rotation,
@@ -30,6 +32,8 @@ export const useImageRender = ({
   hashes,
   palette,
   invertPalette,
+  framePalette,
+  invertFramePalette,
   lockFrame,
   frameId,
   rotation,
@@ -101,6 +105,8 @@ export const useImageRender = ({
           imageStartLine,
           lockFrame,
           rotation,
+          framePalette: lockFrame ? framePalette : (palette as string[]),
+          invertFramePalette: lockFrame ? invertFramePalette : invertPalette,
         });
       }
     };
@@ -110,7 +116,19 @@ export const useImageRender = ({
     return () => {
       aborted = true;
     };
-  }, [loadImageTiles, hash, frameId, palette, invertPalette, lockFrame, rotation, usedPalette, frameHash]);
+  }, [
+    loadImageTiles,
+    hash,
+    frameId,
+    palette,
+    invertPalette,
+    lockFrame,
+    rotation,
+    usedPalette,
+    frameHash,
+    framePalette,
+    invertFramePalette,
+  ]);
 
   return {
     gbImageProps,

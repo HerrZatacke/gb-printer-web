@@ -13,8 +13,6 @@ import './index.scss';
 function LightboxImage() {
   const {
     image,
-    title,
-    created,
     isFullscreen,
     currentIndex,
     size,
@@ -36,7 +34,7 @@ function LightboxImage() {
         <span
           className="lightbox-image__title"
         >
-          { title }
+          { image?.title }
         </span>
         <span
           className="lightbox-image__counter"
@@ -64,7 +62,9 @@ function LightboxImage() {
         <ImageRender
           lockFrame={image.lockFrame}
           invertPalette={image.invertPalette}
+          invertFramePalette={image.invertFramePalette}
           palette={image.palette}
+          framePalette={image.framePalette}
           frameId={image.frame}
           hash={image.hash}
           hashes={(image as RGBNImage).hashes}
@@ -92,7 +92,7 @@ function LightboxImage() {
         ) : null}
       </div>
       <div className="lightbox-image__created">
-        {dateFormatLocale(dayjs(created, dateFormat), preferredLocale)}
+        {dateFormatLocale(dayjs(image?.created, dateFormat), preferredLocale)}
       </div>
     </Lightbox>
   );

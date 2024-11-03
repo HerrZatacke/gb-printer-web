@@ -132,6 +132,12 @@
     &--frame {
       @include theme-background-color($color-button-green, $color-button-green-dark);
     }
+
+    &:disabled {
+      @include theme-background-color($color-grey-70, $color-grey-40);
+      @include theme-color($color-grey-90, $color-grey-60);
+      cursor: initial;
+    }
   }
 
   &__icon {

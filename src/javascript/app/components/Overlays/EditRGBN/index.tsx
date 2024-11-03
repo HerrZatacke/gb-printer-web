@@ -112,7 +112,9 @@ function EditRGBN() {
                     <ImageRender
                       lockFrame={false}
                       invertPalette={false}
+                      invertFramePalette={false}
                       palette={previewPalette(isR, isG, isB, isN)}
+                      framePalette={previewPalette(isR, isG, isB, isN)}
                       hash={hash}
                     />
                     <RGBNSelect
@@ -176,7 +178,9 @@ function EditRGBN() {
               <ImageRender
                 lockFrame={false}
                 invertPalette={false}
+                invertFramePalette={false}
                 palette={defaultRGBNPalette}
+                framePalette={[]}
                 hash="newRGBN"
                 hashes={hashes}
               />

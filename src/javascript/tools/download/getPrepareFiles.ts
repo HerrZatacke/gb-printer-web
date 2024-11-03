@@ -1,19 +1,20 @@
 import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
-import { BW_PALETTE, Decoder, RGBNDecoder } from 'gb-image-decoder';
+import { BW_PALETTE, BW_PALETTE_HEX, Decoder, RGBNDecoder } from 'gb-image-decoder';
 import generateFileName from '../generateFileName';
 import { getTxtFile } from './getTxtFile';
 import { getRotatedCanvas } from '../applyRotation';
 import type { State } from '../../app/store/State';
 import type { Palette } from '../../../types/Palette';
-import type { Image } from '../../../types/Image';
+import type { Image, MonochromeImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 import type { DownloadInfo } from '../../../types/Sync';
+import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
+import { getImagePalettes } from '../getImagePalettes';
 
 const getPrepareFiles =
   (
     state: State,
   ) => (
-    palette: RGBNPalette | Palette,
     image: Image,
   ) => async (
     tiles: string[] | RGBNTiles,
@@ -24,9 +25,13 @@ const getPrepareFiles =
     let decoder: Decoder | RGBNDecoder;
     const isRGBN = isRGBNImage(image);
     const lockFrame = image.lockFrame || false;
-    const invertPalette = image.invertPalette || false;
     const rotation = image.rotation || 0;
 
+    const { palette, framePalette } = getImagePalettes(state, image);
+
+    if (!palette) {
+      throw new Error('Palette missing?');
+    }
 
     if (isRGBN) {
       decoder = new RGBNDecoder();
@@ -38,13 +43,23 @@ const getPrepareFiles =
       });
     } else {
       decoder = new Decoder();
+      const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
+      const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
+      const invertPalette = (image as MonochromeImage).invertPalette || false;
+      const invertFramePalette = (image as MonochromeImage).invertFramePalette || false;
+
+      const updateParams = getDecoderUpdateParams({
+        palette: pal,
+        framePalette: framePal,
+        invertPalette,
+        invertFramePalette,
+      });
+
       decoder.update({
         canvas: null,
         tiles: tiles as string[],
-        palette: (palette as Palette).palette as string[],
-        lockFrame,
+        ...updateParams,
         imageStartLine,
-        invertPalette,
       });
     }
 

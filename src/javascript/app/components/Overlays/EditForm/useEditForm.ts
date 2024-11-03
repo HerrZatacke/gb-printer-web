@@ -21,12 +21,14 @@ import type { TagChange } from '../../../../tools/applyTagChanges';
 interface Batch {
   created: boolean,
   title: boolean,
-  palette: boolean,
-  invertPalette: boolean,
   frame: boolean,
   lockFrame: boolean,
   tags: boolean,
   rotation: boolean,
+  palette: boolean,
+  invertPalette: boolean,
+  framePalette: boolean,
+  invertFramePalette: boolean,
 }
 
 interface ToEdit {
@@ -35,6 +37,7 @@ interface ToEdit {
   height: number,
   imageCount: number,
   invertPalette: boolean,
+  invertFramePalette: boolean,
   lockFrame: boolean,
   mixedTypes: boolean,
   tags: string[],
@@ -45,6 +48,7 @@ interface ToEdit {
   meta?: ImageMetadata,
   paletteRGBN?: RGBNPalette,
   paletteShort?: string,
+  framePaletteShort?: string,
   rotation?: Rotation,
 }
 
@@ -60,7 +64,9 @@ interface Form {
   lockFrame?: boolean,
   rotation?: Rotation,
   invertPalette?: boolean,
+  invertFramePalette?: boolean,
   paletteShort: string,
+  framePaletteShort: string,
   paletteRGBN?: RGBNPalette,
 }
 
@@ -69,30 +75,33 @@ interface UseEditForm {
   form: Form,
   isRegularImage: boolean,
   shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>,
-  willUpdateBatch: string,
+  willUpdateBatch: string[],
   tagChanges: TagChange,
   usedPalette: string[] | RGBNPalette,
+  usedFramePalette: string[],
 
   updateForm: (what: keyof Batch) => (value: string | boolean | Rotation) => void,
   updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void,
   updateTags: (mode: TagUpdateMode, tag: string) => void,
+  updateFramePalette: (paletteUpdate: string, confirm?: boolean) => void,
 
   save: () => void;
   cancel: () => void,
 }
 
-const willUpdate = (batch: Batch): string => ([
-  batch.created ? 'date' : null,
-  batch.title ? 'title' : null,
-  batch.palette ? 'palette' : null,
-  batch.invertPalette ? 'invertPalette' : null,
-  batch.frame ? 'frame' : null,
-  batch.lockFrame ? 'framePalette' : null,
-  batch.tags ? 'tags' : null,
-  batch.rotation ? 'rotation' : null,
+const willUpdate = (batch: Batch): string[] => ([
+  batch.created ? 'Date' : '',
+  batch.title ? 'Title' : '',
+  batch.palette ? 'Image palette colors' : '',
+  batch.invertPalette ? 'Invert image palette' : '',
+  batch.frame ? 'Frame' : '',
+  batch.lockFrame ? 'Separate frame settings' : '',
+  batch.framePalette ? 'Frame palette colors' : '',
+  batch.invertFramePalette ? 'Invert frame palette' : '',
+  batch.tags ? 'Tags' : '',
+  batch.rotation ? 'Rotation' : '',
 ]
   .filter(Boolean)
-  .join(', ')
 );
 
 
@@ -146,6 +155,7 @@ export const useEditForm = (): UseEditForm => {
     const mixedTypes = typeCount.mono && typeCount.rgb;
     const paletteRGBN = isRGBNImage(image) ? (image as RGBNImage).palette : undefined;
     const paletteShort = !isRGBNImage(image) ? (image as MonochromeImage).palette : undefined;
+    const framePaletteShort = !isRGBNImage(image) ? (image as MonochromeImage).framePalette : undefined;
 
 
     return ({
@@ -153,7 +163,8 @@ export const useEditForm = (): UseEditForm => {
       hash: image.hash,
       height,
       imageCount: batch?.length || 0,
-      invertPalette: image.invertPalette || false,
+      invertPalette: (image as MonochromeImage).invertPalette || false,
+      invertFramePalette: (image as MonochromeImage).invertFramePalette || false,
       lockFrame: image.lockFrame || false,
       mixedTypes,
       tags: stateTags,
@@ -164,6 +175,7 @@ export const useEditForm = (): UseEditForm => {
       meta: image.meta,
       paletteRGBN,
       paletteShort,
+      framePaletteShort,
       rotation: image.rotation,
     });
   });
@@ -174,7 +186,9 @@ export const useEditForm = (): UseEditForm => {
   const [lockFrame, updateFrameLock] = useState<boolean | undefined>(toEdit?.lockFrame);
   const [rotation, updateRotation] = useState<Rotation | undefined>(toEdit?.rotation);
   const [invertPalette, updateInvertPalette] = useState<boolean | undefined>(toEdit?.invertPalette);
+  const [invertFramePalette, updateInvertFramePalette] = useState<boolean | undefined>(toEdit?.invertFramePalette);
   const [paletteShort, updatePaletteShort] = useState<string>(toEdit?.paletteShort || '');
+  const [framePaletteShort, updateFramePaletteShort] = useState<string>(toEdit?.framePaletteShort || '');
   const [paletteRGBN, updatePaletteRGBN] = useState<RGBNPalette | undefined>(toEdit?.paletteRGBN);
 
   const [isRegularImage, setIsRegularImage] = useState<boolean>(false);
@@ -187,10 +201,13 @@ export const useEditForm = (): UseEditForm => {
     rotation,
     invertPalette,
     paletteShort,
+    framePaletteShort,
+    invertFramePalette,
     paletteRGBN,
   };
 
   const usedPalette = paletteRGBN || findPalette(paletteShort).palette;
+  const usedFramePalette = findPalette(framePaletteShort).palette;
 
   const hash = toEdit?.hash;
   useEffect(() => {
@@ -215,12 +232,14 @@ export const useEditForm = (): UseEditForm => {
   const [shouldUpdate, updateShouldUpdate] = useState<Batch>({
     created: false,
     title: false,
-    palette: false,
-    invertPalette: false,
     frame: false,
     lockFrame: false,
     tags: false,
     rotation: false,
+    palette: false,
+    invertPalette: false,
+    framePalette: false,
+    invertFramePalette: false,
   });
 
 
@@ -236,6 +255,12 @@ export const useEditForm = (): UseEditForm => {
         break;
       case 'invertPalette':
         updateInvertPalette(value as boolean);
+        break;
+      case 'invertFramePalette':
+        updateInvertFramePalette(value as boolean);
+        break;
+      case 'framePalette':
+        updateFramePaletteShort(value as string);
         break;
       case 'frame':
         updateFrame(value as string);
@@ -262,6 +287,14 @@ export const useEditForm = (): UseEditForm => {
     }
   };
 
+  const updateFramePalette = (paletteUpdate: string, confirm?: boolean) => {
+    if (confirm) {
+      updateShouldUpdate({ ...shouldUpdate, framePalette: true });
+    }
+
+    updateFramePaletteShort(paletteUpdate as string);
+  };
+
   const updateTags = (mode: TagUpdateMode, tag: string) => {
     updateShouldUpdate({ ...shouldUpdate, tags: true });
     updateTagChanges({
@@ -280,9 +313,11 @@ export const useEditForm = (): UseEditForm => {
     willUpdateBatch: willUpdate(shouldUpdate),
     tagChanges,
     usedPalette,
+    usedFramePalette,
 
     updateForm,
     updatePalette,
+    updateFramePalette,
     updateTags,
 
     save: () => {
@@ -294,10 +329,12 @@ export const useEditForm = (): UseEditForm => {
             title,
             created,
             frame,
-            invertPalette,
             lockFrame,
-            palette: paletteRGBN || paletteShort,
             rotation,
+            palette: paletteRGBN || paletteShort,
+            invertPalette: invertPalette || false,
+            framePalette: framePaletteShort,
+            invertFramePalette: invertFramePalette || false,
           },
           tagChanges,
         },

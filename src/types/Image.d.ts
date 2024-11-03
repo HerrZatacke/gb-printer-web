@@ -29,7 +29,6 @@ interface CommonImage {
   frame?: string,
   tags: string[],
   lockFrame?: boolean,
-  invertPalette?: boolean,
   rotation?: Rotation,
   meta?: ImageMetadata
 }
@@ -48,7 +47,10 @@ export interface RGBNImage extends CommonImage {
 
 export interface MonochromeImage extends CommonImage {
   lines: number,
-  palette: string, // ToDo BWPalette??
+  palette: string,
+  invertPalette: boolean,
+  framePalette: string,
+  invertFramePalette: boolean,
 }
 
 export type Image = MonochromeImage | RGBNImage

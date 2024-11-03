@@ -1,13 +1,13 @@
 import Queue from 'promise-queue';
 import type { AnyAction, Dispatch } from 'redux';
 import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
-import { RGBNDecoder, Decoder, ExportFrameMode } from 'gb-image-decoder';
+import { RGBNDecoder, Decoder, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
 import dayjs from 'dayjs';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
-import getImagePalette from '../../../tools/getImagePalette';
+import { getImagePalettes } from '../../../tools/getImagePalettes';
 import generateFileName from '../../../tools/generateFileName';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
@@ -21,6 +21,7 @@ import unique from '../../../tools/unique';
 import type { ProgressCreateGifAction } from '../../../../types/actions/ProgressActions';
 import type { ErrorAction } from '../../../../types/actions/GlobalActions';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
+import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
 
 interface GifFrameData {
   palette: number[],
@@ -141,7 +142,10 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
 
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
     const tiles = await tileLoader(image.hash);
-    const palette = getImagePalette(state, image);
+    const lockFrame = videoLockFrame || image.lockFrame || false;
+    const rotation = image.rotation || 0;
+
+    const { palette, framePalette } = getImagePalettes(state, { ...image, lockFrame }); // set Lockframe to value set by global animate settings
 
     const frame = state.frames.find(({ id }) => id === image.frame);
     const frameData = frame ? await loadFrameData(frame.hash) : null;
@@ -153,9 +157,6 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
 
     const isRGBN = isRGBNImage(image);
     let decoder: RGBNDecoder | Decoder;
-    const lockFrame = videoLockFrame || image.lockFrame || false;
-    const invertPalette = videoInvertPalette || image.invertPalette || false;
-    const rotation = image.rotation || 0;
 
     if (isRGBN) {
       decoder = new RGBNDecoder();
@@ -167,13 +168,23 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
       });
     } else {
       decoder = new Decoder();
+      const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
+      const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
+      const invertPalette = videoInvertPalette || (image as MonochromeImage).invertPalette || false;
+      const invertFramePalette = videoInvertPalette || (image as MonochromeImage).invertFramePalette || false;
+
+      const updateParams = getDecoderUpdateParams({
+        palette: pal,
+        invertPalette,
+        framePalette: lockFrame ? framePal : pal,
+        invertFramePalette: lockFrame ? invertFramePalette : invertPalette,
+      });
+
       decoder.update({
         canvas: null,
         tiles: tiles as string[],
-        palette: (palette as Palette).palette as string[],
-        lockFrame,
+        ...updateParams,
         imageStartLine,
-        invertPalette,
       });
     }
 

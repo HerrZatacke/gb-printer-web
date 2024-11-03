@@ -77,6 +77,22 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
         Object.assign(monoImage, { palette: palettesShorts[0] || 'bw' });
       }
 
+      if (typeof monoImage.framePalette === 'undefined') {
+        if (monoImage.lockFrame) {
+          Object.assign(monoImage, { framePalette: 'bw' });
+        } else {
+          Object.assign(monoImage, { framePalette: monoImage.palette });
+        }
+      }
+
+      if (typeof monoImage.lockFrame === 'undefined') {
+        Object.assign(monoImage, { lockFrame: false });
+      }
+
+      if (typeof monoImage.invertFramePalette === 'undefined') {
+        Object.assign(monoImage, { invertFramePalette: monoImage.invertPalette });
+      }
+
       monoImage.frame = image.frame || undefined;
       return monoImage;
     });

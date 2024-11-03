@@ -1,9 +1,9 @@
 import Queue from 'promise-queue';
 import { saveAs } from 'file-saver';
-import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
-import { RGBNDecoder, Decoder } from 'gb-image-decoder';
+import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
+import { RGBNDecoder, Decoder, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
-import getImagePalette from '../../../tools/getImagePalette';
+import { getImagePalettes } from '../../../tools/getImagePalettes';
 import { Actions } from '../actions';
 import { getRotatedCanvas } from '../../../tools/applyRotation';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
@@ -13,7 +13,9 @@ import type { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, Plugi
 import type { TypedStore } from '../State';
 import type { ProgressExecutePluginAction } from '../../../../types/actions/ProgressActions';
 import type { PluginUpdatePropertiesAction } from '../../../../types/actions/PluginActions';
+import type { MonochromeImage } from '../../../../types/Image';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
+import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
 
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,
@@ -26,6 +28,16 @@ declare global {
       stateConfig: PluginConfigValues,
     ): PluginClassInstance }) => void;
   }
+}
+
+export interface GetCanvasOptions {
+  scaleFactor?: number,
+  palette?: Palette | RGBNPalette,
+  framePalette?: Palette,
+  lockFrame?: boolean,
+  invertPalette?: boolean,
+  invertFramePalette?: boolean,
+  handleExportFrame?: ExportFrameMode,
 }
 
 const pluginsMiddleware: MiddlewareWithState = (store) => {
@@ -48,7 +60,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
       throw new Error('image not found');
     }
 
-    const selectedPalette = getImagePalette(state, meta);
+    const { palette: selectedPalette, framePalette: selectedFramePalette } = getImagePalettes(state, meta);
     if (!selectedPalette) {
       throw new Error('selectedPalette not found');
     }
@@ -57,13 +69,17 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
 
     const isRGBN = isRGBNImage(meta);
 
-    const getCanvas = async ({
-      scaleFactor = 1,
-      palette = selectedPalette,
-      lockFrame = meta.lockFrame || false,
-      invertPalette = meta.invertPalette || false,
-      handleExportFrame = handleExportFrameState,
-    } = {}): Promise<HTMLCanvasElement> => {
+    const getCanvas = async (options: GetCanvasOptions = {}): Promise<HTMLCanvasElement> => {
+      const {
+        scaleFactor = 1,
+        palette = selectedPalette,
+        framePalette = selectedFramePalette,
+        lockFrame = meta.lockFrame || false,
+        invertPalette = (meta as MonochromeImage).invertPalette || false,
+        invertFramePalette = (meta as MonochromeImage).invertFramePalette || false,
+        handleExportFrame = handleExportFrameState,
+      } = options;
+
       const tiles = await getTiles();
       let decoder: RGBNDecoder | Decoder;
 
@@ -81,13 +97,21 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
         });
       } else {
         decoder = new Decoder();
+        const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
+        const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
+
+        const updateParams = getDecoderUpdateParams({
+          palette: pal,
+          framePalette: framePal,
+          invertPalette,
+          invertFramePalette,
+        });
+
         decoder.update({
           canvas: null,
           tiles: tiles as string[],
-          palette: (palette as Palette).palette as string[],
-          lockFrame,
+          ...updateParams,
           imageStartLine,
-          invertPalette,
         });
       }
 

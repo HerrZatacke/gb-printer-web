@@ -1,5 +1,5 @@
 import type { Actions } from '../../javascript/app/store/actions';
-import type { CurrentEditBatch, Image, RGBNHashes } from '../Image';
+import type { CurrentEditBatch, Image, MonochromeImage, RGBNHashes } from '../Image';
 import type { TagUpdates } from '../../javascript/tools/modifyTagChanges';
 import type { BatchActionType } from '../../javascript/consts/batchActionTypes';
 
@@ -8,7 +8,9 @@ export interface AddImagesAction {
   payload: Image[],
 }
 
-export type ImageUpdates = Pick<Image, 'title' | 'created' | 'palette' | 'invertPalette' | 'frame' | 'lockFrame' | 'rotation'>;
+export type ImageUpdates =
+  Pick<Image, 'title' | 'created' | 'palette' | 'frame' | 'lockFrame' | 'rotation'> &
+  Pick<MonochromeImage, 'invertPalette' | 'framePalette' | 'invertFramePalette'>;
 
 export interface ImagesBatchUpdateAction {
   type: Actions.UPDATE_IMAGES_BATCH_CHANGES,

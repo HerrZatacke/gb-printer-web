@@ -12,29 +12,35 @@ export const saveImageFileContent = async (fileContent: string): Promise<string>
   return save(lines);
 };
 
-export const saveFrameFileContent = async (fileContent: string): Promise<string> => {
-  const tiles = JSON.parse(fileContent) as FrameData;
-  const imageStartLine = tiles.upper.length / 20;
-
+export const padFrameData = (frameData: FrameData): string[] => {
   const black = Array(32)
     .fill('f')
     .join('');
   const pad = Array(16)
     .fill(black);
 
-  // tiles need to be padded with some lines that get stripped again when saving frame data
   const paddedFrameData = [
-    ...tiles.upper,
+    ...frameData.upper,
     ...Array(14)
       .fill('')
       .map((_, index) => ([
-        ...tiles.left[index],
+        ...frameData.left[index],
         ...pad,
-        ...tiles.right[index],
+        ...frameData.right[index],
       ]))
       .flat(),
-    ...tiles.lower,
+    ...frameData.lower,
   ];
+
+  return paddedFrameData;
+};
+
+export const saveFrameFileContent = async (fileContent: string): Promise<string> => {
+  const tiles = JSON.parse(fileContent) as FrameData;
+  const imageStartLine = tiles.upper.length / 20;
+
+  // tiles need to be padded with some lines that get stripped again when saving frame data
+  const paddedFrameData = padFrameData(tiles);
   return saveFrameData(paddedFrameData, imageStartLine);
 };
 

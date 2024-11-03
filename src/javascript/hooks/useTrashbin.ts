@@ -10,7 +10,7 @@ import type { WrappedLocalForageInstance } from '../tools/localforageInstance/cr
 import type { TrashShowHideAction, UpdateTrashcountAction } from '../../types/actions/TrashActions';
 import { reduceImagesMonochrome } from '../tools/isRGBNImage';
 import type { JSONExportBinary, JSONExportState, State, TypedStore } from '../app/store/State';
-import type { Image } from '../../types/Image';
+import type { Image, MonochromeImage } from '../../types/Image';
 import { reduceItems } from '../tools/reduceArray';
 import type { Frame } from '../../types/Frame';
 import type { TrashCount } from '../app/store/reducers/trashCountReducer';
@@ -67,7 +67,7 @@ const useTrashbin = (): UseTrashbin => {
   };
 
   const downloadImages = async (): Promise<void> => {
-    const imageHashes = await getTrashImages(store.getState().images.reduce(reduceImagesMonochrome, []));
+    const imageHashes = await getTrashImages(store.getState().images as MonochromeImage[]);
     const deletedImages = await getItems(imageHashes, localforageImages);
 
     const jsonExportBinary: JSONExportBinary = {};
@@ -81,6 +81,9 @@ const useTrashbin = (): UseTrashbin => {
           lines: image.lines.length,
           tags: ['backup'],
           palette: 'bw',
+          framePalette: 'bw',
+          invertPalette: false,
+          invertFramePalette: false,
           frame: '',
         };
       } catch (error) {
