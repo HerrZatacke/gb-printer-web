@@ -7,6 +7,7 @@ import cleanUrl from '../../tools/cleanUrl';
 import dateFormatLocale from '../../tools/dateFormatLocale';
 import { getEnv } from '../../tools/getEnv';
 import { PaletteSortMode } from '../../consts/paletteSortModes';
+import { GalleryViews } from '../../consts/GalleryViews';
 
 interface Values {
   activePalette: string,
@@ -14,6 +15,7 @@ interface Values {
   exportFileTypes: string[],
   exportScaleFactors: number[],
   forceMagicCheck: boolean,
+  galleryView: GalleryViews,
   handleExportFrame: ExportFrameMode,
   hideDates: boolean,
   importDeleted: boolean,
@@ -33,6 +35,7 @@ interface Actions {
   setExportFileTypes: (updateFileType: string, checked: boolean) => void,
   setExportScaleFactors: (factor: number, checked: boolean) => void
   setForceMagicCheck: (forceMagicCheck: boolean) => void,
+  setGalleryView: (galleryView: GalleryViews) => void,
   setHandleExportFrame: (handleExportFrame: ExportFrameMode) => void,
   setHideDates: (hideDates: boolean) => void,
   setImportDeleted: (importDeleted: boolean) => void,
@@ -61,6 +64,7 @@ const useSettingsStore = create(
       exportFileTypes: ['png'],
       exportScaleFactors: [4],
       forceMagicCheck: true,
+      galleryView: GalleryViews.GALLERY_VIEW_1X,
       handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
       hideDates: false,
       importDeleted: true,
@@ -76,6 +80,7 @@ const useSettingsStore = create(
       setActivePalette: (activePalette: string) => set({ activePalette }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
       setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),
+      setGalleryView: (galleryView: GalleryViews) => set({ galleryView }),
       setHandleExportFrame: (handleExportFrame: ExportFrameMode) => set({ handleExportFrame }),
       setHideDates: (hideDates: boolean) => set({ hideDates }),
       setImportDeleted: (importDeleted: boolean) => set({ importDeleted }),

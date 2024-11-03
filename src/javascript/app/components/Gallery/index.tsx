@@ -38,7 +38,7 @@ function Gallery() {
     valid,
     page,
     images,
-    currentView,
+    galleryView,
   } = useGallery();
 
   const screenDimensions = useScreenDimensions();
@@ -59,10 +59,10 @@ function Gallery() {
       <ul
         className={
           classnames('gallery', {
-            [`gallery--${currentView}`]: true,
+            [`gallery--${galleryView}`]: true,
           })
         }
-        style={currentView === GalleryViews.GALLERY_VIEW_SMALL ? getSmallStyleVars(screenDimensions) : undefined}
+        style={galleryView === GalleryViews.GALLERY_VIEW_SMALL ? getSmallStyleVars(screenDimensions) : undefined}
       >
         { images.map((image) => (
           <GalleryImage

@@ -12,14 +12,14 @@ interface UseGallery {
   imageCount: number,
   selectedCount: number,
   images: Image[],
-  currentView: GalleryViews,
+  galleryView: GalleryViews,
   filteredCount: number,
   valid: boolean,
   page: number,
 }
 
 export const useGallery = (): UseGallery => {
-  const { pageSize } = useSettingsStore();
+  const { pageSize, galleryView } = useSettingsStore();
   const {
     imageSelection,
     filtersActiveTags,
@@ -32,33 +32,22 @@ export const useGallery = (): UseGallery => {
   const filteredCount = getFilteredImagesCount(stateImages, filtersActiveTags, recentImports);
 
   const { valid, page } = useGetValidPageIndex({ pageSize, imageCount: filteredCount });
+  const iOffset = page * pageSize;
+  const pSize = pageSize;
+  const selectedCount = imageSelection.length;
+  const images = getFilteredImages(
+    stateImages,
+    { filtersActiveTags, recentImports, sortBy },
+  )
+    .splice(iOffset, pSize || Infinity);
 
-  const {
-    selectedCount,
-    currentView,
-    images,
-  } = useSelector((state: State) => {
-    const iOffset = page * pageSize;
-    const pSize = pageSize;
-
-    return ({
-      selectedCount: imageSelection.length,
-      currentView: state.galleryView,
-      images: getFilteredImages(
-        stateImages,
-        { filtersActiveTags, recentImports, sortBy },
-      )
-        .splice(iOffset, pSize || Infinity),
-    });
-  });
-
-  return ({
+  return {
     imageCount,
     selectedCount,
     filteredCount,
     valid,
     page,
     images,
-    currentView,
-  });
+    galleryView,
+  };
 };

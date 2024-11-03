@@ -1,6 +1,5 @@
 export enum Actions {
   // View
-  SET_CURRENT_GALLERY_VIEW = 'SET_CURRENT_GALLERY_VIEW',
   SET_IS_FULLSCREEN = 'SET_IS_FULLSCREEN',
 
   // Lightbox
