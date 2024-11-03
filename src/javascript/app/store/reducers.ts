@@ -29,7 +29,6 @@ import framesMessage from './reducers/framesMessageReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import images from './reducers/imagesReducer';
 import importQueue from './reducers/importQueueReducer';
-import lightboxImage from './reducers/lightboxImageReducer';
 import palettes from './reducers/palettesReducer';
 import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
@@ -62,7 +61,6 @@ export interface Reducers extends ReducersMapObject {
   images: Reducer<Image[]>,
   importQueue: Reducer<ImportItem[]>,
   progressLog: Reducer<ProgressLog>,
-  lightboxImage: Reducer<number | null>,
   palettes: Reducer<Palette[]>,
   plugins: Reducer<Plugin[]>,
   printerBusy: Reducer<boolean>,
@@ -94,7 +92,6 @@ const reducers: ReducersMapObject = {
   images,
   importQueue,
   progressLog,
-  lightboxImage,
   palettes,
   pickColors,
   plugins,

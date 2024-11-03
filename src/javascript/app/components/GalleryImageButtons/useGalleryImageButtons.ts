@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
 import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { State } from '../../store/State';
 import type {
   DeleteImageAction,
   DownloadImageStartAction, EditImageSelectionAction,
   ImageFavouriteAction,
-  LightboxImageSetAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { canShare } from '../../../tools/canShare';
+import { getFilteredImages } from '../../../tools/getFilteredImages';
 
 interface UseGalleryImageButtons {
   isSelected: boolean,
@@ -46,9 +47,21 @@ interface UseGalleryImageButtonsParams {
 export const useGalleryImageButtons = (
   { hash, imageTitle, tags }: UseGalleryImageButtonsParams,
 ): UseGalleryImageButtons => {
-  const { imageSelection, updateImageSelection } = useFiltersStore();
+  const {
+    imageSelection,
+    updateImageSelection,
+    filtersActiveTags,
+    sortBy,
+    recentImports,
+  } = useFiltersStore();
+
+  const { setLightboxImage } = useInteractionsStore();
+
   const isSelected = imageSelection.includes(hash);
-  const hasPlugins = useSelector((state: State) => !!state.plugins.length);
+  const { hasPlugins, stateImages } = useSelector((state: State) => ({
+    hasPlugins: !!state.plugins.length,
+    stateImages: state.images,
+  }));
 
   const dispatch = useDispatch();
 
@@ -92,10 +105,13 @@ export const useGalleryImageButtons = (
       updateImageSelection(mode, hash);
     },
     setLightboxImage: () => {
-      dispatch<LightboxImageSetAction>({
-        type: Actions.SET_LIGHTBOX_IMAGE_HASH,
-        payload: hash,
-      });
+      setLightboxImage(
+        getFilteredImages(
+          stateImages,
+          { filtersActiveTags, sortBy, recentImports },
+        )
+          .findIndex((image) => hash === image.hash),
+      );
     },
     updateFavouriteTag: (isFavourite: boolean) => {
       dispatch<ImageFavouriteAction>({

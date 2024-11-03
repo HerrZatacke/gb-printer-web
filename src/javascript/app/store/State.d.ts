@@ -33,7 +33,6 @@ export interface State {
   images: Image[],
   importQueue: ImportItem[],
   progressLog: ProgressLog,
-  lightboxImage: number | null,
   palettes: Palette[],
   pickColors: PickColors | null,
   plugins: Plugin[],

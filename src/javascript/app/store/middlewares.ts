@@ -9,7 +9,6 @@ import fileDrop from './middlewares/fileDrop';
 import gitStorage from './middlewares/gitStorage';
 import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
-import lightbox from './middlewares/lightbox';
 import pluginsMiddleware from './middlewares/plugins';
 import saveEditPalette from './middlewares/saveEditPalette';
 import saveRGBNImage from './middlewares/saveRGBNImage';
@@ -29,7 +28,6 @@ export default applyMiddleware(
   gitStorage,
   importFile,
   importMessage,
-  lightbox,
   pluginsMiddleware,
   saveEditPalette,
   saveRGBNImage,

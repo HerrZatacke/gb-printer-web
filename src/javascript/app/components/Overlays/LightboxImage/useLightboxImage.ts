@@ -1,21 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import screenfull from 'screenfull';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import useFiltersStore from '../../../stores/filtersStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import useInteractionsStore from '../../../stores/interactionsStore';
-import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import type { MonochromeImage, RGBNHashes, RGBNImage } from '../../../../../types/Image';
 import { Rotation } from '../../../../tools/applyRotation';
 import { missingGreyPalette } from '../../../defaults';
-import type {
-  SetLightboxFullscreenAction,
-  SetLightboxImageAction,
-  SetLightboxNextAction,
-  SetLightboxPrevAction,
-} from '../../../../../types/actions/GlobalActions';
 
 interface UseLightboxImage {
   hash: string,
@@ -41,9 +35,16 @@ interface UseLightboxImage {
 
 export const useLightboxImage = (): UseLightboxImage => {
   const filtersState = useFiltersStore();
-  const { isFullscreen } = useInteractionsStore();
+  const {
+    isFullscreen,
+    setLightboxImage,
+    setLightboxImagePrev,
+    setLightboxImageNext,
+    lightboxImage,
+  } = useInteractionsStore();
 
   const {
+    imageCount,
     image,
     size,
     palette,
@@ -51,7 +52,7 @@ export const useLightboxImage = (): UseLightboxImage => {
     lightboxIndex,
   } = useSelector((state: State) => {
     const filteredImages = getFilteredImages(state.images, filtersState);
-    const sImage = filteredImages.find((_, lbIndex) => lbIndex === state.lightboxImage);
+    const sImage = filteredImages.find((_, lbIndex) => lbIndex === lightboxImage);
     let pal: RGBNPalette | string[] | undefined;
     let fPal: string[] | undefined;
 
@@ -64,24 +65,23 @@ export const useLightboxImage = (): UseLightboxImage => {
       }
     }
 
-    return ({
+    return {
+      imageCount: state.images.length,
       image: sImage,
       size: filteredImages.length,
       palette: pal || missingGreyPalette.palette,
       framePalette: fPal || missingGreyPalette.palette,
-      lightboxIndex: state.lightboxImage || 0,
-    });
+      lightboxIndex: lightboxImage || 0,
+    };
   });
 
   const { preferredLocale } = useSettingsStore();
-
-  const dispatch = useDispatch();
 
   return {
     hash: image?.hash || '',
     title: image?.title || '',
     created: image?.created || '',
-    hashes: (image as RGBNImage).hashes || null,
+    hashes: (image as RGBNImage)?.hashes || null,
     frame: image?.frame || '',
     isFullscreen,
     palette,
@@ -93,26 +93,17 @@ export const useLightboxImage = (): UseLightboxImage => {
     invertFramePalette: (image as MonochromeImage)?.invertFramePalette || false,
     preferredLocale,
     rotation: image?.rotation || Rotation.DEG_0,
-    close: () => {
-      dispatch<SetLightboxImageAction>({
-        type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-        // No payload means "close"
-      });
-    },
-    prev: () => {
-      dispatch<SetLightboxPrevAction>({
-        type: Actions.LIGHTBOX_PREV,
-      });
-    },
-    next: () => {
-      dispatch<SetLightboxNextAction>({
-        type: Actions.LIGHTBOX_NEXT,
-      });
-    },
+    close: () => setLightboxImage(null),
+    prev: () => setLightboxImagePrev(),
+    next: () => setLightboxImageNext(imageCount),
     fullscreen: () => {
-      dispatch<SetLightboxFullscreenAction>({
-        type: Actions.LIGHTBOX_FULLSCREEN,
-      });
+      if (screenfull.isEnabled) {
+        if (!screenfull.element) {
+          screenfull.request(document.body);
+        } else {
+          screenfull.exit();
+        }
+      }
     },
   };
 };
