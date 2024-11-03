@@ -31,7 +31,6 @@ import framesMessage from './reducers/framesMessageReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import images from './reducers/imagesReducer';
 import importQueue from './reducers/importQueueReducer';
-import isFullscreen from './reducers/isFullscreenReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import palettes from './reducers/palettesReducer';
 import pickColors from './reducers/pickColorsReducer';
@@ -65,7 +64,6 @@ export interface Reducers extends ReducersMapObject {
   gitStorage: Reducer<GitStorageSettings>,
   images: Reducer<Image[]>,
   importQueue: Reducer<ImportItem[]>,
-  isFullscreen: Reducer<boolean>,
   progressLog: Reducer<ProgressLog>,
   lightboxImage: Reducer<number | null>,
   palettes: Reducer<Palette[]>,
@@ -99,7 +97,6 @@ const reducers: ReducersMapObject = {
   gitStorage,
   images,
   importQueue,
-  isFullscreen,
   progressLog,
   lightboxImage,
   palettes,

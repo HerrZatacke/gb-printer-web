@@ -3,6 +3,7 @@ import type { RGBNPalette } from 'gb-image-decoder';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import useFiltersStore from '../../../stores/filtersStore';
 import useSettingsStore from '../../../stores/settingsStore';
+import useInteractionsStore from '../../../stores/interactionsStore';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
@@ -40,12 +41,13 @@ interface UseLightboxImage {
 
 export const useLightboxImage = (): UseLightboxImage => {
   const filtersState = useFiltersStore();
+  const { isFullscreen } = useInteractionsStore();
+
   const {
     image,
     size,
     palette,
     framePalette,
-    isFullscreen,
     lightboxIndex,
   } = useSelector((state: State) => {
     const filteredImages = getFilteredImages(state.images, filtersState);
@@ -67,7 +69,6 @@ export const useLightboxImage = (): UseLightboxImage => {
       size: filteredImages.length,
       palette: pal || missingGreyPalette.palette,
       framePalette: fPal || missingGreyPalette.palette,
-      isFullscreen: state.isFullscreen,
       lightboxIndex: state.lightboxImage || 0,
     });
   });

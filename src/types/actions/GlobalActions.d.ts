@@ -5,11 +5,6 @@ export interface FramesMessageHideAction {
   type: Actions.FRAMES_MESSAGE_HIDE
 }
 
-export interface IsFullscreenAction {
-  type: Actions.SET_IS_FULLSCREEN,
-  payload?: boolean,
-}
-
 export interface SetLightboxImageAction {
   type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
   payload?: number,

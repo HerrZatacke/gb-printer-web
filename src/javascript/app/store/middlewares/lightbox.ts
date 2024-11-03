@@ -1,10 +1,10 @@
 import screenfull from 'screenfull';
 import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type {
-  IsFullscreenAction,
   SetLightboxImageAction,
   SetLightboxNextAction,
   SetLightboxPrevAction,
@@ -14,10 +14,7 @@ const confirmation: MiddlewareWithState = (store) => {
 
   if (screenfull.isEnabled) {
     screenfull.on('change', () => {
-      store.dispatch<IsFullscreenAction>({
-        type: Actions.SET_IS_FULLSCREEN,
-        payload: !!screenfull.element,
-      });
+      useInteractionsStore.getState().setIsFullscreen(!!screenfull.element);
     });
   }
 

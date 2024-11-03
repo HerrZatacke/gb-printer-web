@@ -16,7 +16,8 @@ interface Values {
 }
 
 interface Actions {
-  setDragover: (dragover: boolean) => void
+  setDragover: (dragover: boolean) => void,
+  setIsFullscreen: (isFullscreen: boolean) => void,
 }
 
 export type InteractionsState = Values & Actions;
@@ -32,6 +33,7 @@ const useInteractionsStore = create<InteractionsState>((set) => ({
   trashCount: { frames: 0, images: 0, show: false },
 
   setDragover: (dragover: boolean) => set({ dragover }),
+  setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
 }));
 
 export default useInteractionsStore;

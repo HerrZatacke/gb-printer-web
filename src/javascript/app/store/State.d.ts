@@ -34,7 +34,6 @@ export interface State {
   gitStorage: GitStorageSettings,
   images: Image[],
   importQueue: ImportItem[],
-  isFullscreen: boolean,
   progressLog: ProgressLog,
   lightboxImage: number | null,
   palettes: Palette[],
