@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import screenfull from 'screenfull';
 import dayjs from 'dayjs';
 import type { ProgressLog } from '../../../types/actions/LogActions';
 import type { Progress } from '../store/reducers/progressReducer';
@@ -27,10 +28,13 @@ interface Values {
 }
 
 interface Actions {
+  dismissError: (index: number) => void,
   setDragover: (dragover: boolean) => void,
   setError: (error: Error) => void,
-  dismissError: (index: number) => void,
   setIsFullscreen: (isFullscreen: boolean) => void,
+  setLightboxImage: (index: number | null) => void,
+  setLightboxImageNext: (maxImages: number) => void,
+  setLightboxImagePrev: () => void,
   setWindowDimensions: () => void,
 }
 
@@ -52,6 +56,28 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix() }] }),
   setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
   setWindowDimensions: () => set({ windowDimensions: { width: window.innerWidth, height: window.innerHeight } }),
+
+  setLightboxImage: (lightboxImage: number | null) => {
+    if (lightboxImage === null) {
+      screenfull.exit();
+    }
+
+    set({ lightboxImage });
+  },
+
+  setLightboxImageNext: (maxImages: number) => {
+    const stateLightboxImage = get().lightboxImage;
+    if (stateLightboxImage !== null) {
+      set({ lightboxImage: Math.min(stateLightboxImage + 1, maxImages - 1) });
+    }
+  },
+
+  setLightboxImagePrev: () => {
+    const stateLightboxImage = get().lightboxImage;
+    if (stateLightboxImage !== null) {
+      set({ lightboxImage: Math.max(stateLightboxImage - 1, 0) });
+    }
+  },
 }));
 
 export default useInteractionsStore;

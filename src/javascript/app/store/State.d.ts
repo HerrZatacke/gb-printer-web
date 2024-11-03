@@ -37,7 +37,6 @@ export interface State {
   imageGroups: SerializableImageGroup[],
   importQueue: ImportItem[],
   progressLog: ProgressLog,
-  lightboxImage: string | null,
   palettes: Palette[],
   pickColors: PickColors | null,
   plugins: Plugin[],

@@ -92,7 +92,6 @@ export interface ShareImageStartAction {
   payload: string,
 }
 
-
 export interface TryRecoverImageAction {
   type: Actions.TRY_RECOVER_IMAGE_DATA,
   payload: string,
@@ -100,9 +99,6 @@ export interface TryRecoverImageAction {
 
 export interface BatchTaskAction {
   type: Actions.BATCH_TASK,
-  payload: {
-    actionType: BatchActionType,
-    images: Image[], // list of images which can currently be batched,
-    page: number,
-  },
+  payload: BatchActionType,
+  page: number,
 }

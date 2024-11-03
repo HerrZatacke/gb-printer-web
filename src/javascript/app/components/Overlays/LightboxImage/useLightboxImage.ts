@@ -1,15 +1,13 @@
 import screenfull from 'screenfull';
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import useFiltersStore from '../../../stores/filtersStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import useInteractionsStore from '../../../stores/interactionsStore';
-import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
 import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../../types/Image';
-import type { CloseLightboxAction, LightboxImageSetAction } from '../../../../../types/actions/LightboxActions';
 import type { Rotation } from '../../../../tools/applyRotation';
 import type { Palette } from '../../../../../types/Palette';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
@@ -84,20 +82,24 @@ export const useLightboxImage = (): UseLightboxImage => {
   const filtersState = useFiltersStore();
 
   const { view, covers } = useGalleryTreeContext();
-  const dispatch = useDispatch();
   // ToDo: zustand or useState??
-  const { isFullscreen, setIsFullscreen } = useInteractionsStore();
+  const {
+    isFullscreen,
+    setLightboxImage,
+    setLightboxImagePrev,
+    setLightboxImageNext,
+    setIsFullscreen,
+    lightboxImage,
+  } = useInteractionsStore();
   // const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const { preferredLocale } = useSettingsStore();
 
   const {
     viewImages,
-    lightboxImage,
     palettes,
   } = useSelector((state: State) => ({
     viewImages: getFilteredImages(view.images, filtersState),
-    lightboxImage: state.lightboxImage,
     palettes: state.palettes,
   }));
 
@@ -105,40 +107,7 @@ export const useLightboxImage = (): UseLightboxImage => {
     viewImages.filter(({ hash }) => !covers.includes(hash))
   ), [covers, viewImages]);
 
-  const currentIndex = filteredImages.findIndex(({ hash }) => hash === lightboxImage);
-  const image = toLightBoxImage(filteredImages[currentIndex], palettes);
-
-  const close = () => {
-    if (screenfull.isEnabled && screenfull.element) {
-      screenfull.exit();
-    }
-
-    dispatch<CloseLightboxAction>({
-      type: Actions.CLOSE_LIGHTBOX,
-    });
-  };
-
-  const prev = () => {
-    const nextHash = filteredImages[Math.max(0, currentIndex - 1)]?.hash;
-
-    if (nextHash) {
-      dispatch<LightboxImageSetAction>({
-        type: Actions.SET_LIGHTBOX_IMAGE_HASH,
-        payload: nextHash,
-      });
-    }
-  };
-
-  const next = () => {
-    const nextHash = filteredImages[Math.min(filteredImages.length, currentIndex + 1)]?.hash;
-
-    if (nextHash) {
-      dispatch<LightboxImageSetAction>({
-        type: Actions.SET_LIGHTBOX_IMAGE_HASH,
-        payload: nextHash,
-      });
-    }
-  };
+  const image = (lightboxImage !== null) ? toLightBoxImage(filteredImages[lightboxImage], palettes) : null;
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -155,13 +124,13 @@ export const useLightboxImage = (): UseLightboxImage => {
 
         case 'Right':
         case 'ArrowRight':
-          next();
+          setLightboxImageNext(filteredImages.length);
           ev.preventDefault();
           break;
 
         case 'Left':
         case 'ArrowLeft':
-          prev();
+          setLightboxImagePrev();
           ev.preventDefault();
           break;
 
@@ -184,14 +153,14 @@ export const useLightboxImage = (): UseLightboxImage => {
   return {
     image,
     isFullscreen,
-    currentIndex,
+    currentIndex: lightboxImage || -1,
     size: filteredImages.length,
-    canPrev: currentIndex > 0,
-    canNext: currentIndex < filteredImages.length - 1,
+    canPrev: (lightboxImage !== null) ? lightboxImage > 0 : false,
+    canNext: (lightboxImage !== null) ? lightboxImage < filteredImages.length - 1 : false,
     preferredLocale,
-    prev,
-    next,
-    close,
+    close: () => setLightboxImage(null),
+    prev: () => setLightboxImagePrev(),
+    next: () => setLightboxImageNext(filteredImages.length),
     fullscreen: () => {
       if (screenfull.isEnabled) {
         if (!screenfull.element) {

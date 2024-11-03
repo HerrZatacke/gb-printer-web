@@ -32,7 +32,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
     }, []);
 
     if (imageSelection.length) {
-      switch (batchTaskAction.payload.actionType) {
+      switch (batchTaskAction.payload) {
         case BatchActionType.DELETE: {
           store.dispatch<ConfirmAskAction>({
             type: Actions.CONFIRM_ASK,

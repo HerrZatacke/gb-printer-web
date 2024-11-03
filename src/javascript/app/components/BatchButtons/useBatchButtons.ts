@@ -57,11 +57,8 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     batchTask: (actionType: BatchActionType) => {
       dispatch<BatchTaskAction>({
         type: Actions.BATCH_TASK,
-        payload: {
-          actionType,
-          images,
-          page,
-        },
+        payload: actionType,
+        page,
       });
     },
     checkAll: () => {

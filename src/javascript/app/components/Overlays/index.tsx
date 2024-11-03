@@ -44,7 +44,6 @@ function Overlays() {
     showEditRGBN,
     showVideoForm,
     showPickColors,
-    showLightboxImage,
     showTrashbin,
     syncSelect,
   } = useSelector((state: State) => ({
@@ -62,7 +61,6 @@ function Overlays() {
     showEditRGBN: state.editRGBNImages.length > 0,
     showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
-    showLightboxImage: state.lightboxImage !== null,
     showTrashbin: state.trashCount.show,
     syncSelect: state.syncSelect,
   }));
@@ -73,9 +71,9 @@ function Overlays() {
   } = useFiltersStore();
 
   const {
+    lightboxImage,
     dragover: showDragOver,
   } = useInteractionsStore();
-
 
   switch (true) {
     case showInfoBox:
@@ -102,7 +100,7 @@ function Overlays() {
       return <VideoParamsForm />; // interactive
     case showPickColors:
       return <PickColors />; // interactive
-    case showLightboxImage:
+    case lightboxImage !== null:
       return <LightboxImage />; // interactive
     case showFilters:
       return <FilterForm />; // interactive
