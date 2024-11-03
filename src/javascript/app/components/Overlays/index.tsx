@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
+import useSettingsStore from '../../stores/settingsStore';
 import ProgressLogBox from './ProgressLogBox';
 import InfoBox from './InfoBox';
 import ProgressBox from './ProgressBox';
@@ -25,6 +27,8 @@ import PickColors from './PickColors';
 import type { State } from '../../store/State';
 
 function Overlays() {
+  const { enableImageGroups } = useSettingsStore();
+
   const {
     showProgressLog,
     showInfoBox,
@@ -41,7 +45,6 @@ function Overlays() {
     showVideoForm,
     showPickColors,
     showLightboxImage,
-    showDragOver,
     showTrashbin,
     syncSelect,
   } = useSelector((state: State) => ({
@@ -53,14 +56,13 @@ function Overlays() {
     showImportQueue: !!state.importQueue.length,
     showFrameQueue: !!state.frameQueue.length,
     showEditForm: !!state.editImage?.batch?.length,
-    showEditImageGroup: !!state.editImageGroup && state.enableImageGroups,
+    showEditImageGroup: !!state.editImageGroup && enableImageGroups,
     showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette,
     showEditRGBN: state.editRGBNImages.length > 0,
     showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
     showLightboxImage: state.lightboxImage !== null,
-    showDragOver: state.dragover,
     showTrashbin: state.trashCount.show,
     syncSelect: state.syncSelect,
   }));
@@ -69,6 +71,11 @@ function Overlays() {
     filtersVisible: showFilters,
     sortOptionsVisible: showSortForm,
   } = useFiltersStore();
+
+  const {
+    dragover: showDragOver,
+  } = useInteractionsStore();
+
 
   switch (true) {
     case showInfoBox:

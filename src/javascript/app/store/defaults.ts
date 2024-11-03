@@ -62,13 +62,6 @@ const definitions: StorePropertyDefault[] = [
     value: {},
   },
   {
-    // to enable imagegroup feature
-    key: 'enableImageGroups',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS],
-    value: false,
-  },
-  {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,

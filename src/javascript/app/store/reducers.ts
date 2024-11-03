@@ -20,14 +20,12 @@ import type { PrinterFunction } from '../../consts/printerFunction';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import confirm from './reducers/confirmReducer';
-import dragover from './reducers/dragoverReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
 import editImageGroup from './reducers/editImageGroupReducer';
 import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
-import enableImageGroups from './reducers/enableImageGroupsReducer';
 import errors from './reducers/errorsReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frameQueue from './reducers/frameQueueReducer';
@@ -57,14 +55,12 @@ import videoParams from './reducers/videoParamsReducer';
 export interface Reducers extends ReducersMapObject {
   bitmapQueue: Reducer<QueueImage[]>,
   confirm: Reducer<Dialog[]>,
-  dragover: Reducer<boolean>,
   dropboxStorage: Reducer<DropBoxSettings>,
   editImage: Reducer<CurrentEditBatch | null>,
   editImageGroup: Reducer<EditGroupInfo | null>,
   editFrame: Reducer<string | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
-  enableImageGroups: Reducer<boolean>,
   errors: Reducer<ErrorMessage[]>,
   frameGroupNames: Reducer<FrameGroup[]>,
   frameQueue: Reducer<ImportItem[]>,
@@ -94,14 +90,12 @@ export interface Reducers extends ReducersMapObject {
 const reducers: ReducersMapObject = {
   bitmapQueue,
   confirm,
-  dragover,
   dropboxStorage,
   editImage,
   editImageGroup,
   editFrame,
   editPalette,
   editRGBNImages,
-  enableImageGroups,
   errors,
   frameGroupNames,
   frameQueue,

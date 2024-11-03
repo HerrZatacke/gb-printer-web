@@ -11,6 +11,7 @@ import type { State } from '../app/store/State';
 import type { Image } from '../../types/Image';
 import type { ErrorAction } from '../../types/actions/GlobalActions';
 import type { DialogOption } from '../../types/Dialog';
+import useSettingsStore from '../app/stores/settingsStore';
 
 const MAX_INFLATE_DEPTH = 20;
 
@@ -95,13 +96,13 @@ const reduceImages = (
 };
 
 export const useGalleryTreeContextValue = (): GalleryTreeContext => {
+  const { enableImageGroups } = useSettingsStore();
+
   const {
-    // enableImageGroups,
     imageGroups,
     stateImages,
   } = useSelector((state: State) => ({
-    // enableImageGroups: state.enableImageGroups,
-    imageGroups: state.enableImageGroups ? state.imageGroups : [],
+    imageGroups: enableImageGroups ? state.imageGroups : [],
     stateImages: state.images,
   }));
 

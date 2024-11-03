@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -8,7 +7,7 @@ import PluginSelect from '../PluginSelect';
 import { ButtonOption, useGalleryImageButtons } from './useGalleryImageButtons';
 import { useImageGroups } from '../../../hooks/useImageGroups';
 import { ImageSelectionMode } from '../../stores/filtersStore';
-import type { State } from '../../store/State';
+import useSettingsStore from '../../stores/settingsStore';
 
 import './index.scss';
 
@@ -25,7 +24,7 @@ interface Props {
 function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: Props) {
   const [pluginsActive, setPluginsActive] = useState(false);
 
-  const enableImageGroups = useSelector((state: State) => state.enableImageGroups);
+  const { enableImageGroups } = useSettingsStore();
 
   const {
     canShare,
