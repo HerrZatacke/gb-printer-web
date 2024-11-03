@@ -3,7 +3,7 @@ import { Dropbox } from 'dropbox';
 import type { files as Files, async as Async } from 'dropbox/types/dropbox_types';
 import { EventEmitter } from 'events';
 import type { Dispatch } from 'redux';
-import dayjs from 'dayjs';
+import useInteractionsStore from '../../app/stores/interactionsStore';
 import readFileAs, { ReadAs } from '../readFileAs';
 import cleanPath from '../cleanPath';
 import type {
@@ -15,8 +15,6 @@ import type {
 } from '../../../types/Sync';
 import type { DropBoxRepoFile, RepoContents, RepoTasks } from '../../../types/Export';
 import type { JSONExportState } from '../../app/store/State';
-import type { ErrorAction } from '../../../types/actions/GlobalActions';
-import { Actions } from '../../app/store/actions';
 
 const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
 
@@ -415,13 +413,7 @@ class DropboxClient extends EventEmitter {
           });
       })
       .catch((error) => {
-        dispatch<ErrorAction>({
-          type: Actions.ERROR,
-          payload: {
-            error,
-            timestamp: dayjs().unix(),
-          },
-        });
+        useInteractionsStore.getState().setError(error);
       });
   }
 }

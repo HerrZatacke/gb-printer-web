@@ -1,9 +1,6 @@
-import dayjs from 'dayjs';
-import getHandleFileImport from '../../../tools/getHandleFileImport';
-import { Actions } from '../actions';
-import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import type { ErrorAction } from '../../../../types/actions/GlobalActions';
 import useInteractionsStore from '../../stores/interactionsStore';
+import getHandleFileImport from '../../../tools/getHandleFileImport';
+import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 
 const fileDrop: MiddlewareWithState = (store) => {
   const root = document.querySelector('#app');
@@ -11,7 +8,7 @@ const fileDrop: MiddlewareWithState = (store) => {
     throw new Error('dafuq?');
   }
 
-  const { setDragover } = useInteractionsStore.getState();
+  const { setDragover, setError } = useInteractionsStore.getState();
 
   const handleFileImport = getHandleFileImport(store);
   let dragoverTimeout: number;
@@ -58,13 +55,7 @@ const fileDrop: MiddlewareWithState = (store) => {
     try {
       await handleFileImport(files);
     } catch (error) {
-      store.dispatch<ErrorAction>({
-        type: Actions.ERROR,
-        payload: {
-          error: error as Error,
-          timestamp: dayjs().unix(),
-        },
-      });
+      setError(error as Error);
     }
   });
 

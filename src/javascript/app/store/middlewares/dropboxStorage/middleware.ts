@@ -3,6 +3,7 @@ import Queue from 'promise-queue';
 import type { AnyAction } from 'redux';
 import useFiltersStore from '../../../stores/filtersStore';
 import useSettingsStore from '../../../stores/settingsStore';
+import useInteractionsStore from '../../../stores/interactionsStore';
 import getUploadFiles from '../../../../tools/getUploadFiles';
 import saveLocalStorageItems, { saveImageFileContent } from '../../../../tools/saveLocalStorageItems';
 import DropboxClient from '../../../../tools/DropboxClient';
@@ -21,7 +22,6 @@ import { delay } from '../../../../tools/delay';
 import type { Image } from '../../../../../types/Image';
 import type { DownloadArrayBuffer } from '../../../../tools/download/types';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../../types/actions/ConfirmActions';
-import type { ErrorAction } from '../../../../../types/actions/GlobalActions';
 import type {
   LogDropboxAction,
   LogStorageDiffDoneAction,
@@ -340,13 +340,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
       }
     } catch (error) {
       console.error(error);
-      store.dispatch<ErrorAction>({
-        type: Actions.ERROR,
-        payload: {
-          error: error as Error,
-          timestamp: dayjs().unix(),
-        },
-      });
+      useInteractionsStore.getState().setError(error as Error);
     }
   };
 };

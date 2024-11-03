@@ -5,11 +5,10 @@ import type { RgbPixel } from 'quantize';
 import quantize from 'quantize';
 import chunk from 'chunk';
 import { useDispatch } from 'react-redux';
-import dayjs from 'dayjs';
+import useInteractionsStore from '../app/stores/interactionsStore';
 import getImageData from '../tools/transformBitmaps/getImageData';
 import { Actions } from '../app/store/actions';
 import type { SetPickColorsAction } from '../../types/actions/PickColorsActions';
-import type { ErrorAction } from '../../types/actions/GlobalActions';
 
 export const toHexColor = ([r, g, b]: number[]): string => ([
   '#',
@@ -41,6 +40,7 @@ interface UsePaletteFromFile {
 const usePaletteFromFile = (): UsePaletteFromFile => {
   const dispatch = useDispatch();
   const [busy, setBusy] = useState<boolean>(false);
+  const { setError } = useInteractionsStore();
 
   const onInputChange = async ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.[0]) {
@@ -53,13 +53,7 @@ const usePaletteFromFile = (): UsePaletteFromFile => {
 
       kmeans.clusterize(image, { k: 6 }, (error, res) => {
         if (error) {
-          dispatch<ErrorAction>({
-            type: Actions.ERROR,
-            payload: {
-              error,
-              timestamp: dayjs().unix(),
-            },
-          });
+          setError(error);
         } else {
 
           const colorMap = quantize(image, 4);
