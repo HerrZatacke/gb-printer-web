@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
 import ProgressLogBox from './ProgressLogBox';
 import InfoBox from './InfoBox';
 import ProgressBox from './ProgressBox';
@@ -39,7 +40,6 @@ function Overlays() {
     showVideoForm,
     showPickColors,
     showLightbox,
-    showDragOver,
     showTrashbin,
     syncSelect,
   } = useSelector((state: State) => ({
@@ -57,7 +57,6 @@ function Overlays() {
     showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
     showLightbox: state.lightboxImage !== null,
-    showDragOver: state.dragover,
     showTrashbin: state.trashCount.show,
     syncSelect: state.syncSelect,
   }));
@@ -66,6 +65,10 @@ function Overlays() {
     filtersVisible: showFilters,
     sortOptionsVisible: showSortForm,
   } = useFiltersStore();
+
+  const {
+    dragover: showDragOver,
+  } = useInteractionsStore();
 
   switch (true) {
     case showInfoBox:

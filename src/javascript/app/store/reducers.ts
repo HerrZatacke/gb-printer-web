@@ -18,7 +18,6 @@ import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import confirm from './reducers/confirmReducer';
-import dragover from './reducers/dragoverReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
 import editFrame from './reducers/editFrameReducer';
@@ -53,7 +52,6 @@ import videoParams from './reducers/videoParamsReducer';
 export interface Reducers extends ReducersMapObject {
   bitmapQueue: Reducer<QueueImage[]>,
   confirm: Reducer<Dialog[]>,
-  dragover: Reducer<boolean>,
   dropboxStorage: Reducer<DropBoxSettings>,
   editImage: Reducer<CurrentEditBatch | null>,
   editFrame: Reducer<string | null>,
@@ -88,7 +86,6 @@ export interface Reducers extends ReducersMapObject {
 const reducers: ReducersMapObject = {
   bitmapQueue,
   confirm,
-  dragover,
   dropboxStorage,
   editImage,
   editFrame,

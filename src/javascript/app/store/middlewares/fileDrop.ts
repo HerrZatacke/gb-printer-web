@@ -2,13 +2,16 @@ import dayjs from 'dayjs';
 import getHandleFileImport from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import type { DragoverAction, ErrorAction } from '../../../../types/actions/GlobalActions';
+import type { ErrorAction } from '../../../../types/actions/GlobalActions';
+import useInteractionsStore from '../../stores/interactionsStore';
 
 const fileDrop: MiddlewareWithState = (store) => {
   const root = document.querySelector('#app');
   if (!root) {
     throw new Error('dafuq?');
   }
+
+  const { setDragover } = useInteractionsStore.getState();
 
   const handleFileImport = getHandleFileImport(store);
   let dragoverTimeout: number;
@@ -19,9 +22,7 @@ const fileDrop: MiddlewareWithState = (store) => {
     ev.preventDefault();
 
     if (!dragging) {
-      store.dispatch<DragoverAction>({
-        type: Actions.IMPORT_DRAGOVER_START,
-      });
+      setDragover(true);
     }
 
     window.clearTimeout(dragoverTimeout);
@@ -30,9 +31,7 @@ const fileDrop: MiddlewareWithState = (store) => {
 
     dragoverTimeout = window.setTimeout(() => {
       dragging = false;
-      store.dispatch<DragoverAction>({
-        type: Actions.IMPORT_DRAGOVER_END,
-      });
+      setDragover(false);
     }, 250);
   });
 

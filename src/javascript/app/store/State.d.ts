@@ -21,7 +21,6 @@ import type { PickColors } from '../../../types/PickColors';
 export interface State {
   bitmapQueue: QueueImage[],
   confirm: Dialog[],
-  dragover: boolean,
   dropboxStorage: DropBoxSettings,
   editImage: CurrentEditBatch | null,
   editFrame: string | null,

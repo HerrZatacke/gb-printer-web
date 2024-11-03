@@ -1,10 +1,6 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { ErrorMessage } from '../../javascript/app/components/Errors/useErrors';
 
-export interface DragoverAction {
-  type: Actions.IMPORT_DRAGOVER_START | Actions.IMPORT_DRAGOVER_END,
-}
-
 export interface FramesMessageHideAction {
   type: Actions.FRAMES_MESSAGE_HIDE
 }
