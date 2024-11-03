@@ -24,24 +24,17 @@ interface Values {
 }
 
 interface Actions {
-  updateImageSelection: (mode: ImageSelectionMode, hash: string) => void,
+  cleanRecentImports: (imageHashes: string[]) => void,
   setFiltersActiveTags: (filtersActiveTags: string[]) => void,
   setFiltersVisible: (filtersVisible: boolean) => void,
   setImageSelection: (imageSelection: string[]) => void,
-  setRecentImports: (images: Image[]) => void,
+  updateRecentImports: (images: Image[]) => void,
   setSortBy: (sortBy: string) => void,
   setSortOptionsVisible: (sortOptionsVisible: boolean) => void,
+  updateImageSelection: (mode: ImageSelectionMode, hash: string) => void,
 }
 
 export type FiltersState = Values & Actions;
-
-// ToDo: // remove items older than 6 hours from "recent imports"
-// const yesterday = dayjs().subtract(6, 'hour').unix();
-// const recentImports = (dirtyState.recentImports || []).filter(({ hash, timestamp }) => (
-//   imageHashes.includes(hash) &&
-//   timestamp > yesterday
-// ));
-
 
 const useFiltersStore = create(
   persist<FiltersState>(
@@ -60,7 +53,19 @@ const useFiltersStore = create(
       setSortBy: (sortBy: string) => set({ sortBy }),
       setSortOptionsVisible: (sortOptionsVisible: boolean) => set({ sortOptionsVisible }),
 
-      setRecentImports: (images: Image[]) => {
+      cleanRecentImports: (imageHashes: string[]) => {
+        const { recentImports } = get();
+        const yesterday = dayjs().subtract(6, 'hour').unix();
+
+        set({
+          recentImports: recentImports.filter(({ hash, timestamp }) => (
+            imageHashes.includes(hash) &&
+            timestamp > yesterday
+          )),
+        });
+      },
+
+      updateRecentImports: (images: Image[]) => {
         const currentValue = get().recentImports;
 
         const recentImports: RecentImport[] = images.reduce((acc: RecentImport[], image: Image) => {
