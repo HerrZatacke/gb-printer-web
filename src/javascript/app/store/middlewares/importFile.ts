@@ -1,12 +1,12 @@
-import dayjs from 'dayjs';
+import useInteractionsStore from '../../stores/interactionsStore';
 import type { HandeFileImportFn } from '../../../tools/getHandleFileImport';
 import getHandleFileImport from '../../../tools/getHandleFileImport';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import type { ErrorAction } from '../../../../types/actions/GlobalActions';
 
 const importFile: MiddlewareWithState = (store) => {
   const handleFileImport: HandeFileImportFn = getHandleFileImport(store);
+  const { setError } = useInteractionsStore.getState();
 
   return (next) => async (action): Promise<void> => {
     if (action.type === Actions.IMPORT_FILES) {
@@ -17,13 +17,7 @@ const importFile: MiddlewareWithState = (store) => {
             fromPrinter: action.payload.fromPrinter || false,
           });
         } catch (error) {
-          store.dispatch<ErrorAction>({
-            type: Actions.ERROR,
-            payload: {
-              error: error as Error,
-              timestamp: dayjs().unix(),
-            },
-          });
+          setError(error as Error);
         }
       }
 

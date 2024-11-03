@@ -1,12 +1,12 @@
 import React from 'react';
-import { useErrors } from './useErrors';
+import useInteractionsStore from '../../stores/interactionsStore';
 import ErrorMessage from './ErrorMessage';
 
 import './index.scss';
 
 function Error() {
 
-  const { errors, dismissError } = useErrors();
+  const { errors, dismissError } = useInteractionsStore();
 
   return (
     <ul className="errors">

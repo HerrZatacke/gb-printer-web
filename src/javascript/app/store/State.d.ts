@@ -2,7 +2,6 @@ import type { Dispatch, MiddlewareAPI } from 'redux';
 import type { QueueImage } from '../../../types/QueueImage';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/Sync';
-import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import type { Palette } from '../../../types/Palette';
@@ -29,7 +28,6 @@ export interface State {
   editFrame: string | null,
   editPalette: Palette | null,
   editRGBNImages: string[],
-  errors: ErrorMessage[],
   frameGroupNames: FrameGroup[],
   frameQueue: ImportItem[],
   frames: Frame[],

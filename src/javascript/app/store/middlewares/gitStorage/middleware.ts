@@ -1,6 +1,6 @@
 import Queue from 'promise-queue';
 import type { AnyAction } from 'redux';
-import dayjs from 'dayjs';
+import useInteractionsStore from '../../../stores/interactionsStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import OctoClient from '../../../../tools/OctoClient';
 import getUploadFiles from '../../../../tools/getUploadFiles';
@@ -9,7 +9,6 @@ import { Actions } from '../../actions';
 import type { AddToQueueFn } from '../../../../../types/Sync';
 import type { TypedStore } from '../../State';
 import { delay } from '../../../../tools/delay';
-import type { ErrorAction } from '../../../../../types/actions/GlobalActions';
 import type { LogGitStorageAction, LogStorageSyncDoneAction } from '../../../../../types/actions/LogActions';
 import type { GitSettingsImportAction } from '../../../../../types/actions/StorageActions';
 
@@ -85,13 +84,7 @@ export const middleware = (store: TypedStore) => async (action: AnyAction) => {
 
     } catch (error) {
       console.error(error);
-      store.dispatch<ErrorAction>({
-        type: Actions.ERROR,
-        payload: {
-          error: error as Error,
-          timestamp: dayjs().unix(),
-        },
-      });
+      useInteractionsStore.getState().setError(error as Error);
     }
 
   } else if (action.type === Actions.SET_GIT_STORAGE) {

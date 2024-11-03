@@ -5,7 +5,6 @@ import type { TrashCount } from './reducers/trashCountReducer';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/Sync';
 import type { EditGroupInfo } from '../../../types/actions/GroupActions';
-import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
@@ -26,7 +25,6 @@ import editImageGroup from './reducers/editImageGroupReducer';
 import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
-import errors from './reducers/errorsReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frameQueue from './reducers/frameQueueReducer';
 import frames from './reducers/framesReducer';
@@ -61,7 +59,6 @@ export interface Reducers extends ReducersMapObject {
   editFrame: Reducer<string | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
-  errors: Reducer<ErrorMessage[]>,
   frameGroupNames: Reducer<FrameGroup[]>,
   frameQueue: Reducer<ImportItem[]>,
   frames: Reducer<Frame[]>,
@@ -96,7 +93,6 @@ const reducers: ReducersMapObject = {
   editFrame,
   editPalette,
   editRGBNImages,
-  errors,
   frameGroupNames,
   frameQueue,
   frames,

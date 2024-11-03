@@ -1,17 +1,15 @@
 import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 import unique from '../tools/unique';
-import { Actions } from '../app/store/actions';
 import { createRoot } from '../app/contexts/galleryTree';
 import { useGalleryParams } from './useGalleryParams';
 import type { SerializableImageGroup, TreeImageGroup } from '../../types/ImageGroup';
 import type { GalleryTreeContext, PathMap } from '../app/contexts/galleryTree';
 import type { State } from '../app/store/State';
 import type { Image } from '../../types/Image';
-import type { ErrorAction } from '../../types/actions/GlobalActions';
 import type { DialogOption } from '../../types/Dialog';
 import useSettingsStore from '../app/stores/settingsStore';
+import useInteractionsStore from '../app/stores/interactionsStore';
 
 const MAX_INFLATE_DEPTH = 20;
 
@@ -97,6 +95,7 @@ const reduceImages = (
 
 export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   const { enableImageGroups } = useSettingsStore();
+  const { setError } = useInteractionsStore();
 
   const {
     imageGroups,
@@ -107,8 +106,6 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   }));
 
   const { path } = useGalleryParams();
-
-  const dispatch = useDispatch();
 
   // the .images property of any cleaned group will contain an image only once across all groups.
   // e.g.: if an image is a child of multiple groups, it will be removed from every group but one.
@@ -129,13 +126,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
       let childGroups: TreeImageGroup[];
 
       if (depth > MAX_INFLATE_DEPTH) {
-        dispatch<ErrorAction>({
-          type: Actions.ERROR,
-          payload: {
-            error: new Error(`Reached maximum inflate depth at group "${imageGroup.title || imageGroup.slug}" (${imageGroup.id})`),
-            timestamp: dayjs().unix(),
-          },
-        });
+        setError(new Error(`Reached maximum inflate depth at group "${imageGroup.title || imageGroup.slug}" (${imageGroup.id})`));
         childGroups = [];
       } else {
         try {
@@ -175,7 +166,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
     };
 
     return newRoot;
-  }, [singleUsageResult, stateImages, dispatch]);
+  }, [singleUsageResult, stateImages, setError]);
 
   const paths = useMemo<PathMap[]>((): PathMap[] => (reducePaths('', root.groups)), [root]);
 

@@ -5,7 +5,7 @@ import { RGBNDecoder, Decoder, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
-import dayjs from 'dayjs';
+import useInteractionsStore from '../../stores/interactionsStore';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import { getImagePalettes } from '../../../tools/getImagePalettes';
 import generateFileName from '../../../tools/generateFileName';
@@ -19,7 +19,6 @@ import type { Palette } from '../../../../types/Palette';
 import type { State } from '../State';
 import unique from '../../../tools/unique';
 import type { ProgressCreateGifAction } from '../../../../types/actions/ProgressActions';
-import type { ErrorAction } from '../../../../types/actions/GlobalActions';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
 
@@ -199,14 +198,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
       payload: 0,
     });
 
-    dispatch<ErrorAction>({
-      type: Actions.ERROR,
-      payload: {
-        error: new Error('All images need to have same dimensions'),
-        timestamp: dayjs().unix(),
-      },
-    });
-
+    useInteractionsStore.getState().setError(new Error('All images need to have same dimensions'));
     return;
   }
 
