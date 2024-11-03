@@ -28,18 +28,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = () => (next) => (
       useFiltersStore.getState().setImageSelection([]);
       break;
 
-      // ToDo: this was called where???
-      // case Actions.SET_AVAILABLE_TAGS: {
-      //   const { filtersActiveTags, setFiltersActiveTags } = useFiltersStore.getState();
-      //   setFiltersActiveTags(
-      //     filtersActiveTags.filter((tag) => (
-      //       specialTags.includes(tag) ||
-      //       action.payload?.includes(tag)
-      //     )),
-      //   );
-      //   break;
-      // }
-
       // ToDo: also update recentImports from GLOBAL_UPDATE
     default:
   }
