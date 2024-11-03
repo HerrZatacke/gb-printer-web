@@ -2,8 +2,6 @@ import { applyMiddleware } from 'redux';
 import animate from './middlewares/animate';
 import batch from './middlewares/batch';
 import batchUpdate from './middlewares/batchUpdate';
-import deleteFrame from './middlewares/deleteFrame';
-import deleteImage from './middlewares/deleteImage';
 import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
 import gitStorage from './middlewares/gitStorage';
@@ -21,8 +19,6 @@ export default applyMiddleware(
   animate,
   batch,
   batchUpdate,
-  deleteFrame,
-  deleteImage,
   dropboxStorage,
   fileDrop,
   gitStorage,

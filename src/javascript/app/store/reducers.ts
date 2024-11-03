@@ -1,7 +1,6 @@
 import type { Reducer, ReducersMapObject } from 'redux';
 import { combineReducers } from 'redux';
 import type { Progress } from './reducers/progressReducer';
-import type { TrashCount } from './reducers/trashCountReducer';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/Sync';
 import type { FrameGroup } from '../../../types/FrameGroup';
@@ -42,7 +41,6 @@ import syncLastUpdate from './reducers/syncLastUpdateReducer';
 import syncSelect from './reducers/syncSelectReducer';
 import useSerials from './reducers/useSerialsReducer';
 import showSerials from './reducers/showSerialsReducer';
-import trashCount from './reducers/trashCountReducer';
 import videoParams from './reducers/videoParamsReducer';
 
 export interface Reducers extends ReducersMapObject {
@@ -72,7 +70,6 @@ export interface Reducers extends ReducersMapObject {
   syncSelect: Reducer<boolean>,
   useSerials: Reducer<boolean>,
   showSerials: Reducer<boolean>,
-  trashCount: Reducer<TrashCount>,
   videoParams: Reducer<VideoParams>,
 }
 
@@ -104,7 +101,6 @@ const reducers: ReducersMapObject = {
   syncSelect,
   useSerials,
   showSerials,
-  trashCount,
   videoParams,
 };
 

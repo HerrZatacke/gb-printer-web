@@ -1,22 +1,22 @@
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useStore } from 'react-redux';
 import dayjs from 'dayjs';
 import { saveAs } from 'file-saver';
+import useInteractionsStore from '../app/stores/interactionsStore';
 import { localforageReady, localforageImages, localforageFrames } from '../tools/localforageInstance';
-import { Actions } from '../app/store/actions';
 import { dateFormat } from '../app/defaults';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTrash';
 import { inflate } from '../tools/pack';
-import type { WrappedLocalForageInstance } from '../tools/localforageInstance/createWrappedInstance';
-import type { TrashShowHideAction, UpdateTrashcountAction } from '../../types/actions/TrashActions';
 import { reduceImagesMonochrome } from '../tools/isRGBNImage';
-import type { JSONExportBinary, JSONExportState, State, TypedStore } from '../app/store/State';
-import type { Image, MonochromeImage } from '../../types/Image';
 import { reduceItems } from '../tools/reduceArray';
+import { checkUpdateTrashCount } from '../tools/checkUpdateTrashCount';
+import type { TrashCount } from '../app/stores/interactionsStore';
+import type { WrappedLocalForageInstance } from '../tools/localforageInstance/createWrappedInstance';
+import type { JSONExportBinary, JSONExportState, TypedStore } from '../app/store/State';
+import type { Image, MonochromeImage } from '../../types/Image';
 import type { Frame } from '../../types/Frame';
-import type { TrashCount } from '../app/store/reducers/trashCountReducer';
 
 export interface UseTrashbin {
-  showTrash: (show: boolean) => void
+  showTrashCount: (show: boolean) => void
   purgeTrash: () => Promise<void>
   downloadImages: () => Promise<void>
   downloadFrames: () => Promise<void>
@@ -54,17 +54,9 @@ const getItems = async (keys: string[], storage: WrappedLocalForageInstance<stri
 };
 
 const useTrashbin = (): UseTrashbin => {
-  const trashCount = useSelector((state: State) => (state.trashCount));
+  const { trashCount, showTrashCount } = useInteractionsStore();
 
   const store: TypedStore = useStore();
-  const dispatch = useDispatch();
-
-  const showTrash = (show: boolean): void => {
-    dispatch<TrashShowHideAction>({
-      type: Actions.SHOW_HIDE_TRASH,
-      payload: show,
-    });
-  };
 
   const downloadImages = async (): Promise<void> => {
     const imageHashes = await getTrashImages(store.getState().images as MonochromeImage[]);
@@ -132,16 +124,11 @@ const useTrashbin = (): UseTrashbin => {
 
   const purgeTrash = async (): Promise<void> => {
     await cleanupStorage(store.getState());
-
-    dispatch<UpdateTrashcountAction>({
-      type: Actions.UPDATE_TRASH_COUNT,
-    });
-
-    showTrash(false);
+    checkUpdateTrashCount(store.getState());
   };
 
   return {
-    showTrash,
+    showTrashCount,
     purgeTrash,
     downloadImages,
     downloadFrames,

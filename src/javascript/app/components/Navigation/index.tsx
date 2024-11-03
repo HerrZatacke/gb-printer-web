@@ -5,7 +5,7 @@ import SVG from '../SVG';
 import ThemeToggle from '../ThemeToggle';
 import './index.scss';
 import useNavigation from './useNavigation';
-import useTrashbin from '../../../hooks/useTrashbin';
+import useInteractionsStore from '../../stores/interactionsStore';
 
 function Navigation() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -22,9 +22,9 @@ function Navigation() {
   } = useNavigation();
 
   const {
-    showTrash,
+    showTrashCount,
     trashCount,
-  } = useTrashbin();
+  } = useInteractionsStore();
 
   const sum = trashCount.frames + trashCount.images;
 
@@ -105,7 +105,7 @@ function Navigation() {
             type="button"
             title="Trash Bin"
             className="navigation__link navigation__link--icon"
-            onClick={() => showTrash(true)}
+            onClick={() => showTrashCount(true)}
           >
             <SVG name="delete" />
             { sum > 0 ? (

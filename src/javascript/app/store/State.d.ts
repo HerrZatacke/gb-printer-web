@@ -10,7 +10,6 @@ import type { ImportItem } from '../../../types/ImportItem';
 import type { ProgressLog } from '../../../types/actions/LogActions';
 import type { Plugin } from '../../../types/Plugin';
 import type { Progress } from './reducers/progressReducer';
-import type { TrashCount } from './reducers/trashCountReducer';
 import type { VideoParams } from '../../../types/VideoParams';
 import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
@@ -45,7 +44,6 @@ export interface State {
   syncSelect: boolean,
   useSerials: boolean,
   showSerials: boolean,
-  trashCount: TrashCount,
   videoParams: VideoParams,
 }
 

@@ -139,12 +139,6 @@ const definitions: StorePropertyDefault[] = [
     saveExport: [],
     value: [],
   },
-  {
-    key: 'trashCount',
-    saveLocally: false,
-    saveExport: [],
-    value: { frames: 0, images: 0, show: false },
-  },
 ];
 
 const defaults: Partial<State> = {};
