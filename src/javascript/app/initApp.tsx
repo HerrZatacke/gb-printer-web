@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
 import getStore from './store';
+import useFiltersStore from './stores/filtersStore';
 import { defaults } from './store/defaults';
 import cleanState from '../tools/cleanState';
 import type { State } from './store/State';
@@ -32,6 +33,9 @@ const initApp = async () => {
   try {
     const root = createRoot(appRoot);
     const store = getStore(state);
+
+    useFiltersStore.getState().cleanRecentImports((state?.images || []).map(({ hash }) => hash));
+
     root.render(<Provider store={store}><App /></Provider>);
   } catch (error) {
     const appNode = document.getElementById('app');
