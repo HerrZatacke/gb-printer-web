@@ -8,7 +8,6 @@ import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
-import type { GalleryViews } from '../../consts/GalleryViews';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Palette } from '../../../types/Palette';
@@ -34,7 +33,6 @@ import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frameQueue from './reducers/frameQueueReducer';
 import frames from './reducers/framesReducer';
 import framesMessage from './reducers/framesMessageReducer';
-import galleryView from './reducers/galleryViewReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import images from './reducers/imagesReducer';
 import imageGroups from './reducers/imageGroupsReducer';
@@ -72,7 +70,6 @@ export interface Reducers extends ReducersMapObject {
   frameQueue: Reducer<ImportItem[]>,
   frames: Reducer<Frame[]>,
   framesMessage: Reducer<number>,
-  galleryView: Reducer<GalleryViews>,
   gitStorage: Reducer<GitStorageSettings>,
   images: Reducer<Image[]>,
   imageGroups: Reducer<SerializableImageGroup>,
@@ -110,7 +107,6 @@ const reducers: ReducersMapObject = {
   frameQueue,
   frames,
   framesMessage,
-  galleryView,
   gitStorage,
   images,
   imageGroups,

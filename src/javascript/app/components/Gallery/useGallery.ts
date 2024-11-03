@@ -14,7 +14,7 @@ interface UseGallery {
   imageCount: number,
   selectedCount: number,
   images: Image[],
-  currentView: GalleryViews,
+  galleryView: GalleryViews,
   filteredCount: number,
   page: number,
   covers: string[],
@@ -22,7 +22,7 @@ interface UseGallery {
 
 export const useGallery = (): UseGallery => {
   const { view, covers } = useGalleryTreeContext();
-  const { pageSize } = useSettingsStore();
+  const { pageSize, galleryView } = useSettingsStore();
 
   const {
     imageSelection,
@@ -46,32 +46,22 @@ export const useGallery = (): UseGallery => {
     navigate(`/gallery/${path}page/${page + 1}`);
   }
 
-  const {
-    selectedCount,
-    currentView,
-    images,
-  } = useSelector((state: State) => {
-    const iOffset = page * pageSize;
-    const pSize = pageSize;
+  const iOffset = page * pageSize;
+  const pSize = pageSize;
+  const selectedCount = imageSelection.length;
+  const images = getFilteredImages(
+    view.images,
+    { filtersActiveTags, recentImports, sortBy },
+  )
+    .splice(iOffset, pSize || Infinity);
 
-    return ({
-      selectedCount: imageSelection.length,
-      currentView: state.galleryView,
-      images: getFilteredImages(
-        view.images,
-        { filtersActiveTags, recentImports, sortBy },
-      )
-        .splice(iOffset, pSize || Infinity),
-    });
-  });
-
-  return ({
+  return {
     imageCount,
     selectedCount,
     filteredCount,
     page,
     images,
-    currentView,
     covers,
-  });
+    galleryView,
+  };
 };

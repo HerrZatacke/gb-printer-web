@@ -28,13 +28,6 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
-    // displaymode of gallery page (list, 1x, 2x...)
-    key: 'galleryView',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS],
-    value: '1x',
-  },
-  {
     // the image being edited currently
     key: 'editImage',
     saveLocally: true,

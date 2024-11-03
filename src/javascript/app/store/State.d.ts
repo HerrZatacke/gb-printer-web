@@ -8,7 +8,6 @@ import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
-import type { GalleryViews } from '../../consts/GalleryViews';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { ProgressLog } from '../../../types/actions/LogActions';
 import type { Plugin } from '../../../types/Plugin';
@@ -37,7 +36,6 @@ export interface State {
   frameQueue: ImportItem[],
   frames: Frame[],
   framesMessage: number,
-  galleryView: GalleryViews,
   gitStorage: GitStorageSettings,
   images: Image[],
   imageGroups: SerializableImageGroup[],
