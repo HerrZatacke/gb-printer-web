@@ -30,31 +30,31 @@ const getSettings = (
   const signal = controller.signal;
 
   const wificonfigGet = async () => {
-    const res = await fetch('/wificonfig/get', { signal });
-    const wifiConfig = await res.json();
+    try {
+      const res = await fetch('/wificonfig/get', { signal });
+      const wifiConfig = await res.json();
 
-    // eslint-disable-next-line no-param-reassign
-    wifiConfig.mdns = wifiConfig.mdns || '';
-    // eslint-disable-next-line no-param-reassign
-    wifiConfig.ap = wifiConfig.ap || { ssid: '', psk: '' };
-    // eslint-disable-next-line no-param-reassign
-    wifiConfig.networks = wifiConfig.networks || [];
+      // eslint-disable-next-line no-param-reassign
+      wifiConfig.mdns = wifiConfig.mdns || '';
+      // eslint-disable-next-line no-param-reassign
+      wifiConfig.ap = wifiConfig.ap || { ssid: '', psk: '' };
+      // eslint-disable-next-line no-param-reassign
+      wifiConfig.networks = wifiConfig.networks || [];
 
-    setStatus('');
-    setWifiConfig(wifiConfig);
+      setStatus('');
+      setWifiConfig(wifiConfig);
+    } catch (error) {
+      if (!signal.aborted) {
+        setStatus('error');
+        setWifiConfig(undefined);
+      }
+    }
   };
 
-  try {
-    wificonfigGet();
-  } catch (error) {
-    if (!signal.aborted) {
-      setStatus('error');
-      setWifiConfig(undefined);
-    }
-  }
+  wificonfigGet();
 
   return () => {
-    controller.abort();
+    controller.abort('Navigated while getting wifi settings');
   };
 };
 
