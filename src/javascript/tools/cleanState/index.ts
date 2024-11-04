@@ -24,7 +24,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
   ]);
 
   const palettesShorts = palettes.map(({ shortName }) => shortName);
-  const frameIds = (dirtyState.frames || []).map(({ id }) => id);
 
   const images: Image[] = (dirtyState.images || [])
     // clean the created date (add ms) (e.g. "2021-01-30 18:16:09" -> "2021-01-30 18:16:09:000")
