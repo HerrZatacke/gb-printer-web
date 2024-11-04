@@ -20,7 +20,6 @@ interface UseNavigation {
 const useNavigation = (): UseNavigation => {
   const {
     useSync,
-    syncLastUpdate,
     autoDropboxSync,
   } = useSelector((state: State) => ({
     useSync: !!(
@@ -34,12 +33,11 @@ const useNavigation = (): UseNavigation => {
         state.gitStorage.token
       )
     ),
-    syncLastUpdate: state.syncLastUpdate,
     autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
   }));
 
   const { syncBusy, setSyncSelect, setShowSerials } = useInteractionsStore();
-  const { useSerials } = useSettingsStore();
+  const { useSerials, syncLastUpdate } = useSettingsStore();
   const disableSerials = !WebUSBSerial.enabled && !WebSerial.enabled;
 
   return {

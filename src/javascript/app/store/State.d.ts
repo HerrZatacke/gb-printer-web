@@ -1,7 +1,7 @@
 import type { Dispatch, MiddlewareAPI } from 'redux';
 import type { QueueImage } from '../../../types/QueueImage';
 import type { Dialog } from '../../../types/Dialog';
-import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/Sync';
+import type { DropBoxSettings, GitStorageSettings } from '../../../types/Sync';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import type { Palette } from '../../../types/Palette';
@@ -9,7 +9,6 @@ import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Plugin } from '../../../types/Plugin';
-import type { VideoParams } from '../../../types/VideoParams';
 import type { PickColors } from '../../../types/PickColors';
 import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 
@@ -33,8 +32,6 @@ export interface State {
   palettes: Palette[],
   pickColors: PickColors | null,
   plugins: Plugin[],
-  syncLastUpdate: SyncLastUpdate,
-  videoParams: VideoParams,
 }
 
 export type TypedStore = MiddlewareAPI<Dispatch, State>;

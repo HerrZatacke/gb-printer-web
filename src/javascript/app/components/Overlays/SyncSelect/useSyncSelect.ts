@@ -4,6 +4,7 @@ import type { State } from '../../../store/State';
 import type { SyncLastUpdate } from '../../../../../types/Sync';
 import type { StorageSyncStartAction } from '../../../../../types/actions/LogActions';
 import useInteractionsStore from '../../../stores/interactionsStore';
+import useSettingsStore from '../../../stores/settingsStore';
 
 
 interface UseSyncSelect {
@@ -31,16 +32,17 @@ export const useSyncSelect = (): UseSyncSelect => {
       state.gitStorage.throttle &&
       state.gitStorage.token
     ),
-    syncLastUpdate: state.syncLastUpdate,
     autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
   }));
 
   const { setSyncSelect } = useInteractionsStore();
+  const { syncLastUpdate } = useSettingsStore();
 
   const dispatch = useDispatch();
 
   return {
     ...data,
+    syncLastUpdate,
     startSync: (storageType: string, direction: string) => {
       dispatch<StorageSyncStartAction>({
         type: Actions.STORAGE_SYNC_START,

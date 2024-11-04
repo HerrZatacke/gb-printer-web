@@ -89,12 +89,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
     error: undefined,
   }));
 
-  const syncLastUpdate = {
-    ...dirtyState.syncLastUpdate,
-    dropbox: dirtyState.syncLastUpdate?.dropbox || 0,
-    local: dirtyState.syncLastUpdate?.local || 0,
-  };
-
   if (dirtyState.frames) {
     await backupFrames(dirtyState.frames);
   }
@@ -104,7 +98,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
   return {
     ...dirtyState,
     frames: hashedFrames || dirtyState.frames,
-    syncLastUpdate,
     images,
     palettes,
     plugins,

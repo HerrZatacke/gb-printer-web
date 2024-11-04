@@ -5,6 +5,7 @@ import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
 import useInteractionsStore from '../../app/stores/interactionsStore';
+import useSettingsStore from '../../app/stores/settingsStore';
 import { loadImageTiles } from '../loadImageTiles';
 import { getImagePalettes } from '../getImagePalettes';
 import generateFileName from '../generateFileName';
@@ -79,7 +80,6 @@ const getAddImages = (
 export const videoParamsWithDefaults = (params: VideoParams): Required<VideoParams> => ({
   scaleFactor: params.scaleFactor || 4,
   frameRate: params.frameRate || 12,
-  imageSelection: params.imageSelection || [],
   yoyo: params.yoyo || false,
   reverse: params.reverse || false,
   frame: params.frame || '',
@@ -90,14 +90,14 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 });
 
 export const createAnimation = async (state: State) => {
-  const { setProgress, setError } = useInteractionsStore.getState();
+  const { setProgress, setError, videoSelection } = useInteractionsStore.getState();
+  const { videoParams } = useSettingsStore.getState();
 
   setProgress('gif', 0.01);
 
   const {
     scaleFactor,
     frameRate,
-    imageSelection,
     yoyo,
     reverse,
     frame: videoFrame,
@@ -105,13 +105,13 @@ export const createAnimation = async (state: State) => {
     invertPalette: videoInvertPalette,
     palette: videoPalette,
     exportFrameMode,
-  } = videoParamsWithDefaults(state.videoParams);
+  } = videoParamsWithDefaults(videoParams);
 
-  if (!imageSelection.length) {
+  if (!videoSelection.length) {
     return;
   }
 
-  const images: (Image | undefined)[] = await Promise.all(imageSelection.map((imageHash) => (
+  const images: (Image | undefined)[] = await Promise.all(videoSelection.map((imageHash) => (
     state.images.find(({ hash }) => hash === imageHash)
   )));
 

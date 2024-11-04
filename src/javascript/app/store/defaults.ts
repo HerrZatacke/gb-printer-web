@@ -49,13 +49,6 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
-    // how to save videos (loop, crop, yoyo, reverse, palette)
-    key: 'videoParams',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: {},
-  },
-  {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,
@@ -111,15 +104,6 @@ const definitions: StorePropertyDefault[] = [
     saveExport: [],
     value: {
       path: '',
-    },
-  },
-  {
-    key: 'syncLastUpdate',
-    saveLocally: true,
-    saveExport: [],
-    value: {
-      dropbox: 0,
-      local: 0,
     },
   },
   {

@@ -101,7 +101,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
 
   return async (action: AnyAction): Promise<void> => {
     const state = store.getState();
-    const { preferredLocale } = useSettingsStore.getState();
+    const { preferredLocale, syncLastUpdate } = useSettingsStore.getState();
 
     try {
 
@@ -135,14 +135,14 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                     payload: lastUpdate,
                   });
 
-                  if (lastUpdate > state?.syncLastUpdate?.local) {
+                  if (lastUpdate > syncLastUpdate?.local) {
                     store.dispatch<ConfirmAskAction>({
                       type: Actions.CONFIRM_ASK,
                       payload: {
                         message: 'There is newer content in your dropbox!',
                         questions: () => [
                           `Your dropbox contains changes from ${dateFormatLocale(dayjs(lastUpdate * 1000), preferredLocale)}`,
-                          `Your last local update was ${state?.syncLastUpdate?.local ? (dateFormatLocale(dayjs(state.syncLastUpdate.local * 1000), preferredLocale)) : 'never'}.`,
+                          `Your last local update was ${syncLastUpdate?.local ? (dateFormatLocale(dayjs(syncLastUpdate.local * 1000), preferredLocale)) : 'never'}.`,
                           'Do you want to load the changes?',
                         ]
                           .map((label, index) => ({
@@ -175,7 +175,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                 }
 
                 case 'up': {
-                  const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
+                  const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
                   const changes = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
                   await dropboxClient.upload(changes, 'settings');
 
