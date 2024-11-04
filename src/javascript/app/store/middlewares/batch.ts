@@ -1,13 +1,13 @@
 import unique from '../../../tools/unique';
 import { Actions } from '../actions';
 import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { Image } from '../../../../types/Image';
 import type { DeleteImagesAction,
   DownloadImageSelectionAction,
   EditImageSelectionAction,
   StartCreateRGBImagesAction } from '../../../../types/actions/ImageActions';
-import type { SetVideoParamsAction } from '../../../../types/actions/VideoParamsOptions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
@@ -53,12 +53,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
         }
 
         case BatchActionType.ANIMATE: {
-          store.dispatch<SetVideoParamsAction>({
-            type: Actions.SET_VIDEO_PARAMS,
-            payload: {
-              imageSelection,
-            },
-          });
+          useInteractionsStore.getState().setVideoSelection(imageSelection);
           break;
         }
 

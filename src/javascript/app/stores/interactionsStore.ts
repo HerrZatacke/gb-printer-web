@@ -51,6 +51,7 @@ interface Values {
   syncSelect: boolean,
   trashCount: TrashCount,
   windowDimensions: WindowDimensions,
+  videoSelection: string[],
 }
 
 interface Actions {
@@ -73,6 +74,7 @@ interface Actions {
   setWindowDimensions: () => void,
   showTrashCount: (show: boolean) => void,
   updateTrashCount: (frames: number, images: number) => void,
+  setVideoSelection: (videoSelection: string[]) => void,
 }
 
 export type InteractionsState = Values & Actions;
@@ -92,6 +94,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   syncSelect: false,
   trashCount: { frames: 0, images: 0, show: false },
   windowDimensions: { width: window.innerWidth, height: window.innerHeight },
+  videoSelection: [],
 
   dismissError: (index: number) => set({ errors: get().errors.filter((_, i) => i !== index) }),
   resetProgressLog: () => set({ progressLog: { git: [], dropbox: [] } }),
@@ -108,6 +111,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   setWindowDimensions: () => set({ windowDimensions: { width: window.innerWidth, height: window.innerHeight } }),
   showTrashCount: (show: boolean) => set({ trashCount: { ...get().trashCount, show } }),
   updateTrashCount: (frames: number, images: number) => set({ trashCount: { show: false, frames, images } }),
+  setVideoSelection: (videoSelection: string[]) => set({ videoSelection }),
 
   setProgressLog: (which: keyof ProgressLog, logItem: LogItem) => {
     const { progressLog } = get();

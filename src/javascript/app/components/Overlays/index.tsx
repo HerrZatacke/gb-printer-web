@@ -33,7 +33,6 @@ function Overlays() {
     showEditFrame,
     showEditPalette,
     showEditRGBN,
-    showVideoForm,
     showPickColors,
   } = useSelector((state: State) => ({
     showConfirm: !!state.confirm.length,
@@ -44,7 +43,6 @@ function Overlays() {
     showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette,
     showEditRGBN: state.editRGBNImages.length > 0,
-    showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
   }));
 
@@ -60,10 +58,12 @@ function Overlays() {
     progress,
     progressLog,
     syncSelect,
+    videoSelection,
   } = useInteractionsStore();
 
   const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
   const showProgressBox = !!progress.gif || !!progress.printer || !!progress.plugin;
+  const showVideoForm = !!videoSelection?.length;
 
   switch (true) {
     case showConfirm:

@@ -8,6 +8,8 @@ import dateFormatLocale from '../../tools/dateFormatLocale';
 import { getEnv } from '../../tools/getEnv';
 import { PaletteSortMode } from '../../consts/paletteSortModes';
 import { GalleryViews } from '../../consts/GalleryViews';
+import type { SyncLastUpdate } from '../../../types/Sync';
+import type { VideoParams } from '../../../types/VideoParams';
 
 interface Values {
   activePalette: string,
@@ -27,7 +29,9 @@ interface Values {
   printerUrl: string,
   savFrameTypes: string,
   sortPalettes: PaletteSortMode,
+  syncLastUpdate: SyncLastUpdate,
   useSerials: boolean,
+  videoParams: VideoParams,
 }
 
 interface Actions {
@@ -48,7 +52,9 @@ interface Actions {
   setPrinterUrl: (printerUrl: string) => void,
   setSavFrameTypes: (savFrameTypes: string) => void,
   setSortPalettes: (sortPalettes: PaletteSortMode) => void,
+  setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => void,
   setUseSerials: (useSerials: boolean) => void,
+  setVideoParams: (videoParams: Partial<VideoParams>) => void,
 }
 
 export type SettingsState = Values & Actions;
@@ -78,7 +84,9 @@ const useSettingsStore = create(
       printerUrl: getEnv()?.env === 'esp8266' ? '/' : '',
       savFrameTypes: 'int',
       sortPalettes: PaletteSortMode.DEFAULT_DESC,
+      syncLastUpdate: { dropbox: 0, local: 0 },
       useSerials: false,
+      videoParams: {},
 
       setActivePalette: (activePalette: string) => set({ activePalette }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
@@ -94,7 +102,11 @@ const useSettingsStore = create(
       setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
       setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
       setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),
+      setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => set((state) => ({ ...state, [what]: value })),
       setUseSerials: (useSerials: boolean) => set({ useSerials }),
+      setVideoParams: (videoParams: Partial<VideoParams>) => set((state) => (
+        { videoParams: { ...state.videoParams, ...videoParams } }
+      )),
 
       setExportScaleFactors: (updateFactor: number, checked: boolean) => {
         const { exportScaleFactors } = get();

@@ -42,6 +42,7 @@ export const init = (store: TypedStore) => {
 
 export const middleware = (store: TypedStore) => async (action: AnyAction) => {
   const { setProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+  const { syncLastUpdate } = useSettingsStore.getState();
 
   if (
     action.type === Actions.STORAGE_SYNC_START &&
@@ -49,14 +50,13 @@ export const middleware = (store: TypedStore) => async (action: AnyAction) => {
   ) {
     setSyncBusy(true);
     setSyncSelect(false);
-    const state = store.getState();
 
     try {
       const repoContents = await octoClient.getRepoContents();
 
       switch (action.payload.direction) {
         case 'up': {
-          const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
+          const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
           const repoTasks = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
           await octoClient.updateRemoteStore(repoTasks);
           break;

@@ -1,14 +1,13 @@
 import type { Reducer, ReducersMapObject } from 'redux';
 import { combineReducers } from 'redux';
 import type { Dialog } from '../../../types/Dialog';
-import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/Sync';
+import type { DropBoxSettings, GitStorageSettings } from '../../../types/Sync';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Palette } from '../../../types/Palette';
 import type { Plugin } from '../../../types/Plugin';
-import type { VideoParams } from '../../../types/VideoParams';
 import type { QueueImage } from '../../../types/QueueImage';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import confirm from './reducers/confirmReducer';
@@ -26,8 +25,6 @@ import importQueue from './reducers/importQueueReducer';
 import palettes from './reducers/palettesReducer';
 import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
-import syncLastUpdate from './reducers/syncLastUpdateReducer';
-import videoParams from './reducers/videoParamsReducer';
 
 export interface Reducers extends ReducersMapObject {
   bitmapQueue: Reducer<QueueImage[]>,
@@ -45,8 +42,6 @@ export interface Reducers extends ReducersMapObject {
   importQueue: Reducer<ImportItem[]>,
   palettes: Reducer<Palette[]>,
   plugins: Reducer<Plugin[]>,
-  syncLastUpdate: Reducer<SyncLastUpdate>,
-  videoParams: Reducer<VideoParams>,
 }
 
 const reducers: ReducersMapObject = {
@@ -66,8 +61,6 @@ const reducers: ReducersMapObject = {
   palettes,
   pickColors,
   plugins,
-  syncLastUpdate,
-  videoParams,
 };
 
 export default combineReducers(reducers);
