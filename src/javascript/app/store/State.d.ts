@@ -25,7 +25,6 @@ export interface State {
   frameGroupNames: FrameGroup[],
   frameQueue: ImportItem[],
   frames: Frame[],
-  framesMessage: number,
   gitStorage: GitStorageSettings,
   images: Image[],
   importQueue: ImportItem[],

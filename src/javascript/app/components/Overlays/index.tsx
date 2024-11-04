@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import ProgressLogBox from './ProgressLogBox';
-import InfoBox from './InfoBox';
 import ProgressBox from './ProgressBox';
 import Confirm from './Confirm';
 import EditForm from './EditForm';
@@ -26,7 +25,6 @@ import type { State } from '../../store/State';
 
 function Overlays() {
   const {
-    showInfoBox,
     showConfirm,
     showBitmapQueue,
     showImportQueue,
@@ -38,7 +36,6 @@ function Overlays() {
     showVideoForm,
     showPickColors,
   } = useSelector((state: State) => ({
-    showInfoBox: state.framesMessage === 1,
     showConfirm: !!state.confirm.length,
     showBitmapQueue: !!state.bitmapQueue.length,
     showImportQueue: !!state.importQueue.length,
@@ -69,8 +66,6 @@ function Overlays() {
   const showProgressBox = !!progress.gif || !!progress.printer || !!progress.plugin;
 
   switch (true) {
-    case showInfoBox:
-      return <InfoBox />; // interactive
     case showConfirm:
       return <Confirm />; // interactive
     case showFrameQueue:

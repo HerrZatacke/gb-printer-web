@@ -26,8 +26,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
   const palettesShorts = palettes.map(({ shortName }) => shortName);
   const frameIds = (dirtyState.frames || []).map(({ id }) => id);
 
-  let framesMessage = dirtyState.framesMessage;
-
   const images: Image[] = (dirtyState.images || [])
     // clean the created date (add ms) (e.g. "2021-01-30 18:16:09" -> "2021-01-30 18:16:09:000")
     .map((image) => ({
@@ -86,18 +84,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
       return monoImage;
     });
 
-  // If the user has at least one frame selected
-  // but the frames are not yet imported, show a message hint
-  images.forEach((image) => {
-    if (
-      image.frame &&
-      !frameIds.includes(image.frame) &&
-      !framesMessage // message not seen yet
-    ) {
-      framesMessage = 1;
-    }
-  });
-
   const plugins = (dirtyState.plugins || []).map((plugin) => ({
     ...plugin,
     loading: true,
@@ -123,7 +109,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
     images,
     palettes,
     plugins,
-    framesMessage: framesMessage || 0,
   };
 };
 
