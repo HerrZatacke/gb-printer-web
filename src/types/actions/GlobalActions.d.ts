@@ -8,8 +8,3 @@ export interface EnableImageGroupsAction {
 export interface FramesMessageHideAction {
   type: Actions.FRAMES_MESSAGE_HIDE
 }
-
-export interface ShowSerialsAction {
-  type: Actions.SHOW_SERIALS,
-  payload?: boolean,
-}

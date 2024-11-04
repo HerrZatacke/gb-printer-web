@@ -22,7 +22,6 @@ export enum Actions {
   NAME_FRAMEGROUP = 'NAME_FRAMEGROUP',
 
   // Generic config
-  SHOW_SERIALS = 'SHOW_SERIALS',
   SET_ENABLE_IMAGE_GROUPS = 'SET_ENABLE_IMAGE_GROUPS',
 
   // Images
