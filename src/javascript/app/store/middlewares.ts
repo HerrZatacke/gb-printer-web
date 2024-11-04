@@ -1,5 +1,4 @@
 import { applyMiddleware } from 'redux';
-import animate from './middlewares/animate';
 import batch from './middlewares/batch';
 import batchUpdate from './middlewares/batchUpdate';
 import dropboxStorage from './middlewares/dropboxStorage';
@@ -16,7 +15,6 @@ import startDownload from './middlewares/startDownload';
 import { zustandMigrationMiddleware } from './middlewares/zustandMigration';
 
 export default applyMiddleware(
-  animate,
   batch,
   batchUpdate,
   dropboxStorage,

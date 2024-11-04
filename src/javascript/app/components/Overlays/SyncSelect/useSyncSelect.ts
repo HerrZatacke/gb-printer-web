@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
 import type { SyncLastUpdate } from '../../../../../types/Sync';
-import type { StorageSyncCancelAction, StorageSyncStartAction } from '../../../../../types/actions/LogActions';
+import type { StorageSyncStartAction } from '../../../../../types/actions/LogActions';
+import useInteractionsStore from '../../../stores/interactionsStore';
 
 
 interface UseSyncSelect {
@@ -34,6 +35,8 @@ export const useSyncSelect = (): UseSyncSelect => {
     autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
   }));
 
+  const { setSyncSelect } = useInteractionsStore();
+
   const dispatch = useDispatch();
 
   return {
@@ -47,10 +50,6 @@ export const useSyncSelect = (): UseSyncSelect => {
         },
       });
     },
-    cancelSync: () => {
-      dispatch<StorageSyncCancelAction>({
-        type: Actions.STORAGE_SYNC_CANCEL,
-      });
-    },
+    cancelSync: () => setSyncSelect(false),
   };
 };

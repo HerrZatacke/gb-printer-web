@@ -4,8 +4,8 @@ import WebSerial from '../../../tools/WebSerial';
 import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import type { SyncLastUpdate } from '../../../../types/Sync';
-import type { StorageSyncSelectAction } from '../../../../types/actions/LogActions';
 import type { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
+import useInteractionsStore from '../../stores/interactionsStore';
 
 interface UseNavigation {
   disableSerials: boolean,
@@ -20,13 +20,11 @@ interface UseNavigation {
 
 const useNavigation = (): UseNavigation => {
   const {
-    syncBusy,
     useSync,
     useSerials,
     syncLastUpdate,
     autoDropboxSync,
   } = useSelector((state: State) => ({
-    syncBusy: state.syncBusy,
     useSync: !!(
       state.dropboxStorage.use ||
       (
@@ -43,15 +41,11 @@ const useNavigation = (): UseNavigation => {
     autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
   }));
 
+  const { syncBusy, setSyncSelect } = useInteractionsStore();
+
   const dispatch = useDispatch();
 
   const disableSerials = !WebUSBSerial.enabled && !WebSerial.enabled;
-
-  const selectSync = () => {
-    dispatch<StorageSyncSelectAction>({
-      type: Actions.STORAGE_SYNC_SELECT,
-    });
-  };
 
   const setShowSerials = () => {
     dispatch<ShowSerialsAction>({
@@ -67,7 +61,7 @@ const useNavigation = (): UseNavigation => {
     useSerials,
     syncLastUpdate,
     autoDropboxSync,
-    selectSync,
+    selectSync: () => setSyncSelect(true),
     setShowSerials,
   };
 };

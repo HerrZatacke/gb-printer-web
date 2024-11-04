@@ -30,9 +30,7 @@ function Overlays() {
   const { enableImageGroups } = useSettingsStore();
 
   const {
-    showProgressLog,
     showInfoBox,
-    showProgressBox,
     showConfirm,
     showBitmapQueue,
     showImportQueue,
@@ -44,11 +42,8 @@ function Overlays() {
     showEditRGBN,
     showVideoForm,
     showPickColors,
-    syncSelect,
   } = useSelector((state: State) => ({
-    showProgressLog: !!state.progressLog.git.length || !!state.progressLog.dropbox.length,
     showInfoBox: state.framesMessage === 1,
-    showProgressBox: !!state.progress.gif || !!state.progress.printer || !!state.progress.plugin,
     showConfirm: !!state.confirm.length,
     showBitmapQueue: !!state.bitmapQueue.length,
     showImportQueue: !!state.importQueue.length,
@@ -60,7 +55,6 @@ function Overlays() {
     showEditRGBN: state.editRGBNImages.length > 0,
     showVideoForm: !!state.videoParams.imageSelection?.length,
     showPickColors: !!state.pickColors,
-    syncSelect: state.syncSelect,
   }));
 
   const {
@@ -72,7 +66,13 @@ function Overlays() {
     lightboxImage,
     dragover: showDragOver,
     trashCount: { show: showTrashbin },
+    progress,
+    progressLog,
+    syncSelect,
   } = useInteractionsStore();
+
+  const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
+  const showProgressBox = !!progress.gif || !!progress.printer || !!progress.plugin;
 
   switch (true) {
     case showInfoBox:

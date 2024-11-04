@@ -22,12 +22,7 @@ import { delay } from '../../../../tools/delay';
 import type { Image } from '../../../../../types/Image';
 import type { DownloadArrayBuffer } from '../../../../tools/download/types';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../../types/actions/ConfirmActions';
-import type {
-  LogDropboxAction,
-  LogStorageDiffDoneAction,
-  LogStorageSyncDoneAction,
-  StorageSyncStartAction,
-} from '../../../../../types/actions/LogActions';
+import type { StorageSyncStartAction } from '../../../../../types/actions/LogActions';
 import type {
   DropboxLastUpdateAction,
   DropboxSetStorageAction,
@@ -45,6 +40,7 @@ interface WithContentHash {
 const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) => {
 
   const recoveryAttempts: string[] = [];
+  const { setProgressLog, resetProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
 
   const queue = new Queue(1, Infinity);
   const addToQueue = (who: string): AddToQueueFn<unknown> => (
@@ -56,12 +52,9 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
     queue.add(async () => {
       await delay(throttle);
       if (!isSilent) {
-        store.dispatch<LogDropboxAction>({
-          type: Actions.DROPBOX_LOG_ACTION,
-          payload: {
-            timestamp: (new Date()).getTime() / 1000,
-            message: `${who} runs ${what}`,
-          },
+        setProgressLog('dropbox', {
+          timestamp: (new Date()).getTime() / 1000,
+          message: `${who} runs ${what}`,
         });
       }
 
@@ -119,13 +112,13 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
         }
 
         case Actions.STORAGE_SYNC_START: {
+          setSyncBusy(true);
+          setSyncSelect(false);
 
           switch (action.payload.storageType) {
             case 'dropbox': {
               const repoContents: RepoContents =
                 await dropboxClient.getRemoteContents(action.payload.direction);
-
-              let syncResult;
 
               switch (action.payload.direction) {
                 case 'diff': {
@@ -184,7 +177,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                 case 'up': {
                   const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
                   const changes = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
-                  syncResult = await dropboxClient.upload(changes, 'settings');
+                  await dropboxClient.upload(changes, 'settings');
 
                   store.dispatch<DropboxLastUpdateAction>({
                     type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
@@ -194,7 +187,7 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                 }
 
                 case 'down': {
-                  syncResult = await saveLocalStorageItems(repoContents);
+                  await saveLocalStorageItems(repoContents);
                   store.dispatch<DropboxSettingsImportAction>({
                     type: Actions.DROPBOX_SETTINGS_IMPORT,
                     payload: repoContents.settings,
@@ -207,17 +200,14 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
               }
 
               if (action.payload.direction === 'diff') {
-                store.dispatch<LogStorageDiffDoneAction>({
-                  type: Actions.STORAGE_DIFF_DONE,
-                });
+                setSyncBusy(false);
+                resetProgressLog();
               } else {
-                store.dispatch<LogStorageSyncDoneAction>({
-                  type: Actions.STORAGE_SYNC_DONE,
-                  payload: {
-                    syncResult,
-                    storageType: 'dropbox',
-                  },
+                setProgressLog('dropbox', {
+                  timestamp: (new Date()).getTime() / 1000,
+                  message: '.',
                 });
+                setSyncBusy(false);
               }
 
 
@@ -291,14 +281,12 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                     return acc;
                   }, []);
 
-                const syncResult = await dropboxClient.upload({ upload: toUpload, del: [] }, 'images');
-                store.dispatch<LogStorageSyncDoneAction>({
-                  type: Actions.STORAGE_SYNC_DONE,
-                  payload: {
-                    syncResult,
-                    storageType: 'dropbox',
-                  },
+                await dropboxClient.upload({ upload: toUpload, del: [] }, 'images');
+                setProgressLog('dropbox', {
+                  timestamp: (new Date()).getTime() / 1000,
+                  message: '.',
                 });
+                setSyncBusy(false);
 
               } else {
                 throw new Error('dropbox sync: wrong sync case');

@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../../store/actions';
-import { videoParamsWithDefaults } from '../../../store/middlewares/animate';
+import { createAnimation, videoParamsWithDefaults } from '../../../../tools/createAnimation';
 import type { State } from '../../../store/State';
 import type { VideoParams } from '../../../../../types/VideoParams';
 import type {
-  AnimateImagesAction,
   CancelAnimateImagesAction,
   SetVideoParamsAction,
 } from '../../../../../types/actions/VideoParamsOptions';
@@ -18,9 +17,9 @@ interface UseVideoForm {
 }
 
 export const useVideoForm = (): UseVideoForm => {
-  const videoParams = useSelector((state: State): VideoParams => (
-    videoParamsWithDefaults(state.videoParams)
-  ));
+  const state = useSelector((s: State) => s);
+  const videoParams = videoParamsWithDefaults(state.videoParams);
+
   const dispatch = useDispatch();
 
   const imageCount = videoParams.imageSelection?.length || 0;
@@ -40,8 +39,11 @@ export const useVideoForm = (): UseVideoForm => {
       });
     },
     animate: () => {
-      dispatch<AnimateImagesAction>({
-        type: Actions.ANIMATE_IMAGES,
+      createAnimation(state);
+      // Dispatch cancel clears images selected and hides the dialog
+      // ToDo: make videoForm not need this.
+      dispatch<CancelAnimateImagesAction>({
+        type: Actions.CANCEL_ANIMATE_IMAGES,
       });
     },
   };
