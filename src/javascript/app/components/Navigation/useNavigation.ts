@@ -6,6 +6,7 @@ import type { State } from '../../store/State';
 import type { SyncLastUpdate } from '../../../../types/Sync';
 import type { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
 import useInteractionsStore from '../../stores/interactionsStore';
+import useSettingsStore from '../../stores/settingsStore';
 
 interface UseNavigation {
   disableSerials: boolean,
@@ -21,7 +22,6 @@ interface UseNavigation {
 const useNavigation = (): UseNavigation => {
   const {
     useSync,
-    useSerials,
     syncLastUpdate,
     autoDropboxSync,
   } = useSelector((state: State) => ({
@@ -36,12 +36,12 @@ const useNavigation = (): UseNavigation => {
         state.gitStorage.token
       )
     ),
-    useSerials: state.useSerials,
     syncLastUpdate: state.syncLastUpdate,
     autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
   }));
 
   const { syncBusy, setSyncSelect } = useInteractionsStore();
+  const { useSerials } = useSettingsStore();
 
   const dispatch = useDispatch();
 

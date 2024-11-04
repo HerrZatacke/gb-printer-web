@@ -27,6 +27,7 @@ interface Values {
   printerUrl: string,
   savFrameTypes: string,
   sortPalettes: PaletteSortMode,
+  useSerials: boolean,
 }
 
 interface Actions {
@@ -47,6 +48,7 @@ interface Actions {
   setPrinterUrl: (printerUrl: string) => void,
   setSavFrameTypes: (savFrameTypes: string) => void,
   setSortPalettes: (sortPalettes: PaletteSortMode) => void,
+  setUseSerials: (useSerials: boolean) => void,
 }
 
 export type SettingsState = Values & Actions;
@@ -76,6 +78,7 @@ const useSettingsStore = create(
       printerUrl: getEnv()?.env === 'esp8266' ? '/' : '',
       savFrameTypes: 'int',
       sortPalettes: PaletteSortMode.DEFAULT_DESC,
+      useSerials: false,
 
       setActivePalette: (activePalette: string) => set({ activePalette }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
@@ -91,6 +94,7 @@ const useSettingsStore = create(
       setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
       setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
       setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),
+      setUseSerials: (useSerials: boolean) => set({ useSerials }),
 
       setExportScaleFactors: (updateFactor: number, checked: boolean) => {
         const { exportScaleFactors } = get();

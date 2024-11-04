@@ -33,7 +33,6 @@ import printerBusy from './reducers/printerBusyReducer';
 import printerData from './reducers/printerDataReducer';
 import printerFunctions from './reducers/printerFunctionsReducer';
 import syncLastUpdate from './reducers/syncLastUpdateReducer';
-import useSerials from './reducers/useSerialsReducer';
 import showSerials from './reducers/showSerialsReducer';
 import videoParams from './reducers/videoParamsReducer';
 
@@ -58,7 +57,6 @@ export interface Reducers extends ReducersMapObject {
   printerData: Reducer<PrinterInfo>,
   printerFunctions: Reducer<PrinterFunction[]>,
   syncLastUpdate: Reducer<SyncLastUpdate>,
-  useSerials: Reducer<boolean>,
   showSerials: Reducer<boolean>,
   videoParams: Reducer<VideoParams>,
 }
@@ -85,7 +83,6 @@ const reducers: ReducersMapObject = {
   printerData,
   printerFunctions,
   syncLastUpdate,
-  useSerials,
   showSerials,
   videoParams,
 };

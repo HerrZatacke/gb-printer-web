@@ -23,7 +23,6 @@ export enum Actions {
 
   // Generic config
   SHOW_SERIALS = 'SHOW_SERIALS',
-  USE_SERIALS = 'USE_SERIALS',
 
   // Images
   ADD_IMAGES = 'ADD_IMAGES',

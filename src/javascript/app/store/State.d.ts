@@ -36,7 +36,6 @@ export interface State {
   printerData: PrinterInfo,
   printerFunctions: PrinterFunction[],
   syncLastUpdate: SyncLastUpdate,
-  useSerials: boolean,
   showSerials: boolean,
   videoParams: VideoParams,
 }

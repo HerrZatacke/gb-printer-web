@@ -8,8 +8,3 @@ export interface ShowSerialsAction {
   type: Actions.SHOW_SERIALS,
   payload?: boolean,
 }
-
-export interface UseSerialsAction {
-  type: Actions.USE_SERIALS,
-  payload?: boolean,
-}
