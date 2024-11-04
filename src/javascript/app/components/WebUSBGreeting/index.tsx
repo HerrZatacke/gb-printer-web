@@ -2,19 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ConnectSerial from '../Overlays/ConnectSerial';
 import EnableWebUSB from './EnableWebUSB';
-import useContainer from './hooks/useSerials';
+import useSettingsStore from '../../stores/settingsStore';
 import WebSerial from '../../../tools/WebSerial';
 import WebUSBSerial from '../../../tools/WebUSBSerial';
 
 import './index.scss';
 
 function WebUSBGreeting() {
-  const { enabled } = useContainer();
+  const { useSerials } = useSettingsStore();
 
   return (
     <>
       <EnableWebUSB />
-      {!enabled ? null : (
+      {!useSerials ? null : (
         <>
           <ConnectSerial inline passive />
           <div className="usb-greeting">

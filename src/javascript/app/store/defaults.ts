@@ -121,12 +121,6 @@ const definitions: StorePropertyDefault[] = [
     },
   },
   {
-    key: 'useSerials',
-    saveLocally: true,
-    saveExport: [],
-    value: false,
-  },
-  {
     key: 'syncLastUpdate',
     saveLocally: true,
     saveExport: [],

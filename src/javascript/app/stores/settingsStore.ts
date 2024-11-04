@@ -28,6 +28,7 @@ interface Values {
   savFrameTypes: string,
   enableImageGroups: boolean,
   sortPalettes: PaletteSortMode,
+  useSerials: boolean,
 }
 
 interface Actions {
@@ -49,6 +50,7 @@ interface Actions {
   setSavFrameTypes: (savFrameTypes: string) => void,
   setEnableImageGroups: (enableImageGroups: boolean) => void,
   setSortPalettes: (sortPalettes: PaletteSortMode) => void,
+  setUseSerials: (useSerials: boolean) => void,
 }
 
 export type SettingsState = Values & Actions;
@@ -79,6 +81,7 @@ const useSettingsStore = create(
       savFrameTypes: 'int',
       enableImageGroups: false,
       sortPalettes: PaletteSortMode.DEFAULT_DESC,
+      useSerials: false,
 
       setActivePalette: (activePalette: string) => set({ activePalette }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
@@ -95,6 +98,7 @@ const useSettingsStore = create(
       setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
       setEnableImageGroups: (enableImageGroups: boolean) => set({ enableImageGroups }),
       setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),
+      setUseSerials: (useSerials: boolean) => set({ useSerials }),
 
       setExportScaleFactors: (updateFactor: number, checked: boolean) => {
         const { exportScaleFactors } = get();
