@@ -1,34 +1,36 @@
-import { useSelector } from 'react-redux';
-import type { State } from '../../../store/State';
+import useInteractionsStore from '../../../stores/interactionsStore';
 
 interface UseProgressBox {
   progress: number,
   message: string,
 }
 
-export const useProgressBox = (): UseProgressBox => (
-  useSelector((state: State) => {
-    if (state.progress.gif) {
-      return ({
-        progress: state.progress.gif,
-        message: 'Creating GIF animation...',
-      });
-    }
+export const useProgressBox = (): UseProgressBox => {
+  const { progress } = useInteractionsStore();
 
-    if (state.progress.plugin) {
-      return ({
-        progress: state.progress.plugin,
-        message: 'Executing plugin...',
-      });
-    }
+  if (progress.gif) {
+    return ({
+      progress: progress.gif,
+      message: 'Creating GIF animation...',
+    });
+  }
 
-    if (state.progress.printer) {
-      return ({
-        progress: state.progress.printer,
-        message: 'Fetching images from printer...',
-      });
-    }
+  if (progress.plugin) {
+    return ({
+      progress: progress.plugin,
+      message: 'Executing plugin...',
+    });
+  }
 
-    return { progress: 0, message: '' };
-  })
-);
+  if (progress.printer) {
+    return ({
+      progress: progress.printer,
+      message: 'Fetching images from printer...',
+    });
+  }
+
+  return {
+    progress: 0,
+    message: '',
+  };
+};

@@ -1,26 +1,22 @@
 import Queue from 'promise-queue';
-import type { AnyAction, Dispatch } from 'redux';
 import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
 import { RGBNDecoder, Decoder, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
-import useInteractionsStore from '../../stores/interactionsStore';
-import { loadImageTiles } from '../../../tools/loadImageTiles';
-import { getImagePalettes } from '../../../tools/getImagePalettes';
-import generateFileName from '../../../tools/generateFileName';
-import { Actions } from '../actions';
-import { getRotatedCanvas } from '../../../tools/applyRotation';
-import { isRGBNImage } from '../../../tools/isRGBNImage';
-import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import type { Image, MonochromeImage, RGBNImage } from '../../../../types/Image';
-import type { VideoParams } from '../../../../types/VideoParams';
-import type { Palette } from '../../../../types/Palette';
-import type { State } from '../State';
-import unique from '../../../tools/unique';
-import type { ProgressCreateGifAction } from '../../../../types/actions/ProgressActions';
-import { loadFrameData } from '../../../tools/applyFrame/frameData';
-import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
+import useInteractionsStore from '../../app/stores/interactionsStore';
+import { loadImageTiles } from '../loadImageTiles';
+import { getImagePalettes } from '../getImagePalettes';
+import generateFileName from '../generateFileName';
+import { getRotatedCanvas } from '../applyRotation';
+import { isRGBNImage } from '../isRGBNImage';
+import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
+import type { VideoParams } from '../../../types/VideoParams';
+import type { Palette } from '../../../types/Palette';
+import type { State } from '../../app/store/State';
+import unique from '../unique';
+import { loadFrameData } from '../applyFrame/frameData';
+import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
 
 interface GifFrameData {
   palette: number[],
@@ -28,7 +24,6 @@ interface GifFrameData {
 }
 
 const getAddImages = (
-  dispatch: Dispatch<AnyAction>,
   gifWriter: GifWriter,
   queue: Queue,
   frameRate: number,
@@ -65,10 +60,7 @@ const getAddImages = (
     }
 
     try {
-      dispatch<ProgressCreateGifAction>({
-        type: Actions.CREATE_GIF_PROGRESS,
-        payload: (index + 1) / total,
-      });
+      useInteractionsStore.getState().setProgress('gif', (index + 1) / total);
 
       window.requestAnimationFrame(() => {
         gifWriter.addFrame(0, 0, canvas.width, canvas.height, pixels, {
@@ -97,7 +89,11 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
   exportFrameMode: params.exportFrameMode || ExportFrameMode.FRAMEMODE_KEEP,
 });
 
-const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
+export const createAnimation = async (state: State) => {
+  const { setProgress, setError } = useInteractionsStore.getState();
+
+  setProgress('gif', 0.01);
+
   const {
     scaleFactor,
     frameRate,
@@ -193,12 +189,8 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
   if (unique(
     canvases.map((canvas) => (`${canvas.width}*${canvas.height}`)),
   ).length !== 1) {
-    dispatch<ProgressCreateGifAction>({
-      type: Actions.CREATE_GIF_PROGRESS,
-      payload: 0,
-    });
-
-    useInteractionsStore.getState().setError(new Error('All images need to have same dimensions'));
+    setProgress('gif', 0);
+    setError(new Error('All images need to have same dimensions'));
     return;
   }
 
@@ -224,7 +216,7 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
     canvases.reverse();
   }
 
-  const addImages = getAddImages(dispatch, gifWriter, queue, frameRate, canvases.length);
+  const addImages = getAddImages(gifWriter, queue, frameRate, canvases.length);
 
   await Promise.all(canvases.map(addImages));
 
@@ -254,18 +246,5 @@ const createAnimation = async (state: State, dispatch: Dispatch<AnyAction>) => {
 
   saveAs(file, `${gifFileName}.gif`);
 
-  dispatch<ProgressCreateGifAction>({
-    type: Actions.CREATE_GIF_PROGRESS,
-    payload: 0,
-  });
+  setProgress('gif', 0);
 };
-
-const animate: MiddlewareWithState = (store) => (next) => async (action) => {
-  if (action.type === Actions.ANIMATE_IMAGES) {
-    createAnimation(store.getState(), store.dispatch);
-  }
-
-  next(action);
-};
-
-export default animate;

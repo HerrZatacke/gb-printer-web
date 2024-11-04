@@ -5,7 +5,6 @@ import type {
   DropboxSettingsImportAction,
 } from '../../../../types/actions/StorageActions';
 import type { SyncLastUpdate } from '../../../../types/Sync';
-import type { LogStorageSyncDoneAction } from '../../../../types/actions/LogActions';
 import type {
   AddImagesAction,
   DeleteImageAction, ImageFavouriteAction,
@@ -38,7 +37,6 @@ const syncLastUpdateReducer = (
     DeleteFrameAction |
     ImageFavouriteAction |
     DropboxLastUpdateAction |
-    LogStorageSyncDoneAction |
     DropboxSettingsImportAction,
 ): SyncLastUpdate => {
   switch (action.type) {
@@ -53,11 +51,6 @@ const syncLastUpdateReducer = (
         dropbox: action.payload?.state.lastUpdateUTC || value.dropbox,
         local: action.payload?.state.lastUpdateUTC || value.local,
       };
-    case Actions.STORAGE_SYNC_DONE:
-      return {
-        ...value,
-      };
-
 
     // ToDo: check for more action types which cause syncable data to be updated
     // case Actions.SET_DROPBOX_STORAGE: // Don't use!

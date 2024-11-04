@@ -7,9 +7,7 @@ import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { ImportItem } from '../../../types/ImportItem';
-import type { ProgressLog } from '../../../types/actions/LogActions';
 import type { Plugin } from '../../../types/Plugin';
-import type { Progress } from './reducers/progressReducer';
 import type { VideoParams } from '../../../types/VideoParams';
 import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
@@ -31,17 +29,13 @@ export interface State {
   gitStorage: GitStorageSettings,
   images: Image[],
   importQueue: ImportItem[],
-  progressLog: ProgressLog,
   palettes: Palette[],
   pickColors: PickColors | null,
   plugins: Plugin[],
   printerBusy: boolean,
   printerData: PrinterInfo,
   printerFunctions: PrinterFunction[],
-  progress: Progress,
-  syncBusy: boolean,
   syncLastUpdate: SyncLastUpdate,
-  syncSelect: boolean,
   useSerials: boolean,
   showSerials: boolean,
   videoParams: VideoParams,

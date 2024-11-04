@@ -1,6 +1,5 @@
 import type { Reducer, ReducersMapObject } from 'redux';
 import { combineReducers } from 'redux';
-import type { Progress } from './reducers/progressReducer';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/Sync';
 import type { FrameGroup } from '../../../types/FrameGroup';
@@ -8,7 +7,6 @@ import type { Frame } from '../../../types/Frame';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Palette } from '../../../types/Palette';
-import type { ProgressLog } from '../../../types/actions/LogActions';
 import type { Plugin } from '../../../types/Plugin';
 import type { VideoParams } from '../../../types/VideoParams';
 import type { QueueImage } from '../../../types/QueueImage';
@@ -34,11 +32,7 @@ import plugins from './reducers/pluginsReducer';
 import printerBusy from './reducers/printerBusyReducer';
 import printerData from './reducers/printerDataReducer';
 import printerFunctions from './reducers/printerFunctionsReducer';
-import progress from './reducers/progressReducer';
-import progressLog from './reducers/progressLogReducer';
-import syncBusy from './reducers/syncBusyReducer';
 import syncLastUpdate from './reducers/syncLastUpdateReducer';
-import syncSelect from './reducers/syncSelectReducer';
 import useSerials from './reducers/useSerialsReducer';
 import showSerials from './reducers/showSerialsReducer';
 import videoParams from './reducers/videoParamsReducer';
@@ -58,16 +52,12 @@ export interface Reducers extends ReducersMapObject {
   gitStorage: Reducer<GitStorageSettings>,
   images: Reducer<Image[]>,
   importQueue: Reducer<ImportItem[]>,
-  progressLog: Reducer<ProgressLog>,
   palettes: Reducer<Palette[]>,
   plugins: Reducer<Plugin[]>,
   printerBusy: Reducer<boolean>,
   printerData: Reducer<PrinterInfo>,
   printerFunctions: Reducer<PrinterFunction[]>,
-  progress: Reducer<Progress>,
-  syncBusy: Reducer<boolean>,
   syncLastUpdate: Reducer<SyncLastUpdate>,
-  syncSelect: Reducer<boolean>,
   useSerials: Reducer<boolean>,
   showSerials: Reducer<boolean>,
   videoParams: Reducer<VideoParams>,
@@ -88,17 +78,13 @@ const reducers: ReducersMapObject = {
   gitStorage,
   images,
   importQueue,
-  progressLog,
   palettes,
   pickColors,
   plugins,
   printerBusy,
   printerData,
   printerFunctions,
-  progress,
-  syncBusy,
   syncLastUpdate,
-  syncSelect,
   useSerials,
   showSerials,
   videoParams,

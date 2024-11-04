@@ -8,9 +8,8 @@ import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
 import { Actions } from '../../actions';
 import type { AddToQueueFn } from '../../../../../types/Sync';
 import type { TypedStore } from '../../State';
-import { delay } from '../../../../tools/delay';
-import type { LogGitStorageAction, LogStorageSyncDoneAction } from '../../../../../types/actions/LogActions';
 import type { GitSettingsImportAction } from '../../../../../types/actions/StorageActions';
+import { delay } from '../../../../tools/delay';
 
 let octoClient: OctoClient;
 let addToQueue: (who: string) => AddToQueueFn<unknown>;
@@ -22,16 +21,15 @@ export const init = (store: TypedStore) => {
     useSettingsStore.getState().preferredLocale
   );
 
+  const { setProgressLog } = useInteractionsStore.getState();
+
   const queue = new Queue(1, Infinity);
   addToQueue = (who: string): AddToQueueFn<unknown> => (what, throttle, fn) => (
     queue.add(async () => {
       await delay(throttle);
-      store.dispatch<LogGitStorageAction>({
-        type: Actions.GITSTORAGE_LOG_ACTION,
-        payload: {
-          timestamp: (new Date()).getTime() / 1000,
-          message: `${who} runs ${what}`,
-        },
+      setProgressLog('git', {
+        timestamp: (new Date()).getTime() / 1000,
+        message: `${who} runs ${what}`,
       });
 
       return fn();
@@ -43,26 +41,29 @@ export const init = (store: TypedStore) => {
 
 
 export const middleware = (store: TypedStore) => async (action: AnyAction) => {
+  const { setProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+
   if (
     action.type === Actions.STORAGE_SYNC_START &&
     action.payload.storageType === 'git'
   ) {
+    setSyncBusy(true);
+    setSyncSelect(false);
     const state = store.getState();
 
     try {
       const repoContents = await octoClient.getRepoContents();
-      let syncResult;
 
       switch (action.payload.direction) {
         case 'up': {
           const lastUpdateUTC = state?.syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
           const repoTasks = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
-          syncResult = await octoClient.updateRemoteStore(repoTasks);
+          await octoClient.updateRemoteStore(repoTasks);
           break;
         }
 
         case 'down': {
-          syncResult = await saveLocalStorageItems(repoContents);
+          await saveLocalStorageItems(repoContents);
           store.dispatch<GitSettingsImportAction>({
             type: Actions.GIT_SETTINGS_IMPORT,
             payload: repoContents.settings,
@@ -74,13 +75,11 @@ export const middleware = (store: TypedStore) => async (action: AnyAction) => {
           throw new Error('github sync: wrong sync case');
       }
 
-      store.dispatch<LogStorageSyncDoneAction>({
-        type: Actions.STORAGE_SYNC_DONE,
-        payload: {
-          syncResult,
-          storageType: 'git',
-        },
+      setProgressLog('git', {
+        timestamp: (new Date()).getTime() / 1000,
+        message: '.',
       });
+      setSyncBusy(false);
 
     } catch (error) {
       console.error(error);
