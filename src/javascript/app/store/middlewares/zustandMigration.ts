@@ -20,19 +20,10 @@ import type {
 } from '../../../../types/actions/FrameActions';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
-import type {
-  ProgressExecutePluginAction,
-  ProgressPrinterProgressAction,
-} from '../../../../types/actions/ProgressActions';
 import type { ConfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 import type { StorageSyncStartAction } from '../../../../types/actions/LogActions';
-import type {
-  PrinterDataReceivedAction,
-  PrinterFunctionsReceivedAction,
-  PrinterRemoteCallAction, PrinterResetAction,
-  PrinterTimedOutAction,
-} from '../../../../types/actions/PrinterActions';
+import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
 import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 import type { DropboxLastUpdateAction, DropboxSettingsImportAction } from '../../../../types/actions/StorageActions';
 
@@ -51,8 +42,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     setIsFullscreen,
     setProgress,
     setPrinterBusy,
-    setPrinterData,
-    setPrinterFunctions,
   } = useInteractionsStore.getState();
 
   const {
@@ -117,13 +106,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       ImportQueueCancelAction |
       PaletteDeleteAction |
       PaletteUpdateAction |
-      PrinterDataReceivedAction |
-      PrinterFunctionsReceivedAction |
       PrinterRemoteCallAction |
-      PrinterResetAction |
-      PrinterTimedOutAction |
-      ProgressExecutePluginAction |
-      ProgressPrinterProgressAction |
       RehashImageAction |
       StorageSyncStartAction |
       UpdateFrameAction,
@@ -160,38 +143,10 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         setProgress('printer', 0);
         setPrinterBusy(false);
         break;
-      case Actions.EXECUTE_PLUGIN_PROGRESS:
-        setProgress('plugin', action.payload);
-        break;
-      case Actions.PRINTER_PROGRESS:
-        setProgress('printer', action.payload);
-        break;
       case Actions.IMPORTQUEUE_CANCEL:
       case Actions.CONFIRM_ANSWERED:
         setProgress('printer', 0);
         setPrinterBusy(false);
-        break;
-
-      case Actions.REMOTE_CALL_FUNCTION:
-        setPrinterBusy(true);
-        break;
-      case Actions.HEARTBEAT_TIMED_OUT:
-        setPrinterBusy(true);
-        setPrinterData(null);
-        setPrinterFunctions([]);
-        break;
-      case Actions.PRINTER_DATA_RECEIVED:
-        setPrinterData(action.payload);
-        setPrinterBusy(false);
-        break;
-      case Actions.PRINTER_RESET:
-        setPrinterBusy(false);
-        setPrinterData(null);
-        break;
-      case Actions.PRINTER_FUNCTIONS_RECEIVED:
-        setPrinterFunctions(action.payload);
-        setPrinterBusy(false);
-        setPrinterData(null);
         break;
 
       default:
