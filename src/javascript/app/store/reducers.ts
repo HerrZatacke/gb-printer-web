@@ -25,7 +25,6 @@ import editRGBNImages from './reducers/editRGBNImagesReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frameQueue from './reducers/frameQueueReducer';
 import frames from './reducers/framesReducer';
-import framesMessage from './reducers/framesMessageReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import images from './reducers/imagesReducer';
 import imageGroups from './reducers/imageGroupsReducer';
@@ -51,7 +50,6 @@ export interface Reducers extends ReducersMapObject {
   frameGroupNames: Reducer<FrameGroup[]>,
   frameQueue: Reducer<ImportItem[]>,
   frames: Reducer<Frame[]>,
-  framesMessage: Reducer<number>,
   gitStorage: Reducer<GitStorageSettings>,
   images: Reducer<Image[]>,
   imageGroups: Reducer<SerializableImageGroup>,
@@ -77,7 +75,6 @@ const reducers: ReducersMapObject = {
   frameGroupNames,
   frameQueue,
   frames,
-  framesMessage,
   gitStorage,
   images,
   imageGroups,

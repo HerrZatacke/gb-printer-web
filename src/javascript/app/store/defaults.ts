@@ -77,13 +77,6 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
-    // user has seen the message about frames removal in version 1.7.0
-    key: 'framesMessage',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: 0,
-  },
-  {
     // set of usable frames
     key: 'frames',
     saveLocally: true,
