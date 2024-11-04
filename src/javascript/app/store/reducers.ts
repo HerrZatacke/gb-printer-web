@@ -11,8 +11,6 @@ import type { Palette } from '../../../types/Palette';
 import type { Plugin } from '../../../types/Plugin';
 import type { VideoParams } from '../../../types/VideoParams';
 import type { QueueImage } from '../../../types/QueueImage';
-import type { PrinterInfo } from '../../../types/Printer';
-import type { PrinterFunction } from '../../consts/printerFunction';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import confirm from './reducers/confirmReducer';
@@ -32,9 +30,6 @@ import importQueue from './reducers/importQueueReducer';
 import palettes from './reducers/palettesReducer';
 import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
-import printerBusy from './reducers/printerBusyReducer';
-import printerData from './reducers/printerDataReducer';
-import printerFunctions from './reducers/printerFunctionsReducer';
 import syncLastUpdate from './reducers/syncLastUpdateReducer';
 import videoParams from './reducers/videoParamsReducer';
 
@@ -56,9 +51,6 @@ export interface Reducers extends ReducersMapObject {
   importQueue: Reducer<ImportItem[]>,
   palettes: Reducer<Palette[]>,
   plugins: Reducer<Plugin[]>,
-  printerBusy: Reducer<boolean>,
-  printerData: Reducer<PrinterInfo>,
-  printerFunctions: Reducer<PrinterFunction[]>,
   syncLastUpdate: Reducer<SyncLastUpdate>,
   videoParams: Reducer<VideoParams>,
 }
@@ -82,9 +74,6 @@ const reducers: ReducersMapObject = {
   palettes,
   pickColors,
   plugins,
-  printerBusy,
-  printerData,
-  printerFunctions,
   syncLastUpdate,
   videoParams,
 };

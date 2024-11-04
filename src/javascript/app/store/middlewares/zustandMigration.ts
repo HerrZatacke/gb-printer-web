@@ -14,6 +14,12 @@ import type {
 import type { ConfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 import type { StorageSyncStartAction } from '../../../../types/actions/LogActions';
+import type {
+  PrinterDataReceivedAction,
+  PrinterFunctionsReceivedAction,
+  PrinterRemoteCallAction, PrinterResetAction,
+  PrinterTimedOutAction,
+} from '../../../../types/actions/PrinterActions';
 
 export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const {
@@ -29,6 +35,9 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     setLightboxImagePrev,
     setIsFullscreen,
     setProgress,
+    setPrinterBusy,
+    setPrinterData,
+    setPrinterFunctions,
   } = useInteractionsStore.getState();
 
   checkUpdateTrashCount(store.getState());
@@ -82,6 +91,11 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       DeleteImagesAction |
       GlobalUpdateAction |
       ImportQueueCancelAction |
+      PrinterDataReceivedAction |
+      PrinterFunctionsReceivedAction |
+      PrinterRemoteCallAction |
+      PrinterResetAction |
+      PrinterTimedOutAction |
       ProgressExecutePluginAction |
       ProgressPrinterProgressAction |
       RehashImageAction |
@@ -117,6 +131,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.ADD_IMAGES:
         checkUpdateTrashCount(store.getState());
         setProgress('printer', 0);
+        setPrinterBusy(false);
         break;
       case Actions.EXECUTE_PLUGIN_PROGRESS:
         setProgress('plugin', action.payload);
@@ -127,6 +142,29 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.IMPORTQUEUE_CANCEL:
       case Actions.CONFIRM_ANSWERED:
         setProgress('printer', 0);
+        setPrinterBusy(false);
+        break;
+
+      case Actions.REMOTE_CALL_FUNCTION:
+        setPrinterBusy(true);
+        break;
+      case Actions.HEARTBEAT_TIMED_OUT:
+        setPrinterBusy(true);
+        setPrinterData(null);
+        setPrinterFunctions([]);
+        break;
+      case Actions.PRINTER_DATA_RECEIVED:
+        setPrinterData(action.payload);
+        setPrinterBusy(false);
+        break;
+      case Actions.PRINTER_RESET:
+        setPrinterBusy(false);
+        setPrinterData(null);
+        break;
+      case Actions.PRINTER_FUNCTIONS_RECEIVED:
+        setPrinterFunctions(action.payload);
+        setPrinterBusy(false);
+        setPrinterData(null);
         break;
 
       default:
