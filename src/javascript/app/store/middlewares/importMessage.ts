@@ -1,5 +1,6 @@
 import { Actions } from '../actions';
 import useSettingsStore from '../../stores/settingsStore';
+import useInteractionsStore from '../../stores/interactionsStore';
 import type { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
@@ -45,7 +46,7 @@ const importMessage: MiddlewareWithState = (store) => {
     if (commands) {
       if (
         !heartbeatTimer ||
-        JSON.stringify(commands) !== JSON.stringify(store.getState().printerFunctions)) {
+        JSON.stringify(commands) !== JSON.stringify(useInteractionsStore.getState().printerFunctions)) {
         store.dispatch<PrinterFunctionsReceivedAction>({
           type: Actions.PRINTER_FUNCTIONS_RECEIVED,
           payload: commands,
@@ -153,9 +154,12 @@ const importMessage: MiddlewareWithState = (store) => {
 
     switch (action.type) {
       case Actions.REMOTE_CALL_FUNCTION: {
-        const state = store.getState();
-        const params: PrinterParams | undefined = (action.payload === PrinterFunction.FETCHIMAGES) ?
-          { dumps: state.printerData?.dumps } : undefined;
+        const { printerData } = useInteractionsStore.getState();
+        let params: PrinterParams | undefined;
+
+        if (action.payload === PrinterFunction.FETCHIMAGES && printerData) {
+          params = { dumps: printerData?.dumps };
+        }
 
         // obh and pako need to be loaded here, as the trigger from the
         // remote window might cause the files not to be loaded correctly

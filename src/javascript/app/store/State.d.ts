@@ -9,8 +9,6 @@ import type { Frame } from '../../../types/Frame';
 import type { ImportItem } from '../../../types/ImportItem';
 import type { Plugin } from '../../../types/Plugin';
 import type { VideoParams } from '../../../types/VideoParams';
-import type { PrinterInfo } from '../../../types/Printer';
-import type { PrinterFunction } from '../../consts/printerFunction';
 import type { PickColors } from '../../../types/PickColors';
 
 // ToDo: infer from store somehow...?
@@ -31,9 +29,6 @@ export interface State {
   palettes: Palette[],
   pickColors: PickColors | null,
   plugins: Plugin[],
-  printerBusy: boolean,
-  printerData: PrinterInfo,
-  printerFunctions: PrinterFunction[],
   syncLastUpdate: SyncLastUpdate,
   videoParams: VideoParams,
 }

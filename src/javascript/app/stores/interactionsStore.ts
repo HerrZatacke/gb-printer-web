@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import screenfull from 'screenfull';
 import dayjs from 'dayjs';
+import type { PrinterInfo } from '../../../types/Printer';
+import type { PrinterFunction } from '../../consts/printerFunction';
 
 export interface LogItem {
   timestamp: number,
@@ -41,6 +43,9 @@ interface Values {
   lightboxImage: number | null,
   progress: Progress,
   progressLog: ProgressLog,
+  printerBusy: boolean,
+  printerData: PrinterInfo | null,
+  printerFunctions: PrinterFunction[],
   showSerials: boolean,
   syncBusy: boolean,
   syncSelect: boolean,
@@ -57,6 +62,9 @@ interface Actions {
   setLightboxImage: (index: number | null) => void,
   setLightboxImageNext: (maxImages: number) => void,
   setLightboxImagePrev: () => void,
+  setPrinterBusy: (printerBusy: boolean) => void,
+  setPrinterData: (printerData: PrinterInfo | null) => void,
+  setPrinterFunctions: (printerFunctions: PrinterFunction[]) => void,
   setProgress: (which: keyof Progress, progress: number) => void,
   setProgressLog: (which: keyof ProgressLog, logItem: LogItem) => void,
   setShowSerials: (showSerials: boolean) => void,
@@ -74,6 +82,9 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   errors: [],
   isFullscreen: false,
   lightboxImage: null,
+  printerBusy: false,
+  printerData: null,
+  printerFunctions: [],
   progress: { gif: 0, printer: 0, plugin: 0 },
   progressLog: { git: [], dropbox: [] },
   showSerials: false,
@@ -87,6 +98,9 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   setDragover: (dragover: boolean) => set({ dragover }),
   setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix() }] }),
   setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
+  setPrinterBusy: (printerBusy: boolean) => set({ printerBusy }),
+  setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),
+  setPrinterFunctions: (printerFunctions: PrinterFunction[]) => set({ printerFunctions }),
   setProgress: (which: keyof Progress, progress: number) => set({ progress: { ...get().progress, [which]: progress } }),
   setShowSerials: (showSerials: boolean) => set({ showSerials }),
   setSyncBusy: (syncBusy: boolean) => set({ syncBusy }),

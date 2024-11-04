@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
 import type { PrinterFunction } from '../../../consts/printerFunction';
 import type { PrinterInfo } from '../../../../types/Printer';
 import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
+import useInteractionsStore from '../../stores/interactionsStore';
 
 interface UsePrinter {
-  printerData: PrinterInfo,
+  printerData: PrinterInfo | null,
   printerFunctions: PrinterFunction[],
   printerConnected: boolean,
   printerBusy: boolean,
@@ -14,17 +14,16 @@ interface UsePrinter {
 }
 
 export const usePrinter = (): UsePrinter => {
-  const printerInfo = useSelector((state: State) => ({
-    printerData: state.printerData,
-    printerFunctions: state.printerFunctions,
-    printerBusy: state.printerBusy,
-  }));
+  const { printerData, printerFunctions, printerBusy } = useInteractionsStore();
+
   const dispatch = useDispatch();
 
-  const printerConnected = printerInfo.printerFunctions.length > 0;
+  const printerConnected = printerFunctions.length > 0;
 
   return {
-    ...printerInfo,
+    printerData,
+    printerFunctions,
+    printerBusy,
     printerConnected,
     callRemoteFunction: (name: PrinterFunction) => {
       dispatch<PrinterRemoteCallAction>({

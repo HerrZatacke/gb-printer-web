@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import useSettingsStore from '../app/stores/settingsStore';
-import type { State } from '../app/store/State';
+import useInteractionsStore from '../app/stores/interactionsStore';
 
 
 export interface UseIframeLoaded {
@@ -17,9 +16,8 @@ const useIframeLoaded = (timeout: number): UseIframeLoaded => {
   const encodedPrinterParams = printerParams ? `#${encodeURI(printerParams)}` : '';
   const fullPrinterUrl = printerUrl ? `${printerUrl}remote.html${encodedPrinterParams}` : undefined;
 
-  const printerConnected = useSelector((state: State) => (
-    state.printerFunctions.length > 0
-  ));
+  const { printerFunctions } = useInteractionsStore();
+  const printerConnected = printerFunctions.length > 0;
 
   const [loaded, setLoaded] = useState<boolean>(false);
   const [failed, setFailed] = useState<boolean>(false);
