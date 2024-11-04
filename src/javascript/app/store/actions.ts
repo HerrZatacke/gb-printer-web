@@ -21,9 +21,6 @@ export enum Actions {
   UPDATE_FRAME = 'UPDATE_FRAME',
   NAME_FRAMEGROUP = 'NAME_FRAMEGROUP',
 
-  // Generic config
-  SHOW_SERIALS = 'SHOW_SERIALS',
-
   // Images
   ADD_IMAGES = 'ADD_IMAGES',
   DELETE_IMAGE = 'DELETE_IMAGE',

@@ -1,10 +1,8 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import WebUSBSerial from '../../../tools/WebUSBSerial';
 import WebSerial from '../../../tools/WebSerial';
-import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import type { SyncLastUpdate } from '../../../../types/Sync';
-import type { ShowSerialsAction } from '../../../../types/actions/GlobalActions';
 import useInteractionsStore from '../../stores/interactionsStore';
 import useSettingsStore from '../../stores/settingsStore';
 
@@ -40,19 +38,9 @@ const useNavigation = (): UseNavigation => {
     autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
   }));
 
-  const { syncBusy, setSyncSelect } = useInteractionsStore();
+  const { syncBusy, setSyncSelect, setShowSerials } = useInteractionsStore();
   const { useSerials } = useSettingsStore();
-
-  const dispatch = useDispatch();
-
   const disableSerials = !WebUSBSerial.enabled && !WebSerial.enabled;
-
-  const setShowSerials = () => {
-    dispatch<ShowSerialsAction>({
-      type: Actions.SHOW_SERIALS,
-      payload: true,
-    });
-  };
 
   return {
     disableSerials,
@@ -62,7 +50,7 @@ const useNavigation = (): UseNavigation => {
     syncLastUpdate,
     autoDropboxSync,
     selectSync: () => setSyncSelect(true),
-    setShowSerials,
+    setShowSerials: () => setShowSerials(true),
   };
 };
 
