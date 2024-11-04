@@ -13,11 +13,11 @@ import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState'
 import type { Palette } from '../../../../types/Palette';
 import type { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
 import type { TypedStore } from '../State';
-import type { ProgressExecutePluginAction } from '../../../../types/actions/ProgressActions';
 import type { PluginUpdatePropertiesAction } from '../../../../types/actions/PluginActions';
 import type { MonochromeImage } from '../../../../types/Image';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
+import useInteractionsStore from '../../stores/interactionsStore';
 
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,
@@ -45,12 +45,10 @@ export interface GetCanvasOptions {
 const pluginsMiddleware: MiddlewareWithState = (store) => {
   const registeredPlugins: RegisteredPlugins = {};
   const queue = new Queue(1, Infinity);
+  const { setProgress } = useInteractionsStore.getState();
 
   const progress = (progressValue: number): void => {
-    store.dispatch<ProgressExecutePluginAction>({
-      type: Actions.EXECUTE_PLUGIN_PROGRESS,
-      payload: progressValue % 1,
-    });
+    setProgress('plugin', progressValue % 1);
   };
 
   const collectImageData = (hash: string): PluginImageData => {

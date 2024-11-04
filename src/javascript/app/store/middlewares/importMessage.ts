@@ -5,19 +5,14 @@ import type { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../t
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import type { ImportFilesAction } from '../../../../types/actions/ImportActions';
-import type {
-  PrinterDataReceivedAction,
-  PrinterFunctionsReceivedAction,
-  PrinterResetAction,
-  PrinterTimedOutAction,
-} from '../../../../types/actions/PrinterActions';
-import type { ProgressPrinterProgressAction } from '../../../../types/actions/ProgressActions';
 import { PrinterFunction } from '../../../consts/printerFunction';
 
 const importMessage: MiddlewareWithState = (store) => {
 
   let heartbeatTimer: number | null;
   let remotePrinterWindow: Window | null;
+
+  const { setProgress, setPrinterFunctions, setPrinterBusy, setPrinterData } = useInteractionsStore.getState();
 
   window.addEventListener('message', (event: MessageEvent<RemotePrinterEvent>) => {
     const { printerUrl } = useSettingsStore.getState();
@@ -47,10 +42,9 @@ const importMessage: MiddlewareWithState = (store) => {
       if (
         !heartbeatTimer ||
         JSON.stringify(commands) !== JSON.stringify(useInteractionsStore.getState().printerFunctions)) {
-        store.dispatch<PrinterFunctionsReceivedAction>({
-          type: Actions.PRINTER_FUNCTIONS_RECEIVED,
-          payload: commands,
-        });
+        setPrinterFunctions(commands);
+        setPrinterBusy(false);
+        setPrinterData(null);
       }
 
       remotePrinterWindow = sourceWindow;
@@ -59,9 +53,9 @@ const importMessage: MiddlewareWithState = (store) => {
       heartbeatTimer = window.setTimeout(() => {
         heartbeatTimer = null;
         remotePrinterWindow = null;
-        store.dispatch<PrinterTimedOutAction>({
-          type: Actions.HEARTBEAT_TIMED_OUT,
-        });
+        setPrinterBusy(true);
+        setPrinterData(null);
+        setPrinterFunctions([]);
       }, 1500);
     }
 
@@ -80,10 +74,7 @@ const importMessage: MiddlewareWithState = (store) => {
     }
 
     if (progress !== undefined) {
-      store.dispatch<ProgressPrinterProgressAction>({
-        type: Actions.PRINTER_PROGRESS,
-        payload: progress,
-      });
+      setProgress('printer', progress);
     }
 
     // fallback for printers with web-app version < 1.15.5 to display some "fake" progress..
@@ -131,9 +122,8 @@ const importMessage: MiddlewareWithState = (store) => {
               store.dispatch<ConfirmAnsweredAction>({
                 type: Actions.CONFIRM_ANSWERED,
               });
-              store.dispatch<PrinterResetAction>({
-                type: Actions.PRINTER_RESET,
-              });
+              setPrinterBusy(false);
+              setPrinterData(null);
             },
           },
         });
@@ -141,10 +131,8 @@ const importMessage: MiddlewareWithState = (store) => {
     }
 
     if (printerData) {
-      store.dispatch<PrinterDataReceivedAction>({
-        type: Actions.PRINTER_DATA_RECEIVED,
-        payload: printerData,
-      });
+      setPrinterData(printerData);
+      setPrinterBusy(false);
     }
 
   });
@@ -155,6 +143,7 @@ const importMessage: MiddlewareWithState = (store) => {
     switch (action.type) {
       case Actions.REMOTE_CALL_FUNCTION: {
         const { printerData } = useInteractionsStore.getState();
+        setPrinterBusy(true);
         let params: PrinterParams | undefined;
 
         if (action.payload === PrinterFunction.FETCHIMAGES && printerData) {
