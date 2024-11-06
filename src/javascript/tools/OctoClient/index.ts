@@ -38,6 +38,12 @@ interface GitCreateTree {
   content?: string;
 }
 
+const b64DecodeUnicode = (str: string): string => (
+  decodeURIComponent(Array.prototype.map.call(atob(str), (c) => (
+    `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`
+  )).join(''))
+);
+
 // Description of whole commit/upload process found here
 // https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
 
@@ -196,7 +202,7 @@ class OctoClient extends EventEmitter {
       }) as Promise<unknown>
     )) as RestEndpointMethodTypes['git']['getBlob']['response']);
 
-    return atob(content);
+    return b64DecodeUnicode(content);
   }
 
   async getCurrentCommit(): Promise<GitCurrentCommit> {
