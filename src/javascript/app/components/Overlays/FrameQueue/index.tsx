@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Lightbox from '../../Lightbox';
 import { Actions } from '../../../store/actions';
 import './index.scss';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
-import type { State } from '../../../store/State';
 import type { AddFrameAction, FrameGroupNamesAction } from '../../../../../types/actions/FrameActions';
-import type { FrameQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
 import EditFrameStartLine from '../EditFrameStartLine';
+import useImportsStore from '../../../stores/importsStore';
 
 function FrameQueue() {
-  const frame = useSelector((state: State) => state.frameQueue[0]);
+  const { frameQueue, frameQueueCancelOne } = useImportsStore();
+  const frame = frameQueue[0];
   const [newGroupName, setNewGroupName] = useState('');
   const [startLine, setStartLine] = useState<number>(Math.floor((frame.tiles.length - 280) / 40));
   const dispatch = useDispatch();
@@ -66,12 +66,7 @@ function FrameQueue() {
           });
         }
       }}
-      deny={() => {
-        dispatch<FrameQueueCancelOneAction>({
-          type: Actions.FRAMEQUEUE_CANCEL_ONE,
-          payload: frame,
-        });
-      }}
+      deny={() => frameQueueCancelOne(frame.tempId)}
     >
       <div
         className="import-overlay__content"

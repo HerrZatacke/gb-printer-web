@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Queue from 'promise-queue';
 import { useNavigate } from 'react-router-dom';
 import { Actions } from '../../../store/actions';
@@ -8,7 +8,6 @@ import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
 import sortBy from '../../../../tools/sortby';
 import { dateFormat } from '../../../defaults';
-import type { State } from '../../../store/State';
 import type { ImportItem } from '../../../../../types/ImportItem';
 import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
@@ -18,6 +17,7 @@ import { randomId } from '../../../../tools/randomId';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
 import useSettingsStore from '../../../stores/settingsStore';
+import useImportsStore from '../../../stores/importsStore';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -43,9 +43,7 @@ const useRunImport = (): UseRunImport => {
   const { view } = useGalleryTreeContext();
   const navigate = useNavigate();
 
-  const { importQueue } = useSelector((state: State) => ({
-    importQueue: state.importQueue,
-  }));
+  const { importQueue } = useImportsStore();
 
   const [frame, setFrame] = useState('');
   const [createGroup, setCreateGroup] = useState<boolean>(importQueue.length > 3);

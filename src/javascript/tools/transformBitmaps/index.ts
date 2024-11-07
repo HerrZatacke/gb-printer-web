@@ -1,31 +1,19 @@
-import { Actions } from '../../app/store/actions';
 import getImageData from './getImageData';
-import moveBitmapsToImport from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
-import type { DispatchBitmapsToImportFn } from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
-import type { TypedStore } from '../../app/store/State';
-import type { BitmapQueueAddAction } from '../../../types/actions/QueueActions';
+import useImportsStore from '../../app/stores/importsStore';
+import { moveBitmapsToImport } from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
 
-const getTransformBitmaps = ({ dispatch }: TypedStore) => {
-  const dispatchBitmapsToImport: DispatchBitmapsToImportFn = moveBitmapsToImport(dispatch);
+export const transformBitmaps = async (file: File, fromPrinter = false): Promise<boolean> => {
+  const image = await getImageData(file);
 
-  return async (file: File, fromPrinter = false): Promise<boolean> => {
-    const image = await getImageData(file);
+  if (fromPrinter) {
+    moveBitmapsToImport({
+      bitmapQueue: [image],
+      dither: false,
+      contrastBaseValues: [0x00, 0x55, 0xAA, 0xFF],
+    });
+  } else {
+    useImportsStore.getState().bitmapQueueAdd([image]);
+  }
 
-    if (fromPrinter) {
-      dispatchBitmapsToImport({
-        bitmapQueue: [image],
-        dither: false,
-        contrastBaseValues: [0x00, 0x55, 0xAA, 0xFF],
-      });
-    } else {
-      dispatch<BitmapQueueAddAction>({
-        type: Actions.BITMAPQUEUE_ADD,
-        payload: image,
-      });
-    }
-
-    return true;
-  };
+  return true;
 };
-
-export default getTransformBitmaps;

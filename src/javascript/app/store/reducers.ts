@@ -6,12 +6,9 @@ import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
-import type { ImportItem } from '../../../types/ImportItem';
 import type { Palette } from '../../../types/Palette';
 import type { Plugin } from '../../../types/Plugin';
-import type { QueueImage } from '../../../types/QueueImage';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
-import bitmapQueue from './reducers/bitmapQueueReducer';
 import confirm from './reducers/confirmReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
@@ -20,18 +17,15 @@ import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
-import frameQueue from './reducers/frameQueueReducer';
 import frames from './reducers/framesReducer';
 import gitStorage from './reducers/gitStorageReducer';
 import images from './reducers/imagesReducer';
 import imageGroups from './reducers/imageGroupsReducer';
-import importQueue from './reducers/importQueueReducer';
 import palettes from './reducers/palettesReducer';
 import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
 
 export interface Reducers extends ReducersMapObject {
-  bitmapQueue: Reducer<QueueImage[]>,
   confirm: Reducer<Dialog[]>,
   dropboxStorage: Reducer<DropBoxSettings>,
   editImage: Reducer<CurrentEditBatch | null>,
@@ -40,18 +34,15 @@ export interface Reducers extends ReducersMapObject {
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
   frameGroupNames: Reducer<FrameGroup[]>,
-  frameQueue: Reducer<ImportItem[]>,
   frames: Reducer<Frame[]>,
   gitStorage: Reducer<GitStorageSettings>,
   images: Reducer<Image[]>,
   imageGroups: Reducer<SerializableImageGroup>,
-  importQueue: Reducer<ImportItem[]>,
   palettes: Reducer<Palette[]>,
   plugins: Reducer<Plugin[]>,
 }
 
 const reducers: ReducersMapObject = {
-  bitmapQueue,
   confirm,
   dropboxStorage,
   editImage,
@@ -60,12 +51,10 @@ const reducers: ReducersMapObject = {
   editPalette,
   editRGBNImages,
   frameGroupNames,
-  frameQueue,
   frames,
   gitStorage,
   images,
   imageGroups,
-  importQueue,
   palettes,
   pickColors,
   plugins,

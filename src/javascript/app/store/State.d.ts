@@ -1,5 +1,4 @@
 import type { Dispatch, MiddlewareAPI } from 'redux';
-import type { QueueImage } from '../../../types/QueueImage';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings } from '../../../types/Sync';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
@@ -7,14 +6,12 @@ import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
-import type { ImportItem } from '../../../types/ImportItem';
 import type { Plugin } from '../../../types/Plugin';
 import type { PickColors } from '../../../types/PickColors';
 import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 
 // ToDo: infer from store somehow...?
 export interface State {
-  bitmapQueue: QueueImage[],
   confirm: Dialog[],
   dropboxStorage: DropBoxSettings,
   editImage: CurrentEditBatch | null,
@@ -23,12 +20,10 @@ export interface State {
   editPalette: Palette | null,
   editRGBNImages: string[],
   frameGroupNames: FrameGroup[],
-  frameQueue: ImportItem[],
   frames: Frame[],
   gitStorage: GitStorageSettings,
   images: Image[],
   imageGroups: SerializableImageGroup[],
-  importQueue: ImportItem[],
   palettes: Palette[],
   pickColors: PickColors | null,
   plugins: Plugin[],
