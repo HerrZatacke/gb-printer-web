@@ -22,13 +22,11 @@ import FrameQueue from './FrameQueue';
 import Trashbin from './Trashbin';
 import PickColors from './PickColors';
 import type { State } from '../../store/State';
+import useImportsStore from '../../stores/importsStore';
 
 function Overlays() {
   const {
     showConfirm,
-    showBitmapQueue,
-    showImportQueue,
-    showFrameQueue,
     showEditForm,
     showEditFrame,
     showEditPalette,
@@ -36,9 +34,6 @@ function Overlays() {
     showPickColors,
   } = useSelector((state: State) => ({
     showConfirm: !!state.confirm.length,
-    showBitmapQueue: !!state.bitmapQueue.length,
-    showImportQueue: !!state.importQueue.length,
-    showFrameQueue: !!state.frameQueue.length,
     showEditForm: !!state.editImage?.batch?.length,
     showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette,
@@ -50,6 +45,16 @@ function Overlays() {
     filtersVisible: showFilters,
     sortOptionsVisible: showSortForm,
   } = useFiltersStore();
+
+  const {
+    bitmapQueue,
+    importQueue,
+    frameQueue,
+  } = useImportsStore();
+
+  const showBitmapQueue = !!bitmapQueue.length;
+  const showImportQueue = !!importQueue.length;
+  const showFrameQueue = !!frameQueue.length;
 
   const {
     lightboxImage,

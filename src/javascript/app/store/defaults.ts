@@ -92,24 +92,6 @@ const definitions: StorePropertyDefault[] = [
       path: '',
     },
   },
-  {
-    key: 'bitmapQueue',
-    saveLocally: false,
-    saveExport: [],
-    value: [],
-  },
-  {
-    key: 'importQueue',
-    saveLocally: false,
-    saveExport: [],
-    value: [],
-  },
-  {
-    key: 'frameQueue',
-    saveLocally: false,
-    saveExport: [],
-    value: [],
-  },
 ];
 
 const defaults: Partial<State> = {};

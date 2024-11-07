@@ -1,10 +1,10 @@
-import getTransformBin from '../transformBin';
 import getTransformSav from '../transformSav';
-import getTransformRom from '../transformRom';
-import getTransformReduced from '../transformReduced';
-import getTransformBitmaps from '../transformBitmaps';
-import getTransformPlainText from '../transformPlainText';
 import getImportJSON from '../importJSON';
+import { transformBin } from '../transformBin';
+import { transformRom } from '../transformRom';
+import { transformReduced } from '../transformReduced';
+import { transformBitmaps } from '../transformBitmaps';
+import { transformPlainText } from '../transformPlainText';
 import prepareFile from './prepareFile';
 import type { PreparedFile } from './prepareFile';
 import type { TypedStore } from '../../app/store/State';
@@ -17,11 +17,6 @@ export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions
 
 const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
   const transformSav = getTransformSav(store);
-  const transformRom = getTransformRom(store);
-  const transformBin = getTransformBin(store);
-  const transformBitmaps = getTransformBitmaps(store);
-  const transformPlainText = getTransformPlainText(store);
-  const transformReduced = getTransformReduced(store);
   const importJSON = getImportJSON(store);
 
   return async (files, { fromPrinter } = { fromPrinter: false }): Promise<void> => {
@@ -66,6 +61,7 @@ const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
         return transformRom(file);
       }
 
+      // can use src/assets/dumps/pico.bin for testing
       if (contentType === 'application/pico-printer-binary-log' /*  || file.name.endsWith('pico.bin') */) {
         return transformReduced(file);
       }

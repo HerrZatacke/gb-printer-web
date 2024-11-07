@@ -46,7 +46,6 @@ const getTransformSav = (
     frames,
     fileName: file.name,
     importDeleted: skipDialogs ? true : importDeleted,
-    dispatch,
     forceMagicCheck: skipDialogs ? false : forceMagicCheck,
   });
 

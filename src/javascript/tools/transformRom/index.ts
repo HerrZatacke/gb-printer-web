@@ -1,7 +1,6 @@
 import chunk from 'chunk';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from '../transformSav/importSav';
-import type { TypedStore } from '../../app/store/State';
 import type { GenerateFilenameFn } from '../transformSav/types';
 import useSettingsStore from '../../app/stores/settingsStore';
 
@@ -15,7 +14,7 @@ const pad2 = (number: number) => (
   number.toString(10).padStart(2, '0')
 );
 
-const getTransformRom = ({ dispatch }: TypedStore) => async (file: File): Promise<boolean[]> => {
+export const transformRom = async (file: File): Promise<boolean[]> => {
   const { default: objectHash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
@@ -75,7 +74,6 @@ const getTransformRom = ({ dispatch }: TypedStore) => async (file: File): Promis
       frames: [],
       fileName,
       importDeleted,
-      dispatch,
       forceMagicCheck,
     });
 
@@ -96,5 +94,3 @@ const getTransformRom = ({ dispatch }: TypedStore) => async (file: File): Promis
 
   return result;
 };
-
-export default getTransformRom;

@@ -1,18 +1,18 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Queue from 'promise-queue';
 import { Actions } from '../../../store/actions';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
 import sortBy from '../../../../tools/sortby';
 import { dateFormat } from '../../../defaults';
-import type { State } from '../../../store/State';
 import type { ImportItem } from '../../../../../types/ImportItem';
 import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
 import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
 import useSettingsStore from '../../../stores/settingsStore';
+import useImportsStore from '../../../stores/importsStore';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -34,9 +34,7 @@ const useRunImport = (): UseRunImport => {
   const dispatch = useDispatch();
   const queue = new Queue(1, Infinity);
 
-  const { importQueue } = useSelector((state: State) => ({
-    importQueue: state.importQueue,
-  }));
+  const { importQueue } = useImportsStore();
 
   const [frame, setFrame] = useState('');
 

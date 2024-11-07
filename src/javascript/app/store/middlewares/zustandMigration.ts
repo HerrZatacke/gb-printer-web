@@ -1,6 +1,7 @@
 import screenfull from 'screenfull';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import useFiltersStore, { ImageSelectionMode } from '../../stores/filtersStore';
+import useImportsStore from '../../stores/importsStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import { Actions } from '../actions';
@@ -33,6 +34,12 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     setImageSelection,
     updateRecentImports,
   } = useFiltersStore.getState();
+
+  const {
+    frameQueueCancelOne,
+    importQueueCancel,
+    importQueueCancelOne,
+  } = useImportsStore.getState();
 
   const {
     setWindowDimensions,
@@ -142,13 +149,32 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         checkUpdateTrashCount(store.getState());
         setProgress('printer', 0);
         setPrinterBusy(false);
+        importQueueCancel();
         break;
+
       case Actions.IMPORTQUEUE_CANCEL:
+        setProgress('printer', 0);
+        setPrinterBusy(false);
+        importQueueCancel();
+        break;
+
       case Actions.CONFIRM_ANSWERED:
         setProgress('printer', 0);
         setPrinterBusy(false);
         break;
 
+      default:
+        break;
+    }
+
+    switch (action.type) {
+      case Actions.ADD_FRAME:
+        if (action.payload?.tempId) {
+          importQueueCancelOne(action.payload.tempId);
+          frameQueueCancelOne(action.payload.tempId);
+        }
+
+        break;
       default:
         break;
     }
