@@ -83,29 +83,6 @@ const definitions: StorePropertyDefault[] = [
     saveExport: [ExportTypes.FRAMES, ExportTypes.REMOTE, ExportTypes.FRAMEGROUP],
     value: [],
   },
-  {
-    // this key s being programatically removed even on a debug export due to possible stored tokens/passwords
-    key: 'gitStorage',
-    saveLocally: true,
-    saveExport: [],
-    value: {
-      use: false,
-      owner: '',
-      repo: '',
-      branch: '',
-      token: '',
-      throttle: '330',
-    },
-  },
-  {
-    // this key s being programatically removed even on a debug export due to possible stored tokens/passwords
-    key: 'dropboxStorage',
-    saveLocally: true,
-    saveExport: [],
-    value: {
-      path: '',
-    },
-  },
 ];
 
 const defaults: Partial<State> = {};

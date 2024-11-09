@@ -1,7 +1,6 @@
 import { applyMiddleware } from 'redux';
 import batch from './middlewares/batch';
 import batchUpdate from './middlewares/batchUpdate';
-import dropboxStorage from './middlewares/dropboxStorage';
 import fileDrop from './middlewares/fileDrop';
 import gitStorage from './middlewares/gitStorage';
 import importFile from './middlewares/importFile';
@@ -17,7 +16,6 @@ import { zustandMigrationMiddleware } from './middlewares/zustandMigration';
 export default applyMiddleware(
   batch,
   batchUpdate,
-  dropboxStorage,
   fileDrop,
   gitStorage,
   importFile,

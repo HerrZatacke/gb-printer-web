@@ -27,6 +27,7 @@ import type { StorageSyncStartAction } from '../../../../types/actions/LogAction
 import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
 import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 import type { DropboxLastUpdateAction, DropboxSettingsImportAction } from '../../../../types/actions/StorageActions';
+import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 
 export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const {
@@ -95,6 +96,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     }
   });
 
+  dropboxStorageTool(store);
 
   return (next) => (
     action:
@@ -196,7 +198,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       }
 
       // ToDo: check for more action types which cause syncable data to be updated
-      // case Actions.SET_DROPBOX_STORAGE: // Don't use!
       case Actions.REHASH_IMAGE:
       case Actions.UPDATE_IMAGES:
       case Actions.DELETE_IMAGE:

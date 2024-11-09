@@ -1,17 +1,8 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { ExportTypes } from '../../javascript/consts/exportTypes';
 import type { RepoContents } from '../Export';
-import type { DropBoxSettings, GitStorageSettings } from '../Sync';
+import type { GitStorageSettings } from '../Sync';
 import type { JSONExportState } from '../../javascript/app/store/State';
-
-export interface DropboxLogoutAction {
-  type: Actions.DROPBOX_LOGOUT,
-}
-
-export interface DropboxSetStorageAction {
-  type: Actions.SET_DROPBOX_STORAGE,
-  payload?: DropBoxSettings
-}
 
 export interface DropboxSettingsImportAction {
   type: Actions.DROPBOX_SETTINGS_IMPORT,
@@ -21,10 +12,6 @@ export interface DropboxSettingsImportAction {
 export interface DropboxLastUpdateAction {
   type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
   payload: number,
-}
-
-export interface DropboxStartAuthAction {
-  type: Actions.DROPBOX_START_AUTH,
 }
 
 export interface GitStorageAction {

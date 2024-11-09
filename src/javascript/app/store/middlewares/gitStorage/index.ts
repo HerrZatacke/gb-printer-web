@@ -1,4 +1,5 @@
 import type { AnyAction } from 'redux';
+import useStoragesStore from '../../../stores/storagesStore';
 import { Actions } from '../../actions';
 import type { MiddlewareWithState } from '../../../../../types/MiddlewareWithState';
 
@@ -10,7 +11,7 @@ const gitStorage: MiddlewareWithState = (store) => {
 
     next(action);
 
-    const { gitStorage: gitStorageSettings } = store.getState();
+    const { gitStorage: gitStorageSettings } = useStoragesStore.getState();
 
     const {
       use,
@@ -31,7 +32,7 @@ const gitStorage: MiddlewareWithState = (store) => {
 
         if (!middleware) {
           const { init, middleware: mw } = await import(/* webpackChunkName: "gmw" */ './middleware');
-          init(store);
+          init();
           middleware = mw(store);
         }
 
