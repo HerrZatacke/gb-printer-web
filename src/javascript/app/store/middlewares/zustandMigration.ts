@@ -32,7 +32,10 @@ import useEditStore from '../../stores/editStore';
 export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const { dismissDialog } = useDialogsStore.getState();
 
-  const { cancelEditFrame } = useEditStore.getState();
+  const {
+    cancelEditFrame,
+    cancelEditPalette,
+  } = useEditStore.getState();
 
   const {
     updateImageSelection,
@@ -142,6 +145,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.GLOBAL_UPDATE:
         checkUpdateTrashCount(store.getState());
         cancelEditFrame();
+        cancelEditPalette();
         break;
       default:
         break;
@@ -173,6 +177,10 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.UPDATE_FRAME:
         cancelEditFrame();
         break;
+      case Actions.PALETTE_UPDATE:
+        cancelEditPalette();
+        break;
+
 
       default:
         break;

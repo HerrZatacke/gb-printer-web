@@ -12,7 +12,6 @@ import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 export interface State {
   editImage: CurrentEditBatch | null,
   editImageGroup: EditGroupInfo | null,
-  editPalette: Palette | null,
   editRGBNImages: string[],
   frameGroupNames: FrameGroup[],
   frames: Frame[],

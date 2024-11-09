@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useFiltersStore from '../../../stores/filtersStore';
-import type { PaletteCancelEditAction, PaletteUpdateAction } from '../../../../../types/actions/PaletteActions';
+import type { PaletteUpdateAction } from '../../../../../types/actions/PaletteActions';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
 import type { Palette } from '../../../../../types/Palette';
 import getPreviewImages from '../../../../tools/getPreviewImages';
 import type { MonochromeImage } from '../../../../../types/Image';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
+import useEditStore from '../../../stores/editStore';
 
 interface UseEditPalette {
   canConfirm: boolean,
@@ -32,16 +33,15 @@ export const useEditPalette = (): UseEditPalette => {
     recentImports,
   } = useFiltersStore();
 
+  const { editPalette, cancelEditPalette } = useEditStore();
+  const shortName = editPalette?.shortName || '';
+  const statePalette = editPalette?.palette || [];
+  const name = editPalette?.name || '';
+
   const {
-    shortName,
-    statePalette,
-    name,
     palettes,
     images,
   } = useSelector((state: State) => ({
-    shortName: state.editPalette?.shortName || '',
-    statePalette: state.editPalette?.palette || [],
-    name: state.editPalette?.name || '',
     palettes: state.palettes,
     images: state.images,
   }));
@@ -108,10 +108,6 @@ export const useEditPalette = (): UseEditPalette => {
     setNewShortName,
     setPalette,
     save,
-    cancelEditPalette: () => {
-      dispatch<PaletteCancelEditAction>({
-        type: Actions.PALETTE_CANCEL_EDIT,
-      });
-    },
+    cancelEditPalette,
   };
 };

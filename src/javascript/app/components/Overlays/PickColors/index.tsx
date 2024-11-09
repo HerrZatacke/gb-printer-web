@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
 import Lightbox from '../../Lightbox';
 import './index.scss';
@@ -22,6 +23,8 @@ function PickColors() {
     filtersActiveTags,
     recentImports,
   } = useFiltersStore();
+
+  const { setEditPalette, cancelEditPalette } = useEditStore();
 
   const dispatch = useDispatch();
   const [selected, setSelected] = useState<number[]>([0, 3, 6, 9]);
@@ -79,19 +82,18 @@ function PickColors() {
     <Lightbox
       className="pick-colors"
       confirm={() => {
-        dispatch({
-          type: Actions.SET_EDIT_PALETTE,
-          payload: {
-            name: `From file ${pickColors.fileName}`,
-            shortName: NEW_PALETTE_SHORT,
-            palette,
-            origin: 'generated from file',
-          },
+        setEditPalette({
+          name: `From file ${pickColors.fileName}`,
+          shortName: NEW_PALETTE_SHORT,
+          palette,
+          origin: 'generated from file',
+          isPredefined: false,
         });
       }}
       canConfirm={selected.length === 4}
       deny={() => {
         dispatch({ type: Actions.CANCEL_PICK_COLORS });
+        cancelEditPalette();
       }}
       header={`Pick colors from "${pickColors.fileName}"`}
     >

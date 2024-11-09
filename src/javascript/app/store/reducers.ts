@@ -10,7 +10,6 @@ import type { Plugin } from '../../../types/Plugin';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import editImageGroup from './reducers/editImageGroupReducer';
 import editImage from './reducers/editImageReducer';
-import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frames from './reducers/framesReducer';
@@ -23,7 +22,6 @@ import plugins from './reducers/pluginsReducer';
 export interface Reducers extends ReducersMapObject {
   editImageGroup: Reducer<EditGroupInfo | null>,
   editImage: Reducer<CurrentEditBatch | null>,
-  editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
   frameGroupNames: Reducer<FrameGroup[]>,
   frames: Reducer<Frame[]>,
@@ -37,7 +35,6 @@ export interface Reducers extends ReducersMapObject {
 const reducers: ReducersMapObject = {
   editImage,
   editImageGroup,
-  editPalette,
   editRGBNImages,
   frameGroupNames,
   frames,
