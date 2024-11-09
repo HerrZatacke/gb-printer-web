@@ -23,7 +23,6 @@ import type { AddToQueueFn, DBFolderFile, DownloadInfo, DropBoxSettings, UploadF
 import type { Image } from '../../../types/Image';
 import type { DownloadArrayBuffer } from '../download/types';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../types/actions/ConfirmActions';
-import type { DropboxLastUpdateAction, DropboxSettingsImportAction } from '../../../types/actions/StorageActions';
 import type { ImagesUpdateAction } from '../../../types/actions/ImageActions';
 import type { RepoContents } from '../../../types/Export';
 
@@ -75,7 +74,8 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { preferredLocale, syncLastUpdate } = useSettingsStore.getState();
+    const { preferredLocale } = useSettingsStore.getState();
+    const { syncLastUpdate } = useStoragesStore.getState();
     const repoContents: RepoContents = await dropboxClient.getRemoteContents(direction);
 
     switch (direction) {
@@ -88,10 +88,7 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
           (Date.now() / 1000) :
           repoContents.settings.state.lastUpdateUTC;
 
-        store.dispatch<DropboxLastUpdateAction>({
-          type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
-          payload: lastUpdate,
-        });
+        useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdate);
 
         if (lastUpdate > syncLastUpdate?.local) {
           store.dispatch<ConfirmAskAction>({
@@ -130,20 +127,18 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
         const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
         const changes = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
         await dropboxClient.upload(changes, 'settings');
-
-        store.dispatch<DropboxLastUpdateAction>({
-          type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
-          payload: lastUpdateUTC,
-        });
+        useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdateUTC);
         break;
       }
 
       case 'down': {
         await saveLocalStorageItems(repoContents);
-        store.dispatch<DropboxSettingsImportAction>({
-          type: Actions.DROPBOX_SETTINGS_IMPORT,
-          payload: repoContents.settings,
-        });
+        const lastUpdate = repoContents.settings?.state?.lastUpdateUTC || 0;
+        if (lastUpdate) {
+          useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdate);
+          useStoragesStore.getState().setSyncLastUpdate('local', lastUpdate);
+        }
+
         break;
       }
 

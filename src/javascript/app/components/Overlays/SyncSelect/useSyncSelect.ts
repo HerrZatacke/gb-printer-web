@@ -2,7 +2,6 @@ import { useStore } from 'react-redux';
 import type { TypedStore } from '../../../store/State';
 import type { SyncLastUpdate } from '../../../../../types/Sync';
 import useInteractionsStore from '../../../stores/interactionsStore';
-import useSettingsStore from '../../../stores/settingsStore';
 import useStoragesStore from '../../../stores/storagesStore';
 import { dropboxStorageTool } from '../../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../../tools/gitStorage';
@@ -22,8 +21,7 @@ export const useSyncSelect = (): UseSyncSelect => {
   const store: TypedStore = useStore();
 
   const { setSyncSelect } = useInteractionsStore();
-  const { syncLastUpdate } = useSettingsStore();
-  const { gitStorage, dropboxStorage } = useStoragesStore();
+  const { gitStorage, dropboxStorage, syncLastUpdate } = useStoragesStore();
 
   return {
     repoUrl: `https://github.com/${gitStorage.owner}/${gitStorage.repo}/tree/${gitStorage.branch}`,

@@ -8,7 +8,6 @@ import dateFormatLocale from '../../tools/dateFormatLocale';
 import { getEnv } from '../../tools/getEnv';
 import { PaletteSortMode } from '../../consts/paletteSortModes';
 import { GalleryViews } from '../../consts/GalleryViews';
-import type { SyncLastUpdate } from '../../../types/Sync';
 import type { VideoParams } from '../../../types/VideoParams';
 
 interface Values {
@@ -30,7 +29,6 @@ interface Values {
   savFrameTypes: string,
   enableImageGroups: boolean,
   sortPalettes: PaletteSortMode,
-  syncLastUpdate: SyncLastUpdate,
   useSerials: boolean,
   videoParams: VideoParams,
 }
@@ -54,7 +52,6 @@ interface Actions {
   setSavFrameTypes: (savFrameTypes: string) => void,
   setEnableImageGroups: (enableImageGroups: boolean) => void,
   setSortPalettes: (sortPalettes: PaletteSortMode) => void,
-  setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => void,
   setUseSerials: (useSerials: boolean) => void,
   setVideoParams: (videoParams: Partial<VideoParams>) => void,
 }
@@ -87,7 +84,6 @@ const useSettingsStore = create(
       savFrameTypes: 'int',
       enableImageGroups: false,
       sortPalettes: PaletteSortMode.DEFAULT_DESC,
-      syncLastUpdate: { dropbox: 0, local: 0 },
       useSerials: false,
       videoParams: {},
 
@@ -106,7 +102,6 @@ const useSettingsStore = create(
       setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
       setEnableImageGroups: (enableImageGroups: boolean) => set({ enableImageGroups }),
       setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),
-      setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => set((state) => ({ ...state, [what]: value })),
       setUseSerials: (useSerials: boolean) => set({ useSerials }),
       setVideoParams: (videoParams: Partial<VideoParams>) => set((state) => (
         { videoParams: { ...state.videoParams, ...videoParams } }
