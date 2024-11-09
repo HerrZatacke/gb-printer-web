@@ -9,7 +9,6 @@ import type { PickColors } from '../../../types/PickColors';
 import type { Plugin } from '../../../types/Plugin';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import editImageGroup from './reducers/editImageGroupReducer';
-import editFrame from './reducers/editFrameReducer';
 import editImage from './reducers/editImageReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
@@ -23,7 +22,6 @@ import plugins from './reducers/pluginsReducer';
 
 export interface Reducers extends ReducersMapObject {
   editImageGroup: Reducer<EditGroupInfo | null>,
-  editFrame: Reducer<string | null>,
   editImage: Reducer<CurrentEditBatch | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
@@ -37,7 +35,6 @@ export interface Reducers extends ReducersMapObject {
 }
 
 const reducers: ReducersMapObject = {
-  editFrame,
   editImage,
   editImageGroup,
   editPalette,

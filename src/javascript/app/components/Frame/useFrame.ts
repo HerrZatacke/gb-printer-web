@@ -4,10 +4,11 @@ import { Actions } from '../../store/actions';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
 import type { State } from '../../store/State';
-import type { DeleteFrameAction, EditFrameAction } from '../../../../types/actions/FrameActions';
+import type { DeleteFrameAction } from '../../../../types/actions/FrameActions';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import useSettingsStore from '../../stores/settingsStore';
 import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
 
 
 interface GetTilesParams {
@@ -42,6 +43,7 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const [tiles, setTiles] = useState<string[]>([]);
   const [imageStartLine, setImageStartLine] = useState<number>(2);
 
+  const { setEditFrame } = useEditStore();
   const { enableDebug } = useSettingsStore();
   const { dismissDialog, setDialog } = useDialogsStore();
 
@@ -91,12 +93,7 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
         deny: async () => dismissDialog(0),
       });
     },
-    editFrame: () => {
-      dispatch<EditFrameAction>({
-        type: Actions.EDIT_FRAME,
-        payload: frameId,
-      });
-    },
+    editFrame: () => setEditFrame(frameId),
   };
 };
 

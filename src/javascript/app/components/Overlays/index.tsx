@@ -1,6 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
+import useImportsStore from '../../stores/importsStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import ProgressLogBox from './ProgressLogBox';
@@ -24,8 +27,6 @@ import FrameQueue from './FrameQueue';
 import Trashbin from './Trashbin';
 import PickColors from './PickColors';
 import type { State } from '../../store/State';
-import useImportsStore from '../../stores/importsStore';
-import useDialogsStore from '../../stores/dialogsStore';
 
 function Overlays() {
   const { enableImageGroups } = useSettingsStore();
@@ -33,14 +34,12 @@ function Overlays() {
   const {
     showEditForm,
     showEditImageGroup,
-    showEditFrame,
     showEditPalette,
     showEditRGBN,
     showPickColors,
   } = useSelector((state: State) => ({
     showEditForm: !!state.editImage?.batch?.length,
     showEditImageGroup: !!state.editImageGroup && enableImageGroups,
-    showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette,
     showEditRGBN: state.editRGBNImages.length > 0,
     showPickColors: !!state.pickColors,
@@ -49,6 +48,10 @@ function Overlays() {
   const { dialogs } = useDialogsStore();
 
   const showConfirm = !!dialogs.length;
+
+  const { editFrame } = useEditStore();
+
+  const showEditFrame = !!editFrame;
 
   const {
     filtersVisible: showFilters,
