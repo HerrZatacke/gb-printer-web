@@ -7,7 +7,6 @@ import type { Palette } from '../../../types/Palette';
 import type { PickColors } from '../../../types/PickColors';
 import type { Plugin } from '../../../types/Plugin';
 import editImage from './reducers/editImageReducer';
-import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
 import frames from './reducers/framesReducer';
@@ -18,7 +17,6 @@ import plugins from './reducers/pluginsReducer';
 
 export interface Reducers extends ReducersMapObject {
   editImage: Reducer<CurrentEditBatch | null>,
-  editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
   pickColors: Reducer<PickColors | null>
 
@@ -31,7 +29,6 @@ export interface Reducers extends ReducersMapObject {
 
 const reducers: ReducersMapObject = {
   editImage,
-  editPalette,
   editRGBNImages,
   frameGroupNames,
   frames,

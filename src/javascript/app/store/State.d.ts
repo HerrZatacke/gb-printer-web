@@ -9,7 +9,6 @@ import type { PickColors } from '../../../types/PickColors';
 // ToDo: infer from store somehow...?
 export interface State {
   editImage: CurrentEditBatch | null,
-  editPalette: Palette | null,
   editRGBNImages: string[],
   frameGroupNames: FrameGroup[],
   frames: Frame[],

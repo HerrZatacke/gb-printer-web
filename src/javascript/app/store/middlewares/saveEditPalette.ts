@@ -1,9 +1,8 @@
-import type { AnyAction, Dispatch } from 'redux';
+import useEditStore from '../../stores/editStore';
 import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { Palette } from '../../../../types/Palette';
-import type { PaletteSetEditAction } from '../../../../types/actions/PaletteActions';
 
 const randomColor = (max: number): string => (
   [
@@ -28,7 +27,6 @@ const randomPalette = (): Palette => ({
 });
 
 const dispatchSetEditPalette = (
-  dispatch: Dispatch<AnyAction>,
   palettes: Palette[],
   paletteShortName: string,
   clone: boolean,
@@ -37,24 +35,21 @@ const dispatchSetEditPalette = (
     palettes.find(({ shortName }) => shortName === paletteShortName) || randomPalette()
   );
 
-  dispatch<PaletteSetEditAction>({
-    type: Actions.SET_EDIT_PALETTE,
-    payload: {
-      ...editPalette,
-      name: clone ? `Copy of ${editPalette.name}` : editPalette.name,
-      shortName: clone ? NEW_PALETTE_SHORT : paletteShortName,
-    },
+  useEditStore.getState().setEditPalette({
+    ...editPalette,
+    name: clone ? `Copy of ${editPalette.name}` : editPalette.name,
+    shortName: clone ? NEW_PALETTE_SHORT : paletteShortName,
   });
 };
 
 const saveEditPalette: MiddlewareWithState = (store) => (next) => (action) => {
   switch (action.type) {
     case Actions.PALETTE_EDIT:
-      dispatchSetEditPalette(store.dispatch, store.getState().palettes, action.payload, false);
+      dispatchSetEditPalette(store.getState().palettes, action.payload, false);
       return;
 
     case Actions.PALETTE_CLONE:
-      dispatchSetEditPalette(store.dispatch, store.getState().palettes, action.payload, true);
+      dispatchSetEditPalette(store.getState().palettes, action.payload, true);
       return;
     default:
   }

@@ -29,12 +29,10 @@ import useEditStore from '../../stores/editStore';
 function Overlays() {
   const {
     showEditForm,
-    showEditPalette,
     showEditRGBN,
     showPickColors,
   } = useSelector((state: State) => ({
     showEditForm: !!state.editImage?.batch?.length,
-    showEditPalette: !!state.editPalette,
     showEditRGBN: state.editRGBNImages.length > 0,
     showPickColors: !!state.pickColors,
   }));
@@ -43,9 +41,10 @@ function Overlays() {
 
   const showConfirm = !!dialogs.length;
 
-  const { editFrame } = useEditStore();
+  const { editFrame, editPalette } = useEditStore();
 
   const showEditFrame = !!editFrame;
+  const showEditPalette = !!editPalette;
 
   const {
     filtersVisible: showFilters,
