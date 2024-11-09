@@ -10,12 +10,13 @@ import type { AddToQueueFn } from '../../../../../types/Sync';
 import type { TypedStore } from '../../State';
 import type { GitSettingsImportAction } from '../../../../../types/actions/StorageActions';
 import { delay } from '../../../../tools/delay';
+import useStoragesStore from '../../../stores/storagesStore';
 
 let octoClient: OctoClient;
 let addToQueue: (who: string) => AddToQueueFn<unknown>;
 
-export const init = (store: TypedStore) => {
-  const { gitStorage: gitStorageSettings } = store.getState();
+export const init = () => {
+  const { gitStorage: gitStorageSettings } = useStoragesStore.getState();
 
   const getPreferredLocale = () => (
     useSettingsStore.getState().preferredLocale

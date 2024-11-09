@@ -1,6 +1,5 @@
-import { useSelector } from 'react-redux';
 import useInteractionsStore from '../../../stores/interactionsStore';
-import type { State } from '../../../store/State';
+import useStoragesStore from '../../../stores/storagesStore';
 import type { LogItem } from '../../../stores/interactionsStore';
 
 interface UseProgress {
@@ -19,22 +18,19 @@ interface UseProgress {
 
 export const useProgress = (): UseProgress => {
   const { progressLog, resetProgressLog } = useInteractionsStore();
+  const { gitStorage, dropboxStorage } = useStoragesStore();
 
-  const progressState = useSelector((state: State) => ({
+  return {
     git: {
       messages: progressLog.git || [],
-      repoUrl: `https://github.com/${state.gitStorage.owner}/${state.gitStorage.repo}/tree/${state.gitStorage.branch}`,
-      repo: state.gitStorage.repo,
-      branch: state.gitStorage.branch,
+      repoUrl: `https://github.com/${gitStorage.owner}/${gitStorage.repo}/tree/${gitStorage.branch}`,
+      repo: gitStorage.repo,
+      branch: gitStorage.branch,
     },
     dropbox: {
       messages: progressLog.dropbox || [],
-      path: state.dropboxStorage.path || '',
+      path: dropboxStorage.path || '',
     },
-  }));
-
-  return {
-    ...progressState,
     confirm: resetProgressLog,
   };
 };

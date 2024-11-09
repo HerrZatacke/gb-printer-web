@@ -208,6 +208,13 @@
     }
   }
 
+  &__note--code {
+    font-family: monospace;
+    padding: 4px;
+    border-radius: $default-border-radius;
+    @include theme-background-color($color-grey-70, $color-grey-30);
+  }
+
   &--disabled {
     opacity: 50%;
   }

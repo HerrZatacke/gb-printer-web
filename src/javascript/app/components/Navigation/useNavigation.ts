@@ -1,10 +1,9 @@
-import { useSelector } from 'react-redux';
 import WebUSBSerial from '../../../tools/WebUSBSerial';
 import WebSerial from '../../../tools/WebSerial';
-import type { State } from '../../store/State';
 import type { SyncLastUpdate } from '../../../../types/Sync';
 import useInteractionsStore from '../../stores/interactionsStore';
 import useSettingsStore from '../../stores/settingsStore';
+import useStoragesStore from '../../stores/storagesStore';
 
 interface UseNavigation {
   disableSerials: boolean,
@@ -18,23 +17,20 @@ interface UseNavigation {
 }
 
 const useNavigation = (): UseNavigation => {
-  const {
-    useSync,
-    autoDropboxSync,
-  } = useSelector((state: State) => ({
-    useSync: !!(
-      state.dropboxStorage.use ||
-      (
-        state.gitStorage.use &&
-        state.gitStorage.owner &&
-        state.gitStorage.repo &&
-        state.gitStorage.branch &&
-        state.gitStorage.throttle &&
-        state.gitStorage.token
-      )
-    ),
-    autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
-  }));
+  const { gitStorage, dropboxStorage } = useStoragesStore();
+
+  const autoDropboxSync = dropboxStorage.autoDropboxSync || false;
+  const useSync = !!(
+    dropboxStorage.use ||
+    (
+      gitStorage.use &&
+      gitStorage.owner &&
+      gitStorage.repo &&
+      gitStorage.branch &&
+      gitStorage.throttle &&
+      gitStorage.token
+    )
+  );
 
   const { syncBusy, setSyncSelect, setShowSerials } = useInteractionsStore();
   const { useSerials, syncLastUpdate } = useSettingsStore();

@@ -1,10 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { Actions } from '../../../store/actions';
-import type { State } from '../../../store/State';
+import type { TypedStore } from '../../../store/State';
 import type { SyncLastUpdate } from '../../../../../types/Sync';
 import type { StorageSyncStartAction } from '../../../../../types/actions/LogActions';
 import useInteractionsStore from '../../../stores/interactionsStore';
 import useSettingsStore from '../../../stores/settingsStore';
+import { dropBoxSyncTool } from '../../../../tools/dropboxStorage/main';
+import useStoragesStore from '../../../stores/storagesStore';
 
 
 interface UseSyncSelect {
@@ -13,44 +15,49 @@ interface UseSyncSelect {
   gitActive: boolean,
   syncLastUpdate: SyncLastUpdate,
   autoDropboxSync: boolean,
-  startSync: (storageType: string, direction: string) => void,
+  startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => void,
   cancelSync: () => void,
 }
 
 export const useSyncSelect = (): UseSyncSelect => {
-  const data = useSelector((state: State) => ({
-    repoUrl: `https://github.com/${state.gitStorage.owner}/${state.gitStorage.repo}/tree/${state.gitStorage.branch}`,
-    dropboxActive: !!(
-      state.dropboxStorage.use &&
-      state.dropboxStorage.accessToken
-    ),
-    gitActive: !!(
-      state.gitStorage.use &&
-      state.gitStorage.owner &&
-      state.gitStorage.repo &&
-      state.gitStorage.branch &&
-      state.gitStorage.throttle &&
-      state.gitStorage.token
-    ),
-    autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
-  }));
+  const store: TypedStore = useStore();
 
   const { setSyncSelect } = useInteractionsStore();
   const { syncLastUpdate } = useSettingsStore();
+  const { gitStorage, dropboxStorage } = useStoragesStore();
 
   const dispatch = useDispatch();
 
   return {
-    ...data,
+    repoUrl: `https://github.com/${gitStorage.owner}/${gitStorage.repo}/tree/${gitStorage.branch}`,
+    dropboxActive: !!(
+      dropboxStorage.use &&
+      dropboxStorage.accessToken
+    ),
+    gitActive: !!(
+      gitStorage.use &&
+      gitStorage.owner &&
+      gitStorage.repo &&
+      gitStorage.branch &&
+      gitStorage.throttle &&
+      gitStorage.token
+    ),
+    autoDropboxSync: dropboxStorage.autoDropboxSync || false,
     syncLastUpdate,
-    startSync: (storageType: string, direction: string) => {
-      dispatch<StorageSyncStartAction>({
-        type: Actions.STORAGE_SYNC_START,
-        payload: {
-          storageType,
-          direction,
-        },
-      });
+    startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => {
+      if (storageType === 'dropbox') {
+        dropBoxSyncTool(store).startSyncData(direction);
+      } else if (storageType === 'dropboximages') {
+        dropBoxSyncTool(store).startSyncImages();
+      } else {
+        dispatch<StorageSyncStartAction>({
+          type: Actions.STORAGE_SYNC_START,
+          payload: {
+            storageType,
+            direction,
+          },
+        });
+      }
     },
     cancelSync: () => setSyncSelect(false),
   };

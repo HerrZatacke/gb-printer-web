@@ -1,6 +1,5 @@
 import type { Dispatch, MiddlewareAPI } from 'redux';
 import type { Dialog } from '../../../types/Dialog';
-import type { DropBoxSettings, GitStorageSettings } from '../../../types/Sync';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
@@ -10,17 +9,13 @@ import type { PickColors } from '../../../types/PickColors';
 
 // ToDo: infer from store somehow...?
 export interface State {
-
-
   confirm: Dialog[],
-  dropboxStorage: DropBoxSettings,
   editImage: CurrentEditBatch | null,
   editFrame: string | null,
   editPalette: Palette | null,
   editRGBNImages: string[],
   frameGroupNames: FrameGroup[],
   frames: Frame[],
-  gitStorage: GitStorageSettings,
   images: Image[],
   palettes: Palette[],
   pickColors: PickColors | null,
