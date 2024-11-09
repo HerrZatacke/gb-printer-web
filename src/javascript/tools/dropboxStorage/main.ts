@@ -23,7 +23,6 @@ import type { AddToQueueFn, DBFolderFile, DownloadInfo, DropBoxSettings, UploadF
 import type { Image } from '../../../types/Image';
 import type { DownloadArrayBuffer } from '../download/types';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../types/actions/ConfirmActions';
-import type { StorageSyncStartAction } from '../../../types/actions/LogActions';
 import type { DropboxLastUpdateAction, DropboxSettingsImportAction } from '../../../types/actions/StorageActions';
 import type { ImagesUpdateAction } from '../../../types/actions/ImageActions';
 import type { RepoContents } from '../../../types/Export';
@@ -40,9 +39,10 @@ export interface SyncTool {
   recoverImageData: (hash: string) => Promise<void>,
 }
 
+const recoveryAttempts: string[] = [];
+
 export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
 
-  const recoveryAttempts: string[] = [];
   const { setProgressLog, resetProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
 
   const queue = new Queue(1, Infinity);
@@ -112,13 +112,7 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
                 store.dispatch<ConfirmAnsweredAction>({
                   type: Actions.CONFIRM_ANSWERED,
                 });
-                store.dispatch<StorageSyncStartAction>({
-                  type: Actions.STORAGE_SYNC_START,
-                  payload: {
-                    storageType: 'dropbox',
-                    direction: 'down',
-                  },
-                });
+                startSyncData('down');
               },
               deny: async () => {
                 store.dispatch<ConfirmAnsweredAction>({
