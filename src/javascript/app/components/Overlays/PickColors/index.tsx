@@ -1,11 +1,10 @@
 import type { CSSProperties } from 'react';
 import React, { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
 import Lightbox from '../../Lightbox';
 import './index.scss';
-import { Actions } from '../../../store/actions';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 import { toHexColor } from '../../../../hooks/usePaletteFromFile';
 import ImageRender from '../../ImageRender';
@@ -13,9 +12,8 @@ import getGetPreviewImages from '../../../../tools/getPreviewImages';
 import type { State } from '../../../store/State';
 
 function PickColors() {
-  const { images, pickColors } = useSelector((state: State) => ({
+  const { images } = useSelector((state: State) => ({
     images: state.images,
-    pickColors: state.pickColors,
   }));
   const {
     imageSelection,
@@ -24,9 +22,8 @@ function PickColors() {
     recentImports,
   } = useFiltersStore();
 
-  const { setEditPalette, cancelEditPalette } = useEditStore();
+  const { pickColors, setEditPalette, cancelEditPalette, cancelPickColors } = useEditStore();
 
-  const dispatch = useDispatch();
   const [selected, setSelected] = useState<number[]>([0, 3, 6, 9]);
   const getPreviewImages = getGetPreviewImages(images, { sortBy, filtersActiveTags, recentImports }, imageSelection);
 
@@ -92,7 +89,7 @@ function PickColors() {
       }}
       canConfirm={selected.length === 4}
       deny={() => {
-        dispatch({ type: Actions.CANCEL_PICK_COLORS });
+        cancelPickColors();
         cancelEditPalette();
       }}
       header={`Pick colors from "${pickColors.fileName}"`}

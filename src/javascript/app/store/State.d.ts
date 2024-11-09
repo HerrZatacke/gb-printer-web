@@ -4,7 +4,6 @@ import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { Plugin } from '../../../types/Plugin';
-import type { PickColors } from '../../../types/PickColors';
 
 // ToDo: infer from store somehow...?
 export interface State {
@@ -14,7 +13,6 @@ export interface State {
   frames: Frame[],
   images: Image[],
   palettes: Palette[],
-  pickColors: PickColors | null,
   plugins: Plugin[],
 }
 
