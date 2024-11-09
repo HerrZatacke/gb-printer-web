@@ -10,13 +10,15 @@ import applyTagChanges from '../../../../tools/applyTagChanges';
 import type { State } from '../../State';
 import { Updatable, UpdatableMonochrome, UPDATATABLES } from './const';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
+import useEditStore from '../../../stores/editStore';
 
 export const createUpdateAction = (action: ImagesBatchUpdateAction, state: State): ImagesUpdateAction | null => {
   const { sortBy } = useFiltersStore.getState();
+  const { editImages } = useEditStore.getState();
   const sortFunc = sortImages(sortBy);
 
-  const currentEditHashes: string[] | undefined = state.editImage?.batch;
-  // const initialTags: string[] | undefined = state.editImage?.tags || [];
+  const currentEditHashes: string[] | undefined = editImages?.batch;
+  // const initialTags: string[] | undefined = editImages?.tags || [];
   const images: Image[] = state.images;
 
   const shouldUpdate: Record<keyof ImageUpdates, boolean> = action.payload.shouldUpdate;

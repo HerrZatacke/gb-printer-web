@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
 import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
@@ -8,7 +9,6 @@ import type { State } from '../../store/State';
 import type {
   DeleteImageAction,
   DownloadImageStartAction,
-  EditImageSelectionAction,
   ImageFavouriteAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
@@ -57,6 +57,7 @@ export const useGalleryImageButtons = (
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
+  const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
 
   const isSelected = imageSelection.includes(hash);
@@ -117,12 +118,9 @@ export const useGalleryImageButtons = (
       });
     },
     editImage: () => {
-      dispatch<EditImageSelectionAction>({
-        type: Actions.EDIT_IMAGE_SELECTION,
-        payload: {
-          tags,
-          batch: [hash],
-        },
+      setEditImages({
+        tags,
+        batch: [hash],
       });
     },
   };

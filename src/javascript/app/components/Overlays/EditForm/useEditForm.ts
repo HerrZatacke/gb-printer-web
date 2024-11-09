@@ -1,23 +1,20 @@
 import { useEffect, useState } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { useDispatch, useSelector } from 'react-redux';
+import useInteractionsStore from '../../../stores/interactionsStore';
+import useEditStore from '../../../stores/editStore';
 import { missingGreyPalette } from '../../../defaults';
 import { Actions } from '../../../store/actions';
+import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import { getImageTileCount } from '../../../../tools/loadImageTiles';
-import type { State } from '../../../store/State';
-import type {
-  CancelEditImagesAction,
-  ImagesBatchUpdateAction,
-  ImageUpdates,
-} from '../../../../../types/actions/ImageActions';
-import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
 import modifyTagChanges from '../../../../tools/modifyTagChanges';
+import type { State } from '../../../store/State';
+import type { ImagesBatchUpdateAction, ImageUpdates } from '../../../../../types/actions/ImageActions';
+import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
 import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../../../../types/Image';
 import type { Rotation } from '../../../../tools/applyRotation';
 import type { Palette } from '../../../../../types/Palette';
-import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import type { TagChange } from '../../../../tools/applyTagChanges';
-import useInteractionsStore from '../../../stores/interactionsStore';
 
 interface Batch {
   created: boolean,
@@ -107,6 +104,7 @@ const willUpdate = (batch: Batch): string[] => ([
 
 
 export const useEditForm = (): UseEditForm => {
+  const { editImages, cancelEditImages } = useEditStore();
 
   const {
     tileCounter,
@@ -121,12 +119,12 @@ export const useEditForm = (): UseEditForm => {
   const { windowDimensions } = useInteractionsStore();
 
   const toEdit = useSelector((state: State): ToEdit | undefined => {
-    if (!state.editImage) {
+    if (!editImages) {
       return undefined;
     }
 
-    const batch = state.editImage.batch || [];
-    const stateTags = state.editImage.tags || [];
+    const batch = editImages.batch || [];
+    const stateTags = editImages.tags || [];
 
     if (!batch[0]) {
       return undefined;
@@ -343,10 +341,6 @@ export const useEditForm = (): UseEditForm => {
         },
       });
     },
-    cancel: () => {
-      dispatch<CancelEditImagesAction>({
-        type: Actions.CANCEL_EDIT_IMAGES,
-      });
-    },
+    cancel: () => cancelEditImages(),
   };
 };

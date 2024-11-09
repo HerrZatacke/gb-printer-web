@@ -1,6 +1,8 @@
 import screenfull from 'screenfull';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import useFiltersStore, { ImageSelectionMode } from '../../stores/filtersStore';
+import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
 import useImportsStore from '../../stores/importsStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import useStoragesStore from '../../stores/storagesStore';
@@ -11,7 +13,9 @@ import type {
   AddImagesAction,
   RehashImageAction,
   ImageFavouriteAction,
-  ImagesUpdateAction, SaveNewRGBImagesAction,
+  ImagesUpdateAction,
+  SaveNewRGBImagesAction,
+  ImagesBatchUpdateAction,
 } from '../../../../types/actions/ImageActions';
 import type {
   AddFrameAction,
@@ -26,14 +30,13 @@ import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterA
 import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../tools/gitStorage';
-import useDialogsStore from '../../stores/dialogsStore';
-import useEditStore from '../../stores/editStore';
 
 export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const { dismissDialog } = useDialogsStore.getState();
 
   const {
     cancelEditFrame,
+    cancelEditImages,
     cancelEditPalette,
     cancelEditRGBNImages,
   } = useEditStore.getState();
@@ -116,6 +119,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       DeleteImagesAction |
       FrameGroupNamesAction |
       GlobalUpdateAction |
+      ImagesBatchUpdateAction |
       ImageFavouriteAction |
       ImagesUpdateAction |
       ImportQueueCancelAction |
@@ -148,16 +152,16 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         checkUpdateTrashCount(store.getState());
         cancelEditFrame();
         cancelEditPalette();
+        cancelEditImages();
         break;
-      default:
-        break;
-    }
 
-    switch (action.type) {
-      case Actions.GLOBAL_UPDATE:
+      case Actions.REHASH_IMAGE:
+        checkUpdateTrashCount(store.getState());
+        cancelEditImages();
+        break;
+
       case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
-      case Actions.REHASH_IMAGE:
       case Actions.DELETE_FRAME:
       case Actions.ADD_FRAME:
         checkUpdateTrashCount(store.getState());
@@ -185,6 +189,10 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.SAVE_NEW_RGB_IMAGES:
         cancelEditRGBNImages();
         break;
+      case Actions.UPDATE_IMAGES_BATCH_CHANGES:
+        cancelEditImages();
+        break;
+
 
       default:
         break;

@@ -32,10 +32,8 @@ function Overlays() {
   const { enableImageGroups } = useSettingsStore();
 
   const {
-    showEditForm,
     showEditImageGroup,
   } = useSelector((state: State) => ({
-    showEditForm: !!state.editImage?.batch?.length,
     showEditImageGroup: !!state.editImageGroup && enableImageGroups,
   }));
 
@@ -45,15 +43,17 @@ function Overlays() {
 
   const {
     editFrame,
+    editImages,
     editPalette,
-    pickColors,
     editRGBNImages,
+    pickColors,
   } = useEditStore();
 
+  const showEditForm = !!editImages?.batch?.length;
   const showEditFrame = !!editFrame;
   const showEditPalette = !!editPalette;
-  const showPickColors = !!pickColors;
   const showEditRGBN = editRGBNImages.length > 0;
+  const showPickColors = !!pickColors;
 
   const {
     filtersVisible: showFilters,
