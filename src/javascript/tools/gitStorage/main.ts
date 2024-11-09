@@ -6,10 +6,9 @@ import OctoClient from './OctoClient';
 import getUploadFiles from '../getUploadFiles';
 import saveLocalStorageItems from '../saveLocalStorageItems';
 import { delay } from '../delay';
-import { Actions } from '../../app/store/actions';
 import type { AddToQueueFn, GitStorageSettings } from '../../../types/Sync';
-import type { GitSettingsImportAction } from '../../../types/actions/StorageActions';
 import type { TypedStore } from '../../app/store/State';
+import { importExportSettings } from '../importExportSettings';
 
 let octoClient: OctoClient;
 let addToQueue: (who: string) => AddToQueueFn<unknown>;
@@ -46,6 +45,7 @@ export const init = () => {
 
 
 export const gitSyncTool = (store: TypedStore): SyncTool => {
+  const { remoteImport } = importExportSettings(store);
   const { setProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
   const { syncLastUpdate } = useStoragesStore.getState();
 
@@ -70,10 +70,8 @@ export const gitSyncTool = (store: TypedStore): SyncTool => {
 
         case 'down': {
           await saveLocalStorageItems(repoContents);
-          store.dispatch<GitSettingsImportAction>({
-            type: Actions.GIT_SETTINGS_IMPORT,
-            payload: repoContents.settings,
-          });
+          remoteImport(repoContents.settings);
+
           break;
         }
 

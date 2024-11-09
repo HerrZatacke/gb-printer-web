@@ -25,6 +25,7 @@ import type { Image } from '../../../types/Image';
 import type { DownloadArrayBuffer } from '../download/types';
 import type { ImagesUpdateAction } from '../../../types/actions/ImageActions';
 import type { RepoContents } from '../../../types/Export';
+import { importExportSettings } from '../importExportSettings';
 
 interface WithContentHash {
   dropboxContentHash: string,
@@ -41,7 +42,7 @@ export interface SyncTool {
 const recoveryAttempts: string[] = [];
 
 export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
-
+  const { remoteImport } = importExportSettings(store);
   const { setProgressLog, resetProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
 
@@ -125,6 +126,8 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
 
       case 'down': {
         await saveLocalStorageItems(repoContents);
+        remoteImport(repoContents.settings);
+
         const lastUpdate = repoContents.settings?.state?.lastUpdateUTC || 0;
         if (lastUpdate) {
           useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdate);
