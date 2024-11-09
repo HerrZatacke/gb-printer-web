@@ -5,10 +5,9 @@ import getImages from './getImages';
 import getFrames from './getFrames';
 import getImageHashesForExport from './getImageHashesForExport';
 import getFrameHashesForExport from './getFrameHashesForExport';
-import { getEnv } from '../getEnv';
 import getFrameGroups from '../getFrameGroups';
 import type { StorePropertyExportable } from '../../app/store/defaults';
-import type { ExportableState, NoExport, TypedStore } from '../../app/store/State';
+import type { ExportableState, TypedStore } from '../../app/store/State';
 import type { GetSettingsOptions } from '../../../types/Sync';
 import type { Image } from '../../../types/Image';
 import type { Frame } from '../../../types/Frame';
@@ -27,15 +26,6 @@ const getGetSettings = (store: TypedStore) => async (
   const { imageSelection } = useFiltersStore.getState();
 
   const localStorageState: ExportableState = JSON.parse(localStorage.getItem('gbp-web-state') || '{}');
-
-  // delete keys potentially containing passwords/tokens
-  delete (localStorageState as NoExport).gitStorage;
-  delete (localStorageState as NoExport).dropboxStorage;
-
-  // Do not export the default '/' printerUrl for printer devices
-  if (getEnv()?.env === 'esp8266') {
-    delete (localStorageState as NoExport).printerUrl;
-  }
 
   const exportableState: ExportableState = (definitions as StorePropertyExportable[])
     .reduce((acc: ExportableState, { saveExport, key }): ExportableState => {

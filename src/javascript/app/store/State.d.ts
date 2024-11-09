@@ -26,14 +26,7 @@ export interface State {
 
 export type TypedStore = MiddlewareAPI<Dispatch, State>;
 
-// properties containing tokens/passwords etc must get removed before exporting
-export interface NoExport {
-  gitStorage?: undefined,
-  dropboxStorage?: undefined,
-  printerUrl?: undefined,
-}
-
-export interface ExportableState extends Omit<Partial<State>, keyof NoExport> {
+export interface ExportableState extends Partial<State> {
   lastUpdateUTC?: number,
 }
 
