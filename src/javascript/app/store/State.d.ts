@@ -5,7 +5,6 @@ import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { Plugin } from '../../../types/Plugin';
-import type { PickColors } from '../../../types/PickColors';
 import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 
 // ToDo: infer from store somehow...?
@@ -18,7 +17,6 @@ export interface State {
   images: Image[],
   imageGroups: SerializableImageGroup[],
   palettes: Palette[],
-  pickColors: PickColors | null,
   plugins: Plugin[],
 }
 

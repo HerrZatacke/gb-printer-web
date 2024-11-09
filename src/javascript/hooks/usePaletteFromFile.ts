@@ -4,11 +4,9 @@ import kmeans from 'node-kmeans';
 import type { RgbPixel } from 'quantize';
 import quantize from 'quantize';
 import chunk from 'chunk';
-import { useDispatch } from 'react-redux';
 import useInteractionsStore from '../app/stores/interactionsStore';
 import getImageData from '../tools/transformBitmaps/getImageData';
-import { Actions } from '../app/store/actions';
-import type { SetPickColorsAction } from '../../types/actions/PickColorsActions';
+import useEditStore from '../app/stores/editStore';
 
 export const toHexColor = ([r, g, b]: number[]): string => ([
   '#',
@@ -38,9 +36,9 @@ interface UsePaletteFromFile {
 }
 
 const usePaletteFromFile = (): UsePaletteFromFile => {
-  const dispatch = useDispatch();
   const [busy, setBusy] = useState<boolean>(false);
   const { setError } = useInteractionsStore();
+  const { setPickColors } = useEditStore();
 
   const onInputChange = async ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.[0]) {
@@ -73,12 +71,9 @@ const usePaletteFromFile = (): UsePaletteFromFile => {
             ))
             .sort(sortColor);
 
-          dispatch<SetPickColorsAction>({
-            type: Actions.SET_PICK_COLORS,
-            payload: {
-              colors,
-              fileName,
-            },
+          setPickColors({
+            colors,
+            fileName,
           });
         }
 

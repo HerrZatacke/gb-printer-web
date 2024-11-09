@@ -35,22 +35,21 @@ function Overlays() {
     showEditForm,
     showEditImageGroup,
     showEditRGBN,
-    showPickColors,
   } = useSelector((state: State) => ({
     showEditForm: !!state.editImage?.batch?.length,
     showEditImageGroup: !!state.editImageGroup && enableImageGroups,
     showEditRGBN: state.editRGBNImages.length > 0,
-    showPickColors: !!state.pickColors,
   }));
 
   const { dialogs } = useDialogsStore();
 
   const showConfirm = !!dialogs.length;
 
-  const { editFrame, editPalette } = useEditStore();
+  const { editFrame, editPalette, pickColors } = useEditStore();
 
   const showEditFrame = !!editFrame;
   const showEditPalette = !!editPalette;
+  const showPickColors = !!pickColors;
 
   const {
     filtersVisible: showFilters,
