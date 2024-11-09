@@ -7,12 +7,13 @@ import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { State } from '../../store/State';
 import type {
   DeleteImageAction,
-  DownloadImageStartAction, EditImageSelectionAction,
+  DownloadImageStartAction,
   ImageFavouriteAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
 import { canShare } from '../../../tools/canShare';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
+import useEditStore from '../../stores/editStore';
 
 interface UseGalleryImageButtons {
   isSelected: boolean,
@@ -56,6 +57,7 @@ export const useGalleryImageButtons = (
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
+  const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
 
   const isSelected = imageSelection.includes(hash);
@@ -116,12 +118,9 @@ export const useGalleryImageButtons = (
       });
     },
     editImage: () => {
-      dispatch<EditImageSelectionAction>({
-        type: Actions.EDIT_IMAGE_SELECTION,
-        payload: {
-          tags,
-          batch: [hash],
-        },
+      setEditImages({
+        tags,
+        batch: [hash],
       });
     },
   };

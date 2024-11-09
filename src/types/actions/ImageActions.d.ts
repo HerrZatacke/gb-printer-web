@@ -1,5 +1,5 @@
 import type { Actions } from '../../javascript/app/store/actions';
-import type { CurrentEditBatch, Image, MonochromeImage, RGBNHashes } from '../Image';
+import type { Image, MonochromeImage, RGBNHashes } from '../Image';
 import type { TagUpdates } from '../../javascript/tools/modifyTagChanges';
 import type { BatchActionType } from '../../javascript/consts/batchActionTypes';
 
@@ -50,15 +50,6 @@ export interface DeleteImageAction {
 export interface DeleteImagesAction {
   type: Actions.DELETE_IMAGES,
   payload: string[],
-}
-
-export interface EditImageSelectionAction {
-  type: Actions.EDIT_IMAGE_SELECTION,
-  payload: CurrentEditBatch,
-}
-
-export interface CancelEditImagesAction {
-  type: Actions.CANCEL_EDIT_IMAGES,
 }
 
 export interface SaveNewRGBImagesAction {

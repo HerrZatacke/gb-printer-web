@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
 import useSettingsStore from '../../stores/settingsStore';
 import useFiltersStore from '../../stores/filtersStore';
@@ -6,12 +6,11 @@ import type { ImageSelectionMode } from '../../stores/filtersStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { missingGreyPalette } from '../../defaults';
 import { SpecialTags } from '../../../consts/SpecialTags';
-import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
 import type { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
-import type { EditImageSelectionAction } from '../../../../types/actions/ImageActions';
+import useEditStore from '../../stores/editStore';
 
 interface GalleryImageData {
   title: string,
@@ -40,6 +39,8 @@ interface UseGalleryImage {
 }
 
 export const useGalleryImage = (hash: string): UseGalleryImage => {
+  const { setEditImages } = useEditStore();
+
   const {
     enableDebug,
     hideDates,
@@ -102,8 +103,6 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
 
   const stateImages = useSelector((state: State) => (state.images));
 
-  const dispatch = useDispatch();
-
   return {
     galleryImageData,
     updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => {
@@ -127,12 +126,9 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       }
     },
     editImage: (tags: string[]) => {
-      dispatch<EditImageSelectionAction>({
-        type: Actions.EDIT_IMAGE_SELECTION,
-        payload: {
-          tags,
-          batch: [hash],
-        },
+      setEditImages({
+        tags,
+        batch: [hash],
       });
     },
   };

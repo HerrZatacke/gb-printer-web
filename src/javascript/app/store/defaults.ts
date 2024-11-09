@@ -21,13 +21,6 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
-    // the image being edited currently
-    key: 'editImage',
-    saveLocally: true,
-    saveExport: [],
-    value: null,
-  },
-  {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,

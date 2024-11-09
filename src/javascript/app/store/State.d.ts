@@ -1,5 +1,5 @@
 import type { Dispatch, MiddlewareAPI } from 'redux';
-import type { CurrentEditBatch, Image } from '../../../types/Image';
+import type { Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
@@ -7,7 +7,6 @@ import type { Plugin } from '../../../types/Plugin';
 
 // ToDo: infer from store somehow...?
 export interface State {
-  editImage: CurrentEditBatch | null,
   frameGroupNames: FrameGroup[],
   frames: Frame[],
   images: Image[],

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
@@ -24,30 +23,25 @@ import ImportQueue from './ImportQueue';
 import FrameQueue from './FrameQueue';
 import Trashbin from './Trashbin';
 import PickColors from './PickColors';
-import type { State } from '../../store/State';
 
 function Overlays() {
-  const {
-    showEditForm,
-  } = useSelector((state: State) => ({
-    showEditForm: !!state.editImage?.batch?.length,
-  }));
-
   const { dialogs } = useDialogsStore();
 
   const showConfirm = !!dialogs.length;
 
   const {
     editFrame,
+    editImages,
     editPalette,
-    pickColors,
     editRGBNImages,
+    pickColors,
   } = useEditStore();
 
+  const showEditForm = !!editImages?.batch?.length;
   const showEditFrame = !!editFrame;
   const showEditPalette = !!editPalette;
-  const showPickColors = !!pickColors;
   const showEditRGBN = editRGBNImages.length > 0;
+  const showPickColors = !!pickColors;
 
   const {
     filtersVisible: showFilters,

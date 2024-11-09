@@ -6,7 +6,7 @@ import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { Image } from '../../../../types/Image';
-import type { DeleteImagesAction, DownloadImageSelectionAction, EditImageSelectionAction } from '../../../../types/actions/ImageActions';
+import type { DeleteImagesAction, DownloadImageSelectionAction } from '../../../../types/actions/ImageActions';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 
@@ -16,7 +16,7 @@ const collectTags = (batchImages: Image[]): string[] => (
 );
 
 const batch: MiddlewareWithState = (store) => (next) => (action) => {
-  const { setEditRGBNImages } = useEditStore.getState();
+  const { setEditImages, setEditRGBNImages } = useEditStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
   const { imageSelection } = useFiltersStore.getState();
   const { setVideoSelection } = useInteractionsStore.getState();
@@ -60,12 +60,9 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
         }
 
         case BatchActionType.EDIT: {
-          store.dispatch<EditImageSelectionAction>({
-            type: Actions.EDIT_IMAGE_SELECTION,
-            payload: {
-              tags: collectTags(batchImages),
-              batch: batchImages.map(({ hash }) => hash),
-            },
+          setEditImages({
+            tags: collectTags(batchImages),
+            batch: batchImages.map(({ hash }) => hash),
           });
           break;
         }
