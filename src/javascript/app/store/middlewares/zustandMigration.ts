@@ -23,11 +23,11 @@ import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
 import type { ConfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
-import type { StorageSyncStartAction } from '../../../../types/actions/LogActions';
 import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
 import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 import type { DropboxLastUpdateAction, DropboxSettingsImportAction } from '../../../../types/actions/StorageActions';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
+import { gitStorageTool } from '../../../tools/gitStorage';
 
 export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const {
@@ -97,6 +97,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   });
 
   dropboxStorageTool(store);
+  gitStorageTool(store);
 
   return (next) => (
     action:
@@ -117,7 +118,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       PaletteUpdateAction |
       PrinterRemoteCallAction |
       RehashImageAction |
-      StorageSyncStartAction |
       UpdateFrameAction,
   ) => {
     switch (action.type) {
