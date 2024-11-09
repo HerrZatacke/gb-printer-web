@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import useSettingsStore from '../../stores/settingsStore';
 import getFrameGroups from '../../../tools/getFrameGroups';
+import { importExportSettings } from '../../../tools/importExportSettings';
+import { compressAndHashFrame, loadFrameData, saveFrameData } from '../../../tools/applyFrame/frameData';
+import { padFrameData } from '../../../tools/saveLocalStorageItems';
 import { Actions } from '../../store/actions';
 import type { FrameGroup } from '../../../../types/FrameGroup';
 import type { FrameGroupNamesAction } from '../../../../types/actions/FrameActions';
-import type { State } from '../../store/State';
+import type { State, TypedStore } from '../../store/State';
 import type { Frame } from '../../../../types/Frame';
-import type { ExportJSONAction } from '../../../../types/actions/StorageActions';
 import type { ExportTypes } from '../../../consts/exportTypes';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { compressAndHashFrame, loadFrameData, saveFrameData } from '../../../tools/applyFrame/frameData';
-import { padFrameData } from '../../../tools/saveLocalStorageItems';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   const group = groups.find(({ id }) => id === byId);
@@ -38,6 +38,8 @@ interface UseFrames {
 const useFrames = (): UseFrames => {
   const dispatch = useDispatch();
   const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
+  const store: TypedStore = useStore();
+  const { downloadSettings } = importExportSettings(store);
 
   const {
     frames,
@@ -77,13 +79,7 @@ const useFrames = (): UseFrames => {
     });
   };
 
-  const exportJson = (what: ExportTypes) => {
-    dispatch<ExportJSONAction>({
-      type: Actions.JSON_EXPORT,
-      payload: what,
-      selectedFrameGroup,
-    });
-  };
+  const exportJson = (what: ExportTypes) => downloadSettings(what, selectedFrameGroup);
 
   const convertFormat = async () => {
     const updatedFrames = await Promise.all(frames.map(async (frame): Promise<Frame> => {

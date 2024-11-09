@@ -1,10 +1,11 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
+import { importExportSettings } from '../../../tools/importExportSettings';
+import useInteractionsStore from '../../stores/interactionsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import { Actions } from '../../store/actions';
-import type { ExportJSONAction } from '../../../../types/actions/StorageActions';
 import type { ExportTypes } from '../../../consts/exportTypes';
 import type { ImportFilesAction } from '../../../../types/actions/ImportActions';
-import useInteractionsStore from '../../stores/interactionsStore';
+import type { TypedStore } from '../../store/State';
 
 interface UseImport {
   printerUrl?: string,
@@ -17,6 +18,8 @@ interface UseImport {
 export const useImport = (): UseImport => {
   const { printerUrl } = useSettingsStore();
   const { printerFunctions } = useInteractionsStore();
+  const store: TypedStore = useStore();
+  const { downloadSettings } = importExportSettings(store);
 
   const fullPrinterUrl = printerUrl ? `${printerUrl}remote.html` : undefined;
   const printerConnected = printerFunctions.length > 0;
@@ -45,11 +48,6 @@ export const useImport = (): UseImport => {
         payload: { files },
       });
     },
-    exportJson: (what: ExportTypes) => {
-      dispatch<ExportJSONAction>({
-        type: Actions.JSON_EXPORT,
-        payload: what,
-      });
-    },
+    exportJson: (what: ExportTypes) => downloadSettings(what),
   };
 };

@@ -1,24 +1,19 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useStore } from 'react-redux';
+import { importExportSettings } from '../../../../../tools/importExportSettings';
 import useStoragePersist from './useStoragePersist';
 import useHashCleanup from '../../../../../tools/hashCleanup';
-import { Actions } from '../../../../store/actions';
-import type { ExportJSONAction } from '../../../../../../types/actions/StorageActions';
 import { ExportTypes } from '../../../../../consts/exportTypes';
+import type { TypedStore } from '../../../../store/State';
 import { useImageGroups } from '../../../../../hooks/useImageGroups';
 
 function ExportSettings() {
-  const dispatch = useDispatch();
   const { hashCleanup, cleanupBusy } = useHashCleanup();
+  const store: TypedStore = useStore();
+  const { downloadSettings } = importExportSettings(store);
 
   const { resetGroups } = useImageGroups();
-
-  const exportJson = (what: ExportTypes) => {
-    dispatch<ExportJSONAction>({
-      type: Actions.JSON_EXPORT,
-      payload: what,
-    });
-  };
+  const exportJson = (what: ExportTypes) => downloadSettings(what);
 
   const {
     persistAPIAvailable,

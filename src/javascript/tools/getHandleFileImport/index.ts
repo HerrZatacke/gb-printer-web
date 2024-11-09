@@ -1,5 +1,5 @@
 import getTransformSav from '../transformSav';
-import getImportJSON from '../importJSON';
+import { getImportJSON } from '../importExportSettings/getImportJSON';
 import { transformBin } from '../transformBin';
 import { transformRom } from '../transformRom';
 import { transformReduced } from '../transformReduced';
