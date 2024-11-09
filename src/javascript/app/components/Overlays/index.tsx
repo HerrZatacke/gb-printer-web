@@ -1,6 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
+import useImportsStore from '../../stores/importsStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import ProgressLogBox from './ProgressLogBox';
 import ProgressBox from './ProgressBox';
@@ -22,9 +25,6 @@ import FrameQueue from './FrameQueue';
 import Trashbin from './Trashbin';
 import PickColors from './PickColors';
 import type { State } from '../../store/State';
-import useImportsStore from '../../stores/importsStore';
-import useDialogsStore from '../../stores/dialogsStore';
-import useEditStore from '../../stores/editStore';
 
 function Overlays() {
   const {
