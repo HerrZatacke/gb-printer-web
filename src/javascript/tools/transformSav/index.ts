@@ -1,6 +1,6 @@
 import getFrameGroups from '../getFrameGroups';
+import useDialogsStore from '../../app/stores/dialogsStore';
 import useSettingsStore from '../../app/stores/settingsStore';
-import { Actions } from '../../app/store/actions';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
 import type { TypedStore } from '../../app/store/State';
@@ -10,12 +10,12 @@ import type { DialogOption,
 import {
   DialoqQuestionType,
 } from '../../../types/Dialog';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../types/actions/ConfirmActions';
 import { reduceItems } from '../reduceArray';
 
 const getTransformSav = (
-  { getState, dispatch }: TypedStore,
+  { getState }: TypedStore,
 ) => async (file: File, skipDialogs: boolean): Promise<boolean> => {
+  const { dismissDialog, setDialog } = useDialogsStore();
   const { savFrameTypes, setSavFrameTypes } = useSettingsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
@@ -59,41 +59,33 @@ const getTransformSav = (
   }
 
   return new Promise(((resolve) => {
-    dispatch<ConfirmAskAction>({
-      type: Actions.CONFIRM_ASK,
-      payload: {
-        message: `Importing '${file.name}'`,
-        questions: () => ([
-          {
-            type: DialoqQuestionType.CHECKBOX,
-            label: 'Import is from a Japanese Cart (PocketCamera)',
-            key: 'cartIsJP',
-          },
-          frameGroupOptions.length > 1 ? {
-            type: DialoqQuestionType.SELECT,
-            label: 'Select frame group to use with this import',
-            key: 'chosenFrameset',
-            options: frameGroupOptions,
-          } : undefined,
-        ].reduce(reduceItems<DialogQuestion>, [])),
-        confirm: async (result: DialogResult): Promise<void> => {
-          const { chosenFrameset, cartIsJP } = result as { chosenFrameset: string, cartIsJP: boolean };
-          dispatch<ConfirmAnsweredAction>({
-            type: Actions.CONFIRM_ANSWERED,
-          });
-
-          setSavFrameTypes(chosenFrameset);
-
-          // Perform actual import action
-          await importSav(chosenFrameset || '', Boolean(cartIsJP));
-          resolve(true);
+    setDialog({
+      message: `Importing '${file.name}'`,
+      questions: () => ([
+        {
+          type: DialoqQuestionType.CHECKBOX,
+          label: 'Import is from a Japanese Cart (PocketCamera)',
+          key: 'cartIsJP',
         },
-        deny: async () => {
-          dispatch<ConfirmAnsweredAction>({
-            type: Actions.CONFIRM_ANSWERED,
-          });
-          resolve(true);
-        },
+        frameGroupOptions.length > 1 ? {
+          type: DialoqQuestionType.SELECT,
+          label: 'Select frame group to use with this import',
+          key: 'chosenFrameset',
+          options: frameGroupOptions,
+        } : undefined,
+      ].reduce(reduceItems<DialogQuestion>, [])),
+      confirm: async (result: DialogResult): Promise<void> => {
+        const { chosenFrameset, cartIsJP } = result as { chosenFrameset: string, cartIsJP: boolean };
+        dismissDialog(0);
+        setSavFrameTypes(chosenFrameset);
+
+        // Perform actual import action
+        await importSav(chosenFrameset || '', Boolean(cartIsJP));
+        resolve(true);
+      },
+      deny: async () => {
+        dismissDialog(0);
+        resolve(true);
       },
     });
   }));

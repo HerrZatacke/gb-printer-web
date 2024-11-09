@@ -1,5 +1,6 @@
 import unique from '../../../tools/unique';
 import { Actions } from '../actions';
+import useDialogsStore from '../../stores/dialogsStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
@@ -8,7 +9,6 @@ import type { DeleteImagesAction,
   DownloadImageSelectionAction,
   EditImageSelectionAction,
   StartCreateRGBImagesAction } from '../../../../types/actions/ImageActions';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 
@@ -18,7 +18,9 @@ const collectTags = (batchImages: Image[]): string[] => (
 );
 
 const batch: MiddlewareWithState = (store) => (next) => (action) => {
+  const { dismissDialog, setDialog } = useDialogsStore.getState();
   const { imageSelection } = useFiltersStore.getState();
+  const { setVideoSelection } = useInteractionsStore.getState();
 
   if (action.type === Actions.BATCH_TASK) {
     const { images } = store.getState();
@@ -31,29 +33,22 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
     if (imageSelection.length) {
       switch (action.payload as BatchActionType) {
         case BatchActionType.DELETE: {
-          store.dispatch<ConfirmAskAction>({
-            type: Actions.CONFIRM_ASK,
-            payload: {
-              message: `Delete ${imageSelection.length} images?`,
-              confirm: async () => {
-                store.dispatch<DeleteImagesAction>({
-                  type: Actions.DELETE_IMAGES,
-                  payload: imageSelection,
-                });
-              },
-              deny: async () => {
-                store.dispatch<ConfirmAnsweredAction>({
-                  type: Actions.CONFIRM_ANSWERED,
-                });
-              },
+          setDialog({
+            message: `Delete ${imageSelection.length} images?`,
+            confirm: async () => {
+              store.dispatch<DeleteImagesAction>({
+                type: Actions.DELETE_IMAGES,
+                payload: imageSelection,
+              });
             },
+            deny: async () => dismissDialog(0),
           });
 
           break;
         }
 
         case BatchActionType.ANIMATE: {
-          useInteractionsStore.getState().setVideoSelection(imageSelection);
+          setVideoSelection(imageSelection);
           break;
         }
 

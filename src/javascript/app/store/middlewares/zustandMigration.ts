@@ -21,14 +21,16 @@ import type {
 } from '../../../../types/actions/FrameActions';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
-import type { ConfirmAnsweredAction } from '../../../../types/actions/ConfirmActions';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
 import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../tools/gitStorage';
+import useDialogsStore from '../../stores/dialogsStore';
 
 export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
+  const { dismissDialog } = useDialogsStore.getState();
+
   const {
     updateImageSelection,
     setImageSelection,
@@ -102,7 +104,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     action:
       AddFrameAction |
       AddImagesAction |
-      ConfirmAnsweredAction |
       DeleteFrameAction |
       DeleteImageAction |
       DeleteImagesAction |
@@ -157,11 +158,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         importQueueCancel();
         break;
 
-      case Actions.CONFIRM_ANSWERED:
-        setProgress('printer', 0);
-        setPrinterBusy(false);
-        break;
-
       default:
         break;
     }
@@ -174,6 +170,20 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         }
 
         break;
+      default:
+        break;
+    }
+
+    switch (action.type) {
+      case Actions.ADD_FRAME:
+      case Actions.ADD_IMAGES:
+      case Actions.DELETE_IMAGE:
+      case Actions.DELETE_IMAGES:
+      case Actions.DELETE_FRAME:
+      case Actions.PALETTE_DELETE:
+        dismissDialog(0);
+        break;
+
       default:
         break;
     }

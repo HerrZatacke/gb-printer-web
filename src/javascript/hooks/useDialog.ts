@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import type { State } from '../app/store/State';
+import useDialogsStore from '../app/stores/dialogsStore';
 import type { Dialog,
   DialogQuestion,
   DialogQuestionSelect,
@@ -63,7 +62,8 @@ const getInitialValues = (questions?: (values: DialogResult) => DialogQuestion[]
 };
 
 const useDialog = (): UseDialog => {
-  const dialog: Dialog = useSelector((state: State) => (state.confirm[0]));
+  const { dialogs } = useDialogsStore();
+  const dialog: Dialog = dialogs[0];
   const {
     questions,
   } = dialog;

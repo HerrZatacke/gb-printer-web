@@ -23,23 +23,26 @@ import Trashbin from './Trashbin';
 import PickColors from './PickColors';
 import type { State } from '../../store/State';
 import useImportsStore from '../../stores/importsStore';
+import useDialogsStore from '../../stores/dialogsStore';
 
 function Overlays() {
   const {
-    showConfirm,
     showEditForm,
     showEditFrame,
     showEditPalette,
     showEditRGBN,
     showPickColors,
   } = useSelector((state: State) => ({
-    showConfirm: !!state.confirm.length,
     showEditForm: !!state.editImage?.batch?.length,
     showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette,
     showEditRGBN: state.editRGBNImages.length > 0,
     showPickColors: !!state.pickColors,
   }));
+
+  const { dialogs } = useDialogsStore();
+
+  const showConfirm = !!dialogs.length;
 
   const {
     filtersVisible: showFilters,

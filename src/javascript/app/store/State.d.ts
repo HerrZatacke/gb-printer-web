@@ -1,5 +1,4 @@
 import type { Dispatch, MiddlewareAPI } from 'redux';
-import type { Dialog } from '../../../types/Dialog';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
@@ -9,7 +8,6 @@ import type { PickColors } from '../../../types/PickColors';
 
 // ToDo: infer from store somehow...?
 export interface State {
-  confirm: Dialog[],
   editImage: CurrentEditBatch | null,
   editFrame: string | null,
   editPalette: Palette | null,

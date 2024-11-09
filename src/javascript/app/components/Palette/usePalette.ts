@@ -5,7 +5,7 @@ import type {
   PaletteDeleteAction,
   PaletteEditAction,
 } from '../../../../types/actions/PaletteActions';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import useDialogsStore from '../../stores/dialogsStore';
 import useSettingsStore from '../../stores/settingsStore';
 
 interface UsePalette {
@@ -18,33 +18,28 @@ interface UsePalette {
 
 export const usePalette = (shortName: string, name: string): UsePalette => {
   const { activePalette, setActivePalette } = useSettingsStore();
+  const { dismissDialog, setDialog } = useDialogsStore();
   const isActive = activePalette === shortName;
   const dispatch = useDispatch();
+
 
   return {
     isActive,
     setActive: () => setActivePalette(shortName),
     deletePalette: () => {
-      dispatch<ConfirmAskAction>({
-        type: Actions.CONFIRM_ASK,
-        payload: {
-          message: `Delete palette "${name || 'no name'}"?`,
-          confirm: async () => {
-            if (isActive) {
-              setActivePalette('dsh');
-            }
+      setDialog({
+        message: `Delete palette "${name || 'no name'}"?`,
+        confirm: async () => {
+          if (isActive) {
+            setActivePalette('dsh');
+          }
 
-            dispatch<PaletteDeleteAction>({
-              type: Actions.PALETTE_DELETE,
-              payload: shortName,
-            });
-          },
-          deny: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-          },
+          dispatch<PaletteDeleteAction>({
+            type: Actions.PALETTE_DELETE,
+            payload: shortName,
+          });
         },
+        deny: async () => dismissDialog(0),
       });
     },
     editPalette: () => {

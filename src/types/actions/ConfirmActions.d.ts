@@ -1,10 +1,4 @@
 import type { Actions } from '../../javascript/app/store/actions';
-import type { Dialog } from '../Dialog';
-
-export interface ConfirmAskAction {
-  type: Actions.CONFIRM_ASK,
-  payload: Dialog,
-}
 
 export interface ConfirmAction {
   type:
@@ -13,8 +7,4 @@ export interface ConfirmAction {
     Actions.DELETE_IMAGE |
     Actions.DELETE_IMAGES |
     Actions.PALETTE_DELETE,
-}
-
-export interface ConfirmAnsweredAction {
-  type: Actions.CONFIRM_ANSWERED,
 }
