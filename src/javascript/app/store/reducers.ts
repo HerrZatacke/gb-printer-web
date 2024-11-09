@@ -6,12 +6,13 @@ import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
+import type { PickColors } from '../../../types/PickColors';
 import type { Plugin } from '../../../types/Plugin';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import confirm from './reducers/confirmReducer';
-import editImage from './reducers/editImageReducer';
 import editImageGroup from './reducers/editImageGroupReducer';
 import editFrame from './reducers/editFrameReducer';
+import editImage from './reducers/editImageReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
 import frameGroupNames from './reducers/frameGroupNamesReducer';
@@ -24,9 +25,9 @@ import plugins from './reducers/pluginsReducer';
 
 export interface Reducers extends ReducersMapObject {
   confirm: Reducer<Dialog[]>,
-  editImage: Reducer<CurrentEditBatch | null>,
   editImageGroup: Reducer<EditGroupInfo | null>,
   editFrame: Reducer<string | null>,
+  editImage: Reducer<CurrentEditBatch | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
   frameGroupNames: Reducer<FrameGroup[]>,
@@ -34,14 +35,15 @@ export interface Reducers extends ReducersMapObject {
   images: Reducer<Image[]>,
   imageGroups: Reducer<SerializableImageGroup>,
   palettes: Reducer<Palette[]>,
+  pickColors: Reducer<PickColors | null>
   plugins: Reducer<Plugin[]>,
 }
 
 const reducers: ReducersMapObject = {
   confirm,
+  editFrame,
   editImage,
   editImageGroup,
-  editFrame,
   editPalette,
   editRGBNImages,
   frameGroupNames,
