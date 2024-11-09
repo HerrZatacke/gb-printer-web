@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import objectHash from 'object-hash';
 import useFiltersStore from '../../../stores/filtersStore';
+import useEditStore from '../../../stores/editStore';
 import { Actions } from '../../../store/actions';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
 import { dateFormat } from '../../../defaults';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
 import { randomId } from '../../../../tools/randomId';
-import type { CancelCreateRGBImagesAction, SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
+import type { SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
 import type { State } from '../../../store/State';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
 import type { AddImageGroupAction } from '../../../../../types/actions/GroupActions';
@@ -38,8 +39,8 @@ interface UseEditRGBNImages {
   toggleSingleChannel: (channel: keyof RGBNHashes, hash: string) => void
   setGrouping: (value: RGBGrouping) => void,
   save: () => void,
-  cancelEditRGBN: () => void,
   setCreateGroup: (value: boolean) => void,
+  cancelEditRGBNImages: () => void,
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
@@ -48,8 +49,8 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   const { view } = useGalleryTreeContext();
 
   const { sortBy } = useFiltersStore();
-  const { editRGBNImages, images } = useSelector((state: State) => ({
-    editRGBNImages: state.editRGBNImages,
+  const { editRGBNImages, cancelEditRGBNImages } = useEditStore();
+  const { images } = useSelector((state: State) => ({
     images: state.images,
   }));
 
@@ -212,10 +213,6 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     setGrouping,
     save,
     setCreateGroup,
-    cancelEditRGBN: () => {
-      dispatch<CancelCreateRGBImagesAction>({
-        type: Actions.CANCEL_CREATE_RGB_IMAGES,
-      });
-    },
+    cancelEditRGBNImages,
   };
 };

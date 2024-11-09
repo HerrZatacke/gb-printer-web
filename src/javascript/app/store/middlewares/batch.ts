@@ -1,14 +1,13 @@
 import unique from '../../../tools/unique';
 import { Actions } from '../actions';
 import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
 import type { Image } from '../../../../types/Image';
 import type { DeleteImagesAction,
-  DownloadImageSelectionAction,
-  EditImageSelectionAction,
-  StartCreateRGBImagesAction, BatchTaskAction } from '../../../../types/actions/ImageActions';
+  DownloadImageSelectionAction, EditImageSelectionAction, BatchTaskAction } from '../../../../types/actions/ImageActions';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 
@@ -18,6 +17,7 @@ const collectTags = (batchImages: Image[]): string[] => (
 );
 
 const batch: MiddlewareWithState = (store) => (next) => (action) => {
+  const { setEditRGBNImages } = useEditStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
   const { imageSelection } = useFiltersStore.getState();
   const { setVideoSelection } = useInteractionsStore.getState();
@@ -74,13 +74,9 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
           break;
         }
 
-        case BatchActionType.RGB: {
-          store.dispatch<StartCreateRGBImagesAction>({
-            type: Actions.START_CREATE_RGB_IMAGES,
-            payload: batchImages.reduce(reduceImagesMonochrome, []).map(({ hash }) => hash),
-          });
+        case BatchActionType.RGB:
+          setEditRGBNImages(batchImages.reduce(reduceImagesMonochrome, []).map(({ hash }) => hash));
           break;
-        }
 
         default:
           break;
