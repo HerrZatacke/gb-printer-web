@@ -1,12 +1,11 @@
-import { useDispatch, useStore } from 'react-redux';
-import { Actions } from '../../../store/actions';
+import { useStore } from 'react-redux';
 import type { TypedStore } from '../../../store/State';
 import type { SyncLastUpdate } from '../../../../../types/Sync';
-import type { StorageSyncStartAction } from '../../../../../types/actions/LogActions';
 import useInteractionsStore from '../../../stores/interactionsStore';
 import useSettingsStore from '../../../stores/settingsStore';
-import { dropBoxSyncTool } from '../../../../tools/dropboxStorage/main';
 import useStoragesStore from '../../../stores/storagesStore';
+import { dropboxStorageTool } from '../../../../tools/dropboxStorage';
+import { gitStorageTool } from '../../../../tools/gitStorage';
 
 
 interface UseSyncSelect {
@@ -26,8 +25,6 @@ export const useSyncSelect = (): UseSyncSelect => {
   const { syncLastUpdate } = useSettingsStore();
   const { gitStorage, dropboxStorage } = useStoragesStore();
 
-  const dispatch = useDispatch();
-
   return {
     repoUrl: `https://github.com/${gitStorage.owner}/${gitStorage.repo}/tree/${gitStorage.branch}`,
     dropboxActive: !!(
@@ -46,17 +43,15 @@ export const useSyncSelect = (): UseSyncSelect => {
     syncLastUpdate,
     startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => {
       if (storageType === 'dropbox') {
-        dropBoxSyncTool(store).startSyncData(direction);
+        dropboxStorageTool(store).startSyncData(direction);
       } else if (storageType === 'dropboximages') {
-        dropBoxSyncTool(store).startSyncImages();
+        dropboxStorageTool(store).startSyncImages();
       } else {
-        dispatch<StorageSyncStartAction>({
-          type: Actions.STORAGE_SYNC_START,
-          payload: {
-            storageType,
-            direction,
-          },
-        });
+        if (direction === 'diff') {
+          throw new Error('diff is invalid direction for github sync');
+        }
+
+        gitStorageTool(store).startSyncData(direction);
       }
     },
     cancelSync: () => setSyncSelect(false),

@@ -1,19 +1,23 @@
 import Queue from 'promise-queue';
-import type { AnyAction } from 'redux';
-import useInteractionsStore from '../../../stores/interactionsStore';
-import useSettingsStore from '../../../stores/settingsStore';
-import OctoClient from '../../../../tools/OctoClient';
-import getUploadFiles from '../../../../tools/getUploadFiles';
-import saveLocalStorageItems from '../../../../tools/saveLocalStorageItems';
-import { Actions } from '../../actions';
-import type { AddToQueueFn } from '../../../../../types/Sync';
-import type { TypedStore } from '../../State';
-import type { GitSettingsImportAction } from '../../../../../types/actions/StorageActions';
-import { delay } from '../../../../tools/delay';
-import useStoragesStore from '../../../stores/storagesStore';
+import useInteractionsStore from '../../app/stores/interactionsStore';
+import useSettingsStore from '../../app/stores/settingsStore';
+import useStoragesStore from '../../app/stores/storagesStore';
+import OctoClient from './OctoClient';
+import getUploadFiles from '../getUploadFiles';
+import saveLocalStorageItems from '../saveLocalStorageItems';
+import { delay } from '../delay';
+import { Actions } from '../../app/store/actions';
+import type { AddToQueueFn, GitStorageSettings } from '../../../types/Sync';
+import type { GitSettingsImportAction } from '../../../types/actions/StorageActions';
+import type { TypedStore } from '../../app/store/State';
 
 let octoClient: OctoClient;
 let addToQueue: (who: string) => AddToQueueFn<unknown>;
+
+export interface SyncTool {
+  startSyncData: (direction: 'up' | 'down') => Promise<void>,
+  updateSettings: (gitSettings: GitStorageSettings) => Promise<void >,
+}
 
 export const init = () => {
   const { gitStorage: gitStorageSettings } = useStoragesStore.getState();
@@ -41,21 +45,22 @@ export const init = () => {
 };
 
 
-export const middleware = (store: TypedStore) => async (action: AnyAction) => {
+export const gitSyncTool = (store: TypedStore): SyncTool => {
   const { setProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
   const { syncLastUpdate } = useSettingsStore.getState();
 
-  if (
-    action.type === Actions.STORAGE_SYNC_START &&
-    action.payload.storageType === 'git'
-  ) {
+  const updateSettings = async (gitSettings: GitStorageSettings) => {
+    await octoClient.setOctokit(gitSettings);
+  };
+
+  const startSyncData = async (direction: 'up' | 'down') => {
     setSyncBusy(true);
     setSyncSelect(false);
 
     try {
       const repoContents = await octoClient.getRepoContents();
 
-      switch (action.payload.direction) {
+      switch (direction) {
         case 'up': {
           const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
           const repoTasks = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
@@ -86,8 +91,12 @@ export const middleware = (store: TypedStore) => async (action: AnyAction) => {
       console.error(error);
       useInteractionsStore.getState().setError(error as Error);
     }
+  };
 
-  } else if (action.type === Actions.SET_GIT_STORAGE) {
-    octoClient.setOctokit(action.payload);
-  }
+  useStoragesStore.subscribe((state) => state.gitStorage, updateSettings);
+
+  return {
+    startSyncData,
+    updateSettings,
+  };
 };

@@ -1,7 +1,6 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { ExportTypes } from '../../javascript/consts/exportTypes';
 import type { RepoContents } from '../Export';
-import type { GitStorageSettings } from '../Sync';
 import type { JSONExportState } from '../../javascript/app/store/State';
 
 export interface DropboxSettingsImportAction {
@@ -12,11 +11,6 @@ export interface DropboxSettingsImportAction {
 export interface DropboxLastUpdateAction {
   type: Actions.LAST_UPDATE_DROPBOX_REMOTE,
   payload: number,
-}
-
-export interface GitStorageAction {
-  type: Actions.SET_GIT_STORAGE,
-  payload?: GitStorageSettings
 }
 
 export interface GitSettingsImportAction {

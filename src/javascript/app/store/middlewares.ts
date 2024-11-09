@@ -2,7 +2,6 @@ import { applyMiddleware } from 'redux';
 import batch from './middlewares/batch';
 import batchUpdate from './middlewares/batchUpdate';
 import fileDrop from './middlewares/fileDrop';
-import gitStorage from './middlewares/gitStorage';
 import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
 import pluginsMiddleware from './middlewares/plugins';
@@ -17,7 +16,6 @@ export default applyMiddleware(
   batch,
   batchUpdate,
   fileDrop,
-  gitStorage,
   importFile,
   importMessage,
   pluginsMiddleware,

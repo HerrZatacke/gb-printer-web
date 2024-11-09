@@ -53,7 +53,6 @@ export enum Actions {
   GIT_SETTINGS_IMPORT = 'GIT_SETTINGS_IMPORT',
 
   // Storage (Git + Dropbox)
-  STORAGE_SYNC_START = 'STORAGE_SYNC_START',
   JSON_EXPORT = 'JSON_EXPORT',
   JSON_IMPORT = 'JSON_IMPORT',
 
