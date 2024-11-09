@@ -4,9 +4,10 @@ import useFiltersStore from '../../../stores/filtersStore';
 import { Actions } from '../../../store/actions';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
-import type { CancelCreateRGBImagesAction, SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
+import type { SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
 import type { State } from '../../../store/State';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
+import useEditStore from '../../../stores/editStore';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -29,14 +30,14 @@ interface UseEditRGBNImages {
   toggleSingleChannel: (channel: keyof RGBNHashes, hash: string) => void
   setGrouping: (value: RGBGrouping) => void,
   save: () => void,
-  cancelEditRGBN: () => void,
+  cancelEditRGBNImages: () => void,
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
   const dispatch = useDispatch();
   const { sortBy } = useFiltersStore();
-  const { editRGBNImages, images } = useSelector((state: State) => ({
-    editRGBNImages: state.editRGBNImages,
+  const { editRGBNImages, cancelEditRGBNImages } = useEditStore();
+  const { images } = useSelector((state: State) => ({
     images: state.images,
   }));
 
@@ -169,10 +170,6 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     toggleSingleChannel,
     setGrouping,
     save,
-    cancelEditRGBN: () => {
-      dispatch<CancelCreateRGBImagesAction>({
-        type: Actions.CANCEL_CREATE_RGB_IMAGES,
-      });
-    },
+    cancelEditRGBNImages,
   };
 };

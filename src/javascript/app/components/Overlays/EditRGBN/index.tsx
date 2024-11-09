@@ -54,14 +54,14 @@ function EditRGBN() {
     toggleSingleChannel,
     setGrouping,
     save,
-    cancelEditRGBN,
+    cancelEditRGBNImages,
   } = useEditRGBNImages();
 
   return (
     <Lightbox
       className="edit-rgbn"
       confirm={save}
-      deny={cancelEditRGBN}
+      deny={cancelEditRGBNImages}
       closeOnOverlayClick={false}
       canConfirm={canConfirm && !lengthWarning}
       header="Create RGBN images"

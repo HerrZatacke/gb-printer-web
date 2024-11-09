@@ -11,7 +11,7 @@ import type {
   AddImagesAction,
   RehashImageAction,
   ImageFavouriteAction,
-  ImagesUpdateAction,
+  ImagesUpdateAction, SaveNewRGBImagesAction,
 } from '../../../../types/actions/ImageActions';
 import type {
   AddFrameAction,
@@ -35,6 +35,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const {
     cancelEditFrame,
     cancelEditPalette,
+    cancelEditRGBNImages,
   } = useEditStore.getState();
 
   const {
@@ -122,6 +123,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       PaletteUpdateAction |
       PrinterRemoteCallAction |
       RehashImageAction |
+      SaveNewRGBImagesAction |
       UpdateFrameAction,
   ) => {
     switch (action.type) {
@@ -180,7 +182,9 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.PALETTE_UPDATE:
         cancelEditPalette();
         break;
-
+      case Actions.SAVE_NEW_RGB_IMAGES:
+        cancelEditRGBNImages();
+        break;
 
       default:
         break;

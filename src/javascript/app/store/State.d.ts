@@ -8,7 +8,6 @@ import type { Plugin } from '../../../types/Plugin';
 // ToDo: infer from store somehow...?
 export interface State {
   editImage: CurrentEditBatch | null,
-  editRGBNImages: string[],
   frameGroupNames: FrameGroup[],
   frames: Frame[],
   images: Image[],

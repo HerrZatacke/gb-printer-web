@@ -28,13 +28,6 @@ const definitions: StorePropertyDefault[] = [
     value: null,
   },
   {
-    // hashes used in the RGBN creation dialog
-    key: 'editRGBNImages',
-    saveLocally: true,
-    saveExport: [],
-    value: [],
-  },
-  {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,
