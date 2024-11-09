@@ -1,6 +1,5 @@
 import type { Reducer, ReducersMapObject } from 'redux';
 import { combineReducers } from 'redux';
-import type { Dialog } from '../../../types/Dialog';
 import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
@@ -9,7 +8,6 @@ import type { Palette } from '../../../types/Palette';
 import type { PickColors } from '../../../types/PickColors';
 import type { Plugin } from '../../../types/Plugin';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
-import confirm from './reducers/confirmReducer';
 import editImageGroup from './reducers/editImageGroupReducer';
 import editFrame from './reducers/editFrameReducer';
 import editImage from './reducers/editImageReducer';
@@ -24,7 +22,6 @@ import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
 
 export interface Reducers extends ReducersMapObject {
-  confirm: Reducer<Dialog[]>,
   editImageGroup: Reducer<EditGroupInfo | null>,
   editFrame: Reducer<string | null>,
   editImage: Reducer<CurrentEditBatch | null>,
@@ -40,7 +37,6 @@ export interface Reducers extends ReducersMapObject {
 }
 
 const reducers: ReducersMapObject = {
-  confirm,
   editFrame,
   editImage,
   editImageGroup,

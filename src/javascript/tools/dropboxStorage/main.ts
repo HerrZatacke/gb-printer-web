@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue';
+import useDialogsStore from '../../app/stores/dialogsStore';
 import useFiltersStore from '../../app/stores/filtersStore';
-import useSettingsStore from '../../app/stores/settingsStore';
 import useInteractionsStore from '../../app/stores/interactionsStore';
+import useSettingsStore from '../../app/stores/settingsStore';
 import useStoragesStore from '../../app/stores/storagesStore';
 import DropboxClient from './DropboxClient';
 import getUploadFiles from '../getUploadFiles';
@@ -22,7 +23,6 @@ import type { TypedStore } from '../../app/store/State';
 import type { AddToQueueFn, DBFolderFile, DownloadInfo, DropBoxSettings, UploadFile } from '../../../types/Sync';
 import type { Image } from '../../../types/Image';
 import type { DownloadArrayBuffer } from '../download/types';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../types/actions/ConfirmActions';
 import type { ImagesUpdateAction } from '../../../types/actions/ImageActions';
 import type { RepoContents } from '../../../types/Export';
 
@@ -43,6 +43,7 @@ const recoveryAttempts: string[] = [];
 export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
 
   const { setProgressLog, resetProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+  const { dismissDialog, setDialog } = useDialogsStore.getState();
 
   const queue = new Queue(1, Infinity);
   const addToQueue = (who: string): AddToQueueFn<unknown> => (
@@ -91,32 +92,23 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
         useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdate);
 
         if (lastUpdate > syncLastUpdate?.local) {
-          store.dispatch<ConfirmAskAction>({
-            type: Actions.CONFIRM_ASK,
-            payload: {
-              message: 'There is newer content in your dropbox!',
-              questions: () => [
-                `Your dropbox contains changes from ${dateFormatLocale(dayjs(lastUpdate * 1000), preferredLocale)}`,
-                `Your last local update was ${syncLastUpdate?.local ? (dateFormatLocale(dayjs(syncLastUpdate.local * 1000), preferredLocale)) : 'never'}.`,
-                'Do you want to load the changes?',
-              ]
-                .map((label, index) => ({
-                  label,
-                  key: `info${index}`,
-                  type: DialoqQuestionType.INFO,
-                })),
-              confirm: async () => {
-                store.dispatch<ConfirmAnsweredAction>({
-                  type: Actions.CONFIRM_ANSWERED,
-                });
-                startSyncData('down');
-              },
-              deny: async () => {
-                store.dispatch<ConfirmAnsweredAction>({
-                  type: Actions.CONFIRM_ANSWERED,
-                });
-              },
+          setDialog({
+            message: 'There is newer content in your dropbox!',
+            questions: () => [
+              `Your dropbox contains changes from ${dateFormatLocale(dayjs(lastUpdate * 1000), preferredLocale)}`,
+              `Your last local update was ${syncLastUpdate?.local ? (dateFormatLocale(dayjs(syncLastUpdate.local * 1000), preferredLocale)) : 'never'}.`,
+              'Do you want to load the changes?',
+            ]
+              .map((label, index) => ({
+                label,
+                key: `info${index}`,
+                type: DialoqQuestionType.INFO,
+              })),
+            confirm: async () => {
+              dismissDialog(0);
+              startSyncData('down');
             },
+            deny: async () => dismissDialog(0),
           });
         }
 

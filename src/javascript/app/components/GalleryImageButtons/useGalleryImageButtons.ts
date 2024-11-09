@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../store/actions';
+import useDialogsStore from '../../stores/dialogsStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
@@ -11,7 +12,6 @@ import type {
   ImageFavouriteAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import { canShare } from '../../../tools/canShare';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 
@@ -57,6 +57,7 @@ export const useGalleryImageButtons = (
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
+  const { dismissDialog, setDialog } = useDialogsStore();
 
   const isSelected = imageSelection.includes(hash);
   const { hasPlugins, stateImages } = useSelector((state: State) => ({
@@ -77,24 +78,16 @@ export const useGalleryImageButtons = (
       });
     },
     deleteImage: () => {
-      dispatch<ConfirmAskAction>({
-        type: Actions.CONFIRM_ASK,
-        payload: {
-          message: imageTitle ? `Delete image "${imageTitle}"?` : 'Delete this image?',
-          confirm: async () => {
-            dispatch<DeleteImageAction>({
-              type: Actions.DELETE_IMAGE,
-              payload: hash,
-            });
-          },
-          deny: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-          },
+      setDialog({
+        message: imageTitle ? `Delete image "${imageTitle}"?` : 'Delete this image?',
+        confirm: async () => {
+          dispatch<DeleteImageAction>({
+            type: Actions.DELETE_IMAGE,
+            payload: hash,
+          });
         },
+        deny: async () => dismissDialog(0),
       });
-
     },
     shareImage: () => {
       dispatch<ShareImageStartAction>({

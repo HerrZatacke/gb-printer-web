@@ -1,9 +1,9 @@
 import { Actions } from '../actions';
+import useDialogsStore from '../../stores/dialogsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import type { NamedFile, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import type { ImportFilesAction } from '../../../../types/actions/ImportActions';
 import { PrinterFunction } from '../../../consts/printerFunction';
 
@@ -13,6 +13,7 @@ const importMessage: MiddlewareWithState = (store) => {
   let remotePrinterWindow: Window | null;
 
   const { setProgress, setPrinterFunctions, setPrinterBusy, setPrinterData } = useInteractionsStore.getState();
+  const { dismissDialog, setDialog } = useDialogsStore.getState();
 
   window.addEventListener('message', (event: MessageEvent<RemotePrinterEvent>) => {
     const { printerUrl } = useSettingsStore.getState();
@@ -114,17 +115,12 @@ const importMessage: MiddlewareWithState = (store) => {
           },
         });
       } else {
-        store.dispatch<ConfirmAskAction>({
-          type: Actions.CONFIRM_ASK,
-          payload: {
-            message: 'No valid files received from WiFi-Printer',
-            confirm: async () => {
-              store.dispatch<ConfirmAnsweredAction>({
-                type: Actions.CONFIRM_ANSWERED,
-              });
-              setPrinterBusy(false);
-              setPrinterData(null);
-            },
+        setDialog({
+          message: 'No valid files received from WiFi-Printer',
+          confirm: async () => {
+            dismissDialog(0);
+            setPrinterBusy(false);
+            setPrinterData(null);
           },
         });
       }

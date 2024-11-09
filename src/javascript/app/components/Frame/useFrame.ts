@@ -4,10 +4,10 @@ import { Actions } from '../../store/actions';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
 import type { State } from '../../store/State';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import type { DeleteFrameAction, EditFrameAction } from '../../../../types/actions/FrameActions';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import useSettingsStore from '../../stores/settingsStore';
+import useDialogsStore from '../../stores/dialogsStore';
 
 
 interface GetTilesParams {
@@ -43,6 +43,7 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const [imageStartLine, setImageStartLine] = useState<number>(2);
 
   const { enableDebug } = useSettingsStore();
+  const { dismissDialog, setDialog } = useDialogsStore();
 
   const {
     frameHash,
@@ -79,22 +80,15 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
     usage,
     setTiles,
     deleteFrame: () => {
-      dispatch<ConfirmAskAction>({
-        type: Actions.CONFIRM_ASK,
-        payload: {
-          message: `Delete frame "${name}" (${frameId})?`,
-          confirm: async () => {
-            dispatch<DeleteFrameAction>({
-              type: Actions.DELETE_FRAME,
-              payload: frameId,
-            });
-          },
-          deny: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-          },
+      setDialog({
+        message: `Delete frame "${name}" (${frameId})?`,
+        confirm: async () => {
+          dispatch<DeleteFrameAction>({
+            type: Actions.DELETE_FRAME,
+            payload: frameId,
+          });
         },
+        deny: async () => dismissDialog(0),
       });
     },
     editFrame: () => {

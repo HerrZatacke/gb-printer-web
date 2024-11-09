@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../types/actions/ConfirmActions';
+import useDialogsStore from '../app/stores/dialogsStore';
 import type {
   SetImageGroupsAction,
   DeleteImageGroupAction,
@@ -21,32 +21,26 @@ interface UseImageGroups {
 export const useImageGroups = (): UseImageGroups => {
   const { view } = useGalleryTreeContext();
   const dispatch = useDispatch();
+  const { dismissDialog, setDialog } = useDialogsStore();
 
   return {
     resetGroups: () => {
-      dispatch<ConfirmAskAction>({
-        type: Actions.CONFIRM_ASK,
-        payload: {
-          message: 'Reset image groups?',
-          questions: () => [{
-            key: 'info',
-            type: DialoqQuestionType.INFO,
-            label: 'This will remove ALL your created groups and all existing images will be moved to the top level.',
-          }],
-          confirm: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-            dispatch<SetImageGroupsAction>({
-              type: Actions.SET_IMAGE_GROUPS,
-              payload: [],
-            });
-          },
-          deny: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-          },
+      setDialog({
+        message: 'Reset image groups?',
+        questions: () => [{
+          key: 'info',
+          type: DialoqQuestionType.INFO,
+          label: 'This will remove ALL your created groups and all existing images will be moved to the top level.',
+        }],
+        confirm: async () => {
+          dismissDialog(0);
+          dispatch<SetImageGroupsAction>({
+            type: Actions.SET_IMAGE_GROUPS,
+            payload: [],
+          });
+        },
+        deny: async () => {
+          dismissDialog(0);
         },
       });
     },
@@ -74,29 +68,22 @@ export const useImageGroups = (): UseImageGroups => {
         return;
       }
 
-      dispatch<ConfirmAskAction>({
-        type: Actions.CONFIRM_ASK,
-        payload: {
-          message: 'Delete image group?',
-          questions: () => [{
-            key: 'info',
-            type: DialoqQuestionType.INFO,
-            label: `This will delete this group "${deleteGroup.title || deleteGroup.slug}" and move all children (images & groups) to the current level.`,
-          }],
-          confirm: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-            dispatch<DeleteImageGroupAction>({
-              type: Actions.DELETE_IMAGE_GROUP,
-              payload: id,
-            });
-          },
-          deny: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-          },
+      setDialog({
+        message: 'Delete image group?',
+        questions: () => [{
+          key: 'info',
+          type: DialoqQuestionType.INFO,
+          label: `This will delete this group "${deleteGroup.title || deleteGroup.slug}" and move all children (images & groups) to the current level.`,
+        }],
+        confirm: async () => {
+          dismissDialog(0);
+          dispatch<DeleteImageGroupAction>({
+            type: Actions.DELETE_IMAGE_GROUP,
+            payload: id,
+          });
+        },
+        deny: async () => {
+          dismissDialog(0);
         },
       });
     },

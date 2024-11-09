@@ -25,12 +25,12 @@ import Trashbin from './Trashbin';
 import PickColors from './PickColors';
 import type { State } from '../../store/State';
 import useImportsStore from '../../stores/importsStore';
+import useDialogsStore from '../../stores/dialogsStore';
 
 function Overlays() {
   const { enableImageGroups } = useSettingsStore();
 
   const {
-    showConfirm,
     showEditForm,
     showEditImageGroup,
     showEditFrame,
@@ -38,7 +38,6 @@ function Overlays() {
     showEditRGBN,
     showPickColors,
   } = useSelector((state: State) => ({
-    showConfirm: !!state.confirm.length,
     showEditForm: !!state.editImage?.batch?.length,
     showEditImageGroup: !!state.editImageGroup && enableImageGroups,
     showEditFrame: !!state.editFrame,
@@ -46,6 +45,10 @@ function Overlays() {
     showEditRGBN: state.editRGBNImages.length > 0,
     showPickColors: !!state.pickColors,
   }));
+
+  const { dialogs } = useDialogsStore();
+
+  const showConfirm = !!dialogs.length;
 
   const {
     filtersVisible: showFilters,

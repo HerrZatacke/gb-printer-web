@@ -1,5 +1,4 @@
 import type { Dispatch, MiddlewareAPI } from 'redux';
-import type { Dialog } from '../../../types/Dialog';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import type { Palette } from '../../../types/Palette';
@@ -11,7 +10,6 @@ import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 
 // ToDo: infer from store somehow...?
 export interface State {
-  confirm: Dialog[],
   editImage: CurrentEditBatch | null,
   editImageGroup: EditGroupInfo | null,
   editFrame: string | null,
