@@ -33,7 +33,8 @@ const useNavigation = (): UseNavigation => {
   );
 
   const { syncBusy, setSyncSelect, setShowSerials } = useInteractionsStore();
-  const { useSerials, syncLastUpdate } = useSettingsStore();
+  const { useSerials } = useSettingsStore();
+  const { syncLastUpdate } = useStoragesStore();
   const disableSerials = !WebUSBSerial.enabled && !WebSerial.enabled;
 
   return {

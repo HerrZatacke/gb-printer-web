@@ -3,7 +3,7 @@ import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState'
 import useFiltersStore, { ImageSelectionMode } from '../../stores/filtersStore';
 import useImportsStore from '../../stores/importsStore';
 import useInteractionsStore from '../../stores/interactionsStore';
-import useSettingsStore from '../../stores/settingsStore';
+import useStoragesStore from '../../stores/storagesStore';
 import { Actions } from '../actions';
 import type {
   DeleteImageAction,
@@ -25,7 +25,6 @@ import type { ConfirmAnsweredAction } from '../../../../types/actions/ConfirmAct
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
 import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
-import type { DropboxLastUpdateAction, DropboxSettingsImportAction } from '../../../../types/actions/StorageActions';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../tools/gitStorage';
 
@@ -54,7 +53,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
   const {
     setSyncLastUpdate,
-  } = useSettingsStore.getState();
+  } = useStoragesStore.getState();
 
   checkUpdateTrashCount(store.getState());
 
@@ -107,8 +106,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       DeleteFrameAction |
       DeleteImageAction |
       DeleteImagesAction |
-      DropboxLastUpdateAction |
-      DropboxSettingsImportAction |
       FrameGroupNamesAction |
       GlobalUpdateAction |
       ImageFavouriteAction |
@@ -182,20 +179,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     }
 
     switch (action.type) {
-      case Actions.LAST_UPDATE_DROPBOX_REMOTE:
-        setSyncLastUpdate('dropbox', action.payload);
-        break;
-      case Actions.DROPBOX_SETTINGS_IMPORT: {
-        if (action.payload?.state.lastUpdateUTC) {
-          setSyncLastUpdate('dropbox', action.payload?.state.lastUpdateUTC);
-        }
-
-        if (action.payload?.state.lastUpdateUTC) {
-          setSyncLastUpdate('local', action.payload?.state.lastUpdateUTC);
-        }
-
-        break;
-      }
 
       // ToDo: check for more action types which cause syncable data to be updated
       case Actions.REHASH_IMAGE:

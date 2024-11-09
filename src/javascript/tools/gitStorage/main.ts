@@ -47,7 +47,7 @@ export const init = () => {
 
 export const gitSyncTool = (store: TypedStore): SyncTool => {
   const { setProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
-  const { syncLastUpdate } = useSettingsStore.getState();
+  const { syncLastUpdate } = useStoragesStore.getState();
 
   const updateSettings = async (gitSettings: GitStorageSettings) => {
     await octoClient.setOctokit(gitSettings);
