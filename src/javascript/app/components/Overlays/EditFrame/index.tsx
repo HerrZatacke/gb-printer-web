@@ -5,12 +5,14 @@ import './index.scss';
 import useEditFrame from './useEditFrame';
 import EditFrameForm from './EditFrameForm';
 import type { State } from '../../../store/State';
+import useEditStore from '../../../stores/editStore';
 
 // eslint-disable-next-line
 const EditFrame = () => {
-  const { frame, editId } = useSelector((state: State) => ({
-    frame: state.frames.find(({ id }) => id === state.editFrame),
-    editId: state.editFrame,
+  const { editFrame } = useEditStore();
+
+  const { frame } = useSelector((state: State) => ({
+    frame: state.frames.find(({ id }) => id === editFrame),
   }));
 
   const {
@@ -38,7 +40,7 @@ const EditFrame = () => {
       className="edit-frame"
       confirm={saveFrame}
       canConfirm={formValid}
-      header={frame ? `Editing frame "${updateId}"${updateHead}` : `Error editing '${editId}'`}
+      header={frame ? `Editing frame "${updateId}"${updateHead}` : `Error editing '${editFrame}'`}
       deny={cancelEdit}
     >
       <div
@@ -59,7 +61,7 @@ const EditFrame = () => {
             setFrameName={setFrameName}
           />
         ) : (
-          <p>{ `A frame with the ID '${editId}' does not exist!` }</p>
+          <p>{ `A frame with the ID '${editFrame}' does not exist!` }</p>
         ) }
       </div>
     </Lightbox>

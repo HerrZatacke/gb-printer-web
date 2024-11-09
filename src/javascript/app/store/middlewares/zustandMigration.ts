@@ -27,9 +27,12 @@ import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../tools/gitStorage';
 import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
 
 export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const { dismissDialog } = useDialogsStore.getState();
+
+  const { cancelEditFrame } = useEditStore.getState();
 
   const {
     updateImageSelection,
@@ -136,9 +139,18 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     next(action);
 
     switch (action.type) {
+      case Actions.GLOBAL_UPDATE:
+        checkUpdateTrashCount(store.getState());
+        cancelEditFrame();
+        break;
+      default:
+        break;
+    }
+
+    switch (action.type) {
+      case Actions.GLOBAL_UPDATE:
       case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
-      case Actions.GLOBAL_UPDATE:
       case Actions.REHASH_IMAGE:
       case Actions.DELETE_FRAME:
       case Actions.ADD_FRAME:
@@ -156,6 +168,10 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         setProgress('printer', 0);
         setPrinterBusy(false);
         importQueueCancel();
+        break;
+
+      case Actions.UPDATE_FRAME:
+        cancelEditFrame();
         break;
 
       default:

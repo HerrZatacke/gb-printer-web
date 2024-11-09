@@ -23,14 +23,6 @@ export interface DeleteFrameAction {
   payload: string,
 }
 
-export interface EditFrameAction {
-  type: Actions.EDIT_FRAME,
-  payload: string,
-}
-
-export interface CancelEditFrameAction {
-  type: Actions.CANCEL_EDIT_FRAME,
-}
 
 export interface FrameGroupNamesAction {
   type: Actions.NAME_FRAMEGROUP,

@@ -6,7 +6,6 @@ import type { CurrentEditBatch, Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import type { PickColors } from '../../../types/PickColors';
 import type { Plugin } from '../../../types/Plugin';
-import editFrame from './reducers/editFrameReducer';
 import editImage from './reducers/editImageReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
@@ -18,20 +17,19 @@ import pickColors from './reducers/pickColorsReducer';
 import plugins from './reducers/pluginsReducer';
 
 export interface Reducers extends ReducersMapObject {
-  editFrame: Reducer<string | null>,
   editImage: Reducer<CurrentEditBatch | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
+  pickColors: Reducer<PickColors | null>
+
   frameGroupNames: Reducer<FrameGroup[]>,
   frames: Reducer<Frame[]>,
   images: Reducer<Image[]>,
   palettes: Reducer<Palette[]>,
-  pickColors: Reducer<PickColors | null>
   plugins: Reducer<Plugin[]>,
 }
 
 const reducers: ReducersMapObject = {
-  editFrame,
   editImage,
   editPalette,
   editRGBNImages,
