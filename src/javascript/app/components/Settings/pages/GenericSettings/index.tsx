@@ -19,6 +19,7 @@ import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
 function GenericSettings() {
   const {
     enableDebug,
+    enableImageGroups,
     exportFileTypes,
     exportScaleFactors,
     forceMagicCheck,
@@ -36,6 +37,7 @@ function GenericSettings() {
     changeExportFileTypes,
     changeExportScaleFactors,
     setEnableDebug,
+    setEnableImageGroups,
     setForceMagicCheck,
     setHandleExportFrame,
     setHideDates,
@@ -469,6 +471,34 @@ function GenericSettings() {
             checked={enableDebug}
             onChange={({ target }) => {
               setEnableDebug(target.checked);
+            }}
+          />
+          <SVG name="checkmark" />
+        </span>
+      </label>
+
+      <label
+        className={
+          classnames('inputgroup checkgroup', {
+            'checkgroup--checked': enableImageGroups,
+          })
+        }
+      >
+        <span
+          className="inputgroup__label"
+          title="Enable Image Groups"
+        >
+          Enable Image Groups
+        </span>
+        <span
+          className="checkgroup__checkbox-wrapper"
+        >
+          <input
+            type="checkbox"
+            className="checkgroup__input"
+            checked={enableImageGroups}
+            onChange={({ target }) => {
+              setEnableImageGroups(target.checked);
             }}
           />
           <SVG name="checkmark" />

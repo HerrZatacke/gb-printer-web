@@ -4,7 +4,7 @@ import updateIfDefined from '../../../tools/updateIfDefined';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import type { DeleteImageAction, DeleteImagesAction } from '../../../../types/actions/ImageActions';
 import type { ImageSelectionAddAction, ImageSelectionRemoveAction, ImageSelectionSetAction } from '../../../../types/actions/ImageSelectionActions';
-
+import type { AddImageGroupAction } from '../../../../types/actions/GroupActions';
 
 const imageSelectionReducer = (
   value: string[] = [],
@@ -14,6 +14,7 @@ const imageSelectionReducer = (
     ImageSelectionSetAction |
     DeleteImageAction |
     DeleteImagesAction |
+    AddImageGroupAction |
     GlobalUpdateAction,
 ): string[] => {
   switch (action.type) {
@@ -25,6 +26,7 @@ const imageSelectionReducer = (
     case Actions.IMAGE_SELECTION_SET:
       return action.payload || value;
     case Actions.DELETE_IMAGES:
+    case Actions.ADD_IMAGE_GROUP:
       return [];
     case Actions.GLOBAL_UPDATE:
       return updateIfDefined<string[]>(action.payload?.imageSelection, value);

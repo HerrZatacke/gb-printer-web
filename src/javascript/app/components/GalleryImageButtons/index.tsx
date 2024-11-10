@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import SVG from '../SVG';
 import PluginSelect from '../PluginSelect';
 import { ButtonOption, useGalleryImageButtons } from './useGalleryImageButtons';
+import { useImageGroups } from '../../../hooks/useImageGroups';
+import type { State } from '../../store/State';
 
 import './index.scss';
 
@@ -21,6 +24,8 @@ interface Props {
 function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: Props) {
   const [pluginsActive, setPluginsActive] = useState(false);
 
+  const enableImageGroups = useSelector((state: State) => state.enableImageGroups);
+
   const {
     canShare,
     isSelected,
@@ -33,6 +38,8 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
     updateFavouriteTag,
     editImage,
   } = useGalleryImageButtons({ hash, imageTitle, tags });
+
+  const { createGroup } = useImageGroups();
 
   return (
     <div
@@ -106,8 +113,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
           <button
             type="button"
             className="gallery-image-buttons__button"
-            onClick={(ev) => {
-              ev.stopPropagation();
+            onClick={() => {
               setPluginsActive(true);
             }}
             title="Use Plugin"
@@ -139,6 +145,15 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
           title={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
         >
           {isFavourite ? '❤️' : <SVG name="fav" />}
+        </button>
+      ) : null}
+      {(isSelected && enableImageGroups) ? (
+        <button
+          type="button"
+          className="gallery-image-buttons__button"
+          onClick={() => createGroup(hash, imageTitle)}
+        >
+          <SVG name="file-add" />
         </button>
       ) : null}
     </div>

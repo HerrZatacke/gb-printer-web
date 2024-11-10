@@ -6,26 +6,19 @@ import SVG from '../../SVG';
 import Lightbox from '../../Lightbox';
 import ImageRender from '../../ImageRender';
 import { useLightboxImage } from './useLightboxImage';
+import type { RGBNImage } from '../../../../../types/Image';
 
 import './index.scss';
 
 function LightboxImage() {
   const {
-    title,
+    image,
     isFullscreen,
-    lockFrame,
-    invertPalette,
-    palette,
-    invertFramePalette,
-    framePalette,
-    frame,
-    hash,
-    hashes,
-    lightboxIndex,
+    currentIndex,
     size,
-    created,
     preferredLocale,
-    rotation,
+    canPrev,
+    canNext,
     prev,
     next,
     fullscreen,
@@ -37,50 +30,61 @@ function LightboxImage() {
       className="lightbox-image"
       deny={close}
     >
-      <label className="lightbox-image__title">
-        {title}
-      </label>
-      {isFullscreen ? null : (
+      <h2 className="lightbox-image__header">
+        <span
+          className="lightbox-image__title"
+        >
+          { image?.title }
+        </span>
+        <span
+          className="lightbox-image__counter"
+        >
+          { `${currentIndex + 1}/${size}` }
+        </span>
         <button
           type="button"
-          className="lightbox-image__button lightbox-image__button--fullscreen"
+          className="lightbox-image__button lightbox-image__header-button lightbox-image__button--fullscreen"
           onClick={fullscreen}
+          title={isFullscreen ? 'Leave fullscreen' : 'Enter fullscreen'}
         >
-          <SVG name="fullscreen" />
+          <SVG name={isFullscreen ? 'fullscreen-off' : 'fullscreen-on'} />
         </button>
-      )}
-      <button
-        type="button"
-        className="lightbox-image__button lightbox-image__button--close"
-        onClick={close}
-      >
-        <SVG name="close" />
-      </button>
-      <ImageRender
-        lockFrame={lockFrame}
-        invertPalette={invertPalette}
-        invertFramePalette={invertFramePalette}
-        palette={palette}
-        framePalette={framePalette}
-        frameId={frame}
-        hash={hash}
-        hashes={hashes}
-        rotation={rotation}
-      />
+        <button
+          type="button"
+          className="lightbox-image__button lightbox-image__header-button lightbox-image__button--close"
+          onClick={close}
+          title="Close"
+        >
+          <SVG name="close" />
+        </button>
+      </h2>
+      { image ? (
+        <ImageRender
+          lockFrame={image.lockFrame}
+          invertPalette={image.invertPalette}
+          invertFramePalette={image.invertFramePalette}
+          palette={image.palette}
+          framePalette={image.framePalette}
+          frameId={image.frame}
+          hash={image.hash}
+          hashes={(image as RGBNImage).hashes}
+          rotation={image.rotation}
+        />
+      ) : null }
       <div className="lightbox-image__navigation">
-        {lightboxIndex > 0 ? (
+        {canPrev ? (
           <button
             type="button"
-            className="lightbox-image__button lightbox-image__button--left"
+            className="lightbox-image__button lightbox-image__nav-button lightbox-image__button--left"
             onClick={prev}
           >
             <SVG name="left" />
           </button>
         ) : null}
-        {lightboxIndex < size - 1 ? (
+        {canNext ? (
           <button
             type="button"
-            className="lightbox-image__button lightbox-image__button--right"
+            className="lightbox-image__button lightbox-image__nav-button lightbox-image__button--right"
             onClick={next}
           >
             <SVG name="right" />
@@ -88,7 +92,7 @@ function LightboxImage() {
         ) : null}
       </div>
       <div className="lightbox-image__created">
-        {dateFormatLocale(dayjs(created, dateFormat), preferredLocale)}
+        {dateFormatLocale(dayjs(image?.created, dateFormat), preferredLocale)}
       </div>
     </Lightbox>
   );

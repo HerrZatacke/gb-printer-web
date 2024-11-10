@@ -14,6 +14,7 @@ import type {
   RehashImageAction,
 } from '../../../../types/actions/ImageActions';
 
+const uniqueByHash = uniqueBy<Image>('hash');
 
 const imagesReducer = (
   value: Image[] = [],
@@ -28,7 +29,7 @@ const imagesReducer = (
 ): Image[] => {
   switch (action.type) {
     case Actions.ADD_IMAGES:
-      return uniqueBy<Image>('hash')([...value, ...action.payload]);
+      return uniqueByHash([...value, ...action.payload]);
     case Actions.DELETE_IMAGE:
       return [...value.filter(({ hash }) => hash !== action.payload)];
     case Actions.DELETE_IMAGES:
@@ -58,7 +59,7 @@ const imagesReducer = (
         return value;
       }
 
-      return uniqueBy<Image>('hash')(action.payload?.images || []);
+      return uniqueByHash(action.payload.images || []);
     default:
       return value;
   }

@@ -1,0 +1,69 @@
+.gallery-group {
+  &__link {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    display: block;
+    @include theme-color($color-white, $color-grey-60);
+    overflow-wrap: anywhere;
+  }
+
+  &__info {
+    align-self: flex-end;
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    line-height: 10px;
+    margin-top: 10px;
+    @include theme-color($color-grey-80, $color-grey-40);
+  }
+
+  &__buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  &__button {
+    margin: 0;
+    padding: 8px;
+  }
+
+  &__image {
+    position: relative;
+  }
+
+  &__temp {
+    position: absolute;
+    @include theme-color($color-warn-red, $color-warn-red);
+    @include theme-background-color(rgba($color-white, 0.5), rgba($color-white, 0.5));
+    @include theme-border-color($color-warn-red, $color-warn-red);
+    padding: 4px 8px;
+    font-size: 18px;
+    line-height: 16px;
+    font-weight: bold;
+    border: 2px solid;
+    left: 0;
+    bottom: 0;
+    transform: rotate(25deg);
+
+    .gallery--2x & {
+      font-size: 40px;
+      line-height: 36px;
+    }
+
+    .gallery--max & {
+      font-size: 10vw;
+      line-height: 9.5vw;
+    }
+  }
+}

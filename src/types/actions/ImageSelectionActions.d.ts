@@ -1,9 +1,13 @@
 import type { Actions } from '../../javascript/app/store/actions';
+import type { Image } from '../Image';
 
 export interface ImageSelectionShiftClickAction {
   type: Actions.IMAGE_SELECTION_SHIFTCLICK,
-  payload: string,
-  page: number
+  payload: {
+    hash: string,
+    images: Image[], // list of images which can currently be selected,
+    page: number
+  },
 }
 
 export interface ImageSelectionAddAction {

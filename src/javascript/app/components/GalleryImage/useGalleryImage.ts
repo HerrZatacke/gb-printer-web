@@ -13,6 +13,7 @@ import type {
   ImageSelectionRemoveAction,
   ImageSelectionShiftClickAction,
 } from '../../../../types/actions/ImageSelectionActions';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
 export enum SelectionEditMode {
   ADD = 'add',
@@ -87,6 +88,8 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     });
   });
 
+  const { images } = useGalleryTreeContext();
+
   const dispatch = useDispatch();
 
   return {
@@ -95,8 +98,7 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       if (shift) {
         dispatch<ImageSelectionShiftClickAction>({
           type: Actions.IMAGE_SELECTION_SHIFTCLICK,
-          payload: hash,
-          page,
+          payload: { hash, images, page },
         });
       } else if (mode === SelectionEditMode.ADD) {
         dispatch<ImageSelectionAddAction>({

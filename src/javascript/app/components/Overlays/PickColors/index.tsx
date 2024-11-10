@@ -14,7 +14,7 @@ function PickColors() {
   const state = useSelector((s: State) => s);
   const dispatch = useDispatch();
   const [selected, setSelected] = useState<number[]>([0, 3, 6, 9]);
-  const getPreviewImages = getGetPreviewImages(state);
+  const getPreviewImages = getGetPreviewImages(state, state.images);
   const { pickColors } = state;
 
   const palette = useMemo<string[]>((): string[] => {

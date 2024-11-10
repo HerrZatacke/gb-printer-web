@@ -1,22 +1,4 @@
 .gallery-image {
-  position: relative;
-  padding: var(--tile-padding);
-  border-radius: $default-border-radius;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  user-select: none;
-  max-width: 100%;
-
-  @include theme-background-color($color-grey-50, $color-grey-20);
-
-  .gallery--1x & {
-    max-height: 350px;
-  }
-
-  .gallery--2x & {
-    max-height: 650px;
-  }
 
   &__image {
     display: flex;
@@ -118,18 +100,6 @@
   &__meta-pre:hover {
     z-index: $z-index-hover-image;
     display: block;
-  }
-
-  &:hover{
-    @include theme-background-color($color-grey-60, $color-grey-30);
-  }
-
-  &--selected {
-    @include theme-background-color($color-selected-image, $color-selected-image-dark);
-
-    &:hover {
-      @include theme-background-color($color-selected-image-hover, $color-selected-image-dark-hover);
-    }
   }
 
   &__hash-debug {

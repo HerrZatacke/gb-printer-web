@@ -4,14 +4,16 @@ import filterTags from './filterTags';
 import type { State } from '../../app/store/State';
 import type { Image } from '../../../types/Image';
 
-export type FilteredImagesState = Pick<State, 'imageSelection' | 'images' | 'sortBy' | 'filtersActiveTags' | 'recentImports'>
+export type FilteredImagesState = Pick<State, 'imageSelection' | 'sortBy' | 'filtersActiveTags' | 'recentImports'>
 
-const getFilteredImages = ({
-  images,
-  filtersActiveTags,
-  sortBy,
-  recentImports,
-}: State | FilteredImagesState): Image[] => (
+const getFilteredImages = (
+  {
+    filtersActiveTags,
+    sortBy,
+    recentImports,
+  }: State | FilteredImagesState,
+  images: Image[],
+): Image[] => (
   [...images]
     .map(addSortIndex)
     .sort(sortImages({ sortBy }))

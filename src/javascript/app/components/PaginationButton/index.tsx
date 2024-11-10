@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
+import { useGalleryParams } from '../../../hooks/useGalleryParams';
 
 interface Props {
   children: React.ReactNode,
@@ -11,6 +12,8 @@ interface Props {
 }
 
 function PaginationButton(props: Props) {
+  const { path } = useGalleryParams();
+
   return (
     <li
       className={classNames('gallery-button pagination__button', props.className, {
@@ -19,7 +22,7 @@ function PaginationButton(props: Props) {
     >
       <NavLink
         className="pagination__link"
-        to={`/gallery/page/${props.page + 1}`}
+        to={`/gallery/${path}page/${props.page + 1}`}
         title={props.title}
       >
         {props.children}

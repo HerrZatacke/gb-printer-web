@@ -101,8 +101,8 @@ function GalleryImage({ page, hash }: Props) {
   return (
     <li
       className={
-        classnames('gallery-image', {
-          'gallery-image--selected': isSelected,
+        classnames('gallery-image gallery-item', {
+          'gallery-item--selected': isSelected,
         })
       }
       // eslint-disable-next-line react/jsx-props-no-spreading
