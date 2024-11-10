@@ -52,7 +52,7 @@ function GalleryGroup({ hash }: Props) {
             hashes={hashes}
             rotation={rotation}
           />
-          <div className="gallery-group__temp">GROUP</div>
+          <div className="gallery-group__temp">GROUP 🗁</div>
         </div>
         <p className="gallery-group__info">{ `${group.images.length} images` }</p>
         <p className="gallery-group__title">{ group.title }</p>
