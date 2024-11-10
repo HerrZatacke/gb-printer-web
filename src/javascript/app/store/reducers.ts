@@ -34,6 +34,7 @@ import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
 import enableDebug from './reducers/enableDebugReducer';
+import enableImageGroups from './reducers/enableImageGroupsReducer';
 import errors from './reducers/errorsReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
@@ -96,6 +97,7 @@ export interface Reducers extends ReducersMapObject {
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
   enableDebug: Reducer<boolean>,
+  enableImageGroups: Reducer<boolean>,
   errors: Reducer<ErrorMessage[]>,
   exportFileTypes: Reducer<string[]>,
   exportScaleFactors: Reducer<number[]>,
@@ -158,6 +160,7 @@ const reducers: ReducersMapObject = {
   editPalette,
   editRGBNImages,
   enableDebug,
+  enableImageGroups,
   errors,
   exportFileTypes,
   exportScaleFactors,

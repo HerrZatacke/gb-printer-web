@@ -54,7 +54,7 @@ function Overlays() {
     showImportQueue: !!state.importQueue.length,
     showFrameQueue: !!state.frameQueue.length,
     showEditForm: !!state.editImage?.batch?.length,
-    showEditImageGroup: !!state.editImageGroup,
+    showEditImageGroup: !!state.editImageGroup && state.enableImageGroups,
     showEditFrame: !!state.editFrame,
     showEditPalette: !!state.editPalette,
     showEditRGBN: state.editRGBNImages.length > 0,

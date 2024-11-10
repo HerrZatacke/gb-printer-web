@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -6,6 +7,7 @@ import SVG from '../SVG';
 import PluginSelect from '../PluginSelect';
 import { ButtonOption, useGalleryImageButtons } from './useGalleryImageButtons';
 import { useImageGroups } from '../../../hooks/useImageGroups';
+import type { State } from '../../store/State';
 
 import './index.scss';
 
@@ -21,6 +23,8 @@ interface Props {
 
 function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: Props) {
   const [pluginsActive, setPluginsActive] = useState(false);
+
+  const enableImageGroups = useSelector((state: State) => state.enableImageGroups);
 
   const {
     canShare,
@@ -143,7 +147,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
           {isFavourite ? '❤️' : <SVG name="fav" />}
         </button>
       ) : null}
-      {isSelected ? (
+      {(isSelected && enableImageGroups) ? (
         <button
           type="button"
           className="gallery-image-buttons__button"

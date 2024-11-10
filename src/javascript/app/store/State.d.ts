@@ -37,6 +37,7 @@ export interface State {
   editPalette: Palette | null,
   editRGBNImages: string[],
   enableDebug: boolean,
+  enableImageGroups: boolean,
   errors: ErrorMessage[],
   exportFileTypes: string[],
   exportScaleFactors: number[],

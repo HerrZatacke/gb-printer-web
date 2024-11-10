@@ -11,6 +11,11 @@ export interface EnableDebugAction {
   payload: boolean,
 }
 
+export interface EnableImageGroupsAction {
+  type: Actions.SET_ENABLE_IMAGE_GROUPS,
+  payload: boolean,
+}
+
 export interface FramesMessageHideAction {
   type: Actions.FRAMES_MESSAGE_HIDE
 }

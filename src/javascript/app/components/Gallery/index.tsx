@@ -1,5 +1,6 @@
 import React from 'react';
 import type { CSSPropertiesVars } from 'react';
+import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import GalleryImage from '../GalleryImage';
 import GalleryHeader from '../GalleryHeader';
@@ -11,6 +12,7 @@ import { useGallery } from './useGallery';
 import { GalleryViews } from '../../../consts/GalleryViews';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 import type { ScreenDimensions } from '../../../hooks/useScreenDimensions';
+import type { State } from '../../store/State';
 
 import './index.scss';
 import './gallery-item.scss';
@@ -45,6 +47,8 @@ function Gallery() {
 
   const screenDimensions = useScreenDimensions();
 
+  const enableImageGroups = useSelector((state: State) => state.enableImageGroups);
+
   return (
     <>
       <GalleryIntro
@@ -52,7 +56,9 @@ function Gallery() {
         selectedCount={selectedCount}
         filteredCount={filteredCount}
       />
-      <FolderNavi />
+      { enableImageGroups ? (
+        <FolderNavi />
+      ) : null }
       <GalleryHeader page={page} isSticky />
       <Pagination page={page} />
       <ul

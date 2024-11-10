@@ -96,10 +96,12 @@ const reduceImages = (
 
 export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   const {
+    // enableImageGroups,
     imageGroups,
     stateImages,
   } = useSelector((state: State) => ({
-    imageGroups: state.imageGroups,
+    // enableImageGroups: state.enableImageGroups,
+    imageGroups: state.enableImageGroups ? state.imageGroups : [],
     stateImages: state.images,
   }));
 
