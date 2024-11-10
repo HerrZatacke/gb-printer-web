@@ -1,13 +1,19 @@
 /* eslint-disable default-param-last */
 import { Actions } from '../actions';
-import type { SetLightboxImageAction } from '../../../../types/actions/GlobalActions';
+import type { CloseLightboxAction, LightboxImageSetAction } from '../../../../types/actions/LightboxActions';
 
-const lightboxImageReducer = (value: number | null = null, action: SetLightboxImageAction): number | null => {
+
+const lightboxImageReducer = (
+  value: string | null = null,
+  action: LightboxImageSetAction | CloseLightboxAction,
+): string | null => {
   switch (action.type) {
-    case Actions.SET_LIGHTBOX_IMAGE_INDEX:
-      return action.payload !== undefined ? action.payload : null;
+    case Actions.SET_LIGHTBOX_IMAGE_HASH:
+      return action.payload;
 
-    // on some filters reset this to null?
+    case Actions.CLOSE_LIGHTBOX:
+      return null;
+
     default:
       return value;
   }

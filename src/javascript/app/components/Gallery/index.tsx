@@ -1,17 +1,21 @@
 import React from 'react';
 import type { CSSPropertiesVars } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import GalleryImage from '../GalleryImage';
 import GalleryHeader from '../GalleryHeader';
 import GalleryIntro from '../GalleryIntro';
+import GalleryGroup from '../GalleryGroup';
+import FolderNavi from '../FolderNavi';
+import Pagination from '../Pagination';
 import { useGallery } from './useGallery';
 import { GalleryViews } from '../../../consts/GalleryViews';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 import type { ScreenDimensions } from '../../../hooks/useScreenDimensions';
+import type { State } from '../../store/State';
 
 import './index.scss';
-import Pagination from '../Pagination';
+import './gallery-item.scss';
 
 const getSmallStyleVars = (screenDimensions: ScreenDimensions): CSSPropertiesVars => {
   const smallTilePadding = 10;
@@ -35,17 +39,15 @@ function Gallery() {
     imageCount,
     selectedCount,
     filteredCount,
-    valid,
     page,
     images,
     currentView,
+    covers,
   } = useGallery();
 
   const screenDimensions = useScreenDimensions();
 
-  if (!valid) {
-    return <Navigate to={`/gallery/page/${page + 1}`} replace />;
-  }
+  const enableImageGroups = useSelector((state: State) => state.enableImageGroups);
 
   return (
     <>
@@ -54,6 +56,9 @@ function Gallery() {
         selectedCount={selectedCount}
         filteredCount={filteredCount}
       />
+      { enableImageGroups ? (
+        <FolderNavi />
+      ) : null }
       <GalleryHeader page={page} isSticky />
       <Pagination page={page} />
       <ul
@@ -65,11 +70,18 @@ function Gallery() {
         style={currentView === GalleryViews.GALLERY_VIEW_SMALL ? getSmallStyleVars(screenDimensions) : undefined}
       >
         { images.map((image) => (
-          <GalleryImage
-            key={image.hash}
-            hash={image.hash}
-            page={page}
-          />
+          covers.includes(image.hash) ? (
+            <GalleryGroup
+              key={image.hash}
+              hash={image.hash}
+            />
+          ) : (
+            <GalleryImage
+              key={image.hash}
+              hash={image.hash}
+              page={page}
+            />
+          )
         )) }
       </ul>
       {

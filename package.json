@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.42.11",
+  "version": "1.43.0",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
@@ -44,6 +44,7 @@
     "@types/quantize": "^1.0.2",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.1",
+    "@types/uuid": "^10.0.0",
     "@types/w3c-web-usb": "^1.0.10",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
@@ -120,6 +121,7 @@
     "ufo": "^1.5.4",
     "use-debounce": "^5.2.1",
     "use-long-press": "^3.2.0",
+    "uuid": "^10.0.0",
     "walkdir": "^0.4.1",
     "webpack": "^5.80.0",
     "webpack-bundle-analyzer": "^4.5.0",

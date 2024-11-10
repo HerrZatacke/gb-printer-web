@@ -5,10 +5,13 @@ import useHashCleanup from '../../../../../tools/hashCleanup';
 import { Actions } from '../../../../store/actions';
 import type { ExportJSONAction } from '../../../../../../types/actions/StorageActions';
 import { ExportTypes } from '../../../../../consts/exportTypes';
+import { useImageGroups } from '../../../../../hooks/useImageGroups';
 
 function ExportSettings() {
   const dispatch = useDispatch();
   const { hashCleanup, cleanupBusy } = useHashCleanup();
+
+  const { resetGroups } = useImageGroups();
 
   const exportJson = (what: ExportTypes) => {
     dispatch<ExportJSONAction>({
@@ -35,6 +38,13 @@ function ExportSettings() {
           { persisted ? 'Storage is persistent' : 'Request storage persistence' }
         </button>
       ) : null }
+      <button
+        type="button"
+        className="button"
+        onClick={resetGroups}
+      >
+        Reset image groups
+      </button>
       <button
         type="button"
         className="button"

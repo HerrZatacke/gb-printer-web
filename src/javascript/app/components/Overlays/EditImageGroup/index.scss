@@ -1,0 +1,20 @@
+.edit-image-group {
+  &__content {
+    padding: 0 20px;
+  }
+
+  &__text {
+    font-size: 14px;
+
+    &--error {
+      @include theme-color($color-warn-red, $color-warn-red);
+    }
+  }
+
+
+  .inputgroup {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+  }
+}

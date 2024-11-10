@@ -8,21 +8,21 @@ import { reduceImagesMonochrome } from '../isRGBNImage';
 
 const uniqeHash = uniqueBy<Image>('hash');
 
-const getPreviewImages = (state: State | FilteredImagesState) => (): MonochromeImage[] => {
+const getPreviewImages = (state: State | FilteredImagesState, images: Image[]) => (): MonochromeImage[] => {
 
   const selectedImages = state.imageSelection
     .map((imageHash) => (
-      state.images.find(({ hash }) => hash === imageHash)
+      images.find(({ hash }) => hash === imageHash)
     ))
     .reduce(reduceImagesMonochrome, []);
 
   const filtered = (selectedImages.length > 1) ?
     [] :
-    getFilteredImages(state).reduce(reduceImagesMonochrome, []);
+    getFilteredImages(state, images).reduce(reduceImagesMonochrome, []);
 
   const allImages = ((selectedImages.length + filtered.length) > 1) ?
     [] :
-    [...state.images]
+    [...images]
       .map(addSortIndex)
       .sort(sortImages({ sortBy: state.sortBy }))
       .map(removeSortIndex)

@@ -64,7 +64,7 @@ export const useEditPalette = (): UseEditPalette => {
   const canConfirm = !canEditShortName || shortNameIsValid(newShortName);
 
   const previewImages = useMemo<MonochromeImage[]>(() => (
-    getPreviewImages({ images, imageSelection, sortBy, filtersActiveTags, recentImports })()
+    getPreviewImages({ imageSelection, sortBy, filtersActiveTags, recentImports }, images)()
   ), [filtersActiveTags, imageSelection, images, recentImports, sortBy]);
 
   const dispatch = useDispatch();

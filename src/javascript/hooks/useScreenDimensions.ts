@@ -50,7 +50,7 @@ export const useScreenDimensions = (): ScreenDimensions => {
 
     window.addEventListener('resize', resizeHandler);
     return () => window.removeEventListener('resize', resizeHandler);
-  });
+  }, [setDimensions]);
 
   return dimensions;
 };

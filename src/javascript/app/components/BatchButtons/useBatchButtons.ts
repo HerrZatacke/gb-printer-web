@@ -8,6 +8,7 @@ import type { ShowFiltersAction } from '../../../../types/actions/TagsActions';
 import type { SortOptionsSetAction } from '../../../../types/actions/SortOptionsActions';
 import type { Image, MonochromeImage } from '../../../../types/Image';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
 interface UseBatchButtons {
   hasPlugins: boolean,
@@ -25,8 +26,12 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const state = useSelector((currentState: State) => currentState);
   const dispatch = useDispatch();
 
+  const { view, covers } = useGalleryTreeContext();
+
   const indexOffset = page * state.pageSize;
-  const images: Image[] = getFilteredImages(state).splice(indexOffset, state.pageSize || Infinity);
+  const images: Image[] = getFilteredImages(state, view.images) // take images from current VIEW (including covers)
+    .splice(indexOffset, state.pageSize || Infinity) // use images of the current PAGE
+    .filter((image: Image) => !covers.includes(image.hash)); // And remove covers AFTERWARDS
   const selectedImages = images.filter(({ hash }) => state.imageSelection.includes(hash));
   const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
 
@@ -37,11 +42,14 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     activeFilters: state.filtersActiveTags.length || 0,
     selectedImages: state.imageSelection.length,
     hasSelected: selectedImages.length > 0,
-    batchTask: (action: BatchActionType) => {
+    batchTask: (actionType: BatchActionType) => {
       dispatch<BatchTaskAction>({
         type: Actions.BATCH_TASK,
-        payload: action,
-        page,
+        payload: {
+          actionType,
+          images,
+          page,
+        },
       });
     },
     filter: () => {

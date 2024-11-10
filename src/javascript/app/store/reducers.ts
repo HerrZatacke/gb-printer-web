@@ -6,6 +6,7 @@ import type { TrashCount } from './reducers/trashCountReducer';
 import type { WindowDimensions } from '../../../types/WindowDimensions';
 import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
+import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
@@ -20,6 +21,7 @@ import type { QueueImage } from '../../../types/QueueImage';
 import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
 import type { PaletteSortMode } from '../../consts/paletteSortModes';
+import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import activePalette from './reducers/activePaletteReducer';
 import bitmapQueue from './reducers/bitmapQueueReducer';
 import canShare from './reducers/canShareReducer';
@@ -27,10 +29,12 @@ import confirm from './reducers/confirmReducer';
 import dragover from './reducers/dragoverReducer';
 import dropboxStorage from './reducers/dropboxStorageReducer';
 import editImage from './reducers/editImageReducer';
+import editImageGroup from './reducers/editImageGroupReducer';
 import editFrame from './reducers/editFrameReducer';
 import editPalette from './reducers/editPaletteReducer';
 import editRGBNImages from './reducers/editRGBNImagesReducer';
 import enableDebug from './reducers/enableDebugReducer';
+import enableImageGroups from './reducers/enableImageGroupsReducer';
 import errors from './reducers/errorsReducer';
 import exportFileTypes from './reducers/exportFileTypesReducer';
 import exportScaleFactors from './reducers/exportScaleFactorsReducer';
@@ -46,12 +50,12 @@ import gitStorage from './reducers/gitStorageReducer';
 import handleExportFrame from './reducers/handleExportFrameReducer';
 import hideDates from './reducers/hideDatesReducer';
 import images from './reducers/imagesReducer';
+import imageGroups from './reducers/imageGroupsReducer';
 import importDeleted from './reducers/importDeletedReducer';
 import importQueue from './reducers/importQueueReducer';
 import imageSelection from './reducers/imageSelectionReducer';
 import importLastSeen from './reducers/importLastSeenReducer';
 import importPad from './reducers/importPadReducer';
-import isFullscreen from './reducers/isFullscreenReducer';
 import lastSelectedImage from './reducers/lastSelectedImageReducer';
 import lightboxImage from './reducers/lightboxImageReducer';
 import pageSize from './reducers/pageSizeReducer';
@@ -88,10 +92,12 @@ export interface Reducers extends ReducersMapObject {
   dragover: Reducer<boolean>,
   dropboxStorage: Reducer<DropBoxSettings>,
   editImage: Reducer<CurrentEditBatch | null>,
+  editImageGroup: Reducer<EditGroupInfo | null>,
   editFrame: Reducer<string | null>,
   editPalette: Reducer<Palette | null>,
   editRGBNImages: Reducer<string[]>,
   enableDebug: Reducer<boolean>,
+  enableImageGroups: Reducer<boolean>,
   errors: Reducer<ErrorMessage[]>,
   exportFileTypes: Reducer<string[]>,
   exportScaleFactors: Reducer<number[]>,
@@ -107,15 +113,15 @@ export interface Reducers extends ReducersMapObject {
   handleExportFrame: Reducer<ExportFrameMode>,
   hideDates: Reducer<boolean>,
   images: Reducer<Image[]>,
+  imageGroups: Reducer<SerializableImageGroup>,
   imageSelection: Reducer<string[]>,
   importDeleted: Reducer<boolean>,
   importQueue: Reducer<ImportItem[]>,
   importLastSeen: Reducer<boolean>,
   importPad: Reducer<boolean>,
-  isFullscreen: Reducer<boolean>,
   lastSelectedImage: Reducer<string | null>,
   progressLog: Reducer<ProgressLog>,
-  lightboxImage: Reducer<number | null>,
+  lightboxImage: Reducer<string | null>,
   pageSize: Reducer<number>,
   palettes: Reducer<Palette[]>,
   plugins: Reducer<Plugin[]>,
@@ -149,10 +155,12 @@ const reducers: ReducersMapObject = {
   dragover,
   dropboxStorage,
   editImage,
+  editImageGroup,
   editFrame,
   editPalette,
   editRGBNImages,
   enableDebug,
+  enableImageGroups,
   errors,
   exportFileTypes,
   exportScaleFactors,
@@ -168,12 +176,12 @@ const reducers: ReducersMapObject = {
   handleExportFrame,
   hideDates,
   images,
+  imageGroups,
   imageSelection,
   importDeleted,
   importQueue,
   importLastSeen,
   importPad,
-  isFullscreen,
   lastSelectedImage,
   progressLog,
   lightboxImage,

@@ -92,10 +92,6 @@ export interface ShareImageStartAction {
   payload: string,
 }
 
-export interface LightboxImageSetAction {
-  type: Actions.SET_LIGHTBOX_IMAGE_HASH,
-  payload: string,
-}
 
 export interface TryRecoverImageAction {
   type: Actions.TRY_RECOVER_IMAGE_DATA,
@@ -104,6 +100,9 @@ export interface TryRecoverImageAction {
 
 export interface BatchTaskAction {
   type: Actions.BATCH_TASK,
-  payload: BatchActionType,
-  page: number,
+  payload: {
+    actionType: BatchActionType,
+    images: Image[], // list of images which can currently be batched,
+    page: number,
+  },
 }

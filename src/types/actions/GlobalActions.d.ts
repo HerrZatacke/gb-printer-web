@@ -11,6 +11,11 @@ export interface EnableDebugAction {
   payload: boolean,
 }
 
+export interface EnableImageGroupsAction {
+  type: Actions.SET_ENABLE_IMAGE_GROUPS,
+  payload: boolean,
+}
+
 export interface FramesMessageHideAction {
   type: Actions.FRAMES_MESSAGE_HIDE
 }
@@ -33,28 +38,6 @@ export interface ImportLastSeenAction {
 export interface ImportPadAction {
   type: Actions.SET_IMPORT_PAD,
   payload: boolean,
-}
-
-export interface IsFullscreenAction {
-  type: Actions.SET_IS_FULLSCREEN,
-  payload?: boolean,
-}
-
-export interface SetLightboxImageAction {
-  type: Actions.SET_LIGHTBOX_IMAGE_INDEX,
-  payload?: number,
-}
-
-export interface SetLightboxPrevAction {
-  type: Actions.LIGHTBOX_PREV,
-}
-
-export interface SetLightboxNextAction {
-  type: Actions.LIGHTBOX_NEXT,
-}
-
-export interface SetLightboxFullscreenAction {
-  type: Actions.LIGHTBOX_FULLSCREEN,
 }
 
 export interface PageSizeAction {

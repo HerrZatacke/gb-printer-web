@@ -18,6 +18,7 @@ import type {
   ImportPadAction,
   PageSizeAction,
   PreferredLocaleAction,
+  EnableImageGroupsAction,
 } from '../../../../../../types/actions/GlobalActions';
 import type { HandleExportFrameAction, SavFrameTypesAction } from '../../../../../../types/actions/FrameActions';
 
@@ -37,6 +38,7 @@ interface UseGenericSettings {
   printerParams: string,
   preferredLocale: string,
   enableDebug: boolean,
+  enableImageGroups: boolean,
   changeExportScaleFactors: (factor: number, checked: boolean) => void
   changeExportFileTypes: (fileType: string, checked: boolean) => void
   setPageSize: (pageSize: number) => void
@@ -51,6 +53,7 @@ interface UseGenericSettings {
   updatePrinterParams: (printerParams: string) => void
   setPreferredLocale: (preferredLocale: string) => void
   setEnableDebug: (enableDebug: boolean) => void
+  setEnableImageGroups: (enableImageGroups: boolean) => void,
 }
 
 export const useGenericSettings = (): UseGenericSettings => {
@@ -70,6 +73,7 @@ export const useGenericSettings = (): UseGenericSettings => {
     printerParams: state.printerParams,
     preferredLocale: state.preferredLocale,
     enableDebug: state.enableDebug,
+    enableImageGroups: state.enableImageGroups,
   }));
 
   const dispatch = useDispatch();
@@ -164,6 +168,12 @@ export const useGenericSettings = (): UseGenericSettings => {
       dispatch<EnableDebugAction>({
         type: Actions.SET_DEBUG,
         payload: enableDebug,
+      });
+    },
+    setEnableImageGroups(enableImageGroups: boolean) {
+      dispatch<EnableImageGroupsAction>({
+        type: Actions.SET_ENABLE_IMAGE_GROUPS,
+        payload: enableImageGroups,
       });
     },
   };

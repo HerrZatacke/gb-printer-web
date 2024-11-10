@@ -35,17 +35,11 @@ function App() {
           element: <Home />,
         },
         {
-          path: '/gallery',
+          path: '/gallery/*',
           element: <Gallery />,
           handle: {
             headline: 'Gallery',
           } as Handle,
-          children: [
-            {
-              path: 'page/:page',
-              element: <Gallery />,
-            },
-          ],
         },
         {
           path: '/import',

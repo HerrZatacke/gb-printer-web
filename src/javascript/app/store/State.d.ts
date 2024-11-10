@@ -5,6 +5,7 @@ import type { Dialog } from '../../../types/Dialog';
 import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../types/Sync';
 import type { ErrorMessage } from '../components/Errors/useErrors';
 import type { CurrentEditBatch, Image } from '../../../types/Image';
+import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
@@ -20,6 +21,7 @@ import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
 import type { PickColors } from '../../../types/PickColors';
 import type { PaletteSortMode } from '../../consts/paletteSortModes';
+import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 
 // ToDo: infer from store somehow...?
 export interface State {
@@ -30,10 +32,12 @@ export interface State {
   dragover: boolean,
   dropboxStorage: DropBoxSettings,
   editImage: CurrentEditBatch | null,
+  editImageGroup: EditGroupInfo | null,
   editFrame: string | null,
   editPalette: Palette | null,
   editRGBNImages: string[],
   enableDebug: boolean,
+  enableImageGroups: boolean,
   errors: ErrorMessage[],
   exportFileTypes: string[],
   exportScaleFactors: number[],
@@ -49,15 +53,15 @@ export interface State {
   handleExportFrame: ExportFrameMode,
   hideDates: boolean,
   images: Image[],
+  imageGroups: SerializableImageGroup[],
   imageSelection: string[],
   importDeleted: boolean,
   importQueue: ImportItem[],
   importLastSeen: boolean,
   importPad: boolean,
-  isFullscreen: boolean,
   lastSelectedImage: string | null,
   progressLog: ProgressLog,
-  lightboxImage: number | null,
+  lightboxImage: string | null,
   pageSize: number,
   palettes: Palette[],
   pickColors: PickColors | null,

@@ -3,11 +3,12 @@ import { Actions } from '../../store/actions';
 import type { State } from '../../store/State';
 import type {
   DeleteImageAction,
-  DownloadImageStartAction, EditImageSelectionAction,
+  DownloadImageStartAction,
+  EditImageSelectionAction,
   ImageFavouriteAction,
-  LightboxImageSetAction,
   ShareImageStartAction,
 } from '../../../../types/actions/ImageActions';
+import type { LightboxImageSetAction } from '../../../../types/actions/LightboxActions';
 import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
 import type { ImageSelectionAddAction, ImageSelectionRemoveAction } from '../../../../types/actions/ImageSelectionActions';
 
@@ -44,17 +45,22 @@ interface UseGalleryImageButtonsParams {
 export const useGalleryImageButtons = (
   { hash, imageTitle, tags }: UseGalleryImageButtonsParams,
 ): UseGalleryImageButtons => {
-  const stateData = useSelector((state: State) => ({
+  const {
+    isSelected,
+    canShare,
+    hasPlugins,
+  } = useSelector((state: State) => ({
     isSelected: state.imageSelection.includes(hash),
     canShare: state.canShare,
     hasPlugins: !!state.plugins.length,
-    hash,
   }));
 
   const dispatch = useDispatch();
 
   return {
-    ...stateData,
+    isSelected,
+    canShare,
+    hasPlugins,
     startDownload: () => {
       dispatch<DownloadImageStartAction>({
         type: Actions.START_DOWNLOAD,

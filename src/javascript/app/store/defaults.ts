@@ -40,6 +40,13 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
+    // Groups/Folders
+    key: 'imageGroups',
+    saveLocally: true,
+    saveExport: [ExportTypes.REMOTE],
+    value: [],
+  },
+  {
     // displaymode of gallery page (list, 1x, 2x...)
     key: 'galleryView',
     saveLocally: true,
@@ -77,6 +84,13 @@ const definitions: StorePropertyDefault[] = [
   {
     // the image being edited currently
     key: 'editImage',
+    saveLocally: true,
+    saveExport: [],
+    value: null,
+  },
+  {
+    // the imagegroup being edited currently
+    key: 'editImageGroup',
     saveLocally: true,
     saveExport: [],
     value: null,
@@ -173,6 +187,13 @@ const definitions: StorePropertyDefault[] = [
   {
     // general debug option
     key: 'enableDebug',
+    saveLocally: true,
+    saveExport: [ExportTypes.SETTINGS],
+    value: false,
+  },
+  {
+    // to enable imagegroup feature
+    key: 'enableImageGroups',
     saveLocally: true,
     saveExport: [ExportTypes.SETTINGS],
     value: false,

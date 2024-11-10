@@ -1,3 +1,3 @@
-export const randomId = (): string => (
-  Math.random().toString(16).split('.')[1]
-);
+import { v4 as uuidv4 } from 'uuid';
+
+export const randomId = uuidv4;
