@@ -9,7 +9,7 @@ const enableImageGroupsReducer = (value = false, action: EnableImageGroupsAction
     case Actions.SET_ENABLE_IMAGE_GROUPS:
       return action.payload;
     case Actions.GLOBAL_UPDATE:
-      return updateIfDefined<boolean>(action.payload?.enableDebug, value);
+      return updateIfDefined<boolean>(action.payload?.enableImageGroups, value);
     default:
       return value;
   }
