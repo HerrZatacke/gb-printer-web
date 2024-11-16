@@ -11,7 +11,6 @@ import type { State } from '../../store/State';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
 import type { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
-import type { EditImageSelectionAction } from '../../../../types/actions/ImageActions';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
 export enum SelectionEditMode {
