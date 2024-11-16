@@ -103,6 +103,7 @@ export const useLightboxImage = (): UseLightboxImage => {
     palettes: state.palettes,
   }));
 
+  // ToDo: Fix lightbox overflow showing "5/4" images (probably not filtering correctly?)
   const filteredImages = useMemo<Image[]>(() => (
     viewImages.filter(({ hash }) => !covers.includes(hash))
   ), [covers, viewImages]);
