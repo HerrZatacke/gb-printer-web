@@ -25,15 +25,6 @@ export interface DeleteImageGroupAction {
   payload: string,
 }
 
-export interface EditImageGroupAction {
-  type: Actions.EDIT_IMAGE_GROUP,
-  payload: EditGroupInfo,
-}
-
-export interface CancelEditImageGroupAction {
-  type: Actions.CANCEL_EDIT_IMAGE_GROUP,
-}
-
 export interface UpdateImageGroupAction {
   type: Actions.UPDATE_IMAGE_GROUP,
   payload: {

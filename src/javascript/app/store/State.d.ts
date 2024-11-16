@@ -5,11 +5,9 @@ import type { Palette } from '../../../types/Palette';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Frame } from '../../../types/Frame';
 import type { Plugin } from '../../../types/Plugin';
-import type { EditGroupInfo } from '../../../types/actions/GroupActions';
 
 // ToDo: infer from store somehow...?
 export interface State {
-  editImageGroup: EditGroupInfo | null,
   frameGroupNames: FrameGroup[],
   frames: Frame[],
   images: Image[],

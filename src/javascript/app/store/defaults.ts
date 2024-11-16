@@ -28,13 +28,6 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
-    // the imagegroup being edited currently
-    key: 'editImageGroup',
-    saveLocally: true,
-    saveExport: [],
-    value: null,
-  },
-  {
     // list of predefined palettes
     key: 'palettes',
     saveLocally: true,

@@ -49,7 +49,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   const { view } = useGalleryTreeContext();
 
   const { sortBy } = useFiltersStore();
-  const { editRGBNImages, cancelEditRGBNImages } = useEditStore();
+  const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
   const { images } = useSelector((state: State) => ({
     images: state.images,
   }));
@@ -176,6 +176,8 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
       const slug = toSlug(title);
 
       const createdImageHashes: string[] = rgbnHashes.map((hashes) => objectHash(hashes));
+
+      cancelEditImageGroup();
 
       dispatch<AddImageGroupAction>({
         type: Actions.ADD_IMAGE_GROUP,

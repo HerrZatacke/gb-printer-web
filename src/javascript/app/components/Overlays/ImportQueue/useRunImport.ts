@@ -18,6 +18,7 @@ import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
 import useSettingsStore from '../../../stores/settingsStore';
 import useImportsStore from '../../../stores/importsStore';
+import useEditStore from '../../../stores/editStore';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -38,6 +39,7 @@ interface UseRunImport {
 
 const useRunImport = (): UseRunImport => {
   const { importPad, setActivePalette, activePalette } = useSettingsStore();
+  const { cancelEditImageGroup } = useEditStore();
   const dispatch = useDispatch();
   const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
@@ -84,6 +86,8 @@ const useRunImport = (): UseRunImport => {
     if (createGroup) {
       const title = `Import ${dayjs().format(dateFormat)}`;
       const slug = toSlug(title);
+
+      cancelEditImageGroup();
 
       dispatch<AddImageGroupAction>({
         type: Actions.ADD_IMAGE_GROUP,

@@ -3,12 +3,12 @@ import useDialogsStore from '../app/stores/dialogsStore';
 import type {
   SetImageGroupsAction,
   DeleteImageGroupAction,
-  EditImageGroupAction,
 } from '../../types/actions/GroupActions';
 import { Actions } from '../app/store/actions';
 import { DialoqQuestionType } from '../../types/Dialog';
 import { useGalleryTreeContext } from '../app/contexts/galleryTree';
 import { NEW_GROUP } from '../app/components/Overlays/EditImageGroup/useEditImageGroup';
+import useEditStore from '../app/stores/editStore';
 
 
 interface UseImageGroups {
@@ -22,6 +22,7 @@ export const useImageGroups = (): UseImageGroups => {
   const { view } = useGalleryTreeContext();
   const dispatch = useDispatch();
   const { dismissDialog, setDialog } = useDialogsStore();
+  const { setEditImageGroup } = useEditStore();
 
   return {
     resetGroups: () => {
@@ -45,22 +46,14 @@ export const useImageGroups = (): UseImageGroups => {
       });
     },
     createGroup: (hash: string, imageTitle?: string) => {
-      dispatch<EditImageGroupAction>({
-        type: Actions.EDIT_IMAGE_GROUP,
-        payload: {
-          groupId: NEW_GROUP,
-          newGroupCover: hash,
-          newGroupTitle: imageTitle?.trim() ? `Group - ${imageTitle}` : 'New group',
-        },
+      setEditImageGroup({
+        groupId: NEW_GROUP,
+        newGroupCover: hash,
+        newGroupTitle: imageTitle?.trim() ? `Group - ${imageTitle}` : 'New group',
       });
     },
     editGroup: (id: string) => {
-      dispatch<EditImageGroupAction>({
-        type: Actions.EDIT_IMAGE_GROUP,
-        payload: {
-          groupId: id,
-        },
-      });
+      setEditImageGroup({ groupId: id });
     },
     deleteGroup: (id: string) => {
       const deleteGroup = view.groups.find((group) => group.id === id);

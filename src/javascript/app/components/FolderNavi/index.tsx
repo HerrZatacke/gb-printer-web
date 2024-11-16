@@ -1,14 +1,12 @@
 import React, { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import Select from '../Overlays/Confirm/fields/Select';
-import { Actions } from '../../store/actions';
-import type { EditImageGroupAction } from '../../../../types/actions/GroupActions';
 
 import './index.scss';
 import SVG from '../SVG';
+import useEditStore from '../../stores/editStore';
 
 interface Segment {
   groupId: string,
@@ -20,7 +18,7 @@ function FolderNavi() {
   const navigate = useNavigate();
   const { path: currentPath } = useGalleryParams();
   const { paths, pathsOptions } = useGalleryTreeContext();
-  const dispatch = useDispatch();
+  const { setEditImageGroup } = useEditStore();
 
   const segments = useMemo<Segment[]>(() => (
     currentPath
@@ -82,14 +80,7 @@ function FolderNavi() {
             <button
               type="button"
               className="folder-navi__edit-button"
-              onClick={() => {
-                dispatch<EditImageGroupAction>({
-                  type: Actions.EDIT_IMAGE_GROUP,
-                  payload: {
-                    groupId,
-                  },
-                });
-              }}
+              onClick={() => setEditImageGroup({ groupId })}
             >
               <SVG
                 name="edit"

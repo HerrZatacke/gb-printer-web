@@ -8,10 +8,11 @@ import { dateFormat } from '../../../defaults';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { useGalleryParams } from '../../../../hooks/useGalleryParams';
 import type { State } from '../../../store/State';
-import type { CancelEditImageGroupAction, AddImageGroupAction, UpdateImageGroupAction } from '../../../../../types/actions/GroupActions';
+import type { AddImageGroupAction, UpdateImageGroupAction } from '../../../../../types/actions/GroupActions';
 import type { DialogOption } from '../../../../../types/Dialog';
 import type { PathMap } from '../../../contexts/galleryTree';
 import useFiltersStore from '../../../stores/filtersStore';
+import useEditStore from '../../../stores/editStore';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -27,7 +28,7 @@ interface UseEditImageGroup {
   setTitle: (title: string) => void,
   setParentSlug: (slug: string) => void
   confirm: () => void,
-  cancelEdit: () => void,
+  cancelEditImageGroup: () => void,
 }
 
 export const toSlug = (title: string): string => (
@@ -44,13 +45,12 @@ const findParentGroup = (paths: PathMap[], groupId: string): PathMap | null => (
 
 const useEditImageGroup = (): UseEditImageGroup => {
   const { imageSelection: selection } = useFiltersStore();
+  const { editImageGroup, cancelEditImageGroup } = useEditStore();
 
   const {
     imageGroup,
-    editImageGroup,
   } = useSelector((state: State) => ({
-    imageGroup: state.imageGroups.find(({ id }) => id === state.editImageGroup?.groupId) || null,
-    editImageGroup: state.editImageGroup,
+    imageGroup: state.imageGroups.find(({ id }) => id === editImageGroup?.groupId) || null,
   }));
 
   const { view, paths, pathsOptions } = useGalleryTreeContext();
@@ -112,6 +112,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
     },
     setParentSlug,
     confirm: () => {
+      cancelEditImageGroup();
+
       if (!canConfirm) {
         return;
       }
@@ -158,11 +160,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
       navigate(`/gallery/${parentSlug}${slug}/page/1`);
     },
-    cancelEdit: () => {
-      dispatch<CancelEditImageGroupAction>({
-        type: Actions.CANCEL_EDIT_IMAGE_GROUP,
-      });
-    },
+    cancelEditImageGroup,
   };
 };
 
