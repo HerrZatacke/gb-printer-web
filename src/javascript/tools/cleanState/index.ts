@@ -4,7 +4,6 @@ import { BlendMode } from 'gb-image-decoder';
 import { dateFormat, defaultRGBNPalette } from '../../app/defaults';
 import uniqueBy from '../unique/by';
 import hashFrames from './hashFrames';
-import backupFrames from './backupFrames';
 import type { State } from '../../app/store/State';
 import type { Palette } from '../../../types/Palette';
 import { isRGBNImage } from '../isRGBNImage';
@@ -88,10 +87,6 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
     loading: true,
     error: undefined,
   }));
-
-  if (dirtyState.frames) {
-    await backupFrames(dirtyState.frames);
-  }
 
   const hashedFrames = await hashFrames(dirtyState.frames || []);
 
