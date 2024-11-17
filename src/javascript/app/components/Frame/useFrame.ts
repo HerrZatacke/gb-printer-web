@@ -1,15 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { Actions } from '../../store/actions';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
-import type { State } from '../../store/State';
-import type { DeleteFrameAction } from '../../../../types/actions/FrameActions';
+import type { State, TypedStore } from '../../store/State';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
+import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
 import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
+import useStoragesStore from '../../stores/storagesStore';
 
 
 interface GetTilesParams {
@@ -40,14 +40,16 @@ const getTiles = ({ frameId, frameHash, name }: GetTilesParams) => {
 };
 
 const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
-  const dispatch = useDispatch();
   const [tiles, setTiles] = useState<string[]>([]);
   const [imageStartLine, setImageStartLine] = useState<number>(2);
+
+  const store: TypedStore = useStore();
 
   const { setEditFrame } = useEditStore();
   const { enableDebug } = useSettingsStore();
   const { dismissDialog, setDialog } = useDialogsStore();
-  const { frames } = useItemsStore();
+  const { frames, deleteFrame } = useItemsStore();
+  const { setSyncLastUpdate } = useStoragesStore();
 
   const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
 
@@ -87,10 +89,10 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
       setDialog({
         message: `Delete frame "${name}" (${frameId})?`,
         confirm: async () => {
-          dispatch<DeleteFrameAction>({
-            type: Actions.DELETE_FRAME,
-            payload: frameId,
-          });
+          dismissDialog(0);
+          setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+          deleteFrame(frameId);
+          checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         },
         deny: async () => dismissDialog(0),
       });

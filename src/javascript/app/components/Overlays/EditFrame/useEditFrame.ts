@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../../store/actions';
+import { useSelector } from 'react-redux';
 import getFrameGroups from '../../../../tools/getFrameGroups';
 import type { State } from '../../../store/State';
 import type { Frame } from '../../../../../types/Frame';
 import type { FrameGroup } from '../../../../../types/FrameGroup';
-import type { UpdateFrameAction } from '../../../../../types/actions/FrameActions';
 import useEditStore from '../../../stores/editStore';
 import useItemsStore from '../../../stores/itemsStore';
+import useStoragesStore from '../../../stores/storagesStore';
 
 interface UseEditFrame {
   groups: FrameGroup[],
@@ -31,6 +30,8 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
   const updateId = frame?.id || '';
   const { cancelEditFrame } = useEditStore();
   const { frames } = useItemsStore();
+  const { addFrames } = useItemsStore();
+  const { setSyncLastUpdate } = useStoragesStore();
 
   const { frameGroupNames } = useSelector((state: State) => ({
     frameGroupNames: state.frameGroupNames,
@@ -38,7 +39,6 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
 
   const groups = getFrameGroups(frames, frameGroupNames);
   const frameGroupIdRegex = /^(?<groupName>[a-z]+)(?<id>[0-9]+)/g;
-  const dispatch = useDispatch();
 
   const match = frameGroupIdRegex.exec(updateId);
   const groupName = match?.groups?.groupName || '';
@@ -63,17 +63,13 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
   );
 
   const saveFrame = () => {
-    dispatch<UpdateFrameAction>({
-      type: Actions.UPDATE_FRAME,
-      payload: {
-        updateId,
-        data: {
-          hash: frame?.hash || '',
-          id: fullId,
-          name: frameName,
-        },
-      },
-    });
+    cancelEditFrame();
+    setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+    addFrames([{
+      hash: frame?.hash || '',
+      id: fullId,
+      name: frameName,
+    }]);
   };
 
   return {

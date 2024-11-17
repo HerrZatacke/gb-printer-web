@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
 import useItemsStore from '../../../stores/itemsStore';
-import type { PaletteUpdateAction } from '../../../../../types/actions/PaletteActions';
-import { Actions } from '../../../store/actions';
+import useStoragesStore from '../../../stores/storagesStore';
 import type { State } from '../../../store/State';
 import type { Palette } from '../../../../../types/Palette';
 import getPreviewImages from '../../../../tools/getPreviewImages';
@@ -35,7 +34,9 @@ export const useEditPalette = (): UseEditPalette => {
   } = useFiltersStore();
 
   const { editPalette, cancelEditPalette } = useEditStore();
-  const { palettes } = useItemsStore();
+  const { palettes, addPalettes } = useItemsStore();
+  const { setSyncLastUpdate } = useStoragesStore();
+
   const shortName = editPalette?.shortName || '';
   const statePalette = editPalette?.palette || [];
   const name = editPalette?.name || '';
@@ -66,14 +67,10 @@ export const useEditPalette = (): UseEditPalette => {
     getPreviewImages(images, { sortBy, filtersActiveTags, recentImports }, imageSelection)()
   ), [filtersActiveTags, imageSelection, images, recentImports, sortBy]);
 
-  const dispatch = useDispatch();
-
-
-  const savePalette = (payload: Palette) => {
-    dispatch<PaletteUpdateAction>({
-      type: Actions.PALETTE_UPDATE,
-      payload,
-    });
+  const savePalette = (updatedPalette: Palette) => {
+    addPalettes([updatedPalette]);
+    setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+    cancelEditPalette();
   };
 
   const save = () => savePalette({

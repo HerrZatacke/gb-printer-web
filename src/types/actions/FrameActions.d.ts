@@ -10,20 +10,6 @@ export interface AddFrameAction {
   },
 }
 
-export interface UpdateFrameAction {
-  type: Actions.UPDATE_FRAME,
-  payload: {
-    updateId: string,
-    data: Frame,
-  }
-}
-
-export interface DeleteFrameAction {
-  type: Actions.DELETE_FRAME,
-  payload: string,
-}
-
-
 export interface FrameGroupNamesAction {
   type: Actions.NAME_FRAMEGROUP,
   payload: FrameGroup,

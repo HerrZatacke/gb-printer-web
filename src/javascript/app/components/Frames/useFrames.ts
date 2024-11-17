@@ -38,7 +38,7 @@ interface UseFrames {
 const useFrames = (): UseFrames => {
   const dispatch = useDispatch();
   const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
-  const { frames, palettes, updateFrames } = useItemsStore();
+  const { frames, palettes, addFrames } = useItemsStore();
   const store: TypedStore = useStore();
   const { downloadSettings } = importExportSettings(store);
 
@@ -106,7 +106,7 @@ const useFrames = (): UseFrames => {
       };
     }));
 
-    updateFrames(updatedFrames);
+    addFrames(updatedFrames);
   };
 
   return {

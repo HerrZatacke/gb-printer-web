@@ -18,7 +18,10 @@ export interface Values {
 }
 
 interface Actions {
-  updateFrames: (frames: Frame[]) => void,
+  addFrames: (frames: Frame[]) => void,
+  addPalettes: (palettes: Palette[]) => void,
+  deleteFrame: (id: string) => void,
+  deletePalette: (shortName: string) => void,
 }
 
 export type ItemsState = Values & Actions;
@@ -27,15 +30,23 @@ export type ItemsState = Values & Actions;
 const useItemsStore = create<ItemsState>()(
   persist(
     (set) => ({
-      frames: [{
-        hash: 'bc0737a23b540ff1e12ccac8c8f537045becffd9',
-        id: 'test01',
-        name: 'test',
-      }],
+      frames: [],
       palettes: [],
 
-      updateFrames: (frames: Frame[]) => set((itemsState) => (
+      addFrames: (frames: Frame[]) => set((itemsState) => (
+        // ToDo: instead of unique, maybe update existing indices (same as with palettes)
         { frames: uniqueById([...frames, ...itemsState.frames]) }
+      )),
+      addPalettes: (palettes: Palette[]) => set((itemsState) => (
+        // ToDo: instead of unique, maybe update existing indices, to prevent shift
+        //  in palette overwiew when editing while sorting "default desc"
+        { palettes: uniqueByShortName([...palettes, ...itemsState.palettes]) }
+      )),
+      deleteFrame: (frameId: string) => (set(({ frames }) => (
+        { frames: frames.filter((frame) => frameId !== frame.id) }
+      ))),
+      deletePalette: (shortName: string) => set(({ palettes }) => (
+        { palettes: palettes.filter((palette) => shortName !== palette.shortName) }
       )),
     }),
     {
@@ -60,14 +71,14 @@ const useItemsStore = create<ItemsState>()(
         };
       },
 
-      partialize: (state: ItemsState): Partial<ItemsState> => ({
+      partialize: (state: ItemsState): Values => ({
         frames: state.frames,
         palettes: state.palettes.filter(({ isPredefined }) => !isPredefined),
       }),
 
       version: STORE_VERSION,
       // migrate: async (persistedState: unknown, version: number): Promise<Partial<ItemsState>> => {
-      migrate: (persistedState: unknown, version: number): Partial<ItemsState> => {
+      migrate: (persistedState: unknown, version: number): Values => {
         let finalState;
 
         if (version === -1) {
@@ -78,7 +89,7 @@ const useItemsStore = create<ItemsState>()(
         //   finalState = await migrateItems(persistedState);
         // }
 
-        return finalState as Partial<ItemsState>;
+        return finalState as Values;
       },
     },
   ),

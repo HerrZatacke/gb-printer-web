@@ -1,12 +1,10 @@
 import { useDispatch } from 'react-redux';
 import { Actions } from '../../store/actions';
-import type {
-  PaletteCloneAction,
-  PaletteDeleteAction,
-  PaletteEditAction,
-} from '../../../../types/actions/PaletteActions';
+import type { PaletteCloneAction, PaletteEditAction } from '../../../../types/actions/PaletteActions';
 import useDialogsStore from '../../stores/dialogsStore';
+import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
+import useStoragesStore from '../../stores/storagesStore';
 
 interface UsePalette {
   isActive: boolean
@@ -19,6 +17,9 @@ interface UsePalette {
 export const usePalette = (shortName: string, name: string): UsePalette => {
   const { activePalette, setActivePalette } = useSettingsStore();
   const { dismissDialog, setDialog } = useDialogsStore();
+  const { setSyncLastUpdate } = useStoragesStore();
+  const { deletePalette } = useItemsStore();
+
   const isActive = activePalette === shortName;
   const dispatch = useDispatch();
 
@@ -34,10 +35,9 @@ export const usePalette = (shortName: string, name: string): UsePalette => {
             setActivePalette('dsh');
           }
 
-          dispatch<PaletteDeleteAction>({
-            type: Actions.PALETTE_DELETE,
-            payload: shortName,
-          });
+          setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+          deletePalette(shortName);
+          dismissDialog(0);
         },
         deny: async () => dismissDialog(0),
       });

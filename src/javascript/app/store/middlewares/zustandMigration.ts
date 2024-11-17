@@ -18,17 +18,11 @@ import type {
   SaveNewRGBImagesAction,
   ImagesBatchUpdateAction,
 } from '../../../../types/actions/ImageActions';
-import type {
-  AddFrameAction,
-  DeleteFrameAction,
-  FrameGroupNamesAction,
-  UpdateFrameAction,
-} from '../../../../types/actions/FrameActions';
+import type { AddFrameAction, FrameGroupNamesAction } from '../../../../types/actions/FrameActions';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
-import type { PaletteDeleteAction, PaletteUpdateAction } from '../../../../types/actions/PaletteActions';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../tools/gitStorage';
 
@@ -67,6 +61,11 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const {
     setSyncLastUpdate,
   } = useStoragesStore.getState();
+
+  const {
+    addPalettes,
+    addFrames,
+  } = useItemsStore.getState();
 
   checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
 
@@ -115,7 +114,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     action:
       AddFrameAction |
       AddImagesAction |
-      DeleteFrameAction |
       DeleteImageAction |
       DeleteImagesAction |
       FrameGroupNamesAction |
@@ -124,12 +122,9 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       ImageFavouriteAction |
       ImagesUpdateAction |
       ImportQueueCancelAction |
-      PaletteDeleteAction |
-      PaletteUpdateAction |
       PrinterRemoteCallAction |
       RehashImageAction |
-      SaveNewRGBImagesAction |
-      UpdateFrameAction,
+      SaveNewRGBImagesAction,
   ) => {
     switch (action.type) {
       case Actions.DELETE_IMAGE:
@@ -139,7 +134,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         setImageSelection([]);
         break;
       case Actions.ADD_IMAGES:
-        // ToDo: also update recentImports from GLOBAL_UPDATE
         updateRecentImports(action.payload);
         break;
       default:
@@ -154,6 +148,20 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         cancelEditFrame();
         cancelEditPalette();
         cancelEditImages();
+        setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+
+        if (action.payload?.palettes) {
+          addPalettes(action.payload.palettes);
+        }
+
+        if (action.payload?.images) {
+          updateRecentImports(action.payload.images);
+        }
+
+        if (action.payload?.frames) {
+          addFrames(action.payload.frames);
+        }
+
         break;
 
       case Actions.REHASH_IMAGE:
@@ -163,7 +171,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
       case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
-      case Actions.DELETE_FRAME:
       case Actions.ADD_FRAME:
         checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         break;
@@ -181,12 +188,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         importQueueCancel();
         break;
 
-      case Actions.UPDATE_FRAME:
-        cancelEditFrame();
-        break;
-      case Actions.PALETTE_UPDATE:
-        cancelEditPalette();
-        break;
       case Actions.SAVE_NEW_RGB_IMAGES:
         cancelEditRGBNImages();
         break;
@@ -206,6 +207,10 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
           frameQueueCancelOne(action.payload.tempId);
         }
 
+        if (action.payload?.frame) {
+          addFrames([action.payload.frame]);
+        }
+
         break;
       default:
         break;
@@ -216,8 +221,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.ADD_IMAGES:
       case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
-      case Actions.DELETE_FRAME:
-      case Actions.PALETTE_DELETE:
         dismissDialog(0);
         break;
 
@@ -232,13 +235,9 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.UPDATE_IMAGES:
       case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
-      case Actions.PALETTE_UPDATE:
-      case Actions.PALETTE_DELETE:
       case Actions.ADD_IMAGES:
       case Actions.ADD_FRAME:
-      case Actions.UPDATE_FRAME:
       case Actions.NAME_FRAMEGROUP:
-      case Actions.DELETE_FRAME:
       case Actions.IMAGE_FAVOURITE_TAG:
         setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
         break;
