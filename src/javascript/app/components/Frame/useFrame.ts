@@ -6,9 +6,10 @@ import textToTiles from '../../../tools/textToTiles';
 import type { State } from '../../store/State';
 import type { DeleteFrameAction } from '../../../../types/actions/FrameActions';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
-import useSettingsStore from '../../stores/settingsStore';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
+import useItemsStore from '../../stores/itemsStore';
+import useSettingsStore from '../../stores/settingsStore';
 
 
 interface GetTilesParams {
@@ -46,12 +47,13 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const { setEditFrame } = useEditStore();
   const { enableDebug } = useSettingsStore();
   const { dismissDialog, setDialog } = useDialogsStore();
+  const { frames } = useItemsStore();
+
+  const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
 
   const {
-    frameHash,
     usage,
   } = useSelector((state: State) => ({
-    frameHash: state.frames.find(({ id }) => id === frameId)?.hash || '',
     usage: state.images.filter(({ frame }) => frame === frameId).length,
   }));
 

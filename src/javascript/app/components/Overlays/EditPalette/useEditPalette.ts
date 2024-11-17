@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
+import useItemsStore from '../../../stores/itemsStore';
 import type { PaletteUpdateAction } from '../../../../../types/actions/PaletteActions';
 import { Actions } from '../../../store/actions';
 import type { State } from '../../../store/State';
@@ -8,7 +10,6 @@ import type { Palette } from '../../../../../types/Palette';
 import getPreviewImages from '../../../../tools/getPreviewImages';
 import type { MonochromeImage } from '../../../../../types/Image';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
-import useEditStore from '../../../stores/editStore';
 
 interface UseEditPalette {
   canConfirm: boolean,
@@ -34,15 +35,14 @@ export const useEditPalette = (): UseEditPalette => {
   } = useFiltersStore();
 
   const { editPalette, cancelEditPalette } = useEditStore();
+  const { palettes } = useItemsStore();
   const shortName = editPalette?.shortName || '';
   const statePalette = editPalette?.palette || [];
   const name = editPalette?.name || '';
 
   const {
-    palettes,
     images,
   } = useSelector((state: State) => ({
-    palettes: state.palettes,
     images: state.images,
   }));
 

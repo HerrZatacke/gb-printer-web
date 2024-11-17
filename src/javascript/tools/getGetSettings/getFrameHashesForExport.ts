@@ -1,6 +1,6 @@
-import type { State } from '../../app/store/State';
+import type { Frame } from '../../../types/Frame';
 
-const getFrameHashesForExport = (what: 'frames' | 'framegroup', { frames }: State, frameSetID = ''): string[] => {
+const getFrameHashesForExport = (what: 'frames' | 'framegroup', frames: Frame[], frameSetID = ''): string[] => {
 
   switch (what) {
     case 'frames':

@@ -1,3 +1,4 @@
+import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import { getPrepareFiles } from '../../../tools/download';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
@@ -10,13 +11,14 @@ const batch: MiddlewareWithState = (store) => (next) => async (action) => {
 
   if (action.type === Actions.SHARE_IMAGE) {
     const state = store.getState();
+    const { frames, palettes } = useItemsStore.getState();
 
     const image = state.images.find(({ hash }) => hash === action.payload);
     if (!image) {
       throw new Error('image not found');
     }
 
-    const frame = state.frames.find(({ id }) => id === image.frame);
+    const frame = frames.find(({ id }) => id === image.frame);
 
     const shareScaleFactor = [...exportScaleFactors].pop() || 4;
     const shareFileType = [...exportFileTypes].pop() || 'png';
@@ -25,10 +27,10 @@ const batch: MiddlewareWithState = (store) => (next) => async (action) => {
       [shareScaleFactor],
       [shareFileType],
       handleExportFrame,
-      state,
+      palettes,
     );
 
-    const tiles = await loadImageTiles(state)(image.hash);
+    const tiles = await loadImageTiles(state.images, frames)(image.hash);
 
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
 

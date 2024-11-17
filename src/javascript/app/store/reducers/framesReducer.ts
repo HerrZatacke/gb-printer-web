@@ -24,11 +24,13 @@ const framesReducer = (
         action.payload.data,
       ]);
     case Actions.GLOBAL_UPDATE:
-      if (!action.payload?.frames) {
-        return frames;
-      }
-
-      return sortById(uniqueById(action.payload?.frames || []));
+      // ToDo: Global Update import frames!
+      return frames;
+      // if (!action.payload?.frames) {
+      //   return frames;
+      // }
+      //
+      // return sortById(uniqueById(action.payload?.frames || []));
     default:
       return frames;
   }

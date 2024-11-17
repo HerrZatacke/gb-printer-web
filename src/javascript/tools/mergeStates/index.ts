@@ -27,11 +27,17 @@ const mergeImages = mergeBy<Image>('hash');
 const mergeFrames = mergeBy<Frame>('id');
 const mergePalettes = mergeBy<Palette>('shortName');
 
-const mergeStates = (currentState: State, updatedState: ExportableState, mergeImagesFrames: boolean) => {
+const mergeStates = (
+  currentStateFrames: Frame[],
+  currentStatePalettes: Palette[],
+  currentState: State,
+  updatedState: ExportableState,
+  mergeImagesFrames: boolean,
+) => {
 
-  let frames = currentState.frames;
+  let frames = currentStateFrames;
   let images = currentState.images;
-  let palettes = currentState.palettes;
+  let palettes = currentStatePalettes;
 
   if (mergeImagesFrames) {
     if (updatedState.frames && updatedState.frames.length) {
@@ -46,9 +52,9 @@ const mergeStates = (currentState: State, updatedState: ExportableState, mergeIm
       palettes = mergePalettes(palettes, updatedState.palettes);
     }
   } else {
-    frames = updatedState.frames || currentState.frames;
+    frames = updatedState.frames || currentStateFrames;
     images = updatedState.images || currentState.images;
-    palettes = updatedState.palettes || currentState.palettes;
+    palettes = updatedState.palettes || currentStatePalettes;
   }
 
   return {

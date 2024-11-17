@@ -1,19 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import Lightbox from '../../Lightbox';
 import './index.scss';
 import useEditFrame from './useEditFrame';
 import EditFrameForm from './EditFrameForm';
-import type { State } from '../../../store/State';
 import useEditStore from '../../../stores/editStore';
+import useItemsStore from '../../../stores/itemsStore';
 
 // eslint-disable-next-line
 const EditFrame = () => {
   const { editFrame } = useEditStore();
-
-  const { frame } = useSelector((state: State) => ({
-    frame: state.frames.find(({ id }) => id === editFrame),
-  }));
+  const { frames } = useItemsStore();
+  const frame = frames.find(({ id }) => id === editFrame);
 
   const {
     cancelEdit,

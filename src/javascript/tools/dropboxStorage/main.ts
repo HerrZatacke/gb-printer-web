@@ -3,6 +3,7 @@ import Queue from 'promise-queue';
 import useDialogsStore from '../../app/stores/dialogsStore';
 import useFiltersStore from '../../app/stores/filtersStore';
 import useInteractionsStore from '../../app/stores/interactionsStore';
+import useItemsStore from '../../app/stores/itemsStore';
 import useSettingsStore from '../../app/stores/settingsStore';
 import useStoragesStore from '../../app/stores/storagesStore';
 import DropboxClient from './DropboxClient';
@@ -159,6 +160,7 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
     setSyncSelect(false);
 
     const state = store.getState();
+    const { frames, palettes } = useItemsStore.getState();
 
     const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
@@ -167,16 +169,16 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
       exportScaleFactors,
       exportFileTypes,
       handleExportFrame,
-      state,
+      palettes,
     );
-    const loadTiles = loadImageTiles(state);
+    const loadTiles = loadImageTiles(state.images, frames);
 
     const downloadInfos = (await Promise.all(
       images.map(async (image, index): Promise<unknown> => (
         addToQueue('Generate images and hashes')(`${index + 1}/${images.length}`, 10, async () => {
           const tiles = await loadTiles(image.hash);
 
-          const frame = state.frames.find(({ id }) => id === image.frame);
+          const frame = frames.find(({ id }) => id === image.frame);
           const frameData = frame ? await loadFrameData(frame?.hash) : null;
           const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 

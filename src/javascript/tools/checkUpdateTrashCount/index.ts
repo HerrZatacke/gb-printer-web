@@ -1,10 +1,10 @@
 import { getTrashFrames, getTrashImages } from '../getTrash';
-import type { State } from '../../app/store/State';
-import type { MonochromeImage } from '../../../types/Image';
+import type { Image, MonochromeImage } from '../../../types/Image';
+import type { Frame } from '../../../types/Frame';
 import interactionsStore from '../../app/stores/interactionsStore';
 
-export const checkUpdateTrashCount = async (state: State) => {
-  const frames = (await getTrashFrames(state.frames)).length;
-  const images = (await getTrashImages(state.images as MonochromeImage[])).length;
+export const checkUpdateTrashCount = async (stateImages: Image[], stateFrames: Frame[]) => {
+  const frames = (await getTrashFrames(stateFrames)).length;
+  const images = (await getTrashImages(stateImages as MonochromeImage[])).length;
   interactionsStore.getState().updateTrashCount(frames, images);
 };

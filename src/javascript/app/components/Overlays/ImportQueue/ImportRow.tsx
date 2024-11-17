@@ -6,8 +6,9 @@ import SVG from '../../SVG';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 import type { State } from '../../../store/State';
 import type { ImportItem } from '../../../../../types/ImportItem';
-import useSettingsStore from '../../../stores/settingsStore';
 import useImportsStore from '../../../stores/importsStore';
+import useItemsStore from '../../../stores/itemsStore';
+import useSettingsStore from '../../../stores/settingsStore';
 
 interface Props {
   importItem: ImportItem,
@@ -26,11 +27,12 @@ function ImportRow({
     tempId,
   } = importItem;
 
+  const { palettes } = useItemsStore();
+  const palette = palettes.find(({ shortName }) => shortName === paletteShort);
+
   const {
-    palette,
     storeDuplicateImage,
   } = useSelector((state: State) => ({
-    palette: state.palettes.find(({ shortName }) => shortName === paletteShort),
     storeDuplicateImage: state.images.find(({ hash }) => hash === imageHash),
   }));
 

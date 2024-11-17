@@ -17,6 +17,9 @@ export interface ConfigParam {
 type PluginConfigParams = Record<string, ConfigParam>;
 export type PluginConfigValues = Record<string, number | string>;
 
+/*
+* On Type-Changes, a history for migration must be kept in /src/javascript/app/stores/migrations/history/
+* */
 export interface Plugin {
   url: string
   config?: PluginConfigValues,

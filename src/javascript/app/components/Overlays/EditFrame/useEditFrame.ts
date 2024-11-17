@@ -7,6 +7,7 @@ import type { Frame } from '../../../../../types/Frame';
 import type { FrameGroup } from '../../../../../types/FrameGroup';
 import type { UpdateFrameAction } from '../../../../../types/actions/FrameActions';
 import useEditStore from '../../../stores/editStore';
+import useItemsStore from '../../../stores/itemsStore';
 
 interface UseEditFrame {
   groups: FrameGroup[],
@@ -29,9 +30,9 @@ interface UseEditFrame {
 const useEditFrame = (frame?: Frame): UseEditFrame => {
   const updateId = frame?.id || '';
   const { cancelEditFrame } = useEditStore();
+  const { frames } = useItemsStore();
 
-  const { frames, frameGroupNames } = useSelector((state: State) => ({
-    frames: state.frames,
+  const { frameGroupNames } = useSelector((state: State) => ({
     frameGroupNames: state.frameGroupNames,
   }));
 

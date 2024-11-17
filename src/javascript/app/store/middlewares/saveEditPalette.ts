@@ -1,4 +1,5 @@
 import useEditStore from '../../stores/editStore';
+import useItemsStore from '../../stores/itemsStore';
 import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
 import { Actions } from '../actions';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
@@ -42,14 +43,14 @@ const dispatchSetEditPalette = (
   });
 };
 
-const saveEditPalette: MiddlewareWithState = (store) => (next) => (action) => {
+const saveEditPalette: MiddlewareWithState = () => (next) => (action) => {
   switch (action.type) {
     case Actions.PALETTE_EDIT:
-      dispatchSetEditPalette(store.getState().palettes, action.payload, false);
+      dispatchSetEditPalette(useItemsStore.getState().palettes, action.payload, false);
       return;
 
     case Actions.PALETTE_CLONE:
-      dispatchSetEditPalette(store.getState().palettes, action.payload, true);
+      dispatchSetEditPalette(useItemsStore.getState().palettes, action.payload, true);
       return;
     default:
   }

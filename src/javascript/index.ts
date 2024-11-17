@@ -2,6 +2,7 @@ import '../scss/index.scss';
 import isTouchDevice from './tools/isTouchDevice';
 import { loadEnv } from './tools/getEnv';
 import initLog from './tools/initLog';
+import { migrateItems } from './app/stores/migrations/history/0/migrateItems';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -18,6 +19,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   initLog('Loading environment information');
+
+  // eslint-disable-next-line no-console
+  console.log('copying state...');
+  // ToDo: change this to produce a version:0 and move migration to itemsStore
+  // after these are resolved:
+  // https://github.com/pmndrs/zustand/discussions/2827
+  // https://github.com/pmndrs/zustand/pull/2833
+  const oldState = localStorage.getItem('gbp-web-state');
+  if (oldState) {
+    const v1State = await migrateItems(JSON.parse(oldState));
+    localStorage.setItem('gbp-z-web-items', `{"version":-1,"state":${JSON.stringify(v1State)}}`);
+  }
 
   try {
     await loadEnv();

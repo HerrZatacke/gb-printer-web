@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNTiles } from 'gb-image-decoder';
+import useItemsStore from '../../app/stores/itemsStore';
 import { loadImageTiles } from '../loadImageTiles';
 import { compressAndHash, save } from '../storage';
 import { Actions } from '../../app/store/actions';
-import type { State, TypedStore } from '../../app/store/State';
+import type { State } from '../../app/store/State';
+import type { Frame } from '../../../types/Frame';
 import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 import type { RehashImageAction } from '../../../types/actions/ImageActions';
 
-const reHash = async (state: State, hash: string): Promise<string | null> => {
-  const loadedTiles: string[] | RGBNTiles | void = await loadImageTiles(state)(hash, false);
+const reHash = async (stateImages: Image[], stateFrames: Frame[], hash: string): Promise<string | null> => {
+  const loadedTiles: string[] | RGBNTiles | void = await loadImageTiles(stateImages, stateFrames)(hash, false);
 
   if (!loadedTiles) {
     return null;
@@ -31,7 +33,9 @@ interface UseHashCleanup {
 }
 
 const useHashCleanup = (): UseHashCleanup => {
-  const store: TypedStore = useStore();
+  const images = useSelector((state: State) => state.images);
+  const { frames } = useItemsStore();
+
   const dispatch = useDispatch();
   const [cleanupBusy, setCleanupBusy] = useState(true);
 
@@ -45,8 +49,6 @@ const useHashCleanup = (): UseHashCleanup => {
       setCleanupBusy(true);
       let iCounterRGBN = 0;
       let iCounterMono = 0;
-      const state: State = store.getState();
-      const images = state.images;
 
       const { default: objectHash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
 
@@ -62,7 +64,7 @@ const useHashCleanup = (): UseHashCleanup => {
               let newHash: string | null = null;
 
               if (channelHash) {
-                newHash = await reHash(state, channelHash);
+                newHash = await reHash(images, frames, channelHash);
               }
 
               return { [key]: newHash || channelHash };
@@ -92,7 +94,7 @@ const useHashCleanup = (): UseHashCleanup => {
           }
 
         } else {
-          const savedHash = await reHash(state, hash);
+          const savedHash = await reHash(images, frames, hash);
 
           if (savedHash) {
             iCounterMono += 1;

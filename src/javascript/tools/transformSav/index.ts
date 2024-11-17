@@ -1,5 +1,6 @@
 import getFrameGroups from '../getFrameGroups';
 import useDialogsStore from '../../app/stores/dialogsStore';
+import useItemsStore from '../../app/stores/itemsStore';
 import useSettingsStore from '../../app/stores/settingsStore';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
@@ -15,12 +16,12 @@ import { reduceItems } from '../reduceArray';
 const getTransformSav = (
   { getState }: TypedStore,
 ) => async (file: File, skipDialogs: boolean): Promise<boolean> => {
-  const { dismissDialog, setDialog } = useDialogsStore();
+  const { dismissDialog, setDialog } = useDialogsStore.getState();
+  const { frames } = useItemsStore.getState();
   const { savFrameTypes, setSavFrameTypes } = useSettingsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
   const {
-    frames,
     frameGroupNames,
   } = getState();
 

@@ -28,24 +28,10 @@ const definitions: StorePropertyDefault[] = [
     value: [],
   },
   {
-    // list of predefined palettes
-    key: 'palettes',
-    saveLocally: true,
-    saveExport: [ExportTypes.PALETTES, ExportTypes.REMOTE],
-    value: [],
-  },
-  {
     // list of plugins
     key: 'plugins',
     saveLocally: true,
     saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: [],
-  },
-  {
-    // set of usable frames
-    key: 'frames',
-    saveLocally: true,
-    saveExport: [ExportTypes.FRAMES, ExportTypes.REMOTE, ExportTypes.FRAMEGROUP],
     value: [],
   },
   {

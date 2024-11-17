@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
-import useSettingsStore from '../../stores/settingsStore';
 import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
+import useItemsStore from '../../stores/itemsStore';
+import useSettingsStore from '../../stores/settingsStore';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { missingGreyPalette } from '../../defaults';
@@ -64,6 +65,8 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     setImageSelection,
   } = useFiltersStore();
 
+  const { palettes } = useItemsStore();
+
   const isSelected = imageSelection.includes(hash);
 
   const galleryImageData = useSelector((state: State): GalleryImageData | undefined => {
@@ -77,12 +80,12 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     if (isRGBNImage(image)) {
       palette = (image as RGBNImage).palette;
     } else {
-      palette = (state.palettes.find(({ shortName }) => (
+      palette = (palettes.find(({ shortName }) => (
         shortName === (image as MonochromeImage).palette
       )) || missingGreyPalette).palette;
     }
 
-    const framePalette = (state.palettes.find(({ shortName }) => (
+    const framePalette = (palettes.find(({ shortName }) => (
       shortName === (image as MonochromeImage).framePalette
     )) || missingGreyPalette).palette;
 

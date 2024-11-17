@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { useDispatch, useSelector } from 'react-redux';
 import useInteractionsStore from '../../../stores/interactionsStore';
+import useItemsStore from '../../../stores/itemsStore';
 import useEditStore from '../../../stores/editStore';
 import { missingGreyPalette } from '../../../defaults';
 import { Actions } from '../../../store/actions';
@@ -48,11 +49,6 @@ interface ToEdit {
   paletteShort?: string,
   framePaletteShort?: string,
   rotation?: Rotation,
-}
-
-interface StateFunctions {
-  tileCounter: (hash: string) => Promise<number>,
-  findPalette: (shortName: string) => Palette
 }
 
 interface Form {
@@ -105,16 +101,15 @@ const willUpdate = (batch: Batch): string[] => ([
 
 export const useEditForm = (): UseEditForm => {
   const { editImages, cancelEditImages } = useEditStore();
+  const { palettes, frames } = useItemsStore();
+  const images = useSelector((state: State) => (state.images));
 
-  const {
-    tileCounter,
-    findPalette,
-  } = useSelector((state: State): StateFunctions => ({
-    tileCounter: getImageTileCount(state),
-    findPalette: (shortName?: string): Palette => (
-      state.palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
-    ),
-  }));
+  const findPalette = (shortName?: string): Palette => (
+    palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
+  );
+
+  const tileCounter = getImageTileCount(images, frames);
+
 
   const { windowDimensions } = useInteractionsStore();
 

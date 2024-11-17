@@ -1,4 +1,5 @@
 import useFiltersStore from '../../app/stores/filtersStore';
+import useItemsStore from '../../app/stores/itemsStore';
 import { definitions } from '../../app/store/defaults';
 import { ExportTypes } from '../../consts/exportTypes';
 import getImages from './getImages';
@@ -22,6 +23,7 @@ const getGetSettings = (store: TypedStore) => async (
   const frameSetID = selectedFrameGroup;
 
   const state = store.getState();
+  const { frames } = useItemsStore.getState();
 
   const { imageSelection } = useFiltersStore.getState();
 
@@ -42,7 +44,7 @@ const getGetSettings = (store: TypedStore) => async (
 
         if (key === 'frames' && what === ExportTypes.FRAMEGROUP) {
           outProp = (outProp as Frame[]).filter(({ hash }) => (
-            getFrameHashesForExport(what, state, frameSetID).includes(hash)
+            getFrameHashesForExport(what, frames, frameSetID).includes(hash)
           ));
         }
 
@@ -51,7 +53,7 @@ const getGetSettings = (store: TypedStore) => async (
           if (what === ExportTypes.FRAMEGROUP) {
             outProp = (outProp as FrameGroup[]).filter((group) => group.id === frameSetID);
           } else {
-            outProp = getFrameGroups(state.frames, (outProp as FrameGroup[]));
+            outProp = getFrameGroups(frames, (outProp as FrameGroup[]));
           }
         }
 
@@ -90,10 +92,10 @@ const getGetSettings = (store: TypedStore) => async (
 
     case ExportTypes.FRAMES:
     case ExportTypes.FRAMEGROUP: {
-      const frames = await getFrames(getFrameHashesForExport(what, state, frameSetID));
+      const exportFrames = await getFrames(getFrameHashesForExport(what, frames, frameSetID));
       return JSON.stringify({
         state: exportableState,
-        ...frames,
+        ...exportFrames,
       }, null, 2);
     }
 

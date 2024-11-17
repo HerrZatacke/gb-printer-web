@@ -18,6 +18,7 @@ import useSettingsStore from '../../../../stores/settingsStore';
 import usePaletteSort from '../../../../../hooks/usePaletteSort';
 import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
 import type { State } from '../../../../store/State';
+import useItemsStore from '../../../../stores/itemsStore';
 
 function GenericSettings() {
   const {
@@ -53,8 +54,10 @@ function GenericSettings() {
     setPrinterUrl,
   } = useSettingsStore();
 
+  const { frames } = useItemsStore();
+
   const savFrameGroups = useSelector((state: State) => (
-    getFrameGroups(state.frames, state.frameGroupNames)
+    getFrameGroups(frames, state.frameGroupNames)
   ));
 
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));

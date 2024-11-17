@@ -8,6 +8,9 @@ export interface BaseImageGroup {
   coverImage: string,
 }
 
+/*
+* On Type-Changes, a history for migration must be kept in /src/javascript/app/stores/migrations/history/
+* */
 export interface SerializableImageGroup extends BaseImageGroup {
   groups: string[],
   images: string[],

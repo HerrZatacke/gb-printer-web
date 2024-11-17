@@ -1,10 +1,11 @@
 import screenfull from 'screenfull';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
-import useFiltersStore, { ImageSelectionMode } from '../../stores/filtersStore';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
+import useFiltersStore, { ImageSelectionMode } from '../../stores/filtersStore';
 import useImportsStore from '../../stores/importsStore';
 import useInteractionsStore from '../../stores/interactionsStore';
+import useItemsStore from '../../stores/itemsStore';
 import useStoragesStore from '../../stores/storagesStore';
 import { Actions } from '../actions';
 import type {
@@ -67,7 +68,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     setSyncLastUpdate,
   } = useStoragesStore.getState();
 
-  checkUpdateTrashCount(store.getState());
+  checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
 
   window.addEventListener('resize', setWindowDimensions);
 
@@ -149,14 +150,14 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
     switch (action.type) {
       case Actions.GLOBAL_UPDATE:
-        checkUpdateTrashCount(store.getState());
+        checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         cancelEditFrame();
         cancelEditPalette();
         cancelEditImages();
         break;
 
       case Actions.REHASH_IMAGE:
-        checkUpdateTrashCount(store.getState());
+        checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         cancelEditImages();
         break;
 
@@ -164,11 +165,11 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.DELETE_IMAGES:
       case Actions.DELETE_FRAME:
       case Actions.ADD_FRAME:
-        checkUpdateTrashCount(store.getState());
+        checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         break;
 
       case Actions.ADD_IMAGES:
-        checkUpdateTrashCount(store.getState());
+        checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         setProgress('printer', 0);
         setPrinterBusy(false);
         importQueueCancel();

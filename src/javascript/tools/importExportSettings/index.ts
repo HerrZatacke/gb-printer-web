@@ -1,4 +1,5 @@
 import type { AnyAction, Dispatch } from 'redux';
+import useItemsStore from '../../app/stores/itemsStore';
 import { download } from '../download';
 import cleanState from '../cleanState';
 import getGetSettings from '../getGetSettings';
@@ -15,6 +16,8 @@ const mergeSettings = (
   newSettings: JSONExport | JSONExportState,
   mergeImagesFrames = false,
 ) => {
+  const { frames, palettes } = useItemsStore.getState();
+
   Object.keys(newSettings).forEach((key: string) => {
     if (key !== 'state') {
       // import frames and images from JSON
@@ -29,7 +32,7 @@ const mergeSettings = (
     }
   });
 
-  cleanState(mergeStates(currentState, newSettings.state || {}, mergeImagesFrames))
+  cleanState(mergeStates(frames, palettes, currentState, newSettings.state || {}, mergeImagesFrames))
     .then((cleanedState) => {
       dispatch<GlobalUpdateAction>({
         type: Actions.GLOBAL_UPDATE,

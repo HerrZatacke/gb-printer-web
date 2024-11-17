@@ -4,6 +4,7 @@ import { RGBNDecoder, Decoder, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
+import useItemsStore from '../../app/stores/itemsStore';
 import useInteractionsStore from '../../app/stores/interactionsStore';
 import useSettingsStore from '../../app/stores/settingsStore';
 import { loadImageTiles } from '../loadImageTiles';
@@ -11,6 +12,7 @@ import { getImagePalettes } from '../getImagePalettes';
 import generateFileName from '../generateFileName';
 import { getRotatedCanvas } from '../applyRotation';
 import { isRGBNImage } from '../isRGBNImage';
+import { reduceItems } from '../reduceArray';
 import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 import type { VideoParams } from '../../../types/VideoParams';
 import type { Palette } from '../../../types/Palette';
@@ -91,6 +93,7 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 
 export const createAnimation = async (state: State) => {
   const { setProgress, setError, videoSelection } = useInteractionsStore.getState();
+  const { frames, palettes } = useItemsStore.getState();
   const { videoParams } = useSettingsStore.getState();
 
   setProgress('gif', 0.01);
@@ -111,9 +114,11 @@ export const createAnimation = async (state: State) => {
     return;
   }
 
-  const images: (Image | undefined)[] = await Promise.all(videoSelection.map((imageHash) => (
-    state.images.find(({ hash }) => hash === imageHash)
-  )));
+  const images: Image[] = videoSelection
+    .map((imageHash) => (
+      state.images.find(({ hash }) => hash === imageHash)
+    ))
+    .reduce(reduceItems<Image>, []);
 
 
   const animationFrames = images.reduce((acc: Image[], image?: Image): Image[] => {
@@ -133,16 +138,16 @@ export const createAnimation = async (state: State) => {
   }, []);
 
 
-  const tileLoader = loadImageTiles(state);
+  const tileLoader = loadImageTiles(images, frames);
 
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
     const tiles = await tileLoader(image.hash);
     const lockFrame = videoLockFrame || image.lockFrame || false;
     const rotation = image.rotation || 0;
 
-    const { palette, framePalette } = getImagePalettes(state, { ...image, lockFrame }); // set Lockframe to value set by global animate settings
+    const { palette, framePalette } = getImagePalettes(palettes, { ...image, lockFrame }); // set Lockframe to value set by global animate settings
 
-    const frame = state.frames.find(({ id }) => id === image.frame);
+    const frame = frames.find(({ id }) => id === image.frame);
     const frameData = frame ? await loadFrameData(frame.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 

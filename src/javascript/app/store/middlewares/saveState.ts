@@ -14,17 +14,12 @@ const saveState: MiddlewareWithState = (store) => (next) => (action) => {
         return;
       }
 
-      switch (key) {
-        case 'palettes':
-          Object.assign(savedState, { [key]: state.palettes.filter(({ isPredefined }) => !isPredefined) });
-          break;
-        default:
-          Object.assign(savedState, { [key]: state[key] });
-          break;
-      }
+      Object.assign(savedState, { [key]: state[key] });
     });
 
-  localStorage.setItem('gbp-web-state', JSON.stringify(savedState));
+  console.log('not updating local storage during final phase of zustand refactor');
+  console.log(savedState);
+  // localStorage.setItem('gbp-web-state', JSON.stringify(savedState));
 };
 
 export default saveState;

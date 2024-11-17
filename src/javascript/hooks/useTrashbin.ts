@@ -2,6 +2,7 @@ import { useStore } from 'react-redux';
 import dayjs from 'dayjs';
 import { saveAs } from 'file-saver';
 import useInteractionsStore from '../app/stores/interactionsStore';
+import useItemsStore from '../app/stores/itemsStore';
 import { localforageReady, localforageImages, localforageFrames } from '../tools/localforageInstance';
 import { dateFormat } from '../app/defaults';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTrash';
@@ -90,7 +91,8 @@ const useTrashbin = (): UseTrashbin => {
   };
 
   const downloadFrames = async (): Promise<void> => {
-    const frameHashes = await getTrashFrames(store.getState().frames);
+    const { frames } = useItemsStore.getState();
+    const frameHashes = await getTrashFrames(frames);
     const deletedFrames = await getItems(frameHashes, localforageFrames);
 
     const jsonExportBinary: JSONExportBinary = {};
@@ -123,8 +125,13 @@ const useTrashbin = (): UseTrashbin => {
   };
 
   const purgeTrash = async (): Promise<void> => {
-    await cleanupStorage(store.getState());
-    checkUpdateTrashCount(store.getState());
+    const { images } = store.getState();
+    const { frames } = useItemsStore.getState();
+    await cleanupStorage({ images, frames });
+
+    const { images: cleanedImages } = store.getState();
+    const { frames: cleanedFrames } = useItemsStore.getState();
+    checkUpdateTrashCount(cleanedImages, cleanedFrames);
   };
 
   return {

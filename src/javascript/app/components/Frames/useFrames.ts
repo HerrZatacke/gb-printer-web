@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import getFrameGroups from '../../../tools/getFrameGroups';
 import { importExportSettings } from '../../../tools/importExportSettings';
@@ -11,7 +12,6 @@ import type { FrameGroupNamesAction } from '../../../../types/actions/FrameActio
 import type { State, TypedStore } from '../../store/State';
 import type { Frame } from '../../../../types/Frame';
 import type { ExportTypes } from '../../../consts/exportTypes';
-import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   const group = groups.find(({ id }) => id === byId);
@@ -38,17 +38,16 @@ interface UseFrames {
 const useFrames = (): UseFrames => {
   const dispatch = useDispatch();
   const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
+  const { frames, palettes, updateFrames } = useItemsStore();
   const store: TypedStore = useStore();
   const { downloadSettings } = importExportSettings(store);
 
+  const palette = palettes.find(({ shortName }) => shortName === activePalette) || palettes[0];
+
   const {
-    frames,
     frameGroupNames,
-    palette,
   } = useSelector((state: State) => ({
-    frames: state.frames,
     frameGroupNames: state.frameGroupNames,
-    palette: state.palettes.find(({ shortName }) => shortName === activePalette) || state.palettes[0],
   }));
 
   const frameGroups = getFrameGroups(frames, frameGroupNames);
@@ -107,12 +106,7 @@ const useFrames = (): UseFrames => {
       };
     }));
 
-    dispatch<GlobalUpdateAction>({
-      type: Actions.GLOBAL_UPDATE,
-      payload: {
-        frames: updatedFrames,
-      },
-    });
+    updateFrames(updatedFrames);
   };
 
   return {

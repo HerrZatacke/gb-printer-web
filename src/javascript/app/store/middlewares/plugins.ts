@@ -2,8 +2,10 @@ import Queue from 'promise-queue';
 import { saveAs } from 'file-saver';
 import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import { RGBNDecoder, Decoder, BW_PALETTE_HEX } from 'gb-image-decoder';
-import useSettingsStore from '../../stores/settingsStore';
 import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
+import useItemsStore from '../../stores/itemsStore';
+import useSettingsStore from '../../stores/settingsStore';
 import { loadImageTiles } from '../../../tools/loadImageTiles';
 import { getImagePalettes } from '../../../tools/getImagePalettes';
 import { Actions } from '../actions';
@@ -17,7 +19,6 @@ import type { PluginUpdatePropertiesAction } from '../../../../types/actions/Plu
 import type { MonochromeImage } from '../../../../types/Image';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
-import useInteractionsStore from '../../stores/interactionsStore';
 
 interface RegisteredPlugins {
   [url: string]: PluginClassInstance,
@@ -53,6 +54,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
 
   const collectImageData = (hash: string): PluginImageData => {
     const state = store.getState();
+    const { frames, palettes } = useItemsStore.getState();
     const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
 
     const meta = state.images.find((image) => image.hash === hash);
@@ -60,12 +62,12 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
       throw new Error('image not found');
     }
 
-    const { palette: selectedPalette, framePalette: selectedFramePalette } = getImagePalettes(state, meta);
+    const { palette: selectedPalette, framePalette: selectedFramePalette } = getImagePalettes(palettes, meta);
     if (!selectedPalette) {
       throw new Error('selectedPalette not found');
     }
 
-    const getTiles = () => loadImageTiles(state)(meta.hash);
+    const getTiles = () => loadImageTiles(state.images, frames)(meta.hash);
 
     const isRGBN = isRGBNImage(meta);
 
@@ -83,7 +85,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
       const tiles = await getTiles();
       let decoder: RGBNDecoder | Decoder;
 
-      const frame = state.frames.find(({ id }) => id === meta.frame);
+      const frame = frames.find(({ id }) => id === meta.frame);
       const frameData = frame ? await loadFrameData(frame.hash) : null;
       const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 

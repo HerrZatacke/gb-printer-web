@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useStore, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
+import useItemsStore from '../../stores/itemsStore';
 import { loadImageTiles as getLoadImageTiles } from '../../../tools/loadImageTiles';
 import type { State, TypedStore } from '../../store/State';
 import { missingGreyPalette } from '../../defaults';
@@ -40,12 +41,11 @@ export const useImageRender = ({
   const [gbImageProps, setGbImageProps] = useState<GameBoyImageProps | null>(null);
 
   const store: TypedStore = useStore();
+  const { frames: allFrames, palettes: allPalettes } = useItemsStore();
+  const frameHash = allFrames.find(({ id }) => id === frameId)?.hash;
 
-  const { allImages, allFrames, allPalettes, frameHash } = useSelector((state: State) => ({
+  const { allImages } = useSelector((state: State) => ({
     allImages: state.images,
-    allFrames: state.frames,
-    frameHash: state.frames.find(({ id }) => id === frameId)?.hash,
-    allPalettes: state.palettes,
   }));
 
   const loadImageTiles = useCallback(
@@ -54,7 +54,7 @@ export const useImageRender = ({
         dropboxStorageTool(store).recoverImageData(imgHash);
       };
 
-      const imageLoader = getLoadImageTiles({ images: allImages, frames: allFrames }, recoverFn);
+      const imageLoader = getLoadImageTiles(allImages, allFrames, recoverFn);
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashes);
     },

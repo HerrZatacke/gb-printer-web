@@ -1,12 +1,11 @@
 import screenfull from 'screenfull';
 import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import useFiltersStore from '../../../stores/filtersStore';
-import useSettingsStore from '../../../stores/settingsStore';
 import useInteractionsStore from '../../../stores/interactionsStore';
-import type { State } from '../../../store/State';
+import useItemsStore from '../../../stores/itemsStore';
+import useSettingsStore from '../../../stores/settingsStore';
 import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../../types/Image';
 import type { Rotation } from '../../../../tools/applyRotation';
 import type { Palette } from '../../../../../types/Palette';
@@ -94,14 +93,8 @@ export const useLightboxImage = (): UseLightboxImage => {
   // const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const { preferredLocale } = useSettingsStore();
-
-  const {
-    viewImages,
-    palettes,
-  } = useSelector((state: State) => ({
-    viewImages: getFilteredImages(view.images, filtersState),
-    palettes: state.palettes,
-  }));
+  const { palettes } = useItemsStore();
+  const viewImages = getFilteredImages(view.images, filtersState);
 
   // ToDo: Fix lightbox overflow showing "5/4" images (probably not filtering correctly?)
   const filteredImages = useMemo<Image[]>(() => (

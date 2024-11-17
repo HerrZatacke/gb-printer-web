@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
 import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
+import useItemsStore from '../../stores/itemsStore';
 import type { Palette } from '../../../../types/Palette';
 import type { PaletteEditAction } from '../../../../types/actions/PaletteActions';
 
@@ -11,7 +11,7 @@ interface UsePalettes {
 }
 
 export const usePalettes = (): UsePalettes => {
-  const palettes = useSelector((state: State) => state.palettes);
+  const { palettes } = useItemsStore();
   const dispatch = useDispatch();
 
   return {
