@@ -4,7 +4,6 @@ import useItemsStore from '../../app/stores/itemsStore';
 import useSettingsStore from '../../app/stores/settingsStore';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
-import type { TypedStore } from '../../app/store/State';
 import type { DialogOption,
   DialogQuestion,
   DialogResult } from '../../../types/Dialog';
@@ -13,17 +12,11 @@ import {
 } from '../../../types/Dialog';
 import { reduceItems } from '../reduceArray';
 
-const getTransformSav = (
-  { getState }: TypedStore,
-) => async (file: File, skipDialogs: boolean): Promise<boolean> => {
+export const transformSav = async (file: File, skipDialogs: boolean): Promise<boolean> => {
   const { dismissDialog, setDialog } = useDialogsStore.getState();
-  const { frames } = useItemsStore.getState();
+  const { frames, frameGroups } = useItemsStore.getState();
   const { savFrameTypes, setSavFrameTypes } = useSettingsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
-
-  const {
-    frameGroupNames,
-  } = getState();
 
   const {
     importLastSeen,
@@ -31,7 +24,7 @@ const getTransformSav = (
     forceMagicCheck,
   } = useSettingsStore.getState();
 
-  const frameGroupOptions: DialogOption[] = getFrameGroups(frames, frameGroupNames)
+  const frameGroupOptions: DialogOption[] = getFrameGroups(frames, frameGroups)
     .map(({ id: value, name }) => ({
       value,
       name,
@@ -91,5 +84,3 @@ const getTransformSav = (
     });
   }));
 };
-
-export default getTransformSav;

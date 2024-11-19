@@ -112,7 +112,7 @@ const useTrashbin = (): UseTrashbin => {
     const jsonExportState: JSONExportState = {
       state: {
         frames: backupFrames,
-        frameGroupNames: [
+        frameGroups: [
           {
             id: 'bak',
             name: 'Re-imported trash frames',

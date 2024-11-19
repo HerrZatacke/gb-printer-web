@@ -18,7 +18,7 @@ import type {
   SaveNewRGBImagesAction,
   ImagesBatchUpdateAction,
 } from '../../../../types/actions/ImageActions';
-import type { AddFrameAction, FrameGroupNamesAction } from '../../../../types/actions/FrameActions';
+import type { AddFrameAction } from '../../../../types/actions/FrameActions';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
@@ -65,6 +65,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   const {
     addPalettes,
     addFrames,
+    updateFrameGroups,
   } = useItemsStore.getState();
 
   checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
@@ -116,7 +117,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       AddImagesAction |
       DeleteImageAction |
       DeleteImagesAction |
-      FrameGroupNamesAction |
       GlobalUpdateAction |
       ImagesBatchUpdateAction |
       ImageFavouriteAction |
@@ -160,6 +160,10 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
         if (action.payload?.frames) {
           addFrames(action.payload.frames);
+        }
+
+        if (action.payload?.frameGroups) {
+          updateFrameGroups(action.payload.frameGroups);
         }
 
         break;
@@ -237,7 +241,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.DELETE_IMAGES:
       case Actions.ADD_IMAGES:
       case Actions.ADD_FRAME:
-      case Actions.NAME_FRAMEGROUP:
       case Actions.IMAGE_FAVOURITE_TAG:
         setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
         break;

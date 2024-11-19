@@ -10,6 +10,10 @@ export const migrateItems = async (persistedState: unknown): Promise<Partial<Ite
     result.frames = await hashFrames(v0state.frames);
   }
 
+  if (v0state.frameGroupNames?.length) {
+    result.frameGroups = v0state.frameGroupNames;
+  }
+
   if (v0state.palettes?.length) {
     result.palettes = v0state.palettes;
   }

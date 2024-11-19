@@ -1,7 +1,6 @@
 import type { ExportFrameMode } from 'gb-image-decoder';
 import type { ILocale } from 'locale-codes';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
@@ -14,11 +13,10 @@ import { getEnv } from '../../../../../tools/getEnv';
 import exportFrameModes from '../../../../../consts/exportFrameModes';
 import dateFormatLocale from '../../../../../tools/dateFormatLocale';
 import getFrameGroups from '../../../../../tools/getFrameGroups';
+import useItemsStore from '../../../../stores/itemsStore';
 import useSettingsStore from '../../../../stores/settingsStore';
 import usePaletteSort from '../../../../../hooks/usePaletteSort';
 import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
-import type { State } from '../../../../store/State';
-import useItemsStore from '../../../../stores/itemsStore';
 
 function GenericSettings() {
   const {
@@ -54,11 +52,9 @@ function GenericSettings() {
     setPrinterUrl,
   } = useSettingsStore();
 
-  const { frames } = useItemsStore();
+  const { frames, frameGroups } = useItemsStore();
 
-  const savFrameGroups = useSelector((state: State) => (
-    getFrameGroups(frames, state.frameGroupNames)
-  ));
+  const savFrameGroups = getFrameGroups(frames, frameGroups);
 
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
   const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);

@@ -49,7 +49,7 @@ const getGetSettings = (store: TypedStore) => async (
         }
 
         // Remove unused framegroups from export
-        if (key === 'frameGroupNames') {
+        if (key === 'frameGroups') {
           if (what === ExportTypes.FRAMEGROUP) {
             outProp = (outProp as FrameGroup[]).filter((group) => group.id === frameSetID);
           } else {

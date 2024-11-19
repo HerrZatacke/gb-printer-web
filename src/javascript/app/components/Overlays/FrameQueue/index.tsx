@@ -6,12 +6,16 @@ import './index.scss';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
-import type { AddFrameAction, FrameGroupNamesAction } from '../../../../../types/actions/FrameActions';
+import type { AddFrameAction } from '../../../../../types/actions/FrameActions';
 import EditFrameStartLine from '../EditFrameStartLine';
 import useImportsStore from '../../../stores/importsStore';
+import useItemsStore from '../../../stores/itemsStore';
+import useStoragesStore from '../../../stores/storagesStore';
 
 function FrameQueue() {
   const { frameQueue, frameQueueCancelOne } = useImportsStore();
+  const { setSyncLastUpdate } = useStoragesStore();
+  const { updateFrameGroups } = useItemsStore();
   const frame = frameQueue[0];
   const [newGroupName, setNewGroupName] = useState('');
   const [startLine, setStartLine] = useState<number>(Math.floor((frame.tiles.length - 280) / 40));
@@ -57,13 +61,11 @@ function FrameQueue() {
         });
 
         if (newGroupName?.trim()) {
-          dispatch<FrameGroupNamesAction>({
-            type: Actions.NAME_FRAMEGROUP,
-            payload: {
-              id: frameGroup,
-              name: newGroupName,
-            },
-          });
+          updateFrameGroups([{
+            id: frameGroup,
+            name: newGroupName,
+          }]);
+          setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
         }
       }}
       deny={() => frameQueueCancelOne(frame.tempId)}

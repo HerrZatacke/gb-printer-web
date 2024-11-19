@@ -1,10 +1,10 @@
-import getTransformSav from '../transformSav';
 import { getImportJSON } from '../importExportSettings/getImportJSON';
 import { transformBin } from '../transformBin';
-import { transformRom } from '../transformRom';
-import { transformReduced } from '../transformReduced';
 import { transformBitmaps } from '../transformBitmaps';
 import { transformPlainText } from '../transformPlainText';
+import { transformReduced } from '../transformReduced';
+import { transformRom } from '../transformRom';
+import { transformSav } from '../transformSav';
 import prepareFile from './prepareFile';
 import type { PreparedFile } from './prepareFile';
 import type { TypedStore } from '../../app/store/State';
@@ -16,7 +16,6 @@ export interface HandeFileImportOptions {
 export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
 
 const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
-  const transformSav = getTransformSav(store);
   const importJSON = getImportJSON(store);
 
   return async (files, { fromPrinter } = { fromPrinter: false }): Promise<void> => {

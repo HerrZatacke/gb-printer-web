@@ -34,13 +34,6 @@ const definitions: StorePropertyDefault[] = [
     saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
     value: [],
   },
-  {
-    // set of usable frames
-    key: 'frameGroupNames',
-    saveLocally: true,
-    saveExport: [ExportTypes.FRAMES, ExportTypes.REMOTE, ExportTypes.FRAMEGROUP],
-    value: [],
-  },
 ];
 
 const defaults: Partial<State> = {};

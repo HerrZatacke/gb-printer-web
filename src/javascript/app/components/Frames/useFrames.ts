@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useStore } from 'react-redux';
 import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import getFrameGroups from '../../../tools/getFrameGroups';
 import { importExportSettings } from '../../../tools/importExportSettings';
 import { compressAndHashFrame, loadFrameData, saveFrameData } from '../../../tools/applyFrame/frameData';
 import { padFrameData } from '../../../tools/saveLocalStorageItems';
-import { Actions } from '../../store/actions';
 import type { FrameGroup } from '../../../../types/FrameGroup';
-import type { FrameGroupNamesAction } from '../../../../types/actions/FrameActions';
-import type { State, TypedStore } from '../../store/State';
+import type { TypedStore } from '../../store/State';
 import type { Frame } from '../../../../types/Frame';
 import type { ExportTypes } from '../../../consts/exportTypes';
+import useStoragesStore from '../../stores/storagesStore';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   const group = groups.find(({ id }) => id === byId);
@@ -36,21 +35,15 @@ interface UseFrames {
 }
 
 const useFrames = (): UseFrames => {
-  const dispatch = useDispatch();
   const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
-  const { frames, palettes, addFrames } = useItemsStore();
+  const { frames, palettes, frameGroups: frameGroupsState, addFrames, updateFrameGroups } = useItemsStore();
+  const { setSyncLastUpdate } = useStoragesStore();
   const store: TypedStore = useStore();
   const { downloadSettings } = importExportSettings(store);
 
   const palette = palettes.find(({ shortName }) => shortName === activePalette) || palettes[0];
 
-  const {
-    frameGroupNames,
-  } = useSelector((state: State) => ({
-    frameGroupNames: state.frameGroupNames,
-  }));
-
-  const frameGroups = getFrameGroups(frames, frameGroupNames);
+  const frameGroups = getFrameGroups(frames, frameGroupsState);
   const [groupFrames, setGroupFrames] = useState<Frame[]>([]);
   const [selectedFrameGroup, setSelectedFrameGroup] = useState(getValidFrameGroupId(frameGroups, savFrameTypes));
 
@@ -69,13 +62,8 @@ const useFrames = (): UseFrames => {
   const activeFrameGroup = frameGroups.find(({ id }) => (id === selectedFrameGroup)) || frameGroups[0];
 
   const setActiveFrameGroupName = (name: string) => {
-    dispatch<FrameGroupNamesAction>({
-      type: Actions.NAME_FRAMEGROUP,
-      payload: {
-        ...activeFrameGroup,
-        name,
-      },
-    });
+    updateFrameGroups([{ ...activeFrameGroup, name }]);
+    setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
   };
 
   const exportJson = (what: ExportTypes) => downloadSettings(what, selectedFrameGroup);

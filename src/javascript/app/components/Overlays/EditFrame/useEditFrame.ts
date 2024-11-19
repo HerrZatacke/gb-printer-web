@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import getFrameGroups from '../../../../tools/getFrameGroups';
-import type { State } from '../../../store/State';
 import type { Frame } from '../../../../../types/Frame';
 import type { FrameGroup } from '../../../../../types/FrameGroup';
 import useEditStore from '../../../stores/editStore';
@@ -30,14 +28,10 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
   const updateId = frame?.id || '';
   const { cancelEditFrame } = useEditStore();
   const { frames } = useItemsStore();
-  const { addFrames } = useItemsStore();
+  const { frameGroups, addFrames } = useItemsStore();
   const { setSyncLastUpdate } = useStoragesStore();
 
-  const { frameGroupNames } = useSelector((state: State) => ({
-    frameGroupNames: state.frameGroupNames,
-  }));
-
-  const groups = getFrameGroups(frames, frameGroupNames);
+  const groups = getFrameGroups(frames, frameGroups);
   const frameGroupIdRegex = /^(?<groupName>[a-z]+)(?<id>[0-9]+)/g;
 
   const match = frameGroupIdRegex.exec(updateId);
