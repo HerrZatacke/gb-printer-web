@@ -15,7 +15,6 @@ import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState'
 import type { Palette } from '../../../../types/Palette';
 import type { Plugin, PluginArgs, PluginClassInstance, PluginConfigValues, PluginImageData } from '../../../../types/Plugin';
 import type { TypedStore } from '../State';
-import type { PluginUpdatePropertiesAction } from '../../../../types/actions/PluginActions';
 import type { MonochromeImage } from '../../../../types/Image';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import { getDecoderUpdateParams } from '../../../tools/getDecoderUpdateParams';
@@ -130,8 +129,10 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
     };
   };
 
+  // ToDo: call this when adding a new Plugin.
   const initPlugin = (plugin: Plugin) => {
-    const pluginState = store.getState().plugins.find(({ url }) => plugin.url === url);
+    const { plugins, updatePluginProperties } = useItemsStore.getState();
+    const pluginState = plugins.find(({ url }) => plugin.url === url);
     const stateConfig = pluginState?.config || {};
     const { url } = plugin;
 
@@ -161,30 +162,28 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
                 config = {},
               } = instance;
 
+              // ToDo: remove from this list when deleted
+              //  and call setConfig on the plugin if config is updated
               registeredPlugins[url] = instance;
 
-              store.dispatch<PluginUpdatePropertiesAction>({
-                type: Actions.PLUGIN_UPDATE_PROPERTIES,
-                payload: {
-                  url,
-                  name,
-                  description,
-                  configParams,
-                  config,
-                  loading: false,
-                  error: false,
-                },
+              updatePluginProperties({
+                url,
+                name,
+                description,
+                configParams,
+                config,
+                loading: false,
+                error: false,
               });
+
               resolve(true);
             } catch (error: unknown) {
-              store.dispatch<PluginUpdatePropertiesAction>({
-                type: Actions.PLUGIN_UPDATE_PROPERTIES,
-                payload: {
-                  url,
-                  loading: false,
-                  error: (error as Error)?.message,
-                },
+              updatePluginProperties({
+                url,
+                loading: false,
+                error: (error as Error)?.message,
               });
+
               resolve(false);
             }
           };
@@ -196,14 +195,12 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
           pluginScript.addEventListener('error', () => {
             window.gbpwRegisterPlugin = () => { /* noop */ };
 
-            store.dispatch<PluginUpdatePropertiesAction>({
-              type: Actions.PLUGIN_UPDATE_PROPERTIES,
-              payload: {
-                url,
-                loading: false,
-                error: 'Loading error',
-              },
+            updatePluginProperties({
+              url,
+              loading: false,
+              error: 'Loading error',
             });
+
             resolve(false);
           });
 
@@ -214,7 +211,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
   };
 
   window.requestAnimationFrame(() => {
-    const { plugins } = store.getState();
+    const { plugins } = useItemsStore.getState();
 
     Promise.all(plugins.map(initPlugin))
       .then((initializedPlugins) => {
@@ -241,22 +238,6 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
         registeredPlugins[url].withSelection(imageSelection.map(collectImageData));
         break;
       }
-
-      case Actions.PLUGIN_UPDATE_CONFIG: {
-        const { url, config } = action.payload;
-        registeredPlugins[url].setConfig(config);
-        break;
-      }
-
-      case Actions.PLUGIN_ADD:
-        initPlugin({
-          url: action.payload,
-        });
-        break;
-
-      case Actions.PLUGIN_REMOVE:
-        delete registeredPlugins[action.payload];
-        break;
 
       default:
         break;

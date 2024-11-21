@@ -18,5 +18,9 @@ export const migrateItems = async (persistedState: unknown): Promise<Partial<Ite
     result.palettes = v0state.palettes;
   }
 
+  if (v0state.plugins?.length) {
+    result.plugins = v0state.plugins;
+  }
+
   return result;
 };

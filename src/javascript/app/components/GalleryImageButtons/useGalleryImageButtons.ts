@@ -4,6 +4,7 @@ import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
+import useItemsStore from '../../stores/itemsStore';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { State } from '../../store/State';
 import type {
@@ -57,12 +58,13 @@ export const useGalleryImageButtons = (
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
+  const { plugins } = useItemsStore();
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
 
   const isSelected = imageSelection.includes(hash);
-  const { hasPlugins, stateImages } = useSelector((state: State) => ({
-    hasPlugins: !!state.plugins.length,
+  const hasPlugins = !!plugins.length;
+  const { stateImages } = useSelector((state: State) => ({
     stateImages: state.images,
   }));
 

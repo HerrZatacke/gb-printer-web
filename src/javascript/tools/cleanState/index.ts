@@ -67,17 +67,9 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
       return monoImage;
     });
 
-  // ToDo: do during store hydration/serialization?
-  const plugins = (dirtyState.plugins || []).map((plugin) => ({
-    ...plugin,
-    loading: true,
-    error: undefined,
-  }));
-
   return {
     ...dirtyState,
     images,
-    plugins,
   };
 };
 

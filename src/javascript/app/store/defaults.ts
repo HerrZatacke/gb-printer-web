@@ -27,13 +27,6 @@ const definitions: StorePropertyDefault[] = [
     saveExport: [ExportTypes.REMOTE],
     value: [],
   },
-  {
-    // list of plugins
-    key: 'plugins',
-    saveLocally: true,
-    saveExport: [ExportTypes.SETTINGS, ExportTypes.REMOTE],
-    value: [],
-  },
 ];
 
 const defaults: Partial<State> = {};

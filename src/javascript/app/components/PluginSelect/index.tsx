@@ -1,11 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
 import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
 import type { PluginImageBatchAction, PluginImageSingleAction } from '../../../../types/actions/PluginActions';
+import useItemsStore from '../../stores/itemsStore';
 
 interface Props {
   children: React.ReactNode,
@@ -14,7 +14,7 @@ interface Props {
 }
 
 function PluginSelect({ children, pluginsActive, hash }: Props) {
-  const plugins = useSelector((state: State) => state.plugins);
+  const { plugins } = useItemsStore();
   const dispatch = useDispatch();
 
   const dispatchToPlugin = (url: string) => {

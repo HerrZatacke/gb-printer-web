@@ -2,13 +2,11 @@ import type { Dispatch, MiddlewareAPI } from 'redux';
 import type { Values } from '../stores/itemsStore';
 import type { Image } from '../../../types/Image';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
-import type { Plugin } from '../../../types/Plugin';
 
 // ToDo: infer from store somehow...?
 export interface State {
   images: Image[],
   imageGroups: SerializableImageGroup[],
-  plugins: Plugin[],
 }
 
 export type TypedStore = MiddlewareAPI<Dispatch, State>;

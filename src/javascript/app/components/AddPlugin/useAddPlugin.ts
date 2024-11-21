@@ -1,7 +1,6 @@
 import { parseURL } from 'ufo';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import type { State } from '../../store/State';
+import useItemsStore from '../../stores/itemsStore';
 import { usePlugins } from '../Settings/pages/PluginSettings/usePlugins';
 
 const trustedSources = [
@@ -23,7 +22,7 @@ interface UseAddPlugin {
 export const useAddPlugin = (): UseAddPlugin => {
   const pluginUrl = useParams().pluginUrl || '';
   const parsedPluginUrl = parseURL(pluginUrl);
-  const plugins = useSelector((state: State) => state.plugins);
+  const { plugins } = useItemsStore();
   const navigate = useNavigate();
   const { pluginAdd } = usePlugins();
 

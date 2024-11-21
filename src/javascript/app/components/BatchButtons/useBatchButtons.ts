@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import useFiltersStore from '../../stores/filtersStore';
+import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
 import type { BatchTaskAction } from '../../../../types/actions/ImageActions';
 import type { BatchActionType } from '../../../consts/batchActionTypes';
 import type { Image, MonochromeImage } from '../../../../types/Image';
@@ -34,7 +34,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     setSortOptionsVisible,
     setImageSelection,
   } = useFiltersStore();
-  const state = useSelector((currentState: State) => currentState);
+  const { plugins } = useItemsStore();
   const { pageSize } = useSettingsStore();
   const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
 
   return ({
-    hasPlugins: !!state.plugins.length,
+    hasPlugins: !!plugins.length,
     batchEnabled: !!imageSelection.length,
     monochromeBatchEnabled: selectedImages.length > 1 && monochromeImages.length === selectedImages.length,
     activeFilters: filtersActiveTags.length || 0,

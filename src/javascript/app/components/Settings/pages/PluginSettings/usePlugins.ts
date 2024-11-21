@@ -1,12 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import type { State } from '../../../../store/State';
 import type { Plugin } from '../../../../../../types/Plugin';
-import { Actions } from '../../../../store/actions';
-import type {
-  PluginAddAction,
-  PluginRemoveAction,
-  PluginUpdateConfigAction,
-} from '../../../../../../types/actions/PluginActions';
+import useItemsStore from '../../../../stores/itemsStore';
 
 interface UsePlugins {
   plugins: Plugin[];
@@ -16,33 +9,14 @@ interface UsePlugins {
 }
 
 export const usePlugins = (): UsePlugins => {
-  const plugins: Plugin[] = useSelector((state: State) => state.plugins);
-  const dispatch = useDispatch();
+  const { plugins, addPlugins, deletePlugin, updatePluginConfig } = useItemsStore();
 
-  const pluginAdd = (url: string) => {
-    dispatch<PluginAddAction>({
-      type: Actions.PLUGIN_ADD,
-      payload: url,
-    });
-  };
+  const pluginAdd = (url: string) => addPlugins([{ url }]);
 
-  const pluginRemove = (url: string) => {
-    dispatch<PluginRemoveAction>({
-      type: Actions.PLUGIN_REMOVE,
-      payload: url,
-    });
-  };
+  const pluginRemove = (url: string) => deletePlugin(url);
 
   const pluginUpdateConfig = (url: string, key: string, value: string | number) => {
-    dispatch<PluginUpdateConfigAction>({
-      type: Actions.PLUGIN_UPDATE_CONFIG,
-      payload: {
-        url,
-        config: {
-          [key]: value,
-        },
-      },
-    });
+    updatePluginConfig({ url, config: { [key]: value } });
   };
 
   return {
