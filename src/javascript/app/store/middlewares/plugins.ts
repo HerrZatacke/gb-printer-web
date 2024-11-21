@@ -130,6 +130,7 @@ const pluginsMiddleware: MiddlewareWithState = (store) => {
   };
 
   // ToDo: call this when adding a new Plugin.
+  // ToDo: Migrate this file to become a context
   const initPlugin = (plugin: Plugin) => {
     const { plugins, updatePluginProperties } = useItemsStore.getState();
     const pluginState = plugins.find(({ url }) => plugin.url === url);

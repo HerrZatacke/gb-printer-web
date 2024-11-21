@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
 import type { Context } from 'react';
-import type { TreeImageGroup } from '../../../types/ImageGroup';
-import type { Image } from '../../../types/Image';
-import type { DialogOption } from '../../../types/Dialog';
+import type { TreeImageGroup } from '../../../../types/ImageGroup';
+import type { Image } from '../../../../types/Image';
+import type { DialogOption } from '../../../../types/Dialog';
 
 export const createRoot = (): TreeImageGroup => ({
   id: 'ROOT',
@@ -36,5 +36,3 @@ export const galleryTreeContext: Context<GalleryTreeContext> = createContext<Gal
 });
 
 export const useGalleryTreeContext = (): GalleryTreeContext => useContext<GalleryTreeContext>(galleryTreeContext);
-
-export const GalleryTreeContextProvider = galleryTreeContext.Provider;
