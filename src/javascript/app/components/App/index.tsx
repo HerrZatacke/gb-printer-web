@@ -22,8 +22,11 @@ import PluginSettings from '../Settings/pages/PluginSettings';
 import DropboxSettings from '../Settings/pages/DropboxSettings';
 import WiFiSettings from '../Settings/pages/WiFiSettings';
 import { reduceItems } from '../../../tools/reduceArray';
+import useFileDrop from '../../../hooks/useFileDrop';
 
 function App() {
+  useFileDrop();
+
   const router = createRouter([
     {
       path: '/',
