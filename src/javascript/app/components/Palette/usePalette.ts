@@ -1,10 +1,8 @@
-import { useDispatch } from 'react-redux';
-import { Actions } from '../../store/actions';
-import type { PaletteCloneAction, PaletteEditAction } from '../../../../types/actions/PaletteActions';
 import useDialogsStore from '../../stores/dialogsStore';
 import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import useStoragesStore from '../../stores/storagesStore';
+import useEditPalette from '../../../hooks/useSetEditPalette';
 
 interface UsePalette {
   isActive: boolean
@@ -19,9 +17,8 @@ export const usePalette = (shortName: string, name: string): UsePalette => {
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setSyncLastUpdate } = useStoragesStore();
   const { deletePalette } = useItemsStore();
-
+  const { editPalette, clonePalette } = useEditPalette();
   const isActive = activePalette === shortName;
-  const dispatch = useDispatch();
 
 
   return {
@@ -42,17 +39,7 @@ export const usePalette = (shortName: string, name: string): UsePalette => {
         deny: async () => dismissDialog(0),
       });
     },
-    editPalette: () => {
-      dispatch<PaletteEditAction>({
-        type: Actions.PALETTE_EDIT,
-        payload: shortName,
-      });
-    },
-    clonePalette: () => {
-      dispatch<PaletteCloneAction>({
-        type: Actions.PALETTE_CLONE,
-        payload: shortName,
-      });
-    },
+    editPalette: () => editPalette(shortName),
+    clonePalette: () => clonePalette(shortName),
   };
 };
