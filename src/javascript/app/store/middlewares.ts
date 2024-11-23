@@ -6,7 +6,6 @@ import importMessage from './middlewares/importMessage';
 import saveEditPalette from './middlewares/saveEditPalette';
 import saveRGBNImage from './middlewares/saveRGBNImage';
 import share from './middlewares/share';
-import startDownload from './middlewares/startDownload';
 import { zustandMigrationMiddleware } from './middlewares/zustandMigration';
 
 export default applyMiddleware(
@@ -17,6 +16,5 @@ export default applyMiddleware(
   saveEditPalette,
   saveRGBNImage,
   share,
-  startDownload,
   zustandMigrationMiddleware,
 );

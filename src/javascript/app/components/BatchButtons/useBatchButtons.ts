@@ -14,7 +14,8 @@ import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import unique from '../../../tools/unique';
 import type { Image, MonochromeImage } from '../../../../types/Image';
 import type { State } from '../../store/State';
-import type { DeleteImagesAction, DownloadImageSelectionAction } from '../../../../types/actions/ImageActions';
+import type { DeleteImagesAction } from '../../../../types/actions/ImageActions';
+import useDownload from '../../../hooks/useDownload';
 
 interface UseBatchButtons {
   hasPlugins: boolean,
@@ -47,6 +48,8 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const { plugins } = useItemsStore();
   const { pageSize } = useSettingsStore();
   const dispatch = useDispatch();
+
+  const { downloadImageCollection } = useDownload();
 
   const { setEditImages, setEditRGBNImages } = useEditStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
@@ -101,10 +104,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
           }
 
           case BatchActionType.DOWNLOAD: {
-            dispatch<DownloadImageSelectionAction>({
-              type: Actions.DOWNLOAD_SELECTION,
-              payload: imageSelection,
-            });
+            downloadImageCollection(imageSelection);
             break;
           }
 

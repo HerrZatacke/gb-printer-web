@@ -5,14 +5,10 @@ import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import useItemsStore from '../../stores/itemsStore';
+import useDownload from '../../../hooks/useDownload';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { State } from '../../store/State';
-import type {
-  DeleteImageAction,
-  DownloadImageStartAction,
-  ImageFavouriteAction,
-  ShareImageStartAction,
-} from '../../../../types/actions/ImageActions';
+import type { DeleteImageAction, ImageFavouriteAction, ShareImageStartAction } from '../../../../types/actions/ImageActions';
 import { canShare } from '../../../tools/canShare';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 
@@ -62,6 +58,8 @@ export const useGalleryImageButtons = (
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
 
+  const { downloadSingleImage } = useDownload();
+
   const isSelected = imageSelection.includes(hash);
   const hasPlugins = !!plugins.length;
   const { stateImages } = useSelector((state: State) => ({
@@ -74,12 +72,7 @@ export const useGalleryImageButtons = (
     hasPlugins,
     isSelected,
     canShare: canShare(),
-    startDownload: () => {
-      dispatch<DownloadImageStartAction>({
-        type: Actions.START_DOWNLOAD,
-        payload: hash,
-      });
-    },
+    startDownload: () => downloadSingleImage(hash),
     deleteImage: () => {
       setDialog({
         message: imageTitle ? `Delete image "${imageTitle}"?` : 'Delete this image?',

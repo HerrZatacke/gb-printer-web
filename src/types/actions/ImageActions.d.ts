@@ -56,17 +56,6 @@ export interface SaveNewRGBImagesAction {
   payload: RGBNHashes[],
 }
 
-export interface DownloadImageSelectionAction {
-  type: Actions.DOWNLOAD_SELECTION,
-  payload: string[],
-}
-
-export interface DownloadImageStartAction {
-  type: Actions.START_DOWNLOAD
-  payload: string,
-}
-
-
 export interface ShareImageStartAction {
   type: Actions.SHARE_IMAGE
   payload: string,
