@@ -2,6 +2,7 @@ import type { RGBNPalette } from 'gb-image-decoder';
 import type { Image, MonochromeImage } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import { isRGBNImage } from '../isRGBNImage';
+import { missingGreyPalette } from '../../app/defaults';
 
 interface GetImagePalettes {
   palette?: RGBNPalette | Palette,
@@ -16,11 +17,13 @@ export const getImagePalettes = (palettes: Palette[], image: Image): GetImagePal
     };
   }
 
-  const palette = palettes.find(({ shortName }) => shortName === image.palette);
-  const framePalette = palettes.find(({ shortName }) => shortName === (image as MonochromeImage).framePalette);
+  const monoImage = image as MonochromeImage;
+
+  const palette = palettes.find(({ shortName }) => shortName === monoImage.palette) || missingGreyPalette;
+  const framePalette = palettes.find(({ shortName }) => shortName === monoImage.framePalette) || missingGreyPalette;
 
   return {
     palette,
-    framePalette: image.lockFrame ? framePalette : palette,
+    framePalette: monoImage.lockFrame ? framePalette : palette,
   };
 };
