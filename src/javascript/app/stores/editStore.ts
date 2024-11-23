@@ -2,7 +2,12 @@ import { create } from 'zustand';
 import type { CurrentEditBatch } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import type { PickColors } from '../../../types/PickColors';
-import type { EditGroupInfo } from '../../../types/actions/GroupActions';
+
+export interface EditGroupInfo {
+  groupId: string,
+  newGroupCover?: string,
+  newGroupTitle?: string,
+}
 
 interface Values {
   editFrame: string | null,

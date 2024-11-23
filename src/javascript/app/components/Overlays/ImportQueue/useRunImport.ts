@@ -12,13 +12,13 @@ import type { ImportItem } from '../../../../../types/ImportItem';
 import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
 import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
-import type { AddImageGroupAction } from '../../../../../types/actions/GroupActions';
 import { randomId } from '../../../../tools/randomId';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
-import useSettingsStore from '../../../stores/settingsStore';
-import useImportsStore from '../../../stores/importsStore';
 import useEditStore from '../../../stores/editStore';
+import useImportsStore from '../../../stores/importsStore';
+import useItemsStore from '../../../stores/itemsStore';
+import useSettingsStore from '../../../stores/settingsStore';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -40,6 +40,8 @@ interface UseRunImport {
 const useRunImport = (): UseRunImport => {
   const { importPad, setActivePalette, activePalette } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
+  const { addImageGroup } = useItemsStore();
+
   const dispatch = useDispatch();
   const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
@@ -89,21 +91,20 @@ const useRunImport = (): UseRunImport => {
 
       cancelEditImageGroup();
 
-      dispatch<AddImageGroupAction>({
-        type: Actions.ADD_IMAGE_GROUP,
-        payload: {
-          parentId: view.id,
-          group: {
-            id: randomId(),
-            slug,
-            title,
-            created: dayjs(Date.now()).format(dateFormat),
-            coverImage: savedImages[0].hash,
-            images: imageHashes,
-            groups: [],
-          },
+      // ToDo: Handle jumping to wrong folder when creating group in sub-view
+
+      addImageGroup(
+        {
+          id: randomId(),
+          slug,
+          title,
+          created: dayjs(Date.now()).format(dateFormat),
+          coverImage: savedImages[0].hash,
+          images: imageHashes,
+          groups: [],
         },
-      });
+        view.id,
+      );
 
       navigate(`/gallery/${view.slug}${slug}/page/1`);
     }

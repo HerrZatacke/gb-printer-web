@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import objectHash from 'object-hash';
-import useFiltersStore from '../../../stores/filtersStore';
 import useEditStore from '../../../stores/editStore';
+import useFiltersStore from '../../../stores/filtersStore';
+import useItemsStore from '../../../stores/itemsStore';
 import { Actions } from '../../../store/actions';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
@@ -14,7 +15,6 @@ import { randomId } from '../../../../tools/randomId';
 import type { SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
 import type { State } from '../../../store/State';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
-import type { AddImageGroupAction } from '../../../../../types/actions/GroupActions';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
@@ -50,6 +50,8 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const { sortBy } = useFiltersStore();
   const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
+  const { addImageGroup } = useItemsStore();
+
   const { images } = useSelector((state: State) => ({
     images: state.images,
   }));
@@ -179,21 +181,20 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
       cancelEditImageGroup();
 
-      dispatch<AddImageGroupAction>({
-        type: Actions.ADD_IMAGE_GROUP,
-        payload: {
-          parentId: view.id,
-          group: {
-            id: randomId(),
-            slug,
-            title,
-            created: dayjs(Date.now()).format(dateFormat),
-            coverImage: createdImageHashes[0],
-            images: createdImageHashes,
-            groups: [],
-          },
+      // ToDo: Handle jumping to wrong folder when creating group in sub-view
+
+      addImageGroup(
+        {
+          id: randomId(),
+          slug,
+          title,
+          created: dayjs(Date.now()).format(dateFormat),
+          coverImage: createdImageHashes[0],
+          images: createdImageHashes,
+          groups: [],
         },
-      });
+        view.id,
+      );
 
       navigate(`/gallery/${view.slug}${slug}/page/1`);
     }

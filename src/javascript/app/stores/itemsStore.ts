@@ -7,6 +7,7 @@ import type { Frame } from '../../../types/Frame';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Palette } from '../../../types/Palette';
 import type { Plugin, PluginConfigValues } from '../../../types/Plugin';
+import type { SerializableImageGroup } from '../../../types/ImageGroup';
 import uniqueBy from '../../tools/unique/by';
 import sortBy from '../../tools/sortby';
 
@@ -14,6 +15,7 @@ const STORE_VERSION = 1;
 
 const framesUniqueById = uniqueBy<Frame>('id');
 const frameGroupsUniqueById = uniqueBy<FrameGroup>('id');
+const groupUniqueById = uniqueBy<SerializableImageGroup>('id');
 const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
 const framesSortById = sortBy<Frame>('id');
 const palettesUniqueByShortName = uniqueBy<Palette>('shortName');
@@ -28,6 +30,7 @@ export interface Values {
   palettes: Palette[],
   frameGroups: FrameGroup[],
   plugins: Plugin[],
+  imageGroups: SerializableImageGroup[],
 }
 
 interface Actions {
@@ -39,6 +42,10 @@ interface Actions {
   updateFrameGroups: (frameGroups: FrameGroup[]) => void,
   addUpdatePluginProperties: (plugin: Plugin) => void,
   updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues,
+  addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
+  deleteImageGroup: (groupId: string) => void,
+  updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
+  setImageGroups: (imageGroups: SerializableImageGroup[]) => void,
 }
 
 export type ItemsState = Values & Actions;
@@ -55,6 +62,7 @@ const useItemsStore = create<ItemsState>()(
       palettes: [],
       frameGroups: [],
       plugins: [],
+      imageGroups: [],
 
       addFrames: (frames: Frame[]) => set((itemsState) => (
         { frames: sortAndUniqueById([...frames, ...itemsState.frames]) }
@@ -148,6 +156,74 @@ const useItemsStore = create<ItemsState>()(
           ))),
         });
       },
+
+      addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
+        const { imageGroups } = get();
+
+        const groups = imageGroups.map((group: SerializableImageGroup) => (
+          group.id !== parentId ? group : {
+            ...group,
+            groups: [...group.groups, imageGroup.id],
+            images: group.images.filter((hash: string) => !imageGroup.images.includes(hash)),
+          }
+        ));
+
+        set({ imageGroups: groupUniqueById([...groups, imageGroup]) });
+      },
+
+      deleteImageGroup: (groupId: string) => {
+        const { imageGroups: stateImageGroups } = get();
+
+        const deleteGroup = stateImageGroups.find(({ id }) => id === groupId);
+
+        if (!deleteGroup) {
+          return;
+        }
+
+        const imageGroups = stateImageGroups.reduce((
+          acc: SerializableImageGroup[],
+          reduceGroup: SerializableImageGroup,
+        ): SerializableImageGroup[] => {
+          if (reduceGroup.id === groupId) {
+            return acc;
+          }
+
+          if (reduceGroup.groups.includes(groupId)) { // group to be deleted is child of reduceGroup
+            return [
+              ...acc,
+              {
+                ...reduceGroup,
+                images: [...reduceGroup.images, ...deleteGroup.images],
+                groups: [...reduceGroup.groups, ...deleteGroup.groups].filter((id) => id !== deleteGroup.id),
+              },
+            ];
+          }
+
+          return [...acc, reduceGroup];
+        }, []);
+
+        set({ imageGroups });
+      },
+
+      updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
+        const { imageGroups: stateImageGroups } = get();
+
+        const imageGroups = stateImageGroups.map((group) => {
+          const updateGroup = { ...group };
+
+          updateGroup.groups = updateGroup.groups.filter((childGroupId) => childGroupId !== imageGroup.id);
+
+          if (parentId === updateGroup.id) {
+            updateGroup.groups = [...updateGroup.groups, imageGroup.id];
+          }
+
+          return updateGroup.id === imageGroup.id ? imageGroup : updateGroup;
+        });
+
+        set({ imageGroups });
+      },
+
+      setImageGroups: (imageGroups: SerializableImageGroup[]) => set({ imageGroups }),
     }),
     {
       name: `${PROJECT_PREFIX}-items`,
@@ -178,6 +254,7 @@ const useItemsStore = create<ItemsState>()(
       partialize: (state: ItemsState): Values => ({
         frames: state.frames,
         frameGroups: state.frameGroups,
+        imageGroups: state.imageGroups,
         plugins: state.plugins.map((plugin) => ({
           ...plugin,
           loading: undefined,

@@ -65,6 +65,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     addPalettes,
     addFrames,
     updateFrameGroups,
+    setImageGroups,
   } = useItemsStore.getState();
 
   checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
@@ -162,6 +163,10 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
         if (action.payload?.frameGroups) {
           updateFrameGroups(action.payload.frameGroups);
+        }
+
+        if (action.payload?.imageGroups) {
+          setImageGroups(action.payload.imageGroups);
         }
 
         break;

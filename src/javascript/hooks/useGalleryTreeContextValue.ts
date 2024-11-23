@@ -10,6 +10,7 @@ import type { Image } from '../../types/Image';
 import type { DialogOption } from '../../types/Dialog';
 import useSettingsStore from '../app/stores/settingsStore';
 import useInteractionsStore from '../app/stores/interactionsStore';
+import useItemsStore from '../app/stores/itemsStore';
 
 const MAX_INFLATE_DEPTH = 20;
 
@@ -96,12 +97,16 @@ const reduceImages = (
 export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   const { enableImageGroups } = useSettingsStore();
   const { setError } = useInteractionsStore();
+  const { imageGroups: stateImageGroups } = useItemsStore();
+
+  const imageGroups = useMemo<SerializableImageGroup[]>(
+    () => (enableImageGroups ? stateImageGroups : []),
+    [enableImageGroups, stateImageGroups],
+  );
 
   const {
-    imageGroups,
     stateImages,
   } = useSelector((state: State) => ({
-    imageGroups: enableImageGroups ? state.imageGroups : [],
     stateImages: state.images,
   }));
 

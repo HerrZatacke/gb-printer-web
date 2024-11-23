@@ -22,5 +22,9 @@ export const migrateItems = async (persistedState: unknown): Promise<Partial<Ite
     result.plugins = v0state.plugins;
   }
 
+  if (v0state.imageGroups?.length) {
+    result.imageGroups = v0state.imageGroups;
+  }
+
   return result;
 };

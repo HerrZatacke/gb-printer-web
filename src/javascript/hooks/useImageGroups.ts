@@ -1,14 +1,9 @@
-import { useDispatch } from 'react-redux';
 import useDialogsStore from '../app/stores/dialogsStore';
-import type {
-  SetImageGroupsAction,
-  DeleteImageGroupAction,
-} from '../../types/actions/GroupActions';
-import { Actions } from '../app/store/actions';
 import { DialoqQuestionType } from '../../types/Dialog';
 import { useGalleryTreeContext } from '../app/contexts/galleryTree';
 import { NEW_GROUP } from '../app/components/Overlays/EditImageGroup/useEditImageGroup';
 import useEditStore from '../app/stores/editStore';
+import useItemsStore from '../app/stores/itemsStore';
 
 
 interface UseImageGroups {
@@ -20,9 +15,9 @@ interface UseImageGroups {
 
 export const useImageGroups = (): UseImageGroups => {
   const { view } = useGalleryTreeContext();
-  const dispatch = useDispatch();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setEditImageGroup } = useEditStore();
+  const { deleteImageGroup, setImageGroups } = useItemsStore();
 
   return {
     resetGroups: () => {
@@ -35,10 +30,7 @@ export const useImageGroups = (): UseImageGroups => {
         }],
         confirm: async () => {
           dismissDialog(0);
-          dispatch<SetImageGroupsAction>({
-            type: Actions.SET_IMAGE_GROUPS,
-            payload: [],
-          });
+          setImageGroups([]);
         },
         deny: async () => {
           dismissDialog(0);
@@ -70,10 +62,7 @@ export const useImageGroups = (): UseImageGroups => {
         }],
         confirm: async () => {
           dismissDialog(0);
-          dispatch<DeleteImageGroupAction>({
-            type: Actions.DELETE_IMAGE_GROUP,
-            payload: id,
-          });
+          deleteImageGroup(id);
         },
         deny: async () => {
           dismissDialog(0);

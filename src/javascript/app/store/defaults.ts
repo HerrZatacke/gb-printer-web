@@ -20,13 +20,6 @@ const definitions: StorePropertyDefault[] = [
     saveExport: [ExportTypes.SELECTED_IMAGES, ExportTypes.IMAGES, ExportTypes.REMOTE],
     value: [],
   },
-  {
-    // Groups/Folders
-    key: 'imageGroups',
-    saveLocally: true,
-    saveExport: [ExportTypes.REMOTE],
-    value: [],
-  },
 ];
 
 const defaults: Partial<State> = {};
