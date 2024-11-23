@@ -43,6 +43,10 @@ interface Actions {
 
 export type ItemsState = Values & Actions;
 
+interface AddUpdatePalettes {
+  add: Palette[],
+  update: Palette[],
+}
 
 const useItemsStore = create<ItemsState>()(
   persist(
@@ -56,18 +60,38 @@ const useItemsStore = create<ItemsState>()(
         { frames: sortAndUniqueById([...frames, ...itemsState.frames]) }
       )),
 
-      addPalettes: (palettes: Palette[]) => set((itemsState) => (
-        // ToDo: instead of unique, maybe update existing indices, to prevent shift
-        //  in palette overwiew when editing while sorting "default desc"
-        { palettes: palettesUniqueByShortName([...palettes, ...itemsState.palettes]) }
-      )),
+      addPalettes: (palettes: Palette[]) => {
+        const { palettes: statePalettes } = get();
+
+        // split palettes to be added
+        const { update, add } = palettes.reduce((acc: AddUpdatePalettes, palette): AddUpdatePalettes => {
+          const paletteIsKnown = !!statePalettes.find((statePalette) => statePalette.shortName === palette.shortName);
+
+          return paletteIsKnown ? {
+            update: [...acc.update, palette],
+            add: acc.add,
+          } : {
+            update: acc.update,
+            add: [...acc.add, palette],
+          };
+        }, { add: [], update: [] });
+
+        set({
+          palettes: palettesUniqueByShortName([
+            ...add,
+            ...statePalettes.map((statePalette) => (
+              update.find(({ shortName }) => shortName === statePalette.shortName) || statePalette
+            )),
+          ]),
+        });
+      },
 
       deleteFrame: (frameId: string) => (set(({ frames }) => (
         { frames: sortAndUniqueById(frames.filter((frame) => frameId !== frame.id)) }
       ))),
 
       deletePalette: (shortName: string) => set(({ palettes }) => (
-        { palettes: palettesUniqueByShortName(palettes.filter((palette) => shortName !== palette.shortName)) }
+        { palettes: palettes.filter((palette) => shortName !== palette.shortName) }
       )),
 
       deletePlugin: (pluginUrl: string) => set(({ plugins }) => (
