@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { definitions } from '../defaults';
 import type { State } from '../State';
 import type { MiddlewareWithState } from '../../../../types/MiddlewareWithState';
