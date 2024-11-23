@@ -1,5 +1,4 @@
 import { applyMiddleware } from 'redux';
-import batch from './middlewares/batch';
 import batchUpdate from './middlewares/batchUpdate';
 import fileDrop from './middlewares/fileDrop';
 import importFile from './middlewares/importFile';
@@ -11,7 +10,6 @@ import startDownload from './middlewares/startDownload';
 import { zustandMigrationMiddleware } from './middlewares/zustandMigration';
 
 export default applyMiddleware(
-  batch,
   batchUpdate,
   fileDrop,
   importFile,

@@ -1,7 +1,6 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { Image, MonochromeImage, RGBNHashes } from '../Image';
 import type { TagUpdates } from '../../javascript/tools/modifyTagChanges';
-import type { BatchActionType } from '../../javascript/consts/batchActionTypes';
 
 export interface AddImagesAction {
   type: Actions.ADD_IMAGES,
@@ -71,10 +70,4 @@ export interface DownloadImageStartAction {
 export interface ShareImageStartAction {
   type: Actions.SHARE_IMAGE
   payload: string,
-}
-
-export interface BatchTaskAction {
-  type: Actions.BATCH_TASK,
-  payload: BatchActionType,
-  page: number,
 }

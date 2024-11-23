@@ -1,14 +1,20 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMemo } from 'react';
+import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
 import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { Actions } from '../../store/actions';
-import type { BatchTaskAction } from '../../../../types/actions/ImageActions';
-import type { BatchActionType } from '../../../consts/batchActionTypes';
-import type { Image, MonochromeImage } from '../../../../types/Image';
+import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import unique from '../../../tools/unique';
+import type { Image, MonochromeImage } from '../../../../types/Image';
+import type { State } from '../../store/State';
+import type { DeleteImagesAction, DownloadImageSelectionAction } from '../../../../types/actions/ImageActions';
 
 interface UseBatchButtons {
   hasPlugins: boolean,
@@ -24,6 +30,10 @@ interface UseBatchButtons {
   showSortOptions: () => void,
 }
 
+const collectTags = (batchImages: Image[]): string[] => (
+  unique(batchImages.map(({ tags }) => tags).flat())
+);
+
 const useBatchButtons = (page: number): UseBatchButtons => {
   const {
     imageSelection,
@@ -38,6 +48,12 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const { pageSize } = useSettingsStore();
   const dispatch = useDispatch();
 
+  const { setEditImages, setEditRGBNImages } = useEditStore.getState();
+  const { dismissDialog, setDialog } = useDialogsStore.getState();
+  const { setVideoSelection } = useInteractionsStore.getState();
+
+  const stateImages = useSelector((state: State) => state.images);
+
   const { view, covers } = useGalleryTreeContext();
 
   const indexOffset = page * pageSize;
@@ -47,6 +63,13 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const selectedImages = images.filter(({ hash }) => imageSelection.includes(hash));
   const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
 
+  const batchImages: Image[] = useMemo(() => (
+    imageSelection.reduce((acc: Image[], selHash: string): Image[] => {
+      const image = stateImages.find(({ hash }) => hash === selHash);
+      return image ? [image, ...acc] : acc;
+    }, [])
+  ), [imageSelection, stateImages]);
+
   return ({
     hasPlugins: !!plugins.length,
     batchEnabled: !!imageSelection.length,
@@ -55,11 +78,52 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     selectedImages: imageSelection.length,
     hasSelected: selectedImages.length > 0,
     batchTask: (actionType: BatchActionType) => {
-      dispatch<BatchTaskAction>({
-        type: Actions.BATCH_TASK,
-        payload: actionType,
-        page,
-      });
+      if (imageSelection.length) {
+        switch (actionType) {
+          case BatchActionType.DELETE: {
+            setDialog({
+              message: `Delete ${imageSelection.length} images?`,
+              confirm: async () => {
+                dispatch<DeleteImagesAction>({
+                  type: Actions.DELETE_IMAGES,
+                  payload: imageSelection,
+                });
+              },
+              deny: async () => dismissDialog(0),
+            });
+
+            break;
+          }
+
+          case BatchActionType.ANIMATE: {
+            setVideoSelection(imageSelection);
+            break;
+          }
+
+          case BatchActionType.DOWNLOAD: {
+            dispatch<DownloadImageSelectionAction>({
+              type: Actions.DOWNLOAD_SELECTION,
+              payload: imageSelection,
+            });
+            break;
+          }
+
+          case BatchActionType.EDIT: {
+            setEditImages({
+              tags: collectTags(batchImages),
+              batch: batchImages.map(({ hash }) => hash),
+            });
+            break;
+          }
+
+          case BatchActionType.RGB:
+            setEditRGBNImages(batchImages.reduce(reduceImagesMonochrome, []).map(({ hash }) => hash));
+            break;
+
+          default:
+            break;
+        }
+      }
     },
     checkAll: () => {
       setImageSelection(
