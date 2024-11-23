@@ -6,7 +6,7 @@ import { PROJECT_PREFIX } from './constants';
 import type { Frame } from '../../../types/Frame';
 import type { FrameGroup } from '../../../types/FrameGroup';
 import type { Palette } from '../../../types/Palette';
-import type { Plugin } from '../../../types/Plugin';
+import type { Plugin, PluginConfigValues } from '../../../types/Plugin';
 import uniqueBy from '../../tools/unique/by';
 import sortBy from '../../tools/sortby';
 
@@ -17,11 +17,11 @@ const frameGroupsUniqueById = uniqueBy<FrameGroup>('id');
 const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
 const framesSortById = sortBy<Frame>('id');
 const palettesUniqueByShortName = uniqueBy<Palette>('shortName');
-const pluginsSortByUrl = sortBy<Plugin>('url');
+const pluginsSortByName = sortBy<Plugin>('name');
 
 // The order of calls is important: First run unique, so that new/updated items are relevant, then sort.
 const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(frames));
-const sortAndUniqueByUrl = (plugins: Plugin[]) => pluginsSortByUrl(pluginsUniqueByUrl(plugins));
+const sortByNameUniqueByUrl = (plugins: Plugin[]) => pluginsSortByName(pluginsUniqueByUrl(plugins));
 
 export interface Values {
   frames: Frame[],
@@ -33,13 +33,12 @@ export interface Values {
 interface Actions {
   addFrames: (frames: Frame[]) => void,
   addPalettes: (palettes: Palette[]) => void,
-  addPlugins: (plugins: Plugin[]) => void,
   deleteFrame: (id: string) => void,
   deletePalette: (shortName: string) => void,
   deletePlugin: (pluginUrl: string) => void,
   updateFrameGroups: (frameGroups: FrameGroup[]) => void,
-  updatePluginProperties: (plugin: Plugin) => void,
-  updatePluginConfig: (plugin: Plugin) => void,
+  addUpdatePluginProperties: (plugin: Plugin) => void,
+  updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues,
 }
 
 export type ItemsState = Values & Actions;
@@ -47,7 +46,7 @@ export type ItemsState = Values & Actions;
 
 const useItemsStore = create<ItemsState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       frames: [],
       palettes: [],
       frameGroups: [],
@@ -63,10 +62,6 @@ const useItemsStore = create<ItemsState>()(
         { palettes: palettesUniqueByShortName([...palettes, ...itemsState.palettes]) }
       )),
 
-      addPlugins: (plugins: Plugin[]) => set((itemsState) => (
-        { plugins: pluginsUniqueByUrl([...plugins, ...itemsState.plugins]) }
-      )),
-
       deleteFrame: (frameId: string) => (set(({ frames }) => (
         { frames: sortAndUniqueById(frames.filter((frame) => frameId !== frame.id)) }
       ))),
@@ -75,43 +70,60 @@ const useItemsStore = create<ItemsState>()(
         { palettes: palettesUniqueByShortName(palettes.filter((palette) => shortName !== palette.shortName)) }
       )),
 
-      // ToDo: remove instance from global plugin list (interface RegisteredPlugins)
       deletePlugin: (pluginUrl: string) => set(({ plugins }) => (
-        { plugins: pluginsUniqueByUrl(plugins.filter((plugin) => pluginUrl !== plugin.url)) }
+        { plugins: sortByNameUniqueByUrl(plugins.filter((plugin) => pluginUrl !== plugin.url)) }
       )),
 
       updateFrameGroups: (frameGroups: FrameGroup[]) => (set((itemsState) => (
         { frameGroups: frameGroupsUniqueById([...frameGroups, ...itemsState.frameGroups]) }
       ))),
 
-      updatePluginConfig: (plugin: Plugin) => set((itemsState) => ({
-        plugins: sortAndUniqueByUrl(pluginsUniqueByUrl(itemsState.plugins.map((mapPlugin) => {
-          if (mapPlugin.url !== plugin.url) {
-            return mapPlugin;
-          }
+      updatePluginConfig: (url: string, key: string, value: string | number): PluginConfigValues => {
+        const { plugins } = get();
 
-          return {
-            ...mapPlugin,
-            config: {
-              ...(mapPlugin.config || {}),
-              ...(plugin.config || {}),
-            },
-          };
-        }))),
-      })),
+        const findPlugin = plugins.find((plugin) => plugin.url === url);
 
-      updatePluginProperties: (plugin: Plugin) => set((itemsState) => ({
-        plugins: sortAndUniqueByUrl(pluginsUniqueByUrl(itemsState.plugins.map((mapPlugin) => {
-          if (mapPlugin.url !== plugin.url) {
-            return mapPlugin;
-          }
+        if (!findPlugin) {
+          throw new Error(`Plugin "${url}" not found`);
+        }
 
-          return {
-            ...mapPlugin,
-            ...plugin,
-          };
-        }))),
-      })),
+        let changedPlugin: Plugin = findPlugin;
+
+        const newConfigValues: PluginConfigValues = {
+          ...(changedPlugin.config || {}),
+          [key]: value,
+        };
+
+        changedPlugin = {
+          ...changedPlugin,
+          config: newConfigValues,
+        };
+
+        set({
+          plugins: plugins.map((mapPlugin): Plugin => (
+            mapPlugin.url !== url ? mapPlugin : changedPlugin
+          )),
+        });
+
+        return newConfigValues;
+      },
+
+      addUpdatePluginProperties: (plugin: Plugin) => {
+        const { plugins } = get();
+        const updatedPlugins: Plugin[] = [...plugins];
+
+        const findPlugin = plugins.find(({ url }) => plugin.url === url);
+
+        if (!findPlugin) {
+          updatedPlugins.push(plugin);
+        }
+
+        set({
+          plugins: sortByNameUniqueByUrl(updatedPlugins.map((mapPlugin) => (
+            (mapPlugin.url !== plugin.url) ? mapPlugin : { ...mapPlugin, ...plugin }
+          ))),
+        });
+      },
     }),
     {
       name: `${PROJECT_PREFIX}-items`,
@@ -134,7 +146,7 @@ const useItemsStore = create<ItemsState>()(
           ]),
           plugins: mergedState.plugins.map((plugin) => ({
             ...plugin,
-            loading: true,
+            loading: false,
           })),
         };
       },

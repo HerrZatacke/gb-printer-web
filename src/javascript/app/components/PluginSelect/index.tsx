@@ -1,11 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
-import { Actions } from '../../store/actions';
-import type { PluginImageBatchAction, PluginImageSingleAction } from '../../../../types/actions/PluginActions';
+import useFiltersStore from '../../stores/filtersStore';
 import useItemsStore from '../../stores/itemsStore';
+import { usePluginsContext } from '../../contexts/plugins';
 
 interface Props {
   children: React.ReactNode,
@@ -15,24 +14,14 @@ interface Props {
 
 function PluginSelect({ children, pluginsActive, hash }: Props) {
   const { plugins } = useItemsStore();
-  const dispatch = useDispatch();
+  const { imageSelection } = useFiltersStore();
+  const { runWithImage, runWithImages } = usePluginsContext();
 
   const dispatchToPlugin = (url: string) => {
     if (hash) {
-      dispatch<PluginImageSingleAction>({
-        type: Actions.PLUGIN_IMAGE,
-        payload: {
-          url,
-          hash,
-        },
-      });
+      runWithImage(url, hash);
     } else {
-      dispatch<PluginImageBatchAction>({
-        type: Actions.PLUGIN_IMAGES,
-        payload: {
-          url,
-        },
-      });
+      runWithImages(url, imageSelection);
     }
   };
 

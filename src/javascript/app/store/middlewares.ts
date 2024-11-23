@@ -4,7 +4,6 @@ import batchUpdate from './middlewares/batchUpdate';
 import fileDrop from './middlewares/fileDrop';
 import importFile from './middlewares/importFile';
 import importMessage from './middlewares/importMessage';
-import pluginsMiddleware from './middlewares/plugins';
 import saveEditPalette from './middlewares/saveEditPalette';
 import saveRGBNImage from './middlewares/saveRGBNImage';
 import share from './middlewares/share';
@@ -17,7 +16,6 @@ export default applyMiddleware(
   fileDrop,
   importFile,
   importMessage,
-  pluginsMiddleware,
   saveEditPalette,
   saveRGBNImage,
   share,

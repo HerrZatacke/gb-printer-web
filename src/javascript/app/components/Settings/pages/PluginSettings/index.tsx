@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import SVG from '../../../SVG';
 import Input, { InputType } from '../../../Input';
-import { usePlugins } from './usePlugins';
+import useItemsStore from '../../../../stores/itemsStore';
+import { usePluginsContext } from '../../../../contexts/plugins';
 
 import './index.scss';
 
@@ -34,10 +35,9 @@ const inputValueFromType = (type: string, value: string): string | number => {
 };
 
 function PluginSettings() {
-
+  const { plugins, deletePlugin, updatePluginConfig } = useItemsStore();
+  const { validateAndAddPlugin } = usePluginsContext();
   const [pluginUrl, setPluginUrl] = useState('');
-
-  const { pluginAdd, pluginRemove, pluginUpdateConfig, plugins } = usePlugins();
 
   return (
     <>
@@ -59,9 +59,10 @@ function PluginSettings() {
         autoCapitalize="off"
         spellCheck={false}
         onChange={setPluginUrl}
-        buttonOnClick={() => {
-          pluginAdd(pluginUrl);
-          setPluginUrl('');
+        buttonOnClick={async () => {
+          if (await validateAndAddPlugin({ url: pluginUrl })) {
+            setPluginUrl('');
+          }
         }}
         buttonIcon={pluginUrl ? 'add' : undefined}
       />
@@ -119,7 +120,7 @@ function PluginSettings() {
               <button
                 type="button"
                 className="button plugin-settings__button plugin-settings__button--delete"
-                onClick={() => pluginRemove(url)}
+                onClick={() => deletePlugin(url)}
               >
                 <SVG name="delete" />
               </button>
@@ -138,7 +139,7 @@ function PluginSettings() {
                       autoCapitalize="off"
                       spellCheck={false}
                       onChange={(value) => {
-                        pluginUpdateConfig(url, fieldName, inputValueFromType(type, value));
+                        updatePluginConfig(url, fieldName, inputValueFromType(type, value));
                       }}
                     />
                   );

@@ -9,7 +9,7 @@ function AddPlugin() {
   // https://herrzatacke.github.io/gb-printer-web-plugins/svgize.js
 
   const {
-    pluginUrl,
+    url,
     source,
     isTrusted,
     pluginExists,
@@ -17,7 +17,7 @@ function AddPlugin() {
     addPlugin,
   } = useAddPlugin();
 
-  if (!pluginUrl) {
+  if (!url) {
     return <Navigate to="/settings/plugins" replace />;
   }
 
@@ -45,7 +45,7 @@ function AddPlugin() {
               The plugin
             </span>
             <code className="add-plugin__source">
-              { pluginUrl }
+              { url }
             </code>
             <span>
               is already installed
@@ -65,7 +65,7 @@ function AddPlugin() {
               This will add
             </span>
             <code className="add-plugin__source">
-              { pluginUrl }
+              { url }
             </code>
             <span>
               to your plugins.

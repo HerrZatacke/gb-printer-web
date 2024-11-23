@@ -8,6 +8,7 @@ import GalleryTreeContextProvider from '../../contexts/galleryTree/GalleryTreeCo
 
 import './index.scss';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
+import PluginsContextProvider from '../../contexts/plugins/PluginsContextProvider';
 
 export interface Handle {
   headline: string,
@@ -28,15 +29,17 @@ function Layout() {
   };
 
   return (
-    <GalleryTreeContextProvider>
-      <Navigation />
-      <div className="layout" style={ddpx}>
-        { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
-        <Outlet />
-      </div>
-      <Overlays />
-      <Errors />
-    </GalleryTreeContextProvider>
+    <PluginsContextProvider>
+      <GalleryTreeContextProvider>
+        <Navigation />
+        <div className="layout" style={ddpx}>
+          { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
+          <Outlet />
+        </div>
+        <Overlays />
+        <Errors />
+      </GalleryTreeContextProvider>
+    </PluginsContextProvider>
   );
 }
 
