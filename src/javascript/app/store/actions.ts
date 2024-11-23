@@ -35,9 +35,6 @@ export enum Actions {
   // Progress
   CREATE_GIF_PROGRESS = 'CREATE_GIF_PROGRESS',
 
-  // WiFi-Printer
-  REMOTE_CALL_FUNCTION = 'REMOTE_CALL_FUNCTION',
-
   // Features
   SHARE_IMAGE = 'SHARE_IMAGE',
   BATCH_TASK = 'BATCH_TASK',
@@ -48,7 +45,6 @@ export enum Actions {
   // Generic action types
   GLOBAL_UPDATE = 'GLOBAL_UPDATE',
   TRY_RECOVER_IMAGE_DATA = 'TRY_RECOVER_IMAGE_DATA',
-  IMPORT_FILES = 'IMPORT_FILES',
   ADD_TO_QUEUE = 'ADD_TO_QUEUE',
 
   // New import workflow

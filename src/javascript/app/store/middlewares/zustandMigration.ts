@@ -22,7 +22,6 @@ import type { AddFrameAction } from '../../../../types/actions/FrameActions';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
-import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../tools/gitStorage';
 
@@ -122,7 +121,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       ImageFavouriteAction |
       ImagesUpdateAction |
       ImportQueueCancelAction |
-      PrinterRemoteCallAction |
       RehashImageAction |
       SaveNewRGBImagesAction,
   ) => {

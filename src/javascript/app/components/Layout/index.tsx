@@ -5,10 +5,11 @@ import Navigation from '../Navigation';
 import Overlays from '../Overlays';
 import Errors from '../Errors';
 import GalleryTreeContextProvider from '../../contexts/galleryTree/GalleryTreeContextProvider';
+import PluginsContextProvider from '../../contexts/plugins/PluginsContextProvider';
+import RemotePrinterContextProvider from '../../contexts/remotePrinter/RemotePrinterContextProvider';
+import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 
 import './index.scss';
-import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
-import PluginsContextProvider from '../../contexts/plugins/PluginsContextProvider';
 
 export interface Handle {
   headline: string,
@@ -31,13 +32,15 @@ function Layout() {
   return (
     <PluginsContextProvider>
       <GalleryTreeContextProvider>
-        <Navigation />
-        <div className="layout" style={ddpx}>
-          { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
-          <Outlet />
-        </div>
-        <Overlays />
-        <Errors />
+        <RemotePrinterContextProvider>
+          <Navigation />
+          <div className="layout" style={ddpx}>
+            { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
+            <Outlet />
+          </div>
+          <Overlays />
+          <Errors />
+        </RemotePrinterContextProvider>
       </GalleryTreeContextProvider>
     </PluginsContextProvider>
   );

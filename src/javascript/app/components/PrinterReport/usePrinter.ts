@@ -1,9 +1,7 @@
-import { useDispatch } from 'react-redux';
-import { Actions } from '../../store/actions';
 import type { PrinterFunction } from '../../../consts/printerFunction';
 import type { PrinterInfo } from '../../../../types/Printer';
-import type { PrinterRemoteCallAction } from '../../../../types/actions/PrinterActions';
 import useInteractionsStore from '../../stores/interactionsStore';
+import { useRemotePrinterContext } from '../../contexts/remotePrinter';
 
 interface UsePrinter {
   printerData: PrinterInfo | null,
@@ -15,8 +13,7 @@ interface UsePrinter {
 
 export const usePrinter = (): UsePrinter => {
   const { printerData, printerFunctions, printerBusy } = useInteractionsStore();
-
-  const dispatch = useDispatch();
+  const { callRemoteFunction } = useRemotePrinterContext();
 
   const printerConnected = printerFunctions.length > 0;
 
@@ -25,11 +22,6 @@ export const usePrinter = (): UsePrinter => {
     printerFunctions,
     printerBusy,
     printerConnected,
-    callRemoteFunction: (name: PrinterFunction) => {
-      dispatch<PrinterRemoteCallAction>({
-        type: Actions.REMOTE_CALL_FUNCTION,
-        payload: name,
-      });
-    },
+    callRemoteFunction,
   };
 };

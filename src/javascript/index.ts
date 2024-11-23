@@ -27,9 +27,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   // https://github.com/pmndrs/zustand/discussions/2827
   // https://github.com/pmndrs/zustand/pull/2833
   const oldState = localStorage.getItem('gbp-web-state');
+  const newState = JSON.parse(localStorage.getItem('gbp-z-web-items') || '{"state":{}}');
   if (oldState) {
     const v1State = await migrateItems(JSON.parse(oldState));
-    localStorage.setItem('gbp-z-web-items', `{"version":-1,"state":${JSON.stringify(v1State)}}`);
+
+    const combinedState = {
+      version: -1,
+      state: {
+        ...v1State,
+        ...newState.state,
+      },
+    };
+
+    localStorage.setItem('gbp-z-web-items', JSON.stringify(combinedState));
   }
 
   try {
