@@ -8,9 +8,10 @@ import useItemsStore from '../../stores/itemsStore';
 import useDownload from '../../../hooks/useDownload';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { State } from '../../store/State';
-import type { DeleteImageAction, ImageFavouriteAction, ShareImageStartAction } from '../../../../types/actions/ImageActions';
+import type { DeleteImageAction, ImageFavouriteAction } from '../../../../types/actions/ImageActions';
 import { canShare } from '../../../tools/canShare';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
+import useShareImage from '../../../hooks/useShareImage';
 
 interface UseGalleryImageButtons {
   isSelected: boolean,
@@ -59,6 +60,7 @@ export const useGalleryImageButtons = (
   const { dismissDialog, setDialog } = useDialogsStore();
 
   const { downloadSingleImage } = useDownload();
+  const { shareImage } = useShareImage();
 
   const isSelected = imageSelection.includes(hash);
   const hasPlugins = !!plugins.length;
@@ -85,12 +87,7 @@ export const useGalleryImageButtons = (
         deny: async () => dismissDialog(0),
       });
     },
-    shareImage: () => {
-      dispatch<ShareImageStartAction>({
-        type: Actions.SHARE_IMAGE,
-        payload: hash,
-      });
-    },
+    shareImage: () => shareImage(hash),
     updateImageToSelection: (mode: ImageSelectionMode) => {
       updateImageSelection(mode, hash);
     },

@@ -55,8 +55,3 @@ export interface SaveNewRGBImagesAction {
   type: Actions.SAVE_NEW_RGB_IMAGES,
   payload: RGBNHashes[],
 }
-
-export interface ShareImageStartAction {
-  type: Actions.SHARE_IMAGE
-  payload: string,
-}
