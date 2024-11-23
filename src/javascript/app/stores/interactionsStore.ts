@@ -110,7 +110,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   setSyncSelect: (syncSelect: boolean) => set({ syncSelect }),
   setWindowDimensions: () => set({ windowDimensions: { width: window.innerWidth, height: window.innerHeight } }),
   showTrashCount: (show: boolean) => set({ trashCount: { ...get().trashCount, show } }),
-  updateTrashCount: (frames: number, images: number) => set({ trashCount: { show: false, frames, images } }),
+  updateTrashCount: (frames: number, images: number) => set({ trashCount: { ...get().trashCount, frames, images } }),
   setVideoSelection: (videoSelection: string[]) => set({ videoSelection }),
 
   setProgressLog: (which: keyof ProgressLog, logItem: LogItem) => {

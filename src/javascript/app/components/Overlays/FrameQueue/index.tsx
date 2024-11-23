@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Lightbox from '../../Lightbox';
-import { Actions } from '../../../store/actions';
 import './index.scss';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
-import type { AddFrameAction } from '../../../../../types/actions/FrameActions';
 import EditFrameStartLine from '../EditFrameStartLine';
+import useDialogsStore from '../../../stores/dialogsStore';
 import useImportsStore from '../../../stores/importsStore';
 import useItemsStore from '../../../stores/itemsStore';
 import useStoragesStore from '../../../stores/storagesStore';
 
 function FrameQueue() {
-  const { frameQueue, frameQueueCancelOne } = useImportsStore();
+  const { dismissDialog } = useDialogsStore();
+  const { frameQueue, frameQueueCancelOne, importQueueCancelOne } = useImportsStore();
   const { setSyncLastUpdate } = useStoragesStore();
-  const { updateFrameGroups } = useItemsStore();
+  const { addFrames, updateFrameGroups } = useItemsStore();
+
   const frame = frameQueue[0];
   const [newGroupName, setNewGroupName] = useState('');
   const [startLine, setStartLine] = useState<number>(Math.floor((frame.tiles.length - 280) / 40));
-  const dispatch = useDispatch();
 
   const {
     fullId,
@@ -47,26 +46,27 @@ function FrameQueue() {
       canConfirm={formValid}
       confirm={async () => {
         const hash = await saveFrameData(frame.tiles, startLine);
+        dismissDialog(0);
 
-        dispatch<AddFrameAction>({
-          type: Actions.ADD_FRAME,
-          payload: {
-            frame: {
-              id: fullId,
-              name: frameName,
-              hash,
-            },
-            tempId: frame.tempId,
-          },
-        });
+        if (frame.tempId) {
+          importQueueCancelOne(frame.tempId);
+          frameQueueCancelOne(frame.tempId);
+        }
+
+        addFrames([{
+          id: fullId,
+          name: frameName,
+          hash,
+        }]);
 
         if (newGroupName?.trim()) {
           updateFrameGroups([{
             id: frameGroup,
             name: newGroupName,
           }]);
-          setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
         }
+
+        setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
       }}
       deny={() => frameQueueCancelOne(frame.tempId)}
     >

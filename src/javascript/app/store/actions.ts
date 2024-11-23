@@ -1,7 +1,4 @@
 export enum Actions {
-  // Frames
-  ADD_FRAME = 'ADD_FRAME',
-
   // Images
   ADD_IMAGES = 'ADD_IMAGES',
   DELETE_IMAGE = 'DELETE_IMAGE',

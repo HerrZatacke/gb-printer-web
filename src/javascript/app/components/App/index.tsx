@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import {
   createHashRouter as createRouter,
@@ -23,9 +23,16 @@ import DropboxSettings from '../Settings/pages/DropboxSettings';
 import WiFiSettings from '../Settings/pages/WiFiSettings';
 import { reduceItems } from '../../../tools/reduceArray';
 import useFileDrop from '../../../hooks/useFileDrop';
+import useTrashbin from '../../../hooks/useTrashbin';
 
 function App() {
   useFileDrop();
+
+  const { checkUpdateTrashCount } = useTrashbin();
+
+  useEffect(() => {
+    checkUpdateTrashCount();
+  }, [checkUpdateTrashCount]);
 
   const router = createRouter([
     {

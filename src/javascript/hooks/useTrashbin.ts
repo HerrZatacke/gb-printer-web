@@ -1,6 +1,7 @@
-import { useStore } from 'react-redux';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { saveAs } from 'file-saver';
+import { useCallback } from 'react';
 import useInteractionsStore from '../app/stores/interactionsStore';
 import useItemsStore from '../app/stores/itemsStore';
 import { localforageReady, localforageImages, localforageFrames } from '../tools/localforageInstance';
@@ -9,18 +10,19 @@ import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTras
 import { inflate } from '../tools/pack';
 import { reduceImagesMonochrome } from '../tools/isRGBNImage';
 import { reduceItems } from '../tools/reduceArray';
-import { checkUpdateTrashCount } from '../tools/checkUpdateTrashCount';
 import type { TrashCount } from '../app/stores/interactionsStore';
 import type { WrappedLocalForageInstance } from '../tools/localforageInstance/createWrappedInstance';
-import type { JSONExportBinary, JSONExportState, TypedStore } from '../app/store/State';
+import type { JSONExportBinary, JSONExportState, State } from '../app/store/State';
 import type { Image, MonochromeImage } from '../../types/Image';
 import type { Frame } from '../../types/Frame';
+
 
 export interface UseTrashbin {
   showTrashCount: (show: boolean) => void
   purgeTrash: () => Promise<void>
   downloadImages: () => Promise<void>
   downloadFrames: () => Promise<void>
+  checkUpdateTrashCount: () => Promise<void>
   trashCount: TrashCount,
 }
 
@@ -56,11 +58,11 @@ const getItems = async (keys: string[], storage: WrappedLocalForageInstance<stri
 
 const useTrashbin = (): UseTrashbin => {
   const { trashCount, showTrashCount } = useInteractionsStore();
-
-  const store: TypedStore = useStore();
+  const { frames } = useItemsStore();
+  const images = useSelector((state: State) => (state.images as MonochromeImage[]));
 
   const downloadImages = async (): Promise<void> => {
-    const imageHashes = await getTrashImages(store.getState().images as MonochromeImage[]);
+    const imageHashes = await getTrashImages(images);
     const deletedImages = await getItems(imageHashes, localforageImages);
 
     const jsonExportBinary: JSONExportBinary = {};
@@ -90,8 +92,7 @@ const useTrashbin = (): UseTrashbin => {
     saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_images.json');
   };
 
-  const downloadFrames = async (): Promise<void> => {
-    const { frames } = useItemsStore.getState();
+  const downloadFrames = useCallback(async (): Promise<void> => {
     const frameHashes = await getTrashFrames(frames);
     const deletedFrames = await getItems(frameHashes, localforageFrames);
 
@@ -122,23 +123,32 @@ const useTrashbin = (): UseTrashbin => {
     };
 
     saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_frames.json');
-  };
+  }, [frames]);
 
-  const purgeTrash = async (): Promise<void> => {
-    const { images } = store.getState();
-    const { frames } = useItemsStore.getState();
+  const stateImages = useSelector((state: State) => state.images);
+  const { frames: stateFrames } = useItemsStore();
+  const { updateTrashCount } = useInteractionsStore();
+
+  const checkUpdateTrashCount = useCallback(async () => {
+    const trashFramesCount = (await getTrashFrames(stateFrames)).length;
+    const trashImagesCount = (await getTrashImages(stateImages as MonochromeImage[])).length;
+    updateTrashCount(trashFramesCount, trashImagesCount);
+  }, [stateFrames, stateImages, updateTrashCount]);
+
+  const purgeTrash = useCallback(async (): Promise<void> => {
     await cleanupStorage({ images, frames });
-
-    const { images: cleanedImages } = store.getState();
-    const { frames: cleanedFrames } = useItemsStore.getState();
-    checkUpdateTrashCount(cleanedImages, cleanedFrames);
-  };
+    showTrashCount(false);
+    window.requestAnimationFrame(() => {
+      checkUpdateTrashCount();
+    });
+  }, [checkUpdateTrashCount, frames, images, showTrashCount]);
 
   return {
     showTrashCount,
     purgeTrash,
     downloadImages,
     downloadFrames,
+    checkUpdateTrashCount,
     trashCount,
   };
 };

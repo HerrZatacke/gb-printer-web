@@ -17,9 +17,7 @@ import type {
   ImagesUpdateAction,
   ImagesBatchUpdateAction,
 } from '../../../../types/actions/ImageActions';
-import type { AddFrameAction } from '../../../../types/actions/FrameActions';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
-import { checkUpdateTrashCount } from '../../../tools/checkUpdateTrashCount';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../tools/gitStorage';
@@ -39,11 +37,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     updateRecentImports,
   } = useFiltersStore.getState();
 
-  const {
-    frameQueueCancelOne,
-    importQueueCancel,
-    importQueueCancelOne,
-  } = useImportsStore.getState();
+  const { importQueueCancel } = useImportsStore.getState();
 
   const {
     setWindowDimensions,
@@ -65,8 +59,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     updateFrameGroups,
     setImageGroups,
   } = useItemsStore.getState();
-
-  checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
 
   window.addEventListener('resize', setWindowDimensions);
 
@@ -111,7 +103,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
   return (next) => (
     action:
-      AddFrameAction |
       AddImagesAction |
       DeleteImageAction |
       DeleteImagesAction |
@@ -140,7 +131,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
     switch (action.type) {
       case Actions.GLOBAL_UPDATE:
-        checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         cancelEditFrame();
         cancelEditPalette();
         cancelEditImages();
@@ -169,18 +159,10 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         break;
 
       case Actions.REHASH_IMAGE:
-        checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         cancelEditImages();
         break;
 
-      case Actions.DELETE_IMAGE:
-      case Actions.DELETE_IMAGES:
-      case Actions.ADD_FRAME:
-        checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
-        break;
-
       case Actions.ADD_IMAGES:
-        checkUpdateTrashCount(store.getState().images, useItemsStore.getState().frames);
         setProgress('printer', 0);
         setPrinterBusy(false);
         importQueueCancel();
@@ -203,23 +185,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     }
 
     switch (action.type) {
-      case Actions.ADD_FRAME:
-        if (action.payload?.tempId) {
-          importQueueCancelOne(action.payload.tempId);
-          frameQueueCancelOne(action.payload.tempId);
-        }
-
-        if (action.payload?.frame) {
-          addFrames([action.payload.frame]);
-        }
-
-        break;
-      default:
-        break;
-    }
-
-    switch (action.type) {
-      case Actions.ADD_FRAME:
       case Actions.ADD_IMAGES:
       case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
@@ -238,7 +203,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
       case Actions.ADD_IMAGES:
-      case Actions.ADD_FRAME:
       case Actions.IMAGE_FAVOURITE_TAG:
         setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
         break;
