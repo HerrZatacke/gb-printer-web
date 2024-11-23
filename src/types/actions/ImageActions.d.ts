@@ -1,5 +1,5 @@
 import type { Actions } from '../../javascript/app/store/actions';
-import type { Image, MonochromeImage, RGBNHashes } from '../Image';
+import type { Image, MonochromeImage } from '../Image';
 import type { TagUpdates } from '../../javascript/tools/modifyTagChanges';
 
 export interface AddImagesAction {
@@ -49,9 +49,4 @@ export interface DeleteImageAction {
 export interface DeleteImagesAction {
   type: Actions.DELETE_IMAGES,
   payload: string[],
-}
-
-export interface SaveNewRGBImagesAction {
-  type: Actions.SAVE_NEW_RGB_IMAGES,
-  payload: RGBNHashes[],
 }

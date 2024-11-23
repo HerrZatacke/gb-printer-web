@@ -1,21 +1,20 @@
 import { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import objectHash from 'object-hash';
 import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
 import useItemsStore from '../../../stores/itemsStore';
-import { Actions } from '../../../store/actions';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
 import { dateFormat } from '../../../defaults';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
 import { randomId } from '../../../../tools/randomId';
-import type { SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
 import type { State } from '../../../store/State';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
+import useSaveRGBNImages from '../../../../hooks/useSaveRGBNImages';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -44,9 +43,9 @@ interface UseEditRGBNImages {
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { view } = useGalleryTreeContext();
+  const { saveRGBNImage } = useSaveRGBNImages();
 
   const { sortBy } = useFiltersStore();
   const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
@@ -168,10 +167,8 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   }, [blockLength, globalSortDirection, grouping, manualHashes, order, sortedImages, usedColorCount]);
 
   const save = () => {
-    dispatch<SaveNewRGBImagesAction>({
-      type: Actions.SAVE_NEW_RGB_IMAGES,
-      payload: rgbnHashes,
-    });
+    cancelEditRGBNImages();
+    saveRGBNImage(rgbnHashes);
 
     if (createGroup) {
       const title = `RGB ${dayjs().format(dateFormat)}`;

@@ -15,7 +15,6 @@ import type {
   RehashImageAction,
   ImageFavouriteAction,
   ImagesUpdateAction,
-  SaveNewRGBImagesAction,
   ImagesBatchUpdateAction,
 } from '../../../../types/actions/ImageActions';
 import type { AddFrameAction } from '../../../../types/actions/FrameActions';
@@ -32,7 +31,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
     cancelEditFrame,
     cancelEditImages,
     cancelEditPalette,
-    cancelEditRGBNImages,
   } = useEditStore.getState();
 
   const {
@@ -122,8 +120,7 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       ImageFavouriteAction |
       ImagesUpdateAction |
       ImportQueueCancelAction |
-      RehashImageAction |
-      SaveNewRGBImagesAction,
+      RehashImageAction,
   ) => {
     switch (action.type) {
       case Actions.DELETE_IMAGE:
@@ -195,8 +192,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         importQueueCancel();
         break;
 
-      case Actions.SAVE_NEW_RGB_IMAGES:
-        cancelEditRGBNImages();
         break;
       case Actions.UPDATE_IMAGES_BATCH_CHANGES:
         cancelEditImages();
