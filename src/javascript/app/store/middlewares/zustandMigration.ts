@@ -15,7 +15,6 @@ import type {
   RehashImageAction,
   ImageFavouriteAction,
   ImagesUpdateAction,
-  ImagesBatchUpdateAction,
 } from '../../../../types/actions/ImageActions';
 import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import type { ImportQueueCancelAction } from '../../../../types/actions/QueueActions';
@@ -107,7 +106,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       DeleteImageAction |
       DeleteImagesAction |
       GlobalUpdateAction |
-      ImagesBatchUpdateAction |
       ImageFavouriteAction |
       ImagesUpdateAction |
       ImportQueueCancelAction |
@@ -173,12 +171,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
         setPrinterBusy(false);
         importQueueCancel();
         break;
-
-        break;
-      case Actions.UPDATE_IMAGES_BATCH_CHANGES:
-        cancelEditImages();
-        break;
-
 
       default:
         break;

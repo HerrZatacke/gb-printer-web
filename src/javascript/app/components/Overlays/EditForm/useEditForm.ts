@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
-import { useDispatch, useSelector } from 'react-redux';
+import useBatchUpdate from '../../../../hooks/useBatchUpdate';
 import useInteractionsStore from '../../../stores/interactionsStore';
 import useItemsStore from '../../../stores/itemsStore';
 import useEditStore from '../../../stores/editStore';
 import { missingGreyPalette } from '../../../defaults';
-import { Actions } from '../../../store/actions';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import { getImageTileCount } from '../../../../tools/loadImageTiles';
 import modifyTagChanges from '../../../../tools/modifyTagChanges';
 import type { State } from '../../../store/State';
-import type { ImagesBatchUpdateAction, ImageUpdates } from '../../../../../types/actions/ImageActions';
+import type { ImageUpdates } from '../../../../../types/actions/ImageActions';
 import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
 import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../../../../types/Image';
 import type { Rotation } from '../../../../tools/applyRotation';
@@ -102,6 +102,7 @@ const willUpdate = (batch: Batch): string[] => ([
 export const useEditForm = (): UseEditForm => {
   const { editImages, cancelEditImages } = useEditStore();
   const { palettes, frames } = useItemsStore();
+  const { batchUpdateImages } = useBatchUpdate();
   const images = useSelector((state: State) => (state.images));
 
   const findPalette = (shortName?: string): Palette => (
@@ -299,8 +300,6 @@ export const useEditForm = (): UseEditForm => {
     });
   };
 
-  const dispatch = useDispatch();
-
   return {
     toEdit,
     form,
@@ -317,23 +316,20 @@ export const useEditForm = (): UseEditForm => {
     updateTags,
 
     save: () => {
-      dispatch<ImagesBatchUpdateAction>({
-        type: Actions.UPDATE_IMAGES_BATCH_CHANGES,
-        payload: {
-          shouldUpdate,
-          updates: {
-            title,
-            created,
-            frame,
-            lockFrame,
-            rotation,
-            palette: paletteRGBN || paletteShort,
-            invertPalette: invertPalette || false,
-            framePalette: framePaletteShort,
-            invertFramePalette: invertFramePalette || false,
-          },
-          tagChanges,
+      batchUpdateImages({
+        shouldUpdate,
+        updates: {
+          title,
+          created,
+          frame,
+          lockFrame,
+          rotation,
+          palette: paletteRGBN || paletteShort,
+          invertPalette: invertPalette || false,
+          framePalette: framePaletteShort,
+          invertFramePalette: invertFramePalette || false,
         },
+        tagChanges,
       });
     },
     cancel: () => cancelEditImages(),

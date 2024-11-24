@@ -1,6 +1,5 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { Image, MonochromeImage } from '../Image';
-import type { TagUpdates } from '../../javascript/tools/modifyTagChanges';
 
 export interface AddImagesAction {
   type: Actions.ADD_IMAGES,
@@ -10,15 +9,6 @@ export interface AddImagesAction {
 export type ImageUpdates =
   Pick<Image, 'title' | 'created' | 'palette' | 'frame' | 'lockFrame' | 'rotation'> &
   Pick<MonochromeImage, 'invertPalette' | 'framePalette' | 'invertFramePalette'>;
-
-export interface ImagesBatchUpdateAction {
-  type: Actions.UPDATE_IMAGES_BATCH_CHANGES,
-  payload: {
-    shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>,
-    updates: ImageUpdates,
-    tagChanges: TagUpdates,
-  },
-}
 
 export interface ImagesUpdateAction {
   type: Actions.UPDATE_IMAGES,
