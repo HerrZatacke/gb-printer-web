@@ -9,7 +9,6 @@ import useItemsStore from '../../stores/itemsStore';
 import useStoragesStore from '../../stores/storagesStore';
 import { Actions } from '../actions';
 import type {
-  DeleteImageAction,
   DeleteImagesAction,
   AddImagesAction,
   RehashImageAction,
@@ -32,7 +31,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
   const {
     updateImageSelection,
-    setImageSelection,
     updateRecentImports,
   } = useFiltersStore.getState();
 
@@ -103,7 +101,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
   return (next) => (
     action:
       AddImagesAction |
-      DeleteImageAction |
       DeleteImagesAction |
       GlobalUpdateAction |
       ImageFavouriteAction |
@@ -112,11 +109,8 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       RehashImageAction,
   ) => {
     switch (action.type) {
-      case Actions.DELETE_IMAGE:
-        updateImageSelection(ImageSelectionMode.REMOVE, action.payload);
-        break;
       case Actions.DELETE_IMAGES:
-        setImageSelection([]);
+        updateImageSelection(ImageSelectionMode.REMOVE, action.payload);
         break;
       case Actions.ADD_IMAGES:
         updateRecentImports(action.payload);
@@ -178,7 +172,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
 
     switch (action.type) {
       case Actions.ADD_IMAGES:
-      case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
         dismissDialog(0);
         break;
@@ -192,7 +185,6 @@ export const zustandMigrationMiddleware: MiddlewareWithState = (store) => {
       // ToDo: check for more action types which cause syncable data to be updated
       case Actions.REHASH_IMAGE:
       case Actions.UPDATE_IMAGES:
-      case Actions.DELETE_IMAGE:
       case Actions.DELETE_IMAGES:
       case Actions.ADD_IMAGES:
       case Actions.IMAGE_FAVOURITE_TAG:

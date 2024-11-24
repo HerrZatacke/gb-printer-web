@@ -31,11 +31,6 @@ export interface ImageFavouriteAction {
   },
 }
 
-export interface DeleteImageAction {
-  type: Actions.DELETE_IMAGE,
-  payload: string,
-}
-
 export interface DeleteImagesAction {
   type: Actions.DELETE_IMAGES,
   payload: string[],

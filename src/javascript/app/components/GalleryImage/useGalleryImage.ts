@@ -131,7 +131,7 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
 
         setImageSelection(images.slice(from, to + 1).map((image) => image.hash));
       } else {
-        updateImageSelection(mode, hash);
+        updateImageSelection(mode, [hash]);
       }
     },
     editImage: (tags: string[]) => {

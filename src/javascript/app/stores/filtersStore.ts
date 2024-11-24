@@ -31,7 +31,7 @@ interface Actions {
   updateRecentImports: (images: Image[]) => void,
   setSortBy: (sortBy: string) => void,
   setSortOptionsVisible: (sortOptionsVisible: boolean) => void,
-  updateImageSelection: (mode: ImageSelectionMode, hash: string) => void,
+  updateImageSelection: (mode: ImageSelectionMode, hashes: string[]) => void,
 }
 
 export type FiltersState = Values & Actions;
@@ -90,21 +90,21 @@ const useFiltersStore = create(
         });
       },
 
-      updateImageSelection: (mode: ImageSelectionMode, hash: string) => {
+      updateImageSelection: (mode: ImageSelectionMode, hashes: string[]) => {
         const value = get().imageSelection;
         switch (mode) {
           case ImageSelectionMode.ADD: {
             set({
-              imageSelection: unique([...value, hash]),
-              lastSelectedImage: hash,
+              imageSelection: unique([...value, ...hashes]),
+              lastSelectedImage: hashes[0],
             });
             break;
           }
 
           case ImageSelectionMode.REMOVE: {
             set({
-              imageSelection: value.filter((h) => hash !== h),
-              lastSelectedImage: hash,
+              imageSelection: value.filter((hash) => !hashes.includes(hash)),
+              lastSelectedImage: null,
             });
             break;
           }

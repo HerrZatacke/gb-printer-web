@@ -7,7 +7,6 @@ import type { GlobalUpdateAction } from '../../../../types/GlobalUpdateAction';
 import type { Image } from '../../../../types/Image';
 import type {
   AddImagesAction,
-  DeleteImageAction,
   DeleteImagesAction,
   ImageFavouriteAction,
   ImagesUpdateAction,
@@ -20,7 +19,6 @@ const imagesReducer = (
   value: Image[] = [],
   action:
     AddImagesAction |
-    DeleteImageAction |
     DeleteImagesAction |
     ImageFavouriteAction |
     ImagesUpdateAction |
@@ -30,8 +28,6 @@ const imagesReducer = (
   switch (action.type) {
     case Actions.ADD_IMAGES:
       return uniqueByHash([...value, ...action.payload]);
-    case Actions.DELETE_IMAGE:
-      return [...value.filter(({ hash }) => hash !== action.payload)];
     case Actions.DELETE_IMAGES:
       return [...value.filter(({ hash }) => !action.payload.includes(hash))];
     case Actions.REHASH_IMAGE:
