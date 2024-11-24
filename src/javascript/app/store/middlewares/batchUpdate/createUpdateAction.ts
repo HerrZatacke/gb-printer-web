@@ -5,10 +5,10 @@ import { Actions } from '../../actions';
 import { addSortIndex, removeSortIndex, sortImages } from '../../../../tools/sortImages';
 import type { Image, MonochromeImage, RGBNImage } from '../../../../../types/Image';
 import type { TagUpdates } from '../../../../tools/modifyTagChanges';
-import type { ImageUpdatable } from './const';
+import type { ImageUpdatable } from '../../../../consts/batchActionTypes';
 import applyTagChanges from '../../../../tools/applyTagChanges';
 import type { State } from '../../State';
-import { Updatable, UpdatableMonochrome, UPDATATABLES } from './const';
+import { Updatable, UpdatableMonochrome, UPDATATABLES } from '../../../../consts/batchActionTypes';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import useEditStore from '../../../stores/editStore';
 
