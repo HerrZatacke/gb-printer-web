@@ -1,13 +1,13 @@
-import getTransformBin from '../transformBin';
-import getTransformSav from '../transformSav';
-import getTransformRom from '../transformRom';
-import getTransformReduced from '../transformReduced';
-import getTransformBitmaps from '../transformBitmaps';
-import getTransformPlainText from '../transformPlainText';
-import getImportJSON from '../importJSON';
+import { getImportJSON } from '../importExportSettings/getImportJSON';
+import { transformBin } from '../transformBin';
+import { transformBitmaps } from '../transformBitmaps';
+import { transformPlainText } from '../transformPlainText';
+import { transformReduced } from '../transformReduced';
+import { transformRom } from '../transformRom';
+import { transformSav } from '../transformSav';
 import prepareFile from './prepareFile';
 import type { PreparedFile } from './prepareFile';
-import type { TypedStore } from '../../app/store/State';
+import type { ImportFn } from '../../hooks/useImportExportSettings';
 
 export interface HandeFileImportOptions {
   fromPrinter: boolean
@@ -15,14 +15,8 @@ export interface HandeFileImportOptions {
 
 export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
 
-const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
-  const transformSav = getTransformSav(store);
-  const transformRom = getTransformRom(store);
-  const transformBin = getTransformBin(store);
-  const transformBitmaps = getTransformBitmaps(store);
-  const transformPlainText = getTransformPlainText(store);
-  const transformReduced = getTransformReduced(store);
-  const importJSON = getImportJSON(store);
+const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
+  const importJSON = getImportJSON(importFn);
 
   return async (files, { fromPrinter } = { fromPrinter: false }): Promise<void> => {
 
@@ -66,6 +60,7 @@ const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
         return transformRom(file);
       }
 
+      // can use src/assets/dumps/pico.bin for testing
       if (contentType === 'application/pico-printer-binary-log' /*  || file.name.endsWith('pico.bin') */) {
         return transformReduced(file);
       }

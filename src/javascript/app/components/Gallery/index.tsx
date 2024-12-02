@@ -1,7 +1,7 @@
 import React from 'react';
 import type { CSSPropertiesVars } from 'react';
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
+import useSettingsStore from '../../stores/settingsStore';
 import GalleryImage from '../GalleryImage';
 import GalleryHeader from '../GalleryHeader';
 import GalleryIntro from '../GalleryIntro';
@@ -12,7 +12,6 @@ import { useGallery } from './useGallery';
 import { GalleryViews } from '../../../consts/GalleryViews';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 import type { ScreenDimensions } from '../../../hooks/useScreenDimensions';
-import type { State } from '../../store/State';
 
 import './index.scss';
 import './gallery-item.scss';
@@ -41,13 +40,13 @@ function Gallery() {
     filteredCount,
     page,
     images,
-    currentView,
     covers,
+    galleryView,
   } = useGallery();
 
   const screenDimensions = useScreenDimensions();
 
-  const enableImageGroups = useSelector((state: State) => state.enableImageGroups);
+  const { enableImageGroups } = useSettingsStore();
 
   return (
     <>
@@ -64,10 +63,10 @@ function Gallery() {
       <ul
         className={
           classnames('gallery', {
-            [`gallery--${currentView}`]: true,
+            [`gallery--${galleryView}`]: true,
           })
         }
-        style={currentView === GalleryViews.GALLERY_VIEW_SMALL ? getSmallStyleVars(screenDimensions) : undefined}
+        style={galleryView === GalleryViews.GALLERY_VIEW_SMALL ? getSmallStyleVars(screenDimensions) : undefined}
       >
         { images.map((image) => (
           covers.includes(image.hash) ? (

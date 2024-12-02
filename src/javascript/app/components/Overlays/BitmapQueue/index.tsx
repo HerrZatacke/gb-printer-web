@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import ImportPreviewImage from '../../ImportPreviewImage';
-import { Actions } from '../../../store/actions';
 import SVG from '../../SVG';
-import './index.scss';
 import Select from '../Confirm/fields/Select';
-import moveBitmapsToImport from './moveBitmapsToImport';
-import type { State } from '../../../store/State';
-import type { BitmapQueueCancelAction } from '../../../../../types/actions/QueueActions';
+import { moveBitmapsToImport } from './moveBitmapsToImport';
+import useImportsStore from '../../../stores/importsStore';
+
+import './index.scss';
 
 interface ImportContrast {
   name: string,
@@ -52,31 +50,24 @@ const contrasts: ImportContrast[] = [
 ];
 
 function BitmapQueue() {
-  const bitmapQueue = useSelector((state: State) => state.bitmapQueue);
-  const dispatch = useDispatch();
+  const { bitmapQueue, bitmapQueueCancel } = useImportsStore();
   const [dither, setDither] = useState(true);
   const [contrast, setContrast] = useState('wide'); // 'wide' covers the complete greyscale range from 00 tro FF. The thresholds are optimal for already dithered imports
 
   const contrastBaseValues = (contrasts.find(({ value }) => (value === contrast)) || contrasts[1]).baseValues;
-
-  const dispatchBitmapsToImport = moveBitmapsToImport(dispatch);
 
   return (
     <Lightbox
       className="bitmap-import-overlay"
       header="Prepare Bitmaps for import"
       confirm={() => {
-        dispatchBitmapsToImport({
+        moveBitmapsToImport({
           bitmapQueue,
           dither,
           contrastBaseValues,
         });
       }}
-      deny={() => {
-        dispatch<BitmapQueueCancelAction>({
-          type: Actions.BITMAPQUEUE_CANCEL,
-        });
-      }}
+      deny={bitmapQueueCancel}
     >
       <div
         className="bitmap-import-overlay__content"

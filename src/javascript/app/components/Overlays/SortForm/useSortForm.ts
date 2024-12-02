@@ -1,7 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../../store/actions';
-import type { State } from '../../../store/State';
-import type { SortOptionsHideAction, SortOptionsSetSortByAction } from '../../../../../types/actions/SortOptionsActions';
+import useFiltersStore from '../../../stores/filtersStore';
 import type { SortDirection } from '../../../../tools/sortby';
 
 interface UseSortForm {
@@ -13,29 +10,15 @@ interface UseSortForm {
 }
 
 export const useSortForm = (): UseSortForm => {
-  const data = useSelector((state: State) => {
-    const [sortBy = '', sortOrder = ''] = state.sortBy.split('_');
-    return {
-      visible: state.sortOptionsVisible,
-      sortBy,
-      sortOrder: sortOrder as SortDirection,
-    };
-  });
+  const { setSortBy, setSortOptionsVisible, sortOptionsVisible, sortBy: stateSortBy } = useFiltersStore();
 
-  const dispatch = useDispatch();
+  const [sortBy = '', sortOrder = ''] = stateSortBy.split('_');
 
   return {
-    ...data,
-    setSortBy: (sortBy: string) => {
-      dispatch<SortOptionsSetSortByAction>({
-        type: Actions.SET_SORT_BY,
-        payload: sortBy,
-      });
-    },
-    hideSortForm: () => {
-      dispatch<SortOptionsHideAction>({
-        type: Actions.HIDE_SORT_OPTIONS,
-      });
-    },
+    visible: sortOptionsVisible,
+    sortBy,
+    sortOrder: sortOrder as SortDirection,
+    setSortBy,
+    hideSortForm: () => setSortOptionsVisible(false),
   };
 };

@@ -1,6 +1,6 @@
-import type { State } from '../../app/store/State';
+import type { Image } from '../../../types/Image';
 
-const getImageHashesForExport = (what: 'images' | 'selected_images', { images, imageSelection }: State): string[] => {
+const getImageHashesForExport = (what: 'images' | 'selected_images', images: Image[], imageSelection: string[]): string[] => {
 
   switch (what) {
     case 'images':

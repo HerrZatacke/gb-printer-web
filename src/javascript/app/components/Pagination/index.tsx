@@ -1,10 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import useFiltersStore from '../../stores/filtersStore';
+import useSettingsStore from '../../stores/settingsStore';
 import PaginationButton from '../PaginationButton';
 import SVG from '../SVG';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import './index.scss';
-import type { State } from '../../store/State';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
 
@@ -14,9 +14,12 @@ interface Props {
 
 function Pagination({ page }: Props) {
   const { view } = useGalleryTreeContext();
-  const totalPages = useSelector((state: State) => (
-    state.pageSize ? Math.ceil(getFilteredImagesCount(state, view.images) / state.pageSize) : 0
-  ));
+  const { pageSize } = useSettingsStore();
+  const { filtersActiveTags, recentImports } = useFiltersStore();
+
+  const totalPages = pageSize ?
+    Math.ceil(getFilteredImagesCount(view.images, filtersActiveTags, recentImports) / pageSize) :
+    0;
 
   if (totalPages < 2) {
     return null;

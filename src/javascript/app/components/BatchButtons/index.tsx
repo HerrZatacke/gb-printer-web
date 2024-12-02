@@ -49,6 +49,8 @@ function BatchButtons({ page }: Props) {
     selectedImages,
     hasSelected,
     batchTask,
+    checkAll,
+    unCheckAll,
     filter,
     showSortOptions,
   } = useBatchButtons(page);
@@ -91,7 +93,7 @@ function BatchButtons({ page }: Props) {
       >
         <button
           type="button"
-          onClick={() => batchTask(hasSelected ? BatchActionType.UNCHECKALL : BatchActionType.CHECKALL)}
+          onClick={hasSelected ? unCheckAll : checkAll}
           title={hasSelected ? 'Uncheck All' : 'Check All'}
         >
           <SVG name="checkmark" />

@@ -1,36 +1,34 @@
 import getFrameGroups from '../getFrameGroups';
-import { Actions } from '../../app/store/actions';
+import useDialogsStore from '../../app/stores/dialogsStore';
+import useItemsStore from '../../app/stores/itemsStore';
+import useSettingsStore from '../../app/stores/settingsStore';
 import readFileAs, { ReadAs } from '../readFileAs';
 import getImportSav from './importSav';
-import type { TypedStore } from '../../app/store/State';
 import type { DialogOption,
   DialogQuestion,
   DialogResult } from '../../../types/Dialog';
 import {
   DialoqQuestionType,
 } from '../../../types/Dialog';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../types/actions/ConfirmActions';
 import { reduceItems } from '../reduceArray';
 
-const getTransformSav = (
-  { getState, dispatch }: TypedStore,
-) => async (file: File, skipDialogs: boolean): Promise<boolean> => {
+export const transformSav = async (file: File, skipDialogs: boolean): Promise<boolean> => {
+  const { dismissDialog, setDialog } = useDialogsStore.getState();
+  const { frames, frameGroups } = useItemsStore.getState();
+  const { savFrameTypes, setSavFrameTypes } = useSettingsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 
   const {
-    savFrameTypes: selectedFrameset,
-    frames,
-    frameGroupNames,
     importLastSeen,
     importDeleted,
     forceMagicCheck,
-  } = getState();
+  } = useSettingsStore.getState();
 
-  const frameGroupOptions: DialogOption[] = getFrameGroups(frames, frameGroupNames)
+  const frameGroupOptions: DialogOption[] = getFrameGroups(frames, frameGroups)
     .map(({ id: value, name }) => ({
       value,
       name,
-      selected: selectedFrameset === value,
+      selected: savFrameTypes === value,
     }));
 
   frameGroupOptions.unshift({ value: '', name: 'None (Black frame)' });
@@ -42,7 +40,6 @@ const getTransformSav = (
     frames,
     fileName: file.name,
     importDeleted: skipDialogs ? true : importDeleted,
-    dispatch,
     forceMagicCheck: skipDialogs ? false : forceMagicCheck,
   });
 
@@ -56,42 +53,34 @@ const getTransformSav = (
   }
 
   return new Promise(((resolve) => {
-    dispatch<ConfirmAskAction>({
-      type: Actions.CONFIRM_ASK,
-      payload: {
-        message: `Importing '${file.name}'`,
-        questions: () => ([
-          {
-            type: DialoqQuestionType.CHECKBOX,
-            label: 'Import is from a Japanese Cart (PocketCamera)',
-            key: 'cartIsJP',
-          },
-          frameGroupOptions.length > 1 ? {
-            type: DialoqQuestionType.SELECT,
-            label: 'Select frame group to use with this import',
-            key: 'chosenFrameset',
-            options: frameGroupOptions,
-          } : undefined,
-        ].reduce(reduceItems<DialogQuestion>, [])),
-        confirm: async (result: DialogResult): Promise<void> => {
-          const { chosenFrameset, cartIsJP } = result as { chosenFrameset: string, cartIsJP: boolean };
-          dispatch<ConfirmAnsweredAction>({
-            type: Actions.CONFIRM_ANSWERED,
-          });
+    setDialog({
+      message: `Importing '${file.name}'`,
+      questions: () => ([
+        {
+          type: DialoqQuestionType.CHECKBOX,
+          label: 'Import is from a Japanese Cart (PocketCamera)',
+          key: 'cartIsJP',
+        },
+        frameGroupOptions.length > 1 ? {
+          type: DialoqQuestionType.SELECT,
+          label: 'Select frame group to use with this import',
+          key: 'chosenFrameset',
+          options: frameGroupOptions,
+        } : undefined,
+      ].reduce(reduceItems<DialogQuestion>, [])),
+      confirm: async (result: DialogResult): Promise<void> => {
+        const { chosenFrameset, cartIsJP } = result as { chosenFrameset: string, cartIsJP: boolean };
+        dismissDialog(0);
+        setSavFrameTypes(chosenFrameset);
 
-          // Perform actual import action
-          await importSav(chosenFrameset || '', Boolean(cartIsJP));
-          resolve(true);
-        },
-        deny: async () => {
-          dispatch<ConfirmAnsweredAction>({
-            type: Actions.CONFIRM_ANSWERED,
-          });
-          resolve(true);
-        },
+        // Perform actual import action
+        await importSav(chosenFrameset || '', Boolean(cartIsJP));
+        resolve(true);
+      },
+      deny: async () => {
+        dismissDialog(0);
+        resolve(true);
       },
     });
   }));
 };
-
-export default getTransformSav;

@@ -1,5 +1,5 @@
 import uniqueBy from '../unique/by';
-import type { ExportableState, State } from '../../app/store/State';
+import type { ExportableState } from '../../../types/ExportState';
 import type { Frame } from '../../../types/Frame';
 import type { Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
@@ -27,11 +27,17 @@ const mergeImages = mergeBy<Image>('hash');
 const mergeFrames = mergeBy<Frame>('id');
 const mergePalettes = mergeBy<Palette>('shortName');
 
-const mergeStates = (currentState: State, updatedState: ExportableState, mergeImagesFrames: boolean) => {
+const mergeStates = (
+  currentStateFrames: Frame[],
+  currentStatePalettes: Palette[],
+  currentStateImages: Image[],
+  updatedState: ExportableState,
+  mergeImagesFrames: boolean,
+) => {
 
-  let frames = currentState.frames;
-  let images = currentState.images;
-  let palettes = currentState.palettes;
+  let frames = currentStateFrames;
+  let images = currentStateImages;
+  let palettes = currentStatePalettes;
 
   if (mergeImagesFrames) {
     if (updatedState.frames && updatedState.frames.length) {
@@ -46,13 +52,12 @@ const mergeStates = (currentState: State, updatedState: ExportableState, mergeIm
       palettes = mergePalettes(palettes, updatedState.palettes);
     }
   } else {
-    frames = updatedState.frames || currentState.frames;
-    images = updatedState.images || currentState.images;
-    palettes = updatedState.palettes || currentState.palettes;
+    frames = updatedState.frames || currentStateFrames;
+    images = updatedState.images || currentStateImages;
+    palettes = updatedState.palettes || currentStatePalettes;
   }
 
   return {
-    ...currentState,
     ...updatedState,
     images,
     frames,

@@ -53,6 +53,9 @@ export interface MonochromeImage extends CommonImage {
   invertFramePalette: boolean,
 }
 
+/*
+* On Type-Changes, a history for migration must be kept in /src/javascript/app/stores/migrations/history/
+* */
 export type Image = MonochromeImage | RGBNImage
 
 export interface CurrentEditBatch {

@@ -45,6 +45,7 @@ const fetchImages = async (
           console.warn(error);
           return {
             ok: false,
+            blob: new Blob(),
           };
         }
       },

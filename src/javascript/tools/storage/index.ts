@@ -10,7 +10,7 @@ export interface HashedCompressed {
 
 export type RecoverFn = (hash: string) => void;
 
-const compressAndHash = async (lines: string[]): Promise<HashedCompressed> => {
+export const compressAndHash = async (lines: string[]): Promise<HashedCompressed> => {
   const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
 
   const imageData = lines
@@ -29,7 +29,7 @@ const compressAndHash = async (lines: string[]): Promise<HashedCompressed> => {
   };
 };
 
-const save = async (lines: string[]): Promise<string> => {
+export const save = async (lines: string[]): Promise<string> => {
   const {
     dataHash,
     compressed,
@@ -38,7 +38,7 @@ const save = async (lines: string[]): Promise<string> => {
   return dataHash;
 };
 
-const load = async (
+export const load = async (
   dataHash: string,
   frameHash?: string,
   noDummy?: boolean,
@@ -73,18 +73,10 @@ const load = async (
   }
 };
 
-const del = async (dataHash: string): Promise<void> => (
+export const del = async (dataHash: string): Promise<void> => (
   localforageImages.removeItem(dataHash)
 );
 
-const delFrame = async (dataHash: string): Promise<void> => (
+export const delFrame = async (dataHash: string): Promise<void> => (
   localforageFrames.removeItem(dataHash)
 );
-
-export {
-  compressAndHash,
-  save,
-  load,
-  del,
-  delFrame,
-};

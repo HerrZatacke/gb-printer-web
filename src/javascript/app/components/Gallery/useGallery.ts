@@ -1,9 +1,10 @@
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import getFilteredImages from '../../../tools/getFilteredImages';
+import useFiltersStore from '../../stores/filtersStore';
+import useItemsStore from '../../stores/itemsStore';
+import useSettingsStore from '../../stores/settingsStore';
+import { getFilteredImages } from '../../../tools/getFilteredImages';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
-import type { State } from '../../store/State';
 import type { GalleryViews } from '../../../consts/GalleryViews';
 import type { Image } from '../../../../types/Image';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
@@ -12,7 +13,7 @@ interface UseGallery {
   imageCount: number,
   selectedCount: number,
   images: Image[],
-  currentView: GalleryViews,
+  galleryView: GalleryViews,
   filteredCount: number,
   page: number,
   covers: string[],
@@ -20,16 +21,19 @@ interface UseGallery {
 
 export const useGallery = (): UseGallery => {
   const { view, covers } = useGalleryTreeContext();
+  const { pageSize, galleryView } = useSettingsStore();
 
   const {
-    imageCount,
-    pageSize,
-    filteredCount,
-  } = useSelector((state: State) => ({
-    pageSize: state.pageSize,
-    imageCount: state.images.length,
-    filteredCount: getFilteredImagesCount(state, view.images),
-  }));
+    imageSelection,
+    filtersActiveTags,
+    recentImports,
+    sortBy,
+  } = useFiltersStore();
+
+  const { images: stateImages } = useItemsStore();
+
+  const imageCount = stateImages.length;
+  const filteredCount = getFilteredImagesCount(view.images, filtersActiveTags, recentImports);
 
   const { pageIndex, path } = useGalleryParams();
   const navigate = useNavigate();
@@ -42,28 +46,22 @@ export const useGallery = (): UseGallery => {
     navigate(`/gallery/${path}page/${page + 1}`);
   }
 
-  const {
-    selectedCount,
-    currentView,
-    images,
-  } = useSelector((state: State) => {
-    const iOffset = page * state.pageSize;
-    const pSize = state.pageSize;
+  const iOffset = page * pageSize;
+  const pSize = pageSize;
+  const selectedCount = imageSelection.length;
+  const images = getFilteredImages(
+    view.images,
+    { filtersActiveTags, recentImports, sortBy },
+  )
+    .splice(iOffset, pSize || Infinity);
 
-    return ({
-      selectedCount: state.imageSelection.length,
-      currentView: state.galleryView,
-      images: getFilteredImages(state, view.images).splice(iOffset, pSize || Infinity),
-    });
-  });
-
-  return ({
+  return {
     imageCount,
     selectedCount,
     filteredCount,
     page,
     images,
-    currentView,
     covers,
-  });
+    galleryView,
+  };
 };
