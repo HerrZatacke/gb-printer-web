@@ -1,18 +1,17 @@
 import dayjs from 'dayjs';
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import useFiltersStore from '../app/stores/filtersStore';
 import { dateFormat, defaultRGBNPalette } from '../app/defaults';
-import { Actions } from '../app/store/actions';
-import type { AddImagesAction } from '../../types/actions/ImageActions';
 import type { RGBNHashes, RGBNImage } from '../../types/Image';
+import { useStores } from './useStores';
 
 interface UseSaveRGBNImages {
   saveRGBNImage: (hashes: RGBNHashes[]) => Promise<void>,
 }
 
 const useSaveRGBNImages = (): UseSaveRGBNImages => {
-  const dispatch = useDispatch();
+  const { setImageSelection } = useFiltersStore();
+  const { addImages } = useStores();
 
   const saveRGBNImage = useCallback(async (hashes: RGBNHashes[]): Promise<void> => {
     const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
@@ -32,14 +31,9 @@ const useSaveRGBNImages = (): UseSaveRGBNImages => {
       return image;
     });
 
-    dispatch<AddImagesAction>({
-      type: Actions.ADD_IMAGES,
-      payload: images,
-    });
-
-    const { setImageSelection } = useFiltersStore.getState();
+    addImages(images);
     setImageSelection(images.map((i) => i.hash));
-  }, [dispatch]);
+  }, [addImages, setImageSelection]);
 
   return { saveRGBNImage };
 };

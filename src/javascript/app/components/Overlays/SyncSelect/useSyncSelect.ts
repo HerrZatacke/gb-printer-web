@@ -1,10 +1,10 @@
-import { useStore } from 'react-redux';
-import type { TypedStore } from '../../../store/State';
 import type { SyncLastUpdate } from '../../../../../types/Sync';
 import useInteractionsStore from '../../../stores/interactionsStore';
 import useStoragesStore from '../../../stores/storagesStore';
 import { dropboxStorageTool } from '../../../../tools/dropboxStorage';
 import { gitStorageTool } from '../../../../tools/gitStorage';
+import { useStores } from '../../../../hooks/useStores';
+import { useImportExportSettings } from '../../../../hooks/useImportExportSettings';
 
 
 interface UseSyncSelect {
@@ -18,7 +18,8 @@ interface UseSyncSelect {
 }
 
 export const useSyncSelect = (): UseSyncSelect => {
-  const store: TypedStore = useStore();
+  const stores = useStores();
+  const { remoteImport } = useImportExportSettings();
 
   const { setSyncSelect } = useInteractionsStore();
   const { gitStorage, dropboxStorage, syncLastUpdate } = useStoragesStore();
@@ -41,15 +42,15 @@ export const useSyncSelect = (): UseSyncSelect => {
     syncLastUpdate,
     startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => {
       if (storageType === 'dropbox') {
-        dropboxStorageTool(store).startSyncData(direction);
+        dropboxStorageTool(stores, remoteImport).startSyncData(direction);
       } else if (storageType === 'dropboximages') {
-        dropboxStorageTool(store).startSyncImages();
+        dropboxStorageTool(stores, remoteImport).startSyncImages();
       } else {
         if (direction === 'diff') {
           throw new Error('diff is invalid direction for github sync');
         }
 
-        gitStorageTool(store).startSyncData(direction);
+        gitStorageTool(remoteImport).startSyncData(direction);
       }
     },
     cancelSync: () => setSyncSelect(false),

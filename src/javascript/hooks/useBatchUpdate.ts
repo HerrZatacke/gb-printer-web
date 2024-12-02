@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
 import useEditStore from '../app/stores/editStore';
 import useFiltersStore from '../app/stores/filtersStore';
-import { Actions } from '../app/store/actions';
+import useItemsStore from '../app/stores/itemsStore';
 import { addSortIndex, removeSortIndex, sortImages } from '../tools/sortImages';
 import applyTagChanges from '../tools/applyTagChanges';
 import { Updatable, UpdatableMonochrome, UPDATATABLES } from '../consts/batchActionTypes';
@@ -11,8 +10,8 @@ import { isRGBNImage } from '../tools/isRGBNImage';
 import type { Image, MonochromeImage, RGBNImage } from '../../types/Image';
 import type { TagUpdates } from '../tools/modifyTagChanges';
 import type { ImageUpdatable } from '../consts/batchActionTypes';
-import type { State } from '../app/store/State';
-import type { ImageUpdates, ImagesUpdateAction } from '../../types/actions/ImageActions';
+import type { ImageUpdates } from '../../types/actions/ImageActions';
+import { useStores } from './useStores';
 
 interface BatchUpdateImagesParams {
   shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>,
@@ -25,10 +24,10 @@ interface UseBatchUpdateImages {
 }
 
 const useBatchUpdateImages = (): UseBatchUpdateImages => {
-  const images = useSelector((s: State) => s.images);
   const { editImages, cancelEditImages } = useEditStore();
   const { sortBy } = useFiltersStore();
-  const dispatch = useDispatch();
+  const { images } = useItemsStore();
+  const { updateImages } = useStores();
 
   const batchUpdateImages = useCallback(({ shouldUpdate, updates, tagChanges }: BatchUpdateImagesParams): void => {
     const sortFunc = sortImages(sortBy);
@@ -126,14 +125,11 @@ const useBatchUpdateImages = (): UseBatchUpdateImages => {
           }, updateImage)
         ));
 
-      dispatch<ImagesUpdateAction>({
-        type: Actions.UPDATE_IMAGES,
-        payload: updatedImages,
-      });
+      updateImages(updatedImages);
     }
 
     cancelEditImages();
-  }, [cancelEditImages, dispatch, editImages, images, sortBy]);
+  }, [cancelEditImages, editImages?.batch, images, sortBy, updateImages]);
 
   return { batchUpdateImages };
 };

@@ -7,16 +7,11 @@ import getUploadFiles from '../getUploadFiles';
 import saveLocalStorageItems from '../saveLocalStorageItems';
 import { delay } from '../delay';
 import type { AddToQueueFn, GitStorageSettings } from '../../../types/Sync';
-import type { TypedStore } from '../../app/store/State';
-import { importExportSettings } from '../importExportSettings';
+import type { JSONExportState } from '../../../types/ExportState';
+import type { GitSyncTool } from './index';
 
 let octoClient: OctoClient;
 let addToQueue: (who: string) => AddToQueueFn<unknown>;
-
-export interface SyncTool {
-  startSyncData: (direction: 'up' | 'down') => Promise<void>,
-  updateSettings: (gitSettings: GitStorageSettings) => Promise<void >,
-}
 
 export const init = () => {
   const { gitStorage: gitStorageSettings } = useStoragesStore.getState();
@@ -44,8 +39,9 @@ export const init = () => {
 };
 
 
-export const gitSyncTool = (store: TypedStore): SyncTool => {
-  const { remoteImport } = importExportSettings(store);
+export const gitSyncTool = (
+  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+): GitSyncTool => {
   const { setProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
   const { syncLastUpdate } = useStoragesStore.getState();
 
@@ -63,7 +59,7 @@ export const gitSyncTool = (store: TypedStore): SyncTool => {
       switch (direction) {
         case 'up': {
           const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
-          const repoTasks = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
+          const repoTasks = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
           await octoClient.updateRemoteStore(repoTasks);
           break;
         }

@@ -5,13 +5,17 @@ import { PROJECT_PREFIX } from './constants';
 // import { migrateItems } from './migrations/history/0/migrateItems';
 import type { Frame } from '../../../types/Frame';
 import type { FrameGroup } from '../../../types/FrameGroup';
+import type { Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
 import type { Plugin, PluginConfigValues } from '../../../types/Plugin';
 import type { SerializableImageGroup } from '../../../types/ImageGroup';
+import { SpecialTags } from '../../consts/SpecialTags';
 import uniqueBy from '../../tools/unique/by';
+import unique from '../../tools/unique';
 import sortBy from '../../tools/sortby';
+import { migrateLegacy, VERSION_LEGACY } from './migrations/legacy';
 
-const STORE_VERSION = 1;
+export const ITEMS_STORE_VERSION = 1;
 
 const framesUniqueById = uniqueBy<Frame>('id');
 const frameGroupsUniqueById = uniqueBy<FrameGroup>('id');
@@ -20,6 +24,7 @@ const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
 const framesSortById = sortBy<Frame>('id');
 const palettesUniqueByShortName = uniqueBy<Palette>('shortName');
 const pluginsSortByName = sortBy<Plugin>('name');
+const imagesUniqueByHash = uniqueBy<Image>('hash');
 
 // The order of calls is important: First run unique, so that new/updated items are relevant, then sort.
 const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(frames));
@@ -31,6 +36,7 @@ export interface Values {
   frameGroups: FrameGroup[],
   plugins: Plugin[],
   imageGroups: SerializableImageGroup[],
+  images: Image[],
 }
 
 interface Actions {
@@ -46,6 +52,13 @@ interface Actions {
   deleteImageGroup: (groupId: string) => void,
   updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
   setImageGroups: (imageGroups: SerializableImageGroup[]) => void,
+
+  addImages: (images: Image[]) => void,
+  deleteImages: (hashes: string[]) => void,
+  updateImageHash: (oldHash: string, image: Image) => void,
+  updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void,
+  updateImages: (images: Image[]) => void,
+  setImages: (images: Image[]) => void,
 }
 
 export type ItemsState = Values & Actions;
@@ -55,6 +68,9 @@ interface AddUpdatePalettes {
   update: Palette[],
 }
 
+
+await migrateLegacy();
+
 const useItemsStore = create<ItemsState>()(
   persist(
     (set, get) => ({
@@ -63,6 +79,7 @@ const useItemsStore = create<ItemsState>()(
       frameGroups: [],
       plugins: [],
       imageGroups: [],
+      images: [],
 
       addFrames: (frames: Frame[]) => set((itemsState) => (
         { frames: sortAndUniqueById([...frames, ...itemsState.frames]) }
@@ -224,6 +241,42 @@ const useItemsStore = create<ItemsState>()(
       },
 
       setImageGroups: (imageGroups: SerializableImageGroup[]) => set({ imageGroups }),
+
+      addImages: (images: Image[]) => set((itemsState) => ({
+        images: imagesUniqueByHash([...itemsState.images, ...images]),
+      })),
+
+      deleteImages: (hashes: string[]) => set((itemsState) => ({
+        images: [...itemsState.images.filter(({ hash }) => !hashes.includes(hash))],
+      })),
+
+      updateImageHash: (oldHash: string, image: Image) => set((itemsState) => ({
+        images: itemsState.images.map((stateImage) => (
+          (stateImage.hash === oldHash) ? image : stateImage
+        )),
+      })),
+
+      updateImageFavouriteTag: (isFavourite: boolean, hash: string) => set((itemsState) => ({
+        images: itemsState.images.map((image) => (
+          (image.hash === hash) ? {
+            ...image,
+            tags: unique(
+              isFavourite ?
+                [SpecialTags.FILTER_FAVOURITE, ...image.tags] :
+                image.tags.filter((tag) => tag !== SpecialTags.FILTER_FAVOURITE),
+            ),
+          } : image
+        )),
+      })),
+
+      updateImages: (images: Image[]) => set((itemsState) => ({
+        images: itemsState.images.map((stateImage) => (
+          // return changed image if existent in payload
+          images.find((changedImage) => (changedImage.hash === stateImage.hash)) || stateImage
+        )),
+      })),
+
+      setImages: (images: Image[]) => set({ images: imagesUniqueByHash(images) }),
     }),
     {
       name: `${PROJECT_PREFIX}-items`,
@@ -255,6 +308,7 @@ const useItemsStore = create<ItemsState>()(
         frames: state.frames,
         frameGroups: state.frameGroups,
         imageGroups: state.imageGroups,
+        images: state.images,
         plugins: state.plugins.map((plugin) => ({
           ...plugin,
           loading: undefined,
@@ -263,12 +317,12 @@ const useItemsStore = create<ItemsState>()(
         palettes: state.palettes.filter(({ isPredefined }) => !isPredefined),
       }),
 
-      version: STORE_VERSION,
+      version: ITEMS_STORE_VERSION,
       // migrate: async (persistedState: unknown, version: number): Promise<Partial<ItemsState>> => {
       migrate: (persistedState: unknown, version: number): Values => {
         let finalState;
 
-        if (version === -1) {
+        if (version === VERSION_LEGACY) {
           finalState = persistedState;
         }
 

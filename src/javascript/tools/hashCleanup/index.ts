@@ -1,15 +1,12 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNTiles } from 'gb-image-decoder';
 import useItemsStore from '../../app/stores/itemsStore';
 import { loadImageTiles } from '../loadImageTiles';
 import { compressAndHash, save } from '../storage';
-import { Actions } from '../../app/store/actions';
-import type { State } from '../../app/store/State';
 import type { Frame } from '../../../types/Frame';
 import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
-import type { RehashImageAction } from '../../../types/actions/ImageActions';
+import { useStores } from '../../hooks/useStores';
 
 const reHash = async (stateImages: Image[], stateFrames: Frame[], hash: string): Promise<string | null> => {
   const loadedTiles: string[] | RGBNTiles | void = await loadImageTiles(stateImages, stateFrames)(hash, false);
@@ -33,10 +30,9 @@ interface UseHashCleanup {
 }
 
 const useHashCleanup = (): UseHashCleanup => {
-  const images = useSelector((state: State) => state.images);
-  const { frames } = useItemsStore();
+  const { frames, images } = useItemsStore();
+  const { updateImageHash } = useStores();
 
-  const dispatch = useDispatch();
   const [cleanupBusy, setCleanupBusy] = useState(true);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -80,17 +76,15 @@ const useHashCleanup = (): UseHashCleanup => {
 
           if (newHash !== hash) {
             iCounterRGBN += 1;
-            dispatch<RehashImageAction>({
-              type: Actions.REHASH_IMAGE,
-              payload: {
-                oldHash: hash,
-                image: {
-                  ...image,
-                  hash: newHash,
-                  hashes: newHashes,
-                } as RGBNImage,
-              },
-            });
+
+            updateImageHash(
+              hash,
+              {
+                ...image,
+                hash: newHash,
+                hashes: newHashes,
+              } as RGBNImage,
+            );
           }
 
         } else {
@@ -98,16 +92,14 @@ const useHashCleanup = (): UseHashCleanup => {
 
           if (savedHash) {
             iCounterMono += 1;
-            dispatch<RehashImageAction>({
-              type: Actions.REHASH_IMAGE,
-              payload: {
-                oldHash: hash,
-                image: {
-                  ...image,
-                  hash: savedHash,
-                } as MonochromeImage,
-              },
-            });
+
+            updateImageHash(
+              hash,
+              {
+                ...image,
+                hash: savedHash,
+              } as MonochromeImage,
+            );
           }
         }
       }));

@@ -1,5 +1,5 @@
 import uniqueBy from '../unique/by';
-import type { ExportableState, State } from '../../app/store/State';
+import type { ExportableState } from '../../../types/ExportState';
 import type { Frame } from '../../../types/Frame';
 import type { Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
@@ -30,13 +30,13 @@ const mergePalettes = mergeBy<Palette>('shortName');
 const mergeStates = (
   currentStateFrames: Frame[],
   currentStatePalettes: Palette[],
-  currentState: State,
+  currentStateImages: Image[],
   updatedState: ExportableState,
   mergeImagesFrames: boolean,
 ) => {
 
   let frames = currentStateFrames;
-  let images = currentState.images;
+  let images = currentStateImages;
   let palettes = currentStatePalettes;
 
   if (mergeImagesFrames) {
@@ -53,12 +53,11 @@ const mergeStates = (
     }
   } else {
     frames = updatedState.frames || currentStateFrames;
-    images = updatedState.images || currentState.images;
+    images = updatedState.images || currentStateImages;
     palettes = updatedState.palettes || currentStatePalettes;
   }
 
   return {
-    ...currentState,
     ...updatedState,
     images,
     frames,

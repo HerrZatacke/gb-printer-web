@@ -1,5 +1,4 @@
 import useItemsStore from '../../app/stores/itemsStore';
-import type { State } from '../../app/store/State';
 import type { AddToQueueFn } from '../../../types/Sync';
 import type { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
 import { loadFrameData } from '../applyFrame/frameData';
@@ -12,7 +11,6 @@ interface TmpInfo {
 }
 
 export const getUploadFrames = async (
-  state: State,
   repoContents: RepoContents,
   addToQueue: AddToQueueFn<SyncFile | null>,
 ): Promise<{

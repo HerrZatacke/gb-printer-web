@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import useItemsStore from '../app/stores/itemsStore';
 import useSettingsStore from '../app/stores/settingsStore';
@@ -8,7 +7,6 @@ import generateFileName from '../tools/generateFileName';
 import { loadImageTiles } from '../tools/loadImageTiles';
 import { getImagePalettes } from '../tools/getImagePalettes';
 import { loadFrameData } from '../tools/applyFrame/frameData';
-import type { State } from '../app/store/State';
 
 interface UseDownload {
   downloadSingleImage: (hash: string) => Promise<void>
@@ -16,11 +14,8 @@ interface UseDownload {
 }
 
 const useDownload = (): UseDownload => {
-  const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore.getState();
-
-  const images = useSelector((state: State) => state.images);
-
-  const { frames, palettes } = useItemsStore.getState();
+  const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore();
+  const { frames, palettes, images } = useItemsStore();
 
   const prepareFiles = getPrepareFiles(
     exportScaleFactors,

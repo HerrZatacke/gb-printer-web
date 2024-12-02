@@ -1,16 +1,13 @@
 import React from 'react';
-import { useStore } from 'react-redux';
-import { importExportSettings } from '../../../../../tools/importExportSettings';
+import { useImportExportSettings } from '../../../../../hooks/useImportExportSettings';
 import useStoragePersist from './useStoragePersist';
 import useHashCleanup from '../../../../../tools/hashCleanup';
 import { ExportTypes } from '../../../../../consts/exportTypes';
-import type { TypedStore } from '../../../../store/State';
 import { useImageGroups } from '../../../../../hooks/useImageGroups';
 
 function ExportSettings() {
   const { hashCleanup, cleanupBusy } = useHashCleanup();
-  const store: TypedStore = useStore();
-  const { downloadSettings } = importExportSettings(store);
+  const { downloadSettings } = useImportExportSettings();
 
   const { resetGroups } = useImageGroups();
   const exportJson = (what: ExportTypes) => downloadSettings(what);
@@ -43,16 +40,16 @@ function ExportSettings() {
       <button
         type="button"
         className="button"
-        onClick={() => exportJson(ExportTypes.DEBUG)}
+        onClick={() => exportJson(ExportTypes.ALL)}
       >
-        Export debug settings
+        Export Everything
       </button>
       <button
         type="button"
         className="button"
-        onClick={() => exportJson(ExportTypes.SETTINGS)}
+        onClick={() => exportJson(ExportTypes.PLUGINS)}
       >
-        Export settings
+        Export Plugins
       </button>
       <button
         disabled={cleanupBusy}

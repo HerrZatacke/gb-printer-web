@@ -1,9 +1,7 @@
-import { useStore } from 'react-redux';
-import { importExportSettings } from '../../../tools/importExportSettings';
+import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
 import useInteractionsStore from '../../stores/interactionsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import type { ExportTypes } from '../../../consts/exportTypes';
-import type { TypedStore } from '../../store/State';
 import useImportFile from '../../../hooks/useImportFile';
 
 interface UseImport {
@@ -17,8 +15,7 @@ interface UseImport {
 export const useImport = (): UseImport => {
   const { printerUrl } = useSettingsStore();
   const { printerFunctions } = useInteractionsStore();
-  const store: TypedStore = useStore();
-  const { downloadSettings } = importExportSettings(store);
+  const { downloadSettings } = useImportExportSettings();
 
   const fullPrinterUrl = printerUrl ? `${printerUrl}remote.html` : undefined;
   const printerConnected = printerFunctions.length > 0;

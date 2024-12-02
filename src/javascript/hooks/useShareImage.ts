@@ -1,11 +1,9 @@
-import { useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import useItemsStore from '../app/stores/itemsStore';
 import useSettingsStore from '../app/stores/settingsStore';
 import { getPrepareFiles } from '../tools/download';
 import { loadImageTiles } from '../tools/loadImageTiles';
 import { loadFrameData } from '../tools/applyFrame/frameData';
-import type { State } from '../app/store/State';
 
 interface UseShareImage {
   shareImage: (hash: string) => Promise<void>,
@@ -13,8 +11,7 @@ interface UseShareImage {
 
 const useShareImage = (): UseShareImage => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore();
-  const { frames, palettes } = useItemsStore();
-  const images = useSelector((state: State) => state.images);
+  const { frames, palettes, images } = useItemsStore();
 
   const shareImage = useCallback(async (hash: string) => {
 

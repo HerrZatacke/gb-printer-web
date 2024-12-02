@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
@@ -7,15 +6,13 @@ import useInteractionsStore from '../../stores/interactionsStore';
 import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
-import { Actions } from '../../store/actions';
+import { useStores } from '../../../hooks/useStores';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import useDownload from '../../../hooks/useDownload';
 import unique from '../../../tools/unique';
 import type { Image, MonochromeImage } from '../../../../types/Image';
-import type { State } from '../../store/State';
-import type { DeleteImagesAction } from '../../../../types/actions/ImageActions';
-import useDownload from '../../../hooks/useDownload';
 
 interface UseBatchButtons {
   hasPlugins: boolean,
@@ -45,18 +42,13 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     setSortOptionsVisible,
     setImageSelection,
   } = useFiltersStore();
-  const { plugins } = useItemsStore();
+  const { plugins, images: stateImages } = useItemsStore();
   const { pageSize } = useSettingsStore();
-  const dispatch = useDispatch();
-
+  const { setEditImages, setEditRGBNImages } = useEditStore();
+  const { dismissDialog, setDialog } = useDialogsStore();
+  const { setVideoSelection } = useInteractionsStore();
   const { downloadImageCollection } = useDownload();
-
-  const { setEditImages, setEditRGBNImages } = useEditStore.getState();
-  const { dismissDialog, setDialog } = useDialogsStore.getState();
-  const { setVideoSelection } = useInteractionsStore.getState();
-
-  const stateImages = useSelector((state: State) => state.images);
-
+  const { deleteImages } = useStores();
   const { view, covers } = useGalleryTreeContext();
 
   const indexOffset = page * pageSize;
@@ -87,10 +79,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
             setDialog({
               message: `Delete ${imageSelection.length} images?`,
               confirm: async () => {
-                dispatch<DeleteImagesAction>({
-                  type: Actions.DELETE_IMAGES,
-                  payload: imageSelection,
-                });
+                deleteImages(imageSelection);
               },
               deny: async () => dismissDialog(0),
             });

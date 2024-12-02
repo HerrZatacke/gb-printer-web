@@ -1,6 +1,7 @@
 import type { ItemsState } from '../../../itemsStore';
 import type { ReduxState } from './State';
-import hashFrames from '../../../../../tools/cleanState/hashFrames';
+import hashFrames from './hashFrames';
+import { cleanImages } from './cleanImages';
 
 export const migrateItems = async (persistedState: unknown): Promise<Partial<ItemsState>> => {
   const v0state = persistedState as Partial<ReduxState>;
@@ -24,6 +25,10 @@ export const migrateItems = async (persistedState: unknown): Promise<Partial<Ite
 
   if (v0state.imageGroups?.length) {
     result.imageGroups = v0state.imageGroups;
+  }
+
+  if (v0state.images?.length) {
+    result.images = cleanImages(v0state.images);
   }
 
   return result;

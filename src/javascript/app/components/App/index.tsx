@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import type { RouteObject } from 'react-router-dom';
-import {
-  createHashRouter as createRouter,
-  RouterProvider,
-} from 'react-router-dom';
+import { createHashRouter as createRouter, RouterProvider } from 'react-router-dom';
 import Home from '../Home';
 import Gallery from '../Gallery';
 import Import from '../Import';
@@ -24,12 +21,25 @@ import WiFiSettings from '../Settings/pages/WiFiSettings';
 import { reduceItems } from '../../../tools/reduceArray';
 import useFileDrop from '../../../hooks/useFileDrop';
 import useTrashbin from '../../../hooks/useTrashbin';
+import { dropboxStorageTool } from '../../../tools/dropboxStorage';
+import { gitStorageTool } from '../../../tools/gitStorage';
+import { useStores } from '../../../hooks/useStores';
+import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
 
 function App() {
   useFileDrop();
 
-  const { checkUpdateTrashCount } = useTrashbin();
+  const stores = useStores();
+  const { remoteImport } = useImportExportSettings();
 
+  useEffect(() => {
+    const { subscribe } = dropboxStorageTool(stores, remoteImport);
+    gitStorageTool(remoteImport);
+
+    return subscribe();
+  }, [remoteImport, stores]);
+
+  const { checkUpdateTrashCount } = useTrashbin();
   useEffect(() => {
     checkUpdateTrashCount();
   }, [checkUpdateTrashCount]);

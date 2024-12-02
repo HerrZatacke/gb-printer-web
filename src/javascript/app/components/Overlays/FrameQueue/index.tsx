@@ -8,12 +8,12 @@ import EditFrameStartLine from '../EditFrameStartLine';
 import useDialogsStore from '../../../stores/dialogsStore';
 import useImportsStore from '../../../stores/importsStore';
 import useItemsStore from '../../../stores/itemsStore';
-import useStoragesStore from '../../../stores/storagesStore';
+import { useStores } from '../../../../hooks/useStores';
 
 function FrameQueue() {
   const { dismissDialog } = useDialogsStore();
   const { frameQueue, frameQueueCancelOne, importQueueCancelOne } = useImportsStore();
-  const { setSyncLastUpdate } = useStoragesStore();
+  const { updateLastSyncLocalNow } = useStores();
   const { addFrames, updateFrameGroups } = useItemsStore();
 
   const frame = frameQueue[0];
@@ -66,7 +66,7 @@ function FrameQueue() {
           }]);
         }
 
-        setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+        updateLastSyncLocalNow();
       }}
       deny={() => frameQueueCancelOne(frame.tempId)}
     >

@@ -1,9 +1,8 @@
-import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { saveAs } from 'file-saver';
 import { useCallback } from 'react';
 import useInteractionsStore from '../app/stores/interactionsStore';
-import useItemsStore from '../app/stores/itemsStore';
+import useItemsStore, { ITEMS_STORE_VERSION } from '../app/stores/itemsStore';
 import { localforageReady, localforageImages, localforageFrames } from '../tools/localforageInstance';
 import { dateFormat } from '../app/defaults';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTrash';
@@ -12,8 +11,8 @@ import { reduceImagesMonochrome } from '../tools/isRGBNImage';
 import { reduceItems } from '../tools/reduceArray';
 import type { TrashCount } from '../app/stores/interactionsStore';
 import type { WrappedLocalForageInstance } from '../tools/localforageInstance/createWrappedInstance';
-import type { JSONExportBinary, JSONExportState, State } from '../app/store/State';
-import type { Image, MonochromeImage } from '../../types/Image';
+import type { JSONExportBinary, JSONExportState } from '../../types/ExportState';
+import type { Image } from '../../types/Image';
 import type { Frame } from '../../types/Frame';
 
 
@@ -58,8 +57,8 @@ const getItems = async (keys: string[], storage: WrappedLocalForageInstance<stri
 
 const useTrashbin = (): UseTrashbin => {
   const { trashCount, showTrashCount } = useInteractionsStore();
-  const { frames } = useItemsStore();
-  const images = useSelector((state: State) => (state.images as MonochromeImage[]));
+  const { frames, images } = useItemsStore();
+  const { updateTrashCount } = useInteractionsStore();
 
   const downloadImages = async (): Promise<void> => {
     const imageHashes = await getTrashImages(images);
@@ -87,7 +86,11 @@ const useTrashbin = (): UseTrashbin => {
     }).reduce(reduceImagesMonochrome, []);
 
 
-    const jsonExportState: JSONExportState = { state: { images: backupImages } };
+    const jsonExportState: JSONExportState = { state: {
+      images: backupImages,
+      lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
+      version: ITEMS_STORE_VERSION,
+    } };
 
     saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_images.json');
   };
@@ -119,21 +122,19 @@ const useTrashbin = (): UseTrashbin => {
             name: 'Re-imported trash frames',
           },
         ],
+        lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
+        version: ITEMS_STORE_VERSION,
       },
     };
 
     saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_frames.json');
   }, [frames]);
 
-  const stateImages = useSelector((state: State) => state.images);
-  const { frames: stateFrames } = useItemsStore();
-  const { updateTrashCount } = useInteractionsStore();
-
   const checkUpdateTrashCount = useCallback(async () => {
-    const trashFramesCount = (await getTrashFrames(stateFrames)).length;
-    const trashImagesCount = (await getTrashImages(stateImages as MonochromeImage[])).length;
+    const trashFramesCount = (await getTrashFrames(frames)).length;
+    const trashImagesCount = (await getTrashImages(images)).length;
     updateTrashCount(trashFramesCount, trashImagesCount);
-  }, [stateFrames, stateImages, updateTrashCount]);
+  }, [frames, images, updateTrashCount]);
 
   const purgeTrash = useCallback(async (): Promise<void> => {
     await cleanupStorage({ images, frames });

@@ -1,20 +1,17 @@
 import type { CSSProperties } from 'react';
 import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
+import useItemsStore from '../../../stores/itemsStore';
 import Lightbox from '../../Lightbox';
-import './index.scss';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 import { toHexColor } from '../../../../hooks/usePaletteFromFile';
 import ImageRender from '../../ImageRender';
 import getGetPreviewImages from '../../../../tools/getPreviewImages';
-import type { State } from '../../../store/State';
+import './index.scss';
 
 function PickColors() {
-  const { images } = useSelector((state: State) => ({
-    images: state.images,
-  }));
+  const { images } = useItemsStore();
   const {
     imageSelection,
     sortBy,

@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import objectHash from 'object-hash';
@@ -11,7 +10,6 @@ import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
 import { dateFormat } from '../../../defaults';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
 import { randomId } from '../../../../tools/randomId';
-import type { State } from '../../../store/State';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import useSaveRGBNImages from '../../../../hooks/useSaveRGBNImages';
@@ -49,11 +47,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const { sortBy } = useFiltersStore();
   const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
-  const { addImageGroup } = useItemsStore();
-
-  const { images } = useSelector((state: State) => ({
-    images: state.images,
-  }));
+  const { addImageGroup, images } = useItemsStore();
 
   const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5);
 

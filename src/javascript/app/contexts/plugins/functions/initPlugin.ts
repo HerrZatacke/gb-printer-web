@@ -3,7 +3,8 @@ import type { Plugin, PluginClassInstance } from '../../../../../types/Plugin';
 import type { ItemsState } from '../../../stores/itemsStore';
 import type { InteractionsState } from '../../../stores/interactionsStore';
 import type { CollectImageDataFn } from './collectImageData';
-import type { TypedStore } from '../../../store/State';
+import type { UseStores } from '../../../../hooks/useStores';
+import type { ImportFn } from '../../../../hooks/useImportExportSettings';
 import { pluginCompatibilityStore } from './pluginContextFunctions';
 
 export type InitPluginSetupParams =
@@ -11,7 +12,8 @@ export type InitPluginSetupParams =
   Pick<InteractionsState, 'setProgress'> &
   {
     collectImageData: CollectImageDataFn,
-    store: TypedStore,
+    stores: UseStores,
+    importFn: ImportFn,
   }
 
 
@@ -20,7 +22,8 @@ export const initPlugin = (
     setProgress,
     addUpdatePluginProperties,
     collectImageData,
-    store,
+    stores,
+    importFn,
   }: InitPluginSetupParams,
   plugin: Plugin,
 ): Promise<PluginClassInstance | null> => {
@@ -43,7 +46,7 @@ export const initPlugin = (
         const instance: PluginClassInstance = new PluginClass({
           saveAs,
           progress,
-          store: pluginCompatibilityStore(store),
+          store: pluginCompatibilityStore(stores, importFn),
           collectImageData,
         }, initialConfig);
 

@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
-import { useStore } from 'react-redux';
 import useInteractionsStore from '../app/stores/interactionsStore';
 import getHandleFileImport from '../tools/getHandleFileImport';
+import { useImportExportSettings } from './useImportExportSettings';
 import type { HandeFileImportFn, HandeFileImportOptions } from '../tools/getHandleFileImport';
-import type { TypedStore } from '../app/store/State';
 
 interface UseImportFile {
   handleFileImport: HandeFileImportFn,
@@ -11,8 +10,9 @@ interface UseImportFile {
 
 const useImportFile = (): UseImportFile => {
   const { setError } = useInteractionsStore.getState();
-  const store: TypedStore = useStore();
-  const handleFileImport = useMemo<HandeFileImportFn>(() => getHandleFileImport(store), [store]);
+  const { jsonImport } = useImportExportSettings();
+
+  const handleFileImport = useMemo(() => (getHandleFileImport(jsonImport)), [jsonImport]);
 
   return {
     handleFileImport: async (files: File[], options?: HandeFileImportOptions): Promise<void> => {

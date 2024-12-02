@@ -1,8 +1,8 @@
-import { useStore } from 'react-redux';
-import type { TypedStore } from '../../../../store/State';
 import type { DropBoxSettings } from '../../../../../../types/Sync';
 import useStoragesStore from '../../../../stores/storagesStore';
 import { dropboxStorageTool } from '../../../../../tools/dropboxStorage';
+import { useStores } from '../../../../../hooks/useStores';
+import { useImportExportSettings } from '../../../../../hooks/useImportExportSettings';
 
 interface UseDropboxSettings {
   use: boolean,
@@ -15,7 +15,8 @@ interface UseDropboxSettings {
 }
 
 export const useDropboxSettings = (): UseDropboxSettings => {
-  const store: TypedStore = useStore();
+  const stores = useStores();
+  const { remoteImport } = useImportExportSettings();
   const { dropboxStorage, dropboxLogout, setDropboxStorage } = useStoragesStore();
 
   return {
@@ -26,7 +27,7 @@ export const useDropboxSettings = (): UseDropboxSettings => {
     logout: dropboxLogout,
     setDropboxStorage,
     startAuth: () => (
-      dropboxStorageTool(store).startAuth()
+      dropboxStorageTool(stores, remoteImport).startAuth()
     ),
   };
 };

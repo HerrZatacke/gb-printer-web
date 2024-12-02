@@ -1,16 +1,23 @@
 import useStoragesStore from '../../app/stores/storagesStore';
-import type { SyncTool } from './main';
-import type { TypedStore } from '../../app/store/State';
 import type { GitStorageSettings } from '../../../types/Sync';
+import type { JSONExportState } from '../../../types/ExportState';
 
-let gitSyncTool: SyncTool;
+export interface GitSyncTool {
+  startSyncData: (direction: 'up' | 'down') => Promise<void>,
+  updateSettings: (gitSettings: GitStorageSettings) => Promise<void >,
+}
 
-export const gitStorageTool = (store: TypedStore): SyncTool => {
-  const loadAndInitMiddleware = async (): Promise<SyncTool> => {
+
+let gitSyncTool: GitSyncTool;
+
+export const gitStorageTool = (
+  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+): GitSyncTool => {
+  const loadAndInitMiddleware = async (): Promise<GitSyncTool> => {
     if (!gitSyncTool) {
-      const { init, gitSyncTool: tool } = await import(/* webpackChunkName: "gmw" */ './main');
+      const { init, gitSyncTool: tool } = await import(/* webpackChunkName: "syn" */ './main');
       init();
-      gitSyncTool = gitSyncTool || tool(store);
+      gitSyncTool = gitSyncTool || tool(remoteImport);
     }
 
     return gitSyncTool;

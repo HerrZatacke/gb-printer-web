@@ -16,7 +16,6 @@ import { reduceItems } from '../reduceArray';
 import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 import type { VideoParams } from '../../../types/VideoParams';
 import type { Palette } from '../../../types/Palette';
-import type { State } from '../../app/store/State';
 import unique from '../unique';
 import { loadFrameData } from '../applyFrame/frameData';
 import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
@@ -91,9 +90,10 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
   exportFrameMode: params.exportFrameMode || ExportFrameMode.FRAMEMODE_KEEP,
 });
 
-export const createAnimation = async (state: State) => {
+// ToDo: move to src/javascript/app/components/Overlays/VideoParamsForm/useVideoForm.ts
+export const createAnimation = async () => {
   const { setProgress, setError, videoSelection } = useInteractionsStore.getState();
-  const { frames, palettes } = useItemsStore.getState();
+  const { frames, palettes, images: stateImages } = useItemsStore.getState();
   const { videoParams } = useSettingsStore.getState();
 
   setProgress('gif', 0.01);
@@ -116,7 +116,7 @@ export const createAnimation = async (state: State) => {
 
   const images: Image[] = videoSelection
     .map((imageHash) => (
-      state.images.find(({ hash }) => hash === imageHash)
+      stateImages.find(({ hash }) => hash === imageHash)
     ))
     .reduce(reduceItems<Image>, []);
 

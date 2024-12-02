@@ -1,5 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../store/actions';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
@@ -7,11 +5,10 @@ import useInteractionsStore from '../../stores/interactionsStore';
 import useItemsStore from '../../stores/itemsStore';
 import useDownload from '../../../hooks/useDownload';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
-import type { State } from '../../store/State';
-import type { DeleteImagesAction, ImageFavouriteAction } from '../../../../types/actions/ImageActions';
 import { canShare } from '../../../tools/canShare';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import useShareImage from '../../../hooks/useShareImage';
+import { useStores } from '../../../hooks/useStores';
 
 interface UseGalleryImageButtons {
   isSelected: boolean,
@@ -55,20 +52,15 @@ export const useGalleryImageButtons = (
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
-  const { plugins } = useItemsStore();
+  const { plugins, images, updateImageFavouriteTag } = useItemsStore();
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
-
+  const { updateLastSyncLocalNow, deleteImages } = useStores();
   const { downloadSingleImage } = useDownload();
   const { shareImage } = useShareImage();
 
   const isSelected = imageSelection.includes(hash);
   const hasPlugins = !!plugins.length;
-  const { stateImages } = useSelector((state: State) => ({
-    stateImages: state.images,
-  }));
-
-  const dispatch = useDispatch();
 
   return {
     hasPlugins,
@@ -79,10 +71,7 @@ export const useGalleryImageButtons = (
       setDialog({
         message: imageTitle ? `Delete image "${imageTitle}"?` : 'Delete this image?',
         confirm: async () => {
-          dispatch<DeleteImagesAction>({
-            type: Actions.DELETE_IMAGES,
-            payload: [hash],
-          });
+          deleteImages([hash]);
         },
         deny: async () => dismissDialog(0),
       });
@@ -94,20 +83,15 @@ export const useGalleryImageButtons = (
     setLightboxImage: () => {
       setLightboxImage(
         getFilteredImages(
-          stateImages,
+          images,
           { filtersActiveTags, sortBy, recentImports },
         )
           .findIndex((image) => hash === image.hash),
       );
     },
     updateFavouriteTag: (isFavourite: boolean) => {
-      dispatch<ImageFavouriteAction>({
-        type: Actions.IMAGE_FAVOURITE_TAG,
-        payload: {
-          hash,
-          isFavourite,
-        },
-      });
+      updateImageFavouriteTag(isFavourite, hash);
+      updateLastSyncLocalNow();
     },
     editImage: () => {
       setEditImages({

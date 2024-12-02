@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
 import useBatchUpdate from '../../../../hooks/useBatchUpdate';
 import useInteractionsStore from '../../../stores/interactionsStore';
@@ -9,7 +8,6 @@ import { missingGreyPalette } from '../../../defaults';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import { getImageTileCount } from '../../../../tools/loadImageTiles';
 import modifyTagChanges from '../../../../tools/modifyTagChanges';
-import type { State } from '../../../store/State';
 import type { ImageUpdates } from '../../../../../types/actions/ImageActions';
 import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
 import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../../../../types/Image';
@@ -101,9 +99,8 @@ const willUpdate = (batch: Batch): string[] => ([
 
 export const useEditForm = (): UseEditForm => {
   const { editImages, cancelEditImages } = useEditStore();
-  const { palettes, frames } = useItemsStore();
+  const { palettes, frames, images } = useItemsStore();
   const { batchUpdateImages } = useBatchUpdate();
-  const images = useSelector((state: State) => (state.images));
 
   const findPalette = (shortName?: string): Palette => (
     palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
@@ -114,7 +111,7 @@ export const useEditForm = (): UseEditForm => {
 
   const { windowDimensions } = useInteractionsStore();
 
-  const toEdit = useSelector((state: State): ToEdit | undefined => {
+  const toEdit = useMemo((): ToEdit | undefined => {
     if (!editImages) {
       return undefined;
     }
@@ -126,7 +123,7 @@ export const useEditForm = (): UseEditForm => {
       return undefined;
     }
 
-    const image = state.images.find(({ hash }) => hash === batch[0]);
+    const image = images.find(({ hash }) => hash === batch[0]);
 
     if (!image) {
       return undefined;
@@ -137,7 +134,7 @@ export const useEditForm = (): UseEditForm => {
       Math.min(900, windowDimensions.height);
 
     const typeCount = batch.reduce((acc, selHash) => {
-      const tcImage = state.images.find(({ hash }) => hash === selHash);
+      const tcImage = images.find(({ hash }) => hash === selHash);
       if (!tcImage) {
         return acc;
       }
@@ -175,7 +172,7 @@ export const useEditForm = (): UseEditForm => {
       framePaletteShort,
       rotation: image.rotation,
     });
-  });
+  }, [editImages, images, windowDimensions]);
 
   const [title, updateTitle] = useState<string>(toEdit?.title || '');
   const [created, updateCreated] = useState<string>(toEdit?.created || '');

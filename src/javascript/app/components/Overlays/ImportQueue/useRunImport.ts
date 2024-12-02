@@ -1,17 +1,13 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Queue from 'promise-queue';
 import { useNavigate } from 'react-router-dom';
-import { Actions } from '../../../store/actions';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
 import sortBy from '../../../../tools/sortby';
 import { dateFormat } from '../../../defaults';
 import type { ImportItem } from '../../../../../types/ImportItem';
-import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
-import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
 import { randomId } from '../../../../tools/randomId';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
@@ -19,6 +15,7 @@ import useEditStore from '../../../stores/editStore';
 import useImportsStore from '../../../stores/importsStore';
 import useItemsStore from '../../../stores/itemsStore';
 import useSettingsStore from '../../../stores/settingsStore';
+import { useStores } from '../../../../hooks/useStores';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -41,8 +38,8 @@ const useRunImport = (): UseRunImport => {
   const { importPad, setActivePalette, activePalette } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
   const { addImageGroup } = useItemsStore();
+  const { addImages, importQueueCancel } = useStores();
 
-  const dispatch = useDispatch();
   const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
   const navigate = useNavigate();
@@ -80,10 +77,7 @@ const useRunImport = (): UseRunImport => {
 
     const imageHashes = savedImages.map(({ hash }) => hash);
 
-    dispatch<AddImagesAction>({
-      type: Actions.ADD_IMAGES,
-      payload: savedImages,
-    });
+    addImages(savedImages);
 
     if (createGroup) {
       const title = `Import ${dayjs().format(dateFormat)}`;
@@ -123,11 +117,7 @@ const useRunImport = (): UseRunImport => {
     setFrame,
     setCreateGroup,
     runImport,
-    cancelImport: () => {
-      dispatch<ImportQueueCancelAction>({
-        type: Actions.IMPORTQUEUE_CANCEL,
-      });
-    },
+    cancelImport: importQueueCancel,
     setActivePalette,
   };
 };

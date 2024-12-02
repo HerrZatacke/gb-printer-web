@@ -60,7 +60,7 @@ export const cleanupStorage = async ({
 };
 
 
-export const getTrashImages = async (images: MonochromeImage[]): Promise<string[]> => {
+export const getTrashImages = async (images: Image[]): Promise<string[]> => {
   await localforageReady();
   const storedHashes = await localforageImages.keys();
   return storedHashes

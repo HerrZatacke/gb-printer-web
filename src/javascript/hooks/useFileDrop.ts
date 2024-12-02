@@ -1,18 +1,17 @@
-import { useStore } from 'react-redux';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import useInteractionsStore from '../app/stores/interactionsStore';
 import getHandleFileImport from '../tools/getHandleFileImport';
-import type { TypedStore } from '../app/store/State';
+import { useImportExportSettings } from './useImportExportSettings';
 
 let dragoverTimeout: number;
 let dragging = false;
 
 const useFileDrop = () => {
   const { setDragover, setError } = useInteractionsStore();
-  const store: TypedStore = useStore();
+  const { jsonImport } = useImportExportSettings();
+  const handleFileImport = useMemo(() => (getHandleFileImport(jsonImport)), [jsonImport]);
 
   const initFileDrop = useCallback(() => {
-    const handleFileImport = getHandleFileImport(store);
 
     const dragListener = (ev: DragEvent) => {
       ev.preventDefault();
@@ -73,7 +72,7 @@ const useFileDrop = () => {
       root.removeEventListener('drop', dropListener);
     };
 
-  }, [store, setDragover, setError]);
+  }, [handleFileImport, setDragover, setError]);
 
   useEffect(initFileDrop, [initFileDrop]);
 };

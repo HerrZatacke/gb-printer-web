@@ -19,31 +19,24 @@ import { getFilteredImages } from '../getFilteredImages';
 import { delay } from '../delay';
 import { DialoqQuestionType } from '../../../types/Dialog';
 import { loadFrameData } from '../applyFrame/frameData';
-import { Actions } from '../../app/store/actions';
-import type { TypedStore } from '../../app/store/State';
 import type { AddToQueueFn, DBFolderFile, DownloadInfo, DropBoxSettings, UploadFile } from '../../../types/Sync';
 import type { Image } from '../../../types/Image';
 import type { DownloadArrayBuffer } from '../download/types';
-import type { ImagesUpdateAction } from '../../../types/actions/ImageActions';
 import type { RepoContents } from '../../../types/Export';
-import { importExportSettings } from '../importExportSettings';
+import type { UseStores } from '../../hooks/useStores';
+import type { JSONExportState } from '../../../types/ExportState';
+import type { DropBoxSyncTool } from './index';
 
 interface WithContentHash {
   dropboxContentHash: string,
 }
 
-export interface SyncTool {
-  updateSettings: (dropBoxSettings: DropBoxSettings) => Promise<void>,
-  startSyncData: (direction: 'up' | 'down' | 'diff') => Promise<void>,
-  startSyncImages: () => Promise<void>,
-  startAuth: () => Promise<void>,
-  recoverImageData: (hash: string) => Promise<void>,
-}
-
 const recoveryAttempts: string[] = [];
 
-export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
-  const { remoteImport } = importExportSettings(store);
+export const dropBoxSyncTool = (
+  stores: UseStores,
+  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+): DropBoxSyncTool => {
   const { setProgressLog, resetProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
 
@@ -67,7 +60,7 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
     })
   );
 
-  const dropboxClient = new DropboxClient(useStoragesStore.getState().dropboxStorage, addToQueue('Dropbox'), store.dispatch);
+  const dropboxClient = new DropboxClient(useStoragesStore.getState().dropboxStorage, addToQueue('Dropbox'));
 
   const updateSettings = async (dropBoxSettings: DropBoxSettings) => {
     await dropboxClient.setRootPath(dropBoxSettings.path || '/');
@@ -119,7 +112,7 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
 
       case 'up': {
         const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
-        const changes = await getUploadFiles(store, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
+        const changes = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
         await dropboxClient.upload(changes, 'settings');
         useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdateUTC);
         break;
@@ -159,19 +152,18 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const state = store.getState();
-    const { frames, palettes } = useItemsStore.getState();
+    const { frames, palettes, images: stateImages } = useItemsStore.getState();
 
     const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
-    const images: Image[] = getFilteredImages(state.images, filtersState);
+    const images: Image[] = getFilteredImages(stateImages, filtersState);
     const prepareFiles = getPrepareFiles(
       exportScaleFactors,
       exportFileTypes,
       handleExportFrame,
       palettes,
     );
-    const loadTiles = loadImageTiles(state.images, frames);
+    const loadTiles = loadImageTiles(stateImages, frames);
 
     const downloadInfos = (await Promise.all(
       images.map(async (image, index): Promise<unknown> => (
@@ -238,6 +230,7 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
 
 
   const recoverImageData = async (hash: string) => {
+    const { updateImages } = stores;
     if (!recoveryAttempts.includes(hash)) {
       // only attempt once to recover file
       recoveryAttempts.push(hash);
@@ -245,10 +238,8 @@ export const dropBoxSyncTool = (store: TypedStore): SyncTool => {
       const remoteFileContent = await dropboxClient.getFileContent(`images/${hash}.txt`, 0, 1, true);
       await saveImageFileContent(remoteFileContent);
 
-      store.dispatch<ImagesUpdateAction>({
-        type: Actions.UPDATE_IMAGES,
-        payload: [],
-      });
+      // ToDo find a way to better trigger update (if it is even necessary ??)
+      updateImages([]);
     }
   };
 

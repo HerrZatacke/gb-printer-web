@@ -1,14 +1,12 @@
-import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
-import type { State } from '../../store/State';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
 import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
-import useStoragesStore from '../../stores/storagesStore';
+import { useStores } from '../../../hooks/useStores';
 
 
 interface GetTilesParams {
@@ -45,16 +43,11 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const { setEditFrame } = useEditStore();
   const { enableDebug } = useSettingsStore();
   const { dismissDialog, setDialog } = useDialogsStore();
-  const { frames, deleteFrame } = useItemsStore();
-  const { setSyncLastUpdate } = useStoragesStore();
+  const { frames, deleteFrame, images } = useItemsStore();
+  const { updateLastSyncLocalNow } = useStores();
 
   const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
-
-  const {
-    usage,
-  } = useSelector((state: State) => ({
-    usage: state.images.filter(({ frame }) => frame === frameId).length,
-  }));
+  const usage = images.filter(({ frame }) => frame === frameId).length;
 
   useEffect(() => {
     setImageStartLine(2);
@@ -87,7 +80,7 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
         message: `Delete frame "${name}" (${frameId})?`,
         confirm: async () => {
           dismissDialog(0);
-          setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+          updateLastSyncLocalNow();
           deleteFrame(frameId);
         },
         deny: async () => dismissDialog(0),

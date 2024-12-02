@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useStore, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
 import useItemsStore from '../../stores/itemsStore';
 import { loadImageTiles as getLoadImageTiles } from '../../../tools/loadImageTiles';
-import type { State, TypedStore } from '../../store/State';
 import { missingGreyPalette } from '../../defaults';
 import type { RGBNHashes } from '../../../../types/Image';
 import type { GameBoyImageProps } from '../GameBoyImage';
 import type { Rotation } from '../../../tools/applyRotation';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
+import { useStores } from '../../../hooks/useStores';
+import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
 
 interface UseImageRender {
   gbImageProps: GameBoyImageProps | null,
@@ -39,26 +39,22 @@ export const useImageRender = ({
   rotation,
 }: UseImageRenderParams): UseImageRender => {
   const [gbImageProps, setGbImageProps] = useState<GameBoyImageProps | null>(null);
-
-  const store: TypedStore = useStore();
-  const { frames: allFrames, palettes: allPalettes } = useItemsStore();
+  const stores = useStores();
+  const { remoteImport } = useImportExportSettings();
+  const { frames: allFrames, palettes: allPalettes, images: allImages } = useItemsStore();
   const frameHash = allFrames.find(({ id }) => id === frameId)?.hash;
-
-  const { allImages } = useSelector((state: State) => ({
-    allImages: state.images,
-  }));
 
   const loadImageTiles = useCallback(
     (imgHash: string, noDummy?: boolean, overrideFrame?: string) => {
       const recoverFn = () => {
-        dropboxStorageTool(store).recoverImageData(imgHash);
+        dropboxStorageTool(stores, remoteImport).recoverImageData(imgHash);
       };
 
       const imageLoader = getLoadImageTiles(allImages, allFrames, recoverFn);
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashes);
     },
-    [allImages, allFrames, hashes, store],
+    [allImages, allFrames, hashes, stores, remoteImport],
   );
 
   const usedPalette = useMemo<string[] | RGBNPalette>(() => {

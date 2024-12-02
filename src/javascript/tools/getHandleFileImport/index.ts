@@ -7,7 +7,7 @@ import { transformRom } from '../transformRom';
 import { transformSav } from '../transformSav';
 import prepareFile from './prepareFile';
 import type { PreparedFile } from './prepareFile';
-import type { TypedStore } from '../../app/store/State';
+import type { ImportFn } from '../../hooks/useImportExportSettings';
 
 export interface HandeFileImportOptions {
   fromPrinter: boolean
@@ -15,8 +15,8 @@ export interface HandeFileImportOptions {
 
 export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
 
-const getHandleFileImport = (store: TypedStore): HandeFileImportFn => {
-  const importJSON = getImportJSON(store);
+const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
+  const importJSON = getImportJSON(importFn);
 
   return async (files, { fromPrinter } = { fromPrinter: false }): Promise<void> => {
 

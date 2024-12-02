@@ -1,28 +1,29 @@
 import React, { useCallback, useMemo } from 'react';
-import { useSelector, useStore } from 'react-redux';
 import type { PropsWithChildren } from 'react';
 import { pluginsContext } from './index';
 import useItemsStore from '../../stores/itemsStore';
 import useInteractionsStore from '../../stores/interactionsStore';
+import { useStores } from '../../../hooks/useStores';
 import { getCollectImageData } from './functions/collectImageData';
 import { initPlugin } from './functions/initPlugin';
 import type { InitPluginSetupParams } from './functions/initPlugin';
 import type { PluginsContext } from './index';
-import type { State, TypedStore } from '../../store/State';
 import type { Plugin, PluginClassInstance } from '../../../../types/Plugin';
+import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
 
 function PluginsContextProvider({ children }: PropsWithChildren) {
-  const images = useSelector((state: State) => state.images);
-  const { plugins, addUpdatePluginProperties } = useItemsStore();
+  const { plugins, images, addUpdatePluginProperties } = useItemsStore();
+  const stores = useStores();
   const { setProgress } = useInteractionsStore();
-  const store: TypedStore = useStore();
+  const { jsonImport } = useImportExportSettings();
 
   const initPluginSetupParams = useMemo<InitPluginSetupParams>(() => ({
     collectImageData: getCollectImageData(images),
     addUpdatePluginProperties,
     setProgress,
-    store,
-  }), [store, images, setProgress, addUpdatePluginProperties]);
+    stores,
+    importFn: jsonImport,
+  }), [images, addUpdatePluginProperties, setProgress, stores, jsonImport]);
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
     const plugin: Plugin = plugins.find((p) => p.url === url) || { url: '' };

@@ -1,16 +1,31 @@
 import useStoragesStore from '../../app/stores/storagesStore';
-import type { TypedStore } from '../../app/store/State';
-import type { SyncTool } from './main';
 import type { DropBoxSettings } from '../../../types/Sync';
+import type { UseStores } from '../../hooks/useStores';
+import type { JSONExportState } from '../../../types/ExportState';
 
-let dropBoxSyncTool: SyncTool;
+export interface DropBoxSyncTool {
+  updateSettings: (dropBoxSettings: DropBoxSettings) => Promise<void>,
+  startSyncData: (direction: 'up' | 'down' | 'diff') => Promise<void>,
+  startSyncImages: () => Promise<void>,
+  startAuth: () => Promise<void>,
+  recoverImageData: (hash: string) => Promise<void>,
+}
 
-export const dropboxStorageTool = (store: TypedStore): SyncTool => {
+let dropBoxSyncTool: DropBoxSyncTool;
 
-  const loadAndInitMiddleware = async (): Promise<SyncTool> => {
+interface AndSubscribe {
+  subscribe: () => () => void,
+}
+
+export const dropboxStorageTool = (
+  stores: UseStores,
+  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+): DropBoxSyncTool & AndSubscribe => {
+
+  const loadAndInitMiddleware = async (): Promise<DropBoxSyncTool> => {
     if (!dropBoxSyncTool) {
-      const { dropBoxSyncTool: tool } = await import(/* webpackChunkName: "dmw" */ './main');
-      dropBoxSyncTool = dropBoxSyncTool || tool(store);
+      const { dropBoxSyncTool: tool } = await import(/* webpackChunkName: "syn" */ './main');
+      dropBoxSyncTool = dropBoxSyncTool || tool(stores, remoteImport);
     }
 
     return dropBoxSyncTool;
@@ -20,7 +35,7 @@ export const dropboxStorageTool = (store: TypedStore): SyncTool => {
     loadAndInitMiddleware();
   }
 
-  useStoragesStore.subscribe((state) => state.dropboxStorage, async (dropboxSettings) => {
+  const subscribe = () => useStoragesStore.subscribe((state) => state.dropboxStorage, async (dropboxSettings) => {
     (await loadAndInitMiddleware()).updateSettings(dropboxSettings);
   });
 
@@ -40,5 +55,6 @@ export const dropboxStorageTool = (store: TypedStore): SyncTool => {
     updateSettings: async (dropBoxSettings: DropBoxSettings) => (
       (await loadAndInitMiddleware()).updateSettings(dropBoxSettings)
     ),
+    subscribe,
   };
 };

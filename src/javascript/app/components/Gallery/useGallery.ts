@@ -1,11 +1,10 @@
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useFiltersStore from '../../stores/filtersStore';
+import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
-import type { State } from '../../store/State';
 import type { GalleryViews } from '../../../consts/GalleryViews';
 import type { Image } from '../../../../types/Image';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
@@ -31,7 +30,8 @@ export const useGallery = (): UseGallery => {
     sortBy,
   } = useFiltersStore();
 
-  const stateImages = useSelector((state: State) => (state.images));
+  const { images: stateImages } = useItemsStore();
+
   const imageCount = stateImages.length;
   const filteredCount = getFilteredImagesCount(view.images, filtersActiveTags, recentImports);
 

@@ -1,18 +1,17 @@
-import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
 import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
-import type { ImageSelectionMode } from '../../stores/filtersStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { missingGreyPalette } from '../../defaults';
 import { SpecialTags } from '../../../consts/SpecialTags';
-import type { State } from '../../store/State';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
 export enum SelectionEditMode {
   ADD = 'add',
@@ -65,12 +64,12 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     setImageSelection,
   } = useFiltersStore();
 
-  const { palettes } = useItemsStore();
+  const { palettes, images: stateImages } = useItemsStore();
 
   const isSelected = imageSelection.includes(hash);
 
-  const galleryImageData = useSelector((state: State): GalleryImageData | undefined => {
-    const image = state.images.find((img) => img.hash === hash);
+  const galleryImageData = useMemo((): GalleryImageData | undefined => {
+    const image = stateImages.find((img) => img.hash === hash);
     let palette: RGBNPalette | string[];
 
     if (!image) {
@@ -108,7 +107,7 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       enableDebug,
       isSelected,
     });
-  });
+  }, [enableDebug, hash, hideDates, isSelected, palettes, preferredLocale, stateImages]);
 
   const { images: treeImages } = useGalleryTreeContext();
 

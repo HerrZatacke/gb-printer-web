@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
 import useItemsStore from '../../../stores/itemsStore';
-import useStoragesStore from '../../../stores/storagesStore';
-import type { State } from '../../../store/State';
 import type { Palette } from '../../../../../types/Palette';
 import getPreviewImages from '../../../../tools/getPreviewImages';
 import type { MonochromeImage } from '../../../../../types/Image';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
+import { useStores } from '../../../../hooks/useStores';
 
 interface UseEditPalette {
   canConfirm: boolean,
@@ -34,18 +32,12 @@ export const useEditPalette = (): UseEditPalette => {
   } = useFiltersStore();
 
   const { editPalette, cancelEditPalette } = useEditStore();
-  const { palettes, addPalettes } = useItemsStore();
-  const { setSyncLastUpdate } = useStoragesStore();
+  const { images, palettes, addPalettes } = useItemsStore();
+  const { updateLastSyncLocalNow } = useStores();
 
   const shortName = editPalette?.shortName || '';
   const statePalette = editPalette?.palette || [];
   const name = editPalette?.name || '';
-
-  const {
-    images,
-  } = useSelector((state: State) => ({
-    images: state.images,
-  }));
 
   const shortNameIsValid = (pShortName: string) => {
     if (!pShortName.match(/^[a-z]+[a-z0-9]*$/gi)) {
@@ -69,7 +61,7 @@ export const useEditPalette = (): UseEditPalette => {
 
   const savePalette = (updatedPalette: Palette) => {
     addPalettes([updatedPalette]);
-    setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+    updateLastSyncLocalNow();
     cancelEditPalette();
   };
 

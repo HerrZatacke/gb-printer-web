@@ -1,11 +1,7 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
-import getStore from './store';
 import useFiltersStore from './stores/filtersStore';
-import { defaults } from './store/defaults';
-import cleanState from '../tools/cleanState';
-import type { State } from './store/State';
+import useItemsStore from './stores/itemsStore';
 
 const initApp = async () => {
   const appRoot = document.getElementById('app');
@@ -13,30 +9,15 @@ const initApp = async () => {
     return;
   }
 
-  let storedSettings: Partial<State>;
-  try {
-    const lsJson = localStorage.getItem('gbp-web-state');
-    storedSettings = JSON.parse(lsJson || '{}') as Partial<State>;
-  } catch (error) {
-    storedSettings = {};
-  }
-
-  const initialState: Partial<State> = Object.assign(defaults, storedSettings);
-
   const { default: App } = await import(/* webpackChunkName: "app" */ './components/App');
-
-  const state = await cleanState(initialState);
-  // Write the cleaned state to local storage.
-  // This is important because `cleanState` may modify indexedDb entries (e.g. Frames) the initial state relies on.
-  localStorage.setItem('gbp-web-state', JSON.stringify(state));
 
   try {
     const root = createRoot(appRoot);
-    const store = getStore(state);
 
-    useFiltersStore.getState().cleanRecentImports((state?.images || []).map(({ hash }) => hash));
+    const { images } = useItemsStore.getState();
+    useFiltersStore.getState().cleanRecentImports((images || []).map(({ hash }) => hash));
 
-    root.render(<Provider store={store}><App /></Provider>);
+    root.render(<App />);
   } catch (error) {
     const appNode = document.getElementById('app');
 

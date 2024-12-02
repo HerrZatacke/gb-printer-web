@@ -4,7 +4,7 @@ import type { Frame } from '../../../../../types/Frame';
 import type { FrameGroup } from '../../../../../types/FrameGroup';
 import useEditStore from '../../../stores/editStore';
 import useItemsStore from '../../../stores/itemsStore';
-import useStoragesStore from '../../../stores/storagesStore';
+import { useStores } from '../../../../hooks/useStores';
 
 interface UseEditFrame {
   groups: FrameGroup[],
@@ -29,7 +29,7 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
   const { cancelEditFrame } = useEditStore();
   const { frames } = useItemsStore();
   const { frameGroups, addFrames } = useItemsStore();
-  const { setSyncLastUpdate } = useStoragesStore();
+  const { updateLastSyncLocalNow } = useStores();
 
   const groups = getFrameGroups(frames, frameGroups);
   const frameGroupIdRegex = /^(?<groupName>[a-z]+)(?<id>[0-9]+)/g;
@@ -58,7 +58,7 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
 
   const saveFrame = () => {
     cancelEditFrame();
-    setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+    updateLastSyncLocalNow();
     addFrames([{
       hash: frame?.hash || '',
       id: fullId,

@@ -1,11 +1,9 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import unique from '../tools/unique';
 import { createRoot } from '../app/contexts/galleryTree';
 import { useGalleryParams } from './useGalleryParams';
 import type { SerializableImageGroup, TreeImageGroup } from '../../types/ImageGroup';
 import type { GalleryTreeContext, PathMap } from '../app/contexts/galleryTree';
-import type { State } from '../app/store/State';
 import type { Image } from '../../types/Image';
 import type { DialogOption } from '../../types/Dialog';
 import useSettingsStore from '../app/stores/settingsStore';
@@ -97,18 +95,12 @@ const reduceImages = (
 export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   const { enableImageGroups } = useSettingsStore();
   const { setError } = useInteractionsStore();
-  const { imageGroups: stateImageGroups } = useItemsStore();
+  const { imageGroups: stateImageGroups, images: stateImages } = useItemsStore();
 
   const imageGroups = useMemo<SerializableImageGroup[]>(
     () => (enableImageGroups ? stateImageGroups : []),
     [enableImageGroups, stateImageGroups],
   );
-
-  const {
-    stateImages,
-  } = useSelector((state: State) => ({
-    stateImages: state.images,
-  }));
 
   const { path } = useGalleryParams();
 

@@ -1,10 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import GameBoyImage from '../../GameBoyImage';
 import SVG from '../../SVG';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
-import type { State } from '../../../store/State';
 import type { ImportItem } from '../../../../../types/ImportItem';
 import useImportsStore from '../../../stores/importsStore';
 import useItemsStore from '../../../stores/itemsStore';
@@ -27,14 +25,9 @@ function ImportRow({
     tempId,
   } = importItem;
 
-  const { palettes } = useItemsStore();
+  const { palettes, images } = useItemsStore();
   const palette = palettes.find(({ shortName }) => shortName === paletteShort);
-
-  const {
-    storeDuplicateImage,
-  } = useSelector((state: State) => ({
-    storeDuplicateImage: state.images.find(({ hash }) => hash === imageHash),
-  }));
+  const storeDuplicateImage = images.find(({ hash }) => hash === imageHash);
 
   const { importQueue } = useImportsStore();
   const queueDuplicates = importQueue.filter((item) => item.imageHash === imageHash).length;

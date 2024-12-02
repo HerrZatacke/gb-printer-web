@@ -2,7 +2,6 @@ import type { DropboxAuth, DropboxOptions, DropboxResponse } from 'dropbox';
 import { Dropbox } from 'dropbox';
 import type { files as Files, async as Async } from 'dropbox/types/dropbox_types';
 import { EventEmitter } from 'events';
-import type { Dispatch } from 'redux';
 import useInteractionsStore from '../../../app/stores/interactionsStore';
 import readFileAs, { ReadAs } from '../../readFileAs';
 import cleanPath from '../../cleanPath';
@@ -14,7 +13,8 @@ import type {
   DropBoxSettings,
 } from '../../../../types/Sync';
 import type { DropBoxRepoFile, RepoContents, RepoTasks } from '../../../../types/Export';
-import type { JSONExportState } from '../../../app/store/State';
+import type { JSONExportState } from '../../../../types/ExportState';
+import { ITEMS_STORE_VERSION } from '../../../app/stores/itemsStore';
 
 const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
 
@@ -25,7 +25,7 @@ class DropboxClient extends EventEmitter {
   private auth: DropboxAuth;
   private rootPath: string[];
 
-  constructor(settings: DropBoxSettings, addToQueue: AddToQueueFn<unknown>, dispatch: Dispatch) {
+  constructor(settings: DropBoxSettings, addToQueue: AddToQueueFn<unknown>) {
     super();
 
     this.queueCallback = addToQueue as AddToQueueFn<DropboxResponse<unknown>>;
@@ -51,7 +51,7 @@ class DropboxClient extends EventEmitter {
     this.auth = auth;
 
     if (autoDropboxSync) {
-      this.startLongPollSettings(dispatch);
+      this.startLongPollSettings();
     }
 
   }
@@ -180,7 +180,12 @@ class DropboxClient extends EventEmitter {
       const settingsText = await readFileAs(result.fileBlob, ReadAs.TEXT);
       settings = JSON.parse(settingsText) as JSONExportState;
     } catch (error) {
-      settings = { state: { lastUpdateUTC: 0 } };
+      settings = {
+        state: {
+          lastUpdateUTC: 0,
+          version: ITEMS_STORE_VERSION,
+        },
+      };
     }
 
 
@@ -378,7 +383,7 @@ class DropboxClient extends EventEmitter {
     };
   }
 
-  startLongPollSettings(dispatch: Dispatch) {
+  startLongPollSettings() {
     // eslint-disable-next-line no-console
     console.info('Start dropbox longpolling');
 
@@ -404,7 +409,7 @@ class DropboxClient extends EventEmitter {
             if (changes) {
               this.emit('settingsChanged');
               return this.addToQueue('Restart longpolling', this.throttle, () => {
-                this.startLongPollSettings(dispatch);
+                this.startLongPollSettings();
                 return Promise.resolve(null as unknown as DropboxResponse<unknown>);
               }, true);
             }

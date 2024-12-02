@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { PaletteSortMode } from '../consts/paletteSortModes';
-import type { State } from '../app/store/State';
 import type { Palette } from '../../types/Palette';
 import { isRGBNImage } from '../tools/isRGBNImage';
 import type { Image, MonochromeImage } from '../../types/Image';
 import useSettingsStore from '../app/stores/settingsStore';
+import useItemsStore from '../app/stores/itemsStore';
 
 export interface PaletteSortOption {
   label: string,
@@ -24,7 +23,7 @@ interface UsePaletteSort {
 
 const usePaletteSort = (): UsePaletteSort => {
   const { sortPalettes, setSortPalettes } = useSettingsStore();
-  const images = useSelector((state: State) => (state.images));
+  const { images } = useItemsStore();
 
   const paletteSortOptions: PaletteSortOption[] = [
     {

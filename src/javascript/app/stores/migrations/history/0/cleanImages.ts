@@ -1,15 +1,12 @@
 import dayjs from 'dayjs';
 import { BlendMode } from 'gb-image-decoder';
-import useItemsStore from '../../app/stores/itemsStore';
-import { dateFormat, defaultRGBNPalette } from '../../app/defaults';
-import type { State } from '../../app/store/State';
-import { isRGBNImage } from '../isRGBNImage';
-import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
+import { dateFormat, defaultRGBNPalette } from '../../../../defaults';
+import type { Image, MonochromeImage, RGBNImage } from '../../../../../../types/Image';
+import { isRGBNImage } from '../../../../../tools/isRGBNImage';
 
-const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> => {
-  const palettesShorts = useItemsStore.getState().palettes.map(({ shortName }) => shortName);
 
-  const images: Image[] = (dirtyState.images || [])
+export const cleanImages = (dirtyImages: Image[]): Image[] => {
+  const images: Image[] = dirtyImages
     // clean the created date (add ms) (e.g. "2021-01-30 18:16:09" -> "2021-01-30 18:16:09:000")
     .map((image) => ({
       ...image,
@@ -42,35 +39,30 @@ const cleanState = async (dirtyState: Partial<State>): Promise<Partial<State>> =
 
       // image is a greyscale image
       const monoImage = { ...image as MonochromeImage };
-      // if palette does not exist, update image to use default (first of list)
-      if (!palettesShorts.includes(monoImage.palette) && !monoImage.palette) {
-        Object.assign(monoImage, { palette: palettesShorts[0] || 'bw' });
-      }
-
       if (typeof monoImage.framePalette === 'undefined') {
         if (monoImage.lockFrame) {
-          Object.assign(monoImage, { framePalette: 'bw' });
+          monoImage.framePalette = 'bw';
         } else {
-          Object.assign(monoImage, { framePalette: monoImage.palette });
+          monoImage.framePalette = monoImage.palette;
         }
       }
 
+
       if (typeof monoImage.lockFrame === 'undefined') {
-        Object.assign(monoImage, { lockFrame: false });
+        monoImage.lockFrame = false;
       }
 
       if (typeof monoImage.invertFramePalette === 'undefined') {
-        Object.assign(monoImage, { invertFramePalette: monoImage.invertPalette });
+        monoImage.invertFramePalette = monoImage.invertPalette;
       }
+
+      monoImage.lockFrame = true;
+      monoImage.framePalette = 'ffs';
+      monoImage.palette = 'bw';
 
       monoImage.frame = image.frame || undefined;
       return monoImage;
     });
 
-  return {
-    ...dirtyState,
-    images,
-  };
+  return images;
 };
-
-export default cleanState;

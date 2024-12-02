@@ -2,7 +2,7 @@ import '../scss/index.scss';
 import isTouchDevice from './tools/isTouchDevice';
 import { loadEnv } from './tools/getEnv';
 import initLog from './tools/initLog';
-import { migrateItems } from './app/stores/migrations/history/0/migrateItems';
+import { initLightbox } from './tools/initLightbox';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -20,34 +20,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   initLog('Loading environment information');
 
-  // eslint-disable-next-line no-console
-  console.log('copying state...');
-  // ToDo: change this to produce a version:0 and move migration to itemsStore
-  // after these are resolved:
-  // https://github.com/pmndrs/zustand/discussions/2827
-  // https://github.com/pmndrs/zustand/pull/2833
-  const oldState = localStorage.getItem('gbp-web-state');
-  const newState = JSON.parse(localStorage.getItem('gbp-z-web-items') || '{"state":{}}');
-  if (oldState) {
-    const v1State = await migrateItems(JSON.parse(oldState));
-
-    const combinedState = {
-      version: -1,
-      state: {
-        ...v1State,
-        ...newState.state,
-      },
-    };
-
-    localStorage.setItem('gbp-z-web-items', JSON.stringify(combinedState));
-  }
-
   try {
     await loadEnv();
     initLog('Loading main app file');
     const { default: initApp } = await import(/* webpackChunkName: "iap" */'./app/initApp');
     initLog('Starting app');
     await initApp();
+    initLightbox();
   } catch (error) {
     const appNode = document.getElementById('app');
 

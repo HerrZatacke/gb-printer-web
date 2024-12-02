@@ -1,16 +1,15 @@
-import useDialogsStore from '../../../stores/dialogsStore';
 import { CompatibilityActionType } from '../../../../../types/PluginCompatibility';
-import { Actions } from '../../../store/actions';
 import type { CompatibilityAction, PluginCompatibilityWrapper } from '../../../../../types/PluginCompatibility';
-import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
-import type { TypedStore } from '../../../store/State';
 import getHandleFileImport from '../../../../tools/getHandleFileImport';
+import type { UseStores } from '../../../../hooks/useStores';
+import type { ImportFn } from '../../../../hooks/useImportExportSettings';
 
-const { setDialog, dismissDialog } = useDialogsStore.getState();
+export const pluginCompatibilityStore = (
+  { addImages, setDialog, dismissDialog }: UseStores,
+  importFn: ImportFn,
+): PluginCompatibilityWrapper => {
+  const handleFileImport = getHandleFileImport(importFn);
 
-
-export const pluginCompatibilityStore = (store: TypedStore): PluginCompatibilityWrapper => {
-  const handleFileImport = getHandleFileImport(store);
 
   return ({
     dispatch: (action: CompatibilityAction) => {
@@ -28,10 +27,7 @@ export const pluginCompatibilityStore = (store: TypedStore): PluginCompatibility
           break;
 
         case CompatibilityActionType.ADD_IMAGES:
-          store.dispatch<AddImagesAction>({
-            type: Actions.ADD_IMAGES,
-            payload: action.payload,
-          });
+          addImages(action.payload);
           break;
 
         default:

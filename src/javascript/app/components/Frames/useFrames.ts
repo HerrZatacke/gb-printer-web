@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useStore } from 'react-redux';
 import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import getFrameGroups from '../../../tools/getFrameGroups';
-import { importExportSettings } from '../../../tools/importExportSettings';
+import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
 import { compressAndHashFrame, loadFrameData, saveFrameData } from '../../../tools/applyFrame/frameData';
 import { padFrameData } from '../../../tools/saveLocalStorageItems';
 import type { FrameGroup } from '../../../../types/FrameGroup';
-import type { TypedStore } from '../../store/State';
 import type { Frame } from '../../../../types/Frame';
 import type { ExportTypes } from '../../../consts/exportTypes';
-import useStoragesStore from '../../stores/storagesStore';
+import { useStores } from '../../../hooks/useStores';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   const group = groups.find(({ id }) => id === byId);
@@ -37,9 +35,8 @@ interface UseFrames {
 const useFrames = (): UseFrames => {
   const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
   const { frames, palettes, frameGroups: frameGroupsState, addFrames, updateFrameGroups } = useItemsStore();
-  const { setSyncLastUpdate } = useStoragesStore();
-  const store: TypedStore = useStore();
-  const { downloadSettings } = importExportSettings(store);
+  const { updateLastSyncLocalNow } = useStores();
+  const { downloadSettings } = useImportExportSettings();
 
   const palette = palettes.find(({ shortName }) => shortName === activePalette) || palettes[0];
 
@@ -63,7 +60,7 @@ const useFrames = (): UseFrames => {
 
   const setActiveFrameGroupName = (name: string) => {
     updateFrameGroups([{ ...activeFrameGroup, name }]);
-    setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
+    updateLastSyncLocalNow();
   };
 
   const exportJson = (what: ExportTypes) => downloadSettings(what, selectedFrameGroup);
