@@ -65,8 +65,8 @@ export const gitSyncTool = (
         }
 
         case 'down': {
-          await saveLocalStorageItems(repoContents);
-          remoteImport(repoContents.settings);
+          const syncedState = await saveLocalStorageItems(repoContents);
+          remoteImport(syncedState);
 
           break;
         }

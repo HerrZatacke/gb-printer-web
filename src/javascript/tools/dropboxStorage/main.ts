@@ -119,8 +119,8 @@ export const dropBoxSyncTool = (
       }
 
       case 'down': {
-        await saveLocalStorageItems(repoContents);
-        remoteImport(repoContents.settings);
+        const syncedState = await saveLocalStorageItems(repoContents);
+        remoteImport(syncedState);
 
         const lastUpdate = repoContents.settings?.state?.lastUpdateUTC || 0;
         if (lastUpdate) {
