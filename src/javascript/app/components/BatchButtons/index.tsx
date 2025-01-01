@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import PluginSelect from '../PluginSelect';
-import './index.scss';
 import useBatchButtons from './useBatchButtons';
 import { BatchActionType } from '../../../consts/batchActionTypes';
+
+import './index.scss';
 
 const BATCH_ACTIONS: BatchActionType[] = [
   BatchActionType.DOWNLOAD,
@@ -46,7 +47,7 @@ function BatchButtons({ page }: Props) {
     batchEnabled,
     monochromeBatchEnabled,
     activeFilters,
-    selectedImages,
+    selectedImageCount,
     hasSelected,
     batchTask,
     checkAll,
@@ -97,8 +98,8 @@ function BatchButtons({ page }: Props) {
           title={hasSelected ? 'Uncheck All' : 'Check All'}
         >
           <SVG name="checkmark" />
-          {selectedImages === 0 ? null : (
-            <span className="batch-buttons__bubble">{selectedImages}</span>
+          {selectedImageCount === 0 ? null : (
+            <span className="batch-buttons__bubble">{selectedImageCount}</span>
           )}
         </button>
       </li>

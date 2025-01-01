@@ -19,7 +19,7 @@ interface UseBatchButtons {
   batchEnabled: boolean,
   monochromeBatchEnabled: boolean,
   activeFilters: number,
-  selectedImages: number,
+  selectedImageCount: number,
   hasSelected: boolean,
   batchTask: (action: BatchActionType) => void,
   checkAll: () => void,
@@ -65,13 +65,16 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     }, [])
   ), [imageSelection, stateImages]);
 
+  const selectedImageCount = imageSelection.length;
+  const hasSelected = selectedImages.length > 0;
+
   return ({
     hasPlugins: !!plugins.length,
     batchEnabled: !!imageSelection.length,
     monochromeBatchEnabled: selectedImages.length > 1 && monochromeImages.length === selectedImages.length,
     activeFilters: filtersActiveTags.length || 0,
-    selectedImages: imageSelection.length,
-    hasSelected: selectedImages.length > 0,
+    selectedImageCount,
+    hasSelected,
     batchTask: (actionType: BatchActionType) => {
       if (imageSelection.length) {
         switch (actionType) {
