@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import Palette from '../Palette';
 import SVG from '../SVG';
-import type { Palette as PaletteT } from '../../../../types/Palette';
-
-import './index.scss';
-import { usePalettes } from './usePalettes';
+import useItemsStore from '../../stores/itemsStore';
+import useEditPalette from '../../../hooks/useSetEditPalette';
 import usePaletteFromFile from '../../../hooks/usePaletteFromFile';
 import usePaletteSort from '../../../hooks/usePaletteSort';
+import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
+import type { Palette as PaletteT } from '../../../../types/Palette';
 import type { PaletteSortMode } from '../../../consts/paletteSortModes';
+
+import './index.scss';
 
 interface Tab {
   id: string,
@@ -36,14 +38,11 @@ const tabs: Tab[] = [
 ];
 
 function Palettes() {
+  const { palettes: palettesUnsorted } = useItemsStore();
   const { onInputChange, busy } = usePaletteFromFile();
+  const { editPalette } = useEditPalette();
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const { filter, headline: currentHeadline, id } = tabs[selectedTabIndex || 0];
-
-  const {
-    palettes: palettesUnsorted,
-    newPalette,
-  } = usePalettes();
 
   const {
     sortFn,
@@ -91,9 +90,7 @@ function Palettes() {
               disabled={busy}
               title="New palette"
               className="button palettes__add-button"
-              onClick={() => {
-                newPalette();
-              }}
+              onClick={() => editPalette(NEW_PALETTE_SHORT)}
             >
               <SVG name="add" />
             </button>

@@ -1,5 +1,4 @@
 import getGetSettings from '../getGetSettings';
-import type { TypedStore } from '../../app/store/State';
 import type { DownloadInfo, ExportStats, KeepFile, RemoteFiles, UploadFile } from '../../../types/Sync';
 import type { SyncFile } from '../../../types/Export';
 import { ExportTypes } from '../../consts/exportTypes';
@@ -28,8 +27,8 @@ const extFromType = (type: string): string => {
   }
 };
 
-const getPrepareRemoteFiles = (store: TypedStore): PrepareRemoteFilesFn => {
-  const getSettings = getGetSettings(store);
+const getPrepareRemoteFiles = (): PrepareRemoteFilesFn => {
+  const getSettings = getGetSettings();
 
   return async (fileCollection: SyncFile[], lastUpdateUTC: number): Promise<RemoteFiles> => {
     const toUpload: UploadFile[] = [];
@@ -66,7 +65,7 @@ const getPrepareRemoteFiles = (store: TypedStore): PrepareRemoteFilesFn => {
       .join('\n');
 
     // querying only remote settings, so no state object needs to be provided
-    const remoteSettings: string = await getSettings(ExportTypes.REMOTE, { lastUpdateUTC });
+    const remoteSettings: string = await getSettings(ExportTypes.ALL, { lastUpdateUTC });
 
     toUpload.push(
       {

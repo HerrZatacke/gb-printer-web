@@ -20,7 +20,7 @@ function EditImageGroup() {
     setTitle,
     setParentSlug,
     confirm,
-    cancelEdit,
+    cancelEditImageGroup,
   } = useEditImageGroup();
 
   return (
@@ -29,7 +29,7 @@ function EditImageGroup() {
       confirm={confirm}
       canConfirm={canConfirm}
       header={editId !== NEW_GROUP ? `Editing group ${title ? `"${title}"` : ''}` : 'Create new image group'}
-      deny={cancelEdit}
+      deny={cancelEditImageGroup}
     >
       <div
         className="edit-image-group__content"

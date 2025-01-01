@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import type { PaletteCancelEditAction, PaletteUpdateAction } from '../../../../../types/actions/PaletteActions';
-import { Actions } from '../../../store/actions';
-import type { State } from '../../../store/State';
+import useEditStore from '../../../stores/editStore';
+import useFiltersStore from '../../../stores/filtersStore';
+import useItemsStore from '../../../stores/itemsStore';
 import type { Palette } from '../../../../../types/Palette';
 import getPreviewImages from '../../../../tools/getPreviewImages';
 import type { MonochromeImage } from '../../../../../types/Image';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
+import { useStores } from '../../../../hooks/useStores';
 
 interface UseEditPalette {
   canConfirm: boolean,
@@ -25,27 +25,19 @@ interface UseEditPalette {
 
 export const useEditPalette = (): UseEditPalette => {
   const {
-    shortName,
-    statePalette,
-    name,
-    palettes,
-    images,
     imageSelection,
     sortBy,
     filtersActiveTags,
     recentImports,
-  } = useSelector((state: State) => ({
-    shortName: state.editPalette?.shortName || '',
-    statePalette: state.editPalette?.palette || [],
-    name: state.editPalette?.name || '',
-    palettes: state.palettes,
+  } = useFiltersStore();
 
-    images: state.images,
-    imageSelection: state.imageSelection,
-    sortBy: state.sortBy,
-    filtersActiveTags: state.filtersActiveTags,
-    recentImports: state.recentImports,
-  }));
+  const { editPalette, cancelEditPalette } = useEditStore();
+  const { images, palettes, addPalettes } = useItemsStore();
+  const { updateLastSyncLocalNow } = useStores();
+
+  const shortName = editPalette?.shortName || '';
+  const statePalette = editPalette?.palette || [];
+  const name = editPalette?.name || '';
 
   const shortNameIsValid = (pShortName: string) => {
     if (!pShortName.match(/^[a-z]+[a-z0-9]*$/gi)) {
@@ -64,17 +56,13 @@ export const useEditPalette = (): UseEditPalette => {
   const canConfirm = !canEditShortName || shortNameIsValid(newShortName);
 
   const previewImages = useMemo<MonochromeImage[]>(() => (
-    getPreviewImages({ imageSelection, sortBy, filtersActiveTags, recentImports }, images)()
+    getPreviewImages(images, { sortBy, filtersActiveTags, recentImports }, imageSelection)()
   ), [filtersActiveTags, imageSelection, images, recentImports, sortBy]);
 
-  const dispatch = useDispatch();
-
-
-  const savePalette = (payload: Palette) => {
-    dispatch<PaletteUpdateAction>({
-      type: Actions.PALETTE_UPDATE,
-      payload,
-    });
+  const savePalette = (updatedPalette: Palette) => {
+    addPalettes([updatedPalette]);
+    updateLastSyncLocalNow();
+    cancelEditPalette();
   };
 
   const save = () => savePalette({
@@ -109,10 +97,6 @@ export const useEditPalette = (): UseEditPalette => {
     setNewShortName,
     setPalette,
     save,
-    cancelEditPalette: () => {
-      dispatch<PaletteCancelEditAction>({
-        type: Actions.PALETTE_CANCEL_EDIT,
-      });
-    },
+    cancelEditPalette,
   };
 };

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import PluginSelect from '../PluginSelect';
-import './index.scss';
 import useBatchButtons from './useBatchButtons';
 import { BatchActionType } from '../../../consts/batchActionTypes';
+
+import './index.scss';
 
 const BATCH_ACTIONS: BatchActionType[] = [
   BatchActionType.DOWNLOAD,
@@ -49,6 +50,8 @@ function BatchButtons({ page }: Props) {
     selectedImageCount,
     hasSelected,
     batchTask,
+    checkAll,
+    unCheckAll,
     filter,
     showSortOptions,
   } = useBatchButtons(page);
@@ -91,7 +94,7 @@ function BatchButtons({ page }: Props) {
       >
         <button
           type="button"
-          onClick={() => batchTask(hasSelected ? BatchActionType.UNCHECKALL : BatchActionType.CHECKALL)}
+          onClick={hasSelected ? unCheckAll : checkAll}
           title={hasSelected ? 'Uncheck All' : 'Check All'}
         >
           <SVG name="checkmark" />

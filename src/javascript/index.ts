@@ -2,6 +2,7 @@ import '../scss/index.scss';
 import isTouchDevice from './tools/isTouchDevice';
 import { loadEnv } from './tools/getEnv';
 import initLog from './tools/initLog';
+import { initLightbox } from './tools/initLightbox';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { default: initApp } = await import(/* webpackChunkName: "iap" */'./app/initApp');
     initLog('Starting app');
     await initApp();
+    initLightbox();
   } catch (error) {
     const appNode = document.getElementById('app');
 

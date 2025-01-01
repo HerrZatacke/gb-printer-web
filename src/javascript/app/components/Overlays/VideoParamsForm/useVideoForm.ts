@@ -1,13 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../../store/actions';
-import { videoParamsWithDefaults } from '../../../store/middlewares/animate';
-import type { State } from '../../../store/State';
+import { createAnimation, videoParamsWithDefaults } from '../../../../tools/createAnimation';
 import type { VideoParams } from '../../../../../types/VideoParams';
-import type {
-  AnimateImagesAction,
-  CancelAnimateImagesAction,
-  SetVideoParamsAction,
-} from '../../../../../types/actions/VideoParamsOptions';
+import useSettingsStore from '../../../stores/settingsStore';
+import useInteractionsStore from '../../../stores/interactionsStore';
 
 interface UseVideoForm {
   imageCount: number,
@@ -18,31 +12,21 @@ interface UseVideoForm {
 }
 
 export const useVideoForm = (): UseVideoForm => {
-  const videoParams = useSelector((state: State): VideoParams => (
-    videoParamsWithDefaults(state.videoParams, state.exportScaleFactors)
-  ));
-  const dispatch = useDispatch();
-
-  const imageCount = videoParams.imageSelection?.length || 0;
+  const { videoParams: stateVideoParams, setVideoParams } = useSettingsStore();
+  const { videoSelection, setVideoSelection } = useInteractionsStore();
+  const videoParams = videoParamsWithDefaults(stateVideoParams);
+  const imageCount = videoSelection.length || 0;
 
   return {
     imageCount,
     videoParams,
-    update: (params: Partial<VideoParams>) => {
-      dispatch<SetVideoParamsAction>({
-        type: Actions.SET_VIDEO_PARAMS,
-        payload: params,
-      });
-    },
+    update: setVideoParams,
     cancel: () => {
-      dispatch<CancelAnimateImagesAction>({
-        type: Actions.CANCEL_ANIMATE_IMAGES,
-      });
+      setVideoSelection([]); // Hide dialog
     },
     animate: () => {
-      dispatch<AnimateImagesAction>({
-        type: Actions.ANIMATE_IMAGES,
-      });
+      createAnimation();
+      setVideoSelection([]); // Hide dialog
     },
   };
 };

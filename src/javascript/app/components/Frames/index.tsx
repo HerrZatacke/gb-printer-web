@@ -82,7 +82,7 @@ function Frames() {
         <button
           type="button"
           className="button"
-          onClick={() => exportJson(ExportTypes.FRAMEGROUP)}
+          onClick={() => exportJson(ExportTypes.CURRENT_FRAMEGROUP)}
         >
           {`Export current framegroup (${selectedFrameGroup})`}
         </button>

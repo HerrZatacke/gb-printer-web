@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../../store/actions';
 import getFrameGroups from '../../../../tools/getFrameGroups';
-import type { State } from '../../../store/State';
 import type { Frame } from '../../../../../types/Frame';
 import type { FrameGroup } from '../../../../../types/FrameGroup';
-import type { CancelEditFrameAction, UpdateFrameAction } from '../../../../../types/actions/FrameActions';
+import useEditStore from '../../../stores/editStore';
+import useItemsStore from '../../../stores/itemsStore';
+import { useStores } from '../../../../hooks/useStores';
 
 interface UseEditFrame {
   groups: FrameGroup[],
@@ -27,15 +26,13 @@ interface UseEditFrame {
 
 const useEditFrame = (frame?: Frame): UseEditFrame => {
   const updateId = frame?.id || '';
+  const { cancelEditFrame } = useEditStore();
+  const { frames } = useItemsStore();
+  const { frameGroups, addFrames } = useItemsStore();
+  const { updateLastSyncLocalNow } = useStores();
 
-  const { frames, frameGroupNames } = useSelector((state: State) => ({
-    frames: state.frames,
-    frameGroupNames: state.frameGroupNames,
-  }));
-
-  const groups = getFrameGroups(frames, frameGroupNames);
+  const groups = getFrameGroups(frames, frameGroups);
   const frameGroupIdRegex = /^(?<groupName>[a-z]+)(?<id>[0-9]+)/g;
-  const dispatch = useDispatch();
 
   const match = frameGroupIdRegex.exec(updateId);
   const groupName = match?.groups?.groupName || '';
@@ -59,24 +56,14 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
     frameIndexValid
   );
 
-  const cancelEdit = () => {
-    dispatch<CancelEditFrameAction>({
-      type: Actions.CANCEL_EDIT_FRAME,
-    });
-  };
-
   const saveFrame = () => {
-    dispatch<UpdateFrameAction>({
-      type: Actions.UPDATE_FRAME,
-      payload: {
-        updateId,
-        data: {
-          hash: frame?.hash || '',
-          id: fullId,
-          name: frameName,
-        },
-      },
-    });
+    cancelEditFrame();
+    updateLastSyncLocalNow();
+    addFrames([{
+      hash: frame?.hash || '',
+      id: fullId,
+      name: frameName,
+    }]);
   };
 
   return {
@@ -94,7 +81,7 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
     setFrameGroup,
     setFrameName,
     saveFrame,
-    cancelEdit,
+    cancelEdit: cancelEditFrame,
   };
 };
 

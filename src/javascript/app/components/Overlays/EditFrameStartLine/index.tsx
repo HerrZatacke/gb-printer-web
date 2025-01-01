@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import GameBoyImage from '../../GameBoyImage';
-import type { State } from '../../../store/State';
 import { posTiles } from './posTiles';
-
 import './index.scss';
+import useItemsStore from '../../../stores/itemsStore';
+import useSettingsStore from '../../../stores/settingsStore';
 
 interface Props {
   tiles: string[],
@@ -13,10 +12,10 @@ interface Props {
 }
 
 function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
+  const { activePalette } = useSettingsStore();
+  const { palettes } = useItemsStore();
 
-  const palette = useSelector((state: State) => (
-    state.palettes.find(({ shortName }) => shortName === state.activePalette)?.palette
-  ));
+  const palette = palettes.find(({ shortName }) => shortName === activePalette)?.palette;
 
   const previewTiles = useMemo<string[]>(() => {
     const pt: string[] = [];

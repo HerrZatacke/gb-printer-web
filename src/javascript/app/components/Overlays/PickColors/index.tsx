@@ -1,21 +1,28 @@
 import type { CSSProperties } from 'react';
 import React, { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import useEditStore from '../../../stores/editStore';
+import useFiltersStore from '../../../stores/filtersStore';
+import useItemsStore from '../../../stores/itemsStore';
 import Lightbox from '../../Lightbox';
-import './index.scss';
-import { Actions } from '../../../store/actions';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 import { toHexColor } from '../../../../hooks/usePaletteFromFile';
 import ImageRender from '../../ImageRender';
 import getGetPreviewImages from '../../../../tools/getPreviewImages';
-import type { State } from '../../../store/State';
+import './index.scss';
 
 function PickColors() {
-  const state = useSelector((s: State) => s);
-  const dispatch = useDispatch();
+  const { images } = useItemsStore();
+  const {
+    imageSelection,
+    sortBy,
+    filtersActiveTags,
+    recentImports,
+  } = useFiltersStore();
+
+  const { pickColors, setEditPalette, cancelEditPalette, cancelPickColors } = useEditStore();
+
   const [selected, setSelected] = useState<number[]>([0, 3, 6, 9]);
-  const getPreviewImages = getGetPreviewImages(state, state.images);
-  const { pickColors } = state;
+  const getPreviewImages = getGetPreviewImages(images, { sortBy, filtersActiveTags, recentImports }, imageSelection);
 
   const palette = useMemo<string[]>((): string[] => {
     if (!pickColors) {
@@ -69,19 +76,18 @@ function PickColors() {
     <Lightbox
       className="pick-colors"
       confirm={() => {
-        dispatch({
-          type: Actions.SET_EDIT_PALETTE,
-          payload: {
-            name: `From file ${pickColors.fileName}`,
-            shortName: NEW_PALETTE_SHORT,
-            palette,
-            origin: 'generated from file',
-          },
+        setEditPalette({
+          name: `From file ${pickColors.fileName}`,
+          shortName: NEW_PALETTE_SHORT,
+          palette,
+          origin: 'generated from file',
+          isPredefined: false,
         });
       }}
       canConfirm={selected.length === 4}
       deny={() => {
-        dispatch({ type: Actions.CANCEL_PICK_COLORS });
+        cancelPickColors();
+        cancelEditPalette();
       }}
       header={`Pick colors from "${pickColors.fileName}"`}
     >

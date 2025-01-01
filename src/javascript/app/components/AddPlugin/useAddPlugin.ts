@@ -1,8 +1,7 @@
 import { parseURL } from 'ufo';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import type { State } from '../../store/State';
-import { usePlugins } from '../Settings/pages/PluginSettings/usePlugins';
+import useItemsStore from '../../stores/itemsStore';
+import { usePluginsContext } from '../../contexts/plugins';
 
 const trustedSources = [
   'https://herrzatacke.github.io',
@@ -13,19 +12,19 @@ const trustedSources = [
 ];
 
 interface UseAddPlugin {
-  pluginUrl: string,
+  url: string,
   source: string,
   pluginExists: boolean,
   isTrusted: boolean,
   canAdd: boolean,
-  addPlugin: () => void,
+  addPlugin: () => Promise<void>,
 }
 export const useAddPlugin = (): UseAddPlugin => {
-  const pluginUrl = useParams().pluginUrl || '';
-  const parsedPluginUrl = parseURL(pluginUrl);
-  const plugins = useSelector((state: State) => state.plugins);
+  const url = useParams().pluginUrl || '';
+  const parsedPluginUrl = parseURL(url);
+  const { plugins } = useItemsStore();
+  const { validateAndAddPlugin } = usePluginsContext();
   const navigate = useNavigate();
-  const { pluginAdd } = usePlugins();
 
   const isTrusted = trustedSources.some((source) => {
     const parsedSourceUrl = parseURL(source);
@@ -36,16 +35,16 @@ export const useAddPlugin = (): UseAddPlugin => {
   });
 
   const pluginExists = plugins.some((plugin) => (
-    plugin.url === pluginUrl
+    plugin.url === url
   ));
 
-  const addPlugin = () => {
-    pluginAdd(pluginUrl);
+  const addPlugin = async () => {
+    await validateAndAddPlugin({ url });
     navigate('/settings/plugins', { replace: true });
   };
 
   return {
-    pluginUrl,
+    url,
     pluginExists,
     source: `${parsedPluginUrl.protocol}//${parsedPluginUrl.host}`,
     isTrusted,

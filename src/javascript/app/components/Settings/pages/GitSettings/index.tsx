@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
 import Input, { InputType } from '../../../Input';
-
+import useStoragesStore from '../../../../stores/storagesStore';
 import './index.scss';
-import { useGitStorage } from './useGitStorage';
 
 function GitSettings() {
-  const { gitStorage, setGitStorage } = useGitStorage();
+  const { gitStorage, setGitStorage } = useStoragesStore();
   const [storage, setStorage] = useState(gitStorage);
 
   return (
@@ -145,14 +144,20 @@ function GitSettings() {
               setGitStorage(storage);
             }}
           >
-            <a
-              className="inputgroup__note"
-              href="https://github.com/settings/tokens/new?scopes=repo"
-              target="_blank"
-              rel="noreferrer"
-            >
-              How to obtain a token
-            </a>
+            <span className="inputgroup__note">
+              {'Go to GitHub to create a '}
+              <a
+                href="https://github.com/settings/personal-access-tokens/new"
+                target="_blank"
+                rel="noreferrer"
+              >
+                new fine-grained personal access token
+              </a>
+              {', select the repository you want to use for synching and allow read/write for '}
+              <code className="inputgroup__note--code">
+                &quot;Repositoty Permissions &gt; Contents&quot;
+              </code>
+            </span>
           </Input>
         </>
       )}

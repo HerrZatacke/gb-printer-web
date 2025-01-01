@@ -1,7 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../../../store/actions';
-import type { State } from '../../../../store/State';
-import type { ShowSerialsAction } from '../../../../../../types/actions/GlobalActions';
+import useSettingsStore from '../../../../stores/settingsStore';
+import useInteractionsStore from '../../../../stores/interactionsStore';
 
 interface UseWithStore {
   lightBoxOpen: boolean,
@@ -10,18 +8,13 @@ interface UseWithStore {
 
 const useWithStore = (): UseWithStore => {
 
-  const lightBoxOpen = useSelector((state: State) => (state.showSerials && state.useSerials));
-  const dispatch = useDispatch();
-  const hideSerials = () => {
-    dispatch<ShowSerialsAction>({
-      type: Actions.SHOW_SERIALS,
-      payload: false,
-    });
-  };
+  const { useSerials } = useSettingsStore();
+  const { showSerials, setShowSerials } = useInteractionsStore();
+  const lightBoxOpen = showSerials && useSerials;
 
   return {
     lightBoxOpen,
-    hideSerials,
+    hideSerials: () => setShowSerials(false),
   };
 };
 
