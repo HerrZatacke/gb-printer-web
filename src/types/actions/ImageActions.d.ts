@@ -102,7 +102,7 @@ export interface BatchTaskAction {
   type: Actions.BATCH_TASK,
   payload: {
     actionType: BatchActionType,
-    images: Image[], // list of images which can currently be batched,
+    currentPageHashes: string[], // hashes of images on current page. Required for "check all" actiontype
     page: number,
   },
 }

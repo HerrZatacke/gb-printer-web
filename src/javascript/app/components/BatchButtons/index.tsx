@@ -46,7 +46,7 @@ function BatchButtons({ page }: Props) {
     batchEnabled,
     monochromeBatchEnabled,
     activeFilters,
-    selectedImages,
+    selectedImageCount,
     hasSelected,
     batchTask,
     filter,
@@ -95,8 +95,8 @@ function BatchButtons({ page }: Props) {
           title={hasSelected ? 'Uncheck All' : 'Check All'}
         >
           <SVG name="checkmark" />
-          {selectedImages === 0 ? null : (
-            <span className="batch-buttons__bubble">{selectedImages}</span>
+          {selectedImageCount === 0 ? null : (
+            <span className="batch-buttons__bubble">{selectedImageCount}</span>
           )}
         </button>
       </li>
