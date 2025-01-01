@@ -1,6 +1,5 @@
 import type { Actions } from '../../javascript/app/store/actions';
 import type { ExportTypes } from '../../javascript/consts/exportTypes';
-import type { RepoContents } from '../Export';
 import type { DropBoxSettings, GitStorageSettings } from '../Sync';
 import type { JSONExportState } from '../../javascript/app/store/State';
 
@@ -34,7 +33,7 @@ export interface GitStorageAction {
 
 export interface GitSettingsImportAction {
   type: Actions.GIT_SETTINGS_IMPORT,
-  payload: RepoContents,
+  payload: JSONExportState,
 }
 
 export interface ImportJSONAction {
