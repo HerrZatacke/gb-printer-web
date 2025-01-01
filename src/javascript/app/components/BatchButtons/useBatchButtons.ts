@@ -6,7 +6,7 @@ import type { BatchTaskAction } from '../../../../types/actions/ImageActions';
 import type { BatchActionType } from '../../../consts/batchActionTypes';
 import type { ShowFiltersAction } from '../../../../types/actions/TagsActions';
 import type { SortOptionsSetAction } from '../../../../types/actions/SortOptionsActions';
-import type { Image, MonochromeImage } from '../../../../types/Image';
+import type { Image } from '../../../../types/Image';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
@@ -15,7 +15,7 @@ interface UseBatchButtons {
   batchEnabled: boolean,
   monochromeBatchEnabled: boolean,
   activeFilters: number,
-  selectedImages: number,
+  selectedImageCount: number,
   hasSelected: boolean,
   batchTask: (action: BatchActionType) => void,
   filter: () => void,
@@ -29,25 +29,30 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const { view, covers } = useGalleryTreeContext();
 
   const indexOffset = page * state.pageSize;
-  const images: Image[] = getFilteredImages(state, view.images) // take images from current VIEW (including covers)
+  const currentPageImages: Image[] = getFilteredImages(state, view.images) // take images from current VIEW (including covers)
     .splice(indexOffset, state.pageSize || Infinity) // use images of the current PAGE
     .filter((image: Image) => !covers.includes(image.hash)); // And remove covers AFTERWARDS
-  const selectedImages = images.filter(({ hash }) => state.imageSelection.includes(hash));
-  const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
+
+  const selectedImages = state.images.filter(({ hash }) => state.imageSelection.includes(hash));
+  const monochromeImageCount: number = selectedImages.reduce(reduceImagesMonochrome, []).length;
+
+  const selectedImageCount = state.imageSelection.length;
+  const hasSelected = selectedImages.length > 0;
+
 
   return ({
     hasPlugins: !!state.plugins.length,
     batchEnabled: selectedImages.length > 1,
-    monochromeBatchEnabled: selectedImages.length > 1 && monochromeImages.length === selectedImages.length,
+    monochromeBatchEnabled: selectedImages.length > 1 && monochromeImageCount === selectedImages.length,
     activeFilters: state.filtersActiveTags.length || 0,
-    selectedImages: state.imageSelection.length,
-    hasSelected: selectedImages.length > 0,
+    selectedImageCount,
+    hasSelected,
     batchTask: (actionType: BatchActionType) => {
       dispatch<BatchTaskAction>({
         type: Actions.BATCH_TASK,
         payload: {
           actionType,
-          images,
+          currentPageHashes: currentPageImages.map(({ hash }) => (hash)),
           page,
         },
       });

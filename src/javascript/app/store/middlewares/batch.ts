@@ -123,9 +123,7 @@ const batch: MiddlewareWithState = (store) => (next) => (action) => {
       case BatchActionType.CHECKALL:
         store.dispatch<ImageSelectionSetAction>({
           type: Actions.IMAGE_SELECTION_SET,
-          payload: getFilteredImages(state, action.payload.images)
-            .slice(batchTaskAction.payload.page * pageSize, (batchTaskAction.payload.page + 1) * pageSize || undefined)
-            .map(({ hash }) => hash),
+          payload: action.payload.currentPageHashes,
         } as ImageSelectionSetAction);
         break;
 
