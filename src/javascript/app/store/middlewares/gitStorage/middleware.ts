@@ -62,10 +62,10 @@ export const middleware = (store: TypedStore) => async (action: AnyAction) => {
         }
 
         case 'down': {
-          syncResult = await saveLocalStorageItems(repoContents);
+          const syncResultSettings = await saveLocalStorageItems(repoContents);
           store.dispatch<GitSettingsImportAction>({
             type: Actions.GIT_SETTINGS_IMPORT,
-            payload: repoContents.settings,
+            payload: syncResultSettings,
           });
           break;
         }

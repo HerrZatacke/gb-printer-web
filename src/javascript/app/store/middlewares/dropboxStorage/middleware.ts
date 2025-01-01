@@ -191,10 +191,11 @@ const middleware = (store: TypedStore): ((action: AnyAction) => Promise<void>) =
                 }
 
                 case 'down': {
-                  syncResult = await saveLocalStorageItems(repoContents);
+                  const syncResultSettings = await saveLocalStorageItems(repoContents);
+
                   store.dispatch<DropboxSettingsImportAction>({
                     type: Actions.DROPBOX_SETTINGS_IMPORT,
-                    payload: repoContents.settings,
+                    payload: syncResultSettings,
                   });
                   break;
                 }
