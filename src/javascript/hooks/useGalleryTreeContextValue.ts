@@ -147,14 +147,20 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
         }
       }
 
+      const images: Image[] = stateImages.reduce(reduceImages(imageGroup.images, childGroups), []);
+
+      const foundCoverImage: Image | undefined = images.find(({ hash }) => hash === imageGroup.coverImage) || images[0];
+
+      const coverImage = foundCoverImage?.hash || imageGroup.coverImage;
+
       return ({
         id: imageGroup.id,
         slug: imageGroup.slug,
         created: imageGroup.created,
         title: imageGroup.title,
-        coverImage: imageGroup.coverImage,
+        coverImage,
         groups: childGroups,
-        images: stateImages.reduce(reduceImages(imageGroup.images, childGroups), []),
+        images,
       });
     };
 
