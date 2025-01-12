@@ -56,10 +56,6 @@ export const cleanImages = (dirtyImages: Image[]): Image[] => {
         monoImage.invertFramePalette = monoImage.invertPalette;
       }
 
-      monoImage.lockFrame = true;
-      monoImage.framePalette = 'ffs';
-      monoImage.palette = 'bw';
-
       monoImage.frame = image.frame || undefined;
       return monoImage;
     });
