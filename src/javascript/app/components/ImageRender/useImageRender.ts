@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import type { RGBNPalette } from 'gb-image-decoder';
+import useItemsStore from '../../stores/itemsStore';
 import { loadImageTiles as getLoadImageTiles } from '../../../tools/loadImageTiles';
-import { Actions } from '../../store/actions';
 import { missingGreyPalette } from '../../defaults';
-import type { State } from '../../store/State';
 import type { RGBNHashes } from '../../../../types/Image';
-import type { TryRecoverImageAction } from '../../../../types/actions/ImageActions';
 import type { GameBoyImageProps } from '../GameBoyImage';
 import type { Rotation } from '../../../tools/applyRotation';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
+import { dropboxStorageTool } from '../../../tools/dropboxStorage';
+import { useStores } from '../../../hooks/useStores';
+import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
 
 interface UseImageRender {
   gbImageProps: GameBoyImageProps | null,
@@ -39,30 +39,22 @@ export const useImageRender = ({
   rotation,
 }: UseImageRenderParams): UseImageRender => {
   const [gbImageProps, setGbImageProps] = useState<GameBoyImageProps | null>(null);
-
-  const dispatch = useDispatch();
-
-  const { allImages, allFrames, allPalettes, frameHash } = useSelector((state: State) => ({
-    allImages: state.images,
-    allFrames: state.frames,
-    frameHash: state.frames.find(({ id }) => id === frameId)?.hash,
-    allPalettes: state.palettes,
-  }));
+  const stores = useStores();
+  const { remoteImport } = useImportExportSettings();
+  const { frames: allFrames, palettes: allPalettes, images: allImages } = useItemsStore();
+  const frameHash = allFrames.find(({ id }) => id === frameId)?.hash;
 
   const loadImageTiles = useCallback(
     (imgHash: string, noDummy?: boolean, overrideFrame?: string) => {
       const recoverFn = () => {
-        dispatch<TryRecoverImageAction>({
-          type: Actions.TRY_RECOVER_IMAGE_DATA,
-          payload: imgHash,
-        });
+        dropboxStorageTool(stores, remoteImport).recoverImageData(imgHash);
       };
 
-      const imageLoader = getLoadImageTiles({ images: allImages, frames: allFrames }, recoverFn);
+      const imageLoader = getLoadImageTiles(allImages, allFrames, recoverFn);
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashes);
     },
-    [allImages, allFrames, dispatch, hashes],
+    [allImages, allFrames, hashes, stores, remoteImport],
   );
 
   const usedPalette = useMemo<string[] | RGBNPalette>(() => {

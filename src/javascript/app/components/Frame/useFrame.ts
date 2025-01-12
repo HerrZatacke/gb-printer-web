@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { Actions } from '../../store/actions';
 import applyFrame from '../../../tools/applyFrame';
 import textToTiles from '../../../tools/textToTiles';
-import type { State } from '../../store/State';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
-import type { DeleteFrameAction, EditFrameAction } from '../../../../types/actions/FrameActions';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
+import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
+import useItemsStore from '../../stores/itemsStore';
+import useSettingsStore from '../../stores/settingsStore';
+import { useStores } from '../../../hooks/useStores';
 
 
 interface GetTilesParams {
@@ -37,19 +37,17 @@ const getTiles = ({ frameId, frameHash, name }: GetTilesParams) => {
 };
 
 const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
-  const dispatch = useDispatch();
   const [tiles, setTiles] = useState<string[]>([]);
   const [imageStartLine, setImageStartLine] = useState<number>(2);
 
-  const {
-    frameHash,
-    enableDebug,
-    usage,
-  } = useSelector((state: State) => ({
-    frameHash: state.frames.find(({ id }) => id === frameId)?.hash || '',
-    enableDebug: state.enableDebug,
-    usage: state.images.filter(({ frame }) => frame === frameId).length,
-  }));
+  const { setEditFrame } = useEditStore();
+  const { enableDebug } = useSettingsStore();
+  const { dismissDialog, setDialog } = useDialogsStore();
+  const { frames, deleteFrame, images } = useItemsStore();
+  const { updateLastSyncLocalNow } = useStores();
+
+  const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
+  const usage = images.filter(({ frame }) => frame === frameId).length;
 
   useEffect(() => {
     setImageStartLine(2);
@@ -78,30 +76,17 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
     usage,
     setTiles,
     deleteFrame: () => {
-      dispatch<ConfirmAskAction>({
-        type: Actions.CONFIRM_ASK,
-        payload: {
-          message: `Delete frame "${name}" (${frameId})?`,
-          confirm: async () => {
-            dispatch<DeleteFrameAction>({
-              type: Actions.DELETE_FRAME,
-              payload: frameId,
-            });
-          },
-          deny: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-          },
+      setDialog({
+        message: `Delete frame "${name}" (${frameId})?`,
+        confirm: async () => {
+          dismissDialog(0);
+          updateLastSyncLocalNow();
+          deleteFrame(frameId);
         },
+        deny: async () => dismissDialog(0),
       });
     },
-    editFrame: () => {
-      dispatch<EditFrameAction>({
-        type: Actions.EDIT_FRAME,
-        payload: frameId,
-      });
-    },
+    editFrame: () => setEditFrame(frameId),
   };
 };
 

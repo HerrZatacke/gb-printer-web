@@ -1,7 +1,6 @@
 import type { ExportFrameMode } from 'gb-image-decoder';
 
 export interface VideoParams {
-  imageSelection?: string[],
   exportFrameMode?: ExportFrameMode,
   frame?: string,
   frameRate?: number,

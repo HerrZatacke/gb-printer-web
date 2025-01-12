@@ -1,19 +1,18 @@
 import { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import objectHash from 'object-hash';
-import { Actions } from '../../../store/actions';
-import getFilteredImages from '../../../../tools/getFilteredImages';
+import useEditStore from '../../../stores/editStore';
+import useFiltersStore from '../../../stores/filtersStore';
+import useItemsStore from '../../../stores/itemsStore';
+import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
 import { dateFormat } from '../../../defaults';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
 import { randomId } from '../../../../tools/randomId';
-import type { CancelCreateRGBImagesAction, SaveNewRGBImagesAction } from '../../../../../types/actions/ImageActions';
-import type { State } from '../../../store/State';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
-import type { AddImageGroupAction } from '../../../../../types/actions/GroupActions';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
+import useSaveRGBNImages from '../../../../hooks/useSaveRGBNImages';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -37,20 +36,18 @@ interface UseEditRGBNImages {
   toggleSingleChannel: (channel: keyof RGBNHashes, hash: string) => void
   setGrouping: (value: RGBGrouping) => void,
   save: () => void,
-  cancelEditRGBN: () => void,
   setCreateGroup: (value: boolean) => void,
+  cancelEditRGBNImages: () => void,
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { view } = useGalleryTreeContext();
+  const { saveRGBNImage } = useSaveRGBNImages();
 
-  const { editRGBNImages, images, sortBy } = useSelector((state: State) => ({
-    editRGBNImages: state.editRGBNImages,
-    images: state.images,
-    sortBy: state.sortBy,
-  }));
+  const { sortBy } = useFiltersStore();
+  const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
+  const { addImageGroup, images } = useItemsStore();
 
   const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5);
 
@@ -58,12 +55,11 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const sortedImages = useMemo<MonochromeImage[]>(() => {
 
-    const filtered = getFilteredImages({
+    const filtered = getFilteredImages(images, {
       filtersActiveTags: [],
       sortBy,
       recentImports: [],
-      imageSelection: [],
-    }, images);
+    });
 
     if (globalSortDirection === 'desc') {
       filtered.reverse();
@@ -165,10 +161,8 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   }, [blockLength, globalSortDirection, grouping, manualHashes, order, sortedImages, usedColorCount]);
 
   const save = () => {
-    dispatch<SaveNewRGBImagesAction>({
-      type: Actions.SAVE_NEW_RGB_IMAGES,
-      payload: rgbnHashes,
-    });
+    cancelEditRGBNImages();
+    saveRGBNImage(rgbnHashes);
 
     if (createGroup) {
       const title = `RGB ${dayjs().format(dateFormat)}`;
@@ -176,21 +170,22 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
       const createdImageHashes: string[] = rgbnHashes.map((hashes) => objectHash(hashes));
 
-      dispatch<AddImageGroupAction>({
-        type: Actions.ADD_IMAGE_GROUP,
-        payload: {
-          parentId: view.id,
-          group: {
-            id: randomId(),
-            slug,
-            title,
-            created: dayjs(Date.now()).format(dateFormat),
-            coverImage: createdImageHashes[0],
-            images: createdImageHashes,
-            groups: [],
-          },
+      cancelEditImageGroup();
+
+      // ToDo: Handle jumping to wrong folder when creating group in sub-view
+
+      addImageGroup(
+        {
+          id: randomId(),
+          slug,
+          title,
+          created: dayjs(Date.now()).format(dateFormat),
+          coverImage: createdImageHashes[0],
+          images: createdImageHashes,
+          groups: [],
         },
-      });
+        view.id,
+      );
 
       navigate(`/gallery/${view.slug}${slug}/page/1`);
     }
@@ -212,10 +207,6 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     setGrouping,
     save,
     setCreateGroup,
-    cancelEditRGBN: () => {
-      dispatch<CancelCreateRGBImagesAction>({
-        type: Actions.CANCEL_CREATE_RGB_IMAGES,
-      });
-    },
+    cancelEditRGBNImages,
   };
 };

@@ -1,16 +1,15 @@
 import { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Actions } from '../../../store/actions';
 import { randomId } from '../../../../tools/randomId';
 import { dateFormat } from '../../../defaults';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { useGalleryParams } from '../../../../hooks/useGalleryParams';
-import type { State } from '../../../store/State';
-import type { CancelEditImageGroupAction, AddImageGroupAction, UpdateImageGroupAction } from '../../../../../types/actions/GroupActions';
 import type { DialogOption } from '../../../../../types/Dialog';
 import type { PathMap } from '../../../contexts/galleryTree';
+import useEditStore from '../../../stores/editStore';
+import useFiltersStore from '../../../stores/filtersStore';
+import useItemsStore from '../../../stores/itemsStore';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -26,7 +25,7 @@ interface UseEditImageGroup {
   setTitle: (title: string) => void,
   setParentSlug: (slug: string) => void
   confirm: () => void,
-  cancelEdit: () => void,
+  cancelEditImageGroup: () => void,
 }
 
 export const toSlug = (title: string): string => (
@@ -42,21 +41,16 @@ const findParentGroup = (paths: PathMap[], groupId: string): PathMap | null => (
 );
 
 const useEditImageGroup = (): UseEditImageGroup => {
-  const {
-    imageGroup,
-    editImageGroup,
-    selection,
-  } = useSelector((state: State) => ({
-    imageGroup: state.imageGroups.find(({ id }) => id === state.editImageGroup?.groupId) || null,
-    editImageGroup: state.editImageGroup,
-    selection: state.imageSelection,
-  }));
+  const { imageSelection: selection } = useFiltersStore();
+  const { editImageGroup, cancelEditImageGroup } = useEditStore();
+  const { imageGroups, addImageGroup, updateImageGroup } = useItemsStore();
+
+  const imageGroup = imageGroups.find(({ id }) => id === editImageGroup?.groupId) || null;
 
   const { view, paths, pathsOptions } = useGalleryTreeContext();
   const { path: currentPath } = useGalleryParams();
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [title, setTitle] = useState<string>(imageGroup?.title || editImageGroup?.newGroupTitle || '');
   const [slug, setSlug] = useState<string>(imageGroup?.slug || toSlug(title));
@@ -111,6 +105,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
     },
     setParentSlug,
     confirm: () => {
+      cancelEditImageGroup();
+
       if (!canConfirm) {
         return;
       }
@@ -120,21 +116,18 @@ const useEditImageGroup = (): UseEditImageGroup => {
           return;
         }
 
-        dispatch<AddImageGroupAction>({
-          type: Actions.ADD_IMAGE_GROUP,
-          payload: {
-            parentId: view.id,
-            group: {
-              id: randomId(),
-              slug,
-              title,
-              created: dayjs(Date.now()).format(dateFormat),
-              coverImage: editImageGroup?.newGroupCover,
-              images: selection,
-              groups: [],
-            },
+        addImageGroup(
+          {
+            id: randomId(),
+            slug,
+            title,
+            created: dayjs(Date.now()).format(dateFormat),
+            coverImage: editImageGroup?.newGroupCover,
+            images: selection,
+            groups: [],
           },
-        });
+          view.id,
+        );
       } else {
         if (!imageGroup) {
           return;
@@ -142,26 +135,20 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
         const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
 
-        dispatch<UpdateImageGroupAction>({
-          type: Actions.UPDATE_IMAGE_GROUP,
-          payload: {
-            group: {
-              ...imageGroup,
-              slug,
-              title,
-            },
-            parentGroupId,
+        // ToDo: Handle jumping to wrong folder when updating parent group
+        updateImageGroup(
+          {
+            ...imageGroup,
+            slug,
+            title,
           },
-        });
+          parentGroupId,
+        );
       }
 
       navigate(`/gallery/${parentSlug}${slug}/page/1`);
     },
-    cancelEdit: () => {
-      dispatch<CancelEditImageGroupAction>({
-        type: Actions.CANCEL_EDIT_IMAGE_GROUP,
-      });
-    },
+    cancelEditImageGroup,
   };
 };
 

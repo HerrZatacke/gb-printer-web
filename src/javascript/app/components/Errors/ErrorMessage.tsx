@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SVG from '../SVG';
-import type { ErrorMessage } from './useErrors';
+import type { ErrorMessage } from '../../stores/interactionsStore';
 
 interface Props {
   dismiss: () => void,

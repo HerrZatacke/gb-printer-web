@@ -5,7 +5,7 @@ import './index.scss';
 
 function Trashbin() {
   const {
-    showTrash,
+    showTrashCount,
     purgeTrash,
     downloadImages,
     downloadFrames,
@@ -18,7 +18,7 @@ function Trashbin() {
     <Lightbox
       className="trashbin"
       confirm={() => {
-        showTrash(false);
+        showTrashCount(false);
       }}
       header={`Trash (${sum} items)`}
     >

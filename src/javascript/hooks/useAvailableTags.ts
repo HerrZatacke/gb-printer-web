@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import unique from '../tools/unique';
+import useItemsStore from '../app/stores/itemsStore';
 import { SpecialTags } from '../consts/SpecialTags';
-import type { State } from '../app/store/State';
 import type { Image } from '../../types/Image';
 
 export const getAvailableTags = (images: Image[]): string[] => {
@@ -19,7 +18,7 @@ export interface UseAvailableTags {
 }
 
 export const useAvailableTags = (): UseAvailableTags => {
-  const images = useSelector((state: State) => state.images);
+  const { images } = useItemsStore();
   const [availableTags, setAvailableTags] = useState<string[]>(getAvailableTags(images));
 
   useEffect(() => {
