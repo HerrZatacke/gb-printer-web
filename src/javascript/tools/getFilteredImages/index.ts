@@ -1,25 +1,23 @@
 import { addSortIndex, removeSortIndex, sortImages } from '../sortImages';
 import filterSpecial from './filterSpecial';
 import filterTags from './filterTags';
-import type { State } from '../../app/store/State';
+import type { FiltersState } from '../../app/stores/filtersStore';
 import type { Image } from '../../../types/Image';
 
-export type FilteredImagesState = Pick<State, 'imageSelection' | 'sortBy' | 'filtersActiveTags' | 'recentImports'>
+export type FilteredImagesState = Pick<FiltersState, 'sortBy' | 'filtersActiveTags' | 'recentImports'>
 
-const getFilteredImages = (
+export const getFilteredImages = (
+  images: Image[],
   {
     filtersActiveTags,
     sortBy,
     recentImports,
-  }: State | FilteredImagesState,
-  images: Image[],
+  }: FilteredImagesState,
 ): Image[] => (
   [...images]
     .map(addSortIndex)
-    .sort(sortImages({ sortBy }))
+    .sort(sortImages(sortBy))
     .map(removeSortIndex)
     .filter(filterSpecial(filtersActiveTags, recentImports))
     .filter(filterTags(filtersActiveTags))
 );
-
-export default getFilteredImages;

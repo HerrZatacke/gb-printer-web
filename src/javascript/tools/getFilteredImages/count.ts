@@ -1,9 +1,13 @@
 import filterTags from './filterTags';
 import filterSpecial from './filterSpecial';
-import type { State } from '../../app/store/State';
 import type { Image } from '../../../types/Image';
+import type { RecentImport } from '../../../types/Sync';
 
-const getFilteredImagesCount = ({ filtersActiveTags, recentImports }: State, stateImages: Image[]): number => (
+const getFilteredImagesCount = (
+  stateImages: Image[],
+  filtersActiveTags: string[],
+  recentImports: RecentImport[],
+): number => (
   [...stateImages]
     .filter(filterSpecial(filtersActiveTags, recentImports))
     .filter(filterTags(filtersActiveTags))

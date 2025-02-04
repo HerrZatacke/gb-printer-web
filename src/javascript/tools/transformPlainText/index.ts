@@ -2,13 +2,11 @@ import readFileAs, { ReadAs } from '../readFileAs';
 import transformCapture from '../transformCapture';
 import transformClassic from '../transformClassic';
 import { compressAndHash } from '../storage';
-import { Actions } from '../../app/store/actions';
-import type { TypedStore } from '../../app/store/State';
-import type { ImportQueueAddAction } from '../../../types/actions/QueueActions';
 import { randomId } from '../randomId';
+import useImportsStore from '../../app/stores/importsStore';
 
-const getTransformPlainText = ({ dispatch }: TypedStore) => async (file: File) => {
-
+export const transformPlainText = async (file: File) => {
+  const { importQueueAdd } = useImportsStore.getState();
   const data: string = await readFileAs(file, ReadAs.TEXT);
   let result: string[][];
 
@@ -22,23 +20,19 @@ const getTransformPlainText = ({ dispatch }: TypedStore) => async (file: File) =
   await Promise.all(result.map(async (tiles: string[], index: number): Promise<boolean> => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
 
-    const indexCount = result.length < 2 ? '' : ` ${(index + 1).toString(10).padStart(2, '0')}`;
+    const indexCount = result.length < 2 ? '' : ` ${(index + 1).toString(10)
+      .padStart(2, '0')}`;
 
-    dispatch<ImportQueueAddAction>({
-      type: Actions.IMPORTQUEUE_ADD,
-      payload: {
-        fileName: `${file.name}${indexCount}`,
-        imageHash,
-        tiles,
-        lastModified: file.lastModified ? (file.lastModified + index) : undefined,
-        tempId: randomId(),
-      },
-    });
+    importQueueAdd([{
+      fileName: `${file.name}${indexCount}`,
+      imageHash,
+      tiles,
+      lastModified: file.lastModified ? (file.lastModified + index) : undefined,
+      tempId: randomId(),
+    }]);
 
     return true;
   }));
 
   return true;
 };
-
-export default getTransformPlainText;

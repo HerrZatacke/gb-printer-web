@@ -4,9 +4,9 @@ import { reduceItems } from '../reduceArray';
 import { isRGBNImage } from '../isRGBNImage';
 import type { FrameData } from '../applyFrame/frameData';
 import type { RepoContents } from '../../../types/Export';
-import type { JSONExportState } from '../../app/store/State';
 import type { Image, RGBNImage } from '../../../types/Image';
 import type { Frame } from '../../../types/Frame';
+import type { JSONExportState } from '../../../types/ExportState';
 
 interface RehashedItem {
   oldHash: string,

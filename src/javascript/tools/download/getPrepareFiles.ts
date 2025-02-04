@@ -1,9 +1,8 @@
-import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import { BW_PALETTE, BW_PALETTE_HEX, Decoder, RGBNDecoder } from 'gb-image-decoder';
 import generateFileName from '../generateFileName';
 import { getTxtFile } from './getTxtFile';
 import { getRotatedCanvas } from '../applyRotation';
-import type { State } from '../../app/store/State';
 import type { Palette } from '../../../types/Palette';
 import type { Image, MonochromeImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
@@ -13,21 +12,23 @@ import { getImagePalettes } from '../getImagePalettes';
 
 const getPrepareFiles =
   (
-    state: State,
+    exportScaleFactors: number[],
+    exportFileTypes: string[],
+    handleExportFrame: ExportFrameMode,
+    palettes: Palette[],
   ) => (
     image: Image,
   ) => async (
     tiles: string[] | RGBNTiles,
     imageStartLine: number,
   ): Promise<DownloadInfo[]> => {
-    const { exportScaleFactors, exportFileTypes, handleExportFrame } = state;
 
     let decoder: Decoder | RGBNDecoder;
     const isRGBN = isRGBNImage(image);
     const lockFrame = image.lockFrame || false;
     const rotation = image.rotation || 0;
 
-    const { palette, framePalette } = getImagePalettes(state, image);
+    const { palette, framePalette } = getImagePalettes(palettes, image);
 
     if (!palette) {
       throw new Error('Palette missing?');

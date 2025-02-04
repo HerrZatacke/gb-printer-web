@@ -1,12 +1,10 @@
 import { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../app/store/actions';
-import type { PaletteSetSortOrderAction } from '../../types/actions/PaletteActions';
 import { PaletteSortMode } from '../consts/paletteSortModes';
-import type { State } from '../app/store/State';
 import type { Palette } from '../../types/Palette';
 import { isRGBNImage } from '../tools/isRGBNImage';
 import type { Image, MonochromeImage } from '../../types/Image';
+import useSettingsStore from '../app/stores/settingsStore';
+import useItemsStore from '../app/stores/itemsStore';
 
 export interface PaletteSortOption {
   label: string,
@@ -24,12 +22,8 @@ interface UsePaletteSort {
 }
 
 const usePaletteSort = (): UsePaletteSort => {
-  const { sortPalettes, images } = useSelector((state: State) => ({
-    sortPalettes: state.sortPalettes,
-    images: state.images,
-  }));
-
-  const dispatch = useDispatch();
+  const { sortPalettes, setSortPalettes } = useSettingsStore();
+  const { images } = useItemsStore();
 
   const paletteSortOptions: PaletteSortOption[] = [
     {
@@ -57,13 +51,6 @@ const usePaletteSort = (): UsePaletteSort => {
       value: PaletteSortMode.NAME_DESC,
     },
   ];
-
-  const setSortPalettes = (sortMode: PaletteSortMode) => {
-    dispatch<PaletteSetSortOrderAction>({
-      type: Actions.SET_PALETTE_SORT,
-      payload: sortMode,
-    });
-  };
 
   const paletteUsages = useMemo(() => (
     images.reduce((acc: PaletteUsage, image: Image): PaletteUsage => {

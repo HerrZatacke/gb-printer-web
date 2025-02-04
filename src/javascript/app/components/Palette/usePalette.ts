@@ -1,13 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
-import type {
-  PaletteCloneAction,
-  PaletteDeleteAction,
-  PaletteEditAction,
-  PaletteSetActiveAction,
-} from '../../../../types/actions/PaletteActions';
-import type { ConfirmAnsweredAction, ConfirmAskAction } from '../../../../types/actions/ConfirmActions';
+import useDialogsStore from '../../stores/dialogsStore';
+import useItemsStore from '../../stores/itemsStore';
+import useSettingsStore from '../../stores/settingsStore';
+import useEditPalette from '../../../hooks/useSetEditPalette';
+import { useStores } from '../../../hooks/useStores';
 
 interface UsePalette {
   isActive: boolean
@@ -18,47 +13,33 @@ interface UsePalette {
 }
 
 export const usePalette = (shortName: string, name: string): UsePalette => {
-  const isActive = useSelector((state: State) => state.activePalette === shortName);
-  const dispatch = useDispatch();
+  const { activePalette, setActivePalette } = useSettingsStore();
+  const { dismissDialog, setDialog } = useDialogsStore();
+  const { updateLastSyncLocalNow } = useStores();
+  const { deletePalette } = useItemsStore();
+  const { editPalette, clonePalette } = useEditPalette();
+  const isActive = activePalette === shortName;
+
 
   return {
     isActive,
-    setActive: () => {
-      dispatch<PaletteSetActiveAction>({
-        type: Actions.PALETTE_SET_ACTIVE,
-        payload: shortName,
-      });
-    },
+    setActive: () => setActivePalette(shortName),
     deletePalette: () => {
-      dispatch<ConfirmAskAction>({
-        type: Actions.CONFIRM_ASK,
-        payload: {
-          message: `Delete palette "${name || 'no name'}"?`,
-          confirm: async () => {
-            dispatch<PaletteDeleteAction>({
-              type: Actions.PALETTE_DELETE,
-              payload: { shortName },
-            });
-          },
-          deny: async () => {
-            dispatch<ConfirmAnsweredAction>({
-              type: Actions.CONFIRM_ANSWERED,
-            });
-          },
+      setDialog({
+        message: `Delete palette "${name || 'no name'}"?`,
+        confirm: async () => {
+          if (isActive) {
+            setActivePalette('dsh');
+          }
+
+          updateLastSyncLocalNow();
+          deletePalette(shortName);
+          dismissDialog(0);
         },
+        deny: async () => dismissDialog(0),
       });
     },
-    editPalette: () => {
-      dispatch<PaletteEditAction>({
-        type: Actions.PALETTE_EDIT,
-        payload: shortName,
-      });
-    },
-    clonePalette: () => {
-      dispatch<PaletteCloneAction>({
-        type: Actions.PALETTE_CLONE,
-        payload: shortName,
-      });
-    },
+    editPalette: () => editPalette(shortName),
+    clonePalette: () => clonePalette(shortName),
   };
 };

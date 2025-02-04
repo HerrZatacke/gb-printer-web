@@ -1,21 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
-import { useDispatch, useSelector } from 'react-redux';
+import useBatchUpdate from '../../../../hooks/useBatchUpdate';
+import useInteractionsStore from '../../../stores/interactionsStore';
+import useItemsStore from '../../../stores/itemsStore';
+import useEditStore from '../../../stores/editStore';
 import { missingGreyPalette } from '../../../defaults';
-import { Actions } from '../../../store/actions';
+import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import { getImageTileCount } from '../../../../tools/loadImageTiles';
-import type { State } from '../../../store/State';
-import type {
-  CancelEditImagesAction,
-  ImagesBatchUpdateAction,
-  ImageUpdates,
-} from '../../../../../types/actions/ImageActions';
-import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
 import modifyTagChanges from '../../../../tools/modifyTagChanges';
+import type { ImageUpdates } from '../../../../../types/actions/ImageActions';
+import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
 import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../../../../types/Image';
 import type { Rotation } from '../../../../tools/applyRotation';
 import type { Palette } from '../../../../../types/Palette';
-import { isRGBNImage } from '../../../../tools/isRGBNImage';
 import type { TagChange } from '../../../../tools/applyTagChanges';
 
 interface Batch {
@@ -50,11 +47,6 @@ interface ToEdit {
   paletteShort?: string,
   framePaletteShort?: string,
   rotation?: Rotation,
-}
-
-interface StateFunctions {
-  tileCounter: (hash: string) => Promise<number>,
-  findPalette: (shortName: string) => Palette
 }
 
 interface Form {
@@ -106,41 +98,43 @@ const willUpdate = (batch: Batch): string[] => ([
 
 
 export const useEditForm = (): UseEditForm => {
+  const { editImages, cancelEditImages } = useEditStore();
+  const { palettes, frames, images } = useItemsStore();
+  const { batchUpdateImages } = useBatchUpdate();
 
-  const {
-    tileCounter,
-    findPalette,
-  } = useSelector((state: State): StateFunctions => ({
-    tileCounter: getImageTileCount(state),
-    findPalette: (shortName?: string): Palette => (
-      state.palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
-    ),
-  }));
+  const findPalette = (shortName?: string): Palette => (
+    palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
+  );
 
-  const toEdit = useSelector((state: State): ToEdit | undefined => {
-    if (!state.editImage) {
+  const tileCounter = getImageTileCount(images, frames);
+
+
+  const { windowDimensions } = useInteractionsStore();
+
+  const toEdit = useMemo((): ToEdit | undefined => {
+    if (!editImages) {
       return undefined;
     }
 
-    const batch = state.editImage.batch || [];
-    const stateTags = state.editImage.tags || [];
+    const batch = editImages.batch || [];
+    const stateTags = editImages.tags || [];
 
     if (!batch[0]) {
       return undefined;
     }
 
-    const image = state.images.find(({ hash }) => hash === batch[0]);
+    const image = images.find(({ hash }) => hash === batch[0]);
 
     if (!image) {
       return undefined;
     }
 
-    const height = (state.windowDimensions.width <= 600) ?
-      state.windowDimensions.height :
-      Math.min(900, state.windowDimensions.height);
+    const height = (windowDimensions.width <= 600) ?
+      windowDimensions.height :
+      Math.min(900, windowDimensions.height);
 
     const typeCount = batch.reduce((acc, selHash) => {
-      const tcImage = state.images.find(({ hash }) => hash === selHash);
+      const tcImage = images.find(({ hash }) => hash === selHash);
       if (!tcImage) {
         return acc;
       }
@@ -178,7 +172,7 @@ export const useEditForm = (): UseEditForm => {
       framePaletteShort,
       rotation: image.rotation,
     });
-  });
+  }, [editImages, images, windowDimensions]);
 
   const [title, updateTitle] = useState<string>(toEdit?.title || '');
   const [created, updateCreated] = useState<string>(toEdit?.created || '');
@@ -303,8 +297,6 @@ export const useEditForm = (): UseEditForm => {
     });
   };
 
-  const dispatch = useDispatch();
-
   return {
     toEdit,
     form,
@@ -321,29 +313,22 @@ export const useEditForm = (): UseEditForm => {
     updateTags,
 
     save: () => {
-      dispatch<ImagesBatchUpdateAction>({
-        type: Actions.UPDATE_IMAGES_BATCH_CHANGES,
-        payload: {
-          shouldUpdate,
-          updates: {
-            title,
-            created,
-            frame,
-            lockFrame,
-            rotation,
-            palette: paletteRGBN || paletteShort,
-            invertPalette: invertPalette || false,
-            framePalette: framePaletteShort,
-            invertFramePalette: invertFramePalette || false,
-          },
-          tagChanges,
+      batchUpdateImages({
+        shouldUpdate,
+        updates: {
+          title,
+          created,
+          frame,
+          lockFrame,
+          rotation,
+          palette: paletteRGBN || paletteShort,
+          invertPalette: invertPalette || false,
+          framePalette: framePaletteShort,
+          invertFramePalette: invertFramePalette || false,
         },
+        tagChanges,
       });
     },
-    cancel: () => {
-      dispatch<CancelEditImagesAction>({
-        type: Actions.CANCEL_EDIT_IMAGES,
-      });
-    },
+    cancel: () => cancelEditImages(),
   };
 };
