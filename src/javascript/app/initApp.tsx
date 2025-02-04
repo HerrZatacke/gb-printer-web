@@ -2,12 +2,15 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import useFiltersStore from './stores/filtersStore';
 import useItemsStore from './stores/itemsStore';
+import { migrateLegacy } from './stores/migrations/legacy';
 
 const initApp = async () => {
   const appRoot = document.getElementById('app');
   if (!appRoot) {
     return;
   }
+
+  migrateLegacy();
 
   const { default: App } = await import(/* webpackChunkName: "app" */ './components/App');
 

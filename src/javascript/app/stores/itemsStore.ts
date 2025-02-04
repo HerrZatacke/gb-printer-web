@@ -13,7 +13,7 @@ import { SpecialTags } from '../../consts/SpecialTags';
 import uniqueBy from '../../tools/unique/by';
 import unique from '../../tools/unique';
 import sortBy from '../../tools/sortby';
-import { migrateLegacy, VERSION_LEGACY } from './migrations/legacy';
+import { migrateItems } from './migrations/history/0/migrateItems';
 
 export const ITEMS_STORE_VERSION = 1;
 
@@ -67,9 +67,6 @@ interface AddUpdatePalettes {
   add: Palette[],
   update: Palette[],
 }
-
-
-await migrateLegacy();
 
 const useItemsStore = create<ItemsState>()(
   persist(
@@ -319,16 +316,13 @@ const useItemsStore = create<ItemsState>()(
 
       version: ITEMS_STORE_VERSION,
       // migrate: async (persistedState: unknown, version: number): Promise<Partial<ItemsState>> => {
-      migrate: (persistedState: unknown, version: number): Values => {
+      migrate: async (persistedState: unknown, version: number): Promise<Values> => {
         let finalState;
 
-        if (version === VERSION_LEGACY) {
-          finalState = persistedState;
+        // console.log({ version });
+        if (version === 0) {
+          finalState = await migrateItems(persistedState);
         }
-
-        // if (version === 0) {
-        //   finalState = await migrateItems(persistedState);
-        // }
 
         return finalState as Values;
       },

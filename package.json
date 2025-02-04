@@ -126,7 +126,7 @@
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.4",
     "webpack-merge": "^5.8.0",
-    "zustand": "^5.0.1"
+    "zustand": "^5.0.3"
   },
   "browserslist": [
     ">1%",
