@@ -30,6 +30,9 @@ const config = async () => {
       remote: [
         path.join(process.cwd(), 'src', 'javascript', 'remote.ts'),
       ],
+      db: [
+        path.join(process.cwd(), 'src', 'javascript', 'db.ts'),
+      ],
     },
     module: {
       rules: [
@@ -176,6 +179,12 @@ const config = async () => {
         template: './src/assets/remote.html',
         filename: 'remote.html',
         chunks: ['pf', 'remote'],
+      }),
+      new HtmlWebpackPlugin({
+        title: 'Game Boy Printer Database',
+        template: './src/assets/db.html',
+        filename: 'db.html',
+        chunks: ['pf', 'db'],
       }),
       new MiniCssExtractPlugin({
         filename: '[name].css',
