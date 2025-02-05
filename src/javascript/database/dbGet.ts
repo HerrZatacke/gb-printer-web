@@ -8,7 +8,6 @@ export interface KV<T> {
 export const dbGetByKey = async (store: IDBObjectStore, key: string): Promise<string> => new Promise((resolve) => {
   const request = store.get(key);
   request.onsuccess = (ev) => {
-    console.log(key, ev);
     // @ts-ignore
     resolve(ev.target?.result as string[]);
   };
