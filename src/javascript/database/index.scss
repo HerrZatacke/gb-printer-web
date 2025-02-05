@@ -1,0 +1,13 @@
+#db {
+  padding: 40px;
+
+  &.is-child {
+    display: none;
+  }
+}
+
+.url-load {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
