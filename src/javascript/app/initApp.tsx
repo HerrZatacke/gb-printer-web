@@ -6,6 +6,7 @@ import { defaults } from './store/defaults';
 import { getEnv } from '../tools/getEnv';
 import cleanState from '../tools/cleanState';
 import type { State } from './store/State';
+import { generateDebugImages } from '../tools/generateDebugImages';
 
 const initApp = async () => {
   const appRoot = document.getElementById('app');
@@ -38,6 +39,13 @@ const initApp = async () => {
     const root = createRoot(appRoot);
     const store = getStore(state);
     root.render(<Provider store={store}><App /></Provider>);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.startFake = async (count: number) => {
+      await generateDebugImages(store, count);
+    };
+
   } catch (error) {
     const appNode = document.getElementById('app');
 
