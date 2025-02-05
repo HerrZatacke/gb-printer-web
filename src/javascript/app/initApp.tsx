@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import useFiltersStore from './stores/filtersStore';
 import useItemsStore from './stores/itemsStore';
 import { migrateLegacy } from './stores/migrations/legacy';
+import { generateDebugImages } from '../tools/generateDebugImages';
 
 const initApp = async () => {
   const appRoot = document.getElementById('app');
@@ -21,6 +22,12 @@ const initApp = async () => {
     useFiltersStore.getState().cleanRecentImports((images || []).map(({ hash }) => hash));
 
     root.render(<App />);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.startFake = async (count: number) => {
+      await generateDebugImages(count);
+    };
   } catch (error) {
     const appNode = document.getElementById('app');
 
