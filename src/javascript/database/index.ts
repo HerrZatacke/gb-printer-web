@@ -33,16 +33,6 @@ export const initDbTransfer = async (opener: Window | null) => {
   });
 
   window.addEventListener('message', (event: MessageEvent<TransferMessage>) => {
-    let childOrigin = '';
-
-    try {
-      childOrigin = (new URL(urlField.value)).origin;
-    } catch { /**/ }
-
-    if (event.origin !== childOrigin) {
-      return;
-    }
-
     if (event.data.type === 'DBDATA') {
       transferred = event.data;
       dbReport.innerText = `${transferred.images.length} images\n${transferred.frames.length} frames\n${transferred.localStorageData.length} localStorage entries`;
@@ -61,7 +51,6 @@ export const initDbTransfer = async (opener: Window | null) => {
 
 
       window.setTimeout(() => {
-        console.log(images, frames);
         const transferMessage: TransferMessage = {
           type: 'DBDATA',
           images,
