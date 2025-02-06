@@ -34,3 +34,16 @@ export const dbGetAllFromStore = async (request: IDBOpenDBRequest, storeName: st
     };
   })
 );
+
+export const dbSetAll = async (request: IDBOpenDBRequest, storeName: string, data: KV<string>[]): Promise<void> => {
+  const objectStore = request.result.transaction(storeName, 'readwrite').objectStore(storeName);
+
+  const clearRequest = objectStore.clear();
+
+  clearRequest.onsuccess = async () => {
+    for (const { key, value } of data) {
+      objectStore.add(value, key);
+    }
+  };
+
+};

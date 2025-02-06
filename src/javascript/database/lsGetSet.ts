@@ -1,4 +1,4 @@
-import type { KV } from './dbGet';
+import type { KV } from './dbGetSet';
 
 export const localStorageGetAll = async (): Promise<KV<string>[]> => {
   const keys = Object.keys(localStorage)
@@ -14,4 +14,10 @@ export const localStorageGetAll = async (): Promise<KV<string>[]> => {
   }
 
   return dbData;
+};
+
+export const localStorageSet = (data: KV<string>[]) => {
+  for (const { key, value } of data) {
+    localStorage.setItem(key, value);
+  }
 };
