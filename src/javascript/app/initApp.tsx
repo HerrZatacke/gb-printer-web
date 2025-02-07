@@ -11,7 +11,10 @@ const initApp = async () => {
     return;
   }
 
-  migrateLegacy();
+  if (migrateLegacy()) {
+    window.location.reload();
+    return;
+  }
 
   const { default: App } = await import(/* webpackChunkName: "app" */ './components/App');
 
