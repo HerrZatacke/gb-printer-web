@@ -3,6 +3,7 @@ import './index.scss';
 import { dbGetAllFromStore, dbSetAll } from './dbGetSet';
 import type { KV } from './dbGetSet';
 import { localStorageGetAll, localStorageSet } from './lsGetSet';
+import { localforageReady } from '../tools/localforageInstance';
 
 const DB_NAME = 'GB Printer Web';
 
@@ -19,6 +20,8 @@ export const initDbTransfer = async (opener: Window | null) => {
   const urlLoadButton = dbRoot.querySelector('#db-url-load') as HTMLButtonElement;
   const copyButton = dbRoot.querySelector('#db-copy') as HTMLButtonElement;
   const dbReport = dbRoot.querySelector('#db-report') as HTMLPreElement;
+
+  await localforageReady();
 
   const databases = await indexedDB.databases();
   const version = databases.find(({ name }) => name === DB_NAME)?.version || 1;
