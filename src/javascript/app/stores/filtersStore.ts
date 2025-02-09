@@ -50,7 +50,7 @@ const useFiltersStore = create(
       setFiltersActiveTags: (filtersActiveTags: string[]) => set({ filtersActiveTags, filtersVisible: false }),
       setFiltersVisible: (filtersVisible: boolean) => set({ filtersVisible }),
       setImageSelection: (imageSelection: string[]) => set({ imageSelection, lastSelectedImage: null }),
-      setSortBy: (sortBy: string) => set({ sortBy }),
+      setSortBy: (sortBy: string) => set({ sortBy, sortOptionsVisible: false }),
       setSortOptionsVisible: (sortOptionsVisible: boolean) => set({ sortOptionsVisible }),
 
       cleanRecentImports: (imageHashes: string[]) => {
