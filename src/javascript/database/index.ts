@@ -30,9 +30,12 @@ export const initDbTransfer = async (opener: Window | null) => {
 
   let transferred: TransferMessage;
 
-  urlLoadButton.addEventListener('click', () => {
-    window.open(urlField.value, 'db-child', 'width=480,height=400') as Window;
+  urlField.value = 'https://herrzatacke.github.io/gb-printer-web/db.html';
 
+  let remoteWindow: Window | undefined;
+
+  urlLoadButton.addEventListener('click', () => {
+    remoteWindow = window.open(urlField.value, 'db-child', 'width=480,height=400') as Window;
   });
 
   copyButton.addEventListener('click', async () => {
@@ -42,6 +45,11 @@ export const initDbTransfer = async (opener: Window | null) => {
     console.log('images done');
     await dbSetAll(request, 'gb-printer-web-frames', transferred.frames);
     console.log('frames done');
+
+    window.setTimeout(() => {
+      remoteWindow?.close();
+      window.location.replace('./');
+    }, 800);
   });
 
   window.addEventListener('message', (event: MessageEvent<TransferMessage>) => {
