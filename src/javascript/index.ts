@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('body')?.classList.add('no-touch');
   }
 
+  if (window.location.hostname.includes('d3-dev')) {
+    document.body.classList.add('debug');
+  }
+
   initLog('Loading environment information');
 
   try {
