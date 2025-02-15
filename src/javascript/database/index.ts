@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment,no-console */
 import './index.scss';
-import { dbGetAllFromStore, dbSetAll } from './dbGetSet';
+import { dbGetAllFromStore, dbClearAndSetAll } from './dbGetSet';
 import type { KV } from './dbGetSet';
-import { localStorageGetAll, localStorageSet } from './lsGetSet';
+import { localStorageClear, localStorageGetAll, localStorageSet } from './lsGetSet';
 import { localforageReady } from '../tools/localforageInstance';
 
 const DB_NAME = 'GB Printer Web';
@@ -24,6 +24,7 @@ export const initDbTransfer = async (opener: Window | null) => {
   await localforageReady();
 
   const databases = await indexedDB.databases();
+
   const version = databases.find(({ name }) => name === DB_NAME)?.version || 1;
 
   const request = indexedDB.open(DB_NAME, version);
@@ -39,16 +40,17 @@ export const initDbTransfer = async (opener: Window | null) => {
   });
 
   copyButton.addEventListener('click', async () => {
+    await localStorageClear();
     await localStorageSet(transferred.localStorageData);
     console.log('localStorage done');
-    await dbSetAll(request, 'gb-printer-web-images', transferred.images);
+    await dbClearAndSetAll(request, 'gb-printer-web-images', transferred.images);
     console.log('images done');
-    await dbSetAll(request, 'gb-printer-web-frames', transferred.frames);
+    await dbClearAndSetAll(request, 'gb-printer-web-frames', transferred.frames);
     console.log('frames done');
 
     window.setTimeout(() => {
       remoteWindow?.close();
-      window.location.replace('./');
+      window.location.href = './';
     }, 800);
   });
 

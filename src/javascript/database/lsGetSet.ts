@@ -16,6 +16,12 @@ export const localStorageGetAll = async (): Promise<KV<string>[]> => {
   return dbData;
 };
 
+export const localStorageClear = () => {
+  for (const key of Object.keys(localStorage)) {
+    localStorage.removeItem(key);
+  }
+};
+
 export const localStorageSet = (data: KV<string>[]) => {
   for (const { key, value } of data) {
     localStorage.setItem(key, value);
