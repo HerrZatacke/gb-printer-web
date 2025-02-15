@@ -1,9 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
+import useItemsStore from '../../stores/itemsStore';
 import SVG from '../SVG';
 import './index.scss';
-import type { State } from '../../store/State';
 
 interface Props {
   frame: string,
@@ -22,7 +21,7 @@ function FrameSelect({
   lockFrame,
   selectLabel,
 }: Props) {
-  const frames = useSelector((state: State) => (state.frames));
+  const { frames } = useItemsStore();
 
   return (
     <div className="frame-select">

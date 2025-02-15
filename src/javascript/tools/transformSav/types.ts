@@ -1,4 +1,3 @@
-import type { AnyAction, Dispatch } from 'redux';
 import type { Frame } from '../../../types/Frame';
 
 export enum RomTypes {
@@ -76,7 +75,6 @@ export interface ImportSavParams {
   frames: Frame[],
   fileName: string | GenerateFilenameFn,
   importDeleted: boolean,
-  dispatch: Dispatch<AnyAction>,
   forceMagicCheck: boolean,
 }
 

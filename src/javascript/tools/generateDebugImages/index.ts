@@ -3,10 +3,8 @@ import dayjs from 'dayjs';
 import saveNewImage from '../saveNewImage';
 import padToHeight from '../padToHeight';
 import { dateFormat } from '../../app/defaults';
-import type { AddImagesAction } from '../../../types/actions/ImageActions';
-import { Actions } from '../../app/store/actions';
-import type { TypedStore } from '../../app/store/State';
 import type { MonochromeImage } from '../../../types/Image';
+import useItemsStore from '../../app/stores/itemsStore';
 
 const generateRandomTile = (): string => (
   (new Array(20))
@@ -26,7 +24,7 @@ interface DebugImport {
   elapsed: number,
 }
 
-const generateDebugImage = async (store: TypedStore, index: number): Promise<DebugImport> => {
+const generateDebugImage = async (index: number): Promise<DebugImport> => {
   const timestamp = Date.now();
   const tiles = generateRandomImage(18);
 
@@ -54,23 +52,25 @@ const generateDebugImage = async (store: TypedStore, index: number): Promise<Deb
   };
 };
 
-export const generateDebugImages = async (store: TypedStore, count: number) => {
+export const generateDebugImages = async (count: number) => {
   const debugs: DebugImport[] = [];
 
   const generateStart = Date.now();
 
   for (let i = 0; i < count; i += 1) {
-    debugs.push(await generateDebugImage(store, i));
+    debugs.push(await generateDebugImage(i));
   }
 
   console.log(`Generate time: ${Date.now() - generateStart}`);
 
   const dispatchStart = Date.now();
 
-  store.dispatch<AddImagesAction>({
-    type: Actions.ADD_IMAGES,
-    payload: debugs.map(({ image }) => image),
-  });
+  const { images, setImages } = useItemsStore.getState();
+
+  setImages([
+    ...images,
+    ...debugs.map(({ image }) => image),
+  ]);
 
   console.log(`Dispatch time: ${Date.now() - dispatchStart}`);
 };

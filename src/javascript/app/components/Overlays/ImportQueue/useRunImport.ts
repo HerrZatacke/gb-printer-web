@@ -1,24 +1,21 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Queue from 'promise-queue';
 import { useNavigate } from 'react-router-dom';
-import { Actions } from '../../../store/actions';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
 import sortBy from '../../../../tools/sortby';
 import { dateFormat } from '../../../defaults';
-import type { State } from '../../../store/State';
-import type { PaletteSetActiveAction } from '../../../../../types/actions/PaletteActions';
 import type { ImportItem } from '../../../../../types/ImportItem';
-import type { ImportQueueCancelAction } from '../../../../../types/actions/QueueActions';
 import type { TagChange } from '../../../../tools/applyTagChanges';
-import type { AddImagesAction } from '../../../../../types/actions/ImageActions';
-import type { AddImageGroupAction } from '../../../../../types/actions/GroupActions';
-import type { ImageSelectionSetAction } from '../../../../../types/actions/ImageSelectionActions';
 import { randomId } from '../../../../tools/randomId';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
+import useEditStore from '../../../stores/editStore';
+import useImportsStore from '../../../stores/importsStore';
+import useItemsStore from '../../../stores/itemsStore';
+import useSettingsStore from '../../../stores/settingsStore';
+import { useStores } from '../../../../hooks/useStores';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -29,7 +26,7 @@ interface UseRunImport {
   frame: string,
   createGroup: boolean,
   setFrame: (frame: string) => void,
-  setPalette: (palette: string) => void,
+  setActivePalette: (palette: string) => void,
   setCreateGroup: (createGroup: boolean) => void,
   runImport: () => Promise<void>,
   cancelImport: () => void,
@@ -38,16 +35,16 @@ interface UseRunImport {
 }
 
 const useRunImport = (): UseRunImport => {
-  const dispatch = useDispatch();
+  const { importPad, setActivePalette, activePalette } = useSettingsStore();
+  const { cancelEditImageGroup } = useEditStore();
+  const { addImageGroup } = useItemsStore();
+  const { addImages, importQueueCancel } = useStores();
+
   const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
   const navigate = useNavigate();
 
-  const { importQueue, palette, importPad } = useSelector((state: State) => ({
-    importPad: state.importPad,
-    palette: state.activePalette || '',
-    importQueue: state.importQueue,
-  }));
+  const { importQueue } = useImportsStore();
 
   const [frame, setFrame] = useState('');
   const [createGroup, setCreateGroup] = useState<boolean>(importQueue.length > 3);
@@ -67,7 +64,7 @@ const useRunImport = (): UseRunImport => {
           saveNewImage({
             lines: importPad ? padToHeight(tiles) : tiles,
             filename: fileName,
-            palette,
+            palette: activePalette,
             frame,
             tags: tagChanges.add,
             // Adding index to milliseconds to ensure better sorting
@@ -80,44 +77,39 @@ const useRunImport = (): UseRunImport => {
 
     const imageHashes = savedImages.map(({ hash }) => hash);
 
-    dispatch<AddImagesAction>({
-      type: Actions.ADD_IMAGES,
-      payload: savedImages,
-    });
+    addImages(savedImages);
 
     if (createGroup) {
       const title = `Import ${dayjs().format(dateFormat)}`;
       const slug = toSlug(title);
 
-      dispatch<AddImageGroupAction>({
-        type: Actions.ADD_IMAGE_GROUP,
-        payload: {
-          parentId: view.id,
-          group: {
-            id: randomId(),
-            slug,
-            title,
-            created: dayjs(Date.now()).format(dateFormat),
-            coverImage: savedImages[0].hash,
-            images: imageHashes,
-            groups: [],
-          },
+      cancelEditImageGroup();
+
+      // ToDo: Handle jumping to wrong folder when creating group in sub-view
+
+      addImageGroup(
+        {
+          id: randomId(),
+          slug,
+          title,
+          created: dayjs(Date.now()).format(dateFormat),
+          coverImage: savedImages[0].hash,
+          images: imageHashes,
+          groups: [],
         },
-      });
+        view.id,
+      );
 
       navigate(`/gallery/${view.slug}${slug}/page/1`);
     }
 
-    dispatch<ImageSelectionSetAction>({
-      type: Actions.IMAGE_SELECTION_SET,
-      payload: imageHashes,
-    });
+    // ToDo: which images should become selected? setSelection(imageHahses)??
   };
 
   return {
     importQueue,
     importPad,
-    palette,
+    palette: activePalette,
     frame,
     tagChanges,
     createGroup,
@@ -125,17 +117,8 @@ const useRunImport = (): UseRunImport => {
     setFrame,
     setCreateGroup,
     runImport,
-    cancelImport: () => {
-      dispatch<ImportQueueCancelAction>({
-        type: Actions.IMPORTQUEUE_CANCEL,
-      });
-    },
-    setPalette: (payload: string) => {
-      dispatch<PaletteSetActiveAction>({
-        type: Actions.PALETTE_SET_ACTIVE,
-        payload,
-      });
-    },
+    cancelImport: importQueueCancel,
+    setActivePalette,
   };
 };
 

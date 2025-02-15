@@ -21,7 +21,7 @@ const removeSortIndex = (image: SortableImage): Image => ({
   sortIndex: undefined,
 } as UnSortableImage as Image);
 
-const sortImages = ({ sortBy }: { sortBy: string }) => (a: SortableImage, b: SortableImage) => {
+const sortImages = (sortBy?: string) => (a: SortableImage, b: SortableImage) => {
 
   if (!sortBy) {
     return 0;

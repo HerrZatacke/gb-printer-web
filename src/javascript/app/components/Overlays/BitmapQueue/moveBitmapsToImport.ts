@@ -1,10 +1,8 @@
-import type { AnyAction, Dispatch } from 'redux';
 import { ditherFilter } from '../../../../tools/applyBitmapFilter';
-import { Actions } from '../../../store/actions';
 import { compressAndHash } from '../../../../tools/storage';
 import type { QueueImage } from '../../../../../types/QueueImage';
-import type { ImportQueueAddAction } from '../../../../../types/actions/QueueActions';
 import { randomId } from '../../../../tools/randomId';
+import useImportsStore from '../../../stores/importsStore';
 
 export interface DispatchBitmapsToImportOptions {
   bitmapQueue: QueueImage[],
@@ -55,11 +53,12 @@ const encodeTile = (tileData: number[]): string => {
     .toUpperCase();
 };
 
-const moveBitmapsToImport = (dispatch: Dispatch<AnyAction>): DispatchBitmapsToImportFn => ({
+export const moveBitmapsToImport: DispatchBitmapsToImportFn = ({
   bitmapQueue,
   dither,
   contrastBaseValues,
 }): void => {
+  const { importQueueAdd } = useImportsStore.getState();
   bitmapQueue.forEach(async ({ imageData, height, fileName, lastModified }: QueueImage): Promise<void> => {
     const { data } = ditherFilter({
       imageData,
@@ -87,17 +86,13 @@ const moveBitmapsToImport = (dispatch: Dispatch<AnyAction>): DispatchBitmapsToIm
 
     const { dataHash: imageHash } = await compressAndHash(tiles);
 
-    dispatch<ImportQueueAddAction>({
-      type: Actions.IMPORTQUEUE_ADD,
-      payload: {
-        fileName,
-        imageHash,
-        tiles,
-        lastModified,
-        tempId: randomId(),
-      },
-    });
+    importQueueAdd([{
+      fileName,
+      imageHash,
+      tiles,
+      lastModified,
+      tempId: randomId(),
+    }]);
   });
 };
 
-export default moveBitmapsToImport;

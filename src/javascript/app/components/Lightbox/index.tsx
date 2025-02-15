@@ -1,4 +1,5 @@
 import React from 'react';
+// import useInteractionsStore from '../../stores/interactionsStore';
 import Buttons from '../Buttons';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
 import useAutoFocus from '../../../hooks/useAutoFocus';
@@ -16,6 +17,8 @@ interface Props {
 }
 
 function Lightbox(props: Props) {
+  // const { isFullscreen } = useInteractionsStore();
+
   const closeOnOverlayClick = typeof props.closeOnOverlayClick !== 'boolean' ? true : props.closeOnOverlayClick;
 
   useOverlayGlobalKeys({

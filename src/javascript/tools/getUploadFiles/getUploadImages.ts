@@ -2,9 +2,9 @@ import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 import type { AddToQueueFn, DownloadInfo } from '../../../types/Sync';
 import type { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
-import type { State } from '../../app/store/State';
 import { getTxtFile } from '../download/getTxtFile';
 import unique from '../unique';
+import useItemsStore from '../../app/stores/itemsStore';
 
 interface TmpInfo {
   file: Image,
@@ -13,7 +13,6 @@ interface TmpInfo {
 }
 
 export const getUploadImages = async (
-  state: State,
   repoContents: RepoContents,
   addToQueue: AddToQueueFn<SyncFile | null>,
 ): Promise<{
@@ -22,7 +21,9 @@ export const getUploadImages = async (
 }> => {
   const missingLocally: string[] = [];
 
-  const images: TmpInfo[] = state.images
+  const { images: stateImages } = useItemsStore.getState();
+
+  const images: TmpInfo[] = stateImages
     .map((image: Image): TmpInfo => {
       const searchHashes: string[] = isRGBNImage(image) ?
         unique(Object.values((image as RGBNImage).hashes)) :

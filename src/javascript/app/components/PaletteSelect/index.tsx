@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import './index.scss';
-import type { State } from '../../store/State';
 import usePaletteSort from '../../../hooks/usePaletteSort';
+import useItemsStore from '../../stores/itemsStore';
 
 interface Props {
   value: string,
@@ -28,7 +27,7 @@ function PaletteSelect({
 }: Props) {
   const [initiallySelected, setInitiallySelected] = useState<string>(value);
 
-  const palettesUnsorted = useSelector((state: State) => (state.palettes));
+  const { palettes: palettesUnsorted } = useItemsStore();
 
   const { sortFn } = usePaletteSort();
 

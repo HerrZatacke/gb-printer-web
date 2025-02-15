@@ -1,11 +1,10 @@
 
 export enum ExportTypes {
-  SETTINGS = 'settings',
-  SELECTED_IMAGES = 'selected_images',
-  IMAGES = 'images',
-  REMOTE = 'remote',
-  PALETTES = 'palettes',
+  ALL = 'all',
   FRAMES = 'frames',
-  FRAMEGROUP = 'framegroup',
-  DEBUG = 'debug',
+  CURRENT_FRAMEGROUP = 'current_framegroup',
+  IMAGES = 'images',
+  SELECTED_IMAGES = 'selected_images',
+  PALETTES = 'palettes',
+  PLUGINS = 'plugins',
 }

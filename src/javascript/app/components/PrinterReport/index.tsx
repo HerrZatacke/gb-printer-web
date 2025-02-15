@@ -14,7 +14,7 @@ const functionLabels: Record<PrinterFunction, string> = {
 };
 
 const getFetchImagesLabel = (printerFunctions: PrinterFunction[], dumpsLength: number): string => {
-  if (printerFunctions.includes(PrinterFunction.TEAR)) {
+  if (printerFunctions.includes(PrinterFunction.TEAR) || !dumpsLength) {
     return 'Fetch images';
   }
 
@@ -53,7 +53,7 @@ function PrinterReport() {
           >
             {
               name === PrinterFunction.FETCHIMAGES ?
-                getFetchImagesLabel(printerFunctions, printerData?.dumps?.length) :
+                getFetchImagesLabel(printerFunctions, printerData?.dumps?.length || 0) :
                 functionLabels[name as PrinterFunction]
             }
           </button>

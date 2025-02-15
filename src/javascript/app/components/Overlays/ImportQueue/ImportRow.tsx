@@ -1,13 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import GameBoyImage from '../../GameBoyImage';
 import SVG from '../../SVG';
-import { Actions } from '../../../store/actions';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
-import type { State } from '../../../store/State';
 import type { ImportItem } from '../../../../../types/ImportItem';
-import type { FrameQueueAddAction, ImportQueueCancelOneAction } from '../../../../../types/actions/QueueActions';
+import useImportsStore from '../../../stores/importsStore';
+import useItemsStore from '../../../stores/itemsStore';
+import useSettingsStore from '../../../stores/settingsStore';
 
 interface Props {
   importItem: ImportItem,
@@ -26,19 +25,16 @@ function ImportRow({
     tempId,
   } = importItem;
 
-  const {
-    palette,
-    locale,
-    storeDuplicateImage,
-    queueDuplicates,
-  } = useSelector((state: State) => ({
-    palette: state.palettes.find(({ shortName }) => shortName === paletteShort),
-    locale: state.preferredLocale,
-    storeDuplicateImage: state.images.find(({ hash }) => hash === imageHash),
-    queueDuplicates: state.importQueue.filter((item) => item.imageHash === imageHash).length,
-  }));
+  const { palettes, images } = useItemsStore();
+  const palette = palettes.find(({ shortName }) => shortName === paletteShort);
+  const storeDuplicateImage = images.find(({ hash }) => hash === imageHash);
 
-  const dispatch = useDispatch();
+  const { importQueue } = useImportsStore();
+  const queueDuplicates = importQueue.filter((item) => item.imageHash === imageHash).length;
+
+  const { preferredLocale } = useSettingsStore();
+
+  const { frameQueueAdd, importQueueCancelOne } = useImportsStore();
 
   return (
     <li className="import-image">
@@ -66,7 +62,7 @@ function ImportRow({
         {
           lastModified ? (
             <div className="import-image__date">
-              { dateFormatLocale(dayjs(lastModified), locale) }
+              { dateFormatLocale(dayjs(lastModified), preferredLocale) }
             </div>
           ) : null
         }
@@ -99,12 +95,7 @@ function ImportRow({
           type="button"
           title="Import as Frame"
           disabled={tiles.length / 20 < 14}
-          onClick={() => {
-            dispatch<FrameQueueAddAction>({
-              type: Actions.FRAMEQUEUE_ADD,
-              payload: importItem,
-            });
-          }}
+          onClick={() => frameQueueAdd([importItem])}
         >
           <SVG
             className="import-image__icon"
@@ -115,12 +106,7 @@ function ImportRow({
           className="import-image__button import-image__button--delete"
           type="button"
           title="Delete"
-          onClick={() => {
-            dispatch<ImportQueueCancelOneAction>({
-              type: Actions.IMPORTQUEUE_CANCEL_ONE,
-              payload: { tempId },
-            });
-          }}
+          onClick={() => importQueueCancelOne(tempId)}
         >
           <SVG
             className="import-image__icon"

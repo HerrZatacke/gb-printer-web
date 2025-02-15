@@ -6,6 +6,21 @@
   width: 100%;
   z-index: $z-index-navigation;
 
+  body.debug &:after {
+    content: 'Debug/Testing instance!';
+    position: absolute;
+    @include theme-background-color(#810000, #c50303);
+    @include theme-color(#ff8282, #ffbbbb);
+    @include theme-box-shadow(rgba($color-grey-20, 0.7), rgba($color-black, 0.7), 0 0 8px -1px);
+    padding: 2px 16px;
+    top: 60px;
+    left: 0;
+    width: 100vw;
+    text-align: center;
+    opacity: 70%;
+    pointer-events: none;
+  }
+
   &__burger-button {
     display: none;
 

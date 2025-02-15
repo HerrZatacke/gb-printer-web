@@ -1,8 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../../store/actions';
-import type { State } from '../../../store/State';
 import type { SyncLastUpdate } from '../../../../../types/Sync';
-import type { StorageSyncCancelAction, StorageSyncStartAction } from '../../../../../types/actions/LogActions';
+import useInteractionsStore from '../../../stores/interactionsStore';
+import useStoragesStore from '../../../stores/storagesStore';
+import { dropboxStorageTool } from '../../../../tools/dropboxStorage';
+import { gitStorageTool } from '../../../../tools/gitStorage';
+import { useStores } from '../../../../hooks/useStores';
+import { useImportExportSettings } from '../../../../hooks/useImportExportSettings';
 
 
 interface UseSyncSelect {
@@ -11,46 +13,46 @@ interface UseSyncSelect {
   gitActive: boolean,
   syncLastUpdate: SyncLastUpdate,
   autoDropboxSync: boolean,
-  startSync: (storageType: string, direction: string) => void,
+  startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => void,
   cancelSync: () => void,
 }
 
 export const useSyncSelect = (): UseSyncSelect => {
-  const data = useSelector((state: State) => ({
-    repoUrl: `https://github.com/${state.gitStorage.owner}/${state.gitStorage.repo}/tree/${state.gitStorage.branch}`,
-    dropboxActive: !!(
-      state.dropboxStorage.use &&
-      state.dropboxStorage.accessToken
-    ),
-    gitActive: !!(
-      state.gitStorage.use &&
-      state.gitStorage.owner &&
-      state.gitStorage.repo &&
-      state.gitStorage.branch &&
-      state.gitStorage.throttle &&
-      state.gitStorage.token
-    ),
-    syncLastUpdate: state.syncLastUpdate,
-    autoDropboxSync: state.dropboxStorage?.autoDropboxSync || false,
-  }));
+  const stores = useStores();
+  const { remoteImport } = useImportExportSettings();
 
-  const dispatch = useDispatch();
+  const { setSyncSelect } = useInteractionsStore();
+  const { gitStorage, dropboxStorage, syncLastUpdate } = useStoragesStore();
 
   return {
-    ...data,
-    startSync: (storageType: string, direction: string) => {
-      dispatch<StorageSyncStartAction>({
-        type: Actions.STORAGE_SYNC_START,
-        payload: {
-          storageType,
-          direction,
-        },
-      });
+    repoUrl: `https://github.com/${gitStorage.owner}/${gitStorage.repo}/tree/${gitStorage.branch}`,
+    dropboxActive: !!(
+      dropboxStorage.use &&
+      dropboxStorage.accessToken
+    ),
+    gitActive: !!(
+      gitStorage.use &&
+      gitStorage.owner &&
+      gitStorage.repo &&
+      gitStorage.branch &&
+      gitStorage.throttle &&
+      gitStorage.token
+    ),
+    autoDropboxSync: dropboxStorage.autoDropboxSync || false,
+    syncLastUpdate,
+    startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => {
+      if (storageType === 'dropbox') {
+        dropboxStorageTool(stores, remoteImport).startSyncData(direction);
+      } else if (storageType === 'dropboximages') {
+        dropboxStorageTool(stores, remoteImport).startSyncImages();
+      } else {
+        if (direction === 'diff') {
+          throw new Error('diff is invalid direction for github sync');
+        }
+
+        gitStorageTool(remoteImport).startSyncData(direction);
+      }
     },
-    cancelSync: () => {
-      dispatch<StorageSyncCancelAction>({
-        type: Actions.STORAGE_SYNC_CANCEL,
-      });
-    },
+    cancelSync: () => setSyncSelect(false),
   };
 };

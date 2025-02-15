@@ -1,7 +1,8 @@
 import type FileSaver from 'file-saver';
-import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
+import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import type { Image } from './Image';
 import type { Palette } from './Palette';
+import type { PluginCompatibilityWrapper } from './PluginCompatibility';
 
 enum ConfigParamType {
   NUMBER = 'number',
@@ -17,6 +18,19 @@ export interface ConfigParam {
 type PluginConfigParams = Record<string, ConfigParam>;
 export type PluginConfigValues = Record<string, number | string>;
 
+export interface GetCanvasOptions {
+  scaleFactor?: number,
+  palette?: Palette | RGBNPalette,
+  framePalette?: Palette,
+  lockFrame?: boolean,
+  invertPalette?: boolean,
+  invertFramePalette?: boolean,
+  handleExportFrame?: ExportFrameMode,
+}
+
+/*
+* On Type-Changes, a history for migration must be kept in /src/javascript/app/stores/migrations/history/
+* */
 export interface Plugin {
   url: string
   config?: PluginConfigValues,
@@ -44,9 +58,19 @@ export interface PluginClassInstance {
   setConfig: (config: PluginConfigValues) => void,
 }
 
-export interface PluginArgs<TypedStore> {
+export interface PluginArgs {
   saveAs: typeof FileSaver,
   progress: (progressValue: number) => void,
-  store: TypedStore,
+  store: PluginCompatibilityWrapper
   collectImageData: (hash: string) => PluginImageData,
+}
+
+
+declare global {
+  interface Window {
+    gbpwRegisterPlugin: (PluginClass: { new (
+        config: PluginArgs,
+        stateConfig: PluginConfigValues,
+      ): PluginClassInstance }) => void;
+  }
 }

@@ -5,12 +5,11 @@ import getFileMeta from './getFileMeta';
 import sortBy from '../sortby';
 import transformImage from './transformImage';
 import { compressAndHash } from '../storage';
-import { Actions } from '../../app/store/actions';
 import type { FileMetaData, ImportSavFn, ImportSavParams, WithTiles } from './types';
-import type { ImportQueueAddMultiAction } from '../../../types/actions/QueueActions';
 import type { ImportItem } from '../../../types/ImportItem';
 import { reduceItems } from '../reduceArray';
 import { randomId } from '../randomId';
+import useImportsStore from '../../app/stores/importsStore';
 
 const sortByAlbumIndex = sortBy<(FileMetaData & WithTiles)>('albumIndex');
 
@@ -21,9 +20,10 @@ const getImportSav = ({
   frames,
   fileName,
   importDeleted,
-  dispatch,
   forceMagicCheck,
 }: ImportSavParams): ImportSavFn | null => {
+  const { importQueueAdd } = useImportsStore.getState();
+
   if (forceMagicCheck) {
     const magicPlaces = [
       0x10D2,
@@ -117,10 +117,7 @@ const getImportSav = ({
       })
     )));
 
-    dispatch<ImportQueueAddMultiAction>({
-      type: Actions.IMPORTQUEUE_ADD_MULTI,
-      payload: imageData.reduce(reduceItems<ImportItem>, []),
-    });
+    importQueueAdd(imageData.reduce(reduceItems<ImportItem>, []));
 
     return true;
   };

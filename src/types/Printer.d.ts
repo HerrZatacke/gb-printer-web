@@ -2,7 +2,7 @@ import type { PrinterFunction } from '../javascript/consts/printerFunction';
 
 export interface BlobResponse {
   ok: boolean // Sent by fetchImages,
-  blob?: Blob // Sent by fetchImages,
+  blob: Blob // Sent by fetchImages,
   contentType?: string // Sent by fetchImages,
   status?: number // Sent by fetchImages,
   meta?: { // Sent by fetchImages,
@@ -41,10 +41,6 @@ export type FromPrinterEvent = Partial<CheckPrinterStatus & PrinterTestFile & Pr
   height: number,
   blob: Blob // fallback for printers with web-app version < 1.15.5 to display some "fake" progress (Deprecated)
 }>
-
-export interface NamedFile extends BlobResponse {
-  blobName: string,
-}
 
 export interface PrinterParams {
   dumps: string[],

@@ -1,9 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
-import type { ExportJSONAction } from '../../../../types/actions/StorageActions';
+import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
+import useInteractionsStore from '../../stores/interactionsStore';
+import useSettingsStore from '../../stores/settingsStore';
 import type { ExportTypes } from '../../../consts/exportTypes';
-import type { ImportFilesAction } from '../../../../types/actions/ImportActions';
+import useImportFile from '../../../hooks/useImportFile';
 
 interface UseImport {
   printerUrl?: string,
@@ -14,43 +13,23 @@ interface UseImport {
 }
 
 export const useImport = (): UseImport => {
-  const {
-    printerUrl,
-    printerConnected,
-  } = useSelector((state: State) => ({
-    printerUrl: state.printerUrl ? `${state.printerUrl}remote.html` : undefined,
-    printerConnected: state.printerFunctions.length > 0,
-  }));
+  const { printerUrl } = useSettingsStore();
+  const { printerFunctions } = useInteractionsStore();
+  const { downloadSettings } = useImportExportSettings();
 
-  const dispatch = useDispatch();
+  const fullPrinterUrl = printerUrl ? `${printerUrl}remote.html` : undefined;
+  const printerConnected = printerFunctions.length > 0;
+
+  const { handleFileImport } = useImportFile();
 
   return {
-    printerUrl,
+    printerUrl: fullPrinterUrl,
     printerConnected,
     importPlainText: (textDump) => {
-      let file;
-      try {
-        file = new File([...textDump], 'Text input.txt', { type: 'text/plain' });
-      } catch (error) {
-        file = new Blob([...textDump], { type: 'text/plain' });
-      }
-
-      dispatch<ImportFilesAction>({
-        type: Actions.IMPORT_FILES,
-        payload: { files: [file] },
-      });
+      const file = new File([...textDump], 'Text input.txt', { type: 'text/plain' });
+      handleFileImport([file]);
     },
-    importFiles: (files: File[]) => {
-      dispatch<ImportFilesAction>({
-        type: Actions.IMPORT_FILES,
-        payload: { files },
-      });
-    },
-    exportJson: (what: ExportTypes) => {
-      dispatch<ExportJSONAction>({
-        type: Actions.JSON_EXPORT,
-        payload: what,
-      });
-    },
+    importFiles: handleFileImport,
+    exportJson: (what: ExportTypes) => downloadSettings(what),
   };
 };

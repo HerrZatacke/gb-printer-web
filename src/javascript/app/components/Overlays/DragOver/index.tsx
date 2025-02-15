@@ -1,10 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import './index.scss';
-import type { State } from '../../../store/State';
+import useInteractionsStore from '../../../stores/interactionsStore';
 
 function DragOver() {
-  const dragover = useSelector((state: State) => state.dragover);
+  const { dragover } = useInteractionsStore();
   return (
     dragover ? (
       <div className="drag-over" />

@@ -1,19 +1,17 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
+import useEditStore from '../../stores/editStore';
+import useFiltersStore from '../../stores/filtersStore';
+import useItemsStore from '../../stores/itemsStore';
+import useSettingsStore from '../../stores/settingsStore';
+import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { missingGreyPalette } from '../../defaults';
 import { SpecialTags } from '../../../consts/SpecialTags';
-import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
-import type { EditImageSelectionAction } from '../../../../types/actions/ImageActions';
-import type {
-  ImageSelectionAddAction,
-  ImageSelectionRemoveAction,
-  ImageSelectionShiftClickAction,
-} from '../../../../types/actions/ImageSelectionActions';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
 export enum SelectionEditMode {
   ADD = 'add',
@@ -42,13 +40,36 @@ interface GalleryImageData {
 
 interface UseGalleryImage {
   galleryImageData?: GalleryImageData
-  updateImageSelection: (mode: SelectionEditMode, shift: boolean, page: number) => void,
+  updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => void,
   editImage: (tags: string[]) => void,
 }
 
 export const useGalleryImage = (hash: string): UseGalleryImage => {
-  const galleryImageData = useSelector((state: State): GalleryImageData | undefined => {
-    const image = state.images.find((img) => img.hash === hash);
+  const { setEditImages } = useEditStore();
+
+  const {
+    enableDebug,
+    hideDates,
+    preferredLocale,
+    pageSize,
+  } = useSettingsStore();
+
+  const {
+    filtersActiveTags,
+    sortBy,
+    recentImports,
+    imageSelection,
+    updateImageSelection,
+    lastSelectedImage,
+    setImageSelection,
+  } = useFiltersStore();
+
+  const { palettes, images: stateImages } = useItemsStore();
+
+  const isSelected = imageSelection.includes(hash);
+
+  const galleryImageData = useMemo((): GalleryImageData | undefined => {
+    const image = stateImages.find((img) => img.hash === hash);
     let palette: RGBNPalette | string[];
 
     if (!image) {
@@ -58,12 +79,12 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     if (isRGBNImage(image)) {
       palette = (image as RGBNImage).palette;
     } else {
-      palette = (state.palettes.find(({ shortName }) => (
+      palette = (palettes.find(({ shortName }) => (
         shortName === (image as MonochromeImage).palette
       )) || missingGreyPalette).palette;
     }
 
-    const framePalette = (state.palettes.find(({ shortName }) => (
+    const framePalette = (palettes.find(({ shortName }) => (
       shortName === (image as MonochromeImage).framePalette
     )) || missingGreyPalette).palette;
 
@@ -74,51 +95,48 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       hashes: (image as RGBNImage).hashes || undefined,
       tags: image.tags,
       isFavourite: image.tags.includes(SpecialTags.FILTER_FAVOURITE),
-      isSelected: state.imageSelection.includes(hash),
       palette,
       framePalette,
       lockFrame: image.lockFrame,
       invertPalette: (image as MonochromeImage).invertPalette,
       invertFramePalette: (image as MonochromeImage).invertFramePalette,
-      hideDate: state.hideDates,
-      preferredLocale: state.preferredLocale,
+      hideDate: hideDates,
       meta: image.meta,
       rotation: image.rotation,
-      enableDebug: state.enableDebug,
+      preferredLocale,
+      enableDebug,
+      isSelected,
     });
-  });
+  }, [enableDebug, hash, hideDates, isSelected, palettes, preferredLocale, stateImages]);
 
-  const { images } = useGalleryTreeContext();
-
-  const dispatch = useDispatch();
+  const { images: treeImages } = useGalleryTreeContext();
 
   return {
     galleryImageData,
-    updateImageSelection: (mode: SelectionEditMode, shift: boolean, page: number) => {
+    updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => {
       if (shift) {
-        dispatch<ImageSelectionShiftClickAction>({
-          type: Actions.IMAGE_SELECTION_SHIFTCLICK,
-          payload: { hash, images, page },
-        });
-      } else if (mode === SelectionEditMode.ADD) {
-        dispatch<ImageSelectionAddAction>({
-          type: Actions.IMAGE_SELECTION_ADD,
-          payload: hash,
-        });
-      } else if (mode === SelectionEditMode.REMOVE) {
-        dispatch<ImageSelectionRemoveAction>({
-          type: Actions.IMAGE_SELECTION_REMOVE,
-          payload: hash,
-        });
+        const images = getFilteredImages(
+          treeImages,
+          { filtersActiveTags, sortBy, recentImports },
+        );
+        const selectedIndex = images.findIndex((image) => image.hash === hash);
+        let prevSelectedIndex = images.findIndex((image) => image.hash === lastSelectedImage);
+        if (prevSelectedIndex === -1) {
+          prevSelectedIndex = page * pageSize;
+        }
+
+        const from = Math.min(prevSelectedIndex, selectedIndex);
+        const to = Math.max(prevSelectedIndex, selectedIndex);
+
+        setImageSelection(images.slice(from, to + 1).map((image) => image.hash));
+      } else {
+        updateImageSelection(mode, [hash]);
       }
     },
     editImage: (tags: string[]) => {
-      dispatch<EditImageSelectionAction>({
-        type: Actions.EDIT_IMAGE_SELECTION,
-        payload: {
-          tags,
-          batch: [hash],
-        },
+      setEditImages({
+        tags,
+        batch: [hash],
       });
     },
   };

@@ -1,9 +1,7 @@
-import { Actions } from '../../app/store/actions';
+import useImportsStore from '../../app/stores/importsStore';
 import readFileAs, { ReadAs } from '../readFileAs';
 import { compressAndHash } from '../storage';
 import { randomId } from '../randomId';
-import type { ImportQueueAddAction } from '../../../types/actions/QueueActions';
-import type { TypedStore } from '../../app/store/State';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer: Uint8Array) => (
@@ -17,7 +15,8 @@ const isBinType = (buffer: Uint8Array) => (
   buffer[7] === 49 //    1
 );
 
-const getTransformBin = ({ dispatch }: TypedStore) => async (file: File): Promise<boolean> => {
+export const transformBin = async (file: File): Promise<boolean> => {
+  const { importQueueAdd } = useImportsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
   //
   if (!isBinType(data)) {
@@ -31,7 +30,9 @@ const getTransformBin = ({ dispatch }: TypedStore) => async (file: File): Promis
 
   for (let i = binOffsetLength; i < data.length; i += 1) {
     const value = data[i];
-    currentLine.push(value.toString(16).padStart(2, '0').toUpperCase());
+    currentLine.push(value.toString(16)
+      .padStart(2, '0')
+      .toUpperCase());
 
     if (currentLine.length === 16) {
       tiles.push(currentLine.join(' '));
@@ -51,18 +52,13 @@ const getTransformBin = ({ dispatch }: TypedStore) => async (file: File): Promis
 
   const { dataHash: imageHash } = await compressAndHash(tiles);
 
-  dispatch<ImportQueueAddAction>({
-    type: Actions.IMPORTQUEUE_ADD,
-    payload: {
-      fileName: file.name,
-      imageHash,
-      tiles,
-      lastModified: file.lastModified,
-      tempId: randomId(),
-    },
-  });
+  importQueueAdd([{
+    fileName: file.name,
+    imageHash,
+    tiles,
+    lastModified: file.lastModified,
+    tempId: randomId(),
+  }]);
 
   return true;
 };
-
-export default getTransformBin;

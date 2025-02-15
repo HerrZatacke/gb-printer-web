@@ -1,4 +1,4 @@
-import type { State } from '../../app/store/State';
+import useItemsStore from '../../app/stores/itemsStore';
 import type { AddToQueueFn } from '../../../types/Sync';
 import type { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
 import { loadFrameData } from '../applyFrame/frameData';
@@ -11,7 +11,6 @@ interface TmpInfo {
 }
 
 export const getUploadFrames = async (
-  state: State,
   repoContents: RepoContents,
   addToQueue: AddToQueueFn<SyncFile | null>,
 ): Promise<{
@@ -20,7 +19,9 @@ export const getUploadFrames = async (
 }> => {
   const missingLocally: string[] = [];
 
-  const frames: TmpInfo[] = state.frames.map((frame): TmpInfo => ({
+  const { frames: stateFrames } = useItemsStore.getState();
+
+  const frames: TmpInfo[] = stateFrames.map((frame): TmpInfo => ({
     file: frame,
     searchHashes: [frame.hash],
     inRepo: ([

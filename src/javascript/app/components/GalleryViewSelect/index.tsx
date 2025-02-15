@@ -2,10 +2,10 @@ import React from 'react';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import { GalleryViews } from '../../../consts/GalleryViews';
-import { useGalleryView } from './useGalleryView';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 
 import './index.scss';
+import useSettingsStore from '../../stores/settingsStore';
 
 const viewName = (id: GalleryViews): string => {
   switch (id) {
@@ -24,9 +24,9 @@ const viewName = (id: GalleryViews): string => {
 
 function GalleryViewSelect() {
   const {
-    currentView,
-    updateView,
-  } = useGalleryView();
+    galleryView,
+    setGalleryView,
+  } = useSettingsStore();
 
   const { ddpx } = useScreenDimensions();
 
@@ -49,14 +49,14 @@ function GalleryViewSelect() {
             key={view}
             className={
               classnames('gallery-button gallery-button--enabled', {
-                'gallery-button--selected': currentView === view,
+                'gallery-button--selected': galleryView === view,
               })
             }
           >
             <button
               type="button"
               onClick={() => {
-                updateView(view);
+                setGalleryView(view);
               }}
               title={viewName(view)}
             >

@@ -1,6 +1,5 @@
 import type { DownloadInfo, UploadFile } from './Sync';
-import type { JSONExportState } from '../javascript/app/store/State';
-
+import type { JSONExportState } from './ExportState';
 
 export interface RepoFile {
   hash: string,

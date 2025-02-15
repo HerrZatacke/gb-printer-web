@@ -1,14 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux';
-import getFilteredImages from '../../../tools/getFilteredImages';
-import { Actions } from '../../store/actions';
-import type { State } from '../../store/State';
-import type { BatchTaskAction } from '../../../../types/actions/ImageActions';
-import type { BatchActionType } from '../../../consts/batchActionTypes';
-import type { ShowFiltersAction } from '../../../../types/actions/TagsActions';
-import type { SortOptionsSetAction } from '../../../../types/actions/SortOptionsActions';
-import type { Image } from '../../../../types/Image';
+import { useMemo } from 'react';
+import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
+import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
+import useItemsStore from '../../stores/itemsStore';
+import useSettingsStore from '../../stores/settingsStore';
+import { getFilteredImages } from '../../../tools/getFilteredImages';
+import { useStores } from '../../../hooks/useStores';
+import { BatchActionType } from '../../../consts/batchActionTypes';
 import { reduceImagesMonochrome } from '../../../tools/isRGBNImage';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import useDownload from '../../../hooks/useDownload';
+import unique from '../../../tools/unique';
+import type { Image, MonochromeImage } from '../../../../types/Image';
 
 interface UseBatchButtons {
   hasPlugins: boolean,
@@ -18,55 +22,115 @@ interface UseBatchButtons {
   selectedImageCount: number,
   hasSelected: boolean,
   batchTask: (action: BatchActionType) => void,
+  checkAll: () => void,
+  unCheckAll: () => void,
   filter: () => void,
   showSortOptions: () => void,
 }
 
-const useBatchButtons = (page: number): UseBatchButtons => {
-  const state = useSelector((currentState: State) => currentState);
-  const dispatch = useDispatch();
+const collectTags = (batchImages: Image[]): string[] => (
+  unique(batchImages.map(({ tags }) => tags).flat())
+);
 
+const useBatchButtons = (page: number): UseBatchButtons => {
+  const {
+    imageSelection,
+    sortBy,
+    filtersActiveTags,
+    recentImports,
+    setFiltersVisible,
+    setSortOptionsVisible,
+    setImageSelection,
+  } = useFiltersStore();
+  const { plugins, images: stateImages } = useItemsStore();
+  const { pageSize } = useSettingsStore();
+  const { setEditImages, setEditRGBNImages } = useEditStore();
+  const { dismissDialog, setDialog } = useDialogsStore();
+  const { setVideoSelection } = useInteractionsStore();
+  const { downloadImageCollection } = useDownload();
+  const { deleteImages } = useStores();
   const { view, covers } = useGalleryTreeContext();
 
-  const indexOffset = page * state.pageSize;
-  const currentPageImages: Image[] = getFilteredImages(state, view.images) // take images from current VIEW (including covers)
-    .splice(indexOffset, state.pageSize || Infinity) // use images of the current PAGE
+  const indexOffset = page * pageSize;
+  const images: Image[] = getFilteredImages(view.images, { sortBy, filtersActiveTags, recentImports }) // take images from current VIEW (including covers)
+    .splice(indexOffset, pageSize || Infinity) // use images of the current PAGE
     .filter((image: Image) => !covers.includes(image.hash)); // And remove covers AFTERWARDS
+  const selectedImages = images.filter(({ hash }) => imageSelection.includes(hash));
+  const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
 
-  const selectedImages = state.images.filter(({ hash }) => state.imageSelection.includes(hash));
-  const monochromeImageCount: number = selectedImages.reduce(reduceImagesMonochrome, []).length;
+  const batchImages: Image[] = useMemo(() => (
+    imageSelection.reduce((acc: Image[], selHash: string): Image[] => {
+      const image = stateImages.find(({ hash }) => hash === selHash);
+      return image ? [image, ...acc] : acc;
+    }, [])
+  ), [imageSelection, stateImages]);
 
-  const selectedImageCount = state.imageSelection.length;
+  const selectedImageCount = imageSelection.length;
   const hasSelected = selectedImages.length > 0;
 
-
   return ({
-    hasPlugins: !!state.plugins.length,
-    batchEnabled: selectedImages.length > 1,
-    monochromeBatchEnabled: selectedImages.length > 1 && monochromeImageCount === selectedImages.length,
-    activeFilters: state.filtersActiveTags.length || 0,
+    hasPlugins: !!plugins.length,
+    batchEnabled: !!imageSelection.length,
+    monochromeBatchEnabled: selectedImages.length > 1 && monochromeImages.length === selectedImages.length,
+    activeFilters: filtersActiveTags.length || 0,
     selectedImageCount,
     hasSelected,
     batchTask: (actionType: BatchActionType) => {
-      dispatch<BatchTaskAction>({
-        type: Actions.BATCH_TASK,
-        payload: {
-          actionType,
-          currentPageHashes: currentPageImages.map(({ hash }) => (hash)),
-          page,
-        },
-      });
+      if (imageSelection.length) {
+        switch (actionType) {
+          case BatchActionType.DELETE: {
+            setDialog({
+              message: `Delete ${imageSelection.length} images?`,
+              confirm: async () => {
+                deleteImages(imageSelection);
+              },
+              deny: async () => dismissDialog(0),
+            });
+
+            break;
+          }
+
+          case BatchActionType.ANIMATE: {
+            setVideoSelection(imageSelection);
+            break;
+          }
+
+          case BatchActionType.DOWNLOAD: {
+            downloadImageCollection(imageSelection);
+            break;
+          }
+
+          case BatchActionType.EDIT: {
+            setEditImages({
+              tags: collectTags(batchImages),
+              batch: batchImages.map(({ hash }) => hash),
+            });
+            break;
+          }
+
+          case BatchActionType.RGB:
+            setEditRGBNImages(batchImages.reduce(reduceImagesMonochrome, []).map(({ hash }) => hash));
+            break;
+
+          default:
+            break;
+        }
+      }
     },
-    filter: () => {
-      dispatch<ShowFiltersAction>({
-        type: Actions.SHOW_FILTERS,
-      });
+    checkAll: () => {
+      setImageSelection(
+        getFilteredImages(view.images, {
+          filtersActiveTags,
+          sortBy,
+          recentImports,
+        })
+          .slice(page * pageSize, (page + 1) * pageSize || undefined)
+          .map(({ hash }) => hash),
+      );
     },
-    showSortOptions: () => {
-      dispatch<SortOptionsSetAction>({
-        type: Actions.SHOW_SORT_OPTIONS,
-      });
-    },
+    unCheckAll: () => setImageSelection([]),
+    filter: () => setFiltersVisible(true),
+    showSortOptions: () => setSortOptionsVisible(true),
   });
 };
 

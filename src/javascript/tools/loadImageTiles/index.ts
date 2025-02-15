@@ -2,7 +2,7 @@ import type { RGBNTiles } from 'gb-image-decoder';
 import { load } from '../storage';
 import { isRGBNImage } from '../isRGBNImage';
 import type { RecoverFn } from '../storage';
-import type { State } from '../../app/store/State';
+import type { Frame } from '../../../types/Frame';
 import type { Image, RGBNHashes, RGBNImage } from '../../../types/Image';
 
 export type PImage = {
@@ -11,20 +11,19 @@ export type PImage = {
   hashes?: RGBNImage['hashes'],
 }
 
-export type ReducedPickState = Pick<State, 'frames' | 'images'>
 
-export const loadImageTiles = (state: State | ReducedPickState, recover?: RecoverFn) => {
+export const loadImageTiles = (stateImages: Image[], stateFrames: Frame[], recover?: RecoverFn) => {
   const loader = async (
     hash: string,
     noDummy?: boolean,
     overrideFrame?: string,
     hashesOverride?: RGBNHashes,
   ): Promise<string[] | RGBNTiles> => {
-    const image = state.images.find(((img) => hash === img.hash));
+    const image = stateImages.find(((img) => hash === img.hash));
 
     // Image may not exist when loading RGBN-channels where original image has been deleted.
     const frame = (typeof overrideFrame === 'string' ? overrideFrame : image?.frame) || undefined;
-    const frameHash = state.frames.find(({ id }) => id === frame)?.hash;
+    const frameHash = stateFrames.find(({ id }) => id === frame)?.hash;
 
     if (!hashesOverride) {
       if (!image || !isRGBNImage(image)) {
@@ -46,8 +45,8 @@ export const loadImageTiles = (state: State | ReducedPickState, recover?: Recove
   return loader;
 };
 
-export const getImageTileCount = (state: State) => {
-  const tileLoader = loadImageTiles(state);
+export const getImageTileCount = (stateImages: Image[], stateFrames: Frame[]) => {
+  const tileLoader = loadImageTiles(stateImages, stateFrames);
   return async (hash: string): Promise<number> => {
     const loadedTiles = await tileLoader(hash, true, '');
     if (loadedTiles) {

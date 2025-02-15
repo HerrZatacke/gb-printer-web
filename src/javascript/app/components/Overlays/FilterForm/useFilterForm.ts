@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import useFiltersStore from '../../../stores/filtersStore';
 import { useAvailableTags } from '../../../../hooks/useAvailableTags';
 import unique from '../../../../tools/unique';
-import type { State } from '../../../store/State';
-import { Actions } from '../../../store/actions';
-import type { HideFiltersAction, SetActiveTagsAction } from '../../../../../types/actions/TagsActions';
 
 export enum ActiveTagUpdateMode {
   ADD = 'add',
@@ -22,12 +19,12 @@ interface UseFilterForm {
 }
 
 export const useFilterForm = (): UseFilterForm => {
-  const { activeTags: stateActiveTags, visible } = useSelector((state: State) => ({
-    activeTags: state.filtersActiveTags,
-    visible: state.filtersVisible,
-  }));
-
-  const dispatch = useDispatch();
+  const {
+    filtersActiveTags: stateActiveTags,
+    filtersVisible: visible,
+    setFiltersVisible,
+    setFiltersActiveTags,
+  } = useFiltersStore();
 
   const [activeTags, setActiveTags] = useState(stateActiveTags);
 
@@ -47,16 +44,7 @@ export const useFilterForm = (): UseFilterForm => {
     activeTags,
     updateActiveTags,
     clearTags: () => setActiveTags([]),
-    confirm: () => {
-      dispatch<SetActiveTagsAction>({
-        type: Actions.SET_ACTIVE_TAGS,
-        payload: activeTags,
-      });
-    },
-    cancel: () => {
-      dispatch<HideFiltersAction>({
-        type: Actions.HIDE_FILTERS,
-      });
-    },
+    confirm: () => setFiltersActiveTags(activeTags),
+    cancel: () => setFiltersVisible(false),
   };
 };
