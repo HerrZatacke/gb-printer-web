@@ -14,10 +14,10 @@ export const migrateLegacy = (): boolean => {
     try {
       legacyState = JSON.parse(legacyStateRaw) as Partial<ReduxState>;
     } catch {
-      legacyState = {};
+      return false;
     }
 
-    const combinedState = {
+    const itemsState = {
       version: VERSION_LEGACY,
       state: {
         frameGroupNames: legacyState.frameGroupNames || [],
@@ -29,12 +29,63 @@ export const migrateLegacy = (): boolean => {
       },
     };
 
-    // const debugState = JSON.parse(JSON.stringify(combinedState.state));
+    localStorage.setItem('gbp-z-web-items', JSON.stringify(itemsState));
+
+    const settingsState = {
+      version: VERSION_LEGACY,
+      state: {
+        activePalette: legacyState.activePalette || 'bw',
+        enableDebug: legacyState.enableDebug || false,
+        enableImageGroups: legacyState.enableImageGroups || false,
+        exportFileTypes: legacyState.exportFileTypes || ['png'],
+        exportScaleFactors: legacyState.exportScaleFactors || [4],
+        forceMagicCheck: legacyState.forceMagicCheck || false,
+        galleryView: legacyState.galleryView || '1x',
+        handleExportFrame: legacyState.handleExportFrame || 'keep',
+        hideDates: legacyState.hideDates || false,
+        importDeleted: typeof legacyState.importDeleted === 'boolean' ? legacyState.importDeleted : true,
+        importLastSeen: typeof legacyState.importLastSeen === 'boolean' ? legacyState.importLastSeen : true,
+        importPad: legacyState.importPad || false,
+        pageSize: typeof legacyState.pageSize === 'number' ? legacyState.pageSize : 60,
+        preferredLocale: legacyState.preferredLocale || 'en-GB',
+        printerParams: legacyState.printerParams || '',
+        printerUrl: legacyState.printerUrl || '',
+        savFrameTypes: legacyState.savFrameTypes || 'int',
+        sortPalettes: legacyState.sortPalettes || 'default_desc',
+        useSerials: legacyState.useSerials || false,
+        videoParams: legacyState.videoParams || {},
+      },
+    };
+
+    localStorage.setItem('gbp-z-web-settings', JSON.stringify(settingsState));
+
+    const filtersState = {
+      version: VERSION_LEGACY,
+      state: {
+        filtersActiveTags: legacyState.filtersActiveTags || [],
+        imageSelection: legacyState.imageSelection || [],
+        recentImports: legacyState.recentImports || [],
+        sortBy: legacyState.sortBy || 'created_asc',
+      },
+    };
+
+    localStorage.setItem('gbp-z-web-filters', JSON.stringify(filtersState));
+
+    // const storagesState = {
+    //   version: VERSION_LEGACY,
+    //   state: {
+    //     dropboxStorage: legacyState.dropboxStorage || {},
+    //     gitStorage: legacyState.gitStorage || {},
+    //     syncLastUpdate: legacyState.syncLastUpdate || {},
+    //   },
+    // };
+    //
+    // localStorage.setItem('gbp-z-web-storages', JSON.stringify(storagesState));
+
+    // const debugState = JSON.parse(JSON.stringify(itemsState.state));
     // debugState.images = (debugState.images || []).length;
     // debugState.frames = (debugState.frames || []).length;
     // console.log({ debugState });
-
-    localStorage.setItem('gbp-z-web-items', JSON.stringify(combinedState));
     return true;
   }
 
