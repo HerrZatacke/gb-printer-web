@@ -37,6 +37,9 @@ export const useStores = (): UseStores => {
     updateFrameGroups,
     updateImageHash,
     updateImages,
+    setFrames,
+    setImages,
+    setPalettes,
   } = useItemsStore();
   const { setSyncLastUpdate } = useStoragesStore();
 
@@ -87,15 +90,19 @@ export const useStores = (): UseStores => {
       }
 
       if (state.palettes) {
-        addPalettes(state.palettes);
+        // hard replace all palettes -> merging happens in src/javascript/tools/mergeStates/index.ts
+        setPalettes(state.palettes);
       }
 
       if (state.images) {
+        // hard replace all images -> merging happens in src/javascript/tools/mergeStates/index.ts
+        setImages(state.images);
         updateRecentImports(state.images);
       }
 
       if (state.frames) {
-        addFrames(state.frames);
+        // hard replace all frames -> merging happens in src/javascript/tools/mergeStates/index.ts
+        setFrames(state.frames);
       }
 
       if (state.frameGroups) {
@@ -129,6 +136,9 @@ export const useStores = (): UseStores => {
     dismissDialog,
     importQueueCancel,
     setDialog,
+    setFrames,
+    setImages,
+    setPalettes,
     setImageGroups,
     setPrinterBusy,
     setProgress,

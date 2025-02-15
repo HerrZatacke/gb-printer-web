@@ -58,7 +58,10 @@ interface Actions {
   updateImageHash: (oldHash: string, image: Image) => void,
   updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void,
   updateImages: (images: Image[]) => void,
+
+  setFrames: (frames: Frame[]) => void,
   setImages: (images: Image[]) => void,
+  setPalettes: (palettes: Palette[]) => void,
 }
 
 export type ItemsState = Values & Actions;
@@ -273,7 +276,9 @@ const useItemsStore = create<ItemsState>()(
         )),
       })),
 
+      setFrames: (frames: Frame[]) => set({ frames: framesUniqueById(frames) }),
       setImages: (images: Image[]) => set({ images: imagesUniqueByHash(images) }),
+      setPalettes: (palettes: Palette[]) => set({ palettes: palettesUniqueByShortName(palettes) }),
     }),
     {
       name: `${PROJECT_PREFIX}-items`,
