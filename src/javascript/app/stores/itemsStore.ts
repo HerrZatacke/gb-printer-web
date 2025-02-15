@@ -71,6 +71,14 @@ interface AddUpdatePalettes {
   update: Palette[],
 }
 
+const withPredefinedPalettes = (palettes: Palette[]): Palette[] => palettesUniqueByShortName([
+  ...predefinedPalettes.map((gbPalette): Palette => ({
+    ...gbPalette,
+    isPredefined: true,
+  })),
+  ...palettes,
+]);
+
 const useItemsStore = create<ItemsState>()(
   persist(
     (set, get) => ({
@@ -278,7 +286,7 @@ const useItemsStore = create<ItemsState>()(
 
       setFrames: (frames: Frame[]) => set({ frames: framesUniqueById(frames) }),
       setImages: (images: Image[]) => set({ images: imagesUniqueByHash(images) }),
-      setPalettes: (palettes: Palette[]) => set({ palettes: palettesUniqueByShortName(palettes) }),
+      setPalettes: (palettes: Palette[]) => set({ palettes: withPredefinedPalettes(palettes) }),
     }),
     {
       name: `${PROJECT_PREFIX}-items`,
@@ -292,13 +300,7 @@ const useItemsStore = create<ItemsState>()(
 
         return {
           ...mergedState,
-          palettes: palettesUniqueByShortName([
-            ...predefinedPalettes.map((gbPalette): Palette => ({
-              ...gbPalette,
-              isPredefined: true,
-            })),
-            ...mergedState.palettes,
-          ]),
+          palettes: withPredefinedPalettes(mergedState.palettes),
           plugins: mergedState.plugins.map((plugin) => ({
             ...plugin,
             loading: false,
