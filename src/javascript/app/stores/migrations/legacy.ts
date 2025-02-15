@@ -71,16 +71,16 @@ export const migrateLegacy = (): boolean => {
 
     localStorage.setItem('gbp-z-web-filters', JSON.stringify(filtersState));
 
-    // const storagesState = {
-    //   version: VERSION_LEGACY,
-    //   state: {
-    //     dropboxStorage: legacyState.dropboxStorage || {},
-    //     gitStorage: legacyState.gitStorage || {},
-    //     syncLastUpdate: legacyState.syncLastUpdate || {},
-    //   },
-    // };
-    //
-    // localStorage.setItem('gbp-z-web-storages', JSON.stringify(storagesState));
+    const storagesState = {
+      version: VERSION_LEGACY,
+      state: {
+        dropboxStorage: legacyState.dropboxStorage || {},
+        gitStorage: legacyState.gitStorage || {},
+        syncLastUpdate: legacyState.syncLastUpdate || {},
+      },
+    };
+
+    localStorage.setItem('gbp-z-web-storages', JSON.stringify(storagesState));
 
     // const debugState = JSON.parse(JSON.stringify(itemsState.state));
     // debugState.images = (debugState.images || []).length;
