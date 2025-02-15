@@ -84,7 +84,7 @@ const getGetSettings = () => async (
           }
 
           case 'images': {
-            const whatImages = (what === ExportTypes.SELECTED_IMAGES) ? 'images' : 'selected_images';
+            const whatImages = (what === ExportTypes.SELECTED_IMAGES) ? 'selected_images' : 'images';
             const exportImageHashes = getImageHashesForExport(whatImages, images, imageSelection);
             return {
               ...acc,
