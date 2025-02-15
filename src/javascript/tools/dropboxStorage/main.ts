@@ -125,7 +125,9 @@ export const dropBoxSyncTool = (
         const lastUpdate = repoContents.settings?.state?.lastUpdateUTC || 0;
         if (lastUpdate) {
           useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdate);
-          useStoragesStore.getState().setSyncLastUpdate('local', lastUpdate);
+
+          // Local time is set in useStores->combinedGlobalUpdate
+          // useStoragesStore.getState().setSyncLastUpdate('local', lastUpdate);
         }
 
         break;

@@ -7,7 +7,6 @@ import useImportsStore from '../app/stores/importsStore';
 import useInteractionsStore from '../app/stores/interactionsStore';
 import useItemsStore from '../app/stores/itemsStore';
 import useStoragesStore from '../app/stores/storagesStore';
-import type { Values } from '../app/stores/itemsStore';
 import type { Dialog } from '../../types/Dialog';
 import type { ExportableState } from '../../types/ExportState';
 
@@ -76,11 +75,16 @@ export const useStores = (): UseStores => {
       updateLastSyncLocalNow();
     };
 
-    const combinedGlobalUpdate = (state: Partial<Values>) => {
+    const combinedGlobalUpdate = (state: Partial<ExportableState>) => {
       cancelEditFrame();
       cancelEditPalette();
       cancelEditImages();
-      updateLastSyncLocalNow();
+
+      if (state.lastUpdateUTC) {
+        setSyncLastUpdate('local', state.lastUpdateUTC);
+      } else {
+        updateLastSyncLocalNow();
+      }
 
       if (state.palettes) {
         addPalettes(state.palettes);
