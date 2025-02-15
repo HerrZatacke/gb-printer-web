@@ -29,9 +29,7 @@ export const useStores = (): UseStores => {
   const { importQueueCancel } = useImportsStore();
   const { setProgress, setPrinterBusy } = useInteractionsStore();
   const {
-    addFrames,
     addImages,
-    addPalettes,
     deleteImages,
     setImageGroups,
     updateFrameGroups,
@@ -126,9 +124,7 @@ export const useStores = (): UseStores => {
       updateLastSyncLocalNow,
     });
   }, [
-    addFrames,
     addImages,
-    addPalettes,
     cancelEditFrame,
     cancelEditImages,
     cancelEditPalette,
