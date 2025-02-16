@@ -17,6 +17,8 @@ import useItemsStore from '../../../../stores/itemsStore';
 import useSettingsStore from '../../../../stores/settingsStore';
 import usePaletteSort from '../../../../../hooks/usePaletteSort';
 import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
+import { fileNameStyleLabels } from '../../../../../consts/fileNameStyles';
+import type { FileNameStyle } from '../../../../../consts/fileNameStyles';
 
 function GenericSettings() {
   const {
@@ -24,6 +26,7 @@ function GenericSettings() {
     enableImageGroups,
     exportFileTypes,
     exportScaleFactors,
+    fileNameStyle,
     forceMagicCheck,
     handleExportFrame,
     hideDates,
@@ -39,6 +42,7 @@ function GenericSettings() {
     setExportScaleFactors,
     setEnableDebug,
     setEnableImageGroups,
+    setFileNameStyle,
     setForceMagicCheck,
     setHandleExportFrame,
     setHideDates,
@@ -176,6 +180,26 @@ function GenericSettings() {
         >
           {
             exportFrameModes.map(({ id, name }) => (
+              <option value={id} key={id}>{ name }</option>
+            ))
+          }
+        </select>
+      </div>
+
+      <div className="inputgroup">
+        <label htmlFor="settings-filename-style" className="inputgroup__label">
+          Filename style
+        </label>
+        <select
+          id="settings-filename-style"
+          className="inputgroup__input inputgroup__input--select"
+          value={fileNameStyle}
+          onChange={(ev) => {
+            setFileNameStyle(ev.target.value as FileNameStyle);
+          }}
+        >
+          {
+            fileNameStyleLabels.map(({ id, name }) => (
               <option value={id} key={id}>{ name }</option>
             ))
           }

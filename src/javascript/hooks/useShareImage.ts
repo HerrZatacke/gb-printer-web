@@ -10,7 +10,7 @@ interface UseShareImage {
 }
 
 const useShareImage = (): UseShareImage => {
-  const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore();
+  const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore();
   const { frames, palettes, images } = useItemsStore();
 
   const shareImage = useCallback(async (hash: string) => {
@@ -30,6 +30,7 @@ const useShareImage = (): UseShareImage => {
       [shareFileType],
       handleExportFrame,
       palettes,
+      fileNameStyle,
     );
 
     const tiles = await loadImageTiles(images, frames)(image.hash);

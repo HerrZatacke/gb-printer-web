@@ -7,10 +7,11 @@ import type { RGBNPalette } from 'gb-image-decoder';
 import { dateFormat, dateFormatFilename } from '../../app/defaults';
 import type { Image } from '../../../types/Image';
 import type { Palette } from '../../../types/Palette';
+import { FileNameStyle } from '../../consts/fileNameStyles';
 
 dayjs.extend(customParseFormat);
 
-const joinNonNullish = (parts: string[], sep = '-'): string => (
+const joinTruthy = (parts: string[], sep = '-'): string => (
   parts.reduce((acc: string, part: string): string => (
     part ? `${acc}${acc ? sep : ''}${part}` : acc
   ), '')
@@ -20,7 +21,7 @@ const rgbnPaletteName = ({ r, g, b, n }: RGBNPalette): string => {
 
   const hex = (val: number) => (val.toString(16)).padStart(2, '0');
 
-  return joinNonNullish([
+  return joinTruthy([
     r?.map(hex).join('') || '',
     g?.map(hex).join('') || '',
     b?.map(hex).join('') || '',
@@ -37,6 +38,7 @@ interface FileNameOptionsBase {
   frameName?: string,
   paletteShort?: string,
   altTitle?: string,
+  fileNameStyle: FileNameStyle,
 }
 
 interface FileNameOptionsImages extends FileNameOptionsBase {
@@ -73,6 +75,8 @@ const generateFileName = (options: FileNameOptions): string => {
   const frameName = options.frameName || '';
   const paletteShort = options.paletteShort || '';
 
+  const { fileNameStyle } = options;
+
 
   const date = (useCurrentDate || !image) ? dayjs() : dayjs(image.created, dateFormat);
   const formattedDate = date.isValid() ? date.format(dateFormatFilename) : '';
@@ -80,14 +84,37 @@ const generateFileName = (options: FileNameOptions): string => {
   const paletteName = paletteShort ||
     (palette ? ((palette as Palette).shortName || rgbnPaletteName(palette as RGBNPalette)) : '');
 
-  const joined = joinNonNullish([
-    formattedDate,
-    image && image.title ? image.title : altTitle,
-    exportScaleFactor ? `${exportScaleFactor}x` : '',
-    frameRate ? `${frameRate}fps` : '',
-    frameName,
-    paletteName,
-  ]);
+  const title = image && image.title ? image.title : altTitle;
+
+  const scaleFactor = exportScaleFactor ? `${exportScaleFactor}x` : '';
+
+  const fps = frameRate ? `${frameRate}fps` : '';
+
+  let parts: string[];
+
+  switch (fileNameStyle) {
+    case FileNameStyle.TITLE_ONLY:
+      parts = [title];
+      break;
+
+    case FileNameStyle.DATE_TITLE:
+      parts = [formattedDate, title];
+      break;
+
+    case FileNameStyle.FULL:
+    default:
+      parts = [
+        formattedDate,
+        title,
+        scaleFactor,
+        fps,
+        frameName,
+        paletteName,
+      ];
+      break;
+  }
+
+  const joined = joinTruthy(parts);
 
   return filenamify(joined, { replacement: '' }) as string;
 };

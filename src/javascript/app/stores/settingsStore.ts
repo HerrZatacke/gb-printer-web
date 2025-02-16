@@ -9,12 +9,14 @@ import { getEnv } from '../../tools/getEnv';
 import { PaletteSortMode } from '../../consts/paletteSortModes';
 import { GalleryViews } from '../../consts/GalleryViews';
 import type { VideoParams } from '../../../types/VideoParams';
+import { FileNameStyle } from '../../consts/fileNameStyles';
 
 interface Values {
   activePalette: string,
   enableDebug: boolean,
   exportFileTypes: string[],
   exportScaleFactors: number[],
+  fileNameStyle: FileNameStyle,
   forceMagicCheck: boolean,
   galleryView: GalleryViews,
   handleExportFrame: ExportFrameMode,
@@ -38,6 +40,7 @@ interface Actions {
   setEnableDebug: (enableDebug: boolean) => void,
   setExportFileTypes: (updateFileType: string, checked: boolean) => void,
   setExportScaleFactors: (factor: number, checked: boolean) => void
+  setFileNameStyle: (fileNameStyle: FileNameStyle) => void,
   setForceMagicCheck: (forceMagicCheck: boolean) => void,
   setGalleryView: (galleryView: GalleryViews) => void,
   setHandleExportFrame: (handleExportFrame: ExportFrameMode) => void,
@@ -70,6 +73,7 @@ const useSettingsStore = create(
       enableDebug: false,
       exportFileTypes: ['png'],
       exportScaleFactors: [4],
+      fileNameStyle: FileNameStyle.FULL,
       forceMagicCheck: true,
       galleryView: GalleryViews.GALLERY_VIEW_1X,
       handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
@@ -89,6 +93,7 @@ const useSettingsStore = create(
 
       setActivePalette: (activePalette: string) => set({ activePalette }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
+      setFileNameStyle: (fileNameStyle: FileNameStyle) => set({ fileNameStyle }),
       setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),
       setGalleryView: (galleryView: GalleryViews) => set({ galleryView }),
       setHandleExportFrame: (handleExportFrame: ExportFrameMode) => set({ handleExportFrame }),

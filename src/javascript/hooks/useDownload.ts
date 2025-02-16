@@ -14,7 +14,7 @@ interface UseDownload {
 }
 
 const useDownload = (): UseDownload => {
-  const { exportScaleFactors, exportFileTypes, handleExportFrame } = useSettingsStore();
+  const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore();
   const { frames, palettes, images } = useItemsStore();
 
   const prepareFiles = getPrepareFiles(
@@ -22,6 +22,7 @@ const useDownload = (): UseDownload => {
     exportFileTypes,
     handleExportFrame,
     palettes,
+    fileNameStyle,
   );
 
 
@@ -41,6 +42,7 @@ const useDownload = (): UseDownload => {
     const zipFilename = generateFileName({
       image,
       palette: imagePalette,
+      fileNameStyle,
     });
 
     const tiles = await loadImageTiles(images, frames)(image.hash);
@@ -62,6 +64,7 @@ const useDownload = (): UseDownload => {
     const zipFilename = generateFileName({
       altTitle: 'gameboy-printer-gallery',
       useCurrentDate: true,
+      fileNameStyle,
     });
 
     const resultImages = await Promise.all(hashes.map(async (imageHash) => {
