@@ -9,6 +9,7 @@ import { isRGBNImage } from '../isRGBNImage';
 import type { DownloadInfo } from '../../../types/Sync';
 import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
 import { getImagePalettes } from '../getImagePalettes';
+import type { FileNameStyle } from '../../consts/fileNameStyles';
 
 const getPrepareFiles =
   (
@@ -16,6 +17,7 @@ const getPrepareFiles =
     exportFileTypes: string[],
     handleExportFrame: ExportFrameMode,
     palettes: Palette[],
+    fileNameStyle: FileNameStyle,
   ) => (
     image: Image,
   ) => async (
@@ -86,6 +88,7 @@ const getPrepareFiles =
             image,
             palette,
             exportScaleFactor,
+            fileNameStyle,
           });
 
           // export the raw tildata of an image

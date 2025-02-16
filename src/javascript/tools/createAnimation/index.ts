@@ -94,7 +94,7 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 export const createAnimation = async () => {
   const { setProgress, setError, videoSelection } = useInteractionsStore.getState();
   const { frames, palettes, images: stateImages } = useItemsStore.getState();
-  const { videoParams } = useSettingsStore.getState();
+  const { videoParams, fileNameStyle } = useSettingsStore.getState();
 
   setProgress('gif', 0.01);
 
@@ -232,6 +232,7 @@ export const createAnimation = async () => {
     altTitle: 'animated',
     frameName: videoFrame,
     paletteShort: videoPalette,
+    fileNameStyle,
   });
 
   const bufferSize = gifWriter.end();
