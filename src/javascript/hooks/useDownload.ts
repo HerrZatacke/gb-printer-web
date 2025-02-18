@@ -57,7 +57,7 @@ const useDownload = (): UseDownload => {
 
     const files = await prepareFiles(image)(tiles, imageStartLine);
     return download(zipFilename)(files);
-  }, [frames, images, palettes, prepareFiles]);
+  }, [fileNameStyle, frames, images, palettes, prepareFiles]);
 
 
   const downloadImageCollection = useCallback(async (hashes: string[]): Promise<void> => {
@@ -85,7 +85,7 @@ const useDownload = (): UseDownload => {
     }));
 
     download(zipFilename)(resultImages.flat());
-  }, [frames, images, prepareFiles]);
+  }, [fileNameStyle, frames, images, prepareFiles]);
 
   return {
     downloadSingleImage,

@@ -6,9 +6,9 @@ import { ExportTypes } from '../../consts/exportTypes';
 import getImages from './getImages';
 import getFrames from './getFrames';
 import getImageHashesForExport from './getImageHashesForExport';
-import getFrameHashesForExport from './getFrameHashesForExport';
+import getFramesForExport from './getFramesForExport';
 import getFrameGroups from '../getFrameGroups';
-import type { ExportableState } from '../../../types/ExportState';
+import type { ExportableState, JSONExport, JSONExportBinary } from '../../../types/ExportState';
 import type { GetSettingsOptions } from '../../../types/Sync';
 // import type { Image } from '../../../types/Image';
 // import type { Frame } from '../../../types/Frame';
@@ -64,18 +64,17 @@ const getGetSettings = () => async (
             return {
               ...acc,
               // Remove unused framegroups from export
-              [key]: (what === ExportTypes.CURRENT_FRAMEGROUP) ?
+              frameGroups: (what === ExportTypes.CURRENT_FRAMEGROUP) ?
                 frameGroups.filter((group) => group.id === selectedFrameGroup) :
                 getFrameGroups(frames, frameGroups),
             };
           }
 
           case 'frames': {
-            const whatFrames = (what === ExportTypes.FRAMES) ? 'frames' : 'current_framegroup';
-            const exportFrameHashes = getFrameHashesForExport(whatFrames, frames, selectedFrameGroup);
+            const whatFrames = (what === ExportTypes.FRAMES) ? ExportTypes.FRAMES : ExportTypes.CURRENT_FRAMEGROUP;
             return {
               ...acc,
-              [key]: frames.filter(({ hash }) => (exportFrameHashes.includes(hash))),
+              frames: getFramesForExport(whatFrames, frames, selectedFrameGroup),
             };
           }
 
@@ -88,7 +87,7 @@ const getGetSettings = () => async (
             const exportImageHashes = getImageHashesForExport(whatImages, images, imageSelection);
             return {
               ...acc,
-              [key]: images.filter(({ hash }) => (exportImageHashes.includes(hash))),
+              images: images.filter(({ hash }) => (exportImageHashes.includes(hash))),
             };
           }
 
@@ -112,32 +111,43 @@ const getGetSettings = () => async (
     version: ITEMS_STORE_VERSION,
   };
 
-  switch (what) {
-    case ExportTypes.IMAGES:
-    case ExportTypes.SELECTED_IMAGES: {
-      if (!exportableState.images) {
-        return JSON.stringify({ state: exportableState }, null, 2);
-      }
+  let exportBinary: JSONExportBinary = {};
 
-      const selectedImages = await getImages(exportableState.images);
-      return JSON.stringify({
-        state: exportableState,
-        ...selectedImages,
-      }, null, 2);
-    }
-
-    case ExportTypes.FRAMES:
-    case ExportTypes.CURRENT_FRAMEGROUP: {
-      const exportFrames = await getFrames(getFrameHashesForExport(what, frames, selectedFrameGroup));
-      return JSON.stringify({
-        state: exportableState,
-        ...exportFrames,
-      }, null, 2);
-    }
-
-    default:
-      return JSON.stringify({ state: exportableState }, null, 2);
+  if (
+    exportableState.images?.length &&
+    [
+      ExportTypes.IMAGES,
+      ExportTypes.SELECTED_IMAGES,
+      ExportTypes.ALL,
+    ].includes(what)
+  ) {
+    exportBinary = {
+      ...exportBinary,
+      ...await getImages(exportableState.images),
+    };
   }
+
+  if (
+    exportableState.frames?.length &&
+    [
+      ExportTypes.FRAMES,
+      ExportTypes.CURRENT_FRAMEGROUP,
+      ExportTypes.ALL,
+    ].includes(what)
+  ) {
+    const whatFrames = what === ExportTypes.CURRENT_FRAMEGROUP ? ExportTypes.CURRENT_FRAMEGROUP : ExportTypes.FRAMES;
+    exportBinary = {
+      ...exportBinary,
+      ...await getFrames(getFramesForExport(whatFrames, frames, selectedFrameGroup).map(({ hash }) => hash)),
+    };
+  }
+
+  const jsonExport = {
+    state: exportableState,
+    ...exportBinary,
+  } as JSONExport;
+
+  return JSON.stringify(jsonExport, null, 2);
 };
 
 export default getGetSettings;

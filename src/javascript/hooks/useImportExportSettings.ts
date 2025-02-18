@@ -7,18 +7,22 @@ import { localforageFrames, localforageImages } from '../tools/localforageInstan
 import type { JSONExport, JSONExportState, ExportableState } from '../../types/ExportState';
 import type { ExportTypes } from '../consts/exportTypes';
 import { useStores } from './useStores';
+import { hashImportFrames } from '../app/stores/migrations/history/0/hashFrames';
 
 const mergeSettings = async (
-  newSettings: JSONExport | JSONExportState,
+  newSettings: JSONExport,
   mergeImagesFrames = false,
 ): Promise<Partial<ExportableState>> => {
   const { frames, palettes, images } = useItemsStore.getState();
 
-  Object.keys(newSettings).forEach((key: string) => {
+  // add hashes to frames if they have the very old name+id format and replace the binary keys of the JSONExport
+  const settings = await hashImportFrames(newSettings);
+
+  Object.keys(settings).forEach((key: string) => {
     if (key !== 'state') {
       // import frames and images from JSON
 
-      const exportProp: string = (newSettings as JSONExport)[key];
+      const exportProp: string = settings[key];
 
       if (key.match(/^[a-f0-9]{40,}$/gi)) {
         localforageImages.setItem(`${key}`, exportProp);
@@ -28,7 +32,7 @@ const mergeSettings = async (
     }
   });
 
-  return mergeStates(frames, palettes, images, newSettings.state || {}, mergeImagesFrames);
+  return mergeStates(frames, palettes, images, settings.state || {}, mergeImagesFrames);
 };
 
 export type ImportFn = (repoContents: JSONExport) => Promise<void>;
@@ -60,7 +64,7 @@ export const useImportExportSettings = (): ImportExportSettings => {
     };
 
     const remoteImport = async (repoContents: JSONExportState): Promise<void> => {
-      const update = await mergeSettings(repoContents, false);
+      const update = await mergeSettings(repoContents as JSONExport, false);
       globalUpdate(update);
     };
 

@@ -1,10 +1,17 @@
 import { localforageFrames } from '../../../../../tools/localforageInstance';
 import type { Frame } from '../../../../../../types/Frame';
+import type { JSONExport, JSONExportState } from '../../../../../../types/ExportState';
 
-const hashFrames = async (dirtyStateFrames: Frame[]): Promise<Frame[]> => {
-  const hasUnhashedFrames = Boolean(dirtyStateFrames.find(({ hash }) => !hash));
+interface OldFrame extends Omit<Frame, 'hash'> {
+  hash?: string;
+}
 
-  if (!hasUnhashedFrames) {
+const hasUnhashedFrames = (frames: (Frame | OldFrame)[]): boolean => (
+  Boolean(frames.find(({ hash }) => !hash))
+);
+
+export const hashStoredFrames = async (dirtyStateFrames: Frame[]): Promise<Frame[]> => {
+  if (!hasUnhashedFrames(dirtyStateFrames)) {
     return dirtyStateFrames;
   }
 
@@ -33,4 +40,44 @@ const hashFrames = async (dirtyStateFrames: Frame[]): Promise<Frame[]> => {
   }));
 };
 
-export default hashFrames;
+export const hashImportFrames = async (newState: JSONExport | JSONExportState): Promise<JSONExport> => {
+  const fixedState = newState as JSONExport;
+
+  if (!fixedState.state.frames || !hasUnhashedFrames(fixedState.state.frames)) {
+    return newState as JSONExport;
+  }
+
+  const { default: hasher } = await import(/* webpackChunkName: "obh" */ 'object-hash');
+
+  const frames = await Promise.all(fixedState.state.frames.map(async (frame: Frame): Promise<Frame> => {
+    if (frame.hash) {
+      return frame;
+    }
+
+    const frameKey = `frame-${frame.id}`;
+
+    const frameData = fixedState[frameKey];
+
+    if (!frameData) {
+      console.warn(`could not load ${frameKey} from json import`);
+      return frame;
+    }
+
+    const hash = hasher(frameData);
+    delete fixedState[frameKey];
+    fixedState[`frame-${hash}`] = frameData;
+
+    return {
+      ...frame,
+      hash,
+    } as Frame;
+  }));
+
+  return {
+    ...fixedState,
+    state: {
+      ...fixedState.state,
+      frames,
+    },
+  } as JSONExport;
+};
