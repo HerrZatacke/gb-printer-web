@@ -50,7 +50,7 @@ const useShareImage = (): UseShareImage => {
       })
         .catch(() => ('¯\\_(ツ)_/¯'));
     }
-  }, [exportFileTypes, exportScaleFactors, frames, handleExportFrame, images, palettes]);
+  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, palettes]);
 
   return {
     shareImage,
