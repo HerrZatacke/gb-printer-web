@@ -49,7 +49,7 @@ const getPrepareFiles =
       const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
       const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
       const invertPalette = (image as MonochromeImage).invertPalette || false;
-      const invertFramePalette = (image as MonochromeImage).invertFramePalette || false;
+      const invertFramePalette = typeof (image as MonochromeImage).invertFramePalette === 'undefined' ? invertPalette : false;
 
       const updateParams = getDecoderUpdateParams({
         palette: pal,
