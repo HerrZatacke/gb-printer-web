@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import objectHash from 'object-hash';
 import useEditStore from '../../../stores/editStore';
@@ -13,6 +12,7 @@ import { randomId } from '../../../../tools/randomId';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import useSaveRGBNImages from '../../../../hooks/useSaveRGBNImages';
+import { useAbsoluteGroupPath } from '../../../../hooks/useAbsoluteGroupPath';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -41,7 +41,7 @@ interface UseEditRGBNImages {
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
-  const navigate = useNavigate();
+  const { navigate } = useAbsoluteGroupPath();
   const { view } = useGalleryTreeContext();
   const { saveRGBNImage } = useSaveRGBNImages();
 
@@ -172,8 +172,6 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
       cancelEditImageGroup();
 
-      // ToDo: Handle jumping to wrong folder when creating group in sub-view
-
       addImageGroup(
         {
           id: randomId(),
@@ -187,7 +185,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
         view.id,
       );
 
-      navigate(`/gallery/${view.slug}${slug}/page/1`);
+      navigate(slug, view.id);
     }
 
   };

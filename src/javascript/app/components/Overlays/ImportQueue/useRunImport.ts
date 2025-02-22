@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import Queue from 'promise-queue';
-import { useNavigate } from 'react-router-dom';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
 import sortBy from '../../../../tools/sortby';
@@ -16,6 +15,7 @@ import useImportsStore from '../../../stores/importsStore';
 import useItemsStore from '../../../stores/itemsStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import { useStores } from '../../../../hooks/useStores';
+import { useAbsoluteGroupPath } from '../../../../hooks/useAbsoluteGroupPath';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -42,7 +42,7 @@ const useRunImport = (): UseRunImport => {
 
   const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
-  const navigate = useNavigate();
+  const { navigate } = useAbsoluteGroupPath();
 
   const { importQueue } = useImportsStore();
 
@@ -85,8 +85,6 @@ const useRunImport = (): UseRunImport => {
 
       cancelEditImageGroup();
 
-      // ToDo: Handle jumping to wrong folder when creating group in sub-view
-
       addImageGroup(
         {
           id: randomId(),
@@ -100,7 +98,7 @@ const useRunImport = (): UseRunImport => {
         view.id,
       );
 
-      navigate(`/gallery/${view.slug}${slug}/page/1`);
+      navigate(slug, view.id);
     }
 
     // ToDo: which images should become selected? setSelection(imageHahses)??
