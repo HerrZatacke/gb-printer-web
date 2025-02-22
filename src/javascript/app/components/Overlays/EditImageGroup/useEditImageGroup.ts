@@ -20,6 +20,7 @@ interface UseEditImageGroup {
   slug: string,
   title: string,
   canConfirm: boolean,
+  slugIsInUse: boolean,
   parentSlug: string,
   setSlug: (slug: string) => void,
   setTitle: (title: string) => void,
@@ -74,11 +75,13 @@ const useEditImageGroup = (): UseEditImageGroup => {
     return `${parentPath}${slug}/`;
   }, [editImageGroup, paths, currentPath, slug]);
 
+  const slugIsInUse = !!paths.find(({ absolutePath }) => absolutePath === absoluteSlug); // absolute slug already exists
+
   const canConfirm = !(
     slug.length === 0 || // no slug entered
     (
       slug !== imageGroup?.slug && // slug has changed
-      paths.find(({ absolutePath }) => absolutePath === absoluteSlug) // absolute slug already exists
+      slugIsInUse
     )
   );
 
@@ -91,6 +94,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     slug,
     title,
     canConfirm,
+    slugIsInUse,
     parentSlug,
     setSlug: (newSlug: string) => {
       setSlug(newSlug);
