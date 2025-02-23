@@ -197,9 +197,9 @@ function EditRGBN() {
         >
           <span
             className="inputgroup__label"
-            title="Create group from images"
+            title="Create group from images at current location"
           >
-            Create group from created images
+            Create group from created images at current location
           </span>
           <span
             className="checkgroup__checkbox-wrapper"
