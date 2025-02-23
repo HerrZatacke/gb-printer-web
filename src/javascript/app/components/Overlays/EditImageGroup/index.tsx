@@ -15,6 +15,7 @@ function EditImageGroup() {
     slug,
     title,
     canConfirm,
+    slugIsInUse,
     parentSlug,
     setSlug,
     setTitle,
@@ -55,7 +56,11 @@ function EditImageGroup() {
                   'edit-image-group__text--error': !canConfirm,
                 })}
               >
-                {`Full Path: "${absoluteSlug}"`}
+                {
+                  slugIsInUse ?
+                    `Path "${absoluteSlug}" is already in use` :
+                    `Full Path: "${absoluteSlug}"`
+                }
               </p>
             </Input>
             { editId === NEW_GROUP ? null : (

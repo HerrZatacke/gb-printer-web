@@ -1,9 +1,23 @@
 import React from 'react';
 import { useImportExportSettings } from '../../../../../hooks/useImportExportSettings';
-import useStoragePersist from './useStoragePersist';
+import useStoragePersist, { PersistState } from './useStoragePersist';
 import useHashCleanup from '../../../../../tools/hashCleanup';
 import { ExportTypes } from '../../../../../consts/exportTypes';
 import { useImageGroups } from '../../../../../hooks/useImageGroups';
+
+const persistMessage = (persistState: PersistState): string => {
+  switch (persistState) {
+    case PersistState.PERSISTED:
+      return 'Storage is persistent';
+    case PersistState.NOT_PERSISTED:
+      return 'Request storage persistence';
+    case PersistState.NO_API:
+      return 'Persistance API not available';
+    case PersistState.FAILED:
+    default:
+      return 'Failed to persist storage';
+  }
+};
 
 function ExportSettings() {
   const { hashCleanup, cleanupBusy } = useHashCleanup();
@@ -13,23 +27,20 @@ function ExportSettings() {
   const exportJson = (what: ExportTypes) => downloadSettings(what);
 
   const {
-    persistAPIAvailable,
     persisted,
     requestPersist,
   } = useStoragePersist();
 
   return (
     <div className="inputgroup buttongroup settings__export">
-      { persistAPIAvailable ? (
-        <button
-          type="button"
-          className="button"
-          disabled={persisted}
-          onClick={requestPersist}
-        >
-          { persisted ? 'Storage is persistent' : 'Request storage persistence' }
-        </button>
-      ) : null }
+      <button
+        type="button"
+        className="button"
+        disabled={persisted !== PersistState.NOT_PERSISTED}
+        onClick={requestPersist}
+      >
+        { persistMessage(persisted) }
+      </button>
       <button
         type="button"
         className="button"

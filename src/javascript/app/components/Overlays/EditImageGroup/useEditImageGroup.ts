@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { randomId } from '../../../../tools/randomId';
 import { dateFormat } from '../../../defaults';
@@ -10,6 +9,7 @@ import type { PathMap } from '../../../contexts/galleryTree';
 import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
 import useItemsStore from '../../../stores/itemsStore';
+import { useAbsoluteGroupPath } from '../../../../hooks/useAbsoluteGroupPath';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -20,6 +20,7 @@ interface UseEditImageGroup {
   slug: string,
   title: string,
   canConfirm: boolean,
+  slugIsInUse: boolean,
   parentSlug: string,
   setSlug: (slug: string) => void,
   setTitle: (title: string) => void,
@@ -50,7 +51,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
   const { view, paths, pathsOptions } = useGalleryTreeContext();
   const { path: currentPath } = useGalleryParams();
 
-  const navigate = useNavigate();
+  const { navigate } = useAbsoluteGroupPath();
 
   const [title, setTitle] = useState<string>(imageGroup?.title || editImageGroup?.newGroupTitle || '');
   const [slug, setSlug] = useState<string>(imageGroup?.slug || toSlug(title));
@@ -74,11 +75,13 @@ const useEditImageGroup = (): UseEditImageGroup => {
     return `${parentPath}${slug}/`;
   }, [editImageGroup, paths, currentPath, slug]);
 
+  const slugIsInUse = !!paths.find(({ absolutePath }) => absolutePath === absoluteSlug); // absolute slug already exists
+
   const canConfirm = !(
     slug.length === 0 || // no slug entered
     (
       slug !== imageGroup?.slug && // slug has changed
-      paths.find(({ absolutePath }) => absolutePath === absoluteSlug) // absolute slug already exists
+      slugIsInUse
     )
   );
 
@@ -91,6 +94,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     slug,
     title,
     canConfirm,
+    slugIsInUse,
     parentSlug,
     setSlug: (newSlug: string) => {
       setSlug(newSlug);
@@ -128,6 +132,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
           },
           view.id,
         );
+
+        navigate(slug, view.id);
       } else {
         if (!imageGroup) {
           return;
@@ -135,7 +141,6 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
         const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
 
-        // ToDo: Handle jumping to wrong folder when updating parent group
         updateImageGroup(
           {
             ...imageGroup,
@@ -144,9 +149,9 @@ const useEditImageGroup = (): UseEditImageGroup => {
           },
           parentGroupId,
         );
-      }
 
-      navigate(`/gallery/${parentSlug}${slug}/page/1`);
+        navigate(slug, parentGroupId);
+      }
     },
     cancelEditImageGroup,
   };

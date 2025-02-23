@@ -1,6 +1,5 @@
 import type { TreeImageGroup } from '../../../../types/ImageGroup';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
-import { useGalleryParams } from '../../../hooks/useGalleryParams';
 
 interface UseGalleryGroup {
   group: TreeImageGroup | null,
@@ -8,27 +7,11 @@ interface UseGalleryGroup {
 }
 
 export const useGalleryGroup = (hash: string): UseGalleryGroup => {
-  const { paths } = useGalleryTreeContext();
-  const { path: viewPath } = useGalleryParams();
+  const { paths, view } = useGalleryTreeContext();
 
-  const path = paths
-    .reduce((acc: string | null, { absolutePath, group }): string | null => {
-      if (acc) {
-        return acc;
-      }
+  const group: TreeImageGroup | null = view.groups.find(({ coverImage }) => coverImage === hash) || null;
 
-      // if two groups use the same coverimage, this may
-      // cause the wrong link to be generated. Maybe a ToDo?
-      // depending on order of creation of the groups
-      if (group.coverImage === hash && absolutePath !== viewPath) {
-        return absolutePath;
-      }
-
-      return null;
-    }, null);
-
-
-  const group = paths.find(({ absolutePath }) => absolutePath === path)?.group || null;
+  const path: string | null = paths.find(({ group: { id } }) => (id === group?.id))?.absolutePath || null;
 
   return { group, path };
 };
