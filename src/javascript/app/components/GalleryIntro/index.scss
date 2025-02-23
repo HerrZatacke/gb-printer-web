@@ -10,4 +10,17 @@
     margin: -20px 0 20px 0;
     font-size: 12px;
   }
+
+  &__storage-limit {
+    --percentage: 0;
+    font-size: 12px;
+    line-height: 14px;
+    margin-bottom: 20px;
+    padding: 8px 12px;
+    border-radius: $default-border-radius;
+    border: 1px solid;
+    @include theme-color($color-text, $color-text-bright);
+    @include theme-border-color(rgba($color-warn-red, 0.34), rgba($color-warn-red, 0.34));
+    background: linear-gradient(to right, rgba($color-warn-red, 0.7) 0%, rgba($color-warn-red, 1) var(--percentage), rgba($color-warn-red, 0.15) var(--percentage), rgba($color-warn-red, 0.3) 100%);
+  }
 }
