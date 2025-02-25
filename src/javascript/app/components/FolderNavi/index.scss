@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 2fr 2fr;
   gap: 40px;
+  font-size: 12px;
 
   &__edit-button,
   &__link {
@@ -22,9 +23,10 @@
   }
 
   &__edit-icon {
-    width: 20px;
+    width: 16px;
+    height: 16px;
     fill: currentColor;
-    @include theme-background-color($color-grey-10, $color-grey-80);
+    @include theme-background-color($color-grey-50, $color-grey-60);
     @include theme-color($color-grey-80, $color-grey-10);
     border-radius: $default-border-radius-small;
   }
@@ -33,17 +35,16 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
   }
 
   &__entry {
     display: flex;
-    gap: 6px;
+    gap: 5px;
   }
 
   &__entry + &__entry:before {
-    content: '>';
-    margin-right: 8px;
+    content: '▷';
   }
 
   .inputgroup {

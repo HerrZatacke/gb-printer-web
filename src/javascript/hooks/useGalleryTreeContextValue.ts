@@ -207,7 +207,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
     const covers = view.groups.map(({ coverImage }) => coverImage);
     const images = view.images.filter((image: Image) => !covers.includes(image.hash));
 
-    return { view, covers, paths, images, pathsOptions };
+    return { view, covers, paths, images, pathsOptions, root };
   }, [path, paths, pathsOptions, root]);
 
   return result;

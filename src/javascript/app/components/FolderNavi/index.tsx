@@ -1,53 +1,20 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import { usePathSegments } from '../../../hooks/usePathSegments';
+import useEditStore from '../../stores/editStore';
 import Select from '../Overlays/Confirm/fields/Select';
+import SVG from '../SVG';
 
 import './index.scss';
-import SVG from '../SVG';
-import useEditStore from '../../stores/editStore';
-
-interface Segment {
-  groupId: string,
-  label: string,
-  path: string,
-}
 
 function FolderNavi() {
   const navigate = useNavigate();
   const { path: currentPath } = useGalleryParams();
-  const { paths, pathsOptions } = useGalleryTreeContext();
+  const { pathsOptions } = useGalleryTreeContext();
   const { setEditImageGroup } = useEditStore();
-
-  const segments = useMemo<Segment[]>(() => (
-    currentPath
-      .split('/')
-      .reduce((acc: Segment[], segment: string): Segment[] => {
-        if (!segment) {
-          return acc;
-        }
-
-        const path = acc.map(({ label }) => label)
-          .concat(segment, '') // the empty string creates the trailing '/'
-          .join('/');
-
-        const groupId = paths.find(({ absolutePath }) => absolutePath === path)?.group.id || '';
-
-        if (!groupId) {
-          return acc;
-        }
-
-        return [
-          ...acc,
-          {
-            groupId,
-            label: segment,
-            path,
-          },
-        ];
-      }, [])
-  ), [currentPath, paths]);
+  const { segments } = usePathSegments();
 
   if (pathsOptions.length < 2) {
     return null;
@@ -56,37 +23,30 @@ function FolderNavi() {
   return (
     <div className="folder-navi">
       <ul className="folder-navi__segments">
-        <li
-          className="folder-navi__entry"
-        >
-          <Link
-            className="folder-navi__link"
-            to="/gallery/page/1"
-          >
-            🏠
-          </Link>
-        </li>
-        { segments.map(({ label, path, groupId }) => (
+        { segments.map(({ group, pagedPath }, index) => (
           <li
-            key={path}
+            key={group.id}
             className="folder-navi__entry"
           >
             <Link
               className="folder-navi__link"
-              to={`/gallery/${path}page/1`}
+              to={`/gallery/${pagedPath}`}
             >
-              { label }
+              { group.title }
             </Link>
-            <button
-              type="button"
-              className="folder-navi__edit-button"
-              onClick={() => setEditImageGroup({ groupId })}
-            >
-              <SVG
-                name="edit"
-                className="folder-navi__edit-icon"
-              />
-            </button>
+            { index > 0 && (
+              <button
+                type="button"
+                className="folder-navi__edit-button"
+                onClick={() => setEditImageGroup({ groupId: group.id })}
+                title={`Edit group "${group.title}"`}
+              >
+                <SVG
+                  name="edit"
+                  className="folder-navi__edit-icon"
+                />
+              </button>
+            ) }
           </li>
         )) }
       </ul>
