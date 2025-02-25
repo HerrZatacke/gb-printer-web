@@ -185,13 +185,15 @@ const useItemsStore = create<ItemsState>()(
       addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
         const { imageGroups } = get();
 
-        const groups = imageGroups.map((group: SerializableImageGroup) => (
-          group.id !== parentId ? group : {
-            ...group,
-            groups: [...group.groups, imageGroup.id],
-            images: group.images.filter((hash: string) => !imageGroup.images.includes(hash)),
-          }
-        ));
+        const groups = imageGroups.map((group: SerializableImageGroup) => {
+          // remove images in current selection from _all other_ imagegroups.
+          const images = group.images.filter((hash: string) => !imageGroup.images.includes(hash));
+
+          // add new group id to parent group.
+          const groupGroups = group.id === parentId ? [...group.groups, imageGroup.id] : group.groups;
+
+          return { ...group, groups: groupGroups, images };
+        });
 
         set({ imageGroups: groupUniqueById([...groups, imageGroup]) });
       },
