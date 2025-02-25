@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { longestCommonSubstring } from 'string-algorithms';
 import useDialogsStore from '../app/stores/dialogsStore';
 import { DialoqQuestionType } from '../../types/Dialog';

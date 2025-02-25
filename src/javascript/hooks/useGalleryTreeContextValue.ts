@@ -180,7 +180,6 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
     if (stateImageGroups.length > paths.length) {
       const idsInPaths = paths.map(({ group }) => group.id);
       const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-      console.log('cleaned unused imagegroups');
       setImageGroups(usedGroups);
     }
   }, [paths, setImageGroups, stateImageGroups]);

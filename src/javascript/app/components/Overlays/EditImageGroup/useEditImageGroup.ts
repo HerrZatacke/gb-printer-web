@@ -188,7 +188,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         return [];
       }
     }
-  }, [absoluteSlug, editMode, pathsOptions]);
+  }, [absoluteSlug, editImageGroup, editMode, paths, pathsOptions]);
 
   return {
     editId: editImageGroup?.groupId || null,

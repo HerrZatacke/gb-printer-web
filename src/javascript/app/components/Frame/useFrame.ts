@@ -5,9 +5,7 @@ import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
 import useItemsStore from '../../stores/itemsStore';
-import useSettingsStore from '../../stores/settingsStore';
 import { useStores } from '../../../hooks/useStores';
-
 
 interface GetTilesParams {
   frameId: string,
