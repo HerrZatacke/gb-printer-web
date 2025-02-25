@@ -1,14 +1,17 @@
+import { useEffect, useMemo } from 'react';
+import { longestCommonSubstring } from 'string-algorithms';
 import useDialogsStore from '../app/stores/dialogsStore';
 import { DialoqQuestionType } from '../../types/Dialog';
 import { useGalleryTreeContext } from '../app/contexts/galleryTree';
 import { NEW_GROUP } from '../app/components/Overlays/EditImageGroup/useEditImageGroup';
 import useEditStore from '../app/stores/editStore';
 import useItemsStore from '../app/stores/itemsStore';
+import useFiltersStore from '../app/stores/filtersStore';
 
 
 interface UseImageGroups {
   resetGroups: () => void,
-  createGroup: (hash: string, imageTitle?: string) => void,
+  createGroup: (hash: string) => void,
   editGroup: (id: string) => void,
   deleteGroup: (id: string) => void,
 }
@@ -17,7 +20,32 @@ export const useImageGroups = (): UseImageGroups => {
   const { view } = useGalleryTreeContext();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setEditImageGroup } = useEditStore();
-  const { deleteImageGroup, setImageGroups } = useItemsStore();
+  const { deleteImageGroup, setImageGroups, images } = useItemsStore();
+  const { imageSelection } = useFiltersStore();
+
+  const newGroupTitle = useMemo<string>(() => {
+    if (!imageSelection.length) {
+      return '';
+    }
+
+    const titles = images
+      .filter(({ hash }) => imageSelection.includes(hash))
+      .map(({ title }) => title)
+      .filter((title) => title.length > 3);
+
+    const groupTitle = longestCommonSubstring(titles);
+
+    const rawTitle = groupTitle.filter((part) => (part.length > 3))[0]?.trim();
+
+    if (!rawTitle) {
+      return 'New Group';
+    }
+
+    return rawTitle
+      .replace(/[_-]/g, ' ')
+      .replace(/^\s*\d+\s+|\s+\d+\s*$/g, '')
+      .trim();
+  }, [imageSelection, images]);
 
   return {
     resetGroups: () => {
@@ -37,11 +65,11 @@ export const useImageGroups = (): UseImageGroups => {
         },
       });
     },
-    createGroup: (hash: string, imageTitle?: string) => {
+    createGroup: (hash: string) => {
       setEditImageGroup({
         groupId: NEW_GROUP,
         newGroupCover: hash,
-        newGroupTitle: imageTitle?.trim() ? `Group - ${imageTitle}` : 'New group',
+        newGroupTitle,
       });
     },
     editGroup: (id: string) => {
