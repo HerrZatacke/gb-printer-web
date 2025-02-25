@@ -151,7 +151,7 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
         <button
           type="button"
           className="gallery-image-buttons__button"
-          onClick={() => createGroup(hash, imageTitle)}
+          onClick={() => createGroup(hash)}
         >
           <SVG name="file-add" />
         </button>

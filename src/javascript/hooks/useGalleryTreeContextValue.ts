@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import unique from '../tools/unique';
 import { createRoot } from '../app/contexts/galleryTree';
 import { useGalleryParams } from './useGalleryParams';
@@ -95,7 +95,7 @@ const reduceImages = (
 export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   const { enableImageGroups } = useSettingsStore();
   const { setError } = useInteractionsStore();
-  const { imageGroups: stateImageGroups, images: stateImages } = useItemsStore();
+  const { imageGroups: stateImageGroups, images: stateImages, setImageGroups } = useItemsStore();
 
   const imageGroups = useMemo<SerializableImageGroup[]>(
     () => (enableImageGroups ? stateImageGroups : []),
@@ -172,6 +172,18 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   }, [singleUsageResult, stateImages, setError]);
 
   const paths = useMemo<PathMap[]>((): PathMap[] => (reducePaths('', root.groups)), [root]);
+
+  // Cleanup effect:
+  // as groups without subgroups or images are filtered/hidden,
+  // they should be deleted from the store as well
+  useEffect(() => {
+    if (stateImageGroups.length > paths.length) {
+      const idsInPaths = paths.map(({ group }) => group.id);
+      const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
+      console.log('cleaned unused imagegroups');
+      setImageGroups(usedGroups);
+    }
+  }, [paths, setImageGroups, stateImageGroups]);
 
   const pathsOptions = useMemo<DialogOption[]>((): DialogOption[] => (
     paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {

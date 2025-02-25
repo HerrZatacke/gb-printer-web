@@ -27,7 +27,6 @@ interface UseFrame {
   setTiles: (tiles: string[]) => void,
   deleteFrame: () => void,
   editFrame: () => void,
-  enableDebug: boolean,
   usage: number,
 }
 
@@ -41,7 +40,6 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const [imageStartLine, setImageStartLine] = useState<number>(2);
 
   const { setEditFrame } = useEditStore();
-  const { enableDebug } = useSettingsStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { frames, deleteFrame, images } = useItemsStore();
   const { updateLastSyncLocalNow } = useStores();
@@ -72,7 +70,6 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
     frameHash,
     tiles,
     imageStartLine,
-    enableDebug,
     usage,
     setTiles,
     deleteFrame: () => {

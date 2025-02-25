@@ -82,9 +82,9 @@ function ImportQueue() {
         >
           <span
             className="inputgroup__label"
-            title="Create group from images"
+            title="Create group from images at current location"
           >
-            Create group from images
+            Create group from images at current location
           </span>
           <span
             className="checkgroup__checkbox-wrapper"

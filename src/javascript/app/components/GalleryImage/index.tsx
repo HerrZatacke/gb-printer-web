@@ -15,6 +15,7 @@ import type { RGBNHashes } from '../../../../types/Image';
 import isTouchDevice from '../../../tools/isTouchDevice';
 
 import './index.scss';
+import Debug from '../Debug';
 
 dayjs.extend(customParseFormat);
 
@@ -174,17 +175,13 @@ function GalleryImage({ page, hash }: Props) {
           preferredLocale={preferredLocale}
         />
       </div>
-      { enableDebug ? (
-        <span className="gallery-image__hash-debug">
-          { hash }
-          { hashes ? Object.keys(hashes).map((channel) => (
-            <span key={channel}>
-              <br />
-              {`${channel.toUpperCase()}: ${hashes[channel as keyof RGBNHashes]}`}
-            </span>
-          )) : null }
-        </span>
-      ) : null }
+      <Debug>
+        { hash }
+        { hashes ? '\n' : null }
+        { hashes ? Object.keys(hashes).map((channel) => (
+          `${channel.toUpperCase()}: ${hashes[channel as keyof RGBNHashes]}`
+        )).join('\n') : null }
+      </Debug>
     </li>
   );
 }

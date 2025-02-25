@@ -6,6 +6,7 @@ import Input, { InputType } from '../../Input';
 
 import './index.scss';
 import Select from '../Confirm/fields/Select';
+import Debug from '../../Debug';
 
 function EditImageGroup() {
   const {
@@ -16,6 +17,7 @@ function EditImageGroup() {
     title,
     canConfirm,
     slugIsInUse,
+    slugWasChanged,
     parentSlug,
     setSlug,
     setTitle,
@@ -58,12 +60,15 @@ function EditImageGroup() {
               >
                 {
                   slugIsInUse ?
-                    `Path "${absoluteSlug}" is already in use` :
-                    `Full Path: "${absoluteSlug}"`
+                    `Path${slugWasChanged ? ' is already in use' : ''}: "${absoluteSlug}"` :
+                    `Path: "${absoluteSlug}"`
                 }
               </p>
             </Input>
-            { editId === NEW_GROUP ? null : (
+            <Debug>
+              { JSON.stringify({ slug, parentSlug, canConfirm, slugIsInUse }, null, 2) }
+            </Debug>
+            { possibleParents.length > 1 && (
               <Select
                 id="paths"
                 label="Parent group"

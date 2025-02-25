@@ -5,6 +5,7 @@ import FrameButtons from '../FrameButtons';
 import useFrame from './useFrame';
 
 import './index.scss';
+import Debug from '../Debug';
 
 interface Props {
   frameId: string,
@@ -18,7 +19,6 @@ function Frame({ frameId, name, palette }: Props) {
     deleteFrame,
     editFrame,
     frameHash,
-    enableDebug,
     imageStartLine,
     usage,
   } = useFrame({ frameId, name });
@@ -55,9 +55,7 @@ function Frame({ frameId, name, palette }: Props) {
       <span className="frame__name">
         {name}
       </span>
-      { enableDebug ? (
-        <span className="frame__hash-debug">{ frameHash }</span>
-      ) : null }
+      <Debug>{ frameHash }</Debug>
       <FrameButtons
         deleteFrame={deleteFrame}
         editFrame={editFrame}

@@ -46,7 +46,7 @@ function GalleryIntroText(props: Props) {
             } as CSSPropertiesVars}
             title={`Using ${bytes(storageEstimate.used)} of ${bytes(storageEstimate.total)}`}
           >
-            { `You are using ${storageEstimate.percentage}% of your browser's ${storageLabel(storageEstimate.type)}. Be aware for now saving images will not be able once you hit the limit.` }
+            { `You are using ${storageEstimate.percentage}% of your browser's ${storageLabel(storageEstimate.type)}. Be aware for now saving images will not be possible once you hit the limit.` }
           </p>
         )
       }
