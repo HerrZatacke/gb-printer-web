@@ -8,7 +8,7 @@ export const createRoot = (): TreeImageGroup => ({
   id: 'ROOT',
   slug: '',
   created: '',
-  title: '',
+  title: '🏠',
   coverImage: '',
   images: [],
   groups: [],
@@ -20,6 +20,7 @@ export interface PathMap {
 }
 
 export interface GalleryTreeContext {
+  root: TreeImageGroup, // always the root element
   view: TreeImageGroup, // 'view' contains images and coverImages (=groups)
   images: Image[], // 'images' contains only actual images (without covers/groups)
   covers: string[],
@@ -27,8 +28,11 @@ export interface GalleryTreeContext {
   pathsOptions: DialogOption[],
 }
 
+const rootView = createRoot();
+
 export const galleryTreeContext: Context<GalleryTreeContext> = createContext<GalleryTreeContext>({
-  view: createRoot(),
+  root: rootView,
+  view: rootView,
   images: [],
   covers: [],
   paths: [],
