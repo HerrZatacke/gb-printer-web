@@ -1,5 +1,5 @@
 import { parseURL } from 'ufo';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import useItemsStore from '../../stores/itemsStore';
 import { usePluginsContext } from '../../contexts/plugins';
 

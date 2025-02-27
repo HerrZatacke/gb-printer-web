@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, NavLink, useMatches, Navigate } from 'react-router-dom';
+import { Outlet, NavLink, useMatches, Navigate } from 'react-router';
 import ExportSettings from './pages/ExportSettings';
 import { getEnv } from '../../../tools/getEnv';
 

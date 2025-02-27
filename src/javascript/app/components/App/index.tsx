@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import type { RouteObject } from 'react-router-dom';
-import { createHashRouter as createRouter, RouterProvider } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
+import { createHashRouter as createRouter, RouterProvider } from 'react-router';
 import Home from '../Home';
 import Gallery from '../Gallery';
 import Import from '../Import';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import { usePathSegments } from '../../../hooks/usePathSegments';
