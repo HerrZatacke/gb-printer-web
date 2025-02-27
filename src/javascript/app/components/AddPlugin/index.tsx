@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router';
 import './index.scss';
 import { useAddPlugin } from './useAddPlugin';
 import SVG from '../SVG';

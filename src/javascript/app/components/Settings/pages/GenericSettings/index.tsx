@@ -1,7 +1,7 @@
 import type { ExportFrameMode } from 'gb-image-decoder';
 import type { ILocale } from 'locale-codes';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import dayjs from 'dayjs';
 import classnames from 'classnames';
 import SVG from '../../../SVG';

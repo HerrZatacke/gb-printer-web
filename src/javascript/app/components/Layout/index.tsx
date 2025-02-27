@@ -1,6 +1,6 @@
 import React from 'react';
 import type { CSSPropertiesVars } from 'react';
-import { Outlet, Navigate, useMatches } from 'react-router-dom';
+import { Outlet, Navigate, useMatches } from 'react-router';
 import Navigation from '../Navigation';
 import Overlays from '../Overlays';
 import Errors from '../Errors';
