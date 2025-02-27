@@ -23,14 +23,14 @@ function FolderNavi() {
   return (
     <div className="folder-navi">
       <ul className="folder-navi__segments">
-        { segments.map(({ group, pagedPath }, index) => (
+        { segments.map(({ group, path }, index) => (
           <li
             key={group.id}
             className="folder-navi__entry"
           >
             <Link
               className="folder-navi__link"
-              to={`/gallery/${pagedPath}`}
+              to={`/gallery/${path}`}
             >
               { group.title }
             </Link>

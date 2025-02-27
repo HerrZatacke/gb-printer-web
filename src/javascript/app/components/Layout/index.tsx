@@ -7,6 +7,7 @@ import Errors from '../Errors';
 import GalleryTreeContextProvider from '../../contexts/galleryTree/GalleryTreeContextProvider';
 import PluginsContextProvider from '../../contexts/plugins/PluginsContextProvider';
 import RemotePrinterContextProvider from '../../contexts/remotePrinter/RemotePrinterContextProvider';
+import { NavigationToolsProvider } from '../../contexts/navigationTools/NavigationToolsProvider';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 
 import './index.scss';
@@ -32,15 +33,17 @@ function Layout() {
   return (
     <PluginsContextProvider>
       <GalleryTreeContextProvider>
-        <RemotePrinterContextProvider>
-          <Navigation />
-          <div className="layout" style={ddpx}>
-            { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
-            <Outlet />
-          </div>
-          <Overlays />
-          <Errors />
-        </RemotePrinterContextProvider>
+        <NavigationToolsProvider>
+          <RemotePrinterContextProvider>
+            <Navigation />
+            <div className="layout" style={ddpx}>
+              { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
+              <Outlet />
+            </div>
+            <Overlays />
+            <Errors />
+          </RemotePrinterContextProvider>
+        </NavigationToolsProvider>
       </GalleryTreeContextProvider>
     </PluginsContextProvider>
   );

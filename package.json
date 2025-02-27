@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.44.7",
+  "version": "1.44.8",
   "description": "gb-printer-web",
   "scripts": {
     "start": "webpack serve --config ./scripts/webpack.dev.js",
@@ -109,7 +109,7 @@
     "react-compound-slider": "^3.4.0",
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
-    "react-router-dom": "^6.6.1",
+    "react-router-dom": "^7.2.0",
     "reset-css": "^5.0.1",
     "rimraf": "^3.0.2",
     "sass": "^1.43.4",

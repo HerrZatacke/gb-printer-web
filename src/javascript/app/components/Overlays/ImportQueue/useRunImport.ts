@@ -4,18 +4,19 @@ import Queue from 'promise-queue';
 import saveNewImage from '../../../../tools/saveNewImage';
 import padToHeight from '../../../../tools/padToHeight';
 import sortBy from '../../../../tools/sortby';
-import { dateFormat } from '../../../defaults';
+import { dateFormat, dateFormatSeconds } from '../../../defaults';
 import type { ImportItem } from '../../../../../types/ImportItem';
 import type { TagChange } from '../../../../tools/applyTagChanges';
 import { randomId } from '../../../../tools/randomId';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
+import { useNavigationToolsContext } from '../../../contexts/navigationTools/NavigationToolsProvider';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
 import useEditStore from '../../../stores/editStore';
+import useFiltersStore from '../../../stores/filtersStore';
 import useImportsStore from '../../../stores/importsStore';
 import useItemsStore from '../../../stores/itemsStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import { useStores } from '../../../../hooks/useStores';
-import { useAbsoluteGroupPath } from '../../../../hooks/useAbsoluteGroupPath';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
@@ -38,11 +39,12 @@ const useRunImport = (): UseRunImport => {
   const { importPad, setActivePalette, activePalette } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
   const { addImageGroup } = useItemsStore();
+  const { setImageSelection } = useFiltersStore();
   const { addImages, importQueueCancel } = useStores();
 
   const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
-  const { navigate } = useAbsoluteGroupPath();
+  const { navigateToGroup } = useNavigationToolsContext();
 
   const { importQueue } = useImportsStore();
 
@@ -80,14 +82,16 @@ const useRunImport = (): UseRunImport => {
     addImages(savedImages);
 
     if (createGroup) {
-      const title = `Import ${dayjs().format(dateFormat)}`;
+      const title = `Import ${dayjs().format(dateFormatSeconds)}`;
       const slug = toSlug(title);
 
       cancelEditImageGroup();
 
+      const newGroupId = randomId();
+
       addImageGroup(
         {
-          id: randomId(),
+          id: newGroupId,
           slug,
           title,
           created: dayjs(Date.now()).format(dateFormat),
@@ -98,10 +102,10 @@ const useRunImport = (): UseRunImport => {
         view.id,
       );
 
-      navigate(slug, view.id);
+      navigateToGroup(newGroupId);
     }
 
-    // ToDo: which images should become selected? setSelection(imageHahses)??
+    setImageSelection(imageHashes);
   };
 
   return {
