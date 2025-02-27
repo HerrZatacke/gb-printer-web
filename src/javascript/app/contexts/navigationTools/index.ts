@@ -4,9 +4,12 @@ import { useGalleryTreeContext } from '../galleryTree';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import useFiltersStore from '../../stores/filtersStore';
 import useSettingsStore from '../../stores/settingsStore';
+import type { TreeImageGroup } from '../../../../types/ImageGroup';
+import type { Image } from '../../../../types/Image';
 
 interface UseNavigationTools {
   getGroupPath: (groupId: string) => string,
+  getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number,
   getPagedImagePath: (hash: string) => string,
   navigateToGroup: (groupId: string) => void,
   navigateToImage: (hash: string) => void,
@@ -28,6 +31,23 @@ export const useNavigationTools = (): UseNavigationTools => {
   const { sortBy, filtersActiveTags, recentImports } = useFiltersStore();
   const { pageSize } = useSettingsStore();
 
+  const imageFilter = useCallback((images: Image[]): Image[] => (
+    getFilteredImages(images, {
+      filtersActiveTags,
+      sortBy,
+      recentImports,
+    })
+  ), [filtersActiveTags, recentImports, sortBy]);
+
+  const getImagePageIndexInGroup = useCallback((imageHash: string, parentGroup: TreeImageGroup) => {
+    const sortedImages = imageFilter(parentGroup.images);
+    const imageIndex = sortedImages.findIndex(({ hash }) => (
+      hash === imageHash
+    ));
+
+    return Math.floor(imageIndex / pageSize) + 1;
+  }, [imageFilter, pageSize]);
+
   const getGroupPath = useCallback((groupId: string): string => {
     const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath || '';
     return `/gallery/${groupPath}page/1`;
@@ -37,7 +57,6 @@ export const useNavigationTools = (): UseNavigationTools => {
     setShouldNavigate({ groupId });
   };
 
-
   const getPagedImagePath = useCallback((imageHash: string): string => {
     const pathMap = paths.find(({ group: { images } }) => (
       images.map(({ hash }) => hash).includes(imageHash)
@@ -46,20 +65,10 @@ export const useNavigationTools = (): UseNavigationTools => {
     const viewSlug = pathMap?.absolutePath || '';
     const group = pathMap?.group || root;
 
-    const sortedImages = getFilteredImages(group.images, {
-      filtersActiveTags,
-      sortBy,
-      recentImports,
-    });
-
-    const imageIndex = sortedImages.findIndex(({ hash }) => (
-      hash === imageHash
-    ));
-
-    const pageIndex = Math.floor(imageIndex / pageSize) + 1;
+    const pageIndex = getImagePageIndexInGroup(imageHash, group);
 
     return `/gallery/${viewSlug}page/${pageIndex}`;
-  }, [filtersActiveTags, pageSize, paths, recentImports, root, sortBy]);
+  }, [getImagePageIndexInGroup, paths, root]);
 
   const navigateToImage = (hash: string) => {
     setShouldNavigate({ imageHash: hash });
@@ -78,6 +87,7 @@ export const useNavigationTools = (): UseNavigationTools => {
   return {
     getGroupPath,
     getPagedImagePath,
+    getImagePageIndexInGroup,
     navigateToGroup,
     navigateToImage,
   };
