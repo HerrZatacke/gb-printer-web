@@ -2,6 +2,7 @@ import { BlendMode } from 'gb-image-decoder';
 import type { Palette } from '../../types/Palette';
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss:SSS';
+const dateFormatSeconds = 'YYYY-MM-DD HH:mm:ss';
 const dateFormatInput = 'YYYY-MM-DD';
 const timeFormatInput = 'HH:mm';
 const dateFormatFilename = 'YYYYMMDD-HHmmss';
@@ -31,6 +32,7 @@ const missingGreyPalette: Palette = {
 
 export {
   dateFormat,
+  dateFormatSeconds,
   dateFormatInput,
   timeFormatInput,
   dateFormatFilename,

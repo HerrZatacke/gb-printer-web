@@ -6,13 +6,13 @@ import useFiltersStore from '../../../stores/filtersStore';
 import useItemsStore from '../../../stores/itemsStore';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
-import { dateFormat } from '../../../defaults';
+import { dateFormat, dateFormatSeconds } from '../../../defaults';
 import { toSlug } from '../EditImageGroup/useEditImageGroup';
 import { randomId } from '../../../../tools/randomId';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
+import { useNavigationToolsContext } from '../../../contexts/navigationTools/NavigationToolsProvider';
 import useSaveRGBNImages from '../../../../hooks/useSaveRGBNImages';
-import { useAbsoluteGroupPath } from '../../../../hooks/useAbsoluteGroupPath';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -35,13 +35,13 @@ interface UseEditRGBNImages {
   updateOrder: (color: ColorKey, direction: number) => void,
   toggleSingleChannel: (channel: keyof RGBNHashes, hash: string) => void
   setGrouping: (value: RGBGrouping) => void,
-  save: () => void,
+  save: () => Promise<void>,
   setCreateGroup: (value: boolean) => void,
   cancelEditRGBNImages: () => void,
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
-  const { navigate } = useAbsoluteGroupPath();
+  const { navigateToGroup } = useNavigationToolsContext();
   const { view } = useGalleryTreeContext();
   const { saveRGBNImage } = useSaveRGBNImages();
 
@@ -160,21 +160,23 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     }
   }, [blockLength, globalSortDirection, grouping, manualHashes, order, sortedImages, usedColorCount]);
 
-  const save = () => {
+  const save = async () => {
     cancelEditRGBNImages();
-    saveRGBNImage(rgbnHashes);
+    await saveRGBNImage(rgbnHashes);
 
     if (createGroup) {
-      const title = `RGB ${dayjs().format(dateFormat)}`;
+      const title = `RGB ${dayjs().format(dateFormatSeconds)}`;
       const slug = toSlug(title);
 
       const createdImageHashes: string[] = rgbnHashes.map((hashes) => objectHash(hashes));
 
       cancelEditImageGroup();
 
+      const newGroupId = randomId();
+
       addImageGroup(
         {
-          id: randomId(),
+          id: newGroupId,
           slug,
           title,
           created: dayjs(Date.now()).format(dateFormat),
@@ -185,7 +187,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
         view.id,
       );
 
-      navigate(slug, view.id);
+      navigateToGroup(newGroupId);
     }
 
   };

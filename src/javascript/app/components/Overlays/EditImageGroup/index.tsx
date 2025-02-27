@@ -16,13 +16,16 @@ function EditImageGroup() {
     slug,
     title,
     canConfirm,
+    canMove,
     slugIsInUse,
     slugWasChanged,
     parentSlug,
+    selectionCount,
     setSlug,
     setTitle,
     setParentSlug,
     confirm,
+    move,
     cancelEditImageGroup,
   } = useEditImageGroup();
 
@@ -31,7 +34,7 @@ function EditImageGroup() {
       className="edit-image-group"
       confirm={confirm}
       canConfirm={canConfirm}
-      header={editId !== NEW_GROUP ? `Editing group ${title ? `"${title}"` : ''}` : 'Create new image group'}
+      header={editId !== NEW_GROUP ? `Editing group ${title ? `"${title}"` : ''}` : `Create new group with ${selectionCount} images`}
       deny={cancelEditImageGroup}
     >
       <div
@@ -65,9 +68,6 @@ function EditImageGroup() {
                 }
               </p>
             </Input>
-            <Debug>
-              { JSON.stringify({ slug, parentSlug, canConfirm, slugIsInUse }, null, 2) }
-            </Debug>
             { possibleParents.length > 1 && (
               <Select
                 id="paths"
@@ -78,6 +78,19 @@ function EditImageGroup() {
                 disabled={false}
               />
             ) }
+            { possibleParents.length > 1 && editId === NEW_GROUP && (
+              <button
+                className="button edit-image-group__move-button"
+                type="button"
+                disabled={!canMove}
+                onClick={move}
+              >
+                { `Move all ${selectionCount} image(s) without creating a group` }
+              </button>
+            ) }
+            <Debug>
+              { JSON.stringify({ slug, parentSlug, canConfirm, slugIsInUse }, null, 2) }
+            </Debug>
           </>
         ) : (
           <p>{ `A group with the ID '${editId}' does not exist!` }</p>
