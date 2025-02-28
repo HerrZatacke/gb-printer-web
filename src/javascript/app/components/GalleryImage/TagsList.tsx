@@ -46,14 +46,14 @@ function TagsList({ tags, fromGroup }: Props) {
         ))}
 
       {
-        showTags.length !== tags.length && (
+        moreTags.length > 0 && (
           <li
-            title={`+${tags.length - 3} more tags:\n${moreTags.join('\n')}`}
+            title={`+${moreTags.length} more tags:\n${moreTags.join('\n')}`}
             className={classnames('gallery-image__tag', {
               'gallery-image__tag--group': fromGroup,
             })}
           >
-            {`+${tags.length - 3} more`}
+            {`+${moreTags.length} more`}
           </li>
         )
       }
