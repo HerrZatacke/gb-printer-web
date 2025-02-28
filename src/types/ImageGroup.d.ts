@@ -19,4 +19,5 @@ export interface SerializableImageGroup extends BaseImageGroup {
 export interface TreeImageGroup extends BaseImageGroup {
   groups: TreeImageGroup[],
   images: Image[],
+  tags: string[],
 }

@@ -1,26 +1,62 @@
 import React from 'react';
-import { SpecialTags } from '../../../consts/SpecialTags';
+import classnames from 'classnames';
+import { specialTags, SpecialTags } from '../../../consts/SpecialTags';
 
 interface Props {
-  tags: string[]
+  tags: string[],
+  fromGroup?: boolean,
 }
 
-function TagsList({ tags }: Props) {
+
+const sortTags = (a: string, b: string) => (
+  a.toLowerCase().localeCompare(b.toLowerCase())
+);
+
+
+function TagsList({ tags, fromGroup }: Props) {
+
+  let showTags: string[];
+  let moreTags: string[] = [];
+
+  if (fromGroup) {
+    const groupOnly = tags.sort(sortTags).filter((groupTag) => (
+      !specialTags.includes(groupTag)
+    ));
+
+    showTags = groupOnly.slice(0, 3);
+    moreTags = groupOnly.slice(3, -1);
+  } else {
+    showTags = tags;
+  }
+
   return (
     <ul className="gallery-image__tags">
-      { tags
-        .sort((a, b) => (
-          a.toLowerCase().localeCompare(b.toLowerCase())
-        ))
+      { showTags
+        .sort(sortTags)
         .map((tag) => (
           <li
             key={tag}
             title={tag === SpecialTags.FILTER_FAVOURITE ? 'Favourite' : tag}
-            className="gallery-image__tag"
+            className={classnames('gallery-image__tag', {
+              'gallery-image__tag--group': fromGroup,
+            })}
           >
             {tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
           </li>
         ))}
+
+      {
+        showTags.length !== tags.length && (
+          <li
+            title={`+${tags.length - 3} more tags:\n${moreTags.join('\n')}`}
+            className={classnames('gallery-image__tag', {
+              'gallery-image__tag--group': fromGroup,
+            })}
+          >
+            {`+${tags.length - 3} more`}
+          </li>
+        )
+      }
     </ul>
   );
 }

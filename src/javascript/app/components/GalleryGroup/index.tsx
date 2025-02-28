@@ -1,7 +1,8 @@
 import { Link } from 'react-router';
 import React from 'react';
-import { useGalleryGroup } from './useGalleryGroup';
 import ImageRender from '../ImageRender';
+import TagsList from '../GalleryImage/TagsList';
+import { useGalleryGroup } from './useGalleryGroup';
 import { useGalleryImage } from '../GalleryImage/useGalleryImage';
 import { useImageGroups } from '../../../hooks/useImageGroups';
 
@@ -42,6 +43,7 @@ function GalleryGroup({ hash }: Props) {
         to={`/gallery/${path}page/1`}
       >
         <div className="gallery-group__image">
+          <div className="gallery-group__group-marker" />
           <ImageRender
             lockFrame={lockFrame}
             invertPalette={invertPalette}
@@ -52,10 +54,10 @@ function GalleryGroup({ hash }: Props) {
             hashes={hashes}
             rotation={rotation}
           />
-          <div className="gallery-group__temp">GROUP 🗁</div>
         </div>
         <p className="gallery-group__info">{ `${group.images.length} images` }</p>
         <p className="gallery-group__title">{ group.title }</p>
+        <TagsList tags={group.tags} fromGroup />
       </Link>
       <div className="gallery-group__buttons">
         <button

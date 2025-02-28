@@ -12,6 +12,7 @@ export const createRoot = (): TreeImageGroup => ({
   coverImage: '',
   images: [],
   groups: [],
+  tags: [],
 });
 
 export interface PathMap {

@@ -9,4 +9,15 @@ export enum SpecialTags {
   FILTER_USERNAME = '__filter:username__',
 }
 
+export const specialTags: string[] = [
+  SpecialTags.FILTER_UNTAGGED,
+  SpecialTags.FILTER_NEW,
+  SpecialTags.FILTER_MONOCHROME,
+  SpecialTags.FILTER_RGB,
+  SpecialTags.FILTER_RECENT,
+  SpecialTags.FILTER_FAVOURITE,
+  SpecialTags.FILTER_COMMENTS,
+  SpecialTags.FILTER_USERNAME,
+];
+
 export const NEW_PALETTE_SHORT = '__new:palette__';

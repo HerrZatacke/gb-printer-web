@@ -54,6 +54,10 @@
     @include theme-background-color($color-secondary, $color-secondary);
     @include theme-color($color-text-bright, $color-black);
     overflow: hidden;
+
+    &--group {
+      @include theme-background-color($color-tertiary, $color-tertiary);
+    }
   }
 
   &__created-meta {
