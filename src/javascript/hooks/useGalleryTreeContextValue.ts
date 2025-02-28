@@ -192,12 +192,16 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   // as groups without subgroups or images are filtered/hidden,
   // they should be deleted from the store as well
   useEffect(() => {
+    if (!enableImageGroups) {
+      return;
+    }
+
     if (stateImageGroups.length > paths.length) {
       const idsInPaths = paths.map(({ group }) => group.id);
       const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
       setImageGroups(usedGroups);
     }
-  }, [paths, setImageGroups, stateImageGroups]);
+  }, [enableImageGroups, paths, setImageGroups, stateImageGroups]);
 
   const pathsOptions = useMemo<DialogOption[]>((): DialogOption[] => (
     paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
