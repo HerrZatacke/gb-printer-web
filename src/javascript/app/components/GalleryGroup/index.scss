@@ -1,4 +1,6 @@
 .gallery-group {
+  overflow: hidden;
+
   &__link {
     height: 100%;
     display: flex;
@@ -42,28 +44,25 @@
     position: relative;
   }
 
-  &__temp {
+  &__group-marker {
     position: absolute;
-    @include theme-color($color-warn-red, $color-warn-red);
-    @include theme-background-color(rgba($color-white, 0.5), rgba($color-white, 0.5));
-    @include theme-border-color($color-warn-red, $color-warn-red);
-    padding: 4px 8px;
-    font-size: 18px;
-    line-height: 16px;
-    font-weight: bold;
-    border: 2px solid;
+    z-index: $z-index-group-marker;
+    @include theme-background-color($color-black, $color-black);
+    opacity: 55%;
     left: 0;
     bottom: 0;
-    transform: rotate(25deg);
+    transform: rotate(-6deg);
+    width: 100%;
+    height: 100%;
+    transition: transform 150ms ease-in-out;
 
-    .gallery--2x & {
-      font-size: 40px;
-      line-height: 36px;
+    & ~ * {
+      position: relative;
+      z-index: $z-index-group-image;
     }
+  }
 
-    .gallery--max & {
-      font-size: 10vw;
-      line-height: 9.5vw;
-    }
+  &:hover &__group-marker {
+    transform: rotate(6deg);
   }
 }

@@ -88,8 +88,20 @@ const reduceImages = (
   image: Image,
 ): Image[] => {
   const foundImage = !!imageHashes.find((hash) => image.hash === hash);
-  const foundCoverImage = !!childGroups.find(({ coverImage }) => image.hash === coverImage);
-  return foundImage || foundCoverImage ? [...acc, image] : acc;
+  const coverChildGroup = childGroups.find(({ coverImage }) => image.hash === coverImage);
+  const foundCoverImage = !!coverChildGroup;
+  const taggedImage = { ...image };
+
+  // If image is a cover image, add all children's tags to it.
+  // This is used for filtering within imageGroups
+  if (coverChildGroup?.tags.length) {
+    taggedImage.tags = unique([
+      ...taggedImage.tags,
+      ...coverChildGroup.tags,
+    ]);
+  }
+
+  return foundImage || foundCoverImage ? [...acc, taggedImage] : acc;
 };
 
 export const useGalleryTreeContextValue = (): GalleryTreeContext => {
@@ -142,6 +154,8 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
 
       const coverImage = foundCoverImage?.hash || imageGroup.coverImage;
 
+      const tags = unique(images.map((image) => image.tags).flat(1));
+
       return ({
         id: imageGroup.id,
         slug: imageGroup.slug,
@@ -150,6 +164,7 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
         coverImage,
         groups: childGroups,
         images,
+        tags,
       });
     };
 
@@ -177,12 +192,16 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
   // as groups without subgroups or images are filtered/hidden,
   // they should be deleted from the store as well
   useEffect(() => {
+    if (!enableImageGroups) {
+      return;
+    }
+
     if (stateImageGroups.length > paths.length) {
       const idsInPaths = paths.map(({ group }) => group.id);
       const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
       setImageGroups(usedGroups);
     }
-  }, [paths, setImageGroups, stateImageGroups]);
+  }, [enableImageGroups, paths, setImageGroups, stateImageGroups]);
 
   const pathsOptions = useMemo<DialogOption[]>((): DialogOption[] => (
     paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
