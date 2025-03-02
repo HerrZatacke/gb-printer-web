@@ -147,7 +147,7 @@ export const useLightboxImage = (): UseLightboxImage => {
   return {
     image,
     isFullscreen,
-    currentIndex: lightboxImage || -1,
+    currentIndex: lightboxImage || 0,
     size: filteredImages.length,
     canPrev: (lightboxImage !== null) ? lightboxImage > 0 : false,
     canNext: (lightboxImage !== null) ? lightboxImage < filteredImages.length - 1 : false,
