@@ -200,6 +200,30 @@ function SVG(props: Props) {
           <path d="M23 3L11 20l12 17h2L13 20 25 3z" />
         </svg>
       );
+    case 'doubleright':
+      return (
+        <svg className={className} viewBox="0 0 40 40">
+          <path d="m12 3 12 17-12 17h-2l12-17L10 3Zm8 0 12 17-12 17h-2l12-17L18 3Z" />
+        </svg>
+      );
+    case 'doubleleft':
+      return (
+        <svg className={className} viewBox="0 0 40 40">
+          <path d="M28 3 16 20l12 17h2L18 20 30 3Zm-8 0L8 20l12 17h2L10 20 22 3Z" />
+        </svg>
+      );
+    case 'allright':
+      return (
+        <svg className={className} viewBox="0 0 40 40">
+          <path d="m12 3 12 17-12 17h-2l12-17L10 3Zm15 0v34h-1.7V3Z" />
+        </svg>
+      );
+    case 'allleft':
+      return (
+        <svg className={className} viewBox="0 0 40 40">
+          <path d="M28 3 16 20l12 17h2L18 20 30 3ZM13 3v34h1.7V3Z" />
+        </svg>
+      );
     case 'burger':
       return (
         <svg className={className} viewBox="0 0 40 40">
