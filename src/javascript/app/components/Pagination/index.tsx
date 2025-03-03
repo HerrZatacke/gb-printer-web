@@ -1,12 +1,11 @@
-import React from 'react';
-import useFiltersStore from '../../stores/filtersStore';
-import useSettingsStore from '../../stores/settingsStore';
+import React, { useMemo } from 'react';
 import PaginationButton from '../PaginationButton';
 import SVG from '../SVG';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import useSettingsStore from '../../stores/settingsStore';
+import useFiltersStore from '../../stores/filtersStore';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import './index.scss';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
-
 
 interface Props {
   page: number
@@ -17,72 +16,83 @@ function Pagination({ page }: Props) {
   const { pageSize } = useSettingsStore();
   const { filtersActiveTags, recentImports } = useFiltersStore();
 
-  const totalPages = pageSize ?
-    Math.ceil(getFilteredImagesCount(view.images, filtersActiveTags, recentImports) / pageSize) :
-    0;
+  const SKIP_STEP = 5;
 
-  if (totalPages < 2) {
+  const maxPageIndex = useMemo(() => (
+    pageSize ?
+      Math.ceil(getFilteredImagesCount(view.images, filtersActiveTags, recentImports) / pageSize) - 1 :
+      0
+  ), [filtersActiveTags, pageSize, recentImports, view]);
+
+  if (maxPageIndex === 0) {
     return null;
   }
 
-  const pages = [...new Array(totalPages)].map((undef, index) => index);
+  const buttons = [
+    {
+      icon: 'left',
+      pageIndex: page - 1,
+      disabled: page < 1,
+    },
+    null,
+    {
+      icon: 'right',
+      pageIndex: page + 1,
+      disabled: maxPageIndex < page + 1,
+    },
+  ];
 
-  const displayedPages = pages.map((pageIndex) => {
-    switch (pageIndex) {
-      // first, current, before/after current and lastpage
-      case 0:
-      case page - 1:
-      case page:
-      case page + 1:
-      case pages.length - 1:
-        return (
-          <PaginationButton
-            key={pageIndex}
-            page={pageIndex}
-            active={pageIndex === page}
-            title={`To page ${pageIndex + 1}`}
-          >
-            {pageIndex + 1}
-          </PaginationButton>
-        );
-      // ellipsis to indicate left out pages
-      case page - 2:
-      case page + 2:
-        return <li key={pageIndex} className="gallery-button pagination__ellipsis" />;
-      default:
-        return null;
-    }
-  });
-
-  if (page > 0) {
-    displayedPages.unshift((
-      <PaginationButton
-        className="pagination__button--start"
-        key="back"
-        title="To previous page"
-        page={page - 1}
-      >
-        <SVG name="left" />
-      </PaginationButton>
-    ));
+  if (maxPageIndex > SKIP_STEP) {
+    buttons.unshift({
+      icon: 'doubleleft',
+      pageIndex: page - SKIP_STEP,
+      disabled: page < SKIP_STEP,
+    });
+    buttons.push({
+      icon: 'doubleright',
+      pageIndex: page + SKIP_STEP,
+      disabled: maxPageIndex < page + SKIP_STEP,
+    });
   }
 
-  if (page < pages.length - 1) {
-    displayedPages.push((
-      <PaginationButton
-        className="pagination__button--end"
-        key="next"
-        title="To next page"
-        page={page + 1}
-      >
-        <SVG name="right" />
-      </PaginationButton>
-    ));
+  if (maxPageIndex > 1) {
+    buttons.unshift({
+      icon: 'allleft',
+      pageIndex: 0,
+      disabled: page === 0,
+    });
+    buttons.push({
+      icon: 'allright',
+      pageIndex: maxPageIndex,
+      disabled: page === maxPageIndex,
+    });
   }
 
   return (
     <ul className="pagination gallery-button__group">
-      {displayedPages.filter(Boolean)}
+      {buttons.map((button) => {
+        if (!button) {
+          return (
+            <li
+              key="current"
+              className="pagination__current"
+            >
+              { `${page + 1}/${maxPageIndex + 1}` }
+            </li>
+          );
+        }
+
+        const { icon, pageIndex, disabled } = button;
+        return (
+          <PaginationButton
+            key={icon}
+            page={pageIndex}
+            disabled={disabled}
+          >
+            <SVG name={icon} />
+          </PaginationButton>
+        );
+      })}
     </ul>
   );
 }
