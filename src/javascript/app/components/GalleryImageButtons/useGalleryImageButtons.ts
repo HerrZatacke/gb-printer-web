@@ -3,12 +3,13 @@ import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useInteractionsStore from '../../stores/interactionsStore';
 import useItemsStore from '../../stores/itemsStore';
-import useDownload from '../../../hooks/useDownload';
+import { useStores } from '../../../hooks/useStores';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
+import useDownload from '../../../hooks/useDownload';
+import useShareImage from '../../../hooks/useShareImage';
 import { canShare } from '../../../tools/canShare';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
-import useShareImage from '../../../hooks/useShareImage';
-import { useStores } from '../../../hooks/useStores';
 
 interface UseGalleryImageButtons {
   isSelected: boolean,
@@ -52,7 +53,8 @@ export const useGalleryImageButtons = (
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
-  const { plugins, images, updateImageFavouriteTag } = useItemsStore();
+  const { plugins, updateImageFavouriteTag } = useItemsStore();
+  const { view } = useGalleryTreeContext();
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { updateLastSyncLocalNow, deleteImages } = useStores();
@@ -83,7 +85,7 @@ export const useGalleryImageButtons = (
     setLightboxImage: () => {
       setLightboxImage(
         getFilteredImages(
-          images,
+          view.images,
           { filtersActiveTags, sortBy, recentImports },
         )
           .findIndex((image) => hash === image.hash),

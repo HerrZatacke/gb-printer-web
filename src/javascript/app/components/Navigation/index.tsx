@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 import classnames from 'classnames';
 import SVG from '../SVG';
 import ThemeToggle from '../ThemeToggle';
 import './index.scss';
 import useNavigation from './useNavigation';
+import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import useInteractionsStore from '../../stores/interactionsStore';
 
 function Navigation() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  const { lastGalleryLink } = useGalleryParams();
+  const { pathname } = useLocation();
 
   const {
     disableSerials,
@@ -57,7 +61,7 @@ function Navigation() {
         </li>
         <li className="navigation__entry">
           <NavLink
-            to="/gallery"
+            to={pathname === lastGalleryLink ? '/gallery/page/1' : lastGalleryLink}
             className={className}
             onClick={() => setMobileNavOpen(false)}
           >

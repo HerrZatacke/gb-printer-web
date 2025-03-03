@@ -3,12 +3,10 @@ import classNames from 'classnames';
 import { NavLink } from 'react-router';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
 
-interface Props {
+export interface Props {
   children: React.ReactNode,
-  className?: string,
-  active?: boolean,
+  disabled: boolean,
   page: number,
-  title: string,
 }
 
 function PaginationButton(props: Props) {
@@ -16,17 +14,28 @@ function PaginationButton(props: Props) {
 
   return (
     <li
-      className={classNames('gallery-button pagination__button', props.className, {
-        'gallery-button--selected': props.active,
+      className={classNames('gallery-button pagination__button', {
+        'gallery-button--disabled': props.disabled,
+        'gallery-button--selected': !props.disabled,
       })}
     >
-      <NavLink
-        className="pagination__link"
-        to={`/gallery/${path}page/${props.page + 1}`}
-        title={props.title}
-      >
-        {props.children}
-      </NavLink>
+      { props.disabled ? (
+        <button
+          className="pagination__link"
+          type="button"
+          disabled
+        >
+          {props.children}
+        </button>
+      ) : (
+        <NavLink
+          className="pagination__link"
+          to={`/gallery/${path}page/${props.page + 1}`}
+          title={`To page ${props.page + 1}`}
+        >
+          {props.children}
+        </NavLink>
+      ) }
     </li>
   );
 }
