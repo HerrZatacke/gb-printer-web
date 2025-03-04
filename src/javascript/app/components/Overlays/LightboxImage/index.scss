@@ -10,7 +10,7 @@
 
   &__box {
     width: calc(70vh - 80px);
-    max-height: calc(100vh - 30px);
+    max-height: calc(100dvh - 30px);
     @include theme-background-color($color-page-background, $color-page-background-dark);
     position: relative;
     overflow: visible;
@@ -23,7 +23,7 @@
 
   .lightbox--fullscreen &__box {
     width: calc(95vh - 30px);
-    max-height: calc(100vh - 30px);
+    max-height: calc(100dvh - 30px);
 
     @media (max-aspect-ratio: 1/1) {
       width: calc(95vw - 30px);
