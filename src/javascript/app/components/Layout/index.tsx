@@ -59,8 +59,6 @@ function Layout() {
     '--ddpx': screenDimensions.ddpx,
   };
 
-  console.log(muiTheme);
-
   return (
     <PluginsContextProvider>
       <GalleryTreeContextProvider>
