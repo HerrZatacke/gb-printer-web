@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { CSSPropertiesVars } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -11,9 +11,10 @@ import PluginsContextProvider from '../../contexts/plugins/PluginsContextProvide
 import RemotePrinterContextProvider from '../../contexts/remotePrinter/RemotePrinterContextProvider';
 import { NavigationToolsProvider } from '../../contexts/navigationTools/NavigationToolsProvider';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
+import useSettingsStore from '../../stores/settingsStore';
+import { ThemeName } from '../../../consts/theme';
 
 import './index.scss';
-import { useTheme } from '../../../hooks/useTheme';
 
 export interface Handle {
   headline: string,
@@ -22,7 +23,22 @@ export interface Handle {
 function Layout() {
   const matches = useMatches();
   const screenDimensions = useScreenDimensions();
-  const { muiTheme } = useTheme();
+  const { themeName } = useSettingsStore();
+
+  useEffect(() => {
+    const classList = document.querySelector('html')?.classList;
+    if (!classList) {
+      return;
+    }
+
+    [ThemeName.BRIGHT, ThemeName.DARK].forEach((oldTheme) => {
+      if (oldTheme === themeName) {
+        classList.add(themeName);
+      } else {
+        classList.remove(oldTheme);
+      }
+    });
+  }, [themeName]);
 
   if (!matches[1]) {
     return <Navigate to="/gallery/page/1" replace />;

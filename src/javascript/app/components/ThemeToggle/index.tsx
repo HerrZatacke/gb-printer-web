@@ -1,6 +1,7 @@
 import React from 'react';
 import SVG from '../SVG';
-import { useTheme, Theme } from '../../../hooks/useTheme';
+import useSettingsStore from '../../stores/settingsStore';
+import { ThemeName } from '../../../consts/theme';
 import './index.scss';
 
 interface Props {
@@ -8,25 +9,25 @@ interface Props {
 }
 
 function ThemeToggle({ closeNavigation }: Props) {
-  const { theme, setTheme } = useTheme();
+  const { themeName, setThemeName } = useSettingsStore();
 
-  const title = theme === Theme.BRIGHT ? 'Switch to dark mode' : 'Switch to bright mode';
+  const title = themeName === ThemeName.BRIGHT ? 'Switch to dark mode' : 'Switch to bright mode';
 
   return (
     <label
       className="theme-toggle navigation__link"
       title={title}
     >
-      <SVG name={theme === Theme.BRIGHT ? 'sun' : 'moon'} />
+      <SVG name={themeName === ThemeName.BRIGHT ? 'sun' : 'moon'} />
       <span className="theme-toggle__title">
         {title}
       </span>
       <input
         type="checkbox"
-        checked={theme === Theme.BRIGHT}
+        checked={themeName === ThemeName.BRIGHT}
         onChange={({ target }) => {
           closeNavigation();
-          setTheme(target.checked ? Theme.BRIGHT : Theme.DARK);
+          setThemeName(target.checked ? ThemeName.BRIGHT : ThemeName.DARK);
         }}
       />
     </label>
