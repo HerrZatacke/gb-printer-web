@@ -8,10 +8,11 @@ import dateFormatLocale from '../../tools/dateFormatLocale';
 import { getEnv } from '../../tools/getEnv';
 import { PaletteSortMode } from '../../consts/paletteSortModes';
 import { GalleryViews } from '../../consts/GalleryViews';
-import type { VideoParams } from '../../../types/VideoParams';
+import { ThemeName } from '../../consts/theme';
 import { FileNameStyle } from '../../consts/fileNameStyles';
+import type { VideoParams } from '../../../types/VideoParams';
 
-interface Values {
+export interface Settings {
   activePalette: string,
   enableDebug: boolean,
   exportFileTypes: string[],
@@ -29,6 +30,7 @@ interface Values {
   printerParams: string,
   printerUrl: string,
   savFrameTypes: string,
+  themeName: ThemeName,
   enableImageGroups: boolean,
   sortPalettes: PaletteSortMode,
   useSerials: boolean,
@@ -53,13 +55,14 @@ interface Actions {
   setPrinterParams: (printerParams: string) => void,
   setPrinterUrl: (printerUrl: string) => void,
   setSavFrameTypes: (savFrameTypes: string) => void,
+  setThemeName: (themeName: ThemeName) => void,
   setEnableImageGroups: (enableImageGroups: boolean) => void,
   setSortPalettes: (sortPalettes: PaletteSortMode) => void,
   setUseSerials: (useSerials: boolean) => void,
   setVideoParams: (videoParams: Partial<VideoParams>) => void,
 }
 
-export type SettingsState = Values & Actions;
+export type SettingsState = Settings & Actions;
 
 const getDefaultLocale = (): string => {
   const [lang, country] = navigator.language.split('-');
@@ -86,6 +89,7 @@ const useSettingsStore = create(
       printerParams: '',
       printerUrl: getEnv()?.env === 'esp8266' ? '/' : '',
       savFrameTypes: 'int',
+      themeName: ThemeName.BRIGHT,
       enableImageGroups: false,
       sortPalettes: PaletteSortMode.DEFAULT_DESC,
       useSerials: false,
@@ -105,6 +109,7 @@ const useSettingsStore = create(
       setPrinterParams: (printerParams: string) => set({ printerParams }),
       setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
       setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
+      setThemeName: (themeName: ThemeName) => set({ themeName }),
       setEnableImageGroups: (enableImageGroups: boolean) => set({ enableImageGroups }),
       setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),
       setUseSerials: (useSerials: boolean) => set({ useSerials }),
