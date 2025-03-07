@@ -1,5 +1,7 @@
 import React from 'react';
 import type { CSSPropertiesVars } from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { Outlet, Navigate, useMatches } from 'react-router';
 import Navigation from '../Navigation';
 import Overlays from '../Overlays';
@@ -11,6 +13,7 @@ import { NavigationToolsProvider } from '../../contexts/navigationTools/Navigati
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 
 import './index.scss';
+import { useTheme } from '../../../hooks/useTheme';
 
 export interface Handle {
   headline: string,
@@ -19,6 +22,7 @@ export interface Handle {
 function Layout() {
   const matches = useMatches();
   const screenDimensions = useScreenDimensions();
+  const { muiTheme } = useTheme();
 
   if (!matches[1]) {
     return <Navigate to="/gallery/page/1" replace />;
@@ -30,18 +34,23 @@ function Layout() {
     '--ddpx': screenDimensions.ddpx,
   };
 
+  console.log(muiTheme);
+
   return (
     <PluginsContextProvider>
       <GalleryTreeContextProvider>
         <NavigationToolsProvider>
           <RemotePrinterContextProvider>
-            <Navigation />
-            <div className="layout" style={ddpx}>
-              { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
-              <Outlet />
-            </div>
-            <Overlays />
-            <Errors />
+            <ThemeProvider theme={muiTheme}>
+              <CssBaseline />
+              <Navigation />
+              <div className="layout" style={ddpx}>
+                { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
+                <Outlet />
+              </div>
+              <Overlays />
+              <Errors />
+            </ThemeProvider>
           </RemotePrinterContextProvider>
         </NavigationToolsProvider>
       </GalleryTreeContextProvider>

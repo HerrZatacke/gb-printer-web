@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import type { Theme as MuiTheme } from '@mui/material';
+import { darkTheme, lightTheme } from '../styles/themes';
 
 export enum Theme {
   BRIGHT = 'theme-bright',
@@ -8,10 +10,11 @@ export enum Theme {
 export interface UseTheme {
   theme: Theme,
   setTheme: (theme: Theme) => void,
+  muiTheme: MuiTheme,
 }
 
 export const useTheme = (): UseTheme => {
-  const [theme, setTheme] = useState<Theme>(localStorage.getItem('gbp-web-theme') as Theme || [Theme.BRIGHT, Theme.DARK][0]);
+  const [theme, setTheme] = useState<Theme>(localStorage.getItem('gbp-web-theme') as Theme || Theme.BRIGHT);
 
   useEffect(() => {
     localStorage.setItem('gbp-web-theme', theme);
@@ -30,8 +33,13 @@ export const useTheme = (): UseTheme => {
 
   }, [theme]);
 
+  const muiTheme = useMemo<MuiTheme>(() => (
+    theme === Theme.BRIGHT ? lightTheme : darkTheme
+  ), [theme]);
+
   return {
     theme,
     setTheme,
+    muiTheme,
   };
 };

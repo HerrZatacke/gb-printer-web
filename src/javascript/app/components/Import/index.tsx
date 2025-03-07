@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import ConnectPrinter from '../ConnectPrinter';
 import Input, { InputType } from '../Input';
 import { useImport } from './useImport';
@@ -63,6 +65,27 @@ function Import() {
           Import
         </button>
       </div>
+      <ButtonGroup fullWidth>
+        <Button
+          onClick={() => exportJson(ExportTypes.IMAGES)}
+          variant="contained"
+        >
+          Export images
+        </Button>
+        <Button
+          onClick={() => exportJson(ExportTypes.SELECTED_IMAGES)}
+          variant="contained"
+        >
+          Export selected images
+        </Button>
+        <Button
+          onClick={() => exportJson(ExportTypes.PALETTES)}
+          variant="contained"
+        >
+          Export palettes
+        </Button>
+      </ButtonGroup>
+
       <div className="inputgroup buttongroup">
         <button
           type="button"
