@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import type { CSSPropertiesVars } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -13,6 +13,7 @@ import { NavigationToolsProvider } from '../../contexts/navigationTools/Navigati
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 import useSettingsStore from '../../stores/settingsStore';
 import { ThemeName } from '../../../consts/theme';
+import { darkTheme, lightTheme } from '../../../styles/themes';
 
 import './index.scss';
 
@@ -38,6 +39,14 @@ function Layout() {
         classList.remove(oldTheme);
       }
     });
+  }, [themeName]);
+
+  const muiTheme = useMemo(() => {
+    if (themeName === ThemeName.DARK) {
+      return darkTheme;
+    }
+
+    return lightTheme;
   }, [themeName]);
 
   if (!matches[1]) {
