@@ -85,30 +85,6 @@ function Import() {
           Export palettes
         </Button>
       </ButtonGroup>
-
-      <div className="inputgroup buttongroup">
-        <button
-          type="button"
-          className="button"
-          onClick={() => exportJson(ExportTypes.IMAGES)}
-        >
-          Export images
-        </button>
-        <button
-          type="button"
-          className="button"
-          onClick={() => exportJson(ExportTypes.SELECTED_IMAGES)}
-        >
-          Export selected images
-        </button>
-        <button
-          type="button"
-          className="button"
-          onClick={() => exportJson(ExportTypes.PALETTES)}
-        >
-          Export palettes
-        </button>
-      </div>
     </div>
   );
 }

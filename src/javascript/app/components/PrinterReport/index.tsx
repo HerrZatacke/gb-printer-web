@@ -1,5 +1,7 @@
 import React from 'react';
 import filesize from 'filesize';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import { usePrinter } from './usePrinter';
 import { PrinterFunction } from '../../../consts/printerFunction';
 
@@ -36,12 +38,11 @@ function PrinterReport() {
 
   return (
     <div className="printer-report">
-      <div className="inputgroup buttongroup">
+      <ButtonGroup fullWidth>
         {printerFunctions.map((name) => (
-          <button
+          <Button
             key={name}
-            type="button"
-            className="button"
+            variant="contained"
             disabled={
               printerBusy ||
               (
@@ -56,9 +57,9 @@ function PrinterReport() {
                 getFetchImagesLabel(printerFunctions, printerData?.dumps?.length || 0) :
                 functionLabels[name as PrinterFunction]
             }
-          </button>
+          </Button>
         ))}
-      </div>
+      </ButtonGroup>
 
       {
         (printerData?.fs && printerData?.dumps) ? (

@@ -1,4 +1,6 @@
 import React from 'react';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import classnames from 'classnames';
 import PrinterReport from '../PrinterReport';
 import useIframeLoaded from '../../../hooks/useIframeLoaded';
@@ -40,17 +42,16 @@ function ConnectPrinter() {
           </>
         ) : (
           (!printerConnected || failed) && (
-            <div className="inputgroup buttongroup">
-              <button
-                type="button"
-                className="button"
+            <ButtonGroup fullWidth>
+              <Button
                 onClick={() => {
                   window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
                 }}
+                variant="contained"
               >
                 Open printer page
-              </button>
-            </div>
+              </Button>
+            </ButtonGroup>
           )
         )
       }
