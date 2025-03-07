@@ -1,4 +1,6 @@
 import React from 'react';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from '@mui/material/Button';
 import classnames from 'classnames';
 import useDateTime from '../../../hooks/useDateTime';
 import type { Rotation } from '../../../tools/applyRotation';
@@ -135,12 +137,14 @@ function ImageMeta({
         <span className="image-meta-form__label-text">
           Edit Rotation
         </span>
-        <div className="inputgroup buttongroup">
+        <ButtonGroup
+          variant="contained"
+          fullWidth
+        >
           {
             rotations.map(({ value, label }) => (
-              <button
+              <Button
                 key={label}
-                type="button"
                 className={classnames('button image-meta-form__rotation-button', {
                   'button--active': value === (rotation || 0),
                 })}
@@ -149,10 +153,10 @@ function ImageMeta({
                 }}
               >
                 { label }
-              </button>
+              </Button>
             ))
           }
-        </div>
+        </ButtonGroup>
       </div>
       <table
         className="image-meta-form__meta-table"
