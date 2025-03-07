@@ -1,5 +1,6 @@
 import type { Theme } from '@mui/material';
 import type { ComponentsOverrides } from '@mui/material/styles/overrides';
+import { getHoverColor } from '../tools/getHoverColor';
 
 export const muiButton = (theme: Theme): ComponentsOverrides<Theme>['MuiButton'] => ({
   root: {
@@ -9,11 +10,11 @@ export const muiButton = (theme: Theme): ComponentsOverrides<Theme>['MuiButton']
     minHeight: '40px',
 
     variants: [
-      (['primary', 'secondary'] as ('primary' | 'secondary')[]).map((color: 'primary' | 'secondary') => ({
+      ...(['primary', 'secondary'] as ('primary' | 'secondary')[]).map((color) => ({
         props: { color },
         style: {
           ':hover': {
-            backgroundColor: theme.palette[color][theme.palette.mode],
+            backgroundColor: getHoverColor(theme.palette, theme.palette[color]),
           },
         },
       })),
