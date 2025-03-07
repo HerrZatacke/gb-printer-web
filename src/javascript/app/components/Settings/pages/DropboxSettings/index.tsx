@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from '@mui/material/Button';
 import classnames from 'classnames';
 import SVG from '../../../SVG';
 import Input, { InputType } from '../../../Input';
@@ -113,24 +115,23 @@ function DropboxSettings() {
                 <SVG name="checkmark" />
               </span>
             </label>
-            <div className="inputgroup buttongroup">
-              <button
-                type="button"
-                className="button"
+            <ButtonGroup
+              variant="contained"
+              fullWidth
+            >
+              <Button
                 disabled={loggedIn}
                 onClick={startAuth}
               >
                 Authenticate
-              </button>
-              <button
-                type="button"
-                className="button"
+              </Button>
+              <Button
                 disabled={!loggedIn}
                 onClick={logout}
               >
                 Logout
-              </button>
-            </div>
+              </Button>
+            </ButtonGroup>
           </>
         )
       }

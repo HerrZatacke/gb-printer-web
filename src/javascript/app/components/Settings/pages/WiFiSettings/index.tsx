@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from '@mui/material/Button';
 import APConfig from './APConfig';
 import SVG from '../../../SVG';
 import Input, { InputType } from '../../../Input';
@@ -246,16 +248,17 @@ function WiFiSettings() {
           })
         }
       </ul>
-      <div className="inputgroup buttongroup">
-        <button
-          type="button"
+      <ButtonGroup
+        fullWidth
+        variant="contained"
+      >
+        <Button
           disabled={status !== 'updated'}
-          className="button"
           onClick={() => saveSettings(setWifiConfig, setStatus, wifiConfig)}
         >
           Save WiFi-Settings
-        </button>
-      </div>
+        </Button>
+      </ButtonGroup>
     </div>
   );
 }

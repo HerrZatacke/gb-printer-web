@@ -1,4 +1,6 @@
 import React from 'react';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from '@mui/material/Button';
 import { useImportExportSettings } from '../../../../../hooks/useImportExportSettings';
 import useStoragePersist, { PersistState } from './useStoragePersist';
 import useHashCleanup from '../../../../../tools/hashCleanup';
@@ -32,45 +34,39 @@ function ExportSettings() {
   } = useStoragePersist();
 
   return (
-    <div className="inputgroup buttongroup settings__export">
-      <button
-        type="button"
-        className="button"
+    <ButtonGroup
+      variant="contained"
+      fullWidth
+      className="settings__export"
+    >
+      <Button
         disabled={persisted !== PersistState.NOT_PERSISTED}
         onClick={requestPersist}
       >
         { persistMessage(persisted) }
-      </button>
-      <button
-        type="button"
-        className="button"
+      </Button>
+      <Button
         onClick={resetGroups}
       >
         Reset image groups
-      </button>
-      <button
-        type="button"
-        className="button"
+      </Button>
+      <Button
         onClick={() => exportJson(ExportTypes.ALL)}
       >
         Export Everything
-      </button>
-      <button
-        type="button"
-        className="button"
+      </Button>
+      <Button
         onClick={() => exportJson(ExportTypes.PLUGINS)}
       >
         Export Plugins
-      </button>
-      <button
+      </Button>
+      <Button
         disabled={cleanupBusy}
-        type="button"
-        className="button button--tiny"
         onClick={hashCleanup}
       >
         Hash Cleanup
-      </button>
-    </div>
+      </Button>
+    </ButtonGroup>
   );
 }
 

@@ -55,15 +55,14 @@ function Import() {
             setText(target.value);
           }}
         />
-        <button
-          className="button button--label"
-          type="button"
+        <Button
+          variant="contained"
           onClick={() => {
             importPlainText(text);
           }}
         >
           Import
-        </button>
+        </Button>
       </div>
       <ButtonGroup
         variant="contained"

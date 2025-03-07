@@ -27,37 +27,33 @@ function ConnectPrinter() {
 
   return (
     <div className="connect-printer">
+      <PrinterReport />
       {
-        // eslint-disable-next-line no-nested-ternary
-        loaded ? (
-          <PrinterReport />
+        iframeSupported(printerUrl) && !failed ? (
+          <>
+            <iframe
+              className={classnames('connect-printer__remote-printer-iframe', {
+                'connect-printer__remote-printer-iframe--connected': printerConnected,
+              })}
+              title="Transfer window"
+              src={printerUrl}
+            />
+            {!loaded && <div className="connect-printer__iframe-loading" />}
+          </>
         ) : (
-          iframeSupported(printerUrl) && !failed ? (
-            <>
-              <iframe
-                className={classnames('connect-printer__remote-printer-iframe', {
-                  'connect-printer__remote-printer-iframe--connected': printerConnected,
-                })}
-                title="Transfer window"
-                src={printerUrl}
-              />
-              {!loaded && <div className="connect-printer__iframe-loading" />}
-            </>
-          ) : (
-            (!printerConnected || failed) && (
-              <ButtonGroup
-                variant="contained"
-                fullWidth
+          (!printerConnected || failed) && (
+            <ButtonGroup
+              variant="contained"
+              fullWidth
+            >
+              <Button
+                onClick={() => {
+                  window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
+                }}
               >
-                <Button
-                  onClick={() => {
-                    window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
-                  }}
-                >
-                  Open printer page
-                </Button>
-              </ButtonGroup>
-            )
+                Open printer page
+              </Button>
+            </ButtonGroup>
           )
         )
       }
