@@ -1,4 +1,6 @@
 import React from 'react';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from '@mui/material/Button';
 import useFrames from './useFrames';
 import Frame from '../Frame';
 import Input, { InputType } from '../Input';
@@ -71,33 +73,30 @@ function Frames() {
         <li className="frame frame--dummy" key="dummy4" />
         <li className="frame frame--dummy" key="dummy5" />
       </ul>
-      <div className="inputgroup buttongroup">
-        <button
-          type="button"
-          className="button"
+      <ButtonGroup
+        variant="contained"
+        fullWidth
+      >
+        <Button
           onClick={() => exportJson(ExportTypes.FRAMES)}
         >
           Export frames
-        </button>
-        <button
-          type="button"
-          className="button"
+        </Button>
+        <Button
           onClick={() => exportJson(ExportTypes.CURRENT_FRAMEGROUP)}
         >
           {`Export current framegroup (${selectedFrameGroup})`}
-        </button>
+        </Button>
         {
           enableDebug ? (
-            <button
-              type="button"
-              className="button"
+            <Button
               onClick={convertFormat}
             >
               Convert frames to new format
-            </button>
+            </Button>
           ) : null
         }
-      </div>
+      </ButtonGroup>
     </div>
   );
 }
