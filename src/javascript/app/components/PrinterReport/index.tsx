@@ -38,11 +38,13 @@ function PrinterReport() {
 
   return (
     <div className="printer-report">
-      <ButtonGroup fullWidth>
+      <ButtonGroup
+        variant="contained"
+        fullWidth
+      >
         {printerFunctions.map((name) => (
           <Button
             key={name}
-            variant="contained"
             disabled={
               printerBusy ||
               (

@@ -65,22 +65,22 @@ function Import() {
           Import
         </button>
       </div>
-      <ButtonGroup fullWidth>
+      <ButtonGroup
+        variant="contained"
+        fullWidth
+      >
         <Button
           onClick={() => exportJson(ExportTypes.IMAGES)}
-          variant="contained"
         >
           Export images
         </Button>
         <Button
           onClick={() => exportJson(ExportTypes.SELECTED_IMAGES)}
-          variant="contained"
         >
           Export selected images
         </Button>
         <Button
           onClick={() => exportJson(ExportTypes.PALETTES)}
-          variant="contained"
         >
           Export palettes
         </Button>
