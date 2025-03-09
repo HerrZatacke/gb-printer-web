@@ -37,7 +37,6 @@ function ExportSettings() {
     <ButtonGroup
       variant="contained"
       fullWidth
-      className="settings__export"
     >
       <Button
         disabled={persisted !== PersistState.NOT_PERSISTED}

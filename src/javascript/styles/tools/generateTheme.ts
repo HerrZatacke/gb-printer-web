@@ -4,6 +4,7 @@ import { muiButton } from '../components/button';
 import { muiButtonGroup } from '../components/buttonGroup';
 import { outlinedInput } from '../components/outlinedInput';
 import { paper } from '../components/paper';
+import { tab } from '../components/tab';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -30,6 +31,9 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiPaper: {
     styleOverrides: paper(),
+  },
+  MuiTab: {
+    styleOverrides: tab(theme),
   },
 });
 
