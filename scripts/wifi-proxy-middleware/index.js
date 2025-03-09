@@ -19,8 +19,11 @@ const initWifiProxy = (app) => {
     return;
   }
 
+  // eslint-disable-next-line no-console
+  console.info(`Initializing wifi proxy to "${conf.wifiproxy}"`);
+
   const wifiProxy = createProxyMiddleware({
-    target: conf.wifiproxy,
+    target: `${conf.wifiproxy}/wificonfig`,
     changeOrigin: true,
     onError: (error, req, res) => {
       res.writeHead(200, {
