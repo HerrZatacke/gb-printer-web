@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import ConnectPrinter from '../ConnectPrinter';
+import PrinterReport from '../PrinterReport';
 import { useImport } from './useImport';
 import { ExportTypes } from '../../../consts/exportTypes';
 
@@ -28,9 +29,8 @@ function Import() {
   return (
     <Stack direction="column" gap={6}>
 
-      {printerUrl && (
-        <ConnectPrinter />
-      )}
+      { printerUrl && <PrinterReport /> }
+      { printerUrl && <ConnectPrinter /> }
 
       <Button
         component="label"

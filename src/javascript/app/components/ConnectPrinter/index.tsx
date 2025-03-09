@@ -1,8 +1,8 @@
 import React from 'react';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import classnames from 'classnames';
-import PrinterReport from '../PrinterReport';
+import CircularProgress from '@mui/material/CircularProgress';
 import useIframeLoaded from '../../../hooks/useIframeLoaded';
 import './index.scss';
 
@@ -25,39 +25,30 @@ const iframeSupported = (printerUrl?: string) => {
 function ConnectPrinter() {
   const { printerUrl, failed, loaded, printerConnected } = useIframeLoaded(5000);
 
-  return (
-    <>
-      <PrinterReport />
-      {
-        iframeSupported(printerUrl) && !failed ? (
-          <>
-            <iframe
-              className={classnames('connect-printer__remote-printer-iframe', {
-                'connect-printer__remote-printer-iframe--connected': printerConnected,
-              })}
-              title="Transfer window"
-              src={printerUrl}
-            />
-            {!loaded && <div className="connect-printer__iframe-loading" />}
-          </>
-        ) : (
-          (!printerConnected || failed) && (
-            <ButtonGroup
-              variant="contained"
-              fullWidth
-            >
-              <Button
-                onClick={() => {
-                  window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
-                }}
-              >
-                Open printer page
-              </Button>
-            </ButtonGroup>
-          )
-        )
-      }
-    </>
+  return iframeSupported(printerUrl) && !failed ? (
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <iframe
+        className="connect-printer-iframe"
+        title="Transfer window"
+        src={printerUrl}
+      />
+      {!loaded && <CircularProgress color="secondary" />}
+    </Box>
+  ) : (
+    (!printerConnected || failed) && (
+      <ButtonGroup
+        variant="contained"
+        fullWidth
+      >
+        <Button
+          onClick={() => {
+            window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
+          }}
+        >
+          Open printer page
+        </Button>
+      </ButtonGroup>
+    )
   );
 }
 
