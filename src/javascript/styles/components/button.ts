@@ -10,7 +10,7 @@ export const muiButton = (theme: Theme): ComponentsOverrides<Theme>['MuiButton']
     minHeight: '40px',
 
     variants: [
-      ...(['primary', 'secondary'] as ('primary' | 'secondary')[]).map((color) => ({
+      ...(['primary', 'secondary', 'tertiary'] as ('primary' | 'secondary' | 'tertiary')[]).map((color) => ({
         props: { color },
         style: {
           ':hover': {
