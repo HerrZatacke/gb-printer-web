@@ -41,6 +41,12 @@ export const generateTheme = (
   colorPageBackground: string,
 ): Theme => {
   const theme: Theme = createTheme({
+    shape: {
+      borderRadius: 0,
+    },
+    typography: {
+      fontFamily: '"Trebuchet MS", Helvetica, sans-serif',
+    },
     palette: {
       mode,
       primary: {

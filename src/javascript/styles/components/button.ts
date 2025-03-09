@@ -4,7 +4,6 @@ import { getHoverColor } from '../tools/getHoverColor';
 
 export const muiButton = (theme: Theme): ComponentsOverrides<Theme>['MuiButton'] => ({
   root: {
-    borderRadius: 0,
     fontSize: '13px',
     textTransform: 'none',
     minHeight: '40px',
