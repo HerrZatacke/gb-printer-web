@@ -39,6 +39,7 @@ export const generateTheme = (
   colorSecondary: string,
   colorTertiary: string,
   colorPageBackground: string,
+  colorText: string,
 ): Theme => {
   const theme: Theme = createTheme({
     shape: {
@@ -46,6 +47,18 @@ export const generateTheme = (
     },
     typography: {
       fontFamily: '"Trebuchet MS", Helvetica, sans-serif',
+      body1: {
+        fontSize: 16,
+      },
+      body2: {
+        fontSize: 13,
+      },
+      h2: {
+        fontSize: 20,
+      },
+      h3: {
+        fontSize: 20,
+      },
     },
     palette: {
       mode,
@@ -78,10 +91,28 @@ export const generateTheme = (
         },
         name: 'bg',
       }),
+      text: {
+        primary: colorText,
+      },
     },
   }, theme);
 
   return createTheme({
+    typography: {
+      fontFamily: '"Trebuchet MS", Helvetica, sans-serif',
+      body1: {
+        color: colorText,
+      },
+      body2: {
+        color: colorText,
+      },
+      h2: {
+        color: withPalette.palette.primary.main,
+      },
+      h3: {
+        color: withPalette.palette.primary.main,
+      },
+    },
     components: themeComponents(withPalette),
   }, withPalette);
 };
