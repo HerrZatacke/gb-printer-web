@@ -26,7 +26,7 @@ function ConnectPrinter() {
   const { printerUrl, failed, loaded, printerConnected } = useIframeLoaded(5000);
 
   return (
-    <div className="connect-printer">
+    <>
       <PrinterReport />
       {
         iframeSupported(printerUrl) && !failed ? (
@@ -57,7 +57,7 @@ function ConnectPrinter() {
           )
         )
       }
-    </div>
+    </>
   );
 }
 
