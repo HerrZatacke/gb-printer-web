@@ -13,7 +13,6 @@ export enum InputType {
   TEXTAREA = 'textarea',
   NUMBER = 'number',
   COLOR = 'color',
-  FILE = 'file',
   PASSWORD = 'password',
 }
 
@@ -26,7 +25,6 @@ interface Props {
   step?: number,
   value?: string | number,
   onChange?: (value: string) => void,
-  onChangeFiles?: (value: File[]) => void,
   onBlur?: () => void,
   buttonOnClick?: () => void,
   buttonIcon?: string,
@@ -53,7 +51,6 @@ function Input({
   value,
   disabled,
   onChange,
-  onChangeFiles,
   onBlur,
   onKeyUp,
   children,
@@ -118,12 +115,9 @@ function Input({
           step={type === InputType.NUMBER ? step : undefined}
           value={value}
           disabled={disabled}
-          onChange={type === InputType.FILE ? ({ target: { files } }) => (
-            files && onChangeFiles && onChangeFiles([...files] as File[])
-          ) : ({ target: { value: newVal } }) => (
+          onChange={({ target: { value: newVal } }) => (
             onChange && onChange(newVal)
           )}
-          multiple={type === InputType.FILE ? true : undefined}
           autoComplete={autoComplete}
           autoCorrect={autoCorrect}
           autoCapitalize={autoCapitalize}
@@ -132,14 +126,6 @@ function Input({
           onKeyUp={keyUpListener}
         />
       )}
-      {((type === InputType.FILE) ? (
-        <label
-          htmlFor={id}
-          className="button button--label"
-        >
-          Select
-        </label>
-      ) : null)}
 
       {(buttonOnClick && (buttonIcon || buttonLabel)) ? (
         <button
