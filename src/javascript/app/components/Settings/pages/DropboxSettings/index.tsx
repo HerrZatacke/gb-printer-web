@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
-import classnames from 'classnames';
-import SVG from '../../../SVG';
-import Input, { InputType } from '../../../Input';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import cleanPath from '../../../../../tools/cleanPath';
 import { useDropboxSettings } from './useDropboxSettings';
+import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
 
 function DropboxSettings() {
   const {
@@ -20,26 +24,17 @@ function DropboxSettings() {
   const [path, setPath] = useState<string>(propsPath);
 
   return (
-    <>
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': use,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Use Dropbox as storage"
-        >
-          Use Dropbox as storage
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
+    <Stack
+      direction="column"
+      gap={6}
+    >
+      <FormControlLabel
+        label="Use Dropbox as storage"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
             checked={use}
             onChange={({ target }) => {
               setDropboxStorage({
@@ -47,59 +42,64 @@ function DropboxSettings() {
               });
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
-      <Input
-        id="dropbox-settings-path"
-        value={path}
-        type={InputType.TEXT}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        onChange={setPath}
-        onBlur={() => {
-          setPath(cleanPath(path));
-          setDropboxStorage({
-            path: cleanPath(path),
-          });
-        }}
-        labelText="Subfolder"
-      >
-        <a
-          className="inputgroup__note"
-          title={`Open Dropbox folder:\nhttps://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`}
-          href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          open
-        </a>
-      </Input>
+        )}
+      />
+
       {
         !use ? null : (
           <>
-            <label
-              className={
-                classnames('inputgroup checkgroup', {
-                  'checkgroup--checked': autoDropboxSync,
-                })
-              }
-            >
-              <span
-                className="inputgroup__label"
-                title="Enable enhanced dropbox sync (experimental)"
-              >
-                Enable enhanced dropbox sync
-                <span className="inputgroup__note inputgroup__note--warn">This is currently an experimental feature.</span>
-              </span>
-              <span
-                className="checkgroup__checkbox-wrapper"
-              >
-                <input
-                  type="checkbox"
-                  className="checkgroup__input"
+            <TextField
+              id="dropbox-settings-path"
+              label="Subfolder"
+              helperText={(
+                <Link
+                  title={`Open Dropbox folder:\nhttps://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`}
+                  href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  open folder
+                </Link>
+              )}
+              type="text"
+              fullWidth
+              size="small"
+              value={path}
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
+                ...textFieldSlotDefaults,
+              }}
+              onChange={(ev) => {
+                setPath(ev.target.value);
+              }}
+              onBlur={() => {
+                setPath(cleanPath(path));
+                setDropboxStorage({
+                  path: cleanPath(path),
+                });
+              }}
+            />
+
+            <FormControlLabel
+              label={(
+                <>
+                  Enable enhanced dropbox sync
+                  <Typography
+                    variant="caption"
+                    component="p"
+                    color="error"
+                  >
+                    This is an experimental feature.
+                  </Typography>
+                </>
+              )}
+              control={(
+                <Switch
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  color="tertiary"
                   checked={autoDropboxSync}
                   onChange={({ target }) => {
                     setDropboxStorage({
@@ -112,9 +112,9 @@ function DropboxSettings() {
                     }, 300);
                   }}
                 />
-                <SVG name="checkmark" />
-              </span>
-            </label>
+              )}
+            />
+
             <ButtonGroup
               variant="contained"
               fullWidth
@@ -135,7 +135,7 @@ function DropboxSettings() {
           </>
         )
       }
-    </>
+    </Stack>
   );
 }
 
