@@ -53,14 +53,29 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
 });
 
-export const generateTheme = (
+interface GenerateThemeArgs {
   mode: PaletteMode,
   colorPrimary: string,
   colorSecondary: string,
   colorTertiary: string,
+  colorSuccess: string,
+  colorWarn: string,
+  colorError: string,
   colorPageBackground: string,
   colorText: string,
-): Theme => {
+}
+
+export const generateTheme = ({
+  mode,
+  colorPrimary,
+  colorSecondary,
+  colorTertiary,
+  colorSuccess,
+  colorWarn,
+  colorError,
+  colorPageBackground,
+  colorText,
+}: GenerateThemeArgs): Theme => {
   const theme: Theme = createTheme({
     shape: {
       borderRadius: 0,
@@ -87,6 +102,15 @@ export const generateTheme = (
       },
       secondary: {
         main: colorSecondary,
+      },
+      success: {
+        main: colorSuccess,
+      },
+      warning: {
+        main: colorWarn,
+      },
+      error: {
+        main: colorError,
       },
       background: {
         default: colorPageBackground,
