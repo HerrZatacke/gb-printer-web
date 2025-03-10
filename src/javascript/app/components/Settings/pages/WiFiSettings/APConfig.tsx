@@ -33,7 +33,7 @@ function APConfig(props: Props) {
       <CardContent>
         <Stack
           direction="column"
-          gap={2}
+          gap={4}
         >
           <TextField
             id={`${props.id}-settings-ap-ssid`}
@@ -44,6 +44,9 @@ function APConfig(props: Props) {
             value={props.ssid}
             slotProps={{
               ...textFieldSlotDefaults,
+              inputLabel: {
+                shrink: true,
+              },
               input: {
                 endAdornment: (
                   <IconButton
@@ -76,6 +79,9 @@ function APConfig(props: Props) {
             type={type}
             slotProps={{
               ...textFieldSlotDefaults,
+              inputLabel: {
+                shrink: true,
+              },
               input: {
                 endAdornment: button,
               },
@@ -90,7 +96,7 @@ function APConfig(props: Props) {
 
           { props.delete && (
             <Alert
-              color="error"
+              severity="error"
               icon={<DeleteIcon fontSize="inherit" />}
             >
               Network will be deleted
