@@ -4,7 +4,7 @@ import type { Image } from './Image';
 import type { Palette } from './Palette';
 import type { PluginCompatibilityWrapper } from './PluginCompatibility';
 
-enum ConfigParamType {
+export enum ConfigParamType {
   NUMBER = 'number',
   STRING = 'string',
   MULTILINE = 'multiline',

@@ -155,7 +155,12 @@ function WiFiSettings() {
                 fullWidth
                 size="small"
                 type="text"
-                slotProps={textFieldSlotDefaults}
+                slotProps={{
+                  ...textFieldSlotDefaults,
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
                 disabled={disabled}
                 value={wifiConfig.mdns || ''}
                 onChange={(ev) => {
@@ -174,7 +179,12 @@ function WiFiSettings() {
                 fullWidth
                 size="small"
                 type="text"
-                slotProps={textFieldSlotDefaults}
+                slotProps={{
+                  ...textFieldSlotDefaults,
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
                 disabled={disabled}
                 value={wifiConfig.ap.ssid || ''}
                 onChange={(ev) => {
@@ -198,6 +208,9 @@ function WiFiSettings() {
                 type={type}
                 slotProps={{
                   ...textFieldSlotDefaults,
+                  inputLabel: {
+                    shrink: true,
+                  },
                   input: {
                     endAdornment: button,
                   },

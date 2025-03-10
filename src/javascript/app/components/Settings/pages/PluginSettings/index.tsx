@@ -1,155 +1,103 @@
 import React, { useState } from 'react';
-import SVG from '../../../SVG';
-import Input, { InputType } from '../../../Input';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import PluginConfig from './PluginConfig';
+import useInteractionsStore from '../../../../stores/interactionsStore';
 import useItemsStore from '../../../../stores/itemsStore';
 import { usePluginsContext } from '../../../../contexts/plugins';
+import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
 
-import './index.scss';
-
-const inputTypeFromType = (type: string): InputType => {
-  switch (type) {
-    case 'number':
-      return InputType.NUMBER;
-    case 'string':
-      return InputType.TEXT;
-    case 'multiline':
-      return InputType.TEXTAREA;
-    default:
-      return InputType.TEXT;
-  }
-};
-
-const inputValueFromType = (type: string, value: string): string | number => {
-  switch (type) {
-    case 'number': {
-      const num = parseFloat(value);
-      return isNaN(num) ? 0 : num;
-    }
-
-    case 'string':
-      return value || '';
-
-    default:
-      return value;
-  }
-};
 
 function PluginSettings() {
-  const { plugins, deletePlugin, updatePluginConfig } = useItemsStore();
+  const { plugins } = useItemsStore();
+  const { setError } = useInteractionsStore();
   const { validateAndAddPlugin } = usePluginsContext();
   const [pluginUrl, setPluginUrl] = useState('');
+  const [addBusy, setAddBusy] = useState(false);
 
   return (
-    <>
-      <a
-        rel="noreferrer noopener nofollow"
-        href="https://herrzatacke.github.io/gb-printer-web-plugins/"
-        className="plugin-settings__ext-link"
-        target="_blank"
-      >
-        🔗 Some plugins can be found here
-      </a>
-      <Input
+    <Stack
+      direction="column"
+      gap={6}
+    >
+      <TextField
         id="plugin-settings-add-plugin"
-        labelText="Add Plugin"
-        type={InputType.TEXT}
+        label="Add Plugin"
+        helperText={(
+          <Link
+            rel="noreferrer noopener nofollow"
+            href="https://herrzatacke.github.io/gb-printer-web-plugins/"
+            target="_blank"
+          >
+            🔗 A selection plugins can be found here
+          </Link>
+        )}
+        type="text"
+        fullWidth
+        size="small"
+        disabled={addBusy}
         value={pluginUrl}
-        autoComplete="url"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        onChange={setPluginUrl}
-        buttonOnClick={async () => {
-          if (await validateAndAddPlugin({ url: pluginUrl })) {
-            setPluginUrl('');
-          }
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+          input: {
+            endAdornment: (
+              <IconButton
+                disabled={!pluginUrl || addBusy}
+                onClick={async () => {
+                  setAddBusy(true);
+                  if (await validateAndAddPlugin({ url: pluginUrl })) {
+                    setPluginUrl('');
+                  } else {
+                    setError(new Error('Could not install plugin.'));
+                  }
+
+                  setAddBusy(false);
+                }}
+              >
+                <AddBoxIcon />
+              </IconButton>
+            ),
+          },
+          ...textFieldSlotDefaults,
         }}
-        buttonIcon={pluginUrl ? 'add' : undefined}
+        onChange={(ev) => {
+          setPluginUrl(ev.target.value);
+        }}
       />
 
-      <ul className="plugin-settings__plugin-list">
-        {
-          plugins.map(({
-            url,
-            name,
-            description,
-            configParams = {},
-            config = {},
-            error,
-            loading,
-          }, pluginIndex) => (
-            <li
-              className="plugin-settings__plugin"
-              key={url}
-            >
-              <div
-                className="plugin-settings__plugin-details"
-              >
-                <span
-                  className="plugin-settings__plugin-name"
-                >
-                  {name}
-                </span>
-                <code
-                  className="plugin-settings__plugin-url"
-                >
-                  {url}
-                </code>
-                <small
-                  className="plugin-settings__plugin-description"
-                >
-                  {description}
-                </small>
-              </div>
-              {error && (
-                <span
-                  className="plugin-settings__plugin-warning"
-                  title={error}
-                >
-                  <SVG name="warn" />
-                </span>
-              )}
-              {loading && (
-                <span
-                  className="plugin-settings__plugin-loading"
-                  title="Loading plugin"
-                >
-                  <SVG name="loading" />
-                </span>
-              )}
-              <button
-                type="button"
-                className="button plugin-settings__button plugin-settings__button--delete"
-                onClick={() => deletePlugin(url)}
-              >
-                <SVG name="delete" />
-              </button>
-              <div className="plugin-settings__config-options">
-                {Object.keys(configParams).map((fieldName) => {
-                  const { type, label } = configParams[fieldName];
-                  return (
-                    <Input
-                      id={`${fieldName}-${pluginIndex}`}
-                      key={`${fieldName}-${pluginIndex}`}
-                      labelText={label}
-                      type={inputTypeFromType(type)}
-                      value={inputValueFromType(type, config[fieldName] as string)}
-                      autoComplete="off"
-                      autoCorrect="off"
-                      autoCapitalize="off"
-                      spellCheck={false}
-                      onChange={(value) => {
-                        updatePluginConfig(url, fieldName, inputValueFromType(type, value));
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-    </>
+
+      <Stack
+        direction="column"
+        gap={1}
+      >
+        <Typography component="h3" variant="h3">
+          Installed Plugins
+        </Typography>
+
+        <Stack
+          direction="column"
+          gap={2}
+          component="ul"
+        >
+          {
+            plugins.map((plugin, pluginIndex) => (
+              <PluginConfig
+                key={plugin.url}
+                pluginIndex={pluginIndex}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...plugin}
+              />
+            ))
+          }
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }
 
