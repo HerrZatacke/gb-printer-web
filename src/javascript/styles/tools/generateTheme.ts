@@ -2,9 +2,13 @@ import { createTheme, lighten } from '@mui/material';
 import type { Components, Theme, PaletteMode } from '@mui/material';
 import { muiButton } from '../components/button';
 import { muiButtonGroup } from '../components/buttonGroup';
+import { toggleButtonGroup } from '../components/toggleButtonGroup';
 import { outlinedInput } from '../components/outlinedInput';
 import { paper } from '../components/paper';
 import { tab } from '../components/tab';
+import { inputLabel } from '../components/inputLabel';
+import { formControl } from '../components/formControl';
+import { cardContent } from '../components/cardContent';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -26,6 +30,9 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   MuiButtonGroup: {
     styleOverrides: muiButtonGroup(theme),
   },
+  MuiToggleButtonGroup: {
+    styleOverrides: toggleButtonGroup(theme),
+  },
   MuiOutlinedInput: {
     styleOverrides: outlinedInput(theme),
   },
@@ -34,6 +41,15 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiTab: {
     styleOverrides: tab(theme),
+  },
+  MuiInputLabel: {
+    styleOverrides: inputLabel(),
+  },
+  MuiFormControl: {
+    styleOverrides: formControl(),
+  },
+  MuiCardContent: {
+    styleOverrides: cardContent(),
   },
 });
 

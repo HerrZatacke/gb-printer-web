@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import Typography from '@mui/material/Typography';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import ConnectPrinter from '../ConnectPrinter';
 import PrinterReport from '../PrinterReport';
@@ -61,15 +60,9 @@ function Import() {
         justifyContent="flex-end"
         justifyItems="end"
       >
-        <Typography
-          htmlFor="import-plaintext"
-          variant="body2"
-          component="label"
-        >
-          Enter data received through your serial monitor
-        </Typography>
-        <OutlinedInput
+        <TextField
           id="import-plaintext"
+          label="Enter data received through your serial monitor"
           multiline
           fullWidth
           size="small"

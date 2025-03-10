@@ -10,5 +10,9 @@ export const outlinedInput = (theme: Theme): ComponentsOverrides<Theme>['MuiOutl
       lineHeight: '16px',
       fontFamily: 'monospace',
     },
+    // hide the legend because shrink inputLabel is outside of the inputfield's border
+    '.MuiOutlinedInput-notchedOutline legend span': {
+      display: 'none',
+    },
   },
 });
