@@ -1,167 +1,194 @@
-import React, { useState } from 'react';
-import classnames from 'classnames';
-import SVG from '../../../SVG';
-import Input, { InputType } from '../../../Input';
+import React, { useCallback, useState } from 'react';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import useStoragesStore from '../../../../stores/storagesStore';
-import './index.scss';
+import { useAsPasswordField } from '../../../../../hooks/useAsPasswordField';
+import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
+import type { GitStorageSettings } from '../../../../../../types/Sync';
 
 function GitSettings() {
   const { gitStorage, setGitStorage } = useStoragesStore();
-  const [storage, setStorage] = useState(gitStorage);
+
+  const [use, setUse] = useState<boolean>(gitStorage.use || false);
+  const [owner, setOwner] = useState<string>(gitStorage.owner || '');
+  const [repo, setRepo] = useState<string>(gitStorage.repo || '');
+  const [branch, setBranch] = useState<string>(gitStorage.branch || '');
+  const [throttle, setThrottle] = useState<string>(gitStorage.throttle?.toString(10) || '10');
+  const [token, setToken] = useState<string>(gitStorage.token || '');
+  const { type, button } = useAsPasswordField();
+
+  const updateGitStorage = useCallback((partial: Partial<GitStorageSettings>) => {
+    setGitStorage({
+      ...gitStorage,
+      ...partial,
+    });
+  }, [gitStorage, setGitStorage]);
 
   return (
-    <>
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': storage.use,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Use github as storage"
-        >
-          Use github as storage
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
-            checked={storage.use}
+    <Stack
+      direction="column"
+      gap={6}
+    >
+      <FormControlLabel
+        label="Use github as storage"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
+            checked={use}
             onChange={({ target }) => {
-              const newSettings = {
-                ...storage,
-                use: target.checked,
-              };
-              setStorage(newSettings);
-              setGitStorage(newSettings);
+              setUse(target.checked);
+              updateGitStorage({ use: target.checked });
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
+        )}
+      />
 
-      { !storage.use ? null : (
+      { !use ? null : (
         <>
-          <Input
+          <TextField
             id="settings-git-owner"
-            labelText="Owner"
-            type={InputType.TEXT}
-            value={storage.owner}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            onChange={(owner) => {
-              setStorage({
-                ...storage,
-                owner,
-              });
+            label="Owner"
+            type="text"
+            fullWidth
+            size="small"
+            value={owner}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+              ...textFieldSlotDefaults,
+            }}
+            onChange={(ev) => {
+              setOwner(ev.target.value);
             }}
             onBlur={() => {
-              setGitStorage(storage);
+              updateGitStorage({ owner });
             }}
           />
 
-          <Input
+          <TextField
             id="settings-git-repo"
-            labelText="Repository name"
-            type={InputType.TEXT}
-            value={storage.repo}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            onChange={(repo) => {
-              setStorage({
-                ...storage,
-                repo,
-              });
+            label="Repository name"
+            type="text"
+            fullWidth
+            size="small"
+            value={repo}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+              ...textFieldSlotDefaults,
+            }}
+            onChange={(ev) => {
+              setRepo(ev.target.value);
             }}
             onBlur={() => {
-              setGitStorage(storage);
+              updateGitStorage({ repo });
             }}
           />
 
-          <Input
+          <TextField
             id="settings-git-branch"
-            labelText="Branch"
-            type={InputType.TEXT}
-            value={storage.branch}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            onChange={(branch) => {
-              setStorage({
-                ...storage,
-                branch,
-              });
+            label="Branch"
+            type="text"
+            fullWidth
+            size="small"
+            value={branch}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+              ...textFieldSlotDefaults,
+            }}
+            onChange={(ev) => {
+              setBranch(ev.target.value);
             }}
             onBlur={() => {
-              setGitStorage(storage);
+              updateGitStorage({ branch });
             }}
           />
 
-          <Input
+          <TextField
             id="settings-git-throttle"
-            labelText="Throttle (in ms)"
-            type={InputType.NUMBER}
-            min={10}
-            max={5000}
-            step={25}
-            value={storage.throttle}
-            onChange={(throttle) => {
-              setStorage({
-                ...storage,
-                throttle: parseInt(throttle, 10),
-              });
+            label="Throttle (in ms)"
+            type="text"
+            fullWidth
+            size="small"
+            value={throttle}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+              ...textFieldSlotDefaults,
+            }}
+            onChange={(ev) => {
+              setThrottle(ev.target.value);
             }}
             onBlur={() => {
-              setGitStorage(storage);
+              const parsed = Math.min(10, Math.max(5000, parseInt(throttle, 10)));
+              setThrottle(parsed.toString(10));
+              updateGitStorage({
+                throttle: parsed,
+              });
             }}
           />
 
-          <Input
+
+          <TextField
             id="settings-git-token"
-            labelText="Token"
-            type={InputType.PASSWORD}
-            value={storage.token}
-            onChange={(token) => {
-              setStorage({
-                ...storage,
-                token,
-              });
+            label="Token"
+            helperText={(
+              <>
+                {'Go to GitHub to create a '}
+                <Link
+                  href="https://github.com/settings/personal-access-tokens/new"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  new fine-grained personal access token
+                </Link>
+                {', select the repository you want to use for synching and allow read/write for '}
+                <Typography
+                  component="code"
+                  variant="caption"
+                  sx={{
+                    fontFamily: 'monospace',
+                    padding: '0 2px',
+                  }}
+                >
+                  &quot;Repositoty Permissions &gt; Contents&quot;
+                </Typography>
+              </>
+            )}
+            type={type}
+            fullWidth
+            size="small"
+            value={token}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+              input: {
+                endAdornment: button,
+              },
+              ...textFieldSlotDefaults,
             }}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
+            onChange={(ev) => {
+              setToken(ev.target.value);
+            }}
             onBlur={() => {
-              setGitStorage(storage);
+              updateGitStorage({ token });
             }}
-          >
-            <span className="inputgroup__note">
-              {'Go to GitHub to create a '}
-              <a
-                href="https://github.com/settings/personal-access-tokens/new"
-                target="_blank"
-                rel="noreferrer"
-              >
-                new fine-grained personal access token
-              </a>
-              {', select the repository you want to use for synching and allow read/write for '}
-              <code className="inputgroup__note--code">
-                &quot;Repositoty Permissions &gt; Contents&quot;
-              </code>
-            </span>
-          </Input>
+          />
         </>
       )}
-    </>
+    </Stack>
   );
 }
 

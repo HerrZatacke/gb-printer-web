@@ -111,6 +111,12 @@ function GenericSettings() {
         size="small"
         helperText="Set to 0 to disable pagination - might cause performance issues on large sets of images"
         value={pageSizeState}
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+          ...textFieldSlotDefaults,
+        }}
         onChange={(ev) => setPageSizeState(ev.target.value)}
         onBlur={() => {
           const newValue = Math.abs(parseInt(pageSizeState, 10) || 0);
