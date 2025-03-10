@@ -88,11 +88,21 @@ export const generateTheme = ({
       body2: {
         fontSize: 13,
       },
+      h1: {
+        fontSize: 30,
+        fontWeight: 'bold',
+      },
       h2: {
-        fontSize: 20,
+        fontSize: 24,
+        fontWeight: 'bold',
       },
       h3: {
         fontSize: 20,
+        fontWeight: 'bold',
+      },
+      h4: {
+        fontSize: 18,
+        fontWeight: 'bold',
       },
     },
     palette: {
@@ -150,10 +160,16 @@ export const generateTheme = ({
       body2: {
         color: colorText,
       },
+      h1: {
+        color: withPalette.palette.primary.main,
+      },
       h2: {
         color: withPalette.palette.primary.main,
       },
       h3: {
+        color: withPalette.palette.primary.main,
+      },
+      h4: {
         color: withPalette.palette.primary.main,
       },
     },
