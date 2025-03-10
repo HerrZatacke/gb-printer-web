@@ -1,11 +1,18 @@
 import type { ExportFrameMode } from 'gb-image-decoder';
 import type { ILocale } from 'locale-codes';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link as RouterLink } from 'react-router';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import InputLabel from '@mui/material/InputLabel';
+import Link from '@mui/material/Link';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import dayjs from 'dayjs';
-import classnames from 'classnames';
-import SVG from '../../../SVG';
-import Input, { InputType } from '../../../Input';
 import EnableWebUSB from '../../../WebUSBGreeting/EnableWebUSB';
 import supportedCanvasImageFormats from '../../../../../tools/supportedCanvasImageFormats/index';
 import cleanUrl from '../../../../../tools/cleanUrl';
@@ -16,8 +23,9 @@ import getFrameGroups from '../../../../../tools/getFrameGroups';
 import useItemsStore from '../../../../stores/itemsStore';
 import useSettingsStore from '../../../../stores/settingsStore';
 import usePaletteSort from '../../../../../hooks/usePaletteSort';
-import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
 import { fileNameStyleLabels } from '../../../../../consts/fileNameStyles';
+import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
+import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
 import type { FileNameStyle } from '../../../../../consts/fileNameStyles';
 
 function GenericSettings() {
@@ -91,347 +99,316 @@ function GenericSettings() {
   }, []);
 
   return (
-    <>
-
-      <Input
+    <Stack
+      direction="column"
+      gap={6}
+    >
+      <TextField
         id="settings-pagesize"
-        labelText="Page size"
-        type={InputType.NUMBER}
-        min={0}
+        label="Page size"
+        type="text"
+        fullWidth
+        size="small"
+        helperText="Set to 0 to disable pagination - might cause performance issues on large sets of images"
         value={pageSizeState}
-        onChange={setPageSizeState}
+        onChange={(ev) => setPageSizeState(ev.target.value)}
         onBlur={() => {
-          setPageSize(parseInt(pageSizeState, 10) || 0);
+          const newValue = Math.abs(parseInt(pageSizeState, 10) || 0);
+          setPageSize(newValue);
+          setPageSizeState(newValue.toString(10));
+        }}
+      />
+
+      <FormControl>
+        <InputLabel shrink>
+          Image export dimensions
+        </InputLabel>
+        <ToggleButtonGroup
+          fullWidth
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          color="tertiary"
+          value={exportScaleFactors}
+          onChange={(_, value) => {
+            setExportScaleFactors(value);
+          }}
+        >
+          {[1, 2, 3, 4, 5, 6, 8, 10].map((factor) => (
+            <ToggleButton
+              key={factor}
+              value={factor}
+              title={`${factor * 160}×${factor * 144}`}
+            >
+              {`${factor}×`}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </FormControl>
+
+      <FormControl>
+        <InputLabel shrink>
+          Image export filetypes
+        </InputLabel>
+        <ToggleButtonGroup
+          fullWidth
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          color="tertiary"
+          value={exportFileTypes}
+          onChange={(_, value) => {
+            setExportFileTypes(value);
+          }}
+        >
+          {[...supportedCanvasImageFormats(), 'txt', 'pgm'].map((fileType) => (
+            <ToggleButton
+              key={fileType}
+              value={fileType}
+              title={fileType}
+            >
+              { fileType }
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </FormControl>
+
+      <TextField
+        id="settings-handle-export-frames"
+        value={handleExportFrame}
+        label="How to handle frames when exporting images"
+        select
+        size="small"
+        onChange={(ev) => {
+          setHandleExportFrame(ev.target.value as ExportFrameMode);
         }}
       >
-        <span
-          className={
-            classnames('inputgroup__note', {
-              'inputgroup__note--warn': !pageSize,
-            })
-          }
-        >
-          (set to 0 to disable pagination - might cause performance issues on large sets of images)
-        </span>
-      </Input>
-
-      <div className="inputgroup">
-        <div className="inputgroup__label">
-          Image export dimensions
-        </div>
-        {[1, 2, 3, 4, 5, 6, 8, 10].map((factor) => (
-          <label
-            key={factor}
-            className={
-              classnames('inputgroup__label-check', {
-                'inputgroup__label-check--selected': exportScaleFactors.includes(factor),
-              })
-            }
-            title={`${factor * 160}×${factor * 144}`}
-          >
-            {`${factor}×`}
-            <input
-              type="checkbox"
-              checked={exportScaleFactors.includes(factor)}
-              onChange={({ target }) => {
-                setExportScaleFactors(factor, target.checked);
-              }}
-            />
-          </label>
-        ))}
-      </div>
-      <div className="inputgroup">
-        <div className="inputgroup__label">
-          Image export filetypes
-        </div>
-        {[...supportedCanvasImageFormats(), 'txt', 'pgm'].map((fileType) => (
-          <label
-            key={fileType}
-            className={
-              classnames('inputgroup__label-check', {
-                'inputgroup__label-check--selected': exportFileTypes.includes(fileType),
-              })
-            }
-            title={fileType}
-          >
-            {fileType}
-            <input
-              type="checkbox"
-              checked={exportFileTypes.includes(fileType)}
-              onChange={({ target }) => {
-                setExportFileTypes(fileType, target.checked);
-              }}
-            />
-          </label>
-        ))}
-      </div>
-
-      <div className="inputgroup">
-        <label htmlFor="settings-handle-export-frames" className="inputgroup__label">
-          How to handle frames when exporting images
-        </label>
-        <select
-          id="settings-handle-export-frames"
-          className="inputgroup__input inputgroup__input--select"
-          value={handleExportFrame}
-          onChange={(ev) => {
-            setHandleExportFrame(ev.target.value as ExportFrameMode);
-          }}
-        >
-          {
-            exportFrameModes.map(({ id, name }) => (
-              <option value={id} key={id}>{ name }</option>
-            ))
-          }
-        </select>
-      </div>
-
-      <div className="inputgroup">
-        <label htmlFor="settings-filename-style" className="inputgroup__label">
-          Filename style
-        </label>
-        <select
-          id="settings-filename-style"
-          className="inputgroup__input inputgroup__input--select"
-          value={fileNameStyle}
-          onChange={(ev) => {
-            setFileNameStyle(ev.target.value as FileNameStyle);
-          }}
-        >
-          {
-            fileNameStyleLabels.map(({ id, name }) => (
-              <option value={id} key={id}>{ name }</option>
-            ))
-          }
-        </select>
-      </div>
-
-      <div className="inputgroup">
-        <label htmlFor="settings-sav-frames" className="inputgroup__label">
-          Frames to be applied when importing Cartridge dumps
-        </label>
-        <select
-          id="settings-sav-frames"
-          className="inputgroup__input inputgroup__input--select"
-          disabled={!savFrameGroups.length}
-          value={savFrameTypes}
-          onChange={(ev) => {
-            setSavFrameTypes(ev.target.value);
-          }}
-        >
-          <option value="">None</option>
-          {
-            savFrameGroups.map(({ id, name }) => (
-              <option value={id} key={id}>{ name }</option>
-            ))
-          }
-        </select>
-      </div>
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': importLastSeen,
-          })
+        {
+          exportFrameModes.map(({ id, name }) => (
+            <MenuItem
+              key={id}
+              value={id}
+            >
+              {name}
+            </MenuItem>
+          ))
         }
+      </TextField>
+
+      <TextField
+        id="settings-filename-style"
+        value={fileNameStyle}
+        label="Filename style"
+        select
+        size="small"
+        onChange={(ev) => {
+          setFileNameStyle(ev.target.value as FileNameStyle);
+        }}
       >
-        <span
-          className="inputgroup__label"
-          title="Import ‘last seen’ image when importing Cartridge dumps"
-        >
-          Import &lsquo;last seen&rsquo; image when importing Cartridge dumps
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
+        {
+          fileNameStyleLabels.map(({ id, name }) => (
+            <MenuItem
+              key={id}
+              value={id}
+            >
+              {name}
+            </MenuItem>
+          ))
+        }
+      </TextField>
+
+      <TextField
+        id="settings-sav-frames"
+        value={savFrameTypes}
+        disabled={!savFrameGroups.length}
+        label="Frames to be applied when importing Cartridge dumps"
+        select
+        size="small"
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+          select: {
+            displayEmpty: true,
+            renderValue: (selected) => (
+              selected === '' ? 'None' : savFrameGroups.find(({ id }) => (
+                id === selected
+              ))?.name || 'Unknown'
+            ),
+          },
+        }}
+        onChange={(ev) => {
+          setSavFrameTypes(ev.target.value);
+        }}
+        placeholder="None"
+      >
+        <MenuItem value="" selected={!savFrameTypes}>None</MenuItem>
+        {
+          savFrameGroups.map(({ id, name }) => (
+            <MenuItem
+              key={id}
+              value={id}
+            >
+              {name}
+            </MenuItem>
+          ))
+        }
+      </TextField>
+
+      <FormControlLabel
+        label="Import ‘last seen’ image when importing Cartridge dumps"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
             checked={importLastSeen}
             onChange={({ target }) => {
               setImportLastSeen(target.checked);
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': importDeleted,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Import deleted images when importing Cartridge dumps"
-        >
-          Import deleted images when importing Cartridge dumps
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
+        )}
+      />
+
+      <FormControlLabel
+        label="Import deleted images when importing Cartridge dumps"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
             checked={importDeleted}
             onChange={({ target }) => {
               setImportDeleted(target.checked);
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': forceMagicCheck,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Force valid .sav file when importing"
-        >
-          Force valid .sav file when importing
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
+        )}
+      />
+
+      <FormControlLabel
+        label="Force valid .sav file when importing"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
             checked={forceMagicCheck}
             onChange={({ target }) => {
               setForceMagicCheck(target.checked);
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
+        )}
+      />
 
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': importPad,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Pad images up to 144px height on import"
-        >
-          Pad images up to 144px height on import
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
+      <FormControlLabel
+        label="Pad images up to 144px height on import"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
             checked={importPad}
             onChange={({ target }) => {
               setImportPad(target.checked);
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
+        )}
+      />
 
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': hideDates,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Hide dates in gallery"
-        >
-          Hide dates in gallery
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
+      <FormControlLabel
+        label="Hide dates in gallery"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
             checked={hideDates}
             onChange={({ target }) => {
               setHideDates(target.checked);
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
+        )}
+      />
 
-      <div className="inputgroup">
-        <label htmlFor="settings-sort-palettes" className="inputgroup__label">
-          Sort Palettes
-        </label>
-        <select
-          id="settings-sort-palettes"
-          className="inputgroup__input inputgroup__input--select"
-          value={sortPalettes}
-          onChange={(ev) => {
-            setSortPalettes(ev.target.value as PaletteSortMode);
-          }}
-        >
-          {
-            paletteSortOptions.map(({ label, value }) => (
-              <option value={value} key={value}>
-                {label}
-              </option>
-            ))
-          }
-        </select>
-      </div>
+      <TextField
+        id="settings-filename-style"
+        value={sortPalettes}
+        label="Sort Palettes"
+        select
+        size="small"
+        onChange={(ev) => {
+          setSortPalettes(ev.target.value as PaletteSortMode);
+        }}
+      >
+        {
+          paletteSortOptions.map(({ value, label }) => (
+            <MenuItem
+              key={value}
+              value={value}
+            >
+              {label}
+            </MenuItem>
+          ))
+        }
+      </TextField>
 
-      <div className="inputgroup">
-        <label htmlFor="settings-preferred-locale" className="inputgroup__label">
-          Preferred locale
-          <span className="inputgroup__note inputgroup__note--newline">
-            { `Example date format: ${dateFormatLocale(now, preferredLocale)}`}
-          </span>
-        </label>
-        <select
-          id="settings-preferred-locale"
-          className="inputgroup__input inputgroup__input--select"
-          value={preferredLocale}
-          onChange={(ev) => {
-            setPreferredLocale(ev.target.value);
-          }}
-        >
-          {
-            localeCodes.map(({ name, local, location, tag }) => (
-              <option value={tag} key={tag}>
-                {`${local || name}${location ? ` - ${location}` : ''} (${tag})`}
-              </option>
-            ))
-          }
-        </select>
-      </div>
+
+      <TextField
+        id="settings-filename-style"
+        value={localeCodes.length ? preferredLocale : ''}
+        label="Preferred locale"
+        helperText={`Example date format: ${dateFormatLocale(now, preferredLocale)}`}
+        select
+        size="small"
+        onChange={(ev) => {
+          setPreferredLocale(ev.target.value);
+        }}
+      >
+        {
+          localeCodes.map(({ name, local, location, tag }) => (
+            <MenuItem
+              key={tag}
+              value={tag}
+            >
+              {`${local || name}${location ? ` - ${location}` : ''} (${tag})`}
+            </MenuItem>
+          ))
+        }
+      </TextField>
 
       <EnableWebUSB />
 
       {(getEnv()?.env === 'esp8266') ? null : (
-        <Input
+        <TextField
           id="settings-printer-url"
-          labelText="Printer URL"
-          type={InputType.TEXT}
+          label="Printer URL"
+          type="text"
+          fullWidth
+          size="small"
+          helperText={(
+            <>
+              {'If you own a physical wifi-printer, you can add it\'s URL here and check the '}
+              <Link
+                component={RouterLink}
+                to="/import"
+              >
+                Import-tab
+              </Link>
+            </>
+          )}
           value={printerUrlState}
-          onChange={setPrinterUrlState}
-          autoComplete="url"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck={false}
+          slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
+            ...textFieldSlotDefaults,
+          }}
+          onChange={(ev) => setPrinterUrlState(ev.target.value)}
           onBlur={() => {
             const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
             setPrinterUrlState(cleanPrinterUrl);
             setPrinterUrl(cleanPrinterUrl);
           }}
-          onKeyUp={(key) => {
-            switch (key) {
+          onKeyUp={(ev) => {
+            switch (ev.key) {
               case 'Enter': {
                 const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
                 setPrinterUrlState(cleanPrinterUrl);
@@ -445,29 +422,29 @@ function GenericSettings() {
               default:
             }
           }}
-        >
-          <span className="inputgroup__note">
-            {'If you own a physical wifi-printer, you can add it\'s URL here and check the '}
-            <Link to="/import">Import-tab</Link>
-          </span>
-        </Input>
+        />
       )}
+
       {(getEnv()?.env === 'esp8266' || printerUrl) ? (
-        <Input
+        <TextField
           id="settings-printer-settings"
-          labelText="Additional printer settings"
-          type={InputType.TEXT}
+          label="Additional printer settings"
+          type="text"
+          fullWidth
+          size="small"
           value={printerParamsState}
-          onChange={setPrinterParamsState}
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck={false}
+          slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
+            ...textFieldSlotDefaults,
+          }}
+          onChange={(ev) => setPrinterParamsState(ev.target.value)}
           onBlur={() => {
             setPrinterParams(printerParamsState);
           }}
-          onKeyUp={(key) => {
-            switch (key) {
+          onKeyUp={(ev) => {
+            switch (ev.key) {
               case 'Enter':
                 setPrinterParams(printerParamsState);
                 break;
@@ -480,62 +457,36 @@ function GenericSettings() {
         />
       ) : null}
 
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': enableDebug,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Show debug info"
-        >
-          Show debug info
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
+      <FormControlLabel
+        label="Show debug info"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
             checked={enableDebug}
             onChange={({ target }) => {
               setEnableDebug(target.checked);
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
+        )}
+      />
 
-      <label
-        className={
-          classnames('inputgroup checkgroup', {
-            'checkgroup--checked': enableImageGroups,
-          })
-        }
-      >
-        <span
-          className="inputgroup__label"
-          title="Enable Image Groups"
-        >
-          Enable Image Groups
-        </span>
-        <span
-          className="checkgroup__checkbox-wrapper"
-        >
-          <input
-            type="checkbox"
-            className="checkgroup__input"
+      <FormControlLabel
+        label="Enable Image Groups"
+        control={(
+          <Switch
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color="tertiary"
             checked={enableImageGroups}
             onChange={({ target }) => {
               setEnableImageGroups(target.checked);
             }}
           />
-          <SVG name="checkmark" />
-        </span>
-      </label>
-    </>
+        )}
+      />
+    </Stack>
   );
 }
 
