@@ -1,35 +1,46 @@
-import type { ReactElement } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect, useState } from 'react';
-import type { Options as ReactMarkdownOptions } from 'react-markdown';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import docs from '../../../../../README.md';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import type { MuiMarkdownProps } from 'mui-markdown';
 
-import './index.scss';
-
-function X() {
-  return <p />;
+function GappedStack({ children }: PropsWithChildren) {
+  return (
+    <Stack
+      direction="column"
+      gap={4}
+    >
+      {children}
+    </Stack>
+  );
 }
 
 function Home() {
-
-  const [ReactMarkdown, setReactMarkdown] = useState<(options: ReactMarkdownOptions) => ReactElement>(() => X);
+  const [MuiMarkdown, setMuiMarkdown] = useState<FC<MuiMarkdownProps>>(() => () => null);
+  const [docs, setDocs] = useState<string>('');
 
   useEffect(() => {
     const load = async () => {
-      const { default: MDComponent } = await import(/* webpackChunkName: "rmd" */ 'react-markdown');
-      setReactMarkdown(() => MDComponent);
+      const { default: MMD } = await import(/* webpackChunkName: "mmd" */ 'mui-markdown');
+      setMuiMarkdown(() => MMD);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const { default: rawMd } = await import(/* webpackChunkName: "doc" */ '../../../../../README.md');
+      setDocs(rawMd);
     };
 
     load();
   }, []);
 
   return (
-    <div className="home">
-      <ReactMarkdown className="markdown-body">
-        {docs}
-      </ReactMarkdown>
-    </div>
+    <Card className="home">
+      <CardContent>
+        <MuiMarkdown options={{ wrapper: GappedStack }}>
+          {docs}
+        </MuiMarkdown>
+      </CardContent>
+    </Card>
   );
 }
 
