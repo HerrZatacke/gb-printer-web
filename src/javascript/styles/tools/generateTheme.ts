@@ -1,5 +1,6 @@
 import { createTheme, lighten } from '@mui/material';
-import type { Components, Theme, PaletteMode } from '@mui/material';
+import type { Components, PaletteMode } from '@mui/material';
+import type { Theme } from '@mui/system';
 import { muiButton } from '../components/button';
 import { muiButtonGroup } from '../components/buttonGroup';
 import { toggleButtonGroup } from '../components/toggleButtonGroup';

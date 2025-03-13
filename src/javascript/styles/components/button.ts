@@ -1,4 +1,4 @@
-import type { Theme } from '@mui/material';
+import type { Theme } from '@mui/system';
 import type { ComponentsOverrides } from '@mui/material/styles/overrides';
 import { getHoverColor } from '../tools/getHoverColor';
 
@@ -9,7 +9,7 @@ export const muiButton = (theme: Theme): ComponentsOverrides<Theme>['MuiButton']
     minHeight: '40px',
 
     variants: [
-      ...(['primary', 'secondary', 'tertiary'] as ('primary' | 'secondary' | 'tertiary')[]).map((color) => ({
+      ...['primary', 'secondary', 'tertiary'].map((color) => ({
         props: { color },
         style: {
           ':hover': {

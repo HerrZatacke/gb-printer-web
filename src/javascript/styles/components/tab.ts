@@ -1,4 +1,4 @@
-import type { Theme } from '@mui/material';
+import type { Theme } from '@mui/system';
 import { alpha } from '@mui/material';
 import type { ComponentsOverrides } from '@mui/material/styles/overrides';
 

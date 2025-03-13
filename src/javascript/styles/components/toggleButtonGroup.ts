@@ -1,11 +1,11 @@
-import type { Theme } from '@mui/material';
+import type { Theme } from '@mui/system';
 import type { ComponentsOverrides } from '@mui/material/styles/overrides';
 import { getHoverColor } from '../tools/getHoverColor';
 
 export const toggleButtonGroup = (theme: Theme): ComponentsOverrides<Theme>['MuiToggleButtonGroup'] => ({
   grouped: {
     variants: [
-      ...(['primary', 'secondary', 'tertiary'] as ('primary' | 'secondary' | 'tertiary')[]).map((color) => ({
+      ...['primary', 'secondary', 'tertiary'].map((color) => ({
         props: { color },
         style: {
           '&.Mui-selected': {

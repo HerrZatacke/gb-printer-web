@@ -1,4 +1,4 @@
-import type { Theme } from '@mui/material';
+import type { Theme } from '@mui/system';
 import { generateTheme } from './tools/generateTheme';
 
 

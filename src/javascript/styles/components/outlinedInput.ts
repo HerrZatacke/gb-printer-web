@@ -1,4 +1,4 @@
-import type { Theme } from '@mui/material';
+import type { Theme } from '@mui/system';
 import type { ComponentsOverrides } from '@mui/material/styles/overrides';
 
 export const outlinedInput = (theme: Theme): ComponentsOverrides<Theme>['MuiOutlinedInput'] => ({
