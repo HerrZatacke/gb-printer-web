@@ -1,8 +1,7 @@
 import { createTheme, lighten } from '@mui/material';
-import type { Components, PaletteMode } from '@mui/material';
-import type { Theme } from '@mui/system';
+import { blend } from '@mui/system/colorManipulator/colorManipulator';
+import type { Components, PaletteMode, Theme } from '@mui/material';
 import { muiButton } from '../components/button';
-import { muiButtonGroup } from '../components/buttonGroup';
 import { toggleButtonGroup } from '../components/toggleButtonGroup';
 import { outlinedInput } from '../components/outlinedInput';
 import { paper } from '../components/paper';
@@ -10,6 +9,9 @@ import { tab } from '../components/tab';
 import { inputLabel } from '../components/inputLabel';
 import { formControl } from '../components/formControl';
 import { cardContent } from '../components/cardContent';
+import { appBar } from '../components/appBar';
+import { toolbar } from '../components/toolbar';
+import { link } from '../components/link';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -26,10 +28,7 @@ declare module '@mui/material/styles' {
 
 const themeComponents = (theme: Theme): Components<Theme> => ({
   MuiButton: {
-    styleOverrides: muiButton(theme),
-  },
-  MuiButtonGroup: {
-    styleOverrides: muiButtonGroup(theme),
+    styleOverrides: muiButton(),
   },
   MuiToggleButtonGroup: {
     styleOverrides: toggleButtonGroup(theme),
@@ -51,6 +50,15 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiCardContent: {
     styleOverrides: cardContent(),
+  },
+  MuiAppBar: {
+    styleOverrides: appBar(theme),
+  },
+  MuiToolbar: {
+    styleOverrides: toolbar(theme),
+  },
+  MuiLink: {
+    styleOverrides: link(),
   },
 });
 
@@ -80,6 +88,15 @@ export const generateTheme = ({
   const theme: Theme = createTheme({
     shape: {
       borderRadius: 0,
+    },
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 480,
+        md: 768,
+        lg: 1024,
+        xl: 1200,
+      },
     },
     typography: {
       fontFamily: '"Trebuchet MS", Helvetica, sans-serif',
@@ -132,7 +149,7 @@ export const generateTheme = ({
     },
   });
 
-  const withPalette = createTheme({
+  const withPalette = createTheme(theme, {
     palette: {
       tertiary: theme.palette.augmentColor({
         color: {
@@ -148,11 +165,14 @@ export const generateTheme = ({
       }),
       text: {
         primary: colorText,
+        secondary: colorText,
       },
     },
-  }, theme);
+  });
 
-  return createTheme({
+  const colorHeadline = blend(withPalette.palette.primary.main, colorText, 0.7);
+
+  return createTheme(withPalette, {
     typography: {
       fontFamily: '"Trebuchet MS", Helvetica, sans-serif',
       body1: {
@@ -162,18 +182,18 @@ export const generateTheme = ({
         color: colorText,
       },
       h1: {
-        color: withPalette.palette.primary.main,
+        color: colorHeadline,
       },
       h2: {
-        color: withPalette.palette.primary.main,
+        color: colorHeadline,
       },
       h3: {
-        color: withPalette.palette.primary.main,
+        color: colorHeadline,
       },
       h4: {
-        color: withPalette.palette.primary.main,
+        color: colorHeadline,
       },
     },
     components: themeComponents(withPalette),
-  }, withPalette);
+  });
 };
