@@ -22,7 +22,7 @@ interface Props {
 }
 
 function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: Props) {
-  const [pluginsActive, setPluginsActive] = useState(false);
+  const [pluginAnchor, setPluginAnchor] = useState<HTMLElement | null>(null);
 
   const { enableImageGroups } = useSettingsStore();
 
@@ -47,7 +47,6 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
       onClick={(ev) => {
         ev.stopPropagation();
       }}
-      onMouseLeave={() => setPluginsActive(false)}
       role="presentation"
     >
       {buttons.includes(ButtonOption.SELECT) ? (
@@ -106,21 +105,23 @@ function GalleryImageButtons({ hash, buttons, isFavourite, imageTitle, tags }: P
         </button>
       ) : null}
       {hasPlugins ? (
-        <PluginSelect
-          pluginsActive={pluginsActive}
-          hash={hash}
-        >
+        <>
+          <PluginSelect
+            pluginAnchor={pluginAnchor}
+            hash={hash}
+            onClose={() => setPluginAnchor(null)}
+          />
           <button
             type="button"
             className="gallery-image-buttons__button"
-            onClick={() => {
-              setPluginsActive(true);
+            onClick={(ev) => {
+              setPluginAnchor(ev.target as HTMLElement);
             }}
             title="Use Plugin"
           >
             <SVG name="plug" />
           </button>
-        </PluginSelect>
+        </>
       ) : null}
       {buttons.includes(ButtonOption.SHARE) && canShare ? (
         <button

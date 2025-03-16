@@ -1,11 +1,14 @@
 import React from 'react';
-import classnames from 'classnames';
-import SVG from '../SVG';
+import type { ReactNode } from 'react';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import AppsIcon from '@mui/icons-material/Apps';
+import LooksOneSharpIcon from '@mui/icons-material/LooksOneSharp';
+import SquareIcon from '@mui/icons-material/Square';
+import WindowSharpIcon from '@mui/icons-material/WindowSharp';
+import useSettingsStore from '../../stores/settingsStore';
 import { GalleryViews } from '../../../consts/GalleryViews';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
-
-import './index.scss';
-import useSettingsStore from '../../stores/settingsStore';
 
 const viewName = (id: GalleryViews): string => {
   switch (id) {
@@ -19,6 +22,20 @@ const viewName = (id: GalleryViews): string => {
       return 'Maximum Size';
     default:
       return '';
+  }
+};
+
+const viewIcon = (view: GalleryViews): ReactNode => {
+  switch (view) {
+    case GalleryViews.GALLERY_VIEW_SMALL:
+      return <LooksOneSharpIcon />;
+    case GalleryViews.GALLERY_VIEW_1X:
+      return <AppsIcon />;
+    case GalleryViews.GALLERY_VIEW_2X:
+      return <WindowSharpIcon />;
+    case GalleryViews.GALLERY_VIEW_MAX:
+    default:
+      return <SquareIcon />;
   }
 };
 
@@ -42,30 +59,31 @@ function GalleryViewSelect() {
   ];
 
   return (
-    <ul className="gallery-view-select gallery-button__group">
+    <ToggleButtonGroup
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      color="tertiary"
+      value={galleryView}
+      exclusive
+      onChange={(_, value) => {
+        if (value) {
+          setGalleryView(value);
+        }
+      }}
+      sx={{ '& .MuiToggleButton-root': { width: 40, height: 40 } }}
+    >
       {
         GALLERY_VIEWS.map((view) => (
-          <li
+          <ToggleButton
             key={view}
-            className={
-              classnames('gallery-button gallery-button--enabled', {
-                'gallery-button--selected': galleryView === view,
-              })
-            }
+            value={view}
+            title={viewName(view)}
           >
-            <button
-              type="button"
-              onClick={() => {
-                setGalleryView(view);
-              }}
-              title={viewName(view)}
-            >
-              <SVG name={view} />
-            </button>
-          </li>
+            {viewIcon(view)}
+          </ToggleButton>
         ))
       }
-    </ul>
+    </ToggleButtonGroup>
   );
 }
 
