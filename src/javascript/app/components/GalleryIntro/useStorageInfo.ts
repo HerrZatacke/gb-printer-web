@@ -59,7 +59,7 @@ export const useStorageInfo = (): UseStorageInfo => {
 
   useEffect(() => {
     window.setTimeout(async () => {
-      const estimate: StorageEstimate = await navigator.storage.estimate();
+      const estimate: StorageEstimate | null = await navigator.storage?.estimate() || null;
 
       const used = getLocalStorageUsage();
       const total = used + estimateLocalStorageMaxSize();
@@ -73,9 +73,9 @@ export const useStorageInfo = (): UseStorageInfo => {
         },
         {
           type: 'localStorage',
-          total: estimate.quota || 0,
-          used: estimate.usage || 0,
-          percentage: Math.ceil(total ? (estimate.usage || 0) / (estimate.quota || 1) * 100 : 100),
+          total: estimate?.quota || 0,
+          used: estimate?.usage || 0,
+          percentage: Math.ceil(total ? (estimate?.usage || 0) / (estimate?.quota || 1) * 100 : 100),
         },
       ]);
     }, 10);
