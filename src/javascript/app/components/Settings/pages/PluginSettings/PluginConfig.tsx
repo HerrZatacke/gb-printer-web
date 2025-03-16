@@ -76,7 +76,7 @@ function APConfig(props: Props) {
           {error && (
             <Alert
               severity="warning"
-              icon={<WarningIcon fontSize="inherit" />}
+              icon={<WarningIcon fontSize="inherit" color="warning" />}
             >
               {error}
             </Alert>
