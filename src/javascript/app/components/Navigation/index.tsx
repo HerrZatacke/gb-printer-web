@@ -42,7 +42,7 @@ interface NavActionItem {
   onClick: () => void,
 }
 
-const drawerContainer = document.querySelector('#app');
+const drawerContainer = document.body;
 
 function Navigation() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);

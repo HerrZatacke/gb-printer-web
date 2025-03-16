@@ -4,11 +4,13 @@ import type { TreeImageGroup } from '../../../../types/ImageGroup';
 import type { Image } from '../../../../types/Image';
 import type { DialogOption } from '../../../../types/Dialog';
 
+export const ROOT_ID = 'ROOT';
+
 export const createRoot = (): TreeImageGroup => ({
-  id: 'ROOT',
+  id: ROOT_ID,
   slug: '',
   created: '',
-  title: '🏠',
+  title: 'Home',
   coverImage: '',
   images: [],
   groups: [],

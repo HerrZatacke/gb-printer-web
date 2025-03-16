@@ -12,6 +12,7 @@ import { cardContent } from '../components/cardContent';
 import { appBar } from '../components/appBar';
 import { toolbar } from '../components/toolbar';
 import { link } from '../components/link';
+import { dialogTitle } from '../components/dialogTitle';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -59,6 +60,9 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiLink: {
     styleOverrides: link(),
+  },
+  MuiDialogTitle: {
+    styleOverrides: dialogTitle(theme),
   },
 });
 

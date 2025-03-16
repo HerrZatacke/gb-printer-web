@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useGalleryTreeContext } from '../galleryTree';
+import { ROOT_ID, useGalleryTreeContext } from '../galleryTree';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import useFiltersStore from '../../stores/filtersStore';
 import useSettingsStore from '../../stores/settingsStore';
@@ -49,6 +49,10 @@ export const useNavigationTools = (): UseNavigationTools => {
   }, [imageFilter, pageSize]);
 
   const getGroupPath = useCallback((groupId: string): string => {
+    if (groupId === ROOT_ID) {
+      return '/gallery/page/1';
+    }
+
     const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath || '';
     return `/gallery/${groupPath}page/1`;
   }, [paths]);

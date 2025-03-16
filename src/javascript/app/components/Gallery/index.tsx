@@ -6,7 +6,7 @@ import GalleryImage from '../GalleryImage';
 import GalleryHeader from '../GalleryHeader';
 import GalleryIntro from '../GalleryIntro';
 import GalleryGroup from '../GalleryGroup';
-import FolderNavi from '../FolderNavi';
+import FolderBreadcrumb from '../FolderBreadcrumb';
 import Pagination from '../Pagination';
 import { useGallery } from './useGallery';
 import { GalleryViews } from '../../../consts/GalleryViews';
@@ -56,7 +56,7 @@ function Gallery() {
         filteredCount={filteredCount}
       />
       { enableImageGroups ? (
-        <FolderNavi />
+        <FolderBreadcrumb />
       ) : null }
       <GalleryHeader page={page} isSticky />
       <Pagination page={page} />
