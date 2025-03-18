@@ -91,6 +91,7 @@ function BatchButtons({ page }: Props) {
         color="tertiary"
         variant="contained"
         sx={{ '& .MuiButton-root': { width: 40, height: 40 } }}
+        disableElevation
       >
         <IconButton
           onClick={showSortOptions}

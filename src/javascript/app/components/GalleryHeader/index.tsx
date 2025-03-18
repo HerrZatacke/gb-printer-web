@@ -12,7 +12,8 @@ interface Props {
 function GalleryHeader({ isBottom, page, isSticky }: Props) {
   return (
     <Stack
-      direction={{ xs: 'column', sm: 'row' }}
+      direction={{ xs: 'column', md: 'row' }}
+      alignItems="center"
       gap={2}
       justifyContent="space-between"
       sx={(theme) => ({
@@ -21,7 +22,8 @@ function GalleryHeader({ isBottom, page, isSticky }: Props) {
         ...(isSticky ? {
           position: 'sticky',
           top: 'var(--navigation-min-height)',
-          py: 2,
+          pb: 2,
+          mb: -2,
         } : {}),
         ...(isBottom ? {
           '@media (max-height: 900px)': {

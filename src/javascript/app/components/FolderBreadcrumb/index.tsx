@@ -63,7 +63,12 @@ function FolderBreadcrumb() {
   }
 
   return (
-    <Stack direction="row" gap={2} justifyContent="space-between">
+    <Stack
+      direction="row"
+      gap={2}
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <Breadcrumbs>
         { segments.map(({ group, path }, index) => (
           <Stack

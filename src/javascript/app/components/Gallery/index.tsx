@@ -1,5 +1,6 @@
 import React from 'react';
 import type { CSSPropertiesVars } from 'react';
+import Stack from '@mui/material/Stack';
 import classnames from 'classnames';
 import useSettingsStore from '../../stores/settingsStore';
 import GalleryImage from '../GalleryImage';
@@ -49,7 +50,10 @@ function Gallery() {
   const { enableImageGroups } = useSettingsStore();
 
   return (
-    <>
+    <Stack
+      direction="column"
+      gap={2}
+    >
       <GalleryIntro
         imageCount={imageCount}
         selectedCount={selectedCount}
@@ -91,7 +95,7 @@ function Gallery() {
           </>
         )
       }
-    </>
+    </Stack>
   );
 }
 
