@@ -1,14 +1,26 @@
 import React from 'react';
-// import useInteractionsStore from '../../stores/interactionsStore';
-import Buttons from '../Buttons';
+import type { CSSProperties } from 'react';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
 import useAutoFocus from '../../../hooks/useAutoFocus';
 import './index.scss';
 
 interface Props {
-  height?: number,
+  contentHeight?: number | string,
+  contentWidth?: number | string,
+  // eslint-disable-next-line react/no-unused-prop-types
   className?: string,
+  open?: boolean,
   header?: string,
+  closeTitle?: string,
   children?: React.ReactNode,
   confirm?: () => void,
   deny?: () => void,
@@ -16,58 +28,123 @@ interface Props {
   closeOnOverlayClick?: boolean,
 }
 
-function Lightbox(props: Props) {
-  // const { isFullscreen } = useInteractionsStore();
+const contentDimensions = (
+  width: string | number | undefined,
+  height: string | number | undefined,
+): CSSProperties => {
+  const styles: CSSProperties = {};
 
-  const closeOnOverlayClick = typeof props.closeOnOverlayClick !== 'boolean' ? true : props.closeOnOverlayClick;
+  switch (typeof height) {
+    case 'string':
+      styles.height = height;
+      break;
+    case 'number':
+      styles.height = `${height}px`;
+      break;
+    default:
+      break;
+  }
+
+  switch (typeof width) {
+    case 'string':
+      styles.width = width;
+      break;
+    case 'number':
+      styles.width = `${width}px`;
+      break;
+    default:
+      styles.width = '440px';
+      break;
+  }
+
+  return styles;
+};
+
+const overlayContainer = document.body;
+
+function Lightbox({
+  contentHeight,
+  contentWidth,
+  header,
+  closeTitle,
+  children,
+  confirm,
+  deny,
+  canConfirm,
+  open: openProp,
+  closeOnOverlayClick: closeOnClick,
+}: Props) {
+  const closeOnOverlayClick = typeof closeOnClick !== 'boolean' ? true : closeOnClick;
+  const open = typeof openProp !== 'boolean' ? true : openProp;
 
   useOverlayGlobalKeys({
-    confirm: props.confirm,
-    canConfirm: props.canConfirm || false,
-    deny: props.deny,
+    confirm,
+    canConfirm: canConfirm || false,
+    deny,
   });
 
   const {
     autofocusRef,
   } = useAutoFocus();
 
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
-    <div className={`lightbox ${props.className}`}>
-      <button
-        type="button"
-        className={`lightbox__backdrop ${props.className}__backdrop`}
-        onClick={closeOnOverlayClick ? props.deny : undefined}
-      />
-      <div
-        className={`lightbox__box ${props.className}__box`}
-        ref={autofocusRef as React.MutableRefObject<HTMLDivElement>}
-        style={{
-          height: props.height ? `${props.height}px` : undefined,
-        }}
-      >
-        <dialog
-          className={`lightbox__box-content ${props.className}__box-content`}
-          aria-labelledby="lightbox-header"
+    <Dialog
+      container={overlayContainer}
+      fullScreen={fullScreen}
+      maxWidth="lg"
+      open={open}
+      onClose={deny}
+      aria-label={typeof header === 'string' ? header : undefined}
+      keepMounted
+      disableEscapeKeyDown={!closeOnOverlayClick}
+    >
+      <DialogTitle>
+        {header}
+        <IconButton
+          title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
+          color="inherit"
+          onClick={deny}
+          sx={{
+            position: 'absolute',
+            right: 12,
+            top: 12,
+          }}
         >
-          {props.header ? (
-            <div
-              id="lightbox-header"
-              className={`lightbox__header ${props.className}__header`}
-            >
-              {props.header}
-            </div>
-          ) : null}
-          {props.children}
-        </dialog>
-        {props.confirm || props.deny ? (
-          <Buttons
-            confirm={props.confirm}
-            canConfirm={props.canConfirm}
-            deny={props.deny}
-          />
-        ) : null}
-      </div>
-    </div>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+
+      <DialogContent
+        ref={autofocusRef as React.MutableRefObject<HTMLDivElement>}
+        sx={fullScreen ? {} : contentDimensions(contentWidth, contentHeight)}
+      >
+        {children}
+      </DialogContent>
+      <DialogActions>
+        { deny ? (
+          <Button
+            onClick={deny}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+        ) : null }
+        { confirm ? (
+          <Button
+            disabled={canConfirm === false}
+            color="primary"
+            variant="contained"
+            onClick={confirm}
+          >
+            Ok
+          </Button>
+        ) : null }
+      </DialogActions>
+    </Dialog>
   );
 }
 

@@ -11,9 +11,6 @@ function EnableWebUSB() {
       label="Enable WebUSB / Serial ports"
       control={(
         <Switch
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          color="tertiary"
           checked={useSerials}
           onChange={({ target }) => {
             setUseSerials(target.checked);

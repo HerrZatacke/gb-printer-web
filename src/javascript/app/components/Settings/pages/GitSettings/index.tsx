@@ -37,9 +37,6 @@ function GitSettings() {
         label="Use github as storage"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={use}
             onChange={({ target }) => {
               setUse(target.checked);

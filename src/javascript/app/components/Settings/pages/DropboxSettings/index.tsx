@@ -32,9 +32,6 @@ function DropboxSettings() {
         label="Use Dropbox as storage"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={use}
             onChange={({ target }) => {
               setDropboxStorage({
@@ -97,9 +94,6 @@ function DropboxSettings() {
               )}
               control={(
                 <Switch
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  color="tertiary"
                   checked={autoDropboxSync}
                   onChange={({ target }) => {
                     setDropboxStorage({

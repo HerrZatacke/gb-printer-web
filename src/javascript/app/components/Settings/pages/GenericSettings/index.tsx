@@ -131,9 +131,6 @@ function GenericSettings() {
         </InputLabel>
         <ToggleButtonGroup
           fullWidth
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          color="tertiary"
           value={exportScaleFactors}
           onChange={(_, value) => {
             setExportScaleFactors(value);
@@ -157,9 +154,6 @@ function GenericSettings() {
         </InputLabel>
         <ToggleButtonGroup
           fullWidth
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          color="tertiary"
           value={exportFileTypes}
           onChange={(_, value) => {
             setExportFileTypes(value);
@@ -263,9 +257,6 @@ function GenericSettings() {
         label="Import ‘last seen’ image when importing Cartridge dumps"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={importLastSeen}
             onChange={({ target }) => {
               setImportLastSeen(target.checked);
@@ -278,9 +269,6 @@ function GenericSettings() {
         label="Import deleted images when importing Cartridge dumps"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={importDeleted}
             onChange={({ target }) => {
               setImportDeleted(target.checked);
@@ -293,9 +281,6 @@ function GenericSettings() {
         label="Force valid .sav file when importing"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={forceMagicCheck}
             onChange={({ target }) => {
               setForceMagicCheck(target.checked);
@@ -308,9 +293,6 @@ function GenericSettings() {
         label="Pad images up to 144px height on import"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={importPad}
             onChange={({ target }) => {
               setImportPad(target.checked);
@@ -323,9 +305,6 @@ function GenericSettings() {
         label="Hide dates in gallery"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={hideDates}
             onChange={({ target }) => {
               setHideDates(target.checked);
@@ -467,9 +446,6 @@ function GenericSettings() {
         label="Show debug info"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={enableDebug}
             onChange={({ target }) => {
               setEnableDebug(target.checked);
@@ -482,9 +458,6 @@ function GenericSettings() {
         label="Enable Image Groups"
         control={(
           <Switch
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color="tertiary"
             checked={enableImageGroups}
             onChange={({ target }) => {
               setEnableImageGroups(target.checked);

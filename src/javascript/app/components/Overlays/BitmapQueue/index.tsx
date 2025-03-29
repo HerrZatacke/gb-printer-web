@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import classnames from 'classnames';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
 import Lightbox from '../../Lightbox';
 import ImportPreviewImage from '../../ImportPreviewImage';
-import SVG from '../../SVG';
-import Select from '../Confirm/fields/Select';
 import { moveBitmapsToImport } from './moveBitmapsToImport';
 import useImportsStore from '../../../stores/importsStore';
-
-import './index.scss';
 
 interface ImportContrast {
   name: string,
@@ -58,7 +58,6 @@ function BitmapQueue() {
 
   return (
     <Lightbox
-      className="bitmap-import-overlay"
       header="Prepare Bitmaps for import"
       confirm={() => {
         moveBitmapsToImport({
@@ -69,8 +68,9 @@ function BitmapQueue() {
       }}
       deny={bitmapQueueCancel}
     >
-      <div
-        className="bitmap-import-overlay__content"
+      <Stack
+        direction="column"
+        gap={4}
       >
         {
           bitmapQueue.map((image, index) => (
@@ -87,35 +87,38 @@ function BitmapQueue() {
             />
           ))
         }
-        <label
-          className={
-            classnames('bitmap-import-overlay__dither-check', {
-              'bitmap-import-overlay__dither-check--checked': dither,
-            })
-          }
-        >
-          <input
-            type="checkbox"
-            className="bitmap-import-overlay__dither"
-            checked={dither}
-            onChange={({ target }) => {
-              setDither(target.checked);
-            }}
-          />
-          <SVG name="checkmark" />
-          <span className="bitmap-import-overlay__dither-text">
-            Enable Dither
-          </span>
-        </label>
-        <Select
-          id="contasts"
-          label="Contrast preset"
-          options={contrasts}
-          setSelected={setContrast}
-          value={contrast}
-          disabled={false}
+        <FormControlLabel
+          label="Enable Dither"
+          control={(
+            <Switch
+              checked={dither}
+              onChange={({ target }) => {
+                setDither(target.checked);
+              }}
+            />
+          )}
         />
-      </div>
+        <TextField
+          value={contrast}
+          label="Contrast preset"
+          select
+          size="small"
+          onChange={(ev) => {
+            setContrast(ev.target.value);
+          }}
+        >
+          {
+            contrasts.map(({ value, name }) => (
+              <MenuItem
+                key={value}
+                value={value}
+              >
+                {name}
+              </MenuItem>
+            ))
+          }
+        </TextField>
+      </Stack>
     </Lightbox>
   );
 }

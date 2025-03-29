@@ -29,10 +29,15 @@ declare module '@mui/material/styles' {
 
 const themeComponents = (theme: Theme): Components<Theme> => ({
   MuiButton: {
-    styleOverrides: muiButton(),
+    styleOverrides: muiButton(theme),
   },
   MuiToggleButtonGroup: {
     styleOverrides: toggleButtonGroup(theme),
+    defaultProps: {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      color: 'tertiary',
+    },
   },
   MuiOutlinedInput: {
     styleOverrides: outlinedInput(theme),
@@ -63,6 +68,20 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiDialogTitle: {
     styleOverrides: dialogTitle(theme),
+  },
+  MuiSwitch: {
+    defaultProps: {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      color: 'tertiary',
+    },
+  },
+  MuiTextField: {
+    defaultProps: {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      color: 'tertiary',
+    },
   },
 });
 
@@ -146,7 +165,7 @@ export const generateTheme = ({
       },
       background: {
         default: colorPageBackground,
-        paper: lighten(colorPageBackground, mode === 'light' ? 0.6 : 0.1),
+        paper: lighten(colorPageBackground, mode === 'light' ? 0.6 : 0.02),
         // default: '#ff0000',
         // paper: '#00ff00',
       },
