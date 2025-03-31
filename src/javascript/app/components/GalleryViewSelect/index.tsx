@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import AppsIcon from '@mui/icons-material/Apps';
-import LooksOneSharpIcon from '@mui/icons-material/LooksOneSharp';
+import ViewCompactIcon from '@mui/icons-material/ViewCompact';
 import SquareIcon from '@mui/icons-material/Square';
 import WindowSharpIcon from '@mui/icons-material/WindowSharp';
 import useSettingsStore from '../../stores/settingsStore';
@@ -28,7 +28,7 @@ const viewName = (id: GalleryViews): string => {
 const viewIcon = (view: GalleryViews): ReactNode => {
   switch (view) {
     case GalleryViews.GALLERY_VIEW_SMALL:
-      return <LooksOneSharpIcon />;
+      return <ViewCompactIcon />;
     case GalleryViews.GALLERY_VIEW_1X:
       return <AppsIcon />;
     case GalleryViews.GALLERY_VIEW_2X:
