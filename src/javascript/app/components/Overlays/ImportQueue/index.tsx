@@ -22,6 +22,7 @@ function ImportQueue() {
     setActivePalette,
     setCreateGroup,
     updateTagChanges,
+    resetTagChanges,
     runImport,
     cancelImport,
   } = useRunImport();
@@ -50,7 +51,6 @@ function ImportQueue() {
           }
         </ul>
         <PaletteSelect
-          selectLabel="Palette"
           noFancy
           value={palette}
           onChange={setActivePalette}
@@ -63,9 +63,8 @@ function ImportQueue() {
           updateFrame={setFrame}
         />
         <TagsSelect
-          label="Tags"
           tags={tagChanges}
-          listDirection="up"
+          resetTags={resetTagChanges}
           updateTags={(mode, tag) => {
             updateTagChanges({
               ...tagChanges,

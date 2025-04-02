@@ -52,15 +52,7 @@ function GitSettings() {
             id="settings-git-owner"
             label="Owner"
             type="text"
-            fullWidth
-            size="small"
             value={owner}
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-              ...textFieldSlotDefaults,
-            }}
             onChange={(ev) => {
               setOwner(ev.target.value);
             }}
@@ -73,15 +65,7 @@ function GitSettings() {
             id="settings-git-repo"
             label="Repository name"
             type="text"
-            fullWidth
-            size="small"
             value={repo}
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-              ...textFieldSlotDefaults,
-            }}
             onChange={(ev) => {
               setRepo(ev.target.value);
             }}
@@ -94,15 +78,7 @@ function GitSettings() {
             id="settings-git-branch"
             label="Branch"
             type="text"
-            fullWidth
-            size="small"
             value={branch}
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-              ...textFieldSlotDefaults,
-            }}
             onChange={(ev) => {
               setBranch(ev.target.value);
             }}
@@ -115,15 +91,7 @@ function GitSettings() {
             id="settings-git-throttle"
             label="Throttle (in ms)"
             type="text"
-            fullWidth
-            size="small"
             value={throttle}
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-              ...textFieldSlotDefaults,
-            }}
             onChange={(ev) => {
               setThrottle(ev.target.value);
             }}
@@ -164,13 +132,8 @@ function GitSettings() {
               </>
             )}
             type={type}
-            fullWidth
-            size="small"
             value={token}
             slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
               input: {
                 endAdornment: button,
               },

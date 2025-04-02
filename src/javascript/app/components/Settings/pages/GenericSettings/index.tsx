@@ -24,7 +24,6 @@ import useItemsStore from '../../../../stores/itemsStore';
 import useSettingsStore from '../../../../stores/settingsStore';
 import usePaletteSort from '../../../../../hooks/usePaletteSort';
 import { fileNameStyleLabels } from '../../../../../consts/fileNameStyles';
-import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
 import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
 import type { FileNameStyle } from '../../../../../consts/fileNameStyles';
 
@@ -107,16 +106,8 @@ function GenericSettings() {
         id="settings-pagesize"
         label="Page size"
         type="text"
-        fullWidth
-        size="small"
         helperText="Set to 0 to disable pagination - might cause performance issues on large sets of images"
         value={pageSizeState}
-        slotProps={{
-          inputLabel: {
-            shrink: true,
-          },
-          ...textFieldSlotDefaults,
-        }}
         onChange={(ev) => setPageSizeState(ev.target.value)}
         onBlur={() => {
           const newValue = Math.abs(parseInt(pageSizeState, 10) || 0);
@@ -227,7 +218,6 @@ function GenericSettings() {
             shrink: true,
           },
           select: {
-            displayEmpty: true,
             renderValue: (selected) => (
               selected === '' ? 'None' : savFrameGroups.find(({ id }) => (
                 id === selected
@@ -366,8 +356,6 @@ function GenericSettings() {
           id="settings-printer-url"
           label="Printer URL"
           type="text"
-          fullWidth
-          size="small"
           helperText={(
             <>
               {'If you own a physical wifi-printer, you can add it\'s URL here and check the '}
@@ -380,12 +368,6 @@ function GenericSettings() {
             </>
           )}
           value={printerUrlState}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-            ...textFieldSlotDefaults,
-          }}
           onChange={(ev) => setPrinterUrlState(ev.target.value)}
           onBlur={() => {
             const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
@@ -415,15 +397,7 @@ function GenericSettings() {
           id="settings-printer-settings"
           label="Additional printer settings"
           type="text"
-          fullWidth
-          size="small"
           value={printerParamsState}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-            ...textFieldSlotDefaults,
-          }}
           onChange={(ev) => setPrinterParamsState(ev.target.value)}
           onBlur={() => {
             setPrinterParams(printerParamsState);

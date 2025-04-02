@@ -1,8 +1,21 @@
-import React from 'react';
-import classnames from 'classnames';
+import React, { useMemo } from 'react';
+import FilterNoneIcon from '@mui/icons-material/FilterNone';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
 import useItemsStore from '../../stores/itemsStore';
-import SVG from '../SVG';
-import './index.scss';
+import { getFramesForGroup } from '../../../tools/getFramesForGroup';
+
+interface FrameSelectOption {
+  id: string,
+  name: string,
+  isGroup: boolean,
+}
 
 interface Props {
   frame: string,
@@ -21,10 +34,35 @@ function FrameSelect({
   lockFrame,
   selectLabel,
 }: Props) {
-  const { frames } = useItemsStore();
+  const { frames, frameGroups } = useItemsStore();
+
+  const groupedFrames = useMemo<FrameSelectOption[]>((): FrameSelectOption[] => {
+    const groups = frameGroups.map((group): FrameSelectOption[] => {
+      const groupFrames = getFramesForGroup(frames, group.id);
+      if (groupFrames.length === 0) {
+        return [];
+      }
+
+      return [
+        {
+          id: group.id,
+          name: group.name,
+          isGroup: true,
+        },
+        ...groupFrames.map(({ id, name }) => (
+          { id, name, isGroup: false }
+        )),
+      ];
+    });
+
+    return groups.flat();
+  }, [frameGroups, frames]);
 
   return (
-    <div className="frame-select">
+    <Stack
+      direction="column"
+      gap={2}
+    >
       {(
         selectLabel ? (
           <label
@@ -35,48 +73,58 @@ function FrameSelect({
           </label>
         ) : null
       )}
-      <select
-        className="frame-select__select"
-        id="frame-select-select"
+      <TextField
+        label="Frame"
+        select
+        size="small"
         value={frame}
         onChange={(ev) => {
           updateFrame(ev.target.value);
         }}
       >
-        <option value="">{noFrameOption || 'As imported / No frame'}</option>
+        <MenuItem value="">
+          {noFrameOption || 'As imported / No frame'}
+        </MenuItem>
         {
-          frames.map(({ id, name }) => (
-            <option key={id} value={id}>
-              {`${name} (${id})`}
-            </option>
+          groupedFrames.map(({ id, name, isGroup }) => (
+            isGroup ? (
+              <ListSubheader
+                key={id}
+              >
+                <ListItemIcon>
+                  <FilterNoneIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {`${name} (${id})`}
+                </ListItemText>
+              </ListSubheader>
+            ) : (
+              <MenuItem
+                key={id}
+                value={id}
+              >
+                {name}
+              </MenuItem>
+            )
           ))
         }
-      </select>
+      </TextField>
       {
         (typeof updateFrameLock === 'function') ? (
-          <label
-            className={
-              classnames('frame-select__check-label', {
-                'frame-select__check-label--checked': lockFrame,
-              })
-            }
-          >
-            <input
-              type="checkbox"
-              className="frame-select__checkbox"
-              checked={lockFrame}
-              onChange={({ target }) => {
-                updateFrameLock(target.checked);
-              }}
-            />
-            <SVG name="checkmark" />
-            <span className="frame-select__check-label-text">
-              Use separate color settings for frame
-            </span>
-          </label>
+          <FormControlLabel
+            label="Use separate color settings for frame"
+            control={(
+              <Switch
+                checked={lockFrame}
+                onChange={({ target }) => {
+                  updateFrameLock(target.checked);
+                }}
+              />
+            )}
+          />
         ) : null
       }
-    </div>
+    </Stack>
   );
 }
 

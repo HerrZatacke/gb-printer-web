@@ -1,13 +1,15 @@
 html {
   @supports (scrollbar-width: auto) {
     --scrollbar-color: #{$color-grey-30};
+    --scrollbar-track-color: #{$color-grey-20};
 
     &.theme-bright {
       --scrollbar-color: #{$color-grey-70};
+      --scrollbar-track-color: #{$color-grey-80};
     }
 
     scrollbar-gutter: stable;
-    scrollbar-color: var(--scrollbar-color) transparent;
+    scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
     scrollbar-width: thin;
   }
 }

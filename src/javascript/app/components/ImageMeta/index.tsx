@@ -1,17 +1,23 @@
-import React from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Button from '@mui/material/Button';
-import classnames from 'classnames';
-import useDateTime from '../../../hooks/useDateTime';
-import type { Rotation } from '../../../tools/applyRotation';
+import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import type { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import Stack from '@mui/material/Stack';
+import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
+import { dateFormat } from '../../defaults';
+import { Rotation } from '../../../tools/applyRotation';
 import type { ImageMetadata, RGBNHashes } from '../../../../types/Image';
-
-import './index.scss';
-
-interface RotationLabel {
-  value: Rotation,
-  label: string,
-}
+import useSettingsStore from '../../stores/settingsStore';
 
 interface Props {
   hash: string,
@@ -28,23 +34,11 @@ interface TableRow {
   value: string,
 }
 
-const rotations: RotationLabel[] = [
-  {
-    value: 0,
-    label: '0°',
-  },
-  {
-    value: 1,
-    label: '90°',
-  },
-  {
-    value: 2,
-    label: '180°',
-  },
-  {
-    value: 3,
-    label: '270°',
-  },
+const rotations: number[] = [
+  Rotation.DEG_0,
+  Rotation.DEG_90,
+  Rotation.DEG_180,
+  Rotation.DEG_270,
 ];
 
 function ImageMeta({
@@ -56,8 +50,6 @@ function ImageMeta({
   rotation,
   updateRotation,
 }: Props) {
-  const { date, time, setDate, setTime, updateDate, updateTime } = useDateTime(updateCreated, created);
-
   const tableData: ImageMetadata & { hash: string } = {
     ...meta,
     hash,
@@ -93,94 +85,90 @@ function ImageMeta({
     table.push(...channelHashes);
   }
 
+  const { preferredLocale } = useSettingsStore();
+
+  const [locale, setLocale] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    (async () => {
+      const localeImport = preferredLocale.toLowerCase();
+      try {
+        await import((`dayjs/locale/${localeImport}.js`));
+        setLocale(localeImport);
+      } catch {
+        try {
+          const fallbackLocaleImport = localeImport.split('-')[0];
+          await import((`dayjs/locale/${fallbackLocaleImport}.js`));
+          setLocale(fallbackLocaleImport);
+        } catch {
+          setLocale(undefined);
+        }
+      }
+    })();
+  }, [preferredLocale]);
+
   return (
-    <div className="image-meta-form">
-      <div className="image-meta-form__datetime">
-        <label
-          className="image-meta-form__label image-meta-form__label--date"
-        >
-          <span className="image-meta-form__label-text">
-            Edit Date
-          </span>
-          <input
-            type="date"
-            className="image-meta-form__date"
-            value={date}
-            onChange={({ target: { value } }) => {
-              setDate(value);
-            }}
-            onBlur={({ target: { value } }) => {
-              updateDate(value);
+    <Stack
+      direction="column"
+      gap={4}
+    >
+      <MuiCleanThemeProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+          <DateTimePicker
+            label="Date / Time"
+            closeOnSelect={false}
+            views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
+            value={dayjs(created)}
+            onAccept={(newDate: Dayjs | null) => {
+              if (newDate) {
+                updateCreated(newDate.format(dateFormat));
+              }
             }}
           />
-        </label>
-        <label
-          className="image-meta-form__label image-meta-form__label--time"
-        >
-          <span className="image-meta-form__label-text">
-            Edit Time
-          </span>
-          <input
-            type="time"
-            className="image-meta-form__date"
-            value={time}
-            onChange={({ target: { value } }) => {
-              setTime(value);
-            }}
-            onBlur={({ target: { value } }) => {
-              updateTime(value);
-            }}
-          />
-        </label>
-      </div>
-      <div className="image-meta-form__rotation">
-        <span className="image-meta-form__label-text">
+        </LocalizationProvider>
+      </MuiCleanThemeProvider>
+
+      <FormControl>
+        <InputLabel shrink>
           Edit Rotation
-        </span>
-        <ButtonGroup
-          variant="contained"
+        </InputLabel>
+        <ToggleButtonGroup
+          exclusive
           fullWidth
+          value={rotation || Rotation.DEG_0}
+          onChange={(_, value) => {
+            updateRotation(value as Rotation);
+          }}
         >
           {
-            rotations.map(({ value, label }) => (
-              <Button
-                key={label}
-                className={classnames('button image-meta-form__rotation-button', {
-                  'button--active': value === (rotation || 0),
-                })}
-                onClick={() => {
-                  updateRotation(value);
-                }}
+            rotations.map((value) => (
+              <ToggleButton
+                key={value}
+                value={value}
               >
-                { label }
-              </Button>
+                { `${value * 90}°` }
+              </ToggleButton>
             ))
           }
-        </ButtonGroup>
-      </div>
-      <table
-        className="image-meta-form__meta-table"
-      >
-        <tbody>
-          {
-            table.map(({ key, value }) => (
-              <tr key={key}>
-                <td
-                  className="image-meta-form__meta-cell image-meta-form__meta-cell--key"
-                >
-                  { key }
-                </td>
-                <td
-                  className="image-meta-form__meta-cell image-meta-form__meta-cell--value"
-                >
-                  { value }
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+        </ToggleButtonGroup>
+      </FormControl>
+
+      <TableContainer>
+        <Table
+          padding="none"
+          sx={{ fontFamily: 'monospace' }}
+        >
+          <TableBody>
+            {table.map(({ key, value }) => (
+              <TableRow key={key}>
+                <TableCell component="th" scope="row">{key}</TableCell>
+                <TableCell align="right">{value}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Stack>
   );
 }
 

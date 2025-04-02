@@ -38,15 +38,10 @@ function APConfig(props: Props) {
           <TextField
             id={`${props.id}-settings-ap-ssid`}
             label="Network SSID"
-            fullWidth
-            size="small"
             type="text"
             value={props.ssid}
             slotProps={{
               ...textFieldSlotDefaults,
-              inputLabel: {
-                shrink: true,
-              },
               input: {
                 endAdornment: (
                   <IconButton
@@ -74,14 +69,9 @@ function APConfig(props: Props) {
           <TextField
             id={`${props.id}-settings-ap-psk`}
             label="Network Password"
-            fullWidth
-            size="small"
             type={type}
             slotProps={{
               ...textFieldSlotDefaults,
-              inputLabel: {
-                shrink: true,
-              },
               input: {
                 endAdornment: button,
               },

@@ -5,4 +5,9 @@ export const textFieldSlotDefaults = {
     autoCapitalize: 'off',
     spellCheck: false,
   },
+  inputLabel: {
+    shrink: true,
+  },
+  fullWidth: true,
+  size: 'small',
 };

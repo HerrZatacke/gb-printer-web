@@ -37,14 +37,9 @@ function PluginSettings() {
           </Link>
         )}
         type="text"
-        fullWidth
-        size="small"
         disabled={addBusy}
         value={pluginUrl}
         slotProps={{
-          inputLabel: {
-            shrink: true,
-          },
           input: {
             endAdornment: (
               <IconButton

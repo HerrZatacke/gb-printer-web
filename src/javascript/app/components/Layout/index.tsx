@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import type { CSSPropertiesVars } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { ThemeProvider } from '@mui/material/styles';
 import { Outlet, Navigate, useMatches } from 'react-router';
 import Navigation from '../Navigation';
 import Overlays from '../Overlays';

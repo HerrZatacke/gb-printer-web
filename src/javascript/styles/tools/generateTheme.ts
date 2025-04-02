@@ -1,6 +1,7 @@
 import { createTheme, lighten } from '@mui/material';
-import { blend } from '@mui/system/colorManipulator/colorManipulator';
+import { blend } from '@mui/system';
 import type { Components, PaletteMode, Theme } from '@mui/material';
+import { textFieldSlotDefaults } from '../../consts/textFieldSlotDefaults';
 import { muiButton } from '../components/button';
 import { toggleButtonGroup } from '../components/toggleButtonGroup';
 import { outlinedInput } from '../components/outlinedInput';
@@ -13,6 +14,10 @@ import { appBar } from '../components/appBar';
 import { toolbar } from '../components/toolbar';
 import { link } from '../components/link';
 import { dialogTitle } from '../components/dialogTitle';
+import { dialogContent } from '../components/dialogContent';
+import { tabs } from '../components/tabs';
+import { select } from '../components/select';
+import { list } from '../components/list';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -48,6 +53,9 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   MuiTab: {
     styleOverrides: tab(theme),
   },
+  MuiTabs: {
+    styleOverrides: tabs(theme),
+  },
   MuiInputLabel: {
     styleOverrides: inputLabel(),
   },
@@ -69,6 +77,9 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   MuiDialogTitle: {
     styleOverrides: dialogTitle(theme),
   },
+  MuiDialogContent: {
+    styleOverrides: dialogContent(),
+  },
   MuiSwitch: {
     defaultProps: {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -81,7 +92,17 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       color: 'tertiary',
+      slotProps: textFieldSlotDefaults,
     },
+  },
+  MuiSelect: {
+    styleOverrides: select(),
+    defaultProps: {
+      displayEmpty: true,
+    },
+  },
+  MuiList: {
+    styleOverrides: list(),
   },
 });
 

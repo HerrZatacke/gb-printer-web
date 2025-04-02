@@ -75,6 +75,7 @@ interface UseEditForm {
   updateForm: (what: keyof Batch) => (value: string | boolean | Rotation) => void,
   updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void,
   updateTags: (mode: TagUpdateMode, tag: string) => void,
+  resetTags: () => void,
   updateFramePalette: (paletteUpdate: string, confirm?: boolean) => void,
 
   save: () => void;
@@ -270,12 +271,16 @@ export const useEditForm = (): UseEditForm => {
   };
 
   const updatePalette = (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => {
+    if (!paletteUpdate) {
+      return;
+    }
+
     if (confirm) {
       updateShouldUpdate({ ...shouldUpdate, palette: true });
     }
 
-    if (paletteShort) {
-      updatePaletteShort(paletteUpdate as string);
+    if (typeof paletteUpdate === 'string') {
+      updatePaletteShort(paletteUpdate);
     } else {
       updatePaletteRGBN(paletteUpdate as RGBNPalette);
     }
@@ -297,6 +302,15 @@ export const useEditForm = (): UseEditForm => {
     });
   };
 
+  const resetTags = () => {
+    updateShouldUpdate({ ...shouldUpdate, tags: false });
+    updateTagChanges(({ initial }) => ({
+      initial,
+      add: [],
+      remove: [],
+    }));
+  };
+
   return {
     toEdit,
     form,
@@ -311,6 +325,7 @@ export const useEditForm = (): UseEditForm => {
     updatePalette,
     updateFramePalette,
     updateTags,
+    resetTags,
 
     save: () => {
       batchUpdateImages({

@@ -152,15 +152,7 @@ function WiFiSettings() {
               <TextField
                 id="settings-mdns"
                 label="mDNS Name (Bonjour/Avahi)"
-                fullWidth
-                size="small"
                 type="text"
-                slotProps={{
-                  ...textFieldSlotDefaults,
-                  inputLabel: {
-                    shrink: true,
-                  },
-                }}
                 disabled={disabled}
                 value={wifiConfig.mdns || ''}
                 onChange={(ev) => {
@@ -176,15 +168,7 @@ function WiFiSettings() {
               <TextField
                 id="settings-ap-ssid"
                 label="Accesspoint SSID"
-                fullWidth
-                size="small"
                 type="text"
-                slotProps={{
-                  ...textFieldSlotDefaults,
-                  inputLabel: {
-                    shrink: true,
-                  },
-                }}
                 disabled={disabled}
                 value={wifiConfig.ap.ssid || ''}
                 onChange={(ev) => {
@@ -203,14 +187,9 @@ function WiFiSettings() {
               <TextField
                 id="settings-ap-psk"
                 label="Accesspoint Password"
-                fullWidth
-                size="small"
                 type={type}
                 slotProps={{
                   ...textFieldSlotDefaults,
-                  inputLabel: {
-                    shrink: true,
-                  },
                   input: {
                     endAdornment: button,
                   },

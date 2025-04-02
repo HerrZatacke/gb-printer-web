@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import { useDebouncedCallback } from 'use-debounce';
 import type { BlendMode, RGBNPalette } from 'gb-image-decoder';
 import { blendModeLabels } from '../../../consts/blendModes';
 import ColorSlider from '../ColorSlider';
 import type { RGBNHashes } from '../../../../types/Image';
-
-import './index.scss';
 
 interface Props {
   values: RGBNPalette,
@@ -41,46 +42,51 @@ function GreySelect(props: Props) {
 
 
   return (
-    <div className="grey-select">
+    <Stack
+      direction="column"
+      gap={3}
+    >
       {
         usedChannels
           .map((color) => (
-            [
-              color === 'n' ? (
-                <select
-                  key="blendmode"
-                  className="grey-select__select"
+            <Stack
+              key={`slider-${color}`}
+              direction="column"
+              gap={0}
+            >
+              {color === 'n' ? (
+                <TextField
                   value={values.blend}
+                  label="Neutral Layer Blendmode"
+                  select
+                  size="small"
                   onChange={(ev) => {
                     change('blend', ev.target.value as BlendMode);
                   }}
                 >
                   {
                     blendModeLabels.map(({ id, label }) => (
-                      <option
+                      <MenuItem
                         key={id}
                         value={id}
                       >
                         {label}
-                      </option>
+                      </MenuItem>
                     ))
                   }
-                </select>
-              ) : null,
-              (
-                <ColorSlider
-                  key={`slider-${color}`}
-                  color={color as keyof RGBNHashes}
-                  values={values[color] as number[]}
-                  onChange={(valueChange) => {
-                    change(color, valueChange);
-                  }}
-                />
-              ),
-            ]
-          ).flat().filter(Boolean))
+                </TextField>
+              ) : null}
+              <ColorSlider
+                color={color as keyof RGBNHashes}
+                values={values[color] as number[]}
+                onChange={(valueChange) => {
+                  change(color, valueChange);
+                }}
+              />
+            </Stack>
+          ))
       }
-    </div>
+    </Stack>
   );
 }
 

@@ -17,7 +17,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import SyncIcon from '@mui/icons-material/Sync';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import UsbIcon from '@mui/icons-material/Usb';
 import { NavLink, useLocation } from 'react-router';
@@ -113,7 +113,7 @@ function Navigation() {
       {
         title: 'Trash',
         icon: <DeleteIcon />,
-        badgeContent: trashCountSum > 0 ? trashCountSum.toString(16) : null,
+        badgeContent: trashCountSum > 0 ? trashCountSum.toString(10) : null,
         disabled: false,
         onClick: () => showTrashCount(true),
       },

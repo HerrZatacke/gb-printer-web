@@ -64,8 +64,6 @@ function Import() {
           id="import-plaintext"
           label="Enter data received through your serial monitor"
           multiline
-          fullWidth
-          size="small"
           rows={20}
           value={text}
           onChange={({ target }) => {

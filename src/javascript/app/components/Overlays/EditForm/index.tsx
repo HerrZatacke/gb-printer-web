@@ -11,7 +11,6 @@ import ImageRender from '../../ImageRender';
 import EditImageTabs from '../../EditImageTabs';
 import Lightbox from '../../Lightbox';
 import { useEditForm } from './useEditForm';
-import { textFieldSlotDefaults } from '../../../../consts/textFieldSlotDefaults';
 
 function EditForm() {
   const {
@@ -26,6 +25,7 @@ function EditForm() {
     updatePalette,
     updateFramePalette,
     updateTags,
+    resetTags,
     save,
     cancel,
   } = useEditForm();
@@ -115,15 +115,7 @@ function EditForm() {
           helperText={toEdit.imageCount > 1 ? 'Use %n (or %nn, %nnn, ...) to add an index to the image titles' : undefined}
           type="text"
           label="Edit title"
-          fullWidth
-          size="small"
           value={title}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-            ...textFieldSlotDefaults,
-          }}
           onChange={({ target: { value } }) => {
             updateForm('title')(value);
           }}
@@ -153,6 +145,7 @@ function EditForm() {
           updateFrameLock={updateForm('lockFrame')}
           updateRotation={updateForm('rotation')}
           updateTags={updateTags}
+          resetTags={resetTags}
         />
       </Stack>
     </Lightbox>

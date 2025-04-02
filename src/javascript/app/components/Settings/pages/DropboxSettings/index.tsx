@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import cleanPath from '../../../../../tools/cleanPath';
 import { useDropboxSettings } from './useDropboxSettings';
-import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
 
 function DropboxSettings() {
   const {
@@ -59,15 +58,7 @@ function DropboxSettings() {
                 </Link>
               )}
               type="text"
-              fullWidth
-              size="small"
               value={path}
-              slotProps={{
-                inputLabel: {
-                  shrink: true,
-                },
-                ...textFieldSlotDefaults,
-              }}
               onChange={(ev) => {
                 setPath(ev.target.value);
               }}

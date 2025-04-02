@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { ConfigParamType } from '../../../../../../types/Plugin';
-import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
 
 const inputValueFromType = (type: ConfigParamType, value: string): string | number => {
   switch (type) {
@@ -45,17 +44,9 @@ function PluginInputField({ id, label, type, value, onChange }: Props) {
     <TextField
       id={id}
       label={label}
-      fullWidth
-      size="small"
       type="text"
       multiline={type === ConfigParamType.MULTILINE}
       value={fieldValue}
-      slotProps={{
-        inputLabel: {
-          shrink: true,
-        },
-        ...textFieldSlotDefaults,
-      }}
       onChange={(ev) => {
         setFieldValue(ev.target.value);
       }}
