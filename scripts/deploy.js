@@ -5,7 +5,7 @@ import rimraf from 'rimraf';
 import mkdirp from 'mkdirp';
 import copyAndGZ from './copyAndGZ.js';
 import conf from '../config.json' assert { type: 'json' };
-import config from './webpack.prod.js';
+import config from './webpack.prod.mjs';
 
 const { output: { path: outputPath } } = config;
 
