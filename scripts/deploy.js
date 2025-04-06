@@ -7,7 +7,7 @@ import copyAndGZ from './copyAndGZ.js';
 import conf from '../config.json' assert { type: 'json' };
 import config from './webpack.prod.mjs';
 
-const { output: { path: outputPath } } = config;
+const { output: { path: outputPath } } = await config();
 
 if (!conf || !conf.deploy || !conf.deploy.dir) {
   process.exit(0);
