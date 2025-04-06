@@ -1,9 +1,9 @@
 {
   "name": "gb-printer-web",
-  "version": "1.44.13",
+  "version": "1.44.1",
   "description": "gb-printer-web",
   "scripts": {
-    "start": "webpack serve --config ./scripts/webpack.dev.js",
+    "start": "webpack serve --config ./scripts/webpack.dev.mjs",
     "lint": "npm run lint:tsc && npm run lint:eslint",
     "lint:tsc": "tsc --noemit",
     "lint:eslint": "eslint -c .eslintrc --ext .js,.jsx,.ts,.tsx .",
@@ -11,7 +11,7 @@
     "host": "npm run build && node ./scripts/host.js",
     "build": "npm run build:clean && npm run build:webpack && npm run build:validate && npm run build:deploy",
     "build:clean": "rimraf dist/*",
-    "build:webpack": "webpack --config ./scripts/webpack.prod.js",
+    "build:webpack": "webpack --config ./scripts/webpack.prod.mjs",
     "build:validate": "node ./scripts/validatebuild.js",
     "build:deploy": "node ./scripts/deploy.js",
     "svgo": "svgo ./src/assets/icons/",
