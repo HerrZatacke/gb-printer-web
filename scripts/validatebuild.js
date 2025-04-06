@@ -3,7 +3,7 @@ import walkdir from 'walkdir';
 import chalk from 'chalk';
 import webpackConfig from './webpack.prod.mjs';
 
-const { output: { path: outputPath } } = webpackConfig;
+const { output: { path: outputPath } } = await webpackConfig();
 
 walkdir(outputPath, (filePath) => {
 
