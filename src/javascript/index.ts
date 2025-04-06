@@ -3,14 +3,11 @@ import isTouchDevice from './tools/isTouchDevice';
 import { loadEnv } from './tools/getEnv';
 import initLog from './tools/initLog';
 import { initLightbox } from './tools/initLightbox';
+import { migrateTheme } from './app/stores/migrations/history/0/migrateTheme';
 
 document.addEventListener('DOMContentLoaded', async () => {
-
   // set the theme class as quick as possible
-  const theme = localStorage.getItem('gbp-web-theme');
-  if (theme) {
-    document.querySelector('html')?.classList.add(theme);
-  }
+  document.querySelector('html')?.classList.add(migrateTheme());
 
   if (isTouchDevice()) {
     document.querySelector('body')?.classList.add('is-touch');

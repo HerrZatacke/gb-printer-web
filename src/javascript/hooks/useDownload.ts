@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 import useItemsStore from '../app/stores/itemsStore';
 import useSettingsStore from '../app/stores/settingsStore';
-import { getPrepareFiles } from '../tools/download';
-import download from '../tools/download/download';
+import { getPrepareFiles, download } from '../tools/download';
 import generateFileName from '../tools/generateFileName';
 import { loadImageTiles } from '../tools/loadImageTiles';
 import { getImagePalettes } from '../tools/getImagePalettes';
