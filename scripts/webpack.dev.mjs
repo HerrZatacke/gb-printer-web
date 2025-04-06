@@ -5,7 +5,7 @@ import ESLintPlugin from 'eslint-webpack-plugin';
 import setupServer from './setupServer.js';
 import common from './webpack.common.js';
 
-const config = merge(await common(), {
+const config = async () => merge(await common(), {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   devServer: {

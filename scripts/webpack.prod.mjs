@@ -5,7 +5,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import common from './webpack.common.js';
 
-const config = merge(await common(), {
+const config = async () => merge(await common(), {
   mode: 'production',
   devtool: false,
   stats: 'errors-warnings',
