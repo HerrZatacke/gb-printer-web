@@ -11,6 +11,8 @@ import type { Rotation } from '../../../../tools/applyRotation';
 import type { Palette } from '../../../../../types/Palette';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';
+import { getImagePalettes } from '../../../../tools/getImagePalettes';
+import { getPaletteSettings } from '../../../../tools/getPaletteSettings';
 import { missingGreyPalette } from '../../../defaults';
 
 interface LightboxImageData {
@@ -44,22 +46,29 @@ interface UseLightboxImage {
 
 const toLightBoxImage = (image: Image, palettes: Palette[]): LightboxImageData | null => {
   let palette: RGBNPalette | string[];
+  let framePalette: string[] = [];
 
   if (!image?.hash) {
     return null;
   }
 
-  if (isRGBNImage(image)) {
-    palette = (image as RGBNImage).palette;
-  } else {
-    palette = (palettes.find(({ shortName }) => (
-      shortName === (image as MonochromeImage).palette
-    )) || missingGreyPalette).palette;
+  const {
+    palette: selectedPalette,
+    framePalette: selectedFramePalette,
+  } = getImagePalettes(palettes, image);
+
+  if (!selectedPalette) {
+    throw new Error('Palette missing?');
   }
 
-  const framePalette = (palettes.find(({ shortName }) => (
-    shortName === (image as MonochromeImage).framePalette
-  )) || missingGreyPalette).palette;
+  const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
+
+  if (isRGBNImage(image)) {
+    palette = selectedPalette as RGBNPalette;
+  } else {
+    palette = ((selectedPalette || missingGreyPalette) as Palette).palette;
+    framePalette = (selectedFramePalette || missingGreyPalette).palette;
+  }
 
   return ({
     title: image?.title || '',
@@ -71,8 +80,8 @@ const toLightBoxImage = (image: Image, palettes: Palette[]): LightboxImageData |
     palette,
     framePalette,
     lockFrame: image.lockFrame,
-    invertPalette: (image as MonochromeImage).invertPalette,
-    invertFramePalette: (image as MonochromeImage).invertFramePalette,
+    invertPalette,
+    invertFramePalette,
     rotation: image.rotation,
   });
 };
