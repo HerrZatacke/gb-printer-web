@@ -19,6 +19,7 @@ import type { Palette } from '../../../types/Palette';
 import unique from '../unique';
 import { loadFrameData } from '../applyFrame/frameData';
 import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
+import { getPaletteSettings } from '../getPaletteSettings';
 
 interface GifFrameData {
   palette: number[],
@@ -170,14 +171,14 @@ export const createAnimation = async () => {
       decoder = new Decoder();
       const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
       const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
-      const invertPalette = videoInvertPalette || (image as MonochromeImage).invertPalette || false;
-      const invertFramePalette = videoInvertPalette || (image as MonochromeImage).invertFramePalette || false;
+
+      const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
 
       const updateParams = getDecoderUpdateParams({
         palette: pal,
-        invertPalette,
+        invertPalette: videoInvertPalette || invertPalette,
         framePalette: lockFrame ? framePal : pal,
-        invertFramePalette: lockFrame ? invertFramePalette : invertPalette,
+        invertFramePalette: videoInvertPalette || invertFramePalette,
       });
 
       decoder.update({
