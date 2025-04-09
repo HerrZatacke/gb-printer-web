@@ -54,7 +54,7 @@ export const useGalleryImageButtons = (
 
   const { setLightboxImage } = useInteractionsStore();
   const { plugins, updateImageFavouriteTag } = useItemsStore();
-  const { view } = useGalleryTreeContext();
+  const { view, covers } = useGalleryTreeContext();
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { updateLastSyncLocalNow, deleteImages } = useStores();
@@ -88,6 +88,7 @@ export const useGalleryImageButtons = (
           view.images,
           { filtersActiveTags, sortBy, recentImports },
         )
+          .filter((image) => !covers.includes(image.hash))
           .findIndex((image) => hash === image.hash),
       );
     },
