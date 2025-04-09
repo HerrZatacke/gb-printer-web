@@ -8,10 +8,13 @@ import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { missingGreyPalette } from '../../defaults';
 import { SpecialTags } from '../../../consts/SpecialTags';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
+import { getImagePalettes } from '../../../tools/getImagePalettes';
+import { getPaletteSettings } from '../../../tools/getPaletteSettings';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
+import type { Palette } from '../../../../types/Palette';
 
 export enum SelectionEditMode {
   ADD = 'add',
@@ -71,22 +74,30 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
   const galleryImageData = useMemo((): GalleryImageData | undefined => {
     const image = stateImages.find((img) => img.hash === hash);
     let palette: RGBNPalette | string[];
+    let framePalette: string[] = [];
 
     if (!image) {
       return undefined;
     }
 
-    if (isRGBNImage(image)) {
-      palette = (image as RGBNImage).palette;
-    } else {
-      palette = (palettes.find(({ shortName }) => (
-        shortName === (image as MonochromeImage).palette
-      )) || missingGreyPalette).palette;
+    const {
+      palette: selectedPalette,
+      framePalette: selectedFramePalette,
+    } = getImagePalettes(palettes, image);
+
+    const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
+
+    if (!selectedPalette) {
+      throw new Error('Palette missing?');
     }
 
-    const framePalette = (palettes.find(({ shortName }) => (
-      shortName === (image as MonochromeImage).framePalette
-    )) || missingGreyPalette).palette;
+    if (isRGBNImage(image)) {
+      palette = selectedPalette as RGBNPalette;
+    } else {
+      palette = ((selectedPalette || missingGreyPalette) as Palette).palette;
+      framePalette = (selectedFramePalette || missingGreyPalette).palette;
+    }
+
 
     return ({
       title: image.title,
@@ -98,8 +109,8 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       palette,
       framePalette,
       lockFrame: image.lockFrame,
-      invertPalette: (image as MonochromeImage).invertPalette,
-      invertFramePalette: (image as MonochromeImage).invertFramePalette,
+      invertPalette,
+      invertFramePalette,
       hideDate: hideDates,
       meta: image.meta,
       rotation: image.rotation,

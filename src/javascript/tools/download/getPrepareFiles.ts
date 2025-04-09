@@ -9,6 +9,7 @@ import { isRGBNImage } from '../isRGBNImage';
 import type { DownloadInfo } from '../../../types/Sync';
 import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
 import { getImagePalettes } from '../getImagePalettes';
+import { getPaletteSettings } from '../getPaletteSettings';
 import type { FileNameStyle } from '../../consts/fileNameStyles';
 
 const getPrepareFiles =
@@ -46,15 +47,11 @@ const getPrepareFiles =
       });
     } else {
       decoder = new Decoder();
-      const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
-      const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
-      const invertPalette = (image as MonochromeImage).invertPalette || false;
-      const imageInvertFramePalette: boolean | undefined = (image as MonochromeImage).invertFramePalette;
-      const invertFramePalette = typeof imageInvertFramePalette === 'undefined' ? invertPalette : imageInvertFramePalette;
+      const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
 
       const updateParams = getDecoderUpdateParams({
-        palette: pal,
-        framePalette: framePal,
+        palette: (palette as Palette)?.palette || BW_PALETTE_HEX,
+        framePalette: (framePalette as Palette)?.palette || BW_PALETTE_HEX,
         invertPalette,
         invertFramePalette,
       });
