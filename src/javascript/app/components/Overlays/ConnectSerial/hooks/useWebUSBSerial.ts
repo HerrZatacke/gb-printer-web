@@ -10,6 +10,7 @@ interface UseWebUSBSerial {
   isReceiving: boolean,
 }
 
+// ToDo: make this a <context> and remove "passive" option
 const useWebUSBSerial = (passive: boolean): UseWebUSBSerial => {
   const webUSBEnabled = WebUSBSerial.enabled;
 
