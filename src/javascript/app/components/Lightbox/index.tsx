@@ -26,6 +26,7 @@ interface Props {
   deny?: () => void,
   canConfirm?: boolean,
   closeOnOverlayClick?: boolean,
+  actionButtons?: React.ReactNode,
 }
 
 const contentDimensions = (
@@ -73,6 +74,7 @@ function Lightbox({
   canConfirm,
   open: openProp,
   closeOnOverlayClick: closeOnClick,
+  actionButtons,
 }: Props) {
   const closeOnOverlayClick = typeof closeOnClick !== 'boolean' ? true : closeOnClick;
   const open = typeof openProp !== 'boolean' ? true : openProp;
@@ -124,6 +126,7 @@ function Lightbox({
         {children}
       </DialogContent>
       <DialogActions>
+        { actionButtons }
         { deny ? (
           <Button
             onClick={deny}

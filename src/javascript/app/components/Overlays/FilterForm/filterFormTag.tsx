@@ -1,34 +1,24 @@
 import React from 'react';
-import classnames from 'classnames';
-import SVG from '../../SVG';
+import Chip from '@mui/material/Chip';
 import { ActiveTagUpdateMode } from './useFilterForm';
 
 interface Props {
   title: string,
   tagActive: boolean,
   toggleTag: (mode: ActiveTagUpdateMode) => void,
-  icon?: string,
 }
 
-function FilterFormTag({ tagActive, toggleTag, title, icon }: Props) {
+function FilterFormTag({ tagActive, toggleTag, title }: Props) {
   return (
-    <li
-      title={title}
-      className={
-        classnames('filter-form__tag', {
-          'filter-form__tag--active': tagActive,
-        })
-      }
-    >
-      <button
-        className="filter-form__tag-button"
-        type="button"
-        onClick={() => toggleTag(tagActive ? ActiveTagUpdateMode.REMOVE : ActiveTagUpdateMode.ADD)}
-      >
-        <SVG name={icon || 'checkmark'} />
-        <span className="filter-form__tag-text">{title}</span>
-      </button>
-    </li>
+    <Chip
+      label={title}
+      title={`${tagActive ? 'Remove' : 'Select'} "${title}"-tag`}
+      size="small"
+      onClick={() => toggleTag(tagActive ? ActiveTagUpdateMode.REMOVE : ActiveTagUpdateMode.ADD)}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      color={tagActive ? 'tertiary' : 'default'}
+    />
   );
 }
 

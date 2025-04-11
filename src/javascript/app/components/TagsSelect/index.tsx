@@ -40,7 +40,6 @@ function TagsSelect({
           gap={1}
           flexWrap="wrap"
           alignItems="center"
-          component="ul"
           sx={{
             '.MuiChip-root': {
               my: '1px', // IconButton for reset function is 2px higher than chip.
