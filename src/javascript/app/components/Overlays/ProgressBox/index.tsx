@@ -1,5 +1,5 @@
 import React from 'react';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import { useProgressBox } from './useProgressBox';
 
 import './index.scss';
@@ -9,7 +9,7 @@ function ProgressBox() {
 
   return (
     progress ? (
-      <Lightbox
+      <OldLightbox
         className="progress-box"
       >
         <div className="progress-box__message">
@@ -20,7 +20,7 @@ function ProgressBox() {
           value={progress}
           max={1}
         />
-      </Lightbox>
+      </OldLightbox>
     ) : null
   );
 }

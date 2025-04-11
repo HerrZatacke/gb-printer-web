@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import Input, { InputType } from '../../Input';
 import ImageRender from '../../ImageRender';
 
@@ -29,7 +29,7 @@ function EditPalette() {
   }
 
   return (
-    <Lightbox
+    <OldLightbox
       className="edit-palette"
       confirm={save}
       canConfirm={canConfirm}
@@ -95,7 +95,7 @@ function EditPalette() {
           ))
         }
       </div>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

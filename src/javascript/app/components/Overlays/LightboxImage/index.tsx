@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { dateFormat } from '../../../defaults';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 import SVG from '../../SVG';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import ImageRender from '../../ImageRender';
 import { useLightboxImage } from './useLightboxImage';
 import type { RGBNImage } from '../../../../../types/Image';
@@ -26,7 +26,7 @@ function LightboxImage() {
   } = useLightboxImage();
 
   return (
-    <Lightbox
+    <OldLightbox
       className="lightbox-image"
       deny={close}
     >
@@ -94,7 +94,7 @@ function LightboxImage() {
       <div className="lightbox-image__created">
         {dateFormatLocale(dayjs(image?.created, dateFormat), preferredLocale)}
       </div>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

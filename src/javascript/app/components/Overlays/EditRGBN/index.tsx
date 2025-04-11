@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import { RGBGrouping, useEditRGBNImages } from './useEditRGBNImages';
 import SVG from '../../SVG';
 import Select from './Select';
@@ -61,7 +61,7 @@ function EditRGBN() {
   } = useEditRGBNImages();
 
   return (
-    <Lightbox
+    <OldLightbox
       className="edit-rgbn"
       confirm={save}
       deny={cancelEditRGBNImages}
@@ -216,7 +216,7 @@ function EditRGBN() {
           </span>
         </label>
       </div>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

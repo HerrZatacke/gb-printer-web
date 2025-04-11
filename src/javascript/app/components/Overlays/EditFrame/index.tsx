@@ -1,5 +1,5 @@
 import React from 'react';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import './index.scss';
 import useEditFrame from './useEditFrame';
 import EditFrameForm from './EditFrameForm';
@@ -33,7 +33,7 @@ const EditFrame = () => {
   const updateHead = updateId !== fullId ? ` -> "${fullId}"` : '';
 
   return (
-    <Lightbox
+    <OldLightbox
       className="edit-frame"
       confirm={saveFrame}
       canConfirm={formValid}
@@ -61,7 +61,7 @@ const EditFrame = () => {
           <p>{ `A frame with the ID '${editFrame}' does not exist!` }</p>
         ) }
       </div>
-    </Lightbox>
+    </OldLightbox>
   );
 };
 

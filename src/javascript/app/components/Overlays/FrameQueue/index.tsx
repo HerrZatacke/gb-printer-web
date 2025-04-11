@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import './index.scss';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../EditFrame/useEditFrame';
@@ -40,7 +40,7 @@ function FrameQueue() {
   });
 
   return (
-    <Lightbox
+    <OldLightbox
       className="import-overlay"
       header={`Import new Frame as "${fullId}"`}
       canConfirm={formValid}
@@ -94,7 +94,7 @@ function FrameQueue() {
           setFrameGroupName={setNewGroupName}
         />
       </div>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

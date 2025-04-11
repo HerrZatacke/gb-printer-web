@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
 import useItemsStore from '../../../stores/itemsStore';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 import { toHexColor } from '../../../../hooks/usePaletteFromFile';
 import ImageRender from '../../ImageRender';
@@ -73,7 +73,7 @@ function PickColors() {
   };
 
   return (
-    <Lightbox
+    <OldLightbox
       className="pick-colors"
       confirm={() => {
         setEditPalette({
@@ -148,7 +148,7 @@ function PickColors() {
           ))}
         </div>
       </>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

@@ -1,8 +1,7 @@
-// @ ts-nocheck
 import React from 'react';
 import classnames from 'classnames';
 import type { ExportFrameMode } from 'gb-image-decoder';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import SVG from '../../SVG';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
@@ -27,7 +26,7 @@ function VideoParamsForm() {
   }
 
   return (
-    <Lightbox
+    <OldLightbox
       className="video-params"
       confirm={animate}
       deny={cancel}
@@ -145,7 +144,7 @@ function VideoParamsForm() {
           />
         </>
       )}
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

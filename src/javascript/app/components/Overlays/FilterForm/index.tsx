@@ -26,7 +26,6 @@ function FilterForm() {
 
   return (
     <Lightbox
-      className="filter-form"
       confirm={confirm}
       deny={cancel}
       header="Select Filters"

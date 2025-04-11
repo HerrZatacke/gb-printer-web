@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import useWebUSBSerial from './hooks/useWebUSBSerial';
 import useWebSerial from './hooks/useWebSerial';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import useWithStore from './hooks/useWithStore';
 
 import './index.scss';
@@ -88,14 +88,14 @@ function ConnectSerial({ inline, passive }: Props) {
   const showOverlay = lightBoxOpen || usbSerialIsReceiving || webSerialIsReceiving;
 
   return !showOverlay ? null : (
-    <Lightbox
+    <OldLightbox
       header="WebUSB / Serial devices"
       confirm={hideSerials}
       canConfirm={!usbSerialIsReceiving && !webSerialIsReceiving}
       className="connect-usb-serial-overlay"
     >
       {content}
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

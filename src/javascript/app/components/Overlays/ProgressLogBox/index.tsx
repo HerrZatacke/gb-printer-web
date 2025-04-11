@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 
 import './index.scss';
 import { useProgress } from './useProgress';
@@ -58,7 +58,7 @@ function ProgressLogBox() {
   ));
 
   return (
-    <Lightbox
+    <OldLightbox
       className="progress-log"
       header={`${finished ? '✔️ Update done' : '⏳ Updating...'} ${isGit ? ` - "${repo}/${branch}"` : ''}`}
       confirm={finished ? confirm : undefined}
@@ -121,7 +121,7 @@ function ProgressLogBox() {
           </>
         ) : null}
       </div>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

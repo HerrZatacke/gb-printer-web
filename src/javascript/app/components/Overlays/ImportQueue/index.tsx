@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
@@ -28,7 +28,7 @@ function ImportQueue() {
   } = useRunImport();
 
   return (
-    <Lightbox
+    <OldLightbox
       className="import-overlay"
       header={`Image Import (${importQueue.length} images)`}
       confirm={runImport}
@@ -100,7 +100,7 @@ function ImportQueue() {
           </span>
         </label>
       </div>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

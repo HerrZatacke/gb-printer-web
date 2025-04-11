@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 
 import './index.scss';
 import { useSortForm } from './useSortForm';
@@ -45,7 +45,7 @@ function SortForm() {
   const currentOrderLabel = sortOrder === SortDirection.ASC ? 'ascending' : 'descending';
 
   return (
-    <Lightbox
+    <OldLightbox
       className="sort-form"
       confirm={() => sortForm.setSortBy(`${sortBy}_${sortOrder}`)}
       deny={() => {
@@ -103,7 +103,7 @@ function SortForm() {
           </button>
         </li>
       </ul>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

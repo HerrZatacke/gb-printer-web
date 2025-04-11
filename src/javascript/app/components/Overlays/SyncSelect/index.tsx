@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import SVG from '../../SVG';
 import { useSyncSelect } from './useSyncSelect';
 
@@ -20,7 +20,7 @@ function SyncSelect() {
   const showSyncHints = autoDropboxSync && (syncLastUpdate.local !== syncLastUpdate.dropbox);
 
   return (
-    <Lightbox
+    <OldLightbox
       className="sync-select"
       deny={cancelSync}
       header="Synchronize"
@@ -136,7 +136,7 @@ function SyncSelect() {
           </>
         )}
       </ul>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

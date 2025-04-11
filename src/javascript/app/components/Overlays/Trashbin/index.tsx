@@ -1,5 +1,5 @@
 import React from 'react';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import useTrashbin from '../../../../hooks/useTrashbin';
 import './index.scss';
 
@@ -15,7 +15,7 @@ function Trashbin() {
   const sum = trashCount.frames + trashCount.images;
 
   return (
-    <Lightbox
+    <OldLightbox
       className="trashbin"
       confirm={() => {
         showTrashCount(false);
@@ -63,7 +63,7 @@ function Trashbin() {
           </button>
         </li>
       </ul>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 

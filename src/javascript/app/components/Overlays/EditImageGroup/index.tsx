@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import Lightbox from '../../Lightbox';
+import OldLightbox from '../../Lightbox';
 import useEditImageGroup, { NEW_GROUP } from './useEditImageGroup';
 import Input, { InputType } from '../../Input';
 import Select from '../EditRGBN/Select';
@@ -30,7 +30,7 @@ function EditImageGroup() {
   } = useEditImageGroup();
 
   return (
-    <Lightbox
+    <OldLightbox
       className="edit-image-group"
       confirm={confirm}
       canConfirm={canConfirm}
@@ -96,7 +96,7 @@ function EditImageGroup() {
           <p>{ `A group with the ID '${editId}' does not exist!` }</p>
         ) }
       </div>
-    </Lightbox>
+    </OldLightbox>
   );
 }
 
