@@ -167,7 +167,6 @@ function GenericSettings() {
         value={handleExportFrame}
         label="How to handle frames when exporting images"
         select
-        size="small"
         onChange={(ev) => {
           setHandleExportFrame(ev.target.value as ExportFrameMode);
         }}
@@ -189,7 +188,6 @@ function GenericSettings() {
         value={fileNameStyle}
         label="Filename style"
         select
-        size="small"
         onChange={(ev) => {
           setFileNameStyle(ev.target.value as FileNameStyle);
         }}
@@ -212,7 +210,6 @@ function GenericSettings() {
         disabled={!savFrameGroups.length}
         label="Frames to be applied when importing Cartridge dumps"
         select
-        size="small"
         slotProps={{
           inputLabel: {
             shrink: true,
@@ -308,7 +305,6 @@ function GenericSettings() {
         value={sortPalettes}
         label="Sort Palettes"
         select
-        size="small"
         onChange={(ev) => {
           setSortPalettes(ev.target.value as PaletteSortMode);
         }}
@@ -332,7 +328,6 @@ function GenericSettings() {
         label="Preferred locale"
         helperText={`Example date format: ${dateFormatLocale(now, preferredLocale)}`}
         select
-        size="small"
         onChange={(ev) => {
           setPreferredLocale(ev.target.value);
         }}

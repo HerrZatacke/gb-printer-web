@@ -59,6 +59,7 @@ function PaletteSelect({
       <TextField
         value={value}
         label="Palette"
+        size="small"
         select
         onChange={(ev) => {
           onChange(ev.target.value, true);
