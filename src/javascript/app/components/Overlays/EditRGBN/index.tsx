@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import Lightbox from '../../Lightbox';
 import { RGBGrouping, useEditRGBNImages } from './useEditRGBNImages';
 import SVG from '../../SVG';
-import Select from '../Confirm/fields/Select';
+import Select from './Select';
 import ImageRender from '../../ImageRender';
 import RGBNSelect from '../../RGBNSelect';
 import { defaultRGBNPalette } from '../../../defaults';

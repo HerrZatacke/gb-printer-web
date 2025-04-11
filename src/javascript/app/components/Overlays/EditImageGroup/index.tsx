@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import Lightbox from '../../Lightbox';
 import useEditImageGroup, { NEW_GROUP } from './useEditImageGroup';
 import Input, { InputType } from '../../Input';
+import Select from '../EditRGBN/Select';
+import Debug from '../../Debug';
 
 import './index.scss';
-import Select from '../Confirm/fields/Select';
-import Debug from '../../Debug';
 
 function EditImageGroup() {
   const {

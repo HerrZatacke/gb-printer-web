@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import Alert from '@mui/material/Alert';
 import isGoodScaleFactor from '../../../tools/isGoodScaleFactor';
 import { applyBitmapFilter } from '../../../tools/applyBitmapFilter';
 import SVG from '../SVG';
 import './index.scss';
-import InfoText, { InfoTextTheme } from '../Overlays/Confirm/fields/InfoText';
 
 interface Props {
   imageData: ImageData, // From QueueImage
@@ -65,10 +65,12 @@ function ImportPreviewImage({
       />
       {
         isGoodScaleFactor(scaleFactor) ? null : (
-          <InfoText
-            label={`The scale factor of your image is ${scaleFactor.toPrecision(3)}. To get a clean result without artifacts, use images with factors being powers of two. (1, 2, 4, 8 ...)`}
-            themes={[InfoTextTheme.WARNING]}
-          />
+          <Alert
+            severity="warning"
+            variant="filled"
+          >
+            {`The scale factor of your image is ${scaleFactor.toPrecision(3)}. To get a clean result without artifacts, use images with factors being powers of two. (1, 2, 4, 8 ...)`}
+          </Alert>
         )
       }
     </div>

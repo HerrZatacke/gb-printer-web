@@ -25,6 +25,7 @@ interface Props {
   confirm?: () => void,
   deny?: () => void,
   canConfirm?: boolean,
+  headerOnly?: boolean,
   closeOnOverlayClick?: boolean,
   actionButtons?: React.ReactNode,
 }
@@ -72,6 +73,7 @@ function Lightbox({
   confirm,
   deny,
   canConfirm,
+  headerOnly,
   open: openProp,
   closeOnOverlayClick: closeOnClick,
   actionButtons,
@@ -103,7 +105,11 @@ function Lightbox({
       keepMounted
       disableEscapeKeyDown={!closeOnOverlayClick}
     >
-      <DialogTitle>
+      <DialogTitle
+        sx={{
+          paddingRight: 8,
+        }}
+      >
         {header}
         <IconButton
           title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
@@ -119,12 +125,15 @@ function Lightbox({
         </IconButton>
       </DialogTitle>
 
-      <DialogContent
-        ref={autofocusRef as React.MutableRefObject<HTMLDivElement>}
-        sx={fullScreen ? {} : contentDimensions(contentWidth, contentHeight)}
-      >
-        {children}
-      </DialogContent>
+      { !headerOnly && (
+        <DialogContent
+          ref={autofocusRef as React.MutableRefObject<HTMLDivElement>}
+          sx={fullScreen ? {} : contentDimensions(contentWidth, contentHeight)}
+        >
+          {children}
+        </DialogContent>
+      ) }
+
       <DialogActions>
         { actionButtons }
         { deny ? (

@@ -1,11 +1,13 @@
 import React from 'react';
-import classnames from 'classnames';
+import Alert from '@mui/material/Alert';
+import Typography from '@mui/material/Typography';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import Lightbox from '../../Lightbox';
 import useDialog from '../../../../hooks/useDialog';
-import Select from './fields/Select';
-import Input, { InputType } from '../../Input';
-import InfoText from './fields/InfoText';
-import SVG from '../../SVG';
 import './index.scss';
 import type { DialogQuestionCheckbox,
   DialogQuestionInfo,
@@ -26,9 +28,11 @@ function Confirm() {
       confirm={confirm}
       deny={deny}
       header={message}
+      headerOnly={!questions.length}
     >
-      <div
-        className="confirm__content"
+      <Stack
+        direction="column"
+        gap={2}
       >
         {
           questions.map((question) => {
@@ -36,29 +40,39 @@ function Confirm() {
               case DialoqQuestionType.SELECT: {
                 const { label, key, options, disabled = false } = question as DialogQuestionSelect;
                 return (
-                  <Select
+                  <TextField
                     key={key}
-                    id={key}
+                    select
                     disabled={disabled}
+                    size="small"
                     value={values[key] as string || ''}
                     label={label}
-                    options={options}
-                    setSelected={(value) => setSelected({ [key]: value })}
-                  />
+                    onChange={(ev) => setSelected({ [key]: ev.target.value })}
+                  >
+                    {
+                      options.map(({ value: val, name }) => (
+                        <MenuItem
+                          value={val}
+                          key={val}
+                        >
+                          {name}
+                        </MenuItem>
+                      ))
+                    }
+                  </TextField>
                 );
               }
 
               case DialoqQuestionType.TEXT: {
                 const { label, key, disabled = false } = question as DialogQuestionText;
                 return (
-                  <Input
+                  <TextField
                     key={key}
-                    id={key}
                     disabled={disabled}
+                    size="small"
                     value={values[key] as string || ''}
-                    type={InputType.TEXT}
-                    labelText={label}
-                    onChange={(update) => setSelected({ [key]: update })}
+                    label={label}
+                    onChange={(ev) => setSelected({ [key]: ev.target.value })}
                   />
                 );
               }
@@ -66,16 +80,17 @@ function Confirm() {
               case DialoqQuestionType.NUMBER: {
                 const { label, key, min, max, disabled = false } = question as DialogQuestionNumber;
                 return (
-                  <Input
+                  <TextField
                     key={key}
-                    id={key}
                     disabled={disabled}
+                    size="small"
                     value={values[key] as string || ''}
-                    type={InputType.NUMBER}
-                    labelText={label}
-                    min={min}
-                    max={max}
-                    onChange={(update) => setSelected({ [key]: update })}
+                    type="number"
+                    label={label}
+                    slotProps={{
+                      htmlInput: { min, max },
+                    }}
+                    onChange={(ev) => setSelected({ [key]: ev.target.value })}
                   />
                 );
               }
@@ -84,49 +99,47 @@ function Confirm() {
                 const { label, key, disabled = false } = question as DialogQuestionCheckbox;
 
                 return (
-                  <label
+                  <FormControlLabel
                     key={key}
-                    id={key}
-                    className={
-                      classnames('confirm__check-label', {
-                        'confirm__check-label--checked': values[key],
-                      })
-                    }
-                  >
-                    <input
-                      type="checkbox"
-                      className="confirm__checkbox"
-                      checked={values[key] as boolean}
-                      disabled={disabled}
-                      onChange={({ target }) => {
-                        setSelected({ [key]: target.checked });
-                      }}
-                    />
-                    <SVG name="checkmark" />
-                    <span className="confirm__check-label-text">
-                      {label}
-                    </span>
-                  </label>
+                    disabled={disabled}
+                    label={label}
+                    control={(
+                      <Switch
+                        checked={values[key] as boolean}
+                        onChange={({ target }) => {
+                          setSelected({ [key]: target.checked });
+                        }}
+                      />
+                    )}
+                  />
                 );
               }
 
               case DialoqQuestionType.INFO: {
-                const { label, key, themes } = question as DialogQuestionInfo;
-                return (
-                  <InfoText
-                    label={label}
-                    themes={themes}
+                const { label, key, severity } = question as DialogQuestionInfo;
+                return severity ? (
+                  <Alert
+                    severity={severity}
                     key={key}
-                  />
+                    variant="filled"
+                  >
+                    {label}
+                  </Alert>
+                ) : (
+                  <Typography
+                    key={key}
+                  >
+                    {label}
+                  </Typography>
                 );
               }
 
               default:
                 return null;
             }
-          }).filter(Boolean)
+          })
         }
-      </div>
+      </Stack>
     </Lightbox>
   );
 }
