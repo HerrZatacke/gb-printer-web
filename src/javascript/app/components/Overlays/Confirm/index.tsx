@@ -8,7 +8,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Lightbox from '../../Lightbox';
 import useDialog from '../../../../hooks/useDialog';
-import './index.scss';
 import type { DialogQuestionCheckbox,
   DialogQuestionInfo,
   DialogQuestionNumber,
@@ -24,7 +23,6 @@ function Confirm() {
 
   return (
     <Lightbox
-      className="confirm"
       confirm={confirm}
       deny={deny}
       header={message}
