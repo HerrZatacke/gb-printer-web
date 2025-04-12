@@ -111,18 +111,22 @@ function Lightbox({
         }}
       >
         {header}
-        <IconButton
-          title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
-          color="inherit"
-          onClick={deny}
-          sx={{
-            position: 'absolute',
-            right: 12,
-            top: 12,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+        {
+          deny ? (
+            <IconButton
+              title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
+              color="inherit"
+              onClick={deny}
+              sx={{
+                position: 'absolute',
+                right: 12,
+                top: 12,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          ) : null
+        }
       </DialogTitle>
 
       { !headerOnly && (
