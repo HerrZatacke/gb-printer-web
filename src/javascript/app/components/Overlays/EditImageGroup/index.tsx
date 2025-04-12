@@ -1,12 +1,11 @@
 import React from 'react';
-import classNames from 'classnames';
-import OldLightbox from '../../Lightbox';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Lightbox from '../../Lightbox';
 import useEditImageGroup, { NEW_GROUP } from './useEditImageGroup';
-import Input, { InputType } from '../../Input';
-import Select from '../EditRGBN/Select';
 import Debug from '../../Debug';
-
-import './index.scss';
 
 function EditImageGroup() {
   const {
@@ -30,73 +29,69 @@ function EditImageGroup() {
   } = useEditImageGroup();
 
   return (
-    <OldLightbox
-      className="edit-image-group"
+    <Lightbox
       confirm={confirm}
       canConfirm={canConfirm}
       header={editId !== NEW_GROUP ? `Editing group ${title ? `"${title}"` : ''}` : `Create new group with ${selectionCount} images`}
       deny={cancelEditImageGroup}
+      contentWidth="auto"
+      actionButtons={possibleParents.length > 1 && editId === NEW_GROUP && (
+        <Button
+          disabled={!canMove}
+          onClick={move}
+          variant="contained"
+          color="secondary"
+        >
+          { `Move ${selectionCount} selected images` }
+        </Button>
+      )}
     >
-      <div
-        className="edit-image-group__content"
+      <Stack
+        direction="column"
+        gap={4}
       >
-        { editId ? (
+        { editId && (
           <>
-            <Input
-              id="title"
-              labelText="Title / Description"
+            <TextField
+              label="Title"
+              size="small"
+              type="text"
               value={title}
-              onChange={setTitle}
-              type={InputType.TEXT}
+              onChange={(ev) => setTitle(ev.target.value)}
             />
-            <Input
-              id="slug"
-              labelText="Pathsegment / Identifier"
+            <TextField
+              label="Pathsegment (identifier)"
+              size="small"
+              type="text"
               value={slug}
-              onChange={setSlug}
-              type={InputType.TEXT}
-            >
-              <p
-                className={classNames('edit-image-group__text', {
-                  'edit-image-group__text--error': !canConfirm,
-                })}
-              >
-                {
-                  slugIsInUse ?
-                    `Path${slugWasChanged ? ' is already in use' : ''}: "${absoluteSlug}"` :
-                    `Path: "${absoluteSlug}"`
-                }
-              </p>
-            </Input>
+              onChange={(ev) => setSlug(ev.target.value)}
+              helperText={
+                slugIsInUse ?
+                  `Path${slugWasChanged ? ' is already in use' : ''}: "${absoluteSlug}"` :
+                  `Path: "${absoluteSlug}"`
+              }
+              error={!canConfirm}
+            />
             { possibleParents.length > 1 && (
-              <Select
-                id="paths"
+              <TextField
                 label="Parent group"
-                options={possibleParents}
-                setSelected={setParentSlug}
+                size="small"
+                select
+                onChange={(ev) => setParentSlug(ev.target.value)}
                 value={parentSlug}
-                disabled={false}
-              />
-            ) }
-            { possibleParents.length > 1 && editId === NEW_GROUP && (
-              <button
-                className="button edit-image-group__move-button"
-                type="button"
-                disabled={!canMove}
-                onClick={move}
               >
-                { `Move all ${selectionCount} image(s) without creating a group` }
-              </button>
+                { possibleParents.map(({ value, name }) => (
+                  <MenuItem key={value} value={value}>{ name }</MenuItem>
+                )) }
+              </TextField>
             ) }
             <Debug>
               { JSON.stringify({ slug, parentSlug, canConfirm, slugIsInUse }, null, 2) }
             </Debug>
           </>
-        ) : (
-          <p>{ `A group with the ID '${editId}' does not exist!` }</p>
-        ) }
-      </div>
-    </OldLightbox>
+        )}
+      </Stack>
+    </Lightbox>
   );
 }
 
