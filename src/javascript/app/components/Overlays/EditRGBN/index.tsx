@@ -1,15 +1,31 @@
 import React from 'react';
-import classnames from 'classnames';
-import OldLightbox from '../../Lightbox';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Lightbox from '../../Lightbox';
 import { RGBGrouping, useEditRGBNImages } from './useEditRGBNImages';
-import SVG from '../../SVG';
-import Select from './Select';
 import ImageRender from '../../ImageRender';
 import RGBNSelect from '../../RGBNSelect';
 import { defaultRGBNPalette } from '../../../defaults';
 import type { RGBNHashes } from '../../../../../types/Image';
-
-import './index.scss';
+import { getChannelColor } from '../../../../tools/getChannelColor';
 
 function previewPalette(isR: boolean, isG: boolean, isB: boolean, isN: boolean): string[] {
   const rPart = isR ? 255 : 0;
@@ -60,163 +76,218 @@ function EditRGBN() {
     cancelEditRGBNImages,
   } = useEditRGBNImages();
 
+  const theme = useTheme();
+  const aboveSm = useMediaQuery(theme.breakpoints.up('sm'));
+
   return (
-    <OldLightbox
-      className="edit-rgbn"
+    <Lightbox
       confirm={save}
       deny={cancelEditRGBNImages}
       closeOnOverlayClick={false}
       canConfirm={canConfirm && !lengthWarning}
       header="Create RGBN images"
+      contentWidth="576px"
     >
-      <div
-        className="edit-rgbn__content"
+      <Stack
+        direction="column"
+        gap={4}
       >
-        <Select
-          id="select-grouping"
-          disabled={false}
+        <TextField
+          label="Grouping of your selection"
+          select
+          size="small"
           value={grouping}
-          label="Select how your selection is grouped."
-          options={[
-            {
-              value: RGBGrouping.BY_COLOR,
-              name: 'Selection is grouped by colors (RRR GGG BBB)',
-            },
-            {
-              value: RGBGrouping.BY_IMAGE,
-              name: 'Selection is grouped by image (RGB RGB RGB)',
-            },
-            {
-              value: RGBGrouping.MANUAL,
-              name: 'Manual selection for single image',
-            },
-          ]}
-          setSelected={(value) => setGrouping(value as RGBGrouping)}
-        />
+          onChange={(ev) => setGrouping(ev.target.value as RGBGrouping)}
+        >
+          <MenuItem value={RGBGrouping.BY_COLOR}>
+            Selection is grouped by colors (RRR GGG BBB)
+          </MenuItem>
+          <MenuItem value={RGBGrouping.BY_IMAGE}>
+            Selection is grouped by image (RGB RGB RGB)
+          </MenuItem>
+          <MenuItem value={RGBGrouping.MANUAL}>
+            Manual channel selection for a single image
+          </MenuItem>
+        </TextField>
 
         { grouping === RGBGrouping.MANUAL ? (
-          <>
-            <p className="edit-rgbn__info-text">Manually select the channels to create a single RGBN image.</p>
-            <ul className="edit-rgbn__single-image-list">
+          <Stack
+            direction="column"
+            gap={1}
+          >
+            <Typography variant="body2">
+              Manually select the channels to create a single RGBN image
+            </Typography>
+            <Stack
+              direction="row"
+              gap={2}
+              component="ul"
+              justifyContent="center"
+              alignItems="center"
+              flexWrap="wrap"
+              sx={{
+                '& .MuiCardContent-root': {
+                  padding: 1,
+                },
+              }}
+            >
               { sortedImages.map(({ hash }) => {
                 const isR = rgbnHashes[0]?.r === hash;
                 const isG = rgbnHashes[0]?.g === hash;
                 const isB = rgbnHashes[0]?.b === hash;
                 const isN = rgbnHashes[0]?.n === hash;
+                const palette = previewPalette(isR, isG, isB, isN);
 
                 return (
-                  <li
+                  <Card
                     key={hash}
                     className="edit-rgbn__single-image-list-entry"
+                    // elevation={8}
+                    variant="outlined"
                   >
-                    <ImageRender
-                      lockFrame={false}
-                      invertPalette={false}
-                      invertFramePalette={false}
-                      palette={previewPalette(isR, isG, isB, isN)}
-                      framePalette={previewPalette(isR, isG, isB, isN)}
-                      hash={hash}
-                    />
-                    <RGBNSelect
-                      isR={isR}
-                      isG={isG}
-                      isB={isB}
-                      isN={isN}
-                      toggleChannel={(channel: keyof RGBNHashes) => toggleSingleChannel(channel, hash)}
-                    />
-                  </li>
+                    <CardContent
+                      sx={{
+                        '.gameboy-image': {
+                          width: '80px',
+                          margin: '0 auto',
+                          imageRendering: 'auto',
+                        },
+                      }}
+                    >
+                      <ImageRender
+                        lockFrame={false}
+                        invertPalette={false}
+                        invertFramePalette={false}
+                        palette={palette}
+                        framePalette={palette}
+                        hash={hash}
+                      />
+                    </CardContent>
+                    <CardActions>
+                      <RGBNSelect
+                        isR={isR}
+                        isG={isG}
+                        isB={isB}
+                        isN={isN}
+                        toggleChannel={(channel: keyof RGBNHashes) => toggleSingleChannel(channel, hash)}
+                      />
+                    </CardActions>
+                  </Card>
                 );
               }) }
-            </ul>
-          </>
+            </Stack>
+          </Stack>
         ) : (
-          <>
-            <p className="edit-rgbn__info-text">Select the order of channels to be applied (in the order of images taken). Channels to the right of the separator will not be used.</p>
-            <ul className="edit-rgbn__order-list">
+          <Stack
+            direction="column"
+            gap={1}
+          >
+            <Typography variant="body2">
+              Select the order of channels to be applied (in the order of images taken).
+              Channels to the right of the separator will not be used.
+            </Typography>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              gap={{ xs: 1, sm: 2 }}
+              component="ul"
+              justifyContent="center"
+              alignItems="center"
+            >
               { order.map((colorKey, index) => (colorKey === 's' ? (
-                <li
+                <Divider
                   key={colorKey}
-                  className="edit-rgbn__order-list-entry edit-rgbn__order-list-entry--separator"
+                  orientation={aboveSm ? 'vertical' : 'horizontal'}
+                  variant="middle"
+                  flexItem
                 />
               ) : (
-                <li
+                <ButtonGroup
                   key={colorKey}
-                  className={`edit-rgbn__order-list-entry edit-rgbn__order-list-entry--${colorKey}`}
+                  component="li"
+                  size="small"
+                  sx={{
+                    backgroundColor: getChannelColor(colorKey),
+                  }}
                 >
-                  <button
-                    className="edit-rgbn__order-list-button"
-                    type="button"
+                  <IconButton
                     onClick={() => updateOrder(colorKey, index - 1)}
+                    sx={{ svg: { color: '#ffffff' } }}
                   >
-                    <SVG name="left" />
-                  </button>
-                  <button
-                    className="edit-rgbn__order-list-button"
-                    type="button"
+                    {aboveSm ? <KeyboardArrowLeftIcon /> : <KeyboardArrowUpIcon />}
+                  </IconButton>
+                  <IconButton
                     onClick={() => updateOrder(colorKey, index + 1)}
+                    sx={{ svg: { color: '#ffffff' } }}
                   >
-                    <SVG name="right" />
-                  </button>
-                </li>
+                    {aboveSm ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
+                  </IconButton>
+                </ButtonGroup>
               )))}
-            </ul>
+            </Stack>
 
             { lengthWarning ? (
-              <p className="edit-rgbn__info-text edit-rgbn__info-text--warning">Warning: Your distribution of channels and number of selected images does not add up!</p>
+              <Alert
+                variant="filled"
+                severity="error"
+              >
+                Your distribution of channels and number of selected images does not add up!
+              </Alert>
             ) : null }
 
-            <p className="edit-rgbn__info-text">Preview the RGBN images that will be created:</p>
-          </>
+          </Stack>
         ) }
 
-        <ul className="edit-rgbn__image-list">
-          { rgbnHashes.map((hashes, index) => (
-            <li
-              className="edit-rgbn__image-list-entry"
-              key={index}
-            >
-              <ImageRender
-                lockFrame={false}
-                invertPalette={false}
-                invertFramePalette={false}
-                palette={defaultRGBNPalette}
-                framePalette={[]}
-                hash="newRGBN"
-                hashes={hashes}
-              />
-            </li>
-          ))}
-        </ul>
-
-        <label
-          className={
-            classnames('import-overlay__checkgroup inputgroup checkgroup', {
-              'checkgroup--checked': createGroup,
-            })
-          }
+        <Stack
+          direction="column"
+          gap={1}
         >
-          <span
-            className="inputgroup__label"
-            title="Create group from images at current location"
+          <Typography variant="body2">
+            Image preview
+          </Typography>
+          <Stack
+            direction="row"
+            component="ul"
+            sx={{
+              overflowX: 'auto',
+              '& > *': {
+                flex: '160px 0 0',
+                margin: '0 auto',
+              },
+            }}
+            gap={1}
           >
-            Create group from created images at current location
-          </span>
-          <span
-            className="checkgroup__checkbox-wrapper"
-          >
-            <input
-              type="checkbox"
-              className="checkgroup__input"
+            { rgbnHashes.map((hashes, index) => (
+              <Box
+                key={index}
+                component="li"
+              >
+                <ImageRender
+                  lockFrame={false}
+                  invertPalette={false}
+                  invertFramePalette={false}
+                  palette={defaultRGBNPalette}
+                  framePalette={[]}
+                  hash="newRGBN"
+                  hashes={hashes}
+                />
+              </Box>
+            ))}
+          </Stack>
+        </Stack>
+
+        <FormControlLabel
+          label="Create group from created images at current location"
+          control={(
+            <Switch
               checked={createGroup}
               onChange={({ target }) => {
                 setCreateGroup(target.checked);
               }}
             />
-            <SVG name="checkmark" />
-          </span>
-        </label>
-      </div>
-    </OldLightbox>
+          )}
+        />
+      </Stack>
+    </Lightbox>
   );
 }
 
