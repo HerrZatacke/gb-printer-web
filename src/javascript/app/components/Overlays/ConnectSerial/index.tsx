@@ -1,11 +1,11 @@
 import React from 'react';
-import classnames from 'classnames';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import useWebUSBSerial from './hooks/useWebUSBSerial';
 import useWebSerial from './hooks/useWebSerial';
 import OldLightbox from '../../Lightbox';
 import useWithStore from './hooks/useWithStore';
-
-import './index.scss';
 
 interface Props {
   inline?: boolean,
@@ -13,8 +13,6 @@ interface Props {
 }
 
 function ConnectSerial({ inline, passive }: Props) {
-  const title = 'WebUSB Serial devices';
-
   const {
     activePorts: usbSerialActivePorts,
     isReceiving: usbSerialIsReceiving,
@@ -36,49 +34,56 @@ function ConnectSerial({ inline, passive }: Props) {
 
 
   const content = (
-    <div className="connect-usb-serial-overlay__content">
-      <button
-        type="button"
-        className={classnames('connect-usb-serial-overlay__button button', {
-          'connect-usb-serial-overlay__button--is-receiving': usbSerialIsReceiving,
-          'connect-usb-serial-overlay__button--disabled': !webUSBEnabled,
-        })}
-        title={title}
-        onClick={openWebUSBSerial}
-        disabled={!webUSBEnabled || usbSerialIsReceiving}
+    <Stack
+      direction={{ xs: 'column', md: inline ? 'row' : 'column' }}
+      gap={4}
+      sx={{ '& > *': { flex: 1 } }}
+    >
+      <Stack
+        direction="column"
+        gap={1}
       >
-        Open WebUSB device
-        {usbSerialIsReceiving ? ' (receiving)' : null}
-      </button>
-      <div
-        className="connect-usb-serial-overlay__info connect-usb-serial-overlay__info--spaced"
-      >
-        <h4>
+        <Button
+          title="Open WebUSB device"
+          onClick={openWebUSBSerial}
+          disabled={!webUSBEnabled}
+          loading={usbSerialIsReceiving}
+          loadingPosition="start"
+          variant="contained"
+          color="secondary"
+        >
+          Open WebUSB device
+          {usbSerialIsReceiving ? ' (receiving)' : null}
+        </Button>
+        <Typography variant="body2">
           {`Connected devices (${usbSerialActivePorts.length}):`}
-        </h4>
+        </Typography>
         <ul>
           {usbSerialActivePorts.map(({ productName }, index) => <li key={index}>{productName}</li>)}
         </ul>
-      </div>
-      <button
-        type="button"
-        className={classnames('connect-usb-serial-overlay__button button', {
-          'connect-usb-serial-overlay__button--is-receiving': webSerialIsReceiving,
-          'connect-usb-serial-overlay__button--disabled': !webSerialEnabled,
-        })}
-        title={title}
-        onClick={openWebSerial}
-        disabled={!webSerialEnabled || webSerialIsReceiving}
+      </Stack>
+
+      <Stack
+        direction="column"
+        gap={1}
       >
-        Open Web Serial device
-        {webSerialIsReceiving ? ' (receiving)' : null}
-      </button>
-      <div
-        className="connect-usb-serial-overlay__info"
-      >
-        {`${webSerialActivePorts.length} devices connected`}
-      </div>
-    </div>
+        <Button
+          title="Open Web Serial device"
+          onClick={openWebSerial}
+          disabled={!webSerialEnabled}
+          loading={webSerialIsReceiving}
+          loadingPosition="start"
+          variant="contained"
+          color="secondary"
+        >
+          Open Web Serial device
+          {webSerialIsReceiving ? ' (receiving)' : null}
+        </Button>
+        <Typography variant="body2">
+          {`${webSerialActivePorts.length} devices connected`}
+        </Typography>
+      </Stack>
+    </Stack>
   );
 
   if (inline) {

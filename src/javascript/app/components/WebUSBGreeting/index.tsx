@@ -31,18 +31,17 @@ function WebUSBGreeting() {
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             gap={4}
+            sx={{ '& > *': { flex: 1 } }}
           >
             <Alert
               severity={WebSerial.enabled ? 'success' : 'warning'}
               variant="filled"
-              sx={{ flex: 1 }}
             >
               {WebSerial.enabled ? 'Your current browser/device does support Web Serial' : 'Your current browser/device does not support Web Serial'}
             </Alert>
             <Alert
               severity={WebUSBSerial.enabled ? 'success' : 'warning'}
               variant="filled"
-              sx={{ flex: 1 }}
             >
               {WebUSBSerial.enabled ? 'Your current browser/device does support WebUSB' : 'Your current browser/device does not support WebUSB'}
             </Alert>
