@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import useWebUSBSerial from './hooks/useWebUSBSerial';
 import useWebSerial from './hooks/useWebSerial';
-import OldLightbox from '../../Lightbox';
+import Lightbox from '../../Lightbox';
 import useWithStore from './hooks/useWithStore';
 
 interface Props {
@@ -93,14 +93,13 @@ function ConnectSerial({ inline, passive }: Props) {
   const showOverlay = lightBoxOpen || usbSerialIsReceiving || webSerialIsReceiving;
 
   return !showOverlay ? null : (
-    <OldLightbox
+    <Lightbox
       header="WebUSB / Serial devices"
       confirm={hideSerials}
       canConfirm={!usbSerialIsReceiving && !webSerialIsReceiving}
-      className="connect-usb-serial-overlay"
     >
       {content}
-    </OldLightbox>
+    </Lightbox>
   );
 }
 
