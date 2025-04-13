@@ -1,27 +1,23 @@
 import React from 'react';
-import OldLightbox from '../../Lightbox';
+import LinearProgress from '@mui/material/LinearProgress';
+import Lightbox from '../../Lightbox';
 import { useProgressBox } from './useProgressBox';
-
-import './index.scss';
 
 function ProgressBox() {
   const { message, progress } = useProgressBox();
 
   return (
-    progress ? (
-      <OldLightbox
-        className="progress-box"
+    progress > 0 && (
+      <Lightbox
+        header={message}
       >
-        <div className="progress-box__message">
-          {message}
-        </div>
-        <progress
-          className="progress-box__progress"
-          value={progress}
-          max={1}
+        <LinearProgress
+          variant="determinate"
+          value={progress * 100}
+          color="secondary"
         />
-      </OldLightbox>
-    ) : null
+      </Lightbox>
+    )
   );
 }
 
