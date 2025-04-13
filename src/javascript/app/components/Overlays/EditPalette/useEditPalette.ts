@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useEditStore from '../../../stores/editStore';
-import useFiltersStore from '../../../stores/filtersStore';
 import useItemsStore from '../../../stores/itemsStore';
+import usePreviewImages from '../../../../hooks/usePreviewImages';
 import type { Palette } from '../../../../../types/Palette';
-import getPreviewImages from '../../../../tools/getPreviewImages';
 import type { MonochromeImage } from '../../../../../types/Image';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 import { useStores } from '../../../../hooks/useStores';
@@ -24,15 +23,9 @@ interface UseEditPalette {
 }
 
 export const useEditPalette = (): UseEditPalette => {
-  const {
-    imageSelection,
-    sortBy,
-    filtersActiveTags,
-    recentImports,
-  } = useFiltersStore();
 
   const { editPalette, cancelEditPalette } = useEditStore();
-  const { images, palettes, addPalettes } = useItemsStore();
+  const { palettes, addPalettes } = useItemsStore();
   const { updateLastSyncLocalNow } = useStores();
 
   const shortName = editPalette?.shortName || '';
@@ -55,9 +48,7 @@ export const useEditPalette = (): UseEditPalette => {
 
   const canConfirm = !canEditShortName || shortNameIsValid(newShortName);
 
-  const previewImages = useMemo<MonochromeImage[]>(() => (
-    getPreviewImages(images, { sortBy, filtersActiveTags, recentImports }, imageSelection)()
-  ), [filtersActiveTags, imageSelection, images, recentImports, sortBy]);
+  const previewImages = usePreviewImages();
 
   const savePalette = (updatedPalette: Palette) => {
     addPalettes([updatedPalette]);
