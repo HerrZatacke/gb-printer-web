@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
-import OldLightbox from '../../Lightbox';
-
-import './index.scss';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Lightbox from '../../Lightbox';
 import { useSortForm } from './useSortForm';
 import { SortDirection } from '../../../../tools/sortby';
 
@@ -27,83 +27,62 @@ const sortables: Sortable[] = [
 ];
 
 function SortForm() {
-  const sortForm = useSortForm();
+  const {
+    visible,
+    sortBy: formSortBy,
+    sortOrder: formSortOrder,
+    setSortBy: formSetSortBy,
+    hideSortForm,
+  } = useSortForm();
 
-  const [sortBy, setSortBy] = useState<string>(sortForm.sortBy);
-  const [sortOrder, setSortOrder] = useState<SortDirection>(sortForm.sortOrder);
+  const [sortBy, setSortBy] = useState<string>(formSortBy);
+  const [sortOrder, setSortOrder] = useState<SortDirection>(formSortOrder);
 
   useEffect(() => {
-    setSortBy(sortForm.sortBy);
-    setSortOrder(sortForm.sortOrder);
-  }, [setSortBy, setSortOrder, sortForm.visible, sortForm.sortBy, sortForm.sortOrder]);
+    setSortBy(formSortBy);
+    setSortOrder(formSortOrder);
+  }, [setSortBy, setSortOrder, visible, formSortBy, formSortOrder]);
 
-  if (!sortForm.visible) {
+  if (!visible) {
     return null;
   }
 
   const currentSortBy = sortables.find(({ key }) => (key === sortBy)) || sortables[0];
-  const currentOrderLabel = sortOrder === SortDirection.ASC ? 'ascending' : 'descending';
+  const currentOrderLabel = sortOrder === SortDirection.ASC ? 'Ascending' : 'Descending';
 
   return (
-    <OldLightbox
-      className="sort-form"
-      confirm={() => sortForm.setSortBy(`${sortBy}_${sortOrder}`)}
-      deny={() => {
-        sortForm.hideSortForm();
-      }}
+    <Lightbox
       header={`Sort by: ${currentSortBy.title}/${currentOrderLabel}`}
+      confirm={() => formSetSortBy(`${sortBy}_${sortOrder}`)}
+      deny={hideSortForm}
     >
-      <ul
-        className="sort-form__list"
+      <Stack
+        direction="column"
+        gap={4}
       >
-        { sortables.map(({ key, title }) => (
-          <li key={key}>
-            <button
-              className={
-                classNames('sort-form__button', {
-                  'sort-form__button--selected': sortBy === key,
-                })
-              }
-              type="button"
-              onClick={() => setSortBy(key)}
-            >
-              { title }
-            </button>
-          </li>
-        )) }
-      </ul>
-
-      <ul
-        className="sort-form__list"
-      >
-        <li>
-          <button
-            className={
-              classNames('sort-form__button sort-form__button--order-asc', {
-                'sort-form__button--selected': sortOrder === 'asc',
-              })
-            }
-            type="button"
-            onClick={() => setSortOrder(SortDirection.ASC)}
-          >
-            Ascending
-          </button>
-        </li>
-        <li>
-          <button
-            className={
-              classNames('sort-form__button sort-form__button--order-desc', {
-                'sort-form__button--selected': sortOrder === 'desc',
-              })
-            }
-            type="button"
-            onClick={() => setSortOrder(SortDirection.DESC)}
-          >
-            Descending
-          </button>
-        </li>
-      </ul>
-    </OldLightbox>
+        <TextField
+          label="Sort by"
+          size="small"
+          select
+          value={sortBy}
+          onChange={(ev) => setSortBy(ev.target.value)}
+        >
+          { sortables.map(({ key, title }) => (
+            <MenuItem key={key} value={key}>{ title }</MenuItem>
+          )) }
+        </TextField>
+        <TextField
+          label="Sort direction"
+          size="small"
+          select
+          value={sortOrder}
+          onChange={(ev) => setSortOrder(ev.target.value as SortDirection)}
+        >
+          <MenuItem value={SortDirection.ASC}>Ascending</MenuItem>
+          <MenuItem value={SortDirection.DESC}>Descending</MenuItem>
+        </TextField>
+      </Stack>
+    </Lightbox>
   );
 }
 
