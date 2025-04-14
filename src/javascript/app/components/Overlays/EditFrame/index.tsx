@@ -1,6 +1,6 @@
 import React from 'react';
-import OldLightbox from '../../Lightbox';
-import './index.scss';
+import Alert from '@mui/material/Alert';
+import Lightbox from '../../Lightbox';
 import useEditFrame from './useEditFrame';
 import EditFrameForm from './EditFrameForm';
 import useEditStore from '../../../stores/editStore';
@@ -33,35 +33,35 @@ const EditFrame = () => {
   const updateHead = updateId !== fullId ? ` -> "${fullId}"` : '';
 
   return (
-    <OldLightbox
-      className="edit-frame"
+    <Lightbox
       confirm={saveFrame}
       canConfirm={formValid}
       header={frame ? `Editing frame "${updateId}"${updateHead}` : `Error editing '${editFrame}'`}
       deny={cancelEdit}
     >
-      <div
-        className="edit-frame__content"
-      >
-        { frame ? (
-          <EditFrameForm
-            groups={groups}
-            fullId={fullId}
-            frameIndex={frameIndex}
-            frameGroup={frameGroup}
-            frameName={frameName}
-            idValid={idValid}
-            groupIdValid={groupIdValid}
-            frameIndexValid={frameIndexValid}
-            setFrameIndex={setFrameIndex}
-            setFrameGroup={setFrameGroup}
-            setFrameName={setFrameName}
-          />
-        ) : (
-          <p>{ `A frame with the ID '${editFrame}' does not exist!` }</p>
-        ) }
-      </div>
-    </OldLightbox>
+      { frame ? (
+        <EditFrameForm
+          groups={groups}
+          fullId={fullId}
+          frameIndex={frameIndex}
+          frameGroup={frameGroup}
+          frameName={frameName}
+          idValid={idValid}
+          groupIdValid={groupIdValid}
+          frameIndexValid={frameIndexValid}
+          setFrameIndex={setFrameIndex}
+          setFrameGroup={setFrameGroup}
+          setFrameName={setFrameName}
+        />
+      ) : (
+        <Alert
+          severity="error"
+          variant="filled"
+        >
+          { `A frame with the ID '${editFrame}' does not exist!` }
+        </Alert>
+      ) }
+    </Lightbox>
   );
 };
 
