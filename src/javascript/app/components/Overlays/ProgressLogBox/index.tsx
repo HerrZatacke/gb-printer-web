@@ -74,7 +74,6 @@ function ProgressLogBox() {
 
   return (
     <Lightbox
-      className="progress-log"
       header={`${finished ? '✔️ Update done' : '⏳ Updating...'} ${isGit ? ` - "${repo}/${branch}"` : ''}`}
       confirm={finished ? confirm : undefined}
     >

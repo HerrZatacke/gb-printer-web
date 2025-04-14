@@ -34,7 +34,6 @@ function LightboxImage() {
 
   return (
     <Lightbox
-      className="lightbox-image"
       header={image?.title}
       deny={close}
       contentWidth="100%"

@@ -18,8 +18,6 @@ import './index.scss';
 interface Props {
   contentHeight?: number | string,
   contentWidth?: number | string,
-  // eslint-disable-next-line react/no-unused-prop-types
-  className?: string,
   open?: boolean,
   header?: string,
   closeTitle?: string,

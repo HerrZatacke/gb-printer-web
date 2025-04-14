@@ -40,7 +40,6 @@ function FrameQueue() {
 
   return (
     <Lightbox
-      className="import-overlay"
       header={`Import new Frame as "${fullId}"`}
       canConfirm={formValid}
       confirm={async () => {

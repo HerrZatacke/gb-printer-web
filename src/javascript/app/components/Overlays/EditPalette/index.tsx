@@ -49,7 +49,6 @@ function EditPalette() {
 
   return (
     <Lightbox
-      className="edit-palette"
       confirm={save}
       canConfirm={canConfirm}
       deny={cancelEditPalette}

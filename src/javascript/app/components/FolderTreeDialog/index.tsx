@@ -60,7 +60,6 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
     <Lightbox
       contentHeight="60vh"
       contentWidth="auto"
-      className="edit-image"
       deny={onClose}
       open={open}
       header="Gallery Navigation"
