@@ -1,15 +1,14 @@
 import React from 'react';
-import classnames from 'classnames';
-import OldLightbox from '../../Lightbox';
+import Stack from '@mui/material/Stack';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
 import useRunImport from './useRunImport';
 import TagsSelect from '../../TagsSelect';
 import modifyTagChanges from '../../../../tools/modifyTagChanges';
-import SVG from '../../SVG';
-
-import './index.scss';
 
 function ImportQueue() {
   const {
@@ -28,17 +27,19 @@ function ImportQueue() {
   } = useRunImport();
 
   return (
-    <OldLightbox
-      className="import-overlay"
+    <Lightbox
       header={`Image Import (${importQueue.length} images)`}
       confirm={runImport}
       deny={cancelImport}
     >
-      <div
-        className="import-overlay__content"
+      <Stack
+        direction="column"
+        gap={4}
       >
-        <ul
-          className="import-overlay__images"
+        <Stack
+          direction="column"
+          component="ul"
+          gap={1}
         >
           {
             importQueue.map((image, index) => (
@@ -49,7 +50,7 @@ function ImportQueue() {
               />
             ))
           }
-        </ul>
+        </Stack>
         <PaletteSelect
           noFancy
           value={palette}
@@ -72,35 +73,19 @@ function ImportQueue() {
             });
           }}
         />
-        <label
-          className={
-            classnames('import-overlay__checkgroup inputgroup checkgroup', {
-              'checkgroup--checked': createGroup,
-            })
-          }
-        >
-          <span
-            className="inputgroup__label"
-            title="Create group from images at current location"
-          >
-            Create group from images at current location
-          </span>
-          <span
-            className="checkgroup__checkbox-wrapper"
-          >
-            <input
-              type="checkbox"
-              className="checkgroup__input"
+        <FormControlLabel
+          label="Create group from images at current location"
+          control={(
+            <Switch
               checked={createGroup}
               onChange={({ target }) => {
                 setCreateGroup(target.checked);
               }}
             />
-            <SVG name="checkmark" />
-          </span>
-        </label>
-      </div>
-    </OldLightbox>
+          )}
+        />
+      </Stack>
+    </Lightbox>
   );
 }
 

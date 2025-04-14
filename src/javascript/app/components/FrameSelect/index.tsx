@@ -63,18 +63,8 @@ function FrameSelect({
       direction="column"
       gap={2}
     >
-      {(
-        selectLabel ? (
-          <label
-            className="frame-select__select-label"
-            htmlFor="frame-select-select"
-          >
-            { selectLabel }
-          </label>
-        ) : null
-      )}
       <TextField
-        label="Frame"
+        label={selectLabel || 'Frame'}
         select
         size="small"
         value={frame}

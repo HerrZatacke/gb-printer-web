@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import dayjs from 'dayjs';
+import CropFreeIcon from '@mui/icons-material/CropFree';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import type { BadgeOwnProps } from '@mui/material/Badge/Badge';
 import GameBoyImage from '../../GameBoyImage';
-import SVG from '../../SVG';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 import type { ImportItem } from '../../../../../types/ImportItem';
 import useImportsStore from '../../../stores/importsStore';
@@ -36,85 +44,148 @@ function ImportRow({
 
   const { frameQueueAdd, importQueueCancelOne } = useImportsStore();
 
+  const badgeProps = useMemo<BadgeOwnProps>(() => {
+    if (queueDuplicates > 1) {
+      return {
+        color: 'error',
+        title: 'This image exists multiple times within this queue',
+        badgeContent: 'D',
+      };
+    }
+
+    if (storeDuplicateImage) {
+      return {
+        color: 'warning',
+        title: `This image has already been imported${storeDuplicateImage.title ? ` as "${storeDuplicateImage.title}"` : ''}`,
+        badgeContent: 'I',
+      };
+    }
+
+    return {};
+  }, [queueDuplicates, storeDuplicateImage]);
+
   return (
-    <li className="import-image">
-      <span
-        className="import-image__image-zoom"
-        style={{
-          height: `${tiles.length / 2.5 / 2.66}px`,
-        }}
+    <Stack
+      direction="row"
+      gap={2}
+      alignItems="center"
+      justifyContent="space-between"
+      component="li"
+      sx={{
+        '--zoom-image-top': 0,
+        '--zoom-image-left': 0,
+        '--zoom-image-width': '60px',
+        '--zoom-image-z-index': 'initial',
+
+        '&:focus-within': {
+          '--zoom-image-top': -12,
+          '--zoom-image-left': -12,
+          '--zoom-image-width': '160px',
+          '--zoom-image-z-index': 2,
+        },
+
+        '& > *': {
+          flexGrow: 1,
+        },
+      }}
+    >
+      <Stack
+        direction="row"
+        gap={2}
+        alignItems="center"
+        justifyContent="left"
       >
-        <span className="import-image__image">
-          <GameBoyImage
-            tiles={tiles}
-            invertPalette={false}
-            lockFrame={false}
-            palette={palette?.palette}
-            imageStartLine={2}
-            asThumb
-          />
-        </span>
-      </span>
-      <div className="import-image__meta">
-        <div className="import-image__name">
-          { fileName }
-        </div>
-        {
-          lastModified ? (
-            <div className="import-image__date">
-              { dateFormatLocale(dayjs(lastModified), preferredLocale) }
-            </div>
-          ) : null
-        }
-      </div>
-      <div className="import-image__duplicate-icons">
-        { (
-          queueDuplicates > 1 ? (
-            <div
-              className="import-image__duplicate-icon import-image__duplicate-icon--queue"
-              title="This image exists multiple times within this queue"
-            >
-              D
-            </div>
-          ) : null
-        ) }
-        { (
-          storeDuplicateImage ? (
-            <div
-              className="import-image__duplicate-icon import-image__duplicate-icon--image"
-              title={`This image has already been imported${storeDuplicateImage.title ? ` as "${storeDuplicateImage.title}"` : ''}`}
-            >
-              I
-            </div>
-          ) : null
-        ) }
-      </div>
-      <div className="import-image__buttons">
-        <button
-          className="import-image__button import-image__button--frame"
-          type="button"
-          title="Import as Frame"
-          disabled={tiles.length / 20 < 14}
-          onClick={() => frameQueueAdd([importItem])}
+        <Box
+          sx={{
+            height: `${tiles.length / 2.5 / 2.66}px`,
+            flex: '60px 0 0',
+            position: 'relative',
+
+            '& > *': {
+              top: 'var(--zoom-image-top)',
+              left: 'var(--zoom-image-left)',
+              width: 'var(--zoom-image-width)',
+              zIndex: 'var(--zoom-image-z-index)',
+              transition: 'width 150ms ease-in-out, left 150ms ease-in-out, top 150ms ease-in-out',
+              position: 'absolute',
+              pointerEvents: 'none',
+            },
+
+            '&:hover': {
+              '--zoom-image-top': -12,
+              '--zoom-image-left': -12,
+              '--zoom-image-width': '160px',
+              '--zoom-image-z-index': 2,
+            },
+          }}
         >
-          <SVG
-            className="import-image__icon"
-            name="frame"
-          />
-        </button>
-        <button
-          className="import-image__button import-image__button--delete"
-          type="button"
-          title="Delete"
-          onClick={() => importQueueCancelOne(tempId)}
-        >
-          <SVG
-            className="import-image__icon"
-            name="delete"
-          />
-        </button>
-      </div>
-    </li>
+          <Box>
+            <GameBoyImage
+              tiles={tiles}
+              invertPalette={false}
+              lockFrame={false}
+              palette={palette?.palette}
+              imageStartLine={2}
+              asThumb
+            />
+          </Box>
+        </Box>
+
+        <Box>
+          <Typography
+            variant="caption"
+            component="p"
+          >
+            { fileName }
+          </Typography>
+          {
+            lastModified && lastModified > 0 && (
+              <Typography
+                variant="caption"
+                component="p"
+              >
+                { dateFormatLocale(dayjs(lastModified), preferredLocale) }
+              </Typography>
+            )
+          }
+        </Box>
+      </Stack>
+
+      <Stack
+        direction="row"
+        gap={2}
+        alignItems="center"
+        justifyContent="right"
+      >
+        <Box>
+          <ButtonGroup>
+            <IconButton
+              title="Import image as frame"
+              disabled={tiles.length / 20 < 14}
+              onClick={() => frameQueueAdd([importItem])}
+            >
+              <CropFreeIcon />
+            </IconButton>
+            <Badge
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...badgeProps}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              overlap="circular"
+            >
+              <IconButton
+                title="Remove image from queue"
+                onClick={() => importQueueCancelOne(tempId)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Badge>
+          </ButtonGroup>
+        </Box>
+      </Stack>
+    </Stack>
   );
 }
 
