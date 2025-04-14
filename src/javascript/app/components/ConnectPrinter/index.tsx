@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import CircularProgress from '@mui/material/CircularProgress';
 import useIframeLoaded from '../../../hooks/useIframeLoaded';
-import './index.scss';
 
 const iframeSupported = (printerUrl?: string) => {
   if (!printerUrl) {
@@ -28,7 +27,13 @@ function ConnectPrinter() {
   return iframeSupported(printerUrl) && !failed ? (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
       <iframe
-        className="connect-printer-iframe"
+        style={{
+          position: 'absolute',
+          top: '80px',
+          left: '-200vw',
+          width: '480px',
+          height: '90px',
+        }}
         title="Transfer window"
         src={printerUrl}
       />
