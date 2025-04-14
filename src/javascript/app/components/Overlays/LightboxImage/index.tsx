@@ -15,8 +15,6 @@ import ImageRender from '../../ImageRender';
 import { useLightboxImage } from './useLightboxImage';
 import type { RGBNImage } from '../../../../../types/Image';
 
-import './index.scss';
-
 function LightboxImage() {
   const {
     image,

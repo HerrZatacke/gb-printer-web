@@ -149,7 +149,6 @@ export const useLightboxImage = (): UseLightboxImage => {
           break;
 
         default:
-          console.log(ev.key);
           break;
       }
     };
