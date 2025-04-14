@@ -1,7 +1,11 @@
 import React, { useMemo } from 'react';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Stack from '@mui/material/Stack';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GameBoyImage from '../../GameBoyImage';
 import { posTiles } from './posTiles';
-import './index.scss';
 import useItemsStore from '../../../stores/itemsStore';
 import useSettingsStore from '../../../stores/settingsStore';
 
@@ -40,31 +44,46 @@ function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
   }, [tiles, startLine]);
 
   return (
-    <div className="edit-frame-start-line">
+    <Stack
+      direction="row"
+      gap={3}
+      justifyContent="center"
+    >
       <GameBoyImage
         tiles={previewTiles}
         palette={palette}
         imageStartLine={startLine}
       />
-      <div className="edit-frame-start-line__buttons">
-        <button
-          className="button edit-frame-start-line__button"
-          type="button"
-          onClick={() => setStartLine(startLine - 1)}
-          disabled={startLine <= 0}
+      <Stack
+        direction="column"
+        justifyContent="center"
+      >
+        <ButtonGroup
+          orientation="vertical"
+          variant="contained"
+          size="large"
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          color="tertiary"
+          fullWidth
         >
-          Move image up
-        </button>
-        <button
-          className="button edit-frame-start-line__button"
-          type="button"
-          onClick={() => setStartLine(startLine + 1)}
-          disabled={startLine >= (tiles.length / 20) - 14}
-        >
-          Move image down
-        </button>
-      </div>
-    </div>
+          <Button
+            onClick={() => setStartLine(startLine - 1)}
+            disabled={startLine <= 0}
+            endIcon={<KeyboardArrowUpIcon />}
+          >
+            Move image up
+          </Button>
+          <Button
+            onClick={() => setStartLine(startLine + 1)}
+            disabled={startLine >= (tiles.length / 20) - 14}
+            endIcon={<KeyboardArrowDownIcon />}
+          >
+            Move image down
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    </Stack>
   );
 }
 

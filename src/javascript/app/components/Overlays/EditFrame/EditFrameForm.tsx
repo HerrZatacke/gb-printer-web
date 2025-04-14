@@ -15,6 +15,7 @@ interface Props {
   groups: FrameGroup[],
   fullId: string,
   frameGroupName?: string,
+  extraFields?: React.ReactNode,
   setFrameGroupName?: (frameGroupName: string) => void,
   setFrameIndex: (frameIndex: number) => void,
   setFrameGroup: (frameGroup: string) => void,
@@ -23,10 +24,7 @@ interface Props {
 
 function EditFrameForm({
   frameIndex,
-  setFrameIndex,
   frameName,
-  setFrameGroup,
-  setFrameName,
   idValid,
   groupIdValid,
   frameIndexValid,
@@ -34,7 +32,11 @@ function EditFrameForm({
   groups,
   fullId,
   frameGroupName,
+  extraFields,
   setFrameGroupName,
+  setFrameIndex,
+  setFrameGroup,
+  setFrameName,
 }: Props) {
   const groupExists = Boolean(groups.find(({ id }) => (frameGroup === id)));
 
@@ -43,6 +45,7 @@ function EditFrameForm({
       direction="column"
       gap={4}
     >
+      {extraFields}
       <TextField
         label="Frame group"
         select
