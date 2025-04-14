@@ -1,9 +1,16 @@
 import React from 'react';
 import dayjs from 'dayjs';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { dateFormat } from '../../../defaults';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
-import SVG from '../../SVG';
-import OldLightbox from '../../Lightbox';
+import Lightbox from '../../Lightbox';
 import ImageRender from '../../ImageRender';
 import { useLightboxImage } from './useLightboxImage';
 import type { RGBNImage } from '../../../../../types/Image';
@@ -26,75 +33,114 @@ function LightboxImage() {
   } = useLightboxImage();
 
   return (
-    <OldLightbox
+    <Lightbox
       className="lightbox-image"
+      header={image?.title}
       deny={close}
-    >
-      <h2 className="lightbox-image__header">
-        <span
-          className="lightbox-image__title"
-        >
-          { image?.title }
-        </span>
-        <span
-          className="lightbox-image__counter"
-        >
-          { `${currentIndex + 1}/${size}` }
-        </span>
-        <button
-          type="button"
-          className="lightbox-image__button lightbox-image__header-button lightbox-image__button--fullscreen"
+      contentWidth="100%"
+      contentHeight="100%"
+      fullSize
+      headerActionButtons={(
+        <IconButton
+          color="inherit"
           onClick={fullscreen}
           title={isFullscreen ? 'Leave fullscreen' : 'Enter fullscreen'}
         >
-          <SVG name={isFullscreen ? 'fullscreen-off' : 'fullscreen-on'} />
-        </button>
-        <button
-          type="button"
-          className="lightbox-image__button lightbox-image__header-button lightbox-image__button--close"
-          onClick={close}
-          title="Close"
+          { isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon /> }
+        </IconButton>
+      )}
+    >
+      <Stack
+        direction="column"
+        gap={2}
+        sx={{
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <Stack
+          direction="row"
+          gap={1}
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            height: '100%',
+            overflow: 'hidden',
+            position: 'relative',
+            '& > .MuiBox-root': {
+              flexGrow: 1,
+            },
+          }}
         >
-          <SVG name="close" />
-        </button>
-      </h2>
-      { image ? (
-        <ImageRender
-          lockFrame={image.lockFrame}
-          invertPalette={image.invertPalette}
-          invertFramePalette={image.invertFramePalette}
-          palette={image.palette}
-          framePalette={image.framePalette}
-          frameId={image.frame}
-          hash={image.hash}
-          hashes={(image as RGBNImage).hashes}
-          rotation={image.rotation}
-        />
-      ) : null }
-      <div className="lightbox-image__navigation">
-        {canPrev ? (
-          <button
-            type="button"
-            className="lightbox-image__button lightbox-image__nav-button lightbox-image__button--left"
+
+          <IconButton
+            size="large"
             onClick={prev}
+            disabled={!canPrev}
           >
-            <SVG name="left" />
-          </button>
-        ) : null}
-        {canNext ? (
-          <button
-            type="button"
-            className="lightbox-image__button lightbox-image__nav-button lightbox-image__button--right"
+            <KeyboardArrowLeftIcon />
+          </IconButton>
+
+          { image && (
+            <Box
+              sx={{
+                width: '100%',
+                height: '100%',
+                flexBasis: '100%',
+                flexGrow: 1,
+
+                '.gameboy-image': {
+                  display: 'flex',
+                  width: '100%',
+                  height: '100%',
+                },
+
+                '.gameboy-image canvas': {
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  objectFit: 'contain',
+                },
+              }}
+            >
+              <ImageRender
+                lockFrame={image.lockFrame}
+                invertPalette={image.invertPalette}
+                invertFramePalette={image.invertFramePalette}
+                palette={image.palette}
+                framePalette={image.framePalette}
+                frameId={image.frame}
+                hash={image.hash}
+                hashes={(image as RGBNImage).hashes}
+                rotation={image.rotation}
+              />
+            </Box>
+          )}
+
+          <IconButton
+            size="large"
             onClick={next}
+            disabled={!canNext}
           >
-            <SVG name="right" />
-          </button>
-        ) : null}
-      </div>
-      <div className="lightbox-image__created">
-        {dateFormatLocale(dayjs(image?.created, dateFormat), preferredLocale)}
-      </div>
-    </OldLightbox>
+            <KeyboardArrowRightIcon />
+          </IconButton>
+        </Stack>
+
+        <Stack
+          direction="row"
+          gap={{ xs: 4, md: 12 }}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography variant="body2">
+            { `Image ${currentIndex + 1}/${size}` }
+          </Typography>
+          <Typography variant="body2">
+            {dateFormatLocale(dayjs(image?.created, dateFormat), preferredLocale)}
+          </Typography>
+        </Stack>
+
+      </Stack>
+    </Lightbox>
   );
 }
 

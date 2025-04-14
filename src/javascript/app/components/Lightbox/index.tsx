@@ -1,5 +1,6 @@
 import React from 'react';
 import type { CSSProperties } from 'react';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import Dialog from '@mui/material/Dialog';
@@ -7,6 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
@@ -22,19 +24,37 @@ interface Props {
   header?: string,
   closeTitle?: string,
   children?: React.ReactNode,
+  fullSize?: boolean,
   confirm?: () => void,
   deny?: () => void,
   canConfirm?: boolean,
   headerOnly?: boolean,
   closeOnOverlayClick?: boolean,
+  headerActionButtons?: React.ReactNode,
   actionButtons?: React.ReactNode,
 }
 
 const contentDimensions = (
   width: string | number | undefined,
   height: string | number | undefined,
+  fullScreen: boolean,
+  fullSize: boolean | undefined,
 ): CSSProperties => {
   const styles: CSSProperties = {};
+
+  if (fullSize) {
+    // MuiDialogTitle forces a padding, so !important is needed :(
+    styles.padding = '8px !important';
+    styles.overflowX = 'hidden';
+    styles.overflowY = 'hidden';
+  } else {
+    styles.scrollbarGutter = 'stable';
+    styles.overflowY = 'scroll';
+  }
+
+  if (fullScreen) {
+    return styles;
+  }
 
   switch (typeof height) {
     case 'string':
@@ -74,8 +94,10 @@ function Lightbox({
   deny,
   canConfirm,
   headerOnly,
+  fullSize,
   open: openProp,
   closeOnOverlayClick: closeOnClick,
+  headerActionButtons,
   actionButtons,
 }: Props) {
   const closeOnOverlayClick = typeof closeOnClick !== 'boolean' ? true : closeOnClick;
@@ -97,42 +119,58 @@ function Lightbox({
   return (
     <Dialog
       container={overlayContainer}
-      fullScreen={fullScreen}
+      fullScreen={fullScreen || fullSize}
       maxWidth="lg"
       open={open}
       onClose={deny}
       aria-label={typeof header === 'string' ? header : undefined}
       keepMounted
       disableEscapeKeyDown={!closeOnOverlayClick}
+      sx={{
+        // matching "scrollbar-width: thin;" on <html>
+        paddingRight: '10px',
+      }}
     >
-      <DialogTitle
-        sx={{
-          paddingRight: 8,
-        }}
-      >
-        {header}
-        {
-          deny ? (
-            <IconButton
-              title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
-              color="inherit"
-              onClick={deny}
-              sx={{
-                position: 'absolute',
-                right: 12,
-                top: 12,
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          ) : null
-        }
+      <DialogTitle>
+        <Stack
+          direction="row"
+          gap={4}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Box
+            sx={{
+              wordBreak: 'break-word',
+            }}
+          >
+            {header}
+          </Box>
+          <Box
+            sx={{
+              my: -0.5,
+              mr: -2,
+            }}
+          >
+            {headerActionButtons}
+            {
+              deny ? (
+                <IconButton
+                  title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
+                  color="inherit"
+                  onClick={deny}
+                >
+                  <CloseIcon />
+                </IconButton>
+              ) : null
+            }
+          </Box>
+        </Stack>
       </DialogTitle>
 
       { !headerOnly && (
         <DialogContent
           ref={autofocusRef as React.MutableRefObject<HTMLDivElement>}
-          sx={fullScreen ? {} : contentDimensions(contentWidth, contentHeight)}
+          sx={contentDimensions(contentWidth, contentHeight, fullScreen, fullSize)}
         >
           {children}
         </DialogContent>

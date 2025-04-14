@@ -14,7 +14,6 @@ import { appBar } from '../components/appBar';
 import { toolbar } from '../components/toolbar';
 import { link } from '../components/link';
 import { dialogTitle } from '../components/dialogTitle';
-import { dialogContent } from '../components/dialogContent';
 import { tabs } from '../components/tabs';
 import { select } from '../components/select';
 import { list } from '../components/list';
@@ -76,9 +75,6 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiDialogTitle: {
     styleOverrides: dialogTitle(theme),
-  },
-  MuiDialogContent: {
-    styleOverrides: dialogContent(),
   },
   MuiSwitch: {
     defaultProps: {

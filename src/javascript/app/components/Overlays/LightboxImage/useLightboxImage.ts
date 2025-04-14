@@ -126,17 +126,30 @@ export const useLightboxImage = (): UseLightboxImage => {
 
         case 'Right':
         case 'ArrowRight':
+        case 'd':
           setLightboxImageNext(filteredImages.length);
           ev.preventDefault();
           break;
 
         case 'Left':
         case 'ArrowLeft':
+        case 'a':
           setLightboxImagePrev();
           ev.preventDefault();
           break;
 
+        case 'Home':
+          setLightboxImage(0);
+          ev.preventDefault();
+          break;
+
+        case 'End':
+          setLightboxImage(filteredImages.length - 1);
+          ev.preventDefault();
+          break;
+
         default:
+          console.log(ev.key);
           break;
       }
     };
