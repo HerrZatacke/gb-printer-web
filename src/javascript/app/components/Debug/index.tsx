@@ -2,6 +2,7 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import type { Theme } from '@mui/system';
 import useSettingsStore from '../../stores/settingsStore';
+import { getPreStyles } from '../../../styles/tools/getPreStyles';
 
 interface Props {
   children: React.ReactNode,
@@ -19,16 +20,14 @@ function Debug({ children }: Props) {
     <Typography
       variant="caption"
       fontFamily="monospace"
-      sx={(theme: Theme) => ({
-        wordBreak: 'break-all',
-        whiteSpace: 'pre-wrap',
-        overflow: 'hidden',
-        backgroundColor: theme.palette.warning[theme.palette.mode],
-        borderRadius: '3px',
+      component="pre"
+      sx={(theme: Theme) => getPreStyles(theme, {
         px: 0.5,
+        py: 0,
         mx: -0.5,
         mt: 1,
         mb: 0,
+        backgroundColor: theme.palette.warning[theme.palette.mode],
       })}
     >
       { children }
