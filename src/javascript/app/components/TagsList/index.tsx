@@ -1,5 +1,7 @@
 import React from 'react';
-import classnames from 'classnames';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import type { Theme } from '@mui/system';
 import { specialTags, SpecialTags } from '../../../consts/SpecialTags';
 
 interface Props {
@@ -29,35 +31,49 @@ function TagsList({ tags, fromGroup }: Props) {
     showTags = tags;
   }
 
+  const color = fromGroup ? 'tertiary' : 'secondary';
+
   return (
-    <ul className="gallery-image__tags">
+    <Stack
+      component="ul"
+      direction="row"
+      gap={0.66}
+      flexWrap="wrap"
+      sx={(theme: Theme) => ({
+        '& .MuiChip-root': {
+          fontSize: '0.75rem',
+          height: theme.spacing(2.5),
+          padding: 0,
+        },
+      })}
+    >
       { showTags
         .sort(sortTags)
         .map((tag) => (
-          <li
+          <Chip
             key={tag}
             title={tag === SpecialTags.FILTER_FAVOURITE ? 'Favourite' : tag}
-            className={classnames('gallery-image__tag', {
-              'gallery-image__tag--group': fromGroup,
-            })}
-          >
-            {tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
-          </li>
+            label={tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
+            size="small"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color={color}
+          />
         ))}
 
       {
         moreTags.length > 0 && (
-          <li
+          <Chip
             title={`+${moreTags.length} more tags:\n${moreTags.join('\n')}`}
-            className={classnames('gallery-image__tag', {
-              'gallery-image__tag--group': fromGroup,
-            })}
-          >
-            {`+${moreTags.length} more`}
-          </li>
+            label={`+${moreTags.length} more`}
+            size="small"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            color={color}
+          />
         )
       }
-    </ul>
+    </Stack>
   );
 }
 

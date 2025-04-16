@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import React from 'react';
 import ImageRender from '../ImageRender';
-import TagsList from '../GalleryImage/TagsList';
+import TagsList from '../TagsList';
 import { useGalleryGroup } from './useGalleryGroup';
 import { useGalleryImage } from '../GalleryImage/useGalleryImage';
 import { useImageGroups } from '../../../hooks/useImageGroups';

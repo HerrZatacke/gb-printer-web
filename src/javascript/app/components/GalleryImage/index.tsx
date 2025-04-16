@@ -6,7 +6,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GalleryImageButtons from '../GalleryImageButtons';
 import ImageRender from '../ImageRender';
 import DateSpan from './DateSpan';
-import TagsList from './TagsList';
+import TagsList from '../TagsList';
 import SVG from '../SVG';
 import { useGalleryImage } from './useGalleryImage';
 import { ImageSelectionMode } from '../../stores/filtersStore';
