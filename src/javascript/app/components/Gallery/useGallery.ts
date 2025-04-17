@@ -5,7 +5,6 @@ import useSettingsStore from '../../stores/settingsStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
-import type { GalleryViews } from '../../../consts/GalleryViews';
 import type { Image } from '../../../../types/Image';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 
@@ -13,7 +12,6 @@ interface UseGallery {
   imageCount: number,
   selectedCount: number,
   images: Image[],
-  galleryView: GalleryViews,
   filteredCount: number,
   page: number,
   covers: string[],
@@ -21,7 +19,7 @@ interface UseGallery {
 
 export const useGallery = (): UseGallery => {
   const { view, covers } = useGalleryTreeContext();
-  const { pageSize, galleryView } = useSettingsStore();
+  const { pageSize } = useSettingsStore();
 
   const {
     imageSelection,
@@ -62,6 +60,5 @@ export const useGallery = (): UseGallery => {
     page,
     images,
     covers,
-    galleryView,
   };
 };

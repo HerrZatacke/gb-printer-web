@@ -2,17 +2,7 @@ import React, { useMemo, useCallback, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { useTheme } from '@mui/material/styles';
-import { alpha } from '@mui/material';
-import { blend } from '@mui/system';
 import ButtonBase from '@mui/material/ButtonBase';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import type { Theme } from '@mui/system';
 import GalleryImageContextMenu from '../GalleryImageContextMenu';
 import ImageRender from '../ImageRender';
 import Debug from '../Debug';
@@ -23,6 +13,7 @@ import useSettingsStore from '../../stores/settingsStore';
 import { ImageSelectionMode } from '../../stores/filtersStore';
 import isTouchDevice from '../../../tools/isTouchDevice';
 import type { RGBNHashes } from '../../../../types/Image';
+import GalleryGridItem from '../GalleryGridItem';
 
 dayjs.extend(customParseFormat);
 
@@ -69,26 +60,6 @@ function GalleryImage({ page, hash }: Props) {
     .join('\n')
   ), [galleryImageData, hash]);
 
-  const theme: Theme = useTheme();
-
-  const rootStyle = useMemo(() => {
-    const baseStyles = {
-      '&:hover': {
-        backgroundColor: blend(theme.palette.tertiary.main, theme.palette.background.paper, 0.33),
-      },
-      transition: 'background-color 0.15s ease-in-out',
-    };
-
-    if (galleryImageData?.selectionIndex === -1) {
-      return baseStyles;
-    }
-
-    return {
-      ...baseStyles,
-      backgroundColor: blend(theme.palette.info.main, theme.palette.background.paper, 0.75),
-    };
-  }, [galleryImageData, theme]);
-
   if (!galleryImageData) {
     return null;
   }
@@ -129,122 +100,43 @@ function GalleryImage({ page, hash }: Props) {
     }
   };
 
-  const titleAttribute = [
-    title,
-    formatter(created),
-  ]
-    .filter(Boolean)
-    .join('\n');
-
-
   return (
-    <Card
-      component="li"
-      sx={rootStyle}
-    >
-      <ButtonBase
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...bindLongPress()}
-        onClick={handleCellClick}
-        disableRipple
-        sx={{
+    <GalleryGridItem
+      selectionText={selectionIndex !== -1 ? (selectionIndex + 1).toString(10) : ''}
+      title={title}
+      subheader={formatter(created)}
+      wrapperComponent={ButtonBase}
+      wrapperProps={{
+        ...bindLongPress(),
+        onClick: handleCellClick,
+        disableRipple: true,
+        sx: {
           display: 'block',
           width: '100%',
-        }}
-      >
-        <CardHeader
-          title={title}
-          subheader={formatter(created)}
-          action={(
-            <IconButton
-              onClick={(ev) => {
-                ev.stopPropagation();
-                setMenuAnchor(ev.target as HTMLElement);
-              }}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          )}
-          slotProps={{
-            title: {
-              title: titleAttribute,
-              variant: 'body1',
-              sx: {
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              },
-            },
-            subheader: {
-              title: titleAttribute,
-              variant: 'caption',
-              sx: {
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              },
-            },
-          }}
-          sx={{
-            gap: 1,
-            backgroundColor: alpha(theme.palette.fgtext.main, 0.1),
-            p: 1,
-            '.MuiCardHeader-content': {
-              minWidth: 0, // allow the ellipsis
-            },
-          }}
+        },
+      }}
+      contextMenuComponent={GalleryImageContextMenu}
+      contextMenuProps={{ hash }}
+      media={(
+        <ImageRender
+          lockFrame={lockFrame}
+          invertPalette={invertPalette}
+          palette={palette}
+          framePalette={framePalette}
+          invertFramePalette={invertFramePalette}
+          frameId={frame}
+          hash={hash}
+          hashes={hashes}
+          rotation={rotation}
         />
-        {/* <Badge */}
-        {/*   badgeContent={selectionIndex + 1} */}
-        {/*   color="info" */}
-        {/*   anchorOrigin={{ vertical: 'top', horizontal: 'left' }} */}
-        {/*   sx={{ */}
-        {/*     '& > .MuiBadge-badge': { */}
-        {/*       transform: 'scale(1.33)', */}
-        {/*       top: theme.spacing(0.5), */}
-        {/*       left: theme.spacing(0.5), */}
-        {/*     }, */}
-        {/*   }} */}
-        {/* /> */}
-        <CardMedia>
-          <ImageRender
-            lockFrame={lockFrame}
-            invertPalette={invertPalette}
-            palette={palette}
-            framePalette={framePalette}
-            invertFramePalette={invertFramePalette}
-            frameId={frame}
-            hash={hash}
-            hashes={hashes}
-            rotation={rotation}
-          />
-        </CardMedia>
-        { (tags.length > 0 || (debugText && enableDebug)) && (
-          <CardContent
-            sx={{
-              p: 1,
-              flexGrow: 1,
-              justifyContent: 'space-between',
-              display: 'flex',
-              flexDirection: 'column',
-              padding: 1,
-
-              '&:last-child': {
-                padding: 1,
-              },
-            }}
-          >
-            <TagsList tags={tags} />
-            <Debug text={debugText} />
-          </CardContent>
-        )}
-      </ButtonBase>
-      <GalleryImageContextMenu
-        hash={hash}
-        menuAnchor={menuAnchor}
-        onClose={() => setMenuAnchor(null)}
-      />
-    </Card>
+      )}
+      content={(tags.length > 0 || (debugText && enableDebug)) && (
+        <>
+          <TagsList tags={tags} />
+          <Debug text={debugText} />
+        </>
+      )}
+    />
   );
 }
 
