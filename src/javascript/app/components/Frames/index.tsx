@@ -1,11 +1,13 @@
 import React from 'react';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import useFrames from './useFrames';
 import Frame from '../Frame';
 import GalleryGrid from '../GalleryGrid';
 import GalleryViewSelect from '../GalleryViewSelect';
-import Input, { InputType } from '../Input';
 import { ExportTypes } from '../../../consts/exportTypes';
 
 function Frames() {
@@ -24,38 +26,32 @@ function Frames() {
   } = useFrames();
 
   return (
-    <div className="frames">
-      <div className="inputgroup">
-        <label htmlFor="framegroups" className="inputgroup__label">
-          Edit Framegroup
-        </label>
-        <select
-          id="framegroups"
-          className="inputgroup__input inputgroup__input--select"
-          value={selectedFrameGroup}
-          onChange={(ev) => {
-            setSelectedFrameGroup(ev.target.value);
-          }}
-        >
-          <option value="">Select frame group</option>
-          {
-            frameGroups.map(({ id, name }) => (
-              <option value={id} key={id}>{ name }</option>
-            ))
-          }
-        </select>
-      </div>
-      {
-        activeFrameGroup ? (
-          <Input
-            type={InputType.TEXT}
-            id="frames-edit-group-name"
-            onChange={setActiveFrameGroupName}
-            value={activeFrameGroup.name || ''}
-            labelText="Rename Framegroup"
-          />
-        ) : null
-      }
+    <Stack
+      direction="column"
+      gap={4}
+    >
+      <TextField
+        label="Edit Framegroup"
+        size="small"
+        select
+        value={selectedFrameGroup}
+        onChange={(ev) => {
+          setSelectedFrameGroup(ev.target.value);
+        }}
+      >
+        { frameGroups.map(({ id, name }) => (
+          <MenuItem key={id} value={id}>{ name }</MenuItem>
+        )) }
+      </TextField>
+      {activeFrameGroup && (
+        <TextField
+          label="Rename Framegroup"
+          size="small"
+          type="text"
+          onChange={(ev) => setActiveFrameGroupName(ev.target.value)}
+          value={activeFrameGroup.name || ''}
+        />
+      )}
       <GalleryViewSelect />
       <GalleryGrid>
         {(
@@ -93,7 +89,7 @@ function Frames() {
           ) : null
         }
       </ButtonGroup>
-    </div>
+    </Stack>
   );
 }
 
