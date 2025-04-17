@@ -1,40 +1,10 @@
 .gallery {
   display: grid;
   margin: 0 auto;
+  padding: 16px 0;
+
+  // variables (--gap, --columns, --image-size) are provided via JS
   gap: var(--gap);
-  --col-size: calc((2 * var(--tile-padding)) + var(--image-size));
-  grid-template-columns: repeat(var(--columns), var(--col-size));
-  width: calc((var(--col-size) * var(--columns)) + (var(--gap) * (var(--columns) - 1)));
-
-  // All values are being set via JS
-  // &--small {
-  //   --tile-padding: 10px;
-  //   --image-size: calc(160px / var(--ddpx));
-  //   --gap: calc(var(--small-gap) / var(--ddpx));
-  //   --columns
-  // }
-
-  &--1x {
-    --tile-padding: 10px;
-    --image-size: 160px;
-    --columns: var(--1x-columns);
-    --gap: var(--1x-gap);
-  }
-
-  &--2x {
-    --tile-padding: 20px;
-    --image-size: 320px;
-    --columns: var(--2x-columns);
-    --gap: var(--2x-gap);
-  }
-
-  &--max {
-    --tile-padding: 20px;
-    --columns: var(--max-columns);
-    --gap: var(--max-gap);
-  }
-
-  @media (max-width: $breakpoint-mobile) {
-    margin-bottom: 20px;
-  }
+  grid-template-columns: repeat(var(--columns), var(--image-size));
+  width: calc((var(--image-size) * var(--columns)) + (var(--gap) * (var(--columns) - 1)));
 }

@@ -197,6 +197,12 @@ export const generateTheme = ({
         },
         name: 'tertiary',
       }),
+      fgtext: theme.palette.augmentColor({
+        color: {
+          main: colorText,
+        },
+        name: 'fgtext',
+      }),
       bg: theme.palette.augmentColor({
         color: {
           main: colorPageBackground,

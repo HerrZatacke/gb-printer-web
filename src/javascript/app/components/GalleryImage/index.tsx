@@ -1,21 +1,28 @@
-import React, { useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import dayjs from 'dayjs';
-import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import GalleryImageButtons from '../GalleryImageButtons';
+import { useTheme } from '@mui/material/styles';
+import { alpha } from '@mui/material';
+import { blend } from '@mui/system';
+import ButtonBase from '@mui/material/ButtonBase';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import type { Theme } from '@mui/system';
+import GalleryImageContextMenu from '../GalleryImageContextMenu';
 import ImageRender from '../ImageRender';
-import DateSpan from './DateSpan';
-import TagsList from '../TagsList';
-import SVG from '../SVG';
-import { useGalleryImage } from './useGalleryImage';
-import { ImageSelectionMode } from '../../stores/filtersStore';
-import { ButtonOption } from '../GalleryImageButtons/useGalleryImageButtons';
-import type { RGBNHashes } from '../../../../types/Image';
-import isTouchDevice from '../../../tools/isTouchDevice';
-
-import './index.scss';
 import Debug from '../Debug';
+import TagsList from '../TagsList';
+import { useGalleryImage } from './useGalleryImage';
+import { useDateFormat } from '../../../hooks/useDateFormat';
+import useSettingsStore from '../../stores/settingsStore';
+import { ImageSelectionMode } from '../../stores/filtersStore';
+import isTouchDevice from '../../../tools/isTouchDevice';
+import type { RGBNHashes } from '../../../../types/Image';
 
 dayjs.extend(customParseFormat);
 
@@ -24,19 +31,9 @@ interface Props {
   page: number,
 }
 
-const buttons = [
-  ButtonOption.SELECT,
-  ButtonOption.EDIT,
-  ButtonOption.FAVOURITE,
-  ButtonOption.DOWNLOAD,
-  ButtonOption.DELETE,
-  ButtonOption.VIEW,
-  ButtonOption.SHARE,
-  ButtonOption.PLUGINS,
-];
-
 function GalleryImage({ page, hash }: Props) {
-  const [showButtons, setShowButtons] = useState<boolean>(false);
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const { enableDebug } = useSettingsStore();
 
   const {
     galleryImageData,
@@ -44,10 +41,12 @@ function GalleryImage({ page, hash }: Props) {
     editImage,
   } = useGalleryImage(hash);
 
+  const { formatter } = useDateFormat();
+
   const bindLongPress = useLongPress(() => {
     if (isTouchDevice()) {
       updateImageSelection(
-        galleryImageData?.isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
+        galleryImageData?.selectionIndex !== -1 ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
         false,
         page,
       );
@@ -56,8 +55,39 @@ function GalleryImage({ page, hash }: Props) {
 
   const globalClickListener = useCallback(() => {
     window.removeEventListener('click', globalClickListener);
-    setShowButtons(false);
+    setMenuAnchor(null);
   }, []);
+
+
+  const debugText = useMemo<string>(() => ([
+    hash,
+    ...(galleryImageData?.hashes ? Object.keys(galleryImageData.hashes).map((channel) => (
+      `${channel.toUpperCase()}: ${galleryImageData.hashes?.[channel as keyof RGBNHashes]}`
+    )) : []),
+  ]
+    .filter(Boolean)
+    .join('\n')
+  ), [galleryImageData, hash]);
+
+  const theme: Theme = useTheme();
+
+  const rootStyle = useMemo(() => {
+    const baseStyles = {
+      '&:hover': {
+        backgroundColor: blend(theme.palette.tertiary.main, theme.palette.background.paper, 0.33),
+      },
+      transition: 'background-color 0.15s ease-in-out',
+    };
+
+    if (galleryImageData?.selectionIndex === -1) {
+      return baseStyles;
+    }
+
+    return {
+      ...baseStyles,
+      backgroundColor: blend(theme.palette.info.main, theme.palette.background.paper, 0.75),
+    };
+  }, [galleryImageData, theme]);
 
   if (!galleryImageData) {
     return null;
@@ -74,22 +104,21 @@ function GalleryImage({ page, hash }: Props) {
     lockFrame,
     title,
     tags,
-    isFavourite,
-    isSelected,
-    hideDate,
-    preferredLocale,
-    meta,
+    selectionIndex,
     rotation,
-    enableDebug,
   } = galleryImageData;
 
   const handleCellClick = (ev: React.MouseEvent) => {
     if (ev.ctrlKey || ev.shiftKey) {
       ev.preventDefault();
-      updateImageSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD, ev.shiftKey, page);
+      updateImageSelection(
+        selectionIndex !== -1 ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
+        ev.shiftKey,
+        page,
+      );
     } else if (isTouchDevice()) {
-      if (!showButtons) {
-        setShowButtons(true);
+      if (!menuAnchor) {
+        setMenuAnchor(ev.target as HTMLElement);
         window.requestAnimationFrame(() => {
           window.addEventListener('click', globalClickListener);
         });
@@ -100,89 +129,122 @@ function GalleryImage({ page, hash }: Props) {
     }
   };
 
+  const titleAttribute = [
+    title,
+    formatter(created),
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+
   return (
-    <li
-      className={
-        classnames('gallery-image gallery-item', {
-          'gallery-item--selected': isSelected,
-        })
-      }
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...bindLongPress()}
-      onClick={handleCellClick}
-      onMouseEnter={() => {
-        if (!isTouchDevice()) {
-          setShowButtons(true);
-        }
-      }}
-      onMouseLeave={() => {
-        if (!isTouchDevice()) {
-          setShowButtons(false);
-        }
-      }}
-      role="presentation"
-      title={enableDebug ? JSON.stringify(galleryImageData, null, 2) : undefined}
+    <Card
+      component="li"
+      sx={rootStyle}
     >
-      {
-        showButtons ? (
-          <GalleryImageButtons
-            isFavourite={isFavourite}
+      <ButtonBase
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...bindLongPress()}
+        onClick={handleCellClick}
+        disableRipple
+        sx={{
+          display: 'block',
+          width: '100%',
+        }}
+      >
+        <CardHeader
+          title={title}
+          subheader={formatter(created)}
+          action={(
+            <IconButton
+              onClick={(ev) => {
+                ev.stopPropagation();
+                setMenuAnchor(ev.target as HTMLElement);
+              }}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          )}
+          slotProps={{
+            title: {
+              title: titleAttribute,
+              variant: 'body1',
+              sx: {
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              },
+            },
+            subheader: {
+              title: titleAttribute,
+              variant: 'caption',
+              sx: {
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              },
+            },
+          }}
+          sx={{
+            gap: 1,
+            backgroundColor: alpha(theme.palette.fgtext.main, 0.1),
+            p: 1,
+            '.MuiCardHeader-content': {
+              minWidth: 0, // allow the ellipsis
+            },
+          }}
+        />
+        {/* <Badge */}
+        {/*   badgeContent={selectionIndex + 1} */}
+        {/*   color="info" */}
+        {/*   anchorOrigin={{ vertical: 'top', horizontal: 'left' }} */}
+        {/*   sx={{ */}
+        {/*     '& > .MuiBadge-badge': { */}
+        {/*       transform: 'scale(1.33)', */}
+        {/*       top: theme.spacing(0.5), */}
+        {/*       left: theme.spacing(0.5), */}
+        {/*     }, */}
+        {/*   }} */}
+        {/* /> */}
+        <CardMedia>
+          <ImageRender
+            lockFrame={lockFrame}
+            invertPalette={invertPalette}
+            palette={palette}
+            framePalette={framePalette}
+            invertFramePalette={invertFramePalette}
+            frameId={frame}
             hash={hash}
-            imageTitle={title}
-            buttons={buttons}
-            tags={tags}
+            hashes={hashes}
+            rotation={rotation}
           />
-        ) : null
-      }
-      <div className="gallery-image__image">
-        <ImageRender
-          lockFrame={lockFrame}
-          invertPalette={invertPalette}
-          palette={palette}
-          framePalette={framePalette}
-          invertFramePalette={invertFramePalette}
-          frameId={frame}
-          hash={hash}
-          hashes={hashes}
-          rotation={rotation}
-        />
-      </div>
-      {title ? (
-        <span
-          className="gallery-image__title"
-        >
-          {title}
-        </span>
-      ) : null}
-      <TagsList tags={tags} />
-      <div className="gallery-image__created-meta">
-        {(
-          meta ? (
-            <>
-              <div className="gallery-image__meta">
-                <SVG name="meta" />
-              </div>
-              <pre className="gallery-image__meta-pre">
-                { JSON.stringify(meta, null, 2) }
-              </pre>
-            </>
-          ) : null
+        </CardMedia>
+        { (tags.length > 0 || (debugText && enableDebug)) && (
+          <CardContent
+            sx={{
+              p: 1,
+              flexGrow: 1,
+              justifyContent: 'space-between',
+              display: 'flex',
+              flexDirection: 'column',
+              padding: 1,
+
+              '&:last-child': {
+                padding: 1,
+              },
+            }}
+          >
+            <TagsList tags={tags} />
+            <Debug text={debugText} />
+          </CardContent>
         )}
-        <DateSpan
-          className="gallery-image__created"
-          hideDate={hideDate}
-          created={created}
-          preferredLocale={preferredLocale}
-        />
-      </div>
-      <Debug>
-        { hash }
-        { hashes ? '\n' : null }
-        { hashes ? Object.keys(hashes).map((channel) => (
-          `${channel.toUpperCase()}: ${hashes[channel as keyof RGBNHashes]}`
-        )).join('\n') : null }
-      </Debug>
-    </li>
+      </ButtonBase>
+      <GalleryImageContextMenu
+        hash={hash}
+        menuAnchor={menuAnchor}
+        onClose={() => setMenuAnchor(null)}
+      />
+    </Card>
   );
 }
 

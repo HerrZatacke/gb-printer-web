@@ -6,13 +6,12 @@ import useItemsStore from '../../stores/itemsStore';
 import useSettingsStore from '../../stores/settingsStore';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import { missingGreyPalette } from '../../defaults';
-import { SpecialTags } from '../../../consts/SpecialTags';
 import { isRGBNImage } from '../../../tools/isRGBNImage';
 import { getImagePalettes } from '../../../tools/getImagePalettes';
 import { getPaletteSettings } from '../../../tools/getPaletteSettings';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
-import type { ImageMetadata, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
+import type { MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
 import type { Palette } from '../../../../types/Palette';
 
@@ -27,18 +26,13 @@ interface GalleryImageData {
   frame?: string,
   hashes?: RGBNHashes,
   tags: string[],
-  isFavourite: boolean,
-  isSelected: boolean,
+  selectionIndex: number,
   palette: RGBNPalette | string[],
   framePalette: string[],
   lockFrame?: boolean,
   invertPalette?: boolean,
   invertFramePalette?: boolean,
-  hideDate: boolean,
-  preferredLocale: string,
-  meta?: ImageMetadata,
   rotation?: Rotation,
-  enableDebug: boolean,
 }
 
 interface UseGalleryImage {
@@ -50,12 +44,7 @@ interface UseGalleryImage {
 export const useGalleryImage = (hash: string): UseGalleryImage => {
   const { setEditImages } = useEditStore();
 
-  const {
-    enableDebug,
-    hideDates,
-    preferredLocale,
-    pageSize,
-  } = useSettingsStore();
+  const { pageSize } = useSettingsStore();
 
   const {
     filtersActiveTags,
@@ -69,7 +58,7 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
 
   const { palettes, images: stateImages } = useItemsStore();
 
-  const isSelected = imageSelection.includes(hash);
+  const selectionIndex = imageSelection.indexOf(hash);
 
   const galleryImageData = useMemo((): GalleryImageData | undefined => {
     const image = stateImages.find((img) => img.hash === hash);
@@ -105,20 +94,15 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       frame: image.frame,
       hashes: (image as RGBNImage).hashes || undefined,
       tags: image.tags,
-      isFavourite: image.tags.includes(SpecialTags.FILTER_FAVOURITE),
       palette,
       framePalette,
       lockFrame: image.lockFrame,
       invertPalette,
       invertFramePalette,
-      hideDate: hideDates,
-      meta: image.meta,
       rotation: image.rotation,
-      preferredLocale,
-      enableDebug,
-      isSelected,
+      selectionIndex,
     });
-  }, [enableDebug, hash, hideDates, isSelected, palettes, preferredLocale, stateImages]);
+  }, [hash, selectionIndex, palettes, stateImages]);
 
   const { images: treeImages } = useGalleryTreeContext();
 

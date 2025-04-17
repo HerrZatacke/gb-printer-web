@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import useDialogsStore from '../../stores/dialogsStore';
 import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
@@ -10,14 +11,19 @@ import useDownload from '../../../hooks/useDownload';
 import useShareImage from '../../../hooks/useShareImage';
 import { canShare } from '../../../tools/canShare';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
+import { SpecialTags } from '../../../consts/SpecialTags';
+import { DialoqQuestionType } from '../../../../types/Dialog';
 
-interface UseGalleryImageButtons {
+interface UseGalleryImageContext {
   isSelected: boolean,
   canShare: boolean,
   hasPlugins: boolean,
+  isFavourite: boolean,
+  hasMeta: boolean,
   startDownload: () => void,
   deleteImage: () => void,
   shareImage: () => void,
+  showMetadata: () => void,
   updateImageToSelection: (mode: ImageSelectionMode) => void,
   setLightboxImage: () => void,
   updateFavouriteTag: (isFavourite: boolean) => void,
@@ -35,15 +41,7 @@ export enum ButtonOption {
   PLUGINS = 'plugins',
 }
 
-interface UseGalleryImageButtonsParams {
-  hash: string,
-  tags: string[],
-  imageTitle?: string,
-}
-
-export const useGalleryImageButtons = (
-  { hash, imageTitle, tags }: UseGalleryImageButtonsParams,
-): UseGalleryImageButtons => {
+export const useGalleryImageContext = (hash: string): UseGalleryImageContext => {
   const {
     imageSelection,
     updateImageSelection,
@@ -61,17 +59,24 @@ export const useGalleryImageButtons = (
   const { downloadSingleImage } = useDownload();
   const { shareImage } = useShareImage();
 
+  const { images } = useItemsStore();
+  const image = useMemo(() => (
+    images.find((img) => img.hash === hash)
+  ), [hash, images]);
+
   const isSelected = imageSelection.includes(hash);
   const hasPlugins = !!plugins.length;
 
   return {
     hasPlugins,
     isSelected,
+    isFavourite: image?.tags.includes(SpecialTags.FILTER_FAVOURITE) || false,
+    hasMeta: !!image?.meta,
     canShare: canShare(),
     startDownload: () => downloadSingleImage(hash),
     deleteImage: () => {
       setDialog({
-        message: imageTitle ? `Delete image "${imageTitle}"?` : 'Delete this image?',
+        message: image?.title ? `Delete image "${image.title}"?` : 'Delete this image?',
         confirm: async () => {
           deleteImages([hash]);
         },
@@ -79,6 +84,15 @@ export const useGalleryImageButtons = (
       });
     },
     shareImage: () => shareImage(hash),
+    showMetadata: () => {
+      setDialog({
+        message: image?.title ? `Meta-Info for "${image.title}"` : 'Meta-Info',
+        questions: () => ([
+          { type: DialoqQuestionType.INFO, label: JSON.stringify(image?.meta), key: 'meta' },
+        ]),
+        confirm: async () => dismissDialog(0),
+      });
+    },
     updateImageToSelection: (mode: ImageSelectionMode) => {
       updateImageSelection(mode, [hash]);
     },
@@ -88,8 +102,8 @@ export const useGalleryImageButtons = (
           view.images,
           { filtersActiveTags, sortBy, recentImports },
         )
-          .filter((image) => !covers.includes(image.hash))
-          .findIndex((image) => hash === image.hash),
+          .filter((img) => !covers.includes(img.hash))
+          .findIndex((img) => hash === img.hash),
       );
     },
     updateFavouriteTag: (isFavourite: boolean) => {
@@ -98,7 +112,7 @@ export const useGalleryImageButtons = (
     },
     editImage: () => {
       setEditImages({
-        tags,
+        tags: image?.tags || [],
         batch: [hash],
       });
     },
