@@ -64,6 +64,7 @@ function TagsList({ tags, fromGroup }: Props) {
       {
         moreTags.length > 0 && (
           <Chip
+            variant="outlined"
             title={`+${moreTags.length} more tags:\n${moreTags.join('\n')}`}
             label={`+${moreTags.length} more`}
             size="small"
