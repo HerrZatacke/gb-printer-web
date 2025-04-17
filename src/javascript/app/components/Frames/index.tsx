@@ -3,10 +3,10 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import useFrames from './useFrames';
 import Frame from '../Frame';
+import GalleryGrid from '../GalleryGrid';
+import GalleryViewSelect from '../GalleryViewSelect';
 import Input, { InputType } from '../Input';
 import { ExportTypes } from '../../../consts/exportTypes';
-
-import './index.scss';
 
 function Frames() {
 
@@ -56,7 +56,8 @@ function Frames() {
           />
         ) : null
       }
-      <ul className="frames__list">
+      <GalleryViewSelect />
+      <GalleryGrid>
         {(
           groupFrames?.map((frame) => (
             <Frame
@@ -67,12 +68,7 @@ function Frames() {
             />
           ))
         )}
-        <li className="frame frame--dummy" key="dummy1" />
-        <li className="frame frame--dummy" key="dummy2" />
-        <li className="frame frame--dummy" key="dummy3" />
-        <li className="frame frame--dummy" key="dummy4" />
-        <li className="frame frame--dummy" key="dummy5" />
-      </ul>
+      </GalleryGrid>
       <ButtonGroup
         variant="contained"
         fullWidth

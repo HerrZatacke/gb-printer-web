@@ -113,6 +113,7 @@ function GalleryImage({ page, hash }: Props) {
         sx: {
           display: 'block',
           width: '100%',
+          textAlign: 'left',
         },
       }}
       contextMenuComponent={GalleryImageContextMenu}

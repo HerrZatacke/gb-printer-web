@@ -26,6 +26,8 @@ interface WrapperProps extends PropsWithChildren {
 interface ContextMenuProps {
   groupId?: string,
   hash?: string,
+  deleteFrame?: () => void,
+  editFrame?: () => void,
 }
 
 interface Props {

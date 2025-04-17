@@ -1,11 +1,12 @@
 import React from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
+import ButtonBase from '@mui/material/ButtonBase';
 import GameBoyImage from '../GameBoyImage';
-import FrameButtons from '../FrameButtons';
 import useFrame from './useFrame';
-
-import './index.scss';
 import Debug from '../Debug';
+import GalleryGridItem from '../GalleryGridItem';
+import useSettingsStore from '../../stores/settingsStore';
+import FrameContextMenu from '../FrameContextMenu';
 
 interface Props {
   frameId: string,
@@ -14,6 +15,8 @@ interface Props {
 }
 
 function Frame({ frameId, name, palette }: Props) {
+  const { enableDebug } = useSettingsStore();
+
   const {
     tiles,
     deleteFrame,
@@ -27,40 +30,36 @@ function Frame({ frameId, name, palette }: Props) {
     return null;
   }
 
+  const usageText = usage ? `Used ${usage} times` : 'Not used';
+
   return (
-    <li
-      className="frame"
-      onClick={editFrame}
-      role="presentation"
-    >
-      <div className="frame__image">
-        { tiles.length ? (
-          <GameBoyImage
-            lockFrame={false}
-            invertPalette={false}
-            palette={palette}
-            imageStartLine={imageStartLine}
-            tiles={tiles}
-          />
-        ) : null }
-      </div>
-      <div className="frame__row">
-        <code className="frame__id">
-          {frameId}
-        </code>
-        <span className="frame__usage">
-          {usage ? `Used ${usage} times` : 'Not used'}
-        </span>
-      </div>
-      <span className="frame__name">
-        {name}
-      </span>
-      <Debug text={frameHash} />
-      <FrameButtons
-        deleteFrame={deleteFrame}
-        editFrame={editFrame}
-      />
-    </li>
+    <GalleryGridItem
+      selectionText=""
+      title={name}
+      subheader={`(${frameId}) ${usageText}`}
+      wrapperComponent={ButtonBase}
+      wrapperProps={{
+        onClick: editFrame,
+        disableRipple: true,
+        sx: {
+          display: 'block',
+          width: '100%',
+          textAlign: 'left',
+        },
+      }}
+      contextMenuComponent={FrameContextMenu}
+      contextMenuProps={{ deleteFrame, editFrame }}
+      media={tiles.length ? (
+        <GameBoyImage
+          lockFrame={false}
+          invertPalette={false}
+          palette={palette}
+          imageStartLine={imageStartLine}
+          tiles={tiles}
+        />
+      ) : null}
+      content={enableDebug && <Debug text={frameHash} />}
+    />
   );
 }
 
