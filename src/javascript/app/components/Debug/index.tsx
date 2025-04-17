@@ -5,11 +5,11 @@ import useSettingsStore from '../../stores/settingsStore';
 import { getPreStyles } from '../../../styles/tools/getPreStyles';
 
 interface Props {
-  children: React.ReactNode,
+  text: string,
 }
 
 
-function Debug({ children }: Props) {
+function Debug({ text }: Props) {
   const { enableDebug } = useSettingsStore();
 
   if (!enableDebug) {
@@ -18,19 +18,19 @@ function Debug({ children }: Props) {
 
   return (
     <Typography
+      title={text}
       variant="caption"
       fontFamily="monospace"
       component="pre"
       sx={(theme: Theme) => getPreStyles(theme, {
         px: 0.5,
         py: 0,
-        mx: -0.5,
         mt: 1,
         mb: 0,
         backgroundColor: theme.palette.warning[theme.palette.mode],
       })}
     >
-      { children }
+      { text }
     </Typography>
   );
 }

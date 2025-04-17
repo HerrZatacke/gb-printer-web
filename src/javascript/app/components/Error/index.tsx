@@ -16,9 +16,7 @@ function Error() {
       >
         { (error as { statusText: string})?.statusText || (error as Error).message }
       </Typography>
-      <Debug>
-        { (error as Error).stack }
-      </Debug>
+      <Debug text={(error as Error).stack || ''} />
     </Stack>
   );
 }

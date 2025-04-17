@@ -55,7 +55,7 @@ function Frame({ frameId, name, palette }: Props) {
       <span className="frame__name">
         {name}
       </span>
-      <Debug>{ frameHash }</Debug>
+      <Debug text={frameHash} />
       <FrameButtons
         deleteFrame={deleteFrame}
         editFrame={editFrame}
