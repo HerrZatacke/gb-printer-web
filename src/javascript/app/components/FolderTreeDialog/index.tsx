@@ -1,12 +1,15 @@
 import React from 'react';
 import Link from '@mui/material/Link';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
-import { useTheme } from '@mui/material/styles';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { useTheme } from '@mui/material/styles';
+import { alpha } from '@mui/material';
+import type { Theme } from '@mui/system';
 import { Link as RouterLink } from 'react-router';
 import Lightbox from '../Lightbox';
-import { ROOT_ID, useGalleryTreeContext } from '../../contexts/galleryTree';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import { useNavigationTools } from '../../contexts/navigationTools';
+import { usePathSegments } from '../../../hooks/usePathSegments';
 import type { TreeImageGroup } from '../../../../types/ImageGroup';
 
 interface FolderTreeItemProps {
@@ -25,10 +28,20 @@ function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
           component={RouterLink}
           to={getGroupPath(group.id)}
           onClick={onClick}
+          sx={{ display: 'block' }}
         >
           {group.title}
         </Link>
       )}
+      sx={(theme: Theme) => ({
+        '& > .MuiTreeItem-content.Mui-selected': {
+          backgroundColor: alpha(theme.palette.secondary.main, 0.8),
+          color: theme.palette.secondary.contrastText,
+          '&:hover,&.Mui-focused': {
+            backgroundColor: theme.palette.secondary.main,
+          },
+        },
+      })}
     >
       {
         group.groups.map((childGroup) => (
@@ -50,7 +63,11 @@ interface FolderTreeDialogProps {
 
 function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
   const { pathsOptions, root } = useGalleryTreeContext();
+  const { currentGroup } = useNavigationTools();
   const theme = useTheme();
+  const { segments } = usePathSegments();
+
+  const ids = segments.map(({ group }) => (group.id));
 
   if (pathsOptions.length < 2) {
     return null;
@@ -63,10 +80,12 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
       deny={onClose}
       open={open}
       header="Gallery Navigation"
+      keepMounted={false}
     >
       <SimpleTreeView
         expansionTrigger="iconContainer"
-        defaultExpandedItems={[ROOT_ID]}
+        defaultExpandedItems={ids}
+        selectedItems={currentGroup.id}
         sx={{
           width: theme.breakpoints.values.sm,
           height: '60vh',
