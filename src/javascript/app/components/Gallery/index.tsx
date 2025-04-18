@@ -26,7 +26,7 @@ function Gallery() {
   return (
     <Stack
       direction="column"
-      gap={1}
+      gap={2}
     >
       <StorageWarning />
       <GalleryNumbers
@@ -37,37 +37,33 @@ function Gallery() {
       { enableImageGroups ? (
         <FolderBreadcrumb />
       ) : null }
-      <Stack
-        direction="column"
-        gap={2}
-      >
-        <GalleryHeader page={page} isSticky />
-        <Pagination page={page} />
-        <GalleryGrid>
-          { images.map((image) => (
-            covers.includes(image.hash) ? (
-              <GalleryGroup
-                key={image.hash}
-                hash={image.hash}
-              />
-            ) : (
-              <GalleryImage
-                key={image.hash}
-                hash={image.hash}
-                page={page}
-              />
-            )
-          )) }
-        </GalleryGrid>
-        {
-          images.length < 3 ? null : (
-            <>
-              <Pagination page={page} />
-              <GalleryHeader page={page} isBottom />
-            </>
+
+      <GalleryHeader page={page} isSticky />
+      <Pagination page={page} />
+      <GalleryGrid>
+        { images.map((image) => (
+          covers.includes(image.hash) ? (
+            <GalleryGroup
+              key={image.hash}
+              hash={image.hash}
+            />
+          ) : (
+            <GalleryImage
+              key={image.hash}
+              hash={image.hash}
+              page={page}
+            />
           )
-        }
-      </Stack>
+        )) }
+      </GalleryGrid>
+      {
+        images.length < 3 ? null : (
+          <>
+            <Pagination page={page} />
+            <GalleryHeader page={page} isBottom />
+          </>
+        )
+      }
     </Stack>
   );
 }
