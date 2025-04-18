@@ -17,6 +17,8 @@ import { dialogTitle } from '../components/dialogTitle';
 import { tabs } from '../components/tabs';
 import { select } from '../components/select';
 import { list } from '../components/list';
+import { menuItem } from '../components/menuItem';
+import { cardActionArea } from '../components/cardActionArea';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -104,6 +106,12 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiList: {
     styleOverrides: list(),
+  },
+  MuiMenuItem: {
+    styleOverrides: menuItem(theme),
+  },
+  MuiCardActionArea: {
+    styleOverrides: cardActionArea(),
   },
 });
 
