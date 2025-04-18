@@ -2,7 +2,6 @@ import React, { useMemo, useCallback, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import ButtonBase from '@mui/material/ButtonBase';
 import GalleryImageContextMenu from '../GalleryImageContextMenu';
 import ImageRender from '../ImageRender';
 import Debug from '../Debug';
@@ -105,7 +104,6 @@ function GalleryImage({ page, hash }: Props) {
       selectionText={selectionIndex !== -1 ? (selectionIndex + 1).toString(10) : ''}
       title={title}
       subheader={formatter(created)}
-      wrapperComponent={ButtonBase}
       wrapperProps={{
         ...bindLongPress(),
         onClick: handleCellClick,

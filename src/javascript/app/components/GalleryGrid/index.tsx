@@ -5,22 +5,37 @@ import useSettingsStore from '../../stores/settingsStore';
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 import { GalleryViews } from '../../../consts/GalleryViews';
 
-function GalleryGrid({ children }: PropsWithChildren) {
+interface Props extends PropsWithChildren {
+  fixedView?: GalleryViews,
+}
+
+function GalleryGrid({ fixedView, children }: Props) {
   const screenDimensions = useScreenDimensions();
   const { galleryView } = useSettingsStore();
+
+  const usedView = fixedView || galleryView;
 
   const styleVariables = useMemo<CSSPropertiesVars>(() => {
     let imageSize = '';
     let gap = '';
     let columns = '';
+    let width = 'auto';
 
-    switch (galleryView) {
+    switch (usedView) {
       case GalleryViews.GALLERY_VIEW_SMALL: {
         const gapNumber = 16 / screenDimensions.ddpx;
         const imageSizeNumber = 160 / screenDimensions.ddpx;
         imageSize = `${imageSizeNumber}px`;
         gap = `${gapNumber}px`;
         columns = Math.floor((screenDimensions.layoutWidth + gapNumber) / (imageSizeNumber + gapNumber)).toString(10);
+        break;
+      }
+
+      case GalleryViews.PALETTE_VIEW: {
+        imageSize = '1fr';
+        gap = '32px';
+        columns = Math.floor(screenDimensions.layoutWidth / 290).toString(10);
+        width = '100%';
         break;
       }
 
@@ -50,17 +65,14 @@ function GalleryGrid({ children }: PropsWithChildren) {
     }
 
     return {
-      '--image-size': imageSize,
-      '--columns': columns,
-      '--layout-width': `${screenDimensions.layoutWidth}px`,
       gap,
       display: 'grid',
       margin: '0 auto',
       padding: '16px 0',
-      gridTemplateColumns: 'repeat(var(--columns), var(--image-size))',
-      width: 'calc((var(--image-size) * var(--columns)) + (var(--gap) * (var(--columns) - 1)))',
+      gridTemplateColumns: `repeat(${columns}, ${imageSize})`,
+      width,
     };
-  }, [galleryView, screenDimensions]);
+  }, [usedView, screenDimensions]);
 
   return (
     <Box

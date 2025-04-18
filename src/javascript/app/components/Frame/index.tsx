@@ -1,6 +1,5 @@
 import React from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
-import ButtonBase from '@mui/material/ButtonBase';
 import GameBoyImage from '../GameBoyImage';
 import useFrame from './useFrame';
 import Debug from '../Debug';
@@ -37,7 +36,6 @@ function Frame({ frameId, name, palette }: Props) {
       selectionText=""
       title={name}
       subheader={`(${frameId}) ${usageText}`}
-      wrapperComponent={ButtonBase}
       wrapperProps={{
         onClick: editFrame,
         disableRipple: true,

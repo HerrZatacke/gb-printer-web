@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Box from '@mui/material/Box';
 import ImageRender from '../ImageRender';
 import TagsList from '../TagsList';
 import GalleryGroupContextMenu from '../GalleryGroupContextMenu';
@@ -35,7 +34,6 @@ function GalleryGroup({ hash }: Props) {
       selectionText=""
       title={group.title}
       subheader={`${group.images.length} items`}
-      wrapperComponent={Box}
       wrapperProps={{
         component: Link,
         to: `/gallery/${path}page/1`,

@@ -5,10 +5,12 @@ import { alpha } from '@mui/material';
 import { blend } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface WrapperProps extends PropsWithChildren {
@@ -28,13 +30,18 @@ interface ContextMenuProps {
   hash?: string,
   deleteFrame?: () => void,
   editFrame?: () => void,
+  isPredefined?: boolean,
+  clonePalette?: () => void,
+  deletePalette?: () => void,
+  editPalette?: () => void,
+  setActive?: () => void,
 }
 
 interface Props {
   selectionText: string,
   title: string,
+  titleIcon?: React.ReactNode,
   subheader?: string | null,
-  wrapperComponent: React.ElementType,
   wrapperProps: WrapperProps,
   media: React.ReactNode,
   content?: React.ReactNode,
@@ -45,8 +52,8 @@ interface Props {
 function GalleryGridItem({
   selectionText,
   title,
+  titleIcon,
   subheader,
-  wrapperComponent: ItemWrapper,
   wrapperProps,
   media,
   content,
@@ -81,12 +88,23 @@ function GalleryGridItem({
       component="li"
       sx={rootStyle}
     >
-      <ItemWrapper
+      <CardActionArea
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...wrapperProps}
+        component={wrapperProps.component || 'span'}
+        tabIndex={wrapperProps.component ? undefined : -1}
       >
         <CardHeader
-          title={title}
+          title={titleIcon ? (
+            <Stack
+              direction="row"
+              gap={0.5}
+              alignItems="center"
+            >
+              {titleIcon}
+              {title}
+            </Stack>
+          ) : title}
           subheader={subheader}
           action={(
             <IconButton
@@ -149,7 +167,7 @@ function GalleryGridItem({
             {content}
           </CardContent>
         )}
-      </ItemWrapper>
+      </CardActionArea>
       <ContextMenuComponent
         menuAnchor={menuAnchor}
         onClose={() => setMenuAnchor(null)}
