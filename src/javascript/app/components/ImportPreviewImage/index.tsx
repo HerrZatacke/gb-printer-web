@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import isGoodScaleFactor from '../../../tools/isGoodScaleFactor';
 import { applyBitmapFilter } from '../../../tools/applyBitmapFilter';
-import SVG from '../SVG';
-import './index.scss';
 
 interface Props {
   imageData: ImageData, // From QueueImage
@@ -43,37 +43,40 @@ function ImportPreviewImage({
   });
 
   return (
-    <div
-      className="import-preview-image"
-      title={`${fileName} - ${scaleFactor}x`}
+    <Stack
+      direction="column"
+      gap={1}
     >
-      <canvas
-        className="import-preview-image__canvas"
-        width={width}
-        height={height}
-        ref={originalCanvas}
-      />
-      <SVG
-        className="import-preview-image__arrow"
-        name="right"
-      />
-      <canvas
-        className="import-preview-image__canvas"
-        width={width}
-        height={height}
-        ref={canvas}
-      />
+      <Stack
+        title={`${fileName} - ${scaleFactor}x`}
+        direction="row"
+        gap={1}
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <canvas
+          width={width}
+          height={height}
+          ref={originalCanvas}
+        />
+        <DoubleArrowIcon fontSize="large" />
+        <canvas
+          width={width}
+          height={height}
+          ref={canvas}
+        />
+      </Stack>
       {
         isGoodScaleFactor(scaleFactor) ? null : (
           <Alert
             severity="warning"
             variant="filled"
           >
-            {`The scale factor of your image is ${scaleFactor.toPrecision(3)}. To get a clean result without artifacts, use images with factors being powers of two. (1, 2, 4, 8 ...)`}
+            {`The scale factor of your image is ${scaleFactor.toPrecision(3)}. To get a clean result without artifacts, try to import only images with it's dimensions being scaled by powers of two. (1, 2, 4, 8 ...)`}
           </Alert>
         )
       }
-    </div>
+    </Stack>
   );
 }
 
