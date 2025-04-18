@@ -1,5 +1,4 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import conf from '../../config.json' assert { type: 'json' };
 
 const mockResponse = {
   mdns: 'mockprinter',
@@ -14,16 +13,16 @@ const mockResponse = {
   },
 };
 
-const initWifiProxy = (app) => {
-  if (!conf || !conf.wifiproxy) {
+const initWifiProxy = (app, projectConfig) => {
+  if (!projectConfig || !projectConfig.wifiproxy) {
     return;
   }
 
   // eslint-disable-next-line no-console
-  console.info(`Initializing wifi proxy to "${conf.wifiproxy}"`);
+  console.info(`Initializing wifi proxy to "${projectConfig.wifiproxy}"`);
 
   const wifiProxy = createProxyMiddleware({
-    target: `${conf.wifiproxy}/wificonfig`,
+    target: `${projectConfig.wifiproxy}/wificonfig`,
     changeOrigin: true,
     onError: (error, req, res) => {
       res.writeHead(200, {

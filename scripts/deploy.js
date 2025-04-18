@@ -4,16 +4,17 @@ import walkdir from 'walkdir';
 import rimraf from 'rimraf';
 import mkdirp from 'mkdirp';
 import copyAndGZ from './copyAndGZ.js';
-import conf from '../config.json' assert { type: 'json' };
 import config from './webpack.prod.mjs';
 
 const { output: { path: outputPath } } = await config();
+const projectConfig = JSON.parse(await fs.promises.readFile(path.join(process.cwd(), 'config.json'), { encoding: 'utf-8' }));
 
-if (!conf || !conf.deploy || !conf.deploy.dir) {
+if (!projectConfig || !projectConfig.deploy || !projectConfig.deploy.dir) {
+  console.error('Project Config of deploy dir missing');
   process.exit(0);
 }
 
-const { dir, gzip } = conf.deploy;
+const { dir, gzip } = projectConfig.deploy;
 
 const coypFunc = gzip ? copyAndGZ : fs.copyFile;
 
