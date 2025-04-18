@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react/jsx-no-bind */
+import React, { useState, useEffect } from 'react';
 import Link from '@mui/material/Link';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
@@ -11,6 +12,7 @@ import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import { useNavigationTools } from '../../contexts/navigationTools';
 import { usePathSegments } from '../../../hooks/usePathSegments';
 import type { TreeImageGroup } from '../../../../types/ImageGroup';
+import unique from '../../../tools/unique';
 
 interface FolderTreeItemProps {
   group: TreeImageGroup,
@@ -66,8 +68,14 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
   const { currentGroup } = useNavigationTools();
   const theme = useTheme();
   const { segments } = usePathSegments();
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
-  const ids = segments.map(({ group }) => (group.id));
+  useEffect(() => {
+    setExpandedItems((currentItems: string[]) => {
+      const fromNavi = segments.map(({ group }) => (group.id));
+      return unique([...fromNavi, ...currentItems]);
+    });
+  }, [segments]);
 
   if (pathsOptions.length < 2) {
     return null;
@@ -84,7 +92,8 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
     >
       <SimpleTreeView
         expansionTrigger="iconContainer"
-        defaultExpandedItems={ids}
+        expandedItems={expandedItems}
+        onExpandedItemsChange={(_, items) => setExpandedItems(items)}
         selectedItems={currentGroup.id}
         sx={{
           width: theme.breakpoints.values.sm,
