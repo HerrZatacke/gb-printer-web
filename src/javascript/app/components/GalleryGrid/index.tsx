@@ -21,13 +21,14 @@ function GalleryGrid({ fixedView, children }: Props) {
     let columns = '';
     let width = 'auto';
 
+
     switch (usedView) {
       case GalleryViews.GALLERY_VIEW_SMALL: {
-        const gapNumber = 16 / screenDimensions.ddpx;
+        const gapNumber = 5 / screenDimensions.ddpx;
         const imageSizeNumber = 160 / screenDimensions.ddpx;
         imageSize = `${imageSizeNumber}px`;
         gap = `${gapNumber}px`;
-        columns = Math.floor((screenDimensions.layoutWidth + gapNumber) / (imageSizeNumber + gapNumber)).toString(10);
+        columns = Math.floor((screenDimensions.width - 32) / (imageSizeNumber + gapNumber)).toString(10);
         break;
       }
 

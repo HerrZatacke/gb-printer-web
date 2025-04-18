@@ -3,6 +3,7 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { CSSPropertiesVars } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { Outlet, Navigate, useMatches } from 'react-router';
@@ -50,6 +51,8 @@ function Layout() {
     return lightTheme;
   }, [themeName]);
 
+  const belowMd = useMediaQuery(muiTheme.breakpoints.down('md'));
+
   if (!matches[1]) {
     return <Navigate to="/gallery/page/1" replace />;
   }
@@ -72,7 +75,7 @@ function Layout() {
                 maxWidth="xl"
                 sx={{
                   ...ddpx,
-                  py: 3,
+                  p: belowMd ? 2 : 3,
                   minHeight: 'calc(100dvh - var(--navigation-height))',
                   display: 'flex',
                   flexDirection: 'column',
