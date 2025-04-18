@@ -85,18 +85,6 @@ function LightboxImage() {
                 height: '100%',
                 flexBasis: '100%',
                 flexGrow: 1,
-
-                '.gameboy-image': {
-                  display: 'flex',
-                  width: '100%',
-                  height: '100%',
-                },
-
-                '.gameboy-image canvas': {
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  objectFit: 'contain',
-                },
               }}
             >
               <ImageRender
