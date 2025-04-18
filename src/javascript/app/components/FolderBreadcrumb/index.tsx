@@ -6,51 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import SegmentIcon from '@mui/icons-material/Segment';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { Link as RouterLink } from 'react-router';
 import FolderTreeDialog from '../FolderTreeDialog';
 import useEditStore from '../../stores/editStore';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
-import { useNavigationTools } from '../../contexts/navigationTools';
 import { usePathSegments } from '../../../hooks/usePathSegments';
 import { shorten } from '../../../tools/shorten';
-import type { TreeImageGroup } from '../../../../types/ImageGroup';
-
-interface FolderTreeItemProps {
-  group: TreeImageGroup,
-}
-
-function FolderTreeItem({ group }: FolderTreeItemProps) {
-  const { getGroupPath } = useNavigationTools();
-
-  return (
-    <TreeItem
-      itemId={group.id}
-      label={(
-        <Stack direction="row" gap={2}>
-          <Typography>{group.title}</Typography>
-          <Link
-            component={RouterLink}
-            to={getGroupPath(group.id)}
-            onClick={(ev) => ev.stopPropagation()}
-          >
-            🔗
-          </Link>
-        </Stack>
-      )}
-    >
-      {
-        group.groups.map((childGroup) => (
-          <FolderTreeItem
-            key={childGroup.id}
-            group={childGroup}
-          />
-        ))
-      }
-    </TreeItem>
-  );
-}
 
 function FolderBreadcrumb() {
   const { pathsOptions } = useGalleryTreeContext();
