@@ -17,7 +17,7 @@ function GalleryHeader({ isBottom, page, isSticky }: Props) {
       gap={2}
       justifyContent="space-between"
       sx={(theme) => ({
-        zIndex: 1100,
+        zIndex: 20,
         backgroundColor: theme.palette.background.default,
         ...(isSticky ? {
           position: 'sticky',
