@@ -6,6 +6,7 @@ import Debug from '../Debug';
 import GalleryGridItem from '../GalleryGridItem';
 import useSettingsStore from '../../stores/settingsStore';
 import FrameContextMenu from '../FrameContextMenu';
+import ImageLoading from '../ImageLoading';
 
 interface Props {
   frameId: string,
@@ -55,7 +56,9 @@ function Frame({ frameId, name, palette }: Props) {
           imageStartLine={imageStartLine}
           tiles={tiles}
         />
-      ) : null}
+      ) : (
+        <ImageLoading />
+      )}
       content={enableDebug && <Debug text={frameHash} />}
     />
   );

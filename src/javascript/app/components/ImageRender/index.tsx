@@ -1,8 +1,7 @@
 import React from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import GameBoyImage from '../GameBoyImage';
+import ImageLoading from '../ImageLoading';
 import { useImageRender } from './useImageRender';
 import type { RGBNHashes } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
@@ -55,27 +54,7 @@ function ImageRender({
       rotation={gbImageProps.rotation}
     />
   ) : (
-    <Box
-      sx={{
-        width: '100%',
-        paddingTop: '90%',
-        height: 0,
-        display: 'block',
-        background: 'transparent',
-        position: 'relative',
-      }}
-    >
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        <CircularProgress color="primary" size={40} />
-      </Box>
-    </Box>
+    <ImageLoading />
   );
 }
 
