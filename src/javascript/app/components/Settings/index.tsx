@@ -69,13 +69,7 @@ function Settings() {
       direction="column"
       gap={6}
     >
-      <Tabs
-        value={pathname}
-        variant="scrollable"
-        scrollButtons="auto"
-        indicatorColor="secondary"
-        allowScrollButtonsMobile
-      >
+      <Tabs value={pathname}>
         {
           tabs.map(({ headline, path }) => (
             <Tab

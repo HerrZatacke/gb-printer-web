@@ -54,6 +54,11 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiTabs: {
     styleOverrides: tabs(theme),
+    defaultProps: {
+      scrollButtons: 'auto',
+      indicatorColor: 'secondary',
+      variant: 'scrollable',
+    },
   },
   MuiInputLabel: {
     styleOverrides: inputLabel(),
