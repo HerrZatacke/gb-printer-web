@@ -21,9 +21,9 @@ function GalleryHeader({ isBottom, page, isSticky }: Props) {
         backgroundColor: theme.palette.background.default,
         ...(isSticky ? {
           position: 'sticky',
-          top: 'var(--navigation-min-height)',
-          pb: 2,
-          mb: -2,
+          top: 'var(--navigation-height)',
+          py: 2,
+          my: -2,
         } : {}),
         ...(isBottom ? {
           '@media (max-height: 900px)': {

@@ -68,7 +68,6 @@ function GalleryGrid({ fixedView, children }: Props) {
       gap,
       display: 'grid',
       margin: '0 auto',
-      padding: '16px 0',
       gridTemplateColumns: `repeat(${columns}, ${imageSize})`,
       width,
     };

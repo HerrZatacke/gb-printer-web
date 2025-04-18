@@ -52,19 +52,24 @@ function Frames() {
           value={activeFrameGroup.name || ''}
         />
       )}
-      <GalleryViewSelect />
-      <GalleryGrid>
-        {(
-          groupFrames?.map((frame) => (
-            <Frame
-              frameId={frame.id}
-              key={`frame-${frame.id}`}
-              name={frame.name}
-              palette={palette}
-            />
-          ))
-        )}
-      </GalleryGrid>
+      <Stack
+        direction="column"
+        gap={2}
+      >
+        <GalleryViewSelect />
+        <GalleryGrid>
+          {(
+            groupFrames?.map((frame) => (
+              <Frame
+                frameId={frame.id}
+                key={`frame-${frame.id}`}
+                name={frame.name}
+                palette={palette}
+              />
+            ))
+          )}
+        </GalleryGrid>
+      </Stack>
       <ButtonGroup
         variant="contained"
         fullWidth

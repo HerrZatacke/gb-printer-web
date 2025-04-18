@@ -3,8 +3,6 @@ import type { ComponentsOverrides } from '@mui/material/styles/overrides';
 
 export const appBar = (theme: Theme): ComponentsOverrides<Theme>['MuiAppBar'] => ({
   root: {
-    minHeight: 'var(--navigation-min-height)',
-
     variants: [
       ...['primary', 'secondary', 'tertiary'].map((color) => ({
         props: { color },

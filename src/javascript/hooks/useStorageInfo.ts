@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import sortBy, { SortDirection } from '../../../tools/sortby';
+import sortBy, { SortDirection } from '../tools/sortby';
 
 export interface Quota {
   type: string,

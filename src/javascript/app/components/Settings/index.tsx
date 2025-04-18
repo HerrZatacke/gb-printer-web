@@ -67,28 +67,35 @@ function Settings() {
   return (
     <Stack
       direction="column"
-      gap={6}
+      gap={4}
+      justifyContent="space-between"
+      sx={{ flexGrow: 1 }}
     >
-      <Tabs value={pathname}>
-        {
-          tabs.map(({ headline, path }) => (
-            <Tab
-              label={headline}
-              key={path}
-              component={NavLink}
-              to={path}
-              value={path}
-              // className={({ isActive }) => ( /* ToDo */ }
-            />
-          ))
-        }
-      </Tabs>
+      <Stack
+        direction="column"
+        gap={6}
+      >
+        <Tabs value={pathname}>
+          {
+            tabs.map(({ headline, path }) => (
+              <Tab
+                label={headline}
+                key={path}
+                component={NavLink}
+                to={path}
+                value={path}
+                // className={({ isActive }) => ( /* ToDo */ }
+              />
+            ))
+          }
+        </Tabs>
 
-      <Box>
-        <Outlet />
-      </Box>
+        <Box>
+          <Outlet />
+        </Box>
 
-      <ExportSettings />
+        <ExportSettings />
+      </Stack>
 
       <Stack
         component="ul"

@@ -1,4 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import type { CSSPropertiesVars } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
@@ -14,8 +17,6 @@ import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 import useSettingsStore from '../../stores/settingsStore';
 import { ThemeName } from '../../../consts/theme';
 import { darkTheme, lightTheme } from '../../../styles/themes';
-
-import './index.scss';
 
 export interface Handle {
   headline: string,
@@ -67,10 +68,32 @@ function Layout() {
             <ThemeProvider theme={muiTheme}>
               <CssBaseline />
               <Navigation />
-              <div className="layout" style={ddpx}>
-                { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
-                <Outlet />
-              </div>
+              <Container
+                maxWidth="xl"
+                sx={{
+                  ...ddpx,
+                  py: 3,
+                  minHeight: 'calc(100dvh - var(--navigation-height))',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Stack
+                  direction="column"
+                  gap={2}
+                  sx={{ flexGrow: 1 }}
+                >
+                  {mainHeadline && (
+                    <Typography
+                      component="h1"
+                      variant="h1"
+                    >
+                      { mainHeadline }
+                    </Typography>
+                  )}
+                  <Outlet />
+                </Stack>
+              </Container>
               <Overlays />
               <Errors />
             </ThemeProvider>

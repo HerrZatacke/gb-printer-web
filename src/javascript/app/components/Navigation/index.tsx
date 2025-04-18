@@ -157,7 +157,7 @@ function Navigation() {
   return (
     <>
       <ThemeProvider theme={lightTheme}>
-        <AppBar color="primary" enableColorOnDark>
+        <AppBar color="primary" enableColorOnDark position="sticky">
           <Container maxWidth="xl" disableGutters>
             <Toolbar disableGutters>
               <ButtonGroup
