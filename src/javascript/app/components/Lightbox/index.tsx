@@ -19,6 +19,7 @@ interface Props {
   contentHeight?: number | string,
   contentWidth?: number | string,
   open?: boolean,
+  keepMounted?: boolean,
   header?: string,
   closeTitle?: string,
   children?: React.ReactNode,
@@ -94,12 +95,14 @@ function Lightbox({
   headerOnly,
   fullSize,
   open: openProp,
+  keepMounted: keepMountedProp,
   closeOnOverlayClick: closeOnClick,
   headerActionButtons,
   actionButtons,
 }: Props) {
   const closeOnOverlayClick = typeof closeOnClick !== 'boolean' ? true : closeOnClick;
   const open = typeof openProp !== 'boolean' ? true : openProp;
+  const keepMounted = typeof keepMountedProp !== 'boolean' ? true : keepMountedProp;
 
   useOverlayGlobalKeys({
     confirm,
@@ -122,7 +125,7 @@ function Lightbox({
       open={open}
       onClose={deny}
       aria-label={typeof header === 'string' ? header : undefined}
-      keepMounted
+      keepMounted={keepMounted}
       disableEscapeKeyDown={!closeOnOverlayClick}
       sx={{
         // matching "scrollbar-width: thin;" on <html>
