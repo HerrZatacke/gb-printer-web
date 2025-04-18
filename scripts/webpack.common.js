@@ -6,18 +6,11 @@ import webpack from 'webpack';
 import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import getBranch from './getBranch/index.js';
-import packageJSON from '../package.json' assert { type: 'json' };
 
-const { version } = packageJSON;
+const config = async (projectConfig, packageJSON) => {
 
-const config = async () => {
-  let dropboxAppKey = null;
-  try {
-    const { default: conf } = await import('../config.json', { assert: { type: 'json' } });
-    dropboxAppKey = conf.dropboxAppKey;
-  } catch (error) {
-    console.error({ error });
-  }
+  const { version } = packageJSON;
+  const dropboxAppKey = projectConfig.dropboxAppKey || null;
 
   return ({
     resolve: {
