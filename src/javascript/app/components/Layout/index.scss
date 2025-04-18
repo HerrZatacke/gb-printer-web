@@ -3,7 +3,7 @@
   margin: 0 auto;
   padding: 120px var(--layout-padding-side) 20px;
   position: relative;
-  z-index: $z-index-content;
+  z-index: 0;
   min-height: 100dvh;
 
   --1x-columns: 6;

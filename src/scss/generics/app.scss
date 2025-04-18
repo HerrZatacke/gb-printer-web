@@ -15,7 +15,7 @@ html {
 }
 
 body {
-  @include font;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
 
   line-height: 1.3em;
   @include theme-background-color($color-page-background, $color-page-background-dark);
@@ -47,7 +47,7 @@ pre {
   @include theme-background-color($color-grey-30, $color-grey-70);
   @include theme-color($color-text-bright, $color-text);
 
-  @media (max-width: $breakpoint-mobile) {
+  @media (max-width: $layout-width-3-cols) {
     margin: 60px 10px;
     padding: 20px 10px;
   }

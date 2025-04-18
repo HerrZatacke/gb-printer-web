@@ -78,7 +78,7 @@ function Settings() {
               component={NavLink}
               to={path}
               value={path}
-              // className={({ isActive }) => (`button contenttabs__tabs-button ${isActive ? 'contenttabs__tabs-button--active' : ''}`)}
+              // className={({ isActive }) => ( /* ToDo */ }
             />
           ))
         }

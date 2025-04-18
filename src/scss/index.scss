@@ -4,12 +4,7 @@
   box-sizing: border-box;
 }
 
-@import './generics/animations';
 @import './generics/app';
-@import './generics/buttongroup';
-@import './generics/checkgroup';
-@import './generics/contenttabs';
-@import './generics/gallery-button';
 
 :root {
   --navigation-min-height: 60px;
