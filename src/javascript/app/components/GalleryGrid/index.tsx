@@ -10,7 +10,7 @@ interface Props extends PropsWithChildren {
 }
 
 function GalleryGrid({ fixedView, children }: Props) {
-  const screenDimensions = useScreenDimensions();
+  const { ddpx } = useScreenDimensions();
   const { galleryView } = useSettingsStore();
 
   const usedView = fixedView || galleryView;
@@ -18,46 +18,42 @@ function GalleryGrid({ fixedView, children }: Props) {
   const styleVariables = useMemo<CSSPropertiesVars>(() => {
     let imageSize = '';
     let gap = '';
-    let columns = '';
-    let width = 'auto';
 
+    // if ddpx is 1, but responsive view is selected, switch to 1x view
+    const checkView = (
+      usedView === GalleryViews.GALLERY_VIEW_SMALL &&
+      ddpx === 1
+    ) ? GalleryViews.GALLERY_VIEW_1X :
+      usedView;
 
-    switch (usedView) {
+    switch (checkView) {
       case GalleryViews.GALLERY_VIEW_SMALL: {
-        const gapNumber = 5 / screenDimensions.ddpx;
-        const imageSizeNumber = 160 / screenDimensions.ddpx;
-        imageSize = `${imageSizeNumber}px`;
-        gap = `${gapNumber}px`;
-        columns = Math.floor((screenDimensions.width - 32) / (imageSizeNumber + gapNumber)).toString(10);
+        imageSize = `${160 / ddpx}px`;
+        gap = `${8 / ddpx}px`;
         break;
       }
 
       case GalleryViews.PALETTE_VIEW: {
-        imageSize = '1fr';
+        imageSize = 'minmax(270px, 1fr)';
         gap = '32px';
-        columns = Math.floor(screenDimensions.layoutWidth / 290).toString(10);
-        width = '100%';
         break;
       }
 
       case GalleryViews.GALLERY_VIEW_1X: {
         imageSize = '160px';
-        gap = 'var(--1x-gap)';
-        columns = 'var(--1x-columns)';
+        gap = '16px';
         break;
       }
 
       case GalleryViews.GALLERY_VIEW_2X: {
         imageSize = '320px';
-        gap = 'var(--2x-gap)';
-        columns = 'var(--2x-columns)';
+        gap = '32px';
         break;
       }
 
       case GalleryViews.GALLERY_VIEW_MAX: {
-        imageSize = `${screenDimensions.layoutWidth}px`;
-        gap = 'var(--max-gap)';
-        columns = 'var(--max-columns)';
+        imageSize = '100%';
+        gap = '32px';
         break;
       }
 
@@ -68,11 +64,10 @@ function GalleryGrid({ fixedView, children }: Props) {
     return {
       gap,
       display: 'grid',
-      margin: '0 auto',
-      gridTemplateColumns: `repeat(${columns}, ${imageSize})`,
-      width,
+      justifyContent: 'center',
+      gridTemplateColumns: `repeat(auto-fill, ${imageSize})`,
     };
-  }, [usedView, screenDimensions]);
+  }, [usedView, ddpx]);
 
   return (
     <Box

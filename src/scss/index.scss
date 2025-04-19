@@ -13,39 +13,4 @@
 
 :root {
   --navigation-height: 64px;
-
-  --1x-columns: 6;
-  --2x-columns: 3;
-  --max-columns: 1;
-
-  --1x-gap: 16px;
-  --2x-gap: 32px;
-  --max-gap: 32px;
-
-  --layout-padding-side: 20px;
-
-  @media (max-width: $breakpoint-5-cols) {
-    --1x-columns: 5;
-    --2x-columns: 2;
-  }
-
-  @media (max-width: $breakpoint-4-cols) {
-    --1x-columns: 4;
-    --2x-columns: 2;
-  }
-
-  @media (max-width: $breakpoint-3-cols) {
-    --1x-columns: 3;
-    --2x-columns: 1;
-    --layout-padding-side: 10px;
-  }
-
-  @media (max-width: $breakpoint-2-cols) {
-    --1x-columns: 2;
-    --layout-padding-side: 5px;
-  }
-
-  @media (max-width: $breakpoint-1-cols) {
-    --1x-columns: 1;
-  }
 }
