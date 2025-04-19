@@ -145,10 +145,10 @@ export const generateTheme = ({
     breakpoints: {
       values: {
         xs: 0,
-        sm: 480,
-        md: 768,
-        lg: 1024,
-        xl: 1200,
+        sm: 570, // GalleryHeader and EditRGBN switch orientation, max-width of Navigation-Drawer and ImageGroups-TreeView, Buttons on Palette Page change direction
+        md: 768, // Main-Container-padding changes, All Dialogs go fullscreen
+        lg: 1024, // Dialog max-width
+        xl: 1200, // Layout max-width
       },
     },
     typography: {

@@ -56,7 +56,7 @@ function Palettes() {
   const [sortMenuAnchor, setSortMenuAnchor] = useState<HTMLElement | null>(null);
   const theme = useTheme();
 
-  const aboveMd = useMediaQuery(theme.breakpoints.up('md'));
+  const aboveSm = useMediaQuery(theme.breakpoints.up('sm'));
 
   const currentTab = useMemo(() => (
     tabs[selectedTabIndex]
@@ -102,8 +102,8 @@ function Palettes() {
           color="tertiary"
           variant="contained"
           size="small"
-          orientation={aboveMd ? 'horizontal' : 'vertical'}
-          fullWidth={!aboveMd}
+          orientation={aboveSm ? 'horizontal' : 'vertical'}
+          fullWidth={!aboveSm}
           disableElevation
         >
           {currentTab.id === 'own' && (
