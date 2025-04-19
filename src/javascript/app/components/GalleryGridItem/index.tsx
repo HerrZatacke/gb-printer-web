@@ -65,8 +65,10 @@ function GalleryGridItem({
 
   const rootStyle = useMemo(() => {
     const baseStyles = {
-      '&:hover': {
-        backgroundColor: blend(theme.palette.tertiary.main, theme.palette.background.paper, 0.33),
+      '@media (any-hover: hover)': {
+        '&:hover': {
+          backgroundColor: blend(theme.palette.tertiary.main, theme.palette.background.paper, 0.33),
+        },
       },
       transition: 'background-color 0.15s ease-in-out',
     };

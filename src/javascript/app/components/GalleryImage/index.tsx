@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useLongPress } from 'use-long-press';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -22,7 +22,6 @@ interface Props {
 }
 
 function GalleryImage({ page, hash }: Props) {
-  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const { enableDebug } = useSettingsStore();
 
   const {
@@ -43,12 +42,6 @@ function GalleryImage({ page, hash }: Props) {
     }
   });
 
-  const globalClickListener = useCallback(() => {
-    window.removeEventListener('click', globalClickListener);
-    setMenuAnchor(null);
-  }, []);
-
-
   const debugText = useMemo<string>(() => ([
     hash,
     ...(galleryImageData?.hashes ? Object.keys(galleryImageData.hashes).map((channel) => (
@@ -58,6 +51,14 @@ function GalleryImage({ page, hash }: Props) {
     .filter(Boolean)
     .join('\n')
   ), [galleryImageData, hash]);
+
+  const updateSelection = useCallback((shift: boolean) => {
+    updateImageSelection(
+      galleryImageData?.selectionIndex !== -1 ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
+      shift,
+      page,
+    );
+  }, [galleryImageData, page, updateImageSelection]);
 
   if (!galleryImageData) {
     return null;
@@ -75,26 +76,18 @@ function GalleryImage({ page, hash }: Props) {
     title,
     tags,
     selectionIndex,
+    selectionActive,
     rotation,
   } = galleryImageData;
 
   const handleCellClick = (ev: React.MouseEvent) => {
+    ev.preventDefault();
+
     if (ev.ctrlKey || ev.shiftKey) {
-      ev.preventDefault();
-      updateImageSelection(
-        selectionIndex !== -1 ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
-        ev.shiftKey,
-        page,
-      );
-    } else if (isTouchDevice()) {
-      if (!menuAnchor) {
-        setMenuAnchor(ev.target as HTMLElement);
-        window.requestAnimationFrame(() => {
-          window.addEventListener('click', globalClickListener);
-        });
-      }
+      updateSelection(ev.shiftKey);
+    } else if (isTouchDevice() && selectionActive) {
+      updateSelection(false);
     } else {
-      ev.preventDefault();
       editImage(tags);
     }
   };
