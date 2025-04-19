@@ -1,5 +1,4 @@
 import '../scss/index.scss';
-import isTouchDevice from './tools/isTouchDevice';
 import { loadEnv } from './tools/getEnv';
 import initLog from './tools/initLog';
 import { migrateTheme } from './app/stores/migrations/history/0/migrateTheme';
@@ -7,12 +6,6 @@ import { migrateTheme } from './app/stores/migrations/history/0/migrateTheme';
 document.addEventListener('DOMContentLoaded', async () => {
   // set the theme class as quick as possible
   document.querySelector('html')?.classList.add(migrateTheme());
-
-  if (isTouchDevice()) {
-    document.querySelector('body')?.classList.add('is-touch');
-  } else {
-    document.querySelector('body')?.classList.add('no-touch');
-  }
 
   if (window.location.hostname.includes('d3-dev')) {
     document.body.classList.add('debug');

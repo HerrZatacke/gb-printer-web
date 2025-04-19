@@ -18,8 +18,6 @@ body {
   font-family: "Trebuchet MS", Helvetica, sans-serif;
 
   line-height: 1.3em;
-  @include theme-background-color($color-page-background, $color-page-background-dark);
-  @include theme-color($color-text, $color-text-bright);
   min-width: 340px;
   overflow-y: scroll;
 
