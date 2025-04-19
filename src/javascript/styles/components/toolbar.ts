@@ -5,6 +5,7 @@ import type { ComponentsOverrides } from '@mui/material/styles/overrides';
 export const toolbar = (theme: Theme): ComponentsOverrides<Theme>['MuiToolbar'] => ({
   root: {
     [theme.breakpoints.up('xs')]: {
+      // Just Override stringer MUI selector
       minHeight: 'var(--navigation-height)',
     },
 

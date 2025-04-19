@@ -79,11 +79,7 @@ function Palettes() {
       direction="column"
       gap={4}
     >
-      <Tabs
-        value={selectedTabIndex}
-        // orientation={aboveMd ? 'horizontal' : 'vertical'}
-        // variant={aboveMd ? 'scrollable' : 'fullWidth'}
-      >
+      <Tabs value={selectedTabIndex}>
         {
           tabs.map(({ id, headline }, index) => (
             <Tab
