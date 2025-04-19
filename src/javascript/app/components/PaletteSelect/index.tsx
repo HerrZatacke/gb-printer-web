@@ -73,7 +73,7 @@ function PaletteSelect({
               value={shortName}
             >
               <ListItemIcon>
-                <PaletteIcon palette={palette} />
+                <PaletteIcon palette={palette} fontSize="1.5rem" />
               </ListItemIcon>
               <ListItemText>
                 {name}
@@ -98,37 +98,21 @@ function PaletteSelect({
         ) : null
       }
       { noFancy ? null : (
-        <Stack
+        <Box
           component="ul"
-          direction="row"
-          gap={0}
-          flexWrap="wrap"
-          justifyContent="space-between"
           sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, 2.5rem)',
+            justifyContent: 'center',
+            gap: 0.25,
+
             button: {
               padding: 0,
-              width: '40px',
-              height: '40px',
+              cursor: 'pointer',
+              width: '2.5rem',
+              height: '2.5rem',
               border: 'none',
               borderRadius: '50%',
-
-              '.palette-icon': {
-                width: '34px',
-                height: '34px',
-              },
-
-              '&:hover .palette-icon': {
-                animation: 'spin 800ms infinite linear',
-              },
-
-              '@keyframes spin': {
-                from: {
-                  transform: 'rotate(0deg)',
-                },
-                to: {
-                  transform: 'rotate(360deg)',
-                },
-              },
             },
           }}
         >
@@ -160,7 +144,7 @@ function PaletteSelect({
               </Box>
             ))
           }
-        </Stack>
+        </Box>
       )}
     </Stack>
   );

@@ -1,20 +1,32 @@
 import React from 'react';
-import './index.scss';
+import Box from '@mui/material/Box';
+import { generateGradient, GradientType } from '../../../tools/generateGradient';
 
 interface Props {
   palette: string[],
+  fontSize?: string,
 }
 
 function PaletteIcon({
   palette,
+  fontSize,
 }: Props) {
   return (
-    <span className="palette-icon">
-      <span className="palette-icon__color" style={{ backgroundColor: palette[0] }} />
-      <span className="palette-icon__color" style={{ backgroundColor: palette[1] }} />
-      <span className="palette-icon__color" style={{ backgroundColor: palette[2] }} />
-      <span className="palette-icon__color" style={{ backgroundColor: palette[3] }} />
-    </span>
+    <Box
+      sx={{
+        display: 'inline-block',
+        fontSize: fontSize || '2rem',
+        width: '1em',
+        height: '1em',
+        lineHeight: '1em',
+        verticalAlign: 'middle',
+        borderRadius: '50%',
+        ...generateGradient(palette, GradientType.CONIC),
+        '&:hover': {
+          animation: 'spin 800ms infinite linear',
+        },
+      }}
+    />
   );
 }
 

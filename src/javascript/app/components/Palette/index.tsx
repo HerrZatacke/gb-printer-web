@@ -5,7 +5,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { usePalette } from './usePalette';
 import GalleryGridItem from '../GalleryGridItem';
 import PaletteContextMenu from '../PaletteContextMenu';
-import { hexToRgbString } from '../../../tools/hexToRgbString';
+import { generateGradient, GradientType } from '../../../tools/generateGradient';
 
 interface Props {
   shortName: string,
@@ -34,12 +34,7 @@ function Palette({
 
   const paletteStyles = useMemo(() => {
     const styles = {
-      '--gradient-1': `${hexToRgbString(palette[0])}`,
-      '--gradient-2': `${hexToRgbString(palette[1])}`,
-      '--gradient-3': `${hexToRgbString(palette[2])}`,
-      '--gradient-4': `${hexToRgbString(palette[3])}`,
-      '--gradient-opacity': '0.25',
-      backgroundImage: 'linear-gradient(to right, rgba(var(--gradient-1), var(--gradient-opacity)) 0%, rgba(var(--gradient-2), var(--gradient-opacity)) 33.3%, rgba(var(--gradient-3), var(--gradient-opacity)) 66.6%, rgba(var(--gradient-4), var(--gradient-opacity)) 100%)',
+      ...generateGradient(palette, GradientType.SMOOTH),
       display: 'block',
       width: '100%',
       textAlign: 'left',
@@ -53,14 +48,14 @@ function Palette({
 
   const mediaStyles = useMemo(() => {
     const styles = {
-      backgroundImage: 'linear-gradient(to right, rgb(var(--gradient-1)) 0%, rgb(var(--gradient-1)) 25%, rgb(var(--gradient-2)) 25%, rgb(var(--gradient-2)) 50%, rgb(var(--gradient-3)) 50%, rgb(var(--gradient-3)) 75%, rgb(var(--gradient-4)) 75%, rgb(var(--gradient-4)) 100%)',
+      ...generateGradient(palette, GradientType.HARD),
       display: 'block',
       width: '100%',
       height: theme.spacing(8),
     };
 
     return styles;
-  }, [theme]);
+  }, [palette, theme]);
 
   if (palette?.length !== 4) {
     return <li className="palette palette--broken" />;
