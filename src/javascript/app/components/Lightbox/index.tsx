@@ -12,7 +12,6 @@ import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
-import useAutoFocus from '../../../hooks/useAutoFocus';
 
 interface Props {
   contentHeight?: number | string,
@@ -109,10 +108,6 @@ function Lightbox({
     deny,
   });
 
-  const {
-    autofocusRef,
-  } = useAutoFocus();
-
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -169,7 +164,6 @@ function Lightbox({
 
       { !headerOnly && (
         <DialogContent
-          ref={autofocusRef as React.MutableRefObject<HTMLDivElement>}
           sx={contentDimensions(contentWidth, contentHeight, fullScreen, fullSize)}
         >
           {children}
