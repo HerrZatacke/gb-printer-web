@@ -4,6 +4,7 @@ import type { Theme } from '@mui/system';
 import { alpha } from '@mui/material';
 import { blend } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
@@ -86,97 +87,128 @@ function GalleryGridItem({
   const titleAttribute = [title, subheader].filter(Boolean).join('\n');
 
   return (
-    <Card
+    <Stack
       component="li"
-      sx={rootStyle}
+      direction="column"
+      justifyContent="stretch"
+      sx={{
+        position: 'relative',
+        '& > *': {
+          flexGrow: 1,
+        },
+      }}
     >
-      <CardActionArea
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...wrapperProps}
-        component={wrapperProps.component || 'span'}
-        tabIndex={wrapperProps.component ? undefined : -1}
-      >
-        <CardHeader
-          title={titleIcon ? (
-            <Stack
-              direction="row"
-              gap={0.5}
-              alignItems="center"
-            >
-              {titleIcon}
-              {title}
-            </Stack>
-          ) : title}
-          subheader={subheader}
-          action={(
-            <IconButton
-              onClick={(ev) => {
-                ev.preventDefault();
-                ev.stopPropagation();
-                setMenuAnchor(ev.target as HTMLElement);
-              }}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          )}
-          slotProps={{
-            title: {
-              title: titleAttribute,
-              variant: 'body1',
-              sx: {
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              },
-            },
-            subheader: {
-              title: titleAttribute,
-              variant: 'caption',
-              sx: {
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              },
-            },
-          }}
+      {selectionText && (
+        <Box
           sx={{
-            gap: 1,
-            backgroundColor: alpha(theme.palette.fgtext.main, 0.1),
-            p: 1,
-            '.MuiCardHeader-content': {
-              minWidth: 0, // allow the ellipsis
-            },
+            position: 'absolute',
+            display: 'block',
+            width: '1.8em',
+            height: '1.8em',
+            top: '-0.53em',
+            left: '-0.53em',
+            zIndex: 25,
+            fontSize: '0.85rem',
+            lineHeight: '1.8em',
+            textAlign: 'center',
+            backgroundColor: theme.palette.info.main,
+            color: theme.palette.info.contrastText,
+            borderRadius: '50%',
+            pointerEvents: 'none',
           }}
-        />
-        <CardMedia>
-          {media}
-        </CardMedia>
-        {content && (
-          <CardContent
-            sx={{
-              p: 1,
-              flexGrow: 1,
-              justifyContent: 'space-between',
-              display: 'flex',
-              flexDirection: 'column',
-              padding: 1,
-
-              '&:last-child': {
-                padding: 1,
+        >
+          {selectionText}
+        </Box>
+      )}
+      <Card sx={rootStyle}>
+        <CardActionArea
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...wrapperProps}
+          component={wrapperProps.component || 'span'}
+          tabIndex={wrapperProps.component ? undefined : -1}
+        >
+          <CardHeader
+            title={titleIcon ? (
+              <Stack
+                direction="row"
+                gap={0.5}
+                alignItems="center"
+              >
+                {titleIcon}
+                {title}
+              </Stack>
+            ) : title}
+            subheader={subheader}
+            action={(
+              <IconButton
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  setMenuAnchor(ev.target as HTMLElement);
+                }}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            )}
+            slotProps={{
+              title: {
+                title: titleAttribute,
+                variant: 'body1',
+                sx: {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              },
+              subheader: {
+                title: titleAttribute,
+                variant: 'caption',
+                sx: {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
               },
             }}
-          >
-            {content}
-          </CardContent>
-        )}
-      </CardActionArea>
-      <ContextMenuComponent
-        menuAnchor={menuAnchor}
-        onClose={() => setMenuAnchor(null)}
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...contextMenuProps}
-      />
-    </Card>
+            sx={{
+              gap: 1,
+              backgroundColor: alpha(theme.palette.fgtext.main, 0.1),
+              p: 1,
+              '.MuiCardHeader-content': {
+                minWidth: 0, // allow the ellipsis
+              },
+            }}
+          />
+          <CardMedia>
+            {media}
+          </CardMedia>
+          {content && (
+            <CardContent
+              sx={{
+                p: 1,
+                flexGrow: 1,
+                justifyContent: 'space-between',
+                display: 'flex',
+                flexDirection: 'column',
+                padding: 1,
+
+                '&:last-child': {
+                  padding: 1,
+                },
+              }}
+            >
+              {content}
+            </CardContent>
+          )}
+        </CardActionArea>
+        <ContextMenuComponent
+          menuAnchor={menuAnchor}
+          onClose={() => setMenuAnchor(null)}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...contextMenuProps}
+        />
+      </Card>
+    </Stack>
   );
 }
 
