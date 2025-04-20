@@ -42,9 +42,9 @@ function ImportQueue() {
           gap={1}
         >
           {
-            importQueue.map((image, index) => (
+            importQueue.map((image) => (
               <ImportRow
-                key={index}
+                key={image.tempId}
                 paletteShort={palette}
                 importItem={image}
               />

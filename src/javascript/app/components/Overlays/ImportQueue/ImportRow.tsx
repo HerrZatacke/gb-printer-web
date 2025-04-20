@@ -77,13 +77,6 @@ function ImportRow({
         '--zoom-image-width': '60px',
         '--zoom-image-z-index': 'initial',
 
-        '&:focus-within': {
-          '--zoom-image-top': -12,
-          '--zoom-image-left': -12,
-          '--zoom-image-width': '160px',
-          '--zoom-image-z-index': 2,
-        },
-
         '& > *': {
           flexGrow: 1,
         },
@@ -108,18 +101,33 @@ function ImportRow({
               zIndex: 'var(--zoom-image-z-index)',
               transition: 'width 150ms ease-in-out, left 150ms ease-in-out, top 150ms ease-in-out',
               position: 'absolute',
-              pointerEvents: 'none',
+              outline: 'none',
+
+              '@media (any-hover: none)': {
+                '&:focus': {
+                  '--zoom-image-top': -12,
+                  '--zoom-image-left': -12,
+                  '--zoom-image-width': '160px',
+                  '--zoom-image-z-index': 2,
+                },
+              },
             },
 
-            '&:hover': {
-              '--zoom-image-top': -12,
-              '--zoom-image-left': -12,
-              '--zoom-image-width': '160px',
-              '--zoom-image-z-index': 2,
+            '@media (any-hover: hover)': {
+              '& > *': {
+                pointerEvents: 'none',
+              },
+
+              '&:hover': {
+                '--zoom-image-top': -12,
+                '--zoom-image-left': -12,
+                '--zoom-image-width': '160px',
+                '--zoom-image-z-index': 2,
+              },
             },
           }}
         >
-          <Box>
+          <Box tabIndex={window.matchMedia('(any-hover: none)').matches ? 0 : undefined}>
             <GameBoyImage
               tiles={tiles}
               invertPalette={false}
