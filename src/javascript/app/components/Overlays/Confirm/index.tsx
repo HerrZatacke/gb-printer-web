@@ -7,11 +7,14 @@ import Input, { InputType } from '../../Input';
 import InfoText from './fields/InfoText';
 import SVG from '../../SVG';
 import './index.scss';
-import type { DialogQuestionCheckbox,
+import type {
+  DialogQuestionCheckbox,
   DialogQuestionInfo,
   DialogQuestionNumber,
   DialogQuestionSelect,
-  DialogQuestionText } from '../../../../../types/Dialog';
+  DialogQuestionText,
+  DialogQuestionImage,
+} from '../../../../../types/Dialog';
 import {
   DialoqQuestionType,
 } from '../../../../../types/Dialog';
@@ -117,6 +120,23 @@ function Confirm() {
                     label={label}
                     themes={themes}
                     key={key}
+                  />
+                );
+              }
+
+              case DialoqQuestionType.IMAGE: {
+                const { label, key, src } = question as DialogQuestionImage;
+                return (
+                  <img
+                    key={key}
+                    src={src}
+                    alt={label}
+                    title={label}
+                    style={{
+                      imageRendering: 'pixelated',
+                      display: 'block',
+                      width: '100%',
+                    }}
                   />
                 );
               }
