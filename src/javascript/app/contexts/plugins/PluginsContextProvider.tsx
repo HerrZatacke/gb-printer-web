@@ -8,7 +8,7 @@ import { getCollectImageData } from './functions/collectImageData';
 import { initPlugin } from './functions/initPlugin';
 import type { InitPluginSetupParams } from './functions/initPlugin';
 import type { PluginsContext } from './index';
-import type { Plugin, PluginClassInstance } from '../../../../types/Plugin';
+import type { Plugin, PluginClassInstance, PluginImageData } from '../../../../types/Plugin';
 import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
 
 function PluginsContextProvider({ children }: PropsWithChildren) {
@@ -37,10 +37,12 @@ function PluginsContextProvider({ children }: PropsWithChildren) {
 
   const contextValue = useMemo<PluginsContext>(() => ({
     runWithImage: async (url: string, imageHash: string): Promise<void> => {
-      (await getInstance(url))?.withImage(getCollectImageData(images)(imageHash));
+      const pluginImage: PluginImageData = getCollectImageData(images)(imageHash);
+      (await getInstance(url))?.withImage(pluginImage);
     },
     runWithImages: async (url: string, imageSelection: string[]): Promise<void> => {
-      (await getInstance(url))?.withSelection(imageSelection.map(getCollectImageData(images)));
+      const pluginImages: PluginImageData[] = imageSelection.map(getCollectImageData(images));
+      (await getInstance(url))?.withSelection(pluginImages);
     },
     validateAndAddPlugin,
   }), [getInstance, images, validateAndAddPlugin]);
