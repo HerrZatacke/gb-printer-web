@@ -67,11 +67,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
       onClose={onClose}
       onClick={(ev) => {
         ev.stopPropagation();
-        onClose();
       }}
     >
       <MenuItem
-        onClick={() => updateImageToSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD)}
+        onClick={() => {
+          updateImageToSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD);
+          onClose();
+        }}
         title={isSelected ? 'Remove from selection' : 'Add to selection'}
       >
         <ListItemIcon>
@@ -82,7 +84,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
         </ListItemText>
       </MenuItem>
       <MenuItem
-        onClick={editImage}
+        onClick={() => {
+          editImage();
+          onClose();
+        }}
         title="Edit"
       >
         <ListItemIcon>
@@ -93,7 +98,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
         </ListItemText>
       </MenuItem>
       <MenuItem
-        onClick={startDownload}
+        onClick={() => {
+          startDownload();
+          onClose();
+        }}
         title="Download"
       >
         <ListItemIcon>
@@ -104,7 +112,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
         </ListItemText>
       </MenuItem>
       <MenuItem
-        onClick={deleteImage}
+        onClick={() => {
+          deleteImage();
+          onClose();
+        }}
         title="Delete"
       >
         <ListItemIcon>
@@ -115,7 +126,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
         </ListItemText>
       </MenuItem>
       <MenuItem
-        onClick={setLightboxImage}
+        onClick={() => {
+          setLightboxImage();
+          onClose();
+        }}
         title="View in Lightbox"
       >
         <ListItemIcon>
@@ -130,7 +144,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
           <PluginSelect
             pluginAnchor={pluginAnchor}
             hash={hash}
-            onClose={() => setPluginAnchor(null)}
+            onClose={() => {
+              setPluginAnchor(null);
+              onClose();
+            }}
           />
           <MenuItem
             onClick={(ev) => {
@@ -149,7 +166,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
       ) : null}
       {canShare ? (
         <MenuItem
-          onClick={shareImage}
+          onClick={() => {
+            shareImage();
+            onClose();
+          }}
           title="Share"
         >
           <ListItemIcon>
@@ -161,7 +181,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
         </MenuItem>
       ) : null}
       <MenuItem
-        onClick={() => updateFavouriteTag(!isFavourite)}
+        onClick={() => {
+          updateFavouriteTag(!isFavourite);
+          onClose();
+        }}
         title={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
       >
         <ListItemIcon>
@@ -173,7 +196,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
       </MenuItem>
       {(hasMeta) && (
         <MenuItem
-          onClick={showMetadata}
+          onClick={() => {
+            showMetadata();
+            onClose();
+          }}
           title="Show Metadata"
         >
           <ListItemIcon>
@@ -186,7 +212,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
       )}
       {(isSelected && enableImageGroups) && (
         <MenuItem
-          onClick={() => createGroup(hash)}
+          onClick={() => {
+            createGroup(hash);
+            onClose();
+          }}
           title="Create Group"
         >
           <ListItemIcon>
