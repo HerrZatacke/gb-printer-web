@@ -31,6 +31,9 @@ function MarkdownStyledStack({ children }: PropsWithChildren) {
           listStyleType: 'disc',
           paddingInlineStart: theme.spacing(2),
         },
+        'h1,h2,h3,h4,h5,h6,p': {
+          marginBottom: '0.6em',
+        },
       })}
     >
       {children}
