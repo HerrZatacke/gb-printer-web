@@ -3,6 +3,8 @@ import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import type { Image } from './Image';
 import type { Palette } from './Palette';
 import type { PluginCompatibilityWrapper } from './PluginCompatibility';
+import type { CollectImageDataFn } from '../javascript/app/contexts/plugins/functions/collectImageData';
+import type { PluginFunctions } from '../javascript/app/contexts/plugins/functions/pluginContextFunctions';
 
 enum ConfigParamType {
   NUMBER = 'number',
@@ -62,7 +64,8 @@ export interface PluginArgs {
   saveAs: typeof FileSaver,
   progress: (progressValue: number) => void,
   store: PluginCompatibilityWrapper
-  collectImageData: (hash: string) => PluginImageData,
+  collectImageData: CollectImageDataFn,
+  functions: PluginFunctions,
 }
 
 
