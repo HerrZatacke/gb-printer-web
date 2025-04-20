@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (appNode) {
       appNode.innerHTML =
-        `<p class="init-error">This browser is not supported.<br/>This App is being optimized for chromium-based browsers.<small>${(error as Error).stack}</small></p>`;
+        `<p class="init-error">There was an unexpected error or this browser is not supported.<br/>This App is being optimized for chromium-based browsers.<small>${(error as Error).stack}</small></p>`;
     }
   }
 });

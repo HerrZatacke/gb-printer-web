@@ -33,7 +33,6 @@
       min-height: 100dvh;
       flex-direction: column;
       justify-content: flex-start;
-      gap: 4rem;
     }
 
     .navigation {
@@ -54,6 +53,7 @@
       margin: 0 auto;
       padding: 2rem;
       min-height: 14rem;
+      margin-top: calc(calc(100dvh - 14rem - var(--navigation-height)) / 2);
     }
 
     @media (max-width: 360px) {
@@ -81,10 +81,10 @@
     }
 
     .loader {
-      height: 16px;
-      width: 16px;
-      margin: -19px 0 0 -2px;
-      display: block;
+      height: 14px;
+      width: 14px;
+      margin: -19px 4px 0 -2px;
+      display: inline-block;
       position: relative;
       opacity: 0.5;
     }
@@ -126,12 +126,14 @@
   <nav class="navigation">
   </nav>
   <div class="app__content">
-    <p class="app__initializing">Initializing...</p>
+    <p class="app__initializing">
+      <span class="loader"></span>
+      Initializing...
+    </p>
     <h1 class="app__content-headline">Game Boy Camera Gallery</h1>
     <div class="loading">
       <ul id="loading-log">
       </ul>
-      <div class="loader"></div>
     </div>
   </div>
 </div>
