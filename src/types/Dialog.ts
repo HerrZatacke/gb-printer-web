@@ -6,6 +6,7 @@ export enum DialoqQuestionType {
   TEXT = 'text',
   NUMBER = 'number',
   INFO = 'info',
+  IMAGE = 'image',
 }
 
 export type DialogResultValue = string | number | boolean;
@@ -50,6 +51,11 @@ export interface DialogQuestionCheckbox extends DialogQuestion {
 export interface DialogQuestionInfo extends DialogQuestion {
   type: DialoqQuestionType.INFO,
   severity: AlertColor,
+}
+
+export interface DialogQuestionImage extends DialogQuestion {
+  type: DialoqQuestionType.IMAGE,
+  src: string,
 }
 
 export interface Dialog {

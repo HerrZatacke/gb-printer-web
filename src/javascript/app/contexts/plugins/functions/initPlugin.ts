@@ -5,7 +5,7 @@ import type { InteractionsState } from '../../../stores/interactionsStore';
 import type { CollectImageDataFn } from './collectImageData';
 import type { UseStores } from '../../../../hooks/useStores';
 import type { ImportFn } from '../../../../hooks/useImportExportSettings';
-import { pluginCompatibilityStore } from './pluginContextFunctions';
+import { pluginFunctions, pluginCompatibilityStore } from './pluginContextFunctions';
 
 export type InitPluginSetupParams =
   Pick<ItemsState, 'addUpdatePluginProperties'> &
@@ -47,6 +47,7 @@ export const initPlugin = (
           saveAs,
           progress,
           store: pluginCompatibilityStore(stores, importFn),
+          functions: pluginFunctions(stores, importFn),
           collectImageData,
         }, initialConfig);
 

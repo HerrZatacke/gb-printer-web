@@ -1,5 +1,6 @@
 import React from 'react';
 import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
@@ -8,11 +9,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Lightbox from '../../Lightbox';
 import useDialog from '../../../../hooks/useDialog';
-import type { DialogQuestionCheckbox,
+import type {
+  DialogQuestionCheckbox,
   DialogQuestionInfo,
   DialogQuestionNumber,
   DialogQuestionSelect,
-  DialogQuestionText } from '../../../../../types/Dialog';
+  DialogQuestionText,
+  DialogQuestionImage,
+} from '../../../../../types/Dialog';
 import {
   DialoqQuestionType,
 } from '../../../../../types/Dialog';
@@ -129,6 +133,20 @@ function Confirm() {
                   >
                     {label}
                   </Typography>
+                );
+              }
+
+              case DialoqQuestionType.IMAGE: {
+                const { label, key, src } = question as DialogQuestionImage;
+                return (
+                  <Box
+                    component="img"
+                    key={key}
+                    src={src}
+                    alt={label}
+                    title={label}
+                    sx={{ imageRendering: 'pixelated' }}
+                  />
                 );
               }
 
