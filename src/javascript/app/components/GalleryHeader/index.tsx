@@ -22,8 +22,8 @@ function GalleryHeader({ isBottom, page, isSticky }: Props) {
         ...(isSticky ? {
           position: 'sticky',
           top: 'var(--navigation-height)',
-          py: 2,
-          my: -2,
+          py: 1,
+          mx: -1,
         } : {}),
         ...(isBottom ? {
           '@media (max-height: 900px)': {

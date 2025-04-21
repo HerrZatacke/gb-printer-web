@@ -44,6 +44,7 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     hasPlugins,
     isFavourite,
     hasMeta,
+    hasHashes,
     deleteImage,
     setLightboxImage,
     shareImage,
@@ -194,7 +195,7 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
           {isFavourite ? 'Remove from favourites' : 'Add to favourites'}
         </ListItemText>
       </MenuItem>
-      {(hasMeta) && (
+      {(hasMeta || hasHashes) && (
         <MenuItem
           onClick={() => {
             showMetadata();

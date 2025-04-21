@@ -7,6 +7,7 @@ import useItemsStore from '../../stores/itemsStore';
 import { useStores } from '../../../hooks/useStores';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
+import type { RGBNImage } from '../../../../types/Image';
 import useDownload from '../../../hooks/useDownload';
 import useShareImage from '../../../hooks/useShareImage';
 import { canShare } from '../../../tools/canShare';
@@ -20,6 +21,7 @@ interface UseGalleryImageContext {
   hasPlugins: boolean,
   isFavourite: boolean,
   hasMeta: boolean,
+  hasHashes: boolean,
   startDownload: () => void,
   deleteImage: () => void,
   shareImage: () => void,
@@ -70,6 +72,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   return {
     hasPlugins,
     isSelected,
+    hasHashes: Boolean((image as RGBNImage)?.hashes),
     isFavourite: image?.tags.includes(SpecialTags.FILTER_FAVOURITE) || false,
     hasMeta: !!image?.meta,
     canShare: canShare(),
@@ -88,7 +91,16 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
       setDialog({
         message: image?.title ? `Meta-Info for "${image.title}"` : 'Meta-Info',
         questions: () => ([
-          { type: DialoqQuestionType.INFO, label: JSON.stringify(image?.meta), key: 'meta' },
+          {
+            key: 'meta',
+            type: DialoqQuestionType.META,
+            label: '', // not displayed
+            meta: {
+              hash,
+              hashes: (image as RGBNImage)?.hashes || undefined,
+              meta: image?.meta || undefined,
+            },
+          },
         ]),
         confirm: async () => dismissDialog(0),
       });
