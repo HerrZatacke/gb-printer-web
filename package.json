@@ -97,7 +97,7 @@
     "localforage": "^1.9.0",
     "mini-css-extract-plugin": "^1.6.0",
     "mkdirp": "^1.0.4",
-    "mui-markdown": "^1.2.5",
+    "mui-markdown": "^2.0.1",
     "node-kmeans": "^1.1.9",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "node-watch": "^0.7.1",
