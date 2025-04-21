@@ -43,7 +43,6 @@ jobs:
       - name: Build 🧱
         if: steps.checkTag.outputs.exists == 'false'
         run: |
-          npm run lint
           npm run build
 
       - name: Create data_w.zip for release 🗄

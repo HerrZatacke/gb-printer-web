@@ -9,7 +9,7 @@
     "lint:eslint": "eslint -c .eslintrc --ext .js,.jsx,.ts,.tsx .",
     "lint::fix": "eslint -c .eslintrc --fix --ext .js,.jsx,.ts,.tsx .",
     "host": "npm run build && node ./scripts/host.js",
-    "build": "npm run build:clean && npm run build:webpack && npm run build:validate && npm run build:deploy",
+    "build": "npm run build:clean && npm run lint && npm run build:webpack && npm run build:validate && npm run build:deploy",
     "build:clean": "rimraf dist/*",
     "build:webpack": "webpack --config ./scripts/webpack.prod.mjs",
     "build:validate": "node ./scripts/validatebuild.js",
