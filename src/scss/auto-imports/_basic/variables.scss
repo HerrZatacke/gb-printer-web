@@ -1,29 +1,4 @@
 
-// Sort by index
-$z-index-overlay-content: -1;
-$z-index-content: 0;
-$z-index-group-marker: 0;
-$z-index-group-image: 1;
-$z-index-plugin-buttons: 1;
-$z-index-hover-image: 1;
-$z-index-live-image: 1;
-$z-index-navigation: 2;
-$z-index-overlay-buttons: 2;
-$z-index-meta-pre: 2;
-$z-index-gallery-image-buttons: 3;
-$z-index-overlay: 3;
-$z-index-overlay-box: 4;
-$z-index-gallery-header-sticky: 5;
-
-$default-border-radius: 5px;
-$default-border-radius-small: 2px;
-
-$checkmark-tick-inactive-opacity: 0.25;
-
-$breakpoint-mobile: 600px;
-$breakpoint-navigation: 768px;
-$breakpoint-tags-in-list: 768px;
-
 // Sizes for 1x layout and grid columns
 $layout-width-1-cols: 100%;
 $layout-width-2-cols: 383px;

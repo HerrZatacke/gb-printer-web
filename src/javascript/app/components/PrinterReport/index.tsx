@@ -1,9 +1,18 @@
 import React from 'react';
 import filesize from 'filesize';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import { usePrinter } from './usePrinter';
 import { PrinterFunction } from '../../../consts/printerFunction';
-
-import './index.scss';
 
 const functionLabels: Record<PrinterFunction, string> = {
   testFile: 'Print test image',
@@ -35,13 +44,14 @@ function PrinterReport() {
   }
 
   return (
-    <div className="printer-report">
-      <div className="inputgroup buttongroup">
+    <Stack direction="column" gap={2}>
+      <ButtonGroup
+        variant="contained"
+        fullWidth
+      >
         {printerFunctions.map((name) => (
-          <button
+          <Button
             key={name}
-            type="button"
-            className="button"
             disabled={
               printerBusy ||
               (
@@ -56,50 +66,53 @@ function PrinterReport() {
                 getFetchImagesLabel(printerFunctions, printerData?.dumps?.length || 0) :
                 functionLabels[name as PrinterFunction]
             }
-          </button>
+          </Button>
         ))}
-      </div>
+      </ButtonGroup>
+
+      {
+        (printerData?.message) ? (
+          <Alert severity="info">
+            { printerData?.message }
+          </Alert>
+        ) : null
+      }
 
       {
         (printerData?.fs && printerData?.dumps) ? (
-          <table className="printer-report__table">
-            <thead>
-              <tr>
-                <th className="printer-report__label printer-report__head">Printer Filesystem</th>
-                <th className="printer-report__value printer-report__head printer-report__value--url" />
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="printer-report__label">Total</td>
-                <td className="printer-report__value">{filesize(printerData?.fs.total)}</td>
-              </tr>
-              <tr>
-                <td className="printer-report__label">Used</td>
-                <td className="printer-report__value">{filesize(printerData?.fs.used)}</td>
-              </tr>
-              <tr>
-                <td className="printer-report__label">Free</td>
-                <td className="printer-report__value">
-                  {`${Math.max(0, ((printerData?.fs.maximages || 0) - (printerData?.dumps.length || 0)))} images`}
-                </td>
-              </tr>
-              <tr>
-                <td className="printer-report__label">Images</td>
-                <td className="printer-report__value">{printerData?.dumps.length}</td>
-              </tr>
-            </tbody>
-          </table>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="right">Printer Filesystem</TableCell>
+                  <TableCell align="left" />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell align="right">Total</TableCell>
+                  <TableCell align="left">{filesize(printerData?.fs.total)}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="right">Used</TableCell>
+                  <TableCell align="left">{filesize(printerData?.fs.used)}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="right">Free</TableCell>
+                  <TableCell align="left">
+                    {`${Math.max(0, ((printerData?.fs.maximages || 0) - (printerData?.dumps.length || 0)))} images`}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="right">Images</TableCell>
+                  <TableCell align="left">{printerData?.dumps.length}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
         ) : null
       }
-      {
-        (printerData?.message) ? (
-          <p className="printer-report__message">
-            { printerData?.message }
-          </p>
-        ) : null
-      }
-    </div>
+    </Stack>
   );
 }
 

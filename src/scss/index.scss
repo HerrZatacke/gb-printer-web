@@ -4,9 +4,13 @@
   box-sizing: border-box;
 }
 
-@import './generics/animations';
 @import './generics/app';
-@import './generics/buttongroup';
-@import './generics/checkgroup';
-@import './generics/contenttabs';
-@import './generics/gallery-button';
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+:root {
+  --navigation-height: 64px;
+}

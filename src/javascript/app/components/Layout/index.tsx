@@ -1,5 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import type { CSSPropertiesVars } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import { Outlet, Navigate, useMatches } from 'react-router';
 import Navigation from '../Navigation';
 import Overlays from '../Overlays';
@@ -11,8 +17,7 @@ import { NavigationToolsProvider } from '../../contexts/navigationTools/Navigati
 import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
 import useSettingsStore from '../../stores/settingsStore';
 import { ThemeName } from '../../../consts/theme';
-
-import './index.scss';
+import { darkTheme, lightTheme } from '../../../styles/themes';
 
 export interface Handle {
   headline: string,
@@ -38,6 +43,16 @@ function Layout() {
     });
   }, [themeName]);
 
+  const muiTheme = useMemo(() => {
+    if (themeName === ThemeName.DARK) {
+      return darkTheme;
+    }
+
+    return lightTheme;
+  }, [themeName]);
+
+  const belowMd = useMediaQuery(muiTheme.breakpoints.down('md'));
+
   if (!matches[1]) {
     return <Navigate to="/gallery/page/1" replace />;
   }
@@ -53,13 +68,38 @@ function Layout() {
       <GalleryTreeContextProvider>
         <NavigationToolsProvider>
           <RemotePrinterContextProvider>
-            <Navigation />
-            <div className="layout" style={ddpx}>
-              { mainHeadline && <h1 className="layout__main-headline">{ mainHeadline }</h1> }
-              <Outlet />
-            </div>
-            <Overlays />
-            <Errors />
+            <ThemeProvider theme={muiTheme}>
+              <CssBaseline />
+              <Navigation />
+              <Container
+                maxWidth="xl"
+                sx={{
+                  ...ddpx,
+                  p: belowMd ? 2 : 3,
+                  minHeight: 'calc(100dvh - var(--navigation-height))',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Stack
+                  direction="column"
+                  gap={2}
+                  sx={{ flexGrow: 1 }}
+                >
+                  {mainHeadline && (
+                    <Typography
+                      component="h1"
+                      variant="h1"
+                    >
+                      { mainHeadline }
+                    </Typography>
+                  )}
+                  <Outlet />
+                </Stack>
+              </Container>
+              <Overlays />
+              <Errors />
+            </ThemeProvider>
           </RemotePrinterContextProvider>
         </NavigationToolsProvider>
       </GalleryTreeContextProvider>

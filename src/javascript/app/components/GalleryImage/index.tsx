@@ -1,21 +1,18 @@
-import React, { useCallback, useState } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useLongPress } from 'use-long-press';
 import dayjs from 'dayjs';
-import classnames from 'classnames';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import GalleryImageButtons from '../GalleryImageButtons';
+import GalleryImageContextMenu from '../GalleryImageContextMenu';
 import ImageRender from '../ImageRender';
-import DateSpan from './DateSpan';
-import TagsList from './TagsList';
-import SVG from '../SVG';
-import { useGalleryImage } from './useGalleryImage';
-import { ImageSelectionMode } from '../../stores/filtersStore';
-import { ButtonOption } from '../GalleryImageButtons/useGalleryImageButtons';
-import type { RGBNHashes } from '../../../../types/Image';
-import isTouchDevice from '../../../tools/isTouchDevice';
-
-import './index.scss';
 import Debug from '../Debug';
+import TagsList from '../TagsList';
+import { useGalleryImage } from './useGalleryImage';
+import { useDateFormat } from '../../../hooks/useDateFormat';
+import useSettingsStore from '../../stores/settingsStore';
+import { ImageSelectionMode } from '../../stores/filtersStore';
+import isTouchDevice from '../../../tools/isTouchDevice';
+import type { RGBNHashes } from '../../../../types/Image';
+import GalleryGridItem from '../GalleryGridItem';
 
 dayjs.extend(customParseFormat);
 
@@ -24,19 +21,8 @@ interface Props {
   page: number,
 }
 
-const buttons = [
-  ButtonOption.SELECT,
-  ButtonOption.EDIT,
-  ButtonOption.FAVOURITE,
-  ButtonOption.DOWNLOAD,
-  ButtonOption.DELETE,
-  ButtonOption.VIEW,
-  ButtonOption.SHARE,
-  ButtonOption.PLUGINS,
-];
-
 function GalleryImage({ page, hash }: Props) {
-  const [showButtons, setShowButtons] = useState<boolean>(false);
+  const { enableDebug } = useSettingsStore();
 
   const {
     galleryImageData,
@@ -44,20 +30,35 @@ function GalleryImage({ page, hash }: Props) {
     editImage,
   } = useGalleryImage(hash);
 
+  const { formatter } = useDateFormat();
+
   const bindLongPress = useLongPress(() => {
     if (isTouchDevice()) {
       updateImageSelection(
-        galleryImageData?.isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
+        galleryImageData?.selectionIndex !== -1 ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
         false,
         page,
       );
     }
   });
 
-  const globalClickListener = useCallback(() => {
-    window.removeEventListener('click', globalClickListener);
-    setShowButtons(false);
-  }, []);
+  const debugText = useMemo<string>(() => ([
+    hash,
+    ...(galleryImageData?.hashes ? Object.keys(galleryImageData.hashes).map((channel) => (
+      `${channel.toUpperCase()}: ${galleryImageData.hashes?.[channel as keyof RGBNHashes]}`
+    )) : []),
+  ]
+    .filter(Boolean)
+    .join('\n')
+  ), [galleryImageData, hash]);
+
+  const updateSelection = useCallback((shift: boolean) => {
+    updateImageSelection(
+      galleryImageData?.selectionIndex !== -1 ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
+      shift,
+      page,
+    );
+  }, [galleryImageData, page, updateImageSelection]);
 
   if (!galleryImageData) {
     return null;
@@ -74,67 +75,41 @@ function GalleryImage({ page, hash }: Props) {
     lockFrame,
     title,
     tags,
-    isFavourite,
-    isSelected,
-    hideDate,
-    preferredLocale,
-    meta,
+    selectionIndex,
+    selectionActive,
     rotation,
-    enableDebug,
   } = galleryImageData;
 
   const handleCellClick = (ev: React.MouseEvent) => {
+    ev.preventDefault();
+
     if (ev.ctrlKey || ev.shiftKey) {
-      ev.preventDefault();
-      updateImageSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD, ev.shiftKey, page);
-    } else if (isTouchDevice()) {
-      if (!showButtons) {
-        setShowButtons(true);
-        window.requestAnimationFrame(() => {
-          window.addEventListener('click', globalClickListener);
-        });
-      }
+      updateSelection(ev.shiftKey);
+    } else if (isTouchDevice() && selectionActive) {
+      updateSelection(false);
     } else {
-      ev.preventDefault();
       editImage(tags);
     }
   };
 
   return (
-    <li
-      className={
-        classnames('gallery-image gallery-item', {
-          'gallery-item--selected': isSelected,
-        })
-      }
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...bindLongPress()}
-      onClick={handleCellClick}
-      onMouseEnter={() => {
-        if (!isTouchDevice()) {
-          setShowButtons(true);
-        }
+    <GalleryGridItem
+      selectionText={selectionIndex !== -1 ? (selectionIndex + 1).toString(10) : ''}
+      title={title}
+      subheader={formatter(created)}
+      wrapperProps={{
+        ...bindLongPress(),
+        onClick: handleCellClick,
+        disableRipple: true,
+        sx: {
+          display: 'block',
+          width: '100%',
+          textAlign: 'left',
+        },
       }}
-      onMouseLeave={() => {
-        if (!isTouchDevice()) {
-          setShowButtons(false);
-        }
-      }}
-      role="presentation"
-      title={enableDebug ? JSON.stringify(galleryImageData, null, 2) : undefined}
-    >
-      {
-        showButtons ? (
-          <GalleryImageButtons
-            isFavourite={isFavourite}
-            hash={hash}
-            imageTitle={title}
-            buttons={buttons}
-            tags={tags}
-          />
-        ) : null
-      }
-      <div className="gallery-image__image">
+      contextMenuComponent={GalleryImageContextMenu}
+      contextMenuProps={{ hash }}
+      media={(
         <ImageRender
           lockFrame={lockFrame}
           invertPalette={invertPalette}
@@ -146,43 +121,14 @@ function GalleryImage({ page, hash }: Props) {
           hashes={hashes}
           rotation={rotation}
         />
-      </div>
-      {title ? (
-        <span
-          className="gallery-image__title"
-        >
-          {title}
-        </span>
-      ) : null}
-      <TagsList tags={tags} />
-      <div className="gallery-image__created-meta">
-        {(
-          meta ? (
-            <>
-              <div className="gallery-image__meta">
-                <SVG name="meta" />
-              </div>
-              <pre className="gallery-image__meta-pre">
-                { JSON.stringify(meta, null, 2) }
-              </pre>
-            </>
-          ) : null
-        )}
-        <DateSpan
-          className="gallery-image__created"
-          hideDate={hideDate}
-          created={created}
-          preferredLocale={preferredLocale}
-        />
-      </div>
-      <Debug>
-        { hash }
-        { hashes ? '\n' : null }
-        { hashes ? Object.keys(hashes).map((channel) => (
-          `${channel.toUpperCase()}: ${hashes[channel as keyof RGBNHashes]}`
-        )).join('\n') : null }
-      </Debug>
-    </li>
+      )}
+      content={(tags.length > 0 || (debugText && enableDebug)) && (
+        <>
+          <TagsList tags={tags} />
+          <Debug text={debugText} />
+        </>
+      )}
+    />
   );
 }
 

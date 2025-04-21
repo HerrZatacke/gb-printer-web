@@ -1,18 +1,19 @@
 import React from 'react';
-import classnames from 'classnames';
-import SVG from '../SVG';
-import './index.scss';
+import CircularProgress from '@mui/material/CircularProgress';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import WarningIcon from '@mui/icons-material/Warning';
 import useFiltersStore from '../../stores/filtersStore';
 import useItemsStore from '../../stores/itemsStore';
 import { usePluginsContext } from '../../contexts/plugins';
 
 interface Props {
-  children: React.ReactNode,
-  pluginsActive: boolean,
+  pluginAnchor: HTMLElement | null,
+  onClose: () => void,
   hash?: string,
 }
 
-function PluginSelect({ children, pluginsActive, hash }: Props) {
+function PluginSelect({ pluginAnchor, hash, onClose }: Props) {
   const { plugins } = useItemsStore();
   const { imageSelection } = useFiltersStore();
   const { runWithImage, runWithImages } = usePluginsContext();
@@ -26,35 +27,29 @@ function PluginSelect({ children, pluginsActive, hash }: Props) {
   };
 
   return (
-    <span className="plugin-select__wrapper">
-      {children}
-      <ul className={classnames('plugin-select', { 'plugin-select--active': pluginsActive })}>
-        {
-          plugins.map(({ url, name, description, loading, error }) => (
-            <li
-              className="plugin-select__plugin-list-entry"
-              key={url}
-            >
-              <button
-                type="button"
-                className="plugin-select__button"
-                disabled={Boolean(loading || error)}
-                title={`${error || description || ''}\n${url}`}
-                onClick={() => dispatchToPlugin(url)}
-              >
-                {error && (
-                  <SVG name="warn" />
-                )}
-                {loading && (
-                  <SVG name="loading" />
-                )}
-                {name || url}
-              </button>
-            </li>
-          ))
-        }
-      </ul>
-    </span>
+    <Menu
+      open={!!pluginAnchor}
+      anchorEl={pluginAnchor}
+      onClose={onClose}
+    >
+      {
+        plugins.map(({ url, name, description, loading, error }) => (
+          <MenuItem
+            key={url}
+            disabled={Boolean(loading || error)}
+            title={`${error || description || ''}\n${url}`}
+            onClick={() => {
+              onClose();
+              dispatchToPlugin(url);
+            }}
+          >
+            {error && <WarningIcon color="warning" />}
+            {loading && <CircularProgress color="secondary" size={22} />}
+            {name || url}
+          </MenuItem>
+        ))
+      }
+    </Menu>
   );
 }
 

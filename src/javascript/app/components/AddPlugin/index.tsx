@@ -1,19 +1,19 @@
 import React from 'react';
-import { Link, Navigate } from 'react-router';
-import './index.scss';
+import { Link as RouterLink, Navigate } from 'react-router';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
 import { useAddPlugin } from './useAddPlugin';
-import SVG from '../SVG';
 
 function AddPlugin() {
-  // https://herrzatacke.github.io/gb-printer-web-plugins/
-  // https://herrzatacke.github.io/gb-printer-web-plugins/svgize.js
-
   const {
     url,
     source,
     isTrusted,
+    pending,
     pluginExists,
-    canAdd,
     addPlugin,
   } = useAddPlugin();
 
@@ -21,67 +21,60 @@ function AddPlugin() {
     return <Navigate to="/settings/plugins" replace />;
   }
 
+  if (pending) {
+    return null;
+  }
+
   return (
-    <div className="add-plugin">
+    <Stack
+      direction="column"
+      gap={4}
+    >
       { isTrusted ? null : (
-        <p className="add-plugin__message  add-plugin__message--warning-strong">
-          <SVG className="add-plugin__warn" name="warn" />
-          <span>
-            The source of this plugin
-          </span>
-          <code className="add-plugin__source">
-            { source }
-          </code>
-          <span>
-            is not trusted!!
-          </span>
-        </p>
+        <Alert severity="error" variant="filled">
+          {`The source "${source}" of this plugin is not trusted!!`}
+        </Alert>
       ) }
       { pluginExists ? (
         <>
-          <p className="add-plugin__message add-plugin__message--warning">
-            <SVG className="add-plugin__warn" name="warn" />
-            <span>
-              The plugin
-            </span>
-            <code className="add-plugin__source">
-              { url }
-            </code>
-            <span>
-              is already installed
-            </span>
-          </p>
+          <Alert severity="warning" variant="filled">
+            {`The plugin "${url}" is already installed`}
+          </Alert>
           <Link
+            component={RouterLink}
             to="/settings/plugins"
-            className="add-plugin__button add-plugin__button--goto"
           >
             Go to plugins
           </Link>
         </>
       ) : (
         <>
-          <p className="add-plugin__message">
-            <span>
-              This will add
-            </span>
-            <code className="add-plugin__source">
-              { url }
-            </code>
-            <span>
-              to your plugins.
-            </span>
-          </p>
-          <button
-            disabled={!canAdd}
-            className="add-plugin__button add-plugin__button--confirm"
-            type="button"
-            onClick={addPlugin}
+          <Alert
+            severity={isTrusted ? 'success' : 'warning'}
+            variant="filled"
           >
-            Add
-          </button>
+            {`This will add ${url} to your plugins.`}
+          </Alert>
+          <Box>
+            <Button
+              color={isTrusted ? 'success' : 'warning'}
+              variant="contained"
+              sx={{
+                fontSize: 20,
+                px: 8,
+                py: 2,
+                mx: 'auto',
+                display: 'block',
+              }}
+              disabled={pluginExists}
+              onClick={addPlugin}
+            >
+              Add
+            </Button>
+          </Box>
         </>
       ) }
-    </div>
+    </Stack>
   );
 }
 

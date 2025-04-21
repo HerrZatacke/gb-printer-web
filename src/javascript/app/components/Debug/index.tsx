@@ -1,13 +1,15 @@
 import React from 'react';
+import Typography from '@mui/material/Typography';
+import type { Theme } from '@mui/system';
 import useSettingsStore from '../../stores/settingsStore';
-import './index.scss';
+import { getPreStyles } from '../../../styles/tools/getPreStyles';
 
 interface Props {
-  children: React.ReactNode,
+  text: string,
 }
 
 
-function Debug({ children }: Props) {
+function Debug({ text }: Props) {
   const { enableDebug } = useSettingsStore();
 
   if (!enableDebug) {
@@ -15,9 +17,21 @@ function Debug({ children }: Props) {
   }
 
   return (
-    <pre className="debug">
-      { children }
-    </pre>
+    <Typography
+      title={text}
+      variant="caption"
+      fontFamily="monospace"
+      component="pre"
+      sx={(theme: Theme) => getPreStyles(theme, {
+        px: 0.5,
+        py: 0,
+        mt: 1,
+        mb: 0,
+        backgroundColor: theme.palette.warning[theme.palette.mode],
+      })}
+    >
+      { text }
+    </Typography>
   );
 }
 

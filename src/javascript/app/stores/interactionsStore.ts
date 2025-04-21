@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import screenfull from 'screenfull';
 import dayjs from 'dayjs';
+import { v4 } from 'uuid';
 import type { PrinterInfo } from '../../../types/Printer';
 import type { PrinterFunction } from '../../consts/printerFunction';
 
@@ -34,6 +35,7 @@ interface WindowDimensions {
 export interface ErrorMessage {
   error: Error
   timestamp: number,
+  id: string,
 }
 
 interface Values {
@@ -99,7 +101,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   dismissError: (index: number) => set({ errors: get().errors.filter((_, i) => i !== index) }),
   resetProgressLog: () => set({ progressLog: { git: [], dropbox: [] } }),
   setDragover: (dragover: boolean) => set({ dragover }),
-  setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix() }] }),
+  setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix(), id: v4() }] }),
   setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
   setPrinterBusy: (printerBusy: boolean) => set({ printerBusy }),
   setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),
@@ -148,5 +150,9 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
     }
   },
 }));
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+window.se = useInteractionsStore.getState().setError;
 
 export default useInteractionsStore;

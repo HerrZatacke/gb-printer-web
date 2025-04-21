@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import useEditStore from '../../../stores/editStore';
-import useFiltersStore from '../../../stores/filtersStore';
 import useItemsStore from '../../../stores/itemsStore';
+import usePreviewImages from '../../../../hooks/usePreviewImages';
 import type { Palette } from '../../../../../types/Palette';
-import getPreviewImages from '../../../../tools/getPreviewImages';
 import type { MonochromeImage } from '../../../../../types/Image';
 import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
 import { useStores } from '../../../../hooks/useStores';
@@ -24,28 +23,22 @@ interface UseEditPalette {
 }
 
 export const useEditPalette = (): UseEditPalette => {
-  const {
-    imageSelection,
-    sortBy,
-    filtersActiveTags,
-    recentImports,
-  } = useFiltersStore();
 
   const { editPalette, cancelEditPalette } = useEditStore();
-  const { images, palettes, addPalettes } = useItemsStore();
+  const { palettes, addPalettes } = useItemsStore();
   const { updateLastSyncLocalNow } = useStores();
 
   const shortName = editPalette?.shortName || '';
   const statePalette = editPalette?.palette || [];
   const name = editPalette?.name || '';
 
-  const shortNameIsValid = (pShortName: string) => {
+  const shortNameIsValid = useCallback((pShortName: string) => {
     if (!pShortName.match(/^[a-z]+[a-z0-9]*$/gi)) {
       return false;
     }
 
     return palettes.findIndex((p) => p.shortName === pShortName) === -1;
-  };
+  }, [palettes]);
 
   const canEditShortName = shortName === NEW_PALETTE_SHORT;
 
@@ -53,25 +46,37 @@ export const useEditPalette = (): UseEditPalette => {
   const [palette, setPalette] = useState<string[]>(statePalette);
   const [newShortName, setNewShortName] = useState<string>(canEditShortName ? '' : shortName);
 
-  const canConfirm = !canEditShortName || shortNameIsValid(newShortName);
+  const canConfirm = useMemo(() => (
+    (!canEditShortName || shortNameIsValid(newShortName)) && newName.length > 0
+  ), [newName, canEditShortName, newShortName, shortNameIsValid]);
 
-  const previewImages = useMemo<MonochromeImage[]>(() => (
-    getPreviewImages(images, { sortBy, filtersActiveTags, recentImports }, imageSelection)()
-  ), [filtersActiveTags, imageSelection, images, recentImports, sortBy]);
+  const previewImages = usePreviewImages();
 
-  const savePalette = (updatedPalette: Palette) => {
-    addPalettes([updatedPalette]);
-    updateLastSyncLocalNow();
-    cancelEditPalette();
-  };
 
-  const save = () => savePalette({
-    shortName: canEditShortName ? newShortName : shortName,
-    name: newName,
+  const save = useCallback(() => {
+    const savePalette = (updatedPalette: Palette) => {
+      addPalettes([updatedPalette]);
+      updateLastSyncLocalNow();
+      cancelEditPalette();
+    };
+
+    savePalette({
+      shortName: canEditShortName ? newShortName : shortName,
+      name: newName,
+      palette,
+      origin: 'Made with the webapp',
+      isPredefined: false,
+    });
+  }, [
+    addPalettes,
+    canEditShortName,
+    cancelEditPalette,
+    newName,
+    newShortName,
     palette,
-    origin: 'Made with the webapp',
-    isPredefined: false,
-  });
+    shortName,
+    updateLastSyncLocalNow,
+  ]);
 
   useEffect(() => {
     const keydownHandler = (ev: KeyboardEvent) => {

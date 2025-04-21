@@ -9,6 +9,7 @@ import type { FrameGroup } from '../../../../types/FrameGroup';
 import type { Frame } from '../../../../types/Frame';
 import type { ExportTypes } from '../../../consts/exportTypes';
 import { useStores } from '../../../hooks/useStores';
+import { getFramesForGroup } from '../../../tools/getFramesForGroup';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   const group = groups.find(({ id }) => id === byId);
@@ -46,11 +47,7 @@ const useFrames = (): UseFrames => {
 
   useEffect(() => {
     if (selectedFrameGroup) {
-      setGroupFrames(frames.reduce((acc: Frame[], frame: Frame): Frame[] => {
-        const frameGroupIdRegex = /^(?<group>[a-z]+)(?<id>[0-9]+)/g;
-        const group = frameGroupIdRegex.exec(frame.id)?.groups?.group;
-        return (selectedFrameGroup === group) ? [...acc, frame] : acc;
-      }, []));
+      setGroupFrames(getFramesForGroup(frames, selectedFrameGroup));
     } else {
       setGroupFrames([]);
     }

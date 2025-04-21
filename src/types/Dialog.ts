@@ -1,4 +1,4 @@
-import type { InfoTextTheme } from '../javascript/app/components/Overlays/Confirm/fields/InfoText';
+import type { AlertColor } from '@mui/material';
 
 export enum DialoqQuestionType {
   CHECKBOX = 'checkbox',
@@ -50,7 +50,7 @@ export interface DialogQuestionCheckbox extends DialogQuestion {
 
 export interface DialogQuestionInfo extends DialogQuestion {
   type: DialoqQuestionType.INFO,
-  themes: InfoTextTheme[]
+  severity: AlertColor,
 }
 
 export interface DialogQuestionImage extends DialogQuestion {

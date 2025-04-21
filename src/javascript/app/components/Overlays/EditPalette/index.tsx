@@ -1,10 +1,11 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
-import Lightbox from '../../Lightbox';
-import Input, { InputType } from '../../Input';
+import React, { useCallback } from 'react';
+import type { ChangeEvent, FocusEvent } from 'react';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import ColorPicker from '../../ColorPicker';
 import ImageRender from '../../ImageRender';
-
-import './index.scss';
+import Lightbox from '../../Lightbox';
 import { useEditPalette } from './useEditPalette';
 
 function EditPalette() {
@@ -24,47 +25,71 @@ function EditPalette() {
     cancelEditPalette,
   } = useEditPalette();
 
+  const handleTitleChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
+    setNewName(ev.target.value);
+  }, [setNewName]);
+
+  const handleShortNameChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
+    setNewShortName(ev.target.value);
+  }, [setNewShortName]);
+
+  const handleShortNameBlur = useCallback((ev: FocusEvent<HTMLInputElement>) => {
+    setNewShortName(ev.target.value.toLowerCase());
+  }, [setNewShortName]);
+
+  const handleColorChange = useCallback((index: number, value: string) => {
+    const np = [...palette];
+    np[index] = value;
+    setPalette(np);
+  }, [palette, setPalette]);
+
   if (!shortName) {
     return null;
   }
 
   return (
     <Lightbox
-      className="edit-palette"
       confirm={save}
       canConfirm={canConfirm}
-      deny={() => cancelEditPalette()}
+      deny={cancelEditPalette}
+      header={`Editing palette ${newName ? `"${newName}"` : ''}`}
       closeOnOverlayClick={false}
     >
-      <label className="edit-palette__header">
-        <input
-          className="edit-palette__header-edit"
+      <Stack
+        direction="column"
+        gap={4}
+      >
+        <TextField
+          label="Edit Title"
+          size="small"
+          type="text"
           placeholder="Add a title"
           value={newName}
-          onChange={(ev) => {
-            setNewName(ev.target.value);
-          }}
+          onChange={handleTitleChange}
         />
-      </label>
-      <div
-        className="edit-palette__content"
-      >
-        <Input
-          id="palette-edit-shortname"
-          labelText="ID/Short name"
-          type={InputType.TEXT}
+
+        <TextField
+          label="ID/Short name"
+          size="small"
+          type="text"
           value={newShortName}
           disabled={!canEditShortName}
-          onChange={(value) => {
-            setNewShortName(value.toLowerCase());
-          }}
+          onChange={handleShortNameChange}
+          onBlur={handleShortNameBlur}
+          required
         />
-        <ul className="edit-palette__previews">
+
+        <Stack
+          direction="row"
+          gap={2}
+          component="ul"
+          justifyContent="space-around"
+        >
           {
             previewImages.map((image) => (
-              <li
-                className="edit-palette__preview-image"
+              <Box
                 key={image.hash}
+                component="li"
               >
                 <ImageRender
                   hash={image.hash}
@@ -74,27 +99,22 @@ function EditPalette() {
                   palette={palette}
                   framePalette={palette}
                 />
-              </li>
+              </Box>
             ))
           }
-        </ul>
+        </Stack>
+
         {
           palette.map((color, index) => (
-            <Input
-              key={index}
-              id={`palette-color-${index}`}
-              labelText={`Color ${index + 1}`}
-              type={InputType.COLOR}
+            <ColorPicker
+              key={`color-${index}`}
+              label={`Color ${index + 1}`}
               value={color}
-              onChange={(value) => {
-                const np = [...palette];
-                np[index] = value;
-                setPalette(np);
-              }}
+              onChange={(value) => handleColorChange(index, value)}
             />
           ))
         }
-      </div>
+      </Stack>
     </Lightbox>
   );
 }

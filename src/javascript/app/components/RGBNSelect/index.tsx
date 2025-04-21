@@ -1,13 +1,13 @@
-import React from 'react';
-import classnames from 'classnames';
-import SVG from '../SVG';
+import React, { useMemo } from 'react';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import type { RGBNHashes } from '../../../../types/Image';
-
-import './index.scss';
+import { getChannelColor } from '../../../tools/getChannelColor';
 
 interface RGBNCheckbox {
   value: boolean,
-  cssModifier: string,
   updateKey: keyof RGBNHashes,
 }
 
@@ -21,58 +21,55 @@ interface Props {
 
 function RGBNSelect({ isR, isG, isB, isN, toggleChannel }: Props) {
 
-  const BOXES: RGBNCheckbox[] = [
+  const BOXES: RGBNCheckbox[] = useMemo<RGBNCheckbox[]>(() => ([
     {
       value: isR,
-      cssModifier: 'red',
       updateKey: 'r',
     },
     {
       value: isG,
-      cssModifier: 'green',
       updateKey: 'g',
     },
     {
       value: isB,
-      cssModifier: 'blue',
       updateKey: 'b',
     },
     {
       value: isN,
-      cssModifier: 'normal',
       updateKey: 'n',
     },
-  ];
+  ]), [isB, isG, isN, isR]);
 
   return (
-    <div
-      className="rgbn-select"
-      onClick={(ev) => {
-        ev.stopPropagation();
+    <ToggleButtonGroup
+      onChange={(_, value: keyof RGBNHashes) => toggleChannel(value)}
+      fullWidth
+      sx={{
+        '.MuiToggleButton-root': {
+          padding: '1px',
+          border: 'none',
+        },
       }}
-      role="presentation"
     >
       {
         BOXES.map(({
           value,
-          cssModifier,
           updateKey,
         }) => (
-          <button
-            type="button"
+          <ToggleButton
+            value={updateKey}
             key={updateKey}
-            className={
-              classnames(`rgbn-select__button rgbn-select__button--${cssModifier}`, {
-                'rgbn-select__button--selected': value,
-              })
-            }
-            onClick={() => toggleChannel(updateKey)}
+            sx={{
+              '& svg': {
+                color: getChannelColor(updateKey),
+              },
+            }}
           >
-            <SVG name="circle" />
-          </button>
+            {value ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+          </ToggleButton>
         ))
       }
-    </div>
+    </ToggleButtonGroup>
   );
 }
 

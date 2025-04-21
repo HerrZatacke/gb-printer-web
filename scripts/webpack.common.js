@@ -15,6 +15,7 @@ const config = async (projectConfig, packageJSON) => {
   return ({
     resolve: {
       extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
+      conditionNames: ['mui-modern', 'webpack', 'browser', 'module', 'import'],
     },
     entry: {
       main: [

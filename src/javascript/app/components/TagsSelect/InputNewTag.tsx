@@ -1,124 +1,70 @@
 import React, { useState } from 'react';
-import classnames from 'classnames';
-import { useCombobox } from 'downshift';
-import SVG from '../SVG';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import type { AutocompleteInputChangeReason, AutocompleteChangeReason } from '@mui/material';
+import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
 import { useAvailableTags } from '../../../hooks/useAvailableTags';
 import { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 interface Props {
   updateTags: (mode: TagUpdateMode, value: string) => void,
   selectedTags: string[],
-  direction?: string,
 }
 
-function InputNewTag({ updateTags, selectedTags, direction }: Props) {
+function InputNewTag({ updateTags, selectedTags }: Props) {
   const { availableTags } = useAvailableTags();
   const selectableTags = availableTags.filter((tag) => !selectedTags.includes(tag));
-  const [inputItems, setInputItems] = useState(selectableTags);
-
-  const {
-    isOpen,
-    getMenuProps,
-    getInputProps,
-    getComboboxProps,
-    getToggleButtonProps,
-    highlightedIndex,
-    getItemProps,
-    reset,
-    inputValue: currentValue,
-  } = useCombobox({
-    items: inputItems,
-
-    onSelectedItemChange: ({ inputValue }) => {
-      if (inputValue?.trim()) {
-        updateTags(TagUpdateMode.ADD, inputValue.trim());
-        reset();
-      }
-    },
-
-    onInputValueChange: ({ inputValue }) => {
-      setInputItems(
-        selectableTags
-          .filter((tag) => (
-            tag.toLowerCase().startsWith(inputValue?.trim().toLowerCase() || '')
-          )),
-      );
-    },
-  });
-
-  const addNewTag = () => {
-    if (currentValue.trim()) {
-      updateTags(TagUpdateMode.ADD, currentValue.trim());
-      reset();
-    }
-  };
+  const [userValue, setUserValue] = useState('');
 
   return (
-    <li
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...getComboboxProps()}
-      className="tags-select__tag tags-select__tag--input"
-    >
-      <input
-        type="text"
-        className="tags-select__tag-name"
-        id="tags-select-new-tag"
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...getInputProps()}
-        onKeyUp={(ev) => {
-          switch (ev.key) {
-            case 'Enter':
-              addNewTag();
+    <MuiCleanThemeProvider>
+      <Autocomplete
+        options={selectableTags}
+        fullWidth
+        size="small"
+        inputValue={userValue}
+        renderInput={(params) => (
+          <TextField
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...params}
+            label="Tags"
+          />
+        )}
+        clearOnBlur
+        clearOnEscape
+        freeSolo
+        onInputChange={(_, value: string | null, changeReason: AutocompleteInputChangeReason) => {
+          // console.log('onInputChange', value, changeReason);
+          switch (changeReason) {
+            case 'input':
+              setUserValue(value || '');
               break;
+            case 'reset':
+            case 'clear':
+            case 'blur':
+              setUserValue('');
+              break;
+            case 'selectOption':
+            case 'removeOption':
             default:
+          }
+        }}
+        onChange={(_, value: string | null, changeReason: AutocompleteChangeReason) => {
+          const stringValue = value || '';
+          // console.log('onChange', stringValue, changeReason);
+          switch (changeReason) {
+            case 'createOption':
+            case 'selectOption':
+              updateTags(TagUpdateMode.ADD, stringValue.trim());
               break;
+            case 'removeOption':
+            case 'clear':
+            case 'blur':
+            default:
           }
         }}
       />
-      <button
-        type="button"
-        className="tags-select__button tags-select__button--add tags-select__button--only-touch"
-        onClick={addNewTag}
-      >
-        <SVG name="add" />
-      </button>
-      <button
-        type="button"
-        className="tags-select__combo-box-toggle-button"
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...getToggleButtonProps()}
-        aria-label="toggle tag select menu"
-      >
-        <SVG name="arrowdown" />
-      </button>
-      <ul
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...getMenuProps()}
-        className={
-          classnames('tags-select__combo-box-list', {
-            'tags-select__combo-box-list--open': isOpen,
-            [`tags-select__combo-box-list--${direction}`]: direction,
-          })
-        }
-      >
-        {isOpen &&
-        inputItems
-          .map((item, index) => (
-            <li
-              className={
-                classnames('tags-select__combo-box-item', {
-                  'tags-select__combo-box-item--selected': highlightedIndex === index,
-                })
-              }
-              key={`${item}${index}`}
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              {...getItemProps({ item, index })}
-            >
-              {item}
-            </li>
-          ))}
-      </ul>
-    </li>
+    </MuiCleanThemeProvider>
   );
 }
 

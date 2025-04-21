@@ -1,11 +1,26 @@
 import React from 'react';
 import { Outlet, NavLink, useMatches, Navigate } from 'react-router';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
 import ExportSettings from './pages/ExportSettings';
 import { getEnv } from '../../../tools/getEnv';
 
-import './index.scss';
-
 const env = getEnv();
+
+const infos: string[] = [
+  `Web-App version: ${VERSION}`,
+  `Web-App branch: ${BRANCH}`,
+  `Printer version: ${env?.version}`,
+  `Max Images: ${env?.maximages}`,
+  `Localforage driver: ${env?.localforage}`,
+  `Environment type: ${env?.env}`,
+  `Compiled Filesystem: ${env?.fstype}`,
+  `Compiled Bootmode: ${env?.bootmode}`,
+  `Compiled for OLED: ${env?.oled ? 'yes' : 'no'}`,
+];
 
 const tabs = [
   {
@@ -50,41 +65,55 @@ function Settings() {
   }
 
   return (
-    <div className="settings">
-      <ul
-        className="contenttabs__tabs"
+    <Stack
+      direction="column"
+      gap={4}
+      justifyContent="space-between"
+      sx={{ flexGrow: 1 }}
+    >
+      <Stack
+        direction="column"
+        gap={6}
       >
-        {
-          tabs.map(({ headline, path }) => (
-            <li
-              className="contenttabs__tab"
-              key={path}
-            >
-              <NavLink
+        <Tabs value={pathname}>
+          {
+            tabs.map(({ headline, path }) => (
+              <Tab
+                label={headline}
+                key={path}
+                component={NavLink}
                 to={path}
-                className={({ isActive }) => (`button contenttabs__tabs-button ${isActive ? 'contenttabs__tabs-button--active' : ''}`)}
-              >
-                {headline}
-              </NavLink>
-            </li>
-          ))
-        }
-      </ul>
-      <h2 className="settings__headline">{tab.headline}</h2>
-      <Outlet />
-      <ExportSettings />
-      <ul className="settings__version">
-        <li>{`Web-App version: ${VERSION}`}</li>
-        <li>{`Web-App branch: ${BRANCH}`}</li>
-        <li>{`Printer version: ${env?.version}`}</li>
-        <li>{`Max Images: ${env?.maximages}`}</li>
-        <li>{`Localforage driver: ${env?.localforage}`}</li>
-        <li>{`Environment type: ${env?.env}`}</li>
-        <li>{`Compiled Filesystem: ${env?.fstype}`}</li>
-        <li>{`Compiled Bootmode: ${env?.bootmode}`}</li>
-        <li>{`Compiled for OLED: ${env?.oled ? 'yes' : 'no'}`}</li>
-      </ul>
-    </div>
+                value={path}
+                // className={({ isActive }) => ( /* ToDo */ }
+              />
+            ))
+          }
+        </Tabs>
+
+        <Box>
+          <Outlet />
+        </Box>
+
+        <ExportSettings />
+      </Stack>
+
+      <Stack
+        component="ul"
+        direction="column"
+      >
+        { infos.map((text) => (
+          <Typography
+            key={text}
+            component="li"
+            variant="caption"
+            color="textDisabled"
+            align="right"
+          >
+            {text}
+          </Typography>
+        )) }
+      </Stack>
+    </Stack>
   );
 }
 

@@ -1,6 +1,13 @@
 import React from 'react';
-import classnames from 'classnames';
-import Input, { InputType } from '../../../Input';
+import Alert from '@mui/material/Alert';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
+import { useAsPasswordField } from '../../../../../hooks/useAsPasswordField';
 
 interface APConfig {
   ssid: string,
@@ -16,49 +23,78 @@ interface Props extends APConfig {
 }
 
 function APConfig(props: Props) {
+  const { type, button } = useAsPasswordField();
+
   return (
-    <div
-      className={
-        classnames('wifi-settings__ap-group', {
-          'wifi-settings__ap-group--delete': props.delete,
-        })
-      }
+    <Card
+      raised
+      component="li"
     >
-      <Input
-        id={`${props.id}-settings-ap-ssid`}
-        labelText="Network SSID"
-        type={InputType.TEXT}
-        value={props.ssid}
-        disabled={!props.isNew || props.disabled}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        onChange={(ssid) => {
-          props.update({ ssid });
-        }}
-        buttonOnClick={() => {
-          props.update({
-            delete: !props.delete,
-          });
-        }}
-        buttonIcon="delete"
-      />
-      <Input
-        id={`${props.id}-settings-ap-psk`}
-        labelText="Network Password"
-        type={InputType.PASSWORD}
-        value={props.psk}
-        disabled={props.disabled}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        onChange={(psk) => {
-          props.update({ psk });
-        }}
-      />
-    </div>
+      <CardContent>
+        <Stack
+          direction="column"
+          gap={4}
+        >
+          <TextField
+            id={`${props.id}-settings-ap-ssid`}
+            label="Network SSID"
+            type="text"
+            value={props.ssid}
+            slotProps={{
+              ...textFieldSlotDefaults,
+              input: {
+                endAdornment: (
+                  <IconButton
+                    title="Delete Network"
+                    color="primary"
+                    onClick={() => {
+                      props.update({
+                        delete: !props.delete,
+                      });
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                ),
+              },
+            }}
+            disabled={!props.isNew || props.disabled}
+            onChange={(ev) => {
+              const ssid = ev.target.value;
+              props.update({ ssid });
+            }}
+          />
+
+
+          <TextField
+            id={`${props.id}-settings-ap-psk`}
+            label="Network Password"
+            type={type}
+            slotProps={{
+              ...textFieldSlotDefaults,
+              input: {
+                endAdornment: button,
+              },
+            }}
+            value={props.psk}
+            disabled={props.disabled}
+            onChange={(ev) => {
+              const psk = ev.target.value;
+              props.update({ psk });
+            }}
+          />
+
+          { props.delete && (
+            <Alert
+              severity="error"
+              icon={<DeleteIcon fontSize="inherit" />}
+            >
+              Network will be deleted
+            </Alert>
+          )}
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }
 

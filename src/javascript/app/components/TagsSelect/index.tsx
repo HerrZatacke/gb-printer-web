@@ -1,81 +1,126 @@
 import React from 'react';
-import classnames from 'classnames';
-import SVG from '../SVG';
+import AddIcon from '@mui/icons-material/Add';
+import ButtonBase from '@mui/material/ButtonBase';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import RemoveIcon from '@mui/icons-material/Remove';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import Stack from '@mui/material/Stack';
 import InputNewTag from './InputNewTag';
 import unique from '../../../tools/unique';
 import { SpecialTags } from '../../../consts/SpecialTags';
-import './index.scss';
 import type { TagChange } from '../../../tools/applyTagChanges';
 import { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 interface Props {
-  label?: string,
   tags: TagChange
   updateTags: (mode: TagUpdateMode, tag: string) => void,
-  listDirection?: string,
+  resetTags: () => void,
 }
 
 function TagsSelect({
-  label,
   tags,
   updateTags,
-  listDirection,
+  resetTags,
 }: Props) {
   const activeTags = unique([...tags.initial, ...tags.add]);
 
   return (
-    <>
-      {(
-        label ? (
-          <label
-            className="tags-select__label"
-            htmlFor="tags-select-new-tag"
-          >
-            { label }
-          </label>
-        ) : null
-      )}
-      <ul className="tags-select">
-        {
-          activeTags.map((tag) => (
-            <li
-              className={
-                classnames('tags-select__tag', {
-                  'tags-select__tag--add': tags.add.includes(tag),
-                  'tags-select__tag--remove': tags.remove.includes(tag),
-                })
+    <Stack
+      direction="column"
+      gap={2}
+    >
+      <InputNewTag
+        updateTags={updateTags}
+        selectedTags={activeTags}
+      />
+      { activeTags.length > 0 && (
+        <Stack
+          direction="row"
+          gap={1}
+          flexWrap="wrap"
+          alignItems="center"
+          sx={{
+            '.MuiChip-root': {
+              my: '1px', // IconButton for reset function is 2px higher than chip.
+            },
+          }}
+        >
+          {
+            activeTags.map((tag) => {
+              const isAdded = tags.add.includes(tag);
+              const isRemoved = tags.remove.includes(tag);
+              let color: 'default' | 'success' | 'error';
+
+              if (isAdded) {
+                color = 'success';
+              } else if (isRemoved) {
+                color = 'error';
+              } else {
+                color = 'default';
               }
-              key={tag}
+
+              return (
+                <Chip
+                  key={tag}
+                  label={(
+                    <Stack
+                      direction="row"
+                      gap={1}
+                      alignItems="center"
+                    >
+                      {tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
+                      <Stack
+                        direction="row"
+                        gap={0}
+                        sx={{
+                          mr: -1,
+                          '.MuiButtonBase-root': {
+                            opacity: 0.4,
+                            borderRadius: '50%',
+
+                            '&:hover': {
+                              opacity: 1,
+                            },
+
+                            '&:focus-visible': {
+                              opacity: 1,
+                              background: 'color-mix(in srgb, currentColor 20%, transparent)',
+                            },
+                          },
+                        }}
+                      >
+                        <ButtonBase
+                          onClick={() => updateTags(TagUpdateMode.ADD, tag)}
+                        >
+                          <AddIcon />
+                        </ButtonBase>
+                        <ButtonBase
+                          onClick={() => updateTags(TagUpdateMode.REMOVE, tag)}
+                        >
+                          <RemoveIcon />
+                        </ButtonBase>
+                      </Stack>
+                    </Stack>
+                  )}
+                  color={color}
+                  variant="filled"
+                />
+              );
+            })
+          }
+          {(tags.add.length + tags.remove.length) > 0 && (
+            <IconButton
+              onClick={resetTags}
+              title="Reset tags"
+              size="small"
             >
-              <span
-                className="tags-select__tag-name"
-              >
-                {tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
-              </span>
-              <button
-                type="button"
-                className="tags-select__button tags-select__button--remove"
-                onClick={() => updateTags(TagUpdateMode.REMOVE, tag)}
-              >
-                <SVG name="remove" />
-              </button>
-              <button
-                type="button"
-                className="tags-select__button tags-select__button--add"
-                onClick={() => updateTags(TagUpdateMode.ADD, tag)}
-              >
-                <SVG name="add" />
-              </button>
-            </li>
-          ))
-        }
-        <InputNewTag
-          updateTags={updateTags}
-          selectedTags={activeTags}
-          direction={listDirection}
-        />
-      </ul>
-    </>
+              <RestartAltIcon />
+            </IconButton>
+          )}
+        </Stack>
+      )}
+    </Stack>
   );
 }
 

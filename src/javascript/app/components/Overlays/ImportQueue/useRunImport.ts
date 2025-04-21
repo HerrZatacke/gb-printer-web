@@ -32,6 +32,7 @@ interface UseRunImport {
   runImport: () => Promise<void>,
   cancelImport: () => void,
   tagChanges: TagChange,
+  resetTagChanges: () => void,
   updateTagChanges: (updates: TagChange) => void,
 }
 
@@ -56,6 +57,14 @@ const useRunImport = (): UseRunImport => {
     add: [],
     remove: [],
   });
+
+  const resetTagChanges = () => {
+    updateTagChanges(({ initial }) => ({
+      initial,
+      add: [],
+      remove: [],
+    }));
+  };
 
   const runImport = async () => {
     const savedImages = await Promise.all(sortByFilename(importQueue).map((image, index) => {
@@ -116,6 +125,7 @@ const useRunImport = (): UseRunImport => {
     tagChanges,
     createGroup,
     updateTagChanges,
+    resetTagChanges,
     setFrame,
     setCreateGroup,
     runImport,

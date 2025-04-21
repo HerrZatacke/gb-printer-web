@@ -6,7 +6,7 @@ import type { PluginCompatibilityWrapper } from './PluginCompatibility';
 import type { CollectImageDataFn } from '../javascript/app/contexts/plugins/functions/collectImageData';
 import type { PluginFunctions } from '../javascript/app/contexts/plugins/functions/pluginContextFunctions';
 
-enum ConfigParamType {
+export enum ConfigParamType {
   NUMBER = 'number',
   STRING = 'string',
   MULTILINE = 'multiline',

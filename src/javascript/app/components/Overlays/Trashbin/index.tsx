@@ -1,7 +1,9 @@
 import React from 'react';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import Lightbox from '../../Lightbox';
 import useTrashbin from '../../../../hooks/useTrashbin';
-import './index.scss';
 
 function Trashbin() {
   const {
@@ -16,53 +18,54 @@ function Trashbin() {
 
   return (
     <Lightbox
-      className="trashbin"
-      confirm={() => {
+      deny={() => {
         showTrashCount(false);
       }}
       header={`Trash (${sum} items)`}
-    >
-      <ul className="trashbin__list">
-        <li className="trashbin__option">
-          <button
-            type="button"
-            className="trashbin__button button"
+      contentWidth="auto"
+      actionButtons={(
+        <>
+          <Button
+            variant="contained"
+            color="secondary"
             title="Download deleted frames"
             disabled={trashCount.frames === 0}
             onClick={downloadFrames}
           >
-            <span className="trashbin__button-label">
-              { `Download deleted frames (${trashCount.frames})` }
-            </span>
-          </button>
-        </li>
-        <li className="trashbin__option">
-          <button
-            type="button"
-            className="trashbin__button button"
+            Download frames
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
             title="Download deleted images"
             disabled={trashCount.images === 0}
             onClick={downloadImages}
           >
-            <span className="trashbin__button-label">
-              { `Download deleted images (${trashCount.images})` }
-            </span>
-          </button>
-        </li>
-        <li className="trashbin__option">
-          <button
-            type="button"
-            className="trashbin__button trashbin__button--sum button"
+            Download images
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
             title="Purge all"
             disabled={sum === 0}
             onClick={purgeTrash}
           >
-            <span className="trashbin__button-label">
-              { `Purge all (${sum})` }
-            </span>
-          </button>
-        </li>
-      </ul>
+            { `Purge all (${sum})` }
+          </Button>
+        </>
+      )}
+    >
+      <Stack
+        direction="column"
+        gap={2}
+      >
+        <Typography variant="body2">
+          { `Deleted frames: ${trashCount.frames}` }
+        </Typography>
+        <Typography variant="body2">
+          { `Deleted images: ${trashCount.images}` }
+        </Typography>
+      </Stack>
     </Lightbox>
   );
 }

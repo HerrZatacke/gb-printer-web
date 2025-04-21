@@ -14,6 +14,7 @@ interface UseFilterForm {
   activeTags: string[],
   updateActiveTags: (tag: string, mode: ActiveTagUpdateMode) => void,
   clearTags: () => void,
+  applyClearTags: () => void,
   cancel: () => void,
   confirm: () => void,
 }
@@ -44,6 +45,7 @@ export const useFilterForm = (): UseFilterForm => {
     activeTags,
     updateActiveTags,
     clearTags: () => setActiveTags([]),
+    applyClearTags: () => setFiltersActiveTags([]),
     confirm: () => setFiltersActiveTags(activeTags),
     cancel: () => setFiltersVisible(false),
   };

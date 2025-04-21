@@ -1,7 +1,9 @@
+import { useCallback, useState } from 'react';
 import { parseURL } from 'ufo';
 import { useParams, useNavigate } from 'react-router';
 import useItemsStore from '../../stores/itemsStore';
 import { usePluginsContext } from '../../contexts/plugins';
+import useInteractionsStore from '../../stores/interactionsStore';
 
 const trustedSources = [
   'https://herrzatacke.github.io',
@@ -16,13 +18,15 @@ interface UseAddPlugin {
   source: string,
   pluginExists: boolean,
   isTrusted: boolean,
-  canAdd: boolean,
+  pending: boolean,
   addPlugin: () => Promise<void>,
 }
 export const useAddPlugin = (): UseAddPlugin => {
   const url = useParams().pluginUrl || '';
+  const [pending, setPending] = useState(false);
   const parsedPluginUrl = parseURL(url);
   const { plugins } = useItemsStore();
+  const { setError } = useInteractionsStore();
   const { validateAndAddPlugin } = usePluginsContext();
   const navigate = useNavigate();
 
@@ -38,17 +42,21 @@ export const useAddPlugin = (): UseAddPlugin => {
     plugin.url === url
   ));
 
-  const addPlugin = async () => {
-    await validateAndAddPlugin({ url });
+  const addPlugin = useCallback(async () => {
+    setPending(true);
     navigate('/settings/plugins', { replace: true });
-  };
+    const installSuccess = await validateAndAddPlugin({ url });
+    if (!installSuccess) {
+      setError(new Error('Could not install plugin.'));
+    }
+  }, [navigate, setError, url, validateAndAddPlugin]);
 
   return {
     url,
+    pending,
     pluginExists,
     source: `${parsedPluginUrl.protocol}//${parsedPluginUrl.host}`,
     isTrusted,
-    canAdd: !pluginExists,
     addPlugin,
   };
 };

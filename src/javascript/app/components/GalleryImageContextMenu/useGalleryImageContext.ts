@@ -1,0 +1,120 @@
+import { useMemo } from 'react';
+import useDialogsStore from '../../stores/dialogsStore';
+import useEditStore from '../../stores/editStore';
+import useFiltersStore from '../../stores/filtersStore';
+import useInteractionsStore from '../../stores/interactionsStore';
+import useItemsStore from '../../stores/itemsStore';
+import { useStores } from '../../../hooks/useStores';
+import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import type { ImageSelectionMode } from '../../stores/filtersStore';
+import useDownload from '../../../hooks/useDownload';
+import useShareImage from '../../../hooks/useShareImage';
+import { canShare } from '../../../tools/canShare';
+import { getFilteredImages } from '../../../tools/getFilteredImages';
+import { SpecialTags } from '../../../consts/SpecialTags';
+import { DialoqQuestionType } from '../../../../types/Dialog';
+
+interface UseGalleryImageContext {
+  isSelected: boolean,
+  canShare: boolean,
+  hasPlugins: boolean,
+  isFavourite: boolean,
+  hasMeta: boolean,
+  startDownload: () => void,
+  deleteImage: () => void,
+  shareImage: () => void,
+  showMetadata: () => void,
+  updateImageToSelection: (mode: ImageSelectionMode) => void,
+  setLightboxImage: () => void,
+  updateFavouriteTag: (isFavourite: boolean) => void,
+  editImage: () => void,
+}
+
+export enum ButtonOption {
+  EDIT = 'edit',
+  DOWNLOAD = 'download',
+  DELETE = 'delete',
+  SHARE = 'share',
+  SELECT = 'select',
+  VIEW = 'view',
+  FAVOURITE = 'favourite',
+  PLUGINS = 'plugins',
+}
+
+export const useGalleryImageContext = (hash: string): UseGalleryImageContext => {
+  const {
+    imageSelection,
+    updateImageSelection,
+    filtersActiveTags,
+    sortBy,
+    recentImports,
+  } = useFiltersStore();
+
+  const { setLightboxImage } = useInteractionsStore();
+  const { plugins, updateImageFavouriteTag } = useItemsStore();
+  const { view, covers } = useGalleryTreeContext();
+  const { setEditImages } = useEditStore();
+  const { dismissDialog, setDialog } = useDialogsStore();
+  const { updateLastSyncLocalNow, deleteImages } = useStores();
+  const { downloadSingleImage } = useDownload();
+  const { shareImage } = useShareImage();
+
+  const { images } = useItemsStore();
+  const image = useMemo(() => (
+    images.find((img) => img.hash === hash)
+  ), [hash, images]);
+
+  const isSelected = imageSelection.includes(hash);
+  const hasPlugins = !!plugins.length;
+
+  return {
+    hasPlugins,
+    isSelected,
+    isFavourite: image?.tags.includes(SpecialTags.FILTER_FAVOURITE) || false,
+    hasMeta: !!image?.meta,
+    canShare: canShare(),
+    startDownload: () => downloadSingleImage(hash),
+    deleteImage: () => {
+      setDialog({
+        message: image?.title ? `Delete image "${image.title}"?` : 'Delete this image?',
+        confirm: async () => {
+          deleteImages([hash]);
+        },
+        deny: async () => dismissDialog(0),
+      });
+    },
+    shareImage: () => shareImage(hash),
+    showMetadata: () => {
+      setDialog({
+        message: image?.title ? `Meta-Info for "${image.title}"` : 'Meta-Info',
+        questions: () => ([
+          { type: DialoqQuestionType.INFO, label: JSON.stringify(image?.meta), key: 'meta' },
+        ]),
+        confirm: async () => dismissDialog(0),
+      });
+    },
+    updateImageToSelection: (mode: ImageSelectionMode) => {
+      updateImageSelection(mode, [hash]);
+    },
+    setLightboxImage: () => {
+      setLightboxImage(
+        getFilteredImages(
+          view.images,
+          { filtersActiveTags, sortBy, recentImports },
+        )
+          .filter((img) => !covers.includes(img.hash))
+          .findIndex((img) => hash === img.hash),
+      );
+    },
+    updateFavouriteTag: (isFavourite: boolean) => {
+      updateImageFavouriteTag(isFavourite, hash);
+      updateLastSyncLocalNow();
+    },
+    editImage: () => {
+      setEditImages({
+        tags: image?.tags || [],
+        batch: [hash],
+      });
+    },
+  };
+};

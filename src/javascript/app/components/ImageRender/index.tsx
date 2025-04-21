@@ -1,11 +1,10 @@
 import React from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
 import GameBoyImage from '../GameBoyImage';
+import ImageLoading from '../ImageLoading';
 import { useImageRender } from './useImageRender';
 import type { RGBNHashes } from '../../../../types/Image';
 import type { Rotation } from '../../../tools/applyRotation';
-
-import './index.scss';
 
 interface Props {
   hash: string,
@@ -55,7 +54,7 @@ function ImageRender({
       rotation={gbImageProps.rotation}
     />
   ) : (
-    <div className="image-render--loading" />
+    <ImageLoading />
   );
 }
 

@@ -2,7 +2,7 @@ import unique from '../unique';
 import type { TagUpdates } from '../modifyTagChanges';
 
 export interface TagChange extends TagUpdates {
-  initial: string[],
+  initial: readonly string[],
 }
 
 const applyTagChanges = ({ initial, add, remove }: TagChange): string[] => (

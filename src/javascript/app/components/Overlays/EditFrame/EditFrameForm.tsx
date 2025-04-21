@@ -1,5 +1,8 @@
 import React from 'react';
-import Input, { InputType } from '../../Input';
+import Alert from '@mui/material/Alert';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import type { FrameGroup } from '../../../../../types/FrameGroup';
 
 interface Props {
@@ -12,6 +15,7 @@ interface Props {
   groups: FrameGroup[],
   fullId: string,
   frameGroupName?: string,
+  extraFields?: React.ReactNode,
   setFrameGroupName?: (frameGroupName: string) => void,
   setFrameIndex: (frameIndex: number) => void,
   setFrameGroup: (frameGroup: string) => void,
@@ -20,10 +24,7 @@ interface Props {
 
 function EditFrameForm({
   frameIndex,
-  setFrameIndex,
   frameName,
-  setFrameGroup,
-  setFrameName,
   idValid,
   groupIdValid,
   frameIndexValid,
@@ -31,83 +32,114 @@ function EditFrameForm({
   groups,
   fullId,
   frameGroupName,
+  extraFields,
   setFrameGroupName,
+  setFrameIndex,
+  setFrameGroup,
+  setFrameName,
 }: Props) {
   const groupExists = Boolean(groups.find(({ id }) => (frameGroup === id)));
 
   return (
-    <>
-      <div className="inputgroup">
-        <label htmlFor="frame-edit-group" className="inputgroup__label">
-          Frame group
-        </label>
-        <select
-          id="frame-edit-group"
-          className="inputgroup__input inputgroup__input--select"
-          value={frameGroup}
-          onChange={(ev) => {
-            setFrameGroup(ev.target.value);
-          }}
-        >
-          <option value="">
-            {groupExists ? 'Select frame group' : 'New frame group'}
-          </option>
-          {
-            groups.map(({ id, name }) => (
-              <option value={id} key={id}>{ name }</option>
-            ))
-          }
-        </select>
-      </div>
-      <Input
-        id="frame-edit-new-group"
-        labelText={groupExists ? 'Frame group id' : 'New frame group id'}
-        type={InputType.TEXT}
+    <Stack
+      direction="column"
+      gap={4}
+    >
+      {extraFields}
+      <TextField
+        label="Frame group"
+        select
+        size="small"
+        type="text"
         value={frameGroup}
-        onChange={setFrameGroup}
+        onChange={(ev) => {
+          setFrameGroup(ev.target.value);
+        }}
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+          select: {
+            renderValue: (selected) => {
+              if (!groupExists) {
+                return selected === '' ? 'Select frame group' : 'New frame group';
+              }
+
+              return groups.find(({ id }) => (
+                id === selected
+              ))?.name || 'Unknown';
+            },
+          },
+        }}
       >
-        {groupIdValid ? null : (
-          <span className="inputgroup__note inputgroup__note--warn">
-            Must have at least two characters, only lowercase
-          </span>
-        )}
-      </Input>
+        <MenuItem value="">
+          {groupExists ? 'Select frame group' : 'New frame group'}
+        </MenuItem>
+        {
+          groups.map(({ id, name }) => (
+            <MenuItem value={id} key={id}>{ name }</MenuItem>
+          ))
+        }
+      </TextField>
+
+      <TextField
+        label={groupExists ? 'Frame group id' : 'New frame group id'}
+        size="small"
+        type="text"
+        value={frameGroup}
+        onChange={(ev) => {
+          setFrameGroup(ev.target.value);
+        }}
+        helperText={groupIdValid ? undefined : 'Must have at least two characters, only lowercase'}
+      />
+
       { setFrameGroupName ? (
-        <Input
-          id="frame-edit-new-group-name"
-          labelText="New frame group name"
-          disabled={groupExists}
-          type={InputType.TEXT}
+        <TextField
+          label="New frame group name"
+          size="small"
+          type="text"
+          onChange={(ev) => {
+            setFrameGroupName(ev.target.value);
+          }}
           value={groupExists ? '' : frameGroupName}
-          onChange={setFrameGroupName}
+          disabled={groupExists}
         />
       ) : null }
-      <Input
-        id="frame-edit-index"
-        labelText="Frame Index"
-        type={InputType.NUMBER}
-        min={1}
-        max={99}
+
+
+      <TextField
+        label="Frame Index"
+        size="small"
+        type="number"
+        slotProps={{
+          htmlInput: { min: 1, max: 99 },
+        }}
         value={frameIndex}
-        onChange={(value) => setFrameIndex(parseInt(value, 10))}
-      >
-        {frameIndexValid ? null : (
-          <span className="inputgroup__note inputgroup__note--warn">
-            Integer, must be greater 0
-          </span>
-        )}
-      </Input>
-      <Input
-        id="frame-edit-shortname"
-        labelText="Frame name"
-        type={InputType.TEXT}
-        value={frameName}
-        onChange={setFrameName}
+        onChange={(ev) => {
+          setFrameIndex(parseInt(ev.target.value, 10));
+        }}
+        helperText={frameIndexValid ? null : 'Integer, must be greater than 0'}
       />
-      <p className="edit-frame__warning">
-        { idValid ? '\u00A0' : `Specified frame index/identifier "${fullId}" is already in use, please try another one.` }
-      </p>
-    </>
+
+      <TextField
+        label="Frame name"
+        size="small"
+        type="text"
+        value={frameName}
+        onChange={(ev) => {
+          setFrameName(ev.target.value);
+        }}
+      />
+
+      {!idValid && (
+        <Alert
+          severity="warning"
+          variant="filled"
+        >
+          {`Specified frame index/identifier "${fullId}" is already in use, please try another one.`}
+        </Alert>
+      )}
+    </Stack>
   );
 }
 

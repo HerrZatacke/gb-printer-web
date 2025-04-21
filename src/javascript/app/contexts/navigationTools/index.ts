@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useGalleryTreeContext } from '../galleryTree';
+import { ROOT_ID, useGalleryTreeContext } from '../galleryTree';
+import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import { getFilteredImages } from '../../../tools/getFilteredImages';
 import useFiltersStore from '../../stores/filtersStore';
 import useSettingsStore from '../../stores/settingsStore';
@@ -9,6 +10,7 @@ import type { Image } from '../../../../types/Image';
 
 interface UseNavigationTools {
   getGroupPath: (groupId: string) => string,
+  currentGroup: TreeImageGroup,
   getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number,
   getPagedImagePath: (hash: string) => string,
   navigateToGroup: (groupId: string) => void,
@@ -30,6 +32,7 @@ export const useNavigationTools = (): UseNavigationTools => {
   const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate>({});
   const { sortBy, filtersActiveTags, recentImports } = useFiltersStore();
   const { pageSize } = useSettingsStore();
+  const { path: currentPath } = useGalleryParams();
 
   const imageFilter = useCallback((images: Image[]): Image[] => (
     getFilteredImages(images, {
@@ -49,9 +52,17 @@ export const useNavigationTools = (): UseNavigationTools => {
   }, [imageFilter, pageSize]);
 
   const getGroupPath = useCallback((groupId: string): string => {
+    if (groupId === ROOT_ID) {
+      return '/gallery/page/1';
+    }
+
     const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath || '';
     return `/gallery/${groupPath}page/1`;
   }, [paths]);
+
+  const currentGroup = useMemo<TreeImageGroup>(() => (
+    paths.find(({ absolutePath }) => (absolutePath === currentPath))?.group || root
+  ), [currentPath, paths, root]);
 
   const navigateToGroup = (groupId: string) => {
     setShouldNavigate({ groupId });
@@ -85,6 +96,7 @@ export const useNavigationTools = (): UseNavigationTools => {
   }, [getGroupPath, getPagedImagePath, routerNavigate, shouldNavigate]);
 
   return {
+    currentGroup,
     getGroupPath,
     getPagedImagePath,
     getImagePageIndexInGroup,

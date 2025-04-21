@@ -52,6 +52,9 @@ function App() {
       children: [
         {
           path: '/home',
+          handle: {
+            headline: 'Game Boy Camera Gallery',
+          },
           element: <Home />,
         },
         {

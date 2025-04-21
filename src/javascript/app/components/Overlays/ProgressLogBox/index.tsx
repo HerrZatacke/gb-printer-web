@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Lightbox from '../../Lightbox';
-
-import './index.scss';
 import { useProgress } from './useProgress';
+import type { LogItem } from '../../../stores/interactionsStore';
 
 dayjs.extend(duration);
 
-const messagesCutOff = 15;
+const MESSAGES_CUTOFF = 15;
 
 function ProgressLogBox() {
 
@@ -28,14 +34,6 @@ function ProgressLogBox() {
 
   const [cutOffMessages, setCutOffMessages] = useState(true);
 
-  if (
-    !gitMessages.length &&
-    !dropboxMessages.length
-
-  ) {
-    return null;
-  }
-
   const isGit = gitMessages.length > 0;
   const isDropbox = dropboxMessages.length > 0;
 
@@ -51,76 +49,114 @@ function ProgressLogBox() {
 
   const timeStart = isGit ? gitTimeStart : dropboxTimeStart;
   const timeLatest = isGit ? gitTimeLatest : dropboxTimeLatest;
-  const messages = gitMessages.concat(dropboxMessages);
 
-  const shownMessages = messages.filter((_, index) => (
-    cutOffMessages ? index < messagesCutOff : true
-  ));
+  const messages = useMemo<LogItem[]>(() => (
+    [
+      ...gitMessages,
+      ...dropboxMessages,
+    ]
+      .filter(({ message }) => (message !== '.'))
+  ), [dropboxMessages, gitMessages]);
+
+  const shownMessages = useMemo<LogItem[]>(() => (
+    messages.filter((_, index) => (
+      cutOffMessages ? index < MESSAGES_CUTOFF : true
+    ))
+  ), [cutOffMessages, messages]);
+
+  if (
+    !gitMessages.length &&
+    !dropboxMessages.length
+
+  ) {
+    return null;
+  }
 
   return (
     <Lightbox
-      className="progress-log"
       header={`${finished ? '✔️ Update done' : '⏳ Updating...'} ${isGit ? ` - "${repo}/${branch}"` : ''}`}
       confirm={finished ? confirm : undefined}
     >
-      <ul className="progress-log__messages">
-        {shownMessages.map(({ message, timestamp }, index) => (
-          message === '.' ? null : (
-            <li
+      <Stack
+        direction="column"
+        gap={2}
+      >
+        <Box
+          component="ul"
+          sx={{
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            maxHeight: '30vh',
+            '& > .MuiTypography-root': {
+              whiteSpace: 'nowrap',
+            },
+          }}
+        >
+          {shownMessages.map(({ message, timestamp }, index) => (
+            <Typography
               key={index}
-              className="progress-log__message"
+              variant="caption"
+              component="li"
               title={dayjs.unix(timestamp).format('HH:mm:ss')}
             >
               {message}
-            </li>
-          )
-        ))}
-      </ul>
-      {messages.length > messagesCutOff ? (
-        <button
-          type="button"
-          className="progress-log__button"
-          onClick={() => setCutOffMessages(!cutOffMessages)}
+            </Typography>
+          ))}
+        </Box>
+
+        {messages.length > MESSAGES_CUTOFF && (
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => setCutOffMessages(!cutOffMessages)}
+            endIcon={cutOffMessages ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+          >
+            {
+              cutOffMessages ?
+                `Show all ${messages.length} messages` :
+                'Reduce messages'
+            }
+          </Button>
+        )}
+        <Stack
+          direction="column"
+          gap={0}
         >
-          {
-            cutOffMessages ?
-              `Show all ${messages.length} messages` :
-              'Reduce messages'
-          }
-        </button>
-      ) : null}
-      <div className="progress-log__duration">
-        {`Started at: ${dayjs.unix(timeStart).format('HH:mm:ss')}`}
-        <br />
-        {`${finished ? 'Finished after' : 'Running for'}: ${dayjs.duration(timeLatest - timeStart, 'seconds').format('HH:mm:ss')}`}
-        {isGit ? (
-          <>
-            <br />
-            {'Repository: '}
-            <a
-              title={repoUrl}
-              href={repoUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open GitHub
-            </a>
-          </>
-        ) : null}
-        {isDropbox ? (
-          <>
-            <br />
-            <a
-              title={`Open Dropbox folder:\nhttps://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
-              href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open Dropbox folder
-            </a>
-          </>
-        ) : null}
-      </div>
+          <Typography variant="caption">
+            {`Started at: ${dayjs.unix(timeStart).format('HH:mm:ss')}`}
+          </Typography>
+          <Typography variant="caption">
+            {`${finished ? 'Finished after' : 'Running for'}: ${dayjs.duration(timeLatest - timeStart, 'seconds').format('HH:mm:ss')}`}
+          </Typography>
+        </Stack>
+        {isGit && (
+          <Button
+            variant="outlined"
+            component="a"
+            color="secondary"
+            startIcon={<GitHubIcon />}
+            title={repoUrl}
+            href={repoUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open GitHub Repository
+          </Button>
+        )}
+        {isDropbox && (
+          <Button
+            variant="outlined"
+            component="a"
+            color="secondary"
+            title={`Open Dropbox folder:\nhttps://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
+            href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open Dropbox folder
+          </Button>
+        )}
+      </Stack>
     </Lightbox>
   );
 }

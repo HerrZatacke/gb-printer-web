@@ -130,7 +130,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
   const [title, setTitle] = useState<string>(initialValues.title);
   const [slug, setSlug] = useState<string>(initialValues.slug);
   const [slugTouched, setSlugTouched] = useState<boolean>(initialValues.slugTouched);
-  const [parentSlug, setParentSlug] = useState<string>(initialValues.parentPathMap?.absolutePath || '/');
+  const [parentSlug, setParentSlug] = useState<string>(initialValues.parentPathMap?.absolutePath || '');
 
   const absoluteSlug = useMemo(() => {
     if (!editImageGroup?.groupId) {

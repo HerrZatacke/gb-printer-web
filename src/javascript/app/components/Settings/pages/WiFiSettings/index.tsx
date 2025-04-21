@@ -1,8 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import APConfig from './APConfig';
-import SVG from '../../../SVG';
-import Input, { InputType } from '../../../Input';
-import './index.scss';
+import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
+import { useAsPasswordField } from '../../../../../hooks/useAsPasswordField';
 
 interface WiFiNetwork {
   psk: string,
@@ -103,160 +112,193 @@ const saveSettings = async (
 };
 
 function WiFiSettings() {
-
-  const ref = useRef(null);
   const [wifiConfig, setWifiConfig] = useState<WiFiConfig>();
   const [status, setStatus] = useState('loading');
+  const { type, button } = useAsPasswordField();
 
   useEffect(() => (
     getSettings(setWifiConfig, setStatus)
   ), [setWifiConfig, setStatus]);
 
   if (status === 'loading' || !wifiConfig) {
-    return <div className="wifi-settings--loading" />;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <CircularProgress color="secondary" />
+      </Box>
+    );
   }
 
   const disabled = (status !== '') && (status !== 'updated');
 
   return (
-    <div
-      className="wifi-settings"
-      ref={ref}
+    <Stack
+      direction="column"
+      gap={6}
     >
-      <h3 className="wifi-settings__subheadline">
-        Host Settings
-      </h3>
-
-      <Input
-        id="settings-mdns"
-        labelText="mDNS Name (Bonjour/Avahi)"
-        type={InputType.TEXT}
-        disabled={disabled}
-        value={wifiConfig.mdns}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        onChange={(mdns) => {
-          setStatus('updated');
-          setWifiConfig({
-            ...wifiConfig,
-            mdns: mdns.trim(),
-          });
-        }}
-      />
-
-      <Input
-        id="settings-ap-ssid"
-        labelText="Accesspoint SSID"
-        type={InputType.TEXT}
-        disabled={disabled}
-        value={wifiConfig.ap.ssid}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        onChange={(ssid) => {
-          setStatus('updated');
-          setWifiConfig({
-            ...wifiConfig,
-            ap: {
-              ...wifiConfig.ap,
-              ssid: ssid.trim(),
-            },
-          });
-        }}
-      />
-
-      <Input
-        id="settings-ap-psk"
-        labelText="Accesspoint Password"
-        type={InputType.PASSWORD}
-        disabled={disabled}
-        value={wifiConfig.ap.psk}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        onChange={(psk) => {
-          setStatus('updated');
-          setWifiConfig({
-            ...wifiConfig,
-            ap: {
-              ...wifiConfig.ap,
-              psk: psk.trim(),
-            },
-          });
-        }}
-      />
-
-      <h3 className="wifi-settings__subheadline">
-        Networks
-        <button
-          type="button"
-          disabled={disabled}
-          className="button wifi-settings__button wifi-settings__button--add"
-          onClick={() => {
-            const { networks } = wifiConfig;
-            networks.push({
-              ssid: '',
-              psk: '',
-              delete: false,
-              isNew: true,
-            });
-
-            setWifiConfig({
-              ...wifiConfig,
-              networks,
-            });
-          }}
-        >
-          <SVG name="add" />
-        </button>
-      </h3>
-      <ul
-        className="wifi-settings__ap-groups"
+      <Stack
+        direction="column"
+        gap={1}
       >
-        {
-          wifiConfig.networks.map((network, index) => {
-            const { ssid, psk = '', delete: del = false, isNew = false } = network;
-            return (
-              <APConfig
-                key={`apconf-${index}`}
-                id={`apconf-${index}`}
-                ssid={ssid}
-                psk={psk}
+        <Typography component="h3" variant="h3">
+          Host Settings
+        </Typography>
+
+        <Card raised>
+          <CardContent>
+            <Stack
+              direction="column"
+              gap={4}
+            >
+              <TextField
+                id="settings-mdns"
+                label="mDNS Name (Bonjour/Avahi)"
+                type="text"
                 disabled={disabled}
-                isNew={isNew}
-                delete={del}
-                update={(data) => {
-                  const { networks } = wifiConfig;
-                  networks[index] = {
-                    ...network,
-                    ...data,
-                  };
+                value={wifiConfig.mdns || ''}
+                onChange={(ev) => {
+                  const mdns = ev.target.value;
                   setStatus('updated');
                   setWifiConfig({
                     ...wifiConfig,
-                    networks,
+                    mdns: mdns.trim(),
                   });
                 }}
               />
-            );
-          })
-        }
-      </ul>
-      <div className="inputgroup buttongroup">
-        <button
-          type="button"
+
+              <TextField
+                id="settings-ap-ssid"
+                label="Accesspoint SSID"
+                type="text"
+                disabled={disabled}
+                value={wifiConfig.ap.ssid || ''}
+                onChange={(ev) => {
+                  const ssid = ev.target.value;
+                  setStatus('updated');
+                  setWifiConfig({
+                    ...wifiConfig,
+                    ap: {
+                      ...wifiConfig.ap,
+                      ssid: ssid.trim(),
+                    },
+                  });
+                }}
+              />
+
+              <TextField
+                id="settings-ap-psk"
+                label="Accesspoint Password"
+                type={type}
+                slotProps={{
+                  ...textFieldSlotDefaults,
+                  input: {
+                    endAdornment: button,
+                  },
+                }}
+                disabled={disabled}
+                value={wifiConfig.ap.psk || ''}
+                onChange={(ev) => {
+                  const psk = ev.target.value;
+                  setStatus('updated');
+                  setWifiConfig({
+                    ...wifiConfig,
+                    ap: {
+                      ...wifiConfig.ap,
+                      psk: psk.trim(),
+                    },
+                  });
+                }}
+              />
+            </Stack>
+          </CardContent>
+        </Card>
+      </Stack>
+
+      <Stack
+        direction="column"
+        gap={1}
+      >
+        <Typography component="h3" variant="h3">
+          Networks
+        </Typography>
+
+        <Stack
+          direction="column"
+          gap={2}
+          component="ul"
+        >
+          {
+            wifiConfig.networks.map((network, index) => {
+              const { ssid, psk = '', delete: del = false, isNew = false } = network;
+              return (
+                <APConfig
+                  key={`apconf-${index}`}
+                  id={`apconf-${index}`}
+                  ssid={ssid}
+                  psk={psk}
+                  disabled={disabled}
+                  isNew={isNew}
+                  delete={del}
+                  update={(data) => {
+                    const { networks } = wifiConfig;
+                    networks[index] = {
+                      ...network,
+                      ...data,
+                    };
+                    setStatus('updated');
+                    setWifiConfig({
+                      ...wifiConfig,
+                      networks,
+                    });
+                  }}
+                />
+              );
+            })
+          }
+
+          <Stack
+            component="li"
+            direction="row"
+            justifyContent="flex-end"
+          >
+            <Button
+              disabled={disabled}
+              title="Add Network"
+              color="primary"
+              variant="contained"
+              startIcon={<AddBoxIcon />}
+              onClick={() => {
+                setWifiConfig({
+                  ...wifiConfig,
+                  networks: [
+                    ...(wifiConfig?.networks || []),
+                    {
+                      ssid: '',
+                      psk: '',
+                      delete: false,
+                      isNew: true,
+                    },
+                  ],
+                });
+              }}
+            >
+              Add Network
+            </Button>
+          </Stack>
+        </Stack>
+      </Stack>
+
+      <ButtonGroup
+        fullWidth
+        variant="contained"
+      >
+        <Button
           disabled={status !== 'updated'}
-          className="button"
           onClick={() => saveSettings(setWifiConfig, setStatus, wifiConfig)}
         >
           Save WiFi-Settings
-        </button>
-      </div>
-    </div>
+        </Button>
+      </ButtonGroup>
+    </Stack>
   );
 }
 

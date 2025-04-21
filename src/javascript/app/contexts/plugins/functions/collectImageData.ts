@@ -11,6 +11,7 @@ import { getDecoderUpdateParams } from '../../../../tools/getDecoderUpdateParams
 import { getRotatedCanvas } from '../../../../tools/applyRotation';
 import type { Image, MonochromeImage } from '../../../../../types/Image';
 import type { Palette } from '../../../../../types/Palette';
+import { getPaletteSettings } from '../../../../tools/getPaletteSettings';
 
 export type CollectImageDataFn = (hash: string) => PluginImageData
 export type GetCollectImageDataFn = (images: Image[]) => CollectImageDataFn;
@@ -38,9 +39,9 @@ export const getCollectImageData = (images: Image[]) => (hash: string): PluginIm
       scaleFactor = 1,
       palette = selectedPalette,
       framePalette = selectedFramePalette,
-      lockFrame = meta.lockFrame || false,
-      invertPalette = (meta as MonochromeImage).invertPalette || false,
-      invertFramePalette = (meta as MonochromeImage).invertFramePalette || false,
+      lockFrame,
+      invertPalette,
+      invertFramePalette,
       handleExportFrame = handleExportFrameState,
     } = options;
 
@@ -57,18 +58,23 @@ export const getCollectImageData = (images: Image[]) => (hash: string): PluginIm
         canvas: null,
         tiles: tiles as RGBNTiles,
         palette: palette as RGBNPalette,
-        lockFrame,
+        lockFrame: typeof lockFrame !== 'undefined' ? lockFrame : meta.lockFrame,
       });
     } else {
       decoder = new Decoder();
       const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
       const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
 
+      const {
+        invertPalette: selectedInvertPalette,
+        invertFramePalette: selectedInvertFramePalette,
+      } = getPaletteSettings(meta as MonochromeImage);
+
       const updateParams = getDecoderUpdateParams({
         palette: pal,
         framePalette: framePal,
-        invertPalette,
-        invertFramePalette,
+        invertPalette: typeof invertPalette !== 'undefined' ? invertPalette : selectedInvertPalette,
+        invertFramePalette: typeof invertFramePalette !== 'undefined' ? invertFramePalette : selectedInvertFramePalette,
       });
 
       decoder.update({

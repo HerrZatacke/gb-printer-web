@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
 import ConnectPrinter from '../ConnectPrinter';
-import Input, { InputType } from '../Input';
+import PrinterReport from '../PrinterReport';
 import { useImport } from './useImport';
 import { ExportTypes } from '../../../consts/exportTypes';
-
-import './index.scss';
 
 function Import() {
   const [text, setText] = useState('');
@@ -24,69 +26,82 @@ function Import() {
   }, []);
 
   return (
-    <div className="import">
+    <Stack direction="column" gap={6}>
 
-      {printerUrl && (
-        <ConnectPrinter />
-      )}
+      { printerUrl && <PrinterReport /> }
+      { printerUrl && <ConnectPrinter /> }
 
-      <Input
-        id="import-file"
-        labelText="Select file for import"
-        type={InputType.FILE}
-        onChangeFiles={(files) => {
-          if (files && files.length) {
-            importFiles(files);
-          }
-        }}
-      />
+      <Button
+        component="label"
+        variant="contained"
+      >
+        Select file(s) to import
+        <input
+          type="file"
+          tabIndex={-1}
+          hidden
+          multiple
+          onChange={(ev) => {
+            const { target } = ev;
+            const { files } = target;
 
-      <div className="inputgroup inputgroup--column">
-        <label htmlFor="import-plaintext" className="inputgroup__label">
-          Paste your plaintext
-        </label>
-        <textarea
+            if (files && files.length) {
+              importFiles([...files]);
+            }
+
+            target.value = '';
+          }}
+        />
+      </Button>
+
+      <Stack
+        flexDirection="column"
+        gap={1}
+        justifyContent="flex-end"
+        justifyItems="end"
+      >
+        <TextField
           id="import-plaintext"
-          className="import__data"
+          label="Enter data received through your serial monitor"
+          multiline
+          rows={20}
           value={text}
           onChange={({ target }) => {
             setText(target.value);
           }}
         />
-        <button
-          className="button button--label"
-          type="button"
-          onClick={() => {
-            importPlainText(text);
-          }}
-        >
-          Import
-        </button>
-      </div>
-      <div className="inputgroup buttongroup">
-        <button
-          type="button"
-          className="button"
+        <Stack direction="row" justifyContent="flex-end">
+          <Button
+            variant="contained"
+            onClick={() => {
+              importPlainText(text);
+            }}
+          >
+            Import
+          </Button>
+        </Stack>
+      </Stack>
+      <ButtonGroup
+        variant="contained"
+        fullWidth
+      >
+        <Button
           onClick={() => exportJson(ExportTypes.IMAGES)}
         >
           Export images
-        </button>
-        <button
-          type="button"
-          className="button"
+        </Button>
+        <Button
           onClick={() => exportJson(ExportTypes.SELECTED_IMAGES)}
         >
           Export selected images
-        </button>
-        <button
-          type="button"
-          className="button"
+        </Button>
+        <Button
           onClick={() => exportJson(ExportTypes.PALETTES)}
         >
           Export palettes
-        </button>
-      </div>
-    </div>
+        </Button>
+      </ButtonGroup>
+    </Stack>
   );
 }
 

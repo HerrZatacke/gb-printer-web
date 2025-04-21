@@ -1,26 +1,40 @@
 import React from 'react';
-import classnames from 'classnames';
+import Stack from '@mui/material/Stack';
 import GalleryViewSelect from '../GalleryViewSelect';
 import BatchButtons from '../BatchButtons';
-import './index.scss';
 
 interface Props {
   page: number,
-  isSticky?: boolean,
   isBottom?: boolean,
+  isSticky?: boolean,
 }
 
-function GalleryHeader(props: Props) {
+function GalleryHeader({ isBottom, page, isSticky }: Props) {
   return (
-    <div
-      className={classnames('gallery-header', {
-        'gallery-header--sticky': props.isSticky,
-        'gallery-header--bottom': props.isBottom,
+    <Stack
+      direction={{ xs: 'column', md: 'row' }}
+      alignItems="center"
+      gap={2}
+      justifyContent="space-between"
+      sx={(theme) => ({
+        zIndex: 20,
+        backgroundColor: theme.palette.background.default,
+        ...(isSticky ? {
+          position: 'sticky',
+          top: 'var(--navigation-height)',
+          py: 2,
+          my: -2,
+        } : {}),
+        ...(isBottom ? {
+          '@media (max-height: 900px)': {
+            display: 'none',
+          },
+        } : {}),
       })}
     >
       <GalleryViewSelect />
-      <BatchButtons page={props.page} />
-    </div>
+      <BatchButtons page={page} />
+    </Stack>
   );
 }
 

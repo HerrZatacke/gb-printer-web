@@ -40,8 +40,8 @@ export interface Settings {
 interface Actions {
   setActivePalette: (activePalette: string) => void,
   setEnableDebug: (enableDebug: boolean) => void,
-  setExportFileTypes: (updateFileType: string, checked: boolean) => void,
-  setExportScaleFactors: (factor: number, checked: boolean) => void
+  setExportFileTypes: (exportFileTypes: string[]) => void,
+  setExportScaleFactors: (exportScaleFactors: number[]) => void
   setFileNameStyle: (fileNameStyle: FileNameStyle) => void,
   setForceMagicCheck: (forceMagicCheck: boolean) => void,
   setGalleryView: (galleryView: GalleryViews) => void,
@@ -71,7 +71,7 @@ const getDefaultLocale = (): string => {
 
 const useSettingsStore = create(
   persist<SettingsState>(
-    (set, get) => ({
+    (set) => ({
       activePalette: 'bw',
       enableDebug: false,
       exportFileTypes: ['png'],
@@ -117,25 +117,8 @@ const useSettingsStore = create(
         { videoParams: { ...state.videoParams, ...videoParams } }
       )),
 
-      setExportScaleFactors: (updateFactor: number, checked: boolean) => {
-        const { exportScaleFactors } = get();
-
-        set({
-          exportScaleFactors: checked ?
-            [...exportScaleFactors, updateFactor] :
-            exportScaleFactors.filter((factor) => (factor !== updateFactor)),
-        });
-      },
-
-      setExportFileTypes: (updateFileType: string, checked: boolean) => {
-        const { exportFileTypes } = get();
-
-        set({
-          exportFileTypes: checked ?
-            [...exportFileTypes, updateFileType] :
-            exportFileTypes.filter((fileType) => (fileType !== updateFileType)),
-        });
-      },
+      setExportScaleFactors: (exportScaleFactors: number[]) => set({ exportScaleFactors }),
+      setExportFileTypes: (exportFileTypes: string[]) => set({ exportFileTypes }),
 
       setPreferredLocale: (preferredLocale: string) => {
         // Try if provided locale can be used without throwing an error

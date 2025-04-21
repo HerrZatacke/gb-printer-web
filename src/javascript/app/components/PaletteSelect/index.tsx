@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import classnames from 'classnames';
-import SVG from '../SVG';
-import './index.scss';
+import type { Theme } from '@mui/system';
+import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import PaletteIcon from '../PaletteIcon';
 import usePaletteSort from '../../../hooks/usePaletteSort';
 import useItemsStore from '../../stores/itemsStore';
 
 interface Props {
   value: string,
-  selectLabel?: string,
   invertPalette?: boolean,
   noFancy?: boolean,
   allowEmpty?: boolean,
@@ -21,13 +28,13 @@ function PaletteSelect({
   allowEmpty,
   invertPalette,
   noFancy,
-  selectLabel,
   onChange,
   updateInvertPalette,
 }: Props) {
   const [initiallySelected, setInitiallySelected] = useState<string>(value);
 
   const { palettes: palettesUnsorted } = useItemsStore();
+  const theme: Theme = useTheme();
 
   const { sortFn } = usePaletteSort();
 
@@ -45,99 +52,101 @@ function PaletteSelect({
   }
 
   return (
-    <>
-      {(
-        selectLabel ? (
-          <label
-            className="palette-select__select-label"
-            htmlFor="palette-select-select"
-          >
-            { selectLabel }
-          </label>
-        ) : null
-      )}
-      <select
-        id="palette-select-select"
-        className="palette-select"
+    <Stack
+      direction="column"
+      gap={2}
+    >
+      <TextField
         value={value}
+        label="Palette"
+        size="small"
+        select
         onChange={(ev) => {
           onChange(ev.target.value, true);
           setInitiallySelected(ev.target.value);
         }}
       >
         {
-          palettes.map(({ shortName, name }) => (
-            <option
+          palettes.map(({ shortName, name, palette }) => (
+            <MenuItem
               key={shortName}
               value={shortName}
             >
-              { name }
-            </option>
+              <ListItemIcon>
+                <PaletteIcon palette={palette} fontSize="1.5rem" />
+              </ListItemIcon>
+              <ListItemText>
+                {name}
+              </ListItemText>
+            </MenuItem>
           ))
         }
-      </select>
+      </TextField>
       {
         updateInvertPalette ? (
-          <label
-            className={
-              classnames('palette-select__check-label', {
-                'palette-select__check-label--checked': invertPalette,
-              })
-            }
-          >
-            <input
-              type="checkbox"
-              className="palette-select__checkbox"
-              checked={invertPalette}
-              onChange={({ target }) => {
-                updateInvertPalette(target.checked);
-              }}
-            />
-            <SVG name="checkmark" />
-            <span className="palette-select__check-label-text">
-              Invert Palette
-            </span>
-          </label>
+          <FormControlLabel
+            label="Invert Palette"
+            control={(
+              <Switch
+                checked={invertPalette}
+                onChange={({ target }) => {
+                  updateInvertPalette(target.checked);
+                }}
+              />
+            )}
+          />
         ) : null
       }
       { noFancy ? null : (
-        <ul className="fancy-palette-select">
+        <Box
+          component="ul"
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, 2.5rem)',
+            justifyContent: 'center',
+            gap: 0.25,
+
+            button: {
+              padding: 0,
+              cursor: 'pointer',
+              width: '2.5rem',
+              height: '2.5rem',
+              border: 'none',
+              borderRadius: '50%',
+            },
+          }}
+        >
           {
             palettes.map(({ shortName, name, palette }) => (
-              <li
+              <Box
+                component="li"
                 key={shortName}
-                className={
-                  classnames('fancy-palette-select__entry', {
-                    'fancy-palette-select__entry--active': initiallySelected === shortName,
-                  })
-                }
               >
                 <button
                   type="button"
-                  className="fancy-palette-select__button"
                   title={name}
-                  onClick={() => {
-                    onChange(shortName, true);
-                    setInitiallySelected(shortName);
+                  style={{
+                    background: shortName === initiallySelected ? theme.palette.tertiary.main : 'transparent',
                   }}
                   onMouseEnter={() => {
                     onChange(shortName, false);
                   }}
                   onMouseLeave={() => {
-                    onChange(initiallySelected);
+                    onChange(initiallySelected, false);
+                  }}
+                  onClick={() => {
+                    onChange(shortName, true);
+                    setInitiallySelected(shortName);
                   }}
                 >
-                  <span className="fancy-palette-select__color" style={{ backgroundColor: palette[0] }} />
-                  <span className="fancy-palette-select__color" style={{ backgroundColor: palette[1] }} />
-                  <span className="fancy-palette-select__color" style={{ backgroundColor: palette[2] }} />
-                  <span className="fancy-palette-select__color" style={{ backgroundColor: palette[3] }} />
+                  <PaletteIcon palette={palette} />
                 </button>
-              </li>
+              </Box>
             ))
           }
-        </ul>
+        </Box>
       )}
-    </>
+    </Stack>
   );
 }
 
