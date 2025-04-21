@@ -21,7 +21,7 @@ function WebUSBGreeting() {
         <>
           <ConnectSerial inline passive />
           <AsyncMarkdown
-            getMarkdown={async () => {
+            getMarkdown={async (): Promise<string> => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               const { default: rawMd } = await import(/* webpackChunkName: "doc" */ './WebUSB.md');
