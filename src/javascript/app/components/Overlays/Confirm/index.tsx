@@ -16,10 +16,12 @@ import type {
   DialogQuestionSelect,
   DialogQuestionText,
   DialogQuestionImage,
+  DialogQuestionMeta,
 } from '../../../../../types/Dialog';
 import {
   DialoqQuestionType,
 } from '../../../../../types/Dialog';
+import MetaTable from '../../MetaTable';
 
 function Confirm() {
 
@@ -146,6 +148,18 @@ function Confirm() {
                     alt={label}
                     title={label}
                     sx={{ imageRendering: 'pixelated' }}
+                  />
+                );
+              }
+
+              case DialoqQuestionType.META: {
+                const { key, meta } = question as DialogQuestionMeta;
+                return (
+                  <MetaTable
+                    key={key}
+                    hash={meta.hash}
+                    meta={meta?.meta}
+                    hashes={meta?.hashes}
                   />
                 );
               }

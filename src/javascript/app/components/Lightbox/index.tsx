@@ -8,7 +8,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
@@ -111,6 +110,8 @@ function Lightbox({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+  const contentDimensionsSx = contentDimensions(contentWidth, contentHeight, fullScreen, fullSize);
+
   return (
     <Dialog
       container={overlayContainer}
@@ -126,45 +127,46 @@ function Lightbox({
         paddingRight: '10px',
       }}
     >
-      <DialogTitle>
-        <Stack
-          direction="row"
-          gap={4}
-          justifyContent="space-between"
-          alignItems="center"
+      <DialogTitle
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: 2,
+          maxWidth: contentDimensionsSx.width,
+        }}
+      >
+        <Box
+          sx={{
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+          }}
         >
-          <Box
-            sx={{
-              wordBreak: 'break-word',
-            }}
-          >
-            {header}
-          </Box>
-          <Box
-            sx={{
-              my: -0.5,
-              mr: -2,
-            }}
-          >
-            {headerActionButtons}
-            {
-              deny ? (
-                <IconButton
-                  title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
-                  color="inherit"
-                  onClick={deny}
-                >
-                  <CloseIcon />
-                </IconButton>
-              ) : null
-            }
-          </Box>
-        </Stack>
+          {header}
+        </Box>
+        <Box
+          sx={{
+            my: -0.5,
+            mr: -2,
+          }}
+        >
+          {headerActionButtons}
+          {
+            deny ? (
+              <IconButton
+                title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
+                color="inherit"
+                onClick={deny}
+              >
+                <CloseIcon />
+              </IconButton>
+            ) : null
+          }
+        </Box>
       </DialogTitle>
-
       { !headerOnly && (
         <DialogContent
-          sx={contentDimensions(contentWidth, contentHeight, fullScreen, fullSize)}
+          sx={contentDimensionsSx}
         >
           {children}
         </DialogContent>

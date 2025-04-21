@@ -1,4 +1,5 @@
 import type { AlertColor } from '@mui/material';
+import type { MetaProps } from '../javascript/app/components/MetaTable';
 
 export enum DialoqQuestionType {
   CHECKBOX = 'checkbox',
@@ -7,6 +8,7 @@ export enum DialoqQuestionType {
   NUMBER = 'number',
   INFO = 'info',
   IMAGE = 'image',
+  META = 'meta',
 }
 
 export type DialogResultValue = string | number | boolean;
@@ -56,6 +58,11 @@ export interface DialogQuestionInfo extends DialogQuestion {
 export interface DialogQuestionImage extends DialogQuestion {
   type: DialoqQuestionType.IMAGE,
   src: string,
+}
+
+export interface DialogQuestionMeta extends DialogQuestion {
+  type: DialoqQuestionType.META,
+  meta: MetaProps,
 }
 
 export interface Dialog {
