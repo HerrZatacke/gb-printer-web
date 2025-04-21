@@ -31,7 +31,7 @@ function TagsList({ tags, fromGroup }: Props) {
     showTags = tags;
   }
 
-  const color = fromGroup ? 'tertiary' : 'secondary';
+  const color = fromGroup ? 'secondary' : 'tertiary';
 
   return (
     <Stack
@@ -68,9 +68,6 @@ function TagsList({ tags, fromGroup }: Props) {
             title={`+${moreTags.length} more tags:\n${moreTags.join('\n')}`}
             label={`+${moreTags.length} more`}
             size="small"
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            color={color}
           />
         )
       }
