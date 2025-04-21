@@ -107,7 +107,7 @@ function GalleryGridItem({
             height: '1.8em',
             top: '-0.53em',
             left: '-0.53em',
-            zIndex: 25,
+            zIndex: 15,
             fontSize: '0.85rem',
             lineHeight: '1.8em',
             textAlign: 'center',
