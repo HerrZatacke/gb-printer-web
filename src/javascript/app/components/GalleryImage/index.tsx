@@ -1,5 +1,4 @@
 import React, { useMemo, useCallback } from 'react';
-import { useLongPress } from 'use-long-press';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import GalleryImageContextMenu from '../GalleryImageContextMenu';
@@ -10,7 +9,6 @@ import { useGalleryImage } from './useGalleryImage';
 import { useDateFormat } from '../../../hooks/useDateFormat';
 import useSettingsStore from '../../stores/settingsStore';
 import { ImageSelectionMode } from '../../stores/filtersStore';
-import isTouchDevice from '../../../tools/isTouchDevice';
 import type { RGBNHashes } from '../../../../types/Image';
 import GalleryGridItem from '../GalleryGridItem';
 
@@ -27,20 +25,9 @@ function GalleryImage({ page, hash }: Props) {
   const {
     galleryImageData,
     updateImageSelection,
-    editImage,
   } = useGalleryImage(hash);
 
   const { formatter } = useDateFormat();
-
-  const bindLongPress = useLongPress(() => {
-    if (isTouchDevice()) {
-      updateImageSelection(
-        galleryImageData?.selectionIndex !== -1 ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
-        false,
-        page,
-      );
-    }
-  });
 
   const debugText = useMemo<string>(() => ([
     hash,
@@ -76,20 +63,12 @@ function GalleryImage({ page, hash }: Props) {
     title,
     tags,
     selectionIndex,
-    selectionActive,
     rotation,
   } = galleryImageData;
 
   const handleCellClick = (ev: React.MouseEvent) => {
     ev.preventDefault();
-
-    if (ev.ctrlKey || ev.shiftKey) {
-      updateSelection(ev.shiftKey);
-    } else if (isTouchDevice() && selectionActive) {
-      updateSelection(false);
-    } else {
-      editImage(tags);
-    }
+    updateSelection(ev.shiftKey);
   };
 
   return (
@@ -98,7 +77,6 @@ function GalleryImage({ page, hash }: Props) {
       title={title}
       subheader={formatter(created)}
       wrapperProps={{
-        ...bindLongPress(),
         onClick: handleCellClick,
         disableRipple: true,
         sx: {

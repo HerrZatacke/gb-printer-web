@@ -27,7 +27,6 @@ interface GalleryImageData {
   hashes?: RGBNHashes,
   tags: string[],
   selectionIndex: number,
-  selectionActive: boolean,
   palette: RGBNPalette | string[],
   framePalette: string[],
   lockFrame?: boolean,
@@ -102,9 +101,8 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       invertFramePalette,
       rotation: image.rotation,
       selectionIndex,
-      selectionActive: imageSelection.length > 0,
     });
-  }, [hash, selectionIndex, imageSelection, palettes, stateImages]);
+  }, [hash, selectionIndex, palettes, stateImages]);
 
   const { images: treeImages } = useGalleryTreeContext();
 

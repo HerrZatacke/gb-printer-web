@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import type { PropsWithChildren, PointerEventHandler } from 'react';
+import type { PropsWithChildren } from 'react';
 import type { Theme } from '@mui/system';
 import { alpha } from '@mui/material';
 import { blend } from '@mui/system';
@@ -20,10 +20,6 @@ interface WrapperProps extends PropsWithChildren {
   to?: string,
   onClick?: (ev: React.MouseEvent) => void,
   disableRipple?: boolean,
-  onPointerDown?: PointerEventHandler,
-  onPointerMove?: PointerEventHandler,
-  onPointerUp?: PointerEventHandler,
-  onPointerLeave?: PointerEventHandler,
 }
 
 interface ContextMenuProps {
