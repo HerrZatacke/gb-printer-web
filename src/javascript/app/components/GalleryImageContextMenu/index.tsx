@@ -72,20 +72,6 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     >
       <MenuItem
         onClick={() => {
-          updateImageToSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD);
-          onClose();
-        }}
-        title={isSelected ? 'Remove from selection' : 'Add to selection'}
-      >
-        <ListItemIcon>
-          { isSelected ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />}
-        </ListItemIcon>
-        <ListItemText>
-          {isSelected ? 'Remove from selection' : 'Add to selection'}
-        </ListItemText>
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
           editImage();
           onClose();
         }}
@@ -193,6 +179,20 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
         </ListItemIcon>
         <ListItemText>
           {isFavourite ? 'Remove from favourites' : 'Add to favourites'}
+        </ListItemText>
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          updateImageToSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD);
+          onClose();
+        }}
+        title={isSelected ? 'Remove from selection' : 'Add to selection'}
+      >
+        <ListItemIcon>
+          { isSelected ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />}
+        </ListItemIcon>
+        <ListItemText>
+          {isSelected ? 'Remove from selection' : 'Add to selection'}
         </ListItemText>
       </MenuItem>
       {(hasMeta || hasHashes) && (
