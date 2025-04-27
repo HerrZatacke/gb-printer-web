@@ -8,6 +8,9 @@ interface UseWebSerial {
   webSerialEnabled: boolean,
   openWebSerial: () => void,
   isReceiving: boolean,
+  setModeDMG: () => void,
+  setModeGBA: () => void,
+  fwinq: () => void,
 }
 
 const useWebSerial = (passive: boolean): UseWebSerial => {
@@ -58,11 +61,26 @@ const useWebSerial = (passive: boolean): UseWebSerial => {
     }
   };
 
+  const setModeGBA = () => {
+    WebSerial.changeMode(true);
+  };
+
+  const setModeDMG = () => {
+    WebSerial.changeMode(false);
+  };
+
+  const fwinq = () => {
+    WebSerial.fwinq();
+  };
+
   return {
     activePorts,
     webSerialEnabled,
     openWebSerial,
     isReceiving,
+    setModeDMG,
+    setModeGBA,
+    fwinq,
   };
 };
 

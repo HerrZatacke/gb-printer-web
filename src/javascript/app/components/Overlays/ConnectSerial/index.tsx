@@ -25,6 +25,9 @@ function ConnectSerial({ inline, passive }: Props) {
     isReceiving: webSerialIsReceiving,
     webSerialEnabled,
     openWebSerial,
+    setModeDMG,
+    setModeGBA,
+    fwinq,
   } = useWebSerial(passive || false);
 
   const {
@@ -82,6 +85,34 @@ function ConnectSerial({ inline, passive }: Props) {
         <Typography variant="body2">
           {`${webSerialActivePorts.length} devices connected`}
         </Typography>
+        {webSerialActivePorts.length > 0 && (
+          <>
+            <Button
+              onClick={setModeGBA}
+              disabled={!webSerialEnabled}
+              variant="contained"
+              color="secondary"
+            >
+              Mode: GBA
+            </Button>
+            <Button
+              onClick={setModeDMG}
+              disabled={!webSerialEnabled}
+              variant="contained"
+              color="secondary"
+            >
+              Mode: DMG
+            </Button>
+            <Button
+              onClick={fwinq}
+              disabled={!webSerialEnabled}
+              variant="contained"
+              color="secondary"
+            >
+              FWINQ
+            </Button>
+          </>
+        )}
       </Stack>
     </Stack>
   );

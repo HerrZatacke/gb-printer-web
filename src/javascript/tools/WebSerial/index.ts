@@ -10,8 +10,8 @@ class WebSerialEE extends EventEmitter {
     super();
     this.enabled = !!navigator.serial && !!window.TextDecoderStream;
     this.activePorts = [];
-    this.baudRate = 115200;
-
+    // this.baudRate = 115200;
+    this.baudRate = 1000000;
     // instantly connect to known existing ports
     this.watchPorts();
   }
@@ -60,13 +60,87 @@ class WebSerialEE extends EventEmitter {
 
               port.connect()
                 .then(() => {
+                  // document.addEventListener('click', () => {
+                  //
+                  //   // if (window.toggl) {
+                  //   //   window.toggl = false;
+                  //   //   port.send('\u00A2\u00A4')
+                  //   //     .then(() => {
+                  //   //       console.log('SET_MODE_AGB / SET_VOLTAGE_3_3V --- \u00A2\u00A4');
+                  //   //     });
+                  //   // } else {
+                  //   //   window.toggl = true;
+                  //   //   port.send('\u00A3\u00A5')
+                  //   //     .then(() => {
+                  //   //       console.log('SET_MODE_DMG / SET_VOLTAGE_5V --- \u00A3\u00A5');
+                  //   //     });
+                  //   // }
+                  //
+                  //   // port.send('\u0068')
+                  //   //   .then(() => {
+                  //   //     console.log('OFW_PCB_VER');
+                  //   //   });
+                  //   //
+                  //
+                  //   // //
+                  //   //
+                  //   // port.send('\u0056')
+                  //   //   .then(() => {
+                  //   //     console.log('OFW_FW_VER');
+                  //   //   });
+                  //
+                  //   //
+                  //   //   port.send('?')
+                  //   //     .then(() => {
+                  //   //       console.log('sent');
+                  //   //     });
+                  // });
+
+
                   this.activePorts.push(port);
                   this.emit('activePortsChange', [...this.activePorts]);
                 })
-                .catch(() => { /* silence! */ });
+                .catch(() => { /* silence! */
+                });
             });
         });
     }, 1000);
+  }
+
+  changeMode(isGBA: boolean) {
+    const port = this.activePorts[0];
+    if (!port) {
+      console.error('Active ports', this.activePorts);
+      return;
+    }
+
+    if (isGBA) {
+      port.send('\u00A2\u00A4')
+        .then(() => {
+          // eslint-disable-next-line no-console
+          console.info('SET_MODE_AGB / SET_VOLTAGE_3_3V --- \u00A2\u00A4');
+        });
+    } else {
+      port.send('\u00A3\u00A5')
+        .then(() => {
+          // eslint-disable-next-line no-console
+          console.info('SET_MODE_DMG / SET_VOLTAGE_5V --- \u00A3\u00A5');
+        });
+    }
+  }
+
+  fwinq() {
+    const port = this.activePorts[0];
+    if (!port) {
+      console.error('Active ports', this.activePorts);
+      return;
+    }
+
+    port.send('\u00A1')
+      .then(() => {
+        // eslint-disable-next-line no-console
+        console.info('QUERY_FW_INFO');
+      });
   }
 
   // returns a list of devices
