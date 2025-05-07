@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import useItemsStore from '../../stores/itemsStore';
 import { loadImageTiles as getLoadImageTiles } from '../../../tools/loadImageTiles';
 import { missingGreyPalette } from '../../defaults';
 import type { RGBNHashes } from '../../../../types/Image';
 import type { GameBoyImageProps } from '../GameBoyImage';
-import type { Rotation } from '../../../tools/applyRotation';
 import { loadFrameData } from '../../../tools/applyFrame/frameData';
 import { dropboxStorageTool } from '../../../tools/dropboxStorage';
 import { useStores } from '../../../hooks/useStores';

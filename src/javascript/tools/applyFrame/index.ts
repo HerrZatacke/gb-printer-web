@@ -1,4 +1,4 @@
-import { tileIndexIsPartOfFrame } from 'gb-image-decoder';
+import { ExportFrameMode, tileIndexIsPartOfFrame } from 'gb-image-decoder';
 import { loadFrameData } from './frameData';
 
 const applyFrame = async (tiles: string[], frameHash: string): Promise<string[]> => {
@@ -20,7 +20,7 @@ const applyFrame = async (tiles: string[], frameHash: string): Promise<string[]>
   }
 
   const unframedImage: string[] = tiles.reduce((acc: string[], tile: string, index: number): string[] => (
-    tileIndexIsPartOfFrame(index, 2) ? acc : [...acc, tile]
+    tileIndexIsPartOfFrame(index, 2, ExportFrameMode.FRAMEMODE_KEEP) ? acc : [...acc, tile]
   ), []);
 
   const result: string[] = [...frameData.upper];
