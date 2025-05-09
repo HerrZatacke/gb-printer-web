@@ -38,7 +38,7 @@
     "@mui/material": "^7.0.1",
     "@mui/x-date-pickers": "^7.28.2",
     "@mui/x-tree-view": "^7.28.1",
-    "@octokit/rest": "^18.1.0",
+    "@octokit/rest": "^21.1.1",
     "@types/bytes": "^3.1.5",
     "@types/chunk": "^0.0.2",
     "@types/dom-serial": "^1.0.6",
