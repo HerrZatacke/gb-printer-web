@@ -98,6 +98,7 @@ function GameBoyImage({
 
   return (
     <Box
+      className="gameboy-image"
       sx={{
         display: 'flex', // For LightBox
         width: '100%', // For LightBox
