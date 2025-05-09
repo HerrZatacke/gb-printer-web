@@ -34,17 +34,10 @@ declare module '@mui/material/styles' {
 
 
 const themeComponents = (theme: Theme): Components<Theme> => ({
-  MuiButton: {
-    styleOverrides: muiButton(theme),
-  },
-  MuiToggleButtonGroup: {
-    styleOverrides: toggleButtonGroup(theme),
-    defaultProps: {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      color: 'tertiary',
-    },
-  },
+  MuiButton: muiButton(theme),
+  MuiToggleButtonGroup: toggleButtonGroup(theme),
+  MuiAppBar: appBar(theme),
+
   MuiOutlinedInput: {
     styleOverrides: outlinedInput(theme),
   },
@@ -70,9 +63,6 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   },
   MuiCardContent: {
     styleOverrides: cardContent(),
-  },
-  MuiAppBar: {
-    styleOverrides: appBar(theme),
   },
   MuiToolbar: {
     styleOverrides: toolbar(theme),
