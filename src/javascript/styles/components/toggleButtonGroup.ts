@@ -6,7 +6,7 @@ export const toggleButtonGroup = (theme: Theme): Components['MuiToggleButtonGrou
   styleOverrides: {
     grouped: {
       variants: [
-        ...['primary', 'secondary', 'tertiary'].map((color) => ({
+        ...(['primary', 'secondary', 'tertiary'] as ('primary' | 'secondary')[]).map((color) => ({
           props: { color },
           style: {
             '&.Mui-selected': {
@@ -27,6 +27,6 @@ export const toggleButtonGroup = (theme: Theme): Components['MuiToggleButtonGrou
   defaultProps: {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    color: 'tertiary',
+    color: 'tertiary' as ('primary' | 'secondary'),
   },
-});
+} as Components['MuiToggleButtonGroup']);
