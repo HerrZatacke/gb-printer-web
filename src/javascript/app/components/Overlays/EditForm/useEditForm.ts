@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import useBatchUpdate from '../../../../hooks/useBatchUpdate';
 import useInteractionsStore from '../../../stores/interactionsStore';
 import useItemsStore from '../../../stores/itemsStore';
@@ -11,7 +11,6 @@ import modifyTagChanges from '../../../../tools/modifyTagChanges';
 import type { ImageUpdates } from '../../../../../types/actions/ImageActions';
 import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
 import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../../../../types/Image';
-import type { Rotation } from '../../../../tools/applyRotation';
 import type { Palette } from '../../../../../types/Palette';
 import type { TagChange } from '../../../../tools/applyTagChanges';
 

@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import type { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import FrameSelect from '../FrameSelect';
 import GreySelect from '../GreySelect';
 import PaletteSelect from '../PaletteSelect';
@@ -13,7 +13,6 @@ import TagsSelect from '../TagsSelect';
 import ImageMeta from '../ImageMeta';
 import type { TagChange } from '../../../tools/applyTagChanges';
 import type { ImageMetadata, RGBNHashes } from '../../../../types/Image';
-import type { Rotation } from '../../../tools/applyRotation';
 import type { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 enum TabType {

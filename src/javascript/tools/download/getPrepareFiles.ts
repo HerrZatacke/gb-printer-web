@@ -1,13 +1,12 @@
-import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
-import { BW_PALETTE, BW_PALETTE_HEX, Decoder, RGBNDecoder } from 'gb-image-decoder';
+import { BW_PALETTE, BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
+import type { RGBNTiles, ExportFrameMode, RGBNPalette } from 'gb-image-decoder';
 import generateFileName from '../generateFileName';
 import { getTxtFile } from './getTxtFile';
-import { getRotatedCanvas } from '../applyRotation';
 import type { Palette } from '../../../types/Palette';
 import type { Image, MonochromeImage } from '../../../types/Image';
 import { isRGBNImage } from '../isRGBNImage';
 import type { DownloadInfo } from '../../../types/Sync';
-import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
+import { getMonochromeImageCreationParams } from '../getMonochromeImageCreationParams';
 import { getImagePalettes } from '../getImagePalettes';
 import { getPaletteSettings } from '../getPaletteSettings';
 import type { FileNameStyle } from '../../consts/fileNameStyles';
@@ -26,7 +25,6 @@ const getPrepareFiles =
     imageStartLine: number,
   ): Promise<DownloadInfo[]> => {
 
-    let decoder: Decoder | RGBNDecoder;
     const isRGBN = isRGBNImage(image);
     const lockFrame = image.lockFrame || false;
     const rotation = image.rotation || 0;
@@ -37,32 +35,37 @@ const getPrepareFiles =
       throw new Error('Palette missing?');
     }
 
-    if (isRGBN) {
-      decoder = new RGBNDecoder();
-      decoder.update({
-        canvas: null,
-        tiles: tiles as RGBNTiles,
-        palette: palette as RGBNPalette,
-        lockFrame,
-      });
-    } else {
-      decoder = new Decoder();
+    const getBlob = async (fileType: string, scaleFactor: number): Promise<Blob> => {
+      if (isRGBN) {
+        return getRGBNImageBlob({
+          tiles: tiles as RGBNTiles,
+          palette: palette as RGBNPalette,
+          lockFrame,
+          imageStartLine,
+          rotation,
+          scaleFactor,
+          handleExportFrame,
+        }, fileType);
+      }
+
       const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
 
-      const updateParams = getDecoderUpdateParams({
-        palette: (palette as Palette)?.palette || BW_PALETTE_HEX,
+      const updateParams = getMonochromeImageCreationParams({
+        imagePalette: (palette as Palette).palette || BW_PALETTE_HEX,
         framePalette: (framePalette as Palette)?.palette || BW_PALETTE_HEX,
         invertPalette,
         invertFramePalette,
       });
 
-      decoder.update({
-        canvas: null,
+      return getMonochromeImageBlob({
         tiles: tiles as string[],
+        rotation,
+        scaleFactor,
+        handleExportFrame,
         ...updateParams,
         imageStartLine,
-      });
-    }
+      }, fileType);
+    };
 
     const validExportScaleFactors = [...exportScaleFactors].filter((factor) => (
       typeof factor === 'number'
@@ -110,83 +113,86 @@ const getPrepareFiles =
                 return;
               }
 
-              const canvas = getRotatedCanvas(decoder.getScaledCanvas(1, handleExportFrame), rotation);
+              getBlob('image/png', exportScaleFactor)
+                .then(createImageBitmap)
+                .then((imageBitmap) => {
+                  const canvas = document.createElement('canvas');
+                  canvas.width = imageBitmap.width;
+                  canvas.height = imageBitmap.height;
+                  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+                  context.drawImage(imageBitmap, 0, 0);
 
-              const pgm = [
-                'P2',
-                '#',
-                `# Exported from ${window.location.origin}`,
-                '#',
-                `# hash: ${image.hash}`,
-                `# created: ${image.created}`,
-                `# title: ${image.title}`,
-                `# tags: ${image.tags.join(', ')}`,
-                `# dimension: ${canvas.width}*${canvas.height} pixels`,
-                '#',
-                `${canvas.width} ${canvas.height}`,
-                '3', // 4 greyscale values (0-3)
-                '#',
-              ];
+                  const paletteValues = (palette as Palette).palette;
 
-              const context = canvas.getContext('2d');
-
-              if (!context) {
-                resolve(null);
-                break;
-              }
-
-              for (let y = 0; y < canvas.height; y += 1) {
-                const line = [];
-                for (let x = 0; x < canvas.width; x += 1) {
-
-                  const imageData = context.getImageData(x, y, 1, 1).data;
-
-                  const hexColor = [
-                    '#',
-                    imageData[0].toString(16).padStart(2, '0'),
-                    imageData[1].toString(16).padStart(2, '0'),
-                    imageData[2].toString(16).padStart(2, '0'),
-                  ].join('');
-
-                  let colorIndex = (palette as Palette).palette?.indexOf(hexColor) || -1;
-
-                  if (colorIndex === -1) {
-                    colorIndex = BW_PALETTE.indexOf(parseInt(hexColor.slice(1), 16));
+                  if (!context || !paletteValues?.length) {
+                    resolve(null);
+                    return;
                   }
 
-                  line.push(3 - colorIndex);
-                }
+                  const pgm = [
+                    'P2',
+                    '#',
+                    `# Exported from ${window.location.origin}`,
+                    '#',
+                    `# hash: ${image.hash}`,
+                    `# created: ${image.created}`,
+                    `# title: ${image.title}`,
+                    `# tags: ${image.tags.join(', ')}`,
+                    `# dimension: ${canvas.width}*${canvas.height} pixels`,
+                    '#',
+                    `${canvas.width} ${canvas.height}`,
+                    '3', // 4 greyscale values (0-3)
+                    '#',
+                  ];
 
-                pgm.push(line.join(' '));
-              }
+                  for (let y = 0; y < canvas.height; y += 1) {
+                    const line = [];
+                    for (let x = 0; x < canvas.width; x += 1) {
 
-              resolve({
-                filename: `${filename}.${fileType}`,
-                blob: new Blob([pgm.join('\n')], {
-                  type: 'text/plain',
-                }),
-                title: image.title,
-              });
+                      const imageData = context.getImageData(x, y, 1, 1).data;
+
+                      const hexColor = [
+                        '#',
+                        imageData[0].toString(16).padStart(2, '0'),
+                        imageData[1].toString(16).padStart(2, '0'),
+                        imageData[2].toString(16).padStart(2, '0'),
+                      ].join('');
+
+                      let colorIndex = (palette as Palette).palette.indexOf(hexColor);
+
+                      if (colorIndex === -1) {
+                        colorIndex = BW_PALETTE.indexOf(parseInt(hexColor.slice(1), 16));
+                      }
+
+                      line.push(3 - colorIndex);
+                    }
+
+                    pgm.push(line.join(' '));
+                  }
+
+                  resolve({
+                    filename: `${filename}.${fileType}`,
+                    blob: new Blob([pgm.join('\n')], {
+                      type: 'text/plain',
+                    }),
+                    title: image.title,
+                  });
+                });
 
               break;
             }
 
             default: {
-              const canvas = getRotatedCanvas(decoder.getScaledCanvas(exportScaleFactor, handleExportFrame), rotation);
-
-              const onBlobComplete = (blob: Blob | null) => {
-                if (!blob) {
-                  resolve(null);
-                } else {
+              getBlob(`image/${fileType}`, exportScaleFactor)
+                .then((blob: Blob) => {
                   resolve({
                     filename: `${filename}.${fileType}`,
                     blob,
                     title: image.title,
                   });
-                }
-              };
+                })
+                .catch(() => resolve(null));
 
-              canvas.toBlob(onBlobComplete, `image/${fileType}`, 1);
               break;
             }
           }

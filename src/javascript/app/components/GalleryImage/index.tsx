@@ -9,8 +9,10 @@ import { useGalleryImage } from './useGalleryImage';
 import { useDateFormat } from '../../../hooks/useDateFormat';
 import useSettingsStore from '../../stores/settingsStore';
 import { ImageSelectionMode } from '../../stores/filtersStore';
+import { GalleryClickAction } from '../../../consts/GalleryClickAction';
 import type { RGBNHashes } from '../../../../types/Image';
 import GalleryGridItem from '../GalleryGridItem';
+import { useGalleryImageContext } from '../GalleryImageContextMenu/useGalleryImageContext';
 
 dayjs.extend(customParseFormat);
 
@@ -20,12 +22,17 @@ interface Props {
 }
 
 function GalleryImage({ page, hash }: Props) {
-  const { enableDebug } = useSettingsStore();
+  const { enableDebug, galleryClickAction } = useSettingsStore();
 
   const {
     galleryImageData,
     updateImageSelection,
   } = useGalleryImage(hash);
+
+  const {
+    setLightboxImage,
+    editImage,
+  } = useGalleryImageContext(hash);
 
   const { formatter } = useDateFormat();
 
@@ -47,6 +54,33 @@ function GalleryImage({ page, hash }: Props) {
     );
   }, [galleryImageData, page, updateImageSelection]);
 
+  const handleCellClick = useCallback((ev: React.MouseEvent) => {
+    ev.preventDefault();
+
+    if (ev.ctrlKey || ev.shiftKey) {
+      updateSelection(ev.shiftKey);
+      return;
+    }
+
+    switch (galleryClickAction) {
+      case GalleryClickAction.VIEW: {
+        setLightboxImage();
+        break;
+      }
+
+      case GalleryClickAction.EDIT: {
+        editImage();
+        break;
+      }
+
+      case GalleryClickAction.SELECT:
+      default: {
+        updateSelection(ev.shiftKey);
+        break;
+      }
+    }
+  }, [editImage, galleryClickAction, setLightboxImage, updateSelection]);
+
   if (!galleryImageData) {
     return null;
   }
@@ -65,11 +99,6 @@ function GalleryImage({ page, hash }: Props) {
     selectionIndex,
     rotation,
   } = galleryImageData;
-
-  const handleCellClick = (ev: React.MouseEvent) => {
-    ev.preventDefault();
-    updateSelection(ev.shiftKey);
-  };
 
   return (
     <GalleryGridItem

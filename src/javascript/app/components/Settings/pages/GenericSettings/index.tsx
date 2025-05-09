@@ -26,6 +26,8 @@ import usePaletteSort from '../../../../../hooks/usePaletteSort';
 import { fileNameStyleLabels } from '../../../../../consts/fileNameStyles';
 import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
 import type { FileNameStyle } from '../../../../../consts/fileNameStyles';
+import { clickActionMenuOptions } from '../../../../../consts/GalleryClickAction';
+import type { GalleryClickAction } from '../../../../../consts/GalleryClickAction';
 
 function GenericSettings() {
   const {
@@ -35,6 +37,7 @@ function GenericSettings() {
     exportScaleFactors,
     fileNameStyle,
     forceMagicCheck,
+    galleryClickAction,
     handleExportFrame,
     hideDates,
     importDeleted,
@@ -51,6 +54,7 @@ function GenericSettings() {
     setEnableImageGroups,
     setFileNameStyle,
     setForceMagicCheck,
+    setGalleryClickAction,
     setHandleExportFrame,
     setHideDates,
     setImportDeleted,
@@ -104,7 +108,7 @@ function GenericSettings() {
     >
       <TextField
         id="settings-pagesize"
-        label="Page size"
+        label="Gallery page size"
         type="text"
         helperText="Set to 0 to disable pagination - might cause performance issues on large sets of images"
         value={pageSizeState}
@@ -115,6 +119,27 @@ function GenericSettings() {
           setPageSizeState(newValue.toString(10));
         }}
       />
+
+      <TextField
+        value={galleryClickAction}
+        label="Click behaviour for gallery images"
+        select
+        helperText="Ctrl+Click and Shift+Click will always select/range-select"
+        onChange={(ev) => {
+          setGalleryClickAction(ev.target.value as GalleryClickAction);
+        }}
+      >
+        {
+          clickActionMenuOptions.map(({ value, label }) => (
+            <MenuItem
+              key={value}
+              value={value}
+            >
+              {label}
+            </MenuItem>
+          ))
+        }
+      </TextField>
 
       <FormControl>
         <InputLabel shrink>
@@ -320,7 +345,6 @@ function GenericSettings() {
           ))
         }
       </TextField>
-
 
       <TextField
         id="settings-filename-style"

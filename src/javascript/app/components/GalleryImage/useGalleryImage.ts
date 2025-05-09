@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import useEditStore from '../../stores/editStore';
 import useFiltersStore from '../../stores/filtersStore';
 import useItemsStore from '../../stores/itemsStore';
@@ -12,7 +12,6 @@ import { getPaletteSettings } from '../../../tools/getPaletteSettings';
 import { useGalleryTreeContext } from '../../contexts/galleryTree';
 import type { ImageSelectionMode } from '../../stores/filtersStore';
 import type { MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
-import type { Rotation } from '../../../tools/applyRotation';
 import type { Palette } from '../../../../types/Palette';
 
 export enum SelectionEditMode {

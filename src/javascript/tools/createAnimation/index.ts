@@ -1,6 +1,6 @@
 import Queue from 'promise-queue';
 import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
-import { RGBNDecoder, Decoder, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
+import { getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
 import { saveAs } from 'file-saver';
 import chunk from 'chunk';
@@ -10,7 +10,6 @@ import useSettingsStore from '../../app/stores/settingsStore';
 import { loadImageTiles } from '../loadImageTiles';
 import { getImagePalettes } from '../getImagePalettes';
 import generateFileName from '../generateFileName';
-import { getRotatedCanvas } from '../applyRotation';
 import { isRGBNImage } from '../isRGBNImage';
 import { reduceItems } from '../reduceArray';
 import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
@@ -18,7 +17,7 @@ import type { VideoParams } from '../../../types/VideoParams';
 import type { Palette } from '../../../types/Palette';
 import unique from '../unique';
 import { loadFrameData } from '../applyFrame/frameData';
-import { getDecoderUpdateParams } from '../getDecoderUpdateParams';
+import { getMonochromeImageCreationParams } from '../getMonochromeImageCreationParams';
 import { getPaletteSettings } from '../getPaletteSettings';
 
 interface GifFrameData {
@@ -108,7 +107,7 @@ export const createAnimation = async () => {
     lockFrame: videoLockFrame,
     invertPalette: videoInvertPalette,
     palette: videoPalette,
-    exportFrameMode,
+    exportFrameMode: handleExportFrame,
   } = videoParamsWithDefaults(videoParams);
 
   if (!videoSelection.length) {
@@ -157,39 +156,49 @@ export const createAnimation = async () => {
     }
 
     const isRGBN = isRGBNImage(image);
-    let decoder: RGBNDecoder | Decoder;
+    let blob: Blob;
 
     if (isRGBN) {
-      decoder = new RGBNDecoder();
-      decoder.update({
-        canvas: null,
+      blob = await getRGBNImageBlob({
         tiles: tiles as RGBNTiles,
         palette: palette as RGBNPalette,
         lockFrame,
-      });
+        imageStartLine,
+        rotation,
+        scaleFactor,
+        handleExportFrame,
+      }, 'image/png');
     } else {
-      decoder = new Decoder();
       const pal = (palette as Palette)?.palette || BW_PALETTE_HEX;
       const framePal = (framePalette as Palette)?.palette || BW_PALETTE_HEX;
 
       const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
 
-      const updateParams = getDecoderUpdateParams({
-        palette: pal,
+      const updateParams = getMonochromeImageCreationParams({
+        imagePalette: pal,
         invertPalette: videoInvertPalette || invertPalette,
         framePalette: lockFrame ? framePal : pal,
         invertFramePalette: videoInvertPalette || invertFramePalette,
       });
 
-      decoder.update({
-        canvas: null,
+      blob = await getMonochromeImageBlob({
         tiles: tiles as string[],
-        ...updateParams,
         imageStartLine,
-      });
+        rotation,
+        scaleFactor,
+        handleExportFrame,
+        ...updateParams,
+      }, 'image/png');
     }
 
-    return getRotatedCanvas(decoder.getScaledCanvas(scaleFactor || 1, exportFrameMode), rotation);
+    const imageBitmap = await createImageBitmap(blob);
+    const canvas = document.createElement('canvas');
+    canvas.width = imageBitmap.width;
+    canvas.height = imageBitmap.height;
+    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+    context.drawImage(imageBitmap, 0, 0);
+
+    return canvas;
   })));
 
   if (unique(

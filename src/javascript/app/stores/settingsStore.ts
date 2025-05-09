@@ -10,6 +10,7 @@ import { PaletteSortMode } from '../../consts/paletteSortModes';
 import { GalleryViews } from '../../consts/GalleryViews';
 import { ThemeName } from '../../consts/theme';
 import { FileNameStyle } from '../../consts/fileNameStyles';
+import { GalleryClickAction } from '../../consts/GalleryClickAction';
 import type { VideoParams } from '../../../types/VideoParams';
 
 export interface Settings {
@@ -20,6 +21,7 @@ export interface Settings {
   fileNameStyle: FileNameStyle,
   forceMagicCheck: boolean,
   galleryView: GalleryViews,
+  galleryClickAction: GalleryClickAction,
   handleExportFrame: ExportFrameMode,
   hideDates: boolean,
   importDeleted: boolean,
@@ -45,6 +47,7 @@ interface Actions {
   setFileNameStyle: (fileNameStyle: FileNameStyle) => void,
   setForceMagicCheck: (forceMagicCheck: boolean) => void,
   setGalleryView: (galleryView: GalleryViews) => void,
+  setGalleryClickAction: (galleryClickAction: GalleryClickAction) => void,
   setHandleExportFrame: (handleExportFrame: ExportFrameMode) => void,
   setHideDates: (hideDates: boolean) => void,
   setImportDeleted: (importDeleted: boolean) => void,
@@ -79,6 +82,7 @@ const useSettingsStore = create(
       fileNameStyle: FileNameStyle.FULL,
       forceMagicCheck: true,
       galleryView: GalleryViews.GALLERY_VIEW_1X,
+      galleryClickAction: GalleryClickAction.SELECT,
       handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
       hideDates: false,
       importDeleted: true,
@@ -100,6 +104,7 @@ const useSettingsStore = create(
       setFileNameStyle: (fileNameStyle: FileNameStyle) => set({ fileNameStyle }),
       setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),
       setGalleryView: (galleryView: GalleryViews) => set({ galleryView }),
+      setGalleryClickAction: (galleryClickAction: GalleryClickAction) => set({ galleryClickAction }),
       setHandleExportFrame: (handleExportFrame: ExportFrameMode) => set({ handleExportFrame }),
       setHideDates: (hideDates: boolean) => set({ hideDates }),
       setImportDeleted: (importDeleted: boolean) => set({ importDeleted }),

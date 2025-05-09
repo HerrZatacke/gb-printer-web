@@ -1,10 +1,9 @@
 import React from 'react';
-import type { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import GameBoyImage from '../GameBoyImage';
 import ImageLoading from '../ImageLoading';
 import { useImageRender } from './useImageRender';
 import type { RGBNHashes } from '../../../../types/Image';
-import type { Rotation } from '../../../tools/applyRotation';
 
 interface Props {
   hash: string,
@@ -14,6 +13,7 @@ interface Props {
   invertPalette?: boolean,
   invertFramePalette?: boolean,
   lockFrame?: boolean,
+  asThumb?: boolean,
   frameId?: string,
   rotation?: Rotation,
 }
@@ -28,6 +28,7 @@ function ImageRender({
   palette,
   framePalette,
   rotation,
+  asThumb,
 }: Props) {
 
   const { gbImageProps } = useImageRender({
@@ -52,6 +53,7 @@ function ImageRender({
       framePalette={gbImageProps.framePalette}
       imageStartLine={gbImageProps.imageStartLine}
       rotation={gbImageProps.rotation}
+      asThumb={asThumb}
     />
   ) : (
     <ImageLoading />

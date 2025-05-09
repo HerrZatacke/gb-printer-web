@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import { blend } from '@mui/system';
@@ -22,19 +22,10 @@ function GalleryGroup({ hash }: Props) {
   const { galleryImageData } = useGalleryImage(hash);
   const { galleryView } = useSettingsStore();
 
-  const canvasStyles = useMemo(() => {
-    switch (galleryView) {
-      case GalleryViews.GALLERY_VIEW_SMALL:
-      case GalleryViews.GALLERY_VIEW_1X:
-        return {
-          transform: 'scale(0.5)',
-          imageRendering: 'auto !important',
-        };
-
-      default:
-        return { transform: 'scale(0.5)' };
-    }
-  }, [galleryView]);
+  const asThumb = [
+    GalleryViews.GALLERY_VIEW_SMALL,
+    GalleryViews.GALLERY_VIEW_1X,
+  ].includes(galleryView);
 
   if (!galleryImageData || !group) {
     return null;
@@ -76,7 +67,9 @@ function GalleryGroup({ hash }: Props) {
               position: 'absolute',
               top: 0,
 
-              canvas: canvasStyles,
+              img: {
+                transform: 'scale(0.5)',
+              },
             },
           }}
         >
@@ -100,6 +93,7 @@ function GalleryGroup({ hash }: Props) {
             hash={hash}
             hashes={hashes}
             rotation={rotation}
+            asThumb={asThumb}
           />
         </Box>
       )}

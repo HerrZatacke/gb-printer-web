@@ -1,13 +1,12 @@
 import screenfull from 'screenfull';
 import { useEffect, useMemo } from 'react';
-import type { RGBNPalette } from 'gb-image-decoder';
+import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import useFiltersStore from '../../../stores/filtersStore';
 import useInteractionsStore from '../../../stores/interactionsStore';
 import useItemsStore from '../../../stores/itemsStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../../../types/Image';
-import type { Rotation } from '../../../../tools/applyRotation';
 import type { Palette } from '../../../../../types/Palette';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { isRGBNImage } from '../../../../tools/isRGBNImage';

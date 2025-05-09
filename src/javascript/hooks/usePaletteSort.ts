@@ -5,11 +5,9 @@ import { isRGBNImage } from '../tools/isRGBNImage';
 import type { Image, MonochromeImage } from '../../types/Image';
 import useSettingsStore from '../app/stores/settingsStore';
 import useItemsStore from '../app/stores/itemsStore';
+import type { MenuOption } from '../../types/MenuOption';
 
-export interface PaletteSortOption {
-  label: string,
-  value: PaletteSortMode,
-}
+export type PaletteSortOption = MenuOption<PaletteSortMode>;
 
 type PaletteUsage = Record<string, number>;
 
