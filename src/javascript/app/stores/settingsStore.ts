@@ -11,10 +11,13 @@ import { GalleryViews } from '../../consts/GalleryViews';
 import { ThemeName } from '../../consts/theme';
 import { FileNameStyle } from '../../consts/fileNameStyles';
 import { GalleryClickAction } from '../../consts/GalleryClickAction';
+import { ImportContrastValue } from '../../consts/bitmapQueueSettings';
 import type { VideoParams } from '../../../types/VideoParams';
 
 export interface Settings {
   activePalette: string,
+  bitmapQueueDither: boolean,
+  bitmapQueueSetting: ImportContrastValue,
   enableDebug: boolean,
   exportFileTypes: string[],
   exportScaleFactors: number[],
@@ -41,6 +44,8 @@ export interface Settings {
 
 interface Actions {
   setActivePalette: (activePalette: string) => void,
+  setBitmapQueueDither: (bitmapQueueDither: boolean) => void,
+  setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => void,
   setEnableDebug: (enableDebug: boolean) => void,
   setExportFileTypes: (exportFileTypes: string[]) => void,
   setExportScaleFactors: (exportScaleFactors: number[]) => void
@@ -76,6 +81,8 @@ const useSettingsStore = create(
   persist<SettingsState>(
     (set) => ({
       activePalette: 'bw',
+      bitmapQueueDither: true,
+      bitmapQueueSetting: ImportContrastValue.WIDE,
       enableDebug: false,
       exportFileTypes: ['png'],
       exportScaleFactors: [4],
@@ -100,6 +107,8 @@ const useSettingsStore = create(
       videoParams: {},
 
       setActivePalette: (activePalette: string) => set({ activePalette }),
+      setBitmapQueueDither: (bitmapQueueDither: boolean) => set({ bitmapQueueDither }),
+      setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => set({ bitmapQueueSetting }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
       setFileNameStyle: (fileNameStyle: FileNameStyle) => set({ fileNameStyle }),
       setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),

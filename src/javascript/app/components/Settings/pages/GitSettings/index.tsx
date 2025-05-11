@@ -127,7 +127,7 @@ function GitSettings() {
                     padding: '0 2px',
                   }}
                 >
-                  &quot;Repositoty Permissions &gt; Contents&quot;
+                  &quot;Repository Permissions &gt; Contents&quot;
                 </Typography>
               </>
             )}
