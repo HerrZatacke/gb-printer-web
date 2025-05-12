@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import type { RGBNPalette, RGBNTiles } from 'gb-image-decoder';
-import { getMonochromeImageUrl, getRGBNImageUrl, maxTiles, defaultRGBNPalette, Rotation } from 'gb-image-decoder';
+import { getMonochromeImageUrl, getRGBNImageUrl, maxTiles, Rotation } from 'gb-image-decoder';
 import { getMonochromeImageCreationParams } from '../../../tools/getMonochromeImageCreationParams';
 
 export interface GameBoyImageProps {
@@ -42,7 +42,7 @@ function GameBoyImage({
         if (isRGBN) {
           setSrc(await getRGBNImageUrl({
             tiles: tiles as RGBNTiles,
-            palette: defaultRGBNPalette,
+            palette,
             lockFrame: lockFrame || false,
             rotation,
           }));
