@@ -12,18 +12,18 @@
   display: none;
 
   &--ip {
-    color: $color-grey-10;
+    color: #1a1a1a;
 
     html.theme-dark & {
-      color: $color-grey-90;
+      color: #e5e5e5;
     }
   }
 
   &--em {
-    color: $color-strong-red;
+    color: #ff0000;
 
     html.theme-dark & {
-      color: $color-warn-red;
+      color: #cb0003;
     }
   }
 }
