@@ -41,9 +41,16 @@ pre {
   padding: 20px 30px;
   border: 8px solid;
   overflow-x: auto;
-  @include theme-border-color($color-primary, $color-secondary);
-  @include theme-background-color($color-grey-30, $color-grey-70);
-  @include theme-color($color-text-bright, $color-text);
+
+  border-color: $color-primary;
+  background-color: $color-grey-30;
+  color: $color-text-bright;
+
+  html.theme-dark & {
+    border-color: $color-secondary;
+    background-color: $color-grey-70;
+    color: $color-text;
+  }
 
   @media (max-width: $layout-width-3-cols) {
     margin: 60px 10px;

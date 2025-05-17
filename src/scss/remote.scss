@@ -12,11 +12,19 @@
   display: none;
 
   &--ip {
-    @include theme-color($color-grey-10, $color-grey-90);
+    color: $color-grey-10;
+
+    html.theme-dark & {
+      color: $color-grey-90;
+    }
   }
 
   &--em {
-    @include theme-color($color-strong-red, $color-warn-red);
+    color: $color-strong-red;
+
+    html.theme-dark & {
+      color: $color-warn-red;
+    }
   }
 }
 
