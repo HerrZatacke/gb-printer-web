@@ -120,7 +120,6 @@
     "rimraf": "^3.0.2",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
-    "sass-resources-loader": "^2.2.1",
     "screenfull": "^5.0.2",
     "string-algorithms": "^1.0.31",
     "style-loader": "^2.0.0",
