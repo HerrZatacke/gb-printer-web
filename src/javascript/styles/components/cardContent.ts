@@ -1,8 +1,9 @@
-import type { Theme } from '@mui/system';
-import type { ComponentsOverrides } from '@mui/material/styles/overrides';
+import type { Components } from '@mui/material/styles';
 
-export const cardContent = (): ComponentsOverrides<Theme>['MuiCardContent'] => ({
-  root: {
-    padding: '24px 16px',
+export const cardContent = (): Components['MuiCardContent'] => ({
+  styleOverrides: {
+    root: {
+      padding: '24px 16px',
+    },
   },
 });

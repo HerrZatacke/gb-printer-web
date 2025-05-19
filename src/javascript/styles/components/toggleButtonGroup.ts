@@ -1,6 +1,6 @@
-import type { Theme } from '@mui/system';
-import type { Components } from '@mui/material/styles/components';
 import { alpha } from '@mui/material';
+import type { Components } from '@mui/material/styles';
+import type { Theme } from '@mui/system';
 
 export const toggleButtonGroup = (theme: Theme): Components['MuiToggleButtonGroup'] => ({
   styleOverrides: {
@@ -29,4 +29,4 @@ export const toggleButtonGroup = (theme: Theme): Components['MuiToggleButtonGrou
     // @ts-ignore
     color: 'tertiary' as ('primary' | 'secondary'),
   },
-} as Components['MuiToggleButtonGroup']);
+});

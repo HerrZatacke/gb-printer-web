@@ -1,14 +1,18 @@
-import type { Theme } from '@mui/system';
-import type { ComponentsOverrides } from '@mui/material/styles/overrides';
+import type { Components } from '@mui/material/styles';
 
-export const select = (): ComponentsOverrides<Theme>['MuiSelect'] => ({
-  select: {
-    display: 'flex',
+export const select = (): Components['MuiSelect'] => ({
+  styleOverrides: {
+    select: {
+      display: 'flex',
 
-    '.MuiListItemIcon-root': {
-      minWidth: 32,
-      flexDirection: 'column',
-      justifyContent: 'center',
+      '.MuiListItemIcon-root': {
+        minWidth: 32,
+        flexDirection: 'column',
+        justifyContent: 'center',
+      },
     },
+  },
+  defaultProps: {
+    displayEmpty: true,
   },
 });

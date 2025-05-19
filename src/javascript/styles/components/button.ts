@@ -1,7 +1,7 @@
+import type { Components } from '@mui/material/styles';
 import type { Theme } from '@mui/system';
-import type { Components } from '@mui/material/styles/components';
 
-export const muiButton = (theme: Theme): Components['MuiButton'] => ({
+export const button = (theme: Theme): Components['MuiButton'] => ({
   styleOverrides: {
     root: {
       fontSize: '13px',
@@ -28,4 +28,4 @@ export const muiButton = (theme: Theme): Components['MuiButton'] => ({
       },
     })),
   ],
-} as Components['MuiButton']);
+});

@@ -1,13 +1,14 @@
-import type { Theme } from '@mui/system';
-import type { ComponentsOverrides } from '@mui/material/styles/overrides';
+import type { Components } from '@mui/material/styles';
 
-export const formControl = (): ComponentsOverrides<Theme>['MuiFormControl'] => ({
-  // add padding to have space for the shrink inputLabel outside of the inputfield's border
-  root: {
-    paddingTop: 16,
+export const formControl = (): Components['MuiFormControl'] => ({
+  styleOverrides: {
+    // add padding to have space for the shrink inputLabel outside of the inputfield's border
+    root: {
+      paddingTop: 16,
 
-    '.MuiStack-root &:first-of-type': {
-      marginTop: 12,
+      '.MuiStack-root &:first-of-type': {
+        marginTop: 12,
+      },
     },
   },
 });

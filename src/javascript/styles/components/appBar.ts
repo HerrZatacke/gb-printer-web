@@ -1,11 +1,7 @@
+import type { Components } from '@mui/material/styles';
 import type { Theme } from '@mui/system';
-import type { Components } from '@mui/material/styles/components';
 
 export const appBar = (theme: Theme): Components['MuiAppBar'] => ({
-  styleOverrides: {
-    root: {
-    },
-  },
   variants: [
     ...(['primary', 'secondary'] as ('primary' | 'secondary')[]).map((color) => ({
       props: { color },
@@ -30,4 +26,4 @@ export const appBar = (theme: Theme): Components['MuiAppBar'] => ({
       },
     })),
   ],
-} as Components['MuiAppBar']);
+});

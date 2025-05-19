@@ -1,24 +1,25 @@
 import { createTheme, lighten } from '@mui/material';
-import { blend } from '@mui/system';
 import type { Components, PaletteMode, Theme } from '@mui/material';
-import { textFieldSlotDefaults } from '../../consts/textFieldSlotDefaults';
-import { muiButton } from '../components/button';
-import { toggleButtonGroup } from '../components/toggleButtonGroup';
-import { outlinedInput } from '../components/outlinedInput';
-import { paper } from '../components/paper';
-import { tab } from '../components/tab';
-import { inputLabel } from '../components/inputLabel';
-import { formControl } from '../components/formControl';
-import { cardContent } from '../components/cardContent';
+import { blend } from '@mui/system';
 import { appBar } from '../components/appBar';
-import { toolbar } from '../components/toolbar';
-import { link } from '../components/link';
+import { button } from '../components/button';
+import { cardActionArea } from '../components/cardActionArea';
+import { cardContent } from '../components/cardContent';
 import { dialogTitle } from '../components/dialogTitle';
-import { tabs } from '../components/tabs';
-import { select } from '../components/select';
+import { formControl } from '../components/formControl';
+import { inputLabel } from '../components/inputLabel';
+import { link } from '../components/link';
 import { list } from '../components/list';
 import { menuItem } from '../components/menuItem';
-import { cardActionArea } from '../components/cardActionArea';
+import { outlinedInput } from '../components/outlinedInput';
+import { paper } from '../components/paper';
+import { select } from '../components/select';
+import { switchc } from '../components/switch';
+import { tab } from '../components/tab';
+import { tabs } from '../components/tabs';
+import { textField } from '../components/textField';
+import { toggleButtonGroup } from '../components/toggleButtonGroup';
+import { toolbar } from '../components/toolbar';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -34,75 +35,25 @@ declare module '@mui/material/styles' {
 
 
 const themeComponents = (theme: Theme): Components<Theme> => ({
-  MuiButton: muiButton(theme),
-  MuiToggleButtonGroup: toggleButtonGroup(theme),
   MuiAppBar: appBar(theme),
-
-  MuiOutlinedInput: {
-    styleOverrides: outlinedInput(theme),
-  },
-  MuiPaper: {
-    styleOverrides: paper(),
-  },
-  MuiTab: {
-    styleOverrides: tab(theme),
-  },
-  MuiTabs: {
-    styleOverrides: tabs(theme),
-    defaultProps: {
-      scrollButtons: 'auto',
-      indicatorColor: 'secondary',
-      variant: 'scrollable',
-    },
-  },
-  MuiInputLabel: {
-    styleOverrides: inputLabel(),
-  },
-  MuiFormControl: {
-    styleOverrides: formControl(),
-  },
-  MuiCardContent: {
-    styleOverrides: cardContent(),
-  },
-  MuiToolbar: {
-    styleOverrides: toolbar(theme),
-  },
-  MuiLink: {
-    styleOverrides: link(),
-  },
-  MuiDialogTitle: {
-    styleOverrides: dialogTitle(theme),
-  },
-  MuiSwitch: {
-    defaultProps: {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      color: 'tertiary',
-    },
-  },
-  MuiTextField: {
-    defaultProps: {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      color: 'tertiary',
-      slotProps: textFieldSlotDefaults,
-    },
-  },
-  MuiSelect: {
-    styleOverrides: select(),
-    defaultProps: {
-      displayEmpty: true,
-    },
-  },
-  MuiList: {
-    styleOverrides: list(),
-  },
-  MuiMenuItem: {
-    styleOverrides: menuItem(theme),
-  },
-  MuiCardActionArea: {
-    styleOverrides: cardActionArea(),
-  },
+  MuiButton: button(theme),
+  MuiCardActionArea: cardActionArea(),
+  MuiCardContent: cardContent(),
+  MuiDialogTitle: dialogTitle(theme),
+  MuiFormControl: formControl(),
+  MuiInputLabel: inputLabel(),
+  MuiLink: link(),
+  MuiList: list(),
+  MuiMenuItem: menuItem(theme),
+  MuiOutlinedInput: outlinedInput(theme),
+  MuiPaper: paper(),
+  MuiSelect: select(),
+  MuiSwitch: switchc(),
+  MuiTab: tab(theme),
+  MuiTabs: tabs(theme),
+  MuiTextField: textField(),
+  MuiToggleButtonGroup: toggleButtonGroup(theme),
+  MuiToolbar: toolbar(theme),
 });
 
 interface GenerateThemeArgs {

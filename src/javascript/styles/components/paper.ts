@@ -1,8 +1,9 @@
-import type { Theme } from '@mui/system';
-import type { ComponentsOverrides } from '@mui/material/styles/overrides';
+import type { Components } from '@mui/material/styles';
 
-export const paper = (): ComponentsOverrides<Theme>['MuiPaper'] => ({
-  root: {
-    backgroundImage: 'none',
+export const paper = (): Components['MuiPaper'] => ({
+  styleOverrides: {
+    root: {
+      backgroundImage: 'none',
+    },
   },
 });
