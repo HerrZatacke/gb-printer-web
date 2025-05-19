@@ -129,6 +129,11 @@ export const useEditForm = (): UseEditForm => {
       return undefined;
     }
 
+    // ToDo: for nextjs migration
+    if (windowDimensions.width === 0 || windowDimensions.height === 0) {
+      throw new Error('windowDimensions not initialized');
+    }
+
     const height = (windowDimensions.width <= 600) ?
       windowDimensions.height :
       Math.min(900, windowDimensions.height);
