@@ -1,8 +1,7 @@
 import { saveAs } from 'file-saver';
-import type { Plugin, PluginClassInstance } from '../../../../../types/Plugin';
+import type { CollectImageDataFn, Plugin, PluginClassInstance } from '../../../../../types/Plugin';
 import type { ItemsState } from '../../../stores/itemsStore';
 import type { InteractionsState } from '../../../stores/interactionsStore';
-import type { CollectImageDataFn } from './collectImageData';
 import type { UseStores } from '../../../../hooks/useStores';
 import type { ImportFn } from '../../../../hooks/useImportExportSettings';
 import { pluginFunctions, pluginCompatibilityStore } from './pluginContextFunctions';
