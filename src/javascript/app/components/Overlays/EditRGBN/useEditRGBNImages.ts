@@ -7,7 +7,7 @@ import useItemsStore from '../../../stores/itemsStore';
 import { getFilteredImages } from '../../../../tools/getFilteredImages';
 import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
 import { dateFormat, dateFormatSeconds } from '../../../defaults';
-import { toSlug } from '../EditImageGroup/useEditImageGroup';
+import { toSlug } from '../../../../hooks/useEditImageGroup';
 import { randomId } from '../../../../tools/randomId';
 import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
