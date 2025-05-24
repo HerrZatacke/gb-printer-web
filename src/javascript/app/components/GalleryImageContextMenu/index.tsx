@@ -20,7 +20,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import PluginSelect from '../PluginSelect';
-import { useGalleryImageContext } from './useGalleryImageContext';
+import { useGalleryImageContext } from '../../../hooks/useGalleryImageContext';
 import { useImageGroups } from '../../../hooks/useImageGroups';
 import { ImageSelectionMode } from '../../stores/filtersStore';
 import useSettingsStore from '../../stores/settingsStore';

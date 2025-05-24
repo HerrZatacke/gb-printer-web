@@ -12,7 +12,7 @@ import { ImageSelectionMode } from '../../stores/filtersStore';
 import { GalleryClickAction } from '../../../consts/GalleryClickAction';
 import type { RGBNHashes } from '../../../../types/Image';
 import GalleryGridItem from '../GalleryGridItem';
-import { useGalleryImageContext } from '../GalleryImageContextMenu/useGalleryImageContext';
+import { useGalleryImageContext } from '../../../hooks/useGalleryImageContext';
 
 dayjs.extend(customParseFormat);
 

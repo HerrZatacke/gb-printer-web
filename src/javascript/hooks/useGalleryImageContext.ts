@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
-import useDialogsStore from '../../stores/dialogsStore';
-import useEditStore from '../../stores/editStore';
-import useFiltersStore from '../../stores/filtersStore';
-import useInteractionsStore from '../../stores/interactionsStore';
-import useItemsStore from '../../stores/itemsStore';
-import { useStores } from '../../../hooks/useStores';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
-import type { ImageSelectionMode } from '../../stores/filtersStore';
-import type { RGBNImage } from '../../../../types/Image';
-import useDownload from '../../../hooks/useDownload';
-import useShareImage from '../../../hooks/useShareImage';
-import { canShare } from '../../../tools/canShare';
-import { getFilteredImages } from '../../../tools/getFilteredImages';
-import { SpecialTags } from '../../../consts/SpecialTags';
-import { DialoqQuestionType } from '../../../../types/Dialog';
+import useDialogsStore from '../app/stores/dialogsStore';
+import useEditStore from '../app/stores/editStore';
+import useFiltersStore from '../app/stores/filtersStore';
+import useInteractionsStore from '../app/stores/interactionsStore';
+import useItemsStore from '../app/stores/itemsStore';
+import { useStores } from './useStores';
+import { useGalleryTreeContext } from '../app/contexts/galleryTree';
+import type { ImageSelectionMode } from '../app/stores/filtersStore';
+import type { RGBNImage } from '../../types/Image';
+import useDownload from './useDownload';
+import useShareImage from './useShareImage';
+import { canShare } from '../tools/canShare';
+import { getFilteredImages } from '../tools/getFilteredImages';
+import { SpecialTags } from '../consts/SpecialTags';
+import { DialoqQuestionType } from '../../types/Dialog';
 
 interface UseGalleryImageContext {
   isSelected: boolean,
