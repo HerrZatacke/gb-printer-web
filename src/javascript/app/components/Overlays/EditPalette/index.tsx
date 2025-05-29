@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import ColorPicker from '../../ColorPicker';
 import ImageRender from '../../ImageRender';
 import Lightbox from '../../Lightbox';
-import { useEditPalette } from './useEditPalette';
+import { useEditPalette } from '../../../../hooks/useEditPalette';
 
 function EditPalette() {
 
