@@ -3,7 +3,7 @@ import getPrepareRemoteFiles from '../getPrepareRemoteFiles';
 import type { AddToQueueFn } from '../../../types/Sync';
 import type { RepoContents, RepoTasks, SyncFile } from '../../../types/Export';
 import { getUploadImages } from './getUploadImages';
-import { getUploadFrames } from './getUpladFrames';
+import { getUploadFrames } from './getUploadFrames';
 
 const getUploadFiles = async (
   repoContents: RepoContents,
