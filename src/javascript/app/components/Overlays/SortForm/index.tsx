@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Lightbox from '../../Lightbox';
-import { useSortForm } from './useSortForm';
+import { useSortForm } from '../../../../hooks/useSortForm';
 import { SortDirection } from '../../../../tools/sortby';
 
 interface Sortable {

@@ -9,7 +9,7 @@ import Lightbox from '../../Lightbox';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
 import exportFrameModes from '../../../../consts/exportFrameModes';
-import { useVideoForm } from './useVideoForm';
+import { useVideoForm } from '../../../../hooks/useVideoForm';
 
 function VideoParamsForm() {
 

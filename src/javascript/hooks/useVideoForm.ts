@@ -1,7 +1,7 @@
-import { createAnimation, videoParamsWithDefaults } from '../../../../tools/createAnimation';
-import type { VideoParams } from '../../../../../types/VideoParams';
-import useSettingsStore from '../../../stores/settingsStore';
-import useInteractionsStore from '../../../stores/interactionsStore';
+import { createAnimation, videoParamsWithDefaults } from '../tools/createAnimation';
+import type { VideoParams } from '../../types/VideoParams';
+import useSettingsStore from '../app/stores/settingsStore';
+import useInteractionsStore from '../app/stores/interactionsStore';
 
 interface UseVideoForm {
   imageCount: number,
