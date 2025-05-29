@@ -1,18 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
-import useBatchUpdate from '../../../../hooks/useBatchUpdate';
-import useInteractionsStore from '../../../stores/interactionsStore';
-import useItemsStore from '../../../stores/itemsStore';
-import useEditStore from '../../../stores/editStore';
-import { missingGreyPalette } from '../../../defaults';
-import { isRGBNImage } from '../../../../tools/isRGBNImage';
-import { getImageTileCount } from '../../../../tools/loadImageTiles';
-import modifyTagChanges from '../../../../tools/modifyTagChanges';
-import type { ImageUpdates } from '../../../../../types/actions/ImageActions';
-import type { TagUpdateMode } from '../../../../tools/modifyTagChanges';
-import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../../../../types/Image';
-import type { Palette } from '../../../../../types/Palette';
-import type { TagChange } from '../../../../tools/applyTagChanges';
+import useBatchUpdate from './useBatchUpdate';
+import useInteractionsStore from '../app/stores/interactionsStore';
+import useItemsStore from '../app/stores/itemsStore';
+import useEditStore from '../app/stores/editStore';
+import { missingGreyPalette } from '../app/defaults';
+import { isRGBNImage } from '../tools/isRGBNImage';
+import { getImageTileCount } from '../tools/loadImageTiles';
+import modifyTagChanges from '../tools/modifyTagChanges';
+import type { ImageUpdates } from '../../types/actions/ImageActions';
+import type { TagUpdateMode } from '../tools/modifyTagChanges';
+import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../types/Image';
+import type { Palette } from '../../types/Palette';
+import type { TagChange } from '../tools/applyTagChanges';
 
 interface Batch {
   created: boolean,

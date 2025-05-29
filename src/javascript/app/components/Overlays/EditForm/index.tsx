@@ -12,7 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import ImageRender from '../../ImageRender';
 import EditImageTabs from '../../EditImageTabs';
 import Lightbox from '../../Lightbox';
-import { useEditForm } from './useEditForm';
+import { useEditForm } from '../../../../hooks/useEditForm';
 import { getScrollParent } from '../../../../tools/getScrollParent';
 
 function EditForm() {
