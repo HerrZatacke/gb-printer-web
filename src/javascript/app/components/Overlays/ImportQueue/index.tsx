@@ -6,9 +6,9 @@ import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
 import FrameSelect from '../../FrameSelect';
 import PaletteSelect from '../../PaletteSelect';
-import useRunImport from './useRunImport';
 import TagsSelect from '../../TagsSelect';
 import modifyTagChanges from '../../../../tools/modifyTagChanges';
+import useRunImport from '../../../../hooks/useRunImport';
 
 function ImportQueue() {
   const {
