@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Lightbox from '../../Lightbox';
-import EditFrameStartLine from '../EditFrameStartLine';
+import EditFrameStartLine from '../../EditFrameStartLine';
 import EditFrameForm from '../EditFrame/EditFrameForm';
 import useEditFrame from '../../../../hooks/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
