@@ -4,7 +4,7 @@ import { reduceItems } from '../reduceArray';
 import { isRGBNImage } from '../isRGBNImage';
 import type { FrameData } from '../applyFrame/frameData';
 import type { RepoContents } from '../../../types/Export';
-import type { Image, RGBNImage } from '../../../types/Image';
+import type { Image, RGBNHashes, RGBNImage } from '../../../types/Image';
 import type { Frame } from '../../../types/Frame';
 import type { JSONExportState } from '../../../types/ExportState';
 
@@ -107,19 +107,34 @@ const saveLocalStorageItems = async ({ images, frames, settings }: RepoContents)
     if (isRGBNImage(settingsImage)) {
       const settingsImageRGBN = settingsImage as RGBNImage;
 
+      const hashes: RGBNHashes = {
+        ...settingsImageRGBN.hashes,
+      };
+
       const hashUpdateR = imagesRehashed.find(({ oldHash }) => oldHash === settingsImageRGBN.hashes.r);
       const hashUpdateG = imagesRehashed.find(({ oldHash }) => oldHash === settingsImageRGBN.hashes.g);
       const hashUpdateB = imagesRehashed.find(({ oldHash }) => oldHash === settingsImageRGBN.hashes.b);
       const hashUpdateN = imagesRehashed.find(({ oldHash }) => oldHash === settingsImageRGBN.hashes.n);
 
+      if (hashUpdateR?.newHash) {
+        hashes.r = hashUpdateR?.newHash;
+      }
+
+      if (hashUpdateG?.newHash) {
+        hashes.g = hashUpdateG?.newHash;
+      }
+
+      if (hashUpdateB?.newHash) {
+        hashes.b = hashUpdateB?.newHash;
+      }
+
+      if (hashUpdateN?.newHash) {
+        hashes.n = hashUpdateN?.newHash;
+      }
+
       return {
         ...settingsImageRGBN,
-        hashes: {
-          r: hashUpdateR?.newHash || settingsImageRGBN.hashes.r,
-          g: hashUpdateG?.newHash || settingsImageRGBN.hashes.g,
-          b: hashUpdateB?.newHash || settingsImageRGBN.hashes.b,
-          n: hashUpdateN?.newHash || settingsImageRGBN.hashes.n,
-        },
+        hashes,
       };
     }
 
