@@ -11,7 +11,7 @@ const getUploadFiles = async (
   addToQueue: AddToQueueFn<unknown>,
 ): Promise<RepoTasks> => {
   const prepareRemoteFiles = getPrepareRemoteFiles();
-  const missingLocally: string[] = [];
+  const missingLocally: string[] = []; // ToDo: is this always empty?
 
   const {
     syncImages,
