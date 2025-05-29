@@ -1,4 +1,4 @@
-import useInteractionsStore from '../../../stores/interactionsStore';
+import useInteractionsStore from '../app/stores/interactionsStore';
 
 interface UseProgressBox {
   progress: number,

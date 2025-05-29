@@ -8,7 +8,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import cleanPath from '../../../../../tools/cleanPath';
-import { useDropboxSettings } from './useDropboxSettings';
+import { useDropboxSettings } from '../../../../../hooks/useDropboxSettings';
 
 function DropboxSettings() {
   const {

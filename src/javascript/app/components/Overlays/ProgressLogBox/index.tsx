@@ -9,7 +9,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Lightbox from '../../Lightbox';
-import { useProgress } from './useProgress';
+import { useProgressLog } from '../../../../hooks/useProgressLog';
 import type { LogItem } from '../../../stores/interactionsStore';
 
 dayjs.extend(duration);
@@ -30,7 +30,7 @@ function ProgressLogBox() {
       path: dropboxPath,
     },
     confirm,
-  } = useProgress();
+  } = useProgressLog();
 
   const [cutOffMessages, setCutOffMessages] = useState(true);
 

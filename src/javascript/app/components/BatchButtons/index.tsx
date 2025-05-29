@@ -12,7 +12,7 @@ import IconButton from '@mui/material/Button';
 import PaletteIcon from '@mui/icons-material/Palette';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import PluginSelect from '../PluginSelect';
-import useBatchButtons from './useBatchButtons';
+import useBatchButtons from '../../../hooks/useBatchButtons';
 import { BatchActionType } from '../../../consts/batchActionTypes';
 
 const BATCH_ACTIONS: BatchActionType[] = [

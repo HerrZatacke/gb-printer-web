@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import useFrames from './useFrames';
+import useFrames from '../../../hooks/useFrames';
 import Frame from '../Frame';
 import GalleryGrid from '../GalleryGrid';
 import GalleryViewSelect from '../GalleryViewSelect';

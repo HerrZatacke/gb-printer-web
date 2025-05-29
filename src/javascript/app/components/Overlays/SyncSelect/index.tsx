@@ -6,7 +6,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import Lightbox from '../../Lightbox';
-import { useSyncSelect } from './useSyncSelect';
+import { useSyncSelect } from '../../../../hooks/useSyncSelect';
 
 const getButtonColor = (showSyncHints: boolean, warn: boolean): 'secondary' | 'error' => {
   if (!showSyncHints) {

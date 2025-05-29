@@ -1,8 +1,8 @@
-import type { DropBoxSettings } from '../../../../../../types/Sync';
-import useStoragesStore from '../../../../stores/storagesStore';
-import { dropboxStorageTool } from '../../../../../tools/dropboxStorage';
-import { useStores } from '../../../../../hooks/useStores';
-import { useImportExportSettings } from '../../../../../hooks/useImportExportSettings';
+import type { DropBoxSettings } from '../../types/Sync';
+import useStoragesStore from '../app/stores/storagesStore';
+import { dropboxStorageTool } from '../tools/dropboxStorage';
+import { useStores } from './useStores';
+import { useImportExportSettings } from './useImportExportSettings';
 
 interface UseDropboxSettings {
   use: boolean,

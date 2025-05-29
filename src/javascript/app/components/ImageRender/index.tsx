@@ -2,7 +2,7 @@ import React from 'react';
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import GameBoyImage from '../GameBoyImage';
 import ImageLoading from '../ImageLoading';
-import { useImageRender } from './useImageRender';
+import { useImageRender } from '../../../hooks/useImageRender';
 import type { RGBNHashes } from '../../../../types/Image';
 
 interface Props {
