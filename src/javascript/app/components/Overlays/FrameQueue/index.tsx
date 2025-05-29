@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Lightbox from '../../Lightbox';
 import EditFrameStartLine from '../EditFrameStartLine';
 import EditFrameForm from '../EditFrame/EditFrameForm';
-import useEditFrame from '../EditFrame/useEditFrame';
+import useEditFrame from '../../../../hooks/useEditFrame';
 import { saveFrameData } from '../../../../tools/applyFrame/frameData';
 import useDialogsStore from '../../../stores/dialogsStore';
 import useImportsStore from '../../../stores/importsStore';
