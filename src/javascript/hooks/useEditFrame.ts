@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import getFrameGroups from '../../../../tools/getFrameGroups';
-import type { Frame } from '../../../../../types/Frame';
-import type { FrameGroup } from '../../../../../types/FrameGroup';
-import useEditStore from '../../../stores/editStore';
-import useItemsStore from '../../../stores/itemsStore';
-import { useStores } from '../../../../hooks/useStores';
+import getFrameGroups from '../tools/getFrameGroups';
+import type { Frame } from '../../types/Frame';
+import type { FrameGroup } from '../../types/FrameGroup';
+import useEditStore from '../app/stores/editStore';
+import useItemsStore from '../app/stores/itemsStore';
+import { useStores } from './useStores';
 
 interface UseEditFrame {
   groups: FrameGroup[],
