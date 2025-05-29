@@ -20,7 +20,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Lightbox from '../../Lightbox';
-import { RGBGrouping, useEditRGBNImages } from './useEditRGBNImages';
+import { RGBGrouping, useEditRGBNImages } from '../../../../hooks/useEditRGBNImages';
 import ImageRender from '../../ImageRender';
 import RGBNSelect from '../../RGBNSelect';
 import { defaultRGBNPalette } from '../../../defaults';

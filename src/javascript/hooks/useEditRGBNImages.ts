@@ -1,18 +1,18 @@
 import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import objectHash from 'object-hash';
-import useEditStore from '../../../stores/editStore';
-import useFiltersStore from '../../../stores/filtersStore';
-import useItemsStore from '../../../stores/itemsStore';
-import { getFilteredImages } from '../../../../tools/getFilteredImages';
-import { reduceImagesMonochrome } from '../../../../tools/isRGBNImage';
-import { dateFormat, dateFormatSeconds } from '../../../defaults';
-import { toSlug } from '../../../../hooks/useEditImageGroup';
-import { randomId } from '../../../../tools/randomId';
-import type { MonochromeImage, RGBNHashes } from '../../../../../types/Image';
-import { useGalleryTreeContext } from '../../../contexts/galleryTree';
-import { useNavigationToolsContext } from '../../../contexts/navigationTools/NavigationToolsProvider';
-import useSaveRGBNImages from '../../../../hooks/useSaveRGBNImages';
+import useEditStore from '../app/stores/editStore';
+import useFiltersStore from '../app/stores/filtersStore';
+import useItemsStore from '../app/stores/itemsStore';
+import { getFilteredImages } from '../tools/getFilteredImages';
+import { reduceImagesMonochrome } from '../tools/isRGBNImage';
+import { dateFormat, dateFormatSeconds } from '../app/defaults';
+import { toSlug } from './useEditImageGroup';
+import { randomId } from '../tools/randomId';
+import type { MonochromeImage, RGBNHashes } from '../../types/Image';
+import { useGalleryTreeContext } from '../app/contexts/galleryTree';
+import { useNavigationToolsContext } from '../app/contexts/navigationTools/NavigationToolsProvider';
+import useSaveRGBNImages from './useSaveRGBNImages';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
