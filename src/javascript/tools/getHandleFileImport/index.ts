@@ -8,12 +8,7 @@ import { transformSav } from '../transformSav';
 import prepareFile from './prepareFile';
 import type { PreparedFile } from './prepareFile';
 import type { ImportFn } from '../../hooks/useImportExportSettings';
-
-export interface HandeFileImportOptions {
-  fromPrinter: boolean
-}
-
-export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
+import type { HandeFileImportFn } from '../../../types/handleFileImport';
 
 const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
   const importJSON = getImportJSON(importFn);

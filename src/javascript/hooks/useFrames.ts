@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import useItemsStore from '../../stores/itemsStore';
-import useSettingsStore from '../../stores/settingsStore';
-import getFrameGroups from '../../../tools/getFrameGroups';
-import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
-import { compressAndHashFrame, loadFrameData, saveFrameData } from '../../../tools/applyFrame/frameData';
-import { padFrameData } from '../../../tools/saveLocalStorageItems';
-import type { FrameGroup } from '../../../../types/FrameGroup';
-import type { Frame } from '../../../../types/Frame';
-import type { ExportTypes } from '../../../consts/exportTypes';
-import { useStores } from '../../../hooks/useStores';
-import { getFramesForGroup } from '../../../tools/getFramesForGroup';
+import useItemsStore from '../app/stores/itemsStore';
+import useSettingsStore from '../app/stores/settingsStore';
+import getFrameGroups from '../tools/getFrameGroups';
+import { useImportExportSettings } from './useImportExportSettings';
+import { compressAndHashFrame, loadFrameData, saveFrameData } from '../tools/applyFrame/frameData';
+import { padFrameData } from '../tools/saveLocalStorageItems';
+import type { FrameGroup } from '../../types/FrameGroup';
+import type { Frame } from '../../types/Frame';
+import type { ExportTypes } from '../consts/exportTypes';
+import { useStores } from './useStores';
+import { getFramesForGroup } from '../tools/getFramesForGroup';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   const group = groups.find(({ id }) => id === byId);

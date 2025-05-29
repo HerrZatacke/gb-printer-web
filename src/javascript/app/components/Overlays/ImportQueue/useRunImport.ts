@@ -10,7 +10,7 @@ import type { TagChange } from '../../../../tools/applyTagChanges';
 import { randomId } from '../../../../tools/randomId';
 import { useGalleryTreeContext } from '../../../contexts/galleryTree';
 import { useNavigationToolsContext } from '../../../contexts/navigationTools/NavigationToolsProvider';
-import { toSlug } from '../EditImageGroup/useEditImageGroup';
+import { toSlug } from '../../../../hooks/useEditImageGroup';
 import useEditStore from '../../../stores/editStore';
 import useFiltersStore from '../../../stores/filtersStore';
 import useImportsStore from '../../../stores/importsStore';

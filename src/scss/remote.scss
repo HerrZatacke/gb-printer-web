@@ -1,10 +1,5 @@
 @import '~reset-css/sass/reset';
-
-* {
-  box-sizing: border-box;
-}
-
-@import './generics/app';
+@import './generic';
 
 .remote-info {
   font-size: 16px;
@@ -12,11 +7,19 @@
   display: none;
 
   &--ip {
-    @include theme-color($color-grey-10, $color-grey-90);
+    color: #1a1a1a;
+
+    html.theme-dark & {
+      color: #e5e5e5;
+    }
   }
 
   &--em {
-    @include theme-color($color-strong-red, $color-warn-red);
+    color: #ff0000;
+
+    html.theme-dark & {
+      color: #cb0003;
+    }
   }
 }
 

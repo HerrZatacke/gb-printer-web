@@ -3,7 +3,7 @@ import { longestCommonSubstring } from 'string-algorithms';
 import useDialogsStore from '../app/stores/dialogsStore';
 import { DialoqQuestionType } from '../../types/Dialog';
 import { useGalleryTreeContext } from '../app/contexts/galleryTree';
-import { NEW_GROUP } from '../app/components/Overlays/EditImageGroup/useEditImageGroup';
+import { NEW_GROUP } from './useEditImageGroup';
 import useEditStore from '../app/stores/editStore';
 import useItemsStore from '../app/stores/itemsStore';
 import useFiltersStore from '../app/stores/filtersStore';

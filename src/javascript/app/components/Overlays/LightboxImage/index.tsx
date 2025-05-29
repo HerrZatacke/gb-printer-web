@@ -12,7 +12,7 @@ import { dateFormat } from '../../../defaults';
 import dateFormatLocale from '../../../../tools/dateFormatLocale';
 import Lightbox from '../../Lightbox';
 import ImageRender from '../../ImageRender';
-import { useLightboxImage } from './useLightboxImage';
+import { useLightboxImage } from '../../../../hooks/useLightboxImage';
 import type { RGBNImage } from '../../../../../types/Image';
 
 function LightboxImage() {

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
 import React, { useState, useEffect } from 'react';
 import Link from '@mui/material/Link';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';

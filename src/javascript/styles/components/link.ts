@@ -1,8 +1,9 @@
-import type { Theme } from '@mui/system';
-import type { ComponentsOverrides } from '@mui/material/styles/overrides';
+import type { Components } from '@mui/material/styles';
 
-export const link = (): ComponentsOverrides<Theme>['MuiLink'] => ({
-  root: {
-    color: 'inherit',
+export const link = (): Components['MuiLink'] => ({
+  styleOverrides: {
+    root: {
+      color: 'inherit',
+    },
   },
 });

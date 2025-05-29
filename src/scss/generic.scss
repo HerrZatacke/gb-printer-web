@@ -1,11 +1,11 @@
 html {
   @supports (scrollbar-width: auto) {
-    --scrollbar-color: #{$color-grey-30};
-    --scrollbar-track-color: #{$color-grey-20};
+    --scrollbar-color: #4c4c4c;
+    --scrollbar-track-color: #333333;
 
     &.theme-bright {
-      --scrollbar-color: #{$color-grey-70};
-      --scrollbar-track-color: #{$color-grey-80};
+      --scrollbar-color: #b2b2b2;
+      --scrollbar-track-color: #cccccc;
     }
 
     scrollbar-gutter: stable;
@@ -41,11 +41,18 @@ pre {
   padding: 20px 30px;
   border: 8px solid;
   overflow-x: auto;
-  @include theme-border-color($color-primary, $color-secondary);
-  @include theme-background-color($color-grey-30, $color-grey-70);
-  @include theme-color($color-text-bright, $color-text);
 
-  @media (max-width: $layout-width-3-cols) {
+  border-color: #292037;
+  background-color: #4c4c4c;
+  color: #b2b2b2;
+
+  html.theme-dark & {
+    border-color: #455c63;
+    background-color: #b2b2b2;
+    color: #333333;
+  }
+
+  @media (max-width: 570px) {
     margin: 60px 10px;
     padding: 20px 10px;
   }
@@ -57,4 +64,8 @@ pre {
     margin-top: 30px;
     white-space: pre;
   }
+}
+
+* {
+  box-sizing: border-box;
 }

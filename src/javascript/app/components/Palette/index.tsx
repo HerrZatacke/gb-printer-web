@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { usePalette } from './usePalette';
+import { usePalette } from '../../../hooks/usePalette';
 import GalleryGridItem from '../GalleryGridItem';
 import PaletteContextMenu from '../PaletteContextMenu';
 import { generateGradient, GradientType } from '../../../tools/generateGradient';

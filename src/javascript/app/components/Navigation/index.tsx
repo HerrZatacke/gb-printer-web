@@ -73,12 +73,6 @@ function Navigation() {
     autoDropboxSync && (syncLastUpdate.local !== syncLastUpdate.dropbox)
   ), [autoDropboxSync, syncLastUpdate]);
 
-  const syncTitle = useMemo(() => (
-    (syncLastUpdate.local > syncLastUpdate.dropbox) ?
-      'There are local changes not synched to dropbox yet' :
-      'There are remote changes not synched yet'
-  ), [syncLastUpdate]);
-
   const navItems = useMemo<NavItem[]>(() => (
     [
       {
@@ -118,7 +112,7 @@ function Navigation() {
         onClick: () => showTrashCount(true),
       },
       useSync ? {
-        title: syncTitle,
+        title: 'Syncronize with remote service(s)',
         icon: <SyncIcon />,
         badgeContent: syncNotification ? '!' : null,
         disabled: syncBusy,
@@ -147,7 +141,6 @@ function Navigation() {
     showTrashCount,
     syncBusy,
     syncNotification,
-    syncTitle,
     themeName,
     trashCountSum,
     useSerials,

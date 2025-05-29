@@ -3,8 +3,16 @@ import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import type { Image } from './Image';
 import type { Palette } from './Palette';
 import type { PluginCompatibilityWrapper } from './PluginCompatibility';
-import type { CollectImageDataFn } from '../javascript/app/contexts/plugins/functions/collectImageData';
-import type { PluginFunctions } from '../javascript/app/contexts/plugins/functions/pluginContextFunctions';
+import type { Dialog } from './Dialog';
+import type { HandeFileImportFn } from './handleFileImport';
+
+export interface PluginFunctions {
+  importFiles: HandeFileImportFn,
+  setDialog: (dialog: Dialog) => void,
+  dismissDialog: () => void,
+  addImages: (images: Image[]) => void,
+  alert: (title: string, text: string) => void,
+}
 
 export enum ConfigParamType {
   NUMBER = 'number',
@@ -59,6 +67,9 @@ export interface PluginClassInstance {
   withSelection: (images: PluginImageData[]) => void,
   setConfig: (config: PluginConfigValues) => void,
 }
+
+export type CollectImageDataFn = (hash: string) => PluginImageData
+export type GetCollectImageDataFn = (images: Image[]) => CollectImageDataFn;
 
 export interface PluginArgs {
   saveAs: typeof FileSaver,

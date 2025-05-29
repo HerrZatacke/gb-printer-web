@@ -26,7 +26,7 @@ export const getUploadImages = async (
   const images: TmpInfo[] = stateImages
     .map((image: Image): TmpInfo => {
       const searchHashes: string[] = isRGBNImage(image) ?
-        unique(Object.values((image as RGBNImage).hashes)) :
+        unique(Object.values((image as RGBNImage).hashes)).filter(Boolean) : // filter removes undefined channels
         [image.hash];
 
       return {

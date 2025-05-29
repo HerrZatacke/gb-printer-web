@@ -1,11 +1,12 @@
-import type { Theme } from '@mui/system';
-import type { ComponentsOverrides } from '@mui/material/styles/overrides';
+import type { Components } from '@mui/material/styles';
 
-export const cardActionArea = (): ComponentsOverrides<Theme>['MuiCardActionArea'] => ({
-  root: {
-    height: '100%',
-    '.MuiCardActionArea-focusHighlight': {
-      background: 'transparent',
+export const cardActionArea = (): Components['MuiCardActionArea'] => ({
+  styleOverrides: {
+    root: {
+      height: '100%',
+      '.MuiCardActionArea-focusHighlight': {
+        background: 'transparent',
+      },
     },
   },
 });

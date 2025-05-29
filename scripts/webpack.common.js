@@ -92,14 +92,6 @@ const config = async (projectConfig, packageJSON) => {
                 },
               },
             },
-            {
-              loader: 'sass-resources-loader',
-              options: {
-                resources: [
-                  path.join(process.cwd(), 'src', 'scss', 'auto-imports', '**', '*.scss'),
-                ],
-              },
-            },
           ],
         },
         {

@@ -1,20 +1,22 @@
-import type { Theme } from '@mui/system';
 import { alpha } from '@mui/material';
-import type { ComponentsOverrides } from '@mui/material/styles/overrides';
+import type { Components } from '@mui/material/styles';
+import type { Theme } from '@mui/system';
 
-export const tab = (theme: Theme): ComponentsOverrides<Theme>['MuiTab'] => ({
-  root: {
-    fontSize: 16,
-    textTransform: 'none',
-    minHeight: 60,
+export const tab = (theme: Theme): Components['MuiTab'] => ({
+  styleOverrides: {
+    root: {
+      fontSize: 16,
+      textTransform: 'none',
+      minHeight: 60,
 
-    '&.Mui-selected': {
-      backgroundColor: alpha(theme.palette.primary.main, 0.2),
-      color: 'inherit',
-    },
+      '&.Mui-selected': {
+        backgroundColor: alpha(theme.palette.primary.main, 0.2),
+        color: 'inherit',
+      },
 
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.secondary.main, 0.35),
+      '&:hover': {
+        backgroundColor: alpha(theme.palette.secondary.main, 0.35),
+      },
     },
   },
 });

@@ -1,8 +1,8 @@
-import useDialogsStore from '../../stores/dialogsStore';
-import useItemsStore from '../../stores/itemsStore';
-import useSettingsStore from '../../stores/settingsStore';
-import useEditPalette from '../../../hooks/useSetEditPalette';
-import { useStores } from '../../../hooks/useStores';
+import useDialogsStore from '../app/stores/dialogsStore';
+import useItemsStore from '../app/stores/itemsStore';
+import useSettingsStore from '../app/stores/settingsStore';
+import useEditPalette from './useSetEditPalette';
+import { useStores } from './useStores';
 
 interface UsePalette {
   isActive: boolean

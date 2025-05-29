@@ -1,7 +1,7 @@
 import React from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
 import GameBoyImage from '../GameBoyImage';
-import useFrame from './useFrame';
+import useFrame from '../../../hooks/useFrame';
 import Debug from '../Debug';
 import GalleryGridItem from '../GalleryGridItem';
 import useSettingsStore from '../../stores/settingsStore';

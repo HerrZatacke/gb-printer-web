@@ -3,7 +3,7 @@ import getPrepareRemoteFiles from '../getPrepareRemoteFiles';
 import type { AddToQueueFn } from '../../../types/Sync';
 import type { RepoContents, RepoTasks, SyncFile } from '../../../types/Export';
 import { getUploadImages } from './getUploadImages';
-import { getUploadFrames } from './getUpladFrames';
+import { getUploadFrames } from './getUploadFrames';
 
 const getUploadFiles = async (
   repoContents: RepoContents,
@@ -11,7 +11,7 @@ const getUploadFiles = async (
   addToQueue: AddToQueueFn<unknown>,
 ): Promise<RepoTasks> => {
   const prepareRemoteFiles = getPrepareRemoteFiles();
-  const missingLocally: string[] = [];
+  const missingLocally: string[] = []; // ToDo: is this always empty?
 
   const {
     syncImages,

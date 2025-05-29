@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Lightbox from '../../Lightbox';
-import useEditImageGroup, { NEW_GROUP } from './useEditImageGroup';
+import useEditImageGroup, { NEW_GROUP } from '../../../../hooks/useEditImageGroup';
 import Debug from '../../Debug';
 
 function EditImageGroup() {
