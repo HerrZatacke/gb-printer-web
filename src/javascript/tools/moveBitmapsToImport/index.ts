@@ -1,13 +1,14 @@
-import { ditherFilter } from '../../../../tools/applyBitmapFilter';
-import { compressAndHash } from '../../../../tools/storage';
-import type { QueueImage } from '../../../../../types/QueueImage';
-import { randomId } from '../../../../tools/randomId';
-import useImportsStore from '../../../stores/importsStore';
+import { ditherFilter } from '../applyBitmapFilter';
+import { compressAndHash } from '../storage';
+import type { QueueImage } from '../../../types/QueueImage';
+import { randomId } from '../randomId';
+import type { ImportItem } from '../../../types/ImportItem';
 
 export interface DispatchBitmapsToImportOptions {
   bitmapQueue: QueueImage[],
   dither: boolean,
   contrastBaseValues: number[],
+  importQueueAdd: (importItems: ImportItem[]) => void,
 }
 
 export type DispatchBitmapsToImportFn = (options: DispatchBitmapsToImportOptions) => void;
@@ -57,8 +58,8 @@ export const moveBitmapsToImport: DispatchBitmapsToImportFn = ({
   bitmapQueue,
   dither,
   contrastBaseValues,
+  importQueueAdd,
 }): void => {
-  const { importQueueAdd } = useImportsStore.getState();
   bitmapQueue.forEach(async ({ imageData, height, fileName, lastModified }: QueueImage): Promise<void> => {
     const { data } = ditherFilter({
       imageData,

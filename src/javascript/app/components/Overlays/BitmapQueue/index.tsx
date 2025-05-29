@@ -6,14 +6,14 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Lightbox from '../../Lightbox';
 import ImportPreviewImage from '../../ImportPreviewImage';
-import { moveBitmapsToImport } from './moveBitmapsToImport';
+import { moveBitmapsToImport } from '../../../../tools/moveBitmapsToImport';
 import useImportsStore from '../../../stores/importsStore';
 import useSettingsStore from '../../../stores/settingsStore';
 import type { ImportContrastValue } from '../../../../consts/bitmapQueueSettings';
 import { contrastSettings } from '../../../../consts/bitmapQueueSettings';
 
 function BitmapQueue() {
-  const { bitmapQueue, bitmapQueueCancel } = useImportsStore();
+  const { bitmapQueue, bitmapQueueCancel, importQueueAdd } = useImportsStore();
   const {
     bitmapQueueDither,
     bitmapQueueSetting,
@@ -34,6 +34,7 @@ function BitmapQueue() {
           bitmapQueue,
           dither: bitmapQueueDither,
           contrastBaseValues,
+          importQueueAdd,
         });
       }}
       deny={bitmapQueueCancel}

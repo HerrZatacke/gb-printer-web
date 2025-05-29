@@ -1,6 +1,6 @@
 import getImageData from './getImageData';
 import useImportsStore from '../../app/stores/importsStore';
-import { moveBitmapsToImport } from '../../app/components/Overlays/BitmapQueue/moveBitmapsToImport';
+import { moveBitmapsToImport } from '../moveBitmapsToImport';
 
 export const transformBitmaps = async (file: File, fromPrinter = false): Promise<boolean> => {
   const image = await getImageData(file);
@@ -10,6 +10,7 @@ export const transformBitmaps = async (file: File, fromPrinter = false): Promise
       bitmapQueue: [image],
       dither: false,
       contrastBaseValues: [0x00, 0x55, 0xAA, 0xFF],
+      importQueueAdd: useImportsStore.getState().importQueueAdd,
     });
   } else {
     useImportsStore.getState().bitmapQueueAdd([image]);
