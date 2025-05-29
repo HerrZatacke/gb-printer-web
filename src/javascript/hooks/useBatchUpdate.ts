@@ -10,7 +10,7 @@ import { isRGBNImage } from '../tools/isRGBNImage';
 import type { Image, MonochromeImage, RGBNImage } from '../../types/Image';
 import type { TagUpdates } from '../tools/modifyTagChanges';
 import type { ImageUpdatable } from '../consts/batchActionTypes';
-import type { ImageUpdates } from '../../types/actions/ImageActions';
+import type { ImageUpdates } from '../../types/ImageActions';
 import { useStores } from './useStores';
 
 interface BatchUpdateImagesParams {

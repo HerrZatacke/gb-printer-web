@@ -8,7 +8,7 @@ import { missingGreyPalette } from '../app/defaults';
 import { isRGBNImage } from '../tools/isRGBNImage';
 import { getImageTileCount } from '../tools/loadImageTiles';
 import modifyTagChanges from '../tools/modifyTagChanges';
-import type { ImageUpdates } from '../../types/actions/ImageActions';
+import type { ImageUpdates } from '../../types/ImageActions';
 import type { TagUpdateMode } from '../tools/modifyTagChanges';
 import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../types/Image';
 import type { Palette } from '../../types/Palette';
