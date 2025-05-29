@@ -65,7 +65,7 @@ const getPrepareRemoteFiles = (): PrepareRemoteFilesFn => {
       .join('\n');
 
     // querying only remote settings, so no state object needs to be provided
-    const remoteSettings: string = await getSettings(ExportTypes.ALL, { lastUpdateUTC });
+    const remoteSettings: string = await getSettings(ExportTypes.JSON_EXPORT, { lastUpdateUTC });
 
     toUpload.push(
       {

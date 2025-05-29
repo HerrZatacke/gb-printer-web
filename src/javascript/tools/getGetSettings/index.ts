@@ -31,6 +31,7 @@ type ExportableKey = keyof Values;
 const getExportKeys = (what: ExportTypes): ExportableKey[] => {
   switch (what) {
     case ExportTypes.ALL:
+    case ExportTypes.JSON_EXPORT:
       return ['frameGroups', 'frames', 'imageGroups', 'images', 'palettes', 'plugins'];
     case ExportTypes.SELECTED_IMAGES:
       return ['images'];
