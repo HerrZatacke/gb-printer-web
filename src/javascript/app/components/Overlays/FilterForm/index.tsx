@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Lightbox from '../../Lightbox';
 import FilterFormTag from './filterFormTag';
 import { SpecialTags } from '../../../../consts/SpecialTags';
-import { useFilterForm } from './useFilterForm';
+import { useFilterForm } from '../../../../hooks/useFilterForm';
 
 function FilterForm() {
 

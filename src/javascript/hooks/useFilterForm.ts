@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import useFiltersStore from '../../../stores/filtersStore';
-import { useAvailableTags } from '../../../../hooks/useAvailableTags';
-import unique from '../../../../tools/unique';
+import useFiltersStore from '../app/stores/filtersStore';
+import { useAvailableTags } from './useAvailableTags';
+import unique from '../tools/unique';
 
 export enum ActiveTagUpdateMode {
   ADD = 'add',
