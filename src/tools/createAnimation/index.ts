@@ -1,24 +1,24 @@
-import Queue from 'promise-queue';
+import chunk from 'chunk';
+import { saveAs } from 'file-saver';
 import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
 import { getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
-import { saveAs } from 'file-saver';
-import chunk from 'chunk';
-import useItemsStore from '../../app/stores/itemsStore';
-import useInteractionsStore from '../../app/stores/interactionsStore';
-import useSettingsStore from '../../app/stores/settingsStore';
-import { loadImageTiles } from '../loadImageTiles';
-import { getImagePalettes } from '../getImagePalettes';
-import generateFileName from '../generateFileName';
-import { isRGBNImage } from '../isRGBNImage';
-import { reduceItems } from '../reduceArray';
-import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
-import type { VideoParams } from '../../../types/VideoParams';
-import type { Palette } from '../../../types/Palette';
-import unique from '../unique';
+import Queue from 'promise-queue';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import generateFileName from '@/tools/generateFileName';
+import { getImagePalettes } from '@/tools/getImagePalettes';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import { loadImageTiles } from '@/tools/loadImageTiles';
+import { reduceItems } from '@/tools/reduceArray';
+import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
+import type { Palette } from '@/types/Palette';
+import type { VideoParams } from '@/types/VideoParams';
 import { loadFrameData } from '../applyFrame/frameData';
 import { getMonochromeImageCreationParams } from '../getMonochromeImageCreationParams';
 import { getPaletteSettings } from '../getPaletteSettings';
+import unique from '../unique';
 
 interface GifFrameData {
   palette: number[],

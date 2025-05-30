@@ -1,13 +1,15 @@
+'use client';
+
 import React, { useEffect, useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
-import { remotePrinterContext } from './index';
-import useImportFile from '../../../hooks/useImportFile';
-import useDialogsStore from '../../stores/dialogsStore';
-import useInteractionsStore from '../../stores/interactionsStore';
-import useSettingsStore from '../../stores/settingsStore';
-import { PrinterFunction } from '../../../consts/printerFunction';
+import { PrinterFunction } from '@/consts/printerFunction';
+import useImportFile from '@/hooks/useImportFile';
+import useDialogsStore from '@/stores/dialogsStore';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import type { BlobResponse, PrinterParams, RemotePrinterEvent } from '@/types/Printer';
 import type { RemotePrinterContext } from './index';
-import type { BlobResponse, PrinterParams, RemotePrinterEvent } from '../../../../types/Printer';
+import { remotePrinterContext } from './index';
 
 let heartbeatTimer: number | null;
 let remotePrinterWindow: Window | null;
@@ -24,7 +26,7 @@ function RemotePrinterContextProvider({ children }: PropsWithChildren) {
 
       try {
         origin = new URL(printerUrl).origin;
-      } catch (error) {
+      } catch {
         origin = new URL(window.location.href).origin;
       }
 
@@ -81,7 +83,7 @@ function RemotePrinterContextProvider({ children }: PropsWithChildren) {
       if (blobsdone) {
         if (typeof blobsdone[0] === 'string') {
           window.setTimeout(() => {
-            // eslint-disable-next-line no-alert
+
             alert('You should update the web-app to a version > 1.16.0 on your printer for an optimized import experience :-)');
           }, 200);
           return;

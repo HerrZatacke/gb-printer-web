@@ -1,23 +1,25 @@
-import React from 'react';
 import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import { blend } from '@mui/system';
 import type { Theme } from '@mui/system';
-import { Link } from 'react-router';
-import ImageRender from '../ImageRender';
-import TagsList from '../TagsList';
-import GalleryGroupContextMenu from '../GalleryGroupContextMenu';
-import GalleryGridItem from '../GalleryGridItem';
-import { useGalleryGroup } from './useGalleryGroup';
-import { useGalleryImage } from '../GalleryImage/useGalleryImage';
-import useSettingsStore from '../../stores/settingsStore';
-import { GalleryViews } from '../../../consts/GalleryViews';
+import Link from 'next/link';
+import React from 'react';
+import GalleryGridItem from '@/components/GalleryGridItem';
+import GalleryGroupContextMenu from '@/components/GalleryGroupContextMenu';
+import ImageRender from '@/components/ImageRender';
+import TagsList from '@/components/TagsList';
+import { GalleryViews } from '@/consts/GalleryViews';
+import { useGalleryGroup } from '@/hooks/useGalleryGroup';
+import { useGalleryImage } from '@/hooks/useGalleryImage';
+import { useGalleryParams } from '@/hooks/useGalleryParams';
+import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
   hash: string,
 }
 
 function GalleryGroup({ hash }: Props) {
+  const { getUrl } = useGalleryParams();
   const { group, path } = useGalleryGroup(hash);
   const { galleryImageData } = useGalleryImage(hash);
   const { galleryView } = useSettingsStore();
@@ -48,7 +50,7 @@ function GalleryGroup({ hash }: Props) {
       subheader={`${group.images.length} items`}
       wrapperProps={{
         component: Link,
-        to: `/gallery/${path}page/1`,
+        href: getUrl({ group: path || '', pageIndex: 0 }),
         sx: {
           textDecoration: 'none',
         },

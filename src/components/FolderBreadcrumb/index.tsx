@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import EditIcon from '@mui/icons-material/Edit';
 import HomeIcon from '@mui/icons-material/Home';
+import SegmentIcon from '@mui/icons-material/Segment';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
-import SegmentIcon from '@mui/icons-material/Segment';
 import Stack from '@mui/material/Stack';
-import { Link as RouterLink } from 'react-router';
-import FolderTreeDialog from '../FolderTreeDialog';
+import NextLink  from 'next/link';
+import React, { useState } from 'react';
+import FolderTreeDialog from '@/components/FolderTreeDialog';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { usePathSegments } from '@/hooks/usePathSegments';
+import { shorten } from '@/tools/shorten';
 import useEditStore from '../../stores/editStore';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
-import { usePathSegments } from '../../../hooks/usePathSegments';
-import { shorten } from '../../../tools/shorten';
 
 function FolderBreadcrumb() {
   const { pathsOptions } = useGalleryTreeContext();
@@ -31,7 +31,7 @@ function FolderBreadcrumb() {
       alignItems="center"
     >
       <Breadcrumbs>
-        { segments.map(({ group, path }, index) => (
+        { segments.map(({ group, link }, index) => (
           <Stack
             key={group.id}
             direction="row"
@@ -40,17 +40,17 @@ function FolderBreadcrumb() {
           >
             { index > 0 ? (
               <Link
-                component={RouterLink}
+                component={NextLink}
                 title={group.title}
-                to={`/gallery/${path}`}
+                href={link}
               >
                 { index ? shorten(group.title, 30) : <HomeIcon fontSize="small" /> }
               </Link>
             ) : (
               <IconButton
-                component={RouterLink}
+                component={NextLink}
                 title={group.title}
-                to={`/gallery/${path}`}
+                href={link}
                 sx={{ fontSize: 16 }}
               >
                 <HomeIcon fontSize="inherit" />

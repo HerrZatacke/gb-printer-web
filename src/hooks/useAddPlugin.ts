@@ -1,9 +1,10 @@
+import { redirect, RedirectType } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { parseURL } from 'ufo';
-import { useParams, useNavigate } from 'react-router';
-import useItemsStore from '../app/stores/itemsStore';
-import { usePluginsContext } from '../app/contexts/plugins';
-import useInteractionsStore from '../app/stores/interactionsStore';
+import { usePluginsContext } from '@/contexts/plugins';
+import { useUrl } from '@/hooks/useUrl';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useItemsStore from '@/stores/itemsStore';
 
 const trustedSources = [
   'https://herrzatacke.github.io',
@@ -22,13 +23,13 @@ interface UseAddPlugin {
   addPlugin: () => Promise<void>,
 }
 export const useAddPlugin = (): UseAddPlugin => {
-  const url = useParams().pluginUrl || '';
-  const [pending, setPending] = useState(false);
+  const { searchParams } = useUrl();
+  const url = searchParams.get('pluginUrl') ||'';
   const parsedPluginUrl = parseURL(url);
+  const [pending, setPending] = useState(false);
   const { plugins } = useItemsStore();
   const { setError } = useInteractionsStore();
   const { validateAndAddPlugin } = usePluginsContext();
-  const navigate = useNavigate();
 
   const isTrusted = trustedSources.some((source) => {
     const parsedSourceUrl = parseURL(source);
@@ -44,12 +45,12 @@ export const useAddPlugin = (): UseAddPlugin => {
 
   const addPlugin = useCallback(async () => {
     setPending(true);
-    navigate('/settings/plugins', { replace: true });
     const installSuccess = await validateAndAddPlugin({ url });
     if (!installSuccess) {
       setError(new Error('Could not install plugin.'));
     }
-  }, [navigate, setError, url, validateAndAddPlugin]);
+    redirect('/settings/plugins', RedirectType.replace);
+  }, [setError, url, validateAndAddPlugin]);
 
   return {
     url,

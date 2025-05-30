@@ -1,10 +1,11 @@
-@import '~reset-css/sass/reset';
-@import './generic';
+body {
+  background: #ffffff;
+}
 
 .remote-info {
   font-size: 16px;
   margin-bottom: 15px;
-  display: none;
+  padding: 20px;
 
   &--ip {
     color: #1a1a1a;
@@ -21,8 +22,4 @@
       color: #cb0003;
     }
   }
-}
-
-body {
-  padding: 20px;
 }

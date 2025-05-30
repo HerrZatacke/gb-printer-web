@@ -1,16 +1,6 @@
 import type { AlertColor } from '@mui/material';
-import type { MetaProps } from '../javascript/app/components/MetaTable';
-
-export enum DialoqQuestionType {
-  CHECKBOX = 'checkbox',
-  SELECT = 'select',
-  TEXT = 'text',
-  NUMBER = 'number',
-  INFO = 'info',
-  IMAGE = 'image',
-  META = 'meta',
-}
-
+import type { MetaProps } from '@/components/MetaTable';
+import type { DialoqQuestionType } from '@/consts/dialog';
 export type DialogResultValue = string | number | boolean;
 export type DialogResult = Record<string, DialogResultValue>;
 

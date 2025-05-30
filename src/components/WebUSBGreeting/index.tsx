@@ -1,12 +1,16 @@
-import React from 'react';
+'use client';
+
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import ConnectSerial from '../Overlays/ConnectSerial';
-import AsyncMarkdown from '../AsyncMarkdown';
+import MuiMarkdown from 'mui-markdown';
+import React from 'react';
+import MarkdownStack from '@/components/MarkdownStack';
+import ConnectSerial from '@/components/Overlays/ConnectSerial';
+import useSettingsStore from '@/stores/settingsStore';
+import WebSerial from '@/tools/WebSerial';
+import WebUSBSerial from '@/tools/WebUSBSerial';
 import EnableWebUSB from './EnableWebUSB';
-import useSettingsStore from '../../stores/settingsStore';
-import WebSerial from '../../../tools/WebSerial';
-import WebUSBSerial from '../../../tools/WebUSBSerial';
+import readme from './WebUSB.md';
 
 function WebUSBGreeting() {
   const { useSerials } = useSettingsStore();
@@ -16,18 +20,13 @@ function WebUSBGreeting() {
       direction="column"
       gap={4}
     >
+      <MuiMarkdown options={{ wrapper: MarkdownStack }}>
+        {readme}
+      </MuiMarkdown>
       <EnableWebUSB />
       {!useSerials ? null : (
         <>
           <ConnectSerial inline passive />
-          <AsyncMarkdown
-            getMarkdown={async (): Promise<string> => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              const { default: rawMd } = await import(/* webpackChunkName: "doc" */ './WebUSB.md');
-              return rawMd;
-            }}
-          />
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             gap={4}

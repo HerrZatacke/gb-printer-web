@@ -1,6 +1,6 @@
-import useStoragesStore from '../../app/stores/storagesStore';
-import type { GitStorageSettings } from '../../../types/Sync';
-import type { JSONExportState } from '../../../types/ExportState';
+import useStoragesStore from '@/stores/storagesStore';
+import type { JSONExportState } from '@/types/ExportState';
+import type { GitStorageSettings } from '@/types/Sync';
 
 export interface GitSyncTool {
   startSyncData: (direction: 'up' | 'down') => Promise<void>,

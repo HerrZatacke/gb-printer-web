@@ -1,16 +1,16 @@
-import React, { useMemo } from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import Lightbox from '../../Lightbox';
-import ImportPreviewImage from '../../ImportPreviewImage';
-import { moveBitmapsToImport } from '../../../../tools/moveBitmapsToImport';
-import useImportsStore from '../../../stores/importsStore';
-import useSettingsStore from '../../../stores/settingsStore';
-import type { ImportContrastValue } from '../../../../consts/bitmapQueueSettings';
-import { contrastSettings } from '../../../../consts/bitmapQueueSettings';
+import React, { useMemo } from 'react';
+import ImportPreviewImage from '@/components/ImportPreviewImage';
+import Lightbox from '@/components/Lightbox';
+import type { ImportContrastValue } from '@/consts/bitmapQueueSettings';
+import { contrastSettings } from '@/consts/bitmapQueueSettings';
+import useImportsStore from '@/stores/importsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { moveBitmapsToImport } from '@/tools/moveBitmapsToImport';
 
 function BitmapQueue() {
   const { bitmapQueue, bitmapQueueCancel, importQueueAdd } = useImportsStore();

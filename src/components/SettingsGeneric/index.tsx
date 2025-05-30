@@ -1,7 +1,5 @@
-import type { ExportFrameMode } from 'gb-image-decoder';
-import type { ILocale } from 'locale-codes';
-import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router';
+'use client';
+
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import InputLabel from '@mui/material/InputLabel';
@@ -13,21 +11,25 @@ import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import dayjs from 'dayjs';
-import EnableWebUSB from '../../../WebUSBGreeting/EnableWebUSB';
-import supportedCanvasImageFormats from '../../../../../tools/supportedCanvasImageFormats/index';
-import cleanUrl from '../../../../../tools/cleanUrl';
-import { getEnv } from '../../../../../tools/getEnv';
-import exportFrameModes from '../../../../../consts/exportFrameModes';
-import dateFormatLocale from '../../../../../tools/dateFormatLocale';
-import getFrameGroups from '../../../../../tools/getFrameGroups';
-import useItemsStore from '../../../../stores/itemsStore';
-import useSettingsStore from '../../../../stores/settingsStore';
-import usePaletteSort from '../../../../../hooks/usePaletteSort';
-import { fileNameStyleLabels } from '../../../../../consts/fileNameStyles';
-import type { PaletteSortMode } from '../../../../../consts/paletteSortModes';
-import type { FileNameStyle } from '../../../../../consts/fileNameStyles';
-import { clickActionMenuOptions } from '../../../../../consts/GalleryClickAction';
-import type { GalleryClickAction } from '../../../../../consts/GalleryClickAction';
+import type { ExportFrameMode } from 'gb-image-decoder';
+import type { ILocale } from 'locale-codes';
+import NextLink from 'next/link';
+import React, { useEffect, useState } from 'react';
+import exportFrameModes from '@/consts/exportFrameModes';
+import { fileNameStyleLabels } from '@/consts/fileNameStyles';
+import type { FileNameStyle } from '@/consts/fileNameStyles';
+import { clickActionMenuOptions } from '@/consts/GalleryClickAction';
+import type { GalleryClickAction } from '@/consts/GalleryClickAction';
+import type { PaletteSortMode } from '@/consts/paletteSortModes';
+import { useEnv } from '@/contexts/envContext';
+import usePaletteSort from '@/hooks/usePaletteSort';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import cleanUrl from '@/tools/cleanUrl';
+import dateFormatLocale from '@/tools/dateFormatLocale';
+import getFrameGroups from '@/tools/getFrameGroups';
+import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
+// import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
 
 function GenericSettings() {
   const {
@@ -67,6 +69,8 @@ function GenericSettings() {
     setPrinterUrl,
   } = useSettingsStore();
 
+  const env = useEnv();
+
   const { frames, frameGroups } = useItemsStore();
 
   const savFrameGroups = getFrameGroups(frames, frameGroups);
@@ -74,6 +78,8 @@ function GenericSettings() {
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
   const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);
   const [printerParamsState, setPrinterParamsState] = useState<string>(printerParams);
+  const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<string[]>(['txt', 'pgm']);
+  const [localeExampleText, setLocaleExampleText] = useState<string>('Example date format:');
   const [localeCodes, setLocaleCodes] = useState<ILocale[]>([]);
   const [now] = useState(dayjs());
 
@@ -84,13 +90,19 @@ function GenericSettings() {
   } = usePaletteSort();
 
   useEffect(() => {
+    setSupportedExportFileTypes([
+      ...supportedCanvasImageFormats(),
+      'txt',
+      'pgm',
+    ]);
+
     const setLocales = async () => {
       const { default: locale } = await import(/* webpackChunkName: "loc" */ 'locale-codes');
       const filteredLocales: ILocale[] = locale.all.filter(({ tag }) => {
         try {
           dateFormatLocale(dayjs(), tag);
           return true;
-        } catch (error) {
+        } catch {
           return false;
         }
       });
@@ -99,7 +111,12 @@ function GenericSettings() {
     };
 
     setLocales();
+
   }, []);
+
+  useEffect(() => {
+    setLocaleExampleText(`Example date format: ${dateFormatLocale(now, preferredLocale)}`);
+  }, [now, preferredLocale]);
 
   return (
     <Stack
@@ -175,7 +192,7 @@ function GenericSettings() {
             setExportFileTypes(value);
           }}
         >
-          {[...supportedCanvasImageFormats(), 'txt', 'pgm'].map((fileType) => (
+          {supportedExportFileTypes.map((fileType) => (
             <ToggleButton
               key={fileType}
               value={fileType}
@@ -231,7 +248,7 @@ function GenericSettings() {
 
       <TextField
         id="settings-sav-frames"
-        value={savFrameTypes}
+        value={savFrameGroups.length ? savFrameTypes : ''}
         disabled={!savFrameGroups.length}
         label="Frames to be applied when importing Cartridge dumps"
         select
@@ -350,7 +367,7 @@ function GenericSettings() {
         id="settings-filename-style"
         value={localeCodes.length ? preferredLocale : ''}
         label="Preferred locale"
-        helperText={`Example date format: ${dateFormatLocale(now, preferredLocale)}`}
+        helperText={localeExampleText}
         select
         onChange={(ev) => {
           setPreferredLocale(ev.target.value);
@@ -368,9 +385,12 @@ function GenericSettings() {
         }
       </TextField>
 
-      <EnableWebUSB />
+      {/*
+        ToDo: add again...
+        <EnableWebUSB />
+      */}
 
-      {(getEnv()?.env === 'esp8266') ? null : (
+      {(env?.env === 'esp8266') ? null : (
         <TextField
           id="settings-printer-url"
           label="Printer URL"
@@ -379,8 +399,8 @@ function GenericSettings() {
             <>
               {'If you own a physical wifi-printer, you can add it\'s URL here and check the '}
               <Link
-                component={RouterLink}
-                to="/import"
+                component={NextLink}
+                href="/import"
               >
                 Import-tab
               </Link>
@@ -411,7 +431,7 @@ function GenericSettings() {
         />
       )}
 
-      {(getEnv()?.env === 'esp8266' || printerUrl) ? (
+      {(env?.env === 'esp8266' || printerUrl) ? (
         <TextField
           id="settings-printer-settings"
           label="Additional printer settings"

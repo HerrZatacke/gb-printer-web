@@ -1,6 +1,6 @@
-import readFileAs, { ReadAs } from '../readFileAs';
-import type { JSONExport } from '../../../types/ExportState';
-import type { ImportFn } from '../../hooks/useImportExportSettings';
+import type { ImportFn } from '@/hooks/useImportExportSettings';
+import readFileAs, { ReadAs } from '@/tools/readFileAs';
+import type { JSONExport } from '@/types/ExportState';
 
 export const getImportJSON = (importFn: ImportFn) => async (file: File) => {
   const data = await readFileAs(file, ReadAs.TEXT);
@@ -8,7 +8,7 @@ export const getImportJSON = (importFn: ImportFn) => async (file: File) => {
 
   try {
     settingsDump = JSON.parse(data);
-  } catch (error) {
+  } catch {
     throw new Error('Not a valid .json file');
   }
 

@@ -1,12 +1,11 @@
-import React, { useCallback } from 'react';
-import type { ChangeEvent, FocusEvent } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import ColorPicker from '../../ColorPicker';
-import ImageRender from '../../ImageRender';
-import Lightbox from '../../Lightbox';
-import { useEditPalette } from '../../../../hooks/useEditPalette';
+import React, { useCallback, type ChangeEvent, type FocusEvent } from 'react';
+import ColorPicker from '@/components/ColorPicker';
+import ImageRender from '@/components/ImageRender';
+import Lightbox from '@/components/Lightbox';
+import { useEditPalette } from '@/hooks/useEditPalette';
 
 function EditPalette() {
 

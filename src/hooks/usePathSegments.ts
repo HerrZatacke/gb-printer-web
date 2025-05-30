@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
-import { useGalleryParams } from './useGalleryParams';
-import { useGalleryTreeContext } from '../app/contexts/galleryTree';
-import { useNavigationTools } from '../app/contexts/navigationTools';
-import type { TreeImageGroup } from '../../types/ImageGroup';
-import type { PathMap } from '../app/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useNavigationTools } from '@/contexts/navigationTools';
+import { useGalleryParams } from '@/hooks/useGalleryParams';
+import { PathMap } from '@/types/galleryTreeContext';
+import type { TreeImageGroup } from '@/types/ImageGroup';
 
 export interface Segment {
   group: TreeImageGroup,
-  path: string,
+  link: string,
 }
 
 export interface UsePathSegments {
@@ -15,7 +15,7 @@ export interface UsePathSegments {
 }
 
 export const usePathSegments = (): UsePathSegments => {
-  const { path: currentPath } = useGalleryParams();
+  const { path: currentPath, getUrl } = useGalleryParams();
   const { root, paths } = useGalleryTreeContext();
   const { getImagePageIndexInGroup } = useNavigationTools();
 
@@ -37,7 +37,7 @@ export const usePathSegments = (): UsePathSegments => {
     const breadCrumbSegments = breadCrumbPaths.map((breadCrumbPath: PathMap, index: number): Segment => {
       const childPath = breadCrumbPaths[index + 1];
 
-      let parentPageIndex = 1;
+      let parentPageIndex = 0;
 
       if (childPath) {
         const childCoverImage = childPath.group.coverImage;
@@ -46,12 +46,12 @@ export const usePathSegments = (): UsePathSegments => {
 
       return {
         group: breadCrumbPath.group,
-        path: `${breadCrumbPath.absolutePath}page/${parentPageIndex}`,
+        link: getUrl({ pageIndex: parentPageIndex, group: breadCrumbPath.absolutePath }),
       };
     });
 
     return breadCrumbSegments;
-  }, [currentPath, getImagePageIndexInGroup, paths, root]);
+  }, [currentPath, getImagePageIndexInGroup, getUrl, paths, root]);
 
   return {
     segments,

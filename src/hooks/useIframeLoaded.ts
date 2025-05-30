@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import useSettingsStore from '../app/stores/settingsStore';
-import useInteractionsStore from '../app/stores/interactionsStore';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useSettingsStore from '@/stores/settingsStore';
 
 
 export interface UseIframeLoaded {
@@ -21,7 +21,7 @@ const useIframeLoaded = (timeout: number): UseIframeLoaded => {
 
   const [loaded, setLoaded] = useState<boolean>(false);
   const [failed, setFailed] = useState<boolean>(false);
-  const timer = useRef<number>();
+  const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (!loaded && !failed && !timer.current) {

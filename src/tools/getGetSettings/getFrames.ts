@@ -1,4 +1,4 @@
-import { localforageFrames } from '../localforageInstance';
+import { localforageFrames } from '@/tools/localforageInstance';
 
 const getFrames = async (exportFrameHashes: string[]): Promise<Record<string, string>> => {
   const result = await Promise.all(exportFrameHashes.map(async (hash) => {

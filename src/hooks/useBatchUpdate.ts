@@ -1,17 +1,17 @@
-import { useCallback } from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
-import useEditStore from '../app/stores/editStore';
-import useFiltersStore from '../app/stores/filtersStore';
-import useItemsStore from '../app/stores/itemsStore';
-import { addSortIndex, removeSortIndex, sortImages } from '../tools/sortImages';
-import applyTagChanges from '../tools/applyTagChanges';
-import { Updatable, UpdatableMonochrome, UPDATATABLES } from '../consts/batchActionTypes';
-import { isRGBNImage } from '../tools/isRGBNImage';
-import type { Image, MonochromeImage, RGBNImage } from '../../types/Image';
-import type { TagUpdates } from '../tools/modifyTagChanges';
-import type { ImageUpdatable } from '../consts/batchActionTypes';
-import type { ImageUpdates } from '../../types/ImageActions';
-import { useStores } from './useStores';
+import { useCallback } from 'react';
+import { Updatable, UpdatableMonochrome, UPDATATABLES } from '@/consts/batchActionTypes';
+import type { ImageUpdatable } from '@/consts/batchActionTypes';
+import { useStores } from '@/hooks/useStores';
+import useEditStore from '@/stores/editStore';
+import useFiltersStore from '@/stores/filtersStore';
+import useItemsStore from '@/stores/itemsStore';
+import applyTagChanges from '@/tools/applyTagChanges';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import type { TagUpdates } from '@/tools/modifyTagChanges';
+import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
+import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
+import type { ImageUpdates } from '@/types/ImageActions';
 
 interface BatchUpdateImagesParams {
   shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>,

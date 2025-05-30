@@ -1,8 +1,6 @@
-import React from 'react';
-import type { CSSProperties } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CloseIcon from '@mui/icons-material/Close';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,7 +8,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import useOverlayGlobalKeys from '../../../hooks/useOverlayGlobalKeys';
+import { CSSProperties, useEffect, useState } from 'react';
+import React from 'react';
+import useOverlayGlobalKeys from '@/hooks/useOverlayGlobalKeys';
 
 interface Props {
   contentHeight?: number | string,
@@ -78,8 +78,6 @@ const contentDimensions = (
   return styles;
 };
 
-const overlayContainer = document.body;
-
 function Lightbox({
   contentHeight,
   contentWidth,
@@ -100,12 +98,17 @@ function Lightbox({
   const closeOnOverlayClick = typeof closeOnClick !== 'boolean' ? true : closeOnClick;
   const open = typeof openProp !== 'boolean' ? true : openProp;
   const keepMounted = typeof keepMountedProp !== 'boolean' ? true : keepMountedProp;
+  const [overlayContainer, setOverlayContainer] = useState<HTMLElement | undefined>();
 
   useOverlayGlobalKeys({
     confirm,
     canConfirm: canConfirm || false,
     deny,
   });
+
+  useEffect(() => {
+    setOverlayContainer(document.body);
+  }, []);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));

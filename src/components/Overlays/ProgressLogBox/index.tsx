@@ -1,16 +1,16 @@
-import React, { useMemo, useState } from 'react';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Lightbox from '../../Lightbox';
-import { useProgressLog } from '../../../../hooks/useProgressLog';
-import type { LogItem } from '../../../stores/interactionsStore';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import React, { useMemo, useState } from 'react';
+import Lightbox from '@/components/Lightbox';
+import { useProgressLog } from '@/hooks/useProgressLog';
+import type { LogItem } from '@/stores/interactionsStore';
 
 dayjs.extend(duration);
 

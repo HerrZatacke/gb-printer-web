@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import WebSerial from '../../../../../tools/WebSerial';
-import useImportPlainText from '../../../../../hooks/useImportPlainText';
-import type SerialPortEE from '../../../../../tools/WebSerial/SerialPort';
+import useImportPlainText from '@/hooks/useImportPlainText';
+import WebSerial from '@/tools/WebSerial';
+import type SerialPortEE from '@/tools/WebSerial/SerialPort';
 
 interface UseWebSerial {
   activePorts: SerialPortEE[]
@@ -19,7 +19,7 @@ const useWebSerial = (passive: boolean): UseWebSerial => {
   const [isReceiving, setIsReceiving] = useState<boolean>(false);
 
   const receivedData = useRef<string>('');
-  const receiveTimeOut = useRef<number>();
+  const receiveTimeOut = useRef<number>(0);
 
   useEffect(() => {
     if (!WebSerial.enabled) {

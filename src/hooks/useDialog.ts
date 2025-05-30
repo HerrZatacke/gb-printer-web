@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import useDialogsStore from '../app/stores/dialogsStore';
+import { DialoqQuestionType } from '@/consts/dialog';
+import useDialogsStore from '@/stores/dialogsStore';
 import type {
   Dialog,
   DialogQuestion,
   DialogQuestionSelect,
   DialogResult,
   DialogQuestionText,
-} from '../../types/Dialog';
-import {
-  DialoqQuestionType,
-} from '../../types/Dialog';
+} from '@/types/Dialog';
 
 export interface UseDialog {
   message: string,

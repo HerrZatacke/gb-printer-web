@@ -1,12 +1,12 @@
-import { load, save } from '../storage';
-import { loadFrameData, saveFrameData } from '../applyFrame/frameData';
-import { reduceItems } from '../reduceArray';
-import { isRGBNImage } from '../isRGBNImage';
-import type { FrameData } from '../applyFrame/frameData';
-import type { RepoContents } from '../../../types/Export';
-import type { Image, RGBNHashes, RGBNImage } from '../../../types/Image';
-import type { Frame } from '../../../types/Frame';
-import type { JSONExportState } from '../../../types/ExportState';
+import { loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
+import type { FrameData } from '@/tools/applyFrame/frameData';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import { reduceItems } from '@/tools/reduceArray';
+import { load, save } from '@/tools/storage';
+import type { RepoContents } from '@/types/Export';
+import type { JSONExportState } from '@/types/ExportState';
+import type { Frame } from '@/types/Frame';
+import type { Image, RGBNHashes, RGBNImage } from '@/types/Image';
 
 interface RehashedItem {
   oldHash: string,

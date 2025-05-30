@@ -8,7 +8,11 @@ class WebSerialEE extends EventEmitter {
 
   constructor() {
     super();
-    this.enabled = !!navigator.serial && !!window.TextDecoderStream;
+    this.enabled =
+      typeof window !== 'undefined' &&
+      typeof navigator !== 'undefined' &&
+      !!navigator.serial &&
+      !!window.TextDecoderStream;
     this.activePorts = [];
     this.baudRate = 115200;
 
@@ -40,6 +44,10 @@ class WebSerialEE extends EventEmitter {
   }
 
   watchPorts() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     window.setInterval(() => {
       this.getPorts()
         .then((ports) => {
@@ -101,4 +109,5 @@ class WebSerialEE extends EventEmitter {
 
 export const baudRates = [2400, 4800, 9600, 19200, 28800, 38400, 57600, 76800, 115200, 230400, 460800, 576000, 921600];
 
-export default new WebSerialEE();
+const instance = new WebSerialEE();
+export default instance;

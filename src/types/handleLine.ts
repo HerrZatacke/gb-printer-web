@@ -1,8 +1,4 @@
-export enum HandleLine {
-  NEW_LINES = 'NEW_LINES',
-  IMAGE_COMPLETE = 'IMAGE_COMPLETE',
-  PARSE_ERROR = 'PARSE_ERROR',
-}
+import { type HandleLine } from '@/consts/handleLine';
 
 export interface ImportLineBase {
   type: HandleLine,

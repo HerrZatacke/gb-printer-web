@@ -1,4 +1,4 @@
-import type { MonochromeImage } from '../../../types/Image';
+import type { MonochromeImage } from '@/types/Image';
 
 export interface PaletteSettings {
   invertPalette: boolean,

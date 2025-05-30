@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import type { QueueImage } from '../../../types/QueueImage';
-import type { ImportItem } from '../../../types/ImportItem';
+import type { ImportItem } from '@/types/ImportItem';
+import type { QueueImage } from '@/types/QueueImage';
 
 interface Values {
   bitmapQueue: QueueImage[],

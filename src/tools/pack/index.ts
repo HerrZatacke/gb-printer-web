@@ -1,6 +1,6 @@
-export const inflate = async (data: string): Promise<string> => {
-  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
+import pako from 'pako';
 
+export const inflate = async (data: string): Promise<string> => {
   // ToDo: @types/pako wrong?
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -10,8 +10,6 @@ export const inflate = async (data: string): Promise<string> => {
 };
 
 export const deflate = async (data: string): Promise<string> => {
-  const { default: pako } = await import(/* webpackChunkName: "pko" */ 'pako');
-
   // ToDo: @types/pako wrong?
   const compressed = pako.deflate(data, {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Dialog } from '../../../types/Dialog';
+import type { Dialog } from '@/types/Dialog';
 
 interface Values {
   dialogs: Dialog[],

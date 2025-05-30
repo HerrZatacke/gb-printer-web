@@ -1,4 +1,4 @@
-import type { MenuOption } from '../../types/MenuOption';
+import type { MenuOption } from '@/types/MenuOption';
 
 export enum GalleryClickAction {
   SELECT = 'select',

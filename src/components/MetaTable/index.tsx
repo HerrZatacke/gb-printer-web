@@ -1,10 +1,10 @@
-import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
-import type { ImageMetadata, RGBNHashes } from '../../../../types/Image';
+import React from 'react';
+import type { ImageMetadata, RGBNHashes } from '@/types/Image';
 
 export interface MetaProps {
   hash: string,

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import type { Theme } from '@mui/system';
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
+import { useTheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import PaletteIcon from '../PaletteIcon';
-import usePaletteSort from '../../../hooks/usePaletteSort';
-import useItemsStore from '../../stores/itemsStore';
+import type { Theme } from '@mui/system';
+import React, { useState } from 'react';
+import PaletteIcon from '@/components/PaletteIcon';
+import usePaletteSort from '@/hooks/usePaletteSort';
+import useItemsStore from '@/stores/itemsStore';
 
 interface Props {
   value: string,

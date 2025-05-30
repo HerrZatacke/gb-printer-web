@@ -1,8 +1,8 @@
-import useItemsStore from '../../app/stores/itemsStore';
-import type { AddToQueueFn } from '../../../types/Sync';
-import type { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
-import { loadFrameData } from '../applyFrame/frameData';
-import type { Frame } from '../../../types/Frame';
+import useItemsStore from '@/stores/itemsStore';
+import { loadFrameData } from '@/tools/applyFrame/frameData';
+import type { RepoContents, RepoFile, SyncFile } from '@/types/Export';
+import type { Frame } from '@/types/Frame';
+import type { AddToQueueFn } from '@/types/Sync';
 
 interface TmpInfo {
   file: Frame,

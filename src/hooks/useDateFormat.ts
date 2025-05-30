@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
 import dayjs from 'dayjs';
-import useSettingsStore from '../app/stores/settingsStore';
-import dateFormatLocale from '../tools/dateFormatLocale';
-import { dateFormat } from '../app/defaults';
+import { useCallback } from 'react';
+import { dateFormat } from '@/consts/defaults';
+import useSettingsStore from '@/stores/settingsStore';
+import dateFormatLocale from '@/tools/dateFormatLocale';
 
 interface UseDateFormat {
   formatter: (date: string) => string | null;

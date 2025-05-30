@@ -1,20 +1,19 @@
-import React, { useMemo } from 'react';
-import dayjs from 'dayjs';
 import CropFreeIcon from '@mui/icons-material/CropFree';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Badge from '@mui/material/Badge';
+import Badge, { type BadgeOwnProps } from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { BadgeOwnProps } from '@mui/material/Badge/Badge';
-import GameBoyImage from '../../GameBoyImage';
-import dateFormatLocale from '../../../../tools/dateFormatLocale';
-import type { ImportItem } from '../../../../../types/ImportItem';
-import useImportsStore from '../../../stores/importsStore';
-import useItemsStore from '../../../stores/itemsStore';
-import useSettingsStore from '../../../stores/settingsStore';
+import dayjs from 'dayjs';
+import React, { useMemo } from 'react';
+import GameBoyImage from '@/components/GameBoyImage';
+import useImportsStore from '@/stores/importsStore';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import dateFormatLocale from '@/tools/dateFormatLocale';
+import type { ImportItem } from '@/types/ImportItem';
 
 interface Props {
   importItem: ImportItem,
@@ -175,7 +174,7 @@ function ImportRow({
               <CropFreeIcon />
             </IconButton>
             <Badge
-              // eslint-disable-next-line react/jsx-props-no-spreading
+
               {...badgeProps}
               anchorOrigin={{
                 vertical: 'bottom',

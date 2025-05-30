@@ -1,27 +1,29 @@
-import React, { useMemo, useState } from 'react';
+'use client';
+
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
+import { useTheme } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Palette from '../Palette';
-import GalleryGrid from '../GalleryGrid';
-import { useImport } from '../Import/useImport';
+import React, { useMemo, useState } from 'react';
+import GalleryGrid from '@/components/GalleryGrid';
+import { useImport } from '@/components/Import/useImport';
+import Palette from '@/components/Palette';
+import { ExportTypes } from '@/consts/exportTypes';
+import { GalleryViews } from '@/consts/GalleryViews';
+import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
+import usePaletteFromFile from '@/hooks/usePaletteFromFile';
+import usePaletteSort from '@/hooks/usePaletteSort';
+import useEditPalette from '@/hooks/useSetEditPalette';
+import type { Palette as PaletteT } from '@/types/Palette';
 import useItemsStore from '../../stores/itemsStore';
-import useEditPalette from '../../../hooks/useSetEditPalette';
-import usePaletteFromFile from '../../../hooks/usePaletteFromFile';
-import usePaletteSort from '../../../hooks/usePaletteSort';
-import { NEW_PALETTE_SHORT } from '../../../consts/SpecialTags';
-import { GalleryViews } from '../../../consts/GalleryViews';
-import { ExportTypes } from '../../../consts/exportTypes';
-import type { Palette as PaletteT } from '../../../../types/Palette';
 
 interface Tab {
   id: string,

@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
-import useItemsStore from '../app/stores/itemsStore';
-import { download } from '../tools/download';
-import getGetSettings from '../tools/getGetSettings';
-import mergeStates from '../tools/mergeStates';
-import { localforageFrames, localforageImages } from '../tools/localforageInstance';
-import type { JSONExport, JSONExportState, ExportableState } from '../../types/ExportState';
-import type { ExportTypes } from '../consts/exportTypes';
-import { useStores } from './useStores';
-import { hashImportFrames } from '../app/stores/migrations/history/0/hashFrames';
+import type { ExportTypes } from '@/consts/exportTypes';
+import { useStores } from '@/hooks/useStores';
+import useItemsStore from '@/stores/itemsStore';
+import { hashImportFrames } from '@/stores/migrations/history/0/hashFrames';
+import { download } from '@/tools/download';
+import getGetSettings from '@/tools/getGetSettings';
+import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
+import mergeStates from '@/tools/mergeStates';
+import type { JSONExport, JSONExportState, ExportableState } from '@/types/ExportState';
 
 const mergeSettings = async (
   newSettings: JSONExport,

@@ -1,19 +1,19 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */
-import React, { useMemo, useState, useEffect } from 'react';
-import Stack from '@mui/material/Stack';
-import Tab from '@mui/material/Tab';
+
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import Stack from '@mui/material/Stack';
+import Tab from '@mui/material/Tab';
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
-import FrameSelect from '../FrameSelect';
-import GreySelect from '../GreySelect';
-import PaletteSelect from '../PaletteSelect';
-import TagsSelect from '../TagsSelect';
-import ImageMeta from '../ImageMeta';
-import type { TagChange } from '../../../tools/applyTagChanges';
-import type { ImageMetadata, RGBNHashes } from '../../../../types/Image';
-import type { TagUpdateMode } from '../../../tools/modifyTagChanges';
+import React, { useMemo, useState, useEffect } from 'react';
+import FrameSelect from '@/components/FrameSelect';
+import GreySelect from '@/components/GreySelect';
+import ImageMeta from '@/components/ImageMeta';
+import PaletteSelect from '@/components/PaletteSelect';
+import TagsSelect from '@/components/TagsSelect';
+import type { TagChange } from '@/tools/applyTagChanges';
+import type { TagUpdateMode } from '@/tools/modifyTagChanges';
+import type { ImageMetadata, RGBNHashes } from '@/types/Image';
 
 enum TabType {
   PALETTE = 'pal',

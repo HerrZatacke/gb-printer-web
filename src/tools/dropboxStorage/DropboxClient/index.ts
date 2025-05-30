@@ -1,20 +1,20 @@
+import { EventEmitter } from 'events';
 import type { DropboxAuth, DropboxOptions, DropboxResponse } from 'dropbox';
 import { Dropbox } from 'dropbox';
 import type { files as Files, async as Async } from 'dropbox/types/dropbox_types';
-import { EventEmitter } from 'events';
-import useInteractionsStore from '../../../app/stores/interactionsStore';
-import readFileAs, { ReadAs } from '../../readFileAs';
-import cleanPath from '../../cleanPath';
+import useInteractionsStore from '@/stores/interactionsStore';
+import { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
+import cleanPath from '@/tools/cleanPath';
+import readFileAs, { ReadAs } from '@/tools/readFileAs';
+import type { DropBoxRepoFile, RepoContents, RepoTasks } from '@/types/Export';
+import type { JSONExportState } from '@/types/ExportState';
 import type {
   AddToQueueFn,
   UploadDeleteResult,
   DBFolderAll,
   DBFolderFile,
   DropBoxSettings,
-} from '../../../../types/Sync';
-import type { DropBoxRepoFile, RepoContents, RepoTasks } from '../../../../types/Export';
-import type { JSONExportState } from '../../../../types/ExportState';
-import { ITEMS_STORE_VERSION } from '../../../app/stores/itemsStore';
+} from '@/types/Sync';
 
 const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
 
@@ -37,7 +37,7 @@ class DropboxClient extends EventEmitter {
     this.setRootPath(path);
 
     this.dbx = new Dropbox({
-      clientId: DROPBOX_APP_KEY,
+      clientId: process.env.NEXT_PUBLIC_DROPBOX_APP_KEY,
       accessToken,
       accessTokenExpiresAt: new Date(expiresAt || 0),
       refreshToken,
@@ -107,7 +107,6 @@ class DropboxClient extends EventEmitter {
       this.auth.setAccessToken('');
 
       throw error;
-      return false;
     }
   }
 
@@ -122,6 +121,7 @@ class DropboxClient extends EventEmitter {
       true,
     )) as string;
 
+    // https://www.dropbox.com/developers/apps/
     window.sessionStorage.setItem('dropboxCodeVerifier', this.auth.getCodeVerifier());
     window.location.replace(authUrl);
   }
@@ -179,7 +179,7 @@ class DropboxClient extends EventEmitter {
 
       const settingsText = await readFileAs(result.fileBlob, ReadAs.TEXT);
       settings = JSON.parse(settingsText) as JSONExportState;
-    } catch (error) {
+    } catch {
       settings = {
         state: {
           lastUpdateUTC: 0,
@@ -207,7 +207,7 @@ class DropboxClient extends EventEmitter {
         hasMore = listResponse.result.has_more;
         cursor = listResponse.result.cursor;
 
-      } catch (error) {
+      } catch {
         entries = [];
         hasMore = false;
       }
@@ -245,7 +245,7 @@ class DropboxClient extends EventEmitter {
       hasMore = listResponse.result.has_more;
       cursor = listResponse.result.cursor;
 
-    } catch (error) {
+    } catch {
       entries = [];
       hasMore = false;
     }
@@ -275,7 +275,7 @@ class DropboxClient extends EventEmitter {
       hasMore = listResponse.result.has_more;
       nextCursor = listResponse.result.cursor;
 
-    } catch (error) {
+    } catch {
       entries = [];
       hasMore = false;
     }
@@ -384,7 +384,7 @@ class DropboxClient extends EventEmitter {
   }
 
   startLongPollSettings() {
-    // eslint-disable-next-line no-console
+
     console.info('Start dropbox longpolling');
 
     this.dbx.filesListFolderGetLatestCursor({
@@ -403,7 +403,7 @@ class DropboxClient extends EventEmitter {
 
         return longPoll()
           .then(({ result: { changes } }) => {
-            // eslint-disable-next-line no-console
+
             console.info('Longpoll info. Changes: ', changes);
 
             if (changes) {

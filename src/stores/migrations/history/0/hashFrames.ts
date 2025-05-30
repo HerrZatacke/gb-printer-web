@@ -1,6 +1,7 @@
-import { localforageFrames } from '../../../../../tools/localforageInstance';
-import type { Frame } from '../../../../../../types/Frame';
-import type { JSONExport, JSONExportState } from '../../../../../../types/ExportState';
+import hasher from 'object-hash';
+import { localforageFrames } from '@/tools/localforageInstance';
+import type { JSONExport, JSONExportState } from '@/types/ExportState';
+import type { Frame } from '@/types/Frame';
 
 interface OldFrame extends Omit<Frame, 'hash'> {
   hash?: string;
@@ -14,8 +15,6 @@ export const hashStoredFrames = async (dirtyStateFrames: Frame[]): Promise<Frame
   if (!hasUnhashedFrames(dirtyStateFrames)) {
     return dirtyStateFrames;
   }
-
-  const { default: hasher } = await import(/* webpackChunkName: "obh" */ 'object-hash');
 
   return Promise.all(dirtyStateFrames.map(async (frame: Frame): Promise<Frame> => {
     if (frame.hash) {
@@ -46,8 +45,6 @@ export const hashImportFrames = async (newState: JSONExport | JSONExportState): 
   if (!fixedState.state.frames || !hasUnhashedFrames(fixedState.state.frames)) {
     return newState as JSONExport;
   }
-
-  const { default: hasher } = await import(/* webpackChunkName: "obh" */ 'object-hash');
 
   const frames = await Promise.all(fixedState.state.frames.map(async (frame: Frame): Promise<Frame> => {
     if (frame.hash) {

@@ -1,4 +1,3 @@
-/* eslint-disable quote-props */
 const chars: Record<string, string> = {
   '': '006666666600FFFF',
   ' ': 'FFFFFFFFFFFFFFFF',

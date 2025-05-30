@@ -1,11 +1,11 @@
-import React from 'react';
+import WarningIcon from '@mui/icons-material/Warning';
 import CircularProgress from '@mui/material/CircularProgress';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import WarningIcon from '@mui/icons-material/Warning';
-import useFiltersStore from '../../stores/filtersStore';
-import useItemsStore from '../../stores/itemsStore';
-import { usePluginsContext } from '../../contexts/plugins';
+import React from 'react';
+import { usePluginsContext } from '@/contexts/plugins';
+import useFiltersStore from '@/stores/filtersStore';
+import useItemsStore from '@/stores/itemsStore';
 
 interface Props {
   pluginAnchor: HTMLElement | null,

@@ -6,7 +6,7 @@ export const canShare = (): boolean => {
       canShareValue = window.navigator.canShare({
         files: [new File([new Blob(['t', 'e', 's', 't'])], 'test.txt', { type: 'text/plain', lastModified: Date.now() })],
       });
-    } catch (error) {
+    } catch {
       canShareValue = false;
     }
   }

@@ -1,23 +1,55 @@
-import '../scss/remote.scss';
-import getRemoteEnv from './remote/getRemoteEnv';
-import showMessage from './remote/showMessage';
-import setClasses from './remote/setClasses';
-import startHeartbeat from './remote/startHeartbeat';
-import initCommands from './remote/initCommands';
-import { loadEnv } from './tools/getEnv';
-import getParams from './remote/getParams';
+import { useEffect, useState } from 'react';
+import { useEnv } from '@/contexts/envContext';
+import { useUrl } from '@/hooks/useUrl';
+import initCommands from '@/tools/remote/initCommands';
+import startHeartbeat from '@/tools/remote/startHeartbeat';
+import { RemoteEnv } from '@/types/Printer';
 
-const remoteEnv = getRemoteEnv();
+export enum ParentType {
+  NONE = 'none',
+  IFRAME = 'iframe',
+  POPUP = 'popup',
+}
 
-document.addEventListener('DOMContentLoaded', async () => {
-  showMessage(remoteEnv);
-  setClasses(remoteEnv);
+interface UseRemoteWindow {
+  parentType: ParentType,
+}
 
-  if (!remoteEnv.isRemote) {
-    return;
-  }
+export const useRemoteWindow = (): UseRemoteWindow => {
+  const [parentType, setParentType] = useState<ParentType>(ParentType.NONE);
+  const envData = useEnv();
+  const { searchParams } = useUrl();
 
-  const { env } = await loadEnv();
-  const commands = initCommands(remoteEnv, env, getParams());
-  startHeartbeat(remoteEnv, commands.map(({ name }) => name));
-});
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const targetWindow: Window = window.opener || window.parent;
+    const isIframe: boolean = targetWindow === window.parent && targetWindow !== window;
+    const isPopup: boolean = targetWindow === window.opener && targetWindow !== window;
+    const isRemote: boolean = isIframe || isPopup;
+
+    const remoteEnv: RemoteEnv = { targetWindow, isIframe, isPopup, isRemote };
+
+    if (isIframe) {
+      setParentType(ParentType.IFRAME);
+    } else if (isPopup) {
+      setParentType(ParentType.POPUP);
+    } else {
+      setParentType(ParentType.NONE);
+    }
+
+    // Initialize remote communication
+    const commands = envData?.env ? initCommands(remoteEnv, envData.env, searchParams) : [];
+    const cleanup = startHeartbeat(remoteEnv, commands.map(({ name }) => name));
+
+    console.log('started');
+
+    return cleanup;
+  }, [envData, searchParams]);
+
+  return {
+    parentType,
+  };
+};

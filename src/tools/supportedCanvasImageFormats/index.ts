@@ -1,6 +1,10 @@
 const supports: Record<string, boolean> = {};
 
 const supportsFileType = (fileType: string) => {
+  if (typeof document === 'undefined') {
+    return false;
+  }
+
   if (supports[fileType] !== undefined) {
     return supports[fileType];
   }

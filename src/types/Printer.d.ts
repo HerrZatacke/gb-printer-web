@@ -1,4 +1,5 @@
-import type { PrinterFunction } from '../javascript/consts/printerFunction';
+import type { ReadonlyURLSearchParams } from 'next/navigation';
+import type { PrinterFunction } from '@/consts/printerFunction';
 
 export interface BlobResponse {
   ok: boolean // Sent by fetchImages,
@@ -46,11 +47,6 @@ export interface PrinterParams {
   dumps: string[],
 }
 
-export interface RemotePrinterParams {
-  delay?: number,
-  [k: string]: string | number | undefined,
-}
-
 export interface ToPrinterEvent {
   command: string,
   params?: PrinterParams,
@@ -62,14 +58,14 @@ export type RemotePrinterEvent = Partial<{
 }>
 
 export interface RemoteEnv {
-  targetWindow: Window,
+  targetWindow?: Window,
   isIframe: boolean,
   isPopup: boolean,
   isRemote: boolean,
 }
 
 export interface PrinterStatusCommand {
-  name: PrinterFunction.CLEARPRINTER | PrinterFunction.CHECKPRINTER,
+  name: PrinterFunction.TEAR | PrinterFunction.CLEARPRINTER | PrinterFunction.CHECKPRINTER,
   fn: () => Promise<CheckPrinterStatus>,
 }
 
@@ -80,7 +76,7 @@ export interface PrinterTestfileCommand {
 
 export interface PrinterFetchImagesCommand {
   name: PrinterFunction.FETCHIMAGES,
-  fn: (targetWindow: Window, params: PrinterParams, remoteParams: RemotePrinterParams) => Promise<PrinterImages>,
+  fn: (targetWindow: Window, params: PrinterParams, remoteParams: ReadonlyURLSearchParams) => Promise<PrinterImages>,
 }
 
 export type PrinterCommand = PrinterStatusCommand | PrinterTestfileCommand | PrinterFetchImagesCommand;

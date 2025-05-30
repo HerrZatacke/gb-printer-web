@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+'use client';
+
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,9 +10,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import React, { useEffect, useState } from 'react';
+import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
+import { useAsPasswordField } from '@/hooks/useAsPasswordField';
 import APConfig from './APConfig';
-import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
-import { useAsPasswordField } from '../../../../../hooks/useAsPasswordField';
 
 interface WiFiNetwork {
   psk: string,
@@ -43,16 +45,16 @@ const getSettings = (
       const res = await fetch('/wificonfig/get', { signal });
       const wifiConfig = await res.json();
 
-      // eslint-disable-next-line no-param-reassign
+
       wifiConfig.mdns = wifiConfig.mdns || '';
-      // eslint-disable-next-line no-param-reassign
+
       wifiConfig.ap = wifiConfig.ap || { ssid: '', psk: '' };
-      // eslint-disable-next-line no-param-reassign
+
       wifiConfig.networks = wifiConfig.networks || [];
 
       setStatus('');
       setWifiConfig(wifiConfig);
-    } catch (error) {
+    } catch {
       if (!signal.aborted) {
         setStatus('error');
         setWifiConfig(undefined);
@@ -102,7 +104,7 @@ const saveSettings = async (
       throw new Error(resJson.error);
     }
   } catch (error) {
-    // eslint-disable-next-line no-alert
+
     alert(error);
     setStatus('error');
     setWifiConfig(undefined);
@@ -111,7 +113,7 @@ const saveSettings = async (
   getSettings(setWifiConfig, setStatus);
 };
 
-function WiFiSettings() {
+function SettingsWiFi() {
   const [wifiConfig, setWifiConfig] = useState<WiFiConfig>();
   const [status, setStatus] = useState('loading');
   const { type, button } = useAsPasswordField();
@@ -302,4 +304,4 @@ function WiFiSettings() {
   );
 }
 
-export default WiFiSettings;
+export default SettingsWiFi;

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { alpha } from '@mui/material';
 import Link from '@mui/material/Link';
+import { useTheme } from '@mui/material/styles';
+import type { Theme } from '@mui/system';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import { useTheme } from '@mui/material/styles';
-import { alpha } from '@mui/material';
-import type { Theme } from '@mui/system';
-import { Link as RouterLink } from 'react-router';
-import Lightbox from '../Lightbox';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
-import { useNavigationTools } from '../../contexts/navigationTools';
-import { usePathSegments } from '../../../hooks/usePathSegments';
-import type { TreeImageGroup } from '../../../../types/ImageGroup';
-import unique from '../../../tools/unique';
+import NextLink from 'next/link';
+import React, { useState, useEffect } from 'react';
+import Lightbox from '@/components/Lightbox';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useNavigationTools } from '@/contexts/navigationTools';
+import { usePathSegments } from '@/hooks/usePathSegments';
+import unique from '@/tools/unique';
+import type { TreeImageGroup } from '@/types/ImageGroup';
 
 interface FolderTreeItemProps {
   group: TreeImageGroup,
@@ -26,8 +26,8 @@ function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
       itemId={group.id}
       label={(
         <Link
-          component={RouterLink}
-          to={getGroupPath(group.id)}
+          component={NextLink}
+          href={getGroupPath(group.id)}
           onClick={onClick}
           sx={{ display: 'block' }}
         >

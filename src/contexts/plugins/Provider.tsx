@@ -1,17 +1,17 @@
+'use client';
+
 import React, { useCallback, useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
-import { pluginsContext } from './index';
-import useItemsStore from '../../stores/itemsStore';
-import useInteractionsStore from '../../stores/interactionsStore';
-import { useStores } from '../../../hooks/useStores';
+import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { useStores } from '@/hooks/useStores';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useItemsStore from '@/stores/itemsStore';
+import type { InitPluginSetupParams, Plugin, PluginClassInstance, PluginImageData, PluginsContext } from '@/types/Plugin';
 import { getCollectImageData } from './functions/collectImageData';
 import { initPlugin } from './functions/initPlugin';
-import type { InitPluginSetupParams } from './functions/initPlugin';
-import type { PluginsContext } from './index';
-import type { Plugin, PluginClassInstance, PluginImageData } from '../../../../types/Plugin';
-import { useImportExportSettings } from '../../../hooks/useImportExportSettings';
+import { pluginsContext } from './index';
 
-function PluginsContextProvider({ children }: PropsWithChildren) {
+export function PluginsContext({ children }: PropsWithChildren) {
   const { plugins, images, addUpdatePluginProperties } = useItemsStore();
   const stores = useStores();
   const { setProgress } = useInteractionsStore();
@@ -53,6 +53,3 @@ function PluginsContextProvider({ children }: PropsWithChildren) {
     </pluginsContext.Provider>
   );
 }
-
-export default PluginsContextProvider;
-

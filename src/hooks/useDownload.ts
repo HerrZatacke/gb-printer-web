@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
-import useItemsStore from '../app/stores/itemsStore';
-import useSettingsStore from '../app/stores/settingsStore';
-import { getPrepareFiles, download } from '../tools/download';
-import generateFileName from '../tools/generateFileName';
-import { loadImageTiles } from '../tools/loadImageTiles';
-import { getImagePalettes } from '../tools/getImagePalettes';
-import { loadFrameData } from '../tools/applyFrame/frameData';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { loadFrameData } from '@/tools/applyFrame/frameData';
+import { getPrepareFiles, download } from '@/tools/download';
+import generateFileName from '@/tools/generateFileName';
+import { getImagePalettes } from '@/tools/getImagePalettes';
+import { loadImageTiles } from '@/tools/loadImageTiles';
 
 interface UseDownload {
   downloadSingleImage: (hash: string) => Promise<void>

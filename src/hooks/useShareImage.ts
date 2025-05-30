@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import useItemsStore from '../app/stores/itemsStore';
-import useSettingsStore from '../app/stores/settingsStore';
-import { getPrepareFiles } from '../tools/download';
-import { loadImageTiles } from '../tools/loadImageTiles';
-import { loadFrameData } from '../tools/applyFrame/frameData';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { loadFrameData } from '@/tools/applyFrame/frameData';
+import { getPrepareFiles } from '@/tools/download';
+import { loadImageTiles } from '@/tools/loadImageTiles';
 
 interface UseShareImage {
   shareImage: (hash: string) => Promise<void>,

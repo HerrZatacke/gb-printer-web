@@ -1,18 +1,18 @@
 import { useMemo } from 'react';
-import useDialogsStore from '../app/stores/dialogsStore';
-import useEditStore from '../app/stores/editStore';
-import useFiltersStore from '../app/stores/filtersStore';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import useItemsStore from '../app/stores/itemsStore';
-import useSettingsStore from '../app/stores/settingsStore';
-import { getFilteredImages } from '../tools/getFilteredImages';
-import { useStores } from './useStores';
-import { BatchActionType } from '../consts/batchActionTypes';
-import { reduceImagesMonochrome } from '../tools/isRGBNImage';
-import { useGalleryTreeContext } from '../app/contexts/galleryTree';
-import useDownload from './useDownload';
-import unique from '../tools/unique';
-import type { Image, MonochromeImage } from '../../types/Image';
+import { BatchActionType } from '@/consts/batchActionTypes';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useDownload from '@/hooks/useDownload';
+import { useStores } from '@/hooks/useStores';
+import useDialogsStore from '@/stores/dialogsStore';
+import useEditStore from '@/stores/editStore';
+import useFiltersStore from '@/stores/filtersStore';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { getFilteredImages } from '@/tools/getFilteredImages';
+import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
+import unique from '@/tools/unique';
+import type { Image, MonochromeImage } from '@/types/Image';
 
 interface UseBatchButtons {
   hasPlugins: boolean,

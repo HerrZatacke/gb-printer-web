@@ -1,12 +1,12 @@
+import dayjs from 'dayjs';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import dayjs from 'dayjs';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import unique from '@/tools/unique';
+import uniqueBy from '@/tools/unique/by';
+import type { Image } from '@/types/Image';
+import type { RecentImport } from '@/types/Sync';
 import { PROJECT_PREFIX } from './constants';
-import type { RecentImport } from '../../../types/Sync';
-import type { Image } from '../../../types/Image';
-import uniqueBy from '../../tools/unique/by';
-import { isRGBNImage } from '../../tools/isRGBNImage';
-import unique from '../../tools/unique';
 
 export enum ImageSelectionMode {
   ADD = 'add',

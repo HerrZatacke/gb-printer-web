@@ -1,25 +1,25 @@
 import { createTheme, lighten } from '@mui/material';
 import type { Components, PaletteMode, Theme } from '@mui/material';
 import { blend } from '@mui/system';
-import { appBar } from '../components/appBar';
-import { button } from '../components/button';
-import { cardActionArea } from '../components/cardActionArea';
-import { cardContent } from '../components/cardContent';
-import { dialogTitle } from '../components/dialogTitle';
-import { formControl } from '../components/formControl';
-import { inputLabel } from '../components/inputLabel';
-import { link } from '../components/link';
-import { list } from '../components/list';
-import { menuItem } from '../components/menuItem';
-import { outlinedInput } from '../components/outlinedInput';
-import { paper } from '../components/paper';
-import { select } from '../components/select';
-import { switchc } from '../components/switch';
-import { tab } from '../components/tab';
-import { tabs } from '../components/tabs';
-import { textField } from '../components/textField';
-import { toggleButtonGroup } from '../components/toggleButtonGroup';
-import { toolbar } from '../components/toolbar';
+import { appBar } from '@/styles/components/appBar';
+import { button } from '@/styles/components/button';
+import { cardActionArea } from '@/styles/components/cardActionArea';
+import { cardContent } from '@/styles/components/cardContent';
+import { dialogTitle } from '@/styles/components/dialogTitle';
+import { formControl } from '@/styles/components/formControl';
+import { inputLabel } from '@/styles/components/inputLabel';
+import { link } from '@/styles/components/link';
+import { list } from '@/styles/components/list';
+import { menuItem } from '@/styles/components/menuItem';
+import { outlinedInput } from '@/styles/components/outlinedInput';
+import { paper } from '@/styles/components/paper';
+import { select } from '@/styles/components/select';
+import { switch_ } from '@/styles/components/switch';
+import { tab } from '@/styles/components/tab';
+import { tabs } from '@/styles/components/tabs';
+import { textField } from '@/styles/components/textField';
+import { toggleButtonGroup } from '@/styles/components/toggleButtonGroup';
+import { toolbar } from '@/styles/components/toolbar';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -32,7 +32,6 @@ declare module '@mui/material/styles' {
     bg?: PaletteOptions['primary'];
   }
 }
-
 
 const themeComponents = (theme: Theme): Components<Theme> => ({
   MuiAppBar: appBar(theme),
@@ -48,7 +47,7 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   MuiOutlinedInput: outlinedInput(theme),
   MuiPaper: paper(),
   MuiSelect: select(),
-  MuiSwitch: switchc(),
+  MuiSwitch: switch_(),
   MuiTab: tab(theme),
   MuiTabs: tabs(theme),
   MuiTextField: textField(),
@@ -80,6 +79,7 @@ export const generateTheme = ({
   colorText,
 }: GenerateThemeArgs): Theme => {
   const theme: Theme = createTheme({
+    // cssVariables: true,
     shape: {
       borderRadius: 0,
     },

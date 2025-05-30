@@ -1,17 +1,17 @@
-import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
-import { randomId } from '../tools/randomId';
-import { dateFormat } from '../app/defaults';
-import { useGalleryTreeContext } from '../app/contexts/galleryTree';
-import { useNavigationToolsContext } from '../app/contexts/navigationTools/NavigationToolsProvider';
-import { useGalleryParams } from './useGalleryParams';
-import type { DialogOption } from '../../types/Dialog';
-import type { PathMap } from '../app/contexts/galleryTree';
-import type { EditGroupInfo } from '../app/stores/editStore';
-import type { SerializableImageGroup } from '../../types/ImageGroup';
-import useEditStore from '../app/stores/editStore';
-import useFiltersStore from '../app/stores/filtersStore';
-import useItemsStore from '../app/stores/itemsStore';
+import { useMemo, useState } from 'react';
+import { dateFormat } from '@/consts/defaults';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useGalleryParams } from '@/hooks/useGalleryParams';
+import type { EditGroupInfo } from '@/stores/editStore';
+import useEditStore from '@/stores/editStore';
+import useFiltersStore from '@/stores/filtersStore';
+import useItemsStore from '@/stores/itemsStore';
+import { randomId } from '@/tools/randomId';
+import { type DialogOption } from '@/types/Dialog';
+import { type PathMap } from '@/types/galleryTreeContext';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
 
 export const NEW_GROUP = 'NEW_GROUP';
 

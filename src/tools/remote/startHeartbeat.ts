@@ -1,8 +1,12 @@
-import type { RemoteEnv, RemotePrinterEvent } from '../../types/Printer';
+import type { RemoteEnv, RemotePrinterEvent } from '@/types/Printer';
 
-const startHeartbeat = ({ targetWindow }: RemoteEnv, commands: string[]) => {
+type cleanupFn = () => void;
+
+const startHeartbeat = ({ targetWindow }: RemoteEnv, commands: string[]): cleanupFn => {
 
   const heartBeat = () => {
+    if (!targetWindow) { return; }
+
     targetWindow.postMessage({
       fromRemotePrinter: {
         height: document.body.getBoundingClientRect().height,
@@ -11,8 +15,11 @@ const startHeartbeat = ({ targetWindow }: RemoteEnv, commands: string[]) => {
     } as RemotePrinterEvent, '*');
   };
 
-  window.setInterval(heartBeat, 500);
-  heartBeat();
+  const interval = window.setInterval(heartBeat, 500);
+
+  return () => {
+    window.clearInterval(interval);
+  };
 };
 
 export default startHeartbeat;

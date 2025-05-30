@@ -1,7 +1,7 @@
-import handleLines from '../handleLines';
-import { terminatorLine } from '../../app/defaults';
-import { HandleLine } from '../handleLines/types';
-import type { ImportLine } from '../handleLines/types';
+import { terminatorLine } from '@/consts/defaults';
+import { HandleLine } from '@/consts/handleLine';
+import handleLines from '@/tools/handleLines';
+import { ImportLine } from '@/types/handleLine';
 
 const transformClassic = (data: string, filename: string): string[][] => {
   const imagesFromFile = `${data}\n${terminatorLine}`.split('\n')

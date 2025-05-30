@@ -1,10 +1,10 @@
-import type { Image, MonochromeImage, RGBNImage } from '../../../types/Image';
-import { isRGBNImage } from '../isRGBNImage';
-import type { AddToQueueFn, DownloadInfo } from '../../../types/Sync';
-import type { RepoContents, RepoFile, SyncFile } from '../../../types/Export';
-import { getTxtFile } from '../download/getTxtFile';
-import unique from '../unique';
-import useItemsStore from '../../app/stores/itemsStore';
+import useItemsStore from '@/stores/itemsStore';
+import { getTxtFile } from '@/tools/download/getTxtFile';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import unique from '@/tools/unique';
+import type { RepoContents, RepoFile, SyncFile } from '@/types/Export';
+import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
+import type { AddToQueueFn, DownloadInfo } from '@/types/Sync';
 
 interface TmpInfo {
   file: Image,

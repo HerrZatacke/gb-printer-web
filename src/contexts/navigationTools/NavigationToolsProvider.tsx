@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useNavigationTools } from './index';

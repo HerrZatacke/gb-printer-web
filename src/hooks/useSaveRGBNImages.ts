@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import { useCallback } from 'react';
-import useFiltersStore from '../app/stores/filtersStore';
-import { dateFormat, defaultRGBNPalette } from '../app/defaults';
-import type { RGBNHashes, RGBNImage } from '../../types/Image';
-import { useStores } from './useStores';
+import { dateFormat, defaultRGBNPalette } from '@/consts/defaults';
+import { useStores } from '@/hooks/useStores';
+import useFiltersStore from '@/stores/filtersStore';
+import type { RGBNHashes, RGBNImage } from '@/types/Image';
 
 interface UseSaveRGBNImages {
   saveRGBNImage: (hashes: RGBNHashes[]) => Promise<void>,

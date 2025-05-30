@@ -1,11 +1,11 @@
-import React from 'react';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import React from 'react';
+import Debug from '@/components/Debug';
+import useEditImageGroup, { NEW_GROUP } from '@/hooks/useEditImageGroup';
 import Lightbox from '../../Lightbox';
-import useEditImageGroup, { NEW_GROUP } from '../../../../hooks/useEditImageGroup';
-import Debug from '../../Debug';
 
 function EditImageGroup() {
   const {

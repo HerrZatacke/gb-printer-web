@@ -1,12 +1,11 @@
+import chunk from 'chunk';
+import kmeans from 'node-kmeans';
+import quantize, { type RgbPixel } from 'quantize';
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
-import kmeans from 'node-kmeans';
-import type { RgbPixel } from 'quantize';
-import quantize from 'quantize';
-import chunk from 'chunk';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import getImageData from '../tools/transformBitmaps/getImageData';
-import useEditStore from '../app/stores/editStore';
+import useEditStore from '@/stores/editStore';
+import useInteractionsStore from '@/stores/interactionsStore';
+import getImageData from '@/tools/transformBitmaps/getImageData';
 
 export const toHexColor = ([r, g, b]: number[]): string => ([
   '#',
@@ -81,7 +80,7 @@ const usePaletteFromFile = (): UsePaletteFromFile => {
       });
     }
 
-    // eslint-disable-next-line no-param-reassign
+
     target.value = '';
   };
 

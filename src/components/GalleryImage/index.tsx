@@ -1,18 +1,18 @@
-import React, { useMemo, useCallback } from 'react';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import GalleryImageContextMenu from '../GalleryImageContextMenu';
-import ImageRender from '../ImageRender';
-import Debug from '../Debug';
-import TagsList from '../TagsList';
-import { useGalleryImage } from './useGalleryImage';
-import { useDateFormat } from '../../../hooks/useDateFormat';
-import useSettingsStore from '../../stores/settingsStore';
-import { ImageSelectionMode } from '../../stores/filtersStore';
-import { GalleryClickAction } from '../../../consts/GalleryClickAction';
-import type { RGBNHashes } from '../../../../types/Image';
-import GalleryGridItem from '../GalleryGridItem';
-import { useGalleryImageContext } from '../../../hooks/useGalleryImageContext';
+import React, { useMemo, useCallback } from 'react';
+import Debug from '@/components/Debug';
+import GalleryGridItem from '@/components/GalleryGridItem';
+import GalleryImageContextMenu from '@/components/GalleryImageContextMenu';
+import ImageRender from '@/components/ImageRender';
+import TagsList from '@/components/TagsList';
+import { GalleryClickAction } from '@/consts/GalleryClickAction';
+import { useDateFormat } from '@/hooks/useDateFormat';
+import { useGalleryImage } from '@/hooks/useGalleryImage';
+import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
+import { ImageSelectionMode } from '@/stores/filtersStore';
+import useSettingsStore from '@/stores/settingsStore';
+import type { RGBNHashes } from '@/types/Image';
 
 dayjs.extend(customParseFormat);
 

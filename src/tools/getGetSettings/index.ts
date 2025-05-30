@@ -1,19 +1,19 @@
-// import useFiltersStore from '../../app/stores/filtersStore';
-import type { Values } from '../../app/stores/itemsStore';
-import useItemsStore, { ITEMS_STORE_VERSION } from '../../app/stores/itemsStore';
-import useFiltersStore from '../../app/stores/filtersStore';
-import { ExportTypes } from '../../consts/exportTypes';
-import getImages from './getImages';
+// import useFiltersStore from '@/stores/filtersStore';
+import { ExportTypes } from '@/consts/exportTypes';
+import useFiltersStore from '@/stores/filtersStore';
+import useItemsStore, { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
+import type { Values } from '@/stores/itemsStore';
+import getFrameGroups from '@/tools/getFrameGroups';
+import type { ExportableState, JSONExport, JSONExportBinary } from '@/types/ExportState';
+import type { GetSettingsOptions } from '@/types/Sync';
 import getFrames from './getFrames';
-import getImageHashesForExport from './getImageHashesForExport';
 import getFramesForExport from './getFramesForExport';
-import getFrameGroups from '../getFrameGroups';
-import type { ExportableState, JSONExport, JSONExportBinary } from '../../../types/ExportState';
-import type { GetSettingsOptions } from '../../../types/Sync';
-// import type { Image } from '../../../types/Image';
-// import type { Frame } from '../../../types/Frame';
-// import type { Palette } from '../../../types/Palette';
-// import type { FrameGroup } from '../../../types/FrameGroup';
+import getImageHashesForExport from './getImageHashesForExport';
+import getImages from './getImages';
+// import type { Image } from '@/types/Image';
+// import type { Frame } from '@/types/Frame';
+// import type { Palette } from '@/types/Palette';
+// import type { FrameGroup } from '@/types/FrameGroup';
 
 // export interface StorePropertyDefault {
 //   key: keyof ExportableState,

@@ -1,12 +1,12 @@
-import React from 'react';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import Lightbox from '../../Lightbox';
-import { useSyncSelect } from '../../../../hooks/useSyncSelect';
+import React from 'react';
+import Lightbox from '@/components/Lightbox';
+import { useSyncSelect } from '@/hooks/useSyncSelect';
 
 const getButtonColor = (showSyncHints: boolean, warn: boolean): 'secondary' | 'error' => {
   if (!showSyncHints) {

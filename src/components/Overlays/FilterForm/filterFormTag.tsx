@@ -1,6 +1,6 @@
-import React from 'react';
 import Chip from '@mui/material/Chip';
-import { ActiveTagUpdateMode } from '../../../../hooks/useFilterForm';
+import React from 'react';
+import { ActiveTagUpdateMode } from '@/hooks/useFilterForm';
 
 interface Props {
   title: string,

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment,no-await-in-loop */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 export interface KV<T> {
   key: string,
@@ -23,12 +23,14 @@ export const dbGetAllFromStore = async (request: IDBOpenDBRequest, storeName: st
 
       const dbData: KV<string>[] = [];
 
+      /* eslint-disable no-await-in-loop */
       for (const key of keys) {
         dbData.push({
           key,
           value: await dbGetByKey(objectStore, key),
         });
       }
+      /* eslint-enable no-await-in-loop */
 
       resolve(dbData);
     };

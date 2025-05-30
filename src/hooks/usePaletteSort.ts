@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react';
-import { PaletteSortMode } from '../consts/paletteSortModes';
-import type { Palette } from '../../types/Palette';
-import { isRGBNImage } from '../tools/isRGBNImage';
-import type { Image, MonochromeImage } from '../../types/Image';
-import useSettingsStore from '../app/stores/settingsStore';
-import useItemsStore from '../app/stores/itemsStore';
-import type { MenuOption } from '../../types/MenuOption';
+import { PaletteSortMode } from '@/consts/paletteSortModes';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import type { Image, MonochromeImage } from '@/types/Image';
+import type { MenuOption } from '@/types/MenuOption';
+import type { Palette } from '@/types/Palette';
 
 export type PaletteSortOption = MenuOption<PaletteSortMode>;
 

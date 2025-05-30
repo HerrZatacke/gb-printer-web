@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import type { RGBNTiles } from 'gb-image-decoder';
-import useItemsStore from '../../app/stores/itemsStore';
-import { loadImageTiles } from '../loadImageTiles';
-import { compressAndHash, save } from '../storage';
-import type { Frame } from '../../../types/Frame';
-import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../../types/Image';
-import { isRGBNImage } from '../isRGBNImage';
-import { useStores } from '../../hooks/useStores';
+import { useState } from 'react';
+import { useStores } from '@/hooks/useStores';
+import useItemsStore from '@/stores/itemsStore';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import { loadImageTiles } from '@/tools/loadImageTiles';
+import { compressAndHash, save } from '@/tools/storage';
+import type { Frame } from '@/types/Frame';
+import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '@/types/Image';
 
 const reHash = async (stateImages: Image[], stateFrames: Frame[], hash: string): Promise<string | null> => {
   const loadedTiles: string[] | RGBNTiles | void = await loadImageTiles(stateImages, stateFrames)(hash, false);
@@ -35,9 +35,11 @@ const useHashCleanup = (): UseHashCleanup => {
 
   const [cleanupBusy, setCleanupBusy] = useState(true);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  window.enableHashCleanup = () => setCleanupBusy(false);
+  if (typeof window !== 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.enableHashCleanup = () => setCleanupBusy(false);
+  }
 
   return {
     cleanupBusy,
@@ -105,7 +107,7 @@ const useHashCleanup = (): UseHashCleanup => {
       }));
 
       setCleanupBusy(false);
-      // eslint-disable-next-line no-console
+
       console.info({
         iCounterRGBN,
         iCounterMono,

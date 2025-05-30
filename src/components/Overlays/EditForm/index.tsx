@@ -1,19 +1,18 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import type { Theme } from '@mui/system';
-import TextField from '@mui/material/TextField';
 import type { SxProps } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
-import ImageRender from '../../ImageRender';
-import EditImageTabs from '../../EditImageTabs';
-import Lightbox from '../../Lightbox';
-import { useEditForm } from '../../../../hooks/useEditForm';
-import { getScrollParent } from '../../../../tools/getScrollParent';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import type { Theme } from '@mui/system';
+import React, { useEffect, useState } from 'react';
+import EditImageTabs from '@/components/EditImageTabs';
+import ImageRender from '@/components/ImageRender';
+import Lightbox from '@/components/Lightbox';
+import { useEditForm } from '@/hooks/useEditForm';
+import { getScrollParent } from '@/tools/getScrollParent';
 
 function EditForm() {
   const {

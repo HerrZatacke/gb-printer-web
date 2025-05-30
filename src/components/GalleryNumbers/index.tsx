@@ -1,5 +1,5 @@
-import React from 'react';
 import Typography from '@mui/material/Typography';
+import React from 'react';
 
 interface Props {
   imageCount: number,

@@ -1,8 +1,9 @@
-import { ditherFilter } from '../applyBitmapFilter';
-import { compressAndHash } from '../storage';
-import type { QueueImage } from '../../../types/QueueImage';
-import { randomId } from '../randomId';
-import type { ImportItem } from '../../../types/ImportItem';
+/* eslint-disable no-bitwise */
+import { ditherFilter } from '@/tools/applyBitmapFilter';
+import { randomId } from '@/tools/randomId';
+import { compressAndHash } from '@/tools/storage';
+import type { ImportItem } from '@/types/ImportItem';
+import type { QueueImage } from '@/types/QueueImage';
 
 export interface DispatchBitmapsToImportOptions {
   bitmapQueue: QueueImage[],
@@ -42,11 +43,11 @@ const encodeTile = (tileData: number[]): string => {
     let rowData = 0;
     for (let col = 0; col < 8; col += 1) {
       const pixel = greyTones[tileData[(row * 8) + col]];
-      // eslint-disable-next-line no-bitwise
+
       rowData += pixel << (7 - col);
     }
 
-    // eslint-disable-next-line no-bitwise
+
     line.push((rowData >> 8).toString(16).padStart(2, '0'), (rowData & 255).toString(16).padStart(2, '0'));
   }
 

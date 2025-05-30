@@ -1,8 +1,8 @@
-import { addSortIndex, removeSortIndex, sortImages } from '../sortImages';
+import type { FiltersState } from '@/stores/filtersStore';
+import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
+import type { Image } from '@/types/Image';
 import filterSpecial from './filterSpecial';
 import filterTags from './filterTags';
-import type { FiltersState } from '../../app/stores/filtersStore';
-import type { Image } from '../../../types/Image';
 
 export type FilteredImagesState = Pick<FiltersState, 'sortBy' | 'filtersActiveTags' | 'recentImports'>
 

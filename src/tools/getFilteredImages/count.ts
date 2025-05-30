@@ -1,7 +1,7 @@
-import filterTags from './filterTags';
+import type { Image } from '@/types/Image';
+import type { RecentImport } from '@/types/Sync';
 import filterSpecial from './filterSpecial';
-import type { Image } from '../../../types/Image';
-import type { RecentImport } from '../../../types/Sync';
+import filterTags from './filterTags';
 
 const getFilteredImagesCount = (
   stateImages: Image[],

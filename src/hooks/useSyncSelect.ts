@@ -1,10 +1,10 @@
-import type { SyncLastUpdate } from '../../types/Sync';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import useStoragesStore from '../app/stores/storagesStore';
-import { dropboxStorageTool } from '../tools/dropboxStorage';
-import { gitStorageTool } from '../tools/gitStorage';
-import { useStores } from './useStores';
-import { useImportExportSettings } from './useImportExportSettings';
+import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { useStores } from '@/hooks/useStores';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useStoragesStore from '@/stores/storagesStore';
+import { dropboxStorageTool } from '@/tools/dropboxStorage';
+import { gitStorageTool } from '@/tools/gitStorage';
+import type { SyncLastUpdate } from '@/types/Sync';
 
 
 interface UseSyncSelect {

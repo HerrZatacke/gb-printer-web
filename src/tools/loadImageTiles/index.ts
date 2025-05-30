@@ -1,16 +1,14 @@
 import type { RGBNTiles } from 'gb-image-decoder';
-import { load } from '../storage';
-import { isRGBNImage } from '../isRGBNImage';
-import type { RecoverFn } from '../storage';
-import type { Frame } from '../../../types/Frame';
-import type { Image, RGBNHashes, RGBNImage } from '../../../types/Image';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import { load, type RecoverFn } from '@/tools/storage';
+import type { Frame } from '@/types/Frame';
+import type { Image, RGBNHashes, RGBNImage } from '@/types/Image';
 
 export type PImage = {
   hash: Image['hash'],
   frame?: Image['frame'],
   hashes?: RGBNImage['hashes'],
 }
-
 
 export const loadImageTiles = (stateImages: Image[], stateFrames: Frame[], recover?: RecoverFn) => {
   const loader = async (

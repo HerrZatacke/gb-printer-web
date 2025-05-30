@@ -1,11 +1,14 @@
-import React from 'react';
-import { Link as RouterLink, Navigate } from 'react-router';
+'use client';
+
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import { useAddPlugin } from '../../../hooks/useAddPlugin';
+import NextLink from 'next/link';
+import { redirect } from 'next/navigation';
+import React from 'react';
+import { useAddPlugin } from '@/hooks/useAddPlugin';
 
 function AddPlugin() {
   const {
@@ -18,7 +21,8 @@ function AddPlugin() {
   } = useAddPlugin();
 
   if (!url) {
-    return <Navigate to="/settings/plugins" replace />;
+    redirect('/settings/plugins');
+    return null;
   }
 
   if (pending) {
@@ -41,8 +45,8 @@ function AddPlugin() {
             {`The plugin "${url}" is already installed`}
           </Alert>
           <Link
-            component={RouterLink}
-            to="/settings/plugins"
+            component={NextLink}
+            href="/settings/plugins"
           >
             Go to plugins
           </Link>

@@ -1,11 +1,13 @@
-import React from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
+'use client';
+
 import Button from '@mui/material/Button';
-import { useImportExportSettings } from '../../../../../hooks/useImportExportSettings';
-import useStoragePersist, { PersistState } from './useStoragePersist';
-import useHashCleanup from '../../../../../tools/hashCleanup';
-import { ExportTypes } from '../../../../../consts/exportTypes';
-import { useImageGroups } from '../../../../../hooks/useImageGroups';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import React from 'react';
+import { ExportTypes } from '@/consts/exportTypes';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import useStoragePersist, { PersistState } from '@/hooks/useStoragePersist';
+import useHashCleanup from '@/tools/hashCleanup';
 
 const persistMessage = (persistState: PersistState): string => {
   switch (persistState) {

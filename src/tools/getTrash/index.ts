@@ -1,6 +1,6 @@
-import { localforageFrames, localforageImages, localforageReady } from '../localforageInstance';
-import { del, delFrame } from '../storage';
-import type { MonochromeImage, RGBNImage, Image } from '../../../types/Image';
+import { localforageFrames, localforageImages, localforageReady } from '@/tools/localforageInstance';
+import { del, delFrame } from '@/tools/storage';
+import type { MonochromeImage, RGBNImage, Image } from '@/types/Image';
 
 interface CheckFrame {
   hash: string,

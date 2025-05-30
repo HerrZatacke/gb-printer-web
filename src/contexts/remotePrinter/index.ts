@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { Context } from 'react';
-import type { PrinterFunction } from '../../../consts/printerFunction';
+import type { PrinterFunction } from '@/consts/printerFunction';
 
 export interface RemotePrinterContext {
   callRemoteFunction: (functionType: PrinterFunction) => Promise<void>,

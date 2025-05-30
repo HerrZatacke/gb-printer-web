@@ -1,15 +1,15 @@
-import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import type { ExportFrameMode } from 'gb-image-decoder';
-import Lightbox from '../../Lightbox';
-import FrameSelect from '../../FrameSelect';
-import PaletteSelect from '../../PaletteSelect';
-import exportFrameModes from '../../../../consts/exportFrameModes';
-import { useVideoForm } from '../../../../hooks/useVideoForm';
+import React from 'react';
+import FrameSelect from '@/components/FrameSelect';
+import Lightbox from '@/components/Lightbox';
+import PaletteSelect from '@/components/PaletteSelect';
+import exportFrameModes from '@/consts/exportFrameModes';
+import { useVideoForm } from '@/hooks/useVideoForm';
 
 function VideoParamsForm() {
 

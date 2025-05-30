@@ -1,13 +1,13 @@
-import React from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
-import { useAsPasswordField } from '../../../../../hooks/useAsPasswordField';
+import React from 'react';
+import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
+import { useAsPasswordField } from '@/hooks/useAsPasswordField';
 
 interface APConfig {
   ssid: string,

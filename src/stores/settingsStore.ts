@@ -1,18 +1,17 @@
+import dayjs from 'dayjs';
+import { ExportFrameMode } from 'gb-image-decoder';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { ExportFrameMode } from 'gb-image-decoder';
-import dayjs from 'dayjs';
+import { ImportContrastValue } from '@/consts/bitmapQueueSettings';
+import { FileNameStyle } from '@/consts/fileNameStyles';
+import { GalleryClickAction } from '@/consts/GalleryClickAction';
+import { GalleryViews } from '@/consts/GalleryViews';
+import { PaletteSortMode } from '@/consts/paletteSortModes';
+import { ThemeName } from '@/consts/theme';
+import cleanUrl from '@/tools/cleanUrl';
+import dateFormatLocale from '@/tools/dateFormatLocale';
+import type { VideoParams } from '@/types/VideoParams';
 import { PROJECT_PREFIX } from './constants';
-import cleanUrl from '../../tools/cleanUrl';
-import dateFormatLocale from '../../tools/dateFormatLocale';
-import { getEnv } from '../../tools/getEnv';
-import { PaletteSortMode } from '../../consts/paletteSortModes';
-import { GalleryViews } from '../../consts/GalleryViews';
-import { ThemeName } from '../../consts/theme';
-import { FileNameStyle } from '../../consts/fileNameStyles';
-import { GalleryClickAction } from '../../consts/GalleryClickAction';
-import { ImportContrastValue } from '../../consts/bitmapQueueSettings';
-import type { VideoParams } from '../../../types/VideoParams';
 
 export interface Settings {
   activePalette: string,
@@ -73,8 +72,12 @@ interface Actions {
 export type SettingsState = Settings & Actions;
 
 const getDefaultLocale = (): string => {
-  const [lang, country] = navigator.language.split('-');
-  return [lang, country].filter(Boolean).join('-');
+  if (typeof navigator !== 'undefined') {
+    const [lang, country] = navigator.language.split('-');
+    return [lang, country].filter(Boolean).join('-');
+  }
+
+  return '';
 };
 
 const useSettingsStore = create(
@@ -98,7 +101,7 @@ const useSettingsStore = create(
       pageSize: 30,
       preferredLocale: getDefaultLocale(),
       printerParams: '',
-      printerUrl: getEnv()?.env === 'esp8266' ? '/' : '',
+      printerUrl: '/',  // when running on an esp8266, the envData context also sets this value
       savFrameTypes: 'int',
       themeName: ThemeName.BRIGHT,
       enableImageGroups: false,

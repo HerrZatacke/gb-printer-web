@@ -1,8 +1,8 @@
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
 import React, { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import IconButton from '@mui/material/IconButton';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Visibility from '@mui/icons-material/Visibility';
 
 interface UseAsPasswordField {
   type: 'text' | 'password',

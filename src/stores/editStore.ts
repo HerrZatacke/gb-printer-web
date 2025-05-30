@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import type { CurrentEditBatch } from '../../../types/Image';
-import type { Palette } from '../../../types/Palette';
-import type { PickColors } from '../../../types/PickColors';
+import type { CurrentEditBatch } from '@/types/Image';
+import type { Palette } from '@/types/Palette';
+import type { PickColors } from '@/types/PickColors';
 
 export interface EditGroupInfo {
   groupId: string,

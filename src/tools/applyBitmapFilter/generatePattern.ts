@@ -1,4 +1,4 @@
-import type { GeneratePatternOptions } from './Types';
+import { GeneratePatternOptions } from '@/types/BitmapFilter';
 
 const generatePattern = ({
   baseValues,

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+'use client';
+
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -7,8 +8,9 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import cleanPath from '../../../../../tools/cleanPath';
-import { useDropboxSettings } from '../../../../../hooks/useDropboxSettings';
+import React, { useState } from 'react';
+import { useDropboxSettings } from '@/hooks/useDropboxSettings';
+import cleanPath from '@/tools/cleanPath';
 
 function DropboxSettings() {
   const {

@@ -1,6 +1,6 @@
-import { localforageFrames } from '../localforageInstance';
-import { deflate, inflate } from '../pack';
-import { getFrameFromFullTiles } from '../getFrameFromFullTiles';
+import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
+import { localforageFrames } from '@/tools/localforageInstance';
+import { deflate, inflate } from '@/tools/pack';
 
 export interface FrameData {
   upper: string[],
@@ -46,13 +46,13 @@ export const loadFrameData = async (frameHash: string): Promise<null | FrameData
 
   try {
     raw = await inflate(binary);
-  } catch (error) {
+  } catch {
     return null;
   }
 
   try {
     return JSON.parse(raw);
-  } catch (error) {
+  } catch {
     /* frame is not in new format */
   }
 
@@ -66,7 +66,7 @@ export const loadFrameData = async (frameHash: string): Promise<null | FrameData
       right: Array(14).fill(0).map((_, index) => tiles.slice((index * 4) + 42, (index * 4) + 44)),
       lower: tiles.slice(96, 136),
     };
-  } catch (error) {
+  } catch {
     return null;
   }
 };

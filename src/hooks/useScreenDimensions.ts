@@ -33,12 +33,23 @@ const getLayoutWidth = (windowWidth: number): number => {
   return windowWidth - layoutPadding;
 };
 
-const getScreenDimensions = (): ScreenDimensions => ({
-  width: window.innerWidth,
-  height: window.innerHeight,
-  ddpx: window.devicePixelRatio <= 2 ? window.devicePixelRatio : window.devicePixelRatio / 2,
-  layoutWidth: getLayoutWidth(window.innerWidth),
-});
+const getScreenDimensions = (): ScreenDimensions => {
+  if (typeof window !== 'undefined') {
+    return ({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      ddpx: window.devicePixelRatio <= 2 ? window.devicePixelRatio : window.devicePixelRatio / 2,
+      layoutWidth: getLayoutWidth(window.innerWidth),
+    });
+  }
+
+  return ({
+    width: Infinity,
+    height: Infinity,
+    ddpx: 1,
+    layoutWidth: getLayoutWidth(Infinity),
+  });
+};
 
 export const useScreenDimensions = (): ScreenDimensions => {
   const [dimensions, setDimensions] = useState<ScreenDimensions>(getScreenDimensions());

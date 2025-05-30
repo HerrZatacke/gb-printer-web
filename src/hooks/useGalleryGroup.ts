@@ -1,5 +1,5 @@
-import type { TreeImageGroup } from '../../../../types/ImageGroup';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import type { TreeImageGroup } from '@/types/ImageGroup';
 
 interface UseGalleryGroup {
   group: TreeImageGroup | null,

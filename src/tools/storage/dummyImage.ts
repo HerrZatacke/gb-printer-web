@@ -1,4 +1,4 @@
-import textToTiles from '../textToTiles';
+import textToTiles from '@/tools/textToTiles';
 
 const dummyImage = (hash: string): string[] => {
   const text = `

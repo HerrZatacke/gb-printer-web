@@ -1,6 +1,3 @@
-import React, { type ReactNode, useState } from 'react';
-import Badge from '@mui/material/Badge';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -8,12 +5,15 @@ import EditIcon from '@mui/icons-material/Edit';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import GifIcon from '@mui/icons-material/Gif';
-import IconButton from '@mui/material/Button';
 import PaletteIcon from '@mui/icons-material/Palette';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
-import PluginSelect from '../PluginSelect';
-import useBatchButtons from '../../../hooks/useBatchButtons';
-import { BatchActionType } from '../../../consts/batchActionTypes';
+import Badge from '@mui/material/Badge';
+import IconButton from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import React, { type ReactNode, useState } from 'react';
+import PluginSelect from '@/components/PluginSelect';
+import { BatchActionType } from '@/consts/batchActionTypes';
+import useBatchButtons from '@/hooks/useBatchButtons';
 
 const BATCH_ACTIONS: BatchActionType[] = [
   BatchActionType.DOWNLOAD,

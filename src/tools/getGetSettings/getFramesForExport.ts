@@ -1,5 +1,5 @@
-import type { Frame } from '../../../types/Frame';
-import type { ExportTypes } from '../../consts/exportTypes';
+import type { ExportTypes } from '@/consts/exportTypes';
+import type { Frame } from '@/types/Frame';
 
 const getFramesForExport = (
   what: ExportTypes.CURRENT_FRAMEGROUP | ExportTypes.FRAMES,

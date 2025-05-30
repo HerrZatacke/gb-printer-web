@@ -1,9 +1,9 @@
-import React from 'react';
-import bytes from 'bytes';
-import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
-import { useStorageInfo } from '../../../hooks/useStorageInfo';
+import bytes from 'bytes';
+import React from 'react';
+import { useStorageInfo } from '@/hooks/useStorageInfo';
 
 
 const storageLabel = (key: string) => {

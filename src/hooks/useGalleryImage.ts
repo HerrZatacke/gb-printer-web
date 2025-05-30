@@ -1,18 +1,18 @@
-import { useMemo } from 'react';
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
-import useEditStore from '../../stores/editStore';
-import useFiltersStore from '../../stores/filtersStore';
-import useItemsStore from '../../stores/itemsStore';
-import useSettingsStore from '../../stores/settingsStore';
-import { getFilteredImages } from '../../../tools/getFilteredImages';
-import { missingGreyPalette } from '../../defaults';
-import { isRGBNImage } from '../../../tools/isRGBNImage';
-import { getImagePalettes } from '../../../tools/getImagePalettes';
-import { getPaletteSettings } from '../../../tools/getPaletteSettings';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
-import type { ImageSelectionMode } from '../../stores/filtersStore';
-import type { MonochromeImage, RGBNHashes, RGBNImage } from '../../../../types/Image';
-import type { Palette } from '../../../../types/Palette';
+import { useMemo } from 'react';
+import { missingGreyPalette } from '@/consts/defaults';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useEditStore from '@/stores/editStore';
+import useFiltersStore from '@/stores/filtersStore';
+import type { ImageSelectionMode } from '@/stores/filtersStore';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { getFilteredImages } from '@/tools/getFilteredImages';
+import { getImagePalettes } from '@/tools/getImagePalettes';
+import { getPaletteSettings } from '@/tools/getPaletteSettings';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import type { MonochromeImage, RGBNHashes, RGBNImage } from '@/types/Image';
+import type { Palette } from '@/types/Palette';
 
 export enum SelectionEditMode {
   ADD = 'add',

@@ -1,4 +1,4 @@
-export default [
+const dummyData = [
   '# GAMEBOY PRINTER EMULATION PROJECT',
   '# By Brian Khuu (2017)',
   '!{"command":"INIT"}',
@@ -400,3 +400,5 @@ export default [
   '# Finished Pretending To Print for fun!',
   '!{"command":"INQY","status":{"lowbatt":0,"jam":0,"err":0,"pkterr":0,"unproc":0,"full":1,"bsy":0,"chk_err":0}}',
 ];
+
+export default dummyData;

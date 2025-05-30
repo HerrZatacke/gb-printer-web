@@ -1,6 +1,6 @@
-import React from 'react';
 import Box from '@mui/material/Box';
-import { generateGradient, GradientType } from '../../../tools/generateGradient';
+import React from 'react';
+import { generateGradient, GradientType } from '@/tools/generateGradient';
 
 interface Props {
   palette: string[],

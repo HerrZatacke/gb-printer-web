@@ -1,16 +1,18 @@
-import React, { useCallback, useState } from 'react';
+'use client';
+
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import useStoragesStore from '../../../../stores/storagesStore';
-import { useAsPasswordField } from '../../../../../hooks/useAsPasswordField';
-import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
-import type { GitStorageSettings } from '../../../../../../types/Sync';
+import React, { useCallback, useState } from 'react';
+import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
+import { useAsPasswordField } from '@/hooks/useAsPasswordField';
+import useStoragesStore from '@/stores/storagesStore';
+import type { GitStorageSettings } from '@/types/Sync';
 
-function GitSettings() {
+function SettingsGit() {
   const { gitStorage, setGitStorage } = useStoragesStore();
 
   const [use, setUse] = useState<boolean>(gitStorage.use || false);
@@ -152,4 +154,4 @@ function GitSettings() {
   );
 }
 
-export default GitSettings;
+export default SettingsGit;

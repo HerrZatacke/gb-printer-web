@@ -1,7 +1,7 @@
-import React from 'react';
 import Stack from '@mui/material/Stack';
-import GalleryViewSelect from '../GalleryViewSelect';
-import BatchButtons from '../BatchButtons';
+import React from 'react';
+import BatchButtons from '@/components/BatchButtons';
+import GalleryViewSelect from '@/components/GalleryViewSelect';
 
 interface Props {
   page: number,

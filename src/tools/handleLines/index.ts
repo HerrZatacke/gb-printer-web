@@ -1,5 +1,5 @@
-import type { ImportLine } from './types';
-import { HandleLine } from './types';
+import { HandleLine } from '@/consts/handleLine';
+import { ImportLine } from '@/types/handleLine';
 
 
 const handleLines = (rawLine: string): ImportLine | null => {
@@ -29,7 +29,7 @@ const handleLines = (rawLine: string): ImportLine | null => {
           type: HandleLine.IMAGE_COMPLETE,
         };
       }
-    } catch (error) {
+    } catch {
       return {
         type: HandleLine.PARSE_ERROR,
         payload: 'Error while trying to parse JSON data command block',

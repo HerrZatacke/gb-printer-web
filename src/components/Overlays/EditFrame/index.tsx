@@ -1,12 +1,11 @@
-import React from 'react';
 import Alert from '@mui/material/Alert';
-import Lightbox from '../../Lightbox';
-import useEditFrame from '../../../../hooks/useEditFrame';
+import React from 'react';
+import Lightbox from '@/components/Lightbox';
+import useEditFrame from '@/hooks/useEditFrame';
+import useEditStore from '@/stores/editStore';
+import useItemsStore from '@/stores/itemsStore';
 import EditFrameForm from './EditFrameForm';
-import useEditStore from '../../../stores/editStore';
-import useItemsStore from '../../../stores/itemsStore';
 
-// eslint-disable-next-line
 const EditFrame = () => {
   const { editFrame } = useEditStore();
   const { frames } = useItemsStore();

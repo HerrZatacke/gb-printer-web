@@ -1,16 +1,12 @@
-import getFrameGroups from '../getFrameGroups';
-import useDialogsStore from '../../app/stores/dialogsStore';
-import useItemsStore from '../../app/stores/itemsStore';
-import useSettingsStore from '../../app/stores/settingsStore';
-import readFileAs, { ReadAs } from '../readFileAs';
+import { DialoqQuestionType } from '@/consts/dialog';
+import useDialogsStore from '@/stores/dialogsStore';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import getFrameGroups from '@/tools/getFrameGroups';
+import readFileAs, { ReadAs } from '@/tools/readFileAs';
+import { reduceItems } from '@/tools/reduceArray';
+import type { DialogOption, DialogQuestion, DialogResult } from '@/types/Dialog';
 import getImportSav from './importSav';
-import type { DialogOption,
-  DialogQuestion,
-  DialogResult } from '../../../types/Dialog';
-import {
-  DialoqQuestionType,
-} from '../../../types/Dialog';
-import { reduceItems } from '../reduceArray';
 
 export const transformSav = async (file: File, skipDialogs: boolean): Promise<boolean> => {
   const { dismissDialog, setDialog } = useDialogsStore.getState();

@@ -1,10 +1,10 @@
-/* eslint-disable no-console, no-await-in-loop */
+// Currently unused, but may be added to "window" for debugging purposes
 import dayjs from 'dayjs';
-import saveNewImage from '../saveNewImage';
-import padToHeight from '../padToHeight';
-import { dateFormat } from '../../app/defaults';
-import type { MonochromeImage } from '../../../types/Image';
-import useItemsStore from '../../app/stores/itemsStore';
+import { dateFormat } from '@/consts/defaults';
+import useItemsStore from '@/stores/itemsStore';
+import padToHeight from '@/tools/padToHeight';
+import saveNewImage from '@/tools/saveNewImage';
+import type { MonochromeImage } from '@/types/Image';
 
 const generateRandomTile = (): string => (
   (new Array(20))

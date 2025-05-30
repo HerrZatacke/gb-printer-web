@@ -7,7 +7,7 @@ class WebUSBSerialEE extends EventEmitter {
 
   constructor() {
     super();
-    this.enabled = !!navigator.usb && !!navigator.usb.getDevices;
+    this.enabled = typeof navigator !== 'undefined' && !!navigator.usb && !!navigator.usb.getDevices;
     this.activePorts = [];
 
     // instantly connect to known existing ports
@@ -35,6 +35,10 @@ class WebUSBSerialEE extends EventEmitter {
   }
 
   watchPorts() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     window.setInterval(() => {
       this.getPorts()
         .then((ports: USBSerialPortEE[]) => {
@@ -106,4 +110,5 @@ class WebUSBSerialEE extends EventEmitter {
   }
 }
 
-export default new WebUSBSerialEE();
+const instance = new WebUSBSerialEE();
+export default instance;

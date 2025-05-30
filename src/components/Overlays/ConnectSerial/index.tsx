@@ -1,11 +1,12 @@
-import React from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import useWebUSBSerial from './hooks/useWebUSBSerial';
-import useWebSerial from './hooks/useWebSerial';
-import Lightbox from '../../Lightbox';
-import useWithStore from './hooks/useWithStore';
+import React from 'react';
+import Lightbox from '@/components/Lightbox';
+import useWebSerial from '@/hooks/useWebSerial';
+import useWebUSBSerial from '@/hooks/useWebUSBSerial';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
   inline?: boolean,
@@ -27,10 +28,9 @@ function ConnectSerial({ inline, passive }: Props) {
     openWebSerial,
   } = useWebSerial(passive || false);
 
-  const {
-    lightBoxOpen,
-    hideSerials,
-  } = useWithStore();
+  const { useSerials } = useSettingsStore();
+  const { showSerials, setShowSerials } = useInteractionsStore();
+  const lightBoxOpen = showSerials && useSerials;
 
 
   const content = (
@@ -95,7 +95,7 @@ function ConnectSerial({ inline, passive }: Props) {
   return !showOverlay ? null : (
     <Lightbox
       header="WebUSB / Serial devices"
-      confirm={hideSerials}
+      confirm={() => setShowSerials(false)}
       canConfirm={!usbSerialIsReceiving && !webSerialIsReceiving}
     >
       {content}

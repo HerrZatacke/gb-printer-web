@@ -13,7 +13,7 @@ interface UseStoragePersist {
   requestPersist: () => void,
 }
 
-const persistAPIAvailable = !!(navigator.storage && navigator.storage.persist);
+const persistAPIAvailable = !!(typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist);
 
 const getPersistState = async (set: (state: PersistState) => void) => {
   if (persistAPIAvailable) {

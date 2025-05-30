@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import getHandleFileImport from '../tools/getHandleFileImport';
+import useInteractionsStore from '@/stores/interactionsStore';
+import getHandleFileImport, { type HandeFileImportFn, type HandeFileImportOptions } from '@/tools/getHandleFileImport';
 import { useImportExportSettings } from './useImportExportSettings';
-import type { HandeFileImportFn, HandeFileImportOptions } from '../../types/handleFileImport';
 
 interface UseImportFile {
   handleFileImport: HandeFileImportFn,

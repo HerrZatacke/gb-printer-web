@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware';
+import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '@/types/Sync';
 import { PROJECT_PREFIX } from './constants';
-import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '../../../types/Sync';
 
 interface Values {
   dropboxStorage: DropBoxSettings,

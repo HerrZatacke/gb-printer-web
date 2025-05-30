@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import applyFrame from '../tools/applyFrame';
-import textToTiles from '../tools/textToTiles';
-import { loadFrameData } from '../tools/applyFrame/frameData';
-import useDialogsStore from '../app/stores/dialogsStore';
-import useEditStore from '../app/stores/editStore';
-import useItemsStore from '../app/stores/itemsStore';
-import { useStores } from './useStores';
+import { useStores } from '@/hooks/useStores';
+import useDialogsStore from '@/stores/dialogsStore';
+import useEditStore from '@/stores/editStore';
+import useItemsStore from '@/stores/itemsStore';
+import applyFrame from '@/tools/applyFrame';
+import { loadFrameData } from '@/tools/applyFrame/frameData';
+import textToTiles from '@/tools/textToTiles';
 
 interface GetTilesParams {
   frameId: string,

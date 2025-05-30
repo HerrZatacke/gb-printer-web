@@ -1,6 +1,6 @@
-import { load } from '../storage';
-import { finalLine, initLine, moreLine, terminatorLine } from '../../app/defaults';
-import type { DownloadInfo } from '../../../types/Sync';
+import { finalLine, initLine, moreLine, terminatorLine } from '@/consts/defaults';
+import { load } from '@/tools/storage';
+import type { DownloadInfo } from '@/types/Sync';
 
 export const getTxtFile = async (hash: string, title: string, filename: string): Promise<DownloadInfo> => {
   const plainTiles = await load(hash);

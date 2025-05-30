@@ -1,35 +1,50 @@
-import { useParams } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { useUrl } from '@/hooks/useUrl';
+
+const GALLERY_BASE_PATH = '/gallery';
+
+interface GetUrlParams {
+  pageIndex?: number,
+  group?: string,
+}
 
 interface UseGalleryParams {
   pageIndex: number,
   path: string,
   lastGalleryLink: string,
+  getUrl: (params: GetUrlParams) => string,
 }
 
 export const useGalleryParams = (): UseGalleryParams => {
-  const { '*': gallerySlug } = useParams();
-
+  const { searchParams, pathname } = useUrl();
   const [lastGalleryLink, setLastGalleryLink] = useState<string>('');
 
-  const galleryPathRegex = /(?<slug>.*\/)*(page\/)(?<page>\d*)/g;
+  const pageIndex = parseInt(searchParams.get('page') ?? '1', 10) - 1;
+  const path = searchParams.get('group') || '';
 
-  const match = galleryPathRegex.exec(gallerySlug || '');
+  const getUrl = useCallback((params: GetUrlParams) => {
+    const page: number = typeof params.pageIndex === 'number' ? params.pageIndex : pageIndex;
+    const group: string = typeof params.group === 'string' ? params.group : path;
 
-  const pageParam = match?.groups?.page;
-  const path = match?.groups?.slug || '';
-  const pageIndex = pageParam ? parseInt(pageParam, 10) - 1 : 0;
+    let link = `${GALLERY_BASE_PATH}?page=${page + 1}`;
+    if (group.length) {
+      link = `${link}&group=${group}`;
+    }
+
+    return link;
+  }, [pageIndex, path]);
 
   useEffect(() => {
-    if (typeof gallerySlug === 'string') {
-      const link = `/gallery/${path}page/${pageIndex + 1}`;
+    if (pathname === GALLERY_BASE_PATH) {
+      const link = getUrl({ pageIndex , group: path });
       setLastGalleryLink(link);
     }
-  }, [path, pageIndex, gallerySlug]);
+  }, [path, pageIndex, pathname, getUrl]);
 
   return {
     pageIndex,
     path,
     lastGalleryLink,
+    getUrl,
   };
 };

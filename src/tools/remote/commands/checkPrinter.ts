@@ -1,4 +1,4 @@
-import type { CheckPrinterStatus, PrinterInfo } from '../../../types/Printer';
+import type { CheckPrinterStatus, PrinterInfo } from '@/types/Printer';
 
 const checkPrinter = async (): Promise<CheckPrinterStatus> => {
   const res = await fetch('/dumps/list');

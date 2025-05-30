@@ -1,13 +1,13 @@
 import Queue from 'promise-queue';
-import useInteractionsStore from '../../app/stores/interactionsStore';
-import useSettingsStore from '../../app/stores/settingsStore';
-import useStoragesStore from '../../app/stores/storagesStore';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import useStoragesStore from '@/stores/storagesStore';
+import { delay } from '@/tools/delay';
+import getUploadFiles from '@/tools/getUploadFiles';
+import saveLocalStorageItems from '@/tools/saveLocalStorageItems';
+import type { JSONExportState } from '@/types/ExportState';
+import type { AddToQueueFn, GitStorageSettings } from '@/types/Sync';
 import OctoClient from './OctoClient';
-import getUploadFiles from '../getUploadFiles';
-import saveLocalStorageItems from '../saveLocalStorageItems';
-import { delay } from '../delay';
-import type { AddToQueueFn, GitStorageSettings } from '../../../types/Sync';
-import type { JSONExportState } from '../../../types/ExportState';
 import type { GitSyncTool } from './index';
 
 let octoClient: OctoClient;

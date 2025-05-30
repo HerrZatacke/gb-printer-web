@@ -10,12 +10,14 @@ const localforageFrames = createWrappedInstance<string>({
   storeName: 'gb-printer-web-frames',
 });
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-window.lfi = localforageImages;
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-window.lff = localforageFrames;
+if (typeof window !== 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  window.lfi = localforageImages;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  window.lff = localforageFrames;
+}
 
 const localforageReady = async (): Promise<void> => {
   await localforageFrames.ready();

@@ -1,18 +1,18 @@
-import React, { useMemo } from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import PaginationButton from '../PaginationButton';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
-import useSettingsStore from '../../stores/settingsStore';
-import useFiltersStore from '../../stores/filtersStore';
-import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
+import React, { useMemo } from 'react';
+import PaginationButton from '@/components/PaginationButton';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useFiltersStore from '@/stores/filtersStore';
+import useSettingsStore from '@/stores/settingsStore';
+import getFilteredImagesCount from '@/tools/getFilteredImages/count';
 
 interface Props {
   page: number

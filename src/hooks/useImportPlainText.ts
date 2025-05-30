@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import useImportFile from './useImportFile';
+import useImportFile from '@/hooks/useImportFile';
 
 const useImportPlainText = () => {
   const { handleFileImport } = useImportFile();

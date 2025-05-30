@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import Lightbox from '../../Lightbox';
-import EditFrameStartLine from '../../EditFrameStartLine';
-import EditFrameForm from '../EditFrame/EditFrameForm';
-import useEditFrame from '../../../../hooks/useEditFrame';
-import { saveFrameData } from '../../../../tools/applyFrame/frameData';
-import useDialogsStore from '../../../stores/dialogsStore';
-import useImportsStore from '../../../stores/importsStore';
-import useItemsStore from '../../../stores/itemsStore';
-import { useStores } from '../../../../hooks/useStores';
+import EditFrameStartLine from '@/components/EditFrameStartLine';
+import Lightbox from '@/components/Lightbox';
+import EditFrameForm from '@/components/Overlays/EditFrame/EditFrameForm';
+import useEditFrame from '@/hooks/useEditFrame';
+import { useStores } from '@/hooks/useStores';
+import useDialogsStore from '@/stores/dialogsStore';
+import useImportsStore from '@/stores/importsStore';
+import useItemsStore from '@/stores/itemsStore';
+import { saveFrameData } from '@/tools/applyFrame/frameData';
 
 function FrameQueue() {
   const { dismissDialog } = useDialogsStore();

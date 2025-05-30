@@ -1,5 +1,3 @@
-import React from 'react';
-import filesize from 'filesize';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -11,19 +9,26 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { usePrinter } from '../../../hooks/usePrinter';
-import { PrinterFunction } from '../../../consts/printerFunction';
+import filesize from 'filesize';
+import React from 'react';
+import { PrinterFunction } from '@/consts/printerFunction';
+import { usePrinter } from '@/hooks/usePrinter';
 
 const functionLabels: Record<PrinterFunction, string> = {
   testFile: 'Print test image',
   checkPrinter: 'Check Printer',
   fetchImages: '',
   clearPrinter: 'Clear Printer',
+  tear: 'Tear',
 };
 
-const getFetchImagesLabel = (dumpsLength: number): string => (
-  dumpsLength ? `Fetch ${dumpsLength} images` : 'Fetch images'
-);
+const getFetchImagesLabel = (printerFunctions: PrinterFunction[], dumpsLength: number): string => {
+  if (printerFunctions.includes(PrinterFunction.TEAR) || !dumpsLength) {
+    return 'Fetch images';
+  }
+
+  return `Fetch ${dumpsLength || 0} images`;
+};
 
 function PrinterReport() {
   const {
@@ -50,7 +55,7 @@ function PrinterReport() {
             disabled={
               printerBusy ||
               (
-                [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER].includes(name) &&
+                [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER, PrinterFunction.TEAR].includes(name) &&
                 !printerData?.dumps?.length
               )
             }
@@ -58,7 +63,7 @@ function PrinterReport() {
           >
             {
               name === PrinterFunction.FETCHIMAGES ?
-                getFetchImagesLabel(printerData?.dumps?.length || 0) :
+                getFetchImagesLabel(printerFunctions, printerData?.dumps?.length || 0) :
                 functionLabels[name as PrinterFunction]
             }
           </Button>

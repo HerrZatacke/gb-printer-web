@@ -1,6 +1,6 @@
-import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import React from 'react';
 import useSettingsStore from '../../stores/settingsStore';
 
 function EnableWebUSB() {

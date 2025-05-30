@@ -1,6 +1,5 @@
 /* eslint-disable no-bitwise */
-import type { CustomMetaData, RomByteOffsets } from './types';
-import { RomTypes } from './types';
+import { type CustomMetaData, type RomByteOffsets, RomTypes } from '@/types/transformSav';
 import {
   // Addresses
   byteOffsetsPXLR,

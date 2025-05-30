@@ -1,10 +1,15 @@
 import type FileSaver from 'file-saver';
 import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
-import type { Image } from './Image';
-import type { Palette } from './Palette';
-import type { PluginCompatibilityWrapper } from './PluginCompatibility';
-import type { Dialog } from './Dialog';
-import type { HandeFileImportFn } from './handleFileImport';
+import type { ConfigParamType } from '@/consts/plugins';
+import type { ImportFn } from '@/hooks/useImportExportSettings';
+import type { UseStores } from '@/hooks/useStores';
+import type { InteractionsState } from '@/stores/interactionsStore';
+import type { ItemsState } from '@/stores/itemsStore';
+import type { HandeFileImportFn } from '@/tools/getHandleFileImport';
+import type { Dialog } from '@/types/Dialog';
+import type { Image } from '@/types/Image';
+import type { Palette } from '@/types/Palette';
+import type { PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
 
 export interface PluginFunctions {
   importFiles: HandeFileImportFn,
@@ -12,12 +17,6 @@ export interface PluginFunctions {
   dismissDialog: () => void,
   addImages: (images: Image[]) => void,
   alert: (title: string, text: string) => void,
-}
-
-export enum ConfigParamType {
-  NUMBER = 'number',
-  STRING = 'string',
-  MULTILINE = 'multiline',
 }
 
 export interface ConfigParam {
@@ -88,3 +87,18 @@ declare global {
       ): PluginClassInstance }) => void;
   }
 }
+
+export interface PluginsContext {
+  runWithImage: (pluginUrl: string, imageHash: string) => Promise<void>,
+  runWithImages: (pluginUrl: string, imageSelection: string[]) => Promise<void>,
+  validateAndAddPlugin: (plugin: Plugin) => Promise<boolean>,
+}
+
+export type InitPluginSetupParams =
+  Pick<ItemsState, 'addUpdatePluginProperties'> &
+  Pick<InteractionsState, 'setProgress'> &
+  {
+    collectImageData: CollectImageDataFn,
+    stores: UseStores,
+    importFn: ImportFn,
+  }

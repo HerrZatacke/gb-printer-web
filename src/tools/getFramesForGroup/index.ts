@@ -1,4 +1,4 @@
-import type { Frame } from '../../../types/Frame';
+import type { Frame } from '@/types/Frame';
 
 export const getFramesForGroup = (frames: Frame[], groupName: string): Frame[] => (
   frames.reduce((acc: Frame[], frame: Frame): Frame[] => {

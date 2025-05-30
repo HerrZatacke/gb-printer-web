@@ -1,12 +1,12 @@
-import React from 'react';
 import type { RGBNPalette } from 'gb-image-decoder';
-import GameBoyImage from '../GameBoyImage';
-import useFrame from '../../../hooks/useFrame';
-import Debug from '../Debug';
-import GalleryGridItem from '../GalleryGridItem';
-import useSettingsStore from '../../stores/settingsStore';
-import FrameContextMenu from '../FrameContextMenu';
-import ImageLoading from '../ImageLoading';
+import React from 'react';
+import Debug from '@/components/Debug';
+import FrameContextMenu from '@/components/FrameContextMenu';
+import GalleryGridItem from '@/components/GalleryGridItem';
+import GameBoyImage from '@/components/GameBoyImage';
+import ImageLoading from '@/components/ImageLoading';
+import useFrame from '@/hooks/useFrame';
+import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
   frameId: string,

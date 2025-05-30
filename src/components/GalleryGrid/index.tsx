@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
 import Box from '@mui/material/Box';
+import React, { useMemo } from 'react';
 import type { CSSPropertiesVars, PropsWithChildren } from 'react';
-import useSettingsStore from '../../stores/settingsStore';
-import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
-import { GalleryViews } from '../../../consts/GalleryViews';
+import { GalleryViews } from '@/consts/GalleryViews';
+import { useScreenDimensions } from '@/hooks/useScreenDimensions';
+import useSettingsStore from '@/stores/settingsStore';
 
 interface Props extends PropsWithChildren {
   fixedView?: GalleryViews,

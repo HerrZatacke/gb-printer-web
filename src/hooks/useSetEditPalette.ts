@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import useEditStore from '../app/stores/editStore';
-import useItemsStore from '../app/stores/itemsStore';
-import { NEW_PALETTE_SHORT } from '../consts/SpecialTags';
-import type { Palette } from '../../types/Palette';
+import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
+import useEditStore from '@/stores/editStore';
+import useItemsStore from '@/stores/itemsStore';
+import type { Palette } from '@/types/Palette';
 
 const randomColor = (max: number): string => (
   [

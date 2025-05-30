@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import type { FilteredImagesState } from '../tools/getFilteredImages';
-import { getFilteredImages } from '../tools/getFilteredImages';
-import { addSortIndex, removeSortIndex, sortImages } from '../tools/sortImages';
-import uniqueBy from '../tools/unique/by';
-import type { Image, MonochromeImage } from '../../types/Image';
-import { reduceImagesMonochrome } from '../tools/isRGBNImage';
-import useFiltersStore from '../app/stores/filtersStore';
-import useItemsStore from '../app/stores/itemsStore';
+import useFiltersStore from '@/stores/filtersStore';
+import useItemsStore from '@/stores/itemsStore';
+import type { FilteredImagesState } from '@/tools/getFilteredImages';
+import { getFilteredImages } from '@/tools/getFilteredImages';
+import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
+import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
+import uniqueBy from '@/tools/unique/by';
+import type { Image, MonochromeImage } from '@/types/Image';
 
 const uniqeHash = uniqueBy<Image>('hash');
 

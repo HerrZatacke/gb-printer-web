@@ -1,11 +1,11 @@
-import type { CompatibilityAction, PluginCompatibilityWrapper } from '../../../../../types/PluginCompatibility';
-import { CompatibilityActionType } from '../../../../../types/PluginCompatibility';
-import getHandleFileImport from '../../../../tools/getHandleFileImport';
-import type { UseStores } from '../../../../hooks/useStores';
-import type { ImportFn } from '../../../../hooks/useImportExportSettings';
-import type { DialogQuestion } from '../../../../../types/Dialog';
-import { DialoqQuestionType } from '../../../../../types/Dialog';
-import type { PluginFunctions } from '../../../../../types/Plugin';
+import { DialoqQuestionType } from '@/consts/dialog';
+import { CompatibilityActionType } from '@/consts/plugins';
+import type { ImportFn } from '@/hooks/useImportExportSettings';
+import type { UseStores } from '@/hooks/useStores';
+import getHandleFileImport from '@/tools/getHandleFileImport';
+import type { DialogQuestion } from '@/types/Dialog';
+import type { PluginFunctions } from '@/types/Plugin';
+import type { CompatibilityAction, PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
 
 export const pluginFunctions = (
   { addImages, setDialog, dismissDialog }: UseStores,

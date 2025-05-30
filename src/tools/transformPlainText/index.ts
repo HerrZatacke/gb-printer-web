@@ -1,9 +1,9 @@
-import readFileAs, { ReadAs } from '../readFileAs';
-import transformCapture from '../transformCapture';
-import transformClassic from '../transformClassic';
-import { compressAndHash } from '../storage';
-import { randomId } from '../randomId';
-import useImportsStore from '../../app/stores/importsStore';
+import useImportsStore from '@/stores/importsStore';
+import { randomId } from '@/tools/randomId';
+import readFileAs, { ReadAs } from '@/tools/readFileAs';
+import { compressAndHash } from '@/tools/storage';
+import transformCapture from '@/tools/transformCapture';
+import transformClassic from '@/tools/transformClassic';
 
 export const transformPlainText = async (file: File) => {
   const { importQueueAdd } = useImportsStore.getState();

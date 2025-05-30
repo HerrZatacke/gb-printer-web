@@ -1,7 +1,7 @@
-import useImportsStore from '../../app/stores/importsStore';
-import readFileAs, { ReadAs } from '../readFileAs';
-import { compressAndHash } from '../storage';
-import { randomId } from '../randomId';
+import useImportsStore from '@/stores/importsStore';
+import { randomId } from '@/tools/randomId';
+import readFileAs, { ReadAs } from '@/tools/readFileAs';
+import { compressAndHash } from '@/tools/storage';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer: Uint8Array) => (

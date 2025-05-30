@@ -1,5 +1,3 @@
-import React from 'react';
-import dayjs from 'dayjs';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -8,12 +6,14 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { dateFormat } from '../../../defaults';
-import dateFormatLocale from '../../../../tools/dateFormatLocale';
-import Lightbox from '../../Lightbox';
-import ImageRender from '../../ImageRender';
-import { useLightboxImage } from '../../../../hooks/useLightboxImage';
-import type { RGBNImage } from '../../../../../types/Image';
+import dayjs from 'dayjs';
+import React from 'react';
+import ImageRender from '@/components/ImageRender';
+import Lightbox from '@/components/Lightbox';
+import { dateFormat } from '@/consts/defaults';
+import { useLightboxImage } from '@/hooks/useLightboxImage';
+import dateFormatLocale from '@/tools/dateFormatLocale';
+import type { RGBNImage } from '@/types/Image';
 
 function LightboxImage() {
   const {

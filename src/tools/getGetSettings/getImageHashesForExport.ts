@@ -1,4 +1,4 @@
-import type { Image } from '../../../types/Image';
+import type { Image } from '@/types/Image';
 
 const getImageHashesForExport = (what: 'images' | 'selected_images', images: Image[], imageSelection: string[]): string[] => {
 

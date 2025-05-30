@@ -1,8 +1,8 @@
-import React from 'react';
 import Typography from '@mui/material/Typography';
 import type { Theme } from '@mui/system';
-import useSettingsStore from '../../stores/settingsStore';
-import { getPreStyles } from '../../../styles/tools/getPreStyles';
+import React from 'react';
+import useSettingsStore from '@/stores/settingsStore';
+import { getPreStyles } from '@/styles/tools/getPreStyles';
 
 interface Props {
   text: string,

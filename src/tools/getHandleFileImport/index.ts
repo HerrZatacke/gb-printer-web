@@ -1,14 +1,19 @@
-import { getImportJSON } from '../importExportSettings/getImportJSON';
-import { transformBin } from '../transformBin';
-import { transformBitmaps } from '../transformBitmaps';
-import { transformPlainText } from '../transformPlainText';
-import { transformReduced } from '../transformReduced';
-import { transformRom } from '../transformRom';
-import { transformSav } from '../transformSav';
-import prepareFile from './prepareFile';
+import type { ImportFn } from '@/hooks/useImportExportSettings';
+import { getImportJSON } from '@/tools/importExportSettings/getImportJSON';
+import { transformBin } from '@/tools/transformBin';
+import { transformBitmaps } from '@/tools/transformBitmaps';
+import { transformPlainText } from '@/tools/transformPlainText';
+import { transformReduced } from '@/tools/transformReduced';
+import { transformRom } from '@/tools/transformRom';
+import { transformSav } from '@/tools/transformSav';
 import type { PreparedFile } from './prepareFile';
-import type { ImportFn } from '../../hooks/useImportExportSettings';
-import type { HandeFileImportFn } from '../../../types/handleFileImport';
+import prepareFile from './prepareFile';
+
+export interface HandeFileImportOptions {
+  fromPrinter: boolean
+}
+
+export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
 
 const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
   const importJSON = getImportJSON(importFn);

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { useDebouncedCallback } from 'use-debounce';
 import type { BlendMode, RGBNPalette } from 'gb-image-decoder';
-import { blendModeLabels } from '../../../consts/blendModes';
-import ColorSlider from '../ColorSlider';
-import type { RGBNHashes } from '../../../../types/Image';
+import React, { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
+import ColorSlider from '@/components/ColorSlider';
+import { blendModeLabels } from '@/consts/blendModes';
+import type { RGBNHashes } from '@/types/Image';
 
 interface Props {
   values: RGBNPalette,

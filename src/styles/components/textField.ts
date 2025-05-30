@@ -1,5 +1,5 @@
 import type { Components } from '@mui/material/styles';
-import { textFieldSlotDefaults } from '../../consts/textFieldSlotDefaults';
+import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 
 export const textField = (): Components['MuiTextField'] => ({
   defaultProps: {

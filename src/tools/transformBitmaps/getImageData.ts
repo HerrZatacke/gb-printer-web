@@ -1,14 +1,12 @@
-import readFileAs, { ReadAs } from '../readFileAs';
-import type { QueueImage } from '../../../types/QueueImage';
+import readFileAs, { ReadAs } from '@/tools/readFileAs';
+import type { QueueImage } from '@/types/QueueImage';
 
-/* eslint-disable no-param-reassign */
 const prepareContext = (context: CanvasRenderingContext2D) => {
   context.fillStyle = '#000';
   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
   context.filter = 'grayscale(1)';
   context.imageSmoothingEnabled = false;
 };
-/* eslint-enable no-param-reassign */
 
 const getImageData = (file: File, keepColor = false): Promise<QueueImage> => (
   new Promise((resolve, reject) => {

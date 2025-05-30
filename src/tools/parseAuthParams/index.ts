@@ -5,8 +5,7 @@ const parseAuthParams = (): { dropboxCode?: string } => {
   const dropboxCode = searchParams.get('code');
 
   if (dropboxCode) {
-    window.history.replaceState({}, document.title, './');
-    window.location.replace('#/settings/dropbox');
+    window.history.replaceState({}, '', window.location.pathname);
     return {
       dropboxCode,
     };

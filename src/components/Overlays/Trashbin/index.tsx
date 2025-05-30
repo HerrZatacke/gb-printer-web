@@ -1,9 +1,9 @@
-import React from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Lightbox from '../../Lightbox';
-import useTrashbin from '../../../../hooks/useTrashbin';
+import React from 'react';
+import Lightbox from '@/components/Lightbox';
+import useTrashbin from '@/hooks/useTrashbin';
 
 function Trashbin() {
   const {

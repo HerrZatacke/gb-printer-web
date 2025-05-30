@@ -1,4 +1,4 @@
-import type { FrameData } from '../applyFrame/frameData';
+import type { FrameData } from '@/tools/applyFrame/frameData';
 
 const toUpper = (s: string): string => s.toUpperCase();
 

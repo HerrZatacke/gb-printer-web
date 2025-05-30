@@ -1,4 +1,4 @@
-import { localforageImages, localforageFrames } from '../localforageInstance';
+import { localforageImages, localforageFrames } from '@/tools/localforageInstance';
 
 const transferLocalStorage = (): Promise<void> => (
   new Promise(((resolve) => {

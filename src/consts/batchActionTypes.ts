@@ -1,4 +1,4 @@
-import type { MonochromeImage, Image } from '../../types/Image';
+import type { MonochromeImage, Image } from '@/types/Image';
 
 export enum BatchActionType {
   DELETE = 'delete',

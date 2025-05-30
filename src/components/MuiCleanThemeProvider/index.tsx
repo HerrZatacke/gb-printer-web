@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
-import type { PropsWithChildren } from 'react';
 import { ThemeProvider, useTheme } from '@mui/material/styles';
 import type { Theme } from '@mui/system';
+import React, { useMemo, type PropsWithChildren } from 'react';
 
 function MuiCleanThemeProvider({ children }: PropsWithChildren) {
   const theme = useTheme();

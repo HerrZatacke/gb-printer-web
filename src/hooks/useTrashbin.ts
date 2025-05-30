@@ -1,19 +1,19 @@
 import dayjs from 'dayjs';
 import { saveAs } from 'file-saver';
 import { useCallback } from 'react';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import useItemsStore, { ITEMS_STORE_VERSION } from '../app/stores/itemsStore';
-import { localforageReady, localforageImages, localforageFrames } from '../tools/localforageInstance';
-import { dateFormat } from '../app/defaults';
-import { cleanupStorage, getTrashImages, getTrashFrames } from '../tools/getTrash';
-import { inflate } from '../tools/pack';
-import { reduceImagesMonochrome } from '../tools/isRGBNImage';
-import { reduceItems } from '../tools/reduceArray';
-import type { TrashCount } from '../app/stores/interactionsStore';
-import type { WrappedLocalForageInstance } from '../tools/localforageInstance/createWrappedInstance';
-import type { JSONExportBinary, JSONExportState } from '../../types/ExportState';
-import type { Image } from '../../types/Image';
-import type { Frame } from '../../types/Frame';
+import { dateFormat } from '@/consts/defaults';
+import useInteractionsStore from '@/stores/interactionsStore';
+import type { TrashCount } from '@/stores/interactionsStore';
+import useItemsStore, { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
+import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
+import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
+import { localforageReady, localforageImages, localforageFrames } from '@/tools/localforageInstance';
+import type { WrappedLocalForageInstance } from '@/tools/localforageInstance/createWrappedInstance';
+import { inflate } from '@/tools/pack';
+import { reduceItems } from '@/tools/reduceArray';
+import type { JSONExportBinary, JSONExportState } from '@/types/ExportState';
+import type { Frame } from '@/types/Frame';
+import type { Image } from '@/types/Image';
 
 
 export interface UseTrashbin {
@@ -47,7 +47,7 @@ const getItems = async (keys: string[], storage: WrappedLocalForageInstance<stri
         lines: inflated.split('\n'),
         binary,
       };
-    } catch (error) {
+    } catch {
       return null;
     }
   }));
@@ -80,7 +80,7 @@ const useTrashbin = (): UseTrashbin => {
           invertFramePalette: false,
           frame: '',
         };
-      } catch (error) {
+      } catch {
         return null;
       }
     }).reduce(reduceImagesMonochrome, []);
@@ -108,7 +108,7 @@ const useTrashbin = (): UseTrashbin => {
           name: `Backup export ${frame.hash}`,
           id: `bak${index.toString(10).padStart(2, '0')}`,
         };
-      } catch (error) {
+      } catch {
         return null;
       }
     }).reduce(reduceItems<Frame>, []);

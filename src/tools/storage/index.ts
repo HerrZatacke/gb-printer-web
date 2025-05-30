@@ -1,7 +1,7 @@
+import applyFrame from '@/tools/applyFrame';
+import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
+import { deflate, inflate } from '@/tools/pack';
 import dummyImage from './dummyImage';
-import applyFrame from '../applyFrame';
-import { localforageFrames, localforageImages } from '../localforageInstance';
-import { deflate, inflate } from '../pack';
 
 export interface HashedCompressed {
   dataHash: string,
@@ -62,7 +62,7 @@ export const load = async (
     }
 
     return applyFrame(tiles, frameHash);
-  } catch (error) {
+  } catch {
     if (typeof recover === 'function') {
       // Recovery function is only used by <ImageRender> component
       // it dispatches so that data might get re-loaded from sync storage

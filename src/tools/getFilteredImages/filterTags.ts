@@ -1,5 +1,5 @@
-import { SpecialTags } from '../../consts/SpecialTags';
-import type { Image } from '../../../types/Image';
+import { SpecialTags } from '@/consts/SpecialTags';
+import type { Image } from '@/types/Image';
 
 const filterTags = (activeTags: (SpecialTags | string)[]) => (image: Image): boolean => {
 

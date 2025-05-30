@@ -1,6 +1,6 @@
+import type { BasicMetaData, FileMetaData, ImageMetaData, RomTypes } from '@/types/transformSav';
 import { charMapInt, charMapJp, charMapDateDigit } from './charMap';
 import { getRomType, parseCustomMetadata } from './parseCustomMetadata';
-import type { BasicMetaData, FileMetaData, ImageMetaData, RomTypes } from './types';
 
 const convertToReadable = (data: Uint8Array, cartIsJP: boolean): string => {
   const charMap = cartIsJP ? charMapJp : charMapInt;

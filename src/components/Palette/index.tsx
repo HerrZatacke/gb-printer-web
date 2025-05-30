@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { usePalette } from '../../../hooks/usePalette';
-import GalleryGridItem from '../GalleryGridItem';
-import PaletteContextMenu from '../PaletteContextMenu';
-import { generateGradient, GradientType } from '../../../tools/generateGradient';
+import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import React, { useMemo } from 'react';
+import GalleryGridItem from '@/components/GalleryGridItem';
+import PaletteContextMenu from '@/components/PaletteContextMenu';
+import { usePalette } from '@/hooks/usePalette';
+import { generateGradient, GradientType } from '@/tools/generateGradient';
 
 interface Props {
   shortName: string,

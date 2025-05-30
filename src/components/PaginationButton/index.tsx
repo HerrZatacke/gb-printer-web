@@ -1,7 +1,7 @@
-import React from 'react';
 import IconButton from '@mui/material/Button';
-import { Link as RouterLink } from 'react-router';
-import { useGalleryParams } from '../../../hooks/useGalleryParams';
+import NextLink from 'next/link';
+import React from 'react';
+import { useGalleryParams } from '@/hooks/useGalleryParams';
 
 export interface Props {
   children: React.ReactNode,
@@ -10,13 +10,13 @@ export interface Props {
 }
 
 function PaginationButton(props: Props) {
-  const { path } = useGalleryParams();
+  const { getUrl } = useGalleryParams();
 
   return (
     <IconButton
-      component={props.disabled ? 'span' : RouterLink}
+      component={props.disabled ? 'span' : NextLink}
       disabled={props.disabled}
-      to={`/gallery/${path}page/${props.page + 1}`}
+      href={getUrl({ pageIndex: props.page })}
       title={`To page ${props.page + 1}`}
     >
       { props.children }

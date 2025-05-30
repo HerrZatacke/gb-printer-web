@@ -1,84 +1,17 @@
-import { useEffect, useMemo } from 'react';
-import unique from '../tools/unique';
-import { createRoot } from '../app/contexts/galleryTree';
-import { useGalleryParams } from './useGalleryParams';
-import type { SerializableImageGroup, TreeImageGroup } from '../../types/ImageGroup';
-import type { GalleryTreeContext, PathMap } from '../app/contexts/galleryTree';
-import type { Image } from '../../types/Image';
-import type { DialogOption } from '../../types/Dialog';
-import useSettingsStore from '../app/stores/settingsStore';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import useItemsStore from '../app/stores/itemsStore';
+import { createTreeRoot } from '@/tools/createTreeRoot';
+import { ensureSingleUsage, SingleUsageResult } from '@/tools/ensureSingleUsage';
+import unique from '@/tools/unique';
+import { type DialogOption } from '@/types/Dialog';
+import {
+  type CalculateRootWorkerParams,
+  type CalculateRootWorkerResult,
+  type CalculateRootWorkerError,
+  type PathMap,
+} from '@/types/galleryTreeContext';
+import { type Image } from '@/types/Image';
+import { type SerializableImageGroup, type TreeImageGroup } from '@/types/ImageGroup';
 
 const MAX_INFLATE_DEPTH = 20;
-
-const arrayDifference = (arrayA: string[], arrayB: string[]): string[] => (
-  arrayA.filter((x) => !arrayB.includes(x))
-);
-
-interface SingleUsageResult {
-  groups: SerializableImageGroup[],
-  usedImageHashes: string[],
-  usedGroupIDs: string[],
-}
-
-const ensureSingleUsage = (groups: SerializableImageGroup[]): SingleUsageResult => {
-  let usedImageHashes: string[] = [];
-  let usedGroupIDs: string[] = [];
-
-  const check = (checkGroup: SerializableImageGroup): SerializableImageGroup => {
-    // unique will remove duplicate images inside a single group
-    // which could happen when json exports are manually edited
-    const uniqueImages = unique(arrayDifference(checkGroup?.images, usedImageHashes));
-    const uniqueGroups = unique(arrayDifference(checkGroup?.groups, usedGroupIDs));
-
-    usedImageHashes = unique([...usedImageHashes, ...checkGroup.images]);
-    usedGroupIDs = unique([...usedGroupIDs, ...checkGroup.groups]);
-
-    return {
-      ...checkGroup,
-      images: uniqueImages,
-      groups: uniqueGroups,
-    };
-  };
-
-  return {
-    groups: groups.map(check),
-    usedImageHashes,
-    usedGroupIDs,
-  };
-};
-
-const reducePaths = (prefix: string, groups: TreeImageGroup[]): PathMap[] => (
-  groups.reduce((acc: PathMap[], group: TreeImageGroup): PathMap[] => {
-    const cleanSlug = group.slug.replace(/[^A-Z0-9_-]+/gi, '_');
-
-    let count = 0;
-    let absolute = `${prefix}${cleanSlug}/`;
-
-    const pathExists = (test: string): boolean => (
-      acc.findIndex(({ absolutePath }) => absolutePath === test) !== -1
-    );
-
-    while (pathExists(absolute)) {
-      count += 1;
-      absolute = `${prefix}${cleanSlug}_${count}/`;
-    }
-
-    return ([
-      ...acc,
-      {
-        absolutePath: absolute,
-        group,
-      },
-      ...reducePaths(absolute, group.groups),
-    ]);
-  }, [])
-);
-
-const reduceEmptyGroups = (acc: TreeImageGroup[], group: TreeImageGroup): TreeImageGroup[] => (
-  group.groups.length + group.images.length ? [...acc, group] : acc
-);
 
 const reduceImages = (
   imageHashes: string[],
@@ -104,107 +37,114 @@ const reduceImages = (
   return foundImage || foundCoverImage ? [...acc, taggedImage] : acc;
 };
 
-export const useGalleryTreeContextValue = (): GalleryTreeContext => {
-  const { enableImageGroups } = useSettingsStore();
-  const { setError } = useInteractionsStore();
-  const { imageGroups: stateImageGroups, images: stateImages, setImageGroups } = useItemsStore();
+const reducePaths = (prefix: string, groups: TreeImageGroup[]): PathMap[] => {
+  const reducedPaths = groups.reduce((acc: PathMap[], group: TreeImageGroup): PathMap[] => {
+    const cleanSlug = group.slug.replace(/[^A-Z0-9_-]+/gi, '_');
 
-  const imageGroups = useMemo<SerializableImageGroup[]>(
-    () => (enableImageGroups ? stateImageGroups : []),
-    [enableImageGroups, stateImageGroups],
-  );
+    let count = 0;
+    let absolute = `${prefix}${cleanSlug}/`;
 
-  const { path } = useGalleryParams();
+    const pathExists = (test: string): boolean => (
+      acc.findIndex(({ absolutePath }) => absolutePath === test) !== -1
+    );
+
+    while (pathExists(absolute)) {
+      count += 1;
+      absolute = `${prefix}${cleanSlug}_${count}/`;
+    }
+
+    return ([
+      ...acc,
+      {
+        absolutePath: absolute,
+        group,
+      },
+      ...reducePaths(absolute, group.groups),
+    ]);
+  }, []);
+
+  return reducedPaths;
+};
+
+const reduceEmptyGroups = (acc: TreeImageGroup[], group: TreeImageGroup): TreeImageGroup[] => (
+  group.groups.length + group.images.length ? [...acc, group] : acc
+);
+
+const inflateImageGroup = (depth: number, stateImages: Image[], singleUsageResult: SingleUsageResult) => (imageGroup: SerializableImageGroup): TreeImageGroup => {
+  // return an array of all _found_ imagegroups and completely
+  // omit groups if their ID is not found (possibly deleted)
+  const getImageGroups = (acc: SerializableImageGroup[], groupId: string): SerializableImageGroup[] => {
+    const found = singleUsageResult.groups.find(({ id }) => id === groupId);
+    return found ? [...acc, found] : acc;
+  };
+
+  let childGroups: TreeImageGroup[];
+
+  if (depth > MAX_INFLATE_DEPTH) {
+    const error: CalculateRootWorkerError = {
+      type: 'error',
+      error: `Reached maximum inflate depth at group "${imageGroup.title || imageGroup.slug}" (${imageGroup.id})`,
+    };
+    self.postMessage(error);
+    childGroups = [];
+  } else {
+    try {
+      childGroups = imageGroup.groups
+        .reduce(getImageGroups, [])
+        .map(inflateImageGroup(depth + 1, stateImages, singleUsageResult))
+        .reduce(reduceEmptyGroups, []);
+    } catch {
+      childGroups = [];
+    }
+  }
+
+  const images: Image[] = stateImages.reduce(reduceImages(imageGroup.images, childGroups), []);
+
+  const foundCoverImage: Image | undefined = images.find(({ hash }) => hash === imageGroup.coverImage) || images[0];
+
+  const coverImage = foundCoverImage?.hash || imageGroup.coverImage;
+
+  const tags = unique(images.map((image) => image.tags).flat(1));
+
+  return ({
+    id: imageGroup.id,
+    slug: imageGroup.slug,
+    created: imageGroup.created,
+    title: imageGroup.title,
+    coverImage,
+    groups: childGroups,
+    images,
+    tags,
+  });
+};
+
+self.onmessage = (messageEvent: MessageEvent<CalculateRootWorkerParams>) => {
+  const startTime = Date.now();
+  const { imageGroups, stateImages } = messageEvent.data;
 
   // the .images property of any cleaned group will contain an image only once across all groups.
   // e.g.: if an image is a child of multiple groups, it will be removed from every group but one.
   // -> an image can only ever be member of a single group
-  const singleUsageResult = useMemo<SingleUsageResult>((): SingleUsageResult => (
-    ensureSingleUsage(imageGroups)
-  ), [imageGroups]);
+  const singleUsageResult = ensureSingleUsage(imageGroups);
 
-  const root = useMemo<TreeImageGroup>((): TreeImageGroup => {
-    const inflateImageGroup = (depth: number) => (imageGroup: SerializableImageGroup): TreeImageGroup => {
-      // return an array of all _found_ imagegroups and completely
-      // omit groups if their ID is not found (possibly deleted)
-      const getImageGroups = (acc: SerializableImageGroup[], groupId: string): SerializableImageGroup[] => {
-        const found = singleUsageResult.groups.find(({ id }) => id === groupId);
-        return found ? [...acc, found] : acc;
-      };
+  const rootChildGroups = singleUsageResult.groups
+    .map(inflateImageGroup(0, stateImages, singleUsageResult)) // convert serializable to tree
+    .reduce(reduceEmptyGroups, []) // remove groups without images_and_groups
+    .filter(({ id }) => !singleUsageResult.usedGroupIDs.includes(id)); // remove groups which are children of other groups
 
-      let childGroups: TreeImageGroup[];
+  const rootImageHashes = stateImages.reduce((acc: string[], { hash }: Image): string[] => (
+    !singleUsageResult.usedImageHashes.includes(hash) ? [...acc, hash] : acc
+  ), []); // remove images which are children of other groups
 
-      if (depth > MAX_INFLATE_DEPTH) {
-        setError(new Error(`Reached maximum inflate depth at group "${imageGroup.title || imageGroup.slug}" (${imageGroup.id})`));
-        childGroups = [];
-      } else {
-        try {
-          childGroups = imageGroup.groups
-            .reduce(getImageGroups, [])
-            .map(inflateImageGroup(depth + 1))
-            .reduce(reduceEmptyGroups, []);
-        } catch (error) {
-          childGroups = [];
-        }
-      }
+  const root = {
+    ...createTreeRoot(),
+    groups: rootChildGroups,
+    images: stateImages.reduce(reduceImages(rootImageHashes, rootChildGroups), []),
+  };
 
-      const images: Image[] = stateImages.reduce(reduceImages(imageGroup.images, childGroups), []);
+  const paths = reducePaths('', root.groups);
 
-      const foundCoverImage: Image | undefined = images.find(({ hash }) => hash === imageGroup.coverImage) || images[0];
-
-      const coverImage = foundCoverImage?.hash || imageGroup.coverImage;
-
-      const tags = unique(images.map((image) => image.tags).flat(1));
-
-      return ({
-        id: imageGroup.id,
-        slug: imageGroup.slug,
-        created: imageGroup.created,
-        title: imageGroup.title,
-        coverImage,
-        groups: childGroups,
-        images,
-        tags,
-      });
-    };
-
-    const rootChildGroups = singleUsageResult.groups
-      .map(inflateImageGroup(0)) // convert serializable to tree
-      .reduce(reduceEmptyGroups, []) // remove groups without images_and_groups
-      .filter(({ id }) => !singleUsageResult.usedGroupIDs.includes(id)); // remove groups which are children of other groups
-
-    const rootImageHashes = stateImages.reduce((acc: string[], { hash }: Image): string[] => (
-      !singleUsageResult.usedImageHashes.includes(hash) ? [...acc, hash] : acc
-    ), []); // remove images which are children of other groups
-
-    const newRoot = {
-      ...createRoot(),
-      groups: rootChildGroups,
-      images: stateImages.reduce(reduceImages(rootImageHashes, rootChildGroups), []),
-    };
-
-    return newRoot;
-  }, [singleUsageResult, stateImages, setError]);
-
-  const paths = useMemo<PathMap[]>((): PathMap[] => (reducePaths('', root.groups)), [root]);
-
-  // Cleanup effect:
-  // as groups without subgroups or images are filtered/hidden,
-  // they should be deleted from the store as well
-  useEffect(() => {
-    if (!enableImageGroups) {
-      return;
-    }
-
-    if (stateImageGroups.length > paths.length) {
-      const idsInPaths = paths.map(({ group }) => group.id);
-      const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-      setImageGroups(usedGroups);
-    }
-  }, [enableImageGroups, paths, setImageGroups, stateImageGroups]);
-
-  const pathsOptions = useMemo<DialogOption[]>((): DialogOption[] => (
-    paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
+  const pathsOptions = paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
       const depth = absolutePath.split('/').length - 1;
       const indent = Array(depth).fill('\u2007').join('');
 
@@ -218,16 +158,14 @@ export const useGalleryTreeContextValue = (): GalleryTreeContext => {
     }, [{
       value: '',
       name: '/',
-    }])
-  ), [paths]);
+    }]);
 
-  const result = useMemo<GalleryTreeContext>((): GalleryTreeContext => {
-    const view = paths.find(({ absolutePath }) => absolutePath === path)?.group || root;
-    const covers = view.groups.map(({ coverImage }) => coverImage);
-    const images = view.images.filter((image: Image) => !covers.includes(image.hash));
-
-    return { view, covers, paths, images, pathsOptions, root };
-  }, [path, paths, pathsOptions, root]);
-
-  return result;
+  const result: CalculateRootWorkerResult = {
+    type: 'result',
+    root,
+    paths,
+    pathsOptions,
+    duration: Date.now() - startTime,
+  };
+  self.postMessage(result);
 };

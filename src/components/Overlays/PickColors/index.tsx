@@ -1,16 +1,16 @@
-import React, { useMemo, useState } from 'react';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CircleIcon from '@mui/icons-material/Circle';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CircleIcon from '@mui/icons-material/Circle';
-import useEditStore from '../../../stores/editStore';
-import Lightbox from '../../Lightbox';
-import { NEW_PALETTE_SHORT } from '../../../../consts/SpecialTags';
-import { toHexColor } from '../../../../hooks/usePaletteFromFile';
-import ImageRender from '../../ImageRender';
-import usePreviewImages from '../../../../hooks/usePreviewImages';
+import React, { useMemo, useState } from 'react';
+import ImageRender from '@/components/ImageRender';
+import Lightbox from '@/components/Lightbox';
+import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
+import { toHexColor } from '@/hooks/usePaletteFromFile';
+import usePreviewImages from '@/hooks/usePreviewImages';
+import useEditStore from '@/stores/editStore';
 
 function PickColors() {
   const { pickColors, setEditPalette, cancelEditPalette, cancelPickColors } = useEditStore();

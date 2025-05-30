@@ -1,7 +1,7 @@
-import React from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
-import Lightbox from '../../Lightbox';
-import { useProgressBox } from '../../../../hooks/useProgressBox';
+import React from 'react';
+import Lightbox from '@/components/Lightbox';
+import { useProgressBox } from '@/hooks/useProgressBox';
 
 function ProgressBox() {
   const { message, progress } = useProgressBox();

@@ -1,4 +1,4 @@
-import type { Values } from '../javascript/app/stores/itemsStore';
+import type { Values } from '@/stores/itemsStore';
 
 interface ExportableState extends Partial<Values> {
   lastUpdateUTC: number,

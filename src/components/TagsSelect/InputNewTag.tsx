@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import type { AutocompleteInputChangeReason, AutocompleteChangeReason } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import type { AutocompleteInputChangeReason, AutocompleteChangeReason } from '@mui/material';
-import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
-import { useAvailableTags } from '../../../hooks/useAvailableTags';
-import { TagUpdateMode } from '../../../tools/modifyTagChanges';
+import React, { useState } from 'react';
+import MuiCleanThemeProvider from '@/components/MuiCleanThemeProvider';
+import { useAvailableTags } from '@/hooks/useAvailableTags';
+import { TagUpdateMode } from '@/tools/modifyTagChanges';
 
 interface Props {
   updateTags: (mode: TagUpdateMode, value: string) => void,
@@ -25,7 +25,7 @@ function InputNewTag({ updateTags, selectedTags }: Props) {
         inputValue={userValue}
         renderInput={(params) => (
           <TextField
-            // eslint-disable-next-line react/jsx-props-no-spreading
+
             {...params}
             label="Tags"
           />

@@ -1,9 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import type { PropsWithChildren } from 'react';
-import type { Theme } from '@mui/system';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { alpha } from '@mui/material';
-import { blend } from '@mui/system';
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
@@ -12,12 +8,16 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useTheme } from '@mui/material/styles';
+import { blend } from '@mui/system';
+import type { Theme } from '@mui/system';
+import type { PropsWithChildren } from 'react';
+import React, { useMemo, useState } from 'react';
 
 interface WrapperProps extends PropsWithChildren {
   sx?: object,
   component?: React.ElementType,
-  to?: string,
+  href?: string,
   onClick?: (ev: React.MouseEvent) => void,
   disableRipple?: boolean,
 }
@@ -118,7 +118,7 @@ function GalleryGridItem({
       )}
       <Card sx={rootStyle}>
         <CardActionArea
-          // eslint-disable-next-line react/jsx-props-no-spreading
+
           {...wrapperProps}
           component={wrapperProps.component || 'span'}
           tabIndex={wrapperProps.component ? undefined : -1}
@@ -200,7 +200,7 @@ function GalleryGridItem({
         <ContextMenuComponent
           menuAnchor={menuAnchor}
           onClose={() => setMenuAnchor(null)}
-          // eslint-disable-next-line react/jsx-props-no-spreading
+
           {...contextMenuProps}
         />
       </Card>

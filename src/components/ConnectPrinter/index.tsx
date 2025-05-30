@@ -1,9 +1,9 @@
-import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import CircularProgress from '@mui/material/CircularProgress';
-import useIframeLoaded from '../../../hooks/useIframeLoaded';
+import React from 'react';
+import useIframeLoaded from '@/hooks/useIframeLoaded';
 
 const iframeSupported = (printerUrl?: string) => {
   if (!printerUrl) {

@@ -1,12 +1,13 @@
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { ROOT_ID, useGalleryTreeContext } from '../galleryTree';
-import { useGalleryParams } from '../../../hooks/useGalleryParams';
-import { getFilteredImages } from '../../../tools/getFilteredImages';
-import useFiltersStore from '../../stores/filtersStore';
-import useSettingsStore from '../../stores/settingsStore';
-import type { TreeImageGroup } from '../../../../types/ImageGroup';
-import type { Image } from '../../../../types/Image';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryParams } from '@/hooks/useGalleryParams';
+import useFiltersStore from '@/stores/filtersStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { ROOT_ID } from '@/tools/createTreeRoot';
+import { getFilteredImages } from '@/tools/getFilteredImages';
+import { type Image } from '@/types/Image';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface UseNavigationTools {
   getGroupPath: (groupId: string) => string,
@@ -27,12 +28,12 @@ interface ShouldNavigate {
 }
 
 export const useNavigationTools = (): UseNavigationTools => {
-  const routerNavigate = useNavigate();
+  const router = useRouter();
   const { paths, root } = useGalleryTreeContext();
   const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate>({});
   const { sortBy, filtersActiveTags, recentImports } = useFiltersStore();
   const { pageSize } = useSettingsStore();
-  const { path: currentPath } = useGalleryParams();
+  const { path: currentPath, getUrl } = useGalleryParams();
 
   const imageFilter = useCallback((images: Image[]): Image[] => (
     getFilteredImages(images, {
@@ -48,17 +49,17 @@ export const useNavigationTools = (): UseNavigationTools => {
       hash === imageHash
     ));
 
-    return Math.floor(imageIndex / pageSize) + 1;
+    return Math.floor(imageIndex / pageSize);
   }, [imageFilter, pageSize]);
 
   const getGroupPath = useCallback((groupId: string): string => {
     if (groupId === ROOT_ID) {
-      return '/gallery/page/1';
+      return getUrl({ pageIndex: 0, group: '' });
     }
 
     const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath || '';
-    return `/gallery/${groupPath}page/1`;
-  }, [paths]);
+    return getUrl({ pageIndex: 0, group: groupPath });
+  }, [getUrl, paths]);
 
   const currentGroup = useMemo<TreeImageGroup>(() => (
     paths.find(({ absolutePath }) => (absolutePath === currentPath))?.group || root
@@ -78,8 +79,8 @@ export const useNavigationTools = (): UseNavigationTools => {
 
     const pageIndex = getImagePageIndexInGroup(imageHash, group);
 
-    return `/gallery/${viewSlug}page/${pageIndex}`;
-  }, [getImagePageIndexInGroup, paths, root]);
+    return getUrl({ pageIndex, group: viewSlug });
+  }, [getImagePageIndexInGroup, getUrl, paths, root]);
 
   const navigateToImage = (hash: string) => {
     setShouldNavigate({ imageHash: hash });
@@ -87,13 +88,13 @@ export const useNavigationTools = (): UseNavigationTools => {
 
   useEffect(() => {
     if (shouldNavigate.imageHash) {
-      routerNavigate(getPagedImagePath(shouldNavigate.imageHash));
+      router.push(getPagedImagePath(shouldNavigate.imageHash));
       setShouldNavigate({});
     } else if (shouldNavigate.groupId) {
-      routerNavigate(getGroupPath(shouldNavigate.groupId));
+      router.push(getGroupPath(shouldNavigate.groupId));
       setShouldNavigate({});
     }
-  }, [getGroupPath, getPagedImagePath, routerNavigate, shouldNavigate]);
+  }, [getGroupPath, getPagedImagePath, router, shouldNavigate]);
 
   return {
     currentGroup,

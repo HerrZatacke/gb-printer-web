@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
-import type { Image } from '../../types/Image';
-import useDialogsStore from '../app/stores/dialogsStore';
-import useEditStore from '../app/stores/editStore';
-import useFiltersStore, { ImageSelectionMode } from '../app/stores/filtersStore';
-import useImportsStore from '../app/stores/importsStore';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import useItemsStore from '../app/stores/itemsStore';
-import useStoragesStore from '../app/stores/storagesStore';
-import type { Dialog } from '../../types/Dialog';
-import type { ExportableState } from '../../types/ExportState';
+import useDialogsStore from '@/stores/dialogsStore';
+import useEditStore from '@/stores/editStore';
+import useFiltersStore, { ImageSelectionMode } from '@/stores/filtersStore';
+import useImportsStore from '@/stores/importsStore';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useItemsStore from '@/stores/itemsStore';
+import useStoragesStore from '@/stores/storagesStore';
+import type { Dialog } from '@/types/Dialog';
+import type { ExportableState } from '@/types/ExportState';
+import type { Image } from '@/types/Image';
 
 export interface UseStores {
   addImages: (images: Image[]) => void,

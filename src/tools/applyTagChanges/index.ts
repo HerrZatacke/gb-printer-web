@@ -1,5 +1,5 @@
+import type { TagUpdates } from '@/tools/modifyTagChanges';
 import unique from '../unique';
-import type { TagUpdates } from '../modifyTagChanges';
 
 export interface TagChange extends TagUpdates {
   initial: readonly string[],

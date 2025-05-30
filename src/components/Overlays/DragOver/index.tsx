@@ -1,10 +1,10 @@
-import React from 'react';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { alpha } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { alpha } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Typography from '@mui/material/Typography';
+import React from 'react';
 
 function DragOver() {
   const theme = useTheme();

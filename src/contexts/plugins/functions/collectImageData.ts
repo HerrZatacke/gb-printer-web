@@ -1,16 +1,16 @@
 import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
 import type { RGBNPalette, RGBNTiles } from 'gb-image-decoder';
-import type { GetCanvasOptions, GetCollectImageDataFn, PluginImageData } from '../../../../../types/Plugin';
-import useItemsStore from '../../../stores/itemsStore';
-import useSettingsStore from '../../../stores/settingsStore';
-import { getImagePalettes } from '../../../../tools/getImagePalettes';
-import { loadImageTiles } from '../../../../tools/loadImageTiles';
-import { isRGBNImage } from '../../../../tools/isRGBNImage';
-import { loadFrameData } from '../../../../tools/applyFrame/frameData';
-import { getMonochromeImageCreationParams } from '../../../../tools/getMonochromeImageCreationParams';
-import type { Image, MonochromeImage } from '../../../../../types/Image';
-import type { Palette } from '../../../../../types/Palette';
-import { getPaletteSettings } from '../../../../tools/getPaletteSettings';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { loadFrameData } from '@/tools/applyFrame/frameData';
+import { getImagePalettes } from '@/tools/getImagePalettes';
+import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
+import { getPaletteSettings } from '@/tools/getPaletteSettings';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import { loadImageTiles } from '@/tools/loadImageTiles';
+import type { Image, MonochromeImage } from '@/types/Image';
+import type { Palette } from '@/types/Palette';
+import type { GetCanvasOptions, GetCollectImageDataFn, PluginImageData } from '@/types/Plugin';
 
 export const getCollectImageData: GetCollectImageDataFn = (images: Image[]) => (hash: string): PluginImageData => {
   const { frames, palettes } = useItemsStore.getState();

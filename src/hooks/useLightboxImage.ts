@@ -1,18 +1,18 @@
-import screenfull from 'screenfull';
-import { useEffect, useMemo } from 'react';
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
-import { getFilteredImages } from '../tools/getFilteredImages';
-import useFiltersStore from '../app/stores/filtersStore';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import useItemsStore from '../app/stores/itemsStore';
-import useSettingsStore from '../app/stores/settingsStore';
-import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '../../types/Image';
-import type { Palette } from '../../types/Palette';
-import { useGalleryTreeContext } from '../app/contexts/galleryTree';
-import { isRGBNImage } from '../tools/isRGBNImage';
-import { getImagePalettes } from '../tools/getImagePalettes';
-import { getPaletteSettings } from '../tools/getPaletteSettings';
-import { missingGreyPalette } from '../app/defaults';
+import { useEffect, useMemo } from 'react';
+import screenfull from 'screenfull';
+import { missingGreyPalette } from '@/consts/defaults';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useFiltersStore from '@/stores/filtersStore';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { getFilteredImages } from '@/tools/getFilteredImages';
+import { getImagePalettes } from '@/tools/getImagePalettes';
+import { getPaletteSettings } from '@/tools/getPaletteSettings';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '@/types/Image';
+import type { Palette } from '@/types/Palette';
 
 interface LightboxImageData {
   title: string,

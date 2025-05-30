@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { ConfigParamType } from '../../../../../../types/Plugin';
+import React, { useState } from 'react';
+import { ConfigParamType } from '@/consts/plugins';
 
 const inputValueFromType = (type: ConfigParamType, value: string): string | number => {
   switch (type) {

@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import type { RGBNHashes } from '../../../../types/Image';
-import { getChannelColor } from '../../../tools/getChannelColor';
+import React, { useMemo } from 'react';
+import { getChannelColor } from '@/tools/getChannelColor';
+import type { RGBNHashes } from '@/types/Image';
 
 interface RGBNCheckbox {
   value: boolean,

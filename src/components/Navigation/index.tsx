@@ -1,38 +1,43 @@
-import React, { useMemo, useState } from 'react';
+'use client';
+
+import CloseIcon from '@mui/icons-material/Close';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import DeleteIcon from '@mui/icons-material/Delete';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import MenuIcon from '@mui/icons-material/Menu';
+import SyncIcon from '@mui/icons-material/Sync';
+import UsbIcon from '@mui/icons-material/Usb';
+import { alpha } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import CloseIcon from '@mui/icons-material/Close';
 import Container from '@mui/material/Container';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import LightModeIcon from '@mui/icons-material/LightMode';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import SyncIcon from '@mui/icons-material/Sync';
 import { ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
-import UsbIcon from '@mui/icons-material/Usb';
-import { NavLink, useLocation } from 'react-router';
-import { alpha } from '@mui/material';
-import useNavigation from '../../../hooks/useNavigation';
-import { useGalleryParams } from '../../../hooks/useGalleryParams';
-import useInteractionsStore from '../../stores/interactionsStore';
-import { reduceItems } from '../../../tools/reduceArray';
-import useSettingsStore from '../../stores/settingsStore';
-import { ThemeName } from '../../../consts/theme';
-import { lightTheme } from '../../../styles/themes';
+import type { Theme } from '@mui/system';
+import Link from 'next/link';
+import React, { useEffect, useMemo, useState } from 'react';
+import { ThemeName } from '@/consts/theme';
+import { useGalleryParams } from '@/hooks/useGalleryParams';
+import useNavigation from '@/hooks/useNavigation';
+import { useUrl } from '@/hooks/useUrl';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { lightTheme } from '@/styles/themes';
+import { reduceItems } from '@/tools/reduceArray';
 
 interface NavItem {
   label: string,
   route: string,
+  prefetch: boolean,
 }
 
 interface NavActionItem {
@@ -42,14 +47,16 @@ interface NavActionItem {
   onClick: () => void,
 }
 
-const drawerContainer = document.body;
-
 function Navigation() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
-  const { lastGalleryLink } = useGalleryParams();
-  const { pathname } = useLocation();
+  const [drawerContainer, setDrawerContainer] = useState<HTMLElement | undefined>(undefined);
+  const { fullPath } = useUrl();
   const { themeName, setThemeName } = useSettingsStore();
+  const { lastGalleryLink, getUrl } = useGalleryParams();
+
+  useEffect(() => {
+    setDrawerContainer(document.body);
+  }, []);
 
   const {
     disableSerials,
@@ -77,30 +84,36 @@ function Navigation() {
     [
       {
         label: 'Home',
-        route: '/home',
+        route: '/',
+        prefetch: false,
       },
       {
         label: 'Gallery',
-        route: lastGalleryLink && pathname !== lastGalleryLink ? lastGalleryLink : '/gallery/page/1',
+        route: lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0 }),
+        prefetch: true,
       },
       {
         label: 'Import',
         route: '/import',
+        prefetch: false,
       },
       {
         label: 'Palettes',
         route: '/palettes',
+        prefetch: true,
       },
       {
         label: 'Frames',
         route: '/frames',
+        prefetch: true,
       },
       {
         label: 'Settings',
-        route: '/settings',
+        route: '/settings/generic',
+        prefetch: false,
       },
     ].reduce(reduceItems<NavItem>, [])
-  ), [lastGalleryLink, pathname]);
+  ), [fullPath, getUrl, lastGalleryLink]);
 
   const navActionItems = useMemo<NavActionItem[]>(() => (
     [
@@ -160,11 +173,12 @@ function Navigation() {
                 aria-label="Main Navigation"
                 sx={{ display: { xs: 'none', md: 'inline-flex' }, width: '100%' }}
               >
-                {navItems.map(({ route, label }) => (
+                {navItems.map(({ route, label, prefetch }) => (
                   <Button
                     key={route}
-                    to={route}
-                    component={NavLink}
+                    href={route}
+                    prefetch={prefetch}
+                    component={Link}
                     color="inherit"
                     onClick={() => setMobileNavOpen(false)}
                   >
@@ -240,10 +254,10 @@ function Navigation() {
           {navItems.map(({ route, label }) => (
             <ListItem key={route} disablePadding>
               <ListItemButton
-                to={route}
-                component={NavLink}
+                href={route}
+                component={Link}
                 onClick={() => setMobileNavOpen(false)}
-                sx={(theme) => ({
+                sx={(theme: Theme) => ({
                   '&.active': {
                     background: theme.palette.secondary.light,
                     color: theme.palette.secondary.contrastText,

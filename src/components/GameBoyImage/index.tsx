@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import type { RGBNPalette, RGBNTiles } from 'gb-image-decoder';
 import { getMonochromeImageUrl, getRGBNImageUrl, maxTiles, Rotation } from 'gb-image-decoder';
-import { getMonochromeImageCreationParams } from '../../../tools/getMonochromeImageCreationParams';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
 
 export interface GameBoyImageProps {
   palette?: string[] | RGBNPalette,
@@ -37,7 +37,8 @@ function GameBoyImage({
       return;
     }
 
-    (async () => {
+    // ToDo: switch to requestIdleCallback once safari supports it.
+    const handle = setTimeout(async () => {
       try {
         if (isRGBN) {
           setSrc(await getRGBNImageUrl({
@@ -67,7 +68,12 @@ function GameBoyImage({
           setDecoderError(error.message);
         }
       }
-    })();
+    }, 1);
+
+    return () => {
+      clearTimeout(handle);
+      // cancelIdleCallback(handle);
+    };
   }, [
     tiles,
     palette,

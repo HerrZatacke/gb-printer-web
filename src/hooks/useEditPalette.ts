@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import useEditStore from '../app/stores/editStore';
-import useItemsStore from '../app/stores/itemsStore';
-import usePreviewImages from './usePreviewImages';
-import type { Palette } from '../../types/Palette';
-import type { MonochromeImage } from '../../types/Image';
-import { NEW_PALETTE_SHORT } from '../consts/SpecialTags';
-import { useStores } from './useStores';
+import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
+import { useStores } from '@/hooks/useStores';
+import useEditStore from '@/stores/editStore';
+import useItemsStore from '@/stores/itemsStore';
+import type { MonochromeImage } from '@/types/Image';
+import type { Palette } from '@/types/Palette';
+import usePreviewImages from '@/hooks/usePreviewImages';
 
 interface UseEditPalette {
   canConfirm: boolean,

@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+'use client';
+
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import React, { useState } from 'react';
+import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
+import { usePluginsContext } from '@/contexts/plugins';
+import useInteractionsStore from '@/stores/interactionsStore';
+import useItemsStore from '@/stores/itemsStore';
 import PluginConfig from './PluginConfig';
-import useInteractionsStore from '../../../../stores/interactionsStore';
-import useItemsStore from '../../../../stores/itemsStore';
-import { usePluginsContext } from '../../../../contexts/plugins';
-import { textFieldSlotDefaults } from '../../../../../consts/textFieldSlotDefaults';
 
 
-function PluginSettings() {
+function SettingsPlugins() {
   const { plugins } = useItemsStore();
   const { setError } = useInteractionsStore();
   const { validateAndAddPlugin } = usePluginsContext();
@@ -22,7 +24,7 @@ function PluginSettings() {
   return (
     <Stack
       direction="column"
-      gap={6}
+      gap={10}
     >
       <TextField
         id="plugin-settings-add-plugin"
@@ -33,7 +35,7 @@ function PluginSettings() {
             href="https://herrzatacke.github.io/gb-printer-web-plugins/"
             target="_blank"
           >
-            🔗 A selection plugins can be found here
+            🔗 A selection of plugins can be found here
           </Link>
         )}
         type="text"
@@ -77,7 +79,7 @@ function PluginSettings() {
 
         <Stack
           direction="column"
-          gap={2}
+          gap={6}
           component="ul"
         >
           {
@@ -85,7 +87,7 @@ function PluginSettings() {
               <PluginConfig
                 key={plugin.url}
                 pluginIndex={pluginIndex}
-                // eslint-disable-next-line react/jsx-props-no-spreading
+
                 {...plugin}
               />
             ))
@@ -96,4 +98,4 @@ function PluginSettings() {
   );
 }
 
-export default PluginSettings;
+export default SettingsPlugins;

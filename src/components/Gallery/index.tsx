@@ -1,19 +1,21 @@
-import React from 'react';
+'use client';
+
 import Stack from '@mui/material/Stack';
-import useSettingsStore from '../../stores/settingsStore';
-import FolderBreadcrumb from '../FolderBreadcrumb';
-import GalleryGrid from '../GalleryGrid';
-import GalleryGroup from '../GalleryGroup';
-import GalleryHeader from '../GalleryHeader';
-import GalleryImage from '../GalleryImage';
-import GalleryNumbers from '../GalleryNumbers';
-import StorageWarning from '../StorageWarning';
-import Pagination from '../Pagination';
-import { useGallery } from './useGallery';
+import React from 'react';
+import FolderBreadcrumb from '@/components/FolderBreadcrumb';
+import GalleryGrid from '@/components/GalleryGrid';
+import GalleryGroup from '@/components/GalleryGroup';
+import GalleryHeader from '@/components/GalleryHeader';
+import GalleryImage from '@/components/GalleryImage';
+import GalleryNumbers from '@/components/GalleryNumbers';
+import Pagination from '@/components/Pagination';
+import StorageWarning from '@/components/StorageWarning';
+import { useGallery } from '@/hooks/useGallery';
+import useSettingsStore from '@/stores/settingsStore';
 
 function Gallery() {
   const {
-    imageCount,
+    totalImageCount,
     selectedCount,
     filteredCount,
     page,
@@ -30,7 +32,7 @@ function Gallery() {
     >
       <StorageWarning />
       <GalleryNumbers
-        imageCount={imageCount}
+        imageCount={totalImageCount}
         selectedCount={selectedCount}
         filteredCount={filteredCount}
       />

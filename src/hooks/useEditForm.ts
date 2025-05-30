@@ -1,18 +1,18 @@
-import { useEffect, useMemo, useState } from 'react';
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
-import useBatchUpdate from './useBatchUpdate';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import useItemsStore from '../app/stores/itemsStore';
-import useEditStore from '../app/stores/editStore';
-import { missingGreyPalette } from '../app/defaults';
-import { isRGBNImage } from '../tools/isRGBNImage';
-import { getImageTileCount } from '../tools/loadImageTiles';
-import modifyTagChanges from '../tools/modifyTagChanges';
-import type { ImageUpdates } from '../../types/ImageActions';
-import type { TagUpdateMode } from '../tools/modifyTagChanges';
-import type { ImageMetadata, MonochromeImage, RGBNImage } from '../../types/Image';
-import type { Palette } from '../../types/Palette';
-import type { TagChange } from '../tools/applyTagChanges';
+import { useEffect, useMemo, useState } from 'react';
+import { missingGreyPalette } from '@/consts/defaults';
+import useBatchUpdate from '@/hooks/useBatchUpdate';
+import { useScreenDimensions } from '@/hooks/useScreenDimensions';
+import useEditStore from '@/stores/editStore';
+import useItemsStore from '@/stores/itemsStore';
+import type { TagChange } from '@/tools/applyTagChanges';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import { getImageTileCount } from '@/tools/loadImageTiles';
+import modifyTagChanges from '@/tools/modifyTagChanges';
+import type { TagUpdateMode } from '@/tools/modifyTagChanges';
+import type { ImageMetadata, MonochromeImage, RGBNImage } from '@/types/Image';
+import type { ImageUpdates } from '@/types/ImageActions';
+import type { Palette } from '@/types/Palette';
 
 interface Batch {
   created: boolean,
@@ -109,7 +109,7 @@ export const useEditForm = (): UseEditForm => {
   const tileCounter = getImageTileCount(images, frames);
 
 
-  const { windowDimensions } = useInteractionsStore();
+  const dimensions = useScreenDimensions();
 
   const toEdit = useMemo((): ToEdit | undefined => {
     if (!editImages) {
@@ -129,14 +129,9 @@ export const useEditForm = (): UseEditForm => {
       return undefined;
     }
 
-    // ToDo: for nextjs migration
-    if (windowDimensions.width === 0 || windowDimensions.height === 0) {
-      throw new Error('windowDimensions not initialized');
-    }
-
-    const height = (windowDimensions.width <= 600) ?
-      windowDimensions.height :
-      Math.min(900, windowDimensions.height);
+    const height = (dimensions.width <= 600) ?
+      dimensions.height :
+      Math.min(900, dimensions.height);
 
     const typeCount = batch.reduce((acc, selHash) => {
       const tcImage = images.find(({ hash }) => hash === selHash);
@@ -177,7 +172,7 @@ export const useEditForm = (): UseEditForm => {
       framePaletteShort,
       rotation: image.rotation,
     });
-  }, [editImages, images, windowDimensions]);
+  }, [editImages, images, dimensions]);
 
   const [title, updateTitle] = useState<string>(toEdit?.title || '');
   const [created, updateCreated] = useState<string>(toEdit?.created || '');

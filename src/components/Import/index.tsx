@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+'use client';
+
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import ConnectPrinter from '../ConnectPrinter';
-import PrinterReport from '../PrinterReport';
+import TextField from '@mui/material/TextField';
+import React, { useEffect, useState } from 'react';
+import ConnectPrinter from '@/components/ConnectPrinter';
+import PrinterReport from '@/components/PrinterReport';
+import { ExportTypes } from '@/consts/exportTypes';
 import { useImport } from './useImport';
-import { ExportTypes } from '../../../consts/exportTypes';
 
 function Import() {
   const [text, setText] = useState('');

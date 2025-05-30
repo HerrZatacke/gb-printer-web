@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import type { Dayjs } from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import ToggleButton from '@mui/material/ToggleButton';
 import Stack from '@mui/material/Stack';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { Rotation } from 'gb-image-decoder';
-import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
-import { dateFormat } from '../../defaults';
-import type { ImageMetadata, RGBNHashes } from '../../../../types/Image';
+import React, { useEffect, useState } from 'react';
+import { dateFormat } from '@/consts/defaults';
+import type { ImageMetadata, RGBNHashes } from '@/types/Image';
 import useSettingsStore from '../../stores/settingsStore';
 import MetaTable from '../MetaTable';
+import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
 
 interface Props {
   hash: string,

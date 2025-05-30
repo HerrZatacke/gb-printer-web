@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import Stack from '@mui/material/Stack';
-import Alert from '@mui/material/Alert';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import isGoodScaleFactor from '../../../tools/isGoodScaleFactor';
-import { applyBitmapFilter } from '../../../tools/applyBitmapFilter';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import React, { useEffect, useRef } from 'react';
+import { applyBitmapFilter } from '@/tools/applyBitmapFilter';
+import isGoodScaleFactor from '@/tools/isGoodScaleFactor';
 
 interface Props {
   imageData: ImageData, // From QueueImage

@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { BlendMode } from 'gb-image-decoder';
-import { dateFormat, defaultRGBNPalette } from '../../../../defaults';
-import type { Image, MonochromeImage, RGBNImage } from '../../../../../../types/Image';
-import { isRGBNImage } from '../../../../../tools/isRGBNImage';
+import { dateFormat, defaultRGBNPalette } from '@/consts/defaults';
+import { isRGBNImage } from '@/tools/isRGBNImage';
+import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
 
 
 export const cleanImages = (dirtyImages: Image[]): Image[] => {

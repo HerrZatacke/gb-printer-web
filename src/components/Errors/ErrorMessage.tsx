@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import type { Theme } from '@mui/system';
+import CloseIcon from '@mui/icons-material/Close';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
-import type { ErrorMessage } from '../../stores/interactionsStore';
-import { getPreStyles } from '../../../styles/tools/getPreStyles';
+import type { Theme } from '@mui/system';
+import React, { useState } from 'react';
+import type { ErrorMessage } from '@/stores/interactionsStore';
+import { getPreStyles } from '@/styles/tools/getPreStyles';
 
 interface Props {
   dismiss: () => void,

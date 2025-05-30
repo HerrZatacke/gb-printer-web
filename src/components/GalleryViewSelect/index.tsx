@@ -1,14 +1,14 @@
-import React from 'react';
-import type { ReactNode } from 'react';
+import AppsIcon from '@mui/icons-material/Apps';
+import SquareIcon from '@mui/icons-material/Square';
+import ViewCompactIcon from '@mui/icons-material/ViewCompact';
+import WindowSharpIcon from '@mui/icons-material/WindowSharp';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import AppsIcon from '@mui/icons-material/Apps';
-import ViewCompactIcon from '@mui/icons-material/ViewCompact';
-import SquareIcon from '@mui/icons-material/Square';
-import WindowSharpIcon from '@mui/icons-material/WindowSharp';
-import useSettingsStore from '../../stores/settingsStore';
-import { GalleryViews } from '../../../consts/GalleryViews';
-import { useScreenDimensions } from '../../../hooks/useScreenDimensions';
+import type { ReactNode } from 'react';
+import React from 'react';
+import { GalleryViews } from '@/consts/GalleryViews';
+import { useScreenDimensions } from '@/hooks/useScreenDimensions';
+import useSettingsStore from '@/stores/settingsStore';
 
 const viewName = (id: GalleryViews): string => {
   switch (id) {

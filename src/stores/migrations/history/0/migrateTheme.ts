@@ -1,6 +1,6 @@
-import { ThemeName } from '../../../../../consts/theme';
-import type { Settings } from '../../../settingsStore';
-import settingsStore from '../../../settingsStore';
+import { ThemeName } from '@/consts/theme';
+import type { Settings } from '@/stores/settingsStore';
+import settingsStore from '@/stores/settingsStore';
 
 export const migrateTheme = (): ThemeName => {
   const legacyTheme = localStorage.getItem('gbp-web-theme') as ThemeName | null;

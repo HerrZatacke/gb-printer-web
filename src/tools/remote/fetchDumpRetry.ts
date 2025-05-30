@@ -1,4 +1,4 @@
-import type { BlobResponse } from '../../types/Printer';
+import type { BlobResponse } from '@/types/Printer';
 
 const fetchDumpRetry = async (url: string, retries: number): Promise<BlobResponse> => {
   let res: Response;

@@ -1,9 +1,9 @@
-import { create } from 'zustand';
-import screenfull from 'screenfull';
 import dayjs from 'dayjs';
+import screenfull from 'screenfull';
 import { v4 } from 'uuid';
-import type { PrinterInfo } from '../../../types/Printer';
-import type { PrinterFunction } from '../../consts/printerFunction';
+import { create } from 'zustand';
+import type { PrinterFunction } from '@/consts/printerFunction';
+import type { PrinterInfo } from '@/types/Printer';
 
 export interface LogItem {
   timestamp: number,
@@ -27,11 +27,6 @@ export interface TrashCount {
   show: boolean,
 }
 
-interface WindowDimensions {
-  width: number,
-  height: number,
-}
-
 export interface ErrorMessage {
   error: Error
   timestamp: number,
@@ -52,7 +47,6 @@ interface Values {
   syncBusy: boolean,
   syncSelect: boolean,
   trashCount: TrashCount,
-  windowDimensions: WindowDimensions,
   videoSelection: string[],
 }
 
@@ -73,7 +67,6 @@ interface Actions {
   setShowSerials: (showSerials: boolean) => void,
   setSyncBusy: (syncBusy: boolean) => void,
   setSyncSelect: (syncBusy: boolean) => void,
-  setWindowDimensions: () => void,
   showTrashCount: (show: boolean) => void,
   updateTrashCount: (frames: number, images: number) => void,
   setVideoSelection: (videoSelection: string[]) => void,
@@ -95,7 +88,6 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   syncBusy: false,
   syncSelect: false,
   trashCount: { frames: 0, images: 0, show: false },
-  windowDimensions: { width: window.innerWidth, height: window.innerHeight },
   videoSelection: [],
 
   dismissError: (index: number) => set({ errors: get().errors.filter((_, i) => i !== index) }),
@@ -110,7 +102,6 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   setShowSerials: (showSerials: boolean) => set({ showSerials }),
   setSyncBusy: (syncBusy: boolean) => set({ syncBusy }),
   setSyncSelect: (syncSelect: boolean) => set({ syncSelect }),
-  setWindowDimensions: () => set({ windowDimensions: { width: window.innerWidth, height: window.innerHeight } }),
   showTrashCount: (show: boolean) => set({ trashCount: { ...get().trashCount, show } }),
   updateTrashCount: (frames: number, images: number) => set({ trashCount: { ...get().trashCount, frames, images } }),
   setVideoSelection: (videoSelection: string[]) => set({ videoSelection }),
@@ -151,8 +142,10 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   },
 }));
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-window.se = useInteractionsStore.getState().setError;
+if (typeof window !== 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  window.se = useInteractionsStore.getState().setError;
+}
 
 export default useInteractionsStore;

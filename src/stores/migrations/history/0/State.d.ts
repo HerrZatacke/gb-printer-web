@@ -1,11 +1,11 @@
-import type { FrameGroup } from '../../../../../../types/FrameGroup';
-import type { Frame } from '../../../../../../types/Frame';
-import type { Image } from '../../../../../../types/Image';
-import type { SerializableImageGroup } from '../../../../../../types/ImageGroup';
-import type { Palette } from '../../../../../../types/Palette';
-import type { Plugin } from '../../../../../../types/Plugin';
-import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '../../../../../../types/Sync';
-import type { VideoParams } from '../../../../../../types/VideoParams';
+import type { Frame } from '@/types/Frame';
+import type { FrameGroup } from '@/types/FrameGroup';
+import type { Image } from '@/types/Image';
+import type { SerializableImageGroup } from '@/types/ImageGroup';
+import type { Palette } from '@/types/Palette';
+import type { Plugin } from '@/types/Plugin';
+import type { DropBoxSettings, GitStorageSettings, RecentImport, SyncLastUpdate } from '@/types/Sync';
+import type { VideoParams } from '@/types/VideoParams';
 
 export interface ReduxState {
   // ItemsState

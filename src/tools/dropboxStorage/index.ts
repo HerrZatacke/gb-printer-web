@@ -1,7 +1,7 @@
-import useStoragesStore from '../../app/stores/storagesStore';
-import type { DropBoxSettings } from '../../../types/Sync';
-import type { UseStores } from '../../hooks/useStores';
-import type { JSONExportState } from '../../../types/ExportState';
+import type { UseStores } from '@/hooks/useStores';
+import useStoragesStore from '@/stores/storagesStore';
+import type { JSONExportState } from '@/types/ExportState';
+import type { DropBoxSettings } from '@/types/Sync';
 
 export interface DropBoxSyncTool {
   updateSettings: (dropBoxSettings: DropBoxSettings) => Promise<void>,
@@ -21,7 +21,6 @@ export const dropboxStorageTool = (
   stores: UseStores,
   remoteImport: (repoContents: JSONExportState) => Promise<void>,
 ): DropBoxSyncTool & AndSubscribe => {
-
   const loadAndInitMiddleware = async (): Promise<DropBoxSyncTool> => {
     if (!dropBoxSyncTool) {
       const { dropBoxSyncTool: tool } = await import(/* webpackChunkName: "syn" */ './main');

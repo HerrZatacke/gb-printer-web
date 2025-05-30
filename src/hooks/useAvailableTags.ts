@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
+import { SpecialTags } from '@/consts/SpecialTags';
+import useItemsStore from '@/stores/itemsStore';
+import type { Image } from '@/types/Image';
 import unique from '../tools/unique';
-import useItemsStore from '../app/stores/itemsStore';
-import { SpecialTags } from '../consts/SpecialTags';
-import type { Image } from '../../types/Image';
 
 export const getAvailableTags = (images: Image[]): string[] => {
   const allTags = unique(images.map(({ tags }) => tags).flat());

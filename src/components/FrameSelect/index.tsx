@@ -1,4 +1,3 @@
-import React, { useMemo } from 'react';
 import FilterNoneIcon from '@mui/icons-material/FilterNone';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -8,8 +7,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import useItemsStore from '../../stores/itemsStore';
-import { getFramesForGroup } from '../../../tools/getFramesForGroup';
+import React, { useMemo } from 'react';
+import useItemsStore from '@/stores/itemsStore';
+import { getFramesForGroup } from '@/tools/getFramesForGroup';
 
 interface FrameSelectOption {
   id: string,

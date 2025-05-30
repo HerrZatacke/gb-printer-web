@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
 import { longestCommonSubstring } from 'string-algorithms';
-import useDialogsStore from '../app/stores/dialogsStore';
-import { DialoqQuestionType } from '../../types/Dialog';
-import { useGalleryTreeContext } from '../app/contexts/galleryTree';
-import { NEW_GROUP } from './useEditImageGroup';
-import useEditStore from '../app/stores/editStore';
-import useItemsStore from '../app/stores/itemsStore';
-import useFiltersStore from '../app/stores/filtersStore';
-
+import { DialoqQuestionType } from '@/consts/dialog';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { NEW_GROUP } from '@/hooks/useEditImageGroup';
+import useDialogsStore from '@/stores/dialogsStore';
+import useEditStore from '@/stores/editStore';
+import useFiltersStore from '@/stores/filtersStore';
+import useItemsStore from '@/stores/itemsStore';
 
 interface UseImageGroups {
   resetGroups: () => void,

@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import GameBoyImage from '../GameBoyImage';
+import React, { useMemo } from 'react';
+import GameBoyImage from '@/components/GameBoyImage';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
 import { posTiles } from './posTiles';
-import useItemsStore from '../../stores/itemsStore';
-import useSettingsStore from '../../stores/settingsStore';
 
 interface Props {
   tiles: string[],

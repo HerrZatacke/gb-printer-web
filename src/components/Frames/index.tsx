@@ -1,14 +1,16 @@
-import React from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
+'use client';
+
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import useFrames from '../../../hooks/useFrames';
-import Frame from '../Frame';
-import GalleryGrid from '../GalleryGrid';
-import GalleryViewSelect from '../GalleryViewSelect';
-import { ExportTypes } from '../../../consts/exportTypes';
+import React from 'react';
+import Frame from '@/components/Frame';
+import GalleryGrid from '@/components/GalleryGrid';
+import GalleryViewSelect from '@/components/GalleryViewSelect';
+import { ExportTypes } from '@/consts/exportTypes';
+import useFrames from '@/hooks/useFrames';
 
 function Frames() {
 

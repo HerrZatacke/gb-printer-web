@@ -1,8 +1,8 @@
 import { parsePicoToClassic } from 'gbp-decode';
-import readFileAs, { ReadAs } from '../readFileAs';
-import { compressAndHash } from '../storage';
-import { randomId } from '../randomId';
-import useImportsStore from '../../app/stores/importsStore';
+import useImportsStore from '@/stores/importsStore';
+import { randomId } from '@/tools/randomId';
+import readFileAs, { ReadAs } from '@/tools/readFileAs';
+import { compressAndHash } from '@/tools/storage';
 
 export const transformReduced = async (file: File): Promise<boolean> => {
   const { importQueueAdd } = useImportsStore.getState();

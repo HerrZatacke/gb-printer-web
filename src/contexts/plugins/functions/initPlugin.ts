@@ -1,20 +1,6 @@
 import { saveAs } from 'file-saver';
-import type { CollectImageDataFn, Plugin, PluginClassInstance } from '../../../../../types/Plugin';
-import type { ItemsState } from '../../../stores/itemsStore';
-import type { InteractionsState } from '../../../stores/interactionsStore';
-import type { UseStores } from '../../../../hooks/useStores';
-import type { ImportFn } from '../../../../hooks/useImportExportSettings';
+import { InitPluginSetupParams, Plugin, PluginClassInstance } from '@/types/Plugin';
 import { pluginFunctions, pluginCompatibilityStore } from './pluginContextFunctions';
-
-export type InitPluginSetupParams =
-  Pick<ItemsState, 'addUpdatePluginProperties'> &
-  Pick<InteractionsState, 'setProgress'> &
-  {
-    collectImageData: CollectImageDataFn,
-    stores: UseStores,
-    importFn: ImportFn,
-  }
-
 
 export const initPlugin = (
   {

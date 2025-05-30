@@ -1,17 +1,17 @@
-import React from 'react';
-import AsyncMarkdown from '../AsyncMarkdown';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import  MuiMarkdown from 'mui-markdown';
+import MarkdownStack from '@/components/MarkdownStack';
+import readme from '../../../README.md';
 
-function Home() {
+export default async function Home() {
   return (
-    <AsyncMarkdown
-      getMarkdown={async (): Promise<string> => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const { default: rawMd } = await import(/* webpackChunkName: "doc" */ '../../../../../README.md');
-        return rawMd.split('\n').slice(1).join('\n');
-      }}
-    />
+    <Card>
+      <CardContent>
+        <MuiMarkdown options={{ wrapper: MarkdownStack }}>
+          {readme}
+        </MuiMarkdown>
+      </CardContent>
+    </Card>
   );
 }
-
-export default Home;

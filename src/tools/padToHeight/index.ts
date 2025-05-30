@@ -9,7 +9,6 @@ const padToHeight = (tiles: string[]): string[] => {
 
   const padLine = (new Array(20)).fill(pad);
 
-  // eslint-disable-next-line
   while (tiles.length < 360) {
     tiles.push(...padLine);
 

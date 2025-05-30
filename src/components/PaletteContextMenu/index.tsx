@@ -1,12 +1,12 @@
-import React from 'react';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import React from 'react';
 
 interface Props {
   isPredefined: boolean,
@@ -65,30 +65,30 @@ function PaletteContextMenu({
         </ListItemText>
       </MenuItem>
       {!isPredefined && (
-        <>
-          <MenuItem
-            onClick={editPalette}
-            title="Edit"
-          >
-            <ListItemIcon>
-              <EditIcon />
-            </ListItemIcon>
-            <ListItemText>
-              Edit
-            </ListItemText>
-          </MenuItem>
-          <MenuItem
-            onClick={deletePalette}
-            title="Delete"
-          >
-            <ListItemIcon>
-              <DeleteIcon />
-            </ListItemIcon>
-            <ListItemText>
-              Delete
-            </ListItemText>
-          </MenuItem>
-        </>
+        <MenuItem
+          onClick={editPalette}
+          title="Edit"
+        >
+          <ListItemIcon>
+            <EditIcon />
+          </ListItemIcon>
+          <ListItemText>
+            Edit
+          </ListItemText>
+        </MenuItem>
+      )}
+      {!isPredefined && (
+        <MenuItem
+          onClick={deletePalette}
+          title="Delete"
+        >
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          <ListItemText>
+            Delete
+          </ListItemText>
+        </MenuItem>
       )}
     </Menu>
   );

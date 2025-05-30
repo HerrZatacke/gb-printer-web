@@ -1,13 +1,11 @@
 import dayjs from 'dayjs';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import filenamify from 'filenamify/browser';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import filenamify from 'filenamify/browser';
 import type { RGBNPalette } from 'gb-image-decoder';
-import { dateFormat, dateFormatFilename } from '../../app/defaults';
-import type { Image } from '../../../types/Image';
-import type { Palette } from '../../../types/Palette';
-import { FileNameStyle } from '../../consts/fileNameStyles';
+import { dateFormat, dateFormatFilename } from '@/consts/defaults';
+import { FileNameStyle } from '@/consts/fileNameStyles';
+import type { Image } from '@/types/Image';
+import type { Palette } from '@/types/Palette';
 
 dayjs.extend(customParseFormat);
 

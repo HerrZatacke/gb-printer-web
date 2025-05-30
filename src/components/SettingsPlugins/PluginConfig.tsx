@@ -1,16 +1,16 @@
-import React from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import WarningIcon from '@mui/icons-material/Warning';
 import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CircularProgress from '@mui/material/CircularProgress';
-import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import WarningIcon from '@mui/icons-material/Warning';
-import useItemsStore from '../../../../stores/itemsStore';
-import type { Plugin } from '../../../../../../types/Plugin';
+import React from 'react';
+import useItemsStore from '@/stores/itemsStore';
+import type { Plugin } from '@/types/Plugin';
 import PluginInputField from './PluginInputField';
 
 interface Props extends Plugin {

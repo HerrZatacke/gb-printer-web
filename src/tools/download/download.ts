@@ -1,7 +1,8 @@
 import { saveAs } from 'file-saver';
-import blobToArrayBuffer from '../blobToArrayBuffer';
-import replaceDuplicateFilenames from '../replaceDuplicateFilenames';
-import type { DownloadBlob, DownloadArrayBuffer } from './types';
+import JSZip from 'jszip';
+import blobToArrayBuffer from '@/tools/blobToArrayBuffer';
+import replaceDuplicateFilenames from '@/tools/replaceDuplicateFilenames';
+import { DownloadArrayBuffer, DownloadBlob } from '@/types/download';
 
 const download = (zipFileName: string | null) => async (files: DownloadBlob[]): Promise<void> => {
 
@@ -10,8 +11,6 @@ const download = (zipFileName: string | null) => async (files: DownloadBlob[]): 
     const image = files[0];
     return saveAs(image.blob, image.filename);
   }
-
-  const { default: JSZip } = await import(/* webpackChunkName: "jsz" */ 'jszip');
 
   const zip = new JSZip();
 

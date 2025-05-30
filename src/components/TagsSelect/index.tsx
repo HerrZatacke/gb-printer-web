@@ -1,16 +1,16 @@
-import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import ButtonBase from '@mui/material/ButtonBase';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
-import RemoveIcon from '@mui/icons-material/Remove';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Stack from '@mui/material/Stack';
+import React from 'react';
+import { SpecialTags } from '@/consts/SpecialTags';
+import type { TagChange } from '@/tools/applyTagChanges';
+import { TagUpdateMode } from '@/tools/modifyTagChanges';
+import unique from '@/tools/unique';
 import InputNewTag from './InputNewTag';
-import unique from '../../../tools/unique';
-import { SpecialTags } from '../../../consts/SpecialTags';
-import type { TagChange } from '../../../tools/applyTagChanges';
-import { TagUpdateMode } from '../../../tools/modifyTagChanges';
 
 interface Props {
   tags: TagChange

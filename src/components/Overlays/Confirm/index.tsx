@@ -1,14 +1,16 @@
-import React from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import Lightbox from '../../Lightbox';
-import useDialog from '../../../../hooks/useDialog';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import React from 'react';
+import Lightbox from '@/components/Lightbox';
+import MetaTable from '@/components/MetaTable';
+import { DialoqQuestionType } from '@/consts/dialog';
+import useDialog from '@/hooks/useDialog';
 import type {
   DialogQuestionCheckbox,
   DialogQuestionInfo,
@@ -17,11 +19,7 @@ import type {
   DialogQuestionText,
   DialogQuestionImage,
   DialogQuestionMeta,
-} from '../../../../../types/Dialog';
-import {
-  DialoqQuestionType,
-} from '../../../../../types/Dialog';
-import MetaTable from '../../MetaTable';
+} from '@/types/Dialog';
 
 function Confirm() {
 

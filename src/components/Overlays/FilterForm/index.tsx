@@ -1,11 +1,11 @@
-import React from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Lightbox from '../../Lightbox';
+import React from 'react';
+import Lightbox from '@/components/Lightbox';
+import { SpecialTags } from '@/consts/SpecialTags';
+import { useFilterForm } from '@/hooks/useFilterForm';
 import FilterFormTag from './filterFormTag';
-import { SpecialTags } from '../../../../consts/SpecialTags';
-import { useFilterForm } from '../../../../hooks/useFilterForm';
 
 function FilterForm() {
 

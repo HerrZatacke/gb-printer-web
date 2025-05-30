@@ -1,5 +1,5 @@
 import type { SxProps, Theme } from '@mui/material/styles';
-import { hexToRgbString } from '../hexToRgbString';
+import { hexToRgbString } from '@/tools/hexToRgbString';
 
 export enum GradientType {
   HARD = 'HARD',

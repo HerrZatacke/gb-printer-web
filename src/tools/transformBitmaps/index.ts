@@ -1,6 +1,6 @@
+import useImportsStore from '@/stores/importsStore';
+import { moveBitmapsToImport } from '@/tools/moveBitmapsToImport';
 import getImageData from './getImageData';
-import useImportsStore from '../../app/stores/importsStore';
-import { moveBitmapsToImport } from '../moveBitmapsToImport';
 
 export const transformBitmaps = async (file: File, fromPrinter = false): Promise<boolean> => {
   const image = await getImageData(file);
@@ -18,3 +18,4 @@ export const transformBitmaps = async (file: File, fromPrinter = false): Promise
 
   return true;
 };
+

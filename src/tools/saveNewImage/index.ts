@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { save } from '../storage';
-import { dateFormat } from '../../app/defaults';
-import type { MonochromeImage } from '../../../types/Image';
+import { dateFormat } from '@/consts/defaults';
+import { save } from '@/tools/storage';
+import type { MonochromeImage } from '@/types/Image';
 
 interface ImageRawData extends Pick<MonochromeImage, 'palette' | 'frame' | 'tags' | 'meta' | 'created'> {
   lines: string[],

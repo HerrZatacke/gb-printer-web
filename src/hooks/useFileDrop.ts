@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
-import useInteractionsStore from '../app/stores/interactionsStore';
-import getHandleFileImport from '../tools/getHandleFileImport';
-import { useImportExportSettings } from './useImportExportSettings';
+import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import useInteractionsStore from '@/stores/interactionsStore';
+import getHandleFileImport from '@/tools/getHandleFileImport';
 
 let dragoverTimeout: number;
 let dragging = false;

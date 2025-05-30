@@ -1,15 +1,15 @@
-import { useNavigate } from 'react-router';
-import useFiltersStore from '../../stores/filtersStore';
-import useItemsStore from '../../stores/itemsStore';
-import useSettingsStore from '../../stores/settingsStore';
-import { getFilteredImages } from '../../../tools/getFilteredImages';
-import getFilteredImagesCount from '../../../tools/getFilteredImages/count';
-import { useGalleryParams } from '../../../hooks/useGalleryParams';
-import type { Image } from '../../../../types/Image';
-import { useGalleryTreeContext } from '../../contexts/galleryTree';
+import { redirect } from 'next/navigation';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryParams } from '@/hooks/useGalleryParams';
+import useFiltersStore from '@/stores/filtersStore';
+import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
+import { getFilteredImages } from '@/tools/getFilteredImages';
+import getFilteredImagesCount from '@/tools/getFilteredImages/count';
+import type { Image } from '@/types/Image';
 
 interface UseGallery {
-  imageCount: number,
+  totalImageCount: number,
   selectedCount: number,
   images: Image[],
   filteredCount: number,
@@ -30,18 +30,16 @@ export const useGallery = (): UseGallery => {
 
   const { images: stateImages } = useItemsStore();
 
-  const imageCount = stateImages.length;
+  const totalImageCount = stateImages.length;
   const filteredCount = getFilteredImagesCount(view.images, filtersActiveTags, recentImports);
 
-  const { pageIndex, path } = useGalleryParams();
-  const navigate = useNavigate();
-
-  const totalPages = pageSize ? Math.ceil(imageCount / pageSize) : 1;
+  const { pageIndex, getUrl } = useGalleryParams();
+  const totalPages = pageSize ? Math.ceil(view.images.length / pageSize) : 1;
   const maxPage = Math.max(0, totalPages - 1);
   const page = Math.max(0, Math.min(pageIndex, maxPage));
 
-  if (page !== pageIndex) {
-    navigate(`/gallery/${path}page/${page + 1}`);
+  if (totalPages > 0 && page !== pageIndex) {
+    redirect(getUrl({ pageIndex: page }));
   }
 
   const iOffset = page * pageSize;
@@ -54,7 +52,7 @@ export const useGallery = (): UseGallery => {
     .splice(iOffset, pSize || Infinity);
 
   return {
-    imageCount,
+    totalImageCount,
     selectedCount,
     filteredCount,
     page,

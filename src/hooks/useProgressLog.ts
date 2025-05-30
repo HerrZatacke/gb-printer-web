@@ -1,6 +1,6 @@
-import useInteractionsStore from '../app/stores/interactionsStore';
-import useStoragesStore from '../app/stores/storagesStore';
-import type { LogItem } from '../app/stores/interactionsStore';
+import useInteractionsStore from '@/stores/interactionsStore';
+import type { LogItem } from '@/stores/interactionsStore';
+import useStoragesStore from '@/stores/storagesStore';
 
 interface UseProgressLog {
   git: {

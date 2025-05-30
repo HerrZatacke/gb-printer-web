@@ -1,4 +1,4 @@
-import getChars from '../chars';
+import getChars from '@/tools/chars';
 
 const black = 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\n';
 
