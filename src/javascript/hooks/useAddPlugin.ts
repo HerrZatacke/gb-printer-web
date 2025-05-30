@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { parseURL } from 'ufo';
 import { useParams, useNavigate } from 'react-router';
-import useItemsStore from '../../stores/itemsStore';
-import { usePluginsContext } from '../../contexts/plugins';
-import useInteractionsStore from '../../stores/interactionsStore';
+import useItemsStore from '../app/stores/itemsStore';
+import { usePluginsContext } from '../app/contexts/plugins';
+import useInteractionsStore from '../app/stores/interactionsStore';
 
 const trustedSources = [
   'https://herrzatacke.github.io',

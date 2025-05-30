@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import { useAddPlugin } from './useAddPlugin';
+import { useAddPlugin } from '../../../hooks/useAddPlugin';
 
 function AddPlugin() {
   const {
