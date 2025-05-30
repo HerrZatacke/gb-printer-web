@@ -1,5 +1,5 @@
 import React from 'react';
-import type { DialogOption } from '../../../../../types/Dialog';
+import type { DialogOption } from '@/types/Dialog';
 
 interface Props {
   id: string,

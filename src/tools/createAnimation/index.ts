@@ -254,7 +254,7 @@ export const createAnimation = async () => {
       `${gifFileName}.gif`,
       { type: 'image/gif' },
     );
-  } catch (error) {
+  } catch {
     file = new Blob(
       [new Uint8Array(buf.slice(0, bufferSize)).buffer],
     );

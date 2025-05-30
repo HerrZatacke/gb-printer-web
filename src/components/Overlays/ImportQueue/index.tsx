@@ -2,13 +2,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import React from 'react';
+import FrameSelect from '@/components/FrameSelect';
+import PaletteSelect from '@/components/PaletteSelect';
+import TagsSelect from '@/components/TagsSelect';
 import useRunImport from '@/hooks/useRunImport';
 import modifyTagChanges from '@/tools/modifyTagChanges';
 import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
-import FrameSelect from '@/components/FrameSelect';
-import PaletteSelect from '@/components/PaletteSelect';
-import TagsSelect from '@/components/TagsSelect';
 
 function ImportQueue() {
   const {

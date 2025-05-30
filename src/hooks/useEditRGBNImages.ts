@@ -5,6 +5,7 @@ import { dateFormat, dateFormatSeconds } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { toSlug } from '@/hooks/useEditImageGroup';
+import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
 import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
 import useItemsStore from '@/stores/itemsStore';
@@ -12,7 +13,6 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
 import type { MonochromeImage, RGBNHashes } from '@/types/Image';
-import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 

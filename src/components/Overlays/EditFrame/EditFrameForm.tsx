@@ -1,9 +1,9 @@
-import React from 'react';
 import Alert from '@mui/material/Alert';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import type { FrameGroup } from '../../../../../types/FrameGroup';
+import React from 'react';
+import type { FrameGroup } from '@/types/FrameGroup';
 
 interface Props {
   frameIndex: number,

@@ -16,7 +16,7 @@ const getShortName = async (filePath) => {
         .update(filePath)
         .update(fileContents)
         .digest('hex');
-    return hash.slice(0, 4);
+    return hash.slice(0, 6);
 };
 
 // Rename files and store mapping

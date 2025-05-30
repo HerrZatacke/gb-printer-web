@@ -1,12 +1,12 @@
 import type { ReadonlyURLSearchParams } from 'next/navigation';
 import Queue from 'promise-queue';
+import fetchDumpRetry from '@/tools/remote/fetchDumpRetry';
 import type {
   PrinterImages,
   PrinterParams,
   BlobResponse,
   RemotePrinterEvent,
 } from '@/types/Printer';
-import fetchDumpRetry from '@/tools/remote/fetchDumpRetry';
 
 const queue = new Queue(1, Infinity);
 const addToQueue = (
