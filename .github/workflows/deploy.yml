@@ -2,7 +2,7 @@ name: Build 🧱 and Deploy 🛳
 
 on:
   push:
-    branches: [ feature/next-migration ]
+    branches: [ master ]
 
 jobs:
   build-and-deploy:
@@ -52,17 +52,17 @@ jobs:
           zip -r ../data_w.zip *
           cd ..
 
-#      - name: Deploy to GitHub-Pages 🛳
-#        uses: JamesIves/github-pages-deploy-action@v4.6.1
-#        if: steps.checkTag.outputs.exists == 'false'
-#        with:
-#          branch: gh-pages
-#          folder: out
+      - name: Deploy to GitHub-Pages 🛳
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        if: steps.checkTag.outputs.exists == 'false'
+        with:
+          branch: gh-pages
+          folder: out
 
       - name: Create Release 🎉 🥳
         uses: softprops/action-gh-release@v2.0.5
         if: steps.checkTag.outputs.exists == 'false'
         with:
-          tag_name: ${{ env.RELEASE_VERSION }}.3
-          name: Version ${{ env.RELEASE_VERSION }}.nextjs.beta.3
+          tag_name: ${{ env.RELEASE_VERSION }}
+          name: Version ${{ env.RELEASE_VERSION }}
           files: data_w.zip
