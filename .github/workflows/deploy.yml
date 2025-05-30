@@ -33,33 +33,44 @@ jobs:
           rm package-lock.json
           npm cache clear -f
           npm install
+          rm -rf public/dumps/
+          rm -rf public/env.json
+          mv public/env-pages.json public/env.json
 
-      - name: Build 🧱
+      - name: Build for release zip 🗄
         if: steps.checkTag.outputs.exists == 'false'
         env:
           NEXT_PUBLIC_DROPBOX_APP_KEY: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_KEY }}
           NEXT_PUBLIC_ENV_ENDPOINT: ${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
           DEPLOY_TARGET: gh-pages
         run: |
-          rm -rf public/dumps/
-          rm -rf public/env.json
-          mv public/env-pages.json public/env.json
           npm run build
-          touch out/.nojekyll
+          mv o o-zip
 
       - name: Create data_w.zip for release 🗄
         if: steps.checkTag.outputs.exists == 'false'
         run: |
-          cd o
+          cd o-zip
           zip -r ../data_w.zip *
           cd ..
 
-      - name: Deploy to GitHub-Pages 🛳
+      - name: Build for pages 📖
+        if: steps.checkTag.outputs.exists == 'false'
+        env:
+          NEXT_PUBLIC_DROPBOX_APP_KEY: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_KEY }}
+          NEXT_PUBLIC_ENV_ENDPOINT: /gb-printer-web${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
+          DEPLOY_TARGET: gh-pages
+        run: |
+          npm run build
+          touch out/.nojekyll
+          mv out out-pages
+
+      - name: Deploy to GitHub-Pages 📖
         uses: JamesIves/github-pages-deploy-action@v4.6.1
         if: steps.checkTag.outputs.exists == 'false'
         with:
           branch: gh-pages
-          folder: out
+          folder: out-pages
 
       - name: Create Release 🎉 🥳
         uses: softprops/action-gh-release@v2.0.5
