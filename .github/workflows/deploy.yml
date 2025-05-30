@@ -63,6 +63,6 @@ jobs:
         uses: softprops/action-gh-release@v2.0.5
         if: steps.checkTag.outputs.exists == 'false'
         with:
-          tag_name: ${{ env.RELEASE_VERSION }}.2
-          name: Version ${{ env.RELEASE_VERSION }}.nextjs.beta.2
+          tag_name: ${{ env.RELEASE_VERSION }}.3
+          name: Version ${{ env.RELEASE_VERSION }}.nextjs.beta.3
           files: data_w.zip
