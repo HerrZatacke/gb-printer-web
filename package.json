@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.47.1",
+  "version": "1.47.2",
   "description": "gb-printer-web",
   "scripts": {
     "dev": "next dev",
