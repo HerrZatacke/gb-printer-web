@@ -45,6 +45,7 @@ jobs:
           rm -rf public/env.json
           mv public/env-pages.json public/env.json
           npm run build
+          touch out/.nojekyll
 
       - name: Create data_w.zip for release 🗄
         if: steps.checkTag.outputs.exists == 'false'
