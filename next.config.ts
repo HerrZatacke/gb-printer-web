@@ -4,6 +4,8 @@ import type { NextConfig } from 'next';
 import { version } from './package.json';
 
 const isDev = process.env.NODE_ENV === 'development';
+const isGithubPages = process.env.DEPLOY_TARGET === 'gh-pages';
+const repoName = 'gb-printer-web';
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: !isDev,
@@ -22,6 +24,8 @@ const branch = getGitBranch();
 const nextConfig: NextConfig = {
   output: 'export',
   trailingSlash: true,
+  basePath: isGithubPages ? `/${repoName}` : '',
+  assetPrefix: isGithubPages ? `/${repoName}/` : '',
 
   env: {
     NEXT_PUBLIC_BRANCH: branch,
