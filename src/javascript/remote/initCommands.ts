@@ -1,7 +1,6 @@
 import testFile from './commands/testFile';
 import checkPrinter from './commands/checkPrinter';
 import fetchImages from './commands/fetchImages';
-import tear from './commands/tear';
 import clearPrinter from './commands/clearPrinter';
 import type {
   CheckPrinterStatus,
@@ -40,10 +39,6 @@ const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: Re
           name: PrinterFunction.CLEARPRINTER,
           fn: clearPrinter,
         },
-        {
-          name: PrinterFunction.TEAR,
-          fn: tear,
-        },
       );
       break;
 
@@ -74,10 +69,6 @@ const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: Re
           name: PrinterFunction.FETCHIMAGES,
           fn: fetchImages,
         },
-        {
-          name: PrinterFunction.TEAR,
-          fn: tear,
-        },
       );
       break;
 
@@ -105,7 +96,6 @@ const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: Re
         break;
       }
 
-      case PrinterFunction.TEAR:
       case PrinterFunction.CLEARPRINTER:
       case PrinterFunction.CHECKPRINTER: {
         const commandFn = commands.find(({ name }) => name === printerCommand.command) as PrinterStatusCommand;

@@ -19,16 +19,11 @@ const functionLabels: Record<PrinterFunction, string> = {
   checkPrinter: 'Check Printer',
   fetchImages: '',
   clearPrinter: 'Clear Printer',
-  tear: 'Tear',
 };
 
-const getFetchImagesLabel = (printerFunctions: PrinterFunction[], dumpsLength: number): string => {
-  if (printerFunctions.includes(PrinterFunction.TEAR) || !dumpsLength) {
-    return 'Fetch images';
-  }
-
-  return `Fetch ${dumpsLength || 0} images`;
-};
+const getFetchImagesLabel = (dumpsLength: number): string => (
+  dumpsLength ? `Fetch ${dumpsLength} images` : 'Fetch images'
+);
 
 function PrinterReport() {
   const {
@@ -55,7 +50,7 @@ function PrinterReport() {
             disabled={
               printerBusy ||
               (
-                [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER, PrinterFunction.TEAR].includes(name) &&
+                [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER].includes(name) &&
                 !printerData?.dumps?.length
               )
             }
@@ -63,7 +58,7 @@ function PrinterReport() {
           >
             {
               name === PrinterFunction.FETCHIMAGES ?
-                getFetchImagesLabel(printerFunctions, printerData?.dumps?.length || 0) :
+                getFetchImagesLabel(printerData?.dumps?.length || 0) :
                 functionLabels[name as PrinterFunction]
             }
           </Button>

@@ -69,7 +69,7 @@ export interface RemoteEnv {
 }
 
 export interface PrinterStatusCommand {
-  name: PrinterFunction.TEAR | PrinterFunction.CLEARPRINTER | PrinterFunction.CHECKPRINTER,
+  name: PrinterFunction.CLEARPRINTER | PrinterFunction.CHECKPRINTER,
   fn: () => Promise<CheckPrinterStatus>,
 }
 
