@@ -15,6 +15,7 @@ import type { ExportFrameMode } from 'gb-image-decoder';
 import type { ILocale } from 'locale-codes';
 import NextLink from 'next/link';
 import React, { useEffect, useState } from 'react';
+import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
 import exportFrameModes from '@/consts/exportFrameModes';
 import { fileNameStyleLabels } from '@/consts/fileNameStyles';
 import type { FileNameStyle } from '@/consts/fileNameStyles';
@@ -29,7 +30,6 @@ import cleanUrl from '@/tools/cleanUrl';
 import dateFormatLocale from '@/tools/dateFormatLocale';
 import getFrameGroups from '@/tools/getFrameGroups';
 import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
-// import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
 
 function GenericSettings() {
   const {
@@ -385,10 +385,7 @@ function GenericSettings() {
         }
       </TextField>
 
-      {/*
-        ToDo: add again...
-        <EnableWebUSB />
-      */}
+      <EnableWebUSB />
 
       {(env?.env === 'esp8266') ? null : (
         <TextField
