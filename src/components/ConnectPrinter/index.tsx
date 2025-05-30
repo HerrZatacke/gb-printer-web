@@ -22,7 +22,8 @@ const iframeSupported = (printerUrl?: string) => {
 // const iframeSupported = () => false;
 
 function ConnectPrinter() {
-  const { printerUrl, failed, loaded, printerConnected } = useIframeLoaded(5000);
+  // Needs high timeout for slow responses of esp webserver
+  const { printerUrl, failed, loaded, printerConnected } = useIframeLoaded(30000);
 
   return iframeSupported(printerUrl) && !failed ? (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
