@@ -11,7 +11,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { usePrinter } from './usePrinter';
+import { usePrinter } from '../../../hooks/usePrinter';
 import { PrinterFunction } from '../../../consts/printerFunction';
 
 const functionLabels: Record<PrinterFunction, string> = {

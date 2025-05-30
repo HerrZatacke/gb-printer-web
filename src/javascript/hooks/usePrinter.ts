@@ -1,7 +1,7 @@
-import type { PrinterFunction } from '../../../consts/printerFunction';
-import type { PrinterInfo } from '../../../../types/Printer';
-import useInteractionsStore from '../../stores/interactionsStore';
-import { useRemotePrinterContext } from '../../contexts/remotePrinter';
+import type { PrinterFunction } from '../consts/printerFunction';
+import type { PrinterInfo } from '../../types/Printer';
+import useInteractionsStore from '../app/stores/interactionsStore';
+import { useRemotePrinterContext } from '../app/contexts/remotePrinter';
 
 interface UsePrinter {
   printerData: PrinterInfo | null,
