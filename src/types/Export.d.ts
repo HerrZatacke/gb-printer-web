@@ -1,5 +1,5 @@
-import type { DownloadInfo, UploadFile } from './Sync';
 import type { JSONExportState } from './ExportState';
+import type { DownloadInfo, UploadFile } from './Sync';
 
 export interface RepoFile {
   hash: string,

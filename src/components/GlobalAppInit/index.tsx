@@ -1,0 +1,31 @@
+'use client';
+
+import { PropsWithChildren, useEffect } from 'react';
+import useFileDrop from '@/hooks/useFileDrop';
+import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { useStores } from '@/hooks/useStores';
+import useTrashbin from '@/hooks/useTrashbin';
+import { dropboxStorageTool } from '@/tools/dropboxStorage';
+
+function GlobalAppInit({ children }: PropsWithChildren) {
+  useFileDrop();
+
+  const stores = useStores();
+  const { remoteImport } = useImportExportSettings();
+
+  useEffect(() => {
+    const { subscribe } = dropboxStorageTool(stores, remoteImport);
+    // gitStorageTool(remoteImport);
+
+    return subscribe();
+  }, [remoteImport, stores]);
+
+  const { checkUpdateTrashCount } = useTrashbin();
+  useEffect(() => {
+    checkUpdateTrashCount();
+  }, [checkUpdateTrashCount]);
+
+  return children;
+}
+
+export default GlobalAppInit;

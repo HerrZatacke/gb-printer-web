@@ -1,0 +1,25 @@
+body {
+  background: #ffffff;
+}
+
+.remote-info {
+  font-size: 16px;
+  margin-bottom: 15px;
+  padding: 20px;
+
+  &--ip {
+    color: #1a1a1a;
+
+    html.theme-dark & {
+      color: #e5e5e5;
+    }
+  }
+
+  &--em {
+    color: #ff0000;
+
+    html.theme-dark & {
+      color: #cb0003;
+    }
+  }
+}

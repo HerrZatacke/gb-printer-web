@@ -16,3 +16,18 @@ dumps/*
 !dumps/.gitkeep
 .DS_Store
 *.iml
+
+# next.js
+/.next/
+/out/
+/o/
+
+# production
+/build
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

@@ -34,21 +34,21 @@ jobs:
           npm cache clear -f
           npm install
 
-      - name: Create config.json 📃
-        if: steps.checkTag.outputs.exists == 'false'
-        env:
-          CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
-        run: echo $CONFIG_JSON | base64 --decode > config.json
-
       - name: Build 🧱
         if: steps.checkTag.outputs.exists == 'false'
+        env:
+          NEXT_PUBLIC_DROPBOX_APP_KEY: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_KEY }}
+          NEXT_PUBLIC_ENV_ENDPOINT: ${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
         run: |
+          rm -rf public/dumps/
+          rm -rf public/env.json
+          mv public/env-pages.json public/env.json
           npm run build
 
       - name: Create data_w.zip for release 🗄
         if: steps.checkTag.outputs.exists == 'false'
         run: |
-          cd release
+          cd o
           zip -r ../data_w.zip *
           cd ..
 
@@ -57,7 +57,7 @@ jobs:
         if: steps.checkTag.outputs.exists == 'false'
         with:
           branch: gh-pages
-          folder: dist
+          folder: out
 
       - name: Create Release 🎉 🥳
         uses: softprops/action-gh-release@v2.0.5

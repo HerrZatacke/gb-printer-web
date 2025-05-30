@@ -26,7 +26,7 @@ After dragging your image into the app, you will be asked on how to import the f
 This `.json` file can be dragged into the application and will add all frames from that export to your application.  
 
 ## Development usage
-The following ptions apply if you plan on contributong to this app:
+The following options apply if you plan on contributing to this app:
 
 ### Optional deployment config with `config.json`
 Add a `deploy` section in `config.json` to automatically copy the created files to another location ([e.g your arduino project](https://github.com/HerrZatacke/wifi-gbp-emulator)).  

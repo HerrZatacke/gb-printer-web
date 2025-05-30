@@ -1,9 +1,10 @@
-declare module '*/WebUSB.md' {
+
+declare module '*.md' {
   const content: string;
   export default content;
 }
 
-declare module '*/README.md' {
+declare module '*.txt' {
   const content: string;
   export default content;
 }
