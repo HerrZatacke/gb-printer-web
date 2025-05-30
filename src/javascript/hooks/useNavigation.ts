@@ -1,9 +1,9 @@
-import WebUSBSerial from '../../../tools/WebUSBSerial';
-import WebSerial from '../../../tools/WebSerial';
-import type { SyncLastUpdate } from '../../../../types/Sync';
-import useInteractionsStore from '../../stores/interactionsStore';
-import useSettingsStore from '../../stores/settingsStore';
-import useStoragesStore from '../../stores/storagesStore';
+import WebUSBSerial from '../tools/WebUSBSerial';
+import WebSerial from '../tools/WebSerial';
+import type { SyncLastUpdate } from '../../types/Sync';
+import useInteractionsStore from '../app/stores/interactionsStore';
+import useSettingsStore from '../app/stores/settingsStore';
+import useStoragesStore from '../app/stores/storagesStore';
 
 interface UseNavigation {
   disableSerials: boolean,

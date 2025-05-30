@@ -22,7 +22,7 @@ import Toolbar from '@mui/material/Toolbar';
 import UsbIcon from '@mui/icons-material/Usb';
 import { NavLink, useLocation } from 'react-router';
 import { alpha } from '@mui/material';
-import useNavigation from './useNavigation';
+import useNavigation from '../../../hooks/useNavigation';
 import { useGalleryParams } from '../../../hooks/useGalleryParams';
 import useInteractionsStore from '../../stores/interactionsStore';
 import { reduceItems } from '../../../tools/reduceArray';
