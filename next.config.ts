@@ -21,7 +21,7 @@ function getGitBranch() {
 const branch = getGitBranch();
 const nextConfig: NextConfig = {
   output: 'export',
-  trailingSlash: false,
+  trailingSlash: true,
 
   env: {
     NEXT_PUBLIC_BRANCH: branch,
