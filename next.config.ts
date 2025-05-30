@@ -7,8 +7,6 @@ const isDev = process.env.NODE_ENV === 'development';
 const isGithubPages = process.env.DEPLOY_TARGET === 'gh-pages';
 const repoName = 'gb-printer-web';
 
-console.log({ isGithubPages, isDev });
-
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: !isDev,
   openAnalyzer: false,
