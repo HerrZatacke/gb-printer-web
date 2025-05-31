@@ -24,7 +24,13 @@ export const EnvProvider = ({ children }: PropsWithChildren) => {
   const { setPrinterUrl } = useSettingsStore();
 
   useEffect(() => {
-    const endpoint = process.env.NEXT_PUBLIC_ENV_ENDPOINT;
+    const endpoint = [
+      process.env.NEXT_PUBLIC_BASE_PATH,
+      process.env.NEXT_PUBLIC_ENV_ENDPOINT,
+    ]
+      .filter(Boolean)
+      .join('/');
+
     if (endpoint) {
       (async () => {
         try {
