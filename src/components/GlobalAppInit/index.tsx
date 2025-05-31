@@ -2,6 +2,7 @@
 
 import { PropsWithChildren, useEffect } from 'react';
 import useFileDrop from '@/hooks/useFileDrop';
+import { useHandleHashParams } from '@/hooks/useHandleHashParams';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
 import useTrashbin from '@/hooks/useTrashbin';
@@ -9,6 +10,7 @@ import { dropboxStorageTool } from '@/tools/dropboxStorage';
 
 function GlobalAppInit({ children }: PropsWithChildren) {
   useFileDrop();
+  useHandleHashParams();
 
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
