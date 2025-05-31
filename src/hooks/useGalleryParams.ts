@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useUrl } from '@/hooks/useUrl';
 
-const GALLERY_BASE_PATH = '/gallery';
+const GALLERY_BASE_PATH = '/gallery/';
 
 interface GetUrlParams {
   pageIndex?: number,
