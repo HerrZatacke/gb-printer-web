@@ -25,11 +25,13 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
   covers: [],
   paths: [],
   pathsOptions: [],
+  isWorking: false,
 });
 
 
 export function GalleryTreeContext({ children }: PropsWithChildren) {
   const [worker, setWorker] = useState<Worker | null>(null);
+  const [isWorking, setIsWorking] = useState<boolean>(false);
   const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot());
   const [paths, setPaths] = useState<PathMap[]>([]);
   const [pathsOptions, setPathsOptions] = useState<DialogOption[]>([]);
@@ -53,6 +55,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
         setRoot(event.data.root);
         setPaths(event.data.paths);
         setPathsOptions(event.data.pathsOptions);
+        setIsWorking(false);
 
         if (stateImageGroups.length > event.data.paths.length) {
           const idsInPaths = event.data.paths.map(({ group }) => group.id);
@@ -70,6 +73,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
 
     newWorker.onerror = (event) => {
       setError(new Error(event.message));
+      setIsWorking(false);
     };
 
     setWorker(newWorker);
@@ -85,6 +89,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       return;
     }
 
+    setIsWorking(true);
     worker.postMessage({ imageGroups, stateImages } as CalculateRootWorkerParams);
   }, [imageGroups, stateImages, worker]);
 
@@ -94,8 +99,8 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
     const covers = view.groups.map(({ coverImage }) => coverImage);
     const images = view.images.filter((image: Image) => !covers.includes(image.hash));
 
-    return { view, covers, paths, images, pathsOptions, root };
-  }, [path, paths, pathsOptions, root]);
+    return { view, covers, paths, images, pathsOptions, root, isWorking };
+  }, [path, paths, pathsOptions, root, isWorking]);
 
   return (
     <galleryTreeContext.Provider value={result}>

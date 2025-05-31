@@ -32,4 +32,5 @@ export interface GalleryTreeContextType {
   covers: string[],
   paths: PathMap[],
   pathsOptions: DialogOption[],
+  isWorking: boolean,
 }

@@ -22,6 +22,7 @@ function Gallery() {
     maxPageIndex,
     images,
     covers,
+    isWorking,
   } = useGallery();
 
   const { enableImageGroups } = useSettingsStore();
@@ -44,7 +45,7 @@ function Gallery() {
       <GalleryHeader page={page} isSticky />
       { maxPageIndex > 0 && <Pagination page={page} maxPageIndex={maxPageIndex} /> }
 
-      <GalleryGrid>
+      <GalleryGrid showLoader={isWorking}>
         { images.map((image) => (
           covers.includes(image.hash) ? (
             <GalleryGroup
@@ -60,6 +61,7 @@ function Gallery() {
           )
         )) }
       </GalleryGrid>
+
       { images.length >= 3 && (
         <>
           <Pagination page={page} maxPageIndex={maxPageIndex} />

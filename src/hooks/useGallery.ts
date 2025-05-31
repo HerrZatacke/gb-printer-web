@@ -17,10 +17,11 @@ interface UseGallery {
   page: number,
   maxPageIndex: number,
   covers: string[],
+  isWorking: boolean,
 }
 
 export const useGallery = (): UseGallery => {
-  const { view, covers } = useGalleryTreeContext();
+  const { view, covers, isWorking } = useGalleryTreeContext();
   const { pageSize } = useSettingsStore();
 
   const {
@@ -67,5 +68,6 @@ export const useGallery = (): UseGallery => {
     maxPageIndex,
     images,
     covers,
+    isWorking,
   };
 };

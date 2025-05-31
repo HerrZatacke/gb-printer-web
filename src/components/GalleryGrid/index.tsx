@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import React, { useMemo } from 'react';
 import type { CSSPropertiesVars, PropsWithChildren } from 'react';
 import { GalleryViews } from '@/consts/GalleryViews';
@@ -7,9 +8,10 @@ import useSettingsStore from '@/stores/settingsStore';
 
 interface Props extends PropsWithChildren {
   fixedView?: GalleryViews,
+  showLoader?: boolean,
 }
 
-function GalleryGrid({ fixedView, children }: Props) {
+function GalleryGrid({ fixedView, showLoader, children }: Props) {
   const { ddpx } = useScreenDimensions();
   const { galleryView } = useSettingsStore();
 
@@ -73,7 +75,21 @@ function GalleryGrid({ fixedView, children }: Props) {
     <Box
       component="ul"
       sx={styleVariables}
+      position="relative"
     >
+      { showLoader && (
+        <LinearProgress
+          color="secondary"
+          variant="indeterminate"
+          sx={{
+            position: 'absolute',
+            top: -4,
+            left: 0,
+            right: 0,
+            zIndex: 1,
+          }}
+        />
+      ) }
       {children}
     </Box>
   );
