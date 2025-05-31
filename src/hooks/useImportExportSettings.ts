@@ -11,9 +11,9 @@ import type { JSONExport, JSONExportState, ExportableState } from '@/types/Expor
 
 const mergeSettings = async (
   newSettings: JSONExport,
-  mergeImagesFrames = false,
+  mergeContents = false,
 ): Promise<Partial<ExportableState>> => {
-  const { frames, palettes, images } = useItemsStore.getState();
+  const { frames, palettes, images, imageGroups } = useItemsStore.getState();
 
   // add hashes to frames if they have the very old name+id format and replace the binary keys of the JSONExport
   const settings = await hashImportFrames(newSettings);
@@ -32,7 +32,14 @@ const mergeSettings = async (
     }
   });
 
-  return mergeStates(frames, palettes, images, settings.state || {}, mergeImagesFrames);
+  return mergeStates(
+    frames,
+    palettes,
+    images,
+    imageGroups,
+    settings.state || {},
+    mergeContents,
+  );
 };
 
 export type ImportFn = (repoContents: JSONExport) => Promise<void>;

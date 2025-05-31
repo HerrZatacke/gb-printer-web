@@ -7,29 +7,16 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import React, { useMemo } from 'react';
+import React from 'react';
 import PaginationButton from '@/components/PaginationButton';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import useFiltersStore from '@/stores/filtersStore';
-import useSettingsStore from '@/stores/settingsStore';
-import getFilteredImagesCount from '@/tools/getFilteredImages/count';
 
 interface Props {
   page: number
+  maxPageIndex: number,
 }
 
-function Pagination({ page }: Props) {
-  const { view } = useGalleryTreeContext();
-  const { pageSize } = useSettingsStore();
-  const { filtersActiveTags, recentImports } = useFiltersStore();
-
+function Pagination({ page, maxPageIndex }: Props) {
   const SKIP_STEP = 5;
-
-  const maxPageIndex = useMemo(() => (
-    pageSize ?
-      Math.ceil(getFilteredImagesCount(view.images, filtersActiveTags, recentImports) / pageSize) - 1 :
-      0
-  ), [filtersActiveTags, pageSize, recentImports, view]);
 
   if (maxPageIndex === 0) {
     return null;

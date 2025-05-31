@@ -19,8 +19,10 @@ function Gallery() {
     selectedCount,
     filteredCount,
     page,
+    maxPageIndex,
     images,
     covers,
+    isWorking,
   } = useGallery();
 
   const { enableImageGroups } = useSettingsStore();
@@ -41,8 +43,9 @@ function Gallery() {
       ) : null }
 
       <GalleryHeader page={page} isSticky />
-      <Pagination page={page} />
-      <GalleryGrid>
+      { maxPageIndex > 0 && <Pagination page={page} maxPageIndex={maxPageIndex} /> }
+
+      <GalleryGrid showLoader={isWorking}>
         { images.map((image) => (
           covers.includes(image.hash) ? (
             <GalleryGroup
@@ -58,14 +61,13 @@ function Gallery() {
           )
         )) }
       </GalleryGrid>
-      {
-        images.length < 3 ? null : (
-          <>
-            <Pagination page={page} />
-            <GalleryHeader page={page} isBottom />
-          </>
-        )
-      }
+
+      { images.length >= 3 && (
+        <>
+          <Pagination page={page} maxPageIndex={maxPageIndex} />
+          <GalleryHeader page={page} isBottom />
+        </>
+      ) }
     </Stack>
   );
 }

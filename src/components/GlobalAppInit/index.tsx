@@ -22,7 +22,11 @@ function GlobalAppInit({ children }: PropsWithChildren) {
 
   const { checkUpdateTrashCount } = useTrashbin();
   useEffect(() => {
-    checkUpdateTrashCount();
+    const handle = window.setTimeout(() => {
+      checkUpdateTrashCount();
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [checkUpdateTrashCount]);
 
   return children;

@@ -53,6 +53,7 @@ function Navigation() {
   const { fullPath } = useUrl();
   const { themeName, setThemeName } = useSettingsStore();
   const { lastGalleryLink, getUrl } = useGalleryParams();
+  const { showTrashCount, trashCount } = useInteractionsStore();
 
   useEffect(() => {
     setDrawerContainer(document.body);
@@ -68,11 +69,6 @@ function Navigation() {
     selectSync,
     setShowSerials,
   } = useNavigation();
-
-  const {
-    showTrashCount,
-    trashCount,
-  } = useInteractionsStore();
 
   const trashCountSum = useMemo(() => (trashCount.frames + trashCount.images), [trashCount]);
 

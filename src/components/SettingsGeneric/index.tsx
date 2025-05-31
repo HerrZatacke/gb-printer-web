@@ -71,7 +71,7 @@ function GenericSettings() {
 
   const env = useEnv();
 
-  const { frames, frameGroups } = useItemsStore();
+  const { frames, frameGroups, imageGroups } = useItemsStore();
 
   const savFrameGroups = getFrameGroups(frames, frameGroups);
 
@@ -465,7 +465,7 @@ function GenericSettings() {
       />
 
       <FormControlLabel
-        label="Enable Image Groups"
+        label={`Enable Image Groups ${imageGroups.length ? `(${imageGroups.length} groups)` : ''}`}
         control={(
           <Switch
             checked={enableImageGroups}
