@@ -63,6 +63,9 @@ export const useHandleHashParams = () => {
       }
     }
 
-    redirect(goto);
+    window.location.hash = '';
+    window.setTimeout(() => {
+      redirect(goto);
+    }, 10);
   }, [getUrl, hash]);
 };
