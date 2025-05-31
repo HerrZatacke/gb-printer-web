@@ -17,6 +17,9 @@ dumps/*
 .DS_Store
 *.iml
 
+# generated
+/public/fav
+
 # next.js
 /.next/
 /out/

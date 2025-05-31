@@ -1,12 +1,11 @@
 import { execSync } from 'child_process';
 import bundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
-import { version } from './package.json';
+import { version, name, author, description, homepage } from './package.json';
+import generateWebManifest from './scripts/generateWebManifest';
 
 const isDev = process.env.NODE_ENV === 'development';
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-
-console.log({ isDev, basePath });
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: !isDev,
@@ -33,31 +32,44 @@ const rewritesConfig = isDev ? {
 } : {};
 
 const branch = getGitBranch();
-const nextConfig: NextConfig = {
-  output: 'export',
-  trailingSlash: true,
-  basePath,
-  assetPrefix: basePath ? `${basePath}/` : '',
 
-  env: {
-    NEXT_PUBLIC_BRANCH: branch,
-    NEXT_PUBLIC_VERSION: version,
-    NEXT_PUBLIC_BASE_PATH: basePath || '',
-  },
+const getNextConfig = async (): Promise<NextConfig> => {
+  const nextConfig: NextConfig = {
+    output: 'export',
+    trailingSlash: true,
+    basePath,
+    assetPrefix: basePath ? `${basePath}/` : '',
 
-  // build still requires webpack, so cannot use... :(
-  // turbopack: {},
+    env: {
+      NEXT_PUBLIC_BRANCH: branch,
+      NEXT_PUBLIC_VERSION: version,
+      NEXT_PUBLIC_BASE_PATH: basePath || '',
+      NEXT_PUBLIC_MANIFEST_TAGS: await generateWebManifest({
+        description,
+        name,
+        author,
+        homepage,
+        basePath,
+        version,
+      }),
+    },
 
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.md$/i,
-      use: 'raw-loader',
-    });
+    // build still requires webpack, so cannot use... :(
+    // turbopack: {},
 
-    return config;
-  },
+    webpack: (config) => {
+      config.module.rules.push({
+        test: /\.md$/i,
+        use: 'raw-loader',
+      });
 
-  ...rewritesConfig,
+      return config;
+    },
+
+    ...rewritesConfig,
+  };
+
+  return withBundleAnalyzer(nextConfig);
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default getNextConfig;
