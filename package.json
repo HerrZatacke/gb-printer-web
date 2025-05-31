@@ -1,12 +1,13 @@
 {
   "name": "gb-printer-web",
-  "version": "1.47.7",
-  "description": "gb-printer-web",
+  "version": "1.47.8",
+  "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run build:clean && npm run build:build && npm run build:shorten",
+    "build": "npm run build:clean && npm run build:build && npm run build:replace && npm run build:shorten",
     "build:build": "next build",
     "build:clean": "rimraf out && rimraf o",
+    "build:replace": "node scripts/replaceInFiles.mjs",
     "build:shorten": "node scripts/shortenStatic.mjs",
     "serve": "npm run build && npm run serve:serve",
     "serve:serve": "npx serve out",
@@ -20,6 +21,7 @@
     "type": "git",
     "url": "https://github.com/HerrZatacke/gb-printer-web.git"
   },
+  "homepage": "https://github.com/HerrZatacke/gb-printer-web",
   "type": "module",
   "devDependencies": {
     "@emotion/cache": "^11.14.0",
@@ -62,6 +64,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
     "events": "^3.3.0",
+    "favicons": "^7.2.0",
     "file-saver": "^2.0.5",
     "filenamify": "^6.0.0",
     "filesize": "^6.1.0",
