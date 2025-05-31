@@ -42,7 +42,7 @@ jobs:
         env:
           NEXT_PUBLIC_DROPBOX_APP_KEY: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_KEY }}
           NEXT_PUBLIC_ENV_ENDPOINT: ${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
-          DEPLOY_TARGET: gh-pages
+          NEXT_PUBLIC_BASE_PATH: ""
         run: |
           npm run build
           mv o o-zip
@@ -58,8 +58,8 @@ jobs:
         if: steps.checkTag.outputs.exists == 'false'
         env:
           NEXT_PUBLIC_DROPBOX_APP_KEY: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_KEY }}
-          NEXT_PUBLIC_ENV_ENDPOINT: /gb-printer-web${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
-          DEPLOY_TARGET: gh-pages
+          NEXT_PUBLIC_ENV_ENDPOINT: ${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
+          NEXT_PUBLIC_BASE_PATH: /gb-printer-web
         run: |
           npm run build
           touch out/.nojekyll
