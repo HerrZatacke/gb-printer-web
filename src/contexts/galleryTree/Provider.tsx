@@ -57,10 +57,13 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
         setPathsOptions(event.data.pathsOptions);
         setIsWorking(false);
 
-        if (stateImageGroups.length > event.data.paths.length) {
-          const idsInPaths = event.data.paths.map(({ group }) => group.id);
-          const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-          setImageGroups(usedGroups);
+        // Cleanup of unused groups
+        if (enableImageGroups) {
+          if (stateImageGroups.length > event.data.paths.length) {
+            const idsInPaths = event.data.paths.map(({ group }) => group.id);
+            const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
+            setImageGroups(usedGroups);
+          }
         }
 
         if (enableDebug) {
@@ -82,7 +85,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       newWorker.terminate();
       setWorker(null);
     };
-  }, [enableDebug, setError, setImageGroups, stateImageGroups]);
+  }, [enableDebug, enableImageGroups, setError, setImageGroups, stateImageGroups]);
 
   useEffect(() => {
     if (!worker) {
