@@ -21,13 +21,13 @@ function SettingsTabs() {
   const tabs = useMemo<Tab[]>(() => (
     [
       {
-        path: '/settings/generic',
+        path: '/settings/generic/',
         headline: 'Generic Settings',
         prefetch: true,
       },
       process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
         {
-          path: '/settings/dropbox',
+          path: '/settings/dropbox/',
           headline: 'Dropbox Settings',
           prefetch: false,
         } : null,
@@ -35,17 +35,17 @@ function SettingsTabs() {
         (env?.env === 'esp8266') ||
         (env?.env === 'webpack-dev')
       ) ? {
-        path: '/settings/wifi',
+        path: '/settings/wifi/',
         headline: 'WiFi Settings',
         prefetch: false,
       } : null,
       {
-        path: '/settings/plugins',
+        path: '/settings/plugins/',
         headline: 'Plugin Settings',
         prefetch: false,
       },
       {
-        path: '/settings/git',
+        path: '/settings/git/',
         headline: 'Git Settings',
         prefetch: false,
       },
