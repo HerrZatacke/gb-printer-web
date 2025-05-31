@@ -24,8 +24,8 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
       </head>
       <body>
         <EnvProvider>
-          <GlobalAppInit>
-            <Suspense>
+          <Suspense>
+            <GlobalAppInit>
               <PluginsContext>
                 <GalleryTreeContext>
                   <NavigationToolsProvider>
@@ -37,8 +37,8 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
                   </NavigationToolsProvider>
                 </GalleryTreeContext>
               </PluginsContext>
-            </Suspense>
-          </GlobalAppInit>
+            </GlobalAppInit>
+          </Suspense>
         </EnvProvider>
       </body>
     </html>
