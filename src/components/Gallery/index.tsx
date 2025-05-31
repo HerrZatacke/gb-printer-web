@@ -19,6 +19,7 @@ function Gallery() {
     selectedCount,
     filteredCount,
     page,
+    maxPageIndex,
     images,
     covers,
   } = useGallery();
@@ -41,7 +42,8 @@ function Gallery() {
       ) : null }
 
       <GalleryHeader page={page} isSticky />
-      <Pagination page={page} />
+      { maxPageIndex > 0 && <Pagination page={page} maxPageIndex={maxPageIndex} /> }
+
       <GalleryGrid>
         { images.map((image) => (
           covers.includes(image.hash) ? (
@@ -58,14 +60,12 @@ function Gallery() {
           )
         )) }
       </GalleryGrid>
-      {
-        images.length < 3 ? null : (
-          <>
-            <Pagination page={page} />
-            <GalleryHeader page={page} isBottom />
-          </>
-        )
-      }
+      { images.length >= 3 && (
+        <>
+          <Pagination page={page} maxPageIndex={maxPageIndex} />
+          <GalleryHeader page={page} isBottom />
+        </>
+      ) }
     </Stack>
   );
 }
