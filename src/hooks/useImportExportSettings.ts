@@ -53,6 +53,7 @@ export interface ImportExportSettings {
 export const useImportExportSettings = (): ImportExportSettings => {
   const { globalUpdate } = useStores();
 
+  // ToDo: clean up this mess :-|
   return useMemo(() => {
     const getSettings = getGetSettings();
     const downloadSettings = async (what: ExportTypes, selectedFrameGroup = ''): Promise<void> => {
