@@ -10,27 +10,25 @@ import { type Image } from '@/types/Image';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface UseNavigationTools {
-  getGroupPath: (groupId: string) => string,
+  getGroupPath: (groupId: string, pageIndex: number) => string,
   currentGroup: TreeImageGroup,
   getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number,
-  getPagedImagePath: (hash: string) => string,
-  navigateToGroup: (groupId: string) => void,
+  navigateToGroup: (groupId: string, pageIndex: number) => void,
   navigateToImage: (hash: string) => void,
 }
 
 interface ShouldNavigate {
   imageHash? :string,
-  groupId?: string,
-  page?: {
-    slug: string,
-    viewId: string,
+  group?: {
+    id: string,
+    pageIndex: number,
   },
 }
 
 export const useNavigationTools = (): UseNavigationTools => {
   const router = useRouter();
-  const { paths, root } = useGalleryTreeContext();
-  const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate>({});
+  const { paths, root, isWorking } = useGalleryTreeContext();
+  const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate | false>(false);
   const { sortBy, filtersActiveTags, recentImports } = useFiltersStore();
   const { pageSize } = useSettingsStore();
   const { path: currentPath, getUrl } = useGalleryParams();
@@ -52,22 +50,18 @@ export const useNavigationTools = (): UseNavigationTools => {
     return Math.floor(imageIndex / pageSize);
   }, [imageFilter, pageSize]);
 
-  const getGroupPath = useCallback((groupId: string): string => {
+  const getGroupPath = useCallback((groupId: string, pageIndex: number): string => {
     if (groupId === ROOT_ID) {
-      return getUrl({ pageIndex: 0, group: '' });
+      return getUrl({ pageIndex, group: '' });
     }
 
     const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath || '';
-    return getUrl({ pageIndex: 0, group: groupPath });
+    return getUrl({ pageIndex, group: groupPath });
   }, [getUrl, paths]);
 
   const currentGroup = useMemo<TreeImageGroup>(() => (
     paths.find(({ absolutePath }) => (absolutePath === currentPath))?.group || root
   ), [currentPath, paths, root]);
-
-  const navigateToGroup = (groupId: string) => {
-    setShouldNavigate({ groupId });
-  };
 
   const getPagedImagePath = useCallback((imageHash: string): string => {
     const pathMap = paths.find(({ group: { images } }) => (
@@ -82,24 +76,46 @@ export const useNavigationTools = (): UseNavigationTools => {
     return getUrl({ pageIndex, group: viewSlug });
   }, [getImagePageIndexInGroup, getUrl, paths, root]);
 
-  const navigateToImage = (hash: string) => {
-    setShouldNavigate({ imageHash: hash });
-  };
+  const navigateToGroup = useCallback((groupId: string, pageIndex: number) => {
+    // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
+    window.setTimeout(() => {
+      setShouldNavigate({
+        group: {
+          id: groupId,
+          pageIndex,
+        },
+      });
+    }, 1);
+  }, []);
+
+  const navigateToImage = useCallback((hash: string) => {
+    // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
+    window.setTimeout(() => {
+      setShouldNavigate({ imageHash: hash });
+    }, 1);
+  }, []);
 
   useEffect(() => {
-    if (shouldNavigate.imageHash) {
-      router.push(getPagedImagePath(shouldNavigate.imageHash));
-      setShouldNavigate({});
-    } else if (shouldNavigate.groupId) {
-      router.push(getGroupPath(shouldNavigate.groupId));
-      setShouldNavigate({});
+    if (isWorking || !shouldNavigate) {
+      return;
     }
-  }, [getGroupPath, getPagedImagePath, router, shouldNavigate]);
+
+    const handle = window.setTimeout(() => {
+      if (shouldNavigate.imageHash) {
+        router.push(getPagedImagePath(shouldNavigate.imageHash));
+        setShouldNavigate(false);
+      } else if (shouldNavigate.group) {
+        router.push(getGroupPath(shouldNavigate.group.id, shouldNavigate.group.pageIndex));
+        setShouldNavigate(false);
+      }
+    }, 1);
+
+    return () => { window.clearTimeout(handle); };
+  }, [getGroupPath, getPagedImagePath, isWorking, router, shouldNavigate]);
 
   return {
     currentGroup,
     getGroupPath,
-    getPagedImagePath,
     getImagePageIndexInGroup,
     navigateToGroup,
     navigateToImage,

@@ -111,7 +111,7 @@ const useRunImport = (): UseRunImport => {
         view.id,
       );
 
-      navigateToGroup(newGroupId);
+      navigateToGroup(newGroupId, 0);
     }
 
     setImageSelection(imageHashes);
