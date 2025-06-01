@@ -17,7 +17,7 @@ export interface UsePathSegments {
 export const usePathSegments = (): UsePathSegments => {
   const { path: currentPath, getUrl } = useGalleryParams();
   const { root, paths } = useGalleryTreeContext();
-  const { getImagePageIndexInGroup } = useNavigationTools();
+  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
 
   const segments = useMemo<Segment[]>(() => {
     const breadCrumbsRaw = ['', ...currentPath.split('/').filter(Boolean)];
@@ -27,12 +27,17 @@ export const usePathSegments = (): UsePathSegments => {
       breadCrumbsRaw.slice(1, index + 1).join('/').concat('/'),
     ]), []);
 
-    const breadCrumbPaths: PathMap[] = breadCrumbSlugs.map((breadCrumbPath): PathMap => (
-      paths.find(({ absolutePath }) => absolutePath === breadCrumbPath) || {
-        absolutePath: '',
-        group: root,
+    const breadCrumbPaths: PathMap[] = breadCrumbSlugs.reduce((acc: PathMap[], breadCrumbPath): PathMap[] => {
+      let segmentPath: PathMap | undefined;
+
+      if (breadCrumbPath === '/') {
+        segmentPath = { absolutePath: '', group: root };
+      } else {
+        segmentPath = paths.find(({ absolutePath }) => absolutePath === breadCrumbPath);
       }
-    ));
+
+      return segmentPath ? [...acc, segmentPath] : acc;
+    }, []);
 
     const breadCrumbSegments = breadCrumbPaths.map((breadCrumbPath: PathMap, index: number): Segment => {
       const childPath = breadCrumbPaths[index + 1];
@@ -50,8 +55,14 @@ export const usePathSegments = (): UsePathSegments => {
       };
     });
 
+    // if url path does not match breadcrumb, navigater to the best possible path instead
+    if (breadCrumbSlugs.length !== breadCrumbSegments.length) {
+      const validGroupId = breadCrumbSegments[breadCrumbSegments.length - 1].group.id;
+      navigateToGroup(validGroupId, 0);
+    }
+
     return breadCrumbSegments;
-  }, [currentPath, getImagePageIndexInGroup, getUrl, paths, root]);
+  }, [currentPath, root, paths, getUrl, getImagePageIndexInGroup, navigateToGroup]);
 
   return {
     segments,

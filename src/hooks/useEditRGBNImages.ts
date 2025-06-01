@@ -187,7 +187,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
         view.id,
       );
 
-      navigateToGroup(newGroupId);
+      navigateToGroup(newGroupId, 0);
     }
 
   };

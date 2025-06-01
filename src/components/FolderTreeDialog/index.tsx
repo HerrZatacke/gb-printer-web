@@ -27,7 +27,7 @@ function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
       label={(
         <Link
           component={NextLink}
-          href={getGroupPath(group.id)}
+          href={getGroupPath(group.id, 0)}
           onClick={onClick}
           sx={{ display: 'block' }}
         >

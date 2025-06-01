@@ -258,7 +258,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
           parentGroupId,
         );
 
-        navigateToGroup(newGroupId);
+        navigateToGroup(newGroupId, 0);
       } else {
         if (!initialValues.imageGroup) {
           return;
@@ -273,7 +273,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
           parentGroupId,
         );
 
-        navigateToGroup(editImageGroup.groupId);
+        navigateToGroup(editImageGroup.groupId, 0);
       }
     },
     move: async () => {

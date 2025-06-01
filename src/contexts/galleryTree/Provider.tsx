@@ -31,7 +31,7 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
 
 export function GalleryTreeContext({ children }: PropsWithChildren) {
   const [worker, setWorker] = useState<Worker | null>(null);
-  const [isWorking, setIsWorking] = useState<boolean>(false);
+  const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
   const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot());
   const [paths, setPaths] = useState<PathMap[]>([]);
   const [pathsOptions, setPathsOptions] = useState<DialogOption[]>([]);
