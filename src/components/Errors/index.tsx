@@ -17,7 +17,7 @@ function Error() {
           position: 'fixed',
           top: theme.spacing(10),
           right: theme.spacing(2),
-          zIndex: 10,
+          zIndex: 30,
         }
       )}
     >
