@@ -1,4 +1,3 @@
-
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CodeIcon from '@mui/icons-material/Code';
@@ -10,6 +9,7 @@ import ExtensionIcon from '@mui/icons-material/Extension';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PreviewIcon from '@mui/icons-material/Preview';
+import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -21,6 +21,7 @@ import React, { useState } from 'react';
 import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
+import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
 import { ImageSelectionMode } from '@/stores/filtersStore';
 import useSettingsStore from '@/stores/settingsStore';
 
@@ -53,6 +54,11 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     updateFavouriteTag,
     editImage,
   } = useGalleryImageContext(hash);
+
+  const {
+    canPrint,
+    print,
+  } = useSuperPrinterInterface();
 
   const { createGroup } = useImageGroups();
 
@@ -126,6 +132,22 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             View in Lightbox
           </ListItemText>
         </MenuItem>
+        {canPrint && (
+          <MenuItem
+            onClick={() => {
+              print(hash);
+              onClose();
+            }}
+            title="Print via Super Printer"
+          >
+            <ListItemIcon>
+              <PrintIcon />
+            </ListItemIcon>
+            <ListItemText>
+              Print via Super Printer
+            </ListItemText>
+          </MenuItem>
+        )}
         {hasPlugins ? (
           <MenuItem
             onClick={(ev) => {

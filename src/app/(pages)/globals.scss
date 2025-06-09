@@ -3,6 +3,18 @@
   to { transform: rotate(360deg); }
 }
 
+@keyframes pulse-bg {
+  0% {
+    background-color: rgba(115, 91, 154, 1);
+  }
+  50% {
+    background-color: rgba(115, 91, 154, 0.3);
+  }
+  100% {
+    background-color: rgba(115, 91, 154, 1);
+  }
+}
+
 :root {
   --navigation-height: 64px;
 }

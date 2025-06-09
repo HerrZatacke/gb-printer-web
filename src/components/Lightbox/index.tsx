@@ -115,6 +115,9 @@ function Lightbox({
 
   const contentDimensionsSx = contentDimensions(contentWidth, contentHeight, fullScreen, fullSize);
 
+  const denyText = Boolean(confirm) ? 'Cancel' : 'Close';
+  const confirmText = 'Ok';
+
   return (
     <Dialog
       container={overlayContainer}
@@ -183,7 +186,7 @@ function Lightbox({
             color="primary"
             variant="outlined"
           >
-            Cancel
+            {denyText}
           </Button>
         ) : null }
         { confirm ? (
@@ -193,7 +196,7 @@ function Lightbox({
             variant="contained"
             onClick={confirm}
           >
-            Ok
+            {confirmText}
           </Button>
         ) : null }
       </DialogActions>

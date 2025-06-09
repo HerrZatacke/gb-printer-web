@@ -1,12 +1,13 @@
+import { usePortsContext } from '@/contexts/ports';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import useStoragesStore from '@/stores/storagesStore';
-import WebSerial from '@/tools/WebSerial';
-import WebUSBSerial from '@/tools/WebUSBSerial';
 import type { SyncLastUpdate } from '@/types/Sync';
 
 interface UseNavigation {
   disableSerials: boolean,
+  serialWarning: boolean,
+  portCount: number,
   syncBusy: boolean,
   useSync: boolean,
   useSerials: boolean,
@@ -35,10 +36,18 @@ const useNavigation = (): UseNavigation => {
   const { syncBusy, setSyncSelect, setShowSerials } = useInteractionsStore();
   const { useSerials } = useSettingsStore();
   const { syncLastUpdate } = useStoragesStore();
-  const disableSerials = !WebUSBSerial.enabled && !WebSerial.enabled;
+  const {
+    webUSBEnabled,
+    webSerialEnabled,
+    hasInactiveDevices,
+    webSerialActivePorts,
+    webUSBActivePorts,
+  } = usePortsContext();
 
   return {
-    disableSerials,
+    disableSerials: !webUSBEnabled && !webSerialEnabled,
+    serialWarning: hasInactiveDevices,
+    portCount: webSerialActivePorts.length + webUSBActivePorts.length,
     syncBusy,
     useSync,
     useSerials,

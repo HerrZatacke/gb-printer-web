@@ -49,7 +49,7 @@ const getExportKeys = (what: ExportTypes): ExportableKey[] => {
   }
 };
 
-const getGetSettings = () => async (
+export const getSettings = async (
   what: ExportTypes,
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {
@@ -150,5 +150,3 @@ const getGetSettings = () => async (
 
   return JSON.stringify(jsonExport, null, 2);
 };
-
-export default getGetSettings;

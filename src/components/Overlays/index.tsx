@@ -1,7 +1,6 @@
 import React from 'react';
 import BitmapQueue from '@/components/Overlays/BitmapQueue';
 import Confirm from '@/components/Overlays/Confirm';
-import ConnectSerial from '@/components/Overlays/ConnectSerial';
 import DragOver from '@/components/Overlays/DragOver';
 import EditForm from '@/components/Overlays/EditForm';
 import EditFrame from '@/components/Overlays/EditFrame';
@@ -15,6 +14,7 @@ import LightboxImage from '@/components/Overlays/LightboxImage';
 import PickColors from '@/components/Overlays/PickColors';
 import ProgressBox from '@/components/Overlays/ProgressBox';
 import ProgressLogBox from '@/components/Overlays/ProgressLogBox';
+import Serials from '@/components/Overlays/Serials';
 import SortForm from '@/components/Overlays/SortForm';
 import SyncSelect from '@/components/Overlays/SyncSelect';
 import Trashbin from '@/components/Overlays/Trashbin';
@@ -27,7 +27,7 @@ import useInteractionsStore from '@/stores/interactionsStore';
 import useSettingsStore from '@/stores/settingsStore';
 
 function Overlays() {
-  const { enableImageGroups } = useSettingsStore();
+  const { enableImageGroups, useSerials } = useSettingsStore();
 
   const { dialogs } = useDialogsStore();
 
@@ -72,11 +72,13 @@ function Overlays() {
     progressLog,
     syncSelect,
     videoSelection,
+    showSerials,
   } = useInteractionsStore();
 
   const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
   const showProgressBox = !!progress.gif || !!progress.printer || !!progress.plugin;
   const showVideoForm = !!videoSelection?.length;
+  const showSerialOverlay = showSerials && useSerials;
 
   switch (true) {
     case showConfirm:
@@ -111,14 +113,16 @@ function Overlays() {
       return <SyncSelect />; // interactive
     case showTrashbin:
       return <Trashbin />; // interactive
+    case showSerialOverlay:
+      return <Serials />; // interactive
     case showDragOver:
       return <DragOver />; // semi-interactive
     case showProgressLog:
       return <ProgressLogBox />; // non-interactive
     case showProgressBox:
       return <ProgressBox />; // non-interactive
-    default: // Default: Components which control their show/hide status themselves (e.g. through a hook)
-      return <ConnectSerial />;
+    default:
+      return null;
   }
 }
 
