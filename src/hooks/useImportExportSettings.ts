@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import type { ExportTypes } from '@/consts/exportTypes';
 import { useStores } from '@/hooks/useStores';
 import useItemsStore from '@/stores/itemsStore';
 import { hashImportFrames } from '@/stores/migrations/history/0/hashFrames';
 import { download } from '@/tools/download';
-import getGetSettings from '@/tools/getGetSettings';
+import { getSettings } from '@/tools/getSettings';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import mergeStates from '@/tools/mergeStates';
 import type { JSONExport, JSONExportState, ExportableState } from '@/types/ExportState';
@@ -53,32 +53,29 @@ export interface ImportExportSettings {
 export const useImportExportSettings = (): ImportExportSettings => {
   const { globalUpdate } = useStores();
 
-  return useMemo(() => {
-    const getSettings = getGetSettings();
-    const downloadSettings = async (what: ExportTypes, selectedFrameGroup = ''): Promise<void> => {
-      const currentSettings = await getSettings(what, { selectedFrameGroup });
-      const filename = what === 'frames' ? 'frames' : [what, selectedFrameGroup].filter(Boolean).join('_');
+  const downloadSettings = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<void> => {
+    const currentSettings = await getSettings(what, { selectedFrameGroup });
+    const filename = what === 'frames' ? 'frames' : [what, selectedFrameGroup].filter(Boolean).join('_');
 
-      download(null)([{
-        blob: new Blob(new Array(currentSettings)),
-        filename: `${filename}.json`,
-      }]);
-    };
+    download(null)([{
+      blob: new Blob(new Array(currentSettings)),
+      filename: `${filename}.json`,
+    }]);
+  }, []);
 
-    const jsonImport = async (repoContents: JSONExport): Promise<void> => {
-      const update = await mergeSettings(repoContents, true);
-      globalUpdate(update);
-    };
-
-    const remoteImport = async (repoContents: JSONExportState): Promise<void> => {
-      const update = await mergeSettings(repoContents as JSONExport, false);
-      globalUpdate(update);
-    };
-
-    return {
-      downloadSettings,
-      jsonImport,
-      remoteImport,
-    };
+  const jsonImport = useCallback(async (repoContents: JSONExport): Promise<void> => {
+    const update = await mergeSettings(repoContents, true);
+    globalUpdate(update);
   }, [globalUpdate]);
+
+  const remoteImport = useCallback(async (repoContents: JSONExportState): Promise<void> => {
+    const update = await mergeSettings(repoContents as JSONExport, false);
+    globalUpdate(update);
+  }, [globalUpdate]);
+
+  return {
+    downloadSettings,
+    jsonImport,
+    remoteImport,
+  };
 };

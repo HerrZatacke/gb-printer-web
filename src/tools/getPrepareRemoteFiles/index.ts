@@ -1,7 +1,7 @@
 import { ExportTypes } from '@/consts/exportTypes';
+import { getSettings } from '@/tools/getSettings';
 import type { SyncFile } from '@/types/Export';
 import type { DownloadInfo, ExportStats, KeepFile, RemoteFiles, UploadFile } from '@/types/Sync';
-import getGetSettings from '../getGetSettings';
 
 type PrepareRemoteFilesFn = (fileCollection: SyncFile[], lastUpdateUTC: number) => Promise<RemoteFiles>;
 
@@ -28,8 +28,6 @@ const extFromType = (type: string): string => {
 };
 
 const getPrepareRemoteFiles = (): PrepareRemoteFilesFn => {
-  const getSettings = getGetSettings();
-
   return async (fileCollection: SyncFile[], lastUpdateUTC: number): Promise<RemoteFiles> => {
     const toUpload: UploadFile[] = [];
     const toKeep: KeepFile[] = [];

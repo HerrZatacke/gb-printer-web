@@ -26,6 +26,7 @@ import type { Theme } from '@mui/system';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
+import { usePortsContext } from '@/contexts/ports';
 import { useGalleryParams } from '@/hooks/useGalleryParams';
 import useNavigation from '@/hooks/useNavigation';
 import { useUrl } from '@/hooks/useUrl';
@@ -33,6 +34,12 @@ import useInteractionsStore from '@/stores/interactionsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { lightTheme } from '@/styles/themes';
 import { reduceItems } from '@/tools/reduceArray';
+
+enum NavBadgeColor {
+  ERROR = 'error',
+  INFO = 'info',
+  DEFAULT = 'default',
+}
 
 interface NavItem {
   label: string,
@@ -44,7 +51,9 @@ interface NavActionItem {
   title: string,
   icon: React.ReactNode,
   badgeContent: string | null,
+  badgeColor: NavBadgeColor,
   onClick: () => void,
+  isBusy: boolean,
 }
 
 function Navigation() {
@@ -61,6 +70,8 @@ function Navigation() {
 
   const {
     disableSerials,
+    serialWarning,
+    portCount,
     syncBusy,
     useSync,
     useSerials,
@@ -69,6 +80,11 @@ function Navigation() {
     selectSync,
     setShowSerials,
   } = useNavigation();
+
+  const {
+    webSerialIsReceiving,
+    webUSBIsReceiving,
+  } = usePortsContext();
 
   const trashCountSum = useMemo(() => (trashCount.frames + trashCount.images), [trashCount]);
 
@@ -117,34 +133,44 @@ function Navigation() {
         title: 'Trash',
         icon: <DeleteIcon />,
         badgeContent: trashCountSum > 0 ? trashCountSum.toString(10) : null,
+        badgeColor: NavBadgeColor.ERROR,
         disabled: false,
+        isBusy: false,
         onClick: () => showTrashCount(true),
       },
       useSync ? {
         title: 'Syncronize with remote service(s)',
         icon: <SyncIcon />,
         badgeContent: syncNotification ? '!' : null,
+        badgeColor: NavBadgeColor.ERROR,
         disabled: syncBusy,
+        isBusy: false,
         onClick: selectSync,
       } : null,
       {
         title: themeName === ThemeName.BRIGHT ? 'Switch to dark mode' : 'Switch to bright mode',
         icon: themeName === ThemeName.BRIGHT ? <LightModeIcon /> : <DarkModeIcon />,
         badgeContent: null,
+        badgeColor: NavBadgeColor.DEFAULT,
         disabled: false,
+        isBusy: false,
         onClick: () => setThemeName(themeName === ThemeName.BRIGHT ? ThemeName.DARK : ThemeName.BRIGHT),
       },
       useSerials ? {
         title: disableSerials ? 'USB devices are disabled' : 'WebUSB Serial devices',
         icon: <UsbIcon />,
-        badgeContent: null,
+        badgeContent: ((serialWarning && '!') || (portCount && portCount.toString(10)) || null),
+        badgeColor: serialWarning ? NavBadgeColor.ERROR : NavBadgeColor.INFO,
         disabled: disableSerials,
+        isBusy: webSerialIsReceiving || webUSBIsReceiving,
         onClick: setShowSerials,
       } : null,
     ].reduce(reduceItems<NavActionItem>, [])
   ), [
     disableSerials,
+    portCount,
     selectSync,
+    serialWarning,
     setShowSerials,
     setThemeName,
     showTrashCount,
@@ -154,6 +180,8 @@ function Navigation() {
     trashCountSum,
     useSerials,
     useSync,
+    webSerialIsReceiving,
+    webUSBIsReceiving,
   ]);
 
   return (
@@ -188,16 +216,17 @@ function Navigation() {
                 role="navigation"
                 aria-label="Utility Navigation"
               >
-                {navActionItems.map(({ title, icon, onClick, badgeContent }) => (
+                {navActionItems.map(({ title, icon, onClick, badgeContent, badgeColor, isBusy }) => (
                   <IconButton
                     key={title}
                     color="inherit"
                     title={title}
                     onClick={onClick}
+                    sx={isBusy ? { animation: 'pulse-bg 600ms infinite' } : undefined}
                   >
                     <Badge
                       badgeContent={badgeContent}
-                      color="error"
+                      color={badgeColor}
                       anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'right',
