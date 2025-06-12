@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import hasher from 'object-hash';
 import { PortDeviceType } from '@/consts/ports';
 import { delay } from '@/tools/delay';
 import { mergeReadResults } from '@/tools/mergeReadResults';
@@ -86,7 +87,17 @@ export abstract class CommonPort extends EventEmitter {
     };
 
     const detectPassiveType = async () => {
-      console.log([...readResult.bytes]);
+      if (hasher([...readResult.bytes]) === 'a0a69f6fd5747a0cafe5a287e957780c4224f009') {
+        /* eslint-disable no-await-in-loop */
+        for (let i=0; i<20; i+=1) {
+          await this.send(new Uint8Array([0xA2, 0xA4]));
+          await delay(500);
+          await this.send(new Uint8Array([0xA3, 0xA5]));
+          await delay(500);
+        }
+        /* eslint-enable no-await-in-loop */
+      }
+
       this.portDeviceType = PortDeviceType.INACTIVE;
       self.clearTimeout(detectionTimeout);
       this.emit('typechange');
