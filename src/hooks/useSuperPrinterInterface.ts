@@ -43,7 +43,7 @@ const printCommand = (
 export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
   const { webUSBActivePorts, webSerialActivePorts, sendDeviceMessage, worker } = usePortsContext();
   const { images, frames } = useItemsStore();
-  const { setProgress } = useInteractionsStore();
+  const { setProgress, startProgress, stopProgress } = useInteractionsStore();
 
   const getTiles = useCallback(async (hash: string) => {
     const tileLoader = loadImageTiles(images, frames);
@@ -72,13 +72,13 @@ export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
     const totalCommands = commands.length;
 
     // trigger "visibility" of overlay
-    setProgress('printer', 1 / (totalCommands + 0.5));
+    const progressId = startProgress('Printing to Super Printer Interface');
 
     const sendCommand = (): boolean => {
       const command = commands.shift();
       if (command?.byteLength) {
         sendDeviceMessage(command, printer.id);
-        setProgress('printer', (totalCommands - commands.length) / (totalCommands + 0.5));
+        setProgress(progressId, (totalCommands - commands.length) / (totalCommands + 0.5));
         return true;
       }
 
@@ -96,14 +96,14 @@ export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
       const sent = sendCommand();
       if (!sent) {
         worker.removeEventListener('message', handler);
-        setProgress('printer', 0);
+        stopProgress(progressId);
       }
     };
 
     // Add listener and start printing
     worker.addEventListener('message', handler);
     sendCommand();
-  }, [printer, sendDeviceMessage, setProgress, worker]);
+  }, [printer, sendDeviceMessage, setProgress, startProgress, stopProgress, worker]);
 
   const print = useCallback(async (hash: string) => {
     if (!canPrint) { return; }

@@ -16,9 +16,9 @@ export interface ProgressLog {
 }
 
 export interface Progress {
-  gif: number,
-  printer: number,
-  plugin: number,
+  id: string,
+  label: string,
+  value: number,
 }
 
 export interface TrashCount {
@@ -38,7 +38,7 @@ interface Values {
   errors: ErrorMessage[],
   isFullscreen: boolean,
   lightboxImage: number | null,
-  progress: Progress,
+  progress: Progress[],
   progressLog: ProgressLog,
   printerBusy: boolean,
   printerData: PrinterInfo | null,
@@ -62,7 +62,9 @@ interface Actions {
   setPrinterBusy: (printerBusy: boolean) => void,
   setPrinterData: (printerData: PrinterInfo | null) => void,
   setPrinterFunctions: (printerFunctions: PrinterFunction[]) => void,
-  setProgress: (which: keyof Progress, progress: number) => void,
+  startProgress: (label: string) => string,
+  setProgress: (id: string, progress: number) => void,
+  stopProgress: (id: string) => void,
   setProgressLog: (which: keyof ProgressLog, logItem: LogItem) => void,
   setShowSerials: (showSerials: boolean) => void,
   setSyncBusy: (syncBusy: boolean) => void,
@@ -82,7 +84,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   printerBusy: false,
   printerData: null,
   printerFunctions: [],
-  progress: { gif: 0, printer: 0, plugin: 0 },
+  progress: [],
   progressLog: { git: [], dropbox: [] },
   showSerials: false,
   syncBusy: false,
@@ -98,13 +100,39 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   setPrinterBusy: (printerBusy: boolean) => set({ printerBusy }),
   setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),
   setPrinterFunctions: (printerFunctions: PrinterFunction[]) => set({ printerFunctions }),
-  setProgress: (which: keyof Progress, progress: number) => set({ progress: { ...get().progress, [which]: progress } }),
   setShowSerials: (showSerials: boolean) => set({ showSerials }),
   setSyncBusy: (syncBusy: boolean) => set({ syncBusy }),
   setSyncSelect: (syncSelect: boolean) => set({ syncSelect }),
   showTrashCount: (show: boolean) => set({ trashCount: { ...get().trashCount, show } }),
   updateTrashCount: (frames: number, images: number) => set({ trashCount: { ...get().trashCount, frames, images } }),
   setVideoSelection: (videoSelection: string[]) => set({ videoSelection }),
+
+  startProgress: (label: string): string => {
+    const newProgress: Progress = {
+      id: v4(),
+      label,
+      value: 0,
+    };
+    set(({ progress }) => ({ progress: [...progress, newProgress] }));
+    return newProgress.id;
+  },
+
+  setProgress: (id: string, progressValue: number) => {
+    set(({ progress }) => ({
+      progress: progress.map((progressEntry): Progress => (
+        (progressEntry.id !== id) ? progressEntry : {
+          ...progressEntry,
+          value: progressValue,
+        }
+      )),
+    }));
+  },
+
+  stopProgress: (id: string) => {
+    set(({ progress }) => ({
+      progress: progress.filter((progressEntry) => (progressEntry.id !== id)),
+    }));
+  },
 
   setProgressLog: (which: keyof ProgressLog, logItem: LogItem) => {
     const { progressLog } = get();

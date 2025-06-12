@@ -1,23 +1,37 @@
 import LinearProgress from '@mui/material/LinearProgress';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
-import { useProgressBox } from '@/hooks/useProgressBox';
+import useInteractionsStore from '@/stores/interactionsStore';
 
 function ProgressBox() {
-  const { message, progress } = useProgressBox();
+  const { progress } = useInteractionsStore();
 
   return (
-    progress > 0 && (
-      <Lightbox
-        header={message}
+    <Lightbox
+      header="Working..."
+    >
+      <Stack
+        direction="column"
+        gap={2}
       >
-        <LinearProgress
-          variant="determinate"
-          value={progress * 100}
-          color="secondary"
-        />
-      </Lightbox>
-    )
+        { progress.map((progressItem) => (
+          <Stack
+            key={progressItem.id}
+            direction="column"
+            gap={1}
+          >
+            <Typography>{ progressItem.label }</Typography>
+            <LinearProgress
+              variant="determinate"
+              value={progressItem.value * 100}
+              color="secondary"
+            />
+          </Stack>
+        )) }
+      </Stack>
+    </Lightbox>
   );
 }
 

@@ -96,7 +96,7 @@ export interface PluginsContext {
 
 export type InitPluginSetupParams =
   Pick<ItemsState, 'addUpdatePluginProperties'> &
-  Pick<InteractionsState, 'setProgress'> &
+  Pick<InteractionsState, 'setProgress'  | 'startProgress' | 'stopProgress'> &
   {
     collectImageData: CollectImageDataFn,
     stores: UseStores,
