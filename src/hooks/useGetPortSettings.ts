@@ -4,7 +4,7 @@ import useDialogsStore from '@/stores/dialogsStore';
 import { DialogQuestionSelect, DialogResult } from '@/types/Dialog';
 import { PortSettings } from '@/types/ports';
 
-const baudRates = [2400, 4800, 9600, 19200, 28800, 38400, 57600, 76800, 115200, 230400, 250000, 460800, 576000, 921600];
+const baudRates = [2400, 4800, 9600, 19200, 28800, 38400, 57600, 76800, 115200, 230400, 250000, 460800, 576000, 921600, 1000000];
 
 interface UseGetPortSettings {
   querySettings: () => Promise<PortSettings | null>,
