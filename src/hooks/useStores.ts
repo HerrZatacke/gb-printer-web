@@ -27,7 +27,7 @@ export const useStores = (): UseStores => {
   const { cancelEditFrame, cancelEditImages, cancelEditPalette } = useEditStore();
   const { updateRecentImports, updateImageSelection } = useFiltersStore();
   const { importQueueCancel } = useImportsStore();
-  const { setProgress, setPrinterBusy } = useInteractionsStore();
+  const { setPrinterBusy } = useInteractionsStore();
   const {
     addImages,
     deleteImages,
@@ -45,7 +45,6 @@ export const useStores = (): UseStores => {
     const updateLastSyncLocalNow = () => setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
 
     const combinedImportQueueCancel = () => {
-      setProgress('printer', 0);
       setPrinterBusy(false);
       importQueueCancel();
     };
@@ -137,7 +136,6 @@ export const useStores = (): UseStores => {
     setPalettes,
     setImageGroups,
     setPrinterBusy,
-    setProgress,
     setSyncLastUpdate,
     updateFrameGroups,
     updateImageHash,

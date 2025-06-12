@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import type { PropsWithChildren } from 'react';
 import { PrinterFunction } from '@/consts/printerFunction';
 import useImportFile from '@/hooks/useImportFile';
@@ -15,9 +15,26 @@ let heartbeatTimer: number | null;
 let remotePrinterWindow: Window | null;
 
 function RemotePrinterContextProvider({ children }: PropsWithChildren) {
-  const { setProgress, setPrinterFunctions, setPrinterBusy, setPrinterData } = useInteractionsStore.getState();
+  const { startProgress, setProgress, stopProgress, setPrinterFunctions, setPrinterBusy, setPrinterData } = useInteractionsStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
   const { handleFileImport } = useImportFile();
+  const progressId = useRef<string>('');
+
+  const showProgress = useCallback((progressValue: number): void => {
+    const value = Math.min(1, Math.max(0, progressValue));
+
+    if (progressId && (value === 0 || value === 1)) {
+      stopProgress(progressId.current);
+      progressId.current = '';
+      return;
+    }
+
+    if (!progressId.current) {
+      progressId.current = startProgress('Getting items from printer');
+    }
+
+    setProgress(progressId.current, value);
+  }, [setProgress, startProgress, stopProgress]);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent<RemotePrinterEvent>) => {
@@ -71,7 +88,7 @@ function RemotePrinterContextProvider({ children }: PropsWithChildren) {
       }
 
       if (progress !== undefined) {
-        setProgress('printer', progress);
+        showProgress(progress);
       }
 
       // fallback for printers with web-app version < 1.15.5 to display some "fake" progress..
@@ -128,8 +145,7 @@ function RemotePrinterContextProvider({ children }: PropsWithChildren) {
 
     return () => window.removeEventListener('message', handleMessage);
 
-  }, [dismissDialog, handleFileImport, setDialog, setPrinterBusy, setPrinterData, setPrinterFunctions, setProgress]);
-
+  }, [dismissDialog, handleFileImport, setDialog, setPrinterBusy, setPrinterData, setPrinterFunctions, showProgress]);
 
   const value = useMemo<RemotePrinterContext>(() => ({
     callRemoteFunction: async (functionType: PrinterFunction) => {

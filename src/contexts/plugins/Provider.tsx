@@ -14,16 +14,18 @@ import { pluginsContext } from './index';
 export function PluginsContext({ children }: PropsWithChildren) {
   const { plugins, images, addUpdatePluginProperties } = useItemsStore();
   const stores = useStores();
-  const { setProgress } = useInteractionsStore();
+  const { startProgress, setProgress, stopProgress } = useInteractionsStore();
   const { jsonImport } = useImportExportSettings();
 
   const initPluginSetupParams = useMemo<InitPluginSetupParams>(() => ({
     collectImageData: getCollectImageData(images),
     addUpdatePluginProperties,
+    startProgress,
     setProgress,
+    stopProgress,
     stores,
     importFn: jsonImport,
-  }), [images, addUpdatePluginProperties, setProgress, stores, jsonImport]);
+  }), [images, addUpdatePluginProperties, startProgress, setProgress, stopProgress, stores, jsonImport]);
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
     const plugin: Plugin = plugins.find((p) => p.url === url) || { url: '' };

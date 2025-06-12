@@ -75,7 +75,7 @@ function ImageMeta({
             closeOnSelect={false}
             views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
             value={dayjs(created)}
-            onAccept={(newDate: Dayjs | null) => {
+            onChange={(newDate: Dayjs | null) => {
               if (newDate) {
                 updateCreated(newDate.format(dateFormat));
               }

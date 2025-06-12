@@ -4,7 +4,9 @@ import { pluginFunctions, pluginCompatibilityStore } from './pluginContextFuncti
 
 export const initPlugin = (
   {
+    startProgress,
     setProgress,
+    stopProgress,
     addUpdatePluginProperties,
     collectImageData,
     stores,
@@ -14,8 +16,22 @@ export const initPlugin = (
 ): Promise<PluginClassInstance | null> => {
   const { url, config: initialConfig = {} } = plugin;
 
+  let progressId = '';
+
   const progress = (progressValue: number): void => {
-    setProgress('plugin', progressValue % 1);
+    const value = Math.min(1, Math.max(0, progressValue));
+
+    if (progressId && (value === 0 || value === 1)) {
+      stopProgress(progressId);
+      progressId = '';
+      return;
+    }
+
+    if (!progressId) {
+      progressId = startProgress(plugin.name || 'Plugin');
+    }
+
+    setProgress(progressId, value);
   };
 
   return new Promise((resolve) => {

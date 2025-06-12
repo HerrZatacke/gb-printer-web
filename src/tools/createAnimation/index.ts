@@ -7,6 +7,7 @@ import Queue from 'promise-queue';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
+import { delay } from '@/tools/delay';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { isRGBNImage } from '@/tools/isRGBNImage';
@@ -25,12 +26,21 @@ interface GifFrameData {
   pixels: number[],
 }
 
-const getAddImages = (
+interface GetAddImagesParams {
   gifWriter: GifWriter,
   queue: Queue,
   frameRate: number,
   total: number,
-) => (canvas: HTMLCanvasElement, index: number) => (
+  setProgress: (value: number) => void,
+}
+
+const getAddImages = ({
+  gifWriter,
+  queue,
+  frameRate,
+  total,
+  setProgress,
+}: GetAddImagesParams) => (canvas: HTMLCanvasElement, index: number) => (
   queue.add(() => new Promise((resolve, reject) => {
     const context = canvas.getContext('2d');
     if (!context) {
@@ -62,7 +72,7 @@ const getAddImages = (
     }
 
     try {
-      useInteractionsStore.getState().setProgress('gif', (index + 1) / total);
+      setProgress((index + 1) / total);
 
       window.requestAnimationFrame(() => {
         gifWriter.addFrame(0, 0, canvas.width, canvas.height, pixels, {
@@ -92,11 +102,13 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 
 // ToDo: move to src/javascript/app/components/Overlays/VideoParamsForm/useVideoForm.ts
 export const createAnimation = async () => {
-  const { setProgress, setError, videoSelection } = useInteractionsStore.getState();
+  const { startProgress, setProgress, stopProgress, setError, videoSelection } = useInteractionsStore.getState();
   const { frames, palettes, images: stateImages } = useItemsStore.getState();
   const { videoParams, fileNameStyle } = useSettingsStore.getState();
 
-  setProgress('gif', 0.01);
+  const progressId = startProgress('Creating Animation');
+  // allow progress modal to appear safely
+  await delay(10);
 
   const {
     scaleFactor,
@@ -204,7 +216,7 @@ export const createAnimation = async () => {
   if (unique(
     canvases.map((canvas) => (`${canvas.width}*${canvas.height}`)),
   ).length !== 1) {
-    setProgress('gif', 0);
+    stopProgress(progressId);
     setError(new Error('All images need to have same dimensions'));
     return;
   }
@@ -231,7 +243,16 @@ export const createAnimation = async () => {
     canvases.reverse();
   }
 
-  const addImages = getAddImages(gifWriter, queue, frameRate, canvases.length);
+  const addImages = getAddImages({
+    frameRate,
+    gifWriter,
+    queue,
+    total: canvases.length,
+    setProgress: (value: number) => {
+      console.log(value);
+      setProgress(progressId, value);
+    },
+  });
 
   await Promise.all(canvases.map(addImages));
 
@@ -262,5 +283,5 @@ export const createAnimation = async () => {
 
   saveAs(file, `${gifFileName}.gif`);
 
-  setProgress('gif', 0);
+  stopProgress(progressId);
 };

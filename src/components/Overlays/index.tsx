@@ -76,7 +76,7 @@ function Overlays() {
   } = useInteractionsStore();
 
   const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
-  const showProgressBox = !!progress.gif || !!progress.printer || !!progress.plugin;
+  const showProgressBox = !!progress.length;
   const showVideoForm = !!videoSelection?.length;
   const showSerialOverlay = showSerials && useSerials;
 
