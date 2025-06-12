@@ -11,7 +11,7 @@ const appendUint8Arrays = (a: Uint8Array, b: Uint8Array): Uint8Array => {
   return result;
 };
 
-export class CommonPort extends EventEmitter {
+export abstract class CommonPort extends EventEmitter {
   protected portDeviceType: PortDeviceType;
   private readTimeoutDuration: number;
 
@@ -25,17 +25,10 @@ export class CommonPort extends EventEmitter {
     return this.portDeviceType;
   }
 
-  canRead(): boolean {
-    return false;
-  }
-
-  getId(): string {
-    return '';
-  }
-
-  async read(): Promise<ReadResult> {
-    throw new Error('must be implemented');
-  }
+  abstract canRead(): boolean
+  abstract getId(): string
+  abstract send(data: BufferSource): Promise<void>
+  abstract read(): Promise<ReadResult>
 
   async readLoop () {
     let readTimeout = 0;
