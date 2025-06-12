@@ -104,7 +104,7 @@ function ConnectSerial({ inline }: Props) {
                   {`Type: ${portDeviceLabels[serialPort.portDeviceType]}`}
                 </Typography>
                 <Typography variant="caption" component="span">
-                  {`${serialPort.description} baud`}
+                  {serialPort.description}
                 </Typography>
               </Stack>
             ))}
