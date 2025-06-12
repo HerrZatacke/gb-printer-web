@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
 import { PortDeviceType } from '@/consts/ports';
-import { delay } from '@/tools/delay';
 import { mergeReadResults } from '@/tools/mergeReadResults';
 import { ReadResult } from '@/types/ports';
 
