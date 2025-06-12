@@ -5,12 +5,14 @@ import { PortDeviceType, PortsWorkerMessageType, PortType, usbDeviceFilters, Wor
 import { useGetPortSettings } from '@/hooks/useGetPortSettings';
 import useImportPlainText from '@/hooks/useImportPlainText';
 import useInteractionsStore from '@/stores/interactionsStore';
+import { mergeReadResults } from '@/tools/mergeReadResults';
 import {
   PortsContextValue,
   PortsWorkerAnswerCommand,
   PortsWorkerMessage,
   PortsWorkerOpenCommand,
   PortsWorkerSendDataCommand,
+  ReadResult,
   WorkerPort,
 } from '@/types/ports';
 import { portsContext } from './index';
@@ -23,7 +25,7 @@ export function PortsContext({ children }: PropsWithChildren) {
   const [webUSBIsReceiving, setWebUSBIsReceiving] = useState(false);
   const [webSerialActivePorts, setWebSerialActivePorts] = useState<WorkerPort[]>([]);
   const [webSerialIsReceiving, setWebSerialIsReceiving] = useState(false);
-  const [unknownDeviceResponse, setUnknownDeviceResponse] = useState<string>('');
+  const [unknownDeviceResponse, setUnknownDeviceResponse] = useState<ReadResult | null>(null);
 
   const importPlainText = useImportPlainText();
   const { querySettings } = useGetPortSettings();
@@ -63,12 +65,12 @@ export function PortsContext({ children }: PropsWithChildren) {
           switch (message.readResult.portDeviceType) {
             case PortDeviceType.PACKET_CAPTURE: {
               importPlainText(message.readResult.string);
-              setUnknownDeviceResponse('');
+              setUnknownDeviceResponse(null);
               break;
             }
 
             case PortDeviceType.SUPER_PRINTER_INTERFACE: {
-              setUnknownDeviceResponse('');
+              setUnknownDeviceResponse(null);
               break;
             }
 
@@ -76,7 +78,9 @@ export function PortsContext({ children }: PropsWithChildren) {
             case PortDeviceType.UNKNOWN:
             default: {
               // Concatenate all received data
-              setUnknownDeviceResponse((current) => `${current}${message.readResult.string}`);
+              setUnknownDeviceResponse((current) => (
+                current ? mergeReadResults(current, message.readResult) : message.readResult
+              ));
               break;
             }
           }

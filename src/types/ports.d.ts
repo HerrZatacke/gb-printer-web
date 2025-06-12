@@ -24,7 +24,7 @@ export interface PortsContextValue {
   webUSBEnabled: boolean,
   openWebUSB: () => void,
   hasInactiveDevices: boolean,
-  unknownDeviceResponse: string,
+  unknownDeviceResponse: ReadResult | null,
   sendDeviceMessage: (message: Uint8Array, id: string) => void,
 }
 

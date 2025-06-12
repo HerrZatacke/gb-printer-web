@@ -11,7 +11,7 @@ export const portsContext: Context<PortsContextValue> = createContext<PortsConte
   webUSBIsReceiving: false,
   webUSBEnabled: false,
   openWebUSB: () => { throw new Error('PortsContext is missing'); },
-  unknownDeviceResponse: '',
+  unknownDeviceResponse: null,
   hasInactiveDevices: false,
   sendDeviceMessage: () => { throw new Error('PortsContext is missing'); },
   worker: null,
