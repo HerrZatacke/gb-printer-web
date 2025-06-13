@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
 import useDialogsStore from '@/stores/dialogsStore';
+import useSettingsStore from '@/stores/settingsStore';
 import { DialogQuestionSelect, DialogResult } from '@/types/Dialog';
 import { PortSettings } from '@/types/ports';
 
@@ -12,15 +13,16 @@ interface UseGetPortSettings {
 
 export const useGetPortSettings = (): UseGetPortSettings => {
   const { setDialog, dismissDialog } = useDialogsStore();
+  const { lastBaudRate, setLastBaudRate } = useSettingsStore();
 
   const querySettings = useCallback((): Promise<PortSettings | null> => {
     return new Promise((resolve) => {
       setDialog({
         confirm: async (values: DialogResult) => {
           dismissDialog(0);
-          resolve({
-            baudRate: parseInt(values?.baudRate as string || '115200', 10),
-          });
+          const baudRate = parseInt(values?.baudRate as string || '115200', 10);
+          setLastBaudRate(baudRate);
+          resolve({ baudRate });
         },
         deny: async () => {
           dismissDialog(0);
@@ -35,13 +37,13 @@ export const useGetPortSettings = (): UseGetPortSettings => {
             options: baudRates.map((baudRate) => ({
               value: baudRate.toString(10),
               name: baudRate.toString(10),
-              selected: baudRate === 115200,
+              selected: baudRate === lastBaudRate,
             })),
           }];
         },
       });
     });
-  }, [dismissDialog, setDialog]);
+  }, [dismissDialog, lastBaudRate, setDialog, setLastBaudRate]);
 
   return{
     querySettings,
