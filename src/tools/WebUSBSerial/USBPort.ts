@@ -1,7 +1,6 @@
 import { PortDeviceType } from '@/consts/ports';
 import { CommonPort } from '@/tools/CommonPort';
 import { randomId } from '@/tools/randomId';
-import { ReadResult } from '@/types/ports';
 
 class CommonUSBPort extends CommonPort {
   private device: USBDevice;
@@ -10,7 +9,6 @@ class CommonUSBPort extends CommonPort {
   private endpointIn: number;
   private endpointOut: number;
   private id: string;
-  private textDecoder: TextDecoder;
 
   constructor(device: USBDevice) {
     super();
@@ -19,7 +17,6 @@ class CommonUSBPort extends CommonPort {
     this.interfaceNumber = 2; // original interface number of WebUSB Arduino demo
     this.endpointIn = 5; // original in endpoint ID of WebUSB Arduino demo
     this.endpointOut = 4; // original out endpoint ID of WebUSB Arduino demo
-    this.textDecoder = new TextDecoder();
     this.id = randomId();
   }
 
@@ -35,24 +32,19 @@ class CommonUSBPort extends CommonPort {
     return this.id;
   }
 
-  canRead(): boolean {
+  protected canRead(): boolean {
     return Boolean(
       this.device &&
       this.device.opened &&
       this.getPortDeviceType() !== PortDeviceType.INACTIVE);
   }
 
-  async read(): Promise<ReadResult> {
+  protected async readChunk(): Promise<Uint8Array> {
     const result = await this.device.transferIn(this.endpointIn, 64);
     const dataView  = result?.data || new DataView(new Uint8Array([]).buffer);
     const bytes = new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength);
 
-    return {
-      bytes,
-      string: this.textDecoder.decode(bytes),
-      portDeviceType: this.getPortDeviceType(),
-      deviceId: this.getId(),
-    };
+    return bytes;
   }
 
   async connect(): Promise<void> {
@@ -108,7 +100,7 @@ class CommonUSBPort extends CommonPort {
     }
   }
 
-  async send(data: BufferSource): Promise<void> {
+  protected async sendRaw(data: BufferSource): Promise<void> {
     await this.device.transferOut(this.endpointOut, data);
   }
 }
