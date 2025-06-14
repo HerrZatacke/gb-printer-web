@@ -88,8 +88,11 @@ export abstract class CommonPort extends EventEmitter {
     const detectPassiveType = async () => {
       if (hasher([...readResult.bytes]) === 'a0a69f6fd5747a0cafe5a287e957780c4224f009') {
         this.portDeviceType = PortDeviceType.GBXCART;
+        this.readTimeoutDuration = 10;
         await this.send(new Uint8Array([0xA3, 0xA5])); // Switch to DMG/5V
-        // await this.send(new Uint8Array([0xA2, 0xA4])); // Switch to GBA/3V
+
+        readResult.string = '';
+        readResult.bytes = new Uint8Array([]);
       } else {
         this.portDeviceType = PortDeviceType.INACTIVE;
       }
