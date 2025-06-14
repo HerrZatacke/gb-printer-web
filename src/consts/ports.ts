@@ -7,6 +7,7 @@ export enum PortDeviceType {
   UNKNOWN = 'unknown', // While detecting headers
   PASSIVE = 'passive', // Device did not send own header by itself. Need to query/guess
   INACTIVE = 'inactive', // Could not be identified, set to be inactive
+  GBXCART = 'gbxcart',
   PACKET_CAPTURE = 'packet_capture',
   SUPER_PRINTER_INTERFACE = 'super_printer_interface',
 }
@@ -15,6 +16,7 @@ export const portDeviceLabels: Record<PortDeviceType, string> = {
   [PortDeviceType.UNKNOWN]: 'Unknown Device',
   [PortDeviceType.PASSIVE]: 'Passive Device',
   [PortDeviceType.INACTIVE]: 'Inactive Device',
+  [PortDeviceType.GBXCART]: 'GBXCart',
   [PortDeviceType.PACKET_CAPTURE]: 'Packet Capture device',
   [PortDeviceType.SUPER_PRINTER_INTERFACE]: 'Super Printer Interface',
 };

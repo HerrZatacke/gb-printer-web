@@ -87,17 +87,13 @@ export abstract class CommonPort extends EventEmitter {
 
     const detectPassiveType = async () => {
       if (hasher([...readResult.bytes]) === 'a0a69f6fd5747a0cafe5a287e957780c4224f009') {
-        /* eslint-disable no-await-in-loop */
-        for (let i=0; i<20; i+=1) {
-          await this.send(new Uint8Array([0xA2, 0xA4]));
-          await delay(500);
-          await this.send(new Uint8Array([0xA3, 0xA5]));
-          await delay(500);
-        }
-        /* eslint-enable no-await-in-loop */
+        this.portDeviceType = PortDeviceType.GBXCART;
+        await this.send(new Uint8Array([0xA3, 0xA5])); // Switch to DMG/5V
+        // await this.send(new Uint8Array([0xA2, 0xA4])); // Switch to GBA/3V
+      } else {
+        this.portDeviceType = PortDeviceType.INACTIVE;
       }
 
-      this.portDeviceType = PortDeviceType.INACTIVE;
       self.clearTimeout(detectionTimeout);
       this.emit('typechange');
     };
