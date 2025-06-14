@@ -114,10 +114,7 @@ function ConnectSerial({ inline }: Props) {
       <Button
         title="Show message from unrecognized device"
         onClick={() => {
-          if (!unknownDeviceResponse) {
-            alert('no message received');
-            return;
-          }
+          if (!unknownDeviceResponse) { return; }
 
           const containsUnreadableChars = unknownDeviceResponse.bytes.some(byte => (
             byte < 32 && byte !== 9 && byte !== 10 && byte !== 13  // tab, cr, lf
@@ -127,7 +124,7 @@ function ConnectSerial({ inline }: Props) {
 
           alert(message);
         }}
-        disabled={!hasInactiveDevices}
+        disabled={!(hasInactiveDevices && unknownDeviceResponse)}
         variant="contained"
         color={hasInactiveDevices ? 'error' : 'secondary'}
       >
