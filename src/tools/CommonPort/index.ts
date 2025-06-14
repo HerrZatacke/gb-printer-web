@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 import { PortDeviceType } from '@/consts/ports';
-import { mergeReadResults } from '@/tools/mergeReadResults';
+import { getNewReadResult, mergeReadResults } from '@/tools/mergeReadResults';
 import { ReadResult } from '@/types/ports';
 
 declare const self: DedicatedWorkerGlobalScope;
@@ -31,12 +31,7 @@ export abstract class CommonPort extends EventEmitter {
 
   async readLoop () {
     let readTimeout = 0;
-    let readResult: ReadResult = {
-      string: '',
-      bytes: new Uint8Array([]),
-      deviceId: this.getId(),
-      portDeviceType: this.portDeviceType,
-    };
+    let readResult = getNewReadResult(this.getId(), this.portDeviceType);
 
     const emitData = () => {
       // Dont emit if there's no content
@@ -46,8 +41,7 @@ export abstract class CommonPort extends EventEmitter {
 
       this.emit('data', readResult);
 
-      readResult.string = '';
-      readResult.bytes = new Uint8Array([]);
+      readResult = getNewReadResult(this.getId(), this.portDeviceType);
     };
 
 
@@ -59,7 +53,7 @@ export abstract class CommonPort extends EventEmitter {
 
       // Detect passive device (device only sends data after a query)
       detectionTimeout = self.setTimeout(async () => {
-        emitData(); // Emit in case something is left in the buffers
+        readResult = getNewReadResult(this.getId(), this.portDeviceType);
         this.portDeviceType = PortDeviceType.INACTIVE;
         this.emit('typechange');
       }, 1500);

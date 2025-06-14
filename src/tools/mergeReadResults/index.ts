@@ -1,3 +1,4 @@
+import { PortDeviceType } from '@/consts/ports';
 import { ReadResult } from '@/types/ports';
 
 const appendUint8Arrays = (a: Uint8Array, b: Uint8Array): Uint8Array => {
@@ -16,3 +17,10 @@ export const mergeReadResults = (first: ReadResult, second: ReadResult): ReadRes
     string: `${first.string}${second.string}`,
   };
 };
+
+export const getNewReadResult = (deviceId: string, portDeviceType: PortDeviceType): ReadResult => ({
+  string: '',
+  bytes: new Uint8Array([]),
+  deviceId,
+  portDeviceType,
+});
