@@ -13,16 +13,19 @@ interface UseGetPortSettings {
 
 export const useGetPortSettings = (): UseGetPortSettings => {
   const { setDialog, dismissDialog } = useDialogsStore();
-  const { lastBaudRate, setLastBaudRate } = useSettingsStore();
+  const { setLastBaudRate } = useSettingsStore();
 
   const querySettings = useCallback((): Promise<PortSettings | null> => {
+    // get lastBaudRate from store without triggering a dependency update by directly calling it from the store
+    const lastBaudRate = useSettingsStore.getState().lastBaudRate;
+
     return new Promise((resolve) => {
       setDialog({
         confirm: async (values: DialogResult) => {
           dismissDialog(0);
           const baudRate = parseInt(values?.baudRate as string || '115200', 10);
-          setLastBaudRate(baudRate);
           resolve({ baudRate });
+          setLastBaudRate(baudRate);
         },
         deny: async () => {
           dismissDialog(0);
@@ -43,7 +46,7 @@ export const useGetPortSettings = (): UseGetPortSettings => {
         },
       });
     });
-  }, [dismissDialog, lastBaudRate, setDialog, setLastBaudRate]);
+  }, [dismissDialog, setDialog, setLastBaudRate]);
 
   return{
     querySettings,
