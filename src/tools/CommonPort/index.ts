@@ -5,6 +5,10 @@ import { findSubarray } from '@/tools/findSubarray';
 import { appendUint8Arrays } from '@/tools/mergeReadResults';
 import { ReadParams, ReadResult } from '@/types/ports';
 
+const DETECT_PACKET_CAPTURE = 'GAMEBOY PRINTER Packet Capture';
+const DETECT_PRINTER_EMULATOR = 'GAMEBOY PRINTER Emulator';
+const DETECT_SUPER_PRINTER_INTERFACE = 'Super Printer Interface by Raphaël BOICHOT';
+
 export abstract class CommonPort extends EventEmitter {
   protected portDeviceType: PortDeviceType;
   private readTimeoutDuration: number;
@@ -53,12 +57,12 @@ export abstract class CommonPort extends EventEmitter {
     let run = true;
     const idleDelay = 10;
 
-    // wait and return what has been received so far
-    // this.bufferedData is filled in parallel
-    if (timeout) {
-      await delay(timeout);
-    } else if (length) {
+    if (typeof timeout === 'number') {
+      setTimeout(() => { run = false; }, timeout);
+    }
 
+    if (typeof length === 'number') {
+      if (length === 0) { run = false; }
       try {
         /* eslint-disable no-await-in-loop */
         while (this.canRead() && run) {
@@ -73,8 +77,9 @@ export abstract class CommonPort extends EventEmitter {
       } catch (error) {
         this.emit('error', (error as Error).message);
       }
-    } else if (texts?.length) {
+    } else if (texts instanceof Array) {
       const needles: Uint8Array[] = texts.map((text) => this.textEncoder.encode(text));
+      if (needles.length === 0) { run = false; }
       /* eslint-disable no-await-in-loop */
       while (this.canRead() && run) {
         if (this.bufferedData && this.bufferedData.byteLength) {
@@ -96,6 +101,12 @@ export abstract class CommonPort extends EventEmitter {
           // give the app some idle time
           await delay(idleDelay);
         }
+      }
+      /* eslint-enable no-await-in-loop */
+    } else {
+      /* eslint-disable no-await-in-loop */
+      while (this.canRead() && run) {
+        await delay(idleDelay);
       }
       /* eslint-enable no-await-in-loop */
     }
@@ -121,14 +132,14 @@ export abstract class CommonPort extends EventEmitter {
     const detectString = this.textDecoder.decode(bytes);
 
     if (
-      (detectString.indexOf('GAMEBOY PRINTER Packet Capture') !== -1) || // Raw Packet mode
-      (detectString.indexOf('GAMEBOY PRINTER Emulator') !== -1) // Hex encoded Tiles
+      (detectString.indexOf(DETECT_PACKET_CAPTURE) !== -1) || // Raw Packet mode
+      (detectString.indexOf(DETECT_PRINTER_EMULATOR) !== -1) // Hex encoded Tiles
     ) {
       // https://github.com/mofosyne/arduino-gameboy-printer-emulator/blob/master/GameBoyPrinterEmulator/GameBoyPrinterEmulator.ino
       this.portDeviceType = PortDeviceType.PACKET_CAPTURE;
       this.readTimeoutDuration = 100;
       this.emit('typechange');
-    } else if (detectString.indexOf('Super Printer Interface by Raphaël BOICHOT') !== -1) {
+    } else if (detectString.indexOf(DETECT_SUPER_PRINTER_INTERFACE) !== -1) {
       // https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/blob/main/Super_Printer_interface/Super_Printer_interface.ino
       this.portDeviceType = PortDeviceType.SUPER_PRINTER_INTERFACE;
       this.readTimeoutDuration = 10;
@@ -172,19 +183,27 @@ export abstract class CommonPort extends EventEmitter {
     this.startBuffering();
 
     // the printer emulator takes about 3500ms to write it's banner, so we wait a bit longer to be safe
-    const bannerBytes = await this.read({ timeout: 4000 });
+    const bannerBytes = await this.read({
+      timeout: 5000,
+      texts: [
+        DETECT_PACKET_CAPTURE,
+        DETECT_PRINTER_EMULATOR,
+        DETECT_SUPER_PRINTER_INTERFACE,
+      ],
+    });
 
     this.detectActiveType(bannerBytes);
 
-    // Banner was received, but not recognized
-    if (bannerBytes.byteLength && this.portDeviceType === PortDeviceType.UNKNOWN) {
+    if (this.portDeviceType !== PortDeviceType.UNKNOWN) {
+      // A known device type was recognized -> clear buffer to remove "rest" of banner
+      this.bufferedData = null;
+    } else if (bannerBytes.byteLength) {
+      // Banner was received, but device type was not not recognized
       this.emitData(bannerBytes);
       this.portDeviceType = PortDeviceType.INACTIVE;
       this.emit('typechange');
-      return;
-    }
-
-    if (this.portDeviceType === PortDeviceType.UNKNOWN) {
+    } else {
+      // Unknown device type and no banner. Try to detect a "passive" device
       const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 500 }], true); // cr/lf
       if (readCrLf.byteLength) {
         this.emitData(readCrLf);
@@ -198,6 +217,7 @@ export abstract class CommonPort extends EventEmitter {
       return;
     }
 
+    // enter the read-loop
     try {
       /* eslint-disable no-await-in-loop */
       while (this.canRead()) {
