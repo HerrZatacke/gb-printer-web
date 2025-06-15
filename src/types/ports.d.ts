@@ -84,8 +84,8 @@ export type PortsWorkerMessage =
 
 export type ReadParams =
   { timeout: number; length?: never; texts?: never } |
-  { timeout?: never; length?: never; texts: string[] } |
-  { timeout?: never; length: number; texts?: never };
+  { timeout?: number; length?: never; texts: string[] } |
+  { timeout?: number; length: number; texts?: never };
 
 
 ////// Commands to Worker //////
