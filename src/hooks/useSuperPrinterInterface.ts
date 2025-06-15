@@ -5,6 +5,7 @@ import { PortDeviceType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
+import useProgressStore from '@/stores/progressStore';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import { ReadParams, WorkerPort } from '@/types/ports';
 
@@ -44,7 +45,8 @@ const printCommand = (
 export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
   const { webUSBActivePorts, webSerialActivePorts, sendDeviceMessage, worker } = usePortsContext();
   const { images, frames } = useItemsStore();
-  const { setProgress, startProgress, stopProgress, setError } = useInteractionsStore();
+  const { setError } = useInteractionsStore();
+  const { setProgress, startProgress, stopProgress } = useProgressStore();
 
   const getTiles = useCallback(async (hash: string) => {
     const tileLoader = loadImageTiles(images, frames);

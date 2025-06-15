@@ -6,6 +6,7 @@ import useDialogsStore from '@/stores/dialogsStore';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
+import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 import useStoragesStore from '@/stores/storagesStore';
 import dateFormatLocale from '@/tools/dateFormatLocale';
@@ -37,7 +38,8 @@ export const dropBoxSyncTool = (
   stores: UseStores,
   remoteImport: (repoContents: JSONExportState) => Promise<void>,
 ): DropBoxSyncTool => {
-  const { setProgressLog, resetProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+  const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+  const { setProgressLog, resetProgressLog } = useProgressStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
 
   const queue = new Queue(1, Infinity);

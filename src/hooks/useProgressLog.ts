@@ -1,5 +1,4 @@
-import useInteractionsStore from '@/stores/interactionsStore';
-import type { LogItem } from '@/stores/interactionsStore';
+import useProgressStore, { type LogItem } from '@/stores/progressStore';
 import useStoragesStore from '@/stores/storagesStore';
 
 interface UseProgressLog {
@@ -17,7 +16,7 @@ interface UseProgressLog {
 }
 
 export const useProgressLog = (): UseProgressLog => {
-  const { progressLog, resetProgressLog } = useInteractionsStore();
+  const { progressLog, resetProgressLog } = useProgressStore();
   const { gitStorage, dropboxStorage } = useStoragesStore();
 
   return {
