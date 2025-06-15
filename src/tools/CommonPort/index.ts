@@ -195,11 +195,9 @@ export abstract class CommonPort extends EventEmitter {
     this.detectActiveType(bannerBytes);
 
     if (this.portDeviceType !== PortDeviceType.UNKNOWN) {
-      console.log('Known!');
       // A known device type was recognized -> clear buffer to remove "rest" of banner
       this.bufferedData = null;
     } else if (bannerBytes.byteLength) {
-      console.log('Unknown with Banner!');
       // Banner was received, but device type was not not recognized
       this.emitData(bannerBytes);
       this.portDeviceType = PortDeviceType.INACTIVE;
