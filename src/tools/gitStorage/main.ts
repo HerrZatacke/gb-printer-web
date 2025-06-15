@@ -1,5 +1,6 @@
 import Queue from 'promise-queue';
 import useInteractionsStore from '@/stores/interactionsStore';
+import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 import useStoragesStore from '@/stores/storagesStore';
 import { delay } from '@/tools/delay';
@@ -20,7 +21,7 @@ export const init = () => {
     useSettingsStore.getState().preferredLocale
   );
 
-  const { setProgressLog } = useInteractionsStore.getState();
+  const { setProgressLog } = useProgressStore.getState();
 
   const queue = new Queue(1, Infinity);
   addToQueue = (who: string): AddToQueueFn<unknown> => (what, throttle, fn) => (
@@ -42,7 +43,8 @@ export const init = () => {
 export const gitSyncTool = (
   remoteImport: (repoContents: JSONExportState) => Promise<void>,
 ): GitSyncTool => {
-  const { setProgressLog, setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+  const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+  const { setProgressLog } = useProgressStore.getState();
   const { syncLastUpdate } = useStoragesStore.getState();
 
   const updateSettings = async (gitSettings: GitStorageSettings) => {

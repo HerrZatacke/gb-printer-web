@@ -24,6 +24,7 @@ import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
 import useImportsStore from '@/stores/importsStore';
 import useInteractionsStore from '@/stores/interactionsStore';
+import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 
 function Overlays() {
@@ -68,12 +69,15 @@ function Overlays() {
     lightboxImage,
     dragover: showDragOver,
     trashCount: { show: showTrashbin },
-    progress,
-    progressLog,
     syncSelect,
     videoSelection,
     showSerials,
   } = useInteractionsStore();
+
+  const {
+    progress,
+    progressLog,
+  } = useProgressStore();
 
   const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
   const showProgressBox = !!progress.length;

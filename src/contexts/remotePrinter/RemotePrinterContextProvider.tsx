@@ -6,6 +6,7 @@ import { PrinterFunction } from '@/consts/printerFunction';
 import useImportFile from '@/hooks/useImportFile';
 import useDialogsStore from '@/stores/dialogsStore';
 import useInteractionsStore from '@/stores/interactionsStore';
+import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 import type { BlobResponse, PrinterParams, RemotePrinterEvent } from '@/types/Printer';
 import type { RemotePrinterContext } from './index';
@@ -15,7 +16,8 @@ let heartbeatTimer: number | null;
 let remotePrinterWindow: Window | null;
 
 function RemotePrinterContextProvider({ children }: PropsWithChildren) {
-  const { startProgress, setProgress, stopProgress, setPrinterFunctions, setPrinterBusy, setPrinterData } = useInteractionsStore.getState();
+  const { setPrinterFunctions, setPrinterBusy, setPrinterData } = useInteractionsStore.getState();
+  const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
   const { handleFileImport } = useImportFile();
   const progressId = useRef<string>('');

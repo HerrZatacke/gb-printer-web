@@ -1,21 +1,19 @@
 import { PortDeviceType, PortsWorkerMessageType, WorkerCommand } from '@/consts/ports';
 import { CommonPort } from '@/tools/CommonPort';
 import { randomId } from '@/tools/randomId';
-import { PortSettings, PortsWorkerCommand, PortsWorkerQuestionMessage, ReadResult } from '@/types/ports';
+import { PortSettings, PortsWorkerCommand, PortsWorkerQuestionMessage } from '@/types/ports';
 
 class CommonSerialPort extends CommonPort {
   private device: SerialPort;
   private baudRate: number;
   private reader: ReadableStreamDefaultReader | null;
   private id: string;
-  private textDecoder: TextDecoder;
 
   constructor(device: SerialPort) {
     super();
     this.device = device;
     this.baudRate = 0;
     this.reader = null;
-    this.textDecoder = new TextDecoder();
     this.id = randomId();
   }
 
@@ -31,20 +29,14 @@ class CommonSerialPort extends CommonPort {
     return this.id;
   }
 
-  canRead(): boolean {
+  protected canRead(): boolean {
     return Boolean(this.reader && this.getPortDeviceType() !== PortDeviceType.INACTIVE);
   }
 
-  async read(): Promise<ReadResult> {
+  protected async readChunk(): Promise<Uint8Array> {
     const result = await this.reader?.read();
     const bytes = result?.value as Uint8Array;
-
-    return {
-      bytes,
-      string: this.textDecoder.decode(bytes),
-      portDeviceType: this.getPortDeviceType(),
-      deviceId: this.getId(),
-    };
+    return bytes;
   }
 
   async queryPortSettings(): Promise<void> {
@@ -79,6 +71,8 @@ class CommonSerialPort extends CommonPort {
         return;
       }
 
+      console.log(this.baudRate);
+
       await this.device.open({ baudRate: this.baudRate });
 
       this.device.addEventListener('disconnect', () => {
@@ -94,7 +88,7 @@ class CommonSerialPort extends CommonPort {
     }
   }
 
-  async send(data: BufferSource) {
+  protected async sendRaw(data: BufferSource) {
     if (!this.device?.writable) {
       this.emit('errormessage', 'device is not writable');
     }
