@@ -45,6 +45,7 @@ export interface PortsWorkerStateMessage extends PortsWorkerBaseMessage {
 
 export interface PortsWorkerErrorMessage extends PortsWorkerBaseMessage {
   type :PortsWorkerMessageType.ERROR,
+  portType: PortType,
   errorMessage: string,
 }
 

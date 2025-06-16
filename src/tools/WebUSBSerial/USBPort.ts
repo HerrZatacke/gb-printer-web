@@ -49,9 +49,15 @@ class CommonUSBPort extends CommonPort {
 
   async connect(): Promise<void> {
     try {
+      try {
+        await this.device.open();
+      } catch (error) {
+        this.emit('error', (error as Error).message);
+        this.emit('errormessage', 'could not mount device');
+        return;
+      }
 
-      await this.device.open();
-      await this.device?.selectConfiguration?.(1);
+      await this.device.selectConfiguration(1);
 
       const configurationInterfaces = this.device.configuration?.interfaces;
       if (!configurationInterfaces) {

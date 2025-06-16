@@ -6,6 +6,7 @@ import {
   PortsWorkerChangeMessage,
   PortsWorkerCommand,
   PortsWorkerDataMessage,
+  PortsWorkerErrorMessage,
   PortsWorkerReceivingMessage,
   PortsWorkerStateMessage,
   ReadResult,
@@ -64,6 +65,19 @@ const receivingListener = (portType: PortType) => (portDeviceType: PortDeviceTyp
 
 SerialPorts.addListener('receiving', receivingListener(PortType.SERIAL));
 USBPorts.addListener('receiving', receivingListener(PortType.USB));
+
+const errorListener = (portType: PortType) => (errorMessage: string) => {
+  const receivingMessage: PortsWorkerErrorMessage = {
+    type: PortsWorkerMessageType.ERROR,
+    portType,
+    errorMessage,
+  };
+
+  self.postMessage(receivingMessage);
+};
+
+SerialPorts.addListener('errormessage', errorListener(PortType.SERIAL));
+USBPorts.addListener('errormessage', errorListener(PortType.USB));
 
 self.onmessage = async (messageEvent: MessageEvent<PortsWorkerCommand>) => {
   const textDecoder = new TextDecoder();
