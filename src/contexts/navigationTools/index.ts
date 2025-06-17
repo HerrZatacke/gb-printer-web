@@ -9,7 +9,7 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { type Image } from '@/types/Image';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
-interface UseNavigationTools {
+export interface UseNavigationTools {
   getGroupPath: (groupId: string, pageIndex: number) => string,
   currentGroup: TreeImageGroup,
   getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number,
