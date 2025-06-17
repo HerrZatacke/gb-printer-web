@@ -69,8 +69,7 @@ export function PortsContext({ children }: PropsWithChildren) {
           switch (message.readResults[0].portDeviceType) {
             case PortDeviceType.PACKET_CAPTURE: {
               setPacketCaptureResponse((current) => (
-                // ToDo: merge all result...
-                current ? mergeReadResults(current, message.readResults[0]) : message.readResults[0]
+                mergeReadResults([current, ...message.readResults])
               ));
               setUnknownDeviceResponse(null);
               break;
@@ -86,8 +85,7 @@ export function PortsContext({ children }: PropsWithChildren) {
             default: {
               // Concatenate all received data
               setUnknownDeviceResponse((current) => (
-                // ToDo: merge all result...
-                current ? mergeReadResults(current, message.readResults[0]) : message.readResults[0]
+                mergeReadResults([current, ...message.readResults])
               ));
               break;
             }

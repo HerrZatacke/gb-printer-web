@@ -42,7 +42,7 @@ export abstract class CommonPort extends EventEmitter {
       while (this.canRead()) {
         const result = await this.readChunk();
         if (result.byteLength) {
-          this.bufferedData = this.bufferedData ? appendUint8Arrays(this.bufferedData, result) : result;
+          this.bufferedData = appendUint8Arrays([this.bufferedData, result]);
         } else {
           // console.log(this.textDecoder.decode(this.bufferedData as Uint8Array));
           await delay(150);
