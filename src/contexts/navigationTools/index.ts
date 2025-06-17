@@ -77,6 +77,8 @@ export const useNavigationTools = (): UseNavigationTools => {
   }, [getImagePageIndexInGroup, getUrl, paths, root]);
 
   const navigateToGroup = useCallback((groupId: string, pageIndex: number) => {
+    if (isWorking) { return; }
+
     // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
     window.setTimeout(() => {
       setShouldNavigate({
@@ -86,7 +88,7 @@ export const useNavigationTools = (): UseNavigationTools => {
         },
       });
     }, 1);
-  }, []);
+  }, [isWorking]);
 
   const navigateToImage = useCallback((hash: string) => {
     // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
@@ -96,9 +98,7 @@ export const useNavigationTools = (): UseNavigationTools => {
   }, []);
 
   useEffect(() => {
-    if (isWorking || !shouldNavigate) {
-      return;
-    }
+    if (isWorking || !shouldNavigate) { return; }
 
     const handle = window.setTimeout(() => {
       if (shouldNavigate.imageHash) {
