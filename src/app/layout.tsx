@@ -1,6 +1,6 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import type { Viewport } from 'next';
-import { ComponentType, PropsWithChildren, ReactNode, Suspense } from 'react';
+import { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import GlobalAppInit from '@/components/GlobalAppInit';
 import { EnvProvider } from '@/contexts/envContext';
 import { GalleryTreeContext } from '@/contexts/galleryTree/Provider';
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
     GlobalAppInit,
     PluginsContext,
     GalleryTreeContext,
-    NavigationToolsProvider,
+    NavigationToolsProvider, // needs <GalleryTreeContext>
     RemotePrinterContextProvider,
     AppRouterCacheProvider,
   ];
@@ -35,11 +35,9 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
         <meta name="replacewith" content={process.env.NEXT_PUBLIC_MANIFEST_TAGS} />
       </head>
       <body>
-        <Suspense>
-          { providers.reduceRight((acc: ReactNode, Provider: ComponentType<{ children: ReactNode }>) => {
-            return <Provider>{acc}</Provider>;
-          }, children) }
-        </Suspense>
+        { providers.reduceRight((acc: ReactNode, Provider: ComponentType<{ children: ReactNode }>) => {
+          return <Provider>{acc}</Provider>;
+        }, children) }
       </body>
     </html>
   );
