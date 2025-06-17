@@ -1,3 +1,4 @@
+import { expose } from 'comlink';
 import { createTreeRoot } from '@/tools/createTreeRoot';
 import { ensureSingleUsage, SingleUsageResult } from '@/tools/ensureSingleUsage';
 import unique from '@/tools/unique';
@@ -5,53 +6,53 @@ import { type DialogOption } from '@/types/Dialog';
 import {
   type CalculateRootWorkerParams,
   type CalculateRootWorkerResult,
-  type CalculateRootWorkerError,
   type PathMap,
+  type TreeContextWorkerApi,
 } from '@/types/galleryTreeContext';
 import { type Image } from '@/types/Image';
 import { type SerializableImageGroup, type TreeImageGroup } from '@/types/ImageGroup';
 
 const MAX_INFLATE_DEPTH = 20;
 
-const reduceImages = (
+const filterAndTagImages = (
   imageHashes: string[],
   childGroups: TreeImageGroup[],
-) => (
-  acc: Image[],
-  image: Image,
+  stateImageMap: Map<string, Image>,
 ): Image[] => {
-  const foundImage = !!imageHashes.find((hash) => image.hash === hash);
-  const coverChildGroup = childGroups.find(({ coverImage }) => image.hash === coverImage);
-  const foundCoverImage = !!coverChildGroup;
-  const taggedImage = { ...image };
+  const imageHashSet = new Set(imageHashes);
+  const coverImageSet = new Set(childGroups.map(({ coverImage }) => coverImage));
 
-  // If image is a cover image, add all children's tags to it.
-  // This is used for filtering within imageGroups
-  if (coverChildGroup?.tags.length) {
-    taggedImage.tags = unique([
-      ...taggedImage.tags,
-      ...coverChildGroup.tags,
-    ]);
-  }
+  return [...imageHashSet, ...coverImageSet].map((hash) => {
+    const image = stateImageMap.get(hash);
+    if (!image) return null;
 
-  return foundImage || foundCoverImage ? [...acc, taggedImage] : acc;
+    const taggedImage = { ...image };
+    const coverChildGroup = childGroups.find(({ coverImage }) => coverImage === hash);
+
+    if (coverChildGroup?.tags.length) {
+      taggedImage.tags = unique([
+        ...taggedImage.tags,
+        ...coverChildGroup.tags,
+      ]);
+    }
+
+    return taggedImage;
+  }).filter(Boolean) as Image[];
 };
 
-const reducePaths = (prefix: string, groups: TreeImageGroup[]): PathMap[] => {
+const reducePaths = (prefix: string, groups: TreeImageGroup[], usedPaths: Set<string>): PathMap[] => {
   const reducedPaths = groups.reduce((acc: PathMap[], group: TreeImageGroup): PathMap[] => {
     const cleanSlug = group.slug.replace(/[^A-Z0-9_-]+/gi, '_');
 
     let count = 0;
     let absolute = `${prefix}${cleanSlug}/`;
 
-    const pathExists = (test: string): boolean => (
-      acc.findIndex(({ absolutePath }) => absolutePath === test) !== -1
-    );
-
-    while (pathExists(absolute)) {
+    while (usedPaths.has(absolute)) {
       count += 1;
       absolute = `${prefix}${cleanSlug}_${count}/`;
     }
+
+    usedPaths.add(absolute);
 
     return ([
       ...acc,
@@ -59,7 +60,7 @@ const reducePaths = (prefix: string, groups: TreeImageGroup[]): PathMap[] => {
         absolutePath: absolute,
         group,
       },
-      ...reducePaths(absolute, group.groups),
+      ...reducePaths(absolute, group.groups, usedPaths),
     ]);
   }, []);
 
@@ -70,7 +71,7 @@ const reduceEmptyGroups = (acc: TreeImageGroup[], group: TreeImageGroup): TreeIm
   group.groups.length + group.images.length ? [...acc, group] : acc
 );
 
-const inflateImageGroup = (depth: number, stateImages: Image[], singleUsageResult: SingleUsageResult) => (imageGroup: SerializableImageGroup): TreeImageGroup => {
+const inflateImageGroup = (depth: number, stateImageMap: Map<string, Image>, singleUsageResult: SingleUsageResult) => (imageGroup: SerializableImageGroup): TreeImageGroup => {
   // return an array of all _found_ imagegroups and completely
   // omit groups if their ID is not found (possibly deleted)
   const getImageGroups = (acc: SerializableImageGroup[], groupId: string): SerializableImageGroup[] => {
@@ -81,24 +82,17 @@ const inflateImageGroup = (depth: number, stateImages: Image[], singleUsageResul
   let childGroups: TreeImageGroup[];
 
   if (depth > MAX_INFLATE_DEPTH) {
-    const error: CalculateRootWorkerError = {
-      type: 'error',
-      error: `Reached maximum inflate depth at group "${imageGroup.title || imageGroup.slug}" (${imageGroup.id})`,
-    };
-    self.postMessage(error);
+    // ToDo: somehow display an explanation for the user why some images are not in groups anymore.
     childGroups = [];
   } else {
-    try {
-      childGroups = imageGroup.groups
-        .reduce(getImageGroups, [])
-        .map(inflateImageGroup(depth + 1, stateImages, singleUsageResult))
-        .reduce(reduceEmptyGroups, []);
-    } catch {
-      childGroups = [];
-    }
+    childGroups = imageGroup.groups
+      .reduce(getImageGroups, [])
+      .map(inflateImageGroup(depth + 1, stateImageMap, singleUsageResult))
+      .reduce(reduceEmptyGroups, []);
+
   }
 
-  const images: Image[] = stateImages.reduce(reduceImages(imageGroup.images, childGroups), []);
+  const images = filterAndTagImages(imageGroup.images, childGroups, stateImageMap);
 
   const foundCoverImage: Image | undefined = images.find(({ hash }) => hash === imageGroup.coverImage) || images[0];
 
@@ -118,33 +112,37 @@ const inflateImageGroup = (depth: number, stateImages: Image[], singleUsageResul
   });
 };
 
-self.onmessage = (messageEvent: MessageEvent<CalculateRootWorkerParams>) => {
-  const startTime = Date.now();
-  const { imageGroups, stateImages } = messageEvent.data;
+const workerApi: TreeContextWorkerApi = {
+  async calculate(params: CalculateRootWorkerParams): Promise<CalculateRootWorkerResult> {
+    const startTime = performance.now();
+    const { imageGroups, stateImages } = params;
 
-  // the .images property of any cleaned group will contain an image only once across all groups.
-  // e.g.: if an image is a child of multiple groups, it will be removed from every group but one.
-  // -> an image can only ever be member of a single group
-  const singleUsageResult = ensureSingleUsage(imageGroups);
+    const stateImageMap = new Map(stateImages.map((img) => [img.hash, img]));
 
-  const rootChildGroups = singleUsageResult.groups
-    .map(inflateImageGroup(0, stateImages, singleUsageResult)) // convert serializable to tree
-    .reduce(reduceEmptyGroups, []) // remove groups without images_and_groups
-    .filter(({ id }) => !singleUsageResult.usedGroupIDs.includes(id)); // remove groups which are children of other groups
+    // the .images property of any cleaned group will contain an image only once across all groups.
+    // e.g.: if an image is a child of multiple groups, it will be removed from every group but one.
+    // -> an image can only ever be member of a single group
+    const singleUsageResult = ensureSingleUsage(imageGroups);
 
-  const rootImageHashes = stateImages.reduce((acc: string[], { hash }: Image): string[] => (
-    !singleUsageResult.usedImageHashes.includes(hash) ? [...acc, hash] : acc
-  ), []); // remove images which are children of other groups
+    const rootChildGroups = singleUsageResult.groups
+      .map(inflateImageGroup(0, stateImageMap, singleUsageResult)) // convert serializable to tree
+      .reduce(reduceEmptyGroups, []) // remove groups without images_and_groups
+      .filter(({ id }) => !singleUsageResult.usedGroupIDs.includes(id)); // remove groups which are children of other groups
 
-  const root = {
-    ...createTreeRoot(),
-    groups: rootChildGroups,
-    images: stateImages.reduce(reduceImages(rootImageHashes, rootChildGroups), []),
-  };
+    const rootImageHashes = stateImages.reduce((acc: string[], { hash }: Image): string[] => (
+      !singleUsageResult.usedImageHashes.includes(hash) ? [...acc, hash] : acc
+    ), []); // remove images which are children of other groups
 
-  const paths = reducePaths('', root.groups);
+    const root = {
+      ...createTreeRoot(),
+      groups: rootChildGroups,
+      images: filterAndTagImages(rootImageHashes, rootChildGroups, stateImageMap),
+    };
 
-  const pathsOptions = paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
+    const usedPaths = new Set<string>();
+    const paths = reducePaths('', root.groups, usedPaths);
+
+    const pathsOptions = paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
       const depth = absolutePath.split('/').length - 1;
       const indent = Array(depth).fill('\u2007').join('');
 
@@ -160,12 +158,15 @@ self.onmessage = (messageEvent: MessageEvent<CalculateRootWorkerParams>) => {
       name: '/',
     }]);
 
-  const result: CalculateRootWorkerResult = {
-    type: 'result',
-    root,
-    paths,
-    pathsOptions,
-    duration: Date.now() - startTime,
-  };
-  self.postMessage(result);
+    const result: CalculateRootWorkerResult = {
+      root,
+      paths,
+      pathsOptions,
+      duration: performance.now() - startTime,
+    };
+
+    return result;
+  },
 };
+
+expose(workerApi);

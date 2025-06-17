@@ -1,4 +1,3 @@
-import unique from '@/tools/unique';
 import type { SerializableImageGroup } from '@/types/ImageGroup';
 
 export interface SingleUsageResult {
@@ -7,33 +6,37 @@ export interface SingleUsageResult {
   usedGroupIDs: string[],
 }
 
-const arrayDifference = (arrayA: string[], arrayB: string[]): string[] => (
-  arrayA.filter((x) => !arrayB.includes(x))
-);
-
 export const ensureSingleUsage = (groups: SerializableImageGroup[]): SingleUsageResult => {
-  let usedImageHashes: string[] = [];
-  let usedGroupIDs: string[] = [];
+  const usedImageHashes = new Set<string>();
+  const usedGroupIDs = new Set<string>();
 
-  const check = (checkGroup: SerializableImageGroup): SerializableImageGroup => {
-    // unique will remove duplicate images inside a single group
-    // which could happen when json exports are manually edited
-    const uniqueImages = unique(arrayDifference(checkGroup?.images, usedImageHashes));
-    const uniqueGroups = unique(arrayDifference(checkGroup?.groups, usedGroupIDs));
+  const cleanGroup = (checkGroup: SerializableImageGroup): SerializableImageGroup => {
+    const filteredImages: string[] = [];
+    for (const imageHash of checkGroup.images) {
+      if (!usedImageHashes.has(imageHash)) {
+        usedImageHashes.add(imageHash);
+        filteredImages.push(imageHash);
+      }
+    }
 
-    usedImageHashes = unique([...usedImageHashes, ...checkGroup.images]);
-    usedGroupIDs = unique([...usedGroupIDs, ...checkGroup.groups]);
+    const filteredGroups: string[] = [];
+    for (const groupId of checkGroup.groups) {
+      if (!usedGroupIDs.has(groupId)) {
+        usedGroupIDs.add(groupId);
+        filteredGroups.push(groupId);
+      }
+    }
 
     return {
       ...checkGroup,
-      images: uniqueImages,
-      groups: uniqueGroups,
+      images: filteredImages,
+      groups: filteredGroups,
     };
   };
 
   return {
-    groups: groups.map(check),
-    usedImageHashes,
-    usedGroupIDs,
+    groups: groups.map(cleanGroup),
+    usedImageHashes: Array.from(usedImageHashes),
+    usedGroupIDs: Array.from(usedGroupIDs),
   };
 };

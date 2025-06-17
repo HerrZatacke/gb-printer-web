@@ -8,16 +8,10 @@ export interface CalculateRootWorkerParams {
 }
 
 export interface CalculateRootWorkerResult {
-  type: 'result',
   root: TreeImageGroup,
   paths: PathMap[],
   pathsOptions: DialogOption[],
   duration: number,
-}
-
-export interface CalculateRootWorkerError {
-  type: 'error',
-  error: string,
 }
 
 export interface PathMap {
@@ -33,4 +27,8 @@ export interface GalleryTreeContextType {
   paths: PathMap[],
   pathsOptions: DialogOption[],
   isWorking: boolean,
+}
+
+export interface TreeContextWorkerApi {
+  calculate: (params: CalculateRootWorkerParams) => Promise<CalculateRootWorkerResult>,
 }
