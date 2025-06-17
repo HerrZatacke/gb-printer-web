@@ -1,6 +1,6 @@
 'use client';
 
-import { wrap } from 'comlink';
+import { proxy, wrap } from 'comlink';
 import React, { type Context, createContext, useEffect, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useGalleryParams } from '@/hooks/useGalleryParams';
@@ -12,6 +12,7 @@ import { type DialogOption } from '@/types/Dialog';
 import {
   type GalleryTreeContextType,
   type PathMap,
+  type SetErrorFn,
   type TreeContextWorkerApi,
 } from '@/types/galleryTreeContext';
 import { type Image } from '@/types/Image';
@@ -48,17 +49,28 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
   useEffect(() => {
     const worker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url), { type: 'module' });
     const api = wrap<TreeContextWorkerApi>(worker);
+    const errors: string[] = [];
+
+    const setErrorProxy = proxy<SetErrorFn>((error: string) => {
+      errors.push(error);
+    });
 
     setIsWorking(true);
 
-    api.calculate({ imageGroups, stateImages })
+    api.calculate({ imageGroups, stateImages }, setErrorProxy)
       .then((result) => {
         setRoot(result.root);
         setPaths(result.paths);
         setPathsOptions(result.pathsOptions);
 
+        if (errors.length) {
+          setError(new Error(errors.join('\n')));
+        }
+
         if (enableImageGroups) {
+          console.log(1, stateImageGroups.length, result.paths.length);
           if (stateImageGroups.length > result.paths.length) {
+            console.log(2);
             const idsInPaths = result.paths.map(({ group }) => group.id);
             const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
             setImageGroups(usedGroups);

@@ -29,6 +29,11 @@ export interface GalleryTreeContextType {
   isWorking: boolean,
 }
 
+export type SetErrorFn = (error: string) => void;
+
 export interface TreeContextWorkerApi {
-  calculate: (params: CalculateRootWorkerParams) => Promise<CalculateRootWorkerResult>,
+  calculate: (
+    params: CalculateRootWorkerParams,
+    setError: SetErrorFn,
+  ) => Promise<CalculateRootWorkerResult>,
 }

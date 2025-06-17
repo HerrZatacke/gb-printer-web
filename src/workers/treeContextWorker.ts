@@ -7,6 +7,7 @@ import {
   type CalculateRootWorkerParams,
   type CalculateRootWorkerResult,
   type PathMap,
+  type SetErrorFn,
   type TreeContextWorkerApi,
 } from '@/types/galleryTreeContext';
 import { type Image } from '@/types/Image';
@@ -71,7 +72,7 @@ const reduceEmptyGroups = (acc: TreeImageGroup[], group: TreeImageGroup): TreeIm
   group.groups.length + group.images.length ? [...acc, group] : acc
 );
 
-const inflateImageGroup = (depth: number, stateImageMap: Map<string, Image>, singleUsageResult: SingleUsageResult) => (imageGroup: SerializableImageGroup): TreeImageGroup => {
+const inflateImageGroup = (depth: number, stateImageMap: Map<string, Image>, setError: SetErrorFn, singleUsageResult: SingleUsageResult) => (imageGroup: SerializableImageGroup): TreeImageGroup => {
   // return an array of all _found_ imagegroups and completely
   // omit groups if their ID is not found (possibly deleted)
   const getImageGroups = (acc: SerializableImageGroup[], groupId: string): SerializableImageGroup[] => {
@@ -82,12 +83,12 @@ const inflateImageGroup = (depth: number, stateImageMap: Map<string, Image>, sin
   let childGroups: TreeImageGroup[];
 
   if (depth > MAX_INFLATE_DEPTH) {
-    // ToDo: somehow display an explanation for the user why some images are not in groups anymore.
+    setError(`Reached maximum inflate depth at group "${imageGroup.title || imageGroup.slug}" (${imageGroup.id})`);
     childGroups = [];
   } else {
     childGroups = imageGroup.groups
       .reduce(getImageGroups, [])
-      .map(inflateImageGroup(depth + 1, stateImageMap, singleUsageResult))
+      .map(inflateImageGroup(depth + 1, stateImageMap, setError, singleUsageResult))
       .reduce(reduceEmptyGroups, []);
 
   }
@@ -113,7 +114,10 @@ const inflateImageGroup = (depth: number, stateImageMap: Map<string, Image>, sin
 };
 
 const workerApi: TreeContextWorkerApi = {
-  async calculate(params: CalculateRootWorkerParams): Promise<CalculateRootWorkerResult> {
+  async calculate(
+    params: CalculateRootWorkerParams,
+    setError: SetErrorFn,
+  ): Promise<CalculateRootWorkerResult> {
     const startTime = performance.now();
     const { imageGroups, stateImages } = params;
 
@@ -125,7 +129,7 @@ const workerApi: TreeContextWorkerApi = {
     const singleUsageResult = ensureSingleUsage(imageGroups);
 
     const rootChildGroups = singleUsageResult.groups
-      .map(inflateImageGroup(0, stateImageMap, singleUsageResult)) // convert serializable to tree
+      .map(inflateImageGroup(0, stateImageMap, setError, singleUsageResult)) // convert serializable to tree
       .reduce(reduceEmptyGroups, []) // remove groups without images_and_groups
       .filter(({ id }) => !singleUsageResult.usedGroupIDs.includes(id)); // remove groups which are children of other groups
 
