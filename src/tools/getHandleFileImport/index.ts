@@ -47,6 +47,7 @@ const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
           file.size === 3584 // Special case: PicNRec .sav
         )
       ) {
+        console.log(file, file.size === 3584);
         return transformSav(file, file.size === 3584);
       }
 

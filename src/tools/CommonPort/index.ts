@@ -42,7 +42,7 @@ export abstract class CommonPort extends EventEmitter {
       while (this.canRead()) {
         const result = await this.readChunk();
         if (result.byteLength) {
-          this.bufferedData = this.bufferedData ? appendUint8Arrays(this.bufferedData, result) : result;
+          this.bufferedData = appendUint8Arrays([this.bufferedData, result]);
         } else {
           // console.log(this.textDecoder.decode(this.bufferedData as Uint8Array));
           await delay(150);
@@ -201,23 +201,31 @@ export abstract class CommonPort extends EventEmitter {
       // Banner was received, but device type was not not recognized
       this.emitData(bannerBytes);
       this.portDeviceType = PortDeviceType.INACTIVE;
+
       this.emit('typechange');
+      return;
     } else {
       // Unknown device type and no banner. Try to detect a "passive" device
-      const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 500 }], true); // cr/lf
-      if (readCrLf.byteLength) {
-        this.emitData(readCrLf);
-      }
 
       const [readGBX] = await this.send(new Uint8Array([0xa1]), [{ timeout: 500 }], true); // Query GBXCart Version
-      this.emitData(readGBX);
 
-      this.portDeviceType = PortDeviceType.INACTIVE;
-      this.emit('typechange');
-    }
+      console.log({ readGBX });
 
-    if (this.portDeviceType === PortDeviceType.INACTIVE) {
-      return;
+      if (findSubarray(readGBX, new Uint8Array([8, 76, 0, 1, 4, 101, 226, 29, 234])) === 0) {
+        this.portDeviceType = PortDeviceType.GBXCART;
+
+        this.emit('typechange');
+        return;
+      } else {
+        const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 500 }], true); // cr/lf
+        if (readCrLf.byteLength) {
+          this.emitData(readCrLf);
+          this.portDeviceType = PortDeviceType.INACTIVE;
+
+          this.emit('typechange');
+          return;
+        }
+      }
     }
 
     // enter the read-loop

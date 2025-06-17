@@ -21,7 +21,7 @@ function Import() {
     exportJson,
   } = useImport();
 
-  const { gbxCartAvailable, importRam } = useGBXCart();
+  const { gbxCartAvailable, testCall } = useGBXCart();
 
   useEffect(() => {
     import(/* webpackChunkName: "dmy" */ './dummy')
@@ -67,7 +67,7 @@ function Import() {
         {gbxCartAvailable && (
           <>
             <Button
-              onClick={importRam}
+              onClick={testCall}
               title="Import memory (RAM) from GBXCart"
             >
               Import memory from GBXCart

@@ -30,7 +30,7 @@ export const transformSav = async (file: File, skipDialogs: boolean): Promise<bo
   frameGroupOptions.unshift({ value: '', name: 'None (Black frame)' });
 
   const importSav = getImportSav({
-    importLastSeen: skipDialogs ? true : importLastSeen,
+    importLastSeen: (skipDialogs || file.size <= 0x1000) ? true : importLastSeen,
     data,
     lastModified: file.lastModified,
     frames,

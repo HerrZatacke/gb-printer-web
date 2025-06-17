@@ -66,6 +66,8 @@ export function PortsContext({ children }: PropsWithChildren) {
         }
 
         case PortsWorkerMessageType.DATA: {
+          if (!message.readResults.length) { break; }
+
           switch (message.readResults[0].portDeviceType) {
             case PortDeviceType.PACKET_CAPTURE: {
               setPacketCaptureResponse((current) => (
