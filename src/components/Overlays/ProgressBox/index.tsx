@@ -3,10 +3,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
-import useInteractionsStore from '@/stores/interactionsStore';
+import useProgressStore from '@/stores/progressStore';
 
 function ProgressBox() {
-  const { progress } = useInteractionsStore();
+  const { progress } = useProgressStore();
 
   return (
     <Lightbox

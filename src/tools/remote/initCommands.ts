@@ -1,4 +1,3 @@
-import type { ReadonlyURLSearchParams } from 'next/navigation';
 import { PrinterFunction } from '@/consts/printerFunction';
 import type {
   CheckPrinterStatus,
@@ -17,7 +16,7 @@ import clearPrinter from './commands/clearPrinter';
 import fetchImages from './commands/fetchImages';
 import testFile from './commands/testFile';
 
-const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: ReadonlyURLSearchParams) => {
+const initCommands = ({ targetWindow }: RemoteEnv, env: string, remoteParams: URLSearchParams) => {
   const commands: PrinterCommand[] = [];
 
   switch (env) {

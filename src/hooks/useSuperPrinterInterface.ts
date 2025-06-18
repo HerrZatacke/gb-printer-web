@@ -1,11 +1,13 @@
 import chunk from 'chunk';
+import objectHash from 'object-hash';
 import { useCallback, useMemo } from 'react';
-import { PortDeviceType, PortsWorkerMessageType } from '@/consts/ports';
+import { PortDeviceType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
+import useProgressStore from '@/stores/progressStore';
 import { loadImageTiles } from '@/tools/loadImageTiles';
-import { PortsWorkerMessage, WorkerPort } from '@/types/ports';
+import { ReadParams, WorkerPort } from '@/types/ports';
 
 interface UseSuperPrinterInterface {
   canPrint: boolean,
@@ -43,7 +45,8 @@ const printCommand = (
 export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
   const { webUSBActivePorts, webSerialActivePorts, sendDeviceMessage, worker } = usePortsContext();
   const { images, frames } = useItemsStore();
-  const { setProgress, startProgress, stopProgress } = useInteractionsStore();
+  const { setError } = useInteractionsStore();
+  const { setProgress, startProgress, stopProgress } = useProgressStore();
 
   const getTiles = useCallback(async (hash: string) => {
     const tileLoader = loadImageTiles(images, frames);
@@ -74,36 +77,44 @@ export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
     // trigger "visibility" of overlay
     const progressId = startProgress('Printing to Super Printer Interface');
 
-    const sendCommand = (): boolean => {
+    const sendCommand = async (): Promise<boolean> => {
       const command = commands.shift();
       if (command?.byteLength) {
-        sendDeviceMessage(command, printer.id);
-        setProgress(progressId, (totalCommands - commands.length) / (totalCommands + 0.5));
-        return true;
+        setProgress(progressId, (totalCommands - commands.length) / totalCommands);
+        const queries: ReadParams[] = [
+          { length: command.byteLength }, // read command echo
+          // { timeout: 450 }, // wait for ready or error
+          { texts: ['Printer ready', 'Packet error'] }, // wait for ready or error
+        ];
+
+        const [echo, response] = await sendDeviceMessage(command, printer.id, queries, true);
+
+        // console.log(response.string);
+
+        // echo should match the command exactly
+        if (objectHash(command) !== objectHash(echo.bytes)) {
+          throw new Error('Command validation failed');
+        }
+
+        // response may contain 'Printer ready' or 'Packet error'
+        if (response.string.indexOf('Printer ready') === -1) {
+          throw new Error('Packet error');
+        }
+
+        return await sendCommand();
       }
 
-      return false;
+      return true;
     };
 
-    const handler = async (event: MessageEvent<PortsWorkerMessage>) => {
-      if (event.data.type !== PortsWorkerMessageType.DATA) { return; }
+    try {
+      await sendCommand();
+    } catch (error) {
+      setError(error as Error);
+    }
 
-      const { readResult } = event.data;
-      if (readResult && readResult.string.indexOf('Printer ready') === -1) {
-        return;
-      }
-
-      const sent = sendCommand();
-      if (!sent) {
-        worker.removeEventListener('message', handler);
-        stopProgress(progressId);
-      }
-    };
-
-    // Add listener and start printing
-    worker.addEventListener('message', handler);
-    sendCommand();
-  }, [printer, sendDeviceMessage, setProgress, startProgress, stopProgress, worker]);
+    stopProgress(progressId);
+  }, [printer, sendDeviceMessage, setError, setProgress, startProgress, stopProgress, worker]);
 
   const print = useCallback(async (hash: string) => {
     if (!canPrint) { return; }

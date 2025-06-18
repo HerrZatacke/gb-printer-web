@@ -1,4 +1,3 @@
-import type { ReadonlyURLSearchParams } from 'next/navigation';
 import Queue from 'promise-queue';
 import fetchDumpRetry from '@/tools/remote/fetchDumpRetry';
 import type {
@@ -27,7 +26,7 @@ const addToQueue = (
 const fetchImages = async (
   targetWindow: Window,
   { dumps }: PrinterParams,
-  remoteParams: ReadonlyURLSearchParams,
+  remoteParams: URLSearchParams,
 ): Promise<PrinterImages> => {
   const delay = parseInt(remoteParams.get('delay') || '250', 10);
   const retries = parseInt(remoteParams.get('retries') || '3', 10);

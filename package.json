@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.48.1",
+  "version": "1.48.2",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev",
@@ -55,6 +55,7 @@
     "@typescript-eslint/parser": "^8.32.1",
     "bytes": "^3.1.2",
     "chunk": "0.0.3",
+    "comlink": "^4.4.2",
     "dayjs": "^1.11.13",
     "dropbox": "^10.34.0",
     "eslint": "^9.27.0",

@@ -1,4 +1,3 @@
-import type { ReadonlyURLSearchParams } from 'next/navigation';
 import type { PrinterFunction } from '@/consts/printerFunction';
 
 export interface BlobResponse {
@@ -76,7 +75,7 @@ export interface PrinterTestfileCommand {
 
 export interface PrinterFetchImagesCommand {
   name: PrinterFunction.FETCHIMAGES,
-  fn: (targetWindow: Window, params: PrinterParams, remoteParams: ReadonlyURLSearchParams) => Promise<PrinterImages>,
+  fn: (targetWindow: Window, params: PrinterParams, remoteParams: URLSearchParams) => Promise<PrinterImages>,
 }
 
 export type PrinterCommand = PrinterStatusCommand | PrinterTestfileCommand | PrinterFetchImagesCommand;

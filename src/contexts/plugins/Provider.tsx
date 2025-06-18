@@ -4,8 +4,8 @@ import React, { useCallback, useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
-import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
+import useProgressStore from '@/stores/progressStore';
 import type { InitPluginSetupParams, Plugin, PluginClassInstance, PluginImageData, PluginsContext } from '@/types/Plugin';
 import { getCollectImageData } from './functions/collectImageData';
 import { initPlugin } from './functions/initPlugin';
@@ -14,7 +14,7 @@ import { pluginsContext } from './index';
 export function PluginsContext({ children }: PropsWithChildren) {
   const { plugins, images, addUpdatePluginProperties } = useItemsStore();
   const stores = useStores();
-  const { startProgress, setProgress, stopProgress } = useInteractionsStore();
+  const { startProgress, setProgress, stopProgress } = useProgressStore();
   const { jsonImport } = useImportExportSettings();
 
   const initPluginSetupParams = useMemo<InitPluginSetupParams>(() => ({

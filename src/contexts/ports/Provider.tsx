@@ -1,17 +1,19 @@
 'use client';
 
-import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { PortDeviceType, PortsWorkerMessageType, PortType, usbDeviceFilters, WorkerCommand } from '@/consts/ports';
 import { useGetPortSettings } from '@/hooks/useGetPortSettings';
 import useImportPlainText from '@/hooks/useImportPlainText';
 import useInteractionsStore from '@/stores/interactionsStore';
 import { mergeReadResults } from '@/tools/mergeReadResults';
+import { randomId } from '@/tools/randomId';
 import {
   PortsContextValue,
   PortsWorkerAnswerCommand,
   PortsWorkerMessage,
   PortsWorkerOpenCommand,
   PortsWorkerSendDataCommand,
+  ReadParams,
   ReadResult,
   WorkerPort,
 } from '@/types/ports';
@@ -26,6 +28,8 @@ export function PortsContext({ children }: PropsWithChildren) {
   const [webSerialActivePorts, setWebSerialActivePorts] = useState<WorkerPort[]>([]);
   const [webSerialIsReceiving, setWebSerialIsReceiving] = useState(false);
   const [unknownDeviceResponse, setUnknownDeviceResponse] = useState<ReadResult | null>(null);
+  const [packetCaptureResponse, setPacketCaptureResponse] = useState<ReadResult | null>(null);
+  const packetCaptureTimeout = useRef(0);
 
   const importPlainText = useImportPlainText();
   const { querySettings } = useGetPortSettings();
@@ -62,9 +66,11 @@ export function PortsContext({ children }: PropsWithChildren) {
         }
 
         case PortsWorkerMessageType.DATA: {
-          switch (message.readResult.portDeviceType) {
+          switch (message.readResults[0].portDeviceType) {
             case PortDeviceType.PACKET_CAPTURE: {
-              importPlainText(message.readResult.string);
+              setPacketCaptureResponse((current) => (
+                mergeReadResults([current, ...message.readResults])
+              ));
               setUnknownDeviceResponse(null);
               break;
             }
@@ -79,19 +85,10 @@ export function PortsContext({ children }: PropsWithChildren) {
             default: {
               // Concatenate all received data
               setUnknownDeviceResponse((current) => (
-                current ? mergeReadResults(current, message.readResult) : message.readResult
+                mergeReadResults([current, ...message.readResults])
               ));
               break;
             }
-          }
-
-          switch (message.portType) {
-            case PortType.SERIAL:
-              setWebSerialIsReceiving(false);
-              break;
-            case PortType.USB:
-              setWebUSBIsReceiving(false);
-              break;
           }
 
           break;
@@ -142,7 +139,7 @@ export function PortsContext({ children }: PropsWithChildren) {
       newWorker.terminate();
       setWorker(null);
     };
-  }, [importPlainText, querySettings, setError]);
+  }, [querySettings, setError]);
 
   const hasInactiveDevices = useMemo<boolean>(() => {
     const allPorts = [
@@ -196,17 +193,54 @@ export function PortsContext({ children }: PropsWithChildren) {
     }
   }, [setError, webUSBEnabled, worker]);
 
-  const sendDeviceMessage = useCallback((message: Uint8Array, deviceId: string) => {
-    if (!worker) { return; }
+  const sendDeviceMessage = useCallback((message: Uint8Array, deviceId: string, readParamss: ReadParams[], flush: boolean): Promise<ReadResult[]> => {
+    if (!worker) { throw new Error('no worker'); }
+
+    const messageId = randomId();
 
     const messageCommand: PortsWorkerSendDataCommand = {
       type: WorkerCommand.SEND_DATA,
       deviceId,
       message,
+      messageId,
+      readParamss,
+      flush,
     };
 
-    worker.postMessage(messageCommand);
+    return new Promise<ReadResult[]>((resolve) => {
+      const responseHandler = (event: MessageEvent<PortsWorkerMessage>) => {
+        const messageResponse = event.data;
+        if (messageResponse.type === PortsWorkerMessageType.DATA) {
+          if (messageResponse.replyToMessageId === messageId) {
+            worker.removeEventListener('message', responseHandler);
+            resolve(messageResponse.readResults);
+          }
+        }
+      };
+
+      worker.addEventListener('message', responseHandler);
+      worker.postMessage(messageCommand);
+    });
   }, [worker]);
+
+  useEffect(() => {
+    if (!packetCaptureResponse) { return; }
+    window.clearTimeout(packetCaptureTimeout.current);
+
+    packetCaptureTimeout.current = window.setTimeout(() => {
+      if (packetCaptureResponse.string.length) {
+        const importData = packetCaptureResponse.string;
+        setPacketCaptureResponse(null);
+        setWebSerialIsReceiving(false);
+        setWebUSBIsReceiving(false);
+        importPlainText(importData);
+      }
+    }, 250);
+
+    return () => {
+      window.clearTimeout(packetCaptureTimeout.current);
+    };
+  }, [packetCaptureResponse, importPlainText]);
 
   const value = useMemo((): PortsContextValue => ({
     hasInactiveDevices,

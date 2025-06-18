@@ -10,7 +10,7 @@ import duration from 'dayjs/plugin/duration';
 import React, { useMemo, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { useProgressLog } from '@/hooks/useProgressLog';
-import type { LogItem } from '@/stores/interactionsStore';
+import type { LogItem } from '@/stores/progressStore';
 
 dayjs.extend(duration);
 

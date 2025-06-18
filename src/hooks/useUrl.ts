@@ -1,20 +1,53 @@
-import { type ReadonlyURLSearchParams, usePathname, useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
+'use client';
+
+import { usePathname } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
 interface UseUrl {
-  fullPath: string,
-  pathname: string,
-  searchParams: ReadonlyURLSearchParams,
-  query: string,
+  fullPath: string;
+  pathname: string;
+  searchParams: URLSearchParams;
+  query: string;
 }
 
 export const useUrl = (): UseUrl => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const [searchParams, setSearchParams] = useState<URLSearchParams>(new URLSearchParams());
 
-  const query = useMemo(() => (
-    searchParams.toString()
-  ), [searchParams]);
+  useEffect(() => {
+    const updateSearchParams = () => {
+      window.setTimeout(() => {
+        setSearchParams(new URLSearchParams(window.location.search));
+      }, 1);
+    };
+
+    updateSearchParams();
+
+    // Listen to popstate (back/forward)
+    window.addEventListener('popstate', updateSearchParams);
+
+    // Listen to pushState/replaceState (manually triggered route changes)
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
+
+    history.pushState = function (...args) {
+      originalPushState.apply(this, args);
+      updateSearchParams();
+    };
+
+    history.replaceState = function (...args) {
+      originalReplaceState.apply(this, args);
+      updateSearchParams();
+    };
+
+    return () => {
+      window.removeEventListener('popstate', updateSearchParams);
+      history.pushState = originalPushState;
+      history.replaceState = originalReplaceState;
+    };
+  }, [pathname]);
+
+  const query = useMemo(() => searchParams.toString(), [searchParams]);
 
   const fullPath = useMemo(() => {
     return query ? `${pathname}?${query}` : pathname;

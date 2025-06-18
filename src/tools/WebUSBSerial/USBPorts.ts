@@ -62,9 +62,12 @@ class USBPorts extends EventEmitter {
       this.emit('activePortsChange');
     });
 
-    await port.connect();
+    // First add port to activeports.
     this.activePorts.push(port);
     this.emit('activePortsChange');
+
+    // if connect fails, it will be removed through the thrown error
+    await port.connect();
   }
 
   // Setup initially known devices and add connection listener

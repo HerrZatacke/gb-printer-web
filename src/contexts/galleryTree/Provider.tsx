@@ -1,5 +1,6 @@
 'use client';
 
+import { proxy, wrap } from 'comlink';
 import React, { type Context, createContext, useEffect, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useGalleryParams } from '@/hooks/useGalleryParams';
@@ -9,11 +10,10 @@ import useSettingsStore from '@/stores/settingsStore';
 import { createTreeRoot } from '@/tools/createTreeRoot';
 import { type DialogOption } from '@/types/Dialog';
 import {
-  type CalculateRootWorkerParams,
-  type CalculateRootWorkerError,
-  type CalculateRootWorkerResult,
   type GalleryTreeContextType,
   type PathMap,
+  type SetErrorFn,
+  type TreeContextWorkerApi,
 } from '@/types/galleryTreeContext';
 import { type Image } from '@/types/Image';
 import { type SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
@@ -30,7 +30,6 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
 
 
 export function GalleryTreeContext({ children }: PropsWithChildren) {
-  const [worker, setWorker] = useState<Worker | null>(null);
   const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
   const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot());
   const [paths, setPaths] = useState<PathMap[]>([]);
@@ -48,53 +47,54 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
   const { path } = useGalleryParams();
 
   useEffect(() => {
-    const newWorker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url));
+    const worker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url), { type: 'module' });
+    const api = wrap<TreeContextWorkerApi>(worker);
+    const errors: string[] = [];
 
-    newWorker.onmessage = (event: MessageEvent<CalculateRootWorkerResult | CalculateRootWorkerError>) => {
-      if (event.data.type === 'result') {
-        setRoot(event.data.root);
-        setPaths(event.data.paths);
-        setPathsOptions(event.data.pathsOptions);
-        setIsWorking(false);
+    const setErrorProxy = proxy<SetErrorFn>((error: string) => {
+      errors.push(error);
+    });
 
-        // Cleanup of unused groups
+    setIsWorking(true);
+
+    api.calculate({ imageGroups, stateImages }, setErrorProxy)
+      .then((result) => {
+        setRoot(result.root);
+        setPaths(result.paths);
+        setPathsOptions(result.pathsOptions);
+
+        if (errors.length) {
+          setError(new Error(errors.join('\n')));
+        }
+
         if (enableImageGroups) {
-          if (stateImageGroups.length > event.data.paths.length) {
-            const idsInPaths = event.data.paths.map(({ group }) => group.id);
+          console.log(1, stateImageGroups.length, result.paths.length);
+          if (stateImageGroups.length > result.paths.length) {
+            console.log(2);
+            const idsInPaths = result.paths.map(({ group }) => group.id);
             const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
             setImageGroups(usedGroups);
           }
         }
 
         if (enableDebug) {
-          console.info(`worker ran for ${event.data.duration}ms`);
+          console.info(`worker ran for ${result.duration.toFixed(2)}ms`);
         }
-      } else if (event.data.type === 'error') {
-        setError(new Error(event.data.error));
-      }
-    };
-
-    newWorker.onerror = (event) => {
-      setError(new Error(event.message));
-      setIsWorking(false);
-    };
-
-    setWorker(newWorker);
+      })
+      .catch((error: Error) => {
+        console.error(error);
+        setError(error);
+      })
+      .finally(() => {
+        setIsWorking(false);
+        worker.terminate();
+      });
 
     return () => {
-      newWorker.terminate();
-      setWorker(null);
+      worker.terminate();
+      setIsWorking(false);
     };
-  }, [enableDebug, enableImageGroups, setError, setImageGroups, stateImageGroups]);
-
-  useEffect(() => {
-    if (!worker) {
-      return;
-    }
-
-    setIsWorking(true);
-    worker.postMessage({ imageGroups, stateImages } as CalculateRootWorkerParams);
-  }, [imageGroups, stateImages, worker]);
+  }, [enableDebug, enableImageGroups, imageGroups, setError, setImageGroups, stateImageGroups, stateImages]);
 
 
   const result = useMemo<GalleryTreeContextType>((): GalleryTreeContextType => {

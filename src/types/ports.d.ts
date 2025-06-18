@@ -25,7 +25,7 @@ export interface PortsContextValue {
   openWebUSB: () => void,
   hasInactiveDevices: boolean,
   unknownDeviceResponse: ReadResult | null,
-  sendDeviceMessage: (message: Uint8Array, id: string) => void,
+  sendDeviceMessage: (message: Uint8Array, deviceId: string, readParamss: ReadParams[], flush: boolean) => Promise<ReadResult[]>,
 }
 
 export interface PortSettings {
@@ -45,6 +45,7 @@ export interface PortsWorkerStateMessage extends PortsWorkerBaseMessage {
 
 export interface PortsWorkerErrorMessage extends PortsWorkerBaseMessage {
   type :PortsWorkerMessageType.ERROR,
+  portType: PortType,
   errorMessage: string,
 }
 
@@ -56,7 +57,8 @@ export interface PortsWorkerChangeMessage extends PortsWorkerBaseMessage {
 
 export interface PortsWorkerDataMessage extends PortsWorkerBaseMessage {
   type :PortsWorkerMessageType.DATA,
-  readResult: ReadResult,
+  readResults: ReadResult[],
+  replyToMessageId?: string,
   portType: PortType,
 }
 
@@ -81,6 +83,12 @@ export type PortsWorkerMessage =
   | PortsWorkerQuestionMessage;
 
 
+export type ReadParams =
+  { timeout: number; length?: never; texts?: never } |
+  { timeout?: number; length?: never; texts: string[] } |
+  { timeout?: number; length: number; texts?: never };
+
+
 ////// Commands to Worker //////
 interface PortsWorkerBaseCommand {
   type: WorkerCommand,
@@ -95,6 +103,9 @@ export interface PortsWorkerSendDataCommand extends PortsWorkerBaseCommand {
   type: WorkerCommand.SEND_DATA,
   deviceId: string,
   message: Uint8Array,
+  messageId: string,
+  readParamss: ReadParams[],
+  flush: boolean,
 }
 
 export interface PortsWorkerAnswerCommand extends PortsWorkerBaseCommand {

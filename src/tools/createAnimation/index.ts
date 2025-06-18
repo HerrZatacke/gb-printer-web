@@ -6,6 +6,7 @@ import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
+import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { delay } from '@/tools/delay';
 import generateFileName from '@/tools/generateFileName';
@@ -102,7 +103,8 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 
 // ToDo: move to src/javascript/app/components/Overlays/VideoParamsForm/useVideoForm.ts
 export const createAnimation = async () => {
-  const { startProgress, setProgress, stopProgress, setError, videoSelection } = useInteractionsStore.getState();
+  const { setError, videoSelection } = useInteractionsStore.getState();
+  const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
   const { frames, palettes, images: stateImages } = useItemsStore.getState();
   const { videoParams, fileNameStyle } = useSettingsStore.getState();
 

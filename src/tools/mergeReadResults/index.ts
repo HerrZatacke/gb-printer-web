@@ -1,18 +1,25 @@
 import { ReadResult } from '@/types/ports';
 
-const appendUint8Arrays = (a: Uint8Array, b: Uint8Array): Uint8Array => {
-  const result = new Uint8Array(a.length + b.length);
-  result.set(a, 0);
-  result.set(b, a.length);
+export const appendUint8Arrays = (arrays: (Uint8Array | null | undefined)[]): Uint8Array => {
+  const validArrays = arrays.filter(Boolean) as Uint8Array[];
+  const totalLength = validArrays.reduce((sum, arr) => sum + arr.length, 0);
+  const result = new Uint8Array(totalLength);
+
+  let offset = 0;
+  for (const arr of validArrays) {
+    result.set(arr, offset);
+    offset += arr.length;
+  }
+
   return result;
 };
 
-
-export const mergeReadResults = (first: ReadResult, second: ReadResult): ReadResult => {
+export const mergeReadResults = (results: (ReadResult | null | undefined)[]): ReadResult => {
+  const validResults = results.filter(Boolean) as ReadResult[];
   return {
-    bytes: appendUint8Arrays(first.bytes, second.bytes),
-    deviceId: first.deviceId || second.deviceId,
-    portDeviceType: first.portDeviceType || second.portDeviceType,
-    string: `${first.string}${second.string}`,
+    bytes: appendUint8Arrays(validResults.map(({ bytes }) => bytes)),
+    deviceId: validResults[0].deviceId,
+    portDeviceType: validResults[0].portDeviceType,
+    string: validResults.map(({ string }) => string).join(''),
   };
 };
