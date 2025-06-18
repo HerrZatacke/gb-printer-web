@@ -1,8 +1,8 @@
 import fs from 'fs/promises';
+import crypto from 'node:crypto';
 import path from 'path';
 import { favicons } from 'favicons';
 import { rimraf } from 'rimraf';
-import crypto from 'node:crypto';
 
 interface Params {
   description: string,
