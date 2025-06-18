@@ -1,7 +1,3 @@
-const unique = (arr: string[]): string[] => (
-  arr.filter((item, index) => (
-    arr.findIndex((findTag) => findTag === item) === index
-  ))
-);
+const unique = (arr: string[]): string[] => Array.from(new Set(arr));
 
 export default unique;
