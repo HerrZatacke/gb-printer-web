@@ -33,6 +33,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
         <title>Game Boy Camera Gallery</title>
         <meta name="robots" content="noindex,nofollow"/>
         <meta name="replacewith" content={process.env.NEXT_PUBLIC_MANIFEST_TAGS} />
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_HOMEPAGE} />
       </head>
       <body>
         { providers.reduceRight((acc: ReactNode, Provider: ComponentType<{ children: ReactNode }>) => {
