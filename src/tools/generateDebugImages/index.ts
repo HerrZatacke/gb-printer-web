@@ -58,7 +58,6 @@ export const generateDebugImages = async (count: number) => {
   const generateStart = Date.now();
 
   for (let i = 0; i < count; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
     debugs.push(await generateDebugImage(i));
   }
 
