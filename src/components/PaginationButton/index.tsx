@@ -1,7 +1,7 @@
 import IconButton from '@mui/material/Button';
 import NextLink from 'next/link';
 import React from 'react';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
 
 export interface Props {
   children: React.ReactNode,
@@ -10,7 +10,7 @@ export interface Props {
 }
 
 function PaginationButton(props: Props) {
-  const { getUrl } = useGalleryParams();
+  const { getUrl } = useGalleryTreeContext();
 
   return (
     <IconButton

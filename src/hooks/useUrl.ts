@@ -12,12 +12,18 @@ interface UseUrl {
 
 export const useUrl = (): UseUrl => {
   const pathname = usePathname();
-  const [searchParams, setSearchParams] = useState<URLSearchParams>(new URLSearchParams());
+  const [windowLocationSearch, setWindowLocationSearch] = useState<string>(typeof window !== 'undefined' ? window.location.search : '');
+
+  const searchParams = useMemo(() => (
+    new URLSearchParams(windowLocationSearch)
+  ), [windowLocationSearch]);
 
   useEffect(() => {
     const updateSearchParams = () => {
       window.setTimeout(() => {
-        setSearchParams(new URLSearchParams(window.location.search));
+        setWindowLocationSearch((current) => (
+          window.location.search !== current ? window.location.search : current
+        ));
       }, 1);
     };
 
@@ -45,7 +51,7 @@ export const useUrl = (): UseUrl => {
       history.pushState = originalPushState;
       history.replaceState = originalReplaceState;
     };
-  }, [pathname]);
+  }, [searchParams, pathname]);
 
   const query = useMemo(() => searchParams.toString(), [searchParams]);
 

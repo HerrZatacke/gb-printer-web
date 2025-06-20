@@ -38,7 +38,6 @@ export abstract class CommonPort extends EventEmitter {
 
   protected startBuffering() {
     (async () => {
-      /* eslint-disable no-await-in-loop */
       while (this.canRead()) {
         const result = await this.readChunk();
         if (result.byteLength) {
@@ -48,7 +47,6 @@ export abstract class CommonPort extends EventEmitter {
           await delay(150);
         }
       }
-      /* eslint-enable no-await-in-loop */
     })();
   }
 
@@ -64,7 +62,6 @@ export abstract class CommonPort extends EventEmitter {
     if (typeof length === 'number') {
       if (length === 0) { run = false; }
       try {
-        /* eslint-disable no-await-in-loop */
         while (this.canRead() && run) {
           if (this.bufferedData && this.bufferedData.byteLength >= length) {
             run = false;
@@ -73,14 +70,12 @@ export abstract class CommonPort extends EventEmitter {
             await delay(idleDelay);
           }
         }
-        /* eslint-enable no-await-in-loop */
       } catch (error) {
         this.emit('error', (error as Error).message);
       }
     } else if (texts instanceof Array) {
       const needles: Uint8Array[] = texts.map((text) => this.textEncoder.encode(text));
       if (needles.length === 0) { run = false; }
-      /* eslint-disable no-await-in-loop */
       while (this.canRead() && run) {
         if (this.bufferedData && this.bufferedData.byteLength) {
           const needleIndex = needles
@@ -102,13 +97,10 @@ export abstract class CommonPort extends EventEmitter {
           await delay(idleDelay);
         }
       }
-      /* eslint-enable no-await-in-loop */
     } else {
-      /* eslint-disable no-await-in-loop */
       while (this.canRead() && run) {
         await delay(idleDelay);
       }
-      /* eslint-enable no-await-in-loop */
     }
 
     if (!this.bufferedData) {
@@ -219,7 +211,6 @@ export abstract class CommonPort extends EventEmitter {
 
     // enter the read-loop
     try {
-      /* eslint-disable no-await-in-loop */
       while (this.canRead()) {
         const result: Uint8Array = await this.read({ timeout: this.readTimeoutDuration });
         if (result.byteLength) {
@@ -228,7 +219,6 @@ export abstract class CommonPort extends EventEmitter {
           this.emitData(result);
         }
       }
-      /* eslint-enable no-await-in-loop */
     } catch (error) {
       this.emit('error', (error as Error).message);
     }

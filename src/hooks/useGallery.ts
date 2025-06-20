@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
 import { useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
 import useFiltersStore from '@/stores/filtersStore';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
@@ -21,7 +20,7 @@ interface UseGallery {
 }
 
 export const useGallery = (): UseGallery => {
-  const { view, covers, isWorking } = useGalleryTreeContext();
+  const { pageIndex, getUrl, view, covers, isWorking } = useGalleryTreeContext();
   const { pageSize } = useSettingsStore();
 
   const {
@@ -35,8 +34,6 @@ export const useGallery = (): UseGallery => {
 
   const totalImageCount = stateImages.length;
   const filteredCount = getFilteredImagesCount(view.images, filtersActiveTags, recentImports);
-
-  const { pageIndex, getUrl } = useGalleryParams();
   const totalPages = pageSize ? Math.ceil(view.images.length / pageSize) : 1;
   const maxPage = Math.max(0, totalPages - 1);
   const page = Math.max(0, Math.min(pageIndex, maxPage));
