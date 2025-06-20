@@ -26,8 +26,8 @@ import type { Theme } from '@mui/system';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { usePortsContext } from '@/contexts/ports';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
 import useNavigation from '@/hooks/useNavigation';
 import { useUrl } from '@/hooks/useUrl';
 import useInteractionsStore from '@/stores/interactionsStore';
@@ -61,7 +61,7 @@ function Navigation() {
   const [drawerContainer, setDrawerContainer] = useState<HTMLElement | undefined>(undefined);
   const { fullPath } = useUrl();
   const { themeName, setThemeName } = useSettingsStore();
-  const { lastGalleryLink, getUrl } = useGalleryParams();
+  const { lastGalleryLink, getUrl } = useGalleryTreeContext();
   const { showTrashCount, trashCount } = useInteractionsStore();
 
   useEffect(() => {

@@ -3,7 +3,6 @@ import { useMemo, useState } from 'react';
 import { dateFormat } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
 import type { EditGroupInfo } from '@/stores/editStore';
 import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
@@ -84,8 +83,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     ungroupImages,
   } = useItemsStore();
   const { navigateToGroup, navigateToImage } = useNavigationToolsContext();
-  const { view, paths, pathsOptions } = useGalleryTreeContext();
-  const { path: currentPath } = useGalleryParams();
+  const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
 
   const editMode = getEditMode(editImageGroup);
