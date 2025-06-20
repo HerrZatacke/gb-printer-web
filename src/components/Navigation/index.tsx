@@ -27,6 +27,7 @@ import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { GALLERY_BASE_PATH } from '@/contexts/galleryTree/Provider';
 import { usePortsContext } from '@/contexts/ports';
 import useNavigation from '@/hooks/useNavigation';
 import { useUrl } from '@/hooks/useUrl';
@@ -61,8 +62,14 @@ function Navigation() {
   const [drawerContainer, setDrawerContainer] = useState<HTMLElement | undefined>(undefined);
   const { fullPath } = useUrl();
   const { themeName, setThemeName } = useSettingsStore();
-  const { lastGalleryLink, getUrl } = useGalleryTreeContext();
   const { showTrashCount, trashCount } = useInteractionsStore();
+  const { lastGalleryLink, getUrl } = useGalleryTreeContext();
+  const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
+
+  useEffect(() => {
+    // Set "galleryRoute" on client side only to prevent hydration issues
+    setGalleryRoute(lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0, group: '' }));
+  }, [fullPath, getUrl, lastGalleryLink]);
 
   useEffect(() => {
     setDrawerContainer(document.body);
@@ -101,7 +108,7 @@ function Navigation() {
       },
       {
         label: 'Gallery',
-        route: lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0 }),
+        route: galleryRoute,
         prefetch: true,
       },
       {
@@ -125,7 +132,7 @@ function Navigation() {
         prefetch: false,
       },
     ].reduce(reduceItems<NavItem>, [])
-  ), [fullPath, getUrl, lastGalleryLink]);
+  ), [galleryRoute]);
 
   const navActionItems = useMemo<NavActionItem[]>(() => (
     [

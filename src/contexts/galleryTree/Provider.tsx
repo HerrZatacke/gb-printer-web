@@ -19,7 +19,7 @@ import {
 import { type Image } from '@/types/Image';
 import { type SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
 
-const GALLERY_BASE_PATH = '/gallery/';
+export const GALLERY_BASE_PATH = '/gallery/';
 
 export const galleryTreeContext: Context<GalleryTreeContextType> = createContext<GalleryTreeContextType>({
   root: createTreeRoot(),
@@ -75,9 +75,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
         }
 
         if (enableImageGroups) {
-          console.log(1, stateImageGroups.length, result.paths.length);
           if (stateImageGroups.length > result.paths.length) {
-            console.log(2);
             const idsInPaths = result.paths.map(({ group }) => group.id);
             const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
             setImageGroups(usedGroups);
@@ -115,7 +113,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
 
     let link = `${GALLERY_BASE_PATH}?page=${page + 1}`;
     if (group.length) {
-      link = `${link}&group=${group}`;
+      link = `${link}&group=${encodeURIComponent(group)}`;
     }
 
     return link;
