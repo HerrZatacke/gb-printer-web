@@ -15,7 +15,6 @@ class USBPorts extends EventEmitter {
       !!navigator.usb &&
       !!navigator.usb.getDevices;
     this.activePorts = [];
-    this.initPorts();
   }
 
   getActivePorts(): CommonUSBPort[] {
@@ -71,7 +70,7 @@ class USBPorts extends EventEmitter {
   }
 
   // Setup initially known devices and add connection listener
-  async initPorts() {
+  public async initPorts() {
     if (!this.enabled) { return; }
 
     const devices = await navigator.usb.getDevices();

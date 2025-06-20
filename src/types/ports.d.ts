@@ -1,4 +1,6 @@
 import { PortDeviceType, PortsWorkerMessageType, PortType, WorkerCommand } from '@/consts/ports';
+import { CaptureDeviceCommsApi } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
+import { CommsApiBase } from '@/tools/comms/DeviceAPIs/CommsDevice';
 
 export interface ReadResult {
   bytes: Uint8Array,
@@ -37,22 +39,14 @@ interface PortsWorkerBaseMessage {
   type: PortsWorkerMessageType,
 }
 
-export interface PortsWorkerStateMessage extends PortsWorkerBaseMessage {
-  type :PortsWorkerMessageType.ENABLED_STATE,
-  webUSBEnabled: boolean,
-  webSerialEnabled: boolean,
-}
+export type InitCallbackFn = (webUSBEnabled: boolean, webSerialEnabled: boolean) => void;
+export type PortsChangeCallbackFn = (portType: PortType, activePorts: WorkerPort[]) => void;
+export type SettingsCallbackFn = () => Promise<PortSettings | null>;
 
 export interface PortsWorkerErrorMessage extends PortsWorkerBaseMessage {
   type :PortsWorkerMessageType.ERROR,
   portType: PortType,
   errorMessage: string,
-}
-
-export interface PortsWorkerChangeMessage extends PortsWorkerBaseMessage {
-  type :PortsWorkerMessageType.PORTS_CHANGE,
-  activePorts: WorkerPort[],
-  portType: PortType,
 }
 
 export interface PortsWorkerDataMessage extends PortsWorkerBaseMessage {
@@ -68,20 +62,10 @@ export interface PortsWorkerReceivingMessage extends PortsWorkerBaseMessage {
   portType: PortType,
 }
 
-export interface PortsWorkerQuestionMessage extends PortsWorkerBaseMessage {
-  type :PortsWorkerMessageType.QUESTION,
-  // currently there's only one type of question - subtypes can be added if needed
-  questionId: string,
-}
-
 export type PortsWorkerMessage =
-  | PortsWorkerStateMessage
   | PortsWorkerErrorMessage
-  | PortsWorkerChangeMessage
   | PortsWorkerDataMessage
-  | PortsWorkerReceivingMessage
-  | PortsWorkerQuestionMessage;
-
+  | PortsWorkerReceivingMessage;
 
 export type ReadParams =
   { timeout: number; length?: never; texts?: never } |
@@ -92,11 +76,6 @@ export type ReadParams =
 ////// Commands to Worker //////
 interface PortsWorkerBaseCommand {
   type: WorkerCommand,
-}
-
-export interface PortsWorkerOpenCommand extends PortsWorkerBaseCommand {
-  type: WorkerCommand.OPEN,
-  portType: PortType,
 }
 
 export interface PortsWorkerSendDataCommand extends PortsWorkerBaseCommand {
@@ -116,6 +95,36 @@ export interface PortsWorkerAnswerCommand extends PortsWorkerBaseCommand {
 }
 
 export type PortsWorkerCommand =
-  | PortsWorkerOpenCommand
   | PortsWorkerSendDataCommand
   | PortsWorkerAnswerCommand;
+
+
+export type CommsApi =
+  // CommsApiBase
+  | CaptureDeviceCommsApi;
+
+export interface DevicesApi {
+  openSerial: (
+    settingsCallbackFn: SettingsCallbackFn,
+  ) => Promise<void>,
+  openUSB: () => Promise<void>,
+  init: (
+    initCallback: InitCallbackFn,
+    portsChangeCallback: PortsChangeCallbackFn,
+    settingsCallbackFn: SettingsCallbackFn,
+  ) => Promise<void>,
+
+  getApi: (deviceId: string) => Promise<CommsApi>,
+}
+
+export type ReceivingCallbackFn = () => void;
+export type DataCallbackFn = (data: string) => void;
+
+export interface CaptureDeviceCommsApi extends CommsApiBase {
+  portDeviceType: PortDeviceType.PACKET_CAPTURE;
+  setCallbacks: (
+    receiving: ReceivingCallbackFn,
+    data: DataCallbackFn,
+  ) => void;
+}
+

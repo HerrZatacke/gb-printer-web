@@ -20,18 +20,14 @@ export const portDeviceLabels: Record<PortDeviceType, string> = {
 };
 
 export enum WorkerCommand {
-  OPEN = 'OPEN',
   SEND_DATA = 'SEND_DATA',
   ANSWER = 'ANSWER',
 }
 
 export enum PortsWorkerMessageType {
-  ENABLED_STATE = 'ENABLED_STATE',
   ERROR = 'ERROR',
-  PORTS_CHANGE = 'PORTS_CHANGE',
   DATA = 'DATA',
   RECEIVING = 'RECEIVING',
-  QUESTION = 'QUESTION',
 }
 
 export const usbDeviceFilters: USBDeviceFilter[] = [

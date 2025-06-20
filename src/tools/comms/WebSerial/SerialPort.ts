@@ -1,35 +1,38 @@
-import { PortDeviceType, PortsWorkerMessageType, WorkerCommand } from '@/consts/ports';
-import { CommonPort } from '@/tools/CommonPort';
+import { PortDeviceType } from '@/consts/ports';
+import { CommonPort } from '@/tools/comms/CommonPort';
 import { randomId } from '@/tools/randomId';
-import { PortSettings, PortsWorkerCommand, PortsWorkerQuestionMessage } from '@/types/ports';
+import { SettingsCallbackFn } from '@/types/ports';
 
 class CommonSerialPort extends CommonPort {
   private device: SerialPort;
   private baudRate: number;
   private reader: ReadableStreamDefaultReader | null;
   private id: string;
+  private settingsCallbackFn: SettingsCallbackFn;
 
-  constructor(device: SerialPort) {
+  constructor(device: SerialPort, settingsCallbackFn: SettingsCallbackFn) {
     super();
     this.device = device;
+    this.settingsCallbackFn = settingsCallbackFn;
     this.baudRate = 0;
     this.reader = null;
     this.id = randomId();
   }
 
+  // ToDo: still needed?
   getDevice(): SerialPort {
     return this.device;
   }
 
-  getBaudRate(): number {
+  public getBaudRate(): number {
     return this.baudRate;
   }
 
-  getId(): string {
+  public getId(): string {
     return this.id;
   }
 
-  protected canRead(): boolean {
+  public canRead(): boolean {
     return Boolean(this.reader && this.getPortDeviceType() !== PortDeviceType.INACTIVE);
   }
 
@@ -39,39 +42,11 @@ class CommonSerialPort extends CommonPort {
     return bytes;
   }
 
-  async queryPortSettings(): Promise<void> {
-    const portSettings: PortSettings | null = await (new Promise((resolve) => {
-      const questionId = randomId();
-
-      const handler = (event: MessageEvent<PortsWorkerCommand>) => {
-        if (event.data.type === WorkerCommand.ANSWER && event.data.questionId === questionId) {
-          self.removeEventListener('message', handler);
-          resolve(event.data.response);
-        }
-      };
-
-      self.addEventListener('message', handler);
-
-      const questionMessage: PortsWorkerQuestionMessage = {
-        type: PortsWorkerMessageType.QUESTION,
-        questionId,
-      };
-
-      postMessage(questionMessage);
-    }));
-
-    this.baudRate = portSettings?.baudRate || 0;
-  }
-
   async connect() {
     try {
-      await this.queryPortSettings();
-
-      if (!this.baudRate) {
-        return;
-      }
-
-      console.log(this.baudRate);
+      const settings = await this.settingsCallbackFn();
+      this.baudRate = settings?.baudRate || 0;
+      if (!this.baudRate) { return; }
 
       await this.device.open({ baudRate: this.baudRate });
 
@@ -81,7 +56,8 @@ class CommonSerialPort extends CommonPort {
 
       this.reader = this.device.readable.getReader();
 
-      this.readLoop();
+      this.startBuffering(50);
+      this.detectType();
     } catch (error) {
       console.error(error);
       this.emit('errormessage', 'could not mount device');

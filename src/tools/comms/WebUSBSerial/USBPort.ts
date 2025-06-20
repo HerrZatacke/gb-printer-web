@@ -1,5 +1,5 @@
 import { PortDeviceType } from '@/consts/ports';
-import { CommonPort } from '@/tools/CommonPort';
+import { CommonPort } from '@/tools/comms/CommonPort';
 import { randomId } from '@/tools/randomId';
 
 class CommonUSBPort extends CommonPort {
@@ -32,7 +32,7 @@ class CommonUSBPort extends CommonPort {
     return this.id;
   }
 
-  protected canRead(): boolean {
+  canRead(): boolean {
     return Boolean(
       this.device &&
       this.device.opened &&
@@ -99,7 +99,8 @@ class CommonUSBPort extends CommonPort {
         index: this.interfaceNumber,
       });
 
-      this.readLoop();
+      this.startBuffering(50);
+      this.detectType();
     } catch (error) {
       console.error(error);
       this.emit('errormessage', 'could not mount device');

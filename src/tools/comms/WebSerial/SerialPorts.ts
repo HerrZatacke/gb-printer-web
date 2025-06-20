@@ -1,10 +1,11 @@
 import EventEmitter from 'events';
-import { ReadResult, WorkerPort } from '@/types/ports';
+import { ReadResult, SettingsCallbackFn, WorkerPort } from '@/types/ports';
 import CommonSerialPort from './SerialPort';
 
 class WebSerialEE extends EventEmitter {
   public enabled: boolean;
   private activePorts: CommonSerialPort[];
+  private settingsCallbackFn: SettingsCallbackFn | null = null;
 
   constructor() {
     super();
@@ -14,7 +15,6 @@ class WebSerialEE extends EventEmitter {
       !!navigator.serial &&
       !!TextDecoderStream;
     this.activePorts = [];
-    this.initPorts();
   }
 
   getActivePorts(): CommonSerialPort[] {
@@ -23,7 +23,7 @@ class WebSerialEE extends EventEmitter {
 
   getWorkerPorts(): WorkerPort[] {
     const ports = this.getActivePorts();
-    return ports.map((commonSerialPort) => ({
+    return ports.map((commonSerialPort): WorkerPort => ({
       id: commonSerialPort.getId(),
       description: `${commonSerialPort.getBaudRate()} baud`,
       portDeviceType: commonSerialPort.getPortDeviceType(),
@@ -33,7 +33,9 @@ class WebSerialEE extends EventEmitter {
   private async initDevice(device: SerialPort): Promise<void> {
     if (device.readable) { return; } // opened devices have a ReadableStream as device.readable
 
-    const port = new CommonSerialPort(device);
+    if (!this.settingsCallbackFn) { return; } // Must be able to query for baudrate
+
+    const port = new CommonSerialPort(device, this.settingsCallbackFn);
 
     port.addListener('error', (error) => {
       console.warn(error);
@@ -66,11 +68,16 @@ class WebSerialEE extends EventEmitter {
     this.emit('activePortsChange');
   }
 
-  async initPorts() {
+  public async initPorts(settingsCallbackFn: SettingsCallbackFn) {
     if (!this.enabled) { return; }
 
+    this.settingsCallbackFn = settingsCallbackFn;
+
     const devices = await navigator.serial.getPorts();
-    devices.forEach((device) => this.initDevice(device));
+
+    for (const device of devices) {
+      await this.initDevice(device);
+    }
 
     // Add listener to setup future devices
     navigator.serial.addEventListener('connect', (event: Event) => {

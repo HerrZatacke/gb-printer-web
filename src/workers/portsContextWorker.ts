@@ -1,148 +1,157 @@
-import { PortDeviceType, PortsWorkerMessageType, PortType, WorkerCommand } from '@/consts/ports';
-import CommonSerialPort from '@/tools/WebSerial/SerialPort';
-import SerialPorts from '@/tools/WebSerial/SerialPorts';
-import USBPorts from '@/tools/WebUSBSerial/USBPorts';
+import { expose, proxy } from 'comlink';
+import { PortDeviceType, PortType } from '@/consts/ports';
+import { CommonPort } from '@/tools/comms/CommonPort';
+import SerialPorts from '@/tools/comms/WebSerial/SerialPorts';
+import USBPorts from '@/tools/comms/WebUSBSerial/USBPorts';
 import {
-  PortsWorkerChangeMessage,
-  PortsWorkerCommand,
-  PortsWorkerDataMessage,
-  PortsWorkerErrorMessage,
-  PortsWorkerReceivingMessage,
-  PortsWorkerStateMessage,
-  ReadResult,
+  CommsApi,
+  DevicesApi,
+  InitCallbackFn,
+  PortsChangeCallbackFn,
+  SettingsCallbackFn,
 } from '@/types/ports';
 
-const initMessage = () => {
-  const stateMessage: PortsWorkerStateMessage = {
-    type: PortsWorkerMessageType.ENABLED_STATE,
-    webSerialEnabled: SerialPorts.enabled,
-    webUSBEnabled: USBPorts.enabled,
-  };
-
-  self.postMessage(stateMessage);
-};
-
-const portChangeListener = (portType: PortType)=> () => {
-  const activePorts = portType === PortType.SERIAL ?
-    SerialPorts.getWorkerPorts() :
-    USBPorts.getWorkerPorts();
-
-  const portsMessage: PortsWorkerChangeMessage = {
-    type: PortsWorkerMessageType.PORTS_CHANGE,
-    activePorts,
-    portType,
-  };
-
-  self.postMessage(portsMessage);
-};
-
-SerialPorts.addListener('activePortsChange', portChangeListener(PortType.SERIAL));
-USBPorts.addListener('activePortsChange', portChangeListener(PortType.USB));
+// const dataListener = (portType: PortType) => (readResult: ReadResult)=> {
+//   const resultsMessage: PortsWorkerDataMessage = {
+//     type: PortsWorkerMessageType.DATA,
+//     readResults: [readResult],
+//     portType,
+//   };
+//
+//   self.postMessage(resultsMessage);
+// };
+//
+// SerialPorts.addListener('data', dataListener(PortType.SERIAL));
+// USBPorts.addListener('data', dataListener(PortType.USB));
 
 
-const dataListener = (portType: PortType) => (readResult: ReadResult)=> {
-  const resultsMessage: PortsWorkerDataMessage = {
-    type: PortsWorkerMessageType.DATA,
-    readResults: [readResult],
-    portType,
-  };
+// const receivingListener = (portType: PortType) => (portDeviceType: PortDeviceType) => {
+//   const receivingMessage: PortsWorkerReceivingMessage = {
+//     type: PortsWorkerMessageType.RECEIVING,
+//     portDeviceType,
+//     portType,
+//   };
+//
+//   self.postMessage(receivingMessage);
+// };
+//
+// SerialPorts.addListener('receiving', receivingListener(PortType.SERIAL));
+// USBPorts.addListener('receiving', receivingListener(PortType.USB));
 
-  self.postMessage(resultsMessage);
-};
 
-SerialPorts.addListener('data', dataListener(PortType.SERIAL));
-USBPorts.addListener('data', dataListener(PortType.USB));
+// const errorListener = (portType: PortType) => (errorMessage: string) => {
+//   const receivingMessage: PortsWorkerErrorMessage = {
+//     type: PortsWorkerMessageType.ERROR,
+//     portType,
+//     errorMessage,
+//   };
+//
+//   self.postMessage(receivingMessage);
+// };
+//
+// SerialPorts.addListener('errormessage', errorListener(PortType.SERIAL));
+// USBPorts.addListener('errormessage', errorListener(PortType.USB));
 
-const receivingListener = (portType: PortType) => (portDeviceType: PortDeviceType) => {
-  const receivingMessage: PortsWorkerReceivingMessage = {
-    type: PortsWorkerMessageType.RECEIVING,
-    portDeviceType,
-    portType,
-  };
 
-  self.postMessage(receivingMessage);
-};
+// self.onmessage = async (messageEvent: MessageEvent<PortsWorkerCommand>) => {
+//   const textDecoder = new TextDecoder();
+//
+//   switch (messageEvent.data.type) {
+//     case WorkerCommand.SEND_DATA: {
+//       const { deviceId, message, readParamss, flush, messageId } = messageEvent.data;
+//
+//       const allDevices = [...SerialPorts.getActivePorts(), ...USBPorts.getActivePorts()];
+//       const device = allDevices.find((findDevice) => findDevice.getId() === deviceId);
+//       if (!device) {
+//         throw new Error('device not found');
+//       }
+//
+//       const portType: PortType = device instanceof CommonSerialPort ? PortType.SERIAL : PortType.USB;
+//
+//       const bytess = await device.send(message, readParamss, flush);
+//
+//       const readResults: ReadResult[] = bytess.map((bytes) => ({
+//         string: textDecoder.decode(bytes),
+//         bytes: bytes,
+//         deviceId: device.getId(),
+//         portDeviceType: device.getPortDeviceType(),
+//       }));
+//
+//       const resultsMessage: PortsWorkerDataMessage = {
+//         type: PortsWorkerMessageType.DATA,
+//         readResults,
+//         portType,
+//         replyToMessageId: messageId,
+//       };
+//
+//       self.postMessage(resultsMessage);
+//
+//       break;
+//     }
+//
+//     case WorkerCommand.ANSWER: {
+//       // listener is elsewhere, can be ignored here
+//       break;
+//     }
+//
+//     default: {
+//       console.log(messageEvent);
+//     }
+//   }
+// };
 
-SerialPorts.addListener('receiving', receivingListener(PortType.SERIAL));
-USBPorts.addListener('receiving', receivingListener(PortType.USB));
+const devicesApi: DevicesApi = {
+  async openSerial(settingsCallbackFn: SettingsCallbackFn): Promise<void> {
+    await SerialPorts.initPorts(settingsCallbackFn);
+  },
 
-const errorListener = (portType: PortType) => (errorMessage: string) => {
-  const receivingMessage: PortsWorkerErrorMessage = {
-    type: PortsWorkerMessageType.ERROR,
-    portType,
-    errorMessage,
-  };
+  async openUSB(): Promise<void> {
+    await USBPorts.initPorts();
+  },
 
-  self.postMessage(receivingMessage);
-};
+  async init(
+    initCallback: InitCallbackFn,
+    portsChangeCallback: PortsChangeCallbackFn,
+    settingsCallbackFn: SettingsCallbackFn,
+  ) {
+    initCallback(SerialPorts.enabled, USBPorts.enabled);
 
-SerialPorts.addListener('errormessage', errorListener(PortType.SERIAL));
-USBPorts.addListener('errormessage', errorListener(PortType.USB));
+    SerialPorts.addListener('activePortsChange', () => {
+      portsChangeCallback(PortType.SERIAL, SerialPorts.getWorkerPorts());
+    });
 
-self.onmessage = async (messageEvent: MessageEvent<PortsWorkerCommand>) => {
-  const textDecoder = new TextDecoder();
+    USBPorts.addListener('activePortsChange', () => {
+      portsChangeCallback(PortType.USB, USBPorts.getWorkerPorts());
+    });
 
-  switch (messageEvent.data.type) {
-    case WorkerCommand.OPEN: {
-      switch (messageEvent.data.portType) {
-        case PortType.SERIAL: {
-          SerialPorts.initPorts();
-          break;
-        }
+    await Promise.all([
+      SerialPorts.initPorts(settingsCallbackFn),
+      USBPorts.initPorts(),
+    ]);
+  },
 
-        case PortType.USB: {
-          USBPorts.initPorts();
-          break;
-        }
+  async getApi(deviceId: string): Promise<CommsApi> {
+    const allPorts: CommonPort[] = [
+      ...SerialPorts.getActivePorts(),
+      ...USBPorts.getActivePorts(),
+    ];
 
-        default:
-          break;
-      }
+    const device: CommonPort | undefined = allPorts.find((port) => port.getId() === deviceId);
+    if (!device) { throw new Error('device with id not found'); }
 
-      break;
+    const api = device.getApi();
+
+    if (api.portDeviceType !== PortDeviceType.PACKET_CAPTURE) {
+      throw new Error('jaja');
     }
 
-    case WorkerCommand.SEND_DATA: {
-      const { deviceId, message, readParamss, flush, messageId } = messageEvent.data;
+    return proxy<CommsApi>(api);
 
-      const allDevices = [...SerialPorts.getActivePorts(), ...USBPorts.getActivePorts()];
-      const device = allDevices.find((findDevice) => findDevice.getId() === deviceId);
-      if (!device) {
-        throw new Error('device not found');
-      }
-
-      const portType: PortType = device instanceof CommonSerialPort ? PortType.SERIAL : PortType.USB;
-
-      const bytess = await device.send(message, readParamss, flush);
-
-      const readResults: ReadResult[] = bytess.map((bytes) => ({
-        string: textDecoder.decode(bytes),
-        bytes: bytes,
-        deviceId: device.getId(),
-        portDeviceType: device.getPortDeviceType(),
-      }));
-
-      const resultsMessage: PortsWorkerDataMessage = {
-        type: PortsWorkerMessageType.DATA,
-        readResults,
-        portType,
-        replyToMessageId: messageId,
-      };
-
-      self.postMessage(resultsMessage);
-
-      break;
-    }
-
-    case WorkerCommand.ANSWER: {
-      // listener is elsewhere, can be ignored here
-      break;
-    }
-
-    default: {
-      console.log(messageEvent);
-    }
-  }
+    // return {
+    //   portDeviceType: api.portDeviceType,
+    //   setCallbacks: proxy(api.setCallbacks),
+    // };
+  },
 };
 
-initMessage();
+expose(devicesApi);
