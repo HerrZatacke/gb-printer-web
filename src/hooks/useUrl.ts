@@ -17,7 +17,11 @@ export const useUrl = (): UseUrl => {
   useEffect(() => {
     const updateSearchParams = () => {
       window.setTimeout(() => {
-        setSearchParams(new URLSearchParams(window.location.search));
+        const newParams = new URLSearchParams(window.location.search);
+        if (newParams)
+        setSearchParams((current) => (
+          newParams.toString() !== current.toString() ? newParams: current
+        ));
       }, 1);
     };
 
