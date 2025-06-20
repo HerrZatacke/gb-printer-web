@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
 import useFiltersStore from '@/stores/filtersStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { ROOT_ID } from '@/tools/createTreeRoot';
@@ -27,11 +26,10 @@ interface ShouldNavigate {
 
 export const useNavigationTools = (): UseNavigationTools => {
   const router = useRouter();
-  const { paths, root, isWorking } = useGalleryTreeContext();
+  const { paths, root, isWorking, path: currentPath, getUrl } = useGalleryTreeContext();
   const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate | false>(false);
   const { sortBy, filtersActiveTags, recentImports } = useFiltersStore();
   const { pageSize } = useSettingsStore();
-  const { path: currentPath, getUrl } = useGalleryParams();
 
   const imageFilter = useCallback((images: Image[]): Image[] => (
     getFilteredImages(images, {

@@ -1,15 +1,16 @@
 'use client';
 
 import { proxy, wrap } from 'comlink';
-import React, { type Context, createContext, useEffect, useMemo, useState } from 'react';
+import React, { type Context, createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
+import { useUrl } from '@/hooks/useUrl';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { createTreeRoot } from '@/tools/createTreeRoot';
 import { type DialogOption } from '@/types/Dialog';
 import {
+  GetUrlParams,
   type GalleryTreeContextType,
   type PathMap,
   type SetErrorFn,
@@ -17,6 +18,8 @@ import {
 } from '@/types/galleryTreeContext';
 import { type Image } from '@/types/Image';
 import { type SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
+
+export const GALLERY_BASE_PATH = '/gallery/';
 
 export const galleryTreeContext: Context<GalleryTreeContextType> = createContext<GalleryTreeContextType>({
   root: createTreeRoot(),
@@ -26,6 +29,10 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
   paths: [],
   pathsOptions: [],
   isWorking: false,
+  pageIndex: 0,
+  path: '',
+  lastGalleryLink: '',
+  getUrl: () => `${GALLERY_BASE_PATH}?page=1`,
 });
 
 
@@ -34,6 +41,8 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
   const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot());
   const [paths, setPaths] = useState<PathMap[]>([]);
   const [pathsOptions, setPathsOptions] = useState<DialogOption[]>([]);
+  const { searchParams, pathname } = useUrl();
+  const [lastGalleryLink, setLastGalleryLink] = useState<string>('');
 
   const { enableImageGroups, enableDebug } = useSettingsStore();
   const { setError } = useInteractionsStore();
@@ -43,8 +52,6 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
     () => (enableImageGroups ? stateImageGroups : []),
     [enableImageGroups, stateImageGroups],
   );
-
-  const { path } = useGalleryParams();
 
   useEffect(() => {
     const worker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url), { type: 'module' });
@@ -68,9 +75,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
         }
 
         if (enableImageGroups) {
-          console.log(1, stateImageGroups.length, result.paths.length);
           if (stateImageGroups.length > result.paths.length) {
-            console.log(2);
             const idsInPaths = result.paths.map(({ group }) => group.id);
             const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
             setImageGroups(usedGroups);
@@ -96,14 +101,51 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
     };
   }, [enableDebug, enableImageGroups, imageGroups, setError, setImageGroups, stateImageGroups, stateImages]);
 
+  const pageIndex = useMemo(() => (
+    parseInt(searchParams.get('page') ?? '1', 10) - 1
+  ), [searchParams]);
+
+  const path = useMemo(() => (searchParams.get('group') || ''), [searchParams]);
+
+  const getUrl = useCallback((params: GetUrlParams) => {
+    const page: number = typeof params.pageIndex === 'number' ? params.pageIndex : pageIndex;
+    const group: string = typeof params.group === 'string' ? params.group : path;
+
+    let link = `${GALLERY_BASE_PATH}?page=${page + 1}`;
+    if (group.length) {
+      link = `${link}&group=${encodeURIComponent(group)}`;
+    }
+
+    return link;
+  }, [pageIndex, path]);
+
+  useEffect(() => {
+    if (pathname === GALLERY_BASE_PATH) {
+      const link = getUrl({ pageIndex , group: path });
+      setLastGalleryLink(link);
+    }
+  }, [path, pageIndex, pathname, getUrl]);
+
 
   const result = useMemo<GalleryTreeContextType>((): GalleryTreeContextType => {
     const view = paths.find(({ absolutePath }) => absolutePath === path)?.group || root;
     const covers = view.groups.map(({ coverImage }) => coverImage);
     const images = view.images.filter((image: Image) => !covers.includes(image.hash));
 
-    return { view, covers, paths, images, pathsOptions, root, isWorking };
-  }, [path, paths, pathsOptions, root, isWorking]);
+    return {
+      view,
+      covers,
+      paths,
+      images,
+      pathsOptions,
+      root,
+      isWorking,
+      pageIndex,
+      path,
+      lastGalleryLink,
+      getUrl,
+    };
+  }, [paths, root, pathsOptions, isWorking, pageIndex, path, lastGalleryLink, getUrl]);
 
   return (
     <galleryTreeContext.Provider value={result}>

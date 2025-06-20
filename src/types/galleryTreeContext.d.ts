@@ -19,6 +19,11 @@ export interface PathMap {
   group: TreeImageGroup,
 }
 
+export interface GetUrlParams {
+  pageIndex?: number,
+  group?: string,
+}
+
 export interface GalleryTreeContextType {
   root: TreeImageGroup, // always the root element
   view: TreeImageGroup, // 'view' contains images and coverImages (=groups)
@@ -27,6 +32,10 @@ export interface GalleryTreeContextType {
   paths: PathMap[],
   pathsOptions: DialogOption[],
   isWorking: boolean,
+  pageIndex: number,
+  path: string,
+  lastGalleryLink: string,
+  getUrl: (params: GetUrlParams) => string,
 }
 
 export type SetErrorFn = (error: string) => void;
