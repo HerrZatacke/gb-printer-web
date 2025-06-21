@@ -1,11 +1,10 @@
 import EventEmitter from 'events';
 import { PortDeviceType } from '@/consts/ports';
 import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
-import { CommsDevice } from '@/tools/comms/DeviceAPIs/CommsDevice';
 import { delay } from '@/tools/delay';
 import { findSubarray } from '@/tools/findSubarray';
 import { appendUint8Arrays } from '@/tools/mergeReadResults';
-import { CommsApi, ReadParams } from '@/types/ports';
+import { ReadParams } from '@/types/ports';
 
 const DETECT_PACKET_CAPTURE = 'GAMEBOY PRINTER Packet Capture';
 const DETECT_PRINTER_EMULATOR = 'GAMEBOY PRINTER Emulator';
@@ -17,7 +16,6 @@ export abstract class CommonPort extends EventEmitter {
   private textEncoder: TextEncoder;
   private bufferedData: Uint8Array | null;
   private readQueue: Promise<void>;
-  private commsDevice: CommsDevice | null;
 
   protected constructor() {
     super();
@@ -26,12 +24,6 @@ export abstract class CommonPort extends EventEmitter {
     this.textEncoder = new TextEncoder();
     this.bufferedData = null;
     this.readQueue = Promise.resolve();
-    this.commsDevice = null;
-  }
-
-  getApi(): CommsApi {
-    if (!this.commsDevice) { throw new Error('no commsDevice'); }
-    return this.commsDevice.getApi();
   }
 
   getPortDeviceType(): PortDeviceType {
@@ -40,18 +32,24 @@ export abstract class CommonPort extends EventEmitter {
 
   abstract canRead(): boolean
   abstract getId(): string
+  abstract getDevice(): SerialPort
   protected abstract readChunk(): Promise<Uint8Array>
   protected abstract sendRaw(data: BufferSource): Promise<void>
 
   protected startBuffering(bufferIdleTime: number) {
     (async () => {
       while (this.canRead()) {
-        const result = await this.readChunk();
-        if (result.byteLength) {
-          this.bufferedData = appendUint8Arrays([this.bufferedData, result]);
-        } else {
-          // console.log(this.textDecoder.decode(this.bufferedData as Uint8Array));
-          await delay(bufferIdleTime);
+        try {
+          const result = await this.readChunk();
+          if (result.byteLength) {
+            this.bufferedData = appendUint8Arrays([this.bufferedData, result]);
+          } else {
+            // console.log(this.textDecoder.decode(this.bufferedData as Uint8Array));
+            await delay(bufferIdleTime);
+          }
+        } catch {
+          // exit buffer loop if reading has failed
+          break;
         }
       }
     })();
@@ -68,17 +66,13 @@ export abstract class CommonPort extends EventEmitter {
 
     if (typeof length === 'number') {
       if (length === 0) { run = false; }
-      try {
-        while (this.canRead() && run) {
-          if (this.bufferedData && this.bufferedData.byteLength >= length) {
-            run = false;
-          } else {
-            // give the app some idle time
-            await delay(idleDelay);
-          }
+      while (this.canRead() && run) {
+        if (this.bufferedData && this.bufferedData.byteLength >= length) {
+          run = false;
+        } else {
+          // give the app some idle time
+          await delay(idleDelay);
         }
-      } catch (error) {
-        this.emit('error', (error as Error).message);
       }
     } else if (texts instanceof Array) {
       const needles: Uint8Array[] = texts.map((text) => this.textEncoder.encode(text));
@@ -120,10 +114,11 @@ export abstract class CommonPort extends EventEmitter {
   }
 
   public read(options: ReadParams): Promise<Uint8Array> {
-    return new Promise<Uint8Array>((resolve) => {
+    return new Promise<Uint8Array>((resolve, reject) => {
       this.readQueue = this.readQueue
         .then(() => this.readFromBuffer(options))
-        .then(resolve);
+        .then(resolve)
+        .catch(reject);
     });
   }
 
@@ -158,7 +153,7 @@ export abstract class CommonPort extends EventEmitter {
     return Promise.all(readResults); // Resolve with read result
   }
 
-  protected async detectType() {
+  protected async detectType(): Promise<CaptureCommsDevice | null> {
     // the printer emulator takes about 3500ms to write it's banner, so we wait a bit longer to be safe
     const bannerBytes = await this.read({
       timeout: 5000,
@@ -192,9 +187,12 @@ export abstract class CommonPort extends EventEmitter {
 
     if (this.portDeviceType === PortDeviceType.PACKET_CAPTURE) {
       await this.read({ timeout: 500 }); // flush the rest of the banner
-      this.commsDevice = new CaptureCommsDevice(this);
+      console.log(`device is a ${PortDeviceType.PACKET_CAPTURE} device -> API :)`);
+      return new CaptureCommsDevice(this);
     }
 
-    this.emit('typechange');
+    console.log(`device is not a ${PortDeviceType.PACKET_CAPTURE} device -> null`);
+    // nothing? do something mart here instead?
+    return null;
   }
 }

@@ -1,13 +1,13 @@
 'use client';
 
-import { proxy, type Remote, wrap } from 'comlink';
+import { proxy, wrap } from 'comlink';
 import { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { PortDeviceType, PortType, usbDeviceFilters } from '@/consts/ports';
 import { useGetPortSettings } from '@/hooks/useGetPortSettings';
 import useImportPlainText from '@/hooks/useImportPlainText';
 import useInteractionsStore from '@/stores/interactionsStore';
+import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
 import {
-  CaptureDeviceCommsApi, CommsApi,
   DevicesApi,
   InitCallbackFn,
   PortsChangeCallbackFn,
@@ -47,18 +47,14 @@ export function PortsContext({ children }: PropsWithChildren) {
         setWebUSBEnabled(usbEnabled);
       });
 
-      const portsChangeCallback = proxy<PortsChangeCallbackFn>((portType: PortType, activePorts: WorkerPort[]) => {
-        switch (portType) {
-          case PortType.SERIAL:
-            setWebSerialActivePorts(activePorts);
-            break;
-          case PortType.USB:
-            setWebUSBActivePorts(activePorts);
-            break;
+      const portsChangeCallback = proxy<PortsChangeCallbackFn>(async (apis: CaptureCommsDevice[]) => {
+        for (const api of apis) {
+          const apiInfo = await api.getInfo();
+          newDevicesApi.proxyCallFn(apiInfo.id, 'setup');
         }
       });
 
-      newDevicesApi.init(initCallback, portsChangeCallback, settingsCallbackFn.current)
+      newDevicesApi.init(initCallback, settingsCallbackFn.current, portsChangeCallback)
         .then(() => {
           setDevicesApi(() => (newDevicesApi));
         })
@@ -237,33 +233,33 @@ export function PortsContext({ children }: PropsWithChildren) {
     };
   }, [packetCaptureResponse, importPlainText]);
 
-  useEffect(() => {
-    if (!devicesApi) { return; }
-    const testDevice = webSerialActivePorts.find(({ portDeviceType }) => portDeviceType === PortDeviceType.PACKET_CAPTURE);
-    if (!testDevice) { return; }
-
-    const addCallbacks = async () => {
-      const commsApi = await devicesApi.getApi(testDevice.id);
-
-      const portDeviceType: PortDeviceType = await commsApi.portDeviceType;
-
-      switch (portDeviceType) {
-        case PortDeviceType.PACKET_CAPTURE:
-          commsApi.setCallbacks(
-            proxy(() => setWebSerialIsReceiving(true)),
-            proxy(setPacketCaptureResponse),
-          );
-          break;
-
-        default:
-          break;
-      }
-
-
-    };
-
-    addCallbacks();
-  }, [devicesApi, webSerialActivePorts]);
+  // useEffect(() => {
+  //   if (!devicesApi) { return; }
+  //   const testDevice = webSerialActivePorts.find(({ portDeviceType }) => portDeviceType === PortDeviceType.PACKET_CAPTURE);
+  //   if (!testDevice) { return; }
+  //
+  //   const addCallbacks = async () => {
+  //     const commsApi = await devicesApi.getApi(testDevice.id);
+  //
+  //     const portDeviceType: PortDeviceType = await commsApi.portDeviceType;
+  //
+  //     switch (portDeviceType) {
+  //       case PortDeviceType.PACKET_CAPTURE:
+  //         commsApi.setCallbacks(
+  //           proxy(() => setWebSerialIsReceiving(true)),
+  //           proxy(setPacketCaptureResponse),
+  //         );
+  //         break;
+  //
+  //       default:
+  //         break;
+  //     }
+  //
+  //
+  //   };
+  //
+  //   addCallbacks();
+  // }, [devicesApi, webSerialActivePorts]);
 
   const value = useMemo((): PortsContextValue => ({
     hasInactiveDevices,

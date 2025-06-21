@@ -1,6 +1,5 @@
 import { PortDeviceType, PortsWorkerMessageType, PortType, WorkerCommand } from '@/consts/ports';
-import { CaptureDeviceCommsApi } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
-import { CommsApiBase } from '@/tools/comms/DeviceAPIs/CommsDevice';
+import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
 
 export interface ReadResult {
   bytes: Uint8Array,
@@ -40,7 +39,7 @@ interface PortsWorkerBaseMessage {
 }
 
 export type InitCallbackFn = (webUSBEnabled: boolean, webSerialEnabled: boolean) => void;
-export type PortsChangeCallbackFn = (portType: PortType, activePorts: WorkerPort[]) => void;
+export type PortsChangeCallbackFn = (exposed: CaptureCommsDevice[]) => void;
 export type SettingsCallbackFn = () => Promise<PortSettings | null>;
 
 export interface PortsWorkerErrorMessage extends PortsWorkerBaseMessage {
@@ -99,10 +98,6 @@ export type PortsWorkerCommand =
   | PortsWorkerAnswerCommand;
 
 
-export type CommsApi =
-  // CommsApiBase
-  | CaptureDeviceCommsApi;
-
 export interface DevicesApi {
   openSerial: (
     settingsCallbackFn: SettingsCallbackFn,
@@ -110,21 +105,36 @@ export interface DevicesApi {
   openUSB: () => Promise<void>,
   init: (
     initCallback: InitCallbackFn,
-    portsChangeCallback: PortsChangeCallbackFn,
     settingsCallbackFn: SettingsCallbackFn,
+    portsChangeCallback: PortsChangeCallbackFn,
   ) => Promise<void>,
 
-  getApi: (deviceId: string) => Promise<CommsApi>,
+  proxyCallFn: (
+    deviceId: string,
+    functionName: string,
+    ...rest: unknown[],
+  ) => Promise<unknown>,
+  // getApi: (deviceId: string) => Promise<CommsApi>,
 }
 
 export type ReceivingCallbackFn = () => void;
 export type DataCallbackFn = (data: string) => void;
 
+
+export interface CommsApiBase  {
+  portDeviceType: PortDeviceType;
+}
+
 export interface CaptureDeviceCommsApi extends CommsApiBase {
   portDeviceType: PortDeviceType.PACKET_CAPTURE;
-  setCallbacks: (
-    receiving: ReceivingCallbackFn,
-    data: DataCallbackFn,
-  ) => void;
 }
+
+export interface CaptureSetupParams {
+  receiving: ReceivingCallbackFn,
+  data: DataCallbackFn,
+}
+
+export type CommsApi =
+// CommsApiBase
+  | CaptureDeviceCommsApi;
 

@@ -1,10 +1,12 @@
 import { expose, proxy } from 'comlink';
-import { PortDeviceType, PortType } from '@/consts/ports';
-import { CommonPort } from '@/tools/comms/CommonPort';
+// import { PortDeviceType, PortType } from '@/consts/ports';
+// import { CommonPort } from '@/tools/comms/CommonPort';
+import { ApiProxy } from '@/tools/comms/ApiProxy';
+// import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
 import SerialPorts from '@/tools/comms/WebSerial/SerialPorts';
-import USBPorts from '@/tools/comms/WebUSBSerial/USBPorts';
+// import USBPorts from '@/tools/comms/WebUSBSerial/USBPorts';
 import {
-  CommsApi,
+  // CommsApi,
   DevicesApi,
   InitCallbackFn,
   PortsChangeCallbackFn,
@@ -100,58 +102,61 @@ import {
 //   }
 // };
 
+const apiProxy = new ApiProxy();
+
 const devicesApi: DevicesApi = {
   async openSerial(settingsCallbackFn: SettingsCallbackFn): Promise<void> {
-    await SerialPorts.initPorts(settingsCallbackFn);
+    await SerialPorts.initPorts(apiProxy.addApi, apiProxy.removePort, settingsCallbackFn);
   },
 
   async openUSB(): Promise<void> {
-    await USBPorts.initPorts();
+    // await USBPorts.initPorts();
+    console.error('deact');
   },
 
   async init(
-    initCallback: InitCallbackFn,
-    portsChangeCallback: PortsChangeCallbackFn,
-    settingsCallbackFn: SettingsCallbackFn,
+    initCallback: InitCallbackFn, // report back enabled state of webserial/webUSB
+    settingsCallbackFn: SettingsCallbackFn, // used to query for BaudRate for serial ports
+    portsChangeCallback: PortsChangeCallbackFn, // report available APIs
   ) {
-    initCallback(SerialPorts.enabled, USBPorts.enabled);
+    apiProxy.setCallback(portsChangeCallback);
+    initCallback(SerialPorts.enabled, false);
+    await SerialPorts.initPorts(apiProxy.addApi, apiProxy.removePort, settingsCallbackFn);
+    // await USBPorts.initPorts(),
 
-    SerialPorts.addListener('activePortsChange', () => {
-      portsChangeCallback(PortType.SERIAL, SerialPorts.getWorkerPorts());
-    });
 
-    USBPorts.addListener('activePortsChange', () => {
-      portsChangeCallback(PortType.USB, USBPorts.getWorkerPorts());
-    });
-
-    await Promise.all([
-      SerialPorts.initPorts(settingsCallbackFn),
-      USBPorts.initPorts(),
-    ]);
   },
 
-  async getApi(deviceId: string): Promise<CommsApi> {
-    const allPorts: CommonPort[] = [
-      ...SerialPorts.getActivePorts(),
-      ...USBPorts.getActivePorts(),
-    ];
-
-    const device: CommonPort | undefined = allPorts.find((port) => port.getId() === deviceId);
-    if (!device) { throw new Error('device with id not found'); }
-
-    const api = device.getApi();
-
-    if (api.portDeviceType !== PortDeviceType.PACKET_CAPTURE) {
-      throw new Error('jaja');
-    }
-
-    return proxy<CommsApi>(api);
-
-    // return {
-    //   portDeviceType: api.portDeviceType,
-    //   setCallbacks: proxy(api.setCallbacks),
-    // };
+  async proxyCallFn(
+    deviceId: string,
+    functionName: string,
+    ...rest: unknown[]
+  ) {
+    apiProxy.callDevice(deviceId, functionName, ...rest);
   },
+
+  // async getApi(deviceId: string): Promise<CommsApi> {
+  //   const allPorts: CommonPort[] = [
+  //     ...SerialPorts.getActivePorts(),
+  //     ...USBPorts.getActivePorts(),
+  //   ];
+  //
+  //   const device: CommonPort | undefined = allPorts.find((port) => port.getId() === deviceId);
+  //   if (!device) { throw new Error('device with id not found'); }
+  //
+  //   const api = await device.getApi();
+  //
+  //   if (api.portDeviceType !== PortDeviceType.PACKET_CAPTURE) {
+  //     throw new Error('jaja');
+  //   }
+  //
+  //   return proxy<CommsApi>(api);
+  //
+  //   // return {
+  //   //   portDeviceType: api.portDeviceType,
+  //   //   setCallbacks: proxy(api.setCallbacks),
+  //   // };
+  // },
 };
 
 expose(devicesApi);

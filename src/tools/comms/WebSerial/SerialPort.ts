@@ -1,5 +1,6 @@
 import { PortDeviceType } from '@/consts/ports';
 import { CommonPort } from '@/tools/comms/CommonPort';
+import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
 import { randomId } from '@/tools/randomId';
 import { SettingsCallbackFn } from '@/types/ports';
 
@@ -20,7 +21,7 @@ class CommonSerialPort extends CommonPort {
   }
 
   // ToDo: still needed?
-  getDevice(): SerialPort {
+  public getDevice(): SerialPort {
     return this.device;
   }
 
@@ -42,42 +43,31 @@ class CommonSerialPort extends CommonPort {
     return bytes;
   }
 
-  async connect() {
-    try {
-      const settings = await this.settingsCallbackFn();
-      this.baudRate = settings?.baudRate || 0;
-      if (!this.baudRate) { return; }
+  async connect(): Promise<CaptureCommsDevice | null> {
+    const settings = await this.settingsCallbackFn();
+    this.baudRate = settings?.baudRate || 0;
+    if (!this.baudRate) { return null; }
 
-      await this.device.open({ baudRate: this.baudRate });
+    await this.device.open({ baudRate: this.baudRate });
 
-      this.device.addEventListener('disconnect', () => {
-        this.emit('close');
-      });
+    // this.device.addEventListener('disconnect', () => {
+    //   console.log('can I be here??');
+    //   this.emit('close');
+    // });
 
-      this.reader = this.device.readable.getReader();
+    this.reader = this.device.readable.getReader();
 
-      this.startBuffering(50);
-      this.detectType();
-    } catch (error) {
-      console.error(error);
-      this.emit('errormessage', 'could not mount device');
-    }
+    this.startBuffering(50);
+    return this.detectType();
   }
 
   protected async sendRaw(data: BufferSource) {
     if (!this.device?.writable) {
-      this.emit('errormessage', 'device is not writable');
+      throw new Error('device is not writable');
     }
 
     const writer = this.device.writable.getWriter();
-
-    try {
-      await writer.write(data);
-    } catch {
-      console.error('Failed to write to serial port');
-    } finally {
-      writer.releaseLock();
-    }
+    await writer.write(data);
   }
 }
 
