@@ -44,6 +44,7 @@ const getNextConfig = async (): Promise<NextConfig> => {
       NEXT_PUBLIC_BRANCH: branch,
       NEXT_PUBLIC_VERSION: version,
       NEXT_PUBLIC_BASE_PATH: basePath || '',
+      NEXT_PUBLIC_HOMEPAGE: homepage,
       NEXT_PUBLIC_MANIFEST_TAGS: await generateWebManifest({
         description,
         name,

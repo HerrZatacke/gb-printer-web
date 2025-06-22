@@ -26,8 +26,8 @@ import type { Theme } from '@mui/system';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { usePortsContext } from '@/contexts/ports';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
 import useNavigation from '@/hooks/useNavigation';
 import { useUrl } from '@/hooks/useUrl';
 import useInteractionsStore from '@/stores/interactionsStore';
@@ -61,8 +61,14 @@ function Navigation() {
   const [drawerContainer, setDrawerContainer] = useState<HTMLElement | undefined>(undefined);
   const { fullPath } = useUrl();
   const { themeName, setThemeName } = useSettingsStore();
-  const { lastGalleryLink, getUrl } = useGalleryParams();
   const { showTrashCount, trashCount } = useInteractionsStore();
+  const { lastGalleryLink, getUrl } = useGalleryTreeContext();
+  const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
+
+  useEffect(() => {
+    // Set "galleryRoute" on client side only to prevent hydration issues
+    setGalleryRoute(lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0, group: '' }));
+  }, [fullPath, getUrl, lastGalleryLink]);
 
   useEffect(() => {
     setDrawerContainer(document.body);
@@ -81,10 +87,7 @@ function Navigation() {
     setShowSerials,
   } = useNavigation();
 
-  const {
-    webSerialIsReceiving,
-    webUSBIsReceiving,
-  } = usePortsContext();
+  const { isReceiving } = usePortsContext();
 
   const trashCountSum = useMemo(() => (trashCount.frames + trashCount.images), [trashCount]);
 
@@ -101,7 +104,7 @@ function Navigation() {
       },
       {
         label: 'Gallery',
-        route: lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0 }),
+        route: galleryRoute,
         prefetch: true,
       },
       {
@@ -125,7 +128,7 @@ function Navigation() {
         prefetch: false,
       },
     ].reduce(reduceItems<NavItem>, [])
-  ), [fullPath, getUrl, lastGalleryLink]);
+  ), [galleryRoute]);
 
   const navActionItems = useMemo<NavActionItem[]>(() => (
     [
@@ -162,7 +165,7 @@ function Navigation() {
         badgeContent: ((serialWarning && '!') || (portCount && portCount.toString(10)) || null),
         badgeColor: serialWarning ? NavBadgeColor.ERROR : NavBadgeColor.INFO,
         disabled: disableSerials,
-        isBusy: webSerialIsReceiving || webUSBIsReceiving,
+        isBusy: isReceiving,
         onClick: setShowSerials,
       } : null,
     ].reduce(reduceItems<NavActionItem>, [])
@@ -180,8 +183,7 @@ function Navigation() {
     trashCountSum,
     useSerials,
     useSync,
-    webSerialIsReceiving,
-    webUSBIsReceiving,
+    isReceiving,
   ]);
 
   return (

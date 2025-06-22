@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import { useNavigationTools } from '@/contexts/navigationTools';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
+import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { PathMap } from '@/types/galleryTreeContext';
 import type { TreeImageGroup } from '@/types/ImageGroup';
 
@@ -15,9 +14,8 @@ export interface UsePathSegments {
 }
 
 export const usePathSegments = (): UsePathSegments => {
-  const { path: currentPath, getUrl } = useGalleryParams();
-  const { root, paths } = useGalleryTreeContext();
-  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
+  const { path: currentPath, getUrl, root, paths } = useGalleryTreeContext();
+  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationToolsContext();
 
   const segments = useMemo<Segment[]>(() => {
     const breadCrumbsRaw = ['', ...currentPath.split('/').filter(Boolean)];

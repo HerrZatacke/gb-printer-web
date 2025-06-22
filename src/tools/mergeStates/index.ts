@@ -8,16 +8,13 @@ import type { Palette } from '@/types/Palette';
 const mergeBy = <T>(by: keyof T) => {
   const unique = uniqueBy<T>(by);
   return (current: T[], update: T[]) => {
-    const mergedUpdate = update.map((item) => {
-      const existingItem = current.find((storeItem) => storeItem[by] === item[by]);
-      if (!existingItem) {
-        return item;
-      }
+    const currentMap = new Map<T[typeof by], T>(
+      current.map(item => [item[by], item]),
+    );
 
-      return {
-        ...existingItem,
-        ...item,
-      };
+    const mergedUpdate = update.map((item) => {
+      const existing = currentMap.get(item[by]);
+      return existing ? { ...existing, ...item } : item;
     });
 
     return unique([...mergedUpdate, ...current]);

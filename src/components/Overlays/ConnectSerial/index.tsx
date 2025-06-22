@@ -1,9 +1,12 @@
+import SettingsInputHdmiIcon from '@mui/icons-material/SettingsInputHdmi';
+import UsbIcon from '@mui/icons-material/Usb';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { portDeviceLabels } from '@/consts/ports';
+import { portDeviceLabels, PortType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
+import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
   inline?: boolean,
@@ -11,17 +14,16 @@ interface Props {
 
 function ConnectSerial({ inline }: Props) {
   const {
-    webUSBActivePorts,
-    webUSBIsReceiving,
+    connectedDevices,
     webUSBEnabled,
     openWebUSB,
-    webSerialActivePorts,
-    webSerialIsReceiving,
     webSerialEnabled,
     openWebSerial,
     unknownDeviceResponse,
     hasInactiveDevices,
   } = usePortsContext();
+
+  const { enableDebug } = useSettingsStore();
 
   return (
     <Stack
@@ -41,35 +43,12 @@ function ConnectSerial({ inline }: Props) {
             title="Open WebUSB device"
             onClick={openWebUSB}
             disabled={!webUSBEnabled}
-            loading={webUSBIsReceiving}
             loadingPosition="start"
             variant="contained"
             color="secondary"
           >
             Open WebUSB device
-            {webUSBIsReceiving ? ' (receiving)' : null}
           </Button>
-          <Typography variant="body2">
-            {`Connected devices (${webUSBActivePorts.length}):`}
-          </Typography>
-          <ul>
-            {webUSBActivePorts.map((usbPort, index) => (
-              <Stack
-                component="li"
-                direction="row"
-                gap={2}
-                key={index}
-                alignItems="baseline"
-              >
-                <Typography variant="body1" component="span">
-                  {`Type: ${portDeviceLabels[usbPort.portDeviceType]}`}
-                </Typography>
-                <Typography variant="caption" component="span">
-                  {`"${usbPort.description}"`}
-                </Typography>
-              </Stack>
-            ))}
-          </ul>
         </Stack>
 
         <Stack
@@ -80,47 +59,57 @@ function ConnectSerial({ inline }: Props) {
             title="Open Web Serial device"
             onClick={openWebSerial}
             disabled={!webSerialEnabled}
-            loading={webSerialIsReceiving}
             loadingPosition="start"
             variant="contained"
             color="secondary"
           >
             Open Web Serial device
-            {webSerialIsReceiving ? ' (receiving)' : null}
           </Button>
-          <Typography variant="body2">
-            {`${webSerialActivePorts.length} devices connected`}
-          </Typography>
-          <ul>
-            {webSerialActivePorts.map((serialPort, index) => (
-              <Stack
-                component="li"
-                direction="row"
-                gap={2}
-                key={index}
-                alignItems="baseline"
-              >
-                <Typography variant="body1" component="span">
-                  {`Type: ${portDeviceLabels[serialPort.portDeviceType]}`}
-                </Typography>
-                <Typography variant="caption" component="span">
-                  {serialPort.description}
-                </Typography>
-              </Stack>
-            ))}
-          </ul>
         </Stack>
       </Stack>
+
+      <Typography variant="body2">
+        {`Connected devices (${connectedDevices.length}):`}
+      </Typography>
+      <ul>
+        {connectedDevices.map(({ id, portType, portDeviceType, description }) => {
+          const Icon = portType === PortType.SERIAL ? SettingsInputHdmiIcon : UsbIcon;
+          return (
+            <Stack
+              component="li"
+              direction="row"
+              gap={2}
+              key={id}
+              alignItems="baseline"
+            >
+              <Typography variant="body1" component="span">
+                <Icon sx={{
+                  fontSize: 'inherit',
+                  verticalAlign: 'middle',
+                  mr: 1,
+                }}/>
+                {`Type: ${portDeviceLabels[portDeviceType]}`}
+              </Typography>
+              <Typography variant="caption" component="span">
+                {enableDebug ? `${description} - ${id}` : description}
+              </Typography>
+            </Stack>
+          );
+        })}
+      </ul>
+
       <Button
         title="Show message from unrecognized device"
         onClick={() => {
           if (!unknownDeviceResponse) { return; }
 
-          const containsUnreadableChars = unknownDeviceResponse.bytes.some(byte => (
+          const containsUnreadableChars = [...unknownDeviceResponse].some(byte => (
             byte < 32 && byte !== 9 && byte !== 10 && byte !== 13  // tab, cr, lf
           ));
 
-          const message = containsUnreadableChars ? [...unknownDeviceResponse.bytes].join(',') : unknownDeviceResponse.string;
+          const message = containsUnreadableChars ?
+            [...unknownDeviceResponse].join(',') :
+            (new TextDecoder()).decode(unknownDeviceResponse);
 
           alert(message);
         }}

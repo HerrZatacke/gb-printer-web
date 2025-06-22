@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
 
 export const useHandleHashParams = () => {
-  const { getUrl } = useGalleryParams();
+  const { getUrl } = useGalleryTreeContext();
 
   const hash = (typeof window === 'undefined' || window.location.hash.length < 2) ? '' : window.location.hash;
 

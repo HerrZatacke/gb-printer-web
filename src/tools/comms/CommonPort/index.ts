@@ -1,54 +1,57 @@
 import EventEmitter from 'events';
-import { PortDeviceType } from '@/consts/ports';
+import { PortDeviceType, PortType } from '@/consts/ports';
+import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
+import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
+import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
+import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';
+import { SuperPrinterCommsDevice } from '@/tools/comms/DeviceAPIs/SuperPrinterCommsDevice';
 import { delay } from '@/tools/delay';
 import { findSubarray } from '@/tools/findSubarray';
-import { appendUint8Arrays } from '@/tools/mergeReadResults';
-import { ReadParams, ReadResult } from '@/types/ports';
+import { ReadParams } from '@/types/ports';
 
 const DETECT_PACKET_CAPTURE = 'GAMEBOY PRINTER Packet Capture';
 const DETECT_PRINTER_EMULATOR = 'GAMEBOY PRINTER Emulator';
 const DETECT_SUPER_PRINTER_INTERFACE = 'Super Printer Interface by Raphaël BOICHOT';
 
 export abstract class CommonPort extends EventEmitter {
-  protected portDeviceType: PortDeviceType;
-  private readTimeoutDuration: number;
+  public readonly portType: PortType;
+  public portDeviceType: PortDeviceType;
   private textDecoder: TextDecoder;
   private textEncoder: TextEncoder;
   private bufferedData: Uint8Array | null;
   private readQueue: Promise<void>;
 
-  protected constructor() {
+  protected constructor(portType: PortType) {
     super();
     this.portDeviceType = PortDeviceType.UNKNOWN;
-    this.readTimeoutDuration = 1000;
+    this.portType = portType;
     this.textDecoder = new TextDecoder();
     this.textEncoder = new TextEncoder();
     this.bufferedData = null;
     this.readQueue = Promise.resolve();
   }
 
-  getPortDeviceType(): PortDeviceType {
-    return this.portDeviceType;
-  }
+  abstract canRead(): boolean;
+  protected abstract readChunk(): Promise<Uint8Array>;
+  protected abstract sendRaw(data: BufferSource): Promise<void>;
+  abstract getDescription(): string;
 
-  protected abstract canRead(): boolean
-  abstract getId(): string
-  protected abstract readChunk(): Promise<Uint8Array>
-  protected abstract sendRaw(data: BufferSource): Promise<void>
-
-  protected startBuffering() {
+  protected startBuffering(bufferIdleTime: number) {
     (async () => {
-      /* eslint-disable no-await-in-loop */
       while (this.canRead()) {
-        const result = await this.readChunk();
-        if (result.byteLength) {
-          this.bufferedData = appendUint8Arrays([this.bufferedData, result]);
-        } else {
-          // console.log(this.textDecoder.decode(this.bufferedData as Uint8Array));
-          await delay(150);
+        try {
+          const result = await this.readChunk();
+          if (result.byteLength) {
+            this.bufferedData = appendUint8Arrays([this.bufferedData, result]);
+          } else {
+            // console.log(this.textDecoder.decode(this.bufferedData as Uint8Array));
+            await delay(bufferIdleTime);
+          }
+        } catch {
+          // exit buffer loop if reading has failed
+          break;
         }
       }
-      /* eslint-enable no-await-in-loop */
     })();
   }
 
@@ -63,24 +66,17 @@ export abstract class CommonPort extends EventEmitter {
 
     if (typeof length === 'number') {
       if (length === 0) { run = false; }
-      try {
-        /* eslint-disable no-await-in-loop */
-        while (this.canRead() && run) {
-          if (this.bufferedData && this.bufferedData.byteLength >= length) {
-            run = false;
-          } else {
-            // give the app some idle time
-            await delay(idleDelay);
-          }
+      while (this.canRead() && run) {
+        if (this.bufferedData && this.bufferedData.byteLength >= length) {
+          run = false;
+        } else {
+          // give the app some idle time
+          await delay(idleDelay);
         }
-        /* eslint-enable no-await-in-loop */
-      } catch (error) {
-        this.emit('error', (error as Error).message);
       }
     } else if (texts instanceof Array) {
       const needles: Uint8Array[] = texts.map((text) => this.textEncoder.encode(text));
       if (needles.length === 0) { run = false; }
-      /* eslint-disable no-await-in-loop */
       while (this.canRead() && run) {
         if (this.bufferedData && this.bufferedData.byteLength) {
           const needleIndex = needles
@@ -102,13 +98,10 @@ export abstract class CommonPort extends EventEmitter {
           await delay(idleDelay);
         }
       }
-      /* eslint-enable no-await-in-loop */
     } else {
-      /* eslint-disable no-await-in-loop */
       while (this.canRead() && run) {
         await delay(idleDelay);
       }
-      /* eslint-enable no-await-in-loop */
     }
 
     if (!this.bufferedData) {
@@ -121,14 +114,15 @@ export abstract class CommonPort extends EventEmitter {
   }
 
   public read(options: ReadParams): Promise<Uint8Array> {
-    return new Promise<Uint8Array>((resolve) => {
+    return new Promise<Uint8Array>((resolve, reject) => {
       this.readQueue = this.readQueue
         .then(() => this.readFromBuffer(options))
-        .then(resolve);
+        .then(resolve)
+        .catch(reject);
     });
   }
 
-  private detectActiveType(bytes: Uint8Array) {
+  private detectActiveTypes(bytes: Uint8Array) {
     const detectString = this.textDecoder.decode(bytes);
 
     if (
@@ -137,13 +131,10 @@ export abstract class CommonPort extends EventEmitter {
     ) {
       // https://github.com/mofosyne/arduino-gameboy-printer-emulator/blob/master/GameBoyPrinterEmulator/GameBoyPrinterEmulator.ino
       this.portDeviceType = PortDeviceType.PACKET_CAPTURE;
-      this.readTimeoutDuration = 100;
-      this.emit('typechange');
     } else if (detectString.indexOf(DETECT_SUPER_PRINTER_INTERFACE) !== -1) {
       // https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/blob/main/Super_Printer_interface/Super_Printer_interface.ino
       this.portDeviceType = PortDeviceType.SUPER_PRINTER_INTERFACE;
-      this.readTimeoutDuration = 10;
-      this.emit('typechange');
+      // ToDo:       this.readTimeoutDuration = 10;
     }
   };
 
@@ -162,26 +153,7 @@ export abstract class CommonPort extends EventEmitter {
     return Promise.all(readResults); // Resolve with read result
   }
 
-
-  private emitData(bytes: Uint8Array) {
-    // Dont emit if there's no content
-    if (bytes.byteLength === 0) {
-      return;
-    }
-
-    const emitReadResult: ReadResult = {
-      string: this.textDecoder.decode(bytes),
-      bytes: bytes,
-      deviceId: this.getId(),
-      portDeviceType: this.portDeviceType,
-    };
-
-    this.emit('data', emitReadResult);
-  };
-
-  async readLoop() {
-    this.startBuffering();
-
+  protected async detectType(): Promise<BaseCommsDevice | null> {
     // the printer emulator takes about 3500ms to write it's banner, so we wait a bit longer to be safe
     const bannerBytes = await this.read({
       timeout: 5000,
@@ -192,56 +164,42 @@ export abstract class CommonPort extends EventEmitter {
       ],
     });
 
-    this.detectActiveType(bannerBytes);
+    this.detectActiveTypes(bannerBytes);
+
+    let unknownBanner: Uint8Array = new Uint8Array();
 
     if (this.portDeviceType !== PortDeviceType.UNKNOWN) {
       // A known device type was recognized -> clear buffer to remove "rest" of banner
       this.bufferedData = null;
     } else if (bannerBytes.byteLength) {
       // Banner was received, but device type was not not recognized
-      this.emitData(bannerBytes);
+      unknownBanner = bannerBytes;
       this.portDeviceType = PortDeviceType.INACTIVE;
-
-      this.emit('typechange');
-      return;
     } else {
       // Unknown device type and no banner. Try to detect a "passive" device
-
-      const [readGBX] = await this.send(new Uint8Array([0xa1]), [{ timeout: 500 }], true); // Query GBXCart Version
-
-      console.log({ readGBX });
-
-      if (findSubarray(readGBX, new Uint8Array([8, 76, 0, 1, 4, 101, 226, 29, 234])) === 0) {
-        this.portDeviceType = PortDeviceType.GBXCART;
-
-        this.emit('typechange');
-        return;
-      } else {
-        const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 500 }], true); // cr/lf
-        if (readCrLf.byteLength) {
-          this.emitData(readCrLf);
-          this.portDeviceType = PortDeviceType.INACTIVE;
-
-          this.emit('typechange');
-          return;
-        }
+      const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 500 }], true); // cr/lf
+      if (readCrLf.byteLength) {
+        unknownBanner = readCrLf;
+        this.portDeviceType = PortDeviceType.INACTIVE;
       }
     }
 
-    // enter the read-loop
-    try {
-      /* eslint-disable no-await-in-loop */
-      while (this.canRead()) {
-        const result: Uint8Array = await this.read({ timeout: this.readTimeoutDuration });
-        if (result.byteLength) {
-          // console.log('received through readloop', this.textDecoder.decode(result));
-          this.emit('receiving');
-          this.emitData(result);
-        }
+    switch (this.portDeviceType) {
+      case PortDeviceType.PACKET_CAPTURE: {
+        await this.read({ timeout: 500 }); // flush the rest of the banner
+        return new CaptureCommsDevice(this);
       }
-      /* eslint-enable no-await-in-loop */
-    } catch (error) {
-      this.emit('error', (error as Error).message);
+
+      case PortDeviceType.SUPER_PRINTER_INTERFACE: {
+        return new SuperPrinterCommsDevice(this);
+      }
+
+      case PortDeviceType.INACTIVE:
+      case PortDeviceType.UNKNOWN:
+      default: {
+        const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
+        return new InactiveCommsDevice(this, appendUint8Arrays([unknownBanner, moreBytes]));
+      }
     }
   }
 }

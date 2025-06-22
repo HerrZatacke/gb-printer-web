@@ -58,7 +58,10 @@ function Error({ dismiss, errorMessage }: Props) {
       )}
     >
       <AlertTitle
-        sx={{ color: 'inherit' }}
+        sx={{
+          color: 'inherit',
+          whiteSpace: 'pre',
+        }}
       >
         {errorMessage.error.message}
       </AlertTitle>

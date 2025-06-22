@@ -2,9 +2,9 @@
 
 import React, { createContext, useContext } from 'react';
 import type { PropsWithChildren } from 'react';
-import { useNavigationTools } from './index';
+import { type UseNavigationTools, useNavigationTools } from './index';
 
-const NavigationToolsContext = createContext<ReturnType<typeof useNavigationTools> | null>(null);
+const NavigationToolsContext = createContext<UseNavigationTools | null>(null);
 
 export function NavigationToolsProvider({ children }: PropsWithChildren) {
   const value = useNavigationTools();

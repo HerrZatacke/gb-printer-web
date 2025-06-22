@@ -9,9 +9,9 @@ import GalleryGroupContextMenu from '@/components/GalleryGroupContextMenu';
 import ImageRender from '@/components/ImageRender';
 import TagsList from '@/components/TagsList';
 import { GalleryViews } from '@/consts/GalleryViews';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useGalleryGroup } from '@/hooks/useGalleryGroup';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
 import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
 }
 
 function GalleryGroup({ hash }: Props) {
-  const { getUrl } = useGalleryParams();
+  const { getUrl } = useGalleryTreeContext();
   const { group, path } = useGalleryGroup(hash);
   const { galleryImageData } = useGalleryImage(hash);
   const { galleryView } = useSettingsStore();

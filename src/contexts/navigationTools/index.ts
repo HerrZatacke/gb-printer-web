@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import { useGalleryParams } from '@/hooks/useGalleryParams';
 import useFiltersStore from '@/stores/filtersStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { ROOT_ID } from '@/tools/createTreeRoot';
@@ -9,7 +8,7 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { type Image } from '@/types/Image';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
-interface UseNavigationTools {
+export interface UseNavigationTools {
   getGroupPath: (groupId: string, pageIndex: number) => string,
   currentGroup: TreeImageGroup,
   getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number,
@@ -27,11 +26,10 @@ interface ShouldNavigate {
 
 export const useNavigationTools = (): UseNavigationTools => {
   const router = useRouter();
-  const { paths, root, isWorking } = useGalleryTreeContext();
+  const { paths, root, isWorking, path: currentPath, getUrl } = useGalleryTreeContext();
   const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate | false>(false);
   const { sortBy, filtersActiveTags, recentImports } = useFiltersStore();
   const { pageSize } = useSettingsStore();
-  const { path: currentPath, getUrl } = useGalleryParams();
 
   const imageFilter = useCallback((images: Image[]): Image[] => (
     getFilteredImages(images, {
@@ -77,6 +75,8 @@ export const useNavigationTools = (): UseNavigationTools => {
   }, [getImagePageIndexInGroup, getUrl, paths, root]);
 
   const navigateToGroup = useCallback((groupId: string, pageIndex: number) => {
+    if (isWorking) { return; }
+
     // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
     window.setTimeout(() => {
       setShouldNavigate({
@@ -86,7 +86,7 @@ export const useNavigationTools = (): UseNavigationTools => {
         },
       });
     }, 1);
-  }, []);
+  }, [isWorking]);
 
   const navigateToImage = useCallback((hash: string) => {
     // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
@@ -96,9 +96,7 @@ export const useNavigationTools = (): UseNavigationTools => {
   }, []);
 
   useEffect(() => {
-    if (isWorking || !shouldNavigate) {
-      return;
-    }
+    if (isWorking || !shouldNavigate) { return; }
 
     const handle = window.setTimeout(() => {
       if (shouldNavigate.imageHash) {

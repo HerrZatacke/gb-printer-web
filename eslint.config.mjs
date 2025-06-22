@@ -27,7 +27,6 @@ const eslintConfig = [
       '@typescript-eslint/no-shadow': ['error'],
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['warn'],
-      'no-await-in-loop': ['error'],
       'no-bitwise': ['error'],
 
       'import/order': [

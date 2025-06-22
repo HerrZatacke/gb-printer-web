@@ -4,7 +4,7 @@ import  MuiMarkdown from 'mui-markdown';
 import MarkdownStack from '@/components/MarkdownStack';
 import readme from '../../../README.md';
 
-export default async function Home() {
+export default function Home() {
   return (
     <Card>
       <CardContent>

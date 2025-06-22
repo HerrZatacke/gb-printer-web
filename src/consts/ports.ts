@@ -5,36 +5,17 @@ export enum PortType {
 
 export enum PortDeviceType {
   UNKNOWN = 'unknown', // While detecting headers
-  PASSIVE = 'passive', // Device did not send own header by itself. Need to query/guess
   INACTIVE = 'inactive', // Could not be identified, set to be inactive
-  GBXCART = 'gbxcart',
   PACKET_CAPTURE = 'packet_capture',
   SUPER_PRINTER_INTERFACE = 'super_printer_interface',
 }
 
 export const portDeviceLabels: Record<PortDeviceType, string> = {
   [PortDeviceType.UNKNOWN]: 'Unknown Device',
-  [PortDeviceType.PASSIVE]: 'Passive Device',
   [PortDeviceType.INACTIVE]: 'Inactive Device',
-  [PortDeviceType.GBXCART]: 'GBXCart',
-  [PortDeviceType.PACKET_CAPTURE]: 'Packet Capture device',
+  [PortDeviceType.PACKET_CAPTURE]: 'Arduino Gameboy Printer Emulator',
   [PortDeviceType.SUPER_PRINTER_INTERFACE]: 'Super Printer Interface',
 };
-
-export enum WorkerCommand {
-  OPEN = 'OPEN',
-  SEND_DATA = 'SEND_DATA',
-  ANSWER = 'ANSWER',
-}
-
-export enum PortsWorkerMessageType {
-  ENABLED_STATE = 'ENABLED_STATE',
-  ERROR = 'ERROR',
-  PORTS_CHANGE = 'PORTS_CHANGE',
-  DATA = 'DATA',
-  RECEIVING = 'RECEIVING',
-  QUESTION = 'QUESTION',
-}
 
 export const usbDeviceFilters: USBDeviceFilter[] = [
   { vendorId: 0x2341, productId: 0x8036 }, // Arduino Leonardo
