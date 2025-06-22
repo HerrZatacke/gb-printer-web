@@ -55,6 +55,7 @@ class CommonSerialPort extends CommonPort {
 
     const writer = this.device.writable.getWriter();
     await writer.write(data);
+    writer.releaseLock();
   }
 }
 
