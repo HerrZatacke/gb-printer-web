@@ -1,9 +1,12 @@
 import EventEmitter from 'events';
-import { PortDeviceType } from '@/consts/ports';
+import { PortDeviceType, PortType } from '@/consts/ports';
+import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
+import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
+import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';
+import { SuperPrinterCommsDevice } from '@/tools/comms/DeviceAPIs/SuperPrinterCommsDevice';
 import { delay } from '@/tools/delay';
 import { findSubarray } from '@/tools/findSubarray';
-import { appendUint8Arrays } from '@/tools/mergeReadResults';
 import { ReadParams } from '@/types/ports';
 
 const DETECT_PACKET_CAPTURE = 'GAMEBOY PRINTER Packet Capture';
@@ -11,30 +14,27 @@ const DETECT_PRINTER_EMULATOR = 'GAMEBOY PRINTER Emulator';
 const DETECT_SUPER_PRINTER_INTERFACE = 'Super Printer Interface by Raphaël BOICHOT';
 
 export abstract class CommonPort extends EventEmitter {
-  protected portDeviceType: PortDeviceType;
+  public readonly portType: PortType;
+  public portDeviceType: PortDeviceType;
   private textDecoder: TextDecoder;
   private textEncoder: TextEncoder;
   private bufferedData: Uint8Array | null;
   private readQueue: Promise<void>;
 
-  protected constructor() {
+  protected constructor(portType: PortType) {
     super();
     this.portDeviceType = PortDeviceType.UNKNOWN;
+    this.portType = portType;
     this.textDecoder = new TextDecoder();
     this.textEncoder = new TextEncoder();
     this.bufferedData = null;
     this.readQueue = Promise.resolve();
   }
 
-  getPortDeviceType(): PortDeviceType {
-    return this.portDeviceType;
-  }
-
-  abstract canRead(): boolean
-  abstract getId(): string
-  abstract getDevice(): SerialPort
-  protected abstract readChunk(): Promise<Uint8Array>
-  protected abstract sendRaw(data: BufferSource): Promise<void>
+  abstract canRead(): boolean;
+  protected abstract readChunk(): Promise<Uint8Array>;
+  protected abstract sendRaw(data: BufferSource): Promise<void>;
+  abstract getDescription(): string;
 
   protected startBuffering(bufferIdleTime: number) {
     (async () => {
@@ -153,7 +153,7 @@ export abstract class CommonPort extends EventEmitter {
     return Promise.all(readResults); // Resolve with read result
   }
 
-  protected async detectType(): Promise<CaptureCommsDevice | null> {
+  protected async detectType(): Promise<BaseCommsDevice | null> {
     // the printer emulator takes about 3500ms to write it's banner, so we wait a bit longer to be safe
     const bannerBytes = await this.read({
       timeout: 5000,
@@ -166,33 +166,43 @@ export abstract class CommonPort extends EventEmitter {
 
     this.detectActiveTypes(bannerBytes);
 
+    let unknownBanner: Uint8Array = new Uint8Array();
+
     if (this.portDeviceType !== PortDeviceType.UNKNOWN) {
       // A known device type was recognized -> clear buffer to remove "rest" of banner
       this.bufferedData = null;
     } else if (bannerBytes.byteLength) {
       // Banner was received, but device type was not not recognized
-      // ToDo: implement InactiveDeviceApi
-      // this.emitData(bannerBytes);
+      unknownBanner = bannerBytes;
       this.portDeviceType = PortDeviceType.INACTIVE;
     } else {
       // Unknown device type and no banner. Try to detect a "passive" device
       const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 500 }], true); // cr/lf
       if (readCrLf.byteLength) {
-        // ToDo: implement InactiveDeviceApi
-        // this.emitData(readCrLf);
+        unknownBanner = readCrLf;
+        this.portDeviceType = PortDeviceType.INACTIVE;
+      }
+    }
+
+    switch (this.portDeviceType) {
+      case PortDeviceType.PACKET_CAPTURE: {
+        await this.read({ timeout: 500 }); // flush the rest of the banner
+        return new CaptureCommsDevice(this);
       }
 
-      this.portDeviceType = PortDeviceType.INACTIVE;
-    }
+      case PortDeviceType.SUPER_PRINTER_INTERFACE: {
+        return new SuperPrinterCommsDevice(this);
+      }
 
-    if (this.portDeviceType === PortDeviceType.PACKET_CAPTURE) {
-      await this.read({ timeout: 500 }); // flush the rest of the banner
-      console.log(`device is a ${PortDeviceType.PACKET_CAPTURE} device -> API :)`);
-      return new CaptureCommsDevice(this);
-    }
+      case PortDeviceType.INACTIVE: {
+        const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
+        return new InactiveCommsDevice(this, appendUint8Arrays([unknownBanner, moreBytes]));
+      }
 
-    console.log(`device is not a ${PortDeviceType.PACKET_CAPTURE} device -> null`);
-    // nothing? do something mart here instead?
-    return null;
+      case PortDeviceType.UNKNOWN:
+      default: {
+        throw new Error('device is not a known device');
+      }
+    }
   }
 }

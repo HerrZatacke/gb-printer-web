@@ -1,11 +1,14 @@
 import EventEmitter from 'events';
-import { ReadResult, WorkerPort } from '@/types/ports';
+import { proxy, Remote } from 'comlink';
+import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
+import { PortsWorkerClient } from '@/types/ports';
 import CommonUSBPort from './USBPort';
 
 
 class USBPorts extends EventEmitter {
   public enabled: boolean;
-  private activePorts: CommonUSBPort[];
+  private connectedDevices: Map<string, USBDevice> = new Map();
+  private portsWorkerClient: PortsWorkerClient | null = null;
 
   constructor() {
     super();
@@ -13,65 +16,30 @@ class USBPorts extends EventEmitter {
       typeof window !== 'undefined' &&
       typeof navigator !== 'undefined' &&
       !!navigator.usb &&
-      !!navigator.usb.getDevices;
-    this.activePorts = [];
+      !!navigator.usb.getDevices;;
   }
 
-  getActivePorts(): CommonUSBPort[] {
-    return this.activePorts;
+  public registerClient(client: PortsWorkerClient) {
+    this.portsWorkerClient = client;
   }
 
-  getWorkerPorts(): WorkerPort[] {
-    const ports = this.getActivePorts();
-    return ports.map((commonUSBPort) => ({
-      id: commonUSBPort.getId(),
-      description: commonUSBPort.getProductName(),
-      portDeviceType: commonUSBPort.getPortDeviceType(),
-    }));
-  }
+  private async initDevice(usbDevice: USBDevice) {
+    if (usbDevice.opened) { return; }
 
-  private async initDevice(device: USBDevice) {
-    if (device.opened) { return; }
+    if (!this.portsWorkerClient) { return; } // Must be able to query for baudrate
 
-    const port = new CommonUSBPort(device);
+    const port = new CommonUSBPort(usbDevice);
 
-    port.addListener('error', (error: string) => {
-      console.warn(error);
-      this.activePorts = this.activePorts
-        .filter((activePort) => (
-          activePort !== port
-        ));
+    const newApi = await port.connect();
 
-      this.emit('activePortsChange');
-    });
-
-    port.addListener('errormessage', (errorMessage: string) => {
-      this.emit('errormessage', errorMessage);
-    });
-
-    port.addListener('data', (readResult: ReadResult) => {
-      this.emit('data', readResult);
-    });
-
-    port.addListener('receiving', () => {
-      this.emit('receiving', port.getPortDeviceType());
-    });
-
-    port.addListener('typechange', () => {
-      this.emit('activePortsChange');
-    });
-
-    // First add port to activeports.
-    this.activePorts.push(port);
-    this.emit('activePortsChange');
-
-    // if connect fails, it will be removed through the thrown error
-    await port.connect();
+    if (newApi) {
+      this.connectedDevices.set(newApi.id, usbDevice);
+      await this.portsWorkerClient.addDeviceApi(proxy(newApi as unknown as Remote<BaseCommsDevice>));}
   }
 
   // Setup initially known devices and add connection listener
   public async initPorts() {
-    if (!this.enabled) { return; }
+    if (!this.enabled || !this.portsWorkerClient) { return; }
 
     const devices = await navigator.usb.getDevices();
     devices.forEach((device) => this.initDevice(device));
@@ -82,14 +50,16 @@ class USBPorts extends EventEmitter {
     });
 
     navigator.usb.addEventListener('disconnect', (event) => {
-      this.activePorts = this.activePorts
-        .filter((port: CommonUSBPort) => {
-          if (port.getDevice() === event.device) {
-            return false;
-          }
-        });
+      if (!this.portsWorkerClient) { return; }
 
-      this.emit('activePortsChange');
+      const [disconnectId] = this.connectedDevices.entries().find(([, usbDevice]) => (
+        usbDevice === event.device
+      )) || [''];
+
+      if (disconnectId) {
+        this.connectedDevices.delete(disconnectId);
+        this.portsWorkerClient.removeDeviceApi(disconnectId);
+      }
     });
   }
 }

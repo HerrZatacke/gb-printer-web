@@ -1,12 +1,13 @@
 import EventEmitter from 'events';
-import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
-import { SettingsCallbackFn } from '@/types/ports';
+import { proxy, Remote } from 'comlink';
+import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
+import { PortsWorkerClient } from '@/types/ports';
 import CommonSerialPort from './SerialPort';
 
 class WebSerialEE extends EventEmitter {
   public enabled: boolean;
-  // private activePorts: CommonSerialPort[];
-  private settingsCallbackFn: SettingsCallbackFn | null = null;
+  private connectedPorts: Map<string, SerialPort> = new Map();
+  private portsWorkerClient: PortsWorkerClient | null = null;
 
   constructor() {
     super();
@@ -15,79 +16,55 @@ class WebSerialEE extends EventEmitter {
       typeof navigator !== 'undefined' &&
       !!navigator.serial &&
       !!TextDecoderStream;
-    // this.activePorts = [];
   }
 
-  // getActivePorts(): CommonSerialPort[] {
-  //   return this.activePorts;
-  // }
+  public registerClient(client: PortsWorkerClient) {
+    this.portsWorkerClient = client;
+  }
 
-  // getWorkerPorts(): WorkerPort[] {
-  //   const ports = this.getActivePorts();
-  //   return ports.map((commonSerialPort): WorkerPort => ({
-  //     id: commonSerialPort.getId(),
-  //     description: `${commonSerialPort.getBaudRate()} baud`,
-  //     portDeviceType: commonSerialPort.getPortDeviceType(),
-  //   }));
-  // }
+  private async initDevice(serialPort: SerialPort): Promise<void> {
+    if (serialPort.readable) { return; } // opened devices have a ReadableStream as serialPort.readable
 
-  private async initDevice(device: SerialPort): Promise<CaptureCommsDevice | null> {
-    if (device.readable) { return null; } // opened devices have a ReadableStream as device.readable
+    if (!this.portsWorkerClient) { return; } // Must be able to query for baudrate
 
-    if (!this.settingsCallbackFn) { return null; } // Must be able to query for baudrate
-
-    const port = new CommonSerialPort(device, this.settingsCallbackFn);
+    const port = new CommonSerialPort(serialPort, this.portsWorkerClient.settingsCallback);
 
     const newApi = await port.connect();
 
-    if (!newApi) {
-      return null;
+    if (newApi) {
+      this.connectedPorts.set(newApi.id, serialPort);
+      await this.portsWorkerClient.addDeviceApi(proxy(newApi as unknown as Remote<BaseCommsDevice>));
     }
-
-    // port.addListener('errormessage', (errorMessage: string) => {
-    //   this.emit('errormessage', errorMessage);
-    // });
-
-    // port.addListener('data', (readResult: ReadResult) => {
-    //   this.emit('data', readResult);
-    // });
-    //
-    // port.addListener('receiving', () => {
-    //   this.emit('receiving', port.getPortDeviceType());
-    // });
-
-    return newApi;
   }
 
-  public async initPorts(
-    addApi: (device: CaptureCommsDevice) => void,
-    removePort: (device: SerialPort) => void,
-    settingsCallbackFn: SettingsCallbackFn,
-  ): Promise<void> {
-    if (!this.enabled) { return; }
+  public async initPorts(): Promise<void> {
+    if (!this.enabled || !this.portsWorkerClient) { throw new Error('could not init serial ports'); }
 
-    this.settingsCallbackFn = settingsCallbackFn;
+    console.log('initializing serial ports');
 
     const ports = await navigator.serial.getPorts();
 
     for (const port of ports) {
-      const api = await this.initDevice(port);
-      if (api) {
-        addApi(api);
-      }
+      await this.initDevice(port);
     }
 
     // Add listener to setup future devices
     navigator.serial.addEventListener('connect', async (event: Event) => {
-      const newApi = await this.initDevice(event.target as SerialPort);
-      if (newApi) {
-        addApi(newApi);
-      }
+      if (!this.portsWorkerClient) { throw new Error('could not init new serial port'); }
+      this.initDevice(event.target as SerialPort);
     });
 
     navigator.serial.addEventListener('disconnect', (event) => {
-      const oldPort = event.target as SerialPort;
-      removePort(oldPort);
+      if (!this.portsWorkerClient) { return; }
+
+      const [disconnectId] = this.connectedPorts.entries().find(([, serialPort]) => (
+        serialPort === event.target as SerialPort
+      )) || [''];
+
+      if (disconnectId) {
+        this.connectedPorts.delete(disconnectId);
+        this.portsWorkerClient.removeDeviceApi(disconnectId);
+      }
     });
   }
 }

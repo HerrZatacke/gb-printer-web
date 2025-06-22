@@ -41,14 +41,13 @@ const useNavigation = (): UseNavigation => {
     webSerialEnabled,
     hasInactiveDevices,
     unknownDeviceResponse,
-    webSerialActivePorts,
-    webUSBActivePorts,
+    connectedDevices,
   } = usePortsContext();
 
   return {
     disableSerials: !webUSBEnabled && !webSerialEnabled,
     serialWarning: Boolean(hasInactiveDevices && unknownDeviceResponse),
-    portCount: webSerialActivePorts.length + webUSBActivePorts.length,
+    portCount: connectedDevices.length,
     syncBusy,
     useSync,
     useSerials,

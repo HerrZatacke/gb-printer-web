@@ -1,33 +1,29 @@
 'use client';
 
-import { proxy, wrap } from 'comlink';
+import { proxy, Remote, wrap } from 'comlink';
 import { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { PortDeviceType, PortType, usbDeviceFilters } from '@/consts/ports';
+import { PortDeviceType, usbDeviceFilters } from '@/consts/ports';
 import { useGetPortSettings } from '@/hooks/useGetPortSettings';
 import useImportPlainText from '@/hooks/useImportPlainText';
 import useInteractionsStore from '@/stores/interactionsStore';
+import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
+import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';
 import {
-  DevicesApi,
-  InitCallbackFn,
-  PortsChangeCallbackFn,
+  CommsDeviceMeta,
+  PortsWorkerRemote,
   PortsContextValue,
-  ReadParams,
-  ReadResult,
-  SettingsCallbackFn,
-  WorkerPort,
+  PortsWorkerClient,
 } from '@/types/ports';
 import { portsContext } from './index';
 
 export function PortsContext({ children }: PropsWithChildren) {
-  const [devicesApi, setDevicesApi] = useState<DevicesApi | null>(null);
+  const [portsWorkerRemote, setPortsWorkerRemote] = useState<PortsWorkerRemote | null>(null);
   const [webSerialEnabled, setWebSerialEnabled] = useState<boolean>(false);
   const [webUSBEnabled, setWebUSBEnabled] = useState<boolean>(false);
-  const [webUSBActivePorts, setWebUSBActivePorts] = useState<WorkerPort[]>([]);
-  const [webUSBIsReceiving, setWebUSBIsReceiving] = useState(false);
-  const [webSerialActivePorts, setWebSerialActivePorts] = useState<WorkerPort[]>([]);
-  const [webSerialIsReceiving, setWebSerialIsReceiving] = useState(false);
-  const [unknownDeviceResponse, setUnknownDeviceResponse] = useState<ReadResult | null>(null);
+  const [connectedDevices, setConnectedDevices] = useState<CommsDeviceMeta[]>([]);
+  const [isReceiving, setIsReceiving] = useState(false);
+  const [unknownDeviceResponse, setUnknownDeviceResponse] = useState<Uint8Array | null>(null);
   const [packetCaptureResponse, setPacketCaptureResponse] = useState<string>('');
   const packetCaptureTimeout = useRef(0);
 
@@ -35,184 +31,112 @@ export function PortsContext({ children }: PropsWithChildren) {
   const { querySettings } = useGetPortSettings();
   const { setError } = useInteractionsStore();
 
-  const settingsCallbackFn = useRef<SettingsCallbackFn>(proxy<SettingsCallbackFn>(querySettings));
-
   useEffect(() => {
     const worker = new Worker(new URL('@/workers/portsContextWorker', import.meta.url), { type: 'module' });
     const handle = window.setTimeout(() => {
-      const newDevicesApi = wrap<DevicesApi>(worker);
+      const newPortsWorkerRemote = wrap<PortsWorkerRemote>(worker);
 
-      const initCallback = proxy<InitCallbackFn>((usbEnabled: boolean, serialEnabled: boolean) => {
-        setWebSerialEnabled(serialEnabled);
-        setWebUSBEnabled(usbEnabled);
-      });
+      const portsWorkerClient: PortsWorkerClient = {
+        async addDeviceApi(device: Remote<BaseCommsDevice>) {
+          const id = await device.id;
+          const portType = await device.portType;
+          const portDeviceType = await device.portDeviceType;
 
-      const portsChangeCallback = proxy<PortsChangeCallbackFn>(async (apis: CaptureCommsDevice[]) => {
-        for (const api of apis) {
-          const apiInfo = await api.getInfo();
-          newDevicesApi.proxyCallFn(apiInfo.id, 'setup');
-        }
-      });
+          switch (portDeviceType) {
+            case PortDeviceType.PACKET_CAPTURE: {
+              // Setup for capture device // ToDo: move to it's setup routine somewhere...
+              await (device as Remote<CaptureCommsDevice>).setup(proxy({
+                receiving: () => { setIsReceiving(true); },
+                data: (data: string) => { setPacketCaptureResponse(data); },
+              }));
+              break;
+            }
 
-      newDevicesApi.init(initCallback, settingsCallbackFn.current, portsChangeCallback)
-        .then(() => {
-          setDevicesApi(() => (newDevicesApi));
-        })
-        .catch((error) => {
-          setError(error);
-          worker.terminate();
-          setWebSerialEnabled(false);
-          setWebUSBEnabled(false);
-          setWebSerialActivePorts([]);
-          setWebUSBActivePorts([]);
-        });
+            case PortDeviceType.INACTIVE: {
+              const banner: Uint8Array = await (device as Remote<InactiveCommsDevice>).getBanner();
+              if (banner.byteLength) {
+                setUnknownDeviceResponse(banner);
+              }
+              break;
+            }
+          }
 
+          const commsDeviceMeta: CommsDeviceMeta = await {
+            id,
+            portType,
+            portDeviceType,
+            description: await device.description,
+            device: device,
+          };
+
+          setConnectedDevices((current) => ([
+            ...current,
+            commsDeviceMeta,
+          ]));
+        },
+        async setStatus(usbEnabled: boolean, serialEnabled: boolean) {
+          setWebSerialEnabled(serialEnabled);
+          setWebUSBEnabled(usbEnabled);
+        },
+        async removeDeviceApi(deviceId: string) {
+          setConnectedDevices((current) => (
+            current.filter(({ id }) => deviceId !== id)
+          ));
+        },
+        settingsCallback() {
+          return querySettings();
+        },
+      };
+
+      newPortsWorkerRemote.registerClient(proxy(portsWorkerClient));
+
+      setPortsWorkerRemote(() => newPortsWorkerRemote);
     }, 1);
-
-    // worker.addEventListener('message', async (event: MessageEvent<PortsWorkerMessage>) => {
-    //   const message = event.data;
-    //
-    //   switch (message.type) {
-    //     case PortsWorkerMessageType.ERROR: {
-    //       setError(new Error(message.errorMessage));
-    //       break;
-    //     }
-    //
-    //     case PortsWorkerMessageType.DATA: {
-    //       switch (message.readResults[0].portDeviceType) {
-    //         case PortDeviceType.PACKET_CAPTURE: {
-    //           setPacketCaptureResponse((current) => (
-    //             mergeReadResults([current, ...message.readResults])
-    //           ));
-    //           setUnknownDeviceResponse(null);
-    //           break;
-    //         }
-    //
-    //         case PortDeviceType.SUPER_PRINTER_INTERFACE: {
-    //           setUnknownDeviceResponse(null);
-    //           break;
-    //         }
-    //
-    //         case PortDeviceType.INACTIVE:
-    //         case PortDeviceType.UNKNOWN:
-    //         default: {
-    //           // Concatenate all received data
-    //           setUnknownDeviceResponse((current) => (
-    //             mergeReadResults([current, ...message.readResults])
-    //           ));
-    //           break;
-    //         }
-    //       }
-    //
-    //       break;
-    //     }
-    //
-    //     case PortsWorkerMessageType.RECEIVING: {
-    //       if (message.portDeviceType === PortDeviceType.PACKET_CAPTURE) {
-    //         switch (message.portType) {
-    //           case PortType.SERIAL:
-    //             setWebSerialIsReceiving(true);
-    //             break;
-    //           case PortType.USB:
-    //             setWebUSBIsReceiving(true);
-    //             break;
-    //         }
-    //       }
-    //
-    //       break;
-    //     }
-    //
-    //     default:
-    //       break;
-    //   }
-    // });
-    //
-    // worker.addEventListener('error', (event) => {
-    //   setError(new Error(event.message));
-    // });
-    //
-    // setWorker(worker);
 
     return () => {
       worker.terminate();
       window.clearTimeout(handle);
-      setDevicesApi(null);
+      setPortsWorkerRemote(null);
     };
   }, [querySettings, setError]);
 
-  const hasInactiveDevices = useMemo<boolean>(() => {
-    const allPorts = [
-      ...webUSBActivePorts,
-      ...webSerialActivePorts,
-    ];
-
-    return Boolean(allPorts.find((port) => (
-      port.portDeviceType === PortDeviceType.INACTIVE
-    )));
-  }, [webSerialActivePorts, webUSBActivePorts]);
+  const hasInactiveDevices = useMemo(() => {
+    const portDeviceTypes: PortDeviceType[] = connectedDevices.map(item => item.portDeviceType);
+    return portDeviceTypes.includes(PortDeviceType.INACTIVE);
+  }, [connectedDevices]);
 
   const openWebSerial = useCallback(async () => {
-    if (webSerialEnabled && devicesApi) {
+    if (webSerialEnabled && portsWorkerRemote) {
       try {
         const device = await navigator.serial.requestPort();
 
         if (device.readable) {
           setError(new Error('device already opened'));
+          return;
         }
 
-        devicesApi.openSerial(settingsCallbackFn.current);
+        portsWorkerRemote.openSerial();
       } catch {
         /* no device was selected by user */
       }
     }
-  }, [devicesApi, setError, webSerialEnabled]);
+  }, [portsWorkerRemote, setError, webSerialEnabled]);
 
   const openWebUSB = useCallback(async () => {
-    if (webUSBEnabled && devicesApi) {
+    if (webUSBEnabled && portsWorkerRemote) {
       try {
         const device = await navigator.usb.requestDevice({ filters: usbDeviceFilters });
         if (device.opened) {
           setError(new Error('device already opened'));
+          return;
         }
 
-        devicesApi.openUSB();
+        portsWorkerRemote.openUSB();
       } catch {
         /* no device was selected by user */
       }
     }
-  }, [devicesApi, setError, webUSBEnabled]);
-
-  const sendDeviceMessage = useCallback((message: Uint8Array, deviceId: string, readParamss: ReadParams[], flush: boolean): Promise<ReadResult[]> => {
-    console.log({ message, deviceId, readParamss, flush });
-    // if (!worker) { throw new Error('no worker'); }
-    //
-    // const messageId = randomId();
-    //
-    // const messageCommand: PortsWorkerSendDataCommand = {
-    //   type: WorkerCommand.SEND_DATA,
-    //   deviceId,
-    //   message,
-    //   messageId,
-    //   readParamss,
-    //   flush,
-    // };
-    //
-    // return new Promise<ReadResult[]>((resolve) => {
-    //   const responseHandler = (event: MessageEvent<PortsWorkerMessage>) => {
-    //     const messageResponse = event.data;
-    //     if (messageResponse.type === PortsWorkerMessageType.DATA) {
-    //       if (messageResponse.replyToMessageId === messageId) {
-    //         worker.removeEventListener('message', responseHandler);
-    //         resolve(messageResponse.readResults);
-    //       }
-    //     }
-    //   };
-    //
-    //   worker.addEventListener('message', responseHandler);
-    //   worker.postMessage(messageCommand);
-    // })
-    return Promise.resolve([]);
-  }, []);
+  }, [portsWorkerRemote, setError, webUSBEnabled]);
 
   useEffect(() => {
     if (!packetCaptureResponse) { return; }
@@ -222,8 +146,7 @@ export function PortsContext({ children }: PropsWithChildren) {
       if (packetCaptureResponse.length) {
         const importData = packetCaptureResponse;
         setPacketCaptureResponse('');
-        setWebSerialIsReceiving(false);
-        setWebUSBIsReceiving(false);
+        setIsReceiving(false);
         importPlainText(importData);
       }
     }, 250);
@@ -233,59 +156,24 @@ export function PortsContext({ children }: PropsWithChildren) {
     };
   }, [packetCaptureResponse, importPlainText]);
 
-  // useEffect(() => {
-  //   if (!devicesApi) { return; }
-  //   const testDevice = webSerialActivePorts.find(({ portDeviceType }) => portDeviceType === PortDeviceType.PACKET_CAPTURE);
-  //   if (!testDevice) { return; }
-  //
-  //   const addCallbacks = async () => {
-  //     const commsApi = await devicesApi.getApi(testDevice.id);
-  //
-  //     const portDeviceType: PortDeviceType = await commsApi.portDeviceType;
-  //
-  //     switch (portDeviceType) {
-  //       case PortDeviceType.PACKET_CAPTURE:
-  //         commsApi.setCallbacks(
-  //           proxy(() => setWebSerialIsReceiving(true)),
-  //           proxy(setPacketCaptureResponse),
-  //         );
-  //         break;
-  //
-  //       default:
-  //         break;
-  //     }
-  //
-  //
-  //   };
-  //
-  //   addCallbacks();
-  // }, [devicesApi, webSerialActivePorts]);
-
   const value = useMemo((): PortsContextValue => ({
+    connectedDevices,
     hasInactiveDevices,
+    isReceiving,
     openWebSerial,
     openWebUSB,
-    sendDeviceMessage,
     unknownDeviceResponse,
-    webSerialActivePorts,
     webSerialEnabled,
-    webSerialIsReceiving,
-    webUSBActivePorts,
     webUSBEnabled,
-    webUSBIsReceiving,
-    worker: null,
   }), [
+    connectedDevices,
     hasInactiveDevices,
+    isReceiving,
     openWebSerial,
     openWebUSB,
-    sendDeviceMessage,
     unknownDeviceResponse,
-    webSerialActivePorts,
     webSerialEnabled,
-    webSerialIsReceiving,
-    webUSBActivePorts,
     webUSBEnabled,
-    webUSBIsReceiving,
   ]);
 
   return <portsContext.Provider value={value}>{ children }</portsContext.Provider>;

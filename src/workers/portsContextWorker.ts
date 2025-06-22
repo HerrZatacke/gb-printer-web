@@ -1,162 +1,30 @@
-import { expose, proxy } from 'comlink';
-// import { PortDeviceType, PortType } from '@/consts/ports';
-// import { CommonPort } from '@/tools/comms/CommonPort';
-import { ApiProxy } from '@/tools/comms/ApiProxy';
-// import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
+import { expose } from 'comlink';
 import SerialPorts from '@/tools/comms/WebSerial/SerialPorts';
-// import USBPorts from '@/tools/comms/WebUSBSerial/USBPorts';
+import USBPorts from '@/tools/comms/WebUSBSerial/USBPorts';
 import {
-  // CommsApi,
-  DevicesApi,
-  InitCallbackFn,
-  PortsChangeCallbackFn,
-  SettingsCallbackFn,
+  PortsWorkerRemote,
+  PortsWorkerClient,
 } from '@/types/ports';
 
-// const dataListener = (portType: PortType) => (readResult: ReadResult)=> {
-//   const resultsMessage: PortsWorkerDataMessage = {
-//     type: PortsWorkerMessageType.DATA,
-//     readResults: [readResult],
-//     portType,
-//   };
-//
-//   self.postMessage(resultsMessage);
-// };
-//
-// SerialPorts.addListener('data', dataListener(PortType.SERIAL));
-// USBPorts.addListener('data', dataListener(PortType.USB));
-
-
-// const receivingListener = (portType: PortType) => (portDeviceType: PortDeviceType) => {
-//   const receivingMessage: PortsWorkerReceivingMessage = {
-//     type: PortsWorkerMessageType.RECEIVING,
-//     portDeviceType,
-//     portType,
-//   };
-//
-//   self.postMessage(receivingMessage);
-// };
-//
-// SerialPorts.addListener('receiving', receivingListener(PortType.SERIAL));
-// USBPorts.addListener('receiving', receivingListener(PortType.USB));
-
-
-// const errorListener = (portType: PortType) => (errorMessage: string) => {
-//   const receivingMessage: PortsWorkerErrorMessage = {
-//     type: PortsWorkerMessageType.ERROR,
-//     portType,
-//     errorMessage,
-//   };
-//
-//   self.postMessage(receivingMessage);
-// };
-//
-// SerialPorts.addListener('errormessage', errorListener(PortType.SERIAL));
-// USBPorts.addListener('errormessage', errorListener(PortType.USB));
-
-
-// self.onmessage = async (messageEvent: MessageEvent<PortsWorkerCommand>) => {
-//   const textDecoder = new TextDecoder();
-//
-//   switch (messageEvent.data.type) {
-//     case WorkerCommand.SEND_DATA: {
-//       const { deviceId, message, readParamss, flush, messageId } = messageEvent.data;
-//
-//       const allDevices = [...SerialPorts.getActivePorts(), ...USBPorts.getActivePorts()];
-//       const device = allDevices.find((findDevice) => findDevice.getId() === deviceId);
-//       if (!device) {
-//         throw new Error('device not found');
-//       }
-//
-//       const portType: PortType = device instanceof CommonSerialPort ? PortType.SERIAL : PortType.USB;
-//
-//       const bytess = await device.send(message, readParamss, flush);
-//
-//       const readResults: ReadResult[] = bytess.map((bytes) => ({
-//         string: textDecoder.decode(bytes),
-//         bytes: bytes,
-//         deviceId: device.getId(),
-//         portDeviceType: device.getPortDeviceType(),
-//       }));
-//
-//       const resultsMessage: PortsWorkerDataMessage = {
-//         type: PortsWorkerMessageType.DATA,
-//         readResults,
-//         portType,
-//         replyToMessageId: messageId,
-//       };
-//
-//       self.postMessage(resultsMessage);
-//
-//       break;
-//     }
-//
-//     case WorkerCommand.ANSWER: {
-//       // listener is elsewhere, can be ignored here
-//       break;
-//     }
-//
-//     default: {
-//       console.log(messageEvent);
-//     }
-//   }
-// };
-
-const apiProxy = new ApiProxy();
-
-const devicesApi: DevicesApi = {
-  async openSerial(settingsCallbackFn: SettingsCallbackFn): Promise<void> {
-    await SerialPorts.initPorts(apiProxy.addApi, apiProxy.removePort, settingsCallbackFn);
+const portsWorkerRemote: PortsWorkerRemote = {
+  async openSerial(): Promise<void> {
+    console.log('open serial');
+    await SerialPorts.initPorts();
   },
 
   async openUSB(): Promise<void> {
-    // await USBPorts.initPorts();
-    console.error('deact');
+    await USBPorts.initPorts();
   },
 
-  async init(
-    initCallback: InitCallbackFn, // report back enabled state of webserial/webUSB
-    settingsCallbackFn: SettingsCallbackFn, // used to query for BaudRate for serial ports
-    portsChangeCallback: PortsChangeCallbackFn, // report available APIs
-  ) {
-    apiProxy.setCallback(portsChangeCallback);
-    initCallback(SerialPorts.enabled, false);
-    await SerialPorts.initPorts(apiProxy.addApi, apiProxy.removePort, settingsCallbackFn);
-    // await USBPorts.initPorts(),
+  async registerClient(portsWorkerClient: PortsWorkerClient) {
+    SerialPorts.registerClient(portsWorkerClient);
+    await USBPorts.registerClient(portsWorkerClient);
 
+    await SerialPorts.initPorts();
+    await USBPorts.initPorts();
 
+    portsWorkerClient.setStatus(USBPorts.enabled, SerialPorts.enabled);
   },
-
-  async proxyCallFn(
-    deviceId: string,
-    functionName: string,
-    ...rest: unknown[]
-  ) {
-    apiProxy.callDevice(deviceId, functionName, ...rest);
-  },
-
-  // async getApi(deviceId: string): Promise<CommsApi> {
-  //   const allPorts: CommonPort[] = [
-  //     ...SerialPorts.getActivePorts(),
-  //     ...USBPorts.getActivePorts(),
-  //   ];
-  //
-  //   const device: CommonPort | undefined = allPorts.find((port) => port.getId() === deviceId);
-  //   if (!device) { throw new Error('device with id not found'); }
-  //
-  //   const api = await device.getApi();
-  //
-  //   if (api.portDeviceType !== PortDeviceType.PACKET_CAPTURE) {
-  //     throw new Error('jaja');
-  //   }
-  //
-  //   return proxy<CommsApi>(api);
-  //
-  //   // return {
-  //   //   portDeviceType: api.portDeviceType,
-  //   //   setCallbacks: proxy(api.setCallbacks),
-  //   // };
-  // },
 };
 
-expose(devicesApi);
+expose(portsWorkerRemote);

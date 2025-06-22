@@ -1,26 +1,34 @@
-import { PortDeviceType } from '@/consts/ports';
+import { PortDeviceType, PortType } from '@/consts/ports';
+import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { CommonPort } from '@/tools/comms/CommonPort';
-import { CommsDevice } from '@/tools/comms/DeviceAPIs/CommsDevice';
-import { appendUint8Arrays } from '@/tools/mergeReadResults';
+import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { randomId } from '@/tools/randomId';
-import { CaptureDeviceCommsApi, CaptureSetupParams, DataCallbackFn, ReceivingCallbackFn } from '@/types/ports';
 
-export class CaptureCommsDevice implements CommsDevice<CaptureDeviceCommsApi, CaptureSetupParams> {
+type ReceivingCallback = () => void;
+type DataCallback = (data: string) => void;
+
+interface SetupParams {
+  receiving: ReceivingCallback,
+  data: DataCallback,
+}
+
+export class CaptureCommsDevice implements BaseCommsDevice {
   private device: CommonPort;
   private textDecoder: TextDecoder = new TextDecoder();
-  private receiving: ReceivingCallbackFn = () => { /**/ };
-  private data: DataCallbackFn = () => { /**/ };
+  private receiving: ReceivingCallback = () => { /**/ };
+  private data: DataCallback = () => { /**/ };
   private longBuffer: Uint8Array | null = null;
-  private id: string;
+  public readonly id: string;
+  public readonly description: string;
+  public readonly portDeviceType = PortDeviceType.PACKET_CAPTURE;
+  public readonly portType: PortType;
 
   constructor(device: CommonPort) {
     this.device = device;
+    this.portType = device.portType;
+    this.description = device.getDescription();
     this.id = randomId();
     this.readLoop();
-  }
-
-  getDevice(): CommonPort {
-    return this.device;
   }
 
   private async readLoop() {
@@ -45,25 +53,8 @@ export class CaptureCommsDevice implements CommsDevice<CaptureDeviceCommsApi, Ca
     }
   }
 
-  async getApi(): Promise<CaptureDeviceCommsApi> {
-    return {
-      portDeviceType: PortDeviceType.PACKET_CAPTURE,
-    };
-  }
-
-  async setup({ receiving, data }: CaptureSetupParams) {
-    console.log('I got callbacks, yay!');
+  async setup({ receiving, data }: SetupParams) {
     this.receiving = receiving;
     this.data = data;
-  }
-
-  getInfo(): Promise<{
-    id: string,
-    type: string,
-  }> {
-    return Promise.resolve({
-      id: this.id,
-      type: this.constructor.name,
-    });
   }
 }
