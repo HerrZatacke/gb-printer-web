@@ -17,11 +17,15 @@ const portsWorkerRemote: PortsWorkerRemote = {
   },
 
   async registerClient(portsWorkerClient: PortsWorkerClient) {
-    SerialPorts.registerClient(portsWorkerClient);
-    await USBPorts.registerClient(portsWorkerClient);
+    if (SerialPorts.enabled) {
+      await SerialPorts.registerClient(portsWorkerClient);
+      await SerialPorts.initPorts();
+    }
 
-    await SerialPorts.initPorts();
-    await USBPorts.initPorts();
+    if (USBPorts.enabled) {
+      await USBPorts.registerClient(portsWorkerClient);
+      await USBPorts.initPorts();
+    }
 
     portsWorkerClient.setStatus(USBPorts.enabled, SerialPorts.enabled);
   },
