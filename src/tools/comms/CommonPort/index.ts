@@ -194,14 +194,11 @@ export abstract class CommonPort extends EventEmitter {
         return new SuperPrinterCommsDevice(this);
       }
 
-      case PortDeviceType.INACTIVE: {
-        const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
-        return new InactiveCommsDevice(this, appendUint8Arrays([unknownBanner, moreBytes]));
-      }
-
+      case PortDeviceType.INACTIVE:
       case PortDeviceType.UNKNOWN:
       default: {
-        throw new Error('device is not a known device');
+        const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
+        return new InactiveCommsDevice(this, appendUint8Arrays([unknownBanner, moreBytes]));
       }
     }
   }
