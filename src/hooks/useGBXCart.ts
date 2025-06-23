@@ -1,9 +1,9 @@
-import { Remote } from 'comlink';
-import { useCallback, useMemo } from 'react';
-// import { GBXCartCommands, GBXCartDeviceVars, GBXCartPCBVersions } from '@/consts/gbxCart';
+import { proxy, Remote } from 'comlink';
+import { useCallback, useEffect, useMemo } from 'react';
 import { PortDeviceType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import useProgressStore from '@/stores/progressStore';
 import { GBXCartCommsDevice } from '@/tools/comms/DeviceAPIs/GBXCartCommsDevice';
 import getHandleFileImport from '@/tools/getHandleFileImport';
 
@@ -18,7 +18,7 @@ export const useGBXCart = (): UseGBXCart => {
 
   const { jsonImport } = useImportExportSettings();
   const handleFileImport = useMemo(() => (getHandleFileImport(jsonImport)), [jsonImport]);
-
+  const { setProgress, startProgress, stopProgress } = useProgressStore();
   const gbxCart: Remote<GBXCartCommsDevice> | null = useMemo(() => {
     const deviceMeta = connectedDevices.find((device) => device.portDeviceType === PortDeviceType.GBXCART);
 
@@ -29,10 +29,25 @@ export const useGBXCart = (): UseGBXCart => {
 
   const gbxCartAvailable = Boolean(gbxCart);
 
+  useEffect(() => {
+    const setupCallbacks = async () => {
+      if (!gbxCart) { return; }
+      await gbxCart.setup(proxy({
+        setProgress,
+        startProgress: async (label: string): Promise<string> => (
+          startProgress(label)
+        ),
+        stopProgress,
+      }));
+
+      await gbxCart.checkFirmware();
+    };
+
+    setupCallbacks();
+  }, [gbxCart, setProgress, startProgress, stopProgress]);
+
   const readRAMImage = useCallback(async () => {
     if (!gbxCart) { return; }
-
-    // await gbxCart.checkFirmware();
 
     const romName = await gbxCart.readROMName();
 

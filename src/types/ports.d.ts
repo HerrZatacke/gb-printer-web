@@ -47,3 +47,10 @@ export type ReadParams =
   { timeout: number; length?: never; texts?: never } |
   { timeout?: number; length?: never; texts: string[] } |
   { timeout?: number; length: number; texts?: never };
+
+export type StartProgressCallback = (label: string) => Promise<string>;
+export type SetProgressCallback = (id: string, value: number) => void;
+export type StopProgressCallback = (id: string) => void;
+export type SetErrorCallback = (error: string) => void;
+
+

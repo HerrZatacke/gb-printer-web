@@ -74,9 +74,9 @@ function Import() {
             </Button>
             <Button
               onClick={readPhotoRom}
-              title="Import Photo!-rolls (ROM-Banks)"
+              title="Import Album Rolls from Photo! (ROM-Banks)"
             >
-              Import Photo!-rolls
+              Import Album Rolls from Photo!
             </Button>
           </>
         )}

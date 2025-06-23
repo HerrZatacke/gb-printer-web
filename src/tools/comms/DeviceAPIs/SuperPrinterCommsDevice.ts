@@ -3,7 +3,7 @@ import objectHash from 'object-hash';
 import { PortDeviceType, PortType } from '@/consts/ports';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { randomId } from '@/tools/randomId';
-import { ReadParams } from '@/types/ports';
+import { ReadParams, SetErrorCallback, SetProgressCallback, StartProgressCallback, StopProgressCallback } from '@/types/ports';
 import { CommonPort } from '../CommonPort';
 
 enum PrinterExposure {
@@ -11,11 +11,6 @@ enum PrinterExposure {
   NORMAL = 0x40,
   DARK = 0x7f,
 }
-
-type StartProgressCallback = (label: string) => Promise<string>;
-type SetProgressCallback = (id: string, value: number) => void;
-type StopProgressCallback = (id: string) => void;
-type SetErrorCallback = (error: string) => void;
 
 interface SetupParams {
   startProgress: StartProgressCallback;

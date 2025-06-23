@@ -3,6 +3,13 @@ import { PortDeviceType, PortType } from '@/consts/ports';
 import { CommonPort } from '@/tools/comms/CommonPort';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { randomId } from '@/tools/randomId';
+import { SetProgressCallback, StartProgressCallback, StopProgressCallback } from '@/types/ports';
+
+interface SetupParams {
+  startProgress: StartProgressCallback;
+  setProgress: SetProgressCallback;
+  stopProgress: StopProgressCallback;
+}
 
 export class GBXCartCommsDevice implements BaseCommsDevice {
   private device: CommonPort;
@@ -10,6 +17,9 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public readonly description: string;
   public readonly portDeviceType = PortDeviceType.GBXCART;
   public readonly portType: PortType;
+  private startProgress: StartProgressCallback = async (label: string): Promise<string> => { console.log(label); return '#'; };
+  private setProgress: SetProgressCallback = (id: string, value: number) => { console.log(`${id} - ${Math.round(value * 100)}%`); };
+  private stopProgress: StopProgressCallback = (id: string) => { console.log(`${id} - done`); };
 
   constructor(device: CommonPort, version: Uint8Array) {
     this.device = device;
@@ -89,21 +99,20 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     const chunkSize = 0x40;
     const readSize = 0x2000;
     const ramBanks = 16;
-    // const totalChunks = ramBanks * readSize / chunkSize;
+    const totalChunks = ramBanks * readSize / chunkSize;
 
-    const start = Date.now();
+    const handle = await this.startProgress('Loading Camera RAM');
 
     for (let ramBank = 0; ramBank < ramBanks; ramBank += 1) {
       await this.cartWrite(0x4000, ramBank); // Set SRAM bank
-      console.log(`reading RAM bank ${ramBank}`);
+      this.setProgress(handle, chunks.length / totalChunks);
       for (let offset = 0; offset < readSize / chunkSize; offset += 1) {
         chunks.push(await this.readRAM(chunkSize * offset, chunkSize));
         // console.log(`${chunks.length}/${totalChunks}`);
       }
     }
 
-    console.log(`RAM read done after ${Date.now() - start}ms`);
-
+    this.stopProgress(handle);
     return chunks;
   }
 
@@ -113,13 +122,13 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     const chunkSize = 0x40;
     const readSize = 0x4000;
     const romBanks = 64;
-    // const totalChunks = romBanks * readSize / chunkSize;
+    const totalChunks = romBanks * readSize / chunkSize;
 
-    const start = Date.now();
+    const handle = await this.startProgress('Loading Album Rolls from Photo!');
 
     for (let romBank = 0; romBank < romBanks; romBank += 1) {
       await this.cartWrite(0x2100, romBank); // Set ROM bank
-      console.log(`reading ROM bank ${romBank}`);
+      this.setProgress(handle, chunks.length / totalChunks);
       for (let offset = 0; offset < readSize / chunkSize; offset += 1) {
         // if first ROM bank, read 0-0x3fff, other banks from 0x4000 0x7fff
         if (romBank === 0) {
@@ -127,12 +136,11 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
         } else {
           chunks.push(await this.readROM((offset * chunkSize) + 0x4000, chunkSize));
         }
-        // console.log(`${chunks.length}/${totalChunks}`);
+
       }
     }
 
-    console.log(`ROM read done after ${Date.now() - start}ms`);
-
+    this.stopProgress(handle);
     return chunks;
   }
 
@@ -147,11 +155,10 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       ,
       fvVer,
       pcbVer,
-      ...dateBytes
     ] = firmwareResult;
 
-    // eslint-disable-next-line no-bitwise
-    const timestamp = (dateBytes[0] << 24) + (dateBytes[1] << 16) + (dateBytes[2] << 8) + dateBytes[3];
+    const timestamp = (new DataView(firmwareResult.buffer, 5, 4)).getUint32(0, false);
+
     const date = new Date(timestamp * 1000);
 
     console.log({
@@ -166,5 +173,11 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async setModeVoltage() {
     const setModeVoltageCommand = new Uint8Array([GBXCartCommands['SET_MODE_DMG'], GBXCartCommands['SET_VOLTAGE_5V']]);
     await this.device.send(setModeVoltageCommand, [], true);
+  }
+
+  async setup({ startProgress, setProgress, stopProgress }: SetupParams) {
+    this.startProgress = startProgress;
+    this.setProgress = setProgress;
+    this.stopProgress = stopProgress;
   }
 }
