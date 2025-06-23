@@ -3,6 +3,7 @@ import { proxy, Remote } from 'comlink';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { PortsWorkerClient } from '@/types/ports';
 import CommonSerialPort from './SerialPort';
+import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';
 
 class WebSerialEE extends EventEmitter {
   public enabled: boolean;
@@ -29,9 +30,16 @@ class WebSerialEE extends EventEmitter {
 
     const port = new CommonSerialPort(serialPort, this.portsWorkerClient.settingsCallback);
 
+    const tempApi = new InactiveCommsDevice(port, new Uint8Array());
+
+    this.connectedPorts.set(tempApi.id, serialPort);
+    await this.portsWorkerClient.addDeviceApi(proxy(tempApi as unknown as Remote<BaseCommsDevice>));
+
     const newApi = await port.connect();
 
     if (newApi) {
+      this.connectedPorts.delete(tempApi.id);
+      await this.portsWorkerClient.removeDeviceApi(tempApi.id);
       this.connectedPorts.set(newApi.id, serialPort);
       await this.portsWorkerClient.addDeviceApi(proxy(newApi as unknown as Remote<BaseCommsDevice>));
     }

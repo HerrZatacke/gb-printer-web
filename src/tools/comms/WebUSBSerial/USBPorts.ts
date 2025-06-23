@@ -3,6 +3,7 @@ import { proxy, Remote } from 'comlink';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { PortsWorkerClient } from '@/types/ports';
 import CommonUSBPort from './USBPort';
+import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';
 
 
 class USBPorts extends EventEmitter {
@@ -16,7 +17,7 @@ class USBPorts extends EventEmitter {
       typeof window !== 'undefined' &&
       typeof navigator !== 'undefined' &&
       !!navigator.usb &&
-      !!navigator.usb.getDevices;;
+      !!navigator.usb.getDevices;
   }
 
   public registerClient(client: PortsWorkerClient) {
@@ -29,10 +30,16 @@ class USBPorts extends EventEmitter {
     if (!this.portsWorkerClient) { return; } // Must be able to query for baudrate
 
     const port = new CommonUSBPort(usbDevice);
+    const tempApi = new InactiveCommsDevice(port, new Uint8Array());
+
+    this.connectedDevices.set(tempApi.id, usbDevice);
+    await this.portsWorkerClient.addDeviceApi(proxy(tempApi as unknown as Remote<BaseCommsDevice>));
 
     const newApi = await port.connect();
 
     if (newApi) {
+      this.connectedDevices.delete(tempApi.id);
+      await this.portsWorkerClient.removeDeviceApi(tempApi.id);
       this.connectedDevices.set(newApi.id, usbDevice);
       await this.portsWorkerClient.addDeviceApi(proxy(newApi as unknown as Remote<BaseCommsDevice>));}
   }
