@@ -8,6 +8,7 @@ export enum PortDeviceType {
   INACTIVE = 'inactive', // Could not be identified, set to be inactive
   PACKET_CAPTURE = 'packet_capture',
   SUPER_PRINTER_INTERFACE = 'super_printer_interface',
+  GBXCART = 'gbxcart',
 }
 
 export const portDeviceLabels: Record<PortDeviceType, string> = {
@@ -15,6 +16,7 @@ export const portDeviceLabels: Record<PortDeviceType, string> = {
   [PortDeviceType.INACTIVE]: 'Inactive Device',
   [PortDeviceType.PACKET_CAPTURE]: 'Arduino Gameboy Printer Emulator',
   [PortDeviceType.SUPER_PRINTER_INTERFACE]: 'Super Printer Interface',
+  [PortDeviceType.GBXCART]: 'GBxCart RW',
 };
 
 export const usbDeviceFilters: USBDeviceFilter[] = [

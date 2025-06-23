@@ -68,9 +68,9 @@ function Import() {
           <>
             <Button
               onClick={testCall}
-              title="Import memory (RAM) from GBXCart"
+              title="Import memory (RAM) from GBxCart RW"
             >
-              Import memory from GBXCart
+              Import memory from GBxCart RW
             </Button>
             <Button
               onClick={() => { /**/ }}

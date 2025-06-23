@@ -1,8 +1,11 @@
 import EventEmitter from 'events';
+import hasher from 'object-hash';
+import { GBXCartCommands } from '@/consts/gbxCart';
 import { PortDeviceType, PortType } from '@/consts/ports';
 import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
+import { GBXCartCommsDevice } from '@/tools/comms/DeviceAPIs/GBXCartCommsDevice';
 import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';
 import { SuperPrinterCommsDevice } from '@/tools/comms/DeviceAPIs/SuperPrinterCommsDevice';
 import { delay } from '@/tools/delay';
@@ -156,7 +159,7 @@ export abstract class CommonPort extends EventEmitter {
   protected async detectType(): Promise<BaseCommsDevice | null> {
     // the printer emulator takes about 3500ms to write it's banner, so we wait a bit longer to be safe
     const bannerBytes = await this.read({
-      timeout: 5000,
+      timeout: 4000,
       texts: [
         DETECT_PACKET_CAPTURE,
         DETECT_PRINTER_EMULATOR,
@@ -177,12 +180,24 @@ export abstract class CommonPort extends EventEmitter {
       this.portDeviceType = PortDeviceType.INACTIVE;
     } else {
       // Unknown device type and no banner. Try to detect a "passive" device
-      const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 500 }], true); // cr/lf
-      if (readCrLf.byteLength) {
-        unknownBanner = readCrLf;
-        this.portDeviceType = PortDeviceType.INACTIVE;
+
+      const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
+
+      if ('cbf9ae0fbba53b3832c3695dc68d6505839d997f' === hasher(readGBXVersion)) {
+        unknownBanner = readGBXVersion;
+        this.portDeviceType = PortDeviceType.GBXCART;
+      } else {
+
+        const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 250 }], true); // cr/lf
+
+        if (readCrLf.byteLength) {
+          unknownBanner = readCrLf;
+          this.portDeviceType = PortDeviceType.INACTIVE;
+        }
       }
     }
+
+    console.log(this.portDeviceType);
 
     switch (this.portDeviceType) {
       case PortDeviceType.PACKET_CAPTURE: {
@@ -192,6 +207,10 @@ export abstract class CommonPort extends EventEmitter {
 
       case PortDeviceType.SUPER_PRINTER_INTERFACE: {
         return new SuperPrinterCommsDevice(this);
+      }
+
+      case PortDeviceType.GBXCART: {
+        return new GBXCartCommsDevice(this, unknownBanner);
       }
 
       case PortDeviceType.INACTIVE:

@@ -4,6 +4,8 @@ interface GBXCartDeviceVar {
   value: number,
 }
 
+// https://github.com/Mraulio/GBCamera-Android-Manager/blob/main/app/src/main/java/com/mraulio/gbcameramanager/gbxcart/GBxCartCommands.java
+
 export const GBXCartCommands: Record<string, number> = {
   'NULL': 0x30,
   'OFW_RESET_AVR': 0x2A,
