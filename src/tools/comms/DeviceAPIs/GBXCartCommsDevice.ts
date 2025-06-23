@@ -34,9 +34,20 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint8(11, 0);
     view.setUint8(12, 0);
 
-    const command = new Uint8Array(buffer);
+    await this.device.send(new Uint8Array(buffer), [], true);
+  }
 
-    await this.device.send(command, [], true);
+  private async cartWrite(address: number, value: number) {
+    const buffer = new ArrayBuffer(6);
+    const view = new DataView(buffer);
+
+    /* eslint-disable no-bitwise */
+    view.setUint8(0, GBXCartCommands['DMG_CART_WRITE'] & 0xFF);
+    view.setUint32(1, address, false);
+    view.setUint8(5, value & 0xFF);
+    /* eslint-enable no-bitwise */
+
+    await this.device.send(new Uint8Array(buffer), [], true);
   }
 
   private async readRAM(address: number, size: number): Promise<Uint8Array> {
@@ -72,16 +83,55 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     return romName;
   }
 
-  public async readImageSlot(): Promise<Uint8Array[]> {
+  public async readRAMImage(): Promise<Uint8Array[]> {
     await this.setModeVoltage();
     const chunks: Uint8Array[] = [];
     const chunkSize = 0x40;
-    const readSize = 0x1000;
+    const readSize = 0x2000;
+    const ramBanks = 16;
+    // const totalChunks = ramBanks * readSize / chunkSize;
 
-    for (let offset = 0; offset < readSize / chunkSize; offset += 1) {
-      chunks.push(await this.readRAM(chunkSize * offset, chunkSize));
-      console.log(`${chunks.length}/${readSize / chunkSize} -> ${chunks.length / (readSize / chunkSize)}`);
+    const start = Date.now();
+
+    for (let ramBank = 0; ramBank < ramBanks; ramBank += 1) {
+      await this.cartWrite(0x4000, ramBank); // Set SRAM bank
+      console.log(`reading RAM bank ${ramBank}`);
+      for (let offset = 0; offset < readSize / chunkSize; offset += 1) {
+        chunks.push(await this.readRAM(chunkSize * offset, chunkSize));
+        // console.log(`${chunks.length}/${totalChunks}`);
+      }
     }
+
+    console.log(`RAM read done after ${Date.now() - start}ms`);
+
+    return chunks;
+  }
+
+  public async readPhotoRom(): Promise<Uint8Array[]> {
+    await this.setModeVoltage();
+    const chunks: Uint8Array[] = [];
+    const chunkSize = 0x40;
+    const readSize = 0x4000;
+    const romBanks = 64;
+    // const totalChunks = romBanks * readSize / chunkSize;
+
+    const start = Date.now();
+
+    for (let romBank = 0; romBank < romBanks; romBank += 1) {
+      await this.cartWrite(0x2100, romBank); // Set ROM bank
+      console.log(`reading ROM bank ${romBank}`);
+      for (let offset = 0; offset < readSize / chunkSize; offset += 1) {
+        // if first ROM bank, read 0-0x3fff, other banks from 0x4000 0x7fff
+        if (romBank === 0) {
+          chunks.push(await this.readROM(offset * chunkSize, chunkSize));
+        } else {
+          chunks.push(await this.readROM((offset * chunkSize) + 0x4000, chunkSize));
+        }
+        // console.log(`${chunks.length}/${totalChunks}`);
+      }
+    }
+
+    console.log(`ROM read done after ${Date.now() - start}ms`);
 
     return chunks;
   }

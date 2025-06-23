@@ -9,7 +9,8 @@ import getHandleFileImport from '@/tools/getHandleFileImport';
 
 interface UseGBXCart {
   gbxCartAvailable: boolean,
-  testCall: () => void,
+  readRAMImage: () => void,
+  readPhotoRom: () => void,
 }
 
 export const useGBXCart = (): UseGBXCart => {
@@ -28,27 +29,41 @@ export const useGBXCart = (): UseGBXCart => {
 
   const gbxCartAvailable = Boolean(gbxCart);
 
-  const testCall = useCallback(async () => {
+  const readRAMImage = useCallback(async () => {
     if (!gbxCart) { return; }
 
     // await gbxCart.checkFirmware();
-    // const result = await gbxCart.testCall();
 
     const romName = await gbxCart.readROMName();
 
-    const result = await gbxCart.readImageSlot();
+    const result = await gbxCart.readRAMImage();
 
     handleFileImport([
       new File(result, `${romName.trim() || 'dump'}.sav`, {
         type: 'application/octet-stream',
       }),
     ], { fromPrinter: false });
+  }, [gbxCart, handleFileImport]);
 
-    console.log(result);
+  const readPhotoRom = useCallback(async () => {
+    if (!gbxCart) { return; }
+
+    // await gbxCart.checkFirmware();
+
+    const romName = await gbxCart.readROMName();
+
+    const result = await gbxCart.readPhotoRom();
+
+    handleFileImport([
+      new File(result, `${romName.trim() || 'dump'}.gb`, {
+        type: 'application/octet-stream',
+      }),
+    ], { fromPrinter: false });
   }, [gbxCart, handleFileImport]);
 
   return {
     gbxCartAvailable,
-    testCall,
+    readRAMImage,
+    readPhotoRom,
   };
 };

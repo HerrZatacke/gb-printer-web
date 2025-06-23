@@ -61,7 +61,6 @@ export abstract class CommonPort extends EventEmitter {
   private async readFromBuffer({ timeout, length, texts }: ReadParams): Promise<Uint8Array> {
     let sliceLength = typeof length === 'number' ? length : Infinity;
     let run = true;
-    const idleDelay = 10;
 
     if (typeof timeout === 'number') {
       setTimeout(() => { run = false; }, timeout);
@@ -69,18 +68,17 @@ export abstract class CommonPort extends EventEmitter {
 
     if (typeof length === 'number') {
       if (length === 0) { run = false; }
-      while (this.canRead() && run) {
+      while (run) {
         if (this.bufferedData && this.bufferedData.byteLength >= length) {
           run = false;
         } else {
-          // give the app some idle time
-          await delay(idleDelay);
+          await delay(0);
         }
       }
     } else if (texts instanceof Array) {
       const needles: Uint8Array[] = texts.map((text) => this.textEncoder.encode(text));
       if (needles.length === 0) { run = false; }
-      while (this.canRead() && run) {
+      while (run) {
         if (this.bufferedData && this.bufferedData.byteLength) {
           const needleIndex = needles
             .map(needle => ({
@@ -94,16 +92,15 @@ export abstract class CommonPort extends EventEmitter {
             sliceLength = needleIndex.index + needleIndex.needle.byteLength;
             run = false;
           } else {
-            await delay(idleDelay);
+            await delay(0);
           }
         } else {
-          // give the app some idle time
-          await delay(idleDelay);
+          await delay(0);
         }
       }
     } else {
-      while (this.canRead() && run) {
-        await delay(idleDelay);
+      while (run) {
+        await delay(0);
       }
     }
 
