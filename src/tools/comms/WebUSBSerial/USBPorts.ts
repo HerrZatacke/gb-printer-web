@@ -1,9 +1,9 @@
 import EventEmitter from 'events';
 import { proxy, Remote } from 'comlink';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
+import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';
 import { PortsWorkerClient } from '@/types/ports';
 import CommonUSBPort from './USBPort';
-import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';
 
 
 class USBPorts extends EventEmitter {
