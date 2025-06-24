@@ -180,11 +180,18 @@ export abstract class CommonPort extends EventEmitter {
 
       const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
 
-      if ('cbf9ae0fbba53b3832c3695dc68d6505839d997f' === hasher(readGBXVersion)) {
-        unknownBanner = readGBXVersion;
-        this.portDeviceType = PortDeviceType.GBXCART;
-      } else {
+      if (readGBXVersion.length) {
+        if ([
+          'a0a69f6fd5747a0cafe5a287e957780c4224f009',
+        ].includes(hasher([...readGBXVersion]))) {
+          unknownBanner = readGBXVersion;
+          this.portDeviceType = PortDeviceType.GBXCART;
+        } else {
+          unknownBanner = readGBXVersion;
+          this.portDeviceType = PortDeviceType.INACTIVE;
+        }
 
+      } else {
         const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 250 }], true); // cr/lf
 
         if (readCrLf.byteLength) {
@@ -193,8 +200,6 @@ export abstract class CommonPort extends EventEmitter {
         }
       }
     }
-
-    console.log(this.portDeviceType);
 
     switch (this.portDeviceType) {
       case PortDeviceType.PACKET_CAPTURE: {
@@ -219,3 +224,4 @@ export abstract class CommonPort extends EventEmitter {
     }
   }
 }
+

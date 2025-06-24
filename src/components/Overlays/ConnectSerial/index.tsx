@@ -3,6 +3,7 @@ import UsbIcon from '@mui/icons-material/Usb';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import hasher from 'object-hash';
 import React from 'react';
 import { portDeviceLabels, PortType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
@@ -111,7 +112,7 @@ function ConnectSerial({ inline }: Props) {
             [...unknownDeviceResponse].join(',') :
             (new TextDecoder()).decode(unknownDeviceResponse);
 
-          alert(message);
+          alert(`${message}\n${hasher([...unknownDeviceResponse])}`);
         }}
         disabled={!(hasInactiveDevices && unknownDeviceResponse)}
         variant="contained"
