@@ -1,10 +1,13 @@
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import SettingsInputHdmiIcon from '@mui/icons-material/SettingsInputHdmi';
 import UsbIcon from '@mui/icons-material/Usb';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import hasher from 'object-hash';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import Lightbox from '@/components/Lightbox';
 import { portDeviceLabels, PortType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
 import useSettingsStore from '@/stores/settingsStore';
@@ -25,6 +28,23 @@ function ConnectSerial({ inline }: Props) {
   } = usePortsContext();
 
   const { enableDebug } = useSettingsStore();
+
+  const [showUnknownDeviceResponse, setShowUnknownDeviceResponse] = useState(false);
+  const unknownDeviceResponseInfo = useMemo<string[]>(() => {
+    if (!unknownDeviceResponse || !unknownDeviceResponse.length) {
+      return [];
+    }
+
+    const containsUnreadableChars = [...unknownDeviceResponse].some(byte => (
+      byte < 32 && byte !== 9 && byte !== 10 && byte !== 13  // tab, cr, lf
+    ));
+
+    const bytes = unknownDeviceResponse.byteLength < 50 ? [...unknownDeviceResponse].join(',') : '';
+    const text = containsUnreadableChars ? '' : (new TextDecoder()).decode(unknownDeviceResponse);
+    const hash = hasher([...unknownDeviceResponse]);
+
+    return [bytes, text, hash].filter(Boolean);
+  }, [unknownDeviceResponse]);
 
   return (
     <Stack
@@ -103,16 +123,7 @@ function ConnectSerial({ inline }: Props) {
         title="Show message from unrecognized device"
         onClick={() => {
           if (!unknownDeviceResponse) { return; }
-
-          const containsUnreadableChars = [...unknownDeviceResponse].some(byte => (
-            byte < 32 && byte !== 9 && byte !== 10 && byte !== 13  // tab, cr, lf
-          ));
-
-          const message = containsUnreadableChars ?
-            [...unknownDeviceResponse].join(',') :
-            (new TextDecoder()).decode(unknownDeviceResponse);
-
-          alert(`${message}\n${hasher([...unknownDeviceResponse])}`);
+          setShowUnknownDeviceResponse(true);
         }}
         disabled={!(hasInactiveDevices && unknownDeviceResponse)}
         variant="contained"
@@ -120,6 +131,30 @@ function ConnectSerial({ inline }: Props) {
       >
         Show message from unrecognized device
       </Button>
+      <Lightbox
+        header="Unknown device info"
+        deny={() => setShowUnknownDeviceResponse(false)}
+        open={showUnknownDeviceResponse && Boolean(unknownDeviceResponse?.length)}
+      >
+        <Stack direction="column" gap={2}>
+          {unknownDeviceResponseInfo.map((value, index) => (
+            <Stack
+              key={index}
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography>{value}</Typography>
+              <IconButton
+                onClick={() => navigator.clipboard.writeText(value)}
+                title="Copy to clipboard"
+              >
+                <ContentCopyIcon />
+              </IconButton>
+            </Stack>
+          ))}
+        </Stack>
+      </Lightbox>
     </Stack>
   );
 }
