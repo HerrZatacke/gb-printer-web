@@ -33,8 +33,8 @@ export const usbDeviceFilters: USBDeviceFilter[] = [
   { vendorId: 0x2341, productId: 0x8056 }, // Arduino MKR Vidor 4000
   { vendorId: 0x2341, productId: 0x8057 }, // Arduino NANO 33 IoT
   { vendorId: 0x239A }, // Adafruit Boards!
-  { vendorId: 0x0483, productId: 0x5740 }, // JoeyJR?
 
-  // CH340 devices (GBXCart) seem to be blocked by chrome
-  // { vendorId: 0x1a86, productId: 0x7523 },
+  // Some devices' vendor IDs (CH380=GBXCart or JoexJR) seem to be blocked by chrome
+  // { vendorId: 0x0483, productId: 0x5740 }, // JoeyJR?
+  // { vendorId: 0x1a86, productId: 0x7523 }, // GBXCart
 ];
