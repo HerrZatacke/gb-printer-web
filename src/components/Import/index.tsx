@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import ConnectPrinter from '@/components/ConnectPrinter';
 import PrinterReport from '@/components/PrinterReport';
 import { ExportTypes } from '@/consts/exportTypes';
+import { useGBXCart } from '@/hooks/useGBXCart';
 import { useImport } from './useImport';
 
 function Import() {
@@ -19,6 +20,8 @@ function Import() {
     printerUrl,
     exportJson,
   } = useImport();
+
+  const { gbxCartAvailable, readRAMImage, readPhotoRom } = useGBXCart();
 
   useEffect(() => {
     import(/* webpackChunkName: "dmy" */ './dummy')
@@ -33,28 +36,51 @@ function Import() {
       { printerUrl && <PrinterReport /> }
       { printerUrl && <ConnectPrinter /> }
 
-      <Button
-        component="label"
+      <ButtonGroup
         variant="contained"
+        fullWidth
       >
-        Select file(s) to import
-        <input
-          type="file"
-          tabIndex={-1}
-          hidden
-          multiple
-          onChange={(ev) => {
-            const { target } = ev;
-            const { files } = target;
+        <Button
+          component="label"
+          variant="contained"
+          title="Select file(s) to import"
+        >
+          Select file(s) to import
+          <input
+            type="file"
+            tabIndex={-1}
+            hidden
+            multiple
+            onChange={(ev) => {
+              const { target } = ev;
+              const { files } = target;
 
-            if (files && files.length) {
-              importFiles([...files]);
-            }
+              if (files && files.length) {
+                importFiles([...files]);
+              }
 
-            target.value = '';
-          }}
-        />
-      </Button>
+              target.value = '';
+            }}
+          />
+        </Button>
+
+        {gbxCartAvailable && (
+          <>
+            <Button
+              onClick={readRAMImage}
+              title="Import memory (RAM) from GBxCart RW"
+            >
+              Import memory from GBxCart RW
+            </Button>
+            <Button
+              onClick={readPhotoRom}
+              title="Import Album Rolls from Photo! (ROM-Banks)"
+            >
+              Import Album Rolls from Photo!
+            </Button>
+          </>
+        )}
+      </ButtonGroup>
 
       <Stack
         flexDirection="column"
@@ -89,16 +115,19 @@ function Import() {
       >
         <Button
           onClick={() => exportJson(ExportTypes.IMAGES)}
+          title="Export images"
         >
           Export images
         </Button>
         <Button
           onClick={() => exportJson(ExportTypes.SELECTED_IMAGES)}
+          title="Export selected images"
         >
           Export selected images
         </Button>
         <Button
           onClick={() => exportJson(ExportTypes.PALETTES)}
+          title="Export palettes"
         >
           Export palettes
         </Button>

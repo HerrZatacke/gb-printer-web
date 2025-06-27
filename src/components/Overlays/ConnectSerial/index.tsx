@@ -1,9 +1,16 @@
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import SettingsInputHdmiIcon from '@mui/icons-material/SettingsInputHdmi';
+import UsbIcon from '@mui/icons-material/Usb';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import React from 'react';
-import { portDeviceLabels } from '@/consts/ports';
+import hasher from 'object-hash';
+import React, { useMemo, useState } from 'react';
+import Lightbox from '@/components/Lightbox';
+import { portDeviceLabels, PortType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
+import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
   inline?: boolean,
@@ -11,17 +18,33 @@ interface Props {
 
 function ConnectSerial({ inline }: Props) {
   const {
-    webUSBActivePorts,
-    webUSBIsReceiving,
+    connectedDevices,
     webUSBEnabled,
     openWebUSB,
-    webSerialActivePorts,
-    webSerialIsReceiving,
     webSerialEnabled,
     openWebSerial,
     unknownDeviceResponse,
     hasInactiveDevices,
   } = usePortsContext();
+
+  const { enableDebug } = useSettingsStore();
+
+  const [showUnknownDeviceResponse, setShowUnknownDeviceResponse] = useState(false);
+  const unknownDeviceResponseInfo = useMemo<string[]>(() => {
+    if (!unknownDeviceResponse || !unknownDeviceResponse.length) {
+      return [];
+    }
+
+    const containsUnreadableChars = [...unknownDeviceResponse].some(byte => (
+      byte < 32 && byte !== 9 && byte !== 10 && byte !== 13  // tab, cr, lf
+    ));
+
+    const bytes = unknownDeviceResponse.byteLength < 50 ? [...unknownDeviceResponse].join(',') : '';
+    const text = containsUnreadableChars ? '' : (new TextDecoder()).decode(unknownDeviceResponse);
+    const hash = hasher([...unknownDeviceResponse]);
+
+    return [bytes, text, hash].filter(Boolean);
+  }, [unknownDeviceResponse]);
 
   return (
     <Stack
@@ -41,35 +64,12 @@ function ConnectSerial({ inline }: Props) {
             title="Open WebUSB device"
             onClick={openWebUSB}
             disabled={!webUSBEnabled}
-            loading={webUSBIsReceiving}
             loadingPosition="start"
             variant="contained"
             color="secondary"
           >
             Open WebUSB device
-            {webUSBIsReceiving ? ' (receiving)' : null}
           </Button>
-          <Typography variant="body2">
-            {`Connected devices (${webUSBActivePorts.length}):`}
-          </Typography>
-          <ul>
-            {webUSBActivePorts.map((usbPort, index) => (
-              <Stack
-                component="li"
-                direction="row"
-                gap={2}
-                key={index}
-                alignItems="baseline"
-              >
-                <Typography variant="body1" component="span">
-                  {`Type: ${portDeviceLabels[usbPort.portDeviceType]}`}
-                </Typography>
-                <Typography variant="caption" component="span">
-                  {`"${usbPort.description}"`}
-                </Typography>
-              </Stack>
-            ))}
-          </ul>
         </Stack>
 
         <Stack
@@ -80,49 +80,50 @@ function ConnectSerial({ inline }: Props) {
             title="Open Web Serial device"
             onClick={openWebSerial}
             disabled={!webSerialEnabled}
-            loading={webSerialIsReceiving}
             loadingPosition="start"
             variant="contained"
             color="secondary"
           >
             Open Web Serial device
-            {webSerialIsReceiving ? ' (receiving)' : null}
           </Button>
-          <Typography variant="body2">
-            {`${webSerialActivePorts.length} devices connected`}
-          </Typography>
-          <ul>
-            {webSerialActivePorts.map((serialPort, index) => (
-              <Stack
-                component="li"
-                direction="row"
-                gap={2}
-                key={index}
-                alignItems="baseline"
-              >
-                <Typography variant="body1" component="span">
-                  {`Type: ${portDeviceLabels[serialPort.portDeviceType]}`}
-                </Typography>
-                <Typography variant="caption" component="span">
-                  {serialPort.description}
-                </Typography>
-              </Stack>
-            ))}
-          </ul>
         </Stack>
       </Stack>
+
+      <Typography variant="body2">
+        {`Connected devices (${connectedDevices.length}):`}
+      </Typography>
+      <ul>
+        {connectedDevices.map(({ id, portType, portDeviceType, description }) => {
+          const Icon = portType === PortType.SERIAL ? SettingsInputHdmiIcon : UsbIcon;
+          return (
+            <Stack
+              component="li"
+              direction="row"
+              gap={2}
+              key={id}
+              alignItems="baseline"
+            >
+              <Typography variant="body1" component="span">
+                <Icon sx={{
+                  fontSize: 'inherit',
+                  verticalAlign: 'middle',
+                  mr: 1,
+                }}/>
+                {`Type: ${portDeviceLabels[portDeviceType]}`}
+              </Typography>
+              <Typography variant="caption" component="span">
+                {enableDebug ? `${description} - ${id}` : description}
+              </Typography>
+            </Stack>
+          );
+        })}
+      </ul>
+
       <Button
         title="Show message from unrecognized device"
         onClick={() => {
           if (!unknownDeviceResponse) { return; }
-
-          const containsUnreadableChars = unknownDeviceResponse.bytes.some(byte => (
-            byte < 32 && byte !== 9 && byte !== 10 && byte !== 13  // tab, cr, lf
-          ));
-
-          const message = containsUnreadableChars ? [...unknownDeviceResponse.bytes].join(',') : unknownDeviceResponse.string;
-
-          alert(message);
+          setShowUnknownDeviceResponse(true);
         }}
         disabled={!(hasInactiveDevices && unknownDeviceResponse)}
         variant="contained"
@@ -130,6 +131,30 @@ function ConnectSerial({ inline }: Props) {
       >
         Show message from unrecognized device
       </Button>
+      <Lightbox
+        header="Unknown device info"
+        deny={() => setShowUnknownDeviceResponse(false)}
+        open={showUnknownDeviceResponse && Boolean(unknownDeviceResponse?.length)}
+      >
+        <Stack direction="column" gap={2}>
+          {unknownDeviceResponseInfo.map((value, index) => (
+            <Stack
+              key={index}
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography>{value}</Typography>
+              <IconButton
+                onClick={() => navigator.clipboard.writeText(value)}
+                title="Copy to clipboard"
+              >
+                <ContentCopyIcon />
+              </IconButton>
+            </Stack>
+          ))}
+        </Stack>
+      </Lightbox>
     </Stack>
   );
 }

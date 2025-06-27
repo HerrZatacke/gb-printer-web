@@ -27,7 +27,6 @@ import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import { GALLERY_BASE_PATH } from '@/contexts/galleryTree/Provider';
 import { usePortsContext } from '@/contexts/ports';
 import useNavigation from '@/hooks/useNavigation';
 import { useUrl } from '@/hooks/useUrl';
@@ -88,10 +87,7 @@ function Navigation() {
     setShowSerials,
   } = useNavigation();
 
-  const {
-    webSerialIsReceiving,
-    webUSBIsReceiving,
-  } = usePortsContext();
+  const { isReceiving } = usePortsContext();
 
   const trashCountSum = useMemo(() => (trashCount.frames + trashCount.images), [trashCount]);
 
@@ -169,7 +165,7 @@ function Navigation() {
         badgeContent: ((serialWarning && '!') || (portCount && portCount.toString(10)) || null),
         badgeColor: serialWarning ? NavBadgeColor.ERROR : NavBadgeColor.INFO,
         disabled: disableSerials,
-        isBusy: webSerialIsReceiving || webUSBIsReceiving,
+        isBusy: isReceiving,
         onClick: setShowSerials,
       } : null,
     ].reduce(reduceItems<NavActionItem>, [])
@@ -187,8 +183,7 @@ function Navigation() {
     trashCountSum,
     useSerials,
     useSync,
-    webSerialIsReceiving,
-    webUSBIsReceiving,
+    isReceiving,
   ]);
 
   return (
