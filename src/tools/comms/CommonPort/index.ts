@@ -178,6 +178,11 @@ export abstract class CommonPort extends EventEmitter {
     } else {
       // Unknown device type and no banner. Try to detect a "passive" device
 
+      const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{ length: 1, timeout: 100 }], true); // gbxcart version query
+      if (setJoeyGBxMode.length && setJoeyGBxMode[0] === 0xff) {
+        console.log('This could be a JoeyJr'); // ToDo: send this info to constructor ?
+      }
+
       const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
 
       if (readGBXVersion.length) {
