@@ -2,15 +2,21 @@ import { useState, useEffect } from 'react';
 import { SpecialTags } from '@/consts/SpecialTags';
 import useItemsStore from '@/stores/itemsStore';
 import type { Image } from '@/types/Image';
-import unique from '../tools/unique';
 
 export const getAvailableTags = (images: Image[]): string[] => {
-  const allTags = unique(images.map(({ tags }) => tags).flat());
-  return allTags
-    .filter((tag) => tag !== SpecialTags.FILTER_FAVOURITE)
-    .sort((a, b) => (
-      a.toLowerCase().localeCompare(b.toLowerCase())
-    ));
+  const tagSet = new Set<string>();
+
+  for (const { tags } of images) {
+    for (const tag of tags) {
+      if (tag !== SpecialTags.FILTER_FAVOURITE) {
+        tagSet.add(tag);
+      }
+    }
+  }
+
+  return Array.from(tagSet).sort((a, b) => (
+    a.toLowerCase().localeCompare(b.toLowerCase())
+  ));
 };
 
 export interface UseAvailableTags {
