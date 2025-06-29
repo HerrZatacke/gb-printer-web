@@ -11,6 +11,7 @@ interface UseGBXCart {
   gbxCartAvailable: boolean,
   readRAMImage: () => void,
   readPhotoRom: () => void,
+  readRomName: () => void,
 }
 
 export const useGBXCart = (): UseGBXCart => {
@@ -76,9 +77,16 @@ export const useGBXCart = (): UseGBXCart => {
     ], { fromPrinter: false });
   }, [gbxCart, handleFileImport]);
 
+  const readRomName = useCallback(async () => {
+    if (!gbxCart) { return; }
+    const romName = await gbxCart.readROMName();
+    console.log('nom name', romName);
+  }, [gbxCart]);
+
   return {
     gbxCartAvailable,
     readRAMImage,
     readPhotoRom,
+    readRomName,
   };
 };

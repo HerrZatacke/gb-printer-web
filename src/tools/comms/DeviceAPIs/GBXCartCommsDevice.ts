@@ -62,8 +62,11 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint8(11, 0);
     view.setUint8(12, 0);
 
+    console.log('sending: ', buffer);
     await this.device.send(new Uint8Array(buffer), [], true);
+    console.log('waitForAck');
     await this.waitForAck();
+    console.log('got Ack');
   }
 
   private async cartWrite(address: number, value: number) {
@@ -95,12 +98,17 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
   private async readROM(address: number, size: number): Promise<Uint8Array> {
     if (size > 0x40) { throw new Error('read size too big'); }
+    console.log(`setFwVariable('TRANSFER_SIZE', ${size})`);
     await this.setFwVariable('TRANSFER_SIZE', size);
+    console.log(`setFwVariable('ADDRESS', ${address})`);
     await this.setFwVariable('ADDRESS', address);
+    console.log(`setFwVariable('DMG_ACCESS_MODE', ${1})`);
     await this.setFwVariable('DMG_ACCESS_MODE', 1);
 
+    console.log('sending \'DMG_CART_READ\'');
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
     const [cartReadResult] = await this.device.send(readCommand, [{ length: size }], true);
+    console.log('result', cartReadResult);
 
     return cartReadResult;
   }
@@ -108,7 +116,9 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async readROMName(): Promise<string> {
     await this.setModeVoltage();
     const textDecoder = new TextDecoder();
+    console.log('readROM(0x134, 0x10):');
     const cartReadResult = await this.readROM(0x134, 0x10);
+    console.log('readResult', cartReadResult);
     const romName = textDecoder.decode(cartReadResult.filter((byte) => (byte !== 0 && byte !== 128)));
     return romName;
   }
