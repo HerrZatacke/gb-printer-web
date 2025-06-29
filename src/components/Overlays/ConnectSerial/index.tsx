@@ -95,29 +95,31 @@ function ConnectSerial({ inline }: Props) {
       <Stack
         component="ul"
         direction="column"
-        gap={inline ? 1 : 2}
+        gap={2}
       >
         {connectedDevices.map(({ id, portType, portDeviceType, description }) => {
           const Icon = portType === PortType.SERIAL ? SettingsInputHdmiIcon : UsbIcon;
           return (
             <Stack
-              component="li"
-              direction={inline ? 'row' : 'column'}
-              gap={inline ? 2 : 0}
               key={id}
-              alignItems="baseline"
+              gap={1}
+              direction="row"
+              alignItems="center"
             >
-              <Typography variant="body1" component="span">
-                <Icon sx={{
-                  fontSize: 'inherit',
-                  verticalAlign: 'middle',
-                  mr: 1,
-                }}/>
-                {`Type: ${portDeviceLabels[portDeviceType]}`}
-              </Typography>
-              <Typography variant="caption" component="span">
-                {enableDebug ? `${description} - ${id}` : description}
-              </Typography>
+              <Icon />
+              <Stack
+                component="li"
+                direction={inline ? 'row' : 'column'}
+                gap={inline ? 2 : 0}
+                alignItems="baseline"
+              >
+                <Typography variant="body1" component="span">
+                  {portDeviceLabels[portDeviceType]}
+                </Typography>
+                <Typography variant="caption" component="span">
+                  {enableDebug ? `${description} - ${id}` : description}
+                </Typography>
+              </Stack>
             </Stack>
           );
         })}

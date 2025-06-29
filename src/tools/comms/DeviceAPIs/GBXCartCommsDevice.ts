@@ -31,7 +31,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       device.getDescription(),
     ]
       .filter(Boolean)
-      .join(' ');
+      .join(' - ');
   }
 
   private async setFwVariable(varKey: keyof typeof GBXCartDeviceVars, varValue: number) {
