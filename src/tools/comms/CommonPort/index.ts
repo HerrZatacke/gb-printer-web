@@ -187,17 +187,15 @@ export abstract class CommonPort extends EventEmitter {
 
     // Unknown device type and no banner. Try to detect passive devices
 
-    // console.log('set joey mode');
-    //
-    // // Set possible JoeyJr into GBxCart mode
-    // let isJoeyJr = false;
-    // const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{
-    //   length: 1,
-    //   timeout: 100,
-    // }], true); // gbxcart version query
-    // if (setJoeyGBxMode.length && setJoeyGBxMode[0] === 0xff) {
-    //   isJoeyJr = true;
-    // }
+    // Set possible JoeyJr into GBxCart mode
+    let isJoeyJr = false;
+    const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{
+      timeout: 100,
+    }], true); // gbxcart version query
+    if (setJoeyGBxMode.length && setJoeyGBxMode[0] === 0xff) {
+      console.log('Joey says', [...setJoeyGBxMode]);
+      isJoeyJr = true;
+    }
 
     // Query GBxCart RW version
     const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
@@ -216,8 +214,8 @@ export abstract class CommonPort extends EventEmitter {
         [1, 14].includes(fwVer) &&
         [4, 5, 6, 101].includes(pcbVer) // PCB Version
       ) {
-        // return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
-        return new GBXCartCommsDevice(this, readGBXVersion, false);
+        return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
+        // return new GBXCartCommsDevice(this, readGBXVersion, false);
       }
 
       const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
