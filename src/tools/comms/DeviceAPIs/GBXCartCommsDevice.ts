@@ -26,7 +26,6 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     this.portType = device.portType;
     this.id = randomId();
     this.description = [
-      'GBxCart RW',
       isJoeyJr ? '(JoeyJr)' : '',
       GBXCartPCBVersions[version[4]] || 'Unknown PCB Version',
       device.getDescription(),
