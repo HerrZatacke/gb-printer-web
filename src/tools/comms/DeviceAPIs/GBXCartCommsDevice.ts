@@ -73,9 +73,8 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint8(1, size);
     view.setUint32(2, value, false);
     view.setUint32(6, varValue, false);
-    // view.setUint8(10, 0);
-    // view.setUint8(11, 0);
-    // view.setUint8(12, 0);
+
+    console.log(`setFwVariable('${varKey}', ${varValue})`);
 
     console.log('sending: ', [...(new Uint8Array(buffer))]);
     await this.device.send(new Uint8Array(buffer), [], true);
@@ -113,11 +112,8 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
   private async readROM(address: number, size: number): Promise<Uint8Array> {
     if (size > 0x40) { throw new Error('read size too big'); }
-    console.log(`setFwVariable('TRANSFER_SIZE', ${size})`);
     await this.setFwVariable('TRANSFER_SIZE', size);
-    console.log(`setFwVariable('ADDRESS', ${address})`);
     await this.setFwVariable('ADDRESS', address);
-    console.log(`setFwVariable('DMG_ACCESS_MODE', ${1})`);
     await this.setFwVariable('DMG_ACCESS_MODE', 1);
 
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
