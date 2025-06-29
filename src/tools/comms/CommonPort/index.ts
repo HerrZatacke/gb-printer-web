@@ -211,8 +211,8 @@ export abstract class CommonPort extends EventEmitter {
       const [
         ,
         cfwId,
-        ,
-        fwVer,
+        fwVerHigh,
+        fwVerLow,
         pcbVer,
         ,
         ,
@@ -221,16 +221,19 @@ export abstract class CommonPort extends EventEmitter {
         deviceNameLength,
       ] = readGBXVersion;
 
-      const deviceNameBytes = new Uint8Array((new DataView(readGBXVersion.buffer, 10, deviceNameLength - 1)).buffer, 10, deviceNameLength - 1);
-      const deviceName = this.textDecoder.decode(deviceNameBytes);
-      const powerControlSupport = readGBXVersion[deviceNameLength + 10];
-      const bootloaderResetSupport = readGBXVersion[deviceNameLength + 11];
+      // eslint-disable-next-line no-bitwise
+      const fwVer = fwVerHigh << 1 + fwVerLow;
 
-      console.log({
-        deviceName,
-        powerControlSupport,
-        bootloaderResetSupport,
-      });
+      let deviceName = '';
+      let powerControlSupport = false;
+      let bootloaderResetSupport = false;
+
+      if (readGBXVersion.byteLength > 10) {
+        const deviceNameBytes = new Uint8Array((new DataView(readGBXVersion.buffer, 10, deviceNameLength - 1)).buffer, 10, deviceNameLength - 1);
+        deviceName = this.textDecoder.decode(deviceNameBytes);
+        powerControlSupport = Boolean(readGBXVersion[deviceNameLength + 10]);
+        bootloaderResetSupport = Boolean(readGBXVersion[deviceNameLength + 11]);
+      }
 
       let pcbVersions: Record<number, string> = GBXCartPCBVersions;
       if (deviceName === 'GBFlash') {
@@ -238,7 +241,16 @@ export abstract class CommonPort extends EventEmitter {
       } else if (deviceName === 'Joey Jr') {
         pcbVersions = GBXCartJoeyPCBVersions;
       }
+
       const pcbVersionKeys = Object.keys(pcbVersions).map((k) => parseInt(k, 10));
+
+      console.log({
+        deviceName,
+        powerControlSupport,
+        bootloaderResetSupport,
+        pcbVersionKeys,
+        pcbVersions,
+      });
 
       if (
         (cfwId === 76) && // "L"
