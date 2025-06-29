@@ -257,13 +257,13 @@ export abstract class CommonPort extends EventEmitter {
         [1, 14].includes(fwVer) &&
         pcbVersionKeys.includes(pcbVer) // PCB Version
       ) {
-        return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
+        return new GBXCartCommsDevice(this, readGBXVersion, `${deviceName} ${pcbVersions[pcbVer]}`);
         // return new GBXCartCommsDevice(this, readGBXVersion, false);
       }
 
       const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
       this.disable();
-      return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW "${String.fromCharCode(cfwId)}${fwVer} ${pcbVersions[pcbVer]  || 'Unknown PCB Version'}" not recognized`);
+      return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW "${deviceName}" not recognized`);
     }
 
     // send cr/lf to see if anything else responds and return an inactive device

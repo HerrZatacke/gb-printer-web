@@ -22,7 +22,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   private setProgress: SetProgressCallback = (id: string, value: number) => { console.log(`${id} - ${Math.round(value * 100)}%`); };
   private stopProgress: StopProgressCallback = (id: string) => { console.log(`${id} - done`); };
 
-  constructor(device: CommonPort, version: Uint8Array, isJoeyJr: boolean) {
+  constructor(device: CommonPort, version: Uint8Array, pcbName: string) {
     this.device = device;
     this.portType = device.portType;
     this.fwVer = version[3];
@@ -39,12 +39,9 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     lk_conn_send_u8(LK_BOOTLOADER_RESET_SUPPORT); // 0 or 1
     * */
 
-    const pcbVersions = isJoeyJr ? GBXCartJoeyPCBVersions : GBXCartPCBVersions;
-
     this.id = randomId();
     this.description = [
-      isJoeyJr ? '(JoeyJr)' : '',
-      pcbVersions[version[4]] || 'Unknown PCB Version',
+      pcbName,
       device.getDescription(),
     ]
       .filter(Boolean)
