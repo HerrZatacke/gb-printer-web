@@ -190,7 +190,7 @@ export abstract class CommonPort extends EventEmitter {
     // Set possible JoeyJr into GBxCart mode
     let isJoeyJr = false;
     const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{
-      timeout: 100,
+      timeout: 250,
     }], true); // gbxcart version query
     if (setJoeyGBxMode.length && setJoeyGBxMode[0] === 0xff) {
       console.log('Joey says', [...setJoeyGBxMode]);
@@ -200,6 +200,8 @@ export abstract class CommonPort extends EventEmitter {
     // Query GBxCart RW version
     const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
     if (readGBXVersion.length) {
+
+      console.log('readGBXVersion', [...readGBXVersion]);
 
       const [
         ,
