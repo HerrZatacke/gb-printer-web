@@ -169,14 +169,12 @@ export abstract class CommonPort extends EventEmitter {
       ],
     });
 
-    console.log('detecting active devices');
     // Detect all active devices which send a banner by themselves
     const detectedDevice = await this.detectActiveTypes(bannerBytes);
     if (detectedDevice) {
       return detectedDevice;
     }
 
-    console.log('unknown banner');
     // Banner was received, but device type was not not recognized
     if (bannerBytes.byteLength) {
       const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get the rest of the banner
@@ -201,8 +199,6 @@ export abstract class CommonPort extends EventEmitter {
     //   isJoeyJr = true;
     // }
 
-    console.log('query GBx Version');
-
     // Query GBxCart RW version
     const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
     if (readGBXVersion.length) {
@@ -217,7 +213,7 @@ export abstract class CommonPort extends EventEmitter {
 
       if (
         (cfwId === 76) && // "L"
-        fwVer === 1 && // only one i can test right now
+        [1, 14].includes(fwVer) &&
         [4, 5, 6, 101].includes(pcbVer) // PCB Version
       ) {
         // return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
@@ -228,8 +224,6 @@ export abstract class CommonPort extends EventEmitter {
       this.disable();
       return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW "${String.fromCharCode(cfwId)}${fwVer} ${GBXCartPCBVersions[pcbVer]  || 'Unknown PCB Version'}" not recognized`);
     }
-
-    console.log('trying crlf');
 
     // send cr/lf to see if anything else responds and return an inactive device
     const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 250 }], true);
