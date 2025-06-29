@@ -93,3 +93,8 @@ export const GBXCartJoeyPCBVersions: Record<number, string> = {
   0x03: 'V2CC',
   0x83: 'V2CC/V2++',
 };
+
+export const GBXCartGBFlashPCBVersions: Record<number, string> = {
+  12: 'v1.2',
+  13:'v1.3',
+};

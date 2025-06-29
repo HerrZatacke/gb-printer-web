@@ -1,5 +1,10 @@
 import EventEmitter from 'events';
-import { GBXCartCommands, GBXCartJoeyPCBVersions, GBXCartPCBVersions } from '@/consts/gbxCart';
+import {
+  GBXCartCommands,
+  GBXCartGBFlashPCBVersions,
+  GBXCartJoeyPCBVersions,
+  GBXCartPCBVersions
+} from '@/consts/gbxCart';
 import { PortType } from '@/consts/ports';
 import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
@@ -209,9 +214,30 @@ export abstract class CommonPort extends EventEmitter {
         ,
         fwVer,
         pcbVer,
+        ,
+        ,
+        ,
+        ,
+        deviceNameLength,
       ] = readGBXVersion;
 
-      const pcbVersions = isJoeyJr ? GBXCartJoeyPCBVersions : GBXCartPCBVersions;
+      const deviceNameBytes = new Uint8Array((new DataView(readGBXVersion.buffer, 10, deviceNameLength - 1)).buffer);
+      const deviceName = this.textDecoder.decode(deviceNameBytes);
+      const powerControlSupport = readGBXVersion[deviceNameLength + 10];
+      const bootloaderResetSupport = readGBXVersion[deviceNameLength + 11];
+
+      console.log({
+        deviceName,
+        powerControlSupport,
+        bootloaderResetSupport,
+      });
+
+      let pcbVersions: Record<number, string> = GBXCartPCBVersions;
+      if (deviceName === 'GBFlash') {
+        pcbVersions = GBXCartGBFlashPCBVersions;
+      } else if (deviceName === 'Joey Jr') {
+        pcbVersions = GBXCartJoeyPCBVersions;
+      }
       const pcbVersionKeys = Object.keys(pcbVersions).map((k) => parseInt(k, 10));
 
       if (
