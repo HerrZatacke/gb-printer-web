@@ -158,7 +158,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       ,
       cfwId,
       ,
-      fvVer,
+      fwVer,
       pcbVer,
     ] = firmwareResult;
 
@@ -168,7 +168,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
     console.log({
       cfwId: String.fromCharCode(cfwId),
-      fvVer,
+      fwVer,
       pcbVer: GBXCartPCBVersions[pcbVer],
       timestamp,
       date: date.toISOString(),
