@@ -220,7 +220,8 @@ export abstract class CommonPort extends EventEmitter {
         fwVer === 1 && // only one i can test right now
         [4, 5, 6, 101].includes(pcbVer) // PCB Version
       ) {
-        return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
+        // return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
+        return new GBXCartCommsDevice(this, readGBXVersion, false);
       }
 
       const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
