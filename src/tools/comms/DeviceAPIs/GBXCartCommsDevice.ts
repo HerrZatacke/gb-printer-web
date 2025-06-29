@@ -37,6 +37,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   }
 
   private async waitForAck(timeout = 1000) : Promise<void> {
+    console.log('waitForAck');
     if (this.fwVer < 12) { return; }
 
     const values = [0x01, 0x03];
@@ -45,6 +46,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     if (!values.includes(result)) {
       throw new Error('no ack received');
     }
+    console.log('got Ack');
   }
 
   private async setFwVariable(varKey: keyof typeof GBXCartDeviceVars, varValue: number) {
@@ -64,9 +66,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
     console.log('sending: ', [...(new Uint8Array(buffer))]);
     await this.device.send(new Uint8Array(buffer), [], true);
-    console.log('waitForAck');
     await this.waitForAck();
-    console.log('got Ack');
   }
 
   private async cartWrite(address: number, value: number) {
@@ -79,6 +79,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint8(5, value & 0xFF);
     /* eslint-enable no-bitwise */
 
+    console.log('cartWrite sending: ', [...(new Uint8Array(buffer))]);
     await this.device.send(new Uint8Array(buffer), [], true);
     await this.waitForAck();
   }
@@ -91,6 +92,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     await this.setFwVariable('DMG_READ_CS_PULSE', 1);
 
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
+    console.log('readRAM sending readCommand: ', [...(new Uint8Array(readCommand))]);
     const [cartReadResult] = await this.device.send(readCommand, [{ length: size }], true);
 
     return cartReadResult;
@@ -105,8 +107,8 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     console.log(`setFwVariable('DMG_ACCESS_MODE', ${1})`);
     await this.setFwVariable('DMG_ACCESS_MODE', 1);
 
-    console.log('sending \'DMG_CART_READ\'');
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
+    console.log('sending \'DMG_CART_READ\': ', [...(new Uint8Array(readCommand))]);
     const [cartReadResult] = await this.device.send(readCommand, [{ length: size }], true);
     console.log('result', cartReadResult);
 
@@ -177,6 +179,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async checkFirmware() {
     this.setModeVoltage();
     const message = new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]);
+    console.log('sending \'QUERY_FW_INFO\': ', [...(new Uint8Array(message))]);
     const [firmwareResult] = await this.device.send(message, [{ length: 9 }], true);
 
     const [
@@ -203,8 +206,10 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async setModeVoltage() {
     const setModeCommand = new Uint8Array([GBXCartCommands['SET_MODE_DMG']]);
     const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
+    console.log('sending \'SET_MODE_DMG\': ', [...(new Uint8Array(setModeCommand))]);
     await this.device.send(setModeCommand, [], true);
     await this.waitForAck();
+    console.log('sending \'SET_VOLTAGE_5V\': ', [...(new Uint8Array(setVoltageCommand))]);
     await this.device.send(setVoltageCommand, [], true);
     await this.waitForAck();
   }
