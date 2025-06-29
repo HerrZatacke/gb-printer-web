@@ -51,16 +51,16 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     const { size, value } = GBXCartDeviceVars[varKey];
     const commandValue = GBXCartCommands['SET_VARIABLE'];
 
-    const buffer = new ArrayBuffer(13);
+    const buffer = new ArrayBuffer(10);
     const view = new DataView(buffer);
 
     view.setUint8(0, commandValue);
     view.setUint8(1, size);
     view.setUint32(2, value, false);
     view.setUint32(6, varValue, false);
-    view.setUint8(10, 0);
-    view.setUint8(11, 0);
-    view.setUint8(12, 0);
+    // view.setUint8(10, 0);
+    // view.setUint8(11, 0);
+    // view.setUint8(12, 0);
 
     console.log('sending: ', [...(new Uint8Array(buffer))]);
     await this.device.send(new Uint8Array(buffer), [], true);
