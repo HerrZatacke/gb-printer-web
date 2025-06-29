@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { GBXCartCommands, GBXCartPCBVersions } from '@/consts/gbxCart';
+import { GBXCartCommands, GBXCartJoeyPCBVersions, GBXCartPCBVersions } from '@/consts/gbxCart';
 import { PortType } from '@/consts/ports';
 import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
@@ -211,10 +211,13 @@ export abstract class CommonPort extends EventEmitter {
         pcbVer,
       ] = readGBXVersion;
 
+      const pcbVersions = isJoeyJr ? GBXCartJoeyPCBVersions : GBXCartPCBVersions;
+      const pcbVersionKeys = Object.keys(pcbVersions).map((k) => parseInt(k, 10));
+
       if (
         (cfwId === 76) && // "L"
         [1, 14].includes(fwVer) &&
-        [4, 5, 6, 101].includes(pcbVer) // PCB Version
+        pcbVersionKeys.includes(pcbVer) // PCB Version
       ) {
         return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
         // return new GBXCartCommsDevice(this, readGBXVersion, false);
@@ -222,7 +225,7 @@ export abstract class CommonPort extends EventEmitter {
 
       const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
       this.disable();
-      return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW "${String.fromCharCode(cfwId)}${fwVer} ${GBXCartPCBVersions[pcbVer]  || 'Unknown PCB Version'}" not recognized`);
+      return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW "${String.fromCharCode(cfwId)}${fwVer} ${pcbVersions[pcbVer]  || 'Unknown PCB Version'}" not recognized`);
     }
 
     // send cr/lf to see if anything else responds and return an inactive device

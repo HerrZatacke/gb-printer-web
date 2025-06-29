@@ -1,4 +1,4 @@
-import { GBXCartCommands, GBXCartDeviceVars, GBXCartPCBVersions } from '@/consts/gbxCart';
+import { GBXCartCommands, GBXCartDeviceVars, GBXCartJoeyPCBVersions, GBXCartPCBVersions } from '@/consts/gbxCart';
 import { PortDeviceType, PortType } from '@/consts/ports';
 import { CommonPort } from '@/tools/comms/CommonPort';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
@@ -39,10 +39,12 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     lk_conn_send_u8(LK_BOOTLOADER_RESET_SUPPORT); // 0 or 1
     * */
 
+    const pcbVersions = isJoeyJr ? GBXCartJoeyPCBVersions : GBXCartPCBVersions;
+
     this.id = randomId();
     this.description = [
       isJoeyJr ? '(JoeyJr)' : '',
-      GBXCartPCBVersions[version[4]] || 'Unknown PCB Version',
+      pcbVersions[version[4]] || 'Unknown PCB Version',
       device.getDescription(),
     ]
       .filter(Boolean)

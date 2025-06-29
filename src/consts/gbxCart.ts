@@ -84,3 +84,12 @@ export const GBXCartPCBVersions: Record<number, string> = {
   6: 'v1.4a',
   101: 'Mini v1.0d',
 };
+
+export const GBXCartJoeyPCBVersions: Record<number, string> = {
+  0x01: 'V2',
+  0x81: 'V2',
+  0x02: 'V2C',
+  0x82: 'V2C',
+  0x03: 'V2CC',
+  0x83: 'V2CC/V2++',
+};
