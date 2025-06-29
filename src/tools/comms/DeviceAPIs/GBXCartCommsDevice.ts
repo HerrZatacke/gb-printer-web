@@ -21,12 +21,18 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   private setProgress: SetProgressCallback = (id: string, value: number) => { console.log(`${id} - ${Math.round(value * 100)}%`); };
   private stopProgress: StopProgressCallback = (id: string) => { console.log(`${id} - done`); };
 
-  constructor(device: CommonPort, version: Uint8Array) {
+  constructor(device: CommonPort, version: Uint8Array, isJoeyJr: boolean) {
     this.device = device;
     this.portType = device.portType;
     this.id = randomId();
-    const pcbVersion = version[4];
-    this.description = `GBxCart RW ${GBXCartPCBVersions[pcbVersion]} ${device.getDescription()}`;
+    this.description = [
+      'GBxCart RW',
+      isJoeyJr ? '(JoeyJr)' : '',
+      GBXCartPCBVersions[version[4]] || 'Unknown PCB Version',
+      device.getDescription(),
+    ]
+      .filter(Boolean)
+      .join(' ');
   }
 
   private async setFwVariable(varKey: keyof typeof GBXCartDeviceVars, varValue: number) {

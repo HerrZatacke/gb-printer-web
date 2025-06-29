@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import hasher from 'object-hash';
 import { GBXCartCommands } from '@/consts/gbxCart';
-import { PortDeviceType, PortType } from '@/consts/ports';
+import { PortType } from '@/consts/ports';
 import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
@@ -18,7 +18,7 @@ const DETECT_SUPER_PRINTER_INTERFACE = 'Super Printer Interface by Raphaël BOIC
 
 export abstract class CommonPort extends EventEmitter {
   public readonly portType: PortType;
-  public portDeviceType: PortDeviceType;
+  // public portDeviceType: PortDeviceType;
   private textDecoder: TextDecoder;
   private textEncoder: TextEncoder;
   private bufferedData: Uint8Array | null;
@@ -26,7 +26,7 @@ export abstract class CommonPort extends EventEmitter {
 
   protected constructor(portType: PortType) {
     super();
-    this.portDeviceType = PortDeviceType.UNKNOWN;
+    // this.portDeviceType = PortDeviceType.UNKNOWN;
     this.portType = portType;
     this.textDecoder = new TextDecoder();
     this.textEncoder = new TextEncoder();
@@ -121,20 +121,22 @@ export abstract class CommonPort extends EventEmitter {
     });
   }
 
-  private detectActiveTypes(bytes: Uint8Array) {
-    const detectString = this.textDecoder.decode(bytes);
-
+  private async detectActiveTypes(bytes: Uint8Array): Promise<BaseCommsDevice | null> {
     if (
-      (detectString.indexOf(DETECT_PACKET_CAPTURE) !== -1) || // Raw Packet mode
-      (detectString.indexOf(DETECT_PRINTER_EMULATOR) !== -1) // Hex encoded Tiles
+      (findSubarray(bytes, this.textEncoder.encode(DETECT_PACKET_CAPTURE)) !== -1) || // Raw Packet mode
+      (findSubarray(bytes, this.textEncoder.encode(DETECT_PRINTER_EMULATOR)) !== -1) // Hex encoded Tiles
     ) {
       // https://github.com/mofosyne/arduino-gameboy-printer-emulator/blob/master/GameBoyPrinterEmulator/GameBoyPrinterEmulator.ino
-      this.portDeviceType = PortDeviceType.PACKET_CAPTURE;
-    } else if (detectString.indexOf(DETECT_SUPER_PRINTER_INTERFACE) !== -1) {
+      await this.read({ timeout: 500 }); // flush the rest of the banner
+      return new CaptureCommsDevice(this);
+    } else if (
+      findSubarray(bytes, this.textEncoder.encode(DETECT_SUPER_PRINTER_INTERFACE)) !== -1
+    ) {
       // https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/blob/main/Super_Printer_interface/Super_Printer_interface.ino
-      this.portDeviceType = PortDeviceType.SUPER_PRINTER_INTERFACE;
-      // ToDo:       this.readTimeoutDuration = 10;
+      return new SuperPrinterCommsDevice(this);
     }
+
+    return null;
   };
 
   async send(data: BufferSource, readParamss: ReadParams[], flush: boolean): Promise<Uint8Array[]> {
@@ -163,69 +165,46 @@ export abstract class CommonPort extends EventEmitter {
       ],
     });
 
-    this.detectActiveTypes(bannerBytes);
-
-    let unknownBanner: Uint8Array = new Uint8Array();
-
-    if (this.portDeviceType !== PortDeviceType.UNKNOWN) {
-      // A known device type was recognized -> clear buffer to remove "rest" of banner
-      this.bufferedData = null;
-    } else if (bannerBytes.byteLength) {
-      // Banner was received, but device type was not not recognized
-      unknownBanner = bannerBytes;
-      this.portDeviceType = PortDeviceType.INACTIVE;
-    } else {
-      // Unknown device type and no banner. Try to detect a "passive" device
-
-      const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{ length: 1, timeout: 100 }], true); // gbxcart version query
-      if (setJoeyGBxMode.length && setJoeyGBxMode[0] === 0xff) {
-        console.log('This could be a JoeyJr'); // ToDo: send this info to constructor ?
-      }
-
-      const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
-
-      if (readGBXVersion.length) {
-        if ([
-          'a0a69f6fd5747a0cafe5a287e957780c4224f009',
-        ].includes(hasher([...readGBXVersion]))) {
-          unknownBanner = readGBXVersion;
-          this.portDeviceType = PortDeviceType.GBXCART;
-        } else {
-          unknownBanner = readGBXVersion;
-          this.portDeviceType = PortDeviceType.INACTIVE;
-        }
-
-      } else {
-        const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 250 }], true); // cr/lf
-
-        if (readCrLf.byteLength) {
-          unknownBanner = readCrLf;
-          this.portDeviceType = PortDeviceType.INACTIVE;
-        }
-      }
+    // Detect all active devices which send a banner by themselves
+    const detectedDevice = await this.detectActiveTypes(bannerBytes);
+    if (detectedDevice) {
+      return detectedDevice;
     }
 
-    switch (this.portDeviceType) {
-      case PortDeviceType.PACKET_CAPTURE: {
-        await this.read({ timeout: 500 }); // flush the rest of the banner
-        return new CaptureCommsDevice(this);
-      }
-
-      case PortDeviceType.SUPER_PRINTER_INTERFACE: {
-        return new SuperPrinterCommsDevice(this);
-      }
-
-      case PortDeviceType.GBXCART: {
-        return new GBXCartCommsDevice(this, unknownBanner);
-      }
-
-      case PortDeviceType.INACTIVE:
-      case PortDeviceType.UNKNOWN:
-      default: {
-        const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
-        return new InactiveCommsDevice(this, appendUint8Arrays([unknownBanner, moreBytes]));
-      }
+    // Banner was received, but device type was not not recognized
+    if (bannerBytes.byteLength) {
+      const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
+      return new InactiveCommsDevice(this, appendUint8Arrays([bannerBytes, moreBytes]), 'Banner not recognized');
     }
+
+    // Unknown device type and no banner. Try to detect passive devices
+
+    // Set possible JoeyJr into GBxCart mode
+    let isJoeyJr = false;
+    const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{
+      length: 1,
+      timeout: 100,
+    }], true); // gbxcart version query
+    if (setJoeyGBxMode.length && setJoeyGBxMode[0] === 0xff) {
+      isJoeyJr = true;
+    }
+
+    // Query GBxCart RW version
+    const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
+    if (readGBXVersion.length) {
+      if ([
+        'a0a69f6fd5747a0cafe5a287e957780c4224f009',
+      ].includes(hasher([...readGBXVersion]))) {
+        return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
+      }
+
+      const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
+      return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), 'GBXCart version not recognized');
+    }
+
+    // send cr/lf to see if anything else responds and return an inactive device
+    const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 250 }], true);
+    return new InactiveCommsDevice(this, readCrLf, 'CrLf response not recognized');
   }
 }
 
