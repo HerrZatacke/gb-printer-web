@@ -221,7 +221,7 @@ export abstract class CommonPort extends EventEmitter {
         deviceNameLength,
       ] = readGBXVersion;
 
-      const deviceNameBytes = new Uint8Array((new DataView(readGBXVersion.buffer, 10, deviceNameLength - 1)).buffer);
+      const deviceNameBytes = new Uint8Array((new DataView(readGBXVersion.buffer, 10, deviceNameLength - 1)).buffer, 10, deviceNameLength - 1);
       const deviceName = this.textDecoder.decode(deviceNameBytes);
       const powerControlSupport = readGBXVersion[deviceNameLength + 10];
       const bootloaderResetSupport = readGBXVersion[deviceNameLength + 11];
