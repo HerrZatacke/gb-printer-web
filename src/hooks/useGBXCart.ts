@@ -40,7 +40,7 @@ export const useGBXCart = (): UseGBXCart => {
         stopProgress,
       }));
 
-      await gbxCart.checkFirmware();
+      // await gbxCart.checkFirmware();
     };
 
     setupCallbacks();
