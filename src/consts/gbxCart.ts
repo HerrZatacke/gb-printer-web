@@ -26,6 +26,7 @@ export const GBXCartCommands: Record<string, number> = {
   'SET_MODE_DMG': 0xA3,
   'SET_VOLTAGE_3_3V': 0xA4,
   'SET_VOLTAGE_5V': 0xA5,
+  'CART_PWR_ON': 0xF2,
   'SET_VARIABLE': 0xA6,
   'SET_FLASH_CMD': 0xA7,
   'SET_ADDR_AS_INPUTS': 0xA8,
