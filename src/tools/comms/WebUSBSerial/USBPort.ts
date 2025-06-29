@@ -1,4 +1,4 @@
-import { PortDeviceType, PortType } from '@/consts/ports';
+import { PortType } from '@/consts/ports';
 import { CommonPort } from '@/tools/comms/CommonPort';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 
@@ -22,7 +22,7 @@ class CommonUSBPort extends CommonPort {
     return Boolean(
       this.device &&
       this.device.opened &&
-      this.portDeviceType !== PortDeviceType.INACTIVE);
+      this.enabled);
   }
 
   getDescription(): string {

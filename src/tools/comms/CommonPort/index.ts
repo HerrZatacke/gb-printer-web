@@ -23,6 +23,7 @@ export abstract class CommonPort extends EventEmitter {
   private textEncoder: TextEncoder;
   private bufferedData: Uint8Array | null;
   private readQueue: Promise<void>;
+  protected enabled: boolean = true;
 
   protected constructor(portType: PortType) {
     super();
@@ -38,6 +39,10 @@ export abstract class CommonPort extends EventEmitter {
   protected abstract readChunk(): Promise<Uint8Array>;
   protected abstract sendRaw(data: BufferSource): Promise<void>;
   abstract getDescription(): string;
+
+  disable() {
+    this.enabled = false;
+  }
 
   protected startBuffering(bufferIdleTime: number) {
     (async () => {
@@ -174,6 +179,7 @@ export abstract class CommonPort extends EventEmitter {
     // Banner was received, but device type was not not recognized
     if (bannerBytes.byteLength) {
       const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
+      this.disable();
       return new InactiveCommsDevice(this, appendUint8Arrays([bannerBytes, moreBytes]), 'Banner not recognized');
     }
 
@@ -199,11 +205,13 @@ export abstract class CommonPort extends EventEmitter {
       }
 
       const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
+      this.disable();
       return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), 'GBXCart version not recognized');
     }
 
     // send cr/lf to see if anything else responds and return an inactive device
     const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 250 }], true);
+    this.disable();
     return new InactiveCommsDevice(this, readCrLf, 'CrLf response not recognized');
   }
 }
