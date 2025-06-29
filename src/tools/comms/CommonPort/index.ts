@@ -222,7 +222,7 @@ export abstract class CommonPort extends EventEmitter {
       ] = readGBXVersion;
 
       // eslint-disable-next-line no-bitwise
-      const fwVer = fwVerHigh << 1 + fwVerLow;
+      const fwVer = (fwVerHigh << 8) + fwVerLow;
 
       let deviceName = '';
       let powerControlSupport = false;
@@ -250,6 +250,10 @@ export abstract class CommonPort extends EventEmitter {
         bootloaderResetSupport,
         pcbVersionKeys,
         pcbVersions,
+        fwVer,
+        pcbVer,
+        fwVerHigh,
+        fwVerLow,
       });
 
       if (
