@@ -233,6 +233,8 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     console.log('sending \'SET_VOLTAGE_5V\': ', [...(new Uint8Array(setVoltageCommand))]);
     await this.device.send(setVoltageCommand, [], true);
     await this.waitForAck();
+
+    await this.setFwVariable('DMG_READ_METHOD', 1);
   }
 
   async setup({ startProgress, setProgress, stopProgress }: SetupParams) {
