@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
-import hasher from 'object-hash';
-import { GBXCartCommands } from '@/consts/gbxCart';
+import { GBXCartCommands, GBXCartPCBVersions } from '@/consts/gbxCart';
 import { PortType } from '@/consts/ports';
 import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
@@ -178,9 +177,12 @@ export abstract class CommonPort extends EventEmitter {
 
     // Banner was received, but device type was not not recognized
     if (bannerBytes.byteLength) {
-      const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
-      this.disable();
-      return new InactiveCommsDevice(this, appendUint8Arrays([bannerBytes, moreBytes]), 'Banner not recognized');
+      const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get the rest of the banner
+
+      // Skip creating an inactive device until all GBxCart stuff is clear
+      // this.disable();
+      // return new InactiveCommsDevice(this, appendUint8Arrays([bannerBytes, moreBytes]), 'Banner not recognized');
+      console.log('Unknown Banner', appendUint8Arrays([bannerBytes, moreBytes]));
     }
 
     // Unknown device type and no banner. Try to detect passive devices
@@ -198,15 +200,26 @@ export abstract class CommonPort extends EventEmitter {
     // Query GBxCart RW version
     const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
     if (readGBXVersion.length) {
-      if ([
-        'a0a69f6fd5747a0cafe5a287e957780c4224f009',
-      ].includes(hasher([...readGBXVersion]))) {
+
+      const [
+        ,
+        cfwId,
+        ,
+        fwVer,
+        pcbVer,
+      ] = readGBXVersion;
+
+      if (
+        (cfwId === 76) && // "L"
+        fwVer === 1 && // only one i can test right now
+        [4, 5, 6, 101].includes(pcbVer) // PCB Version
+      ) {
         return new GBXCartCommsDevice(this, readGBXVersion, isJoeyJr);
       }
 
-      const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // flush the rest of the banner
+      const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
       this.disable();
-      return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), 'GBXCart version not recognized');
+      return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW "${String.fromCharCode(cfwId)}${fwVer} ${GBXCartPCBVersions[pcbVer]  || 'Unknown PCB Version'}" not recognized`);
     }
 
     // send cr/lf to see if anything else responds and return an inactive device

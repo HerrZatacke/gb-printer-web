@@ -184,7 +184,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     console.log({
       cfwId: String.fromCharCode(cfwId),
       fwVer,
-      pcbVer: GBXCartPCBVersions[pcbVer],
+      pcbVer: GBXCartPCBVersions[pcbVer] || 'Unknown PCB Version',
       timestamp,
       date: date.toISOString(),
     });
