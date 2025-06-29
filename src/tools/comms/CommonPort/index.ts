@@ -76,11 +76,10 @@ export abstract class CommonPort extends EventEmitter {
         }
       }
     } else if (texts instanceof Array) {
-      const needles: Uint8Array[] = texts.map((text) => this.textEncoder.encode(text));
-      if (needles.length === 0) { run = false; }
+      if (texts.length === 0) { run = false; }
       while (run) {
         if (this.bufferedData && this.bufferedData.byteLength) {
-          const needleIndex = needles
+          const needleIndex = texts
             .map(needle => ({
               needle,
               index: findSubarray(this.bufferedData as Uint8Array, needle),
@@ -158,9 +157,9 @@ export abstract class CommonPort extends EventEmitter {
     const bannerBytes = await this.read({
       timeout: 4000,
       texts: [
-        DETECT_PACKET_CAPTURE,
-        DETECT_PRINTER_EMULATOR,
-        DETECT_SUPER_PRINTER_INTERFACE,
+        this.textEncoder.encode(DETECT_PACKET_CAPTURE),
+        this.textEncoder.encode(DETECT_PRINTER_EMULATOR),
+        this.textEncoder.encode(DETECT_SUPER_PRINTER_INTERFACE),
       ],
     });
 

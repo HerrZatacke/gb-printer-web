@@ -23,6 +23,7 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
   private device: CommonPort;
   public readonly portDeviceType = PortDeviceType.SUPER_PRINTER_INTERFACE;
   private textDecoder: TextDecoder = new TextDecoder();
+  private textEncoder: TextEncoder = new TextEncoder();
   private startProgress: StartProgressCallback = async (label: string): Promise<string> => { console.log(label); return '#'; };
   private setProgress: SetProgressCallback = (id: string, value: number) => { console.log(`${id} - ${Math.round(value * 100)}%`); };
   private stopProgress: StopProgressCallback = (id: string) => { console.log(`${id} - done`); };
@@ -72,8 +73,18 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
       if (command?.byteLength) {
         this.setProgress(progressHandle, (totalCommands - commands.length) / totalCommands);
         const queries: ReadParams[] = [
-          { length: command.byteLength }, // read command echo
-          { texts: ['Printer ready', 'Packet error'], timeout: 20000 }, // wait for ready or error, 20s is safe above maximum print duration.
+          {
+            // read command echo
+            length: command.byteLength,
+          },
+          {
+            texts: [
+              this.textEncoder.encode('Printer ready'),
+              this.textEncoder.encode('Packet error'),
+            ],
+            // wait for ready or error, 20s is safe above maximum print duration.
+            timeout: 20000,
+          },
         ];
 
         const [echo, responseBytes] = await this.device.send(command, queries, true);
