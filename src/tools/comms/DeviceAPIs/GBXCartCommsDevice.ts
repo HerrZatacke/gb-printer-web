@@ -62,7 +62,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint8(11, 0);
     view.setUint8(12, 0);
 
-    console.log('sending: ', buffer);
+    console.log('sending: ', [...(new Uint8Array(buffer))]);
     await this.device.send(new Uint8Array(buffer), [], true);
     console.log('waitForAck');
     await this.waitForAck();
