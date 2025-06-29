@@ -26,6 +26,19 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     this.device = device;
     this.portType = device.portType;
     this.fwVer = version[3];
+
+    /*  ToDo handle whole possible data
+    lk_conn_send_u8(8);
+    lk_conn_send_u8('L');
+    lk_conn_send_u16(LK_FIRMWARE_VERSION);
+    lk_conn_send_u8(LK_PCB_VERSION);
+    lk_conn_send_u32(__BUILD_TIMESTAMP__);
+    lk_conn_send_u8(sizeof(LK_DEVICE_NAME)); // e.g. 0xB
+    lk_conn_send((u8*)LK_DEVICE_NAME, sizeof(LK_DEVICE_NAME)); // e.g. "GBxCart RW"
+    lk_conn_send_u8(LK_POWER_CONTROL_SUPPORT); // 0 or 1
+    lk_conn_send_u8(LK_BOOTLOADER_RESET_SUPPORT); // 0 or 1
+    * */
+
     this.id = randomId();
     this.description = [
       isJoeyJr ? '(JoeyJr)' : '',
@@ -206,9 +219,17 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async setModeVoltage() {
     const setModeCommand = new Uint8Array([GBXCartCommands['SET_MODE_DMG']]);
     const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
+    const setPwrOnCommand = new Uint8Array([GBXCartCommands['CART_PWR_ON']]);
+
     console.log('sending \'SET_MODE_DMG\': ', [...(new Uint8Array(setModeCommand))]);
     await this.device.send(setModeCommand, [], true);
     await this.waitForAck();
+
+    // ToDo: base sending on LK_POWER_CONTROL_SUPPORT
+    console.log('sending \'CART_PWR_ON\': ', [...(new Uint8Array(setPwrOnCommand))]);
+    await this.device.send(setPwrOnCommand, [], true);
+    await this.waitForAck();
+
     console.log('sending \'SET_VOLTAGE_5V\': ', [...(new Uint8Array(setVoltageCommand))]);
     await this.device.send(setVoltageCommand, [], true);
     await this.waitForAck();
