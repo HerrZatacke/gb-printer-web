@@ -219,14 +219,14 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async setModeVoltage() {
     const setModeCommand = new Uint8Array([GBXCartCommands['SET_MODE_DMG']]);
     const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
-    const setPwrOnCommand = new Uint8Array([GBXCartCommands['CART_PWR_ON']]);
+    const setPwrOnCommand = new Uint8Array([GBXCartCommands['OFW_CART_PWR_ON']]);
 
     console.log('sending \'SET_MODE_DMG\': ', [...(new Uint8Array(setModeCommand))]);
     await this.device.send(setModeCommand, [], true);
     await this.waitForAck();
 
     // ToDo: base sending on LK_POWER_CONTROL_SUPPORT
-    console.log('sending \'CART_PWR_ON\': ', [...(new Uint8Array(setPwrOnCommand))]);
+    console.log('sending \'OFW_CART_PWR_ON\': ', [...(new Uint8Array(setPwrOnCommand))]);
     await this.device.send(setPwrOnCommand, [], true);
     await this.waitForAck();
 
