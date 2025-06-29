@@ -3,7 +3,7 @@ import {
   GBXCartCommands,
   GBXCartGBFlashPCBVersions,
   GBXCartJoeyPCBVersions,
-  GBXCartPCBVersions
+  GBXCartPCBVersions,
 } from '@/consts/gbxCart';
 import { PortType } from '@/consts/ports';
 import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
