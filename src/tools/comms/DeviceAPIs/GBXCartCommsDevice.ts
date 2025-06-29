@@ -17,6 +17,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public readonly description: string;
   public readonly portDeviceType = PortDeviceType.GBXCART;
   public readonly portType: PortType;
+  private readonly fwVer: number;
   private startProgress: StartProgressCallback = async (label: string): Promise<string> => { console.log(label); return '#'; };
   private setProgress: SetProgressCallback = (id: string, value: number) => { console.log(`${id} - ${Math.round(value * 100)}%`); };
   private stopProgress: StopProgressCallback = (id: string) => { console.log(`${id} - done`); };
@@ -24,6 +25,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   constructor(device: CommonPort, version: Uint8Array, isJoeyJr: boolean) {
     this.device = device;
     this.portType = device.portType;
+    this.fwVer = version[3];
     this.id = randomId();
     this.description = [
       isJoeyJr ? '(JoeyJr)' : '',
@@ -32,6 +34,17 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     ]
       .filter(Boolean)
       .join(' - ');
+  }
+
+  private async waitForAck(timeout = 1000) : Promise<void> {
+    if (this.fwVer < 12) { return; }
+
+    const values = [0x01, 0x03];
+    const [result] = await this.device.read({ length: 1, timeout });
+
+    if (!values.includes(result)) {
+      throw new Error('no ack received');
+    }
   }
 
   private async setFwVariable(varKey: keyof typeof GBXCartDeviceVars, varValue: number) {
@@ -50,6 +63,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint8(12, 0);
 
     await this.device.send(new Uint8Array(buffer), [], true);
+    await this.waitForAck();
   }
 
   private async cartWrite(address: number, value: number) {
@@ -63,6 +77,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     /* eslint-enable no-bitwise */
 
     await this.device.send(new Uint8Array(buffer), [], true);
+    await this.waitForAck();
   }
 
   private async readRAM(address: number, size: number): Promise<Uint8Array> {
@@ -176,8 +191,12 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   }
 
   public async setModeVoltage() {
-    const setModeVoltageCommand = new Uint8Array([GBXCartCommands['SET_MODE_DMG'], GBXCartCommands['SET_VOLTAGE_5V']]);
-    await this.device.send(setModeVoltageCommand, [], true);
+    const setModeCommand = new Uint8Array([GBXCartCommands['SET_MODE_DMG']]);
+    const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
+    await this.device.send(setModeCommand, [], true);
+    await this.waitForAck();
+    await this.device.send(setVoltageCommand, [], true);
+    await this.waitForAck();
   }
 
   async setup({ startProgress, setProgress, stopProgress }: SetupParams) {
