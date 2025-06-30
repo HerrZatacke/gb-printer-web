@@ -52,7 +52,6 @@ export const transformSav = async (file: File, options: TransformOptions): Promi
   }
 
   if (frameSet) {
-    console.log({ frameSet });
     await importSav(frameSet, frameSet === 'jp');
     return true;
   }

@@ -1,8 +1,9 @@
 import { proxy, Remote } from 'comlink';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { PortDeviceType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import useInteractionsStore from '@/stores/interactionsStore';
 import useProgressStore from '@/stores/progressStore';
 import { GBXCartCommsDevice } from '@/tools/comms/DeviceAPIs/GBXCartCommsDevice';
 import getHandleFileImport from '@/tools/getHandleFileImport';
@@ -12,14 +13,17 @@ interface UseGBXCart {
   readRAMImage: () => void,
   readPhotoRom: () => void,
   readRomName: () => void,
+  canReadPhotoRom: boolean,
 }
 
 export const useGBXCart = (): UseGBXCart => {
   const { connectedDevices } = usePortsContext();
-
+  const { setProgress, startProgress, stopProgress } = useProgressStore();
+  const { setError } = useInteractionsStore();
   const { jsonImport } = useImportExportSettings();
   const handleFileImport = useMemo(() => (getHandleFileImport(jsonImport)), [jsonImport]);
-  const { setProgress, startProgress, stopProgress } = useProgressStore();
+  const [canReadPhotoRom, setCanReadPhotoRom] = useState(false);
+
   const gbxCart: Remote<GBXCartCommsDevice> | null = useMemo(() => {
     const deviceMeta = connectedDevices.find((device) => device.portDeviceType === PortDeviceType.GBXCART);
 
@@ -29,6 +33,14 @@ export const useGBXCart = (): UseGBXCart => {
   }, [connectedDevices]);
 
   const gbxCartAvailable = Boolean(gbxCart);
+
+  useEffect(() => {
+    if (gbxCart) {
+      gbxCart.readROMName().then((romName) => {
+        setCanReadPhotoRom(romName.trim() === 'PHOTO');
+      });
+    }
+  }, [gbxCart]);
 
   useEffect(() => {
     const setupCallbacks = async () => {
@@ -51,6 +63,7 @@ export const useGBXCart = (): UseGBXCart => {
     if (!gbxCart) { return; }
 
     const romName = await gbxCart.readROMName();
+    setCanReadPhotoRom(romName.trim() === 'PHOTO');
 
     let savFrameSet: string | undefined;
 
@@ -95,9 +108,13 @@ export const useGBXCart = (): UseGBXCart => {
   const readPhotoRom = useCallback(async () => {
     if (!gbxCart) { return; }
 
-    // await gbxCart.checkFirmware();
-
     const romName = await gbxCart.readROMName();
+    setCanReadPhotoRom(romName.trim() === 'PHOTO');
+
+    if (romName !== 'PHOTO') {
+      setError(new Error('ROM is not PHOTO!'));
+      return;
+    }
 
     const result = await gbxCart.readPhotoRom();
 
@@ -116,6 +133,7 @@ export const useGBXCart = (): UseGBXCart => {
 
   return {
     gbxCartAvailable,
+    canReadPhotoRom,
     readRAMImage,
     readPhotoRom,
     readRomName,
