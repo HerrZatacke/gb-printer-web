@@ -1,10 +1,5 @@
 import EventEmitter from 'events';
-import {
-  GBXCartCommands,
-  GBXCartGBFlashPCBVersions,
-  GBXCartJoeyPCBVersions,
-  GBXCartPCBVersions,
-} from '@/consts/gbxCart';
+import { GBXCartCommands } from '@/consts/gbxCart';
 import { PortType } from '@/consts/ports';
 import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
@@ -180,7 +175,6 @@ export abstract class CommonPort extends EventEmitter {
 
       this.disable();
       return new InactiveCommsDevice(this, appendUint8Arrays([bannerBytes, moreBytes]), 'Banner not recognized');
-      console.log('Unknown Banner', appendUint8Arrays([bannerBytes, moreBytes]));
     }
 
     // Unknown device type and no banner. Try to detect passive devices

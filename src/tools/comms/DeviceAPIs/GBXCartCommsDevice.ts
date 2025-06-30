@@ -6,11 +6,11 @@ import {
   GBXCartPCBVersions,
 } from '@/consts/gbxCart';
 import { PortDeviceType, PortType } from '@/consts/ports';
+import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { CommonPort } from '@/tools/comms/CommonPort';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { randomId } from '@/tools/randomId';
 import { SetProgressCallback, StartProgressCallback, StopProgressCallback } from '@/types/ports';
-import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 
 interface SetupParams {
   startProgress: StartProgressCallback;
