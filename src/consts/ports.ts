@@ -16,7 +16,7 @@ export const portDeviceLabels: Record<PortDeviceType, string> = {
   [PortDeviceType.INACTIVE]: 'Inactive Device',
   [PortDeviceType.PACKET_CAPTURE]: 'Arduino Gameboy Printer Emulator',
   [PortDeviceType.SUPER_PRINTER_INTERFACE]: 'Super Printer Interface',
-  [PortDeviceType.GBXCART]: 'GBxCart RW',
+  [PortDeviceType.GBXCART]: 'Cartridge Reader (LK Firmware)',
 };
 
 export const usbDeviceFilters: USBDeviceFilter[] = [
