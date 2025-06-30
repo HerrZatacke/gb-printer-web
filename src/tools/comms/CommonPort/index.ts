@@ -168,6 +168,35 @@ export abstract class CommonPort extends EventEmitter {
     return Promise.all(readResults);
   }
 
+  private async detectGBxCart(): Promise<BaseCommsDevice | null> {
+    // GBFlash example response
+    // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 13, 104, 48, 61, 76, 8, 71, 66, 70, 108, 97, 115, 104, 0, 1, 1]);
+    // JoeyJr example response
+    // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 131, 104, 48, 61, 76, 8, 74, 111, 101, 121, 32, 74, 114, 0, 0, 1]);
+
+    // Query GBxCart RW version
+    const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 100 }]); // gbxcart version query
+    if (readGBXVersion.length) {
+      const firmwareInfo = GBXCartCommsDevice.parseFwResponse(readGBXVersion);
+      console.log('firmwareInfo', firmwareInfo);
+
+      if (firmwareInfo) {
+        if (
+          [1, 14].includes(firmwareInfo.firmwareVersion) &&
+          firmwareInfo.pcbLabel !== ''
+        ) {
+          return new GBXCartCommsDevice(this, readGBXVersion);
+        }
+
+        const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
+        this.disable();
+        return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW not recognized (${firmwareInfo.pcbLabel} ${firmwareInfo.deviceName} fw:${firmwareInfo.firmwareVersion})`);
+      }
+    }
+
+    return null;
+  }
+
   protected async detectType(): Promise<BaseCommsDevice | null> {
     // the printer emulator takes about 3500ms to write it's banner, so we wait a bit longer to be safe
     const bannerBytes = await this.read({
@@ -195,6 +224,11 @@ export abstract class CommonPort extends EventEmitter {
 
     // Unknown device type and no banner. Try to detect passive devices
 
+    const detextedGBxDevice = await this.detectGBxCart();
+    if (detextedGBxDevice) {
+      return detextedGBxDevice;
+    }
+
     // Query Joey Jr
     const [queryJoey] = await this.send(new Uint8Array([0x55, 0xaa]), [{ timeout: 100 }]);
     // const queryJoey = new Uint8Array([0, 74, 111, 101, 121, 32, 74, 114, 32, 70, 87, 32, 76, 49, 52, 0, 0, 0, 0]);
@@ -208,34 +242,11 @@ export abstract class CommonPort extends EventEmitter {
         if (!setJoeyGBxMode.length || setJoeyGBxMode[0] !== 0xff) {
           throw new Error('could not correctly initialize Joey Jr');
         }
-      }
-    }
 
-    // GBFlash example response
-    // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 13, 104, 48, 61, 76, 8, 71, 66, 70, 108, 97, 115, 104, 0, 1, 1]);
-    // JoeyJr example response
-    // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 131, 104, 48, 61, 76, 8, 74, 111, 101, 121, 32, 74, 114, 0, 0, 1]);
-
-    // Query GBxCart RW version
-    console.log('Query GBxCart RW version');
-    const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 100 }]); // gbxcart version query
-    console.log('readGBXVersion', readGBXVersion);
-    if (readGBXVersion.length) {
-      const firmwareInfo = GBXCartCommsDevice.parseFwResponse(readGBXVersion);
-      console.log('firmwareInfo', firmwareInfo);
-
-      if (firmwareInfo) {
-        if (
-          [1, 14].includes(firmwareInfo.firmwareVersion) &&
-          firmwareInfo.pcbLabel !== ''
-        ) {
-          console.log('nice device!');
-          return new GBXCartCommsDevice(this, readGBXVersion);
+        const detextedJoeyGBxDevice = await this.detectGBxCart();
+        if (detextedJoeyGBxDevice) {
+          return detextedJoeyGBxDevice;
         }
-
-        const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
-        this.disable();
-        return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW not recognized (${firmwareInfo.pcbLabel} ${firmwareInfo.deviceName} fw:${firmwareInfo.firmwareVersion})`);
       }
     }
 
