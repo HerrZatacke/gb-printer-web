@@ -224,9 +224,9 @@ export abstract class CommonPort extends EventEmitter {
 
     // Unknown device type and no banner. Try to detect passive devices
 
-    const detextedGBxDevice = await this.detectGBxCart();
-    if (detextedGBxDevice) {
-      return detextedGBxDevice;
+    const detectedGBxDevice = await this.detectGBxCart();
+    if (detectedGBxDevice) {
+      return detectedGBxDevice;
     }
 
     // Query Joey Jr
@@ -243,9 +243,9 @@ export abstract class CommonPort extends EventEmitter {
           throw new Error('could not correctly initialize Joey Jr');
         }
 
-        const detextedJoeyGBxDevice = await this.detectGBxCart();
-        if (detextedJoeyGBxDevice) {
-          return detextedJoeyGBxDevice;
+        const detectedJoeyGBxDevice = await this.detectGBxCart();
+        if (detectedJoeyGBxDevice) {
+          return detectedJoeyGBxDevice;
         }
       }
     }
