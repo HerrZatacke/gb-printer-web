@@ -125,6 +125,14 @@ export abstract class CommonPort extends EventEmitter {
     });
   }
 
+  public readReady(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.readQueue = this.readQueue
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
   private async detectActiveTypes(bytes: Uint8Array): Promise<BaseCommsDevice | null> {
     if (
       (findSubarray(bytes, this.textEncoder.encode(DETECT_PACKET_CAPTURE)) !== -1) || // Raw Packet mode
@@ -144,12 +152,20 @@ export abstract class CommonPort extends EventEmitter {
   };
 
   async send(data: BufferSource, readParamss: ReadParams[]): Promise<Uint8Array[]> {
-    this.bufferedData = null; // Flush
+    // Flush
+    this.bufferedData = null;
+
+    // Wait until our readResults are guaranteed to be next
+    await this.readReady();
+
     // read actual result -> this will resolve with the requested data
     const readResults = readParamss.map((readParams) => this.read(readParams));
-    await this.readQueue; // Wait until our readResult is guaranteed to be next
-    await this.sendRaw(data); // Send Data
-    return Promise.all(readResults); // Resolve with read result
+
+    // Send Data
+    await this.sendRaw(data);
+
+    // Resolve with read result
+    return Promise.all(readResults);
   }
 
   protected async detectType(): Promise<BaseCommsDevice | null> {
