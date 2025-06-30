@@ -104,7 +104,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   }
 
   private async readRAM(address: number, size: number): Promise<Uint8Array> {
-    const chunkSize = Math.min(0x40, size);
+    const chunkSize = Math.min(0x1000, size);
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
     await this.setFwVariable('TRANSFER_SIZE', chunkSize);
     await this.setFwVariable('ADDRESS', 0xA000 + address);
@@ -122,7 +122,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   }
 
   private async readROM(address: number, size: number): Promise<Uint8Array> {
-    const chunkSize = Math.min(0x40, size);
+    const chunkSize = Math.min(0x1000, size);
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
     await this.setFwVariable('TRANSFER_SIZE', chunkSize);
     await this.setFwVariable('ADDRESS', address);
@@ -172,7 +172,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async readPhotoRom(): Promise<Uint8Array[]> {
     await this.setModeVoltage();
     const chunks: Uint8Array[] = [];
-    const chunkSize = 0x40;
+    const chunkSize = 0x1000;
     const readSize = 0x4000;
     const romBanks = 64;
     const totalChunks = romBanks * readSize / chunkSize;
