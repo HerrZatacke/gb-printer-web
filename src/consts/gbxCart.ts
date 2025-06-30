@@ -96,5 +96,5 @@ export const GBXCartJoeyPCBVersions: Record<number, string> = {
 
 export const GBXCartGBFlashPCBVersions: Record<number, string> = {
   12: 'v1.2',
-  13:'v1.3',
+  13: 'v1.3',
 };

@@ -28,7 +28,7 @@ class CommonSerialPort extends CommonPort {
   }
 
   getDescription(): string {
-    return `${this.baudRate} baud`;
+    return this.baudRate ? `${this.baudRate} baud` : '';
   }
 
   protected async readChunk(): Promise<Uint8Array> {

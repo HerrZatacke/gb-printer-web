@@ -80,7 +80,7 @@ export const useGBXCart = (): UseGBXCart => {
   const readRomName = useCallback(async () => {
     if (!gbxCart) { return; }
     const romName = await gbxCart.readROMName();
-    console.log('nom name', romName);
+    console.log('ROM name', romName);
   }, [gbxCart]);
 
   return {

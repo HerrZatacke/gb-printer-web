@@ -1,4 +1,10 @@
-import { GBXCartCommands, GBXCartDeviceVars, GBXCartJoeyPCBVersions, GBXCartPCBVersions } from '@/consts/gbxCart';
+import {
+  GBXCartCommands,
+  GBXCartDeviceVars,
+  GBXCartGBFlashPCBVersions,
+  GBXCartJoeyPCBVersions,
+  GBXCartPCBVersions,
+} from '@/consts/gbxCart';
 import { PortDeviceType, PortType } from '@/consts/ports';
 import { CommonPort } from '@/tools/comms/CommonPort';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
@@ -11,6 +17,17 @@ interface SetupParams {
   stopProgress: StopProgressCallback;
 }
 
+export interface GBxFwData {
+  deviceName: string;
+  powerControlSupport: boolean;
+  bootloaderResetSupport: boolean;
+  firmwareVersion: number;
+  pcbVersion: number;
+  pcbLabel: string;
+  firmwareTimestamp: number;
+  firmwareDate: Date;
+}
+
 export class GBXCartCommsDevice implements BaseCommsDevice {
   private device: CommonPort;
   public readonly id: string;
@@ -18,30 +35,28 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public readonly portDeviceType = PortDeviceType.GBXCART;
   public readonly portType: PortType;
   private readonly fwVer: number;
+  private powerControlSupport: boolean;
   private startProgress: StartProgressCallback = async (label: string): Promise<string> => { console.log(label); return '#'; };
   private setProgress: SetProgressCallback = (id: string, value: number) => { console.log(`${id} - ${Math.round(value * 100)}%`); };
   private stopProgress: StopProgressCallback = (id: string) => { console.log(`${id} - done`); };
 
-  constructor(device: CommonPort, version: Uint8Array, pcbName: string) {
+  constructor(device: CommonPort, version: Uint8Array) {
     this.device = device;
     this.portType = device.portType;
-    this.fwVer = version[3];
+    const firmwareInfo = GBXCartCommsDevice.parseFwResponse(version);
+    this.fwVer = firmwareInfo?.firmwareVersion || 0;
+    this.powerControlSupport = firmwareInfo?.powerControlSupport || false;
 
-    /*  ToDo handle whole possible data
-    lk_conn_send_u8(8);
-    lk_conn_send_u8('L');
-    lk_conn_send_u16(LK_FIRMWARE_VERSION);
-    lk_conn_send_u8(LK_PCB_VERSION);
-    lk_conn_send_u32(__BUILD_TIMESTAMP__);
-    lk_conn_send_u8(sizeof(LK_DEVICE_NAME)); // e.g. 0xB
-    lk_conn_send((u8*)LK_DEVICE_NAME, sizeof(LK_DEVICE_NAME)); // e.g. "GBxCart RW"
-    lk_conn_send_u8(LK_POWER_CONTROL_SUPPORT); // 0 or 1
-    lk_conn_send_u8(LK_BOOTLOADER_RESET_SUPPORT); // 0 or 1
+    /*  ToDo handle this everywhere
+    DMG_READ_CS_PULSE, DMG_ACCESS_MODE and TRANSFER_SIZE only needs to be set once (before your first RAM transfer).
+    ADDRESS only needs to be set once per RAM bank switch, should just auto increment.
+    So just spam the readCommand to get the next data.
     * */
 
     this.id = randomId();
     this.description = [
-      pcbName,
+      firmwareInfo?.deviceName,
+      firmwareInfo?.pcbLabel,
       device.getDescription(),
     ]
       .filter(Boolean)
@@ -49,7 +64,6 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   }
 
   private async waitForAck(timeout = 1000) : Promise<void> {
-    console.log('waitForAck');
     if (this.fwVer < 12) { return; }
 
     const values = [0x01, 0x03];
@@ -58,7 +72,6 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     if (!values.includes(result)) {
       throw new Error('no ack received');
     }
-    console.log('got Ack');
   }
 
   private async setFwVariable(varKey: keyof typeof GBXCartDeviceVars, varValue: number) {
@@ -73,9 +86,6 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint32(2, value, false);
     view.setUint32(6, varValue, false);
 
-    console.log(`setFwVariable('${varKey}', ${varValue})`);
-
-    console.log('sending: ', [...(new Uint8Array(buffer))]);
     await this.device.send(new Uint8Array(buffer), [], true);
     await this.waitForAck();
   }
@@ -90,7 +100,6 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint8(5, value & 0xFF);
     /* eslint-enable no-bitwise */
 
-    console.log('cartWrite sending: ', [...(new Uint8Array(buffer))]);
     await this.device.send(new Uint8Array(buffer), [], true);
     await this.waitForAck();
   }
@@ -126,9 +135,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async readROMName(): Promise<string> {
     await this.setModeVoltage();
     const textDecoder = new TextDecoder();
-    console.log('readROM(0x134, 0x10):');
     const cartReadResult = await this.readROM(0x134, 0x10);
-    console.log('readResult', cartReadResult);
     const romName = textDecoder.decode(cartReadResult.filter((byte) => (byte !== 0 && byte !== 128)));
     return romName;
   }
@@ -185,30 +192,9 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   }
 
   public async checkFirmware() {
-    this.setModeVoltage();
     const message = new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]);
-    console.log('sending \'QUERY_FW_INFO\': ', [...(new Uint8Array(message))]);
-    const [firmwareResult] = await this.device.send(message, [{ length: 9 }], true);
-
-    const [
-      ,
-      cfwId,
-      ,
-      fwVer,
-      pcbVer,
-    ] = firmwareResult;
-
-    const timestamp = (new DataView(firmwareResult.buffer, 5, 4)).getUint32(0, false);
-
-    const date = new Date(timestamp * 1000);
-
-    console.log({
-      cfwId: String.fromCharCode(cfwId),
-      fwVer,
-      pcbVer: GBXCartPCBVersions[pcbVer] || 'Unknown PCB Version',
-      timestamp,
-      date: date.toISOString(),
-    });
+    const [firmwareResult] = await this.device.send(message, [{ timeout: 100 }], true);
+    console.log(GBXCartCommsDevice.parseFwResponse(firmwareResult));
   }
 
   public async setModeVoltage() {
@@ -216,16 +202,14 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
     const setPwrOnCommand = new Uint8Array([GBXCartCommands['CART_PWR_ON']]);
 
-    console.log('sending \'SET_MODE_DMG\': ', [...(new Uint8Array(setModeCommand))]);
     await this.device.send(setModeCommand, [], true);
     await this.waitForAck();
 
-    // ToDo: base sending on LK_POWER_CONTROL_SUPPORT
-    console.log('sending \'CART_PWR_ON\': ', [...(new Uint8Array(setPwrOnCommand))]);
-    await this.device.send(setPwrOnCommand, [], true);
-    await this.waitForAck();
+    if (this.powerControlSupport) {
+      await this.device.send(setPwrOnCommand, [], true);
+      await this.waitForAck();
+    }
 
-    console.log('sending \'SET_VOLTAGE_5V\': ', [...(new Uint8Array(setVoltageCommand))]);
     await this.device.send(setVoltageCommand, [], true);
     await this.waitForAck();
 
@@ -236,5 +220,45 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     this.startProgress = startProgress;
     this.setProgress = setProgress;
     this.stopProgress = stopProgress;
+  }
+
+  static parseFwResponse(firmwareByteResponse: Uint8Array): GBxFwData | null {
+    const textDecoder = new TextDecoder();
+    if (firmwareByteResponse[1] !== 76) { return null; } // must be "L"
+
+    const firmwareVersion = (new DataView(firmwareByteResponse.buffer, 2, 2)).getUint16(0, false);
+    const pcbVersion = firmwareByteResponse[4];
+    const firmwareTimestamp = (new DataView(firmwareByteResponse.buffer, 5, 4)).getUint32(0, false);
+    const deviceNameLength = firmwareByteResponse[9];
+    const firmwareDate = new Date(firmwareTimestamp * 1000);
+
+    let deviceName = 'GBxCart RW';
+    let powerControlSupport = false;
+    let bootloaderResetSupport = false;
+
+    if (firmwareByteResponse.byteLength > 10) {
+      const deviceNameBytes = new Uint8Array(firmwareByteResponse.buffer, 10, deviceNameLength - 1);
+      deviceName = textDecoder.decode(deviceNameBytes);
+      powerControlSupport = Boolean(firmwareByteResponse[deviceNameLength + 10]);
+      bootloaderResetSupport = Boolean(firmwareByteResponse[deviceNameLength + 11]);
+    }
+
+    let pcbVersions: Record<number, string> = GBXCartPCBVersions;
+    if (deviceName === 'GBFlash') {
+      pcbVersions = GBXCartGBFlashPCBVersions;
+    } else if (deviceName === 'Joey Jr') {
+      pcbVersions = GBXCartJoeyPCBVersions;
+    }
+
+    return {
+      deviceName,
+      powerControlSupport,
+      bootloaderResetSupport,
+      firmwareVersion,
+      pcbVersion,
+      pcbLabel: pcbVersions[pcbVersion] || '',
+      firmwareTimestamp,
+      firmwareDate,
+    };
   }
 }

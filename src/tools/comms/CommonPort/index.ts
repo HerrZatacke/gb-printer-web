@@ -184,90 +184,52 @@ export abstract class CommonPort extends EventEmitter {
     if (bannerBytes.byteLength) {
       const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get the rest of the banner
 
-      // Skip creating an inactive device until all GBxCart stuff is clear
-      // this.disable();
-      // return new InactiveCommsDevice(this, appendUint8Arrays([bannerBytes, moreBytes]), 'Banner not recognized');
+      this.disable();
+      return new InactiveCommsDevice(this, appendUint8Arrays([bannerBytes, moreBytes]), 'Banner not recognized');
       console.log('Unknown Banner', appendUint8Arrays([bannerBytes, moreBytes]));
     }
 
     // Unknown device type and no banner. Try to detect passive devices
 
-    // Set possible JoeyJr into GBxCart mode
-    let isJoeyJr = false;
-    const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{
-      timeout: 250,
-    }], true); // gbxcart version query
-    if (setJoeyGBxMode.length && setJoeyGBxMode[0] === 0xff) {
-      console.log('Joey says', [...setJoeyGBxMode]);
-      isJoeyJr = true;
+    // Query Joey Jr
+    const [queryJoey] = await this.send(new Uint8Array([0x55, 0xaa]), [{ timeout: 100 }], true);
+    // const queryJoey = new Uint8Array([0, 74, 111, 101, 121, 32, 74, 114, 32, 70, 87, 32, 76, 49, 52, 0, 0, 0, 0]);
+    if (queryJoey.byteLength) {
+      const joeyBanner = this.textDecoder.decode(queryJoey);
+
+      // it _is_ a Joey Jr
+      if (joeyBanner.indexOf('Joey') !== -1) {
+        // Set GBxCart mode for Joey Cart reader
+        const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{ timeout: 100 }], true);
+        if (!setJoeyGBxMode.length || setJoeyGBxMode[0] !== 0xff) {
+          throw new Error('could not correctly initialize Joey Jr');
+        }
+      }
     }
 
+    // GBFlash example response
+    // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 13, 104, 48, 61, 76, 8, 71, 66, 70, 108, 97, 115, 104, 0, 1, 1]);
+    // JoeyJr example response
+    // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 131, 104, 48, 61, 76, 8, 74, 111, 101, 121, 32, 74, 114, 0, 0, 1]);
+
     // Query GBxCart RW version
-    const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 250 }], true); // gbxcart version query
+    const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 100 }], true); // gbxcart version query
     if (readGBXVersion.length) {
+      const firmwareInfo = GBXCartCommsDevice.parseFwResponse(readGBXVersion);
+      console.log(firmwareInfo);
 
-      console.log('readGBXVersion', [...readGBXVersion]);
+      if (firmwareInfo) {
+        if (
+          [1, 14].includes(firmwareInfo.firmwareVersion) &&
+          firmwareInfo.pcbLabel !== ''
+        ) {
+          return new GBXCartCommsDevice(this, readGBXVersion);
+        }
 
-      const [
-        ,
-        cfwId,
-        fwVerHigh,
-        fwVerLow,
-        pcbVer,
-        ,
-        ,
-        ,
-        ,
-        deviceNameLength,
-      ] = readGBXVersion;
-
-      // eslint-disable-next-line no-bitwise
-      const fwVer = (fwVerHigh << 8) + fwVerLow;
-
-      let deviceName = '';
-      let powerControlSupport = false;
-      let bootloaderResetSupport = false;
-
-      if (readGBXVersion.byteLength > 10) {
-        const deviceNameBytes = new Uint8Array((new DataView(readGBXVersion.buffer, 10, deviceNameLength - 1)).buffer, 10, deviceNameLength - 1);
-        deviceName = this.textDecoder.decode(deviceNameBytes);
-        powerControlSupport = Boolean(readGBXVersion[deviceNameLength + 10]);
-        bootloaderResetSupport = Boolean(readGBXVersion[deviceNameLength + 11]);
+        const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
+        this.disable();
+        return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW not recognized (${firmwareInfo.pcbLabel} ${firmwareInfo.deviceName} fw:${firmwareInfo.firmwareVersion})`);
       }
-
-      let pcbVersions: Record<number, string> = GBXCartPCBVersions;
-      if (deviceName === 'GBFlash') {
-        pcbVersions = GBXCartGBFlashPCBVersions;
-      } else if (deviceName === 'Joey Jr') {
-        pcbVersions = GBXCartJoeyPCBVersions;
-      }
-
-      const pcbVersionKeys = Object.keys(pcbVersions).map((k) => parseInt(k, 10));
-
-      console.log({
-        deviceName,
-        powerControlSupport,
-        bootloaderResetSupport,
-        pcbVersionKeys,
-        pcbVersions,
-        fwVer,
-        pcbVer,
-        fwVerHigh,
-        fwVerLow,
-      });
-
-      if (
-        (cfwId === 76) && // "L"
-        [1, 14].includes(fwVer) &&
-        pcbVersionKeys.includes(pcbVer) // PCB Version
-      ) {
-        return new GBXCartCommsDevice(this, readGBXVersion, `${deviceName} ${pcbVersions[pcbVer]}`);
-        // return new GBXCartCommsDevice(this, readGBXVersion, false);
-      }
-
-      const moreBytes: Uint8Array = await this.read({ timeout: 500 }); // get possible rest of the banner
-      this.disable();
-      return new InactiveCommsDevice(this, appendUint8Arrays([readGBXVersion, moreBytes]), `GBXCart RW "${deviceName}" not recognized`);
     }
 
     // send cr/lf to see if anything else responds and return an inactive device
