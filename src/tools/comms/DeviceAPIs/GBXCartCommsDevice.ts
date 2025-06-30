@@ -94,11 +94,9 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     const buffer = new ArrayBuffer(6);
     const view = new DataView(buffer);
 
-    /* eslint-disable no-bitwise */
-    view.setUint8(0, GBXCartCommands['DMG_CART_WRITE'] & 0xFF);
+    view.setUint8(0, GBXCartCommands['DMG_CART_WRITE']);
     view.setUint32(1, address, false);
-    view.setUint8(5, value & 0xFF);
-    /* eslint-enable no-bitwise */
+    view.setUint8(5, value);
 
     await this.device.send(new Uint8Array(buffer), [], true);
     await this.waitForAck();
