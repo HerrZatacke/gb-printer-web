@@ -52,13 +52,44 @@ export const useGBXCart = (): UseGBXCart => {
 
     const romName = await gbxCart.readROMName();
 
+    let savFrameSet: string | undefined;
+
+    switch (romName) {
+      case 'GAMEBOYCAMERA': // International edition
+      case 'GAMEBOYCAMERA G': // Golden/Zelda edition
+        savFrameSet = 'int';
+        break;
+
+      case 'POCKETCAMERA': // Japanese edition
+        savFrameSet = 'jp';
+        break;
+
+      case 'POCKETCAMERA_SN': // HK/SN edition
+        savFrameSet = 'hk';
+        break;
+
+      case 'PHOTO':
+        savFrameSet = 'photo';
+        break;
+
+      case 'PXLR':
+      case 'PXLR_SLSC':
+        savFrameSet = 'pxlr';
+        break;
+
+      default:
+    }
+
     const result = await gbxCart.readRAMImage();
 
     handleFileImport([
       new File(result, `${romName.trim() || 'dump'}.sav`, {
         type: 'application/octet-stream',
       }),
-    ], { fromPrinter: false });
+    ], {
+      fromPrinter: false,
+      savFrameSet,
+    });
   }, [gbxCart, handleFileImport]);
 
   const readPhotoRom = useCallback(async () => {

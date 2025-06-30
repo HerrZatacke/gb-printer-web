@@ -11,6 +11,7 @@ import prepareFile from './prepareFile';
 
 export interface HandeFileImportOptions {
   fromPrinter: boolean
+  savFrameSet?: string,
 }
 
 export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
@@ -18,7 +19,7 @@ export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions
 const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
   const importJSON = getImportJSON(importFn);
 
-  return async (files, { fromPrinter } = { fromPrinter: false }): Promise<void> => {
+  return async (files, { fromPrinter, savFrameSet } = { fromPrinter: false }): Promise<void> => {
 
     await Promise.all(files.map((fileData) => {
       const { file, contentType }: PreparedFile = prepareFile(fileData);
@@ -47,7 +48,10 @@ const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
           file.size === 3584 // Special case: PicNRec .sav
         )
       ) {
-        return transformSav(file, file.size === 3584);
+        return transformSav(file, {
+          skipDialogs: file.size === 3584,
+          frameSet: savFrameSet,
+        });
       }
 
       // .extracting 7 banks of a photo rom

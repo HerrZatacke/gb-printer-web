@@ -8,11 +8,19 @@ import { reduceItems } from '@/tools/reduceArray';
 import type { DialogOption, DialogQuestion, DialogResult } from '@/types/Dialog';
 import getImportSav from './importSav';
 
-export const transformSav = async (file: File, skipDialogs: boolean): Promise<boolean> => {
+export interface TransformOptions {
+  skipDialogs: boolean,
+  frameSet?: string,
+}
+
+export const transformSav = async (file: File, options: TransformOptions): Promise<boolean> => {
   const { dismissDialog, setDialog } = useDialogsStore.getState();
   const { frames, frameGroups } = useItemsStore.getState();
   const { savFrameTypes, setSavFrameTypes } = useSettingsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
+
+  const skipDialogs = options.skipDialogs || false;
+  const frameSet = options.frameSet || '';
 
   const {
     importLastSeen,
@@ -41,6 +49,12 @@ export const transformSav = async (file: File, skipDialogs: boolean): Promise<bo
 
   if (!importSav) {
     throw new Error('.sav file seems to be invalid');
+  }
+
+  if (frameSet) {
+    console.log({ frameSet });
+    await importSav(frameSet, frameSet === 'jp');
+    return true;
   }
 
   if (skipDialogs) {
