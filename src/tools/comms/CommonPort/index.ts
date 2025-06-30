@@ -229,7 +229,7 @@ export abstract class CommonPort extends EventEmitter {
           [1, 14].includes(firmwareInfo.firmwareVersion) &&
           firmwareInfo.pcbLabel !== ''
         ) {
-          console.log('nice device!')
+          console.log('nice device!');
           return new GBXCartCommsDevice(this, readGBXVersion);
         }
 
