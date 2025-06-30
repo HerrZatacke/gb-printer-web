@@ -150,12 +150,9 @@ export abstract class CommonPort extends EventEmitter {
 
   async send(data: BufferSource, readParamss: ReadParams[]): Promise<Uint8Array[]> {
     this.bufferedData = null; // Flush
-    // read length 0 -> this will resolve once all existing read calls are resolved
-    const readReady = this.read({ length: 0 });
     // read actual result -> this will resolve with the requested data
     const readResults = readParamss.map((readParams) => this.read(readParams));
-
-    await readReady; // Wait until our readResult is guaranteed to be next
+    await this.readQueue; // Wait until our readResult is guaranteed to be next
     await this.sendRaw(data); // Send Data
     return Promise.all(readResults); // Resolve with read result
   }
