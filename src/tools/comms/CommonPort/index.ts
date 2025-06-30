@@ -173,12 +173,14 @@ export abstract class CommonPort extends EventEmitter {
     // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 13, 104, 48, 61, 76, 8, 71, 66, 70, 108, 97, 115, 104, 0, 1, 1]);
     // JoeyJr example response
     // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 131, 104, 48, 61, 76, 8, 74, 111, 101, 121, 32, 74, 114, 0, 0, 1]);
+    // GBxCart RW v1.3
+    // const readGBXVersion = new Uint8Array([8, 76, 0, 1, 4, 101, 226, 29, 234]);
 
     // Query GBxCart RW version
     const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 100 }]); // gbxcart version query
     if (readGBXVersion.length) {
       const firmwareInfo = GBXCartCommsDevice.parseFwResponse(readGBXVersion);
-      console.log('firmwareInfo', firmwareInfo);
+      console.log('firmwareInfo', firmwareInfo, readGBXVersion);
 
       if (firmwareInfo) {
         if (
