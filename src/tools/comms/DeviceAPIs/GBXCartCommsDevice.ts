@@ -155,7 +155,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
     const handle = await this.startProgress('Loading Camera RAM');
 
-    const start = Date.now();
+    const start = performance.now();
 
     for (let ramBank = 0; ramBank < ramBanks; ramBank += 1) {
       await this.cartWrite(0x4000, ramBank); // Set SRAM bank
@@ -163,7 +163,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       chunks.push(await this.readRAM(0, readSize));
     }
 
-    console.log(Date.now() - start);
+    console.log(`Reading RAM completed in ${((performance.now() - start) / 1000).toFixed(2)}s`);
 
     this.stopProgress(handle);
     return chunks;
@@ -179,7 +179,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
     const handle = await this.startProgress('Loading Album Rolls from Photo!');
 
-    const start = Date.now();
+    const start = performance.now();
 
     for (let romBank = 0; romBank < romBanks; romBank += 1) {
       await this.cartWrite(0x2100, romBank); // Set ROM bank
@@ -195,7 +195,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       }
     }
 
-    console.log(Date.now() - start);
+    console.log(`Reading Photo ROM completed in ${((performance.now() - start) / 1000).toFixed(2)}s`);
 
     this.stopProgress(handle);
     return chunks;
