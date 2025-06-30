@@ -148,11 +148,8 @@ export abstract class CommonPort extends EventEmitter {
     return null;
   };
 
-  async send(data: BufferSource, readParamss: ReadParams[], flush: boolean): Promise<Uint8Array[]> {
-    if (flush) {
-      this.bufferedData = null;
-    }
-
+  async send(data: BufferSource, readParamss: ReadParams[]): Promise<Uint8Array[]> {
+    this.bufferedData = null; // Flush
     // read length 0 -> this will resolve once all existing read calls are resolved
     const readReady = this.read({ length: 0 });
     // read actual result -> this will resolve with the requested data
@@ -192,7 +189,7 @@ export abstract class CommonPort extends EventEmitter {
     // Unknown device type and no banner. Try to detect passive devices
 
     // Query Joey Jr
-    const [queryJoey] = await this.send(new Uint8Array([0x55, 0xaa]), [{ timeout: 100 }], true);
+    const [queryJoey] = await this.send(new Uint8Array([0x55, 0xaa]), [{ timeout: 100 }]);
     // const queryJoey = new Uint8Array([0, 74, 111, 101, 121, 32, 74, 114, 32, 70, 87, 32, 76, 49, 52, 0, 0, 0, 0]);
     if (queryJoey.byteLength) {
       const joeyBanner = this.textDecoder.decode(queryJoey);
@@ -200,7 +197,7 @@ export abstract class CommonPort extends EventEmitter {
       // it _is_ a Joey Jr
       if (joeyBanner.indexOf('Joey') !== -1) {
         // Set GBxCart mode for Joey Cart reader
-        const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{ timeout: 100 }], true);
+        const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{ timeout: 100 }]);
         if (!setJoeyGBxMode.length || setJoeyGBxMode[0] !== 0xff) {
           throw new Error('could not correctly initialize Joey Jr');
         }
@@ -213,7 +210,7 @@ export abstract class CommonPort extends EventEmitter {
     // const readGBXVersion = new Uint8Array([8, 76, 0, 14, 131, 104, 48, 61, 76, 8, 74, 111, 101, 121, 32, 74, 114, 0, 0, 1]);
 
     // Query GBxCart RW version
-    const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 100 }], true); // gbxcart version query
+    const [readGBXVersion] = await this.send(new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]), [{ timeout: 100 }]); // gbxcart version query
     if (readGBXVersion.length) {
       const firmwareInfo = GBXCartCommsDevice.parseFwResponse(readGBXVersion);
       console.log(firmwareInfo);
@@ -233,7 +230,7 @@ export abstract class CommonPort extends EventEmitter {
     }
 
     // send cr/lf to see if anything else responds and return an inactive device
-    const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 250 }], true);
+    const [readCrLf] = await this.send(new Uint8Array([0x0d, 0x0a]), [{ timeout: 250 }]);
     this.disable();
     return new InactiveCommsDevice(this, readCrLf, 'CrLf response not recognized');
   }

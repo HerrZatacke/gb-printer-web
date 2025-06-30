@@ -87,7 +87,7 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
           },
         ];
 
-        const [echo, responseBytes] = await this.device.send(command, queries, true);
+        const [echo, responseBytes] = await this.device.send(command, queries);
 
         // echo should match the command exactly
         if (objectHash(command) !== objectHash(echo)) {

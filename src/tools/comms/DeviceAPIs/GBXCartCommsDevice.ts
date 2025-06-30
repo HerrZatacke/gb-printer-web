@@ -10,6 +10,7 @@ import { CommonPort } from '@/tools/comms/CommonPort';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { randomId } from '@/tools/randomId';
 import { SetProgressCallback, StartProgressCallback, StopProgressCallback } from '@/types/ports';
+import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 
 interface SetupParams {
   startProgress: StartProgressCallback;
@@ -86,7 +87,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint32(2, value, false);
     view.setUint32(6, varValue, false);
 
-    await this.device.send(new Uint8Array(buffer), [], true);
+    await this.device.send(new Uint8Array(buffer), []);
     await this.waitForAck();
   }
 
@@ -98,36 +99,43 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint32(1, address, false);
     view.setUint8(5, value);
 
-    await this.device.send(new Uint8Array(buffer), [], true);
+    await this.device.send(new Uint8Array(buffer), []);
     await this.waitForAck();
   }
 
   private async readRAM(address: number, size: number): Promise<Uint8Array> {
-    if (size > 0x40) { throw new Error('read size too big'); }
-    await this.setFwVariable('TRANSFER_SIZE', size);
+    const chunkSize = Math.min(0x40, size);
+    const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
+    await this.setFwVariable('TRANSFER_SIZE', chunkSize);
     await this.setFwVariable('ADDRESS', 0xA000 + address);
     await this.setFwVariable('DMG_ACCESS_MODE', 3);
     await this.setFwVariable('DMG_READ_CS_PULSE', 1);
 
-    const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
-    console.log('readRAM sending readCommand: ', [...(new Uint8Array(readCommand))]);
-    const [cartReadResult] = await this.device.send(readCommand, [{ length: size }], true);
+    let result: Uint8Array = new Uint8Array([]);
 
-    return cartReadResult;
+    while (result.byteLength < size) {
+      const [cartReadResult] = await this.device.send(readCommand, [{ length: chunkSize }]);
+      result = appendUint8Arrays([result, cartReadResult]);
+    }
+
+    return result;
   }
 
   private async readROM(address: number, size: number): Promise<Uint8Array> {
-    if (size > 0x40) { throw new Error('read size too big'); }
-    await this.setFwVariable('TRANSFER_SIZE', size);
+    const chunkSize = Math.min(0x40, size);
+    const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
+    await this.setFwVariable('TRANSFER_SIZE', chunkSize);
     await this.setFwVariable('ADDRESS', address);
     await this.setFwVariable('DMG_ACCESS_MODE', 1);
 
-    const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
-    console.log('sending \'DMG_CART_READ\': ', [...(new Uint8Array(readCommand))]);
-    const [cartReadResult] = await this.device.send(readCommand, [{ length: size }], true);
-    console.log('result', cartReadResult);
+    let result: Uint8Array = new Uint8Array([]);
 
-    return cartReadResult;
+    while (result.byteLength < size) {
+      const [cartReadResult] = await this.device.send(readCommand, [{ length: chunkSize }]);
+      result = appendUint8Arrays([result, cartReadResult]);
+    }
+
+    return result;
   }
 
   public async readROMName(): Promise<string> {
@@ -141,21 +149,21 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async readRAMImage(): Promise<Uint8Array[]> {
     await this.setModeVoltage();
     const chunks: Uint8Array[] = [];
-    const chunkSize = 0x40;
     const readSize = 0x2000;
     const ramBanks = 16;
-    const totalChunks = ramBanks * readSize / chunkSize;
+    const totalChunks = ramBanks;
 
     const handle = await this.startProgress('Loading Camera RAM');
+
+    const start = Date.now();
 
     for (let ramBank = 0; ramBank < ramBanks; ramBank += 1) {
       await this.cartWrite(0x4000, ramBank); // Set SRAM bank
       this.setProgress(handle, chunks.length / totalChunks);
-      for (let offset = 0; offset < readSize / chunkSize; offset += 1) {
-        chunks.push(await this.readRAM(chunkSize * offset, chunkSize));
-        // console.log(`${chunks.length}/${totalChunks}`);
-      }
+      chunks.push(await this.readRAM(0, readSize));
     }
+
+    console.log(Date.now() - start);
 
     this.stopProgress(handle);
     return chunks;
@@ -171,6 +179,8 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
     const handle = await this.startProgress('Loading Album Rolls from Photo!');
 
+    const start = Date.now();
+
     for (let romBank = 0; romBank < romBanks; romBank += 1) {
       await this.cartWrite(0x2100, romBank); // Set ROM bank
       this.setProgress(handle, chunks.length / totalChunks);
@@ -185,13 +195,15 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       }
     }
 
+    console.log(Date.now() - start);
+
     this.stopProgress(handle);
     return chunks;
   }
 
   public async checkFirmware() {
     const message = new Uint8Array([GBXCartCommands['QUERY_FW_INFO']]);
-    const [firmwareResult] = await this.device.send(message, [{ timeout: 100 }], true);
+    const [firmwareResult] = await this.device.send(message, [{ timeout: 100 }]);
     console.log(GBXCartCommsDevice.parseFwResponse(firmwareResult));
   }
 
@@ -200,15 +212,15 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
     const setPwrOnCommand = new Uint8Array([GBXCartCommands['CART_PWR_ON']]);
 
-    await this.device.send(setModeCommand, [], true);
+    await this.device.send(setModeCommand, []);
     await this.waitForAck();
 
     if (this.powerControlSupport) {
-      await this.device.send(setPwrOnCommand, [], true);
+      await this.device.send(setPwrOnCommand, []);
       await this.waitForAck();
     }
 
-    await this.device.send(setVoltageCommand, [], true);
+    await this.device.send(setVoltageCommand, []);
     await this.waitForAck();
 
     await this.setFwVariable('DMG_READ_METHOD', 1);
