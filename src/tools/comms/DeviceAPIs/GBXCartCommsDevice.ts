@@ -59,16 +59,17 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     this.description = [
       firmwareInfo?.deviceName,
       firmwareInfo?.pcbLabel,
+      `fw:L${firmwareInfo?.pcbLabel}`,
       device.getDescription(),
     ]
       .filter(Boolean)
       .join(' - ');
   }
 
-  private async waitForAck(timeout = 1000) : Promise<void> {
+  private async waitForAck(timeout = 100) : Promise<void> {
     if (this.fwVer < 12) {
       if (this.fwVer > 1) {
-        await delay(200);
+        await delay(timeout);
       }
       return;
     }
@@ -232,7 +233,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
          GBXCartCommands[(this.fwVer >= 12) ? 'CART_PWR_ON' : 'OFW_CART_PWR_ON'],
       ]);
       await this.device.send(setPwrOnCommand, []);
-      await this.waitForAck();
+      await this.waitForAck(250);
     }
 
     if (this.fwVer >= 12) {
@@ -246,7 +247,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
         GBXCartCommands[(this.fwVer >= 12) ? 'CART_PWR_OFF' : 'OFW_CART_PWR_OFF'],
       ]);
       await this.device.send(setPwrOffCommand, []);
-      await this.waitForAck();
+      await this.waitForAck(250);
     }
   }
 
