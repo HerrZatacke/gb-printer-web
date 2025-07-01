@@ -184,7 +184,7 @@ export abstract class CommonPort extends EventEmitter {
 
       if (firmwareInfo) {
         if (
-          [1, 14].includes(firmwareInfo.firmwareVersion) &&
+          firmwareInfo.firmwareVersion > 0 &&
           firmwareInfo.pcbLabel !== ''
         ) {
           return new GBXCartCommsDevice(this, readGBXVersion);

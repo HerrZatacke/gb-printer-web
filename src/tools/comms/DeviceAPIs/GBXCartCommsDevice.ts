@@ -142,6 +142,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     await this.setModeVoltage();
     const textDecoder = new TextDecoder();
     const cartReadResult = await this.readROM(0x134, 0x10);
+    await this.powerOff();
     const romName = textDecoder.decode(cartReadResult.filter((byte) => (byte !== 0 && byte !== 128)));
     return romName;
   }
@@ -162,6 +163,8 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       this.setProgress(handle, chunks.length / totalChunks);
       chunks.push(await this.readRAM(0, readSize));
     }
+
+    await this.powerOff();
 
     console.log(`Reading RAM completed in ${((performance.now() - start) / 1000).toFixed(2)}s`);
 
@@ -195,6 +198,8 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       }
     }
 
+    await this.powerOff();
+
     console.log(`Reading Photo ROM completed in ${((performance.now() - start) / 1000).toFixed(2)}s`);
 
     this.stopProgress(handle);
@@ -209,21 +214,34 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
   public async setModeVoltage() {
     const setModeCommand = new Uint8Array([GBXCartCommands['SET_MODE_DMG']]);
-    const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
-    const setPwrOnCommand = new Uint8Array([GBXCartCommands['CART_PWR_ON']]);
-
     await this.device.send(setModeCommand, []);
     await this.waitForAck();
 
     if (this.powerControlSupport) {
+      const setPwrOnCommand = new Uint8Array([
+         GBXCartCommands[(this.fwVer >= 12) ? 'CART_PWR_ON' : 'OFW_CART_PWR_ON'],
+      ]);
       await this.device.send(setPwrOnCommand, []);
       await this.waitForAck();
     }
 
+    const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
     await this.device.send(setVoltageCommand, []);
     await this.waitForAck();
 
-    await this.setFwVariable('DMG_READ_METHOD', 1);
+    if (this.fwVer >= 12) {
+      await this.setFwVariable('DMG_READ_METHOD', 1);
+    }
+  }
+
+  public async powerOff() {
+    if (this.powerControlSupport) {
+      const setPwrOffCommand = new Uint8Array([
+        GBXCartCommands[(this.fwVer >= 12) ? 'CART_PWR_OFF' : 'OFW_CART_PWR_OFF'],
+      ]);
+      await this.device.send(setPwrOffCommand, []);
+      await this.waitForAck();
+    }
   }
 
   async setup({ startProgress, setProgress, stopProgress }: SetupParams) {
@@ -243,10 +261,10 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     const firmwareDate = new Date(firmwareTimestamp * 1000);
 
     let deviceName = 'GBxCart RW';
-    let powerControlSupport = false;
+    let powerControlSupport = firmwareVersion > 1;
     let bootloaderResetSupport = false;
 
-    if (firmwareByteResponse.byteLength > 10) {
+    if (firmwareVersion >= 12) {
       const deviceNameBytes = new Uint8Array(firmwareByteResponse.buffer, 10, deviceNameLength - 1);
       deviceName = textDecoder.decode(deviceNameBytes);
       powerControlSupport = Boolean(firmwareByteResponse[deviceNameLength + 10]);
