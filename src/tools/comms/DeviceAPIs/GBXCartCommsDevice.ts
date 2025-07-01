@@ -188,10 +188,9 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public async readPhotoRom(): Promise<Uint8Array[]> {
     await this.setModeVoltage();
     const chunks: Uint8Array[] = [];
-    const chunkSize = 0x1000;
-    const readSize = 0x4000;
+    const chunkSize = 0x4000;
     const romBanks = 64;
-    const totalChunks = romBanks * readSize / chunkSize;
+    const totalChunks = romBanks;
 
     const handle = await this.startProgress('Loading Album Rolls from Photo!');
 
@@ -200,14 +199,10 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     for (let romBank = 0; romBank < romBanks; romBank += 1) {
       await this.cartWrite(0x2100, romBank); // Set ROM bank
       this.setProgress(handle, chunks.length / totalChunks);
-      for (let offset = 0; offset < readSize / chunkSize; offset += 1) {
-        // if first ROM bank, read 0-0x3fff, other banks from 0x4000 0x7fff
-        if (romBank === 0) {
-          chunks.push(await this.readROM(offset * chunkSize, chunkSize));
-        } else {
-          chunks.push(await this.readROM((offset * chunkSize) + 0x4000, chunkSize));
-        }
-
+      if (romBank === 0) {
+        chunks.push(await this.readROM(0, chunkSize));
+      } else {
+        chunks.push(await this.readROM(0x4000, chunkSize));
       }
     }
 
