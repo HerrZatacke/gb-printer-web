@@ -139,8 +139,13 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     let result: Uint8Array = new Uint8Array([]);
 
     while (result.byteLength < size) {
-      const [cartReadResult] = await this.device.send(readCommand, [{ length: chunkSize }]);
-      result = appendUint8Arrays([result, cartReadResult]);
+      const [cartReadResult] = await this.device.send(readCommand, [{ length: chunkSize, timeout: 1000 }]);
+      if (cartReadResult.byteLength !== chunkSize) {
+        console.log(`Expected ${chunkSize}bytes from read, received ${cartReadResult.byteLength}bytes after 1000ms`);
+        result = appendUint8Arrays([result, new Uint8Array(chunkSize)]);
+      } else {
+        result = appendUint8Arrays([result, cartReadResult]);
+      }
     }
 
     return result;
