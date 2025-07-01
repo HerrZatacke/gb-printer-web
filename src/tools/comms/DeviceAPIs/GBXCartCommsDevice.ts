@@ -95,7 +95,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     view.setUint32(6, varValue, false);
 
     await this.device.send(new Uint8Array(buffer), []);
-    await this.waitForAck();
+    await this.waitForAck(50);
   }
 
   private async cartWrite(address: number, value: number) {
