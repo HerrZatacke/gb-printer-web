@@ -129,7 +129,8 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   }
 
   private async readROM(address: number, size: number): Promise<Uint8Array> {
-    const chunkSize = Math.min(0x1000, size);
+    const maxChunkSize = (this.fwVer > 1 && this.fwVer < 12) ? 0x800 : 0x1000;
+    const chunkSize = Math.min(maxChunkSize, size);
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
     await this.setFwVariable('TRANSFER_SIZE', chunkSize);
     await this.setFwVariable('ADDRESS', address);
