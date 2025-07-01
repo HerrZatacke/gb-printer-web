@@ -56,7 +56,7 @@ class CommonSerialPort extends CommonPort {
       throw new Error('device is not writable');
     }
 
-    this.writer.write(data);
+    await this.writer.write(data);
   }
 }
 
