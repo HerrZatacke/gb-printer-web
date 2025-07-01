@@ -9,6 +9,7 @@ import { PortDeviceType, PortType } from '@/consts/ports';
 import { appendUint8Arrays } from '@/tools/appendUint8Arrays';
 import { CommonPort } from '@/tools/comms/CommonPort';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
+import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
 import { SetProgressCallback, StartProgressCallback, StopProgressCallback } from '@/types/ports';
 
@@ -217,17 +218,21 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     await this.device.send(setModeCommand, []);
     await this.waitForAck();
 
+    const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
+    await this.device.send(setVoltageCommand, []);
+    await this.waitForAck();
+
     if (this.powerControlSupport) {
       const setPwrOnCommand = new Uint8Array([
          GBXCartCommands[(this.fwVer >= 12) ? 'CART_PWR_ON' : 'OFW_CART_PWR_ON'],
       ]);
       await this.device.send(setPwrOnCommand, []);
       await this.waitForAck();
-    }
 
-    const setVoltageCommand = new Uint8Array([GBXCartCommands['SET_VOLTAGE_5V']]);
-    await this.device.send(setVoltageCommand, []);
-    await this.waitForAck();
+      if (this.fwVer < 12) {
+        await delay(200);
+      }
+    }
 
     if (this.fwVer >= 12) {
       await this.setFwVariable('DMG_READ_METHOD', 1);
