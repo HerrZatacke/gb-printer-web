@@ -59,7 +59,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     this.description = [
       firmwareInfo?.deviceName,
       firmwareInfo?.pcbLabel,
-      `fw:L${firmwareInfo?.pcbLabel}`,
+      `fw:L${firmwareInfo?.firmwareVersion}`,
       device.getDescription(),
     ]
       .filter(Boolean)
