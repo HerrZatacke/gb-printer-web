@@ -133,7 +133,7 @@ export const useGBXCart = (): UseGBXCart => {
         type: 'application/octet-stream',
       }),
     ], { fromPrinter: false });
-  }, [gbxCart, handleFileImport]);
+  }, [gbxCart, handleFileImport, setError]);
 
   const readRomName = useCallback(async () => {
     if (!gbxCart) { return; }
