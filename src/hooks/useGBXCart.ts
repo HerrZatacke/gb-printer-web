@@ -14,6 +14,7 @@ interface UseGBXCart {
   readPhotoRom: () => void,
   readRomName: () => void,
   canReadPhotoRom: boolean,
+  busy: boolean,
 }
 
 export const useGBXCart = (): UseGBXCart => {
@@ -23,6 +24,7 @@ export const useGBXCart = (): UseGBXCart => {
   const { jsonImport } = useImportExportSettings();
   const handleFileImport = useMemo(() => (getHandleFileImport(jsonImport)), [jsonImport]);
   const [canReadPhotoRom, setCanReadPhotoRom] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   const gbxCart: Remote<GBXCartCommsDevice> | null = useMemo(() => {
     const deviceMeta = connectedDevices.find((device) => device.portDeviceType === PortDeviceType.GBXCART);
@@ -36,8 +38,10 @@ export const useGBXCart = (): UseGBXCart => {
 
   useEffect(() => {
     if (gbxCart) {
+      setBusy(true);
       gbxCart.readROMName().then((romName) => {
         setCanReadPhotoRom(romName.trim() === 'PHOTO');
+        setBusy(false);
       });
     }
   }, [gbxCart]);
@@ -61,6 +65,7 @@ export const useGBXCart = (): UseGBXCart => {
 
   const readRAMImage = useCallback(async () => {
     if (!gbxCart) { return; }
+    setBusy(true);
 
     const romName = await gbxCart.readROMName();
     setCanReadPhotoRom(romName.trim() === 'PHOTO');
@@ -95,6 +100,8 @@ export const useGBXCart = (): UseGBXCart => {
 
     const result = await gbxCart.readRAMImage();
 
+    setBusy(false);
+
     handleFileImport([
       new File(result, `${romName.trim() || 'dump'}.sav`, {
         type: 'application/octet-stream',
@@ -107,6 +114,7 @@ export const useGBXCart = (): UseGBXCart => {
 
   const readPhotoRom = useCallback(async () => {
     if (!gbxCart) { return; }
+    setBusy(true);
 
     const romName = await gbxCart.readROMName();
     setCanReadPhotoRom(romName.trim() === 'PHOTO');
@@ -117,6 +125,8 @@ export const useGBXCart = (): UseGBXCart => {
     }
 
     const result = await gbxCart.readPhotoRom();
+
+    setBusy(false);
 
     handleFileImport([
       new File(result, `${romName.trim() || 'dump'}.gb`, {
@@ -137,5 +147,6 @@ export const useGBXCart = (): UseGBXCart => {
     readRAMImage,
     readPhotoRom,
     readRomName,
+    busy,
   };
 };
