@@ -66,7 +66,12 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   }
 
   private async waitForAck(timeout = 1000) : Promise<void> {
-    if (this.fwVer < 12) { return; }
+    if (this.fwVer < 12) {
+      if (this.fwVer > 1) {
+        await delay(200);
+      }
+      return;
+    }
 
     const values = [0x01, 0x03];
     const [result] = await this.device.read({ length: 1, timeout });
@@ -228,10 +233,6 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
       ]);
       await this.device.send(setPwrOnCommand, []);
       await this.waitForAck();
-
-      if (this.fwVer < 12) {
-        await delay(200);
-      }
     }
 
     if (this.fwVer >= 12) {
