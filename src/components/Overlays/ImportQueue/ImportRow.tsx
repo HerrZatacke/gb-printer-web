@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import useImportsStore from '@/stores/importsStore';
 import useItemsStore from '@/stores/itemsStore';
@@ -39,13 +39,14 @@ function ImportRow({
   const { importQueue } = useImportsStore();
   const { preferredLocale } = useSettingsStore();
 
+  const [show, setShow] = useState<boolean>(true);
+
   const palette = useMemo(() => palettes.find(({ shortName }) => shortName === paletteShort), [paletteShort, palettes]);
 
-  const storeDuplicateImage = useMemo(() => images.find(({ hash }) => hash === imageHash), [imageHash, images]);
-
-  const queueDuplicates = useMemo(() => importQueue.filter((item) => item.imageHash === imageHash).length, [imageHash, importQueue]);
-
   const badgeProps = useMemo<BadgeOwnProps>(() => {
+    const storeDuplicateImage = images.find(({ hash }) => hash === imageHash);
+    const queueDuplicates = importQueue.filter((item) => item.imageHash === imageHash).length;
+
     if (queueDuplicates > 1) {
       return {
         color: 'error',
@@ -63,7 +64,7 @@ function ImportRow({
     }
 
     return {};
-  }, [queueDuplicates, storeDuplicateImage]);
+  }, [imageHash, images, importQueue]);
 
   const stackSx = useMemo(() => ({
     '--zoom-image-top': 0,
@@ -113,6 +114,10 @@ function ImportRow({
       },
     },
   }), [tiles.length]);
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <Stack
@@ -189,7 +194,10 @@ function ImportRow({
             >
               <IconButton
                 title="Remove image from queue"
-                onClick={cancelItemImport}
+                onClick={() => {
+                  setShow(false);
+                  setTimeout(cancelItemImport, 1);
+                }}
               >
                 <DeleteIcon />
               </IconButton>
