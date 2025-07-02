@@ -63,6 +63,55 @@ function ImportRow({
     return {};
   }, [queueDuplicates, storeDuplicateImage]);
 
+  const stackSx = useMemo(() => ({
+    '--zoom-image-top': 0,
+    '--zoom-image-left': 0,
+    '--zoom-image-width': '60px',
+    '--zoom-image-z-index': 'initial',
+
+    '& > *': {
+      flexGrow: 1,
+    },
+  }), []);
+
+  const boxSx = useMemo(() => ({
+    height: `${tiles.length / 2.5 / 2.66}px`,
+    flex: '60px 0 0',
+    position: 'relative',
+
+    '& > *': {
+      top: 'var(--zoom-image-top)',
+      left: 'var(--zoom-image-left)',
+      width: 'var(--zoom-image-width)',
+      zIndex: 'var(--zoom-image-z-index)',
+      transition: 'width 150ms ease-in-out, left 150ms ease-in-out, top 150ms ease-in-out',
+      position: 'absolute',
+      outline: 'none',
+
+      '@media (any-hover: none)': {
+        '&:focus': {
+          '--zoom-image-top': -12,
+          '--zoom-image-left': -12,
+          '--zoom-image-width': '160px',
+          '--zoom-image-z-index': 2,
+        },
+      },
+    },
+
+    '@media (any-hover: hover)': {
+      '& > *': {
+        pointerEvents: 'none',
+      },
+
+      '&:hover': {
+        '--zoom-image-top': -12,
+        '--zoom-image-left': -12,
+        '--zoom-image-width': '160px',
+        '--zoom-image-z-index': 2,
+      },
+    },
+  }), [tiles.length]);
+
   return (
     <Stack
       direction="row"
@@ -70,16 +119,7 @@ function ImportRow({
       alignItems="center"
       justifyContent="space-between"
       component="li"
-      sx={{
-        '--zoom-image-top': 0,
-        '--zoom-image-left': 0,
-        '--zoom-image-width': '60px',
-        '--zoom-image-z-index': 'initial',
-
-        '& > *': {
-          flexGrow: 1,
-        },
-      }}
+      sx={stackSx}
     >
       <Stack
         direction="row"
@@ -88,43 +128,7 @@ function ImportRow({
         justifyContent="left"
       >
         <Box
-          sx={{
-            height: `${tiles.length / 2.5 / 2.66}px`,
-            flex: '60px 0 0',
-            position: 'relative',
-
-            '& > *': {
-              top: 'var(--zoom-image-top)',
-              left: 'var(--zoom-image-left)',
-              width: 'var(--zoom-image-width)',
-              zIndex: 'var(--zoom-image-z-index)',
-              transition: 'width 150ms ease-in-out, left 150ms ease-in-out, top 150ms ease-in-out',
-              position: 'absolute',
-              outline: 'none',
-
-              '@media (any-hover: none)': {
-                '&:focus': {
-                  '--zoom-image-top': -12,
-                  '--zoom-image-left': -12,
-                  '--zoom-image-width': '160px',
-                  '--zoom-image-z-index': 2,
-                },
-              },
-            },
-
-            '@media (any-hover: hover)': {
-              '& > *': {
-                pointerEvents: 'none',
-              },
-
-              '&:hover': {
-                '--zoom-image-top': -12,
-                '--zoom-image-left': -12,
-                '--zoom-image-width': '160px',
-                '--zoom-image-z-index': 2,
-              },
-            },
-          }}
+          sx={boxSx}
         >
           <Box tabIndex={window.matchMedia('(any-hover: none)').matches ? 0 : undefined}>
             <GameBoyImage
@@ -174,7 +178,6 @@ function ImportRow({
               <CropFreeIcon />
             </IconButton>
             <Badge
-
               {...badgeProps}
               anchorOrigin={{
                 vertical: 'bottom',
