@@ -237,8 +237,8 @@ export abstract class CommonPort extends EventEmitter {
     if (queryJoey.byteLength) {
       const joeyBanner = this.textDecoder.decode(queryJoey);
 
-      // it _is_ a Joey Jr
-      if (joeyBanner.indexOf('Joey') !== -1) {
+      // it _is_ a Joey Jr with LK firmware
+      if (joeyBanner.indexOf('Joey Jr FW L') !== -1) {
         // Set GBxCart mode for Joey Cart reader
         const [setJoeyGBxMode] = await this.send(new Uint8Array([0x4C, 0x4B]), [{ timeout: 100 }]);
         if (!setJoeyGBxMode.length || setJoeyGBxMode[0] !== 0xff) {
