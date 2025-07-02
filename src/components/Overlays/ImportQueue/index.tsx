@@ -24,6 +24,8 @@ function ImportQueue() {
     resetTagChanges,
     runImport,
     cancelImport,
+    importAsFrame,
+    cancelItemImport,
   } = useRunImport();
 
   return (
@@ -47,6 +49,8 @@ function ImportQueue() {
                 key={image.tempId}
                 paletteShort={palette}
                 importItem={image}
+                importAsFrame={() => importAsFrame(image)}
+                cancelItemImport={() => cancelItemImport(image.tempId)}
               />
             ))
           }

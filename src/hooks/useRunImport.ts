@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { dateFormat, dateFormatSeconds } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
@@ -34,6 +34,8 @@ interface UseRunImport {
   tagChanges: TagChange,
   resetTagChanges: () => void,
   updateTagChanges: (updates: TagChange) => void,
+  importAsFrame: (item: ImportItem) => void,
+  cancelItemImport: (id: string) => void,
 }
 
 const useRunImport = (): UseRunImport => {
@@ -43,11 +45,10 @@ const useRunImport = (): UseRunImport => {
   const { setImageSelection } = useFiltersStore();
   const { addImages, importQueueCancel } = useStores();
 
-  const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
   const { navigateToGroup } = useNavigationToolsContext();
 
-  const { importQueue } = useImportsStore();
+  const { importQueue, frameQueueAdd, importQueueCancelOne } = useImportsStore();
 
   const [frame, setFrame] = useState('');
   const [createGroup, setCreateGroup] = useState<boolean>(importQueue.length > 3);
@@ -58,15 +59,19 @@ const useRunImport = (): UseRunImport => {
     remove: [],
   });
 
-  const resetTagChanges = () => {
+  const importAsFrame = useCallback((item: ImportItem) => frameQueueAdd([item]), [frameQueueAdd]);
+  const cancelItemImport = useCallback((id: string) => importQueueCancelOne(id), [importQueueCancelOne]);
+
+  const resetTagChanges = useCallback(() => {
     updateTagChanges(({ initial }) => ({
       initial,
       add: [],
       remove: [],
     }));
-  };
+  }, []);
 
-  const runImport = async () => {
+  const runImport = useCallback(async () => {
+    const queue = new Queue(1, Infinity);
     const savedImages = await Promise.all(sortByFilename(importQueue).map((image, index) => {
       const { tiles, fileName, meta, lastModified } = image;
 
@@ -115,7 +120,7 @@ const useRunImport = (): UseRunImport => {
     }
 
     setImageSelection(imageHashes);
-  };
+  }, [activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, frame, importPad, importQueue, navigateToGroup, setImageSelection, tagChanges.add, view.id]);
 
   return {
     importQueue,
@@ -130,6 +135,8 @@ const useRunImport = (): UseRunImport => {
     setCreateGroup,
     runImport,
     cancelImport: importQueueCancel,
+    importAsFrame,
+    cancelItemImport,
     setActivePalette,
   };
 };

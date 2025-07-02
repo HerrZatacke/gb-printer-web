@@ -18,30 +18,32 @@ import type { ImportItem } from '@/types/ImportItem';
 interface Props {
   importItem: ImportItem,
   paletteShort: string,
+  importAsFrame: () => void,
+  cancelItemImport: () => void,
 }
 
 function ImportRow({
   importItem,
   paletteShort,
+  importAsFrame,
+  cancelItemImport,
 }: Props) {
   const {
     tiles,
     fileName,
     lastModified,
     imageHash,
-    tempId,
   } = importItem;
 
   const { palettes, images } = useItemsStore();
-  const palette = palettes.find(({ shortName }) => shortName === paletteShort);
-  const storeDuplicateImage = images.find(({ hash }) => hash === imageHash);
-
   const { importQueue } = useImportsStore();
-  const queueDuplicates = importQueue.filter((item) => item.imageHash === imageHash).length;
-
   const { preferredLocale } = useSettingsStore();
 
-  const { frameQueueAdd, importQueueCancelOne } = useImportsStore();
+  const palette = useMemo(() => palettes.find(({ shortName }) => shortName === paletteShort), [paletteShort, palettes]);
+
+  const storeDuplicateImage = useMemo(() => images.find(({ hash }) => hash === imageHash), [imageHash, images]);
+
+  const queueDuplicates = useMemo(() => importQueue.filter((item) => item.imageHash === imageHash).length, [imageHash, importQueue]);
 
   const badgeProps = useMemo<BadgeOwnProps>(() => {
     if (queueDuplicates > 1) {
@@ -173,7 +175,7 @@ function ImportRow({
             <IconButton
               title="Import image as frame"
               disabled={tiles.length / 20 < 14}
-              onClick={() => frameQueueAdd([importItem])}
+              onClick={importAsFrame}
             >
               <CropFreeIcon />
             </IconButton>
@@ -187,7 +189,7 @@ function ImportRow({
             >
               <IconButton
                 title="Remove image from queue"
-                onClick={() => importQueueCancelOne(tempId)}
+                onClick={cancelItemImport}
               >
                 <DeleteIcon />
               </IconButton>
