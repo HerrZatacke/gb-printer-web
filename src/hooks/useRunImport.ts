@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue';
-import { useCallback, useState } from 'react';
-import { dateFormat, dateFormatSeconds } from '@/consts/defaults';
+import { useCallback, useMemo, useState } from 'react';
+import { dateFormat, dateFormatSeconds, missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { useStores } from '@/hooks/useStores';
@@ -16,13 +16,15 @@ import { randomId } from '@/tools/randomId';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
 import type { ImportItem } from '@/types/ImportItem';
+import { Palette } from '@/types/Palette';
 import { toSlug } from './useEditImageGroup';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
 interface UseRunImport {
   importQueue: ImportItem[],
-  palette: string,
+  palette: Palette,
+  activePalette: string,
   importPad: boolean,
   frame: string,
   createGroup: boolean,
@@ -41,7 +43,7 @@ interface UseRunImport {
 const useRunImport = (): UseRunImport => {
   const { importPad, setActivePalette, activePalette } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
-  const { addImageGroup } = useItemsStore();
+  const { addImageGroup, palettes } = useItemsStore();
   const { setImageSelection } = useFiltersStore();
   const { addImages, importQueueCancel } = useStores();
 
@@ -122,10 +124,13 @@ const useRunImport = (): UseRunImport => {
     setImageSelection(imageHashes);
   }, [activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, frame, importPad, importQueue, navigateToGroup, setImageSelection, tagChanges.add, view.id]);
 
+  const palette = useMemo(() => palettes.find(({ shortName }) => shortName === activePalette) || missingGreyPalette, [activePalette, palettes]);
+
   return {
     importQueue,
     importPad,
-    palette: activePalette,
+    palette,
+    activePalette,
     frame,
     tagChanges,
     createGroup,

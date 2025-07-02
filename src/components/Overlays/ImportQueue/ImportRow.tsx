@@ -14,17 +14,18 @@ import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import dateFormatLocale from '@/tools/dateFormatLocale';
 import type { ImportItem } from '@/types/ImportItem';
+import type { Palette } from '@/types/Palette';
 
 interface Props {
   importItem: ImportItem,
-  paletteShort: string,
+  palette: Palette,
   importAsFrame: () => void,
   cancelItemImport: () => void,
 }
 
 function ImportRow({
   importItem,
-  paletteShort,
+  palette,
   importAsFrame,
   cancelItemImport,
 }: Props) {
@@ -35,13 +36,11 @@ function ImportRow({
     imageHash,
   } = importItem;
 
-  const { palettes, images } = useItemsStore();
+  const { images } = useItemsStore();
   const { importQueue } = useImportsStore();
   const { preferredLocale } = useSettingsStore();
 
   const [show, setShow] = useState<boolean>(true);
-
-  const palette = useMemo(() => palettes.find(({ shortName }) => shortName === paletteShort), [paletteShort, palettes]);
 
   const badgeProps = useMemo<BadgeOwnProps>(() => {
     const storeDuplicateImage = images.find(({ hash }) => hash === imageHash);

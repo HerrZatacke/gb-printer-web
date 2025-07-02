@@ -14,6 +14,7 @@ function ImportQueue() {
   const {
     frame,
     palette,
+    activePalette,
     importQueue,
     tagChanges,
     createGroup,
@@ -47,7 +48,7 @@ function ImportQueue() {
             importQueue.map((image) => (
               <ImportRow
                 key={image.tempId}
-                paletteShort={palette}
+                palette={palette}
                 importItem={image}
                 importAsFrame={() => importAsFrame(image)}
                 cancelItemImport={() => cancelItemImport(image.tempId)}
@@ -57,7 +58,7 @@ function ImportQueue() {
         </Stack>
         <PaletteSelect
           noFancy
-          value={palette}
+          value={activePalette}
           onChange={setActivePalette}
         />
         <FrameSelect
