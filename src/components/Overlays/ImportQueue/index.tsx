@@ -2,10 +2,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import React from 'react';
+import { FixedSizeList } from 'react-window';
 import FrameSelect from '@/components/FrameSelect';
 import PaletteSelect from '@/components/PaletteSelect';
 import TagsSelect from '@/components/TagsSelect';
 import useRunImport from '@/hooks/useRunImport';
+import { useScreenDimensions } from '@/hooks/useScreenDimensions';
 import modifyTagChanges from '@/tools/modifyTagChanges';
 import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
@@ -15,7 +17,7 @@ function ImportQueue() {
     frame,
     palette,
     activePalette,
-    importQueue,
+    queue,
     tagChanges,
     createGroup,
     setFrame,
@@ -29,9 +31,11 @@ function ImportQueue() {
     cancelItemImport,
   } = useRunImport();
 
+  const { height } = useScreenDimensions();
+
   return (
     <Lightbox
-      header={`Image Import (${importQueue.length} images)`}
+      header={`Image Import (${queue.length} images)`}
       confirm={runImport}
       deny={cancelImport}
     >
@@ -39,23 +43,23 @@ function ImportQueue() {
         direction="column"
         gap={4}
       >
-        <Stack
-          direction="column"
-          component="ul"
-          gap={1}
+        <FixedSizeList
+          height={Math.min(queue.length * 152, height / 2)}
+          itemCount={queue.length}
+          itemSize={152}
+          overscanCount={5}
+          width="100%"
         >
-          {
-            importQueue.map((image) => (
-              <ImportRow
-                key={image.tempId}
-                palette={palette}
-                importItem={image}
-                importAsFrame={() => importAsFrame(image)}
-                cancelItemImport={() => cancelItemImport(image.tempId)}
-              />
-            ))
-          }
-        </Stack>
+          {({ index, style }) => (
+            <ImportRow
+              windowStyle={style}
+              palette={palette}
+              imageId={queue[index]}
+              importAsFrame={() => importAsFrame(queue[index])}
+              cancelItemImport={() => cancelItemImport(queue[index])}
+            />
+          )}
+        </FixedSizeList>
         <PaletteSelect
           noFancy
           value={activePalette}

@@ -16,6 +16,7 @@ interface Actions {
   importQueueAdd: (importItems: ImportItem[]) => void,
   importQueueCancel: () => void,
   importQueueCancelOne: (tempId: string) => void,
+  getImportItem: (tempId: string) => ImportItem | null,
 }
 
 export type ImportsState = Values & Actions;
@@ -53,6 +54,10 @@ const useImportsStore = create<ImportsState>((set, get) => ({
   importQueueCancelOne: (tempId: string) => set(({ importQueue }) => (
     { importQueue: importQueue.filter((item) => item.tempId !== tempId) }
   )),
+  getImportItem: (tempId: string): ImportItem | null => {
+    const { importQueue } = get();
+    return importQueue.find((item) => item.tempId === tempId) || null;
+  },
 }));
 
 export default useImportsStore;
