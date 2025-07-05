@@ -15,10 +15,10 @@ import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
-import { FlaggedImportItem, ImportItem } from '@/types/ImportItem';
+import { type Image } from '@/types/Image';
+import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
 import { Palette } from '@/types/Palette';
 import { toSlug } from './useEditImageGroup';
-import { Image } from '@/types/Image';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
