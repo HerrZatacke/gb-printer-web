@@ -38,6 +38,8 @@ interface UseRunImport {
   updateTagChanges: (updates: TagChange) => void,
   importAsFrame: (id: string) => void,
   cancelItemImport: (id: string) => void,
+  removeLastSeen: () => void,
+  removeDeleted: () => void,
 }
 
 const useRunImport = (): UseRunImport => {
@@ -45,7 +47,7 @@ const useRunImport = (): UseRunImport => {
   const { cancelEditImageGroup } = useEditStore();
   const { addImageGroup, palettes } = useItemsStore();
   const { setImageSelection } = useFiltersStore();
-  const { importQueue: rawImportQueue, frameQueueAdd, importQueueCancelOne } = useImportsStore();
+  const { importQueue: rawImportQueue, importQueueSet, frameQueueAdd, importQueueCancelOne } = useImportsStore();
   const { addImages, importQueueCancel } = useStores();
 
   const { view } = useGalleryTreeContext();
@@ -135,6 +137,18 @@ const useRunImport = (): UseRunImport => {
 
   const queue = useMemo(() => (rawImportQueue.map(({ tempId }) => tempId)), [rawImportQueue]);
 
+  const removeLastSeen = useCallback(() => {
+    importQueueSet(rawImportQueue.filter((importItem: ImportItem) => (
+      importItem.fileName.indexOf('[last seen]') === -1
+    )));
+  }, [importQueueSet, rawImportQueue]);
+
+  const removeDeleted = useCallback(() => {
+    importQueueSet(rawImportQueue.filter((importItem: ImportItem) => (
+      importItem.fileName.indexOf('[deleted]') === -1
+    )));
+  }, [importQueueSet, rawImportQueue]);
+
   return {
     queue,
     importPad,
@@ -152,6 +166,8 @@ const useRunImport = (): UseRunImport => {
     importAsFrame,
     cancelItemImport,
     setActivePalette,
+    removeLastSeen,
+    removeDeleted,
   };
 };
 

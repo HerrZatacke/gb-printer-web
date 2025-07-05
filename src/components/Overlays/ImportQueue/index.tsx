@@ -1,3 +1,5 @@
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
@@ -8,6 +10,7 @@ import PaletteSelect from '@/components/PaletteSelect';
 import TagsSelect from '@/components/TagsSelect';
 import useRunImport from '@/hooks/useRunImport';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
+import useSettingsStore from '@/stores/settingsStore';
 import modifyTagChanges from '@/tools/modifyTagChanges';
 import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
@@ -29,9 +32,14 @@ function ImportQueue() {
     cancelImport,
     importAsFrame,
     cancelItemImport,
+    removeLastSeen,
+    removeDeleted,
   } = useRunImport();
 
   const { height } = useScreenDimensions();
+  const { importLastSeen, importDeleted } = useSettingsStore();
+
+  const showRemovalButtons = importLastSeen || importDeleted;
 
   return (
     <Lightbox
@@ -60,6 +68,26 @@ function ImportQueue() {
             />
           )}
         </FixedSizeList>
+        {showRemovalButtons && (
+          <ButtonGroup
+            variant="contained"
+            color="secondary"
+            fullWidth
+          >
+            <Button
+              disabled={!importLastSeen}
+              onClick={removeLastSeen}
+            >
+              Remove [last seen]
+            </Button>
+            <Button
+              disabled={!importDeleted}
+              onClick={removeDeleted}
+            >
+              Remove [deleted]
+            </Button>
+          </ButtonGroup>
+        )}
         <PaletteSelect
           noFancy
           value={activePalette}
