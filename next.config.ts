@@ -1,16 +1,10 @@
 import { execSync } from 'child_process';
-import bundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 import { version, name, author, description, homepage } from './package.json';
 import generateWebManifest from './scripts/generateWebManifest';
 
 const isDev = process.env.NODE_ENV === 'development';
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: !isDev,
-  openAnalyzer: false,
-});
 
 function getGitBranch() {
   try {
@@ -70,7 +64,7 @@ const getNextConfig = async (): Promise<NextConfig> => {
     ...rewritesConfig,
   };
 
-  return withBundleAnalyzer(nextConfig);
+  return nextConfig;
 };
 
 export default getNextConfig;
