@@ -9,15 +9,13 @@ import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 import React, { useMemo, memo, type CSSProperties } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
-import useImportsStore from '@/stores/importsStore';
-import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import dateFormatLocale from '@/tools/dateFormatLocale';
-import type { ImportItem } from '@/types/ImportItem';
+import type { FlaggedImportItem } from '@/types/ImportItem';
 import type { Palette } from '@/types/Palette';
 
 interface Props {
-  imageId: string,
+  importItem: FlaggedImportItem,
   windowStyle: CSSProperties,
   palette: Palette,
   importAsFrame: () => void,
@@ -25,33 +23,24 @@ interface Props {
 }
 
 function ImportRow({
-  imageId,
+  importItem,
   palette,
   importAsFrame,
   cancelItemImport,
   windowStyle,
 }: Props) {
-  const { images } = useItemsStore();
-  const { getImportItem } = useImportsStore();
   const { preferredLocale } = useSettingsStore();
-
-  const importItem: ImportItem = useMemo(() => (
-    getImportItem(imageId) || { tempId: imageId, tiles: [], fileName: '', lastModified: 0, imageHash: '' }
-  ), [getImportItem, imageId]);
 
   const {
     tiles,
     fileName,
     lastModified,
-    imageHash,
+    alreadyImported,
+    isDuplicateInQueue,
   } = importItem;
 
   const badgeProps = useMemo<BadgeOwnProps>(() => {
-    const storeDuplicateImage = images.find(({ hash }) => hash === imageHash);
-    const { importQueue } = useImportsStore.getState();
-    const queueDuplicates = importQueue.filter((item) => item.imageHash === imageHash).length;
-
-    if (queueDuplicates > 1) {
+    if (isDuplicateInQueue) {
       return {
         color: 'error',
         title: 'This image exists multiple times within this queue',
@@ -59,16 +48,16 @@ function ImportRow({
       };
     }
 
-    if (storeDuplicateImage) {
+    if (alreadyImported) {
       return {
         color: 'warning',
-        title: `This image has already been imported${storeDuplicateImage.title ? ` as "${storeDuplicateImage.title}"` : ''}`,
+        title: `This image has already been imported${alreadyImported.title ? ` as "${alreadyImported.title}"` : ''}`,
         badgeContent: 'I',
       };
     }
 
     return {};
-  }, [imageHash, images]);
+  }, [alreadyImported, isDuplicateInQueue]);
 
   return (
     <Stack

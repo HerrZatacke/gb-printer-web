@@ -15,14 +15,15 @@ import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
-import type { ImportItem } from '@/types/ImportItem';
+import { FlaggedImportItem, ImportItem } from '@/types/ImportItem';
 import { Palette } from '@/types/Palette';
 import { toSlug } from './useEditImageGroup';
+import { Image } from '@/types/Image';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
 interface UseRunImport {
-  queue: string[],
+  importQueue: FlaggedImportItem[],
   palette: Palette,
   activePalette: string,
   importPad: boolean,
@@ -38,14 +39,20 @@ interface UseRunImport {
   updateTagChanges: (updates: TagChange) => void,
   importAsFrame: (id: string) => void,
   cancelItemImport: (id: string) => void,
+  lastSeenCount: number,
+  deletedCount: number,
+  importedDuplicatesCount: number,
+  queueDuplicatesCount: number,
   removeLastSeen: () => void,
   removeDeleted: () => void,
+  removeImportedDuplicates: () => void,
+  removeQueueDuplicates: () => void,
 }
 
 const useRunImport = (): UseRunImport => {
   const { importPad, setActivePalette, activePalette } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
-  const { addImageGroup, palettes } = useItemsStore();
+  const { addImageGroup, palettes, images } = useItemsStore();
   const { setImageSelection } = useFiltersStore();
   const { importQueue: rawImportQueue, importQueueSet, frameQueueAdd, importQueueCancelOne } = useImportsStore();
   const { addImages, importQueueCancel } = useStores();
@@ -135,7 +142,50 @@ const useRunImport = (): UseRunImport => {
 
   const palette = useMemo(() => palettes.find(({ shortName }) => shortName === activePalette) || missingGreyPalette, [activePalette, palettes]);
 
-  const queue = useMemo(() => (rawImportQueue.map(({ tempId }) => tempId)), [rawImportQueue]);
+  const stateImages = useMemo(() => {
+    return new Map<string, Image>(images.map((image) => [image.hash, image]));
+  }, [images]);
+
+  const importQueue = useMemo<FlaggedImportItem[]>(() => {
+    const seen = new Set<string>();
+
+    return rawImportQueue.map((importItem: ImportItem): FlaggedImportItem => {
+      const alreadyImported = stateImages.get(importItem.imageHash) || null;
+      const isDuplicateInQueue = seen.has(importItem.imageHash);
+
+      seen.add(importItem.imageHash);
+
+      return {
+        ...importItem,
+        isDuplicateInQueue,
+        alreadyImported,
+      };
+    });
+  }, [rawImportQueue, stateImages]);
+
+  const lastSeenCount = useMemo<number>(() => (
+    rawImportQueue.filter((importItem: ImportItem) => (
+      importItem.fileName.indexOf('[last seen]') !== -1
+    )).length
+  ), [rawImportQueue]);
+
+  const deletedCount = useMemo<number>(() => (
+    rawImportQueue.filter((importItem: ImportItem) => (
+      importItem.fileName.indexOf('[deleted]') !== -1
+    )).length
+  ), [rawImportQueue]);
+
+  const queueDuplicatesCount = useMemo<number>(() => (
+    importQueue.filter((importItem: FlaggedImportItem) => (
+      importItem.isDuplicateInQueue
+    )).length
+  ), [importQueue]);
+
+  const importedDuplicatesCount = useMemo<number>(() => (
+    importQueue.filter((importItem: FlaggedImportItem) => (
+      importItem.alreadyImported
+    )).length
+  ), [importQueue]);
 
   const removeLastSeen = useCallback(() => {
     importQueueSet(rawImportQueue.filter((importItem: ImportItem) => (
@@ -149,8 +199,23 @@ const useRunImport = (): UseRunImport => {
     )));
   }, [importQueueSet, rawImportQueue]);
 
+  const removeQueueDuplicates = useCallback(() => {
+    const seen = new Set<string>();
+    importQueueSet(rawImportQueue.filter((importItem: ImportItem) => {
+      const isDuplicateInQueue = seen.has(importItem.imageHash);
+      seen.add(importItem.imageHash);
+      return !isDuplicateInQueue;
+    }));
+  }, [importQueueSet, rawImportQueue]);
+
+  const removeImportedDuplicates = useCallback(() => {
+    importQueueSet(rawImportQueue.filter((importItem: ImportItem) => (
+      !stateImages.has(importItem.imageHash)
+    )));
+  }, [importQueueSet, rawImportQueue, stateImages]);
+
   return {
-    queue,
+    importQueue,
     importPad,
     palette,
     activePalette,
@@ -166,8 +231,14 @@ const useRunImport = (): UseRunImport => {
     importAsFrame,
     cancelItemImport,
     setActivePalette,
+    lastSeenCount,
+    importedDuplicatesCount,
+    queueDuplicatesCount,
+    deletedCount,
     removeLastSeen,
     removeDeleted,
+    removeImportedDuplicates,
+    removeQueueDuplicates,
   };
 };
 
