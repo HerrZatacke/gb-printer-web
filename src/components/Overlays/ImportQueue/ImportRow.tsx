@@ -62,8 +62,8 @@ function ImportRow({
   return (
     <Stack
       direction="row"
-      gap={2}
-      alignItems="center"
+      gap={1}
+      alignItems="stretch"
       justifyContent="space-between"
       sx={windowStyle}
     >
@@ -80,52 +80,66 @@ function ImportRow({
         />
       </Box>
 
-      <Box sx={{ flex: 'auto 1 1' }}>
-        <Typography
-          variant="caption"
-          component="p"
-        >
-          { fileName }
-        </Typography>
-        {
-          lastModified && lastModified > 0 && (
-            <Typography
-              variant="caption"
-              component="p"
-            >
-              { dateFormatLocale(dayjs(lastModified), preferredLocale) }
-            </Typography>
-          )
-        }
-      </Box>
-
-      <ButtonGroup
-        sx={{ flex: '40px 0 0' }}
-        orientation="vertical"
+      <Stack
+        sx={{
+          flex: 'auto 0 1',
+          my: 1,
+        }}
+        direction="column"
+        gap={2}
+        justifyContent="space-between"
+        alignContent="space-between"
       >
-        <IconButton
-          title="Import image as frame"
-          disabled={tiles.length / 20 < 14}
-          onClick={importAsFrame}
-        >
-          <CropFreeIcon />
-        </IconButton>
-        <Badge
-          {...badgeProps}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
+        <ButtonGroup
+          fullWidth
+          sx={{
+            justifyContent: 'flex-end',
+            display: 'flex',
           }}
-          overlap="circular"
         >
           <IconButton
-            title="Remove image from queue"
-            onClick={() => setTimeout(cancelItemImport, 1)}
+            title="Import image as frame"
+            disabled={tiles.length / 20 < 14}
+            onClick={importAsFrame}
           >
-            <DeleteIcon />
+            <CropFreeIcon />
           </IconButton>
-        </Badge>
-      </ButtonGroup>
+          <Badge
+            {...badgeProps}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            overlap="circular"
+          >
+            <IconButton
+              title="Remove image from queue"
+              onClick={() => setTimeout(cancelItemImport, 1)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Badge>
+        </ButtonGroup>
+
+        <Box sx={{ wordBreak: 'break-word' }}>
+          <Typography
+            variant="caption"
+            component="p"
+          >
+            { fileName }
+          </Typography>
+          {
+            lastModified && lastModified > 0 && (
+              <Typography
+                variant="caption"
+                component="p"
+              >
+                { dateFormatLocale(dayjs(lastModified), preferredLocale) }
+              </Typography>
+            )
+          }
+        </Box>
+      </Stack>
     </Stack>
   );
 }
