@@ -131,8 +131,11 @@ const parseBasicMetadata = (data: Uint8Array, baseAddress: number, cartIsJP: boo
 // };
 
 const getFileMeta = (data: Uint8Array, baseAddress: number, cartIsJP: boolean): FileMetaData => {
-  const cartIndex = (baseAddress / 0x1000) - 2;
-  const albumIndex = cartIndex >= 0 ? data[0x11b2 + cartIndex] : 64;
+  const inBankAddress = (baseAddress % 0x20000);
+  const bankIndex = Math.floor(baseAddress / 0x20000);
+  const bankStartAddress = bankIndex * 0x20000;
+  const cartIndex = (inBankAddress / 0x1000) - 2;
+  const albumIndex = cartIndex >= 0 ? (data[bankStartAddress + 0x11b2 + cartIndex] + (bankIndex * 30)) : -1;
 
   // 0x00F54: border number associated to the image.
   const frameNumber = data[baseAddress + 0x00F54];
@@ -144,7 +147,7 @@ const getFileMeta = (data: Uint8Array, baseAddress: number, cartIsJP: boolean): 
   let meta: ImageMetaData | undefined;
 
   // not deleted or last seen
-  if (albumIndex < 64) {
+  if (albumIndex !== -1) {
     const romType: RomTypes = getRomType(thumbnail);
     // console.log(`albumIndex: ${describeAlbumIndex(albumIndex)} - ${romType}`);
 

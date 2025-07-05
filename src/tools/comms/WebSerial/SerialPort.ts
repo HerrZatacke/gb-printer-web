@@ -1,4 +1,4 @@
-import { PortDeviceType, PortType } from '@/consts/ports';
+import { PortType } from '@/consts/ports';
 import { CommonPort } from '@/tools/comms/CommonPort';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { SettingsCallback } from '@/types/ports';
@@ -7,6 +7,7 @@ class CommonSerialPort extends CommonPort {
   private device: SerialPort;
   private baudRate: number;
   private reader: ReadableStreamDefaultReader | null;
+  private writer: WritableStreamDefaultWriter | null;
   private settingsCallback: SettingsCallback;
 
   constructor(device: SerialPort, settingsCallback: SettingsCallback) {
@@ -15,6 +16,7 @@ class CommonSerialPort extends CommonPort {
     this.settingsCallback = settingsCallback;
     this.baudRate = 0;
     this.reader = null;
+    this.writer = null;
   }
 
   public getBaudRate(): number {
@@ -22,11 +24,11 @@ class CommonSerialPort extends CommonPort {
   }
 
   public canRead(): boolean {
-    return Boolean(this.reader && this.portDeviceType !== PortDeviceType.INACTIVE);
+    return Boolean(this.reader && this.enabled);
   }
 
   getDescription(): string {
-    return `${this.baudRate} baud`;
+    return this.baudRate ? `${this.baudRate} baud` : '';
   }
 
   protected async readChunk(): Promise<Uint8Array> {
@@ -43,19 +45,18 @@ class CommonSerialPort extends CommonPort {
     await this.device.open({ baudRate: this.baudRate });
 
     this.reader = this.device.readable.getReader();
+    this.writer = this.device.writable.getWriter();
 
     this.startBuffering(50);
     return this.detectType();
   }
 
   protected async sendRaw(data: BufferSource) {
-    if (!this.device?.writable) {
+    if (!this.device?.writable || !this.writer) {
       throw new Error('device is not writable');
     }
 
-    const writer = this.device.writable.getWriter();
-    await writer.write(data);
-    writer.releaseLock();
+    await this.writer.write(data);
   }
 }
 

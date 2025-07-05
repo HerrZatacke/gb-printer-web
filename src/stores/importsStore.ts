@@ -14,8 +14,10 @@ interface Actions {
   frameQueueAdd: (importItems: ImportItem[]) => void,
   frameQueueCancelOne: (tempId: string) => void,
   importQueueAdd: (importItems: ImportItem[]) => void,
+  importQueueSet: (importItems: ImportItem[]) => void,
   importQueueCancel: () => void,
   importQueueCancelOne: (tempId: string) => void,
+  getImportItem: (tempId: string) => ImportItem | null,
 }
 
 export type ImportsState = Values & Actions;
@@ -36,7 +38,6 @@ const useImportsStore = create<ImportsState>((set, get) => ({
   frameQueueCancelOne: (tempId: string) => set(({ frameQueue }) => (
     { frameQueue: frameQueue.filter((item) => item.tempId !== tempId) }
   )),
-
   importQueueAdd: (importItems: ImportItem[]) => {
     const { bitmapQueue, importQueue } = get();
     const fileNames = importItems.map(({ fileName }) => fileName);
@@ -47,12 +48,19 @@ const useImportsStore = create<ImportsState>((set, get) => ({
       importQueue: [...importQueue, ...importItems],
     });
   },
+  importQueueSet: (importItems: ImportItem[]) => {
+    set({ importQueue: importItems });
+  },
   importQueueCancel: () => {
     set({ importQueue: [] });
   },
   importQueueCancelOne: (tempId: string) => set(({ importQueue }) => (
     { importQueue: importQueue.filter((item) => item.tempId !== tempId) }
   )),
+  getImportItem: (tempId: string): ImportItem | null => {
+    const { importQueue } = get();
+    return importQueue.find((item) => item.tempId === tempId) || null;
+  },
 }));
 
 export default useImportsStore;

@@ -45,18 +45,31 @@ const getImportSav = ({
   }
 
   return async (selectedFrameset, cartIsJP) => {
-    const adresses = (new Array(30)).fill(null)
-      .map((_, index) => (
-        (index + 2) * 0x1000
-      ))
-      .filter((address) => address < data.length);
+    const imageSlots = Math.ceil(data.byteLength / 0x1000);
 
-    if (importLastSeen) {
-      adresses.unshift(0);
+    let addresses = Array.from({ length: imageSlots }, (_, i) => i * 0x1000);
+
+    if (data.byteLength === 0x100000) {
+      const romNameBytes = data.subarray(0x134, 0x134 + 0x10);
+      const textDecoder = new TextDecoder();
+      const romName = textDecoder.decode(romNameBytes.filter((byte) => (byte !== 0 && byte !== 128))).trim();
+
+      // If it's an actual PHOTO!-ROM, not a 8-bank save file
+      if (romName === 'PHOTO') {
+        // Remove first 32 (non-)images
+        addresses = addresses.slice(32);
+      }
+    }
+
+    // remove "gameFace"
+    addresses = addresses.filter((address) => ((address - 0x1000) % 0x20000) !== 0);
+
+    if (!importLastSeen) {
+      addresses = addresses.filter((address) => (address % 0x20000) !== 0);
     }
 
     const images: ((FileMetaData & WithTiles) | null)[] = await Promise.all(
-      adresses.map(async (address): Promise<(FileMetaData & WithTiles) | null> => {
+      addresses.map(async (address): Promise<(FileMetaData & WithTiles) | null> => {
         const meta = getFileMeta(data, address, cartIsJP);
         const { frameNumber } = meta;
 
@@ -84,7 +97,7 @@ const getImportSav = ({
       queue.add(async (): Promise<ImportItem | undefined> => {
         let indexText;
         switch (albumIndex) {
-          case 64:
+          case -1:
             indexText = '[last seen]';
             break;
           case 255:

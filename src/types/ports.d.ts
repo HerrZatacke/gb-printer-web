@@ -45,7 +45,7 @@ export interface CommsDeviceMeta {
 
 export type ReadParams =
   { timeout: number; length?: never; texts?: never } |
-  { timeout?: number; length?: never; texts: string[] } |
+  { timeout?: number; length?: never; texts: Uint8Array[] } |
   { timeout?: number; length: number; texts?: never };
 
 export type StartProgressCallback = (label: string) => Promise<string>;

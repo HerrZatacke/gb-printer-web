@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.48.4",
+  "version": "1.49.0",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev",
@@ -49,6 +49,7 @@
     "@types/quantize": "^1.0.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-window": "^1.8.8",
     "@types/string-algorithms": "^1.0.3",
     "@types/w3c-web-usb": "^1.0.10",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
@@ -87,6 +88,7 @@
     "raw-loader": "^4.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-window": "^1.8.11",
     "reset-css": "^5.0.2",
     "rimraf": "^6.0.1",
     "sass": "^1.89.0",

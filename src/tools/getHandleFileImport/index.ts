@@ -4,13 +4,13 @@ import { transformBin } from '@/tools/transformBin';
 import { transformBitmaps } from '@/tools/transformBitmaps';
 import { transformPlainText } from '@/tools/transformPlainText';
 import { transformReduced } from '@/tools/transformReduced';
-import { transformRom } from '@/tools/transformRom';
 import { transformSav } from '@/tools/transformSav';
 import type { PreparedFile } from './prepareFile';
 import prepareFile from './prepareFile';
 
 export interface HandeFileImportOptions {
   fromPrinter: boolean
+  savFrameSet?: string,
 }
 
 export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
@@ -18,7 +18,7 @@ export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions
 const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
   const importJSON = getImportJSON(importFn);
 
-  return async (files, { fromPrinter } = { fromPrinter: false }): Promise<void> => {
+  return async (files, { fromPrinter, savFrameSet } = { fromPrinter: false }): Promise<void> => {
 
     await Promise.all(files.map((fileData) => {
       const { file, contentType }: PreparedFile = prepareFile(fileData);
@@ -42,22 +42,19 @@ const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
 
       // .sav files are always exactly 128kB, but we allow any multiple of 4kB
       if (
-        file.name?.toLowerCase().endsWith('.sav') && (
+        (
+          file.name?.toLowerCase().endsWith('.gb') ||
+          file.name?.toLowerCase().endsWith('.gbc') ||
+          file.name?.toLowerCase().endsWith('.sav')
+        ) && (
           file.size % 0x1000 === 0 ||
           file.size === 3584 // Special case: PicNRec .sav
         )
       ) {
-        return transformSav(file, file.size === 3584);
-      }
-
-      // .extracting 7 banks of a photo rom
-      if ((
-        file.name?.toLowerCase().endsWith('.gb') ||
-        file.name?.toLowerCase().endsWith('.gbc')
-      ) && (
-        file.size % 0x100000 === 0
-      )) {
-        return transformRom(file);
+        return transformSav(file, {
+          skipDialogs: file.size !== 0x20000, // Skip dialogs for all non-standard save files
+          frameSet: savFrameSet,
+        });
       }
 
       // can use src/assets/dumps/pico.bin for testing

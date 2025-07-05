@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue';
-import { useState } from 'react';
-import { dateFormat, dateFormatSeconds } from '@/consts/defaults';
+import { useCallback, useMemo, useState } from 'react';
+import { dateFormat, dateFormatSeconds, missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { useStores } from '@/hooks/useStores';
@@ -16,13 +16,15 @@ import { randomId } from '@/tools/randomId';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
 import type { ImportItem } from '@/types/ImportItem';
+import { Palette } from '@/types/Palette';
 import { toSlug } from './useEditImageGroup';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
 interface UseRunImport {
-  importQueue: ImportItem[],
-  palette: string,
+  queue: string[],
+  palette: Palette,
+  activePalette: string,
   importPad: boolean,
   frame: string,
   createGroup: boolean,
@@ -34,23 +36,26 @@ interface UseRunImport {
   tagChanges: TagChange,
   resetTagChanges: () => void,
   updateTagChanges: (updates: TagChange) => void,
+  importAsFrame: (id: string) => void,
+  cancelItemImport: (id: string) => void,
+  removeLastSeen: () => void,
+  removeDeleted: () => void,
 }
 
 const useRunImport = (): UseRunImport => {
   const { importPad, setActivePalette, activePalette } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
-  const { addImageGroup } = useItemsStore();
+  const { addImageGroup, palettes } = useItemsStore();
   const { setImageSelection } = useFiltersStore();
+  const { importQueue: rawImportQueue, importQueueSet, frameQueueAdd, importQueueCancelOne } = useImportsStore();
   const { addImages, importQueueCancel } = useStores();
 
-  const queue = new Queue(1, Infinity);
   const { view } = useGalleryTreeContext();
   const { navigateToGroup } = useNavigationToolsContext();
 
-  const { importQueue } = useImportsStore();
 
   const [frame, setFrame] = useState('');
-  const [createGroup, setCreateGroup] = useState<boolean>(importQueue.length > 3);
+  const [createGroup, setCreateGroup] = useState<boolean>(rawImportQueue.length > 3);
 
   const [tagChanges, updateTagChanges] = useState<TagChange>({
     initial: [],
@@ -58,18 +63,29 @@ const useRunImport = (): UseRunImport => {
     remove: [],
   });
 
-  const resetTagChanges = () => {
+  const importAsFrame = useCallback((id: string) => {
+    const { importQueue } = useImportsStore.getState();
+    frameQueueAdd(importQueue.filter(({ tempId }) => tempId === id));
+  }, [frameQueueAdd]);
+
+  const cancelItemImport = useCallback((id: string) => {
+    importQueueCancelOne(id);
+  }, [importQueueCancelOne]);
+
+  const resetTagChanges = useCallback(() => {
     updateTagChanges(({ initial }) => ({
       initial,
       add: [],
       remove: [],
     }));
-  };
+  }, []);
 
-  const runImport = async () => {
+  const runImport = useCallback(async () => {
+    const { importQueue } = useImportsStore.getState();
+    const queue = new Queue(1, Infinity);
     const savedImages = await Promise.all(sortByFilename(importQueue).map((image, index) => {
       const { tiles, fileName, meta, lastModified } = image;
-
+      const { add } = tagChanges;
       return (
         queue.add(() => (
           saveNewImage({
@@ -77,7 +93,7 @@ const useRunImport = (): UseRunImport => {
             filename: fileName,
             palette: activePalette,
             frame,
-            tags: tagChanges.add,
+            tags: add,
             // Adding index to milliseconds to ensure better sorting
             created: dayjs((lastModified || Date.now()) + index).format(dateFormat),
             meta,
@@ -115,12 +131,29 @@ const useRunImport = (): UseRunImport => {
     }
 
     setImageSelection(imageHashes);
-  };
+  }, [activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
+
+  const palette = useMemo(() => palettes.find(({ shortName }) => shortName === activePalette) || missingGreyPalette, [activePalette, palettes]);
+
+  const queue = useMemo(() => (rawImportQueue.map(({ tempId }) => tempId)), [rawImportQueue]);
+
+  const removeLastSeen = useCallback(() => {
+    importQueueSet(rawImportQueue.filter((importItem: ImportItem) => (
+      importItem.fileName.indexOf('[last seen]') === -1
+    )));
+  }, [importQueueSet, rawImportQueue]);
+
+  const removeDeleted = useCallback(() => {
+    importQueueSet(rawImportQueue.filter((importItem: ImportItem) => (
+      importItem.fileName.indexOf('[deleted]') === -1
+    )));
+  }, [importQueueSet, rawImportQueue]);
 
   return {
-    importQueue,
+    queue,
     importPad,
-    palette: activePalette,
+    palette,
+    activePalette,
     frame,
     tagChanges,
     createGroup,
@@ -130,7 +163,11 @@ const useRunImport = (): UseRunImport => {
     setCreateGroup,
     runImport,
     cancelImport: importQueueCancel,
+    importAsFrame,
+    cancelItemImport,
     setActivePalette,
+    removeLastSeen,
+    removeDeleted,
   };
 };
 

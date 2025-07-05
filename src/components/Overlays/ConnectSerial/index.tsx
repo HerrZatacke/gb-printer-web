@@ -92,32 +92,38 @@ function ConnectSerial({ inline }: Props) {
       <Typography variant="body2">
         {`Connected devices (${connectedDevices.length}):`}
       </Typography>
-      <ul>
+      <Stack
+        component="ul"
+        direction="column"
+        gap={2}
+      >
         {connectedDevices.map(({ id, portType, portDeviceType, description }) => {
           const Icon = portType === PortType.SERIAL ? SettingsInputHdmiIcon : UsbIcon;
           return (
             <Stack
-              component="li"
-              direction="row"
-              gap={2}
               key={id}
-              alignItems="baseline"
+              gap={1}
+              direction="row"
+              alignItems="center"
             >
-              <Typography variant="body1" component="span">
-                <Icon sx={{
-                  fontSize: 'inherit',
-                  verticalAlign: 'middle',
-                  mr: 1,
-                }}/>
-                {`Type: ${portDeviceLabels[portDeviceType]}`}
-              </Typography>
-              <Typography variant="caption" component="span">
-                {enableDebug ? `${description} - ${id}` : description}
-              </Typography>
+              <Icon />
+              <Stack
+                component="li"
+                direction={inline ? 'row' : 'column'}
+                gap={inline ? 2 : 0}
+                alignItems="baseline"
+              >
+                <Typography variant="body1" component="span">
+                  {portDeviceLabels[portDeviceType]}
+                </Typography>
+                <Typography variant="caption" component="span">
+                  {enableDebug ? `${description} - ${id}` : description}
+                </Typography>
+              </Stack>
             </Stack>
           );
         })}
-      </ul>
+      </Stack>
 
       <Button
         title="Show message from unrecognized device"

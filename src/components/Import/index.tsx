@@ -21,7 +21,13 @@ function Import() {
     exportJson,
   } = useImport();
 
-  const { gbxCartAvailable, readRAMImage, readPhotoRom } = useGBXCart();
+  const {
+    gbxCartAvailable,
+    readRAMImage,
+    readPhotoRom,
+    canReadPhotoRom,
+    busy,
+  } = useGBXCart();
 
   useEffect(() => {
     import(/* webpackChunkName: "dmy" */ './dummy')
@@ -68,15 +74,17 @@ function Import() {
           <>
             <Button
               onClick={readRAMImage}
-              title="Import memory (RAM) from GBxCart RW"
+              title="Import memory (RAM) from Cartridge Reader"
+              disabled={busy}
             >
-              Import memory from GBxCart RW
+              Import memory from Cartridge Reader
             </Button>
             <Button
               onClick={readPhotoRom}
-              title="Import Album Rolls from Photo! (ROM-Banks)"
+              disabled={!canReadPhotoRom || busy}
+              title="Import Album Rolls from Photo! (ROM + Flash)"
             >
-              Import Album Rolls from Photo!
+              Import Album Rolls from Photo!(ROM + Flash)
             </Button>
           </>
         )}
