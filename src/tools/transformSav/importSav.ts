@@ -44,10 +44,22 @@ const getImportSav = ({
     }
   }
 
-  const imageSlots = Math.ceil(data.byteLength / 0x1000);
-
   return async (selectedFrameset, cartIsJP) => {
+    const imageSlots = Math.ceil(data.byteLength / 0x1000);
+
     let addresses = Array.from({ length: imageSlots }, (_, i) => i * 0x1000);
+
+    if (data.byteLength === 0x100000) {
+      const romNameBytes = data.subarray(0x134, 0x134 + 0x10);
+      const textDecoder = new TextDecoder();
+      const romName = textDecoder.decode(romNameBytes.filter((byte) => (byte !== 0 && byte !== 128))).trim();
+
+      // If it's an actual PHOTO!-ROM, not a 8-bank save file
+      if (romName === 'PHOTO') {
+        // Remove first 32 (non-)images
+        addresses = addresses.slice(32);
+      }
+    }
 
     // remove "gameFace"
     addresses = addresses.filter((address) => ((address - 0x1000) % 0x20000) !== 0);
