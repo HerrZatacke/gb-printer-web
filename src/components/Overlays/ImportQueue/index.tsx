@@ -10,7 +10,6 @@ import PaletteSelect from '@/components/PaletteSelect';
 import TagsSelect from '@/components/TagsSelect';
 import useRunImport from '@/hooks/useRunImport';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
-import useSettingsStore from '@/stores/settingsStore';
 import modifyTagChanges from '@/tools/modifyTagChanges';
 import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
@@ -20,7 +19,7 @@ function ImportQueue() {
     frame,
     palette,
     activePalette,
-    queue,
+    importQueue,
     tagChanges,
     createGroup,
     setFrame,
@@ -32,18 +31,21 @@ function ImportQueue() {
     cancelImport,
     importAsFrame,
     cancelItemImport,
+    lastSeenCount,
+    importedDuplicatesCount,
+    queueDuplicatesCount,
+    deletedCount,
     removeLastSeen,
     removeDeleted,
+    removeImportedDuplicates,
+    removeQueueDuplicates,
   } = useRunImport();
 
   const { height } = useScreenDimensions();
-  const { importLastSeen, importDeleted } = useSettingsStore();
-
-  const showRemovalButtons = importLastSeen || importDeleted;
 
   return (
     <Lightbox
-      header={`Image Import (${queue.length} images)`}
+      header={`Image Import (${importQueue.length} images)`}
       confirm={runImport}
       deny={cancelImport}
     >
@@ -52,8 +54,8 @@ function ImportQueue() {
         gap={4}
       >
         <FixedSizeList
-          height={Math.min(queue.length * 152, height / 2)}
-          itemCount={queue.length}
+          height={Math.min(importQueue.length * 152, height / 2)}
+          itemCount={importQueue.length}
           itemSize={152}
           overscanCount={5}
           width="100%"
@@ -62,32 +64,46 @@ function ImportQueue() {
             <ImportRow
               windowStyle={style}
               palette={palette}
-              imageId={queue[index]}
-              importAsFrame={() => importAsFrame(queue[index])}
-              cancelItemImport={() => cancelItemImport(queue[index])}
+              importItem={importQueue[index]}
+              importAsFrame={() => importAsFrame(importQueue[index].tempId)}
+              cancelItemImport={() => cancelItemImport(importQueue[index].tempId)}
             />
           )}
         </FixedSizeList>
-        {showRemovalButtons && (
-          <ButtonGroup
-            variant="contained"
-            color="secondary"
-            fullWidth
+        <ButtonGroup
+          variant="contained"
+          color="secondary"
+          fullWidth
+        >
+          <Button
+            disabled={!lastSeenCount}
+            onClick={removeLastSeen}
+            title="Remove last seen"
           >
-            <Button
-              disabled={!importLastSeen}
-              onClick={removeLastSeen}
-            >
-              Remove [last seen]
-            </Button>
-            <Button
-              disabled={!importDeleted}
-              onClick={removeDeleted}
-            >
-              Remove [deleted]
-            </Button>
-          </ButtonGroup>
-        )}
+            {`Remove last seen ${lastSeenCount ? `(${lastSeenCount})` : ''}`}
+          </Button>
+          <Button
+            disabled={!deletedCount}
+            onClick={removeDeleted}
+            title="Remove deleted"
+          >
+            {`Remove deleted ${deletedCount ? `(${deletedCount})` : ''}`}
+          </Button>
+          <Button
+            disabled={!queueDuplicatesCount}
+            onClick={removeQueueDuplicates}
+            title="Remove duplicates in queue"
+          >
+            {`Remove duplicates in queue ${queueDuplicatesCount ? `(${queueDuplicatesCount})` : ''}`}
+          </Button>
+          <Button
+            disabled={!importedDuplicatesCount}
+            onClick={removeImportedDuplicates}
+            title="Remove already imported"
+          >
+            {`Remove already imported ${importedDuplicatesCount ? `(${importedDuplicatesCount})` : ''}`}
+          </Button>
+        </ButtonGroup>
         <PaletteSelect
           noFancy
           value={activePalette}

@@ -1,4 +1,4 @@
-import type { ImageMetadata } from './Image';
+import { Image, ImageMetadata } from './Image';
 
 export interface ImportItem {
   fileName:string,
@@ -7,4 +7,9 @@ export interface ImportItem {
   lastModified?: number,
   tempId: string,
   meta?: ImageMetadata,
+}
+
+export interface FlaggedImportItem extends ImportItem {
+  isDuplicateInQueue: boolean;
+  alreadyImported: Image | null;
 }
