@@ -82,9 +82,9 @@ function Import() {
             <Button
               onClick={readPhotoRom}
               disabled={!canReadPhotoRom || busy}
-              title="Import Album Rolls from Photo! (ROM-Banks)"
+              title="Import Album Rolls from Photo! (ROM + Flash)"
             >
-              Import Album Rolls from Photo!
+              Import Album Rolls from Photo!(ROM + Flash)
             </Button>
           </>
         )}

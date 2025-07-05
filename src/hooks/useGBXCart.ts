@@ -23,7 +23,7 @@ export const useGBXCart = (): UseGBXCart => {
   const { setError } = useInteractionsStore();
   const { jsonImport } = useImportExportSettings();
   const handleFileImport = useMemo(() => (getHandleFileImport(jsonImport)), [jsonImport]);
-  const [canReadPhotoRom, setCanReadPhotoRom] = useState(false);
+  const [canReadPhotoRom, setCanReadPhotoAlbums] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const gbxCart: Remote<GBXCartCommsDevice> | null = useMemo(() => {
@@ -40,7 +40,7 @@ export const useGBXCart = (): UseGBXCart => {
     if (gbxCart) {
       setBusy(true);
       gbxCart.readROMName().then((romName) => {
-        setCanReadPhotoRom(romName.trim() === 'PHOTO');
+        setCanReadPhotoAlbums(romName.trim() === 'PHOTO');
         setBusy(false);
       });
     }
@@ -68,7 +68,7 @@ export const useGBXCart = (): UseGBXCart => {
     setBusy(true);
 
     const romName = await gbxCart.readROMName();
-    setCanReadPhotoRom(romName.trim() === 'PHOTO');
+    setCanReadPhotoAlbums(romName.trim() === 'PHOTO');
 
     let savFrameSet: string | undefined;
 
@@ -117,19 +117,19 @@ export const useGBXCart = (): UseGBXCart => {
     setBusy(true);
 
     const romName = await gbxCart.readROMName();
-    setCanReadPhotoRom(romName.trim() === 'PHOTO');
+    setCanReadPhotoAlbums(romName.trim() === 'PHOTO');
 
     if (romName !== 'PHOTO') {
       setError(new Error('ROM is not PHOTO!'));
       return;
     }
 
-    const result = await gbxCart.readPhotoRom();
+    const result = await gbxCart.readPhotoAlbums();
 
     setBusy(false);
 
     handleFileImport([
-      new File(result, `${romName.trim() || 'dump'}.gb`, {
+      new File(result, `${romName.trim() || 'dump'}.sav`, {
         type: 'application/octet-stream',
       }),
     ], { fromPrinter: false });

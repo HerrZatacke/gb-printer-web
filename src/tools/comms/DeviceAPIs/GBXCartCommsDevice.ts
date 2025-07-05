@@ -37,7 +37,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
   public readonly portDeviceType = PortDeviceType.GBXCART;
   public readonly portType: PortType;
   private readonly fwVer: number;
-  private powerControlSupport: boolean;
+  private readonly powerControlSupport: boolean;
   private startProgress: StartProgressCallback = async (label: string): Promise<string> => { console.log(label); return '#'; };
   private setProgress: SetProgressCallback = (id: string, value: number) => { console.log(`${id} - ${Math.round(value * 100)}%`); };
   private stopProgress: StopProgressCallback = (id: string) => { console.log(`${id} - done`); };
@@ -48,12 +48,6 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     const firmwareInfo = GBXCartCommsDevice.parseFwResponse(version);
     this.fwVer = firmwareInfo?.firmwareVersion || 0;
     this.powerControlSupport = firmwareInfo?.powerControlSupport || false;
-
-    /*  ToDo handle this everywhere
-    DMG_READ_CS_PULSE, DMG_ACCESS_MODE and TRANSFER_SIZE only needs to be set once (before your first RAM transfer).
-    ADDRESS only needs to be set once per RAM bank switch, should just auto increment.
-    So just spam the readCommand to get the next data.
-    * */
 
     this.id = randomId();
     this.description = [
@@ -185,20 +179,29 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     return chunks;
   }
 
-  public async readPhotoRom(): Promise<Uint8Array[]> {
+  public async readPhotoAlbums(): Promise<Uint8Array[]> {
     await this.setModeVoltage();
     const chunks: Uint8Array[] = [];
     const chunkSize = 0x4000;
+    const ramReadSize = 0x2000;
     const romBanks = 64;
-    const totalChunks = romBanks;
+    const ramBanks = 16;
+    const skipFirstRomBanks = 8;
+    const progressTarget = ramBanks + romBanks - skipFirstRomBanks;
 
-    const handle = await this.startProgress('Loading Album Rolls from Photo!');
+    const handle = await this.startProgress('Loading Album Rolls (ROM + Flash) from Photo!');
 
     const start = performance.now();
 
-    for (let romBank = 0; romBank < romBanks; romBank += 1) {
+    for (let ramBank = 0; ramBank < ramBanks; ramBank += 1) {
+      await this.cartWrite(0x4000, ramBank); // Set SRAM bank
+      this.setProgress(handle, chunks.length / progressTarget);
+      chunks.push(await this.readRAM(0, ramReadSize));
+    }
+
+    for (let romBank = skipFirstRomBanks; romBank < romBanks; romBank += 1) {
       await this.cartWrite(0x2100, romBank); // Set ROM bank
-      this.setProgress(handle, chunks.length / totalChunks);
+      this.setProgress(handle, chunks.length / progressTarget);
       if (romBank === 0) {
         chunks.push(await this.readROM(0, chunkSize));
       } else {
@@ -208,7 +211,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
 
     await this.powerOff();
 
-    console.log(`Reading Photo ROM completed in ${((performance.now() - start) / 1000).toFixed(2)}s`);
+    console.log(`Reading Photo RAM+ROM completed in ${((performance.now() - start) / 1000).toFixed(2)}s`);
 
     this.stopProgress(handle);
     return chunks;

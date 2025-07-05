@@ -49,7 +49,7 @@ const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
         )
       ) {
         return transformSav(file, {
-          skipDialogs: file.size === 3584,
+          skipDialogs: file.size !== 0x20000, // Skip dialogs for all non-standard save files
           frameSet: savFrameSet,
         });
       }
