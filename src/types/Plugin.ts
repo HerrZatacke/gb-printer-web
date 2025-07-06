@@ -3,6 +3,7 @@ import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import type { ConfigParamType } from '@/consts/plugins';
 import type { ImportFn } from '@/hooks/useImportExportSettings';
 import type { UseStores } from '@/hooks/useStores';
+import type { InteractionsState } from '@/stores/interactionsStore';
 import type { ItemsState } from '@/stores/itemsStore';
 import type { ProgressState } from '@/stores/progressStore';
 import type { HandeFileImportFn } from '@/tools/getHandleFileImport';
@@ -73,6 +74,7 @@ export type GetCollectImageDataFn = (images: Image[]) => CollectImageDataFn;
 export interface PluginArgs {
   saveAs: typeof FileSaver,
   progress: (progressValue: number) => void,
+  setError: (err: Error) => void,
   store: PluginCompatibilityWrapper
   collectImageData: CollectImageDataFn,
   functions: PluginFunctions,
@@ -97,6 +99,7 @@ export interface PluginsContext {
 export type InitPluginSetupParams =
   Pick<ItemsState, 'addUpdatePluginProperties'> &
   Pick<ProgressState, 'setProgress'  | 'startProgress' | 'stopProgress'> &
+  Pick<InteractionsState, 'setError'> &
   {
     collectImageData: CollectImageDataFn,
     stores: UseStores,
