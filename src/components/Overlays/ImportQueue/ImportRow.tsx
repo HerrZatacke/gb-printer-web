@@ -64,7 +64,7 @@ function ImportRow({
       direction="row"
       gap={1}
       alignItems="stretch"
-      justifyContent="space-between"
+      justifyContent="left"
       sx={windowStyle}
     >
       <Box
@@ -82,7 +82,7 @@ function ImportRow({
 
       <Stack
         sx={{
-          flex: 'auto 0 1',
+          flex: 'auto 1 1',
           my: 1,
         }}
         direction="column"
@@ -121,10 +121,15 @@ function ImportRow({
           </Badge>
         </ButtonGroup>
 
-        <Box sx={{ wordBreak: 'break-word' }}>
+        <Stack
+          sx={{ pr: 1 }}
+          gap={1}
+          direction="column"
+        >
           <Typography
             variant="caption"
             component="p"
+            sx={{ wordBreak: 'break-word' }}
           >
             { fileName }
           </Typography>
@@ -138,7 +143,7 @@ function ImportRow({
               </Typography>
             )
           }
-        </Box>
+        </Stack>
       </Stack>
     </Stack>
   );
