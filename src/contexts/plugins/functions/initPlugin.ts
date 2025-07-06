@@ -7,6 +7,7 @@ export const initPlugin = (
     startProgress,
     setProgress,
     stopProgress,
+    setError,
     addUpdatePluginProperties,
     collectImageData,
     stores,
@@ -47,6 +48,7 @@ export const initPlugin = (
         const instance: PluginClassInstance = new PluginClass({
           saveAs,
           progress,
+          setError,
           store: pluginCompatibilityStore(stores, importFn),
           functions: pluginFunctions(stores, importFn),
           collectImageData,

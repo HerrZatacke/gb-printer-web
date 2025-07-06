@@ -4,6 +4,7 @@ import React, { useCallback, useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
+import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
 import useProgressStore from '@/stores/progressStore';
 import type { InitPluginSetupParams, Plugin, PluginClassInstance, PluginImageData, PluginsContext } from '@/types/Plugin';
@@ -15,6 +16,7 @@ export function PluginsContext({ children }: PropsWithChildren) {
   const { plugins, images, addUpdatePluginProperties } = useItemsStore();
   const stores = useStores();
   const { startProgress, setProgress, stopProgress } = useProgressStore();
+  const { setError } = useInteractionsStore();
   const { jsonImport } = useImportExportSettings();
 
   const initPluginSetupParams = useMemo<InitPluginSetupParams>(() => ({
@@ -23,9 +25,10 @@ export function PluginsContext({ children }: PropsWithChildren) {
     startProgress,
     setProgress,
     stopProgress,
+    setError,
     stores,
     importFn: jsonImport,
-  }), [images, addUpdatePluginProperties, startProgress, setProgress, stopProgress, stores, jsonImport]);
+  }), [images, addUpdatePluginProperties, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
     const plugin: Plugin = plugins.find((p) => p.url === url) || { url: '' };
