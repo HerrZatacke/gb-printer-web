@@ -116,7 +116,7 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
     this.stopProgress(progressHandle);
   }
 
-  printImage(tiles: string[]) {
+  async printImage(tiles: string[]) {
     const bytes = tiles.reduce((acc: number[], tile: string): number[] => {
       const hexBytes = chunk<string>(tile, 2).flat();
       return [
@@ -134,7 +134,7 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
       ]));
 
     // add print command every 9 lines (regular image size and maximum printer capacity)
-    const commands = chunk(lines, 9)
+    const commands = chunk(lines, 1)
       .map(((section: Uint8Array[], index: number, arr: Uint8Array[][]) => {
         const topMargin: number = (index === 0) ? 1 : 0;
         const bottomMargin: number = (index === arr.length - 1) ? 3 : 0;
@@ -145,8 +145,7 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
       }))
       .flat();
 
-
-    this.sendCommands(commands);
+    await this.sendCommands(commands);
   }
 
   async setup({ startProgress, setProgress, stopProgress, setError }: SetupParams) {
