@@ -49,6 +49,14 @@
     "webSerialEnabled":  "Your current browser/device does support Web Serial",
     "webSerialDisabled": "Your current browser/device does not support Web Serial"
   },
+  "ConnectSerial": {
+    "openWebUSB": "Open WebUSB device",
+    "openWebSerial": "Open Web Serial device",
+    "connectedDevices": "{deviceCount, plural, =0 {No connected devices} =1 {One connected device:} other {# connected devices:}}",
+    "showUnknownResponse": "Show message from unrecognized device",
+    "unknownDeviceInfo": "Unknown device info",
+    "copyToClipboard": "Copy to clipboard"
+  },
   "usePaletteSort": {
     "defaultAsc": "Default (ascending)",
     "defaultDesc": "Default (descending)",

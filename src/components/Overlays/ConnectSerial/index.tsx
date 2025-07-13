@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import hasher from 'object-hash';
 import React, { useMemo, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
@@ -27,7 +28,9 @@ function ConnectSerial({ inline }: Props) {
     hasInactiveDevices,
   } = usePortsContext();
 
+
   const { enableDebug } = useSettingsStore();
+  const t = useTranslations('ConnectSerial');
 
   const [showUnknownDeviceResponse, setShowUnknownDeviceResponse] = useState(false);
   const unknownDeviceResponseInfo = useMemo<string[]>(() => {
@@ -61,14 +64,14 @@ function ConnectSerial({ inline }: Props) {
           gap={1}
         >
           <Button
-            title="Open WebUSB device"
+            title={t('openWebUSB')}
             onClick={openWebUSB}
             disabled={!webUSBEnabled}
             loadingPosition="start"
             variant="contained"
             color="secondary"
           >
-            Open WebUSB device
+            {t('openWebUSB')}
           </Button>
         </Stack>
 
@@ -77,20 +80,20 @@ function ConnectSerial({ inline }: Props) {
           gap={1}
         >
           <Button
-            title="Open Web Serial device"
+            title={t('openWebSerial')}
             onClick={openWebSerial}
             disabled={!webSerialEnabled}
             loadingPosition="start"
             variant="contained"
             color="secondary"
           >
-            Open Web Serial device
+            {t('openWebSerial')}
           </Button>
         </Stack>
       </Stack>
 
       <Typography variant="body2">
-        {`Connected devices (${connectedDevices.length}):`}
+        {t('connectedDevices', { deviceCount: connectedDevices.length })}
       </Typography>
       <Stack
         component="ul"
@@ -126,19 +129,19 @@ function ConnectSerial({ inline }: Props) {
       </Stack>
 
       <Button
-        title="Show message from unrecognized device"
+        title={t('showUnknownResponse')}
         onClick={() => {
           if (!unknownDeviceResponse) { return; }
           setShowUnknownDeviceResponse(true);
         }}
         disabled={!(hasInactiveDevices && unknownDeviceResponse)}
         variant="contained"
-        color={hasInactiveDevices ? 'error' : 'secondary'}
+        color="error"
       >
-        Show message from unrecognized device
+        {t('showUnknownResponse')}
       </Button>
       <Lightbox
-        header="Unknown device info"
+        header={t('unknownDeviceInfo')}
         deny={() => setShowUnknownDeviceResponse(false)}
         open={showUnknownDeviceResponse && Boolean(unknownDeviceResponse?.length)}
       >
@@ -153,7 +156,7 @@ function ConnectSerial({ inline }: Props) {
               <Typography>{value}</Typography>
               <IconButton
                 onClick={() => navigator.clipboard.writeText(value)}
-                title="Copy to clipboard"
+                title={t('copyToClipboard')}
               >
                 <ContentCopyIcon />
               </IconButton>
