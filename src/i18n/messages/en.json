@@ -71,6 +71,15 @@
     "installedPlugins": "Installed Plugins",
     "deletePlugin": "Delete Plugin \"{name}\""
   },
+  "SettingsGit": {
+    "enableStorage": "Use github as storage",
+    "owner": "Owner",
+    "repoName": "Repository name",
+    "branch": "Branch",
+    "throttle": "Throttle (in ms)",
+    "token": "Token",
+    "tokenHelper": "Go to GitHub to create a <link>new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>\"Repository Permissions > Contents\"</code>"
+  },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",
     "webUSBEnabled":  "Your current browser/device does support WebUSB",

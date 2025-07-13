@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React, { useCallback, useState } from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import { useAsPasswordField } from '@/hooks/useAsPasswordField';
@@ -22,6 +23,7 @@ function SettingsGit() {
   const [throttle, setThrottle] = useState<string>(gitStorage.throttle?.toString(10) || '10');
   const [token, setToken] = useState<string>(gitStorage.token || '');
   const { type, button } = useAsPasswordField();
+  const t = useTranslations('SettingsGit');
 
   const updateGitStorage = useCallback((partial: Partial<GitStorageSettings>) => {
     setGitStorage({
@@ -36,7 +38,7 @@ function SettingsGit() {
       gap={6}
     >
       <FormControlLabel
-        label="Use github as storage"
+        label={t('enableStorage')}
         control={(
           <Switch
             checked={use}
@@ -52,7 +54,7 @@ function SettingsGit() {
         <>
           <TextField
             id="settings-git-owner"
-            label="Owner"
+            label={t('owner')}
             type="text"
             value={owner}
             onChange={(ev) => {
@@ -65,7 +67,7 @@ function SettingsGit() {
 
           <TextField
             id="settings-git-repo"
-            label="Repository name"
+            label={t('repoName')}
             type="text"
             value={repo}
             onChange={(ev) => {
@@ -78,7 +80,7 @@ function SettingsGit() {
 
           <TextField
             id="settings-git-branch"
-            label="Branch"
+            label={t('branch')}
             type="text"
             value={branch}
             onChange={(ev) => {
@@ -91,7 +93,7 @@ function SettingsGit() {
 
           <TextField
             id="settings-git-throttle"
-            label="Throttle (in ms)"
+            label={t('throttle')}
             type="text"
             value={throttle}
             onChange={(ev) => {
@@ -109,18 +111,19 @@ function SettingsGit() {
 
           <TextField
             id="settings-git-token"
-            label="Token"
-            helperText={(
-              <>
-                {'Go to GitHub to create a '}
+            label={t('token')}
+            helperText={t.rich('tokenHelper', {
+              link: (chunks) => (
                 <Link
                   href="https://github.com/settings/personal-access-tokens/new"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  new fine-grained personal access token
+                  🔗
+                  {chunks}
                 </Link>
-                {', select the repository you want to use for synching and allow read/write for '}
+              ),
+              code: (chunks) => (
                 <Typography
                   component="code"
                   variant="caption"
@@ -129,10 +132,10 @@ function SettingsGit() {
                     padding: '0 2px',
                   }}
                 >
-                  &quot;Repository Permissions &gt; Contents&quot;
+                  {chunks}
                 </Typography>
-              </>
-            )}
+              ),
+            })}
             type={type}
             value={token}
             slotProps={{
