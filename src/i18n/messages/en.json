@@ -52,6 +52,19 @@
     "authenticate": "Authenticate",
     "logout":"Logout"
   },
+  "SettingsWiFi": {
+    "hostSettings": "Host Settings",
+    "mdnsName": "mDNS Name (Bonjour/Avahi)",
+    "accesspointSSID": "Accesspoint SSID",
+    "accesspointPassword": "Accesspoint Password",
+    "networks": "Networks",
+    "networkSSID": "Network SSID",
+    "networkPassword": "Network Password",
+    "deleteNetwork": "Delete Network",
+    "willDeleteNetwork": "Network will be deleted",
+    "addNetwork": "Add Network",
+    "saveSettings": "Save WiFi-Settings"
+  },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",
     "webUSBEnabled":  "Your current browser/device does support WebUSB",

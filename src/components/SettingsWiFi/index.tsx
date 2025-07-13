@@ -10,6 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import { useAsPasswordField } from '@/hooks/useAsPasswordField';
@@ -65,7 +66,7 @@ const getSettings = (
   wificonfigGet();
 
   return () => {
-    controller.abort('Navigated while getting wifi settings');
+    controller.abort();
   };
 };
 
@@ -117,6 +118,7 @@ function SettingsWiFi() {
   const [wifiConfig, setWifiConfig] = useState<WiFiConfig>();
   const [status, setStatus] = useState('loading');
   const { type, button } = useAsPasswordField();
+  const t = useTranslations('SettingsWiFi');
 
   useEffect(() => (
     getSettings(setWifiConfig, setStatus)
@@ -142,7 +144,7 @@ function SettingsWiFi() {
         gap={1}
       >
         <Typography component="h3" variant="h3">
-          Host Settings
+          {t('hostSettings')}
         </Typography>
 
         <Card raised>
@@ -153,7 +155,7 @@ function SettingsWiFi() {
             >
               <TextField
                 id="settings-mdns"
-                label="mDNS Name (Bonjour/Avahi)"
+                label={t('mdnsName')}
                 type="text"
                 disabled={disabled}
                 value={wifiConfig.mdns || ''}
@@ -169,7 +171,7 @@ function SettingsWiFi() {
 
               <TextField
                 id="settings-ap-ssid"
-                label="Accesspoint SSID"
+                label={t('accespointSSID')}
                 type="text"
                 disabled={disabled}
                 value={wifiConfig.ap.ssid || ''}
@@ -188,7 +190,7 @@ function SettingsWiFi() {
 
               <TextField
                 id="settings-ap-psk"
-                label="Accesspoint Password"
+                label={t('accesspointPassword')}
                 type={type}
                 slotProps={{
                   ...textFieldSlotDefaults,
@@ -220,7 +222,7 @@ function SettingsWiFi() {
         gap={1}
       >
         <Typography component="h3" variant="h3">
-          Networks
+          {t('networks')}
         </Typography>
 
         <Stack
@@ -264,7 +266,7 @@ function SettingsWiFi() {
           >
             <Button
               disabled={disabled}
-              title="Add Network"
+              title={t('addNetwork')}
               color="primary"
               variant="contained"
               startIcon={<AddBoxIcon />}
@@ -283,7 +285,7 @@ function SettingsWiFi() {
                 });
               }}
             >
-              Add Network
+              {t('addNetwork')}
             </Button>
           </Stack>
         </Stack>
@@ -297,7 +299,7 @@ function SettingsWiFi() {
           disabled={status !== 'updated'}
           onClick={() => saveSettings(setWifiConfig, setStatus, wifiConfig)}
         >
-          Save WiFi-Settings
+          {t('saveSettings')}
         </Button>
       </ButtonGroup>
     </Stack>

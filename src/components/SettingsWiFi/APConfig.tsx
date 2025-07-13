@@ -5,6 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import { useAsPasswordField } from '@/hooks/useAsPasswordField';
@@ -24,6 +25,7 @@ interface Props extends APConfig {
 
 function APConfig(props: Props) {
   const { type, button } = useAsPasswordField();
+  const t = useTranslations('SettingsWiFi');
 
   return (
     <Card
@@ -37,7 +39,7 @@ function APConfig(props: Props) {
         >
           <TextField
             id={`${props.id}-settings-ap-ssid`}
-            label="Network SSID"
+            label={t('networkSSID')}
             type="text"
             value={props.ssid}
             slotProps={{
@@ -45,7 +47,7 @@ function APConfig(props: Props) {
               input: {
                 endAdornment: (
                   <IconButton
-                    title="Delete Network"
+                    title={t('deleteNetwork')}
                     color="primary"
                     onClick={() => {
                       props.update({
@@ -68,7 +70,7 @@ function APConfig(props: Props) {
 
           <TextField
             id={`${props.id}-settings-ap-psk`}
-            label="Network Password"
+            label={t('networkPassword')}
             type={type}
             slotProps={{
               ...textFieldSlotDefaults,
@@ -89,7 +91,7 @@ function APConfig(props: Props) {
               severity="error"
               icon={<DeleteIcon fontSize="inherit" />}
             >
-              Network will be deleted
+              {t('willDeleteNetwork')}
             </Alert>
           )}
         </Stack>
