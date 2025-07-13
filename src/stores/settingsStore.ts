@@ -103,7 +103,7 @@ const useSettingsStore = create(
       pageSize: 30,
       preferredLocale: getDefaultLocale(),
       printerParams: '',
-      printerUrl: '/',  // when running on an esp8266, the envData context also sets this value
+      printerUrl: '',
       savFrameTypes: 'int',
       themeName: ThemeName.BRIGHT,
       enableImageGroups: false,
