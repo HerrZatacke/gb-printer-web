@@ -382,6 +382,7 @@ function SettingsGeneric() {
                   component={NextLink}
                   href="/import"
                 >
+                  🔗
                   {chunks}
                 </Link>
               ),
