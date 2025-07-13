@@ -39,7 +39,8 @@
     "locales": {
       "de-DE": "German - Germany (de-DE)",
       "en-US": "English - United States (en-US)",
-      "en-GB": "English - United Kingdom (en-GB)"
+      "en-GB": "English - United Kingdom (en-GB)",
+      "en-CA": "English - Canada (en-CA)"
     }
   },
   "SettingsDropbox": {
