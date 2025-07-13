@@ -1,6 +1,6 @@
 ## Using a WebUSB or WebSerial device:
 After connecting a WebUSB or WebSerial device, you can continue to the [Gallery Page](#/gallery) or [Home Page](#/home) now.  
-An overlay will appear once you're receiving data.  
+The USB-Symbol will pulse as soon as data is being received.    
 You can also access these options via the USB-Symbol in the navigation and the [Settings Page](#/settings).  
 
 ## Note: WebUSB and Web Serial are similar but not the same:

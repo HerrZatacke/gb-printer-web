@@ -3,17 +3,40 @@
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import MuiMarkdown from 'mui-markdown';
-import React from 'react';
+import { useTranslations } from 'next-intl';
+import React, { useEffect, useState } from 'react';
 import MarkdownStack from '@/components/MarkdownStack';
 import ConnectSerial from '@/components/Overlays/ConnectSerial';
 import { usePortsContext } from '@/contexts/ports';
 import useSettingsStore from '@/stores/settingsStore';
 import EnableWebUSB from './EnableWebUSB';
-import readme from './WebUSB.md';
+import readmeEn from './WebUSB.en.md';
 
 function WebUSBGreeting() {
   const { useSerials } = useSettingsStore();
   const { webSerialEnabled, webUSBEnabled } = usePortsContext();
+  const { preferredLocale } = useSettingsStore();
+  const t = useTranslations('WebUSBGreeting');
+
+  const [readme, setReadme] = useState(readmeEn);
+
+  useEffect(() => {
+    const set = async () => {
+      let langFile = preferredLocale.split('-')[0];
+
+      if (!['de', 'en'].includes(langFile)) {
+        langFile = 'en';
+      }
+
+      try {
+        setReadme((await import(`./WebUSB.${langFile}.md`)).default);
+      } catch {
+        setReadme(readmeEn);
+      }
+    };
+
+    set();
+  }, [preferredLocale]);
 
   return (
     <Stack
@@ -36,13 +59,13 @@ function WebUSBGreeting() {
               severity={webUSBEnabled ? 'success' : 'warning'}
               variant="filled"
             >
-              {webUSBEnabled ? 'Your current browser/device does support WebUSB' : 'Your current browser/device does not support WebUSB'}
+              {t(webUSBEnabled ? 'webUSBEnabled' : 'webUSBDisabled')}
             </Alert>
             <Alert
               severity={webSerialEnabled ? 'success' : 'warning'}
               variant="filled"
             >
-              {webSerialEnabled ? 'Your current browser/device does support Web Serial' : 'Your current browser/device does not support Web Serial'}
+              {t(webSerialEnabled ? 'webSerialEnabled' : 'webSerialDisabled')}
             </Alert>
           </Stack>
         </>

@@ -26,7 +26,13 @@ export default function MarkdownStack({ children }: PropsWithChildren) {
           paddingInlineStart: theme.spacing(2),
         },
         'h1,h2,h3,h4,h5,h6,p': {
-          marginBottom: '0.6em',
+          mb: '0.25em',
+        },
+        'h1,h2,h3,h4,h5,h6': {
+          mt: '1.25em',
+        },
+        '& > :first-child': {
+          mt: 0,
         },
       })}
     >

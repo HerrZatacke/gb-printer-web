@@ -12,14 +12,14 @@ interface FileNameStyleLabel {
 export const fileNameStyleLabels: FileNameStyleLabel[] = [
   {
     id: FileNameStyle.FULL,
-    name: 'Full Title',
+    name: 'filenameStyles.fullTitle',
   },
   {
     id: FileNameStyle.DATE_TITLE,
-    name: 'Date and Title',
+    name: 'filenameStyles.dateTitle',
   },
   {
     id: FileNameStyle.TITLE_ONLY,
-    name: 'Title only',
+    name: 'filenameStyles.titleOnly',
   },
 ];

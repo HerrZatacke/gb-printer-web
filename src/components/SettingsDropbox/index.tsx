@@ -8,11 +8,12 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { useDropboxSettings } from '@/hooks/useDropboxSettings';
 import cleanPath from '@/tools/cleanPath';
 
-function DropboxSettings() {
+function SettingsDropbox() {
   const {
     use,
     loggedIn,
@@ -23,6 +24,8 @@ function DropboxSettings() {
     autoDropboxSync,
   } = useDropboxSettings();
   const [path, setPath] = useState<string>(propsPath);
+  const t = useTranslations('SettingsDropbox');
+  const folderLink = `https://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`;
 
   return (
     <Stack
@@ -30,7 +33,7 @@ function DropboxSettings() {
       gap={6}
     >
       <FormControlLabel
-        label="Use Dropbox as storage"
+        label={t('enableStorage')}
         control={(
           <Switch
             checked={use}
@@ -48,17 +51,19 @@ function DropboxSettings() {
           <>
             <TextField
               id="dropbox-settings-path"
-              label="Subfolder"
-              helperText={(
-                <Link
-                  title={`Open Dropbox folder:\nhttps://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`}
-                  href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  open folder
-                </Link>
-              )}
+              label={t('subfolder')}
+              helperText={t.rich('openFolder', { link: (chunks) => (
+                  <Link
+                    title={t('openFolderLinkTitle', { folderLink })}
+                    href={folderLink}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    🔗
+                    {chunks}
+                  </Link>
+                ),
+              })}
               type="text"
               value={path}
               onChange={(ev) => {
@@ -75,13 +80,13 @@ function DropboxSettings() {
             <FormControlLabel
               label={(
                 <>
-                  Enable enhanced dropbox sync
+                  {t('enableEnhancedSync')}
                   <Typography
                     variant="caption"
                     component="p"
                     color="error"
                   >
-                    This is an experimental feature.
+                    {t('enableEnhancedSyncHelper')}
                   </Typography>
                 </>
               )}
@@ -93,7 +98,7 @@ function DropboxSettings() {
                       autoDropboxSync: target.checked,
                     });
 
-                    // Temporary refresh to start/stop polling in dropbox client
+                    // refresh to start/stop polling in dropbox client
                     window.setTimeout(() => {
                       window.location.reload();
                     }, 300);
@@ -110,13 +115,13 @@ function DropboxSettings() {
                 disabled={loggedIn}
                 onClick={startAuth}
               >
-                Authenticate
+                {t('authenticate')}
               </Button>
               <Button
                 disabled={!loggedIn}
                 onClick={logout}
               >
-                Logout
+                {t('logout')}
               </Button>
             </ButtonGroup>
           </>
@@ -126,4 +131,4 @@ function DropboxSettings() {
   );
 }
 
-export default DropboxSettings;
+export default SettingsDropbox;

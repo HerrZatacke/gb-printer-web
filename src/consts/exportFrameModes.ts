@@ -3,19 +3,19 @@ import { ExportFrameMode } from 'gb-image-decoder';
 const exportFrameModes = [
   {
     id: ExportFrameMode.FRAMEMODE_KEEP,
-    name: 'Keep frame',
+    name: 'frameModes.keepFrame',
   },
   {
     id: ExportFrameMode.FRAMEMODE_CROP,
-    name: 'Crop frame',
+    name: 'frameModes.cropFrame',
   },
   {
     id: ExportFrameMode.FRAMEMODE_SQUARE_BLACK,
-    name: 'Make image squared (add black)',
+    name: 'frameModes.squareBlack',
   },
   {
     id: ExportFrameMode.FRAMEMODE_SQUARE_WHITE,
-    name: 'Make image squared (add white)',
+    name: 'frameModes.squareWhite',
   },
 ];
 

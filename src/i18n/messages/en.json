@@ -3,11 +3,142 @@
     "galleryPageSize": "Gallery page size",
     "galleryPageSizeHelper": "Set to 0 to disable pagination - might cause performance issues on large sets of images",
     "galleryClickAction": "Click behaviour for gallery images",
-    "galleryClickActionHelper": "Ctrl+Click and Shift+Click will always select/range-select"
+    "galleryClickActionHelper": "Ctrl+Click and Shift+Click will always select/range-select",
+    "exportDimensions": "Image export dimensions",
+    "exportFiletypes": "Image export filetypes",
+    "exportHandleFrame": "How to handle frames when exporting images",
+    "filenameStyle": "Filename style",
+    "importSavFrames": "Frames to be applied when importing Cartridge dumps",
+    "importSavFramesNone":  "None",
+    "importSavFramesUnknown": "Unknown",
+    "importLastSeen": "Import ‘last seen’ image when importing Cartridge dumps",
+    "importDeleted": "Import deleted images when importing Cartridge dumps",
+    "forceMagicCheck": "Force valid .sav file when importing",
+    "importPad": "Pad images up to 144px height on import",
+    "hideDates": "Hide dates in gallery",
+    "sortPalettes": "Sort Palettes",
+    "preferredLocale": "Preferred locale",
+    "exampleDateFormat": "Example date format: {format}",
+    "printerUrl": "Printer URL",
+    "printerUrlHelper": "If you own a physical wifi-printer, you can add it\\'s URL here and check the <link>Import-tab</link>",
+    "printerParams": "Additional printer settings",
+    "enableDebug": "Show debug info",
+    "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
+
+    "frameModes": {
+      "keepFrame": "Keep frame",
+      "cropFrame": "Crop frame",
+      "squareBlack": "Make image squared (add black)",
+      "squareWhite": "Make image squared (add white)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Full Title",
+      "dateTitle": "Date and Title",
+      "titleOnly": "Title only"
+    },
+    "locales": {
+      "de-DE": "German - Germany (de-DE)",
+      "en-US": "English - United States (en-US)",
+      "en-GB": "English - United Kingdom (en-GB)",
+      "en-CA": "English - Canada (en-CA)"
+    }
   },
-  "Locales": {
-    "de-DE": "German - Germany (de-DE)",
-    "en-US": "English - United States (en-US)",
-    "en-GB": "English - United Kingdom (en-GB)"
+  "SettingsDropbox": {
+    "enableStorage": "Use Dropbox as storage",
+    "subfolder": "Subfolder",
+    "openFolder": "<link>Open folder</link>",
+    "openFolderLinkTitle": "Open Dropbox folder:\n{folderLink}",
+    "enableEnhancedSync": "Enable enhanced dropbox sync",
+    "enableEnhancedSyncHelper": "This is an experimental feature.",
+    "authenticate": "Authenticate",
+    "logout":"Logout"
+  },
+  "SettingsWiFi": {
+    "hostSettings": "Host Settings",
+    "mdnsName": "mDNS Name (Bonjour/Avahi)",
+    "accesspointSSID": "Accesspoint SSID",
+    "accesspointPassword": "Accesspoint Password",
+    "networks": "Networks",
+    "networkSSID": "Network SSID",
+    "networkPassword": "Network Password",
+    "deleteNetwork": "Delete Network",
+    "willDeleteNetwork": "Network will be deleted",
+    "addNetwork": "Add Network",
+    "saveSettings": "Save WiFi-Settings"
+  },
+  "SettingsPlugins": {
+    "addPlugin": "Add Plugin",
+    "addPluginHelper": "A selection of plugins can be found here",
+    "installedPlugins": "Installed Plugins",
+    "deletePlugin": "Delete Plugin \"{name}\""
+  },
+  "SettingsGit": {
+    "enableStorage": "Use github as storage",
+    "owner": "Owner",
+    "repoName": "Repository name",
+    "branch": "Branch",
+    "throttle": "Throttle (in ms)",
+    "token": "Token",
+    "tokenHelper": "Go to GitHub to create a <link>new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>\"Repository Permissions > Contents\"</code>"
+  },
+  "WebUSBGreeting": {
+    "enableWebUsb": "Enable WebUSB / Serial ports",
+    "webUSBEnabled":  "Your current browser/device does support WebUSB",
+    "webUSBDisabled": "Your current browser/device does not support WebUSB",
+    "webSerialEnabled":  "Your current browser/device does support Web Serial",
+    "webSerialDisabled": "Your current browser/device does not support Web Serial"
+  },
+  "ConnectSerial": {
+    "openWebUSB": "Open WebUSB device",
+    "openWebSerial": "Open Web Serial device",
+    "connectedDevices": "{deviceCount, plural, =0 {No connected devices} =1 {One connected device:} other {# connected devices:}}",
+    "showUnknownResponse": "Show message from unrecognized device",
+    "unknownDeviceInfo": "Unknown device info",
+    "copyToClipboard": "Copy to clipboard"
+  },
+  "SettingsTabs": {
+    "genericSettings": "Generic Settings",
+    "dropboxSettings": "Dropbox Settings",
+    "wifiSettings": "WiFi Settings",
+    "pluginSettings": "Plugin Settings",
+    "gitSettings": "Git Settings"
+  },
+  "ExportSettings": {
+    "resetGroups": "Reset image groups",
+    "exportAll": "Export Everything",
+    "exportPlugins": "Export Plugins",
+    "hashCleanup": "Hash Cleanup",
+
+    "persistState": {
+      "isPersistent": "Storage is persistent",
+      "requestPersistence": "Request storage persistence",
+      "apiUnavailable": "Persistance API not available",
+      "failed": "Failed to persist storage"
+    }
+  },
+  "EnvInfo": {
+    "appVersion": "Web-App version: {value}",
+    "appBranch": "Web-App branch: {value}",
+    "printerVersion": "Printer version: {value}",
+    "maxImages": "Max Images: {value}",
+    "storageDriver": "Localforage driver: {value}",
+    "envType": "Environment type: {value}",
+    "filesystem": "Compiled Filesystem: {value}",
+    "bootmode": "Compiled Bootmode: {value}",
+    "hasOled": "Compiled for OLED: {value}",
+    "yes": "yes",
+    "no": "no"
+},
+  "usePaletteSort": {
+    "defaultAsc": "Default (ascending)",
+    "defaultDesc": "Default (descending)",
+    "usageAsc": "Usage (ascending)",
+    "usageDesc": "Usage (descending)",
+    "nameAsc": "Name (ascending)",
+    "nameDesc": "Name (descending)"
+  },
+  "useAsPasswordField": {
+    "hidePassword": "Hide Password",
+    "showPassword": "Show Password"
   }
 }

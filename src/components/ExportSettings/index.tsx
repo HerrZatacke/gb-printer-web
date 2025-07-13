@@ -2,6 +2,7 @@
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { ExportTypes } from '@/consts/exportTypes';
 import { useImageGroups } from '@/hooks/useImageGroups';
@@ -12,20 +13,21 @@ import useHashCleanup from '@/tools/hashCleanup';
 const persistMessage = (persistState: PersistState): string => {
   switch (persistState) {
     case PersistState.PERSISTED:
-      return 'Storage is persistent';
+      return 'persistState.isPersistent';
     case PersistState.NOT_PERSISTED:
-      return 'Request storage persistence';
+      return 'persistState.requestPersistence';
     case PersistState.NO_API:
-      return 'Persistance API not available';
+      return 'persistState.apiUnavailable';
     case PersistState.FAILED:
     default:
-      return 'Failed to persist storage';
+      return 'persistState.failed';
   }
 };
 
 function ExportSettings() {
   const { hashCleanup, cleanupBusy } = useHashCleanup();
   const { downloadSettings } = useImportExportSettings();
+  const t = useTranslations('ExportSettings');
 
   const { resetGroups } = useImageGroups();
   const exportJson = (what: ExportTypes) => downloadSettings(what);
@@ -41,31 +43,36 @@ function ExportSettings() {
       fullWidth
     >
       <Button
+        title={t(persistMessage(persisted))}
         disabled={persisted !== PersistState.NOT_PERSISTED}
         onClick={requestPersist}
       >
-        { persistMessage(persisted) }
+        {t(persistMessage(persisted))}
       </Button>
       <Button
+        title={t('resetGroups')}
         onClick={resetGroups}
       >
-        Reset image groups
+        {t('resetGroups')}
       </Button>
       <Button
+        title={t('exportAll')}
         onClick={() => exportJson(ExportTypes.ALL)}
       >
-        Export Everything
+        {t('exportAll')}
       </Button>
       <Button
+        title={t('exportPlugins')}
         onClick={() => exportJson(ExportTypes.PLUGINS)}
       >
-        Export Plugins
+        {t('exportPlugins')}
       </Button>
       <Button
+        title={t('hashCleanup')}
         disabled={cleanupBusy}
         onClick={hashCleanup}
       >
-        Hash Cleanup
+        {t('hashCleanup')}
       </Button>
     </ButtonGroup>
   );

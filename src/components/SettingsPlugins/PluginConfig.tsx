@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import useItemsStore from '@/stores/itemsStore';
 import type { Plugin } from '@/types/Plugin';
@@ -17,8 +18,9 @@ interface Props extends Plugin {
   pluginIndex: number;
 }
 
-function APConfig(props: Props) {
+function PluginConfig(props: Props) {
   const { deletePlugin, updatePluginConfig } = useItemsStore();
+  const t = useTranslations('SettingsPlugins');
 
   const {
     url,
@@ -60,7 +62,7 @@ function APConfig(props: Props) {
         )}
         action={(
           <IconButton
-            title={`Delete Plugin "${name}"`}
+            title={t('deletePlugin', { name: name || '' })}
             onClick={() => deletePlugin(url)}
           >
             <DeleteIcon />
@@ -101,4 +103,4 @@ function APConfig(props: Props) {
   );
 }
 
-export default APConfig;
+export default PluginConfig;
