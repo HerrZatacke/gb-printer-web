@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
 import { BlendMode } from 'gb-image-decoder';
-import { dateFormat, defaultRGBNPalette } from '@/consts/defaults';
+import { defaultRGBNPalette } from '@/consts/defaults';
 import { isRGBNImage } from '@/tools/isRGBNImage';
+import { toCreationDate } from '@/tools/toCreationDate';
 import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
 
 
@@ -10,7 +10,7 @@ export const cleanImages = (dirtyImages: Image[]): Image[] => {
     // clean the created date (add ms) (e.g. "2021-01-30 18:16:09" -> "2021-01-30 18:16:09:000")
     .map((image) => ({
       ...image,
-      created: dayjs(image.created).format(dateFormat),
+      created: toCreationDate(image.created),
     }))
 
     // add tags array if missing

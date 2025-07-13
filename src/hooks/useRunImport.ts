@@ -1,9 +1,9 @@
-import dayjs from 'dayjs';
 import Queue from 'promise-queue';
 import { useCallback, useMemo, useState } from 'react';
-import { dateFormat, dateFormatSeconds, missingGreyPalette } from '@/consts/defaults';
+import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useDateFormat } from '@/hooks/useDateFormat';
 import { useStores } from '@/hooks/useStores';
 import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
@@ -15,6 +15,7 @@ import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
+import { toCreationDate } from '@/tools/toCreationDate';
 import { type Image } from '@/types/Image';
 import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
 import { Palette } from '@/types/Palette';
@@ -79,6 +80,8 @@ const useRunImport = (): UseRunImport => {
     importQueueCancelOne(id);
   }, [importQueueCancelOne]);
 
+  const { formatter } = useDateFormat();
+
   const resetTagChanges = useCallback(() => {
     updateTagChanges(({ initial }) => ({
       initial,
@@ -90,9 +93,11 @@ const useRunImport = (): UseRunImport => {
   const runImport = useCallback(async () => {
     const { importQueue } = useImportsStore.getState();
     const queue = new Queue(1, Infinity);
+    const now = Date.now();
     const savedImages = await Promise.all(sortByFilename(importQueue).map((image, index) => {
       const { tiles, fileName, meta, lastModified } = image;
       const { add } = tagChanges;
+      const date = lastModified || now;
       return (
         queue.add(() => (
           saveNewImage({
@@ -101,8 +106,8 @@ const useRunImport = (): UseRunImport => {
             palette: activePalette,
             frame,
             tags: add,
-            // Adding index to milliseconds to ensure better sorting
-            created: dayjs((lastModified || Date.now()) + index).format(dateFormat),
+            // Adding index to milliseconds to ensure proper sorting
+            created: toCreationDate(date + index),
             meta,
           })
         ))
@@ -114,7 +119,7 @@ const useRunImport = (): UseRunImport => {
     addImages(savedImages);
 
     if (createGroup) {
-      const title = `Import ${dayjs().format(dateFormatSeconds)}`;
+      const title = `Import ${formatter(new Date())}`;
       const slug = toSlug(title);
 
       cancelEditImageGroup();
@@ -126,7 +131,7 @@ const useRunImport = (): UseRunImport => {
           id: newGroupId,
           slug,
           title,
-          created: dayjs(Date.now()).format(dateFormat),
+          created: toCreationDate(),
           coverImage: savedImages[0].hash,
           images: imageHashes,
           groups: [],
@@ -138,7 +143,7 @@ const useRunImport = (): UseRunImport => {
     }
 
     setImageSelection(imageHashes);
-  }, [activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
+  }, [activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
 
   const palette = useMemo(() => palettes.find(({ shortName }) => shortName === activePalette) || missingGreyPalette, [activePalette, palettes]);
 

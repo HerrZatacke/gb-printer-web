@@ -9,7 +9,7 @@ import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { Rotation } from 'gb-image-decoder';
 import React, { useEffect, useState } from 'react';
-import { dateFormat } from '@/consts/defaults';
+import { toCreationDate } from '@/tools/toCreationDate';
 import type { ImageMetadata, RGBNHashes } from '@/types/Image';
 import useSettingsStore from '../../stores/settingsStore';
 import MetaTable from '../MetaTable';
@@ -77,7 +77,7 @@ function ImageMeta({
             value={dayjs(created)}
             onChange={(newDate: Dayjs | null) => {
               if (newDate) {
-                updateCreated(newDate.format(dateFormat));
+                updateCreated(toCreationDate(newDate.toDate()));
               }
             }}
           />

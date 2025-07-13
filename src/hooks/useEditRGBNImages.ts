@@ -1,9 +1,8 @@
-import dayjs from 'dayjs';
 import objectHash from 'object-hash';
-import { useMemo, useState } from 'react';
-import { dateFormat, dateFormatSeconds } from '@/consts/defaults';
+import { useCallback, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useDateFormat } from '@/hooks/useDateFormat';
 import { toSlug } from '@/hooks/useEditImageGroup';
 import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
 import useEditStore from '@/stores/editStore';
@@ -12,6 +11,7 @@ import useItemsStore from '@/stores/itemsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
+import { toCreationDate } from '@/tools/toCreationDate';
 import type { MonochromeImage, RGBNHashes } from '@/types/Image';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
@@ -160,12 +160,14 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     }
   }, [blockLength, globalSortDirection, grouping, manualHashes, order, sortedImages, usedColorCount]);
 
-  const save = async () => {
+  const { formatter } = useDateFormat();
+
+  const save = useCallback(async () => {
     cancelEditRGBNImages();
     await saveRGBNImage(rgbnHashes);
 
     if (createGroup) {
-      const title = `RGB ${dayjs().format(dateFormatSeconds)}`;
+      const title = `RGB ${formatter(new Date())}`;
       const slug = toSlug(title);
 
       const createdImageHashes: string[] = rgbnHashes.map((hashes) => objectHash(hashes));
@@ -179,7 +181,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
           id: newGroupId,
           slug,
           title,
-          created: dayjs(Date.now()).format(dateFormat),
+          created: toCreationDate(),
           coverImage: createdImageHashes[0],
           images: createdImageHashes,
           groups: [],
@@ -190,7 +192,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
       navigateToGroup(newGroupId, 0);
     }
 
-  };
+  }, [addImageGroup, cancelEditImageGroup, cancelEditRGBNImages, createGroup, formatter, navigateToGroup, rgbnHashes, saveRGBNImage, view.id]);
 
   const singleMode = grouping === RGBGrouping.MANUAL;
 

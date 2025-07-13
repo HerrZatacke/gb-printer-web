@@ -6,7 +6,6 @@ import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
@@ -36,7 +35,6 @@ interface UseLightboxImage {
   size: number,
   canPrev: boolean,
   canNext: boolean,
-  preferredLocale: string,
   close: () => void,
   prev: () => void,
   next: () => void,
@@ -100,7 +98,6 @@ export const useLightboxImage = (): UseLightboxImage => {
   } = useInteractionsStore();
   // const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  const { preferredLocale } = useSettingsStore();
   const { palettes } = useItemsStore();
   const viewImages = getFilteredImages(view.images, filtersState);
 
@@ -170,7 +167,6 @@ export const useLightboxImage = (): UseLightboxImage => {
     size: filteredImages.length,
     canPrev: (lightboxImage !== null) ? lightboxImage > 0 : false,
     canNext: (lightboxImage !== null) ? lightboxImage < filteredImages.length - 1 : false,
-    preferredLocale,
     close: () => setLightboxImage(null),
     prev: () => setLightboxImagePrev(),
     next: () => setLightboxImageNext(filteredImages.length),

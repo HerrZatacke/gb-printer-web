@@ -6,13 +6,11 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import dayjs from 'dayjs';
 import React from 'react';
 import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
-import { dateFormat } from '@/consts/defaults';
+import { useDateFormat } from '@/hooks/useDateFormat';
 import { useLightboxImage } from '@/hooks/useLightboxImage';
-import dateFormatLocale from '@/tools/dateFormatLocale';
 import type { RGBNImage } from '@/types/Image';
 
 function LightboxImage() {
@@ -21,7 +19,6 @@ function LightboxImage() {
     isFullscreen,
     currentIndex,
     size,
-    preferredLocale,
     canPrev,
     canNext,
     prev,
@@ -29,6 +26,8 @@ function LightboxImage() {
     fullscreen,
     close,
   } = useLightboxImage();
+
+  const { formatter } = useDateFormat();
 
   return (
     <Lightbox
@@ -119,9 +118,11 @@ function LightboxImage() {
           <Typography variant="body2">
             { `Image ${currentIndex + 1}/${size}` }
           </Typography>
-          <Typography variant="body2">
-            {dateFormatLocale(dayjs(image?.created, dateFormat), preferredLocale)}
-          </Typography>
+          {image?.created && (
+            <Typography variant="body2">
+              {formatter(image.created)}
+            </Typography>
+          )}
         </Stack>
 
       </Stack>

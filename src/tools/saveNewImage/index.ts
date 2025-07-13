@@ -1,6 +1,5 @@
-import dayjs from 'dayjs';
-import { dateFormat } from '@/consts/defaults';
 import { save } from '@/tools/storage';
+import { toCreationDate } from '@/tools/toCreationDate';
 import type { MonochromeImage } from '@/types/Image';
 
 interface ImageRawData extends Pick<MonochromeImage, 'palette' | 'frame' | 'tags' | 'meta' | 'created'> {
@@ -16,7 +15,7 @@ const saveNewImage = async ({
   frame,
   tags = [],
   meta,
-  created = dayjs().format(dateFormat),
+  created = toCreationDate(),
 }: ImageRawData): Promise<MonochromeImage> => {
   const dataHash = await save(lines);
 

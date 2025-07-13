@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { ExportFrameMode } from 'gb-image-decoder';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -8,8 +7,8 @@ import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { ThemeName } from '@/consts/theme';
+import { locales } from '@/i18n/locales';
 import cleanUrl from '@/tools/cleanUrl';
-import dateFormatLocale from '@/tools/dateFormatLocale';
 import type { VideoParams } from '@/types/VideoParams';
 import { PROJECT_PREFIX } from './constants';
 
@@ -74,12 +73,17 @@ interface Actions {
 export type SettingsState = Settings & Actions;
 
 const getDefaultLocale = (): string => {
+  let locale = '';
   if (typeof navigator !== 'undefined') {
     const [lang, country] = navigator.language.split('-');
-    return [lang, country].filter(Boolean).join('-');
+    locale = [lang, country].filter(Boolean).join('-');
   }
 
-  return '';
+  if (locales.includes(locale)) {
+    return locale;
+  }
+
+  return locales[0];
 };
 
 const useSettingsStore = create(
@@ -104,7 +108,7 @@ const useSettingsStore = create(
       pageSize: 30,
       preferredLocale: getDefaultLocale(),
       printerParams: '',
-      printerUrl: '/',  // when running on an esp8266, the envData context also sets this value
+      printerUrl: '',
       savFrameTypes: 'int',
       themeName: ThemeName.BRIGHT,
       enableImageGroups: false,
@@ -142,12 +146,10 @@ const useSettingsStore = create(
       setExportFileTypes: (exportFileTypes: string[]) => set({ exportFileTypes }),
 
       setPreferredLocale: (preferredLocale: string) => {
-        // Try if provided locale can be used without throwing an error
-        try {
-          dateFormatLocale(dayjs(), preferredLocale);
+        if (locales.includes(preferredLocale)) {
           set({ preferredLocale });
-        } catch (error) {
-          console.error(error);
+        } else {
+          console.log(`unknown locale "${preferredLocale}"`);
         }
       },
     }),

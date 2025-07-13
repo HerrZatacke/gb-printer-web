@@ -6,11 +6,9 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import dayjs from 'dayjs';
 import React, { useMemo, memo, type CSSProperties } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
-import useSettingsStore from '@/stores/settingsStore';
-import dateFormatLocale from '@/tools/dateFormatLocale';
+import { useDateFormat } from '@/hooks/useDateFormat';
 import type { FlaggedImportItem } from '@/types/ImportItem';
 import type { Palette } from '@/types/Palette';
 
@@ -29,7 +27,6 @@ function ImportRow({
   cancelItemImport,
   windowStyle,
 }: Props) {
-  const { preferredLocale } = useSettingsStore();
 
   const {
     tiles,
@@ -58,6 +55,8 @@ function ImportRow({
 
     return {};
   }, [alreadyImported, isDuplicateInQueue]);
+
+  const { formatter } = useDateFormat();
 
   return (
     <Stack
@@ -139,7 +138,7 @@ function ImportRow({
                 variant="caption"
                 component="p"
               >
-                { dateFormatLocale(dayjs(lastModified), preferredLocale) }
+                { formatter(lastModified) }
               </Typography>
             )
           }

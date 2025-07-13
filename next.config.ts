@@ -1,5 +1,6 @@
 import { execSync } from 'child_process';
 import type { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
 import { version, name, author, description, homepage } from './package.json';
 import generateWebManifest from './scripts/generateWebManifest';
 
@@ -26,6 +27,8 @@ const rewritesConfig = isDev ? {
 } : {};
 
 const branch = getGitBranch();
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const getNextConfig = async (): Promise<NextConfig> => {
   const nextConfig: NextConfig = {
@@ -64,7 +67,7 @@ const getNextConfig = async (): Promise<NextConfig> => {
     ...rewritesConfig,
   };
 
-  return nextConfig;
+  return withNextIntl(nextConfig);
 };
 
 export default getNextConfig;

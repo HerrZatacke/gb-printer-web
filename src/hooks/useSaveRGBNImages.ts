@@ -1,9 +1,10 @@
-import dayjs from 'dayjs';
 import { useCallback } from 'react';
-import { dateFormat, defaultRGBNPalette } from '@/consts/defaults';
+import { defaultRGBNPalette } from '@/consts/defaults';
 import { useStores } from '@/hooks/useStores';
 import useFiltersStore from '@/stores/filtersStore';
+import { toCreationDate } from '@/tools/toCreationDate';
 import type { RGBNHashes, RGBNImage } from '@/types/Image';
+
 
 interface UseSaveRGBNImages {
   saveRGBNImage: (hashes: RGBNHashes[]) => Promise<void>,
@@ -16,14 +17,14 @@ const useSaveRGBNImages = (): UseSaveRGBNImages => {
   const saveRGBNImage = useCallback(async (hashes: RGBNHashes[]): Promise<void> => {
     const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
 
-    const now = dayjs();
+    const now = Date.now();
 
     const images = hashes.map((rgbnHashes: RGBNHashes, index: number): RGBNImage => {
       const image: RGBNImage = {
         palette: defaultRGBNPalette,
         hashes: rgbnHashes,
         hash: hash(rgbnHashes),
-        created: now.add(index, 'milliseconds').format(dateFormat),
+        created: toCreationDate(now + index),
         title: '',
         tags: [],
       };
