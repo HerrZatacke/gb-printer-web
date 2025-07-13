@@ -42,6 +42,13 @@
       "en-GB": "English - United Kingdom (en-GB)"
     }
   },
+  "WebUSBGreeting": {
+    "enableWebUsb": "Enable WebUSB / Serial ports",
+    "webUSBEnabled":  "Your current browser/device does support WebUSB",
+    "webUSBDisabled": "Your current browser/device does not support WebUSB",
+    "webSerialEnabled":  "Your current browser/device does support Web Serial",
+    "webSerialDisabled": "Your current browser/device does not support Web Serial"
+  },
   "usePaletteSort": {
     "defaultAsc": "Default (ascending)",
     "defaultDesc": "Default (descending)",
