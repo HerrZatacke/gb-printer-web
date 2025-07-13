@@ -4,10 +4,50 @@
     "galleryPageSizeHelper": "Set to 0 to disable pagination - might cause performance issues on large sets of images",
     "galleryClickAction": "Click behaviour for gallery images",
     "galleryClickActionHelper": "Ctrl+Click and Shift+Click will always select/range-select",
-    "Locales": {
+    "exportDimensions": "Image export dimensions",
+    "exportFiletypes": "Image export filetypes",
+    "exportHandleFrame": "How to handle frames when exporting images",
+    "filenameStyle": "Filename style",
+    "importSavFrames": "Frames to be applied when importing Cartridge dumps",
+    "importSavFramesNone":  "None",
+    "importSavFramesUnknown": "Unknown",
+    "importLastSeen": "Import ‘last seen’ image when importing Cartridge dumps",
+    "importDeleted": "Import deleted images when importing Cartridge dumps",
+    "forceMagicCheck": "Force valid .sav file when importing",
+    "importPad": "Pad images up to 144px height on import",
+    "hideDates": "Hide dates in gallery",
+    "sortPalettes": "Sort Palettes",
+    "preferredLocale": "Preferred locale",
+    "exampleDateFormat": "Example date format: {format}",
+    "printerUrl": "Printer URL",
+    "printerUrlHelper": "If you own a physical wifi-printer, you can add it\\'s URL here and check the <link>Import-tab</link>",
+    "printerParams": "Additional printer settings",
+    "enableDebug": "Show debug info",
+    "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
+
+    "frameModes": {
+      "keepFrame": "Keep frame",
+      "cropFrame": "Crop frame",
+      "squareBlack": "Make image squared (add black)",
+      "squareWhite": "Make image squared (add white)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Full Title",
+      "dateTitle": "Date and Title",
+      "titleOnly": "Title only"
+    },
+    "locales": {
       "de-DE": "German - Germany (de-DE)",
       "en-US": "English - United States (en-US)",
       "en-GB": "English - United Kingdom (en-GB)"
     }
+  },
+  "usePaletteSort": {
+    "defaultAsc": "Default (ascending)",
+    "defaultDesc": "Default (descending)",
+    "usageAsc": "Usage (ascending)",
+    "usageDesc": "Usage (descending)",
+    "nameAsc": "Name (ascending)",
+    "nameDesc": "Name (descending)"
   }
 }

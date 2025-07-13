@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import useItemsStore from '@/stores/itemsStore';
@@ -22,33 +23,34 @@ interface UsePaletteSort {
 const usePaletteSort = (): UsePaletteSort => {
   const { sortPalettes, setSortPalettes } = useSettingsStore();
   const { images } = useItemsStore();
+  const t = useTranslations('usePaletteSort');
 
-  const paletteSortOptions: PaletteSortOption[] = [
+  const paletteSortOptions: PaletteSortOption[] = useMemo(() => ([
     {
-      label: 'Default (ascending)',
+      label: t('defaultAsc'),
       value: PaletteSortMode.DEFAULT_ASC,
     },
     {
-      label: 'Default (descending)',
+      label: t('defaultDesc'),
       value: PaletteSortMode.DEFAULT_DESC,
     },
     {
-      label: 'Usage (ascending)',
+      label: t('usageAsc'),
       value: PaletteSortMode.USAGE_ASC,
     },
     {
-      label: 'Usage (descending)',
+      label: t('usageDesc'),
       value: PaletteSortMode.USAGE_DESC,
     },
     {
-      label: 'Name (ascending)',
+      label: t('nameAsc'),
       value: PaletteSortMode.NAME_ASC,
     },
     {
-      label: 'Name (descending)',
+      label: t('nameDesc'),
       value: PaletteSortMode.NAME_DESC,
     },
-  ];
+  ]), [t]);
 
   const paletteUsages = useMemo(() => (
     images.reduce((acc: PaletteUsage, image: Image): PaletteUsage => {

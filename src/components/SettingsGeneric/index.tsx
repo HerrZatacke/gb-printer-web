@@ -31,7 +31,7 @@ import cleanUrl from '@/tools/cleanUrl';
 import getFrameGroups from '@/tools/getFrameGroups';
 import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
 
-function GenericSettings() {
+function SettingsGeneric() {
   const {
     enableDebug,
     enableImageGroups,
@@ -79,9 +79,8 @@ function GenericSettings() {
   const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);
   const [printerParamsState, setPrinterParamsState] = useState<string>(printerParams);
   const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<string[]>(['txt', 'pgm']);
-  const [localeExampleText, setLocaleExampleText] = useState<string>('Example date format:');
+  const [localeExampleText, setLocaleExampleText] = useState<string>('');
   const { formatter } = useDateFormat();
-  const tLocales = useTranslations('SettingsGeneric.Locales');
   const t = useTranslations('SettingsGeneric');
 
   const {
@@ -99,7 +98,7 @@ function GenericSettings() {
   }, []);
 
   useEffect(() => {
-    setLocaleExampleText(`Example date format: ${formatter(new Date())}`);
+    setLocaleExampleText(t('exampleDateFormat', { format: formatter(new Date()) }));
   }, [formatter]);
 
   return (
@@ -144,7 +143,7 @@ function GenericSettings() {
 
       <FormControl>
         <InputLabel shrink>
-          Image export dimensions
+          {t('exportDimensions')}
         </InputLabel>
         <ToggleButtonGroup
           fullWidth
@@ -167,7 +166,7 @@ function GenericSettings() {
 
       <FormControl>
         <InputLabel shrink>
-          Image export filetypes
+          {t('exportFiletypes')}
         </InputLabel>
         <ToggleButtonGroup
           fullWidth
@@ -191,7 +190,7 @@ function GenericSettings() {
       <TextField
         id="settings-handle-export-frames"
         value={handleExportFrame}
-        label="How to handle frames when exporting images"
+        label={t('exportHandleFrame')}
         select
         onChange={(ev) => {
           setHandleExportFrame(ev.target.value as ExportFrameMode);
@@ -203,7 +202,7 @@ function GenericSettings() {
               key={id}
               value={id}
             >
-              {name}
+              {t(name)}
             </MenuItem>
           ))
         }
@@ -212,7 +211,7 @@ function GenericSettings() {
       <TextField
         id="settings-filename-style"
         value={fileNameStyle}
-        label="Filename style"
+        label={t('filenameStyle')}
         select
         onChange={(ev) => {
           setFileNameStyle(ev.target.value as FileNameStyle);
@@ -224,7 +223,7 @@ function GenericSettings() {
               key={id}
               value={id}
             >
-              {name}
+              {t(name)}
             </MenuItem>
           ))
         }
@@ -234,7 +233,7 @@ function GenericSettings() {
         id="settings-sav-frames"
         value={savFrameGroups.length ? savFrameTypes : ''}
         disabled={!savFrameGroups.length}
-        label="Frames to be applied when importing Cartridge dumps"
+        label={t('importSavFrames')}
         select
         slotProps={{
           inputLabel: {
@@ -242,16 +241,16 @@ function GenericSettings() {
           },
           select: {
             renderValue: (selected) => (
-              selected === '' ? 'None' : savFrameGroups.find(({ id }) => (
+              selected === '' ? t('importSavFramesNone') : savFrameGroups.find(({ id }) => (
                 id === selected
-              ))?.name || 'Unknown'
+              ))?.name || t('importSavFramesUnknown')
             ),
           },
         }}
         onChange={(ev) => {
           setSavFrameTypes(ev.target.value);
         }}
-        placeholder="None"
+        placeholder={t('importSavFramesNone')}
       >
         <MenuItem value="" selected={!savFrameTypes}>None</MenuItem>
         {
@@ -267,7 +266,7 @@ function GenericSettings() {
       </TextField>
 
       <FormControlLabel
-        label="Import ‘last seen’ image when importing Cartridge dumps"
+        label={t('importLastSeen')}
         control={(
           <Switch
             checked={importLastSeen}
@@ -279,7 +278,7 @@ function GenericSettings() {
       />
 
       <FormControlLabel
-        label="Import deleted images when importing Cartridge dumps"
+        label={t('importDeleted')}
         control={(
           <Switch
             checked={importDeleted}
@@ -291,7 +290,7 @@ function GenericSettings() {
       />
 
       <FormControlLabel
-        label="Force valid .sav file when importing"
+        label={t('forceMagicCheck')}
         control={(
           <Switch
             checked={forceMagicCheck}
@@ -303,7 +302,7 @@ function GenericSettings() {
       />
 
       <FormControlLabel
-        label="Pad images up to 144px height on import"
+        label={t('importPad')}
         control={(
           <Switch
             checked={importPad}
@@ -315,7 +314,7 @@ function GenericSettings() {
       />
 
       <FormControlLabel
-        label="Hide dates in gallery"
+        label={t('hideDates')}
         control={(
           <Switch
             checked={hideDates}
@@ -329,7 +328,7 @@ function GenericSettings() {
       <TextField
         id="settings-filename-style"
         value={sortPalettes}
-        label="Sort Palettes"
+        label={t('sortPalettes')}
         select
         onChange={(ev) => {
           setSortPalettes(ev.target.value as PaletteSortMode);
@@ -350,7 +349,7 @@ function GenericSettings() {
       <TextField
         id="settings-filename-style"
         value={preferredLocale}
-        label="Preferred locale"
+        label={t('preferredLocale')}
         helperText={localeExampleText}
         select
         onChange={(ev) => {
@@ -363,7 +362,7 @@ function GenericSettings() {
               key={code}
               value={code}
             >
-              {tLocales(code)}
+              {t(`locales.${code}`)}
             </MenuItem>
           ))
         }
@@ -374,19 +373,20 @@ function GenericSettings() {
       {(env?.env === 'esp8266') ? null : (
         <TextField
           id="settings-printer-url"
-          label="Printer URL"
+          label={t('printerUrl')}
           type="text"
-          helperText={(
-            <>
-              {'If you own a physical wifi-printer, you can add it\'s URL here and check the '}
-              <Link
-                component={NextLink}
-                href="/import"
-              >
-                Import-tab
-              </Link>
-            </>
-          )}
+          helperText={
+            t.rich('printerUrlHelper', {
+              link: (chunks) => (
+                <Link
+                  component={NextLink}
+                  href="/import"
+                >
+                  {chunks}
+                </Link>
+              ),
+            })
+          }
           value={printerUrlState}
           onChange={(ev) => setPrinterUrlState(ev.target.value)}
           onBlur={() => {
@@ -415,7 +415,7 @@ function GenericSettings() {
       {(env?.env === 'esp8266' || printerUrl) ? (
         <TextField
           id="settings-printer-settings"
-          label="Additional printer settings"
+          label={t('printerParams')}
           type="text"
           value={printerParamsState}
           onChange={(ev) => setPrinterParamsState(ev.target.value)}
@@ -437,7 +437,7 @@ function GenericSettings() {
       ) : null}
 
       <FormControlLabel
-        label="Show debug info"
+        label={t('enableDebug')}
         control={(
           <Switch
             checked={enableDebug}
@@ -449,7 +449,7 @@ function GenericSettings() {
       />
 
       <FormControlLabel
-        label={`Enable Image Groups ${imageGroups.length ? `(${imageGroups.length} groups)` : ''}`}
+        label={t('enableImageGroups', { groupCount: imageGroups.length })}
         control={(
           <Switch
             checked={enableImageGroups}
@@ -463,4 +463,4 @@ function GenericSettings() {
   );
 }
 
-export default GenericSettings;
+export default SettingsGeneric;
