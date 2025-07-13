@@ -115,6 +115,19 @@
       "failed": "Failed to persist storage"
     }
   },
+  "EnvInfo": {
+    "appVersion": "Web-App version: {value}",
+    "appBranch": "Web-App branch: {value}",
+    "printerVersion": "Printer version: {value}",
+    "maxImages": "Max Images: {value}",
+    "storageDriver": "Localforage driver: {value}",
+    "envType": "Environment type: {value}",
+    "filesystem": "Compiled Filesystem: {value}",
+    "bootmode": "Compiled Bootmode: {value}",
+    "hasOled": "Compiled for OLED: {value}",
+    "yes": "yes",
+    "no": "no"
+},
   "usePaletteSort": {
     "defaultAsc": "Default (ascending)",
     "defaultDesc": "Default (descending)",
