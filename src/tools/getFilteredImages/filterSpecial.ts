@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { dateFormat } from '@/consts/defaults';
 import { SpecialTags } from '@/consts/SpecialTags';
 import type { Image } from '@/types/Image';
 import type { RecentImport } from '@/types/Sync';
@@ -35,7 +34,7 @@ const filterSpecial = (
 
     // 2) Keep "new" images
     if (activeSpecialTags.includes(SpecialTags.FILTER_NEW)) {
-      const date = dayjs(image.created, dateFormat)
+      const date = dayjs(new Date(image.created))
         .unix();
       const maxNew = dayjs()
         .subtract(1, 'day')

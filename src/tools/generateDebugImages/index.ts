@@ -1,9 +1,8 @@
 // Currently unused, but may be added to "window" for debugging purposes
-import dayjs from 'dayjs';
-import { dateFormat } from '@/consts/defaults';
 import useItemsStore from '@/stores/itemsStore';
 import padToHeight from '@/tools/padToHeight';
 import saveNewImage from '@/tools/saveNewImage';
+import { toCreationDate } from '@/tools/toCreationDate';
 import type { MonochromeImage } from '@/types/Image';
 
 const generateRandomTile = (): string => (
@@ -35,7 +34,7 @@ const generateDebugImage = async (index: number): Promise<DebugImport> => {
     frame: 'int14',
     tags: ['debug', 'dummy'],
     // Adding index to milliseconds to ensure better sorting
-    created: dayjs(timestamp).format(dateFormat),
+    created: toCreationDate(timestamp),
     meta: {},
   });
 

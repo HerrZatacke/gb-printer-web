@@ -1,7 +1,5 @@
-import dayjs from 'dayjs';
 import { saveAs } from 'file-saver';
 import { useCallback } from 'react';
-import { dateFormat } from '@/consts/defaults';
 import useInteractionsStore from '@/stores/interactionsStore';
 import type { TrashCount } from '@/stores/interactionsStore';
 import useItemsStore, { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
@@ -11,6 +9,7 @@ import { localforageReady, localforageImages, localforageFrames } from '@/tools/
 import type { WrappedLocalForageInstance } from '@/tools/localforageInstance/createWrappedInstance';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
+import { toCreationDate } from '@/tools/toCreationDate';
 import type { JSONExportBinary, JSONExportState } from '@/types/ExportState';
 import type { Frame } from '@/types/Frame';
 import type { Image } from '@/types/Image';
@@ -70,7 +69,7 @@ const useTrashbin = (): UseTrashbin => {
         jsonExportBinary[image.hash] = image.binary;
         return {
           hash: image.hash,
-          created: dayjs().format(dateFormat),
+          created: toCreationDate(),
           title: `Backup export ${image.hash}`,
           lines: image.lines.length,
           tags: ['backup'],

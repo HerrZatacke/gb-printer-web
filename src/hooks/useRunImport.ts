@@ -1,7 +1,6 @@
-import dayjs from 'dayjs';
 import Queue from 'promise-queue';
 import { useCallback, useMemo, useState } from 'react';
-import { dateFormat, missingGreyPalette } from '@/consts/defaults';
+import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { useDateFormat } from '@/hooks/useDateFormat';
@@ -16,6 +15,7 @@ import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
+import { toCreationDate } from '@/tools/toCreationDate';
 import { type Image } from '@/types/Image';
 import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
 import { Palette } from '@/types/Palette';
@@ -93,9 +93,11 @@ const useRunImport = (): UseRunImport => {
   const runImport = useCallback(async () => {
     const { importQueue } = useImportsStore.getState();
     const queue = new Queue(1, Infinity);
+    const now = Date.now();
     const savedImages = await Promise.all(sortByFilename(importQueue).map((image, index) => {
       const { tiles, fileName, meta, lastModified } = image;
       const { add } = tagChanges;
+      const date = lastModified || now;
       return (
         queue.add(() => (
           saveNewImage({
@@ -104,8 +106,8 @@ const useRunImport = (): UseRunImport => {
             palette: activePalette,
             frame,
             tags: add,
-            // Adding index to milliseconds to ensure better sorting
-            created: dayjs((lastModified || Date.now()) + index).format(dateFormat),
+            // Adding index to milliseconds to ensure proper sorting
+            created: toCreationDate(date + index),
             meta,
           })
         ))
@@ -129,7 +131,7 @@ const useRunImport = (): UseRunImport => {
           id: newGroupId,
           slug,
           title,
-          created: dayjs(Date.now()).format(dateFormat),
+          created: toCreationDate(),
           coverImage: savedImages[0].hash,
           images: imageHashes,
           groups: [],

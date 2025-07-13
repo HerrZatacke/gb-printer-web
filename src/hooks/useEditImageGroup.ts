@@ -1,6 +1,4 @@
-import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
-import { dateFormat } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import type { EditGroupInfo } from '@/stores/editStore';
@@ -8,6 +6,7 @@ import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
 import useItemsStore from '@/stores/itemsStore';
 import { randomId } from '@/tools/randomId';
+import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
 import { type PathMap } from '@/types/galleryTreeContext';
 import { type SerializableImageGroup } from '@/types/ImageGroup';
@@ -248,7 +247,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
             id: newGroupId,
             slug,
             title,
-            created: dayjs(Date.now()).format(dateFormat),
+            created: toCreationDate(),
             coverImage: editImageGroup.newGroupCover,
             images: selection,
             groups: [],

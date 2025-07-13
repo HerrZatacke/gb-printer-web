@@ -1,7 +1,5 @@
-import dayjs from 'dayjs';
 import objectHash from 'object-hash';
 import { useCallback, useMemo, useState } from 'react';
-import { dateFormat } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { useDateFormat } from '@/hooks/useDateFormat';
@@ -13,6 +11,7 @@ import useItemsStore from '@/stores/itemsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
+import { toCreationDate } from '@/tools/toCreationDate';
 import type { MonochromeImage, RGBNHashes } from '@/types/Image';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
@@ -182,7 +181,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
           id: newGroupId,
           slug,
           title,
-          created: dayjs(Date.now()).format(dateFormat),
+          created: toCreationDate(),
           coverImage: createdImageHashes[0],
           images: createdImageHashes,
           groups: [],
