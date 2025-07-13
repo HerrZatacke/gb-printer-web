@@ -1,6 +1,7 @@
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
+import { useTranslations } from 'next-intl';
 import React, { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 
@@ -12,11 +13,12 @@ interface UseAsPasswordField {
 
 export const useAsPasswordField = (): UseAsPasswordField => {
   const [showPassword, setShowPassword] = useState(false);
+  const t = useTranslations('useAsPasswordField');
 
   const button = useMemo<ReactNode>(() => (
     <IconButton
-      title={showPassword ? 'Hide Password' : 'Show Password'}
-      aria-label={showPassword ? 'hide the password' : 'display the password'}
+      title={t(showPassword ? 'hidePassword' : 'showPassword')}
+      aria-label={t(showPassword ? 'hidePassword' : 'showPassword')}
       color="primary"
       onClick={() => {
         setShowPassword(!showPassword);

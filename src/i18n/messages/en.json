@@ -122,5 +122,9 @@
     "usageDesc": "Usage (descending)",
     "nameAsc": "Name (ascending)",
     "nameDesc": "Name (descending)"
+  },
+  "useAsPasswordField": {
+    "hidePassword": "Hide Password",
+    "showPassword": "Show Password"
   }
 }
