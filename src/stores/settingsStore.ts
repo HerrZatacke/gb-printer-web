@@ -73,12 +73,17 @@ interface Actions {
 export type SettingsState = Settings & Actions;
 
 const getDefaultLocale = (): string => {
+  let locale = '';
   if (typeof navigator !== 'undefined') {
     const [lang, country] = navigator.language.split('-');
-    return [lang, country].filter(Boolean).join('-');
+    locale = [lang, country].filter(Boolean).join('-');
   }
 
-  return '';
+  if (locales.includes(locale)) {
+    return locale;
+  }
+
+  return locales[0];
 };
 
 const useSettingsStore = create(
