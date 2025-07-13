@@ -10,7 +10,6 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import dayjs from 'dayjs';
 import type { ExportFrameMode } from 'gb-image-decoder';
 import type { ILocale } from 'locale-codes';
 import NextLink from 'next/link';
@@ -23,11 +22,12 @@ import { clickActionMenuOptions } from '@/consts/GalleryClickAction';
 import type { GalleryClickAction } from '@/consts/GalleryClickAction';
 import type { PaletteSortMode } from '@/consts/paletteSortModes';
 import { useEnv } from '@/contexts/envContext';
+import { useDateFormat } from '@/hooks/useDateFormat';
 import usePaletteSort from '@/hooks/usePaletteSort';
+import { locales } from '@/i18n/locales';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import cleanUrl from '@/tools/cleanUrl';
-import dateFormatLocale from '@/tools/dateFormatLocale';
 import getFrameGroups from '@/tools/getFrameGroups';
 import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
 
@@ -81,7 +81,8 @@ function GenericSettings() {
   const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<string[]>(['txt', 'pgm']);
   const [localeExampleText, setLocaleExampleText] = useState<string>('Example date format:');
   const [localeCodes, setLocaleCodes] = useState<ILocale[]>([]);
-  const [now] = useState(dayjs());
+  const [now] = useState(new Date());
+  const { formatter } = useDateFormat();
 
   const {
     sortPalettes,
@@ -97,15 +98,11 @@ function GenericSettings() {
     ]);
 
     const setLocales = async () => {
-      const { default: locale } = await import(/* webpackChunkName: "loc" */ 'locale-codes');
-      const filteredLocales: ILocale[] = locale.all.filter(({ tag }) => {
-        try {
-          dateFormatLocale(dayjs(), tag);
-          return true;
-        } catch {
-          return false;
-        }
-      });
+      const { default: locale } = await import('locale-codes');
+      const filteredLocales: ILocale[] = locale.all
+        .filter(({ tag }) => (
+          locales.includes(tag)
+        ));
 
       setLocaleCodes(filteredLocales);
     };
@@ -115,8 +112,9 @@ function GenericSettings() {
   }, []);
 
   useEffect(() => {
-    setLocaleExampleText(`Example date format: ${dateFormatLocale(now, preferredLocale)}`);
-  }, [now, preferredLocale]);
+    // setLocaleExampleText(`Example date format: ${dateFormatLocale(now, preferredLocale)}`);
+    setLocaleExampleText(`Example date format: ${formatter(now)}`);
+  }, [formatter, now, preferredLocale]);
 
   return (
     <Stack

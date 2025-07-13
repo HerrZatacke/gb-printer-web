@@ -1,11 +1,9 @@
 import EventEmitter from 'events';
 import type { RestEndpointMethodTypes } from '@octokit/rest';
 import { Octokit } from '@octokit/rest';
-import dayjs from 'dayjs';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import type { RepoFile, RepoTasks } from '@/types/Export';
 import type { AddToQueueFn, GitStorageSettings, GitUploadResult, UploadFile } from '@/types/Sync';
-import dateFormatLocale from '../dateFormatLocale';
 
 interface GitFile {
   path?: string | undefined,
@@ -314,7 +312,7 @@ class OctoClient extends EventEmitter {
       throw new Error('OctoClient not configured');
     }
 
-    const commitMessage = `Sync. ${dateFormatLocale(dayjs(), this.getPreferredLocale())}`;
+    const commitMessage = `Sync. ${(new Date()).toLocaleString(this.getPreferredLocale())}`;
 
     const uploadLength = upload.length;
 

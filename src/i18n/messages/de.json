@@ -1,0 +1,8 @@
+{
+  "SettingsGeneric": {
+    "galleryPageSize": "Bilder pro Seite",
+    "galleryPageSizeHelper": "'0' deaktiviert Paginierung - kann zu Leistungseinbußen führen",
+    "galleryClickAction": "Klick-Aktion für Galerie-Bilder",
+    "galleryClickActionHelper": "Strg+Klick und Umschalt+Klick kann immer für Mehrfachselektion verwendet werden"
+  }
+}

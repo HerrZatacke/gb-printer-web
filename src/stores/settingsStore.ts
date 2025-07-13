@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { ExportFrameMode } from 'gb-image-decoder';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -8,8 +7,8 @@ import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { ThemeName } from '@/consts/theme';
+import { locales } from '@/i18n/locales';
 import cleanUrl from '@/tools/cleanUrl';
-import dateFormatLocale from '@/tools/dateFormatLocale';
 import type { VideoParams } from '@/types/VideoParams';
 import { PROJECT_PREFIX } from './constants';
 
@@ -142,12 +141,10 @@ const useSettingsStore = create(
       setExportFileTypes: (exportFileTypes: string[]) => set({ exportFileTypes }),
 
       setPreferredLocale: (preferredLocale: string) => {
-        // Try if provided locale can be used without throwing an error
-        try {
-          dateFormatLocale(dayjs(), preferredLocale);
+        if (locales.includes(preferredLocale)) {
           set({ preferredLocale });
-        } catch (error) {
-          console.error(error);
+        } else {
+          console.log(`unknown locale "${preferredLocale}"`);
         }
       },
     }),

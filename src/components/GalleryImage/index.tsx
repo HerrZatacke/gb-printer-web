@@ -34,7 +34,7 @@ function GalleryImage({ page, hash }: Props) {
     editImage,
   } = useGalleryImageContext(hash);
 
-  const { formatter } = useDateFormat();
+  const { formatterGallery } = useDateFormat();
 
   const debugText = useMemo<string>(() => ([
     hash,
@@ -104,7 +104,7 @@ function GalleryImage({ page, hash }: Props) {
     <GalleryGridItem
       selectionText={selectionIndex !== -1 ? (selectionIndex + 1).toString(10) : ''}
       title={title}
-      subheader={formatter(created)}
+      subheader={formatterGallery(created)}
       wrapperProps={{
         onClick: handleCellClick,
         disableRipple: true,

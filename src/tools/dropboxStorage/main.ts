@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import Queue from 'promise-queue';
 import { DialoqQuestionType } from '@/consts/dialog';
 import type { UseStores } from '@/hooks/useStores';
@@ -9,7 +8,6 @@ import useItemsStore from '@/stores/itemsStore';
 import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 import useStoragesStore from '@/stores/storagesStore';
-import dateFormatLocale from '@/tools/dateFormatLocale';
 import { delay } from '@/tools/delay';
 import { getPrepareFiles } from '@/tools/download';
 import { getFilteredImages } from '@/tools/getFilteredImages';
@@ -92,8 +90,8 @@ export const dropBoxSyncTool = (
           setDialog({
             message: 'There is newer content in your dropbox!',
             questions: () => [
-              `Your dropbox contains changes from ${dateFormatLocale(dayjs(lastUpdate * 1000), preferredLocale)}`,
-              `Your last local update was ${syncLastUpdate?.local ? (dateFormatLocale(dayjs(syncLastUpdate.local * 1000), preferredLocale)) : 'never'}.`,
+              `Your dropbox contains changes from ${(new Date(lastUpdate * 1000)).toLocaleString(preferredLocale)}`,
+              `Your last local update was ${syncLastUpdate?.local ? ((new Date(syncLastUpdate.local * 1000)).toLocaleString(preferredLocale)) : 'never'}.`,
               'Do you want to load the changes?',
             ]
               .map((label, index) => ({

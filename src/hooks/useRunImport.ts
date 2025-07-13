@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
 import Queue from 'promise-queue';
 import { useCallback, useMemo, useState } from 'react';
-import { dateFormat, dateFormatSeconds, missingGreyPalette } from '@/consts/defaults';
+import { dateFormat, missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useDateFormat } from '@/hooks/useDateFormat';
 import { useStores } from '@/hooks/useStores';
 import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
@@ -79,6 +80,8 @@ const useRunImport = (): UseRunImport => {
     importQueueCancelOne(id);
   }, [importQueueCancelOne]);
 
+  const { formatter } = useDateFormat();
+
   const resetTagChanges = useCallback(() => {
     updateTagChanges(({ initial }) => ({
       initial,
@@ -114,7 +117,7 @@ const useRunImport = (): UseRunImport => {
     addImages(savedImages);
 
     if (createGroup) {
-      const title = `Import ${dayjs().format(dateFormatSeconds)}`;
+      const title = `Import ${formatter(new Date())}`;
       const slug = toSlug(title);
 
       cancelEditImageGroup();
@@ -138,7 +141,7 @@ const useRunImport = (): UseRunImport => {
     }
 
     setImageSelection(imageHashes);
-  }, [activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
+  }, [activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
 
   const palette = useMemo(() => palettes.find(({ shortName }) => shortName === activePalette) || missingGreyPalette, [activePalette, palettes]);
 

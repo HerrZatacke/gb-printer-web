@@ -1,0 +1,46 @@
+'use client';
+
+import { NextIntlClientProvider } from 'next-intl';
+import { PropsWithChildren, useEffect, useState } from 'react';
+import { formats } from '@/i18n/formats';
+import messagesEn from '@/i18n/messages/en.json';
+import useSettingsStore from '@/stores/settingsStore';
+
+function I18nContext({ children }: PropsWithChildren) {
+  const [locale, setLocale] = useState('en');
+  const [messages, setMessages] = useState(messagesEn);
+  const [timeZone, setTimeZone] = useState('UTC');
+
+  const { preferredLocale } = useSettingsStore();
+
+  useEffect(() => {
+    const set = async () => {
+      let langFile = preferredLocale.split('-')[0];
+
+      if (!['de', 'en'].includes(langFile)) {
+        langFile = 'en';
+      }
+
+      const localeMessages = (await import(`@/i18n/messages/${langFile}.json`)).default;
+
+      setMessages(localeMessages);
+      setLocale(preferredLocale);
+      setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+    };
+
+    set();
+  }, [preferredLocale]);
+
+  return (
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages}
+      timeZone={timeZone}
+      formats={formats}
+    >
+      {children}
+    </NextIntlClientProvider>
+  );
+}
+
+export default I18nContext;

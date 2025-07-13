@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import filenamify from 'filenamify/browser';
 import type { RGBNPalette } from 'gb-image-decoder';
-import { dateFormat, dateFormatFilename } from '@/consts/defaults';
+import { dateFormat } from '@/consts/defaults';
 import { FileNameStyle } from '@/consts/fileNameStyles';
 import type { Image } from '@/types/Image';
 import type { Palette } from '@/types/Palette';
@@ -77,7 +77,7 @@ const generateFileName = (options: FileNameOptions): string => {
 
 
   const date = (useCurrentDate || !image) ? dayjs() : dayjs(image.created, dateFormat);
-  const formattedDate = date.isValid() ? date.format(dateFormatFilename) : '';
+  const formattedDate = date.isValid() ? date.format('YYYYMMDD-HHmmss') : '';
 
   const paletteName = paletteShort ||
     (palette ? ((palette as Palette).shortName || rgbnPaletteName(palette as RGBNPalette)) : '');

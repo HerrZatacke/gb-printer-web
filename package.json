@@ -78,6 +78,7 @@
     "localforage": "^1.10.0",
     "mui-markdown": "^2.0.1",
     "next": "15.3.5",
+    "next-intl": "^4.3.4",
     "node-kmeans": "^1.1.9",
     "object-hash": "^3.0.0",
     "omggif": "^1.0.10",

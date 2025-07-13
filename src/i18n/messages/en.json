@@ -1,0 +1,8 @@
+{
+  "SettingsGeneric": {
+    "galleryPageSize": "Gallery page size",
+    "galleryPageSizeHelper": "Set to 0 to disable pagination - might cause performance issues on large sets of images",
+    "galleryClickAction": "Click behaviour for gallery images",
+    "galleryClickActionHelper": "Ctrl+Click and Shift+Click will always select/range-select"
+  }
+}
