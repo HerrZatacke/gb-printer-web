@@ -1,5 +1,6 @@
 'use client';
 
+import defu from 'defu';
 import { NextIntlClientProvider } from 'next-intl';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { formats } from '@/i18n/formats';
@@ -30,7 +31,7 @@ function I18nContext({ children }: PropsWithChildren) {
 
       const localeMessages = (await import(`@/i18n/messages/${langFile}.json`)).default;
 
-      setMessages(localeMessages);
+      setMessages(defu(localeMessages, messagesEn));
       setLocale(preferredLocale);
       setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
     };

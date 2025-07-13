@@ -81,7 +81,8 @@ function GenericSettings() {
   const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<string[]>(['txt', 'pgm']);
   const [localeExampleText, setLocaleExampleText] = useState<string>('Example date format:');
   const { formatter } = useDateFormat();
-  const tLocales = useTranslations('Locales');
+  const tLocales = useTranslations('SettingsGeneric.Locales');
+  const t = useTranslations('SettingsGeneric');
 
   const {
     sortPalettes,
@@ -108,9 +109,9 @@ function GenericSettings() {
     >
       <TextField
         id="settings-pagesize"
-        label="Gallery page size"
+        label={t('galleryPageSize')}
         type="text"
-        helperText="Set to 0 to disable pagination - might cause performance issues on large sets of images"
+        helperText={t('galleryPageSizeHelper')}
         value={pageSizeState}
         onChange={(ev) => setPageSizeState(ev.target.value)}
         onBlur={() => {
@@ -122,9 +123,9 @@ function GenericSettings() {
 
       <TextField
         value={galleryClickAction}
-        label="Click behaviour for gallery images"
+        label={t('galleryClickAction')}
         select
-        helperText="Ctrl+Click and Shift+Click will always select/range-select"
+        helperText={t('galleryClickActionHelper')}
         onChange={(ev) => {
           setGalleryClickAction(ev.target.value as GalleryClickAction);
         }}
