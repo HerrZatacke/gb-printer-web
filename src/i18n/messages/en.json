@@ -65,6 +65,12 @@
     "addNetwork": "Add Network",
     "saveSettings": "Save WiFi-Settings"
   },
+  "SettingsPlugins": {
+    "addPlugin": "Add Plugin",
+    "addPluginHelper": "A selection of plugins can be found here",
+    "installedPlugins": "Installed Plugins",
+    "deletePlugin": "Delete Plugin \"{name}\""
+  },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",
     "webUSBEnabled":  "Your current browser/device does support WebUSB",

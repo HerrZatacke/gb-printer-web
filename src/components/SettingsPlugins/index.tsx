@@ -6,6 +6,7 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import { usePluginsContext } from '@/contexts/plugins';
@@ -20,6 +21,7 @@ function SettingsPlugins() {
   const { validateAndAddPlugin } = usePluginsContext();
   const [pluginUrl, setPluginUrl] = useState('');
   const [addBusy, setAddBusy] = useState(false);
+  const t = useTranslations('SettingsPlugins');
 
   return (
     <Stack
@@ -28,14 +30,15 @@ function SettingsPlugins() {
     >
       <TextField
         id="plugin-settings-add-plugin"
-        label="Add Plugin"
+        label={t('addPlugin')}
         helperText={(
           <Link
             rel="noreferrer noopener nofollow"
             href="https://herrzatacke.github.io/gb-printer-web-plugins/"
             target="_blank"
           >
-            🔗 A selection of plugins can be found here
+            🔗
+            {t('addPluginHelper')}
           </Link>
         )}
         type="text"
@@ -74,7 +77,7 @@ function SettingsPlugins() {
         gap={1}
       >
         <Typography component="h3" variant="h3">
-          Installed Plugins
+          {t('installedPlugins')}
         </Typography>
 
         <Stack
