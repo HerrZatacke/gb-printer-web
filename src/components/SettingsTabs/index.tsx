@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useEnv } from '@/contexts/envContext';
 import { reduceItems } from '@/tools/reduceArray';
@@ -17,18 +18,19 @@ interface Tab {
 function SettingsTabs() {
   const pathName = usePathname();
   const env = useEnv();
+  const t = useTranslations('SettingsTabs');
 
   const tabs = useMemo<Tab[]>(() => (
     [
       {
         path: '/settings/generic/',
-        headline: 'Generic Settings',
+        headline: t('genericSettings'),
         prefetch: true,
       },
       process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
         {
           path: '/settings/dropbox/',
-          headline: 'Dropbox Settings',
+          headline: t('dropboxSettings'),
           prefetch: false,
         } : null,
       (
@@ -36,17 +38,17 @@ function SettingsTabs() {
         (env?.env === 'webpack-dev')
       ) ? {
         path: '/settings/wifi/',
-        headline: 'WiFi Settings',
+        headline: t('wifiSettings'),
         prefetch: false,
       } : null,
       {
         path: '/settings/plugins/',
-        headline: 'Plugin Settings',
+        headline: t('pluginSettings'),
         prefetch: false,
       },
       {
         path: '/settings/git/',
-        headline: 'Git Settings',
+        headline: t('gitSettings'),
         prefetch: false,
       },
     ]

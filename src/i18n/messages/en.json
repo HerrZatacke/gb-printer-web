@@ -57,6 +57,26 @@
     "unknownDeviceInfo": "Unknown device info",
     "copyToClipboard": "Copy to clipboard"
   },
+  "SettingsTabs": {
+    "genericSettings": "Generic Settings",
+    "dropboxSettings": "Dropbox Settings",
+    "wifiSettings": "WiFi Settings",
+    "pluginSettings": "Plugin Settings",
+    "gitSettings": "Git Settings"
+  },
+  "ExportSettings": {
+    "resetGroups": "Reset image groups",
+    "exportAll": "Export Everything",
+    "exportPlugins": "Export Plugins",
+    "hashCleanup": "Hash Cleanup",
+
+    "persistState": {
+      "isPersistent": "Storage is persistent",
+      "requestPersistence": "Request storage persistence",
+      "apiUnavailable": "Persistance API not available",
+      "failed": "Failed to persist storage"
+    }
+  },
   "usePaletteSort": {
     "defaultAsc": "Default (ascending)",
     "defaultDesc": "Default (descending)",
