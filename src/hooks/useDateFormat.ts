@@ -13,7 +13,14 @@ export const useDateFormat = (): UseDateFormat => {
   const format = useFormatter();
 
   const formatter = useCallback((date: number | string | Date) => {
-    return format.dateTime(new Date(date), 'short');
+    let dateObject = new Date(date);
+
+    if (typeof date === 'string' && isNaN(dateObject.getTime())) {
+      const fixed = date.replace(/(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}):(\d{3})/, '$1T$2.$3');
+      dateObject = new Date(fixed);
+    }
+
+    return format.dateTime(dateObject, 'short');
   }, [format]);
 
   const formatterGallery = useCallback((date: string) => {
