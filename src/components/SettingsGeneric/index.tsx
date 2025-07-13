@@ -11,8 +11,8 @@ import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import type { ExportFrameMode } from 'gb-image-decoder';
-import type { ILocale } from 'locale-codes';
 import NextLink from 'next/link';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
 import exportFrameModes from '@/consts/exportFrameModes';
@@ -80,9 +80,8 @@ function GenericSettings() {
   const [printerParamsState, setPrinterParamsState] = useState<string>(printerParams);
   const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<string[]>(['txt', 'pgm']);
   const [localeExampleText, setLocaleExampleText] = useState<string>('Example date format:');
-  const [localeCodes, setLocaleCodes] = useState<ILocale[]>([]);
-  const [now] = useState(new Date());
   const { formatter } = useDateFormat();
+  const tLocales = useTranslations('Locales');
 
   const {
     sortPalettes,
@@ -96,25 +95,11 @@ function GenericSettings() {
       'txt',
       'pgm',
     ]);
-
-    const setLocales = async () => {
-      const { default: locale } = await import('locale-codes');
-      const filteredLocales: ILocale[] = locale.all
-        .filter(({ tag }) => (
-          locales.includes(tag)
-        ));
-
-      setLocaleCodes(filteredLocales);
-    };
-
-    setLocales();
-
   }, []);
 
   useEffect(() => {
-    // setLocaleExampleText(`Example date format: ${dateFormatLocale(now, preferredLocale)}`);
-    setLocaleExampleText(`Example date format: ${formatter(now)}`);
-  }, [formatter, now, preferredLocale]);
+    setLocaleExampleText(`Example date format: ${formatter(new Date())}`);
+  }, [formatter]);
 
   return (
     <Stack
@@ -363,7 +348,7 @@ function GenericSettings() {
 
       <TextField
         id="settings-filename-style"
-        value={localeCodes.length ? preferredLocale : ''}
+        value={preferredLocale}
         label="Preferred locale"
         helperText={localeExampleText}
         select
@@ -372,12 +357,12 @@ function GenericSettings() {
         }}
       >
         {
-          localeCodes.map(({ name, local, location, tag }) => (
+          locales.map((code) => (
             <MenuItem
-              key={tag}
-              value={tag}
+              key={code}
+              value={code}
             >
-              {`${local || name}${location ? ` - ${location}` : ''} (${tag})`}
+              {tLocales(code)}
             </MenuItem>
           ))
         }
