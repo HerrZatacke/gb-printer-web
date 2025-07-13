@@ -42,6 +42,16 @@
       "en-GB": "English - United Kingdom (en-GB)"
     }
   },
+  "SettingsDropbox": {
+    "enableStorage": "Use Dropbox as storage",
+    "subfolder": "Subfolder",
+    "openFolder": "<link>Open folder</link>",
+    "openFolderLinkTitle": "Open Dropbox folder:\n{folderLink}",
+    "enableEnhancedSync": "Enable enhanced dropbox sync",
+    "enableEnhancedSyncHelper": "This is an experimental feature.",
+    "authenticate": "Authenticate",
+    "logout":"Logout"
+  },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",
     "webUSBEnabled":  "Your current browser/device does support WebUSB",
