@@ -15,8 +15,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import React, { useState } from 'react';
 import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
@@ -24,8 +22,6 @@ import { useImageGroups } from '@/hooks/useImageGroups';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
 import { ImageSelectionMode } from '@/stores/filtersStore';
 import useSettingsStore from '@/stores/settingsStore';
-
-dayjs.extend(customParseFormat);
 
 interface Props {
   hash: string,

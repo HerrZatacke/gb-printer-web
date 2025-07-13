@@ -1,12 +1,9 @@
 import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import filenamify from 'filenamify/browser';
 import type { RGBNPalette } from 'gb-image-decoder';
 import { FileNameStyle } from '@/consts/fileNameStyles';
 import type { Image } from '@/types/Image';
 import type { Palette } from '@/types/Palette';
-
-dayjs.extend(customParseFormat);
 
 const joinTruthy = (parts: string[], sep = '-'): string => (
   parts.reduce((acc: string, part: string): string => (
