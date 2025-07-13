@@ -3,6 +3,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { formats } from '@/i18n/formats';
+import { locales } from '@/i18n/locales';
 import messagesEn from '@/i18n/messages/en.json';
 import useSettingsStore from '@/stores/settingsStore';
 
@@ -11,7 +12,13 @@ function I18nContext({ children }: PropsWithChildren) {
   const [messages, setMessages] = useState(messagesEn);
   const [timeZone, setTimeZone] = useState('UTC');
 
-  const { preferredLocale } = useSettingsStore();
+  const { preferredLocale, setPreferredLocale } = useSettingsStore();
+
+  useEffect(() => {
+    if (!locales.includes(preferredLocale)) {
+      setPreferredLocale(locales[0]);
+    }
+  }, [preferredLocale, setPreferredLocale]);
 
   useEffect(() => {
     const set = async () => {
