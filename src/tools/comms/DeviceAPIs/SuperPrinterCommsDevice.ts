@@ -134,7 +134,7 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
       ]));
 
     // add print command every 9 lines (regular image size and maximum printer capacity)
-    const commands = chunk(lines, 1)
+    const commands = chunk(lines, 9)
       .map(((section: Uint8Array[], index: number, arr: Uint8Array[][]) => {
         const topMargin: number = (index === 0) ? 1 : 0;
         const bottomMargin: number = (index === arr.length - 1) ? 3 : 0;
