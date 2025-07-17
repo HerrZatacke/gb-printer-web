@@ -116,6 +116,137 @@
       "failed": "Failed to persist storage"
     }
   },
+  "BatchButtons": {
+    "manageSorting": "Manage Sorting",
+    "manageFilters": "Manage Filters",
+    "checkAll": "Check All",
+    "uncheckAll": "Uncheck All",
+    "usePlugin": "Use Plugin",
+    "batchActions": {
+      "delete": "Delete",
+      "animate": "Animate",
+      "download": "Download",
+      "edit": "Edit",
+      "rgb": "Create RGB Images"
+    }
+  },
+  "AddPlugin": {
+    "notTrusted": "The source \"{source}\" of this plugin is not trusted!!",
+    "alreadyInstalled": "The plugin \"{url}\" is already installed",
+    "goToPlugins": "Go to plugins",
+    "willAdd": "This will add {url} to your plugins.",
+    "addButton": "Add"
+  },
+  "CopyDatabase": {
+    "sourceUrl": "Source URL",
+    "loadButton": "Load",
+    "copyButton": "Copy",
+    "reportImages": "{count} images",
+    "reportFrames": "{count} frames",
+    "reportLocalStorage": "{count} localStorage entries",
+    "reportLocalStorageCleared": "localStorage cleared",
+    "reportLocalStorageCopied": "localstorage copied",
+    "reportImagesCopied": "images copied",
+    "reportFramesCopied": "frames copied"
+  },
+  "EditFrameStartLine": {
+    "moveUp": "Move image up",
+    "moveDown": "Move image down"
+  },
+  "EditImageTabs": {
+    "tabTypes": {
+      "frame": "Frame",
+      "misc": "Misc",
+      "palette": "Palette",
+      "colors": "Colors",
+      "tags": "Tags"
+    }
+  },
+  "FolderBreadcrumb": {
+    "editGroup": "Edit group \"{title}\"",
+    "openNavigation": "Open Gallery Navigation"
+  },
+  "FolderTreeDialog": {
+    "header": "Gallery Navigation"
+  },
+  "Frame": {
+    "usedTimes": "Used {count} times",
+    "notUsed": "Not used"
+  },
+  "FrameContextMenu": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "FrameSelect": {
+    "frameLabel": "Frame",
+    "noFrameOption": "As imported / No frame",
+    "separateColorSettings": "Use separate color settings for frame"
+  },
+  "Frames": {
+    "editFramegroup": "Edit Framegroup",
+    "renameFramegroup": "Rename Framegroup",
+    "exportFrames": "Export frames",
+    "exportCurrentFramegroup": "Export current framegroup ({id})",
+    "convertFramesFormat": "Convert frames to new format"
+  },
+  "GalleryGroup": {
+    "itemCount": "{count} items"
+  },
+  "GalleryGroupContextMenu": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "GalleryNumbers": {
+    "imageCount": "{count} images",
+    "filteredCount": "{count} filtered",
+    "selectedCount": "{count} selected",
+    "separator": " / "
+  },
+  "GalleryViewSelect": {
+    "viewNames": {
+      "smallest": "Smallest",
+      "originalSize": "Original Size",
+      "doubleSize": "Double Size",
+      "maximumSize": "Maximum Size"
+    }
+  },
+  "GalleryImageContextMenu": {
+    "edit": "Edit",
+    "download": "Download",
+    "delete": "Delete",
+    "viewInLightbox": "View in Lightbox",
+    "printViaSuperPrinter": "Print via Super Printer",
+    "usePlugin": "Use Plugin",
+    "share": "Share",
+    "addToFavourites": "Add to favourites",
+    "removeFromFavourites": "Remove from favourites",
+    "addToSelection": "Add to selection",
+    "removeFromSelection": "Remove from selection",
+    "showMetadata": "Show Metadata",
+    "createGroup": "Create Group"
+  },
+  "GreySelect": {
+    "neutralLayerBlendmode": "Neutral Layer Blendmode",
+    "blendModes": {
+      "normal": "Normal (ignore neutral layer)",
+      "normalS": "Normal ⇵ (only neutral layer)",
+      "lighten": "Lighten",
+      "screen": "Screen",
+      "dodge": "Dodge",
+      "addition": "Addition",
+      "darken": "Darken",
+      "multiply": "Multiply",
+      "burn": "Burn",
+      "overlay": "Overlay",
+      "softLight": "Soft light",
+      "hardLight": "Hard light",
+      "difference": "Difference",
+      "exclusion": "Exclusion"
+    }
+  },
+  "ConnectPrinter": {
+    "openPrinterPage": "Open printer page"
+  },
   "EnvInfo": {
     "appVersion": "Web-App version: {value}",
     "appBranch": "Web-App branch: {value}",

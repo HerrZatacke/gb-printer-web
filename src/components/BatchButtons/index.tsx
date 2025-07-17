@@ -10,6 +10,7 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import { useTranslations } from 'next-intl';
 import React, { type ReactNode, useState } from 'react';
 import PluginSelect from '@/components/PluginSelect';
 import { BatchActionType } from '@/consts/batchActionTypes';
@@ -29,15 +30,15 @@ const BATCH_ACTIONS_MONOCHROME: BatchActionType[] = [
 const batchActionTitle = (id: BatchActionType) => {
   switch (id) {
     case BatchActionType.DELETE:
-      return 'Delete';
+      return 'batchActions.delete';
     case BatchActionType.ANIMATE:
-      return 'Animate';
+      return 'batchActions.animate';
     case BatchActionType.DOWNLOAD:
-      return 'Download';
+      return 'batchActions.download';
     case BatchActionType.EDIT:
-      return 'Edit';
+      return 'batchActions.edit';
     case BatchActionType.RGB:
-      return 'Create RGB Images';
+      return 'batchActions.rgb';
     default:
       return '';
   }
@@ -66,6 +67,7 @@ interface Props {
 }
 
 function BatchButtons({ page }: Props) {
+  const t = useTranslations('BatchButtons');
 
   const {
     hasPlugins,
@@ -95,13 +97,13 @@ function BatchButtons({ page }: Props) {
       >
         <IconButton
           onClick={showSortOptions}
-          title="Manage Sorting"
+          title={t('manageSorting')}
         >
           <SwapVertIcon />
         </IconButton>
         <IconButton
           onClick={filter}
-          title="Manage Filters"
+          title={t('manageFilters')}
         >
           <Badge
             badgeContent={activeFilters}
@@ -116,7 +118,7 @@ function BatchButtons({ page }: Props) {
         </IconButton>
         <IconButton
           onClick={hasSelected ? unCheckAll : checkAll}
-          title={hasSelected ? 'Uncheck All' : 'Check All'}
+          title={hasSelected ? t('uncheckAll') : t('checkAll')}
         >
           <Badge
             badgeContent={selectedImageCount}
@@ -135,7 +137,7 @@ function BatchButtons({ page }: Props) {
               key={action}
               disabled={!batchEnabled}
               onClick={() => batchTask(action)}
-              title={batchActionTitle(action)}
+              title={t(batchActionTitle(action))}
             >
               { actionIcon(action) }
             </IconButton>
@@ -147,7 +149,7 @@ function BatchButtons({ page }: Props) {
               key={action}
               disabled={!monochromeBatchEnabled}
               onClick={() => batchTask(action)}
-              title={batchActionTitle(action)}
+              title={t(batchActionTitle(action))}
             >
               { actionIcon(action) }
             </IconButton>
@@ -158,7 +160,7 @@ function BatchButtons({ page }: Props) {
             onClick={(ev) => {
               setPluginAnchor(ev.target as HTMLElement);
             }}
-            title="Use Plugin"
+            title={t('usePlugin')}
           >
             <ExtensionIcon />
           </IconButton>

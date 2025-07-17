@@ -4,6 +4,7 @@ import ViewCompactIcon from '@mui/icons-material/ViewCompact';
 import WindowSharpIcon from '@mui/icons-material/WindowSharp';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import React from 'react';
 import { GalleryViews } from '@/consts/GalleryViews';
@@ -13,13 +14,13 @@ import useSettingsStore from '@/stores/settingsStore';
 const viewName = (id: GalleryViews): string => {
   switch (id) {
     case GalleryViews.GALLERY_VIEW_SMALL:
-      return 'Smallest';
+      return 'viewNames.smallest';
     case GalleryViews.GALLERY_VIEW_1X:
-      return 'Original Size';
+      return 'viewNames.originalSize';
     case GalleryViews.GALLERY_VIEW_2X:
-      return 'Double Size';
+      return 'viewNames.doubleSize';
     case GalleryViews.GALLERY_VIEW_MAX:
-      return 'Maximum Size';
+      return 'viewNames.maximumSize';
     default:
       return '';
   }
@@ -40,6 +41,7 @@ const viewIcon = (view: GalleryViews): ReactNode => {
 };
 
 function GalleryViewSelect() {
+  const t = useTranslations('GalleryViewSelect');
   const {
     galleryView,
     setGalleryView,
@@ -74,7 +76,7 @@ function GalleryViewSelect() {
           <ToggleButton
             key={view}
             value={view}
-            title={viewName(view)}
+            title={t(viewName(view))}
           >
             {viewIcon(view)}
           </ToggleButton>

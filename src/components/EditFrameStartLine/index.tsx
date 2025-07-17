@@ -3,6 +3,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
+import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import useItemsStore from '@/stores/itemsStore';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
+  const t = useTranslations('EditFrameStartLine');
   const { activePalette } = useSettingsStore();
   const { palettes } = useItemsStore();
 
@@ -72,14 +74,14 @@ function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
             disabled={startLine <= 0}
             endIcon={<KeyboardArrowUpIcon />}
           >
-            Move image up
+            {t('moveUp')}
           </Button>
           <Button
             onClick={() => setStartLine(startLine + 1)}
             disabled={startLine >= (tiles.length / 20) - 14}
             endIcon={<KeyboardArrowDownIcon />}
           >
-            Move image down
+            {t('moveDown')}
           </Button>
         </ButtonGroup>
       </Stack>

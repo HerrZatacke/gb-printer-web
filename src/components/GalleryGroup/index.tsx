@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import { blend } from '@mui/system';
 import type { Theme } from '@mui/system';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React from 'react';
 import GalleryGridItem from '@/components/GalleryGridItem';
@@ -19,6 +20,7 @@ interface Props {
 }
 
 function GalleryGroup({ hash }: Props) {
+  const t = useTranslations('GalleryGroup');
   const { getUrl } = useGalleryTreeContext();
   const { group, path } = useGalleryGroup(hash);
   const { galleryImageData } = useGalleryImage(hash);
@@ -47,7 +49,7 @@ function GalleryGroup({ hash }: Props) {
     <GalleryGridItem
       selectionText=""
       title={group.title}
-      subheader={`${group.images.length} items`}
+      subheader={t('itemCount', { count: group.images.length })}
       wrapperProps={{
         component: Link,
         href: getUrl({ group: path || '', pageIndex: 0 }),

@@ -5,6 +5,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import Frame from '@/components/Frame';
 import GalleryGrid from '@/components/GalleryGrid';
@@ -13,6 +14,7 @@ import { ExportTypes } from '@/consts/exportTypes';
 import useFrames from '@/hooks/useFrames';
 
 function Frames() {
+  const t = useTranslations('Frames');
 
   const {
     frameGroups,
@@ -33,7 +35,7 @@ function Frames() {
       gap={4}
     >
       <TextField
-        label="Edit Framegroup"
+        label={t('editFramegroup')}
         size="small"
         select
         value={selectedFrameGroup}
@@ -47,7 +49,7 @@ function Frames() {
       </TextField>
       {activeFrameGroup && (
         <TextField
-          label="Rename Framegroup"
+          label={t('renameFramegroup')}
           size="small"
           type="text"
           onChange={(ev) => setActiveFrameGroupName(ev.target.value)}
@@ -79,19 +81,19 @@ function Frames() {
         <Button
           onClick={() => exportJson(ExportTypes.FRAMES)}
         >
-          Export frames
+          {t('exportFrames')}
         </Button>
         <Button
           onClick={() => exportJson(ExportTypes.CURRENT_FRAMEGROUP)}
         >
-          {`Export current framegroup (${selectedFrameGroup})`}
+          {t('exportCurrentFramegroup', { id: selectedFrameGroup })}
         </Button>
         {
           enableDebug ? (
             <Button
               onClick={convertFormat}
             >
-              Convert frames to new format
+              {t('convertFramesFormat')}
             </Button>
           ) : null
         }
