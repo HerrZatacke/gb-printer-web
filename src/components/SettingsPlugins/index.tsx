@@ -37,7 +37,6 @@ function SettingsPlugins() {
             href="https://herrzatacke.github.io/gb-printer-web-plugins/"
             target="_blank"
           >
-            🔗
             {t('addPluginHelper')}
           </Link>
         )}

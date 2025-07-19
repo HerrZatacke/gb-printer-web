@@ -20,7 +20,7 @@
     "preferredLocale": "Preferred locale",
     "exampleDateFormat": "Example date format: {format}",
     "printerUrl": "Printer URL",
-    "printerUrlHelper": "If you own a physical wifi-printer, you can add it\\'s URL here and check the <link>Import-tab</link>",
+    "printerUrlHelper": "If you own a physical wifi-printer, you can add it\\'s URL here and check the <link>🔗 Import-tab</link>",
     "printerParams": "Additional printer settings",
     "enableDebug": "Show debug info",
     "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
@@ -45,7 +45,7 @@
   "SettingsDropbox": {
     "enableStorage": "Use Dropbox as storage",
     "subfolder": "Subfolder",
-    "openFolder": "<link>Open folder</link>",
+    "openFolder": "<link>🔗 Open folder</link>",
     "openFolderLinkTitle": "Open Dropbox folder:\n{folderLink}",
     "enableEnhancedSync": "Enable enhanced dropbox sync",
     "enableEnhancedSyncHelper": "This is an experimental feature.",
@@ -67,7 +67,7 @@
   },
   "SettingsPlugins": {
     "addPlugin": "Add Plugin",
-    "addPluginHelper": "A selection of plugins can be found here",
+    "addPluginHelper": "🔗 A selection of plugins can be found here",
     "installedPlugins": "Installed Plugins",
     "deletePlugin": "Delete Plugin \"{name}\""
   },
@@ -78,7 +78,7 @@
     "branch": "Branch",
     "throttle": "Throttle (in ms)",
     "token": "Token",
-    "tokenHelper": "Go to GitHub to create a <link>new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>\"Repository Permissions > Contents\"</code>"
+    "tokenHelper": "Go to GitHub to create a <link>🔗 new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>\"Repository Permissions > Contents\"</code>"
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",

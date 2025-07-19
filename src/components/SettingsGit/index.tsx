@@ -119,7 +119,6 @@ function SettingsGit() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  🔗
                   {chunks}
                 </Link>
               ),

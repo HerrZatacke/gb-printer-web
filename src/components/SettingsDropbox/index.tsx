@@ -59,7 +59,6 @@ function SettingsDropbox() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    🔗
                     {chunks}
                   </Link>
                 ),
