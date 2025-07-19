@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { useTranslations } from 'next-intl';
 import React, { useMemo, useState } from 'react';
 import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
@@ -13,6 +14,7 @@ import usePreviewImages from '@/hooks/usePreviewImages';
 import useEditStore from '@/stores/editStore';
 
 function PickColors() {
+  const t = useTranslations('PickColors');
   const { pickColors, setEditPalette, cancelEditPalette, cancelPickColors } = useEditStore();
 
   const [selected, setSelected] = useState<number[]>([0, 3, 6, 9]);
@@ -41,7 +43,7 @@ function PickColors() {
     <Lightbox
       confirm={() => {
         setEditPalette({
-          name: `From file ${pickColors.fileName}`,
+          name: t('paletteNameFromFile', { fileName: pickColors.fileName }),
           shortName: NEW_PALETTE_SHORT,
           palette,
           origin: 'generated from file',
@@ -53,7 +55,7 @@ function PickColors() {
         cancelPickColors();
         cancelEditPalette();
       }}
-      header={`Pick colors from "${pickColors.fileName}"`}
+      header={t('dialogHeader', { fileName: pickColors.fileName })}
       contentWidth="auto"
     >
       <Stack

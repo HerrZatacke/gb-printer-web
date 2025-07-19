@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import type { Theme } from '@mui/system';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import PaletteIcon from '@/components/PaletteIcon';
 import usePaletteSort from '@/hooks/usePaletteSort';
@@ -31,6 +32,7 @@ function PaletteSelect({
   onChange,
   updateInvertPalette,
 }: Props) {
+  const t = useTranslations('PaletteSelect');
   const [initiallySelected, setInitiallySelected] = useState<string>(value);
 
   const { palettes: palettesUnsorted } = useItemsStore();
@@ -44,7 +46,7 @@ function PaletteSelect({
   if (allowEmpty) {
     palettes.unshift({
       shortName: '',
-      name: 'As selected per image',
+      name: t('asSelectedPerImage'),
       palette: [],
       isPredefined: false,
       origin: '',
@@ -58,7 +60,7 @@ function PaletteSelect({
     >
       <TextField
         value={value}
-        label="Palette"
+        label={t('palette')}
         size="small"
         select
         onChange={(ev) => {
@@ -85,7 +87,7 @@ function PaletteSelect({
       {
         updateInvertPalette ? (
           <FormControlLabel
-            label="Invert Palette"
+            label={t('invertPalette')}
             control={(
               <Switch
                 checked={invertPalette}

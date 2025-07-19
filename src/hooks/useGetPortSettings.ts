@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
 import useDialogsStore from '@/stores/dialogsStore';
@@ -12,6 +13,7 @@ interface UseGetPortSettings {
 }
 
 export const useGetPortSettings = (): UseGetPortSettings => {
+  const t = useTranslations('useGetPortSettings');
   const { setDialog, dismissDialog } = useDialogsStore();
   const { setLastBaudRate } = useSettingsStore();
 
@@ -31,11 +33,11 @@ export const useGetPortSettings = (): UseGetPortSettings => {
           dismissDialog(0);
           resolve(null);
         },
-        message: 'Specify Baudrate for Port',
+        message: t('specifyBaudrate'),
         questions: (): DialogQuestionSelect[] => {
           return [{
             key: 'baudRate',
-            label: 'Baud Rate',
+            label: t('baudRateLabel'),
             type: DialoqQuestionType.SELECT,
             options: baudRates.map((baudRate) => ({
               value: baudRate.toString(10),
@@ -46,7 +48,7 @@ export const useGetPortSettings = (): UseGetPortSettings => {
         },
       });
     });
-  }, [dismissDialog, setDialog, setLastBaudRate]);
+  }, [dismissDialog, setDialog, setLastBaudRate, t]);
 
   return{
     querySettings,

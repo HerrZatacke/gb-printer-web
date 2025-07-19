@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React, { useCallback, type ChangeEvent, type FocusEvent } from 'react';
 import ColorPicker from '@/components/ColorPicker';
 import ImageRender from '@/components/ImageRender';
@@ -8,6 +9,7 @@ import Lightbox from '@/components/Lightbox';
 import { useEditPalette } from '@/hooks/useEditPalette';
 
 function EditPalette() {
+  const t = useTranslations('EditPalette');
 
   const {
     canConfirm,
@@ -51,7 +53,7 @@ function EditPalette() {
       confirm={save}
       canConfirm={canConfirm}
       deny={cancelEditPalette}
-      header={`Editing palette ${newName ? `"${newName}"` : ''}`}
+      header={t('dialogHeader', { name: newName ? `"${newName}"` : '' })}
       closeOnOverlayClick={false}
     >
       <Stack
@@ -59,16 +61,16 @@ function EditPalette() {
         gap={4}
       >
         <TextField
-          label="Edit Title"
+          label={t('editTitle')}
           size="small"
           type="text"
-          placeholder="Add a title"
+          placeholder={t('addTitle')}
           value={newName}
           onChange={handleTitleChange}
         />
 
         <TextField
-          label="ID/Short name"
+          label={t('idShortName')}
           size="small"
           type="text"
           value={newShortName}
@@ -107,7 +109,7 @@ function EditPalette() {
           palette.map((color, index) => (
             <ColorPicker
               key={`color-${index}`}
-              label={`Color ${index + 1}`}
+              label={t('colorNumber', { number: index + 1 })}
               value={color}
               onChange={(value) => handleColorChange(index, value)}
             />

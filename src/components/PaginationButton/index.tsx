@@ -1,5 +1,6 @@
 import IconButton from '@mui/material/Button';
 import NextLink from 'next/link';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 
@@ -10,6 +11,7 @@ export interface Props {
 }
 
 function PaginationButton(props: Props) {
+  const t = useTranslations('PaginationButton');
   const { getUrl } = useGalleryTreeContext();
 
   return (
@@ -17,7 +19,7 @@ function PaginationButton(props: Props) {
       component={props.disabled ? 'span' : NextLink}
       disabled={props.disabled}
       href={getUrl({ pageIndex: props.page })}
-      title={`To page ${props.page + 1}`}
+      title={t('toPage', { page: props.page + 1 })}
     >
       { props.children }
     </IconButton>

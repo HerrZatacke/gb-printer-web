@@ -24,6 +24,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import type { Theme } from '@mui/system';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
@@ -57,6 +58,7 @@ interface NavActionItem {
 }
 
 function Navigation() {
+  const t = useTranslations('Navigation');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [drawerContainer, setDrawerContainer] = useState<HTMLElement | undefined>(undefined);
   const { fullPath } = useUrl();
@@ -98,42 +100,42 @@ function Navigation() {
   const navItems = useMemo<NavItem[]>(() => (
     [
       {
-        label: 'Home',
+        label: t('home'),
         route: '/',
         prefetch: false,
       },
       {
-        label: 'Gallery',
+        label: t('gallery'),
         route: galleryRoute,
         prefetch: true,
       },
       {
-        label: 'Import',
+        label: t('import'),
         route: '/import',
         prefetch: false,
       },
       {
-        label: 'Palettes',
+        label: t('palettes'),
         route: '/palettes',
         prefetch: true,
       },
       {
-        label: 'Frames',
+        label: t('frames'),
         route: '/frames',
         prefetch: true,
       },
       {
-        label: 'Settings',
+        label: t('settings'),
         route: '/settings/generic',
         prefetch: false,
       },
     ].reduce(reduceItems<NavItem>, [])
-  ), [galleryRoute]);
+  ), [galleryRoute, t]);
 
   const navActionItems = useMemo<NavActionItem[]>(() => (
     [
       {
-        title: 'Trash',
+        title: t('trash'),
         icon: <DeleteIcon />,
         badgeContent: trashCountSum > 0 ? trashCountSum.toString(10) : null,
         badgeColor: NavBadgeColor.ERROR,
@@ -142,7 +144,7 @@ function Navigation() {
         onClick: () => showTrashCount(true),
       },
       useSync ? {
-        title: 'Syncronize with remote service(s)',
+        title: t('syncRemote'),
         icon: <SyncIcon />,
         badgeContent: syncNotification ? '!' : null,
         badgeColor: NavBadgeColor.ERROR,
@@ -151,7 +153,7 @@ function Navigation() {
         onClick: selectSync,
       } : null,
       {
-        title: themeName === ThemeName.BRIGHT ? 'Switch to dark mode' : 'Switch to bright mode',
+        title: themeName === ThemeName.BRIGHT ? t('switchToDark') : t('switchToBright'),
         icon: themeName === ThemeName.BRIGHT ? <LightModeIcon /> : <DarkModeIcon />,
         badgeContent: null,
         badgeColor: NavBadgeColor.DEFAULT,
@@ -160,7 +162,7 @@ function Navigation() {
         onClick: () => setThemeName(themeName === ThemeName.BRIGHT ? ThemeName.DARK : ThemeName.BRIGHT),
       },
       useSerials ? {
-        title: disableSerials ? 'USB devices are disabled' : 'WebUSB Serial devices',
+        title: disableSerials ? t('usbDisabled') : t('usbDevices'),
         icon: <UsbIcon />,
         badgeContent: ((serialWarning && '!') || (portCount && portCount.toString(10)) || null),
         badgeColor: serialWarning ? NavBadgeColor.ERROR : NavBadgeColor.INFO,
@@ -179,6 +181,7 @@ function Navigation() {
     showTrashCount,
     syncBusy,
     syncNotification,
+    t,
     themeName,
     trashCountSum,
     useSerials,
@@ -196,7 +199,7 @@ function Navigation() {
                 variant="text"
                 component="nav"
                 role="navigation"
-                aria-label="Main Navigation"
+                aria-label={t('mainNavAriaLabel')}
                 sx={{ display: { xs: 'none', md: 'inline-flex' }, width: '100%' }}
               >
                 {navItems.map(({ route, label, prefetch }) => (
@@ -216,7 +219,7 @@ function Navigation() {
               <ButtonGroup
                 variant="text"
                 role="navigation"
-                aria-label="Utility Navigation"
+                aria-label={t('utilityNavAriaLabel')}
               >
                 {navActionItems.map(({ title, icon, onClick, badgeContent, badgeColor, isBusy }) => (
                   <IconButton
@@ -240,7 +243,7 @@ function Navigation() {
                 ))}
                 <IconButton
                   color="inherit"
-                  title="Open Main Navigation"
+                  title={t('openMainNav')}
                   onClick={() => setMobileNavOpen(true)}
                   sx={{ display: { md: 'none' } }}
                 >
@@ -269,7 +272,7 @@ function Navigation() {
           >
             <IconButton
               color="inherit"
-              title="Close Main Navigation"
+              title={t('closeMainNav')}
               onClick={() => setMobileNavOpen(false)}
             >
               <CloseIcon />

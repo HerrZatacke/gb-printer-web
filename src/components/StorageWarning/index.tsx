@@ -2,31 +2,24 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import bytes from 'bytes';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { useStorageInfo } from '@/hooks/useStorageInfo';
 
-
-const storageLabel = (key: string) => {
-  switch (key) {
-    case 'indexedDB':
-      return 'indexed DB';
-    case 'localStorage':
-      return 'local storage';
-    default:
-      return key;
-  }
-};
-
 function StorageWarning() {
+  const t = useTranslations('StorageWarning');
   const { storageEstimate } = useStorageInfo();
 
   if (!storageEstimate) {
     return null;
   }
 
+  // Get the translated storage type label
+  const storageType = t(`storageTypes.${storageEstimate.type}`);
+
   return (
     <Box
-      title={`Using ${bytes(storageEstimate.used)} of ${bytes(storageEstimate.total)}`}
+      title={t('usageTooltip', { used: bytes(storageEstimate.used) || '', total: bytes(storageEstimate.total) || '' })}
       sx={{ position: 'relative' }}
     >
       <LinearProgress
@@ -44,7 +37,10 @@ function StorageWarning() {
           top: 0,
         }}
       >
-        { `You are using ${storageEstimate.percentage}% of your browser's ${storageLabel(storageEstimate.type)}. Be aware for now saving images will not be possible once you hit the limit.` }
+        {t('usageWarning', {
+          percentage: storageEstimate.percentage,
+          type: storageType,
+        })}
       </Typography>
     </Box>
   );

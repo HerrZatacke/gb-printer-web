@@ -8,6 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { Rotation } from 'gb-image-decoder';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import { toCreationDate } from '@/tools/toCreationDate';
 import type { ImageMetadata, RGBNHashes } from '@/types/Image';
@@ -42,6 +43,7 @@ function ImageMeta({
   updateRotation,
 }: Props) {
   const { preferredLocale } = useSettingsStore();
+  const t = useTranslations('ImageMeta');
 
   const [locale, setLocale] = useState<string | undefined>(undefined);
 
@@ -71,7 +73,7 @@ function ImageMeta({
       <MuiCleanThemeProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
           <DateTimePicker
-            label="Date / Time"
+            label={t('dateTime')}
             closeOnSelect={false}
             views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
             value={dayjs(created)}
@@ -86,7 +88,7 @@ function ImageMeta({
 
       <FormControl>
         <InputLabel shrink>
-          Edit Rotation
+          {t('editRotation')}
         </InputLabel>
         <ToggleButtonGroup
           exclusive

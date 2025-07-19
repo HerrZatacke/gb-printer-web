@@ -99,7 +99,7 @@ function SettingsGeneric() {
 
   useEffect(() => {
     setLocaleExampleText(t('exampleDateFormat', { format: formatter(new Date()) }));
-  }, [formatter]);
+  }, [formatter, t]);
 
   return (
     <Stack

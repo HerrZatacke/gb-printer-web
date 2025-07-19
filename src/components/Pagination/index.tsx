@@ -7,6 +7,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import PaginationButton from '@/components/PaginationButton';
 
@@ -16,6 +17,7 @@ interface Props {
 }
 
 function Pagination({ page, maxPageIndex }: Props) {
+  const t = useTranslations('Pagination');
   const SKIP_STEP = 5;
 
   if (maxPageIndex === 0) {
@@ -84,7 +86,7 @@ function Pagination({ page, maxPageIndex }: Props) {
                 variant="body1"
                 sx={{ px: 2, display: 'flex', alignItems: 'center' }}
               >
-                { `${page + 1}/${maxPageIndex + 1}` }
+                {t('pageCount', { current: page + 1, total: maxPageIndex + 1 })}
               </Typography>
             );
           }

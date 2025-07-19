@@ -8,40 +8,40 @@ export enum ImportContrastValue {
 }
 
 interface ImportContrast {
-  name: string,
+  translationKey: string,
   baseValues: number[],
   value: ImportContrastValue,
 }
 
 export const contrastSettings: ImportContrast[] = [
   {
-    name: 'Wider',
+    translationKey: 'contrastSettings.wider',
     baseValues: [0x00, 0x44, 0xBB, 0xFF],
     value: ImportContrastValue.WIDER,
   },
   {
-    name: 'Wide',
+    translationKey: 'contrastSettings.wide',
     baseValues: [0x00, 0x55, 0xAA, 0xFF],
     value: ImportContrastValue.WIDE,
   },
   {
-    name: 'Normal',
+    translationKey: 'contrastSettings.normal',
     baseValues: [0x33, 0x66, 0x99, 0xCC],
     value: ImportContrastValue.NORMAL,
   },
   {
-    name: 'Narrow',
+    translationKey: 'contrastSettings.narrow',
     baseValues: [0x45, 0x73, 0xA2, 0xD0],
     value: ImportContrastValue.NARROW,
   },
   {
-    name: 'Narrower',
+    translationKey: 'contrastSettings.narrower',
     baseValues: [0x55, 0x71, 0x8D, 0xAA],
     value: ImportContrastValue.NARROWER,
   },
   {
     // Using src/assets/images/greys.png for reference
-    name: 'From Emulator',
+    translationKey: 'contrastSettings.emulator',
     baseValues: [0x40, 0x90, 0xE0, 0xFF],
     value: ImportContrastValue.EMULATOR,
   },

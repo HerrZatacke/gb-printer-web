@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { longestCommonSubstring } from 'string-algorithms';
 import { DialoqQuestionType } from '@/consts/dialog';
@@ -16,6 +17,7 @@ interface UseImageGroups {
 }
 
 export const useImageGroups = (): UseImageGroups => {
+  const t = useTranslations('useImageGroups');
   const { view } = useGalleryTreeContext();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setEditImageGroup } = useEditStore();
@@ -37,23 +39,23 @@ export const useImageGroups = (): UseImageGroups => {
     const rawTitle = groupTitle.filter((part) => (part.length > 3))[0]?.trim();
 
     if (!rawTitle) {
-      return 'New Group';
+      return t('newGroupDefault');
     }
 
     return rawTitle
       .replace(/[_-]/g, ' ')
       .replace(/^\s*\d+\s+|\s+\d+\s*$/g, '')
       .trim();
-  }, [imageSelection, images]);
+  }, [imageSelection, images, t]);
 
   return {
     resetGroups: () => {
       setDialog({
-        message: 'Reset image groups?',
+        message: t('resetGroupsMessage'),
         questions: () => [{
           key: 'info',
           type: DialoqQuestionType.INFO,
-          label: 'This will remove ALL your created groups and all existing images will be moved to the top level.',
+          label: t('resetGroupsInfo'),
         }],
         confirm: async () => {
           dismissDialog(0);
@@ -81,11 +83,11 @@ export const useImageGroups = (): UseImageGroups => {
       }
 
       setDialog({
-        message: 'Delete image group?',
+        message: t('deleteGroupMessage'),
         questions: () => [{
           key: 'info',
           type: DialoqQuestionType.INFO,
-          label: `This will delete this group "${deleteGroup.title || deleteGroup.slug}" and move all children (images & groups) to the current level.`,
+          label: t('deleteGroupInfo', { groupTitle: deleteGroup.title || deleteGroup.slug }),
         }],
         confirm: async () => {
           dismissDialog(0);

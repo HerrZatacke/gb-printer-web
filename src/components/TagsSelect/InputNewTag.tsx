@@ -1,6 +1,7 @@
 import type { AutocompleteInputChangeReason, AutocompleteChangeReason } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import MuiCleanThemeProvider from '@/components/MuiCleanThemeProvider';
 import { useAvailableTags } from '@/hooks/useAvailableTags';
@@ -12,6 +13,7 @@ interface Props {
 }
 
 function InputNewTag({ updateTags, selectedTags }: Props) {
+  const t = useTranslations('InputNewTag');
   const { availableTags } = useAvailableTags();
   const selectableTags = availableTags.filter((tag) => !selectedTags.includes(tag));
   const [userValue, setUserValue] = useState('');
@@ -25,9 +27,8 @@ function InputNewTag({ updateTags, selectedTags }: Props) {
         inputValue={userValue}
         renderInput={(params) => (
           <TextField
-
             {...params}
-            label="Tags"
+            label={t('tagsLabel')}
           />
         )}
         clearOnBlur

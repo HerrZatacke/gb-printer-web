@@ -3,6 +3,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import type { ImageMetadata, RGBNHashes } from '@/types/Image';
 
@@ -22,6 +23,7 @@ function MetaTable({
   hashes,
   meta,
 }: MetaProps) {
+  const t = useTranslations('MetaTable');
   const tableData: ImageMetadata & { hash: string } = {
     ...meta,
     hash,
@@ -49,7 +51,7 @@ function MetaTable({
     const channelHashes = (Object.keys(hashes) as (keyof RGBNHashes)[])
       .reduce((acc: TableRow[], channel: keyof RGBNHashes): TableRow[] => {
         const row: TableRow = {
-          key: `hash ${channel}`,
+          key: t('hashChannel', { channel }),
           value: hashes[channel] as string,
         };
         return [...acc, row];

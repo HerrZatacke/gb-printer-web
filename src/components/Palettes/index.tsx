@@ -12,6 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTranslations } from 'next-intl';
 import React, { useMemo, useState } from 'react';
 import GalleryGrid from '@/components/GalleryGrid';
 import { useImport } from '@/components/Import/useImport';
@@ -27,24 +28,24 @@ import useItemsStore from '../../stores/itemsStore';
 
 interface Tab {
   id: string,
-  headline: string,
+  translationKey: string,
   filter: (palette: PaletteT) => boolean,
 }
 
 const tabs: Tab[] = [
   {
     id: 'own',
-    headline: 'Own palettes',
+    translationKey: 'ownPalettes',
     filter: ({ isPredefined }) => !isPredefined,
   },
   {
     id: 'predefined',
-    headline: 'Predefined palettes',
+    translationKey: 'predefinedPalettes',
     filter: ({ isPredefined }) => isPredefined,
   },
   {
     id: 'all',
-    headline: 'All palettes',
+    translationKey: 'allPalettes',
     filter: Boolean,
   },
 ];
@@ -57,6 +58,7 @@ function Palettes() {
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const [sortMenuAnchor, setSortMenuAnchor] = useState<HTMLElement | null>(null);
   const theme = useTheme();
+  const t = useTranslations('Palettes');
 
   const aboveSm = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -83,9 +85,9 @@ function Palettes() {
     >
       <Tabs value={selectedTabIndex}>
         {
-          tabs.map(({ id, headline }, index) => (
+          tabs.map(({ id, translationKey }, index) => (
             <Tab
-              label={headline}
+              label={t(translationKey)}
               key={id}
               onClick={() => setSelectedTabIndex(index)}
               value={index}
@@ -112,19 +114,19 @@ function Palettes() {
             <>
               <Button
                 disabled={busy}
-                title="New palette"
+                title={t('newPalette')}
                 onClick={() => editPalette(NEW_PALETTE_SHORT)}
                 startIcon={<AddBoxIcon />}
               >
-                New palette
+                {t('newPalette')}
               </Button>
               <Button
                 component="label"
                 disabled={busy}
                 startIcon={<AddPhotoAlternateIcon />}
-                title="New palette from image"
+                title={t('newPaletteFromImage')}
               >
-                New palette from image
+                {t('newPaletteFromImage')}
                 <input
                   disabled={busy}
                   type="file"
@@ -135,11 +137,11 @@ function Palettes() {
             </>
           )}
           <Button
-            title="Sort Palettes"
+            title={t('sortPalettes')}
             onClick={(ev) => setSortMenuAnchor(ev.target as HTMLElement)}
             endIcon={<ArrowDropDownIcon />}
           >
-            Sort Palettes
+            {t('sortPalettes')}
           </Button>
         </ButtonGroup>
       </Stack>
@@ -187,7 +189,7 @@ function Palettes() {
         <Button
           onClick={() => exportJson(ExportTypes.PALETTES)}
         >
-          Export palettes
+          {t('exportPalettes')}
         </Button>
       </ButtonGroup>
     </Stack>

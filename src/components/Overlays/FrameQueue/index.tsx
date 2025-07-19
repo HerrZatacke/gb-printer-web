@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import EditFrameStartLine from '@/components/EditFrameStartLine';
 import Lightbox from '@/components/Lightbox';
@@ -10,6 +11,7 @@ import useItemsStore from '@/stores/itemsStore';
 import { saveFrameData } from '@/tools/applyFrame/frameData';
 
 function FrameQueue() {
+  const t = useTranslations('FrameQueue');
   const { dismissDialog } = useDialogsStore();
   const { frameQueue, frameQueueCancelOne, importQueueCancelOne } = useImportsStore();
   const { updateLastSyncLocalNow } = useStores();
@@ -40,7 +42,7 @@ function FrameQueue() {
 
   return (
     <Lightbox
-      header={`Import new Frame as "${fullId}"`}
+      header={t('dialogHeader', { id: fullId })}
       canConfirm={formValid}
       confirm={async () => {
         const hash = await saveFrameData(frame.tiles, startLine);

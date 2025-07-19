@@ -3,6 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import ImportPreviewImage from '@/components/ImportPreviewImage';
 import Lightbox from '@/components/Lightbox';
@@ -13,6 +14,7 @@ import useSettingsStore from '@/stores/settingsStore';
 import { moveBitmapsToImport } from '@/tools/moveBitmapsToImport';
 
 function BitmapQueue() {
+  const t = useTranslations('BitmapQueue');
   const { bitmapQueue, bitmapQueueCancel, importQueueAdd } = useImportsStore();
   const {
     bitmapQueueDither,
@@ -28,7 +30,7 @@ function BitmapQueue() {
 
   return (
     <Lightbox
-      header="Prepare Bitmaps for import"
+      header={t('dialogHeader')}
       confirm={() => {
         moveBitmapsToImport({
           bitmapQueue,
@@ -59,7 +61,7 @@ function BitmapQueue() {
           ))
         }
         <FormControlLabel
-          label="Enable Dither"
+          label={t('enableDither')}
           control={(
             <Switch
               checked={bitmapQueueDither}
@@ -71,7 +73,7 @@ function BitmapQueue() {
         />
         <TextField
           value={bitmapQueueSetting}
-          label="Contrast preset"
+          label={t('contrastPreset')}
           select
           size="small"
           onChange={(ev) => {
@@ -79,12 +81,12 @@ function BitmapQueue() {
           }}
         >
           {
-            contrastSettings.map(({ value, name }) => (
+            contrastSettings.map(({ value, translationKey }) => (
               <MenuItem
                 key={value}
                 value={value}
               >
-                {name}
+                {t(translationKey)}
               </MenuItem>
             ))
           }

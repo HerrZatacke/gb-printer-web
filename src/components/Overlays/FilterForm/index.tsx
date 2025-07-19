@@ -1,6 +1,7 @@
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
 import { SpecialTags } from '@/consts/SpecialTags';
@@ -8,6 +9,7 @@ import { useFilterForm } from '@/hooks/useFilterForm';
 import FilterFormTag from './filterFormTag';
 
 function FilterForm() {
+  const t = useTranslations('FilterForm');
 
   const {
     visible,
@@ -28,27 +30,27 @@ function FilterForm() {
     <Lightbox
       confirm={confirm}
       deny={cancel}
-      header="Select Filters"
+      header={t('dialogHeader')}
       contentWidth="auto"
       actionButtons={(
         <>
           <Button
             disabled={!activeTags.length}
-            title="Clear Filters"
+            title={t('clearFiltersTitle')}
             color="secondary"
             variant="outlined"
             onClick={clearTags}
           >
-            Clear
+            {t('clear')}
           </Button>
           <Button
             disabled={!activeTags.length}
-            title="Clear Filters and apply"
+            title={t('clearFiltersAndApplyTitle')}
             color="secondary"
             variant="contained"
             onClick={applyClearTags}
           >
-            Clear and apply
+            {t('clearAndApply')}
           </Button>
         </>
       )}
@@ -65,7 +67,7 @@ function FilterForm() {
             component="span"
             variant="body2"
           >
-            If set, all must be met
+            {t('allMustBeMet')}
           </Typography>
           <Stack
             direction="row"
@@ -79,42 +81,42 @@ function FilterForm() {
             }}
           >
             <FilterFormTag
-              title="Untagged"
+              title={t('untagged')}
               tagActive={activeTags.includes(SpecialTags.FILTER_UNTAGGED)}
               toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_UNTAGGED, active)}
             />
             <FilterFormTag
-              title="❤️ Favourite"
+              title={t('favourite')}
               tagActive={activeTags.includes(SpecialTags.FILTER_FAVOURITE)}
               toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_FAVOURITE, active)}
             />
             <FilterFormTag
-              title="New"
+              title={t('new')}
               tagActive={activeTags.includes(SpecialTags.FILTER_NEW)}
               toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_NEW, active)}
             />
             <FilterFormTag
-              title="Monochrome"
+              title={t('monochrome')}
               tagActive={activeTags.includes(SpecialTags.FILTER_MONOCHROME)}
               toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_MONOCHROME, active)}
             />
             <FilterFormTag
-              title="RGB"
+              title={t('rgb')}
               tagActive={activeTags.includes(SpecialTags.FILTER_RGB)}
               toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_RGB, active)}
             />
             <FilterFormTag
-              title="Recent Imports"
+              title={t('recentImports')}
               tagActive={activeTags.includes(SpecialTags.FILTER_RECENT)}
               toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_RECENT, active)}
             />
             <FilterFormTag
-              title="Image has comments"
+              title={t('imageHasComments')}
               tagActive={activeTags.includes(SpecialTags.FILTER_COMMENTS)}
               toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_COMMENTS, active)}
             />
             <FilterFormTag
-              title="Image has username"
+              title={t('imageHasUsername')}
               tagActive={activeTags.includes(SpecialTags.FILTER_USERNAME)}
               toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_USERNAME, active)}
             />
@@ -129,7 +131,7 @@ function FilterForm() {
             component="span"
             variant="body2"
           >
-            If set, one must be met
+            {t('oneMustBeMet')}
           </Typography>
           <Stack
             direction="row"

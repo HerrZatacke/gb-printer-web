@@ -4,6 +4,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
 import { useSyncSelect } from '@/hooks/useSyncSelect';
@@ -17,6 +18,8 @@ const getButtonColor = (showSyncHints: boolean, warn: boolean): 'secondary' | 'e
 };
 
 function SyncSelect() {
+  const t = useTranslations('SyncSelect');
+
   const {
     repoUrl,
     dropboxActive,
@@ -32,7 +35,7 @@ function SyncSelect() {
   return (
     <Lightbox
       deny={cancelSync}
-      header="Synchronize"
+      header={t('dialogHeader')}
     >
       <Stack
         direction="column"
@@ -49,24 +52,24 @@ function SyncSelect() {
               color="secondary"
               startIcon={<GitHubIcon />}
               endIcon={<CloudUploadIcon />}
-              title={`Synchronize to GitHub\n${repoUrl}`}
+              title={t('syncToGitHubTitle', { repoUrl })}
               onClick={() => {
                 startSync('git', 'up');
               }}
             >
-              Synchronize to GitHub
+              {t('syncToGitHub')}
             </Button>
             <Button
               variant="contained"
               color="secondary"
               startIcon={<GitHubIcon />}
               endIcon={<CloudDownloadIcon />}
-              title={`Synchronize from GitHub\n${repoUrl}`}
+              title={t('syncFromGitHubTitle', { repoUrl })}
               onClick={() => {
                 startSync('git', 'down');
               }}
             >
-              Synchronize from GitHub
+              {t('syncFromGitHub')}
             </Button>
           </Stack>
         )}
@@ -83,16 +86,16 @@ function SyncSelect() {
                 variant="contained"
                 color={getButtonColor(showSyncHints, syncLastUpdate.local < syncLastUpdate.dropbox)}
                 endIcon={<CloudUploadIcon />}
-                title="Synchronize to Dropbox"
+                title={t('syncToDropbox')}
                 onClick={() => {
                   startSync('dropbox', 'up');
                 }}
               >
-                Synchronize to Dropbox
+                {t('syncToDropbox')}
               </Button>
               {showSyncHints && syncLastUpdate.local < syncLastUpdate.dropbox && (
                 <Typography variant="caption">
-                  There are pending remote changes. If you synchronize to dropbox now, these will be lost.
+                  {t('pendingRemoteChangesWarning')}
                 </Typography>
               )}
             </Stack>
@@ -105,17 +108,16 @@ function SyncSelect() {
                 variant="contained"
                 color={getButtonColor(showSyncHints, syncLastUpdate.local > syncLastUpdate.dropbox)}
                 endIcon={<CloudDownloadIcon />}
-                title="Synchronize from Dropbox"
+                title={t('syncFromDropbox')}
                 onClick={() => {
                   startSync('dropbox', 'down');
                 }}
               >
-                Synchronize from Dropbox
+                {t('syncFromDropbox')}
               </Button>
               {showSyncHints && syncLastUpdate.local > syncLastUpdate.dropbox && (
                 <Typography variant="caption">
-                  There are local changes not synched to dropbox yet.
-                  If you synchronize from dropbox now, these will be lost.
+                  {t('pendingLocalChangesWarning')}
                 </Typography>
               )}
             </Stack>
@@ -124,12 +126,12 @@ function SyncSelect() {
               variant="contained"
               color="secondary"
               endIcon={<CloudUploadIcon />}
-              title="Synchronize images to Dropbox"
+              title={t('syncImagesToDropbox')}
               onClick={() => {
                 startSync('dropboximages', 'up');
               }}
             >
-              Synchronize images to Dropbox
+              {t('syncImagesToDropbox')}
             </Button>
           </Stack>
         )}

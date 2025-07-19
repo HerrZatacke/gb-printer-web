@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import useEditPalette from '@/hooks/useSetEditPalette';
 import { useStores } from '@/hooks/useStores';
 import useDialogsStore from '@/stores/dialogsStore';
@@ -13,6 +14,7 @@ interface UsePalette {
 }
 
 export const usePalette = (shortName: string, name: string): UsePalette => {
+  const t = useTranslations('usePalette');
   const { activePalette, setActivePalette } = useSettingsStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { updateLastSyncLocalNow } = useStores();
@@ -26,7 +28,7 @@ export const usePalette = (shortName: string, name: string): UsePalette => {
     setActive: () => setActivePalette(shortName),
     deletePalette: () => {
       setDialog({
-        message: `Delete palette "${name || 'no name'}"?`,
+        message: t('deletePaletteMessage', { name: name || 'no name' }),
         confirm: async () => {
           if (isActive) {
             setActivePalette('dsh');

@@ -1,6 +1,7 @@
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { useSortForm } from '@/hooks/useSortForm';
@@ -11,22 +12,9 @@ interface Sortable {
   key: string,
 }
 
-const sortables: Sortable[] = [
-  {
-    title: 'Title',
-    key: 'title',
-  },
-  {
-    title: 'Date',
-    key: 'created',
-  },
-  {
-    title: 'Palette',
-    key: 'palette',
-  },
-];
-
 function SortForm() {
+  const t = useTranslations('SortForm');
+
   const {
     visible,
     sortBy: formSortBy,
@@ -47,12 +35,27 @@ function SortForm() {
     return null;
   }
 
+  const sortables: Sortable[] = [
+    {
+      title: t('titleOption'),
+      key: 'title',
+    },
+    {
+      title: t('dateOption'),
+      key: 'created',
+    },
+    {
+      title: t('paletteOption'),
+      key: 'palette',
+    },
+  ];
+
   const currentSortBy = sortables.find(({ key }) => (key === sortBy)) || sortables[0];
-  const currentOrderLabel = sortOrder === SortDirection.ASC ? 'Ascending' : 'Descending';
+  const currentOrderLabel = sortOrder === SortDirection.ASC ? t('ascending') : t('descending');
 
   return (
     <Lightbox
-      header={`Sort by: ${currentSortBy.title}/${currentOrderLabel}`}
+      header={t('dialogHeader', { sortBy: currentSortBy.title, order: currentOrderLabel })}
       confirm={() => formSetSortBy(`${sortBy}_${sortOrder}`)}
       deny={hideSortForm}
     >
@@ -61,7 +64,7 @@ function SortForm() {
         gap={4}
       >
         <TextField
-          label="Sort by"
+          label={t('sortByLabel')}
           size="small"
           select
           value={sortBy}
@@ -72,14 +75,14 @@ function SortForm() {
           )) }
         </TextField>
         <TextField
-          label="Sort direction"
+          label={t('sortDirectionLabel')}
           size="small"
           select
           value={sortOrder}
           onChange={(ev) => setSortOrder(ev.target.value as SortDirection)}
         >
-          <MenuItem value={SortDirection.ASC}>Ascending</MenuItem>
-          <MenuItem value={SortDirection.DESC}>Descending</MenuItem>
+          <MenuItem value={SortDirection.ASC}>{t('ascending')}</MenuItem>
+          <MenuItem value={SortDirection.DESC}>{t('descending')}</MenuItem>
         </TextField>
       </Stack>
     </Lightbox>

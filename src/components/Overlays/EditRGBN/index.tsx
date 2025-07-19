@@ -18,6 +18,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
@@ -60,6 +61,7 @@ function previewPalette(isR: boolean, isG: boolean, isB: boolean, isN: boolean):
 }
 
 function EditRGBN() {
+  const t = useTranslations('EditRGBN');
   const {
     canConfirm,
     order,
@@ -85,7 +87,7 @@ function EditRGBN() {
       deny={cancelEditRGBNImages}
       closeOnOverlayClick={false}
       canConfirm={canConfirm && !lengthWarning}
-      header="Create RGBN images"
+      header={t('dialogHeader')}
       contentWidth="576px"
     >
       <Stack
@@ -93,20 +95,20 @@ function EditRGBN() {
         gap={4}
       >
         <TextField
-          label="Grouping of your selection"
+          label={t('groupingLabel')}
           select
           size="small"
           value={grouping}
           onChange={(ev) => setGrouping(ev.target.value as RGBGrouping)}
         >
           <MenuItem value={RGBGrouping.BY_COLOR}>
-            Selection is grouped by colors (RRR GGG BBB)
+            {t('groupByColor')}
           </MenuItem>
           <MenuItem value={RGBGrouping.BY_IMAGE}>
-            Selection is grouped by image (RGB RGB RGB)
+            {t('groupByImage')}
           </MenuItem>
           <MenuItem value={RGBGrouping.MANUAL}>
-            Manual channel selection for a single image
+            {t('manualChannelSelection')}
           </MenuItem>
         </TextField>
 
@@ -116,7 +118,7 @@ function EditRGBN() {
             gap={1}
           >
             <Typography variant="body2">
-              Manually select the channels to create a single RGBN image
+              {t('manualChannelInstructions')}
             </Typography>
             <Stack
               direction="row"
@@ -183,8 +185,7 @@ function EditRGBN() {
             gap={1}
           >
             <Typography variant="body2">
-              Select the order of channels to be applied (in the order of images taken).
-              Channels to the right of the separator will not be used.
+              {t('channelOrderInstructions')}
             </Typography>
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
@@ -230,7 +231,7 @@ function EditRGBN() {
                 variant="filled"
                 severity="error"
               >
-                Your distribution of channels and number of selected images does not add up!
+                {t('channelDistributionError')}
               </Alert>
             ) : null }
 
@@ -242,7 +243,7 @@ function EditRGBN() {
           gap={1}
         >
           <Typography variant="body2">
-            Image preview
+            {t('imagePreview')}
           </Typography>
           <Stack
             direction="row"
@@ -276,7 +277,7 @@ function EditRGBN() {
         </Stack>
 
         <FormControlLabel
-          label="Create group from created images at current location"
+          label={t('createGroupLabel')}
           control={(
             <Switch
               checked={createGroup}

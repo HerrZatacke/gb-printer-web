@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import type { ExportFrameMode } from 'gb-image-decoder';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import FrameSelect from '@/components/FrameSelect';
 import Lightbox from '@/components/Lightbox';
@@ -12,6 +13,7 @@ import exportFrameModes from '@/consts/exportFrameModes';
 import { useVideoForm } from '@/hooks/useVideoForm';
 
 function VideoParamsForm() {
+  const t = useTranslations('VideoParamsForm');
 
   const {
     update,
@@ -29,14 +31,14 @@ function VideoParamsForm() {
     <Lightbox
       confirm={animate}
       deny={cancel}
-      header={`Create an animated GIF with ${imageCount} frames`}
+      header={t('dialogHeader', { count: imageCount })}
     >
       <Stack
         direction="column"
         gap={4}
       >
         <TextField
-          label="Framerate"
+          label={t('frameRate')}
           size="small"
           type="number"
           slotProps={{
@@ -48,7 +50,7 @@ function VideoParamsForm() {
           }}
         />
         <TextField
-          label="Scale GIF"
+          label={t('scaleGif')}
           size="small"
           type="number"
           slotProps={{
@@ -60,7 +62,7 @@ function VideoParamsForm() {
           }}
         />
         <FormControlLabel
-          label="Enable Yoyo-Effect (loop back to the beginning)"
+          label={t('enableYoyo')}
           control={(
             <Switch
               checked={videoParams.yoyo}
@@ -71,7 +73,7 @@ function VideoParamsForm() {
           )}
         />
         <FormControlLabel
-          label="Reverse animation direction"
+          label={t('reverseDirection')}
           control={(
             <Switch
               checked={videoParams.reverse}
@@ -94,7 +96,7 @@ function VideoParamsForm() {
           }}
         />
         <TextField
-          label="How to handle frames when exporting images"
+          label={t('handleFrames')}
           size="small"
           select
           value={videoParams.exportFrameMode}
@@ -112,7 +114,7 @@ function VideoParamsForm() {
           <FrameSelect
             frame={videoParams.frame || ''}
             lockFrame={videoParams.lockFrame}
-            noFrameOption="As selected per image"
+            noFrameOption={t('asSelectedPerImage')}
             updateFrame={(frame) => {
               update({ frame });
             }}

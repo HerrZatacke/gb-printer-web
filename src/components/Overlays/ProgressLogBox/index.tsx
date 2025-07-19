@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { useTranslations } from 'next-intl';
 import React, { useMemo, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { useProgressLog } from '@/hooks/useProgressLog';
@@ -31,6 +32,8 @@ function ProgressLogBox() {
     },
     confirm,
   } = useProgressLog();
+
+  const t = useTranslations('ProgressLogBox');
 
   const [cutOffMessages, setCutOffMessages] = useState(true);
 
@@ -74,7 +77,7 @@ function ProgressLogBox() {
 
   return (
     <Lightbox
-      header={`${finished ? '✔️ Update done' : '⏳ Updating...'} ${isGit ? ` - "${repo}/${branch}"` : ''}`}
+      header={t(finished ? 'dialogHeaderDone' : 'dialogHeaderUpdating', { repo: isGit ? `${repo}/${branch}` : '' })}
       confirm={finished ? confirm : undefined}
     >
       <Stack
@@ -113,8 +116,8 @@ function ProgressLogBox() {
           >
             {
               cutOffMessages ?
-                `Show all ${messages.length} messages` :
-                'Reduce messages'
+                t('showAllMessages', { count: messages.length }) :
+                t('reduceMessages')
             }
           </Button>
         )}
@@ -123,10 +126,10 @@ function ProgressLogBox() {
           gap={0}
         >
           <Typography variant="caption">
-            {`Started at: ${dayjs.unix(timeStart).format('HH:mm:ss')}`}
+            {t('startedAt', { time: dayjs.unix(timeStart).format('HH:mm:ss') })}
           </Typography>
           <Typography variant="caption">
-            {`${finished ? 'Finished after' : 'Running for'}: ${dayjs.duration(timeLatest - timeStart, 'seconds').format('HH:mm:ss')}`}
+            {t(finished ? 'finishedAfter' : 'runningFor', { duration: dayjs.duration(timeLatest - timeStart, 'seconds').format('HH:mm:ss') })}
           </Typography>
         </Stack>
         {isGit && (
@@ -140,7 +143,7 @@ function ProgressLogBox() {
             target="_blank"
             rel="noreferrer"
           >
-            Open GitHub Repository
+            {t('openGitHubRepository')}
           </Button>
         )}
         {isDropbox && (
@@ -148,12 +151,12 @@ function ProgressLogBox() {
             variant="outlined"
             component="a"
             color="secondary"
-            title={`Open Dropbox folder:\nhttps://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
+            title={t('openDropboxFolderTitle', { path: `https://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}` })}
             href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
             target="_blank"
             rel="noreferrer"
           >
-            Open Dropbox folder
+            {t('openDropboxFolder')}
           </Button>
         )}
       </Stack>
