@@ -31,13 +31,13 @@ const EditFrame = () => {
     frameIndexValid,
   } = useEditFrame(frame);
 
-  const updateHead = updateId !== fullId ? t('idChange', { newId: fullId }) : '';
+  const idChange = updateId !== fullId ? t('idChange', { newId: fullId }) : '';
 
   return (
     <Lightbox
       confirm={saveFrame}
       canConfirm={formValid}
-      header={frame ? t('dialogHeader', { id: updateId, updateHead }) : t('errorDialogHeader', { id: editFrame || t('idUnknown') })}
+      header={frame ? t('dialogHeader', { id: updateId, idChange }) : undefined}
       deny={cancelEdit}
     >
       { frame ? (
@@ -54,14 +54,7 @@ const EditFrame = () => {
           setFrameGroup={setFrameGroup}
           setFrameName={setFrameName}
         />
-      ) : (
-        <Alert
-          severity="error"
-          variant="filled"
-        >
-          {t('frameNotExist', { id: editFrame || t('idUnknown') })}
-        </Alert>
-      ) }
+      ) : null }
     </Lightbox>
   );
 };

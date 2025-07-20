@@ -43,7 +43,7 @@ function PickColors() {
     <Lightbox
       confirm={() => {
         setEditPalette({
-          name: t('paletteNameFromFile', { fileName: pickColors.fileName }),
+          name: t('newPaletteNameFromFile', { fileName: pickColors.fileName }),
           shortName: NEW_PALETTE_SHORT,
           palette,
           origin: 'generated from file',

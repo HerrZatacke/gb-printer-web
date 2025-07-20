@@ -30,25 +30,25 @@ function Trashbin() {
           <Button
             variant="contained"
             color="secondary"
-            title={t('downloadFrames')}
+            title={t('downloadFrames', { count: 0 })}
             disabled={trashCount.frames === 0}
             onClick={downloadFrames}
           >
-            {t('downloadFrames')}
+            {t('downloadFrames', { count: trashCount.frames })}
           </Button>
           <Button
             variant="contained"
             color="secondary"
-            title={t('downloadImages')}
+            title={t('downloadImages', { count: 0 })}
             disabled={trashCount.images === 0}
             onClick={downloadImages}
           >
-            {t('downloadImages')}
+            {t('downloadImages', { count: trashCount.images })}
           </Button>
           <Button
             variant="contained"
             color="error"
-            title={t('purgeAll')}
+            title={t('purgeAll', { count: 0 })}
             disabled={sum === 0}
             onClick={purgeTrash}
           >

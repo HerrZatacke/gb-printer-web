@@ -106,7 +106,7 @@ function VideoParamsForm() {
         >
           {
             exportFrameModes.map(({ id, name }) => (
-              <MenuItem value={id} key={id}>{ name }</MenuItem>
+              <MenuItem value={id} key={id}>{t(name)}</MenuItem>
             ))
           }
         </TextField>
@@ -114,7 +114,7 @@ function VideoParamsForm() {
           <FrameSelect
             frame={videoParams.frame || ''}
             lockFrame={videoParams.lockFrame}
-            noFrameOption={t('asSelectedPerImage')}
+            noFrameOption={t('noFrameOption')}
             updateFrame={(frame) => {
               update({ frame });
             }}

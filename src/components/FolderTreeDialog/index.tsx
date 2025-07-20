@@ -88,7 +88,7 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
       contentWidth="auto"
       deny={onClose}
       open={open}
-      header={t('header')}
+      header={t('dialogHeader')}
       keepMounted={false}
     >
       <SimpleTreeView

@@ -109,7 +109,7 @@ function EditPalette() {
           palette.map((color, index) => (
             <ColorPicker
               key={`color-${index}`}
-              label={t('colorNumber', { number: index + 1 })}
+              label={t('colorIndex', { index: index + 1 })}
               value={color}
               onChange={(value) => handleColorChange(index, value)}
             />

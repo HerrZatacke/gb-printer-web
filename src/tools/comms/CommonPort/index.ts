@@ -17,7 +17,6 @@ const DETECT_SUPER_PRINTER_INTERFACE = 'Super Printer Interface by Raphaël BOIC
 
 export abstract class CommonPort extends EventEmitter {
   public readonly portType: PortType;
-  // public portDeviceType: PortDeviceType;
   private textDecoder: TextDecoder;
   private textEncoder: TextEncoder;
   private bufferedData: Uint8Array | null;
@@ -26,7 +25,6 @@ export abstract class CommonPort extends EventEmitter {
 
   protected constructor(portType: PortType) {
     super();
-    // this.portDeviceType = PortDeviceType.UNKNOWN;
     this.portType = portType;
     this.textDecoder = new TextDecoder();
     this.textEncoder = new TextEncoder();

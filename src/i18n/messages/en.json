@@ -24,6 +24,11 @@
     "printerParams": "Additional printer settings",
     "enableDebug": "Show debug info",
     "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
+    "galleryClickActions": {
+      "clickSelectsItem": "lick selects the item",
+      "clickOpensEditDialog": "Click opens edit dialog",
+      "clickOpensLightbox": "Click opens the item in lightbox"
+    },
     "frameModes": {
       "keepFrame": "Keep frame",
       "cropFrame": "Crop frame",
@@ -93,7 +98,13 @@
     "connectedDevices": "{deviceCount, plural, =0 {No connected devices} =1 {One connected device:} other {# connected devices:}}",
     "showUnknownResponse": "Show message from unrecognized device",
     "unknownDeviceInfo": "Unknown device info",
-    "copyToClipboard": "Copy to clipboard"
+    "copyToClipboard": "Copy to clipboard",
+    "portDeviceTypes": {
+      "inactiveDevice": "Inactive Device",
+      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Printer Emulator",
+      "superPrinterInterface": "Super Printer Interface",
+      "cartridgeReader": "Cartridge Reader (LK Firmware)"
+    }
   },
   "SettingsTabs": {
     "genericSettings": "Generic Settings",
@@ -131,7 +142,7 @@
   "AddPlugin": {
     "notTrusted": "The source \"{source}\" of this plugin is not trusted!!",
     "alreadyInstalled": "The plugin \"{url}\" is already installed",
-    "goToPlugins": "Go to plugins",
+    "goToPlugins": "🔗 Go to plugins",
     "willAdd": "This will add {url} to your plugins.",
     "addButton": "Add"
   },
@@ -165,7 +176,7 @@
     "openNavigation": "Open Gallery Navigation"
   },
   "FolderTreeDialog": {
-    "header": "Gallery Navigation"
+    "dialogHeader": "Gallery Navigation"
   },
   "Frame": {
     "usedTimes": "Used {count} times",
@@ -281,8 +292,7 @@
     "serialMonitorLabel": "Enter data received through your serial monitor",
     "import": "Import",
     "exportImages": "Export images",
-    "exportSelectedImages": "Export selected images",
-    "exportPalettes": "Export palettes"
+    "exportSelectedImages": "Export selected images"
   },
   "ImportPreviewImage": {
     "scaleFactorWarning": "The scale factor of your image is {scaleFactor}. To get a clean result without artifacts, try to import only images with it's dimensions being scaled by powers of two. (1, 2, 4, 8 ...)"
@@ -299,7 +309,7 @@
     "imageCounter": "Image {current}/{total}"
   },
   "MetaTable": {
-    "hashChannel": "hash {channel}"
+    "hashChannel": "{channel}-channel hash"
   },
   "Navigation": {
     "home": "Home",
@@ -312,7 +322,7 @@
     "syncRemote": "Syncronize with remote service(s)",
     "switchToDark": "Switch to dark mode",
     "switchToBright": "Switch to bright mode",
-    "usbDisabled": "USB devices are disabled",
+    "usbDisabled": "USB devices are not available",
     "usbDevices": "WebUSB Serial devices",
     "openMainNav": "Open Main Navigation",
     "closeMainNav": "Close Main Navigation",
@@ -337,28 +347,16 @@
     "supportedFileTypes": "Printer hex-dumps, .sav savestates, JSON exports or even plain bitmaps."
   },
   "EditForm": {
-    "dialogHeader": {
-      "one": "Editing {count} image",
-      "other": "Editing {count} images"
-    },
-    "editing": {
-      "one": "Editing one image",
-      "other": "Editing {count} images"
-    },
+    "dialogHeader": "Editing {count, plural, =0 {} =1 {one image} other {# images}}",
     "editingMultiple": "You are editing {count} images",
     "indexHelperText": "Use %n (or %nn, %nnn, ...) to add an index to the image titles",
     "editTitle": "Edit title"
   },
   "EditFrame": {
-    "dialogHeader": "Editing frame {id}{updateHead}",
-    "errorDialogHeader": "Error editing frame {id}",
-    "idChange": " -> \"{newId}\"",
-    "errorEditing": "Error editing '{id}'",
-    "frameNotExist": "A frame with the ID '{id}' does not exist!",
-    "idUnknown": "Unknown"
+    "dialogHeader": "Editing frame \"{id}\" {idChange}",
+    "idChange": "-> \"{newId}\""
   },
   "EditFrameForm": {
-    "dialogHeader": "Editing frame",
     "selectFrameGroup": "Select frame group",
     "newFrameGroup": "New frame group",
     "unknown": "Unknown",
@@ -374,18 +372,8 @@
   },
   "EditImageGroup": {
     "dialogHeader": "Editing group {title}",
-    "createNewGroupDialogHeader": {
-      "one": "Create new group with {count} image",
-      "other": "Create new group with {count} images"
-    },
-    "createNewGroup": {
-      "one": "Create new group with {count} image",
-      "other": "Create new group with {count} images"
-    },
-    "moveSelectedImages": {
-      "one": "Move {count} selected image",
-      "other": "Move {count} selected images"
-    },
+    "createNewGroupDialogHeader": "Create new group {count, plural, =0 {} =1 {} other {with # images}}",
+    "moveSelectedImages": "Move {count, plural, =0 {} =1 {image} other {# images}}",
     "title": "Title",
     "pathSegment": "Pathsegment (identifier)",
     "path": "Path: \"{path}\"",
@@ -397,27 +385,25 @@
     "editTitle": "Edit Title",
     "addTitle": "Add a title",
     "idShortName": "ID/Short name",
-    "colorNumber": "Color {number}"
+    "colorIndex": "Color {index}"
   },
   "EditRGBN": {
     "dialogHeader": "Create RGBN images",
-    "createRGBNImages": "Create RGBN images",
     "groupingLabel": "Grouping of your selection",
     "groupByColor": "Selection is grouped by colors (RRR GGG BBB)",
     "groupByImage": "Selection is grouped by image (RGB RGB RGB)",
     "manualChannelSelection": "Manual channel selection for a single image",
     "manualChannelInstructions": "Manually select the channels to create a single RGBN image",
     "channelOrderInstructions": "Select the order of channels to be applied (in the order of images taken). Channels to the right of the separator will not be used.",
-    "channelDistributionError": "Your distribution of channels and number of selected images does not add up!",
+    "channelDistributionError": "Your distribution of channels and number of selected images does not add up! Make sure to select the correct images.",
     "imagePreview": "Image preview",
     "createGroupLabel": "Create group from created images at current location"
   },
   "useEditRGBNImages": {
-    "rgbGroupTitle": "RGB {date}"
+    "rgbNewGroupTitle": "RGB {date}"
   },
   "FilterForm": {
     "dialogHeader": "Select Filters",
-    "selectFilters": "Select Filters",
     "clearFiltersTitle": "Clear Filters",
     "clear": "Clear",
     "clearFiltersAndApplyTitle": "Clear Filters and apply",
@@ -438,12 +424,10 @@
     "selectTag": "Select \"{title}\"-tag"
   },
   "FrameQueue": {
-    "dialogHeader": "Import new Frame as \"{id}\"",
-    "importNewFrame": "Import new Frame as \"{id}\""
+    "dialogHeader": "Import new Frame as \"{id}\""
   },
   "ImportQueue": {
-    "dialogHeader": "Image Import {count, plural, =1 {# image} other {# images}}",
-    "imageImport": "Image Import {count, plural, =1 {} other {(# images)}}",
+    "dialogHeader": "{count, plural, =1 {Import one image} other {Import # images}}",
     "removeLastSeenTitle": "Remove last seen",
     "removeLastSeen": "Remove last seen {count, plural, =0 {} other {({count})}}",
     "removeDeletedTitle": "Remove deleted",
@@ -458,20 +442,20 @@
   },
   "ImportRow": {
     "duplicateInQueue": "This image exists multiple times within this queue",
-    "alreadyImported": "This image has already been imported{title}",
+    "alreadyImported": "This image has already been imported {title, select, NO_TITLE {} other {as \"{title}\"}}",
     "importAsFrame": "Import image as frame",
     "removeFromQueue": "Remove image from queue"
   },
   "PickColors": {
-    "paletteNameFromFile": "From file {fileName}",
+    "newPaletteNameFromFile": "From file {fileName}",
     "dialogHeader": "Pick colors from \"{fileName}\""
   },
   "ProgressBox": {
     "dialogHeader": "Working..."
   },
   "ProgressLogBox": {
-    "dialogHeaderDone": "✔️ Update done{repo, select, '' {} other { - {repo}}}",
-    "dialogHeaderUpdating": "⏳ Updating...{repo, select, '' {} other { - {repo}}}",
+    "dialogHeaderDone": "✔️ Update done {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderUpdating": "⏳ Updating... {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Show all {count} messages",
     "reduceMessages": "Reduce messages",
     "startedAt": "Started at: {time}",
@@ -508,9 +492,9 @@
   },
   "Trashbin": {
     "dialogHeader": "Trash ({count} items)",
-    "downloadFrames": "Download frames",
-    "downloadImages": "Download images",
-    "purgeAll": "Purge all ({count})",
+    "downloadFrames": "Download frames {count, plural, =0 {} other {(#)}}",
+    "downloadImages": "Download images {count, plural, =0 {} other {(#)}}",
+    "purgeAll": "Purge all {count, plural, =0 {} other {(#)}}",
     "deletedFrames": "Deleted frames: {count}",
     "deletedImages": "Deleted images: {count}"
   },
@@ -520,8 +504,14 @@
     "scaleGif": "Scale GIF",
     "enableYoyo": "Enable Yoyo-Effect (loop back to the beginning)",
     "reverseDirection": "Reverse animation direction",
-    "handleFrames": "How to handle frames when exporting images",
-    "asSelectedPerImage": "As selected per image"
+    "handleFrames": "How to handle frames for animation",
+    "noFrameOption": "As selected per image",
+    "frameModes": {
+      "keepFrame": "Keep frame",
+      "cropFrame": "Crop frame",
+      "squareBlack": "Make image squared (add black)",
+      "squareWhite": "Make image squared (add white)"
+    }
   },
   "Pagination": {
     "pageCount": "{current}/{total}"
@@ -530,11 +520,7 @@
     "toPage": "To page {page}"
   },
   "Palette": {
-    "usageCount": {
-      "zero": "({shortName}) Not used",
-      "one": "({shortName}) Used one time",
-      "other": "({shortName}) Used {count} times"
-    }
+    "usageCount": "({shortName}) {count, plural, =0 {Not used} =1 {Used one time} other {used # times}}"
   },
   "PaletteContextMenu": {
     "setActive": "Set Active",
@@ -582,7 +568,7 @@
   },
   "StorageWarning": {
     "storageTypes": {
-      "indexedDB": "indexed DB",
+      "indexedDB": "database storage",
       "localStorage": "local storage"
     },
     "usageTooltip": "Using {used} of {total}",

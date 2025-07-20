@@ -135,12 +135,6 @@ function Import() {
         >
           {t('exportSelectedImages')}
         </Button>
-        <Button
-          onClick={() => exportJson(ExportTypes.PALETTES)}
-          title={t('exportPalettes')}
-        >
-          {t('exportPalettes')}
-        </Button>
       </ButtonGroup>
     </Stack>
   );

@@ -50,7 +50,7 @@ function ImportRow({
     if (alreadyImported) {
       return {
         color: 'warning',
-        title: t('alreadyImported', { title: alreadyImported.title ? ` as "${alreadyImported.title}"` : '' }),
+        title: t('alreadyImported', { title: alreadyImported.title || 'NO_TITLE' }),
         badgeContent: 'I',
       };
     }

@@ -30,7 +30,7 @@ function StorageWarning() {
       />
       <Typography
         variant="body2"
-        color="bg"
+        color="fgtext"
         sx={{
           position: 'absolute',
           p: 1,

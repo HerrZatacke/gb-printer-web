@@ -30,7 +30,7 @@ class USBPorts extends EventEmitter {
     if (!this.portsWorkerClient) { return; } // Must be able to query for baudrate
 
     const port = new CommonUSBPort(usbDevice);
-    const tempApi = new InactiveCommsDevice(port, new Uint8Array(), 'identifying device');
+    const tempApi = new InactiveCommsDevice(port, new Uint8Array());
 
     this.connectedDevices.set(tempApi.id, usbDevice);
     await this.portsWorkerClient.addDeviceApi(proxy(tempApi as unknown as Remote<BaseCommsDevice>));

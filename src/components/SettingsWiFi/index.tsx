@@ -171,7 +171,7 @@ function SettingsWiFi() {
 
               <TextField
                 id="settings-ap-ssid"
-                label={t('accespointSSID')}
+                label={t('accesspointSSID')}
                 type="text"
                 disabled={disabled}
                 value={wifiConfig.ap.ssid || ''}

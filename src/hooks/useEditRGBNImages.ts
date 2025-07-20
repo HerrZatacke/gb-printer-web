@@ -169,7 +169,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     await saveRGBNImage(rgbnHashes);
 
     if (createGroup) {
-      const title = t('rgbGroupTitle', { date: formatter(new Date()) });
+      const title = t('rgbNewGroupTitle', { date: formatter(new Date()) });
       const slug = toSlug(title);
 
       const createdImageHashes: string[] = rgbnHashes.map((hashes) => objectHash(hashes));

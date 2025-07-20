@@ -77,7 +77,7 @@ function ProgressLogBox() {
 
   return (
     <Lightbox
-      header={t(finished ? 'dialogHeaderDone' : 'dialogHeaderUpdating', { repo: isGit ? `${repo}/${branch}` : '' })}
+      header={t(finished ? 'dialogHeaderDone' : 'dialogHeaderUpdating', { repo: isGit ? `${repo}/${branch}` : 'NO_REPO' })}
       confirm={finished ? confirm : undefined}
     >
       <Stack
