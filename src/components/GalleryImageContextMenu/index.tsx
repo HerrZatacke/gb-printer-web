@@ -15,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
@@ -30,6 +31,7 @@ interface Props {
 }
 
 function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
+  const t = useTranslations('GalleryImageContextMenu');
   const [pluginAnchor, setPluginAnchor] = useState<HTMLElement | null>(null);
 
   const { enableImageGroups } = useSettingsStore();
@@ -77,13 +79,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             editImage();
             onClose();
           }}
-          title="Edit"
+          title={t('edit')}
         >
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>
           <ListItemText>
-            Edit
+            {t('edit')}
           </ListItemText>
         </MenuItem>
         <MenuItem
@@ -91,13 +93,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             startDownload();
             onClose();
           }}
-          title="Download"
+          title={t('download')}
         >
           <ListItemIcon>
             <DownloadIcon />
           </ListItemIcon>
           <ListItemText>
-            Download
+            {t('download')}
           </ListItemText>
         </MenuItem>
         <MenuItem
@@ -105,13 +107,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             deleteImage();
             onClose();
           }}
-          title="Delete"
+          title={t('delete')}
         >
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
           <ListItemText>
-            Delete
+            {t('delete')}
           </ListItemText>
         </MenuItem>
         <MenuItem
@@ -119,13 +121,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             setLightboxImage();
             onClose();
           }}
-          title="View in Lightbox"
+          title={t('viewInLightbox')}
         >
           <ListItemIcon>
             <PreviewIcon />
           </ListItemIcon>
           <ListItemText>
-            View in Lightbox
+            {t('viewInLightbox')}
           </ListItemText>
         </MenuItem>
         {canPrint && (
@@ -134,13 +136,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
               print(hash);
               onClose();
             }}
-            title="Print via Super Printer"
+            title={t('printViaSuperPrinter')}
           >
             <ListItemIcon>
               <PrintIcon />
             </ListItemIcon>
             <ListItemText>
-              Print via Super Printer
+              {t('printViaSuperPrinter')}
             </ListItemText>
           </MenuItem>
         )}
@@ -149,13 +151,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             onClick={(ev) => {
               setPluginAnchor(ev.target as HTMLElement);
             }}
-            title="Use Plugin"
+            title={t('usePlugin')}
           >
             <ListItemIcon>
               <ExtensionIcon />
             </ListItemIcon>
             <ListItemText>
-              Use Plugin
+              {t('usePlugin')}
             </ListItemText>
           </MenuItem>
         ) : null}
@@ -165,13 +167,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
               shareImage();
               onClose();
             }}
-            title="Share"
+            title={t('share')}
           >
             <ListItemIcon>
               <ShareIcon />
             </ListItemIcon>
             <ListItemText>
-              Share
+              {t('share')}
             </ListItemText>
           </MenuItem>
         ) : null}
@@ -180,13 +182,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             updateFavouriteTag(!isFavourite);
             onClose();
           }}
-          title={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
+          title={isFavourite ? t('removeFromFavourites') : t('addToFavourites')}
         >
           <ListItemIcon>
             {isFavourite ? <FavoriteBorderIcon /> : <FavoriteIcon />}
           </ListItemIcon>
           <ListItemText>
-            {isFavourite ? 'Remove from favourites' : 'Add to favourites'}
+            {isFavourite ? t('removeFromFavourites') : t('addToFavourites')}
           </ListItemText>
         </MenuItem>
         <MenuItem
@@ -194,13 +196,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             updateImageToSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD);
             onClose();
           }}
-          title={isSelected ? 'Remove from selection' : 'Add to selection'}
+          title={isSelected ? t('removeFromSelection') : t('addToSelection')}
         >
           <ListItemIcon>
             { isSelected ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />}
           </ListItemIcon>
           <ListItemText>
-            {isSelected ? 'Remove from selection' : 'Add to selection'}
+            {isSelected ? t('removeFromSelection') : t('addToSelection')}
           </ListItemText>
         </MenuItem>
         {(hasMeta || hasHashes) && (
@@ -209,13 +211,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
               showMetadata();
               onClose();
             }}
-            title="Show Metadata"
+            title={t('showMetadata')}
           >
             <ListItemIcon>
               <CodeIcon />
             </ListItemIcon>
             <ListItemText>
-              Show Metadata
+              {t('showMetadata')}
             </ListItemText>
           </MenuItem>
         )}
@@ -225,13 +227,13 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
               createGroup(hash);
               onClose();
             }}
-            title="Create Group"
+            title={t('createGroup')}
           >
             <ListItemIcon>
               <CreateNewFolderIcon />
             </ListItemIcon>
             <ListItemText>
-              Create Group
+              {t('createGroup')}
             </ListItemText>
           </MenuItem>
         )}

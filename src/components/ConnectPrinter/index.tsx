@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import useIframeLoaded from '@/hooks/useIframeLoaded';
 
@@ -22,6 +23,7 @@ const iframeSupported = (printerUrl?: string) => {
 // const iframeSupported = () => false;
 
 function ConnectPrinter() {
+  const t = useTranslations('ConnectPrinter');
   // Needs high timeout for slow responses of esp webserver
   const { printerUrl, failed, loaded, printerConnected } = useIframeLoaded(30000);
 
@@ -35,7 +37,6 @@ function ConnectPrinter() {
           width: '480px',
           height: '90px',
         }}
-        title="Transfer window"
         src={printerUrl}
       />
       {!loaded && <CircularProgress color="secondary" />}
@@ -51,7 +52,7 @@ function ConnectPrinter() {
             window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
           }}
         >
-          Open printer page
+          {t('openPrinterPage')}
         </Button>
       </ButtonGroup>
     )

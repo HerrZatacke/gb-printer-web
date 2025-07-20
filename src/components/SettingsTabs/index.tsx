@@ -53,7 +53,7 @@ function SettingsTabs() {
       },
     ]
       .reduce(reduceItems<Tab>, [])
-  ), [env]);
+  ), [t, env]);
 
   const tabsValue = useMemo<string | null>(() => {
     if (

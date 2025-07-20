@@ -9,13 +9,20 @@ import { useTranslations } from 'next-intl';
 import hasher from 'object-hash';
 import React, { useMemo, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
-import { portDeviceLabels, PortType } from '@/consts/ports';
+import { PortDeviceType, PortType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
 import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
   inline?: boolean,
 }
+
+export const portDeviceTranslationKeys: Record<PortDeviceType, string> = {
+  [PortDeviceType.INACTIVE]: 'portDeviceTypes.inactiveDevice',
+  [PortDeviceType.PACKET_CAPTURE]: 'portDeviceTypes.arduinoGameboyPrinterEmulator',
+  [PortDeviceType.SUPER_PRINTER_INTERFACE]: 'portDeviceTypes.superPrinterInterface',
+  [PortDeviceType.GBXCART]: 'portDeviceTypes.cartridgeReader',
+};
 
 function ConnectSerial({ inline }: Props) {
   const {
@@ -117,7 +124,7 @@ function ConnectSerial({ inline }: Props) {
                 alignItems="baseline"
               >
                 <Typography variant="body1" component="span">
-                  {portDeviceLabels[portDeviceType]}
+                  {t(portDeviceTranslationKeys[portDeviceType])}
                 </Typography>
                 <Typography variant="caption" component="span">
                   {enableDebug ? `${description} - ${id}` : description}

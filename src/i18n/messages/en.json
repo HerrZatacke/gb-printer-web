@@ -9,7 +9,7 @@
     "exportHandleFrame": "How to handle frames when exporting images",
     "filenameStyle": "Filename style",
     "importSavFrames": "Frames to be applied when importing Cartridge dumps",
-    "importSavFramesNone":  "None",
+    "importSavFramesNone": "None",
     "importSavFramesUnknown": "Unknown",
     "importLastSeen": "Import ‘last seen’ image when importing Cartridge dumps",
     "importDeleted": "Import deleted images when importing Cartridge dumps",
@@ -20,11 +20,15 @@
     "preferredLocale": "Preferred locale",
     "exampleDateFormat": "Example date format: {format}",
     "printerUrl": "Printer URL",
-    "printerUrlHelper": "If you own a physical wifi-printer, you can add it\\'s URL here and check the <link>Import-tab</link>",
+    "printerUrlHelper": "If you own a physical wifi-printer, you can add it\\'s URL here and check the <link>🔗 Import-tab</link>",
     "printerParams": "Additional printer settings",
     "enableDebug": "Show debug info",
     "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
-
+    "galleryClickActions": {
+      "clickSelectsItem": "lick selects the item",
+      "clickOpensEditDialog": "Click opens edit dialog",
+      "clickOpensLightbox": "Click opens the item in lightbox"
+    },
     "frameModes": {
       "keepFrame": "Keep frame",
       "cropFrame": "Crop frame",
@@ -46,12 +50,12 @@
   "SettingsDropbox": {
     "enableStorage": "Use Dropbox as storage",
     "subfolder": "Subfolder",
-    "openFolder": "<link>Open folder</link>",
+    "openFolder": "<link>🔗 Open folder</link>",
     "openFolderLinkTitle": "Open Dropbox folder:\n{folderLink}",
     "enableEnhancedSync": "Enable enhanced dropbox sync",
     "enableEnhancedSyncHelper": "This is an experimental feature.",
     "authenticate": "Authenticate",
-    "logout":"Logout"
+    "logout": "Logout"
   },
   "SettingsWiFi": {
     "hostSettings": "Host Settings",
@@ -68,7 +72,7 @@
   },
   "SettingsPlugins": {
     "addPlugin": "Add Plugin",
-    "addPluginHelper": "A selection of plugins can be found here",
+    "addPluginHelper": "🔗 A selection of plugins can be found here",
     "installedPlugins": "Installed Plugins",
     "deletePlugin": "Delete Plugin \"{name}\""
   },
@@ -79,13 +83,13 @@
     "branch": "Branch",
     "throttle": "Throttle (in ms)",
     "token": "Token",
-    "tokenHelper": "Go to GitHub to create a <link>new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>\"Repository Permissions > Contents\"</code>"
+    "tokenHelper": "Go to GitHub to create a <link>🔗 new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>\"Repository Permissions > Contents\"</code>"
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",
-    "webUSBEnabled":  "Your current browser/device does support WebUSB",
+    "webUSBEnabled": "Your current browser/device does support WebUSB",
     "webUSBDisabled": "Your current browser/device does not support WebUSB",
-    "webSerialEnabled":  "Your current browser/device does support Web Serial",
+    "webSerialEnabled": "Your current browser/device does support Web Serial",
     "webSerialDisabled": "Your current browser/device does not support Web Serial"
   },
   "ConnectSerial": {
@@ -94,7 +98,13 @@
     "connectedDevices": "{deviceCount, plural, =0 {No connected devices} =1 {One connected device:} other {# connected devices:}}",
     "showUnknownResponse": "Show message from unrecognized device",
     "unknownDeviceInfo": "Unknown device info",
-    "copyToClipboard": "Copy to clipboard"
+    "copyToClipboard": "Copy to clipboard",
+    "portDeviceTypes": {
+      "inactiveDevice": "Inactive Device",
+      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Printer Emulator",
+      "superPrinterInterface": "Super Printer Interface",
+      "cartridgeReader": "Cartridge Reader (LK Firmware)"
+    }
   },
   "SettingsTabs": {
     "genericSettings": "Generic Settings",
@@ -108,13 +118,143 @@
     "exportAll": "Export Everything",
     "exportPlugins": "Export Plugins",
     "hashCleanup": "Hash Cleanup",
-
     "persistState": {
       "isPersistent": "Storage is persistent",
       "requestPersistence": "Request storage persistence",
       "apiUnavailable": "Persistance API not available",
       "failed": "Failed to persist storage"
     }
+  },
+  "BatchButtons": {
+    "manageSorting": "Manage Sorting",
+    "manageFilters": "Manage Filters",
+    "checkAll": "Check All",
+    "uncheckAll": "Uncheck All",
+    "usePlugin": "Use Plugin",
+    "batchActions": {
+      "delete": "Delete",
+      "animate": "Animate",
+      "download": "Download",
+      "edit": "Edit",
+      "rgb": "Create RGB Images"
+    }
+  },
+  "AddPlugin": {
+    "notTrusted": "The source \"{source}\" of this plugin is not trusted!!",
+    "alreadyInstalled": "The plugin \"{url}\" is already installed",
+    "goToPlugins": "🔗 Go to plugins",
+    "willAdd": "This will add {url} to your plugins.",
+    "addButton": "Add"
+  },
+  "CopyDatabase": {
+    "sourceUrl": "Source URL",
+    "loadButton": "Load",
+    "copyButton": "Copy",
+    "reportImages": "{count} images",
+    "reportFrames": "{count} frames",
+    "reportLocalStorage": "{count} localStorage entries",
+    "reportLocalStorageCleared": "localStorage cleared",
+    "reportLocalStorageCopied": "localstorage copied",
+    "reportImagesCopied": "images copied",
+    "reportFramesCopied": "frames copied"
+  },
+  "EditFrameStartLine": {
+    "moveUp": "Move image up",
+    "moveDown": "Move image down"
+  },
+  "EditImageTabs": {
+    "tabTypes": {
+      "frame": "Frame",
+      "misc": "Misc",
+      "palette": "Palette",
+      "colors": "Colors",
+      "tags": "Tags"
+    }
+  },
+  "FolderBreadcrumb": {
+    "editGroup": "Edit group \"{title}\"",
+    "openNavigation": "Open Gallery Navigation"
+  },
+  "FolderTreeDialog": {
+    "dialogHeader": "Gallery Navigation"
+  },
+  "Frame": {
+    "usedTimes": "Used {count} times",
+    "notUsed": "Not used"
+  },
+  "FrameContextMenu": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "FrameSelect": {
+    "frameLabel": "Frame",
+    "noFrameOption": "As imported / No frame",
+    "separateColorSettings": "Use separate color settings for frame"
+  },
+  "Frames": {
+    "editFramegroup": "Edit Framegroup",
+    "renameFramegroup": "Rename Framegroup",
+    "exportFrames": "Export frames",
+    "exportCurrentFramegroup": "Export current framegroup ({id})",
+    "convertFramesFormat": "Convert frames to new format"
+  },
+  "GalleryGroup": {
+    "itemCount": "{count} items"
+  },
+  "GalleryGroupContextMenu": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "GalleryNumbers": {
+    "imageCount": "{count} images",
+    "filteredCount": "{count} filtered",
+    "selectedCount": "{count} selected",
+    "separator": " / "
+  },
+  "GalleryViewSelect": {
+    "viewNames": {
+      "smallest": "Smallest",
+      "originalSize": "Original Size",
+      "doubleSize": "Double Size",
+      "maximumSize": "Maximum Size"
+    }
+  },
+  "GalleryImageContextMenu": {
+    "edit": "Edit",
+    "download": "Download",
+    "delete": "Delete",
+    "viewInLightbox": "View in Lightbox",
+    "printViaSuperPrinter": "Print via Super Printer",
+    "usePlugin": "Use Plugin",
+    "share": "Share",
+    "addToFavourites": "Add to favourites",
+    "removeFromFavourites": "Remove from favourites",
+    "addToSelection": "Add to selection",
+    "removeFromSelection": "Remove from selection",
+    "showMetadata": "Show Metadata",
+    "createGroup": "Create Group"
+  },
+  "GreySelect": {
+    "neutralLayerBlendmode": "Neutral Layer Blendmode",
+    "blendModes": {
+      "normal": "Normal (ignore neutral layer)",
+      "normalS": "Normal ⇵ (only neutral layer)",
+      "lighten": "Lighten",
+      "screen": "Screen",
+      "dodge": "Dodge",
+      "addition": "Addition",
+      "darken": "Darken",
+      "multiply": "Multiply",
+      "burn": "Burn",
+      "overlay": "Overlay",
+      "softLight": "Soft light",
+      "hardLight": "Hard light",
+      "difference": "Difference",
+      "exclusion": "Exclusion"
+    }
+  },
+  "ConnectPrinter": {
+    "openPrinterPage": "Open printer page"
   },
   "EnvInfo": {
     "appVersion": "Web-App version: {value}",
@@ -128,7 +268,7 @@
     "hasOled": "Compiled for OLED: {value}",
     "yes": "yes",
     "no": "no"
-},
+  },
   "usePaletteSort": {
     "defaultAsc": "Default (ascending)",
     "defaultDesc": "Default (descending)",
@@ -140,5 +280,361 @@
   "useAsPasswordField": {
     "hidePassword": "Hide Password",
     "showPassword": "Show Password"
+  },
+  "ImageMeta": {
+    "dateTime": "Date / Time",
+    "editRotation": "Edit Rotation"
+  },
+  "Import": {
+    "selectFiles": "Select file(s) to import",
+    "importMemory": "Import memory from Cartridge Reader",
+    "importAlbumRolls": "Import Album Rolls from Photo!(ROM + Flash)",
+    "serialMonitorLabel": "Enter data received through your serial monitor",
+    "import": "Import",
+    "exportImages": "Export images",
+    "exportSelectedImages": "Export selected images"
+  },
+  "ImportPreviewImage": {
+    "scaleFactorWarning": "The scale factor of your image is {scaleFactor}. To get a clean result without artifacts, try to import only images with it's dimensions being scaled by powers of two. (1, 2, 4, 8 ...)"
+  },
+  "Lightbox": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "ok": "Ok",
+    "closeWithHeader": "Close {header}"
+  },
+  "LightboxImage": {
+    "leaveFullscreen": "Leave fullscreen",
+    "enterFullscreen": "Enter fullscreen",
+    "imageCounter": "Image {current}/{total}"
+  },
+  "MetaTable": {
+    "hashChannel": "{channel}-channel hash"
+  },
+  "Navigation": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "import": "Import",
+    "palettes": "Palettes",
+    "frames": "Frames",
+    "settings": "Settings",
+    "trash": "Trash",
+    "syncRemote": "Syncronize with remote service(s)",
+    "switchToDark": "Switch to dark mode",
+    "switchToBright": "Switch to bright mode",
+    "usbDisabled": "USB devices are not available",
+    "usbDevices": "WebUSB Serial devices",
+    "openMainNav": "Open Main Navigation",
+    "closeMainNav": "Close Main Navigation",
+    "mainNavAriaLabel": "Main Navigation",
+    "utilityNavAriaLabel": "Utility Navigation"
+  },
+  "BitmapQueue": {
+    "dialogHeader": "Bitmap Queue",
+    "enableDither": "Enable Dither",
+    "contrastPreset": "Contrast preset",
+    "contrastSettings": {
+      "wider": "Wider",
+      "wide": "Wide",
+      "normal": "Normal",
+      "narrow": "Narrow",
+      "narrower": "Narrower",
+      "emulator": "From Emulator"
+    }
+  },
+  "DragOver": {
+    "dropFilesHere": "Drop your files here",
+    "supportedFileTypes": "Printer hex-dumps, .sav savestates, JSON exports or even plain bitmaps."
+  },
+  "EditForm": {
+    "dialogHeader": "Editing {count, plural, =0 {} =1 {one image} other {# images}}",
+    "editingMultiple": "You are editing {count} images",
+    "indexHelperText": "Use %n (or %nn, %nnn, ...) to add an index to the image titles",
+    "editTitle": "Edit title"
+  },
+  "EditFrame": {
+    "dialogHeader": "Editing frame \"{id}\" {idChange}",
+    "idChange": "-> \"{newId}\""
+  },
+  "EditFrameForm": {
+    "selectFrameGroup": "Select frame group",
+    "newFrameGroup": "New frame group",
+    "unknown": "Unknown",
+    "frameGroup": "Frame group",
+    "frameGroupId": "Frame group id",
+    "newFrameGroupId": "New frame group id",
+    "groupIdHelperText": "Must have at least two characters, only lowercase",
+    "newFrameGroupName": "New frame group name",
+    "frameIndex": "Frame Index",
+    "frameIndexHelperText": "Integer, must be greater than 0",
+    "frameName": "Frame name",
+    "idInUse": "Specified frame index/identifier \"{id}\" is already in use, please try another one."
+  },
+  "EditImageGroup": {
+    "dialogHeader": "Editing group {title}",
+    "createNewGroupDialogHeader": "Create new group {count, plural, =0 {} =1 {} other {with # images}}",
+    "moveSelectedImages": "Move {count, plural, =0 {} =1 {image} other {# images}}",
+    "title": "Title",
+    "pathSegment": "Pathsegment (identifier)",
+    "path": "Path: \"{path}\"",
+    "pathInUse": "Path is already in use: \"{path}\"",
+    "parentGroup": "Parent group"
+  },
+  "EditPalette": {
+    "dialogHeader": "Editing palette {name}",
+    "editTitle": "Edit Title",
+    "addTitle": "Add a title",
+    "idShortName": "ID/Short name",
+    "colorIndex": "Color {index}"
+  },
+  "EditRGBN": {
+    "dialogHeader": "Create RGBN images",
+    "groupingLabel": "Grouping of your selection",
+    "groupByColor": "Selection is grouped by colors (RRR GGG BBB)",
+    "groupByImage": "Selection is grouped by image (RGB RGB RGB)",
+    "manualChannelSelection": "Manual channel selection for a single image",
+    "manualChannelInstructions": "Manually select the channels to create a single RGBN image",
+    "channelOrderInstructions": "Select the order of channels to be applied (in the order of images taken). Channels to the right of the separator will not be used.",
+    "channelDistributionError": "Your distribution of channels and number of selected images does not add up! Make sure to select the correct images.",
+    "imagePreview": "Image preview",
+    "createGroupLabel": "Create group from created images at current location"
+  },
+  "useEditRGBNImages": {
+    "rgbNewGroupTitle": "RGB {date}"
+  },
+  "FilterForm": {
+    "dialogHeader": "Select Filters",
+    "clearFiltersTitle": "Clear Filters",
+    "clear": "Clear",
+    "clearFiltersAndApplyTitle": "Clear Filters and apply",
+    "clearAndApply": "Clear and apply",
+    "allMustBeMet": "If set, all must be met",
+    "oneMustBeMet": "If set, one must be met",
+    "untagged": "Untagged",
+    "favourite": "❤️ Favourite",
+    "new": "New",
+    "monochrome": "Monochrome",
+    "rgb": "RGB",
+    "recentImports": "Recent Imports",
+    "imageHasComments": "Image has comments",
+    "imageHasUsername": "Image has username"
+  },
+  "FilterFormTag": {
+    "removeTag": "Remove \"{title}\"-tag",
+    "selectTag": "Select \"{title}\"-tag"
+  },
+  "FrameQueue": {
+    "dialogHeader": "Import new Frame as \"{id}\""
+  },
+  "ImportQueue": {
+    "dialogHeader": "{count, plural, =1 {Import one image} other {Import # images}}",
+    "removeLastSeenTitle": "Remove last seen",
+    "removeLastSeen": "Remove last seen {count, plural, =0 {} other {({count})}}",
+    "removeDeletedTitle": "Remove deleted",
+    "removeDeleted": "Remove deleted {count, plural, =0 {} other {({count})}}",
+    "removeDuplicatesInQueueTitle": "Remove duplicates in queue",
+    "removeDuplicatesInQueue": "Remove duplicates in queue {count, plural, =0 {} other {({count})}}",
+    "removeAlreadyImportedTitle": "Remove already imported",
+    "removeAlreadyImported": "Remove already imported {count, plural, =0 {} other {({count})}}",
+    "modifyFrame": "Modify Frame",
+    "noFrameOption": "No frame / import as is",
+    "createGroupLabel": "Create group from images at current location"
+  },
+  "ImportRow": {
+    "duplicateInQueue": "This image exists multiple times within this queue",
+    "alreadyImported": "This image has already been imported {title, select, NO_TITLE {} other {as \"{title}\"}}",
+    "importAsFrame": "Import image as frame",
+    "removeFromQueue": "Remove image from queue"
+  },
+  "PickColors": {
+    "newPaletteNameFromFile": "From file {fileName}",
+    "dialogHeader": "Pick colors from \"{fileName}\""
+  },
+  "ProgressBox": {
+    "dialogHeader": "Working..."
+  },
+  "ProgressLogBox": {
+    "dialogHeaderDone": "✔️ Update done {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderUpdating": "⏳ Updating... {repo, select, NO_REPO {} other {- {repo}}}",
+    "showAllMessages": "Show all {count} messages",
+    "reduceMessages": "Reduce messages",
+    "startedAt": "Started at: {time}",
+    "finishedAfter": "Finished after: {duration}",
+    "runningFor": "Running for: {duration}",
+    "openGitHubRepository": "Open GitHub Repository",
+    "openDropboxFolder": "Open Dropbox folder",
+    "openDropboxFolderTitle": "Open Dropbox folder:\n{path}"
+  },
+  "Serials": {
+    "dialogHeader": "WebUSB / Serial devices"
+  },
+  "SortForm": {
+    "dialogHeader": "Sort by: {sortBy}/{order}",
+    "sortByLabel": "Sort by",
+    "sortDirectionLabel": "Sort direction",
+    "titleOption": "Title",
+    "dateOption": "Date",
+    "paletteOption": "Palette",
+    "ascending": "Ascending",
+    "descending": "Descending"
+  },
+  "SyncSelect": {
+    "dialogHeader": "Synchronize",
+    "syncToGitHub": "Synchronize to GitHub",
+    "syncToGitHubTitle": "Synchronize to GitHub\n{repoUrl}",
+    "syncFromGitHub": "Synchronize from GitHub",
+    "syncFromGitHubTitle": "Synchronize from GitHub\n{repoUrl}",
+    "syncToDropbox": "Synchronize to Dropbox",
+    "syncFromDropbox": "Synchronize from Dropbox",
+    "syncImagesToDropbox": "Synchronize images to Dropbox",
+    "pendingRemoteChangesWarning": "There are pending remote changes. If you synchronize to dropbox now, these will be lost.",
+    "pendingLocalChangesWarning": "There are local changes not synched to dropbox yet. If you synchronize from dropbox now, these will be lost."
+  },
+  "Trashbin": {
+    "dialogHeader": "Trash ({count} items)",
+    "downloadFrames": "Download frames {count, plural, =0 {} other {(#)}}",
+    "downloadImages": "Download images {count, plural, =0 {} other {(#)}}",
+    "purgeAll": "Purge all {count, plural, =0 {} other {(#)}}",
+    "deletedFrames": "Deleted frames: {count}",
+    "deletedImages": "Deleted images: {count}"
+  },
+  "VideoParamsForm": {
+    "dialogHeader": "Create an animated GIF with {count} frames",
+    "frameRate": "Framerate",
+    "scaleGif": "Scale GIF",
+    "enableYoyo": "Enable Yoyo-Effect (loop back to the beginning)",
+    "reverseDirection": "Reverse animation direction",
+    "handleFrames": "How to handle frames for animation",
+    "noFrameOption": "As selected per image",
+    "frameModes": {
+      "keepFrame": "Keep frame",
+      "cropFrame": "Crop frame",
+      "squareBlack": "Make image squared (add black)",
+      "squareWhite": "Make image squared (add white)"
+    }
+  },
+  "Pagination": {
+    "pageCount": "{current}/{total}"
+  },
+  "PaginationButton": {
+    "toPage": "To page {page}"
+  },
+  "Palette": {
+    "usageCount": "({shortName}) {count, plural, =0 {Not used} =1 {Used one time} other {used # times}}"
+  },
+  "PaletteContextMenu": {
+    "setActive": "Set Active",
+    "clone": "Clone",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "Palettes": {
+    "ownPalettes": "Own palettes",
+    "predefinedPalettes": "Predefined palettes",
+    "allPalettes": "All palettes",
+    "newPalette": "New palette",
+    "newPaletteFromImage": "New palette from image",
+    "sortPalettes": "Sort Palettes",
+    "exportPalettes": "Export palettes"
+  },
+  "PaletteSelect": {
+    "asSelectedPerImage": "As selected per image",
+    "palette": "Palette",
+    "invertPalette": "Invert Palette"
+  },
+  "PluginSelect": {
+    "pluginTooltip": "{description}\n{url}"
+  },
+  "PrinterReport": {
+    "functions": {
+      "printTestImage": "Print test image",
+      "checkPrinter": "Check Printer",
+      "fetchImagesGeneric": "Fetch images",
+      "fetchImagesCount": "Fetch {count} images",
+      "clearPrinter": "Clear Printer",
+      "tear": "Tear"
+    },
+    "printerFilesystem": "Printer Filesystem",
+    "total": "Total",
+    "used": "Used",
+    "free": "Free",
+    "freeImages": "{count} images",
+    "images": "Images"
+  },
+  "Remote": {
+    "iframe": "<p>This is a remote window which is included in an iframe on your main page. <em>You should not see this message.</em></p>",
+    "popup": "<p>This is your WiFi-printer's remote control page.</p><p>{host}</p><p>You can go back to your main app and start importing your images.</p><p><em>In order for the import to work, this window needs to remain open!</em></p>",
+    "noReference": "<p>This window is missing the reference to your main app.</p><p><em>It must be opened from the settings page of your main app in order to work!</em></p>"
+  },
+  "StorageWarning": {
+    "storageTypes": {
+      "indexedDB": "database storage",
+      "localStorage": "local storage"
+    },
+    "usageTooltip": "Using {used} of {total}",
+    "usageWarning": "You are using {percentage}% of your browser's {type}. Be aware for now saving images will not be possible once you hit the limit."
+  },
+  "TagsList": {
+    "favourite": "Favourite",
+    "moreTags": "+{count} more tags:\n{tags}",
+    "moreTagsLabel": "+{count} more"
+  },
+  "TagsSelect": {
+    "resetTags": "Reset tags"
+  },
+  "InputNewTag": {
+    "tagsLabel": "Tags"
+  },
+  "useBatchButtons": {
+    "deleteConfirmation": "Delete {count} images?"
+  },
+  "useEditForm": {
+    "updateDate": "Update date",
+    "updateTitle": "Update title",
+    "updatePalette": "Update image palette colors",
+    "updateInvertPalette": "Update invert image palette setting",
+    "updateFrame": "Update frame",
+    "updateLockFrame": "Update separate frame settings",
+    "updateFramePalette": "Update frame palette colors",
+    "updateInvertFramePalette": "Update invert frame palette setting",
+    "updateTags": "Update tags",
+    "updateRotation": "Update rotation"
+  },
+  "useEditPalette": {
+    "paletteOrigin": "Made with the webapp"
+  },
+  "useFrame": {
+    "deleteConfirmation": "Delete frame \"{name}\" ({frameId})?"
+  },
+  "useGalleryImageContext": {
+    "deleteImageWithTitle": "Delete image \"{title}\"?",
+    "deleteImageGeneric": "Delete this image?",
+    "metaInfoWithTitle": "Meta-Info for \"{title}\"",
+    "metaInfoGeneric": "Meta-Info"
+  },
+  "useGetPortSettings": {
+    "specifyBaudrate": "Specify Baudrate for Port",
+    "baudRateLabel": "Baud Rate"
+  },
+  "useImageGroups": {
+    "newGroupDefault": "New Group",
+    "resetGroupsMessage": "Reset image groups?",
+    "resetGroupsInfo": "This will remove ALL your created groups and all existing images will be moved to the top level.",
+    "deleteGroupMessage": "Delete image group?",
+    "deleteGroupInfo": "This will delete this group \"{groupTitle}\" and move all children (images & groups) to the current level."
+  },
+  "usePalette": {
+    "deletePaletteMessage": "Delete palette \"{name}\"?"
+  },
+  "useRunImport": {
+    "importGroupTitle": "Import {date}"
+  },
+  "useSetEditPalette": {
+    "copyOfPalette": "Copy of {name}"
+  },
+  "useTrashbin": {
+    "backupExportImage": "Backup export {hash}",
+    "backupExportFrame": "Backup export {hash}",
+    "reImportedTrashFrames": "Re-imported trash frames"
   }
 }

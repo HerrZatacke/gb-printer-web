@@ -1,6 +1,7 @@
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import type { Theme } from '@mui/system';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { specialTags, SpecialTags } from '@/consts/SpecialTags';
 
@@ -9,13 +10,12 @@ interface Props {
   fromGroup?: boolean,
 }
 
-
 const sortTags = (a: string, b: string) => (
   a.toLowerCase().localeCompare(b.toLowerCase())
 );
 
-
 function TagsList({ tags, fromGroup }: Props) {
+  const t = useTranslations('TagsList');
 
   let showTags: string[];
   let moreTags: string[] = [];
@@ -52,7 +52,7 @@ function TagsList({ tags, fromGroup }: Props) {
         .map((tag) => (
           <Chip
             key={tag}
-            title={tag === SpecialTags.FILTER_FAVOURITE ? 'Favourite' : tag}
+            title={tag === SpecialTags.FILTER_FAVOURITE ? t('favourite') : tag}
             label={tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
             size="small"
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -65,8 +65,8 @@ function TagsList({ tags, fromGroup }: Props) {
         moreTags.length > 0 && (
           <Chip
             variant="outlined"
-            title={`+${moreTags.length} more tags:\n${moreTags.join('\n')}`}
-            label={`+${moreTags.length} more`}
+            title={t('moreTags', { count: moreTags.length, tags: moreTags.join('\n') })}
+            label={t('moreTagsLabel', { count: moreTags.length })}
             size="small"
           />
         )

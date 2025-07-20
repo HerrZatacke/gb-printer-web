@@ -1,4 +1,5 @@
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 interface Props {
@@ -8,12 +9,23 @@ interface Props {
 }
 
 function GalleryNumbers(props: Props) {
+  const t = useTranslations('GalleryNumbers');
+
+  const textParts = [
+    t('imageCount', { count: props.imageCount }),
+  ];
+
+  if (props.filteredCount) {
+    textParts.push(t('filteredCount', { count: props.filteredCount }));
+  }
+
+  if (props.selectedCount) {
+    textParts.push(t('selectedCount', { count: props.selectedCount }));
+  }
 
   return (
     <Typography component="h2" variant="caption">
-      {`${props.imageCount} images`}
-      { props.filteredCount ? ` / ${props.filteredCount} filtered` : null}
-      { props.selectedCount ? ` / ${props.selectedCount} selected` : null}
+      {textParts.join(t('separator'))}
     </Typography>
   );
 }

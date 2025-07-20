@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import usePreviewImages from '@/hooks/usePreviewImages';
@@ -23,6 +24,8 @@ interface UseEditPalette {
 }
 
 export const useEditPalette = (): UseEditPalette => {
+
+  const t = useTranslations('useEditPalette');
 
   const { editPalette, cancelEditPalette } = useEditStore();
   const { palettes, addPalettes } = useItemsStore();
@@ -64,7 +67,7 @@ export const useEditPalette = (): UseEditPalette => {
       shortName: canEditShortName ? newShortName : shortName,
       name: newName,
       palette,
-      origin: 'Made with the webapp',
+      origin: t('paletteOrigin'),
       isPredefined: false,
     });
   }, [
@@ -76,6 +79,7 @@ export const useEditPalette = (): UseEditPalette => {
     palette,
     shortName,
     updateLastSyncLocalNow,
+    t,
   ]);
 
   useEffect(() => {

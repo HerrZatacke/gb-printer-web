@@ -1,4 +1,5 @@
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import useBatchUpdate from '@/hooks/useBatchUpdate';
@@ -78,26 +79,27 @@ interface UseEditForm {
   updateFramePalette: (paletteUpdate: string, confirm?: boolean) => void,
 
   save: () => void;
-  cancel: () => void,
+  cancel: () => void;
 }
 
-const willUpdate = (batch: Batch): string[] => ([
-  batch.created ? 'Update date' : '',
-  batch.title ? 'Update title' : '',
-  batch.palette ? 'Update image palette colors' : '',
-  batch.invertPalette ? 'Update invert image palette setting' : '',
-  batch.frame ? 'Update frame' : '',
-  batch.lockFrame ? 'Update separate frame settings' : '',
-  batch.framePalette ? 'Update frame palette colors' : '',
-  batch.invertFramePalette ? 'Update invert frame palette setting' : '',
-  batch.tags ? 'Update tags' : '',
-  batch.rotation ? 'Update rotation' : '',
+const willUpdate = (batch: Batch, t: ReturnType<typeof useTranslations>): string[] => ([
+  batch.created ? t('updateDate') : '',
+  batch.title ? t('updateTitle') : '',
+  batch.palette ? t('updatePalette') : '',
+  batch.invertPalette ? t('updateInvertPalette') : '',
+  batch.frame ? t('updateFrame') : '',
+  batch.lockFrame ? t('updateLockFrame') : '',
+  batch.framePalette ? t('updateFramePalette') : '',
+  batch.invertFramePalette ? t('updateInvertFramePalette') : '',
+  batch.tags ? t('updateTags') : '',
+  batch.rotation ? t('updateRotation') : '',
 ]
   .filter(Boolean)
 );
 
 
 export const useEditForm = (): UseEditForm => {
+  const t = useTranslations('useEditForm');
   const { editImages, cancelEditImages } = useEditStore();
   const { palettes, frames, images } = useItemsStore();
   const { batchUpdateImages } = useBatchUpdate();
@@ -315,7 +317,7 @@ export const useEditForm = (): UseEditForm => {
     form,
     isRegularImage,
     shouldUpdate,
-    willUpdateBatch: willUpdate(shouldUpdate),
+    willUpdateBatch: willUpdate(shouldUpdate, t),
     tagChanges,
     usedPalette,
     usedFramePalette,

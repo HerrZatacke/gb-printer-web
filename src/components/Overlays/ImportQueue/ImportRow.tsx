@@ -6,6 +6,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React, { useMemo, memo, type CSSProperties } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import { useDateFormat } from '@/hooks/useDateFormat';
@@ -27,6 +28,7 @@ function ImportRow({
   cancelItemImport,
   windowStyle,
 }: Props) {
+  const t = useTranslations('ImportRow');
 
   const {
     tiles,
@@ -40,7 +42,7 @@ function ImportRow({
     if (isDuplicateInQueue) {
       return {
         color: 'error',
-        title: 'This image exists multiple times within this queue',
+        title: t('duplicateInQueue'),
         badgeContent: 'D',
       };
     }
@@ -48,13 +50,13 @@ function ImportRow({
     if (alreadyImported) {
       return {
         color: 'warning',
-        title: `This image has already been imported${alreadyImported.title ? ` as "${alreadyImported.title}"` : ''}`,
+        title: t('alreadyImported', { title: alreadyImported.title || 'NO_TITLE' }),
         badgeContent: 'I',
       };
     }
 
     return {};
-  }, [alreadyImported, isDuplicateInQueue]);
+  }, [alreadyImported, isDuplicateInQueue, t]);
 
   const { formatter } = useDateFormat();
 
@@ -97,7 +99,7 @@ function ImportRow({
           }}
         >
           <IconButton
-            title="Import image as frame"
+            title={t('importAsFrame')}
             disabled={tiles.length / 20 < 14}
             onClick={importAsFrame}
           >
@@ -112,7 +114,7 @@ function ImportRow({
             overlap="circular"
           >
             <IconButton
-              title="Remove image from queue"
+              title={t('removeFromQueue')}
               onClick={() => setTimeout(cancelItemImport, 1)}
             >
               <DeleteIcon />

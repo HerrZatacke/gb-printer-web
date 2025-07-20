@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { BatchActionType } from '@/consts/batchActionTypes';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
@@ -33,6 +34,7 @@ const collectTags = (batchImages: Image[]): string[] => (
 );
 
 const useBatchButtons = (page: number): UseBatchButtons => {
+  const t = useTranslations('useBatchButtons');
   const {
     imageSelection,
     sortBy,
@@ -80,7 +82,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
         switch (actionType) {
           case BatchActionType.DELETE: {
             setDialog({
-              message: `Delete ${imageSelection.length} images?`,
+              message: t('deleteConfirmation', { count: imageSelection.length }),
               confirm: async () => {
                 deleteImages(imageSelection);
               },

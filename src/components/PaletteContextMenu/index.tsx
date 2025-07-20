@@ -6,6 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 interface Props {
@@ -18,7 +19,6 @@ interface Props {
   onClose: () => void,
 }
 
-
 function PaletteContextMenu({
   isPredefined,
   clonePalette,
@@ -28,6 +28,8 @@ function PaletteContextMenu({
   menuAnchor,
   onClose,
 }: Props) {
+  const t = useTranslations('PaletteContextMenu');
+
   if (!menuAnchor) {
     return null;
   }
@@ -44,49 +46,49 @@ function PaletteContextMenu({
     >
       <MenuItem
         onClick={setActive}
-        title="Set Active"
+        title={t('setActive')}
       >
         <ListItemIcon>
           <CheckCircleIcon />
         </ListItemIcon>
         <ListItemText>
-          Set Active
+          {t('setActive')}
         </ListItemText>
       </MenuItem>
       <MenuItem
         onClick={clonePalette}
-        title="Clone"
+        title={t('clone')}
       >
         <ListItemIcon>
           <FileCopyIcon />
         </ListItemIcon>
         <ListItemText>
-          Clone
+          {t('clone')}
         </ListItemText>
       </MenuItem>
       {!isPredefined && (
         <MenuItem
           onClick={editPalette}
-          title="Edit"
+          title={t('edit')}
         >
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>
           <ListItemText>
-            Edit
+            {t('edit')}
           </ListItemText>
         </MenuItem>
       )}
       {!isPredefined && (
         <MenuItem
           onClick={deletePalette}
-          title="Delete"
+          title={t('delete')}
         >
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
           <ListItemText>
-            Delete
+            {t('delete')}
           </ListItemText>
         </MenuItem>
       )}

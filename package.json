@@ -12,6 +12,7 @@
     "serve": "npm run build && npm run serve:serve",
     "serve:serve": "npx serve out",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "audit": "npm audit fix",
     "browserlist": "npx update-browserslist-db@latest"
   },

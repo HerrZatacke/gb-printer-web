@@ -2,6 +2,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import CircularProgress from '@mui/material/CircularProgress';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { usePluginsContext } from '@/contexts/plugins';
 import useFiltersStore from '@/stores/filtersStore';
@@ -14,6 +15,7 @@ interface Props {
 }
 
 function PluginSelect({ pluginAnchor, hash, onClose }: Props) {
+  const t = useTranslations('PluginSelect');
   const { plugins } = useItemsStore();
   const { imageSelection } = useFiltersStore();
   const { runWithImage, runWithImages } = usePluginsContext();
@@ -37,7 +39,10 @@ function PluginSelect({ pluginAnchor, hash, onClose }: Props) {
           <MenuItem
             key={url}
             disabled={Boolean(loading || error)}
-            title={`${error || description || ''}\n${url}`}
+            title={t('pluginTooltip', { 
+              description: error || description || '', 
+              url, 
+            })}
             onClick={() => {
               onClose();
               dispatchToPlugin(url);

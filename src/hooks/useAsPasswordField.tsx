@@ -26,7 +26,7 @@ export const useAsPasswordField = (): UseAsPasswordField => {
     >
       {showPassword ? <VisibilityOff /> : <Visibility />}
     </IconButton>
-  ), [showPassword]);
+  ), [t, showPassword]);
 
   const type = useMemo(() => (
     showPassword ? 'text' : 'password'

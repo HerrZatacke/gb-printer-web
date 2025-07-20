@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import NextLink  from 'next/link';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import FolderTreeDialog from '@/components/FolderTreeDialog';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
@@ -14,6 +15,7 @@ import { shorten } from '@/tools/shorten';
 import useEditStore from '../../stores/editStore';
 
 function FolderBreadcrumb() {
+  const t = useTranslations('FolderBreadcrumb');
   const { pathsOptions } = useGalleryTreeContext();
   const { setEditImageGroup } = useEditStore();
   const { segments } = usePathSegments();
@@ -59,7 +61,7 @@ function FolderBreadcrumb() {
             { index > 0 && (
               <IconButton
                 onClick={() => setEditImageGroup({ groupId: group.id })}
-                title={`Edit group "${group.title}"`}
+                title={t('editGroup', { title: group.title })}
                 sx={{ fontSize: 16 }}
               >
                 <EditIcon fontSize="inherit" />
@@ -69,7 +71,7 @@ function FolderBreadcrumb() {
         )) }
       </Breadcrumbs>
       <IconButton
-        title="Open Gallery Navigation"
+        title={t('openNavigation')}
         onClick={() => setTreeDialogOpen(true)}
       >
         <SegmentIcon />

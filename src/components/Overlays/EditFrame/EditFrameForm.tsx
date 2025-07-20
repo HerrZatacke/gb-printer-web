@@ -2,6 +2,7 @@ import Alert from '@mui/material/Alert';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import type { FrameGroup } from '@/types/FrameGroup';
 
@@ -38,6 +39,7 @@ function EditFrameForm({
   setFrameGroup,
   setFrameName,
 }: Props) {
+  const t = useTranslations('EditFrameForm');
   const groupExists = Boolean(groups.find(({ id }) => (frameGroup === id)));
 
   return (
@@ -47,7 +49,7 @@ function EditFrameForm({
     >
       {extraFields}
       <TextField
-        label="Frame group"
+        label={t('frameGroup')}
         select
         size="small"
         type="text"
@@ -62,18 +64,18 @@ function EditFrameForm({
           select: {
             renderValue: (selected) => {
               if (!groupExists) {
-                return selected === '' ? 'Select frame group' : 'New frame group';
+                return selected === '' ? t('selectFrameGroup') : t('newFrameGroup');
               }
 
               return groups.find(({ id }) => (
                 id === selected
-              ))?.name || 'Unknown';
+              ))?.name || t('unknown');
             },
           },
         }}
       >
         <MenuItem value="">
-          {groupExists ? 'Select frame group' : 'New frame group'}
+          {groupExists ? t('selectFrameGroup') : t('newFrameGroup')}
         </MenuItem>
         {
           groups.map(({ id, name }) => (
@@ -83,19 +85,19 @@ function EditFrameForm({
       </TextField>
 
       <TextField
-        label={groupExists ? 'Frame group id' : 'New frame group id'}
+        label={groupExists ? t('frameGroupId') : t('newFrameGroupId')}
         size="small"
         type="text"
         value={frameGroup}
         onChange={(ev) => {
           setFrameGroup(ev.target.value);
         }}
-        helperText={groupIdValid ? undefined : 'Must have at least two characters, only lowercase'}
+        helperText={groupIdValid ? undefined : t('groupIdHelperText')}
       />
 
       { setFrameGroupName ? (
         <TextField
-          label="New frame group name"
+          label={t('newFrameGroupName')}
           size="small"
           type="text"
           onChange={(ev) => {
@@ -108,7 +110,7 @@ function EditFrameForm({
 
 
       <TextField
-        label="Frame Index"
+        label={t('frameIndex')}
         size="small"
         type="number"
         slotProps={{
@@ -118,11 +120,11 @@ function EditFrameForm({
         onChange={(ev) => {
           setFrameIndex(parseInt(ev.target.value, 10));
         }}
-        helperText={frameIndexValid ? null : 'Integer, must be greater than 0'}
+        helperText={frameIndexValid ? null : t('frameIndexHelperText')}
       />
 
       <TextField
-        label="Frame name"
+        label={t('frameName')}
         size="small"
         type="text"
         value={frameName}
@@ -136,7 +138,7 @@ function EditFrameForm({
           severity="warning"
           variant="filled"
         >
-          {`Specified frame index/identifier "${fullId}" is already in use, please try another one.`}
+          {t('idInUse', { id: fullId })}
         </Alert>
       )}
     </Stack>
@@ -144,4 +146,3 @@ function EditFrameForm({
 }
 
 export default EditFrameForm;
-

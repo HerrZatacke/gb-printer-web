@@ -18,9 +18,8 @@ import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
 import exportFrameModes from '@/consts/exportFrameModes';
 import { fileNameStyleLabels } from '@/consts/fileNameStyles';
 import type { FileNameStyle } from '@/consts/fileNameStyles';
-import { clickActionMenuOptions } from '@/consts/GalleryClickAction';
-import type { GalleryClickAction } from '@/consts/GalleryClickAction';
-import type { PaletteSortMode } from '@/consts/paletteSortModes';
+import { GalleryClickAction } from '@/consts/GalleryClickAction';
+import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { useEnv } from '@/contexts/envContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import usePaletteSort from '@/hooks/usePaletteSort';
@@ -30,6 +29,26 @@ import useSettingsStore from '@/stores/settingsStore';
 import cleanUrl from '@/tools/cleanUrl';
 import getFrameGroups from '@/tools/getFrameGroups';
 import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
+
+interface ClickActionOption {
+  translationKey: string,
+  value: string,
+}
+
+const clickActionMenuOptions: ClickActionOption[] = [
+  {
+    translationKey: 'galleryClickActions.clickSelectsItem',
+    value: GalleryClickAction.SELECT,
+  },
+  {
+    translationKey: 'galleryClickActions.clickOpensEditDialog',
+    value: GalleryClickAction.EDIT,
+  },
+  {
+    translationKey: 'galleryClickActions.clickOpensLightbox',
+    value: GalleryClickAction.VIEW,
+  },
+];
 
 function SettingsGeneric() {
   const {
@@ -99,7 +118,7 @@ function SettingsGeneric() {
 
   useEffect(() => {
     setLocaleExampleText(t('exampleDateFormat', { format: formatter(new Date()) }));
-  }, [formatter]);
+  }, [formatter, t]);
 
   return (
     <Stack
@@ -130,12 +149,12 @@ function SettingsGeneric() {
         }}
       >
         {
-          clickActionMenuOptions.map(({ value, label }) => (
+          clickActionMenuOptions.map(({ value, translationKey }) => (
             <MenuItem
               key={value}
               value={value}
             >
-              {label}
+              {t(translationKey)}
             </MenuItem>
           ))
         }
@@ -382,7 +401,6 @@ function SettingsGeneric() {
                   component={NextLink}
                   href="/import"
                 >
-                  🔗
                   {chunks}
                 </Link>
               ),
