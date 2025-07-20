@@ -323,7 +323,7 @@
     "switchToDark": "Switch to dark mode",
     "switchToBright": "Switch to bright mode",
     "usbDisabled": "USB devices are not available",
-    "usbDevices": "WebUSB Serial devices",
+    "usbDevices": "WebUSB and Web Serial devices",
     "openMainNav": "Open Main Navigation",
     "closeMainNav": "Close Main Navigation",
     "mainNavAriaLabel": "Main Navigation",
