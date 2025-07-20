@@ -1,4 +1,5 @@
 import { saveAs } from 'file-saver';
+import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import useInteractionsStore from '@/stores/interactionsStore';
 import type { TrashCount } from '@/stores/interactionsStore';
@@ -13,7 +14,6 @@ import { toCreationDate } from '@/tools/toCreationDate';
 import type { JSONExportBinary, JSONExportState } from '@/types/ExportState';
 import type { Frame } from '@/types/Frame';
 import type { Image } from '@/types/Image';
-
 
 export interface UseTrashbin {
   showTrashCount: (show: boolean) => void
@@ -58,8 +58,9 @@ const useTrashbin = (): UseTrashbin => {
   const { trashCount, showTrashCount } = useInteractionsStore();
   const { frames, images } = useItemsStore();
   const { updateTrashCount } = useInteractionsStore();
+  const t = useTranslations('useTrashbin');
 
-  const downloadImages = async (): Promise<void> => {
+  const downloadImages = useCallback(async (): Promise<void> => {
     const imageHashes = await getTrashImages(images);
     const deletedImages = await getItems(imageHashes, localforageImages);
 
@@ -70,7 +71,7 @@ const useTrashbin = (): UseTrashbin => {
         return {
           hash: image.hash,
           created: toCreationDate(),
-          title: `Backup export ${image.hash}`,
+          title: t('backupExportImage', { hash: image.hash }),
           lines: image.lines.length,
           tags: ['backup'],
           palette: 'bw',
@@ -92,7 +93,7 @@ const useTrashbin = (): UseTrashbin => {
     } };
 
     saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_images.json');
-  };
+  }, [images, t]);
 
   const downloadFrames = useCallback(async (): Promise<void> => {
     const frameHashes = await getTrashFrames(frames);
@@ -104,7 +105,7 @@ const useTrashbin = (): UseTrashbin => {
         jsonExportBinary[`frame-${frame.hash}`] = frame.binary;
         return {
           hash: frame.hash,
-          name: `Backup export ${frame.hash}`,
+          name: t('backupExportFrame', { hash: frame.hash }),
           id: `bak${index.toString(10).padStart(2, '0')}`,
         };
       } catch {
@@ -118,7 +119,7 @@ const useTrashbin = (): UseTrashbin => {
         frameGroups: [
           {
             id: 'bak',
-            name: 'Re-imported trash frames',
+            name: t('reImportedTrashFrames'),
           },
         ],
         lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
@@ -127,7 +128,7 @@ const useTrashbin = (): UseTrashbin => {
     };
 
     saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_frames.json');
-  }, [frames]);
+  }, [t, frames]);
 
   const checkUpdateTrashCount = useCallback(async () => {
     const trashFramesCount = (await getTrashFrames(frames)).length;

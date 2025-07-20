@@ -30,7 +30,7 @@ class WebSerialEE extends EventEmitter {
 
     const port = new CommonSerialPort(serialPort, this.portsWorkerClient.settingsCallback);
 
-    const tempApi = new InactiveCommsDevice(port, new Uint8Array(), 'identifying device');
+    const tempApi = new InactiveCommsDevice(port, new Uint8Array());
 
     this.connectedPorts.set(tempApi.id, serialPort);
     await this.portsWorkerClient.addDeviceApi(proxy(tempApi as unknown as Remote<BaseCommsDevice>));

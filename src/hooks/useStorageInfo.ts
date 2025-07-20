@@ -28,7 +28,7 @@ const getLocalStorageUsage = (): number => {
   return totalSize;
 };
 
-const estimateLocalStorageMaxSize = (): number => {
+const estimateLocalStorageAvailableSize = (): number => {
   const testKey = '__test_localStorage_limit__';
   let low = 0;
   let high = 15 * 1024 * 1024; // Start with an assumption of 15MB
@@ -62,17 +62,17 @@ export const useStorageInfo = (): UseStorageInfo => {
       const estimate: StorageEstimate | null = await navigator.storage?.estimate() || null;
 
       const used = getLocalStorageUsage();
-      const total = used + estimateLocalStorageMaxSize();
+      const total = used + estimateLocalStorageAvailableSize();
 
       setStorageEstimate([
         {
-          type: 'indexedDB',
+          type: 'localStorage',
           total,
           used,
           percentage: Math.ceil(used / total * 100),
         },
         {
-          type: 'localStorage',
+          type: 'indexedDB',
           total: estimate?.quota || 0,
           used: estimate?.usage || 0,
           percentage: Math.ceil(total ? (estimate?.usage || 0) / (estimate?.quota || 1) * 100 : 100),

@@ -4,20 +4,11 @@ export enum PortType {
 }
 
 export enum PortDeviceType {
-  UNKNOWN = 'unknown', // While detecting headers
   INACTIVE = 'inactive', // Could not be identified, set to be inactive
   PACKET_CAPTURE = 'packet_capture',
   SUPER_PRINTER_INTERFACE = 'super_printer_interface',
   GBXCART = 'gbxcart',
 }
-
-export const portDeviceLabels: Record<PortDeviceType, string> = {
-  [PortDeviceType.UNKNOWN]: 'Unknown Device',
-  [PortDeviceType.INACTIVE]: 'Inactive Device',
-  [PortDeviceType.PACKET_CAPTURE]: 'Arduino Gameboy Printer Emulator',
-  [PortDeviceType.SUPER_PRINTER_INTERFACE]: 'Super Printer Interface',
-  [PortDeviceType.GBXCART]: 'Cartridge Reader (LK Firmware)',
-};
 
 export const usbDeviceFilters: USBDeviceFilter[] = [
   { vendorId: 0x2341, productId: 0x8036 }, // Arduino Leonardo

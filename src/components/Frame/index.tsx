@@ -1,4 +1,5 @@
 import type { RGBNPalette } from 'gb-image-decoder';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import Debug from '@/components/Debug';
 import FrameContextMenu from '@/components/FrameContextMenu';
@@ -15,6 +16,7 @@ interface Props {
 }
 
 function Frame({ frameId, name, palette }: Props) {
+  const t = useTranslations('Frame');
   const { enableDebug } = useSettingsStore();
 
   const {
@@ -30,7 +32,7 @@ function Frame({ frameId, name, palette }: Props) {
     return null;
   }
 
-  const usageText = usage ? `Used ${usage} times` : 'Not used';
+  const usageText = usage ? t('usedTimes', { count: usage }) : t('notUsed');
 
   return (
     <GalleryGridItem

@@ -4,10 +4,12 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 function DragOver() {
   const theme = useTheme();
+  const t = useTranslations('DragOver');
 
   return (
     <Stack
@@ -39,14 +41,14 @@ function DragOver() {
         >
           <CloudUploadIcon sx={{ fontSize: 64 }} />
           <Typography variant="h5" fontWeight="bold">
-            Drop your files here
+            {t('dropFilesHere')}
           </Typography>
           <Typography
             variant="body2"
             sx={{ maxWidth: '70vw' }}
             textAlign="center"
           >
-            Printer hex-dumps, .sav savestates, JSON exports or even plain bitmaps.
+            {t('supportedFileTypes')}
           </Typography>
         </Stack>
       </Paper>

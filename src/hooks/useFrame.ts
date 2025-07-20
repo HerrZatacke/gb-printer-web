@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useStores } from '@/hooks/useStores';
 import useDialogsStore from '@/stores/dialogsStore';
@@ -34,6 +35,7 @@ const getTiles = ({ frameId, frameHash, name }: GetTilesParams) => {
 };
 
 const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
+  const t = useTranslations('useFrame');
   const [tiles, setTiles] = useState<string[]>([]);
   const [imageStartLine, setImageStartLine] = useState<number>(2);
 
@@ -72,7 +74,7 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
     setTiles,
     deleteFrame: () => {
       setDialog({
-        message: `Delete frame "${name}" (${frameId})?`,
+        message: t('deleteConfirmation', { name, frameId }),
         confirm: async () => {
           dismissDialog(0);
           updateLastSyncLocalNow();

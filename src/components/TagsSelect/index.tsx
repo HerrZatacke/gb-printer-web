@@ -5,6 +5,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SpecialTags } from '@/consts/SpecialTags';
 import type { TagChange } from '@/tools/applyTagChanges';
@@ -23,6 +24,7 @@ function TagsSelect({
   updateTags,
   resetTags,
 }: Props) {
+  const t = useTranslations('TagsSelect');
   const activeTags = unique([...tags.initial, ...tags.add]);
 
   return (
@@ -112,7 +114,7 @@ function TagsSelect({
           {(tags.add.length + tags.remove.length) > 0 && (
             <IconButton
               onClick={resetTags}
-              title="Reset tags"
+              title={t('resetTags')}
               size="small"
             >
               <RestartAltIcon />

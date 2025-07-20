@@ -1,10 +1,10 @@
-
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
+import { useTranslations } from 'next-intl';
 import React, { useMemo, useState, useEffect } from 'react';
 import FrameSelect from '@/components/FrameSelect';
 import GreySelect from '@/components/GreySelect';
@@ -55,19 +55,20 @@ interface Props {
 const tabTitle = (tabType: TabType, isRGBN: boolean): string => {
   switch (tabType) {
     case TabType.FRAME:
-      return 'Frame';
+      return 'tabTypes.frame';
     case TabType.MISC:
-      return 'Misc';
+      return 'tabTypes.misc';
     case TabType.PALETTE:
-      return isRGBN ? 'Colors' : 'Palette';
+      return isRGBN ? 'tabTypes.colors' : 'tabTypes.palette';
     case TabType.TAGS:
-      return 'Tags';
+      return 'tabTypes.tags';
     default:
       return '';
   }
 };
 
 function EditImageTabs(props: Props) {
+  const t = useTranslations('EditImageTabs');
 
   const tabs: TabType[] = useMemo(() => {
     const memoTabs: TabType[] = [];
@@ -105,7 +106,7 @@ function EditImageTabs(props: Props) {
           {
             tabs.map((tabType) => (
               <Tab
-                label={tabTitle(tabType, !!props.paletteRGBN)}
+                label={t(tabTitle(tabType, !!props.paletteRGBN))}
                 key={tabType}
                 value={tabType}
                 onClick={() => setTab(tabType)}

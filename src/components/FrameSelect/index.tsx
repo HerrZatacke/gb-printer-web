@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import useItemsStore from '@/stores/itemsStore';
 import { getFramesForGroup } from '@/tools/getFramesForGroup';
@@ -34,6 +35,7 @@ function FrameSelect({
   lockFrame,
   selectLabel,
 }: Props) {
+  const t = useTranslations('FrameSelect');
   const { frames, frameGroups } = useItemsStore();
 
   const groupedFrames = useMemo<FrameSelectOption[]>((): FrameSelectOption[] => {
@@ -64,7 +66,7 @@ function FrameSelect({
       gap={2}
     >
       <TextField
-        label={selectLabel || 'Frame'}
+        label={selectLabel || t('frameLabel')}
         select
         size="small"
         value={frame}
@@ -73,7 +75,7 @@ function FrameSelect({
         }}
       >
         <MenuItem value="">
-          {noFrameOption || 'As imported / No frame'}
+          {noFrameOption || t('noFrameOption')}
         </MenuItem>
         {
           groupedFrames.map(({ id, name, isGroup }) => (
@@ -102,7 +104,7 @@ function FrameSelect({
       {
         (typeof updateFrameLock === 'function') ? (
           <FormControlLabel
-            label="Use separate color settings for frame"
+            label={t('separateColorSettings')}
             control={(
               <Switch
                 checked={lockFrame}

@@ -5,10 +5,12 @@ import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import type { Image, MonochromeImage } from '@/types/Image';
-import type { MenuOption } from '@/types/MenuOption';
 import type { Palette } from '@/types/Palette';
 
-export type PaletteSortOption = MenuOption<PaletteSortMode>;
+export interface PaletteSortOption {
+  label: string,
+  value: PaletteSortMode,
+}
 
 type PaletteUsage = Record<string, number>;
 

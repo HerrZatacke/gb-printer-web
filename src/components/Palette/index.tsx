@@ -1,6 +1,7 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
+import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import GalleryGridItem from '@/components/GalleryGridItem';
 import PaletteContextMenu from '@/components/PaletteContextMenu';
@@ -31,6 +32,7 @@ function Palette({
   } = usePalette(shortName, name);
 
   const theme = useTheme();
+  const t = useTranslations('Palette');
 
   const paletteStyles = useMemo(() => {
     const styles = {
@@ -65,7 +67,7 @@ function Palette({
     <GalleryGridItem
       selectionText=""
       title={name}
-      subheader={`(${shortName}) ${usage ? `Used ${usage} times` : 'Not used'}`}
+      subheader={t('usageCount', { count: usage || 0, shortName })}
       titleIcon={isActive ? <CheckCircleIcon /> : undefined}
       wrapperProps={{
         sx: paletteStyles,
@@ -85,6 +87,5 @@ function Palette({
     />
   );
 }
-
 
 export default Palette;

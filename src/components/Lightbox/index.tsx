@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTranslations } from 'next-intl';
 import { CSSProperties, useEffect, useState } from 'react';
 import React from 'react';
 import useOverlayGlobalKeys from '@/hooks/useOverlayGlobalKeys';
@@ -95,6 +96,7 @@ function Lightbox({
   headerActionButtons,
   actionButtons,
 }: Props) {
+  const t = useTranslations('Lightbox');
   const closeOnOverlayClick = typeof closeOnClick !== 'boolean' ? true : closeOnClick;
   const open = typeof openProp !== 'boolean' ? true : openProp;
   const keepMounted = typeof keepMountedProp !== 'boolean' ? true : keepMountedProp;
@@ -115,8 +117,8 @@ function Lightbox({
 
   const contentDimensionsSx = contentDimensions(contentWidth, contentHeight, fullScreen, fullSize);
 
-  const denyText = Boolean(confirm) ? 'Cancel' : 'Close';
-  const confirmText = 'Ok';
+  const denyText = Boolean(confirm) ? t('cancel') : t('close');
+  const confirmText = t('ok');
 
   return (
     <Dialog
@@ -160,7 +162,7 @@ function Lightbox({
           {
             deny ? (
               <IconButton
-                title={closeTitle || `Close ${typeof header === 'string' ? header : ''}`}
+                title={closeTitle || t('closeWithHeader', { header: typeof header === 'string' ? header : '' })}
                 color="inherit"
                 onClick={deny}
               >

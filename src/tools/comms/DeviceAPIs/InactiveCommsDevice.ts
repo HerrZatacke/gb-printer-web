@@ -10,7 +10,7 @@ export class InactiveCommsDevice implements BaseCommsDevice {
   public readonly portType: PortType;
   private bannerBytes: Uint8Array;
 
-  constructor(device: CommonPort, bannerBytes: Uint8Array, reason: string) {
+  constructor(device: CommonPort, bannerBytes: Uint8Array, reason?: string) {
     this.bannerBytes = bannerBytes;
     this.portType = device.portType;
     this.description = [

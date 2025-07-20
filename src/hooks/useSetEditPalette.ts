@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import useEditStore from '@/stores/editStore';
@@ -34,6 +35,7 @@ interface UseSetEditPalette {
 const useSetEditPalette = (): UseSetEditPalette => {
   const { palettes } = useItemsStore();
   const { setEditPalette } = useEditStore();
+  const t = useTranslations('useSetEditPalette');
 
   const startEditPalette = useCallback((shortName: string, clone: boolean) => {
     const editPalette: Palette = (shortName === NEW_PALETTE_SHORT) ? randomPalette() : (
@@ -42,10 +44,10 @@ const useSetEditPalette = (): UseSetEditPalette => {
 
     setEditPalette({
       ...editPalette,
-      name: clone ? `Copy of ${editPalette.name}` : editPalette.name,
+      name: clone ? t('copyOfPalette', { name: editPalette.name }) : editPalette.name,
       shortName: clone ? NEW_PALETTE_SHORT : shortName,
     });
-  }, [palettes, setEditPalette]);
+  }, [palettes, setEditPalette, t]);
 
   return {
     editPalette: (shortName: string) => startEditPalette(shortName, false),

@@ -4,6 +4,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 interface Props {
@@ -15,6 +16,8 @@ interface Props {
 
 
 function GalleryGroupContextMenu({ deleteFrame, editFrame, menuAnchor, onClose }: Props) {
+  const t = useTranslations('FrameContextMenu');
+  
   if (!menuAnchor) {
     return null;
   }
@@ -31,24 +34,24 @@ function GalleryGroupContextMenu({ deleteFrame, editFrame, menuAnchor, onClose }
     >
       <MenuItem
         onClick={editFrame}
-        title="Edit"
+        title={t('edit')}
       >
         <ListItemIcon>
           <EditIcon />
         </ListItemIcon>
         <ListItemText>
-          Edit
+          {t('edit')}
         </ListItemText>
       </MenuItem>
       <MenuItem
         onClick={deleteFrame}
-        title="Delete"
+        title={t('delete')}
       >
         <ListItemIcon>
           <DeleteIcon />
         </ListItemIcon>
         <ListItemText>
-          Delete
+          {t('delete')}
         </ListItemText>
       </MenuItem>
     </Menu>

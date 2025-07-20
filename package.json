@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.49.6",
+  "version": "1.49.7",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev",
@@ -12,6 +12,7 @@
     "serve": "npm run build && npm run serve:serve",
     "serve:serve": "npx serve out",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "audit": "npm audit fix",
     "browserlist": "npx update-browserslist-db@latest"
   },

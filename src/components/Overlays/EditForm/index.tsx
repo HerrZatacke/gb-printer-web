@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import type { Theme } from '@mui/system';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import EditImageTabs from '@/components/EditImageTabs';
 import ImageRender from '@/components/ImageRender';
@@ -15,6 +16,7 @@ import { useEditForm } from '@/hooks/useEditForm';
 import { getScrollParent } from '@/tools/getScrollParent';
 
 function EditForm() {
+  const t = useTranslations('EditForm');
   const {
     toEdit,
     form,
@@ -105,7 +107,7 @@ function EditForm() {
   return (
     <Lightbox
       contentHeight={toEdit.height}
-      header={`Editing ${toEdit.imageCount} image(s)`}
+      header={t('dialogHeader', { count: toEdit.imageCount })}
       open
       confirm={save}
       deny={cancel}
@@ -148,7 +150,7 @@ function EditForm() {
                 }}
               >
                 <AlertTitle>
-                  { `You are editing ${toEdit.imageCount} images` }
+                  {t('editingMultiple', { count: toEdit.imageCount })}
                 </AlertTitle>
                 {
                   willUpdateBatch.length ? (
@@ -170,9 +172,9 @@ function EditForm() {
           </Box>
         </Box>
         <TextField
-          helperText={toEdit.imageCount > 1 ? 'Use %n (or %nn, %nnn, ...) to add an index to the image titles' : undefined}
+          helperText={toEdit.imageCount > 1 ? t('indexHelperText') : undefined}
           type="text"
-          label="Edit title"
+          label={t('editTitle')}
           value={title}
           onChange={({ target: { value } }) => {
             updateForm('title')(value);

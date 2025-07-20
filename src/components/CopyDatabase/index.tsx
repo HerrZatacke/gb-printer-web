@@ -2,6 +2,7 @@
 
 import './styles.scss';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { dbClearAndSetAll, dbGetAllFromStore, type KV } from '@/tools/database/dbGetSet';
 import { localStorageClear, localStorageGetAll, localStorageSet } from '@/tools/database/lsGetSet';
@@ -18,7 +19,8 @@ interface TransferMessage {
 }
 
 export default function CopyDatabase() {
-  const [url, setUrl] = useState('https://herrzatacke.github.io/gb-printer-web/db.html');
+  const t = useTranslations('CopyDatabase');
+  const [url, setUrl] = useState('https://herrzatacke.github.io/gb-printer-web/db/');
   const [remoteWindow, setRemoteWindow] = useState<Window | undefined>();
   const [transferred, setTransferred] = useState<TransferMessage | undefined>();
   const [dbRequest, setDbRequest] = useState<IDBOpenDBRequest | undefined>();
@@ -78,12 +80,12 @@ export default function CopyDatabase() {
       setReportText([]);
     } else {
       setReportText([
-        `${transferred.images.length} images`,
-        `${transferred.frames.length} frames`,
-        `${transferred.localStorageData.length} localStorage entries`,
+        t('reportImages', { count: transferred.images.length }),
+        t('reportFrames', { count: transferred.frames.length }),
+        t('reportLocalStorage', { count: transferred.localStorageData.length }),
       ]);
     }
-  }, [transferred]);
+  }, [t, transferred]);
 
   const loadRemote = useCallback(() => {
     setRemoteWindow(window.open(url, 'db-child', 'width=480,height=400') as Window);
@@ -95,26 +97,26 @@ export default function CopyDatabase() {
     }
 
     await localStorageClear();
-    addReportText('localStorage cleared');
+    addReportText(t('reportLocalStorageCleared'));
     await localStorageSet(transferred.localStorageData);
-    addReportText('localstorage copied');
+    addReportText(t('reportLocalStorageCopied'));
     await dbClearAndSetAll(dbRequest, 'gb-printer-web-images', transferred.images);
-    addReportText('images copied');
+    addReportText(t('reportImagesCopied'));
     await dbClearAndSetAll(dbRequest, 'gb-printer-web-frames', transferred.frames);
-    addReportText('frames copied');
+    addReportText(t('reportFramesCopied'));
 
     window.setTimeout(() => {
       remoteWindow?.close();
       replace('/');
     }, 800);
-  }, [addReportText, dbRequest, remoteWindow, replace, transferred]);
+  }, [addReportText, dbRequest, remoteWindow, replace, t, transferred]);
 
   return (
     <div className={`database-page ${isChlid ? 'is-child' : ''}`}>
       <div className="url-load">
         <label>
         <span>
-          Source URL
+          {t('sourceUrl')}
         </span>
           <input
             id="db-url"
@@ -127,7 +129,7 @@ export default function CopyDatabase() {
           type="button"
           onClick={loadRemote}
         >
-          Load
+          {t('loadButton')}
         </button>
       </div>
 
@@ -138,7 +140,7 @@ export default function CopyDatabase() {
         disabled={!Boolean(transferred)}
         onClick={copyData}
       >
-        Copy
+        {t('copyButton')}
       </button>
     </div>
   );

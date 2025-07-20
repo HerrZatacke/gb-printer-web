@@ -3,6 +3,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { FixedSizeList } from 'react-window';
 import FrameSelect from '@/components/FrameSelect';
@@ -15,6 +16,7 @@ import Lightbox from '../../Lightbox';
 import ImportRow from './ImportRow';
 
 function ImportQueue() {
+  const t = useTranslations('ImportQueue');
   const {
     frame,
     palette,
@@ -45,7 +47,7 @@ function ImportQueue() {
 
   return (
     <Lightbox
-      header={`Image Import (${importQueue.length} images)`}
+      header={t('dialogHeader', { count: importQueue.length })}
       confirm={runImport}
       deny={cancelImport}
     >
@@ -78,30 +80,30 @@ function ImportQueue() {
           <Button
             disabled={!lastSeenCount}
             onClick={removeLastSeen}
-            title="Remove last seen"
+            title={t('removeLastSeenTitle')}
           >
-            {`Remove last seen ${lastSeenCount ? `(${lastSeenCount})` : ''}`}
+            {t('removeLastSeen', { count: lastSeenCount || 0 })}
           </Button>
           <Button
             disabled={!deletedCount}
             onClick={removeDeleted}
-            title="Remove deleted"
+            title={t('removeDeletedTitle')}
           >
-            {`Remove deleted ${deletedCount ? `(${deletedCount})` : ''}`}
+            {t('removeDeleted', { count: deletedCount || 0 })}
           </Button>
           <Button
             disabled={!queueDuplicatesCount}
             onClick={removeQueueDuplicates}
-            title="Remove duplicates in queue"
+            title={t('removeDuplicatesInQueueTitle')}
           >
-            {`Remove duplicates in queue ${queueDuplicatesCount ? `(${queueDuplicatesCount})` : ''}`}
+            {t('removeDuplicatesInQueue', { count: queueDuplicatesCount || 0 })}
           </Button>
           <Button
             disabled={!importedDuplicatesCount}
             onClick={removeImportedDuplicates}
-            title="Remove already imported"
+            title={t('removeAlreadyImportedTitle')}
           >
-            {`Remove already imported ${importedDuplicatesCount ? `(${importedDuplicatesCount})` : ''}`}
+            {t('removeAlreadyImported', { count: importedDuplicatesCount || 0 })}
           </Button>
         </ButtonGroup>
         <PaletteSelect
@@ -110,10 +112,10 @@ function ImportQueue() {
           onChange={setActivePalette}
         />
         <FrameSelect
-          selectLabel="Modify Frame"
+          selectLabel={t('modifyFrame')}
           frame={frame}
           lockFrame={false}
-          noFrameOption="No frame / import as is"
+          noFrameOption={t('noFrameOption')}
           updateFrame={setFrame}
         />
         <TagsSelect
@@ -127,7 +129,7 @@ function ImportQueue() {
           }}
         />
         <FormControlLabel
-          label="Create group from images at current location"
+          label={t('createGroupLabel')}
           control={(
             <Switch
               checked={createGroup}

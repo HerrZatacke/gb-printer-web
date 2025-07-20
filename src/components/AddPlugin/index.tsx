@@ -7,10 +7,12 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import NextLink from 'next/link';
 import { redirect } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { useAddPlugin } from '@/hooks/useAddPlugin';
 
 function AddPlugin() {
+  const t = useTranslations('AddPlugin');
   const {
     url,
     source,
@@ -36,19 +38,19 @@ function AddPlugin() {
     >
       { isTrusted ? null : (
         <Alert severity="error" variant="filled">
-          {`The source "${source}" of this plugin is not trusted!!`}
+          {t('notTrusted', { source })}
         </Alert>
       ) }
       { pluginExists ? (
         <>
           <Alert severity="warning" variant="filled">
-            {`The plugin "${url}" is already installed`}
+            {t('alreadyInstalled', { url })}
           </Alert>
           <Link
             component={NextLink}
             href="/settings/plugins"
           >
-            Go to plugins
+            {t('goToPlugins')}
           </Link>
         </>
       ) : (
@@ -57,7 +59,7 @@ function AddPlugin() {
             severity={isTrusted ? 'success' : 'warning'}
             variant="filled"
           >
-            {`This will add ${url} to your plugins.`}
+            {t('willAdd', { url })}
           </Alert>
           <Box>
             <Button
@@ -73,7 +75,7 @@ function AddPlugin() {
               disabled={pluginExists}
               onClick={addPlugin}
             >
-              Add
+              {t('addButton')}
             </Button>
           </Box>
         </>

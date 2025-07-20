@@ -1,6 +1,7 @@
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useRef } from 'react';
 import { applyBitmapFilter } from '@/tools/applyBitmapFilter';
 import isGoodScaleFactor from '@/tools/isGoodScaleFactor';
@@ -26,9 +27,10 @@ function ImportPreviewImage({
   dither,
   contrastBaseValues,
 }: Props) {
-
   const canvas = useRef(null);
   const originalCanvas = useRef(null);
+  const t = useTranslations('ImportPreviewImage');
+
   useEffect(() => {
     if (canvas.current && originalCanvas.current && contrastBaseValues?.length) {
       applyBitmapFilter({
@@ -72,7 +74,7 @@ function ImportPreviewImage({
             severity="warning"
             variant="filled"
           >
-            {`The scale factor of your image is ${scaleFactor.toPrecision(3)}. To get a clean result without artifacts, try to import only images with it's dimensions being scaled by powers of two. (1, 2, 4, 8 ...)`}
+            {t('scaleFactorWarning', { scaleFactor: scaleFactor.toPrecision(3) })}
           </Alert>
         )
       }

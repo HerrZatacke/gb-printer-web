@@ -2,6 +2,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import type { BlendMode, RGBNPalette } from 'gb-image-decoder';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import ColorSlider from '@/components/ColorSlider';
@@ -15,6 +16,7 @@ interface Props {
 }
 
 function GreySelect(props: Props) {
+  const t = useTranslations('GreySelect');
 
   const [values, setValues] = useState<RGBNPalette>(props.values);
 
@@ -40,7 +42,6 @@ function GreySelect(props: Props) {
       return acc;
     }, []);
 
-
   return (
     <Stack
       direction="column"
@@ -57,7 +58,7 @@ function GreySelect(props: Props) {
               {color === 'n' ? (
                 <TextField
                   value={values.blend}
-                  label="Neutral Layer Blendmode"
+                  label={t('neutralLayerBlendmode')}
                   select
                   size="small"
                   onChange={(ev) => {
@@ -65,12 +66,12 @@ function GreySelect(props: Props) {
                   }}
                 >
                   {
-                    blendModeLabels.map(({ id, label }) => (
+                    blendModeLabels.map(({ id, translationKey }) => (
                       <MenuItem
                         key={id}
                         value={id}
                       >
-                        {label}
+                        {t(translationKey)}
                       </MenuItem>
                     ))
                   }

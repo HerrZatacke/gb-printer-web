@@ -5,6 +5,7 @@ import type { Theme } from '@mui/system';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import NextLink from 'next/link';
+import { useTranslations } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
@@ -63,6 +64,7 @@ interface FolderTreeDialogProps {
 }
 
 function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
+  const t = useTranslations('FolderTreeDialog');
   const { pathsOptions, root } = useGalleryTreeContext();
   const { currentGroup } = useNavigationToolsContext();
   const theme = useTheme();
@@ -86,7 +88,7 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
       contentWidth="auto"
       deny={onClose}
       open={open}
-      header="Gallery Navigation"
+      header={t('dialogHeader')}
       keepMounted={false}
     >
       <SimpleTreeView

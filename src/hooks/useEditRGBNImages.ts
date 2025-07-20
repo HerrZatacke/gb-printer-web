@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import objectHash from 'object-hash';
 import { useCallback, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
@@ -41,6 +42,7 @@ interface UseEditRGBNImages {
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
+  const t = useTranslations('useEditRGBNImages');
   const { navigateToGroup } = useNavigationToolsContext();
   const { view } = useGalleryTreeContext();
   const { saveRGBNImage } = useSaveRGBNImages();
@@ -167,7 +169,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
     await saveRGBNImage(rgbnHashes);
 
     if (createGroup) {
-      const title = `RGB ${formatter(new Date())}`;
+      const title = t('rgbNewGroupTitle', { date: formatter(new Date()) });
       const slug = toSlug(title);
 
       const createdImageHashes: string[] = rgbnHashes.map((hashes) => objectHash(hashes));
@@ -192,7 +194,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
       navigateToGroup(newGroupId, 0);
     }
 
-  }, [addImageGroup, cancelEditImageGroup, cancelEditRGBNImages, createGroup, formatter, navigateToGroup, rgbnHashes, saveRGBNImage, view.id]);
+  }, [t, addImageGroup, cancelEditImageGroup, cancelEditRGBNImages, createGroup, formatter, navigateToGroup, rgbnHashes, saveRGBNImage, view.id]);
 
   const singleMode = grouping === RGBGrouping.MANUAL;
 

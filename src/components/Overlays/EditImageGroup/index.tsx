@@ -2,12 +2,14 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import Debug from '@/components/Debug';
 import useEditImageGroup, { NEW_GROUP } from '@/hooks/useEditImageGroup';
 import Lightbox from '../../Lightbox';
 
 function EditImageGroup() {
+  const t = useTranslations('EditImageGroup');
   const {
     editId,
     absoluteSlug,
@@ -32,7 +34,9 @@ function EditImageGroup() {
     <Lightbox
       confirm={confirm}
       canConfirm={canConfirm}
-      header={editId !== NEW_GROUP ? `Editing group ${title ? `"${title}"` : ''}` : `Create new group with ${selectionCount} images`}
+      header={editId !== NEW_GROUP ? 
+        t('dialogHeader', { title: title ? `"${title}"` : '' }) : 
+        t('createNewGroupDialogHeader', { count: selectionCount })}
       deny={cancelEditImageGroup}
       contentWidth="auto"
       actionButtons={possibleParents.length > 1 && editId === NEW_GROUP && (
@@ -42,7 +46,7 @@ function EditImageGroup() {
           variant="contained"
           color="secondary"
         >
-          { `Move ${selectionCount} selected images` }
+          {t('moveSelectedImages', { count: selectionCount })}
         </Button>
       )}
     >
@@ -53,28 +57,28 @@ function EditImageGroup() {
         { editId && (
           <>
             <TextField
-              label="Title"
+              label={t('title')}
               size="small"
               type="text"
               value={title}
               onChange={(ev) => setTitle(ev.target.value)}
             />
             <TextField
-              label="Pathsegment (identifier)"
+              label={t('pathSegment')}
               size="small"
               type="text"
               value={slug}
               onChange={(ev) => setSlug(ev.target.value)}
               helperText={
                 slugIsInUse ?
-                  `Path${slugWasChanged ? ' is already in use' : ''}: "${absoluteSlug}"` :
-                  `Path: "${absoluteSlug}"`
+                  t(slugWasChanged ? 'pathInUse' : 'path', { path: absoluteSlug }) :
+                  t('path', { path: absoluteSlug })
               }
               error={!canConfirm}
             />
             { possibleParents.length > 1 && (
               <TextField
-                label="Parent group"
+                label={t('parentGroup')}
                 size="small"
                 select
                 onChange={(ev) => setParentSlug(ev.target.value)}

@@ -1,16 +1,18 @@
 import LinearProgress from '@mui/material/LinearProgress';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
 import useProgressStore from '@/stores/progressStore';
 
 function ProgressBox() {
+  const t = useTranslations('ProgressBox');
   const { progress } = useProgressStore();
 
   return (
     <Lightbox
-      header="Working..."
+      header={t('dialogHeader')}
     >
       <Stack
         direction="column"

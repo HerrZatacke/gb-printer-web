@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import ConnectPrinter from '@/components/ConnectPrinter';
 import PrinterReport from '@/components/PrinterReport';
@@ -13,6 +14,7 @@ import { useImport } from './useImport';
 
 function Import() {
   const [text, setText] = useState('');
+  const t = useTranslations('Import');
 
   const {
     importPlainText,
@@ -49,9 +51,9 @@ function Import() {
         <Button
           component="label"
           variant="contained"
-          title="Select file(s) to import"
+          title={t('selectFiles')}
         >
-          Select file(s) to import
+          {t('selectFiles')}
           <input
             type="file"
             tabIndex={-1}
@@ -74,17 +76,17 @@ function Import() {
           <>
             <Button
               onClick={readRAMImage}
-              title="Import memory (RAM) from Cartridge Reader"
+              title={t('importMemory')}
               disabled={busy}
             >
-              Import memory from Cartridge Reader
+              {t('importMemory')}
             </Button>
             <Button
               onClick={readPhotoRom}
               disabled={!canReadPhotoRom || busy}
-              title="Import Album Rolls from Photo! (ROM + Flash)"
+              title={t('importAlbumRolls')}
             >
-              Import Album Rolls from Photo!(ROM + Flash)
+              {t('importAlbumRolls')}
             </Button>
           </>
         )}
@@ -98,7 +100,7 @@ function Import() {
       >
         <TextField
           id="import-plaintext"
-          label="Enter data received through your serial monitor"
+          label={t('serialMonitorLabel')}
           multiline
           rows={20}
           value={text}
@@ -113,7 +115,7 @@ function Import() {
               importPlainText(text);
             }}
           >
-            Import
+            {t('import')}
           </Button>
         </Stack>
       </Stack>
@@ -123,21 +125,15 @@ function Import() {
       >
         <Button
           onClick={() => exportJson(ExportTypes.IMAGES)}
-          title="Export images"
+          title={t('exportImages')}
         >
-          Export images
+          {t('exportImages')}
         </Button>
         <Button
           onClick={() => exportJson(ExportTypes.SELECTED_IMAGES)}
-          title="Export selected images"
+          title={t('exportSelectedImages')}
         >
-          Export selected images
-        </Button>
-        <Button
-          onClick={() => exportJson(ExportTypes.PALETTES)}
-          title="Export palettes"
-        >
-          Export palettes
+          {t('exportSelectedImages')}
         </Button>
       </ButtonGroup>
     </Stack>

@@ -1,11 +1,13 @@
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
 import useTrashbin from '@/hooks/useTrashbin';
 
 function Trashbin() {
+  const t = useTranslations('Trashbin');
   const {
     showTrashCount,
     purgeTrash,
@@ -21,36 +23,36 @@ function Trashbin() {
       deny={() => {
         showTrashCount(false);
       }}
-      header={`Trash (${sum} items)`}
+      header={t('dialogHeader', { count: sum })}
       contentWidth="auto"
       actionButtons={(
         <>
           <Button
             variant="contained"
             color="secondary"
-            title="Download deleted frames"
+            title={t('downloadFrames', { count: 0 })}
             disabled={trashCount.frames === 0}
             onClick={downloadFrames}
           >
-            Download frames
+            {t('downloadFrames', { count: trashCount.frames })}
           </Button>
           <Button
             variant="contained"
             color="secondary"
-            title="Download deleted images"
+            title={t('downloadImages', { count: 0 })}
             disabled={trashCount.images === 0}
             onClick={downloadImages}
           >
-            Download images
+            {t('downloadImages', { count: trashCount.images })}
           </Button>
           <Button
             variant="contained"
             color="error"
-            title="Purge all"
+            title={t('purgeAll', { count: 0 })}
             disabled={sum === 0}
             onClick={purgeTrash}
           >
-            { `Purge all (${sum})` }
+            {t('purgeAll', { count: sum })}
           </Button>
         </>
       )}
@@ -60,10 +62,10 @@ function Trashbin() {
         gap={2}
       >
         <Typography variant="body2">
-          { `Deleted frames: ${trashCount.frames}` }
+          {t('deletedFrames', { count: trashCount.frames })}
         </Typography>
         <Typography variant="body2">
-          { `Deleted images: ${trashCount.images}` }
+          {t('deletedImages', { count: trashCount.images })}
         </Typography>
       </Stack>
     </Lightbox>

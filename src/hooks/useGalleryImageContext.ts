@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
 import { SpecialTags } from '@/consts/SpecialTags';
@@ -44,6 +45,7 @@ export enum ButtonOption {
 }
 
 export const useGalleryImageContext = (hash: string): UseGalleryImageContext => {
+  const t = useTranslations('useGalleryImageContext');
   const {
     imageSelection,
     updateImageSelection,
@@ -79,7 +81,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
     startDownload: () => downloadSingleImage(hash),
     deleteImage: () => {
       setDialog({
-        message: image?.title ? `Delete image "${image.title}"?` : 'Delete this image?',
+        message: image?.title ? t('deleteImageWithTitle', { title: image.title }) : t('deleteImageGeneric'),
         confirm: async () => {
           deleteImages([hash]);
         },
@@ -89,7 +91,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
     shareImage: () => shareImage(hash),
     showMetadata: () => {
       setDialog({
-        message: image?.title ? `Meta-Info for "${image.title}"` : 'Meta-Info',
+        message: image?.title ? t('metaInfoWithTitle', { title: image.title }) : t('metaInfoGeneric'),
         questions: () => ([
           {
             key: 'meta',

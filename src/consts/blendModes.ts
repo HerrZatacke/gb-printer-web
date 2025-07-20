@@ -2,65 +2,64 @@ import { BlendMode } from 'gb-image-decoder';
 
 export interface BlendModeLabel {
   id: BlendMode,
-  label: string,
+  translationKey: string,
 }
 
 export const blendModeLabels: BlendModeLabel[] = [
   {
     id: BlendMode.NORMAL,
-    label: 'Normal (ignore neutral layer)',
+    translationKey: 'blendModes.normal',
   },
   {
     id: BlendMode.NORMAL_S,
-    label: 'Normal ⇵ (only neutral layer)',
+    translationKey: 'blendModes.normalS',
   },
   {
     id: BlendMode.LIGHTEN,
-    label: 'Lighten',
+    translationKey: 'blendModes.lighten',
   },
   {
     id: BlendMode.SCREEN,
-    label: 'Screen',
+    translationKey: 'blendModes.screen',
   },
   {
     id: BlendMode.DODGE,
-    label: 'Dodge',
+    translationKey: 'blendModes.dodge',
   },
   {
     id: BlendMode.ADDITION,
-    label: 'Addition',
+    translationKey: 'blendModes.addition',
   },
   {
     id: BlendMode.DARKEN,
-    label: 'Darken',
+    translationKey: 'blendModes.darken',
   },
   {
     id: BlendMode.MULTIPLY,
-    label: 'Multiply',
+    translationKey: 'blendModes.multiply',
   },
   {
     id: BlendMode.BURN,
-    label: 'Burn',
+    translationKey: 'blendModes.burn',
   },
   {
     id: BlendMode.OVERLAY,
-    label: 'Overlay',
+    translationKey: 'blendModes.overlay',
   },
   {
     id: BlendMode.SOFTLIGHT,
-    label: 'Soft light',
+    translationKey: 'blendModes.softLight',
   },
   {
     id: BlendMode.HARDLIGHT,
-    label: 'Hard light',
+    translationKey: 'blendModes.hardLight',
   },
   {
     id: BlendMode.DIFFERENCE,
-    label: 'Difference',
+    translationKey: 'blendModes.difference',
   },
   {
     id: BlendMode.EXCLUSION,
-    label: 'Exclusion',
+    translationKey: 'blendModes.exclusion',
   },
 ];
-

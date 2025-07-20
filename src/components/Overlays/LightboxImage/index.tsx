@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
@@ -14,6 +15,7 @@ import { useLightboxImage } from '@/hooks/useLightboxImage';
 import type { RGBNImage } from '@/types/Image';
 
 function LightboxImage() {
+  const t = useTranslations('LightboxImage');
   const {
     image,
     isFullscreen,
@@ -40,7 +42,7 @@ function LightboxImage() {
         <IconButton
           color="inherit"
           onClick={fullscreen}
-          title={isFullscreen ? 'Leave fullscreen' : 'Enter fullscreen'}
+          title={t(isFullscreen ? 'leaveFullscreen' : 'enterFullscreen')}
         >
           { isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon /> }
         </IconButton>
@@ -116,7 +118,7 @@ function LightboxImage() {
           justifyContent="center"
         >
           <Typography variant="body2">
-            { `Image ${currentIndex + 1}/${size}` }
+            {t('imageCounter', { current: currentIndex + 1, total: size })}
           </Typography>
           {image?.created && (
             <Typography variant="body2">

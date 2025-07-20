@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
 import { useCallback, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
@@ -61,6 +62,7 @@ const useRunImport = (): UseRunImport => {
   const { view } = useGalleryTreeContext();
   const { navigateToGroup } = useNavigationToolsContext();
 
+  const t = useTranslations('useRunImport');
 
   const [frame, setFrame] = useState('');
   const [createGroup, setCreateGroup] = useState<boolean>(rawImportQueue.length > 3);
@@ -90,7 +92,7 @@ const useRunImport = (): UseRunImport => {
     }));
   }, []);
 
-  const runImport = useCallback(async () => {
+  const runImport = useCallback(async (): Promise<void> => {
     const { importQueue } = useImportsStore.getState();
     const queue = new Queue(1, Infinity);
     const now = Date.now();
@@ -119,7 +121,7 @@ const useRunImport = (): UseRunImport => {
     addImages(savedImages);
 
     if (createGroup) {
-      const title = `Import ${formatter(new Date())}`;
+      const title = t('importGroupTitle', { date: formatter(new Date()) });
       const slug = toSlug(title);
 
       cancelEditImageGroup();
@@ -143,7 +145,7 @@ const useRunImport = (): UseRunImport => {
     }
 
     setImageSelection(imageHashes);
-  }, [activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
+  }, [t, activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
 
   const palette = useMemo(() => palettes.find(({ shortName }) => shortName === activePalette) || missingGreyPalette, [activePalette, palettes]);
 

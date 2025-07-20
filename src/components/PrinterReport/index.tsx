@@ -10,27 +10,22 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import filesize from 'filesize';
-import React from 'react';
+import { useTranslations } from 'next-intl';
+import React, { useMemo } from 'react';
 import { PrinterFunction } from '@/consts/printerFunction';
 import { usePrinter } from '@/hooks/usePrinter';
 
-const functionLabels: Record<PrinterFunction, string> = {
-  testFile: 'Print test image',
-  checkPrinter: 'Check Printer',
+const functionTranslationKeys: Record<PrinterFunction, string> = {
+  testFile: 'functions.printTestImage',
+  checkPrinter: 'functions.checkPrinter',
   fetchImages: '',
-  clearPrinter: 'Clear Printer',
-  tear: 'Tear',
-};
-
-const getFetchImagesLabel = (printerFunctions: PrinterFunction[], dumpsLength: number): string => {
-  if (printerFunctions.includes(PrinterFunction.TEAR) || !dumpsLength) {
-    return 'Fetch images';
-  }
-
-  return `Fetch ${dumpsLength || 0} images`;
+  clearPrinter: 'functions.clearPrinter',
+  tear: 'functions.tear',
 };
 
 function PrinterReport() {
+  const t = useTranslations('PrinterReport');
+
   const {
     printerData,
     printerFunctions,
@@ -38,6 +33,15 @@ function PrinterReport() {
     callRemoteFunction,
     printerBusy,
   } = usePrinter();
+
+  const fetchImagesLabel = useMemo((): string => {
+    const dumpsLength = printerData?.dumps?.length || 0;
+    if (printerFunctions.includes(PrinterFunction.TEAR) || !dumpsLength) {
+      return t('functions.fetchImagesGeneric');
+    }
+
+    return t('functions.fetchImagesCount', { count: dumpsLength });
+  }, [printerData?.dumps?.length, printerFunctions, t]);
 
   if (!printerConnected) {
     return null;
@@ -63,8 +67,8 @@ function PrinterReport() {
           >
             {
               name === PrinterFunction.FETCHIMAGES ?
-                getFetchImagesLabel(printerFunctions, printerData?.dumps?.length || 0) :
-                functionLabels[name as PrinterFunction]
+                fetchImagesLabel :
+                t(functionTranslationKeys[name as PrinterFunction])
             }
           </Button>
         ))}
@@ -84,27 +88,27 @@ function PrinterReport() {
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="right">Printer Filesystem</TableCell>
+                  <TableCell align="right">{t('printerFilesystem')}</TableCell>
                   <TableCell align="left" />
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell align="right">Total</TableCell>
+                  <TableCell align="right">{t('total')}</TableCell>
                   <TableCell align="left">{filesize(printerData?.fs.total)}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell align="right">Used</TableCell>
+                  <TableCell align="right">{t('used')}</TableCell>
                   <TableCell align="left">{filesize(printerData?.fs.used)}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell align="right">Free</TableCell>
+                  <TableCell align="right">{t('free')}</TableCell>
                   <TableCell align="left">
-                    {`${Math.max(0, ((printerData?.fs.maximages || 0) - (printerData?.dumps.length || 0)))} images`}
+                    {t('freeImages', { count: Math.max(0, ((printerData?.fs.maximages || 0) - (printerData?.dumps.length || 0))) })}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell align="right">Images</TableCell>
+                  <TableCell align="right">{t('images')}</TableCell>
                   <TableCell align="left">{printerData?.dumps.length}</TableCell>
                 </TableRow>
               </TableBody>
