@@ -83,7 +83,7 @@
     "branch": "Branch",
     "throttle": "Drosselung (in ms)",
     "token": "Token",
-    "tokenHelper": "Gehen zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlauben Lese-/Schreibzugriff für <code>\"Repository Permissions > Contents\"</code>"
+    "tokenHelper": "Gehe zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlauben Lese-/Schreibzugriff für <code>\"Repository Permissions > Contents\"</code>"
   },
   "WebUSBGreeting": {
     "enableWebUsb": "WebUSB / Serielle Ports aktivieren",
@@ -142,7 +142,7 @@
   "AddPlugin": {
     "notTrusted": "Die Quelle \"{source}\" dieses Plugins ist nicht vertrauenswürdig!!",
     "alreadyInstalled": "Das Plugin \"{url}\" ist bereits installiert",
-    "goToPlugins": "🔗 Zu Plugins gehen",
+    "goToPlugins": "🔗 Zu den  Plugin Einstellungen",
     "willAdd": "Dies wird {url} zu deinen Plugins hinzufügen.",
     "addButton": "Hinzufügen"
   },
