@@ -15,12 +15,12 @@ function getGitBranch() {
   }
 }
 
-const rewritesConfig = isDev ? {
+const rewritesConfig = isDev && process.env.NEXT_DEV_WIFI_PROXY_HOST ? {
   rewrites: async () => {
     return  [
       {
         source: '/wificonfig/:path*',
-        destination: 'http://192.168.0.5/wificonfig/:path*',
+        destination: `http://${process.env.NEXT_DEV_WIFI_PROXY_HOST}/wificonfig/:path*`,
       },
     ];
   },
