@@ -20,7 +20,7 @@ interface TransferMessage {
 
 export default function CopyDatabase() {
   const t = useTranslations('CopyDatabase');
-  const [url, setUrl] = useState('https://herrzatacke.github.io/gb-printer-web/db.html');
+  const [url, setUrl] = useState('https://herrzatacke.github.io/gb-printer-web/db/');
   const [remoteWindow, setRemoteWindow] = useState<Window | undefined>();
   const [transferred, setTransferred] = useState<TransferMessage | undefined>();
   const [dbRequest, setDbRequest] = useState<IDBOpenDBRequest | undefined>();
