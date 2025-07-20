@@ -83,7 +83,7 @@
     "branch": "Branch",
     "throttle": "Drosselung (in ms)",
     "token": "Token",
-    "tokenHelper": "Gehe zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlauben Lese-/Schreibzugriff für <code>\"Repository Permissions > Contents\"</code>"
+    "tokenHelper": "Gehe zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlaube Lese-/Schreibzugriff für <code>\"Repository Permissions > Contents\"</code>"
   },
   "WebUSBGreeting": {
     "enableWebUsb": "WebUSB / Serielle Ports aktivieren",
@@ -142,7 +142,7 @@
   "AddPlugin": {
     "notTrusted": "Die Quelle \"{source}\" dieses Plugins ist nicht vertrauenswürdig!!",
     "alreadyInstalled": "Das Plugin \"{url}\" ist bereits installiert",
-    "goToPlugins": "🔗 Zu den  Plugin Einstellungen",
+    "goToPlugins": "🔗 Zu den Plugin Einstellungen",
     "willAdd": "Dies wird {url} zu deinen Plugins hinzufügen.",
     "addButton": "Hinzufügen"
   },
@@ -569,11 +569,11 @@
   },
   "StorageWarning": {
     "storageTypes": {
-      "indexedDB": "Datenbank-Speichers",
-      "localStorage": "lokalen Speichers"
+      "indexedDB": "Datenbank-Speicher",
+      "localStorage": "lokaler Speicher"
     },
     "usageTooltip": "Verwende {used} von {total}",
-    "usageWarning": "Du verwendest {percentage}% deines Browser {type}. Beachte, dass das Speichern von Bildern nicht mehr möglich sein wird, sobald das Limit erreicht ist."
+    "usageWarning": "Du verwendest {percentage}% deines Browser {type}s. Beachte, dass das Speichern von Bildern nicht mehr möglich sein wird, sobald das Limit erreicht ist."
   },
   "TagsList": {
     "favourite": "Favorit",

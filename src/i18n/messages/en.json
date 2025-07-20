@@ -25,7 +25,7 @@
     "enableDebug": "Show debug info",
     "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
     "galleryClickActions": {
-      "clickSelectsItem": "lick selects the item",
+      "clickSelectsItem": "Click selects the item",
       "clickOpensEditDialog": "Click opens edit dialog",
       "clickOpensLightbox": "Click opens the item in lightbox"
     },
@@ -121,7 +121,7 @@
     "persistState": {
       "isPersistent": "Storage is persistent",
       "requestPersistence": "Request storage persistence",
-      "apiUnavailable": "Persistance API not available",
+      "apiUnavailable": "Persistence API not available",
       "failed": "Failed to persist storage"
     }
   },
@@ -154,7 +154,7 @@
     "reportFrames": "{count} frames",
     "reportLocalStorage": "{count} localStorage entries",
     "reportLocalStorageCleared": "localStorage cleared",
-    "reportLocalStorageCopied": "localstorage copied",
+    "reportLocalStorageCopied": "localStorage copied",
     "reportImagesCopied": "images copied",
     "reportFramesCopied": "frames copied"
   },
@@ -320,7 +320,7 @@
     "settings": "Settings",
     "addPlugin": "Add Plugin",
     "trash": "Trash",
-    "syncRemote": "Syncronize with remote service(s)",
+    "syncRemote": "Synchronize with remote service(s)",
     "switchToDark": "Switch to dark mode",
     "switchToBright": "Switch to bright mode",
     "usbDisabled": "USB devices are not available",
@@ -573,7 +573,7 @@
       "localStorage": "local storage"
     },
     "usageTooltip": "Using {used} of {total}",
-    "usageWarning": "You are using {percentage}% of your browser's {type}. Be aware for now saving images will not be possible once you hit the limit."
+    "usageWarning": "You are using {percentage}% of your browser's {type}. Be aware that saving images will not be possible once you hit the limit."
   },
   "TagsList": {
     "favourite": "Favourite",
