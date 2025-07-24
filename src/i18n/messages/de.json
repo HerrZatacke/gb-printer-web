@@ -608,10 +608,8 @@
     "deleteConfirmation": "Rahmen \"{name}\" ({frameId}) löschen?"
   },
   "useGalleryImageContext": {
-    "deleteImageWithTitle": "Bild \"{title}\" löschen?",
-    "deleteImageGeneric": "Dieses Bild löschen?",
-    "metaInfoWithTitle": "Meta-Info für \"{title}\"",
-    "metaInfoGeneric": "Meta-Info"
+    "deleteImage": "{title, select, NO_TITLE {Dieses Bild} other {Bild \"{title}\"}} löschen",
+    "metaInfo": "Metadaten {title, select, NO_TITLE {} other {für \"{title}\"}}"
   },
   "useGetPortSettings": {
     "specifyBaudrate": "Baudrate für Port wählen",

@@ -81,7 +81,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
     startDownload: () => downloadSingleImage(hash),
     deleteImage: () => {
       setDialog({
-        message: image?.title ? t('deleteImageWithTitle', { title: image.title }) : t('deleteImageGeneric'),
+        message: t('deleteImage', { title: image?.title || 'NO_TITLE' }),
         confirm: async () => {
           deleteImages([hash]);
         },
@@ -91,7 +91,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
     shareImage: () => shareImage(hash),
     showMetadata: () => {
       setDialog({
-        message: image?.title ? t('metaInfoWithTitle', { title: image.title }) : t('metaInfoGeneric'),
+        message: t('metaInfo', { title: image?.title || 'NO_TITLE' }),
         questions: () => ([
           {
             key: 'meta',

@@ -608,10 +608,8 @@
     "deleteConfirmation": "Delete frame \"{name}\" ({frameId})?"
   },
   "useGalleryImageContext": {
-    "deleteImageWithTitle": "Delete image \"{title}\"?",
-    "deleteImageGeneric": "Delete this image?",
-    "metaInfoWithTitle": "Meta-Info for \"{title}\"",
-    "metaInfoGeneric": "Meta-Info"
+    "deleteImage": "Delete {title, select, NO_TITLE {this image} other {image \"{title}\"}}?",
+    "metaInfo": "Metadata {title, select, NO_TITLE {} other {for \"{title}\"}}"
   },
   "useGetPortSettings": {
     "specifyBaudrate": "Specify Baudrate for Port",
