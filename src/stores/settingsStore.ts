@@ -96,7 +96,7 @@ const useSettingsStore = create(
       exportFileTypes: ['png'],
       exportScaleFactors: [4],
       fileNameStyle: FileNameStyle.FULL,
-      forceMagicCheck: true,
+      forceMagicCheck: false,
       galleryView: GalleryViews.GALLERY_VIEW_1X,
       galleryClickAction: GalleryClickAction.SELECT,
       handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
