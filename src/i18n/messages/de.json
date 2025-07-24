@@ -165,7 +165,7 @@
   "EditImageTabs": {
     "tabTypes": {
       "frame": "Rahmen",
-      "misc": "Verschiedenes",
+      "misc": "Sonstiges",
       "palette": "Palette",
       "colors": "Farben",
       "tags": "Tags"
@@ -287,9 +287,9 @@
   },
   "Import": {
     "selectFiles": "Datei(en) zum Importieren auswählen",
-    "importMemory": "Speicher vom Cartridge Reader importieren",
+    "importMemory": "Speicher von Cartridge Reader importieren",
     "importAlbumRolls": "Album-Rollen von Photo! importieren (ROM + Flash)",
-    "serialMonitorLabel": "Über den seriellen Monitor empfangene Daten eingeben",
+    "serialMonitorLabel": "Über den seriellen Monitor empfangene Daten importieren",
     "import": "Importieren",
     "exportImages": "Bilder exportieren",
     "exportSelectedImages": "Ausgewählte Bilder exportieren"
@@ -309,7 +309,7 @@
     "imageCounter": "Bild {current}/{total}"
   },
   "MetaTable": {
-    "hashChannel": "{channel}-Kanal-Hash"
+    "hashChannel": "Hash {channel}-Kanal"
   },
   "Navigation": {
     "home": "Startseite",
@@ -328,10 +328,10 @@
     "openMainNav": "Hauptnavigation öffnen",
     "closeMainNav": "Hauptnavigation schließen",
     "mainNavAriaLabel": "Hauptnavigation",
-    "utilityNavAriaLabel": "Utility-Navigation"
+    "utilityNavAriaLabel": "Werkzeug-Navigation"
   },
   "BitmapQueue": {
-    "dialogHeader": "Bitmap-Warteschlange",
+    "dialogHeader": "Bilderimport Warteschlange",
     "enableDither": "Dithering aktivieren",
     "contrastPreset": "Kontrast-Voreinstellung",
     "contrastSettings": {
@@ -340,17 +340,17 @@
       "normal": "Normal",
       "narrow": "Eng",
       "narrower": "Enger",
-      "emulator": "Vom Emulator"
+      "emulator": "Von Emulator"
     }
   },
   "DragOver": {
     "dropFilesHere": "Dateien hier ablegen",
-    "supportedFileTypes": "Drucker-Hex-Dumps, .sav-Savestates, JSON-Exporte oder sogar einfache Bitmaps."
+    "supportedFileTypes": "Drucker-Hex-Dumps, .sav-Savestates, JSON-Exporte oder Bitmaps hier ablegen."
   },
   "EditForm": {
-    "dialogHeader": "{count, plural, =0 {} =1 {Ein Bild} other {# Bilder}} bearbeiten",
+    "dialogHeader": "{count, plural, =0 {} =1 {Bild} other {# Bilder}} bearbeiten",
     "editingMultiple": "Du bearbeitest {count} Bilder",
-    "indexHelperText": "Verwende %n (oder %nn, %nnn, ...), um einen Index zu den Bildtiteln hinzuzufügen",
+    "indexHelperText": "Verwende %n (oder %nn, %nnn, ...), um einen numerischen Index zu den Bildtiteln hinzuzufügen",
     "editTitle": "Titel bearbeiten"
   },
   "EditFrame": {
@@ -373,7 +373,7 @@
   },
   "EditImageGroup": {
     "dialogHeader": "Gruppe {title} bearbeiten",
-    "createNewGroupDialogHeader": "Neue Gruppe erstellen {count, plural, =0 {} =1 {} other {mit # Bildern}}",
+    "createNewGroupDialogHeader": "Neue Gruppe {count, plural, =0 {} =1 {} other {mit # Bildern}} erstellen",
     "moveSelectedImages": "{count, plural, =0 {} =1 {Bild} other {# Bilder}} verschieben",
     "title": "Titel",
     "pathSegment": "Pfadsegment (Bezeichner)",
@@ -395,10 +395,10 @@
     "groupByImage": "Auswahl ist nach Bildern gruppiert (RGB RGB RGB)",
     "manualChannelSelection": "Manuelle Kanalauswahl für ein einzelnes Bild",
     "manualChannelInstructions": "Wähle manuell die Kanäle aus, um ein einzelnes RGBN-Bild zu erstellen",
-    "channelOrderInstructions": "Wähle die Reihenfolge der anzuwendenden Kanäle (in der Reihenfolge der aufgenommenen Bilder). Kanäle rechts vom Separator werden nicht verwendet.",
+    "channelOrderInstructions": "Wähle die Reihenfolge der anzuwendenden Kanäle (in der Reihenfolge ausgewählter Bilder). Kanäle rechts vom Separator werden nicht verwendet.",
     "channelDistributionError": "Deine Auswahl von Kanälen und Anzahl ausgewählter Bilder stimmt nicht überein! Stelle sicher, dass du die richtigen Bilder ausgewählt hast.",
     "imagePreview": "Bildvorschau",
-    "createGroupLabel": "Gruppe aus erstellten Bildern am aktuellen Standort erstellen"
+    "createGroupLabel": "Gruppe aus erstellten Bildern auf aktueller Ebene erstellen"
   },
   "useEditRGBNImages": {
     "rgbNewGroupTitle": "RGB {date}"
@@ -428,7 +428,7 @@
     "dialogHeader": "Neuen Rahmen als \"{id}\" importieren"
   },
   "ImportQueue": {
-    "dialogHeader": "{count, plural, =1 {Ein Bild importieren} other {# Bilder importieren}}",
+    "dialogHeader": "{count, plural, =1 {Bild importieren} other {# Bilder importieren}}",
     "removeLastSeenTitle": "Zuletzt gesehen entfernen",
     "removeLastSeen": "Zuletzt gesehen entfernen {count, plural, =0 {} other {({count})}}",
     "removeDeletedTitle": "Gelöschte entfernen",
@@ -443,7 +443,7 @@
   },
   "ImportRow": {
     "duplicateInQueue": "Dieses Bild existiert mehrfach in dieser Warteschlange",
-    "alreadyImported": "Dieses Bild wurde bereits importiert {title, select, NO_TITLE {} other {als \"{title}\"}}",
+    "alreadyImported": "Dieses Bild wurde bereits {title, select, NO_TITLE {} other {als \"{title}\"}} importiert",
     "importAsFrame": "Bild als Rahmen importieren",
     "removeFromQueue": "Bild aus Warteschlange entfernen"
   },
@@ -503,7 +503,7 @@
     "dialogHeader": "Animiertes GIF mit {count} Frames erstellen",
     "frameRate": "Framerate",
     "scaleGif": "GIF skalieren",
-    "enableYoyo": "Yoyo-Effekt aktivieren (zurück zum Anfang schleifen)",
+    "enableYoyo": "Jo-Jo-Effekt aktivieren (Animation rückwärts wiederholen)",
     "reverseDirection": "Animationsrichtung umkehren",
     "handleFrames": "Umgang mit Rahmen für Animation",
     "noFrameOption": "Wie pro Bild ausgewählt",
@@ -525,7 +525,7 @@
   },
   "PaletteContextMenu": {
     "setActive": "Als aktiv setzen",
-    "clone": "Klonen",
+    "clone": "Kopieren und Bearbeiten",
     "edit": "Bearbeiten",
     "delete": "Löschen"
   },
@@ -549,9 +549,9 @@
   "PrinterReport": {
     "functions": {
       "printTestImage": "Testbild drucken",
-      "checkPrinter": "Drucker überprüfen",
-      "fetchImagesGeneric": "Bilder abrufen",
-      "fetchImagesCount": "{count} Bilder abrufen",
+      "checkPrinter": "Druckerinfo abrufen",
+      "fetchImagesGeneric": "Bilder importieren",
+      "fetchImagesCount": "{count} Bilder importieren",
       "clearPrinter": "Drucker leeren",
       "tear": "Abreißen"
     },
@@ -620,7 +620,7 @@
     "resetGroupsMessage": "Bildgruppen zurücksetzen?",
     "resetGroupsInfo": "Dies wird ALLE erstellten Gruppen entfernen und alle vorhandenen Bilder auf die oberste Ebene verschieben.",
     "deleteGroupMessage": "Bildgruppe löschen?",
-    "deleteGroupInfo": "Dies wird diese Gruppe \"{groupTitle}\" löschen und alle Inhalte (Bilder & Gruppen) auf die aktuelle Ebene verschieben."
+    "deleteGroupInfo": "Dies wird die Gruppe \"{groupTitle}\" löschen und alle Inhalte (Bilder & Gruppen) auf die aktuelle Ebene verschieben."
   },
   "usePalette": {
     "deletePaletteMessage": "Palette \"{name}\" löschen?"
