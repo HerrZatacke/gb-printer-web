@@ -149,6 +149,7 @@ function Lightbox({
             textOverflow: 'ellipsis',
             overflow: 'hidden',
           }}
+          title={header}
         >
           {header}
         </Box>
