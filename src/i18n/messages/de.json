@@ -1,7 +1,7 @@
 {
   "SettingsGeneric": {
     "galleryPageSize": "Bilder pro Galerieseite",
-    "galleryPageSizeHelper": "Auf 0 setzen, um Paginierung zu deaktivieren - kann bei großen Bildmengen zu Leistungseinbußen führen",
+    "galleryPageSizeHelper": "Auf 0 setzen, um Paginierung zu deaktivieren – kann bei großen Bildmengen zu Leistungseinbußen führen",
     "galleryClickAction": "Klickverhalten für Galeriebilder",
     "galleryClickActionHelper": "Strg+Klick und Umschalt+Klick können immer für auswählen/bereichsweise auswählen verwendet werden",
     "exportDimensions": "Bildexport-Skalierungen",
@@ -11,7 +11,7 @@
     "importSavFrames": "Rahmen, die beim Importieren von Cartridge-Dumps angewendet werden sollen",
     "importSavFramesNone": "Keine",
     "importSavFramesUnknown": "Unbekannt",
-    "importLastSeen": "'Zuletzt gesehen'-Bild beim Importieren von Cartridge-Dumps importieren",
+    "importLastSeen": "‚Zuletzt gesehen‘-Bild beim Importieren von Cartridge-Dumps importieren",
     "importDeleted": "Gelöschte Bilder beim Importieren von Cartridge-Dumps importieren",
     "forceMagicCheck": "Gültige .sav-Datei beim Importieren erzwingen",
     "importPad": "Bilder beim Import auf 144px Höhe auffüllen",
@@ -41,10 +41,10 @@
       "titleOnly": "Nur Titel"
     },
     "locales": {
-      "de-DE": "Deutsch - Deutschland (de-DE)",
-      "en-US": "Englisch - Vereinigte Staaten (en-US)",
-      "en-GB": "Englisch - Vereinigtes Königreich (en-GB)",
-      "en-CA": "Englisch - Kanada (en-CA)"
+      "de-DE": "Deutsch – Deutschland (de-DE)",
+      "en-US": "Englisch – Vereinigte Staaten (en-US)",
+      "en-GB": "Englisch – Vereinigtes Königreich (en-GB)",
+      "en-CA": "Englisch – Kanada (en-CA)"
     }
   },
   "SettingsDropbox": {
@@ -74,7 +74,7 @@
     "addPlugin": "Plugin hinzufügen",
     "addPluginHelper": "🔗 Eine Auswahl von Plugins findest du hier",
     "installedPlugins": "Installierte Plugins",
-    "deletePlugin": "Plugin \"{name}\" löschen"
+    "deletePlugin": "Plugin „{name}“ löschen"
   },
   "SettingsGit": {
     "enableStorage": "GitHub als Speicher verwenden",
@@ -83,7 +83,7 @@
     "branch": "Branch",
     "throttle": "Drosselung (in ms)",
     "token": "Token",
-    "tokenHelper": "Gehe zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlaube Lese-/Schreibzugriff für <code>\"Repository Permissions > Contents\"</code>"
+    "tokenHelper": "Gehe zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlaube Lese-/Schreibzugriff für <code>„Repository Permissions > Contents“</code>"
   },
   "WebUSBGreeting": {
     "enableWebUsb": "WebUSB / Serielle Ports aktivieren",
@@ -140,8 +140,8 @@
     }
   },
   "AddPlugin": {
-    "notTrusted": "Die Quelle \"{source}\" dieses Plugins ist nicht vertrauenswürdig!!",
-    "alreadyInstalled": "Das Plugin \"{url}\" ist bereits installiert",
+    "notTrusted": "Die Quelle „{source}“ dieses Plugins ist nicht vertrauenswürdig!!",
+    "alreadyInstalled": "Das Plugin „{url}“ ist bereits installiert",
     "goToPlugins": "🔗 Zu den Plugin Einstellungen",
     "willAdd": "Dies wird {url} zu deinen Plugins hinzufügen.",
     "addButton": "Hinzufügen"
@@ -172,7 +172,7 @@
     }
   },
   "FolderBreadcrumb": {
-    "editGroup": "Gruppe \"{title}\" bearbeiten",
+    "editGroup": "Gruppe „{title}“ bearbeiten",
     "openNavigation": "Galerie-Navigation öffnen"
   },
   "FolderTreeDialog": {
@@ -354,8 +354,8 @@
     "editTitle": "Titel bearbeiten"
   },
   "EditFrame": {
-    "dialogHeader": "Rahmen \"{id}\" bearbeiten {idChange}",
-    "idChange": "-> \"{newId}\""
+    "dialogHeader": "Rahmen „{id}“ bearbeiten {idChange}",
+    "idChange": "→ „{newId}“"
   },
   "EditFrameForm": {
     "selectFrameGroup": "Rahmengruppe auswählen",
@@ -369,7 +369,7 @@
     "frameIndex": "Rahmen-Index",
     "frameIndexHelperText": "Ganzzahl, muss größer als 0 sein",
     "frameName": "Rahmenname",
-    "idInUse": "Der angegebene Rahmen-Index/Bezeichner \"{id}\" wird bereits verwendet, bitte wähle einen anderen."
+    "idInUse": "Der angegebene Rahmen-Index/Bezeichner „{id}“ wird bereits verwendet, bitte wähle einen anderen."
   },
   "EditImageGroup": {
     "dialogHeader": "Gruppe {title} bearbeiten",
@@ -377,8 +377,8 @@
     "moveSelectedImages": "{count, plural, =0 {} =1 {Bild} other {# Bilder}} verschieben",
     "title": "Titel",
     "pathSegment": "Pfadsegment (Bezeichner)",
-    "path": "Pfad: \"{path}\"",
-    "pathInUse": "Pfad wird bereits verwendet: \"{path}\"",
+    "path": "Pfad: „{path}“",
+    "pathInUse": "Pfad wird bereits verwendet: „{path}“",
     "parentGroup": "Übergeordnete Gruppe"
   },
   "EditPalette": {
@@ -421,11 +421,11 @@
     "imageHasUsername": "Bild hat Benutzername"
   },
   "FilterFormTag": {
-    "removeTag": "\"{title}\"-Tag entfernen",
-    "selectTag": "\"{title}\"-Tag auswählen"
+    "removeTag": "„{title}“-Tag entfernen",
+    "selectTag": "„{title}“-Tag auswählen"
   },
   "FrameQueue": {
-    "dialogHeader": "Neuen Rahmen als \"{id}\" importieren"
+    "dialogHeader": "Neuen Rahmen als „{id}“ importieren"
   },
   "ImportQueue": {
     "dialogHeader": "{count, plural, =1 {Bild importieren} other {# Bilder importieren}}",
@@ -443,13 +443,13 @@
   },
   "ImportRow": {
     "duplicateInQueue": "Dieses Bild existiert mehrfach in dieser Warteschlange",
-    "alreadyImported": "Dieses Bild wurde bereits {title, select, NO_TITLE {} other {als \"{title}\"}} importiert",
+    "alreadyImported": "Dieses Bild wurde bereits {title, select, NO_TITLE {} other {als „{title}“}} importiert",
     "importAsFrame": "Bild als Rahmen importieren",
     "removeFromQueue": "Bild aus Warteschlange entfernen"
   },
   "PickColors": {
     "newPaletteNameFromFile": "Aus Datei {fileName}",
-    "dialogHeader": "Farben aus \"{fileName}\" auswählen"
+    "dialogHeader": "Farben aus „{fileName}“ auswählen"
   },
   "ProgressBox": {
     "dialogHeader": "Arbeite..."
@@ -489,7 +489,7 @@
     "syncFromDropbox": "Von Dropbox synchronisieren",
     "syncImagesToDropbox": "Bilder mit Dropbox synchronisieren",
     "pendingRemoteChangesWarning": "Es gibt ausstehende Remote-Änderungen. Wenn du jetzt mit Dropbox synchronisierst, gehen diese verloren.",
-    "pendingLocalChangesWarning": "Es gibt lokale Änderungen, die noch nicht mit Dropbox synchronisiert wurden. Wenn du jetzt von Dropbox synchronisiest, gehen diese verloren."
+    "pendingLocalChangesWarning": "Es gibt lokale Änderungen, die noch nicht mit Dropbox synchronisiert wurden. Wenn du jetzt von Dropbox synchronisierst, gehen diese verloren."
   },
   "Trashbin": {
     "dialogHeader": "Papierkorb ({count} Elemente)",
@@ -605,11 +605,11 @@
     "paletteOrigin": "Mit der Webapp erstellt"
   },
   "useFrame": {
-    "deleteConfirmation": "Rahmen \"{name}\" ({frameId}) löschen?"
+    "deleteConfirmation": "Rahmen „{name}“ ({frameId}) löschen?"
   },
   "useGalleryImageContext": {
-    "deleteImage": "{title, select, NO_TITLE {Dieses Bild} other {Bild \"{title}\"}} löschen",
-    "metaInfo": "Metadaten {title, select, NO_TITLE {} other {für \"{title}\"}}"
+    "deleteImage": "{title, select, NO_TITLE {Dieses Bild} other {Bild „{title}“}} löschen",
+    "metaInfo": "Metadaten {title, select, NO_TITLE {} other {für „{title}“}}"
   },
   "useGetPortSettings": {
     "specifyBaudrate": "Baudrate für Port wählen",
@@ -620,10 +620,10 @@
     "resetGroupsMessage": "Bildgruppen zurücksetzen?",
     "resetGroupsInfo": "Dies wird ALLE erstellten Gruppen entfernen und alle vorhandenen Bilder auf die oberste Ebene verschieben.",
     "deleteGroupMessage": "Bildgruppe löschen?",
-    "deleteGroupInfo": "Dies wird die Gruppe \"{groupTitle}\" löschen und alle Inhalte (Bilder & Gruppen) auf die aktuelle Ebene verschieben."
+    "deleteGroupInfo": "Dies wird die Gruppe „{groupTitle}“ löschen und alle Inhalte (Bilder & Gruppen) auf die aktuelle Ebene verschieben."
   },
   "usePalette": {
-    "deletePaletteMessage": "Palette \"{name}\" löschen?"
+    "deletePaletteMessage": "Palette „{name}“ löschen?"
   },
   "useRunImport": {
     "importGroupTitle": "Import {date}"
