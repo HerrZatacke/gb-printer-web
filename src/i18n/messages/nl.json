@@ -1,0 +1,639 @@
+{
+  "SettingsGeneric": {
+    "galleryPageSize": "Afbeeldingen per galeriepagina",
+    "galleryPageSizeHelper": "Stel in op 0 om paginering uit te schakelen – kan prestatieproblemen veroorzaken bij grote aantallen afbeeldingen",
+    "galleryClickAction": "Klikgedrag voor galerieafbeeldingen",
+    "galleryClickActionHelper": "Ctrl+klik en Shift+klik kunnen altijd worden gebruikt voor selecteren/bereik selecteren",
+    "exportDimensions": "Afbeeldingexport schalingen",
+    "exportFiletypes": "Afbeeldingexport bestandstypen",
+    "exportHandleFrame": "Omgang met kaders bij het exporteren van afbeeldingen",
+    "filenameStyle": "Bestandsnaamstijl",
+    "importSavFrames": "Kaders die moeten worden toegepast bij het importeren van cartridge dumps",
+    "importSavFramesNone": "Geen",
+    "importSavFramesUnknown": "Onbekend",
+    "importLastSeen": "‘Laatst gezien’-afbeelding importeren bij het importeren van cartridge dumps",
+    "importDeleted": "Verwijderde afbeeldingen importeren bij het importeren van cartridge dumps",
+    "forceMagicCheck": "Geldige .sav-bestand afdwingen bij importeren",
+    "importPad": "Afbeeldingen opvullen tot 144px hoogte bij import",
+    "hideDates": "Afbeeldingsdatum verbergen in galerie",
+    "sortPalettes": "Paletten sorteren",
+    "preferredLocale": "Voorkeurstaal",
+    "exampleDateFormat": "Voorbeeld datumformaat: {format}",
+    "printerUrl": "Printer-URL",
+    "printerUrlHelper": "Als je een fysieke WiFi-printer hebt, kun je de URL hier toevoegen en doorgaan in de <link>🔗 Import-tab</link>",
+    "printerParams": "Extra printerinstellingen",
+    "enableDebug": "Debug-informatie tonen",
+    "enableImageGroups": "Afbeeldingsgroepen inschakelen {groupCount, plural, =0 {} =1 {(Je hebt één groep)} other {(Je hebt # groepen)}}",
+    "galleryClickActions": {
+      "clickSelectsItem": "Klik selecteert het item",
+      "clickOpensEditDialog": "Klik opent bewerkingsdialoog",
+      "clickOpensLightbox": "Klik opent het item in de lightbox"
+    },
+    "frameModes": {
+      "keepFrame": "Kader behouden",
+      "cropFrame": "Kader bijsnijden",
+      "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
+      "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Volledige titel",
+      "dateTitle": "Datum en titel",
+      "titleOnly": "Alleen titel"
+    },
+    "locales": {
+      "de-DE": "Duits – Duitsland (de-DE)",
+      "en-US": "Engels – Verenigde Staten (en-US)",
+      "en-GB": "Engels – Verenigd Koninkrijk (en-GB)",
+      "en-CA": "Engels – Canada (en-CA)"
+    }
+  },
+  "SettingsDropbox": {
+    "enableStorage": "Dropbox gebruiken als opslag",
+    "subfolder": "Submap",
+    "openFolder": "<link>🔗 Map openen</link>",
+    "openFolderLinkTitle": "Dropbox-map openen:\n{folderLink}",
+    "enableEnhancedSync": "Verbeterde Dropbox-synchronisatie inschakelen",
+    "enableEnhancedSyncHelper": "Dit is een experimentele functie.",
+    "authenticate": "Authenticeren",
+    "logout": "Uitloggen"
+  },
+  "SettingsWiFi": {
+    "hostSettings": "Host-instellingen",
+    "mdnsName": "mDNS-naam (Bonjour/Avahi)",
+    "accesspointSSID": "Access Point SSID",
+    "accesspointPassword": "Access Point wachtwoord",
+    "networks": "Netwerken",
+    "networkSSID": "Netwerk-SSID",
+    "networkPassword": "Netwerk-wachtwoord",
+    "deleteNetwork": "Netwerk verwijderen",
+    "willDeleteNetwork": "Netwerk wordt verwijderd",
+    "addNetwork": "Netwerk toevoegen",
+    "saveSettings": "WiFi-instellingen opslaan"
+  },
+  "SettingsPlugins": {
+    "addPlugin": "Plugin toevoegen",
+    "addPluginHelper": "🔗 Een selectie van plugins vind je hier",
+    "installedPlugins": "Geïnstalleerde plugins",
+    "deletePlugin": "Plugin “{name}” verwijderen"
+  },
+  "SettingsGit": {
+    "enableStorage": "GitHub gebruiken als opslag",
+    "owner": "Eigenaar",
+    "repoName": "Repository-naam",
+    "branch": "Branch",
+    "throttle": "Vertraging (in ms)",
+    "token": "Token",
+    "tokenHelper": "Ga naar GitHub om een <link>🔗 nieuwe fijnafgestemde persoonlijke toegangstoken</link> te maken, selecteer de repository die je wilt gebruiken voor synchronisatie, en sta lees-/schrijftoegang toe voor <code>“Repository Permissions > Contents”</code>"
+  },
+  "WebUSBGreeting": {
+    "enableWebUsb": "WebUSB / Seriële poorten inschakelen",
+    "webUSBEnabled": "Je huidige browser/apparaat ondersteunt WebUSB",
+    "webUSBDisabled": "Je huidige browser/apparaat ondersteunt helaas geen WebUSB",
+    "webSerialEnabled": "Je huidige browser/apparaat ondersteunt Web Serial",
+    "webSerialDisabled": "Je huidige browser/apparaat ondersteunt helaas geen Web Serial"
+  },
+  "ConnectSerial": {
+    "openWebUSB": "WebUSB-apparaat openen",
+    "openWebSerial": "Web Serial-apparaat openen",
+    "connectedDevices": "{deviceCount, plural, =0 {Geen verbonden apparaten} =1 {Eén verbonden apparaat:} other {# verbonden apparaten:}}",
+    "showUnknownResponse": "Bericht van onbekend apparaat tonen",
+    "unknownDeviceInfo": "Onbekende apparaatinformatie",
+    "copyToClipboard": "Naar klembord kopiëren",
+    "portDeviceTypes": {
+      "inactiveDevice": "Inactief apparaat",
+      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Printer Emulator",
+      "superPrinterInterface": "Super Printer Interface",
+      "cartridgeReader": "Cartridge Reader (LK Firmware)"
+    }
+  },
+  "SettingsTabs": {
+    "genericSettings": "Algemene instellingen",
+    "dropboxSettings": "Dropbox-instellingen",
+    "wifiSettings": "WiFi-instellingen",
+    "pluginSettings": "Plugin-instellingen",
+    "gitSettings": "Git-instellingen"
+  },
+  "ExportSettings": {
+    "resetGroups": "Afbeeldingsgroepen resetten",
+    "exportAll": "Alles exporteren",
+    "exportPlugins": "Plugins exporteren",
+    "hashCleanup": "Hash-opruiming",
+    "persistState": {
+      "isPersistent": "Opslag is persistent",
+      "requestPersistence": "Opslag-persistentie aanvragen",
+      "apiUnavailable": "Persistentie-API niet beschikbaar",
+      "failed": "Opslag-persistering mislukt"
+    }
+  },
+  "BatchButtons": {
+    "manageSorting": "Sortering beheren",
+    "manageFilters": "Filters beheren",
+    "checkAll": "Alles selecteren",
+    "uncheckAll": "Alles deselecteren",
+    "usePlugin": "Plugin gebruiken",
+    "batchActions": {
+      "delete": "Verwijderen",
+      "animate": "Animeren",
+      "download": "Downloaden",
+      "edit": "Bewerken",
+      "rgb": "RGB-afbeeldingen maken"
+    }
+  },
+  "AddPlugin": {
+    "notTrusted": "De bron “{source}” van deze plugin is niet vertrouwd!!",
+    "alreadyInstalled": "De plugin “{url}” is al geïnstalleerd",
+    "goToPlugins": "🔗 Naar plugin-instellingen",
+    "willAdd": "Dit zal {url} toevoegen aan je plugins.",
+    "addButton": "Toevoegen"
+  },
+  "CopyDatabase": {
+    "sourceUrl": "Bron-URL",
+    "loadButton": "Laden",
+    "copyButton": "Kopiëren",
+    "reportImages": "{count} afbeeldingen",
+    "reportFrames": "{count} kaders",
+    "reportLocalStorage": "{count} localStorage-items",
+    "reportLocalStorageCleared": "localStorage geleegd",
+    "reportLocalStorageCopied": "localStorage gekopieerd",
+    "reportImagesCopied": "Afbeeldingen gekopieerd",
+    "reportFramesCopied": "Kaders gekopieerd"
+  },
+  "EditFrameStartLine": {
+    "moveUp": "Afbeelding omhoog verplaatsen",
+    "moveDown": "Afbeelding omlaag verplaatsen"
+  },
+  "EditImageTabs": {
+    "tabTypes": {
+      "frame": "Kader",
+      "misc": "Overig",
+      "palette": "Palet",
+      "colors": "Kleuren",
+      "tags": "Tags"
+    }
+  },
+  "FolderBreadcrumb": {
+    "editGroup": "Groep “{title}” bewerken",
+    "openNavigation": "Galerienavigatie openen"
+  },
+  "FolderTreeDialog": {
+    "dialogHeader": "Galerienavigatie"
+  },
+  "Frame": {
+    "usedTimes": "{count} keer gebruikt",
+    "notUsed": "Niet gebruikt"
+  },
+  "FrameContextMenu": {
+    "edit": "Bewerken",
+    "delete": "Verwijderen"
+  },
+  "FrameSelect": {
+    "frameLabel": "Kader",
+    "noFrameOption": "Zoals geïmporteerd / Geen kader",
+    "separateColorSettings": "Aparte kleurinstellingen voor kader gebruiken"
+  },
+  "Frames": {
+    "editFramegroup": "Kadergroep bewerken",
+    "renameFramegroup": "Kadergroep hernoemen",
+    "exportFrames": "Kaders exporteren",
+    "exportCurrentFramegroup": "Huidige kadergroep exporteren ({id})",
+    "convertFramesFormat": "Kaders naar nieuw formaat converteren"
+  },
+  "GalleryGroup": {
+    "itemCount": "{count} items"
+  },
+  "GalleryGroupContextMenu": {
+    "edit": "Bewerken",
+    "delete": "Verwijderen"
+  },
+  "GalleryNumbers": {
+    "imageCount": "{count} afbeeldingen",
+    "filteredCount": "{count} gefilterd",
+    "selectedCount": "{count} geselecteerd",
+    "separator": " / "
+  },
+  "GalleryViewSelect": {
+    "viewNames": {
+      "smallest": "Kleinste",
+      "originalSize": "Originele grootte",
+      "doubleSize": "Dubbele grootte",
+      "maximumSize": "Maximale grootte"
+    }
+  },
+  "GalleryImageContextMenu": {
+    "edit": "Bewerken",
+    "download": "Downloaden",
+    "delete": "Verwijderen",
+    "viewInLightbox": "In lightbox bekijken",
+    "printViaSuperPrinter": "Via Super Printer afdrukken",
+    "usePlugin": "Plugin gebruiken",
+    "share": "Delen",
+    "addToFavourites": "Aan favorieten toevoegen",
+    "removeFromFavourites": "Uit favorieten verwijderen",
+    "addToSelection": "Aan selectie toevoegen",
+    "removeFromSelection": "Uit selectie verwijderen",
+    "showMetadata": "Metadata tonen",
+    "createGroup": "Groep maken"
+  },
+  "GreySelect": {
+    "neutralLayerBlendmode": "Neutrale laag mengmodus",
+    "blendModes": {
+      "normal": "Normaal (neutrale laag negeren)",
+      "normalS": "Normaal ⇵ (alleen neutrale laag)",
+      "lighten": "Lichter maken",
+      "screen": "Scherm",
+      "dodge": "Ontwijken",
+      "addition": "Optelling",
+      "darken": "Donkerder maken",
+      "multiply": "Vermenigvuldigen",
+      "burn": "Branden",
+      "overlay": "Overlay",
+      "softLight": "Zacht licht",
+      "hardLight": "Hard licht",
+      "difference": "Verschil",
+      "exclusion": "Uitsluiting"
+    }
+  },
+  "ConnectPrinter": {
+    "openPrinterPage": "Printerpagina openen"
+  },
+  "EnvInfo": {
+    "appVersion": "Web-app versie: {value}",
+    "appBranch": "Web-app branch: {value}",
+    "printerVersion": "Printer versie: {value}",
+    "maxImages": "Max. afbeeldingen: {value}",
+    "storageDriver": "Localforage driver: {value}",
+    "envType": "Omgevingstype: {value}",
+    "filesystem": "Gecompileerd bestandssysteem: {value}",
+    "bootmode": "Gecompileerde bootmodus: {value}",
+    "hasOled": "Gecompileerd voor OLED: {value}",
+    "yes": "ja",
+    "no": "nee"
+  },
+  "usePaletteSort": {
+    "defaultAsc": "Standaard (oplopend)",
+    "defaultDesc": "Standaard (aflopend)",
+    "usageAsc": "Gebruik (oplopend)",
+    "usageDesc": "Gebruik (aflopend)",
+    "nameAsc": "Naam (oplopend)",
+    "nameDesc": "Naam (aflopend)"
+  },
+  "useAsPasswordField": {
+    "hidePassword": "Wachtwoord verbergen",
+    "showPassword": "Wachtwoord tonen"
+  },
+  "ImageMeta": {
+    "dateTime": "Datum / Tijd",
+    "editRotation": "Rotatie bewerken"
+  },
+  "Import": {
+    "selectFiles": "Bestand(en) selecteren om te importeren",
+    "importMemory": "Geheugen van Cartridge Reader importeren",
+    "importAlbumRolls": "Album-rollen van Photo! importeren (ROM + Flash)",
+    "serialMonitorLabel": "Via seriële monitor ontvangen data importeren",
+    "import": "Importeren",
+    "exportImages": "Afbeeldingen exporteren",
+    "exportSelectedImages": "Geselecteerde afbeeldingen exporteren"
+  },
+  "ImportPreviewImage": {
+    "scaleFactorWarning": "De schaalfactor van de afbeelding is {scaleFactor}. Voor een schoon resultaat zonder artefacten, probeer alleen afbeeldingen te importeren waarvan de afmetingen geschaald zijn met machten van twee. (1, 2, 4, 8 ...)"
+  },
+  "Lightbox": {
+    "cancel": "Annuleren",
+    "close": "Sluiten",
+    "ok": "Ok",
+    "closeWithHeader": "{header} sluiten"
+  },
+  "LightboxImage": {
+    "leaveFullscreen": "Volledig scherm verlaten",
+    "enterFullscreen": "Volledig scherm activeren",
+    "imageCounter": "Afbeelding {current}/{total}"
+  },
+  "MetaTable": {
+    "hashChannel": "Hash {channel}-kanaal"
+  },
+  "Navigation": {
+    "home": "Startpagina",
+    "gallery": "Galerie",
+    "import": "Import",
+    "palettes": "Paletten",
+    "frames": "Kaders",
+    "settings": "Instellingen",
+    "addPlugin": "Plugin toevoegen",
+    "trash": "Prullenbak",
+    "syncRemote": "Synchroniseren met externe service(s)",
+    "switchToDark": "Naar donkere modus wisselen",
+    "switchToBright": "Naar lichte modus wisselen",
+    "usbDisabled": "USB-apparaten zijn niet beschikbaar",
+    "usbDevices": "WebUSB en seriële apparaten",
+    "openMainNav": "Hoofdnavigatie openen",
+    "closeMainNav": "Hoofdnavigatie sluiten",
+    "mainNavAriaLabel": "Hoofdnavigatie",
+    "utilityNavAriaLabel": "Hulpmiddelen-navigatie"
+  },
+  "BitmapQueue": {
+    "dialogHeader": "Afbeeldingimport wachtrij",
+    "enableDither": "Dithering inschakelen",
+    "contrastPreset": "Contrast-voorinstelling",
+    "contrastSettings": {
+      "wider": "Breder",
+      "wide": "Breed",
+      "normal": "Normaal",
+      "narrow": "Smal",
+      "narrower": "Smaller",
+      "emulator": "Van emulator"
+    }
+  },
+  "DragOver": {
+    "dropFilesHere": "Bestanden hier neerzetten",
+    "supportedFileTypes": "Printer hex-dumps, .sav savestates, JSON-exports of bitmaps hier neerzetten."
+  },
+  "EditForm": {
+    "dialogHeader": "{count, plural, =0 {} =1 {Afbeelding} other {# afbeeldingen}} bewerken",
+    "editingMultiple": "Je bewerkt {count} afbeeldingen",
+    "indexHelperText": "Gebruik %n (of %nn, %nnn, ...) om een numerieke index toe te voegen aan afbeeldingstitels",
+    "editTitle": "Titel bewerken"
+  },
+  "EditFrame": {
+    "dialogHeader": "Kader “{id}” bewerken {idChange}",
+    "idChange": "→ “{newId}”"
+  },
+  "EditFrameForm": {
+    "selectFrameGroup": "Kadergroep selecteren",
+    "newFrameGroup": "Nieuwe kadergroep",
+    "unknown": "Onbekend",
+    "frameGroup": "Kadergroep",
+    "frameGroupId": "Kadergroep-ID",
+    "newFrameGroupId": "Nieuwe kadergroep-ID",
+    "groupIdHelperText": "Moet minstens twee tekens hebben, alleen kleine letters",
+    "newFrameGroupName": "Nieuwe kadergroepnaam",
+    "frameIndex": "Kader-index",
+    "frameIndexHelperText": "Geheel getal, moet groter zijn dan 0",
+    "frameName": "Kadernaam",
+    "idInUse": "De opgegeven kader-index/identifier “{id}” wordt al gebruikt, kies een andere."
+  },
+  "EditImageGroup": {
+    "dialogHeader": "Groep {title} bewerken",
+    "createNewGroupDialogHeader": "Nieuwe groep {count, plural, =0 {} =1 {} other {met # afbeeldingen}} maken",
+    "moveSelectedImages": "{count, plural, =0 {} =1 {Afbeelding} other {# afbeeldingen}} verplaatsen",
+    "title": "Titel",
+    "pathSegment": "Padsegment (identifier)",
+    "path": "Pad: “{path}”",
+    "pathInUse": "Pad wordt al gebruikt: “{path}”",
+    "parentGroup": "Bovenliggende groep"
+  },
+  "EditPalette": {
+    "dialogHeader": "Palet {name} bewerken",
+    "editTitle": "Titel bewerken",
+    "addTitle": "Titel toevoegen",
+    "idShortName": "ID/korte naam",
+    "colorIndex": "Kleur {index}"
+  },
+  "EditRGBN": {
+    "dialogHeader": "RGBN-afbeeldingen maken",
+    "groupingLabel": "Groepering van selectie",
+    "groupByColor": "Selectie is gegroepeerd op kleur (RRR GGG BBB)",
+    "groupByImage": "Selectie is gegroepeerd op afbeelding (RGB RGB RGB)",
+    "manualChannelSelection": "Handmatige kanaalselectie voor enkele afbeelding",
+    "manualChannelInstructions": "Selecteer handmatig de kanalen om een enkele RGBN-afbeelding te maken",
+    "channelOrderInstructions": "Selecteer de volgorde van toe te passen kanalen (in volgorde van geselecteerde afbeeldingen). Kanalen rechts van de separator worden niet gebruikt.",
+    "channelDistributionError": "Je selectie van kanalen en aantal geselecteerde afbeeldingen komen niet overeen! Zorg ervoor dat je de juiste afbeeldingen hebt geselecteerd.",
+    "imagePreview": "Afbeeldingvoorbeeld",
+    "createGroupLabel": "Groep maken van gemaakte afbeeldingen op huidig niveau"
+  },
+  "useEditRGBNImages": {
+    "rgbNewGroupTitle": "RGB {date}"
+  },
+  "FilterForm": {
+    "dialogHeader": "Filters selecteren",
+    "clearFiltersTitle": "Filters wissen",
+    "clear": "Wissen",
+    "clearFiltersAndApplyTitle": "Filters wissen en toepassen",
+    "clearAndApply": "Wissen en toepassen",
+    "allMustBeMet": "Indien ingesteld, moeten alle worden voldaan",
+    "oneMustBeMet": "Indien ingesteld, moet één worden voldaan",
+    "untagged": "Zonder tags",
+    "favourite": "❤️ Favoriet",
+    "new": "Nieuw",
+    "monochrome": "Monochroom",
+    "rgb": "RGB",
+    "recentImports": "Recente imports",
+    "imageHasComments": "Afbeelding heeft opmerkingen",
+    "imageHasUsername": "Afbeelding heeft gebruikersnaam"
+  },
+  "FilterFormTag": {
+    "removeTag": "“{title}”-tag verwijderen",
+    "selectTag": "“{title}”-tag selecteren"
+  },
+  "FrameQueue": {
+    "dialogHeader": "Nieuw kader importeren als “{id}”"
+  },
+  "ImportQueue": {
+    "dialogHeader": "{count, plural, =1 {Afbeelding importeren} other {# afbeeldingen importeren}}",
+    "removeLastSeenTitle": "Laatst gezien verwijderen",
+    "removeLastSeen": "Laatst gezien verwijderen {count, plural, =0 {} other {({count})}}",
+    "removeDeletedTitle": "Verwijderde verwijderen",
+    "removeDeleted": "Verwijderde verwijderen {count, plural, =0 {} other {({count})}}",
+    "removeDuplicatesInQueueTitle": "Duplicaten in wachtrij verwijderen",
+    "removeDuplicatesInQueue": "Duplicaten in wachtrij verwijderen {count, plural, =0 {} other {({count})}}",
+    "removeAlreadyImportedTitle": "Al geïmporteerde verwijderen",
+    "removeAlreadyImported": "Al geïmporteerde verwijderen {count, plural, =0 {} other {({count})}}",
+    "modifyFrame": "Kader wijzigen",
+    "noFrameOption": "Geen kader / zoals geïmporteerd",
+    "createGroupLabel": "Groep maken van afbeeldingen op huidige locatie"
+  },
+  "ImportRow": {
+    "duplicateInQueue": "Deze afbeelding bestaat meerdere keren in deze wachtrij",
+    "alreadyImported": "Deze afbeelding is al {title, select, NO_TITLE {} other {als “{title}”}} geïmporteerd",
+    "importAsFrame": "Afbeelding als kader importeren",
+    "removeFromQueue": "Afbeelding uit wachtrij verwijderen"
+  },
+  "PickColors": {
+    "newPaletteNameFromFile": "Uit bestand {fileName}",
+    "dialogHeader": "Kleuren uit “{fileName}” selecteren"
+  },
+  "ProgressBox": {
+    "dialogHeader": "Bezig..."
+  },
+  "ProgressLogBox": {
+    "dialogHeaderDone": "✔️ Update voltooid {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderUpdating": "⏳ Bijwerken... {repo, select, NO_REPO {} other {- {repo}}}",
+    "showAllMessages": "Alle {count} berichten tonen",
+    "reduceMessages": "Berichten verminderen",
+    "startedAt": "Gestart om: {time}",
+    "finishedAfter": "Voltooid na: {duration}",
+    "runningFor": "Loopt al: {duration}",
+    "openGitHubRepository": "GitHub repository openen",
+    "openDropboxFolder": "Dropbox-map openen",
+    "openDropboxFolderTitle": "Dropbox-map openen:\n{path}"
+  },
+  "Serials": {
+    "dialogHeader": "WebUSB / Seriële apparaten"
+  },
+  "SortForm": {
+    "dialogHeader": "Sorteren op: {sortBy}/{order}",
+    "sortByLabel": "Sorteren op",
+    "sortDirectionLabel": "Sorteerrichting",
+    "titleOption": "Titel",
+    "dateOption": "Datum",
+    "paletteOption": "Palet",
+    "ascending": "Oplopend",
+    "descending": "Aflopend"
+  },
+  "SyncSelect": {
+    "dialogHeader": "Synchroniseren",
+    "syncToGitHub": "Naar GitHub synchroniseren",
+    "syncToGitHubTitle": "Naar GitHub synchroniseren\n{repoUrl}",
+    "syncFromGitHub": "Van GitHub synchroniseren",
+    "syncFromGitHubTitle": "Van GitHub synchroniseren\n{repoUrl}",
+    "syncToDropbox": "Naar Dropbox synchroniseren",
+    "syncFromDropbox": "Van Dropbox synchroniseren",
+    "syncImagesToDropbox": "Afbeeldingen naar Dropbox synchroniseren",
+    "pendingRemoteChangesWarning": "Er zijn uitstaande externe wijzigingen. Als je nu naar Dropbox synchroniseert, gaan deze verloren.",
+    "pendingLocalChangesWarning": "Er zijn lokale wijzigingen die nog niet naar Dropbox zijn gesynchroniseerd. Als je nu van Dropbox synchroniseert, gaan deze verloren."
+  },
+  "Trashbin": {
+    "dialogHeader": "Prullenbak ({count} items)",
+    "downloadFrames": "Kaders downloaden {count, plural, =0 {} other {(#)}}",
+    "downloadImages": "Afbeeldingen downloaden {count, plural, =0 {} other {(#)}}",
+    "purgeAll": "Alles verwijderen {count, plural, =0 {} other {(#)}}",
+    "deletedFrames": "Verwijderde kaders: {count}",
+    "deletedImages": "Verwijderde afbeeldingen: {count}"
+  },
+  "VideoParamsForm": {
+    "dialogHeader": "Geanimeerde GIF maken met {count} frames",
+    "frameRate": "Framerate",
+    "scaleGif": "GIF schalen",
+    "enableYoyo": "Jo-jo-effect inschakelen (animatie achteruit herhalen)",
+    "reverseDirection": "Animatierichting omkeren",
+    "handleFrames": "Omgang met kaders voor animatie",
+    "noFrameOption": "Zoals per afbeelding geselecteerd",
+    "frameModes": {
+      "keepFrame": "Kader behouden",
+      "cropFrame": "Kader bijsnijden",
+      "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
+      "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
+    }
+  },
+  "Pagination": {
+    "pageCount": "{current}/{total}"
+  },
+  "PaginationButton": {
+    "toPage": "Naar pagina {page}"
+  },
+  "Palette": {
+    "usageCount": "({shortName}) {count, plural, =0 {Niet gebruikt} =1 {Eenmaal gebruikt} other {# keer gebruikt}}"
+  },
+  "PaletteContextMenu": {
+    "setActive": "Als actief instellen",
+    "clone": "Kopiëren en bewerken",
+    "edit": "Bewerken",
+    "delete": "Verwijderen"
+  },
+  "Palettes": {
+    "ownPalettes": "Eigen paletten",
+    "predefinedPalettes": "Voorgedefinieerde paletten",
+    "allPalettes": "Alle paletten",
+    "newPalette": "Nieuw palet",
+    "newPaletteFromImage": "Nieuw palet van afbeelding",
+    "sortPalettes": "Paletten sorteren",
+    "exportPalettes": "Paletten exporteren"
+  },
+  "PaletteSelect": {
+    "asSelectedPerImage": "Zoals per afbeelding geselecteerd",
+    "palette": "Palet",
+    "invertPalette": "Palet omkeren"
+  },
+  "PluginSelect": {
+    "pluginTooltip": "{description}\n{url}"
+  },
+  "PrinterReport": {
+    "functions": {
+      "printTestImage": "Testafbeelding afdrukken",
+      "checkPrinter": "Printerinfo ophalen",
+      "fetchImagesGeneric": "Afbeeldingen importeren",
+      "fetchImagesCount": "{count} afbeeldingen importeren",
+      "clearPrinter": "Printer leegmaken",
+      "tear": "Afscheuren"
+    },
+    "printerFilesystem": "Printer-bestandssysteem",
+    "total": "Totaal",
+    "used": "Gebruikt",
+    "free": "Vrij",
+    "freeImages": "{count} afbeeldingen",
+    "images": "Afbeeldingen"
+  },
+  "Remote": {
+    "iframe": "<p>Dit is een extern venster dat is ingesloten in een iframe op de hoofdpagina. <em>Je zou dit bericht niet moeten zien.</em></p>",
+    "popup": "<p>Dit is de afstandsbedieningspagina van je WiFi-printer.</p><p>{host}</p><p>Je kunt teruggaan naar de hoofd-app en beginnen met het importeren van je afbeeldingen.</p><p><em>Voor het importeren moet dit venster open blijven!</em></p>",
+    "noReference": "<p>Dit venster mist de referentie naar de hoofd-app.</p><p><em>Het moet worden geopend vanaf de instellingenpagina van de hoofd-app om te werken!</em></p>"
+  },
+  "StorageWarning": {
+    "storageTypes": {
+      "indexedDB": "Database-opslag",
+      "localStorage": "lokale opslag"
+    },
+    "usageTooltip": "Gebruikt {used} van {total}",
+    "usageWarning": "Je gebruikt {percentage}% van je browser {type}. Let op dat het opslaan van afbeeldingen niet meer mogelijk is zodra de limiet is bereikt."
+  },
+  "TagsList": {
+    "favourite": "Favoriet",
+    "moreTags": "+{count} meer tags:\n{tags}",
+    "moreTagsLabel": "+{count} meer"
+  },
+  "TagsSelect": {
+    "resetTags": "Tags resetten"
+  },
+  "InputNewTag": {
+    "tagsLabel": "Tags"
+  },
+  "useBatchButtons": {
+    "deleteConfirmation": "{count} afbeeldingen verwijderen?"
+  },
+  "useEditForm": {
+    "updateDate": "Datum bijwerken",
+    "updateTitle": "Titel bijwerken",
+    "updatePalette": "Afbeeldingspalet-kleuren bijwerken",
+    "updateInvertPalette": "Afbeeldingspalet-inversie bijwerken",
+    "updateFrame": "Kader bijwerken",
+    "updateLockFrame": "Aparte kaderinstellingen bijwerken",
+    "updateFramePalette": "Kaderpalet-kleuren bijwerken",
+    "updateInvertFramePalette": "Kaderpalet-inversie bijwerken",
+    "updateTags": "Tags bijwerken",
+    "updateRotation": "Rotatie bijwerken"
+  },
+  "useEditPalette": {
+    "paletteOrigin": "Gemaakt met de webapp"
+  },
+  "useFrame": {
+    "deleteConfirmation": "Kader “{name}” ({frameId}) verwijderen?"
+  },
+  "useGalleryImageContext": {
+    "deleteImage": "{title, select, NO_TITLE {Deze afbeelding} other {Afbeelding “{title}”}} verwijderen",
+    "metaInfo": "Metadata {title, select, NO_TITLE {} other {voor “{title}”}}"
+  },
+  "useGetPortSettings": {
+    "specifyBaudrate": "Baudrate voor poort kiezen",
+    "baudRateLabel": "Baudrate"
+  },
+  "useImageGroups": {
+    "newGroupDefault": "Nieuwe groep",
+    "resetGroupsMessage": "Afbeeldingsgroepen resetten?",
+    "resetGroupsInfo": "Dit zal ALLE gemaakte groepen verwijderen en alle bestaande afbeeldingen naar het hoogste niveau verplaatsen.",
+    "deleteGroupMessage": "Afbeeldingsgroep verwijderen?",
+    "deleteGroupInfo": "Dit zal de groep “{groupTitle}” verwijderen en alle inhoud (afbeeldingen & groepen) naar het huidige niveau verplaatsen."
+  },
+  "usePalette": {
+    "deletePaletteMessage": "Palet “{name}” verwijderen?"
+  },
+  "useRunImport": {
+    "importGroupTitle": "Import {date}"
+  },
+  "useSetEditPalette": {
+    "copyOfPalette": "Kopie van {name}"
+  },
+  "useTrashbin": {
+    "backupExportImage": "Backup-export {hash}",
+    "backupExportFrame": "Backup-export {hash}",
+    "reImportedTrashFrames": "Opnieuw geïmporteerde, verwijderde kaders"
+  }
+}
