@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- USB device filter for Game Boy Printer and compatible serial devices -->
+    <!-- This allows the app to detect when compatible USB devices are connected -->
+    
+    <!-- Generic USB-to-Serial adapters (FTDI, CH340, CP210x, etc.) -->
+    <usb-device vendor-id="1027" product-id="24577" /> <!-- FTDI FT232 -->
+    <usb-device vendor-id="1659" product-id="8963" /> <!-- Prolific PL2303 -->
+    <usb-device vendor-id="4292" product-id="60000" /> <!-- Silicon Labs CP210x -->
+    <usb-device vendor-id="6790" product-id="29987" /> <!-- WCH CH340 -->
+    
+    <!-- Add more vendor/product IDs as needed for specific Game Boy Printer adapters -->
+    <!-- You can find these by connecting your device and checking with 'adb shell lsusb' -->
+    
+    <!-- Generic CDC ACM devices (Arduino-compatible boards) -->
+    <usb-device class="2" subclass="2" protocol="1" />
+    
+    <!-- Generic USB Serial devices -->
+    <usb-device class="255" />
+</resources>
