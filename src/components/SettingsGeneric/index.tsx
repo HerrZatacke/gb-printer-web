@@ -20,6 +20,7 @@ import { fileNameStyleLabels } from '@/consts/fileNameStyles';
 import type { FileNameStyle } from '@/consts/fileNameStyles';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
+import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
 import { useEnv } from '@/contexts/envContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import usePaletteSort from '@/hooks/usePaletteSort';
@@ -29,7 +30,6 @@ import useSettingsStore from '@/stores/settingsStore';
 import cleanUrl from '@/tools/cleanUrl';
 import getFrameGroups from '@/tools/getFrameGroups';
 import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
-import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
 
 interface ClickActionOption {
   translationKey: string,
