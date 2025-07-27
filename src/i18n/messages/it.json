@@ -430,13 +430,13 @@
   "ImportQueue": {
     "dialogHeader": "{count, plural, =1 {Importa immagine} other {Importa # immagini}}",
     "removeLastSeenTitle": "Rimuovi ultimo visto",
-    "removeLastSeen": "Rimuovi ultimo visto {count, plural, =0 {} other {(#)}}",
+    "removeLastSeen": "Rimuovi ultimo visto {count, plural, =0 {} other {({count})}}",
     "removeDeletedTitle": "Rimuovi eliminati",
-    "removeDeleted": "Rimuovi eliminati {count, plural, =0 {} other {(#)}}",
+    "removeDeleted": "Rimuovi eliminati {count, plural, =0 {} other {({count})}}",
     "removeDuplicatesInQueueTitle": "Rimuovi duplicati nella coda",
-    "removeDuplicatesInQueue": "Rimuovi duplicati nella coda {count, plural, =0 {} other {(#)}}",
+    "removeDuplicatesInQueue": "Rimuovi duplicati nella coda {count, plural, =0 {} other {({count})}}",
     "removeAlreadyImportedTitle": "Rimuovi già importati",
-    "removeAlreadyImported": "Rimuovi già importati {count, plural, =0 {} other {(#)}}",
+    "removeAlreadyImported": "Rimuovi già importati {count, plural, =0 {} other {({count})}}",
     "modifyFrame": "Modifica cornice",
     "noFrameOption": "Nessuna cornice / come importato",
     "createGroupLabel": "Crea gruppo dalle immagini nella posizione attuale"
