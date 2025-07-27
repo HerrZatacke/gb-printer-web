@@ -12,6 +12,7 @@
     "importSavFramesNone": "Ingen",
     "importSavFramesUnknown": "Ukjent",
     "importLastSeen": "Importer ’Sist sett’-bilde ved import av cartridge-dumps",
+    "importSavOrder": "Rekkefølge å bruke ved import av .sav-fil",
     "importDeleted": "Importer slettede bilder ved import av cartridge-dumps",
     "forceMagicCheck": "Tving gyldig .sav-fil ved import",
     "importPad": "Fyll ut bilder til 144px høyde ved import",
@@ -34,6 +35,10 @@
       "cropFrame": "Beskjær ramme",
       "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
       "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
+    },
+    "importOrders": {
+      "cartIndex": "Sortert etter ROM-avgjørelse (som sett i kamerarulle i opprinnelig RAM)",
+      "ramIndex": "Sortert etter faktisk rekkefølge i RAM (minneadresse)"
     },
     "filenameStyles": {
       "fullTitle": "Full tittel",
