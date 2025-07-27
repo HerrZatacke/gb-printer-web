@@ -286,9 +286,9 @@
     "editRotation": "Editar rotación"
   },
   "Import": {
-    "selectFiles": "Seleccionar archivos",
+    "selectFiles": "Seleccionar archivo(s) para importar",
     "importMemory": "Importar memoria",
-    "importAlbumRolls": "Importar rollos de álbum",
+    "importAlbumRolls": "Importar rollos de álbum de Photo! (ROM + Flash)",
     "serialMonitorLabel": "Monitor serial",
     "import": "Importar",
     "exportImages": "Exportar imágenes",
@@ -320,7 +320,7 @@
     "settings": "Configuraciones",
     "addPlugin": "Agregar plugin",
     "trash": "Papelera",
-    "syncRemote": "Sincronizar remoto",
+    "syncRemote": "Sincronizar con servicio(s) remoto",
     "switchToDark": "Cambiar a oscuro",
     "switchToBright": "Cambiar a claro",
     "usbDisabled": "USB deshabilitado",
