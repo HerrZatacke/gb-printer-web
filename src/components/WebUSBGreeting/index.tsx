@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import MarkdownStack from '@/components/MarkdownStack';
 import ConnectSerial from '@/components/Overlays/ConnectSerial';
 import { usePortsContext } from '@/contexts/ports';
+import { shortLocales } from '@/i18n/locales';
 import useSettingsStore from '@/stores/settingsStore';
 import EnableWebUSB from './EnableWebUSB';
 import readmeEn from './WebUSB.en.md';
@@ -24,7 +25,7 @@ function WebUSBGreeting() {
     const set = async () => {
       let langFile = preferredLocale.split('-')[0];
 
-      if (!['de', 'en'].includes(langFile)) {
+      if (!shortLocales.includes(langFile)) {
         langFile = 'en';
       }
 
