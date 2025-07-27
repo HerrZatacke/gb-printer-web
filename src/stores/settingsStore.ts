@@ -6,12 +6,12 @@ import { FileNameStyle } from '@/consts/fileNameStyles';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
+import { SavImportOrder } from '@/consts/SavImportOrder';
 import { ThemeName } from '@/consts/theme';
 import { defaultLocale, locales } from '@/i18n/locales';
 import cleanUrl from '@/tools/cleanUrl';
 import type { VideoParams } from '@/types/VideoParams';
 import { PROJECT_PREFIX } from './constants';
-import { SavImportOrder } from '@/consts/SavImportOrder';
 
 export interface Settings {
   activePalette: string,
