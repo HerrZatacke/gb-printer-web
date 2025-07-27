@@ -23,6 +23,40 @@ const compareCount = [
   },
 ];
 
+// Find placeholders like {name} - handle nested brackets in pluralization
+function extractPlaceholders(text: string): string[] {
+  const placeholders: string[] = [];
+  let i = 0;
+
+  while (i < text.length) {
+    if (text[i] === '{') {
+      let braceCount = 1;
+      let j = i + 1;
+
+      // Find the matching closing brace, handling nested braces
+      while (j < text.length && braceCount > 0) {
+        if (text[j] === '{') braceCount++;
+        if (text[j] === '}') braceCount--;
+        j++;
+      }
+
+      if (braceCount === 0) {
+        const fullPlaceholder = text.substring(i, j);
+        // Extract just the variable name (first word after {)
+        const match = fullPlaceholder.match(/^{\s*(\w+)/);
+        if (match) {
+          placeholders.push(`{${match[1]}`);
+        }
+      }
+      i = j;
+    } else {
+      i++;
+    }
+  }
+
+  return placeholders;
+}
+
 let totalMismatches = 0;
 
 function compareStrings(sourceValue: string, testValue: string, keyPath: string): void {
@@ -50,6 +84,29 @@ function compareStrings(sourceValue: string, testValue: string, keyPath: string)
 
       // const charList = charGroup.characters.map(c => `'${c}'`).join(', ');
       console.log(`  ${charGroup.type}: want=${sourceTotal}, found=${testTotal}`);
+    }
+  }
+
+  const sourcePlaceholders = extractPlaceholders(sourceValue);
+  const testPlaceholders = extractPlaceholders(testValue);
+
+  // Compare placeholder arrays
+  const missingInTest = sourcePlaceholders.filter(p => !testPlaceholders.includes(p));
+  const extraInTest = testPlaceholders.filter(p => !sourcePlaceholders.includes(p));
+
+  if (missingInTest.length > 0 || extraInTest.length > 0) {
+    if (!hasErrors) {
+      console.log(`Mismatch at ${keyPath}:`);
+      console.log(`  Source: ${sourceValue}`);
+      console.log(`  Test: ${testValue}`);
+      hasErrors = true;
+    }
+
+    if (missingInTest.length > 0) {
+      console.log(`  Missing placeholders: ${missingInTest.join(', ')}`);
+    }
+    if (extraInTest.length > 0) {
+      console.log(`  Extra placeholders: ${extraInTest.join(', ')}`);
     }
   }
 
