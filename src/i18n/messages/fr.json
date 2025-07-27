@@ -12,6 +12,7 @@
     "importSavFramesNone": "Aucun",
     "importSavFramesUnknown": "Inconnu",
     "importLastSeen": "Importer l'image ‹ Dernière vue › lors de l'importation de dumps de cartouche",
+    "importSavOrder": "Ordre à utiliser lors de l'importation d'un fichier .sav",
     "importDeleted": "Importer les images supprimées lors de l'importation de dumps de cartouche",
     "forceMagicCheck": "Forcer un fichier .sav valide lors de l'importation",
     "importPad": "Remplir les images à 144px de hauteur lors de l'importation",
@@ -34,6 +35,10 @@
       "cropFrame": "Recadrer le cadre",
       "squareBlack": "Rendre l'image carrée (ajouter du noir)",
       "squareWhite": "Rendre l'image carrée (ajouter du blanc)"
+    },
+    "importOrders": {
+      "cartIndex": "Trié par décision ROM (comme vu dans le rouleau de l'appareil photo dans la RAM d'origine)",
+      "ramIndex": "Trié par ordre réel dans la RAM (adresse mémoire)"
     },
     "filenameStyles": {
       "fullTitle": "Titre complet",
