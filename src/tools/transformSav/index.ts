@@ -26,6 +26,7 @@ export const transformSav = async (file: File, options: TransformOptions): Promi
     importLastSeen,
     importDeleted,
     forceMagicCheck,
+    savImportOrder,
   } = useSettingsStore.getState();
 
   const frameGroupOptions: DialogOption[] = getFrameGroups(frames, frameGroups)
@@ -39,6 +40,7 @@ export const transformSav = async (file: File, options: TransformOptions): Promi
 
   const importSav = getImportSav({
     importLastSeen: (skipDialogs || file.size <= 0x1000) ? true : importLastSeen,
+    savImportOrder,
     data,
     lastModified: file.lastModified,
     frames,

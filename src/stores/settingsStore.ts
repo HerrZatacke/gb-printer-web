@@ -7,10 +7,11 @@ import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { ThemeName } from '@/consts/theme';
-import { locales } from '@/i18n/locales';
+import { defaultLocale, locales } from '@/i18n/locales';
 import cleanUrl from '@/tools/cleanUrl';
 import type { VideoParams } from '@/types/VideoParams';
 import { PROJECT_PREFIX } from './constants';
+import { SavImportOrder } from '@/consts/SavImportOrder';
 
 export interface Settings {
   activePalette: string,
@@ -34,6 +35,7 @@ export interface Settings {
   printerParams: string,
   printerUrl: string,
   savFrameTypes: string,
+  savImportOrder: SavImportOrder,
   themeName: ThemeName,
   enableImageGroups: boolean,
   sortPalettes: PaletteSortMode,
@@ -63,6 +65,7 @@ interface Actions {
   setPrinterParams: (printerParams: string) => void,
   setPrinterUrl: (printerUrl: string) => void,
   setSavFrameTypes: (savFrameTypes: string) => void,
+  setSavImportOrder: (savImportOrder: SavImportOrder) => void,
   setThemeName: (themeName: ThemeName) => void,
   setEnableImageGroups: (enableImageGroups: boolean) => void,
   setSortPalettes: (sortPalettes: PaletteSortMode) => void,
@@ -83,7 +86,7 @@ const getDefaultLocale = (): string => {
     return locale;
   }
 
-  return locales[0];
+  return defaultLocale;
 };
 
 const useSettingsStore = create(
@@ -110,6 +113,7 @@ const useSettingsStore = create(
       printerParams: '',
       printerUrl: '',
       savFrameTypes: 'int',
+      savImportOrder: SavImportOrder.CART_INDEX,
       themeName: ThemeName.BRIGHT,
       enableImageGroups: false,
       sortPalettes: PaletteSortMode.DEFAULT_DESC,
@@ -134,6 +138,7 @@ const useSettingsStore = create(
       setPrinterParams: (printerParams: string) => set({ printerParams }),
       setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
       setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
+      setSavImportOrder: (savImportOrder: SavImportOrder) => set({ savImportOrder }),
       setThemeName: (themeName: ThemeName) => set({ themeName }),
       setEnableImageGroups: (enableImageGroups: boolean) => set({ enableImageGroups }),
       setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),

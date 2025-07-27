@@ -1,7 +1,7 @@
 {
   "SettingsGeneric": {
     "galleryPageSize": "Gallery page size",
-    "galleryPageSizeHelper": "Set to 0 to disable pagination - might cause performance issues on large sets of images",
+    "galleryPageSizeHelper": "Set to 0 to disable pagination – might cause performance issues on large sets of images",
     "galleryClickAction": "Click behaviour for gallery images",
     "galleryClickActionHelper": "Ctrl+Click and Shift+Click will always select/range-select",
     "exportDimensions": "Image export dimensions",
@@ -11,6 +11,7 @@
     "importSavFrames": "Frames to be applied when importing Cartridge dumps",
     "importSavFramesNone": "None",
     "importSavFramesUnknown": "Unknown",
+    "importSavOrder": "Order to use when importing a .sav file",
     "importLastSeen": "Import ‘last seen’ image when importing Cartridge dumps",
     "importDeleted": "Import deleted images when importing Cartridge dumps",
     "forceMagicCheck": "Force valid .sav file when importing",
@@ -20,7 +21,7 @@
     "preferredLocale": "Preferred locale",
     "exampleDateFormat": "Example date format: {format}",
     "printerUrl": "Printer URL",
-    "printerUrlHelper": "If you own a physical wifi-printer, you can add it\\'s URL here and check the <link>🔗 Import-tab</link>",
+    "printerUrlHelper": "If you own a physical wifi-printer, you can add its URL here and check the <link>🔗 Import-tab</link>",
     "printerParams": "Additional printer settings",
     "enableDebug": "Show debug info",
     "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
@@ -35,16 +36,20 @@
       "squareBlack": "Make image squared (add black)",
       "squareWhite": "Make image squared (add white)"
     },
+    "importOrders": {
+      "cartIndex": "Sorted by ROMs decision (as seen in camera roll in original RAM)",
+      "ramIndex":"Sorted by actual order in RAM (memory address)"
+    },
     "filenameStyles": {
       "fullTitle": "Full Title",
       "dateTitle": "Date and Title",
       "titleOnly": "Title only"
     },
     "locales": {
-      "de-DE": "German - Germany (de-DE)",
-      "en-US": "English - United States (en-US)",
-      "en-GB": "English - United Kingdom (en-GB)",
-      "en-CA": "English - Canada (en-CA)"
+      "de-DE": "German – Germany (de-DE)",
+      "en-US": "English – United States (en-US)",
+      "en-GB": "English – United Kingdom (en-GB)",
+      "en-CA": "English – Canada (en-CA)"
     }
   },
   "SettingsDropbox": {
@@ -74,7 +79,7 @@
     "addPlugin": "Add Plugin",
     "addPluginHelper": "🔗 A selection of plugins can be found here",
     "installedPlugins": "Installed Plugins",
-    "deletePlugin": "Delete Plugin \"{name}\""
+    "deletePlugin": "Delete Plugin “{name}”"
   },
   "SettingsGit": {
     "enableStorage": "Use github as storage",
@@ -83,7 +88,7 @@
     "branch": "Branch",
     "throttle": "Throttle (in ms)",
     "token": "Token",
-    "tokenHelper": "Go to GitHub to create a <link>🔗 new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>\"Repository Permissions > Contents\"</code>"
+    "tokenHelper": "Go to GitHub to create a <link>🔗 new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>“Repository Permissions > Contents”</code>"
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",
@@ -140,8 +145,8 @@
     }
   },
   "AddPlugin": {
-    "notTrusted": "The source \"{source}\" of this plugin is not trusted!!",
-    "alreadyInstalled": "The plugin \"{url}\" is already installed",
+    "notTrusted": "The source “{source}” of this plugin is not trusted!!",
+    "alreadyInstalled": "The plugin “{url}” is already installed",
     "goToPlugins": "🔗 Go to plugins",
     "willAdd": "This will add {url} to your plugins.",
     "addButton": "Add"
@@ -172,7 +177,7 @@
     }
   },
   "FolderBreadcrumb": {
-    "editGroup": "Edit group \"{title}\"",
+    "editGroup": "Edit group “{title}”",
     "openNavigation": "Open Gallery Navigation"
   },
   "FolderTreeDialog": {
@@ -354,8 +359,8 @@
     "editTitle": "Edit title"
   },
   "EditFrame": {
-    "dialogHeader": "Editing frame \"{id}\" {idChange}",
-    "idChange": "-> \"{newId}\""
+    "dialogHeader": "Editing frame “{id}” {idChange}",
+    "idChange": "→ “{newId}”"
   },
   "EditFrameForm": {
     "selectFrameGroup": "Select frame group",
@@ -369,7 +374,7 @@
     "frameIndex": "Frame Index",
     "frameIndexHelperText": "Integer, must be greater than 0",
     "frameName": "Frame name",
-    "idInUse": "Specified frame index/identifier \"{id}\" is already in use, please try another one."
+    "idInUse": "Specified frame index/identifier “{id}” is already in use, please try another one."
   },
   "EditImageGroup": {
     "dialogHeader": "Editing group {title}",
@@ -377,8 +382,8 @@
     "moveSelectedImages": "Move {count, plural, =0 {} =1 {image} other {# images}}",
     "title": "Title",
     "pathSegment": "Pathsegment (identifier)",
-    "path": "Path: \"{path}\"",
-    "pathInUse": "Path is already in use: \"{path}\"",
+    "path": "Path: “{path}”",
+    "pathInUse": "Path is already in use: “{path}”",
     "parentGroup": "Parent group"
   },
   "EditPalette": {
@@ -421,11 +426,11 @@
     "imageHasUsername": "Image has username"
   },
   "FilterFormTag": {
-    "removeTag": "Remove \"{title}\"-tag",
-    "selectTag": "Select \"{title}\"-tag"
+    "removeTag": "Remove “{title}”-tag",
+    "selectTag": "Select “{title}”-tag"
   },
   "FrameQueue": {
-    "dialogHeader": "Import new Frame as \"{id}\""
+    "dialogHeader": "Import new Frame as “{id}”"
   },
   "ImportQueue": {
     "dialogHeader": "{count, plural, =1 {Import one image} other {Import # images}}",
@@ -443,13 +448,13 @@
   },
   "ImportRow": {
     "duplicateInQueue": "This image exists multiple times within this queue",
-    "alreadyImported": "This image has already been imported {title, select, NO_TITLE {} other {as \"{title}\"}}",
+    "alreadyImported": "This image has already been imported {title, select, NO_TITLE {} other {as “{title}”}}",
     "importAsFrame": "Import image as frame",
     "removeFromQueue": "Remove image from queue"
   },
   "PickColors": {
     "newPaletteNameFromFile": "From file {fileName}",
-    "dialogHeader": "Pick colors from \"{fileName}\""
+    "dialogHeader": "Pick colors from “{fileName}”"
   },
   "ProgressBox": {
     "dialogHeader": "Working..."
@@ -564,7 +569,7 @@
   },
   "Remote": {
     "iframe": "<p>This is a remote window which is included in an iframe on your main page. <em>You should not see this message.</em></p>",
-    "popup": "<p>This is your WiFi-printer's remote control page.</p><p>{host}</p><p>You can go back to your main app and start importing your images.</p><p><em>In order for the import to work, this window needs to remain open!</em></p>",
+    "popup": "<p>This is your Wi-Fi printer’s remote control page.</p><p>{host}</p><p>You can go back to your main app and start importing your images.</p><p><em>In order for the import to work, this window needs to remain open!</em></p>",
     "noReference": "<p>This window is missing the reference to your main app.</p><p><em>It must be opened from the settings page of your main app in order to work!</em></p>"
   },
   "StorageWarning": {
@@ -573,7 +578,7 @@
       "localStorage": "local storage"
     },
     "usageTooltip": "Using {used} of {total}",
-    "usageWarning": "You are using {percentage}% of your browser's {type}. Be aware that saving images will not be possible once you hit the limit."
+    "usageWarning": "You are using {percentage}% of your browser’s {type}. Be aware that saving images will not be possible once you hit the limit."
   },
   "TagsList": {
     "favourite": "Favourite",
@@ -605,11 +610,11 @@
     "paletteOrigin": "Made with the webapp"
   },
   "useFrame": {
-    "deleteConfirmation": "Delete frame \"{name}\" ({frameId})?"
+    "deleteConfirmation": "Delete frame “{name}” ({frameId})?"
   },
   "useGalleryImageContext": {
-    "deleteImage": "Delete {title, select, NO_TITLE {this image} other {image \"{title}\"}}?",
-    "metaInfo": "Metadata {title, select, NO_TITLE {} other {for \"{title}\"}}"
+    "deleteImage": "Delete {title, select, NO_TITLE {this image} other {image “{title}”}}?",
+    "metaInfo": "Metadata {title, select, NO_TITLE {} other {for “{title}”}}"
   },
   "useGetPortSettings": {
     "specifyBaudrate": "Specify Baudrate for Port",
@@ -620,10 +625,10 @@
     "resetGroupsMessage": "Reset image groups?",
     "resetGroupsInfo": "This will remove ALL your created groups and all existing images will be moved to the top level.",
     "deleteGroupMessage": "Delete image group?",
-    "deleteGroupInfo": "This will delete this group \"{groupTitle}\" and move all children (images & groups) to the current level."
+    "deleteGroupInfo": "This will delete this group “{groupTitle}” and move all children (images & groups) to the current level."
   },
   "usePalette": {
-    "deletePaletteMessage": "Delete palette \"{name}\"?"
+    "deletePaletteMessage": "Delete palette “{name}”?"
   },
   "useRunImport": {
     "importGroupTitle": "Import {date}"
