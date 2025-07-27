@@ -11,6 +11,7 @@
     "importSavFrames": "Frames to be applied when importing Cartridge dumps",
     "importSavFramesNone": "None",
     "importSavFramesUnknown": "Unknown",
+    "importSavOrder": "Order to use when importing a .sav file",
     "importLastSeen": "Import ‘last seen’ image when importing Cartridge dumps",
     "importDeleted": "Import deleted images when importing Cartridge dumps",
     "forceMagicCheck": "Force valid .sav file when importing",
@@ -34,6 +35,10 @@
       "cropFrame": "Crop frame",
       "squareBlack": "Make image squared (add black)",
       "squareWhite": "Make image squared (add white)"
+    },
+    "importOrders": {
+      "cartIndex": "Sorted by ROMs decision (as seen in camera roll in original RAM)",
+      "ramIndex":"Sorted by actual order in RAM (memory address)"
     },
     "filenameStyles": {
       "fullTitle": "Full Title",

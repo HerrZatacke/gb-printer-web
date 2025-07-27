@@ -29,6 +29,7 @@ import useSettingsStore from '@/stores/settingsStore';
 import cleanUrl from '@/tools/cleanUrl';
 import getFrameGroups from '@/tools/getFrameGroups';
 import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
+import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
 
 interface ClickActionOption {
   translationKey: string,
@@ -69,6 +70,7 @@ function SettingsGeneric() {
     printerParams,
     printerUrl,
     savFrameTypes,
+    savImportOrder,
     setExportFileTypes,
     setExportScaleFactors,
     setEnableDebug,
@@ -84,6 +86,7 @@ function SettingsGeneric() {
     setPageSize,
     setPreferredLocale,
     setSavFrameTypes,
+    setSavImportOrder,
     setPrinterParams,
     setPrinterUrl,
   } = useSettingsStore();
@@ -279,6 +282,27 @@ function SettingsGeneric() {
               value={id}
             >
               {name}
+            </MenuItem>
+          ))
+        }
+      </TextField>
+
+      <TextField
+        id="settings-sav-order"
+        value={savImportOrder}
+        label={t('importSavOrder')}
+        select
+        onChange={(ev) => {
+          setSavImportOrder(ev.target.value as SavImportOrder);
+        }}
+      >
+        {
+          savImportOptions.map(({ value, translationKey }) => (
+            <MenuItem
+              key={value}
+              value={value}
+            >
+              {t(translationKey)}
             </MenuItem>
           ))
         }
