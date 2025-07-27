@@ -464,7 +464,7 @@
     "runningFor": "Körs sedan: {duration}",
     "openGitHubRepository": "Öppna GitHub-repo",
     "openDropboxFolder": "Öppna Dropbox-mapp",
-    "openDropboxFolderTitle": "Öppna Dropbox-mapp:\n{folderLink}"
+    "openDropboxFolderTitle": "Öppna Dropbox-mapp:\n{path}"
   },
   "Serials": {
     "dialogHeader": "Seriel"
