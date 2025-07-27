@@ -12,6 +12,7 @@
     "importSavFramesNone": "Inga",
     "importSavFramesUnknown": "Okänd",
     "importLastSeen": "Importera ’Senast sedd’-bild vid import av cartridge-dumpar",
+    "importSavOrder": "Ordning att använda vid import av .sav-fil",
     "importDeleted": "Importera raderade bilder vid import av cartridge-dumpar",
     "forceMagicCheck": "Tvinga giltig .sav-fil vid import",
     "importPad": "Fyll ut bilder till 144px höjd vid import",
@@ -34,6 +35,10 @@
       "cropFrame": "Beskär ram",
       "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
       "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
+    },
+    "importOrders": {
+      "cartIndex": "Sorterad efter ROM-beslut (som sett i kamerarullen i ursprungligt RAM)",
+      "ramIndex": "Sorterad efter faktisk ordning i RAM (minnesadress)"
     },
     "filenameStyles": {
       "fullTitle": "Fullständig titel",
