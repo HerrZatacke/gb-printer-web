@@ -1,5 +1,5 @@
 ## Een WebUSB of WebSerial apparaat gebruiken:
-Na het verbinden van een WebUSB of WebSerial apparaat kun je nu doorgaan naar de [Galerij Pagina](/gallery) of [Home Pagina](/home).  
+Na het verbinden van een WebUSB of WebSerial apparaat kun je nu doorgaan naar de [Galerij Pagina](/gallery) of [Home Pagina](/).  
 Het USB-symbool zal pulseren zodra er gegevens worden ontvangen.    
 Je kunt deze opties ook bereiken via het USB-symbool in de navigatie en de [Instellingen Pagina](/settings).  
 

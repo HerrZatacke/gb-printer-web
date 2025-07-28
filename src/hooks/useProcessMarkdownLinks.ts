@@ -4,7 +4,14 @@ export default function useProcessMarkdownLinks(markdown: string): string {
   return useMemo(() => {
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
-    // Replace markdown links that start with "/" with base path prefix
-    return markdown.replace(/\[([^\]]+)]\(\/([^)]+)\)/g, `[$1](${basePath}/$2)`);
+    return markdown.replace(/\[([^\]]+)]\(\/([^)]*)\)/g, (_, linkText, path) => {
+      if (path === '') {
+        // Handle root path "/"
+        return `[${linkText}](${basePath}/)`;
+      } else {
+        // Handle paths like "/import", "/gallery", etc.
+        return `[${linkText}](${basePath}/${path})`;
+      }
+    });
   }, [markdown]);
 }
