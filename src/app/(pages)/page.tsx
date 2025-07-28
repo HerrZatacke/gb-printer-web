@@ -5,6 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import  MuiMarkdown from 'mui-markdown';
 import { useEffect, useState } from 'react';
 import MarkdownStack from '@/components/MarkdownStack';
+import useProcessMarkdownLinks from '@/hooks/useProcessMarkdownLinks';
 import { shortLocales } from '@/i18n/locales';
 import readmeEn from '@/i18n/markdown/Startpage/en.md';
 import useSettingsStore from '@/stores/settingsStore';
@@ -12,6 +13,7 @@ import useSettingsStore from '@/stores/settingsStore';
 export default function Home() {
   const [readme, setReadme] = useState(readmeEn);
   const { preferredLocale } = useSettingsStore();
+  const processedReadme = useProcessMarkdownLinks(readme);
 
   useEffect(() => {
     const set = async () => {
@@ -35,7 +37,7 @@ export default function Home() {
     <Card>
       <CardContent>
         <MuiMarkdown options={{ wrapper: MarkdownStack }}>
-          {readme}
+          {processedReadme}
         </MuiMarkdown>
       </CardContent>
     </Card>
