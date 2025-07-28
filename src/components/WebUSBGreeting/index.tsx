@@ -9,9 +9,9 @@ import MarkdownStack from '@/components/MarkdownStack';
 import ConnectSerial from '@/components/Overlays/ConnectSerial';
 import { usePortsContext } from '@/contexts/ports';
 import { shortLocales } from '@/i18n/locales';
+import readmeEn from '@/i18n/markdown/WebUSB/en.md';
 import useSettingsStore from '@/stores/settingsStore';
 import EnableWebUSB from './EnableWebUSB';
-import readmeEn from './WebUSB.en.md';
 
 function WebUSBGreeting() {
   const { useSerials } = useSettingsStore();
@@ -30,7 +30,7 @@ function WebUSBGreeting() {
       }
 
       try {
-        setReadme((await import(`./WebUSB.${langFile}.md`)).default);
+        setReadme((await import(`@/i18n/markdown/WebUSB/${langFile}.md`)).default);
       } catch {
         setReadme(readmeEn);
       }
