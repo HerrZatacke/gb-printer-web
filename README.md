@@ -18,7 +18,7 @@ Configure the application using these environment variables:
 # Endpoint for environment configuration
 NEXT_PUBLIC_ENV_ENDPOINT="/env.json"
 
-# Base path for deployment (leave empty for root deployment)
+# Base path for deployment (leave empty for root deployment, use leading slash otherwise like "/gb-printer-web")
 NEXT_PUBLIC_BASE_PATH=""
 
 # Development WiFi proxy host (for local development with WiFi devices)
