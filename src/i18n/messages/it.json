@@ -24,7 +24,6 @@
     "printerUrlHelper": "Se possiedi una stampante WiFi fisica, puoi aggiungere il suo URL qui e continuare nella <link>🔗 scheda Importa</link>",
     "printerParams": "Impostazioni aggiuntive della stampante",
     "enableDebug": "Mostra informazioni di debug",
-    "enableImageGroups": "Abilita gruppi di immagini {groupCount, plural, =0 {} =1 {(Hai un gruppo)} other {(Hai # gruppi)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Il clic seleziona l'elemento",
       "clickOpensEditDialog": "Il clic apre la finestra di modifica",
