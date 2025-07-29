@@ -203,7 +203,7 @@
     "convertFramesFormat": "Converti cornici nel nuovo formato"
   },
   "GalleryGroup": {
-    "itemCount": "{count} elementi"
+    "itemCount": "{count} immagini"
   },
   "GalleryGroupContextMenu": {
     "edit": "Modifica",
