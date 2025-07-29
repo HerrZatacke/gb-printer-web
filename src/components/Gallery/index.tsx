@@ -11,7 +11,6 @@ import GalleryNumbers from '@/components/GalleryNumbers';
 import Pagination from '@/components/Pagination';
 import StorageWarning from '@/components/StorageWarning';
 import { useGallery } from '@/hooks/useGallery';
-import useSettingsStore from '@/stores/settingsStore';
 
 function Gallery() {
   const {
@@ -25,8 +24,6 @@ function Gallery() {
     isWorking,
   } = useGallery();
 
-  const { enableImageGroups } = useSettingsStore();
-
   return (
     <Stack
       direction="column"
@@ -38,10 +35,7 @@ function Gallery() {
         selectedCount={selectedCount}
         filteredCount={filteredCount}
       />
-      { enableImageGroups ? (
-        <FolderBreadcrumb />
-      ) : null }
-
+      <FolderBreadcrumb />
       <GalleryHeader page={page} isSticky />
       { maxPageIndex > 0 && <Pagination page={page} maxPageIndex={maxPageIndex} /> }
 

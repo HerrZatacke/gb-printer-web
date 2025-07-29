@@ -24,7 +24,6 @@
     "printerUrlHelper": "If you own a physical wifi-printer, you can add its URL here and check the <link>🔗 Import-tab</link>",
     "printerParams": "Additional printer settings",
     "enableDebug": "Show debug info",
-    "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Click selects the item",
       "clickOpensEditDialog": "Click opens edit dialog",
