@@ -489,7 +489,7 @@
     "syncToGitHubTitle": "Mit GitHub synchronisieren\n{repoUrl}",
     "syncFromGitHub": "Von GitHub synchronisieren",
     "syncFromGitHubTitle": "Von GitHub synchronisieren\n{repoUrl}",
-    "syncToDropbox": "Mit Dropbox synchronisieren",
+    "syncToDropbox": "Nach Dropbox synchronisieren",
     "syncFromDropbox": "Von Dropbox synchronisieren",
     "syncImagesToDropbox": "Bilder mit Dropbox synchronisieren",
     "pendingRemoteChangesWarning": "Es gibt ausstehende Remote-Änderungen. Wenn du jetzt mit Dropbox synchronisierst, gehen diese verloren.",

@@ -1,7 +1,5 @@
 import Queue from 'promise-queue';
-import { DialoqQuestionType } from '@/consts/dialog';
 import type { UseStores } from '@/hooks/useStores';
-import useDialogsStore from '@/stores/dialogsStore';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
@@ -37,8 +35,7 @@ export const dropBoxSyncTool = (
   remoteImport: (repoContents: JSONExportState) => Promise<void>,
 ): DropBoxSyncTool => {
   const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
-  const { setProgressLog, resetProgressLog } = useProgressStore.getState();
-  const { dismissDialog, setDialog } = useDialogsStore.getState();
+  const { setProgressLog } = useProgressStore.getState();
 
   const queue = new Queue(1, Infinity);
   const addToQueue = (who: string): AddToQueueFn<unknown> => (
@@ -63,53 +60,17 @@ export const dropBoxSyncTool = (
   const dropboxClient = new DropboxClient(useStoragesStore.getState().dropboxStorage, addToQueue('Dropbox'));
 
   const updateSettings = async (dropBoxSettings: DropBoxSettings) => {
-    await dropboxClient.setRootPath(dropBoxSettings.path || '/');
+    dropboxClient.setRootPath(dropBoxSettings.path || '/');
   };
 
-  const startSyncData = async (direction: 'up' | 'down' | 'diff') => {
+  const startSyncData = async (direction: 'up' | 'down') => {
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { preferredLocale } = useSettingsStore.getState();
     const { syncLastUpdate } = useStoragesStore.getState();
-    const repoContents: RepoContents = await dropboxClient.getRemoteContents(direction);
+    const repoContents: RepoContents = await dropboxClient.getRemoteContents();
 
     switch (direction) {
-      case 'diff': {
-        if (repoContents?.settings?.state?.lastUpdateUTC === null) {
-          break;
-        }
-
-        const lastUpdate = (repoContents.settings.state?.lastUpdateUTC === undefined) ?
-          (Date.now() / 1000) :
-          repoContents.settings.state.lastUpdateUTC;
-
-        useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdate);
-
-        if (lastUpdate > syncLastUpdate?.local) {
-          setDialog({
-            message: 'There is newer content in your dropbox!',
-            questions: () => [
-              `Your dropbox contains changes from ${(new Date(lastUpdate * 1000)).toLocaleString(preferredLocale)}`,
-              `Your last local update was ${syncLastUpdate?.local ? ((new Date(syncLastUpdate.local * 1000)).toLocaleString(preferredLocale)) : 'never'}.`,
-              'Do you want to load the changes?',
-            ]
-              .map((label, index) => ({
-                label,
-                key: `info${index}`,
-                type: DialoqQuestionType.INFO,
-              })),
-            confirm: async () => {
-              dismissDialog(0);
-              startSyncData('down');
-            },
-            deny: async () => dismissDialog(0),
-          });
-        }
-
-        break;
-      }
-
       case 'up': {
         const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
         const changes = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
@@ -120,7 +81,7 @@ export const dropBoxSyncTool = (
 
       case 'down': {
         const syncedState = await saveLocalStorageItems(repoContents);
-        remoteImport(syncedState);
+        await remoteImport(syncedState);
 
         const lastUpdate = repoContents.settings?.state?.lastUpdateUTC || 0;
         if (lastUpdate) {
@@ -137,14 +98,10 @@ export const dropBoxSyncTool = (
         throw new Error('dropbox sync: wrong sync case');
     }
 
-    if (direction !== 'diff') {
-      setProgressLog('dropbox', {
-        timestamp: (new Date()).getTime() / 1000,
-        message: '.',
-      });
-    } else {
-      resetProgressLog();
-    }
+    setProgressLog('dropbox', {
+      timestamp: (new Date()).getTime() / 1000,
+      message: '.',
+    });
 
     setSyncBusy(false);
   };
@@ -245,20 +202,6 @@ export const dropBoxSyncTool = (
       updateImages([]);
     }
   };
-
-  const checkDropboxStatus = (): void => {
-    startSyncData('diff');
-  };
-
-  if (useStoragesStore.getState().dropboxStorage.autoDropboxSync) {
-    // check dropbox for updates
-    checkDropboxStatus();
-
-    // check dropbox for updates
-    dropboxClient.on('settingsChanged', () => {
-      checkDropboxStatus();
-    });
-  }
 
   dropboxClient.on('loginDataUpdate', (data) => {
     const { setDropboxStorage } = useStoragesStore.getState();
