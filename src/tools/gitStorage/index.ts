@@ -1,9 +1,10 @@
+import { SyncDirection } from '@/consts/sync';
 import useStoragesStore from '@/stores/storagesStore';
 import type { JSONExportState } from '@/types/ExportState';
 import type { GitStorageSettings } from '@/types/Sync';
 
 export interface GitSyncTool {
-  startSyncData: (direction: 'up' | 'down') => Promise<void>,
+  startSyncData: (direction: SyncDirection) => Promise<void>,
   updateSettings: (gitSettings: GitStorageSettings) => Promise<void >,
 }
 
@@ -40,7 +41,7 @@ export const gitStorageTool = (
   }
 
   return {
-    startSyncData: async (direction: 'up' | 'down') => (
+    startSyncData: async (direction: SyncDirection) => (
       (await loadAndInitMiddleware()).startSyncData(direction)
     ),
     updateSettings: async (gitSettings: GitStorageSettings) => (

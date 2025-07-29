@@ -1,3 +1,4 @@
+import { StorageType, SyncDirection } from '@/consts/sync';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
 import useInteractionsStore from '@/stores/interactionsStore';
@@ -6,14 +7,13 @@ import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { gitStorageTool } from '@/tools/gitStorage';
 import type { SyncLastUpdate } from '@/types/Sync';
 
-
 interface UseSyncSelect {
   repoUrl: string,
   dropboxActive: boolean,
   gitActive: boolean,
   syncLastUpdate: SyncLastUpdate,
   autoDropboxSync: boolean,
-  startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => void,
+  startSync: (storageType: StorageType, direction: SyncDirection) => void,
   cancelSync: () => void,
 }
 
@@ -40,17 +40,22 @@ export const useSyncSelect = (): UseSyncSelect => {
     ),
     autoDropboxSync: dropboxStorage.autoDropboxSync || false,
     syncLastUpdate,
-    startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => {
-      if (storageType === 'dropbox') {
-        dropboxStorageTool(stores, remoteImport).startSyncData(direction);
-      } else if (storageType === 'dropboximages') {
-        dropboxStorageTool(stores, remoteImport).startSyncImages();
-      } else {
-        if (direction === 'diff') {
-          throw new Error('diff is invalid direction for github sync');
-        }
+    startSync: (storageType: StorageType, direction: SyncDirection) => {
+      switch (storageType) {
+        case StorageType.DROPBOX:
+          dropboxStorageTool(stores, remoteImport).startSyncData(direction);
+          break;
 
-        gitStorageTool(remoteImport).startSyncData(direction);
+          case StorageType.DROPBOXIMAGES:
+          dropboxStorageTool(stores, remoteImport).startSyncImages();
+          break;
+
+        case StorageType.GIT:
+          gitStorageTool(remoteImport).startSyncData(direction);
+          break;
+
+        default:
+          break;
       }
     },
     cancelSync: () => setSyncSelect(false),

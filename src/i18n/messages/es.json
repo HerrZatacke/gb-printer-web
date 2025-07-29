@@ -12,6 +12,7 @@
     "importSavFramesNone": "Ninguno",
     "importSavFramesUnknown": "Desconocido",
     "importLastSeen": "Importar imagen ‹Visto por última vez› al importar volcados de cartucho",
+    "importSavOrder": "Orden a usar al importar un archivo .sav",
     "importDeleted": "Importar imágenes eliminadas al importar volcados de cartucho",
     "forceMagicCheck": "Forzar archivo .sav válido al importar",
     "importPad": "Rellenar imágenes a 144px de altura al importar",
@@ -23,7 +24,6 @@
     "printerUrlHelper": "Si tienes una impresora WiFi física, puedes agregar su URL aquí y continuar en la <link>🔗 pestaña Importar</link>",
     "printerParams": "Configuraciones adicionales de impresora",
     "enableDebug": "Mostrar información de depuración",
-    "enableImageGroups": "Activar grupos de imágenes {groupCount, plural, =0 {} =1 {(Tienes un grupo)} other {(Tienes # grupos)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Clic selecciona el elemento",
       "clickOpensEditDialog": "Clic abre el diálogo de edición",
@@ -34,6 +34,10 @@
       "cropFrame": "Recortar marco",
       "squareBlack": "Hacer imagen cuadrada (agregar negro)",
       "squareWhite": "Hacer imagen cuadrada (agregar blanco)"
+    },
+    "importOrders": {
+      "cartIndex": "Ordenado por decisión de ROM (como se ve en el carrete de la cámara en la RAM original)",
+      "ramIndex": "Ordenado por orden real en RAM (dirección de memoria)"
     },
     "filenameStyles": {
       "fullTitle": "Título completo",
@@ -286,9 +290,9 @@
     "editRotation": "Editar rotación"
   },
   "Import": {
-    "selectFiles": "Seleccionar archivos",
+    "selectFiles": "Seleccionar archivo(s) para importar",
     "importMemory": "Importar memoria",
-    "importAlbumRolls": "Importar rollos de álbum",
+    "importAlbumRolls": "Importar rollos de álbum de Photo! (ROM + Flash)",
     "serialMonitorLabel": "Monitor serial",
     "import": "Importar",
     "exportImages": "Exportar imágenes",
@@ -320,7 +324,7 @@
     "settings": "Configuraciones",
     "addPlugin": "Agregar plugin",
     "trash": "Papelera",
-    "syncRemote": "Sincronizar remoto",
+    "syncRemote": "Sincronizar con servicio(s) remoto",
     "switchToDark": "Cambiar a oscuro",
     "switchToBright": "Cambiar a claro",
     "usbDisabled": "USB deshabilitado",
@@ -481,11 +485,11 @@
   },
   "SyncSelect": {
     "dialogHeader": "Sincronizar",
-    "syncToGitHub": "Sincronizar con GitHub",
-    "syncToGitHubTitle": "Sincronizar con GitHub\n{repoUrl}",
+    "syncToGitHub": "Sincronizar hacia GitHub",
+    "syncToGitHubTitle": "Sincronizar hacia GitHub\n{repoUrl}",
     "syncFromGitHub": "Sincronizar desde GitHub",
     "syncFromGitHubTitle": "Sincronizar desde GitHub\n{repoUrl}",
-    "syncToDropbox": "Sincronizar con Dropbox",
+    "syncToDropbox": "Sincronizar hacia Dropbox",
     "syncFromDropbox": "Sincronizar desde Dropbox",
     "syncImagesToDropbox": "Sincronizar imágenes con Dropbox",
     "pendingRemoteChangesWarning": "Hay cambios remotos pendientes. Si sincronizas con Dropbox ahora, estos se perderán.",

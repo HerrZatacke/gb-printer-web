@@ -20,6 +20,7 @@ import { fileNameStyleLabels } from '@/consts/fileNameStyles';
 import type { FileNameStyle } from '@/consts/fileNameStyles';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
+import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
 import { useEnv } from '@/contexts/envContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import usePaletteSort from '@/hooks/usePaletteSort';
@@ -53,7 +54,6 @@ const clickActionMenuOptions: ClickActionOption[] = [
 function SettingsGeneric() {
   const {
     enableDebug,
-    enableImageGroups,
     exportFileTypes,
     exportScaleFactors,
     fileNameStyle,
@@ -69,10 +69,10 @@ function SettingsGeneric() {
     printerParams,
     printerUrl,
     savFrameTypes,
+    savImportOrder,
     setExportFileTypes,
     setExportScaleFactors,
     setEnableDebug,
-    setEnableImageGroups,
     setFileNameStyle,
     setForceMagicCheck,
     setGalleryClickAction,
@@ -84,13 +84,14 @@ function SettingsGeneric() {
     setPageSize,
     setPreferredLocale,
     setSavFrameTypes,
+    setSavImportOrder,
     setPrinterParams,
     setPrinterUrl,
   } = useSettingsStore();
 
   const env = useEnv();
 
-  const { frames, frameGroups, imageGroups } = useItemsStore();
+  const { frames, frameGroups } = useItemsStore();
 
   const savFrameGroups = getFrameGroups(frames, frameGroups);
 
@@ -284,6 +285,27 @@ function SettingsGeneric() {
         }
       </TextField>
 
+      <TextField
+        id="settings-sav-order"
+        value={savImportOrder}
+        label={t('importSavOrder')}
+        select
+        onChange={(ev) => {
+          setSavImportOrder(ev.target.value as SavImportOrder);
+        }}
+      >
+        {
+          savImportOptions.map(({ value, translationKey }) => (
+            <MenuItem
+              key={value}
+              value={value}
+            >
+              {t(translationKey)}
+            </MenuItem>
+          ))
+        }
+      </TextField>
+
       <FormControlLabel
         label={t('importLastSeen')}
         control={(
@@ -462,18 +484,6 @@ function SettingsGeneric() {
             checked={enableDebug}
             onChange={({ target }) => {
               setEnableDebug(target.checked);
-            }}
-          />
-        )}
-      />
-
-      <FormControlLabel
-        label={t('enableImageGroups', { groupCount: imageGroups.length })}
-        control={(
-          <Switch
-            checked={enableImageGroups}
-            onChange={({ target }) => {
-              setEnableImageGroups(target.checked);
             }}
           />
         )}

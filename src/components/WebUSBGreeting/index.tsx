@@ -8,9 +8,11 @@ import React, { useEffect, useState } from 'react';
 import MarkdownStack from '@/components/MarkdownStack';
 import ConnectSerial from '@/components/Overlays/ConnectSerial';
 import { usePortsContext } from '@/contexts/ports';
+import useProcessMarkdownLinks from '@/hooks/useProcessMarkdownLinks';
+import { shortLocales } from '@/i18n/locales';
+import readmeEn from '@/i18n/markdown/WebUSB/en.md';
 import useSettingsStore from '@/stores/settingsStore';
 import EnableWebUSB from './EnableWebUSB';
-import readmeEn from './WebUSB.en.md';
 
 function WebUSBGreeting() {
   const { useSerials } = useSettingsStore();
@@ -19,17 +21,18 @@ function WebUSBGreeting() {
   const t = useTranslations('WebUSBGreeting');
 
   const [readme, setReadme] = useState(readmeEn);
+  const processedReadme = useProcessMarkdownLinks(readme);
 
   useEffect(() => {
     const set = async () => {
       let langFile = preferredLocale.split('-')[0];
 
-      if (!['de', 'en'].includes(langFile)) {
+      if (!shortLocales.includes(langFile)) {
         langFile = 'en';
       }
 
       try {
-        setReadme((await import(`./WebUSB.${langFile}.md`)).default);
+        setReadme((await import(`@/i18n/markdown/WebUSB/${langFile}.md`)).default);
       } catch {
         setReadme(readmeEn);
       }
@@ -44,7 +47,7 @@ function WebUSBGreeting() {
       gap={4}
     >
       <MuiMarkdown options={{ wrapper: MarkdownStack }}>
-        {readme}
+        {processedReadme}
       </MuiMarkdown>
       <EnableWebUSB />
       {!useSerials ? null : (

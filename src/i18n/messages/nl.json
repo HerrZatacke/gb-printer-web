@@ -12,6 +12,7 @@
     "importSavFramesNone": "Geen",
     "importSavFramesUnknown": "Onbekend",
     "importLastSeen": "‘Laatst gezien’-afbeelding importeren bij het importeren van cartridge dumps",
+    "importSavOrder": "Volgorde om te gebruiken bij het importeren van een .sav-bestand",
     "importDeleted": "Verwijderde afbeeldingen importeren bij het importeren van cartridge dumps",
     "forceMagicCheck": "Geldige .sav-bestand afdwingen bij importeren",
     "importPad": "Afbeeldingen opvullen tot 144px hoogte bij import",
@@ -23,7 +24,6 @@
     "printerUrlHelper": "Als je een fysieke WiFi-printer hebt, kun je de URL hier toevoegen en doorgaan in de <link>🔗 Import-tab</link>",
     "printerParams": "Extra printerinstellingen",
     "enableDebug": "Debug-informatie tonen",
-    "enableImageGroups": "Afbeeldingsgroepen inschakelen {groupCount, plural, =0 {} =1 {(Je hebt één groep)} other {(Je hebt # groepen)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Klik selecteert het item",
       "clickOpensEditDialog": "Klik opent bewerkingsdialoog",
@@ -34,6 +34,10 @@
       "cropFrame": "Kader bijsnijden",
       "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
       "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
+    },
+    "importOrders": {
+      "cartIndex": "Gesorteerd op ROM-beslissing (zoals te zien in camerarol in oorspronkelijke RAM)",
+      "ramIndex": "Gesorteerd op werkelijke volgorde in RAM (geheugenadres)"
     },
     "filenameStyles": {
       "fullTitle": "Volledige titel",

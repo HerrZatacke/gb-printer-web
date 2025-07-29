@@ -19,7 +19,6 @@ export interface ReduxState {
   // SettingsState
   activePalette: string,
   enableDebug: boolean,
-  enableImageGroups: boolean,
   exportFileTypes: string[],
   exportScaleFactors: number[],
   forceMagicCheck: boolean,

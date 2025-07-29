@@ -1,4 +1,3 @@
-import Alert from '@mui/material/Alert';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';

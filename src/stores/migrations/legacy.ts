@@ -36,7 +36,6 @@ export const migrateLegacy = (): boolean => {
       state: {
         activePalette: legacyState.activePalette || 'bw',
         enableDebug: legacyState.enableDebug || false,
-        enableImageGroups: legacyState.enableImageGroups || false,
         exportFileTypes: legacyState.exportFileTypes || ['png'],
         exportScaleFactors: legacyState.exportScaleFactors || [4],
         forceMagicCheck: legacyState.forceMagicCheck || false,

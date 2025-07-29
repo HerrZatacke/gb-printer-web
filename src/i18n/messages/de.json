@@ -12,6 +12,7 @@
     "importSavFramesNone": "Keine",
     "importSavFramesUnknown": "Unbekannt",
     "importLastSeen": "‚Zuletzt gesehen‘-Bild beim Importieren von Cartridge-Dumps importieren",
+    "importSavOrder": "Reihenfolge beim Importieren einer .sav-Datei",
     "importDeleted": "Gelöschte Bilder beim Importieren von Cartridge-Dumps importieren",
     "forceMagicCheck": "Gültige .sav-Datei beim Importieren erzwingen",
     "importPad": "Bilder beim Import auf 144px Höhe auffüllen",
@@ -23,7 +24,6 @@
     "printerUrlHelper": "Wenn du einen physischen WLAN-Drucker besitzt, kannst du dessen URL hier hinzufügen und im <link>🔗 Import-Tab</link> weiter machen",
     "printerParams": "Zusätzliche Druckereinstellungen",
     "enableDebug": "Debug-Informationen anzeigen",
-    "enableImageGroups": "Bildgruppen aktivieren {groupCount, plural, =0 {} =1 {(Du hast eine Gruppe)} other {(Du hast # Gruppen)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Klick wählt das Element aus",
       "clickOpensEditDialog": "Klick öffnet Bearbeitungsdialog",
@@ -34,6 +34,10 @@
       "cropFrame": "Rahmen zuschneiden",
       "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
       "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
+    },
+    "importOrders": {
+      "cartIndex": "Sortiert nach ROM-Entscheidung (wie in der Kamerarolle im ursprünglichen RAM zu sehen)",
+      "ramIndex": "Sortiert nach tatsächlicher Reihenfolge im RAM (Speicheradresse)"
     },
     "filenameStyles": {
       "fullTitle": "Vollständiger Titel",
@@ -481,11 +485,11 @@
   },
   "SyncSelect": {
     "dialogHeader": "Synchronisieren",
-    "syncToGitHub": "Mit GitHub synchronisieren",
-    "syncToGitHubTitle": "Mit GitHub synchronisieren\n{repoUrl}",
+    "syncToGitHub": "Nach GitHub synchronisieren",
+    "syncToGitHubTitle": "Nach GitHub synchronisieren\n{repoUrl}",
     "syncFromGitHub": "Von GitHub synchronisieren",
     "syncFromGitHubTitle": "Von GitHub synchronisieren\n{repoUrl}",
-    "syncToDropbox": "Mit Dropbox synchronisieren",
+    "syncToDropbox": "Nach Dropbox synchronisieren",
     "syncFromDropbox": "Von Dropbox synchronisieren",
     "syncImagesToDropbox": "Bilder mit Dropbox synchronisieren",
     "pendingRemoteChangesWarning": "Es gibt ausstehende Remote-Änderungen. Wenn du jetzt mit Dropbox synchronisierst, gehen diese verloren.",

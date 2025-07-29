@@ -1,3 +1,4 @@
+import { SavImportOrder } from '@/consts/SavImportOrder';
 import type { Frame } from '@/types/Frame';
 
 export enum RomTypes {
@@ -70,6 +71,7 @@ export type ImportSavFn = (selectedFrameset: string, cartIsJP: boolean) => Promi
 
 export interface ImportSavParams {
   importLastSeen: boolean,
+  savImportOrder: SavImportOrder,
   data: Uint8Array,
   lastModified: number,
   frames: Frame[],

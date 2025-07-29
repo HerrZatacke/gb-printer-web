@@ -2,9 +2,10 @@ import { EventEmitter } from 'events';
 import type { DropboxAuth, DropboxOptions, DropboxResponse } from 'dropbox';
 import { Dropbox } from 'dropbox';
 import type { files as Files, async as Async } from 'dropbox/types/dropbox_types';
-import useInteractionsStore from '@/stores/interactionsStore';
 import { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
+import useStoragesStore from '@/stores/storagesStore';
 import cleanPath from '@/tools/cleanPath';
+import { delay } from '@/tools/delay';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import type { DropBoxRepoFile, RepoContents, RepoTasks } from '@/types/Export';
 import type { JSONExportState } from '@/types/ExportState';
@@ -159,18 +160,7 @@ class DropboxClient extends EventEmitter {
     });
   }
 
-  async getRemoteContents(direction: 'diff' | 'up' | 'down'): Promise<RepoContents> {
-    const get = ['images', 'frames'];
-    const isSilent = direction === 'diff';
-
-    const loggedIn = await this.checkLoginStatus();
-    if (!loggedIn) {
-      throw new Error('not logged in');
-    }
-
-
-    let settings: JSONExportState;
-
+  async getRemoteSettings(isSilent: boolean): Promise<JSONExportState> {
     try {
       const response: DropboxResponse<unknown> = await this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
         this.dbx.filesDownload({ path: this.toPath('/settings/settings.json') })
@@ -178,16 +168,27 @@ class DropboxClient extends EventEmitter {
       const result = response.result as (Files.FileMetadata & { fileBlob: Blob });
 
       const settingsText = await readFileAs(result.fileBlob, ReadAs.TEXT);
-      settings = JSON.parse(settingsText) as JSONExportState;
+      return JSON.parse(settingsText) as JSONExportState;
     } catch {
-      settings = {
+      return {
         state: {
           lastUpdateUTC: 0,
           version: ITEMS_STORE_VERSION,
         },
       };
     }
+  }
 
+  async getRemoteContents(): Promise<RepoContents> {
+    const get = ['images', 'frames'];
+    const isSilent = false;
+
+    const loggedIn = await this.checkLoginStatus();
+    if (!loggedIn) {
+      throw new Error('not logged in');
+    }
+
+    const settings = await this.getRemoteSettings(isSilent);
 
     const [images, frames] = await Promise.all(get.map(async (folderPath) => {
       let entries: DBFolderAll[];
@@ -383,43 +384,22 @@ class DropboxClient extends EventEmitter {
     };
   }
 
-  startLongPollSettings() {
-
+  async startLongPollSettings() {
     console.info('Start dropbox longpolling');
 
-    this.dbx.filesListFolderGetLatestCursor({
-      path: this.toPath('/settings'),
-      recursive: false,
-      include_media_info: false,
-      include_deleted: false,
-      include_has_explicit_shared_members: false,
-    })
-      .then(({ result: { cursor } }) => {
+    while (useStoragesStore.getState().dropboxStorage.autoDropboxSync) {
+      try {
+        const settings = await this.getRemoteSettings(true);
 
-        const longPoll = () => this.dbx.filesListFolderLongpoll({
-          cursor,
-          timeout: 480,
-        });
+        if (settings.state.lastUpdateUTC) {
+          useStoragesStore.getState().setSyncLastUpdate('dropbox', settings.state.lastUpdateUTC);
+        }
+      } catch (error) {
+        console.error('Error polling Dropbox settings:', error);
+      }
 
-        return longPoll()
-          .then(({ result: { changes } }) => {
-
-            console.info('Longpoll info. Changes: ', changes);
-
-            if (changes) {
-              this.emit('settingsChanged');
-              return this.addToQueue('Restart longpolling', this.throttle, () => {
-                this.startLongPollSettings();
-                return Promise.resolve(null as unknown as DropboxResponse<unknown>);
-              }, true);
-            }
-
-            return longPoll();
-          });
-      })
-      .catch((error) => {
-        useInteractionsStore.getState().setError(error);
-      });
+      await delay(20000);
+    }
   }
 }
 

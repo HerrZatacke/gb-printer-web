@@ -1,4 +1,5 @@
 import Queue from 'promise-queue';
+import { SavImportOrder } from '@/consts/SavImportOrder';
 import useImportsStore from '@/stores/importsStore';
 import applyFrame from '@/tools/applyFrame';
 import { randomId } from '@/tools/randomId';
@@ -15,6 +16,7 @@ const sortByAlbumIndex = sortBy<(FileMetaData & WithTiles)>('albumIndex');
 
 const getImportSav = ({
   importLastSeen,
+  savImportOrder,
   data,
   lastModified,
   frames,
@@ -87,7 +89,9 @@ const getImportSav = ({
       }),
     );
 
-    const sortedImages = sortByAlbumIndex(images.filter(Boolean) as (FileMetaData & WithTiles)[]);
+    const ramOrderImages = images.filter(Boolean) as (FileMetaData & WithTiles)[];
+
+    const sortedImages = savImportOrder === SavImportOrder.RAM_INDEX ? ramOrderImages : sortByAlbumIndex(ramOrderImages);
 
     const queue = new Queue(1, Infinity);
 

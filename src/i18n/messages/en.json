@@ -11,6 +11,7 @@
     "importSavFrames": "Frames to be applied when importing Cartridge dumps",
     "importSavFramesNone": "None",
     "importSavFramesUnknown": "Unknown",
+    "importSavOrder": "Order to use when importing a .sav file",
     "importLastSeen": "Import ‘last seen’ image when importing Cartridge dumps",
     "importDeleted": "Import deleted images when importing Cartridge dumps",
     "forceMagicCheck": "Force valid .sav file when importing",
@@ -23,7 +24,6 @@
     "printerUrlHelper": "If you own a physical wifi-printer, you can add its URL here and check the <link>🔗 Import-tab</link>",
     "printerParams": "Additional printer settings",
     "enableDebug": "Show debug info",
-    "enableImageGroups": "Enable Image Groups {groupCount, plural, =0 {} =1 {(you have one group)} other {(you have # groups)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Click selects the item",
       "clickOpensEditDialog": "Click opens edit dialog",
@@ -34,6 +34,10 @@
       "cropFrame": "Crop frame",
       "squareBlack": "Make image squared (add black)",
       "squareWhite": "Make image squared (add white)"
+    },
+    "importOrders": {
+      "cartIndex": "Sorted by ROMs decision (as seen in camera roll in original RAM)",
+      "ramIndex":"Sorted by actual order in RAM (memory address)"
     },
     "filenameStyles": {
       "fullTitle": "Full Title",
