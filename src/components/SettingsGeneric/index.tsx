@@ -54,7 +54,6 @@ const clickActionMenuOptions: ClickActionOption[] = [
 function SettingsGeneric() {
   const {
     enableDebug,
-    enableImageGroups,
     exportFileTypes,
     exportScaleFactors,
     fileNameStyle,
@@ -74,7 +73,6 @@ function SettingsGeneric() {
     setExportFileTypes,
     setExportScaleFactors,
     setEnableDebug,
-    setEnableImageGroups,
     setFileNameStyle,
     setForceMagicCheck,
     setGalleryClickAction,
@@ -93,7 +91,7 @@ function SettingsGeneric() {
 
   const env = useEnv();
 
-  const { frames, frameGroups, imageGroups } = useItemsStore();
+  const { frames, frameGroups } = useItemsStore();
 
   const savFrameGroups = getFrameGroups(frames, frameGroups);
 
@@ -486,18 +484,6 @@ function SettingsGeneric() {
             checked={enableDebug}
             onChange={({ target }) => {
               setEnableDebug(target.checked);
-            }}
-          />
-        )}
-      />
-
-      <FormControlLabel
-        label={t('enableImageGroups', { groupCount: imageGroups.length })}
-        control={(
-          <Switch
-            checked={enableImageGroups}
-            onChange={({ target }) => {
-              setEnableImageGroups(target.checked);
             }}
           />
         )}

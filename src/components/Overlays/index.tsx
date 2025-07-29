@@ -28,7 +28,7 @@ import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 
 function Overlays() {
-  const { enableImageGroups, useSerials } = useSettingsStore();
+  const { useSerials } = useSettingsStore();
 
   const { dialogs } = useDialogsStore();
 
@@ -45,7 +45,7 @@ function Overlays() {
 
   const showEditForm = !!editImages?.batch?.length;
   const showEditFrame = !!editFrame;
-  const showEditImageGroup = !!editImageGroup && enableImageGroups;
+  const showEditImageGroup = !!editImageGroup;
   const showEditPalette = !!editPalette;
   const showEditRGBN = editRGBNImages.length > 0;
   const showPickColors = !!pickColors;
