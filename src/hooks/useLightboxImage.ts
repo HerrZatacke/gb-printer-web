@@ -99,7 +99,7 @@ export const useLightboxImage = (): UseLightboxImage => {
   // const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const { palettes } = useItemsStore();
-  const viewImages = getFilteredImages(view.images, filtersState);
+  const viewImages = getFilteredImages(view, filtersState);
 
   const filteredImages = useMemo<Image[]>(() => (
     viewImages.filter(({ hash }) => !covers.includes(hash))

@@ -113,7 +113,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
     setLightboxImage: () => {
       setLightboxImage(
         getFilteredImages(
-          view.images,
+          view,
           { filtersActiveTags, sortBy, recentImports },
         )
           .filter((img) => !covers.includes(img.hash))

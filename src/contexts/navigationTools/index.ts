@@ -31,8 +31,8 @@ export const useNavigationTools = (): UseNavigationTools => {
   const { sortBy, filtersActiveTags, recentImports } = useFiltersStore();
   const { pageSize } = useSettingsStore();
 
-  const imageFilter = useCallback((images: Image[]): Image[] => (
-    getFilteredImages(images, {
+  const imageFilter = useCallback((group: TreeImageGroup): Image[] => (
+    getFilteredImages(group, {
       filtersActiveTags,
       sortBy,
       recentImports,
@@ -40,7 +40,7 @@ export const useNavigationTools = (): UseNavigationTools => {
   ), [filtersActiveTags, recentImports, sortBy]);
 
   const getImagePageIndexInGroup = useCallback((imageHash: string, parentGroup: TreeImageGroup) => {
-    const sortedImages = imageFilter(parentGroup.images);
+    const sortedImages = imageFilter(parentGroup);
     const imageIndex = sortedImages.findIndex(({ hash }) => (
       hash === imageHash
     ));

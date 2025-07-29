@@ -116,7 +116,7 @@ export const dropBoxSyncTool = (
 
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
-    const images: Image[] = getFilteredImages(stateImages, filtersState);
+    const images: Image[] = getFilteredImages({ images: stateImages, groups: [] }, filtersState);
     const prepareFiles = getPrepareFiles(
       exportScaleFactors,
       exportFileTypes,

@@ -103,16 +103,20 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     });
   }, [hash, selectionIndex, palettes, stateImages]);
 
-  const { images: treeImages } = useGalleryTreeContext();
+  const { view, covers } = useGalleryTreeContext();
 
   return {
     galleryImageData,
     updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => {
       if (shift) {
         const images = getFilteredImages(
-          treeImages,
+          view,
           { filtersActiveTags, sortBy, recentImports },
-        );
+        )
+          .filter((image) => (
+            !covers.includes(image.hash)
+          ));
+
         const selectedIndex = images.findIndex((image) => image.hash === hash);
         let prevSelectedIndex = images.findIndex((image) => image.hash === lastSelectedImage);
         if (prevSelectedIndex === -1) {
