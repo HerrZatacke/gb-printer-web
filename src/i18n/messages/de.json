@@ -203,7 +203,7 @@
     "convertFramesFormat": "Rahmen in neues Format konvertieren"
   },
   "GalleryGroup": {
-    "itemCount": "{count} Elemente"
+    "itemCount": "{count} Bilder"
   },
   "GalleryGroupContextMenu": {
     "edit": "Bearbeiten",

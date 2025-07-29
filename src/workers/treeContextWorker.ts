@@ -15,6 +15,39 @@ import { type SerializableImageGroup, type TreeImageGroup } from '@/types/ImageG
 
 const MAX_INFLATE_DEPTH = 20;
 
+const getDeepChildImages = (
+  imageHashes: string[],
+  childGroups: TreeImageGroup[],
+  stateImageMap: Map<string, Image>,
+): Image[] => {
+  const imageMap = new Map<string, Image>();
+
+  // Add direct images from this group
+  imageHashes.forEach((hash) => {
+    const image = stateImageMap.get(hash);
+    if (image) {
+      imageMap.set(hash, image);
+    }
+  });
+
+  // Recursively add images from child groups
+  childGroups.forEach((childGroup) => {
+    // Add the child group's direct images
+    childGroup.images.forEach((image) => {
+      imageMap.set(image.hash, image);
+    });
+
+    // Recursively get images from nested groups
+    const childImageHashes = childGroup.images.map(image => image.hash);
+    const childImages = getDeepChildImages(childImageHashes, childGroup.groups, stateImageMap);
+    childImages.forEach((image) => {
+      imageMap.set(image.hash, image);
+    });
+  });
+
+  return Array.from(imageMap.values());
+};
+
 const filterAndTagImages = (
   imageHashes: string[],
   childGroups: TreeImageGroup[],
@@ -95,6 +128,8 @@ const inflateImageGroup = (depth: number, stateImageMap: Map<string, Image>, set
 
   const images = filterAndTagImages(imageGroup.images, childGroups, stateImageMap);
 
+  const allImages = getDeepChildImages(imageGroup.images, childGroups, stateImageMap);
+
   const foundCoverImage: Image | undefined = images.find(({ hash }) => hash === imageGroup.coverImage) || images[0];
 
   const coverImage = foundCoverImage?.hash || imageGroup.coverImage;
@@ -109,6 +144,7 @@ const inflateImageGroup = (depth: number, stateImageMap: Map<string, Image>, set
     coverImage,
     groups: childGroups,
     images,
+    allImages, // allImages contains all children recursively. E.g. for filtering
     tags,
   });
 };
@@ -138,7 +174,7 @@ const workerApi: TreeContextWorkerApi = {
     ), []); // remove images which are children of other groups
 
     const root = {
-      ...createTreeRoot(),
+      ...createTreeRoot(stateImages),
       groups: rootChildGroups,
       images: filterAndTagImages(rootImageHashes, rootChildGroups, stateImageMap),
     };

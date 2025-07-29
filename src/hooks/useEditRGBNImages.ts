@@ -49,15 +49,14 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const { sortBy } = useFiltersStore();
   const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
-  const { addImageGroup, images } = useItemsStore();
+  const { addImageGroup } = useItemsStore();
 
   const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5);
 
   const globalSortDirection = sortBy.split('_')[1];
 
   const sortedImages = useMemo<MonochromeImage[]>(() => {
-
-    const filtered = getFilteredImages(images, {
+    const filtered = getFilteredImages(view, {
       filtersActiveTags: [],
       sortBy,
       recentImports: [],
@@ -76,7 +75,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
         return [...acc, image];
       }, []);
-  }, [editRGBNImages, globalSortDirection, images, sortBy]);
+  }, [editRGBNImages, globalSortDirection, view, sortBy]);
 
   const [order, setOrder] = useState<RGBOrder>(['r', 'g', 'b', 's', 'n']);
   const [grouping, setGrouping] = useState<RGBGrouping>(

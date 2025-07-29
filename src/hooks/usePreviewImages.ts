@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import useFiltersStore from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
 import type { FilteredImagesState } from '@/tools/getFilteredImages';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
@@ -11,7 +11,7 @@ import type { Image, MonochromeImage } from '@/types/Image';
 const uniqeHash = uniqueBy<Image>('hash');
 
 const usePreviewImages = (): MonochromeImage[] => {
-  const { images } = useItemsStore();
+  const { root } = useGalleryTreeContext();
 
   const {
     imageSelection,
@@ -27,17 +27,17 @@ const usePreviewImages = (): MonochromeImage[] => {
   return useMemo<MonochromeImage[]>(() => {
     const selectedImages = imageSelection
       .map((imageHash) => (
-        images.find(({ hash }) => hash === imageHash)
+        root.allImages.find(({ hash }) => hash === imageHash)
       ))
       .reduce(reduceImagesMonochrome, []);
 
     const filtered = (selectedImages.length > 1) ?
       [] :
-      getFilteredImages(images, filterState).reduce(reduceImagesMonochrome, []);
+      getFilteredImages(root, filterState).reduce(reduceImagesMonochrome, []);
 
     const allImages = ((selectedImages.length + filtered.length) > 1) ?
       [] :
-      [...images]
+      [...root.allImages]
         .map(addSortIndex)
         .sort(sortImages(filterState.sortBy))
         .map(removeSortIndex)
@@ -56,7 +56,7 @@ const usePreviewImages = (): MonochromeImage[] => {
       previewImages.shift(),
       previewImages.pop(),
     ].reduce(reduceImagesMonochrome, []);
-  }, [filterState, imageSelection, images]);
+  }, [filterState, imageSelection, root]);
 };
 
 export default usePreviewImages;

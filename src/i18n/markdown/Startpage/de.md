@@ -3,11 +3,11 @@
 Game Boy Camera Gallery ist eine Web-App zum Organisieren, Bearbeiten und Teilen von Aufnahmen der Game Boy Camera.
 
 ## [Galerie](/gallery)
-Durchsuche alle importierten Aufnahmen in einer responsiven Galerie:
+Betrachte und verwalte alle importierten Aufnahmen in einer responsiven Galerie:
 - Bilder mit Tags versehen
 - Aufnahmen in Bildgruppen zusammenfassen
 - Deine Sammlung filtern
-- Metadaten von unterstützten ROMs wie [Photo!](https://github.com/untoxa/gb-photo) anzeigen oder sogar die grundlegenden Informationen aus dem ursprünglichen Game Boy Camera ROM
+- Metadaten von aus Savestates von ROMs wie [Photo!](https://github.com/untoxa/gb-photo) oder dem originalen Game Boy Camera ROM anzeigen
 - Bilder auf einem originalen Game Boy Printer mit seriellen Kommunikationsgeräten drucken
 
 ### Bildgruppen
@@ -24,7 +24,7 @@ Direkte Verbindung zu Community-Projekt Geräten über WebSerial:
 
 ### Cartridge-Kommunikation
 - WebSerial in Chrome aktivieren, um direkt mit dem GBxCart zu kommunizieren (nur Desktop)
-- Ein Gerät mit Lesserkumas Firmware für verschiedene Geräte verwenden (z.B. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
+- Ein Cartridge-Leser mit Lesserkumas Firmware zum Laden von Savestates verwenden (z.B. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
 
 ### Game Boy Printer Emulatoren
 Einen Printer-Emulator über WebSerial verbinden, um direkt von der Game Boy Camera in die WebApp zu drucken:

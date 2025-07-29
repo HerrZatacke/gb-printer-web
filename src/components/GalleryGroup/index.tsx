@@ -49,7 +49,7 @@ function GalleryGroup({ hash }: Props) {
     <GalleryGridItem
       selectionText=""
       title={group.title}
-      subheader={t('itemCount', { count: group.images.length })}
+      subheader={t('itemCount', { count: group.allImages.length })}
       wrapperProps={{
         component: Link,
         href: getUrl({ group: path || '', pageIndex: 0 }),

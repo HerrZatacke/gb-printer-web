@@ -203,7 +203,7 @@
     "convertFramesFormat": "Kaders naar nieuw formaat converteren"
   },
   "GalleryGroup": {
-    "itemCount": "{count} items"
+    "itemCount": "{count} afbeeldingen"
   },
   "GalleryGroupContextMenu": {
     "edit": "Bewerken",

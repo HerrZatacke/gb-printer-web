@@ -203,7 +203,7 @@
     "convertFramesFormat": "Convertir marcos a nuevo formato"
   },
   "GalleryGroup": {
-    "itemCount": "{count} elementos"
+    "itemCount": "{count} imágenes"
   },
   "GalleryGroupContextMenu": {
     "edit": "Editar",

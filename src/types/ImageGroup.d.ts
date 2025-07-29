@@ -20,4 +20,5 @@ export interface TreeImageGroup extends BaseImageGroup {
   groups: TreeImageGroup[],
   images: Image[],
   tags: string[],
+  allImages: Image[],
 }
