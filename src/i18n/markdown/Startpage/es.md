@@ -28,10 +28,10 @@ Conecta directamente con dispositivos de proyectos de la comunidad usando WebSer
 
 ### Emuladores de Game Boy Printer
 Conecta un emulador de impresora a través de WebSerial para imprimir desde tu Game Boy Camera directamente a la WebApp:
-- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) - Emulador basado en Arduino por mofosyne
-- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) - Implementación para Raspberry Pi Pico por untoxa
-- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) - Implementación para Arduino Nano por Rafael Zenaro
-- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) - Emulador WiFi ESP8266 con servidor web integrado que puede alojar esta webapp
+- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) – Emulador basado en Arduino por mofosyne
+- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) – Implementación para Raspberry Pi Pico por untoxa
+- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – Implementación para Arduino Nano por Rafael Zenaro
+- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) – Emulador WiFi ESP8266 con servidor web integrado que puede alojar esta webapp
 
 ## [Importar](/import)
 Importa imágenes de múltiples fuentes mediante arrastrar y soltar:
@@ -53,8 +53,8 @@ Trabajar con paletas de colores:
 
 ## [Complementos](/settings/plugins)
 Amplía la caja de herramientas con complementos de la comunidad:
-- «Average» - Crear imágenes compuestas de múltiples fotos (estilo HDR)
-- «Custom Pixels» - Reemplazar píxeles individuales con representaciones detalladas
+- «Average» – Crear imágenes compuestas de múltiples fotos (estilo HDR)
+- «Custom Pixels» – Reemplazar píxeles individuales con representaciones detalladas
 
 ## [Sincronización Dropbox](/settings/dropbox)
 Mantén tu galería sincronizada entre dispositivos. Habilita Dropbox y podrás sincronizar tu biblioteca.

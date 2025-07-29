@@ -28,10 +28,10 @@ Connectez-vous directement aux dispositifs de projets communautaires en utilisan
 
 ### Émulateurs de Game Boy Printer
 Connectez un émulateur d'imprimante via WebSerial pour imprimer depuis votre Game Boy Camera directement vers l'application web :
-- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) - Émulateur basé sur Arduino par mofosyne
-- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) - Implémentation Raspberry Pi Pico par untoxa
-- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) - Implémentation Arduino Nano par Rafael Zenaro
-- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) - Émulateur WiFi ESP8266 avec serveur web intégré qui peut héberger cette webapp
+- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) – Émulateur basé sur Arduino par mofosyne
+- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) – Implémentation Raspberry Pi Pico par untoxa
+- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – Implémentation Arduino Nano par Rafael Zenaro
+- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) – Émulateur WiFi ESP8266 avec serveur web intégré qui peut héberger cette webapp
 
 ## [Import](/import)
 Importez des images depuis plusieurs sources par glisser-déposer :
@@ -53,8 +53,8 @@ Travaillez avec des palettes de couleurs :
 
 ## [Plugins](/settings/plugins)
 Étendez la boîte à outils avec des plug-ins communautaires :
-- « Average » - Créez des images composites à partir de plusieurs prises (style HDR)
-- « Custom Pixels » - Remplacez des pixels individuels par des représentations détaillées
+- « Average » – Créez des images composites à partir de plusieurs prises (style HDR)
+- « Custom Pixels » – Remplacez des pixels individuels par des représentations détaillées
 
 ## [Synchronisation Dropbox](/settings/dropbox)
 Gardez votre galerie synchronisée sur tous vos appareils. Activez Dropbox et vous pourrez synchroniser votre bibliothèque.
