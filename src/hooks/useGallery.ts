@@ -33,7 +33,7 @@ export const useGallery = (): UseGallery => {
   const { images: stateImages } = useItemsStore();
 
   const totalImageCount = stateImages.length;
-  const filteredCount = getFilteredImagesCount(view.images, filtersActiveTags, recentImports);
+  const filteredCount = getFilteredImagesCount(view, filtersActiveTags, recentImports);
   const totalPages = pageSize ? Math.ceil(view.images.length / pageSize) : 1;
   const maxPage = Math.max(0, totalPages - 1);
   const page = Math.max(0, Math.min(pageIndex, maxPage));
@@ -46,14 +46,14 @@ export const useGallery = (): UseGallery => {
   const pSize = pageSize;
   const selectedCount = imageSelection.length;
   const images = getFilteredImages(
-    view.images,
+    view,
     { filtersActiveTags, recentImports, sortBy },
   )
     .splice(iOffset, pSize || Infinity);
 
   const maxPageIndex = useMemo(() => (
     pageSize ?
-      Math.ceil(getFilteredImagesCount(view.images, filtersActiveTags, recentImports) / pageSize) - 1 :
+      Math.ceil(getFilteredImagesCount(view, filtersActiveTags, recentImports) / pageSize) - 1 :
       0
   ), [filtersActiveTags, pageSize, recentImports, view]);
 

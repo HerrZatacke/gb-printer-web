@@ -54,10 +54,17 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const { view, covers } = useGalleryTreeContext();
 
   const indexOffset = page * pageSize;
-  const images: Image[] = getFilteredImages(view.images, { sortBy, filtersActiveTags, recentImports }) // take images from current VIEW (including covers)
-    .splice(indexOffset, pageSize || Infinity) // use images of the current PAGE
-    .filter((image: Image) => !covers.includes(image.hash)); // And remove covers AFTERWARDS
-  const selectedImages = images.filter(({ hash }) => imageSelection.includes(hash));
+
+  const currentPageImages: Image[] = useMemo(() => (
+    getFilteredImages(view, { sortBy, filtersActiveTags, recentImports }) // take images from current VIEW (including covers)
+      .splice(indexOffset, pageSize || Infinity) // use images of the current PAGE
+      .filter((image: Image) => !covers.includes(image.hash)) // And remove covers AFTERWARDS
+  ), [covers, filtersActiveTags, indexOffset, pageSize, recentImports, sortBy, view]);
+
+  const selectedImages = useMemo(() => (
+    currentPageImages.filter(({ hash }) => imageSelection.includes(hash))
+  ), [currentPageImages, imageSelection]);
+
   const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
 
   const batchImages: Image[] = useMemo(() => (
@@ -120,15 +127,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
       }
     },
     checkAll: () => {
-      setImageSelection(
-        getFilteredImages(view.images, {
-          filtersActiveTags,
-          sortBy,
-          recentImports,
-        })
-          .slice(page * pageSize, (page + 1) * pageSize || undefined)
-          .map(({ hash }) => hash),
-      );
+      setImageSelection(currentPageImages.map(({ hash }) => hash));
     },
     unCheckAll: () => setImageSelection([]),
     filter: () => setFiltersVisible(true),

@@ -1,10 +1,10 @@
 {
   "name": "gb-printer-web",
-  "version": "1.49.12",
+  "version": "1.49.13",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run build:clean && npm run build:build && npm run build:replace && npm run build:shorten",
+    "build": "npm run build:clean && npm run lint && npm run build:build && npm run build:replace && npm run build:shorten",
     "build:build": "next build",
     "build:clean": "rimraf out && rimraf o",
     "build:replace": "node scripts/replaceInFiles.mjs",
