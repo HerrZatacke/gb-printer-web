@@ -1,4 +1,5 @@
 import Queue from 'promise-queue';
+import { SyncDirection } from '@/consts/sync';
 import type { UseStores } from '@/hooks/useStores';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
@@ -63,7 +64,7 @@ export const dropBoxSyncTool = (
     dropboxClient.setRootPath(dropBoxSettings.path || '/');
   };
 
-  const startSyncData = async (direction: 'up' | 'down') => {
+  const startSyncData = async (direction: SyncDirection) => {
     setSyncBusy(true);
     setSyncSelect(false);
 
@@ -71,7 +72,7 @@ export const dropBoxSyncTool = (
     const repoContents: RepoContents = await dropboxClient.getRemoteContents();
 
     switch (direction) {
-      case 'up': {
+      case SyncDirection.UP: {
         const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
         const changes = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
         await dropboxClient.upload(changes, 'settings');
@@ -79,7 +80,7 @@ export const dropBoxSyncTool = (
         break;
       }
 
-      case 'down': {
+      case SyncDirection.DOWN: {
         const syncedState = await saveLocalStorageItems(repoContents);
         await remoteImport(syncedState);
 

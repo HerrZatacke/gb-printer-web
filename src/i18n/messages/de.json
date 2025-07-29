@@ -485,8 +485,8 @@
   },
   "SyncSelect": {
     "dialogHeader": "Synchronisieren",
-    "syncToGitHub": "Mit GitHub synchronisieren",
-    "syncToGitHubTitle": "Mit GitHub synchronisieren\n{repoUrl}",
+    "syncToGitHub": "Nach GitHub synchronisieren",
+    "syncToGitHubTitle": "Nach GitHub synchronisieren\n{repoUrl}",
     "syncFromGitHub": "Von GitHub synchronisieren",
     "syncFromGitHubTitle": "Von GitHub synchronisieren\n{repoUrl}",
     "syncToDropbox": "Nach Dropbox synchronisieren",

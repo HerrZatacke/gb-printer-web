@@ -1,4 +1,5 @@
 import Queue from 'promise-queue';
+import { SyncDirection } from '@/consts/sync';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
@@ -51,7 +52,7 @@ export const gitSyncTool = (
     await octoClient.setOctokit(gitSettings);
   };
 
-  const startSyncData = async (direction: 'up' | 'down') => {
+  const startSyncData = async (direction: SyncDirection) => {
     setSyncBusy(true);
     setSyncSelect(false);
 
@@ -59,14 +60,14 @@ export const gitSyncTool = (
       const repoContents = await octoClient.getRepoContents();
 
       switch (direction) {
-        case 'up': {
+        case SyncDirection.UP: {
           const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
           const repoTasks = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
           await octoClient.updateRemoteStore(repoTasks);
           break;
         }
 
-        case 'down': {
+        case SyncDirection.DOWN: {
           const syncedState = await saveLocalStorageItems(repoContents);
           remoteImport(syncedState);
 
