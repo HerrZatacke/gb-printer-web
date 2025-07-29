@@ -13,7 +13,7 @@ interface UseSyncSelect {
   gitActive: boolean,
   syncLastUpdate: SyncLastUpdate,
   autoDropboxSync: boolean,
-  startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => void,
+  startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down') => void,
   cancelSync: () => void,
 }
 
@@ -40,16 +40,12 @@ export const useSyncSelect = (): UseSyncSelect => {
     ),
     autoDropboxSync: dropboxStorage.autoDropboxSync || false,
     syncLastUpdate,
-    startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down' | 'diff') => {
+    startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down') => {
       if (storageType === 'dropbox') {
         dropboxStorageTool(stores, remoteImport).startSyncData(direction);
       } else if (storageType === 'dropboximages') {
         dropboxStorageTool(stores, remoteImport).startSyncImages();
       } else {
-        if (direction === 'diff') {
-          throw new Error('diff is invalid direction for github sync');
-        }
-
         gitStorageTool(remoteImport).startSyncData(direction);
       }
     },
