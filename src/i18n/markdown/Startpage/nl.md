@@ -2,6 +2,14 @@
 
 Game Boy Camera Gallery is een web-app om foto's gemaakt met de Game Boy Camera te organiseren, bewerken en delen.
 
+## [Galerij](/gallery)
+Bekijk alle geïmporteerde foto's in een responsieve galerij:
+- Tag afbeeldingen
+- Combineer foto's in afbeeldingsgroepen
+- Filter je collectie
+- Bekijk metadata van ondersteunde ROMs zoals [Photo!](https://github.com/untoxa/gb-photo) of zelfs de basis informatie van de originele Game Boy Camera ROM
+- Met [WebSerial](/webusb) ingeschakeld, print afbeeldingen op een originele Game Boy Printer met de [Super Printer Interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) door Raphaël Boichot
+
 ## [Import](/import)
 Importeer afbeeldingen uit meerdere bronnen via Drag-and-drop:
 - Cartridge savestates („.sav“-dumps inclusief de 1MB versie van [FlashGBX](https://github.com/lesserkuma/FlashGBX))
@@ -16,14 +24,6 @@ Importeer afbeeldingen uit meerdere bronnen via Drag-and-drop:
   - [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) – Raspberry Pi Pico implementatie door untoxa
   - [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – Arduino Nano implementatie door Rafael Zenaro
   - [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) – ESP8266 WiFi emulator met geïntegreerde webserver die deze webapp kan hosten
-
-## [Galerij](/gallery)
-Bekijk alle geïmporteerde foto's in een responsieve galerij:
-- Tag afbeeldingen
-- Combineer foto's in afbeeldingsgroepen
-- Filter je collectie
-- Bekijk metadata van ondersteunde ROMs zoals [Photo!](https://github.com/untoxa/gb-photo) of zelfs de basis informatie van de originele Game Boy Camera ROM
-- Met [WebSerial](/webusb) ingeschakeld, print afbeeldingen op een originele Game Boy Printer met de [Super Printer Interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) door Raphaël Boichot
 
 ## [Frames](/frames)
 Game Boy Camera frames toevoegen, bewerken en delen:

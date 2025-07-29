@@ -2,6 +2,14 @@
 
 La Galería de la cámara Game Boy es una aplicación web para organizar, editar y compartir fotos tomadas con la cámara Game Boy.
 
+## [Galería](/gallery)
+Explora todas las fotos importadas en una galería responsiva:
+- Etiquetar imágenes
+- Combinar fotos en grupos de imágenes
+- Filtrar tu colección
+- Ver metadatos de ROMs compatibles como [Photo!](https://github.com/untoxa/gb-photo) o incluso la información básica de la ROM original de la cámara Game Boy
+- Con [WebSerial](/webusb) habilitado, imprime imágenes en una Game Boy Printer original usando la [Super Printer Interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) por Raphaël Boichot
+
 ## [Importar](/import)
 Importa imágenes desde múltiples fuentes mediante arrastrar y soltar:
 - Estados de guardado de cartuchos (dumps `.sav` incluyendo la versión de 1MB de [FlashGBX](https://github.com/lesserkuma/FlashGBX))
@@ -16,14 +24,6 @@ Importa imágenes desde múltiples fuentes mediante arrastrar y soltar:
   - [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) - Implementación para Raspberry Pi Pico por untoxa
   - [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) - Implementación para Arduino Nano por Rafael Zenaro
   - [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) - Emulador WiFi ESP8266 con servidor web integrado que puede alojar esta webapp
-
-## [Galería](/gallery)
-Explora todas las fotos importadas en una galería responsiva:
-- Etiquetar imágenes
-- Combinar fotos en grupos de imágenes
-- Filtrar tu colección
-- Ver metadatos de ROMs compatibles como [Photo!](https://github.com/untoxa/gb-photo) o incluso la información básica de la ROM original de la cámara Game Boy
-- Con [WebSerial](/webusb) habilitado, imprime imágenes en una Game Boy Printer original usando la [Super Printer Interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) por Raphaël Boichot
 
 ## [Marcos](/frames)
 Añadir, editar y compartir marcos de la cámara Game Boy:

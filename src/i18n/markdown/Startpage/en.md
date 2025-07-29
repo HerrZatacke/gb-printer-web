@@ -2,6 +2,14 @@
 
 Game Boy Camera Gallery is a web app to organise, edit and share shots taken with the Game Boy Camera.
 
+## [Gallery](/gallery)
+Browse all imported shots in a responsive gallery:
+- Tag images
+- Combine shots into image groups
+- Filter your collection
+- View metadata from supported ROMs like [Photo!](https://github.com/untoxa/gb-photo) or even the basic information from the original Game Boy Camera's ROM
+- With [WebSerial](/webusb) enabled, print images on an original Game Boy Printer using the [Super Printer interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) by Raphaël Boichot
+
 ## [Import](/import)
 Import images from multiple sources through Drag-and-drop:
 - Cartridge savestates (`.sav`-dumps including the 1MB version from [FlashGBX](https://github.com/lesserkuma/FlashGBX))
@@ -16,14 +24,6 @@ Import images from multiple sources through Drag-and-drop:
   - [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) - Raspberry Pi Pico implementation by untoxa
   - [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) - Arduino Nano implementation by Rafael Zenaro
   - [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) - ESP8266 WiFi emulator with integrated web server that can host this webapp
-
-## [Gallery](/gallery)
-Browse all imported shots in a responsive gallery:
-- Tag images
-- Combine shots into image groups
-- Filter your collection
-- View metadata from supported ROMs like [Photo!](https://github.com/untoxa/gb-photo) or even the basic information from the original Game Boy Camera's ROM
-- With [WebSerial](/webusb) enabled, print images on an original Game Boy Printer using the [Super Printer interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) by Raphaël Boichot
 
 ## [Frames](/frames)
 Add, edit and share Game Boy Camera frames:
