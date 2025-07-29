@@ -24,7 +24,6 @@
     "printerUrlHelper": "Om du äger en fysisk WiFi-skrivare kan du lägga till dess URL här och fortsätta i <link>🔗 Import-fliken</link>",
     "printerParams": "Ytterligare skrivarinställningar",
     "enableDebug": "Visa debug-information",
-    "enableImageGroups": "Aktivera bildgrupper {groupCount, plural, =0 {} =1 {(Du har en grupp)} other {(Du har # grupper)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Klick väljer objektet",
       "clickOpensEditDialog": "Klick öppnar redigeringsdialog",
