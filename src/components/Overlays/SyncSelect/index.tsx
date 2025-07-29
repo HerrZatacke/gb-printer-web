@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
+import { StorageType, SyncDirection } from '@/consts/sync';
 import { useSyncSelect } from '@/hooks/useSyncSelect';
 
 const getButtonColor = (showSyncHints: boolean, warn: boolean): 'secondary' | 'error' => {
@@ -54,7 +55,7 @@ function SyncSelect() {
               endIcon={<CloudUploadIcon />}
               title={t('syncToGitHubTitle', { repoUrl })}
               onClick={() => {
-                startSync('git', 'up');
+                startSync(StorageType.GIT, SyncDirection.UP);
               }}
             >
               {t('syncToGitHub')}
@@ -66,7 +67,7 @@ function SyncSelect() {
               endIcon={<CloudDownloadIcon />}
               title={t('syncFromGitHubTitle', { repoUrl })}
               onClick={() => {
-                startSync('git', 'down');
+                startSync(StorageType.GIT, SyncDirection.DOWN);
               }}
             >
               {t('syncFromGitHub')}
@@ -88,7 +89,7 @@ function SyncSelect() {
                 endIcon={<CloudUploadIcon />}
                 title={t('syncToDropbox')}
                 onClick={() => {
-                  startSync('dropbox', 'up');
+                  startSync(StorageType.DROPBOX, SyncDirection.UP);
                 }}
               >
                 {t('syncToDropbox')}
@@ -110,7 +111,7 @@ function SyncSelect() {
                 endIcon={<CloudDownloadIcon />}
                 title={t('syncFromDropbox')}
                 onClick={() => {
-                  startSync('dropbox', 'down');
+                  startSync(StorageType.DROPBOX, SyncDirection.DOWN);
                 }}
               >
                 {t('syncFromDropbox')}
@@ -128,7 +129,7 @@ function SyncSelect() {
               endIcon={<CloudUploadIcon />}
               title={t('syncImagesToDropbox')}
               onClick={() => {
-                startSync('dropboximages', 'up');
+                startSync(StorageType.DROPBOXIMAGES, SyncDirection.UP);
               }}
             >
               {t('syncImagesToDropbox')}

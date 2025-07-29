@@ -1,3 +1,4 @@
+import { StorageType, SyncDirection } from '@/consts/sync';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
 import useInteractionsStore from '@/stores/interactionsStore';
@@ -6,14 +7,13 @@ import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { gitStorageTool } from '@/tools/gitStorage';
 import type { SyncLastUpdate } from '@/types/Sync';
 
-
 interface UseSyncSelect {
   repoUrl: string,
   dropboxActive: boolean,
   gitActive: boolean,
   syncLastUpdate: SyncLastUpdate,
   autoDropboxSync: boolean,
-  startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down') => void,
+  startSync: (storageType: StorageType, direction: SyncDirection) => void,
   cancelSync: () => void,
 }
 
@@ -40,13 +40,22 @@ export const useSyncSelect = (): UseSyncSelect => {
     ),
     autoDropboxSync: dropboxStorage.autoDropboxSync || false,
     syncLastUpdate,
-    startSync: (storageType: 'git' | 'dropbox' | 'dropboximages', direction: 'up' | 'down') => {
-      if (storageType === 'dropbox') {
-        dropboxStorageTool(stores, remoteImport).startSyncData(direction);
-      } else if (storageType === 'dropboximages') {
-        dropboxStorageTool(stores, remoteImport).startSyncImages();
-      } else {
-        gitStorageTool(remoteImport).startSyncData(direction);
+    startSync: (storageType: StorageType, direction: SyncDirection) => {
+      switch (storageType) {
+        case StorageType.DROPBOX:
+          dropboxStorageTool(stores, remoteImport).startSyncData(direction);
+          break;
+
+          case StorageType.DROPBOXIMAGES:
+          dropboxStorageTool(stores, remoteImport).startSyncImages();
+          break;
+
+        case StorageType.GIT:
+          gitStorageTool(remoteImport).startSyncData(direction);
+          break;
+
+        default:
+          break;
       }
     },
     cancelSync: () => setSyncSelect(false),

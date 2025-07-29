@@ -1,3 +1,4 @@
+import { SyncDirection } from '@/consts/sync';
 import type { UseStores } from '@/hooks/useStores';
 import useStoragesStore from '@/stores/storagesStore';
 import type { JSONExportState } from '@/types/ExportState';
@@ -5,7 +6,7 @@ import type { DropBoxSettings } from '@/types/Sync';
 
 export interface DropBoxSyncTool {
   updateSettings: (dropBoxSettings: DropBoxSettings) => Promise<void>,
-  startSyncData: (direction: 'up' | 'down') => Promise<void>,
+  startSyncData: (direction: SyncDirection) => Promise<void>,
   startSyncImages: () => Promise<void>,
   startAuth: () => Promise<void>,
   recoverImageData: (hash: string) => Promise<void>,
@@ -45,7 +46,7 @@ export const dropboxStorageTool = (
     startAuth: async () => (
       (await loadAndInitMiddleware()).startAuth()
     ),
-    startSyncData: async (direction: 'up' | 'down') => (
+    startSyncData: async (direction: SyncDirection) => (
       (await loadAndInitMiddleware()).startSyncData(direction)
     ),
     startSyncImages: async () => (
