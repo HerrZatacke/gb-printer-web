@@ -203,7 +203,7 @@
     "convertFramesFormat": "Converter molduras para o novo formato"
   },
   "GalleryGroup": {
-    "itemCount": "{count} itens"
+    "itemCount": "{count} imagens"
   },
   "GalleryGroupContextMenu": {
     "edit": "Editar",
