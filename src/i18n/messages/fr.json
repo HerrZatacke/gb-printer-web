@@ -1,11 +1,11 @@
 {
   "SettingsGeneric": {
-    "galleryPageSize": "Images par page de galerie",
+    "galleryPageSize": "Images par page",
     "galleryPageSizeHelper": "Définir à 0 pour désactiver la pagination – peut entraîner des problèmes de performance avec de grandes quantités d'images",
-    "galleryClickAction": "Comportement de clic pour les images de galerie",
-    "galleryClickActionHelper": "Ctrl+clic et Maj+clic peuvent toujours être utilisés pour sélectionner/sélectionner par plage",
-    "exportDimensions": "Échelles d'exportation d'images",
-    "exportFiletypes": "Types de fichiers d'exportation d'images",
+    "galleryClickAction": "Comportement du clic pour les images de la galerie",
+    "galleryClickActionHelper": "Ctrl+clic et Maj+clic peuvent toujours être utilisés pour sélectionner/sélectionner une plage",
+    "exportDimensions": "Tailles des images à exporter",
+    "exportFiletypes": "Types des fichiers images à exporter",
     "exportHandleFrame": "Gestion des cadres lors de l'exportation d'images",
     "filenameStyle": "Style de nom de fichier",
     "importSavFrames": "Cadres à appliquer lors de l'importation de dumps de cartouche",
@@ -22,7 +22,7 @@
     "exampleDateFormat": "Format de date d'exemple : {format}",
     "printerUrl": "URL de l'imprimante",
     "printerUrlHelper": "Si vous possédez une imprimante WiFi physique, vous pouvez ajouter son URL ici et continuer dans l'<link>🔗 onglet Import</link>",
-    "printerParams": "Paramètres d'imprimante supplémentaires",
+    "printerParams": "Paramètres d'impression supplémentaires",
     "enableDebug": "Afficher les informations de débogage",
     "galleryClickActions": {
       "clickSelectsItem": "Le clic sélectionne l'élément",
@@ -36,7 +36,7 @@
       "squareWhite": "Rendre l'image carrée (ajouter du blanc)"
     },
     "importOrders": {
-      "cartIndex": "Trié par décision ROM (comme vu dans le rouleau de l'appareil photo dans la RAM d'origine)",
+      "cartIndex": "Trié comme dans le rouleau de l'appareil photo dans la RAM d'origine",
       "ramIndex": "Trié par ordre réel dans la RAM (adresse mémoire)"
     },
     "filenameStyles": {
@@ -91,22 +91,22 @@
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Activer WebUSB / Ports série",
-    "webUSBEnabled": "Votre navigateur/appareil actuel prend en charge WebUSB",
-    "webUSBDisabled": "Votre navigateur/appareil actuel ne prend malheureusement pas en charge WebUSB",
-    "webSerialEnabled": "Votre navigateur/appareil actuel prend en charge Web Serial",
-    "webSerialDisabled": "Votre navigateur/appareil actuel ne prend malheureusement pas en charge Web Serial"
+    "webUSBEnabled": "Votre navigateur/périphérique actuel prend en charge WebUSB",
+    "webUSBDisabled": "Votre navigateur/périphérique actuel ne prend pas en charge WebUSB",
+    "webSerialEnabled": "Votre navigateur/périphérique actuel prend en charge Web Serial",
+    "webSerialDisabled": "Votre navigateur/périphérique actuel ne prend pas en charge Web Serial"
   },
   "ConnectSerial": {
-    "openWebUSB": "Ouvrir l'appareil WebUSB",
-    "openWebSerial": "Ouvrir l'appareil Web Serial",
-    "connectedDevices": "{deviceCount, plural, =0 {Aucun appareil connecté} =1 {Un appareil connecté :} other {# appareils connectés :}}",
-    "showUnknownResponse": "Afficher le message d'un appareil inconnu",
-    "unknownDeviceInfo": "Informations d'appareil inconnu",
+    "openWebUSB": "Ouvrir le périphérique en WebUSB",
+    "openWebSerial": "Ouvrir le périphérique en Web Serial",
+    "connectedDevices": "{deviceCount, plural, =0 {Aucun périphérique connecté} =1 {Un périphérique connecté :} other {# périphériques connectés :}}",
+    "showUnknownResponse": "Message issu d'un périphérique inconnu...",
+    "unknownDeviceInfo": "Pas d'information sur le périphérique connecté",
     "copyToClipboard": "Copier dans le presse-papiers",
     "portDeviceTypes": {
-      "inactiveDevice": "Appareil inactif",
-      "arduinoGameboyPrinterEmulator": "Émulateur d'imprimante Gameboy Arduino",
-      "superPrinterInterface": "Interface Super Printer",
+      "inactiveDevice": "Périphérique muet",
+      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Printer Emulator",
+      "superPrinterInterface": "Super Printer Interface",
       "cartridgeReader": "Lecteur de cartouche (Firmware LK)"
     }
   },
@@ -121,7 +121,7 @@
     "resetGroups": "Réinitialiser les groupes d'images",
     "exportAll": "Tout exporter",
     "exportPlugins": "Exporter les plugins",
-    "hashCleanup": "Nettoyage des hachages",
+    "hashCleanup": "Nettoyage des hash",
     "persistState": {
       "isPersistent": "Le stockage est persistant",
       "requestPersistence": "Demander la persistance du stockage",
@@ -228,7 +228,7 @@
     "download": "Télécharger",
     "delete": "Supprimer",
     "viewInLightbox": "Afficher dans la lightbox",
-    "printViaSuperPrinter": "Imprimer via Super Printer",
+    "printViaSuperPrinter": "Imprimer via Super Printer Interface",
     "usePlugin": "Utiliser un plugin",
     "share": "Partager",
     "addToFavourites": "Ajouter aux favoris",
@@ -239,7 +239,7 @@
     "createGroup": "Créer un groupe"
   },
   "GreySelect": {
-    "neutralLayerBlendmode": "Mode de fusion de couche neutre",
+    "neutralLayerBlendmode": "Fusion de couche neutre",
     "blendModes": {
       "normal": "Normal (ignorer la couche neutre)",
       "normalS": "Normal ⇵ (couche neutre uniquement)",
@@ -291,15 +291,15 @@
   },
   "Import": {
     "selectFiles": "Sélectionner le(s) fichier(s) à importer",
-    "importMemory": "Importer la mémoire du lecteur de cartouche",
+    "importMemory": "Importer la RAM à partir du lecteur de cartouche",
     "importAlbumRolls": "Importer les rouleaux d'album de Photo! (ROM + Flash)",
-    "serialMonitorLabel": "Importer les données reçues via le moniteur série",
+    "serialMonitorLabel": "Importer les données reçues via le port série",
     "import": "Importer",
     "exportImages": "Exporter les images",
     "exportSelectedImages": "Exporter les images sélectionnées"
   },
   "ImportPreviewImage": {
-    "scaleFactorWarning": "Le facteur d'échelle de l'image est {scaleFactor}. Pour obtenir un résultat propre sans artefacts, essayez d'importer uniquement des images dont les dimensions sont mises à l'échelle par des puissances de deux. (1, 2, 4, 8 ...)"
+    "scaleFactorWarning": "Le facteur d'échelle de l'image est {scaleFactor}. Pour obtenir un résultat sans artefacts, essayez d'importer uniquement des images dont les dimensions sont mises à l'échelle par des puissances de deux. (1, 2, 4, 8 ...)"
   },
   "Lightbox": {
     "cancel": "Annuler",
@@ -308,12 +308,12 @@
     "closeWithHeader": "Fermer {header}"
   },
   "LightboxImage": {
-    "leaveFullscreen": "Quitter le plein écran",
-    "enterFullscreen": "Activer le plein écran",
+    "leaveFullscreen": "Quitter le mode plein écran",
+    "enterFullscreen": "Activer le mode plein écran",
     "imageCounter": "Image {current}/{total}"
   },
   "MetaTable": {
-    "hashChannel": "Canal de hachage {channel}"
+    "hashChannel": "Canal de hash {channel}"
   },
   "Navigation": {
     "home": "Accueil",
@@ -327,8 +327,8 @@
     "syncRemote": "Synchroniser avec le(s) service(s) distant(s)",
     "switchToDark": "Passer au mode sombre",
     "switchToBright": "Passer au mode clair",
-    "usbDisabled": "Les appareils USB ne sont pas disponibles",
-    "usbDevices": "Appareils WebUSB et série",
+    "usbDisabled": "Les périphériques USB ne sont pas disponibles",
+    "usbDevices": "Périphériques WebUSB et série",
     "openMainNav": "Ouvrir la navigation principale",
     "closeMainNav": "Fermer la navigation principale",
     "mainNavAriaLabel": "Navigation principale",
@@ -433,14 +433,14 @@
   },
   "ImportQueue": {
     "dialogHeader": "{count, plural, =1 {Importer une image} other {Importer # images}}",
-    "removeLastSeenTitle": "Retirer la dernière vue",
-    "removeLastSeen": "Retirer la dernière vue {count, plural, =0 {} other {({count})}}",
-    "removeDeletedTitle": "Retirer les supprimées",
-    "removeDeleted": "Retirer les supprimées {count, plural, =0 {} other {({count})}}",
+    "removeLastSeenTitle": "Retirer la dernière image",
+    "removeLastSeen": "Retirer la dernière image {count, plural, =0 {} other {({count})}}",
+    "removeDeletedTitle": "Retirer les images supprimées",
+    "removeDeleted": "Retirer les images supprimées {count, plural, =0 {} other {({count})}}",
     "removeDuplicatesInQueueTitle": "Retirer les doublons dans la file",
     "removeDuplicatesInQueue": "Retirer les doublons dans la file {count, plural, =0 {} other {({count})}}",
-    "removeAlreadyImportedTitle": "Retirer les déjà importées",
-    "removeAlreadyImported": "Retirer les déjà importées {count, plural, =0 {} other {({count})}}",
+    "removeAlreadyImportedTitle": "Retirer les images déjà importées",
+    "removeAlreadyImported": "Retirer les images déjà importées {count, plural, =0 {} other {({count})}}",
     "modifyFrame": "Modifier le cadre",
     "noFrameOption": "Aucun cadre / comme importé",
     "createGroupLabel": "Créer un groupe à partir des images à l'emplacement actuel"
@@ -471,7 +471,7 @@
     "openDropboxFolderTitle": "Ouvrir le dossier Dropbox :\n{path}"
   },
   "Serials": {
-    "dialogHeader": "Appareils WebUSB / Série"
+    "dialogHeader": "Périphériques WebUSB / Série"
   },
   "SortForm": {
     "dialogHeader": "Trier par : {sortBy}/{order}",
@@ -534,7 +534,7 @@
     "delete": "Supprimer"
   },
   "Palettes": {
-    "ownPalettes": "Palettes personnelles",
+    "ownPalettes": "Palettes personnalisées",
     "predefinedPalettes": "Palettes prédéfinies",
     "allPalettes": "Toutes les palettes",
     "newPalette": "Nouvelle palette",
@@ -557,7 +557,7 @@
       "fetchImagesGeneric": "Importer les images",
       "fetchImagesCount": "Importer {count} images",
       "clearPrinter": "Vider l'imprimante",
-      "tear": "Déchirer"
+      "tear": "Déchirer le papier"
     },
     "printerFilesystem": "Système de fichiers de l'imprimante",
     "total": "Total",
@@ -569,11 +569,11 @@
   "Remote": {
     "iframe": "<p>Ceci est une fenêtre distante intégrée dans un iframe sur la page principale. <em>Vous ne devriez pas voir ce message.</em></p>",
     "popup": "<p>Ceci est la page de contrôle à distance de votre imprimante WiFi.</p><p>{host}</p><p>Vous pouvez retourner à l'application principale et commencer à importer vos images.</p><p><em>Pour que l'importation fonctionne, cette fenêtre doit rester ouverte !</em></p>",
-    "noReference": "<p>Cette fenêtre n'a pas de référence à l'application principale.</p><p><em>Elle doit être ouverte depuis la page des paramètres de l'application principale pour fonctionner !</em></p>"
+    "noReference": "<p>Cette fenêtre ne fait pas référence à l'application principale.</p><p><em>Elle doit être ouverte depuis la page des paramètres de l'application principale pour fonctionner !</em></p>"
   },
   "StorageWarning": {
     "storageTypes": {
-      "indexedDB": "Stockage de base de données",
+      "indexedDB": "Stockage des bases de données",
       "localStorage": "Stockage local"
     },
     "usageTooltip": "Utilise {used} sur {total}",
@@ -596,12 +596,12 @@
   "useEditForm": {
     "updateDate": "Mettre à jour la date",
     "updateTitle": "Mettre à jour le titre",
-    "updatePalette": "Mettre à jour les couleurs de la palette d'image",
-    "updateInvertPalette": "Mettre à jour l'inversion de la palette d'image",
+    "updatePalette": "Mettre à jour les couleurs de la palette des image",
+    "updateInvertPalette": "Mettre à jour l'inversion de la palette des image",
     "updateFrame": "Mettre à jour le cadre",
-    "updateLockFrame": "Mettre à jour les paramètres de cadre séparés",
-    "updateFramePalette": "Mettre à jour les couleurs de la palette de cadre",
-    "updateInvertFramePalette": "Mettre à jour l'inversion de la palette de cadre",
+    "updateLockFrame": "Mettre à jour les paramètres du cadre",
+    "updateFramePalette": "Mettre à jour les couleurs de la palette du cadre",
+    "updateInvertFramePalette": "Mettre à jour l'inversion de palette du cadre",
     "updateTags": "Mettre à jour les tags",
     "updateRotation": "Mettre à jour la rotation"
   },
@@ -616,7 +616,7 @@
     "metaInfo": "Métadonnées {title, select, NO_TITLE {} other {pour « {title} »}}"
   },
   "useGetPortSettings": {
-    "specifyBaudrate": "Choisir le débit pour le port",
+    "specifyBaudrate": "Choisir le débit (ou baudrate) pour le port",
     "baudRateLabel": "Débit"
   },
   "useImageGroups": {
