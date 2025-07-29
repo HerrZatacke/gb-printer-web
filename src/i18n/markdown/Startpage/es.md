@@ -7,23 +7,31 @@ Explora todas las fotos importadas en una galería responsiva:
 - Etiquetar imágenes
 - Combinar fotos en grupos de imágenes
 - Filtrar tu colección
-- Ver metadatos de ROMs compatibles como [Photo!](https://github.com/untoxa/gb-photo) o incluso la información básica de la ROM original de la cámara Game Boy
-- Con [WebSerial](/webusb) habilitado, imprime imágenes en una Game Boy Printer original usando la [Super Printer Interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) por Raphaël Boichot
+- Ver metadatos de ROMs compatibles como [Photo!](https://github.com/untoxa/gb-photo) o incluso la información básica de la ROM original de Game Boy Camera
+- Imprimir imágenes en una Game Boy Printer original usando dispositivos de comunicación serie
+
+## [Comunicación Serie](/webusb)
+Conecta directamente con dispositivos de proyectos de la comunidad usando WebSerial:
+
+### Impresión en una Game Boy Printer física
+- Con WebSerial habilitado, imprime imágenes en una Game Boy Printer original usando el [Super Printer Interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) de Raphaël Boichot
+
+### Comunicación con Cartuchos
+- Habilita WebSerial en Chrome para comunicarte directamente con el GBxCart (solo escritorio)
+- Usa un dispositivo con el firmware de Lesserkuma para varios dispositivos (ej. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
+
+### Emuladores de Game Boy Printer
+Conecta un emulador de impresora a través de WebSerial para imprimir desde tu Game Boy Camera directamente a la WebApp:
+- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) - Emulador basado en Arduino por mofosyne
+- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) - Implementación para Raspberry Pi Pico por untoxa
+- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) - Implementación para Arduino Nano por Rafael Zenaro
+- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) - Emulador WiFi ESP8266 con servidor web integrado que puede alojar esta webapp
 
 ## [Importar](/import)
-Importa imágenes desde múltiples fuentes mediante arrastrar y soltar:
+Importa imágenes de múltiples fuentes mediante arrastrar y soltar:
 - Estados de guardado de cartuchos (dumps `.sav` incluyendo la versión de 1MB de [FlashGBX](https://github.com/lesserkuma/FlashGBX))
-  - Habilita [WebSerial](/webusb) en Chrome para comunicarte directamente con el GBxCart (solo escritorio)
-  - Usa un dispositivo con el firmware de [Lesserkuma](https://github.com/lesserkuma) para varios dispositivos (ej. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
-- Registros hex seriales de Game Boy Printer
-  - Conecta un emulador de impresora a través de WebSerial para imprimir directamente desde tu cámara Game Boy
-- Bitmaps simples
-  - Archivos bitmap directos de proyectos que solo generan imágenes básicas
-- Exportaciones de varios proyectos de microcontroladores de la comunidad:
-  - [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) - Emulador basado en Arduino por mofosyne
-  - [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) - Implementación para Raspberry Pi Pico por untoxa
-  - [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) - Implementación para Arduino Nano por Rafael Zenaro
-  - [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) - Emulador WiFi ESP8266 con servidor web integrado que puede alojar esta webapp
+- Registros serie hexadecimales de Game Boy Printer
+- Archivos de bitmap de proyectos que solo generan imágenes básicas
 
 ## [Marcos](/frames)
 Añadir, editar y compartir marcos de la cámara Game Boy:
