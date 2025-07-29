@@ -24,7 +24,6 @@
     "printerUrlHelper": "Hvis du eier en fysisk WiFi-skriver, kan du legge til URL-en her og fortsette i <link>🔗 Import-fanen</link>",
     "printerParams": "Ytterligere skriverinnstillinger",
     "enableDebug": "Vis feilsøkingsinformasjon",
-    "enableImageGroups": "Aktiver bildegrupper {groupCount, plural, =0 {} =1 {(Du har én gruppe)} other {(Du har # grupper)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Klikk velger elementet",
       "clickOpensEditDialog": "Klikk åpner redigeringsdialog",
