@@ -17,7 +17,7 @@ import {
   type TreeContextWorkerApi,
 } from '@/types/galleryTreeContext';
 import { type Image } from '@/types/Image';
-import { type SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
+import { TreeImageGroup } from '@/types/ImageGroup';
 
 export const GALLERY_BASE_PATH = '/gallery/';
 
@@ -44,14 +44,9 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
   const { searchParams, pathname } = useUrl();
   const [lastGalleryLink, setLastGalleryLink] = useState<string>('');
 
-  const { enableImageGroups, enableDebug } = useSettingsStore();
+  const { enableDebug } = useSettingsStore();
   const { setError } = useInteractionsStore();
-  const { imageGroups: stateImageGroups, images: stateImages, setImageGroups } = useItemsStore();
-
-  const imageGroups = useMemo<SerializableImageGroup[]>(
-    () => (enableImageGroups ? stateImageGroups : []),
-    [enableImageGroups, stateImageGroups],
-  );
+  const { imageGroups, images: stateImages, setImageGroups } = useItemsStore();
 
   useEffect(() => {
     const worker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url), { type: 'module' });
@@ -74,12 +69,10 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
           setError(new Error(errors.join('\n')));
         }
 
-        if (enableImageGroups) {
-          if (stateImageGroups.length > result.paths.length) {
-            const idsInPaths = result.paths.map(({ group }) => group.id);
-            const usedGroups = stateImageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-            setImageGroups(usedGroups);
-          }
+        if (imageGroups.length > result.paths.length) {
+          const idsInPaths = result.paths.map(({ group }) => group.id);
+          const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
+          setImageGroups(usedGroups);
         }
 
         if (enableDebug) {
@@ -99,7 +92,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       worker.terminate();
       setIsWorking(false);
     };
-  }, [enableDebug, enableImageGroups, imageGroups, setError, setImageGroups, stateImageGroups, stateImages]);
+  }, [enableDebug, imageGroups, setError, setImageGroups, stateImages]);
 
   const pageIndex = useMemo(() => (
     parseInt(searchParams.get('page') ?? '1', 10) - 1

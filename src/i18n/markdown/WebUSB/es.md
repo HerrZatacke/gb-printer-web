@@ -1,5 +1,5 @@
 ## Uso de un dispositivo WebUSB o WebSerial:
-Después de conectar un dispositivo WebUSB o WebSerial, ahora puedes continuar a la [página de galería](/gallery) o a la [página de inicio](/home).  
+Después de conectar un dispositivo WebUSB o WebSerial, ahora puedes continuar a la [página de galería](/gallery) o a la [página de inicio](/).  
 El icono USB pulsará cuando se reciban datos.  
 También puedes acceder a las opciones a través del icono USB en la navegación y la [página de configuración](/settings).
 

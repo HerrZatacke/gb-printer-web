@@ -22,7 +22,6 @@ import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
 import { ImageSelectionMode } from '@/stores/filtersStore';
-import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
   hash: string,
@@ -33,8 +32,6 @@ interface Props {
 function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
   const t = useTranslations('GalleryImageContextMenu');
   const [pluginAnchor, setPluginAnchor] = useState<HTMLElement | null>(null);
-
-  const { enableImageGroups } = useSettingsStore();
 
   const {
     canShare,
@@ -221,7 +218,7 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             </ListItemText>
           </MenuItem>
         )}
-        {(isSelected && enableImageGroups) && (
+        {isSelected && (
           <MenuItem
             onClick={() => {
               createGroup(hash);

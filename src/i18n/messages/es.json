@@ -24,7 +24,6 @@
     "printerUrlHelper": "Si tienes una impresora WiFi física, puedes agregar su URL aquí y continuar en la <link>🔗 pestaña Importar</link>",
     "printerParams": "Configuraciones adicionales de impresora",
     "enableDebug": "Mostrar información de depuración",
-    "enableImageGroups": "Activar grupos de imágenes {groupCount, plural, =0 {} =1 {(Tienes un grupo)} other {(Tienes # grupos)}}",
     "galleryClickActions": {
       "clickSelectsItem": "Clic selecciona el elemento",
       "clickOpensEditDialog": "Clic abre el diálogo de edición",
@@ -486,11 +485,11 @@
   },
   "SyncSelect": {
     "dialogHeader": "Sincronizar",
-    "syncToGitHub": "Sincronizar con GitHub",
-    "syncToGitHubTitle": "Sincronizar con GitHub\n{repoUrl}",
+    "syncToGitHub": "Sincronizar hacia GitHub",
+    "syncToGitHubTitle": "Sincronizar hacia GitHub\n{repoUrl}",
     "syncFromGitHub": "Sincronizar desde GitHub",
     "syncFromGitHubTitle": "Sincronizar desde GitHub\n{repoUrl}",
-    "syncToDropbox": "Sincronizar con Dropbox",
+    "syncToDropbox": "Sincronizar hacia Dropbox",
     "syncFromDropbox": "Sincronizar desde Dropbox",
     "syncImagesToDropbox": "Sincronizar imágenes con Dropbox",
     "pendingRemoteChangesWarning": "Hay cambios remotos pendientes. Si sincronizas con Dropbox ahora, estos se perderán.",
