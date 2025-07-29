@@ -10,6 +10,12 @@ Durchsuche alle importierten Aufnahmen in einer responsiven Galerie:
 - Metadaten von unterstützten ROMs wie [Photo!](https://github.com/untoxa/gb-photo) anzeigen oder sogar die grundlegenden Informationen aus dem ursprünglichen Game Boy Camera ROM
 - Bilder auf einem originalen Game Boy Printer mit seriellen Kommunikationsgeräten drucken
 
+### Bildgruppen
+Du kannst verwandte Bilder in Gruppen organisieren:
+- Du kannst Gruppen erstellen, indem du mehrere Bilder auswählst und sie über das Kontextmenü eines ausgewählten Bildes gruppierst
+- Gruppen können automatisch während eines Importvorgangs oder beim Generieren von RGB-Bildern erstellt werden
+- Du kannst Bilder auswählen, um sie zwischen Gruppen zu verschieben, ohne notwendigerweise eine neue Gruppe zu erstellen
+
 ## [Serielle Kommunikation](/webusb)
 Direkte Verbindung zu Community-Projekt Geräten über WebSerial:
 

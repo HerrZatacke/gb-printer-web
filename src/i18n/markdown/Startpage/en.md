@@ -10,6 +10,12 @@ Browse all imported shots in a responsive gallery:
 - View metadata from supported ROMs like [Photo!](https://github.com/untoxa/gb-photo) or even the basic information from the original Game Boy Camera's ROM
 - Print images on an original Game Boy Printer using serial communication devices
 
+### Image Groups
+Organize related images together in groups:
+- Create groups by selecting multiple images and grouping them together through the context menu of a selected image
+- Groups can automatically be created during an import process or when generating RGB images
+- Select images to move them between groups without necessarily creating a new group
+
 ## [Serial Communication](/webusb)
 Connect directly to community project devices using WebSerial:
 

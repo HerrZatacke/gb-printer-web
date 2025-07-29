@@ -10,6 +10,12 @@ Explora todas las fotos importadas en una galería responsiva:
 - Ver metadatos de ROMs compatibles como [Photo!](https://github.com/untoxa/gb-photo) o incluso la información básica de la ROM original de Game Boy Camera
 - Imprimir imágenes en una Game Boy Printer original usando dispositivos de comunicación serie
 
+### Grupos de Imágenes
+Puedes organizar imágenes relacionadas en grupos:
+- Puedes crear grupos seleccionando múltiples imágenes y agrupándolas a través del menú contextual de una imagen seleccionada
+- Los grupos pueden crearse automáticamente durante un proceso de importación o al generar imágenes RGB
+- Puedes seleccionar imágenes para moverlas entre grupos sin necesariamente crear un nuevo grupo
+
 ## [Comunicación Serie](/webusb)
 Conecta directamente con dispositivos de proyectos de la comunidad usando WebSerial:
 
