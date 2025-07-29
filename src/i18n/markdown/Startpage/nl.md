@@ -7,7 +7,7 @@ Bekijk alle geïmporteerde foto's in een responsieve galerij:
 - Tag afbeeldingen
 - Combineer foto's in afbeeldingsgroepen
 - Filter je collectie
-- Metadata bekijken van ondersteunde ROMs zoals [Photo!](https://github.com/untoxa/gb-photo) of zelfs de basisinformatie van de originele Game Boy Camera ROM
+- Metadata bekijken van savestates van ROMs zoals [Photo!](https://github.com/untoxa/gb-photo) of de originele Game Boy Camera ROM
 - Afbeeldingen afdrukken op een originele Game Boy Printer met community-projectapparaten
 
 ### Afbeeldingsgroepen
@@ -24,7 +24,7 @@ Verbind direct met community-projectapparaten via WebSerial:
 
 ### Cartridge Communicatie
 - Schakel WebSerial in Chrome in om direct te communiceren met de GBxCart (alleen desktop)
-- Gebruik een apparaat met Lesserkuma's firmware voor verschillende apparaten (bijv. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
+- Gebruik een cartridge-lezer met Lesserkuma's firmware voor het laden van savestates (bijv. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
 
 ### Game Boy Printer Emulators
 Verbind een printer-emulator via WebSerial om direct van je Game Boy Camera naar de WebApp af te drukken:
