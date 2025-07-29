@@ -3,7 +3,7 @@
 Game Boy Camera Gallery is a web app to organise, edit and share shots taken with the Game Boy Camera.
 
 ## [Gallery](/gallery)
-View and manage all imported shots in a responsive gallery:
+View and manage all imported shots in an interactive gallery:
 - Tag images
 - Combine shots into image groups
 - Filter your collection
