@@ -28,10 +28,10 @@ Connect directly to community project devices using WebSerial:
 
 ### Game Boy Printer Emulators
 Connect a printer emulator through WebSerial to print from your Game Boy Camera directly to the WebApp:
-- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) - Arduino-based emulator by mofosyne
-- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) - Raspberry Pi Pico implementation by untoxa
-- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) - Arduino Nano implementation by Rafael Zenaro
-- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) - ESP8266 WiFi emulator with integrated web server that can host this webapp
+- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) – Arduino-based emulator by mofosyne
+- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) – Raspberry Pi Pico implementation by untoxa
+- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – Arduino Nano implementation by Rafael Zenaro
+- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) – ESP8266 WiFi emulator with integrated web server that can host this webapp
 
 ## [Import](/import)
 Import images from multiple sources through Drag-and-drop:
@@ -53,8 +53,8 @@ Work with colour palettes:
 
 ## [Plugins](/settings/plugins)
 Extend the toolbox with community plug-ins:
-- «Average» - Create composite images from multiple shots (HDR-style)
-- «Custom Pixels» - Replace individual pixels with detailed representations
+- «Average» – Create composite images from multiple shots (HDR-style)
+- «Custom Pixels» – Replace individual pixels with detailed representations
 
 ## [Dropbox Sync](/settings/dropbox)
 Keep your gallery in sync across devices. Enable Dropbox and you can synchronize your library.

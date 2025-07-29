@@ -30,6 +30,11 @@ This is a standard Next.js project. Clone the repository, install dependencies w
 
 Set up environment variables in `.env.local` if needed (see above).
 
-### Community
+## Thanks
+* [Raphaël Boichot](https://github.com/Raphael-Boichot/) for help with the French locale.
+* Various members of the Game Boy Camera community for countless suggestions, bugreports and testing.
+
+## Community
 * [Game Boy Camera Club Discord](https://gameboycamera.club/)
 * [Game Boy Camera Telegram Channel](https://t.me/gameboycamera)
+
