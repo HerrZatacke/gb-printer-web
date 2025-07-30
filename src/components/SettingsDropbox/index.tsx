@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
+import Debug from '@/components/Debug';
 import { useDropboxSettings } from '@/hooks/useDropboxSettings';
 import cleanPath from '@/tools/cleanPath';
 
@@ -22,6 +23,7 @@ function SettingsDropbox() {
     setDropboxStorage,
     path: propsPath,
     autoDropboxSync,
+    debugText,
   } = useDropboxSettings();
   const [path, setPath] = useState<string>(propsPath);
   const t = useTranslations('SettingsDropbox');
@@ -126,6 +128,7 @@ function SettingsDropbox() {
           </>
         )
       }
+      <Debug text={debugText}/>
     </Stack>
   );
 }
