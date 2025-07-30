@@ -55,6 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Use Dropbox as storage",
     "subfolder": "Subfolder",
+    "subfolderWarning": "Enter only the subfolder name. Otherwise, the app will fully resolve to \"{fullAppPath}\" within your Dropbox, which is probably not what you intended.",
     "openFolder": "<link>🔗 Open folder</link>",
     "openFolderLinkTitle": "Open Dropbox folder:\n{folderLink}",
     "enableEnhancedSync": "Enable enhanced dropbox sync",

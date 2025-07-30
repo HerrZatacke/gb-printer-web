@@ -55,6 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Bruk Dropbox som lagring",
     "subfolder": "Undermappe",
+    "subfolderWarning": "Skriv inn bare navnet på undermappen. Ellers vil appen fullstendig løse til ”{fullAppPath}” innenfor din Dropbox, noe som sannsynligvis ikke er det du hadde til hensikt.",
     "openFolder": "<link>🔗 Åpne mappe</link>",
     "openFolderLinkTitle": "Åpne Dropbox-mappe:\n{folderLink}",
     "enableEnhancedSync": "Aktiver forbedret Dropbox-synkronisering",
@@ -454,7 +455,7 @@
   },
   "PickColors": {
     "newPaletteNameFromFile": "Fra fil {fileName}",
-    "dialogHeader": "Velg farger fra „{fileName}”"
+    "dialogHeader": "Velg farger fra ”{fileName}”"
   },
   "ProgressBox": {
     "dialogHeader": "Fremdriftsdialog"

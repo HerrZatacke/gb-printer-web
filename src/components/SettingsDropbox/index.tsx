@@ -1,5 +1,6 @@
 'use client';
 
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,7 +10,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Debug from '@/components/Debug';
 import { useDropboxSettings } from '@/hooks/useDropboxSettings';
 import cleanPath from '@/tools/cleanPath';
@@ -27,7 +28,14 @@ function SettingsDropbox() {
   } = useDropboxSettings();
   const [path, setPath] = useState<string>(propsPath);
   const t = useTranslations('SettingsDropbox');
-  const folderLink = `https://www.dropbox.com/home/Apps/GameBoyPrinter/${path}`;
+  const fullAppPath = `/home/Apps/GameBoyPrinter/${path}`;
+  const folderLink = `https://www.dropbox.com${fullAppPath}`;
+
+  const showWarning = useMemo(() => (
+    path.includes('https') ||
+    path.includes('http') ||
+    path.includes('www.dropbox.com')
+  ), [path]);
 
   return (
     <Stack
@@ -51,32 +59,40 @@ function SettingsDropbox() {
       {
         !use ? null : (
           <>
-            <TextField
-              id="dropbox-settings-path"
-              label={t('subfolder')}
-              helperText={t.rich('openFolder', { link: (chunks) => (
-                  <Link
-                    title={t('openFolderLinkTitle', { folderLink })}
-                    href={folderLink}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {chunks}
-                  </Link>
-                ),
-              })}
-              type="text"
-              value={path}
-              onChange={(ev) => {
-                setPath(ev.target.value);
-              }}
-              onBlur={() => {
-                setPath(cleanPath(path));
-                setDropboxStorage({
-                  path: cleanPath(path),
-                });
-              }}
-            />
+            <Stack gap={1}>
+              <TextField
+                id="dropbox-settings-path"
+                label={t('subfolder')}
+                helperText={t.rich('openFolder', { link: (chunks) => (
+                    <Link
+                      title={t('openFolderLinkTitle', { folderLink })}
+                      href={folderLink}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {chunks}
+                    </Link>
+                  ),
+                })}
+                type="text"
+                value={path}
+                onChange={(ev) => {
+                  setPath(ev.target.value);
+                }}
+                onBlur={() => {
+                  setPath(cleanPath(path));
+                  setDropboxStorage({
+                    path: cleanPath(path),
+                  });
+                }}
+              />
+
+              { showWarning && (
+                <Alert severity="warning" variant="filled">
+                  {t('subfolderWarning', { fullAppPath })}
+                </Alert>
+              )}
+            </Stack>
 
             <FormControlLabel
               label={(

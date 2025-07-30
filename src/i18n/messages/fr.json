@@ -55,6 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Utiliser Dropbox comme stockage",
     "subfolder": "Sous-dossier",
+    "subfolderWarning": "Saisissez uniquement le nom du sous-dossier. Sinon, l'application résoudra complètement vers « {fullAppPath} » dans votre Dropbox, ce qui n'est probablement pas ce que vous aviez l'intention de faire.",
     "openFolder": "<link>🔗 Ouvrir le dossier</link>",
     "openFolderLinkTitle": "Ouvrir le dossier Dropbox :\n{folderLink}",
     "enableEnhancedSync": "Activer la synchronisation Dropbox améliorée",

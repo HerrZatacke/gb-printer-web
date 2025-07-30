@@ -55,6 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Dropbox gebruiken als opslag",
     "subfolder": "Submap",
+    "subfolderWarning": "Voer alleen de naam van de submap in. Anders zal de app volledig oplossen naar “{fullAppPath}”, binnen uw Dropbox, wat waarschijnlijk niet is wat u bedoelde.",
     "openFolder": "<link>🔗 Map openen</link>",
     "openFolderLinkTitle": "Dropbox-map openen:\n{folderLink}",
     "enableEnhancedSync": "Verbeterde Dropbox-synchronisatie inschakelen",

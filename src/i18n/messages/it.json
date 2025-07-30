@@ -55,6 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Usa Dropbox come archivio",
     "subfolder": "Sottocartella",
+    "subfolderWarning": "Inserisci solo il nome della sottocartella. Altrimenti, l'app risolverà completamente a «{fullAppPath}» all'interno del tuo Dropbox, il che probabilmente non è quello che intendevi.",
     "openFolder": "<link>🔗 Apri cartella</link>",
     "openFolderLinkTitle": "Apri cartella Dropbox:\n{folderLink}",
     "enableEnhancedSync": "Abilita sincronizzazione Dropbox avanzata",
