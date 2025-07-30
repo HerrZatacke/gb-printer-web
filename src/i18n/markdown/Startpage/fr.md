@@ -3,12 +3,12 @@
 La Galerie Game Boy Camera est une application web pour organiser, éditer et partager les photos prises avec la Game Boy Camera.
 
 ## [Galerie](/gallery)
-Visualisez et gérez toutes les photos importées dans une galerie responsive :
+Visualisez et gérez toutes les photos importées dans une galerie intéractive :
 - Étiquetez les images
 - Combinez les photos en groupes d'images
 - Filtrez votre collection
 - Visualisez les métadonnées des savestates de ROMs comme [Photo!](https://github.com/untoxa/gb-photo) ou la ROM originale de la Game Boy Camera
-- Imprimez les images sur une Game Boy Printer originale en utilisant des dispositifs de communication série
+- Imprimez les images sur une Game Boy Printer originale en utilisant des périphériques de communication série
 
 ### Groupes d'Images
 Organisez les images liées ensemble en groupes :
@@ -17,7 +17,7 @@ Organisez les images liées ensemble en groupes :
 - Sélectionnez des images pour les déplacer entre les groupes sans nécessairement créer un nouveau groupe
 
 ## [Communication Série](/webusb)
-Connectez-vous directement aux dispositifs de projets communautaires en utilisant WebSerial :
+Connectez-vous directement aux périphériques de projets communautaires en utilisant WebSerial :
 
 ### Impression sur une Game Boy Printer physique
 - Avec WebSerial activé, imprimez des images sur une Game Boy Printer originale en utilisant l'[interface Super Printer](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) par Raphaël Boichot
