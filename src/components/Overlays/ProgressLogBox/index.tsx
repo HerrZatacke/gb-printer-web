@@ -87,7 +87,7 @@ function ProgressLogBox() {
         <Box
           component="ul"
           sx={{
-            overflowX: 'hidden',
+            overflowX: 'auto',
             overflowY: 'auto',
             maxHeight: '30vh',
             '& > .MuiTypography-root': {
