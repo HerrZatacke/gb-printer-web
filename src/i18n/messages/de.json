@@ -55,6 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Dropbox als Speicher verwenden",
     "subfolder": "Unterordner",
+    "subfolderWarning": "Gib nur den Namen des Unterordners ein. Andernfalls wird der Ordnerpfad vollständig zu „{fullAppPath}“ in Deiner Dropbox aufgelöst, was wahrscheinlich nicht das ist, was Du beabsichtigst.",
     "openFolder": "<link>🔗 Ordner öffnen</link>",
     "openFolderLinkTitle": "Dropbox-Ordner öffnen:\n{folderLink}",
     "enableEnhancedSync": "Erweiterte Dropbox-Synchronisation aktivieren",

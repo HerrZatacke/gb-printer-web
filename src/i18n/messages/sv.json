@@ -55,6 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Använd Dropbox som lagring",
     "subfolder": "Undermapp",
+    "subfolderWarning": "Ange endast undermappens namn. Annars kommer appen att fullständigt lösa till ”{fullAppPath}” inom din Dropbox, vilket förmodligen inte är vad du avsåg.",
     "openFolder": "<link>🔗 Öppna mapp</link>",
     "openFolderLinkTitle": "Öppna Dropbox-mapp:\n{folderLink}",
     "enableEnhancedSync": "Aktivera förbättrad Dropbox-synkronisering",

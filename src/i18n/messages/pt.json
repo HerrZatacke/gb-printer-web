@@ -55,6 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Usar Dropbox como armazenamento",
     "subfolder": "Subpasta",
+    "subfolderWarning": "Insira apenas o nome da subpasta. Caso contrário, a aplicação resolverá completamente para «{fullAppPath}» dentro do seu Dropbox, o que provavelmente não é o que pretendia.",
     "openFolder": "<link>🔗 Abrir pasta</link>",
     "openFolderLinkTitle": "Abrir pasta do Dropbox:\n{folderLink}",
     "enableEnhancedSync": "Ativar sincronização avançada do Dropbox",
