@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useTranslations } from 'next-intl';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
@@ -34,6 +34,25 @@ function PickColors() {
       });
   }, [pickColors, selected]);
 
+  const deny = useCallback(() => {
+    cancelPickColors();
+    cancelEditPalette();
+  }, [cancelEditPalette, cancelPickColors]);
+
+  useEffect(() => {
+    const lastIndex = (pickColors?.colors.length || 1) - 1;
+    if (lastIndex < 3) {
+      deny();
+      return;
+    }
+
+    setSelected([
+      0,
+      Math.round(lastIndex * 0.33),
+      Math.round(lastIndex * 0.66),
+      lastIndex,
+    ]);
+  }, [deny, pickColors]);
 
   if (!pickColors) {
     return null;
@@ -51,10 +70,7 @@ function PickColors() {
         });
       }}
       canConfirm={selected.length === 4}
-      deny={() => {
-        cancelPickColors();
-        cancelEditPalette();
-      }}
+      deny={deny}
       header={t('dialogHeader', { fileName: pickColors.fileName })}
       contentWidth="auto"
     >

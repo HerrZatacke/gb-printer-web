@@ -37,7 +37,7 @@ interface UsePaletteFromFile {
 const usePaletteFromFile = (): UsePaletteFromFile => {
   const [busy, setBusy] = useState<boolean>(false);
   const { setError } = useInteractionsStore();
-  const { setPickColors } = useEditStore();
+  const { setPickColors, cancelPickColors } = useEditStore();
 
   const onInputChange = async ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.[0]) {
@@ -70,10 +70,15 @@ const usePaletteFromFile = (): UsePaletteFromFile => {
             ))
             .sort(sortColor);
 
-          setPickColors({
-            colors,
-            fileName,
-          });
+          if (colors.length < 4) {
+            setError(new Error('Not enough colors to pick from!'));
+            cancelPickColors();
+          } else {
+            setPickColors({
+              colors,
+              fileName,
+            });
+          }
         }
 
         setBusy(false);
