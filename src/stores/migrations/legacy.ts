@@ -61,7 +61,7 @@ export const migrateLegacy = (): boolean => {
     const filtersState = {
       version: VERSION_LEGACY,
       state: {
-        filtersActiveTags: legacyState.filtersActiveTags || [],
+        filtersActiveTags: [],
         imageSelection: legacyState.imageSelection || [],
         recentImports: legacyState.recentImports || [],
         sortBy: legacyState.sortBy || 'created_asc',
