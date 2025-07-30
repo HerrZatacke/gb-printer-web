@@ -322,9 +322,10 @@ class DropboxClient extends EventEmitter {
   }
 
   async getFileContent(path: string, index: number, total: number, isSilent = false): Promise<string> {
-    const message = `dbx.filesDownload (${index + 1}/${total}) ${path}`;
+    const actualPath = this.toPath(`/settings/${path}`);
+    const message = `dbx.filesDownload (${index + 1}/${total}) ${actualPath}`;
     const response: DropboxResponse<unknown> = (await this.addToQueue(message, this.throttle, () => (
-      this.dbx.filesDownload({ path: this.toPath(`/settings/${path}`) })
+      this.dbx.filesDownload({ path: actualPath })
     ), isSilent));
 
     const result = response.result as (Files.FileMetadata & { fileBlob: Blob });
