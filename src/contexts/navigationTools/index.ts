@@ -28,16 +28,18 @@ export const useNavigationTools = (): UseNavigationTools => {
   const router = useRouter();
   const { paths, root, isWorking, path: currentPath, getUrl } = useGalleryTreeContext();
   const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate | false>(false);
-  const { sortBy, filtersActiveTags, recentImports } = useFiltersStore();
+  const { sortBy, filtersTags, filtersFrames, filtersPalettes, recentImports } = useFiltersStore();
   const { pageSize } = useSettingsStore();
 
   const imageFilter = useCallback((group: TreeImageGroup): Image[] => (
     getFilteredImages(group, {
-      filtersActiveTags,
+      filtersTags,
+      filtersFrames,
+      filtersPalettes,
       sortBy,
       recentImports,
     })
-  ), [filtersActiveTags, recentImports, sortBy]);
+  ), [filtersFrames, filtersPalettes, filtersTags, recentImports, sortBy]);
 
   const getImagePageIndexInGroup = useCallback((imageHash: string, parentGroup: TreeImageGroup) => {
     const sortedImages = imageFilter(parentGroup);

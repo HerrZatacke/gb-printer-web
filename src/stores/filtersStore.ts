@@ -14,7 +14,9 @@ export enum ImageSelectionMode {
 }
 
 interface Values {
-  filtersActiveTags: string[],
+  filtersTags: string[],
+  filtersPalettes: string[],
+  filtersFrames: string[],
   filtersVisible: boolean,
   imageSelection: string[],
   lastSelectedImage: string | null,
@@ -25,7 +27,7 @@ interface Values {
 
 interface Actions {
   cleanRecentImports: (imageHashes: string[]) => void,
-  setFiltersActiveTags: (filtersActiveTags: string[]) => void,
+  setFilters: (filtersTags: string[], filtersPalettes: string[], filtersFrames: string[]) => void,
   setFiltersVisible: (filtersVisible: boolean) => void,
   setImageSelection: (imageSelection: string[]) => void,
   updateRecentImports: (images: Image[]) => void,
@@ -39,7 +41,9 @@ export type FiltersState = Values & Actions;
 const useFiltersStore = create(
   persist<FiltersState>(
     (set, get) => ({
-      filtersActiveTags: [],
+      filtersTags: [],
+      filtersPalettes: [],
+      filtersFrames: [],
       filtersVisible: false,
       imageSelection: [],
       lastSelectedImage: null,
@@ -47,7 +51,15 @@ const useFiltersStore = create(
       sortBy: 'created_asc',
       sortOptionsVisible: false,
 
-      setFiltersActiveTags: (filtersActiveTags: string[]) => set({ filtersActiveTags, filtersVisible: false }),
+      setFilters: (filtersTags: string[], filtersPalettes: string[], filtersFrames: string[]) => {
+        set({
+          filtersTags,
+          filtersPalettes,
+          filtersFrames,
+          filtersVisible: false,
+        });
+      },
+
       setFiltersVisible: (filtersVisible: boolean) => set({ filtersVisible }),
       setImageSelection: (imageSelection: string[]) => set({ imageSelection, lastSelectedImage: null }),
       setSortBy: (sortBy: string) => set({ sortBy, sortOptionsVisible: false }),

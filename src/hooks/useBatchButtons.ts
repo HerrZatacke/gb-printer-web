@@ -38,7 +38,9 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const {
     imageSelection,
     sortBy,
-    filtersActiveTags,
+    filtersTags,
+    filtersPalettes,
+    filtersFrames,
     recentImports,
     setFiltersVisible,
     setSortOptionsVisible,
@@ -56,10 +58,16 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const indexOffset = page * pageSize;
 
   const currentPageImages: Image[] = useMemo(() => (
-    getFilteredImages(view, { sortBy, filtersActiveTags, recentImports }) // take images from current VIEW (including covers)
+    getFilteredImages(view, {
+      sortBy,
+      filtersTags,
+      filtersFrames,
+      filtersPalettes,
+      recentImports,
+    }) // take images from current VIEW (including covers)
       .splice(indexOffset, pageSize || Infinity) // use images of the current PAGE
       .filter((image: Image) => !covers.includes(image.hash)) // And remove covers AFTERWARDS
-  ), [covers, filtersActiveTags, indexOffset, pageSize, recentImports, sortBy, view]);
+  ), [covers, filtersFrames, filtersPalettes, filtersTags, indexOffset, pageSize, recentImports, sortBy, view]);
 
   const selectedImages = useMemo(() => (
     currentPageImages.filter(({ hash }) => imageSelection.includes(hash))
@@ -81,7 +89,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     hasPlugins: !!plugins.length,
     batchEnabled: !!imageSelection.length,
     monochromeBatchEnabled: selectedImages.length > 1 && monochromeImages.length === selectedImages.length,
-    activeFilters: filtersActiveTags.length || 0,
+    activeFilters: filtersTags.length + filtersPalettes.length + filtersFrames.length,
     selectedImageCount,
     hasSelected,
     batchTask: (actionType: BatchActionType) => {

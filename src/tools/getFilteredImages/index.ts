@@ -5,7 +5,7 @@ import { TreeImageGroup } from '@/types/ImageGroup';
 import filterSpecial from './filterSpecial';
 import filterTags from './filterTags';
 
-export type FilteredImagesState = Pick<FiltersState, 'sortBy' | 'filtersActiveTags' | 'recentImports'>
+export type FilteredImagesState = Pick<FiltersState, 'sortBy' | 'filtersTags' | 'recentImports' | 'filtersPalettes' | 'filtersFrames'>
 
 export const getFilteredImages = (
   {
@@ -13,7 +13,9 @@ export const getFilteredImages = (
     groups,
   }: Pick<TreeImageGroup, 'images' | 'groups'>,
   {
-    filtersActiveTags,
+    filtersTags,
+    filtersFrames,
+    filtersPalettes,
     sortBy,
     recentImports,
   }: FilteredImagesState,
@@ -22,6 +24,6 @@ export const getFilteredImages = (
     .map(addSortIndex)
     .sort(sortImages(sortBy))
     .map(removeSortIndex)
-    .filter(filterSpecial(filtersActiveTags, recentImports, groups))
-    .filter(filterTags(filtersActiveTags))
+    .filter(filterSpecial(filtersTags, filtersFrames, filtersPalettes, recentImports, groups))
+    .filter(filterTags(filtersTags))
 );
