@@ -49,7 +49,9 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   const {
     imageSelection,
     updateImageSelection,
-    filtersActiveTags,
+    filtersTags,
+    filtersFrames,
+    filtersPalettes,
     sortBy,
     recentImports,
   } = useFiltersStore();
@@ -114,7 +116,13 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
       setLightboxImage(
         getFilteredImages(
           view,
-          { filtersActiveTags, sortBy, recentImports },
+          {
+            filtersTags,
+            filtersFrames,
+            filtersPalettes,
+            sortBy,
+            recentImports,
+          },
         )
           .filter((img) => !covers.includes(img.hash))
           .findIndex((img) => hash === img.hash),

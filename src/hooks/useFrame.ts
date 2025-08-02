@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStores } from '@/hooks/useStores';
 import useDialogsStore from '@/stores/dialogsStore';
 import useEditStore from '@/stores/editStore';
@@ -45,7 +45,9 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const { updateLastSyncLocalNow } = useStores();
 
   const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
-  const usage = images.filter(({ frame }) => frame === frameId).length;
+  const usage = useMemo(() => (
+    images.filter(({ frame }) => frame === frameId).length
+  ), [frameId, images]);
 
   useEffect(() => {
     setImageStartLine(2);

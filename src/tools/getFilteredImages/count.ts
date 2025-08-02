@@ -8,12 +8,14 @@ const getFilteredImagesCount = (
     images,
     groups,
   }: TreeImageGroup,
-  filtersActiveTags: string[],
+  filtersTags: string[],
+  filtersFrames: string[],
+  filtersPalettes: string[],
   recentImports: RecentImport[],
 ): number => (
   [...images]
-    .filter(filterSpecial(filtersActiveTags, recentImports, groups))
-    .filter(filterTags(filtersActiveTags))
+    .filter(filterSpecial(filtersTags, filtersFrames, filtersPalettes, recentImports, groups))
+    .filter(filterTags(filtersTags))
     .length
 );
 

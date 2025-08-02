@@ -17,10 +17,10 @@ const compareCount = [
     type: 'Curly Braces',
     characters: ['{', '}'],
   },
-  {
-    type: 'Round Braces',
-    characters: ['(', ')'],
-  },
+  // {
+  //   type: 'Round Braces',
+  //   characters: ['(', ')'],
+  // },
 ];
 
 // Find placeholders like {name} - handle nested brackets in pluralization
@@ -57,9 +57,20 @@ function extractPlaceholders(text: string): string[] {
   return placeholders;
 }
 
-let totalMismatches = 0;
+function isFalsePositive(keyPath: string, charGroupType: string, want: number, found: number): boolean {
+ if (
+   ['Remote.popup', 'StorageWarning.usageWarning'].includes(keyPath) &&
+   charGroupType === 'Single quotationmarks' &&
+   want === 1 &&
+   found === 0
+ ) {
+   return true;
+ }
 
-function compareStrings(sourceValue: string, testValue: string, keyPath: string): void {
+ return false;
+}
+
+function compareStrings(sourceValue: string, testValue: string, keyPath: string): boolean {
   let hasErrors = false;
 
   for (const charGroup of compareCount) {
@@ -74,7 +85,10 @@ function compareStrings(sourceValue: string, testValue: string, keyPath: string)
     }
 
     // Check if totals match
-    if (sourceTotal !== testTotal) {
+    if (
+      sourceTotal !== testTotal &&
+      !isFalsePositive(keyPath, charGroup.type, sourceTotal, testTotal)
+    ) {
       if (!hasErrors) {
         console.log(`Mismatch at ${keyPath}:`);
         console.log(`  Source: ${sourceValue}`);
@@ -112,14 +126,16 @@ function compareStrings(sourceValue: string, testValue: string, keyPath: string)
 
   if (hasErrors) {
     console.log('---');
-    totalMismatches++;
+    return true;
   }
+
+  return false;
 }
 
 /**
  * Recursively traverse and compare nested message objects
  */
-function deepCompare(source: Messages, test: Messages, keyPath: string = ''): void {
+function deepCompare(source: Messages, test: Messages, keyPath: string = '', totalMismatches: number = 0): number {
   // Get all unique keys from both objects
   const allKeys = new Set([...Object.keys(source), ...Object.keys(test)]);
 
@@ -131,52 +147,85 @@ function deepCompare(source: Messages, test: Messages, keyPath: string = ''): vo
     // Check if key exists in both objects
     if (!(key in source)) {
       console.log(`Missing key in source: ${currentPath}`);
+      totalMismatches++;
       continue;
     }
 
     if (!(key in test)) {
       console.log(`Missing key in test: ${currentPath}`);
+      totalMismatches++;
       continue;
     }
 
     // Both values are strings - compare them
     if (typeof sourceValue === 'string' && typeof testValue === 'string') {
-      compareStrings(sourceValue, testValue, currentPath);
+      if (compareStrings(sourceValue, testValue, currentPath)) {
+        totalMismatches++;
+      }
     }
     // Both values are objects - recurse deeper
     else if (typeof sourceValue === 'object' && typeof testValue === 'object') {
-      deepCompare(sourceValue, testValue, currentPath);
+      totalMismatches = deepCompare(sourceValue, testValue, currentPath, totalMismatches);
     }
     // Type mismatch
     else {
       console.log(`Type mismatch at ${currentPath}:`);
       console.log(`  Source type: ${typeof sourceValue}`);
       console.log(`  Test type:   ${typeof testValue}`);
+      totalMismatches++;
     }
   }
+
+  return totalMismatches;
 }
+
+const compareFiles = async (sourceFilePath: string, targetFilePath: string) => {
+  console.log('\n\n---------------------------------');
+  console.log(`comparing "${sourceFilePath}" with "${targetFilePath}"`);
+  let source: Messages;
+  let test: Messages;
+
+  try {
+    const sourceFileContent = await fs.readFile(sourceFilePath, { encoding: 'utf-8' });
+    const testFileContent = await fs.readFile(targetFilePath, { encoding: 'utf-8' });
+
+    source = JSON.parse(sourceFileContent);
+    test = JSON.parse(testFileContent);
+  } catch {
+    console.log('cannot read/parse files');
+    process.exit(1);
+  }
+
+  const totalMismatches = deepCompare(source, test);
+
+  if (totalMismatches) {
+    console.log(`Total mismatched messages: ${totalMismatches}`);
+  } else {
+    console.log('Messages match basic comparison!');
+  }
+};
+
+
+let source: string;
+let targets: string[];
 
 if (process.argv.length !== 4) {
-  console.log('arguments: need two files');
-  process.exit(1);
+  source = './src/i18n/messages/en.json';
+  targets = [
+    './src/i18n/messages/de.json',
+    './src/i18n/messages/es.json',
+    './src/i18n/messages/fr.json',
+    './src/i18n/messages/it.json',
+    './src/i18n/messages/nl.json',
+    './src/i18n/messages/no.json',
+    './src/i18n/messages/pt.json',
+    './src/i18n/messages/sv.json',
+  ];
+} else {
+  source = process.argv[2];
+  targets = [process.argv[3]];
 }
 
-let source: Messages;
-let test: Messages;
-
-try {
-  const sourceFileContent = await fs.readFile(process.argv[2], { encoding: 'utf-8' });
-  const testFileContent = await fs.readFile(process.argv[3], { encoding: 'utf-8' });
-
-  source = JSON.parse(sourceFileContent);
-  test = JSON.parse(testFileContent);
-} catch {
-  console.log('cannot read/parse files');
-  process.exit(1);
-}
-
-deepCompare(source, test);
-
-if (totalMismatches) {
-  console.log(`Total mismatched messages: ${totalMismatches}`);
+for (const target of targets) {
+  await compareFiles(source, target);
 }

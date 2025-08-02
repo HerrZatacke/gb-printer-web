@@ -415,6 +415,7 @@
     "clear": "Slett",
     "clearFiltersAndApplyTitle": "Slett filtre og bruk",
     "clearAndApply": "Slett og bruk",
+    "clearTab": "Tilbakestill valgte {tab, select, tabTags {Tagger} tabPalettes {Paletter} tabFrames {Rammer} other {}}",
     "allMustBeMet": "Hvis satt, må alle være oppfylt",
     "oneMustBeMet": "Hvis satt, må en være oppfylt",
     "untagged": "Uten tagger",
@@ -424,11 +425,25 @@
     "rgb": "RGB",
     "recentImports": "Nylige importer",
     "imageHasComments": "Bilde har kommentarer",
-    "imageHasUsername": "Bilde har brukernavn"
+    "imageHasUsername": "Bilde har brukernavn",
+    "filterTabs": {
+      "tabTags": "Tagger {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletter {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Rammer {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Fjern ”{title}”-tag",
+    "removeTag": "Fjern ”{title}”-tag fra utvalg",
     "selectTag": "Velg ”{title}”-tag"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Fjern palett ”{name}” fra utvalg",
+    "selectPalette": "Velg palett ”{name}”"
+  },
+  "FilterFormFrame": {
+    "usage": "Brukt {usage} ganger",
+    "removeFrame": "Fjern ramme ”{name}” fra utvalg",
+    "selectFrame": "Velg ramme ”{name}”"
   },
   "FrameQueue": {
     "dialogHeader": "Importer ny ramme som ”{id}”"

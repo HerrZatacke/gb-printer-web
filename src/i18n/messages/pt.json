@@ -415,6 +415,7 @@
     "clear": "Limpar",
     "clearFiltersAndApplyTitle": "Limpar filtros e aplicar",
     "clearAndApply": "Limpar e aplicar",
+    "clearTab": "Repor {tab, select, tabTags {Etiquetas} tabPalettes {Paletas} tabFrames {Molduras} other {}} selecionadas",
     "allMustBeMet": "Se marcado, todos devem ser satisfeitos",
     "oneMustBeMet": "Se marcado, um deve ser satisfeito",
     "untagged": "Sem etiquetas",
@@ -424,11 +425,25 @@
     "rgb": "RGB",
     "recentImports": "Importações recentes",
     "imageHasComments": "Imagem tem comentários",
-    "imageHasUsername": "Imagem tem nome de utilizador"
+    "imageHasUsername": "Imagem tem nome de utilizador",
+    "filterTabs": {
+      "tabTags": "Etiquetas {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletas {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Molduras {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Remover etiqueta «{title}»",
+    "removeTag": "Remover etiqueta «{title}» da seleção",
     "selectTag": "Selecionar etiqueta «{title}»"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Remover paleta «{name}» da seleção",
+    "selectPalette": "Selecionar paleta «{name}»"
+  },
+  "FilterFormFrame": {
+    "usage": "Usado {usage} vezes",
+    "removeFrame": "Remover moldura «{name}» da seleção",
+    "selectFrame": "Selecionar moldura «{name}»"
   },
   "FrameQueue": {
     "dialogHeader": "Importar nova moldura como «{id}»"

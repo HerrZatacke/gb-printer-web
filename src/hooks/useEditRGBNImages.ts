@@ -57,7 +57,9 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const sortedImages = useMemo<MonochromeImage[]>(() => {
     const filtered = getFilteredImages(view, {
-      filtersActiveTags: [],
+      filtersTags: [],
+      filtersFrames: [],
+      filtersPalettes: [],
       sortBy,
       recentImports: [],
     });

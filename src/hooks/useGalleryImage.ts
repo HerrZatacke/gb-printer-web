@@ -1,5 +1,5 @@
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import useEditStore from '@/stores/editStore';
@@ -46,11 +46,13 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
   const { pageSize } = useSettingsStore();
 
   const {
-    filtersActiveTags,
+    filtersTags,
+    filtersFrames,
+    filtersPalettes,
     sortBy,
     recentImports,
     imageSelection,
-    updateImageSelection,
+    updateImageSelection: storeUpdateImageSelection,
     lastSelectedImage,
     setImageSelection,
   } = useFiltersStore();
@@ -105,32 +107,40 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
 
   const { view, covers } = useGalleryTreeContext();
 
+  const updateImageSelection = useCallback((mode: ImageSelectionMode, shift: boolean, page: number) => {
+    if (shift) {
+      const images = getFilteredImages(
+        view,
+        {
+          filtersTags,
+          filtersFrames,
+          filtersPalettes,
+          sortBy,
+          recentImports,
+        },
+      )
+        .filter((image) => (
+          !covers.includes(image.hash)
+        ));
+
+      const selectedIndex = images.findIndex((image) => image.hash === hash);
+      let prevSelectedIndex = images.findIndex((image) => image.hash === lastSelectedImage);
+      if (prevSelectedIndex === -1) {
+        prevSelectedIndex = page * pageSize;
+      }
+
+      const from = Math.min(prevSelectedIndex, selectedIndex);
+      const to = Math.max(prevSelectedIndex, selectedIndex);
+
+      setImageSelection(images.slice(from, to + 1).map((image) => image.hash));
+    } else {
+      storeUpdateImageSelection(mode, [hash]);
+    }
+  }, [covers, filtersFrames, filtersPalettes, filtersTags, hash, lastSelectedImage, pageSize, recentImports, setImageSelection, sortBy, storeUpdateImageSelection, view]);
+
   return {
     galleryImageData,
-    updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => {
-      if (shift) {
-        const images = getFilteredImages(
-          view,
-          { filtersActiveTags, sortBy, recentImports },
-        )
-          .filter((image) => (
-            !covers.includes(image.hash)
-          ));
-
-        const selectedIndex = images.findIndex((image) => image.hash === hash);
-        let prevSelectedIndex = images.findIndex((image) => image.hash === lastSelectedImage);
-        if (prevSelectedIndex === -1) {
-          prevSelectedIndex = page * pageSize;
-        }
-
-        const from = Math.min(prevSelectedIndex, selectedIndex);
-        const to = Math.max(prevSelectedIndex, selectedIndex);
-
-        setImageSelection(images.slice(from, to + 1).map((image) => image.hash));
-      } else {
-        updateImageSelection(mode, [hash]);
-      }
-    },
+    updateImageSelection,
     editImage: (tags: string[]) => {
       setEditImages({
         tags,

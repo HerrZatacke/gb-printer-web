@@ -16,13 +16,15 @@ const usePreviewImages = (): MonochromeImage[] => {
   const {
     imageSelection,
     sortBy,
-    filtersActiveTags,
+    filtersTags,
+    filtersFrames,
+    filtersPalettes,
     recentImports,
   } = useFiltersStore();
 
   const filterState: FilteredImagesState = useMemo(() => (
-    { sortBy, filtersActiveTags, recentImports }
-  ), [filtersActiveTags, recentImports, sortBy]);
+    { sortBy, filtersTags, filtersPalettes, filtersFrames, recentImports }
+  ), [filtersFrames, filtersPalettes, filtersTags, recentImports, sortBy]);
 
   return useMemo<MonochromeImage[]>(() => {
     const selectedImages = imageSelection

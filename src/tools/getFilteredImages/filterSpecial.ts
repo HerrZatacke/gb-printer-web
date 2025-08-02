@@ -7,6 +7,8 @@ import { isRGBNImage } from '../isRGBNImage';
 
 const filterSpecial = (
   activeTags: string[],
+  filtersFrames: string[],
+  filtersPalettes: string[],
   recentImports: RecentImport[],
   groups: TreeImageGroup[],
 ) => {
@@ -84,9 +86,24 @@ const filterSpecial = (
       if (activeSpecialTags.includes(SpecialTags.FILTER_USERNAME) && !image.meta?.userName) {
         return false;
       }
+    }
 
-      // Filtering for special, but no conditions are met
-      return true;
+    if (filtersPalettes.length) {
+      if (
+        typeof image.palette !== 'string' ||
+        !filtersPalettes.includes(image.palette)
+      ) {
+        return false;
+      }
+    }
+
+    if (filtersFrames.length) {
+      if (
+        !image.frame ||
+        !filtersFrames.includes(image.frame)
+      ) {
+        return false;
+      }
     }
 
     // Not filtering for special, keep all

@@ -415,6 +415,7 @@
     "clear": "Rensa",
     "clearFiltersAndApplyTitle": "Rensa filter och tillämpa",
     "clearAndApply": "Rensa och tillämpa",
+    "clearTab": "Återställ valda {tab, select, tabTags {Taggar} tabPalettes {Paletter} tabFrames {Ramar} other {}}",
     "allMustBeMet": "Alla måste uppfyllas",
     "oneMustBeMet": "En måste uppfyllas",
     "untagged": "Otaggade",
@@ -424,11 +425,25 @@
     "rgb": "RGB",
     "recentImports": "Nya import",
     "imageHasComments": "Bilder med kommentarer",
-    "imageHasUsername": "Bilder med användarnamn"
+    "imageHasUsername": "Bilder med användarnamn",
+    "filterTabs": {
+      "tabTags": "Taggar {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletter {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Ramar {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Ta bort ”{title}”-tagg",
+    "removeTag": "Ta bort ”{title}”-tagg från urval",
     "selectTag": "Välj ”{title}”-tagg"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Ta bort palett ”{name}” från urval",
+    "selectPalette": "Välj palett ”{name}”"
+  },
+  "FilterFormFrame": {
+    "usage": "Använd {usage} gånger",
+    "removeFrame": "Ta bort ram ”{name}” från urval",
+    "selectFrame": "Välj ram ”{name}”"
   },
   "FrameQueue": {
     "dialogHeader": "Importera ny ram som ”{id}”"
