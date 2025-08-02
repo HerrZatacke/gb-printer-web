@@ -207,13 +207,12 @@ const compareFiles = async (sourceFilePath: string, targetFilePath: string) => {
 
 
 let source: string;
-let targets: string[] = [];
+let targets: string[];
 
 if (process.argv.length !== 4) {
   source = './src/i18n/messages/en.json';
   targets = [
     './src/i18n/messages/de.json',
-    './src/i18n/messages/en.json',
     './src/i18n/messages/es.json',
     './src/i18n/messages/fr.json',
     './src/i18n/messages/it.json',
