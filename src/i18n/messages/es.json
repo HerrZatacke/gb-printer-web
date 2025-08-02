@@ -415,6 +415,7 @@
     "clear": "Limpiar",
     "clearFiltersAndApplyTitle": "Limpiar filtros y aplicar",
     "clearAndApply": "Limpiar y aplicar",
+    "clearTab": "Restablecer {tab, select, tabTags {Etiquetas} tabPalettes {Paletas} tabFrames {Marcos} other {}} seleccionadas",
     "allMustBeMet": "Si está configurado, todos deben cumplirse",
     "oneMustBeMet": "Si está configurado, uno debe cumplirse",
     "untagged": "Sin etiquetas",
@@ -424,11 +425,25 @@
     "rgb": "RGB",
     "recentImports": "Importaciones recientes",
     "imageHasComments": "La imagen tiene comentarios",
-    "imageHasUsername": "La imagen tiene nombre de usuario"
+    "imageHasUsername": "La imagen tiene nombre de usuario",
+    "filterTabs": {
+      "tabTags": "Etiquetas {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletas {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Marcos {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Eliminar etiqueta «{title}»",
+    "removeTag": "Eliminar etiqueta «{title}» de la selección",
     "selectTag": "Seleccionar etiqueta «{title}»"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Eliminar paleta «{name}» de la selección",
+    "selectPalette": "Seleccionar paleta «{name}»"
+  },
+  "FilterFormFrame": {
+    "usage": "Usado {usage} veces",
+    "removeFrame": "Eliminar marco «{name}» de la selección",
+    "selectFrame": "Seleccionar marco «{name}»"
   },
   "FrameQueue": {
     "dialogHeader": "Importar nuevo marco como «{id}»"

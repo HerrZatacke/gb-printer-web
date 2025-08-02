@@ -415,6 +415,7 @@
     "clear": "Wissen",
     "clearFiltersAndApplyTitle": "Filters wissen en toepassen",
     "clearAndApply": "Wissen en toepassen",
+    "clearTab": "Geselecteerde {tab, select, tabTags {Tags} tabPalettes {Paletten} tabFrames {Kaders} other {}} resetten",
     "allMustBeMet": "Indien ingesteld, moeten alle worden voldaan",
     "oneMustBeMet": "Indien ingesteld, moet één worden voldaan",
     "untagged": "Zonder tags",
@@ -424,11 +425,25 @@
     "rgb": "RGB",
     "recentImports": "Recente imports",
     "imageHasComments": "Afbeelding heeft opmerkingen",
-    "imageHasUsername": "Afbeelding heeft gebruikersnaam"
+    "imageHasUsername": "Afbeelding heeft gebruikersnaam",
+    "filterTabs": {
+      "tabTags": "Tags {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletten {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Kaders {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "“{title}”-tag verwijderen",
+    "removeTag": "“{title}”-tag uit selectie verwijderen",
     "selectTag": "“{title}”-tag selecteren"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Palet “{name}” uit selectie verwijderen",
+    "selectPalette": "Palet “{name}” selecteren"
+  },
+  "FilterFormFrame": {
+    "usage": "{usage} keer gebruikt",
+    "removeFrame": "Kader “{name}” uit selectie verwijderen",
+    "selectFrame": "Kader “{name}” selecteren"
   },
   "FrameQueue": {
     "dialogHeader": "Nieuw kader importeren als “{id}”"

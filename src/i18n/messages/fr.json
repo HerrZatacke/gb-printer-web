@@ -415,6 +415,7 @@
     "clear": "Effacer",
     "clearFiltersAndApplyTitle": "Effacer les filtres et appliquer",
     "clearAndApply": "Effacer et appliquer",
+    "clearTab": "Réinitialiser les {tab, select, tabTags {Tags} tabPalettes {Palettes} tabFrames {Cadres} other {}} sélectionnés",
     "allMustBeMet": "Si défini, tous doivent être satisfaits",
     "oneMustBeMet": "Si défini, un doit être satisfait",
     "untagged": "Sans tags",
@@ -424,11 +425,25 @@
     "rgb": "RGB",
     "recentImports": "Importations récentes",
     "imageHasComments": "L'image a des commentaires",
-    "imageHasUsername": "L'image a un nom d'utilisateur"
+    "imageHasUsername": "L'image a un nom d'utilisateur",
+    "filterTabs": {
+      "tabTags": "Tags {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Palettes {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Cadres {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Retirer le tag « {title} »",
+    "removeTag": "Retirer le tag « {title} » de la sélection",
     "selectTag": "Sélectionner le tag « {title} »"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Retirer la palette « {name} » de la sélection",
+    "selectPalette": "Sélectionner la palette « {name} »"
+  },
+  "FilterFormFrame": {
+    "usage": "Utilisé {usage} fois",
+    "removeFrame": "Retirer le cadre « {name} » de la sélection",
+    "selectFrame": "Sélectionner le cadre « {name} »"
   },
   "FrameQueue": {
     "dialogHeader": "Importer un nouveau cadre comme « {id} »"

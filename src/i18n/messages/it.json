@@ -415,6 +415,7 @@
     "clear": "Cancella",
     "clearFiltersAndApplyTitle": "Cancella filtri e applica",
     "clearAndApply": "Cancella e applica",
+    "clearTab": "Ripristina {tab, select, tabTags {Tag} tabPalettes {Palette} tabFrames {Cornici} other {}} selezionati",
     "allMustBeMet": "Se impostato, tutti devono essere soddisfatti",
     "oneMustBeMet": "Se impostato, uno deve essere soddisfatto",
     "untagged": "Senza tag",
@@ -424,11 +425,25 @@
     "rgb": "RGB",
     "recentImports": "Importazioni recenti",
     "imageHasComments": "L'immagine ha commenti",
-    "imageHasUsername": "L'immagine ha nome utente"
+    "imageHasUsername": "L'immagine ha nome utente",
+    "filterTabs": {
+      "tabTags": "Tag {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Palette {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Cornici {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Rimuovi tag «{title}»",
+    "removeTag": "Rimuovi tag «{title}» dalla selezione",
     "selectTag": "Seleziona tag «{title}»"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Rimuovi palette «{name}» dalla selezione",
+    "selectPalette": "Seleziona palette «{name}»"
+  },
+  "FilterFormFrame": {
+    "usage": "Usato {usage} volte",
+    "removeFrame": "Rimuovi cornice «{name}» dalla selezione",
+    "selectFrame": "Seleziona cornice «{name}»"
   },
   "FrameQueue": {
     "dialogHeader": "Importa nuova cornice come «{id}»"

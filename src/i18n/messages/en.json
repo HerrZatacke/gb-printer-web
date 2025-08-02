@@ -55,7 +55,7 @@
   "SettingsDropbox": {
     "enableStorage": "Use Dropbox as storage",
     "subfolder": "Subfolder",
-    "subfolderWarning": "Enter only the subfolder name. Otherwise, the app will fully resolve to \"{fullAppPath}\" within your Dropbox, which is probably not what you intended.",
+    "subfolderWarning": "Enter only the subfolder name. Otherwise, the app will fully resolve to “{fullAppPath}” within your Dropbox, which is probably not what you intended.",
     "openFolder": "<link>🔗 Open folder</link>",
     "openFolderLinkTitle": "Open Dropbox folder:\n{folderLink}",
     "enableEnhancedSync": "Enable enhanced dropbox sync",
@@ -415,6 +415,7 @@
     "clear": "Clear",
     "clearFiltersAndApplyTitle": "Clear Filters and apply",
     "clearAndApply": "Clear and apply",
+    "clearTab": "Reset selected {tab, select, tabTags {Tags} tabPalettes {Palettes} tabFrames {Frames} other {}}",
     "allMustBeMet": "If set, all must be met",
     "oneMustBeMet": "If set, one must be met",
     "untagged": "Untagged",
@@ -424,11 +425,25 @@
     "rgb": "RGB",
     "recentImports": "Recent Imports",
     "imageHasComments": "Image has comments",
-    "imageHasUsername": "Image has username"
+    "imageHasUsername": "Image has username",
+    "filterTabs": {
+      "tabTags": "Tags {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Palettes {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Frames {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Remove “{title}”-tag",
+    "removeTag": "Remove “{title}”-tag from selection",
     "selectTag": "Select “{title}”-tag"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Remove palette „{name}“ from selection",
+    "selectPalette": "Select palette „{name}“"
+  },
+  "FilterFormFrame": {
+    "usage": "Used {usage} times",
+    "removeFrame": "Remove frame „{name}“ from selection",
+    "selectFrame": "Select frame „{name}“"
   },
   "FrameQueue": {
     "dialogHeader": "Import new Frame as “{id}”"
