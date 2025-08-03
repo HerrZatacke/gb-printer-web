@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Establecer en 0 para desactivar la paginación: puede causar problemas de rendimiento con grandes cantidades de imágenes",
     "galleryClickAction": "Comportamiento de clic para imágenes de galería",
     "galleryClickActionHelper": "Ctrl+clic y Mayús+clic siempre se pueden usar para seleccionar/seleccionar por rango",
-    "exportDimensions": "Escalas de exportación de imágenes",
-    "exportFiletypes": "Tipos de archivo de exportación de imágenes",
-    "exportHandleFrame": "Manejo de marcos al exportar imágenes",
-    "filenameStyle": "Estilo de nombre de archivo",
     "importSavFrames": "Marcos que se aplicarán al importar volcados de cartucho",
     "importSavFramesNone": "Ninguno",
     "importSavFramesUnknown": "Desconocido",
@@ -29,20 +25,9 @@
       "clickOpensEditDialog": "Clic abre el diálogo de edición",
       "clickOpensLightbox": "Clic abre el elemento en lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Mantener marco",
-      "cropFrame": "Recortar marco",
-      "squareBlack": "Hacer imagen cuadrada (agregar negro)",
-      "squareWhite": "Hacer imagen cuadrada (agregar blanco)"
-    },
     "importOrders": {
       "cartIndex": "Ordenado por decisión de ROM (como se ve en el carrete de la cámara en la RAM original)",
       "ramIndex": "Ordenado por orden real en RAM (dirección de memoria)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Título completo",
-      "dateTitle": "Fecha y título",
-      "titleOnly": "Solo título"
     },
     "locales": {
       "de-DE": "Alemán – Alemania (de-DE)",
@@ -90,6 +75,29 @@
     "throttle": "Limitación (en ms)",
     "token": "Token",
     "tokenHelper": "Ve a GitHub para crear un <link>🔗 nuevo token de acceso personal refinado</link>, selecciona el repositorio que quieres usar para sincronización y permite acceso de lectura/escritura para <code>«Repository Permissions > Contents»</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Descargar {count, plural, =1 {imagen} other {# imágenes}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Escalas de exportación de imágenes",
+    "exportFiletypes": "Tipos de archivo de exportación de imágenes",
+    "exportHandleFrame": "Manejo de marcos al exportar imágenes",
+    "filenameStyle": "Estilo de nombre de archivo",
+    "alwaysShowDownloadDialogInForm": "Mostrar las opciones de descarga cada vez",
+    "alwaysShowDownloadDialogInDialog": "Mostrar este diálogo siempre",
+    "alwaysShowDownloadDialogHelper": "Puedes volver a activar esta opción en la configuración en cualquier momento",
+    "frameModes": {
+      "keepFrame": "Mantener marco",
+      "cropFrame": "Recortar marco",
+      "squareBlack": "Hacer imagen cuadrada (agregar negro)",
+      "squareWhite": "Hacer imagen cuadrada (agregar blanco)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Título completo",
+      "dateTitle": "Fecha y título",
+      "titleOnly": "Solo título"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Activar WebUSB / Puertos seriales",
@@ -202,7 +210,8 @@
     "renameFramegroup": "Renombrar grupo de marcos",
     "exportFrames": "Exportar marcos",
     "exportCurrentFramegroup": "Exportar grupo de marcos actual ({id})",
-    "convertFramesFormat": "Convertir marcos a nuevo formato"
+    "convertFramesFormat": "Convertir marcos a nuevo formato",
+    "applyFrames": "Añadir marco a imágenes si los datos sin procesar coinciden"
   },
   "GalleryGroup": {
     "itemCount": "{count} imágenes"

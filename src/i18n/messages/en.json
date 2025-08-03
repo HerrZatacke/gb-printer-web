@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Set to 0 to disable pagination – might cause performance issues on large sets of images",
     "galleryClickAction": "Click behaviour for gallery images",
     "galleryClickActionHelper": "Ctrl+Click and Shift+Click will always select/range-select",
-    "exportDimensions": "Image export dimensions",
-    "exportFiletypes": "Image export filetypes",
-    "exportHandleFrame": "How to handle frames when exporting images",
-    "filenameStyle": "Filename style",
     "importSavFrames": "Frames to be applied when importing Cartridge dumps",
     "importSavFramesNone": "None",
     "importSavFramesUnknown": "Unknown",
@@ -29,20 +25,9 @@
       "clickOpensEditDialog": "Click opens edit dialog",
       "clickOpensLightbox": "Click opens the item in lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Keep frame",
-      "cropFrame": "Crop frame",
-      "squareBlack": "Make image squared (add black)",
-      "squareWhite": "Make image squared (add white)"
-    },
     "importOrders": {
       "cartIndex": "Sorted by ROMs decision (as seen in camera roll in original RAM)",
       "ramIndex":"Sorted by actual order in RAM (memory address)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Full Title",
-      "dateTitle": "Date and Title",
-      "titleOnly": "Title only"
     },
     "locales": {
       "de-DE": "German – Germany (de-DE)",
@@ -90,6 +75,29 @@
     "throttle": "Throttle (in ms)",
     "token": "Token",
     "tokenHelper": "Go to GitHub to create a <link>🔗 new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>“Repository Permissions > Contents”</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Download {count, plural, =1 {image} other {# images}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Image export dimensions",
+    "exportFiletypes": "Image export filetypes",
+    "exportHandleFrame": "How to handle frames when exporting images",
+    "filenameStyle": "Filename style",
+    "alwaysShowDownloadDialogInForm": "Show download options every time",
+    "alwaysShowDownloadDialogInDialog": "Always show this dialog",
+    "alwaysShowDownloadDialogHelper": "You can re-enable this option in the settings at any time",
+    "frameModes": {
+      "keepFrame": "Keep frame",
+      "cropFrame": "Crop frame",
+      "squareBlack": "Make image squared (add black)",
+      "squareWhite": "Make image squared (add white)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Full Title",
+      "dateTitle": "Date and Title",
+      "titleOnly": "Title only"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",
@@ -202,7 +210,8 @@
     "renameFramegroup": "Rename Framegroup",
     "exportFrames": "Export frames",
     "exportCurrentFramegroup": "Export current framegroup ({id})",
-    "convertFramesFormat": "Convert frames to new format"
+    "convertFramesFormat": "Convert frames to new format",
+    "applyFrames": "Add frame to images if raw data matches"
   },
   "GalleryGroup": {
     "itemCount": "{count} images"

@@ -51,7 +51,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const { setEditImages, setEditRGBNImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setVideoSelection } = useInteractionsStore();
-  const { downloadImageCollection } = useDownload();
+  const { setDownloadImages } = useDownload();
   const { deleteImages } = useStores();
   const { view, covers } = useGalleryTreeContext();
 
@@ -113,7 +113,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
           }
 
           case BatchActionType.DOWNLOAD: {
-            downloadImageCollection(imageSelection);
+            setDownloadImages(imageSelection);
             break;
           }
 

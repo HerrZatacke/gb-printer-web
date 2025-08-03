@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Sätt till 0 för att inaktivera paginering – kan orsaka prestandaproblem med stora bildmängder",
     "galleryClickAction": "Klickbeteende för galleribilder",
     "galleryClickActionHelper": "Ctrl+klick och Shift+klick kan alltid användas för att välja/välj område",
-    "exportDimensions": "Bildexport-skalningar",
-    "exportFiletypes": "Bildexport-filtyper",
-    "exportHandleFrame": "Hantering av ramar vid export av bilder",
-    "filenameStyle": "Filnamsstil",
     "importSavFrames": "Ramar som ska tillämpas vid import av cartridge-dumpar",
     "importSavFramesNone": "Inga",
     "importSavFramesUnknown": "Okänd",
@@ -29,20 +25,9 @@
       "clickOpensEditDialog": "Klick öppnar redigeringsdialog",
       "clickOpensLightbox": "Klick öppnar objektet i lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Behåll ram",
-      "cropFrame": "Beskär ram",
-      "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
-      "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
-    },
     "importOrders": {
       "cartIndex": "Sorterad efter ROM-beslut (som sett i kamerarullen i ursprungligt RAM)",
       "ramIndex": "Sorterad efter faktisk ordning i RAM (minnesadress)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Fullständig titel",
-      "dateTitle": "Datum och titel",
-      "titleOnly": "Endast titel"
     },
     "locales": {
       "de-DE": "Tyska – Tyskland (de-DE)",
@@ -90,6 +75,29 @@
     "throttle": "Begränsning (i ms)",
     "token": "Token",
     "tokenHelper": "Gå till GitHub för att skapa en <link>🔗 ny finjusterad personlig åtkomsttoken</link>, välj det repository du vill använda för synkronisering och tillåt läs-/skrivåtkomst för <code>”Repository Permissions > Contents”</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Ladda ner {count, plural, =1 {bild} other {# bilder}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Bildexport-skalningar",
+    "exportFiletypes": "Bildexport-filtyper",
+    "exportHandleFrame": "Hantering av ramar vid export av bilder",
+    "filenameStyle": "Filnamsstil",
+    "alwaysShowDownloadDialogInForm": "Visa nedladdningsalternativ varje gång",
+    "alwaysShowDownloadDialogInDialog": "Visa alltid denna dialogruta",
+    "alwaysShowDownloadDialogHelper": "Du kan återaktivera det här alternativet i inställningarna när som helst",
+    "frameModes": {
+      "keepFrame": "Behåll ram",
+      "cropFrame": "Beskär ram",
+      "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
+      "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Fullständig titel",
+      "dateTitle": "Datum och titel",
+      "titleOnly": "Endast titel"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Aktivera WebUSB / Seriella portar",
@@ -202,7 +210,8 @@
     "renameFramegroup": "Byt namn på ramgrupp",
     "exportFrames": "Exportera ramar",
     "exportCurrentFramegroup": "Exportera aktuell ramgrupp ({id})",
-    "convertFramesFormat": "Konvertera ramar till nytt format"
+    "convertFramesFormat": "Konvertera ramar till nytt format",
+    "applyFrames": "Lägg till ram till bilder om rådata matchar"
   },
   "GalleryGroup": {
     "itemCount": "{count} bilder"

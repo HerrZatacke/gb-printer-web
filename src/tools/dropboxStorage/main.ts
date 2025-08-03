@@ -139,7 +139,7 @@ export const dropBoxSyncTool = (
             throw new Error('tiles missing');
           }
 
-          const imageBlobs = await prepareFiles(image)(tiles, imageStartLine);
+          const imageBlobs = await prepareFiles(image, tiles, imageStartLine);
 
           const result = await Promise.all(
             imageBlobs.map(async (dlInfo: DownloadInfo): Promise<DownloadArrayBuffer> => ({
