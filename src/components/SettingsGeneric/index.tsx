@@ -1,23 +1,16 @@
 'use client';
 
-import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import InputLabel from '@mui/material/InputLabel';
 import Link from '@mui/material/Link';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import type { ExportFrameMode } from 'gb-image-decoder';
 import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
+import DownloadOptionsForm from '@/components/Overlays/DownloadOptions/DownloadOptionsForm';
 import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
-import exportFrameModes from '@/consts/exportFrameModes';
-import { fileNameStyleLabels } from '@/consts/fileNameStyles';
-import type { FileNameStyle } from '@/consts/fileNameStyles';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
@@ -29,7 +22,6 @@ import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import cleanUrl from '@/tools/cleanUrl';
 import getFrameGroups from '@/tools/getFrameGroups';
-import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
 
 interface ClickActionOption {
   translationKey: string,
@@ -54,12 +46,8 @@ const clickActionMenuOptions: ClickActionOption[] = [
 function SettingsGeneric() {
   const {
     enableDebug,
-    exportFileTypes,
-    exportScaleFactors,
-    fileNameStyle,
     forceMagicCheck,
     galleryClickAction,
-    handleExportFrame,
     hideDates,
     importDeleted,
     importLastSeen,
@@ -70,13 +58,9 @@ function SettingsGeneric() {
     printerUrl,
     savFrameTypes,
     savImportOrder,
-    setExportFileTypes,
-    setExportScaleFactors,
     setEnableDebug,
-    setFileNameStyle,
     setForceMagicCheck,
     setGalleryClickAction,
-    setHandleExportFrame,
     setHideDates,
     setImportDeleted,
     setImportLastSeen,
@@ -98,7 +82,6 @@ function SettingsGeneric() {
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
   const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);
   const [printerParamsState, setPrinterParamsState] = useState<string>(printerParams);
-  const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<string[]>(['txt', 'pgm']);
   const [localeExampleText, setLocaleExampleText] = useState<string>('');
   const { formatter } = useDateFormat();
   const t = useTranslations('SettingsGeneric');
@@ -108,14 +91,6 @@ function SettingsGeneric() {
     setSortPalettes,
     paletteSortOptions,
   } = usePaletteSort();
-
-  useEffect(() => {
-    setSupportedExportFileTypes([
-      ...supportedCanvasImageFormats(),
-      'txt',
-      'pgm',
-    ]);
-  }, []);
 
   useEffect(() => {
     setLocaleExampleText(t('exampleDateFormat', { format: formatter(new Date()) }));
@@ -161,93 +136,7 @@ function SettingsGeneric() {
         }
       </TextField>
 
-      <FormControl>
-        <InputLabel shrink>
-          {t('exportDimensions')}
-        </InputLabel>
-        <ToggleButtonGroup
-          fullWidth
-          value={exportScaleFactors}
-          onChange={(_, value) => {
-            setExportScaleFactors(value);
-          }}
-        >
-          {[1, 2, 3, 4, 5, 6, 8, 10].map((factor) => (
-            <ToggleButton
-              key={factor}
-              value={factor}
-              title={`${factor * 160}×${factor * 144}`}
-            >
-              {`${factor}×`}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </FormControl>
-
-      <FormControl>
-        <InputLabel shrink>
-          {t('exportFiletypes')}
-        </InputLabel>
-        <ToggleButtonGroup
-          fullWidth
-          value={exportFileTypes}
-          onChange={(_, value) => {
-            setExportFileTypes(value);
-          }}
-        >
-          {supportedExportFileTypes.map((fileType) => (
-            <ToggleButton
-              key={fileType}
-              value={fileType}
-              title={fileType}
-            >
-              { fileType }
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </FormControl>
-
-      <TextField
-        id="settings-handle-export-frames"
-        value={handleExportFrame}
-        label={t('exportHandleFrame')}
-        select
-        onChange={(ev) => {
-          setHandleExportFrame(ev.target.value as ExportFrameMode);
-        }}
-      >
-        {
-          exportFrameModes.map(({ id, name }) => (
-            <MenuItem
-              key={id}
-              value={id}
-            >
-              {t(name)}
-            </MenuItem>
-          ))
-        }
-      </TextField>
-
-      <TextField
-        id="settings-filename-style"
-        value={fileNameStyle}
-        label={t('filenameStyle')}
-        select
-        onChange={(ev) => {
-          setFileNameStyle(ev.target.value as FileNameStyle);
-        }}
-      >
-        {
-          fileNameStyleLabels.map(({ id, name }) => (
-            <MenuItem
-              key={id}
-              value={id}
-            >
-              {t(name)}
-            </MenuItem>
-          ))
-        }
-      </TextField>
+      <DownloadOptionsForm inDialog={false} />
 
       <TextField
         id="settings-sav-frames"

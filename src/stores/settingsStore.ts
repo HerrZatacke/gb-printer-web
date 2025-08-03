@@ -15,6 +15,7 @@ import { PROJECT_PREFIX } from './constants';
 
 export interface Settings {
   activePalette: string,
+  alwaysShowDownloadDialog: boolean,
   bitmapQueueDither: boolean,
   bitmapQueueSetting: ImportContrastValue,
   enableDebug: boolean,
@@ -44,6 +45,7 @@ export interface Settings {
 
 interface Actions {
   setActivePalette: (activePalette: string) => void,
+  setAlwaysShowDownloadDialog: (alwaysShowDownloadDialog: boolean) => void,
   setBitmapQueueDither: (bitmapQueueDither: boolean) => void,
   setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => void,
   setEnableDebug: (enableDebug: boolean) => void,
@@ -91,6 +93,7 @@ const useSettingsStore = create(
   persist<SettingsState>(
     (set) => ({
       activePalette: 'bw',
+      alwaysShowDownloadDialog: true,
       bitmapQueueDither: true,
       bitmapQueueSetting: ImportContrastValue.WIDE,
       enableDebug: false,
@@ -118,6 +121,7 @@ const useSettingsStore = create(
       videoParams: {},
 
       setActivePalette: (activePalette: string) => set({ activePalette }),
+      setAlwaysShowDownloadDialog: (alwaysShowDownloadDialog: boolean) => set({ alwaysShowDownloadDialog }),
       setBitmapQueueDither: (bitmapQueueDither: boolean) => set({ bitmapQueueDither }),
       setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => set({ bitmapQueueSetting }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),

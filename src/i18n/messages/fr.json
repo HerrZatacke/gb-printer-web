@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Définir à 0 pour désactiver la pagination – peut entraîner des problèmes de performance avec de grandes quantités d'images",
     "galleryClickAction": "Comportement du clic pour les images de la galerie",
     "galleryClickActionHelper": "Ctrl+clic et Maj+clic peuvent toujours être utilisés pour sélectionner/sélectionner une plage",
-    "exportDimensions": "Tailles des images à exporter",
-    "exportFiletypes": "Types des fichiers images à exporter",
-    "exportHandleFrame": "Gestion des cadres lors de l'exportation d'images",
-    "filenameStyle": "Style de nom de fichier",
     "importSavFrames": "Cadres à appliquer lors de l'importation de dumps de cartouche",
     "importSavFramesNone": "Aucun",
     "importSavFramesUnknown": "Inconnu",
@@ -29,20 +25,9 @@
       "clickOpensEditDialog": "Le clic ouvre la boîte de dialogue d'édition",
       "clickOpensLightbox": "Le clic ouvre l'élément dans la lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Conserver le cadre",
-      "cropFrame": "Recadrer le cadre",
-      "squareBlack": "Rendre l'image carrée (ajouter du noir)",
-      "squareWhite": "Rendre l'image carrée (ajouter du blanc)"
-    },
     "importOrders": {
       "cartIndex": "Trié comme dans le rouleau de l'appareil photo dans la RAM d'origine",
       "ramIndex": "Trié par ordre réel dans la RAM (adresse mémoire)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Titre complet",
-      "dateTitle": "Date et titre",
-      "titleOnly": "Titre seulement"
     },
     "locales": {
       "de-DE": "Allemand – Allemagne (de-DE)",
@@ -90,6 +75,29 @@
     "throttle": "Limitation (en ms)",
     "token": "Jeton",
     "tokenHelper": "Allez sur GitHub pour créer un <link>🔗 nouveau jeton d'accès personnel affiné</link>, sélectionnez le dépôt que vous souhaitez utiliser pour la synchronisation et autorisez l'accès en lecture/écriture pour <code>« Repository Permissions > Contents »</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Télécharger {count, plural, =1 {image} other {# images}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Tailles des images à exporter",
+    "exportFiletypes": "Types des fichiers images à exporter",
+    "exportHandleFrame": "Gestion des cadres lors de l'exportation d'images",
+    "filenameStyle": "Style de nom de fichier",
+    "alwaysShowDownloadDialogInForm": "Afficher les options de téléchargement à chaque fois",
+    "alwaysShowDownloadDialogInDialog": "Toujours afficher cette boîte de dialogue",
+    "alwaysShowDownloadDialogHelper": "Vous pouvez réactiver cette option dans les paramètres à tout moment",
+    "frameModes": {
+      "keepFrame": "Conserver le cadre",
+      "cropFrame": "Recadrer le cadre",
+      "squareBlack": "Rendre l'image carrée (ajouter du noir)",
+      "squareWhite": "Rendre l'image carrée (ajouter du blanc)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Titre complet",
+      "dateTitle": "Date et titre",
+      "titleOnly": "Titre seulement"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Activer WebUSB / Ports série",

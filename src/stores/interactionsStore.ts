@@ -18,6 +18,7 @@ export interface ErrorMessage {
 }
 
 interface Values {
+  downloadHashes: string[],
   dragover: boolean,
   errors: ErrorMessage[],
   isFullscreen: boolean,
@@ -34,6 +35,7 @@ interface Values {
 
 interface Actions {
   dismissError: (index: number) => void,
+  setDownloadHashes: (downloadHashes: string[]) => void,
   setDragover: (dragover: boolean) => void,
   setError: (error: Error) => void,
   setIsFullscreen: (isFullscreen: boolean) => void,
@@ -54,6 +56,7 @@ interface Actions {
 export type InteractionsState = Values & Actions;
 
 const useInteractionsStore = create<InteractionsState>((set, get) => ({
+  downloadHashes: [],
   dragover: false,
   errors: [],
   isFullscreen: false,
@@ -68,6 +71,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   videoSelection: [],
 
   dismissError: (index: number) => set({ errors: get().errors.filter((_, i) => i !== index) }),
+  setDownloadHashes: (downloadHashes: string[]) => set({ downloadHashes }),
   setDragover: (dragover: boolean) => set({ dragover }),
   setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix(), id: v4() }] }),
   setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),

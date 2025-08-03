@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Auf 0 setzen, um Paginierung zu deaktivieren – kann bei großen Bildmengen zu Leistungseinbußen führen",
     "galleryClickAction": "Klickverhalten für Galeriebilder",
     "galleryClickActionHelper": "Strg+Klick und Umschalt+Klick können immer für auswählen/bereichsweise auswählen verwendet werden",
-    "exportDimensions": "Bildexport-Skalierungen",
-    "exportFiletypes": "Bildexport-Dateitypen",
-    "exportHandleFrame": "Umgang mit Rahmen beim Exportieren von Bildern",
-    "filenameStyle": "Dateinamenstil",
     "importSavFrames": "Rahmen, die beim Importieren von Cartridge-Dumps angewendet werden sollen",
     "importSavFramesNone": "Keine",
     "importSavFramesUnknown": "Unbekannt",
@@ -29,20 +25,9 @@
       "clickOpensEditDialog": "Klick öffnet Bearbeitungsdialog",
       "clickOpensLightbox": "Klick öffnet das Element in der Lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Rahmen beibehalten",
-      "cropFrame": "Rahmen zuschneiden",
-      "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
-      "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
-    },
     "importOrders": {
       "cartIndex": "Sortiert nach ROM-Entscheidung (wie in der Kamerarolle im ursprünglichen RAM zu sehen)",
       "ramIndex": "Sortiert nach tatsächlicher Reihenfolge im RAM (Speicheradresse)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Vollständiger Titel",
-      "dateTitle": "Datum und Titel",
-      "titleOnly": "Nur Titel"
     },
     "locales": {
       "de-DE": "Deutsch – Deutschland (de-DE)",
@@ -90,6 +75,29 @@
     "throttle": "Drosselung (in ms)",
     "token": "Token",
     "tokenHelper": "Gehe zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlaube Lese-/Schreibzugriff für <code>„Repository Permissions > Contents“</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "{count, plural, =1 {Bild} other {# Bilder}} herunterladen"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Bildexport-Skalierungen",
+    "exportFiletypes": "Bildexport-Dateitypen",
+    "exportHandleFrame": "Umgang mit Rahmen beim Exportieren von Bildern",
+    "filenameStyle": "Dateinamenstil",
+    "alwaysShowDownloadDialogInForm": "Download Optionen bei jedem Download anzeigen",
+    "alwaysShowDownloadDialogInDialog": "Diesen Dialog jedes Mal anzeigen",
+    "alwaysShowDownloadDialogHelper": "Du kannst diese Option in den Einstellungen jederzeit wieder aktivieren",
+    "frameModes": {
+      "keepFrame": "Rahmen beibehalten",
+      "cropFrame": "Rahmen zuschneiden",
+      "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
+      "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Vollständiger Titel",
+      "dateTitle": "Datum und Titel",
+      "titleOnly": "Nur Titel"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "WebUSB / Serielle Ports aktivieren",

@@ -62,7 +62,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { updateLastSyncLocalNow, deleteImages } = useStores();
-  const { downloadImages } = useDownload();
+  const { setDownloadImages } = useDownload();
   const { shareImage } = useShareImage();
 
   const { images } = useItemsStore();
@@ -80,7 +80,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
     isFavourite: image?.tags.includes(SpecialTags.FILTER_FAVOURITE) || false,
     hasMeta: !!image?.meta,
     canShare: canShare(),
-    startDownload: () => downloadImages([hash]),
+    startDownload: () => setDownloadImages([hash]),
     deleteImage: () => {
       setDialog({
         message: t('deleteImage', { title: image?.title || 'NO_TITLE' }),

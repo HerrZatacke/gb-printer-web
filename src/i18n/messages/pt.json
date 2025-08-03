@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Define para 0 para desativar a paginação – pode degradar o desempenho com muitas imagens",
     "galleryClickAction": "Ação de clique para imagens da galeria",
     "galleryClickActionHelper": "Ctrl+Clique e Shift+Clique podem ser sempre usados para selecionar/seleção de intervalo",
-    "exportDimensions": "Escalas de exportação de imagens",
-    "exportFiletypes": "Tipos de ficheiro de exportação de imagens",
-    "exportHandleFrame": "Tratamento da moldura ao exportar imagens",
-    "filenameStyle": "Estilo do nome do ficheiro",
     "importSavFrames": "Molduras a aplicar ao importar dumps de cartucho",
     "importSavFramesNone": "Nenhuma",
     "importSavFramesUnknown": "Desconhecida",
@@ -29,20 +25,9 @@
       "clickOpensEditDialog": "Clique abre o diálogo de edição",
       "clickOpensLightbox": "Clique abre o item na lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Manter moldura",
-      "cropFrame": "Recortar moldura",
-      "squareBlack": "Tornar imagem quadrada (adicionar preto)",
-      "squareWhite": "Tornar imagem quadrada (adicionar branco)"
-    },
     "importOrders": {
       "cartIndex": "Ordenado pela decisão ROM (como visto no rolo da câmara na RAM original)",
       "ramIndex": "Ordenado pela ordem real na RAM (endereço de memória)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Título completo",
-      "dateTitle": "Data e título",
-      "titleOnly": "Apenas título"
     },
     "locales": {
       "de-DE": "Alemão – Alemanha (de-DE)",
@@ -90,6 +75,29 @@
     "throttle": "Limitador (ms)",
     "token": "Token",
     "tokenHelper": "Vai ao GitHub para criar um <link>🔗 novo token de acesso pessoal afinado</link>, escolhe o repositório que queres sincronizar e concede permissões de leitura/escrita a <code>«Repository Permissions > Contents»</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Transferir {count, plural, =1 {imagem} other {# imagens}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Escalas de exportação de imagens",
+    "exportFiletypes": "Tipos de ficheiro de exportação de imagens",
+    "exportHandleFrame": "Tratamento da moldura ao exportar imagens",
+    "filenameStyle": "Estilo do nome do ficheiro",
+    "alwaysShowDownloadDialogInForm": "Mostrar opções de transferência sempre",
+    "alwaysShowDownloadDialogInDialog": "Mostrar sempre esta caixa de diálogo",
+    "alwaysShowDownloadDialogHelper": "Pode reativar esta opção nas definições a qualquer momento",
+    "frameModes": {
+      "keepFrame": "Manter moldura",
+      "cropFrame": "Recortar moldura",
+      "squareBlack": "Tornar imagem quadrada (adicionar preto)",
+      "squareWhite": "Tornar imagem quadrada (adicionar branco)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Título completo",
+      "dateTitle": "Data e título",
+      "titleOnly": "Apenas título"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Ativar WebUSB / Portas seriais",

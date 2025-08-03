@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Stel in op 0 om paginering uit te schakelen – kan prestatieproblemen veroorzaken bij grote aantallen afbeeldingen",
     "galleryClickAction": "Klikgedrag voor galerieafbeeldingen",
     "galleryClickActionHelper": "Ctrl+klik en Shift+klik kunnen altijd worden gebruikt voor selecteren/bereik selecteren",
-    "exportDimensions": "Afbeeldingexport schalingen",
-    "exportFiletypes": "Afbeeldingexport bestandstypen",
-    "exportHandleFrame": "Omgang met kaders bij het exporteren van afbeeldingen",
-    "filenameStyle": "Bestandsnaamstijl",
     "importSavFrames": "Kaders die moeten worden toegepast bij het importeren van cartridge dumps",
     "importSavFramesNone": "Geen",
     "importSavFramesUnknown": "Onbekend",
@@ -29,20 +25,9 @@
       "clickOpensEditDialog": "Klik opent bewerkingsdialoog",
       "clickOpensLightbox": "Klik opent het item in de lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Kader behouden",
-      "cropFrame": "Kader bijsnijden",
-      "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
-      "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
-    },
     "importOrders": {
       "cartIndex": "Gesorteerd op ROM-beslissing (zoals te zien in camerarol in oorspronkelijke RAM)",
       "ramIndex": "Gesorteerd op werkelijke volgorde in RAM (geheugenadres)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Volledige titel",
-      "dateTitle": "Datum en titel",
-      "titleOnly": "Alleen titel"
     },
     "locales": {
       "de-DE": "Duits – Duitsland (de-DE)",
@@ -90,6 +75,29 @@
     "throttle": "Vertraging (in ms)",
     "token": "Token",
     "tokenHelper": "Ga naar GitHub om een <link>🔗 nieuwe fijnafgestemde persoonlijke toegangstoken</link> te maken, selecteer de repository die je wilt gebruiken voor synchronisatie, en sta lees-/schrijftoegang toe voor <code>“Repository Permissions > Contents”</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "{count, plural, =1 {afbeelding} other {# afbeeldingen}} downloaden"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Afbeeldingexport schalingen",
+    "exportFiletypes": "Afbeeldingexport bestandstypen",
+    "exportHandleFrame": "Omgang met kaders bij het exporteren van afbeeldingen",
+    "filenameStyle": "Bestandsnaamstijl",
+    "alwaysShowDownloadDialogInForm": "Downloadopties altijd weergeven",
+    "alwaysShowDownloadDialogInDialog": "Deze dialoog altijd tonen",
+    "alwaysShowDownloadDialogHelper": "Je kunt deze optie op elk moment opnieuw inschakelen in de instellingen",
+    "frameModes": {
+      "keepFrame": "Kader behouden",
+      "cropFrame": "Kader bijsnijden",
+      "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
+      "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Volledige titel",
+      "dateTitle": "Datum en titel",
+      "titleOnly": "Alleen titel"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "WebUSB / Seriële poorten inschakelen",

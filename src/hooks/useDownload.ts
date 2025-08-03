@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
@@ -10,11 +11,13 @@ import { DownloadInfo } from '@/types/Sync';
 
 interface UseDownload {
   downloadImages: (hashes: string[]) => Promise<void>
+  setDownloadImages: (hashes: string[]) => Promise<void>
 }
 
 const useDownload = (): UseDownload => {
-  const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore();
+  const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle, alwaysShowDownloadDialog } = useSettingsStore();
   const { frames, palettes, images } = useItemsStore();
+  const { setDownloadHashes } = useInteractionsStore();
 
   const prepareFiles = useMemo(() => getPrepareFiles(
     exportScaleFactors,
@@ -70,8 +73,17 @@ const useDownload = (): UseDownload => {
     download(zipFilename)(resultImages.flat());
   }, [getZipFileName, prepareDownloadInfo]);
 
+  const setDownloadImages = useCallback(async (hashes: string[]) => {
+    if (alwaysShowDownloadDialog) {
+      setDownloadHashes(hashes);
+    } else {
+      await downloadImages(hashes);
+    }
+  }, [alwaysShowDownloadDialog, downloadImages, setDownloadHashes]);
+
   return {
     downloadImages,
+    setDownloadImages,
   };
 };
 

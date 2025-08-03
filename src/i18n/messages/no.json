@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Sett til 0 for å deaktivere paginering – kan føre til ytelsesreduksjon ved store bildevolumer",
     "galleryClickAction": "Klikkoppførsel for galleribilder",
     "galleryClickActionHelper": "Ctrl+klikk og Shift+klikk kan alltid brukes for å velge/velge område",
-    "exportDimensions": "Bildeksport-skaleringer",
-    "exportFiletypes": "Bildeksport-filtyper",
-    "exportHandleFrame": "Håndtering av ramme ved eksport av bilder",
-    "filenameStyle": "Filnavnstil",
     "importSavFrames": "Rammer som skal brukes ved import av cartridge-dumps",
     "importSavFramesNone": "Ingen",
     "importSavFramesUnknown": "Ukjent",
@@ -29,20 +25,9 @@
       "clickOpensEditDialog": "Klikk åpner redigeringsdialog",
       "clickOpensLightbox": "Klikk åpner elementet i lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Behold ramme",
-      "cropFrame": "Beskjær ramme",
-      "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
-      "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
-    },
     "importOrders": {
       "cartIndex": "Sortert etter ROM-avgjørelse (som sett i kamerarulle i opprinnelig RAM)",
       "ramIndex": "Sortert etter faktisk rekkefølge i RAM (minneadresse)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Full tittel",
-      "dateTitle": "Dato og tittel",
-      "titleOnly": "Kun tittel"
     },
     "locales": {
       "de-DE": "Tysk – Tyskland (de-DE)",
@@ -90,6 +75,29 @@
     "throttle": "Struping (i ms)",
     "token": "Token",
     "tokenHelper": "Gå til GitHub for å opprette et <link>🔗 nytt finjustert personlig tilgangstoken</link>, velg repositoryet du vil bruke for synkronisering, og tillat lese-/skrivetilgang for <code>”Repository Permissions > Contents”</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Last ned {count, plural, =1 {bilde} other {# bilder}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Bildeksport-skaleringer",
+    "exportFiletypes": "Bildeksport-filtyper",
+    "exportHandleFrame": "Håndtering av ramme ved eksport av bilder",
+    "filenameStyle": "Filnavnstil",
+    "alwaysShowDownloadDialogInForm": "Vis nedlastingsvalg hver gang",
+    "alwaysShowDownloadDialogInDialog": "Vis alltid denne dialogen",
+    "alwaysShowDownloadDialogHelper": "Du kan aktivere dette alternativet igjen i innstillingene når som helst",
+    "frameModes": {
+      "keepFrame": "Behold ramme",
+      "cropFrame": "Beskjær ramme",
+      "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
+      "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Full tittel",
+      "dateTitle": "Dato og tittel",
+      "titleOnly": "Kun tittel"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Aktiver WebUSB / Serielle porter",

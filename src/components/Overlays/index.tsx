@@ -1,6 +1,7 @@
 import React from 'react';
 import BitmapQueue from '@/components/Overlays/BitmapQueue';
 import Confirm from '@/components/Overlays/Confirm';
+import DownloadOptions from '@/components/Overlays/DownloadOptions';
 import DragOver from '@/components/Overlays/DragOver';
 import EditForm from '@/components/Overlays/EditForm';
 import EditFrame from '@/components/Overlays/EditFrame';
@@ -72,6 +73,7 @@ function Overlays() {
     syncSelect,
     videoSelection,
     showSerials,
+    downloadHashes,
   } = useInteractionsStore();
 
   const {
@@ -79,6 +81,7 @@ function Overlays() {
     progressLog,
   } = useProgressStore();
 
+  const showDownloadOverlay = !!downloadHashes.length;
   const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
   const showProgressBox = !!progress.length;
   const showVideoForm = !!videoSelection?.length;
@@ -119,6 +122,8 @@ function Overlays() {
       return <Trashbin />; // interactive
     case showSerialOverlay:
       return <Serials />; // interactive
+    case showDownloadOverlay:
+      return <DownloadOptions />; // interactive
     case showDragOver:
       return <DragOver />; // semi-interactive
     case showProgressLog:
