@@ -54,7 +54,7 @@ const useDownload = (): UseDownload => {
       throw new Error('no tiles');
     }
 
-    const files = await prepareFiles(image)(tiles, imageStartLine);
+    const files = await prepareFiles(image, tiles, imageStartLine);
     return download(zipFilename)(files);
   }, [fileNameStyle, frames, images, palettes, prepareFiles]);
 
@@ -80,7 +80,7 @@ const useDownload = (): UseDownload => {
 
       const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
-      return prepareFiles(image)(tiles || [], imageStartLine);
+      return prepareFiles(image, tiles || [], imageStartLine);
     }));
 
     download(zipFilename)(resultImages.flat());

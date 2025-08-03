@@ -39,7 +39,7 @@ const useShareImage = (): UseShareImage => {
 
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
-    const downloadInfo = await prepareFiles(image)(tiles || [], imageStartLine);
+    const downloadInfo = await prepareFiles(image, tiles || [], imageStartLine);
 
     const { blob, filename, title } = downloadInfo[0];
 

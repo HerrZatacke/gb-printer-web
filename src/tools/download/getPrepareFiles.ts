@@ -18,9 +18,8 @@ const getPrepareFiles =
     handleExportFrame: ExportFrameMode,
     palettes: Palette[],
     fileNameStyle: FileNameStyle,
-  ) => (
-    image: Image,
   ) => async (
+    image: Image,
     tiles: string[] | RGBNTiles,
     imageStartLine: number,
   ): Promise<DownloadInfo[]> => {
