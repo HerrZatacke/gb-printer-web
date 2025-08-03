@@ -202,7 +202,8 @@
     "renameFramegroup": "Byt namn på ramgrupp",
     "exportFrames": "Exportera ramar",
     "exportCurrentFramegroup": "Exportera aktuell ramgrupp ({id})",
-    "convertFramesFormat": "Konvertera ramar till nytt format"
+    "convertFramesFormat": "Konvertera ramar till nytt format",
+    "applyFrames": "Lägg till ram till bilder om rådata matchar"
   },
   "GalleryGroup": {
     "itemCount": "{count} bilder"

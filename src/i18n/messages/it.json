@@ -202,7 +202,8 @@
     "renameFramegroup": "Rinomina gruppo cornice",
     "exportFrames": "Esporta cornici",
     "exportCurrentFramegroup": "Esporta gruppo cornice attuale ({id})",
-    "convertFramesFormat": "Converti cornici nel nuovo formato"
+    "convertFramesFormat": "Converti cornici nel nuovo formato",
+    "applyFrames": "Aggiungi cornice alle immagini se i dati grezzi corrispondono"
   },
   "GalleryGroup": {
     "itemCount": "{count} immagini"

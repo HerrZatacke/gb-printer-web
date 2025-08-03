@@ -202,7 +202,8 @@
     "renameFramegroup": "Rename Framegroup",
     "exportFrames": "Export frames",
     "exportCurrentFramegroup": "Export current framegroup ({id})",
-    "convertFramesFormat": "Convert frames to new format"
+    "convertFramesFormat": "Convert frames to new format",
+    "applyFrames": "Add frame to images if raw data matches"
   },
   "GalleryGroup": {
     "itemCount": "{count} images"

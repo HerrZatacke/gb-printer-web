@@ -202,7 +202,8 @@
     "renameFramegroup": "Rahmengruppe umbenennen",
     "exportFrames": "Rahmen exportieren",
     "exportCurrentFramegroup": "Aktuelle Rahmengruppe exportieren ({id})",
-    "convertFramesFormat": "Rahmen in neues Format konvertieren"
+    "convertFramesFormat": "Rahmen in neues Format konvertieren",
+    "applyFrames": "Frame zu Bildern hinzufügen falls Rohdaten übereinstimmen"
   },
   "GalleryGroup": {
     "itemCount": "{count} Bilder"

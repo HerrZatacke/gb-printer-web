@@ -202,7 +202,8 @@
     "renameFramegroup": "Renombrar grupo de marcos",
     "exportFrames": "Exportar marcos",
     "exportCurrentFramegroup": "Exportar grupo de marcos actual ({id})",
-    "convertFramesFormat": "Convertir marcos a nuevo formato"
+    "convertFramesFormat": "Convertir marcos a nuevo formato",
+    "applyFrames": "Añadir marco a imágenes si los datos sin procesar coinciden"
   },
   "GalleryGroup": {
     "itemCount": "{count} imágenes"

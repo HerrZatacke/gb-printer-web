@@ -202,7 +202,8 @@
     "renameFramegroup": "Renommer le groupe de cadres",
     "exportFrames": "Exporter les cadres",
     "exportCurrentFramegroup": "Exporter le groupe de cadres actuel ({id})",
-    "convertFramesFormat": "Convertir les cadres au nouveau format"
+    "convertFramesFormat": "Convertir les cadres au nouveau format",
+    "applyFrames": "Ajouter un cadre aux images si les données brutes correspondent"
   },
   "GalleryGroup": {
     "itemCount": "{count} images"

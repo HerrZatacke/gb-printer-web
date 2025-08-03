@@ -202,7 +202,8 @@
     "renameFramegroup": "Kadergroep hernoemen",
     "exportFrames": "Kaders exporteren",
     "exportCurrentFramegroup": "Huidige kadergroep exporteren ({id})",
-    "convertFramesFormat": "Kaders naar nieuw formaat converteren"
+    "convertFramesFormat": "Kaders naar nieuw formaat converteren",
+    "applyFrames": "Voeg kader toe aan afbeeldingen als ruwe data overeenkomt"
   },
   "GalleryGroup": {
     "itemCount": "{count} afbeeldingen"

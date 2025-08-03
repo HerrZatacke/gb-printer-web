@@ -202,7 +202,8 @@
     "renameFramegroup": "Gi nytt navn til rammegruppe",
     "exportFrames": "Eksporter rammer",
     "exportCurrentFramegroup": "Eksporter gjeldende rammegruppe ({id})",
-    "convertFramesFormat": "Konverter rammer til nytt format"
+    "convertFramesFormat": "Konverter rammer til nytt format",
+    "applyFrames": "Legg til ramme til bilder hvis rådata stemmer overens"
   },
   "GalleryGroup": {
     "itemCount": "{count} bilder"

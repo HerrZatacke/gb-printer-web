@@ -202,7 +202,8 @@
     "renameFramegroup": "Renomear grupo de molduras",
     "exportFrames": "Exportar molduras",
     "exportCurrentFramegroup": "Exportar grupo de molduras atual ({id})",
-    "convertFramesFormat": "Converter molduras para o novo formato"
+    "convertFramesFormat": "Converter molduras para o novo formato",
+    "applyFrames": "Adicionar moldura às imagens se os dados brutos coincidirem"
   },
   "GalleryGroup": {
     "itemCount": "{count} imagens"

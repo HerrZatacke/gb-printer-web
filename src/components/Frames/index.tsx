@@ -26,6 +26,7 @@ function Frames() {
     setActiveFrameGroupName,
     activeFrameGroup,
     convertFormat,
+    detectFrames,
     enableDebug,
   } = useFrames();
 
@@ -89,13 +90,20 @@ function Frames() {
           {t('exportCurrentFramegroup', { id: selectedFrameGroup })}
         </Button>
         {
-          enableDebug ? (
-            <Button
-              onClick={convertFormat}
-            >
-              {t('convertFramesFormat')}
-            </Button>
-          ) : null
+          enableDebug && (
+            <>
+              <Button
+                onClick={convertFormat}
+              >
+                {t('convertFramesFormat')}
+              </Button>
+              <Button
+                onClick={detectFrames}
+              >
+                {t('applyFrames')}
+              </Button>
+            </>
+          )
         }
       </ButtonGroup>
     </Stack>

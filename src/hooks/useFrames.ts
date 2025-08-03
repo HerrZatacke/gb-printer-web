@@ -1,14 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { ExportTypes } from '@/consts/exportTypes';
 import { useStores } from '@/hooks/useStores';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { compressAndHashFrame, loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
+import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
 import getFrameGroups from '@/tools/getFrameGroups';
 import { getFramesForGroup } from '@/tools/getFramesForGroup';
+import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { padFrameData } from '@/tools/saveLocalStorageItems';
+import { load } from '@/tools/storage';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
+import { Image } from '@/types/Image';
 import { useImportExportSettings } from './useImportExportSettings';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
@@ -30,13 +34,14 @@ interface UseFrames {
   setActiveFrameGroupName: (name: string) => void,
   activeFrameGroup: FrameGroup,
   convertFormat: () => void,
+  detectFrames: () => void,
   enableDebug: boolean,
 }
 
 const useFrames = (): UseFrames => {
   const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
-  const { frames, palettes, frameGroups: frameGroupsState, addFrames, updateFrameGroups } = useItemsStore();
-  const { updateLastSyncLocalNow } = useStores();
+  const { frames, images, palettes, frameGroups: frameGroupsState, addFrames, updateFrameGroups } = useItemsStore();
+  const { updateLastSyncLocalNow, updateImages } = useStores();
   const { downloadSettings } = useImportExportSettings();
 
   const palette = palettes.find(({ shortName }) => shortName === activePalette) || palettes[0];
@@ -71,7 +76,7 @@ const useFrames = (): UseFrames => {
 
   const exportJson = (what: ExportTypes) => downloadSettings(what, selectedFrameGroup);
 
-  const convertFormat = async () => {
+  const convertFormat = useCallback(async () => {
     const updatedFrames = await Promise.all(frames.map(async (frame): Promise<Frame> => {
       const stateData = await loadFrameData(frame.hash);
 
@@ -98,7 +103,44 @@ const useFrames = (): UseFrames => {
     }));
 
     addFrames(updatedFrames);
-  };
+  }, [addFrames, frames]);
+
+  const detectFrames = useCallback(async () => {
+    const unframedImages = images
+      .filter(({ frame }: Image) => !frame)
+      .reduce(reduceImagesMonochrome, [])
+    ;
+
+    const updatedImages: Image[] = [];
+
+    console.log(`found ${unframedImages.length} images without frame`);
+
+    for (const image of unframedImages) {
+      const tiles = await load(image.hash, undefined, true);
+
+      if (!tiles || tiles.length !== 360) { continue; }
+
+      const frameData = getFrameFromFullTiles(tiles, 2);
+      const frameTileData = padFrameData(frameData);
+      const { dataHash } = await compressAndHashFrame(frameTileData, 2);
+
+      const frame = frames.find(({ hash }) => (hash === dataHash));
+
+      if (!frame) {
+        console.log(`unknown frame in image "${image.title}"`);
+        continue;
+      }
+
+
+      updatedImages.push({
+        ...image,
+        frame: frame.id,
+      });
+    }
+
+    console.log(`will update ${updatedImages.length} with correct frame`);
+    updateImages(updatedImages);
+  }, [frames, images, updateImages]);
 
   return {
     selectedFrameGroup,
@@ -110,6 +152,7 @@ const useFrames = (): UseFrames => {
     setActiveFrameGroupName,
     activeFrameGroup,
     convertFormat,
+    detectFrames,
     enableDebug,
   };
 };
