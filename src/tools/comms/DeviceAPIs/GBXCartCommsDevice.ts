@@ -104,7 +104,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     await this.waitForAck();
   }
 
-  private async readRAM(address: number, size: number): Promise<Uint8Array> {
+  private async readRAM(address: number, size: number): Promise<Uint8Array<ArrayBuffer>> {
     const chunkSize = Math.min(0x1000, size);
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
     await this.setFwVariable('TRANSFER_SIZE', chunkSize);
@@ -112,7 +112,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     await this.setFwVariable('DMG_ACCESS_MODE', 3);
     await this.setFwVariable('DMG_READ_CS_PULSE', 1);
 
-    let result: Uint8Array = new Uint8Array([]);
+    let result: Uint8Array<ArrayBuffer> = new Uint8Array([]);
 
     while (result.byteLength < size) {
       const [cartReadResult] = await this.device.send(readCommand, [{ length: chunkSize }]);
@@ -122,7 +122,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     return result;
   }
 
-  private async readROM(address: number, size: number): Promise<Uint8Array> {
+  private async readROM(address: number, size: number): Promise<Uint8Array<ArrayBuffer>> {
     const maxChunkSize = (this.fwVer > 1 && this.fwVer < 12) ? 0x800 : 0x1000;
     const chunkSize = Math.min(maxChunkSize, size);
     const readCommand = new Uint8Array([GBXCartCommands['DMG_CART_READ']]);
@@ -130,7 +130,7 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     await this.setFwVariable('ADDRESS', address);
     await this.setFwVariable('DMG_ACCESS_MODE', 1);
 
-    let result: Uint8Array = new Uint8Array([]);
+    let result: Uint8Array<ArrayBuffer> = new Uint8Array([]);
 
     while (result.byteLength < size) {
       const [cartReadResult] = await this.device.send(readCommand, [{ length: chunkSize, timeout: 1000 }]);
@@ -154,9 +154,9 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     return romName;
   }
 
-  public async readRAMImage(): Promise<Uint8Array[]> {
+  public async readRAMImage(): Promise<Uint8Array<ArrayBuffer>[]> {
     await this.setModeVoltage();
-    const chunks: Uint8Array[] = [];
+    const chunks: Uint8Array<ArrayBuffer>[] = [];
     const readSize = 0x2000;
     const ramBanks = 16;
     const totalChunks = ramBanks;
@@ -179,9 +179,9 @@ export class GBXCartCommsDevice implements BaseCommsDevice {
     return chunks;
   }
 
-  public async readPhotoAlbums(): Promise<Uint8Array[]> {
+  public async readPhotoAlbums(): Promise<Uint8Array<ArrayBuffer>[]> {
     await this.setModeVoltage();
-    const chunks: Uint8Array[] = [];
+    const chunks: Uint8Array<ArrayBuffer>[] = [];
     const chunkSize = 0x4000;
     const ramReadSize = 0x2000;
     const romBanks = 64;
