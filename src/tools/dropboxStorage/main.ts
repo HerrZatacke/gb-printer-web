@@ -4,7 +4,7 @@ import type { UseStores } from '@/hooks/useStores';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
-import useProgressStore from '@/stores/progressStore';
+import useProgressStore, { LogType } from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 import useStoragesStore from '@/stores/storagesStore';
 import { delay } from '@/tools/delay';
@@ -51,6 +51,7 @@ export const dropBoxSyncTool = (
         setProgressLog('dropbox', {
           timestamp: (new Date()).getTime() / 1000,
           message: `${who} runs ${what}`,
+          type: LogType.MESSAGE,
         });
       }
 
@@ -68,40 +69,49 @@ export const dropBoxSyncTool = (
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { syncLastUpdate } = useStoragesStore.getState();
-    const repoContents: RepoContents = await dropboxClient.getRemoteContents();
+    try {
+      const { syncLastUpdate } = useStoragesStore.getState();
+      const repoContents: RepoContents = await dropboxClient.getRemoteContents();
 
-    switch (direction) {
-      case SyncDirection.UP: {
-        const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
-        const changes = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
-        await dropboxClient.upload(changes, 'settings');
-        useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdateUTC);
-        break;
-      }
-
-      case SyncDirection.DOWN: {
-        const syncedState = await saveLocalStorageItems(repoContents);
-        await remoteImport(syncedState);
-
-        const lastUpdate = repoContents.settings?.state?.lastUpdateUTC || 0;
-        if (lastUpdate) {
-          useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdate);
-
-          // Local time is set in useStores->combinedGlobalUpdate
-          // useStoragesStore.getState().setSyncLastUpdate('local', lastUpdate);
+      switch (direction) {
+        case SyncDirection.UP: {
+          const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
+          const changes = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
+          await dropboxClient.upload(changes, 'settings');
+          useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdateUTC);
+          break;
         }
 
-        break;
-      }
+        case SyncDirection.DOWN: {
+          const syncedState = await saveLocalStorageItems(repoContents);
+          await remoteImport(syncedState);
 
-      default:
-        throw new Error('dropbox sync: wrong sync case');
+          const lastUpdate = repoContents.settings?.state?.lastUpdateUTC || 0;
+          if (lastUpdate) {
+            useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdate);
+
+            // Local time is set in useStores->combinedGlobalUpdate
+            // useStoragesStore.getState().setSyncLastUpdate('local', lastUpdate);
+          }
+
+          break;
+        }
+
+        default:
+          throw new Error('dropbox sync: wrong sync case');
+      }
+    } catch (error) {
+      setProgressLog('dropbox', {
+        timestamp: (new Date()).getTime() / 1000,
+        message: `Encountered an error during sync: ${(error as Error).message}`,
+        type: LogType.ERROR,
+      });
     }
 
     setProgressLog('dropbox', {
       timestamp: (new Date()).getTime() / 1000,
       message: '.',
+      type: LogType.DONE,
     });
 
     setSyncBusy(false);
@@ -184,6 +194,7 @@ export const dropBoxSyncTool = (
     setProgressLog('dropbox', {
       timestamp: (new Date()).getTime() / 1000,
       message: '.',
+      type: LogType.DONE,
     });
 
     setSyncBusy(false);

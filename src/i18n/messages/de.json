@@ -487,6 +487,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Update abgeschlossen {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Aktualisiere... {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderError": "❌ Update fehlgeschlagen {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Alle {count} Nachrichten anzeigen",
     "reduceMessages": "Nachrichten reduzieren",
     "startedAt": "Gestartet um: {time}",

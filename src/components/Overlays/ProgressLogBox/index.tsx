@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import React, { useMemo, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { useProgressLog } from '@/hooks/useProgressLog';
-import type { LogItem } from '@/stores/progressStore';
+import { type LogItem, LogType } from '@/stores/progressStore';
 
 dayjs.extend(duration);
 
@@ -58,7 +58,7 @@ function ProgressLogBox() {
       ...gitMessages,
       ...dropboxMessages,
     ]
-      .filter(({ message }) => (message !== '.'))
+      .filter(({ type }) => (type !== LogType.DONE))
   ), [dropboxMessages, gitMessages]);
 
   const shownMessages = useMemo<LogItem[]>(() => (
@@ -66,6 +66,18 @@ function ProgressLogBox() {
       cutOffMessages ? index < MESSAGES_CUTOFF : true
     ))
   ), [cutOffMessages, messages]);
+
+  const header = useMemo<string>(() => {
+    const texts = { repo: isGit ? `${repo}/${branch}` : 'NO_REPO' };
+
+    if (!finished) {
+      return t('dialogHeaderUpdating', texts);
+    }
+
+    const hasError = (messages.some(({ type }) => type === LogType.ERROR));
+
+    return t(hasError ? 'dialogHeaderError' : 'dialogHeaderDone', texts);
+  }, [branch, finished, isGit, messages, repo, t]);
 
   if (
     !gitMessages.length &&
@@ -77,7 +89,7 @@ function ProgressLogBox() {
 
   return (
     <Lightbox
-      header={t(finished ? 'dialogHeaderDone' : 'dialogHeaderUpdating', { repo: isGit ? `${repo}/${branch}` : 'NO_REPO' })}
+      header={header}
       confirm={finished ? confirm : undefined}
     >
       <Stack
@@ -95,12 +107,13 @@ function ProgressLogBox() {
             },
           }}
         >
-          {shownMessages.map(({ message, timestamp }, index) => (
+          {shownMessages.map(({ message, timestamp, type }, index) => (
             <Typography
               key={index}
               variant="caption"
               component="li"
               title={dayjs.unix(timestamp).format('HH:mm:ss')}
+              color={type === LogType.ERROR ? 'error' : undefined}
             >
               {message}
             </Typography>

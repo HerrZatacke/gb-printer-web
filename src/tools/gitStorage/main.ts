@@ -1,7 +1,7 @@
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
 import useInteractionsStore from '@/stores/interactionsStore';
-import useProgressStore from '@/stores/progressStore';
+import useProgressStore, { LogType } from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 import useStoragesStore from '@/stores/storagesStore';
 import { delay } from '@/tools/delay';
@@ -31,6 +31,7 @@ export const init = () => {
       setProgressLog('git', {
         timestamp: (new Date()).getTime() / 1000,
         message: `${who} runs ${what}`,
+        type: LogType.MESSAGE,
       });
 
       return fn();
@@ -77,17 +78,20 @@ export const gitSyncTool = (
         default:
           throw new Error('github sync: wrong sync case');
       }
-
+    } catch (error) {
       setProgressLog('git', {
         timestamp: (new Date()).getTime() / 1000,
-        message: '.',
+        message: `Encountered an error during sync: ${(error as Error).message}`,
+        type: LogType.ERROR,
       });
-      setSyncBusy(false);
-
-    } catch (error) {
-      console.error(error);
-      useInteractionsStore.getState().setError(error as Error);
     }
+
+    setProgressLog('git', {
+      timestamp: (new Date()).getTime() / 1000,
+      message: '.',
+      type: LogType.DONE,
+    });
+    setSyncBusy(false);
   };
 
   useStoragesStore.subscribe((state) => state.gitStorage, updateSettings);

@@ -2,13 +2,11 @@ export enum ReadAs {
   UINT8_ARRAY = 'uint8array',
   TEXT = 'text',
   DATA_URL = 'dataURL',
-  BINARY_STRING = 'binaryString',
 }
 
 function readFileAs(file: File | Blob, readAs: ReadAs.UINT8_ARRAY): Promise<Uint8Array>;
 function readFileAs(file: File | Blob, readAs: ReadAs.TEXT): Promise<string>;
 function readFileAs(file: File | Blob, readAs: ReadAs.DATA_URL): Promise<string>;
-function readFileAs(file: File | Blob, readAs: ReadAs.BINARY_STRING): Promise<string>;
 
 function readFileAs(file: File | Blob, readAs: ReadAs): Promise<Uint8Array | string> {
   return new Promise((resolve, reject) => {
@@ -38,9 +36,6 @@ function readFileAs(file: File | Blob, readAs: ReadAs): Promise<Uint8Array | str
         break;
       case ReadAs.TEXT:
         reader.readAsText(file);
-        break;
-      case ReadAs.BINARY_STRING:
-        reader.readAsBinaryString(file);
         break;
       case ReadAs.DATA_URL:
         reader.readAsDataURL(file);

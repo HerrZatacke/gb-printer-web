@@ -1,9 +1,16 @@
 import { v4 } from 'uuid';
 import { create } from 'zustand';
 
+export enum LogType {
+  ERROR = 'error',
+  DONE = 'done',
+  MESSAGE = 'message',
+}
+
 export interface LogItem {
   timestamp: number,
   message: string,
+  type: LogType,
 }
 
 export interface ProgressLog {
