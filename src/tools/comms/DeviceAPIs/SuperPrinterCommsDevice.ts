@@ -59,7 +59,7 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
     ];
   };
 
-  private async sendCommands(commands: Uint8Array[]) {
+  private async sendCommands(commands: Uint8Array<ArrayBuffer>[]) {
     if (!commands.length) {
       return;
     }
@@ -135,7 +135,7 @@ export class SuperPrinterCommsDevice implements BaseCommsDevice {
 
     // add print command every 9 lines (regular image size and maximum printer capacity)
     const commands = chunk(lines, 9)
-      .map(((section: Uint8Array[], index: number, arr: Uint8Array[][]) => {
+      .map(((section: Uint8Array<ArrayBuffer>[], index: number, arr: Uint8Array[][]) => {
         const topMargin: number = (index === 0) ? 1 : 0;
         const bottomMargin: number = (index === arr.length - 1) ? 3 : 0;
         return [

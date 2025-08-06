@@ -98,7 +98,7 @@ export const useGBXCart = (): UseGBXCart => {
       default:
     }
 
-    const result: Uint8Array[] = await gbxCart.readRAMImage();
+    const result = await gbxCart.readRAMImage();
 
     setBusy(false);
 
