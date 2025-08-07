@@ -1,8 +1,10 @@
 import predefinedPalettes from 'gb-palettes';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-// import { migrateItems } from './migrations/history/0/migrateItems';
 import { SpecialTags } from '@/consts/SpecialTags';
+import { PROJECT_PREFIX } from '@/stores/constants';
+import { cleanupItems } from '@/stores/migrations/cleanupItems';
+import { migrateItems } from '@/stores/migrations/history/0/migrateItems';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
 import uniqueBy from '@/tools/unique/by';
@@ -12,8 +14,6 @@ import type { Image } from '@/types/Image';
 import type { SerializableImageGroup } from '@/types/ImageGroup';
 import type { Palette } from '@/types/Palette';
 import type { Plugin, PluginConfigValues } from '@/types/Plugin';
-import { PROJECT_PREFIX } from './constants';
-import { migrateItems } from './migrations/history/0/migrateItems';
 
 export const ITEMS_STORE_VERSION = 1;
 
@@ -352,6 +352,12 @@ const useItemsStore = create<ItemsState>()(
         })),
         palettes: state.palettes.filter(({ isPredefined }) => !isPredefined),
       }),
+
+      onRehydrateStorage: () => (hydratedState) => {
+        if (hydratedState) {
+          cleanupItems(hydratedState);
+        }
+      },
 
       version: ITEMS_STORE_VERSION,
       // migrate: async (persistedState: unknown, version: number): Promise<Partial<ItemsState>> => {
