@@ -306,12 +306,15 @@ const useItemsStore = create<ItemsState>()(
         )),
       })),
 
-      updateImages: (images: Image[]) => set((itemsState) => ({
-        images: itemsState.images.map((stateImage) => (
-          // return changed image if existent in payload
-          images.find((changedImage) => (changedImage.hash === stateImage.hash)) || stateImage
-        )),
-      })),
+      updateImages: (images: Image[]) => set((itemsState) => {
+        const changedImagesMap = new Map(images.map((img) => [img.hash, img]));
+
+        return {
+          images: itemsState.images.map((stateImage) => (
+            changedImagesMap.get(stateImage.hash) || stateImage
+          )),
+        };
+      }),
 
       setFrames: (frames: Frame[]) => set({ frames: framesUniqueById(frames) }),
       setImages: (images: Image[]) => set({ images: imagesUniqueByHash(images) }),
