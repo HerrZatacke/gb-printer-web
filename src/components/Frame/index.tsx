@@ -5,7 +5,6 @@ import Debug from '@/components/Debug';
 import FrameContextMenu from '@/components/FrameContextMenu';
 import GalleryGridItem from '@/components/GalleryGridItem';
 import GameBoyImage from '@/components/GameBoyImage';
-import ImageLoading from '@/components/ImageLoading';
 import useFrame from '@/hooks/useFrame';
 import useSettingsStore from '@/stores/settingsStore';
 
@@ -50,7 +49,7 @@ function Frame({ frameId, name, palette }: Props) {
       }}
       contextMenuComponent={FrameContextMenu}
       contextMenuProps={{ deleteFrame, editFrame }}
-      media={tiles.length ? (
+      media={
         <GameBoyImage
           lockFrame={false}
           invertPalette={false}
@@ -58,9 +57,7 @@ function Frame({ frameId, name, palette }: Props) {
           imageStartLine={imageStartLine}
           tiles={tiles}
         />
-      ) : (
-        <ImageLoading />
-      )}
+      }
       content={enableDebug && <Debug text={frameHash} />}
     />
   );

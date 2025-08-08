@@ -60,6 +60,7 @@ interface Actions {
   updateImageHash: (oldHash: string, image: Image) => void,
   updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void,
   updateImages: (images: Image[]) => void,
+  updateFrames: (frames: Frame[]) => void,
 
   setFrames: (frames: Frame[]) => void,
   setImages: (images: Image[]) => void,
@@ -312,6 +313,16 @@ const useItemsStore = create<ItemsState>()(
         return {
           images: itemsState.images.map((stateImage) => (
             changedImagesMap.get(stateImage.hash) || stateImage
+          )),
+        };
+      }),
+
+      updateFrames: (frames: Frame[]) => set((itemsState) => {
+        const changedFramesMap = new Map(frames.map((frm) => [frm.id, frm]));
+
+        return {
+          frames: itemsState.frames.map((stateFrame) => (
+            changedFramesMap.get(stateFrame.id) || stateFrame
           )),
         };
       }),

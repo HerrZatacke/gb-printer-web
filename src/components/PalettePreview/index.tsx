@@ -9,7 +9,7 @@ interface Props {
 }
 
 function PalettePreview({ palette }: Props) {
-  const previewImages = usePreviewImages();
+  const { previewImages } = usePreviewImages();
 
   return (
     <Stack
@@ -23,6 +23,9 @@ function PalettePreview({ palette }: Props) {
           <Box
             key={image.hash}
             component="li"
+            sx={{
+              flex: '160px 0 0',
+            }}
           >
             <ImageRender
               hash={image.hash}
@@ -31,6 +34,8 @@ function PalettePreview({ palette }: Props) {
               lockFrame={false}
               palette={palette}
               framePalette={palette}
+              frameId={image.frame}
+              rotation={image.rotation}
             />
           </Box>
         ))

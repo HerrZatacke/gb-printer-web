@@ -1,4 +1,4 @@
-import type { RGBNPalette, Rotation } from 'gb-image-decoder';
+import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette } from '@/consts/defaults';
@@ -7,11 +7,13 @@ import { useStores } from '@/hooks/useStores';
 import useItemsStore from '@/stores/itemsStore';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
-import type { RGBNHashes } from '@/types/Image';
+import { type RGBNHashes } from '@/types/Image';
 import { loadImageTiles as getLoadImageTiles } from '../tools/loadImageTiles';
 
+type PartialGameBoyImageProps = Omit<GameBoyImageProps, 'dimensions'>;
+
 interface UseImageRender {
-  gbImageProps: GameBoyImageProps | null,
+  gbImageProps: PartialGameBoyImageProps | null,
 }
 
 interface UseImageRenderParams {
@@ -37,7 +39,7 @@ export const useImageRender = ({
   frameId,
   rotation,
 }: UseImageRenderParams): UseImageRender => {
-  const [gbImageProps, setGbImageProps] = useState<GameBoyImageProps | null>(null);
+  const [gbImageProps, setGbImageProps] = useState<PartialGameBoyImageProps | null>(null);
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
   const { frames: allFrames, palettes: allPalettes, images: allImages } = useItemsStore();
