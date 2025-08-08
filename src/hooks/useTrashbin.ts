@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import useInteractionsStore from '@/stores/interactionsStore';
 import type { TrashCount } from '@/stores/interactionsStore';
 import useItemsStore, { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
+import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { localforageReady, localforageImages, localforageFrames } from '@/tools/localforageInstance';
@@ -14,7 +15,6 @@ import { toCreationDate } from '@/tools/toCreationDate';
 import type { JSONExportBinary, JSONExportState } from '@/types/ExportState';
 import type { Frame } from '@/types/Frame';
 import type { Image } from '@/types/Image';
-import { FrameData } from '@/tools/applyFrame/frameData';
 
 export interface UseTrashbin {
   showTrashCount: (show: boolean) => void
