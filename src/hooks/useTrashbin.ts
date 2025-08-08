@@ -14,6 +14,7 @@ import { toCreationDate } from '@/tools/toCreationDate';
 import type { JSONExportBinary, JSONExportState } from '@/types/ExportState';
 import type { Frame } from '@/types/Frame';
 import type { Image } from '@/types/Image';
+import { FrameData } from '@/tools/applyFrame/frameData';
 
 export interface UseTrashbin {
   showTrashCount: (show: boolean) => void
@@ -100,11 +101,16 @@ const useTrashbin = (): UseTrashbin => {
     const deletedFrames = await getItems(frameHashes, localforageFrames);
 
     const jsonExportBinary: JSONExportBinary = {};
-    const backupFrames = deletedFrames.map((frame, index) => {
+    const backupFrames: Frame[] = deletedFrames.map((frame, index) => {
       try {
         jsonExportBinary[`frame-${frame.hash}`] = frame.binary;
+
+        const frameData = JSON.parse(frame.lines[0]) as FrameData;
+        const lines = frameData.upper.length + (frameData.left.length * 20) + frameData.lower.length;
+
         return {
           hash: frame.hash,
+          lines,
           name: t('backupExportFrame', { hash: frame.hash }),
           id: `bak${index.toString(10).padStart(2, '0')}`,
         };

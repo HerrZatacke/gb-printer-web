@@ -1,11 +1,10 @@
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
 import React, { useCallback, type ChangeEvent, type FocusEvent } from 'react';
 import ColorPicker from '@/components/ColorPicker';
-import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
+import PalettePreview from '@/components/PalettePreview';
 import { useEditPalette } from '@/hooks/useEditPalette';
 
 function EditPalette() {
@@ -17,7 +16,6 @@ function EditPalette() {
     newName,
     newShortName,
     palette,
-    previewImages,
     shortName,
     setNewName,
     setNewShortName,
@@ -80,30 +78,7 @@ function EditPalette() {
           required
         />
 
-        <Stack
-          direction="row"
-          gap={2}
-          component="ul"
-          justifyContent="space-around"
-        >
-          {
-            previewImages.map((image) => (
-              <Box
-                key={image.hash}
-                component="li"
-              >
-                <ImageRender
-                  hash={image.hash}
-                  invertPalette={false}
-                  invertFramePalette={false}
-                  lockFrame={false}
-                  palette={palette}
-                  framePalette={palette}
-                />
-              </Box>
-            ))
-          }
-        </Stack>
+        <PalettePreview palette={palette} />
 
         {
           palette.map((color, index) => (

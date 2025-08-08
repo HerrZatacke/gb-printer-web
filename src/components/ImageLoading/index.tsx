@@ -1,28 +1,38 @@
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
+import Skeleton from '@mui/material/Skeleton';
 import React from 'react';
+import { type Dimensions } from '@/hooks/useImageDimensions';
 
-function ImageLoading() {
+interface Props {
+  dimensions: Dimensions,
+}
+
+function ImageLoading({ dimensions }: Props) {
+  const isLandscape = dimensions.width > dimensions.height;
   return (
     <Box
       sx={{
+        display: 'flex',
         width: '100%',
-        paddingTop: '90%',
-        height: 0,
-        display: 'block',
-        background: 'transparent',
-        position: 'relative',
+        height: '100%',
       }}
     >
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          display: 'block',
+          margin: '0 auto',
+          width: isLandscape ? '100%' : `${(1 / dimensions.aspectRatio) * 100}%`,
+          aspectRatio: dimensions.aspectRatioCSS,
+          maxWidth: '100%', // For Lightbox
+          maxHeight: '100%', // For Lightbox
+          objectFit: 'contain', // For Lightbox
         }}
       >
-        <CircularProgress color="primary" size={40} />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="100%"
+        />
       </Box>
     </Box>
   );

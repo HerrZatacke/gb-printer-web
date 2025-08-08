@@ -38,6 +38,7 @@ function FrameQueue() {
     id: '',
     hash: '',
     name: frame.fileName,
+    lines: frame.tiles.length,
   });
 
   return (
@@ -57,6 +58,7 @@ function FrameQueue() {
           id: fullId,
           name: frameName,
           hash,
+          lines: frame.tiles.length,
         }]);
 
         if (newGroupName?.trim()) {

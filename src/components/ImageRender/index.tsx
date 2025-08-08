@@ -1,5 +1,6 @@
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import React from 'react';
+import { useImageDimensions } from '@/hooks/useImageDimensions';
 import { useImageRender } from '@/hooks/useImageRender';
 import type { RGBNHashes } from '@/types/Image';
 import GameBoyImage from '../GameBoyImage';
@@ -31,7 +32,9 @@ function ImageRender({
   asThumb,
 }: Props) {
 
-  const { gbImageProps } = useImageRender({
+  const {
+    gbImageProps,
+  } = useImageRender({
     hash,
     hashes,
     frameId,
@@ -42,6 +45,8 @@ function ImageRender({
     framePalette,
     rotation,
   });
+
+  const { dimensions } = useImageDimensions(hash);
 
   return gbImageProps ? (
     <GameBoyImage
@@ -54,9 +59,10 @@ function ImageRender({
       imageStartLine={gbImageProps.imageStartLine}
       rotation={gbImageProps.rotation}
       asThumb={asThumb}
+      dimensions={dimensions}
     />
   ) : (
-    <ImageLoading />
+    <ImageLoading dimensions={dimensions} />
   );
 }
 
