@@ -10,7 +10,11 @@ import type { Image, MonochromeImage } from '@/types/Image';
 
 const uniqeHash = uniqueBy<Image>('hash');
 
-const usePreviewImages = (): MonochromeImage[] => {
+interface UsePreviewImages {
+  previewImages: MonochromeImage[];
+}
+
+const usePreviewImages = (): UsePreviewImages => {
   const { root } = useGalleryTreeContext();
 
   const {
@@ -26,7 +30,7 @@ const usePreviewImages = (): MonochromeImage[] => {
     { sortBy, filtersTags, filtersPalettes, filtersFrames, recentImports }
   ), [filtersFrames, filtersPalettes, filtersTags, recentImports, sortBy]);
 
-  return useMemo<MonochromeImage[]>(() => {
+  const previewImages = useMemo<MonochromeImage[]>(() => {
     const selectedImages = imageSelection
       .map((imageHash) => (
         root.allImages.find(({ hash }) => hash === imageHash)
@@ -45,7 +49,7 @@ const usePreviewImages = (): MonochromeImage[] => {
         .map(removeSortIndex)
         .reduce(reduceImagesMonochrome, []);
 
-    const previewImages = uniqeHash([
+    const availableImages = uniqeHash([
       selectedImages.shift(),
       filtered.shift(),
       allImages.shift(),
@@ -55,10 +59,14 @@ const usePreviewImages = (): MonochromeImage[] => {
     ].reduce(reduceImagesMonochrome, []));
 
     return [
-      previewImages.shift(),
-      previewImages.pop(),
+      availableImages.shift(),
+      availableImages.pop(),
     ].reduce(reduceImagesMonochrome, []);
   }, [filterState, imageSelection, root]);
+
+  return {
+    previewImages,
+  };
 };
 
 export default usePreviewImages;

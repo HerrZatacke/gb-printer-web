@@ -6,11 +6,10 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
+import PalettePreview from '@/components/PalettePreview';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import { toHexColor } from '@/hooks/usePaletteFromFile';
-import usePreviewImages from '@/hooks/usePreviewImages';
 import useEditStore from '@/stores/editStore';
 
 function PickColors() {
@@ -18,7 +17,6 @@ function PickColors() {
   const { pickColors, setEditPalette, cancelEditPalette, cancelPickColors } = useEditStore();
 
   const [selected, setSelected] = useState<number[]>([0, 3, 6, 9]);
-  const previewImages = usePreviewImages();
 
   const palette = useMemo<string[]>((): string[] => {
     if (!pickColors) {
@@ -78,30 +76,7 @@ function PickColors() {
         direction="column"
         gap={4}
       >
-        <Stack
-          direction="row"
-          gap={2}
-          component="ul"
-          justifyContent="space-around"
-        >
-          {
-            previewImages.map((image) => (
-              <Box
-                key={image.hash}
-                component="li"
-              >
-                <ImageRender
-                  hash={image.hash}
-                  invertPalette={false}
-                  invertFramePalette={false}
-                  lockFrame={false}
-                  palette={palette}
-                  framePalette={palette}
-                />
-              </Box>
-            ))
-          }
-        </Stack>
+        <PalettePreview palette={palette} />
 
         <ToggleButtonGroup
           value={selected}
