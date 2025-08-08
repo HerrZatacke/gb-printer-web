@@ -50,7 +50,7 @@ export const useImageDimensions = (hash: string): UseDimensions => {
     const frame = frames.find(({ id }) => id === image.frame) || null;
 
     if (frame?.lines) {
-      return dimensionsFromTileCount(frame.lines);
+      return dimensionsFromTileCount(frame.lines, image.rotation);
     }
 
     let tileCount: number;
