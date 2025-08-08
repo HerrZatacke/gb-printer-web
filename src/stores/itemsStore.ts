@@ -318,11 +318,11 @@ const useItemsStore = create<ItemsState>()(
       }),
 
       updateFrames: (frames: Frame[]) => set((itemsState) => {
-        const changedFramesMap = new Map(frames.map((frm) => [frm.id, frm]));
+        const changedFramesMap = new Map(frames.map((frm) => [frm.hash, frm]));
 
         return {
           frames: itemsState.frames.map((stateFrame) => (
-            changedFramesMap.get(stateFrame.id) || stateFrame
+            changedFramesMap.get(stateFrame.hash) || stateFrame
           )),
         };
       }),

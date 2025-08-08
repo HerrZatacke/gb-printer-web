@@ -100,11 +100,12 @@ const useTrashbin = (): UseTrashbin => {
     const deletedFrames = await getItems(frameHashes, localforageFrames);
 
     const jsonExportBinary: JSONExportBinary = {};
-    const backupFrames = deletedFrames.map((frame, index) => {
+    const backupFrames: Frame[] = deletedFrames.map((frame, index) => {
       try {
         jsonExportBinary[`frame-${frame.hash}`] = frame.binary;
         return {
           hash: frame.hash,
+          lines: frame.lines.length,
           name: t('backupExportFrame', { hash: frame.hash }),
           id: `bak${index.toString(10).padStart(2, '0')}`,
         };
