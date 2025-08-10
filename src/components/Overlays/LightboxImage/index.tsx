@@ -11,13 +11,13 @@ import React from 'react';
 import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
 import { useDateFormat } from '@/hooks/useDateFormat';
+import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useLightboxImage } from '@/hooks/useLightboxImage';
-import type { RGBNImage } from '@/types/Image';
 
 function LightboxImage() {
   const t = useTranslations('LightboxImage');
   const {
-    image,
+    imageHash,
     isFullscreen,
     currentIndex,
     size,
@@ -29,11 +29,15 @@ function LightboxImage() {
     close,
   } = useLightboxImage();
 
+  const { galleryImageData: image } = useGalleryImage(imageHash || '');
+
   const { formatter } = useDateFormat();
+
+  if (!image) { return null; }
 
   return (
     <Lightbox
-      header={image?.title}
+      header={image.title}
       deny={close}
       contentWidth="100%"
       contentHeight="100%"
@@ -95,8 +99,8 @@ function LightboxImage() {
                 palette={image.palette}
                 framePalette={image.framePalette}
                 frameId={image.frame}
-                hash={image.hash}
-                hashes={(image as RGBNImage).hashes}
+                hash={imageHash || ''}
+                hashes={image.hashes}
                 rotation={image.rotation}
               />
             </Box>
@@ -120,7 +124,7 @@ function LightboxImage() {
           <Typography variant="body2">
             {t('imageCounter', { current: currentIndex + 1, total: size })}
           </Typography>
-          {image?.created && (
+          {image.created && (
             <Typography variant="body2">
               {formatter(image.created)}
             </Typography>

@@ -1,35 +1,13 @@
-import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import { useEffect, useMemo } from 'react';
 import screenfull from 'screenfull';
-import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
-import { getImagePalettes } from '@/tools/getImagePalettes';
-import { getPaletteSettings } from '@/tools/getPaletteSettings';
-import { isRGBNImage } from '@/tools/isRGBNImage';
-import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '@/types/Image';
-import type { Palette } from '@/types/Palette';
-
-interface LightboxImageData {
-  title: string,
-  created: string,
-  frame?: string,
-  hash: string,
-  hashes?: RGBNHashes,
-  tags: string[],
-  palette: RGBNPalette | string[],
-  framePalette: string[],
-  lockFrame?: boolean,
-  invertPalette?: boolean,
-  invertFramePalette?: boolean,
-  rotation?: Rotation,
-}
+import { type Image } from '@/types/Image';
 
 interface UseLightboxImage {
-  image: LightboxImageData | null,
+  imageHash: string | null,
   isFullscreen: boolean,
   currentIndex: number,
   size: number,
@@ -41,53 +19,10 @@ interface UseLightboxImage {
   fullscreen: () => void,
 }
 
-const toLightBoxImage = (image: Image, palettes: Palette[]): LightboxImageData | null => {
-  let palette: RGBNPalette | string[];
-  let framePalette: string[] = [];
-
-  if (!image?.hash) {
-    return null;
-  }
-
-  const {
-    palette: selectedPalette,
-    framePalette: selectedFramePalette,
-  } = getImagePalettes(palettes, image);
-
-  if (!selectedPalette) {
-    throw new Error('Palette missing?');
-  }
-
-  const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
-
-  if (isRGBNImage(image)) {
-    palette = selectedPalette as RGBNPalette;
-  } else {
-    palette = ((selectedPalette || missingGreyPalette) as Palette).palette;
-    framePalette = (selectedFramePalette || missingGreyPalette).palette;
-  }
-
-  return ({
-    title: image?.title || '',
-    created: image?.created || '',
-    frame: image.frame,
-    hash: image.hash,
-    hashes: (image as RGBNImage).hashes || undefined,
-    tags: image.tags,
-    palette,
-    framePalette,
-    lockFrame: image.lockFrame,
-    invertPalette,
-    invertFramePalette,
-    rotation: image.rotation,
-  });
-};
-
 export const useLightboxImage = (): UseLightboxImage => {
   const filtersState = useFiltersStore();
 
   const { view, covers } = useGalleryTreeContext();
-  // ToDo: zustand or useState??
   const {
     isFullscreen,
     setLightboxImage,
@@ -96,16 +31,17 @@ export const useLightboxImage = (): UseLightboxImage => {
     setIsFullscreen,
     lightboxImage,
   } = useInteractionsStore();
-  // const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  const { palettes } = useItemsStore();
-  const viewImages = getFilteredImages(view, filtersState);
+  const filteredImages = useMemo<Image[]>(() => {
+    const viewImages = getFilteredImages(view, filtersState);
+    return viewImages.filter(({ hash }) => !covers.includes(hash));
+  }, [covers, filtersState, view]);
 
-  const filteredImages = useMemo<Image[]>(() => (
-    viewImages.filter(({ hash }) => !covers.includes(hash))
-  ), [covers, viewImages]);
+  const imageHash = useMemo(() => {
+    if (lightboxImage === null) { return null; }
 
-  const image = (lightboxImage !== null) ? toLightBoxImage(filteredImages[lightboxImage], palettes) : null;
+    return filteredImages[lightboxImage].hash || null;
+  }, [filteredImages, lightboxImage]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -161,7 +97,7 @@ export const useLightboxImage = (): UseLightboxImage => {
   });
 
   return {
-    image,
+    imageHash,
     isFullscreen,
     currentIndex: lightboxImage || 0,
     size: filteredImages.length,
