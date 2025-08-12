@@ -3,7 +3,6 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Card from '@mui/material/Card';
@@ -22,8 +21,8 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
+import RGBNPreviewImage from '@/components/Overlays/EditRGBN/RGBNPreviewImage';
 import RGBNSelect from '@/components/RGBNSelect';
-import { defaultRGBNPalette } from '@/consts/defaults';
 import { RGBGrouping, useEditRGBNImages } from '@/hooks/useEditRGBNImages';
 import { getChannelColor } from '@/tools/getChannelColor';
 import type { RGBNHashes } from '@/types/Image';
@@ -157,12 +156,12 @@ function EditRGBN() {
                       }}
                     >
                       <ImageRender
-                        lockFrame={false}
-                        invertPalette={false}
-                        invertFramePalette={false}
-                        palette={palette}
-                        framePalette={palette}
                         hash={hash}
+                        overrides={{
+                          palette,
+                          lockFrame: false,
+                          invertPalette: false,
+                        }}
                       />
                     </CardContent>
                     <CardActions>
@@ -258,20 +257,7 @@ function EditRGBN() {
             gap={1}
           >
             { rgbnHashes.map((hashes, index) => (
-              <Box
-                key={index}
-                component="li"
-              >
-                <ImageRender
-                  lockFrame={false}
-                  invertPalette={false}
-                  invertFramePalette={false}
-                  palette={defaultRGBNPalette}
-                  framePalette={[]}
-                  hash="newRGBN"
-                  hashes={hashes}
-                />
-              </Box>
+              <RGBNPreviewImage key={index} rgbnHashes={hashes} />
             ))}
           </Stack>
         </Stack>

@@ -33,7 +33,7 @@ function LightboxImage() {
 
   const { formatter } = useDateFormat();
 
-  if (!image) { return null; }
+  if (!imageHash || !image) { return null; }
 
   return (
     <Lightbox
@@ -92,17 +92,7 @@ function LightboxImage() {
                 flexGrow: 1,
               }}
             >
-              <ImageRender
-                lockFrame={image.lockFrame}
-                invertPalette={image.invertPalette}
-                invertFramePalette={image.invertFramePalette}
-                palette={image.palette}
-                framePalette={image.framePalette}
-                frameId={image.frame}
-                hash={imageHash || ''}
-                hashes={image.hashes}
-                rotation={image.rotation}
-              />
+              <ImageRender hash={imageHash} />
             </Box>
           )}
 

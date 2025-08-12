@@ -87,17 +87,9 @@ function GalleryImage({ page, hash }: Props) {
 
   const {
     created,
-    hashes,
-    palette,
-    invertPalette,
-    invertFramePalette,
-    framePalette,
-    frame,
-    lockFrame,
     title,
     tags,
     selectionIndex,
-    rotation,
   } = galleryImageData;
 
   return (
@@ -117,17 +109,7 @@ function GalleryImage({ page, hash }: Props) {
       contextMenuComponent={GalleryImageContextMenu}
       contextMenuProps={{ hash }}
       media={(
-        <ImageRender
-          lockFrame={lockFrame}
-          invertPalette={invertPalette}
-          palette={palette}
-          framePalette={framePalette}
-          invertFramePalette={invertFramePalette}
-          frameId={frame}
-          hash={hash}
-          hashes={hashes}
-          rotation={rotation}
-        />
+        <ImageRender hash={hash} />
       )}
       content={(tags.length > 0 || (debugText && enableDebug)) && (
         <>
