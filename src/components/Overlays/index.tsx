@@ -11,7 +11,7 @@ import EditRGBN from '@/components/Overlays/EditRGBN';
 import FilterForm from '@/components/Overlays/FilterForm';
 import FrameQueue from '@/components/Overlays/FrameQueue';
 import ImportQueue from '@/components/Overlays/ImportQueue';
-import LightboxImage from '@/components/Overlays/LightboxImage';
+import LightboxImages from '@/components/Overlays/LightboxImages';
 import PickColors from '@/components/Overlays/PickColors';
 import ProgressBox from '@/components/Overlays/ProgressBox';
 import ProgressLogBox from '@/components/Overlays/ProgressLogBox';
@@ -111,7 +111,7 @@ function Overlays() {
     case showPickColors:
       return <PickColors />; // interactive
     case lightboxImage !== null:
-      return <LightboxImage />; // interactive
+      return <LightboxImages />; // interactive
     case showFilters:
       return <FilterForm />; // interactive
     case showSortForm:
