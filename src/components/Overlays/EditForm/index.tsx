@@ -1,6 +1,7 @@
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import Stack from '@mui/material/Stack';
 import type { SxProps } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
@@ -88,8 +89,21 @@ function EditForm() {
 
   const { gbImageProps } = useImageRender(toEdit?.hash || '', overrides);
 
-  if (!toEdit || !gbImageProps) {
-    console.warn('Editform should be open, but "toEdit" is undefined', toEdit);
+  if (!gbImageProps || !toEdit) {
+    if (toEdit) {
+      return (
+        <Lightbox
+          contentHeight={toEdit.height}
+          header={t('dialogHeader', { count: toEdit.imageCount })}
+          open
+          deny={cancel}
+        >
+          <LinearProgress variant="indeterminate" />
+        </Lightbox>
+      );
+    }
+
+    console.warn('Editform should be open, but "toEdit" is undefined', toEdit, gbImageProps);
     return null;
   }
 
