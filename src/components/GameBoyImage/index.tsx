@@ -101,7 +101,7 @@ function GameBoyImage({
   const imageStyles = useMemo((): CSSPropertiesVars => {
     const isLandscape = dimensions.width > dimensions.height;
 
-    const pixelate = asThumb || dimensions.width > 160 || dimensions.height > 144;
+    const pixelate = asThumb; // because of lightbox can't use: || dimensions.width > 160 || dimensions.height > 144;
 
     return {
       display: 'block',
