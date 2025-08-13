@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslations } from 'next-intl';
@@ -153,7 +154,8 @@ function Lightbox({
         >
           {header}
         </Box>
-        <Box
+        <Stack
+          direction="row"
           sx={{
             my: -0.5,
             mr: -2,
@@ -171,7 +173,7 @@ function Lightbox({
               </IconButton>
             ) : null
           }
-        </Box>
+        </Stack>
       </DialogTitle>
       { !headerOnly && (
         <DialogContent
