@@ -40,8 +40,6 @@ interface Actions {
   setError: (error: Error) => void,
   setIsFullscreen: (isFullscreen: boolean) => void,
   setLightboxImage: (index: number | null) => void,
-  setLightboxImageNext: (maxImages: number) => void,
-  setLightboxImagePrev: () => void,
   setPrinterBusy: (printerBusy: boolean) => void,
   setPrinterData: (printerData: PrinterInfo | null) => void,
   setPrinterFunctions: (printerFunctions: PrinterFunction[]) => void,
@@ -91,20 +89,6 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
     }
 
     set({ lightboxImage });
-  },
-
-  setLightboxImageNext: (maxImages: number) => {
-    const stateLightboxImage = get().lightboxImage;
-    if (stateLightboxImage !== null) {
-      set({ lightboxImage: Math.min(stateLightboxImage + 1, maxImages - 1) });
-    }
-  },
-
-  setLightboxImagePrev: () => {
-    const stateLightboxImage = get().lightboxImage;
-    if (stateLightboxImage !== null) {
-      set({ lightboxImage: Math.max(stateLightboxImage - 1, 0) });
-    }
   },
 }));
 

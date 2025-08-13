@@ -35,7 +35,7 @@ interface GalleryImageData {
 }
 
 interface UseGalleryImage {
-  galleryImageData?: GalleryImageData
+  galleryImageData: GalleryImageData | null,
   updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => void,
   editImage: (tags: string[]) => void,
 }
@@ -61,13 +61,13 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
 
   const selectionIndex = imageSelection.indexOf(hash);
 
-  const galleryImageData = useMemo((): GalleryImageData | undefined => {
+  const galleryImageData = useMemo((): GalleryImageData | null => {
     const image = stateImages.find((img) => img.hash === hash);
     let palette: RGBNPalette | string[];
     let framePalette: string[] = [];
 
     if (!image) {
-      return undefined;
+      return null;
     }
 
     const {

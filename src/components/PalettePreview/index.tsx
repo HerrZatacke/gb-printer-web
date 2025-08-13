@@ -19,24 +19,15 @@ function PalettePreview({ palette }: Props) {
       justifyContent="space-around"
     >
       {
-        previewImages.map((image) => (
+        previewImages.map((imageHash) => (
           <Box
-            key={image.hash}
+            key={imageHash}
             component="li"
             sx={{
               flex: '160px 0 0',
             }}
           >
-            <ImageRender
-              hash={image.hash}
-              invertPalette={false}
-              invertFramePalette={false}
-              lockFrame={false}
-              palette={palette}
-              framePalette={palette}
-              frameId={image.frame}
-              rotation={image.rotation}
-            />
+            <ImageRender hash={imageHash} overrides={{ palette , framePalette: palette }} />
           </Box>
         ))
       }

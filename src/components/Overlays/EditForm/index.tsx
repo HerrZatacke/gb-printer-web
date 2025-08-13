@@ -1,6 +1,7 @@
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import Stack from '@mui/material/Stack';
 import type { SxProps } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
@@ -13,6 +14,7 @@ import EditImageTabs from '@/components/EditImageTabs';
 import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
 import { useEditForm } from '@/hooks/useEditForm';
+import { useImageRender } from '@/hooks/useImageRender';
 import { getScrollParent } from '@/tools/getScrollParent';
 
 function EditForm() {
@@ -20,11 +22,10 @@ function EditForm() {
   const {
     toEdit,
     form,
+    overrides,
     isRegularImage,
     willUpdateBatch,
     tagChanges,
-    usedPalette,
-    usedFramePalette,
     updateForm,
     updatePalette,
     updateFramePalette,
@@ -86,23 +87,25 @@ function EditForm() {
     };
   }, [stickyBox]);
 
-  if (!toEdit) {
-    console.warn('Editform should be open, but "toEdit" is undefined', toEdit);
+  const { gbImageProps } = useImageRender(toEdit?.hash || '', overrides);
+
+  if (!gbImageProps || !toEdit) {
+    if (toEdit) {
+      return (
+        <Lightbox
+          contentHeight={toEdit.height}
+          header={t('dialogHeader', { count: toEdit.imageCount })}
+          open
+          deny={cancel}
+        >
+          <LinearProgress variant="indeterminate" />
+        </Lightbox>
+      );
+    }
+
+    console.warn('Editform should be open, but "toEdit" is undefined', toEdit, gbImageProps);
     return null;
   }
-
-  const {
-    title,
-    created,
-    frame,
-    lockFrame,
-    rotation,
-    invertPalette,
-    invertFramePalette,
-    framePaletteShort,
-    paletteShort,
-    paletteRGBN,
-  } = form;
 
   return (
     <Lightbox
@@ -127,17 +130,7 @@ function EditForm() {
               backgroundColor: theme.palette.background.default,
             }}
           >
-            <ImageRender
-              lockFrame={lockFrame}
-              invertPalette={invertPalette}
-              palette={usedPalette}
-              invertFramePalette={invertFramePalette}
-              framePalette={usedFramePalette}
-              frameId={frame}
-              hash={toEdit.hash}
-              hashes={toEdit.hashes}
-              rotation={rotation}
-            />
+            <ImageRender hash={toEdit.hash} overrides={overrides} />
             { toEdit.imageCount > 1 ? (
               <Alert
                 severity="info"
@@ -175,28 +168,28 @@ function EditForm() {
           helperText={toEdit.imageCount > 1 ? t('indexHelperText') : undefined}
           type="text"
           label={t('editTitle')}
-          value={title}
+          value={form.title}
           onChange={({ target: { value } }) => {
             updateForm('title')(value);
           }}
         />
         <EditImageTabs
-          created={created}
+          created={form.created}
           updateCreated={updateForm('created')}
           regularImage={isRegularImage}
           mixedTypes={toEdit.mixedTypes}
-          lockFrame={lockFrame}
+          lockFrame={form.lockFrame}
           hash={toEdit.hash}
           hashes={toEdit.hashes}
-          paletteShort={paletteShort}
-          framePaletteShort={framePaletteShort}
-          paletteRGBN={paletteRGBN}
-          invertPalette={invertPalette}
-          invertFramePalette={invertFramePalette}
-          frame={frame}
+          paletteShort={form.paletteShort}
+          framePaletteShort={form.framePaletteShort}
+          paletteRGBN={form.paletteRGBN}
+          invertPalette={form.invertPalette}
+          invertFramePalette={form.invertFramePalette}
+          frame={form.frame}
           tags={tagChanges}
           meta={toEdit.meta}
-          rotation={rotation}
+          rotation={form.rotation}
           updatePalette={updatePalette}
           updateInvertPalette={updateForm('invertPalette')}
           updateFramePalette={updateFramePalette}

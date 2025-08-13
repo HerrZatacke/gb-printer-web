@@ -6,12 +6,12 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
 import uniqueBy from '@/tools/unique/by';
-import type { Image, MonochromeImage } from '@/types/Image';
+import { type Image } from '@/types/Image';
 
 const uniqeHash = uniqueBy<Image>('hash');
 
 interface UsePreviewImages {
-  previewImages: MonochromeImage[];
+  previewImages: string[];
 }
 
 const usePreviewImages = (): UsePreviewImages => {
@@ -30,7 +30,7 @@ const usePreviewImages = (): UsePreviewImages => {
     { sortBy, filtersTags, filtersPalettes, filtersFrames, recentImports }
   ), [filtersFrames, filtersPalettes, filtersTags, recentImports, sortBy]);
 
-  const previewImages = useMemo<MonochromeImage[]>(() => {
+  const previewImages = useMemo<string[]>(() => {
     const selectedImages = imageSelection
       .map((imageHash) => (
         root.allImages.find(({ hash }) => hash === imageHash)
@@ -61,7 +61,9 @@ const usePreviewImages = (): UsePreviewImages => {
     return [
       availableImages.shift(),
       availableImages.pop(),
-    ].reduce(reduceImagesMonochrome, []);
+    ]
+      .reduce(reduceImagesMonochrome, [])
+      .map(({ hash }) => hash);
   }, [filterState, imageSelection, root]);
 
   return {
