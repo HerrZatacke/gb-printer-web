@@ -164,8 +164,8 @@ function ProgressLogBox() {
             variant="outlined"
             component="a"
             color="secondary"
-            title={t('openDropboxFolderTitle', { path: `https://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}` })}
-            href={`https://www.dropbox.com/home/Apps/GameBoyPrinter/${dropboxPath}`}
+            title={t('openDropboxFolderTitle', { path: `https://www.dropbox.com${process.env.NEXT_PUBLIC_DROPBOX_APP_PATH}${dropboxPath}` })}
+            href={`https://www.dropbox.com${process.env.NEXT_PUBLIC_DROPBOX_APP_PATH}${dropboxPath}`}
             target="_blank"
             rel="noreferrer"
           >
