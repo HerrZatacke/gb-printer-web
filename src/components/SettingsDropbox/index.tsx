@@ -28,13 +28,15 @@ function SettingsDropbox() {
   } = useDropboxSettings();
   const [path, setPath] = useState<string>(propsPath);
   const t = useTranslations('SettingsDropbox');
-  const fullAppPath = `/home/Apps/GameBoyPrinter/${path}`;
+  const fullAppPath = `${process.env.NEXT_PUBLIC_DROPBOX_APP_PATH}${path}`;
   const folderLink = `https://www.dropbox.com${fullAppPath}`;
 
   const showWarning = useMemo(() => (
     path.includes('https') ||
     path.includes('http') ||
-    path.includes('www.dropbox.com')
+    path.includes('www.dropbox.com') ||
+    path.includes('home/Apps/') ||
+    path.includes(process.env.NEXT_PUBLIC_DROPBOX_APP_PATH as string)
   ), [path]);
 
   return (
