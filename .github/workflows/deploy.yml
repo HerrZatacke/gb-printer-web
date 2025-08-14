@@ -41,6 +41,7 @@ jobs:
         if: steps.checkTag.outputs.exists == 'false'
         env:
           NEXT_PUBLIC_DROPBOX_APP_KEY: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_KEY }}
+          NEXT_PUBLIC_DROPBOX_APP_PATH: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_PATH }}
           NEXT_PUBLIC_ENV_ENDPOINT: ${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
           NEXT_PUBLIC_BASE_PATH: /gb-printer-web
         run: |
