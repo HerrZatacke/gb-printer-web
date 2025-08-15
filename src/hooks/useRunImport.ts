@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
@@ -52,7 +52,13 @@ interface UseRunImport {
 }
 
 const useRunImport = (): UseRunImport => {
-  const { importPad, setActivePalette, activePalette } = useSettingsStore();
+  const {
+    importPad,
+    setActivePalette,
+    activePalette,
+    createGroup: stateCreateGroup,
+    setCreateGroup: stateSetCreateGroup,
+  } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
   const { addImageGroup, palettes, images } = useItemsStore();
   const { setImageSelection } = useFiltersStore();
@@ -65,7 +71,11 @@ const useRunImport = (): UseRunImport => {
   const t = useTranslations('useRunImport');
 
   const [frame, setFrame] = useState('');
-  const [createGroup, setCreateGroup] = useState<boolean>(rawImportQueue.length > 3);
+  const [createGroup, setCreateGroup] = useState<boolean>(rawImportQueue.length > 3 && stateCreateGroup);
+
+  useEffect(() => {
+    stateSetCreateGroup(createGroup);
+  }, [createGroup, stateSetCreateGroup]);
 
   const [tagChanges, updateTagChanges] = useState<TagChange>({
     initial: [],

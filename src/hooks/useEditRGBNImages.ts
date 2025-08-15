@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import objectHash from 'object-hash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { useDateFormat } from '@/hooks/useDateFormat';
@@ -14,6 +14,7 @@ import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import type { MonochromeImage, RGBNHashes } from '@/types/Image';
+import useSettingsStore from '@/stores/settingsStore';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -47,11 +48,21 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   const { view } = useGalleryTreeContext();
   const { saveRGBNImage } = useSaveRGBNImages();
 
+  const {
+    createGroup: stateCreateGroup,
+    setCreateGroup: stateSetCreateGroup,
+  } = useSettingsStore();
+
   const { sortBy } = useFiltersStore();
   const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
   const { addImageGroup } = useItemsStore();
 
-  const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5);
+  const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5 && stateCreateGroup);
+
+  useEffect(() => {
+    stateSetCreateGroup(createGroup);
+  }, [createGroup, stateSetCreateGroup]);
+
 
   const globalSortDirection = sortBy.split('_')[1];
 
