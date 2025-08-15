@@ -9,12 +9,12 @@ import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
 import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
 import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import type { MonochromeImage, RGBNHashes } from '@/types/Image';
-import useSettingsStore from '@/stores/settingsStore';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
