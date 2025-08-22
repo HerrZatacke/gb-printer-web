@@ -17,7 +17,7 @@ import type {
   DropBoxSettings,
 } from '@/types/Sync';
 
-const REDIRECT_URL = encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
+const getRedirectUrl = () => encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
 
 class DropboxClient extends EventEmitter {
   private queueCallback: AddToQueueFn<DropboxResponse<unknown>>;
@@ -113,7 +113,7 @@ class DropboxClient extends EventEmitter {
 
   async startAuth() {
     const authUrl = (await this.auth.getAuthenticationUrl(
-      REDIRECT_URL,
+      getRedirectUrl(),
       undefined,
       'code',
       'offline',
@@ -136,7 +136,7 @@ class DropboxClient extends EventEmitter {
     this.auth.setCodeVerifier(codeVerifier);
     window.sessionStorage.removeItem('dropboxCodeVerifier');
 
-    const response = await this.auth.getAccessTokenFromCode(REDIRECT_URL, dropboxCode);
+    const response = await this.auth.getAccessTokenFromCode(getRedirectUrl(), dropboxCode);
 
     const {
       refresh_token: refreshToken,
