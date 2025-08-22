@@ -18,6 +18,24 @@ interface Actions {
 
 export type StoragesState = Values & Actions;
 
+const dropboxDefaults: DropBoxSettings = {
+  use: false,
+  refreshToken: '',
+  accessToken: '',
+  expiresAt: 0,
+  path: '',
+  autoDropboxSync: false,
+};
+
+const gitDefaults: GitStorageSettings = {
+  branch: '',
+  owner: '',
+  repo: '',
+  throttle: 10,
+  token: '',
+  use: false,
+};
+
 const useStoragesStore = create(
   subscribeWithSelector(
     persist<StoragesState>(
@@ -26,12 +44,16 @@ const useStoragesStore = create(
         gitStorage: {},
         syncLastUpdate: { dropbox: 0, local: 0 },
 
-        dropboxLogout: () => set(({ dropboxStorage }) => ({ dropboxStorage: { use: dropboxStorage.use } })),
+        dropboxLogout: () => set(({ dropboxStorage }) => ({ dropboxStorage: {
+          ...dropboxDefaults,
+            use: dropboxStorage.use,
+            path: dropboxStorage.path,
+        } })),
         setDropboxStorage: (newSettings: DropBoxSettings) => set(({ dropboxStorage }) => (
-          { dropboxStorage: { ...dropboxStorage, ...newSettings } }
+          { dropboxStorage: { ...dropboxDefaults, ...dropboxStorage, ...newSettings } }
         )),
         setGitStorage: (newSettings: GitStorageSettings) => set(({ gitStorage }) => (
-          { gitStorage: { ...gitStorage, ...newSettings } }
+          { gitStorage: { ...gitDefaults, ...gitStorage, ...newSettings } }
         )),
         setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => (set(({ syncLastUpdate }) => (
           { syncLastUpdate: { ...syncLastUpdate, [what]: value } }
