@@ -43,9 +43,9 @@ function InputNewTag({ updateTags, selectedTags }: Props) {
             case 'reset':
             case 'clear':
             case 'blur':
+            case 'selectOption':
               setUserValue('');
               break;
-            case 'selectOption':
             case 'removeOption':
             default:
           }

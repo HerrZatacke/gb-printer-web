@@ -8,7 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import { ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useMemo, type CSSPropertiesVars, Suspense, useEffect } from 'react';
+import { useMemo, type CSSPropertiesVars, Suspense, useEffect, useState } from 'react';
 import Errors from '@/components/Errors';
 import Navigation from '@/components/Navigation';
 import NavigationSkeleton from '@/components/Navigation/Skeleton';
@@ -27,9 +27,13 @@ export default function RootLayout({
 
   const screenDimensions = useScreenDimensions();
 
-  const ddpx: CSSPropertiesVars = {
-    '--ddpx': screenDimensions.ddpx,
-  };
+  const [ddpx, setDdpx] = useState<CSSPropertiesVars>({});
+
+  useEffect(() => {
+    setDdpx({
+      '--ddpx': screenDimensions.ddpx,
+    });
+  }, [screenDimensions]);
 
   useEffect(() => {
     const classList = document.querySelector('html')?.classList;

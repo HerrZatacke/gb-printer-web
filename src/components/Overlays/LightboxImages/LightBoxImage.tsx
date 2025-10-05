@@ -1,16 +1,14 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import React from 'react';
-import ImageLoading from '@/components/ImageLoading';
 import ImageRender from '@/components/ImageRender';
 import { useImageDimensions } from '@/hooks/useImageDimensions';
 
 export interface LightBoxImageProps {
   hash: string,
-  renderContent: boolean,
 }
 
-function LightBoxImage({ hash, renderContent }: LightBoxImageProps) {
+function LightBoxImage({ hash }: LightBoxImageProps) {
   const { dimensions } = useImageDimensions(hash);
   return (
     <Stack
@@ -29,13 +27,7 @@ function LightBoxImage({ hash, renderContent }: LightBoxImageProps) {
           maxHeight: '100%',
         }}
       >
-        {renderContent ? (
-          <ImageRender hash={hash}/>
-        ) : (
-          <>
-            <ImageLoading dimensions={dimensions} />
-          </>
-        )}
+        <ImageRender hash={hash}/>
       </Box>
     </Stack>
   );

@@ -5,8 +5,8 @@ import WindowSharpIcon from '@mui/icons-material/WindowSharp';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useTranslations } from 'next-intl';
-import type { ReactNode } from 'react';
-import React from 'react';
+import { ReactNode, useEffect } from 'react';
+import React, { useState } from 'react';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
 import useSettingsStore from '@/stores/settingsStore';
@@ -49,16 +49,20 @@ function GalleryViewSelect() {
 
   const { ddpx } = useScreenDimensions();
 
-  const GALLERY_VIEWS = ddpx > 1 ? [
-    GalleryViews.GALLERY_VIEW_SMALL,
-    GalleryViews.GALLERY_VIEW_1X,
-    GalleryViews.GALLERY_VIEW_2X,
-    GalleryViews.GALLERY_VIEW_MAX,
-  ] : [
-    GalleryViews.GALLERY_VIEW_1X,
-    GalleryViews.GALLERY_VIEW_2X,
-    GalleryViews.GALLERY_VIEW_MAX,
-  ];
+  const [galleryViews, setGalleryViews] = useState<GalleryViews[]>([]);
+
+  useEffect(() => {
+    setGalleryViews(ddpx > 1 ? [
+      GalleryViews.GALLERY_VIEW_SMALL,
+      GalleryViews.GALLERY_VIEW_1X,
+      GalleryViews.GALLERY_VIEW_2X,
+      GalleryViews.GALLERY_VIEW_MAX,
+    ] : [
+      GalleryViews.GALLERY_VIEW_1X,
+      GalleryViews.GALLERY_VIEW_2X,
+      GalleryViews.GALLERY_VIEW_MAX,
+    ]);
+  }, [ddpx]);
 
   return (
     <ToggleButtonGroup
@@ -72,7 +76,7 @@ function GalleryViewSelect() {
       sx={{ '& .MuiToggleButton-root': { width: 40, height: 40 } }}
     >
       {
-        GALLERY_VIEWS.map((view) => (
+        galleryViews.map((view) => (
           <ToggleButton
             key={view}
             value={view}

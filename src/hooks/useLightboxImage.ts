@@ -13,7 +13,7 @@ interface CurrentInfo {
 }
 
 interface UseLightboxImage {
-  lightboxImageHashes: string[],
+  renderHash: string,
   currentInfo: CurrentInfo | null,
   isFullscreen: boolean,
   size: number,
@@ -22,7 +22,6 @@ interface UseLightboxImage {
   close: () => void,
   prev: () => void,
   next: () => void,
-  setCurrentIndex: (index: number) => void,
   handleFullscreen: () => void,
 }
 
@@ -71,14 +70,13 @@ export const useLightboxImage = (): UseLightboxImage => {
   }, [createCurrentInfo, lightboxImageState]);
 
   const next = useCallback(() => {
-    const maxImages = filteredImages.length;
-
     setCurrentInfo((current) => {
       if (current === null) { return null; }
+      const { length } = filteredImages;
 
-      return createCurrentInfo(Math.min(current.index + 1, maxImages - 1));
+      return createCurrentInfo(Math.min(current.index + 1, length - 1));
     });
-  }, [createCurrentInfo, filteredImages.length]);
+  }, [createCurrentInfo, filteredImages]);
 
   const prev = useCallback(() => {
     setCurrentInfo((current) => {
@@ -89,7 +87,11 @@ export const useLightboxImage = (): UseLightboxImage => {
   }, [createCurrentInfo]);
 
   const setCurrentIndex = useCallback((index: number) => {
-    setCurrentInfo(createCurrentInfo(index));
+    setCurrentInfo((current) => {
+      if (current === null) { return null; }
+
+      return createCurrentInfo(index);
+    });
   }, [createCurrentInfo]);
 
   const close = useCallback(() => {
@@ -124,12 +126,12 @@ export const useLightboxImage = (): UseLightboxImage => {
           break;
 
         case 'Home':
-          setCurrentInfo(createCurrentInfo(0));
+          setCurrentIndex(0);
           ev.preventDefault();
           break;
 
         case 'End':
-          setCurrentInfo(createCurrentInfo(filteredImages.length - 1));
+          setCurrentIndex(filteredImages.length - 1);
           ev.preventDefault();
           break;
 
@@ -147,7 +149,7 @@ export const useLightboxImage = (): UseLightboxImage => {
       document.removeEventListener('keydown', keyboardHandler);
       screenfull.off('change', handleFullscreenChange);
     };
-  }, [filteredImages.length, setIsFullscreen, next, prev, close, createCurrentInfo]);
+  }, [filteredImages.length, setIsFullscreen, next, prev, close, createCurrentInfo, setCurrentIndex]);
 
   const handleFullscreen = useCallback(() => {
     if (screenfull.isEnabled) {
@@ -162,10 +164,17 @@ export const useLightboxImage = (): UseLightboxImage => {
   const canPrev = useMemo(() => (currentInfo !== null) ? currentInfo.index > 0 : false, [currentInfo]);
   const canNext = useMemo(() => (currentInfo !== null) ? currentInfo.index < filteredImages.length - 1 : false, [currentInfo, filteredImages.length]);
 
+  const renderHash = useMemo(() => {
+    if (!currentInfo) {
+      return '';
+    }
+
+    return lightboxImageHashes[currentInfo.index];
+  }, [lightboxImageHashes, currentInfo]);
 
   return {
     currentInfo,
-    lightboxImageHashes,
+    renderHash,
     isFullscreen,
     size: lightboxImageHashes.length,
     canPrev,
@@ -173,7 +182,6 @@ export const useLightboxImage = (): UseLightboxImage => {
     close,
     prev,
     next,
-    setCurrentIndex,
     handleFullscreen,
   };
 };
