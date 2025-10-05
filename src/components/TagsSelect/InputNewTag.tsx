@@ -52,9 +52,12 @@ function InputNewTag({ updateTags, selectedTags }: Props) {
         }}
         onChange={(_, value: string | null, changeReason: AutocompleteChangeReason) => {
           const stringValue = value || '';
-          // console.log('onChange', stringValue, changeReason);
+          console.log('onChange', stringValue, changeReason);
           switch (changeReason) {
             case 'createOption':
+              updateTags(TagUpdateMode.ADD, stringValue.trim());
+              setUserValue('');
+              break;
             case 'selectOption':
               updateTags(TagUpdateMode.ADD, stringValue.trim());
               break;
