@@ -85,7 +85,9 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
 
   setLightboxImage: (lightboxImage: number | null) => {
     if (lightboxImage === null) {
-      screenfull.exit();
+      if (screenfull.isEnabled) {
+        screenfull.exit();
+      }
     }
 
     set({ lightboxImage });
