@@ -147,7 +147,9 @@ export const useLightboxImage = (): UseLightboxImage => {
 
     return () => {
       document.removeEventListener('keydown', keyboardHandler);
-      screenfull.off('change', handleFullscreenChange);
+      if (screenfull.isEnabled) {
+        screenfull.off('change', handleFullscreenChange);
+      }
     };
   }, [filteredImages.length, setIsFullscreen, next, prev, close, createCurrentInfo, setCurrentIndex]);
 
