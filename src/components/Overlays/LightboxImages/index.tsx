@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import Lightbox from '@/components/Lightbox';
 import LightBoxImage from '@/components/Overlays/LightboxImages/LightBoxImage';
 import { useDateFormat } from '@/hooks/useDateFormat';
@@ -14,54 +14,24 @@ import { useLightboxImage } from '@/hooks/useLightboxImage';
 
 function LightboxImages() {
   const t = useTranslations('LightboxImage');
-  const [containerNode, setContainerNode] = useState<HTMLDivElement | null>(null);
+
   const {
     currentInfo,
-    lightboxImageHashes,
-    isFullscreen,
     size,
+    renderHash,
+    isFullscreen,
     canPrev,
     canNext,
     prev,
     next,
-    setCurrentIndex,
     handleFullscreen,
     close,
   } = useLightboxImage();
 
   const { formatter } = useDateFormat();
 
-  const updateHandler = useCallback((() => {
-    if (!containerNode || !currentInfo) { return; }
 
-    const children = [...containerNode.childNodes] as HTMLDivElement[];
-    children[currentInfo.index].scrollIntoView({
-      behavior:'smooth',
-      block:'nearest',
-      inline:'center',
-    });
-  }), [containerNode, currentInfo]);
-
-  useEffect(() => {
-    if (!containerNode) { return; }
-
-    const scrollHandler = () => {
-      const index = Math.round(containerNode.scrollLeft / containerNode.offsetWidth);
-      setCurrentIndex(index);
-    };
-
-    containerNode.addEventListener('scrollend', scrollHandler);
-    window.addEventListener('resize', updateHandler);
-
-    return () => {
-      containerNode.removeEventListener('scrollend', scrollHandler);
-      window.removeEventListener('resize', updateHandler);
-    };
-  }, [containerNode, setCurrentIndex, updateHandler]);
-
-  useEffect(updateHandler, [updateHandler]);
-
-  if (!lightboxImageHashes.length || !currentInfo) { return null; }
+  if (!size || !currentInfo) { return null; }
 
   return (
     <Lightbox
@@ -115,38 +85,25 @@ function LightboxImages() {
             <Stack
               direction="row"
               gap={0}
-              ref={setContainerNode}
               sx={{
                 width: '100%',
                 height: '100%',
                 flexBasis: '100%',
                 flexGrow: 1,
                 overflowX: 'auto',
-                scrollSnapType: 'x mandatory',
                 WebkitOverflowScrolling: 'touch',
                 scrollbarWidth: 'none',
                 '&::-webkit-scrollbar': {
                   display: 'none',
                 },
                 '&>.MuiBox-root': {
-                  scrollSnapAlign: 'center',
-                  scrollSnapStop: 'always',
                   outline: 'none',
                 },
               }}
             >
-              {
-                lightboxImageHashes.map((hash, index) => {
-                  const renderContent = [currentInfo.index - 1, currentInfo.index, currentInfo.index + 1].includes(index);
-                  return (
-                    <LightBoxImage
-                      key={hash}
-                      hash={hash}
-                      renderContent={renderContent}
-                    />
-                  );
-                })
-              }
+              <LightBoxImage
+                hash={renderHash}
+              />
             </Stack>
           )}
 
