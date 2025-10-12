@@ -12,8 +12,13 @@ interface CurrentInfo {
   created: string,
 }
 
+interface RenderHashInfo {
+  hash: string,
+  visible: boolean,
+}
+
 interface UseLightboxImage {
-  renderHash: string,
+  renderHashes: RenderHashInfo[],
   currentInfo: CurrentInfo | null,
   isFullscreen: boolean,
   size: number,
@@ -166,17 +171,26 @@ export const useLightboxImage = (): UseLightboxImage => {
   const canPrev = useMemo(() => (currentInfo !== null) ? currentInfo.index > 0 : false, [currentInfo]);
   const canNext = useMemo(() => (currentInfo !== null) ? currentInfo.index < filteredImages.length - 1 : false, [currentInfo, filteredImages.length]);
 
-  const renderHash = useMemo(() => {
+  const renderHashes = useMemo<RenderHashInfo[]>(() => {
     if (!currentInfo) {
-      return '';
+      return [];
     }
 
-    return lightboxImageHashes[currentInfo.index];
+    const index = currentInfo.index;
+
+    const visibleHash = lightboxImageHashes[currentInfo.index];
+
+    return lightboxImageHashes
+      .slice(Math.max(0, index - 1), index + 2)
+      .map((hash): RenderHashInfo => ({
+        hash,
+        visible: hash === visibleHash,
+      }));
   }, [lightboxImageHashes, currentInfo]);
 
   return {
     currentInfo,
-    renderHash,
+    renderHashes,
     isFullscreen,
     size: lightboxImageHashes.length,
     canPrev,

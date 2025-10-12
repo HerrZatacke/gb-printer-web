@@ -18,7 +18,7 @@ function LightboxImages() {
   const {
     currentInfo,
     size,
-    renderHash,
+    renderHashes,
     isFullscreen,
     canPrev,
     canNext,
@@ -101,9 +101,13 @@ function LightboxImages() {
                 },
               }}
             >
-              <LightBoxImage
-                hash={renderHash}
-              />
+              {renderHashes.map(({ hash, visible }) => (
+                <LightBoxImage
+                  key={hash}
+                  hash={hash}
+                  visible={visible}
+                />
+              ))}
             </Stack>
           )}
 
