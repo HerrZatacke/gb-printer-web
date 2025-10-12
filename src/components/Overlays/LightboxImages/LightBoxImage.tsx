@@ -5,9 +5,10 @@ import ImageRender from '@/components/ImageRender';
 
 export interface LightBoxImageProps {
   hash: string,
+  visible: boolean,
 }
 
-function LightBoxImage({ hash }: LightBoxImageProps) {
+function LightBoxImage({ hash, visible }: LightBoxImageProps) {
   return (
     <Stack
       direction="column"
@@ -15,7 +16,7 @@ function LightBoxImage({ hash }: LightBoxImageProps) {
       tabIndex={0}
       sx={{
         flex: '0 0 auto',
-        width: '100%',
+        width: visible ? '100%' : '0',
       }}
       justifyContent="center"
     >
