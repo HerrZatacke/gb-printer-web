@@ -21,7 +21,10 @@ function ImageRender({ hash, asThumb, overrides }: Props) {
       dimensions={dimensions}
     />
   ) : (
-    <ImageLoading dimensions={dimensions} />
+    <ImageLoading
+      asThumb={asThumb}
+      dimensions={dimensions}
+    />
   );
 }
 

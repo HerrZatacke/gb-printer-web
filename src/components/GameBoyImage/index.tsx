@@ -116,7 +116,10 @@ function GameBoyImage({
   }, [asThumb, dimensions]);
 
   if (decoderError || !src) {
-    return <ImageLoading dimensions={dimensions} />;
+    return <ImageLoading
+      asThumb={asThumb}
+      dimensions={dimensions}
+    />;
   }
 
   return (

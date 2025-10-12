@@ -5,27 +5,24 @@ import { type Dimensions } from '@/hooks/useImageDimensions';
 
 interface Props {
   dimensions: Dimensions,
+  asThumb?: boolean,
 }
 
-function ImageLoading({ dimensions }: Props) {
-  const isLandscape = dimensions.width > dimensions.height;
+function ImageLoading({ dimensions, asThumb }: Props) {
   return (
     <Box
       sx={{
-        display: 'flex',
+        display: asThumb ? 'flex' : 'block',
         width: '100%',
         height: '100%',
       }}
     >
       <Box
         sx={{
-          display: 'block',
           margin: '0 auto',
-          width: isLandscape ? '100%' : `${(1 / dimensions.aspectRatio) * 100}%`,
           aspectRatio: dimensions.aspectRatioCSS,
           maxWidth: '100%', // For Lightbox
           maxHeight: '100%', // For Lightbox
-          objectFit: 'contain', // For Lightbox
         }}
       >
         <Skeleton
