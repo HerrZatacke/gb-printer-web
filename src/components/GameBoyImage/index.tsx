@@ -52,15 +52,17 @@ function GameBoyImage({
     // ToDo: switch to requestIdleCallback once safari supports it.
     const handle = setTimeout(async () => {
       try {
+        let newSrc: string = '';
+
         if (isRGBN) {
-          setSrc(await getRGBNImageUrl({
+          newSrc = await getRGBNImageUrl({
             tiles: tiles as RGBNTiles,
             palette,
             lockFrame: lockFrame || false,
             rotation,
-          }));
+          });
         } else if ((tiles as string[] | undefined)?.length) {
-          setSrc(await getMonochromeImageUrl({
+          newSrc = await getMonochromeImageUrl({
             tiles: tiles as string[],
             imageStartLine,
             rotation,
@@ -70,7 +72,11 @@ function GameBoyImage({
               invertPalette,
               invertFramePalette,
             }),
-          }));
+          });
+        }
+
+        if (newSrc) {
+          setSrc(newSrc);
         }
 
         setDecoderError('');
