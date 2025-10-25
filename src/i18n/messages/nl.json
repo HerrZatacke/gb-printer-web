@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Stel in op 0 om paginering uit te schakelen – kan prestatieproblemen veroorzaken bij grote aantallen afbeeldingen",
     "galleryClickAction": "Klikgedrag voor galerieafbeeldingen",
     "galleryClickActionHelper": "Ctrl+klik en Shift+klik kunnen altijd worden gebruikt voor selecteren/bereik selecteren",
-    "exportDimensions": "Afbeeldingexport schalingen",
-    "exportFiletypes": "Afbeeldingexport bestandstypen",
-    "exportHandleFrame": "Omgang met kaders bij het exporteren van afbeeldingen",
-    "filenameStyle": "Bestandsnaamstijl",
     "importSavFrames": "Kaders die moeten worden toegepast bij het importeren van cartridge dumps",
     "importSavFramesNone": "Geen",
     "importSavFramesUnknown": "Onbekend",
@@ -29,31 +25,22 @@
       "clickOpensEditDialog": "Klik opent bewerkingsdialoog",
       "clickOpensLightbox": "Klik opent het item in de lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Kader behouden",
-      "cropFrame": "Kader bijsnijden",
-      "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
-      "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
-    },
     "importOrders": {
       "cartIndex": "Gesorteerd op ROM-beslissing (zoals te zien in camerarol in oorspronkelijke RAM)",
       "ramIndex": "Gesorteerd op werkelijke volgorde in RAM (geheugenadres)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Volledige titel",
-      "dateTitle": "Datum en titel",
-      "titleOnly": "Alleen titel"
     },
     "locales": {
       "de-DE": "Duits – Duitsland (de-DE)",
       "en-US": "Engels – Verenigde Staten (en-US)",
       "en-GB": "Engels – Verenigd Koninkrijk (en-GB)",
-      "en-CA": "Engels – Canada (en-CA)"
+      "en-CA": "Engels – Canada (en-CA)",
+      "fr-FR": "Frans – Frankrijk (fr-FR)"
     }
   },
   "SettingsDropbox": {
     "enableStorage": "Dropbox gebruiken als opslag",
     "subfolder": "Submap",
+    "subfolderWarning": "Voer alleen de naam van de submap in. Anders zal de app volledig oplossen naar “{fullAppPath}”, binnen uw Dropbox, wat waarschijnlijk niet is wat u bedoelde.",
     "openFolder": "<link>🔗 Map openen</link>",
     "openFolderLinkTitle": "Dropbox-map openen:\n{folderLink}",
     "enableEnhancedSync": "Verbeterde Dropbox-synchronisatie inschakelen",
@@ -88,6 +75,29 @@
     "throttle": "Vertraging (in ms)",
     "token": "Token",
     "tokenHelper": "Ga naar GitHub om een <link>🔗 nieuwe fijnafgestemde persoonlijke toegangstoken</link> te maken, selecteer de repository die je wilt gebruiken voor synchronisatie, en sta lees-/schrijftoegang toe voor <code>“Repository Permissions > Contents”</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "{count, plural, =1 {afbeelding} other {# afbeeldingen}} downloaden"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Afbeeldingexport schalingen",
+    "exportFiletypes": "Afbeeldingexport bestandstypen",
+    "exportHandleFrame": "Omgang met kaders bij het exporteren van afbeeldingen",
+    "filenameStyle": "Bestandsnaamstijl",
+    "alwaysShowDownloadDialogInForm": "Downloadopties altijd weergeven",
+    "alwaysShowDownloadDialogInDialog": "Deze dialoog altijd tonen",
+    "alwaysShowDownloadDialogHelper": "Je kunt deze optie op elk moment opnieuw inschakelen in de instellingen",
+    "frameModes": {
+      "keepFrame": "Kader behouden",
+      "cropFrame": "Kader bijsnijden",
+      "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
+      "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Volledige titel",
+      "dateTitle": "Datum en titel",
+      "titleOnly": "Alleen titel"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "WebUSB / Seriële poorten inschakelen",
@@ -200,10 +210,11 @@
     "renameFramegroup": "Kadergroep hernoemen",
     "exportFrames": "Kaders exporteren",
     "exportCurrentFramegroup": "Huidige kadergroep exporteren ({id})",
-    "convertFramesFormat": "Kaders naar nieuw formaat converteren"
+    "convertFramesFormat": "Kaders naar nieuw formaat converteren",
+    "applyFrames": "Voeg kader toe aan afbeeldingen als ruwe data overeenkomt"
   },
   "GalleryGroup": {
-    "itemCount": "{count} items"
+    "itemCount": "{count} afbeeldingen"
   },
   "GalleryGroupContextMenu": {
     "edit": "Bewerken",
@@ -413,6 +424,7 @@
     "clear": "Wissen",
     "clearFiltersAndApplyTitle": "Filters wissen en toepassen",
     "clearAndApply": "Wissen en toepassen",
+    "clearTab": "Geselecteerde {tab, select, tabTags {Tags} tabPalettes {Paletten} tabFrames {Kaders} other {}} resetten",
     "allMustBeMet": "Indien ingesteld, moeten alle worden voldaan",
     "oneMustBeMet": "Indien ingesteld, moet één worden voldaan",
     "untagged": "Zonder tags",
@@ -422,11 +434,25 @@
     "rgb": "RGB",
     "recentImports": "Recente imports",
     "imageHasComments": "Afbeelding heeft opmerkingen",
-    "imageHasUsername": "Afbeelding heeft gebruikersnaam"
+    "imageHasUsername": "Afbeelding heeft gebruikersnaam",
+    "filterTabs": {
+      "tabTags": "Tags {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletten {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Kaders {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "“{title}”-tag verwijderen",
+    "removeTag": "“{title}”-tag uit selectie verwijderen",
     "selectTag": "“{title}”-tag selecteren"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Palet “{name}” uit selectie verwijderen",
+    "selectPalette": "Palet “{name}” selecteren"
+  },
+  "FilterFormFrame": {
+    "usage": "{usage} keer gebruikt",
+    "removeFrame": "Kader “{name}” uit selectie verwijderen",
+    "selectFrame": "Kader “{name}” selecteren"
   },
   "FrameQueue": {
     "dialogHeader": "Nieuw kader importeren als “{id}”"
@@ -461,6 +487,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Update voltooid {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Bijwerken... {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderError": "❌ Bijwerken mislukt",
     "showAllMessages": "Alle {count} berichten tonen",
     "reduceMessages": "Berichten verminderen",
     "startedAt": "Gestart om: {time}",

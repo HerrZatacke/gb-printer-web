@@ -7,6 +7,7 @@ export const locales = [
   'en-CA',
   defaultLocale,
   'en-US',
+  'fr-FR',
 ];
 
 export const shortLocales = unique((locales.map((locale: string) => (

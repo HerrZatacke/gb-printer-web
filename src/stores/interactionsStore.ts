@@ -18,6 +18,7 @@ export interface ErrorMessage {
 }
 
 interface Values {
+  downloadHashes: string[],
   dragover: boolean,
   errors: ErrorMessage[],
   isFullscreen: boolean,
@@ -34,12 +35,11 @@ interface Values {
 
 interface Actions {
   dismissError: (index: number) => void,
+  setDownloadHashes: (downloadHashes: string[]) => void,
   setDragover: (dragover: boolean) => void,
   setError: (error: Error) => void,
   setIsFullscreen: (isFullscreen: boolean) => void,
   setLightboxImage: (index: number | null) => void,
-  setLightboxImageNext: (maxImages: number) => void,
-  setLightboxImagePrev: () => void,
   setPrinterBusy: (printerBusy: boolean) => void,
   setPrinterData: (printerData: PrinterInfo | null) => void,
   setPrinterFunctions: (printerFunctions: PrinterFunction[]) => void,
@@ -54,6 +54,7 @@ interface Actions {
 export type InteractionsState = Values & Actions;
 
 const useInteractionsStore = create<InteractionsState>((set, get) => ({
+  downloadHashes: [],
   dragover: false,
   errors: [],
   isFullscreen: false,
@@ -68,6 +69,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   videoSelection: [],
 
   dismissError: (index: number) => set({ errors: get().errors.filter((_, i) => i !== index) }),
+  setDownloadHashes: (downloadHashes: string[]) => set({ downloadHashes }),
   setDragover: (dragover: boolean) => set({ dragover }),
   setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix(), id: v4() }] }),
   setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
@@ -83,24 +85,12 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
 
   setLightboxImage: (lightboxImage: number | null) => {
     if (lightboxImage === null) {
-      screenfull.exit();
+      if (screenfull.isEnabled) {
+        screenfull.exit();
+      }
     }
 
     set({ lightboxImage });
-  },
-
-  setLightboxImageNext: (maxImages: number) => {
-    const stateLightboxImage = get().lightboxImage;
-    if (stateLightboxImage !== null) {
-      set({ lightboxImage: Math.min(stateLightboxImage + 1, maxImages - 1) });
-    }
-  },
-
-  setLightboxImagePrev: () => {
-    const stateLightboxImage = get().lightboxImage;
-    if (stateLightboxImage !== null) {
-      set({ lightboxImage: Math.max(stateLightboxImage - 1, 0) });
-    }
   },
 }));
 

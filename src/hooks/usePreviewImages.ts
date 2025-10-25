@@ -1,49 +1,55 @@
 import { useMemo } from 'react';
+import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import useFiltersStore from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
 import type { FilteredImagesState } from '@/tools/getFilteredImages';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
 import uniqueBy from '@/tools/unique/by';
-import type { Image, MonochromeImage } from '@/types/Image';
+import { type Image } from '@/types/Image';
 
 const uniqeHash = uniqueBy<Image>('hash');
 
-const usePreviewImages = (): MonochromeImage[] => {
-  const { images } = useItemsStore();
+interface UsePreviewImages {
+  previewImages: string[];
+}
+
+const usePreviewImages = (): UsePreviewImages => {
+  const { root } = useGalleryTreeContext();
 
   const {
     imageSelection,
     sortBy,
-    filtersActiveTags,
+    filtersTags,
+    filtersFrames,
+    filtersPalettes,
     recentImports,
   } = useFiltersStore();
 
   const filterState: FilteredImagesState = useMemo(() => (
-    { sortBy, filtersActiveTags, recentImports }
-  ), [filtersActiveTags, recentImports, sortBy]);
+    { sortBy, filtersTags, filtersPalettes, filtersFrames, recentImports }
+  ), [filtersFrames, filtersPalettes, filtersTags, recentImports, sortBy]);
 
-  return useMemo<MonochromeImage[]>(() => {
+  const previewImages = useMemo<string[]>(() => {
     const selectedImages = imageSelection
       .map((imageHash) => (
-        images.find(({ hash }) => hash === imageHash)
+        root.allImages.find(({ hash }) => hash === imageHash)
       ))
       .reduce(reduceImagesMonochrome, []);
 
     const filtered = (selectedImages.length > 1) ?
       [] :
-      getFilteredImages(images, filterState).reduce(reduceImagesMonochrome, []);
+      getFilteredImages(root, filterState).reduce(reduceImagesMonochrome, []);
 
     const allImages = ((selectedImages.length + filtered.length) > 1) ?
       [] :
-      [...images]
+      [...root.allImages]
         .map(addSortIndex)
         .sort(sortImages(filterState.sortBy))
         .map(removeSortIndex)
         .reduce(reduceImagesMonochrome, []);
 
-    const previewImages = uniqeHash([
+    const availableImages = uniqeHash([
       selectedImages.shift(),
       filtered.shift(),
       allImages.shift(),
@@ -53,10 +59,16 @@ const usePreviewImages = (): MonochromeImage[] => {
     ].reduce(reduceImagesMonochrome, []));
 
     return [
-      previewImages.shift(),
-      previewImages.pop(),
-    ].reduce(reduceImagesMonochrome, []);
-  }, [filterState, imageSelection, images]);
+      availableImages.shift(),
+      availableImages.pop(),
+    ]
+      .reduce(reduceImagesMonochrome, [])
+      .map(({ hash }) => hash);
+  }, [filterState, imageSelection, root]);
+
+  return {
+    previewImages,
+  };
 };
 
 export default usePreviewImages;

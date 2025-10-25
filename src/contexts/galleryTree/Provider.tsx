@@ -22,8 +22,8 @@ import { TreeImageGroup } from '@/types/ImageGroup';
 export const GALLERY_BASE_PATH = '/gallery/';
 
 export const galleryTreeContext: Context<GalleryTreeContextType> = createContext<GalleryTreeContextType>({
-  root: createTreeRoot(),
-  view: createTreeRoot(),
+  root: createTreeRoot([]),
+  view: createTreeRoot([]),
   images: [],
   covers: [],
   paths: [],
@@ -37,8 +37,9 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
 
 
 export function GalleryTreeContext({ children }: PropsWithChildren) {
+  const { imageGroups, images: stateImages, setImageGroups } = useItemsStore();
   const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
-  const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot());
+  const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot(stateImages));
   const [paths, setPaths] = useState<PathMap[]>([]);
   const [pathsOptions, setPathsOptions] = useState<DialogOption[]>([]);
   const { searchParams, pathname } = useUrl();
@@ -46,7 +47,6 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
 
   const { enableDebug } = useSettingsStore();
   const { setError } = useInteractionsStore();
-  const { imageGroups, images: stateImages, setImageGroups } = useItemsStore();
 
   useEffect(() => {
     const worker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url), { type: 'module' });

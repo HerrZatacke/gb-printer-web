@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Establecer en 0 para desactivar la paginación: puede causar problemas de rendimiento con grandes cantidades de imágenes",
     "galleryClickAction": "Comportamiento de clic para imágenes de galería",
     "galleryClickActionHelper": "Ctrl+clic y Mayús+clic siempre se pueden usar para seleccionar/seleccionar por rango",
-    "exportDimensions": "Escalas de exportación de imágenes",
-    "exportFiletypes": "Tipos de archivo de exportación de imágenes",
-    "exportHandleFrame": "Manejo de marcos al exportar imágenes",
-    "filenameStyle": "Estilo de nombre de archivo",
     "importSavFrames": "Marcos que se aplicarán al importar volcados de cartucho",
     "importSavFramesNone": "Ninguno",
     "importSavFramesUnknown": "Desconocido",
@@ -29,31 +25,22 @@
       "clickOpensEditDialog": "Clic abre el diálogo de edición",
       "clickOpensLightbox": "Clic abre el elemento en lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Mantener marco",
-      "cropFrame": "Recortar marco",
-      "squareBlack": "Hacer imagen cuadrada (agregar negro)",
-      "squareWhite": "Hacer imagen cuadrada (agregar blanco)"
-    },
     "importOrders": {
       "cartIndex": "Ordenado por decisión de ROM (como se ve en el carrete de la cámara en la RAM original)",
       "ramIndex": "Ordenado por orden real en RAM (dirección de memoria)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Título completo",
-      "dateTitle": "Fecha y título",
-      "titleOnly": "Solo título"
     },
     "locales": {
       "de-DE": "Alemán – Alemania (de-DE)",
       "en-US": "Inglés – Estados Unidos (en-US)",
       "en-GB": "Inglés – Reino Unido (en-GB)",
-      "en-CA": "Inglés – Canadá (en-CA)"
+      "en-CA": "Inglés – Canadá (en-CA)",
+      "fr-FR": "Francés – Francia (fr-FR)"
     }
   },
   "SettingsDropbox": {
     "enableStorage": "Usar Dropbox como almacenamiento",
     "subfolder": "Subcarpeta",
+    "subfolderWarning": "Ingrese solo el nombre de la subcarpeta. De lo contrario, la aplicación se resolverá completamente a «{fullAppPath}» dentro de su Dropbox, lo cual probablemente no es lo que pretendía.",
     "openFolder": "<link>🔗 Abrir carpeta</link>",
     "openFolderLinkTitle": "Abrir carpeta de Dropbox:\n{folderLink}",
     "enableEnhancedSync": "Activar sincronización mejorada de Dropbox",
@@ -88,6 +75,29 @@
     "throttle": "Limitación (en ms)",
     "token": "Token",
     "tokenHelper": "Ve a GitHub para crear un <link>🔗 nuevo token de acceso personal refinado</link>, selecciona el repositorio que quieres usar para sincronización y permite acceso de lectura/escritura para <code>«Repository Permissions > Contents»</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Descargar {count, plural, =1 {imagen} other {# imágenes}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Escalas de exportación de imágenes",
+    "exportFiletypes": "Tipos de archivo de exportación de imágenes",
+    "exportHandleFrame": "Manejo de marcos al exportar imágenes",
+    "filenameStyle": "Estilo de nombre de archivo",
+    "alwaysShowDownloadDialogInForm": "Mostrar las opciones de descarga cada vez",
+    "alwaysShowDownloadDialogInDialog": "Mostrar este diálogo siempre",
+    "alwaysShowDownloadDialogHelper": "Puedes volver a activar esta opción en la configuración en cualquier momento",
+    "frameModes": {
+      "keepFrame": "Mantener marco",
+      "cropFrame": "Recortar marco",
+      "squareBlack": "Hacer imagen cuadrada (agregar negro)",
+      "squareWhite": "Hacer imagen cuadrada (agregar blanco)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Título completo",
+      "dateTitle": "Fecha y título",
+      "titleOnly": "Solo título"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Activar WebUSB / Puertos seriales",
@@ -200,10 +210,11 @@
     "renameFramegroup": "Renombrar grupo de marcos",
     "exportFrames": "Exportar marcos",
     "exportCurrentFramegroup": "Exportar grupo de marcos actual ({id})",
-    "convertFramesFormat": "Convertir marcos a nuevo formato"
+    "convertFramesFormat": "Convertir marcos a nuevo formato",
+    "applyFrames": "Añadir marco a imágenes si los datos sin procesar coinciden"
   },
   "GalleryGroup": {
-    "itemCount": "{count} elementos"
+    "itemCount": "{count} imágenes"
   },
   "GalleryGroupContextMenu": {
     "edit": "Editar",
@@ -413,6 +424,7 @@
     "clear": "Limpiar",
     "clearFiltersAndApplyTitle": "Limpiar filtros y aplicar",
     "clearAndApply": "Limpiar y aplicar",
+    "clearTab": "Restablecer {tab, select, tabTags {Etiquetas} tabPalettes {Paletas} tabFrames {Marcos} other {}} seleccionadas",
     "allMustBeMet": "Si está configurado, todos deben cumplirse",
     "oneMustBeMet": "Si está configurado, uno debe cumplirse",
     "untagged": "Sin etiquetas",
@@ -422,11 +434,25 @@
     "rgb": "RGB",
     "recentImports": "Importaciones recientes",
     "imageHasComments": "La imagen tiene comentarios",
-    "imageHasUsername": "La imagen tiene nombre de usuario"
+    "imageHasUsername": "La imagen tiene nombre de usuario",
+    "filterTabs": {
+      "tabTags": "Etiquetas {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletas {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Marcos {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Eliminar etiqueta «{title}»",
+    "removeTag": "Eliminar etiqueta «{title}» de la selección",
     "selectTag": "Seleccionar etiqueta «{title}»"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Eliminar paleta «{name}» de la selección",
+    "selectPalette": "Seleccionar paleta «{name}»"
+  },
+  "FilterFormFrame": {
+    "usage": "Usado {usage} veces",
+    "removeFrame": "Eliminar marco «{name}» de la selección",
+    "selectFrame": "Seleccionar marco «{name}»"
   },
   "FrameQueue": {
     "dialogHeader": "Importar nuevo marco como «{id}»"
@@ -461,6 +487,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Actualización completada {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Actualizando... {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderError": "❌ Error al actualizar",
     "showAllMessages": "Mostrar todos los {count} mensajes",
     "reduceMessages": "Reducir mensajes",
     "startedAt": "Iniciado en: {time}",

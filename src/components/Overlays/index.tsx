@@ -1,6 +1,7 @@
 import React from 'react';
 import BitmapQueue from '@/components/Overlays/BitmapQueue';
 import Confirm from '@/components/Overlays/Confirm';
+import DownloadOptions from '@/components/Overlays/DownloadOptions';
 import DragOver from '@/components/Overlays/DragOver';
 import EditForm from '@/components/Overlays/EditForm';
 import EditFrame from '@/components/Overlays/EditFrame';
@@ -10,7 +11,7 @@ import EditRGBN from '@/components/Overlays/EditRGBN';
 import FilterForm from '@/components/Overlays/FilterForm';
 import FrameQueue from '@/components/Overlays/FrameQueue';
 import ImportQueue from '@/components/Overlays/ImportQueue';
-import LightboxImage from '@/components/Overlays/LightboxImage';
+import LightboxImages from '@/components/Overlays/LightboxImages';
 import PickColors from '@/components/Overlays/PickColors';
 import ProgressBox from '@/components/Overlays/ProgressBox';
 import ProgressLogBox from '@/components/Overlays/ProgressLogBox';
@@ -72,6 +73,7 @@ function Overlays() {
     syncSelect,
     videoSelection,
     showSerials,
+    downloadHashes,
   } = useInteractionsStore();
 
   const {
@@ -79,6 +81,7 @@ function Overlays() {
     progressLog,
   } = useProgressStore();
 
+  const showDownloadOverlay = !!downloadHashes.length;
   const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
   const showProgressBox = !!progress.length;
   const showVideoForm = !!videoSelection?.length;
@@ -108,7 +111,7 @@ function Overlays() {
     case showPickColors:
       return <PickColors />; // interactive
     case lightboxImage !== null:
-      return <LightboxImage />; // interactive
+      return <LightboxImages />; // interactive
     case showFilters:
       return <FilterForm />; // interactive
     case showSortForm:
@@ -119,6 +122,8 @@ function Overlays() {
       return <Trashbin />; // interactive
     case showSerialOverlay:
       return <Serials />; // interactive
+    case showDownloadOverlay:
+      return <DownloadOptions />; // interactive
     case showDragOver:
       return <DragOver />; // semi-interactive
     case showProgressLog:

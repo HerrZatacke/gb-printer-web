@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import objectHash from 'object-hash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { useDateFormat } from '@/hooks/useDateFormat';
@@ -9,6 +9,7 @@ import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
 import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
 import useItemsStore from '@/stores/itemsStore';
+import useSettingsStore from '@/stores/settingsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
@@ -47,18 +48,29 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   const { view } = useGalleryTreeContext();
   const { saveRGBNImage } = useSaveRGBNImages();
 
+  const {
+    createGroup: stateCreateGroup,
+    setCreateGroup: stateSetCreateGroup,
+  } = useSettingsStore();
+
   const { sortBy } = useFiltersStore();
   const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
-  const { addImageGroup, images } = useItemsStore();
+  const { addImageGroup } = useItemsStore();
 
-  const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5);
+  const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5 && stateCreateGroup);
+
+  useEffect(() => {
+    stateSetCreateGroup(createGroup);
+  }, [createGroup, stateSetCreateGroup]);
+
 
   const globalSortDirection = sortBy.split('_')[1];
 
   const sortedImages = useMemo<MonochromeImage[]>(() => {
-
-    const filtered = getFilteredImages(images, {
-      filtersActiveTags: [],
+    const filtered = getFilteredImages(view, {
+      filtersTags: [],
+      filtersFrames: [],
+      filtersPalettes: [],
       sortBy,
       recentImports: [],
     });
@@ -76,7 +88,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
         return [...acc, image];
       }, []);
-  }, [editRGBNImages, globalSortDirection, images, sortBy]);
+  }, [editRGBNImages, globalSortDirection, view, sortBy]);
 
   const [order, setOrder] = useState<RGBOrder>(['r', 'g', 'b', 's', 'n']);
   const [grouping, setGrouping] = useState<RGBGrouping>(

@@ -1,11 +1,9 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
-import usePreviewImages from '@/hooks/usePreviewImages';
 import { useStores } from '@/hooks/useStores';
 import useEditStore from '@/stores/editStore';
 import useItemsStore from '@/stores/itemsStore';
-import type { MonochromeImage } from '@/types/Image';
 import type { Palette } from '@/types/Palette';
 
 interface UseEditPalette {
@@ -14,7 +12,6 @@ interface UseEditPalette {
   newName: string,
   newShortName: string,
   palette: string[],
-  previewImages: MonochromeImage[],
   shortName: string,
   setNewName: (newName: string) => void,
   setNewShortName: (newShortName: string) => void,
@@ -52,9 +49,6 @@ export const useEditPalette = (): UseEditPalette => {
   const canConfirm = useMemo(() => (
     (!canEditShortName || shortNameIsValid(newShortName)) && newName.length > 0
   ), [newName, canEditShortName, newShortName, shortNameIsValid]);
-
-  const previewImages = usePreviewImages();
-
 
   const save = useCallback(() => {
     const savePalette = (updatedPalette: Palette) => {
@@ -100,7 +94,6 @@ export const useEditPalette = (): UseEditPalette => {
     newName,
     newShortName,
     palette,
-    previewImages,
     shortName,
     setNewName,
     setNewShortName,

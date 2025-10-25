@@ -3,11 +3,11 @@
 Game Boy Camera Gallery is een web-app om foto's gemaakt met de Game Boy Camera te organiseren, bewerken en delen.
 
 ## [Galerij](/gallery)
-Bekijk alle geïmporteerde foto's in een responsieve galerij:
+Bekijk en beheer alle geïmporteerde foto's in een interactieve galerij:
 - Tag afbeeldingen
 - Combineer foto's in afbeeldingsgroepen
 - Filter je collectie
-- Metadata bekijken van ondersteunde ROMs zoals [Photo!](https://github.com/untoxa/gb-photo) of zelfs de basisinformatie van de originele Game Boy Camera ROM
+- Metadata bekijken van savestates van ROMs zoals [Photo!](https://github.com/untoxa/gb-photo) of de originele Game Boy Camera ROM
 - Afbeeldingen afdrukken op een originele Game Boy Printer met community-projectapparaten
 
 ### Afbeeldingsgroepen
@@ -24,14 +24,14 @@ Verbind direct met community-projectapparaten via WebSerial:
 
 ### Cartridge Communicatie
 - Schakel WebSerial in Chrome in om direct te communiceren met de GBxCart (alleen desktop)
-- Gebruik een apparaat met Lesserkuma's firmware voor verschillende apparaten (bijv. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
+- Gebruik een cartridge-lezer met Lesserkuma's firmware voor het laden van savestates (bijv. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
 
 ### Game Boy Printer Emulators
 Verbind een printer-emulator via WebSerial om direct van je Game Boy Camera naar de WebApp af te drukken:
-- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) - Arduino-gebaseerde emulator door mofosyne
-- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) - Raspberry Pi Pico implementatie door untoxa
-- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) - Arduino Nano implementatie door Rafael Zenaro
-- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) - ESP8266 WiFi-emulator met geïntegreerde webserver die deze webapp kan hosten
+- [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) – Arduino-gebaseerde emulator door mofosyne
+- [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) – Raspberry Pi Pico implementatie door untoxa
+- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – Arduino Nano implementatie door Rafael Zenaro
+- [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) – ESP8266 WiFi-emulator met geïntegreerde webserver die deze webapp kan hosten
 
 ## [Importeren](/import)
 Importeer afbeeldingen uit meerdere bronnen via slepen en neerzetten:

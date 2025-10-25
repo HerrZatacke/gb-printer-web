@@ -12,7 +12,6 @@ import TagsList from '@/components/TagsList';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useGalleryGroup } from '@/hooks/useGalleryGroup';
-import { useGalleryImage } from '@/hooks/useGalleryImage';
 import useSettingsStore from '@/stores/settingsStore';
 
 interface Props {
@@ -23,7 +22,6 @@ function GalleryGroup({ hash }: Props) {
   const t = useTranslations('GalleryGroup');
   const { getUrl } = useGalleryTreeContext();
   const { group, path } = useGalleryGroup(hash);
-  const { galleryImageData } = useGalleryImage(hash);
   const { galleryView } = useSettingsStore();
 
   const asThumb = [
@@ -31,25 +29,15 @@ function GalleryGroup({ hash }: Props) {
     GalleryViews.GALLERY_VIEW_1X,
   ].includes(galleryView);
 
-  if (!galleryImageData || !group) {
+  if (!group) {
     return null;
   }
-
-  const {
-    hashes,
-    palette,
-    invertPalette,
-    framePalette,
-    frame,
-    lockFrame,
-    rotation,
-  } = galleryImageData;
 
   return (
     <GalleryGridItem
       selectionText=""
       title={group.title}
-      subheader={t('itemCount', { count: group.images.length })}
+      subheader={t('itemCount', { count: group.allImages.length })}
       wrapperProps={{
         component: Link,
         href: getUrl({ group: path || '', pageIndex: 0 }),
@@ -88,17 +76,7 @@ function GalleryGroup({ hash }: Props) {
           >
             <path d="M 10,2 H 4 C 2.9,2 2.01,2.9 2.01,4 L 2,16 c 0,1.1 0.9,2 2,2 h 16 c 1.1,0 2,-0.9 2,-2 V 6 C 22,4.9 21.1,4 20,4 h -8 z" />
           </SvgIcon>
-          <ImageRender
-            lockFrame={lockFrame}
-            invertPalette={invertPalette}
-            framePalette={framePalette}
-            palette={palette}
-            frameId={frame}
-            hash={hash}
-            hashes={hashes}
-            rotation={rotation}
-            asThumb={asThumb}
-          />
+          <ImageRender hash={hash} asThumb={asThumb} />
         </Box>
       )}
       content={group.tags.length > 0 && (

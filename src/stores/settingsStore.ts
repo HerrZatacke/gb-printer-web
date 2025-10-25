@@ -15,8 +15,10 @@ import { PROJECT_PREFIX } from './constants';
 
 export interface Settings {
   activePalette: string,
+  alwaysShowDownloadDialog: boolean,
   bitmapQueueDither: boolean,
   bitmapQueueSetting: ImportContrastValue,
+  createGroup: boolean,
   enableDebug: boolean,
   exportFileTypes: string[],
   exportScaleFactors: number[],
@@ -44,8 +46,10 @@ export interface Settings {
 
 interface Actions {
   setActivePalette: (activePalette: string) => void,
+  setAlwaysShowDownloadDialog: (alwaysShowDownloadDialog: boolean) => void,
   setBitmapQueueDither: (bitmapQueueDither: boolean) => void,
   setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => void,
+  setCreateGroup: (createGroup: boolean) => void,
   setEnableDebug: (enableDebug: boolean) => void,
   setExportFileTypes: (exportFileTypes: string[]) => void,
   setExportScaleFactors: (exportScaleFactors: number[]) => void
@@ -91,8 +95,10 @@ const useSettingsStore = create(
   persist<SettingsState>(
     (set) => ({
       activePalette: 'bw',
+      alwaysShowDownloadDialog: true,
       bitmapQueueDither: true,
       bitmapQueueSetting: ImportContrastValue.WIDE,
+      createGroup: true,
       enableDebug: false,
       exportFileTypes: ['png'],
       exportScaleFactors: [4],
@@ -118,8 +124,10 @@ const useSettingsStore = create(
       videoParams: {},
 
       setActivePalette: (activePalette: string) => set({ activePalette }),
+      setAlwaysShowDownloadDialog: (alwaysShowDownloadDialog: boolean) => set({ alwaysShowDownloadDialog }),
       setBitmapQueueDither: (bitmapQueueDither: boolean) => set({ bitmapQueueDither }),
       setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => set({ bitmapQueueSetting }),
+      setCreateGroup: (createGroup: boolean) => set({ createGroup }),
       setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
       setFileNameStyle: (fileNameStyle: FileNameStyle) => set({ fileNameStyle }),
       setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),

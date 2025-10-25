@@ -38,7 +38,6 @@ export interface ReduxState {
   videoParams: VideoParams,
 
   // FiltersState
-  filtersActiveTags: string[],
   imageSelection: string[],
   recentImports: RecentImport[],
   sortBy: string,

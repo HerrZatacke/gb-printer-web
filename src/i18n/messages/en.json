@@ -4,10 +4,6 @@
     "galleryPageSizeHelper": "Set to 0 to disable pagination – might cause performance issues on large sets of images",
     "galleryClickAction": "Click behaviour for gallery images",
     "galleryClickActionHelper": "Ctrl+Click and Shift+Click will always select/range-select",
-    "exportDimensions": "Image export dimensions",
-    "exportFiletypes": "Image export filetypes",
-    "exportHandleFrame": "How to handle frames when exporting images",
-    "filenameStyle": "Filename style",
     "importSavFrames": "Frames to be applied when importing Cartridge dumps",
     "importSavFramesNone": "None",
     "importSavFramesUnknown": "Unknown",
@@ -29,31 +25,22 @@
       "clickOpensEditDialog": "Click opens edit dialog",
       "clickOpensLightbox": "Click opens the item in lightbox"
     },
-    "frameModes": {
-      "keepFrame": "Keep frame",
-      "cropFrame": "Crop frame",
-      "squareBlack": "Make image squared (add black)",
-      "squareWhite": "Make image squared (add white)"
-    },
     "importOrders": {
       "cartIndex": "Sorted by ROMs decision (as seen in camera roll in original RAM)",
       "ramIndex":"Sorted by actual order in RAM (memory address)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Full Title",
-      "dateTitle": "Date and Title",
-      "titleOnly": "Title only"
     },
     "locales": {
       "de-DE": "German – Germany (de-DE)",
       "en-US": "English – United States (en-US)",
       "en-GB": "English – United Kingdom (en-GB)",
-      "en-CA": "English – Canada (en-CA)"
+      "en-CA": "English – Canada (en-CA)",
+      "fr-FR": "French – France (fr-FR)"
     }
   },
   "SettingsDropbox": {
     "enableStorage": "Use Dropbox as storage",
     "subfolder": "Subfolder",
+    "subfolderWarning": "Enter only the subfolder name. Otherwise, the app will fully resolve to “{fullAppPath}” within your Dropbox, which is probably not what you intended.",
     "openFolder": "<link>🔗 Open folder</link>",
     "openFolderLinkTitle": "Open Dropbox folder:\n{folderLink}",
     "enableEnhancedSync": "Enable enhanced dropbox sync",
@@ -88,6 +75,29 @@
     "throttle": "Throttle (in ms)",
     "token": "Token",
     "tokenHelper": "Go to GitHub to create a <link>🔗 new fine-grained personal access token</link>, select the repository you want to use for synching and allow read/write for <code>“Repository Permissions > Contents”</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Download {count, plural, =1 {image} other {# images}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Image export dimensions",
+    "exportFiletypes": "Image export filetypes",
+    "exportHandleFrame": "How to handle frames when exporting images",
+    "filenameStyle": "Filename style",
+    "alwaysShowDownloadDialogInForm": "Show download options every time",
+    "alwaysShowDownloadDialogInDialog": "Always show this dialog",
+    "alwaysShowDownloadDialogHelper": "You can re-enable this option in the settings at any time",
+    "frameModes": {
+      "keepFrame": "Keep frame",
+      "cropFrame": "Crop frame",
+      "squareBlack": "Make image squared (add black)",
+      "squareWhite": "Make image squared (add white)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Full Title",
+      "dateTitle": "Date and Title",
+      "titleOnly": "Title only"
+    }
   },
   "WebUSBGreeting": {
     "enableWebUsb": "Enable WebUSB / Serial ports",
@@ -200,10 +210,11 @@
     "renameFramegroup": "Rename Framegroup",
     "exportFrames": "Export frames",
     "exportCurrentFramegroup": "Export current framegroup ({id})",
-    "convertFramesFormat": "Convert frames to new format"
+    "convertFramesFormat": "Convert frames to new format",
+    "applyFrames": "Add frame to images if raw data matches"
   },
   "GalleryGroup": {
-    "itemCount": "{count} items"
+    "itemCount": "{count} images"
   },
   "GalleryGroupContextMenu": {
     "edit": "Edit",
@@ -413,6 +424,7 @@
     "clear": "Clear",
     "clearFiltersAndApplyTitle": "Clear Filters and apply",
     "clearAndApply": "Clear and apply",
+    "clearTab": "Reset selected {tab, select, tabTags {Tags} tabPalettes {Palettes} tabFrames {Frames} other {}}",
     "allMustBeMet": "If set, all must be met",
     "oneMustBeMet": "If set, one must be met",
     "untagged": "Untagged",
@@ -422,11 +434,25 @@
     "rgb": "RGB",
     "recentImports": "Recent Imports",
     "imageHasComments": "Image has comments",
-    "imageHasUsername": "Image has username"
+    "imageHasUsername": "Image has username",
+    "filterTabs": {
+      "tabTags": "Tags {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Palettes {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Frames {count, plural, =0 {} other {(#)}}"
+    }
   },
   "FilterFormTag": {
-    "removeTag": "Remove “{title}”-tag",
+    "removeTag": "Remove “{title}”-tag from selection",
     "selectTag": "Select “{title}”-tag"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Remove palette „{name}“ from selection",
+    "selectPalette": "Select palette „{name}“"
+  },
+  "FilterFormFrame": {
+    "usage": "Used {usage} times",
+    "removeFrame": "Remove frame „{name}“ from selection",
+    "selectFrame": "Select frame „{name}“"
   },
   "FrameQueue": {
     "dialogHeader": "Import new Frame as “{id}”"
@@ -461,6 +487,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Update done {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Updating... {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderError": "❌ Update failed {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Show all {count} messages",
     "reduceMessages": "Reduce messages",
     "startedAt": "Started at: {time}",

@@ -5,20 +5,20 @@ const config: CapacitorConfig = {
   appName: 'GB Printer',
   webDir: 'out',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
   },
   android: {
     allowMixedContent: true,
     captureInput: true,
-    webContentsDebuggingEnabled: true
+    webContentsDebuggingEnabled: true,
   },
   plugins: {
     SplashScreen: {
       launchShowDuration: 2000,
       backgroundColor: '#000000',
-      showSpinner: false
-    }
-  }
+      showSpinner: false,
+    },
+  },
 };
 
 export default config;

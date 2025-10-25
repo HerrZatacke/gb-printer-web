@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import useInteractionsStore from '@/stores/interactionsStore';
 import type { TrashCount } from '@/stores/interactionsStore';
 import useItemsStore, { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
+import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { localforageReady, localforageImages, localforageFrames } from '@/tools/localforageInstance';
@@ -100,11 +101,16 @@ const useTrashbin = (): UseTrashbin => {
     const deletedFrames = await getItems(frameHashes, localforageFrames);
 
     const jsonExportBinary: JSONExportBinary = {};
-    const backupFrames = deletedFrames.map((frame, index) => {
+    const backupFrames: Frame[] = deletedFrames.map((frame, index) => {
       try {
         jsonExportBinary[`frame-${frame.hash}`] = frame.binary;
+
+        const frameData = JSON.parse(frame.lines[0]) as FrameData;
+        const lines = frameData.upper.length + (frameData.left.length * 20) + frameData.lower.length;
+
         return {
           hash: frame.hash,
+          lines,
           name: t('backupExportFrame', { hash: frame.hash }),
           id: `bak${index.toString(10).padStart(2, '0')}`,
         };

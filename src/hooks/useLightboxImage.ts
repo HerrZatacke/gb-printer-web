@@ -1,111 +1,107 @@
-import type { RGBNPalette, Rotation } from 'gb-image-decoder';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import screenfull from 'screenfull';
-import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
-import { getImagePalettes } from '@/tools/getImagePalettes';
-import { getPaletteSettings } from '@/tools/getPaletteSettings';
-import { isRGBNImage } from '@/tools/isRGBNImage';
-import type { Image, MonochromeImage, RGBNHashes, RGBNImage } from '@/types/Image';
-import type { Palette } from '@/types/Palette';
+import { type Image } from '@/types/Image';
 
-interface LightboxImageData {
+interface CurrentInfo {
+  index: number,
   title: string,
   created: string,
-  frame?: string,
+}
+
+interface RenderHashInfo {
   hash: string,
-  hashes?: RGBNHashes,
-  tags: string[],
-  palette: RGBNPalette | string[],
-  framePalette: string[],
-  lockFrame?: boolean,
-  invertPalette?: boolean,
-  invertFramePalette?: boolean,
-  rotation?: Rotation,
+  visible: boolean,
 }
 
 interface UseLightboxImage {
-  image: LightboxImageData | null,
+  renderHashes: RenderHashInfo[],
+  currentInfo: CurrentInfo | null,
   isFullscreen: boolean,
-  currentIndex: number,
   size: number,
   canPrev: boolean,
   canNext: boolean,
   close: () => void,
   prev: () => void,
   next: () => void,
-  fullscreen: () => void,
+  handleFullscreen: () => void,
 }
-
-const toLightBoxImage = (image: Image, palettes: Palette[]): LightboxImageData | null => {
-  let palette: RGBNPalette | string[];
-  let framePalette: string[] = [];
-
-  if (!image?.hash) {
-    return null;
-  }
-
-  const {
-    palette: selectedPalette,
-    framePalette: selectedFramePalette,
-  } = getImagePalettes(palettes, image);
-
-  if (!selectedPalette) {
-    throw new Error('Palette missing?');
-  }
-
-  const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
-
-  if (isRGBNImage(image)) {
-    palette = selectedPalette as RGBNPalette;
-  } else {
-    palette = ((selectedPalette || missingGreyPalette) as Palette).palette;
-    framePalette = (selectedFramePalette || missingGreyPalette).palette;
-  }
-
-  return ({
-    title: image?.title || '',
-    created: image?.created || '',
-    frame: image.frame,
-    hash: image.hash,
-    hashes: (image as RGBNImage).hashes || undefined,
-    tags: image.tags,
-    palette,
-    framePalette,
-    lockFrame: image.lockFrame,
-    invertPalette,
-    invertFramePalette,
-    rotation: image.rotation,
-  });
-};
 
 export const useLightboxImage = (): UseLightboxImage => {
   const filtersState = useFiltersStore();
 
   const { view, covers } = useGalleryTreeContext();
-  // ToDo: zustand or useState??
   const {
     isFullscreen,
-    setLightboxImage,
-    setLightboxImagePrev,
-    setLightboxImageNext,
     setIsFullscreen,
-    lightboxImage,
+    setLightboxImage: setLightboxImageState,
+    lightboxImage: lightboxImageState,
   } = useInteractionsStore();
-  // const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  const { palettes } = useItemsStore();
-  const viewImages = getFilteredImages(view.images, filtersState);
+  const filteredImages = useMemo<Image[]>(() => {
+    console.log('filteredImagesUpdate');
+    const viewImages = getFilteredImages(view, filtersState);
+    return viewImages.filter(({ hash }) => !covers.includes(hash));
+  }, [covers, filtersState, view]);
 
-  const filteredImages = useMemo<Image[]>(() => (
-    viewImages.filter(({ hash }) => !covers.includes(hash))
-  ), [covers, viewImages]);
+  const lightboxImageHashes = useMemo<string[]>(() => (
+    filteredImages.map(({ hash }) => (hash))
+  ), [filteredImages]);
 
-  const image = (lightboxImage !== null) ? toLightBoxImage(filteredImages[lightboxImage], palettes) : null;
+
+  const [currentInfo, setCurrentInfo] = useState<CurrentInfo | null>(null);
+
+  const createCurrentInfo = useCallback((index: number): CurrentInfo | null => {
+    const currentImage = filteredImages[index];
+    if (!currentImage) { return null; }
+
+    return {
+      title: currentImage.title,
+      created: currentImage.created,
+      index,
+    };
+  }, [filteredImages]);
+
+  useEffect(() => {
+    console.log('Initially setting currentInfo', Date.now());
+    if (lightboxImageState === null) {
+      setCurrentInfo(null);
+    } else {
+      setCurrentInfo(createCurrentInfo(lightboxImageState));
+    }
+  }, [createCurrentInfo, lightboxImageState]);
+
+  const next = useCallback(() => {
+    setCurrentInfo((current) => {
+      if (current === null) { return null; }
+      const { length } = filteredImages;
+
+      return createCurrentInfo(Math.min(current.index + 1, length - 1));
+    });
+  }, [createCurrentInfo, filteredImages]);
+
+  const prev = useCallback(() => {
+    setCurrentInfo((current) => {
+      if (current === null) { return null; }
+
+      return createCurrentInfo(Math.max(current.index - 1, 0));
+    });
+  }, [createCurrentInfo]);
+
+  const setCurrentIndex = useCallback((index: number) => {
+    setCurrentInfo((current) => {
+      if (current === null) { return null; }
+
+      return createCurrentInfo(index);
+    });
+  }, [createCurrentInfo]);
+
+  const close = useCallback(() => {
+    setLightboxImageState(null);
+  }, [setLightboxImageState]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -123,24 +119,24 @@ export const useLightboxImage = (): UseLightboxImage => {
         case 'Right':
         case 'ArrowRight':
         case 'd':
-          setLightboxImageNext(filteredImages.length);
+          next();
           ev.preventDefault();
           break;
 
         case 'Left':
         case 'ArrowLeft':
         case 'a':
-          setLightboxImagePrev();
+          prev();
           ev.preventDefault();
           break;
 
         case 'Home':
-          setLightboxImage(0);
+          setCurrentIndex(0);
           ev.preventDefault();
           break;
 
         case 'End':
-          setLightboxImage(filteredImages.length - 1);
+          setCurrentIndex(filteredImages.length - 1);
           ev.preventDefault();
           break;
 
@@ -156,28 +152,52 @@ export const useLightboxImage = (): UseLightboxImage => {
 
     return () => {
       document.removeEventListener('keydown', keyboardHandler);
-      screenfull.off('change', handleFullscreenChange);
+      if (screenfull.isEnabled) {
+        screenfull.off('change', handleFullscreenChange);
+      }
     };
-  });
+  }, [filteredImages.length, setIsFullscreen, next, prev, close, createCurrentInfo, setCurrentIndex]);
+
+  const handleFullscreen = useCallback(() => {
+    if (screenfull.isEnabled) {
+      if (!screenfull.element) {
+        screenfull.request(document.body);
+      } else {
+        screenfull.exit();
+      }
+    }
+  }, []);
+
+  const canPrev = useMemo(() => (currentInfo !== null) ? currentInfo.index > 0 : false, [currentInfo]);
+  const canNext = useMemo(() => (currentInfo !== null) ? currentInfo.index < filteredImages.length - 1 : false, [currentInfo, filteredImages.length]);
+
+  const renderHashes = useMemo<RenderHashInfo[]>(() => {
+    if (!currentInfo) {
+      return [];
+    }
+
+    const index = currentInfo.index;
+
+    const visibleHash = lightboxImageHashes[currentInfo.index];
+
+    return lightboxImageHashes
+      .slice(Math.max(0, index - 1), index + 2)
+      .map((hash): RenderHashInfo => ({
+        hash,
+        visible: hash === visibleHash,
+      }));
+  }, [lightboxImageHashes, currentInfo]);
 
   return {
-    image,
+    currentInfo,
+    renderHashes,
     isFullscreen,
-    currentIndex: lightboxImage || 0,
-    size: filteredImages.length,
-    canPrev: (lightboxImage !== null) ? lightboxImage > 0 : false,
-    canNext: (lightboxImage !== null) ? lightboxImage < filteredImages.length - 1 : false,
-    close: () => setLightboxImage(null),
-    prev: () => setLightboxImagePrev(),
-    next: () => setLightboxImageNext(filteredImages.length),
-    fullscreen: () => {
-      if (screenfull.isEnabled) {
-        if (!screenfull.element) {
-          screenfull.request(document.body);
-        } else {
-          screenfull.exit();
-        }
-      }
-    },
+    size: lightboxImageHashes.length,
+    canPrev,
+    canNext,
+    close,
+    prev,
+    next,
+    handleFullscreen,
   };
 };

@@ -1,8 +1,8 @@
 import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
-import { missingGreyPalette } from '@/consts/defaults';
 import useBatchUpdate from '@/hooks/useBatchUpdate';
+import type { Overrides } from '@/hooks/useImageRender';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
 import useEditStore from '@/stores/editStore';
 import useItemsStore from '@/stores/itemsStore';
@@ -13,7 +13,6 @@ import modifyTagChanges from '@/tools/modifyTagChanges';
 import type { TagUpdateMode } from '@/tools/modifyTagChanges';
 import type { ImageMetadata, MonochromeImage, RGBNImage } from '@/types/Image';
 import type { ImageUpdates } from '@/types/ImageActions';
-import type { Palette } from '@/types/Palette';
 
 interface Batch {
   created: boolean,
@@ -65,12 +64,11 @@ interface Form {
 interface UseEditForm {
   toEdit?: ToEdit,
   form: Form,
+  overrides: Overrides,
   isRegularImage: boolean,
   shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>,
   willUpdateBatch: string[],
   tagChanges: TagChange,
-  usedPalette: string[] | RGBNPalette,
-  usedFramePalette: string[],
 
   updateForm: (what: keyof Batch) => (value: string | boolean | Rotation) => void,
   updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void,
@@ -101,15 +99,10 @@ const willUpdate = (batch: Batch, t: ReturnType<typeof useTranslations>): string
 export const useEditForm = (): UseEditForm => {
   const t = useTranslations('useEditForm');
   const { editImages, cancelEditImages } = useEditStore();
-  const { palettes, frames, images } = useItemsStore();
+  const { frames, images } = useItemsStore();
   const { batchUpdateImages } = useBatchUpdate();
 
-  const findPalette = (shortName?: string): Palette => (
-    palettes.find((palette) => shortName === palette.shortName) || missingGreyPalette
-  );
-
   const tileCounter = getImageTileCount(images, frames);
-
 
   const dimensions = useScreenDimensions();
 
@@ -189,7 +182,7 @@ export const useEditForm = (): UseEditForm => {
 
   const [isRegularImage, setIsRegularImage] = useState<boolean>(false);
 
-  const form: Form = {
+  const form = useMemo<Form>(() => ({
     title,
     created,
     frame,
@@ -200,10 +193,20 @@ export const useEditForm = (): UseEditForm => {
     framePaletteShort,
     invertFramePalette,
     paletteRGBN,
-  };
+  }), [created, frame, framePaletteShort, invertFramePalette, invertPalette, lockFrame, paletteRGBN, paletteShort, rotation, title]);
 
-  const usedPalette = paletteRGBN || findPalette(paletteShort).palette;
-  const usedFramePalette = findPalette(framePaletteShort).palette;
+
+  const overrides = useMemo<Overrides>(() => ({
+    frameId: form.frame,
+    framePaletteId: form.framePaletteShort,
+    paletteId: form.paletteShort,
+    invertFramePalette: form.invertFramePalette,
+    invertPalette: form.invertPalette,
+    lockFrame: form.lockFrame,
+    palette: form.paletteRGBN,
+    rotation: form.rotation,
+  }), [form]);
+
 
   const hash = toEdit?.hash;
   useEffect(() => {
@@ -315,12 +318,11 @@ export const useEditForm = (): UseEditForm => {
   return {
     toEdit,
     form,
+    overrides,
     isRegularImage,
     shouldUpdate,
     willUpdateBatch: willUpdate(shouldUpdate, t),
     tagChanges,
-    usedPalette,
-    usedFramePalette,
 
     updateForm,
     updatePalette,

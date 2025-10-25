@@ -1,28 +1,35 @@
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
+import Skeleton from '@mui/material/Skeleton';
 import React from 'react';
+import { type Dimensions } from '@/hooks/useImageDimensions';
 
-function ImageLoading() {
+interface Props {
+  dimensions: Dimensions,
+  asThumb?: boolean,
+}
+
+function ImageLoading({ dimensions, asThumb }: Props) {
   return (
     <Box
       sx={{
+        display: asThumb ? 'flex' : 'block',
         width: '100%',
-        paddingTop: '90%',
-        height: 0,
-        display: 'block',
-        background: 'transparent',
-        position: 'relative',
+        height: '100%',
       }}
     >
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          margin: '0 auto',
+          aspectRatio: dimensions.aspectRatioCSS,
+          maxWidth: '100%', // For Lightbox
+          maxHeight: '100%', // For Lightbox
         }}
       >
-        <CircularProgress color="primary" size={40} />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="100%"
+        />
       </Box>
     </Box>
   );

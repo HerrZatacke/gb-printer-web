@@ -37,6 +37,25 @@ jobs:
           rm -rf public/env.json
           mv public/env-pages.json public/env.json
 
+      - name: Build for pages 📖
+        if: steps.checkTag.outputs.exists == 'false'
+        env:
+          NEXT_PUBLIC_DROPBOX_APP_KEY: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_KEY }}
+          NEXT_PUBLIC_DROPBOX_APP_PATH: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_PATH }}
+          NEXT_PUBLIC_ENV_ENDPOINT: ${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
+          NEXT_PUBLIC_BASE_PATH: /gb-printer-web
+        run: |
+          npm run build
+          touch out/.nojekyll
+          mv out out-pages
+
+      - name: Deploy to GitHub-Pages 📖
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        if: steps.checkTag.outputs.exists == 'false'
+        with:
+          branch: gh-pages
+          folder: out-pages
+
       - name: Build for release zip 🗄
         if: steps.checkTag.outputs.exists == 'false'
         env:
@@ -53,24 +72,6 @@ jobs:
           cd o-zip
           zip -r ../data_w.zip *
           cd ..
-
-      - name: Build for pages 📖
-        if: steps.checkTag.outputs.exists == 'false'
-        env:
-          NEXT_PUBLIC_DROPBOX_APP_KEY: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_KEY }}
-          NEXT_PUBLIC_ENV_ENDPOINT: ${{ secrets.NEXT_PUBLIC_ENV_ENDPOINT }}
-          NEXT_PUBLIC_BASE_PATH: /gb-printer-web
-        run: |
-          npm run build
-          touch out/.nojekyll
-          mv out out-pages
-
-      - name: Deploy to GitHub-Pages 📖
-        uses: JamesIves/github-pages-deploy-action@v4.6.1
-        if: steps.checkTag.outputs.exists == 'false'
-        with:
-          branch: gh-pages
-          folder: out-pages
 
       - name: Create Release 🎉 🥳
         uses: softprops/action-gh-release@v2.0.5

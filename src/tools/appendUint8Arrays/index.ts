@@ -1,4 +1,4 @@
-export const appendUint8Arrays = (arrays: (Uint8Array | null | undefined)[]): Uint8Array => {
+export const appendUint8Arrays = (arrays: (Uint8Array | null | undefined)[]): Uint8Array<ArrayBuffer> => {
   const validArrays = arrays.filter(Boolean) as Uint8Array[];
   const totalLength = validArrays.reduce((sum, arr) => sum + arr.length, 0);
   const result = new Uint8Array(totalLength);

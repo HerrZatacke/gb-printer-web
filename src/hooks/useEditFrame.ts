@@ -63,6 +63,7 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
       hash: frame?.hash || '',
       id: fullId,
       name: frameName,
+      lines: frame?.lines || 0,
     }]);
   };
 

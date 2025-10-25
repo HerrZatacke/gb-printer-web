@@ -1,0 +1,670 @@
+{
+  "SettingsGeneric": {
+    "galleryPageSize": "Imagens por página da galeria",
+    "galleryPageSizeHelper": "Define para 0 para desativar a paginação – pode degradar o desempenho com muitas imagens",
+    "galleryClickAction": "Ação de clique para imagens da galeria",
+    "galleryClickActionHelper": "Ctrl+Clique e Shift+Clique podem ser sempre usados para selecionar/seleção de intervalo",
+    "importSavFrames": "Molduras a aplicar ao importar dumps de cartucho",
+    "importSavFramesNone": "Nenhuma",
+    "importSavFramesUnknown": "Desconhecida",
+    "importLastSeen": "Importar imagem ‘Última vista’ ao importar dumps de cartucho",
+    "importSavOrder": "Ordem ao importar um ficheiro .sav",
+    "importDeleted": "Importar imagens eliminadas ao importar dumps de cartucho",
+    "forceMagicCheck": "Forçar verificação de ficheiro .sav válido na importação",
+    "importPad": "Preencher imagens para 144 px de altura na importação",
+    "hideDates": "Ocultar data da imagem na galeria",
+    "sortPalettes": "Ordenar paletas",
+    "preferredLocale": "Idioma preferido",
+    "exampleDateFormat": "Exemplo de formato de data: {format}",
+    "printerUrl": "URL da impressora",
+    "printerUrlHelper": "Se tiveres uma impressora Wi-Fi física, podes adicionar o URL aqui e continuar no <link>🔗 separador Importar</link>",
+    "printerParams": "Parâmetros adicionais da impressora",
+    "enableDebug": "Mostrar informações de depuração",
+    "galleryClickActions": {
+      "clickSelectsItem": "Clique selecciona o item",
+      "clickOpensEditDialog": "Clique abre o diálogo de edição",
+      "clickOpensLightbox": "Clique abre o item na lightbox"
+    },
+    "importOrders": {
+      "cartIndex": "Ordenado pela decisão ROM (como visto no rolo da câmara na RAM original)",
+      "ramIndex": "Ordenado pela ordem real na RAM (endereço de memória)"
+    },
+    "locales": {
+      "de-DE": "Alemão – Alemanha (de-DE)",
+      "en-US": "Inglês – Estados Unidos (en-US)",
+      "en-GB": "Inglês – Reino Unido (en-GB)",
+      "en-CA": "Inglês – Canadá (en-CA)",
+      "fr-FR": "Francês – França (fr-FR)"
+    }
+  },
+  "SettingsDropbox": {
+    "enableStorage": "Usar Dropbox como armazenamento",
+    "subfolder": "Subpasta",
+    "subfolderWarning": "Insira apenas o nome da subpasta. Caso contrário, a aplicação resolverá completamente para «{fullAppPath}» dentro do seu Dropbox, o que provavelmente não é o que pretendia.",
+    "openFolder": "<link>🔗 Abrir pasta</link>",
+    "openFolderLinkTitle": "Abrir pasta do Dropbox:\n{folderLink}",
+    "enableEnhancedSync": "Ativar sincronização avançada do Dropbox",
+    "enableEnhancedSyncHelper": "Esta é uma funcionalidade experimental.",
+    "authenticate": "Autenticar",
+    "logout": "Terminar sessão"
+  },
+  "SettingsWiFi": {
+    "hostSettings": "Definições do host",
+    "mdnsName": "Nome mDNS (Bonjour/Avahi)",
+    "accesspointSSID": "SSID do ponto de acesso",
+    "accesspointPassword": "Palavra-passe do ponto de acesso",
+    "networks": "Redes",
+    "networkSSID": "SSID da rede",
+    "networkPassword": "Palavra-passe da rede",
+    "deleteNetwork": "Eliminar rede",
+    "willDeleteNetwork": "A rede será eliminada",
+    "addNetwork": "Adicionar rede",
+    "saveSettings": "Guardar definições Wi-Fi"
+  },
+  "SettingsPlugins": {
+    "addPlugin": "Adicionar plugin",
+    "addPluginHelper": "🔗 Uma seleção de plugins pode ser encontrada aqui",
+    "installedPlugins": "Plugins instalados",
+    "deletePlugin": "Eliminar plugin «{name}»"
+  },
+  "SettingsGit": {
+    "enableStorage": "Usar GitHub como armazenamento",
+    "owner": "Proprietário",
+    "repoName": "Nome do repositório",
+    "branch": "Ramo",
+    "throttle": "Limitador (ms)",
+    "token": "Token",
+    "tokenHelper": "Vai ao GitHub para criar um <link>🔗 novo token de acesso pessoal afinado</link>, escolhe o repositório que queres sincronizar e concede permissões de leitura/escrita a <code>«Repository Permissions > Contents»</code>"
+  },
+  "DownloadOptions": {
+    "dialogHeader": "Transferir {count, plural, =1 {imagem} other {# imagens}}"
+  },
+  "DownloadOptionsForm": {
+    "exportDimensions": "Escalas de exportação de imagens",
+    "exportFiletypes": "Tipos de ficheiro de exportação de imagens",
+    "exportHandleFrame": "Tratamento da moldura ao exportar imagens",
+    "filenameStyle": "Estilo do nome do ficheiro",
+    "alwaysShowDownloadDialogInForm": "Mostrar opções de transferência sempre",
+    "alwaysShowDownloadDialogInDialog": "Mostrar sempre esta caixa de diálogo",
+    "alwaysShowDownloadDialogHelper": "Pode reativar esta opção nas definições a qualquer momento",
+    "frameModes": {
+      "keepFrame": "Manter moldura",
+      "cropFrame": "Recortar moldura",
+      "squareBlack": "Tornar imagem quadrada (adicionar preto)",
+      "squareWhite": "Tornar imagem quadrada (adicionar branco)"
+    },
+    "filenameStyles": {
+      "fullTitle": "Título completo",
+      "dateTitle": "Data e título",
+      "titleOnly": "Apenas título"
+    }
+  },
+  "WebUSBGreeting": {
+    "enableWebUsb": "Ativar WebUSB / Portas seriais",
+    "webUSBEnabled": "O teu navegador/dispositivo atual suporta WebUSB",
+    "webUSBDisabled": "O teu navegador/dispositivo atual não suporta WebUSB",
+    "webSerialEnabled": "O teu navegador/dispositivo atual suporta Web Serial",
+    "webSerialDisabled": "O teu navegador/dispositivo atual não suporta Web Serial"
+  },
+  "ConnectSerial": {
+    "openWebUSB": "Abrir dispositivo WebUSB",
+    "openWebSerial": "Abrir dispositivo Web Serial",
+    "connectedDevices": "{deviceCount, plural, =0 {Sem dispositivos ligados} =1 {Um dispositivo ligado:} other {# dispositivos ligados:}}",
+    "showUnknownResponse": "Mostrar mensagem de dispositivo desconhecido",
+    "unknownDeviceInfo": "Informações de dispositivo desconhecido",
+    "copyToClipboard": "Copiar para a área de transferência",
+    "portDeviceTypes": {
+      "inactiveDevice": "Dispositivo inativo",
+      "arduinoGameboyPrinterEmulator": "Emulador de impressora Gameboy em Arduino",
+      "superPrinterInterface": "Interface Super Printer",
+      "cartridgeReader": "Leitor de cartuchos (Firmware LK)"
+    }
+  },
+  "SettingsTabs": {
+    "genericSettings": "Definições genéricas",
+    "dropboxSettings": "Definições do Dropbox",
+    "wifiSettings": "Definições Wi-Fi",
+    "pluginSettings": "Definições de plugins",
+    "gitSettings": "Definições do Git"
+  },
+  "ExportSettings": {
+    "resetGroups": "Repor grupos de imagens",
+    "exportAll": "Exportar tudo",
+    "exportPlugins": "Exportar plugins",
+    "hashCleanup": "Limpar hash",
+    "persistState": {
+      "isPersistent": "Armazenamento é persistente",
+      "requestPersistence": "Solicitar persistência de armazenamento",
+      "apiUnavailable": "API de persistência indisponível",
+      "failed": "Falha na persistência de armazenamento"
+    }
+  },
+  "BatchButtons": {
+    "manageSorting": "Gerir ordenação",
+    "manageFilters": "Gerir filtros",
+    "checkAll": "Selecionar tudo",
+    "uncheckAll": "Desselecionar tudo",
+    "usePlugin": "Usar plugin",
+    "batchActions": {
+      "delete": "Eliminar",
+      "animate": "Animar",
+      "download": "Transferir",
+      "edit": "Editar",
+      "rgb": "Criar imagens RGB"
+    }
+  },
+  "AddPlugin": {
+    "notTrusted": "A origem «{source}» deste plugin não é confiável!!",
+    "alreadyInstalled": "O plugin «{url}» já está instalado",
+    "goToPlugins": "🔗 Ir para as definições de plugins",
+    "willAdd": "Isto irá adicionar {url} aos teus plugins.",
+    "addButton": "Adicionar"
+  },
+  "CopyDatabase": {
+    "sourceUrl": "URL de origem",
+    "loadButton": "Carregar",
+    "copyButton": "Copiar",
+    "reportImages": "{count} imagens",
+    "reportFrames": "{count} molduras",
+    "reportLocalStorage": "{count} entradas em localStorage",
+    "reportLocalStorageCleared": "localStorage limpo",
+    "reportLocalStorageCopied": "localStorage copiado",
+    "reportImagesCopied": "Imagens copiadas",
+    "reportFramesCopied": "Molduras copiadas"
+  },
+  "EditFrameStartLine": {
+    "moveUp": "Mover imagem para cima",
+    "moveDown": "Mover imagem para baixo"
+  },
+  "EditImageTabs": {
+    "tabTypes": {
+      "frame": "Moldura",
+      "misc": "Diversos",
+      "palette": "Paleta",
+      "colors": "Cores",
+      "tags": "Etiquetas"
+    }
+  },
+  "FolderBreadcrumb": {
+    "editGroup": "Editar grupo «{title}»",
+    "openNavigation": "Abrir navegação da galeria"
+  },
+  "FolderTreeDialog": {
+    "dialogHeader": "Navegação da galeria"
+  },
+  "Frame": {
+    "usedTimes": "Usada {count} vezes",
+    "notUsed": "Não usada"
+  },
+  "FrameContextMenu": {
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "FrameSelect": {
+    "frameLabel": "Moldura",
+    "noFrameOption": "Como importado / Sem moldura",
+    "separateColorSettings": "Usar definições de cor separadas para a moldura"
+  },
+  "Frames": {
+    "editFramegroup": "Editar grupo de molduras",
+    "renameFramegroup": "Renomear grupo de molduras",
+    "exportFrames": "Exportar molduras",
+    "exportCurrentFramegroup": "Exportar grupo de molduras atual ({id})",
+    "convertFramesFormat": "Converter molduras para o novo formato",
+    "applyFrames": "Adicionar moldura às imagens se os dados brutos coincidirem"
+  },
+  "GalleryGroup": {
+    "itemCount": "{count} imagens"
+  },
+  "GalleryGroupContextMenu": {
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "GalleryNumbers": {
+    "imageCount": "{count} imagens",
+    "filteredCount": "{count} filtradas",
+    "selectedCount": "{count} selecionadas",
+    "separator": " / "
+  },
+  "GalleryViewSelect": {
+    "viewNames": {
+      "smallest": "Mais pequena",
+      "originalSize": "Tamanho original",
+      "doubleSize": "Dobro do tamanho",
+      "maximumSize": "Tamanho máximo"
+    }
+  },
+  "GalleryImageContextMenu": {
+    "edit": "Editar",
+    "download": "Transferir",
+    "delete": "Eliminar",
+    "viewInLightbox": "Ver na lightbox",
+    "printViaSuperPrinter": "Imprimir via Super Printer",
+    "usePlugin": "Usar plugin",
+    "share": "Partilhar",
+    "addToFavourites": "Adicionar aos favoritos",
+    "removeFromFavourites": "Remover dos favoritos",
+    "addToSelection": "Adicionar à seleção",
+    "removeFromSelection": "Remover da seleção",
+    "showMetadata": "Mostrar metadados",
+    "createGroup": "Criar grupo"
+  },
+  "GreySelect": {
+    "neutralLayerBlendmode": "Modo de mistura da camada neutra",
+    "blendModes": {
+      "normal": "Normal (ignorar camada neutra)",
+      "normalS": "Normal ⇵ (apenas camada neutra)",
+      "lighten": "Aclarar",
+      "screen": "Multiplicação negativa",
+      "dodge": "Sub-expor",
+      "addition": "Adição",
+      "darken": "Escurecer",
+      "multiply": "Multiplicar",
+      "burn": "Super-expor",
+      "overlay": "Sobrepor",
+      "softLight": "Luz suave",
+      "hardLight": "Luz forte",
+      "difference": "Diferença",
+      "exclusion": "Exclusão"
+    }
+  },
+  "ConnectPrinter": {
+    "openPrinterPage": "Abrir página da impressora"
+  },
+  "EnvInfo": {
+    "appVersion": "Versão da web-app: {value}",
+    "appBranch": "Ramo da web-app: {value}",
+    "printerVersion": "Versão da impressora: {value}",
+    "maxImages": "Máx. imagens: {value}",
+    "storageDriver": "Driver Localforage: {value}",
+    "envType": "Tipo de ambiente: {value}",
+    "filesystem": "Sistema de ficheiros compilado: {value}",
+    "bootmode": "Modo de arranque compilado: {value}",
+    "hasOled": "Compilado para OLED: {value}",
+    "yes": "sim",
+    "no": "não"
+  },
+  "usePaletteSort": {
+    "defaultAsc": "Padrão (ascendente)",
+    "defaultDesc": "Padrão (descendente)",
+    "usageAsc": "Uso (ascendente)",
+    "usageDesc": "Uso (descendente)",
+    "nameAsc": "Nome (ascendente)",
+    "nameDesc": "Nome (descendente)"
+  },
+  "useAsPasswordField": {
+    "hidePassword": "Ocultar palavra-passe",
+    "showPassword": "Mostrar palavra-passe"
+  },
+  "ImageMeta": {
+    "dateTime": "Data / Hora",
+    "editRotation": "Editar rotação"
+  },
+  "Import": {
+    "selectFiles": "Selecionar ficheiro(s) para importar",
+    "importMemory": "Importar memória do Cartridge Reader",
+    "importAlbumRolls": "Importar rolos de álbum do Photo! (ROM + Flash)",
+    "serialMonitorLabel": "Importar dados recebidos pelo monitor serial",
+    "import": "Importar",
+    "exportImages": "Exportar imagens",
+    "exportSelectedImages": "Exportar imagens selecionadas"
+  },
+  "ImportPreviewImage": {
+    "scaleFactorWarning": "O fator de escala da imagem é {scaleFactor}. Para obter um resultado limpo sem artefactos, tenta apenas importar imagens cujas dimensões sejam potências de dois. (1, 2, 4, 8 ...)"
+  },
+  "Lightbox": {
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "ok": "Ok",
+    "closeWithHeader": "Fechar {header}"
+  },
+  "LightboxImage": {
+    "leaveFullscreen": "Sair do ecrã inteiro",
+    "enterFullscreen": "Ativar ecrã inteiro",
+    "imageCounter": "Imagem {current}/{total}"
+  },
+  "MetaTable": {
+    "hashChannel": "Canal hash {channel}"
+  },
+  "Navigation": {
+    "home": "Início",
+    "gallery": "Galeria",
+    "import": "Importar",
+    "palettes": "Paletas",
+    "frames": "Molduras",
+    "settings": "Definições",
+    "addPlugin": "Adicionar plugin",
+    "trash": "Lixo",
+    "syncRemote": "Sincronizar com serviço(s) remoto(s)",
+    "switchToDark": "Mudar para modo escuro",
+    "switchToBright": "Mudar para modo claro",
+    "usbDisabled": "Dispositivos USB não estão disponíveis",
+    "usbDevices": "WebUSB e dispositivos seriais",
+    "openMainNav": "Abrir navegação principal",
+    "closeMainNav": "Fechar navegação principal",
+    "mainNavAriaLabel": "Navegação principal",
+    "utilityNavAriaLabel": "Navegação utilitária"
+  },
+  "BitmapQueue": {
+    "dialogHeader": "Fila de importação de imagens",
+    "enableDither": "Ativar dithering",
+    "contrastPreset": "Predefinição de contraste",
+    "contrastSettings": {
+      "wider": "Mais amplo",
+      "wide": "Amplo",
+      "normal": "Normal",
+      "narrow": "Estreito",
+      "narrower": "Mais estreito",
+      "emulator": "Do emulador"
+    }
+  },
+  "DragOver": {
+    "dropFilesHere": "Larga ficheiros aqui",
+    "supportedFileTypes": "Larga dumps hex da impressora, estados .sav, exportações JSON ou bitmaps aqui."
+  },
+  "EditForm": {
+    "dialogHeader": "Editar {count, plural, =0 {} =1 {imagem} other {# imagens}}",
+    "editingMultiple": "Estás a editar {count} imagens",
+    "indexHelperText": "Usa %n (ou %nn, %nnn, ...) para adicionar um índice numérico aos títulos das imagens",
+    "editTitle": "Editar título"
+  },
+  "EditFrame": {
+    "dialogHeader": "Editar moldura «{id}» {idChange}",
+    "idChange": "→ «{newId}»"
+  },
+  "EditFrameForm": {
+    "selectFrameGroup": "Selecionar grupo de molduras",
+    "newFrameGroup": "Novo grupo de molduras",
+    "unknown": "Desconhecido",
+    "frameGroup": "Grupo de molduras",
+    "frameGroupId": "ID do grupo de molduras",
+    "newFrameGroupId": "Nova ID do grupo de molduras",
+    "groupIdHelperText": "Deve ter pelo menos dois caracteres, apenas minúsculas",
+    "newFrameGroupName": "Novo nome do grupo de molduras",
+    "frameIndex": "Índice da moldura",
+    "frameIndexHelperText": "Número inteiro, deve ser maior que 0",
+    "frameName": "Nome da moldura",
+    "idInUse": "O índice/identificador de moldura fornecido «{id}» já está em uso, escolhe outro."
+  },
+  "EditImageGroup": {
+    "dialogHeader": "Editar grupo {title}",
+    "createNewGroupDialogHeader": "Criar novo grupo {count, plural, =0 {} =1 {} other {com # imagens}}",
+    "moveSelectedImages": "Mover {count, plural, =0 {} =1 {imagem} other {# imagens}}",
+    "title": "Título",
+    "pathSegment": "Segmento de caminho (identificador)",
+    "path": "Caminho: «{path}»",
+    "pathInUse": "Caminho já em uso: «{path}»",
+    "parentGroup": "Grupo pai"
+  },
+  "EditPalette": {
+    "dialogHeader": "Editar paleta {name}",
+    "editTitle": "Editar título",
+    "addTitle": "Adicionar título",
+    "idShortName": "ID/Nome curto",
+    "colorIndex": "Cor {index}"
+  },
+  "EditRGBN": {
+    "dialogHeader": "Criar imagens RGBN",
+    "groupingLabel": "Agrupamento da seleção",
+    "groupByColor": "A seleção está agrupada por cores (RRR GGG BBB)",
+    "groupByImage": "A seleção está agrupada por imagens (RGB RGB RGB)",
+    "manualChannelSelection": "Seleção manual de canais para uma única imagem",
+    "manualChannelInstructions": "Seleciona manualmente os canais para criar uma única imagem RGBN",
+    "channelOrderInstructions": "Seleciona a ordem dos canais a aplicar (na ordem das imagens selecionadas). Os canais à direita do separador não são usados.",
+    "channelDistributionError": "A tua seleção de canais e o número de imagens selecionadas não coincidem! Certifica-te de que escolheste as imagens corretas.",
+    "imagePreview": "Pré-visualização da imagem",
+    "createGroupLabel": "Criar grupo a partir das imagens geradas no nível atual"
+  },
+  "useEditRGBNImages": {
+    "rgbNewGroupTitle": "RGB {date}"
+  },
+  "FilterForm": {
+    "dialogHeader": "Selecionar filtros",
+    "clearFiltersTitle": "Limpar filtros",
+    "clear": "Limpar",
+    "clearFiltersAndApplyTitle": "Limpar filtros e aplicar",
+    "clearAndApply": "Limpar e aplicar",
+    "clearTab": "Repor {tab, select, tabTags {Etiquetas} tabPalettes {Paletas} tabFrames {Molduras} other {}} selecionadas",
+    "allMustBeMet": "Se marcado, todos devem ser satisfeitos",
+    "oneMustBeMet": "Se marcado, um deve ser satisfeito",
+    "untagged": "Sem etiquetas",
+    "favourite": "❤️ Favorito",
+    "new": "Novo",
+    "monochrome": "Monocromático",
+    "rgb": "RGB",
+    "recentImports": "Importações recentes",
+    "imageHasComments": "Imagem tem comentários",
+    "imageHasUsername": "Imagem tem nome de utilizador",
+    "filterTabs": {
+      "tabTags": "Etiquetas {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletas {count, plural, =0 {} other {(#)}}",
+      "tabFrames": "Molduras {count, plural, =0 {} other {(#)}}"
+    }
+  },
+  "FilterFormTag": {
+    "removeTag": "Remover etiqueta «{title}» da seleção",
+    "selectTag": "Selecionar etiqueta «{title}»"
+  },
+  "FilterFormPalette": {
+    "removePalette": "Remover paleta «{name}» da seleção",
+    "selectPalette": "Selecionar paleta «{name}»"
+  },
+  "FilterFormFrame": {
+    "usage": "Usado {usage} vezes",
+    "removeFrame": "Remover moldura «{name}» da seleção",
+    "selectFrame": "Selecionar moldura «{name}»"
+  },
+  "FrameQueue": {
+    "dialogHeader": "Importar nova moldura como «{id}»"
+  },
+  "ImportQueue": {
+    "dialogHeader": "{count, plural, =1 {Importar imagem} other {Importar # imagens}}",
+    "removeLastSeenTitle": "Remover última vista",
+    "removeLastSeen": "Remover última vista {count, plural, =0 {} other {({count})}}",
+    "removeDeletedTitle": "Remover eliminadas",
+    "removeDeleted": "Remover eliminadas {count, plural, =0 {} other {({count})}}",
+    "removeDuplicatesInQueueTitle": "Remover duplicados na fila",
+    "removeDuplicatesInQueue": "Remover duplicados na fila {count, plural, =0 {} other {({count})}}",
+    "removeAlreadyImportedTitle": "Remover já importadas",
+    "removeAlreadyImported": "Remover já importadas {count, plural, =0 {} other {({count})}}",
+    "modifyFrame": "Modificar moldura",
+    "noFrameOption": "Sem moldura / como importado",
+    "createGroupLabel": "Criar grupo a partir das imagens no local atual"
+  },
+  "ImportRow": {
+    "duplicateInQueue": "Esta imagem existe várias vezes nesta fila",
+    "alreadyImported": "Esta imagem já foi {title, select, NO_TITLE {} other {importada como «{title}»}}",
+    "importAsFrame": "Importar imagem como moldura",
+    "removeFromQueue": "Remover imagem da fila"
+  },
+  "PickColors": {
+    "newPaletteNameFromFile": "De ficheiro {fileName}",
+    "dialogHeader": "Selecionar cores de «{fileName}»"
+  },
+  "ProgressBox": {
+    "dialogHeader": "A trabalhar..."
+  },
+  "ProgressLogBox": {
+    "dialogHeaderDone": "✔️ Atualização concluída {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderUpdating": "⏳ A atualizar... {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderError": "❌ A atualização falhou",
+    "showAllMessages": "Mostrar todas as {count} mensagens",
+    "reduceMessages": "Reduzir mensagens",
+    "startedAt": "Iniciado às: {time}",
+    "finishedAfter": "Concluído após: {duration}",
+    "runningFor": "A correr há: {duration}",
+    "openGitHubRepository": "Abrir repositório GitHub",
+    "openDropboxFolder": "Abrir pasta do Dropbox",
+    "openDropboxFolderTitle": "Abrir pasta do Dropbox:\n{path}"
+  },
+  "Serials": {
+    "dialogHeader": "Dispositivos WebUSB / Seriais"
+  },
+  "SortForm": {
+    "dialogHeader": "Ordenar por: {sortBy}/{order}",
+    "sortByLabel": "Ordenar por",
+    "sortDirectionLabel": "Direção de ordenação",
+    "titleOption": "Título",
+    "dateOption": "Data",
+    "paletteOption": "Paleta",
+    "ascending": "Ascendente",
+    "descending": "Descendente"
+  },
+  "SyncSelect": {
+    "dialogHeader": "Sincronizar",
+    "syncToGitHub": "Sincronizar para GitHub",
+    "syncToGitHubTitle": "Sincronizar para GitHub\n{repoUrl}",
+    "syncFromGitHub": "Sincronizar do GitHub",
+    "syncFromGitHubTitle": "Sincronizar do GitHub\n{repoUrl}",
+    "syncToDropbox": "Sincronizar para Dropbox",
+    "syncFromDropbox": "Sincronizar do Dropbox",
+    "syncImagesToDropbox": "Sincronizar imagens com Dropbox",
+    "pendingRemoteChangesWarning": "Existem alterações remotas pendentes. Se sincronizares agora com o Dropbox, elas serão perdidas.",
+    "pendingLocalChangesWarning": "Existem alterações locais que ainda não foram sincronizadas com o Dropbox. Se sincronizares agora do Dropbox, elas serão perdidas."
+  },
+  "Trashbin": {
+    "dialogHeader": "Lixeira ({count} itens)",
+    "downloadFrames": "Transferir molduras {count, plural, =0 {} other {(#)}}",
+    "downloadImages": "Transferir imagens {count, plural, =0 {} other {(#)}}",
+    "purgeAll": "Eliminar tudo {count, plural, =0 {} other {(#)}}",
+    "deletedFrames": "Molduras eliminadas: {count}",
+    "deletedImages": "Imagens eliminadas: {count}"
+  },
+  "VideoParamsForm": {
+    "dialogHeader": "Criar GIF animado com {count} frames",
+    "frameRate": "Taxa de frames",
+    "scaleGif": "Escalar GIF",
+    "enableYoyo": "Ativar efeito ioiô (animar ao contrário)",
+    "reverseDirection": "Inverter direção da animação",
+    "handleFrames": "Tratamento da moldura para animação",
+    "noFrameOption": "Como selecionado por imagem",
+    "frameModes": {
+      "keepFrame": "Manter moldura",
+      "cropFrame": "Recortar moldura",
+      "squareBlack": "Tornar imagem quadrada (adicionar preto)",
+      "squareWhite": "Tornar imagem quadrada (adicionar branco)"
+    }
+  },
+  "Pagination": {
+    "pageCount": "{current}/{total}"
+  },
+  "PaginationButton": {
+    "toPage": "Para a página {page}"
+  },
+  "Palette": {
+    "usageCount": "({shortName}) {count, plural, =0 {Não usada} =1 {Usada uma vez} other {Usada # vezes}}"
+  },
+  "PaletteContextMenu": {
+    "setActive": "Definir como ativa",
+    "clone": "Clonar e editar",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "Palettes": {
+    "ownPalettes": "Paletas próprias",
+    "predefinedPalettes": "Paletas predefinidas",
+    "allPalettes": "Todas as paletas",
+    "newPalette": "Nova paleta",
+    "newPaletteFromImage": "Nova paleta a partir de imagem",
+    "sortPalettes": "Ordenar paletas",
+    "exportPalettes": "Exportar paletas"
+  },
+  "PaletteSelect": {
+    "asSelectedPerImage": "Como selecionado por imagem",
+    "palette": "Paleta",
+    "invertPalette": "Inverter paleta"
+  },
+  "PluginSelect": {
+    "pluginTooltip": "{description}\n{url}"
+  },
+  "PrinterReport": {
+    "functions": {
+      "printTestImage": "Imprimir imagem de teste",
+      "checkPrinter": "Obter informações da impressora",
+      "fetchImagesGeneric": "Importar imagens",
+      "fetchImagesCount": "Importar {count} imagens",
+      "clearPrinter": "Limpar impressora",
+      "tear": "Rasgar"
+    },
+    "printerFilesystem": "Sistema de ficheiros da impressora",
+    "total": "Total",
+    "used": "Usado",
+    "free": "Livre",
+    "freeImages": "{count} imagens",
+    "images": "Imagens"
+  },
+  "Remote": {
+    "iframe": "<p>Esta é uma janela remota incorporada num iframe na página principal. <em>Não deverias ver esta mensagem.</em></p>",
+    "popup": "<p>Esta é a página de controlo remoto da tua impressora Wi-Fi.</p><p>{host}</p><p>Podes voltar à aplicação principal e começar a importar as tuas imagens.</p><p><em>Esta janela tem de permanecer aberta para que a importação funcione!</em></p>",
+    "noReference": "<p>Falta a esta janela a referência à aplicação principal.</p><p><em>Tem de ser aberta a partir da página de definições da aplicação principal para funcionar!</em></p>"
+  },
+  "StorageWarning": {
+    "storageTypes": {
+      "indexedDB": "Armazenamento de base de dados",
+      "localStorage": "Armazenamento local"
+    },
+    "usageTooltip": "Usado {used} de {total}",
+    "usageWarning": "Estás a usar {percentage}% do teu {type} do navegador. Nota que deixarás de poder guardar imagens quando atingires o limite."
+  },
+  "TagsList": {
+    "favourite": "Favorito",
+    "moreTags": "+{count} etiquetas adicionais:\n{tags}",
+    "moreTagsLabel": "+{count} mais"
+  },
+  "TagsSelect": {
+    "resetTags": "Repor etiquetas"
+  },
+  "InputNewTag": {
+    "tagsLabel": "Etiquetas"
+  },
+  "useBatchButtons": {
+    "deleteConfirmation": "Eliminar {count} imagens?"
+  },
+  "useEditForm": {
+    "updateDate": "Atualizar data",
+    "updateTitle": "Atualizar título",
+    "updatePalette": "Atualizar cores da paleta da imagem",
+    "updateInvertPalette": "Atualizar inversão da paleta da imagem",
+    "updateFrame": "Atualizar moldura",
+    "updateLockFrame": "Atualizar definições de moldura separadas",
+    "updateFramePalette": "Atualizar cores da paleta da moldura",
+    "updateInvertFramePalette": "Atualizar inversão da paleta da moldura",
+    "updateTags": "Atualizar etiquetas",
+    "updateRotation": "Atualizar rotação"
+  },
+  "useEditPalette": {
+    "paletteOrigin": "Criado com a web-app"
+  },
+  "useFrame": {
+    "deleteConfirmation": "Eliminar moldura «{name}» ({frameId})?"
+  },
+  "useGalleryImageContext": {
+    "deleteImage": "Eliminar {title, select, NO_TITLE {esta imagem} other {imagem «{title}»}}",
+    "metaInfo": "Metadados {title, select, NO_TITLE {} other {para «{title}»}}"
+  },
+  "useGetPortSettings": {
+    "specifyBaudrate": "Selecionar taxa de baud para a porta",
+    "baudRateLabel": "Taxa de baud"
+  },
+  "useImageGroups": {
+    "newGroupDefault": "Novo grupo",
+    "resetGroupsMessage": "Repor grupos de imagens?",
+    "resetGroupsInfo": "Isto irá remover TODOS os grupos criados e mover todas as imagens existentes para o nível superior.",
+    "deleteGroupMessage": "Eliminar grupo de imagens?",
+    "deleteGroupInfo": "Isto irá eliminar o grupo «{groupTitle}» e mover todo o conteúdo (imagens & grupos) para o nível atual."
+  },
+  "usePalette": {
+    "deletePaletteMessage": "Eliminar paleta «{name}»?"
+  },
+  "useRunImport": {
+    "importGroupTitle": "Importação {date}"
+  },
+  "useSetEditPalette": {
+    "copyOfPalette": "Cópia de {name}"
+  },
+  "useTrashbin": {
+    "backupExportImage": "Backup de exportação {hash}",
+    "backupExportFrame": "Backup de exportação {hash}",
+    "reImportedTrashFrames": "Molduras eliminadas reimportadas"
+  }
+}

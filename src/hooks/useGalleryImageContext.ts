@@ -49,7 +49,9 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   const {
     imageSelection,
     updateImageSelection,
-    filtersActiveTags,
+    filtersTags,
+    filtersFrames,
+    filtersPalettes,
     sortBy,
     recentImports,
   } = useFiltersStore();
@@ -60,7 +62,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { updateLastSyncLocalNow, deleteImages } = useStores();
-  const { downloadSingleImage } = useDownload();
+  const { setDownloadImages } = useDownload();
   const { shareImage } = useShareImage();
 
   const { images } = useItemsStore();
@@ -78,7 +80,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
     isFavourite: image?.tags.includes(SpecialTags.FILTER_FAVOURITE) || false,
     hasMeta: !!image?.meta,
     canShare: canShare(),
-    startDownload: () => downloadSingleImage(hash),
+    startDownload: () => setDownloadImages([hash]),
     deleteImage: () => {
       setDialog({
         message: t('deleteImage', { title: image?.title || 'NO_TITLE' }),
@@ -113,8 +115,14 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
     setLightboxImage: () => {
       setLightboxImage(
         getFilteredImages(
-          view.images,
-          { filtersActiveTags, sortBy, recentImports },
+          view,
+          {
+            filtersTags,
+            filtersFrames,
+            filtersPalettes,
+            sortBy,
+            recentImports,
+          },
         )
           .filter((img) => !covers.includes(img.hash))
           .findIndex((img) => hash === img.hash),

@@ -2,38 +2,40 @@ import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import ImageRender from '@/components/ImageRender';
 import Lightbox from '@/components/Lightbox';
+import LightBoxImage from '@/components/Overlays/LightboxImages/LightBoxImage';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useLightboxImage } from '@/hooks/useLightboxImage';
-import type { RGBNImage } from '@/types/Image';
 
-function LightboxImage() {
+function LightboxImages() {
   const t = useTranslations('LightboxImage');
+
   const {
-    image,
-    isFullscreen,
-    currentIndex,
+    currentInfo,
     size,
+    renderHashes,
+    isFullscreen,
     canPrev,
     canNext,
     prev,
     next,
-    fullscreen,
+    handleFullscreen,
     close,
   } = useLightboxImage();
 
   const { formatter } = useDateFormat();
 
+
+  if (!size || !currentInfo) { return null; }
+
   return (
     <Lightbox
-      header={image?.title}
+      header={currentInfo.title}
       deny={close}
       contentWidth="100%"
       contentHeight="100%"
@@ -41,7 +43,7 @@ function LightboxImage() {
       headerActionButtons={(
         <IconButton
           color="inherit"
-          onClick={fullscreen}
+          onClick={handleFullscreen}
           title={t(isFullscreen ? 'leaveFullscreen' : 'enterFullscreen')}
         >
           { isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon /> }
@@ -79,27 +81,34 @@ function LightboxImage() {
             <KeyboardArrowLeftIcon />
           </IconButton>
 
-          { image && (
-            <Box
+          { currentInfo && (
+            <Stack
+              direction="row"
+              gap={0}
               sx={{
                 width: '100%',
                 height: '100%',
                 flexBasis: '100%',
                 flexGrow: 1,
+                overflowX: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                scrollbarWidth: 'none',
+                '&::-webkit-scrollbar': {
+                  display: 'none',
+                },
+                '&>.MuiBox-root': {
+                  outline: 'none',
+                },
               }}
             >
-              <ImageRender
-                lockFrame={image.lockFrame}
-                invertPalette={image.invertPalette}
-                invertFramePalette={image.invertFramePalette}
-                palette={image.palette}
-                framePalette={image.framePalette}
-                frameId={image.frame}
-                hash={image.hash}
-                hashes={(image as RGBNImage).hashes}
-                rotation={image.rotation}
-              />
-            </Box>
+              {renderHashes.map(({ hash, visible }) => (
+                <LightBoxImage
+                  key={hash}
+                  hash={hash}
+                  visible={visible}
+                />
+              ))}
+            </Stack>
           )}
 
           <IconButton
@@ -118,11 +127,11 @@ function LightboxImage() {
           justifyContent="center"
         >
           <Typography variant="body2">
-            {t('imageCounter', { current: currentIndex + 1, total: size })}
+            {t('imageCounter', { current: currentInfo.index + 1, total: size })}
           </Typography>
-          {image?.created && (
+          {currentInfo.created && (
             <Typography variant="body2">
-              {formatter(image.created)}
+              {formatter(currentInfo.created)}
             </Typography>
           )}
         </Stack>
@@ -132,4 +141,4 @@ function LightboxImage() {
   );
 }
 
-export default LightboxImage;
+export default LightboxImages;

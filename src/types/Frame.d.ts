@@ -5,5 +5,6 @@ export interface Frame {
   id: string,
   hash: string,
   name: string,
+  lines: number,
   tempId?: string,
 }

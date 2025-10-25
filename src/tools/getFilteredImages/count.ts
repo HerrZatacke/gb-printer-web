@@ -1,16 +1,21 @@
-import type { Image } from '@/types/Image';
+import { TreeImageGroup } from '@/types/ImageGroup';
 import type { RecentImport } from '@/types/Sync';
 import filterSpecial from './filterSpecial';
 import filterTags from './filterTags';
 
 const getFilteredImagesCount = (
-  stateImages: Image[],
-  filtersActiveTags: string[],
+  {
+    images,
+    groups,
+  }: TreeImageGroup,
+  filtersTags: string[],
+  filtersFrames: string[],
+  filtersPalettes: string[],
   recentImports: RecentImport[],
 ): number => (
-  [...stateImages]
-    .filter(filterSpecial(filtersActiveTags, recentImports))
-    .filter(filterTags(filtersActiveTags))
+  [...images]
+    .filter(filterSpecial(filtersTags, filtersFrames, filtersPalettes, recentImports, groups))
+    .filter(filterTags(filtersTags))
     .length
 );
 
