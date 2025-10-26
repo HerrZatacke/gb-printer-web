@@ -11,7 +11,8 @@ export interface Quota {
 const sortByPercentage = sortBy<Quota>('percentage', SortDirection.DESC);
 
 interface UseStorageInfo {
-  storageEstimate: Quota,
+  criticalStorageEstimate: Quota | null,
+  storageEstimate: Quota[],
 }
 
 const getLocalStorageUsage = (): number => {
@@ -82,6 +83,7 @@ export const useStorageInfo = (): UseStorageInfo => {
   }, []);
 
   return {
-    storageEstimate: sortByPercentage(storageEstimate.filter(({ percentage }) => (percentage > 75)))[0] || null,
+    criticalStorageEstimate: sortByPercentage(storageEstimate.filter(({ percentage }) => (percentage > 75)))[0] || null,
+    storageEstimate,
   };
 };
