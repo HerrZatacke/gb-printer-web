@@ -7,7 +7,7 @@ Betrachte und verwalte alle importierten Aufnahmen in einer interaktiven Galerie
 - Bilder mit Tags versehen
 - Aufnahmen in Bildgruppen zusammenfassen
 - Deine Sammlung filtern
-- Metadaten von aus Savestates von ROMs wie [Photo!](https://github.com/untoxa/gb-photo) oder dem originalen Game Boy Camera ROM anzeigen
+- Metadaten aus Savestates von ROMs wie [Photo!](https://github.com/untoxa/gb-photo) oder dem originalen Game Boy Camera ROM anzeigen
 - Bilder auf einem originalen Game Boy Printer mit seriellen Kommunikationsgeräten drucken
 
 ### Bildgruppen
