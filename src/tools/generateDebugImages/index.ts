@@ -1,5 +1,6 @@
 // Currently unused, but may be added to "window" for debugging purposes
 import useItemsStore from '@/stores/itemsStore';
+import { delay } from '@/tools/delay';
 import padToHeight from '@/tools/padToHeight';
 import saveNewImage from '@/tools/saveNewImage';
 import { toCreationDate } from '@/tools/toCreationDate';
@@ -40,10 +41,7 @@ const generateDebugImage = async (index: number): Promise<DebugImport> => {
 
   const elapsed = Date.now() - timestamp;
 
-  await new Promise((resolve) => {
-    console.log(index, elapsed);
-    window.requestAnimationFrame(resolve);
-  });
+  await delay(0);
 
   return {
     image: img,
@@ -51,10 +49,19 @@ const generateDebugImage = async (index: number): Promise<DebugImport> => {
   };
 };
 
+let hasRun = true;
+
 export const generateDebugImages = async (count: number) => {
+  if (hasRun) {
+    return;
+  }
+
+  hasRun = true;
+
   const debugs: DebugImport[] = [];
 
   const generateStart = Date.now();
+  console.log(`Generating ${count} dummy images...`);
 
   for (let i = 0; i < count; i += 1) {
     debugs.push(await generateDebugImage(i));
