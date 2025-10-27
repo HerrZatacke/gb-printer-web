@@ -26,7 +26,7 @@ function GlobalAppInit({ children }: PropsWithChildren) {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdateTrashCount();
-    }, 1);
+    }, 5000); // 5000ms to let store hydration happen.
 
     return () => window.clearTimeout(handle);
   }, [checkUpdateTrashCount]);
