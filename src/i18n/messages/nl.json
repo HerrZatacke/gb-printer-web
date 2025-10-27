@@ -277,6 +277,7 @@
     "printerVersion": "Printer versie: {value}",
     "maxImages": "Max. afbeeldingen: {value}",
     "storageDriver": "Localforage driver: {value}",
+    "storageEstimate": "Gebruik van {type}: {percentage}% ({used} van {total})",
     "envType": "Omgevingstype: {value}",
     "filesystem": "Gecompileerd bestandssysteem: {value}",
     "bootmode": "Gecompileerde bootmodus: {value}",
