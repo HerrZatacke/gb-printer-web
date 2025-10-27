@@ -277,6 +277,7 @@
     "printerVersion": "Versão da impressora: {value}",
     "maxImages": "Máx. imagens: {value}",
     "storageDriver": "Driver Localforage: {value}",
+    "storageEstimate": "Utilização de {type}: {percentage}% ({used} de {total})",
     "envType": "Tipo de ambiente: {value}",
     "filesystem": "Sistema de ficheiros compilado: {value}",
     "bootmode": "Modo de arranque compilado: {value}",

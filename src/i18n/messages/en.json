@@ -277,6 +277,7 @@
     "printerVersion": "Printer version: {value}",
     "maxImages": "Max Images: {value}",
     "storageDriver": "Localforage driver: {value}",
+    "storageEstimate": "{type} usage: {percentage}% ({used} of {total})",
     "envType": "Environment type: {value}",
     "filesystem": "Compiled Filesystem: {value}",
     "bootmode": "Compiled Bootmode: {value}",

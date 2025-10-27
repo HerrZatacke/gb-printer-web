@@ -8,23 +8,23 @@ import { useStorageInfo } from '@/hooks/useStorageInfo';
 
 function StorageWarning() {
   const t = useTranslations('StorageWarning');
-  const { storageEstimate } = useStorageInfo();
+  const { criticalStorageEstimate } = useStorageInfo();
 
-  if (!storageEstimate) {
+  if (!criticalStorageEstimate) {
     return null;
   }
 
   // Get the translated storage type label
-  const storageType = t(`storageTypes.${storageEstimate.type}`);
+  const storageType = t(`storageTypes.${criticalStorageEstimate.type}`);
 
   return (
     <Box
-      title={t('usageTooltip', { used: bytes(storageEstimate.used) || '', total: bytes(storageEstimate.total) || '' })}
+      title={t('usageTooltip', { used: bytes(criticalStorageEstimate.used) || '', total: bytes(criticalStorageEstimate.total) || '' })}
       sx={{ position: 'relative' }}
     >
       <LinearProgress
         variant="determinate"
-        value={storageEstimate.percentage}
+        value={criticalStorageEstimate.percentage}
         sx={{ width: '100%', height: '34px' }}
         color="error"
       />
@@ -38,7 +38,7 @@ function StorageWarning() {
         }}
       >
         {t('usageWarning', {
-          percentage: storageEstimate.percentage,
+          percentage: criticalStorageEstimate.percentage,
           type: storageType,
         })}
       </Typography>

@@ -277,6 +277,7 @@
     "printerVersion": "Skriver-versjon: {value}",
     "maxImages": "Maks. bilder: {value}",
     "storageDriver": "Localforage-driver: {value}",
+    "storageEstimate": "Bruk av {type}: {percentage}% ({used} av {total})",
     "envType": "Miljøtype: {value}",
     "filesystem": "Kompilert filsystem: {value}",
     "bootmode": "Kompilert oppstartsmodus: {value}",
