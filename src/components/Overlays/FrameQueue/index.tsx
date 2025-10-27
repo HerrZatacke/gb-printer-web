@@ -24,7 +24,7 @@ function FrameQueue() {
   const {
     fullId,
     formValid,
-    groups,
+    frameGroups,
     frameGroup,
     frameIndex,
     setFrameIndex,
@@ -82,7 +82,7 @@ function FrameQueue() {
         idValid={idValid}
         frameIndexValid={frameIndexValid}
         setFrameIndex={setFrameIndex}
-        groups={groups}
+        groups={frameGroups}
         fullId={fullId}
         frameGroupName={newGroupName}
         setFrameGroupName={setNewGroupName}

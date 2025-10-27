@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { ExportTypes } from '@/consts/exportTypes';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useStores } from '@/hooks/useStores';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { compressAndHashFrame, loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
 import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
-import getFrameGroups from '@/tools/getFrameGroups';
 import { getFramesForGroup } from '@/tools/getFramesForGroup';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { padFrameData } from '@/tools/saveLocalStorageItems';
@@ -40,13 +40,13 @@ interface UseFrames {
 
 const useFrames = (): UseFrames => {
   const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
-  const { frames, images, palettes, frameGroups: frameGroupsState, addFrames, updateFrameGroups } = useItemsStore();
+  const { frames, images, palettes, addFrames, updateFrameGroups } = useItemsStore();
+  const { frameGroups } = useFrameGroups();
   const { updateLastSyncLocalNow, updateImages } = useStores();
   const { downloadSettings } = useImportExportSettings();
 
   const palette = palettes.find(({ shortName }) => shortName === activePalette) || palettes[0];
 
-  const frameGroups = getFrameGroups(frames, frameGroupsState);
   const [groupFrames, setGroupFrames] = useState<Frame[]>([]);
   const [selectedFrameGroup, setSelectedFrameGroup] = useState(getValidFrameGroupId(frameGroups, savFrameTypes));
 
