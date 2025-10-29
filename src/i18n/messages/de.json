@@ -602,10 +602,10 @@
   "StorageWarning": {
     "storageTypes": {
       "indexedDB": "Datenbank-Speicher",
-      "localStorage": "lokaler Speicher"
+      "localStorage": "lokalen Speicher"
     },
     "usageTooltip": "Verwende {used} von {total}",
-    "usageWarning": "Du verwendest {percentage}% deines Browser {type}s. Beachte, dass das Speichern von Bildern nicht mehr möglich sein wird, sobald das Limit erreicht ist."
+    "usageWarning": "Du verwendest {percentage}% des {type}s deines Browsers. Beachte, dass das Speichern von Bildern nicht mehr möglich sein wird, sobald das Limit erreicht ist."
   },
   "TagsList": {
     "favourite": "Favorit",
