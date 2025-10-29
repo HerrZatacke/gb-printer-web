@@ -1,10 +1,11 @@
 import predefinedPalettes from 'gb-palettes';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { PROJECT_PREFIX } from '@/stores/constants';
 import { cleanupItems } from '@/stores/migrations/cleanupItems';
 import { migrateItems } from '@/stores/migrations/history/0/migrateItems';
+import { createSplitStorage } from '@/stores/storage/splitStorage';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
 import uniqueBy from '@/tools/unique/by';
@@ -333,7 +334,7 @@ const useItemsStore = create<ItemsState>()(
     }),
     {
       name: `${PROJECT_PREFIX}-items`,
-      storage: createJSONStorage(() => localStorage),
+      storage: createSplitStorage('gb-printer-web--items'),
 
       merge: (persistedState: unknown, currentState: ItemsState): ItemsState => {
         const mergedState: ItemsState = {
