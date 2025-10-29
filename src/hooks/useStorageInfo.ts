@@ -70,13 +70,13 @@ export const useStorageInfo = (): UseStorageInfo => {
           type: 'localStorage',
           total,
           used,
-          percentage: Math.ceil(used / total * 100),
+          percentage: used / total * 100,
         },
         {
           type: 'indexedDB',
           total: estimate?.quota || 0,
           used: estimate?.usage || 0,
-          percentage: Math.ceil(total ? (estimate?.usage || 0) / (estimate?.quota || 1) * 100 : 100),
+          percentage: total ? (estimate?.usage || 0) / (estimate?.quota || 1) * 100 : 100,
         },
       ]);
     }, 10);

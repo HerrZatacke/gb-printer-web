@@ -38,7 +38,7 @@ function StorageWarning() {
         }}
       >
         {t('usageWarning', {
-          percentage: criticalStorageEstimate.percentage,
+          percentage: criticalStorageEstimate.percentage.toFixed(2),
           type: storageType,
         })}
       </Typography>
