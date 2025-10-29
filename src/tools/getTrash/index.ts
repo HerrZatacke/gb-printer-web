@@ -1,3 +1,4 @@
+import { delay } from '@/tools/delay';
 import { localforageFrames, localforageImages, localforageReady } from '@/tools/localforageInstance';
 import { del, delFrame } from '@/tools/storage';
 import type { MonochromeImage, RGBNImage, Image } from '@/types/Image';
@@ -63,9 +64,21 @@ export const cleanupStorage = async ({
 export const getTrashImages = async (images: Image[]): Promise<string[]> => {
   await localforageReady();
   const storedHashes = await localforageImages.keys();
-  return storedHashes
-    .filter((hash) => !hash.startsWith('dummy'))
-    .filter(imageIsDeleted(images));
+  const isDeleted = imageIsDeleted(images);
+
+  const results: string[] = [];
+
+  for (let i = 0; i < storedHashes.length; i++) {
+    const hash = storedHashes[i];
+    if (!hash.startsWith('dummy') && isDeleted(hash)) {
+      results.push(hash);
+    }
+
+    // Yield to the event loop to keep UI responsive
+    if (i % 20 === 0) await delay(0);
+  }
+
+  return results;
 };
 
 const frameIsDeleted = (frames: CheckFrame[]) => (hash: string): boolean => (
@@ -75,7 +88,19 @@ const frameIsDeleted = (frames: CheckFrame[]) => (hash: string): boolean => (
 export const getTrashFrames = async (frames: CheckFrame[]): Promise<string[]> => {
   await localforageReady();
   const storedHashes = await localforageFrames.keys();
-  return storedHashes
-    .filter((hash) => !hash.startsWith('dummy'))
-    .filter(frameIsDeleted(frames));
+  const isDeleted = frameIsDeleted(frames);
+
+  const results: string[] = [];
+
+  for (let i = 0; i < storedHashes.length; i++) {
+    const hash = storedHashes[i];
+    if (!hash.startsWith('dummy') && isDeleted(hash)) {
+      results.push(hash);
+    }
+
+    // Yield to the event loop to keep UI responsive
+    if (i % 20 === 0) await delay(0);
+  }
+
+  return results;
 };
