@@ -16,12 +16,11 @@ import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
 import { useEnv } from '@/contexts/envContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import { locales } from '@/i18n/locales';
-import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import cleanUrl from '@/tools/cleanUrl';
-import getFrameGroups from '@/tools/getFrameGroups';
 
 interface ClickActionOption {
   translationKey: string,
@@ -75,9 +74,7 @@ function SettingsGeneric() {
 
   const env = useEnv();
 
-  const { frames, frameGroups } = useItemsStore();
-
-  const savFrameGroups = getFrameGroups(frames, frameGroups);
+  const { frameGroups } = useFrameGroups();
 
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
   const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);
@@ -140,8 +137,8 @@ function SettingsGeneric() {
 
       <TextField
         id="settings-sav-frames"
-        value={savFrameGroups.length ? savFrameTypes : ''}
-        disabled={!savFrameGroups.length}
+        value={frameGroups.length ? savFrameTypes : ''}
+        disabled={!frameGroups.length}
         label={t('importSavFrames')}
         select
         slotProps={{
@@ -150,7 +147,7 @@ function SettingsGeneric() {
           },
           select: {
             renderValue: (selected) => (
-              selected === '' ? t('importSavFramesNone') : savFrameGroups.find(({ id }) => (
+              selected === '' ? t('importSavFramesNone') : frameGroups.find(({ id }) => (
                 id === selected
               ))?.name || t('importSavFramesUnknown')
             ),
@@ -163,7 +160,7 @@ function SettingsGeneric() {
       >
         <MenuItem value="" selected={!savFrameTypes}>None</MenuItem>
         {
-          savFrameGroups.map(({ id, name }) => (
+          frameGroups.map(({ id, name }) => (
             <MenuItem
               key={id}
               value={id}

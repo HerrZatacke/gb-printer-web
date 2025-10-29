@@ -1,13 +1,13 @@
 import { useState } from 'react';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useStores } from '@/hooks/useStores';
 import useEditStore from '@/stores/editStore';
 import useItemsStore from '@/stores/itemsStore';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
-import getFrameGroups from '../tools/getFrameGroups';
 
 interface UseEditFrame {
-  groups: FrameGroup[],
+  frameGroups: FrameGroup[],
   updateId: string,
   fullId: string,
   frameIndex: number,
@@ -28,10 +28,10 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
   const updateId = frame?.id || '';
   const { cancelEditFrame } = useEditStore();
   const { frames } = useItemsStore();
-  const { frameGroups, addFrames } = useItemsStore();
+  const { addFrames } = useItemsStore();
   const { updateLastSyncLocalNow } = useStores();
 
-  const groups = getFrameGroups(frames, frameGroups);
+  const { frameGroups } = useFrameGroups();
   const frameGroupIdRegex = /^(?<groupName>[a-z]+)(?<id>[0-9]+)/g;
 
   const match = frameGroupIdRegex.exec(updateId);
@@ -68,7 +68,7 @@ const useEditFrame = (frame?: Frame): UseEditFrame => {
   };
 
   return {
-    groups,
+    frameGroups,
     updateId,
     fullId,
     frameIndex,

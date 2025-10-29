@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+import useItemsStore from '@/stores/itemsStore';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
 
@@ -32,7 +34,8 @@ const prioId = (id: string): string => {
   }
 };
 
-const getFrameGroups = (frames: Frame[], frameGroupNames: FrameGroup[]): FrameGroup[] => {
+// Raw function needs to be exported for settings-export and tansformSav, which are not react hooks.
+export const getFrameGroups = (frames: Frame[], frameGroupNames: FrameGroup[]): FrameGroup[] => {
   const usedGroups: FrameGroup[] = frames
     .reduce((result: FrameGroup[], { id, name }): FrameGroup[] => {
       try {
@@ -71,4 +74,17 @@ const getFrameGroups = (frames: Frame[], frameGroupNames: FrameGroup[]): FrameGr
     });
 };
 
-export default getFrameGroups;
+export interface UseFrameGroups {
+  frameGroups: FrameGroup[];
+}
+
+export const useFrameGroups = (): UseFrameGroups => {
+  const { frameGroups: frameGroupsState, frames } = useItemsStore();
+  const frameGroups = useMemo(() => {
+    return getFrameGroups(frames, frameGroupsState);
+  }, [frameGroupsState, frames]);
+
+  return {
+    frameGroups,
+  };
+};

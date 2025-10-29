@@ -1,22 +1,28 @@
 // Currently unused, but may be added to "window" for debugging purposes
 import useItemsStore from '@/stores/itemsStore';
+import { delay } from '@/tools/delay';
 import padToHeight from '@/tools/padToHeight';
 import saveNewImage from '@/tools/saveNewImage';
 import { toCreationDate } from '@/tools/toCreationDate';
 import type { MonochromeImage } from '@/types/Image';
 
-const generateRandomTile = (): string => (
-  (new Array(20))
-    .fill('')
-    .map(() => Math.floor(Math.random() * 256).toString(16).padStart(2, '0'))
-    .join(' ')
-);
+const generateRandomImage = (numLines: number): string[] => {
+  const totalTiles = 20 * numLines;
+  const result = new Array(totalTiles);
+  const bytes = new Uint8Array(20 * totalTiles);
+  crypto.getRandomValues(bytes);
 
-const generateRandomImage = (numLines: number): string[] => (
-  new Array(20 * numLines)
-    .fill('')
-    .map(generateRandomTile)
-);
+  let offset = 0;
+  for (let i = 0; i < totalTiles; i++) {
+    let tile = '';
+    for (let j = 0; j < 20; j++) {
+      const b = bytes[offset++];
+      tile += (b < 16 ? '0' : '') + b.toString(16) + (j === 19 ? '' : ' ');
+    }
+    result[i] = tile;
+  }
+  return result;
+};
 
 interface DebugImport {
   image: MonochromeImage,
@@ -40,10 +46,7 @@ const generateDebugImage = async (index: number): Promise<DebugImport> => {
 
   const elapsed = Date.now() - timestamp;
 
-  await new Promise((resolve) => {
-    console.log(index, elapsed);
-    window.requestAnimationFrame(resolve);
-  });
+  await delay(0);
 
   return {
     image: img,
@@ -51,10 +54,20 @@ const generateDebugImage = async (index: number): Promise<DebugImport> => {
   };
 };
 
+let hasRun = false;
+
 export const generateDebugImages = async (count: number) => {
+  if (hasRun) {
+    console.log('not running generateDebugImages again');
+    return;
+  }
+
+  hasRun = true;
+
   const debugs: DebugImport[] = [];
 
   const generateStart = Date.now();
+  console.log(`Generating ${count} dummy images...`);
 
   for (let i = 0; i < count; i += 1) {
     debugs.push(await generateDebugImage(i));

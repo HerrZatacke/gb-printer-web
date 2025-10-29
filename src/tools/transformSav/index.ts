@@ -1,8 +1,8 @@
 import { DialoqQuestionType } from '@/consts/dialog';
+import { getFrameGroups } from '@/hooks/useFrameGroups';
 import useDialogsStore from '@/stores/dialogsStore';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
-import getFrameGroups from '@/tools/getFrameGroups';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import { reduceItems } from '@/tools/reduceArray';
 import type { DialogOption, DialogQuestion, DialogResult } from '@/types/Dialog';

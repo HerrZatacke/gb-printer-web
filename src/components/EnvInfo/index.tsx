@@ -29,7 +29,7 @@ function EnvInfo() {
           type: estimate.type,
           total: filesize(estimate.total),
           used: filesize(estimate.used),
-          percentage: estimate.percentage,
+          percentage: estimate.percentage.toFixed(2),
         })
       )),
       t('envType', { value: env.env }),

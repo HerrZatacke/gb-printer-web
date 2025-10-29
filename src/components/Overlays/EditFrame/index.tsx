@@ -18,7 +18,7 @@ const EditFrame = () => {
     updateId,
     fullId,
     formValid,
-    groups,
+    frameGroups,
     frameGroup,
     frameIndex,
     setFrameIndex,
@@ -41,7 +41,7 @@ const EditFrame = () => {
     >
       { frame ? (
         <EditFrameForm
-          groups={groups}
+          groups={frameGroups}
           fullId={fullId}
           frameIndex={frameIndex}
           frameGroup={frameGroup}
