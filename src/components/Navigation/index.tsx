@@ -54,6 +54,7 @@ interface NavActionItem {
   badgeContent: string | null,
   badgeColor: NavBadgeColor,
   onClick: () => void,
+  disabled: boolean,
   isBusy: boolean,
 }
 
@@ -63,7 +64,7 @@ function Navigation() {
   const [drawerContainer, setDrawerContainer] = useState<HTMLElement | undefined>(undefined);
   const { fullPath } = useUrl();
   const { themeName, setThemeName } = useSettingsStore();
-  const { showTrashCount, trashCount } = useInteractionsStore();
+  const { showTrashCount, trashCount, trashBusy } = useInteractionsStore();
   const { lastGalleryLink, getUrl } = useGalleryTreeContext();
   const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
 
@@ -139,8 +140,8 @@ function Navigation() {
         icon: <DeleteIcon />,
         badgeContent: trashCountSum > 0 ? trashCountSum.toString(10) : null,
         badgeColor: NavBadgeColor.ERROR,
-        disabled: false,
-        isBusy: false,
+        disabled: trashBusy,
+        isBusy: trashBusy,
         onClick: () => showTrashCount(true),
       },
       useSync ? {
@@ -179,6 +180,7 @@ function Navigation() {
     setShowSerials,
     setThemeName,
     showTrashCount,
+    trashBusy,
     syncBusy,
     syncNotification,
     t,
@@ -221,10 +223,11 @@ function Navigation() {
                 role="navigation"
                 aria-label={t('utilityNavAriaLabel')}
               >
-                {navActionItems.map(({ title, icon, onClick, badgeContent, badgeColor, isBusy }) => (
+                {navActionItems.map(({ title, icon, onClick, badgeContent, badgeColor, isBusy, disabled }) => (
                   <IconButton
                     key={title}
                     color="inherit"
+                    disabled={disabled}
                     title={title}
                     onClick={onClick}
                     sx={isBusy ? { animation: 'pulse-bg 600ms infinite' } : undefined}

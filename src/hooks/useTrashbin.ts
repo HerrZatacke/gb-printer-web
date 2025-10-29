@@ -58,7 +58,7 @@ const getItems = async (keys: string[], storage: WrappedLocalForageInstance<stri
 const useTrashbin = (): UseTrashbin => {
   const { trashCount, showTrashCount } = useInteractionsStore();
   const { frames, images } = useItemsStore();
-  const { updateTrashCount } = useInteractionsStore();
+  const { updateTrashCount, setTrashBusy } = useInteractionsStore();
   const t = useTranslations('useTrashbin');
 
   const downloadImages = useCallback(async (): Promise<void> => {
@@ -137,10 +137,16 @@ const useTrashbin = (): UseTrashbin => {
   }, [t, frames]);
 
   const checkUpdateTrashCount = useCallback(async () => {
-    const trashFramesCount = (await getTrashFrames(frames)).length;
-    const trashImagesCount = (await getTrashImages(images)).length;
-    updateTrashCount(trashFramesCount, trashImagesCount);
-  }, [frames, images, updateTrashCount]);
+    setTrashBusy(true);
+
+    const [trashFrames, trashImages] = await Promise.all([
+      getTrashFrames(frames),
+      getTrashImages(images),
+    ]);
+
+    updateTrashCount(trashFrames.length, trashImages.length);
+    setTrashBusy(false);
+  }, [frames, images, setTrashBusy, updateTrashCount]);
 
   const purgeTrash = useCallback(async (): Promise<void> => {
     await cleanupStorage({ images, frames });

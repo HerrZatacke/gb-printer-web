@@ -29,6 +29,7 @@ interface Values {
   showSerials: boolean,
   syncBusy: boolean,
   syncSelect: boolean,
+  trashBusy: boolean,
   trashCount: TrashCount,
   videoSelection: string[],
 }
@@ -46,6 +47,7 @@ interface Actions {
   setShowSerials: (showSerials: boolean) => void,
   setSyncBusy: (syncBusy: boolean) => void,
   setSyncSelect: (syncBusy: boolean) => void,
+  setTrashBusy: (trashBusy: boolean) => void,
   showTrashCount: (show: boolean) => void,
   updateTrashCount: (frames: number, images: number) => void,
   setVideoSelection: (videoSelection: string[]) => void,
@@ -65,6 +67,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   showSerials: false,
   syncBusy: false,
   syncSelect: false,
+  trashBusy: false,
   trashCount: { frames: 0, images: 0, show: false },
   videoSelection: [],
 
@@ -80,6 +83,7 @@ const useInteractionsStore = create<InteractionsState>((set, get) => ({
   setSyncBusy: (syncBusy: boolean) => set({ syncBusy }),
   setSyncSelect: (syncSelect: boolean) => set({ syncSelect }),
   showTrashCount: (show: boolean) => set({ trashCount: { ...get().trashCount, show } }),
+  setTrashBusy: (trashBusy: boolean) => set({ trashBusy }),
   updateTrashCount: (frames: number, images: number) => set({ trashCount: { ...get().trashCount, frames, images } }),
   setVideoSelection: (videoSelection: string[]) => set({ videoSelection }),
 
