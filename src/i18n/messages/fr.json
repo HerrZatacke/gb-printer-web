@@ -35,7 +35,13 @@
       "en-GB": "Anglais – Royaume-Uni (en-GB)",
       "en-CA": "Anglais – Canada (en-CA)",
       "fr-FR": "Français – France (fr-FR)"
-    }
+    },
+    "resetTrackingConsent": "Réinitialiser le consentement pour l'analyse/le suivi (actuellement {consentState, select, accepted {actif} other {inactif}})"
+  },
+  "TrackingConsent": {
+    "title": "J'aurais besoin de votre aide",
+    "confirm": "Ça me va",
+    "deny": "Non, merci"
   },
   "SettingsDropbox": {
     "enableStorage": "Utiliser Dropbox comme stockage",

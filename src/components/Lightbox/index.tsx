@@ -25,6 +25,8 @@ interface Props {
   fullSize?: boolean,
   confirm?: () => void,
   deny?: () => void,
+  confirmMessage?: string,
+  denyMessage?: string,
   canConfirm?: boolean,
   headerOnly?: boolean,
   closeOnOverlayClick?: boolean,
@@ -88,6 +90,8 @@ function Lightbox({
   children,
   confirm,
   deny,
+  confirmMessage,
+  denyMessage,
   canConfirm,
   headerOnly,
   fullSize,
@@ -106,7 +110,7 @@ function Lightbox({
   useOverlayGlobalKeys({
     confirm,
     canConfirm: canConfirm || false,
-    deny,
+    deny: closeOnOverlayClick ? deny : undefined,
   });
 
   useEffect(() => {
@@ -118,8 +122,10 @@ function Lightbox({
 
   const contentDimensionsSx = contentDimensions(contentWidth, contentHeight, fullScreen, fullSize);
 
-  const denyText = Boolean(confirm) ? t('cancel') : t('close');
-  const confirmText = t('ok');
+
+
+  const denyText = denyMessage || (Boolean(confirm) ? t('cancel') : t('close'));
+  const confirmText = confirmMessage || t('ok');
 
   return (
     <Dialog
@@ -127,10 +133,10 @@ function Lightbox({
       fullScreen={fullScreen || fullSize}
       maxWidth="lg"
       open={open}
-      onClose={deny}
+      onClose={closeOnOverlayClick ? deny : undefined}
       aria-label={typeof header === 'string' ? header : undefined}
       keepMounted={keepMounted}
-      disableEscapeKeyDown={!closeOnOverlayClick}
+      disableEscapeKeyDown
       sx={{
         // matching "scrollbar-width: thin;" on <html>
         paddingRight: '10px',

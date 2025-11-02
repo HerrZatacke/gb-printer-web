@@ -35,7 +35,13 @@
       "en-GB": "Engels – Verenigd Koninkrijk (en-GB)",
       "en-CA": "Engels – Canada (en-CA)",
       "fr-FR": "Frans – Frankrijk (fr-FR)"
-    }
+    },
+    "resetTrackingConsent": "Analyse-/trackingtoestemming opnieuw instellen (momenteel {consentState, select, accepted {actief} other {inactief}})"
+  },
+  "TrackingConsent": {
+    "title": "Ik kan je hulp gebruiken",
+    "confirm": "Dat is prima voor mij",
+    "deny": "Nee, bedankt"
   },
   "SettingsDropbox": {
     "enableStorage": "Dropbox gebruiken als opslag",

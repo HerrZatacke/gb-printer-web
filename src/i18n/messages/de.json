@@ -35,7 +35,13 @@
       "en-GB": "Englisch – Vereinigtes Königreich (en-GB)",
       "en-CA": "Englisch – Kanada (en-CA)",
       "fr-FR": "Französisch – Frankreich (fr-FR)"
-    }
+    },
+    "resetTrackingConsent": "Analyse-/Tracking-Einwilligung zurücksetzen (derzeit {consentState, select, accepted {aktiv} other {inaktiv}})"
+  },
+  "TrackingConsent": {
+    "title": "Ich könnte deine Hilfe brauchen",
+    "confirm": "Das ist für mich in Ordnung",
+    "deny": "Nein, danke"
   },
   "SettingsDropbox": {
     "enableStorage": "Dropbox als Speicher verwenden",
