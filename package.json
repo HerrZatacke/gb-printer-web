@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.51.0",
+  "version": "1.52.0",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev",
