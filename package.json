@@ -52,6 +52,7 @@
     "@types/react-dom": "^19",
     "@types/react-window": "^1.8.8",
     "@types/string-algorithms": "^1.0.3",
+    "@types/umami-browser": "^2.18.0",
     "@types/w3c-web-usb": "^1.0.10",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",

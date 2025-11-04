@@ -1,4 +1,5 @@
 'use client';
+import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 import React, {
   createContext,
@@ -13,6 +14,7 @@ import React, {
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
+import EventData = umami.EventData;
 
 const CONSENT_STORAGE_KEY = 'gbp-z-web-analytics-consent';
 
@@ -22,18 +24,10 @@ export enum ConsentState {
   DENIED = 'denied',
 }
 
-declare global {
-  interface Window {
-    umami?: {
-      track: (eventName: string, data: unknown) => void;
-    };
-  }
-}
-
 interface TrackingContextType {
   consentState: ConsentState;
   setConsent: (consent: ConsentState) => void;
-  sendEvent: (eventName: string, eventData: unknown) => void;
+  sendEvent: (eventName: string, eventData: EventData) => void;
   trackingAvailable: boolean;
   showPopup: boolean;
 }
@@ -68,7 +62,7 @@ export function TrackingProvider({ children }: PropsWithChildren) {
     consentState === ConsentState.UNKNOWN
   )), [consentState]);
 
-  const sendEvent = useCallback((eventName: string, eventData: unknown) => {
+  const sendEvent = useCallback((eventName: string, eventData: EventData) => {
     if (!trackingAvailable || consentState !== ConsentState.ACCEPTED || !window.umami) {
       return;
     }
@@ -131,7 +125,7 @@ export function TrackingProvider({ children }: PropsWithChildren) {
     timeoutRefErrors.current = window.setTimeout(() => {
       sendEvent('error', {
         message: error.message,
-        stack: error.stack,
+        stack: error.stack || '',
       });
     }, 1000);
 
@@ -141,6 +135,29 @@ export function TrackingProvider({ children }: PropsWithChildren) {
       }
     };
   }, [errors, sendEvent]);
+
+
+  // const timeoutRefRoute = useRef<number | null>(null);
+  // const pathname = usePathname();
+  //
+  // // Send error event when error occurs
+  // useEffect(() => {
+  //   if (timeoutRefRoute.current) {
+  //     window.clearTimeout(timeoutRefRoute.current);
+  //   }
+  //
+  //   timeoutRefRoute.current = window.setTimeout(() => {
+  //     sendEvent('navigate', {
+  //       url: `${window.location.origin}${pathname}`,
+  //     });
+  //   }, 1000);
+  //
+  //   return () => {
+  //     if (timeoutRefRoute.current) {
+  //       window.clearTimeout(timeoutRefRoute.current);
+  //     }
+  //   };
+  // }, [pathname, sendEvent]);
 
   return (
     <TrackingContext.Provider value={{ consentState, setConsent, trackingAvailable, showPopup, sendEvent }}>
