@@ -9,6 +9,7 @@ import { NavigationToolsProvider } from '@/contexts/navigationTools/NavigationTo
 import { PluginsContext } from '@/contexts/plugins/Provider';
 import { PortsContext } from '@/contexts/ports/Provider';
 import RemotePrinterContextProvider from '@/contexts/remotePrinter/RemotePrinterContextProvider';
+import { TrackingProvider } from '@/contexts/TrackingContext';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -19,6 +20,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   const providers = [
     I18nContext,
+    TrackingProvider,
     EnvProvider,
     PortsContext,
     GlobalAppInit,

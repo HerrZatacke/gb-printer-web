@@ -17,14 +17,14 @@ Du kannst verwandte Bilder in Gruppen organisieren:
 - Du kannst Bilder auswählen, um sie zwischen Gruppen zu verschieben, ohne notwendigerweise eine neue Gruppe zu erstellen
 
 ## [Serielle Kommunikation](/webusb)
-Direkte Verbindung zu Community-Projekt Geräten über WebSerial:
+Stelle eine direkte Verbindung zu Community-Projekt-Geräten über WebSerial her:
 
-### Drucken auf einem physischen Game Boy Printer
+### Drucke auf einem physischen Game Boy Printer
 - Mit aktiviertem WebSerial können Bilder auf einem originalen Game Boy Printer mit dem [Super Printer Interface](https://github.com/Raphael-Boichot/Yet-another-PC-to-Game-Boy-Printer-interface/) von Raphaël Boichot gedruckt werden
 
 ### Cartridge-Kommunikation
-- WebSerial in Chrome aktivieren, um direkt mit dem GBxCart zu kommunizieren (nur Desktop)
-- Ein Cartridge-Leser mit Lesserkumas Firmware zum Laden von Savestates verwenden (z.B. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
+- Aktiviere WebSerial in Chrome, um direkt mit dem GBxCart Cartridge-Leser zu kommunizieren (nur Desktop)
+- Benutze einen Cartridge-Leser mit Lesserkumas Firmware zum Laden von Savestates. (z.B. [GBxCart RW](https://www.gbxcart.com/), [JoeyJr](https://bennvenn.myshopify.com/products/usb-gb-c-cart-dumper-the-joey-jr), [GBFlash](https://github.com/simonkwng/GBFlash))
 
 ### Game Boy Printer Emulatoren
 Einen Printer-Emulator über WebSerial verbinden, um direkt von der Game Boy Camera in die WebApp zu drucken:

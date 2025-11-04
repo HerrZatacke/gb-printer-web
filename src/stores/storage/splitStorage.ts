@@ -24,6 +24,8 @@ const wrapForage = <FT>(storeName: string, keyField: keyof FT): WrappedForage<FT
     storeName,
   });
 
+  const hashCache = new Map<string, string>();
+
   return {
     async dropDB(): Promise<void> {
       await instance.dropInstance();
@@ -31,35 +33,37 @@ const wrapForage = <FT>(storeName: string, keyField: keyof FT): WrappedForage<FT
 
     async loadData(): Promise<FT[]> {
       const items: FT[] = [];
-      await instance.iterate((value: FT) => {
+      await instance.iterate((value: FT, dbId) => {
+        const hash = ohash(value);
+
         items.push(value);
+        hashCache.set(dbId, hash);
       });
 
       return items;
     },
 
     async setData(items: FT[]): Promise<void> {
-      // build a hash map of existing data
-      const existing = new Map<string, string>();
-      await instance.iterate((value: FT, dbId) => {
-        existing.set(ohash(value || null), dbId);
-      });
+      const seenIds = new Set<string>();
 
-      // update or add new/changed items if hash of an item does not exist
       for (const item of items) {
         const dbId = String(item[keyField]);
-        const itemHash = ohash(item || null);
+        const newHash = ohash(item);
+        const oldHash = hashCache.get(dbId);
 
-        if (existing.has(itemHash)) {
-          existing.delete(itemHash); // item is unchanged
-        } else {
-          await instance.setItem(dbId, item); // item is new or changed
+        if (oldHash !== newHash) {
+          await instance.setItem(dbId, item);
+          hashCache.set(dbId, newHash);
         }
+
+        seenIds.add(dbId);
       }
 
-      // remove deleted items
-      if (existing.size > 0) {
-        await Promise.all(Array.from(existing.values()).map((dbId) => instance.removeItem(dbId)));
+      for (const dbId of hashCache.keys()) {
+        if (!seenIds.has(dbId)) {
+          await instance.removeItem(dbId);
+          hashCache.delete(dbId);
+        }
       }
     },
   };

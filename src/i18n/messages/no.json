@@ -35,7 +35,13 @@
       "en-GB": "Engelsk – Storbritannia (en-GB)",
       "en-CA": "Engelsk – Canada (en-CA)",
       "fr-FR": "Fransk – Frankrike (fr-FR)"
-    }
+    },
+    "resetTrackingConsent": "Tilbakestill analyse-/sporingssamtykke (for øyeblikket {consentState, select, accepted {aktiv} other {inaktiv}})"
+  },
+  "TrackingConsent": {
+    "title": "Jeg kunne trengt din hjelp",
+    "confirm": "Det går fint for meg",
+    "deny": "Nei, takk"
   },
   "SettingsDropbox": {
     "enableStorage": "Bruk Dropbox som lagring",

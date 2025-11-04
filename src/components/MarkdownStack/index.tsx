@@ -25,6 +25,9 @@ export default function MarkdownStack({ children }: PropsWithChildren) {
           listStyleType: 'disc',
           paddingInlineStart: theme.spacing(2),
         },
+        em: {
+          fontStyle: 'italic',
+        },
         'h1,h2,h3,h4,h5,h6,p': {
           mb: '0.25em',
         },

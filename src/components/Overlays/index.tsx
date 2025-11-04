@@ -18,8 +18,10 @@ import ProgressLogBox from '@/components/Overlays/ProgressLogBox';
 import Serials from '@/components/Overlays/Serials';
 import SortForm from '@/components/Overlays/SortForm';
 import SyncSelect from '@/components/Overlays/SyncSelect';
+import TrackingConsent from '@/components/Overlays/TrackingConsent';
 import Trashbin from '@/components/Overlays/Trashbin';
 import VideoParamsForm from '@/components/Overlays/VideoParamsForm';
+import useTracking from '@/contexts/TrackingContext';
 import useDialogsStore from '@/stores/dialogsStore';
 import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
@@ -29,6 +31,10 @@ import useProgressStore from '@/stores/progressStore';
 import useSettingsStore from '@/stores/settingsStore';
 
 function Overlays() {
+  const { showPopup, trackingAvailable } = useTracking();
+
+  const showTrackingPopup = showPopup && trackingAvailable;
+
   const { useSerials } = useSettingsStore();
 
   const { dialogs } = useDialogsStore();
@@ -88,6 +94,8 @@ function Overlays() {
   const showSerialOverlay = showSerials && useSerials;
 
   switch (true) {
+    case showTrackingPopup:
+      return <TrackingConsent />; // interactive
     case showConfirm:
       return <Confirm />; // interactive
     case showFrameQueue:

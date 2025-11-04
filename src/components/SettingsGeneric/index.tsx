@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,6 +16,7 @@ import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
 import { useEnv } from '@/contexts/envContext';
+import useTracking, { ConsentState } from '@/contexts/TrackingContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
 import usePaletteSort from '@/hooks/usePaletteSort';
@@ -75,6 +77,7 @@ function SettingsGeneric() {
   const env = useEnv();
 
   const { frameGroups } = useFrameGroups();
+  const { setConsent, trackingAvailable, consentState } = useTracking();
 
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
   const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);
@@ -374,6 +377,22 @@ function SettingsGeneric() {
           />
         )}
       />
+
+      {trackingAvailable && (
+        <Stack
+          direction="column"
+          gap={2}
+          alignItems="flex-start"
+        >
+          <Button
+            variant="outlined"
+            onClick={() => setConsent(ConsentState.UNKNOWN)}
+            color="secondary"
+          >
+            {t('resetTrackingConsent', { consentState })}
+          </Button>
+        </Stack>
+      )}
     </Stack>
   );
 }
