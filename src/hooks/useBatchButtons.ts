@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { BatchActionType } from '@/consts/batchActionTypes';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useTracking from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import { useStores } from '@/hooks/useStores';
 import useDialogsStore from '@/stores/dialogsStore';
@@ -12,6 +13,7 @@ import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
+import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import unique from '@/tools/unique';
 import type { Image, MonochromeImage } from '@/types/Image';
 
@@ -54,6 +56,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const { setDownloadImages } = useDownload();
   const { deleteImages } = useStores();
   const { view, covers } = useGalleryTreeContext();
+  const { sendEvent } = useTracking();
 
   const indexOffset = page * pageSize;
 
@@ -122,6 +125,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
               tags: collectTags(batchImages),
               batch: batchImages.map(({ hash }) => hash),
             });
+            sendEvent('editImages', { imageCount: nextPowerOfTwo(batchImages.length) });
             break;
           }
 

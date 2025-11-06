@@ -20,7 +20,7 @@ const useImportFile = (): UseImportFile => {
   const handleFileImport = useCallback(async (files: File[], options?: HandeFileImportOptions): Promise<ImportResult[]> => {
     try {
       const importResults = await handleFileImportFn(files, options);
-      sendEvent('importQueue', concatImportResults(importResults));
+      sendEvent('importQueue', concatImportResults(importResults, 'fileImport'));
       return importResults;
     } catch (error) {
       setError(error as Error);

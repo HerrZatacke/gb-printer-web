@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import useTracking from '@/contexts/TrackingContext';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
@@ -12,8 +13,10 @@ interface UseShareImage {
 const useShareImage = (): UseShareImage => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore();
   const { frames, palettes, images } = useItemsStore();
+  const { sendEvent } = useTracking();
 
   const shareImage = useCallback(async (hash: string) => {
+    if (!window.navigator.share) { return; }
 
     const image = images.find(({ hash: findHash }) => hash === findHash);
     if (!image) {
@@ -43,14 +46,14 @@ const useShareImage = (): UseShareImage => {
 
     const { blob, filename, title } = downloadInfo[0];
 
-    if (window.navigator.share) {
-      window.navigator.share({
-        files: [new File([blob], filename, { type: 'image/png', lastModified: Date.now() })],
-        title,
-      })
-        .catch(() => ('¯\\_(ツ)_/¯'));
-    }
-  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, palettes]);
+    window.navigator.share({
+      files: [new File([blob], filename, { type: 'image/png', lastModified: Date.now() })],
+      title,
+    })
+      .catch(() => ('¯\\_(ツ)_/¯'));
+
+    sendEvent('shareImages', { imageCount: 1 });
+  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, palettes, sendEvent]);
 
   return {
     shareImage,

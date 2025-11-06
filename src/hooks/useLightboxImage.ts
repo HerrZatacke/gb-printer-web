@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import screenfull from 'screenfull';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useTracking from '@/contexts/TrackingContext';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
+import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import { type Image } from '@/types/Image';
 
 interface CurrentInfo {
@@ -32,7 +34,7 @@ interface UseLightboxImage {
 
 export const useLightboxImage = (): UseLightboxImage => {
   const filtersState = useFiltersStore();
-
+  const { sendEvent } = useTracking();
   const { view, covers } = useGalleryTreeContext();
   const {
     isFullscreen,
@@ -66,13 +68,20 @@ export const useLightboxImage = (): UseLightboxImage => {
   }, [filteredImages]);
 
   useEffect(() => {
-    console.log('Initially setting currentInfo', Date.now());
-    if (lightboxImageState === null) {
-      setCurrentInfo(null);
-    } else {
-      setCurrentInfo(createCurrentInfo(lightboxImageState));
-    }
-  }, [createCurrentInfo, lightboxImageState]);
+    setCurrentInfo((prevInfo) => {
+      if (lightboxImageState === null) {
+        return null;
+      }
+
+      if (!prevInfo) {
+        sendEvent('lightBox', {
+          imageCount: nextPowerOfTwo(lightboxImageHashes.length),
+        });
+      }
+
+      return createCurrentInfo(lightboxImageState);
+    });
+  }, [createCurrentInfo, lightboxImageHashes.length, lightboxImageState, sendEvent]);
 
   const next = useCallback(() => {
     setCurrentInfo((current) => {
