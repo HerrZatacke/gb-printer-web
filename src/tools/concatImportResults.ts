@@ -3,6 +3,7 @@ import { ImportResult } from '@/types/ImportItem';
 
 export const concatImportResults = (
   importResults: ImportResult[],
+  trigger: string,
 ): umami.EventData => {
   const result: Record<string, number> = {};
 
@@ -10,5 +11,8 @@ export const concatImportResults = (
     result[importMethod] = (result[importMethod] ?? 0) + nextPowerOfTwo(imageCount);
   }
 
-  return result;
+  return {
+    ...result,
+    trigger,
+  };
 };

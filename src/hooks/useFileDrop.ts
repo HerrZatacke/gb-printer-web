@@ -55,7 +55,7 @@ const useFileDrop = () => {
 
       try {
         const importResults = await handleFileImport(files);
-        sendEvent('importQueue', concatImportResults(importResults));
+        sendEvent('importQueue', concatImportResults(importResults, 'fileDrop'));
       } catch (error) {
         setError(error as Error);
       }

@@ -114,7 +114,7 @@ export const useGBXCart = (): UseGBXCart => {
       savFrameSet,
     });
 
-    sendEvent('importQueue', concatImportResults(importResults));
+    sendEvent('importQueue', concatImportResults(importResults, 'gbxCart'));
   }, [gbxCart, handleFileImport, sendEvent]);
 
   const readPhotoRom = useCallback(async () => {
