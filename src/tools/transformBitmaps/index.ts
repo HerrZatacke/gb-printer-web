@@ -1,8 +1,10 @@
+import { ImportMethod } from '@/consts/ImportMethod';
 import useImportsStore from '@/stores/importsStore';
 import { moveBitmapsToImport } from '@/tools/moveBitmapsToImport';
+import { ImportResult } from '@/types/ImportItem';
 import getImageData from './getImageData';
 
-export const transformBitmaps = async (file: File, fromPrinter = false): Promise<boolean> => {
+export const transformBitmaps = async (file: File, fromPrinter = false): Promise<ImportResult> => {
   const image = await getImageData(file);
 
   if (fromPrinter) {
@@ -16,6 +18,9 @@ export const transformBitmaps = async (file: File, fromPrinter = false): Promise
     useImportsStore.getState().bitmapQueueAdd([image]);
   }
 
-  return true;
+  return {
+    imageCount: 1,
+    importMethod: ImportMethod.BITMAP,
+  };
 };
 

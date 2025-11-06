@@ -1,11 +1,13 @@
+import { ImportMethod } from '@/consts/ImportMethod';
 import useImportsStore from '@/stores/importsStore';
 import { randomId } from '@/tools/randomId';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import { compressAndHash } from '@/tools/storage';
 import transformCapture from '@/tools/transformCapture';
 import transformClassic from '@/tools/transformClassic';
+import { ImportResult } from '@/types/ImportItem';
 
-export const transformPlainText = async (file: File) => {
+export const transformPlainText = async (file: File): Promise<ImportResult> => {
   const { importQueueAdd } = useImportsStore.getState();
   const data: string = await readFileAs(file, ReadAs.TEXT);
   let result: string[][];
@@ -17,7 +19,7 @@ export const transformPlainText = async (file: File) => {
     result = await transformCapture(data);
   }
 
-  await Promise.all(result.map(async (tiles: string[], index: number): Promise<boolean> => {
+  const imported = await Promise.all(result.map(async (tiles: string[], index: number): Promise<boolean> => {
     const { dataHash: imageHash } = await compressAndHash(tiles);
 
     const indexCount = result.length < 2 ? '' : ` ${(index + 1).toString(10)
@@ -34,5 +36,10 @@ export const transformPlainText = async (file: File) => {
     return true;
   }));
 
-  return true;
+  const imageCount = imported.filter(Boolean).length;
+
+  return {
+    imageCount,
+    importMethod: ImportMethod.PLAIN_TEXT,
+  };
 };

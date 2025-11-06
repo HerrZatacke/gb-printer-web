@@ -1,7 +1,9 @@
+import { ImportMethod } from '@/consts/ImportMethod';
 import useImportsStore from '@/stores/importsStore';
 import { randomId } from '@/tools/randomId';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import { compressAndHash } from '@/tools/storage';
+import { ImportResult } from '@/types/ImportItem';
 
 // check for the header "GB-BIN01"
 const isBinType = (buffer: Uint8Array) => (
@@ -15,7 +17,7 @@ const isBinType = (buffer: Uint8Array) => (
   buffer[7] === 49 //    1
 );
 
-export const transformBin = async (file: File): Promise<boolean> => {
+export const transformBin = async (file: File): Promise<ImportResult> => {
   const { importQueueAdd } = useImportsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
   //
@@ -60,5 +62,8 @@ export const transformBin = async (file: File): Promise<boolean> => {
     tempId: randomId(),
   }]);
 
-  return true;
+  return {
+    imageCount: 1,
+    importMethod: ImportMethod.WIFI_BIN,
+  };
 };

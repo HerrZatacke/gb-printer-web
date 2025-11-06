@@ -1,6 +1,9 @@
 import { useCallback, useMemo } from 'react';
+import useTracking from '@/contexts/TrackingContext';
 import useInteractionsStore from '@/stores/interactionsStore';
+import { concatImportResults } from '@/tools/concatImportResults';
 import getHandleFileImport, { type HandeFileImportFn, type HandeFileImportOptions } from '@/tools/getHandleFileImport';
+import { ImportResult } from '@/types/ImportItem';
 import { useImportExportSettings } from './useImportExportSettings';
 
 interface UseImportFile {
@@ -10,16 +13,20 @@ interface UseImportFile {
 const useImportFile = (): UseImportFile => {
   const { setError } = useInteractionsStore.getState();
   const { jsonImport } = useImportExportSettings();
+  const { sendEvent } = useTracking();
 
-  const handleFileImportJson = useMemo(() => getHandleFileImport(jsonImport), [jsonImport]);
+  const handleFileImportFn = useMemo(() => getHandleFileImport(jsonImport), [jsonImport]);
 
-  const handleFileImport = useCallback(async (files: File[], options?: HandeFileImportOptions): Promise<void> => {
+  const handleFileImport = useCallback(async (files: File[], options?: HandeFileImportOptions): Promise<ImportResult[]> => {
     try {
-      await handleFileImportJson(files, options);
+      const importResults = await handleFileImportFn(files, options);
+      sendEvent('importQueue', concatImportResults(importResults));
+      return importResults;
     } catch (error) {
       setError(error as Error);
+      return [];
     }
-  }, [handleFileImportJson, setError]);
+  }, [handleFileImportFn, sendEvent, setError]);
 
   return {
     handleFileImport,

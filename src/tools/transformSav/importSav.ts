@@ -46,7 +46,7 @@ const getImportSav = ({
     }
   }
 
-  return async (selectedFrameset, cartIsJP) => {
+  return async (selectedFrameset, cartIsJP): Promise<number> => {
     const imageSlots = Math.ceil(data.byteLength / 0x1000);
 
     let addresses = Array.from({ length: imageSlots }, (_, i) => i * 0x1000);
@@ -134,9 +134,11 @@ const getImportSav = ({
       })
     )));
 
-    importQueueAdd(imageData.reduce(reduceItems<ImportItem>, []));
+    const importItems = imageData.reduce(reduceItems<ImportItem>, []);
 
-    return true;
+    importQueueAdd(importItems);
+
+    return importItems.length;
   };
 };
 

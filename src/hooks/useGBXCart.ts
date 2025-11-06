@@ -2,10 +2,12 @@ import { proxy, Remote } from 'comlink';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { PortDeviceType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
+import useTracking from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useProgressStore from '@/stores/progressStore';
 import { GBXCartCommsDevice } from '@/tools/comms/DeviceAPIs/GBXCartCommsDevice';
+import { concatImportResults } from '@/tools/concatImportResults';
 import getHandleFileImport from '@/tools/getHandleFileImport';
 
 interface UseGBXCart {
@@ -20,6 +22,7 @@ interface UseGBXCart {
 export const useGBXCart = (): UseGBXCart => {
   const { connectedDevices } = usePortsContext();
   const { setProgress, startProgress, stopProgress } = useProgressStore();
+  const { sendEvent } = useTracking();
   const { setError } = useInteractionsStore();
   const { jsonImport } = useImportExportSettings();
   const handleFileImport = useMemo(() => (getHandleFileImport(jsonImport)), [jsonImport]);
@@ -102,7 +105,7 @@ export const useGBXCart = (): UseGBXCart => {
 
     setBusy(false);
 
-    handleFileImport([
+    const importResults = await handleFileImport([
       new File(result, `${romName.trim() || 'dump'}.sav`, {
         type: 'application/octet-stream',
       }),
@@ -110,7 +113,9 @@ export const useGBXCart = (): UseGBXCart => {
       fromPrinter: false,
       savFrameSet,
     });
-  }, [gbxCart, handleFileImport]);
+
+    sendEvent('importQueue', concatImportResults(importResults));
+  }, [gbxCart, handleFileImport, sendEvent]);
 
   const readPhotoRom = useCallback(async () => {
     if (!gbxCart) { return; }
