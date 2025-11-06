@@ -14,6 +14,8 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';
 import type { Image, MonochromeImage } from '@/types/Image';
+import useTracking from '@/contexts/TrackingContext';
+import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 
 interface UseBatchButtons {
   hasPlugins: boolean,
@@ -54,6 +56,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
   const { setDownloadImages } = useDownload();
   const { deleteImages } = useStores();
   const { view, covers } = useGalleryTreeContext();
+  const { sendEvent } = useTracking();
 
   const indexOffset = page * pageSize;
 
@@ -122,6 +125,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
               tags: collectTags(batchImages),
               batch: batchImages.map(({ hash }) => hash),
             });
+            sendEvent('editImages', { imageCount: nextPowerOfTwo(batchImages.length) });
             break;
           }
 

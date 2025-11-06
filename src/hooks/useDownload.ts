@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import useTracking from '@/contexts/TrackingContext';
 import useInteractionsStore from '@/stores/interactionsStore';
 import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
@@ -7,6 +8,7 @@ import { getPrepareFiles, download } from '@/tools/download';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { loadImageTiles } from '@/tools/loadImageTiles';
+import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import { DownloadInfo } from '@/types/Sync';
 
 interface UseDownload {
@@ -18,6 +20,7 @@ const useDownload = (): UseDownload => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle, alwaysShowDownloadDialog } = useSettingsStore();
   const { frames, palettes, images } = useItemsStore();
   const { setDownloadHashes } = useInteractionsStore();
+  const { sendEvent } = useTracking();
 
   const prepareFiles = useMemo(() => getPrepareFiles(
     exportScaleFactors,
@@ -71,7 +74,8 @@ const useDownload = (): UseDownload => {
     const zipFilename = getZipFileName(hashes);
     const resultImages = await Promise.all(hashes.map(prepareDownloadInfo));
     download(zipFilename)(resultImages.flat());
-  }, [getZipFileName, prepareDownloadInfo]);
+    sendEvent('downloadImages', { imageCount: nextPowerOfTwo(resultImages.flat().length) });
+  }, [getZipFileName, prepareDownloadInfo, sendEvent]);
 
   const setDownloadImages = useCallback(async (hashes: string[]) => {
     if (alwaysShowDownloadDialog) {

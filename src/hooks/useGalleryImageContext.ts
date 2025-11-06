@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useTracking from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
@@ -64,6 +65,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   const { updateLastSyncLocalNow, deleteImages } = useStores();
   const { setDownloadImages } = useDownload();
   const { shareImage } = useShareImage();
+  const { sendEvent } = useTracking();
 
   const { images } = useItemsStore();
   const image = useMemo(() => (
@@ -137,6 +139,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
         tags: image?.tags || [],
         batch: [hash],
       });
+      sendEvent('editImages', { imageCount: 1 });
     },
   };
 };
