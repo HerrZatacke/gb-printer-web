@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import screenfull from 'screenfull';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useTracking from '@/contexts/TrackingContext';
 import useFiltersStore from '@/stores/filtersStore';
 import useInteractionsStore from '@/stores/interactionsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
-import { type Image } from '@/types/Image';
-import useTracking from '@/contexts/TrackingContext';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
+import { type Image } from '@/types/Image';
 
 interface CurrentInfo {
   index: number,
