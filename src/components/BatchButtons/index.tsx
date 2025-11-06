@@ -157,6 +157,7 @@ function BatchButtons({ page }: Props) {
         }
         {hasPlugins ? (
           <IconButton
+            disabled={!batchEnabled}
             onClick={(ev) => {
               setPluginAnchor(ev.target as HTMLElement);
             }}

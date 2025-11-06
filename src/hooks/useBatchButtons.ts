@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { BatchActionType } from '@/consts/batchActionTypes';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import useTracking from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import { useStores } from '@/hooks/useStores';
 import useDialogsStore from '@/stores/dialogsStore';
@@ -12,10 +13,9 @@ import useItemsStore from '@/stores/itemsStore';
 import useSettingsStore from '@/stores/settingsStore';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
+import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import unique from '@/tools/unique';
 import type { Image, MonochromeImage } from '@/types/Image';
-import useTracking from '@/contexts/TrackingContext';
-import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 
 interface UseBatchButtons {
   hasPlugins: boolean,
