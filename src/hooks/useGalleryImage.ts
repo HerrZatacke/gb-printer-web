@@ -2,7 +2,6 @@ import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import { useCallback, useMemo } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import useEditStore from '@/stores/editStore';
 import useFiltersStore from '@/stores/filtersStore';
 import type { ImageSelectionMode } from '@/stores/filtersStore';
 import useItemsStore from '@/stores/itemsStore';
@@ -37,12 +36,9 @@ interface GalleryImageData {
 interface UseGalleryImage {
   galleryImageData: GalleryImageData | null,
   updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => void,
-  editImage: (tags: string[]) => void,
 }
 
 export const useGalleryImage = (hash: string): UseGalleryImage => {
-  const { setEditImages } = useEditStore();
-
   const { pageSize } = useSettingsStore();
 
   const {
@@ -141,11 +137,5 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
   return {
     galleryImageData,
     updateImageSelection,
-    editImage: (tags: string[]) => {
-      setEditImages({
-        tags,
-        batch: [hash],
-      });
-    },
   };
 };
