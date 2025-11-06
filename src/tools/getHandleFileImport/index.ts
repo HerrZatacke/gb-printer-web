@@ -5,6 +5,7 @@ import { transformBitmaps } from '@/tools/transformBitmaps';
 import { transformPlainText } from '@/tools/transformPlainText';
 import { transformReduced } from '@/tools/transformReduced';
 import { transformSav } from '@/tools/transformSav';
+import { ImportResult } from '@/types/ImportItem';
 import type { PreparedFile } from './prepareFile';
 import prepareFile from './prepareFile';
 
@@ -13,14 +14,14 @@ export interface HandeFileImportOptions {
   savFrameSet?: string,
 }
 
-export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;
+export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<ImportResult[]>;
 
 const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
   const importJSON = getImportJSON(importFn);
 
-  return async (files, { fromPrinter, savFrameSet } = { fromPrinter: false }): Promise<void> => {
+  return async (files, { fromPrinter, savFrameSet } = { fromPrinter: false }): Promise<ImportResult[]> => {
 
-    await Promise.all(files.map((fileData) => {
+    const fileResults = await Promise.all(files.map((fileData): Promise<ImportResult> => {
       const { file, contentType }: PreparedFile = prepareFile(fileData);
 
       if (contentType && contentType.startsWith('image/')) {
@@ -69,7 +70,7 @@ const getHandleFileImport = (importFn: ImportFn): HandeFileImportFn => {
       throw new Error('Not a dump');
     }));
 
-    // ToDo: display some import counter?
+    return fileResults;
   };
 };
 

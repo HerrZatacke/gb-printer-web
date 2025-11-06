@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import useTracking from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import useInteractionsStore from '@/stores/interactionsStore';
+import { concatImportResults } from '@/tools/concatImportResults';
 import getHandleFileImport from '@/tools/getHandleFileImport';
 
 let dragoverTimeout: number;
@@ -8,6 +10,7 @@ let dragging = false;
 
 const useFileDrop = () => {
   const { setDragover, setError } = useInteractionsStore();
+  const { sendEvent } = useTracking();
   const { jsonImport } = useImportExportSettings();
   const handleFileImport = useMemo(() => (getHandleFileImport(jsonImport)), [jsonImport]);
 
@@ -51,7 +54,8 @@ const useFileDrop = () => {
       }
 
       try {
-        await handleFileImport(files);
+        const importResults = await handleFileImport(files);
+        sendEvent('importQueue', concatImportResults(importResults));
       } catch (error) {
         setError(error as Error);
       }
@@ -72,7 +76,7 @@ const useFileDrop = () => {
       root.removeEventListener('drop', dropListener);
     };
 
-  }, [handleFileImport, setDragover, setError]);
+  }, [handleFileImport, sendEvent, setDragover, setError]);
 
   useEffect(initFileDrop, [initFileDrop]);
 };

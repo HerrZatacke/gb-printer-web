@@ -1,4 +1,5 @@
 import { DialoqQuestionType } from '@/consts/dialog';
+import { ImportMethod } from '@/consts/ImportMethod';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
 import useDialogsStore from '@/stores/dialogsStore';
 import useItemsStore from '@/stores/itemsStore';
@@ -6,6 +7,7 @@ import useSettingsStore from '@/stores/settingsStore';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import { reduceItems } from '@/tools/reduceArray';
 import type { DialogOption, DialogQuestion, DialogResult } from '@/types/Dialog';
+import { ImportResult } from '@/types/ImportItem';
 import getImportSav from './importSav';
 
 export interface TransformOptions {
@@ -13,7 +15,7 @@ export interface TransformOptions {
   frameSet?: string,
 }
 
-export const transformSav = async (file: File, options: TransformOptions): Promise<boolean> => {
+export const transformSav = async (file: File, options: TransformOptions): Promise<ImportResult> => {
   const { dismissDialog, setDialog } = useDialogsStore.getState();
   const { frames, frameGroups } = useItemsStore.getState();
   const { savFrameTypes, setSavFrameTypes } = useSettingsStore.getState();
@@ -54,13 +56,19 @@ export const transformSav = async (file: File, options: TransformOptions): Promi
   }
 
   if (frameSet) {
-    await importSav(frameSet, frameSet === 'jp');
-    return true;
+    const imageCount = await importSav(frameSet, frameSet === 'jp');
+    return {
+      imageCount,
+      importMethod: ImportMethod.SAV,
+    };
   }
 
   if (skipDialogs) {
-    await importSav('', false);
-    return true;
+    const imageCount =await importSav('', false);
+    return {
+      imageCount,
+      importMethod: ImportMethod.SAV,
+    };
   }
 
   return new Promise(((resolve) => {
@@ -85,12 +93,18 @@ export const transformSav = async (file: File, options: TransformOptions): Promi
         setSavFrameTypes(chosenFrameset);
 
         // Perform actual import action
-        await importSav(chosenFrameset || '', Boolean(cartIsJP));
-        resolve(true);
+        const imageCount = await importSav(chosenFrameset || '', Boolean(cartIsJP));
+        resolve({
+          imageCount,
+          importMethod: ImportMethod.SAV,
+        });
       },
       deny: async () => {
         dismissDialog(0);
-        resolve(true);
+        resolve({
+          imageCount: 0,
+          importMethod: ImportMethod.SAV,
+        });
       },
     });
   }));

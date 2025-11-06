@@ -67,7 +67,7 @@ export interface GenerateFilenameOptions {
 
 export type GenerateFilenameFn = (options: GenerateFilenameOptions) => string
 
-export type ImportSavFn = (selectedFrameset: string, cartIsJP: boolean) => Promise<boolean>
+export type ImportSavFn = (selectedFrameset: string, cartIsJP: boolean) => Promise<number>
 
 export interface ImportSavParams {
   importLastSeen: boolean,
