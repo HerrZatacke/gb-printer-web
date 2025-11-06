@@ -61,78 +61,55 @@ export function TrackingProvider({ children }: PropsWithChildren) {
     consentState === ConsentState.UNKNOWN
   )), [consentState]);
 
+  const sendEventHandlesRef = useRef<Record<string, number>>({});
   const sendEvent = useCallback((eventName: string, eventData: EventData) => {
     if (!trackingAvailable || consentState !== ConsentState.ACCEPTED || !window.umami) {
       return;
     }
 
-    window.umami.track(eventName, eventData);
+    window.clearTimeout(sendEventHandlesRef.current[eventName]);
+
+    sendEventHandlesRef.current[eventName] = window.setTimeout(() => {
+      window.umami.track(eventName, eventData);
+    }, 1000);
   }, [consentState]);
 
 
   const itemsState = useItemsStore();
   const { errors } = useInteractionsStore();
 
-  const timeoutRefStats = useRef<number | null>(null);
-
   // Send stats event when itemState changes
   useEffect(() => {
-    if (timeoutRefStats.current) {
-      window.clearTimeout(timeoutRefStats.current);
-    }
+    const {
+      images,
+      imageGroups,
+      frames,
+      frameGroups,
+      palettes,
+      plugins,
+    } = itemsState;
 
-    timeoutRefStats.current = window.setTimeout(() => {
-      const {
-        images,
-        imageGroups,
-        frames,
-        frameGroups,
-        palettes,
-        plugins,
-      } = itemsState;
-
-      sendEvent('global-stats', {
-        images: nextPowerOfTwo(images.length),
-        imageGroups: nextPowerOfTwo(imageGroups.length),
-        frames: nextPowerOfTwo(frames.length),
-        frameGroups: nextPowerOfTwo(frameGroups.length),
-        palettes: nextPowerOfTwo(palettes.length),
-        plugins: nextPowerOfTwo(plugins.length),
-      });
-    }, 5000);
-
-    return () => {
-      if (timeoutRefStats.current) {
-        window.clearTimeout(timeoutRefStats.current);
-      }
-    };
+    sendEvent('global-stats', {
+      images: nextPowerOfTwo(images.length),
+      imageGroups: nextPowerOfTwo(imageGroups.length),
+      frames: nextPowerOfTwo(frames.length),
+      frameGroups: nextPowerOfTwo(frameGroups.length),
+      palettes: nextPowerOfTwo(palettes.length),
+      plugins: nextPowerOfTwo(plugins.length),
+    });
   }, [itemsState, sendEvent]);
 
 
-  const timeoutRefErrors = useRef<number | null>(null);
-
   // Send error event when error occurs
   useEffect(() => {
-    if (timeoutRefErrors.current) {
-      window.clearTimeout(timeoutRefErrors.current);
-    }
-
     if (!errors.length) { return; }
 
     const { error } = errors[errors.length - 1];
 
-    timeoutRefErrors.current = window.setTimeout(() => {
-      sendEvent('error', {
-        message: error.message,
-        stack: error.stack || '',
-      });
-    }, 1000);
-
-    return () => {
-      if (timeoutRefErrors.current) {
-        window.clearTimeout(timeoutRefErrors.current);
-      }
-    };
+    sendEvent('error', {
+      message: error.message,
+      stack: error.stack || '',
+    });
   }, [errors, sendEvent]);
 
 
@@ -141,21 +118,9 @@ export function TrackingProvider({ children }: PropsWithChildren) {
   //
   // // Send error event when error occurs
   // useEffect(() => {
-  //   if (timeoutRefRoute.current) {
-  //     window.clearTimeout(timeoutRefRoute.current);
-  //   }
-  //
-  //   timeoutRefRoute.current = window.setTimeout(() => {
-  //     sendEvent('navigate', {
-  //       url: `${window.location.origin}${pathname}`,
-  //     });
-  //   }, 1000);
-  //
-  //   return () => {
-  //     if (timeoutRefRoute.current) {
-  //       window.clearTimeout(timeoutRefRoute.current);
-  //     }
-  //   };
+  //   sendEvent('navigate', {
+  //     url: `${window.location.origin}${pathname}`,
+  //   });
   // }, [pathname, sendEvent]);
 
   return (
