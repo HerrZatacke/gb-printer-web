@@ -6,6 +6,7 @@ import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import useTracking from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import useShareImage from '@/hooks/useShareImage';
+import useSSTV from '@/hooks/useSSTV';
 import { useStores } from '@/hooks/useStores';
 import useDialogsStore from '@/stores/dialogsStore';
 import useEditStore from '@/stores/editStore';
@@ -27,6 +28,7 @@ interface UseGalleryImageContext {
   startDownload: () => void,
   deleteImage: () => void,
   shareImage: () => void,
+  playImage: () => void,
   showMetadata: () => void,
   updateImageToSelection: (mode: ImageSelectionMode) => void,
   setLightboxImage: () => void,
@@ -65,6 +67,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   const { updateLastSyncLocalNow, deleteImages } = useStores();
   const { setDownloadImages } = useDownload();
   const { shareImage } = useShareImage();
+  const { playImage } = useSSTV();
   const { sendEvent } = useTracking();
 
   const { images } = useItemsStore();
@@ -93,6 +96,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
       });
     },
     shareImage: () => shareImage(hash),
+    playImage: () => playImage(hash),
     showMetadata: () => {
       setDialog({
         message: t('metaInfo', { title: image?.title || 'NO_TITLE' }),

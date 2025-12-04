@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
@@ -43,6 +44,7 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     deleteImage,
     setLightboxImage,
     shareImage,
+    playImage,
     startDownload,
     showMetadata,
     updateImageToSelection,
@@ -174,6 +176,20 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
             </ListItemText>
           </MenuItem>
         ) : null}
+        <MenuItem
+          onClick={() => {
+            playImage();
+            onClose();
+          }}
+          title={t('play')}
+        >
+          <ListItemIcon>
+            <MusicNoteIcon />
+          </ListItemIcon>
+          <ListItemText>
+            {t('play')}
+          </ListItemText>
+        </MenuItem>
         <MenuItem
           onClick={() => {
             updateFavouriteTag(!isFavourite);
