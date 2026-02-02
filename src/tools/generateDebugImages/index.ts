@@ -1,5 +1,5 @@
 // Currently unused, but may be added to "window" for debugging purposes
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import padToHeight from '@/tools/padToHeight';
 import saveNewImage from '@/tools/saveNewImage';

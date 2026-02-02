@@ -12,7 +12,7 @@ import TagsList from '@/components/TagsList';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useGalleryGroup } from '@/hooks/useGalleryGroup';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 interface Props {
   hash: string,

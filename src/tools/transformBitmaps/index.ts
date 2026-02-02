@@ -1,5 +1,5 @@
 import { ImportMethod } from '@/consts/ImportMethod';
-import useImportsStore from '@/stores/importsStore';
+import { useImportsStore } from '@/stores/stores';
 import { moveBitmapsToImport } from '@/tools/moveBitmapsToImport';
 import { ImportResult } from '@/types/ImportItem';
 import getImageData from './getImageData';

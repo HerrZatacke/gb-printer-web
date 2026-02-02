@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import type { ExportTypes } from '@/consts/exportTypes';
 import { useStores } from '@/hooks/useStores';
-import useItemsStore from '@/stores/itemsStore';
 import { hashImportFrames } from '@/stores/migrations/history/0/hashFrames';
+import { useItemsStore } from '@/stores/stores';
 import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';

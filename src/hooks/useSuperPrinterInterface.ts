@@ -2,9 +2,11 @@ import { proxy, Remote } from 'comlink';
 import { useCallback, useMemo } from 'react';
 import { PortDeviceType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useProgressStore from '@/stores/progressStore';
+import {
+  useInteractionsStore,
+  useItemsStore,
+  useProgressStore,
+} from '@/stores/stores';
 import { SuperPrinterCommsDevice } from '@/tools/comms/DeviceAPIs/SuperPrinterCommsDevice';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 

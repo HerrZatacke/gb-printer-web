@@ -1,8 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
-import useDialogsStore from '@/stores/dialogsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useDialogsStore, useSettingsStore } from '@/stores/stores';
 import { DialogQuestionSelect, DialogResult } from '@/types/Dialog';
 import { PortSettings } from '@/types/ports';
 

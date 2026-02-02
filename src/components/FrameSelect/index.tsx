@@ -9,7 +9,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import { getFramesForGroup } from '@/tools/getFramesForGroup';
 
 interface FrameSelectOption {

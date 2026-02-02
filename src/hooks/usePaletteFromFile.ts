@@ -3,8 +3,7 @@ import kmeans from 'node-kmeans';
 import quantize, { type RgbPixel } from 'quantize';
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
-import useEditStore from '@/stores/editStore';
-import useInteractionsStore from '@/stores/interactionsStore';
+import { useEditStore, useInteractionsStore } from '@/stores/stores';
 import getImageData from '@/tools/transformBitmaps/getImageData';
 
 export const toHexColor = ([r, g, b]: number[]): string => ([

@@ -11,7 +11,7 @@ import { usePortsContext } from '@/contexts/ports';
 import useProcessMarkdownLinks from '@/hooks/useProcessMarkdownLinks';
 import { shortLocales } from '@/i18n/locales';
 import readmeEn from '@/i18n/markdown/WebUSB/en.md';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 import EnableWebUSB from './EnableWebUSB';
 
 function WebUSBGreeting() {

@@ -1,9 +1,11 @@
 import { useTranslations } from 'next-intl';
 import useEditPalette from '@/hooks/useSetEditPalette';
 import { useStores } from '@/hooks/useStores';
-import useDialogsStore from '@/stores/dialogsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useDialogsStore,
+  useItemsStore,
+  useSettingsStore,
+} from '@/stores/stores';
 
 interface UsePalette {
   isActive: boolean

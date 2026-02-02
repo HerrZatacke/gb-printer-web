@@ -2,8 +2,7 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
 import useEditFrame from '@/hooks/useEditFrame';
-import useEditStore from '@/stores/editStore';
-import useItemsStore from '@/stores/itemsStore';
+import { useEditStore, useItemsStore } from '@/stores/stores';
 import EditFrameForm from './EditFrameForm';
 
 const EditFrame = () => {

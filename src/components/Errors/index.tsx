@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack';
 import type { Theme } from '@mui/system';
 import React from 'react';
-import useInteractionsStore from '@/stores/interactionsStore';
+import { useInteractionsStore } from '@/stores/stores';
 import ErrorMessage from './ErrorMessage';
 
 function Error() {

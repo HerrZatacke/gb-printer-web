@@ -12,10 +12,10 @@ interface Actions {
 
 export type DialogsState = Values & Actions;
 
-const useDialogsStore = create<DialogsState>((set) => ({
-  dialogs: [],
-  dismissDialog: (index: number) => set(({ dialogs }) => ({ dialogs: dialogs.filter((_, i) => index !== i) })),
-  setDialog: (dialog: Dialog) => set(({ dialogs }) => ({ dialogs: [dialog, ...dialogs] })),
-}));
-
-export default useDialogsStore;
+export const createDialogsStore = () => (
+  create<DialogsState>((set) => ({
+    dialogs: [],
+    dismissDialog: (index: number) => set(({ dialogs }) => ({ dialogs: dialogs.filter((_, i) => index !== i) })),
+    setDialog: (dialog: Dialog) => set(({ dialogs }) => ({ dialogs: [dialog, ...dialogs] })),
+  }))
+);

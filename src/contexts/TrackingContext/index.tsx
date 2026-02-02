@@ -10,8 +10,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
+import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import EventData = umami.EventData;
 

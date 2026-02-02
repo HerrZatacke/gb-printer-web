@@ -1,9 +1,11 @@
 import { redirect } from 'next/navigation';
 import { useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import useFiltersStore from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useFiltersStore,
+  useItemsStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import getFilteredImagesCount from '@/tools/getFilteredImages/count';
 import type { Image } from '@/types/Image';

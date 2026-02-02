@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 import React, { useCallback, useState } from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import { useAsPasswordField } from '@/hooks/useAsPasswordField';
-import useStoragesStore from '@/stores/storagesStore';
+import { useStoragesStore } from '@/stores/stores';
 import type { GitStorageSettings } from '@/types/Sync';
 
 function SettingsGit() {

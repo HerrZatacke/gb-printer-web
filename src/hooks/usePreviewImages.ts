@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import useFiltersStore from '@/stores/filtersStore';
+import { useFiltersStore } from '@/stores/stores';
 import type { FilteredImagesState } from '@/tools/getFilteredImages';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';

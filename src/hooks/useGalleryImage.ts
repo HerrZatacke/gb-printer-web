@@ -2,10 +2,12 @@ import type { RGBNPalette, Rotation } from 'gb-image-decoder';
 import { useCallback, useMemo } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import useFiltersStore from '@/stores/filtersStore';
 import type { ImageSelectionMode } from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useFiltersStore,
+  useItemsStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';

@@ -10,8 +10,7 @@ import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import { usePluginsContext } from '@/contexts/plugins';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
+import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 import PluginConfig from './PluginConfig';
 
 

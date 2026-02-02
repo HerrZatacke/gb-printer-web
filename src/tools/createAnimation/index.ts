@@ -4,10 +4,12 @@ import type { RGBNTiles, RGBNPalette } from 'gb-image-decoder';
 import { getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useProgressStore from '@/stores/progressStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useInteractionsStore,
+  useItemsStore,
+  useProgressStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';

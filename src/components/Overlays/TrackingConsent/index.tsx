@@ -8,7 +8,7 @@ import MarkdownStack from '@/components/MarkdownStack';
 import useTracking, { ConsentState } from '@/contexts/TrackingContext';
 import { shortLocales } from '@/i18n/locales';
 import readmeEn from '@/i18n/markdown/Analytics/en.md';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 export default function TrackingConsent() {
   const { showPopup, trackingAvailable, setConsent } = useTracking();

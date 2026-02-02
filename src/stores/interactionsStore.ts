@@ -55,47 +55,47 @@ interface Actions {
 
 export type InteractionsState = Values & Actions;
 
-const useInteractionsStore = create<InteractionsState>((set, get) => ({
-  downloadHashes: [],
-  dragover: false,
-  errors: [],
-  isFullscreen: false,
-  lightboxImage: null,
-  printerBusy: false,
-  printerData: null,
-  printerFunctions: [],
-  showSerials: false,
-  syncBusy: false,
-  syncSelect: false,
-  trashBusy: false,
-  trashCount: { frames: 0, images: 0, show: false },
-  videoSelection: [],
+export const createInteractionsStore = () => (
+  create<InteractionsState>((set, get) => ({
+    downloadHashes: [],
+    dragover: false,
+    errors: [],
+    isFullscreen: false,
+    lightboxImage: null,
+    printerBusy: false,
+    printerData: null,
+    printerFunctions: [],
+    showSerials: false,
+    syncBusy: false,
+    syncSelect: false,
+    trashBusy: false,
+    trashCount: { frames: 0, images: 0, show: false },
+    videoSelection: [],
 
-  dismissError: (index: number) => set({ errors: get().errors.filter((_, i) => i !== index) }),
-  setDownloadHashes: (downloadHashes: string[]) => set({ downloadHashes }),
-  setDragover: (dragover: boolean) => set({ dragover }),
-  setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix(), id: v4() }] }),
-  setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
-  setPrinterBusy: (printerBusy: boolean) => set({ printerBusy }),
-  setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),
-  setPrinterFunctions: (printerFunctions: PrinterFunction[]) => set({ printerFunctions }),
-  setShowSerials: (showSerials: boolean) => set({ showSerials }),
-  setSyncBusy: (syncBusy: boolean) => set({ syncBusy }),
-  setSyncSelect: (syncSelect: boolean) => set({ syncSelect }),
-  showTrashCount: (show: boolean) => set({ trashCount: { ...get().trashCount, show } }),
-  setTrashBusy: (trashBusy: boolean) => set({ trashBusy }),
-  updateTrashCount: (frames: number, images: number) => set({ trashCount: { ...get().trashCount, frames, images } }),
-  setVideoSelection: (videoSelection: string[]) => set({ videoSelection }),
+    dismissError: (index: number) => set({ errors: get().errors.filter((_, i) => i !== index) }),
+    setDownloadHashes: (downloadHashes: string[]) => set({ downloadHashes }),
+    setDragover: (dragover: boolean) => set({ dragover }),
+    setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix(), id: v4() }] }),
+    setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
+    setPrinterBusy: (printerBusy: boolean) => set({ printerBusy }),
+    setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),
+    setPrinterFunctions: (printerFunctions: PrinterFunction[]) => set({ printerFunctions }),
+    setShowSerials: (showSerials: boolean) => set({ showSerials }),
+    setSyncBusy: (syncBusy: boolean) => set({ syncBusy }),
+    setSyncSelect: (syncSelect: boolean) => set({ syncSelect }),
+    showTrashCount: (show: boolean) => set({ trashCount: { ...get().trashCount, show } }),
+    setTrashBusy: (trashBusy: boolean) => set({ trashBusy }),
+    updateTrashCount: (frames: number, images: number) => set({ trashCount: { ...get().trashCount, frames, images } }),
+    setVideoSelection: (videoSelection: string[]) => set({ videoSelection }),
 
-  setLightboxImage: (lightboxImage: number | null) => {
-    if (lightboxImage === null) {
-      if (screenfull.isEnabled) {
-        screenfull.exit();
+    setLightboxImage: (lightboxImage: number | null) => {
+      if (lightboxImage === null) {
+        if (screenfull.isEnabled) {
+          screenfull.exit();
+        }
       }
-    }
 
-    set({ lightboxImage });
-  },
-}));
-
-export default useInteractionsStore;
+      set({ lightboxImage });
+    },
+  }))
+);

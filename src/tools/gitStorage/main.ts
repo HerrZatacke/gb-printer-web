@@ -1,9 +1,12 @@
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useProgressStore, { LogType } from '@/stores/progressStore';
-import useSettingsStore from '@/stores/settingsStore';
-import useStoragesStore from '@/stores/storagesStore';
+import { LogType } from '@/stores/progressStore';
+import {
+  useInteractionsStore,
+  useProgressStore,
+  useSettingsStore,
+  useStoragesStore,
+} from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import getUploadFiles from '@/tools/getUploadFiles';
 import saveLocalStorageItems from '@/tools/saveLocalStorageItems';

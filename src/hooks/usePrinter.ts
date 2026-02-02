@@ -1,6 +1,6 @@
 import type { PrinterFunction } from '@/consts/printerFunction';
 import { useRemotePrinterContext } from '@/contexts/remotePrinter';
-import useInteractionsStore from '@/stores/interactionsStore';
+import { useInteractionsStore } from '@/stores/stores';
 import type { PrinterInfo } from '@/types/Printer';
 
 interface UsePrinter {

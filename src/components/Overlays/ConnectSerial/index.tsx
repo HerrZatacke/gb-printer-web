@@ -11,7 +11,7 @@ import React, { useMemo, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { PortDeviceType, PortType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/ports';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 interface Props {
   inline?: boolean,

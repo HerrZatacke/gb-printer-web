@@ -6,11 +6,13 @@ import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useStores } from '@/hooks/useStores';
-import useEditStore from '@/stores/editStore';
-import useFiltersStore from '@/stores/filtersStore';
-import useImportsStore from '@/stores/importsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useEditStore,
+  useFiltersStore,
+  useImportsStore,
+  useItemsStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import type { TagChange } from '@/tools/applyTagChanges';
 import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';

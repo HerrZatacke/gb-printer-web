@@ -8,7 +8,7 @@ import MarkdownStack from '@/components/MarkdownStack';
 import useProcessMarkdownLinks from '@/hooks/useProcessMarkdownLinks';
 import { shortLocales } from '@/i18n/locales';
 import readmeEn from '@/i18n/markdown/Startpage/en.md';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 export default function Home() {
   const [readme, setReadme] = useState(readmeEn);

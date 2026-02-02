@@ -1,8 +1,7 @@
 import { StorageType, SyncDirection } from '@/consts/sync';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useStoragesStore from '@/stores/storagesStore';
+import { useInteractionsStore, useStoragesStore } from '@/stores/stores';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { gitStorageTool } from '@/tools/gitStorage';
 import type { SyncLastUpdate } from '@/types/Sync';

@@ -5,7 +5,7 @@ import { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } 
 import { PortDeviceType, usbDeviceFilters } from '@/consts/ports';
 import { useGetPortSettings } from '@/hooks/useGetPortSettings';
 import useImportPlainText from '@/hooks/useImportPlainText';
-import useInteractionsStore from '@/stores/interactionsStore';
+import { useInteractionsStore } from '@/stores/stores';
 import { BaseCommsDevice } from '@/tools/comms/DeviceAPIs/BaseCommsDevice';
 import { CaptureCommsDevice } from '@/tools/comms/DeviceAPIs/CaptureCommsDevice';
 import { InactiveCommsDevice } from '@/tools/comms/DeviceAPIs/InactiveCommsDevice';

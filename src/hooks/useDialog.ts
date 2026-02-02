@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
-import useDialogsStore from '@/stores/dialogsStore';
+import { useDialogsStore } from '@/stores/stores';
 import type {
   Dialog,
   DialogQuestion,

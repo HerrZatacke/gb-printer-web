@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState,  PropsWithChildren } from 'react';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 import { localforageImages, localforageReady } from '@/tools/localforageInstance';
 
 // Define the shape of your data

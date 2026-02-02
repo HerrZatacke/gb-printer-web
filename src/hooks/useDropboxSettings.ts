@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
-import useStoragesStore from '@/stores/storagesStore';
+import { useStoragesStore } from '@/stores/stores';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import type { DropBoxSettings } from '@/types/Sync';
 

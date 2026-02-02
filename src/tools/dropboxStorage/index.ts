@@ -1,6 +1,6 @@
 import { SyncDirection } from '@/consts/sync';
 import type { UseStores } from '@/hooks/useStores';
-import useStoragesStore from '@/stores/storagesStore';
+import { useStoragesStore } from '@/stores/stores';
 import type { JSONExportState } from '@/types/ExportState';
 import type { DropBoxSettings } from '@/types/Sync';
 

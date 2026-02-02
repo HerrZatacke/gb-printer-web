@@ -1,6 +1,6 @@
 import Queue from 'promise-queue';
 import { SavImportOrder } from '@/consts/SavImportOrder';
-import useImportsStore from '@/stores/importsStore';
+import { useImportsStore } from '@/stores/stores';
 import applyFrame from '@/tools/applyFrame';
 import { randomId } from '@/tools/randomId';
 import { reduceItems } from '@/tools/reduceArray';

@@ -1,8 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
-import useEditStore from '@/stores/editStore';
-import useItemsStore from '@/stores/itemsStore';
+import { useEditStore, useItemsStore } from '@/stores/stores';
 import type { Palette } from '@/types/Palette';
 
 const randomColor = (max: number): string => (

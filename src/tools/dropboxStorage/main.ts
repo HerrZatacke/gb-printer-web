@@ -1,12 +1,15 @@
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
 import type { UseStores } from '@/hooks/useStores';
-import useFiltersStore from '@/stores/filtersStore';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useProgressStore, { LogType } from '@/stores/progressStore';
-import useSettingsStore from '@/stores/settingsStore';
-import useStoragesStore from '@/stores/storagesStore';
+import { LogType } from '@/stores/progressStore';
+import {
+  useFiltersStore,
+  useInteractionsStore,
+  useItemsStore,
+  useProgressStore,
+  useSettingsStore,
+  useStoragesStore,
+} from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { getPrepareFiles } from '@/tools/download';
 import { getFilteredImages } from '@/tools/getFilteredImages';

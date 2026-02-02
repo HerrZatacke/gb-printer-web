@@ -1,5 +1,5 @@
 import { SyncDirection } from '@/consts/sync';
-import useStoragesStore from '@/stores/storagesStore';
+import { useStoragesStore } from '@/stores/stores';
 import type { JSONExportState } from '@/types/ExportState';
 import type { GitStorageSettings } from '@/types/Sync';
 

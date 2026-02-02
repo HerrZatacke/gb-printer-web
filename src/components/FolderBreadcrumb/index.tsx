@@ -11,8 +11,8 @@ import React, { useState } from 'react';
 import FolderTreeDialog from '@/components/FolderTreeDialog';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { usePathSegments } from '@/hooks/usePathSegments';
+import { useEditStore } from '@/stores/stores';
 import { shorten } from '@/tools/shorten';
-import useEditStore from '../../stores/editStore';
 
 function FolderBreadcrumb() {
   const t = useTranslations('FolderBreadcrumb');

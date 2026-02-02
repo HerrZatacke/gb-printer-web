@@ -5,9 +5,11 @@ import type { PropsWithChildren } from 'react';
 import useTracking from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useProgressStore from '@/stores/progressStore';
+import {
+  useInteractionsStore,
+  useItemsStore,
+  useProgressStore,
+} from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import type { InitPluginSetupParams, Plugin, PluginClassInstance, PluginImageData, PluginsContext } from '@/types/Plugin';
 import { getCollectImageData } from './functions/collectImageData';

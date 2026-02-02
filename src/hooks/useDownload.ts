@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import useTracking from '@/contexts/TrackingContext';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useInteractionsStore,
+  useItemsStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getPrepareFiles, download } from '@/tools/download';
 import generateFileName from '@/tools/generateFileName';

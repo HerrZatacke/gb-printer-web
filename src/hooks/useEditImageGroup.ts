@@ -2,9 +2,11 @@ import { useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import type { EditGroupInfo } from '@/stores/editStore';
-import useEditStore from '@/stores/editStore';
-import useFiltersStore from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
+import {
+  useEditStore,
+  useFiltersStore,
+  useItemsStore,
+} from '@/stores/stores';
 import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';

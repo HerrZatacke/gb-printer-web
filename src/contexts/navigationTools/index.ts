@@ -1,8 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import useFiltersStore from '@/stores/filtersStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useFiltersStore, useSettingsStore } from '@/stores/stores';
 import { ROOT_ID } from '@/tools/createTreeRoot';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { type Image } from '@/types/Image';

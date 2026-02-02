@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import useTracking from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
-import useInteractionsStore from '@/stores/interactionsStore';
+import { useInteractionsStore } from '@/stores/stores';
 import { concatImportResults } from '@/tools/concatImportResults';
 import getHandleFileImport from '@/tools/getHandleFileImport';
 

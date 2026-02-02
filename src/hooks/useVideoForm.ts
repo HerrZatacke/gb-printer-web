@@ -1,5 +1,4 @@
-import useInteractionsStore from '@/stores/interactionsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { createAnimation, videoParamsWithDefaults } from '@/tools/createAnimation';
 import type { VideoParams } from '@/types/VideoParams';
 

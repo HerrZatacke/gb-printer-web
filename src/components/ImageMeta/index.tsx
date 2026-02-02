@@ -10,9 +10,9 @@ import dayjs from 'dayjs';
 import { Rotation } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
+import { useSettingsStore } from '@/stores/stores';
 import { toCreationDate } from '@/tools/toCreationDate';
 import type { ImageMetadata, RGBNHashes } from '@/types/Image';
-import useSettingsStore from '../../stores/settingsStore';
 import MetaTable from '../MetaTable';
 import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
 

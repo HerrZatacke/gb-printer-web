@@ -4,7 +4,7 @@ import React from 'react';
 import Lightbox from '@/components/Lightbox';
 import DownloadOptionsForm from '@/components/Overlays/DownloadOptions/DownloadOptionsForm';
 import useDownload from '@/hooks/useDownload';
-import useInteractionsStore from '@/stores/interactionsStore';
+import { useInteractionsStore } from '@/stores/stores';
 
 function DownloadOptions() {
   const t = useTranslations('DownloadOptions');

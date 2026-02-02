@@ -5,8 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { usePluginsContext } from '@/contexts/plugins';
-import useFiltersStore from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
+import { useFiltersStore, useItemsStore } from '@/stores/stores';
 
 interface Props {
   pluginAnchor: HTMLElement | null,
@@ -39,9 +38,9 @@ function PluginSelect({ pluginAnchor, hash, onClose }: Props) {
           <MenuItem
             key={url}
             disabled={Boolean(loading || error)}
-            title={t('pluginTooltip', { 
-              description: error || description || '', 
-              url, 
+            title={t('pluginTooltip', {
+              description: error || description || '',
+              url,
             })}
             onClick={() => {
               onClose();

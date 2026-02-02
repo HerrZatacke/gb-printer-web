@@ -9,7 +9,7 @@ import { ReactNode, useEffect } from 'react';
 import React, { useState } from 'react';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 const viewName = (id: GalleryViews): string => {
   switch (id) {

@@ -4,10 +4,12 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import type { PropsWithChildren } from 'react';
 import { PrinterFunction } from '@/consts/printerFunction';
 import useImportFile from '@/hooks/useImportFile';
-import useDialogsStore from '@/stores/dialogsStore';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useProgressStore from '@/stores/progressStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useDialogsStore,
+  useInteractionsStore,
+  useProgressStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import type { BlobResponse, PrinterParams, RemotePrinterEvent } from '@/types/Printer';
 import type { RemotePrinterContext } from './index';
 import { remotePrinterContext } from './index';

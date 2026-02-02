@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import useTracking from '@/contexts/TrackingContext';
-import useInteractionsStore from '@/stores/interactionsStore';
+import { useInteractionsStore } from '@/stores/stores';
 import { concatImportResults } from '@/tools/concatImportResults';
 import getHandleFileImport, { type HandeFileImportFn, type HandeFileImportOptions } from '@/tools/getHandleFileImport';
 import { ImportResult } from '@/types/ImportItem';

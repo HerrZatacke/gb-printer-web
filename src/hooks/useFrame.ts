@@ -1,9 +1,11 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useStores } from '@/hooks/useStores';
-import useDialogsStore from '@/stores/dialogsStore';
-import useEditStore from '@/stores/editStore';
-import useItemsStore from '@/stores/itemsStore';
+import {
+  useDialogsStore,
+  useEditStore,
+  useItemsStore,
+} from '@/stores/stores';
 import applyFrame from '@/tools/applyFrame';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import textToTiles from '@/tools/textToTiles';

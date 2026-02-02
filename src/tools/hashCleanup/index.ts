@@ -1,7 +1,7 @@
 import type { RGBNTiles } from 'gb-image-decoder';
 import { useState } from 'react';
 import { useStores } from '@/hooks/useStores';
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import { compressAndHash, save } from '@/tools/storage';

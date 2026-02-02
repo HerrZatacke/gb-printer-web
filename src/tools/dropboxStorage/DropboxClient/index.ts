@@ -3,7 +3,7 @@ import type { DropboxAuth, DropboxOptions, DropboxResponse } from 'dropbox';
 import { Dropbox } from 'dropbox';
 import type { files as Files, async as Async } from 'dropbox/types/dropbox_types';
 import { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
-import useStoragesStore from '@/stores/storagesStore';
+import { useStoragesStore } from '@/stores/stores';
 import cleanPath from '@/tools/cleanPath';
 import { delay } from '@/tools/delay';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';

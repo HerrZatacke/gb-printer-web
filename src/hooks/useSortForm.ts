@@ -1,4 +1,4 @@
-import useFiltersStore from '@/stores/filtersStore';
+import { useFiltersStore } from '@/stores/stores';
 import { type SortDirection } from '@/tools/sortby';
 
 interface UseSortForm {

@@ -9,8 +9,7 @@ import ImportPreviewImage from '@/components/ImportPreviewImage';
 import Lightbox from '@/components/Lightbox';
 import type { ImportContrastValue } from '@/consts/bitmapQueueSettings';
 import { contrastSettings } from '@/consts/bitmapQueueSettings';
-import useImportsStore from '@/stores/importsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useImportsStore, useSettingsStore } from '@/stores/stores';
 import { moveBitmapsToImport } from '@/tools/moveBitmapsToImport';
 
 function BitmapQueue() {
