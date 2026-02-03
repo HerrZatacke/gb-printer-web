@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import type { CSSPropertiesVars, PropsWithChildren } from 'react';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 interface Props extends PropsWithChildren {
   fixedView?: GalleryViews,

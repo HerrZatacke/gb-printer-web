@@ -1,8 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import type { Image, MonochromeImage } from '@/types/Image';
 import type { Palette } from '@/types/Palette';

@@ -4,9 +4,11 @@ import { proxy, wrap } from 'comlink';
 import React, { type Context, createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useUrl } from '@/hooks/useUrl';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useInteractionsStore,
+  useItemsStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import { createTreeRoot } from '@/tools/createTreeRoot';
 import { type DialogOption } from '@/types/Dialog';
 import {

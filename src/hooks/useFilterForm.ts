@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAvailableTags } from '@/hooks/useAvailableTags';
-import useFiltersStore from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
+import { useFiltersStore, useItemsStore } from '@/stores/stores';
 import sortBy, { SortDirection } from '@/tools/sortby';
 import unique from '@/tools/unique';
 import { type Frame } from '@/types/Frame';

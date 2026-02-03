@@ -15,8 +15,7 @@ import FilterFormTab from '@/components/Overlays/FilterForm/FilterFormTab';
 import FilterFormTag from '@/components/Overlays/FilterForm/FilterFormTag';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { useFilterForm } from '@/hooks/useFilterForm';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import sortBy, { SortDirection } from '@/tools/sortby';
 
 enum FilterTab {

@@ -5,9 +5,11 @@ import Lightbox from '@/components/Lightbox';
 import EditFrameForm from '@/components/Overlays/EditFrame/EditFrameForm';
 import useEditFrame from '@/hooks/useEditFrame';
 import { useStores } from '@/hooks/useStores';
-import useDialogsStore from '@/stores/dialogsStore';
-import useImportsStore from '@/stores/importsStore';
-import useItemsStore from '@/stores/itemsStore';
+import {
+  useDialogsStore,
+  useImportsStore,
+  useItemsStore,
+} from '@/stores/stores';
 import { saveFrameData } from '@/tools/applyFrame/frameData';
 
 function FrameQueue() {

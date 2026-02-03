@@ -7,12 +7,14 @@ import useTracking from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
-import useDialogsStore from '@/stores/dialogsStore';
-import useEditStore from '@/stores/editStore';
-import useFiltersStore from '@/stores/filtersStore';
 import type { ImageSelectionMode } from '@/stores/filtersStore';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
+import {
+  useDialogsStore,
+  useEditStore,
+  useFiltersStore,
+  useInteractionsStore,
+  useItemsStore,
+} from '@/stores/stores';
 import { canShare } from '@/tools/canShare';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import type { RGBNImage } from '@/types/Image';

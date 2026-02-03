@@ -1,6 +1,6 @@
 import { useFormatter } from 'next-intl';
 import { useCallback } from 'react';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 interface UseDateFormat {
   formatterGallery: (date: string) => string | null;

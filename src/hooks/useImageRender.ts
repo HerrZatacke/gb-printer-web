@@ -5,7 +5,7 @@ import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { type RGBNHashes } from '@/types/Image';

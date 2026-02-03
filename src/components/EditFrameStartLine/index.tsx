@@ -6,8 +6,7 @@ import Stack from '@mui/material/Stack';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { posTiles } from './posTiles';
 
 interface Props {

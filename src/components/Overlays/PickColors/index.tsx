@@ -10,7 +10,7 @@ import Lightbox from '@/components/Lightbox';
 import PalettePreview from '@/components/PalettePreview';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import { toHexColor } from '@/hooks/usePaletteFromFile';
-import useEditStore from '@/stores/editStore';
+import { useEditStore } from '@/stores/stores';
 
 function PickColors() {
   const t = useTranslations('PickColors');

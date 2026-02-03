@@ -6,10 +6,12 @@ import { useNavigationToolsContext } from '@/contexts/navigationTools/Navigation
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { toSlug } from '@/hooks/useEditImageGroup';
 import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
-import useEditStore from '@/stores/editStore';
-import useFiltersStore from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useEditStore,
+  useFiltersStore,
+  useItemsStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';

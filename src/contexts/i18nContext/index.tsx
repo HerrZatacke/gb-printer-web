@@ -6,7 +6,7 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { formats } from '@/i18n/formats';
 import { defaultLocale, locales, shortLocales } from '@/i18n/locales';
 import messagesEn from '@/i18n/messages/en.json';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 function I18nContext({ children }: PropsWithChildren) {
   const [locale, setLocale] = useState('en');

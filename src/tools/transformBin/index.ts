@@ -1,5 +1,5 @@
 import { ImportMethod } from '@/consts/ImportMethod';
-import useImportsStore from '@/stores/importsStore';
+import { useImportsStore } from '@/stores/stores';
 import { randomId } from '@/tools/randomId';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import { compressAndHash } from '@/tools/storage';

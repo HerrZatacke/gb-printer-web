@@ -31,8 +31,7 @@ import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { usePortsContext } from '@/contexts/ports';
 import useNavigation from '@/hooks/useNavigation';
 import { useUrl } from '@/hooks/useUrl';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { lightTheme } from '@/styles/themes';
 import { reduceItems } from '@/tools/reduceArray';
 

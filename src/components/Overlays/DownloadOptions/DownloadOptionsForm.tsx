@@ -13,7 +13,7 @@ import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import exportFrameModes from '@/consts/exportFrameModes';
 import { FileNameStyle, fileNameStyleLabels } from '@/consts/fileNameStyles';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
 
 interface Props {

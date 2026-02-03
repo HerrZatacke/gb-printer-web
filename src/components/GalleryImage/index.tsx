@@ -11,7 +11,7 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { ImageSelectionMode } from '@/stores/filtersStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 import type { RGBNHashes } from '@/types/Image';
 
 dayjs.extend(customParseFormat);

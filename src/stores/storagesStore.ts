@@ -36,35 +36,35 @@ const gitDefaults: GitStorageSettings = {
   use: false,
 };
 
-const useStoragesStore = create(
-  subscribeWithSelector(
-    persist<StoragesState>(
-      (set) => ({
-        dropboxStorage: {},
-        gitStorage: {},
-        syncLastUpdate: { dropbox: 0, local: 0 },
+export const createStoragesStore = () => (
+  create(
+    subscribeWithSelector(
+      persist<StoragesState>(
+        (set) => ({
+          dropboxStorage: {},
+          gitStorage: {},
+          syncLastUpdate: { dropbox: 0, local: 0 },
 
-        dropboxLogout: () => set(({ dropboxStorage }) => ({ dropboxStorage: {
-          ...dropboxDefaults,
-            use: dropboxStorage.use,
-            path: dropboxStorage.path,
-        } })),
-        setDropboxStorage: (newSettings: DropBoxSettings) => set(({ dropboxStorage }) => (
-          { dropboxStorage: { ...dropboxDefaults, ...dropboxStorage, ...newSettings } }
-        )),
-        setGitStorage: (newSettings: GitStorageSettings) => set(({ gitStorage }) => (
-          { gitStorage: { ...gitDefaults, ...gitStorage, ...newSettings } }
-        )),
-        setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => (set(({ syncLastUpdate }) => (
-          { syncLastUpdate: { ...syncLastUpdate, [what]: value } }
-        ))),
-      }),
-      {
-        name: `${PROJECT_PREFIX}-storages`,
-        storage: createJSONStorage(() => localStorage),
-      },
+          dropboxLogout: () => set(({ dropboxStorage }) => ({ dropboxStorage: {
+              ...dropboxDefaults,
+              use: dropboxStorage.use,
+              path: dropboxStorage.path,
+            } })),
+          setDropboxStorage: (newSettings: DropBoxSettings) => set(({ dropboxStorage }) => (
+            { dropboxStorage: { ...dropboxDefaults, ...dropboxStorage, ...newSettings } }
+          )),
+          setGitStorage: (newSettings: GitStorageSettings) => set(({ gitStorage }) => (
+            { gitStorage: { ...gitDefaults, ...gitStorage, ...newSettings } }
+          )),
+          setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => (set(({ syncLastUpdate }) => (
+            { syncLastUpdate: { ...syncLastUpdate, [what]: value } }
+          ))),
+        }),
+        {
+          name: `${PROJECT_PREFIX}-storages`,
+          storage: createJSONStorage(() => localStorage),
+        },
+      ),
     ),
-  ),
+  )
 );
-
-export default useStoragesStore;

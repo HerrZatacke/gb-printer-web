@@ -1,4 +1,4 @@
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import { getTxtFile } from '@/tools/download/getTxtFile';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';

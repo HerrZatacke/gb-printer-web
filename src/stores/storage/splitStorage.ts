@@ -134,11 +134,23 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
     window.removeEventListener('beforeunload', unloadHandler);
   };
 
+  const getVersion = async (): Promise<number | null> => {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    try {
+      return rootStore.getItem<number>('version');
+    } catch {
+      return null;
+    }
+  };
+
   const loadRootData = async (): Promise<{
     state: Values,
     version: number,
   } | null> => {
-    const version = await rootStore.getItem<number>('version');
+    const version = await getVersion();
 
     if (typeof version !== 'number') { return null; }
 

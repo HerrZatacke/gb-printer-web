@@ -22,13 +22,15 @@ import TrackingConsent from '@/components/Overlays/TrackingConsent';
 import Trashbin from '@/components/Overlays/Trashbin';
 import VideoParamsForm from '@/components/Overlays/VideoParamsForm';
 import useTracking from '@/contexts/TrackingContext';
-import useDialogsStore from '@/stores/dialogsStore';
-import useEditStore from '@/stores/editStore';
-import useFiltersStore from '@/stores/filtersStore';
-import useImportsStore from '@/stores/importsStore';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useProgressStore from '@/stores/progressStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useDialogsStore,
+  useEditStore,
+  useFiltersStore,
+  useImportsStore,
+  useInteractionsStore,
+  useProgressStore,
+  useSettingsStore,
+} from '@/stores/stores';
 
 function Overlays() {
   const { showPopup, trackingAvailable } = useTracking();

@@ -15,7 +15,7 @@ import NavigationSkeleton from '@/components/Navigation/Skeleton';
 import Overlays from '@/components/Overlays';
 import { ThemeName } from '@/consts/theme';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 import { darkTheme, lightTheme } from '@/styles/themes';
 
 export default function RootLayout({

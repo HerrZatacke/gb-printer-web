@@ -1,8 +1,7 @@
 import type { ExportTypes } from '@/consts/exportTypes';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import useImportFile from '@/hooks/useImportFile';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 
 interface UseImport {
   printerUrl?: string,

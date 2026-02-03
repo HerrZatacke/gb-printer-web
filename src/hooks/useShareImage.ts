@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import useTracking from '@/contexts/TrackingContext';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getPrepareFiles } from '@/tools/download';
 import { loadImageTiles } from '@/tools/loadImageTiles';

@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import type { Plugin } from '@/types/Plugin';
 import PluginInputField from './PluginInputField';
 

@@ -6,7 +6,7 @@ import FrameContextMenu from '@/components/FrameContextMenu';
 import GalleryGridItem from '@/components/GalleryGridItem';
 import GameBoyImage from '@/components/GameBoyImage';
 import useFrame from '@/hooks/useFrame';
-import useSettingsStore from '@/stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 interface Props {
   frameId: string,

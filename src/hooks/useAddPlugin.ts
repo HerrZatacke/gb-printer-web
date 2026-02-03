@@ -3,8 +3,7 @@ import { useCallback, useState } from 'react';
 import { parseURL } from 'ufo';
 import { usePluginsContext } from '@/contexts/plugins';
 import { useUrl } from '@/hooks/useUrl';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
+import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 
 const trustedSources = [
   'https://herrzatacke.github.io',

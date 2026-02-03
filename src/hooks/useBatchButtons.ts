@@ -5,12 +5,14 @@ import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import useTracking from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import { useStores } from '@/hooks/useStores';
-import useDialogsStore from '@/stores/dialogsStore';
-import useEditStore from '@/stores/editStore';
-import useFiltersStore from '@/stores/filtersStore';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import {
+  useDialogsStore,
+  useEditStore,
+  useFiltersStore,
+  useInteractionsStore,
+  useItemsStore,
+  useSettingsStore,
+} from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';

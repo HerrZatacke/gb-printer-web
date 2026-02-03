@@ -12,7 +12,7 @@ import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import PaletteIcon from '@/components/PaletteIcon';
 import usePaletteSort from '@/hooks/usePaletteSort';
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 
 interface Props {
   value: string,

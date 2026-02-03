@@ -3,7 +3,7 @@ import { RGBNTiles } from 'gb-image-decoder';
 import React, { useCallback, useEffect, useState } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import { defaultRGBNPalette } from '@/consts/defaults';
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import { loadImageTiles as getLoadImageTiles } from '@/tools/loadImageTiles';
 import { type RGBNHashes } from '@/types/Image';
 

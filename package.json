@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.52.2",
+  "version": "1.52.3",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev",
@@ -79,8 +79,8 @@
     "globby": "^14.1.0",
     "jszip": "^3.10.1",
     "localforage": "^1.10.0",
-    "mui-markdown": "^2.0.1",
-    "next": "15.5.7",
+    "mui-markdown": "^2.1.0",
+    "next": "15.5.11",
     "next-intl": "^4.3.4",
     "node-kmeans": "^1.1.9",
     "object-hash": "^3.0.0",

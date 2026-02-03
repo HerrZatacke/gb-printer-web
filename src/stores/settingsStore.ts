@@ -91,82 +91,82 @@ const getDefaultLocale = (): string => {
   return defaultLocale;
 };
 
-const useSettingsStore = create(
-  persist<SettingsState>(
-    (set) => ({
-      activePalette: 'bw',
-      alwaysShowDownloadDialog: true,
-      bitmapQueueDither: true,
-      bitmapQueueSetting: ImportContrastValue.WIDE,
-      createGroup: true,
-      enableDebug: false,
-      exportFileTypes: ['png'],
-      exportScaleFactors: [4],
-      fileNameStyle: FileNameStyle.FULL,
-      forceMagicCheck: false,
-      galleryView: GalleryViews.GALLERY_VIEW_1X,
-      galleryClickAction: GalleryClickAction.SELECT,
-      handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
-      hideDates: false,
-      importDeleted: true,
-      importLastSeen: true,
-      importPad: false,
-      lastBaudRate: 115200,
-      pageSize: 30,
-      preferredLocale: getDefaultLocale(),
-      printerParams: '',
-      printerUrl: '',
-      savFrameTypes: 'int',
-      savImportOrder: SavImportOrder.CART_INDEX,
-      themeName: ThemeName.BRIGHT,
-      sortPalettes: PaletteSortMode.DEFAULT_DESC,
-      useSerials: false,
-      videoParams: {},
+export const createSettingsStore = () => (
+  create(
+    persist<SettingsState>(
+      (set) => ({
+        activePalette: 'bw',
+        alwaysShowDownloadDialog: true,
+        bitmapQueueDither: true,
+        bitmapQueueSetting: ImportContrastValue.WIDE,
+        createGroup: true,
+        enableDebug: false,
+        exportFileTypes: ['png'],
+        exportScaleFactors: [4],
+        fileNameStyle: FileNameStyle.FULL,
+        forceMagicCheck: false,
+        galleryView: GalleryViews.GALLERY_VIEW_1X,
+        galleryClickAction: GalleryClickAction.SELECT,
+        handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
+        hideDates: false,
+        importDeleted: true,
+        importLastSeen: true,
+        importPad: false,
+        lastBaudRate: 115200,
+        pageSize: 30,
+        preferredLocale: getDefaultLocale(),
+        printerParams: '',
+        printerUrl: '',
+        savFrameTypes: 'int',
+        savImportOrder: SavImportOrder.CART_INDEX,
+        themeName: ThemeName.BRIGHT,
+        sortPalettes: PaletteSortMode.DEFAULT_DESC,
+        useSerials: false,
+        videoParams: {},
 
-      setActivePalette: (activePalette: string) => set({ activePalette }),
-      setAlwaysShowDownloadDialog: (alwaysShowDownloadDialog: boolean) => set({ alwaysShowDownloadDialog }),
-      setBitmapQueueDither: (bitmapQueueDither: boolean) => set({ bitmapQueueDither }),
-      setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => set({ bitmapQueueSetting }),
-      setCreateGroup: (createGroup: boolean) => set({ createGroup }),
-      setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
-      setFileNameStyle: (fileNameStyle: FileNameStyle) => set({ fileNameStyle }),
-      setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),
-      setGalleryView: (galleryView: GalleryViews) => set({ galleryView }),
-      setGalleryClickAction: (galleryClickAction: GalleryClickAction) => set({ galleryClickAction }),
-      setHandleExportFrame: (handleExportFrame: ExportFrameMode) => set({ handleExportFrame }),
-      setHideDates: (hideDates: boolean) => set({ hideDates }),
-      setImportDeleted: (importDeleted: boolean) => set({ importDeleted }),
-      setImportLastSeen: (importLastSeen: boolean) => set({ importLastSeen }),
-      setImportPad: (importPad: boolean) => set({ importPad }),
-      setLastBaudRate: (lastBaudRate: number) => set({ lastBaudRate }),
-      setPageSize: (pageSize: number) => set({ pageSize }),
-      setPrinterParams: (printerParams: string) => set({ printerParams }),
-      setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
-      setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
-      setSavImportOrder: (savImportOrder: SavImportOrder) => set({ savImportOrder }),
-      setThemeName: (themeName: ThemeName) => set({ themeName }),
-      setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),
-      setUseSerials: (useSerials: boolean) => set({ useSerials }),
-      setVideoParams: (videoParams: Partial<VideoParams>) => set((state) => (
-        { videoParams: { ...state.videoParams, ...videoParams } }
-      )),
+        setActivePalette: (activePalette: string) => set({ activePalette }),
+        setAlwaysShowDownloadDialog: (alwaysShowDownloadDialog: boolean) => set({ alwaysShowDownloadDialog }),
+        setBitmapQueueDither: (bitmapQueueDither: boolean) => set({ bitmapQueueDither }),
+        setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => set({ bitmapQueueSetting }),
+        setCreateGroup: (createGroup: boolean) => set({ createGroup }),
+        setEnableDebug: (enableDebug: boolean) => set({ enableDebug }),
+        setFileNameStyle: (fileNameStyle: FileNameStyle) => set({ fileNameStyle }),
+        setForceMagicCheck: (forceMagicCheck: boolean) => set({ forceMagicCheck }),
+        setGalleryView: (galleryView: GalleryViews) => set({ galleryView }),
+        setGalleryClickAction: (galleryClickAction: GalleryClickAction) => set({ galleryClickAction }),
+        setHandleExportFrame: (handleExportFrame: ExportFrameMode) => set({ handleExportFrame }),
+        setHideDates: (hideDates: boolean) => set({ hideDates }),
+        setImportDeleted: (importDeleted: boolean) => set({ importDeleted }),
+        setImportLastSeen: (importLastSeen: boolean) => set({ importLastSeen }),
+        setImportPad: (importPad: boolean) => set({ importPad }),
+        setLastBaudRate: (lastBaudRate: number) => set({ lastBaudRate }),
+        setPageSize: (pageSize: number) => set({ pageSize }),
+        setPrinterParams: (printerParams: string) => set({ printerParams }),
+        setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
+        setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
+        setSavImportOrder: (savImportOrder: SavImportOrder) => set({ savImportOrder }),
+        setThemeName: (themeName: ThemeName) => set({ themeName }),
+        setSortPalettes: (sortPalettes: PaletteSortMode) => set({ sortPalettes }),
+        setUseSerials: (useSerials: boolean) => set({ useSerials }),
+        setVideoParams: (videoParams: Partial<VideoParams>) => set((state) => (
+          { videoParams: { ...state.videoParams, ...videoParams } }
+        )),
 
-      setExportScaleFactors: (exportScaleFactors: number[]) => set({ exportScaleFactors }),
-      setExportFileTypes: (exportFileTypes: string[]) => set({ exportFileTypes }),
+        setExportScaleFactors: (exportScaleFactors: number[]) => set({ exportScaleFactors }),
+        setExportFileTypes: (exportFileTypes: string[]) => set({ exportFileTypes }),
 
-      setPreferredLocale: (preferredLocale: string) => {
-        if (locales.includes(preferredLocale)) {
-          set({ preferredLocale });
-        } else {
-          console.log(`unknown locale "${preferredLocale}"`);
-        }
+        setPreferredLocale: (preferredLocale: string) => {
+          if (locales.includes(preferredLocale)) {
+            set({ preferredLocale });
+          } else {
+            console.log(`unknown locale "${preferredLocale}"`);
+          }
+        },
+      }),
+      {
+        name: `${PROJECT_PREFIX}-settings`,
+        storage: createJSONStorage(() => localStorage),
       },
-    }),
-    {
-      name: `${PROJECT_PREFIX}-settings`,
-      storage: createJSONStorage(() => localStorage),
-    },
-  ),
+    ),
+  )
 );
-
-export default useSettingsStore;

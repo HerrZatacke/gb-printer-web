@@ -1,9 +1,9 @@
 import { saveAs } from 'file-saver';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
-import useInteractionsStore from '@/stores/interactionsStore';
 import type { TrashCount } from '@/stores/interactionsStore';
-import useItemsStore, { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
+import { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
+import { useItemsStore, useInteractionsStore } from '@/stores/stores';
 import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';

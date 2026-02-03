@@ -3,9 +3,11 @@ import { useCallback } from 'react';
 import { Updatable, UpdatableMonochrome, UPDATATABLES } from '@/consts/batchActionTypes';
 import type { ImageUpdatable } from '@/consts/batchActionTypes';
 import { useStores } from '@/hooks/useStores';
-import useEditStore from '@/stores/editStore';
-import useFiltersStore from '@/stores/filtersStore';
-import useItemsStore from '@/stores/itemsStore';
+import {
+  useEditStore,
+  useFiltersStore,
+  useItemsStore,
+} from '@/stores/stores';
 import applyTagChanges from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import type { TagUpdates } from '@/tools/modifyTagChanges';

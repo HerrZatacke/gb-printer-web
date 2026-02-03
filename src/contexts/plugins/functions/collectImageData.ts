@@ -1,7 +1,6 @@
 import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
 import type { RGBNPalette, RGBNTiles } from 'gb-image-decoder';
-import useItemsStore from '@/stores/itemsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';

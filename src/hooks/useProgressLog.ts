@@ -1,5 +1,5 @@
-import useProgressStore, { type LogItem } from '@/stores/progressStore';
-import useStoragesStore from '@/stores/storagesStore';
+import { type LogItem } from '@/stores/progressStore';
+import { useProgressStore, useStoragesStore } from '@/stores/stores';
 
 interface UseProgressLog {
   git: {

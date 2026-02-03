@@ -1,7 +1,9 @@
 import { usePortsContext } from '@/contexts/ports';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useSettingsStore from '@/stores/settingsStore';
-import useStoragesStore from '@/stores/storagesStore';
+import {
+  useInteractionsStore,
+  useSettingsStore,
+  useStoragesStore,
+} from '@/stores/stores';
 import type { SyncLastUpdate } from '@/types/Sync';
 
 interface UseNavigation {

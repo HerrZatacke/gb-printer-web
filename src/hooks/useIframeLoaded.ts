@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import useInteractionsStore from '@/stores/interactionsStore';
-import useSettingsStore from '@/stores/settingsStore';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 
 
 export interface UseIframeLoaded {

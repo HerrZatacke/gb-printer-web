@@ -1,6 +1,6 @@
 import { Rotation, TILE_PIXEL_WIDTH, TILES_PER_LINE } from 'gb-image-decoder';
 import { useMemo } from 'react';
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import { isRGBNImage, reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNImage } from '@/types/Image';
 

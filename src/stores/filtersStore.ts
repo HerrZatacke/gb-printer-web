@@ -38,98 +38,98 @@ interface Actions {
 
 export type FiltersState = Values & Actions;
 
-const useFiltersStore = create(
-  persist<FiltersState>(
-    (set, get) => ({
-      filtersTags: [],
-      filtersPalettes: [],
-      filtersFrames: [],
-      filtersVisible: false,
-      imageSelection: [],
-      lastSelectedImage: null,
-      recentImports: [],
-      sortBy: 'created_asc',
-      sortOptionsVisible: false,
+export const createFiltersStore = () => (
+  create(
+    persist<FiltersState>(
+      (set, get) => ({
+        filtersTags: [],
+        filtersPalettes: [],
+        filtersFrames: [],
+        filtersVisible: false,
+        imageSelection: [],
+        lastSelectedImage: null,
+        recentImports: [],
+        sortBy: 'created_asc',
+        sortOptionsVisible: false,
 
-      setFilters: (filtersTags: string[], filtersPalettes: string[], filtersFrames: string[]) => {
-        set({
-          filtersTags,
-          filtersPalettes,
-          filtersFrames,
-          filtersVisible: false,
-        });
-      },
+        setFilters: (filtersTags: string[], filtersPalettes: string[], filtersFrames: string[]) => {
+          set({
+            filtersTags,
+            filtersPalettes,
+            filtersFrames,
+            filtersVisible: false,
+          });
+        },
 
-      setFiltersVisible: (filtersVisible: boolean) => set({ filtersVisible }),
-      setImageSelection: (imageSelection: string[]) => set({ imageSelection, lastSelectedImage: null }),
-      setSortBy: (sortBy: string) => set({ sortBy, sortOptionsVisible: false }),
-      setSortOptionsVisible: (sortOptionsVisible: boolean) => set({ sortOptionsVisible }),
+        setFiltersVisible: (filtersVisible: boolean) => set({ filtersVisible }),
+        setImageSelection: (imageSelection: string[]) => set({ imageSelection, lastSelectedImage: null }),
+        setSortBy: (sortBy: string) => set({ sortBy, sortOptionsVisible: false }),
+        setSortOptionsVisible: (sortOptionsVisible: boolean) => set({ sortOptionsVisible }),
 
-      cleanRecentImports: (imageHashes: string[]) => {
-        const { recentImports } = get();
-        const yesterday = dayjs().subtract(6, 'hour').unix();
+        cleanRecentImports: (imageHashes: string[]) => {
+          const { recentImports } = get();
+          const yesterday = dayjs().subtract(6, 'hour').unix();
 
-        set({
-          recentImports: recentImports.filter(({ hash, timestamp }) => (
-            imageHashes.includes(hash) &&
-            timestamp > yesterday
-          )),
-        });
-      },
+          set({
+            recentImports: recentImports.filter(({ hash, timestamp }) => (
+              imageHashes.includes(hash) &&
+              timestamp > yesterday
+            )),
+          });
+        },
 
-      updateRecentImports: (images: Image[]) => {
-        const currentValue = get().recentImports;
+        updateRecentImports: (images: Image[]) => {
+          const currentValue = get().recentImports;
 
-        const recentImports: RecentImport[] = images.reduce((acc: RecentImport[], image: Image) => {
-          if (isRGBNImage(image)) {
-            return acc;
+          const recentImports: RecentImport[] = images.reduce((acc: RecentImport[], image: Image) => {
+            if (isRGBNImage(image)) {
+              return acc;
+            }
+
+            return [
+              ...acc,
+              {
+                hash: image.hash,
+                timestamp: dayjs().unix(),
+              },
+            ];
+          }, []);
+
+          set({
+            recentImports: uniqueBy<RecentImport>('hash')([
+              ...currentValue,
+              ...recentImports,
+            ]),
+          });
+        },
+
+        updateImageSelection: (mode: ImageSelectionMode, hashes: string[]) => {
+          const value = get().imageSelection;
+          switch (mode) {
+            case ImageSelectionMode.ADD: {
+              set({
+                imageSelection: unique([...value, ...hashes]),
+                lastSelectedImage: hashes[0],
+              });
+              break;
+            }
+
+            case ImageSelectionMode.REMOVE: {
+              set({
+                imageSelection: value.filter((hash) => !hashes.includes(hash)),
+                lastSelectedImage: null,
+              });
+              break;
+            }
+
+            default:
           }
-
-          return [
-            ...acc,
-            {
-              hash: image.hash,
-              timestamp: dayjs().unix(),
-            },
-          ];
-        }, []);
-
-        set({
-          recentImports: uniqueBy<RecentImport>('hash')([
-            ...currentValue,
-            ...recentImports,
-          ]),
-        });
+        },
+      }),
+      {
+        name: `${PROJECT_PREFIX}-filters`,
+        storage: createJSONStorage(() => localStorage),
       },
-
-      updateImageSelection: (mode: ImageSelectionMode, hashes: string[]) => {
-        const value = get().imageSelection;
-        switch (mode) {
-          case ImageSelectionMode.ADD: {
-            set({
-              imageSelection: unique([...value, ...hashes]),
-              lastSelectedImage: hashes[0],
-            });
-            break;
-          }
-
-          case ImageSelectionMode.REMOVE: {
-            set({
-              imageSelection: value.filter((hash) => !hashes.includes(hash)),
-              lastSelectedImage: null,
-            });
-            break;
-          }
-
-          default:
-        }
-      },
-    }),
-    {
-      name: `${PROJECT_PREFIX}-filters`,
-      storage: createJSONStorage(() => localStorage),
-    },
-  ),
+    ),
+  )
 );
-
-export default useFiltersStore;

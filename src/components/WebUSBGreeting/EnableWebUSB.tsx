@@ -2,7 +2,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import useSettingsStore from '../../stores/settingsStore';
+import { useSettingsStore } from '@/stores/stores';
 
 function EnableWebUSB() {
   const { useSerials, setUseSerials } = useSettingsStore();

@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
-import useProgressStore from '@/stores/progressStore';
+import { useProgressStore } from '@/stores/stores';
 
 function ProgressBox() {
   const t = useTranslations('ProgressBox');

@@ -1,4 +1,4 @@
-import useItemsStore from '@/stores/itemsStore';
+import { useItemsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import type { RepoContents, RepoFile, SyncFile } from '@/types/Export';
 import type { Frame } from '@/types/Frame';

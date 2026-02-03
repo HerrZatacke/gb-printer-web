@@ -35,26 +35,26 @@ interface Actions {
 
 export type EditState = Values & Actions;
 
-const useEditStore = create<EditState>((set) => ({
-  editFrame: null,
-  editPalette: null,
-  pickColors: null,
-  editImageGroup: null,
-  editImages: null,
-  editRGBNImages: [],
+export const createEditStore = () => (
+  create<EditState>((set) => ({
+    editFrame: null,
+    editPalette: null,
+    pickColors: null,
+    editImageGroup: null,
+    editImages: null,
+    editRGBNImages: [],
 
-  setEditFrame: (editFrame: string) => set({ editFrame }),
-  setEditImageGroup: (editImageGroup: EditGroupInfo) => set({ editImageGroup }),
-  setEditPalette: (editPalette: Palette) => set({ editPalette, pickColors: null }),
-  setEditRGBNImages: (editRGBNImages: string[]) => set({ editRGBNImages }),
-  setPickColors: (pickColors: PickColors) => set({ pickColors }),
-  setEditImages: (editImages: CurrentEditBatch) => set({ editImages }),
-  cancelEditFrame: () => set({ editFrame: null }),
-  cancelEditImageGroup: () => set({ editImageGroup: null }),
-  cancelEditPalette: () => set({ editPalette: null }),
-  cancelEditRGBNImages: () => set({ editRGBNImages: [] }),
-  cancelPickColors: () => set({ pickColors: null }),
-  cancelEditImages: () => set({ editImages: null }),
-}));
-
-export default useEditStore;
+    setEditFrame: (editFrame: string) => set({ editFrame }),
+    setEditImageGroup: (editImageGroup: EditGroupInfo) => set({ editImageGroup }),
+    setEditPalette: (editPalette: Palette) => set({ editPalette, pickColors: null }),
+    setEditRGBNImages: (editRGBNImages: string[]) => set({ editRGBNImages }),
+    setPickColors: (pickColors: PickColors) => set({ pickColors }),
+    setEditImages: (editImages: CurrentEditBatch) => set({ editImages }),
+    cancelEditFrame: () => set({ editFrame: null }),
+    cancelEditImageGroup: () => set({ editImageGroup: null }),
+    cancelEditPalette: () => set({ editPalette: null }),
+    cancelEditRGBNImages: () => set({ editRGBNImages: [] }),
+    cancelPickColors: () => set({ pickColors: null }),
+    cancelEditImages: () => set({ editImages: null }),
+  }))
+);
