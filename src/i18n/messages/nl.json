@@ -67,6 +67,13 @@
     "addNetwork": "Netwerk toevoegen",
     "saveSettings": "WiFi-instellingen opslaan"
   },
+  "SettingsGapiSheets": {
+    "about": "Dit is een experimentele functie. De sessie moet elke 60 minuten worden vernieuwd. Zorg dat je geen updates uitvoert wanneer de sessietimer bijna is verlopen.",
+    "tokenExpiry": "Sessie verloopt over {time}",
+    "enableStorage": "Gebruik Google Sheets als opslag",
+    "sheetId": "Sheet-ID",
+    "sheetIdHelper": "Je kunt de volledige bewerkingslink plakken om de juiste sheet-id te krijgen."
+  },
   "SettingsPlugins": {
     "addPlugin": "Plugin toevoegen",
     "addPluginHelper": "🔗 Een selectie van plugins vind je hier",
@@ -129,6 +136,7 @@
   "SettingsTabs": {
     "genericSettings": "Algemene instellingen",
     "dropboxSettings": "Dropbox-instellingen",
+    "gapiSheetsSettings": "Google Sheets-instellingen",
     "wifiSettings": "WiFi-instellingen",
     "pluginSettings": "Plugin-instellingen",
     "gitSettings": "Git-instellingen"

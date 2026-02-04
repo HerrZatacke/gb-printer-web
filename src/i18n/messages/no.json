@@ -67,6 +67,13 @@
     "addNetwork": "Legg til nettverk",
     "saveSettings": "Lagre WiFi-innstillinger"
   },
+  "SettingsGapiSheets": {
+    "about": "Dette er en eksperimentell funksjon. Økten må fornyes hvert 60. minutt. Sørg for å ikke kjøre oppdateringer når økt-timeren er i ferd med å utløpe.",
+    "tokenExpiry": "Økten utløper om {time}",
+    "enableStorage": "Bruk Google Sheets som lagring",
+    "sheetId": "Regneark-ID",
+    "sheetIdHelper": "Du kan lime inn hele redigeringslinken for å få riktig regneark-ID."
+  },
   "SettingsPlugins": {
     "addPlugin": "Legg til plugin",
     "addPluginHelper": "🔗 Et utvalg av plugins finner du her",
@@ -129,6 +136,7 @@
   "SettingsTabs": {
     "genericSettings": "Generelle innstillinger",
     "dropboxSettings": "Dropbox-innstillinger",
+    "gapiSheetsSettings": "Google Sheets-innstillinger",
     "wifiSettings": "WiFi-innstillinger",
     "pluginSettings": "Plugin-innstillinger",
     "gitSettings": "Git-innstillinger"

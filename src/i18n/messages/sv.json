@@ -67,6 +67,13 @@
     "addNetwork": "Lägg till nätverk",
     "saveSettings": "Spara WiFi-inställningar"
   },
+  "SettingsGapiSheets": {
+    "about": "Detta är en experimentell funktion. Sessionen måste förnyas var 60:e minut. Se till att inte köra uppdateringar när sessionstimern håller på att gå ut.",
+    "tokenExpiry": "Sessionen upphör om {time}",
+    "enableStorage": "Använd Google Sheets som lagring",
+    "sheetId": "Sheet-ID",
+    "sheetIdHelper": "Du kan klistra in hela redigeringslänken för att få korrekt blad-ID."
+  },
   "SettingsPlugins": {
     "addPlugin": "Lägg till plugin",
     "addPluginHelper": "🔗 Ett urval av plugins hittar du här",
@@ -131,7 +138,8 @@
     "dropboxSettings": "Dropbox-inställningar",
     "wifiSettings": "WiFi-inställningar",
     "pluginSettings": "Plugin-inställningar",
-    "gitSettings": "Git-inställningar"
+    "gitSettings": "Git-inställningar",
+    "gapiSheetsSettings": "Google Sheets-inställningar"
   },
   "ExportSettings": {
     "resetGroups": "Återställ bildgrupper",

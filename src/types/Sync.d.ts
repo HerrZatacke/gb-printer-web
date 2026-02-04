@@ -67,6 +67,13 @@ export interface GitStorageSettings {
   throttle?: number,
 }
 
+export interface GapiSettings {
+  use?: boolean,
+  sheetId?: string,
+  token?: string,
+  tokenExpiry?: number,
+}
+
 export interface SyncLastUpdate {
   dropbox: number,
   local: number,

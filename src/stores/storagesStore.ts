@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware';
-import type { DropBoxSettings, GitStorageSettings, SyncLastUpdate } from '@/types/Sync';
+import type { DropBoxSettings, GapiSettings, GitStorageSettings, SyncLastUpdate } from '@/types/Sync';
 import { PROJECT_PREFIX } from './constants';
 
 interface Values {
   dropboxStorage: DropBoxSettings,
   gitStorage: GitStorageSettings,
+  gapiStorage: GapiSettings,
   syncLastUpdate: SyncLastUpdate,
 }
 
@@ -13,6 +14,7 @@ interface Actions {
   dropboxLogout: () => void,
   setDropboxStorage: (dropboxStorage: DropBoxSettings) => void,
   setGitStorage: (gitStorage: GitStorageSettings) => void,
+  setGapiSettings: (gapiStorage: GapiSettings) => void,
   setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => void,
 }
 
@@ -36,6 +38,13 @@ const gitDefaults: GitStorageSettings = {
   use: false,
 };
 
+const gapiDefaults: GapiSettings = {
+  use: false,
+  sheetId: '',
+  token: '',
+  tokenExpiry: 0,
+};
+
 export const createStoragesStore = () => (
   create(
     subscribeWithSelector(
@@ -43,6 +52,7 @@ export const createStoragesStore = () => (
         (set) => ({
           dropboxStorage: {},
           gitStorage: {},
+          gapiStorage: {},
           syncLastUpdate: { dropbox: 0, local: 0 },
 
           dropboxLogout: () => set(({ dropboxStorage }) => ({ dropboxStorage: {
@@ -55,6 +65,9 @@ export const createStoragesStore = () => (
           )),
           setGitStorage: (newSettings: GitStorageSettings) => set(({ gitStorage }) => (
             { gitStorage: { ...gitDefaults, ...gitStorage, ...newSettings } }
+          )),
+          setGapiSettings: (newSettings: GapiSettings) => set(({ gapiStorage }) => (
+            { gapiStorage: { ...gapiDefaults, ...gapiStorage, ...newSettings } }
           )),
           setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => (set(({ syncLastUpdate }) => (
             { syncLastUpdate: { ...syncLastUpdate, [what]: value } }

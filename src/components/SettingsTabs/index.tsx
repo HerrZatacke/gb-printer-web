@@ -27,6 +27,15 @@ function SettingsTabs() {
         headline: t('genericSettings'),
         prefetch: true,
       },
+      (
+        process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID &&
+        process.env.NEXT_PUBLIC_GOOGLE_SCOPES
+      ) ?
+        {
+          path: '/settings/gsheets/',
+          headline: t('gapiSheetsSettings'),
+          prefetch: false,
+        } : null,
       process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
         {
           path: '/settings/dropbox/',

@@ -67,6 +67,13 @@
     "addNetwork": "Aggiungi rete",
     "saveSettings": "Salva impostazioni WLAN"
   },
+  "SettingsGapiSheets": {
+    "about": "Questa è una funzionalità sperimentale. La sessione deve essere rinnovata ogni 60 minuti. Assicurati di non eseguire aggiornamenti quando il timer della sessione sta per scadere.",
+    "tokenExpiry": "La sessione scadrà tra {time}",
+    "enableStorage": "Usa Google Sheets come archivio",
+    "sheetId": "ID del foglio",
+    "sheetIdHelper": "Puoi incollare il link di modifica completo per ottenere l'ID del foglio corretto."
+  },
   "SettingsPlugins": {
     "addPlugin": "Aggiungi plugin",
     "addPluginHelper": "🔗 Puoi trovare una selezione di plugin qui",
@@ -129,6 +136,7 @@
   "SettingsTabs": {
     "genericSettings": "Impostazioni generali",
     "dropboxSettings": "Impostazioni Dropbox",
+    "gapiSheetsSettings": "Impostazioni Google Sheets",
     "wifiSettings": "Impostazioni WLAN",
     "pluginSettings": "Impostazioni plugin",
     "gitSettings": "Impostazioni Git"
