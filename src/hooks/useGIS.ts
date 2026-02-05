@@ -79,6 +79,7 @@ export const useGIS = (): UseGIS => {
 
     const handle = setTimeout(async () => {
       await loadScript('https://accounts.google.com/gsi/client');
+      await loadScript('https://apis.google.com/js/api.js');
       await createTokenClient();
     }, 1);
 

@@ -11,11 +11,34 @@ export const initGapiSync = (
 ): FnTeardown => {
 
   let gapiConfig: GapiSettings = storagesStore.getState().gapiStorage;
+  let gapiClient: typeof gapi.client | null = null;
 
   const unsubscribeConfig = storagesStore.subscribe((state) => {
     if (state.gapiStorage !== gapiConfig) {
-      console.log('gapiConfig has changed!');
       gapiConfig = state.gapiStorage;
+
+      const { use, sheetId } = gapiConfig;
+
+      if (!use || !sheetId) {
+        gapiClient = null;
+        return;
+      }
+
+      gapi.load('client', async () => {
+        await gapi.client.init({
+          discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+        });
+
+        gapiClient = gapi.client;
+
+        const resp = await gapiClient.sheets.spreadsheets.values.get({
+          spreadsheetId: sheetId,
+          range: 'images!A1',
+        });
+
+        const values = resp.result.values;
+        console.info(values);
+      });
     }
   });
 
