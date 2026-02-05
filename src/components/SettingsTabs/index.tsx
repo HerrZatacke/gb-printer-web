@@ -29,7 +29,7 @@ function SettingsTabs() {
       },
       (
         process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID &&
-        process.env.NEXT_PUBLIC_GOOGLE_SCOPES
+        process.env.NEXT_PUBLIC_GOOGLE_SCOPE
       ) ?
         {
           path: '/settings/gsheets/',

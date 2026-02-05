@@ -2,6 +2,8 @@
 
 import {
   Alert,
+  Button,
+  ButtonGroup,
   FormControlLabel,
   Stack,
   Switch,
@@ -9,7 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useGIS } from '@/hooks/useGIS';
 import { useStoragesStore } from '@/stores/stores';
 import type { GapiSettings } from '@/types/Sync';
 
@@ -32,11 +35,32 @@ const cleanGapiSheetId = (dirtyId: string): string => {
 };
 
 function SettingsGapiSheets() {
+  const { isSignedIn, handleSignIn, handleSignOut } = useGIS();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
-
+  const [expiryTimeInfo, setExpiryTimeInfo] = useState<string>('');
   const [use, setUse] = useState<boolean>(gapiStorage.use || false);
   const [sheetId, setSheetId] = useState<string>(gapiStorage.sheetId || '');
   const t = useTranslations('SettingsGapiSheets');
+
+  useEffect(() => {
+    const handle = setInterval(() => {
+
+      const expiresInMs = (gapiStorage.tokenExpiry || 0) - Date.now();
+
+      const expiryInfo = (new Date(expiresInMs))
+        .toLocaleTimeString('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          timeZone: 'UTC',
+        });
+
+      setExpiryTimeInfo(expiryInfo);
+    }, 1000);
+
+    return () => clearInterval(handle);
+  }, [gapiStorage.tokenExpiry]);
 
   const updateGapiSettings = useCallback((partial: Partial<GapiSettings>) => {
     setGapiSettings({
@@ -53,6 +77,7 @@ function SettingsGapiSheets() {
       <Alert severity="warning" variant="filled">
         {t('about')}
       </Alert>
+
       <FormControlLabel
         label={t('enableStorage')}
         control={(
@@ -65,6 +90,25 @@ function SettingsGapiSheets() {
           />
         )}
       />
+
+      <ButtonGroup
+        variant="contained"
+        fullWidth
+      >
+        <Button
+          disabled={isSignedIn || !gapiStorage.use}
+          onClick={handleSignIn}
+        >
+          {t('authenticate')}
+        </Button>
+        <Button
+          disabled={!isSignedIn}
+          onClick={handleSignOut}
+        >
+          {t('logout')}
+        </Button>
+      </ButtonGroup>
+
 
       { !use ? null : (
         <>
@@ -84,7 +128,7 @@ function SettingsGapiSheets() {
           />
 
           <Typography>
-            {t('tokenExpiry', { time: gapiStorage.tokenExpiry?.toString(10) || '??:??' })}
+            {t('tokenExpiry', { time: expiryTimeInfo })}
           </Typography>
         </>
       )}
