@@ -72,7 +72,9 @@
     "tokenExpiry": "Sessie verloopt over {time}",
     "enableStorage": "Gebruik Google Sheets als opslag",
     "sheetId": "Sheet-ID",
-    "sheetIdHelper": "Je kunt de volledige bewerkingslink plakken om de juiste sheet-id te krijgen."
+    "sheetIdHelper": "Je kunt de volledige bewerkingslink plakken om de juiste sheet-id te krijgen.",
+    "authenticate": "Authenticeren",
+    "logout": "Uitloggen"
   },
   "SettingsPlugins": {
     "addPlugin": "Plugin toevoegen",

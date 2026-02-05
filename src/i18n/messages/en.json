@@ -72,7 +72,9 @@
     "tokenExpiry": "Session will expire in {time}",
     "enableStorage": "Use Google Sheets as storage",
     "sheetId":"Sheet ID",
-    "sheetIdHelper": "You can paste the full edit link to get the correct sheet id."
+    "sheetIdHelper": "You can paste the full edit link to get the correct sheet id.",
+    "authenticate": "Authenticate",
+    "logout": "Logout"
   },
   "SettingsPlugins": {
     "addPlugin": "Add Plugin",

@@ -72,7 +72,9 @@
     "tokenExpiry": "Sessionen upphör om {time}",
     "enableStorage": "Använd Google Sheets som lagring",
     "sheetId": "Sheet-ID",
-    "sheetIdHelper": "Du kan klistra in hela redigeringslänken för att få korrekt blad-ID."
+    "sheetIdHelper": "Du kan klistra in hela redigeringslänken för att få korrekt blad-ID.",
+    "authenticate": "Autentisera",
+    "logout": "Logga ut"
   },
   "SettingsPlugins": {
     "addPlugin": "Lägg till plugin",

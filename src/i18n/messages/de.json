@@ -72,7 +72,9 @@
     "tokenExpiry": "Die Sitzung läuft in {time} ab",
     "enableStorage": "Google Sheets als Speicher verwenden",
     "sheetId": "Sheet-ID",
-    "sheetIdHelper": "Du kannst den kompletten Bearbeitungslink einfügen, um die korrekte Sheet-ID zu erhalten."
+    "sheetIdHelper": "Du kannst den kompletten Bearbeitungslink einfügen, um die korrekte Sheet-ID zu erhalten.",
+    "authenticate": "Authentifizieren",
+    "logout": "Abmelden"
   },
   "SettingsPlugins": {
     "addPlugin": "Plugin hinzufügen",

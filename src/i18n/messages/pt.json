@@ -72,7 +72,9 @@
     "tokenExpiry": "A sessão irá expirar em {time}",
     "enableStorage": "Usar Google Sheets como armazenamento",
     "sheetId": "ID da folha",
-    "sheetIdHelper": "Podes colar o link de edição completo para obteres o ID da folha correto."
+    "sheetIdHelper": "Podes colar o link de edição completo para obteres o ID da folha correto.",
+    "authenticate": "Autenticar",
+    "logout": "Terminar sessão"
   },
   "SettingsPlugins": {
     "addPlugin": "Adicionar plugin",

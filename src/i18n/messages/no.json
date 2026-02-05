@@ -72,7 +72,9 @@
     "tokenExpiry": "Økten utløper om {time}",
     "enableStorage": "Bruk Google Sheets som lagring",
     "sheetId": "Regneark-ID",
-    "sheetIdHelper": "Du kan lime inn hele redigeringslinken for å få riktig regneark-ID."
+    "sheetIdHelper": "Du kan lime inn hele redigeringslinken for å få riktig regneark-ID.",
+    "authenticate": "Autentiser",
+    "logout": "Logg ut"
   },
   "SettingsPlugins": {
     "addPlugin": "Legg til plugin",
