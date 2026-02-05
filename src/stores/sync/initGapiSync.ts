@@ -3,6 +3,9 @@ import type { StoreApi } from 'zustand';
 import { ItemsState } from '@/stores/itemsStore';
 import { StoragesState } from '@/stores/storagesStore';
 import { GapiSettings } from '@/types/Sync';
+// import { objectsToSheet } from '@/tools/sheetConversion/objectsToSheet';
+// import { sheetToObjects } from '@/tools/sheetConversion/sheetToObjects';
+// import { Image } from '@/types/Image';
 
 type FnTeardown = () => void;
 
@@ -71,14 +74,18 @@ export const initGapiSync = (
     clearInterval(testHandle);
     testHandle = window.setInterval(async () => {
       const { use, sheetId } = gapiStorageConfig;
-      if (use && sheetId) {
-        const { result } = await gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: sheetId,
-          range: 'images!A1',
-        });
-        console.info(JSON.stringify(result.values));
+      if (use && sheetId /* && confirm('pull images?') */) {
+        // const importStart = Date.now();
+        // const { result } = await gapi.client.sheets.spreadsheets.values.get({
+        //   spreadsheetId: sheetId,
+        //   range: 'images!A1:Z10000',
+        // });
+        //
+        // const imagesToImport = sheetToObjects<Image>(result.values as string[][], 'hash');
+        // itemsStore.getState().setImages(imagesToImport);
+        // console.log(`Image import done in ${Date.now() - importStart}ms`);
       }
-    }, 5 * 60000);
+    }, 15000);
   };
 
   // wait fpr possible initially loaded client
@@ -108,9 +115,64 @@ export const initGapiSync = (
     if (state !== itemsState) {
       itemsState = state;
       window.clearTimeout(itemsDebounceHandle);
-      itemsDebounceHandle = window.setTimeout(() => {
+      itemsDebounceHandle = window.setTimeout(async () => {
         console.log('🤖 itemsState has changed!');
-      }, 10);
+        const { use, sheetId } = gapiStorageConfig;
+
+        if (!use || !sheetId || !gapi.client) {
+          return;
+        }
+
+        // const palStart = Date.now();
+        //
+        // const { result: palettesResult } = await gapi.client.sheets.spreadsheets.values.get({
+        //   spreadsheetId: sheetId,
+        //   range: 'palettes!A1:Z10000',
+        // });
+        //
+        // const updateSheetDataPalettes = objectsToSheet(itemsState.palettes.filter(({ isPredefined }) => !isPredefined), {
+        //   deleteMissing: false,
+        //   existing: palettesResult.values,
+        //   key: 'shortName',
+        // });
+        //
+        // await gapi.client.sheets.spreadsheets.values.update({
+        //   spreadsheetId: sheetId,
+        //   range: 'palettes!A1',
+        //   valueInputOption: 'USER_ENTERED',
+        //   resource: { values: updateSheetDataPalettes },
+        // });
+        //
+        // console.log(`Palettes in ${Date.now() - palStart}ms`);
+        //
+        //
+        //
+        // const imgStart = Date.now();
+        //
+        // const { result: imagesResult } = await gapi.client.sheets.spreadsheets.values.get({
+        //   spreadsheetId: sheetId,
+        //   range: 'images!A1:Z10000',
+        // });
+        //
+        // const updateSheetDataImages = objectsToSheet(itemsState.images, {
+        //   deleteMissing: false,
+        //   existing: imagesResult.values,
+        //   key: 'hash',
+        // });
+        //
+        // await gapi.client.sheets.spreadsheets.values.update({
+        //   spreadsheetId: sheetId,
+        //   range: 'images!A1',
+        //   valueInputOption: 'USER_ENTERED',
+        //   resource: { values: updateSheetDataImages },
+        // });
+        //
+        // console.log(`Images in ${Date.now() - imgStart}ms`);
+
+
+
+        // console.log('🤖 Data saved!');
+      }, 5000);
     }
   });
 
