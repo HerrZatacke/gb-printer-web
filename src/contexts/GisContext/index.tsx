@@ -1,51 +1,36 @@
-import { useEffect, useCallback, useState, useMemo } from 'react';
+'use client';
+
+import { type PropsWithChildren, createContext, useEffect, useCallback, useState, useMemo, useContext } from 'react';
 import { useLoadScript } from '@/hooks/useLoadScript';
 import { useStoragesStore } from '@/stores/stores';
 import TokenClient = google.accounts.oauth2.TokenClient;
 
-interface UseGIS {
+interface GISContextType {
   isSignedIn: boolean;
   handleSignIn: () => Promise<void>;
   handleSignOut: () => Promise<void>;
 }
 
-export const useGIS = (): UseGIS => {
+const gisContext = createContext<GISContextType>({
+  isSignedIn: false,
+  handleSignIn: async () => {},
+  handleSignOut: async () => {},
+});
+
+const clientId = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID || '';
+const scope = process.env.NEXT_PUBLIC_GOOGLE_SCOPE || '';
+
+export function GISProvider({ children }: PropsWithChildren) {
   const { loadScript } = useLoadScript();
   const { setGapiSettings, gapiStorage } = useStoragesStore();
   const [tokenClient, setTokenClient] = useState<TokenClient | null>(null);
-
-  // ToDo: Find place to remove accessTokenData once expired
-  // useEffect(() => {
-  //   if (!accessTokenData) {
-  //     return;
-  //   }
-  //
-  //   const expiresInMs = Math.max(1, (accessTokenData?.expiry || 0) - Date.now());
-  //   // console.log(`expires in ${new Date(expiresInMs).toLocaleTimeString('en-GB', {
-  //   //   hour: '2-digit',
-  //   //   minute: '2-digit',
-  //   //   second: '2-digit',
-  //   //   hour12: false,
-  //   //   timeZone: 'UTC',
-  //   // })}`);
-  //
-  //   const expiryHandle = setTimeout(() => {
-  //     setAccessTokenData(null);
-  //   }, expiresInMs);
-  //
-  //   return () => clearTimeout(expiryHandle);
-  // }, [accessTokenData, setAccessTokenData]);
 
   const isSignedIn = useMemo(() => (
     Boolean(gapiStorage.token)
   ), [gapiStorage.token]);
 
   const createTokenClient = useCallback(() => {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID || '';
-    const scope = process.env.NEXT_PUBLIC_GOOGLE_SCOPE || '';
-
     if (!clientId || !scope) {
-      console.log({ clientId, scope });
       return;
     }
 
@@ -58,6 +43,7 @@ export const useGIS = (): UseGIS => {
         client_id: clientId,
         scope,
         callback: (tokenResponse) => {
+          console.log('🤖 callback');
           if (tokenResponse.error) {
             throw new Error(tokenResponse.error_description);
           }
@@ -72,7 +58,30 @@ export const useGIS = (): UseGIS => {
   }, [setGapiSettings]);
 
   useEffect(() => {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID || '';
+    const { use, tokenExpiry, token } = gapiStorage;
+    if (!clientId || !use || !token) {
+      return;
+    }
+
+    const tokenExpiresInMs = (tokenExpiry || 0) - Date.now();
+
+    const tokenExpiryTimerHandle = window.setTimeout(() => {
+      if (!tokenClient) {
+        return;
+      }
+
+      console.log('🤖 Token expired!');
+      tokenClient.requestAccessToken({ prompt: '' });
+      setGapiSettings({
+        token: '',
+        tokenExpiry: 0,
+      });
+    }, tokenExpiresInMs);
+
+    return () => window.clearTimeout(tokenExpiryTimerHandle);
+  }, [gapiStorage, setGapiSettings, tokenClient]);
+
+  useEffect(() => {
     if (!clientId || !gapiStorage.use) {
       return;
     }
@@ -109,9 +118,13 @@ export const useGIS = (): UseGIS => {
   }, [gapiStorage.token, setGapiSettings]);
 
 
-  return {
-    handleSignIn,
-    handleSignOut,
-    isSignedIn,
-  };
-};
+  return (
+    <gisContext.Provider value={{ handleSignIn, handleSignOut, isSignedIn }}>
+      {children}
+    </gisContext.Provider>
+  );
+}
+
+const useGIS = () => useContext(gisContext);
+
+export default useGIS;

@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useGIS } from '@/hooks/useGIS';
+import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import type { GapiSettings } from '@/types/Sync';
 
@@ -46,6 +46,10 @@ function SettingsGapiSheets() {
     const handle = setInterval(() => {
 
       const expiresInMs = (gapiStorage.tokenExpiry || 0) - Date.now();
+      if (expiresInMs <= 0) {
+        setExpiryTimeInfo('N/A');
+        return;
+      }
 
       const expiryInfo = (new Date(expiresInMs))
         .toLocaleTimeString('en-GB', {
