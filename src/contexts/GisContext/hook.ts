@@ -5,6 +5,7 @@ import TokenClient = google.accounts.oauth2.TokenClient;
 
 export interface GISContextType {
   isSignedIn: boolean;
+  isReady: boolean;
   handleSignIn: () => Promise<void>;
   handleSignOut: () => Promise<void>;
 }
@@ -20,6 +21,10 @@ export const useContextHook = (): GISContextType => {
   const isSignedIn = useMemo(() => (
     Boolean(gapiStorage.token)
   ), [gapiStorage.token]);
+
+  const isReady = useMemo(() => (
+    Boolean(tokenClient)
+  ), [tokenClient]);
 
   const createTokenClient = useCallback(() => {
     if (!clientId || !scope) {
@@ -109,5 +114,5 @@ export const useContextHook = (): GISContextType => {
     });
   }, [gapiStorage.token, setGapiSettings]);
 
-  return { handleSignIn, handleSignOut, isSignedIn };
+  return { handleSignIn, handleSignOut, isSignedIn, isReady };
 };

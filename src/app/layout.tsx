@@ -4,6 +4,7 @@ import { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import GlobalAppInit from '@/components/GlobalAppInit';
 import { EnvProvider } from '@/contexts/envContext';
 import { GalleryTreeContext } from '@/contexts/galleryTree/Provider';
+import { GapiSyncProvider } from '@/contexts/GapiSyncContext';
 import { GISProvider } from '@/contexts/GisContext';
 import I18nContext from '@/contexts/i18nContext';
 import { NavigationToolsProvider } from '@/contexts/navigationTools/NavigationToolsProvider';
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
     I18nContext,
     TrackingProvider,
     GISProvider,
+    GapiSyncProvider,
     EnvProvider,
     PortsContext,
     GlobalAppInit,

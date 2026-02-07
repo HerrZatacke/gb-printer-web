@@ -24,6 +24,8 @@ export const initGapiSync = (
     return () => { /**/ };
   }
 
+  return () => { /**/ };
+
   let gapiInitialized = false;
   let gapiStorageConfig: GapiSettings = storagesStore.getState().gapiStorage;
   let itemsState: ItemsState = itemsStore.getState();
