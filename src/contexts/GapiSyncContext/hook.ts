@@ -2,18 +2,46 @@ import { useCallback, useEffect, useState } from 'react';
 import useGIS from '@/contexts/GisContext';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
 import Sheet = gapi.client.sheets.Sheet;
+import SheetProperties = gapi.client.sheets.SheetProperties;
+import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
+
+export interface SheetState {
+  properties: SheetProperties;
+  lastUpdate: number;
+}
 
 export interface GapiSyncContextType {
   busy: boolean;
-  sheets: Sheet[];
+  sheets: SheetState[];
 }
+
+const getLastUpdate = (developerMetadata: DeveloperMetadata[]): number => (
+  developerMetadata.reduce((max, item) => {
+    if (item.metadataKey !== 'lastUpdate') return max;
+    const value = Number(item.metadataValue);
+    return value > max ? value : max;
+  }, 0)
+);
+
+const getSheetState = (sheet: Sheet): SheetState | null => {
+  const properties = sheet.properties;
+
+  if (!properties) {
+    return null;
+  }
+
+  return {
+    properties,
+    lastUpdate: getLastUpdate(sheet.developerMetadata || []),
+  };
+};
 
 export const useContextHook = (): GapiSyncContextType => {
   const { gapiStorage } = useStoragesStore();
   const { palettes } = useItemsStore();
   const { isReady } = useGIS();
   const [busy, setBusy] = useState(false);
-  const [sheets, setSheets] = useState<Sheet[]>([]);
+  const [sheets, setSheets] = useState<SheetState[]>([]);
   const [gapiClient, setGapiClient] = useState<typeof gapi.client | null>(null);
 
   const initClient = useCallback(async () => {
@@ -69,7 +97,9 @@ export const useContextHook = (): GapiSyncContextType => {
       spreadsheetId: sheetId,
     });
 
-    setSheets(remoteSheets || []);
+    const sheetStates = (remoteSheets || []).map(getSheetState).filter(Boolean) as SheetState[];
+
+    setSheets(sheetStates);
     setBusy(false);
   }, [gapiClient, gapiStorage]);
 

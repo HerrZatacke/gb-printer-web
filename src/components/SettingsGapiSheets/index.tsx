@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import React, { useCallback, useEffect, useState } from 'react';
+import SheetsTable from '@/components/SettingsGapiSheets/SheetsTable';
 import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import type { GapiSettings } from '@/types/Sync';
@@ -134,6 +135,8 @@ function SettingsGapiSheets() {
           <Typography>
             {t('tokenExpiry', { time: expiryTimeInfo })}
           </Typography>
+
+          <SheetsTable />
         </>
       )}
     </Stack>
