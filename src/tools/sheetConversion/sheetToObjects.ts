@@ -1,27 +1,28 @@
-import { decodeHeader } from '@/tools/sheetConversion/headers';
+import { type ColumnSpec } from '@/tools/sheetConversion/types';
 import { deserialize } from '@/tools/sheetConversion/values';
 
-export const sheetToObjects = <T extends object>(
+export function sheetToObjects<T extends object>(
   sheet: string[][],
-  key: keyof T,
-): T[] => {
-  const [headers, ...rows] = sheet;
-  const decodedHeaders = headers.map(decodeHeader);
+  options: { key: keyof T; columns: ColumnSpec<T>[] },
+): T[] {
+  const [, ...rows] = sheet;
+  const { columns } = options;
 
-  return rows.map(row => {
+  return rows.map((row) => {
     const obj: Record<string, unknown> = {};
 
-    decodedHeaders.forEach(({ name, type }, i) => {
-      const value = deserialize(row[i], type);
+    columns.forEach((col, i) => {
+      const value = deserialize(
+        row[i],
+        col.type,
+        col.fallbackType,
+      );
+
       if (value !== undefined) {
-        obj[name] = value;
+        obj[col.prop as string] = value;
       }
     });
 
-    if (typeof obj[key as string] !== 'string') {
-      throw new Error(`Missing key ${String(key)}`);
-    }
-
     return obj as T;
   });
-};
+}

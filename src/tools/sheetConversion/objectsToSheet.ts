@@ -1,65 +1,50 @@
 import { UNDEFINED } from '@/tools/sheetConversion/consts';
-import { decodeHeader, encodeHeader } from '@/tools/sheetConversion/headers';
-import { ColumnType } from '@/tools/sheetConversion/types';
+import { type ColumnSpec } from '@/tools/sheetConversion/types';
 import { serialize } from '@/tools/sheetConversion/values';
 
 interface ToSheetOptions<T> {
   key: keyof T;
+  columns: ColumnSpec<T>[];
   existing?: string[][];
   deleteMissing?: boolean;
 }
+
+const dedupeByColumnIndex = (values: string[][], columnIndex: number): string[][] => {
+  const seen = new Set<string>();
+
+  return values.filter(row => {
+    const key = row[columnIndex];
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
 
 export const objectsToSheet = <T extends object>(
   objects: T[],
   options: ToSheetOptions<T>,
 ): string[][] => {
-  const { key, existing, deleteMissing = false } = options;
+  const { key, columns, existing, deleteMissing = false } = options;
 
-  const columnTypes = new Map<string, ColumnType>();
+  const headers = columns.map(column => column.column);
+  const index = new Map(headers.map((headerName, idx) => [headerName, idx]));
 
-  // Infer types from objects
-  for (const obj of objects) {
-    for (const [k, v] of Object.entries(obj)) {
-      if (v === undefined || v === null) continue;
+  let rows: string[][] = existing ? existing.slice(1).map(r => [...(r.slice(0, headers.length))]) : [];
 
-      if (typeof v === 'string') columnTypes.set(k, ColumnType.STRING);
-      else if (typeof v === 'number') columnTypes.set(k, ColumnType.NUMBER);
-      else if (typeof v === 'boolean') columnTypes.set(k, ColumnType.BOOLEAN);
-      else columnTypes.set(k, ColumnType.JSON);
-    }
+  const keyColumn = columns.find(c => c.prop === key);
+  if (!keyColumn) {
+    throw new Error('Key must be included in columns');
   }
 
-  let headers: string[] = [];
-  let rows: string[][] = [];
-
-  if (existing?.length) {
-    headers = [...existing[0]];
-    rows = existing.slice(1).map(r => [...r]);
-
-    for (const h of headers) {
-      const { name, type } = decodeHeader(h);
-      columnTypes.set(name, type);
-    }
-  }
-
-  // Ensure key column exists
-  if (!columnTypes.has(key as string)) {
-    columnTypes.set(key as string, ColumnType.STRING);
-  }
-
-  // Build headers
-  headers = [...columnTypes.entries()].map(([k, t]) => encodeHeader(k, t));
-
-  const index = new Map(headers.map((h, i) => [decodeHeader(h).name, i]));
-  const keyIndex = index.get(key as string)!;
-
+  const keyIndex = index.get(keyColumn.column)!;
   const rowByKey = new Map<string, string[]>();
+
   rows.forEach(r => rowByKey.set(r[keyIndex], r));
 
   const seen = new Set<string>();
 
   for (const obj of objects) {
-    const id = obj[key];
+    const id = (obj as T)[key];
     if (typeof id !== 'string') {
       throw new Error('Key must be a string');
     }
@@ -73,18 +58,17 @@ export const objectsToSheet = <T extends object>(
       rowByKey.set(id, row);
     }
 
-    for (const [prop, type] of columnTypes) {
-      if (prop in obj) {
-        row[index.get(prop)!] = serialize(obj[prop as keyof T], type);
-      } else {
-        row[index.get(prop)!] = UNDEFINED;
-      }
+    for (const col of columns) {
+      const value = col.prop in obj ? (obj as T)[col.prop] : undefined;
+      row[index.get(col.column)!] = serialize(value, col.type, col.fallbackType);
     }
   }
 
   if (deleteMissing) {
     rows = rows.filter(r => seen.has(r[keyIndex]));
   }
+
+  rows = dedupeByColumnIndex(rows, keyIndex);
 
   return [headers, ...rows];
 };
