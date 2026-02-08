@@ -3,6 +3,7 @@ import localforage from 'localforage';
 import { hash as ohash } from 'ohash';
 import { createJSONStorage, PersistStorage } from 'zustand/middleware';
 import { StorageValue } from 'zustand/middleware/persist';
+import { GapiLastUpdates } from '@/contexts/GapiSyncContext/consts';
 import { type Values } from '@/stores/itemsStore';
 import sortBy from '@/tools/sortby';
 import { type Frame } from '@/types/Frame';
@@ -11,7 +12,6 @@ import { type Image } from '@/types/Image';
 import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
-import { GapiLastUpdates } from '@/contexts/GapiSyncContext/consts';
 
 interface WrappedForage<T> {
   setData: (items: T[]) => Promise<void>;
