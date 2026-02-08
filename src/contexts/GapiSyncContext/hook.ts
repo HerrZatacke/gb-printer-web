@@ -32,27 +32,33 @@ export const useContextHook = (): GapiSyncContextType => {
 
     setBusy(true);
 
+    const updaterOptions = {
+      sheetsClient: gapi.client.sheets,
+      sheetId: gapiStorage.sheetId ,
+      newLastUpdateValue: newLastUpdate,
+    };
+
     switch (sheetName) {
       case SheetName.PALETTES:
-        await updatePalettes(gapi.client.sheets, gapiStorage.sheetId, useItemsStore.getState().palettes, newLastUpdate);
+        await updatePalettes(updaterOptions, useItemsStore.getState().palettes);
         break;
       case SheetName.IMAGES:
-        await updateImages(gapi.client.sheets, gapiStorage.sheetId, useItemsStore.getState().images, newLastUpdate);
+        await updateImages(updaterOptions, useItemsStore.getState().images);
         break;
       case SheetName.RGBN_IMAGES:
-        await updateImagesRGBN(gapi.client.sheets, gapiStorage.sheetId, useItemsStore.getState().images, newLastUpdate);
+        await updateImagesRGBN(updaterOptions, useItemsStore.getState().images);
         break;
       case SheetName.FRAME_GROUPS:
-        await updateFrameGroups(gapi.client.sheets, gapiStorage.sheetId, useItemsStore.getState().frameGroups, newLastUpdate);
+        await updateFrameGroups(updaterOptions, useItemsStore.getState().frameGroups);
         break;
       case SheetName.FRAMES:
-        await updateFrames(gapi.client.sheets, gapiStorage.sheetId, useItemsStore.getState().frames, newLastUpdate);
+        await updateFrames(updaterOptions, useItemsStore.getState().frames);
         break;
       case SheetName.IMAGE_GROUPS:
-        await updateImageGroups(gapi.client.sheets, gapiStorage.sheetId, useItemsStore.getState().imageGroups, newLastUpdate);
+        await updateImageGroups(updaterOptions, useItemsStore.getState().imageGroups);
         break;
       case SheetName.PLUGINS:
-        await updatePlugins(gapi.client.sheets, gapiStorage.sheetId, useItemsStore.getState().plugins, newLastUpdate);
+        await updatePlugins(updaterOptions, useItemsStore.getState().plugins);
         break;
       default:
     }

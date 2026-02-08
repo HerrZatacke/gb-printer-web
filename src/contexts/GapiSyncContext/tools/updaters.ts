@@ -1,3 +1,4 @@
+import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { updateItems } from '@/contexts/GapiSyncContext/tools/updateItems';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
 import { type ColumnSpec, ColumnType } from '@/tools/sheetConversion/types';
@@ -7,6 +8,12 @@ import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
 import { SerializableImageGroup } from '@/types/ImageGroup';
 import type { Palette } from '@/types/Palette';
 import type { Plugin } from '@/types/Plugin';
+
+interface UpdaterOptions {
+  sheetsClient: typeof gapi.client.sheets;
+  sheetId: string;
+  newLastUpdateValue: number;
+}
 
 const imagesCommonProps: ColumnSpec<Image>[] = [
   { prop: 'hash', column: 'Hash', type: ColumnType.STRING },
@@ -20,10 +27,8 @@ const imagesCommonProps: ColumnSpec<Image>[] = [
 ];
 
 export const updateImages = async (
-  sheetsClient: typeof gapi.client.sheets,
-  sheetId: string,
+  { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   images: Image[],
-  newLastUpdateValue: number,
 ) => {
   await updateItems<MonochromeImage>({
     sheetsClient,
@@ -44,17 +49,15 @@ export const updateImages = async (
     items: images.reduce(reduceImagesMonochrome, []),
     keyColumn: 'hash',
     sheetId,
-    sheetName: 'images',
+    sheetName: SheetName.IMAGES,
     // updateFn: itemsStore.getState().setImages,
     updateFn: console.log.bind(console),
   });
 };
 
 export const updateImagesRGBN = async (
-  sheetsClient: typeof gapi.client.sheets,
-  sheetId: string,
+  { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   images: Image[],
-  newLastUpdateValue: number,
 ) => {
   await updateItems<RGBNImage>({
     sheetsClient,
@@ -68,17 +71,15 @@ export const updateImagesRGBN = async (
     items: images.reduce(reduceImagesRGBN, []),
     keyColumn: 'hash',
     sheetId,
-    sheetName: 'rgbnImages',
+    sheetName: SheetName.RGBN_IMAGES,
     // updateFn: itemsStore.getState().setImages,
     updateFn: console.log.bind(console),
   });
 };
 
 export const updateImageGroups = async (
-  sheetsClient: typeof gapi.client.sheets,
-  sheetId: string,
+  { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   imageGroups: SerializableImageGroup[],
-  newLastUpdateValue: number,
 ) => {
   await updateItems<SerializableImageGroup>({
     sheetsClient,
@@ -95,16 +96,14 @@ export const updateImageGroups = async (
     items: imageGroups,
     keyColumn: 'id',
     sheetId,
-    sheetName: 'imageGroups',
+    sheetName: SheetName.IMAGE_GROUPS,
     updateFn: console.log.bind(console),
   });
 };
 
 export const updatePalettes = async (
-  sheetsClient: typeof gapi.client.sheets,
-  sheetId: string,
+  { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   palettes: Palette[],
-  newLastUpdateValue: number,
 ) => {
   await updateItems<Palette>({
     sheetsClient,
@@ -118,7 +117,7 @@ export const updatePalettes = async (
     items: palettes.filter(({ isPredefined }) => !isPredefined),
     keyColumn: 'shortName',
     sheetId,
-    sheetName: 'palettes',
+    sheetName: SheetName.PALETTES,
     // updateFn: itemsStore.getState().setPalettes,
     updateFn: console.log.bind(console),
   });
@@ -126,10 +125,8 @@ export const updatePalettes = async (
 
 
 export const updateFrames = async (
-  sheetsClient: typeof gapi.client.sheets,
-  sheetId: string,
+  { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   frames: Frame[],
-  newLastUpdateValue: number,
 ) => {
   await updateItems<Frame>({
     sheetsClient,
@@ -143,17 +140,15 @@ export const updateFrames = async (
     items: frames,
     keyColumn: 'id',
     sheetId,
-    sheetName: 'frames',
+    sheetName: SheetName.FRAMES,
     updateFn: console.log.bind(console),
   });
 };
 
 
 export const updateFrameGroups = async (
-  sheetsClient: typeof gapi.client.sheets,
-  sheetId: string,
+  { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   frameGroups: FrameGroup[],
-  newLastUpdateValue: number,
 ) => {
   await updateItems<FrameGroup>({
     sheetsClient,
@@ -165,17 +160,15 @@ export const updateFrameGroups = async (
     items: frameGroups,
     keyColumn: 'id',
     sheetId,
-    sheetName: 'frameGroups',
+    sheetName: SheetName.FRAME_GROUPS,
     updateFn: console.log.bind(console),
   });
 };
 
 
 export const updatePlugins = async (
-  sheetsClient: typeof gapi.client.sheets,
-  sheetId: string,
+  { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   plugins: Plugin[],
-  newLastUpdateValue: number,
 ) => {
   await updateItems<Plugin>({
     sheetsClient,
@@ -190,7 +183,7 @@ export const updatePlugins = async (
     items: plugins,
     keyColumn: 'url',
     sheetId,
-    sheetName: 'plugins',
+    sheetName: SheetName.PLUGINS,
     updateFn: console.log.bind(console),
   });
 };
