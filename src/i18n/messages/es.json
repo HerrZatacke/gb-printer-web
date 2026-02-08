@@ -74,7 +74,8 @@
     "sheetId": "ID de hoja",
     "sheetIdHelper": "Puedes pegar el enlace completo de edición para obtener el ID de hoja correcto.",
     "authenticate": "Autenticar",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "openSheetLink": "Abrir hoja en una nueva pestaña"
   },
   "SettingsPlugins": {
     "addPlugin": "Agregar plugin",

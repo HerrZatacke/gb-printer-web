@@ -74,7 +74,8 @@
     "sheetId": "Regneark-ID",
     "sheetIdHelper": "Du kan lime inn hele redigeringslinken for å få riktig regneark-ID.",
     "authenticate": "Autentiser",
-    "logout": "Logg ut"
+    "logout": "Logg ut",
+    "openSheetLink": "Åpne ark i ny fane"
   },
   "SettingsPlugins": {
     "addPlugin": "Legg til plugin",

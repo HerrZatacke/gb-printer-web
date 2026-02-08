@@ -74,7 +74,8 @@
     "sheetId": "Sheet-ID",
     "sheetIdHelper": "Du kannst den kompletten Bearbeitungslink einfügen, um die korrekte Sheet-ID zu erhalten.",
     "authenticate": "Authentifizieren",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "openSheetLink": "Sheet in neuem Tab öffnen"
   },
   "SettingsPlugins": {
     "addPlugin": "Plugin hinzufügen",

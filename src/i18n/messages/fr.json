@@ -74,7 +74,8 @@
     "sheetId": "ID de feuille",
     "sheetIdHelper": "Vous pouvez coller le lien d'édition complet pour obtenir le bon ID de feuille.",
     "authenticate": "Authentifier",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "openSheetLink": "Ouvrir la feuille dans un nouvel onglet"
   },
   "SettingsPlugins": {
     "addPlugin": "Ajouter un plugin",

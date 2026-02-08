@@ -74,7 +74,8 @@
     "sheetId": "ID da folha",
     "sheetIdHelper": "Podes colar o link de edição completo para obteres o ID da folha correto.",
     "authenticate": "Autenticar",
-    "logout": "Terminar sessão"
+    "logout": "Terminar sessão",
+    "openSheetLink": "Abrir planilha em nova aba"
   },
   "SettingsPlugins": {
     "addPlugin": "Adicionar plugin",

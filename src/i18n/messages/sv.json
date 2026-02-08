@@ -74,7 +74,8 @@
     "sheetId": "Sheet-ID",
     "sheetIdHelper": "Du kan klistra in hela redigeringslänken för att få korrekt blad-ID.",
     "authenticate": "Autentisera",
-    "logout": "Logga ut"
+    "logout": "Logga ut",
+    "openSheetLink": "Öppna blad i ny flik"
   },
   "SettingsPlugins": {
     "addPlugin": "Lägg till plugin",

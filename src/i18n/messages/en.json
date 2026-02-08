@@ -74,7 +74,8 @@
     "sheetId":"Sheet ID",
     "sheetIdHelper": "You can paste the full edit link to get the correct sheet id.",
     "authenticate": "Authenticate",
-    "logout": "Logout"
+    "logout": "Logout",
+    "openSheetLink": "Open sheet in new tab"
   },
   "SettingsPlugins": {
     "addPlugin": "Add Plugin",

@@ -1,18 +1,21 @@
 'use client';
 
+import BackupTableIcon from '@mui/icons-material/BackupTable';
 import {
   Alert,
   Button,
   ButtonGroup,
   FormControlLabel,
+  Link,
   Stack,
   Switch,
   TextField,
   Typography,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import SheetsTable from '@/components/SettingsGapiSheets/SheetsTable';
+import TokenTimer from '@/components/SettingsGapiSheets/TokenTimer';
 import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import type { GapiSettings } from '@/types/Sync';
@@ -38,34 +41,9 @@ const cleanGapiSheetId = (dirtyId: string): string => {
 function SettingsGapiSheets() {
   const { isSignedIn, handleSignIn, handleSignOut } = useGIS();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
-  const [expiryTimeInfo, setExpiryTimeInfo] = useState<string>('');
   const [use, setUse] = useState<boolean>(gapiStorage.use || false);
   const [sheetId, setSheetId] = useState<string>(gapiStorage.sheetId || '');
   const t = useTranslations('SettingsGapiSheets');
-
-  useEffect(() => {
-    const handle = setInterval(() => {
-
-      const expiresInMs = (gapiStorage.tokenExpiry || 0) - Date.now();
-      if (expiresInMs <= 0) {
-        setExpiryTimeInfo('N/A');
-        return;
-      }
-
-      const expiryInfo = (new Date(expiresInMs))
-        .toLocaleTimeString('en-GB', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: false,
-          timeZone: 'UTC',
-        });
-
-      setExpiryTimeInfo(expiryInfo);
-    }, 1000);
-
-    return () => clearInterval(handle);
-  }, [gapiStorage.tokenExpiry]);
 
   const updateGapiSettings = useCallback((partial: Partial<GapiSettings>) => {
     setGapiSettings({
@@ -132,9 +110,24 @@ function SettingsGapiSheets() {
             }}
           />
 
-          <Typography>
-            {t('tokenExpiry', { time: expiryTimeInfo })}
-          </Typography>
+          {gapiStorage.sheetId && (
+            <Stack
+              alignItems="center"
+              direction="row"
+              gap={1}
+              component={Link}
+              href={`https://docs.google.com/spreadsheets/d/${gapiStorage.sheetId}/edit`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <BackupTableIcon />
+              <Typography>
+                {t('openSheetLink')}
+              </Typography>
+            </Stack>
+          )}
+
+          {isSignedIn && <TokenTimer />}
 
           <SheetsTable />
         </>
