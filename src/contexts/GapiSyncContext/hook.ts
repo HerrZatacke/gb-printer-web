@@ -19,7 +19,7 @@ export interface GapiSyncContextType {
 }
 
 export const useContextHook = (): GapiSyncContextType => {
-  const { gapiLastRemoteUpdates } = useGapiSheetState();
+  const { gapiLastRemoteUpdates, updateSheets } = useGapiSheetState();
   const { gapiLastLocalUpdates } = useItemsStore();
   const { isReady } = useGIS();
   const { gapiStorage } = useStoragesStore();
@@ -55,11 +55,12 @@ export const useContextHook = (): GapiSyncContextType => {
         await updatePlugins(gapi.client.sheets, gapiStorage.sheetId, useItemsStore.getState().plugins, newLastUpdate);
         break;
       default:
-
     }
 
+    updateSheets();
+
     setBusy(false);
-  }, [gapiStorage.sheetId]);
+  }, [gapiStorage.sheetId, updateSheets]);
 
   const checkUpdate = useCallback(async (sheetName: SheetName, lastLocalUpdate: number, lastRemoteUpdate?: number) => {
     const { use, sheetId, token } = gapiStorage;

@@ -15,6 +15,7 @@ export interface GapiSheetStateContextType {
   busy: boolean;
   sheets: Sheet[];
   gapiLastRemoteUpdates: GapiLastUpdates | null;
+  updateSheets: () => Promise<void>;
 }
 
 const getSheetByTitle = (sheets: Sheet[]) => (title: SheetName): Sheet | null => (
@@ -148,5 +149,6 @@ export const useContextHook = (): GapiSheetStateContextType => {
     busy,
     sheets,
     gapiLastRemoteUpdates,
+    updateSheets,
   };
 };

@@ -7,6 +7,7 @@ const gapiSheetStateContext = createContext<GapiSheetStateContextType>({
   busy: false,
   sheets: [],
   gapiLastRemoteUpdates: null,
+  updateSheets: async () => {},
 });
 
 export function GapiSheetStateProvider({ children }: PropsWithChildren) {
