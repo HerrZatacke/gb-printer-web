@@ -2,10 +2,11 @@ import predefinedPalettes from 'gb-palettes';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { SpecialTags } from '@/consts/SpecialTags';
+import { GapiLastUpdates } from '@/contexts/GapiSyncContext/consts';
 import { PROJECT_PREFIX } from '@/stores/constants';
 import { cleanupItems } from '@/stores/migrations/cleanupItems';
 import { migrateItems } from '@/stores/migrations/history/0/migrateItems';
-import { createSplitStorage } from '@/stores/storage/splitStorage';
+import { createSplitStorage, gapiLastUpdatesDefaults } from '@/stores/storage/splitStorage';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
 import uniqueBy from '@/tools/unique/by';
@@ -38,6 +39,7 @@ export interface Values {
   plugins: Plugin[],
   imageGroups: SerializableImageGroup[],
   images: Image[],
+  gapiLastLocalUpdates: GapiLastUpdates,
 }
 
 interface Actions {
@@ -93,6 +95,7 @@ export const createItemsStore = () => (
         plugins: [],
         imageGroups: [],
         images: [],
+        gapiLastLocalUpdates: gapiLastUpdatesDefaults(),
 
         addFrames: (frames: Frame[]) => set((itemsState) => (
           { frames: sortAndUniqueById([...frames, ...itemsState.frames]) }
@@ -364,6 +367,7 @@ export const createItemsStore = () => (
             error: undefined,
           })),
           palettes: state.palettes.filter(({ isPredefined }) => !isPredefined),
+          gapiLastLocalUpdates: state.gapiLastLocalUpdates,
         }),
 
         onRehydrateStorage: () => (hydratedState) => {
