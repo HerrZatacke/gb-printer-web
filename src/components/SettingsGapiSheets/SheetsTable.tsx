@@ -29,7 +29,7 @@ const toDate = (timestamp?: number): string => {
 
 function SheetsTable() {
   const { gapiLastRemoteUpdates, sheets } = useGapiSheetState();
-  const { busy, performUpdate } = useGapiSync();
+  const { busy, performPush, performPull } = useGapiSync();
   const { gapiLastLocalUpdates } = useItemsStore();
 
   return (
@@ -60,7 +60,8 @@ function SheetsTable() {
                 <TableCell align="right">{toDate(gapiLastLocalUpdates?.[sheetName])}</TableCell>
                 <TableCell align="center">
                   {gapiLastLocalUpdates?.[sheetName]}
-                  <button disabled={busy} onClick={() => performUpdate(sheetName, gapiLastLocalUpdates?.[sheetName])}>Uppy!</button>
+                  <button disabled={busy} onClick={() => performPush(sheetName, gapiLastLocalUpdates?.[sheetName])}>Uppy!</button>
+                  <button disabled={busy} onClick={() => performPull(sheetName)}>Pully!</button>
                 </TableCell>
               </TableRow>
             );

@@ -1,3 +1,5 @@
+import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
+
 export enum ColumnType {
   STRING = 'string',
   NUMBER = 'number',
@@ -10,4 +12,15 @@ export interface ColumnSpec<T> {
   column: string;
   type: ColumnType;
   fallbackType?: ColumnType;
+}
+
+export interface UpdaterOptionsDynamic {
+  sheetsClient: typeof gapi.client.sheets;
+  sheetId: string;
+}
+
+export interface UpdaterOptionsStatic<T> {
+  columns: ColumnSpec<T>[];
+  keyColumn: keyof T;
+  sheetName: SheetName;
 }

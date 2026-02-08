@@ -1,35 +1,23 @@
 import { LASTUPDATE_METADATA_KEY } from '@/contexts/GapiSheetStateContext/consts';
 import { getRemoteSheetProperties } from '@/contexts/GapiSyncContext/tools/getRemoteSheetProperties';
 import { objectsToSheet } from '@/tools/sheetConversion/objectsToSheet';
-import { sheetToObjects } from '@/tools/sheetConversion/sheetToObjects';
-import { ColumnSpec } from '@/tools/sheetConversion/types';
+import { UpdaterOptionsDynamic, UpdaterOptionsStatic } from '@/tools/sheetConversion/types';
 import UpdateDeveloperMetadataRequest = gapi.client.sheets.UpdateDeveloperMetadataRequest;
 import CreateDeveloperMetadataRequest = gapi.client.sheets.CreateDeveloperMetadataRequest;
 import Request = gapi.client.sheets.Request;
 
-export const pushItems = async <T extends object>({
-  sheetsClient,
-  sheetId,
-  sheetName,
-  columns,
-  keyColumn,
-  items,
-  newLastUpdateValue,
-}: {
-  sheetsClient: typeof gapi.client.sheets;
-  sheetId: string;
-  sheetName: string;
-  columns: ColumnSpec<T>[];
-  keyColumn: keyof T;
-  items: T[];
-  newLastUpdateValue: number;
-}): Promise<void> => {
-  const startTime = Date.now();
-
-  const options = {
-    key: keyColumn,
+export const pushItems = async <T extends object>(
+  {
+    sheetsClient,
+    sheetId,
+    sheetName,
     columns,
-  };
+    keyColumn,
+    newLastUpdateValue,
+  }: { newLastUpdateValue: number } & UpdaterOptionsDynamic & UpdaterOptionsStatic<T>,
+  items: T[],
+): Promise<void> => {
+  const startTime = Date.now();
 
   const {
     sheetProperties,
@@ -73,7 +61,8 @@ export const pushItems = async <T extends object>({
   console.log({ newLastUpdateValue, metadataUpsertRequest });
 
   const sheetItems = objectsToSheet(items, {
-    ...options,
+    key: keyColumn,
+    columns,
     deleteMissing: true,
     existing: remoteValues,
   });
