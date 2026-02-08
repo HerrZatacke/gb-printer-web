@@ -19,17 +19,20 @@ interface WrappedForage<T> {
   dropDB: () => Promise<void>;
 }
 
-export const gapiLastUpdatesDefaults = (): GapiLastUpdates => ({
-  images: 0,
-  rgbnImages: 0,
-  frames: 0,
-  palettes: 0,
-  plugins: 0,
-  imageGroups: 0,
-  frameGroups: 0,
-  binImages: 0,
-  binFrames: 0,
-});
+export const gapiLastUpdatesDefaults = (): GapiLastUpdates => {
+  const now = Date.now();
+  return {
+    images: now,
+    rgbnImages: now,
+    frames: now,
+    palettes: now,
+    plugins: now,
+    imageGroups: now,
+    frameGroups: now,
+    binImages: now,
+    binFrames: now,
+  };
+};
 
 const wrapForage = <FT>(storeName: string, keyField: keyof FT): WrappedForage<FT> => {
   const instance = localforage.createInstance({

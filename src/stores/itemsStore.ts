@@ -2,7 +2,7 @@ import predefinedPalettes from 'gb-palettes';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { SpecialTags } from '@/consts/SpecialTags';
-import { GapiLastUpdates } from '@/contexts/GapiSyncContext/consts';
+import { GapiLastUpdates, SheetName } from '@/contexts/GapiSyncContext/consts';
 import { PROJECT_PREFIX } from '@/stores/constants';
 import { cleanupItems } from '@/stores/migrations/cleanupItems';
 import { migrateItems } from '@/stores/migrations/history/0/migrateItems';
@@ -96,6 +96,16 @@ const withPredefinedPalettes = (palettes: Palette[]): Palette[] => palettesUniqu
   ...palettes,
 ]);
 
+const updateLastLocalUpdates = (get: () => ItemsState, sheetName: SheetName): Partial<ItemsState> => {
+  const { gapiLastLocalUpdates } = get();
+  return ({
+    gapiLastLocalUpdates: {
+      ...gapiLastLocalUpdates,
+      [sheetName]: Date.now(),
+    },
+  });
+};
+
 export const createItemsStore = () => (
   create<ItemsState>()(
     persist(
@@ -109,7 +119,10 @@ export const createItemsStore = () => (
         gapiLastLocalUpdates: gapiLastUpdatesDefaults(),
 
         addFrames: (frames: Frame[]) => set((itemsState) => (
-          { frames: sortAndUniqueById([...frames, ...itemsState.frames]) }
+          {
+            frames: sortAndUniqueById([...frames, ...itemsState.frames]),
+            ...updateLastLocalUpdates(get, SheetName.FRAMES),
+          }
         )),
 
         addPalettes: (palettes: Palette[]) => {
@@ -135,23 +148,36 @@ export const createItemsStore = () => (
                 update.find(({ shortName }) => shortName === statePalette.shortName) || statePalette
               )),
             ]),
+            ...updateLastLocalUpdates(get, SheetName.PALETTES),
           });
         },
 
         deleteFrame: (frameId: string) => (set(({ frames }) => (
-          { frames: sortAndUniqueById(frames.filter((frame) => frameId !== frame.id)) }
+          {
+            frames: sortAndUniqueById(frames.filter((frame) => frameId !== frame.id)),
+            ...updateLastLocalUpdates(get, SheetName.FRAMES),
+          }
         ))),
 
         deletePalette: (shortName: string) => set(({ palettes }) => (
-          { palettes: palettes.filter((palette) => shortName !== palette.shortName) }
+          {
+            palettes: palettes.filter((palette) => shortName !== palette.shortName),
+            ...updateLastLocalUpdates(get, SheetName.PALETTES),
+          }
         )),
 
         deletePlugin: (pluginUrl: string) => set(({ plugins }) => (
-          { plugins: sortByNameUniqueByUrl(plugins.filter((plugin) => pluginUrl !== plugin.url)) }
+          {
+            plugins: sortByNameUniqueByUrl(plugins.filter((plugin) => pluginUrl !== plugin.url)),
+            ...updateLastLocalUpdates(get, SheetName.PLUGINS),
+          }
         )),
 
         updateFrameGroups: (frameGroups: FrameGroup[]) => (set((itemsState) => (
-          { frameGroups: frameGroupsUniqueById([...frameGroups, ...itemsState.frameGroups]) }
+          {
+            frameGroups: frameGroupsUniqueById([...frameGroups, ...itemsState.frameGroups]),
+            ...updateLastLocalUpdates(get, SheetName.FRAME_GROUPS),
+          }
         ))),
 
         updatePluginConfig: (url: string, key: string, value: string | number): PluginConfigValues => {
@@ -179,6 +205,7 @@ export const createItemsStore = () => (
             plugins: plugins.map((mapPlugin): Plugin => (
               mapPlugin.url !== url ? mapPlugin : changedPlugin
             )),
+            ...updateLastLocalUpdates(get, SheetName.PLUGINS),
           });
 
           return newConfigValues;
@@ -198,6 +225,7 @@ export const createItemsStore = () => (
             plugins: sortByNameUniqueByUrl(updatedPlugins.map((mapPlugin) => (
               (mapPlugin.url !== plugin.url) ? mapPlugin : { ...mapPlugin, ...plugin }
             ))),
+            ...updateLastLocalUpdates(get, SheetName.PLUGINS),
           });
         },
 
@@ -214,7 +242,10 @@ export const createItemsStore = () => (
             return { ...group, groups: groupGroups, images };
           });
 
-          set({ imageGroups: groupUniqueById([...groups, imageGroup]) });
+          set({
+            imageGroups: groupUniqueById([...groups, imageGroup]),
+            ...updateLastLocalUpdates(get, SheetName.IMAGE_GROUPS),
+          });
         },
 
         deleteImageGroup: (groupId: string) => {
@@ -248,7 +279,10 @@ export const createItemsStore = () => (
             return [...acc, reduceGroup];
           }, []);
 
-          set({ imageGroups });
+          set({
+            imageGroups,
+            ...updateLastLocalUpdates(get, SheetName.IMAGE_GROUPS),
+          });
         },
 
         updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
@@ -266,7 +300,10 @@ export const createItemsStore = () => (
             return updateGroup.id === imageGroup.id ? imageGroup : updateGroup;
           });
 
-          set({ imageGroups });
+          set({
+            imageGroups,
+            ...updateLastLocalUpdates(get, SheetName.IMAGE_GROUPS),
+          });
         },
 
         groupImagesAdd: (imageGroupId: string, images: string[]) => set((itemsState) => ({
@@ -284,6 +321,7 @@ export const createItemsStore = () => (
               images: group.images.filter((hash) => !images.includes(hash)),
             }
           )),
+          ...updateLastLocalUpdates(get, SheetName.IMAGE_GROUPS),
         })),
 
         ungroupImages: (images: string[]) => set((itemsState) => ({
@@ -292,20 +330,24 @@ export const createItemsStore = () => (
             // remove images from imageGroup - images will move to root group
             images: group.images.filter((hash) => !images.includes(hash)),
           })),
+          ...updateLastLocalUpdates(get, SheetName.IMAGE_GROUPS),
         })),
 
         addImages: (images: Image[]) => set((itemsState) => ({
           images: imagesUniqueByHash([...itemsState.images, ...images]),
+          ...updateLastLocalUpdates(get, SheetName.IMAGES),
         })),
 
         deleteImages: (hashes: string[]) => set((itemsState) => ({
           images: [...itemsState.images.filter(({ hash }) => !hashes.includes(hash))],
+          ...updateLastLocalUpdates(get, SheetName.IMAGES),
         })),
 
         updateImageHash: (oldHash: string, image: Image) => set((itemsState) => ({
           images: itemsState.images.map((stateImage) => (
             (stateImage.hash === oldHash) ? image : stateImage
           )),
+          ...updateLastLocalUpdates(get, SheetName.IMAGES),
         })),
 
         updateImageFavouriteTag: (isFavourite: boolean, hash: string) => set((itemsState) => ({
@@ -319,6 +361,7 @@ export const createItemsStore = () => (
               ),
             } : image
           )),
+          ...updateLastLocalUpdates(get, SheetName.IMAGES),
         })),
 
         updateImages: (images: Image[]) => set((itemsState) => {
@@ -328,23 +371,41 @@ export const createItemsStore = () => (
             images: itemsState.images.map((stateImage) => (
               changedImagesMap.get(stateImage.hash) || stateImage
             )),
+            ...updateLastLocalUpdates(get, SheetName.IMAGES),
           };
         }),
 
         updateFrames: (frames: Frame[]) => set((itemsState) => {
+          console.log('updateFrames', frames);
           const changedFramesMap = new Map(frames.map((frm) => [frm.hash, frm]));
 
           return {
             frames: itemsState.frames.map((stateFrame) => (
               changedFramesMap.get(stateFrame.hash) || stateFrame
             )),
+            ...updateLastLocalUpdates(get, SheetName.FRAMES),
           };
         }),
 
-        setFrames: (frames: Frame[]) => set({ frames: framesUniqueById(frames) }),
-        setImages: (images: Image[]) => set({ images: imagesUniqueByHash(images) }),
-        setImageGroups: (imageGroups: SerializableImageGroup[]) => set({ imageGroups }),
-        setPalettes: (palettes: Palette[]) => set({ palettes: withPredefinedPalettes(palettes) }),
+        setFrames: (frames: Frame[]) => set({
+          frames: framesUniqueById(frames),
+          ...updateLastLocalUpdates(get, SheetName.FRAMES),
+        }),
+
+        setImages: (images: Image[]) => set({
+          images: imagesUniqueByHash(images),
+          ...updateLastLocalUpdates(get, SheetName.IMAGES),
+        }),
+
+        setImageGroups: (imageGroups: SerializableImageGroup[]) => set({
+          imageGroups,
+          ...updateLastLocalUpdates(get, SheetName.IMAGE_GROUPS),
+        }),
+
+        setPalettes: (palettes: Palette[]) => set({
+          palettes: withPredefinedPalettes(palettes),
+          ...updateLastLocalUpdates(get, SheetName.PALETTES),
+        }),
       }),
       {
         name: `${PROJECT_PREFIX}-items`,
