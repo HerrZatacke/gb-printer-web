@@ -1,12 +1,12 @@
 import { hash as ohash } from 'ohash';
 import { useCallback, useEffect, useState } from 'react';
-import { type GapiLastUpdates, SheetName, sheetNames } from '@/contexts/GapiSyncContext/consts';
+import { type GapiLastUpdates, SheetName, sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import Sheet = gapi.client.sheets.Sheet;
 import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
 
-export interface GapiSyncContextType {
+export interface GapiSheetStateContextType {
   busy: boolean;
   sheets: Sheet[];
   gapiLastRemoteUpdates: GapiLastUpdates | null;
@@ -35,7 +35,7 @@ const createGapiLastUpdates = (sheets: Sheet[]): GapiLastUpdates => {
   return lastUpdates as GapiLastUpdates;
 };
 
-export const useContextHook = (): GapiSyncContextType => {
+export const useContextHook = (): GapiSheetStateContextType => {
   const { gapiStorage } = useStoragesStore();
   const { isReady } = useGIS();
   const [busy, setBusy] = useState(false);

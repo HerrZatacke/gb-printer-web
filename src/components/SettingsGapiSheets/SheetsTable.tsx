@@ -7,8 +7,8 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-import useGapiSync from '@/contexts/GapiSyncContext';
-import { SheetName } from '@/contexts/GapiSyncContext/consts';
+import useGapiSync from '@/contexts/GapiSheetStateContext';
+import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { useItemsStore } from '@/stores/stores';
 
 const toDate = (timestamp?: number): string => {

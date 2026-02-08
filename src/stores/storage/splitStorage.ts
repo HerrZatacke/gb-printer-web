@@ -3,7 +3,7 @@ import localforage from 'localforage';
 import { hash as ohash } from 'ohash';
 import { createJSONStorage, PersistStorage } from 'zustand/middleware';
 import { StorageValue } from 'zustand/middleware/persist';
-import { GapiLastUpdates } from '@/contexts/GapiSyncContext/consts';
+import { GapiLastUpdates } from '@/contexts/GapiSheetStateContext/consts';
 import { type Values } from '@/stores/itemsStore';
 import sortBy from '@/tools/sortby';
 import { type Frame } from '@/types/Frame';

@@ -2,7 +2,7 @@ import predefinedPalettes from 'gb-palettes';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { SpecialTags } from '@/consts/SpecialTags';
-import { GapiLastUpdates, SheetName } from '@/contexts/GapiSyncContext/consts';
+import { GapiLastUpdates, SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { PROJECT_PREFIX } from '@/stores/constants';
 import { cleanupItems } from '@/stores/migrations/cleanupItems';
 import { migrateItems } from '@/stores/migrations/history/0/migrateItems';
