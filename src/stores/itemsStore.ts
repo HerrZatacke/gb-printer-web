@@ -43,21 +43,23 @@ export interface Values {
 }
 
 interface Actions {
+  // Frame updates
   addFrames: (frames: Frame[]) => void,
-  addPalettes: (palettes: Palette[]) => void,
   deleteFrame: (id: string) => void,
-  deletePalette: (shortName: string) => void,
-  deletePlugin: (pluginUrl: string) => void,
-  updateFrameGroups: (frameGroups: FrameGroup[]) => void,
-  addUpdatePluginProperties: (plugin: Plugin) => void,
-  updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues,
-  addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
-  deleteImageGroup: (groupId: string) => void,
-  updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
-  groupImagesAdd: (imageGroupId: string, images: string[]) => void,
-  ungroupImages: (images: string[]) => void,
-  setImageGroups: (imageGroups: SerializableImageGroup[]) => void,
 
+  // FrameGroup updates
+  updateFrameGroups: (frameGroups: FrameGroup[]) => void,
+
+  // Palette updates
+  addPalettes: (palettes: Palette[]) => void,
+  deletePalette: (shortName: string) => void,
+
+  // Plugin updates
+  addUpdatePluginProperties: (plugin: Plugin) => void,
+  deletePlugin: (pluginUrl: string) => void,
+  updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues,
+
+  // Image updates
   addImages: (images: Image[]) => void,
   deleteImages: (hashes: string[]) => void,
   updateImageHash: (oldHash: string, image: Image) => void,
@@ -65,8 +67,17 @@ interface Actions {
   updateImages: (images: Image[]) => void,
   updateFrames: (frames: Frame[]) => void,
 
+  // ImageGroup updates
+  addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
+  deleteImageGroup: (groupId: string) => void,
+  updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
+  groupImagesAdd: (imageGroupId: string, images: string[]) => void,
+  ungroupImages: (images: string[]) => void,
+
+  // Global Updates
   setFrames: (frames: Frame[]) => void,
   setImages: (images: Image[]) => void,
+  setImageGroups: (imageGroups: SerializableImageGroup[]) => void,
   setPalettes: (palettes: Palette[]) => void,
 }
 
@@ -283,8 +294,6 @@ export const createItemsStore = () => (
           })),
         })),
 
-        setImageGroups: (imageGroups: SerializableImageGroup[]) => set({ imageGroups }),
-
         addImages: (images: Image[]) => set((itemsState) => ({
           images: imagesUniqueByHash([...itemsState.images, ...images]),
         })),
@@ -334,6 +343,7 @@ export const createItemsStore = () => (
 
         setFrames: (frames: Frame[]) => set({ frames: framesUniqueById(frames) }),
         setImages: (images: Image[]) => set({ images: imagesUniqueByHash(images) }),
+        setImageGroups: (imageGroups: SerializableImageGroup[]) => set({ imageGroups }),
         setPalettes: (palettes: Palette[]) => set({ palettes: withPredefinedPalettes(palettes) }),
       }),
       {
