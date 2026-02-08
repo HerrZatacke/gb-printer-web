@@ -7,7 +7,7 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-import useGapiSync from '@/contexts/GapiSheetStateContext';
+import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { useItemsStore } from '@/stores/stores';
 
@@ -27,9 +27,8 @@ const toDate = (timestamp?: number): string => {
 };
 
 function SheetsTable() {
-  const { gapiLastRemoteUpdates } = useGapiSync();
+  const { gapiLastRemoteUpdates, sheets } = useGapiSheetState();
   const { gapiLastLocalUpdates } = useItemsStore();
-  const { sheets } = useGapiSync();
 
   return (
     <TableContainer component={Paper}>

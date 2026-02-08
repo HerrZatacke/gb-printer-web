@@ -19,6 +19,6 @@ export function GapiSheetStateProvider({ children }: PropsWithChildren) {
   );
 }
 
-const useGapiSync = () => useContext(gapiSheetStateContext);
+const useGapiSheetState = () => useContext(gapiSheetStateContext);
 
-export default useGapiSync;
+export default useGapiSheetState;
