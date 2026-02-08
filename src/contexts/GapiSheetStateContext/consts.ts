@@ -23,3 +23,5 @@ export const sheetNames: SheetName[] = [
   SheetName.PLUGINS,
   SheetName.RGBN_IMAGES,
 ];
+
+export const LASTUPDATE_METADATA_KEY = 'lastUpdate';

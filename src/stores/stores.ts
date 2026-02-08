@@ -1,4 +1,3 @@
-import { initGapiSync } from '@/stores/sync/initGapiSync';
 import { createDialogsStore } from './dialogsStore';
 import { createEditStore } from './editStore';
 import { createFiltersStore } from './filtersStore';
@@ -18,5 +17,3 @@ export const useItemsStore = createItemsStore();
 export const useProgressStore = createProgressStore();
 export const useSettingsStore = createSettingsStore();
 export const useStoragesStore = createStoragesStore();
-
-initGapiSync(useStoragesStore, useItemsStore);

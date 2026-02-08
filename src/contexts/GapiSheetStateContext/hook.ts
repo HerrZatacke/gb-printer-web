@@ -1,6 +1,11 @@
 import { hash as ohash } from 'ohash';
 import { useCallback, useEffect, useState } from 'react';
-import { type GapiLastUpdates, SheetName, sheetNames } from '@/contexts/GapiSheetStateContext/consts';
+import {
+  type GapiLastUpdates,
+  LASTUPDATE_METADATA_KEY,
+  SheetName,
+  sheetNames,
+} from '@/contexts/GapiSheetStateContext/consts';
 import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import Sheet = gapi.client.sheets.Sheet;
@@ -18,7 +23,10 @@ const getSheetByTitle = (sheets: Sheet[]) => (title: SheetName): Sheet | null =>
 
 const getLastUpdate = (developerMetadata: DeveloperMetadata[]): number => (
   developerMetadata.reduce((max, item) => {
-    if (item.metadataKey !== 'lastUpdate') return max;
+    if (item.metadataKey !== LASTUPDATE_METADATA_KEY) {
+      return max;
+    }
+
     const value = Number(item.metadataValue);
     return value > max ? value : max;
   }, 0)
