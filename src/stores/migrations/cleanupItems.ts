@@ -31,7 +31,9 @@ export const cleanupItems = async (persistedItemsState: ItemsState): Promise<voi
     }
   }
 
-  updateImages(imagesUpdateRequired);
+  if (imagesUpdateRequired.length) {
+    updateImages(imagesUpdateRequired);
+  }
 
   const framesUpdateRequired: Frame[] = [];
   for (const frame of frames) {
@@ -46,5 +48,7 @@ export const cleanupItems = async (persistedItemsState: ItemsState): Promise<voi
     }
   }
 
-  updateFrames(framesUpdateRequired);
+  if (framesUpdateRequired.length) {
+    updateFrames(framesUpdateRequired);
+  }
 };
