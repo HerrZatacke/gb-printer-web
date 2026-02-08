@@ -95,18 +95,18 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.IMAGES, gapiLastLocalUpdates.images, gapiLastRemoteUpdates?.images);
-    }, 1);
+    }, 5000);
 
-    return window.clearTimeout(handle);
+    return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.images, gapiLastRemoteUpdates?.images, checkUpdate]);
 
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.PALETTES, gapiLastLocalUpdates.palettes, gapiLastRemoteUpdates?.palettes);
-    }, 1);
+    }, 5000);
 
-    return window.clearTimeout(handle);
+    return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.palettes, gapiLastRemoteUpdates?.palettes, checkUpdate]);
 
   return {
