@@ -13,8 +13,12 @@ import type { SerializableImageGroup } from '@/types/ImageGroup';
 import type { Palette } from '@/types/Palette';
 import type { Plugin } from '@/types/Plugin';
 import type { GapiSettings } from '@/types/Sync';
+import SheetProperties = gapi.client.sheets.SheetProperties;
+import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
 
 type FnTeardown = () => void;
+
+const LASTUPDATE_METADATA_KEY = 'lastUpdate';
 
 export const initGapiSync = (
   storagesStore: StoreApi<StoragesState>,
@@ -97,6 +101,64 @@ export const initGapiSync = (
     }
   }, 4000);
 
+  const getRemoteSheetProperties = async (spreadsheetId: string, sheetName: string): Promise<{
+    sheetProperties: SheetProperties;
+    developerMetadata?: DeveloperMetadata[];
+    values: string[][];
+  }> => {
+    const { result: { sheets } } = await gapi.client.sheets.spreadsheets.get({
+      spreadsheetId,
+    });
+
+    const sheet = (sheets || []).find(({ properties }) => (
+      properties?.title === sheetName
+    ));
+
+    let sheetProperties = sheet?.properties;
+    const developerMetadata = sheet?.developerMetadata;
+
+    if (!sheetProperties) {
+      const { result } = await gapi.client.sheets.spreadsheets.batchUpdate({
+        spreadsheetId,
+        resource: {
+          requests: [
+            {
+              addSheet: {
+                properties: {
+                  title: sheetName,
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      if (!result.replies?.[0]?.addSheet?.properties) {
+        throw new Error('Could not create new sheet');
+      }
+
+      sheetProperties = result.replies[0]?.addSheet.properties;
+    }
+
+
+    if (!sheetProperties) {
+      throw new Error(`remote sheet "${sheetName}" missing`);
+    }
+
+    const { result: { values } } = await gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: `${sheetProperties.title}!A:Z`,
+    });
+
+    console.log({ developerMetadata });
+
+    return {
+      sheetProperties,
+      developerMetadata,
+      values: values || [[]],
+    };
+  };
+
   const updateItems = async <T extends object>({
     sheetId,
     sheetName,
@@ -119,26 +181,38 @@ export const initGapiSync = (
       columns,
     };
 
-    const { result: { values: remoteValues } } = await gapi.client.sheets.spreadsheets.values.get({
-      spreadsheetId: sheetId,
-      range: `${sheetName}!A:Z`,
-    });
+    const {
+      sheetProperties,
+      developerMetadata,
+      values: remoteValues,
+    } =  await getRemoteSheetProperties(sheetId, sheetName);
 
-    const { result: { sheets: remoteSheets } } = await gapi.client.sheets.spreadsheets.get({
-      spreadsheetId: sheetId,
-    });
-
-    const remoteSheet = (remoteSheets || []).find(({ properties }) => (
-      properties?.title === sheetName
+    const lastUpdateMetadataItem = developerMetadata?.find((metadata) => (
+      metadata.metadataKey === LASTUPDATE_METADATA_KEY
     ));
 
-    const targetSheetId = remoteSheet?.properties?.sheetId;
+    const targetSheetId = sheetProperties.sheetId;
 
-    if (!remoteSheet || targetSheetId === undefined) {
-      throw new Error(`remote sheet "${sheetName}" missing`);
-    }
-
-    // console.log(remoteSheet);
+    const metadataUpsertRequest = lastUpdateMetadataItem ? {
+      updateDeveloperMetadata: {
+        developerMetadata: {
+          metadataId: lastUpdateMetadataItem.metadataId,
+          metadataValue: Date.now().toString(10),
+        },
+        fields: 'metadataValue',
+      },
+    } : {
+      createDeveloperMetadata: {
+        developerMetadata: {
+          metadataKey: LASTUPDATE_METADATA_KEY,
+          metadataValue: Date.now().toString(10),
+          visibility: 'DOCUMENT',
+          location: {
+            sheetId: targetSheetId,
+          },
+        },
+      },
+    };
 
     const sheetItems = objectsToSheet(items, {
       ...options,
@@ -198,19 +272,7 @@ export const initGapiSync = (
               ],
             },
           },
-          {
-            createDeveloperMetadata: {
-              // ToDo: prevent adding a new item every time... :/
-              developerMetadata: {
-                metadataKey: 'lastUpdate',
-                metadataValue: Date.now().toString(10),
-                visibility: 'DOCUMENT',
-                location: {
-                  sheetId: targetSheetId,
-                },
-              },
-            },
-          },
+          metadataUpsertRequest,
           {
             autoResizeDimensions: {
               dimensions: {
