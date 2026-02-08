@@ -7,7 +7,7 @@ import UpdateDeveloperMetadataRequest = gapi.client.sheets.UpdateDeveloperMetada
 import CreateDeveloperMetadataRequest = gapi.client.sheets.CreateDeveloperMetadataRequest;
 import Request = gapi.client.sheets.Request;
 
-export const updateItems = async <T extends object>({
+export const pushItems = async <T extends object>({
   sheetsClient,
   sheetId,
   sheetName,
@@ -15,7 +15,6 @@ export const updateItems = async <T extends object>({
   keyColumn,
   items,
   newLastUpdateValue,
-  updateFn,
 }: {
   sheetsClient: typeof gapi.client.sheets;
   sheetId: string;
@@ -24,7 +23,6 @@ export const updateItems = async <T extends object>({
   keyColumn: keyof T;
   items: T[];
   newLastUpdateValue: number;
-  updateFn: (items: T[]) => void;
 }): Promise<void> => {
   const startTime = Date.now();
 
@@ -165,12 +163,4 @@ export const updateItems = async <T extends object>({
   });
 
   console.log(`Pushed ${sheetName} in ${Date.now() - startTime}ms`);
-
-  // Update
-  const { result: { values: updatedValues } } = await sheetsClient.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: `${sheetName}!A:Z`,
-  });
-  const importItems = sheetToObjects<T>(updatedValues as string[][], options);
-  updateFn(importItems);
 };

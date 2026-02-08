@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import {
-  updateFrameGroups,
-  updateFrames,
-  updateImageGroups,
-  updateImages,
-  updateImagesRGBN,
-  updatePalettes,
-  updatePlugins,
+  pushFrameGroups,
+  pushFrames,
+  pushImageGroups,
+  pushImages,
+  pushImagesRGBN,
+  pushPalettes,
+  pushPlugins,
 } from '@/contexts/GapiSyncContext/tools/updaters';
 import useGIS from '@/contexts/GisContext';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
@@ -40,25 +40,25 @@ export const useContextHook = (): GapiSyncContextType => {
 
     switch (sheetName) {
       case SheetName.PALETTES:
-        await updatePalettes(updaterOptions, useItemsStore.getState().palettes);
+        await pushPalettes(updaterOptions, useItemsStore.getState().palettes);
         break;
       case SheetName.IMAGES:
-        await updateImages(updaterOptions, useItemsStore.getState().images);
+        await pushImages(updaterOptions, useItemsStore.getState().images);
         break;
       case SheetName.RGBN_IMAGES:
-        await updateImagesRGBN(updaterOptions, useItemsStore.getState().images);
+        await pushImagesRGBN(updaterOptions, useItemsStore.getState().images);
         break;
       case SheetName.FRAME_GROUPS:
-        await updateFrameGroups(updaterOptions, useItemsStore.getState().frameGroups);
+        await pushFrameGroups(updaterOptions, useItemsStore.getState().frameGroups);
         break;
       case SheetName.FRAMES:
-        await updateFrames(updaterOptions, useItemsStore.getState().frames);
+        await pushFrames(updaterOptions, useItemsStore.getState().frames);
         break;
       case SheetName.IMAGE_GROUPS:
-        await updateImageGroups(updaterOptions, useItemsStore.getState().imageGroups);
+        await pushImageGroups(updaterOptions, useItemsStore.getState().imageGroups);
         break;
       case SheetName.PLUGINS:
-        await updatePlugins(updaterOptions, useItemsStore.getState().plugins);
+        await pushPlugins(updaterOptions, useItemsStore.getState().plugins);
         break;
       default:
     }

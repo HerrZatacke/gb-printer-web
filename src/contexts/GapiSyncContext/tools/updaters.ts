@@ -1,5 +1,5 @@
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
-import { updateItems } from '@/contexts/GapiSyncContext/tools/updateItems';
+import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
 import { type ColumnSpec, ColumnType } from '@/tools/sheetConversion/types';
 import type { Frame } from '@/types/Frame';
@@ -26,11 +26,11 @@ const imagesCommonProps: ColumnSpec<Image>[] = [
   { prop: 'meta', column: 'Meta', type: ColumnType.JSON },
 ];
 
-export const updateImages = async (
+export const pushImages = async (
   { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   images: Image[],
 ) => {
-  await updateItems<MonochromeImage>({
+  await pushItems<MonochromeImage>({
     sheetsClient,
     newLastUpdateValue,
     columns: [
@@ -50,16 +50,14 @@ export const updateImages = async (
     keyColumn: 'hash',
     sheetId,
     sheetName: SheetName.IMAGES,
-    // updateFn: itemsStore.getState().setImages,
-    updateFn: console.log.bind(console),
   });
 };
 
-export const updateImagesRGBN = async (
+export const pushImagesRGBN = async (
   { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   images: Image[],
 ) => {
-  await updateItems<RGBNImage>({
+  await pushItems<RGBNImage>({
     sheetsClient,
     newLastUpdateValue,
     columns: [
@@ -72,16 +70,14 @@ export const updateImagesRGBN = async (
     keyColumn: 'hash',
     sheetId,
     sheetName: SheetName.RGBN_IMAGES,
-    // updateFn: itemsStore.getState().setImages,
-    updateFn: console.log.bind(console),
   });
 };
 
-export const updateImageGroups = async (
+export const pushImageGroups = async (
   { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   imageGroups: SerializableImageGroup[],
 ) => {
-  await updateItems<SerializableImageGroup>({
+  await pushItems<SerializableImageGroup>({
     sheetsClient,
     newLastUpdateValue,
     columns: [
@@ -97,15 +93,14 @@ export const updateImageGroups = async (
     keyColumn: 'id',
     sheetId,
     sheetName: SheetName.IMAGE_GROUPS,
-    updateFn: console.log.bind(console),
   });
 };
 
-export const updatePalettes = async (
+export const pushPalettes = async (
   { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   palettes: Palette[],
 ) => {
-  await updateItems<Palette>({
+  await pushItems<Palette>({
     sheetsClient,
     newLastUpdateValue,
     columns: [
@@ -118,17 +113,15 @@ export const updatePalettes = async (
     keyColumn: 'shortName',
     sheetId,
     sheetName: SheetName.PALETTES,
-    // updateFn: itemsStore.getState().setPalettes,
-    updateFn: console.log.bind(console),
   });
 };
 
 
-export const updateFrames = async (
+export const pushFrames = async (
   { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   frames: Frame[],
 ) => {
-  await updateItems<Frame>({
+  await pushItems<Frame>({
     sheetsClient,
     newLastUpdateValue,
     columns: [
@@ -141,16 +134,15 @@ export const updateFrames = async (
     keyColumn: 'id',
     sheetId,
     sheetName: SheetName.FRAMES,
-    updateFn: console.log.bind(console),
   });
 };
 
 
-export const updateFrameGroups = async (
+export const pushFrameGroups = async (
   { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   frameGroups: FrameGroup[],
 ) => {
-  await updateItems<FrameGroup>({
+  await pushItems<FrameGroup>({
     sheetsClient,
     newLastUpdateValue,
     columns: [
@@ -161,16 +153,15 @@ export const updateFrameGroups = async (
     keyColumn: 'id',
     sheetId,
     sheetName: SheetName.FRAME_GROUPS,
-    updateFn: console.log.bind(console),
   });
 };
 
 
-export const updatePlugins = async (
+export const pushPlugins = async (
   { sheetsClient, sheetId, newLastUpdateValue }: UpdaterOptions,
   plugins: Plugin[],
 ) => {
-  await updateItems<Plugin>({
+  await pushItems<Plugin>({
     sheetsClient,
     newLastUpdateValue,
     columns: [
@@ -184,6 +175,5 @@ export const updatePlugins = async (
     keyColumn: 'url',
     sheetId,
     sheetName: SheetName.PLUGINS,
-    updateFn: console.log.bind(console),
   });
 };
