@@ -67,6 +67,7 @@ export interface GitStorageSettings {
   throttle?: number,
 }
 
+
 export interface GapiSettings {
   use?: boolean,
   sheetId?: string,

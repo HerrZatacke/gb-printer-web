@@ -342,7 +342,7 @@ export const initGapiSync = (
           items: itemsState.images.reduce(reduceImagesRGBN, []),
           keyColumn: 'hash',
           sheetId,
-          sheetName: 'rgbnimages',
+          sheetName: 'rgbnImages',
           // updateFn: itemsStore.getState().setImages,
           updateFn: console.log.bind(console),
         });
@@ -370,7 +370,7 @@ export const initGapiSync = (
           items: itemsState.frameGroups,
           keyColumn: 'id',
           sheetId,
-          sheetName: 'framegroups',
+          sheetName: 'frameGroups',
           updateFn: console.log.bind(console),
         });
 
@@ -402,7 +402,7 @@ export const initGapiSync = (
           items: itemsState.imageGroups,
           keyColumn: 'id',
           sheetId,
-          sheetName: 'imagegroups',
+          sheetName: 'imageGroups',
           updateFn: console.log.bind(console),
         });
 

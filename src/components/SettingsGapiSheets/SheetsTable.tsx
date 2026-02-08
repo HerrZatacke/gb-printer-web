@@ -8,8 +8,10 @@ import {
   Paper,
 } from '@mui/material';
 import useGapiSync from '@/contexts/GapiSyncContext';
+import { SheetName } from '@/contexts/GapiSyncContext/consts';
+import { useItemsStore } from '@/stores/stores';
 
-const toDate = (timestamp: number): string => {
+const toDate = (timestamp?: number): string => {
   if (!timestamp) {
     return 'N/A';
   }
@@ -25,6 +27,8 @@ const toDate = (timestamp: number): string => {
 };
 
 function SheetsTable() {
+  const { gapiLastRemoteUpdates } = useGapiSync();
+  const { gapiLastLocalUpdates } = useItemsStore();
   const { sheets } = useGapiSync();
 
   return (
@@ -36,19 +40,27 @@ function SheetsTable() {
             <TableCell align="right">Title</TableCell>
             <TableCell align="right">Columns</TableCell>
             <TableCell align="right">Rows</TableCell>
-            <TableCell align="right">Last Update</TableCell>
+            <TableCell align="right">Last Remote Update</TableCell>
+            <TableCell align="right">Last Local Update</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sheets.map(({ properties, lastUpdate }) => (
-            <TableRow key={properties?.sheetId}>
-              <TableCell align="right">{properties?.sheetId}</TableCell>
-              <TableCell align="right">{properties?.title}</TableCell>
-              <TableCell align="right">{properties?.gridProperties?.columnCount}</TableCell>
-              <TableCell align="right">{properties?.gridProperties?.rowCount}</TableCell>
-              <TableCell align="right">{toDate(lastUpdate)}</TableCell>
-            </TableRow>
-          ))}
+          {sheets.map(({ properties }) => {
+            if (!properties) {
+              return null;
+            }
+
+            return (
+              <TableRow key={properties.sheetId}>
+                <TableCell align="right">{properties.sheetId}</TableCell>
+                <TableCell align="right">{properties.title}</TableCell>
+                <TableCell align="right">{properties.gridProperties?.columnCount}</TableCell>
+                <TableCell align="right">{properties.gridProperties?.rowCount}</TableCell>
+                <TableCell align="right">{toDate(gapiLastRemoteUpdates?.[properties.title as SheetName])}</TableCell>
+                <TableCell align="right">{toDate(gapiLastLocalUpdates?.[properties.title as SheetName])}</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

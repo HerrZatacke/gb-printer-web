@@ -1,19 +1,20 @@
+import { hash as ohash } from 'ohash';
 import { useCallback, useEffect, useState } from 'react';
+import { type GapiLastUpdates, SheetName, sheetNames } from '@/contexts/GapiSyncContext/consts';
 import useGIS from '@/contexts/GisContext';
-import { useItemsStore, useStoragesStore } from '@/stores/stores';
+import { useStoragesStore } from '@/stores/stores';
 import Sheet = gapi.client.sheets.Sheet;
-import SheetProperties = gapi.client.sheets.SheetProperties;
 import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
-
-export interface SheetState {
-  properties: SheetProperties;
-  lastUpdate: number;
-}
 
 export interface GapiSyncContextType {
   busy: boolean;
-  sheets: SheetState[];
+  sheets: Sheet[];
+  gapiLastRemoteUpdates: GapiLastUpdates | null;
 }
+
+const getSheetByTitle = (sheets: Sheet[]) => (title: SheetName): Sheet | null => (
+  sheets.find(({ properties }) => (properties?.title === title)) || null
+);
 
 const getLastUpdate = (developerMetadata: DeveloperMetadata[]): number => (
   developerMetadata.reduce((max, item) => {
@@ -23,26 +24,24 @@ const getLastUpdate = (developerMetadata: DeveloperMetadata[]): number => (
   }, 0)
 );
 
-const getSheetState = (sheet: Sheet): SheetState | null => {
-  const properties = sheet.properties;
+const createGapiLastUpdates = (sheets: Sheet[]): GapiLastUpdates => {
+  const getByTitle = getSheetByTitle(sheets);
+  const lastUpdates: Partial<GapiLastUpdates> = {};
 
-  if (!properties) {
-    return null;
+  for (const name of sheetNames) {
+    lastUpdates[name] = getLastUpdate(getByTitle(name)?.developerMetadata || []);
   }
 
-  return {
-    properties,
-    lastUpdate: getLastUpdate(sheet.developerMetadata || []),
-  };
+  return lastUpdates as GapiLastUpdates;
 };
 
 export const useContextHook = (): GapiSyncContextType => {
   const { gapiStorage } = useStoragesStore();
-  const { palettes } = useItemsStore();
   const { isReady } = useGIS();
   const [busy, setBusy] = useState(false);
-  const [sheets, setSheets] = useState<SheetState[]>([]);
   const [gapiClient, setGapiClient] = useState<typeof gapi.client | null>(null);
+  const [sheets, setSheets] = useState<Sheet[]>([]);
+  const [gapiLastRemoteUpdates, setGapiLastRemoteUpdates] = useState<GapiLastUpdates | null>(null);
 
   const initClient = useCallback(async () => {
     if (!isReady || !gapiStorage.use) {
@@ -79,7 +78,6 @@ export const useContextHook = (): GapiSyncContextType => {
       return;
     }
 
-    console.log('🤖 applyToken: setting new token');
     gapiClient.setToken({ access_token: token });
   }, [gapiClient, gapiStorage, isReady]);
 
@@ -97,7 +95,23 @@ export const useContextHook = (): GapiSyncContextType => {
       spreadsheetId: sheetId,
     });
 
-    const sheetStates = (remoteSheets || []).map(getSheetState).filter(Boolean) as SheetState[];
+    const newLastRemoteUpdates = createGapiLastUpdates(remoteSheets || []);
+    const sheetStates = (remoteSheets || []).filter(({ properties }) => {
+      if (!properties?.title) {
+        return false;
+      }
+
+      return (sheetNames as string[]).includes(properties.title);
+    });
+
+
+    setGapiLastRemoteUpdates((currentLastRemoteUpdates) => {
+      // only trigger a settings update if the timestamps have changed
+      if (ohash(newLastRemoteUpdates) === ohash(currentLastRemoteUpdates)) {
+        return currentLastRemoteUpdates;
+      }
+      return newLastRemoteUpdates;
+    });
 
     setSheets(sheetStates);
     setBusy(false);
@@ -109,6 +123,10 @@ export const useContextHook = (): GapiSyncContextType => {
 
   // start polling
   useEffect(() => {
+    if (!isReady) {
+      return;
+    }
+
     const pollHandle = setInterval(updateSheets, 60000);
     const instantHandle = setTimeout(updateSheets, 1);
 
@@ -116,10 +134,11 @@ export const useContextHook = (): GapiSyncContextType => {
       clearInterval(pollHandle);
       clearTimeout(instantHandle);
     };
-  }, [updateSheets]);
+  }, [isReady, updateSheets]);
 
   return {
     busy,
     sheets,
+    gapiLastRemoteUpdates,
   };
 };
