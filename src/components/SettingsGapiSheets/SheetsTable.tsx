@@ -11,12 +11,12 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Typography,
 } from '@mui/material';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import { sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import useGapiSync from '@/contexts/GapiSyncContext';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
-import Typography from '@mui/material/Typography';
 
 
 const toDate = (timestamp?: number): string => {
@@ -101,8 +101,12 @@ function SheetsTable() {
                 <TableCell align="right">{properties?.gridProperties?.rowCount || 'N/A'}</TableCell>
                 <TableCell align="right" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(remoteTimestamp)}</TableCell>
                 <TableCell align="center" sx={{ backgroundColor: 'var(--color-match)' }}>
-                  <Typography variant="h3">
+                  <Typography variant="h4">
+                    {diff > 0 && '✨ '}
+                    {diff < 0 && '🕰️ '}
                     {getSign(diff)}
+                    {diff > 0 && ' 🕰️'}
+                    {diff < 0 && ' ✨'}
                   </Typography>
                 </TableCell>
                 <TableCell align="left" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(localTimestamp)}</TableCell>
