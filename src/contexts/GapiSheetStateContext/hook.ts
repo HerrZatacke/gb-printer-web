@@ -2,47 +2,20 @@ import { hash as ohash } from 'ohash';
 import { useCallback, useEffect, useState } from 'react';
 import {
   type GapiLastUpdates,
-  LASTUPDATE_METADATA_KEY,
-  SheetName,
   sheetNames,
 } from '@/contexts/GapiSheetStateContext/consts';
+import { createGapiLastUpdates } from '@/contexts/GapiSheetStateContext/tools/createGapiLastUpdates';
 import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import Sheet = gapi.client.sheets.Sheet;
-import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
 
 export interface GapiSheetStateContextType {
   busy: boolean;
   sheets: Sheet[];
+  gapiClient: typeof gapi.client | null;
   gapiLastRemoteUpdates: GapiLastUpdates | null;
   updateSheets: () => Promise<void>;
 }
-
-const getSheetByTitle = (sheets: Sheet[]) => (title: SheetName): Sheet | null => (
-  sheets.find(({ properties }) => (properties?.title === title)) || null
-);
-
-const getLastUpdate = (developerMetadata: DeveloperMetadata[]): number => (
-  developerMetadata.reduce((max, item) => {
-    if (item.metadataKey !== LASTUPDATE_METADATA_KEY) {
-      return max;
-    }
-
-    const value = Number(item.metadataValue);
-    return value > max ? value : max;
-  }, 0)
-);
-
-const createGapiLastUpdates = (sheets: Sheet[]): GapiLastUpdates => {
-  const getByTitle = getSheetByTitle(sheets);
-  const lastUpdates: Partial<GapiLastUpdates> = {};
-
-  for (const name of sheetNames) {
-    lastUpdates[name] = getLastUpdate(getByTitle(name)?.developerMetadata || []);
-  }
-
-  return lastUpdates as GapiLastUpdates;
-};
 
 export const useContextHook = (): GapiSheetStateContextType => {
   const { gapiStorage } = useStoragesStore();
@@ -147,6 +120,7 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
   return {
     busy,
+    gapiClient,
     sheets,
     gapiLastRemoteUpdates,
     updateSheets,

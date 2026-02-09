@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
+import { getLastUpdate } from '@/contexts/GapiSheetStateContext/tools/getLastUpdate';
 import {
   createOptionsFrameGroups,
   createOptionsFrames,
@@ -15,11 +16,11 @@ import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
 import useGIS from '@/contexts/GisContext';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
-import { UpdaterOptionsDynamic } from '@/tools/sheetConversion/types';
+import type { UpdaterOptionsDynamic } from '@/tools/sheetConversion/types';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
 import type { MonochromeImage, RGBNImage } from '@/types/Image';
-import { SerializableImageGroup } from '@/types/ImageGroup';
+import type { SerializableImageGroup } from '@/types/ImageGroup';
 import type { Palette } from '@/types/Palette';
 import type { Plugin } from '@/types/Plugin';
 
@@ -30,21 +31,21 @@ export interface GapiSyncContextType {
 }
 
 export const useContextHook = (): GapiSyncContextType => {
-  const { gapiLastRemoteUpdates, updateSheets } = useGapiSheetState();
+  const { gapiLastRemoteUpdates, updateSheets, gapiClient } = useGapiSheetState();
   const { gapiLastLocalUpdates } = useItemsStore();
   const { isReady } = useGIS();
   const { gapiStorage } = useStoragesStore();
   const [busy, setBusy] = useState(false);
 
   const performPush = useCallback(async (sheetName: SheetName, newLastUpdateValue: number) => {
-    if (!gapiStorage.sheetId) {
+    if (!gapiStorage.sheetId || !gapiClient) {
       return;
     }
 
     setBusy(true);
 
     const updaterOptions: UpdaterOptionsDynamic = {
-      sheetsClient: gapi.client.sheets,
+      sheetsClient: gapiClient.sheets,
       sheetId: gapiStorage.sheetId,
     };
 
@@ -139,92 +140,113 @@ export const useContextHook = (): GapiSyncContextType => {
     updateSheets();
 
     setBusy(false);
-  }, [gapiStorage.sheetId, updateSheets]);
+  }, [gapiStorage.sheetId, updateSheets, gapiClient]);
 
 
   const performPull = useCallback(async (sheetName: SheetName, lastRemoteUpdate?: number) => {
-    if (!gapiStorage.sheetId) {
+    if (!gapiStorage.sheetId || !gapiClient) {
       return;
     }
 
     setBusy(true);
 
     const updaterOptions: UpdaterOptionsDynamic = {
-      sheetsClient: gapi.client.sheets,
+      sheetsClient: gapiClient.sheets,
       sheetId: gapiStorage.sheetId ,
     };
 
     switch (sheetName) {
       case SheetName.PALETTES: {
-        const loaded = await pullItems<Palette>({
+        const result = await pullItems<Palette>({
           ...updaterOptions,
           ...createOptionsPalettes(),
         });
 
-        useItemsStore.getState().setPalettes(loaded);
+        const metaData = result.sheetProperties.developerMetadata;
+        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+        useItemsStore.getState().setPalettes(result.items, timestamp);
         break;
       }
 
       case SheetName.IMAGES: {
-        const loaded = await pullItems<MonochromeImage>({
+        const result = await pullItems<MonochromeImage>({
           ...updaterOptions,
           ...createOptionsImages(),
         });
 
-        useItemsStore.getState().addImages(loaded);
+        const metaData = result.sheetProperties.developerMetadata;
+        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+        useItemsStore.getState().addImages(result.items, timestamp);
         break;
       }
 
       case SheetName.RGBN_IMAGES: {
-        const loaded = await pullItems<RGBNImage>({
+        const result = await pullItems<RGBNImage>({
           ...updaterOptions,
           ...createOptionsImagesRGBN(),
         });
 
-        useItemsStore.getState().addImages(loaded);
+        const metaData = result.sheetProperties.developerMetadata;
+        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+        useItemsStore.getState().addImages(result.items, timestamp);
         break;
       }
 
       case SheetName.FRAME_GROUPS: {
-        const loaded = await pullItems<FrameGroup>({
+        const result = await pullItems<FrameGroup>({
           ...updaterOptions,
           ...createOptionsFrameGroups(),
         });
 
+        const metaData = result.sheetProperties.developerMetadata;
+        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
         // ToDo
-        console.log(loaded);
+        console.log(result.items, timestamp);
         break;
       }
 
       case SheetName.FRAMES: {
-        const loaded = await pullItems<Frame>({
+        const result = await pullItems<Frame>({
           ...updaterOptions,
           ...createOptionsFrames(),
         });
 
-        useItemsStore.getState().setFrames(loaded);
+        const metaData = result.sheetProperties.developerMetadata;
+        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+        useItemsStore.getState().setFrames(result.items, timestamp);
         break;
       }
 
       case SheetName.IMAGE_GROUPS: {
-        const loaded = await pullItems<SerializableImageGroup>({
+        const result = await pullItems<SerializableImageGroup>({
           ...updaterOptions,
           ...createOptionsImageGroups(),
         });
 
-        useItemsStore.getState().setImageGroups(loaded);
+        const metaData = result.sheetProperties.developerMetadata;
+        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+        useItemsStore.getState().setImageGroups(result.items, timestamp);
         break;
       }
 
 
       case SheetName.PLUGINS: {
-        const loaded = await pullItems<Plugin>({
+        const result = await pullItems<Plugin>({
           ...updaterOptions,
           ...createOptionsPlugins(),
         });
 
+        const metaData = result.sheetProperties.developerMetadata;
+        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
         // ToDo
-        console.log(loaded);
+        console.log(result.items, timestamp);
         break;
       }
 
@@ -239,7 +261,7 @@ export const useContextHook = (): GapiSyncContextType => {
     updateSheets();
 
     setBusy(false);
-  }, [gapiStorage.sheetId, updateSheets]);
+  }, [gapiStorage.sheetId, updateSheets, gapiClient]);
 
 
   const checkUpdate = useCallback(async (sheetName: SheetName, lastLocalUpdate: number, lastRemoteUpdate?: number) => {

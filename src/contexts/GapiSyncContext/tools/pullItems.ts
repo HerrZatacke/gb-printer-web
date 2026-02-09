@@ -1,5 +1,11 @@
+import { getRemoteSheetProperties, type RemoteSheetProperties } from '@/contexts/GapiSyncContext/tools/getRemoteSheetProperties';
 import { sheetToObjects } from '@/tools/sheetConversion/sheetToObjects';
 import { ColumnSpec } from '@/tools/sheetConversion/types';
+
+interface PullItemsResult<T> {
+  items: T[];
+  sheetProperties: RemoteSheetProperties;
+}
 
 export const pullItems = async <T extends object>({
   sheetsClient,
@@ -13,7 +19,7 @@ export const pullItems = async <T extends object>({
   sheetName: string;
   columns: ColumnSpec<T>[];
   keyColumn: keyof T;
-}): Promise<T[]> => {
+}): Promise<PullItemsResult<T>> => {
   const startTime = Date.now();
 
   const options = {
@@ -27,9 +33,14 @@ export const pullItems = async <T extends object>({
     range: `${sheetName}!A:Z`,
   });
 
+  const sheetProperties = await getRemoteSheetProperties(sheetsClient, sheetId, sheetName);
+
   console.log(`Pulled ${sheetName} in ${Date.now() - startTime}ms`);
 
-  const importItems = sheetToObjects<T>(updatedValues as string[][], options);
+  const items = sheetToObjects<T>(updatedValues as string[][], options);
 
-  return importItems;
+  return {
+    items,
+    sheetProperties,
+  };
 };

@@ -1,13 +1,13 @@
 import SheetProperties = gapi.client.sheets.SheetProperties;
 import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
 
-interface GetRemoteSheetProperties {
+export interface RemoteSheetProperties {
   sheetProperties: SheetProperties;
   developerMetadata?: DeveloperMetadata[];
   values: string[][];
 }
 
-export const getRemoteSheetProperties = async (sheetsClient: typeof gapi.client.sheets, spreadsheetId: string, sheetName: string): Promise<GetRemoteSheetProperties> => {
+export const getRemoteSheetProperties = async (sheetsClient: typeof gapi.client.sheets, spreadsheetId: string, sheetName: string): Promise<RemoteSheetProperties> => {
   const { result: { sheets } } = await sheetsClient.spreadsheets.get({
     spreadsheetId,
   });
