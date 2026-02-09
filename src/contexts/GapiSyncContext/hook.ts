@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { getLastUpdate } from '@/contexts/GapiSheetStateContext/tools/getLastUpdate';
@@ -250,11 +250,6 @@ export const useContextHook = (): GapiSyncContextType => {
         }
 
         default:
-      }
-
-      if (typeof lastRemoteUpdate !== 'undefined') {
-        // ToDo:
-        console.log('need to set this as new local value', lastRemoteUpdate);
       }
     });
 
