@@ -1,21 +1,23 @@
 'use client';
 
-import BackupTableIcon from '@mui/icons-material/BackupTable';
+import LaunchIcon from '@mui/icons-material/Launch';
 import {
   Alert,
   Button,
   ButtonGroup,
   FormControlLabel,
+  IconButton,
+  InputAdornment,
   Link,
   Stack,
   Switch,
   TextField,
-  Typography,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import React, { useCallback, useState } from 'react';
 import SheetsTable from '@/components/SettingsGapiSheets/SheetsTable';
 import TokenTimer from '@/components/SettingsGapiSheets/TokenTimer';
+import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import type { GapiSettings } from '@/types/Sync';
@@ -115,6 +117,27 @@ function SettingsGapiSheets() {
             helperText={t('sheetIdHelper')}
             type="text"
             value={sheetId}
+            slotProps={{
+              ...textFieldSlotDefaults,
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      title={t('openSheetLink')}
+                      aria-label={t('openSheetLink')}
+                      disabled={!gapiStorage.sheetId}
+                      edge="end"
+                      component={Link}
+                      href={`https://docs.google.com/spreadsheets/d/${gapiStorage.sheetId}/edit`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <LaunchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
             onChange={(ev) => {
               setSheetId(ev.target.value);
             }}
@@ -124,23 +147,6 @@ function SettingsGapiSheets() {
               updateGapiSettings({ sheetId: cleanId });
             }}
           />
-
-          {gapiStorage.sheetId && (
-            <Stack
-              alignItems="center"
-              direction="row"
-              gap={1}
-              component={Link}
-              href={`https://docs.google.com/spreadsheets/d/${gapiStorage.sheetId}/edit`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <BackupTableIcon />
-              <Typography>
-                {t('openSheetLink')}
-              </Typography>
-            </Stack>
-          )}
 
           {isSignedIn && <TokenTimer />}
 
