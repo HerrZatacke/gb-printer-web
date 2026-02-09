@@ -66,7 +66,7 @@ function SheetsTable() {
                 <TableCell align="center">
                   {gapiLastLocalUpdates?.[sheetName]}
                   <button disabled={busy} onClick={() => performPush(sheetName, gapiLastLocalUpdates?.[sheetName])}>Uppy!</button>
-                  <button disabled={busy} onClick={() => performPull(sheetName)}>Pully!</button>
+                  <button disabled={busy} onClick={() => performPull(sheetName, gapiLastRemoteUpdates?.[sheetName])}>Pully!</button>
                 </TableCell>
               </TableRow>
             );

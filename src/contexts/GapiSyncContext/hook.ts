@@ -26,7 +26,7 @@ import type { Plugin } from '@/types/Plugin';
 export interface GapiSyncContextType {
   busy: boolean;
   performPush: (sheetName: SheetName, lastLocalUpdate: number) => Promise<void>;
-  performPull: (sheetName: SheetName) => Promise<void>;
+  performPull: (sheetName: SheetName, lastRemoteUpdate?: number) => Promise<void>;
 }
 
 export const useContextHook = (): GapiSyncContextType => {
@@ -142,7 +142,7 @@ export const useContextHook = (): GapiSyncContextType => {
   }, [gapiStorage.sheetId, updateSheets]);
 
 
-  const performPull = useCallback(async (sheetName: SheetName) => {
+  const performPull = useCallback(async (sheetName: SheetName, lastRemoteUpdate?: number) => {
     if (!gapiStorage.sheetId) {
       return;
     }
@@ -231,6 +231,10 @@ export const useContextHook = (): GapiSyncContextType => {
       default:
     }
 
+    if (typeof lastRemoteUpdate !== 'undefined') {
+      // ToDo:
+      console.log('need to set this as new local value', lastRemoteUpdate);
+    }
 
     updateSheets();
 
@@ -252,7 +256,7 @@ export const useContextHook = (): GapiSyncContextType => {
     if (lastLocalUpdate > lastRemoteUpdate) {
       await performPush(sheetName, lastLocalUpdate);
     } else {
-      await performPull(sheetName);
+      await performPull(sheetName, lastRemoteUpdate);
     }
   }, [gapiStorage, isReady, performPull, performPush]);
 
