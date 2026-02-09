@@ -70,6 +70,7 @@ export interface GitStorageSettings {
 
 export interface GapiSettings {
   use?: boolean,
+  autoSync?: boolean,
   sheetId?: string,
   token?: string,
   tokenExpiry?: number,

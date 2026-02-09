@@ -243,10 +243,11 @@ export const useContextHook = (): GapiSyncContextType => {
 
 
   const checkUpdate = useCallback(async (sheetName: SheetName, lastLocalUpdate: number, lastRemoteUpdate?: number) => {
-    const { use, sheetId, token } = gapiStorage;
+    const { use, sheetId, token, autoSync } = gapiStorage;
 
     if (
       typeof lastRemoteUpdate === 'undefined' || // Still waiting for remote info
+      !autoSync || // Autosync disabled
       !isReady || !use || !sheetId|| !token || // sync not ready
       lastLocalUpdate === lastRemoteUpdate // no need for update
     ) {

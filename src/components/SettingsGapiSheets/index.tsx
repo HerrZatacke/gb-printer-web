@@ -42,6 +42,7 @@ function SettingsGapiSheets() {
   const { isSignedIn, handleSignIn, handleSignOut } = useGIS();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
   const [use, setUse] = useState<boolean>(gapiStorage.use || false);
+  const [autoSync, setAutoSync] = useState<boolean>(gapiStorage.autoSync || false);
   const [sheetId, setSheetId] = useState<string>(gapiStorage.sheetId || '');
   const t = useTranslations('SettingsGapiSheets');
 
@@ -69,6 +70,20 @@ function SettingsGapiSheets() {
             onChange={({ target }) => {
               setUse(target.checked);
               updateGapiSettings({ use: target.checked });
+            }}
+          />
+        )}
+      />
+
+      <FormControlLabel
+        label={t('enableAutoSync')}
+        disabled={!use}
+        control={(
+          <Switch
+            checked={autoSync}
+            onChange={({ target }) => {
+              setAutoSync(target.checked);
+              updateGapiSettings({ autoSync: target.checked });
             }}
           />
         )}

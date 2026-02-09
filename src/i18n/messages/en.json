@@ -71,6 +71,7 @@
     "about": "This is an experimental feature. The session requires renewal every 60 minutes. Make sure not to run updates when the session timer is about to expire.",
     "tokenExpiry": "Session will expire in {time}",
     "enableStorage": "Use Google Sheets as storage",
+    "enableAutoSync": "Synchronize automatically",
     "sheetId":"Sheet ID",
     "sheetIdHelper": "You can paste the full edit link to get the correct sheet id.",
     "authenticate": "Authenticate",

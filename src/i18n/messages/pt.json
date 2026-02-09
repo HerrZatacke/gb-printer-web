@@ -71,6 +71,7 @@
     "about": "Esta é uma funcionalidade experimental. A sessão requer renovação a cada 60 minutos. Certifique-se de não executar atualizações quando o temporizador da sessão estiver prestes a expirar.",
     "tokenExpiry": "A sessão irá expirar em {time}",
     "enableStorage": "Usar Google Sheets como armazenamento",
+    "enableAutoSync": "Sincronizar automaticamente",
     "sheetId": "ID da folha",
     "sheetIdHelper": "Podes colar o link de edição completo para obteres o ID da folha correto.",
     "authenticate": "Autenticar",

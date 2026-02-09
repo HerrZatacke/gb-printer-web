@@ -71,6 +71,7 @@
     "about": "Detta är en experimentell funktion. Sessionen måste förnyas var 60:e minut. Se till att inte köra uppdateringar när sessionstimern håller på att gå ut.",
     "tokenExpiry": "Sessionen upphör om {time}",
     "enableStorage": "Använd Google Sheets som lagring",
+    "enableAutoSync": "Synkronisera automatiskt",
     "sheetId": "Sheet-ID",
     "sheetIdHelper": "Du kan klistra in hela redigeringslänken för att få korrekt blad-ID.",
     "authenticate": "Autentisera",
