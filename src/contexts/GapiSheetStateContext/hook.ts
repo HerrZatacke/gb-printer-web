@@ -27,6 +27,7 @@ export const useContextHook = (): GapiSheetStateContextType => {
   const [gapiClient, setGapiClient] = useState<typeof gapi.client | null>(null);
   const [sheets, setSheets] = useState<Sheet[]>([]);
   const [gapiLastRemoteUpdates, setGapiLastRemoteUpdates] = useState<GapiLastUpdates | null>(null);
+  const refreshHandle = useRef<number>(0);
   const queue = useRef<Queue | null>(null);
 
   if (!queue.current) {
@@ -96,6 +97,8 @@ export const useContextHook = (): GapiSheetStateContextType => {
       return;
     }
 
+    window.clearTimeout(refreshHandle.current);
+
     await enqueueSheetsClientRequest(async (sheetsClient) => {
       const { result: { sheets: remoteSheets } } = await sheetsClient.spreadsheets.get({
         spreadsheetId: sheetId,
@@ -121,6 +124,8 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
       setSheets(sheetStates);
     });
+
+    refreshHandle.current = window.setTimeout(updateSheets, 60000);
   }, [enqueueSheetsClientRequest, gapiStorage]);
 
   useEffect(() => { initClient(); }, [gapiStorage, initClient]);
@@ -133,13 +138,8 @@ export const useContextHook = (): GapiSheetStateContextType => {
       return;
     }
 
-    const pollHandle = setInterval(updateSheets, 60000);
-    const instantHandle = setTimeout(updateSheets, 1);
-
-    return () => {
-      clearInterval(pollHandle);
-      clearTimeout(instantHandle);
-    };
+    const handle = setTimeout(updateSheets, 1);
+    return () => clearTimeout(handle);
   }, [gapiClient, isReady, updateSheets]);
 
   return {
