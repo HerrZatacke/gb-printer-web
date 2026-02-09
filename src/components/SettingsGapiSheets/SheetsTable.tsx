@@ -46,7 +46,7 @@ const getSign = (value: number): string => {
 };
 
 function SheetsTable() {
-  const { gapiLastRemoteUpdates, sheets } = useGapiSheetState();
+  const { gapiLastRemoteUpdates, sheets, updateSheets } = useGapiSheetState();
   const { gapiStorage } = useStoragesStore();
   const { busy, performPush, performPull } = useGapiSync();
   const { gapiLastLocalUpdates } = useItemsStore();
@@ -74,6 +74,7 @@ function SheetsTable() {
             <TableCell align="right">
               <IconButton
                 disabled={disabled}
+                onClick={updateSheets}
               >
                 <RefreshIcon />
               </IconButton>
