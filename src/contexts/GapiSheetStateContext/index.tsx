@@ -5,9 +5,11 @@ import { GapiSheetStateContextType, useContextHook } from '@/contexts/GapiSheetS
 
 const gapiSheetStateContext = createContext<GapiSheetStateContextType>({
   busy: false,
+  isReady: false,
   sheets: [],
   gapiLastRemoteUpdates: null,
   updateSheets: async () => {},
+  enqueueSheetsClientRequest: async () => {},
 });
 
 export function GapiSheetStateProvider({ children }: PropsWithChildren) {

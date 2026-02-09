@@ -13,7 +13,6 @@ import {
 } from '@/contexts/GapiSyncContext/tools/optionCreaters';
 import { pullItems } from '@/contexts/GapiSyncContext/tools/pullItems';
 import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
-import useGIS from '@/contexts/GisContext';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
 import type { UpdaterOptionsDynamic } from '@/tools/sheetConversion/types';
@@ -31,237 +30,236 @@ export interface GapiSyncContextType {
 }
 
 export const useContextHook = (): GapiSyncContextType => {
-  const { gapiLastRemoteUpdates, updateSheets, gapiSheetsClient } = useGapiSheetState();
+  const { gapiLastRemoteUpdates, updateSheets, enqueueSheetsClientRequest, isReady, busy } = useGapiSheetState();
   const { gapiLastLocalUpdates } = useItemsStore();
-  const { isReady } = useGIS();
   const { gapiStorage } = useStoragesStore();
-  const [busy, setBusy] = useState(false);
 
   const performPush = useCallback(async (sheetName: SheetName, newLastUpdateValue: number) => {
-    if (!gapiStorage.sheetId || !gapiSheetsClient) {
+    const sheetId =  gapiStorage.sheetId;
+
+    if (!sheetId) {
       return;
     }
 
-    setBusy(true);
+    await enqueueSheetsClientRequest(async (sheetsClient) => {
+      const updaterOptions: UpdaterOptionsDynamic = {
+        sheetsClient,
+        sheetId,
+      };
 
-    const updaterOptions: UpdaterOptionsDynamic = {
-      sheetsClient: gapiSheetsClient,
-      sheetId: gapiStorage.sheetId,
-    };
+      switch (sheetName) {
+        case SheetName.PALETTES: {
+          await pushItems<Palette>(
+            {
+              newLastUpdateValue,
+              ...updaterOptions,
+              ...createOptionsPalettes(),
+            },
+            useItemsStore.getState().palettes.filter(({ isPredefined }) => !isPredefined),
+          );
+          break;
+        }
 
-    switch (sheetName) {
-      case SheetName.PALETTES: {
-        await pushItems<Palette>(
-          {
-            newLastUpdateValue,
-            ...updaterOptions,
-            ...createOptionsPalettes(),
-          },
-          useItemsStore.getState().palettes.filter(({ isPredefined }) => !isPredefined),
-        );
-        break;
+        case SheetName.IMAGES: {
+          await pushItems<MonochromeImage>(
+            {
+              newLastUpdateValue,
+              ...updaterOptions,
+              ...createOptionsImages(),
+            },
+            useItemsStore.getState().images.reduce(reduceImagesMonochrome, []),
+          );
+          break;
+        }
+
+        case SheetName.RGBN_IMAGES: {
+          await pushItems<RGBNImage>(
+            {
+              newLastUpdateValue,
+              ...updaterOptions,
+              ...createOptionsImagesRGBN(),
+            },
+            useItemsStore.getState().images.reduce(reduceImagesRGBN, []),
+          );
+          break;
+        }
+
+        case SheetName.FRAME_GROUPS: {
+          await pushItems<FrameGroup>(
+            {
+              newLastUpdateValue,
+              ...updaterOptions,
+              ...createOptionsFrameGroups(),
+            },
+            useItemsStore.getState().frameGroups,
+          );
+          break;
+        }
+
+        case SheetName.FRAMES: {
+          await pushItems<Frame>(
+            {
+              newLastUpdateValue,
+              ...updaterOptions,
+              ...createOptionsFrames(),
+            },
+            useItemsStore.getState().frames,
+          );
+          break;
+        }
+
+        case SheetName.IMAGE_GROUPS: {
+          await pushItems<SerializableImageGroup>(
+            {
+              newLastUpdateValue,
+              ...updaterOptions,
+              ...createOptionsImageGroups(),
+            },
+            useItemsStore.getState().imageGroups,
+          );
+          break;
+        }
+
+        case SheetName.PLUGINS: {
+          await pushItems<Plugin>(
+            {
+              newLastUpdateValue,
+              ...updaterOptions,
+              ...createOptionsPlugins(),
+            },
+            useItemsStore.getState().plugins,
+          );
+          break;
+        }
+
+        default:
       }
+    });
 
-      case SheetName.IMAGES: {
-        await pushItems<MonochromeImage>(
-          {
-            newLastUpdateValue,
-            ...updaterOptions,
-            ...createOptionsImages(),
-          },
-          useItemsStore.getState().images.reduce(reduceImagesMonochrome, []),
-        );
-        break;
-      }
 
-      case SheetName.RGBN_IMAGES: {
-        await pushItems<RGBNImage>(
-          {
-            newLastUpdateValue,
-            ...updaterOptions,
-            ...createOptionsImagesRGBN(),
-          },
-          useItemsStore.getState().images.reduce(reduceImagesRGBN, []),
-        );
-        break;
-      }
-
-      case SheetName.FRAME_GROUPS: {
-        await pushItems<FrameGroup>(
-          {
-            newLastUpdateValue,
-            ...updaterOptions,
-            ...createOptionsFrameGroups(),
-          },
-          useItemsStore.getState().frameGroups,
-        );
-        break;
-      }
-
-      case SheetName.FRAMES: {
-        await pushItems<Frame>(
-          {
-            newLastUpdateValue,
-            ...updaterOptions,
-            ...createOptionsFrames(),
-          },
-          useItemsStore.getState().frames,
-        );
-        break;
-      }
-
-      case SheetName.IMAGE_GROUPS: {
-        await pushItems<SerializableImageGroup>(
-          {
-            newLastUpdateValue,
-            ...updaterOptions,
-            ...createOptionsImageGroups(),
-          },
-          useItemsStore.getState().imageGroups,
-        );
-        break;
-      }
-
-      case SheetName.PLUGINS: {
-        await pushItems<Plugin>(
-          {
-            newLastUpdateValue,
-            ...updaterOptions,
-            ...createOptionsPlugins(),
-          },
-          useItemsStore.getState().plugins,
-        );
-        break;
-      }
-
-      default:
-    }
-
-    updateSheets();
-
-    setBusy(false);
-  }, [gapiStorage.sheetId, updateSheets, gapiSheetsClient]);
+    await updateSheets();
+  }, [enqueueSheetsClientRequest, gapiStorage.sheetId, updateSheets]);
 
 
   const performPull = useCallback(async (sheetName: SheetName, lastRemoteUpdate?: number) => {
-    if (!gapiStorage.sheetId || !gapiSheetsClient) {
+    const sheetId =  gapiStorage.sheetId;
+
+    if (!sheetId) {
       return;
     }
 
-    setBusy(true);
+    await enqueueSheetsClientRequest(async (sheetsClient) => {
+      const updaterOptions: UpdaterOptionsDynamic = {
+        sheetsClient,
+        sheetId,
+      };
 
-    const updaterOptions: UpdaterOptionsDynamic = {
-      sheetsClient: gapiSheetsClient,
-      sheetId: gapiStorage.sheetId ,
-    };
+      switch (sheetName) {
+        case SheetName.PALETTES: {
+          const result = await pullItems<Palette>({
+            ...updaterOptions,
+            ...createOptionsPalettes(),
+          });
 
-    switch (sheetName) {
-      case SheetName.PALETTES: {
-        const result = await pullItems<Palette>({
-          ...updaterOptions,
-          ...createOptionsPalettes(),
-        });
+          const metaData = result.sheetProperties.developerMetadata;
+          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-        const metaData = result.sheetProperties.developerMetadata;
-        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+          useItemsStore.getState().setPalettes(result.items, timestamp);
+          break;
+        }
 
-        useItemsStore.getState().setPalettes(result.items, timestamp);
-        break;
+        case SheetName.IMAGES: {
+          const result = await pullItems<MonochromeImage>({
+            ...updaterOptions,
+            ...createOptionsImages(),
+          });
+
+          const metaData = result.sheetProperties.developerMetadata;
+          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+          useItemsStore.getState().addImages(result.items, timestamp);
+          break;
+        }
+
+        case SheetName.RGBN_IMAGES: {
+          const result = await pullItems<RGBNImage>({
+            ...updaterOptions,
+            ...createOptionsImagesRGBN(),
+          });
+
+          const metaData = result.sheetProperties.developerMetadata;
+          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+          useItemsStore.getState().addImages(result.items, timestamp);
+          break;
+        }
+
+        case SheetName.FRAME_GROUPS: {
+          const result = await pullItems<FrameGroup>({
+            ...updaterOptions,
+            ...createOptionsFrameGroups(),
+          });
+
+          const metaData = result.sheetProperties.developerMetadata;
+          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+          // ToDo
+          console.log(result.items, timestamp);
+          break;
+        }
+
+        case SheetName.FRAMES: {
+          const result = await pullItems<Frame>({
+            ...updaterOptions,
+            ...createOptionsFrames(),
+          });
+
+          const metaData = result.sheetProperties.developerMetadata;
+          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+          useItemsStore.getState().setFrames(result.items, timestamp);
+          break;
+        }
+
+        case SheetName.IMAGE_GROUPS: {
+          const result = await pullItems<SerializableImageGroup>({
+            ...updaterOptions,
+            ...createOptionsImageGroups(),
+          });
+
+          const metaData = result.sheetProperties.developerMetadata;
+          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+          useItemsStore.getState().setImageGroups(result.items, timestamp);
+          break;
+        }
+
+
+        case SheetName.PLUGINS: {
+          const result = await pullItems<Plugin>({
+            ...updaterOptions,
+            ...createOptionsPlugins(),
+          });
+
+          const metaData = result.sheetProperties.developerMetadata;
+          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+          // ToDo
+          console.log(result.items, timestamp);
+          break;
+        }
+
+        default:
       }
 
-      case SheetName.IMAGES: {
-        const result = await pullItems<MonochromeImage>({
-          ...updaterOptions,
-          ...createOptionsImages(),
-        });
-
-        const metaData = result.sheetProperties.developerMetadata;
-        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-        useItemsStore.getState().addImages(result.items, timestamp);
-        break;
+      if (typeof lastRemoteUpdate !== 'undefined') {
+        // ToDo:
+        console.log('need to set this as new local value', lastRemoteUpdate);
       }
+    });
 
-      case SheetName.RGBN_IMAGES: {
-        const result = await pullItems<RGBNImage>({
-          ...updaterOptions,
-          ...createOptionsImagesRGBN(),
-        });
-
-        const metaData = result.sheetProperties.developerMetadata;
-        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-        useItemsStore.getState().addImages(result.items, timestamp);
-        break;
-      }
-
-      case SheetName.FRAME_GROUPS: {
-        const result = await pullItems<FrameGroup>({
-          ...updaterOptions,
-          ...createOptionsFrameGroups(),
-        });
-
-        const metaData = result.sheetProperties.developerMetadata;
-        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-        // ToDo
-        console.log(result.items, timestamp);
-        break;
-      }
-
-      case SheetName.FRAMES: {
-        const result = await pullItems<Frame>({
-          ...updaterOptions,
-          ...createOptionsFrames(),
-        });
-
-        const metaData = result.sheetProperties.developerMetadata;
-        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-        useItemsStore.getState().setFrames(result.items, timestamp);
-        break;
-      }
-
-      case SheetName.IMAGE_GROUPS: {
-        const result = await pullItems<SerializableImageGroup>({
-          ...updaterOptions,
-          ...createOptionsImageGroups(),
-        });
-
-        const metaData = result.sheetProperties.developerMetadata;
-        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-        useItemsStore.getState().setImageGroups(result.items, timestamp);
-        break;
-      }
-
-
-      case SheetName.PLUGINS: {
-        const result = await pullItems<Plugin>({
-          ...updaterOptions,
-          ...createOptionsPlugins(),
-        });
-
-        const metaData = result.sheetProperties.developerMetadata;
-        const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-        // ToDo
-        console.log(result.items, timestamp);
-        break;
-      }
-
-      default:
-    }
-
-    if (typeof lastRemoteUpdate !== 'undefined') {
-      // ToDo:
-      console.log('need to set this as new local value', lastRemoteUpdate);
-    }
-
-    updateSheets();
-
-    setBusy(false);
-  }, [gapiStorage.sheetId, updateSheets, gapiSheetsClient]);
+    await updateSheets();
+  }, [enqueueSheetsClientRequest, gapiStorage.sheetId, updateSheets]);
 
 
   const checkUpdate = useCallback(async (sheetName: SheetName, lastLocalUpdate: number, lastRemoteUpdate?: number) => {
@@ -340,7 +338,6 @@ export const useContextHook = (): GapiSyncContextType => {
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.plugins, gapiLastRemoteUpdates?.plugins, checkUpdate]);
-
 
 
   return {

@@ -1,5 +1,6 @@
 import { hash as ohash } from 'ohash';
-import { useCallback, useEffect, useState } from 'react';
+import Queue from 'promise-queue';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   type GapiLastUpdates,
   sheetNames,
@@ -9,12 +10,14 @@ import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import Sheet = gapi.client.sheets.Sheet;
 
+
 export interface GapiSheetStateContextType {
   busy: boolean;
+  isReady: boolean;
   sheets: Sheet[];
-  gapiSheetsClient: typeof gapi.client.sheets | null;
   gapiLastRemoteUpdates: GapiLastUpdates | null;
   updateSheets: () => Promise<void>;
+  enqueueSheetsClientRequest: (callback: (sheetsClient: typeof gapi.client.sheets) => Promise<void>) => Promise<void>;
 }
 
 export const useContextHook = (): GapiSheetStateContextType => {
@@ -24,6 +27,29 @@ export const useContextHook = (): GapiSheetStateContextType => {
   const [gapiClient, setGapiClient] = useState<typeof gapi.client | null>(null);
   const [sheets, setSheets] = useState<Sheet[]>([]);
   const [gapiLastRemoteUpdates, setGapiLastRemoteUpdates] = useState<GapiLastUpdates | null>(null);
+  const queue = useRef<Queue | null>(null);
+
+  if (!queue.current) {
+    queue.current = new Queue(1, Infinity);
+  }
+
+  const enqueueSheetsClientRequest = useCallback((callback: (sheetsClient: typeof gapi.client.sheets) => Promise<void>) => {
+    const sheetsClient = gapiClient?.sheets;
+
+    if (!queue.current) {
+      throw new Error('No queue available');
+    }
+
+    if (!sheetsClient) {
+      throw new Error('No sheetsClient available');
+    }
+
+    return queue.current.add(async () => {
+      setBusy(true);
+      await callback(sheetsClient);
+      setBusy(false);
+    });
+  }, [gapiClient?.sheets]);
 
   const initClient = useCallback(async () => {
     if (!isReady || !gapiStorage.use) {
@@ -64,40 +90,38 @@ export const useContextHook = (): GapiSheetStateContextType => {
   }, [gapiClient, gapiStorage, isReady]);
 
   const updateSheets = useCallback(async () => {
-    const sheetsClient = gapiClient?.sheets;
     const { use, sheetId } = gapiStorage;
 
-    if (!sheetsClient || !sheetId || !use) {
+    if (!sheetId || !use) {
       return;
     }
 
-    setBusy(true);
+    await enqueueSheetsClientRequest(async (sheetsClient) => {
+      const { result: { sheets: remoteSheets } } = await sheetsClient.spreadsheets.get({
+        spreadsheetId: sheetId,
+      });
 
-    const { result: { sheets: remoteSheets } } = await sheetsClient.spreadsheets.get({
-      spreadsheetId: sheetId,
+      const newLastRemoteUpdates = createGapiLastUpdates(remoteSheets || []);
+      const sheetStates = (remoteSheets || []).filter(({ properties }) => {
+        if (!properties?.title) {
+          return false;
+        }
+
+        return (sheetNames as string[]).includes(properties.title);
+      });
+
+
+      setGapiLastRemoteUpdates((currentLastRemoteUpdates) => {
+        // only trigger a settings update if the timestamps have changed
+        if (ohash(newLastRemoteUpdates) === ohash(currentLastRemoteUpdates)) {
+          return currentLastRemoteUpdates;
+        }
+        return newLastRemoteUpdates;
+      });
+
+      setSheets(sheetStates);
     });
-
-    const newLastRemoteUpdates = createGapiLastUpdates(remoteSheets || []);
-    const sheetStates = (remoteSheets || []).filter(({ properties }) => {
-      if (!properties?.title) {
-        return false;
-      }
-
-      return (sheetNames as string[]).includes(properties.title);
-    });
-
-
-    setGapiLastRemoteUpdates((currentLastRemoteUpdates) => {
-      // only trigger a settings update if the timestamps have changed
-      if (ohash(newLastRemoteUpdates) === ohash(currentLastRemoteUpdates)) {
-        return currentLastRemoteUpdates;
-      }
-      return newLastRemoteUpdates;
-    });
-
-    setSheets(sheetStates);
-    setBusy(false);
-  }, [gapiClient, gapiStorage]);
+  }, [enqueueSheetsClientRequest, gapiStorage]);
 
   useEffect(() => { initClient(); }, [gapiStorage, initClient]);
 
@@ -105,7 +129,7 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
   // start polling
   useEffect(() => {
-    if (!isReady) {
+    if (!isReady || !gapiClient) {
       return;
     }
 
@@ -116,11 +140,12 @@ export const useContextHook = (): GapiSheetStateContextType => {
       clearInterval(pollHandle);
       clearTimeout(instantHandle);
     };
-  }, [isReady, updateSheets]);
+  }, [gapiClient, isReady, updateSheets]);
 
   return {
     busy,
-    gapiSheetsClient: gapiClient?.sheets || null,
+    isReady,
+    enqueueSheetsClientRequest,
     sheets,
     gapiLastRemoteUpdates,
     updateSheets,
