@@ -51,13 +51,18 @@ function SheetsTable() {
             const properties = sheets.find((sheet) => (sheet.properties?.title === sheetName))?.properties;
 
             return (
-              <TableRow key={sheetName}>
+              <TableRow
+                key={sheetName}
+                sx={{
+                  '--color-match': (gapiLastRemoteUpdates?.[sheetName] === gapiLastLocalUpdates?.[sheetName] ? '#040' : '#400'),
+                }}
+              >
                 <TableCell align="right">{properties?.sheetId || 'N/A'}</TableCell>
                 <TableCell align="right">{sheetName}</TableCell>
                 <TableCell align="right">{properties?.gridProperties?.columnCount || 'N/A'}</TableCell>
                 <TableCell align="right">{properties?.gridProperties?.rowCount || 'N/A'}</TableCell>
-                <TableCell align="right">{toDate(gapiLastRemoteUpdates?.[sheetName])}</TableCell>
-                <TableCell align="right">{toDate(gapiLastLocalUpdates?.[sheetName])}</TableCell>
+                <TableCell align="right" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(gapiLastRemoteUpdates?.[sheetName])}</TableCell>
+                <TableCell align="right" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(gapiLastLocalUpdates?.[sheetName])}</TableCell>
                 <TableCell align="center">
                   {gapiLastLocalUpdates?.[sheetName]}
                   <button disabled={busy} onClick={() => performPush(sheetName, gapiLastLocalUpdates?.[sheetName])}>Uppy!</button>
