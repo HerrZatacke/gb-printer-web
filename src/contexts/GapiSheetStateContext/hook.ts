@@ -12,7 +12,7 @@ import Sheet = gapi.client.sheets.Sheet;
 export interface GapiSheetStateContextType {
   busy: boolean;
   sheets: Sheet[];
-  gapiClient: typeof gapi.client | null;
+  gapiSheetsClient: typeof gapi.client.sheets | null;
   gapiLastRemoteUpdates: GapiLastUpdates | null;
   updateSheets: () => Promise<void>;
 }
@@ -120,7 +120,7 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
   return {
     busy,
-    gapiClient,
+    gapiSheetsClient: gapiClient?.sheets || null,
     sheets,
     gapiLastRemoteUpdates,
     updateSheets,

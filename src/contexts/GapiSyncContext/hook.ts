@@ -31,21 +31,21 @@ export interface GapiSyncContextType {
 }
 
 export const useContextHook = (): GapiSyncContextType => {
-  const { gapiLastRemoteUpdates, updateSheets, gapiClient } = useGapiSheetState();
+  const { gapiLastRemoteUpdates, updateSheets, gapiSheetsClient } = useGapiSheetState();
   const { gapiLastLocalUpdates } = useItemsStore();
   const { isReady } = useGIS();
   const { gapiStorage } = useStoragesStore();
   const [busy, setBusy] = useState(false);
 
   const performPush = useCallback(async (sheetName: SheetName, newLastUpdateValue: number) => {
-    if (!gapiStorage.sheetId || !gapiClient) {
+    if (!gapiStorage.sheetId || !gapiSheetsClient) {
       return;
     }
 
     setBusy(true);
 
     const updaterOptions: UpdaterOptionsDynamic = {
-      sheetsClient: gapiClient.sheets,
+      sheetsClient: gapiSheetsClient,
       sheetId: gapiStorage.sheetId,
     };
 
@@ -140,18 +140,18 @@ export const useContextHook = (): GapiSyncContextType => {
     updateSheets();
 
     setBusy(false);
-  }, [gapiStorage.sheetId, updateSheets, gapiClient]);
+  }, [gapiStorage.sheetId, updateSheets, gapiSheetsClient]);
 
 
   const performPull = useCallback(async (sheetName: SheetName, lastRemoteUpdate?: number) => {
-    if (!gapiStorage.sheetId || !gapiClient) {
+    if (!gapiStorage.sheetId || !gapiSheetsClient) {
       return;
     }
 
     setBusy(true);
 
     const updaterOptions: UpdaterOptionsDynamic = {
-      sheetsClient: gapiClient.sheets,
+      sheetsClient: gapiSheetsClient,
       sheetId: gapiStorage.sheetId ,
     };
 
@@ -261,7 +261,7 @@ export const useContextHook = (): GapiSyncContextType => {
     updateSheets();
 
     setBusy(false);
-  }, [gapiStorage.sheetId, updateSheets, gapiClient]);
+  }, [gapiStorage.sheetId, updateSheets, gapiSheetsClient]);
 
 
   const checkUpdate = useCallback(async (sheetName: SheetName, lastLocalUpdate: number, lastRemoteUpdate?: number) => {
