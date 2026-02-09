@@ -99,33 +99,35 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
     window.clearTimeout(refreshHandle.current);
 
-    await enqueueSheetsClientRequest(async (sheetsClient) => {
-      const { result: { sheets: remoteSheets } } = await sheetsClient.spreadsheets.get({
-        spreadsheetId: sheetId,
+    try {
+      await enqueueSheetsClientRequest(async (sheetsClient) => {
+        const { result: { sheets: remoteSheets } } = await sheetsClient.spreadsheets.get({
+          spreadsheetId: sheetId,
+        });
+
+        const newLastRemoteUpdates = createGapiLastUpdates(remoteSheets || []);
+        const sheetStates = (remoteSheets || []).filter(({ properties }) => {
+          if (!properties?.title) {
+            return false;
+          }
+
+          return (sheetNames as string[]).includes(properties.title);
+        });
+
+
+        setGapiLastRemoteUpdates((currentLastRemoteUpdates) => {
+          // only trigger a settings update if the timestamps have changed
+          if (ohash(newLastRemoteUpdates) === ohash(currentLastRemoteUpdates)) {
+            return currentLastRemoteUpdates;
+          }
+          return newLastRemoteUpdates;
+        });
+
+        setSheets(sheetStates);
       });
-
-      const newLastRemoteUpdates = createGapiLastUpdates(remoteSheets || []);
-      const sheetStates = (remoteSheets || []).filter(({ properties }) => {
-        if (!properties?.title) {
-          return false;
-        }
-
-        return (sheetNames as string[]).includes(properties.title);
-      });
-
-
-      setGapiLastRemoteUpdates((currentLastRemoteUpdates) => {
-        // only trigger a settings update if the timestamps have changed
-        if (ohash(newLastRemoteUpdates) === ohash(currentLastRemoteUpdates)) {
-          return currentLastRemoteUpdates;
-        }
-        return newLastRemoteUpdates;
-      });
-
-      setSheets(sheetStates);
-    });
-
-    refreshHandle.current = window.setTimeout(updateSheets, 60000);
+    } finally {
+      refreshHandle.current = window.setTimeout(updateSheets, 60000);
+    }
   }, [enqueueSheetsClientRequest, gapiStorage]);
 
   useEffect(() => { initClient(); }, [gapiStorage, initClient]);
@@ -141,6 +143,10 @@ export const useContextHook = (): GapiSheetStateContextType => {
     const handle = setTimeout(updateSheets, 1);
     return () => clearTimeout(handle);
   }, [gapiClient, isReady, updateSheets]);
+
+  useEffect(() => {
+    return () => window.clearTimeout(refreshHandle.current);
+  }, []);
 
   return {
     busy,
