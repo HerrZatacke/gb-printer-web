@@ -10,6 +10,7 @@ import {
   createOptionsPalettes,
   createOptionsPlugins,
 } from '@/contexts/GapiSyncContext/tools/optionCreaters';
+import { pullItems } from '@/contexts/GapiSyncContext/tools/pullItems';
 import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
 import useGIS from '@/contexts/GisContext';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
@@ -21,7 +22,6 @@ import type { MonochromeImage, RGBNImage } from '@/types/Image';
 import { SerializableImageGroup } from '@/types/ImageGroup';
 import type { Palette } from '@/types/Palette';
 import type { Plugin } from '@/types/Plugin';
-import { pullItems } from '@/contexts/GapiSyncContext/tools/pullItems';
 
 export interface GapiSyncContextType {
   busy: boolean;
@@ -251,23 +251,10 @@ export const useContextHook = (): GapiSyncContextType => {
 
     if (lastLocalUpdate > lastRemoteUpdate) {
       await performPush(sheetName, lastLocalUpdate);
-
-      console.log({
-        sheetName,
-        lastLocalUpdate,
-        lastRemoteUpdate,
-      });
+    } else {
+      await performPull(sheetName);
     }
-  }, [gapiStorage, isReady, performPush]);
-
-
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      checkUpdate(SheetName.IMAGES, gapiLastLocalUpdates.images, gapiLastRemoteUpdates?.images);
-    }, 5000);
-
-    return () => window.clearTimeout(handle);
-  }, [gapiLastLocalUpdates.images, gapiLastRemoteUpdates?.images, checkUpdate]);
+  }, [gapiStorage, isReady, performPull, performPush]);
 
 
   useEffect(() => {
@@ -277,6 +264,57 @@ export const useContextHook = (): GapiSyncContextType => {
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.palettes, gapiLastRemoteUpdates?.palettes, checkUpdate]);
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      checkUpdate(SheetName.IMAGES, gapiLastLocalUpdates.images, gapiLastRemoteUpdates?.images);
+    }, 5000);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiLastLocalUpdates.images, gapiLastRemoteUpdates?.images, checkUpdate]);
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      checkUpdate(SheetName.RGBN_IMAGES, gapiLastLocalUpdates.rgbnImages, gapiLastRemoteUpdates?.rgbnImages);
+    }, 5000);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiLastLocalUpdates.rgbnImages, gapiLastRemoteUpdates?.rgbnImages, checkUpdate]);
+
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      checkUpdate(SheetName.FRAME_GROUPS, gapiLastLocalUpdates.frameGroups, gapiLastRemoteUpdates?.frameGroups);
+    }, 5000);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiLastLocalUpdates.frameGroups, gapiLastRemoteUpdates?.frameGroups, checkUpdate]);
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      checkUpdate(SheetName.FRAMES, gapiLastLocalUpdates.frames, gapiLastRemoteUpdates?.frames);
+    }, 5000);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiLastLocalUpdates.frames, gapiLastRemoteUpdates?.frames, checkUpdate]);
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      checkUpdate(SheetName.IMAGE_GROUPS, gapiLastLocalUpdates.imageGroups, gapiLastRemoteUpdates?.imageGroups);
+    }, 5000);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiLastLocalUpdates.imageGroups, gapiLastRemoteUpdates?.imageGroups, checkUpdate]);
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      checkUpdate(SheetName.PLUGINS, gapiLastLocalUpdates.plugins, gapiLastRemoteUpdates?.plugins);
+    }, 5000);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiLastLocalUpdates.plugins, gapiLastRemoteUpdates?.plugins, checkUpdate]);
+
+
 
   return {
     busy,
