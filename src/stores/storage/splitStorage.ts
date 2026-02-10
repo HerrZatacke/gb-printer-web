@@ -123,7 +123,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
 
     busy = true;
 
-    console.log('start storing items');
+    console.log('⚙️ start storing items');
     const start = performance.now();
 
     const { state, version } = storageValue;
@@ -138,7 +138,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
     await palettesStore.setData(state.palettes);
     await pluginsStore.setData(state.plugins);
 
-    console.log(`saved in ${(performance.now() - start).toFixed(2)}ms`);
+    console.log(`⚙️ saved in ${(performance.now() - start).toFixed(2)}ms`);
 
     busy = false;
 
@@ -187,7 +187,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
 
     if (typeof version !== 'number') { return null; }
 
-    console.log('start loading items');
+    console.log('⚙️ start loading items');
     const start = performance.now();
 
 
@@ -201,7 +201,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
       gapiLastLocalUpdates: await getLastLocalUpdate(),
     };
 
-    console.log(`loaded in ${(performance.now() - start).toFixed(2)}ms`);
+    console.log(`⚙️ loaded in ${(performance.now() - start).toFixed(2)}ms`);
 
     return {
       state,
@@ -243,7 +243,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
       //   jsonStorage.setItem(name, storageValue);
       // }
 
-      console.log(`Items storage will use roughly ${filesize(JSON.stringify(storageValue).length)}`);
+      console.log(`⚙️ Items storage will use roughly ${filesize(JSON.stringify(storageValue).length)}`);
 
       const results = await Promise.allSettled([
         Promise.resolve().then(() => jsonStorage.setItem(name, storageValue)),

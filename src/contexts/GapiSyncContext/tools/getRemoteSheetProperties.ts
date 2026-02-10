@@ -66,8 +66,6 @@ export const getRemoteSheetProperties = async (sheetsClient: typeof gapi.client.
     range: `${sheetProperties.title}!A:Z`,
   });
 
-  console.log('Uppy Metadata:', matchedDeveloperMetadata?.[0].developerMetadata);
-
   return {
     sheetProperties,
     developerMetadata: (matchedDeveloperMetadata ||[]).map((metaData) => metaData.developerMetadata).filter(Boolean) as DeveloperMetadata[],

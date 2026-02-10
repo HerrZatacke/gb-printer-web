@@ -19,6 +19,8 @@ export const pushItems = async <T extends object>(
 ): Promise<void> => {
   const startTime = Date.now();
 
+  console.log(`📊 Pushing ${sheetName}`);
+
   const {
     sheetProperties,
     developerMetadata,
@@ -30,8 +32,6 @@ export const pushItems = async <T extends object>(
   ));
 
   const targetSheetId = sheetProperties.sheetId;
-
-  console.log({ metadataId: lastUpdateMetadataItem?.metadataId });
 
   const metadataUpsertRequest: Request = lastUpdateMetadataItem ? {
     updateDeveloperMetadata: {
@@ -57,8 +57,6 @@ export const pushItems = async <T extends object>(
       },
     } as CreateDeveloperMetadataRequest,
   };
-
-  console.log({ newLastUpdateValue, metadataUpsertRequest });
 
   const sheetItems = objectsToSheet(items, {
     key: keyColumn,
@@ -151,5 +149,5 @@ export const pushItems = async <T extends object>(
     },
   });
 
-  console.log(`Pushed ${sheetName} in ${Date.now() - startTime}ms`);
+  console.log(`📊 Pushed ${sheetName} in ${Date.now() - startTime}ms`);
 };

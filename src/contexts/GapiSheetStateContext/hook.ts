@@ -97,6 +97,8 @@ export const useContextHook = (): GapiSheetStateContextType => {
       return;
     }
 
+    console.log('📊 Updating sheet dates');
+
     window.clearTimeout(refreshHandle.current);
 
     try {

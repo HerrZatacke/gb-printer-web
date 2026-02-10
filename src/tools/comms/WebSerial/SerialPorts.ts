@@ -48,7 +48,7 @@ class WebSerialEE extends EventEmitter {
   public async initPorts(): Promise<void> {
     if (!this.enabled || !this.portsWorkerClient) { throw new Error('could not init serial ports'); }
 
-    console.log('initializing serial ports');
+    console.log('🔌 initializing serial ports');
 
     const ports = await navigator.serial.getPorts();
 

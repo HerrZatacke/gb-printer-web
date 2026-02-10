@@ -22,6 +22,8 @@ export const pullItems = async <T extends object>({
 }): Promise<PullItemsResult<T>> => {
   const startTime = Date.now();
 
+  console.log(`📊 Pulling ${sheetName}`);
+
   const options = {
     key: keyColumn,
     columns,
@@ -35,7 +37,7 @@ export const pullItems = async <T extends object>({
 
   const sheetProperties = await getRemoteSheetProperties(sheetsClient, sheetId, sheetName);
 
-  console.log(`Pulled ${sheetName} in ${Date.now() - startTime}ms`);
+  console.log(`📊 Pulled ${sheetName} in ${Date.now() - startTime}ms`);
 
   const items = sheetToObjects<T>(updatedValues as string[][], options);
 
