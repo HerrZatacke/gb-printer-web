@@ -1,6 +1,7 @@
 import applyFrame from '@/tools/applyFrame';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import { deflate, inflate } from '@/tools/pack';
+import { reduceItems } from '@/tools/reduceArray';
 import dummyImage from './dummyImage';
 
 export interface HashedCompressed {
@@ -80,3 +81,28 @@ export const del = async (dataHash: string): Promise<void> => (
 export const delFrame = async (dataHash: string): Promise<void> => (
   localforageFrames.removeItem(dataHash)
 );
+
+export const getAllImages = async (): Promise<[string, string][]> => {
+  const imageHashes = await localforageImages.keys();
+
+  const allImages = await Promise.all(imageHashes.map(async (hash): Promise<[string, string] | null> => {
+    // const imageData = await load(hash);
+    const imageData = await localforageImages.getItem(hash);
+
+    // hash for empty string
+    if (hash === '5aa1221a3c354b60aed8076105f9e6239281aca9') {
+      return null;
+    }
+
+    if (!imageData) {
+      return null;
+    }
+
+    // const data = imageData.join('\n');
+    const data = btoa(imageData);
+
+    return [hash, data];
+  }));
+
+  return allImages.reduce(reduceItems<[string, string]>, []);
+};

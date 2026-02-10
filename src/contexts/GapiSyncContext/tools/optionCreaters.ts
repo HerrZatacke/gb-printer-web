@@ -1,4 +1,5 @@
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
+import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
 import { type ColumnSpec, ColumnType, UpdaterOptions } from '@/tools/sheetConversion/types';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
@@ -120,4 +121,28 @@ export const createOptionsPlugins = (sheetsClient: typeof gapi.client.sheets, sh
   ],
   keyColumn: 'url',
   sheetName: SheetName.PLUGINS,
+});
+
+
+export const createOptionsBinaryFrames = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<BinaryGapiSyncItem> => ({
+  sheetsClient,
+  sheetId,
+  columns: [
+    { prop: 'hash', column: 'hash', type: ColumnType.STRING },
+    { prop: 'data', column: 'Data', type: ColumnType.STRING },
+  ],
+  keyColumn: 'hash',
+  sheetName: SheetName.BIN_FRAMES,
+});
+
+
+export const createOptionsBinaryImages = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<BinaryGapiSyncItem> => ({
+  sheetsClient,
+  sheetId,
+  columns: [
+    { prop: 'hash', column: 'hash', type: ColumnType.STRING },
+    { prop: 'data', column: 'Data', type: ColumnType.STRING },
+  ],
+  keyColumn: 'hash',
+  sheetName: SheetName.BIN_IMAGES,
 });

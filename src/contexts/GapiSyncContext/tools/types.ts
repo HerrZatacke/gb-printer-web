@@ -8,3 +8,8 @@ export interface UpdateOptions<T> {
   keyColumn: keyof T;
   newLastUpdateValue: number;
 }
+
+export interface BinaryGapiSyncItem {
+  hash: string;
+  data: string;
+}

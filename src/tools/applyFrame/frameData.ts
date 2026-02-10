@@ -1,6 +1,7 @@
 import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
 import { localforageFrames } from '@/tools/localforageInstance';
 import { deflate, inflate } from '@/tools/pack';
+import { reduceItems } from '@/tools/reduceArray';
 
 export interface FrameData {
   upper: string[],
@@ -69,4 +70,22 @@ export const loadFrameData = async (frameHash: string): Promise<null | FrameData
   } catch {
     return null;
   }
+};
+
+export const getAllFrames = async (): Promise<[string, string][]> => {
+  const frameHashes = await localforageFrames.keys();
+
+  const allFrames = await Promise.all(frameHashes.map(async (hash): Promise<[string, string] | null> => {
+    const frameData = await loadFrameData(hash);
+
+    if (!frameData) {
+      return null;
+    }
+
+    const data = JSON.stringify(frameData);
+
+    return [hash, data];
+  }));
+
+  return allFrames.reduce(reduceItems<[string, string]>, []);
 };

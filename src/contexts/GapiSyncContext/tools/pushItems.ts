@@ -113,6 +113,7 @@ export const pushItems = async <T extends object>(
     },
   ];
 
+  // ToDo: make sorting optional via parameter? (no need to sort the binary tables)
   // don't sort an empty table
   const sortRequest: Request[] = tableEmpty ? [] : [
     {

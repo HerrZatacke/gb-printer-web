@@ -3,6 +3,8 @@ import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { getLastUpdate } from '@/contexts/GapiSheetStateContext/tools/getLastUpdate';
 import {
+  createOptionsBinaryFrames,
+  createOptionsBinaryImages,
   createOptionsFrameGroups,
   createOptionsFrames,
   createOptionsImageGroups,
@@ -13,9 +15,12 @@ import {
 } from '@/contexts/GapiSyncContext/tools/optionCreaters';
 import { pullItems } from '@/contexts/GapiSyncContext/tools/pullItems';
 import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
+import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
+import { getAllFrames } from '@/tools/applyFrame/frameData';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
 import { PushOptions } from '@/tools/sheetConversion/types';
+import { getAllImages } from '@/tools/storage';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
 import type { MonochromeImage, RGBNImage } from '@/types/Image';
@@ -123,6 +128,51 @@ export const useContextHook = (): GapiSyncContextType => {
             },
             useItemsStore.getState().plugins,
           );
+          break;
+        }
+
+        case SheetName.BIN_FRAMES: {
+          const frames = await getAllFrames();
+          await pushItems<BinaryGapiSyncItem>(
+            {
+              ...pushOptions,
+              ...createOptionsBinaryFrames(sheetsClient, sheetId),
+            },
+            frames.map(([hash, data]) => ({ hash, data })),
+          );
+          break;
+        }
+
+        case SheetName.BIN_IMAGES: {
+          const startTime = Date.now();
+
+          console.log(`📊 Collecting ${sheetName}`);
+          const images = await getAllImages();
+          console.log(`📊 Collected ${sheetName} in ${Date.now() - startTime}ms`);
+
+          // ToDo: move this size-check into "pushItems" method
+          if(images.find(([, data]) => (data.length >= 50000))) {
+            throw new Error('Some cells are too big');
+          }
+
+          console.log('largest image', images.reduce((acc, [,data]) => Math.max(acc, data.length), -Infinity));
+          console.log('smallest image', images.reduce((acc, [,data]) => Math.min(acc, data.length), Infinity));
+
+          const smallest = images.filter(([,data]) => (data.length < 100));
+
+          console.log(smallest);
+          console.log(smallest.length);
+
+          await pushItems<BinaryGapiSyncItem>(
+            {
+              ...pushOptions,
+              ...createOptionsBinaryImages(sheetsClient, sheetId),
+            },
+            // ToDo: Upload images in sensible batches
+            images.slice(0, 500).map(([hash, data]) => ({ hash, data })),
+            // images.map(([hash, data]) => ({ hash, data })),
+          );
+
           break;
         }
 
@@ -305,6 +355,25 @@ export const useContextHook = (): GapiSyncContextType => {
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.plugins, gapiLastRemoteUpdates?.plugins, checkUpdate]);
+
+
+  // Binary Table Frames
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      checkUpdate(SheetName.BIN_FRAMES, gapiLastLocalUpdates.binFrames, gapiLastRemoteUpdates?.binFrames);
+    }, 5000);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiLastLocalUpdates.binFrames, gapiLastRemoteUpdates?.binFrames, checkUpdate]);
+
+  // Binary Table Images
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      checkUpdate(SheetName.BIN_IMAGES, gapiLastLocalUpdates.binImages, gapiLastRemoteUpdates?.binImages);
+    }, 5000);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiLastLocalUpdates.binImages, gapiLastRemoteUpdates?.binImages, checkUpdate]);
 
 
   return {
