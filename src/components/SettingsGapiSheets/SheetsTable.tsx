@@ -48,7 +48,7 @@ const getSign = (value: number): string => {
 function SheetsTable() {
   const { gapiLastRemoteUpdates, sheets, updateSheets } = useGapiSheetState();
   const { gapiStorage } = useStoragesStore();
-  const { busy, performPush, performPull } = useGapiSync();
+  const { busy, performPush, performPull, performMerge } = useGapiSync();
   const { gapiLastLocalUpdates } = useItemsStore();
 
   const disabled = busy || !gapiStorage.sheetId || !gapiStorage.use;
@@ -114,12 +114,13 @@ function SheetsTable() {
                 <TableCell align="right">
                   <IconButton
                     disabled={disabled}
-                    onClick={() => performPush(sheetName, localTimestamp)}
+                    onClick={() => performPush(sheetName, localTimestamp, false)}
                   >
                     <CloudUploadIcon />
                   </IconButton>
                   <IconButton
                     disabled={disabled}
+                    onClick={() => performMerge(sheetName, remoteTimestamp, localTimestamp)}
                   >
                     <JoinFullIcon />
                   </IconButton>

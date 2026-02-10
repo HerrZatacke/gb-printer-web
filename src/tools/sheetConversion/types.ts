@@ -14,12 +14,14 @@ export interface ColumnSpec<T> {
   fallbackType?: ColumnType;
 }
 
-export interface UpdaterOptionsDynamic {
-  sheetsClient: typeof gapi.client.sheets;
-  sheetId: string;
+export interface PushOptions {
+  newLastUpdateValue: number;
+  merge: boolean;
 }
 
-export interface UpdaterOptionsStatic<T> {
+export interface UpdaterOptions<T> {
+  sheetsClient: typeof gapi.client.sheets;
+  sheetId: string;
   columns: ColumnSpec<T>[];
   keyColumn: keyof T;
   sheetName: SheetName;

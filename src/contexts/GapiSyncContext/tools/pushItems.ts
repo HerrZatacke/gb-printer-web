@@ -1,7 +1,7 @@
 import { LASTUPDATE_METADATA_KEY } from '@/contexts/GapiSheetStateContext/consts';
 import { getRemoteSheetProperties } from '@/contexts/GapiSyncContext/tools/getRemoteSheetProperties';
 import { objectsToSheet } from '@/tools/sheetConversion/objectsToSheet';
-import { UpdaterOptionsDynamic, UpdaterOptionsStatic } from '@/tools/sheetConversion/types';
+import { PushOptions, UpdaterOptions } from '@/tools/sheetConversion/types';
 import UpdateDeveloperMetadataRequest = gapi.client.sheets.UpdateDeveloperMetadataRequest;
 import CreateDeveloperMetadataRequest = gapi.client.sheets.CreateDeveloperMetadataRequest;
 import Request = gapi.client.sheets.Request;
@@ -10,11 +10,12 @@ export const pushItems = async <T extends object>(
   {
     sheetsClient,
     sheetId,
+    merge,
     sheetName,
     columns,
     keyColumn,
     newLastUpdateValue,
-  }: { newLastUpdateValue: number } & UpdaterOptionsDynamic & UpdaterOptionsStatic<T>,
+  }: PushOptions & UpdaterOptions<T>,
   items: T[],
 ): Promise<void> => {
   const startTime = Date.now();
@@ -61,7 +62,7 @@ export const pushItems = async <T extends object>(
   const sheetItems = objectsToSheet(items, {
     key: keyColumn,
     columns,
-    deleteMissing: true,
+    deleteMissing: !merge,
     existing: remoteValues,
   });
 

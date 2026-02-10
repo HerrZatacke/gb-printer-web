@@ -15,7 +15,7 @@ import { pullItems } from '@/contexts/GapiSyncContext/tools/pullItems';
 import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
-import type { UpdaterOptionsDynamic } from '@/tools/sheetConversion/types';
+import { PushOptions } from '@/tools/sheetConversion/types';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
 import type { MonochromeImage, RGBNImage } from '@/types/Image';
@@ -25,8 +25,9 @@ import type { Plugin } from '@/types/Plugin';
 
 export interface GapiSyncContextType {
   busy: boolean;
-  performPush: (sheetName: SheetName, lastLocalUpdate: number) => Promise<void>;
+  performPush: (sheetName: SheetName, lastLocalUpdate: number, merge: boolean) => Promise<void>;
   performPull: (sheetName: SheetName, lastRemoteUpdate?: number) => Promise<void>;
+  performMerge: (sheetName: SheetName, lastRemoteUpdate: number, lastLocalUpdate?: number) => Promise<void>;
 }
 
 export const useContextHook = (): GapiSyncContextType => {
@@ -34,7 +35,7 @@ export const useContextHook = (): GapiSyncContextType => {
   const { gapiLastLocalUpdates } = useItemsStore();
   const { gapiStorage } = useStoragesStore();
 
-  const performPush = useCallback(async (sheetName: SheetName, newLastUpdateValue: number) => {
+  const performPush = useCallback(async (sheetName: SheetName, newLastUpdateValue: number, merge: boolean) => {
     const sheetId =  gapiStorage.sheetId;
 
     if (!sheetId) {
@@ -42,18 +43,17 @@ export const useContextHook = (): GapiSyncContextType => {
     }
 
     await enqueueSheetsClientRequest(async (sheetsClient) => {
-      const updaterOptions: UpdaterOptionsDynamic = {
-        sheetsClient,
-        sheetId,
+      const pushOptions: PushOptions = {
+        newLastUpdateValue,
+        merge,
       };
 
       switch (sheetName) {
         case SheetName.PALETTES: {
           await pushItems<Palette>(
             {
-              newLastUpdateValue,
-              ...updaterOptions,
-              ...createOptionsPalettes(),
+              ...pushOptions,
+              ...createOptionsPalettes(sheetsClient, sheetId),
             },
             useItemsStore.getState().palettes.filter(({ isPredefined }) => !isPredefined),
           );
@@ -63,9 +63,8 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.IMAGES: {
           await pushItems<MonochromeImage>(
             {
-              newLastUpdateValue,
-              ...updaterOptions,
-              ...createOptionsImages(),
+              ...pushOptions,
+              ...createOptionsImages(sheetsClient, sheetId),
             },
             useItemsStore.getState().images.reduce(reduceImagesMonochrome, []),
           );
@@ -75,9 +74,8 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.RGBN_IMAGES: {
           await pushItems<RGBNImage>(
             {
-              newLastUpdateValue,
-              ...updaterOptions,
-              ...createOptionsImagesRGBN(),
+              ...pushOptions,
+              ...createOptionsImagesRGBN(sheetsClient, sheetId),
             },
             useItemsStore.getState().images.reduce(reduceImagesRGBN, []),
           );
@@ -87,9 +85,8 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.FRAME_GROUPS: {
           await pushItems<FrameGroup>(
             {
-              newLastUpdateValue,
-              ...updaterOptions,
-              ...createOptionsFrameGroups(),
+              ...pushOptions,
+              ...createOptionsFrameGroups(sheetsClient, sheetId),
             },
             useItemsStore.getState().frameGroups,
           );
@@ -99,9 +96,8 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.FRAMES: {
           await pushItems<Frame>(
             {
-              newLastUpdateValue,
-              ...updaterOptions,
-              ...createOptionsFrames(),
+              ...pushOptions,
+              ...createOptionsFrames(sheetsClient, sheetId),
             },
             useItemsStore.getState().frames,
           );
@@ -111,9 +107,8 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.IMAGE_GROUPS: {
           await pushItems<SerializableImageGroup>(
             {
-              newLastUpdateValue,
-              ...updaterOptions,
-              ...createOptionsImageGroups(),
+              ...pushOptions,
+              ...createOptionsImageGroups(sheetsClient, sheetId),
             },
             useItemsStore.getState().imageGroups,
           );
@@ -123,9 +118,8 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.PLUGINS: {
           await pushItems<Plugin>(
             {
-              newLastUpdateValue,
-              ...updaterOptions,
-              ...createOptionsPlugins(),
+              ...pushOptions,
+              ...createOptionsPlugins(sheetsClient, sheetId),
             },
             useItemsStore.getState().plugins,
           );
@@ -149,17 +143,9 @@ export const useContextHook = (): GapiSyncContextType => {
     }
 
     await enqueueSheetsClientRequest(async (sheetsClient) => {
-      const updaterOptions: UpdaterOptionsDynamic = {
-        sheetsClient,
-        sheetId,
-      };
-
       switch (sheetName) {
         case SheetName.PALETTES: {
-          const result = await pullItems<Palette>({
-            ...updaterOptions,
-            ...createOptionsPalettes(),
-          });
+          const result = await pullItems<Palette>(createOptionsPalettes(sheetsClient, sheetId));
 
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
@@ -169,10 +155,7 @@ export const useContextHook = (): GapiSyncContextType => {
         }
 
         case SheetName.IMAGES: {
-          const result = await pullItems<MonochromeImage>({
-            ...updaterOptions,
-            ...createOptionsImages(),
-          });
+          const result = await pullItems<MonochromeImage>(createOptionsImages(sheetsClient, sheetId));
 
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
@@ -182,10 +165,7 @@ export const useContextHook = (): GapiSyncContextType => {
         }
 
         case SheetName.RGBN_IMAGES: {
-          const result = await pullItems<RGBNImage>({
-            ...updaterOptions,
-            ...createOptionsImagesRGBN(),
-          });
+          const result = await pullItems<RGBNImage>(createOptionsImagesRGBN(sheetsClient, sheetId));
 
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
@@ -195,10 +175,7 @@ export const useContextHook = (): GapiSyncContextType => {
         }
 
         case SheetName.FRAME_GROUPS: {
-          const result = await pullItems<FrameGroup>({
-            ...updaterOptions,
-            ...createOptionsFrameGroups(),
-          });
+          const result = await pullItems<FrameGroup>(createOptionsFrameGroups(sheetsClient, sheetId));
 
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
@@ -208,10 +185,7 @@ export const useContextHook = (): GapiSyncContextType => {
         }
 
         case SheetName.FRAMES: {
-          const result = await pullItems<Frame>({
-            ...updaterOptions,
-            ...createOptionsFrames(),
-          });
+          const result = await pullItems<Frame>(createOptionsFrames(sheetsClient, sheetId));
 
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
@@ -221,10 +195,7 @@ export const useContextHook = (): GapiSyncContextType => {
         }
 
         case SheetName.IMAGE_GROUPS: {
-          const result = await pullItems<SerializableImageGroup>({
-            ...updaterOptions,
-            ...createOptionsImageGroups(),
-          });
+          const result = await pullItems<SerializableImageGroup>(createOptionsImageGroups(sheetsClient, sheetId));
 
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
@@ -235,10 +206,7 @@ export const useContextHook = (): GapiSyncContextType => {
 
 
         case SheetName.PLUGINS: {
-          const result = await pullItems<Plugin>({
-            ...updaterOptions,
-            ...createOptionsPlugins(),
-          });
+          const result = await pullItems<Plugin>(createOptionsPlugins(sheetsClient, sheetId));
 
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
@@ -255,6 +223,12 @@ export const useContextHook = (): GapiSyncContextType => {
   }, [enqueueSheetsClientRequest, gapiStorage.sheetId, updateSheets]);
 
 
+  const performMerge = useCallback(async (sheetName: SheetName, lastRemoteUpdate: number, lastLocalUpdate?: number) => {
+    const lastUpdate = Math.max(lastRemoteUpdate, lastLocalUpdate || 0);
+    await performPush(sheetName, lastUpdate, true);
+    await performPull(sheetName, lastUpdate);
+  }, [performPull, performPush]);
+
   const checkUpdate = useCallback(async (sheetName: SheetName, lastLocalUpdate: number, lastRemoteUpdate?: number) => {
     const { use, sheetId, token, autoSync } = gapiStorage;
 
@@ -268,7 +242,7 @@ export const useContextHook = (): GapiSyncContextType => {
     }
 
     if (lastLocalUpdate > lastRemoteUpdate) {
-      await performPush(sheetName, lastLocalUpdate);
+      await performPush(sheetName, lastLocalUpdate, false);
     } else {
       await performPull(sheetName, lastRemoteUpdate);
     }
@@ -337,5 +311,6 @@ export const useContextHook = (): GapiSyncContextType => {
     busy,
     performPush,
     performPull,
+    performMerge,
   };
 };

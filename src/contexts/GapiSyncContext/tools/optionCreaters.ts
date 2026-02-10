@@ -1,5 +1,5 @@
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
-import { type ColumnSpec, ColumnType, UpdaterOptionsStatic } from '@/tools/sheetConversion/types';
+import { type ColumnSpec, ColumnType, UpdaterOptions } from '@/tools/sheetConversion/types';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
 import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
@@ -19,7 +19,9 @@ const imagesCommonProps: ColumnSpec<Image>[] = [
   { prop: 'meta', column: 'Meta', type: ColumnType.JSON },
 ];
 
-export const createOptionsImages = (): UpdaterOptionsStatic<MonochromeImage> => ({
+export const createOptionsImages = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<MonochromeImage> => ({
+  sheetsClient,
+  sheetId,
   columns: [
     ...imagesCommonProps,
     // From Monochrome Image
@@ -37,7 +39,9 @@ export const createOptionsImages = (): UpdaterOptionsStatic<MonochromeImage> => 
   sheetName: SheetName.IMAGES,
 });
 
-export const createOptionsImagesRGBN = (): UpdaterOptionsStatic<RGBNImage> => ({
+export const createOptionsImagesRGBN = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<RGBNImage> => ({
+  sheetsClient,
+  sheetId,
   columns: [
     ...imagesCommonProps,
     // From RGBN Image
@@ -48,7 +52,9 @@ export const createOptionsImagesRGBN = (): UpdaterOptionsStatic<RGBNImage> => ({
   sheetName: SheetName.RGBN_IMAGES,
 });
 
-export const createOptionsImageGroups = (): UpdaterOptionsStatic<SerializableImageGroup> => ({
+export const createOptionsImageGroups = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<SerializableImageGroup> => ({
+  sheetsClient,
+  sheetId,
   columns: [
     { prop: 'id', column: 'ID', type: ColumnType.STRING },
     { prop: 'title', column: 'Title', type: ColumnType.STRING },
@@ -62,7 +68,9 @@ export const createOptionsImageGroups = (): UpdaterOptionsStatic<SerializableIma
   sheetName: SheetName.IMAGE_GROUPS,
 });
 
-export const createOptionsPalettes = (): UpdaterOptionsStatic<Palette> => ({
+export const createOptionsPalettes = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<Palette> => ({
+  sheetsClient,
+  sheetId,
   columns: [
     { prop: 'shortName', column: 'ShortName', type: ColumnType.STRING },
     { prop: 'name', column: 'Name', type: ColumnType.STRING },
@@ -74,7 +82,9 @@ export const createOptionsPalettes = (): UpdaterOptionsStatic<Palette> => ({
 });
 
 
-export const createOptionsFrames = (): UpdaterOptionsStatic<Frame> => ({
+export const createOptionsFrames = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<Frame> => ({
+  sheetsClient,
+  sheetId,
   columns: [
     { prop: 'id', column: 'ID', type: ColumnType.STRING },
     { prop: 'hash', column: 'Hash', type: ColumnType.STRING },
@@ -86,7 +96,9 @@ export const createOptionsFrames = (): UpdaterOptionsStatic<Frame> => ({
 });
 
 
-export const createOptionsFrameGroups = (): UpdaterOptionsStatic<FrameGroup> => ({
+export const createOptionsFrameGroups = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<FrameGroup> => ({
+  sheetsClient,
+  sheetId,
   columns: [
     { prop: 'id', column: 'ID', type: ColumnType.STRING },
     { prop: 'name', column: 'Name', type: ColumnType.STRING },
@@ -96,7 +108,9 @@ export const createOptionsFrameGroups = (): UpdaterOptionsStatic<FrameGroup> => 
 });
 
 
-export const createOptionsPlugins = (): UpdaterOptionsStatic<Plugin> => ({
+export const createOptionsPlugins = (sheetsClient: typeof gapi.client.sheets, sheetId: string): UpdaterOptions<Plugin> => ({
+  sheetsClient,
+  sheetId,
   columns: [
     { prop: 'url', column: 'URL', type: ColumnType.STRING },
     { prop: 'name', column: 'Name', type: ColumnType.STRING },
