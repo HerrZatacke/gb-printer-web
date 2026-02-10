@@ -78,6 +78,18 @@
     "logout": "Logga ut",
     "openSheetLink": "Öppna blad i ny flik"
   },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Titel",
+    "columns": "Kolumner",
+    "rows": "Rader",
+    "lastRemoteUpdate": "Senaste lokala uppdatering",
+    "lastLocalUpdate": "Senaste fjärruppdatering",
+    "refreshStats":  "Uppdatera egenskaper",
+    "syncPush": "Synkronisera till Sheets",
+    "syncMerge":  "Sammanfoga med Sheets",
+    "syncPull": "Synkronisera från Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Lägg till plugin",
     "addPluginHelper": "🔗 Ett urval av plugins hittar du här",

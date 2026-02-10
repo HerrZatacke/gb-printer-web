@@ -78,6 +78,18 @@
     "logout": "Uitloggen",
     "openSheetLink": "Werkblad in nieuw tabblad openen"
   },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Titel",
+    "columns": "Kolommen",
+    "rows": "Rijen",
+    "lastRemoteUpdate": "Laatste lokale update",
+    "lastLocalUpdate": "Laatste externe update",
+    "refreshStats":  "Eigenschappen vernieuwen",
+    "syncPush": "Synchroniseren naar Sheets",
+    "syncMerge":  "Samenvoegen met Sheets",
+    "syncPull": "Synchroniseren vanuit Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Plugin toevoegen",
     "addPluginHelper": "🔗 Een selectie van plugins vind je hier",

@@ -78,6 +78,18 @@
     "logout": "Logg ut",
     "openSheetLink": "Åpne ark i ny fane"
   },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Tittel",
+    "columns": "Kolonner",
+    "rows": "Rader",
+    "lastRemoteUpdate": "Siste lokale oppdatering",
+    "lastLocalUpdate": "Siste eksterne oppdatering",
+    "refreshStats":  "Oppdater egenskaper",
+    "syncPush": "Synkroniser til Sheets",
+    "syncMerge":  "Slå sammen med Sheets",
+    "syncPull": "Synkroniser fra Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Legg til plugin",
     "addPluginHelper": "🔗 Et utvalg av plugins finner du her",

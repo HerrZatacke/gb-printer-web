@@ -13,6 +13,7 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import { sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import useGapiSync from '@/contexts/GapiSyncContext';
@@ -50,6 +51,7 @@ function SheetsTable() {
   const { gapiStorage } = useStoragesStore();
   const { busy, performPush, performPull, performMerge } = useGapiSync();
   const { gapiLastLocalUpdates } = useItemsStore();
+  const t = useTranslations('SheetsTable');
 
   const disabled = busy || !gapiStorage.sheetId || !gapiStorage.use;
 
@@ -64,16 +66,17 @@ function SheetsTable() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">ID</TableCell>
-            <TableCell align="right">Title</TableCell>
-            <TableCell align="right">Columns</TableCell>
-            <TableCell align="right">Rows</TableCell>
-            <TableCell align="right">Last Remote Update</TableCell>
+            <TableCell align="right">{t('id')}</TableCell>
+            <TableCell align="right">{t('title')}</TableCell>
+            <TableCell align="right">{t('columns')}</TableCell>
+            <TableCell align="right">{t('rows')}</TableCell>
+            <TableCell align="right">{t('lastRemoteUpdate')}</TableCell>
             <TableCell />
-            <TableCell align="left">Last Local Update</TableCell>
+            <TableCell align="left">{t('lastLocalUpdate')}</TableCell>
             <TableCell align="right">
               <IconButton
                 disabled={disabled}
+                title={t('refreshStats')}
                 onClick={updateSheets}
               >
                 <RefreshIcon />
@@ -114,18 +117,21 @@ function SheetsTable() {
                 <TableCell align="right">
                   <IconButton
                     disabled={disabled}
+                    title={t('syncPush')}
                     onClick={() => performPush(sheetName, localTimestamp, false)}
                   >
                     <CloudUploadIcon />
                   </IconButton>
                   <IconButton
                     disabled={disabled}
+                    title={t('syncMerge')}
                     onClick={() => performMerge(sheetName, remoteTimestamp, localTimestamp)}
                   >
                     <JoinFullIcon />
                   </IconButton>
                   <IconButton
                     disabled={disabled}
+                    title={t('syncPull')}
                     onClick={() => performPull(sheetName, remoteTimestamp)}
                   >
                     <CloudDownloadIcon />

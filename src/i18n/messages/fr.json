@@ -78,6 +78,18 @@
     "logout": "Se déconnecter",
     "openSheetLink": "Ouvrir la feuille dans un nouvel onglet"
   },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Titre",
+    "columns": "Colonnes",
+    "rows": "Lignes",
+    "lastRemoteUpdate": "Dernière mise à jour locale",
+    "lastLocalUpdate": "Dernière mise à jour distante",
+    "refreshStats":  "Actualiser les propriétés",
+    "syncPush": "Synchroniser vers Sheets",
+    "syncMerge":  "Fusionner avec Sheets",
+    "syncPull": "Synchroniser depuis Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Ajouter un plugin",
     "addPluginHelper": "🔗 Vous trouverez une sélection de plugins ici",
