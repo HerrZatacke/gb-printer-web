@@ -203,8 +203,7 @@ export const useContextHook = (): GapiSyncContextType => {
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-          // ToDo
-          console.log(result.items, timestamp);
+          useItemsStore.getState().setFrameGroups(result.items, timestamp);
           break;
         }
 
@@ -244,8 +243,7 @@ export const useContextHook = (): GapiSyncContextType => {
           const metaData = result.sheetProperties.developerMetadata;
           const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-          // ToDo
-          console.log(result.items, timestamp);
+          useItemsStore.getState().setPlugins(result.items, timestamp);
           break;
         }
 

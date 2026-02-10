@@ -76,9 +76,11 @@ interface Actions {
 
   // Global Updates
   setFrames: (frames: Frame[], timestampOverride?: number) => void,
+  setFrameGroups: (frameGroups: FrameGroup[], timestampOverride?: number) => void,
   setImages: (images: Image[], timestampOverride?: number) => void,
   setImageGroups: (imageGroups: SerializableImageGroup[], timestampOverride?: number) => void,
   setPalettes: (palettes: Palette[], timestampOverride?: number) => void,
+  setPlugins: (plugins: Plugin[], timestampOverride?: number) => void,
 }
 
 export type ItemsState = Values & Actions;
@@ -399,6 +401,11 @@ export const createItemsStore = () => (
           ...updateLastLocalUpdates(get, [SheetName.FRAMES], timestampOverride),
         }),
 
+        setFrameGroups: (frameGroups: FrameGroup[], timestampOverride?: number) => set({
+          frameGroups: frameGroupsUniqueById(frameGroups),
+          ...updateLastLocalUpdates(get, [SheetName.FRAME_GROUPS], timestampOverride),
+        }),
+
         setImages: (images: Image[], timestampOverride?: number) => set({
           images: imagesUniqueByHash(images),
           ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES], timestampOverride),
@@ -412,6 +419,11 @@ export const createItemsStore = () => (
         setPalettes: (palettes: Palette[], timestampOverride?: number) => set({
           palettes: withPredefinedPalettes(palettes),
           ...updateLastLocalUpdates(get, [SheetName.PALETTES], timestampOverride),
+        }),
+
+        setPlugins: (plugins: Plugin[], timestampOverride?: number) => set({
+          plugins: pluginsUniqueByUrl(plugins),
+          ...updateLastLocalUpdates(get, [SheetName.PLUGINS], timestampOverride),
         }),
       }),
       {

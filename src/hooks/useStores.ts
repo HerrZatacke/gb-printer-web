@@ -106,7 +106,7 @@ export const useStores = (): UseStores => {
       }
 
       if (state.frameGroups) {
-        updateFrameGroups(state.frameGroups);
+        updateFrameGroups(state.frameGroups); // updateFrameGroups merges
       }
 
       if (state.imageGroups) {
