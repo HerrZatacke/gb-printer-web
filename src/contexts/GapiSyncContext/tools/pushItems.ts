@@ -81,6 +81,57 @@ export const pushItems = async <T extends object>(
     resource: { values: sheetItems },
   });
 
+  // only headline
+  const tableEmpty = sheetItems.length <= 1;
+
+  // requests must be separate, to prevent failure when emptying table
+  const resizeRequests: Request[] = [
+    {
+      updateSheetProperties: {
+        properties: {
+          sheetId: targetSheetId,
+          gridProperties: {
+            frozenRowCount: tableEmpty ? 0 : 1,
+          },
+        },
+        fields: 'gridProperties.frozenRowCount',
+      },
+    },
+    {
+      updateSheetProperties: {
+        properties: {
+          sheetId: targetSheetId,
+          gridProperties: {
+            // Todo: instead of cropping, maybe delete indices row-by-row? -> More requests, but less network overhead?
+            // these dimensions crop the last items if fewer new rows than before
+            rowCount: sheetItems.length,
+            columnCount: columns.length,
+          },
+        },
+        fields: 'gridProperties(rowCount,columnCount)',
+      },
+    },
+  ];
+
+  // don't sort an empty table
+  const sortRequest: Request[] = tableEmpty ? [] : [
+    {
+      sortRange: {
+        range: {
+          sheetId: targetSheetId,
+          startRowIndex: 1,
+          startColumnIndex: 0,
+        },
+        sortSpecs: [
+          {
+            dimensionIndex: 0,
+            sortOrder: 'ASCENDING',
+          },
+        ],
+      },
+    },
+  ];
+
   // update sheet properties:
   // fix header row
   // crop sheet size to sheetItems to delete excess items
@@ -88,45 +139,9 @@ export const pushItems = async <T extends object>(
     spreadsheetId: sheetId,
     resource: {
       requests: [
-        {
-          updateSheetProperties: {
-            properties: {
-              sheetId: targetSheetId,
-              gridProperties: {
-                frozenRowCount: 1,
-                // Todo: instead of cropping, maybe delete indices row-by-row? -> More requests, but less network overhead?
-                // these dimensions crop the last items if fewer new rows than before
-                rowCount: sheetItems.length + 1,
-                columnCount: columns.length,
-              },
-            },
-            fields: 'gridProperties(rowCount,columnCount,frozenRowCount)',
-          },
-        },
-        {
-          sortRange: {
-            range: {
-              sheetId: targetSheetId,
-              startRowIndex: 1,
-              startColumnIndex: 0,
-            },
-            sortSpecs: [
-              {
-                dimensionIndex: 0,
-                sortOrder: 'ASCENDING',
-              },
-            ],
-          },
-        },
+        ...resizeRequests,
+        ...sortRequest,
         metadataUpsertRequest,
-        {
-          autoResizeDimensions: {
-            dimensions: {
-              sheetId: targetSheetId,
-              dimension: 'COLUMNS',
-            },
-          },
-        },
         {
           repeatCell: {
             range: {
