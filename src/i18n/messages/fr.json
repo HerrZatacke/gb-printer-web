@@ -518,7 +518,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Mise à jour terminée {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Mise à jour... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Échec de la mise à jour",
+    "dialogHeaderError": "❌ Échec de la mise à jour {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Afficher tous les {count} messages",
     "reduceMessages": "Réduire les messages",
     "startedAt": "Démarré à : {time}",

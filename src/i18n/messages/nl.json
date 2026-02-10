@@ -518,7 +518,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Update voltooid {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Bijwerken... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Bijwerken mislukt",
+    "dialogHeaderError": "❌ Bijwerken mislukt {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Alle {count} berichten tonen",
     "reduceMessages": "Berichten verminderen",
     "startedAt": "Gestart om: {time}",

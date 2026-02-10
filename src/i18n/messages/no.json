@@ -518,7 +518,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Oppdatering fullført {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Oppdaterer... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Oppdatering mislyktes",
+    "dialogHeaderError": "❌ Oppdatering mislyktes {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Vis alle {count} meldinger",
     "reduceMessages": "Reduser meldinger",
     "startedAt": "Startet kl.: {time}",

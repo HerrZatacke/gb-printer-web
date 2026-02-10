@@ -518,7 +518,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Aggiornamento completato {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Aggiornamento in corso... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Aggiornamento non riuscito",
+    "dialogHeaderError": "❌ Aggiornamento non riuscito {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Mostra tutti i {count} messaggi",
     "reduceMessages": "Riduci messaggi",
     "startedAt": "Iniziato alle: {time}",

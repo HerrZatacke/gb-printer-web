@@ -518,7 +518,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Uppdatering klar {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Uppdaterar... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Uppdateringen misslyckades",
+    "dialogHeaderError": "❌ Uppdateringen misslyckades {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Visa alla {count} meddelanden",
     "reduceMessages": "Minska meddelanden",
     "startedAt": "Startad vid: {time}",
