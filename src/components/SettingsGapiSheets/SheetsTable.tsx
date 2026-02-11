@@ -1,6 +1,14 @@
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CollectionsIcon from '@mui/icons-material/Collections';
+import DataObjectIcon from '@mui/icons-material/DataObject';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import FilterIcon from '@mui/icons-material/Filter';
+import GradientIcon from '@mui/icons-material/Gradient';
+import ImageIcon from '@mui/icons-material/Image';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import JoinFullIcon from '@mui/icons-material/JoinFullRounded';
+import PaletteIcon from '@mui/icons-material/Palette';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   IconButton,
@@ -44,6 +52,29 @@ const getSign = (value: number): string => {
       return '>';
     default:
       return '=';
+  }
+};
+
+const getIcon = (sheeName: SheetName) => {
+  switch (sheeName) {
+    case SheetName.IMAGES:
+      return ImageIcon;
+    case SheetName.RGBN_IMAGES:
+      return GradientIcon;
+    case SheetName.IMAGE_GROUPS:
+      return CollectionsIcon;
+    case SheetName.FRAMES:
+      return ImageOutlinedIcon;
+    case SheetName.FRAME_GROUPS:
+      return FilterIcon;
+    case SheetName.PALETTES:
+      return PaletteIcon;
+    case SheetName.PLUGINS:
+      return ExtensionIcon;
+    case SheetName.BIN_IMAGES:
+      return DataObjectIcon;
+    case SheetName.BIN_FRAMES:
+      return DataObjectIcon;
   }
 };
 
@@ -103,7 +134,12 @@ function SheetsTable() {
                 }}
               >
                 <TableCell align="right">{properties?.sheetId || 'N/A'}</TableCell>
-                <TableCell align="right">{sheetName}</TableCell>
+                <TableCell align="right">
+                  <Stack direction="row" gap={1} alignItems="center" justifyContent="right">
+                    <span>{sheetName}</span>
+                    {Icon && <Icon />}
+                  </Stack>
+                </TableCell>
                 <TableCell align="right">{properties?.gridProperties?.columnCount || 'N/A'}</TableCell>
                 <TableCell align="right">{properties?.gridProperties?.rowCount || 'N/A'}</TableCell>
                 <TableCell align="right" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(remoteTimestamp)}</TableCell>

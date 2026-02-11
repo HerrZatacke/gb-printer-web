@@ -12,16 +12,17 @@ export enum SheetName {
 
 export type GapiLastUpdates = Record<SheetName, number>;
 
+// Order is used in SheetsTable
 export const sheetNames: SheetName[] = [
-  SheetName.BIN_FRAMES,
-  SheetName.BIN_IMAGES,
-  SheetName.FRAME_GROUPS,
-  SheetName.FRAMES,
-  SheetName.IMAGE_GROUPS,
   SheetName.IMAGES,
+  SheetName.RGBN_IMAGES,
+  SheetName.BIN_IMAGES,
+  SheetName.IMAGE_GROUPS,
+  SheetName.FRAMES,
+  SheetName.BIN_FRAMES,
+  SheetName.FRAME_GROUPS,
   SheetName.PALETTES,
   SheetName.PLUGINS,
-  SheetName.RGBN_IMAGES,
 ];
 
 export const LASTUPDATE_METADATA_KEY = 'lastUpdate';
