@@ -61,6 +61,7 @@ export const pushItems = async <T extends object>(
   };
 
   const sheetItems = objectsToSheet(items, {
+  const sheetItems = await objectsToSheet(items, {
     key: keyColumn,
     columns,
     deleteMissing: !merge,
@@ -108,7 +109,7 @@ export const pushItems = async <T extends object>(
             // Todo: instead of cropping, maybe delete indices row-by-row? -> More requests, but less network overhead?
             // these dimensions crop the last items if fewer new rows than before
             rowCount: sheetItems.length,
-            columnCount: columns.length,
+            columnCount: sheetItems[0].length,
           },
         },
         fields: 'gridProperties(rowCount,columnCount)',

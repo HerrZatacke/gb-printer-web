@@ -1,7 +1,8 @@
+import { HASH_COLUMN_NAME } from '@/contexts/GapiSheetStateContext/consts';
+import { hashRow } from '@/contexts/GapiSyncContext/tools/hashRow';
 import { UNDEFINED } from '@/tools/sheetConversion/consts';
 import { type ColumnSpec } from '@/tools/sheetConversion/types';
 import { serialize } from '@/tools/sheetConversion/values';
-import { HASH_COLUMN_NAME } from '@/contexts/GapiSheetStateContext/consts';
 
 interface ToSheetOptions<T> {
   key: keyof T;
@@ -23,10 +24,10 @@ const dedupeByColumnIndex = (values: string[][], columnIndex: number): string[][
   });
 };
 
-export const objectsToSheet = <T extends object>(
+export const objectsToSheet = async <T extends object>(
   objects: T[],
   options: ToSheetOptions<T>,
-): string[][] => {
+): Promise<string[][]> => {
   const { key, columns, existing, deleteMissing = false } = options;
 
   const headers = columns.map(column => column.column);
@@ -34,6 +35,8 @@ export const objectsToSheet = <T extends object>(
   if (headers.includes(HASH_COLUMN_NAME)) {
     throw new Error(`Headers contain illegal name (${HASH_COLUMN_NAME})`);
   }
+
+  headers.push(HASH_COLUMN_NAME);
 
   const index = new Map(headers.map((headerName, idx) => [headerName, idx]));
 
@@ -76,6 +79,9 @@ export const objectsToSheet = <T extends object>(
 
       row[index.get(col.column)!] = cellValue;
     }
+
+    const hash = await hashRow(row);
+    row[index.get(HASH_COLUMN_NAME)!] = hash;
   }
 
   if (deleteMissing) {
