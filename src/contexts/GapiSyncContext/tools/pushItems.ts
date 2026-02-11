@@ -87,6 +87,7 @@ export const pushItems = async <T extends object>(
 
   // requests must be separate, to prevent failure when emptying table
   const resizeRequests: Request[] = [
+    // set fixed header row
     {
       updateSheetProperties: {
         properties: {
@@ -98,6 +99,7 @@ export const pushItems = async <T extends object>(
         fields: 'gridProperties.frozenRowCount',
       },
     },
+    // crop sheet size to sheetItems / delete excess items
     {
       updateSheetProperties: {
         properties: {
@@ -133,10 +135,6 @@ export const pushItems = async <T extends object>(
     },
   ] : [];
 
-
-  // update sheet properties:
-  // fix header row
-  // crop sheet size to sheetItems to delete excess items
   await sheetsClient.spreadsheets.batchUpdate({
     spreadsheetId: sheetId,
     resource: {
