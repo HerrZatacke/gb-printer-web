@@ -15,6 +15,7 @@ export const pushItems = async <T extends object>(
     columns,
     keyColumn,
     newLastUpdateValue,
+    sort,
   }: PushOptions & UpdaterOptions<T>,
   items: T[],
 ): Promise<void> => {
@@ -113,9 +114,8 @@ export const pushItems = async <T extends object>(
     },
   ];
 
-  // ToDo: make sorting optional via parameter? (no need to sort the binary tables)
   // don't sort an empty table
-  const sortRequest: Request[] = tableEmpty ? [] : [
+  const sortRequest: Request[] = (sort && !tableEmpty) ? [
     {
       sortRange: {
         range: {
@@ -131,7 +131,8 @@ export const pushItems = async <T extends object>(
         ],
       },
     },
-  ];
+  ] : [];
+
 
   // update sheet properties:
   // fix header row

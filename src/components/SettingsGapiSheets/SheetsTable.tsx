@@ -4,18 +4,19 @@ import JoinFullIcon from '@mui/icons-material/JoinFullRounded';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   IconButton,
+  Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Typography,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
-import { sheetNames } from '@/contexts/GapiSheetStateContext/consts';
+import { SheetName, sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import useGapiSync from '@/contexts/GapiSyncContext';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
 
@@ -91,6 +92,8 @@ function SheetsTable() {
             const remoteTimestamp = gapiLastRemoteUpdates?.[sheetName] || 0;
             const localTimestamp = gapiLastLocalUpdates?.[sheetName];
             const diff = Math.sign(remoteTimestamp - localTimestamp);
+            const sort = sheetName !== SheetName.BIN_IMAGES && sheetName !== SheetName.BIN_FRAMES;
+            const Icon = getIcon(sheetName);
 
             return (
               <TableRow
@@ -118,21 +121,34 @@ function SheetsTable() {
                   <IconButton
                     disabled={disabled}
                     title={t('syncPush')}
-                    onClick={() => performPush(sheetName, localTimestamp, false)}
+                    onClick={() => performPush({
+                      sheetName: sheetName,
+                      newLastUpdateValue: localTimestamp,
+                      merge: false,
+                      sort,
+                    })}
                   >
                     <CloudUploadIcon />
                   </IconButton>
                   <IconButton
                     disabled={disabled}
                     title={t('syncMerge')}
-                    onClick={() => performMerge(sheetName, remoteTimestamp, localTimestamp)}
+                    onClick={() => performMerge({
+                      sheetName: sheetName,
+                      lastRemoteUpdate: remoteTimestamp,
+                      lastLocalUpdate: localTimestamp,
+                      sort,
+                    })}
                   >
                     <JoinFullIcon />
                   </IconButton>
                   <IconButton
                     disabled={disabled}
                     title={t('syncPull')}
-                    onClick={() => performPull(sheetName, remoteTimestamp)}
+                    onClick={() => performPull({
+                      sheetName,
+                      lastRemoteUpdate: remoteTimestamp,
+                    })}
                   >
                     <CloudDownloadIcon />
                   </IconButton>
