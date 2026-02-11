@@ -59,6 +59,8 @@ export const pushItems = async <T extends object>(
     } as CreateDeveloperMetadataRequest,
   };
 
+  const start = Date.now();
+
   const {
     sheetItems,
     keyIndex,
@@ -68,6 +70,8 @@ export const pushItems = async <T extends object>(
     existing: remoteValues,
   });
 
+  console.log(`Created and hashed sheet with ${sheetItems.length} items in ${Date.now() - start}ms`);
+  console.log(sheetItems.slice(0, 2));
   // console.log({
   //   items,
   //   sheetName,
