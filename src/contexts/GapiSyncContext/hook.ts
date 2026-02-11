@@ -175,11 +175,6 @@ export const useContextHook = (): GapiSyncContextType => {
           const images = await getAllImages();
           console.log(`📊 Collected ${sheetName} in ${Date.now() - startTime}ms`);
 
-          // ToDo: move this size-check into "pushItems" method
-          if(images.find(([, data]) => (data.length >= 50000))) {
-            throw new Error('Some cells are too big');
-          }
-
           console.log('largest image', images.reduce((acc, [,data]) => Math.max(acc, data.length), -Infinity));
           console.log('smallest image', images.reduce((acc, [,data]) => Math.min(acc, data.length), Infinity));
 

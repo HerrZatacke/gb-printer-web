@@ -9,6 +9,8 @@ interface ToSheetOptions<T> {
   deleteMissing?: boolean;
 }
 
+const MAX_CELL_SIZE = 50000;
+
 const dedupeByColumnIndex = (values: string[][], columnIndex: number): string[][] => {
   const seen = new Set<string>();
 
@@ -60,7 +62,13 @@ export const objectsToSheet = <T extends object>(
 
     for (const col of columns) {
       const value = col.prop in obj ? (obj as T)[col.prop] : undefined;
-      row[index.get(col.column)!] = serialize(value, col.type, col.fallbackType);
+      const cellValue = serialize(value, col.type, col.fallbackType);
+
+      if (cellValue.length >= MAX_CELL_SIZE) {
+        throw new Error('Cell content is too big');
+      }
+
+      row[index.get(col.column)!] = cellValue;
     }
   }
 
