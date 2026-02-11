@@ -3,7 +3,7 @@ import { deserialize } from '@/tools/sheetConversion/values';
 
 export function sheetToObjects<T extends object>(
   sheet: string[][],
-  options: { key: keyof T; columns: ColumnSpec<T>[] },
+  options: { columns: ColumnSpec<T>[] },
 ): T[] {
   const [, ...rows] = sheet;
   const { columns } = options;

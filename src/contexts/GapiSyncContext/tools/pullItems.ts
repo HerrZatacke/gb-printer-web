@@ -12,20 +12,17 @@ export const pullItems = async <T extends object>({
   sheetId,
   sheetName,
   columns,
-  keyColumn,
 }: {
   sheetsClient: typeof gapi.client.sheets;
   sheetId: string;
   sheetName: string;
   columns: ColumnSpec<T>[];
-  keyColumn: keyof T;
 }): Promise<PullItemsResult<T>> => {
   const startTime = Date.now();
 
   console.log(`📊 Pulling ${sheetName}`);
 
   const options = {
-    key: keyColumn,
     columns,
   };
 
