@@ -60,7 +60,7 @@ interface Actions {
   updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues,
 
   // Image updates
-  addImages: (images: Image[], timestampOverride?: number) => void,
+  addImages: (images: Image[]) => void,
   deleteImages: (hashes: string[]) => void,
   updateImageHash: (oldHash: string, image: Image) => void,
   updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void,
@@ -81,6 +81,8 @@ interface Actions {
   setImageGroups: (imageGroups: SerializableImageGroup[], timestampOverride?: number) => void,
   setPalettes: (palettes: Palette[], timestampOverride?: number) => void,
   setPlugins: (plugins: Plugin[], timestampOverride?: number) => void,
+
+  setLastUpdate: (sheetName: SheetName) => void,
 }
 
 export type ItemsState = Values & Actions;
@@ -342,9 +344,9 @@ export const createItemsStore = () => (
           ...updateLastLocalUpdates(get, [SheetName.IMAGE_GROUPS]),
         })),
 
-        addImages: (images: Image[], timestampOverride?: number) => set((itemsState) => ({
+        addImages: (images: Image[]) => set((itemsState) => ({
           images: imagesUniqueByHash([...itemsState.images, ...images]),
-          ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES], timestampOverride),
+          ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES]),
         })),
 
         deleteImages: (hashes: string[]) => set((itemsState) => ({
@@ -424,6 +426,11 @@ export const createItemsStore = () => (
         setPlugins: (plugins: Plugin[], timestampOverride?: number) => set({
           plugins: pluginsUniqueByUrl(plugins),
           ...updateLastLocalUpdates(get, [SheetName.PLUGINS], timestampOverride),
+        }),
+
+        // Pure timestamp update
+        setLastUpdate: (sheetName: SheetName) => set({
+          ...updateLastLocalUpdates(get, [sheetName]),
         }),
       }),
       {

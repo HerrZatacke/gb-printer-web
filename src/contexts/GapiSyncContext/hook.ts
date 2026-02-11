@@ -232,23 +232,26 @@ export const useContextHook = (): GapiSyncContextType => {
           break;
         }
 
-        case SheetName.IMAGES: {
-          const result = await pullItems<MonochromeImage>(createOptionsImages(sheetsClient, sheetId));
-
-          const metaData = result.sheetProperties.developerMetadata;
-          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-          useItemsStore.getState().addImages(result.items, timestamp);
-          break;
-        }
-
+        // When pulling images, both remote tables must be queried, to allow deletion
+        case SheetName.IMAGES:
         case SheetName.RGBN_IMAGES: {
-          const result = await pullItems<RGBNImage>(createOptionsImagesRGBN(sheetsClient, sheetId));
+          const monochromeResult = await pullItems<MonochromeImage>(createOptionsImages(sheetsClient, sheetId));
 
-          const metaData = result.sheetProperties.developerMetadata;
-          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+          const monochromeMetaData = monochromeResult.sheetProperties.developerMetadata;
+          const monochromeTimestamp: number | undefined = monochromeMetaData ? getLastUpdate(monochromeMetaData) : lastRemoteUpdate;
 
-          useItemsStore.getState().addImages(result.items, timestamp);
+          const rgbnResult = await pullItems<RGBNImage>(createOptionsImagesRGBN(sheetsClient, sheetId));
+
+          const rgbnMetaData = rgbnResult.sheetProperties.developerMetadata;
+          const rgbnTimestamp: number | undefined = rgbnMetaData ? getLastUpdate(rgbnMetaData) : lastRemoteUpdate;
+
+          const values = [monochromeTimestamp, rgbnTimestamp].filter((value) => (value !== undefined));
+          const timestamp = values.length > 0 ? Math.max(...values) : undefined;
+
+          useItemsStore.getState().setImages([
+            ...monochromeResult.items,
+            ...rgbnResult.items,
+          ], timestamp);
           break;
         }
 

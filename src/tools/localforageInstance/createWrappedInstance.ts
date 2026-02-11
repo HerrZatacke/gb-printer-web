@@ -1,4 +1,6 @@
 import localforage from 'localforage';
+import { type SheetName } from '@/contexts/GapiSheetStateContext/consts';
+import { useItemsStore } from '@/stores/stores';
 
 export interface WrappedLocalForageInstance<T> {
   ready: () => Promise<void>,
@@ -11,7 +13,7 @@ export interface WrappedLocalForageInstance<T> {
 
 const DUMMY = `dummy${(new Date()).getTime()}`;
 
-const createWrappedInstance = <T>(options: LocalForageOptions): WrappedLocalForageInstance<T> => {
+const createWrappedInstance = <T>(options: LocalForageOptions, lastUpdateSheetName: SheetName): WrappedLocalForageInstance<T> => {
   let instance = localforage.createInstance(options);
 
   const createDummys = async () => {
@@ -47,7 +49,9 @@ const createWrappedInstance = <T>(options: LocalForageOptions): WrappedLocalFora
     },
     setItem: async (key: string, value: T): Promise<T> => {
       try {
-        return await instance.setItem(key, value);
+        const item = await instance.setItem(key, value);
+        useItemsStore.getState().setLastUpdate(lastUpdateSheetName);
+        return item;
       } catch (error) {
         instance = localforage.createInstance(options);
         throw error;
@@ -64,7 +68,8 @@ const createWrappedInstance = <T>(options: LocalForageOptions): WrappedLocalFora
     },
     removeItem: async (key: string): Promise<void> => {
       try {
-        return await instance.removeItem(key);
+        await instance.removeItem(key);
+        useItemsStore.getState().setLastUpdate(lastUpdateSheetName);
       } catch (error) {
         instance = localforage.createInstance(options);
         throw error;
