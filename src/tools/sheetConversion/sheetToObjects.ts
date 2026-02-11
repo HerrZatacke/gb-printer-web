@@ -5,15 +5,23 @@ export function sheetToObjects<T extends object>(
   sheet: string[][],
   options: { columns: ColumnSpec<T>[] },
 ): T[] {
-  const [, ...rows] = sheet;
+  const [headers, ...rows] = sheet;
   const { columns } = options;
+
 
   return rows.map((row) => {
     const obj: Record<string, unknown> = {};
 
-    columns.forEach((col, i) => {
+    columns.forEach((col) => {
+
+      const columnIndex = headers.indexOf(col.column);
+
+      if (columnIndex === -1) {
+        throw new Error(`cannot find column ${col.column} in sheet`);
+      }
+
       const value = deserialize(
-        row[i],
+        row[columnIndex],
         col.type,
         col.fallbackType,
       );
