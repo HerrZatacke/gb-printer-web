@@ -89,6 +89,7 @@ export const getAllImages = async (): Promise<[string, string][]> => {
     // const imageData = await load(hash);
     const imageData = await localforageImages.getItem(hash);
 
+    // ToDo: needed?
     // hash for empty string
     if (hash === '5aa1221a3c354b60aed8076105f9e6239281aca9') {
       return null;
