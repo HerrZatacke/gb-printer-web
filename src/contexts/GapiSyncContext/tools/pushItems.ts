@@ -13,7 +13,6 @@ export const pushItems = async <T extends object>(
     merge,
     sheetName,
     columns,
-    keyColumn,
     newLastUpdateValue,
     sort,
   }: PushOptions & UpdaterOptions<T>,
@@ -60,9 +59,10 @@ export const pushItems = async <T extends object>(
     } as CreateDeveloperMetadataRequest,
   };
 
-  const sheetItems = objectsToSheet(items, {
-  const sheetItems = await objectsToSheet(items, {
-    key: keyColumn,
+  const {
+    sheetItems,
+    keyIndex,
+  } = await objectsToSheet(items, {
     columns,
     deleteMissing: !merge,
     existing: remoteValues,
@@ -128,7 +128,7 @@ export const pushItems = async <T extends object>(
         },
         sortSpecs: [
           {
-            dimensionIndex: 0,
+            dimensionIndex: keyIndex,
             sortOrder: 'ASCENDING',
           },
         ],

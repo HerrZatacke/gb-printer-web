@@ -36,7 +36,6 @@ export const createOptionsImages = (sheetsClient: typeof gapi.client.sheets, she
     // =ADDRESS(MATCH(INDEX(A:A, ROW()),images_bin!$A:$A, 0), 2, 4, TRUE, "images_bin")
     // =MATCH(INDEX(A:A, ROW()), images_bin!$A:$A, 0)
   ],
-  keyColumn: 'hash',
   sheetName: SheetName.IMAGES,
 });
 
@@ -49,7 +48,6 @@ export const createOptionsImagesRGBN = (sheetsClient: typeof gapi.client.sheets,
     { prop: 'palette', column: 'Palette', type: ColumnType.JSON },
     { prop: 'hashes', column: 'Hashes', type: ColumnType.JSON },
   ],
-  keyColumn: 'hash',
   sheetName: SheetName.RGBN_IMAGES,
 });
 
@@ -65,7 +63,6 @@ export const createOptionsImageGroups = (sheetsClient: typeof gapi.client.sheets
     { prop: 'images', column: 'Images', type: ColumnType.JSON },
     { prop: 'groups', column: 'Sub-Groups', type: ColumnType.JSON },
   ],
-  keyColumn: 'id',
   sheetName: SheetName.IMAGE_GROUPS,
 });
 
@@ -78,7 +75,6 @@ export const createOptionsPalettes = (sheetsClient: typeof gapi.client.sheets, s
     { prop: 'palette', column: 'Palette', type: ColumnType.JSON },
     { prop: 'origin', column: 'Origin', type: ColumnType.STRING },
   ],
-  keyColumn: 'shortName',
   sheetName: SheetName.PALETTES,
 });
 
@@ -92,7 +88,6 @@ export const createOptionsFrames = (sheetsClient: typeof gapi.client.sheets, she
     { prop: 'name', column: 'Name', type: ColumnType.STRING },
     { prop: 'lines', column: 'Lines', type: ColumnType.NUMBER },
   ],
-  keyColumn: 'id',
   sheetName: SheetName.FRAMES,
 });
 
@@ -104,7 +99,6 @@ export const createOptionsFrameGroups = (sheetsClient: typeof gapi.client.sheets
     { prop: 'id', column: 'ID', type: ColumnType.STRING },
     { prop: 'name', column: 'Name', type: ColumnType.STRING },
   ],
-  keyColumn: 'id',
   sheetName: SheetName.FRAME_GROUPS,
 });
 
@@ -119,7 +113,6 @@ export const createOptionsPlugins = (sheetsClient: typeof gapi.client.sheets, sh
     { prop: 'config', column: 'Config', type: ColumnType.JSON },
     { prop: 'configParams', column: 'Config Params', type: ColumnType.JSON },
   ],
-  keyColumn: 'url',
   sheetName: SheetName.PLUGINS,
 });
 
@@ -131,7 +124,6 @@ export const createOptionsBinaryFrames = (sheetsClient: typeof gapi.client.sheet
     { prop: 'hash', column: 'hash', type: ColumnType.STRING },
     { prop: 'data', column: 'Data', type: ColumnType.STRING },
   ],
-  keyColumn: 'hash',
   sheetName: SheetName.BIN_FRAMES,
 });
 
@@ -143,6 +135,5 @@ export const createOptionsBinaryImages = (sheetsClient: typeof gapi.client.sheet
     { prop: 'hash', column: 'hash', type: ColumnType.STRING },
     { prop: 'data', column: 'Data', type: ColumnType.STRING },
   ],
-  keyColumn: 'hash',
   sheetName: SheetName.BIN_IMAGES,
 });

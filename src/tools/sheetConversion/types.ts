@@ -24,6 +24,5 @@ export interface UpdaterOptions<T> {
   sheetsClient: typeof gapi.client.sheets;
   sheetId: string;
   columns: ColumnSpec<T>[];
-  keyColumn: keyof T;
   sheetName: SheetName;
 }

@@ -5,10 +5,14 @@ import { type ColumnSpec } from '@/tools/sheetConversion/types';
 import { serialize } from '@/tools/sheetConversion/values';
 
 interface ToSheetOptions<T> {
-  key: keyof T;
   columns: ColumnSpec<T>[];
   existing?: string[][];
   deleteMissing?: boolean;
+}
+
+interface ObjectsToSheetResult {
+  sheetItems: string[][];
+  keyIndex: number;
 }
 
 const MAX_CELL_SIZE = 50000;
@@ -27,8 +31,8 @@ const dedupeByColumnIndex = (values: string[][], columnIndex: number): string[][
 export const objectsToSheet = async <T extends object>(
   objects: T[],
   options: ToSheetOptions<T>,
-): Promise<string[][]> => {
-  const { key, columns, existing, deleteMissing = false } = options;
+): Promise<ObjectsToSheetResult> => {
+  const { columns, existing, deleteMissing = false } = options;
 
   const headers = columns.map(column => column.column);
 
@@ -42,9 +46,9 @@ export const objectsToSheet = async <T extends object>(
 
   let rows: string[][] = existing ? existing.slice(1).map(r => [...(r.slice(0, headers.length))]) : [];
 
-  const keyColumn = columns.find(c => c.prop === key);
+  const keyColumn = columns[0];
   if (!keyColumn) {
-    throw new Error('Key must be included in columns');
+    throw new Error('No columns');
   }
 
   const keyIndex = index.get(keyColumn.column)!;
@@ -55,7 +59,7 @@ export const objectsToSheet = async <T extends object>(
   const seen = new Set<string>();
 
   for (const obj of objects) {
-    const id = (obj as T)[key];
+    const id = (obj as T)[keyColumn.prop];
     if (typeof id !== 'string') {
       throw new Error('Key must be a string');
     }
@@ -90,5 +94,8 @@ export const objectsToSheet = async <T extends object>(
 
   rows = dedupeByColumnIndex(rows, keyIndex);
 
-  return [headers, ...rows];
+  return {
+    sheetItems: [headers, ...rows],
+    keyIndex,
+  };
 };
