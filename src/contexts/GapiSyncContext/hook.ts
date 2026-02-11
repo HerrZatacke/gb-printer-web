@@ -169,20 +169,7 @@ export const useContextHook = (): GapiSyncContextType => {
         }
 
         case SheetName.BIN_IMAGES: {
-          const startTime = Date.now();
-
-          console.log(`📊 Collecting ${sheetName}`);
           const images = await getAllImages();
-          console.log(`📊 Collected ${sheetName} in ${Date.now() - startTime}ms`);
-
-          console.log('largest image', images.reduce((acc, [,data]) => Math.max(acc, data.length), -Infinity));
-          console.log('smallest image', images.reduce((acc, [,data]) => Math.min(acc, data.length), Infinity));
-
-          const smallest = images.filter(([,data]) => (data.length < 100));
-
-          console.log(smallest);
-          console.log(smallest.length);
-
           await pushItems<BinaryGapiSyncItem>(
             {
               ...pushOptions,
