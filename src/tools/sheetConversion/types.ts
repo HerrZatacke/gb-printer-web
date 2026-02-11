@@ -16,7 +16,6 @@ export interface ColumnSpec<T> {
 
 export interface PushOptions {
   newLastUpdateValue: number;
-  merge: boolean;
   sort: boolean;
 }
 

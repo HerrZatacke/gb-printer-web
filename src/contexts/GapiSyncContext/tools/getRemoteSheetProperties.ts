@@ -1,13 +1,34 @@
+import { HASH_COLUMN_NAME } from '@/contexts/GapiSheetStateContext/consts';
+import { getSheetColumnRange } from '@/contexts/GapiSyncContext/tools/getSheetColumnRange';
 import SheetProperties = gapi.client.sheets.SheetProperties;
 import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
+
+export enum ColumnRange {
+  ALL = 'all',
+  HASHES = 'hashes',
+}
+
+export interface GetRemoteSheetOptions {
+  sheetsClient: typeof gapi.client.sheets;
+  spreadsheetId: string;
+  sheetName: string;
+  columnRange: ColumnRange;
+}
 
 export interface RemoteSheetProperties {
   sheetProperties: SheetProperties;
   developerMetadata?: DeveloperMetadata[];
+  headers: string[];
   values: string[][];
 }
 
-export const getRemoteSheetProperties = async (sheetsClient: typeof gapi.client.sheets, spreadsheetId: string, sheetName: string): Promise<RemoteSheetProperties> => {
+
+export const getRemoteSheetProperties = async ({
+  sheetsClient,
+  spreadsheetId,
+  sheetName,
+  columnRange,
+}: GetRemoteSheetOptions): Promise<RemoteSheetProperties> => {
   const { result: { sheets } } = await sheetsClient.spreadsheets.get({
     spreadsheetId,
   });
@@ -61,14 +82,24 @@ export const getRemoteSheetProperties = async (sheetsClient: typeof gapi.client.
     throw new Error(`remote sheet "${sheetName}" missing`);
   }
 
-  const { result: { values } } = await sheetsClient.spreadsheets.values.get({
+  const { result: { values: headerValues } } = await sheetsClient.spreadsheets.values.get({
     spreadsheetId,
-    range: `${sheetProperties.title}!A:Z`,
+    range: `${sheetProperties.title}!1:1`,
+  });
+
+  const headers = headerValues ? headerValues[0] : [];
+  const hashHeaderIndex = headers.indexOf(HASH_COLUMN_NAME);
+  const resultRange = columnRange === ColumnRange.ALL ? 'A:Z' : getSheetColumnRange(hashHeaderIndex);
+
+  const { result: { values: rangeValues } } = await sheetsClient.spreadsheets.values.get({
+    spreadsheetId,
+    range: `${sheetProperties.title}!${resultRange}`,
   });
 
   return {
     sheetProperties,
     developerMetadata: (matchedDeveloperMetadata ||[]).map((metaData) => metaData.developerMetadata).filter(Boolean) as DeveloperMetadata[],
-    values: values || [[]],
+    values: rangeValues || [[]],
+    headers,
   };
 };

@@ -31,13 +31,13 @@ import type { Plugin } from '@/types/Plugin';
 interface PerformPushOptions {
   sheetName: SheetName,
   newLastUpdateValue: number,
-  merge: boolean;
   sort: boolean;
 }
 
 interface PerformPullOptions {
   sheetName: SheetName;
   lastRemoteUpdate?: number;
+  merge: boolean;
 }
 
 interface PerformMergeOptions {
@@ -62,7 +62,6 @@ export const useContextHook = (): GapiSyncContextType => {
   const performPush = useCallback(async ({
     sheetName,
     newLastUpdateValue,
-    merge,
     sort,
   }: PerformPushOptions) => {
     const sheetId =  gapiStorage.sheetId;
@@ -74,7 +73,6 @@ export const useContextHook = (): GapiSyncContextType => {
     await enqueueSheetsClientRequest(async (sheetsClient) => {
       const pushOptions: PushOptions = {
         newLastUpdateValue,
-        merge,
         sort,
       };
 
@@ -175,9 +173,7 @@ export const useContextHook = (): GapiSyncContextType => {
               ...pushOptions,
               ...createOptionsBinaryImages(sheetsClient, sheetId),
             },
-            // ToDo: Upload images in sensible batches
-            images.slice(0, 500).map(([hash, data]) => ({ hash, data })),
-            // images.map(([hash, data]) => ({ hash, data })),
+            images.map(([hash, data]) => ({ hash, data })),
           );
 
           break;
@@ -195,11 +191,18 @@ export const useContextHook = (): GapiSyncContextType => {
   const performPull = useCallback(async ({
     sheetName,
     lastRemoteUpdate,
+    merge,
   }: PerformPullOptions) => {
     const sheetId =  gapiStorage.sheetId;
 
     if (!sheetId) {
       return;
+    }
+
+
+    if (merge) {
+      // ToDo: implement merge when pulling
+      throw new Error('merge not implemented');
     }
 
     await enqueueSheetsClientRequest(async (sheetsClient) => {
@@ -294,16 +297,16 @@ export const useContextHook = (): GapiSyncContextType => {
   }: PerformMergeOptions) => {
     const lastUpdate = Math.max(lastRemoteUpdate, lastLocalUpdate || 0);
 
-    await performPush({
-      sheetName,
-      newLastUpdateValue: lastUpdate,
-      merge: true,
-      sort,
-    });
-
     await performPull({
       sheetName,
       lastRemoteUpdate: lastUpdate,
+      merge: true,
+    });
+
+    await performPush({
+      sheetName,
+      newLastUpdateValue: lastUpdate,
+      sort,
     });
   }, [performPull, performPush]);
 
@@ -323,13 +326,13 @@ export const useContextHook = (): GapiSyncContextType => {
       await performPush({
         sheetName,
         newLastUpdateValue: lastLocalUpdate,
-        merge: false,
         sort: true,
       });
     } else {
       await performPull({
         sheetName,
         lastRemoteUpdate,
+        merge: false,
       });
     }
   }, [gapiStorage, isReady, performPull, performPush]);

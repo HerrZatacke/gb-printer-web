@@ -6,12 +6,14 @@ import { serialize } from '@/tools/sheetConversion/values';
 
 interface ToSheetOptions<T> {
   columns: ColumnSpec<T>[];
-  existing?: string[][];
-  deleteMissing?: boolean;
+  remoteHashes?: string[];
+  remoteHeaders?: string[];
 }
 
 interface ObjectsToSheetResult {
-  sheetItems: string[][];
+  sheetHeaders: string[];
+  newSheetItems: string[][];
+  deleteIndices: number[];
   keyIndex: number;
 }
 
@@ -32,31 +34,36 @@ export const objectsToSheet = async <T extends object>(
   objects: T[],
   options: ToSheetOptions<T>,
 ): Promise<ObjectsToSheetResult> => {
-  const { columns, existing, deleteMissing = false } = options;
+  const { columns, remoteHashes = [], remoteHeaders = [] } = options;
+  const sheetHeaders = [...remoteHeaders];
 
-  const headers = columns.map(column => column.column);
+  columns.forEach(column => {
+    const columnHeader = column.column;
 
-  if (headers.includes(HASH_COLUMN_NAME)) {
-    throw new Error(`Headers contain illegal name (${HASH_COLUMN_NAME})`);
+    if (columnHeader === HASH_COLUMN_NAME) {
+      throw new Error(`Column headers contain illegal name (${HASH_COLUMN_NAME})`);
+    }
+
+    if (!sheetHeaders.includes(columnHeader)) {
+      sheetHeaders.push(columnHeader);
+    }
+  });
+
+  if (!sheetHeaders.includes(HASH_COLUMN_NAME)) {
+    sheetHeaders.unshift(HASH_COLUMN_NAME);
   }
 
-  headers.unshift(HASH_COLUMN_NAME);
 
-  const index = new Map(headers.map((headerName, idx) => [headerName, idx]));
-
-  let rows: string[][] = existing ? existing.slice(1).map(r => [...(r.slice(0, headers.length))]) : [];
-
+  const headerIndices = new Map(sheetHeaders.map((headerName, idx) => [headerName, idx]));
+  const hashHeaderIndices = new Map(columns.map((column, idx) => [column.column, idx]));
+  const newItems: string[][] = [];
+  const remoteHashSet = new Set<string>(remoteHashes);
   const keyColumn = columns[0];
-  if (!keyColumn) {
+  const keyIndex = headerIndices.get(keyColumn.column);
+  if (!keyColumn || typeof keyIndex === 'undefined') {
     throw new Error('No columns');
   }
 
-  const keyIndex = index.get(keyColumn.column)!;
-  const rowByKey = new Map<string, string[]>();
-
-  rows.forEach(r => rowByKey.set(r[keyIndex], r));
-
-  const seen = new Set<string>();
 
   for (const obj of objects) {
     const id = (obj as T)[keyColumn.prop];
@@ -64,15 +71,10 @@ export const objectsToSheet = async <T extends object>(
       throw new Error('Key must be a string');
     }
 
-    seen.add(id);
+    const row = Array(sheetHeaders.length).fill(UNDEFINED);
+    const rowToHash = Array(sheetHeaders.length).fill(UNDEFINED); // use order of config default header order for creating hash value
 
-    let row = rowByKey.get(id);
-    if (!row) {
-      row = Array(headers.length).fill(UNDEFINED);
-      rows.push(row);
-      rowByKey.set(id, row);
-    }
-
+    // Populate the row with data
     for (const col of columns) {
       const value = col.prop in obj ? (obj as T)[col.prop] : undefined;
       const cellValue = serialize(value, col.type, col.fallbackType);
@@ -81,21 +83,33 @@ export const objectsToSheet = async <T extends object>(
         throw new Error('Cell content is too big');
       }
 
-      row[index.get(col.column)!] = cellValue;
+      row[headerIndices.get(col.column)!] = cellValue;
+      rowToHash[hashHeaderIndices.get(col.column)!] = cellValue;
     }
 
-    const hash = await hashRow(row);
-    row[index.get(HASH_COLUMN_NAME)!] = hash;
+    const hash = await hashRow(rowToHash);
+    row[headerIndices.get(HASH_COLUMN_NAME)!] = hash;
+
+    // row is not known in remote dataset -> needs to be added
+    if (!remoteHashSet.has(hash)) {
+      newItems.push(row);
+    }
+
+    // in case row is known, remove from remoteHashSet -> all remaining will be listed in deleteIndices
+    remoteHashSet.delete(hash);
   }
 
-  if (deleteMissing) {
-    rows = rows.filter(r => seen.has(r[keyIndex]));
-  }
-
-  rows = dedupeByColumnIndex(rows, keyIndex);
+  const deleteIndices: number[] = [];
+  remoteHashes.forEach((hash, idx) => {
+    if (remoteHashSet.has(hash)) {
+      deleteIndices.push(idx);
+    }
+  });
 
   return {
-    sheetItems: [headers, ...rows],
+    sheetHeaders,
+    newSheetItems: dedupeByColumnIndex(newItems, keyIndex),
+    deleteIndices: [...new Set(deleteIndices)].sort((a, b) => b - a),
     keyIndex,
   };
 };

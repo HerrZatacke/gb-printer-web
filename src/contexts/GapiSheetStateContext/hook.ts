@@ -8,6 +8,7 @@ import {
 import { createGapiLastUpdates } from '@/contexts/GapiSheetStateContext/tools/createGapiLastUpdates';
 import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
+import { delay } from '@/tools/delay';
 import Sheet = gapi.client.sheets.Sheet;
 
 
@@ -47,7 +48,13 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
     return queue.current.add(async () => {
       setBusy(true);
-      await callback(sheetsClient);
+      try {
+        await callback(sheetsClient);
+      } catch (error) {
+        // ToDo: can we read the error reason here? e.g. quota/timeout and wait accordingly
+        console.log(error);
+        await delay(2000);
+      }
       setBusy(false);
     });
   }, [gapiClient?.sheets]);

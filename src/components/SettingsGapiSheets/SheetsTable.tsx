@@ -160,7 +160,6 @@ function SheetsTable() {
                     onClick={() => performPush({
                       sheetName: sheetName,
                       newLastUpdateValue: localTimestamp,
-                      merge: false,
                       sort,
                     })}
                   >
@@ -182,6 +181,7 @@ function SheetsTable() {
                     disabled={disabled}
                     title={t('syncPull')}
                     onClick={() => performPull({
+                      merge: false,
                       sheetName,
                       lastRemoteUpdate: remoteTimestamp,
                     })}

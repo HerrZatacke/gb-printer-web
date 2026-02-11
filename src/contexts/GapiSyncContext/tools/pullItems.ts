@@ -1,4 +1,8 @@
-import { getRemoteSheetProperties, type RemoteSheetProperties } from '@/contexts/GapiSyncContext/tools/getRemoteSheetProperties';
+import {
+  ColumnRange,
+  getRemoteSheetProperties,
+  type RemoteSheetProperties,
+} from '@/contexts/GapiSyncContext/tools/getRemoteSheetProperties';
 import { sheetToObjects } from '@/tools/sheetConversion/sheetToObjects';
 import { ColumnSpec } from '@/tools/sheetConversion/types';
 
@@ -32,7 +36,12 @@ export const pullItems = async <T extends object>({
     range: `${sheetName}!A:Z`,
   });
 
-  const sheetProperties = await getRemoteSheetProperties(sheetsClient, sheetId, sheetName);
+  const sheetProperties = await getRemoteSheetProperties({
+    sheetsClient,
+    spreadsheetId: sheetId,
+    sheetName,
+    columnRange: ColumnRange.ALL,
+  });
 
   console.log(`📊 Pulled ${sheetName} in ${Date.now() - startTime}ms`);
 
