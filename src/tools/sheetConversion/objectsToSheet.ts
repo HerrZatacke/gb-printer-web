@@ -1,6 +1,7 @@
 import { UNDEFINED } from '@/tools/sheetConversion/consts';
 import { type ColumnSpec } from '@/tools/sheetConversion/types';
 import { serialize } from '@/tools/sheetConversion/values';
+import { HASH_COLUMN_NAME } from '@/contexts/GapiSheetStateContext/consts';
 
 interface ToSheetOptions<T> {
   key: keyof T;
@@ -29,6 +30,11 @@ export const objectsToSheet = <T extends object>(
   const { key, columns, existing, deleteMissing = false } = options;
 
   const headers = columns.map(column => column.column);
+
+  if (headers.includes(HASH_COLUMN_NAME)) {
+    throw new Error(`Headers contain illegal name (${HASH_COLUMN_NAME})`);
+  }
+
   const index = new Map(headers.map((headerName, idx) => [headerName, idx]));
 
   let rows: string[][] = existing ? existing.slice(1).map(r => [...(r.slice(0, headers.length))]) : [];

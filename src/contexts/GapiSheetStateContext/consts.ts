@@ -26,3 +26,4 @@ export const sheetNames: SheetName[] = [
 ];
 
 export const LASTUPDATE_METADATA_KEY = 'lastUpdate';
+export const HASH_COLUMN_NAME = '__HASH__';
