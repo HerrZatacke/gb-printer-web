@@ -143,25 +143,6 @@ export const pushItems = async <T extends object>(
         ...resizeRequests,
         ...sortRequest,
         metadataUpsertRequest,
-        {
-          repeatCell: {
-            range: {
-              sheetId: targetSheetId,
-              startColumnIndex: 0,
-              endColumnIndex: 1,
-            },
-            cell: {
-              userEnteredFormat: {
-                backgroundColor: {
-                  red: 0.85,
-                  green: 0.85,
-                  blue: 0.85,
-                },
-              },
-            },
-            fields: 'userEnteredFormat.backgroundColor',
-          },
-        },
       ],
     },
   });

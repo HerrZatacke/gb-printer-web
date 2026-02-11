@@ -36,7 +36,7 @@ export const objectsToSheet = async <T extends object>(
     throw new Error(`Headers contain illegal name (${HASH_COLUMN_NAME})`);
   }
 
-  headers.push(HASH_COLUMN_NAME);
+  headers.unshift(HASH_COLUMN_NAME);
 
   const index = new Map(headers.map((headerName, idx) => [headerName, idx]));
 
