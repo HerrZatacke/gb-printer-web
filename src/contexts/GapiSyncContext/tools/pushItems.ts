@@ -211,5 +211,7 @@ export const pushItems = async <T extends object>(
     },
   });
 
-  console.log(`📊 Pushed ${sheetName} in ${Date.now() - startTime}ms`);
+  console.log(`📊 Pushed ${sheetName}:
+    deleted: ${deleteIndices.length} created: ${newSheetItems.length}
+    in ${Date.now() - startTime}ms`);
 };
