@@ -60,7 +60,7 @@ export interface GapiSyncContextType {
 export const useContextHook = (): GapiSyncContextType => {
   const { gapiLastRemoteUpdates, updateSheets, enqueueSheetsClientRequest, isReady, busy } = useGapiSheetState();
   const { gapiLastLocalUpdates } = useItemsStore();
-  const { gapiStorage } = useStoragesStore();
+  const { gapiStorage, setGapiSettings } = useStoragesStore();
 
   const performPush = useCallback(async ({
     sheetName,
@@ -73,122 +73,125 @@ export const useContextHook = (): GapiSyncContextType => {
       return;
     }
 
-    await enqueueSheetsClientRequest(async (sheetsClient) => {
-      const pushOptions: PushOptions = {
-        newLastUpdateValue,
-        sort,
-      };
+    try {
+      await enqueueSheetsClientRequest(async (sheetsClient) => {
+        const pushOptions: PushOptions = {
+          newLastUpdateValue,
+          sort,
+        };
 
-      switch (sheetName) {
-        case SheetName.PALETTES: {
-          await pushItems<Palette>(
-            {
-              ...pushOptions,
-              ...createOptionsPalettes(sheetsClient, sheetId),
-            },
-            useItemsStore.getState().palettes.filter(({ isPredefined }) => !isPredefined),
-          );
-          break;
+        switch (sheetName) {
+          case SheetName.PALETTES: {
+            await pushItems<Palette>(
+              {
+                ...pushOptions,
+                ...createOptionsPalettes(sheetsClient, sheetId),
+              },
+              useItemsStore.getState().palettes.filter(({ isPredefined }) => !isPredefined),
+            );
+            break;
+          }
+
+          case SheetName.IMAGES: {
+            await pushItems<MonochromeImage>(
+              {
+                ...pushOptions,
+                ...createOptionsImages(sheetsClient, sheetId),
+              },
+              useItemsStore.getState().images.reduce(reduceImagesMonochrome, []),
+            );
+            break;
+          }
+
+          case SheetName.RGBN_IMAGES: {
+            await pushItems<RGBNImage>(
+              {
+                ...pushOptions,
+                ...createOptionsImagesRGBN(sheetsClient, sheetId),
+              },
+              useItemsStore.getState().images.reduce(reduceImagesRGBN, []),
+            );
+            break;
+          }
+
+          case SheetName.FRAME_GROUPS: {
+            await pushItems<FrameGroup>(
+              {
+                ...pushOptions,
+                ...createOptionsFrameGroups(sheetsClient, sheetId),
+              },
+              useItemsStore.getState().frameGroups,
+            );
+            break;
+          }
+
+          case SheetName.FRAMES: {
+            await pushItems<Frame>(
+              {
+                ...pushOptions,
+                ...createOptionsFrames(sheetsClient, sheetId),
+              },
+              useItemsStore.getState().frames,
+            );
+            break;
+          }
+
+          case SheetName.IMAGE_GROUPS: {
+            await pushItems<SerializableImageGroup>(
+              {
+                ...pushOptions,
+                ...createOptionsImageGroups(sheetsClient, sheetId),
+              },
+              useItemsStore.getState().imageGroups,
+            );
+            break;
+          }
+
+          case SheetName.PLUGINS: {
+            await pushItems<Plugin>(
+              {
+                ...pushOptions,
+                ...createOptionsPlugins(sheetsClient, sheetId),
+              },
+              useItemsStore.getState().plugins,
+            );
+            break;
+          }
+
+          case SheetName.BIN_FRAMES: {
+            const frames = await getAllFrames();
+            await pushItems<BinaryGapiSyncItem>(
+              {
+                ...pushOptions,
+                ...createOptionsBinaryFrames(sheetsClient, sheetId),
+              },
+              frames.map(([hash, data]) => ({ hash, data })),
+            );
+            break;
+          }
+
+          case SheetName.BIN_IMAGES: {
+            const images = await getAllImages();
+            await pushItems<BinaryGapiSyncItem>(
+              {
+                ...pushOptions,
+                ...createOptionsBinaryImages(sheetsClient, sheetId),
+              },
+              images.map(([hash, data]) => ({ hash, data })),
+            );
+
+            break;
+          }
+
+          default:
         }
-
-        case SheetName.IMAGES: {
-          await pushItems<MonochromeImage>(
-            {
-              ...pushOptions,
-              ...createOptionsImages(sheetsClient, sheetId),
-            },
-            useItemsStore.getState().images.reduce(reduceImagesMonochrome, []),
-          );
-          break;
-        }
-
-        case SheetName.RGBN_IMAGES: {
-          await pushItems<RGBNImage>(
-            {
-              ...pushOptions,
-              ...createOptionsImagesRGBN(sheetsClient, sheetId),
-            },
-            useItemsStore.getState().images.reduce(reduceImagesRGBN, []),
-          );
-          break;
-        }
-
-        case SheetName.FRAME_GROUPS: {
-          await pushItems<FrameGroup>(
-            {
-              ...pushOptions,
-              ...createOptionsFrameGroups(sheetsClient, sheetId),
-            },
-            useItemsStore.getState().frameGroups,
-          );
-          break;
-        }
-
-        case SheetName.FRAMES: {
-          await pushItems<Frame>(
-            {
-              ...pushOptions,
-              ...createOptionsFrames(sheetsClient, sheetId),
-            },
-            useItemsStore.getState().frames,
-          );
-          break;
-        }
-
-        case SheetName.IMAGE_GROUPS: {
-          await pushItems<SerializableImageGroup>(
-            {
-              ...pushOptions,
-              ...createOptionsImageGroups(sheetsClient, sheetId),
-            },
-            useItemsStore.getState().imageGroups,
-          );
-          break;
-        }
-
-        case SheetName.PLUGINS: {
-          await pushItems<Plugin>(
-            {
-              ...pushOptions,
-              ...createOptionsPlugins(sheetsClient, sheetId),
-            },
-            useItemsStore.getState().plugins,
-          );
-          break;
-        }
-
-        case SheetName.BIN_FRAMES: {
-          const frames = await getAllFrames();
-          await pushItems<BinaryGapiSyncItem>(
-            {
-              ...pushOptions,
-              ...createOptionsBinaryFrames(sheetsClient, sheetId),
-            },
-            frames.map(([hash, data]) => ({ hash, data })),
-          );
-          break;
-        }
-
-        case SheetName.BIN_IMAGES: {
-          const images = await getAllImages();
-          await pushItems<BinaryGapiSyncItem>(
-            {
-              ...pushOptions,
-              ...createOptionsBinaryImages(sheetsClient, sheetId),
-            },
-            images.map(([hash, data]) => ({ hash, data })),
-          );
-
-          break;
-        }
-
-        default:
-      }
-    });
-
+      });
+    } catch {
+      setGapiSettings({ autoSync: false });
+    }
 
     await updateSheets();
-  }, [enqueueSheetsClientRequest, gapiStorage.sheetId, updateSheets]);
+  }, [enqueueSheetsClientRequest, gapiStorage.sheetId, setGapiSettings, updateSheets]);
 
 
   const performPull = useCallback(async ({
@@ -202,130 +205,134 @@ export const useContextHook = (): GapiSyncContextType => {
       return;
     }
 
-    await enqueueSheetsClientRequest(async (sheetsClient) => {
-      switch (sheetName) {
-        case SheetName.PALETTES: {
-          const result = await pullItems<Palette>(createOptionsPalettes(sheetsClient, sheetId));
+    try {
+      await enqueueSheetsClientRequest(async (sheetsClient) => {
+        switch (sheetName) {
+          case SheetName.PALETTES: {
+            const result = await pullItems<Palette>(createOptionsPalettes(sheetsClient, sheetId));
 
-          if (merge) {
-            useItemsStore.getState().addPalettes(result.items);
-          } else {
-            const metaData = result.sheetProperties.developerMetadata;
-            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+            if (merge) {
+              useItemsStore.getState().addPalettes(result.items);
+            } else {
+              const metaData = result.sheetProperties.developerMetadata;
+              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-            useItemsStore.getState().setPalettes(result.items, timestamp);
+              useItemsStore.getState().setPalettes(result.items, timestamp);
+            }
+            break;
           }
-          break;
-        }
 
-        // When pulling images, both remote tables must be queried, to allow deletion
-        case SheetName.IMAGES:
-        case SheetName.RGBN_IMAGES: {
-          const monochromeResult = await pullItems<MonochromeImage>(createOptionsImages(sheetsClient, sheetId));
-          const rgbnResult = await pullItems<RGBNImage>(createOptionsImagesRGBN(sheetsClient, sheetId));
+          // When pulling images, both remote tables must be queried, to allow deletion
+          case SheetName.IMAGES:
+          case SheetName.RGBN_IMAGES: {
+            const monochromeResult = await pullItems<MonochromeImage>(createOptionsImages(sheetsClient, sheetId));
+            const rgbnResult = await pullItems<RGBNImage>(createOptionsImagesRGBN(sheetsClient, sheetId));
 
-          const images: Image[] = [
-            ...monochromeResult.items,
-            ...rgbnResult.items,
-          ];
-
-          if (merge) {
-            useItemsStore.getState().addImages(images);
-          } else {
-            const monochromeMetaData = monochromeResult.sheetProperties.developerMetadata;
-            const monochromeTimestamp: number | undefined = monochromeMetaData ? getLastUpdate(monochromeMetaData) : lastRemoteUpdate;
-
-            const rgbnMetaData = rgbnResult.sheetProperties.developerMetadata;
-            const rgbnTimestamp: number | undefined = rgbnMetaData ? getLastUpdate(rgbnMetaData) : lastRemoteUpdate;
-
-            const values = [monochromeTimestamp, rgbnTimestamp].filter((value) => (value !== undefined));
-            const timestamp = values.length > 0 ? Math.max(...values) : undefined;
-
-            useItemsStore.getState().setImages(images, timestamp);
-          }
-          break;
-        }
-
-        case SheetName.FRAME_GROUPS: {
-          const result = await pullItems<FrameGroup>(createOptionsFrameGroups(sheetsClient, sheetId));
-
-          if (merge) {
-            useItemsStore.getState().updateFrameGroups(result.items);
-          } else {
-            const metaData = result.sheetProperties.developerMetadata;
-            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-            useItemsStore.getState().setFrameGroups(result.items, timestamp);
-          }
-          break;
-        }
-
-        case SheetName.FRAMES: {
-          const result = await pullItems<Frame>(createOptionsFrames(sheetsClient, sheetId));
-
-          if (merge) {
-            useItemsStore.getState().addFrames(result.items);
-          } else {
-            const metaData = result.sheetProperties.developerMetadata;
-            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-            useItemsStore.getState().setFrames(result.items, timestamp);
-          }
-          break;
-        }
-
-        case SheetName.IMAGE_GROUPS: {
-          const result = await pullItems<SerializableImageGroup>(createOptionsImageGroups(sheetsClient, sheetId));
-
-          if (merge) {
-            const groupUniqueById = uniqueBy<SerializableImageGroup>('id');
-
-            const updateGroups = [
-              ...useItemsStore.getState().imageGroups,
-              ...result.items,
+            const images: Image[] = [
+              ...monochromeResult.items,
+              ...rgbnResult.items,
             ];
 
-            useItemsStore.getState().setImageGroups(groupUniqueById(updateGroups));
-          } else {
-            const metaData = result.sheetProperties.developerMetadata;
-            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+            if (merge) {
+              useItemsStore.getState().addImages(images);
+            } else {
+              const monochromeMetaData = monochromeResult.sheetProperties.developerMetadata;
+              const monochromeTimestamp: number | undefined = monochromeMetaData ? getLastUpdate(monochromeMetaData) : lastRemoteUpdate;
 
-            useItemsStore.getState().setImageGroups(result.items, timestamp);
+              const rgbnMetaData = rgbnResult.sheetProperties.developerMetadata;
+              const rgbnTimestamp: number | undefined = rgbnMetaData ? getLastUpdate(rgbnMetaData) : lastRemoteUpdate;
+
+              const values = [monochromeTimestamp, rgbnTimestamp].filter((value) => (value !== undefined));
+              const timestamp = values.length > 0 ? Math.max(...values) : undefined;
+
+              useItemsStore.getState().setImages(images, timestamp);
+            }
+            break;
           }
-          break;
-        }
 
+          case SheetName.FRAME_GROUPS: {
+            const result = await pullItems<FrameGroup>(createOptionsFrameGroups(sheetsClient, sheetId));
 
-        case SheetName.PLUGINS: {
-          const result = await pullItems<Plugin>(createOptionsPlugins(sheetsClient, sheetId));
+            if (merge) {
+              useItemsStore.getState().updateFrameGroups(result.items);
+            } else {
+              const metaData = result.sheetProperties.developerMetadata;
+              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-          if (merge) {
-            const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
-
-            const updatePlugins = [
-              ...useItemsStore.getState().plugins,
-              ...result.items,
-            ];
-
-            useItemsStore.getState().setPlugins(pluginsUniqueByUrl(updatePlugins));
-          } else {
-            const metaData = result.sheetProperties.developerMetadata;
-            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
-
-            useItemsStore.getState().setPlugins(result.items, timestamp);
+              useItemsStore.getState().setFrameGroups(result.items, timestamp);
+            }
+            break;
           }
-          break;
-        }
 
-        default:
-      }
-    });
+          case SheetName.FRAMES: {
+            const result = await pullItems<Frame>(createOptionsFrames(sheetsClient, sheetId));
+
+            if (merge) {
+              useItemsStore.getState().addFrames(result.items);
+            } else {
+              const metaData = result.sheetProperties.developerMetadata;
+              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+              useItemsStore.getState().setFrames(result.items, timestamp);
+            }
+            break;
+          }
+
+          case SheetName.IMAGE_GROUPS: {
+            const result = await pullItems<SerializableImageGroup>(createOptionsImageGroups(sheetsClient, sheetId));
+
+            if (merge) {
+              const groupUniqueById = uniqueBy<SerializableImageGroup>('id');
+
+              const updateGroups = [
+                ...useItemsStore.getState().imageGroups,
+                ...result.items,
+              ];
+
+              useItemsStore.getState().setImageGroups(groupUniqueById(updateGroups));
+            } else {
+              const metaData = result.sheetProperties.developerMetadata;
+              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+              useItemsStore.getState().setImageGroups(result.items, timestamp);
+            }
+            break;
+          }
+
+
+          case SheetName.PLUGINS: {
+            const result = await pullItems<Plugin>(createOptionsPlugins(sheetsClient, sheetId));
+
+            if (merge) {
+              const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
+
+              const updatePlugins = [
+                ...useItemsStore.getState().plugins,
+                ...result.items,
+              ];
+
+              useItemsStore.getState().setPlugins(pluginsUniqueByUrl(updatePlugins));
+            } else {
+              const metaData = result.sheetProperties.developerMetadata;
+              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+              useItemsStore.getState().setPlugins(result.items, timestamp);
+            }
+            break;
+          }
+
+          default:
+        }
+      });
+    } catch {
+      setGapiSettings({ autoSync: false });
+    }
 
     if (!merge) {
       // merge will call updateSheets later inside performPush()
       await updateSheets();
     }
-  }, [enqueueSheetsClientRequest, gapiStorage.sheetId, updateSheets]);
+  }, [enqueueSheetsClientRequest, gapiStorage.sheetId, setGapiSettings, updateSheets]);
 
 
   const performMerge = useCallback(async ({
