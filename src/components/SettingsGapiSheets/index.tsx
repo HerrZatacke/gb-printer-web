@@ -21,6 +21,7 @@ import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import useGIS from '@/contexts/GisContext';
 import { useStoragesStore } from '@/stores/stores';
 import type { GapiSettings } from '@/types/Sync';
+import { useGapiSheetsStats } from '@/hooks/useGapiSheetsStats';
 
 const cleanGapiSheetId = (dirtyId: string): string => {
   const input = dirtyId.trim();
@@ -44,6 +45,7 @@ function SettingsGapiSheets() {
   const { isSignedIn, handleSignIn, handleSignOut } = useGIS();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
   const [use, setUse] = useState<boolean>(gapiStorage.use || false);
+  const { sheetsStats, canEnableAutoSync } = useGapiSheetsStats();
   const [autoSync, setAutoSync] = useState<boolean>(gapiStorage.autoSync || false);
   const [sheetId, setSheetId] = useState<string>(gapiStorage.sheetId || '');
   const t = useTranslations('SettingsGapiSheets');
@@ -79,7 +81,7 @@ function SettingsGapiSheets() {
 
       <FormControlLabel
         label={t('enableAutoSync')}
-        disabled={!use}
+        disabled={!use || !canEnableAutoSync}
         control={(
           <Switch
             checked={autoSync}
@@ -150,7 +152,7 @@ function SettingsGapiSheets() {
 
           {isSignedIn && <TokenTimer />}
 
-          <SheetsTable />
+          <SheetsTable sheetsStats={sheetsStats} />
         </>
       )}
     </Stack>

@@ -1,14 +1,6 @@
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import CollectionsIcon from '@mui/icons-material/Collections';
-import DataObjectIcon from '@mui/icons-material/DataObject';
-import ExtensionIcon from '@mui/icons-material/Extension';
-import FilterIcon from '@mui/icons-material/Filter';
-import GradientIcon from '@mui/icons-material/Gradient';
-import ImageIcon from '@mui/icons-material/Image';
-import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import JoinFullIcon from '@mui/icons-material/JoinFullRounded';
-import PaletteIcon from '@mui/icons-material/Palette';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   IconButton,
@@ -24,10 +16,9 @@ import {
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
-import { SheetName, sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import useGapiSync from '@/contexts/GapiSyncContext';
-import { useItemsStore, useStoragesStore } from '@/stores/stores';
-
+import { SheetStats } from '@/hooks/useGapiSheetsStats';
+import { useStoragesStore } from '@/stores/stores';
 
 const toDate = (timestamp?: number): string => {
   if (!timestamp) {
@@ -55,34 +46,14 @@ const getSign = (value: number): string => {
   }
 };
 
-const getIcon = (sheeName: SheetName) => {
-  switch (sheeName) {
-    case SheetName.IMAGES:
-      return ImageIcon;
-    case SheetName.RGBN_IMAGES:
-      return GradientIcon;
-    case SheetName.IMAGE_GROUPS:
-      return CollectionsIcon;
-    case SheetName.FRAMES:
-      return ImageOutlinedIcon;
-    case SheetName.FRAME_GROUPS:
-      return FilterIcon;
-    case SheetName.PALETTES:
-      return PaletteIcon;
-    case SheetName.PLUGINS:
-      return ExtensionIcon;
-    case SheetName.BIN_IMAGES:
-      return DataObjectIcon;
-    case SheetName.BIN_FRAMES:
-      return DataObjectIcon;
-  }
-};
+interface Props {
+  sheetsStats: SheetStats[];
+}
 
-function SheetsTable() {
-  const { gapiLastRemoteUpdates, sheets, updateSheets } = useGapiSheetState();
+function SheetsTable({ sheetsStats }: Props) {
+  const { updateSheets } = useGapiSheetState();
   const { gapiStorage } = useStoragesStore();
   const { busy, performPush, performPull, performMerge } = useGapiSync();
-  const { gapiLastLocalUpdates } = useItemsStore();
   const t = useTranslations('SheetsTable');
 
   const disabled = busy || !gapiStorage.sheetId || !gapiStorage.use;
@@ -117,14 +88,19 @@ function SheetsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sheetNames.map((sheetName) => {
-            const properties = sheets.find((sheet) => (sheet.properties?.title === sheetName))?.properties;
+          {sheetsStats.map((sheetStats) => {
 
-            const remoteTimestamp = gapiLastRemoteUpdates?.[sheetName] || 0;
-            const localTimestamp = gapiLastLocalUpdates?.[sheetName];
-            const diff = Math.sign(remoteTimestamp - localTimestamp);
-            const sort = sheetName !== SheetName.BIN_IMAGES && sheetName !== SheetName.BIN_FRAMES;
-            const Icon = getIcon(sheetName);
+            const {
+              sheetName,
+              sheetId,
+              columnCount,
+              rowCount,
+              remoteTimestamp,
+              localTimestamp,
+              diff,
+              sort,
+              Icon,
+            } = sheetStats;
 
             return (
               <TableRow
@@ -133,15 +109,15 @@ function SheetsTable() {
                   '--color-match': diff ? 'var(--color-match-diff)' : 'var(--color-match-same)',
                 }}
               >
-                <TableCell align="right">{properties?.sheetId || 'N/A'}</TableCell>
+                <TableCell align="right">{sheetId}</TableCell>
                 <TableCell align="right">
                   <Stack direction="row" gap={1} alignItems="center" justifyContent="right">
                     <span>{sheetName}</span>
                     {Icon && <Icon />}
                   </Stack>
                 </TableCell>
-                <TableCell align="right">{properties?.gridProperties?.columnCount || 'N/A'}</TableCell>
-                <TableCell align="right">{properties?.gridProperties?.rowCount || 'N/A'}</TableCell>
+                <TableCell align="right">{columnCount}</TableCell>
+                <TableCell align="right">{rowCount}</TableCell>
                 <TableCell align="right" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(remoteTimestamp)}</TableCell>
                 <TableCell align="center" sx={{ backgroundColor: 'var(--color-match)' }}>
                   <Typography variant="h4">
@@ -158,7 +134,7 @@ function SheetsTable() {
                     disabled={disabled}
                     title={t('syncPush')}
                     onClick={() => performPush({
-                      sheetName: sheetName,
+                      sheetName,
                       newLastUpdateValue: localTimestamp,
                       sort,
                     })}
@@ -169,7 +145,7 @@ function SheetsTable() {
                     disabled={disabled}
                     title={t('syncMerge')}
                     onClick={() => performMerge({
-                      sheetName: sheetName,
+                      sheetName,
                       lastRemoteUpdate: remoteTimestamp,
                       lastLocalUpdate: localTimestamp,
                       sort,
