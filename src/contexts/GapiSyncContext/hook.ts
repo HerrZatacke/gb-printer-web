@@ -21,12 +21,15 @@ import { getAllFrames } from '@/tools/applyFrame/frameData';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
 import { PushOptions } from '@/tools/sheetConversion/types';
 import { getAllImages } from '@/tools/storage';
+import uniqueBy from '@/tools/unique/by';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
-import type { MonochromeImage, RGBNImage } from '@/types/Image';
+import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
 import type { SerializableImageGroup } from '@/types/ImageGroup';
 import type { Palette } from '@/types/Palette';
 import type { Plugin } from '@/types/Plugin';
+
+const AUTOSYNC_DELAY = 5000;
 
 interface PerformPushOptions {
   sheetName: SheetName,
@@ -192,17 +195,11 @@ export const useContextHook = (): GapiSyncContextType => {
     sheetName,
     lastRemoteUpdate,
     merge,
-  }: PerformPullOptions) => {
+  }: PerformPullOptions): Promise<void> => {
     const sheetId =  gapiStorage.sheetId;
 
     if (!sheetId) {
       return;
-    }
-
-
-    if (merge) {
-      // ToDo: implement merge when pulling
-      throw new Error('merge not implemented');
     }
 
     await enqueueSheetsClientRequest(async (sheetsClient) => {
@@ -210,10 +207,14 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.PALETTES: {
           const result = await pullItems<Palette>(createOptionsPalettes(sheetsClient, sheetId));
 
-          const metaData = result.sheetProperties.developerMetadata;
-          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+          if (merge) {
+            useItemsStore.getState().addPalettes(result.items);
+          } else {
+            const metaData = result.sheetProperties.developerMetadata;
+            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-          useItemsStore.getState().setPalettes(result.items, timestamp);
+            useItemsStore.getState().setPalettes(result.items, timestamp);
+          }
           break;
         }
 
@@ -221,52 +222,76 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.IMAGES:
         case SheetName.RGBN_IMAGES: {
           const monochromeResult = await pullItems<MonochromeImage>(createOptionsImages(sheetsClient, sheetId));
-
-          const monochromeMetaData = monochromeResult.sheetProperties.developerMetadata;
-          const monochromeTimestamp: number | undefined = monochromeMetaData ? getLastUpdate(monochromeMetaData) : lastRemoteUpdate;
-
           const rgbnResult = await pullItems<RGBNImage>(createOptionsImagesRGBN(sheetsClient, sheetId));
 
-          const rgbnMetaData = rgbnResult.sheetProperties.developerMetadata;
-          const rgbnTimestamp: number | undefined = rgbnMetaData ? getLastUpdate(rgbnMetaData) : lastRemoteUpdate;
-
-          const values = [monochromeTimestamp, rgbnTimestamp].filter((value) => (value !== undefined));
-          const timestamp = values.length > 0 ? Math.max(...values) : undefined;
-
-          useItemsStore.getState().setImages([
+          const images: Image[] = [
             ...monochromeResult.items,
             ...rgbnResult.items,
-          ], timestamp);
+          ];
+
+          if (merge) {
+            useItemsStore.getState().addImages(images);
+          } else {
+            const monochromeMetaData = monochromeResult.sheetProperties.developerMetadata;
+            const monochromeTimestamp: number | undefined = monochromeMetaData ? getLastUpdate(monochromeMetaData) : lastRemoteUpdate;
+
+            const rgbnMetaData = rgbnResult.sheetProperties.developerMetadata;
+            const rgbnTimestamp: number | undefined = rgbnMetaData ? getLastUpdate(rgbnMetaData) : lastRemoteUpdate;
+
+            const values = [monochromeTimestamp, rgbnTimestamp].filter((value) => (value !== undefined));
+            const timestamp = values.length > 0 ? Math.max(...values) : undefined;
+
+            useItemsStore.getState().setImages(images, timestamp);
+          }
           break;
         }
 
         case SheetName.FRAME_GROUPS: {
           const result = await pullItems<FrameGroup>(createOptionsFrameGroups(sheetsClient, sheetId));
 
-          const metaData = result.sheetProperties.developerMetadata;
-          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+          if (merge) {
+            useItemsStore.getState().updateFrameGroups(result.items);
+          } else {
+            const metaData = result.sheetProperties.developerMetadata;
+            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-          useItemsStore.getState().setFrameGroups(result.items, timestamp);
+            useItemsStore.getState().setFrameGroups(result.items, timestamp);
+          }
           break;
         }
 
         case SheetName.FRAMES: {
           const result = await pullItems<Frame>(createOptionsFrames(sheetsClient, sheetId));
 
-          const metaData = result.sheetProperties.developerMetadata;
-          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+          if (merge) {
+            useItemsStore.getState().addFrames(result.items);
+          } else {
+            const metaData = result.sheetProperties.developerMetadata;
+            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-          useItemsStore.getState().setFrames(result.items, timestamp);
+            useItemsStore.getState().setFrames(result.items, timestamp);
+          }
           break;
         }
 
         case SheetName.IMAGE_GROUPS: {
           const result = await pullItems<SerializableImageGroup>(createOptionsImageGroups(sheetsClient, sheetId));
 
-          const metaData = result.sheetProperties.developerMetadata;
-          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+          if (merge) {
+            const groupUniqueById = uniqueBy<SerializableImageGroup>('id');
 
-          useItemsStore.getState().setImageGroups(result.items, timestamp);
+            const updateGroups = [
+              ...useItemsStore.getState().imageGroups,
+              ...result.items,
+            ];
+
+            useItemsStore.getState().setImageGroups(groupUniqueById(updateGroups));
+          } else {
+            const metaData = result.sheetProperties.developerMetadata;
+            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+            useItemsStore.getState().setImageGroups(result.items, timestamp);
+          }
           break;
         }
 
@@ -274,10 +299,21 @@ export const useContextHook = (): GapiSyncContextType => {
         case SheetName.PLUGINS: {
           const result = await pullItems<Plugin>(createOptionsPlugins(sheetsClient, sheetId));
 
-          const metaData = result.sheetProperties.developerMetadata;
-          const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+          if (merge) {
+            const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
 
-          useItemsStore.getState().setPlugins(result.items, timestamp);
+            const updatePlugins = [
+              ...useItemsStore.getState().plugins,
+              ...result.items,
+            ];
+
+            useItemsStore.getState().setPlugins(pluginsUniqueByUrl(updatePlugins));
+          } else {
+            const metaData = result.sheetProperties.developerMetadata;
+            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+            useItemsStore.getState().setPlugins(result.items, timestamp);
+          }
           break;
         }
 
@@ -285,7 +321,10 @@ export const useContextHook = (): GapiSyncContextType => {
       }
     });
 
-    await updateSheets();
+    if (!merge) {
+      // merge will call updateSheets later inside performPush()
+      await updateSheets();
+    }
   }, [enqueueSheetsClientRequest, gapiStorage.sheetId, updateSheets]);
 
 
@@ -303,12 +342,31 @@ export const useContextHook = (): GapiSyncContextType => {
       merge: true,
     });
 
-    await performPush({
-      sheetName,
-      newLastUpdateValue: lastUpdate,
-      sort,
-    });
-  }, [performPull, performPush]);
+    // Auto sync will automatically push changes after AUTOSYNC_DELAY
+    if (!gapiStorage.autoSync) {
+      const resultTimestamp = useItemsStore.getState().gapiLastLocalUpdates[sheetName];
+
+      if (sheetName === SheetName.IMAGES || sheetName === SheetName.RGBN_IMAGES) {
+        await performPush({
+          sheetName: SheetName.IMAGES,
+          newLastUpdateValue: resultTimestamp,
+          sort,
+        });
+
+        await performPush({
+          sheetName: SheetName.RGBN_IMAGES,
+          newLastUpdateValue: resultTimestamp,
+          sort,
+        });
+      } else {
+        await performPush({
+          sheetName,
+          newLastUpdateValue: resultTimestamp,
+          sort,
+        });
+      }
+    }
+  }, [gapiStorage.autoSync, performPull, performPush]);
 
   const checkUpdate = useCallback(async (sheetName: SheetName, lastLocalUpdate: number, lastRemoteUpdate?: number) => {
     const { use, sheetId, token, autoSync } = gapiStorage;
@@ -341,7 +399,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.PALETTES, gapiLastLocalUpdates.palettes, gapiLastRemoteUpdates?.palettes);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.palettes, gapiLastRemoteUpdates?.palettes, checkUpdate]);
@@ -349,7 +407,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.IMAGES, gapiLastLocalUpdates.images, gapiLastRemoteUpdates?.images);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.images, gapiLastRemoteUpdates?.images, checkUpdate]);
@@ -357,7 +415,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.RGBN_IMAGES, gapiLastLocalUpdates.rgbnImages, gapiLastRemoteUpdates?.rgbnImages);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.rgbnImages, gapiLastRemoteUpdates?.rgbnImages, checkUpdate]);
@@ -366,7 +424,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.FRAME_GROUPS, gapiLastLocalUpdates.frameGroups, gapiLastRemoteUpdates?.frameGroups);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.frameGroups, gapiLastRemoteUpdates?.frameGroups, checkUpdate]);
@@ -374,7 +432,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.FRAMES, gapiLastLocalUpdates.frames, gapiLastRemoteUpdates?.frames);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.frames, gapiLastRemoteUpdates?.frames, checkUpdate]);
@@ -382,7 +440,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.IMAGE_GROUPS, gapiLastLocalUpdates.imageGroups, gapiLastRemoteUpdates?.imageGroups);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.imageGroups, gapiLastRemoteUpdates?.imageGroups, checkUpdate]);
@@ -390,7 +448,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.PLUGINS, gapiLastLocalUpdates.plugins, gapiLastRemoteUpdates?.plugins);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.plugins, gapiLastRemoteUpdates?.plugins, checkUpdate]);
@@ -400,7 +458,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.BIN_FRAMES, gapiLastLocalUpdates.binFrames, gapiLastRemoteUpdates?.binFrames);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.binFrames, gapiLastRemoteUpdates?.binFrames, checkUpdate]);
@@ -409,7 +467,7 @@ export const useContextHook = (): GapiSyncContextType => {
   useEffect(() => {
     const handle = window.setTimeout(() => {
       checkUpdate(SheetName.BIN_IMAGES, gapiLastLocalUpdates.binImages, gapiLastRemoteUpdates?.binImages);
-    }, 5000);
+    }, AUTOSYNC_DELAY);
 
     return () => window.clearTimeout(handle);
   }, [gapiLastLocalUpdates.binImages, gapiLastRemoteUpdates?.binImages, checkUpdate]);
