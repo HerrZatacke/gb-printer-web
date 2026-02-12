@@ -14,14 +14,14 @@ import {
   TextField,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import SheetsTable from '@/components/SettingsGapiSheets/SheetsTable';
 import TokenTimer from '@/components/SettingsGapiSheets/TokenTimer';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
+import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import useGIS from '@/contexts/GisContext';
-import { useStoragesStore } from '@/stores/stores';
-import type { GapiSettings } from '@/types/Sync';
 import { useGapiSheetsStats } from '@/hooks/useGapiSheetsStats';
+import { useStoragesStore } from '@/stores/stores';
 
 const cleanGapiSheetId = (dirtyId: string): string => {
   const input = dirtyId.trim();
@@ -45,17 +45,11 @@ function SettingsGapiSheets() {
   const { isSignedIn, handleSignIn, handleSignOut } = useGIS();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
   const [use, setUse] = useState<boolean>(gapiStorage.use || false);
+  const { clearGapiLastRemoteUpdates } = useGapiSheetState();
   const { sheetsStats, canEnableAutoSync } = useGapiSheetsStats();
   const [autoSync, setAutoSync] = useState<boolean>(gapiStorage.autoSync || false);
   const [sheetId, setSheetId] = useState<string>(gapiStorage.sheetId || '');
   const t = useTranslations('SettingsGapiSheets');
-
-  const updateGapiSettings = useCallback((partial: Partial<GapiSettings>) => {
-    setGapiSettings({
-      ...gapiStorage,
-      ...partial,
-    });
-  }, [gapiStorage, setGapiSettings]);
 
   return (
     <Stack
@@ -73,7 +67,7 @@ function SettingsGapiSheets() {
             checked={use}
             onChange={({ target }) => {
               setUse(target.checked);
-              updateGapiSettings({ use: target.checked });
+              setGapiSettings({ use: target.checked });
             }}
           />
         )}
@@ -87,7 +81,7 @@ function SettingsGapiSheets() {
             checked={autoSync}
             onChange={({ target }) => {
               setAutoSync(target.checked);
-              updateGapiSettings({ autoSync: target.checked });
+              setGapiSettings({ autoSync: target.checked });
             }}
           />
         )}
@@ -146,7 +140,8 @@ function SettingsGapiSheets() {
             onBlur={(ev) => {
               const cleanId = cleanGapiSheetId(ev.target.value);
               setSheetId(cleanId);
-              updateGapiSettings({ sheetId: cleanId });
+              setGapiSettings({ sheetId: cleanId, autoSync: false });
+              clearGapiLastRemoteUpdates();
             }}
           />
 
