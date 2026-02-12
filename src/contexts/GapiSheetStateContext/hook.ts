@@ -19,6 +19,7 @@ export interface GapiSheetStateContextType {
   gapiLastRemoteUpdates: GapiLastUpdates | null;
   updateSheets: () => Promise<void>;
   enqueueSheetsClientRequest: (callback: (sheetsClient: typeof gapi.client.sheets) => Promise<void>) => Promise<void>;
+  clearGapiLastRemoteUpdates: () => void;
 }
 
 export const useContextHook = (): GapiSheetStateContextType => {
@@ -139,6 +140,10 @@ export const useContextHook = (): GapiSheetStateContextType => {
     }
   }, [enqueueSheetsClientRequest, gapiStorage]);
 
+  const clearGapiLastRemoteUpdates = useCallback(() => {
+    setGapiLastRemoteUpdates(null);
+  }, []);
+
   useEffect(() => { initClient(); }, [gapiStorage, initClient]);
 
   useEffect(() => { applyToken(); }, [applyToken]);
@@ -164,5 +169,6 @@ export const useContextHook = (): GapiSheetStateContextType => {
     sheets,
     gapiLastRemoteUpdates,
     updateSheets,
+    clearGapiLastRemoteUpdates,
   };
 };

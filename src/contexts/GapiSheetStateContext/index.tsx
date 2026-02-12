@@ -10,6 +10,7 @@ const gapiSheetStateContext = createContext<GapiSheetStateContextType>({
   gapiLastRemoteUpdates: null,
   updateSheets: async () => {},
   enqueueSheetsClientRequest: async () => {},
+  clearGapiLastRemoteUpdates: () => {},
 });
 
 export function GapiSheetStateProvider({ children }: PropsWithChildren) {
