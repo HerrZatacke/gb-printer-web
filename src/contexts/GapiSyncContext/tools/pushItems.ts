@@ -178,6 +178,18 @@ export const pushItems = async <T extends object>(
         fields: 'gridProperties.frozenRowCount',
       },
     },
+    // crop sheet size to sheetItems / delete excess items
+    {
+      updateSheetProperties: {
+        properties: {
+          sheetId: targetSheetId,
+          gridProperties: {
+            rowCount: items.length + 1,
+          },
+        },
+        fields: 'gridProperties.rowCount',
+      },
+    },
   ];
 
   // don't sort an empty table
