@@ -32,7 +32,12 @@ function Error({ dismiss, errorMessage }: Props) {
     <Alert
       severity="error"
       variant="filled"
-      sx={{ minWidth: 300 }}
+      sx={{
+        width: { xs: '100%', md: 'auto' },
+        minWidth: { md: 300 },
+        maxWidth: { md: 500 },
+        pointerEvents: 'all',
+      }}
       action={(
         <>
           {errorMessage.error.stack && !showStack && (
@@ -60,7 +65,6 @@ function Error({ dismiss, errorMessage }: Props) {
       <AlertTitle
         sx={{
           color: 'inherit',
-          whiteSpace: 'pre',
         }}
       >
         {errorMessage.error.message}
