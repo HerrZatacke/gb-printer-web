@@ -16,6 +16,7 @@ import {
 import { pullItems } from '@/contexts/GapiSyncContext/tools/pullItems';
 import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
 import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
+import useTrashbin from '@/hooks/useTrashbin';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
@@ -60,6 +61,7 @@ export const useContextHook = (): GapiSyncContextType => {
   const { gapiLastRemoteUpdates, updateSheets, enqueueSheetsClientRequest, isReady, busy } = useGapiSheetState();
   const { gapiLastLocalUpdates } = useItemsStore();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
+  const { checkUpdateTrashCount } = useTrashbin();
 
   const performPush = useCallback(async ({
     sheetName,
@@ -334,6 +336,7 @@ export const useContextHook = (): GapiSyncContextType => {
 
               localforageImages.setSyncItems(result.items);
               useItemsStore.getState().setLastUpdate(sheetName, timestamp);
+              checkUpdateTrashCount();
             }
 
             break;
@@ -350,6 +353,7 @@ export const useContextHook = (): GapiSyncContextType => {
 
               localforageFrames.setSyncItems(result.items);
               useItemsStore.getState().setLastUpdate(sheetName, timestamp);
+              checkUpdateTrashCount();
             }
 
             break;
@@ -366,7 +370,7 @@ export const useContextHook = (): GapiSyncContextType => {
       // merge will call updateSheets later inside performPush()
       await updateSheets();
     }
-  }, [enqueueSheetsClientRequest, gapiStorage.sheetId, setGapiSettings, updateSheets]);
+  }, [checkUpdateTrashCount, enqueueSheetsClientRequest, gapiStorage.sheetId, setGapiSettings, updateSheets]);
 
 
   const performMerge = useCallback(async ({
