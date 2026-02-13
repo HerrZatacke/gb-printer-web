@@ -37,7 +37,11 @@ function SheetsTable({ sheetsStats }: Props) {
         '--color-match-diff': `rgb(from ${theme.palette.error.main} r g b / 0.25)`,
       })}
     >
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table
+        sx={{ minWidth: 650 }}
+        padding="normal"
+        size="small"
+      >
         <TableHead>
           <TableRow>
             <TableCell align="right">{t('id')}</TableCell>
