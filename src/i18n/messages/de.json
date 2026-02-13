@@ -86,9 +86,9 @@
     "lastRemoteUpdate": "Letzte lokale Aktualisierung",
     "lastLocalUpdate": "Letzte entfernte Aktualisierung",
     "refreshStats":  "Eigenschaften aktualisieren",
-    "syncPush": "Nach Sheets syncronisieren",
+    "syncPush": "Nach Sheets synchronisieren",
     "syncMerge":  "Mit Sheets zusammenführen",
-    "syncPull": "Von Sheets syncronisieren"
+    "syncPull": "Von Sheets synchronisieren"
   },
   "SettingsPlugins": {
     "addPlugin": "Plugin hinzufügen",
