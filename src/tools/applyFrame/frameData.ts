@@ -1,7 +1,6 @@
 import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
 import { localforageFrames } from '@/tools/localforageInstance';
 import { deflate, inflate } from '@/tools/pack';
-import { reduceItems } from '@/tools/reduceArray';
 
 export interface FrameData {
   upper: string[],

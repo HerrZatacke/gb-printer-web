@@ -328,34 +328,24 @@ export const useContextHook = (): GapiSyncContextType => {
           case SheetName.BIN_IMAGES: {
             const result = await pullItems<BinaryGapiSyncItem>(createOptionsBinaryImages(sheetsClient, sheetId));
 
-            if (merge) {
-              console.log(`merge ${sheetName} not implemented`);
-            } else {
-              const metaData = result.sheetProperties.developerMetadata;
-              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+            const metaData = result.sheetProperties.developerMetadata;
+            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-              localforageImages.setSyncItems(result.items);
-              useItemsStore.getState().setLastUpdate(sheetName, timestamp);
-              checkUpdateTrashCount();
-            }
-
+            await localforageImages.setSyncItems(result.items, merge);
+            await checkUpdateTrashCount();
+            useItemsStore.getState().setLastUpdate(sheetName, timestamp);
             break;
           }
 
           case SheetName.BIN_FRAMES: {
             const result = await pullItems<BinaryGapiSyncItem>(createOptionsBinaryFrames(sheetsClient, sheetId));
 
-            if (merge) {
-              console.log(`merge ${sheetName} not implemented`);
-            } else {
-              const metaData = result.sheetProperties.developerMetadata;
-              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+            const metaData = result.sheetProperties.developerMetadata;
+            const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
 
-              localforageFrames.setSyncItems(result.items);
-              useItemsStore.getState().setLastUpdate(sheetName, timestamp);
-              checkUpdateTrashCount();
-            }
-
+            await localforageFrames.setSyncItems(result.items, merge);
+            await checkUpdateTrashCount();
+            useItemsStore.getState().setLastUpdate(sheetName, timestamp);
             break;
           }
 

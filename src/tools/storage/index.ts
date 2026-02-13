@@ -1,9 +1,7 @@
 import applyFrame from '@/tools/applyFrame';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import { deflate, inflate } from '@/tools/pack';
-import { reduceItems } from '@/tools/reduceArray';
 import dummyImage from './dummyImage';
-import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
 
 export interface HashedCompressed {
   dataHash: string,

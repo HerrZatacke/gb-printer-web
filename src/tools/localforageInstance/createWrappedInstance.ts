@@ -12,7 +12,7 @@ export interface WrappedLocalForageInstance<T> {
   getItem: (key: string) => Promise<T | null>,
   removeItem: (key: string) => Promise<void>,
   getSyncItems: () => Promise<BinaryGapiSyncItem[]>,
-  setSyncItems: (items: BinaryGapiSyncItem[]) => Promise<void>,
+  setSyncItems: (items: BinaryGapiSyncItem[], merge: boolean) => Promise<void>,
 }
 
 const DUMMY = `dummy${(new Date()).getTime()}`;
@@ -98,10 +98,26 @@ const createWrappedInstance = <T>(options: LocalForageOptions, lastUpdateSheetNa
         throw error;
       }
     },
-    setSyncItems: async (items: BinaryGapiSyncItem[]): Promise<void> => {
+    setSyncItems: async (items: BinaryGapiSyncItem[], merge: boolean): Promise<void> => {
+      const syncedHashes = new Set<string>();
       try {
         for (const { hash, data } of items) {
-          await await instance.setItem(hash, atob(data));
+          await instance.setItem(hash, atob(data));
+          syncedHashes.add(hash);
+        }
+
+        if (!merge) {
+          const keys = await instance.keys();
+          const toDelete = keys.filter((key) => !syncedHashes.has(key));
+
+          console.log((await instance.keys()).length);
+
+          for (const hash of toDelete) {
+            console.log(`deleting ${hash}`);
+            await instance.removeItem(hash);
+          }
+
+          console.log((await instance.keys()).length);
         }
       } catch (error) {
         instance = localforage.createInstance(options);
