@@ -1,6 +1,8 @@
 import localforage from 'localforage';
 import { type SheetName } from '@/contexts/GapiSheetStateContext/consts';
+import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
 import { useItemsStore } from '@/stores/stores';
+import { reduceItems } from '@/tools/reduceArray';
 
 export interface WrappedLocalForageInstance<T> {
   ready: () => Promise<void>,
@@ -9,6 +11,8 @@ export interface WrappedLocalForageInstance<T> {
   setItem: (key: string, value: T) => Promise<T>,
   getItem: (key: string) => Promise<T | null>,
   removeItem: (key: string) => Promise<void>,
+  getSyncItems: () => Promise<BinaryGapiSyncItem[]>,
+  setSyncItems: (items: BinaryGapiSyncItem[]) => Promise<void>,
 }
 
 const DUMMY = `dummy${(new Date()).getTime()}`;
@@ -70,6 +74,35 @@ const createWrappedInstance = <T>(options: LocalForageOptions, lastUpdateSheetNa
       try {
         await instance.removeItem(key);
         useItemsStore.getState().setLastUpdate(lastUpdateSheetName);
+      } catch (error) {
+        instance = localforage.createInstance(options);
+        throw error;
+      }
+    },
+    getSyncItems: async (): Promise<BinaryGapiSyncItem[]> => {
+      try {
+        const keys = await instance.keys();
+
+        const allItems = await Promise.all(keys.map(async (key): Promise<BinaryGapiSyncItem | null> => {
+          const data = await instance.getItem<string | null>(key);
+          if (typeof data !== 'string') {
+            return null;
+          }
+
+          return { hash: key, data: btoa(data) };
+        }));
+
+        return allItems.reduce(reduceItems<BinaryGapiSyncItem>, []);
+      } catch (error) {
+        instance = localforage.createInstance(options);
+        throw error;
+      }
+    },
+    setSyncItems: async (items: BinaryGapiSyncItem[]): Promise<void> => {
+      try {
+        for (const { hash, data } of items) {
+          await await instance.setItem(hash, atob(data));
+        }
       } catch (error) {
         instance = localforage.createInstance(options);
         throw error;
