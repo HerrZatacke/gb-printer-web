@@ -68,7 +68,7 @@
     "saveSettings": "Lagre WiFi-innstillinger"
   },
   "SettingsGapiSheets": {
-    "about": "Dette er en eksperimentell funksjon. Økten må fornyes hvert 60. minutt. Sørg for å ikke kjøre oppdateringer når økt-timeren er i ferd med å utløpe.",
+    "about": "Dette er en eksperimentell funksjon. Økten må fornyes hvert 60. minutt.",
     "tokenExpiry": "Økten utløper om {time}",
     "enableStorage": "Bruk Google Sheets som lagring",
     "enableAutoSync": "Synkronisere automatisk",

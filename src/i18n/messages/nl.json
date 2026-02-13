@@ -68,7 +68,7 @@
     "saveSettings": "WiFi-instellingen opslaan"
   },
   "SettingsGapiSheets": {
-    "about": "Dit is een experimentele functie. De sessie moet elke 60 minuten worden vernieuwd. Zorg dat je geen updates uitvoert wanneer de sessietimer bijna is verlopen.",
+    "about": "Dit is een experimentele functie. De sessie moet elke 60 minuten worden vernieuwd.",
     "tokenExpiry": "Sessie verloopt over {time}",
     "enableStorage": "Gebruik Google Sheets als opslag",
     "enableAutoSync": "Automatisch synchroniseren",

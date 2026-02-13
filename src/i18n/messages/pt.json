@@ -68,7 +68,7 @@
     "saveSettings": "Guardar definições Wi-Fi"
   },
   "SettingsGapiSheets": {
-    "about": "Esta é uma funcionalidade experimental. A sessão requer renovação a cada 60 minutos. Certifique-se de não executar atualizações quando o temporizador da sessão estiver prestes a expirar.",
+    "about": "Esta é uma funcionalidade experimental. A sessão requer renovação a cada 60 minutos.",
     "tokenExpiry": "A sessão irá expirar em {time}",
     "enableStorage": "Usar Google Sheets como armazenamento",
     "enableAutoSync": "Sincronizar automaticamente",

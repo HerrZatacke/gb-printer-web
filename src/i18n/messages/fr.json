@@ -68,7 +68,7 @@
     "saveSettings": "Enregistrer les paramètres WiFi"
   },
   "SettingsGapiSheets": {
-    "about": "Ceci est une fonctionnalité expérimentale. La session doit être renouvelée toutes les 60 minutes. Veillez à ne pas lancer de mises à jour lorsque le minuteur de session est sur le point d'expirer.",
+    "about": "Ceci est une fonctionnalité expérimentale. La session doit être renouvelée toutes les 60 minutes.",
     "tokenExpiry": "La session expirera dans {time}",
     "enableStorage": "Utiliser Google Sheets comme stockage",
     "enableAutoSync": "Synchroniser automatiquement",

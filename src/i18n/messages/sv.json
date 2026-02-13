@@ -68,7 +68,7 @@
     "saveSettings": "Spara WiFi-inställningar"
   },
   "SettingsGapiSheets": {
-    "about": "Detta är en experimentell funktion. Sessionen måste förnyas var 60:e minut. Se till att inte köra uppdateringar när sessionstimern håller på att gå ut.",
+    "about": "Detta är en experimentell funktion. Sessionen måste förnyas var 60:e minut.",
     "tokenExpiry": "Sessionen upphör om {time}",
     "enableStorage": "Använd Google Sheets som lagring",
     "enableAutoSync": "Synkronisera automatiskt",

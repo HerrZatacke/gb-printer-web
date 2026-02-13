@@ -68,7 +68,7 @@
     "saveSettings": "Salva impostazioni WLAN"
   },
   "SettingsGapiSheets": {
-    "about": "Questa è una funzionalità sperimentale. La sessione deve essere rinnovata ogni 60 minuti. Assicurati di non eseguire aggiornamenti quando il timer della sessione sta per scadere.",
+    "about": "Questa è una funzionalità sperimentale. La sessione deve essere rinnovata ogni 60 minuti.",
     "tokenExpiry": "La sessione scadrà tra {time}",
     "enableStorage": "Usa Google Sheets come archivio",
     "enableAutoSync": "Sincronizzare automaticamente",
