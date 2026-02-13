@@ -1,13 +1,11 @@
 import { hash as ohash } from 'ohash';
 import Queue from 'promise-queue';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  type GapiLastUpdates,
-  sheetNames,
-} from '@/contexts/GapiSheetStateContext/consts';
+import { type GapiLastUpdates, sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import { createGapiLastUpdates } from '@/contexts/GapiSheetStateContext/tools/createGapiLastUpdates';
+import { isGapiError } from '@/contexts/GapiSheetStateContext/tools/isGapiError';
 import useGIS from '@/contexts/GisContext';
-import { useStoragesStore } from '@/stores/stores';
+import { useInteractionsStore, useStoragesStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import Sheet = gapi.client.sheets.Sheet;
 
@@ -23,7 +21,8 @@ export interface GapiSheetStateContextType {
 }
 
 export const useContextHook = (): GapiSheetStateContextType => {
-  const { gapiStorage } = useStoragesStore();
+  const { gapiStorage, setGapiSettings } = useStoragesStore();
+  const { setError } = useInteractionsStore();
   const { isReady } = useGIS();
   const [busy, setBusy] = useState(false);
   const [gapiClient, setGapiClient] = useState<typeof gapi.client | null>(null);
@@ -52,13 +51,41 @@ export const useContextHook = (): GapiSheetStateContextType => {
       try {
         await callback(sheetsClient);
       } catch (error) {
-        // ToDo: can we read the error reason here? e.g. quota/timeout and wait accordingly
-        console.log(error);
-        await delay(2000);
+        if (isGapiError(error)) {
+          setError(new Error(error.result.error.message));
+
+          switch (error.status) {
+            // too many requests
+            case 429: {
+              setGapiSettings({ autoSync: false });
+              await delay(30000); // allow a new request after 30s;
+              break;
+            }
+
+            case 404: {
+              setGapiSettings({ sheetId: '', autoSync: false });
+              break;
+            }
+
+            case 403: {
+              setGapiSettings({ token: '', tokenExpiry: 0, autoSync: false });
+              break;
+            }
+
+            default: // unhandled gapi error
+              console.log(`Unhandled gapi error (${error.status}): `, error.result?.error?.message);
+              setGapiSettings({ use: false });
+              break;
+          }
+        } else {
+          // Not a gapi error: re-throw
+          setError(error as Error);
+          throw error;
+        }
       }
       setBusy(false);
     });
-  }, [gapiClient?.sheets]);
+  }, [gapiClient?.sheets, setError, setGapiSettings]);
 
   const initClient = useCallback(async () => {
     if (!isReady || !gapiStorage.use) {
@@ -99,9 +126,10 @@ export const useContextHook = (): GapiSheetStateContextType => {
   }, [gapiClient, gapiStorage, isReady]);
 
   const updateSheets = useCallback(async () => {
-    const { use, sheetId } = gapiStorage;
+    const { use, sheetId, tokenExpiry, token } = gapiStorage;
 
-    if (!sheetId || !use) {
+    if (!sheetId || !use || !token || !tokenExpiry) {
+      console.log('📊 NOT updating sheet dates');
       return;
     }
 
