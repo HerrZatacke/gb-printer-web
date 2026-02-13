@@ -14,7 +14,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SheetsTable from '@/components/SettingsGapiSheets/SheetsTable';
 import TokenTimer from '@/components/SettingsGapiSheets/TokenTimer';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
@@ -44,12 +44,18 @@ const cleanGapiSheetId = (dirtyId: string): string => {
 function SettingsGapiSheets() {
   const { isSignedIn, handleSignIn, handleSignOut } = useGIS();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
-  const [use, setUse] = useState<boolean>(gapiStorage.use || false);
   const { clearGapiLastRemoteUpdates } = useGapiSheetState();
   const { sheetsStats, canEnableAutoSync } = useGapiSheetsStats();
+  const [use, setUse] = useState<boolean>(gapiStorage.use || false);
   const [autoSync, setAutoSync] = useState<boolean>(gapiStorage.autoSync || false);
   const [sheetId, setSheetId] = useState<string>(gapiStorage.sheetId || '');
   const t = useTranslations('SettingsGapiSheets');
+
+  useEffect(() => {
+    setUse(gapiStorage.use || false);
+    setAutoSync(gapiStorage.autoSync || false);
+    setSheetId(gapiStorage.sheetId || '');
+  }, [gapiStorage]);
 
   return (
     <Stack
