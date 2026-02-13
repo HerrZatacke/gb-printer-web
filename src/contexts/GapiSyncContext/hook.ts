@@ -17,10 +17,9 @@ import { pullItems } from '@/contexts/GapiSyncContext/tools/pullItems';
 import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
 import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
-import { getAllFrames } from '@/tools/applyFrame/frameData';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
+import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import { PushOptions } from '@/tools/sheetConversion/types';
-import { getAllImages } from '@/tools/storage';
 import uniqueBy from '@/tools/unique/by';
 import type { Frame } from '@/types/Frame';
 import type { FrameGroup } from '@/types/FrameGroup';
@@ -160,27 +159,27 @@ export const useContextHook = (): GapiSyncContextType => {
           }
 
           case SheetName.BIN_FRAMES: {
-            const frames = await getAllFrames();
+            const frames = await localforageFrames.getSyncItems();
             await pushItems<BinaryGapiSyncItem>(
               {
                 ...pushOptions,
                 chunkSize: 256,
                 ...createOptionsBinaryFrames(sheetsClient, sheetId),
               },
-              frames.map(([hash, data]) => ({ hash, data })),
+              frames,
             );
             break;
           }
 
           case SheetName.BIN_IMAGES: {
-            const images = await getAllImages();
+            const images = await localforageImages.getSyncItems();
             await pushItems<BinaryGapiSyncItem>(
               {
                 ...pushOptions,
-                chunkSize: 128,
+                chunkSize: 256,
                 ...createOptionsBinaryImages(sheetsClient, sheetId),
               },
-              images.map(([hash, data]) => ({ hash, data })),
+              images,
             );
 
             break;
@@ -321,6 +320,38 @@ export const useContextHook = (): GapiSyncContextType => {
 
               useItemsStore.getState().setPlugins(result.items, timestamp);
             }
+            break;
+          }
+
+          case SheetName.BIN_IMAGES: {
+            const result = await pullItems<BinaryGapiSyncItem>(createOptionsBinaryImages(sheetsClient, sheetId));
+
+            if (merge) {
+              console.log(`merge ${sheetName} not implemented`);
+            } else {
+              const metaData = result.sheetProperties.developerMetadata;
+              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+              localforageImages.setSyncItems(result.items);
+              useItemsStore.getState().setLastUpdate(sheetName, timestamp);
+            }
+
+            break;
+          }
+
+          case SheetName.BIN_FRAMES: {
+            const result = await pullItems<BinaryGapiSyncItem>(createOptionsBinaryFrames(sheetsClient, sheetId));
+
+            if (merge) {
+              console.log(`merge ${sheetName} not implemented`);
+            } else {
+              const metaData = result.sheetProperties.developerMetadata;
+              const timestamp: number | undefined = metaData ? getLastUpdate(metaData) : lastRemoteUpdate;
+
+              localforageFrames.setSyncItems(result.items);
+              useItemsStore.getState().setLastUpdate(sheetName, timestamp);
+            }
+
             break;
           }
 
