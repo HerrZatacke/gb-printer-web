@@ -4,6 +4,7 @@ import { type PropsWithChildren, createContext, useContext } from 'react';
 import { GISContextType, useContextHook } from '@/contexts/GisContext/hook';
 
 const gisContext = createContext<GISContextType>({
+  isReady: false,
   isSignedIn: false,
   handleSignIn: async () => {},
   handleSignOut: async () => {},
