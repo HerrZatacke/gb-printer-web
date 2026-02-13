@@ -17,6 +17,7 @@ export interface ColumnSpec<T> {
 export interface PushOptions {
   newLastUpdateValue: number;
   sort: boolean;
+  chunkSize: number;
 }
 
 export interface UpdaterOptions<T> {

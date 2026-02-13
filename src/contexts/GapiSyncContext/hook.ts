@@ -78,6 +78,7 @@ export const useContextHook = (): GapiSyncContextType => {
         const pushOptions: PushOptions = {
           newLastUpdateValue,
           sort,
+          chunkSize: 512,
         };
 
         switch (sheetName) {
@@ -163,6 +164,7 @@ export const useContextHook = (): GapiSyncContextType => {
             await pushItems<BinaryGapiSyncItem>(
               {
                 ...pushOptions,
+                chunkSize: 256,
                 ...createOptionsBinaryFrames(sheetsClient, sheetId),
               },
               frames.map(([hash, data]) => ({ hash, data })),
@@ -175,6 +177,7 @@ export const useContextHook = (): GapiSyncContextType => {
             await pushItems<BinaryGapiSyncItem>(
               {
                 ...pushOptions,
+                chunkSize: 128,
                 ...createOptionsBinaryImages(sheetsClient, sheetId),
               },
               images.map(([hash, data]) => ({ hash, data })),

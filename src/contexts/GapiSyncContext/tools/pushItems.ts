@@ -14,6 +14,7 @@ export const pushItems = async <T extends object>(
     columns,
     newLastUpdateValue,
     sort,
+    chunkSize,
   }: PushOptions & UpdaterOptions<T>,
   items: T[],
 ): Promise<void> => {
@@ -144,8 +145,6 @@ export const pushItems = async <T extends object>(
     sheetHeaders,
     ...newSheetItems,
   ];
-
-  const chunkSize = 400;
 
   // update values in chunks
   for (let startRow = 0; startRow < values.length; startRow += chunkSize) {
