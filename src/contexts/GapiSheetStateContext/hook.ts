@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { type GapiLastUpdates, sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import { createGapiLastUpdates } from '@/contexts/GapiSheetStateContext/tools/createGapiLastUpdates';
 import { isGapiError } from '@/contexts/GapiSheetStateContext/tools/isGapiError';
+import { patchGapiClient } from '@/contexts/GapiSheetStateContext/tools/patchGapiClient';
 import useGIS from '@/contexts/GisContext';
+import { useLimitCounter } from '@/hooks/useLimitCounter';
 import { useInteractionsStore, useStoragesStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import Sheet = gapi.client.sheets.Sheet;
@@ -29,6 +31,8 @@ export const useContextHook = (): GapiSheetStateContextType => {
   const [sheets, setSheets] = useState<Sheet[]>([]);
   const [gapiLastRemoteUpdates, setGapiLastRemoteUpdates] = useState<GapiLastUpdates | null>(null);
   const refreshHandle = useRef<number>(0);
+  const { increaseLimit: increaseReads } = useLimitCounter(60000, 60);
+  const { increaseLimit: increaseWrites } = useLimitCounter(60000, 60);
   const queue = useRef<Queue | null>(null);
 
   if (!queue.current) {
@@ -102,9 +106,9 @@ export const useContextHook = (): GapiSheetStateContextType => {
         discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
       });
 
-      setGapiClient(gapi.client);
+      setGapiClient(patchGapiClient(gapi.client, increaseReads, increaseWrites));
     });
-  }, [gapiClient, gapiStorage.use, isReady]);
+  }, [gapiClient, gapiStorage.use, increaseReads, increaseWrites, isReady]);
 
   const applyToken = useCallback(() => {
     const { use, token } = gapiStorage;
