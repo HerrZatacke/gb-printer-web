@@ -82,7 +82,7 @@ interface Actions {
   setPalettes: (palettes: Palette[], timestampOverride?: number) => void,
   setPlugins: (plugins: Plugin[], timestampOverride?: number) => void,
 
-  setLastUpdate: (sheetName: SheetName) => void,
+  setLastUpdate: (sheetName: SheetName, timestampOverride?: number) => void,
 }
 
 export type ItemsState = Values & Actions;
@@ -429,8 +429,8 @@ export const createItemsStore = () => (
         }),
 
         // Pure timestamp update
-        setLastUpdate: (sheetName: SheetName) => set({
-          ...updateLastLocalUpdates(get, [sheetName]),
+        setLastUpdate: (sheetName: SheetName, timestampOverride?: number) => set({
+          ...updateLastLocalUpdates(get, [sheetName], timestampOverride),
         }),
       }),
       {
