@@ -4,6 +4,9 @@ import { type PropsWithChildren, createContext, useContext } from 'react';
 import { GapiSyncContextType, useContextHook } from '@/contexts/GapiSyncContext/hook';
 
 const gapiSyncContext = createContext<GapiSyncContextType>({
+  performMerge: async () => {},
+  performPull: async () => {},
+  performPush: async () => {},
   busy: false,
 });
 
