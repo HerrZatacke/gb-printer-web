@@ -161,7 +161,6 @@
     "resetGroups": "Ripristina gruppi di immagini",
     "exportAll": "Esporta tutto",
     "exportPlugins": "Esporta plugin",
-    "hashCleanup": "Pulizia hash",
     "persistState": {
       "isPersistent": "L'archivio è persistente",
       "requestPersistence": "Richiedi persistenza archivio",

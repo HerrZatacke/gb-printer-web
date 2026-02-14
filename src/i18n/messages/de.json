@@ -161,7 +161,6 @@
     "resetGroups": "Bildgruppen zurücksetzen",
     "exportAll": "Alles exportieren",
     "exportPlugins": "Plugins exportieren",
-    "hashCleanup": "Hash-Bereinigung",
     "persistState": {
       "isPersistent": "Speicher ist persistent",
       "requestPersistence": "Speicher-Persistenz anfordern",

@@ -161,7 +161,6 @@
     "resetGroups": "Tilbakestill bildegrupper",
     "exportAll": "Eksporter alt",
     "exportPlugins": "Eksporter plugins",
-    "hashCleanup": "Hash-opprydding",
     "persistState": {
       "isPersistent": "Lagring er persistent",
       "requestPersistence": "Be om lagrings-persistens",

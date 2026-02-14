@@ -62,7 +62,6 @@ interface Actions {
   // Image updates
   addImages: (images: Image[]) => void,
   deleteImages: (hashes: string[]) => void,
-  updateImageHash: (oldHash: string, image: Image) => void,
   updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void,
   updateImages: (images: Image[]) => void,
   updateFrames: (frames: Frame[]) => void,
@@ -351,13 +350,6 @@ export const createItemsStore = () => (
 
         deleteImages: (hashes: string[]) => set((itemsState) => ({
           images: [...itemsState.images.filter(({ hash }) => !hashes.includes(hash))],
-          ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES]),
-        })),
-
-        updateImageHash: (oldHash: string, image: Image) => set((itemsState) => ({
-          images: itemsState.images.map((stateImage) => (
-            (stateImage.hash === oldHash) ? image : stateImage
-          )),
           ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES]),
         })),
 

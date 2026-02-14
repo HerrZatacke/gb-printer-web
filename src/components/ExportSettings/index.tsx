@@ -8,7 +8,6 @@ import { ExportTypes } from '@/consts/exportTypes';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import useStoragePersist, { PersistState } from '@/hooks/useStoragePersist';
-import useHashCleanup from '@/tools/hashCleanup';
 
 const persistMessage = (persistState: PersistState): string => {
   switch (persistState) {
@@ -25,7 +24,6 @@ const persistMessage = (persistState: PersistState): string => {
 };
 
 function ExportSettings() {
-  const { hashCleanup, cleanupBusy } = useHashCleanup();
   const { downloadSettings } = useImportExportSettings();
   const t = useTranslations('ExportSettings');
 
@@ -66,13 +64,6 @@ function ExportSettings() {
         onClick={() => exportJson(ExportTypes.PLUGINS)}
       >
         {t('exportPlugins')}
-      </Button>
-      <Button
-        title={t('hashCleanup')}
-        disabled={cleanupBusy}
-        onClick={hashCleanup}
-      >
-        {t('hashCleanup')}
       </Button>
     </ButtonGroup>
   );

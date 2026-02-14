@@ -161,7 +161,6 @@
     "resetGroups": "Afbeeldingsgroepen resetten",
     "exportAll": "Alles exporteren",
     "exportPlugins": "Plugins exporteren",
-    "hashCleanup": "Hash-opruiming",
     "persistState": {
       "isPersistent": "Opslag is persistent",
       "requestPersistence": "Opslag-persistentie aanvragen",
