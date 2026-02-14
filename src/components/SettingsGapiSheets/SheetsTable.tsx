@@ -16,6 +16,7 @@ import { memo } from 'react';
 import SheetsTableRow from '@/components/SettingsGapiSheets/SheetsTableRow';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import useGapiSync from '@/contexts/GapiSyncContext';
+import useGIS from '@/contexts/GisContext';
 import { SheetStats } from '@/hooks/useGapiSheetsStats';
 import { useStoragesStore } from '@/stores/stores';
 
@@ -27,9 +28,10 @@ function SheetsTable({ sheetsStats }: Props) {
   const { updateSheets } = useGapiSheetState();
   const { gapiStorage } = useStoragesStore();
   const { busy } = useGapiSync();
+  const { isReady, isSignedIn } = useGIS();
   const t = useTranslations('SheetsTable');
 
-  const disabled = busy || !gapiStorage.sheetId || !gapiStorage.use;
+  const disabled = busy || !gapiStorage.sheetId || !gapiStorage.use || !isReady || !isSignedIn;
 
   return (
     <TableContainer

@@ -111,19 +111,28 @@ export const useContextHook = (): GapiSheetStateContextType => {
   }, [gapiClient, gapiStorage.use, increaseReads, increaseWrites, isReady]);
 
   const updateSheets = useCallback(async () => {
-    const { use, sheetId, tokenExpiry, token } = gapiStorage;
+    window.clearTimeout(refreshHandle.current);
 
-    if (!sheetId || !use || !token || !tokenExpiry) {
-      console.log('📊 NOT updating sheet dates');
+    const { use, sheetId } = gapiStorage;
+
+    if (!sheetId || !use) {
+      setSheets([]);
+      setGapiLastRemoteUpdates(null);
       return;
     }
 
-    console.log('📊 Updating sheet dates');
-
-    window.clearTimeout(refreshHandle.current);
-
     try {
       await enqueueSheetsClientRequest(async (sheetsClient) => {
+        const { token } = gapiStorage;
+        if (!token) {
+          console.log('📊 NOT updating sheet dates');
+          setSheets([]);
+          setGapiLastRemoteUpdates(null);
+          return;
+        }
+
+        console.log('📊 Updating sheet dates');
+
         const { result: { sheets: remoteSheets } } = await sheetsClient.spreadsheets.get({
           spreadsheetId: sheetId,
         });
