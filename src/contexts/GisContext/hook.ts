@@ -63,16 +63,16 @@ export const useContextHook = (): GISContextType => {
     const tokenExpiresInMs = (tokenExpiry || 0) - Date.now();
 
     const tokenExpiryTimerHandle = window.setTimeout(() => {
-      if (!tokenClient) {
-        return;
-      }
-
       console.log('🤖 Token expired!');
-      tokenClient.requestAccessToken({ prompt: '' });
+
       setGapiSettings({
         token: '',
         tokenExpiry: 0,
       });
+
+      if (tokenClient) {
+        tokenClient.requestAccessToken({ prompt: '' });
+      }
     }, tokenExpiresInMs);
 
     return () => window.clearTimeout(tokenExpiryTimerHandle);

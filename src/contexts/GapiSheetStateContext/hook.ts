@@ -110,25 +110,6 @@ export const useContextHook = (): GapiSheetStateContextType => {
     });
   }, [gapiClient, gapiStorage.use, increaseReads, increaseWrites, isReady]);
 
-  const applyToken = useCallback(() => {
-    const { use, token } = gapiStorage;
-
-    if (
-      !isReady ||
-      !gapiClient ||
-      gapiClient.getToken()?.access_token === token
-    ) {
-      return;
-    }
-
-    if (!use || !token ) {
-      gapiClient?.setToken(null);
-      return;
-    }
-
-    gapiClient.setToken({ access_token: token });
-  }, [gapiClient, gapiStorage, isReady]);
-
   const updateSheets = useCallback(async () => {
     const { use, sheetId, tokenExpiry, token } = gapiStorage;
 
@@ -178,7 +159,28 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
   useEffect(() => { initClient(); }, [gapiStorage, initClient]);
 
-  useEffect(() => { applyToken(); }, [applyToken]);
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      const { use, token } = gapiStorage;
+
+      if (
+        !isReady ||
+        !gapiClient ||
+        gapiClient.getToken()?.access_token === token
+      ) {
+        return;
+      }
+
+      if (!use || !token ) {
+        gapiClient?.setToken(null);
+        return;
+      }
+
+      gapiClient.setToken({ access_token: token });
+    }, 1);
+
+    return () => window.clearTimeout(handle);
+  }, [gapiClient, gapiStorage, isReady]);
 
   // start polling
   useEffect(() => {
