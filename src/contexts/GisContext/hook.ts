@@ -60,7 +60,7 @@ export const useContextHook = (): GISContextType => {
       return;
     }
 
-    const tokenExpiresInMs = (tokenExpiry || 0) - Date.now();
+    const tokenExpiresInMs = (tokenExpiry || 0) - Date.now() - 60000;
 
     const tokenExpiryTimerHandle = window.setTimeout(() => {
       if (tokenClient) {
