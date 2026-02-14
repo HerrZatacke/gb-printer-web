@@ -27,7 +27,11 @@ const toDate = (timestamp?: number): string => {
   });
 };
 
-const getSign = (value: number): string => {
+const getSign = (value: number, remoteTimestamp: number, localTimestamp: number): string => {
+  if (remoteTimestamp === 0 && localTimestamp === 0) {
+    return '≠';
+  }
+
   switch (value) {
     case -1:
       return '<';
@@ -59,33 +63,15 @@ function SheetsTableRow({ sheetStats, disabled }: Props) {
     Icon,
   } = sheetStats;
 
+  const sign = getSign(diff, remoteTimestamp, localTimestamp);
+
   return (
     <TableRow
       key={sheetName}
       sx={{
-        '--color-match': diff ? 'var(--color-match-diff)' : 'var(--color-match-same)',
+        '--color-match': sign !== '=' ? 'var(--color-match-diff)' : 'var(--color-match-same)',
       }}
     >
-      <TableCell align="right">{sheetId}</TableCell>
-      <TableCell align="right">
-        <Stack direction="row" gap={1} alignItems="center" justifyContent="right">
-          <span>{sheetName}</span>
-          {Icon && <Icon />}
-        </Stack>
-      </TableCell>
-      <TableCell align="right">{columnCount}</TableCell>
-      <TableCell align="right">{rowCount}</TableCell>
-      <TableCell align="right" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(remoteTimestamp)}</TableCell>
-      <TableCell align="center" sx={{ backgroundColor: 'var(--color-match)' }}>
-        <Typography variant="h4">
-          {diff > 0 && '✨ '}
-          {diff < 0 && '🕰️ '}
-          {getSign(diff)}
-          {diff > 0 && ' 🕰️'}
-          {diff < 0 && ' ✨'}
-        </Typography>
-      </TableCell>
-      <TableCell align="left" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(localTimestamp)}</TableCell>
       <TableCell align="right">
         <IconButton
           disabled={disabled}
@@ -122,6 +108,26 @@ function SheetsTableRow({ sheetStats, disabled }: Props) {
           <CloudDownloadIcon />
         </IconButton>
       </TableCell>
+      <TableCell align="right">
+        <Stack direction="row" gap={1} alignItems="center" justifyContent="right">
+          <span>{sheetName}</span>
+          {Icon && <Icon />}
+        </Stack>
+      </TableCell>
+      <TableCell align="right" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(remoteTimestamp)}</TableCell>
+      <TableCell align="center" sx={{ backgroundColor: 'var(--color-match)' }}>
+        <Typography variant="h4">
+          {diff > 0 && '✨ '}
+          {diff < 0 && '🕰️ '}
+          {sign}
+          {diff > 0 && ' 🕰️'}
+          {diff < 0 && ' ✨'}
+        </Typography>
+      </TableCell>
+      <TableCell align="left" sx={{ backgroundColor: 'var(--color-match)' }}>{toDate(localTimestamp)}</TableCell>
+      <TableCell align="right">{columnCount}</TableCell>
+      <TableCell align="right">{rowCount}</TableCell>
+      <TableCell align="right">{sheetId}</TableCell>
     </TableRow>
   );
 }

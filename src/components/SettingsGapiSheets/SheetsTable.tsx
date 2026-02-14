@@ -1,5 +1,7 @@
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
+  Backdrop,
+  CircularProgress,
   IconButton,
   Paper,
   Table,
@@ -35,22 +37,23 @@ function SheetsTable({ sheetsStats }: Props) {
       sx={(theme) => ({
         '--color-match-same': `rgb(from ${theme.palette.success.main} r g b / 0.25)`,
         '--color-match-diff': `rgb(from ${theme.palette.error.main} r g b / 0.25)`,
+        position: 'relative',
+        overflowX: 'auto',
       })}
     >
+      <Backdrop
+        sx={{ position: 'absolute' }}
+        open={busy}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Table
-        sx={{ minWidth: 650 }}
+        sx={{ minWidth: 1024 }}
         padding="normal"
         size="small"
       >
         <TableHead>
           <TableRow>
-            <TableCell align="right">{t('id')}</TableCell>
-            <TableCell align="right">{t('title')}</TableCell>
-            <TableCell align="right">{t('columns')}</TableCell>
-            <TableCell align="right">{t('rows')}</TableCell>
-            <TableCell align="right">{t('lastRemoteUpdate')}</TableCell>
-            <TableCell />
-            <TableCell align="left">{t('lastLocalUpdate')}</TableCell>
             <TableCell align="right">
               <IconButton
                 disabled={disabled}
@@ -60,6 +63,13 @@ function SheetsTable({ sheetsStats }: Props) {
                 <RefreshIcon />
               </IconButton>
             </TableCell>
+            <TableCell align="right">{t('title')}</TableCell>
+            <TableCell align="right">{t('lastRemoteUpdate')}</TableCell>
+            <TableCell />
+            <TableCell align="left">{t('lastLocalUpdate')}</TableCell>
+            <TableCell align="right">{t('columns')}</TableCell>
+            <TableCell align="right">{t('rows')}</TableCell>
+            <TableCell align="right">{t('id')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

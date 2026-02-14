@@ -126,7 +126,7 @@ export const createItemsStore = () => (
         plugins: [],
         imageGroups: [],
         images: [],
-        gapiLastLocalUpdates: gapiLastUpdatesDefaults(),
+        gapiLastLocalUpdates: gapiLastUpdatesDefaults(0),
 
         addFrames: (frames: Frame[]) => set((itemsState) => (
           {

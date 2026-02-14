@@ -19,18 +19,17 @@ interface WrappedForage<T> {
   dropDB: () => Promise<void>;
 }
 
-export const gapiLastUpdatesDefaults = (): GapiLastUpdates => {
-  const now = Date.now();
+export const gapiLastUpdatesDefaults = (when: number): GapiLastUpdates => {
   return {
-    images: now,
-    rgbnImages: now,
-    frames: now,
-    palettes: now,
-    plugins: now,
-    imageGroups: now,
-    frameGroups: now,
-    binImages: now,
-    binFrames: now,
+    images: when,
+    rgbnImages: when,
+    frames: when,
+    palettes: when,
+    plugins: when,
+    imageGroups: when,
+    frameGroups: when,
+    binImages: when,
+    binFrames: when,
   };
 };
 
@@ -165,18 +164,18 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
 
   const getLastLocalUpdate = async (): Promise<GapiLastUpdates> => {
     if (typeof window === 'undefined') {
-      return gapiLastUpdatesDefaults();
+      return gapiLastUpdatesDefaults(0);
     }
 
     const rawUpdates = await rootStore.getItem<string>('gapiLastLocalUpdates');
 
     if (!rawUpdates) {
-      return gapiLastUpdatesDefaults();
+      return gapiLastUpdatesDefaults(0);
     }
 
     const parsed = JSON.parse(rawUpdates || 'null') as GapiLastUpdates | null;
 
-    return parsed || gapiLastUpdatesDefaults();
+    return parsed || gapiLastUpdatesDefaults(0);
   };
 
   const loadRootData = async (): Promise<{
