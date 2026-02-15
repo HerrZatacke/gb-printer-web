@@ -21,7 +21,8 @@ import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import useGIS from '@/contexts/GisContext';
 import { useGapiSheetsStats } from '@/hooks/useGapiSheetsStats';
-import { useStoragesStore } from '@/stores/stores';
+import { useSettingsStore, useStoragesStore } from '@/stores/stores';
+import { FeatureFlag } from '@/types/FeatureFlags';
 
 const cleanGapiSheetId = (dirtyId: string): string => {
   const input = dirtyId.trim();
@@ -43,6 +44,7 @@ const cleanGapiSheetId = (dirtyId: string): string => {
 
 function SettingsGapiSheets() {
   const { isSignedIn, handleSignIn, handleSignOut } = useGIS();
+  const { featureFlags } = useSettingsStore();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
   const { clearGapiLastRemoteUpdates } = useGapiSheetState();
   const { sheetsStats, canEnableAutoSync } = useGapiSheetsStats();
@@ -56,6 +58,10 @@ function SettingsGapiSheets() {
     setAutoSync(gapiStorage.autoSync || false);
     setSheetId(gapiStorage.sheetId || '');
   }, [gapiStorage]);
+
+  if (!featureFlags.includes(FeatureFlag.GAPI_SHEETS)) {
+    return null;
+  }
 
   return (
     <Stack

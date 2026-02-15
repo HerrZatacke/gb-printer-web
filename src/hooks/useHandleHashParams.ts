@@ -1,10 +1,12 @@
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useSettingsStore } from '@/stores/stores';
+import { FeatureFlag } from '@/types/FeatureFlags';
 
 export const useHandleHashParams = () => {
   const { getUrl } = useGalleryTreeContext();
-
+  const { setFeatureFlags } = useSettingsStore();
   const hash = (typeof window === 'undefined' || window.location.hash.length < 2) ? '' : window.location.hash;
 
   useEffect(() => {
@@ -53,6 +55,19 @@ export const useHandleHashParams = () => {
       }
 
       case 'home': {
+        goto = '/';
+        break;
+      }
+
+      case 'enableFeature': {
+        console.info(`🚩 Enabling feature "${hashSegments[1]}"`);
+        setFeatureFlags(hashSegments[1] as FeatureFlag, true);
+        break;
+      }
+
+      case 'disableFeature': {
+        console.info(`🚩 Disabling feature "${hashSegments[1]}"`);
+        setFeatureFlags(hashSegments[1] as FeatureFlag, false);
         break;
       }
 
@@ -63,9 +78,11 @@ export const useHandleHashParams = () => {
       }
     }
 
-    window.location.hash = '';
     window.setTimeout(() => {
-      redirect(goto);
+      if (goto) {
+        window.location.hash = '';
+        redirect(goto);
+      }
     }, 10);
-  }, [getUrl, hash]);
+  }, [getUrl, hash, setFeatureFlags]);
 };

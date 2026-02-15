@@ -10,6 +10,7 @@ import { SavImportOrder } from '@/consts/SavImportOrder';
 import { ThemeName } from '@/consts/theme';
 import { defaultLocale, locales } from '@/i18n/locales';
 import cleanUrl from '@/tools/cleanUrl';
+import { FeatureFlag } from '@/types/FeatureFlags';
 import type { VideoParams } from '@/types/VideoParams';
 import { PROJECT_PREFIX } from './constants';
 
@@ -22,6 +23,7 @@ export interface Settings {
   enableDebug: boolean;
   exportFileTypes: string[];
   exportScaleFactors: number[];
+  featureFlags: FeatureFlag[];
   fileNameStyle: FileNameStyle;
   forceMagicCheck: boolean;
   galleryView: GalleryViews;
@@ -53,6 +55,7 @@ interface Actions {
   setEnableDebug: (enableDebug: boolean) => void;
   setExportFileTypes: (exportFileTypes: string[]) => void;
   setExportScaleFactors: (exportScaleFactors: number[]) => void;
+  setFeatureFlags: (featureFlag: FeatureFlag, enable: boolean) => void;
   setFileNameStyle: (fileNameStyle: FileNameStyle) => void;
   setForceMagicCheck: (forceMagicCheck: boolean) => void;
   setGalleryView: (galleryView: GalleryViews) => void;
@@ -103,6 +106,7 @@ export const createSettingsStore = () => (
         enableDebug: false,
         exportFileTypes: ['png'],
         exportScaleFactors: [4],
+        featureFlags: [],
         fileNameStyle: FileNameStyle.FULL,
         forceMagicCheck: false,
         galleryView: GalleryViews.GALLERY_VIEW_1X,
@@ -153,6 +157,21 @@ export const createSettingsStore = () => (
         )),
 
         setExportScaleFactors: (exportScaleFactors: number[]) => set({ exportScaleFactors }),
+
+        setFeatureFlags: (featureFlag: FeatureFlag, enable: boolean) => set(({ featureFlags }) => {
+          const newFlags = new Set<FeatureFlag>(featureFlags);
+
+          if (enable) {
+            newFlags.add(featureFlag);
+          } else {
+            newFlags.delete(featureFlag);
+          }
+
+          return {
+            featureFlags: [...newFlags],
+          };
+        }),
+
         setExportFileTypes: (exportFileTypes: string[]) => set({ exportFileTypes }),
 
         setPreferredLocale: (preferredLocale: string) => {
