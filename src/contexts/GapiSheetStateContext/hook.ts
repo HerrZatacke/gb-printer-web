@@ -123,8 +123,11 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
     try {
       await enqueueSheetsClientRequest(async (sheetsClient) => {
-        const { token } = gapiStorage;
-        if (!token) {
+        const { token, tokenExpiry } = gapiStorage;
+
+        const tokenExpiresInMs = (tokenExpiry || 0) - Date.now() - 10000;
+
+        if (!token || tokenExpiresInMs < 0) {
           console.log('📊 NOT updating sheet dates');
           setSheets([]);
           setGapiLastRemoteUpdates(null);
