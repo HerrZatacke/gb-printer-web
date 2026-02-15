@@ -14,65 +14,65 @@ import type { VideoParams } from '@/types/VideoParams';
 import { PROJECT_PREFIX } from './constants';
 
 export interface Settings {
-  activePalette: string,
-  alwaysShowDownloadDialog: boolean,
-  bitmapQueueDither: boolean,
-  bitmapQueueSetting: ImportContrastValue,
-  createGroup: boolean,
-  enableDebug: boolean,
-  exportFileTypes: string[],
-  exportScaleFactors: number[],
-  fileNameStyle: FileNameStyle,
-  forceMagicCheck: boolean,
-  galleryView: GalleryViews,
-  galleryClickAction: GalleryClickAction,
-  handleExportFrame: ExportFrameMode,
-  hideDates: boolean,
-  importDeleted: boolean,
-  importLastSeen: boolean,
-  importPad: boolean,
-  lastBaudRate: number,
-  pageSize: number,
-  preferredLocale: string,
-  printerParams: string,
-  printerUrl: string,
-  savFrameTypes: string,
-  savImportOrder: SavImportOrder,
-  themeName: ThemeName,
-  sortPalettes: PaletteSortMode,
-  useSerials: boolean,
-  videoParams: VideoParams,
+  activePalette: string;
+  alwaysShowDownloadDialog: boolean;
+  bitmapQueueDither: boolean;
+  bitmapQueueSetting: ImportContrastValue;
+  createGroup: boolean;
+  enableDebug: boolean;
+  exportFileTypes: string[];
+  exportScaleFactors: number[];
+  fileNameStyle: FileNameStyle;
+  forceMagicCheck: boolean;
+  galleryView: GalleryViews;
+  galleryClickAction: GalleryClickAction;
+  handleExportFrame: ExportFrameMode;
+  hideDates: boolean;
+  importDeleted: boolean;
+  importLastSeen: boolean;
+  importPad: boolean;
+  lastBaudRate: number;
+  pageSize: number;
+  preferredLocale: string;
+  printerParams: string;
+  printerUrl: string;
+  savFrameTypes: string;
+  savImportOrder: SavImportOrder;
+  themeName: ThemeName;
+  sortPalettes: PaletteSortMode;
+  useSerials: boolean;
+  videoParams: VideoParams;
 }
 
 interface Actions {
-  setActivePalette: (activePalette: string) => void,
-  setAlwaysShowDownloadDialog: (alwaysShowDownloadDialog: boolean) => void,
-  setBitmapQueueDither: (bitmapQueueDither: boolean) => void,
-  setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => void,
-  setCreateGroup: (createGroup: boolean) => void,
-  setEnableDebug: (enableDebug: boolean) => void,
-  setExportFileTypes: (exportFileTypes: string[]) => void,
-  setExportScaleFactors: (exportScaleFactors: number[]) => void
-  setFileNameStyle: (fileNameStyle: FileNameStyle) => void,
-  setForceMagicCheck: (forceMagicCheck: boolean) => void,
-  setGalleryView: (galleryView: GalleryViews) => void,
-  setGalleryClickAction: (galleryClickAction: GalleryClickAction) => void,
-  setHandleExportFrame: (handleExportFrame: ExportFrameMode) => void,
-  setHideDates: (hideDates: boolean) => void,
-  setImportDeleted: (importDeleted: boolean) => void,
-  setImportLastSeen: (importLastSeen: boolean) => void,
-  setImportPad: (importPad: boolean) => void,
-  setLastBaudRate: (lastBaudRate: number) => void,
-  setPageSize: (pageSize: number) => void
-  setPreferredLocale: (preferredLocale: string) => void,
-  setPrinterParams: (printerParams: string) => void,
-  setPrinterUrl: (printerUrl: string) => void,
-  setSavFrameTypes: (savFrameTypes: string) => void,
-  setSavImportOrder: (savImportOrder: SavImportOrder) => void,
-  setThemeName: (themeName: ThemeName) => void,
-  setSortPalettes: (sortPalettes: PaletteSortMode) => void,
-  setUseSerials: (useSerials: boolean) => void,
-  setVideoParams: (videoParams: Partial<VideoParams>) => void,
+  setActivePalette: (activePalette: string) => void;
+  setAlwaysShowDownloadDialog: (alwaysShowDownloadDialog: boolean) => void;
+  setBitmapQueueDither: (bitmapQueueDither: boolean) => void;
+  setBitmapQueueSetting: (bitmapQueueSetting: ImportContrastValue) => void;
+  setCreateGroup: (createGroup: boolean) => void;
+  setEnableDebug: (enableDebug: boolean) => void;
+  setExportFileTypes: (exportFileTypes: string[]) => void;
+  setExportScaleFactors: (exportScaleFactors: number[]) => void;
+  setFileNameStyle: (fileNameStyle: FileNameStyle) => void;
+  setForceMagicCheck: (forceMagicCheck: boolean) => void;
+  setGalleryView: (galleryView: GalleryViews) => void;
+  setGalleryClickAction: (galleryClickAction: GalleryClickAction) => void;
+  setHandleExportFrame: (handleExportFrame: ExportFrameMode) => void;
+  setHideDates: (hideDates: boolean) => void;
+  setImportDeleted: (importDeleted: boolean) => void;
+  setImportLastSeen: (importLastSeen: boolean) => void;
+  setImportPad: (importPad: boolean) => void;
+  setLastBaudRate: (lastBaudRate: number) => void;
+  setPageSize: (pageSize: number) => void;
+  setPreferredLocale: (preferredLocale: string) => void;
+  setPrinterParams: (printerParams: string) => void;
+  setPrinterUrl: (printerUrl: string) => void;
+  setSavFrameTypes: (savFrameTypes: string) => void;
+  setSavImportOrder: (savImportOrder: SavImportOrder) => void;
+  setThemeName: (themeName: ThemeName) => void;
+  setSortPalettes: (sortPalettes: PaletteSortMode) => void;
+  setUseSerials: (useSerials: boolean) => void;
+  setVideoParams: (videoParams: Partial<VideoParams>) => void;
 }
 
 export type SettingsState = Settings & Actions;
