@@ -8,14 +8,14 @@ import { useStores } from '@/hooks/useStores';
 import useTrashbin from '@/hooks/useTrashbin';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
 
-if (typeof window !== 'undefined') {
-  import('@/tools/generateDebugImages')
-    .then(({ generateDebugImages }) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      window.generateDebugImages = generateDebugImages;
-    });
-}
+// if (typeof window !== 'undefined') {
+//   import('@/tools/generateDebugImages')
+//     .then(({ generateDebugImages }) => {
+//       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//       // @ts-expect-error
+//       window.generateDebugImages = generateDebugImages;
+//     });
+// }
 
 function GlobalAppInit({ children }: PropsWithChildren) {
   useFileDrop();
