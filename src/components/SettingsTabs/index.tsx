@@ -7,7 +7,9 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useEnv } from '@/contexts/envContext';
+import { useSettingsStore } from '@/stores/stores';
 import { reduceItems } from '@/tools/reduceArray';
+import { FeatureFlag } from '@/types/FeatureFlags';
 
 interface Tab {
   path: string,
@@ -17,6 +19,7 @@ interface Tab {
 
 function SettingsTabs() {
   const pathName = usePathname();
+  const { featureFlags } = useSettingsStore();
   const env = useEnv();
   const t = useTranslations('SettingsTabs');
 
@@ -27,6 +30,16 @@ function SettingsTabs() {
         headline: t('genericSettings'),
         prefetch: true,
       },
+      (
+        process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID &&
+        process.env.NEXT_PUBLIC_GOOGLE_SCOPE &&
+        featureFlags.includes(FeatureFlag.GAPI_SHEETS)
+      ) ?
+        {
+          path: '/settings/gsheets/',
+          headline: t('gapiSheetsSettings'),
+          prefetch: false,
+        } : null,
       process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
         {
           path: '/settings/dropbox/',
@@ -53,12 +66,13 @@ function SettingsTabs() {
       },
     ]
       .reduce(reduceItems<Tab>, [])
-  ), [t, env]);
+  ), [t, featureFlags, env?.env]);
 
   const tabsValue = useMemo<string | null>(() => {
     if (
       !tabs.length ||
-      pathName === '/settings'
+      pathName === '/settings' ||
+      tabs.findIndex(({ path }) => (path === pathName)) === -1
     ) {
       return null;
     }

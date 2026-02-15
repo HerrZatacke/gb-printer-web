@@ -67,6 +67,29 @@
     "addNetwork": "Aggiungi rete",
     "saveSettings": "Salva impostazioni WLAN"
   },
+  "SettingsGapiSheets": {
+    "about": "Questa è una funzionalità sperimentale. La sessione deve essere rinnovata ogni 60 minuti.",
+    "tokenExpiry": "La sessione scadrà tra {time}",
+    "enableStorage": "Usa Google Sheets come archivio",
+    "enableAutoSync": "Sincronizzare automaticamente",
+    "sheetId": "ID del foglio",
+    "sheetIdHelper": "Puoi incollare il link di modifica completo per ottenere l'ID del foglio corretto.",
+    "authenticate": "Autentica",
+    "logout": "Disconnetti",
+    "openSheetLink": "Apri il foglio in una nuova scheda"
+  },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Titolo",
+    "columns": "Colonne",
+    "rows": "Righe",
+    "lastLocalUpdate": "Ultimo aggiornamento locale",
+    "lastRemoteUpdate": "Ultimo aggiornamento remoto",
+    "refreshStats":  "Aggiornare le proprietà",
+    "syncPush": "Sincronizzare con Sheets",
+    "syncMerge":  "Unire con Sheets",
+    "syncPull": "Sincronizzare da Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Aggiungi plugin",
     "addPluginHelper": "🔗 Puoi trovare una selezione di plugin qui",
@@ -129,6 +152,7 @@
   "SettingsTabs": {
     "genericSettings": "Impostazioni generali",
     "dropboxSettings": "Impostazioni Dropbox",
+    "gapiSheetsSettings": "Impostazioni Google Sheets",
     "wifiSettings": "Impostazioni WLAN",
     "pluginSettings": "Impostazioni plugin",
     "gitSettings": "Impostazioni Git"
@@ -137,7 +161,6 @@
     "resetGroups": "Ripristina gruppi di immagini",
     "exportAll": "Esporta tutto",
     "exportPlugins": "Esporta plugin",
-    "hashCleanup": "Pulizia hash",
     "persistState": {
       "isPersistent": "L'archivio è persistente",
       "requestPersistence": "Richiedi persistenza archivio",
@@ -494,7 +517,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Aggiornamento completato {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Aggiornamento in corso... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Aggiornamento non riuscito",
+    "dialogHeaderError": "❌ Aggiornamento non riuscito {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Mostra tutti i {count} messaggi",
     "reduceMessages": "Riduci messaggi",
     "startedAt": "Iniziato alle: {time}",

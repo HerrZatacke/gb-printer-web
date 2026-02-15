@@ -67,6 +67,29 @@
     "addNetwork": "Lägg till nätverk",
     "saveSettings": "Spara WiFi-inställningar"
   },
+  "SettingsGapiSheets": {
+    "about": "Detta är en experimentell funktion. Sessionen måste förnyas var 60:e minut.",
+    "tokenExpiry": "Sessionen upphör om {time}",
+    "enableStorage": "Använd Google Sheets som lagring",
+    "enableAutoSync": "Synkronisera automatiskt",
+    "sheetId": "Sheet-ID",
+    "sheetIdHelper": "Du kan klistra in hela redigeringslänken för att få korrekt blad-ID.",
+    "authenticate": "Autentisera",
+    "logout": "Logga ut",
+    "openSheetLink": "Öppna blad i ny flik"
+  },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Titel",
+    "columns": "Kolumner",
+    "rows": "Rader",
+    "lastLocalUpdate": "Senaste lokala uppdatering",
+    "lastRemoteUpdate": "Senaste fjärruppdatering",
+    "refreshStats":  "Uppdatera egenskaper",
+    "syncPush": "Synkronisera till Sheets",
+    "syncMerge":  "Sammanfoga med Sheets",
+    "syncPull": "Synkronisera från Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Lägg till plugin",
     "addPluginHelper": "🔗 Ett urval av plugins hittar du här",
@@ -131,13 +154,13 @@
     "dropboxSettings": "Dropbox-inställningar",
     "wifiSettings": "WiFi-inställningar",
     "pluginSettings": "Plugin-inställningar",
-    "gitSettings": "Git-inställningar"
+    "gitSettings": "Git-inställningar",
+    "gapiSheetsSettings": "Google Sheets-inställningar"
   },
   "ExportSettings": {
     "resetGroups": "Återställ bildgrupper",
     "exportAll": "Exportera allt",
     "exportPlugins": "Exportera plugins",
-    "hashCleanup": "Hash-rensning",
     "persistState": {
       "isPersistent": "Lagring är persistent",
       "requestPersistence": "Begär lagrings-persistens",
@@ -494,7 +517,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Uppdatering klar {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Uppdaterar... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Uppdateringen misslyckades",
+    "dialogHeaderError": "❌ Uppdateringen misslyckades {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Visa alla {count} meddelanden",
     "reduceMessages": "Minska meddelanden",
     "startedAt": "Startad vid: {time}",

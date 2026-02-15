@@ -1,5 +1,4 @@
 import Stack from '@mui/material/Stack';
-import type { Theme } from '@mui/system';
 import React from 'react';
 import { useInteractionsStore } from '@/stores/stores';
 import ErrorMessage from './ErrorMessage';
@@ -11,15 +10,16 @@ function Error() {
   return (
     <Stack
       direction="column"
+      alignItems="end"
       gap={4}
-      sx={(theme: Theme) => (
-        {
-          position: 'fixed',
-          top: theme.spacing(10),
-          right: theme.spacing(2),
-          zIndex: 30,
-        }
-      )}
+      sx={{
+        position: 'fixed',
+        top: 80,
+        left: 16,
+        right: 16,
+        zIndex: 30,
+        pointerEvents: 'none',
+      }}
     >
       { errors.map((errorMessage, index) => (
         <ErrorMessage

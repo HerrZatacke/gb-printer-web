@@ -67,6 +67,29 @@
     "addNetwork": "Legg til nettverk",
     "saveSettings": "Lagre WiFi-innstillinger"
   },
+  "SettingsGapiSheets": {
+    "about": "Dette er en eksperimentell funksjon. Økten må fornyes hvert 60. minutt.",
+    "tokenExpiry": "Økten utløper om {time}",
+    "enableStorage": "Bruk Google Sheets som lagring",
+    "enableAutoSync": "Synkronisere automatisk",
+    "sheetId": "Regneark-ID",
+    "sheetIdHelper": "Du kan lime inn hele redigeringslinken for å få riktig regneark-ID.",
+    "authenticate": "Autentiser",
+    "logout": "Logg ut",
+    "openSheetLink": "Åpne ark i ny fane"
+  },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Tittel",
+    "columns": "Kolonner",
+    "rows": "Rader",
+    "lastLocalUpdate": "Siste lokale oppdatering",
+    "lastRemoteUpdate": "Siste eksterne oppdatering",
+    "refreshStats":  "Oppdater egenskaper",
+    "syncPush": "Synkroniser til Sheets",
+    "syncMerge":  "Slå sammen med Sheets",
+    "syncPull": "Synkroniser fra Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Legg til plugin",
     "addPluginHelper": "🔗 Et utvalg av plugins finner du her",
@@ -129,6 +152,7 @@
   "SettingsTabs": {
     "genericSettings": "Generelle innstillinger",
     "dropboxSettings": "Dropbox-innstillinger",
+    "gapiSheetsSettings": "Google Sheets-innstillinger",
     "wifiSettings": "WiFi-innstillinger",
     "pluginSettings": "Plugin-innstillinger",
     "gitSettings": "Git-innstillinger"
@@ -137,7 +161,6 @@
     "resetGroups": "Tilbakestill bildegrupper",
     "exportAll": "Eksporter alt",
     "exportPlugins": "Eksporter plugins",
-    "hashCleanup": "Hash-opprydding",
     "persistState": {
       "isPersistent": "Lagring er persistent",
       "requestPersistence": "Be om lagrings-persistens",
@@ -494,7 +517,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Oppdatering fullført {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Oppdaterer... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Oppdatering mislyktes",
+    "dialogHeaderError": "❌ Oppdatering mislyktes {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Vis alle {count} meldinger",
     "reduceMessages": "Reduser meldinger",
     "startedAt": "Startet kl.: {time}",

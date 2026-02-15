@@ -1,14 +1,15 @@
+import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import createWrappedInstance from './createWrappedInstance';
 
 const localforageImages = createWrappedInstance<string>({
   name: 'GB Printer Web',
   storeName: 'gb-printer-web-images',
-});
+}, SheetName.BIN_IMAGES);
 
 const localforageFrames = createWrappedInstance<string>({
   name: 'GB Printer Web',
   storeName: 'gb-printer-web-frames',
-});
+}, SheetName.BIN_FRAMES);
 
 if (typeof window !== 'undefined') {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

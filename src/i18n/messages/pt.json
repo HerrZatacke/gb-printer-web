@@ -67,6 +67,29 @@
     "addNetwork": "Adicionar rede",
     "saveSettings": "Guardar definições Wi-Fi"
   },
+  "SettingsGapiSheets": {
+    "about": "Esta é uma funcionalidade experimental. A sessão requer renovação a cada 60 minutos.",
+    "tokenExpiry": "A sessão irá expirar em {time}",
+    "enableStorage": "Usar Google Sheets como armazenamento",
+    "enableAutoSync": "Sincronizar automaticamente",
+    "sheetId": "ID da folha",
+    "sheetIdHelper": "Podes colar o link de edição completo para obteres o ID da folha correto.",
+    "authenticate": "Autenticar",
+    "logout": "Terminar sessão",
+    "openSheetLink": "Abrir planilha em nova aba"
+  },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Título",
+    "columns": "Colunas",
+    "rows": "Linhas",
+    "lastLocalUpdate": "Última atualização local",
+    "lastRemoteUpdate": "Última atualização remota",
+    "refreshStats":  "Atualizar propriedades",
+    "syncPush": "Sincronizar para o Sheets",
+    "syncMerge":  "Mesclar com o Sheets",
+    "syncPull": "Sincronizar do Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Adicionar plugin",
     "addPluginHelper": "🔗 Uma seleção de plugins pode ser encontrada aqui",
@@ -129,6 +152,7 @@
   "SettingsTabs": {
     "genericSettings": "Definições genéricas",
     "dropboxSettings": "Definições do Dropbox",
+    "gapiSheetsSettings": "Definições do Google Sheets",
     "wifiSettings": "Definições Wi-Fi",
     "pluginSettings": "Definições de plugins",
     "gitSettings": "Definições do Git"
@@ -137,7 +161,6 @@
     "resetGroups": "Repor grupos de imagens",
     "exportAll": "Exportar tudo",
     "exportPlugins": "Exportar plugins",
-    "hashCleanup": "Limpar hash",
     "persistState": {
       "isPersistent": "Armazenamento é persistente",
       "requestPersistence": "Solicitar persistência de armazenamento",
@@ -494,7 +517,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Atualização concluída {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ A atualizar... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ A atualização falhou",
+    "dialogHeaderError": "❌ A atualização falhou {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Mostrar todas as {count} mensagens",
     "reduceMessages": "Reduzir mensagens",
     "startedAt": "Iniciado às: {time}",

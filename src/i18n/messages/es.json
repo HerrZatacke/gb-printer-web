@@ -67,6 +67,29 @@
     "addNetwork": "Agregar red",
     "saveSettings": "Guardar configuraciones WiFi"
   },
+  "SettingsGapiSheets": {
+    "about": "Esta es una función experimental. La sesión requiere renovación cada 60 minutos.",
+    "tokenExpiry": "La sesión expirará en {time}",
+    "enableStorage": "Usar Google Sheets como almacenamiento",
+    "enableAutoSync": "Sincronizar automáticamente",
+    "sheetId": "ID de hoja",
+    "sheetIdHelper": "Puedes pegar el enlace completo de edición para obtener el ID de hoja correcto.",
+    "authenticate": "Autenticar",
+    "logout": "Cerrar sesión",
+    "openSheetLink": "Abrir hoja en una nueva pestaña"
+  },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Título",
+    "columns": "Columnas",
+    "rows": "Filas",
+    "lastLocalUpdate": "Última actualización local",
+    "lastRemoteUpdate": "Última actualización remota",
+    "refreshStats":  "Actualizar propiedades",
+    "syncPush": "Sincronizar con Sheets",
+    "syncMerge":  "Combinar con Sheets",
+    "syncPull": "Sincronizar desde Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Agregar plugin",
     "addPluginHelper": "🔗 Puedes encontrar una selección de plugins aquí",
@@ -129,6 +152,7 @@
   "SettingsTabs": {
     "genericSettings": "Configuraciones generales",
     "dropboxSettings": "Configuraciones de Dropbox",
+    "gapiSheetsSettings": "Configuración de Google Sheets",
     "wifiSettings": "Configuraciones WiFi",
     "pluginSettings": "Configuraciones de plugin",
     "gitSettings": "Configuraciones de Git"
@@ -137,7 +161,6 @@
     "resetGroups": "Restablecer grupos de imágenes",
     "exportAll": "Exportar todo",
     "exportPlugins": "Exportar plugins",
-    "hashCleanup": "Limpieza de hash",
     "persistState": {
       "isPersistent": "El almacenamiento es persistente",
       "requestPersistence": "Solicitar persistencia de almacenamiento",
@@ -494,7 +517,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Actualización completada {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Actualizando... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Error al actualizar",
+    "dialogHeaderError": "❌ Error al actualizar {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Mostrar todos los {count} mensajes",
     "reduceMessages": "Reducir mensajes",
     "startedAt": "Iniciado en: {time}",

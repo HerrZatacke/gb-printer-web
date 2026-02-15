@@ -2,10 +2,11 @@ import predefinedPalettes from 'gb-palettes';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { SpecialTags } from '@/consts/SpecialTags';
+import { GapiLastUpdates, SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { PROJECT_PREFIX } from '@/stores/constants';
 import { cleanupItems } from '@/stores/migrations/cleanupItems';
 import { migrateItems } from '@/stores/migrations/history/0/migrateItems';
-import { createSplitStorage } from '@/stores/storage/splitStorage';
+import { createSplitStorage, gapiLastUpdatesDefaults } from '@/stores/storage/splitStorage';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
 import uniqueBy from '@/tools/unique/by';
@@ -38,34 +39,49 @@ export interface Values {
   plugins: Plugin[],
   imageGroups: SerializableImageGroup[],
   images: Image[],
+  gapiLastLocalUpdates: GapiLastUpdates,
 }
 
 interface Actions {
+  // Frame updates
   addFrames: (frames: Frame[]) => void,
-  addPalettes: (palettes: Palette[]) => void,
   deleteFrame: (id: string) => void,
-  deletePalette: (shortName: string) => void,
-  deletePlugin: (pluginUrl: string) => void,
+
+  // FrameGroup updates
   updateFrameGroups: (frameGroups: FrameGroup[]) => void,
+
+  // Palette updates
+  addPalettes: (palettes: Palette[]) => void,
+  deletePalette: (shortName: string) => void,
+
+  // Plugin updates
   addUpdatePluginProperties: (plugin: Plugin) => void,
+  deletePlugin: (pluginUrl: string) => void,
   updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues,
+
+  // Image updates
+  addImages: (images: Image[]) => void,
+  deleteImages: (hashes: string[]) => void,
+  updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void,
+  updateImages: (images: Image[]) => void,
+  updateFrames: (frames: Frame[]) => void,
+
+  // ImageGroup updates
   addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
   deleteImageGroup: (groupId: string) => void,
   updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
   groupImagesAdd: (imageGroupId: string, images: string[]) => void,
   ungroupImages: (images: string[]) => void,
-  setImageGroups: (imageGroups: SerializableImageGroup[]) => void,
 
-  addImages: (images: Image[]) => void,
-  deleteImages: (hashes: string[]) => void,
-  updateImageHash: (oldHash: string, image: Image) => void,
-  updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void,
-  updateImages: (images: Image[]) => void,
-  updateFrames: (frames: Frame[]) => void,
+  // Global Updates
+  setFrames: (frames: Frame[], timestampOverride?: number) => void,
+  setFrameGroups: (frameGroups: FrameGroup[], timestampOverride?: number) => void,
+  setImages: (images: Image[], timestampOverride?: number) => void,
+  setImageGroups: (imageGroups: SerializableImageGroup[], timestampOverride?: number) => void,
+  setPalettes: (palettes: Palette[], timestampOverride?: number) => void,
+  setPlugins: (plugins: Plugin[], timestampOverride?: number) => void,
 
-  setFrames: (frames: Frame[]) => void,
-  setImages: (images: Image[]) => void,
-  setPalettes: (palettes: Palette[]) => void,
+  setLastUpdate: (sheetName: SheetName, timestampOverride?: number) => void,
 }
 
 export type ItemsState = Values & Actions;
@@ -83,6 +99,23 @@ const withPredefinedPalettes = (palettes: Palette[]): Palette[] => palettesUniqu
   ...palettes,
 ]);
 
+const updateLastLocalUpdates = (get: () => ItemsState, sheetNames: SheetName[], timestampOverride?: number): Partial<ItemsState> => {
+  const { gapiLastLocalUpdates } = get();
+  const timestamp = typeof timestampOverride === 'number' ? timestampOverride : Date.now();
+
+  const newGapiLastLocalUpdates = {
+    ...gapiLastLocalUpdates,
+  };
+
+  sheetNames.forEach((sheetName) => {
+    newGapiLastLocalUpdates[sheetName] = timestamp;
+  });
+
+  return ({
+    gapiLastLocalUpdates: newGapiLastLocalUpdates,
+  });
+};
+
 export const createItemsStore = () => (
   create<ItemsState>()(
     persist(
@@ -93,9 +126,13 @@ export const createItemsStore = () => (
         plugins: [],
         imageGroups: [],
         images: [],
+        gapiLastLocalUpdates: gapiLastUpdatesDefaults(0),
 
         addFrames: (frames: Frame[]) => set((itemsState) => (
-          { frames: sortAndUniqueById([...frames, ...itemsState.frames]) }
+          {
+            frames: sortAndUniqueById([...frames, ...itemsState.frames]),
+            ...updateLastLocalUpdates(get, [SheetName.FRAMES]),
+          }
         )),
 
         addPalettes: (palettes: Palette[]) => {
@@ -121,23 +158,36 @@ export const createItemsStore = () => (
                 update.find(({ shortName }) => shortName === statePalette.shortName) || statePalette
               )),
             ]),
+            ...updateLastLocalUpdates(get, [SheetName.PALETTES]),
           });
         },
 
         deleteFrame: (frameId: string) => (set(({ frames }) => (
-          { frames: sortAndUniqueById(frames.filter((frame) => frameId !== frame.id)) }
+          {
+            frames: sortAndUniqueById(frames.filter((frame) => frameId !== frame.id)),
+            ...updateLastLocalUpdates(get, [SheetName.FRAMES]),
+          }
         ))),
 
         deletePalette: (shortName: string) => set(({ palettes }) => (
-          { palettes: palettes.filter((palette) => shortName !== palette.shortName) }
+          {
+            palettes: palettes.filter((palette) => shortName !== palette.shortName),
+            ...updateLastLocalUpdates(get, [SheetName.PALETTES]),
+          }
         )),
 
         deletePlugin: (pluginUrl: string) => set(({ plugins }) => (
-          { plugins: sortByNameUniqueByUrl(plugins.filter((plugin) => pluginUrl !== plugin.url)) }
+          {
+            plugins: sortByNameUniqueByUrl(plugins.filter((plugin) => pluginUrl !== plugin.url)),
+            ...updateLastLocalUpdates(get, [SheetName.PLUGINS]),
+          }
         )),
 
         updateFrameGroups: (frameGroups: FrameGroup[]) => (set((itemsState) => (
-          { frameGroups: frameGroupsUniqueById([...frameGroups, ...itemsState.frameGroups]) }
+          {
+            frameGroups: frameGroupsUniqueById([...frameGroups, ...itemsState.frameGroups]),
+            ...updateLastLocalUpdates(get, [SheetName.FRAME_GROUPS]),
+          }
         ))),
 
         updatePluginConfig: (url: string, key: string, value: string | number): PluginConfigValues => {
@@ -165,6 +215,7 @@ export const createItemsStore = () => (
             plugins: plugins.map((mapPlugin): Plugin => (
               mapPlugin.url !== url ? mapPlugin : changedPlugin
             )),
+            ...updateLastLocalUpdates(get, [SheetName.PLUGINS]),
           });
 
           return newConfigValues;
@@ -184,6 +235,7 @@ export const createItemsStore = () => (
             plugins: sortByNameUniqueByUrl(updatedPlugins.map((mapPlugin) => (
               (mapPlugin.url !== plugin.url) ? mapPlugin : { ...mapPlugin, ...plugin }
             ))),
+            ...updateLastLocalUpdates(get, [SheetName.PLUGINS]),
           });
         },
 
@@ -200,7 +252,10 @@ export const createItemsStore = () => (
             return { ...group, groups: groupGroups, images };
           });
 
-          set({ imageGroups: groupUniqueById([...groups, imageGroup]) });
+          set({
+            imageGroups: groupUniqueById([...groups, imageGroup]),
+            ...updateLastLocalUpdates(get, [SheetName.IMAGE_GROUPS]),
+          });
         },
 
         deleteImageGroup: (groupId: string) => {
@@ -234,7 +289,10 @@ export const createItemsStore = () => (
             return [...acc, reduceGroup];
           }, []);
 
-          set({ imageGroups });
+          set({
+            imageGroups,
+            ...updateLastLocalUpdates(get, [SheetName.IMAGE_GROUPS]),
+          });
         },
 
         updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
@@ -252,7 +310,10 @@ export const createItemsStore = () => (
             return updateGroup.id === imageGroup.id ? imageGroup : updateGroup;
           });
 
-          set({ imageGroups });
+          set({
+            imageGroups,
+            ...updateLastLocalUpdates(get, [SheetName.IMAGE_GROUPS]),
+          });
         },
 
         groupImagesAdd: (imageGroupId: string, images: string[]) => set((itemsState) => ({
@@ -270,6 +331,7 @@ export const createItemsStore = () => (
               images: group.images.filter((hash) => !images.includes(hash)),
             }
           )),
+          ...updateLastLocalUpdates(get, [SheetName.IMAGE_GROUPS]),
         })),
 
         ungroupImages: (images: string[]) => set((itemsState) => ({
@@ -278,22 +340,17 @@ export const createItemsStore = () => (
             // remove images from imageGroup - images will move to root group
             images: group.images.filter((hash) => !images.includes(hash)),
           })),
+          ...updateLastLocalUpdates(get, [SheetName.IMAGE_GROUPS]),
         })),
-
-        setImageGroups: (imageGroups: SerializableImageGroup[]) => set({ imageGroups }),
 
         addImages: (images: Image[]) => set((itemsState) => ({
           images: imagesUniqueByHash([...itemsState.images, ...images]),
+          ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES]),
         })),
 
         deleteImages: (hashes: string[]) => set((itemsState) => ({
           images: [...itemsState.images.filter(({ hash }) => !hashes.includes(hash))],
-        })),
-
-        updateImageHash: (oldHash: string, image: Image) => set((itemsState) => ({
-          images: itemsState.images.map((stateImage) => (
-            (stateImage.hash === oldHash) ? image : stateImage
-          )),
+          ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES]),
         })),
 
         updateImageFavouriteTag: (isFavourite: boolean, hash: string) => set((itemsState) => ({
@@ -307,6 +364,7 @@ export const createItemsStore = () => (
               ),
             } : image
           )),
+          ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES]),
         })),
 
         updateImages: (images: Image[]) => set((itemsState) => {
@@ -316,22 +374,56 @@ export const createItemsStore = () => (
             images: itemsState.images.map((stateImage) => (
               changedImagesMap.get(stateImage.hash) || stateImage
             )),
+            ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES]),
           };
         }),
 
         updateFrames: (frames: Frame[]) => set((itemsState) => {
+          console.log('updateFrames', frames);
           const changedFramesMap = new Map(frames.map((frm) => [frm.hash, frm]));
 
           return {
             frames: itemsState.frames.map((stateFrame) => (
               changedFramesMap.get(stateFrame.hash) || stateFrame
             )),
+            ...updateLastLocalUpdates(get, [SheetName.FRAMES]),
           };
         }),
 
-        setFrames: (frames: Frame[]) => set({ frames: framesUniqueById(frames) }),
-        setImages: (images: Image[]) => set({ images: imagesUniqueByHash(images) }),
-        setPalettes: (palettes: Palette[]) => set({ palettes: withPredefinedPalettes(palettes) }),
+        setFrames: (frames: Frame[], timestampOverride?: number) => set({
+          frames: framesUniqueById(frames),
+          ...updateLastLocalUpdates(get, [SheetName.FRAMES], timestampOverride),
+        }),
+
+        setFrameGroups: (frameGroups: FrameGroup[], timestampOverride?: number) => set({
+          frameGroups: frameGroupsUniqueById(frameGroups),
+          ...updateLastLocalUpdates(get, [SheetName.FRAME_GROUPS], timestampOverride),
+        }),
+
+        setImages: (images: Image[], timestampOverride?: number) => set({
+          images: imagesUniqueByHash(images),
+          ...updateLastLocalUpdates(get, [SheetName.IMAGES, SheetName.RGBN_IMAGES], timestampOverride),
+        }),
+
+        setImageGroups: (imageGroups: SerializableImageGroup[], timestampOverride?: number) => set({
+          imageGroups,
+          ...updateLastLocalUpdates(get, [SheetName.IMAGE_GROUPS], timestampOverride),
+        }),
+
+        setPalettes: (palettes: Palette[], timestampOverride?: number) => set({
+          palettes: withPredefinedPalettes(palettes),
+          ...updateLastLocalUpdates(get, [SheetName.PALETTES], timestampOverride),
+        }),
+
+        setPlugins: (plugins: Plugin[], timestampOverride?: number) => set({
+          plugins: pluginsUniqueByUrl(plugins),
+          ...updateLastLocalUpdates(get, [SheetName.PLUGINS], timestampOverride),
+        }),
+
+        // Pure timestamp update
+        setLastUpdate: (sheetName: SheetName, timestampOverride?: number) => set({
+          ...updateLastLocalUpdates(get, [sheetName], timestampOverride),
+        }),
       }),
       {
         name: `${PROJECT_PREFIX}-items`,
@@ -364,6 +456,7 @@ export const createItemsStore = () => (
             error: undefined,
           })),
           palettes: state.palettes.filter(({ isPredefined }) => !isPredefined),
+          gapiLastLocalUpdates: state.gapiLastLocalUpdates,
         }),
 
         onRehydrateStorage: () => (hydratedState) => {

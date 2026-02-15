@@ -3,6 +3,7 @@ import localforage from 'localforage';
 import { hash as ohash } from 'ohash';
 import { createJSONStorage, PersistStorage } from 'zustand/middleware';
 import { StorageValue } from 'zustand/middleware/persist';
+import { GapiLastUpdates } from '@/contexts/GapiSheetStateContext/consts';
 import { type Values } from '@/stores/itemsStore';
 import sortBy from '@/tools/sortby';
 import { type Frame } from '@/types/Frame';
@@ -17,6 +18,20 @@ interface WrappedForage<T> {
   loadData: () => Promise<T[]>;
   dropDB: () => Promise<void>;
 }
+
+export const gapiLastUpdatesDefaults = (when: number): GapiLastUpdates => {
+  return {
+    images: when,
+    rgbnImages: when,
+    frames: when,
+    palettes: when,
+    plugins: when,
+    imageGroups: when,
+    frameGroups: when,
+    binImages: when,
+    binFrames: when,
+  };
+};
 
 const wrapForage = <FT>(storeName: string, keyField: keyof FT): WrappedForage<FT> => {
   const instance = localforage.createInstance({
@@ -107,13 +122,14 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
 
     busy = true;
 
-    console.log('start storing items');
+    console.log('⚙️ start storing items');
     const start = performance.now();
 
     const { state, version } = storageValue;
 
     // sequentially saving seems to be slightly faster than Promise.all([...]);
     await rootStore.setItem('version', version);
+    await rootStore.setItem('gapiLastLocalUpdates', JSON.stringify(state.gapiLastLocalUpdates));
     await frameGroupsStore.setData(state.frameGroups);
     await framesStore.setData(state.frames);
     await imagesStore.setData(state.images);
@@ -121,7 +137,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
     await palettesStore.setData(state.palettes);
     await pluginsStore.setData(state.plugins);
 
-    console.log(`saved in ${(performance.now() - start).toFixed(2)}ms`);
+    console.log(`⚙️ saved in ${(performance.now() - start).toFixed(2)}ms`);
 
     busy = false;
 
@@ -146,6 +162,22 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
     }
   };
 
+  const getLastLocalUpdate = async (): Promise<GapiLastUpdates> => {
+    if (typeof window === 'undefined') {
+      return gapiLastUpdatesDefaults(0);
+    }
+
+    const rawUpdates = await rootStore.getItem<string>('gapiLastLocalUpdates');
+
+    if (!rawUpdates) {
+      return gapiLastUpdatesDefaults(0);
+    }
+
+    const parsed = JSON.parse(rawUpdates || 'null') as GapiLastUpdates | null;
+
+    return parsed || gapiLastUpdatesDefaults(0);
+  };
+
   const loadRootData = async (): Promise<{
     state: Values,
     version: number,
@@ -154,8 +186,9 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
 
     if (typeof version !== 'number') { return null; }
 
-    console.log('start loading items');
+    console.log('⚙️ start loading items');
     const start = performance.now();
+
 
     const state: Values = {
       frameGroups: await frameGroupsStore.loadData(), // sorted later in useFrameGroups-hook
@@ -164,9 +197,10 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
       images: await imagesStore.loadData(),
       palettes: sortByShortName(await palettesStore.loadData()),
       plugins: sortByTitle(await pluginsStore.loadData()),
+      gapiLastLocalUpdates: await getLastLocalUpdate(),
     };
 
-    console.log(`loaded in ${(performance.now() - start).toFixed(2)}ms`);
+    console.log(`⚙️ loaded in ${(performance.now() - start).toFixed(2)}ms`);
 
     return {
       state,
@@ -208,7 +242,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
       //   jsonStorage.setItem(name, storageValue);
       // }
 
-      console.log(`Items storage will use roughly ${filesize(JSON.stringify(storageValue).length)}`);
+      console.log(`⚙️ Items storage will use roughly ${filesize(JSON.stringify(storageValue).length)}`);
 
       const results = await Promise.allSettled([
         Promise.resolve().then(() => jsonStorage.setItem(name, storageValue)),

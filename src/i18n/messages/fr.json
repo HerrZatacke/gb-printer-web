@@ -67,6 +67,29 @@
     "addNetwork": "Ajouter un réseau",
     "saveSettings": "Enregistrer les paramètres WiFi"
   },
+  "SettingsGapiSheets": {
+    "about": "Ceci est une fonctionnalité expérimentale. La session doit être renouvelée toutes les 60 minutes.",
+    "tokenExpiry": "La session expirera dans {time}",
+    "enableStorage": "Utiliser Google Sheets comme stockage",
+    "enableAutoSync": "Synchroniser automatiquement",
+    "sheetId": "ID de feuille",
+    "sheetIdHelper": "Vous pouvez coller le lien d'édition complet pour obtenir le bon ID de feuille.",
+    "authenticate": "Authentifier",
+    "logout": "Se déconnecter",
+    "openSheetLink": "Ouvrir la feuille dans un nouvel onglet"
+  },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Titre",
+    "columns": "Colonnes",
+    "rows": "Lignes",
+    "lastLocalUpdate": "Dernière mise à jour locale",
+    "lastRemoteUpdate": "Dernière mise à jour distante",
+    "refreshStats":  "Actualiser les propriétés",
+    "syncPush": "Synchroniser vers Sheets",
+    "syncMerge":  "Fusionner avec Sheets",
+    "syncPull": "Synchroniser depuis Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Ajouter un plugin",
     "addPluginHelper": "🔗 Vous trouverez une sélection de plugins ici",
@@ -129,6 +152,7 @@
   "SettingsTabs": {
     "genericSettings": "Paramètres généraux",
     "dropboxSettings": "Paramètres Dropbox",
+    "gapiSheetsSettings": "Paramètres Google Sheets",
     "wifiSettings": "Paramètres WiFi",
     "pluginSettings": "Paramètres des plugins",
     "gitSettings": "Paramètres Git"
@@ -137,7 +161,6 @@
     "resetGroups": "Réinitialiser les groupes d'images",
     "exportAll": "Tout exporter",
     "exportPlugins": "Exporter les plugins",
-    "hashCleanup": "Nettoyage des hash",
     "persistState": {
       "isPersistent": "Le stockage est persistant",
       "requestPersistence": "Demander la persistance du stockage",
@@ -494,7 +517,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Mise à jour terminée {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Mise à jour... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Échec de la mise à jour",
+    "dialogHeaderError": "❌ Échec de la mise à jour {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Afficher tous les {count} messages",
     "reduceMessages": "Réduire les messages",
     "startedAt": "Démarré à : {time}",

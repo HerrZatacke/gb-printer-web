@@ -67,6 +67,29 @@
     "addNetwork": "Netwerk toevoegen",
     "saveSettings": "WiFi-instellingen opslaan"
   },
+  "SettingsGapiSheets": {
+    "about": "Dit is een experimentele functie. De sessie moet elke 60 minuten worden vernieuwd.",
+    "tokenExpiry": "Sessie verloopt over {time}",
+    "enableStorage": "Gebruik Google Sheets als opslag",
+    "enableAutoSync": "Automatisch synchroniseren",
+    "sheetId": "Sheet-ID",
+    "sheetIdHelper": "Je kunt de volledige bewerkingslink plakken om de juiste sheet-id te krijgen.",
+    "authenticate": "Authenticeren",
+    "logout": "Uitloggen",
+    "openSheetLink": "Werkblad in nieuw tabblad openen"
+  },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Titel",
+    "columns": "Kolommen",
+    "rows": "Rijen",
+    "lastLocalUpdate": "Laatste lokale update",
+    "lastRemoteUpdate": "Laatste externe update",
+    "refreshStats":  "Eigenschappen vernieuwen",
+    "syncPush": "Synchroniseren naar Sheets",
+    "syncMerge":  "Samenvoegen met Sheets",
+    "syncPull": "Synchroniseren vanuit Sheets"
+  },
   "SettingsPlugins": {
     "addPlugin": "Plugin toevoegen",
     "addPluginHelper": "🔗 Een selectie van plugins vind je hier",
@@ -129,6 +152,7 @@
   "SettingsTabs": {
     "genericSettings": "Algemene instellingen",
     "dropboxSettings": "Dropbox-instellingen",
+    "gapiSheetsSettings": "Google Sheets-instellingen",
     "wifiSettings": "WiFi-instellingen",
     "pluginSettings": "Plugin-instellingen",
     "gitSettings": "Git-instellingen"
@@ -137,7 +161,6 @@
     "resetGroups": "Afbeeldingsgroepen resetten",
     "exportAll": "Alles exporteren",
     "exportPlugins": "Plugins exporteren",
-    "hashCleanup": "Hash-opruiming",
     "persistState": {
       "isPersistent": "Opslag is persistent",
       "requestPersistence": "Opslag-persistentie aanvragen",
@@ -494,7 +517,7 @@
   "ProgressLogBox": {
     "dialogHeaderDone": "✔️ Update voltooid {repo, select, NO_REPO {} other {- {repo}}}",
     "dialogHeaderUpdating": "⏳ Bijwerken... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Bijwerken mislukt",
+    "dialogHeaderError": "❌ Bijwerken mislukt {repo, select, NO_REPO {} other {- {repo}}}",
     "showAllMessages": "Alle {count} berichten tonen",
     "reduceMessages": "Berichten verminderen",
     "startedAt": "Gestart om: {time}",

@@ -67,6 +67,29 @@
     "addNetwork": "Netzwerk hinzufügen",
     "saveSettings": "WLAN-Einstellungen speichern"
   },
+  "SettingsGapiSheets": {
+    "about": "Dies ist eine experimentelle Funktion. Die Sitzung muss alle 60 Minuten erneuert werden.",
+    "tokenExpiry": "Die Sitzung läuft in {time} ab",
+    "enableStorage": "Google Sheets als Speicher verwenden",
+    "enableAutoSync": "Automatisch synchronisieren",
+    "sheetId": "Sheet-ID",
+    "sheetIdHelper": "Du kannst den kompletten Bearbeitungslink einfügen, um die korrekte Sheet-ID zu erhalten.",
+    "authenticate": "Authentifizieren",
+    "logout": "Abmelden",
+    "openSheetLink": "Sheet in neuem Tab öffnen"
+  },
+  "SheetsTable": {
+    "id": "ID",
+    "title": "Titel",
+    "columns": "Spalten",
+    "rows": "Zeilen",
+    "lastLocalUpdate": "Letzte lokale Aktualisierung",
+    "lastRemoteUpdate": "Letzte entfernte Aktualisierung",
+    "refreshStats":  "Eigenschaften aktualisieren",
+    "syncPush": "Nach Sheets synchronisieren",
+    "syncMerge":  "Mit Sheets zusammenführen",
+    "syncPull": "Von Sheets synchronisieren"
+  },
   "SettingsPlugins": {
     "addPlugin": "Plugin hinzufügen",
     "addPluginHelper": "🔗 Eine Auswahl von Plugins findest du hier",
@@ -129,6 +152,7 @@
   "SettingsTabs": {
     "genericSettings": "Allgemeine Einstellungen",
     "dropboxSettings": "Dropbox-Einstellungen",
+    "gapiSheetsSettings": "Google Sheets Einstellungen",
     "wifiSettings": "WLAN-Einstellungen",
     "pluginSettings": "Plugin-Einstellungen",
     "gitSettings": "Git-Einstellungen"
@@ -137,7 +161,6 @@
     "resetGroups": "Bildgruppen zurücksetzen",
     "exportAll": "Alles exportieren",
     "exportPlugins": "Plugins exportieren",
-    "hashCleanup": "Hash-Bereinigung",
     "persistState": {
       "isPersistent": "Speicher ist persistent",
       "requestPersistence": "Speicher-Persistenz anfordern",

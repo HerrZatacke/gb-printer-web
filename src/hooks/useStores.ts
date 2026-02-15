@@ -20,7 +20,6 @@ export interface UseStores {
   globalUpdate: (state: Partial<ExportableState>) => void,
   importQueueCancel: () => void,
   setDialog: (dialog: Dialog) => void,
-  updateImageHash: (oldHash: string, image: Image) => void,
   updateImages: (images: Image[]) => void,
   updateLastSyncLocalNow: () => void,
 }
@@ -36,7 +35,6 @@ export const useStores = (): UseStores => {
     deleteImages,
     setImageGroups,
     updateFrameGroups,
-    updateImageHash,
     updateImages,
     setFrames,
     setImages,
@@ -63,12 +61,6 @@ export const useStores = (): UseStores => {
     const combinedUpdateImages = (images: Image[]) => {
       updateImages(images);
       updateLastSyncLocalNow();
-    };
-
-    const combinedUpdateImageHash = (oldHash: string, image: Image) => {
-      cancelEditImages();
-      updateLastSyncLocalNow();
-      updateImageHash(oldHash, image);
     };
 
     const combinedDeleteImages = (hashes: string[]) => {
@@ -106,7 +98,7 @@ export const useStores = (): UseStores => {
       }
 
       if (state.frameGroups) {
-        updateFrameGroups(state.frameGroups);
+        updateFrameGroups(state.frameGroups); // updateFrameGroups merges
       }
 
       if (state.imageGroups) {
@@ -121,7 +113,6 @@ export const useStores = (): UseStores => {
       globalUpdate: combinedGlobalUpdate,
       importQueueCancel: combinedImportQueueCancel,
       setDialog,
-      updateImageHash: combinedUpdateImageHash,
       updateImages: combinedUpdateImages,
       updateLastSyncLocalNow,
     });
@@ -141,7 +132,6 @@ export const useStores = (): UseStores => {
     setPrinterBusy,
     setSyncLastUpdate,
     updateFrameGroups,
-    updateImageHash,
     updateImageSelection,
     updateImages,
     updateRecentImports,
