@@ -1,6 +1,6 @@
 import { hash as ohash } from 'ohash';
 import Queue from 'promise-queue';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { type GapiLastUpdates, sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import { createGapiLastUpdates } from '@/contexts/GapiSheetStateContext/tools/createGapiLastUpdates';
 import { isGapiError } from '@/contexts/GapiSheetStateContext/tools/isGapiError';
@@ -25,7 +25,7 @@ export interface GapiSheetStateContextType {
 export const useContextHook = (): GapiSheetStateContextType => {
   const { gapiStorage, setGapiSettings } = useStoragesStore();
   const { setError } = useInteractionsStore();
-  const { isReady } = useGIS();
+  const { isReady: gisIsReady } = useGIS();
   const [busy, setBusy] = useState(false);
   const [gapiClient, setGapiClient] = useState<typeof gapi.client | null>(null);
   const [sheets, setSheets] = useState<Sheet[]>([]);
@@ -92,7 +92,7 @@ export const useContextHook = (): GapiSheetStateContextType => {
   }, [gapiClient?.sheets, setError, setGapiSettings]);
 
   const initClient = useCallback(async () => {
-    if (!isReady || !gapiStorage.use) {
+    if (!gisIsReady || !gapiStorage.use) {
       setGapiClient(null);
       return;
     }
@@ -108,7 +108,7 @@ export const useContextHook = (): GapiSheetStateContextType => {
 
       setGapiClient(patchGapiClient(gapi.client, increaseReads, increaseWrites));
     });
-  }, [gapiClient, gapiStorage.use, increaseReads, increaseWrites, isReady]);
+  }, [gapiClient, gapiStorage.use, increaseReads, increaseWrites, gisIsReady]);
 
   const updateSheets = useCallback(async () => {
     window.clearTimeout(refreshHandle.current);
@@ -170,6 +170,10 @@ export const useContextHook = (): GapiSheetStateContextType => {
   }, []);
 
   useEffect(() => { initClient(); }, [gapiStorage, initClient]);
+
+  const isReady = useMemo(() => (
+    Boolean(gisIsReady && gapiClient)
+  ), [gapiClient, gisIsReady]);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
