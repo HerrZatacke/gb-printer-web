@@ -45,6 +45,7 @@ function FolderBreadcrumb() {
                 component={NextLink}
                 title={group.title}
                 href={link}
+                prefetch={false}
               >
                 { index ? shorten(group.title, 30) : <HomeIcon fontSize="small" /> }
               </Link>
@@ -53,6 +54,7 @@ function FolderBreadcrumb() {
                 component={NextLink}
                 title={group.title}
                 href={link}
+                prefetch={false}
                 sx={{ fontSize: 16 }}
               >
                 <HomeIcon fontSize="inherit" />

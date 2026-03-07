@@ -311,6 +311,7 @@ function SettingsGeneric() {
                 <Link
                   component={NextLink}
                   href="/import"
+                  prefetch={false}
                 >
                   {chunks}
                 </Link>
