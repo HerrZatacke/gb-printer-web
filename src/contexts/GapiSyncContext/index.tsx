@@ -7,6 +7,7 @@ const gapiSyncContext = createContext<GapiSyncContextType>({
   performMerge: async () => {},
   performPull: async () => {},
   performPush: async () => {},
+  recoverImage: () => false,
   busy: false,
 });
 

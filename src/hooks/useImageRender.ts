@@ -2,6 +2,7 @@ import { type RGBNPalette } from 'gb-image-decoder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
+import useGapiSync from '@/contexts/GapiSyncContext';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
@@ -28,6 +29,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
   const { frames: allFrames, palettes: allPalettes, images: allImages } = useItemsStore();
+  const { recoverImage } = useGapiSync();
 
   const { galleryImageData } = useGalleryImage(hash);
 
@@ -35,15 +37,18 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
 
   const loadImageTiles = useCallback(
     (imgHash: string, noDummy?: boolean, overrideFrame?: string, hashesOverride?: RGBNHashes) => {
-      const recoverFn = () => {
-        dropboxStorageTool(stores, remoteImport).recoverImageData(imgHash);
+      const recoverFn = async () => {
+        const gapiRecovered = await recoverImage(imgHash);
+        if (!gapiRecovered) {
+          await dropboxStorageTool(stores, remoteImport).recoverImageData(imgHash);
+        }
       };
 
       const imageLoader = getLoadImageTiles(allImages, allFrames, recoverFn);
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashesOverride);
     },
-    [allImages, allFrames, stores, remoteImport],
+    [allImages, allFrames, recoverImage, stores, remoteImport],
   );
 
   const isRGB = useMemo(() => {

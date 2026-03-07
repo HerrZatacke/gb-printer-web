@@ -1,7 +1,8 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useGapiSheetState from '@/contexts/GapiSheetStateContext';
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { getLastUpdate } from '@/contexts/GapiSheetStateContext/tools/getLastUpdate';
+import { getBinImagesByHashes } from '@/contexts/GapiSyncContext/tools/getBinImagesByHashes';
 import {
   createOptionsBinaryFrames,
   createOptionsBinaryImages,
@@ -17,7 +18,7 @@ import { pullItems } from '@/contexts/GapiSyncContext/tools/pullItems';
 import { pushItems } from '@/contexts/GapiSyncContext/tools/pushItems';
 import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
 import useTrashbin from '@/hooks/useTrashbin';
-import { useItemsStore, useStoragesStore } from '@/stores/stores';
+import { useInteractionsStore, useItemsStore, useStoragesStore } from '@/stores/stores';
 import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import { PushOptions } from '@/tools/sheetConversion/types';
@@ -55,13 +56,77 @@ export interface GapiSyncContextType {
   performPush: (options: PerformPushOptions) => Promise<void>;
   performPull: (options: PerformPullOptions) => Promise<void>;
   performMerge: (options: PerformMergeOptions) => Promise<void>;
+  recoverImage: (hash: string) => boolean;
 }
 
 export const useContextHook = (): GapiSyncContextType => {
   const { gapiLastRemoteUpdates, updateSheets, enqueueSheetsClientRequest, isReady, busy } = useGapiSheetState();
-  const { gapiLastLocalUpdates } = useItemsStore();
+  const { gapiLastLocalUpdates, updateImages } = useItemsStore();
   const { gapiStorage, setGapiSettings } = useStoragesStore();
+  const { setError } = useInteractionsStore();
   const { checkUpdateTrashCount } = useTrashbin();
+  const [recoveryTasks, setRecoveryTasks] = useState<string[]>([]);
+
+
+  const recoverImage = useCallback((hash: string): boolean => {
+    if (!gapiStorage.use) {
+      return false;
+    }
+
+    setRecoveryTasks((currentTasks) => {
+      if (currentTasks.includes(hash)) {
+        return currentTasks;
+      }
+
+      return [...currentTasks, hash];
+    });
+
+    return true;
+  }, [gapiStorage.use]);
+
+  useEffect(() => {
+    const { sheetId, use } =  gapiStorage;
+
+    if (!sheetId || !isReady || !use || !recoveryTasks.length) {
+      return;
+    }
+
+    const handle = window.setTimeout(async () => {
+      await enqueueSheetsClientRequest(async (sheetsClient) => {
+        if (recoveryTasks.length) {
+          setRecoveryTasks([]);
+
+          const toRecoverHashes = new Set(recoveryTasks);
+          const recovered = await getBinImagesByHashes({
+            hashes: recoveryTasks,
+            sheetsClient,
+            spreadsheetId: sheetId,
+          });
+
+          for (const recoveredItem of recovered) {
+            if (recoveredItem.imageData) {
+              toRecoverHashes.delete(recoveredItem.hash);
+              await localforageImages.setItem(recoveredItem.hash, recoveredItem.imageData);
+            }
+          }
+
+          // some images could be recovered
+          if (toRecoverHashes.size < recoveryTasks.length) {
+            // trigger store update
+            updateImages([]);
+          }
+
+          // some could not be recovered
+          if (toRecoverHashes.size > 0) {
+            setError(new Error(`could not recover hashes:\n${[...toRecoverHashes].join('\n')}`));
+          }
+        }
+      });
+    }, 2000);
+
+    return () => window.clearInterval(handle);
+  }, [enqueueSheetsClientRequest, gapiStorage, isReady, recoveryTasks, setError, updateImages]);
+
 
   const performPush = useCallback(async ({
     sheetName,
@@ -513,5 +578,6 @@ export const useContextHook = (): GapiSyncContextType => {
     performPush,
     performPull,
     performMerge,
+    recoverImage,
   };
 };

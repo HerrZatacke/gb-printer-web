@@ -2,7 +2,7 @@
 
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -14,7 +14,6 @@ import { FeatureFlag } from '@/types/FeatureFlags';
 interface Tab {
   path: string,
   headline: string,
-  prefetch: boolean,
 }
 
 function SettingsTabs() {
@@ -28,7 +27,6 @@ function SettingsTabs() {
       {
         path: '/settings/generic/',
         headline: t('genericSettings'),
-        prefetch: true,
       },
       (
         process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID &&
@@ -38,13 +36,11 @@ function SettingsTabs() {
         {
           path: '/settings/gsheets/',
           headline: t('gapiSheetsSettings'),
-          prefetch: false,
         } : null,
       process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
         {
           path: '/settings/dropbox/',
           headline: t('dropboxSettings'),
-          prefetch: false,
         } : null,
       (
         (env?.env === 'esp8266') ||
@@ -52,17 +48,14 @@ function SettingsTabs() {
       ) ? {
         path: '/settings/wifi/',
         headline: t('wifiSettings'),
-        prefetch: false,
       } : null,
       {
         path: '/settings/plugins/',
         headline: t('pluginSettings'),
-        prefetch: false,
       },
       {
         path: '/settings/git/',
         headline: t('gitSettings'),
-        prefetch: false,
       },
     ]
       .reduce(reduceItems<Tab>, [])
@@ -87,13 +80,13 @@ function SettingsTabs() {
   return (
     <Tabs value={tabsValue}>
       {
-        tabs.map(({ headline, path, prefetch }) => (
+        tabs.map(({ headline, path }) => (
           <Tab
             label={headline}
             key={path}
-            component={Link}
+            component={NextLink}
             href={path}
-            prefetch={prefetch}
+            prefetch={false}
             value={path}
           />
         ))

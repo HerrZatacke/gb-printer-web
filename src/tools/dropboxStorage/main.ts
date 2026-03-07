@@ -205,6 +205,13 @@ export const dropBoxSyncTool = (
 
 
   const recoverImageData = async (hash: string) => {
+    const { dropboxStorage } = useStoragesStore.getState();
+    const { use, accessToken } = dropboxStorage;
+
+    if (!use || !accessToken) {
+      return;
+    }
+
     const { updateImages } = stores;
     if (!recoveryAttempts.includes(hash)) {
       // only attempt once to recover file

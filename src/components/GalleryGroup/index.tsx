@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import { blend } from '@mui/system';
 import type { Theme } from '@mui/system';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import GalleryGridItem from '@/components/GalleryGridItem';
@@ -39,7 +39,7 @@ function GalleryGroup({ hash }: Props) {
       title={group.title}
       subheader={t('itemCount', { count: group.allImages.length })}
       wrapperProps={{
-        component: Link,
+        component: NextLink,
         href: getUrl({ group: path || '', pageIndex: 0 }),
         sx: {
           textDecoration: 'none',

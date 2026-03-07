@@ -23,7 +23,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import type { Theme } from '@mui/system';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
@@ -44,7 +44,6 @@ enum NavBadgeColor {
 interface NavItem {
   label: string,
   route: string,
-  prefetch: boolean,
 }
 
 interface NavActionItem {
@@ -68,12 +67,20 @@ function Navigation() {
   const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
 
   useEffect(() => {
-    // Set "galleryRoute" on client side only to prevent hydration issues
-    setGalleryRoute(lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0, group: '' }));
+    const handle = window.setTimeout(() => {
+      // Set "galleryRoute" on client side only to prevent hydration issues
+      setGalleryRoute(lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0, group: '' }));
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [fullPath, getUrl, lastGalleryLink]);
 
   useEffect(() => {
-    setDrawerContainer(document.body);
+    const handle = window.setTimeout(() => {
+      setDrawerContainer(document.body);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, []);
 
   const {
@@ -102,32 +109,26 @@ function Navigation() {
       {
         label: t('home'),
         route: '/',
-        prefetch: false,
       },
       {
         label: t('gallery'),
         route: galleryRoute,
-        prefetch: true,
       },
       {
         label: t('import'),
         route: '/import',
-        prefetch: false,
       },
       {
         label: t('palettes'),
         route: '/palettes',
-        prefetch: true,
       },
       {
         label: t('frames'),
         route: '/frames',
-        prefetch: true,
       },
       {
         label: t('settings'),
         route: '/settings/generic',
-        prefetch: false,
       },
     ].reduce(reduceItems<NavItem>, [])
   ), [galleryRoute, t]);
@@ -203,12 +204,12 @@ function Navigation() {
                 aria-label={t('mainNavAriaLabel')}
                 sx={{ display: { xs: 'none', md: 'inline-flex' }, width: '100%' }}
               >
-                {navItems.map(({ route, label, prefetch }) => (
+                {navItems.map(({ route, label }) => (
                   <Button
                     key={route}
                     href={route}
-                    prefetch={prefetch}
-                    component={Link}
+                    prefetch={false}
+                    component={NextLink}
                     color="inherit"
                     onClick={() => setMobileNavOpen(false)}
                   >
@@ -287,7 +288,8 @@ function Navigation() {
             <ListItem key={route} disablePadding>
               <ListItemButton
                 href={route}
-                component={Link}
+                component={NextLink}
+                prefetch={false}
                 onClick={() => setMobileNavOpen(false)}
                 sx={(theme: Theme) => ({
                   '&.active': {

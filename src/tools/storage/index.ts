@@ -8,7 +8,7 @@ export interface HashedCompressed {
   compressed: string,
 }
 
-export type RecoverFn = (hash: string) => void;
+export type RecoverFn = (hash: string) => Promise<void>;
 
 export const compressAndHash = async (lines: string[]): Promise<HashedCompressed> => {
   const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
@@ -66,7 +66,7 @@ export const load = async (
     if (typeof recover === 'function') {
       // Recovery function is only used by <ImageRender> component
       // it dispatches so that data might get re-loaded from sync storage
-      recover(dataHash);
+      await recover(dataHash);
     }
 
     return noDummy ? [] : dummyImage(dataHash);

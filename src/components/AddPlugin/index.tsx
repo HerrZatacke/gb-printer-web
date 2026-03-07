@@ -49,6 +49,7 @@ function AddPlugin() {
           <Link
             component={NextLink}
             href="/settings/plugins"
+            prefetch={false}
           >
             {t('goToPlugins')}
           </Link>

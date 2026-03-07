@@ -59,38 +59,41 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       errors.push(error);
     });
 
-    setIsWorking(true);
+    const handle = window.setTimeout(() => {
+      setIsWorking(true);
 
-    api.calculate({ imageGroups, stateImages }, setErrorProxy)
-      .then((result) => {
-        setRoot(result.root);
-        setPaths(result.paths);
-        setPathsOptions(result.pathsOptions);
+      api.calculate({ imageGroups, stateImages }, setErrorProxy)
+        .then((result) => {
+          setRoot(result.root);
+          setPaths(result.paths);
+          setPathsOptions(result.pathsOptions);
 
-        if (errors.length) {
-          setError(new Error(errors.join('\n')));
-        }
+          if (errors.length) {
+            setError(new Error(errors.join('\n')));
+          }
 
-        if (imageGroups.length > result.paths.length) {
-          const idsInPaths = result.paths.map(({ group }) => group.id);
-          const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-          setImageGroups(usedGroups);
-        }
+          if (imageGroups.length > result.paths.length) {
+            const idsInPaths = result.paths.map(({ group }) => group.id);
+            const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
+            setImageGroups(usedGroups);
+          }
 
-        if (enableDebug) {
-          console.info(`worker ran for ${result.duration.toFixed(2)}ms`);
-        }
-      })
-      .catch((error: Error) => {
-        console.error(error);
-        setError(error);
-      })
-      .finally(() => {
-        setIsWorking(false);
-        worker.terminate();
-      });
+          if (enableDebug) {
+            console.info(`worker ran for ${result.duration.toFixed(2)}ms`);
+          }
+        })
+        .catch((error: Error) => {
+          console.error(error);
+          setError(error);
+        })
+        .finally(() => {
+          setIsWorking(false);
+          worker.terminate();
+        });
+    }, 1);
 
     return () => {
+      clearTimeout(handle);
       worker.terminate();
       setIsWorking(false);
     };
@@ -116,9 +119,15 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (pathname === GALLERY_BASE_PATH) {
-      const link = getUrl({ pageIndex , group: path });
-      setLastGalleryLink(link);
+      const handle = window.setTimeout(() => {
+        const link = getUrl({ pageIndex , group: path });
+        setLastGalleryLink(link);
+      }, 1);
+
+      return () => window.clearTimeout(handle);
     }
+
+    return () => {/**/};
   }, [path, pageIndex, pathname, getUrl]);
 
 
