@@ -6,6 +6,7 @@ import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
 export enum ColumnRange {
   ALL = 'all',
   HASHES = 'hashes',
+  SPECIFIC_COLUMN = 'specificColumn',
 }
 
 export interface GetRemoteSheetOptions {
@@ -13,6 +14,7 @@ export interface GetRemoteSheetOptions {
   spreadsheetId: string;
   sheetName: string;
   columnRange: ColumnRange;
+  specificColumnHeader?: string;
 }
 
 export interface RemoteSheetProperties {
@@ -23,11 +25,37 @@ export interface RemoteSheetProperties {
 }
 
 
+const getResultRange = (headers: string[], columnRange: ColumnRange, specificColumnHeader = ''): string => {
+
+  switch (columnRange) {
+    case ColumnRange.HASHES: {
+      const hashHeaderIndex = headers.indexOf(HASH_COLUMN_NAME);
+      return getSheetColumnRange(hashHeaderIndex);
+    }
+
+    case ColumnRange.SPECIFIC_COLUMN: {
+      const columnIndex = headers.indexOf(specificColumnHeader);
+      if (columnIndex === -1) {
+        throw new Error(`'${specificColumnHeader}' not in headers when trying to get column range '${ColumnRange.SPECIFIC_COLUMN}'`);
+      }
+
+      return getSheetColumnRange(columnIndex);
+      break;
+    }
+
+    case ColumnRange.ALL:
+    default:
+      return 'A:Z';
+      break;
+  }
+};
+
 export const getRemoteSheetProperties = async ({
   sheetsClient,
   spreadsheetId,
   sheetName,
   columnRange,
+  specificColumnHeader,
 }: GetRemoteSheetOptions): Promise<RemoteSheetProperties> => {
   const { result: { sheets } } = await sheetsClient.spreadsheets.get({
     spreadsheetId,
@@ -87,9 +115,8 @@ export const getRemoteSheetProperties = async ({
     range: `${sheetProperties.title}!1:1`,
   });
 
-  const headers = headerValues ? headerValues[0] : [];
-  const hashHeaderIndex = headers.indexOf(HASH_COLUMN_NAME);
-  const resultRange = columnRange === ColumnRange.ALL ? 'A:Z' : getSheetColumnRange(hashHeaderIndex);
+  const headers: string[] = headerValues ? headerValues[0] : [];
+  const resultRange = getResultRange(headers, columnRange, specificColumnHeader);
 
   const { result: { values: rangeValues } } = await sheetsClient.spreadsheets.values.get({
     spreadsheetId,
