@@ -1,0 +1,4 @@
+:HL["/gb-printer-web/_next/static/css/c3c44492e960e259.css","style"]
+:HL["/gb-printer-web/_next/static/css/930d7008377762d1.css","style"]
+:HL["/gb-printer-web/_next/static/css/8e3a559ba30ce919.css","style"]
+0:{"buildId":"MMnnhZlasnhau9yJpNTR8","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"(remote)","paramType":null,"paramKey":"(remote)","hasRuntimePrefetch":false,"slots":{"children":{"name":"db","paramType":null,"paramKey":"db","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
