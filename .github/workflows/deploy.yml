@@ -30,7 +30,6 @@ jobs:
       - name: Install npm dependencies 🔗
         if: steps.checkTag.outputs.exists == 'false'
         run: |
-          rm package-lock.json
           npm cache clear -f
           npm install
           rm -rf public/dumps/
