@@ -93,7 +93,11 @@ function SettingsGeneric() {
   } = usePaletteSort();
 
   useEffect(() => {
-    setLocaleExampleText(t('exampleDateFormat', { format: formatter(new Date()) }));
+    const handle = window.setTimeout(() => {
+      setLocaleExampleText(t('exampleDateFormat', { format: formatter(new Date()) }));
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [formatter, t]);
 
   return (
