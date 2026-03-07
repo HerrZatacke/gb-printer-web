@@ -67,12 +67,20 @@ function Navigation() {
   const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
 
   useEffect(() => {
-    // Set "galleryRoute" on client side only to prevent hydration issues
-    setGalleryRoute(lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0, group: '' }));
+    const handle = window.setTimeout(() => {
+      // Set "galleryRoute" on client side only to prevent hydration issues
+      setGalleryRoute(lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0, group: '' }));
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [fullPath, getUrl, lastGalleryLink]);
 
   useEffect(() => {
-    setDrawerContainer(document.body);
+    const handle = window.setTimeout(() => {
+      setDrawerContainer(document.body);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, []);
 
   const {
