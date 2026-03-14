@@ -59,37 +59,36 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       errors.push(error);
     });
 
-    const handle = window.setTimeout(() => {
+    const handle = window.setTimeout(async () => {
       setIsWorking(true);
 
-      api.calculate({ imageGroups, stateImages }, setErrorProxy)
-        .then((result) => {
-          setRoot(result.root);
-          setPaths(result.paths);
-          setPathsOptions(result.pathsOptions);
+      const workerResult = await api.calculate({ imageGroups, stateImages }, setErrorProxy);
 
-          if (errors.length) {
-            setError(new Error(errors.join('\n')));
-          }
+      try {
+        setRoot(workerResult.root);
+        setPaths(workerResult.paths);
+        setPathsOptions(workerResult.pathsOptions);
 
-          if (imageGroups.length > result.paths.length) {
-            const idsInPaths = result.paths.map(({ group }) => group.id);
-            const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-            setImageGroups(usedGroups);
-          }
+        if (errors.length) {
+          setError(new Error(errors.join('\n')));
+        }
 
-          if (enableDebug) {
-            console.info(`worker ran for ${result.duration.toFixed(2)}ms`);
-          }
-        })
-        .catch((error: Error) => {
-          console.error(error);
-          setError(error);
-        })
-        .finally(() => {
-          setIsWorking(false);
-          worker.terminate();
-        });
+        if (imageGroups.length > workerResult.paths.length) {
+          const idsInPaths = workerResult.paths.map(({ group }) => group.id);
+          const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
+          setImageGroups(usedGroups);
+        }
+
+        if (enableDebug) {
+          console.info(`worker ran for ${workerResult.duration.toFixed(2)}ms`);
+        }
+      } catch (error) {
+        console.error(error);
+        setError(error as Error);
+      } finally {
+        setIsWorking(false);
+        worker.terminate();
+      }
     }, 1);
 
     return () => {
