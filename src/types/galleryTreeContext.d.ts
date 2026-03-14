@@ -32,6 +32,7 @@ export interface GalleryTreeContextType {
   paths: PathMap[],
   pathsOptions: DialogOption[],
   isWorking: boolean,
+  isInitialized: boolean,
   pageIndex: number,
   path: string,
   lastGalleryLink: string,

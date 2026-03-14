@@ -30,7 +30,8 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
   covers: [],
   paths: [],
   pathsOptions: [],
-  isWorking: false,
+  isWorking: true,
+  isInitialized: false,
   pageIndex: 0,
   path: '',
   lastGalleryLink: '',
@@ -41,6 +42,7 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
 export function GalleryTreeContext({ children }: PropsWithChildren) {
   const { imageGroups, images: stateImages, setImageGroups } = useItemsStore();
   const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
+  const [isInitialized, setIsInitialized] = useState<boolean>(false); // start asto prevent navigation side effect
   const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot(stateImages));
   const [paths, setPaths] = useState<PathMap[]>([]);
   const [pathsOptions, setPathsOptions] = useState<DialogOption[]>([]);
@@ -59,37 +61,39 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       errors.push(error);
     });
 
-    const handle = window.setTimeout(() => {
+    const handle = window.setTimeout(async () => {
+      if (!imageGroups.length) { return; }
+
       setIsWorking(true);
 
-      api.calculate({ imageGroups, stateImages }, setErrorProxy)
-        .then((result) => {
-          setRoot(result.root);
-          setPaths(result.paths);
-          setPathsOptions(result.pathsOptions);
+      const workerResult = await api.calculate({ imageGroups, stateImages }, setErrorProxy);
 
-          if (errors.length) {
-            setError(new Error(errors.join('\n')));
-          }
+      try {
+        setRoot(workerResult.root);
+        setPaths(workerResult.paths);
+        setPathsOptions(workerResult.pathsOptions);
 
-          if (imageGroups.length > result.paths.length) {
-            const idsInPaths = result.paths.map(({ group }) => group.id);
-            const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-            setImageGroups(usedGroups);
-          }
+        if (errors.length) {
+          setError(new Error(errors.join('\n')));
+        }
 
-          if (enableDebug) {
-            console.info(`worker ran for ${result.duration.toFixed(2)}ms`);
-          }
-        })
-        .catch((error: Error) => {
-          console.error(error);
-          setError(error);
-        })
-        .finally(() => {
-          setIsWorking(false);
-          worker.terminate();
-        });
+        if (imageGroups.length > workerResult.paths.length) {
+          const idsInPaths = workerResult.paths.map(({ group }) => group.id);
+          const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
+          setImageGroups(usedGroups);
+        }
+
+        if (enableDebug) {
+          console.info(`worker ran for ${workerResult.duration.toFixed(2)}ms`);
+        }
+      } catch (error) {
+        console.error(error);
+        setError(error as Error);
+      } finally {
+        setIsWorking(false);
+        setIsInitialized(true);
+        worker.terminate();
+      }
     }, 1);
 
     return () => {
@@ -144,12 +148,13 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       pathsOptions,
       root,
       isWorking,
+      isInitialized,
       pageIndex,
       path,
       lastGalleryLink,
       getUrl,
     };
-  }, [paths, root, pathsOptions, isWorking, pageIndex, path, lastGalleryLink, getUrl]);
+  }, [paths, root, pathsOptions, isWorking, isInitialized, pageIndex, path, lastGalleryLink, getUrl]);
 
   return (
     <galleryTreeContext.Provider value={result}>
