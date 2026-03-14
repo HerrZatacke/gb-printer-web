@@ -31,6 +31,7 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
   paths: [],
   pathsOptions: [],
   isWorking: true,
+  isInitialized: false,
   pageIndex: 0,
   path: '',
   lastGalleryLink: '',
@@ -41,6 +42,7 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
 export function GalleryTreeContext({ children }: PropsWithChildren) {
   const { imageGroups, images: stateImages, setImageGroups } = useItemsStore();
   const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
+  const [isInitialized, setIsInitialized] = useState<boolean>(false); // start asto prevent navigation side effect
   const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot(stateImages));
   const [paths, setPaths] = useState<PathMap[]>([]);
   const [pathsOptions, setPathsOptions] = useState<DialogOption[]>([]);
@@ -89,6 +91,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
         setError(error as Error);
       } finally {
         setIsWorking(false);
+        setIsInitialized(true);
         worker.terminate();
       }
     }, 1);
@@ -145,12 +148,13 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       pathsOptions,
       root,
       isWorking,
+      isInitialized,
       pageIndex,
       path,
       lastGalleryLink,
       getUrl,
     };
-  }, [paths, root, pathsOptions, isWorking, pageIndex, path, lastGalleryLink, getUrl]);
+  }, [paths, root, pathsOptions, isWorking, isInitialized, pageIndex, path, lastGalleryLink, getUrl]);
 
   return (
     <galleryTreeContext.Provider value={result}>
