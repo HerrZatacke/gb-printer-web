@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { PathMap } from '@/types/galleryTreeContext';
@@ -14,17 +14,19 @@ export interface UsePathSegments {
 }
 
 export const usePathSegments = (): UsePathSegments => {
-  const { path: currentPath, getUrl, root, paths } = useGalleryTreeContext();
+  const { path: currentPath, getUrl, root, paths, isInitialized } = useGalleryTreeContext();
   const { getImagePageIndexInGroup, navigateToGroup } = useNavigationToolsContext();
 
-  const segments = useMemo<Segment[]>(() => {
+  const breadCrumbSlugs = useMemo(() => {
     const breadCrumbsRaw = ['', ...currentPath.split('/').filter(Boolean)];
 
-    const breadCrumbSlugs = breadCrumbsRaw.reduce((acc: string[], path: string, index: number): string[] => ([
+    return breadCrumbsRaw.reduce((acc: string[], path: string, index: number): string[] => ([
       ...acc,
       breadCrumbsRaw.slice(1, index + 1).join('/').concat('/'),
     ]), []);
+  }, [currentPath]);
 
+  const segments = useMemo<Segment[]>(() => {
     const breadCrumbPaths: PathMap[] = breadCrumbSlugs.reduce((acc: PathMap[], breadCrumbPath): PathMap[] => {
       let segmentPath: PathMap | undefined;
 
@@ -53,14 +55,19 @@ export const usePathSegments = (): UsePathSegments => {
       };
     });
 
-    // if url path does not match breadcrumb, navigater to the best possible path instead
-    if (breadCrumbSlugs.length !== breadCrumbSegments.length) {
-      const validGroupId = breadCrumbSegments[breadCrumbSegments.length - 1].group.id;
+    return breadCrumbSegments;
+  }, [breadCrumbSlugs, root, paths, getUrl, getImagePageIndexInGroup]);
+
+
+  useEffect(() => {
+    if (!isInitialized) { return; }
+
+    // if url path does not match breadcrumb, navigate to the best possible path instead
+    if (breadCrumbSlugs.length !== segments.length) {
+      const validGroupId = segments[segments.length - 1].group.id;
       navigateToGroup(validGroupId, 0);
     }
-
-    return breadCrumbSegments;
-  }, [currentPath, root, paths, getUrl, getImagePageIndexInGroup, navigateToGroup]);
+  }, [breadCrumbSlugs.length, isInitialized, navigateToGroup, segments]);
 
   return {
     segments,
