@@ -30,7 +30,7 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
   covers: [],
   paths: [],
   pathsOptions: [],
-  isWorking: false,
+  isWorking: true,
   pageIndex: 0,
   path: '',
   lastGalleryLink: '',
