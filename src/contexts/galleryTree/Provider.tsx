@@ -60,6 +60,8 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
     });
 
     const handle = window.setTimeout(async () => {
+      if (!imageGroups.length) { return; }
+
       setIsWorking(true);
 
       const workerResult = await api.calculate({ imageGroups, stateImages }, setErrorProxy);
