@@ -77,7 +77,7 @@
     "gb-image-decoder": "^2.0.4",
     "gb-palettes": "^1.0.14",
     "gbp-decode": "^1.4.1",
-    "globby": "^14.1.0",
+    "globby": "^16.1.1",
     "jszip": "^3.10.1",
     "localforage": "^1.10.0",
     "mui-markdown": "^2.1.1",
