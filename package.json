@@ -32,7 +32,7 @@
     "@mui/lab": "^7.0.1-beta.23",
     "@mui/material": "^7.3.9",
     "@mui/material-nextjs": "^7.3.9",
-    "@mui/x-date-pickers": "~7.29.4",
+    "@mui/x-date-pickers": "^8.27.2",
     "@mui/x-tree-view": "^8.27.2",
     "@octokit/rest": "^21.1.1",
     "@types/bytes": "^3.1.5",
