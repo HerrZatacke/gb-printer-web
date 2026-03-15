@@ -2,7 +2,7 @@ import { BlendMode } from 'gb-image-decoder';
 import { defaultRGBNPalette } from '@/consts/defaults';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { toCreationDate } from '@/tools/toCreationDate';
-import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
+import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 
 
 export const cleanImages = (dirtyImages: Image[]): Image[] => {

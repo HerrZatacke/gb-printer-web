@@ -46,9 +46,13 @@ export function TrackingProvider({ children }: PropsWithChildren) {
   const [consentState, setConsentGiven] = useState<ConsentState>(ConsentState.DENIED);
 
   useEffect(() => {
-    if (!trackingAvailable) return;
-    const state = localStorage.getItem(CONSENT_STORAGE_KEY) as ConsentState || ConsentState.UNKNOWN;
-    setConsentGiven(state);
+    const handle = window.setTimeout(() => {
+      if (!trackingAvailable) return;
+      const state = localStorage.getItem(CONSENT_STORAGE_KEY) as ConsentState || ConsentState.UNKNOWN;
+      setConsentGiven(state);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, []);
 
   const setConsent = useCallback((consent: ConsentState) => {

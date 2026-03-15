@@ -5,7 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import type { ImageMetadata, RGBNHashes } from '@/types/Image';
+import { type ImageMetadata, type RGBNHashes } from '@/types/Image';
 
 export interface MetaProps {
   hash: string,

@@ -60,15 +60,19 @@ function FilterForm() {
   } = useFilterForm();
 
   useEffect(() => {
-    if (tabValue) { return; }
+    const handle = window.setTimeout(() => {
+      if (tabValue) { return; }
 
-    const mostFilters = sortByCount([
-      { tab: FilterTab.FRAMES, count: activeFrames.length },
-      { tab: FilterTab.PALETTES, count: activePalettes.length },
-      { tab: FilterTab.TAGS, count: activeTags.length },
-    ]);
+      const mostFilters = sortByCount([
+        { tab: FilterTab.FRAMES, count: activeFrames.length },
+        { tab: FilterTab.PALETTES, count: activePalettes.length },
+        { tab: FilterTab.TAGS, count: activeTags.length },
+      ]);
 
-    setTabValue(mostFilters[2].tab);
+      setTabValue(mostFilters[2].tab);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [activeFrames.length, activePalettes.length, activeTags.length, tabValue]);
 
   const { palettes } = useItemsStore();

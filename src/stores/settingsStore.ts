@@ -11,7 +11,7 @@ import { ThemeName } from '@/consts/theme';
 import { defaultLocale, locales } from '@/i18n/locales';
 import cleanUrl from '@/tools/cleanUrl';
 import { FeatureFlag } from '@/types/FeatureFlags';
-import type { VideoParams } from '@/types/VideoParams';
+import { type VideoParams } from '@/types/VideoParams';
 import { PROJECT_PREFIX } from './constants';
 
 export interface Settings {

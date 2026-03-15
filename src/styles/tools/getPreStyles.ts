@@ -1,4 +1,4 @@
-import type { Theme } from '@mui/system';
+import { type Theme } from '@mui/system';
 
 export const getPreStyles = (theme: Theme, additionalStyles: object) => ({
   flexGrow: 0,

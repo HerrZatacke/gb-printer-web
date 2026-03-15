@@ -1,20 +1,23 @@
 import { saveAs } from 'file-saver';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
-import type { TrashCount } from '@/stores/interactionsStore';
-import { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
-import { useItemsStore, useInteractionsStore } from '@/stores/stores';
+import {
+  type TrashCount,
+  ITEMS_STORE_VERSION,
+  useItemsStore,
+  useInteractionsStore,
+} from '@/stores/stores';
 import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { localforageReady, localforageImages, localforageFrames } from '@/tools/localforageInstance';
-import type { WrappedLocalForageInstance } from '@/tools/localforageInstance/createWrappedInstance';
+import { type WrappedLocalForageInstance } from '@/tools/localforageInstance/createWrappedInstance';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
 import { toCreationDate } from '@/tools/toCreationDate';
-import type { JSONExportBinary, JSONExportState } from '@/types/ExportState';
-import type { Frame } from '@/types/Frame';
-import type { Image } from '@/types/Image';
+import { type JSONExportBinary, type JSONExportState } from '@/types/ExportState';
+import { type Frame } from '@/types/Frame';
+import { type Image } from '@/types/Image';
 
 export interface UseTrashbin {
   showTrashCount: (show: boolean) => void

@@ -7,28 +7,32 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import React, { useMemo, memo, type CSSProperties } from 'react';
+import React, { useMemo } from 'react';
+import { type RowComponentProps } from 'react-window';
 import GameBoyImage from '@/components/GameBoyImage';
 import { useDateFormat } from '@/hooks/useDateFormat';
-import type { FlaggedImportItem } from '@/types/ImportItem';
-import type { Palette } from '@/types/Palette';
+import { type FlaggedImportItem } from '@/types/ImportItem';
+import { type Palette } from '@/types/Palette';
 
 interface Props {
-  importItem: FlaggedImportItem,
-  windowStyle: CSSProperties,
+  importQueue: FlaggedImportItem[],
   palette: Palette,
-  importAsFrame: () => void,
-  cancelItemImport: () => void,
+  importAsFrame: (id: string) => void,
+  cancelItemImport: (id: string) => void,
 }
 
 function ImportRow({
-  importItem,
+  ariaAttributes,
+  index,
+  style,
+  importQueue,
   palette,
   importAsFrame,
   cancelItemImport,
-  windowStyle,
-}: Props) {
+}: Props & RowComponentProps) {
   const t = useTranslations('ImportRow');
+
+  const importItem = useMemo(() => importQueue[index], [importQueue, index]);
 
   const {
     tiles,
@@ -36,6 +40,7 @@ function ImportRow({
     lastModified,
     alreadyImported,
     isDuplicateInQueue,
+    tempId,
   } = importItem;
 
   const badgeProps = useMemo<BadgeOwnProps>(() => {
@@ -63,10 +68,12 @@ function ImportRow({
   return (
     <Stack
       direction="row"
+      component="li"
       gap={1}
       alignItems="stretch"
       justifyContent="left"
-      sx={windowStyle}
+      sx={style}
+      {...ariaAttributes}
     >
       <Box
         sx={{ flex: '160px 0 0' }}
@@ -101,7 +108,7 @@ function ImportRow({
           <IconButton
             title={t('importAsFrame')}
             disabled={tiles.length / 20 < 14}
-            onClick={importAsFrame}
+            onClick={() => importAsFrame(tempId)}
           >
             <CropFreeIcon />
           </IconButton>
@@ -115,7 +122,9 @@ function ImportRow({
           >
             <IconButton
               title={t('removeFromQueue')}
-              onClick={() => setTimeout(cancelItemImport, 1)}
+              onClick={() => setTimeout(() => {
+                cancelItemImport(tempId);
+              }, 1)}
             >
               <DeleteIcon />
             </IconButton>
@@ -150,4 +159,4 @@ function ImportRow({
   );
 }
 
-export default memo(ImportRow);
+export default ImportRow;

@@ -8,7 +8,7 @@ import {
 } from '@/stores/stores';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import { reduceItems } from '@/tools/reduceArray';
-import type { DialogOption, DialogQuestion, DialogResult } from '@/types/Dialog';
+import { type DialogOption, type DialogQuestion, type DialogResult } from '@/types/Dialog';
 import { ImportResult } from '@/types/ImportItem';
 import getImportSav from './importSav';
 

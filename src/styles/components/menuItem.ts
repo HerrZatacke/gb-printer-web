@@ -1,6 +1,6 @@
 import { alpha } from '@mui/material';
-import type { Components } from '@mui/material/styles';
-import type { Theme } from '@mui/system';
+import { type Components } from '@mui/material/styles';
+import { type Theme } from '@mui/system';
 
 export const menuItem = (theme: Theme): Components['MuiMenuItem'] => ({
   styleOverrides: {

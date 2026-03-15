@@ -1,4 +1,4 @@
-import type { AutocompleteInputChangeReason, AutocompleteChangeReason } from '@mui/material';
+import { type AutocompleteInputChangeReason, type AutocompleteChangeReason } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';

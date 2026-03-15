@@ -3,7 +3,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
-import type { RGBNPalette, Rotation } from 'gb-image-decoder';
+import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import React, { useMemo, useState, useEffect } from 'react';
 import FrameSelect from '@/components/FrameSelect';
@@ -11,9 +11,9 @@ import GreySelect from '@/components/GreySelect';
 import ImageMeta from '@/components/ImageMeta';
 import PaletteSelect from '@/components/PaletteSelect';
 import TagsSelect from '@/components/TagsSelect';
-import type { TagChange } from '@/tools/applyTagChanges';
-import type { TagUpdateMode } from '@/tools/modifyTagChanges';
-import type { ImageMetadata, RGBNHashes } from '@/types/Image';
+import { type TagChange } from '@/tools/applyTagChanges';
+import { type TagUpdateMode } from '@/tools/modifyTagChanges';
+import { type ImageMetadata, type RGBNHashes } from '@/types/Image';
 
 enum TabType {
   PALETTE = 'pal',

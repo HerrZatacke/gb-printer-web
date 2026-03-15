@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { Context } from 'react';
+import { type Context } from 'react';
 import { PortsContextValue } from '@/types/ports';
 
 export const portsContext: Context<PortsContextValue> = createContext<PortsContextValue>({

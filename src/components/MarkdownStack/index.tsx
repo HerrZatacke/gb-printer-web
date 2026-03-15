@@ -2,7 +2,7 @@
 
 import Stack from '@mui/material/Stack';
 import { Theme } from '@mui/system';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 export default function MarkdownStack({ children }: PropsWithChildren) {
   return (

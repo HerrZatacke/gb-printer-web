@@ -1,4 +1,4 @@
-import type { GbPalette } from 'gb-palettes';
+import { type GbPalette } from 'gb-palettes';
 
 /*
 * On Type-Changes, a history for migration must be kept in /src/javascript/app/stores/migrations/history/

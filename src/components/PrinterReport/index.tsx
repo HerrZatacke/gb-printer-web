@@ -9,7 +9,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import filesize from 'filesize';
+import { filesize } from 'filesize';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import { PrinterFunction } from '@/consts/printerFunction';

@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
-import type { EditGroupInfo } from '@/stores/editStore';
 import {
+  type EditGroupInfo,
   useEditStore,
   useFiltersStore,
   useItemsStore,

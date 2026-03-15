@@ -1,4 +1,4 @@
-import type { ImportFn } from '@/hooks/useImportExportSettings';
+import { type ImportFn } from '@/hooks/useImportExportSettings';
 import { getImportJSON } from '@/tools/importExportSettings/getImportJSON';
 import { transformBin } from '@/tools/transformBin';
 import { transformBitmaps } from '@/tools/transformBitmaps';
@@ -6,7 +6,7 @@ import { transformPlainText } from '@/tools/transformPlainText';
 import { transformReduced } from '@/tools/transformReduced';
 import { transformSav } from '@/tools/transformSav';
 import { ImportResult } from '@/types/ImportItem';
-import type { PreparedFile } from './prepareFile';
+import { type PreparedFile } from './prepareFile';
 import prepareFile from './prepareFile';
 
 export interface HandeFileImportOptions {

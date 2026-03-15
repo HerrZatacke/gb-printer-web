@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { ExportTypes } from '@/consts/exportTypes';
+import { type ExportTypes } from '@/consts/exportTypes';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useStores } from '@/hooks/useStores';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
@@ -9,8 +9,8 @@ import { getFramesForGroup } from '@/tools/getFramesForGroup';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { padFrameData } from '@/tools/saveLocalStorageItems';
 import { load } from '@/tools/storage';
-import type { Frame } from '@/types/Frame';
-import type { FrameGroup } from '@/types/FrameGroup';
+import { type Frame } from '@/types/Frame';
+import { type FrameGroup } from '@/types/FrameGroup';
 import { Image } from '@/types/Image';
 import { useImportExportSettings } from './useImportExportSettings';
 
@@ -50,20 +50,28 @@ const useFrames = (): UseFrames => {
   const [selectedFrameGroup, setSelectedFrameGroup] = useState(getValidFrameGroupId(frameGroups, savFrameTypes));
 
   useEffect(() => {
-    if (selectedFrameGroup) {
-      setGroupFrames(getFramesForGroup(frames, selectedFrameGroup));
-    } else {
-      setGroupFrames([]);
-    }
+    const handle = window.setTimeout(() => {
+      if (selectedFrameGroup) {
+        setGroupFrames(getFramesForGroup(frames, selectedFrameGroup));
+      } else {
+        setGroupFrames([]);
+      }
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [frames, selectedFrameGroup]);
 
   useEffect(() => {
-    if (selectedFrameGroup === '') {
-      const possibleFrameGroup = getValidFrameGroupId(frameGroups, savFrameTypes);
-      if (possibleFrameGroup !== '') {
-        setSelectedFrameGroup(possibleFrameGroup);
+    const handle = window.setTimeout(() => {
+      if (selectedFrameGroup === '') {
+        const possibleFrameGroup = getValidFrameGroupId(frameGroups, savFrameTypes);
+        if (possibleFrameGroup !== '') {
+          setSelectedFrameGroup(possibleFrameGroup);
+        }
       }
-    }
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [frameGroups, frames, savFrameTypes, selectedFrameGroup]);
 
   const activeFrameGroup = frameGroups.find(({ id }) => (id === selectedFrameGroup)) || frameGroups[0];

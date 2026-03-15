@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useFiltersStore } from '@/stores/stores';
-import type { FilteredImagesState } from '@/tools/getFilteredImages';
+import { type FilteredImagesState } from '@/tools/getFilteredImages';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';

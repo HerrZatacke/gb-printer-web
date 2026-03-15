@@ -1,5 +1,5 @@
 import { TreeImageGroup } from '@/types/ImageGroup';
-import type { RecentImport } from '@/types/Sync';
+import { type RecentImport } from '@/types/Sync';
 import filterSpecial from './filterSpecial';
 import filterTags from './filterTags';
 

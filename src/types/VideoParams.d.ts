@@ -1,4 +1,4 @@
-import type { ExportFrameMode } from 'gb-image-decoder';
+import { type ExportFrameMode } from 'gb-image-decoder';
 
 export interface VideoParams {
   exportFrameMode?: ExportFrameMode,

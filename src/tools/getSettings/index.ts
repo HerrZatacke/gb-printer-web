@@ -1,10 +1,13 @@
 import { ExportTypes } from '@/consts/exportTypes';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
-import { ITEMS_STORE_VERSION } from '@/stores/itemsStore';
-import type { Values } from '@/stores/itemsStore';
-import { useItemsStore, useFiltersStore } from '@/stores/stores';
-import type { ExportableState, JSONExport, JSONExportBinary } from '@/types/ExportState';
-import type { GetSettingsOptions } from '@/types/Sync';
+import {
+  type Values,
+  ITEMS_STORE_VERSION,
+  useItemsStore,
+  useFiltersStore,
+} from '@/stores/stores';
+import { type ExportableState, type JSONExport, type JSONExportBinary } from '@/types/ExportState';
+import { type GetSettingsOptions } from '@/types/Sync';
 import getFrames from './getFrames';
 import getFramesForExport from './getFramesForExport';
 import getImageHashesForExport from './getImageHashesForExport';

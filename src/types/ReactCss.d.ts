@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 
 declare module 'react' {
   interface CSSPropertiesVars extends CSSProperties {

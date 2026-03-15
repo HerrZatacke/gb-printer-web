@@ -1,4 +1,4 @@
-import type { RemoteEnv, RemotePrinterEvent } from '@/types/Printer';
+import { type RemoteEnv, type RemotePrinterEvent } from '@/types/Printer';
 
 type cleanupFn = () => void;
 

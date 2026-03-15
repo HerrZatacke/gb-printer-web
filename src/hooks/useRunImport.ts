@@ -13,7 +13,7 @@ import {
   useItemsStore,
   useSettingsStore,
 } from '@/stores/stores';
-import type { TagChange } from '@/tools/applyTagChanges';
+import { type TagChange } from '@/tools/applyTagChanges';
 import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';
 import saveNewImage from '@/tools/saveNewImage';

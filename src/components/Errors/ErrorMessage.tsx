@@ -4,9 +4,9 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import type { Theme } from '@mui/system';
+import { type Theme } from '@mui/system';
 import React, { useState } from 'react';
-import type { ErrorMessage } from '@/stores/interactionsStore';
+import { type ErrorMessage } from '@/stores/stores';
 import { getPreStyles } from '@/styles/tools/getPreStyles';
 
 interface Props {

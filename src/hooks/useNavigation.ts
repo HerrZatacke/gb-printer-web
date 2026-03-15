@@ -4,7 +4,7 @@ import {
   useSettingsStore,
   useStoragesStore,
 } from '@/stores/stores';
-import type { SyncLastUpdate } from '@/types/Sync';
+import { type SyncLastUpdate } from '@/types/Sync';
 
 interface UseNavigation {
   disableSerials: boolean,

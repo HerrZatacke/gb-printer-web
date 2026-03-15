@@ -1,9 +1,8 @@
 import { alpha } from '@mui/material';
 import Link from '@mui/material/Link';
 import { useTheme } from '@mui/material/styles';
-import type { Theme } from '@mui/system';
-import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
-import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { type Theme } from '@mui/system';
+import { TreeItem, SimpleTreeView } from '@mui/x-tree-view';
 import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useState, useEffect } from 'react';
@@ -12,7 +11,7 @@ import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';
-import type { TreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface FolderTreeItemProps {
   group: TreeImageGroup,
@@ -73,10 +72,14 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   useEffect(() => {
-    setExpandedItems((currentItems: string[]) => {
-      const fromNavi = segments.map(({ group }) => (group.id));
-      return unique([...fromNavi, ...currentItems]);
-    });
+    const handle = window.setTimeout(() => {
+      setExpandedItems((currentItems: string[]) => {
+        const fromNavi = segments.map(({ group }) => (group.id));
+        return unique([...fromNavi, ...currentItems]);
+      });
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [segments]);
 
   if (pathsOptions.length < 2) {

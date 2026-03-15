@@ -1,17 +1,17 @@
-import type { RGBNPalette, Rotation } from 'gb-image-decoder';
+import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import useBatchUpdate from '@/hooks/useBatchUpdate';
-import type { Overrides } from '@/hooks/useImageRender';
+import { type Overrides } from '@/hooks/useImageRender';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
 import { useEditStore, useItemsStore } from '@/stores/stores';
-import type { TagChange } from '@/tools/applyTagChanges';
+import { type TagChange } from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { getImageTileCount } from '@/tools/loadImageTiles';
 import modifyTagChanges from '@/tools/modifyTagChanges';
-import type { TagUpdateMode } from '@/tools/modifyTagChanges';
-import type { ImageMetadata, MonochromeImage, RGBNImage } from '@/types/Image';
-import type { ImageUpdates } from '@/types/ImageActions';
+import { type TagUpdateMode } from '@/tools/modifyTagChanges';
+import { type ImageMetadata, type MonochromeImage, type RGBNImage } from '@/types/Image';
+import { type ImageUpdates } from '@/types/ImageActions';
 
 interface Batch {
   created: boolean,

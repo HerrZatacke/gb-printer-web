@@ -1,5 +1,5 @@
 import { DialogOption } from '@/types/Dialog';
-import type { Image } from '@/types/Image';
+import { type Image } from '@/types/Image';
 import { SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
 
 export interface CalculateRootWorkerParams {

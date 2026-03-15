@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useMemo } from 'react';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import useTracking from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
@@ -11,7 +11,13 @@ import {
   useProgressStore,
 } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
-import type { InitPluginSetupParams, Plugin, PluginClassInstance, PluginImageData, PluginsContext } from '@/types/Plugin';
+import {
+  type InitPluginSetupParams,
+  type Plugin,
+  type PluginClassInstance,
+  type PluginImageData,
+  type PluginsContext,
+} from '@/types/Plugin';
 import { getCollectImageData } from './functions/collectImageData';
 import { initPlugin } from './functions/initPlugin';
 import { pluginsContext } from './index';

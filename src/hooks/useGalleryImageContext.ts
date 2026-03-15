@@ -7,8 +7,8 @@ import useTracking from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
-import type { ImageSelectionMode } from '@/stores/filtersStore';
 import {
+  type ImageSelectionMode,
   useDialogsStore,
   useEditStore,
   useFiltersStore,
@@ -17,7 +17,7 @@ import {
 } from '@/stores/stores';
 import { canShare } from '@/tools/canShare';
 import { getFilteredImages } from '@/tools/getFilteredImages';
-import type { RGBNImage } from '@/types/Image';
+import { type RGBNImage } from '@/types/Image';
 
 interface UseGalleryImageContext {
   isSelected: boolean,

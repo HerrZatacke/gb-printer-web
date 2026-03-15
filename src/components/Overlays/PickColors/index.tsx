@@ -38,18 +38,22 @@ function PickColors() {
   }, [cancelEditPalette, cancelPickColors]);
 
   useEffect(() => {
-    const lastIndex = (pickColors?.colors.length || 1) - 1;
-    if (lastIndex < 3) {
-      deny();
-      return;
-    }
+    const handle = window.setTimeout(() => {
+      const lastIndex = (pickColors?.colors.length || 1) - 1;
+      if (lastIndex < 3) {
+        deny();
+        return;
+      }
 
-    setSelected([
-      0,
-      Math.round(lastIndex * 0.33),
-      Math.round(lastIndex * 0.66),
-      lastIndex,
-    ]);
+      setSelected([
+        0,
+        Math.round(lastIndex * 0.33),
+        Math.round(lastIndex * 0.66),
+        lastIndex,
+      ]);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [deny, pickColors]);
 
   if (!pickColors) {

@@ -1,13 +1,13 @@
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import type { BlendMode, RGBNPalette } from 'gb-image-decoder';
+import { type BlendMode, type RGBNPalette } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import ColorSlider from '@/components/ColorSlider';
 import { blendModeLabels } from '@/consts/blendModes';
-import type { RGBNHashes } from '@/types/Image';
+import { type RGBNHashes } from '@/types/Image';
 
 interface Props {
   values: RGBNPalette,
@@ -15,32 +15,34 @@ interface Props {
   useChannels: Record<keyof RGBNHashes, boolean>,
 }
 
-function GreySelect(props: Props) {
+function GreySelect({ values, onChange, useChannels }: Props) {
   const t = useTranslations('GreySelect');
 
-  const [values, setValues] = useState<RGBNPalette>(props.values);
+  const [localValues, setLocalValues] = useState<RGBNPalette>(values);
 
   const debounced = useDebouncedCallback((debouncedValues) => {
-    props.onChange(debouncedValues, true);
+    onChange(debouncedValues, true);
   }, 150, { leading: true, trailing: true });
 
-  const change = (color: keyof RGBNPalette, valueUpdate: readonly number[] | string) => {
+  const change = useCallback((color: keyof RGBNPalette, valueUpdate: readonly number[] | string) => {
     const nextValues = {
-      ...values,
+      ...localValues,
       [color]: valueUpdate,
     };
-    setValues(nextValues);
-    debounced.callback(nextValues);
-  };
+    setLocalValues(nextValues);
+    debounced(nextValues);
+  }, [debounced, localValues]);
 
-  const usedChannels = (['r', 'g', 'b', 'n'] as (keyof RGBNHashes)[])
-    .reduce((acc: (keyof RGBNHashes)[], channelName: keyof RGBNHashes): (keyof RGBNHashes)[] => {
-      if (props.useChannels[channelName]) {
-        return [...acc, channelName];
-      }
+  const usedChannels = useMemo(() => (
+    (['r', 'g', 'b', 'n'] as (keyof RGBNHashes)[])
+      .reduce((acc: (keyof RGBNHashes)[], channelName: keyof RGBNHashes): (keyof RGBNHashes)[] => {
+        if (useChannels[channelName]) {
+          return [...acc, channelName];
+        }
 
-      return acc;
-    }, []);
+        return acc;
+      }, [])
+  ), [useChannels]);
 
   return (
     <Stack
@@ -57,7 +59,7 @@ function GreySelect(props: Props) {
             >
               {color === 'n' ? (
                 <TextField
-                  value={values.blend}
+                  value={localValues.blend}
                   label={t('neutralLayerBlendmode')}
                   select
                   size="small"
@@ -79,7 +81,7 @@ function GreySelect(props: Props) {
               ) : null}
               <ColorSlider
                 color={color as keyof RGBNHashes}
-                values={values[color] as number[]}
+                values={localValues[color] as number[]}
                 onChange={(valueChange) => {
                   change(color, valueChange);
                 }}

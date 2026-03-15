@@ -1,4 +1,4 @@
-import type { DownloadArrayBuffer } from '@/types/download';
+import { type DownloadArrayBuffer } from '@/types/download';
 
 const replaceDuplicateFilenames = (files: DownloadArrayBuffer[]): DownloadArrayBuffer[] => {
 

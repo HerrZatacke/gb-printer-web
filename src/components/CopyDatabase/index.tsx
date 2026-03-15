@@ -76,15 +76,19 @@ export default function CopyDatabase() {
   }, []);
 
   useEffect(() => {
-    if (!transferred) {
-      setReportText([]);
-    } else {
-      setReportText([
-        t('reportImages', { count: transferred.images.length }),
-        t('reportFrames', { count: transferred.frames.length }),
-        t('reportLocalStorage', { count: transferred.localStorageData.length }),
-      ]);
-    }
+    const handle = window.setTimeout(() => {
+      if (!transferred) {
+        setReportText([]);
+      } else {
+        setReportText([
+          t('reportImages', { count: transferred.images.length }),
+          t('reportFrames', { count: transferred.frames.length }),
+          t('reportLocalStorage', { count: transferred.localStorageData.length }),
+        ]);
+      }
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [t, transferred]);
 
   const loadRemote = useCallback(() => {

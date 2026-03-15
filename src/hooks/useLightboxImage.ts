@@ -67,19 +67,23 @@ export const useLightboxImage = (): UseLightboxImage => {
   }, [filteredImages]);
 
   useEffect(() => {
-    setCurrentInfo((prevInfo) => {
-      if (lightboxImageState === null) {
-        return null;
-      }
+    const handle = window.setTimeout(() => {
+      setCurrentInfo((prevInfo) => {
+        if (lightboxImageState === null) {
+          return null;
+        }
 
-      if (!prevInfo) {
-        sendEvent('lightBox', {
-          imageCount: nextPowerOfTwo(lightboxImageHashes.length),
-        });
-      }
+        if (!prevInfo) {
+          sendEvent('lightBox', {
+            imageCount: nextPowerOfTwo(lightboxImageHashes.length),
+          });
+        }
 
-      return createCurrentInfo(lightboxImageState);
+        return createCurrentInfo(lightboxImageState);
+      });
     });
+
+    return () => window.clearTimeout(handle);
   }, [createCurrentInfo, lightboxImageHashes.length, lightboxImageState, sendEvent]);
 
   const next = useCallback(() => {

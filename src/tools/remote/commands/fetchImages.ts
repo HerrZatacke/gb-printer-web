@@ -1,10 +1,10 @@
 import Queue from 'promise-queue';
 import fetchDumpRetry from '@/tools/remote/fetchDumpRetry';
-import type {
-  PrinterImages,
-  PrinterParams,
-  BlobResponse,
-  RemotePrinterEvent,
+import {
+  type PrinterImages,
+  type PrinterParams,
+  type BlobResponse,
+  type RemotePrinterEvent,
 } from '@/types/Printer';
 
 const queue = new Queue(1, Infinity);

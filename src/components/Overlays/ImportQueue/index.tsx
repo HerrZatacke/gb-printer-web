@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { FixedSizeList } from 'react-window';
+import { List } from 'react-window';
 import FrameSelect from '@/components/FrameSelect';
 import PaletteSelect from '@/components/PaletteSelect';
 import TagsSelect from '@/components/TagsSelect';
@@ -55,23 +55,23 @@ function ImportQueue() {
         direction="column"
         gap={4}
       >
-        <FixedSizeList
-          height={Math.min(importQueue.length * 152, height / 2)}
-          itemCount={importQueue.length}
-          itemSize={152}
+        <List
+          rowComponent={ImportRow}
+          rowCount={importQueue.length}
+          rowHeight={152}
           overscanCount={5}
-          width="100%"
-        >
-          {({ index, style }) => (
-            <ImportRow
-              windowStyle={style}
-              palette={palette}
-              importItem={importQueue[index]}
-              importAsFrame={() => importAsFrame(importQueue[index].tempId)}
-              cancelItemImport={() => cancelItemImport(importQueue[index].tempId)}
-            />
-          )}
-        </FixedSizeList>
+          rowProps={{
+            palette,
+            importQueue,
+            importAsFrame,
+            cancelItemImport,
+          }}
+          style={{
+            height: Math.min(importQueue.length * 152, height / 2),
+            width: '100%',
+          }}
+          tagName="ul"
+        />
         <ButtonGroup
           variant="contained"
           color="secondary"

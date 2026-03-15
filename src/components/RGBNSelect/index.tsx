@@ -4,7 +4,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import React, { useMemo } from 'react';
 import { getChannelColor } from '@/tools/getChannelColor';
-import type { RGBNHashes } from '@/types/Image';
+import { type RGBNHashes } from '@/types/Image';
 
 interface RGBNCheckbox {
   value: boolean,

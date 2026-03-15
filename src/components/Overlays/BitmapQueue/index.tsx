@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import ImportPreviewImage from '@/components/ImportPreviewImage';
 import Lightbox from '@/components/Lightbox';
-import type { ImportContrastValue } from '@/consts/bitmapQueueSettings';
+import { type ImportContrastValue } from '@/consts/bitmapQueueSettings';
 import { contrastSettings } from '@/consts/bitmapQueueSettings';
 import { useImportsStore, useSettingsStore } from '@/stores/stores';
 import { moveBitmapsToImport } from '@/tools/moveBitmapsToImport';

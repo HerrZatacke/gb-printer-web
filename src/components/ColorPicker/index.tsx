@@ -3,7 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useId, useState, useRef } from 'react';
 
 interface Props {
   label: string,
@@ -19,7 +19,7 @@ const isValidColor = (color: string): boolean => {
 function ColorPicker({ value, onChange, label }: Props) {
 
   const [localValue, setLocalValue] = useState(value);
-  const [id] = useState(`id-${Math.random().toString(16).split('.')[1]}`);
+  const id = useId();
 
   useEffect(() => {
     setLocalValue(value);

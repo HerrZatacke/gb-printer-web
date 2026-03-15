@@ -1,4 +1,4 @@
-import type { SerializableImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
 
 export interface SingleUsageResult {
   groups: SerializableImageGroup[],

@@ -1,4 +1,4 @@
-import type { BasicMetaData, FileMetaData, ImageMetaData, RomTypes } from '@/types/transformSav';
+import { type BasicMetaData, type FileMetaData, type ImageMetaData, type RomTypes } from '@/types/transformSav';
 import { charMapInt, charMapJp, charMapDateDigit } from './charMap';
 import { getRomType, parseCustomMetadata } from './parseCustomMetadata';
 

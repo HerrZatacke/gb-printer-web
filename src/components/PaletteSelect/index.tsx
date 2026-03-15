@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import type { Theme } from '@mui/system';
+import { type Theme } from '@mui/system';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import PaletteIcon from '@/components/PaletteIcon';

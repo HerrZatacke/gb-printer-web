@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import type { ExportTypes } from '@/consts/exportTypes';
+import { type ExportTypes } from '@/consts/exportTypes';
 import { useStores } from '@/hooks/useStores';
 import { hashImportFrames } from '@/stores/migrations/history/0/hashFrames';
 import { useItemsStore } from '@/stores/stores';
@@ -7,7 +7,7 @@ import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import mergeStates from '@/tools/mergeStates';
-import type { JSONExport, JSONExportState, ExportableState } from '@/types/ExportState';
+import { type JSONExport, type JSONExportState, type ExportableState } from '@/types/ExportState';
 
 const mergeSettings = async (
   newSettings: JSONExport,

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
 import { useDialogsStore } from '@/stores/stores';
-import type {
-  Dialog,
-  DialogQuestion,
-  DialogQuestionSelect,
-  DialogResult,
-  DialogQuestionText,
+import {
+  type Dialog,
+  type DialogQuestion,
+  type DialogQuestionSelect,
+  type DialogResult,
+  type DialogQuestionText,
 } from '@/types/Dialog';
 
 export interface UseDialog {

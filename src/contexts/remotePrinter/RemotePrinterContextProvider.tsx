@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { PrinterFunction } from '@/consts/printerFunction';
 import useImportFile from '@/hooks/useImportFile';
 import {
@@ -10,8 +10,8 @@ import {
   useProgressStore,
   useSettingsStore,
 } from '@/stores/stores';
-import type { BlobResponse, PrinterParams, RemotePrinterEvent } from '@/types/Printer';
-import type { RemotePrinterContext } from './index';
+import { type BlobResponse, type PrinterParams, type RemotePrinterEvent } from '@/types/Printer';
+import { type RemotePrinterContext } from './index';
 import { remotePrinterContext } from './index';
 
 let heartbeatTimer: number | null;

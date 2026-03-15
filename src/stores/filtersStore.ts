@@ -4,8 +4,8 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';
 import uniqueBy from '@/tools/unique/by';
-import type { Image } from '@/types/Image';
-import type { RecentImport } from '@/types/Sync';
+import { type Image } from '@/types/Image';
+import { type RecentImport } from '@/types/Sync';
 import { PROJECT_PREFIX } from './constants';
 
 export enum ImageSelectionMode {

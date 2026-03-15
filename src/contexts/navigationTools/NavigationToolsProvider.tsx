@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { type UseNavigationTools, useNavigationTools } from './index';
 
 const NavigationToolsContext = createContext<UseNavigationTools | null>(null);

@@ -1,6 +1,6 @@
 import { type RGBNPalette } from 'gb-image-decoder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { GameBoyImageProps } from '@/components/GameBoyImage';
+import { type GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
 import useGapiSync from '@/contexts/GapiSyncContext';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
@@ -38,7 +38,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const loadImageTiles = useCallback(
     (imgHash: string, noDummy?: boolean, overrideFrame?: string, hashesOverride?: RGBNHashes) => {
       const recoverFn = async () => {
-        const gapiRecovered = await recoverImage(imgHash);
+        const gapiRecovered = recoverImage(imgHash);
         if (!gapiRecovered) {
           await dropboxStorageTool(stores, remoteImport).recoverImageData(imgHash);
         }
@@ -100,11 +100,11 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   useEffect(() => {
     let aborted = false;
 
-    if (!hash) {
-      setGbImageProps(null);
-    }
-
     const loadTiles = async () => {
+      if (!hash) {
+        setGbImageProps(null);
+      }
+
       // check before async call
       if (aborted) {
         return;
@@ -137,10 +137,11 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
       }
     };
 
-    loadTiles();
+    const handle = window.setTimeout(loadTiles, 1);
 
     return () => {
       aborted = true;
+      window.clearTimeout(handle);
     };
   }, [
     frameHash,

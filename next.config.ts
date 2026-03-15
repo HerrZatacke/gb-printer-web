@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import type { NextConfig } from 'next';
+import { type NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 import { version, name, author, description, homepage } from './package.json';
 import generateWebManifest from './scripts/generateWebManifest';

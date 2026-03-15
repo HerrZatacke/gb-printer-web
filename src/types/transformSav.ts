@@ -1,5 +1,5 @@
 import { SavImportOrder } from '@/consts/SavImportOrder';
-import type { Frame } from '@/types/Frame';
+import { type Frame } from '@/types/Frame';
 
 export enum RomTypes {
   PHOTO = 'photo',

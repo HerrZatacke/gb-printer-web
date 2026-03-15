@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import type { FrameGroup } from '@/types/FrameGroup';
+import { type FrameGroup } from '@/types/FrameGroup';
 
 interface Props {
   frameIndex: number,

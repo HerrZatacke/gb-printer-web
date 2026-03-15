@@ -1,15 +1,15 @@
 import { PrinterFunction } from '@/consts/printerFunction';
-import type {
-  CheckPrinterStatus,
-  PrinterCommand,
-  PrinterFetchImagesCommand,
-  PrinterImages,
-  PrinterParams,
-  PrinterStatusCommand,
-  PrinterTestFile,
-  PrinterTestfileCommand,
-  RemoteEnv,
-  RemotePrinterEvent,
+import {
+  type CheckPrinterStatus,
+  type PrinterCommand,
+  type PrinterFetchImagesCommand,
+  type PrinterImages,
+  type PrinterParams,
+  type PrinterStatusCommand,
+  type PrinterTestFile,
+  type PrinterTestfileCommand,
+  type RemoteEnv,
+  type RemotePrinterEvent,
 } from '@/types/Printer';
 import checkPrinter from './commands/checkPrinter';
 import clearPrinter from './commands/clearPrinter';

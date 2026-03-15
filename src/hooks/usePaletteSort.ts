@@ -3,8 +3,8 @@ import { useCallback, useMemo } from 'react';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { isRGBNImage } from '@/tools/isRGBNImage';
-import type { Image, MonochromeImage } from '@/types/Image';
-import type { Palette } from '@/types/Palette';
+import { type Image, type MonochromeImage } from '@/types/Image';
+import { type Palette } from '@/types/Palette';
 
 export interface PaletteSortOption {
   label: string,

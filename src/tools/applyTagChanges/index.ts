@@ -1,4 +1,4 @@
-import type { TagUpdates } from '@/tools/modifyTagChanges';
+import { type TagUpdates } from '@/tools/modifyTagChanges';
 import unique from '../unique';
 
 export interface TagChange extends TagUpdates {

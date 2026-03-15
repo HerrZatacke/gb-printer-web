@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { useItemsStore } from '@/stores/stores';
-import type { Plugin } from '@/types/Plugin';
+import { type Plugin } from '@/types/Plugin';
 import PluginInputField from './PluginInputField';
 
 interface Props extends Plugin {

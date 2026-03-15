@@ -17,7 +17,7 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import unique from '@/tools/unique';
-import type { Image, MonochromeImage } from '@/types/Image';
+import { type Image, type MonochromeImage } from '@/types/Image';
 
 interface UseBatchButtons {
   hasPlugins: boolean,

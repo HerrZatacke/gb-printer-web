@@ -72,9 +72,13 @@ export const useFilterForm = (): UseFilterForm => {
   ), [activeFrames, frames, images]);
 
   useEffect(() => {
-    setActiveTags(stateTags);
-    setActiveFrames(stateFrames);
-    setActivePalettes(statePalettes);
+    const handle = window.setTimeout(() => {
+      setActiveTags(stateTags);
+      setActiveFrames(stateFrames);
+      setActivePalettes(statePalettes);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [stateFrames, statePalettes, stateTags]);
 
   const updateActiveTags = useCallback((tag: string, mode: ActiveFilterUpdateMode) => {

@@ -1,4 +1,4 @@
-import { type ItemsState } from '@/stores/itemsStore';
+import { type ItemsState } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { load } from '@/tools/storage';

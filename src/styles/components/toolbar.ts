@@ -1,6 +1,6 @@
-import type { Theme as ThemedTheme } from '@mui/material';
-import type { Components } from '@mui/material/styles';
-import type { Theme } from '@mui/system';
+import { type Theme as ThemedTheme } from '@mui/material';
+import { type Components } from '@mui/material/styles';
+import { type Theme } from '@mui/system';
 
 export const toolbar = (theme: Theme): Components['MuiToolbar'] => ({
   styleOverrides: {

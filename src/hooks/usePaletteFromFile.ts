@@ -1,7 +1,7 @@
 import chunk from 'chunk';
 import kmeans from 'node-kmeans';
 import quantize, { type RgbPixel } from 'quantize';
-import type { ChangeEvent } from 'react';
+import { type ChangeEvent } from 'react';
 import { useState } from 'react';
 import { useEditStore, useInteractionsStore } from '@/stores/stores';
 import getImageData from '@/tools/transformBitmaps/getImageData';

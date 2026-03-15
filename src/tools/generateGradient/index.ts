@@ -1,4 +1,4 @@
-import type { SxProps, Theme } from '@mui/material/styles';
+import { type SxProps, type Theme } from '@mui/material/styles';
 import { hexToRgbString } from '@/tools/hexToRgbString';
 
 export enum GradientType {

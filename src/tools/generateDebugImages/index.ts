@@ -4,7 +4,7 @@ import { delay } from '@/tools/delay';
 import padToHeight from '@/tools/padToHeight';
 import saveNewImage from '@/tools/saveNewImage';
 import { toCreationDate } from '@/tools/toCreationDate';
-import type { MonochromeImage } from '@/types/Image';
+import { type MonochromeImage } from '@/types/Image';
 
 const generateRandomImage = (numLines: number): string[] => {
   const totalTiles = 20 * numLines;

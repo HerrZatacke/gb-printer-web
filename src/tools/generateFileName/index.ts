@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import filenamify from 'filenamify/browser';
-import type { RGBNPalette } from 'gb-image-decoder';
+import { type RGBNPalette } from 'gb-image-decoder';
 import { FileNameStyle } from '@/consts/fileNameStyles';
-import type { Image } from '@/types/Image';
-import type { Palette } from '@/types/Palette';
+import { type Image } from '@/types/Image';
+import { type Palette } from '@/types/Palette';
 
 const joinTruthy = (parts: string[], sep = '-'): string => (
   parts.reduce((acc: string, part: string): string => (
@@ -110,7 +110,7 @@ const generateFileName = (options: FileNameOptions): string => {
 
   const joined = joinTruthy(parts);
 
-  return filenamify(joined, { replacement: '' }) as string;
+  return filenamify(joined, { replacement: '' });
 };
 
 export default generateFileName;
