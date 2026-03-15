@@ -2,7 +2,7 @@
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import filesize from 'filesize';
+import { filesize } from 'filesize';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useEnv } from '@/contexts/envContext';

@@ -1,4 +1,4 @@
-import filesize from 'filesize';
+import { filesize } from 'filesize';
 import localforage from 'localforage';
 import { hash as ohash } from 'ohash';
 import { createJSONStorage, PersistStorage } from 'zustand/middleware';
