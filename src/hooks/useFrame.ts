@@ -52,10 +52,10 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   ), [frameId, images]);
 
   useEffect(() => {
-    setImageStartLine(2);
-    setTiles([]);
+    const handle = window.setTimeout(async () => {
+      setImageStartLine(2);
+      setTiles([]);
 
-    const get = async () => {
       if (!frameHash) {
         return;
       }
@@ -65,9 +65,9 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
 
       setImageStartLine(frameData ? frameData.upper.length / 20 : 2);
       setTiles(newTiles);
-    };
+    }, 1);
 
-    get();
+    return () => window.clearTimeout(handle);
   }, [frameId, frameHash, name]);
 
   return {

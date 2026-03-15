@@ -39,13 +39,17 @@ export const useGBXCart = (): UseGBXCart => {
   const gbxCartAvailable = Boolean(gbxCart);
 
   useEffect(() => {
-    if (gbxCart) {
-      setBusy(true);
-      gbxCart.readROMName().then((romName) => {
-        setCanReadPhotoAlbums(romName.trim() === 'PHOTO');
-        setBusy(false);
-      });
-    }
+    const handle = window.setTimeout(() => {
+      if (gbxCart) {
+        setBusy(true);
+        gbxCart.readROMName().then((romName) => {
+          setCanReadPhotoAlbums(romName.trim() === 'PHOTO');
+          setBusy(false);
+        });
+      }
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [gbxCart]);
 
   useEffect(() => {

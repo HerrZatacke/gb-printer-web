@@ -73,10 +73,14 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   useEffect(() => {
-    setExpandedItems((currentItems: string[]) => {
-      const fromNavi = segments.map(({ group }) => (group.id));
-      return unique([...fromNavi, ...currentItems]);
-    });
+    const handle = window.setTimeout(() => {
+      setExpandedItems((currentItems: string[]) => {
+        const fromNavi = segments.map(({ group }) => (group.id));
+        return unique([...fromNavi, ...currentItems]);
+      });
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [segments]);
 
   if (pathsOptions.length < 2) {

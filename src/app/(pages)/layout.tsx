@@ -30,9 +30,13 @@ export default function RootLayout({
   const [ddpx, setDdpx] = useState<CSSPropertiesVars>({});
 
   useEffect(() => {
-    setDdpx({
-      '--ddpx': screenDimensions.ddpx,
-    });
+    const handle = window.setTimeout(() => {
+      setDdpx({
+        '--ddpx': screenDimensions.ddpx,
+      });
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [screenDimensions]);
 
   useEffect(() => {

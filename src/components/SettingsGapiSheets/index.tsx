@@ -54,9 +54,13 @@ function SettingsGapiSheets() {
   const t = useTranslations('SettingsGapiSheets');
 
   useEffect(() => {
-    setUse(gapiStorage.use || false);
-    setAutoSync(gapiStorage.autoSync || false);
-    setSheetId(gapiStorage.sheetId || '');
+    const handle = window.setTimeout(() => {
+      setUse(gapiStorage.use || false);
+      setAutoSync(gapiStorage.autoSync || false);
+      setSheetId(gapiStorage.sheetId || '');
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [gapiStorage]);
 
   if (!featureFlags.includes(FeatureFlag.GAPI_SHEETS)) {

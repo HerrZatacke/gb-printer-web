@@ -50,20 +50,28 @@ const useFrames = (): UseFrames => {
   const [selectedFrameGroup, setSelectedFrameGroup] = useState(getValidFrameGroupId(frameGroups, savFrameTypes));
 
   useEffect(() => {
-    if (selectedFrameGroup) {
-      setGroupFrames(getFramesForGroup(frames, selectedFrameGroup));
-    } else {
-      setGroupFrames([]);
-    }
+    const handle = window.setTimeout(() => {
+      if (selectedFrameGroup) {
+        setGroupFrames(getFramesForGroup(frames, selectedFrameGroup));
+      } else {
+        setGroupFrames([]);
+      }
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [frames, selectedFrameGroup]);
 
   useEffect(() => {
-    if (selectedFrameGroup === '') {
-      const possibleFrameGroup = getValidFrameGroupId(frameGroups, savFrameTypes);
-      if (possibleFrameGroup !== '') {
-        setSelectedFrameGroup(possibleFrameGroup);
+    const handle = window.setTimeout(() => {
+      if (selectedFrameGroup === '') {
+        const possibleFrameGroup = getValidFrameGroupId(frameGroups, savFrameTypes);
+        if (possibleFrameGroup !== '') {
+          setSelectedFrameGroup(possibleFrameGroup);
+        }
       }
-    }
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [frameGroups, frames, savFrameTypes, selectedFrameGroup]);
 
   const activeFrameGroup = frameGroups.find(({ id }) => (id === selectedFrameGroup)) || frameGroups[0];

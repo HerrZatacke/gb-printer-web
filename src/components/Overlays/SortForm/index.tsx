@@ -27,8 +27,12 @@ function SortForm() {
   const [sortOrder, setSortOrder] = useState<SortDirection>(formSortOrder);
 
   useEffect(() => {
-    setSortBy(formSortBy);
-    setSortOrder(formSortOrder);
+    const handle = window.setTimeout(() => {
+      setSortBy(formSortBy);
+      setSortOrder(formSortOrder);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [setSortBy, setSortOrder, visible, formSortBy, formSortOrder]);
 
   if (!visible) {

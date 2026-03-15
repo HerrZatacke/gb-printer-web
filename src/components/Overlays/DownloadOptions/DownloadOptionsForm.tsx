@@ -39,11 +39,15 @@ function DownloadOptionsForm({ inDialog }: Props) {
   const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<string[]>(['txt', 'pgm']);
 
   useEffect(() => {
-    setSupportedExportFileTypes([
-      ...supportedCanvasImageFormats(),
-      'txt',
-      'pgm',
-    ]);
+    const handle = window.setTimeout(() => {
+      setSupportedExportFileTypes([
+        ...supportedCanvasImageFormats(),
+        'txt',
+        'pgm',
+      ]);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, []);
 
   return (

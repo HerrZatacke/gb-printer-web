@@ -52,16 +52,20 @@ function GalleryViewSelect() {
   const [galleryViews, setGalleryViews] = useState<GalleryViews[]>([]);
 
   useEffect(() => {
-    setGalleryViews(ddpx > 1 ? [
-      GalleryViews.GALLERY_VIEW_SMALL,
-      GalleryViews.GALLERY_VIEW_1X,
-      GalleryViews.GALLERY_VIEW_2X,
-      GalleryViews.GALLERY_VIEW_MAX,
-    ] : [
-      GalleryViews.GALLERY_VIEW_1X,
-      GalleryViews.GALLERY_VIEW_2X,
-      GalleryViews.GALLERY_VIEW_MAX,
-    ]);
+    const handle = window.setTimeout(() => {
+      setGalleryViews(ddpx > 1 ? [
+        GalleryViews.GALLERY_VIEW_SMALL,
+        GalleryViews.GALLERY_VIEW_1X,
+        GalleryViews.GALLERY_VIEW_2X,
+        GalleryViews.GALLERY_VIEW_MAX,
+      ] : [
+        GalleryViews.GALLERY_VIEW_1X,
+        GalleryViews.GALLERY_VIEW_2X,
+        GalleryViews.GALLERY_VIEW_MAX,
+      ]);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, [ddpx]);
 
   return (

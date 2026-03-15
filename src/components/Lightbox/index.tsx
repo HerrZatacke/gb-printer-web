@@ -114,7 +114,11 @@ function Lightbox({
   });
 
   useEffect(() => {
-    setOverlayContainer(document.body);
+    const handle = window.setTimeout(() => {
+      setOverlayContainer(document.body);
+    }, 1);
+
+    return () => window.clearTimeout(handle);
   }, []);
 
   const theme = useTheme();
