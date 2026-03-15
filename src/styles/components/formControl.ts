@@ -1,4 +1,4 @@
-import type { Components } from '@mui/material/styles';
+import { type Components } from '@mui/material/styles';
 
 export const formControl = (): Components['MuiFormControl'] => ({
   styleOverrides: {

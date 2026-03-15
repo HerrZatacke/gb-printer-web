@@ -6,8 +6,8 @@ import {
   useItemsStore,
   useFiltersStore,
 } from '@/stores/stores';
-import type { ExportableState, JSONExport, JSONExportBinary } from '@/types/ExportState';
-import type { GetSettingsOptions } from '@/types/Sync';
+import { type ExportableState, type JSONExport, type JSONExportBinary } from '@/types/ExportState';
+import { type GetSettingsOptions } from '@/types/Sync';
 import getFrames from './getFrames';
 import getFramesForExport from './getFramesForExport';
 import getImageHashesForExport from './getImageHashesForExport';

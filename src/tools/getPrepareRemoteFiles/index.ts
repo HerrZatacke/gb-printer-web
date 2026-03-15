@@ -1,7 +1,7 @@
 import { ExportTypes } from '@/consts/exportTypes';
 import { getSettings } from '@/tools/getSettings';
-import type { SyncFile } from '@/types/Export';
-import type { DownloadInfo, ExportStats, KeepFile, RemoteFiles, UploadFile } from '@/types/Sync';
+import { type SyncFile } from '@/types/Export';
+import { type DownloadInfo, type ExportStats, type KeepFile, type RemoteFiles, type UploadFile } from '@/types/Sync';
 
 type PrepareRemoteFilesFn = (fileCollection: SyncFile[], lastUpdateUTC: number) => Promise<RemoteFiles>;
 

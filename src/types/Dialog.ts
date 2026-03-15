@@ -1,6 +1,6 @@
-import type { AlertColor } from '@mui/material';
-import type { MetaProps } from '@/components/MetaTable';
-import type { DialoqQuestionType } from '@/consts/dialog';
+import { type AlertColor } from '@mui/material';
+import { type MetaProps } from '@/components/MetaTable';
+import { type DialoqQuestionType } from '@/consts/dialog';
 export type DialogResultValue = string | number | boolean;
 export type DialogResult = Record<string, DialogResultValue>;
 

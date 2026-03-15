@@ -31,6 +31,7 @@ const eslintConfig = defineConfig([
           'newlines-between': 'never',
         },
       ],
+      "import/consistent-type-specifier-style": ["error", "prefer-inline"],
     },
   },
   // Override default ignores of eslint-config-next.

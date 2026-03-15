@@ -1,5 +1,5 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import type { Viewport } from 'next';
+import { type Viewport } from 'next';
 import { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import GlobalAppInit from '@/components/GlobalAppInit';
 import { EnvProvider } from '@/contexts/envContext';

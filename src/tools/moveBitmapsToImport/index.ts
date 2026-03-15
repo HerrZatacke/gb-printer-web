@@ -2,8 +2,8 @@
 import { ditherFilter } from '@/tools/applyBitmapFilter';
 import { randomId } from '@/tools/randomId';
 import { compressAndHash } from '@/tools/storage';
-import type { ImportItem } from '@/types/ImportItem';
-import type { QueueImage } from '@/types/QueueImage';
+import { type ImportItem } from '@/types/ImportItem';
+import { type QueueImage } from '@/types/QueueImage';
 
 export interface DispatchBitmapsToImportOptions {
   bitmapQueue: QueueImage[],

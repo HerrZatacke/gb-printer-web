@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography';
-import type { Theme } from '@mui/system';
+import { type Theme } from '@mui/system';
 import React from 'react';
 import { useSettingsStore } from '@/stores/stores';
 import { getPreStyles } from '@/styles/tools/getPreStyles';

@@ -2,7 +2,7 @@
 
 import { proxy, wrap } from 'comlink';
 import React, { type Context, createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { useUrl } from '@/hooks/useUrl';
 import {
   useInteractionsStore,

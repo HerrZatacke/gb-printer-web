@@ -3,7 +3,7 @@ import { defaultRGBNPalette } from '@/consts/defaults';
 import { useStores } from '@/hooks/useStores';
 import { useFiltersStore } from '@/stores/stores';
 import { toCreationDate } from '@/tools/toCreationDate';
-import type { RGBNHashes, RGBNImage } from '@/types/Image';
+import { type RGBNHashes, type RGBNImage } from '@/types/Image';
 
 
 interface UseSaveRGBNImages {

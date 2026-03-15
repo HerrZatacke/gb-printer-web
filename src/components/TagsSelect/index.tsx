@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SpecialTags } from '@/consts/SpecialTags';
-import type { TagChange } from '@/tools/applyTagChanges';
+import { type TagChange } from '@/tools/applyTagChanges';
 import { TagUpdateMode } from '@/tools/modifyTagChanges';
 import unique from '@/tools/unique';
 import InputNewTag from './InputNewTag';

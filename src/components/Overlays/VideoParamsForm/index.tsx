@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import type { ExportFrameMode } from 'gb-image-decoder';
+import { type ExportFrameMode } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import FrameSelect from '@/components/FrameSelect';

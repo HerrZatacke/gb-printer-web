@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import screenfull from 'screenfull';
 import { v4 } from 'uuid';
 import { create } from 'zustand';
-import type { PrinterFunction } from '@/consts/printerFunction';
-import type { PrinterInfo } from '@/types/Printer';
+import { type PrinterFunction } from '@/consts/printerFunction';
+import { type PrinterInfo } from '@/types/Printer';
 
 export interface TrashCount {
   frames: number,

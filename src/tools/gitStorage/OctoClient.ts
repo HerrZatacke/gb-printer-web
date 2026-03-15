@@ -1,9 +1,9 @@
 import EventEmitter from 'events';
-import type { RestEndpointMethodTypes } from '@octokit/rest';
+import { type RestEndpointMethodTypes } from '@octokit/rest';
 import { Octokit } from '@octokit/rest';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
-import type { RepoFile, RepoTasks } from '@/types/Export';
-import type { AddToQueueFn, GitStorageSettings, GitUploadResult, UploadFile } from '@/types/Sync';
+import { type RepoFile, type RepoTasks } from '@/types/Export';
+import { type AddToQueueFn, type GitStorageSettings, type GitUploadResult, type UploadFile } from '@/types/Sync';
 
 interface GitFile {
   path?: string | undefined,

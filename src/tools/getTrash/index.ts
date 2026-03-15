@@ -1,7 +1,7 @@
 import { delay } from '@/tools/delay';
 import { localforageFrames, localforageImages, localforageReady } from '@/tools/localforageInstance';
 import { del, delFrame } from '@/tools/storage';
-import type { MonochromeImage, RGBNImage, Image } from '@/types/Image';
+import { type MonochromeImage, type RGBNImage, type Image } from '@/types/Image';
 
 interface CheckFrame {
   hash: string,

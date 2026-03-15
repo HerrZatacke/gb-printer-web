@@ -1,6 +1,6 @@
 import { type RGBNPalette } from 'gb-image-decoder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { GameBoyImageProps } from '@/components/GameBoyImage';
+import { type GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
 import useGapiSync from '@/contexts/GapiSyncContext';
 import { useGalleryImage } from '@/hooks/useGalleryImage';

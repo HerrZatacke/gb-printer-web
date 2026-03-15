@@ -1,7 +1,7 @@
 import hasher from 'object-hash';
 import { localforageFrames } from '@/tools/localforageInstance';
-import type { JSONExport, JSONExportState } from '@/types/ExportState';
-import type { Frame } from '@/types/Frame';
+import { type JSONExport, type JSONExportState } from '@/types/ExportState';
+import { type Frame } from '@/types/Frame';
 
 interface OldFrame extends Omit<Frame, 'hash'> {
   hash?: string;

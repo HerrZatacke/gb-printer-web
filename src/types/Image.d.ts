@@ -1,4 +1,4 @@
-import type { RGBNPalette, Rotation } from 'gb-image-decoder';
+import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
 
 export interface ImageMetadata extends Record<string, unknown>{
   romType?: string,

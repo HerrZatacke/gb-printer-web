@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { Context } from 'react';
+import { type Context } from 'react';
 import { PluginsContext } from '@/types/Plugin';
 
 export const pluginsContext: Context<PluginsContext> = createContext<PluginsContext>({

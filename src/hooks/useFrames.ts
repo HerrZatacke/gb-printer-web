@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { ExportTypes } from '@/consts/exportTypes';
+import { type ExportTypes } from '@/consts/exportTypes';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useStores } from '@/hooks/useStores';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
@@ -9,8 +9,8 @@ import { getFramesForGroup } from '@/tools/getFramesForGroup';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { padFrameData } from '@/tools/saveLocalStorageItems';
 import { load } from '@/tools/storage';
-import type { Frame } from '@/types/Frame';
-import type { FrameGroup } from '@/types/FrameGroup';
+import { type Frame } from '@/types/Frame';
+import { type FrameGroup } from '@/types/FrameGroup';
 import { Image } from '@/types/Image';
 import { useImportExportSettings } from './useImportExportSettings';
 

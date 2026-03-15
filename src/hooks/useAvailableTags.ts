@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { useItemsStore } from '@/stores/stores';
-import type { Image } from '@/types/Image';
+import { type Image } from '@/types/Image';
 
 export const getAvailableTags = (images: Image[]): string[] => {
   const tagSet = new Set<string>();

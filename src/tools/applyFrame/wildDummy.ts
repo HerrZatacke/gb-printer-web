@@ -1,4 +1,4 @@
-import type { FrameData } from './frameData';
+import { type FrameData } from './frameData';
 
 export const wildDummy: FrameData = {
   upper: [

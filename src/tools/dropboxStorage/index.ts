@@ -1,8 +1,8 @@
 import { SyncDirection } from '@/consts/sync';
-import type { UseStores } from '@/hooks/useStores';
+import { type UseStores } from '@/hooks/useStores';
 import { useStoragesStore } from '@/stores/stores';
-import type { JSONExportState } from '@/types/ExportState';
-import type { DropBoxSettings } from '@/types/Sync';
+import { type JSONExportState } from '@/types/ExportState';
+import { type DropBoxSettings } from '@/types/Sync';
 
 export interface DropBoxSyncTool {
   updateSettings: (dropBoxSettings: DropBoxSettings) => Promise<void>,

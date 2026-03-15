@@ -10,10 +10,10 @@ import {
 import { delay } from '@/tools/delay';
 import getUploadFiles from '@/tools/getUploadFiles';
 import saveLocalStorageItems from '@/tools/saveLocalStorageItems';
-import type { JSONExportState } from '@/types/ExportState';
-import type { AddToQueueFn, GitStorageSettings } from '@/types/Sync';
+import { type JSONExportState } from '@/types/ExportState';
+import { type AddToQueueFn, type GitStorageSettings } from '@/types/Sync';
 import OctoClient from './OctoClient';
-import type { GitSyncTool } from './index';
+import { type GitSyncTool } from './index';
 
 let octoClient: OctoClient;
 let addToQueue: (who: string) => AddToQueueFn<unknown>;

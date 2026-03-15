@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { SpecialTags } from '@/consts/SpecialTags';
-import type { Image } from '@/types/Image';
+import { type Image } from '@/types/Image';
 import { type TreeImageGroup } from '@/types/ImageGroup';
-import type { RecentImport } from '@/types/Sync';
+import { type RecentImport } from '@/types/Sync';
 import { isRGBNImage } from '../isRGBNImage';
 
 const filterSpecial = (

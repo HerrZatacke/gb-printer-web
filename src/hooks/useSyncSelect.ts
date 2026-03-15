@@ -4,7 +4,7 @@ import { useStores } from '@/hooks/useStores';
 import { useInteractionsStore, useStoragesStore } from '@/stores/stores';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { gitStorageTool } from '@/tools/gitStorage';
-import type { SyncLastUpdate } from '@/types/Sync';
+import { type SyncLastUpdate } from '@/types/Sync';
 
 interface UseSyncSelect {
   repoUrl: string,

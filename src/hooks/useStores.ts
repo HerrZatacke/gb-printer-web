@@ -9,9 +9,9 @@ import {
   useItemsStore,
   useStoragesStore,
 } from '@/stores/stores';
-import type { Dialog } from '@/types/Dialog';
-import type { ExportableState } from '@/types/ExportState';
-import type { Image } from '@/types/Image';
+import { type Dialog } from '@/types/Dialog';
+import { type ExportableState } from '@/types/ExportState';
+import { type Image } from '@/types/Image';
 
 export interface UseStores {
   addImages: (images: Image[]) => void,

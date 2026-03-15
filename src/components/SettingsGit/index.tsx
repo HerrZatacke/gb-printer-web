@@ -11,7 +11,7 @@ import React, { useCallback, useState } from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import { useAsPasswordField } from '@/hooks/useAsPasswordField';
 import { useStoragesStore } from '@/stores/stores';
-import type { GitStorageSettings } from '@/types/Sync';
+import { type GitStorageSettings } from '@/types/Sync';
 
 function SettingsGit() {
   const { gitStorage, setGitStorage } = useStoragesStore();

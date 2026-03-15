@@ -1,7 +1,7 @@
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { localforageImages } from '@/tools/localforageInstance';
 import unique from '@/tools/unique';
-import type { Image, RGBNImage } from '@/types/Image';
+import { type Image, type RGBNImage } from '@/types/Image';
 
 const getImages = async (exportImages: Image[]): Promise<Record<string, string>> => {
 

@@ -1,4 +1,4 @@
-import type { RGBNPalette } from 'gb-image-decoder';
+import { type RGBNPalette } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import Debug from '@/components/Debug';

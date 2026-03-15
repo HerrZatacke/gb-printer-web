@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState, useCallback } from 'react';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import { useStores } from '@/hooks/useStores';
 import { useEditStore, useItemsStore } from '@/stores/stores';
-import type { Palette } from '@/types/Palette';
+import { type Palette } from '@/types/Palette';
 
 interface UseEditPalette {
   canConfirm: boolean,

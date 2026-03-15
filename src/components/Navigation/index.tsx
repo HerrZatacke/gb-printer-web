@@ -22,7 +22,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
-import type { Theme } from '@mui/system';
+import { type Theme } from '@mui/system';
 import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useMemo, useState } from 'react';

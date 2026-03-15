@@ -1,4 +1,4 @@
-import type { Image } from './Image';
+import { type Image } from './Image';
 
 export interface BaseImageGroup {
   id: string,

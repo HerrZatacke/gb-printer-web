@@ -1,14 +1,14 @@
 import { BW_PALETTE, BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
-import type { RGBNTiles, ExportFrameMode, RGBNPalette } from 'gb-image-decoder';
-import type { FileNameStyle } from '@/consts/fileNameStyles';
+import { type RGBNTiles, type ExportFrameMode, type RGBNPalette } from 'gb-image-decoder';
+import { type FileNameStyle } from '@/consts/fileNameStyles';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
-import type { Image, MonochromeImage } from '@/types/Image';
-import type { Palette } from '@/types/Palette';
-import type { DownloadInfo } from '@/types/Sync';
+import { type Image, type MonochromeImage } from '@/types/Image';
+import { type Palette } from '@/types/Palette';
+import { type DownloadInfo } from '@/types/Sync';
 import { getTxtFile } from './getTxtFile';
 
 const getPrepareFiles =

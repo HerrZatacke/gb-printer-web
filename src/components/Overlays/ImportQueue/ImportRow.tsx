@@ -10,8 +10,8 @@ import { useTranslations } from 'next-intl';
 import React, { useMemo, memo, type CSSProperties } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import { useDateFormat } from '@/hooks/useDateFormat';
-import type { FlaggedImportItem } from '@/types/ImportItem';
-import type { Palette } from '@/types/Palette';
+import { type FlaggedImportItem } from '@/types/ImportItem';
+import { type Palette } from '@/types/Palette';
 
 interface Props {
   importItem: FlaggedImportItem,

@@ -1,19 +1,19 @@
 import { EventEmitter } from 'events';
-import type { DropboxAuth, DropboxOptions, DropboxResponse } from 'dropbox';
+import { type DropboxAuth, type DropboxOptions, type DropboxResponse } from 'dropbox';
 import { Dropbox } from 'dropbox';
-import type { files as Files, async as Async } from 'dropbox/types/dropbox_types';
+import { type files as Files, type async as Async } from 'dropbox/types/dropbox_types';
 import { ITEMS_STORE_VERSION, useStoragesStore } from '@/stores/stores';
 import cleanPath from '@/tools/cleanPath';
 import { delay } from '@/tools/delay';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
-import type { DropBoxRepoFile, RepoContents, RepoTasks } from '@/types/Export';
-import type { JSONExportState } from '@/types/ExportState';
-import type {
-  AddToQueueFn,
-  UploadDeleteResult,
-  DBFolderAll,
-  DBFolderFile,
-  DropBoxSettings,
+import { type DropBoxRepoFile, type RepoContents, type RepoTasks } from '@/types/Export';
+import { type JSONExportState } from '@/types/ExportState';
+import {
+  type AddToQueueFn,
+  type UploadDeleteResult,
+  type DBFolderAll,
+  type DBFolderFile,
+  type DropBoxSettings,
 } from '@/types/Sync';
 
 const getRedirectUrl = () => encodeURIComponent(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);

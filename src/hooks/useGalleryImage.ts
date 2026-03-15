@@ -1,4 +1,4 @@
-import type { RGBNPalette, Rotation } from 'gb-image-decoder';
+import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { useCallback, useMemo } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
@@ -12,8 +12,8 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
-import type { MonochromeImage, RGBNHashes, RGBNImage } from '@/types/Image';
-import type { Palette } from '@/types/Palette';
+import { type MonochromeImage, type RGBNHashes, type RGBNImage } from '@/types/Image';
+import { type Palette } from '@/types/Palette';
 
 export enum SelectionEditMode {
   ADD = 'add',

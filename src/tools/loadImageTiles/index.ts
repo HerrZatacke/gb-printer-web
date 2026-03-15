@@ -1,8 +1,8 @@
-import type { RGBNTiles } from 'gb-image-decoder';
+import { type RGBNTiles } from 'gb-image-decoder';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { load, type RecoverFn } from '@/tools/storage';
-import type { Frame } from '@/types/Frame';
-import type { Image, RGBNHashes, RGBNImage } from '@/types/Image';
+import { type Frame } from '@/types/Frame';
+import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
 
 export type PImage = {
   hash: Image['hash'],

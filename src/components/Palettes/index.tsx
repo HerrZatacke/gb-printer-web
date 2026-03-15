@@ -24,7 +24,7 @@ import usePaletteFromFile from '@/hooks/usePaletteFromFile';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import useEditPalette from '@/hooks/useSetEditPalette';
 import { useItemsStore } from '@/stores/stores';
-import type { Palette as PaletteT } from '@/types/Palette';
+import { type Palette as PaletteT } from '@/types/Palette';
 
 interface Tab {
   id: string,

@@ -16,7 +16,7 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
-import type { MonochromeImage, RGBNHashes } from '@/types/Image';
+import { type MonochromeImage, type RGBNHashes } from '@/types/Image';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 

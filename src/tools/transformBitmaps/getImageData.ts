@@ -1,5 +1,5 @@
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
-import type { QueueImage } from '@/types/QueueImage';
+import { type QueueImage } from '@/types/QueueImage';
 
 const prepareContext = (context: CanvasRenderingContext2D) => {
   context.fillStyle = '#000';

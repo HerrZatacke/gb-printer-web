@@ -25,7 +25,7 @@ import RGBNPreviewImage from '@/components/Overlays/EditRGBN/RGBNPreviewImage';
 import RGBNSelect from '@/components/RGBNSelect';
 import { RGBGrouping, useEditRGBNImages } from '@/hooks/useEditRGBNImages';
 import { getChannelColor } from '@/tools/getChannelColor';
-import type { RGBNHashes } from '@/types/Image';
+import { type RGBNHashes } from '@/types/Image';
 
 function previewPalette(isR: boolean, isG: boolean, isB: boolean, isN: boolean): string[] {
   const rPart = isR ? 255 : 0;

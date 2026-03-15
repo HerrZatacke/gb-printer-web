@@ -3,7 +3,7 @@ import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
 import { useStoragesStore } from '@/stores/stores';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
-import type { DropBoxSettings } from '@/types/Sync';
+import { type DropBoxSettings } from '@/types/Sync';
 
 interface UseDropboxSettings {
   use: boolean,

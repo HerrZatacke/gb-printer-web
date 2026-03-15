@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { PathMap } from '@/types/galleryTreeContext';
-import type { TreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 export interface Segment {
   group: TreeImageGroup,

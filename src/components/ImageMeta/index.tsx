@@ -5,14 +5,14 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import type { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { Rotation } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import { useSettingsStore } from '@/stores/stores';
 import { toCreationDate } from '@/tools/toCreationDate';
-import type { ImageMetadata, RGBNHashes } from '@/types/Image';
+import { type ImageMetadata, type RGBNHashes } from '@/types/Image';
 import MetaTable from '../MetaTable';
 import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
 

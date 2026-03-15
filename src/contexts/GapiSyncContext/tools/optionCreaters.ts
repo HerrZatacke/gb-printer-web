@@ -1,12 +1,12 @@
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
 import { type ColumnSpec, ColumnType, UpdaterOptions } from '@/tools/sheetConversion/types';
-import type { Frame } from '@/types/Frame';
-import type { FrameGroup } from '@/types/FrameGroup';
-import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
+import { type Frame } from '@/types/Frame';
+import { type FrameGroup } from '@/types/FrameGroup';
+import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { SerializableImageGroup } from '@/types/ImageGroup';
-import type { Palette } from '@/types/Palette';
-import type { Plugin } from '@/types/Plugin';
+import { type Palette } from '@/types/Palette';
+import { type Plugin } from '@/types/Plugin';
 
 
 const imagesCommonProps: ColumnSpec<Image>[] = [

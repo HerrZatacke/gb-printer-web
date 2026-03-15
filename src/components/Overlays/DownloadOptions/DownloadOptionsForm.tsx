@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
-import type { ExportFrameMode } from 'gb-image-decoder';
+import { type ExportFrameMode } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import exportFrameModes from '@/consts/exportFrameModes';

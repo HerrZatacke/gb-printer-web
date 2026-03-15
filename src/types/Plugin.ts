@@ -1,18 +1,18 @@
 import type FileSaver from 'file-saver';
-import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
-import type { ConfigParamType } from '@/consts/plugins';
-import type { ImportFn } from '@/hooks/useImportExportSettings';
-import type { UseStores } from '@/hooks/useStores';
+import { type RGBNTiles, type RGBNPalette, type ExportFrameMode } from 'gb-image-decoder';
+import { type ConfigParamType } from '@/consts/plugins';
+import { type ImportFn } from '@/hooks/useImportExportSettings';
+import { type UseStores } from '@/hooks/useStores';
 import {
   type InteractionsState,
   type ItemsState,
   type ProgressState,
 } from '@/stores/stores';
-import type { HandeFileImportFn } from '@/tools/getHandleFileImport';
-import type { Dialog } from '@/types/Dialog';
-import type { Image } from '@/types/Image';
-import type { Palette } from '@/types/Palette';
-import type { PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
+import { type HandeFileImportFn } from '@/tools/getHandleFileImport';
+import { type Dialog } from '@/types/Dialog';
+import { type Image } from '@/types/Image';
+import { type Palette } from '@/types/Palette';
+import { type PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
 
 export interface PluginFunctions {
   importFiles: HandeFileImportFn,

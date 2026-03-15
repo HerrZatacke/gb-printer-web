@@ -10,8 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import { blend } from '@mui/system';
-import type { Theme } from '@mui/system';
-import type { PropsWithChildren } from 'react';
+import { type Theme } from '@mui/system';
+import { type PropsWithChildren } from 'react';
 import React, { useMemo, useState } from 'react';
 
 interface WrapperProps extends PropsWithChildren {

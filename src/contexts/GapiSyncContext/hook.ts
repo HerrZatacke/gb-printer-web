@@ -23,12 +23,12 @@ import { reduceImagesMonochrome, reduceImagesRGBN } from '@/tools/isRGBNImage';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import { PushOptions } from '@/tools/sheetConversion/types';
 import uniqueBy from '@/tools/unique/by';
-import type { Frame } from '@/types/Frame';
-import type { FrameGroup } from '@/types/FrameGroup';
-import type { Image, MonochromeImage, RGBNImage } from '@/types/Image';
-import type { SerializableImageGroup } from '@/types/ImageGroup';
-import type { Palette } from '@/types/Palette';
-import type { Plugin } from '@/types/Plugin';
+import { type Frame } from '@/types/Frame';
+import { type FrameGroup } from '@/types/FrameGroup';
+import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
+import { type Palette } from '@/types/Palette';
+import { type Plugin } from '@/types/Plugin';
 
 const AUTOSYNC_DELAY = 5000;
 

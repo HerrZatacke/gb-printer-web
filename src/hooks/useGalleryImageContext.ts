@@ -17,7 +17,7 @@ import {
 } from '@/stores/stores';
 import { canShare } from '@/tools/canShare';
 import { getFilteredImages } from '@/tools/getFilteredImages';
-import type { RGBNImage } from '@/types/Image';
+import { type RGBNImage } from '@/types/Image';
 
 interface UseGalleryImageContext {
   isSelected: boolean,

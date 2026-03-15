@@ -1,7 +1,7 @@
 import { type ItemsState } from '@/stores/stores';
 import { cleanImages } from './cleanImages';
 import { hashStoredFrames } from './hashFrames';
-import type { ReduxState } from './State';
+import { type ReduxState } from './State';
 
 export const migrateItems = async (persistedState: unknown): Promise<Partial<ItemsState>> => {
   const v0state = persistedState as Partial<ReduxState>;

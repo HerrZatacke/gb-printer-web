@@ -11,14 +11,14 @@ import Lightbox from '@/components/Lightbox';
 import MetaTable from '@/components/MetaTable';
 import { DialoqQuestionType } from '@/consts/dialog';
 import useDialog from '@/hooks/useDialog';
-import type {
-  DialogQuestionCheckbox,
-  DialogQuestionInfo,
-  DialogQuestionNumber,
-  DialogQuestionSelect,
-  DialogQuestionText,
-  DialogQuestionImage,
-  DialogQuestionMeta,
+import {
+  type DialogQuestionCheckbox,
+  type DialogQuestionInfo,
+  type DialogQuestionNumber,
+  type DialogQuestionSelect,
+  type DialogQuestionText,
+  type DialogQuestionImage,
+  type DialogQuestionMeta,
 } from '@/types/Dialog';
 
 function Confirm() {

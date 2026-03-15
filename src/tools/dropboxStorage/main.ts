@@ -1,6 +1,6 @@
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
-import type { UseStores } from '@/hooks/useStores';
+import { type UseStores } from '@/hooks/useStores';
 import {
   LogType,
   useFiltersStore,
@@ -19,14 +19,14 @@ import parseAuthParams from '@/tools/parseAuthParams';
 import replaceDuplicateFilenames from '@/tools/replaceDuplicateFilenames';
 import saveLocalStorageItems, { saveImageFileContent } from '@/tools/saveLocalStorageItems';
 import { DownloadArrayBuffer } from '@/types/download';
-import type { RepoContents } from '@/types/Export';
-import type { JSONExportState } from '@/types/ExportState';
-import type { Image } from '@/types/Image';
-import type { AddToQueueFn, DBFolderFile, DownloadInfo, DropBoxSettings, UploadFile } from '@/types/Sync';
+import { type RepoContents } from '@/types/Export';
+import { type JSONExportState } from '@/types/ExportState';
+import { type Image } from '@/types/Image';
+import { type AddToQueueFn, type DBFolderFile, type DownloadInfo, type DropBoxSettings, type UploadFile } from '@/types/Sync';
 import { loadFrameData } from '../applyFrame/frameData';
 import DropboxClient from './DropboxClient';
 import { hasher } from './DropboxClient/dropboxContentHasher';
-import type { DropBoxSyncTool } from './index';
+import { type DropBoxSyncTool } from './index';
 
 interface WithContentHash {
   dropboxContentHash: string,

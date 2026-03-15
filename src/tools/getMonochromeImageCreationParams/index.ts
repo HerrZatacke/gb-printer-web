@@ -1,4 +1,4 @@
-import type { MonochromeImageCreationParams } from 'gb-image-decoder';
+import { type MonochromeImageCreationParams } from 'gb-image-decoder';
 import { BW_PALETTE_HEX } from 'gb-image-decoder';
 
 interface Params {

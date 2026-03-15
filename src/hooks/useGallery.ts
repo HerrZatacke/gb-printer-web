@@ -8,7 +8,7 @@ import {
 } from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import getFilteredImagesCount from '@/tools/getFilteredImages/count';
-import type { Image } from '@/types/Image';
+import { type Image } from '@/types/Image';
 
 interface UseGallery {
   totalImageCount: number,

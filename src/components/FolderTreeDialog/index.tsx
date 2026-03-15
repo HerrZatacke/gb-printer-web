@@ -1,7 +1,7 @@
 import { alpha } from '@mui/material';
 import Link from '@mui/material/Link';
 import { useTheme } from '@mui/material/styles';
-import type { Theme } from '@mui/system';
+import { type Theme } from '@mui/system';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import NextLink from 'next/link';
@@ -12,7 +12,7 @@ import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';
-import type { TreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface FolderTreeItemProps {
   group: TreeImageGroup,
