@@ -73,7 +73,7 @@
     "events": "^3.3.0",
     "favicons": "^7.2.0",
     "file-saver": "^2.0.5",
-    "filenamify": "^6.0.0",
+    "filenamify": "^7.0.1",
     "filesize": "^11.0.13",
     "gb-image-decoder": "^2.0.4",
     "gb-palettes": "^1.0.14",

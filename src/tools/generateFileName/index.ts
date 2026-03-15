@@ -110,7 +110,7 @@ const generateFileName = (options: FileNameOptions): string => {
 
   const joined = joinTruthy(parts);
 
-  return filenamify(joined, { replacement: '' }) as string;
+  return filenamify(joined, { replacement: '' });
 };
 
 export default generateFileName;
