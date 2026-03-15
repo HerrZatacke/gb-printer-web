@@ -45,8 +45,6 @@ function ImportQueue() {
 
   const { height } = useScreenDimensions();
 
-  console.log({ height });
-
   return (
     <Lightbox
       header={t('dialogHeader', { count: importQueue.length })}
