@@ -1,4 +1,4 @@
-import type { ItemsState } from '@/stores/itemsStore';
+import { type ItemsState } from '@/stores/stores';
 import { cleanImages } from './cleanImages';
 import { hashStoredFrames } from './hashFrames';
 import type { ReduxState } from './State';

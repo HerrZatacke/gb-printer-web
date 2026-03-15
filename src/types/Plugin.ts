@@ -3,9 +3,11 @@ import type { RGBNTiles, RGBNPalette, ExportFrameMode } from 'gb-image-decoder';
 import type { ConfigParamType } from '@/consts/plugins';
 import type { ImportFn } from '@/hooks/useImportExportSettings';
 import type { UseStores } from '@/hooks/useStores';
-import type { InteractionsState } from '@/stores/interactionsStore';
-import type { ItemsState } from '@/stores/itemsStore';
-import type { ProgressState } from '@/stores/progressStore';
+import {
+  type InteractionsState,
+  type ItemsState,
+  type ProgressState,
+} from '@/stores/stores';
 import type { HandeFileImportFn } from '@/tools/getHandleFileImport';
 import type { Dialog } from '@/types/Dialog';
 import type { Image } from '@/types/Image';

@@ -1,4 +1,4 @@
-import type { FiltersState } from '@/stores/filtersStore';
+import { type FiltersState } from '@/stores/stores';
 import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
 import type { Image } from '@/types/Image';
 import { TreeImageGroup } from '@/types/ImageGroup';

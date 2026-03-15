@@ -7,8 +7,8 @@ import useTracking from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
-import type { ImageSelectionMode } from '@/stores/filtersStore';
 import {
+  type ImageSelectionMode,
   useDialogsStore,
   useEditStore,
   useFiltersStore,

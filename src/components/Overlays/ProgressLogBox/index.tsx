@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import React, { useMemo, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { useProgressLog } from '@/hooks/useProgressLog';
-import { type LogItem, LogType } from '@/stores/progressStore';
+import { type LogItem, LogType } from '@/stores/stores';
 
 dayjs.extend(duration);
 

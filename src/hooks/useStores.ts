@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { ImageSelectionMode } from '@/stores/filtersStore';
 import {
+  ImageSelectionMode,
   useDialogsStore,
   useEditStore,
   useFiltersStore,

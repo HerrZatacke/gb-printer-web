@@ -21,7 +21,7 @@ import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
-import { ImageSelectionMode } from '@/stores/filtersStore';
+import { ImageSelectionMode } from '@/stores/stores';
 
 interface Props {
   hash: string,

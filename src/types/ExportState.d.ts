@@ -1,4 +1,4 @@
-import type { Values } from '@/stores/itemsStore';
+import { type Values } from '@/stores/stores';
 
 interface ExportableState extends Partial<Values> {
   lastUpdateUTC: number,

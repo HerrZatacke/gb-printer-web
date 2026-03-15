@@ -1,8 +1,8 @@
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
 import type { UseStores } from '@/hooks/useStores';
-import { LogType } from '@/stores/progressStore';
 import {
+  LogType,
   useFiltersStore,
   useInteractionsStore,
   useItemsStore,
