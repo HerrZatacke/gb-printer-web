@@ -35,11 +35,17 @@ const useIframeLoaded = (timeout: number): UseIframeLoaded => {
     };
   }, [failed, loaded, timeout]);
 
-  if (!loaded && printerConnected) {
-    window.clearTimeout(timer.current);
-    timer.current = undefined;
-    setLoaded(true);
-  }
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      if (!loaded && printerConnected) {
+        window.clearTimeout(timer.current);
+        timer.current = undefined;
+        setLoaded(true);
+      }
+    }, 1);
+
+    return () => window.clearTimeout(handle);
+  }, [loaded, printerConnected]);
 
   return {
     failed,
