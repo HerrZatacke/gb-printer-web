@@ -1,24 +1,34 @@
 import pako from 'pako';
 
-export const inflate = async (data: string): Promise<string> => {
-  // ToDo: @types/pako wrong?
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const inflated = pako.inflate(data, { to: 'string' });
+const bytesStringToArrayBuffer = (stringData: string) => {
+  const uint8 = new Uint8Array(stringData.length);
+  for (let i = 0; i < stringData.length; i++) {
+    // eslint-disable-next-line no-bitwise
+    uint8[i] = stringData.charCodeAt(i) & 0xFF;
+  }
+  return uint8.buffer;
+};
 
-  return inflated;
+
+const arrayBufferToByteString = (buffer: Uint8Array) => {
+  const uint8 = new Uint8Array(buffer);
+  let str = '';
+  for (let i = 0; i < uint8.length; i++) {
+    str += String.fromCharCode(uint8[i]);
+  }
+  return str;
+};
+
+export const inflate = async (data: string): Promise<string> => {
+  return pako.inflate(bytesStringToArrayBuffer(data), { to: 'string' });
 };
 
 export const deflate = async (data: string): Promise<string> => {
-  // ToDo: @types/pako wrong?
   const compressed = pako.deflate(data, {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    to: 'string',
     strategy: 1,
     level: 8,
-  }) as unknown as string;
+  });
 
-  return compressed;
+  return arrayBufferToByteString(compressed);
 };
 
