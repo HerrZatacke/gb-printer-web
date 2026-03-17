@@ -1,3 +1,4 @@
+import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CodeIcon from '@mui/icons-material/Code';
@@ -16,6 +17,7 @@ import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu'
 import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
+import { useSSTV } from '@/hooks/useSSTV';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
 import { ImageSelectionMode } from '@/stores/stores';
 
@@ -56,6 +58,10 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     canPrint,
     print,
   } = useSuperPrinterInterface();
+
+  const {
+    sstv,
+  } = useSSTV();
 
   const { createGroup } = useImageGroups();
 
@@ -99,6 +105,14 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
         disabled: !canPrint,
         onClick: () => {
           print(hash);
+          onClose();
+        },
+      },
+      {
+        Icon: AudiotrackIcon,
+        label: 'useSSTV',
+        onClick: () => {
+          sstv(hash);
           onClose();
         },
       },
@@ -171,6 +185,7 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     setLightboxImage,
     shareImage,
     showMetadata,
+    sstv,
     startDownload,
     updateFavouriteTag,
     updateImageToSelection,
