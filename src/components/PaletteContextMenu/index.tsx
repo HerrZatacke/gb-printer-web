@@ -2,12 +2,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useTranslations } from 'next-intl';
 import React, { type ComponentType, type MouseEventHandler, useMemo } from 'react';
+import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 
 interface ContextMenuItem {
   label: string;
@@ -35,61 +31,56 @@ function PaletteContextMenu({
   menuAnchor,
   onClose,
 }: Props) {
-  const t = useTranslations('PaletteContextMenu');
-
   const menuItems = useMemo((): ContextMenuItem[] => (
     [
       {
         Icon: CheckCircleIcon,
         label: 'setActive',
-        onClick: setActive,
+        onClick: () => {
+          setActive();
+          onClose();
+        },
       },
       {
         Icon: FileCopyIcon,
         label: 'clone',
-        onClick: clonePalette,
+        onClick: () => {
+          clonePalette();
+          onClose();
+        },
       },
       {
         Icon: EditIcon,
         label: 'edit',
         disabled: isPredefined,
-        onClick: editPalette,
+        onClick: () => {
+          editPalette();
+          onClose();
+        },
       },
       {
         Icon: DeleteIcon,
         label: 'delete',
         disabled: isPredefined,
-        onClick: deletePalette,
+        onClick: () => {
+          deletePalette();
+          onClose();
+        },
       },
     ]
-  ), [clonePalette, deletePalette, editPalette, isPredefined, setActive]);
+  ), [clonePalette, deletePalette, editPalette, isPredefined, onClose, setActive]);
 
   if (!menuAnchor) {
     return null;
   }
 
   return (
-    <Menu
-      open={!!menuAnchor}
-      anchorEl={menuAnchor}
+    <GalleryGridItemContextMenu
+      menuItems={menuItems}
+      menuAnchor={menuAnchor}
       onClose={onClose}
-      onClick={(ev) => {
-        ev.stopPropagation();
-        onClose();
-      }}
-    >
-      {menuItems.map(({ label, Icon, disabled, onClick }) => (
-        <MenuItem
-          key={label}
-          onClick={onClick}
-          title={t(label)}
-          disabled={disabled}
-        >
-          <ListItemIcon><Icon /></ListItemIcon>
-          <ListItemText>{t(label)}</ListItemText>
-        </MenuItem>
-      ))}
-    </Menu>
+      translationKey="PaletteContextMenu"
+    />
   );
 }
 

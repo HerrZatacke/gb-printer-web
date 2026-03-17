@@ -1,11 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useTranslations } from 'next-intl';
 import React, { type ComponentType, type MouseEventHandler, useMemo } from 'react';
+import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 
 interface ContextMenuItem {
   label: string;
@@ -23,49 +19,38 @@ interface Props {
 
 
 function FrameContextMenu({ deleteFrame, editFrame, menuAnchor, onClose }: Props) {
-  const t = useTranslations('FrameContextMenu');
-
   const menuItems = useMemo((): ContextMenuItem[] => (
     [
       {
         Icon: EditIcon,
         label: 'edit',
-        onClick: editFrame,
+        onClick: () => {
+          editFrame();
+          onClose();
+        },
       },
       {
         Icon: DeleteIcon,
         label: 'delete',
-        onClick: deleteFrame,
+        onClick: () => {
+          deleteFrame();
+          onClose();
+        },
       },
     ]
-  ), [deleteFrame, editFrame]);
+  ), [deleteFrame, editFrame, onClose]);
 
   if (!menuAnchor) {
     return null;
   }
 
   return (
-    <Menu
-      open={!!menuAnchor}
-      anchorEl={menuAnchor}
+    <GalleryGridItemContextMenu
+      menuItems={menuItems}
+      menuAnchor={menuAnchor}
       onClose={onClose}
-      onClick={(ev) => {
-        ev.stopPropagation();
-        onClose();
-      }}
-    >
-      {menuItems.map(({ label, Icon, disabled, onClick }) => (
-        <MenuItem
-          key={label}
-          onClick={onClick}
-          title={t(label)}
-          disabled={disabled}
-        >
-          <ListItemIcon><Icon /></ListItemIcon>
-          <ListItemText>{t(label)}</ListItemText>
-        </MenuItem>
-      ))}
-    </Menu>
+      translationKey="FrameContextMenu"
+    />
   );
 }
 

@@ -1,11 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useTranslations } from 'next-intl';
 import React, { type ComponentType, type MouseEventHandler, useMemo } from 'react';
+import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 import { useImageGroups } from '@/hooks/useImageGroups';
 
 interface ContextMenuItem {
@@ -22,7 +18,6 @@ interface Props {
 }
 
 function GalleryGroupContextMenu({ groupId, menuAnchor, onClose }: Props) {
-  const t = useTranslations('GalleryGroupContextMenu');
   const { deleteGroup, editGroup } = useImageGroups();
 
   const menuItems = useMemo((): ContextMenuItem[] => (
@@ -30,42 +25,33 @@ function GalleryGroupContextMenu({ groupId, menuAnchor, onClose }: Props) {
       {
         Icon: EditIcon,
         label: 'edit',
-        onClick: () => editGroup(groupId),
+        onClick: () => {
+          editGroup(groupId);
+          onClose();
+        },
       },
       {
         Icon: DeleteIcon,
         label: 'delete',
-        onClick: () => deleteGroup(groupId),
+        onClick: () => {
+          deleteGroup(groupId);
+          onClose();
+        },
       },
     ]
-  ), [deleteGroup, editGroup, groupId]);
+  ), [deleteGroup, editGroup, groupId, onClose]);
 
   if (!menuAnchor) {
     return null;
   }
 
   return (
-    <Menu
-      open={!!menuAnchor}
-      anchorEl={menuAnchor}
+    <GalleryGridItemContextMenu
+      menuItems={menuItems}
+      menuAnchor={menuAnchor}
       onClose={onClose}
-      onClick={(ev) => {
-        ev.stopPropagation();
-        onClose();
-      }}
-    >
-      {menuItems.map(({ label, Icon, disabled, onClick }) => (
-        <MenuItem
-          key={label}
-          onClick={onClick}
-          title={t(label)}
-          disabled={disabled}
-        >
-          <ListItemIcon><Icon /></ListItemIcon>
-          <ListItemText>{t(label)}</ListItemText>
-        </MenuItem>
-      ))}
-    </Menu>
+      translationKey="GalleryGroupContextMenu"
+    />
   );
 }
 

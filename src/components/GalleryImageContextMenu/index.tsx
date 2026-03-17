@@ -11,12 +11,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useTranslations } from 'next-intl';
 import { type ComponentType, type MouseEventHandler, useMemo, useState } from 'react';
+import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
@@ -37,7 +33,6 @@ interface Props {
 }
 
 function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
-  const t = useTranslations('GalleryImageContextMenu');
   const [pluginAnchor, setPluginAnchor] = useState<HTMLElement | null>(null);
 
   const {
@@ -187,26 +182,12 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
 
   return (
     <>
-      <Menu
-        open={!!menuAnchor}
-        anchorEl={menuAnchor}
+      <GalleryGridItemContextMenu
+        menuItems={menuItems}
+        menuAnchor={menuAnchor}
         onClose={onClose}
-        onClick={(ev) => {
-          ev.stopPropagation();
-        }}
-      >
-        {menuItems.map(({ label, Icon, disabled, onClick }) => (
-          <MenuItem
-            key={label}
-            onClick={onClick}
-            title={t(label)}
-            disabled={disabled}
-          >
-            <ListItemIcon><Icon /></ListItemIcon>
-            <ListItemText>{t(label)}</ListItemText>
-          </MenuItem>
-        ))}
-      </Menu>
+        translationKey="GalleryImageContextMenu"
+      />
       <PluginSelect
         pluginAnchor={pluginAnchor}
         hash={hash}
