@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import useTracking from '@/contexts/TrackingContext';
 import {
   useInteractionsStore,
@@ -6,7 +6,7 @@ import {
   useSettingsStore,
 } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { getPrepareFiles, download } from '@/tools/download';
+import { prepareFiles, download, PrepareFilesOptions } from '@/tools/download';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { loadImageTiles } from '@/tools/loadImageTiles';
@@ -14,8 +14,9 @@ import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import { DownloadInfo } from '@/types/Sync';
 
 interface UseDownload {
-  downloadImages: (hashes: string[]) => Promise<void>
-  setDownloadImages: (hashes: string[]) => Promise<void>
+  downloadImages: (hashes: string[]) => Promise<void>;
+  prepareDownloadInfo: (hash: string) => Promise<DownloadInfo[]>;
+  setDownloadImages: (hashes: string[]) => Promise<void>;
 }
 
 const useDownload = (): UseDownload => {
@@ -23,14 +24,6 @@ const useDownload = (): UseDownload => {
   const { frames, palettes, images } = useItemsStore();
   const { setDownloadHashes } = useInteractionsStore();
   const { sendEvent } = useTracking();
-
-  const prepareFiles = useMemo(() => getPrepareFiles(
-    exportScaleFactors,
-    exportFileTypes,
-    handleExportFrame,
-    palettes,
-    fileNameStyle,
-  ), [exportFileTypes, exportScaleFactors, fileNameStyle, handleExportFrame, palettes]);
 
   const getZipFileName = useCallback((hashes: string[]): string => {
     if (hashes.length === 1) {
@@ -69,8 +62,16 @@ const useDownload = (): UseDownload => {
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
-    return prepareFiles(image, tiles, imageStartLine);
-  }, [frames, images, prepareFiles]);
+    const prepareFilesOptions: PrepareFilesOptions = {
+      exportFileTypes,
+      exportScaleFactors,
+      fileNameStyle,
+      handleExportFrame,
+      palettes,
+    };
+
+    return prepareFiles(image, tiles, imageStartLine, prepareFilesOptions);
+  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, palettes]);
 
   const downloadImages = useCallback(async (hashes: string[]): Promise<void> => {
     const zipFilename = getZipFileName(hashes);
@@ -89,6 +90,7 @@ const useDownload = (): UseDownload => {
 
   return {
     downloadImages,
+    prepareDownloadInfo,
     setDownloadImages,
   };
 };
