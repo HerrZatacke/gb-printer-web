@@ -7,7 +7,14 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { type ComponentType, type MouseEventHandler, useMemo } from 'react';
+
+interface ContextMenuItem {
+  label: string;
+  Icon: ComponentType;
+  disabled?: boolean;
+  onClick: MouseEventHandler;
+}
 
 interface Props {
   isPredefined: boolean,
@@ -30,6 +37,33 @@ function PaletteContextMenu({
 }: Props) {
   const t = useTranslations('PaletteContextMenu');
 
+  const menuItems = useMemo((): ContextMenuItem[] => (
+    [
+      {
+        Icon: CheckCircleIcon,
+        label: 'setActive',
+        onClick: setActive,
+      },
+      {
+        Icon: FileCopyIcon,
+        label: 'clone',
+        onClick: clonePalette,
+      },
+      {
+        Icon: EditIcon,
+        label: 'edit',
+        disabled: isPredefined,
+        onClick: editPalette,
+      },
+      {
+        Icon: DeleteIcon,
+        label: 'delete',
+        disabled: isPredefined,
+        onClick: deletePalette,
+      },
+    ]
+  ), [clonePalette, deletePalette, editPalette, isPredefined, setActive]);
+
   if (!menuAnchor) {
     return null;
   }
@@ -44,54 +78,17 @@ function PaletteContextMenu({
         onClose();
       }}
     >
-      <MenuItem
-        onClick={setActive}
-        title={t('setActive')}
-      >
-        <ListItemIcon>
-          <CheckCircleIcon />
-        </ListItemIcon>
-        <ListItemText>
-          {t('setActive')}
-        </ListItemText>
-      </MenuItem>
-      <MenuItem
-        onClick={clonePalette}
-        title={t('clone')}
-      >
-        <ListItemIcon>
-          <FileCopyIcon />
-        </ListItemIcon>
-        <ListItemText>
-          {t('clone')}
-        </ListItemText>
-      </MenuItem>
-      {!isPredefined && (
+      {menuItems.map(({ label, Icon, disabled, onClick }) => (
         <MenuItem
-          onClick={editPalette}
-          title={t('edit')}
+          key={label}
+          onClick={onClick}
+          title={t(label)}
+          disabled={disabled}
         >
-          <ListItemIcon>
-            <EditIcon />
-          </ListItemIcon>
-          <ListItemText>
-            {t('edit')}
-          </ListItemText>
+          <ListItemIcon><Icon /></ListItemIcon>
+          <ListItemText>{t(label)}</ListItemText>
         </MenuItem>
-      )}
-      {!isPredefined && (
-        <MenuItem
-          onClick={deletePalette}
-          title={t('delete')}
-        >
-          <ListItemIcon>
-            <DeleteIcon />
-          </ListItemIcon>
-          <ListItemText>
-            {t('delete')}
-          </ListItemText>
-        </MenuItem>
-      )}
+      ))}
     </Menu>
   );
 }
