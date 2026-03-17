@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import useTracking from '@/contexts/TrackingContext';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { getPrepareFiles } from '@/tools/download';
+import { PrepareFilesOptions, prepareFiles } from '@/tools/download';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 
 interface UseShareImage {
@@ -27,13 +27,13 @@ const useShareImage = (): UseShareImage => {
     const shareScaleFactor = [...exportScaleFactors].pop() || 4;
     const shareFileType = [...exportFileTypes].pop() || 'png';
 
-    const prepareFiles = getPrepareFiles(
-      [shareScaleFactor],
-      [shareFileType],
+    const prepareFilesOptions: PrepareFilesOptions = {
+      exportFileTypes: [shareFileType],
+      exportScaleFactors: [shareScaleFactor],
+      fileNameStyle,
       handleExportFrame,
       palettes,
-      fileNameStyle,
-    );
+    };
 
     const tiles = await loadImageTiles(images, frames)(image.hash);
 
@@ -41,7 +41,7 @@ const useShareImage = (): UseShareImage => {
 
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
-    const downloadInfo = await prepareFiles(image, tiles || [], imageStartLine);
+    const downloadInfo = await prepareFiles(image, tiles || [], imageStartLine, prepareFilesOptions);
 
     const { blob, filename, title } = downloadInfo[0];
 

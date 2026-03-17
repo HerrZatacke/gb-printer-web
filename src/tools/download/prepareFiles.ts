@@ -11,17 +11,25 @@ import { type Palette } from '@/types/Palette';
 import { type DownloadInfo } from '@/types/Sync';
 import { getTxtFile } from './getTxtFile';
 
-const getPrepareFiles =
-  (
-    exportScaleFactors: number[],
-    exportFileTypes: string[],
-    handleExportFrame: ExportFrameMode,
-    palettes: Palette[],
-    fileNameStyle: FileNameStyle,
-  ) => async (
+export interface PrepareFilesOptions {
+  exportScaleFactors: number[];
+  exportFileTypes: string[];
+  handleExportFrame: ExportFrameMode;
+  palettes: Palette[];
+  fileNameStyle: FileNameStyle;
+}
+
+export const prepareFiles = async (
     image: Image,
     tiles: string[] | RGBNTiles,
     imageStartLine: number,
+    {
+      exportScaleFactors,
+      exportFileTypes,
+      handleExportFrame,
+      palettes,
+      fileNameStyle,
+    }: PrepareFilesOptions,
   ): Promise<DownloadInfo[]> => {
 
     const isRGBN = isRGBNImage(image);
@@ -209,6 +217,4 @@ const getPrepareFiles =
     }, []);
   };
 
-export type PrepareFilesReturnType = ReturnType<typeof getPrepareFiles>;
-
-export default getPrepareFiles;
+export type PrepareFilesReturnType = ReturnType<typeof prepareFiles>;

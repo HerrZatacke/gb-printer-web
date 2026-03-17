@@ -1,7 +1,8 @@
 import download from './download';
-import getPrepareFiles from './getPrepareFiles';
+import { type PrepareFilesOptions, prepareFiles } from './prepareFiles';
 
 export {
   download,
-  getPrepareFiles,
+  prepareFiles,
+  type PrepareFilesOptions,
 };
