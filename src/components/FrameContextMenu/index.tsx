@@ -5,7 +5,14 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { type ComponentType, type MouseEventHandler, useMemo } from 'react';
+
+interface ContextMenuItem {
+  label: string;
+  Icon: ComponentType;
+  disabled?: boolean;
+  onClick: MouseEventHandler;
+}
 
 interface Props {
   deleteFrame: () => void,
@@ -15,9 +22,24 @@ interface Props {
 }
 
 
-function GalleryGroupContextMenu({ deleteFrame, editFrame, menuAnchor, onClose }: Props) {
+function FrameContextMenu({ deleteFrame, editFrame, menuAnchor, onClose }: Props) {
   const t = useTranslations('FrameContextMenu');
-  
+
+  const menuItems = useMemo((): ContextMenuItem[] => (
+    [
+      {
+        Icon: EditIcon,
+        label: 'edit',
+        onClick: editFrame,
+      },
+      {
+        Icon: DeleteIcon,
+        label: 'delete',
+        onClick: deleteFrame,
+      },
+    ]
+  ), [deleteFrame, editFrame]);
+
   if (!menuAnchor) {
     return null;
   }
@@ -32,30 +54,19 @@ function GalleryGroupContextMenu({ deleteFrame, editFrame, menuAnchor, onClose }
         onClose();
       }}
     >
-      <MenuItem
-        onClick={editFrame}
-        title={t('edit')}
-      >
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText>
-          {t('edit')}
-        </ListItemText>
-      </MenuItem>
-      <MenuItem
-        onClick={deleteFrame}
-        title={t('delete')}
-      >
-        <ListItemIcon>
-          <DeleteIcon />
-        </ListItemIcon>
-        <ListItemText>
-          {t('delete')}
-        </ListItemText>
-      </MenuItem>
+      {menuItems.map(({ label, Icon, disabled, onClick }) => (
+        <MenuItem
+          key={label}
+          onClick={onClick}
+          title={t(label)}
+          disabled={disabled}
+        >
+          <ListItemIcon><Icon /></ListItemIcon>
+          <ListItemText>{t(label)}</ListItemText>
+        </MenuItem>
+      ))}
     </Menu>
   );
 }
 
-export default GalleryGroupContextMenu;
+export default FrameContextMenu;
