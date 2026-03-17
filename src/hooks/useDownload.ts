@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import useTracking from '@/contexts/TrackingContext';
 import {
   useInteractionsStore,
@@ -24,6 +24,14 @@ const useDownload = (): UseDownload => {
   const { frames, palettes, images } = useItemsStore();
   const { setDownloadHashes } = useInteractionsStore();
   const { sendEvent } = useTracking();
+
+  const prepareFilesOptions = useMemo<PrepareFilesOptions>(() => ( {
+    exportFileTypes,
+    exportScaleFactors,
+    fileNameStyle,
+    handleExportFrame,
+    palettes,
+  }), [exportFileTypes, exportScaleFactors, fileNameStyle, handleExportFrame, palettes]);
 
   const getZipFileName = useCallback((hashes: string[]): string => {
     if (hashes.length === 1) {
@@ -51,7 +59,7 @@ const useDownload = (): UseDownload => {
     });
   }, [fileNameStyle, images, palettes]);
 
-  const prepareDownloadInfo = useCallback(async (imageHash: string): Promise<DownloadInfo[]> => {
+  const prepareDownloadInfo = useCallback(async (imageHash: string, prepareFilesOptionsOverride?: PrepareFilesOptions): Promise<DownloadInfo[]> => {
     const image = images.find(({ hash }) => hash === imageHash);
     if (!image) { throw new Error('image not found'); }
 
@@ -62,20 +70,13 @@ const useDownload = (): UseDownload => {
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
-    const prepareFilesOptions: PrepareFilesOptions = {
-      exportFileTypes,
-      exportScaleFactors,
-      fileNameStyle,
-      handleExportFrame,
-      palettes,
-    };
 
-    return prepareFiles(image, tiles, imageStartLine, prepareFilesOptions);
-  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, palettes]);
+    return prepareFiles(image, tiles, imageStartLine, prepareFilesOptionsOverride || prepareFilesOptions);
+  }, [frames, images, prepareFilesOptions]);
 
   const downloadImages = useCallback(async (hashes: string[]): Promise<void> => {
     const zipFilename = getZipFileName(hashes);
-    const resultImages = await Promise.all(hashes.map(prepareDownloadInfo));
+    const resultImages = await Promise.all(hashes.map((hash) => prepareDownloadInfo(hash)));
     download(zipFilename)(resultImages.flat());
     sendEvent('downloadImages', { imageCount: nextPowerOfTwo(resultImages.flat().length) });
   }, [getZipFileName, prepareDownloadInfo, sendEvent]);
