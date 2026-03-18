@@ -15,7 +15,7 @@ import { DownloadInfo } from '@/types/Sync';
 
 interface UseDownload {
   downloadImages: (hashes: string[]) => Promise<void>;
-  prepareDownloadInfo: (hash: string) => Promise<DownloadInfo[]>;
+  prepareDownloadInfo: (hash: string, prepareFilesOptionsOverride?: PrepareFilesOptions) => Promise<DownloadInfo[]>;
   setDownloadImages: (hashes: string[]) => Promise<void>;
 }
 
