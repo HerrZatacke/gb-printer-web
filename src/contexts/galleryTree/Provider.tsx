@@ -62,7 +62,14 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
     });
 
     const handle = window.setTimeout(async () => {
-      if (!imageGroups.length) { return; }
+      if (!imageGroups.length) {
+        const basicTreeRoot = createTreeRoot(stateImages);
+        basicTreeRoot.images = [...stateImages];
+        setRoot(basicTreeRoot);
+        setIsWorking(false);
+        setIsInitialized(true);
+        return;
+      }
 
       setIsWorking(true);
 

@@ -90,6 +90,13 @@ export const useGallery = (): UseGallery => {
       maxPageIndex: ${maxPageIndex}
       ---
       images: ${images.length}
+      ---
+      view.id: ${view.id}
+      view.title: ${view.title}
+      view.images: ${view.images.length}
+      view.groups: ${view.groups.length}
+      view.allImages: ${view.allImages.length}
+      view.slug: ${view.slug}
 `);
     }
   }, [
@@ -110,6 +117,7 @@ export const useGallery = (): UseGallery => {
     sortBy,
     totalImageCount,
     totalPages,
+    view,
   ]);
 
   return {
