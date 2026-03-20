@@ -204,12 +204,12 @@ export const dropBoxSyncTool = (
   };
 
 
-  const recoverImageData = async (hash: string) => {
+  const recoverImageData = async (hash: string): Promise<boolean> => {
     const { dropboxStorage } = useStoragesStore.getState();
     const { use, accessToken } = dropboxStorage;
 
     if (!use || !accessToken) {
-      return;
+      return false;
     }
 
     const { updateImages } = stores;
@@ -217,11 +217,18 @@ export const dropBoxSyncTool = (
       // only attempt once to recover file
       recoveryAttempts.push(hash);
 
-      const remoteFileContent = await dropboxClient.getFileContent(`images/${hash}.txt`, 0, 1, true);
-      await saveImageFileContent(remoteFileContent);
+      try {
+        const remoteFileContent = await dropboxClient.getFileContent(`images/${hash}.txt`, 0, 1, true);
+        await saveImageFileContent(remoteFileContent);
 
-      // ToDo find a way to better trigger update (if it is even necessary ??)
-      updateImages([]);
+        // ToDo find a way to better trigger update (if it is even necessary ??)
+        updateImages([]);
+        return true;
+      } catch {
+        return false;
+      }
+    } else {
+      return false;
     }
   };
 
