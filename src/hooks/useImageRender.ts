@@ -6,7 +6,7 @@ import useGapiSync from '@/contexts/GapiSyncContext';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
-import { useItemsStore } from '@/stores/stores';
+import { useItemsStore, useStoragesStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { type RGBNHashes } from '@/types/Image';
@@ -29,8 +29,8 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
   const { frames: allFrames, palettes: allPalettes, images: allImages } = useItemsStore();
+  const { gapiStorage, dropboxStorage, gitStorage } = useStoragesStore();
   const { recoverImage } = useGapiSync();
-
   const { galleryImageData } = useGalleryImage(hash);
 
   const frameId = overrides?.frameId || galleryImageData?.frame;
@@ -38,9 +38,32 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const loadImageTiles = useCallback(
     (imgHash: string, noDummy?: boolean, overrideFrame?: string, hashesOverride?: RGBNHashes) => {
       const recoverFn = async () => {
-        const gapiRecovered = recoverImage(imgHash);
-        if (!gapiRecovered) {
-          await dropboxStorageTool(stores, remoteImport).recoverImageData(imgHash);
+        console.log(`🗃️ recovering ${imgHash}`);
+        let recovered = false;
+        if (gapiStorage.use) {
+          console.log('🗃️ from gapi storage');
+          recovered = recoverImage(imgHash);
+          if (!recovered) {
+            console.log('🗃️ ...failed');
+          }
+        }
+
+        if (!recovered && dropboxStorage.use) {
+          console.log('🗃️ from dropbox storage');
+          recovered = await dropboxStorageTool(stores, remoteImport).recoverImageData(imgHash);
+          if (!recovered) {
+            console.log('🗃️ ...failed');
+          }
+        }
+
+        if (!recovered && gitStorage.use) {
+          console.log('🗃️ recovering from git storage is not a feature');
+        } else {
+          if (recovered) {
+            console.log('🗃️ recovery successfull');
+          } else {
+            console.log('🗃️ recovery failed');
+          }
         }
       };
 
@@ -48,7 +71,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashesOverride);
     },
-    [allImages, allFrames, recoverImage, stores, remoteImport],
+    [allImages, allFrames, gapiStorage.use, dropboxStorage.use, gitStorage.use, recoverImage, stores, remoteImport],
   );
 
   const isRGB = useMemo(() => {

@@ -11,26 +11,28 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import { type ComponentType, type MouseEventHandler, useMemo, useState } from 'react';
+import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
 import { ImageSelectionMode } from '@/stores/stores';
 
+interface ContextMenuItem {
+  label: string;
+  Icon: ComponentType;
+  disabled?: boolean;
+  onClick: MouseEventHandler;
+}
+
 interface Props {
-  hash: string,
-  menuAnchor: HTMLElement | null,
-  onClose: () => void,
+  hash: string;
+  menuAnchor: HTMLElement | null;
+  onClose: () => void;
 }
 
 function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
-  const t = useTranslations('GalleryImageContextMenu');
   const [pluginAnchor, setPluginAnchor] = useState<HTMLElement | null>(null);
 
   const {
@@ -57,184 +59,135 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
 
   const { createGroup } = useImageGroups();
 
+  const menuItems = useMemo((): ContextMenuItem[] => (
+    [
+      {
+        Icon: EditIcon,
+        label: 'edit',
+        onClick: () => {
+          editImage();
+          onClose();
+        },
+      },
+      {
+        Icon: DownloadIcon,
+        label: 'download',
+        onClick: () => {
+          startDownload();
+          onClose();
+        },
+      },
+      {
+        Icon: DeleteIcon,
+        label: 'delete',
+        onClick: () => {
+          deleteImage();
+          onClose();
+        },
+      },
+      {
+        Icon: PreviewIcon,
+        label: 'viewInLightbox',
+        onClick: () => {
+          setLightboxImage();
+          onClose();
+        },
+      },
+      {
+        Icon: PrintIcon,
+        label: 'printViaSuperPrinter',
+        disabled: !canPrint,
+        onClick: () => {
+          print(hash);
+          onClose();
+        },
+      },
+      {
+        Icon: ExtensionIcon,
+        label: 'usePlugin',
+        disabled: !hasPlugins,
+        onClick: (ev) => {
+          setPluginAnchor(ev.target as HTMLElement);
+        },
+      },
+      {
+        Icon: ShareIcon,
+        label: 'share',
+        disabled: !canShare,
+        onClick: () => {
+          shareImage();
+          onClose();
+        },
+      },
+      {
+        Icon: isFavourite ? FavoriteBorderIcon : FavoriteIcon,
+        label: isFavourite ? 'removeFromFavourites' : 'addToFavourites',
+        onClick: () => {
+          updateFavouriteTag(!isFavourite);
+          onClose();
+        },
+      },
+      {
+        Icon: isSelected ? CheckBoxOutlineBlankIcon : CheckBoxIcon,
+        label: isSelected ? 'removeFromSelection' : 'addToSelection',
+        onClick: () => {
+          updateImageToSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD);
+          onClose();
+        },
+      },
+      {
+        Icon: CodeIcon,
+        label: 'showMetadata',
+        disabled: !(hasMeta || hasHashes),
+        onClick: () => {
+          showMetadata();
+          onClose();
+        },
+      },
+      {
+        Icon: CreateNewFolderIcon,
+        label: 'createGroup',
+        disabled: !isSelected,
+        onClick: () => {
+          createGroup(hash);
+          onClose();
+        },
+      },
+    ]
+  ), [
+    canPrint,
+    canShare,
+    createGroup,
+    deleteImage,
+    editImage,
+    hasHashes,
+    hasMeta,
+    hasPlugins,
+    hash,
+    isFavourite,
+    isSelected,
+    onClose,
+    print,
+    setLightboxImage,
+    shareImage,
+    showMetadata,
+    startDownload,
+    updateFavouriteTag,
+    updateImageToSelection,
+  ]);
+
   if (!menuAnchor) {
     return null;
   }
 
   return (
     <>
-      <Menu
-        open={!!menuAnchor}
-        anchorEl={menuAnchor}
+      <GalleryGridItemContextMenu
+        menuItems={menuItems}
+        menuAnchor={menuAnchor}
         onClose={onClose}
-        onClick={(ev) => {
-          ev.stopPropagation();
-        }}
-      >
-        <MenuItem
-          onClick={() => {
-            editImage();
-            onClose();
-          }}
-          title={t('edit')}
-        >
-          <ListItemIcon>
-            <EditIcon />
-          </ListItemIcon>
-          <ListItemText>
-            {t('edit')}
-          </ListItemText>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            startDownload();
-            onClose();
-          }}
-          title={t('download')}
-        >
-          <ListItemIcon>
-            <DownloadIcon />
-          </ListItemIcon>
-          <ListItemText>
-            {t('download')}
-          </ListItemText>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            deleteImage();
-            onClose();
-          }}
-          title={t('delete')}
-        >
-          <ListItemIcon>
-            <DeleteIcon />
-          </ListItemIcon>
-          <ListItemText>
-            {t('delete')}
-          </ListItemText>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setLightboxImage();
-            onClose();
-          }}
-          title={t('viewInLightbox')}
-        >
-          <ListItemIcon>
-            <PreviewIcon />
-          </ListItemIcon>
-          <ListItemText>
-            {t('viewInLightbox')}
-          </ListItemText>
-        </MenuItem>
-        {canPrint && (
-          <MenuItem
-            onClick={() => {
-              print(hash);
-              onClose();
-            }}
-            title={t('printViaSuperPrinter')}
-          >
-            <ListItemIcon>
-              <PrintIcon />
-            </ListItemIcon>
-            <ListItemText>
-              {t('printViaSuperPrinter')}
-            </ListItemText>
-          </MenuItem>
-        )}
-        {hasPlugins ? (
-          <MenuItem
-            onClick={(ev) => {
-              setPluginAnchor(ev.target as HTMLElement);
-            }}
-            title={t('usePlugin')}
-          >
-            <ListItemIcon>
-              <ExtensionIcon />
-            </ListItemIcon>
-            <ListItemText>
-              {t('usePlugin')}
-            </ListItemText>
-          </MenuItem>
-        ) : null}
-        {canShare ? (
-          <MenuItem
-            onClick={() => {
-              shareImage();
-              onClose();
-            }}
-            title={t('share')}
-          >
-            <ListItemIcon>
-              <ShareIcon />
-            </ListItemIcon>
-            <ListItemText>
-              {t('share')}
-            </ListItemText>
-          </MenuItem>
-        ) : null}
-        <MenuItem
-          onClick={() => {
-            updateFavouriteTag(!isFavourite);
-            onClose();
-          }}
-          title={isFavourite ? t('removeFromFavourites') : t('addToFavourites')}
-        >
-          <ListItemIcon>
-            {isFavourite ? <FavoriteBorderIcon /> : <FavoriteIcon />}
-          </ListItemIcon>
-          <ListItemText>
-            {isFavourite ? t('removeFromFavourites') : t('addToFavourites')}
-          </ListItemText>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            updateImageToSelection(isSelected ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD);
-            onClose();
-          }}
-          title={isSelected ? t('removeFromSelection') : t('addToSelection')}
-        >
-          <ListItemIcon>
-            { isSelected ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />}
-          </ListItemIcon>
-          <ListItemText>
-            {isSelected ? t('removeFromSelection') : t('addToSelection')}
-          </ListItemText>
-        </MenuItem>
-        {(hasMeta || hasHashes) && (
-          <MenuItem
-            onClick={() => {
-              showMetadata();
-              onClose();
-            }}
-            title={t('showMetadata')}
-          >
-            <ListItemIcon>
-              <CodeIcon />
-            </ListItemIcon>
-            <ListItemText>
-              {t('showMetadata')}
-            </ListItemText>
-          </MenuItem>
-        )}
-        {isSelected && (
-          <MenuItem
-            onClick={() => {
-              createGroup(hash);
-              onClose();
-            }}
-            title={t('createGroup')}
-          >
-            <ListItemIcon>
-              <CreateNewFolderIcon />
-            </ListItemIcon>
-            <ListItemText>
-              {t('createGroup')}
-            </ListItemText>
-          </MenuItem>
-        )}
-      </Menu>
+        translationKey="GalleryImageContextMenu"
+      />
       <PluginSelect
         pluginAnchor={pluginAnchor}
         hash={hash}

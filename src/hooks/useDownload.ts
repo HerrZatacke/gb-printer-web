@@ -6,7 +6,7 @@ import {
   useSettingsStore,
 } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { getPrepareFiles, download } from '@/tools/download';
+import { prepareFiles, download, PrepareFilesOptions } from '@/tools/download';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { loadImageTiles } from '@/tools/loadImageTiles';
@@ -14,8 +14,9 @@ import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import { DownloadInfo } from '@/types/Sync';
 
 interface UseDownload {
-  downloadImages: (hashes: string[]) => Promise<void>
-  setDownloadImages: (hashes: string[]) => Promise<void>
+  downloadImages: (hashes: string[]) => Promise<void>;
+  prepareDownloadInfo: (hash: string, prepareFilesOptionsOverride?: PrepareFilesOptions) => Promise<DownloadInfo[]>;
+  setDownloadImages: (hashes: string[]) => Promise<void>;
 }
 
 const useDownload = (): UseDownload => {
@@ -24,13 +25,13 @@ const useDownload = (): UseDownload => {
   const { setDownloadHashes } = useInteractionsStore();
   const { sendEvent } = useTracking();
 
-  const prepareFiles = useMemo(() => getPrepareFiles(
-    exportScaleFactors,
+  const prepareFilesOptions = useMemo<PrepareFilesOptions>(() => ( {
     exportFileTypes,
+    exportScaleFactors,
+    fileNameStyle,
     handleExportFrame,
     palettes,
-    fileNameStyle,
-  ), [exportFileTypes, exportScaleFactors, fileNameStyle, handleExportFrame, palettes]);
+  }), [exportFileTypes, exportScaleFactors, fileNameStyle, handleExportFrame, palettes]);
 
   const getZipFileName = useCallback((hashes: string[]): string => {
     if (hashes.length === 1) {
@@ -58,7 +59,7 @@ const useDownload = (): UseDownload => {
     });
   }, [fileNameStyle, images, palettes]);
 
-  const prepareDownloadInfo = useCallback(async (imageHash: string): Promise<DownloadInfo[]> => {
+  const prepareDownloadInfo = useCallback(async (imageHash: string, prepareFilesOptionsOverride?: PrepareFilesOptions): Promise<DownloadInfo[]> => {
     const image = images.find(({ hash }) => hash === imageHash);
     if (!image) { throw new Error('image not found'); }
 
@@ -69,12 +70,13 @@ const useDownload = (): UseDownload => {
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
-    return prepareFiles(image, tiles, imageStartLine);
-  }, [frames, images, prepareFiles]);
+
+    return prepareFiles(image, tiles, imageStartLine, prepareFilesOptionsOverride || prepareFilesOptions);
+  }, [frames, images, prepareFilesOptions]);
 
   const downloadImages = useCallback(async (hashes: string[]): Promise<void> => {
     const zipFilename = getZipFileName(hashes);
-    const resultImages = await Promise.all(hashes.map(prepareDownloadInfo));
+    const resultImages = await Promise.all(hashes.map((hash) => prepareDownloadInfo(hash)));
     download(zipFilename)(resultImages.flat());
     sendEvent('downloadImages', { imageCount: nextPowerOfTwo(resultImages.flat().length) });
   }, [getZipFileName, prepareDownloadInfo, sendEvent]);
@@ -89,6 +91,7 @@ const useDownload = (): UseDownload => {
 
   return {
     downloadImages,
+    prepareDownloadInfo,
     setDownloadImages,
   };
 };

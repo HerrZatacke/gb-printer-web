@@ -12,13 +12,13 @@ import { useTheme } from '@mui/material/styles';
 import { blend } from '@mui/system';
 import { type Theme } from '@mui/system';
 import { type PropsWithChildren } from 'react';
-import React, { useMemo, useState } from 'react';
+import { type ElementType, type MouseEvent, type ReactNode, useMemo, useState } from 'react';
 
 interface WrapperProps extends PropsWithChildren {
   sx?: object,
-  component?: React.ElementType,
+  component?: ElementType,
   href?: string,
-  onClick?: (ev: React.MouseEvent) => void,
+  onClick?: (ev: MouseEvent) => void,
   disableRipple?: boolean,
 }
 
@@ -37,12 +37,12 @@ interface ContextMenuProps {
 interface Props {
   selectionText: string,
   title: string,
-  titleIcon?: React.ReactNode,
+  titleIcon?: ReactNode,
   subheader?: string | null,
   wrapperProps: WrapperProps,
-  media: React.ReactNode,
-  content?: React.ReactNode,
-  contextMenuComponent: React.ElementType,
+  media: ReactNode,
+  content?: ReactNode,
+  contextMenuComponent: ElementType,
   contextMenuProps: ContextMenuProps,
 }
 

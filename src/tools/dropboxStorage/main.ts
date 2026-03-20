@@ -11,7 +11,7 @@ import {
   useStoragesStore,
 } from '@/stores/stores';
 import { delay } from '@/tools/delay';
-import { getPrepareFiles } from '@/tools/download';
+import { prepareFiles, PrepareFilesOptions } from '@/tools/download';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import getUploadFiles from '@/tools/getUploadFiles';
 import { loadImageTiles } from '@/tools/loadImageTiles';
@@ -130,13 +130,13 @@ export const dropBoxSyncTool = (
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
     const images: Image[] = getFilteredImages({ images: stateImages, groups: [] }, filtersState);
-    const prepareFiles = getPrepareFiles(
+    const prepareFilesOptions: PrepareFilesOptions ={
       exportScaleFactors,
       exportFileTypes,
       handleExportFrame,
       palettes,
       fileNameStyle,
-    );
+    };
     const loadTiles = loadImageTiles(stateImages, frames);
 
     const downloadInfos = (await Promise.all(
@@ -152,7 +152,7 @@ export const dropBoxSyncTool = (
             throw new Error('tiles missing');
           }
 
-          const imageBlobs = await prepareFiles(image, tiles, imageStartLine);
+          const imageBlobs = await prepareFiles(image, tiles, imageStartLine, prepareFilesOptions);
 
           const result = await Promise.all(
             imageBlobs.map(async (dlInfo: DownloadInfo): Promise<DownloadArrayBuffer> => ({
@@ -204,12 +204,12 @@ export const dropBoxSyncTool = (
   };
 
 
-  const recoverImageData = async (hash: string) => {
+  const recoverImageData = async (hash: string): Promise<boolean> => {
     const { dropboxStorage } = useStoragesStore.getState();
     const { use, accessToken } = dropboxStorage;
 
     if (!use || !accessToken) {
-      return;
+      return false;
     }
 
     const { updateImages } = stores;
@@ -217,11 +217,18 @@ export const dropBoxSyncTool = (
       // only attempt once to recover file
       recoveryAttempts.push(hash);
 
-      const remoteFileContent = await dropboxClient.getFileContent(`images/${hash}.txt`, 0, 1, true);
-      await saveImageFileContent(remoteFileContent);
+      try {
+        const remoteFileContent = await dropboxClient.getFileContent(`images/${hash}.txt`, 0, 1, true);
+        await saveImageFileContent(remoteFileContent);
 
-      // ToDo find a way to better trigger update (if it is even necessary ??)
-      updateImages([]);
+        // ToDo find a way to better trigger update (if it is even necessary ??)
+        updateImages([]);
+        return true;
+      } catch {
+        return false;
+      }
+    } else {
+      return false;
     }
   };
 

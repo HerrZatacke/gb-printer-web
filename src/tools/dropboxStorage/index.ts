@@ -9,7 +9,7 @@ export interface DropBoxSyncTool {
   startSyncData: (direction: SyncDirection) => Promise<void>,
   startSyncImages: () => Promise<void>,
   startAuth: () => Promise<void>,
-  recoverImageData: (hash: string) => Promise<void>,
+  recoverImageData: (hash: string) => Promise<boolean>,
 }
 
 let dropBoxSyncTool: DropBoxSyncTool;

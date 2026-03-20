@@ -1,12 +1,15 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { type ComponentType, type MouseEventHandler, useMemo } from 'react';
+import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 import { useImageGroups } from '@/hooks/useImageGroups';
+
+interface ContextMenuItem {
+  label: string;
+  Icon: ComponentType;
+  disabled?: boolean;
+  onClick: MouseEventHandler;
+}
 
 interface Props {
   groupId: string,
@@ -15,46 +18,40 @@ interface Props {
 }
 
 function GalleryGroupContextMenu({ groupId, menuAnchor, onClose }: Props) {
-  const t = useTranslations('GalleryGroupContextMenu');
   const { deleteGroup, editGroup } = useImageGroups();
+
+  const menuItems = useMemo((): ContextMenuItem[] => (
+    [
+      {
+        Icon: EditIcon,
+        label: 'edit',
+        onClick: () => {
+          editGroup(groupId);
+          onClose();
+        },
+      },
+      {
+        Icon: DeleteIcon,
+        label: 'delete',
+        onClick: () => {
+          deleteGroup(groupId);
+          onClose();
+        },
+      },
+    ]
+  ), [deleteGroup, editGroup, groupId, onClose]);
 
   if (!menuAnchor) {
     return null;
   }
 
   return (
-    <Menu
-      open={!!menuAnchor}
-      anchorEl={menuAnchor}
+    <GalleryGridItemContextMenu
+      menuItems={menuItems}
+      menuAnchor={menuAnchor}
       onClose={onClose}
-      onClick={(ev) => {
-        ev.stopPropagation();
-        onClose();
-      }}
-    >
-      <MenuItem
-        onClick={() => editGroup(groupId)}
-        title={t('edit')}
-      >
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText>
-          {t('edit')}
-        </ListItemText>
-      </MenuItem>
-      <MenuItem
-        onClick={() => deleteGroup(groupId)}
-        title={t('delete')}
-      >
-        <ListItemIcon>
-          <DeleteIcon />
-        </ListItemIcon>
-        <ListItemText>
-          {t('delete')}
-        </ListItemText>
-      </MenuItem>
-    </Menu>
+      translationKey="GalleryGroupContextMenu"
+    />
   );
 }
 
