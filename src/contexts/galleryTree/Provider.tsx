@@ -40,7 +40,7 @@ export const galleryTreeContext: Context<GalleryTreeContextType> = createContext
 
 
 export function GalleryTreeContext({ children }: PropsWithChildren) {
-  const { imageGroups, images: stateImages, setImageGroups } = useItemsStore();
+  const { imageGroups, images: stateImages, setImageGroups, initialized: itemsStoreInitialized } = useItemsStore();
   const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
   const [isInitialized, setIsInitialized] = useState<boolean>(false); // start asto prevent navigation side effect
   const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot(stateImages));
@@ -52,6 +52,8 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
   const { enableDebug } = useSettingsStore();
   const { setError } = useInteractionsStore();
 
+  console.log('GalleryTreeContext', itemsStoreInitialized);
+
   useEffect(() => {
     const worker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url), { type: 'module' });
     const api = wrap<TreeContextWorkerApi>(worker);
@@ -62,12 +64,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
     });
 
     const handle = window.setTimeout(async () => {
-      if (!imageGroups.length) {
-        const basicTreeRoot = createTreeRoot(stateImages);
-        basicTreeRoot.images = [...stateImages];
-        setRoot(basicTreeRoot);
-        setIsWorking(false);
-        setIsInitialized(true);
+      if (!itemsStoreInitialized) {
         return;
       }
 
@@ -108,7 +105,7 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
       worker.terminate();
       setIsWorking(false);
     };
-  }, [enableDebug, imageGroups, setError, setImageGroups, stateImages]);
+  }, [enableDebug, imageGroups, itemsStoreInitialized, setError, setImageGroups, stateImages]);
 
   const pageIndex = useMemo(() => (
     parseInt(searchParams.get('page') ?? '1', 10) - 1
