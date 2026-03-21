@@ -1,87 +1,54 @@
 import { saveAs } from 'file-saver';
 import { ExportFrameMode } from 'gb-image-decoder';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { FileNameStyle } from '@/consts/fileNameStyles';
 import useDownload from '@/hooks/useDownload';
 import { useItemsStore } from '@/stores/stores';
 import { PrepareFilesOptions } from '@/tools/download';
-import { generateFrequencies } from '@/tools/sstv';
-import { ModeType } from '@/tools/sstv/types';
+import { generateSamples, audioBufferToWav, samplesToAudioBuffer, ModeType } from '@/tools/sstv';
 
 interface UseSSTV {
   sstv: (hash: string) => Promise<void>;
+  audioSource: string;
 }
 
 export const useSSTV = (): UseSSTV => {
   const { palettes } = useItemsStore();
+  const [audioSource, setAudioSource] = useState<string>('');
   const { prepareDownloadInfo } = useDownload();
 
   const sstv = useCallback(async (hash: string) => {
-    const waveBlob: Blob = await (new Promise(async (resolve) => {
+    const sstvPrepareFilesOptions: PrepareFilesOptions = {
+      exportScaleFactors: [1],
+      exportFileTypes: ['png'],
+      // handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
+      handleExportFrame: ExportFrameMode.FRAMEMODE_CROP,
+      palettes,
+      fileNameStyle: FileNameStyle.TITLE_ONLY,
+    };
 
-      const sstvPrepareFilesOptions: PrepareFilesOptions = {
-        exportScaleFactors: [1],
-        exportFileTypes: ['png'],
-        handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
-        palettes,
-        fileNameStyle: FileNameStyle.TITLE_ONLY,
-      };
+    const sampleRate = 22500;
 
-      const [{ blob: pngBlob }] = await prepareDownloadInfo(hash, sstvPrepareFilesOptions);
+    const [{ blob: pngBlob }] = await prepareDownloadInfo(hash, sstvPrepareFilesOptions);
+    // const samples = await generateSamples(pngBlob, ModeType.MARTIN_1);
+    const samples = await generateSamples(pngBlob, ModeType.ROBOT_36);
+    const audioBuffer = await samplesToAudioBuffer(sampleRate, samples);
 
-      // const frequencies = await generateFrequencies(pngBlob, ModeType.MARTIN_1);
-      const frequencies = await generateFrequencies(pngBlob, ModeType.ROBOT_36);
+    if (audioBuffer) {
+      const waveBlob = audioBufferToWav(audioBuffer);
+      saveAs(waveBlob, 'output.wav');
+      // https://sstv-decoder.mathieurenaud.fr/
 
-      const audioCtx = new window.AudioContext();
-
-      if (!audioCtx) {
-        return;
-      }
-
-      const oscillator = audioCtx.createOscillator();
-      oscillator.type = 'sine';
-
-      const gainNode = audioCtx.createGain();
-      gainNode.gain.value = 0.1; // keep volume low
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-
-      const dest = audioCtx.createMediaStreamDestination();
-      oscillator.connect(dest);
-
-      const recorder = new MediaRecorder(dest.stream);
-      const chunks: BlobPart[] = [];
-
-      recorder.ondataavailable = (e) => {
-        chunks.push(e.data);
-      };
-
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/mp3' }); // audio/webm audio/mp3
-        resolve(blob);
-      };
-
-      recorder.start();
-      oscillator.onended = () => recorder.stop();
-
-
-
-      let t = audioCtx.currentTime;
-      console.log('start');
-      oscillator.start();
-      frequencies.forEach(({ freq, durationMs }) => {
-        oscillator.frequency.setValueAtTime(freq, t);
-        t += durationMs / 1000;
+      setAudioSource((currentSource) => {
+        URL.revokeObjectURL(currentSource);
+        return URL.createObjectURL(waveBlob);
       });
-      oscillator.stop(t);
-      console.log('stop');
-    }));
-
-    saveAs(waveBlob, 'output.mp3');
-    // https://sstv-decoder.mathieurenaud.fr/
+    }
 
   }, [palettes, prepareDownloadInfo]);
 
-  return { sstv };
+  return {
+    audioSource,
+    sstv,
+  };
 };
