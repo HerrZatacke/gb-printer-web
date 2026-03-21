@@ -269,6 +269,7 @@
     "delete": "Löschen",
     "viewInLightbox": "In Lightbox anzeigen",
     "printViaSuperPrinter": "Über Super Printer drucken",
+    "useSSTV": "Als SSTV-Ton abspielen",
     "usePlugin": "Plugin verwenden",
     "share": "Teilen",
     "addToFavourites": "Zu Favoriten hinzufügen",
@@ -696,5 +697,16 @@
     "backupExportImage": "Backup-Export {hash}",
     "backupExportFrame": "Backup-Export {hash}",
     "reImportedTrashFrames": "Wieder importierte, gelöschte Rahmen"
+  },
+  "SSTVForm": {
+    "dialogHeader": "SSTV Audiodatei erstellen",
+    "modeTypeLabel": "Wähle SSTV Mode",
+    "modeType": {
+      "martin1": "Martin 1",
+      "martin2": "Martin 2",
+      "robot32": "Robot 32",
+      "robot36": "Robot 36",
+      "robot72": "Robot 72"
+    }
   }
 }

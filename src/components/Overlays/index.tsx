@@ -17,6 +17,7 @@ import ProgressBox from '@/components/Overlays/ProgressBox';
 import ProgressLogBox from '@/components/Overlays/ProgressLogBox';
 import Serials from '@/components/Overlays/Serials';
 import SortForm from '@/components/Overlays/SortForm';
+import SSTVForm from '@/components/Overlays/SSTVForm';
 import SyncSelect from '@/components/Overlays/SyncSelect';
 import TrackingConsent from '@/components/Overlays/TrackingConsent';
 import Trashbin from '@/components/Overlays/Trashbin';
@@ -82,6 +83,7 @@ function Overlays() {
     videoSelection,
     showSerials,
     downloadHashes,
+    sstvHash,
   } = useInteractionsStore();
 
   const {
@@ -89,6 +91,7 @@ function Overlays() {
     progressLog,
   } = useProgressStore();
 
+  const showSSTVForm = !!sstvHash;
   const showDownloadOverlay = !!downloadHashes.length;
   const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
   const showProgressBox = !!progress.length;
@@ -126,6 +129,8 @@ function Overlays() {
       return <FilterForm />; // interactive
     case showSortForm:
       return <SortForm />; // interactive
+    case showSSTVForm:
+      return <SSTVForm />; // interactive
     case syncSelect:
       return <SyncSelect />; // interactive
     case showTrashbin:
