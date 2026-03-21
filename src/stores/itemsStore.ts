@@ -33,6 +33,7 @@ const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(f
 const sortByNameUniqueByUrl = (plugins: Plugin[]) => pluginsSortByName(pluginsUniqueByUrl(plugins));
 
 export interface Values {
+  initialized: boolean,
   frames: Frame[],
   palettes: Palette[],
   frameGroups: FrameGroup[],
@@ -120,6 +121,7 @@ export const createItemsStore = () => (
   create<ItemsState>()(
     persist(
       (set, get) => ({
+        initialized: false,
         frames: [],
         palettes: [],
         frameGroups: [],
@@ -433,6 +435,7 @@ export const createItemsStore = () => (
           const mergedState: ItemsState = {
             ...currentState,
             ...(persistedState as object),
+            initialized: true,
           };
 
           return {
@@ -457,6 +460,7 @@ export const createItemsStore = () => (
           })),
           palettes: state.palettes.filter(({ isPredefined }) => !isPredefined),
           gapiLastLocalUpdates: state.gapiLastLocalUpdates,
+          initialized: false,
         }),
 
         onRehydrateStorage: () => (hydratedState) => {

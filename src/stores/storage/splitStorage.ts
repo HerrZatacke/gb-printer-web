@@ -198,6 +198,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
       palettes: sortByShortName(await palettesStore.loadData()),
       plugins: sortByTitle(await pluginsStore.loadData()),
       gapiLastLocalUpdates: await getLastLocalUpdate(),
+      initialized: false,
     };
 
     console.log(`⚙️ loaded in ${(performance.now() - start).toFixed(2)}ms`);
