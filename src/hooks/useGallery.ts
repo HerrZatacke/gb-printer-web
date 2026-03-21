@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import {
   useFiltersStore,
@@ -23,7 +23,7 @@ interface UseGallery {
 
 export const useGallery = (): UseGallery => {
   const { pageIndex, getUrl, view, covers, isWorking } = useGalleryTreeContext();
-  const { pageSize } = useSettingsStore();
+  const { pageSize, enableDebug } = useSettingsStore();
 
   const {
     imageSelection,
@@ -69,6 +69,56 @@ export const useGallery = (): UseGallery => {
       Math.ceil(getFilteredImagesCount(view, filtersTags, filtersFrames, filtersPalettes, recentImports) / pageSize) - 1 :
       0
   ), [filtersFrames, filtersPalettes, filtersTags, pageSize, recentImports, view]);
+
+  useEffect(() => {
+    if (enableDebug) {
+      console.log(`🎨 Gallery Stats
+      iOffset: ${iOffset}
+      pSize: ${pSize}
+      selectedCount: ${selectedCount}
+      filtersTags: ${filtersTags.length}
+      filtersPalettes: ${filtersPalettes.length}
+      filtersFrames: ${filtersFrames.length}
+      recentImports: ${recentImports.length}
+      sortBy: ${sortBy}
+      totalImageCount: ${totalImageCount}
+      filteredCount: ${filteredCount}
+      totalPages: ${totalPages}
+      maxPage: ${maxPage}
+      page: ${page}
+      pageIndex: ${pageIndex}
+      maxPageIndex: ${maxPageIndex}
+      ---
+      images: ${images.length}
+      ---
+      view.id: ${view.id}
+      view.title: ${view.title}
+      view.images: ${view.images.length}
+      view.groups: ${view.groups.length}
+      view.allImages: ${view.allImages.length}
+      view.slug: ${view.slug}
+`);
+    }
+  }, [
+    enableDebug,
+    filteredCount,
+    filtersFrames.length,
+    filtersPalettes.length,
+    filtersTags.length,
+    iOffset,
+    images.length,
+    maxPage,
+    maxPageIndex,
+    pSize,
+    page,
+    pageIndex,
+    recentImports.length,
+    selectedCount,
+    sortBy,
+    totalImageCount,
+    totalPages,
+    view,
+  ]);
 
   return {
     totalImageCount,
