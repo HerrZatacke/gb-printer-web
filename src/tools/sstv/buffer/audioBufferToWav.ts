@@ -1,6 +1,6 @@
 import { BufferWriter } from '@/tools/BufferWriter';
 
-export const audioBufferToWav = (audioBuffer: AudioBuffer) => {
+export const audioBufferToWav = (audioBuffer: AudioBuffer): Blob => {
   const numChannels = audioBuffer.numberOfChannels;
   const length = audioBuffer.length;
   const sampleRate = audioBuffer.sampleRate;

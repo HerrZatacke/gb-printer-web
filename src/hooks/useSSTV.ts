@@ -1,54 +1,66 @@
-import { saveAs } from 'file-saver';
 import { ExportFrameMode } from 'gb-image-decoder';
-import { useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileNameStyle } from '@/consts/fileNameStyles';
 import useDownload from '@/hooks/useDownload';
-import { useItemsStore } from '@/stores/stores';
+import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 import { PrepareFilesOptions } from '@/tools/download';
-import { generateSamples, audioBufferToWav, samplesToAudioBuffer, ModeType } from '@/tools/sstv';
+import { audioBufferToWav, generateSamples, ModeType, samplesToAudioBuffer } from '@/tools/sstv';
 
 interface UseSSTV {
-  sstv: (hash: string) => Promise<void>;
+  modeType: ModeType;
+  setModeType: Dispatch<SetStateAction<ModeType>>;
   audioSource: string;
+  filename: string;
 }
 
 export const useSSTV = (): UseSSTV => {
   const { palettes } = useItemsStore();
   const [audioSource, setAudioSource] = useState<string>('');
+  const [filename, setFilename] = useState<string>('');
+  const [modeType, setModeType] = useState<ModeType>(ModeType.MARTIN_1);
   const { prepareDownloadInfo } = useDownload();
+  const { sstvHash } = useInteractionsStore();
 
-  const sstv = useCallback(async (hash: string) => {
-    const sstvPrepareFilesOptions: PrepareFilesOptions = {
-      exportScaleFactors: [1],
-      exportFileTypes: ['png'],
-      // handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
-      handleExportFrame: ExportFrameMode.FRAMEMODE_CROP,
-      palettes,
-      fileNameStyle: FileNameStyle.TITLE_ONLY,
-    };
-
-    const sampleRate = 22500;
-
-    const [{ blob: pngBlob }] = await prepareDownloadInfo(hash, sstvPrepareFilesOptions);
-    // const samples = await generateSamples(pngBlob, ModeType.MARTIN_1);
-    const samples = await generateSamples(pngBlob, ModeType.ROBOT_36);
-    const audioBuffer = await samplesToAudioBuffer(sampleRate, samples);
-
-    if (audioBuffer) {
-      const waveBlob = audioBufferToWav(audioBuffer);
-      saveAs(waveBlob, 'output.wav');
-      // https://sstv-decoder.mathieurenaud.fr/
-
+  useEffect(() => {
+    const handle = window.setTimeout(async () => {
       setAudioSource((currentSource) => {
         URL.revokeObjectURL(currentSource);
-        return URL.createObjectURL(waveBlob);
+        return '';
       });
-    }
+      setFilename('');
 
-  }, [palettes, prepareDownloadInfo]);
+      const sstvPrepareFilesOptions: PrepareFilesOptions = {
+        exportScaleFactors: [1],
+        exportFileTypes: ['png'],
+        // handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
+        handleExportFrame: ExportFrameMode.FRAMEMODE_CROP,
+        palettes,
+        fileNameStyle: FileNameStyle.TITLE_ONLY,
+      };
+
+      const sampleRate = 22500;
+
+      const [{ blob: pngBlob, filename: imageFilename }] = await prepareDownloadInfo(sstvHash, sstvPrepareFilesOptions);
+      const samples = await generateSamples(pngBlob, modeType);
+      const audioBuffer = await samplesToAudioBuffer(sampleRate, samples);
+
+      if (audioBuffer) {
+        const waveFile = audioBufferToWav(audioBuffer);
+        setAudioSource((currentSource) => {
+          URL.revokeObjectURL(currentSource);
+          return URL.createObjectURL(waveFile);
+        });
+        setFilename(imageFilename.replace(/(\.[^.]+)$/, '.wav'));
+      }
+    }, 1);
+
+    return () => window.clearTimeout(handle);
+  }, [modeType, palettes, prepareDownloadInfo, sstvHash]);
 
   return {
+    modeType,
+    setModeType,
     audioSource,
-    sstv,
+    filename,
   };
 };
