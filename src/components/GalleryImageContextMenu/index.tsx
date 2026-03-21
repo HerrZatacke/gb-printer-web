@@ -12,14 +12,16 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
+import Bowser from 'bowser';
 import { type ComponentType, type MouseEventHandler, useMemo, useState } from 'react';
 import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { useSSTV } from '@/hooks/useSSTV';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
-import { ImageSelectionMode } from '@/stores/stores';
+import { ImageSelectionMode, useInteractionsStore } from '@/stores/stores';
+
+const browser = Bowser.getParser(typeof window !== 'undefined' ? window.navigator.userAgent : '.');
 
 interface ContextMenuItem {
   label: string;
@@ -60,10 +62,11 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
   } = useSuperPrinterInterface();
 
   const {
-    sstv,
-  } = useSSTV();
+    setSSTVHash,
+  } = useInteractionsStore();
 
   const { createGroup } = useImageGroups();
+  const sstvEnabled = browser.getBrowserName() !== 'Firefox';
 
   const menuItems = useMemo((): ContextMenuItem[] => (
     [
@@ -111,8 +114,9 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
       {
         Icon: AudiotrackIcon,
         label: 'useSSTV',
+        disabled: !sstvEnabled,
         onClick: () => {
-          sstv(hash);
+          setSSTVHash(hash);
           onClose();
         },
       },
@@ -183,9 +187,9 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     onClose,
     print,
     setLightboxImage,
+    setSSTVHash,
     shareImage,
     showMetadata,
-    sstv,
     startDownload,
     updateFavouriteTag,
     updateImageToSelection,
