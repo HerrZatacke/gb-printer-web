@@ -697,5 +697,16 @@
     "backupExportImage": "Sikkerhetskopi-eksport {hash}",
     "backupExportFrame": "Sikkerhetskopi-eksport {hash}",
     "reImportedTrashFrames": "Gjenimporterte papirkurv-rammer"
+  },
+  "SSTVForm": {
+    "dialogHeader": "Opprett SSTV-lydfil",
+    "modeTypeLabel": "Velg SSTV-modus",
+    "modeType": {
+      "martin1": "Martin 1",
+      "martin2": "Martin 2",
+      "robot32": "Robot 32",
+      "robot36": "Robot 36",
+      "robot72": "Robot 72"
+    }
   }
 }

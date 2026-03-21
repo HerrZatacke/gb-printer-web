@@ -697,5 +697,16 @@
     "backupExportImage": "Säkerhetskopiering-export {hash}",
     "backupExportFrame": "Säkerhetskopiering-export {hash}",
     "reImportedTrashFrames": "Återimporterade raderade ramar"
+  },
+  "SSTVForm": {
+    "dialogHeader": "Skapa SSTV-ljudfil",
+    "modeTypeLabel": "Välj SSTV-läge",
+    "modeType": {
+      "martin1": "Martin 1",
+      "martin2": "Martin 2",
+      "robot32": "Robot 32",
+      "robot36": "Robot 36",
+      "robot72": "Robot 72"
+    }
   }
 }

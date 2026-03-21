@@ -697,5 +697,16 @@
     "backupExportImage": "Exportación de respaldo {hash}",
     "backupExportFrame": "Exportación de respaldo {hash}",
     "reImportedTrashFrames": "Marcos eliminados reimportados"
+  },
+  "SSTVForm": {
+    "dialogHeader": "Crear archivo de audio SSTV",
+    "modeTypeLabel": "Seleccionar modo SSTV",
+    "modeType": {
+      "martin1": "Martin 1",
+      "martin2": "Martin 2",
+      "robot32": "Robot 32",
+      "robot36": "Robot 36",
+      "robot72": "Robot 72"
+    }
   }
 }
