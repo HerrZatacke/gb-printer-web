@@ -101,29 +101,6 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
     ...createVIS(settings),
   ];
 
-  // const testVis = [
-  //   { 'freq': 1900, 'durationMs': 300 },  // Leader
-  //   { 'freq': 1200, 'durationMs': 10 },   // Break
-  //   { 'freq': 1900, 'durationMs': 300 },  // Leader repeat
-  //   { 'freq': 1200, 'durationMs': 30 },   // Start bit
-  //   { 'freq': 1200, 'durationMs': 30 },   // Bit 0 → 1
-  //   { 'freq': 1900, 'durationMs': 30 },   // Bit 1 → 0
-  //   { 'freq': 1900, 'durationMs': 30 },   // Bit 2 → 0
-  //   { 'freq': 1200, 'durationMs': 30 },   // Bit 3 → 1
-  //   { 'freq': 1900, 'durationMs': 30 },   // Bit 4 → 0
-  //   { 'freq': 1900, 'durationMs': 30 },   // Bit 5 → 0
-  //   { 'freq': 1900, 'durationMs': 30 },   // Bit 6 → 0
-  //   { 'freq': 1900, 'durationMs': 30 },   // Parity bit (even parity → 0 → 1900)
-  //   { 'freq': 1200, 'durationMs': 30 },    // Stop bit
-  // ];
-  //
-  //
-  // console.log(JSON.stringify(settings, null, 2));
-  // console.log(JSON.stringify(samples, null, 2));
-  // if (JSON.stringify(testVis) === JSON.stringify(samples)) {
-  //   samples = testVis;
-  // }
-
   // Image lines
   for (let y = 0; y < settings.height; y += 1) {
     // Sync + porch
