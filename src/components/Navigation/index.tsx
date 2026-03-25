@@ -19,6 +19,7 @@ import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import NavigationFlyout from '@/components/NavigationFlyout';
+import WrappedNextLink from '@/components/WrappedNextLink';
 import useNavigationItems from '@/contexts/NavigationItemsContext';
 import { FlyoutContent } from '@/types/Navigation';
 
@@ -149,7 +150,8 @@ function Navigation() {
             <ListItem key={route} disablePadding>
               <ListItemButton
                 href={route}
-                component={NextLink}
+                component={WrappedNextLink}
+                exact={route === '/'}
                 prefetch={false}
                 onClick={() => setMobileNavOpen(false)}
               >

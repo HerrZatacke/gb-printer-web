@@ -7,8 +7,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import NextLink from 'next/link';
 import React from 'react';
+import WrappedNextLink from '@/components/WrappedNextLink';
 import { FlyoutContent } from '@/types/Navigation';
 
 interface Props {
@@ -33,7 +33,7 @@ function NavigationFlyoutContent({ flyoutContent: { headline, navItems, sizeFlyo
             <ListItem key={route} disablePadding>
               <ListItemButton
                 href={route}
-                component={NextLink}
+                component={WrappedNextLink}
                 prefetch={false}
                 onClick={close}
               >

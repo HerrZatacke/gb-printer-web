@@ -7,7 +7,7 @@ export const listItemButton = (theme: Theme): Components['MuiListItemButton'] =>
   styleOverrides: {
     root: {
       '&.active': {
-        background: theme.palette.secondary.light,
+        background: alpha(theme.palette.secondary.light, 0.3),
         color: theme.palette.secondary.contrastText,
       },
       '&:hover': {
