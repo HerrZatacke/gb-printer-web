@@ -2,7 +2,6 @@
 
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
-import { alpha } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
@@ -17,7 +16,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
-import { type Theme } from '@mui/system';
 import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
@@ -142,15 +140,6 @@ function Navigation() {
                 component={NextLink}
                 prefetch={false}
                 onClick={() => setMobileNavOpen(false)}
-                sx={(theme: Theme) => ({
-                  '&.active': {
-                    background: theme.palette.secondary.light,
-                    color: theme.palette.secondary.contrastText,
-                  },
-                  '&:hover': {
-                    background: alpha(theme.palette.primary.main, 0.3),
-                  },
-                })}
               >
                 <ListItemText primary={label} />
               </ListItemButton>
