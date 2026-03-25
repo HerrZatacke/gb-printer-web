@@ -10,11 +10,7 @@ import { useEnv } from '@/contexts/envContext';
 import { useSettingsStore } from '@/stores/stores';
 import { reduceItems } from '@/tools/reduceArray';
 import { FeatureFlag } from '@/types/FeatureFlags';
-
-interface Tab {
-  path: string,
-  headline: string,
-}
+import { NavItem } from '@/types/Navigation';
 
 function SettingsTabs() {
   const pathName = usePathname();
@@ -22,11 +18,11 @@ function SettingsTabs() {
   const env = useEnv();
   const t = useTranslations('SettingsTabs');
 
-  const tabs = useMemo<Tab[]>(() => (
+  const tabs = useMemo<NavItem[]>(() => (
     [
       {
-        path: '/settings/generic/',
-        headline: t('genericSettings'),
+        route: '/settings/generic/',
+        label: t('genericSettings'),
       },
       (
         process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID &&
@@ -34,38 +30,38 @@ function SettingsTabs() {
         featureFlags.includes(FeatureFlag.GAPI_SHEETS)
       ) ?
         {
-          path: '/settings/gsheets/',
-          headline: t('gapiSheetsSettings'),
+          route: '/settings/gsheets/',
+          label: t('gapiSheetsSettings'),
         } : null,
       process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
         {
-          path: '/settings/dropbox/',
-          headline: t('dropboxSettings'),
+          route: '/settings/dropbox/',
+          label: t('dropboxSettings'),
         } : null,
       (
         (env?.env === 'esp8266') ||
         (env?.env === 'webpack-dev')
       ) ? {
-        path: '/settings/wifi/',
-        headline: t('wifiSettings'),
+        route: '/settings/wifi/',
+        label: t('wifiSettings'),
       } : null,
       {
-        path: '/settings/plugins/',
-        headline: t('pluginSettings'),
+        route: '/settings/plugins/',
+        label: t('pluginSettings'),
       },
       {
-        path: '/settings/git/',
-        headline: t('gitSettings'),
+        route: '/settings/git/',
+        label: t('gitSettings'),
       },
     ]
-      .reduce(reduceItems<Tab>, [])
+      .reduce(reduceItems<NavItem>, [])
   ), [t, featureFlags, env?.env]);
 
   const tabsValue = useMemo<string | null>(() => {
     if (
       !tabs.length ||
       pathName === '/settings' ||
-      tabs.findIndex(({ path }) => (path === pathName)) === -1
+      tabs.findIndex(({ route }) => (route === pathName)) === -1
     ) {
       return null;
     }
@@ -80,14 +76,14 @@ function SettingsTabs() {
   return (
     <Tabs value={tabsValue}>
       {
-        tabs.map(({ headline, path }) => (
+        tabs.map(({ label, route }) => (
           <Tab
-            label={headline}
-            key={path}
+            label={label}
+            key={route}
             component={NextLink}
-            href={path}
+            href={route}
             prefetch={false}
-            value={path}
+            value={route}
           />
         ))
       }

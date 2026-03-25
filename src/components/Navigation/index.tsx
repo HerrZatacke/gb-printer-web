@@ -34,16 +34,12 @@ import { useUrl } from '@/hooks/useUrl';
 import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { lightTheme } from '@/styles/themes';
 import { reduceItems } from '@/tools/reduceArray';
+import { NavItem } from '@/types/Navigation';
 
 enum NavBadgeColor {
   ERROR = 'error',
   INFO = 'info',
   DEFAULT = 'default',
-}
-
-interface NavItem {
-  label: string,
-  route: string,
 }
 
 interface NavActionItem {
