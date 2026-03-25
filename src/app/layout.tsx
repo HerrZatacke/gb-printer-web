@@ -8,6 +8,7 @@ import { GapiSheetStateProvider } from '@/contexts/GapiSheetStateContext';
 import { GapiSyncProvider  } from '@/contexts/GapiSyncContext';
 import { GISProvider } from '@/contexts/GisContext';
 import I18nContext from '@/contexts/i18nContext';
+import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
 import { NavigationToolsProvider } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { PluginsContext } from '@/contexts/plugins/Provider';
 import { PortsContext } from '@/contexts/ports/Provider';
@@ -21,7 +22,7 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
-  const providers = [
+  const providers: ComponentType<{ children: ReactNode }>[] = [
     I18nContext,
     TrackingProvider,
     GISProvider,
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
     PluginsContext,
     GalleryTreeContext,
     NavigationToolsProvider, // needs <GalleryTreeContext>
+    NavigationItemsProvider,
     RemotePrinterContextProvider,
     AppRouterCacheProvider,
   ];
@@ -46,7 +48,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
         <link rel="canonical" href={process.env.NEXT_PUBLIC_HOMEPAGE} />
       </head>
       <body>
-        { providers.reduceRight((acc: ReactNode, Provider: ComponentType<{ children: ReactNode }>) => {
+        { providers.reduceRight((acc: ReactNode, Provider) => {
           return <Provider>{acc}</Provider>;
         }, children) }
       </body>
