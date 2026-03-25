@@ -9,15 +9,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslations } from 'next-intl';
 import React, { useMemo, useState } from 'react';
 import GalleryGrid from '@/components/GalleryGrid';
-import { useImport } from '@/components/Import/useImport';
 import Palette from '@/components/Palette';
-import { ExportTypes } from '@/consts/exportTypes';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import usePaletteFromFile from '@/hooks/usePaletteFromFile';
@@ -26,45 +22,20 @@ import useEditPalette from '@/hooks/useSetEditPalette';
 import { useItemsStore } from '@/stores/stores';
 import { type Palette as PaletteT } from '@/types/Palette';
 
-interface Tab {
-  id: string,
-  translationKey: string,
-  filter: (palette: PaletteT) => boolean,
+interface Props {
+  filter: (palette: PaletteT) => boolean;
+  showEditButtons?: boolean;
 }
 
-const tabs: Tab[] = [
-  {
-    id: 'own',
-    translationKey: 'ownPalettes',
-    filter: ({ isPredefined }) => !isPredefined,
-  },
-  {
-    id: 'predefined',
-    translationKey: 'predefinedPalettes',
-    filter: ({ isPredefined }) => isPredefined,
-  },
-  {
-    id: 'all',
-    translationKey: 'allPalettes',
-    filter: Boolean,
-  },
-];
-
-function Palettes() {
+function Palettes({ filter, showEditButtons }: Props) {
   const { palettes: palettesUnsorted } = useItemsStore();
   const { onInputChange, busy } = usePaletteFromFile();
   const { editPalette } = useEditPalette();
-  const { exportJson } = useImport();
-  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const [sortMenuAnchor, setSortMenuAnchor] = useState<HTMLElement | null>(null);
   const theme = useTheme();
   const t = useTranslations('Palettes');
 
   const aboveSm = useMediaQuery(theme.breakpoints.up('sm'));
-
-  const currentTab = useMemo(() => (
-    tabs[selectedTabIndex]
-  ), [selectedTabIndex]);
 
   const {
     sortFn,
@@ -75,27 +46,11 @@ function Palettes() {
   } = usePaletteSort();
 
   const palettes = useMemo<PaletteT[]>(() => (
-    [...palettesUnsorted].filter(currentTab.filter).sort(sortFn)
-  ), [currentTab, palettesUnsorted, sortFn]);
+    [...palettesUnsorted].filter(filter).sort(sortFn)
+  ), [filter, palettesUnsorted, sortFn]);
 
   return (
-    <Stack
-      direction="column"
-      gap={4}
-    >
-      <Tabs value={selectedTabIndex}>
-        {
-          tabs.map(({ id, translationKey }, index) => (
-            <Tab
-              label={t(translationKey)}
-              key={id}
-              onClick={() => setSelectedTabIndex(index)}
-              value={index}
-            />
-          ))
-        }
-      </Tabs>
-
+    <>
       <Stack
         direction="row"
         justifyContent="end"
@@ -110,7 +65,7 @@ function Palettes() {
           fullWidth={!aboveSm}
           disableElevation
         >
-          {currentTab.id === 'own' && (
+          {showEditButtons && (
             <>
               <Button
                 disabled={busy}
@@ -182,17 +137,8 @@ function Palettes() {
           ))
         }
       </GalleryGrid>
-      <ButtonGroup
-        variant="contained"
-        fullWidth
-      >
-        <Button
-          onClick={() => exportJson(ExportTypes.PALETTES)}
-        >
-          {t('exportPalettes')}
-        </Button>
-      </ButtonGroup>
-    </Stack>
+
+    </>
   );
 }
 

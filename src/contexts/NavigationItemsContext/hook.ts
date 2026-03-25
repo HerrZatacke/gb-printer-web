@@ -20,11 +20,13 @@ export interface NavigationItemsContextType {
   mainNavigationItems: NavItem[];
   mainNavigationActionItems: NavActionItem[];
   settingsTabs: NavItem[];
+  palettesTabs: NavItem[];
 }
 
 export const useContextHook = (): NavigationItemsContextType => {
   const tNavigation = useTranslations('Navigation');
   const tSettingsTabs = useTranslations('SettingsTabs');
+  const tPalettes = useTranslations('Palettes');
   const { fullPath } = useUrl();
   const { lastGalleryLink, getUrl } = useGalleryTreeContext();
   const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
@@ -81,7 +83,7 @@ export const useContextHook = (): NavigationItemsContextType => {
       },
       {
         label: tNavigation('palettes'),
-        route: '/palettes',
+        route: '/palettes/own',
       },
       {
         label: tNavigation('frames'),
@@ -192,9 +194,28 @@ export const useContextHook = (): NavigationItemsContextType => {
       .reduce(reduceItems<NavItem>, [])
   ), [tSettingsTabs, featureFlags, env?.env]);
 
+  const palettesTabs: NavItem[] = useMemo<NavItem[]>(() => (
+    [
+      {
+        route: '/palettes/own/',
+        label: tPalettes('ownPalettes'),
+      },
+      {
+        route: '/palettes/predefined/',
+        label: tPalettes('predefinedPalettes'),
+      },
+      {
+        route: '/palettes/all/',
+        label: tPalettes('allPalettes'),
+      },
+    ]
+  ), [tPalettes]);
+
+
   return {
     mainNavigationItems,
     mainNavigationActionItems,
     settingsTabs,
+    palettesTabs,
   };
 };
