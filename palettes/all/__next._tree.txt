@@ -1,0 +1,3 @@
+:HL["/gb-printer-web/_next/static/css/bdc72c0d0767576a.css","style"]
+:HL["/gb-printer-web/_next/static/css/59f3b4615684664e.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(pages)","param":null,"prefetchHints":0,"slots":{"children":{"name":"palettes","param":null,"prefetchHints":0,"slots":{"children":{"name":"all","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"muKK7rk__hk-QC-m2O36P"}
