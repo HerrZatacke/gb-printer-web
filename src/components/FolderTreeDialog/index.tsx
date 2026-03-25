@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
 import WrappedNextLink from '@/components/WrappedNextLink';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';

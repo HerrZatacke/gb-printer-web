@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { useMemo, useEffect } from 'react';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import {
   useFiltersStore,
   useItemsStore,

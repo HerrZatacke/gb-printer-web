@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import {
   type EditGroupInfo,

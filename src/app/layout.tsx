@@ -3,7 +3,7 @@ import { type Viewport } from 'next';
 import { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import GlobalAppInit from '@/components/GlobalAppInit';
 import { EnvProvider } from '@/contexts/envContext';
-import { GalleryTreeContext } from '@/contexts/galleryTree/Provider';
+import { GalleryTreeProvider } from '@/contexts/GalleryTreeContext';
 import { GapiSheetStateProvider } from '@/contexts/GapiSheetStateContext';
 import { GapiSyncProvider  } from '@/contexts/GapiSyncContext';
 import { GISProvider } from '@/contexts/GisContext';
@@ -30,10 +30,10 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
     GapiSyncProvider,
     EnvProvider,
     PortsContext,
-    GlobalAppInit,
+    GalleryTreeProvider,
+    GlobalAppInit, // needs <GalleryTreeProvider>
     PluginsContext,
-    GalleryTreeContext,
-    NavigationToolsProvider, // needs <GalleryTreeContext>
+    NavigationToolsProvider, // needs <GalleryTreeProvider>
     NavigationItemsProvider,
     RemotePrinterContextProvider,
     AppRouterCacheProvider,

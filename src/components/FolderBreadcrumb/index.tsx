@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import FolderTreeDialog from '@/components/FolderTreeDialog';
 import WrappedNextLink from '@/components/WrappedNextLink';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import { useEditStore } from '@/stores/stores';
 import { shorten } from '@/tools/shorten';

@@ -10,7 +10,7 @@ import ImageRender from '@/components/ImageRender';
 import TagsList from '@/components/TagsList';
 import WrappedNextLink from '@/components/WrappedNextLink';
 import { GalleryViews } from '@/consts/GalleryViews';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useGalleryGroup } from '@/hooks/useGalleryGroup';
 import { useSettingsStore } from '@/stores/stores';
 

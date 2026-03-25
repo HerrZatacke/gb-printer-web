@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import screenfull from 'screenfull';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import useTracking from '@/contexts/TrackingContext';
 import { useFiltersStore, useInteractionsStore } from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';

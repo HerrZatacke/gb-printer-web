@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { longestCommonSubstring } from 'string-algorithms';
 import { DialoqQuestionType } from '@/consts/dialog';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { NEW_GROUP } from '@/hooks/useEditImageGroup';
 import {
   useDialogsStore,

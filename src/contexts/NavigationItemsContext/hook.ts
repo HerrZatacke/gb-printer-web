@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
 import { useEnv } from '@/contexts/envContext';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { usePortsContext } from '@/contexts/ports';
 import useNavigation from '@/hooks/useNavigation';
 import { useUrl } from '@/hooks/useUrl';

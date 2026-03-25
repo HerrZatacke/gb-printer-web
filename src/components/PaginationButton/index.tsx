@@ -2,7 +2,7 @@ import IconButton from '@mui/material/Button';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import WrappedNextLink from '@/components/WrappedNextLink';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 
 export interface Props {
   children: React.ReactNode,

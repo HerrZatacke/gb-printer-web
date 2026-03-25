@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useFiltersStore } from '@/stores/stores';
 import { type FilteredImagesState } from '@/tools/getFilteredImages';
 import { getFilteredImages } from '@/tools/getFilteredImages';

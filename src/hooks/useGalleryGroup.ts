@@ -1,4 +1,4 @@
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface UseGalleryGroup {

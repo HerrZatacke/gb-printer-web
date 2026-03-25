@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useSettingsStore } from '@/stores/stores';
 import { FeatureFlag } from '@/types/FeatureFlags';
 

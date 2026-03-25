@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import objectHash from 'object-hash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { toSlug } from '@/hooks/useEditImageGroup';
