@@ -1,9 +1,9 @@
 'use client';
 
 import { Tab, Tabs } from '@mui/material';
-import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
+import WrappedNextLink from '@/components/WrappedNextLink';
 import useNavigationItems from '@/contexts/NavigationItemsContext';
 
 function PalettesTabs() {
@@ -33,7 +33,7 @@ function PalettesTabs() {
           <Tab
             label={label}
             key={route}
-            component={NextLink}
+            component={WrappedNextLink}
             href={route}
             prefetch={false}
             value={route}

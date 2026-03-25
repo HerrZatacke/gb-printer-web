@@ -2,9 +2,9 @@
 
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
+import WrappedNextLink from '@/components/WrappedNextLink';
 import useNavigationItems from '@/contexts/NavigationItemsContext';
 
 function SettingsTabs() {
@@ -35,7 +35,7 @@ function SettingsTabs() {
           <Tab
             label={label}
             key={route}
-            component={NextLink}
+            component={WrappedNextLink}
             href={route}
             prefetch={false}
             value={route}

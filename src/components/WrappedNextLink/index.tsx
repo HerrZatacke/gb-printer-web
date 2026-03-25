@@ -30,12 +30,6 @@ const WrappedNextLink = React.forwardRef<HTMLAnchorElement, Props>(
       const normalizedPathname = normalize(pathname);
       const normalizedHref = normalize(String(href));
 
-      console.log({
-        exact,
-        normalizedPathname,
-        normalizedHref,
-      });
-
       return exact ? normalizedPathname === normalizedHref : normalizedPathname.startsWith(normalizedHref);
     }, [exact, href, pathname]);
 

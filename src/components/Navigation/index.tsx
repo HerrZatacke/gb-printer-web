@@ -15,7 +15,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
-import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import NavigationFlyout from '@/components/NavigationFlyout';
@@ -67,7 +66,8 @@ function Navigation() {
                   key={route}
                   href={route}
                   prefetch={false}
-                  component={NextLink}
+                  component={WrappedNextLink}
+                  exact={route === '/'}
                   color="inherit"
                   onClick={() => setMobileNavOpen(false)}
                   onMouseEnter={() => setFlyoutContents(children || [])}

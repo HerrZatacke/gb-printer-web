@@ -5,10 +5,10 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import NextLink  from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import FolderTreeDialog from '@/components/FolderTreeDialog';
+import WrappedNextLink from '@/components/WrappedNextLink';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import { useEditStore } from '@/stores/stores';
@@ -42,7 +42,7 @@ function FolderBreadcrumb() {
           >
             { index > 0 ? (
               <Link
-                component={NextLink}
+                component={WrappedNextLink}
                 title={group.title}
                 href={link}
                 prefetch={false}
@@ -51,7 +51,7 @@ function FolderBreadcrumb() {
               </Link>
             ) : (
               <IconButton
-                component={NextLink}
+                component={WrappedNextLink}
                 title={group.title}
                 href={link}
                 prefetch={false}

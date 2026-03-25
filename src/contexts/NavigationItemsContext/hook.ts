@@ -139,7 +139,7 @@ export const useContextHook = (): NavigationItemsContextType => {
       },
       {
         label: tNavigation('palettes'),
-        route: '/palettes/own',
+        route: '/palettes',
         children: [{
           headline: tNavigation('palettes'),
           navItems: palettesTabs,
@@ -152,7 +152,7 @@ export const useContextHook = (): NavigationItemsContextType => {
       },
       {
         label: tNavigation('settings'),
-        route: '/settings/generic',
+        route: '/settings',
         children: [{
           headline: tNavigation('settings'),
           navItems: settingsTabs,

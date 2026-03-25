@@ -3,10 +3,10 @@ import Link from '@mui/material/Link';
 import { useTheme } from '@mui/material/styles';
 import { type Theme } from '@mui/system';
 import { TreeItem, SimpleTreeView } from '@mui/x-tree-view';
-import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
+import WrappedNextLink from '@/components/WrappedNextLink';
 import { useGalleryTreeContext } from '@/contexts/galleryTree';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { usePathSegments } from '@/hooks/usePathSegments';
@@ -26,7 +26,7 @@ function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
       itemId={group.id}
       label={(
         <Link
-          component={NextLink}
+          component={WrappedNextLink}
           href={getGroupPath(group.id, 0)}
           prefetch={false}
           onClick={onClick}
