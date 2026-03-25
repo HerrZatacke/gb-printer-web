@@ -14,17 +14,18 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
+import NavigationFlyout from '@/components/NavigationFlyout';
 import useNavigationItems from '@/contexts/NavigationItemsContext';
-import { lightTheme } from '@/styles/themes';
+import { FlyoutContent } from '@/types/Navigation';
 
 function Navigation() {
   const t = useTranslations('Navigation');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [flyoutContents, setFlyoutContents] = useState<FlyoutContent[]>([]);
   const [drawerContainer, setDrawerContainer] = useState<HTMLElement | undefined>(undefined);
 
   const {
@@ -42,70 +43,81 @@ function Navigation() {
 
   return (
     <>
-      <ThemeProvider theme={lightTheme}>
-        <AppBar color="primary" enableColorOnDark position="sticky">
-          <Container maxWidth="xl" disableGutters>
-            <Toolbar disableGutters>
-              <ButtonGroup
-                variant="text"
-                component="nav"
-                role="navigation"
-                aria-label={t('mainNavAriaLabel')}
-                sx={{ display: { xs: 'none', md: 'inline-flex' }, width: '100%' }}
-              >
-                {mainNavigationItems.map(({ route, label }) => (
-                  <Button
-                    key={route}
-                    href={route}
-                    prefetch={false}
-                    component={NextLink}
-                    color="inherit"
-                    onClick={() => setMobileNavOpen(false)}
-                  >
-                    {label}
-                  </Button>
-                ))}
-              </ButtonGroup>
-
-              <ButtonGroup
-                variant="text"
-                role="navigation"
-                aria-label={t('utilityNavAriaLabel')}
-              >
-                {mainNavigationActionItems.map(({ title, Icon, onClick, badgeContent, badgeColor, isBusy, disabled }) => (
-                  <IconButton
-                    key={title}
-                    color="inherit"
-                    disabled={disabled}
-                    title={title}
-                    onClick={onClick}
-                    sx={isBusy ? { animation: 'pulse-bg 600ms infinite' } : undefined}
-                  >
-                    <Badge
-                      badgeContent={badgeContent}
-                      color={badgeColor}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                      }}
-                    >
-                      <Icon />
-                    </Badge>
-                  </IconButton>
-                ))}
-                <IconButton
+      <AppBar color="primary" enableColorOnDark position="sticky">
+        <Container
+          maxWidth="xl"
+          disableGutters
+          sx={{ position: 'relative' }}
+          onMouseLeave={() => setFlyoutContents([])}
+        >
+          <Toolbar
+            disableGutters
+            sx={{ zIndex: 1 }}
+          >
+            <ButtonGroup
+              variant="text"
+              component="nav"
+              role="navigation"
+              aria-label={t('mainNavAriaLabel')}
+              sx={{ display: { xs: 'none', md: 'inline-flex' }, width: '100%' }}
+            >
+              {mainNavigationItems.map(({ route, label, children }) => (
+                <Button
+                  key={route}
+                  href={route}
+                  prefetch={false}
+                  component={NextLink}
                   color="inherit"
-                  title={t('openMainNav')}
-                  onClick={() => setMobileNavOpen(true)}
-                  sx={{ display: { md: 'none' } }}
+                  onClick={() => setMobileNavOpen(false)}
+                  onMouseEnter={() => setFlyoutContents(children || [])}
                 >
-                  <MenuIcon />
+                  {label}
+                </Button>
+              ))}
+            </ButtonGroup>
+
+            <ButtonGroup
+              variant="text"
+              role="navigation"
+              aria-label={t('utilityNavAriaLabel')}
+            >
+              {mainNavigationActionItems.map(({ title, Icon, onClick, badgeContent, badgeColor, isBusy, disabled }) => (
+                <IconButton
+                  key={title}
+                  color="inherit"
+                  disabled={disabled}
+                  title={title}
+                  onClick={onClick}
+                  sx={isBusy ? { animation: 'pulse-bg 600ms infinite' } : undefined}
+                >
+                  <Badge
+                    badgeContent={badgeContent}
+                    color={badgeColor}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                  >
+                    <Icon />
+                  </Badge>
                 </IconButton>
-              </ButtonGroup>
-            </Toolbar>
-          </Container>
-        </AppBar>
-      </ThemeProvider>
+              ))}
+              <IconButton
+                color="inherit"
+                title={t('openMainNav')}
+                onClick={() => setMobileNavOpen(true)}
+                sx={{ display: { md: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </ButtonGroup>
+          </Toolbar>
+          <NavigationFlyout
+            flyoutContents={flyoutContents}
+            close={() => setFlyoutContents([])}
+          />
+        </Container>
+      </AppBar>
       <Drawer
         container={drawerContainer}
         variant="temporary"

@@ -67,6 +67,62 @@ export const useContextHook = (): NavigationItemsContextType => {
     return () => window.clearTimeout(handle);
   }, [fullPath, getUrl, lastGalleryLink]);
 
+  const settingsTabs = useMemo<NavItem[]>(() => (
+    [
+      {
+        route: '/settings/generic/',
+        label: tSettingsTabs('genericSettings'),
+      },
+      (
+        process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID &&
+        process.env.NEXT_PUBLIC_GOOGLE_SCOPE &&
+        featureFlags.includes(FeatureFlag.GAPI_SHEETS)
+      ) ?
+        {
+          route: '/settings/gsheets/',
+          label: tSettingsTabs('gapiSheetsSettings'),
+        } : null,
+      process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
+        {
+          route: '/settings/dropbox/',
+          label: tSettingsTabs('dropboxSettings'),
+        } : null,
+      (
+        (env?.env === 'esp8266') ||
+        (env?.env === 'webpack-dev')
+      ) ? {
+        route: '/settings/wifi/',
+        label: tSettingsTabs('wifiSettings'),
+      } : null,
+      {
+        route: '/settings/plugins/',
+        label: tSettingsTabs('pluginSettings'),
+      },
+      {
+        route: '/settings/git/',
+        label: tSettingsTabs('gitSettings'),
+      },
+    ]
+      .reduce(reduceItems<NavItem>, [])
+  ), [tSettingsTabs, featureFlags, env?.env]);
+
+  const palettesTabs: NavItem[] = useMemo<NavItem[]>(() => (
+    [
+      {
+        route: '/palettes/own/',
+        label: tPalettes('ownPalettes'),
+      },
+      {
+        route: '/palettes/predefined/',
+        label: tPalettes('predefinedPalettes'),
+      },
+      {
+        route: '/palettes/all/',
+        label: tPalettes('allPalettes'),
+      },
+    ]
+  ), [tPalettes]);
+
   const mainNavigationItems = useMemo<NavItem[]>(() => (
     [
       {
@@ -84,6 +140,11 @@ export const useContextHook = (): NavigationItemsContextType => {
       {
         label: tNavigation('palettes'),
         route: '/palettes/own',
+        children: [{
+          headline: tNavigation('palettes'),
+          navItems: palettesTabs,
+          sizeFlyout: { xs: 12, lg: 6 },
+        }],
       },
       {
         label: tNavigation('frames'),
@@ -92,9 +153,14 @@ export const useContextHook = (): NavigationItemsContextType => {
       {
         label: tNavigation('settings'),
         route: '/settings/generic',
+        children: [{
+          headline: tNavigation('settings'),
+          navItems: settingsTabs,
+          sizeFlyout: { xs: 12, lg: 6 },
+        }],
       },
     ].reduce(reduceItems<NavItem>, [])
-  ), [galleryRoute, tNavigation]);
+  ), [galleryRoute, palettesTabs, settingsTabs, tNavigation]);
 
 
   const mainNavigationActionItems = useMemo<NavActionItem[]>(() => (
@@ -154,63 +220,6 @@ export const useContextHook = (): NavigationItemsContextType => {
     useSync,
     isReceiving,
   ]);
-
-  const settingsTabs = useMemo<NavItem[]>(() => (
-    [
-      {
-        route: '/settings/generic/',
-        label: tSettingsTabs('genericSettings'),
-      },
-      (
-        process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID &&
-        process.env.NEXT_PUBLIC_GOOGLE_SCOPE &&
-        featureFlags.includes(FeatureFlag.GAPI_SHEETS)
-      ) ?
-        {
-          route: '/settings/gsheets/',
-          label: tSettingsTabs('gapiSheetsSettings'),
-        } : null,
-      process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
-        {
-          route: '/settings/dropbox/',
-          label: tSettingsTabs('dropboxSettings'),
-        } : null,
-      (
-        (env?.env === 'esp8266') ||
-        (env?.env === 'webpack-dev')
-      ) ? {
-        route: '/settings/wifi/',
-        label: tSettingsTabs('wifiSettings'),
-      } : null,
-      {
-        route: '/settings/plugins/',
-        label: tSettingsTabs('pluginSettings'),
-      },
-      {
-        route: '/settings/git/',
-        label: tSettingsTabs('gitSettings'),
-      },
-    ]
-      .reduce(reduceItems<NavItem>, [])
-  ), [tSettingsTabs, featureFlags, env?.env]);
-
-  const palettesTabs: NavItem[] = useMemo<NavItem[]>(() => (
-    [
-      {
-        route: '/palettes/own/',
-        label: tPalettes('ownPalettes'),
-      },
-      {
-        route: '/palettes/predefined/',
-        label: tPalettes('predefinedPalettes'),
-      },
-      {
-        route: '/palettes/all/',
-        label: tPalettes('allPalettes'),
-      },
-    ]
-  ), [tPalettes]);
-
 
   return {
     mainNavigationItems,
