@@ -10,6 +10,7 @@ import { formControl } from '@/styles/components/formControl';
 import { inputLabel } from '@/styles/components/inputLabel';
 import { link } from '@/styles/components/link';
 import { list } from '@/styles/components/list';
+import { listItemButton } from '@/styles/components/listItemButton';
 import { menuItem } from '@/styles/components/menuItem';
 import { outlinedInput } from '@/styles/components/outlinedInput';
 import { paper } from '@/styles/components/paper';
@@ -43,6 +44,7 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
   MuiInputLabel: inputLabel(),
   MuiLink: link(),
   MuiList: list(),
+  MuiListItemButton: listItemButton(theme),
   MuiMenuItem: menuItem(theme),
   MuiOutlinedInput: outlinedInput(theme),
   MuiPaper: paper(),

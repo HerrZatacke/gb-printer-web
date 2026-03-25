@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
 import { PathMap } from '@/types/galleryTreeContext';
 import { type TreeImageGroup } from '@/types/ImageGroup';

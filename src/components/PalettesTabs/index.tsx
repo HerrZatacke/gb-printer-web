@@ -1,28 +1,26 @@
 'use client';
 
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import { Tab, Tabs } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import WrappedNextLink from '@/components/WrappedNextLink';
 import useNavigationItems from '@/contexts/NavigationItemsContext';
 
-function SettingsTabs() {
+function PalettesTabs() {
   const pathName = usePathname();
 
-  const { settingsTabs } = useNavigationItems();
+  const { palettesTabs } = useNavigationItems();
 
   const tabsValue = useMemo<string | null>(() => {
     if (
-      !settingsTabs.length ||
-      pathName === '/settings' ||
-      settingsTabs.findIndex(({ route }) => (route === pathName)) === -1
+      pathName === '/palettes' ||
+      palettesTabs.findIndex(({ route }) => (route === pathName)) === -1
     ) {
       return null;
     }
 
     return pathName;
-  }, [pathName, settingsTabs]);
+  }, [pathName, palettesTabs]);
 
   if (!tabsValue) {
     return null;
@@ -31,7 +29,7 @@ function SettingsTabs() {
   return (
     <Tabs value={tabsValue}>
       {
-        settingsTabs.map(({ label, route }) => (
+        palettesTabs.map(({ label, route }) => (
           <Tab
             label={label}
             key={route}
@@ -46,4 +44,4 @@ function SettingsTabs() {
     );
 }
 
-export default SettingsTabs;
+export default PalettesTabs;

@@ -1,7 +1,7 @@
 import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { useCallback, useMemo } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import {
   type ImageSelectionMode,
   useFiltersStore,

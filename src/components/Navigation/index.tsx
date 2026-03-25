@@ -1,13 +1,7 @@
 'use client';
 
 import CloseIcon from '@mui/icons-material/Close';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import DeleteIcon from '@mui/icons-material/Delete';
-import LightModeIcon from '@mui/icons-material/LightMode';
 import MenuIcon from '@mui/icons-material/Menu';
-import SyncIcon from '@mui/icons-material/Sync';
-import UsbIcon from '@mui/icons-material/Usb';
-import { alpha } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
@@ -20,60 +14,24 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
-import { type Theme } from '@mui/system';
-import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useMemo, useState } from 'react';
-import { ThemeName } from '@/consts/theme';
-import { useGalleryTreeContext } from '@/contexts/galleryTree';
-import { usePortsContext } from '@/contexts/ports';
-import useNavigation from '@/hooks/useNavigation';
-import { useUrl } from '@/hooks/useUrl';
-import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
-import { lightTheme } from '@/styles/themes';
-import { reduceItems } from '@/tools/reduceArray';
-
-enum NavBadgeColor {
-  ERROR = 'error',
-  INFO = 'info',
-  DEFAULT = 'default',
-}
-
-interface NavItem {
-  label: string,
-  route: string,
-}
-
-interface NavActionItem {
-  title: string,
-  icon: React.ReactNode,
-  badgeContent: string | null,
-  badgeColor: NavBadgeColor,
-  onClick: () => void,
-  disabled: boolean,
-  isBusy: boolean,
-}
+import React, { useEffect, useState } from 'react';
+import NavigationFlyout from '@/components/NavigationFlyout';
+import WrappedNextLink from '@/components/WrappedNextLink';
+import useNavigationItems from '@/contexts/NavigationItemsContext';
+import { FlyoutContent } from '@/types/Navigation';
 
 function Navigation() {
   const t = useTranslations('Navigation');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [flyoutContents, setFlyoutContents] = useState<FlyoutContent[]>([]);
   const [drawerContainer, setDrawerContainer] = useState<HTMLElement | undefined>(undefined);
-  const { fullPath } = useUrl();
-  const { themeName, setThemeName } = useSettingsStore();
-  const { showTrashCount, trashCount, trashBusy } = useInteractionsStore();
-  const { lastGalleryLink, getUrl } = useGalleryTreeContext();
-  const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
 
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      // Set "galleryRoute" on client side only to prevent hydration issues
-      setGalleryRoute(lastGalleryLink && fullPath !== lastGalleryLink ? lastGalleryLink : getUrl({ pageIndex: 0, group: '' }));
-    }, 1);
-
-    return () => window.clearTimeout(handle);
-  }, [fullPath, getUrl, lastGalleryLink]);
+  const {
+    mainNavigationItems,
+    mainNavigationActionItems,
+  } = useNavigationItems();
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
@@ -83,180 +41,84 @@ function Navigation() {
     return () => window.clearTimeout(handle);
   }, []);
 
-  const {
-    disableSerials,
-    serialWarning,
-    portCount,
-    syncBusy,
-    useSync,
-    useSerials,
-    syncLastUpdate,
-    autoDropboxSync,
-    selectSync,
-    setShowSerials,
-  } = useNavigation();
-
-  const { isReceiving } = usePortsContext();
-
-  const trashCountSum = useMemo(() => (trashCount.frames + trashCount.images), [trashCount]);
-
-  const syncNotification = useMemo(() => (
-    autoDropboxSync && (syncLastUpdate.local !== syncLastUpdate.dropbox)
-  ), [autoDropboxSync, syncLastUpdate]);
-
-  const navItems = useMemo<NavItem[]>(() => (
-    [
-      {
-        label: t('home'),
-        route: '/',
-      },
-      {
-        label: t('gallery'),
-        route: galleryRoute,
-      },
-      {
-        label: t('import'),
-        route: '/import',
-      },
-      {
-        label: t('palettes'),
-        route: '/palettes',
-      },
-      {
-        label: t('frames'),
-        route: '/frames',
-      },
-      {
-        label: t('settings'),
-        route: '/settings/generic',
-      },
-    ].reduce(reduceItems<NavItem>, [])
-  ), [galleryRoute, t]);
-
-  const navActionItems = useMemo<NavActionItem[]>(() => (
-    [
-      {
-        title: t('trash'),
-        icon: <DeleteIcon />,
-        badgeContent: trashCountSum > 0 ? trashCountSum.toString(10) : null,
-        badgeColor: NavBadgeColor.ERROR,
-        disabled: trashBusy,
-        isBusy: trashBusy,
-        onClick: () => showTrashCount(true),
-      },
-      useSync ? {
-        title: t('syncRemote'),
-        icon: <SyncIcon />,
-        badgeContent: syncNotification ? '!' : null,
-        badgeColor: NavBadgeColor.ERROR,
-        disabled: syncBusy,
-        isBusy: false,
-        onClick: selectSync,
-      } : null,
-      {
-        title: themeName === ThemeName.BRIGHT ? t('switchToDark') : t('switchToBright'),
-        icon: themeName === ThemeName.BRIGHT ? <LightModeIcon /> : <DarkModeIcon />,
-        badgeContent: null,
-        badgeColor: NavBadgeColor.DEFAULT,
-        disabled: false,
-        isBusy: false,
-        onClick: () => setThemeName(themeName === ThemeName.BRIGHT ? ThemeName.DARK : ThemeName.BRIGHT),
-      },
-      useSerials ? {
-        title: disableSerials ? t('usbDisabled') : t('usbDevices'),
-        icon: <UsbIcon />,
-        badgeContent: ((serialWarning && '!') || (portCount && portCount.toString(10)) || null),
-        badgeColor: serialWarning ? NavBadgeColor.ERROR : NavBadgeColor.INFO,
-        disabled: disableSerials,
-        isBusy: isReceiving,
-        onClick: setShowSerials,
-      } : null,
-    ].reduce(reduceItems<NavActionItem>, [])
-  ), [
-    disableSerials,
-    portCount,
-    selectSync,
-    serialWarning,
-    setShowSerials,
-    setThemeName,
-    showTrashCount,
-    trashBusy,
-    syncBusy,
-    syncNotification,
-    t,
-    themeName,
-    trashCountSum,
-    useSerials,
-    useSync,
-    isReceiving,
-  ]);
-
   return (
     <>
-      <ThemeProvider theme={lightTheme}>
-        <AppBar color="primary" enableColorOnDark position="sticky">
-          <Container maxWidth="xl" disableGutters>
-            <Toolbar disableGutters>
-              <ButtonGroup
-                variant="text"
-                component="nav"
-                role="navigation"
-                aria-label={t('mainNavAriaLabel')}
-                sx={{ display: { xs: 'none', md: 'inline-flex' }, width: '100%' }}
-              >
-                {navItems.map(({ route, label }) => (
-                  <Button
-                    key={route}
-                    href={route}
-                    prefetch={false}
-                    component={NextLink}
-                    color="inherit"
-                    onClick={() => setMobileNavOpen(false)}
-                  >
-                    {label}
-                  </Button>
-                ))}
-              </ButtonGroup>
-
-              <ButtonGroup
-                variant="text"
-                role="navigation"
-                aria-label={t('utilityNavAriaLabel')}
-              >
-                {navActionItems.map(({ title, icon, onClick, badgeContent, badgeColor, isBusy, disabled }) => (
-                  <IconButton
-                    key={title}
-                    color="inherit"
-                    disabled={disabled}
-                    title={title}
-                    onClick={onClick}
-                    sx={isBusy ? { animation: 'pulse-bg 600ms infinite' } : undefined}
-                  >
-                    <Badge
-                      badgeContent={badgeContent}
-                      color={badgeColor}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                      }}
-                    >
-                      {icon}
-                    </Badge>
-                  </IconButton>
-                ))}
-                <IconButton
+      <AppBar color="primary" enableColorOnDark position="sticky">
+        <Container
+          maxWidth="xl"
+          disableGutters
+          sx={{ position: 'relative' }}
+          onMouseLeave={() => setFlyoutContents([])}
+        >
+          <Toolbar
+            disableGutters
+            sx={{ zIndex: 1 }}
+          >
+            <ButtonGroup
+              variant="text"
+              component="nav"
+              role="navigation"
+              aria-label={t('mainNavAriaLabel')}
+              sx={{ display: { xs: 'none', md: 'inline-flex' }, width: '100%' }}
+            >
+              {mainNavigationItems.map(({ route, label, children }) => (
+                <Button
+                  key={route}
+                  href={route}
+                  prefetch={false}
+                  component={WrappedNextLink}
+                  exact={route === '/'}
                   color="inherit"
-                  title={t('openMainNav')}
-                  onClick={() => setMobileNavOpen(true)}
-                  sx={{ display: { md: 'none' } }}
+                  onClick={() => setMobileNavOpen(false)}
+                  onMouseEnter={() => setFlyoutContents(children || [])}
                 >
-                  <MenuIcon />
+                  {label}
+                </Button>
+              ))}
+            </ButtonGroup>
+
+            <ButtonGroup
+              variant="text"
+              role="navigation"
+              aria-label={t('utilityNavAriaLabel')}
+            >
+              {mainNavigationActionItems.map(({ title, Icon, onClick, badgeContent, badgeColor, isBusy, disabled }) => (
+                <IconButton
+                  key={title}
+                  color="inherit"
+                  disabled={disabled}
+                  title={title}
+                  onClick={onClick}
+                  sx={isBusy ? { animation: 'pulse-bg 600ms infinite' } : undefined}
+                >
+                  <Badge
+                    badgeContent={badgeContent}
+                    color={badgeColor}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                  >
+                    <Icon />
+                  </Badge>
                 </IconButton>
-              </ButtonGroup>
-            </Toolbar>
-          </Container>
-        </AppBar>
-      </ThemeProvider>
+              ))}
+              <IconButton
+                color="inherit"
+                title={t('openMainNav')}
+                onClick={() => setMobileNavOpen(true)}
+                sx={{ display: { md: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </ButtonGroup>
+          </Toolbar>
+          <NavigationFlyout
+            flyoutContents={flyoutContents}
+            close={() => setFlyoutContents([])}
+          />
+        </Container>
+      </AppBar>
       <Drawer
         container={drawerContainer}
         variant="temporary"
@@ -284,22 +146,14 @@ function Navigation() {
         </Toolbar>
         <Divider />
         <List>
-          {navItems.map(({ route, label }) => (
+          {mainNavigationItems.map(({ route, label }) => (
             <ListItem key={route} disablePadding>
               <ListItemButton
                 href={route}
-                component={NextLink}
+                component={WrappedNextLink}
+                exact={route === '/'}
                 prefetch={false}
                 onClick={() => setMobileNavOpen(false)}
-                sx={(theme: Theme) => ({
-                  '&.active': {
-                    background: theme.palette.secondary.light,
-                    color: theme.palette.secondary.contrastText,
-                  },
-                  '&:hover': {
-                    background: alpha(theme.palette.primary.main, 0.3),
-                  },
-                })}
               >
                 <ListItemText primary={label} />
               </ListItemButton>

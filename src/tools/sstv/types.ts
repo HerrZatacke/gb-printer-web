@@ -1,9 +1,9 @@
 export enum ModeType {
   MARTIN_1 = 'M1',
   MARTIN_2 = 'M2',
-  ROBOT_32 = '32',
-  ROBOT_36 = '36',
-  ROBOT_72 = '72',
+  ROBOT_32 = 'R32',
+  ROBOT_36 = 'R36',
+  ROBOT_72 = 'R72',
 }
 
 export interface SSTVSettings {

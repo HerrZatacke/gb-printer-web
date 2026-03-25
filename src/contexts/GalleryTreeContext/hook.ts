@@ -1,8 +1,5 @@
-'use client';
-
 import { proxy, wrap } from 'comlink';
-import React, { type Context, createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import { type PropsWithChildren } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUrl } from '@/hooks/useUrl';
 import {
   useInteractionsStore,
@@ -12,7 +9,7 @@ import {
 import { createTreeRoot } from '@/tools/createTreeRoot';
 import { type DialogOption } from '@/types/Dialog';
 import {
-  GetUrlParams,
+  type GetUrlParams,
   type GalleryTreeContextType,
   type PathMap,
   type SetErrorFn,
@@ -21,25 +18,9 @@ import {
 import { type Image } from '@/types/Image';
 import { TreeImageGroup } from '@/types/ImageGroup';
 
-export const GALLERY_BASE_PATH = '/gallery/';
+const GALLERY_BASE_PATH = '/gallery/';
 
-export const galleryTreeContext: Context<GalleryTreeContextType> = createContext<GalleryTreeContextType>({
-  root: createTreeRoot([]),
-  view: createTreeRoot([]),
-  images: [],
-  covers: [],
-  paths: [],
-  pathsOptions: [],
-  isWorking: true,
-  isInitialized: false,
-  pageIndex: 0,
-  path: '',
-  lastGalleryLink: '',
-  getUrl: () => `${GALLERY_BASE_PATH}?page=1`,
-});
-
-
-export function GalleryTreeContext({ children }: PropsWithChildren) {
+export const useContextHook = (): GalleryTreeContextType => {
   const { imageGroups, images: stateImages, setImageGroups, initialized: itemsStoreInitialized } = useItemsStore();
   const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
   const [isInitialized, setIsInitialized] = useState<boolean>(false); // start asto prevent navigation side effect
@@ -139,31 +120,30 @@ export function GalleryTreeContext({ children }: PropsWithChildren) {
   }, [path, pageIndex, pathname, getUrl]);
 
 
-  const result = useMemo<GalleryTreeContextType>((): GalleryTreeContextType => {
-    const view = paths.find(({ absolutePath }) => absolutePath === path)?.group || root;
-    const covers = view.groups.map(({ coverImage }) => coverImage);
-    const images = view.images.filter((image: Image) => !covers.includes(image.hash));
+  const view = useMemo(() => (
+    paths.find(({ absolutePath }) => absolutePath === path)?.group || root
+  ), [path, paths, root]);
 
-    return {
-      view,
-      covers,
-      paths,
-      images,
-      pathsOptions,
-      root,
-      isWorking,
-      isInitialized,
-      pageIndex,
-      path,
-      lastGalleryLink,
-      getUrl,
-    };
-  }, [paths, root, pathsOptions, isWorking, isInitialized, pageIndex, path, lastGalleryLink, getUrl]);
+  const covers = useMemo(() => (
+    view.groups.map(({ coverImage }) => coverImage)
+  ), [view.groups]);
 
-  return (
-    <galleryTreeContext.Provider value={result}>
-      { children }
-    </galleryTreeContext.Provider>
-  );
-}
+  const images = useMemo(() => (
+    view.images.filter((image: Image) => !covers.includes(image.hash))
+  ), [covers, view.images]);
 
+  return {
+    view,
+    covers,
+    paths,
+    images,
+    pathsOptions,
+    root,
+    isWorking,
+    isInitialized,
+    pageIndex,
+    path,
+    lastGalleryLink,
+    getUrl,
+  };
+};

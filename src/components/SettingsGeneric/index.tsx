@@ -7,11 +7,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import DownloadOptionsForm from '@/components/Overlays/DownloadOptions/DownloadOptionsForm';
 import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
+import WrappedNextLink from '@/components/WrappedNextLink';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
@@ -313,7 +313,7 @@ function SettingsGeneric() {
             t.rich('printerUrlHelper', {
               link: (chunks) => (
                 <Link
-                  component={NextLink}
+                  component={WrappedNextLink}
                   href="/import"
                   prefetch={false}
                 >

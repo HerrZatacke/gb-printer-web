@@ -5,10 +5,10 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import NextLink from 'next/link';
 import { redirect } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import WrappedNextLink from '@/components/WrappedNextLink';
 import { useAddPlugin } from '@/hooks/useAddPlugin';
 
 function AddPlugin() {
@@ -47,7 +47,7 @@ function AddPlugin() {
             {t('alreadyInstalled', { url })}
           </Alert>
           <Link
-            component={NextLink}
+            component={WrappedNextLink}
             href="/settings/plugins"
             prefetch={false}
           >
