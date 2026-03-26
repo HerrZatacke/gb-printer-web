@@ -422,6 +422,7 @@
     "createNewGroupDialogHeader": "Crea nuovo gruppo {count, plural, =0 {} =1 {} other {con # immagini}}",
     "moveSelectedImages": "Sposta {count, plural, =0 {} =1 {immagine} other {# immagini}}",
     "title": "Titolo",
+    "favourite": "Aggiungi ai collegamenti rapidi",
     "pathSegment": "Segmento percorso (identificatore)",
     "path": "Percorso: «{path}»",
     "pathInUse": "Percorso già in uso: «{path}»",

@@ -422,6 +422,7 @@
     "createNewGroupDialogHeader": "Skapa ny grupp {count, plural, =0 {} =1 {} other {med # bilder}}",
     "moveSelectedImages": "Flytta {count, plural, =0 {} =1 {bild} other {# bilder}}",
     "title": "Titel",
+    "favourite": "Fäst till genvägar",
     "pathSegment": "Sökvägssegment (identifierare)",
     "path": "Sökväg: ”{path}”",
     "pathInUse": "Sökväg används redan: ”{path}”",

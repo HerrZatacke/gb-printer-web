@@ -422,6 +422,7 @@
     "createNewGroupDialogHeader": "Nieuwe groep {count, plural, =0 {} =1 {} other {met # afbeeldingen}} maken",
     "moveSelectedImages": "{count, plural, =0 {} =1 {Afbeelding} other {# afbeeldingen}} verplaatsen",
     "title": "Titel",
+    "favourite": "Vastmaken aan snelkoppelingen",
     "pathSegment": "Padsegment (identifier)",
     "path": "Pad: “{path}”",
     "pathInUse": "Pad wordt al gebruikt: “{path}”",

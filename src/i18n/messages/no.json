@@ -422,6 +422,7 @@
     "createNewGroupDialogHeader": "Opprett ny gruppe {count, plural, =0 {} =1 {} other {med # bilder}}",
     "moveSelectedImages": "{count, plural, =0 {} =1 {Bilde} other {# bilder}} flytte",
     "title": "Tittel",
+    "favourite": "Fest til snarveier",
     "pathSegment": "Stisegment (identifikator)",
     "path": "Sti: ”{path}”",
     "pathInUse": "Sti er allerede i bruk: ”{path}”",

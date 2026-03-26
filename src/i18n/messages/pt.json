@@ -422,6 +422,7 @@
     "createNewGroupDialogHeader": "Criar novo grupo {count, plural, =0 {} =1 {} other {com # imagens}}",
     "moveSelectedImages": "Mover {count, plural, =0 {} =1 {imagem} other {# imagens}}",
     "title": "Título",
+    "favourite": "Fixar aos atalhos",
     "pathSegment": "Segmento de caminho (identificador)",
     "path": "Caminho: «{path}»",
     "pathInUse": "Caminho já em uso: «{path}»",
