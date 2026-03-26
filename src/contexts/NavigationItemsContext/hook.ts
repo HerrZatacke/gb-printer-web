@@ -13,8 +13,11 @@ import useNavigation from '@/hooks/useNavigation';
 import { useUrl } from '@/hooks/useUrl';
 import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { reduceItems } from '@/tools/reduceArray';
+import sortBy from '@/tools/sortby';
 import { FeatureFlag } from '@/types/FeatureFlags';
 import { NavActionItem, NavBadgeColor, NavItem } from '@/types/Navigation';
+
+const sortByLabel = sortBy<NavItem>('label');
 
 export interface NavigationItemsContextType {
   mainNavigationItems: NavItem[];
@@ -28,7 +31,7 @@ export const useContextHook = (): NavigationItemsContextType => {
   const tSettingsTabs = useTranslations('SettingsTabs');
   const tPalettes = useTranslations('Palettes');
   const { fullPath } = useUrl();
-  const { lastGalleryLink, getUrl } = useGalleryTreeContext();
+  const { lastGalleryLink, getUrl, paths } = useGalleryTreeContext();
   const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
   const { themeName, setThemeName } = useSettingsStore();
   const { showTrashCount, trashCount, trashBusy } = useInteractionsStore();
@@ -123,6 +126,21 @@ export const useContextHook = (): NavigationItemsContextType => {
     ]
   ), [tPalettes]);
 
+  const galleryShortcuts: NavItem[] = useMemo(() => {
+    const favouriteGroups = paths
+      .filter((pathMap) => (
+        pathMap.group.isFavourite
+      ))
+      .map((pathMap): NavItem => ({
+        label: pathMap.group.title,
+        route: getUrl({
+          group: pathMap.absolutePath,
+        }),
+      }));
+
+    return sortByLabel(favouriteGroups);
+  }, [getUrl, paths]);
+
   const mainNavigationItems = useMemo<NavItem[]>(() => (
     [
       {
@@ -132,6 +150,12 @@ export const useContextHook = (): NavigationItemsContextType => {
       {
         label: tNavigation('gallery'),
         route: galleryRoute,
+        children: [{
+          headline: tNavigation('gallery'),
+          navItems: galleryShortcuts,
+          sizeFlyout: { xs: 12, lg: 6 },
+        }]
+          .filter(({ navItems }) => navItems.length),
       },
       {
         label: tNavigation('import'),
@@ -160,7 +184,7 @@ export const useContextHook = (): NavigationItemsContextType => {
         }],
       },
     ].reduce(reduceItems<NavItem>, [])
-  ), [galleryRoute, palettesTabs, settingsTabs, tNavigation]);
+  ), [galleryRoute, galleryShortcuts, palettesTabs, settingsTabs, tNavigation]);
 
 
   const mainNavigationActionItems = useMemo<NavActionItem[]>(() => (
