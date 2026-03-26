@@ -33,8 +33,6 @@ export const useContextHook = (): GalleryTreeContextType => {
   const { enableDebug } = useSettingsStore();
   const { setError } = useInteractionsStore();
 
-  console.log('GalleryTreeContext', itemsStoreInitialized);
-
   useEffect(() => {
     const worker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url), { type: 'module' });
     const api = wrap<TreeContextWorkerApi>(worker);
