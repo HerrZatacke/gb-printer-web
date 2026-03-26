@@ -1,6 +1,8 @@
 import Button from '@mui/material/Button';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
 import React from 'react';
@@ -16,6 +18,7 @@ function EditImageGroup() {
     possibleParents,
     slug,
     title,
+    isFavourite,
     canConfirm,
     canMove,
     slugIsInUse,
@@ -24,6 +27,7 @@ function EditImageGroup() {
     selectionCount,
     setSlug,
     setTitle,
+    setIsFavourite,
     setParentSlug,
     confirm,
     move,
@@ -34,8 +38,8 @@ function EditImageGroup() {
     <Lightbox
       confirm={confirm}
       canConfirm={canConfirm}
-      header={editId !== NEW_GROUP ? 
-        t('dialogHeader', { title: title ? `"${title}"` : '' }) : 
+      header={editId !== NEW_GROUP ?
+        t('dialogHeader', { title: title ? `"${title}"` : '' }) :
         t('createNewGroupDialogHeader', { count: selectionCount })}
       deny={cancelEditImageGroup}
       contentWidth="auto"
@@ -62,6 +66,17 @@ function EditImageGroup() {
               type="text"
               value={title}
               onChange={(ev) => setTitle(ev.target.value)}
+            />
+            <FormControlLabel
+              label={t('favourite')}
+              control={(
+                <Switch
+                  checked={isFavourite}
+                  onChange={({ target }) => {
+                    setIsFavourite(target.checked);
+                  }}
+                />
+              )}
             />
             <TextField
               label={t('pathSegment')}

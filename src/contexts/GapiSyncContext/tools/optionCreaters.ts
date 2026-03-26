@@ -57,6 +57,7 @@ export const createOptionsImageGroups = (sheetsClient: typeof gapi.client.sheets
   columns: [
     { prop: 'id', column: 'ID', type: ColumnType.STRING },
     { prop: 'title', column: 'Title', type: ColumnType.STRING },
+    { prop: 'isFavourite', column: 'Favourite', type: ColumnType.BOOLEAN },
     { prop: 'slug', column: 'Slug', type: ColumnType.STRING },
     { prop: 'created', column: 'Created', type: ColumnType.STRING },
     { prop: 'coverImage', column: 'Cover Image Hash', type: ColumnType.STRING },
