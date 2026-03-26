@@ -3,13 +3,7 @@
 import { type PropsWithChildren, createContext, useContext } from 'react';
 import { GapiSyncContextType, useContextHook } from '@/contexts/GapiSyncContext/hook';
 
-const gapiSyncContext = createContext<GapiSyncContextType>({
-  performMerge: async () => {},
-  performPull: async () => {},
-  performPush: async () => {},
-  recoverImage: () => false,
-  busy: false,
-});
+const gapiSyncContext = createContext<GapiSyncContextType | null>(null);
 
 export function GapiSyncProvider({ children }: PropsWithChildren) {
   const contextValue = useContextHook();
@@ -21,6 +15,11 @@ export function GapiSyncProvider({ children }: PropsWithChildren) {
   );
 }
 
-const useGapiSync = () => useContext(gapiSyncContext);
+export const useGapiSync = (): GapiSyncContextType => {
+  const context = useContext(gapiSyncContext);
+  if (!context) {
+    throw new Error('Missing ContextProvider');
+  }
 
-export default useGapiSync;
+  return context;
+};
