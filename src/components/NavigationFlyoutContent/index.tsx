@@ -18,7 +18,7 @@ interface Props {
 
 function NavigationFlyoutContent({ flyoutContent: { headline, navItems, sizeFlyout }, close }: Props) {
   return (
-    <Grid size={sizeFlyout}>
+    <Grid size={sizeFlyout} sx={{ p: 2 }}>
       <Stack
         direction="column"
         gap={2}
