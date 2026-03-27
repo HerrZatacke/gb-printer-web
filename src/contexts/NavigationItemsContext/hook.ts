@@ -151,7 +151,7 @@ export const useContextHook = (): NavigationItemsContextType => {
         label: tNavigation('gallery'),
         route: galleryRoute,
         children: [{
-          headline: tNavigation('gallery'),
+          headline: tNavigation('galleryShortcuts'),
           navItems: galleryShortcuts,
           sizeFlyout: { xs: 12, lg: 6 },
         }]

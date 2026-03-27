@@ -360,6 +360,7 @@
   "Navigation": {
     "home": "Accueil",
     "gallery": "Galerie",
+    "galleryShortcuts": "Raccourcis de la galerie",
     "import": "Import",
     "palettes": "Palettes",
     "frames": "Cadres",
