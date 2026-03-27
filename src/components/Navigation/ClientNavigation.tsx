@@ -67,7 +67,7 @@ function ClientNavigation() {
                   href={route}
                   prefetch={false}
                   component={WrappedNextLink}
-                  exact={route === '/' ? ExactMatchMode.EXACT_PATH : ExactMatchMode.EXACT_STARTSWITH}
+                  exact={route === '/' ? ExactMatchMode.EXACT_PATH : ExactMatchMode.PATH_STARTSWITH}
                   color="inherit"
                   onClick={() => setMobileNavOpen(false)}
                   onMouseEnter={() => setFlyoutContents(children || [])}
@@ -151,7 +151,7 @@ function ClientNavigation() {
               <ListItemButton
                 href={route}
                 component={WrappedNextLink}
-                exact={route === '/' ? ExactMatchMode.EXACT_PATH : ExactMatchMode.EXACT_STARTSWITH}
+                exact={route === '/' ? ExactMatchMode.EXACT_PATH : ExactMatchMode.PATH_STARTSWITH}
                 prefetch={false}
                 onClick={() => setMobileNavOpen(false)}
               >

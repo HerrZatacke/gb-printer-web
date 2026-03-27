@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import WrappedNextLink from '@/components/WrappedNextLink';
+import WrappedNextLink, { ExactMatchMode } from '@/components/WrappedNextLink';
 import { FlyoutContent } from '@/types/Navigation';
 
 interface Props {
@@ -34,6 +34,7 @@ function NavigationFlyoutContent({ flyoutContent: { headline, navItems, sizeFlyo
               <ListItemButton
                 href={route}
                 component={WrappedNextLink}
+                exact={ExactMatchMode.EXACT_PATH_AND_SEARCH}
                 prefetch={false}
                 onClick={close}
               >
