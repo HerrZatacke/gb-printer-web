@@ -5,6 +5,7 @@ export interface BaseImageGroup {
   slug: string,
   created: string,
   title: string,
+  isFavourite: boolean,
   coverImage: string,
 }
 

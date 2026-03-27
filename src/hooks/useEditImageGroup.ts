@@ -16,23 +16,25 @@ import { type SerializableImageGroup } from '@/types/ImageGroup';
 export const NEW_GROUP = 'NEW_GROUP';
 
 interface UseEditImageGroup {
-  editId: string | null,
-  absoluteSlug: string,
-  possibleParents: DialogOption[],
-  slug: string,
-  title: string,
-  canConfirm: boolean,
-  canMove: boolean,
-  slugIsInUse: boolean,
-  slugWasChanged: boolean,
-  parentSlug: string,
-  selectionCount: number,
-  setSlug: (slug: string) => void,
-  setTitle: (title: string) => void,
-  setParentSlug: (slug: string) => void
-  confirm: () => void,
-  move: () => Promise<void>,
-  cancelEditImageGroup: () => void,
+  editId: string | null;
+  absoluteSlug: string;
+  possibleParents: DialogOption[];
+  slug: string;
+  title: string;
+  isFavourite: boolean;
+  canConfirm: boolean;
+  canMove: boolean;
+  slugIsInUse: boolean;
+  slugWasChanged: boolean;
+  parentSlug: string;
+  selectionCount: number;
+  setSlug: (slug: string) => void;
+  setTitle: (title: string) => void;
+  setIsFavourite: (isFavourite: boolean) => void;
+  setParentSlug: (slug: string) => void;
+  confirm: () => void;
+  move: () => Promise<void>;
+  cancelEditImageGroup: () => void;
 }
 
 export const toSlug = (title: string): string => (
@@ -66,11 +68,12 @@ const getEditMode = (editImageGroup: EditGroupInfo | null): EditMode => {
 };
 
 interface InitialEditValues {
-  imageGroup: SerializableImageGroup | null,
-  parentPathMap: PathMap | null,
-  title: string,
-  slug: string,
-  slugTouched: boolean,
+  imageGroup: SerializableImageGroup | null;
+  parentPathMap: PathMap | null;
+  title: string;
+  isFavourite: boolean;
+  slug: string;
+  slugTouched: boolean;
 }
 
 const useEditImageGroup = (): UseEditImageGroup => {
@@ -97,6 +100,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
           imageGroup: null,
           parentPathMap: paths.find(({ group }) => group.id === view.id) || null,
           title,
+          isFavourite: false,
           slug: toSlug(title),
           slugTouched: false,
         };
@@ -108,6 +112,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
           imageGroup,
           parentPathMap: editImageGroup?.groupId ? findParentGroup(paths, editImageGroup.groupId) : null,
           title: imageGroup?.title || '',
+          isFavourite: imageGroup?.isFavourite || false,
           slug: imageGroup?.slug || '',
           slugTouched: true,
         };
@@ -119,6 +124,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
           imageGroup: null,
           parentPathMap: null,
           title: '',
+          isFavourite: false,
           slug: '',
           slugTouched: false,
         };
@@ -127,6 +133,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
   }, [editImageGroup, editMode, imageGroups, paths, view]);
 
   const [title, setTitle] = useState<string>(initialValues.title);
+  const [isFavourite, setIsFavourite] = useState<boolean>(initialValues.isFavourite);
   const [slug, setSlug] = useState<string>(initialValues.slug);
   const [slugTouched, setSlugTouched] = useState<boolean>(initialValues.slugTouched);
   const [parentSlug, setParentSlug] = useState<string>(initialValues.parentPathMap?.absolutePath || '');
@@ -210,6 +217,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     possibleParents,
     slug,
     title,
+    isFavourite,
     canConfirm,
     canMove,
     slugIsInUse,
@@ -227,6 +235,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         setSlug(toSlug(newTitle));
       }
     },
+    setIsFavourite,
     setParentSlug,
     confirm: () => {
       cancelEditImageGroup();
@@ -249,6 +258,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
             id: newGroupId,
             slug,
             title,
+            isFavourite,
             created: toCreationDate(),
             coverImage: editImageGroup.newGroupCover,
             images: selection,
@@ -268,6 +278,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
             ...initialValues.imageGroup,
             slug,
             title,
+            isFavourite,
           },
           parentGroupId,
         );

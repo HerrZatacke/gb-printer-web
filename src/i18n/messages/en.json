@@ -360,6 +360,7 @@
   "Navigation": {
     "home": "Home",
     "gallery": "Gallery",
+    "galleryShortcuts": "Gallery shortcuts",
     "import": "Import",
     "palettes": "Palettes",
     "frames": "Frames",
@@ -422,6 +423,7 @@
     "createNewGroupDialogHeader": "Create new group {count, plural, =0 {} =1 {} other {with # images}}",
     "moveSelectedImages": "Move {count, plural, =0 {} =1 {image} other {# images}}",
     "title": "Title",
+    "favourite": "Pin to shortcuts",
     "pathSegment": "Pathsegment (identifier)",
     "path": "Path: “{path}”",
     "pathInUse": "Path is already in use: “{path}”",

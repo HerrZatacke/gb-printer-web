@@ -360,6 +360,7 @@
   "Navigation": {
     "home": "Startseite",
     "gallery": "Galerie",
+    "galleryShortcuts": "Galerie Schnellzugriff",
     "import": "Import",
     "palettes": "Paletten",
     "frames": "Rahmen",
@@ -422,6 +423,7 @@
     "createNewGroupDialogHeader": "Neue Gruppe {count, plural, =0 {} =1 {} other {mit # Bildern}} erstellen",
     "moveSelectedImages": "{count, plural, =0 {} =1 {Bild} other {# Bilder}} verschieben",
     "title": "Titel",
+    "favourite": "An Schnellzugriff anheften",
     "pathSegment": "Pfadsegment (Bezeichner)",
     "path": "Pfad: „{path}“",
     "pathInUse": "Pfad wird bereits verwendet: „{path}“",

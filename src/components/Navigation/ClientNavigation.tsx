@@ -18,11 +18,11 @@ import Toolbar from '@mui/material/Toolbar';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import NavigationFlyout from '@/components/NavigationFlyout';
-import WrappedNextLink from '@/components/WrappedNextLink';
+import WrappedNextLink, { ExactMatchMode } from '@/components/WrappedNextLink';
 import useNavigationItems from '@/contexts/NavigationItemsContext';
 import { FlyoutContent } from '@/types/Navigation';
 
-function Navigation() {
+function ClientNavigation() {
   const t = useTranslations('Navigation');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [flyoutContents, setFlyoutContents] = useState<FlyoutContent[]>([]);
@@ -67,7 +67,7 @@ function Navigation() {
                   href={route}
                   prefetch={false}
                   component={WrappedNextLink}
-                  exact={route === '/'}
+                  exact={route === '/' ? ExactMatchMode.EXACT_PATH : ExactMatchMode.PATH_STARTSWITH}
                   color="inherit"
                   onClick={() => setMobileNavOpen(false)}
                   onMouseEnter={() => setFlyoutContents(children || [])}
@@ -151,7 +151,7 @@ function Navigation() {
               <ListItemButton
                 href={route}
                 component={WrappedNextLink}
-                exact={route === '/'}
+                exact={route === '/' ? ExactMatchMode.EXACT_PATH : ExactMatchMode.PATH_STARTSWITH}
                 prefetch={false}
                 onClick={() => setMobileNavOpen(false)}
               >
@@ -165,4 +165,4 @@ function Navigation() {
   );
 }
 
-export default Navigation;
+export default ClientNavigation;

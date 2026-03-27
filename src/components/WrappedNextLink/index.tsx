@@ -1,14 +1,20 @@
 'use client';
 
 import NextLink, { LinkProps } from 'next/link';
-import { usePathname } from 'next/navigation';
+import { ReadonlyURLSearchParams, usePathname, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import { useMemo } from 'react';
+
+export enum ExactMatchMode {
+  PATH_STARTSWITH = 'PATH_STARTSWITH',
+  EXACT_PATH = 'EXACT_PATH',
+  EXACT_PATH_AND_SEARCH = 'EXACT_PATH_AND_SEARCH',
+}
 
 type Props = LinkProps &
   Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
   activeClassName?: string;
-  exact?: boolean;
+  exact?: ExactMatchMode;
 };
 
 const normalize = (url: string): string => {
@@ -19,19 +25,38 @@ const normalize = (url: string): string => {
   }
 };
 
+const pathAndSearch = (pathName: string, searchParams: ReadonlyURLSearchParams): string => {
+  const search = searchParams.toString();
+  return search.length ? `${pathName}?${search}` : pathName;
+};
+
 const WrappedNextLink = React.forwardRef<HTMLAnchorElement, Props>(
   function WrappedNextLink(
-    { href, activeClassName = 'active', exact = true, className, ...rest },
+    {
+      href,
+      activeClassName = 'active',
+      exact = ExactMatchMode.PATH_STARTSWITH,
+      className,
+      ...rest
+    },
     ref,
   ) {
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const isActive = useMemo(() => {
-      const normalizedPathname = normalize(pathname);
-      const normalizedHref = normalize(String(href));
+      switch (exact) {
+        case ExactMatchMode.PATH_STARTSWITH:
+          return pathname.startsWith(normalize(String(href)));
 
-      return exact ? normalizedPathname === normalizedHref : normalizedPathname.startsWith(normalizedHref);
-    }, [exact, href, pathname]);
+        case ExactMatchMode.EXACT_PATH:
+          return pathname === normalize(String(href));
+
+        case ExactMatchMode.EXACT_PATH_AND_SEARCH:
+        default:
+          return pathAndSearch(pathname, searchParams) === String(href);
+      }
+    }, [exact, href, pathname, searchParams]);
 
     const combinedClassName = [
       className,

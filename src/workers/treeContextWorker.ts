@@ -141,6 +141,7 @@ const inflateImageGroup = (depth: number, stateImageMap: Map<string, Image>, set
     slug: imageGroup.slug,
     created: imageGroup.created,
     title: imageGroup.title,
+    isFavourite: imageGroup.isFavourite,
     coverImage,
     groups: childGroups,
     images,

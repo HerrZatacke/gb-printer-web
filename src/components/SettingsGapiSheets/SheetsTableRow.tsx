@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import useGapiSync from '@/contexts/GapiSyncContext';
+import { useGapiSync } from '@/contexts/GapiSyncContext';
 import { SheetStats } from '@/hooks/useGapiSheetsStats';
 
 const toDate = (timestamp?: number): string => {
