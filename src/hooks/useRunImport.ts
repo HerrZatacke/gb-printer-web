@@ -145,6 +145,7 @@ const useRunImport = (): UseRunImport => {
           id: newGroupId,
           slug,
           title,
+          isFavourite: false,
           created: toCreationDate(),
           coverImage: savedImages[0].hash,
           images: imageHashes,

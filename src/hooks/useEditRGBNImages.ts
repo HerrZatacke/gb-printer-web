@@ -197,6 +197,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
           id: newGroupId,
           slug,
           title,
+          isFavourite: false,
           created: toCreationDate(),
           coverImage: createdImageHashes[0],
           images: createdImageHashes,
