@@ -22,7 +22,7 @@ import WrappedNextLink, { ExactMatchMode } from '@/components/WrappedNextLink';
 import useNavigationItems from '@/contexts/NavigationItemsContext';
 import { FlyoutContent } from '@/types/Navigation';
 
-function Navigation() {
+function ClientNavigation() {
   const t = useTranslations('Navigation');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [flyoutContents, setFlyoutContents] = useState<FlyoutContent[]>([]);
@@ -165,4 +165,4 @@ function Navigation() {
   );
 }
 
-export default Navigation;
+export default ClientNavigation;

@@ -8,10 +8,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import { ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useMemo, type CSSPropertiesVars, Suspense, useEffect, useState } from 'react';
+import { useMemo, type CSSPropertiesVars, useEffect, useState } from 'react';
 import Errors from '@/components/Errors';
-import Navigation from '@/components/Navigation';
-import NavigationSkeleton from '@/components/Navigation/Skeleton';
+import { Navigation } from '@/components/Navigation';
 import Overlays from '@/components/Overlays';
 import { ThemeName } from '@/consts/theme';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
@@ -67,9 +66,7 @@ export default function RootLayout({
   return (
     <ThemeProvider theme={muiTheme}>
       <CssBaseline />
-      <Suspense fallback={<NavigationSkeleton />}>
-        <Navigation />
-      </Suspense>
+      <Navigation />
       <Container
         maxWidth="xl"
         sx={{
