@@ -11,7 +11,7 @@ import I18nContext from '@/contexts/i18nContext';
 import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
 import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
 import { PluginsContext } from '@/contexts/PluginsContext';
-import { PortsContext } from '@/contexts/ports/Provider';
+import { PortsContext } from '@/contexts/PortsContext';
 import RemotePrinterContextProvider from '@/contexts/RemotePrinterContext';
 import { TrackingProvider } from '@/contexts/TrackingContext';
 

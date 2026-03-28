@@ -10,7 +10,7 @@ import hasher from 'object-hash';
 import React, { useMemo, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { PortDeviceType, PortType } from '@/consts/ports';
-import { usePortsContext } from '@/contexts/ports';
+import { usePortsContext } from '@/contexts/PortsContext';
 import { useSettingsStore } from '@/stores/stores';
 
 interface Props {
