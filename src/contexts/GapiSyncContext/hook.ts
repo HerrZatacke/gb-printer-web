@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import useGapiSheetState from '@/contexts/GapiSheetStateContext';
+import { useGapiSheetState } from '@/contexts/GapiSheetStateContext';
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { getLastUpdate } from '@/contexts/GapiSheetStateContext/tools/getLastUpdate';
 import { getBinImagesByHashes } from '@/contexts/GapiSyncContext/tools/getBinImagesByHashes';

@@ -15,7 +15,7 @@ export function GapiSheetStateProvider({ children }: PropsWithChildren) {
   );
 }
 
-const useGapiSheetState = () => {
+export const useGapiSheetState = (): GapiSheetStateContextType => {
   const context = useContext(gapiSheetStateContext);
 
   if (!context) {
@@ -24,5 +24,3 @@ const useGapiSheetState = () => {
 
   return context;
 };
-
-export default useGapiSheetState;
