@@ -17,6 +17,7 @@ export function GapiSyncProvider({ children }: PropsWithChildren) {
 
 export const useGapiSync = (): GapiSyncContextType => {
   const context = useContext(gapiSyncContext);
+
   if (!context) {
     throw new Error('Missing ContextProvider');
   }

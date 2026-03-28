@@ -7,9 +7,10 @@ import { useContextHook, UseNavigationTools } from '@/contexts/NavigationToolsCo
 const navigationToolsContext = createContext<UseNavigationTools | null>(null);
 
 export function NavigationToolsProvider({ children }: PropsWithChildren) {
-  const value = useContextHook();
+  const contextValue = useContextHook();
+
   return (
-    <navigationToolsContext.Provider value={value}>
+    <navigationToolsContext.Provider value={contextValue}>
       {children}
     </navigationToolsContext.Provider>
   );
@@ -17,6 +18,7 @@ export function NavigationToolsProvider({ children }: PropsWithChildren) {
 
 export const useNavigationTools = (): UseNavigationTools => {
   const context = useContext(navigationToolsContext);
+
   if (!context) {
     throw new Error('Missing ContextProvider');
   }

@@ -17,6 +17,7 @@ export function NavigationItemsProvider({ children }: PropsWithChildren) {
 
 export const useNavigationItems = (): NavigationItemsContextType => {
   const context = useContext(navigationItemsContext);
+
   if (!context) {
     throw new Error('Missing ContextProvider');
   }

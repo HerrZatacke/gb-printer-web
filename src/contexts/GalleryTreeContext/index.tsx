@@ -9,6 +9,7 @@ const galleryTreeContext = createContext<GalleryTreeContextType | null>(null);
 
 export function GalleryTreeProvider({ children }: PropsWithChildren) {
   const contextValue = useContextHook();
+
   return (
     <galleryTreeContext.Provider value={contextValue}>
       { children }
@@ -18,6 +19,7 @@ export function GalleryTreeProvider({ children }: PropsWithChildren) {
 
 export const useGalleryTreeContext = (): GalleryTreeContextType => {
   const context = useContext(galleryTreeContext);
+
   if (!context) {
     throw new Error('Missing ContextProvider');
   }
