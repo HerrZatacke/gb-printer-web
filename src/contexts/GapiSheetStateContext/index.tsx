@@ -3,15 +3,7 @@
 import { type PropsWithChildren, createContext, useContext } from 'react';
 import { GapiSheetStateContextType, useContextHook } from '@/contexts/GapiSheetStateContext/hook';
 
-const gapiSheetStateContext = createContext<GapiSheetStateContextType>({
-  busy: false,
-  isReady: false,
-  sheets: [],
-  gapiLastRemoteUpdates: null,
-  updateSheets: async () => {},
-  enqueueSheetsClientRequest: async () => {},
-  clearGapiLastRemoteUpdates: () => {},
-});
+const gapiSheetStateContext = createContext<GapiSheetStateContextType | null>(null);
 
 export function GapiSheetStateProvider({ children }: PropsWithChildren) {
   const contextValue = useContextHook();
@@ -23,6 +15,14 @@ export function GapiSheetStateProvider({ children }: PropsWithChildren) {
   );
 }
 
-const useGapiSheetState = () => useContext(gapiSheetStateContext);
+const useGapiSheetState = () => {
+  const context = useContext(gapiSheetStateContext);
+
+  if (!context) {
+    throw new Error('Missing ContextProvider');
+  }
+
+  return context;
+};
 
 export default useGapiSheetState;
