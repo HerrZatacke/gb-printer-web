@@ -15,7 +15,7 @@ import WrappedNextLink from '@/components/WrappedNextLink';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
-import { useEnv } from '@/contexts/envContext';
+import { useEnv } from '@/contexts/EnvContext';
 import useTracking from '@/contexts/TrackingContext';
 import { ConsentState } from '@/contexts/TrackingContext/hook';
 import { useDateFormat } from '@/hooks/useDateFormat';

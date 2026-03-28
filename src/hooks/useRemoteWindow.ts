@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useEnv } from '@/contexts/envContext';
+import { useEnv } from '@/contexts/EnvContext';
 import { useUrl } from '@/hooks/useUrl';
 import initCommands from '@/tools/remote/initCommands';
 import startHeartbeat from '@/tools/remote/startHeartbeat';
