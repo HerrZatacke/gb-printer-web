@@ -15,7 +15,7 @@ export function GISProvider({ children }: PropsWithChildren) {
   );
 }
 
-const useGIS = () => {
+export const useGIS = (): GISContextType => {
   const context = useContext(gisContext);
 
   if (!context) {
@@ -24,5 +24,3 @@ const useGIS = () => {
 
   return context;
 };
-
-export default useGIS;
