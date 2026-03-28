@@ -7,7 +7,7 @@ import { GalleryTreeProvider } from '@/contexts/GalleryTreeContext';
 import { GapiSheetStateProvider } from '@/contexts/GapiSheetStateContext';
 import { GapiSyncProvider  } from '@/contexts/GapiSyncContext';
 import { GISProvider } from '@/contexts/GisContext';
-import I18nContext from '@/contexts/i18nContext';
+import I18nContext from '@/contexts/I18nContext';
 import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
 import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
 import { PluginsContext } from '@/contexts/PluginsContext';
