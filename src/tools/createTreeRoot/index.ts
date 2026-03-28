@@ -8,6 +8,7 @@ export const createTreeRoot = (allImages: Image[]): TreeImageGroup => ({
   slug: '',
   created: '',
   title: 'Home',
+  isFavourite: false,
   coverImage: '',
   images: [],
   groups: [],
