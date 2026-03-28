@@ -12,7 +12,7 @@ import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
 import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
 import { PluginsContext } from '@/contexts/PluginsContext';
 import { PortsContext } from '@/contexts/ports/Provider';
-import RemotePrinterContextProvider from '@/contexts/remotePrinter/RemotePrinterContextProvider';
+import RemotePrinterContextProvider from '@/contexts/RemotePrinterContext';
 import { TrackingProvider } from '@/contexts/TrackingContext';
 
 export const viewport: Viewport = {

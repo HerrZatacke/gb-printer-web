@@ -1,7 +1,4 @@
-'use client';
-
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { type PropsWithChildren } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { PrinterFunction } from '@/consts/printerFunction';
 import useImportFile from '@/hooks/useImportFile';
 import {
@@ -11,13 +8,15 @@ import {
   useSettingsStore,
 } from '@/stores/stores';
 import { type BlobResponse, type PrinterParams, type RemotePrinterEvent } from '@/types/Printer';
-import { type RemotePrinterContext } from './index';
-import { remotePrinterContext } from './index';
 
 let heartbeatTimer: number | null;
 let remotePrinterWindow: Window | null;
 
-function RemotePrinterContextProvider({ children }: PropsWithChildren) {
+export interface RemotePrinterContextValue {
+  callRemoteFunction: (functionType: PrinterFunction) => Promise<void>,
+}
+
+export const useContextHook = (): RemotePrinterContextValue => {
   const { setPrinterFunctions, setPrinterBusy, setPrinterData } = useInteractionsStore.getState();
   const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
@@ -151,40 +150,33 @@ function RemotePrinterContextProvider({ children }: PropsWithChildren) {
 
   }, [dismissDialog, handleFileImport, setDialog, setPrinterBusy, setPrinterData, setPrinterFunctions, showProgress]);
 
-  const value = useMemo<RemotePrinterContext>(() => ({
-    callRemoteFunction: async (functionType: PrinterFunction) => {
-      const { printerData } = useInteractionsStore.getState();
-      setPrinterBusy(true);
-      let params: PrinterParams | undefined;
+  const callRemoteFunction = useCallback(async (functionType: PrinterFunction) => {
+    const { printerData } = useInteractionsStore.getState();
+    setPrinterBusy(true);
+    let params: PrinterParams | undefined;
 
-      if (functionType === PrinterFunction.FETCHIMAGES && printerData) {
-        params = { dumps: printerData?.dumps };
-      }
+    if (functionType === PrinterFunction.FETCHIMAGES && printerData) {
+      params = { dumps: printerData?.dumps };
+    }
 
-      // obh and pako need to be loaded here, as the trigger from the
-      // remote window might cause the files not to be loaded correctly
-      await import(/* webpackChunkName: "obh" */ 'object-hash');
-      await import(/* webpackChunkName: "pko" */ 'pako');
+    // obh and pako need to be loaded here, as the trigger from the
+    // remote window might cause the files not to be loaded correctly
+    await import(/* webpackChunkName: "obh" */ 'object-hash');
+    await import(/* webpackChunkName: "pko" */ 'pako');
 
-      if (!remotePrinterWindow) {
-        throw new Error('remote printer window object is missing');
-      }
+    if (!remotePrinterWindow) {
+      throw new Error('remote printer window object is missing');
+    }
 
-      remotePrinterWindow.postMessage({
-        toRemotePrinter: {
-          command: functionType,
-          params,
-        },
-      } as RemotePrinterEvent, '*');
-    },
-  }), [setPrinterBusy]);
+    remotePrinterWindow.postMessage({
+      toRemotePrinter: {
+        command: functionType,
+        params,
+      },
+    } as RemotePrinterEvent, '*');
+  }, [setPrinterBusy]);
 
-  return (
-    <remotePrinterContext.Provider value={value}>
-      { children }
-    </remotePrinterContext.Provider>
-  );
-}
-
-export default RemotePrinterContextProvider;
-
+  return {
+    callRemoteFunction,
+  };
+};
