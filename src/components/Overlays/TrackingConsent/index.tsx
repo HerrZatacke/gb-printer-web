@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import MarkdownStack from '@/components/MarkdownStack';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import { ConsentState } from '@/contexts/TrackingContext/hook';
 import { shortLocales } from '@/i18n/locales';
 import readmeEn from '@/i18n/markdown/Analytics/en.md';

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useInteractionsStore } from '@/stores/stores';
 import { concatImportResults } from '@/tools/concatImportResults';

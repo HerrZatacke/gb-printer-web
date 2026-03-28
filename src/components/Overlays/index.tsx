@@ -22,7 +22,7 @@ import SyncSelect from '@/components/Overlays/SyncSelect';
 import TrackingConsent from '@/components/Overlays/TrackingConsent';
 import Trashbin from '@/components/Overlays/Trashbin';
 import VideoParamsForm from '@/components/Overlays/VideoParamsForm';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import {
   useDialogsStore,
   useEditStore,

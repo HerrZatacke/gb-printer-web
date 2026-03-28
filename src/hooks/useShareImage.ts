@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { PrepareFilesOptions, prepareFiles } from '@/tools/download';

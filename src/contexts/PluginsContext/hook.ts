@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
 import {

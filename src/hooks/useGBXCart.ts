@@ -2,7 +2,7 @@ import { proxy, Remote } from 'comlink';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { PortDeviceType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/PortsContext';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useInteractionsStore, useProgressStore } from '@/stores/stores';
 import { GBXCartCommsDevice } from '@/tools/comms/DeviceAPIs/GBXCartCommsDevice';

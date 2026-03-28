@@ -30,7 +30,7 @@ export function TrackingProvider({ children }: PropsWithChildren) {
   );
 }
 
-const useTracking = () => {
+export const useTracking = (): TrackingContextType => {
   const context = useContext(trackingContext);
 
   if (!context) {
@@ -39,5 +39,3 @@ const useTracking = () => {
 
   return context;
 };
-
-export default useTracking;
