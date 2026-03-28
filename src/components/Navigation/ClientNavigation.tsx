@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import NavigationFlyout from '@/components/NavigationFlyout';
 import WrappedNextLink, { ExactMatchMode } from '@/components/WrappedNextLink';
-import useNavigationItems from '@/contexts/NavigationItemsContext';
+import { useNavigationItems } from '@/contexts/NavigationItemsContext';
 import { FlyoutContent } from '@/types/Navigation';
 
 function ClientNavigation() {

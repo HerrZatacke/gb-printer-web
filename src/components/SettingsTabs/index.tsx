@@ -5,7 +5,7 @@ import Tabs from '@mui/material/Tabs';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import WrappedNextLink from '@/components/WrappedNextLink';
-import useNavigationItems from '@/contexts/NavigationItemsContext';
+import { useNavigationItems } from '@/contexts/NavigationItemsContext';
 
 function SettingsTabs() {
   const pathName = usePathname();
