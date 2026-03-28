@@ -23,7 +23,7 @@ interface ShouldNavigate {
   },
 }
 
-export const useNavigationTools = (): UseNavigationTools => {
+export const useContextHook = (): UseNavigationTools => {
   const router = useRouter();
   const { paths, root, isWorking, path: currentPath, getUrl } = useGalleryTreeContext();
   const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate | false>(false);

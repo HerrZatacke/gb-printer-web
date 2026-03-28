@@ -9,7 +9,7 @@ import { GapiSyncProvider  } from '@/contexts/GapiSyncContext';
 import { GISProvider } from '@/contexts/GisContext';
 import I18nContext from '@/contexts/i18nContext';
 import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
-import { NavigationToolsProvider } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
 import { PluginsContext } from '@/contexts/plugins/Provider';
 import { PortsContext } from '@/contexts/ports/Provider';
 import RemotePrinterContextProvider from '@/contexts/remotePrinter/RemotePrinterContextProvider';

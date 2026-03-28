@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import {
   type EditGroupInfo,
   useEditStore,
@@ -86,7 +86,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     groupImagesAdd,
     ungroupImages,
   } = useItemsStore();
-  const { navigateToGroup, navigateToImage } = useNavigationToolsContext();
+  const { navigateToGroup, navigateToImage } = useNavigationTools();
   const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
 
