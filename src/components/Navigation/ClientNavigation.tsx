@@ -18,7 +18,8 @@ import Toolbar from '@mui/material/Toolbar';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import NavigationFlyout from '@/components/NavigationFlyout';
-import WrappedNextLink, { ExactMatchMode } from '@/components/WrappedNextLink';
+import WrappedNextLink from '@/components/WrappedNextLink';
+import { ExactMatchMode } from '@/components/WrappedNextLink/common';
 import useNavigationItems from '@/contexts/NavigationItemsContext';
 import { FlyoutContent } from '@/types/Navigation';
 

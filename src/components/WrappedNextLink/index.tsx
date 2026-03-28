@@ -1,75 +1,48 @@
 'use client';
 
-import NextLink, { LinkProps } from 'next/link';
-import { ReadonlyURLSearchParams, usePathname, useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import NextLink from 'next/link';
 import * as React from 'react';
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
+import { type WrappedNextLinkProps } from '@/components/WrappedNextLink/common';
 
-export enum ExactMatchMode {
-  PATH_STARTSWITH = 'PATH_STARTSWITH',
-  EXACT_PATH = 'EXACT_PATH',
-  EXACT_PATH_AND_SEARCH = 'EXACT_PATH_AND_SEARCH',
-}
+export const WrappedClientLink = dynamic(
+  () => import('@/components/WrappedNextLink/ClientLink'),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
 
-type Props = LinkProps &
-  Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
-  activeClassName?: string;
-  exact?: ExactMatchMode;
-};
-
-const normalize = (url: string): string => {
-  try {
-    return new URL(url, window.location.origin).pathname;
-  } catch {
-    return url;
-  }
-};
-
-const pathAndSearch = (pathName: string, searchParams: ReadonlyURLSearchParams): string => {
-  const search = searchParams.toString();
-  return search.length ? `${pathName}?${search}` : pathName;
-};
-
-const WrappedNextLink = React.forwardRef<HTMLAnchorElement, Props>(
+const WrappedNextLink = React.forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
   function WrappedNextLink(
-    {
-      href,
-      activeClassName = 'active',
-      exact = ExactMatchMode.PATH_STARTSWITH,
-      className,
-      ...rest
-    },
+    props,
     ref,
   ) {
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
-    const isActive = useMemo(() => {
-      switch (exact) {
-        case ExactMatchMode.PATH_STARTSWITH:
-          return pathname.startsWith(normalize(String(href)));
-
-        case ExactMatchMode.EXACT_PATH:
-          return pathname === normalize(String(href));
-
-        case ExactMatchMode.EXACT_PATH_AND_SEARCH:
-        default:
-          return pathAndSearch(pathname, searchParams) === String(href);
-      }
-    }, [exact, href, pathname, searchParams]);
-
-    const combinedClassName = [
+    const {
+      href,
       className,
-      isActive ? activeClassName : null,
-    ]
-      .filter(Boolean)
-      .join(' ');
+      ...rest
+    } = props;
+
+    const [onClient, setOnClient] = useState(false);
+    useEffect(() => {
+      const handle = window.setTimeout(() => {
+        setOnClient(true);
+      }, 1);
+
+      return () => window.clearTimeout(handle);
+    }, []);
+
+    if (onClient) {
+      return <WrappedClientLink ref={ref} {...props} />;
+    }
 
     return (
       <NextLink
         ref={ref}
         href={href}
-        className={combinedClassName}
+        className={className}
         {...rest}
       />
     );
