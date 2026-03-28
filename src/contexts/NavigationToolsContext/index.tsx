@@ -4,19 +4,19 @@ import React, { createContext, useContext } from 'react';
 import { type PropsWithChildren } from 'react';
 import { useContextHook, UseNavigationTools } from '@/contexts/NavigationToolsContext/hook';
 
-const NavigationToolsContext = createContext<UseNavigationTools | null>(null);
+const navigationToolsContext = createContext<UseNavigationTools | null>(null);
 
 export function NavigationToolsProvider({ children }: PropsWithChildren) {
   const value = useContextHook();
   return (
-    <NavigationToolsContext.Provider value={value}>
+    <navigationToolsContext.Provider value={value}>
       {children}
-    </NavigationToolsContext.Provider>
+    </navigationToolsContext.Provider>
   );
 }
 
 export const useNavigationTools = () => {
-  const context = useContext(NavigationToolsContext);
+  const context = useContext(navigationToolsContext);
   if (!context) {
     throw new Error('Missing ContextProvider');
   }
