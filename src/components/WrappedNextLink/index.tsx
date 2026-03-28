@@ -1,48 +1,77 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import NextLink from 'next/link';
+import NextLink, { LinkProps } from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { type WrappedNextLinkProps } from '@/components/WrappedNextLink/common';
+import { useMemo } from 'react';
 
-export const WrappedClientLink = dynamic(
-  () => import('@/components/WrappedNextLink/ClientLink'),
-  {
-    ssr: false,
-    loading: () => null,
-  },
-);
+export enum ExactMatchMode {
+  PATH_STARTSWITH = 'PATH_STARTSWITH',
+  EXACT_PATH = 'EXACT_PATH',
+  EXACT_PATH_AND_SEARCH = 'EXACT_PATH_AND_SEARCH',
+}
+
+export type WrappedNextLinkProps = LinkProps &
+  Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
+  activeClassName?: string;
+  exact?: ExactMatchMode;
+};
+
+const normalize = (url: string): string => {
+  try {
+    return new URL(url, window.location.origin).pathname;
+  } catch {
+    return url;
+  }
+};
+
+const pathAndSearch = (pathName: string, searchParams?: URLSearchParams): string => {
+  const search = searchParams?.toString() || '';
+  return search.length ? `${pathName}?${search}` : pathName;
+};
+
+export const calculateActive = (exact: ExactMatchMode, pathname: string, href: string, searchParams?: URLSearchParams) => {
+  switch (exact) {
+    case ExactMatchMode.PATH_STARTSWITH:
+      return pathname.startsWith(normalize(href));
+
+    case ExactMatchMode.EXACT_PATH:
+      return pathname === normalize(href);
+
+    case ExactMatchMode.EXACT_PATH_AND_SEARCH:
+    default:
+      return pathAndSearch(pathname, searchParams) === href;
+  }
+};
 
 const WrappedNextLink = React.forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
   function WrappedNextLink(
-    props,
-    ref,
-  ) {
-    const {
+    {
       href,
+      activeClassName = 'active',
+      exact = ExactMatchMode.PATH_STARTSWITH,
       className,
       ...rest
-    } = props;
+    },
+    ref,
+  ) {
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
-    const [onClient, setOnClient] = useState(false);
-    useEffect(() => {
-      const handle = window.setTimeout(() => {
-        setOnClient(true);
-      }, 1);
-
-      return () => window.clearTimeout(handle);
-    }, []);
-
-    if (onClient) {
-      return <WrappedClientLink ref={ref} {...props} />;
-    }
+    const combinedClassName = useMemo(() => (
+      [
+        className,
+        calculateActive(exact, pathname, String(href), searchParams) ? activeClassName : null,
+      ]
+        .filter(Boolean)
+        .join(' ')
+    ), [className, exact, pathname, href, activeClassName, searchParams]);
 
     return (
       <NextLink
         ref={ref}
         href={href}
-        className={className}
+        className={combinedClassName}
         {...rest}
       />
     );
