@@ -6,7 +6,7 @@ import { RemotePrinterContextValue, useContextHook } from '@/contexts/RemotePrin
 
 const remotePrinterContext = createContext<RemotePrinterContextValue | null>(null);
 
-function RemotePrinterContextProvider({ children }: PropsWithChildren) {
+export function RemotePrinterProvider({ children }: PropsWithChildren) {
   const contextValue = useContextHook();
 
   return (
@@ -15,8 +15,6 @@ function RemotePrinterContextProvider({ children }: PropsWithChildren) {
     </remotePrinterContext.Provider>
   );
 }
-
-export default RemotePrinterContextProvider;
 
 export const useRemotePrinterContext = (): RemotePrinterContextValue => {
   const context = useContext(remotePrinterContext);

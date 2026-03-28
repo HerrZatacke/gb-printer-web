@@ -6,7 +6,7 @@ import { PortsContextValue } from '@/types/ports';
 
 export const portsContext = createContext<PortsContextValue | null>(null);
 
-export function PortsContext({ children }: PropsWithChildren) {
+export function PortsProvider({ children }: PropsWithChildren) {
   const contextValue = useContextHook();
 
   return (

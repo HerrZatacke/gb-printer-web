@@ -6,7 +6,7 @@ import { type PluginsContext } from '@/types/Plugin';
 
 const pluginsContext = createContext<PluginsContext | null>(null);
 
-export function PluginsContext({ children }: PropsWithChildren) {
+export function PluginsProvider({ children }: PropsWithChildren) {
   const contextValue = useContextHook();
 
   return (
