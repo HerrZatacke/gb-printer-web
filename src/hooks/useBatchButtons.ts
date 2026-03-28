@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { BatchActionType } from '@/consts/batchActionTypes';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import { useStores } from '@/hooks/useStores';
 import {

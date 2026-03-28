@@ -14,9 +14,9 @@ import {
 import { useTranslations } from 'next-intl';
 import { memo } from 'react';
 import SheetsTableRow from '@/components/SettingsGapiSheets/SheetsTableRow';
-import useGapiSheetState from '@/contexts/GapiSheetStateContext';
+import { useGapiSheetState } from '@/contexts/GapiSheetStateContext';
 import { useGapiSync } from '@/contexts/GapiSyncContext';
-import useGIS from '@/contexts/GisContext';
+import { useGIS } from '@/contexts/GisContext';
 import { SheetStats } from '@/hooks/useGapiSheetsStats';
 import { useStoragesStore } from '@/stores/stores';
 

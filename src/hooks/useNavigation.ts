@@ -1,4 +1,4 @@
-import { usePortsContext } from '@/contexts/ports';
+import { usePortsContext } from '@/contexts/PortsContext';
 import {
   useInteractionsStore,
   useSettingsStore,

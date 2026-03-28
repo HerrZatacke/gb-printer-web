@@ -8,7 +8,7 @@ import { defaultLocale, locales, shortLocales } from '@/i18n/locales';
 import messagesEn from '@/i18n/messages/en.json';
 import { useSettingsStore } from '@/stores/stores';
 
-function I18nContext({ children }: PropsWithChildren) {
+export function I18nProvider({ children }: PropsWithChildren) {
   const [locale, setLocale] = useState('en');
   const [messages, setMessages] = useState(messagesEn);
   const [timeZone, setTimeZone] = useState('UTC');
@@ -51,4 +51,3 @@ function I18nContext({ children }: PropsWithChildren) {
   );
 }
 
-export default I18nContext;

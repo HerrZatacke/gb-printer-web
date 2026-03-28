@@ -1,7 +1,7 @@
 import { proxy, Remote } from 'comlink';
 import { useCallback, useMemo } from 'react';
 import { PortDeviceType } from '@/consts/ports';
-import { usePortsContext } from '@/contexts/ports';
+import { usePortsContext } from '@/contexts/PortsContext';
 import {
   useInteractionsStore,
   useItemsStore,

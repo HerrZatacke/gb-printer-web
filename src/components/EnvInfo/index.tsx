@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { filesize } from 'filesize';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import { useEnv } from '@/contexts/envContext';
+import { useEnv } from '@/contexts/EnvContext';
 import { useStorageInfo } from '@/hooks/useStorageInfo';
 
 function EnvInfo() {

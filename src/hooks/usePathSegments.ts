@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { PathMap } from '@/types/galleryTreeContext';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
@@ -15,7 +15,7 @@ export interface UsePathSegments {
 
 export const usePathSegments = (): UsePathSegments => {
   const { path: currentPath, getUrl, root, paths, isInitialized } = useGalleryTreeContext();
-  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationToolsContext();
+  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
 
   const breadCrumbSlugs = useMemo(() => {
     const breadCrumbsRaw = ['', ...currentPath.split('/').filter(Boolean)];

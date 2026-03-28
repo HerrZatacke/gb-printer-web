@@ -4,7 +4,7 @@ import { Tab, Tabs } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import WrappedNextLink from '@/components/WrappedNextLink';
-import useNavigationItems from '@/contexts/NavigationItemsContext';
+import { useNavigationItems } from '@/contexts/NavigationItemsContext';
 
 function PalettesTabs() {
   const pathName = usePathname();

@@ -7,7 +7,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import PaletteIcon from '@mui/icons-material/Palette';
 import { ElementType, useMemo } from 'react';
-import useGapiSheetState from '@/contexts/GapiSheetStateContext';
+import { useGapiSheetState } from '@/contexts/GapiSheetStateContext';
 import { SheetName, sheetNames } from '@/contexts/GapiSheetStateContext/consts';
 import { useItemsStore } from '@/stores/stores';
 

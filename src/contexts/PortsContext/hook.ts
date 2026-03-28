@@ -1,7 +1,5 @@
-'use client';
-
 import { proxy, Remote, wrap } from 'comlink';
-import { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { PortDeviceType, usbDeviceFilters } from '@/consts/ports';
 import { useGetPortSettings } from '@/hooks/useGetPortSettings';
 import useImportPlainText from '@/hooks/useImportPlainText';
@@ -15,9 +13,8 @@ import {
   PortsContextValue,
   PortsWorkerClient,
 } from '@/types/ports';
-import { portsContext } from './index';
 
-export function PortsContext({ children }: PropsWithChildren) {
+export const useContextHook = (): PortsContextValue => {
   const [portsWorkerRemote, setPortsWorkerRemote] = useState<PortsWorkerRemote | null>(null);
   const [webSerialEnabled, setWebSerialEnabled] = useState<boolean>(false);
   const [webUSBEnabled, setWebUSBEnabled] = useState<boolean>(false);
@@ -156,7 +153,7 @@ export function PortsContext({ children }: PropsWithChildren) {
     };
   }, [packetCaptureResponse, importPlainText]);
 
-  const value = useMemo((): PortsContextValue => ({
+  return {
     connectedDevices,
     hasInactiveDevices,
     isReceiving,
@@ -165,16 +162,5 @@ export function PortsContext({ children }: PropsWithChildren) {
     unknownDeviceResponse,
     webSerialEnabled,
     webUSBEnabled,
-  }), [
-    connectedDevices,
-    hasInactiveDevices,
-    isReceiving,
-    openWebSerial,
-    openWebUSB,
-    unknownDeviceResponse,
-    webSerialEnabled,
-    webUSBEnabled,
-  ]);
-
-  return <portsContext.Provider value={value}>{ children }</portsContext.Provider>;
-}
+  };
+};

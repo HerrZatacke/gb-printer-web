@@ -5,7 +5,7 @@ import { type GapiLastUpdates, sheetNames } from '@/contexts/GapiSheetStateConte
 import { createGapiLastUpdates } from '@/contexts/GapiSheetStateContext/tools/createGapiLastUpdates';
 import { isGapiError } from '@/contexts/GapiSheetStateContext/tools/isGapiError';
 import { patchGapiClient } from '@/contexts/GapiSheetStateContext/tools/patchGapiClient';
-import useGIS from '@/contexts/GisContext';
+import { useGIS } from '@/contexts/GisContext';
 import { useLimitCounter } from '@/hooks/useLimitCounter';
 import { useInteractionsStore, useStoragesStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';

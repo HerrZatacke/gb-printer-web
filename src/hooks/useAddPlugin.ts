@@ -1,7 +1,7 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { parseURL } from 'ufo';
-import { usePluginsContext } from '@/contexts/plugins';
+import { usePluginsContext } from '@/contexts/PluginsContext';
 import { useUrl } from '@/hooks/useUrl';
 import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 

@@ -3,7 +3,7 @@ import Queue from 'promise-queue';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useStores } from '@/hooks/useStores';
 import {
@@ -68,7 +68,7 @@ const useRunImport = (): UseRunImport => {
   const { addImages, importQueueCancel } = useStores();
 
   const { view } = useGalleryTreeContext();
-  const { navigateToGroup } = useNavigationToolsContext();
+  const { navigateToGroup } = useNavigationTools();
 
   const t = useTranslations('useRunImport');
 

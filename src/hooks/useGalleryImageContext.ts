@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';

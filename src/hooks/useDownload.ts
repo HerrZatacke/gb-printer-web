@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import useTracking from '@/contexts/TrackingContext';
+import { useTracking } from '@/contexts/TrackingContext';
 import {
   useInteractionsStore,
   useItemsStore,

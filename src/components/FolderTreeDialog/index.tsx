@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
 import WrappedNextLink from '@/components/WrappedNextLink';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';
 import { type TreeImageGroup } from '@/types/ImageGroup';
@@ -19,7 +19,7 @@ interface FolderTreeItemProps {
 }
 
 function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
-  const { getGroupPath } = useNavigationToolsContext();
+  const { getGroupPath } = useNavigationTools();
 
   return (
     <TreeItem
@@ -66,7 +66,7 @@ interface FolderTreeDialogProps {
 function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
   const t = useTranslations('FolderTreeDialog');
   const { pathsOptions, root } = useGalleryTreeContext();
-  const { currentGroup } = useNavigationToolsContext();
+  const { currentGroup } = useNavigationTools();
   const theme = useTheme();
   const { segments } = usePathSegments();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);

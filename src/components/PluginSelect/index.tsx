@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { usePluginsContext } from '@/contexts/plugins';
+import { usePluginsContext } from '@/contexts/PluginsContext';
 import { useFiltersStore, useItemsStore } from '@/stores/stores';
 
 interface Props {

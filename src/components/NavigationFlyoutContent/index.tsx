@@ -8,8 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import WrappedNextLink from '@/components/WrappedNextLink';
-import { ExactMatchMode } from '@/components/WrappedNextLink/common';
+import WrappedNextLink, { ExactMatchMode } from '@/components/WrappedNextLink';
 import { FlyoutContent } from '@/types/Navigation';
 
 interface Props {

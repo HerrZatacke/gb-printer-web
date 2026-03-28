@@ -2,17 +2,18 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { type Viewport } from 'next';
 import { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import GlobalAppInit from '@/components/GlobalAppInit';
-import { EnvProvider } from '@/contexts/envContext';
+import { EnvProvider } from '@/contexts/EnvContext';
 import { GalleryTreeProvider } from '@/contexts/GalleryTreeContext';
 import { GapiSheetStateProvider } from '@/contexts/GapiSheetStateContext';
 import { GapiSyncProvider  } from '@/contexts/GapiSyncContext';
 import { GISProvider } from '@/contexts/GisContext';
-import I18nContext from '@/contexts/i18nContext';
+import { I18nProvider } from '@/contexts/I18nContext';
 import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
-import { NavigationToolsProvider } from '@/contexts/navigationTools/NavigationToolsProvider';
-import { PluginsContext } from '@/contexts/plugins/Provider';
-import { PortsContext } from '@/contexts/ports/Provider';
-import RemotePrinterContextProvider from '@/contexts/remotePrinter/RemotePrinterContextProvider';
+import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
+import { PluginsProvider } from '@/contexts/PluginsContext';
+import { PortsProvider } from '@/contexts/PortsContext';
+import { RemotePrinterProvider } from '@/contexts/RemotePrinterContext';
+import { SearchParamsProvider } from '@/contexts/SearchParamsContext';
 import { TrackingProvider } from '@/contexts/TrackingContext';
 
 export const viewport: Viewport = {
@@ -23,19 +24,20 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   const providers: ComponentType<{ children: ReactNode }>[] = [
-    I18nContext,
+    SearchParamsProvider,
+    I18nProvider,
     TrackingProvider,
     GISProvider,
     GapiSheetStateProvider,
     GapiSyncProvider,
     EnvProvider,
-    PortsContext,
+    PortsProvider,
     GalleryTreeProvider,
     GlobalAppInit, // needs <GalleryTreeProvider>
-    PluginsContext,
+    PluginsProvider,
     NavigationToolsProvider, // needs <GalleryTreeProvider>
     NavigationItemsProvider,
-    RemotePrinterContextProvider,
+    RemotePrinterProvider,
     AppRouterCacheProvider,
   ];
 

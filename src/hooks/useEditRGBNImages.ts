@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import objectHash from 'object-hash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useNavigationToolsContext } from '@/contexts/navigationTools/NavigationToolsProvider';
+import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { toSlug } from '@/hooks/useEditImageGroup';
 import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
@@ -46,7 +46,7 @@ interface UseEditRGBNImages {
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {
   const t = useTranslations('useEditRGBNImages');
-  const { navigateToGroup } = useNavigationToolsContext();
+  const { navigateToGroup } = useNavigationTools();
   const { view } = useGalleryTreeContext();
   const { saveRGBNImage } = useSaveRGBNImages();
 

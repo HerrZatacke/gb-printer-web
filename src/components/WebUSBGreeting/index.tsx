@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import MarkdownStack from '@/components/MarkdownStack';
 import ConnectSerial from '@/components/Overlays/ConnectSerial';
-import { usePortsContext } from '@/contexts/ports';
+import { usePortsContext } from '@/contexts/PortsContext';
 import useProcessMarkdownLinks from '@/hooks/useProcessMarkdownLinks';
 import { shortLocales } from '@/i18n/locales';
 import readmeEn from '@/i18n/markdown/WebUSB/en.md';
