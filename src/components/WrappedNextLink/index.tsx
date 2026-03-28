@@ -1,9 +1,9 @@
 'use client';
 
 import NextLink, { LinkProps } from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
-import * as React from 'react';
-import { useMemo } from 'react';
+import { usePathname } from 'next/navigation';
+import { forwardRef, useMemo } from 'react';
+import { useClientSearchParams } from '@/contexts/SearchParamsContext';
 
 export enum ExactMatchMode {
   PATH_STARTSWITH = 'PATH_STARTSWITH',
@@ -25,12 +25,12 @@ const normalize = (url: string): string => {
   }
 };
 
-const pathAndSearch = (pathName: string, searchParams?: URLSearchParams): string => {
+const pathAndSearch = (pathName: string, searchParams: URLSearchParams | null): string => {
   const search = searchParams?.toString() || '';
   return search.length ? `${pathName}?${search}` : pathName;
 };
 
-export const calculateActive = (exact: ExactMatchMode, pathname: string, href: string, searchParams?: URLSearchParams) => {
+export const calculateActive = (exact: ExactMatchMode, pathname: string, href: string, searchParams: URLSearchParams | null) => {
   switch (exact) {
     case ExactMatchMode.PATH_STARTSWITH:
       return pathname.startsWith(normalize(href));
@@ -44,7 +44,7 @@ export const calculateActive = (exact: ExactMatchMode, pathname: string, href: s
   }
 };
 
-const WrappedNextLink = React.forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
+const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
   function WrappedNextLink(
     {
       href,
@@ -56,7 +56,7 @@ const WrappedNextLink = React.forwardRef<HTMLAnchorElement, WrappedNextLinkProps
     ref,
   ) {
     const pathname = usePathname();
-    const searchParams = useSearchParams();
+    const { searchParams } = useClientSearchParams();
 
     const combinedClassName = useMemo(() => (
       [

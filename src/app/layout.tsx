@@ -13,6 +13,7 @@ import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
 import { PluginsProvider } from '@/contexts/PluginsContext';
 import { PortsProvider } from '@/contexts/PortsContext';
 import { RemotePrinterProvider } from '@/contexts/RemotePrinterContext';
+import { SearchParamsProvider } from '@/contexts/SearchParamsContext';
 import { TrackingProvider } from '@/contexts/TrackingContext';
 
 export const viewport: Viewport = {
@@ -23,6 +24,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   const providers: ComponentType<{ children: ReactNode }>[] = [
+    SearchParamsProvider,
     I18nProvider,
     TrackingProvider,
     GISProvider,
