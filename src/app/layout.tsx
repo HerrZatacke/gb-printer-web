@@ -10,7 +10,7 @@ import { GISProvider } from '@/contexts/GisContext';
 import I18nContext from '@/contexts/i18nContext';
 import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
 import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
-import { PluginsContext } from '@/contexts/plugins/Provider';
+import { PluginsContext } from '@/contexts/PluginsContext';
 import { PortsContext } from '@/contexts/ports/Provider';
 import RemotePrinterContextProvider from '@/contexts/remotePrinter/RemotePrinterContextProvider';
 import { TrackingProvider } from '@/contexts/TrackingContext';

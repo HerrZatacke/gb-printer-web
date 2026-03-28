@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
-import { usePluginsContext } from '@/contexts/plugins';
+import { usePluginsContext } from '@/contexts/PluginsContext';
 import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 import PluginConfig from './PluginConfig';
 
