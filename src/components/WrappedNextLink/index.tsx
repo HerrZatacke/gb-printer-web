@@ -1,7 +1,7 @@
 'use client';
 
 import NextLink, { LinkProps } from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { forwardRef, useMemo } from 'react';
 import { useClientSearchParams } from '@/contexts/SearchParamsContext';
 
@@ -55,7 +55,6 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
     },
     ref,
   ) {
-    const router = useRouter();
     const pathname = usePathname();
     const { searchParams } = useClientSearchParams();
 
@@ -91,8 +90,6 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
                   searchParams,
                   searchParamsStringified: searchParams?.toString(),
                 });
-
-                router.push(href);
               }
             }
           }, 1000);
