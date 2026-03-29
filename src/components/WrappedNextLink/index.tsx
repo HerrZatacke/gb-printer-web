@@ -75,16 +75,26 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
         {...rest}
         onClick={(ev) => {
           const onClick = rest.onClick;
-          console.log({
-            onClick,
-            href,
-            pathname,
-            searchParams,
-            searchParamsStringified: searchParams?.toString(),
-          });
+
           if (typeof onClick === 'function') {
             onClick(ev);
           }
+
+          window.setTimeout(() => {
+            if (typeof href === 'string') {
+              if (!window.location.href.endsWith(href)) {
+                console.log({
+                  onClick,
+                  href,
+                  pathname,
+                  searchParams,
+                  searchParamsStringified: searchParams?.toString(),
+                });
+
+                window.location.href = href;
+              }
+            }
+          }, 1000);
         }}
       />
     );
