@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
 import useFileDrop from '@/hooks/useFileDrop';
 import { useHandleHashParams } from '@/hooks/useHandleHashParams';
@@ -20,6 +21,13 @@ import { dropboxStorageTool } from '@/tools/dropboxStorage';
 function GlobalAppInit({ children }: PropsWithChildren) {
   useFileDrop();
   useHandleHashParams();
+
+  const router = useRouter();
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.nextRouter = router;
+  }, [router]);
 
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
