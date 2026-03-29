@@ -91,7 +91,7 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
                   searchParamsStringified: searchParams?.toString(),
                 });
 
-                window.location.href = href;
+                window.location.href = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}${href}`;
               }
             }
           }, 1000);
