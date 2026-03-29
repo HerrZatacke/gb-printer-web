@@ -73,6 +73,19 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
         href={href}
         className={combinedClassName}
         {...rest}
+        onClick={(ev) => {
+          const onClick = rest.onClick;
+          console.log({
+            onClick,
+            href,
+            pathname,
+            searchParams,
+            searchParamsStringified: searchParams?.toString(),
+          });
+          if (typeof onClick === 'function') {
+            onClick(ev);
+          }
+        }}
       />
     );
   },
