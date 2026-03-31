@@ -15,6 +15,17 @@ function getGitBranch() {
   }
 }
 
+console.log(Object.keys(process.env));
+
+// console.log({
+//   NODE_ENV: process.env.NODE_ENV,
+//   CI: process.env.CI,
+//   isDev,
+//   basePath,
+// });
+
+process.exit(-1);
+
 const rewritesConfig = isDev && process.env.NEXT_DEV_WIFI_PROXY_HOST ? {
   rewrites: async () => {
     return  [
