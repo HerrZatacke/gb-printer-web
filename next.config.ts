@@ -25,8 +25,9 @@ delete envvars.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
 delete envvars.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID;
 delete envvars.NEXT_PUBLIC_GOOGLE_SCOPE;
 
-console.log(JSON.stringify(envvars));
-
+Object.entries(envvars).forEach(([k,v]) => {
+  console.log(`${k}=${v}`);
+});
 // console.log({
 //   NODE_ENV: process.env.NODE_ENV,
 //   CI: process.env.CI,
