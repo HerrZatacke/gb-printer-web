@@ -1,3 +1,3 @@
 :HL["/gb-printer-web/_next/static/css/bdc72c0d0767576a.css","style"]
 :HL["/gb-printer-web/_next/static/css/59f3b4615684664e.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(pages)","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"nIzGD5BNMGey2hkP-whif"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(pages)","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"0fov5eNC_bjP7lpO8eTv4"}
