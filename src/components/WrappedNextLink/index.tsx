@@ -59,9 +59,9 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
     const pathname = usePathname();
     const { searchParams } = useClientSearchParams();
 
+    // https://github.com/vercel/next.js/issues/71365
     useEffect(() => {
       if (typeof href === 'string') {
-        console.log('Danke, NextJs');
         router.prefetch(href);
       }
     }, [href, router]);
