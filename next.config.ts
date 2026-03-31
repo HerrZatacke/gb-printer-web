@@ -9,13 +9,23 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 function getGitBranch() {
   try {
-    return execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+    return execSync('git rev-parse --abbrev-ref HEAD')
+      .toString()
+      .trim();
   } catch {
     return 'unknown';
   }
 }
 
-console.log(Object.keys(process.env));
+const envvars = JSON.parse(JSON.stringify(process.env));
+
+delete envvars.NEXT_PUBLIC_DROPBOX_APP_KEY;
+delete envvars.NEXT_PUBLIC_DROPBOX_APP_PATH;
+delete envvars.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+delete envvars.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID;
+delete envvars.NEXT_PUBLIC_GOOGLE_SCOPE;
+
+console.log(JSON.stringify(envvars));
 
 // console.log({
 //   NODE_ENV: process.env.NODE_ENV,
@@ -28,7 +38,7 @@ process.exit(-1);
 
 const rewritesConfig = isDev && process.env.NEXT_DEV_WIFI_PROXY_HOST ? {
   rewrites: async () => {
-    return  [
+    return [
       {
         source: '/wificonfig/:path*',
         destination: `http://${process.env.NEXT_DEV_WIFI_PROXY_HOST}/wificonfig/:path*`,
