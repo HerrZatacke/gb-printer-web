@@ -1,8 +1,8 @@
 'use client';
 
 import NextLink, { LinkProps } from 'next/link';
-import { usePathname } from 'next/navigation';
-import { forwardRef, useMemo } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { forwardRef, useEffect, useMemo } from 'react';
 import { useClientSearchParams } from '@/contexts/SearchParamsContext';
 
 export enum ExactMatchMode {
@@ -55,8 +55,16 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
     },
     ref,
   ) {
+    const router = useRouter();
     const pathname = usePathname();
     const { searchParams } = useClientSearchParams();
+
+    useEffect(() => {
+      if (typeof href === 'string') {
+        console.log('Danke, NextJs');
+        router.prefetch(href);
+      }
+    }, [href, router]);
 
     const combinedClassName = useMemo(() => (
       [

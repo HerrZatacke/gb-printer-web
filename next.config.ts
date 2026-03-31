@@ -17,26 +17,6 @@ function getGitBranch() {
   }
 }
 
-const envvars = JSON.parse(JSON.stringify(process.env));
-
-delete envvars.NEXT_PUBLIC_DROPBOX_APP_KEY;
-delete envvars.NEXT_PUBLIC_DROPBOX_APP_PATH;
-delete envvars.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
-delete envvars.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID;
-delete envvars.NEXT_PUBLIC_GOOGLE_SCOPE;
-
-Object.entries(envvars).forEach(([k,v]) => {
-  console.log(`${k}=${v}`);
-});
-// console.log({
-//   NODE_ENV: process.env.NODE_ENV,
-//   CI: process.env.CI,
-//   isDev,
-//   basePath,
-// });
-
-process.exit(-1);
-
 const rewritesConfig = isDev && process.env.NEXT_DEV_WIFI_PROXY_HOST ? {
   rewrites: async () => {
     return [
