@@ -11,7 +11,9 @@ declare global {
   }
 }
 
-window.debugNext71365 = false;
+if (typeof window !== 'undefined') {
+  window.debugNext71365 = false;
+}
 
 export enum ExactMatchMode {
   PATH_STARTSWITH = 'PATH_STARTSWITH',
