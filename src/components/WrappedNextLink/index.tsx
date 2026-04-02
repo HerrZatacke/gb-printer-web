@@ -61,9 +61,13 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
 
     // https://github.com/vercel/next.js/issues/71365
     useEffect(() => {
-      if (typeof href === 'string') {
-        router.prefetch(href);
-      }
+      const handle = window.setTimeout(() => {
+        if (typeof href === 'string') {
+          router.prefetch(href);
+        }
+      }, 500 + (Math.random() * 500));
+
+      return () => window.clearTimeout(handle);
     }, [href, router]);
 
     const combinedClassName = useMemo(() => (
