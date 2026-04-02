@@ -5,6 +5,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import { forwardRef, useEffect, useMemo } from 'react';
 import { useClientSearchParams } from '@/contexts/SearchParamsContext';
 
+declare global {
+  interface Window {
+    debugNext71365?: boolean,
+  }
+}
+
+window.debugNext71365 = false;
+
 export enum ExactMatchMode {
   PATH_STARTSWITH = 'PATH_STARTSWITH',
   EXACT_PATH = 'EXACT_PATH',
@@ -59,11 +67,17 @@ const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
     const pathname = usePathname();
     const { searchParams } = useClientSearchParams();
 
+    // https://github.com/vercel/next.js/issues/71365 can only be debugged in production
+    // due to bad build results on windows
+    // to debug set window.debugNext71365 to true via console
     useEffect(() => {
-      if (typeof href === 'string') {
-        console.log('Danke, NextJs');
-        router.prefetch(href);
-      }
+      const handle = window.setTimeout(() => {
+        if (typeof href === 'string' && !window.debugNext71365) {
+          router.prefetch(href);
+        }
+      }, 500 + (Math.random() * 500));
+
+      return () => window.clearTimeout(handle);
     }, [href, router]);
 
     const combinedClassName = useMemo(() => (
