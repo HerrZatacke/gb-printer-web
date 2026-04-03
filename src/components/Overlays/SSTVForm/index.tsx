@@ -21,11 +21,16 @@ function SSTVForm() {
   const visible = !!sstvHash;
 
   const modeTypes = useMemo(() => ([
-    { title: t('modeType.martin1'), key: ModeType.MARTIN_1 },
-    { title: t('modeType.martin2'), key: ModeType.MARTIN_2 },
-    // { title: t('modeType.robot32'), key: ModeType.ROBOT_32 },
-    // { title: t('modeType.robot36'), key: ModeType.ROBOT_36 },
-    // { title: t('modeType.robot72'), key: ModeType.ROBOT_72 },
+    { title: t('modeType.martin1'), key: ModeType.MARTIN_1, disabled: false },
+    { title: t('modeType.martin2'), key: ModeType.MARTIN_2, disabled: false },
+    { title: t('modeType.robot8'), key: ModeType.ROBOT_8, disabled: true },
+    { title: t('modeType.robot12'), key: ModeType.ROBOT_12, disabled: true },
+    { title: t('modeType.robot24'), key: ModeType.ROBOT_24, disabled: true },
+    { title: t('modeType.robot36'), key: ModeType.ROBOT_36, disabled: true },
+    { title: t('modeType.robot72'), key: ModeType.ROBOT_72, disabled: true },
+    { title: t('modeType.scottie1'), key: ModeType.SCOTTIE_1, disabled: true },
+    { title: t('modeType.scottie2'), key: ModeType.SCOTTIE_2, disabled: true },
+    { title: t('modeType.scottieDX'), key: ModeType.SCOTTIE_DX, disabled: true },
   ]), [t]);
 
   if (!visible) {
@@ -49,8 +54,8 @@ function SSTVForm() {
           value={modeType}
           onChange={(ev) => setModeType(ev.target.value as ModeType)}
         >
-          { modeTypes.map(({ key, title }) => (
-            <MenuItem key={key} value={key}>{ title }</MenuItem>
+          { modeTypes.map(({ key, title, disabled }) => (
+            <MenuItem key={key} value={key} disabled={disabled}>{ title }</MenuItem>
           )) }
         </TextField>
         <AudioPlayer

@@ -706,9 +706,14 @@
     "modeType": {
       "martin1": "Martin 1",
       "martin2": "Martin 2",
-      "robot32": "Robot 32",
+      "robot8": "Robot 8",
+      "robot12": "Robot 12",
+      "robot24": "Robot 24",
       "robot36": "Robot 36",
-      "robot72": "Robot 72"
+      "robot72": "Robot 72",
+      "scottie1": "Scottie 1",
+      "scottie2": "Scottie 2",
+      "scottieDX": "Scottie DX"
     }
   }
 }
