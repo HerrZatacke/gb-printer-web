@@ -113,12 +113,18 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
       case ModeType.MARTIN_2:
         samples.push(...createGBRLine(settings, lineData));
         break;
-      case ModeType.ROBOT_32:
+      case ModeType.ROBOT_8:
+      case ModeType.ROBOT_12:
+      case ModeType.ROBOT_24:
       case ModeType.ROBOT_36:
       case ModeType.ROBOT_72:
-        throw new Error('Not corretly implemented');
         samples.push(...createYLine(settings, lineData));
         samples.push(...createChromaLine(settings, lineData, Boolean(y % 2)));
+        break;
+      case ModeType.SCOTTIE_1:
+      case ModeType.SCOTTIE_2:
+      case ModeType.SCOTTIE_DX:
+        throw new Error('Not implemented');
         break;
     }
   }

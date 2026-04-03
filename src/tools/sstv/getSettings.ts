@@ -1,3 +1,4 @@
+import { getDimensions } from '@/tools/sstv/getDimensions';
 import { ModeType, type SSTVSettings } from '@/tools/sstv/types';
 
 const sstvCommon: SSTVSettings = {
@@ -21,72 +22,75 @@ const sstvCommon: SSTVSettings = {
   visBitMs: 30,
 };
 
+/*
+  MARTIN
+*/
 const martinCommon: SSTVSettings = {
   ...sstvCommon,
-  pixelMs: 0.4576,
+  visCode: 32,
   syncMs: 4.862,
   porchMs: 0.572,
 };
 
 const martin1: SSTVSettings = {
   ...martinCommon,
-  visCode: 44,
-  width: 320,
-  height: 256,
+  pixelMs: 0.4576,
 };
 
 const martin2: SSTVSettings = {
   ...martinCommon,
-  visCode: 45,
-  width: 160,
-  height: 256,
+  pixelMs: 0.2288,
 };
 
 
+/*
+  ROBOT
+*/
 const robotCommon: SSTVSettings = {
   ...sstvCommon,
   syncMs: 9.0,
   porchMs: 3.0,
-};
-
-const robot32: SSTVSettings = {
-  ...robotCommon,
-  visCode: 8, // Probably wrong
-  width: 160, // Probably wrong
-  height: 240, // Probably wrong
-  pixelMs: 0.2752, // Probably wrong
+  visCode: 0,
 };
 
 const robot36: SSTVSettings = {
   ...robotCommon,
-  visCode: 8, // somehow wrong
-  width: 160, // somehow wrong
-  height: 240, // somehow wrong
   pixelMs: 0.4576, // somehow wrong
 };
 
 const robot72: SSTVSettings = {
   ...robotCommon,
-  visCode: 12, // somehow wrong
-  width: 320, // somehow wrong
-  height: 240, // somehow wrong
   pixelMs: 0.2752, // somehow wrong
 };
 
 
 export const getSettings = (mode: ModeType): SSTVSettings => {
+  const { width, height, visPartial } = getDimensions(mode);
+
+  let settings: SSTVSettings;
+
   switch (mode) {
     case ModeType.MARTIN_1:
-      return martin1;
+      settings = martin1;
+      break;
     case ModeType.MARTIN_2:
-      return martin2;
-    case ModeType.ROBOT_32:
-      return robot32;
+      settings = martin2;
+      break;
     case ModeType.ROBOT_36:
-      return robot36;
+      settings = robot36;
+      break;
     case ModeType.ROBOT_72:
-      return robot72;
+      settings = robot72;
+      break;
     default:
       throw new Error(`Unknown mode "${mode}"`);
   }
+
+  return {
+    ...settings,
+    width,
+    height,
+    // eslint-disable-next-line no-bitwise
+    visCode: settings.visCode | visPartial,
+  };
 };
