@@ -55,7 +55,7 @@ const robotCommon: SSTVSettings = {
 
 const robot36: SSTVSettings = {
   ...robotCommon,
-  pixelMs: 0.4576, // somehow wrong
+  pixelMs: 0.2752, // somehow wrong
 };
 
 const robot72: SSTVSettings = {
@@ -85,6 +85,14 @@ export const getSettings = (mode: ModeType): SSTVSettings => {
     default:
       throw new Error(`Unknown mode "${mode}"`);
   }
+
+  console.log({
+    mode,
+    'settings.visCode': settings.visCode,
+    visPartial,
+    // eslint-disable-next-line no-bitwise
+    combined: settings.visCode | visPartial,
+  });
 
   return {
     ...settings,

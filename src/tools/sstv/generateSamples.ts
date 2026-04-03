@@ -75,13 +75,16 @@ const createYLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample
   }
 
   // Porch after Y
-  samples.push(valueToSample(settings.porchFreq, settings.porchMs));
+  samples.push(valueToSample(settings.porchFreq, 4.5));
 
   return samples;
 };
 
 const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, useCb: boolean): Sample[] => {
   const samples: Sample[] = [];
+
+  const scaleTime = 1.568;
+  const pixelMs = scaleTime * settings.pixelMs;
 
   for (let x = 0; x < settings.width; x += 1) {
     const i = x * 4;
@@ -94,7 +97,7 @@ const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, us
       ? 128 - 0.168736 * r - 0.331264 * g + 0.5 * b
       : 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
 
-    samples.push(valueToSample(pixelToFreq(settings, value), settings.pixelMs));
+    samples.push(valueToSample(pixelToFreq(settings, value), pixelMs));
   }
 
   samples.push(valueToSample(settings.porchFreq, settings.porchMs));
