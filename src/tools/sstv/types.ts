@@ -42,3 +42,9 @@ export interface Sample {
   freq: number;
   durationMs: number;
 }
+
+export enum RGBChannel {
+  RED = 'r',
+  GREEN = 'g',
+  BLUE = 'b',
+}

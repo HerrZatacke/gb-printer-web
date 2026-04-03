@@ -1,6 +1,6 @@
 import { getSettings } from './getSettings';
 import { blobToImageData, pixelToFreq, valueToSample } from './tools';
-import { ModeType, type Sample, type SSTVSettings } from './types';
+import { ModeType, RGBChannel, type Sample, type SSTVSettings } from './types';
 
 const createVIS = (settings: SSTVSettings): Sample[] => {
   let parity = 0;
@@ -31,22 +31,31 @@ const createVIS = (settings: SSTVSettings): Sample[] => {
   return samples;
 };
 
-const createGBRLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample[] => {
-  const samples: Sample[] = [];
+const createRGBLine = (settings: SSTVSettings, channelOrder: RGBChannel[], rawRGBA: Uint8ClampedArray): Sample[] => {
+  const pixelOffsets: Record<RGBChannel, number> = {
+    [RGBChannel.RED]: 0,
+    [RGBChannel.GREEN]: 1,
+    [RGBChannel.BLUE]: 2,
+  };
 
-  for (const channel of ['g', 'b', 'r']) {
+  const lineParts = channelOrder.map((channel) => {
+    const linePartSamples: Sample[] = [];
     for (let x = 0; x < settings.width; x += 1) {
-      const pixelIndex = x * 4;
-      const colorValue = channel === 'r' ? rawRGBA[pixelIndex] : channel === 'g' ? rawRGBA[pixelIndex+1] : rawRGBA[pixelIndex+2];
-      samples.push(valueToSample(pixelToFreq(settings, colorValue), settings.pixelMs));
+      const pixelIndex = x * 4 + pixelOffsets[channel];
+      const colorValue = rawRGBA[pixelIndex];
+      linePartSamples.push(valueToSample(pixelToFreq(settings, colorValue), settings.pixelMs));
     }
 
-    if (channel !== 'r') {
-      samples.push(valueToSample(settings.porchFreq, settings.porchMs));
-    }
-  }
+    return linePartSamples;
+  });
 
-  return samples;
+  return [
+    ...lineParts[0],
+    valueToSample(settings.porchFreq, settings.porchMs),
+    ...lineParts[1],
+    valueToSample(settings.porchFreq, settings.porchMs),
+    ...lineParts[2],
+  ];
 };
 
 
@@ -111,7 +120,7 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
     switch (mode) {
       case ModeType.MARTIN_1:
       case ModeType.MARTIN_2:
-        samples.push(...createGBRLine(settings, lineData));
+        samples.push(...createRGBLine(settings, [RGBChannel.GREEN, RGBChannel.BLUE, RGBChannel.RED], lineData));
         break;
       case ModeType.ROBOT_8:
       case ModeType.ROBOT_12:
