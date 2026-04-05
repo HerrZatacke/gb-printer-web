@@ -1,0 +1,26 @@
+diff --git a/node_modules/next/dist/esm/shared/lib/segment-cache/segment-value-encoding.js b/node_modules/next/dist/esm/shared/lib/segment-cache/segment-value-encoding.js
+index 49288a5..ad10756 100644
+--- a/node_modules/next/dist/esm/shared/lib/segment-cache/segment-value-encoding.js
++++ b/node_modules/next/dist/esm/shared/lib/segment-cache/segment-value-encoding.js
+@@ -59,7 +59,7 @@ function encodeToFilesystemAndURLSafeString(value) {
+     return '!' + base64url;
+ }
+ export function convertSegmentPathToStaticExportFilename(segmentPath) {
+-    return `__next${segmentPath.replace(/\//g, '.')}.txt`;
++    return `__next${segmentPath.replace(/[/\\]/g, '.')}.txt`
+ }
+ 
+ //# sourceMappingURL=segment-value-encoding.js.map
+diff --git a/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js b/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js
+index 71505fc..32629b4 100644
+--- a/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js
++++ b/node_modules/next/dist/shared/lib/segment-cache/segment-value-encoding.js
+@@ -93,7 +93,7 @@ function encodeToFilesystemAndURLSafeString(value) {
+     return '!' + base64url;
+ }
+ function convertSegmentPathToStaticExportFilename(segmentPath) {
+-    return `__next${segmentPath.replace(/\//g, '.')}.txt`;
++    return `__next${segmentPath.replace(/[/\\]/g, '.')}.txt`
+ }
+ 
+ //# sourceMappingURL=segment-value-encoding.js.map
