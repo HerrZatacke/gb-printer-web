@@ -1,5 +1,12 @@
 import { getDimensions } from '@/tools/sstv/getDimensions';
-import { ModeType, type SSTVSettings } from '@/tools/sstv/types';
+import { ModeType, type SSTVSettings, type VoxTones } from '@/tools/sstv/types';
+
+export const voxTones: VoxTones = {
+  durationMs: 100,
+  freqToneLow: 1500,
+  freqToneMid: 1900,
+  freqToneHigh: 2300,
+};
 
 const sstvCommon: SSTVSettings = {
   startStopBitFreq: 1200,

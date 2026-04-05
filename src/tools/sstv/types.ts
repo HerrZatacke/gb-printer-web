@@ -11,6 +11,13 @@ export enum ModeType {
   SCOTTIE_DX = 'SDX',
 }
 
+export interface VoxTones {
+  durationMs: number;
+  freqToneLow: number;
+  freqToneMid: number;
+  freqToneHigh: number;
+}
+
 export interface SSTVDimensions {
   width: number;
   height: number;

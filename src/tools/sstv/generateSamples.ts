@@ -1,6 +1,21 @@
-import { getSettings } from './getSettings';
+import { getSettings, voxTones } from './getSettings';
 import { blobToImageData, pixelToFreq, valueToSample } from './tools';
 import { ModeType, RGBChannel, type Sample, type SSTVSettings } from './types';
+
+const createVoxTones = (): Sample[] => {
+  const samples: Sample[] = [
+    valueToSample(voxTones.freqToneMid, voxTones.durationMs),
+    valueToSample(voxTones.freqToneLow, voxTones.durationMs),
+    valueToSample(voxTones.freqToneMid, voxTones.durationMs),
+    valueToSample(voxTones.freqToneLow, voxTones.durationMs),
+    valueToSample(voxTones.freqToneHigh, voxTones.durationMs),
+    valueToSample(voxTones.freqToneLow, voxTones.durationMs),
+    valueToSample(voxTones.freqToneHigh, voxTones.durationMs),
+    valueToSample(voxTones.freqToneLow, voxTones.durationMs),
+  ];
+
+  return samples;
+};
 
 const createVIS = (settings: SSTVSettings): Sample[] => {
   let parity = 0;
@@ -110,6 +125,7 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
 
   const data = await blobToImageData(pngBlob, settings.width, settings.height);
   const samples: Sample[] = [
+    ...createVoxTones(),
     ...createVIS(settings),
   ];
 
