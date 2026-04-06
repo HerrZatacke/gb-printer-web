@@ -1,6 +1,21 @@
-import { getSettings } from './getSettings';
+import { getSettings, voxTones } from './getSettings';
 import { blobToImageData, pixelToFreq, valueToSample } from './tools';
-import { ModeType, type Sample, type SSTVSettings } from './types';
+import { ModeType, RGBChannel, type Sample, type SSTVSettings } from './types';
+
+const createVoxTones = (): Sample[] => {
+  const samples: Sample[] = [
+    valueToSample(voxTones.freqToneMid, voxTones.durationMs),
+    valueToSample(voxTones.freqToneLow, voxTones.durationMs),
+    valueToSample(voxTones.freqToneMid, voxTones.durationMs),
+    valueToSample(voxTones.freqToneLow, voxTones.durationMs),
+    valueToSample(voxTones.freqToneHigh, voxTones.durationMs),
+    valueToSample(voxTones.freqToneLow, voxTones.durationMs),
+    valueToSample(voxTones.freqToneHigh, voxTones.durationMs),
+    valueToSample(voxTones.freqToneLow, voxTones.durationMs),
+  ];
+
+  return samples;
+};
 
 const createVIS = (settings: SSTVSettings): Sample[] => {
   let parity = 0;
@@ -31,22 +46,31 @@ const createVIS = (settings: SSTVSettings): Sample[] => {
   return samples;
 };
 
-const createGBRLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample[] => {
-  const samples: Sample[] = [];
+const createRGBLine = (settings: SSTVSettings, channelOrder: RGBChannel[], rawRGBA: Uint8ClampedArray): Sample[] => {
+  const pixelOffsets: Record<RGBChannel, number> = {
+    [RGBChannel.RED]: 0,
+    [RGBChannel.GREEN]: 1,
+    [RGBChannel.BLUE]: 2,
+  };
 
-  for (const channel of ['g', 'b', 'r']) {
+  const lineParts = channelOrder.map((channel) => {
+    const linePartSamples: Sample[] = [];
     for (let x = 0; x < settings.width; x += 1) {
-      const pixelIndex = x * 4;
-      const colorValue = channel === 'r' ? rawRGBA[pixelIndex] : channel === 'g' ? rawRGBA[pixelIndex+1] : rawRGBA[pixelIndex+2];
-      samples.push(valueToSample(pixelToFreq(settings, colorValue), settings.pixelMs));
+      const pixelIndex = x * 4 + pixelOffsets[channel];
+      const colorValue = rawRGBA[pixelIndex];
+      linePartSamples.push(valueToSample(pixelToFreq(settings, colorValue), settings.pixelMs));
     }
 
-    if (channel !== 'r') {
-      samples.push(valueToSample(settings.porchFreq, settings.porchMs));
-    }
-  }
+    return linePartSamples;
+  });
 
-  return samples;
+  return [
+    ...lineParts[0],
+    valueToSample(settings.porchFreq, settings.porchMs),
+    ...lineParts[1],
+    valueToSample(settings.porchFreq, settings.porchMs),
+    ...lineParts[2],
+  ];
 };
 
 
@@ -66,13 +90,16 @@ const createYLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample
   }
 
   // Porch after Y
-  samples.push(valueToSample(settings.porchFreq, settings.porchMs));
+  samples.push(valueToSample(settings.porchFreq, 4.5));
 
   return samples;
 };
 
 const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, useCb: boolean): Sample[] => {
   const samples: Sample[] = [];
+
+  const scaleTime = 1.568;
+  const pixelMs = scaleTime * settings.pixelMs;
 
   for (let x = 0; x < settings.width; x += 1) {
     const i = x * 4;
@@ -85,7 +112,7 @@ const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, us
       ? 128 - 0.168736 * r - 0.331264 * g + 0.5 * b
       : 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
 
-    samples.push(valueToSample(pixelToFreq(settings, value), settings.pixelMs));
+    samples.push(valueToSample(pixelToFreq(settings, value), pixelMs));
   }
 
   samples.push(valueToSample(settings.porchFreq, settings.porchMs));
@@ -98,6 +125,7 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
 
   const data = await blobToImageData(pngBlob, settings.width, settings.height);
   const samples: Sample[] = [
+    ...createVoxTones(),
     ...createVIS(settings),
   ];
 
@@ -111,14 +139,20 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
     switch (mode) {
       case ModeType.MARTIN_1:
       case ModeType.MARTIN_2:
-        samples.push(...createGBRLine(settings, lineData));
+        samples.push(...createRGBLine(settings, [RGBChannel.GREEN, RGBChannel.BLUE, RGBChannel.RED], lineData));
         break;
-      case ModeType.ROBOT_32:
+      case ModeType.ROBOT_8:
+      case ModeType.ROBOT_12:
+      case ModeType.ROBOT_24:
       case ModeType.ROBOT_36:
       case ModeType.ROBOT_72:
-        throw new Error('Not corretly implemented');
         samples.push(...createYLine(settings, lineData));
         samples.push(...createChromaLine(settings, lineData, Boolean(y % 2)));
+        break;
+      case ModeType.SCOTTIE_1:
+      case ModeType.SCOTTIE_2:
+      case ModeType.SCOTTIE_DX:
+        throw new Error('Not implemented');
         break;
     }
   }
