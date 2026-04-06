@@ -27,6 +27,12 @@ export default async function generateWebManifest({
 
   await rimraf(dest);
 
+  if (!process.env.NEXT_PUBLIC_CREATE_WEB_MANIFEST) {
+    const emptyTagsFile = path.join(dest, 'no-manifest.html');
+    await fs.writeFile(emptyTagsFile, '');
+    return emptyTagsFile;
+  }
+
   const response = await favicons(icon, {
     appName: 'GBC Gallery',
     appDescription: description,

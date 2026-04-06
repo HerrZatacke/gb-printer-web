@@ -6,7 +6,7 @@
     "dev": "next dev --webpack",
     "build": "npm run build:clean && npm run build:build && npm run build:replace && npm run build:shorten",
     "build:build": "next build --webpack",
-    "build:clean": "rimraf out && rimraf o",
+    "build:clean": "rimraf public/fav && rimraf out && rimraf o",
     "build:replace": "node scripts/replaceInFiles.mjs",
     "build:shorten": "node scripts/shortenStatic.mjs",
     "serve": "npm run build && npm run serve:serve",
