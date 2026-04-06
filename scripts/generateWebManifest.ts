@@ -27,6 +27,8 @@ export default async function generateWebManifest({
 
   await rimraf(dest);
 
+  await fs.mkdir(dest, { recursive: true });
+
   if (!process.env.NEXT_PUBLIC_CREATE_WEB_MANIFEST) {
     const emptyTagsFile = path.join(dest, 'no-manifest.html');
     await fs.writeFile(emptyTagsFile, '');
@@ -77,7 +79,6 @@ export default async function generateWebManifest({
     ],
   });
 
-  await fs.mkdir(dest, { recursive: true });
   await Promise.all(
     response.images.map(
       async (image) =>
