@@ -36,7 +36,6 @@ export interface Settings {
   lastBaudRate: number;
   pageSize: number;
   preferredLocale: string;
-  printerParams: string;
   printerUrl: string;
   savFrameTypes: string;
   savImportOrder: SavImportOrder;
@@ -68,7 +67,6 @@ interface Actions {
   setLastBaudRate: (lastBaudRate: number) => void;
   setPageSize: (pageSize: number) => void;
   setPreferredLocale: (preferredLocale: string) => void;
-  setPrinterParams: (printerParams: string) => void;
   setPrinterUrl: (printerUrl: string) => void;
   setSavFrameTypes: (savFrameTypes: string) => void;
   setSavImportOrder: (savImportOrder: SavImportOrder) => void;
@@ -119,7 +117,6 @@ export const createSettingsStore = () => (
         lastBaudRate: 115200,
         pageSize: 30,
         preferredLocale: getDefaultLocale(),
-        printerParams: '',
         printerUrl: '',
         savFrameTypes: 'int',
         savImportOrder: SavImportOrder.CART_INDEX,
@@ -145,7 +142,6 @@ export const createSettingsStore = () => (
         setImportPad: (importPad: boolean) => set({ importPad }),
         setLastBaudRate: (lastBaudRate: number) => set({ lastBaudRate }),
         setPageSize: (pageSize: number) => set({ pageSize }),
-        setPrinterParams: (printerParams: string) => set({ printerParams }),
         setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
         setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
         setSavImportOrder: (savImportOrder: SavImportOrder) => set({ savImportOrder }),

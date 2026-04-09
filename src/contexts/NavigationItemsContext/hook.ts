@@ -6,7 +6,6 @@ import UsbIcon from '@mui/icons-material/Usb';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { ThemeName } from '@/consts/theme';
-import { useEnv } from '@/contexts/EnvContext';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { usePortsContext } from '@/contexts/PortsContext';
 import useNavigation from '@/hooks/useNavigation';
@@ -36,8 +35,6 @@ export const useContextHook = (): NavigationItemsContextType => {
   const { themeName, setThemeName } = useSettingsStore();
   const { showTrashCount, trashCount, trashBusy } = useInteractionsStore();
   const { featureFlags } = useSettingsStore();
-  const env = useEnv();
-
 
   const {
     disableSerials,
@@ -90,13 +87,6 @@ export const useContextHook = (): NavigationItemsContextType => {
           route: '/settings/dropbox/',
           label: tSettingsTabs('dropboxSettings'),
         } : null,
-      (
-        (env?.env === 'esp8266') ||
-        (env?.env === 'webpack-dev')
-      ) ? {
-        route: '/settings/wifi/',
-        label: tSettingsTabs('wifiSettings'),
-      } : null,
       {
         route: '/settings/plugins/',
         label: tSettingsTabs('pluginSettings'),
@@ -107,7 +97,7 @@ export const useContextHook = (): NavigationItemsContextType => {
       },
     ]
       .reduce(reduceItems<NavItem>, [])
-  ), [tSettingsTabs, featureFlags, env?.env]);
+  ), [tSettingsTabs, featureFlags]);
 
   const palettesTabs: NavItem[] = useMemo<NavItem[]>(() => (
     [

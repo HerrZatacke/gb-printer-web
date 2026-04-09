@@ -16,11 +16,9 @@ import { PrinterFunction } from '@/consts/printerFunction';
 import { usePrinter } from '@/hooks/usePrinter';
 
 const functionTranslationKeys: Record<PrinterFunction, string> = {
-  testFile: 'functions.printTestImage',
   checkPrinter: 'functions.checkPrinter',
   fetchImages: '',
   clearPrinter: 'functions.clearPrinter',
-  tear: 'functions.tear',
 };
 
 function PrinterReport() {
@@ -36,12 +34,12 @@ function PrinterReport() {
 
   const fetchImagesLabel = useMemo((): string => {
     const dumpsLength = printerData?.dumps?.length || 0;
-    if (printerFunctions.includes(PrinterFunction.TEAR) || !dumpsLength) {
+    if (!dumpsLength) {
       return t('functions.fetchImagesGeneric');
     }
 
     return t('functions.fetchImagesCount', { count: dumpsLength });
-  }, [printerData?.dumps?.length, printerFunctions, t]);
+  }, [printerData?.dumps?.length, t]);
 
   if (!printerConnected) {
     return null;
@@ -59,7 +57,7 @@ function PrinterReport() {
             disabled={
               printerBusy ||
               (
-                [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER, PrinterFunction.TEAR].includes(name) &&
+                [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER].includes(name) &&
                 !printerData?.dumps?.length
               )
             }

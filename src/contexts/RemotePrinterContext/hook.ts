@@ -7,7 +7,7 @@ import {
   useProgressStore,
   useSettingsStore,
 } from '@/stores/stores';
-import { type BlobResponse, type PrinterParams, type RemotePrinterEvent } from '@/types/Printer';
+import { type BlobResponse, FromPrinterEvent, type PrinterParams, type RemotePrinterEvent } from '@/types/Printer';
 
 let heartbeatTimer: number | null;
 let remotePrinterWindow: Window | null;
@@ -50,19 +50,24 @@ export const useContextHook = (): RemotePrinterContextValue => {
         origin = new URL(window.location.href).origin;
       }
 
+      const sourceWindow = event.source as Window;
+
       if (event.origin !== origin) {
         return;
       }
 
-      const { fromRemotePrinter: {
-        lines,
+      const fromRemotePrinter: FromPrinterEvent | undefined = event.data.fromRemotePrinter;
+
+      if (!fromRemotePrinter) {
+        return;
+      }
+
+      const {
         progress,
-        blob,
         blobsdone,
         commands,
         printerData,
-      } = {} } = event.data;
-      const sourceWindow = event.source as Window;
+      } = fromRemotePrinter;
 
       if (commands) {
         if (
@@ -85,30 +90,11 @@ export const useContextHook = (): RemotePrinterContextValue => {
         }, 1500);
       }
 
-      if (lines) {
-        const file = new File([lines.join('\n')], 'Text input.txt', { type: 'text/plain' });
-        handleFileImport([file]);
-      }
-
       if (progress !== undefined) {
         showProgress(progress);
       }
 
-      // fallback for printers with web-app version < 1.15.5 to display some "fake" progress..
-      if (blob) {
-        const file = new File([blob], 'blob.unknown');
-        handleFileImport([file]);
-      }
-
       if (blobsdone) {
-        if (typeof blobsdone[0] === 'string') {
-          window.setTimeout(() => {
-
-            alert('You should update the web-app to a version > 1.16.0 on your printer for an optimized import experience :-)');
-          }, 200);
-          return;
-        }
-
         const files = blobsdone.reduce((acc: File[], response: BlobResponse): File[] => {
           if (!response.blob || !response.ok) {
             return acc;

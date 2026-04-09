@@ -1,61 +1,43 @@
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslations } from 'next-intl';
-import React from 'react';
-import useIframeLoaded from '@/hooks/useIframeLoaded';
-
-const iframeSupported = (printerUrl?: string) => {
-  if (!printerUrl) {
-    return false;
-  }
-
-  if (printerUrl.startsWith('/')) {
-    return true;
-  }
-
-  const { protocol: printerProtocol } = new URL(printerUrl);
-  const { protocol: ownProtocol } = new URL(window.location.href);
-  return ownProtocol === 'http:' || ownProtocol === printerProtocol;
-};
-
-// const iframeSupported = () => false;
+import React, { useEffect, useState } from 'react';
+import { useSettingsStore } from '@/stores/stores';
 
 function ConnectPrinter() {
   const t = useTranslations('ConnectPrinter');
-  // Needs high timeout for slow responses of esp webserver
-  const { printerUrl, failed, loaded, printerConnected } = useIframeLoaded(30000);
+  const { printerUrl } = useSettingsStore();
+  const [printerWindow, setPrinterWindow] = useState<Window | null>(null);
 
-  return iframeSupported(printerUrl) && !failed ? (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <iframe
-        style={{
-          position: 'absolute',
-          top: '80px',
-          left: '-200vw',
-          width: '480px',
-          height: '90px',
-        }}
-        src={printerUrl}
-      />
-      {!loaded && <CircularProgress color="secondary" />}
-    </Box>
-  ) : (
-    (!printerConnected || failed) && (
-      <ButtonGroup
-        variant="contained"
-        fullWidth
-      >
+  useEffect(() => {
+    return () => printerWindow?.close();
+  }, [printerWindow]);
+
+  return (
+    <ButtonGroup
+      variant="contained"
+      fullWidth
+    >
+      {printerWindow ? (
+        <Button
+          onClick={() => setPrinterWindow(null)}
+        >
+          {t('closePrinterPage')}
+        </Button>
+      ):(
         <Button
           onClick={() => {
-            window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
+            const newWindow = window.open(printerUrl, 'remoteprinter', 'width=480,height=400');
+            setPrinterWindow((currentWindow) => {
+              currentWindow?.close();
+              return newWindow;
+            });
           }}
         >
           {t('openPrinterPage')}
         </Button>
-      </ButtonGroup>
-    )
+      )}
+    </ButtonGroup>
   );
 }
 

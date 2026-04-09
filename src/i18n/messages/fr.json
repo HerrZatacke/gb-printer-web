@@ -18,7 +18,6 @@
     "exampleDateFormat": "Format de date d'exemple : {format}",
     "printerUrl": "URL de l'imprimante",
     "printerUrlHelper": "Si vous possédez une imprimante WiFi physique, vous pouvez ajouter son URL ici et continuer dans l'<link>🔗 onglet Import</link>",
-    "printerParams": "Paramètres d'impression supplémentaires",
     "enableDebug": "Afficher les informations de débogage",
     "galleryClickActions": {
       "clickSelectsItem": "Le clic sélectionne l'élément",
@@ -53,19 +52,6 @@
     "enableEnhancedSyncHelper": "Ceci est une fonctionnalité expérimentale.",
     "authenticate": "Authentifier",
     "logout": "Se déconnecter"
-  },
-  "SettingsWiFi": {
-    "hostSettings": "Paramètres d'hôte",
-    "mdnsName": "Nom mDNS (Bonjour/Avahi)",
-    "accesspointSSID": "SSID du point d'accès",
-    "accesspointPassword": "Mot de passe du point d'accès",
-    "networks": "Réseaux",
-    "networkSSID": "SSID du réseau",
-    "networkPassword": "Mot de passe du réseau",
-    "deleteNetwork": "Supprimer le réseau",
-    "willDeleteNetwork": "Le réseau sera supprimé",
-    "addNetwork": "Ajouter un réseau",
-    "saveSettings": "Enregistrer les paramètres WiFi"
   },
   "SettingsGapiSheets": {
     "about": "Ceci est une fonctionnalité expérimentale. La session doit être renouvelée toutes les 60 minutes.",
@@ -153,7 +139,6 @@
     "genericSettings": "Paramètres généraux",
     "dropboxSettings": "Paramètres Dropbox",
     "gapiSheetsSettings": "Paramètres Google Sheets",
-    "wifiSettings": "Paramètres WiFi",
     "pluginSettings": "Paramètres des plugins",
     "gitSettings": "Paramètres Git"
   },
@@ -299,21 +284,13 @@
     }
   },
   "ConnectPrinter": {
-    "openPrinterPage": "Ouvrir la page de l'imprimante"
+    "openPrinterPage": "Ouvrir la page de l’imprimante",
+    "closePrinterPage": "Fermer la page de l’imprimante"
   },
   "EnvInfo": {
     "appVersion": "Version de l'application web : {value}",
     "appBranch": "Branche de l'application web : {value}",
-    "printerVersion": "Version de l'imprimante : {value}",
-    "maxImages": "Images max : {value}",
-    "storageDriver": "Pilote Localforage : {value}",
-    "storageEstimate": "Utilisation de {type} : {percentage}% ({used} sur {total})",
-    "envType": "Type d'environnement : {value}",
-    "filesystem": "Système de fichiers compilé : {value}",
-    "bootmode": "Mode de démarrage compilé : {value}",
-    "hasOled": "Compilé pour OLED : {value}",
-    "yes": "oui",
-    "no": "non"
+    "storageEstimate": "Utilisation de {type} : {percentage}% ({used} sur {total})"
   },
   "usePaletteSort": {
     "defaultAsc": "Par défaut (croissant)",
@@ -612,12 +589,10 @@
   },
   "PrinterReport": {
     "functions": {
-      "printTestImage": "Imprimer une image de test",
       "checkPrinter": "Obtenir les informations de l'imprimante",
       "fetchImagesGeneric": "Importer les images",
       "fetchImagesCount": "Importer {count} images",
-      "clearPrinter": "Vider l'imprimante",
-      "tear": "Déchirer le papier"
+      "clearPrinter": "Vider l'imprimante"
     },
     "printerFilesystem": "Système de fichiers de l'imprimante",
     "total": "Total",
@@ -625,11 +600,6 @@
     "free": "Libre",
     "freeImages": "{count} images",
     "images": "Images"
-  },
-  "Remote": {
-    "iframe": "<p>Ceci est une fenêtre distante intégrée dans un iframe sur la page principale. <em>Vous ne devriez pas voir ce message.</em></p>",
-    "popup": "<p>Ceci est la page de contrôle à distance de votre imprimante WiFi.</p><p>{host}</p><p>Vous pouvez retourner à l'application principale et commencer à importer vos images.</p><p><em>Pour que l'importation fonctionne, cette fenêtre doit rester ouverte !</em></p>",
-    "noReference": "<p>Cette fenêtre ne fait pas référence à l'application principale.</p><p><em>Elle doit être ouverte depuis la page des paramètres de l'application principale pour fonctionner !</em></p>"
   },
   "StorageWarning": {
     "storageTypes": {

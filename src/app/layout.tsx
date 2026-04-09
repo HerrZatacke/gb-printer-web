@@ -2,7 +2,6 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { type Viewport } from 'next';
 import { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import GlobalAppInit from '@/components/GlobalAppInit';
-import { EnvProvider } from '@/contexts/EnvContext';
 import { GalleryTreeProvider } from '@/contexts/GalleryTreeContext';
 import { GapiSheetStateProvider } from '@/contexts/GapiSheetStateContext';
 import { GapiSyncProvider  } from '@/contexts/GapiSyncContext';
@@ -30,7 +29,6 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
     GISProvider,
     GapiSheetStateProvider,
     GapiSyncProvider,
-    EnvProvider,
     PortsProvider,
     GalleryTreeProvider,
     GlobalAppInit, // needs <GalleryTreeProvider>

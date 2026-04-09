@@ -18,7 +18,6 @@
     "exampleDateFormat": "Voorbeeld datumformaat: {format}",
     "printerUrl": "Printer-URL",
     "printerUrlHelper": "Als je een fysieke WiFi-printer hebt, kun je de URL hier toevoegen en doorgaan in de <link>🔗 Import-tab</link>",
-    "printerParams": "Extra printerinstellingen",
     "enableDebug": "Debug-informatie tonen",
     "galleryClickActions": {
       "clickSelectsItem": "Klik selecteert het item",
@@ -53,19 +52,6 @@
     "enableEnhancedSyncHelper": "Dit is een experimentele functie.",
     "authenticate": "Authenticeren",
     "logout": "Uitloggen"
-  },
-  "SettingsWiFi": {
-    "hostSettings": "Host-instellingen",
-    "mdnsName": "mDNS-naam (Bonjour/Avahi)",
-    "accesspointSSID": "Access Point SSID",
-    "accesspointPassword": "Access Point wachtwoord",
-    "networks": "Netwerken",
-    "networkSSID": "Netwerk-SSID",
-    "networkPassword": "Netwerk-wachtwoord",
-    "deleteNetwork": "Netwerk verwijderen",
-    "willDeleteNetwork": "Netwerk wordt verwijderd",
-    "addNetwork": "Netwerk toevoegen",
-    "saveSettings": "WiFi-instellingen opslaan"
   },
   "SettingsGapiSheets": {
     "about": "Dit is een experimentele functie. De sessie moet elke 60 minuten worden vernieuwd.",
@@ -153,7 +139,6 @@
     "genericSettings": "Algemene instellingen",
     "dropboxSettings": "Dropbox-instellingen",
     "gapiSheetsSettings": "Google Sheets-instellingen",
-    "wifiSettings": "WiFi-instellingen",
     "pluginSettings": "Plugin-instellingen",
     "gitSettings": "Git-instellingen"
   },
@@ -299,21 +284,13 @@
     }
   },
   "ConnectPrinter": {
-    "openPrinterPage": "Printerpagina openen"
+    "openPrinterPage": "Printerpagina openen",
+    "closePrinterPage": "Printerpagina sluiten"
   },
   "EnvInfo": {
     "appVersion": "Web-app versie: {value}",
     "appBranch": "Web-app branch: {value}",
-    "printerVersion": "Printer versie: {value}",
-    "maxImages": "Max. afbeeldingen: {value}",
-    "storageDriver": "Localforage driver: {value}",
-    "storageEstimate": "Gebruik van {type}: {percentage}% ({used} van {total})",
-    "envType": "Omgevingstype: {value}",
-    "filesystem": "Gecompileerd bestandssysteem: {value}",
-    "bootmode": "Gecompileerde bootmodus: {value}",
-    "hasOled": "Gecompileerd voor OLED: {value}",
-    "yes": "ja",
-    "no": "nee"
+    "storageEstimate": "Gebruik van {type}: {percentage}% ({used} van {total})"
   },
   "usePaletteSort": {
     "defaultAsc": "Standaard (oplopend)",
@@ -612,12 +589,10 @@
   },
   "PrinterReport": {
     "functions": {
-      "printTestImage": "Testafbeelding afdrukken",
       "checkPrinter": "Printerinfo ophalen",
       "fetchImagesGeneric": "Afbeeldingen importeren",
       "fetchImagesCount": "{count} afbeeldingen importeren",
-      "clearPrinter": "Printer leegmaken",
-      "tear": "Afscheuren"
+      "clearPrinter": "Printer leegmaken"
     },
     "printerFilesystem": "Printer-bestandssysteem",
     "total": "Totaal",
@@ -625,11 +600,6 @@
     "free": "Vrij",
     "freeImages": "{count} afbeeldingen",
     "images": "Afbeeldingen"
-  },
-  "Remote": {
-    "iframe": "<p>Dit is een extern venster dat is ingesloten in een iframe op de hoofdpagina. <em>Je zou dit bericht niet moeten zien.</em></p>",
-    "popup": "<p>Dit is de afstandsbedieningspagina van je WiFi-printer.</p><p>{host}</p><p>Je kunt teruggaan naar de hoofd-app en beginnen met het importeren van je afbeeldingen.</p><p><em>Voor het importeren moet dit venster open blijven!</em></p>",
-    "noReference": "<p>Dit venster mist de referentie naar de hoofd-app.</p><p><em>Het moet worden geopend vanaf de instellingenpagina van de hoofd-app om te werken!</em></p>"
   },
   "StorageWarning": {
     "storageTypes": {

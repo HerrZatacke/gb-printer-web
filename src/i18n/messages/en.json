@@ -18,7 +18,6 @@
     "exampleDateFormat": "Example date format: {format}",
     "printerUrl": "Printer URL",
     "printerUrlHelper": "If you own a physical wifi-printer, you can add its URL here and check the <link>🔗 Import-tab</link>",
-    "printerParams": "Additional printer settings",
     "enableDebug": "Show debug info",
     "galleryClickActions": {
       "clickSelectsItem": "Click selects the item",
@@ -53,19 +52,6 @@
     "enableEnhancedSyncHelper": "This is an experimental feature.",
     "authenticate": "Authenticate",
     "logout": "Logout"
-  },
-  "SettingsWiFi": {
-    "hostSettings": "Host Settings",
-    "mdnsName": "mDNS Name (Bonjour/Avahi)",
-    "accesspointSSID": "Accesspoint SSID",
-    "accesspointPassword": "Accesspoint Password",
-    "networks": "Networks",
-    "networkSSID": "Network SSID",
-    "networkPassword": "Network Password",
-    "deleteNetwork": "Delete Network",
-    "willDeleteNetwork": "Network will be deleted",
-    "addNetwork": "Add Network",
-    "saveSettings": "Save WiFi-Settings"
   },
   "SettingsGapiSheets": {
     "about": "This is an experimental feature. The session requires renewal every 60 minutes.",
@@ -153,7 +139,6 @@
     "genericSettings": "Generic Settings",
     "dropboxSettings": "Dropbox Settings",
     "gapiSheetsSettings": "Google Sheets Settings",
-    "wifiSettings": "WiFi Settings",
     "pluginSettings": "Plugin Settings",
     "gitSettings": "Git Settings"
   },
@@ -299,21 +284,13 @@
     }
   },
   "ConnectPrinter": {
-    "openPrinterPage": "Open printer page"
+    "openPrinterPage": "Open printer page",
+    "closePrinterPage": "Close printer page"
   },
   "EnvInfo": {
     "appVersion": "Web-App version: {value}",
     "appBranch": "Web-App branch: {value}",
-    "printerVersion": "Printer version: {value}",
-    "maxImages": "Max Images: {value}",
-    "storageDriver": "Localforage driver: {value}",
-    "storageEstimate": "{type} usage: {percentage}% ({used} of {total})",
-    "envType": "Environment type: {value}",
-    "filesystem": "Compiled Filesystem: {value}",
-    "bootmode": "Compiled Bootmode: {value}",
-    "hasOled": "Compiled for OLED: {value}",
-    "yes": "yes",
-    "no": "no"
+    "storageEstimate": "{type} usage: {percentage}% ({used} of {total})"
   },
   "usePaletteSort": {
     "defaultAsc": "Default (ascending)",
@@ -612,12 +589,10 @@
   },
   "PrinterReport": {
     "functions": {
-      "printTestImage": "Print test image",
       "checkPrinter": "Check Printer",
       "fetchImagesGeneric": "Fetch images",
       "fetchImagesCount": "Fetch {count} images",
-      "clearPrinter": "Clear Printer",
-      "tear": "Tear"
+      "clearPrinter": "Clear Printer"
     },
     "printerFilesystem": "Printer Filesystem",
     "total": "Total",
@@ -625,11 +600,6 @@
     "free": "Free",
     "freeImages": "{count} images",
     "images": "Images"
-  },
-  "Remote": {
-    "iframe": "<p>This is a remote window which is included in an iframe on your main page. <em>You should not see this message.</em></p>",
-    "popup": "<p>This is your Wi-Fi printer’s remote control page.</p><p>{host}</p><p>You can go back to your main app and start importing your images.</p><p><em>In order for the import to work, this window needs to remain open!</em></p>",
-    "noReference": "<p>This window is missing the reference to your main app.</p><p><em>It must be opened from the settings page of your main app in order to work!</em></p>"
   },
   "StorageWarning": {
     "storageTypes": {
