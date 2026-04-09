@@ -18,7 +18,6 @@
     "exampleDateFormat": "Exempel datumformat: {format}",
     "printerUrl": "Skrivar-URL",
     "printerUrlHelper": "Om du äger en fysisk WiFi-skrivare kan du lägga till dess URL här och fortsätta i <link>🔗 Import-fliken</link>",
-    "printerParams": "Ytterligare skrivarinställningar",
     "enableDebug": "Visa debug-information",
     "galleryClickActions": {
       "clickSelectsItem": "Klick väljer objektet",
@@ -53,19 +52,6 @@
     "enableEnhancedSyncHelper": "Detta är en experimentell funktion.",
     "authenticate": "Autentisera",
     "logout": "Logga ut"
-  },
-  "SettingsWiFi": {
-    "hostSettings": "Värd-inställningar",
-    "mdnsName": "mDNS-namn (Bonjour/Avahi)",
-    "accesspointSSID": "Access Point SSID",
-    "accesspointPassword": "Access Point lösenord",
-    "networks": "Nätverk",
-    "networkSSID": "Nätverks-SSID",
-    "networkPassword": "Nätverkslösenord",
-    "deleteNetwork": "Ta bort nätverk",
-    "willDeleteNetwork": "Nätverket kommer att tas bort",
-    "addNetwork": "Lägg till nätverk",
-    "saveSettings": "Spara WiFi-inställningar"
   },
   "SettingsGapiSheets": {
     "about": "Detta är en experimentell funktion. Sessionen måste förnyas var 60:e minut.",
@@ -152,7 +138,6 @@
   "SettingsTabs": {
     "genericSettings": "Allmänna inställningar",
     "dropboxSettings": "Dropbox-inställningar",
-    "wifiSettings": "WiFi-inställningar",
     "pluginSettings": "Plugin-inställningar",
     "gitSettings": "Git-inställningar",
     "gapiSheetsSettings": "Google Sheets-inställningar"
@@ -299,21 +284,13 @@
     }
   },
   "ConnectPrinter": {
-    "openPrinterPage": "Öppna skrivarsida"
+    "openPrinterPage": "Öppna skrivarsida",
+    "closePrinterPage": "Stäng skrivarsida"
   },
   "EnvInfo": {
     "appVersion": "Webbapp-version: {value}",
     "appBranch": "Webbapp-branch: {value}",
-    "printerVersion": "Skrivarversion: {value}",
-    "maxImages": "Max bilder: {value}",
-    "storageDriver": "Localforage-drivrutin: {value}",
-    "storageEstimate": "Användning av {type}: {percentage}% ({used} av {total})",
-    "envType": "Miljötyp: {value}",
-    "filesystem": "Kompilerat filsystem: {value}",
-    "bootmode": "Kompilerat startläge: {value}",
-    "hasOled": "Kompilerat för OLED: {value}",
-    "yes": "ja",
-    "no": "nej"
+    "storageEstimate": "Användning av {type}: {percentage}% ({used} av {total})"
   },
   "usePaletteSort": {
     "defaultAsc": "Standard (stigande)",
@@ -612,12 +589,10 @@
   },
   "PrinterReport": {
     "functions": {
-      "printTestImage": "Skriv ut testbild",
       "checkPrinter": "Kontrollera skrivare",
       "fetchImagesGeneric": "Importera bilder",
       "fetchImagesCount": "Importera {count} bilder",
-      "clearPrinter": "Rensa skrivare",
-      "tear": "Riv"
+      "clearPrinter": "Rensa skrivare"
     },
     "printerFilesystem": "Skrivar-filsystem",
     "total": "Totalt",
@@ -625,11 +600,6 @@
     "free": "Ledigt",
     "freeImages": "{count} bilder",
     "images": "Bilder"
-  },
-  "Remote": {
-    "iframe": "Iframe",
-    "popup": "<p>Detta är fjärrkontrollsidan för din WiFi-skrivare.</p><p>{host}</p><p>Du kan återgå till huvudappen och börja importera dina bilder.</p><p><em>För att importen ska fungera måste detta fönster förbli öppet!</em></p>",
-    "noReference": "Ingen referens"
   },
   "StorageWarning": {
     "storageTypes": {

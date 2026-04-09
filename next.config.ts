@@ -4,7 +4,6 @@ import createNextIntlPlugin from 'next-intl/plugin';
 import { version, name, author, description, homepage } from './package.json';
 import generateWebManifest from './scripts/generateWebManifest';
 
-const isDev = process.env.NODE_ENV === 'development';
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 function getGitBranch() {
@@ -16,17 +15,6 @@ function getGitBranch() {
     return 'unknown';
   }
 }
-
-const rewritesConfig = isDev && process.env.NEXT_DEV_WIFI_PROXY_HOST ? {
-  rewrites: async () => {
-    return [
-      {
-        source: '/wificonfig/:path*',
-        destination: `http://${process.env.NEXT_DEV_WIFI_PROXY_HOST}/wificonfig/:path*`,
-      },
-    ];
-  },
-} : {};
 
 const branch = getGitBranch();
 
@@ -65,8 +53,6 @@ const getNextConfig = async (): Promise<NextConfig> => {
 
       return config;
     },
-
-    ...rewritesConfig,
   };
 
   return withNextIntl(nextConfig);

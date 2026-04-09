@@ -15,7 +15,6 @@ import WrappedNextLink from '@/components/WrappedNextLink';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
-import { useEnv } from '@/contexts/EnvContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import { ConsentState } from '@/contexts/TrackingContext/hook';
 import { useDateFormat } from '@/hooks/useDateFormat';
@@ -56,7 +55,6 @@ function SettingsGeneric() {
     importPad,
     pageSize,
     preferredLocale,
-    printerParams,
     printerUrl,
     savFrameTypes,
     savImportOrder,
@@ -71,18 +69,14 @@ function SettingsGeneric() {
     setPreferredLocale,
     setSavFrameTypes,
     setSavImportOrder,
-    setPrinterParams,
     setPrinterUrl,
   } = useSettingsStore();
-
-  const env = useEnv();
 
   const { frameGroups } = useFrameGroups();
   const { setConsent, trackingAvailable, consentState } = useTracking();
 
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
   const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);
-  const [printerParamsState, setPrinterParamsState] = useState<string>(printerParams);
   const [localeExampleText, setLocaleExampleText] = useState<string>('');
   const { formatter } = useDateFormat();
   const t = useTranslations('SettingsGeneric');
@@ -305,72 +299,46 @@ function SettingsGeneric() {
 
       <EnableWebUSB />
 
-      {(env?.env === 'esp8266') ? null : (
-        <TextField
-          id="settings-printer-url"
-          label={t('printerUrl')}
-          type="text"
-          helperText={
-            t.rich('printerUrlHelper', {
-              link: (chunks) => (
-                <Link
-                  component={WrappedNextLink}
-                  href="/import"
-                  prefetch={false}
-                >
-                  {chunks}
-                </Link>
-              ),
-            })
+      <TextField
+        id="settings-printer-url"
+        label={t('printerUrl')}
+        type="text"
+        helperText={
+          t.rich('printerUrlHelper', {
+            link: (chunks) => (
+              <Link
+                component={WrappedNextLink}
+                href="/import"
+                prefetch={false}
+              >
+                {chunks}
+              </Link>
+            ),
+          })
+        }
+        value={printerUrlState}
+        onChange={(ev) => setPrinterUrlState(ev.target.value)}
+        onBlur={() => {
+          const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
+          setPrinterUrlState(cleanPrinterUrl);
+          setPrinterUrl(cleanPrinterUrl);
+        }}
+        onKeyUp={(ev) => {
+          switch (ev.key) {
+            case 'Enter': {
+              const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
+              setPrinterUrlState(cleanPrinterUrl);
+              setPrinterUrl(cleanPrinterUrl);
+              break;
+            }
+
+            case 'Escape':
+              setPrinterUrlState(printerUrl);
+              break;
+            default:
           }
-          value={printerUrlState}
-          onChange={(ev) => setPrinterUrlState(ev.target.value)}
-          onBlur={() => {
-            const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
-            setPrinterUrlState(cleanPrinterUrl);
-            setPrinterUrl(cleanPrinterUrl);
-          }}
-          onKeyUp={(ev) => {
-            switch (ev.key) {
-              case 'Enter': {
-                const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
-                setPrinterUrlState(cleanPrinterUrl);
-                setPrinterUrl(cleanPrinterUrl);
-                break;
-              }
-
-              case 'Escape':
-                setPrinterUrlState(printerUrl);
-                break;
-              default:
-            }
-          }}
-        />
-      )}
-
-      {(env?.env === 'esp8266' || printerUrl) ? (
-        <TextField
-          id="settings-printer-settings"
-          label={t('printerParams')}
-          type="text"
-          value={printerParamsState}
-          onChange={(ev) => setPrinterParamsState(ev.target.value)}
-          onBlur={() => {
-            setPrinterParams(printerParamsState);
-          }}
-          onKeyUp={(ev) => {
-            switch (ev.key) {
-              case 'Enter':
-                setPrinterParams(printerParamsState);
-                break;
-              case 'Escape':
-                setPrinterParamsState(printerParams);
-                break;
-              default:
-            }
-          }}
-        />
-      ) : null}
+        }}
+      />
 
       <FormControlLabel
         label={t('enableDebug')}

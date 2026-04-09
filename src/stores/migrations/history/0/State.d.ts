@@ -30,7 +30,6 @@ export interface ReduxState {
   importPad: boolean,
   pageSize: number,
   preferredLocale: string,
-  printerParams: string,
   printerUrl: string,
   savFrameTypes: string,
   sortPalettes: string,

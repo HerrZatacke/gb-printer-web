@@ -13,17 +13,8 @@ The following options apply if you plan on contributing to this app:
 
 ### Environment Variables
 
-#### Development
-```bash
-# Development WiFi proxy host (for local development with WiFi devices)
-NEXT_DEV_WIFI_PROXY_HOST=192.168.0.5
-```
-
 #### Self-hosting (with or without subfolders)
 ```bash
-# Endpoint for environment configuration
-NEXT_PUBLIC_ENV_ENDPOINT="/env.json"
-
 # Base path for deployment (leave empty for root deployment, use leading slash otherwise like "/gb-printer-web")
 NEXT_PUBLIC_BASE_PATH=""
 ```

@@ -59,10 +59,19 @@ function extractPlaceholders(text: string): string[] {
 
 function isFalsePositive(keyPath: string, charGroupType: string, want: number, found: number): boolean {
  if (
-   ['Remote.popup', 'StorageWarning.usageWarning'].includes(keyPath) &&
+   ['StorageWarning.usageWarning'].includes(keyPath) &&
    charGroupType === 'Single quotationmarks' &&
    want === 1 &&
    found === 0
+ ) {
+   return true;
+ }
+
+ if (
+   ['ConnectPrinter.openPrinterPage', 'ConnectPrinter.closePrinterPage'].includes(keyPath) &&
+   charGroupType === 'Single quotationmarks' &&
+   want === 0 &&
+   found === 1
  ) {
    return true;
  }

@@ -18,7 +18,6 @@
     "exampleDateFormat": "Formato data di esempio: {format}",
     "printerUrl": "URL stampante",
     "printerUrlHelper": "Se possiedi una stampante WiFi fisica, puoi aggiungere il suo URL qui e continuare nella <link>🔗 scheda Importa</link>",
-    "printerParams": "Impostazioni aggiuntive della stampante",
     "enableDebug": "Mostra informazioni di debug",
     "galleryClickActions": {
       "clickSelectsItem": "Il clic seleziona l'elemento",
@@ -53,19 +52,6 @@
     "enableEnhancedSyncHelper": "Questa è una funzione sperimentale.",
     "authenticate": "Autentica",
     "logout": "Disconnetti"
-  },
-  "SettingsWiFi": {
-    "hostSettings": "Impostazioni host",
-    "mdnsName": "Nome mDNS (Bonjour/Avahi)",
-    "accesspointSSID": "SSID Access Point",
-    "accesspointPassword": "Password Access Point",
-    "networks": "Reti",
-    "networkSSID": "SSID rete",
-    "networkPassword": "Password rete",
-    "deleteNetwork": "Elimina rete",
-    "willDeleteNetwork": "La rete verrà eliminata",
-    "addNetwork": "Aggiungi rete",
-    "saveSettings": "Salva impostazioni WLAN"
   },
   "SettingsGapiSheets": {
     "about": "Questa è una funzionalità sperimentale. La sessione deve essere rinnovata ogni 60 minuti.",
@@ -153,7 +139,6 @@
     "genericSettings": "Impostazioni generali",
     "dropboxSettings": "Impostazioni Dropbox",
     "gapiSheetsSettings": "Impostazioni Google Sheets",
-    "wifiSettings": "Impostazioni WLAN",
     "pluginSettings": "Impostazioni plugin",
     "gitSettings": "Impostazioni Git"
   },
@@ -299,21 +284,13 @@
     }
   },
   "ConnectPrinter": {
-    "openPrinterPage": "Apri pagina stampante"
+    "openPrinterPage": "Apri pagina stampante",
+    "closePrinterPage": "Chiudere pagina stampante"
   },
   "EnvInfo": {
     "appVersion": "Versione app web: {value}",
     "appBranch": "Branch app web: {value}",
-    "printerVersion": "Versione stampante: {value}",
-    "maxImages": "Max immagini: {value}",
-    "storageDriver": "Driver Localforage: {value}",
-    "storageEstimate": "Utilizzo di {type}: {percentage}% ({used} di {total})",
-    "envType": "Tipo ambiente: {value}",
-    "filesystem": "Filesystem compilato: {value}",
-    "bootmode": "Modalità boot compilata: {value}",
-    "hasOled": "Compilato per OLED: {value}",
-    "yes": "sì",
-    "no": "no"
+    "storageEstimate": "Utilizzo di {type}: {percentage}% ({used} di {total})"
   },
   "usePaletteSort": {
     "defaultAsc": "Predefinito (crescente)",
@@ -612,12 +589,10 @@
   },
   "PrinterReport": {
     "functions": {
-      "printTestImage": "Stampa immagine di test",
       "checkPrinter": "Ottieni info stampante",
       "fetchImagesGeneric": "Importa immagini",
       "fetchImagesCount": "Importa {count} immagini",
-      "clearPrinter": "Svuota stampante",
-      "tear": "Strappa"
+      "clearPrinter": "Svuota stampante"
     },
     "printerFilesystem": "Filesystem stampante",
     "total": "Totale",
@@ -625,11 +600,6 @@
     "free": "Libero",
     "freeImages": "{count} immagini",
     "images": "Immagini"
-  },
-  "Remote": {
-    "iframe": "<p>Questa è una finestra remota incorporata in un iframe nella pagina principale. <em>Non dovresti vedere questo messaggio.</em></p>",
-    "popup": "<p>Questa è la pagina di controllo remoto della tua stampante WLAN.</p><p>{host}</p><p>Puoi tornare all'app principale e iniziare a importare le tue immagini.</p><p><em>Perché l'importazione funzioni, questa finestra deve rimanere aperta!</em></p>",
-    "noReference": "<p>A questa finestra manca il riferimento all'app principale.</p><p><em>Deve essere aperta dalla pagina delle impostazioni dell'app principale per funzionare!</em></p>"
   },
   "StorageWarning": {
     "storageTypes": {

@@ -18,7 +18,6 @@
     "exampleDateFormat": "Exemplo de formato de data: {format}",
     "printerUrl": "URL da impressora",
     "printerUrlHelper": "Se tiveres uma impressora Wi-Fi física, podes adicionar o URL aqui e continuar no <link>🔗 separador Importar</link>",
-    "printerParams": "Parâmetros adicionais da impressora",
     "enableDebug": "Mostrar informações de depuração",
     "galleryClickActions": {
       "clickSelectsItem": "Clique selecciona o item",
@@ -53,19 +52,6 @@
     "enableEnhancedSyncHelper": "Esta é uma funcionalidade experimental.",
     "authenticate": "Autenticar",
     "logout": "Terminar sessão"
-  },
-  "SettingsWiFi": {
-    "hostSettings": "Definições do host",
-    "mdnsName": "Nome mDNS (Bonjour/Avahi)",
-    "accesspointSSID": "SSID do ponto de acesso",
-    "accesspointPassword": "Palavra-passe do ponto de acesso",
-    "networks": "Redes",
-    "networkSSID": "SSID da rede",
-    "networkPassword": "Palavra-passe da rede",
-    "deleteNetwork": "Eliminar rede",
-    "willDeleteNetwork": "A rede será eliminada",
-    "addNetwork": "Adicionar rede",
-    "saveSettings": "Guardar definições Wi-Fi"
   },
   "SettingsGapiSheets": {
     "about": "Esta é uma funcionalidade experimental. A sessão requer renovação a cada 60 minutos.",
@@ -153,7 +139,6 @@
     "genericSettings": "Definições genéricas",
     "dropboxSettings": "Definições do Dropbox",
     "gapiSheetsSettings": "Definições do Google Sheets",
-    "wifiSettings": "Definições Wi-Fi",
     "pluginSettings": "Definições de plugins",
     "gitSettings": "Definições do Git"
   },
@@ -299,21 +284,13 @@
     }
   },
   "ConnectPrinter": {
-    "openPrinterPage": "Abrir página da impressora"
+    "openPrinterPage": "Abrir página da impressora",
+    "closePrinterPage": "Fechar página da impressora"
   },
   "EnvInfo": {
     "appVersion": "Versão da web-app: {value}",
     "appBranch": "Ramo da web-app: {value}",
-    "printerVersion": "Versão da impressora: {value}",
-    "maxImages": "Máx. imagens: {value}",
-    "storageDriver": "Driver Localforage: {value}",
-    "storageEstimate": "Utilização de {type}: {percentage}% ({used} de {total})",
-    "envType": "Tipo de ambiente: {value}",
-    "filesystem": "Sistema de ficheiros compilado: {value}",
-    "bootmode": "Modo de arranque compilado: {value}",
-    "hasOled": "Compilado para OLED: {value}",
-    "yes": "sim",
-    "no": "não"
+    "storageEstimate": "Utilização de {type}: {percentage}% ({used} de {total})"
   },
   "usePaletteSort": {
     "defaultAsc": "Padrão (ascendente)",
@@ -612,12 +589,10 @@
   },
   "PrinterReport": {
     "functions": {
-      "printTestImage": "Imprimir imagem de teste",
       "checkPrinter": "Obter informações da impressora",
       "fetchImagesGeneric": "Importar imagens",
       "fetchImagesCount": "Importar {count} imagens",
-      "clearPrinter": "Limpar impressora",
-      "tear": "Rasgar"
+      "clearPrinter": "Limpar impressora"
     },
     "printerFilesystem": "Sistema de ficheiros da impressora",
     "total": "Total",
@@ -625,11 +600,6 @@
     "free": "Livre",
     "freeImages": "{count} imagens",
     "images": "Imagens"
-  },
-  "Remote": {
-    "iframe": "<p>Esta é uma janela remota incorporada num iframe na página principal. <em>Não deverias ver esta mensagem.</em></p>",
-    "popup": "<p>Esta é a página de controlo remoto da tua impressora Wi-Fi.</p><p>{host}</p><p>Podes voltar à aplicação principal e começar a importar as tuas imagens.</p><p><em>Esta janela tem de permanecer aberta para que a importação funcione!</em></p>",
-    "noReference": "<p>Falta a esta janela a referência à aplicação principal.</p><p><em>Tem de ser aberta a partir da página de definições da aplicação principal para funcionar!</em></p>"
   },
   "StorageWarning": {
     "storageTypes": {
