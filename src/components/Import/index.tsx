@@ -10,18 +10,21 @@ import ConnectPrinter from '@/components/ConnectPrinter';
 import PrinterReport from '@/components/PrinterReport';
 import { ExportTypes } from '@/consts/exportTypes';
 import { useGBXCart } from '@/hooks/useGBXCart';
+import { useSettingsStore } from '@/stores/stores';
 import { useImport } from './useImport';
 
 function Import() {
   const [text, setText] = useState('');
   const t = useTranslations('Import');
+  const { printerUrl } = useSettingsStore();
+  const fullPrinterUrl = printerUrl ? `${printerUrl}remote.html` : undefined;
 
   const {
     importPlainText,
     importFiles,
-    printerUrl,
     exportJson,
   } = useImport();
+
 
   const {
     gbxCartAvailable,
@@ -41,8 +44,8 @@ function Import() {
   return (
     <Stack direction="column" gap={6}>
 
-      { printerUrl && <PrinterReport /> }
-      { printerUrl && <ConnectPrinter /> }
+      { fullPrinterUrl && <PrinterReport /> }
+      { fullPrinterUrl && <ConnectPrinter /> }
 
       <ButtonGroup
         variant="contained"

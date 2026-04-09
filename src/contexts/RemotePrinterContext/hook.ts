@@ -45,7 +45,7 @@ export const useContextHook = (): RemotePrinterContextValue => {
       const origin = new URL(printerUrl).origin;
       const sourceWindow = event.source as Window;
 
-      if (event.origin !== origin) {
+      if (!origins.includes(event.origin)) {
         return;
       }
 
