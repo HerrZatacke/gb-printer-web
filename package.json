@@ -4,7 +4,9 @@
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "npm run build:clean && npm run build:build && npm run build:replace && npm run build:shorten",
+    "build": "npm run build:lint && npm run build:clean && npm run build:build && npm run build:replace && npm run build:shorten",
+    "lint:fix": "eslint . --fix",
+    "build:lint": "eslint .",
     "build:build": "next build --webpack",
     "build:clean": "rimraf public/fav && rimraf out && rimraf o",
     "build:replace": "node scripts/replaceInFiles.mjs",
@@ -36,6 +38,7 @@
     "@mui/x-date-pickers": "^8.27.2",
     "@mui/x-tree-view": "^8.27.2",
     "@octokit/rest": "^21.1.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/bytes": "^3.1.5",
     "@types/chunk": "^0.0.2",
     "@types/dom-serial": "^1.0.6",
