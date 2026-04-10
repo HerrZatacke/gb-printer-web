@@ -15,13 +15,13 @@ import usePaletteSort from '@/hooks/usePaletteSort';
 import { useItemsStore } from '@/stores/stores';
 
 interface Props {
-  value: string,
-  invertPalette?: boolean,
-  noFancy?: boolean,
-  allowEmpty?: boolean,
+  value: string;
+  invertPalette?: boolean;
+  noFancy?: boolean;
+  allowEmpty?: boolean;
   // `confirm` param is required for direct preview of hovered palettes in edit form
-  onChange: (value: string, confirm?: boolean) => void,
-  updateInvertPalette?: (invert: boolean) => void,
+  onChange: (value: string, confirm?: boolean) => void;
+  updateInvertPalette?: (invert: boolean) => void;
 }
 
 function PaletteSelect({

@@ -8,9 +8,9 @@ export enum ImportContrastValue {
 }
 
 interface ImportContrast {
-  translationKey: string,
-  baseValues: number[],
-  value: ImportContrastValue,
+  translationKey: string;
+  baseValues: number[];
+  value: ImportContrastValue;
 }
 
 export const contrastSettings: ImportContrast[] = [

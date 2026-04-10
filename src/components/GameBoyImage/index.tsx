@@ -8,16 +8,16 @@ import { type Dimensions, dimensionsFromTileCount } from '@/hooks/useImageDimens
 import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
 
 export interface GameBoyImageProps {
-  palette?: string[] | RGBNPalette,
-  tiles: string[] | RGBNTiles,
-  imageStartLine: number,
-  lockFrame?: boolean,
-  invertPalette?: boolean,
-  framePalette?: string[],
-  invertFramePalette?: boolean,
-  dimensions?: Dimensions,
-  asThumb?: boolean,
-  rotation?: Rotation,
+  palette?: string[] | RGBNPalette;
+  tiles: string[] | RGBNTiles;
+  imageStartLine: number;
+  lockFrame?: boolean;
+  invertPalette?: boolean;
+  framePalette?: string[];
+  invertFramePalette?: boolean;
+  dimensions?: Dimensions;
+  asThumb?: boolean;
+  rotation?: Rotation;
 }
 
 function GameBoyImage({

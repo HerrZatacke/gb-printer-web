@@ -7,16 +7,16 @@ import { getChannelColor } from '@/tools/getChannelColor';
 import { type RGBNHashes } from '@/types/Image';
 
 interface RGBNCheckbox {
-  value: boolean,
-  updateKey: keyof RGBNHashes,
+  value: boolean;
+  updateKey: keyof RGBNHashes;
 }
 
 interface Props {
-  isR: boolean,
-  isG: boolean,
-  isB: boolean,
-  isN: boolean,
-  toggleChannel: (channel: keyof RGBNHashes) => void
+  isR: boolean;
+  isG: boolean;
+  isB: boolean;
+  isN: boolean;
+  toggleChannel: (channel: keyof RGBNHashes) => void;
 }
 
 function RGBNSelect({ isR, isG, isB, isN, toggleChannel }: Props) {

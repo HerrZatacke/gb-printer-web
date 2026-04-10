@@ -17,7 +17,7 @@ import { useSettingsStore } from '@/stores/stores';
 import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
 
 interface Props {
-  inDialog: boolean,
+  inDialog: boolean;
 }
 
 function DownloadOptionsForm({ inDialog }: Props) {

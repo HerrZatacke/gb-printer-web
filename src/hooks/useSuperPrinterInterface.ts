@@ -11,8 +11,8 @@ import { SuperPrinterCommsDevice } from '@/tools/comms/DeviceAPIs/SuperPrinterCo
 import { loadImageTiles } from '@/tools/loadImageTiles';
 
 interface UseSuperPrinterInterface {
-  canPrint: boolean,
-  print: (hash: string) => void,
+  canPrint: boolean;
+  print: (hash: string) => void;
 }
 
 export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {

@@ -10,8 +10,8 @@ import { type PreparedFile } from './prepareFile';
 import prepareFile from './prepareFile';
 
 export interface HandeFileImportOptions {
-  fromPrinter: boolean
-  savFrameSet?: string,
+  fromPrinter: boolean;
+  savFrameSet?: string;
 }
 
 export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<ImportResult[]>;

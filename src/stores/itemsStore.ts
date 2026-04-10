@@ -33,63 +33,63 @@ const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(f
 const sortByNameUniqueByUrl = (plugins: Plugin[]) => pluginsSortByName(pluginsUniqueByUrl(plugins));
 
 export interface Values {
-  initialized: boolean,
-  frames: Frame[],
-  palettes: Palette[],
-  frameGroups: FrameGroup[],
-  plugins: Plugin[],
-  imageGroups: SerializableImageGroup[],
-  images: Image[],
-  gapiLastLocalUpdates: GapiLastUpdates,
+  initialized: boolean;
+  frames: Frame[];
+  palettes: Palette[];
+  frameGroups: FrameGroup[];
+  plugins: Plugin[];
+  imageGroups: SerializableImageGroup[];
+  images: Image[];
+  gapiLastLocalUpdates: GapiLastUpdates;
 }
 
 interface Actions {
   // Frame updates
-  addFrames: (frames: Frame[]) => void,
-  deleteFrame: (id: string) => void,
+  addFrames: (frames: Frame[]) => void;
+  deleteFrame: (id: string) => void;
 
   // FrameGroup updates
-  updateFrameGroups: (frameGroups: FrameGroup[]) => void,
+  updateFrameGroups: (frameGroups: FrameGroup[]) => void;
 
   // Palette updates
-  addPalettes: (palettes: Palette[]) => void,
-  deletePalette: (shortName: string) => void,
+  addPalettes: (palettes: Palette[]) => void;
+  deletePalette: (shortName: string) => void;
 
   // Plugin updates
-  addUpdatePluginProperties: (plugin: Plugin) => void,
-  deletePlugin: (pluginUrl: string) => void,
-  updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues,
+  addUpdatePluginProperties: (plugin: Plugin) => void;
+  deletePlugin: (pluginUrl: string) => void;
+  updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues;
 
   // Image updates
-  addImages: (images: Image[]) => void,
-  deleteImages: (hashes: string[]) => void,
-  updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void,
-  updateImages: (images: Image[]) => void,
-  updateFrames: (frames: Frame[]) => void,
+  addImages: (images: Image[]) => void;
+  deleteImages: (hashes: string[]) => void;
+  updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void;
+  updateImages: (images: Image[]) => void;
+  updateFrames: (frames: Frame[]) => void;
 
   // ImageGroup updates
-  addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
-  deleteImageGroup: (groupId: string) => void,
-  updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void,
-  groupImagesAdd: (imageGroupId: string, images: string[]) => void,
-  ungroupImages: (images: string[]) => void,
+  addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
+  deleteImageGroup: (groupId: string) => void;
+  updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
+  groupImagesAdd: (imageGroupId: string, images: string[]) => void;
+  ungroupImages: (images: string[]) => void;
 
   // Global Updates
-  setFrames: (frames: Frame[], timestampOverride?: number) => void,
-  setFrameGroups: (frameGroups: FrameGroup[], timestampOverride?: number) => void,
-  setImages: (images: Image[], timestampOverride?: number) => void,
-  setImageGroups: (imageGroups: SerializableImageGroup[], timestampOverride?: number) => void,
-  setPalettes: (palettes: Palette[], timestampOverride?: number) => void,
-  setPlugins: (plugins: Plugin[], timestampOverride?: number) => void,
+  setFrames: (frames: Frame[], timestampOverride?: number) => void;
+  setFrameGroups: (frameGroups: FrameGroup[], timestampOverride?: number) => void;
+  setImages: (images: Image[], timestampOverride?: number) => void;
+  setImageGroups: (imageGroups: SerializableImageGroup[], timestampOverride?: number) => void;
+  setPalettes: (palettes: Palette[], timestampOverride?: number) => void;
+  setPlugins: (plugins: Plugin[], timestampOverride?: number) => void;
 
-  setLastUpdate: (sheetName: SheetName, timestampOverride?: number) => void,
+  setLastUpdate: (sheetName: SheetName, timestampOverride?: number) => void;
 }
 
 export type ItemsState = Values & Actions;
 
 interface AddUpdatePalettes {
-  add: Palette[],
-  update: Palette[],
+  add: Palette[];
+  update: Palette[];
 }
 
 const withPredefinedPalettes = (palettes: Palette[]): Palette[] => palettesUniqueByShortName([

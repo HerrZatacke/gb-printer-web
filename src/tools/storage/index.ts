@@ -4,8 +4,8 @@ import { deflate, inflate } from '@/tools/pack';
 import dummyImage from './dummyImage';
 
 export interface HashedCompressed {
-  dataHash: string,
-  compressed: string,
+  dataHash: string;
+  compressed: string;
 }
 
 export type RecoverFn = (hash: string) => Promise<void>;

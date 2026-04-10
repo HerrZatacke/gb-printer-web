@@ -4,18 +4,18 @@ import { type DropBoxSettings, type GapiSettings, type GitStorageSettings, type 
 import { PROJECT_PREFIX } from './constants';
 
 interface Values {
-  dropboxStorage: DropBoxSettings,
-  gitStorage: GitStorageSettings,
-  gapiStorage: GapiSettings,
-  syncLastUpdate: SyncLastUpdate,
+  dropboxStorage: DropBoxSettings;
+  gitStorage: GitStorageSettings;
+  gapiStorage: GapiSettings;
+  syncLastUpdate: SyncLastUpdate;
 }
 
 interface Actions {
-  dropboxLogout: () => void,
-  setDropboxStorage: (dropboxStorage: DropBoxSettings) => void,
-  setGitStorage: (gitStorage: GitStorageSettings) => void,
-  setGapiSettings: (gapiStorage: GapiSettings) => void,
-  setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => void,
+  dropboxLogout: () => void;
+  setDropboxStorage: (dropboxStorage: DropBoxSettings) => void;
+  setGitStorage: (gitStorage: GitStorageSettings) => void;
+  setGapiSettings: (gapiStorage: GapiSettings) => void;
+  setSyncLastUpdate: (what: keyof SyncLastUpdate, value: number) => void;
 }
 
 export type StoragesState = Values & Actions;

@@ -14,26 +14,26 @@ export enum ImageSelectionMode {
 }
 
 interface Values {
-  filtersTags: string[],
-  filtersPalettes: string[],
-  filtersFrames: string[],
-  filtersVisible: boolean,
-  imageSelection: string[],
-  lastSelectedImage: string | null,
-  recentImports: RecentImport[],
-  sortBy: string,
-  sortOptionsVisible: boolean,
+  filtersTags: string[];
+  filtersPalettes: string[];
+  filtersFrames: string[];
+  filtersVisible: boolean;
+  imageSelection: string[];
+  lastSelectedImage: string | null;
+  recentImports: RecentImport[];
+  sortBy: string;
+  sortOptionsVisible: boolean;
 }
 
 interface Actions {
-  cleanRecentImports: (imageHashes: string[]) => void,
-  setFilters: (filtersTags: string[], filtersPalettes: string[], filtersFrames: string[]) => void,
-  setFiltersVisible: (filtersVisible: boolean) => void,
-  setImageSelection: (imageSelection: string[]) => void,
-  updateRecentImports: (images: Image[]) => void,
-  setSortBy: (sortBy: string) => void,
-  setSortOptionsVisible: (sortOptionsVisible: boolean) => void,
-  updateImageSelection: (mode: ImageSelectionMode, hashes: string[]) => void,
+  cleanRecentImports: (imageHashes: string[]) => void;
+  setFilters: (filtersTags: string[], filtersPalettes: string[], filtersFrames: string[]) => void;
+  setFiltersVisible: (filtersVisible: boolean) => void;
+  setImageSelection: (imageSelection: string[]) => void;
+  updateRecentImports: (images: Image[]) => void;
+  setSortBy: (sortBy: string) => void;
+  setSortOptionsVisible: (sortOptionsVisible: boolean) => void;
+  updateImageSelection: (mode: ImageSelectionMode, hashes: string[]) => void;
 }
 
 export type FiltersState = Values & Actions;

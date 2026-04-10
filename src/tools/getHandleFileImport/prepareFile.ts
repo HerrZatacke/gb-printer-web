@@ -1,13 +1,13 @@
 interface OldFile {
-  blob: Blob,
-  blobName?: string,
-  contentType?: string,
-  ok?: boolean,
+  blob: Blob;
+  blobName?: string;
+  contentType?: string;
+  ok?: boolean;
 }
 
 export interface PreparedFile {
-  file: File,
-  contentType: string,
+  file: File;
+  contentType: string;
 }
 
 const prepareFile = (fileData: File | OldFile): PreparedFile => {

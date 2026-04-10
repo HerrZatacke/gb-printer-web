@@ -8,11 +8,11 @@ import {
 } from '@/stores/stores';
 
 interface UsePalette {
-  isActive: boolean
-  setActive: () => void,
-  deletePalette: () => void,
-  editPalette: () => void,
-  clonePalette: () => void,
+  isActive: boolean;
+  setActive: () => void;
+  deletePalette: () => void;
+  editPalette: () => void;
+  clonePalette: () => void;
 }
 
 export const usePalette = (shortName: string, name: string): UsePalette => {

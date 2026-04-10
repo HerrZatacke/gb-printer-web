@@ -8,19 +8,19 @@ import { type Image } from '@/types/Image';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 export interface UseNavigationTools {
-  getGroupPath: (groupId: string, pageIndex: number) => string,
-  currentGroup: TreeImageGroup,
-  getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number,
-  navigateToGroup: (groupId: string, pageIndex: number) => void,
-  navigateToImage: (hash: string) => void,
+  getGroupPath: (groupId: string, pageIndex: number) => string;
+  currentGroup: TreeImageGroup;
+  getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number;
+  navigateToGroup: (groupId: string, pageIndex: number) => void;
+  navigateToImage: (hash: string) => void;
 }
 
 interface ShouldNavigate {
-  imageHash? :string,
+  imageHash? :string;
   group?: {
-    id: string,
-    pageIndex: number,
-  },
+    id: string;
+    pageIndex: number;
+  };
 }
 
 export const useContextHook = (): UseNavigationTools => {

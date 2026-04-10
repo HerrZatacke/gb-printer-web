@@ -7,9 +7,9 @@ import { ActiveFilterUpdateMode } from '@/hooks/useFilterForm';
 import { Palette } from '@/types/Palette';
 
 interface Props {
-  palette: Palette,
-  paletteActive: boolean,
-  togglePalette: (mode: ActiveFilterUpdateMode) => void,
+  palette: Palette;
+  paletteActive: boolean;
+  togglePalette: (mode: ActiveFilterUpdateMode) => void;
 }
 
 function FilterFormPalette({ paletteActive, togglePalette, palette }: Props) {

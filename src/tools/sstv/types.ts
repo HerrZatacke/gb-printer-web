@@ -21,7 +21,7 @@ export interface VoxTones {
 export interface SSTVDimensions {
   width: number;
   height: number;
-  visPartial: number,
+  visPartial: number;
 }
 
 export interface SSTVSettings {

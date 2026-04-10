@@ -3,8 +3,8 @@ import { toCreationDate } from '@/tools/toCreationDate';
 import { type MonochromeImage } from '@/types/Image';
 
 interface ImageRawData extends Pick<MonochromeImage, 'palette' | 'frame' | 'tags' | 'meta' | 'created'> {
-  lines: string[],
-  filename: string,
+  lines: string[];
+  filename: string;
 }
 
 

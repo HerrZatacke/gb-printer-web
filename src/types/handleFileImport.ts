@@ -1,6 +1,6 @@
 
 export interface HandeFileImportOptions {
-  fromPrinter: boolean
+  fromPrinter: boolean;
 }
 
 export type HandeFileImportFn = (files: File[], options?: HandeFileImportOptions) => Promise<void>;

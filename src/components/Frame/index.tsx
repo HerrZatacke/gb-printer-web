@@ -9,9 +9,9 @@ import useFrame from '@/hooks/useFrame';
 import { useSettingsStore } from '@/stores/stores';
 
 interface Props {
-  frameId: string,
-  name: string,
-  palette: string[] | RGBNPalette,
+  frameId: string;
+  name: string;
+  palette: string[] | RGBNPalette;
 }
 
 function Frame({ frameId, name, palette }: Props) {

@@ -8,9 +8,9 @@ export enum PersistState {
 }
 
 interface UseStoragePersist {
-  persistAPIAvailable: boolean,
-  persisted: PersistState,
-  requestPersist: () => void,
+  persistAPIAvailable: boolean;
+  persisted: PersistState;
+  requestPersist: () => void;
 }
 
 const persistAPIAvailable = !!(typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist);

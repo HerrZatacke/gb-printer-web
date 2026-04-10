@@ -5,7 +5,7 @@ import ImageRender from '@/components/ImageRender';
 import usePreviewImages from '@/hooks/usePreviewImages';
 
 interface Props {
-  palette: string[],
+  palette: string[];
 }
 
 function PalettePreview({ palette }: Props) {

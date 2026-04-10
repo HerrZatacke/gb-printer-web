@@ -15,35 +15,35 @@ import { type PropsWithChildren } from 'react';
 import { type ElementType, type MouseEvent, type ReactNode, useMemo, useState } from 'react';
 
 interface WrapperProps extends PropsWithChildren {
-  sx?: object,
-  component?: ElementType,
-  href?: string,
-  onClick?: (ev: MouseEvent) => void,
-  disableRipple?: boolean,
+  sx?: object;
+  component?: ElementType;
+  href?: string;
+  onClick?: (ev: MouseEvent) => void;
+  disableRipple?: boolean;
 }
 
 interface ContextMenuProps {
-  groupId?: string,
-  hash?: string,
-  deleteFrame?: () => void,
-  editFrame?: () => void,
-  isPredefined?: boolean,
-  clonePalette?: () => void,
-  deletePalette?: () => void,
-  editPalette?: () => void,
-  setActive?: () => void,
+  groupId?: string;
+  hash?: string;
+  deleteFrame?: () => void;
+  editFrame?: () => void;
+  isPredefined?: boolean;
+  clonePalette?: () => void;
+  deletePalette?: () => void;
+  editPalette?: () => void;
+  setActive?: () => void;
 }
 
 interface Props {
-  selectionText: string,
-  title: string,
-  titleIcon?: ReactNode,
-  subheader?: string | null,
-  wrapperProps: WrapperProps,
-  media: ReactNode,
-  content?: ReactNode,
-  contextMenuComponent: ElementType,
-  contextMenuProps: ContextMenuProps,
+  selectionText: string;
+  title: string;
+  titleIcon?: ReactNode;
+  subheader?: string | null;
+  wrapperProps: WrapperProps;
+  media: ReactNode;
+  content?: ReactNode;
+  contextMenuComponent: ElementType;
+  contextMenuProps: ContextMenuProps;
 }
 
 function GalleryGridItem({

@@ -6,53 +6,53 @@ import { type PrinterFunction } from '@/consts/printerFunction';
 import { type PrinterInfo } from '@/types/Printer';
 
 export interface TrashCount {
-  frames: number,
-  images: number,
-  show: boolean,
+  frames: number;
+  images: number;
+  show: boolean;
 }
 
 export interface ErrorMessage {
-  error: Error
-  timestamp: number,
-  id: string,
+  error: Error;
+  timestamp: number;
+  id: string;
 }
 
 interface Values {
-  downloadHashes: string[],
-  dragover: boolean,
-  errors: ErrorMessage[],
-  isFullscreen: boolean,
-  lightboxImage: number | null,
-  printerBusy: boolean,
-  printerData: PrinterInfo | null,
-  printerFunctions: PrinterFunction[],
-  showSerials: boolean,
-  sstvHash: string,
-  syncBusy: boolean,
-  syncSelect: boolean,
-  trashBusy: boolean,
-  trashCount: TrashCount,
-  videoSelection: string[],
+  downloadHashes: string[];
+  dragover: boolean;
+  errors: ErrorMessage[];
+  isFullscreen: boolean;
+  lightboxImage: number | null;
+  printerBusy: boolean;
+  printerData: PrinterInfo | null;
+  printerFunctions: PrinterFunction[];
+  showSerials: boolean;
+  sstvHash: string;
+  syncBusy: boolean;
+  syncSelect: boolean;
+  trashBusy: boolean;
+  trashCount: TrashCount;
+  videoSelection: string[];
 }
 
 interface Actions {
-  dismissError: (index: number) => void,
-  setDownloadHashes: (downloadHashes: string[]) => void,
-  setDragover: (dragover: boolean) => void,
-  setError: (error: Error) => void,
-  setIsFullscreen: (isFullscreen: boolean) => void,
-  setLightboxImage: (index: number | null) => void,
-  setPrinterBusy: (printerBusy: boolean) => void,
-  setPrinterData: (printerData: PrinterInfo | null) => void,
-  setPrinterFunctions: (printerFunctions: PrinterFunction[]) => void,
-  setShowSerials: (showSerials: boolean) => void,
-  setSSTVHash: (sstvHash: string) => void,
-  setSyncBusy: (syncBusy: boolean) => void,
-  setSyncSelect: (syncBusy: boolean) => void,
-  setTrashBusy: (trashBusy: boolean) => void,
-  showTrashCount: (show: boolean) => void,
-  updateTrashCount: (frames: number, images: number) => void,
-  setVideoSelection: (videoSelection: string[]) => void,
+  dismissError: (index: number) => void;
+  setDownloadHashes: (downloadHashes: string[]) => void;
+  setDragover: (dragover: boolean) => void;
+  setError: (error: Error) => void;
+  setIsFullscreen: (isFullscreen: boolean) => void;
+  setLightboxImage: (index: number | null) => void;
+  setPrinterBusy: (printerBusy: boolean) => void;
+  setPrinterData: (printerData: PrinterInfo | null) => void;
+  setPrinterFunctions: (printerFunctions: PrinterFunction[]) => void;
+  setShowSerials: (showSerials: boolean) => void;
+  setSSTVHash: (sstvHash: string) => void;
+  setSyncBusy: (syncBusy: boolean) => void;
+  setSyncSelect: (syncBusy: boolean) => void;
+  setTrashBusy: (trashBusy: boolean) => void;
+  showTrashCount: (show: boolean) => void;
+  updateTrashCount: (frames: number, images: number) => void;
+  setVideoSelection: (videoSelection: string[]) => void;
 }
 
 export type InteractionsState = Values & Actions;

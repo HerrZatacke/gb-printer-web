@@ -23,8 +23,8 @@ import { locales } from '@/i18n/locales';
 import { useSettingsStore } from '@/stores/stores';
 
 interface ClickActionOption {
-  translationKey: string,
-  value: string,
+  translationKey: string;
+  value: string;
 }
 
 const clickActionMenuOptions: ClickActionOption[] = [

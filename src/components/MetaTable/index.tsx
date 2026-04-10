@@ -8,14 +8,14 @@ import React from 'react';
 import { type ImageMetadata, type RGBNHashes } from '@/types/Image';
 
 export interface MetaProps {
-  hash: string,
-  hashes?: RGBNHashes,
-  meta?: ImageMetadata,
+  hash: string;
+  hashes?: RGBNHashes;
+  meta?: ImageMetadata;
 }
 
 interface TableRow {
-  key: string,
-  value: string,
+  key: string;
+  value: string;
 }
 
 function MetaTable({

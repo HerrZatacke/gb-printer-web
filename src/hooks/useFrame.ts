@@ -11,24 +11,24 @@ import { loadFrameData } from '@/tools/applyFrame/frameData';
 import textToTiles from '@/tools/textToTiles';
 
 interface GetTilesParams {
-  frameId: string,
-  frameHash: string,
-  name: string,
+  frameId: string;
+  frameHash: string;
+  name: string;
 }
 
 interface UseFrameParams {
-  frameId: string,
-  name: string,
+  frameId: string;
+  name: string;
 }
 
 interface UseFrame {
-  frameHash: string,
-  tiles: string[],
-  imageStartLine: number,
-  setTiles: (tiles: string[]) => void,
-  deleteFrame: () => void,
-  editFrame: () => void,
-  usage: number,
+  frameHash: string;
+  tiles: string[];
+  imageStartLine: number;
+  setTiles: (tiles: string[]) => void;
+  deleteFrame: () => void;
+  editFrame: () => void;
+  usage: number;
 }
 
 const getTiles = ({ frameId, frameHash, name }: GetTilesParams) => {

@@ -13,7 +13,7 @@ let heartbeatTimer: number | null;
 let remotePrinterWindow: Window | null;
 
 export interface RemotePrinterContextValue {
-  callRemoteFunction: (functionType: PrinterFunction) => Promise<void>,
+  callRemoteFunction: (functionType: PrinterFunction) => Promise<void>;
 }
 
 export const useContextHook = (): RemotePrinterContextValue => {

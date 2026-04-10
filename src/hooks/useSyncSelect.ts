@@ -7,13 +7,13 @@ import { gitStorageTool } from '@/tools/gitStorage';
 import { type SyncLastUpdate } from '@/types/Sync';
 
 interface UseSyncSelect {
-  repoUrl: string,
-  dropboxActive: boolean,
-  gitActive: boolean,
-  syncLastUpdate: SyncLastUpdate,
-  autoDropboxSync: boolean,
-  startSync: (storageType: StorageType, direction: SyncDirection) => void,
-  cancelSync: () => void,
+  repoUrl: string;
+  dropboxActive: boolean;
+  gitActive: boolean;
+  syncLastUpdate: SyncLastUpdate;
+  autoDropboxSync: boolean;
+  startSync: (storageType: StorageType, direction: SyncDirection) => void;
+  cancelSync: () => void;
 }
 
 export const useSyncSelect = (): UseSyncSelect => {

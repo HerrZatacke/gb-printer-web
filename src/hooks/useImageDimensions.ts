@@ -5,14 +5,14 @@ import { isRGBNImage, reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNImage } from '@/types/Image';
 
 export interface Dimensions {
-  width: number,
-  height: number,
-  aspectRatio: number,
-  aspectRatioCSS: string,
+  width: number;
+  height: number;
+  aspectRatio: number;
+  aspectRatioCSS: string;
 }
 
 interface UseDimensions {
-  dimensions: Dimensions,
+  dimensions: Dimensions;
 }
 
 export const dimensionsFromTileCount = (tileCount: number, rotation = Rotation.DEG_0): Dimensions => {

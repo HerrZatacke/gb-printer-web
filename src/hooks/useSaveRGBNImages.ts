@@ -7,7 +7,7 @@ import { type RGBNHashes, type RGBNImage } from '@/types/Image';
 
 
 interface UseSaveRGBNImages {
-  saveRGBNImage: (hashes: RGBNHashes[]) => Promise<void>,
+  saveRGBNImage: (hashes: RGBNHashes[]) => Promise<void>;
 }
 
 const useSaveRGBNImages = (): UseSaveRGBNImages => {

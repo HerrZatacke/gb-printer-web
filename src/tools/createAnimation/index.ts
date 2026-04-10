@@ -25,16 +25,16 @@ import { getPaletteSettings } from '../getPaletteSettings';
 import unique from '../unique';
 
 interface GifFrameData {
-  palette: number[],
-  pixels: number[],
+  palette: number[];
+  pixels: number[];
 }
 
 interface GetAddImagesParams {
-  gifWriter: GifWriter,
-  queue: Queue,
-  frameRate: number,
-  total: number,
-  setProgress: (value: number) => void,
+  gifWriter: GifWriter;
+  queue: Queue;
+  frameRate: number;
+  total: number;
+  setProgress: (value: number) => void;
 }
 
 const getAddImages = ({

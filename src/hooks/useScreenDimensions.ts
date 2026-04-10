@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
 export interface ScreenDimensions {
-  ddpx: number,
-  width: number,
-  height: number,
-  layoutWidth: number,
+  ddpx: number;
+  width: number;
+  height: number;
+  layoutWidth: number;
 }
 
 const getLayoutWidth = (windowWidth: number): number => {

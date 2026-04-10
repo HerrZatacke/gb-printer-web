@@ -3,11 +3,11 @@ import { createAnimation, videoParamsWithDefaults } from '@/tools/createAnimatio
 import { type VideoParams } from '@/types/VideoParams';
 
 interface UseVideoForm {
-  imageCount: number,
-  videoParams: VideoParams,
-  update: (params: Partial<VideoParams>) => void,
-  cancel: () => void,
-  animate: () => void,
+  imageCount: number;
+  videoParams: VideoParams;
+  update: (params: Partial<VideoParams>) => void;
+  cancel: () => void;
+  animate: () => void;
 }
 
 export const useVideoForm = (): UseVideoForm => {

@@ -14,66 +14,66 @@ import { type ImageMetadata, type MonochromeImage, type RGBNImage } from '@/type
 import { type ImageUpdates } from '@/types/ImageActions';
 
 interface Batch {
-  created: boolean,
-  title: boolean,
-  frame: boolean,
-  lockFrame: boolean,
-  tags: boolean,
-  rotation: boolean,
-  palette: boolean,
-  invertPalette: boolean,
-  framePalette: boolean,
-  invertFramePalette: boolean,
+  created: boolean;
+  title: boolean;
+  frame: boolean;
+  lockFrame: boolean;
+  tags: boolean;
+  rotation: boolean;
+  palette: boolean;
+  invertPalette: boolean;
+  framePalette: boolean;
+  invertFramePalette: boolean;
 }
 
 interface ToEdit {
-  created: string,
-  hash: string,
-  height: number,
-  imageCount: number,
-  invertPalette: boolean,
-  invertFramePalette: boolean,
-  lockFrame: boolean,
-  mixedTypes: boolean,
-  tags: string[],
-  title: string,
+  created: string;
+  hash: string;
+  height: number;
+  imageCount: number;
+  invertPalette: boolean;
+  invertFramePalette: boolean;
+  lockFrame: boolean;
+  mixedTypes: boolean;
+  tags: string[];
+  title: string;
 
-  frame?: string,
-  hashes?: object,
-  meta?: ImageMetadata,
-  paletteRGBN?: RGBNPalette,
-  paletteShort?: string,
-  framePaletteShort?: string,
-  rotation?: Rotation,
+  frame?: string;
+  hashes?: object;
+  meta?: ImageMetadata;
+  paletteRGBN?: RGBNPalette;
+  paletteShort?: string;
+  framePaletteShort?: string;
+  rotation?: Rotation;
 }
 
 interface Form {
-  title: string,
-  created: string,
-  frame: string,
-  lockFrame?: boolean,
-  rotation?: Rotation,
-  invertPalette?: boolean,
-  invertFramePalette?: boolean,
-  paletteShort: string,
-  framePaletteShort: string,
-  paletteRGBN?: RGBNPalette,
+  title: string;
+  created: string;
+  frame: string;
+  lockFrame?: boolean;
+  rotation?: Rotation;
+  invertPalette?: boolean;
+  invertFramePalette?: boolean;
+  paletteShort: string;
+  framePaletteShort: string;
+  paletteRGBN?: RGBNPalette;
 }
 
 interface UseEditForm {
-  toEdit?: ToEdit,
-  form: Form,
-  overrides: Overrides,
-  isRegularImage: boolean,
-  shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>,
-  willUpdateBatch: string[],
-  tagChanges: TagChange,
+  toEdit?: ToEdit;
+  form: Form;
+  overrides: Overrides;
+  isRegularImage: boolean;
+  shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>;
+  willUpdateBatch: string[];
+  tagChanges: TagChange;
 
-  updateForm: (what: keyof Batch) => (value: string | boolean | Rotation) => void,
-  updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void,
-  updateTags: (mode: TagUpdateMode, tag: string) => void,
-  resetTags: () => void,
-  updateFramePalette: (paletteUpdate: string, confirm?: boolean) => void,
+  updateForm: (what: keyof Batch) => (value: string | boolean | Rotation) => void;
+  updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void;
+  updateTags: (mode: TagUpdateMode, tag: string) => void;
+  resetTags: () => void;
+  updateFramePalette: (paletteUpdate: string, confirm?: boolean) => void;
 
   save: () => void;
   cancel: () => void;

@@ -20,7 +20,7 @@ export const getAvailableTags = (images: Image[]): string[] => {
 };
 
 export interface UseAvailableTags {
-  availableTags: string[],
+  availableTags: string[];
 }
 
 export const useAvailableTags = (): UseAvailableTags => {

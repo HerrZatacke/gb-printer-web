@@ -10,12 +10,12 @@ import {
 } from '@/types/Dialog';
 
 export interface UseDialog {
-  message: string,
-  confirm: () => Promise<void>,
-  deny?: () => Promise<void>,
-  questions: DialogQuestion[],
-  values: DialogResult,
-  setSelected: (result: DialogResult) => void,
+  message: string;
+  confirm: () => Promise<void>;
+  deny?: () => Promise<void>;
+  questions: DialogQuestion[];
+  values: DialogResult;
+  setSelected: (result: DialogResult) => void;
 }
 
 const getInitialValues = (questions?: (values: DialogResult) => DialogQuestion[]): DialogResult => {

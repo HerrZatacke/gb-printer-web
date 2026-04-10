@@ -2,8 +2,8 @@ import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface UseGalleryGroup {
-  group: TreeImageGroup | null,
-  path: string | null,
+  group: TreeImageGroup | null;
+  path: string | null;
 }
 
 export const useGalleryGroup = (hash: string): UseGalleryGroup => {

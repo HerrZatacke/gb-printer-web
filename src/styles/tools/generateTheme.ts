@@ -58,15 +58,15 @@ const themeComponents = (theme: Theme): Components<Theme> => ({
 });
 
 interface GenerateThemeArgs {
-  mode: PaletteMode,
-  colorPrimary: string,
-  colorSecondary: string,
-  colorTertiary: string,
-  colorSuccess: string,
-  colorWarn: string,
-  colorError: string,
-  colorPageBackground: string,
-  colorText: string,
+  mode: PaletteMode;
+  colorPrimary: string;
+  colorSecondary: string;
+  colorTertiary: string;
+  colorSuccess: string;
+  colorWarn: string;
+  colorError: string;
+  colorPageBackground: string;
+  colorText: string;
 }
 
 export const generateTheme = ({

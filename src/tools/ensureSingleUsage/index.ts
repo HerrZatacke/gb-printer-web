@@ -1,9 +1,9 @@
 import { type SerializableImageGroup } from '@/types/ImageGroup';
 
 export interface SingleUsageResult {
-  groups: SerializableImageGroup[],
-  usedImageHashes: string[],
-  usedGroupIDs: string[],
+  groups: SerializableImageGroup[];
+  usedImageHashes: string[];
+  usedGroupIDs: string[];
 }
 
 export const ensureSingleUsage = (groups: SerializableImageGroup[]): SingleUsageResult => {

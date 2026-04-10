@@ -7,18 +7,18 @@ import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 
 export interface PaletteSortOption {
-  label: string,
-  value: PaletteSortMode,
+  label: string;
+  value: PaletteSortMode;
 }
 
 type PaletteUsage = Record<string, number>;
 
 interface UsePaletteSort {
-  sortPalettes: PaletteSortMode,
-  setSortPalettes: (mode: PaletteSortMode) => void,
-  paletteSortOptions: PaletteSortOption[],
-  paletteUsages: PaletteUsage,
-  sortFn: (p1: Palette, p2: Palette) => number,
+  sortPalettes: PaletteSortMode;
+  setSortPalettes: (mode: PaletteSortMode) => void;
+  paletteSortOptions: PaletteSortOption[];
+  paletteUsages: PaletteUsage;
+  sortFn: (p1: Palette, p2: Palette) => number;
 }
 
 const usePaletteSort = (): UsePaletteSort => {

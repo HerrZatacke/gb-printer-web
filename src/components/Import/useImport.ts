@@ -3,9 +3,9 @@ import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import useImportFile from '@/hooks/useImportFile';
 
 interface UseImport {
-  importPlainText: (textDump: string) => void,
-  importFiles: (files: File[]) => void,
-  exportJson: (what: ExportTypes) => void,
+  importPlainText: (textDump: string) => void;
+  importFiles: (files: File[]) => void;
+  exportJson: (what: ExportTypes) => void;
 }
 
 export const useImport = (): UseImport => {

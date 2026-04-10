@@ -15,10 +15,10 @@ import { type FlaggedImportItem } from '@/types/ImportItem';
 import { type Palette } from '@/types/Palette';
 
 interface Props {
-  importQueue: FlaggedImportItem[],
-  palette: Palette,
-  importAsFrame: (id: string) => void,
-  cancelItemImport: (id: string) => void,
+  importQueue: FlaggedImportItem[];
+  palette: Palette;
+  importAsFrame: (id: string) => void;
+  cancelItemImport: (id: string) => void;
 }
 
 function ImportRow({

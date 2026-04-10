@@ -6,7 +6,7 @@ import { PrepareFilesOptions, prepareFiles } from '@/tools/download';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 
 interface UseShareImage {
-  shareImage: (hash: string) => Promise<void>,
+  shareImage: (hash: string) => Promise<void>;
 }
 
 const useShareImage = (): UseShareImage => {

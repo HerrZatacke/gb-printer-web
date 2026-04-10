@@ -9,8 +9,8 @@ import { type Frame } from '@/types/Frame';
 import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
 
 interface RehashedItem {
-  oldHash: string,
-  newHash: string,
+  oldHash: string;
+  newHash: string;
 }
 
 export const saveImageFileContent = async (fileContent: string): Promise<string> => {

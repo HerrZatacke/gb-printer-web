@@ -5,9 +5,9 @@ import WrappedNextLink from '@/components/WrappedNextLink';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 
 export interface Props {
-  children: React.ReactNode,
-  disabled: boolean,
-  page: number,
+  children: React.ReactNode;
+  disabled: boolean;
+  page: number;
 }
 
 function PaginationButton(props: Props) {

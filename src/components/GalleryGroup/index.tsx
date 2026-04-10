@@ -15,7 +15,7 @@ import { useGalleryGroup } from '@/hooks/useGalleryGroup';
 import { useSettingsStore } from '@/stores/stores';
 
 interface Props {
-  hash: string,
+  hash: string;
 }
 
 function GalleryGroup({ hash }: Props) {

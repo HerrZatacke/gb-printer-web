@@ -1,8 +1,8 @@
 import { BlendMode } from 'gb-image-decoder';
 
 export interface BlendModeLabel {
-  id: BlendMode,
-  translationKey: string,
+  id: BlendMode;
+  translationKey: string;
 }
 
 export const blendModeLabels: BlendModeLabel[] = [

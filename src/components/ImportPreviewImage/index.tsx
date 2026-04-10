@@ -7,14 +7,14 @@ import { applyBitmapFilter } from '@/tools/applyBitmapFilter';
 import isGoodScaleFactor from '@/tools/isGoodScaleFactor';
 
 interface Props {
-  imageData: ImageData, // From QueueImage
-  scaleFactor: number, // From QueueImage
-  width: number, // From QueueImage
-  height: number, // From QueueImage
-  fileName: string, // From QueueImage
-  dither: boolean,
-  contrastBaseValues: number[],
-  palette: string[],
+  imageData: ImageData; // From QueueImage
+  scaleFactor: number; // From QueueImage
+  width: number; // From QueueImage
+  height: number; // From QueueImage
+  fileName: string; // From QueueImage
+  dither: boolean;
+  contrastBaseValues: number[];
+  palette: string[];
 }
 
 function ImportPreviewImage({

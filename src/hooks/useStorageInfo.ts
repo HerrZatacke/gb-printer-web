@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 import sortBy, { SortDirection } from '@/tools/sortby';
 
 export interface Quota {
-  type: string,
-  total: number,
-  used: number,
-  percentage: number,
+  type: string;
+  total: number;
+  used: number;
+  percentage: number;
 }
 
 const sortByPercentage = sortBy<Quota>('percentage', SortDirection.DESC);
 
 interface UseStorageInfo {
-  criticalStorageEstimate: Quota | null,
-  storageEstimate: Quota[],
+  criticalStorageEstimate: Quota | null;
+  storageEstimate: Quota[];
 }
 
 const getLocalStorageUsage = (): number => {

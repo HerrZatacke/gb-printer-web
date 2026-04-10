@@ -2,12 +2,12 @@ import { create } from 'zustand';
 import { type Dialog } from '@/types/Dialog';
 
 interface Values {
-  dialogs: Dialog[],
+  dialogs: Dialog[];
 }
 
 interface Actions {
-  setDialog: (dialog: Dialog) => void,
-  dismissDialog: (index: number) => void,
+  setDialog: (dialog: Dialog) => void;
+  dismissDialog: (index: number) => void;
 }
 
 export type DialogsState = Values & Actions;

@@ -14,8 +14,8 @@ import unique from '@/tools/unique';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface FolderTreeItemProps {
-  group: TreeImageGroup,
-  onClick: () => void,
+  group: TreeImageGroup;
+  onClick: () => void;
 }
 
 function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
@@ -59,8 +59,8 @@ function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
 }
 
 interface FolderTreeDialogProps {
-  open: boolean,
-  onClose: () => void,
+  open: boolean;
+  onClose: () => void;
 }
 
 function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {

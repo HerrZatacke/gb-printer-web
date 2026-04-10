@@ -8,8 +8,8 @@ import { useSortForm } from '@/hooks/useSortForm';
 import { SortDirection } from '@/tools/sortby';
 
 interface Sortable {
-  title: string,
-  key: string,
+  title: string;
+  key: string;
 }
 
 function SortForm() {

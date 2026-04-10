@@ -10,8 +10,8 @@ import { type ErrorMessage } from '@/stores/stores';
 import { getPreStyles } from '@/styles/tools/getPreStyles';
 
 interface Props {
-  dismiss: () => void,
-  errorMessage: ErrorMessage,
+  dismiss: () => void;
+  errorMessage: ErrorMessage;
 }
 
 function Error({ dismiss, errorMessage }: Props) {

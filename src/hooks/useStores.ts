@@ -14,14 +14,14 @@ import { type ExportableState } from '@/types/ExportState';
 import { type Image } from '@/types/Image';
 
 export interface UseStores {
-  addImages: (images: Image[]) => void,
-  deleteImages: (hashes: string[]) => void,
-  dismissDialog: (index: number) => void,
-  globalUpdate: (state: Partial<ExportableState>) => void,
-  importQueueCancel: () => void,
-  setDialog: (dialog: Dialog) => void,
-  updateImages: (images: Image[]) => void,
-  updateLastSyncLocalNow: () => void,
+  addImages: (images: Image[]) => void;
+  deleteImages: (hashes: string[]) => void;
+  dismissDialog: (index: number) => void;
+  globalUpdate: (state: Partial<ExportableState>) => void;
+  importQueueCancel: () => void;
+  setDialog: (dialog: Dialog) => void;
+  updateImages: (images: Image[]) => void;
+  updateLastSyncLocalNow: () => void;
 }
 
 export const useStores = (): UseStores => {

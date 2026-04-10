@@ -7,20 +7,20 @@ import React from 'react';
 import { type FrameGroup } from '@/types/FrameGroup';
 
 interface Props {
-  frameIndex: number,
-  frameName: string,
-  idValid: boolean,
-  groupIdValid: boolean,
-  frameIndexValid: boolean,
-  frameGroup: string,
-  groups: FrameGroup[],
-  fullId: string,
-  frameGroupName?: string,
-  extraFields?: React.ReactNode,
-  setFrameGroupName?: (frameGroupName: string) => void,
-  setFrameIndex: (frameIndex: number) => void,
-  setFrameGroup: (frameGroup: string) => void,
-  setFrameName: (frameName: string) => void,
+  frameIndex: number;
+  frameName: string;
+  idValid: boolean;
+  groupIdValid: boolean;
+  frameIndexValid: boolean;
+  frameGroup: string;
+  groups: FrameGroup[];
+  fullId: string;
+  frameGroupName?: string;
+  extraFields?: React.ReactNode;
+  setFrameGroupName?: (frameGroupName: string) => void;
+  setFrameIndex: (frameIndex: number) => void;
+  setFrameGroup: (frameGroup: string) => void;
+  setFrameName: (frameName: string) => void;
 }
 
 function EditFrameForm({

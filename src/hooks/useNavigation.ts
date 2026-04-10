@@ -7,16 +7,16 @@ import {
 import { type SyncLastUpdate } from '@/types/Sync';
 
 interface UseNavigation {
-  disableSerials: boolean,
-  serialWarning: boolean,
-  portCount: number,
-  syncBusy: boolean,
-  useSync: boolean,
-  useSerials: boolean,
-  syncLastUpdate: SyncLastUpdate,
-  autoDropboxSync: boolean,
-  selectSync: () => void,
-  setShowSerials: () => void,
+  disableSerials: boolean;
+  serialWarning: boolean;
+  portCount: number;
+  syncBusy: boolean;
+  useSync: boolean;
+  useSerials: boolean;
+  syncLastUpdate: SyncLastUpdate;
+  autoDropboxSync: boolean;
+  selectSync: () => void;
+  setShowSerials: () => void;
 }
 
 const useNavigation = (): UseNavigation => {

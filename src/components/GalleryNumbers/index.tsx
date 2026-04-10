@@ -3,9 +3,9 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 
 interface Props {
-  imageCount: number,
-  selectedCount: number,
-  filteredCount: number,
+  imageCount: number;
+  selectedCount: number;
+  filteredCount: number;
 }
 
 function GalleryNumbers(props: Props) {

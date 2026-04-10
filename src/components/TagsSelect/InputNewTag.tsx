@@ -8,8 +8,8 @@ import { useAvailableTags } from '@/hooks/useAvailableTags';
 import { TagUpdateMode } from '@/tools/modifyTagChanges';
 
 interface Props {
-  updateTags: (mode: TagUpdateMode, value: string) => void,
-  selectedTags: string[],
+  updateTags: (mode: TagUpdateMode, value: string) => void;
+  selectedTags: string[];
 }
 
 function InputNewTag({ updateTags, selectedTags }: Props) {

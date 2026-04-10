@@ -5,9 +5,9 @@ import GameBoyImage from '../GameBoyImage';
 import ImageLoading from '../ImageLoading';
 
 interface Props {
-  hash: string,
-  asThumb?: boolean,
-  overrides?: Overrides,
+  hash: string;
+  asThumb?: boolean;
+  overrides?: Overrides;
 }
 
 function ImageRender({ hash, asThumb, overrides }: Props) {

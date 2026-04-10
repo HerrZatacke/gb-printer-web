@@ -16,7 +16,7 @@ interface SetupParams {
   startProgress: StartProgressCallback;
   setProgress: SetProgressCallback;
   stopProgress: StopProgressCallback;
-  setError: SetErrorCallback,
+  setError: SetErrorCallback;
 }
 
 export class SuperPrinterCommsDevice implements BaseCommsDevice {

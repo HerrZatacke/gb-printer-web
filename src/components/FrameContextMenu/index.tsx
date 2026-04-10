@@ -11,10 +11,10 @@ interface ContextMenuItem {
 }
 
 interface Props {
-  deleteFrame: () => void,
-  editFrame: () => void,
-  menuAnchor: HTMLElement | null,
-  onClose: () => void,
+  deleteFrame: () => void;
+  editFrame: () => void;
+  menuAnchor: HTMLElement | null;
+  onClose: () => void;
 }
 
 

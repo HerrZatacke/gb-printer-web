@@ -13,13 +13,13 @@ interface ContextMenuItem {
 }
 
 interface Props {
-  isPredefined: boolean,
-  clonePalette: () => void,
-  editPalette: () => void,
-  deletePalette: () => void,
-  setActive: () => void,
-  menuAnchor: HTMLElement | null,
-  onClose: () => void,
+  isPredefined: boolean;
+  clonePalette: () => void;
+  editPalette: () => void;
+  deletePalette: () => void;
+  setActive: () => void;
+  menuAnchor: HTMLElement | null;
+  onClose: () => void;
 }
 
 function PaletteContextMenu({

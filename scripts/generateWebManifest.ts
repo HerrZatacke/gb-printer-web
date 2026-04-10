@@ -5,12 +5,12 @@ import { favicons } from 'favicons';
 import { rimraf } from 'rimraf';
 
 interface Params {
-  description: string,
-  name: string,
-  author: string,
-  homepage: string,
-  basePath: string,
-  version: string,
+  description: string;
+  name: string;
+  author: string;
+  homepage: string;
+  basePath: string;
+  version: string;
 }
 
 export default async function generateWebManifest({

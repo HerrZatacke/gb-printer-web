@@ -13,18 +13,18 @@ import { useItemsStore } from '@/stores/stores';
 import { getFramesForGroup } from '@/tools/getFramesForGroup';
 
 interface FrameSelectOption {
-  id: string,
-  name: string,
-  isGroup: boolean,
+  id: string;
+  name: string;
+  isGroup: boolean;
 }
 
 interface Props {
-  frame: string,
-  updateFrame: (frame: string) => void,
-  updateFrameLock?: (lockFame: boolean) => void,
-  lockFrame?: boolean,
-  noFrameOption?: string,
-  selectLabel?: string,
+  frame: string;
+  updateFrame: (frame: string) => void;
+  updateFrameLock?: (lockFame: boolean) => void;
+  lockFrame?: boolean;
+  noFrameOption?: string;
+  selectLabel?: string;
 }
 
 function FrameSelect({

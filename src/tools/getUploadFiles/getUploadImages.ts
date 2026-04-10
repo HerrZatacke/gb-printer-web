@@ -7,17 +7,17 @@ import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image'
 import { type AddToQueueFn, type DownloadInfo } from '@/types/Sync';
 
 interface TmpInfo {
-  file: Image,
-  inRepo: RepoFile[],
-  searchHashes: string[],
+  file: Image;
+  inRepo: RepoFile[];
+  searchHashes: string[];
 }
 
 export const getUploadImages = async (
   repoContents: RepoContents,
   addToQueue: AddToQueueFn<SyncFile | null>,
 ): Promise<{
-  syncImages: SyncFile[],
-  missingLocally: string[],
+  syncImages: SyncFile[];
+  missingLocally: string[];
 }> => {
   const missingLocally: string[] = [];
 

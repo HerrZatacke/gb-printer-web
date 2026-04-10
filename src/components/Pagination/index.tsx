@@ -12,8 +12,8 @@ import React from 'react';
 import PaginationButton from '@/components/PaginationButton';
 
 interface Props {
-  page: number
-  maxPageIndex: number,
+  page: number;
+  maxPageIndex: number;
 }
 
 function Pagination({ page, maxPageIndex }: Props) {

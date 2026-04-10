@@ -14,8 +14,8 @@ const TRANSFER_MESSAGE_TYPE = 'DBDATA';
 interface TransferMessage {
   type: 'DBDATA';
   images: KV<string>[];
-  frames: KV<string>[]
-  localStorageData: KV<string>[],
+  frames: KV<string>[];
+  localStorageData: KV<string>[];
 }
 
 export default function CopyDatabase() {
