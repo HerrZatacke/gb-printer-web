@@ -16,8 +16,6 @@
     "sortPalettes": "Sorter paletter",
     "preferredLocale": "Foretrukket språk",
     "exampleDateFormat": "Eksempel datoformat: {format}",
-    "printerUrl": "Skriver-URL",
-    "printerUrlHelper": "Hvis du eier en fysisk WiFi-skriver, kan du legge til URL-en her og fortsette i <link>🔗 Import-fanen</link>",
     "enableDebug": "Vis feilsøkingsinformasjon",
     "galleryClickActions": {
       "clickSelectsItem": "Klikk velger elementet",
@@ -36,6 +34,12 @@
       "fr-FR": "Fransk – Frankrike (fr-FR)"
     },
     "resetTrackingConsent": "Tilbakestill analyse-/sporingssamtykke (for øyeblikket {consentState, select, accepted {aktiv} other {inaktiv}})"
+  },
+  "SettingsPrinterUrls": {
+    "printerUrls": "Skriver-URLer",
+    "printerUrlHelper": "Hvis du eier en fysisk WiFi-skriver, kan du legge til URL-en her og fortsette i <link>🔗 Import-fanen</link>",
+    "addPrinter": "Legg til skriver",
+    "printerUrl": "Skriver-URL"
   },
   "TrackingConsent": {
     "title": "Jeg kunne trengt din hjelp",

@@ -16,8 +16,6 @@
     "sortPalettes": "Ordenar paletas",
     "preferredLocale": "Idioma preferido",
     "exampleDateFormat": "Exemplo de formato de data: {format}",
-    "printerUrl": "URL da impressora",
-    "printerUrlHelper": "Se tiveres uma impressora Wi-Fi física, podes adicionar o URL aqui e continuar no <link>🔗 separador Importar</link>",
     "enableDebug": "Mostrar informações de depuração",
     "galleryClickActions": {
       "clickSelectsItem": "Clique selecciona o item",
@@ -36,6 +34,12 @@
       "fr-FR": "Francês – França (fr-FR)"
     },
     "resetTrackingConsent": "Repor consentimento de análise/rastreamento (atualmente {consentState, select, accepted {ativo} other {inativo}})"
+  },
+  "SettingsPrinterUrls": {
+    "printerUrls": "URLs de impressoras",
+    "printerUrlHelper": "Se tiveres uma impressora Wi-Fi física, podes adicionar o URL aqui e continuar no <link>🔗 separador Importar</link>",
+    "addPrinter": "Adicionar impressora",
+    "printerUrl": "URL da impressora"
   },
   "TrackingConsent": {
     "title": "Eu poderia usar a sua ajuda",

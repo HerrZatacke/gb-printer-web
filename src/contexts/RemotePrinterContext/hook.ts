@@ -41,8 +41,8 @@ export const useContextHook = (): RemotePrinterContextValue => {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent<RemotePrinterEvent>) => {
-      const { printerUrl } = useSettingsStore.getState();
-      const origin = new URL(printerUrl).origin;
+      const { printerUrls } = useSettingsStore.getState();
+      const origins = printerUrls.map((printerUrl) => (new URL(printerUrl).origin));
       const sourceWindow = event.source as Window;
 
       if (!origins.includes(event.origin)) {

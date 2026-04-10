@@ -2,7 +2,6 @@
 
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Link from '@mui/material/Link';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
@@ -10,8 +9,8 @@ import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import DownloadOptionsForm from '@/components/Overlays/DownloadOptions/DownloadOptionsForm';
+import SettingsPrinterUrls from '@/components/SettingsPrinterUrls';
 import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
-import WrappedNextLink from '@/components/WrappedNextLink';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { savImportOptions, SavImportOrder } from '@/consts/SavImportOrder';
@@ -22,7 +21,6 @@ import { useFrameGroups } from '@/hooks/useFrameGroups';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import { locales } from '@/i18n/locales';
 import { useSettingsStore } from '@/stores/stores';
-import cleanUrl from '@/tools/cleanUrl';
 
 interface ClickActionOption {
   translationKey: string,
@@ -55,7 +53,6 @@ function SettingsGeneric() {
     importPad,
     pageSize,
     preferredLocale,
-    printerUrl,
     savFrameTypes,
     savImportOrder,
     setEnableDebug,
@@ -69,14 +66,12 @@ function SettingsGeneric() {
     setPreferredLocale,
     setSavFrameTypes,
     setSavImportOrder,
-    setPrinterUrl,
   } = useSettingsStore();
 
   const { frameGroups } = useFrameGroups();
   const { setConsent, trackingAvailable, consentState } = useTracking();
 
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
-  const [printerUrlState, setPrinterUrlState] = useState<string>(printerUrl);
   const [localeExampleText, setLocaleExampleText] = useState<string>('');
   const { formatter } = useDateFormat();
   const t = useTranslations('SettingsGeneric');
@@ -100,6 +95,8 @@ function SettingsGeneric() {
       direction="column"
       gap={6}
     >
+      <SettingsPrinterUrls />
+
       <TextField
         id="settings-pagesize"
         label={t('galleryPageSize')}
@@ -299,46 +296,7 @@ function SettingsGeneric() {
 
       <EnableWebUSB />
 
-      <TextField
-        id="settings-printer-url"
-        label={t('printerUrl')}
-        type="text"
-        helperText={
-          t.rich('printerUrlHelper', {
-            link: (chunks) => (
-              <Link
-                component={WrappedNextLink}
-                href="/import"
-                prefetch={false}
-              >
-                {chunks}
-              </Link>
-            ),
-          })
-        }
-        value={printerUrlState}
-        onChange={(ev) => setPrinterUrlState(ev.target.value)}
-        onBlur={() => {
-          const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
-          setPrinterUrlState(cleanPrinterUrl);
-          setPrinterUrl(cleanPrinterUrl);
-        }}
-        onKeyUp={(ev) => {
-          switch (ev.key) {
-            case 'Enter': {
-              const cleanPrinterUrl = cleanUrl(printerUrlState, 'http');
-              setPrinterUrlState(cleanPrinterUrl);
-              setPrinterUrl(cleanPrinterUrl);
-              break;
-            }
-
-            case 'Escape':
-              setPrinterUrlState(printerUrl);
-              break;
-            default:
-          }
-        }}
-      />
+      {/* <SettingsPrinterUrls /> */}
 
       <FormControlLabel
         label={t('enableDebug')}

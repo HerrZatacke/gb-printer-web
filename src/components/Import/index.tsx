@@ -5,26 +5,21 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import ConnectPrinter from '@/components/ConnectPrinter';
-import PrinterReport from '@/components/PrinterReport';
 import { ExportTypes } from '@/consts/exportTypes';
 import { useGBXCart } from '@/hooks/useGBXCart';
-import { useSettingsStore } from '@/stores/stores';
 import { useImport } from './useImport';
 
 function Import() {
   const [text, setText] = useState('');
   const t = useTranslations('Import');
-  const { printerUrl } = useSettingsStore();
-  const fullPrinterUrl = printerUrl ? `${printerUrl}remote.html` : undefined;
 
   const {
     importPlainText,
     importFiles,
     exportJson,
   } = useImport();
-
 
   const {
     gbxCartAvailable,
@@ -43,9 +38,7 @@ function Import() {
 
   return (
     <Stack direction="column" gap={6}>
-
-      { fullPrinterUrl && <PrinterReport /> }
-      { fullPrinterUrl && <ConnectPrinter /> }
+      <ConnectPrinter />
 
       <ButtonGroup
         variant="contained"

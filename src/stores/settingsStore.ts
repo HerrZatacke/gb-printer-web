@@ -36,7 +36,7 @@ export interface Settings {
   lastBaudRate: number;
   pageSize: number;
   preferredLocale: string;
-  printerUrl: string;
+  printerUrls: string[];
   savFrameTypes: string;
   savImportOrder: SavImportOrder;
   themeName: ThemeName;
@@ -67,7 +67,7 @@ interface Actions {
   setLastBaudRate: (lastBaudRate: number) => void;
   setPageSize: (pageSize: number) => void;
   setPreferredLocale: (preferredLocale: string) => void;
-  setPrinterUrl: (printerUrl: string) => void;
+  setPrinterUrls: (printerUrls: string[]) => void;
   setSavFrameTypes: (savFrameTypes: string) => void;
   setSavImportOrder: (savImportOrder: SavImportOrder) => void;
   setThemeName: (themeName: ThemeName) => void;
@@ -117,7 +117,7 @@ export const createSettingsStore = () => (
         lastBaudRate: 115200,
         pageSize: 30,
         preferredLocale: getDefaultLocale(),
-        printerUrl: '',
+        printerUrls: [],
         savFrameTypes: 'int',
         savImportOrder: SavImportOrder.CART_INDEX,
         themeName: ThemeName.BRIGHT,
@@ -142,7 +142,7 @@ export const createSettingsStore = () => (
         setImportPad: (importPad: boolean) => set({ importPad }),
         setLastBaudRate: (lastBaudRate: number) => set({ lastBaudRate }),
         setPageSize: (pageSize: number) => set({ pageSize }),
-        setPrinterUrl: (printerUrl: string) => set({ printerUrl: cleanUrl(printerUrl, 'http') }),
+        setPrinterUrls: (printerUrls: string[]) => set({ printerUrls: printerUrls.map((url) => cleanUrl(url, 'http')) }),
         setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
         setSavImportOrder: (savImportOrder: SavImportOrder) => set({ savImportOrder }),
         setThemeName: (themeName: ThemeName) => set({ themeName }),

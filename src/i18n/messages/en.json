@@ -16,8 +16,6 @@
     "sortPalettes": "Sort Palettes",
     "preferredLocale": "Preferred locale",
     "exampleDateFormat": "Example date format: {format}",
-    "printerUrl": "Printer URL",
-    "printerUrlHelper": "If you own a physical wifi-printer, you can add its URL here and check the <link>🔗 Import-tab</link>",
     "enableDebug": "Show debug info",
     "galleryClickActions": {
       "clickSelectsItem": "Click selects the item",
@@ -36,6 +34,12 @@
       "fr-FR": "French – France (fr-FR)"
     },
     "resetTrackingConsent": "Reset Analytics/Tracking consent (currently {consentState, select, accepted {active} other {inactive}})"
+  },
+  "SettingsPrinterUrls": {
+    "printerUrls": "Printer URLs",
+    "printerUrlHelper": "If you own a physical wifi-printer, you can add its URL here and check the <link>🔗 Import-tab</link>",
+    "addPrinter": "Add printer",
+    "printerUrl": "Printer URL"
   },
   "TrackingConsent": {
     "title": "I could use your help",
