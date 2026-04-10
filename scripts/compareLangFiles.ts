@@ -68,7 +68,11 @@ function isFalsePositive(keyPath: string, charGroupType: string, want: number, f
  }
 
  if (
-   ['ConnectPrinter.openPrinterPage', 'ConnectPrinter.closePrinterPage'].includes(keyPath) &&
+   [
+     'ConnectPrinter.openPrinterPage',
+     'ConnectPrinter.closePrinterPage',
+     'ConnectPrinter.askAddPrinterMessage',
+   ].includes(keyPath) &&
    charGroupType === 'Single quotationmarks' &&
    want === 0 &&
    found === 1
