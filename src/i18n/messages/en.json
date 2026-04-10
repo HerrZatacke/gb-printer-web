@@ -289,7 +289,9 @@
   },
   "ConnectPrinter": {
     "openPrinterPage": "Open printer page",
-    "closePrinterPage": "Close printer page"
+    "closePrinterPage": "Close printer page",
+    "askAddPrinterTitle": "Trust and add printer",
+    "askAddPrinterMessage": "Trust external printer from {openPrinterUrl}, add it to the list of known devices, and open it?"
   },
   "EnvInfo": {
     "appVersion": "Web-App version: {value}",

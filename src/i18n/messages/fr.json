@@ -289,7 +289,9 @@
   },
   "ConnectPrinter": {
     "openPrinterPage": "Ouvrir la page de l’imprimante",
-    "closePrinterPage": "Fermer la page de l’imprimante"
+    "closePrinterPage": "Fermer la page de l’imprimante",
+    "askAddPrinterTitle": "Faire confiance à l’imprimante et l’ajouter",
+    "askAddPrinterMessage": "Faire confiance à l’imprimante externe de {openPrinterUrl}, l’ajouter à la liste des appareils connus et l’ouvrir ?"
   },
   "EnvInfo": {
     "appVersion": "Version de l'application web : {value}",

@@ -289,7 +289,9 @@
   },
   "ConnectPrinter": {
     "openPrinterPage": "Printerpagina openen",
-    "closePrinterPage": "Printerpagina sluiten"
+    "closePrinterPage": "Printerpagina sluiten",
+    "askAddPrinterTitle": "Printer vertrouwen en toevoegen",
+    "askAddPrinterMessage": "Externe printer van {openPrinterUrl} vertrouwen, toevoegen aan de lijst met bekende apparaten en openen?"
   },
   "EnvInfo": {
     "appVersion": "Web-app versie: {value}",

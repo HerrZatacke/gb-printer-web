@@ -289,7 +289,9 @@
   },
   "ConnectPrinter": {
     "openPrinterPage": "Åpne skriverside",
-    "closePrinterPage": "Lukk skriverside"
+    "closePrinterPage": "Lukk skriverside",
+    "askAddPrinterTitle": "Stol på og legg til skriver",
+    "askAddPrinterMessage": "Stole på ekstern skriver fra {openPrinterUrl}, legge den til i listen over kjente enheter og åpne den?"
   },
   "EnvInfo": {
     "appVersion": "Web-app-versjon: {value}",

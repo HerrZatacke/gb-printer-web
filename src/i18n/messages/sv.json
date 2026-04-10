@@ -289,7 +289,9 @@
   },
   "ConnectPrinter": {
     "openPrinterPage": "Öppna skrivarsida",
-    "closePrinterPage": "Stäng skrivarsida"
+    "closePrinterPage": "Stäng skrivarsida",
+    "askAddPrinterTitle": "Lita på och lägg till skrivare",
+    "askAddPrinterMessage": "Lita på extern skrivare från {openPrinterUrl}, lägga till den i listan över kända enheter och öppna den?"
   },
   "EnvInfo": {
     "appVersion": "Webbapp-version: {value}",
