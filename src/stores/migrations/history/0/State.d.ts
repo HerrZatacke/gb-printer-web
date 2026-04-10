@@ -4,45 +4,13 @@ import { type Image } from '@/types/Image';
 import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
-import { type DropBoxSettings, type GitStorageSettings, type RecentImport, type SyncLastUpdate } from '@/types/Sync';
-import { type VideoParams } from '@/types/VideoParams';
 
 export interface ReduxState {
   // ItemsState
-  frameGroupNames: FrameGroup[],
-  frames: Frame[],
-  images: Image[],
-  imageGroups: SerializableImageGroup[],
-  palettes: Palette[],
-  plugins: Plugin[],
-
-  // SettingsState
-  activePalette: string,
-  enableDebug: boolean,
-  exportFileTypes: string[],
-  exportScaleFactors: number[],
-  forceMagicCheck: boolean,
-  galleryView: string,
-  handleExportFrame: string,
-  hideDates: boolean,
-  importDeleted: boolean,
-  importLastSeen: boolean,
-  importPad: boolean,
-  pageSize: number,
-  preferredLocale: string,
-  printerUrl: string,
-  savFrameTypes: string,
-  sortPalettes: string,
-  useSerials: boolean,
-  videoParams: VideoParams,
-
-  // FiltersState
-  imageSelection: string[],
-  recentImports: RecentImport[],
-  sortBy: string,
-
-  // StoragesState
-  dropboxStorage: DropBoxSettings,
-  gitStorage: GitStorageSettings,
-  syncLastUpdate: SyncLastUpdate,
+  frameGroupNames: FrameGroup[];
+  frames: Frame[];
+  images: Image[];
+  imageGroups: SerializableImageGroup[];
+  palettes: Palette[];
+  plugins: Plugin[];
 }

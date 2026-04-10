@@ -5,9 +5,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import ConnectPrinter from '@/components/ConnectPrinter';
-import PrinterReport from '@/components/PrinterReport';
 import { ExportTypes } from '@/consts/exportTypes';
 import { useGBXCart } from '@/hooks/useGBXCart';
 import { useImport } from './useImport';
@@ -19,7 +18,6 @@ function Import() {
   const {
     importPlainText,
     importFiles,
-    printerUrl,
     exportJson,
   } = useImport();
 
@@ -40,9 +38,7 @@ function Import() {
 
   return (
     <Stack direction="column" gap={6}>
-
-      { printerUrl && <PrinterReport /> }
-      { printerUrl && <ConnectPrinter /> }
+      <ConnectPrinter />
 
       <ButtonGroup
         variant="contained"

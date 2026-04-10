@@ -16,8 +16,6 @@
     "sortPalettes": "Paletten sorteren",
     "preferredLocale": "Voorkeurstaal",
     "exampleDateFormat": "Voorbeeld datumformaat: {format}",
-    "printerUrl": "Printer-URL",
-    "printerUrlHelper": "Als je een fysieke WiFi-printer hebt, kun je de URL hier toevoegen en doorgaan in de <link>🔗 Import-tab</link>",
     "enableDebug": "Debug-informatie tonen",
     "galleryClickActions": {
       "clickSelectsItem": "Klik selecteert het item",
@@ -36,6 +34,12 @@
       "fr-FR": "Frans – Frankrijk (fr-FR)"
     },
     "resetTrackingConsent": "Analyse-/trackingtoestemming opnieuw instellen (momenteel {consentState, select, accepted {actief} other {inactief}})"
+  },
+  "SettingsPrinterUrls": {
+    "printerUrls": "Printer-URL's",
+    "printerUrlHelper": "Als je een fysieke WiFi-printer hebt, kun je de URL hier toevoegen en doorgaan in de <link>🔗 Import-tab</link>",
+    "addPrinter": "Printer toevoegen",
+    "printerUrl": "Printer-URL"
   },
   "TrackingConsent": {
     "title": "Ik kan je hulp gebruiken",
@@ -285,7 +289,9 @@
   },
   "ConnectPrinter": {
     "openPrinterPage": "Printerpagina openen",
-    "closePrinterPage": "Printerpagina sluiten"
+    "closePrinterPage": "Printerpagina sluiten",
+    "askAddPrinterTitle": "Printer vertrouwen en toevoegen",
+    "askAddPrinterMessage": "Externe printer van {openPrinterUrl} vertrouwen, toevoegen aan de lijst met bekende apparaten en openen?"
   },
   "EnvInfo": {
     "appVersion": "Web-app versie: {value}",

@@ -11,9 +11,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { filesize } from 'filesize';
 import { useTranslations } from 'next-intl';
-import React, { useMemo } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { PrinterFunction } from '@/consts/printerFunction';
-import { usePrinter } from '@/hooks/usePrinter';
+import { useRemotePrinterContext } from '@/contexts/RemotePrinterContext';
+import { useInteractionsStore } from '@/stores/stores';
 
 const functionTranslationKeys: Record<PrinterFunction, string> = {
   checkPrinter: 'functions.checkPrinter',
@@ -21,16 +22,10 @@ const functionTranslationKeys: Record<PrinterFunction, string> = {
   clearPrinter: 'functions.clearPrinter',
 };
 
-function PrinterReport() {
+function PrinterReport({ children }: PropsWithChildren) {
   const t = useTranslations('PrinterReport');
-
-  const {
-    printerData,
-    printerFunctions,
-    printerConnected,
-    callRemoteFunction,
-    printerBusy,
-  } = usePrinter();
+  const { printerData, printerFunctions, printerBusy } = useInteractionsStore();
+  const { callRemoteFunction } = useRemotePrinterContext();
 
   const fetchImagesLabel = useMemo((): string => {
     const dumpsLength = printerData?.dumps?.length || 0;
@@ -41,35 +36,36 @@ function PrinterReport() {
     return t('functions.fetchImagesCount', { count: dumpsLength });
   }, [printerData?.dumps?.length, t]);
 
-  if (!printerConnected) {
-    return null;
-  }
-
   return (
     <Stack direction="column" gap={2}>
       <ButtonGroup
         variant="contained"
         fullWidth
       >
-        {printerFunctions.map((name) => (
-          <Button
-            key={name}
-            disabled={
-              printerBusy ||
-              (
-                [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER].includes(name) &&
-                !printerData?.dumps?.length
-              )
-            }
-            onClick={() => callRemoteFunction(name)}
-          >
-            {
-              name === PrinterFunction.FETCHIMAGES ?
-                fetchImagesLabel :
-                t(functionTranslationKeys[name as PrinterFunction])
-            }
-          </Button>
-        ))}
+        {printerFunctions.length ? (
+          printerFunctions.map((name) => (
+            <Button
+              key={name}
+              disabled={
+                printerBusy ||
+                (
+                  [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER].includes(name) &&
+                  !printerData?.dumps?.length
+                )
+              }
+              onClick={() => callRemoteFunction(name)}
+            >
+              {
+                name === PrinterFunction.FETCHIMAGES ?
+                  fetchImagesLabel :
+                  t(functionTranslationKeys[name as PrinterFunction])
+              }
+            </Button>
+          ))
+        ) : (
+          <Button loading />
+        )}
+        {children}
       </ButtonGroup>
 
       {
