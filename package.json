@@ -16,7 +16,8 @@
     "audit": "npm audit fix",
     "postinstall": "patch-package",
     "browserlist": "npx update-browserslist-db@latest",
-    "comparelangs": "tsx scripts/compareLangFiles.ts"
+    "translations:compare": "tsx scripts/compareLangFiles.ts",
+    "translations:get": "tsx --env-file=.env scripts/translations/get.ts && npm run translations:compare"
   },
   "author": "Herr Zatacke",
   "license": "MIT",
@@ -88,6 +89,7 @@
     "next-intl": "^4.9.0",
     "node-kmeans": "^1.1.9",
     "object-hash": "^3.0.0",
+    "ofetch": "^1.5.1",
     "omggif": "^1.0.10",
     "pako": "^2.1.0",
     "patch-package": "^8.0.1",
