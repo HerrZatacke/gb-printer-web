@@ -38,6 +38,8 @@ for (const exportLanguage of languageKeys) {
 
   const languageExport = await $fetch(languageExportResponse.result.url, { responseType: 'json' });
 
-  await fs.writeFile(`${outDir}/${exportLanguage}.json`, JSON.stringify(languageExport, null, 2));
+  const jsonContent = `${JSON.stringify(languageExport, null, 2)}\n`;
+
+  await fs.writeFile(`${outDir}/${exportLanguage}.json`, jsonContent.replace(/\n/g, '\r\n'));
 }
 
