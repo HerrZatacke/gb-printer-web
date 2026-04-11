@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef } from 'react';
 import { PrinterFunction } from '@/consts/printerFunction';
 import useImportFile from '@/hooks/useImportFile';
@@ -18,6 +19,7 @@ export interface RemotePrinterContextValue {
 
 export const useContextHook = (): RemotePrinterContextValue => {
   const { setPrinterFunctions, setPrinterBusy, setPrinterData } = useInteractionsStore.getState();
+  const t = useTranslations('RemotePrinterContext');
   const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
   const { dismissDialog, setDialog } = useDialogsStore.getState();
   const { handleFileImport } = useImportFile();
@@ -106,7 +108,7 @@ export const useContextHook = (): RemotePrinterContextValue => {
           handleFileImport(files, { fromPrinter: true });
         } else {
           setDialog({
-            message: 'No valid files received from WiFi-Printer',
+            message: t('noFilesReceived'),
             confirm: async () => {
               dismissDialog(0);
               setPrinterBusy(false);
@@ -127,7 +129,7 @@ export const useContextHook = (): RemotePrinterContextValue => {
 
     return () => window.removeEventListener('message', handleMessage);
 
-  }, [dismissDialog, handleFileImport, setDialog, setPrinterBusy, setPrinterData, setPrinterFunctions, showProgress]);
+  }, [dismissDialog, handleFileImport, setDialog, setPrinterBusy, setPrinterData, setPrinterFunctions, showProgress, t]);
 
   const callRemoteFunction = useCallback(async (functionType: PrinterFunction) => {
     const { printerData } = useInteractionsStore.getState();
