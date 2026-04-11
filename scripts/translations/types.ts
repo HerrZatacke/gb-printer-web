@@ -24,3 +24,16 @@ export interface POELanguages {
 export interface POEExport {
   url: string;
 }
+
+export interface POEUpload {
+  terms: {
+    parsed: number;
+    added: number;
+    deleted: number;
+  };
+  translations: {
+    parsed: number;
+    added: number;
+    updated: number;
+  };
+}

@@ -17,7 +17,8 @@
     "postinstall": "patch-package",
     "browserlist": "npx update-browserslist-db@latest",
     "translations:compare": "tsx scripts/compareLangFiles.ts",
-    "translations:get": "tsx --env-file=.env scripts/translations/get.ts && npm run translations:compare"
+    "translations:get": "tsx --env-file=.env scripts/translations/get.ts && npm run translations:compare",
+    "translations:put": "tsx --env-file=.env scripts/translations/put.ts"
   },
   "author": "Herr Zatacke",
   "license": "MIT",
