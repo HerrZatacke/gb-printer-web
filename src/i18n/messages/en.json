@@ -437,6 +437,9 @@
     "showAllMessages": "Show all {count} messages",
     "startedAt": "Started at: {time}"
   },
+  "RemotePrinterContext": {
+    "noFilesReceived": "No valid files received from WiFi-Printer"
+  },
   "Serials": {
     "dialogHeader": "WebUSB / Serial devices"
   },
