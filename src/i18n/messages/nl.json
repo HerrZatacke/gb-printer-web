@@ -437,6 +437,9 @@
     "showAllMessages": "Alle {count} berichten tonen",
     "startedAt": "Gestart om: {time}"
   },
+  "RemotePrinterContext": {
+    "noFilesReceived": "Geen geldige bestanden ontvangen van WiFi-printer"
+  },
   "Serials": {
     "dialogHeader": "WebUSB / Seriële apparaten"
   },

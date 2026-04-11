@@ -437,6 +437,9 @@
     "showAllMessages": "Vis alle {count} meldinger",
     "startedAt": "Startet kl.: {time}"
   },
+  "RemotePrinterContext": {
+    "noFilesReceived": "Ingen gyldige filer mottatt fra WiFi-skriver"
+  },
   "Serials": {
     "dialogHeader": "Serielles dialog"
   },
