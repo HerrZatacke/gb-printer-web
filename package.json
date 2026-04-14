@@ -9,7 +9,7 @@
     "build:lint": "eslint .",
     "build:build": "next build --webpack",
     "build:clean": "rimraf public/fav && rimraf out && rimraf o",
-    "build:replace": "node scripts/replaceInFiles.mjs",
+    "build:replace": "tsx scripts/replaceInFiles.ts",
     "serve": "npm run build && npm run serve:serve",
     "serve:serve": "npx serve out",
     "audit": "npm audit fix",
