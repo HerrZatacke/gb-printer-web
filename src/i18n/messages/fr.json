@@ -498,7 +498,7 @@
       "fr-FR": "Français – France (fr-FR)"
     },
     "preferredLocale": "Langue préférée",
-    "resetTrackingConsent": "Réinitialiser le consentement pour l'analyse/le suivi (actuellement {consentState, select, accepted {actif} other {inactif}})",
+    "resetTrackingConsent": "Réinitialiser le consentement pour l'analyse/le suivi (actuellement {consentState, select, accepted {active} other {inactive}})",
     "sortPalettes": "Trier les palettes"
   },
   "SettingsGit": {
