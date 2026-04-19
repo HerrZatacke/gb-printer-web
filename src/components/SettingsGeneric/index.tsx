@@ -95,8 +95,6 @@ function SettingsGeneric() {
       direction="column"
       gap={6}
     >
-      <SettingsPrinterUrls />
-
       <TextField
         id="settings-pagesize"
         label={t('galleryPageSize')}
@@ -296,7 +294,7 @@ function SettingsGeneric() {
 
       <EnableWebUSB />
 
-      {/* <SettingsPrinterUrls /> */}
+      <SettingsPrinterUrls />
 
       <FormControlLabel
         label={t('enableDebug')}
