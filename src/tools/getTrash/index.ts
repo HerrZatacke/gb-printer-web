@@ -4,7 +4,7 @@ import { del, delFrame } from '@/tools/storage';
 import { type MonochromeImage, type RGBNImage, type Image } from '@/types/Image';
 
 interface CheckFrame {
-  hash: string,
+  hash: string;
 }
 
 const hashIsUsedInRGBN = (hash: string, images: RGBNImage[]): boolean => (
@@ -49,8 +49,8 @@ export const cleanupStorage = async ({
   images,
   frames,
 }: {
-  images: Image[]
-  frames: CheckFrame[],
+  images: Image[];
+  frames: CheckFrame[];
 }): Promise<void> => {
   await localforageReady();
   const storedImages = await localforageImages.keys();

@@ -3,21 +3,21 @@ import { type ImportItem } from '@/types/ImportItem';
 import { type QueueImage } from '@/types/QueueImage';
 
 interface Values {
-  bitmapQueue: QueueImage[],
-  frameQueue: ImportItem[],
-  importQueue: ImportItem[],
+  bitmapQueue: QueueImage[];
+  frameQueue: ImportItem[];
+  importQueue: ImportItem[];
 }
 
 interface Actions {
-  bitmapQueueAdd: (queueImages: QueueImage[]) => void,
-  bitmapQueueCancel: () => void,
-  frameQueueAdd: (importItems: ImportItem[]) => void,
-  frameQueueCancelOne: (tempId: string) => void,
-  importQueueAdd: (importItems: ImportItem[]) => void,
-  importQueueSet: (importItems: ImportItem[]) => void,
-  importQueueCancel: () => void,
-  importQueueCancelOne: (tempId: string) => void,
-  getImportItem: (tempId: string) => ImportItem | null,
+  bitmapQueueAdd: (queueImages: QueueImage[]) => void;
+  bitmapQueueCancel: () => void;
+  frameQueueAdd: (importItems: ImportItem[]) => void;
+  frameQueueCancelOne: (tempId: string) => void;
+  importQueueAdd: (importItems: ImportItem[]) => void;
+  importQueueSet: (importItems: ImportItem[]) => void;
+  importQueueCancel: () => void;
+  importQueueCancelOne: (tempId: string) => void;
+  getImportItem: (tempId: string) => ImportItem | null;
 }
 
 export type ImportsState = Values & Actions;

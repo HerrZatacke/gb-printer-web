@@ -15,7 +15,7 @@ const transparentLine: string[] = (new Array(20)).fill(SKIP_LINE);
 interface Props {
   frame: Frame;
   palette: string[];
-  usage: number,
+  usage: number;
   frameActive: boolean;
   toggleFrame: (mode: ActiveFilterUpdateMode) => void;
 }

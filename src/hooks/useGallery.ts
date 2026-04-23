@@ -11,14 +11,14 @@ import getFilteredImagesCount from '@/tools/getFilteredImages/count';
 import { type Image } from '@/types/Image';
 
 interface UseGallery {
-  totalImageCount: number,
-  selectedCount: number,
-  images: Image[],
-  filteredCount: number,
-  page: number,
-  maxPageIndex: number,
-  covers: string[],
-  isWorking: boolean,
+  totalImageCount: number;
+  selectedCount: number;
+  images: Image[];
+  filteredCount: number;
+  page: number;
+  maxPageIndex: number;
+  covers: string[];
+  isWorking: boolean;
 }
 
 export const useGallery = (): UseGallery => {

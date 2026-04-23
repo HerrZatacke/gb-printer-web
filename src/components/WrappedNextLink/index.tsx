@@ -7,7 +7,7 @@ import { useClientSearchParams } from '@/contexts/SearchParamsContext';
 
 declare global {
   interface Window {
-    debugNext71365?: boolean,
+    debugNext71365?: boolean;
   }
 }
 

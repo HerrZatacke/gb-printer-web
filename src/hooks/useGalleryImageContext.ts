@@ -20,20 +20,20 @@ import { getFilteredImages } from '@/tools/getFilteredImages';
 import { type RGBNImage } from '@/types/Image';
 
 interface UseGalleryImageContext {
-  isSelected: boolean,
-  canShare: boolean,
-  hasPlugins: boolean,
-  isFavourite: boolean,
-  hasMeta: boolean,
-  hasHashes: boolean,
-  startDownload: () => void,
-  deleteImage: () => void,
-  shareImage: () => void,
-  showMetadata: () => void,
-  updateImageToSelection: (mode: ImageSelectionMode) => void,
-  setLightboxImage: () => void,
-  updateFavouriteTag: (isFavourite: boolean) => void,
-  editImage: () => void,
+  isSelected: boolean;
+  canShare: boolean;
+  hasPlugins: boolean;
+  isFavourite: boolean;
+  hasMeta: boolean;
+  hasHashes: boolean;
+  startDownload: () => void;
+  deleteImage: () => void;
+  shareImage: () => void;
+  showMetadata: () => void;
+  updateImageToSelection: (mode: ImageSelectionMode) => void;
+  setLightboxImage: () => void;
+  updateFavouriteTag: (isFavourite: boolean) => void;
+  editImage: () => void;
 }
 
 export enum ButtonOption {

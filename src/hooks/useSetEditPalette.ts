@@ -27,8 +27,8 @@ const randomPalette = (): Palette => ({
 });
 
 interface UseSetEditPalette {
-  clonePalette: (shortName: string) => void,
-  editPalette: (shortName: string) => void,
+  clonePalette: (shortName: string) => void;
+  editPalette: (shortName: string) => void;
 }
 
 const useSetEditPalette = (): UseSetEditPalette => {

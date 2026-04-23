@@ -29,7 +29,7 @@ import { hasher } from './DropboxClient/dropboxContentHasher';
 import { type DropBoxSyncTool } from './index';
 
 interface WithContentHash {
-  dropboxContentHash: string,
+  dropboxContentHash: string;
 }
 
 const recoveryAttempts: string[] = [];

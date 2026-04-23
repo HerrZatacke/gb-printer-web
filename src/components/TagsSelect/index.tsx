@@ -14,9 +14,9 @@ import unique from '@/tools/unique';
 import InputNewTag from './InputNewTag';
 
 interface Props {
-  tags: TagChange
-  updateTags: (mode: TagUpdateMode, tag: string) => void,
-  resetTags: () => void,
+  tags: TagChange;
+  updateTags: (mode: TagUpdateMode, tag: string) => void;
+  resetTags: () => void;
 }
 
 function TagsSelect({

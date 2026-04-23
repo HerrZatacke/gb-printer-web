@@ -4,12 +4,14 @@ import React from 'react';
 import Lightbox from '@/components/Lightbox';
 import DownloadOptionsForm from '@/components/Overlays/DownloadOptions/DownloadOptionsForm';
 import useDownload from '@/hooks/useDownload';
+import { useDownloadInfo } from '@/hooks/useDownloadInfo';
 import { useInteractionsStore } from '@/stores/stores';
 
 function DownloadOptions() {
   const t = useTranslations('DownloadOptions');
   const { downloadHashes, setDownloadHashes } = useInteractionsStore();
   const { downloadImages } = useDownload();
+  const { downloadTotal } = useDownloadInfo();
 
   return (
     <Lightbox
@@ -19,6 +21,7 @@ function DownloadOptions() {
         setDownloadHashes([]);
       }}
       deny={() => setDownloadHashes([])}
+      canConfirm={downloadTotal > 0}
     >
       <Stack
         direction="column"

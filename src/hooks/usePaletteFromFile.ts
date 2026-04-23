@@ -29,8 +29,8 @@ const sortColor = (a: number[], b: number[]): number => {
 };
 
 interface UsePaletteFromFile {
-  onInputChange: (ev: ChangeEvent<HTMLInputElement>) => void,
-  busy: boolean,
+  onInputChange: (ev: ChangeEvent<HTMLInputElement>) => void;
+  busy: boolean;
 }
 
 const usePaletteFromFile = (): UsePaletteFromFile => {

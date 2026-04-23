@@ -6,17 +6,17 @@ import { useEditStore, useItemsStore } from '@/stores/stores';
 import { type Palette } from '@/types/Palette';
 
 interface UseEditPalette {
-  canConfirm: boolean,
-  canEditShortName: boolean,
-  newName: string,
-  newShortName: string,
-  palette: string[],
-  shortName: string,
-  setNewName: (newName: string) => void,
-  setNewShortName: (newShortName: string) => void,
-  setPalette: (palette: string[]) => void,
-  save: () => void,
-  cancelEditPalette: () => void,
+  canConfirm: boolean;
+  canEditShortName: boolean;
+  newName: string;
+  newShortName: string;
+  palette: string[];
+  shortName: string;
+  setNewName: (newName: string) => void;
+  setNewShortName: (newShortName: string) => void;
+  setPalette: (palette: string[]) => void;
+  save: () => void;
+  cancelEditPalette: () => void;
 }
 
 export const useEditPalette = (): UseEditPalette => {

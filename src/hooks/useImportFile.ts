@@ -7,7 +7,7 @@ import { ImportResult } from '@/types/ImportItem';
 import { useImportExportSettings } from './useImportExportSettings';
 
 interface UseImportFile {
-  handleFileImport: HandeFileImportFn,
+  handleFileImport: HandeFileImportFn;
 }
 
 const useImportFile = (): UseImportFile => {

@@ -142,9 +142,9 @@ class DropboxClient extends EventEmitter {
       access_token: accessToken,
       expires_in: expiresIn,
     } = response.result as {
-      refresh_token: string,
-      access_token: string,
-      expires_in: number,
+      refresh_token: string;
+      access_token: string;
+      expires_in: number;
     };
 
     const expiresAt = (new Date()).getTime() + (expiresIn * 1000);

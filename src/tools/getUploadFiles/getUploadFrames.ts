@@ -5,17 +5,17 @@ import { type Frame } from '@/types/Frame';
 import { type AddToQueueFn } from '@/types/Sync';
 
 interface TmpInfo {
-  file: Frame,
-  inRepo: RepoFile[],
-  searchHashes: string[],
+  file: Frame;
+  inRepo: RepoFile[];
+  searchHashes: string[];
 }
 
 export const getUploadFrames = async (
   repoContents: RepoContents,
   addToQueue: AddToQueueFn<SyncFile | null>,
 ): Promise<{
-  syncFrames: SyncFile[],
-  missingLocally: string[],
+  syncFrames: SyncFile[];
+  missingLocally: string[];
 }> => {
   const missingLocally: string[] = [];
 

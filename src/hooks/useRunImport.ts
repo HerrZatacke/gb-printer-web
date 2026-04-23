@@ -27,30 +27,30 @@ import { toSlug } from './useEditImageGroup';
 const sortByFilename = sortBy<ImportItem>('fileName');
 
 interface UseRunImport {
-  importQueue: FlaggedImportItem[],
-  palette: Palette,
-  activePalette: string,
-  importPad: boolean,
-  frame: string,
-  createGroup: boolean,
-  setFrame: (frame: string) => void,
-  setActivePalette: (palette: string) => void,
-  setCreateGroup: (createGroup: boolean) => void,
-  runImport: () => Promise<void>,
-  cancelImport: () => void,
-  tagChanges: TagChange,
-  resetTagChanges: () => void,
-  updateTagChanges: (updates: TagChange) => void,
-  importAsFrame: (id: string) => void,
-  cancelItemImport: (id: string) => void,
-  lastSeenCount: number,
-  deletedCount: number,
-  importedDuplicatesCount: number,
-  queueDuplicatesCount: number,
-  removeLastSeen: () => void,
-  removeDeleted: () => void,
-  removeImportedDuplicates: () => void,
-  removeQueueDuplicates: () => void,
+  importQueue: FlaggedImportItem[];
+  palette: Palette;
+  activePalette: string;
+  importPad: boolean;
+  frame: string;
+  createGroup: boolean;
+  setFrame: (frame: string) => void;
+  setActivePalette: (palette: string) => void;
+  setCreateGroup: (createGroup: boolean) => void;
+  runImport: () => Promise<void>;
+  cancelImport: () => void;
+  tagChanges: TagChange;
+  resetTagChanges: () => void;
+  updateTagChanges: (updates: TagChange) => void;
+  importAsFrame: (id: string) => void;
+  cancelItemImport: (id: string) => void;
+  lastSeenCount: number;
+  deletedCount: number;
+  importedDuplicatesCount: number;
+  queueDuplicatesCount: number;
+  removeLastSeen: () => void;
+  removeDeleted: () => void;
+  removeImportedDuplicates: () => void;
+  removeQueueDuplicates: () => void;
 }
 
 const useRunImport = (): UseRunImport => {

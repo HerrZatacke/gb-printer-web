@@ -7,8 +7,8 @@ import { useScreenDimensions } from '@/hooks/useScreenDimensions';
 import { useSettingsStore } from '@/stores/stores';
 
 interface Props extends PropsWithChildren {
-  fixedView?: GalleryViews,
-  showLoader?: boolean,
+  fixedView?: GalleryViews;
+  showLoader?: boolean;
 }
 
 function GalleryGrid({ fixedView, showLoader, children }: Props) {

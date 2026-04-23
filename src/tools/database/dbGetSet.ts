@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 export interface KV<T> {
-  key: string,
-  value: T,
+  key: string;
+  value: T;
 }
 
 export const dbGetByKey = async (store: IDBObjectStore, key: string): Promise<string> => new Promise((resolve) => {

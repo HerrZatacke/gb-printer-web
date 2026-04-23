@@ -4,8 +4,8 @@ import { type JSONExportState } from '@/types/ExportState';
 import { type GitStorageSettings } from '@/types/Sync';
 
 export interface GitSyncTool {
-  startSyncData: (direction: SyncDirection) => Promise<void>,
-  updateSettings: (gitSettings: GitStorageSettings) => Promise<void >,
+  startSyncData: (direction: SyncDirection) => Promise<void>;
+  updateSettings: (gitSettings: GitStorageSettings) => Promise<void >;
 }
 
 

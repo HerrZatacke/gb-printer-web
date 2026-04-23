@@ -9,11 +9,11 @@ import { usePalette } from '@/hooks/usePalette';
 import { generateGradient, GradientType } from '@/tools/generateGradient';
 
 interface Props {
-  shortName: string,
-  name: string,
-  isPredefined: boolean,
-  palette: string[],
-  usage: number,
+  shortName: string;
+  name: string;
+  isPredefined: boolean;
+  palette: string[];
+  usage: number;
 }
 
 function Palette({

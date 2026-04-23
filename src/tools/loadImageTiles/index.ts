@@ -5,9 +5,9 @@ import { type Frame } from '@/types/Frame';
 import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
 
 export type PImage = {
-  hash: Image['hash'],
-  frame?: Image['frame'],
-  hashes?: RGBNImage['hashes'],
+  hash: Image['hash'];
+  frame?: Image['frame'];
+  hashes?: RGBNImage['hashes'];
 }
 
 export const loadImageTiles = (stateImages: Image[], stateFrames: Frame[], recover?: RecoverFn) => {

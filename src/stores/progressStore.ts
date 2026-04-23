@@ -1,5 +1,5 @@
-import { v4 } from 'uuid';
 import { create } from 'zustand';
+import { randomId } from '@/tools/randomId';
 
 export enum LogType {
   ERROR = 'error',
@@ -8,33 +8,33 @@ export enum LogType {
 }
 
 export interface LogItem {
-  timestamp: number,
-  message: string,
-  type: LogType,
+  timestamp: number;
+  message: string;
+  type: LogType;
 }
 
 export interface ProgressLog {
-  git: LogItem[],
-  dropbox: LogItem[],
+  git: LogItem[];
+  dropbox: LogItem[];
 }
 
 export interface Progress {
-  id: string,
-  label: string,
-  value: number,
+  id: string;
+  label: string;
+  value: number;
 }
 
 interface Values {
-  progress: Progress[],
-  progressLog: ProgressLog,
+  progress: Progress[];
+  progressLog: ProgressLog;
 }
 
 interface Actions {
-  resetProgressLog: () => void,
-  startProgress: (label: string) => string,
-  setProgress: (id: string, progress: number) => void,
-  stopProgress: (id: string) => void,
-  setProgressLog: (which: keyof ProgressLog, logItem: LogItem) => void,
+  resetProgressLog: () => void;
+  startProgress: (label: string) => string;
+  setProgress: (id: string, progress: number) => void;
+  stopProgress: (id: string) => void;
+  setProgressLog: (which: keyof ProgressLog, logItem: LogItem) => void;
 }
 
 export type ProgressState = Values & Actions;
@@ -48,7 +48,7 @@ export const createProgressStore = () => (
 
     startProgress: (label: string): string => {
       const newProgress: Progress = {
-        id: v4(),
+        id: randomId(),
         label,
         value: 0,
       };

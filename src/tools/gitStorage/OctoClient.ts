@@ -6,25 +6,25 @@ import { type RepoFile, type RepoTasks } from '@/types/Export';
 import { type AddToQueueFn, type GitStorageSettings, type GitUploadResult, type UploadFile } from '@/types/Sync';
 
 interface GitFile {
-  path?: string | undefined,
-  mode?: string | undefined,
-  type?: string | undefined,
-  sha?: string | undefined,
-  size?: number | undefined,
-  url?: string | undefined
+  path?: string | undefined;
+  mode?: string | undefined;
+  type?: string | undefined;
+  sha?: string | undefined;
+  size?: number | undefined;
+  url?: string | undefined;
 }
 
 interface GitCurrentCommit {
-  commitSha: string,
-  treeSha: string,
+  commitSha: string;
+  treeSha: string;
 }
 
 interface GitBlobFile {
-  filename: string,
+  filename: string;
   blobData: {
-    url: string,
-    sha: string,
-  }
+    url: string;
+    sha: string;
+  };
 }
 
 interface GitCreateTree {

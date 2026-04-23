@@ -5,59 +5,59 @@ export type DialogResultValue = string | number | boolean;
 export type DialogResult = Record<string, DialogResultValue>;
 
 export interface DialogOption {
-  value: string,
-  name: string,
-  selected?: boolean,
+  value: string;
+  name: string;
+  selected?: boolean;
 }
 
 export interface DialogQuestion {
-  type: DialoqQuestionType,
-  label: string,
-  key: string,
+  type: DialoqQuestionType;
+  label: string;
+  key: string;
 }
 
 export interface DialogQuestionText extends DialogQuestion {
-  type: DialoqQuestionType.TEXT,
-  initialValue?: string,
-  disabled?: boolean,
+  type: DialoqQuestionType.TEXT;
+  initialValue?: string;
+  disabled?: boolean;
 }
 
 export interface DialogQuestionNumber extends DialogQuestion {
-  type: DialoqQuestionType.NUMBER,
-  min: number,
-  max: number,
-  disabled?: boolean,
+  type: DialoqQuestionType.NUMBER;
+  min: number;
+  max: number;
+  disabled?: boolean;
 }
 
 export interface DialogQuestionSelect extends DialogQuestion {
-  type: DialoqQuestionType.SELECT,
-  options: DialogOption[],
-  disabled?: boolean,
+  type: DialoqQuestionType.SELECT;
+  options: DialogOption[];
+  disabled?: boolean;
 }
 
 export interface DialogQuestionCheckbox extends DialogQuestion {
-  type: DialoqQuestionType.CHECKBOX,
-  disabled?: boolean,
+  type: DialoqQuestionType.CHECKBOX;
+  disabled?: boolean;
 }
 
 export interface DialogQuestionInfo extends DialogQuestion {
-  type: DialoqQuestionType.INFO,
-  severity: AlertColor,
+  type: DialoqQuestionType.INFO;
+  severity: AlertColor;
 }
 
 export interface DialogQuestionImage extends DialogQuestion {
-  type: DialoqQuestionType.IMAGE,
-  src: string,
+  type: DialoqQuestionType.IMAGE;
+  src: string;
 }
 
 export interface DialogQuestionMeta extends DialogQuestion {
-  type: DialoqQuestionType.META,
-  meta: MetaProps,
+  type: DialoqQuestionType.META;
+  meta: MetaProps;
 }
 
 export interface Dialog {
-  message: string,
-  questions?: (values: DialogResult) => DialogQuestion[],
-  confirm: (values: DialogResult) => Promise<void>,
-  deny?: () => Promise<void>,
+  message: string;
+  questions?: (values: DialogResult) => DialogQuestion[];
+  confirm: (values: DialogResult) => Promise<void>;
+  deny?: () => Promise<void>;
 }

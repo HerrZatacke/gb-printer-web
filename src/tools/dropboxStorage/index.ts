@@ -5,17 +5,17 @@ import { type JSONExportState } from '@/types/ExportState';
 import { type DropBoxSettings } from '@/types/Sync';
 
 export interface DropBoxSyncTool {
-  updateSettings: (dropBoxSettings: DropBoxSettings) => Promise<void>,
-  startSyncData: (direction: SyncDirection) => Promise<void>,
-  startSyncImages: () => Promise<void>,
-  startAuth: () => Promise<void>,
-  recoverImageData: (hash: string) => Promise<boolean>,
+  updateSettings: (dropBoxSettings: DropBoxSettings) => Promise<void>;
+  startSyncData: (direction: SyncDirection) => Promise<void>;
+  startSyncImages: () => Promise<void>;
+  startAuth: () => Promise<void>;
+  recoverImageData: (hash: string) => Promise<boolean>;
 }
 
 let dropBoxSyncTool: DropBoxSyncTool;
 
 interface AndSubscribe {
-  subscribe: () => () => void,
+  subscribe: () => () => void;
 }
 
 export const dropboxStorageTool = (

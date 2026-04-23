@@ -17,13 +17,13 @@ import MetaTable from '../MetaTable';
 import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
 
 interface Props {
-  hash: string,
-  updateCreated: (value: string) => void,
-  updateRotation: (value: Rotation) => void,
-  created?: string,
-  hashes?: RGBNHashes,
-  meta?: ImageMetadata,
-  rotation?: Rotation,
+  hash: string;
+  updateCreated: (value: string) => void;
+  updateRotation: (value: Rotation) => void;
+  created?: string;
+  hashes?: RGBNHashes;
+  meta?: ImageMetadata;
+  rotation?: Rotation;
 }
 
 const rotations: number[] = [

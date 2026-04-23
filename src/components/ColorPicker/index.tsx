@@ -6,9 +6,9 @@ import Stack from '@mui/material/Stack';
 import React, { useEffect, useId, useState, useRef } from 'react';
 
 interface Props {
-  label: string,
-  value: string,
-  onChange: (value: string) => void,
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
 }
 
 const isValidColor = (color: string): boolean => {

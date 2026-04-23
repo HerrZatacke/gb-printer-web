@@ -1,7 +1,7 @@
 
 interface GBXCartDeviceVar {
-  size: number,
-  value: number,
+  size: number;
+  value: number;
 }
 
 // https://github.com/Mraulio/GBCamera-Android-Manager/blob/main/app/src/main/java/com/mraulio/gbcameramanager/gbxcart/GBxCartCommands.java

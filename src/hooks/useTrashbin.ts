@@ -20,18 +20,18 @@ import { type Frame } from '@/types/Frame';
 import { type Image } from '@/types/Image';
 
 export interface UseTrashbin {
-  showTrashCount: (show: boolean) => void
-  purgeTrash: () => Promise<void>
-  downloadImages: () => Promise<void>
-  downloadFrames: () => Promise<void>
-  checkUpdateTrashCount: () => Promise<void>
-  trashCount: TrashCount,
+  showTrashCount: (show: boolean) => void;
+  purgeTrash: () => Promise<void>;
+  downloadImages: () => Promise<void>;
+  downloadFrames: () => Promise<void>;
+  checkUpdateTrashCount: () => Promise<void>;
+  trashCount: TrashCount;
 }
 
 interface TrashItem {
-  hash: string,
-  lines: string[],
-  binary: string,
+  hash: string;
+  lines: string[];
+  binary: string;
 }
 
 const getItems = async (keys: string[], storage: WrappedLocalForageInstance<string>): Promise<TrashItem[]> => {

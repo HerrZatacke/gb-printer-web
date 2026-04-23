@@ -2,16 +2,16 @@ import { type LogItem, useProgressStore, useStoragesStore } from '@/stores/store
 
 interface UseProgressLog {
   git: {
-    messages: LogItem[],
-    repoUrl: string,
-    repo?: string,
-    branch?: string,
-  },
+    messages: LogItem[];
+    repoUrl: string;
+    repo?: string;
+    branch?: string;
+  };
   dropbox: {
-    messages: LogItem[],
-    path: string,
-  },
-  confirm: () => void,
+    messages: LogItem[];
+    path: string;
+  };
+  confirm: () => void;
 }
 
 export const useProgressLog = (): UseProgressLog => {

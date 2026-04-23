@@ -190,6 +190,7 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     setSSTVHash,
     shareImage,
     showMetadata,
+    sstvEnabled,
     startDownload,
     updateFavouriteTag,
     updateImageToSelection,

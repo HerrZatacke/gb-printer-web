@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
 export interface OverlayGlobalKeysParams {
-  confirm?: () => void,
-  canConfirm: boolean,
-  deny?: () => void,
+  confirm?: () => void;
+  canConfirm: boolean;
+  deny?: () => void;
 }
 
 const useOverlayGlobalKeys = ({

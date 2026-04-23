@@ -12,10 +12,10 @@ import {
 } from '@/stores/stores';
 
 interface UseImageGroups {
-  resetGroups: () => void,
-  createGroup: (hash: string) => void,
-  editGroup: (id: string) => void,
-  deleteGroup: (id: string) => void,
+  resetGroups: () => void;
+  createGroup: (hash: string) => void;
+  editGroup: (id: string) => void;
+  deleteGroup: (id: string) => void;
 }
 
 export const useImageGroups = (): UseImageGroups => {

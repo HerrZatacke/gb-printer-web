@@ -3,10 +3,10 @@ import { localforageFrames } from '@/tools/localforageInstance';
 import { deflate, inflate } from '@/tools/pack';
 
 export interface FrameData {
-  upper: string[],
-  left: string[][],
-  right: string[][],
-  lower: string[],
+  upper: string[];
+  left: string[][];
+  right: string[][];
+  lower: string[];
 }
 
 export const compressAndHashFrame = async (lines: string[], imageStartLine: number) => {

@@ -23,7 +23,6 @@ dumps/*
 # next.js
 /.next/
 /out/
-/o/
 
 # production
 /build

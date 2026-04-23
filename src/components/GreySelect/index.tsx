@@ -10,9 +10,9 @@ import { blendModeLabels } from '@/consts/blendModes';
 import { type RGBNHashes } from '@/types/Image';
 
 interface Props {
-  values: RGBNPalette,
-  onChange: (values: RGBNPalette, confirm: boolean) => void,
-  useChannels: Record<keyof RGBNHashes, boolean>,
+  values: RGBNPalette;
+  onChange: (values: RGBNPalette, confirm: boolean) => void;
+  useChannels: Record<keyof RGBNHashes, boolean>;
 }
 
 function GreySelect({ values, onChange, useChannels }: Props) {

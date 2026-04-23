@@ -21,7 +21,7 @@ export interface Overrides extends Omit<GameBoyImageProps, 'dimensions' | 'asThu
 }
 
 interface UseImageRender {
-  gbImageProps: PartialGameBoyImageProps | null,
+  gbImageProps: PartialGameBoyImageProps | null;
 }
 
 export const useImageRender = (hash: string, overrides?: Overrides): UseImageRender => {

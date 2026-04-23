@@ -12,29 +12,29 @@ export enum ActiveFilterUpdateMode {
 }
 
 interface FilterFrameInfo {
-  usage: number,
-  frame: Frame,
+  usage: number;
+  frame: Frame;
 }
 
 const sortByUsage = sortBy<FilterFrameInfo>('usage', SortDirection.DESC);
 
 interface UseFilterForm {
-  visible: boolean,
-  availableTags: string[],
-  availableFrames: FilterFrameInfo[],
-  availablePalettes: Palette[],
-  activeTags: string[],
-  activeFrames: string[],
-  activePalettes: string[],
-  updateActiveTags: (tag: string, mode: ActiveFilterUpdateMode) => void,
-  updateActivePalettes: (palette: string, mode: ActiveFilterUpdateMode) => void,
-  updateActiveFrames: (frame: string, mode: ActiveFilterUpdateMode) => void,
-  applyClearTags: () => void,
-  clearTags: () => void,
-  clearPalettes: () => void,
-  clearFrames: () => void,
-  cancel: () => void,
-  confirm: () => void,
+  visible: boolean;
+  availableTags: string[];
+  availableFrames: FilterFrameInfo[];
+  availablePalettes: Palette[];
+  activeTags: string[];
+  activeFrames: string[];
+  activePalettes: string[];
+  updateActiveTags: (tag: string, mode: ActiveFilterUpdateMode) => void;
+  updateActivePalettes: (palette: string, mode: ActiveFilterUpdateMode) => void;
+  updateActiveFrames: (frame: string, mode: ActiveFilterUpdateMode) => void;
+  applyClearTags: () => void;
+  clearTags: () => void;
+  clearPalettes: () => void;
+  clearFrames: () => void;
+  cancel: () => void;
+  confirm: () => void;
 }
 
 export const useFilterForm = (): UseFilterForm => {

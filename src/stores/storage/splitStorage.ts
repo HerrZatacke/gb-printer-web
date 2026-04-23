@@ -179,8 +179,8 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
   };
 
   const loadRootData = async (): Promise<{
-    state: Values,
-    version: number,
+    state: Values;
+    version: number;
   } | null> => {
     const version = await getVersion();
 

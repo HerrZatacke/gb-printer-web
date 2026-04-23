@@ -15,71 +15,71 @@ import { type Palette } from '@/types/Palette';
 import { type PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
 
 export interface PluginFunctions {
-  importFiles: HandeFileImportFn,
-  setDialog: (dialog: Dialog) => void,
-  dismissDialog: () => void,
-  addImages: (images: Image[]) => void,
-  alert: (title: string, text: string) => void,
+  importFiles: HandeFileImportFn;
+  setDialog: (dialog: Dialog) => void;
+  dismissDialog: () => void;
+  addImages: (images: Image[]) => void;
+  alert: (title: string, text: string) => void;
 }
 
 export interface ConfigParam {
-  label: string,
-  type: ConfigParamType,
+  label: string;
+  type: ConfigParamType;
 }
 
 type PluginConfigParams = Record<string, ConfigParam>;
 export type PluginConfigValues = Record<string, number | string>;
 
 export interface GetCanvasOptions {
-  scaleFactor?: number,
-  palette?: Palette | RGBNPalette,
-  framePalette?: Palette,
-  lockFrame?: boolean,
-  invertPalette?: boolean,
-  invertFramePalette?: boolean,
-  handleExportFrame?: ExportFrameMode,
+  scaleFactor?: number;
+  palette?: Palette | RGBNPalette;
+  framePalette?: Palette;
+  lockFrame?: boolean;
+  invertPalette?: boolean;
+  invertFramePalette?: boolean;
+  handleExportFrame?: ExportFrameMode;
 }
 
 /*
 * On Type-Changes, a history for migration must be kept in /src/javascript/app/stores/migrations/history/
 * */
 export interface Plugin {
-  url: string
-  config?: PluginConfigValues,
-  name?: string
-  description?: string
-  loading?: boolean
-  error?: string | false
-  configParams?: PluginConfigParams,
+  url: string;
+  config?: PluginConfigValues;
+  name?: string;
+  description?: string;
+  loading?: boolean;
+  error?: string | false;
+  configParams?: PluginConfigParams;
 }
 
 export interface PluginImageData {
-  getMeta: () => Promise<Image & { isRGBN: boolean }>,
-  getPalette: () => Promise<Palette | RGBNPalette>,
-  getTiles: () => Promise<string[] | RGBNTiles | void>,
-  getCanvas: () => Promise<HTMLCanvasElement>,
+  getMeta: () => Promise<Image & { isRGBN: boolean }>;
+  getPalette: () => Promise<Palette | RGBNPalette>;
+  getTiles: () => Promise<string[] | RGBNTiles | void>;
+  getCanvas: () => Promise<HTMLCanvasElement>;
 }
 
 export interface PluginClassInstance {
-  name: string,
-  description: string,
-  config: PluginConfigValues,
-  configParams: PluginConfigParams,
-  withImage: (image: PluginImageData) => void,
-  withSelection: (images: PluginImageData[]) => void,
-  setConfig: (config: PluginConfigValues) => void,
+  name: string;
+  description: string;
+  config: PluginConfigValues;
+  configParams: PluginConfigParams;
+  withImage: (image: PluginImageData) => void;
+  withSelection: (images: PluginImageData[]) => void;
+  setConfig: (config: PluginConfigValues) => void;
 }
 
 export type CollectImageDataFn = (hash: string) => PluginImageData
 export type GetCollectImageDataFn = (images: Image[]) => CollectImageDataFn;
 
 export interface PluginArgs {
-  saveAs: typeof FileSaver,
-  progress: (progressValue: number) => void,
-  setError: (err: Error) => void,
-  store: PluginCompatibilityWrapper
-  collectImageData: CollectImageDataFn,
-  functions: PluginFunctions,
+  saveAs: typeof FileSaver;
+  progress: (progressValue: number) => void;
+  setError: (err: Error) => void;
+  store: PluginCompatibilityWrapper;
+  collectImageData: CollectImageDataFn;
+  functions: PluginFunctions;
 }
 
 
@@ -88,14 +88,14 @@ declare global {
     gbpwRegisterPlugin: (PluginClass: { new (
         config: PluginArgs,
         stateConfig: PluginConfigValues,
-      ): PluginClassInstance }) => void;
+      ): PluginClassInstance; }) => void;
   }
 }
 
 export interface PluginsContext {
-  runWithImage: (pluginUrl: string, imageHash: string) => Promise<void>,
-  runWithImages: (pluginUrl: string, imageSelection: string[]) => Promise<void>,
-  validateAndAddPlugin: (plugin: Plugin) => Promise<boolean>,
+  runWithImage: (pluginUrl: string, imageHash: string) => Promise<void>;
+  runWithImages: (pluginUrl: string, imageSelection: string[]) => Promise<void>;
+  validateAndAddPlugin: (plugin: Plugin) => Promise<boolean>;
 }
 
 export type InitPluginSetupParams =
@@ -103,7 +103,7 @@ export type InitPluginSetupParams =
   Pick<ProgressState, 'setProgress'  | 'startProgress' | 'stopProgress'> &
   Pick<InteractionsState, 'setError'> &
   {
-    collectImageData: CollectImageDataFn,
-    stores: UseStores,
-    importFn: ImportFn,
+    collectImageData: CollectImageDataFn;
+    stores: UseStores;
+    importFn: ImportFn;
   }

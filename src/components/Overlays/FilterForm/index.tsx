@@ -25,8 +25,8 @@ enum FilterTab {
 }
 
 interface FilterTabUsage {
-  tab: FilterTab,
-  count: number,
+  tab: FilterTab;
+  count: number;
 }
 
 const sortByCount = sortBy<FilterTabUsage>('count', SortDirection.ASC);

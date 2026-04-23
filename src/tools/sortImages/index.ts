@@ -1,11 +1,11 @@
 import { type Image } from '@/types/Image';
 
 interface Sortable {
-  sortIndex: number,
+  sortIndex: number;
 }
 
 interface UnSortable {
-  sortIndex?: number,
+  sortIndex?: number;
 }
 
 type SortableImage = Sortable & Image;

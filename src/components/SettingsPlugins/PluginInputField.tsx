@@ -30,11 +30,11 @@ const toStringValue = (value?: string | number): string => {
 };
 
 interface Props {
-  id: string,
-  label: string,
-  type: ConfigParamType,
-  value?: string | number,
-  onChange: (value: string | number) => void,
+  id: string;
+  label: string;
+  type: ConfigParamType;
+  value?: string | number;
+  onChange: (value: string | number) => void;
 }
 
 function PluginInputField({ id, label, type, value, onChange }: Props) {

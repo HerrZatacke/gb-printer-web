@@ -2,12 +2,12 @@ import React from 'react';
 import { type DialogOption } from '@/types/Dialog';
 
 interface Props {
-  id: string,
-  label?: string,
-  disabled: boolean,
-  value: string,
-  setSelected: (value: string) => void,
-  options: DialogOption[],
+  id: string;
+  label?: string;
+  disabled: boolean;
+  value: string;
+  setSelected: (value: string) => void;
+  options: DialogOption[];
 }
 
 function Select({ id, label, disabled, value, setSelected, options }: Props) {

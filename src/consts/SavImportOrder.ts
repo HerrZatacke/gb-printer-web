@@ -4,8 +4,8 @@ export enum SavImportOrder {
 }
 
 interface SavImportOption {
-  translationKey: string,
-  value: SavImportOrder,
+  translationKey: string;
+  value: SavImportOrder;
 }
 
 export const savImportOptions: SavImportOption[] = [

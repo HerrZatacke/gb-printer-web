@@ -1,7 +1,24 @@
-const supports: Record<string, boolean> = {};
+export const TestFileType = {
+  JPEG: 'jpeg',
+  PNG: 'png',
+  WEBP: 'webp',
+  BPM: 'bmp',
+  GIF: 'gif',
+  TXT: 'txt',
+  PGM: 'pgm',
+  JSON: 'json',
+} as const;
 
-const supportsFileType = (fileType: string) => {
-  if (typeof document === 'undefined') {
+export type TestFileType = typeof TestFileType[keyof typeof TestFileType];
+
+export const testFileTypes: TestFileType[] = Object.values(TestFileType);
+
+export const bitmapFileTypes : TestFileType[] = [TestFileType.JPEG, TestFileType.PNG, TestFileType.WEBP, TestFileType.BPM, TestFileType.GIF];
+
+const supports: Partial<Record<TestFileType, boolean>> = {};
+
+const supportsFileType = (fileType: TestFileType) => {
+  if (typeof window === 'undefined') {
     return false;
   }
 
@@ -9,17 +26,34 @@ const supportsFileType = (fileType: string) => {
     return supports[fileType];
   }
 
-  const canvas = document.createElement('canvas');
-  canvas.width = 2;
-  canvas.height = 2;
-  const imgData = canvas.toDataURL(`image/${fileType}`);
+  let isSupported = false;
 
-  supports[fileType] = imgData.indexOf(`data:image/${fileType};base64`) === 0;
-  return supports[fileType];
+  switch (fileType) {
+    case TestFileType.JPEG:
+    case TestFileType.PNG:
+    case TestFileType.WEBP:
+    case TestFileType.BPM:
+    case TestFileType.GIF: {
+      const canvas = document.createElement('canvas');
+      canvas.width = 2;
+      canvas.height = 2;
+      const imgData = canvas.toDataURL(`image/${fileType}`);
+
+      isSupported = imgData.indexOf(`data:image/${fileType};base64`) === 0;
+      break;
+    }
+
+    case TestFileType.TXT:
+    case TestFileType.PGM: {
+      isSupported = true;
+      break;
+    }
+  }
+
+  supports[fileType] = isSupported;
+  return isSupported;
 };
 
-const supportedCanvasImageFormats = () => (
-  ['jpeg', 'jpg', 'png', 'webp', 'bmp', 'gif'].filter((fileType) => supportsFileType(fileType))
+export const supportedCanvasImageFormats = () => (
+  testFileTypes.filter((fileType) => supportsFileType(fileType))
 );
-
-export default supportedCanvasImageFormats;

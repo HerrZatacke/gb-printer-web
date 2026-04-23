@@ -6,14 +6,14 @@ import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { type DropBoxSettings } from '@/types/Sync';
 
 interface UseDropboxSettings {
-  use: boolean,
-  loggedIn: boolean,
-  path: string,
-  autoDropboxSync: boolean,
-  debugText: string,
-  logout: () => void,
-  setDropboxStorage: (dropboxStorage: DropBoxSettings) => void,
-  startAuth: () => void,
+  use: boolean;
+  loggedIn: boolean;
+  path: string;
+  autoDropboxSync: boolean;
+  debugText: string;
+  logout: () => void;
+  setDropboxStorage: (dropboxStorage: DropBoxSettings) => void;
+  startAuth: () => void;
 }
 
 export const useDropboxSettings = (): UseDropboxSettings => {

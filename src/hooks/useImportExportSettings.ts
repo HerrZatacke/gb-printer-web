@@ -45,9 +45,9 @@ const mergeSettings = async (
 export type ImportFn = (repoContents: JSONExport) => Promise<void>;
 
 export interface ImportExportSettings {
-  downloadSettings: (what: ExportTypes, selectedFrameGroup?: string) => Promise<void>,
-  jsonImport: ImportFn,
-  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+  downloadSettings: (what: ExportTypes, selectedFrameGroup?: string) => Promise<void>;
+  jsonImport: ImportFn;
+  remoteImport: (repoContents: JSONExportState) => Promise<void>;
 }
 
 export const useImportExportSettings = (): ImportExportSettings => {

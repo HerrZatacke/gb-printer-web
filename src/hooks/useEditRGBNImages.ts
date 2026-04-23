@@ -29,19 +29,19 @@ export enum RGBGrouping {
 }
 
 interface UseEditRGBNImages {
-  order: RGBOrder,
-  grouping: RGBGrouping,
-  canConfirm: boolean,
-  lengthWarning: boolean,
-  rgbnHashes: RGBNHashes[],
-  sortedImages: MonochromeImage[],
-  createGroup: boolean,
-  updateOrder: (color: ColorKey, direction: number) => void,
-  toggleSingleChannel: (channel: keyof RGBNHashes, hash: string) => void
-  setGrouping: (value: RGBGrouping) => void,
-  save: () => Promise<void>,
-  setCreateGroup: (value: boolean) => void,
-  cancelEditRGBNImages: () => void,
+  order: RGBOrder;
+  grouping: RGBGrouping;
+  canConfirm: boolean;
+  lengthWarning: boolean;
+  rgbnHashes: RGBNHashes[];
+  sortedImages: MonochromeImage[];
+  createGroup: boolean;
+  updateOrder: (color: ColorKey, direction: number) => void;
+  toggleSingleChannel: (channel: keyof RGBNHashes, hash: string) => void;
+  setGrouping: (value: RGBGrouping) => void;
+  save: () => Promise<void>;
+  setCreateGroup: (value: boolean) => void;
+  cancelEditRGBNImages: () => void;
 }
 
 export const useEditRGBNImages = (): UseEditRGBNImages => {

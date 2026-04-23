@@ -16,8 +16,8 @@ import { type RGBNHashes } from '@/types/Image';
 dayjs.extend(customParseFormat);
 
 interface Props {
-  hash: string,
-  page: number,
+  hash: string;
+  page: number;
 }
 
 function GalleryImage({ page, hash }: Props) {

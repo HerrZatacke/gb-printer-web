@@ -6,9 +6,9 @@ import React, { useMemo, useState } from 'react';
 import { type ReactNode } from 'react';
 
 interface UseAsPasswordField {
-  type: 'text' | 'password',
-  setShowPassword: (show: boolean) => void,
-  button: ReactNode,
+  type: 'text' | 'password';
+  setShowPassword: (show: boolean) => void;
+  button: ReactNode;
 }
 
 export const useAsPasswordField = (): UseAsPasswordField => {

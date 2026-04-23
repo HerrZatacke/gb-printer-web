@@ -6,10 +6,10 @@ import { type ImportItem } from '@/types/ImportItem';
 import { type QueueImage } from '@/types/QueueImage';
 
 export interface DispatchBitmapsToImportOptions {
-  bitmapQueue: QueueImage[],
-  dither: boolean,
-  contrastBaseValues: number[],
-  importQueueAdd: (importItems: ImportItem[]) => void,
+  bitmapQueue: QueueImage[];
+  dither: boolean;
+  contrastBaseValues: number[];
+  importQueueAdd: (importItems: ImportItem[]) => void;
 }
 
 export type DispatchBitmapsToImportFn = (options: DispatchBitmapsToImportOptions) => void;

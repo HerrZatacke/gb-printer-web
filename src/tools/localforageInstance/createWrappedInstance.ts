@@ -5,14 +5,14 @@ import { useItemsStore } from '@/stores/stores';
 import { reduceItems } from '@/tools/reduceArray';
 
 export interface WrappedLocalForageInstance<T> {
-  ready: () => Promise<void>,
-  keys: () => Promise<string[]>,
-  driver: () => Promise<string>,
-  setItem: (key: string, value: T) => Promise<T>,
-  getItem: (key: string) => Promise<T | null>,
-  removeItem: (key: string) => Promise<void>,
-  getSyncItems: () => Promise<BinaryGapiSyncItem[]>,
-  setSyncItems: (items: BinaryGapiSyncItem[], merge: boolean) => Promise<void>,
+  ready: () => Promise<void>;
+  keys: () => Promise<string[]>;
+  driver: () => Promise<string>;
+  setItem: (key: string, value: T) => Promise<T>;
+  getItem: (key: string) => Promise<T | null>;
+  removeItem: (key: string) => Promise<void>;
+  getSyncItems: () => Promise<BinaryGapiSyncItem[]>;
+  setSyncItems: (items: BinaryGapiSyncItem[], merge: boolean) => Promise<void>;
 }
 
 const DUMMY = `dummy${(new Date()).getTime()}`;

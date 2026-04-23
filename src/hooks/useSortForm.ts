@@ -2,11 +2,11 @@ import { useFiltersStore } from '@/stores/stores';
 import { type SortDirection } from '@/tools/sortby';
 
 interface UseSortForm {
-  visible: boolean,
-  sortBy: string,
-  sortOrder: SortDirection,
-  setSortBy: (sortBy: string) => void,
-  hideSortForm: () => void,
+  visible: boolean;
+  sortBy: string;
+  sortOrder: SortDirection;
+  setSortBy: (sortBy: string) => void;
+  hideSortForm: () => void;
 }
 
 export const useSortForm = (): UseSortForm => {

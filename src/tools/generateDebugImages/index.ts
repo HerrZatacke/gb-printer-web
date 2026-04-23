@@ -25,8 +25,8 @@ const generateRandomImage = (numLines: number): string[] => {
 };
 
 interface DebugImport {
-  image: MonochromeImage,
-  elapsed: number,
+  image: MonochromeImage;
+  elapsed: number;
 }
 
 const generateDebugImage = async (index: number): Promise<DebugImport> => {

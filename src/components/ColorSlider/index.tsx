@@ -6,9 +6,9 @@ import React, { useMemo } from 'react';
 import { type RGBNHashes } from '@/types/Image';
 
 interface Props {
-  color: keyof RGBNHashes,
-  onChange: (values: readonly number[]) => void,
-  values: number[],
+  color: keyof RGBNHashes;
+  onChange: (values: readonly number[]) => void;
+  values: number[];
 }
 
 function ColorSlider({ color, onChange, values }: Props) {

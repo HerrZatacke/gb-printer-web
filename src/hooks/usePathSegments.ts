@@ -5,12 +5,12 @@ import { PathMap } from '@/types/galleryTreeContext';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 export interface Segment {
-  group: TreeImageGroup,
-  link: string,
+  group: TreeImageGroup;
+  link: string;
 }
 
 export interface UsePathSegments {
-  segments: Segment[],
+  segments: Segment[];
 }
 
 export const usePathSegments = (): UsePathSegments => {

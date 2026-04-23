@@ -4,8 +4,8 @@ import React from 'react';
 import ImageRender from '@/components/ImageRender';
 
 export interface LightBoxImageProps {
-  hash: string,
-  visible: boolean,
+  hash: string;
+  visible: boolean;
 }
 
 function LightBoxImage({ hash, visible }: LightBoxImageProps) {

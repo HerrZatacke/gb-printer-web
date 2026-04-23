@@ -4,8 +4,8 @@ import React from 'react';
 import { type Dimensions } from '@/hooks/useImageDimensions';
 
 interface Props {
-  dimensions: Dimensions,
-  asThumb?: boolean,
+  dimensions: Dimensions;
+  asThumb?: boolean;
 }
 
 function ImageLoading({ dimensions, asThumb }: Props) {

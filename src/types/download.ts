@@ -1,9 +1,9 @@
 export interface DownloadBlob {
-  blob: Blob,
-  filename: string,
+  blob: Blob;
+  filename: string;
 }
 
 export interface DownloadArrayBuffer {
-  filename: string,
-  arrayBuffer: ArrayBuffer,
+  filename: string;
+  arrayBuffer: ArrayBuffer;
 }

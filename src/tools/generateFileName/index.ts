@@ -24,35 +24,35 @@ const rgbnPaletteName = ({ r, g, b, n }: RGBNPalette): string => {
 };
 
 interface FileNameOptionsBase {
-  image?: Image,
-  palette?: Palette | RGBNPalette,
-  exportScaleFactor?: number,
-  useCurrentDate?: boolean,
-  frameRate?: number,
-  frameName?: string,
-  paletteShort?: string,
-  altTitle?: string,
-  fileNameStyle: FileNameStyle,
+  image?: Image;
+  palette?: Palette | RGBNPalette;
+  exportScaleFactor?: number;
+  useCurrentDate?: boolean;
+  frameRate?: number;
+  frameName?: string;
+  paletteShort?: string;
+  altTitle?: string;
+  fileNameStyle: FileNameStyle;
 }
 
 interface FileNameOptionsImages extends FileNameOptionsBase {
-  image: Image,
-  palette: Palette | RGBNPalette,
-  exportScaleFactor?: number,
+  image: Image;
+  palette: Palette | RGBNPalette;
+  exportScaleFactor?: number;
 }
 
 interface FileNameOptionsAnimated extends FileNameOptionsBase {
-  useCurrentDate: boolean,
-  exportScaleFactor: number,
-  frameRate: number,
-  altTitle: string,
-  frameName: string,
-  paletteShort: string,
+  useCurrentDate: boolean;
+  exportScaleFactor: number;
+  frameRate: number;
+  altTitle: string;
+  frameName: string;
+  paletteShort: string;
 }
 
 interface FileNameOptionsZipDownload extends FileNameOptionsBase {
-  useCurrentDate: boolean,
-  altTitle: string,
+  useCurrentDate: boolean;
+  altTitle: string;
 }
 
 export type FileNameOptions = FileNameOptionsImages | FileNameOptionsAnimated | FileNameOptionsZipDownload;

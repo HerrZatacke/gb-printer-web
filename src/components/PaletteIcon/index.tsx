@@ -3,8 +3,8 @@ import React from 'react';
 import { generateGradient, GradientType } from '@/tools/generateGradient';
 
 interface Props {
-  palette: string[],
-  fontSize?: string,
+  palette: string[];
+  fontSize?: string;
 }
 
 function PaletteIcon({

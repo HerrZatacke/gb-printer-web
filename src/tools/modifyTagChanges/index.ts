@@ -4,11 +4,11 @@ export enum TagUpdateMode {
 }
 
 export interface TagUpdates {
-  add: string[],
-  remove: string[],
+  add: string[];
+  remove: string[];
 }
 
-const modifyTagChanges = (initial: TagUpdates, { mode, tag }: { mode: TagUpdateMode, tag: string }): TagUpdates => {
+const modifyTagChanges = (initial: TagUpdates, { mode, tag }: { mode: TagUpdateMode; tag: string }): TagUpdates => {
   switch (mode) {
     case 'add':
       return {

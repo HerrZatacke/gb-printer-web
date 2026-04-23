@@ -33,8 +33,8 @@ import { type Plugin } from '@/types/Plugin';
 const AUTOSYNC_DELAY = 5000;
 
 interface PerformPushOptions {
-  sheetName: SheetName,
-  newLastUpdateValue: number,
+  sheetName: SheetName;
+  newLastUpdateValue: number;
   sort: boolean;
 }
 

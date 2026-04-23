@@ -1,5 +1,5 @@
-import { globby } from 'globby';
 import fs from 'node:fs';
+import { globby } from 'globby';
 
 const outDir = 'out';
 const filesToShorten = await globby([`${outDir}/**/*.html`]);

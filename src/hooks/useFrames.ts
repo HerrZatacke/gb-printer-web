@@ -24,17 +24,17 @@ const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
 };
 
 interface UseFrames {
-  selectedFrameGroup: string,
-  groupFrames: Frame[],
-  setSelectedFrameGroup: (id: string) => void,
-  frameGroups: FrameGroup[],
-  exportJson: (what: ExportTypes) => void,
-  palette: string[],
-  setActiveFrameGroupName: (name: string) => void,
-  activeFrameGroup: FrameGroup,
-  convertFormat: () => void,
-  detectFrames: () => void,
-  enableDebug: boolean,
+  selectedFrameGroup: string;
+  groupFrames: Frame[];
+  setSelectedFrameGroup: (id: string) => void;
+  frameGroups: FrameGroup[];
+  exportJson: (what: ExportTypes) => void;
+  palette: string[];
+  setActiveFrameGroupName: (name: string) => void;
+  activeFrameGroup: FrameGroup;
+  convertFormat: () => void;
+  detectFrames: () => void;
+  enableDebug: boolean;
 }
 
 const useFrames = (): UseFrames => {

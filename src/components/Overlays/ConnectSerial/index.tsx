@@ -14,7 +14,7 @@ import { usePortsContext } from '@/contexts/PortsContext';
 import { useSettingsStore } from '@/stores/stores';
 
 interface Props {
-  inline?: boolean,
+  inline?: boolean;
 }
 
 export const portDeviceTranslationKeys: Record<PortDeviceType, string> = {

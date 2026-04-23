@@ -10,9 +10,9 @@ import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { posTiles } from './posTiles';
 
 interface Props {
-  tiles: string[],
-  startLine: number,
-  setStartLine: (startLine: number) => void,
+  tiles: string[];
+  startLine: number;
+  setStartLine: (startLine: number) => void;
 }
 
 function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {

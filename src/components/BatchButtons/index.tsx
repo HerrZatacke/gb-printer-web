@@ -63,7 +63,7 @@ const actionIcon = (action: BatchActionType): ReactNode => {
 };
 
 interface Props {
-  page: number,
+  page: number;
 }
 
 function BatchButtons({ page }: Props) {

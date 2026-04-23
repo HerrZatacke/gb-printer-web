@@ -5,8 +5,8 @@ import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 
 interface GetImagePalettes {
-  palette?: RGBNPalette | Palette,
-  framePalette?: Palette
+  palette?: RGBNPalette | Palette;
+  framePalette?: Palette;
 }
 
 export const getImagePalettes = (palettes: Palette[], image: Image): GetImagePalettes => {

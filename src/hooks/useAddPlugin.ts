@@ -14,12 +14,12 @@ const trustedSources = [
 ];
 
 interface UseAddPlugin {
-  url: string,
-  source: string,
-  pluginExists: boolean,
-  isTrusted: boolean,
-  pending: boolean,
-  addPlugin: () => Promise<void>,
+  url: string;
+  source: string;
+  pluginExists: boolean;
+  isTrusted: boolean;
+  pending: boolean;
+  addPlugin: () => Promise<void>;
 }
 export const useAddPlugin = (): UseAddPlugin => {
   const { searchParams } = useUrl();

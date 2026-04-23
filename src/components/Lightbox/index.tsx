@@ -15,23 +15,23 @@ import React from 'react';
 import useOverlayGlobalKeys from '@/hooks/useOverlayGlobalKeys';
 
 interface Props {
-  contentHeight?: number | string,
-  contentWidth?: number | string,
-  open?: boolean,
-  keepMounted?: boolean,
-  header?: string,
-  closeTitle?: string,
-  children?: React.ReactNode,
-  fullSize?: boolean,
-  confirm?: () => void,
-  deny?: () => void,
-  confirmMessage?: string,
-  denyMessage?: string,
-  canConfirm?: boolean,
-  headerOnly?: boolean,
-  closeOnOverlayClick?: boolean,
-  headerActionButtons?: React.ReactNode,
-  actionButtons?: React.ReactNode,
+  contentHeight?: number | string;
+  contentWidth?: number | string;
+  open?: boolean;
+  keepMounted?: boolean;
+  header?: string;
+  closeTitle?: string;
+  children?: React.ReactNode;
+  fullSize?: boolean;
+  confirm?: () => void;
+  deny?: () => void;
+  confirmMessage?: string;
+  denyMessage?: string;
+  canConfirm?: boolean;
+  headerOnly?: boolean;
+  closeOnOverlayClick?: boolean;
+  headerActionButtons?: React.ReactNode;
+  actionButtons?: React.ReactNode;
 }
 
 const contentDimensions = (

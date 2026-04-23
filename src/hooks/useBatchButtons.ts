@@ -20,17 +20,17 @@ import unique from '@/tools/unique';
 import { type Image, type MonochromeImage } from '@/types/Image';
 
 interface UseBatchButtons {
-  hasPlugins: boolean,
-  batchEnabled: boolean,
-  monochromeBatchEnabled: boolean,
-  activeFilters: number,
-  selectedImageCount: number,
-  hasSelected: boolean,
-  batchTask: (action: BatchActionType) => void,
-  checkAll: () => void,
-  unCheckAll: () => void,
-  filter: () => void,
-  showSortOptions: () => void,
+  hasPlugins: boolean;
+  batchEnabled: boolean;
+  monochromeBatchEnabled: boolean;
+  activeFilters: number;
+  selectedImageCount: number;
+  hasSelected: boolean;
+  batchTask: (action: BatchActionType) => void;
+  checkAll: () => void;
+  unCheckAll: () => void;
+  filter: () => void;
+  showSortOptions: () => void;
 }
 
 const collectTags = (batchImages: Image[]): string[] => (

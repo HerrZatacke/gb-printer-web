@@ -1,376 +1,92 @@
 {
-  "SettingsGeneric": {
-    "galleryPageSize": "Bilder per galleriside",
-    "galleryPageSizeHelper": "Sett til 0 for å deaktivere paginering – kan føre til ytelsesreduksjon ved store bildevolumer",
-    "galleryClickAction": "Klikkoppførsel for galleribilder",
-    "galleryClickActionHelper": "Ctrl+klikk og Shift+klikk kan alltid brukes for å velge/velge område",
-    "importSavFrames": "Rammer som skal brukes ved import av cartridge-dumps",
-    "importSavFramesNone": "Ingen",
-    "importSavFramesUnknown": "Ukjent",
-    "importLastSeen": "Importer ’Sist sett’-bilde ved import av cartridge-dumps",
-    "importSavOrder": "Rekkefølge å bruke ved import av .sav-fil",
-    "importDeleted": "Importer slettede bilder ved import av cartridge-dumps",
-    "forceMagicCheck": "Tving gyldig .sav-fil ved import",
-    "importPad": "Fyll ut bilder til 144px høyde ved import",
-    "hideDates": "Skjul bildedato i galleriet",
-    "sortPalettes": "Sorter paletter",
-    "preferredLocale": "Foretrukket språk",
-    "exampleDateFormat": "Eksempel datoformat: {format}",
-    "enableDebug": "Vis feilsøkingsinformasjon",
-    "galleryClickActions": {
-      "clickSelectsItem": "Klikk velger elementet",
-      "clickOpensEditDialog": "Klikk åpner redigeringsdialog",
-      "clickOpensLightbox": "Klikk åpner elementet i lightbox"
+  "AddPlugin": {
+    "addButton": "Legg til",
+    "alreadyInstalled": "Pluginet ”{url}” er allerede installert",
+    "goToPlugins": "🔗 Gå til Plugin-innstillinger",
+    "notTrusted": "Kilden ”{source}” til dette pluginet er ikke pålitelig!!",
+    "willAdd": "Dette vil legge til {url} til dine plugins."
+  },
+  "BatchButtons": {
+    "batchActions": {
+      "animate": "Animer",
+      "delete": "Slett",
+      "download": "Last ned",
+      "edit": "Rediger",
+      "rgb": "Opprett RGB-bilder"
     },
-    "importOrders": {
-      "cartIndex": "Sortert etter ROM-avgjørelse (som sett i kamerarulle i opprinnelig RAM)",
-      "ramIndex": "Sortert etter faktisk rekkefølge i RAM (minneadresse)"
+    "checkAll": "Velg alle",
+    "manageFilters": "Administrer filtre",
+    "manageSorting": "Administrer sortering",
+    "uncheckAll": "Avvelg alle",
+    "usePlugin": "Bruk plugin"
+  },
+  "BitmapQueue": {
+    "contrastPreset": "Kontrast-forhåndsinnstilling",
+    "contrastSettings": {
+      "emulator": "Fra emulator",
+      "narrow": "Smal",
+      "narrower": "Smalere",
+      "normal": "Normal",
+      "wide": "Vid",
+      "wider": "Videre"
     },
-    "locales": {
-      "de-DE": "Tysk – Tyskland (de-DE)",
-      "en-US": "Engelsk – USA (en-US)",
-      "en-GB": "Engelsk – Storbritannia (en-GB)",
-      "en-CA": "Engelsk – Canada (en-CA)",
-      "fr-FR": "Fransk – Frankrike (fr-FR)"
+    "dialogHeader": "Bildeimport-kø",
+    "enableDither": "Aktiver dithering"
+  },
+  "ConnectPrinter": {
+    "askAddPrinterMessage": "Stole på ekstern skriver fra {openPrinterUrl}, legge den til i listen over kjente enheter og åpne den?",
+    "askAddPrinterTitle": "Stol på og legg til skriver",
+    "closePrinterPage": "Lukk skriverside",
+    "openPrinterPage": "Åpne skriverside"
+  },
+  "ConnectSerial": {
+    "connectedDevices": "{deviceCount, plural, =0 {Ingen tilkoblede enheter} =1 {Én tilkoblet enhet:} other {# tilkoblede enheter:}}",
+    "copyToClipboard": "Kopier til utklippstavle",
+    "openWebSerial": "Åpne Web Serial-enhet",
+    "openWebUSB": "Åpne WebUSB-enhet",
+    "portDeviceTypes": {
+      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Printer Emulator",
+      "cartridgeReader": "Cartridge Reader (LK Firmware)",
+      "inactiveDevice": "Inaktiv enhet",
+      "superPrinterInterface": "Super Printer Interface"
     },
-    "resetTrackingConsent": "Tilbakestill analyse-/sporingssamtykke (for øyeblikket {consentState, select, accepted {aktiv} other {inaktiv}})"
+    "showUnknownResponse": "Vis melding fra ukjent enhet",
+    "unknownDeviceInfo": "Ukjent enhetsinformasjon"
   },
-  "SettingsPrinterUrls": {
-    "printerUrls": "Skriver-URLer",
-    "printerUrlHelper": "Hvis du eier en fysisk WiFi-skriver, kan du legge til URL-en her og fortsette i <link>🔗 Import-fanen</link>",
-    "addPrinter": "Legg til skriver",
-    "printerUrl": "Skriver-URL"
-  },
-  "TrackingConsent": {
-    "title": "Jeg kunne trengt din hjelp",
-    "confirm": "Det går fint for meg",
-    "deny": "Nei, takk"
-  },
-  "SettingsDropbox": {
-    "enableStorage": "Bruk Dropbox som lagring",
-    "subfolder": "Undermappe",
-    "subfolderWarning": "Skriv inn bare navnet på undermappen. Ellers vil appen fullstendig løse til ”{fullAppPath}” innenfor din Dropbox, noe som sannsynligvis ikke er det du hadde til hensikt.",
-    "openFolder": "<link>🔗 Åpne mappe</link>",
-    "openFolderLinkTitle": "Åpne Dropbox-mappe:\n{folderLink}",
-    "enableEnhancedSync": "Aktiver forbedret Dropbox-synkronisering",
-    "enableEnhancedSyncHelper": "Dette er en eksperimentell funksjon.",
-    "authenticate": "Autentiser",
-    "logout": "Logg ut"
-  },
-  "SettingsGapiSheets": {
-    "about": "Dette er en eksperimentell funksjon. Økten må fornyes hvert 60. minutt.",
-    "tokenExpiry": "Økten utløper om {time}",
-    "enableStorage": "Bruk Google Sheets som lagring",
-    "enableAutoSync": "Synkronisere automatisk",
-    "sheetId": "Regneark-ID",
-    "sheetIdHelper": "Du kan lime inn hele redigeringslinken for å få riktig regneark-ID.",
-    "authenticate": "Autentiser",
-    "logout": "Logg ut",
-    "openSheetLink": "Åpne ark i ny fane"
-  },
-  "SheetsTable": {
-    "id": "ID",
-    "title": "Tittel",
-    "columns": "Kolonner",
-    "rows": "Rader",
-    "lastLocalUpdate": "Siste lokale oppdatering",
-    "lastRemoteUpdate": "Siste eksterne oppdatering",
-    "refreshStats":  "Oppdater egenskaper",
-    "syncPush": "Synkroniser til Sheets",
-    "syncMerge":  "Slå sammen med Sheets",
-    "syncPull": "Synkroniser fra Sheets"
-  },
-  "SettingsPlugins": {
-    "addPlugin": "Legg til plugin",
-    "addPluginHelper": "🔗 Et utvalg av plugins finner du her",
-    "installedPlugins": "Installerte plugins",
-    "deletePlugin": "Slett plugin ”{name}”"
-  },
-  "SettingsGit": {
-    "enableStorage": "Bruk GitHub som lagring",
-    "owner": "Eier",
-    "repoName": "Repository-navn",
-    "branch": "Gren",
-    "throttle": "Struping (i ms)",
-    "token": "Token",
-    "tokenHelper": "Gå til GitHub for å opprette et <link>🔗 nytt finjustert personlig tilgangstoken</link>, velg repositoryet du vil bruke for synkronisering, og tillat lese-/skrivetilgang for <code>”Repository Permissions > Contents”</code>"
+  "CopyDatabase": {
+    "copyButton": "Kopier",
+    "loadButton": "Last",
+    "reportFrames": "{count} rammer",
+    "reportFramesCopied": "Rammer kopiert",
+    "reportImages": "{count} bilder",
+    "reportImagesCopied": "Bilder kopiert",
+    "reportLocalStorage": "{count} localStorage-oppføringer",
+    "reportLocalStorageCleared": "localStorage tømt",
+    "reportLocalStorageCopied": "localStorage kopiert",
+    "sourceUrl": "Kilde-URL"
   },
   "DownloadOptions": {
     "dialogHeader": "Last ned {count, plural, =1 {bilde} other {# bilder}}"
   },
   "DownloadOptionsForm": {
+    "alwaysShowDownloadDialogHelper": "Du kan aktivere dette alternativet igjen i innstillingene når som helst",
+    "alwaysShowDownloadDialogInDialog": "Vis alltid denne dialogen",
+    "alwaysShowDownloadDialogInForm": "Vis nedlastingsvalg hver gang",
     "exportDimensions": "Bildeksport-skaleringer",
     "exportFiletypes": "Bildeksport-filtyper",
     "exportHandleFrame": "Håndtering av ramme ved eksport av bilder",
     "filenameStyle": "Filnavnstil",
-    "alwaysShowDownloadDialogInForm": "Vis nedlastingsvalg hver gang",
-    "alwaysShowDownloadDialogInDialog": "Vis alltid denne dialogen",
-    "alwaysShowDownloadDialogHelper": "Du kan aktivere dette alternativet igjen i innstillingene når som helst",
+    "filenameStyles": {
+      "dateTitle": "Dato og tittel",
+      "fullTitle": "Full tittel",
+      "titleOnly": "Kun tittel"
+    },
+    "fileTypeInfo": "Bildeutvalget ditt inneholder {monochromeCount, plural, =0 {no} other {#}} monokrome og {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder.",
     "frameModes": {
-      "keepFrame": "Behold ramme",
       "cropFrame": "Beskjær ramme",
+      "keepFrame": "Behold ramme",
       "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
       "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Full tittel",
-      "dateTitle": "Dato og tittel",
-      "titleOnly": "Kun tittel"
-    }
-  },
-  "WebUSBGreeting": {
-    "enableWebUsb": "Aktiver WebUSB / Serielle porter",
-    "webUSBEnabled": "Din nåværende nettleser/enhet støtter WebUSB",
-    "webUSBDisabled": "Din nåværende nettleser/enhet støtter dessverre ikke WebUSB",
-    "webSerialEnabled": "Din nåværende nettleser/enhet støtter Web Serial",
-    "webSerialDisabled": "Din nåværende nettleser/enhet støtter dessverre ikke Web Serial"
-  },
-  "ConnectSerial": {
-    "openWebUSB": "Åpne WebUSB-enhet",
-    "openWebSerial": "Åpne Web Serial-enhet",
-    "connectedDevices": "{deviceCount, plural, =0 {Ingen tilkoblede enheter} =1 {Én tilkoblet enhet:} other {# tilkoblede enheter:}}",
-    "showUnknownResponse": "Vis melding fra ukjent enhet",
-    "unknownDeviceInfo": "Ukjent enhetsinformasjon",
-    "copyToClipboard": "Kopier til utklippstavle",
-    "portDeviceTypes": {
-      "inactiveDevice": "Inaktiv enhet",
-      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Printer Emulator",
-      "superPrinterInterface": "Super Printer Interface",
-      "cartridgeReader": "Cartridge Reader (LK Firmware)"
-    }
-  },
-  "SettingsTabs": {
-    "genericSettings": "Generelle innstillinger",
-    "dropboxSettings": "Dropbox-innstillinger",
-    "gapiSheetsSettings": "Google Sheets-innstillinger",
-    "pluginSettings": "Plugin-innstillinger",
-    "gitSettings": "Git-innstillinger"
-  },
-  "ExportSettings": {
-    "resetGroups": "Tilbakestill bildegrupper",
-    "exportAll": "Eksporter alt",
-    "exportPlugins": "Eksporter plugins",
-    "persistState": {
-      "isPersistent": "Lagring er persistent",
-      "requestPersistence": "Be om lagrings-persistens",
-      "apiUnavailable": "Persistens-API ikke tilgjengelig",
-      "failed": "Lagrings-persistering feilet"
-    }
-  },
-  "BatchButtons": {
-    "manageSorting": "Administrer sortering",
-    "manageFilters": "Administrer filtre",
-    "checkAll": "Velg alle",
-    "uncheckAll": "Avvelg alle",
-    "usePlugin": "Bruk plugin",
-    "batchActions": {
-      "delete": "Slett",
-      "animate": "Animer",
-      "download": "Last ned",
-      "edit": "Rediger",
-      "rgb": "Opprett RGB-bilder"
-    }
-  },
-  "AddPlugin": {
-    "notTrusted": "Kilden ”{source}” til dette pluginet er ikke pålitelig!!",
-    "alreadyInstalled": "Pluginet ”{url}” er allerede installert",
-    "goToPlugins": "🔗 Gå til Plugin-innstillinger",
-    "willAdd": "Dette vil legge til {url} til dine plugins.",
-    "addButton": "Legg til"
-  },
-  "CopyDatabase": {
-    "sourceUrl": "Kilde-URL",
-    "loadButton": "Last",
-    "copyButton": "Kopier",
-    "reportImages": "{count} bilder",
-    "reportFrames": "{count} rammer",
-    "reportLocalStorage": "{count} localStorage-oppføringer",
-    "reportLocalStorageCleared": "localStorage tømt",
-    "reportLocalStorageCopied": "localStorage kopiert",
-    "reportImagesCopied": "Bilder kopiert",
-    "reportFramesCopied": "Rammer kopiert"
-  },
-  "EditFrameStartLine": {
-    "moveUp": "Flytt bilde opp",
-    "moveDown": "Flytt bilde ned"
-  },
-  "EditImageTabs": {
-    "tabTypes": {
-      "frame": "Ramme",
-      "misc": "Diverse",
-      "palette": "Palett",
-      "colors": "Farger",
-      "tags": "Tagger"
-    }
-  },
-  "FolderBreadcrumb": {
-    "editGroup": "Rediger gruppe ”{title}”",
-    "openNavigation": "Åpne galleri-navigasjon"
-  },
-  "FolderTreeDialog": {
-    "dialogHeader": "Galleri-navigasjon"
-  },
-  "Frame": {
-    "usedTimes": "Brukt {count} ganger",
-    "notUsed": "Ikke brukt"
-  },
-  "FrameContextMenu": {
-    "edit": "Rediger",
-    "delete": "Slett"
-  },
-  "FrameSelect": {
-    "frameLabel": "Ramme",
-    "noFrameOption": "Som importert / Ingen ramme",
-    "separateColorSettings": "Bruk separate fargeinnstillinger for ramme"
-  },
-  "Frames": {
-    "editFramegroup": "Rediger rammegruppe",
-    "renameFramegroup": "Gi nytt navn til rammegruppe",
-    "exportFrames": "Eksporter rammer",
-    "exportCurrentFramegroup": "Eksporter gjeldende rammegruppe ({id})",
-    "convertFramesFormat": "Konverter rammer til nytt format",
-    "applyFrames": "Legg til ramme til bilder hvis rådata stemmer overens"
-  },
-  "GalleryGroup": {
-    "itemCount": "{count} bilder"
-  },
-  "GalleryGroupContextMenu": {
-    "edit": "Rediger",
-    "delete": "Slett"
-  },
-  "GalleryNumbers": {
-    "imageCount": "{count} bilder",
-    "filteredCount": "{count} filtrert",
-    "selectedCount": "{count} valgt",
-    "separator": " / "
-  },
-  "GalleryViewSelect": {
-    "viewNames": {
-      "smallest": "Minste",
-      "originalSize": "Originalstørrelse",
-      "doubleSize": "Dobbel størrelse",
-      "maximumSize": "Maksimal størrelse"
-    }
-  },
-  "GalleryImageContextMenu": {
-    "edit": "Rediger",
-    "download": "Last ned",
-    "delete": "Slett",
-    "viewInLightbox": "Vis i lightbox",
-    "printViaSuperPrinter": "Skriv ut via Super Printer",
-    "useSSTV": "Spill av som SSTV-tone",
-    "usePlugin": "Bruk plugin",
-    "share": "Del",
-    "addToFavourites": "Legg til i favoritter",
-    "removeFromFavourites": "Fjern fra favoritter",
-    "addToSelection": "Legg til i utvalg",
-    "removeFromSelection": "Fjern fra utvalg",
-    "showMetadata": "Vis metadata",
-    "createGroup": "Opprett gruppe"
-  },
-  "GreySelect": {
-    "neutralLayerBlendmode": "Nøytral-lag blandingsmodus",
-    "blendModes": {
-      "normal": "Normal (ignorer nøytralt lag)",
-      "normalS": "Normal ⇵ (kun nøytralt lag)",
-      "lighten": "Lysne",
-      "screen": "Skjerm",
-      "dodge": "Unngå",
-      "addition": "Addisjon",
-      "darken": "Mørkne",
-      "multiply": "Multipliser",
-      "burn": "Brenn",
-      "overlay": "Overlegg",
-      "softLight": "Mykt lys",
-      "hardLight": "Hardt lys",
-      "difference": "Forskjell",
-      "exclusion": "Eksklusjon"
-    }
-  },
-  "ConnectPrinter": {
-    "openPrinterPage": "Åpne skriverside",
-    "closePrinterPage": "Lukk skriverside",
-    "askAddPrinterTitle": "Stol på og legg til skriver",
-    "askAddPrinterMessage": "Stole på ekstern skriver fra {openPrinterUrl}, legge den til i listen over kjente enheter og åpne den?"
-  },
-  "EnvInfo": {
-    "appVersion": "Web-app-versjon: {value}",
-    "appBranch": "Web-app-gren: {value}",
-    "storageEstimate": "Bruk av {type}: {percentage}% ({used} av {total})"
-  },
-  "usePaletteSort": {
-    "defaultAsc": "Standard (stigende)",
-    "defaultDesc": "Standard (synkende)",
-    "usageAsc": "Bruk (stigende)",
-    "usageDesc": "Bruk (synkende)",
-    "nameAsc": "Navn (stigende)",
-    "nameDesc": "Navn (synkende)"
-  },
-  "useAsPasswordField": {
-    "hidePassword": "Skjul passord",
-    "showPassword": "Vis passord"
-  },
-  "ImageMeta": {
-    "dateTime": "Dato / Tid",
-    "editRotation": "Rediger rotasjon"
-  },
-  "Import": {
-    "selectFiles": "Velg fil(er) for import",
-    "importMemory": "Importer minne fra Cartridge Reader",
-    "importAlbumRolls": "Importer album-ruller fra Photo! (ROM + Flash)",
-    "serialMonitorLabel": "Importer data mottatt via seriell monitor",
-    "import": "Importer",
-    "exportImages": "Eksporter bilder",
-    "exportSelectedImages": "Eksporter valgte bilder"
-  },
-  "ImportPreviewImage": {
-    "scaleFactorWarning": "Skalafaktoren til bildet er {scaleFactor}. For å få et rent resultat uten artefakter, prøv kun å importere bilder hvis dimensjoner er skalert med potenser av to. (1, 2, 4, 8 ...)"
-  },
-  "Lightbox": {
-    "cancel": "Avbryt",
-    "close": "Lukk",
-    "ok": "Ok",
-    "closeWithHeader": "Lukk {header}"
-  },
-  "LightboxImage": {
-    "leaveFullscreen": "Forlat fullskjerm",
-    "enterFullscreen": "Aktiver fullskjerm",
-    "imageCounter": "Bilde {current}/{total}"
-  },
-  "MetaTable": {
-    "hashChannel": "Hash {channel}-kanal"
-  },
-  "Navigation": {
-    "home": "Hjem",
-    "gallery": "Galleri",
-    "galleryShortcuts": "Gallerisnarveier",
-    "import": "Import",
-    "palettes": "Paletter",
-    "frames": "Rammer",
-    "settings": "Innstillinger",
-    "addPlugin": "Legg til plugin",
-    "trash": "Papirkurv",
-    "syncRemote": "Synkroniser med fjern-tjeneste(r)",
-    "switchToDark": "Bytt til mørk modus",
-    "switchToBright": "Bytt til lys modus",
-    "usbDisabled": "USB-enheter er ikke tilgjengelige",
-    "usbDevices": "WebUSB og serielle enheter",
-    "openMainNav": "Åpne hovednavigasjon",
-    "closeMainNav": "Lukk hovednavigasjon",
-    "mainNavAriaLabel": "Hovednavigasjon",
-    "utilityNavAriaLabel": "Verktøy-navigasjon"
-  },
-  "BitmapQueue": {
-    "dialogHeader": "Bildeimport-kø",
-    "enableDither": "Aktiver dithering",
-    "contrastPreset": "Kontrast-forhåndsinnstilling",
-    "contrastSettings": {
-      "wider": "Videre",
-      "wide": "Vid",
-      "normal": "Normal",
-      "narrow": "Smal",
-      "narrower": "Smalere",
-      "emulator": "Fra emulator"
     }
   },
   "DragOver": {
@@ -380,186 +96,281 @@
   "EditForm": {
     "dialogHeader": "{count, plural, =0 {} =1 {Bilde} other {# bilder}} redigere",
     "editingMultiple": "Du redigerer {count} bilder",
-    "indexHelperText": "Bruk %n (eller %nn, %nnn, ...) for å legge til en numerisk indeks til bildetitlene",
-    "editTitle": "Rediger tittel"
+    "editTitle": "Rediger tittel",
+    "indexHelperText": "Bruk %n (eller %nn, %nnn, ...) for å legge til en numerisk indeks til bildetitlene"
   },
   "EditFrame": {
     "dialogHeader": "Rediger ramme ”{id}” {idChange}",
     "idChange": "→ ”{newId}”"
   },
   "EditFrameForm": {
-    "selectFrameGroup": "Velg rammegruppe",
-    "newFrameGroup": "Ny rammegruppe",
-    "unknown": "Ukjent",
     "frameGroup": "Rammegruppe",
     "frameGroupId": "Rammegruppe-ID",
-    "newFrameGroupId": "Ny rammegruppe-ID",
-    "groupIdHelperText": "Må ha minst to tegn, kun små bokstaver",
-    "newFrameGroupName": "Nytt rammegruppenavn",
     "frameIndex": "Rammeindeks",
     "frameIndexHelperText": "Heltall, må være større enn 0",
     "frameName": "Rammenavn",
-    "idInUse": "Den angitte rammeindeksen/identifikatoren ”{id}” er allerede i bruk, velg en annen."
+    "groupIdHelperText": "Må ha minst to tegn, kun små bokstaver",
+    "idInUse": "Den angitte rammeindeksen/identifikatoren ”{id}” er allerede i bruk, velg en annen.",
+    "newFrameGroup": "Ny rammegruppe",
+    "newFrameGroupId": "Ny rammegruppe-ID",
+    "newFrameGroupName": "Nytt rammegruppenavn",
+    "selectFrameGroup": "Velg rammegruppe",
+    "unknown": "Ukjent"
+  },
+  "EditFrameStartLine": {
+    "moveDown": "Flytt bilde ned",
+    "moveUp": "Flytt bilde opp"
   },
   "EditImageGroup": {
-    "dialogHeader": "Rediger gruppe {title}",
     "createNewGroupDialogHeader": "Opprett ny gruppe {count, plural, =0 {} =1 {} other {med # bilder}}",
-    "moveSelectedImages": "{count, plural, =0 {} =1 {Bilde} other {# bilder}} flytte",
-    "title": "Tittel",
+    "dialogHeader": "Rediger gruppe {title}",
     "favourite": "Fest til snarveier",
-    "pathSegment": "Stisegment (identifikator)",
+    "moveSelectedImages": "{count, plural, =0 {} =1 {Bilde} other {# bilder}} flytte",
+    "parentGroup": "Overordnet gruppe",
     "path": "Sti: ”{path}”",
     "pathInUse": "Sti er allerede i bruk: ”{path}”",
-    "parentGroup": "Overordnet gruppe"
+    "pathSegment": "Stisegment (identifikator)",
+    "title": "Tittel"
   },
-  "EditPalette": {
-    "dialogHeader": "Rediger palett {name}",
-    "editTitle": "Rediger tittel",
-    "addTitle": "Legg til tittel",
-    "idShortName": "ID/Kortnavn",
-    "colorIndex": "Farge {index}"
-  },
-  "EditRGBN": {
-    "dialogHeader": "Opprett RGBN-bilder",
-    "groupingLabel": "Gruppering av utvalg",
-    "groupByColor": "Utvalg er gruppert etter farger (RRR GGG BBB)",
-    "groupByImage": "Utvalg er gruppert etter bilder (RGB RGB RGB)",
-    "manualChannelSelection": "Manuell kanalvalg for enkelt bilde",
-    "manualChannelInstructions": "Velg manuelt kanalene for å opprette et enkelt RGBN-bilde",
-    "channelOrderInstructions": "Velg rekkefølgen på kanalene som skal brukes (i rekkefølge av valgte bilder). Kanaler til høyre for separatoren vil ikke bli brukt.",
-    "channelDistributionError": "Ditt valg av kanaler og antall valgte bilder stemmer ikke overens! Sørg for at du har valgt riktige bilder.",
-    "imagePreview": "Bildeforhåndsvisning",
-    "createGroupLabel": "Opprett gruppe fra opprettede bilder på gjeldende nivå"
-  },
-  "useEditRGBNImages": {
-    "rgbNewGroupTitle": "RGB {date}"
-  },
-  "FilterForm": {
-    "dialogHeader": "Velg filtre",
-    "clearFiltersTitle": "Slett filtre",
-    "clear": "Slett",
-    "clearFiltersAndApplyTitle": "Slett filtre og bruk",
-    "clearAndApply": "Slett og bruk",
-    "clearTab": "Tilbakestill valgte {tab, select, tabTags {Tagger} tabPalettes {Paletter} tabFrames {Rammer} other {}}",
-    "allMustBeMet": "Hvis satt, må alle være oppfylt",
-    "oneMustBeMet": "Hvis satt, må en være oppfylt",
-    "untagged": "Uten tagger",
-    "favourite": "❤️ Favoritt",
-    "new": "Ny",
-    "monochrome": "Monokrom",
-    "rgb": "RGB",
-    "recentImports": "Nylige importer",
-    "imageHasComments": "Bilde har kommentarer",
-    "imageHasUsername": "Bilde har brukernavn",
-    "filterTabs": {
-      "tabTags": "Tagger {count, plural, =0 {} other {(#)}}",
-      "tabPalettes": "Paletter {count, plural, =0 {} other {(#)}}",
-      "tabFrames": "Rammer {count, plural, =0 {} other {(#)}}"
+  "EditImageTabs": {
+    "tabTypes": {
+      "colors": "Farger",
+      "frame": "Ramme",
+      "misc": "Diverse",
+      "palette": "Palett",
+      "tags": "Tagger"
     }
   },
-  "FilterFormTag": {
-    "removeTag": "Fjern ”{title}”-tag fra utvalg",
-    "selectTag": "Velg ”{title}”-tag"
+  "EditPalette": {
+    "addTitle": "Legg til tittel",
+    "colorIndex": "Farge {index}",
+    "dialogHeader": "Rediger palett {name}",
+    "editTitle": "Rediger tittel",
+    "idShortName": "ID/Kortnavn"
+  },
+  "EditRGBN": {
+    "channelDistributionError": "Ditt valg av kanaler og antall valgte bilder stemmer ikke overens! Sørg for at du har valgt riktige bilder.",
+    "channelOrderInstructions": "Velg rekkefølgen på kanalene som skal brukes (i rekkefølge av valgte bilder). Kanaler til høyre for separatoren vil ikke bli brukt.",
+    "createGroupLabel": "Opprett gruppe fra opprettede bilder på gjeldende nivå",
+    "dialogHeader": "Opprett RGBN-bilder",
+    "groupByColor": "Utvalg er gruppert etter farger (RRR GGG BBB)",
+    "groupByImage": "Utvalg er gruppert etter bilder (RGB RGB RGB)",
+    "groupingLabel": "Gruppering av utvalg",
+    "imagePreview": "Bildeforhåndsvisning",
+    "manualChannelInstructions": "Velg manuelt kanalene for å opprette et enkelt RGBN-bilde",
+    "manualChannelSelection": "Manuell kanalvalg for enkelt bilde"
+  },
+  "EnvInfo": {
+    "appBranch": "Web-app-gren: {value}",
+    "appVersion": "Web-app-versjon: {value}",
+    "storageEstimate": "Bruk av {type}: {percentage}% ({used} av {total})"
+  },
+  "ExportSettings": {
+    "exportAll": "Eksporter alt",
+    "exportPlugins": "Eksporter plugins",
+    "persistState": {
+      "apiUnavailable": "Persistens-API ikke tilgjengelig",
+      "failed": "Lagrings-persistering feilet",
+      "isPersistent": "Lagring er persistent",
+      "requestPersistence": "Be om lagrings-persistens"
+    },
+    "resetGroups": "Tilbakestill bildegrupper"
+  },
+  "FilterForm": {
+    "allMustBeMet": "Hvis satt, må alle være oppfylt",
+    "clear": "Slett",
+    "clearAndApply": "Slett og bruk",
+    "clearFiltersAndApplyTitle": "Slett filtre og bruk",
+    "clearFiltersTitle": "Slett filtre",
+    "clearTab": "Tilbakestill valgte {tab, select, tabTags {Tagger} tabPalettes {Paletter} tabFrames {Rammer} other {}}",
+    "dialogHeader": "Velg filtre",
+    "favourite": "❤️ Favoritt",
+    "filterTabs": {
+      "tabFrames": "Rammer {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletter {count, plural, =0 {} other {(#)}}",
+      "tabTags": "Tagger {count, plural, =0 {} other {(#)}}"
+    },
+    "imageHasComments": "Bilde har kommentarer",
+    "imageHasUsername": "Bilde har brukernavn",
+    "monochrome": "Monokrom",
+    "new": "Ny",
+    "oneMustBeMet": "Hvis satt, må en være oppfylt",
+    "recentImports": "Nylige importer",
+    "rgb": "RGB",
+    "untagged": "Uten tagger"
+  },
+  "FilterFormFrame": {
+    "removeFrame": "Fjern ramme ”{name}” fra utvalg",
+    "selectFrame": "Velg ramme ”{name}”",
+    "usage": "Brukt {usage} ganger"
   },
   "FilterFormPalette": {
     "removePalette": "Fjern palett ”{name}” fra utvalg",
     "selectPalette": "Velg palett ”{name}”"
   },
-  "FilterFormFrame": {
-    "usage": "Brukt {usage} ganger",
-    "removeFrame": "Fjern ramme ”{name}” fra utvalg",
-    "selectFrame": "Velg ramme ”{name}”"
+  "FilterFormTag": {
+    "removeTag": "Fjern ”{title}”-tag fra utvalg",
+    "selectTag": "Velg ”{title}”-tag"
+  },
+  "FolderBreadcrumb": {
+    "editGroup": "Rediger gruppe ”{title}”",
+    "openNavigation": "Åpne galleri-navigasjon"
+  },
+  "FolderTreeDialog": {
+    "dialogHeader": "Galleri-navigasjon"
+  },
+  "Frame": {
+    "notUsed": "Ikke brukt",
+    "usedTimes": "Brukt {count} ganger"
+  },
+  "FrameContextMenu": {
+    "delete": "Slett",
+    "edit": "Rediger"
   },
   "FrameQueue": {
     "dialogHeader": "Importer ny ramme som ”{id}”"
   },
+  "Frames": {
+    "applyFrames": "Legg til ramme til bilder hvis rådata stemmer overens",
+    "convertFramesFormat": "Konverter rammer til nytt format",
+    "editFramegroup": "Rediger rammegruppe",
+    "exportCurrentFramegroup": "Eksporter gjeldende rammegruppe ({id})",
+    "exportFrames": "Eksporter rammer",
+    "renameFramegroup": "Gi nytt navn til rammegruppe"
+  },
+  "FrameSelect": {
+    "frameLabel": "Ramme",
+    "noFrameOption": "Som importert / Ingen ramme",
+    "separateColorSettings": "Bruk separate fargeinnstillinger for ramme"
+  },
+  "GalleryGroup": {
+    "itemCount": "{count} bilder"
+  },
+  "GalleryGroupContextMenu": {
+    "delete": "Slett",
+    "edit": "Rediger"
+  },
+  "GalleryImageContextMenu": {
+    "addToFavourites": "Legg til i favoritter",
+    "addToSelection": "Legg til i utvalg",
+    "createGroup": "Opprett gruppe",
+    "delete": "Slett",
+    "download": "Last ned",
+    "edit": "Rediger",
+    "printViaSuperPrinter": "Skriv ut via Super Printer",
+    "removeFromFavourites": "Fjern fra favoritter",
+    "removeFromSelection": "Fjern fra utvalg",
+    "share": "Del",
+    "showMetadata": "Vis metadata",
+    "usePlugin": "Bruk plugin",
+    "useSSTV": "Spill av som SSTV-tone",
+    "viewInLightbox": "Vis i lightbox"
+  },
+  "GalleryNumbers": {
+    "filteredCount": "{count} filtrert",
+    "imageCount": "{count} bilder",
+    "selectedCount": "{count} valgt",
+    "separator": " / "
+  },
+  "GalleryViewSelect": {
+    "viewNames": {
+      "doubleSize": "Dobbel størrelse",
+      "maximumSize": "Maksimal størrelse",
+      "originalSize": "Originalstørrelse",
+      "smallest": "Minste"
+    }
+  },
+  "GreySelect": {
+    "blendModes": {
+      "addition": "Addisjon",
+      "burn": "Brenn",
+      "darken": "Mørkne",
+      "difference": "Forskjell",
+      "dodge": "Unngå",
+      "exclusion": "Eksklusjon",
+      "hardLight": "Hardt lys",
+      "lighten": "Lysne",
+      "multiply": "Multipliser",
+      "normal": "Normal (ignorer nøytralt lag)",
+      "normalS": "Normal ⇵ (kun nøytralt lag)",
+      "overlay": "Overlegg",
+      "screen": "Skjerm",
+      "softLight": "Mykt lys"
+    },
+    "neutralLayerBlendmode": "Nøytral-lag blandingsmodus"
+  },
+  "ImageMeta": {
+    "dateTime": "Dato / Tid",
+    "editRotation": "Rediger rotasjon"
+  },
+  "Import": {
+    "exportImages": "Eksporter bilder",
+    "exportSelectedImages": "Eksporter valgte bilder",
+    "import": "Importer",
+    "importAlbumRolls": "Importer album-ruller fra Photo! (ROM + Flash)",
+    "importMemory": "Importer minne fra Cartridge Reader",
+    "selectFiles": "Velg fil(er) for import",
+    "serialMonitorLabel": "Importer data mottatt via seriell monitor"
+  },
+  "ImportPreviewImage": {
+    "scaleFactorWarning": "Skalafaktoren til bildet er {scaleFactor}. For å få et rent resultat uten artefakter, prøv kun å importere bilder hvis dimensjoner er skalert med potenser av to. (1, 2, 4, 8 ...)"
+  },
   "ImportQueue": {
+    "createGroupLabel": "Opprett gruppe fra bilder på gjeldende plassering",
     "dialogHeader": "{count, plural, =1 {Importer bilde} other {Importer # bilder}}",
-    "removeLastSeenTitle": "Fjern sist sett",
-    "removeLastSeen": "Fjern sist sett {count, plural, =0 {} other {({count})}}",
-    "removeDeletedTitle": "Fjern slettede",
-    "removeDeleted": "Fjern slettede {count, plural, =0 {} other {({count})}}",
-    "removeDuplicatesInQueueTitle": "Fjern duplikater i kø",
-    "removeDuplicatesInQueue": "Fjern duplikater i kø {count, plural, =0 {} other {({count})}}",
-    "removeAlreadyImportedTitle": "Fjern allerede importerte",
-    "removeAlreadyImported": "Fjern allerede importerte {count, plural, =0 {} other {({count})}}",
     "modifyFrame": "Endre ramme",
     "noFrameOption": "Ingen ramme / som importert",
-    "createGroupLabel": "Opprett gruppe fra bilder på gjeldende plassering"
+    "removeAlreadyImported": "Fjern allerede importerte {count, plural, =0 {} other {({count})}}",
+    "removeAlreadyImportedTitle": "Fjern allerede importerte",
+    "removeDeleted": "Fjern slettede {count, plural, =0 {} other {({count})}}",
+    "removeDeletedTitle": "Fjern slettede",
+    "removeDuplicatesInQueue": "Fjern duplikater i kø {count, plural, =0 {} other {({count})}}",
+    "removeDuplicatesInQueueTitle": "Fjern duplikater i kø",
+    "removeLastSeen": "Fjern sist sett {count, plural, =0 {} other {({count})}}",
+    "removeLastSeenTitle": "Fjern sist sett"
   },
   "ImportRow": {
-    "duplicateInQueue": "Dette bildet finnes flere ganger i denne køen",
     "alreadyImported": "Dette bildet ble allerede {title, select, NO_TITLE {} other {som ”{title}”}} importert",
+    "duplicateInQueue": "Dette bildet finnes flere ganger i denne køen",
     "importAsFrame": "Importer bilde som ramme",
     "removeFromQueue": "Fjern bilde fra kø"
   },
-  "PickColors": {
-    "newPaletteNameFromFile": "Fra fil {fileName}",
-    "dialogHeader": "Velg farger fra ”{fileName}”"
+  "InputNewTag": {
+    "tagsLabel": "Tagger"
   },
-  "ProgressBox": {
-    "dialogHeader": "Fremdriftsdialog"
+  "Lightbox": {
+    "cancel": "Avbryt",
+    "close": "Lukk",
+    "closeWithHeader": "Lukk {header}",
+    "ok": "Ok"
   },
-  "ProgressLogBox": {
-    "dialogHeaderDone": "✔️ Oppdatering fullført {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderUpdating": "⏳ Oppdaterer... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Oppdatering mislyktes {repo, select, NO_REPO {} other {- {repo}}}",
-    "showAllMessages": "Vis alle {count} meldinger",
-    "reduceMessages": "Reduser meldinger",
-    "startedAt": "Startet kl.: {time}",
-    "finishedAfter": "Ferdig etter: {duration}",
-    "runningFor": "Kjører siden: {duration}",
-    "openGitHubRepository": "Åpne GitHub-repository",
-    "openDropboxFolder": "Åpne Dropbox-mappe",
-    "openDropboxFolderTitle": "Åpne Dropbox-mappe:\n{path}"
+  "LightboxImage": {
+    "enterFullscreen": "Aktiver fullskjerm",
+    "imageCounter": "Bilde {current}/{total}",
+    "leaveFullscreen": "Forlat fullskjerm"
   },
-  "Serials": {
-    "dialogHeader": "Serielles dialog"
+  "MetaTable": {
+    "hashChannel": "Hash {channel}-kanal"
   },
-  "SortForm": {
-    "dialogHeader": "Sorter etter: {sortBy}/{order}",
-    "sortByLabel": "Sorter etter",
-    "sortDirectionLabel": "Sorteringsretning",
-    "titleOption": "Tittel",
-    "dateOption": "Dato",
-    "paletteOption": "Palett",
-    "ascending": "Stigende",
-    "descending": "Synkende"
-  },
-  "SyncSelect": {
-    "dialogHeader": "Synkroniser",
-    "syncToGitHub": "Synkroniser til GitHub",
-    "syncToGitHubTitle": "Synkroniser til GitHub\n{repoUrl}",
-    "syncFromGitHub": "Synkroniser fra GitHub",
-    "syncFromGitHubTitle": "Synkroniser fra GitHub\n{repoUrl}",
-    "syncToDropbox": "Synkroniser til Dropbox",
-    "syncFromDropbox": "Synkroniser fra Dropbox",
-    "syncImagesToDropbox": "Synkroniser bilder med Dropbox",
-    "pendingRemoteChangesWarning": "Det er ventende fjernendringer. Hvis du synkroniserer med Dropbox nå, vil disse gå tapt.",
-    "pendingLocalChangesWarning": "Det er lokale endringer som ikke er synkronisert med Dropbox ennå. Hvis du synkroniserer fra Dropbox nå, vil disse gå tapt."
-  },
-  "Trashbin": {
-    "dialogHeader": "Papirkurv ({count} elementer)",
-    "downloadFrames": "Last ned rammer {count, plural, =0 {} other {(#)}}",
-    "downloadImages": "Last ned bilder {count, plural, =0 {} other {(#)}}",
-    "purgeAll": "Slett alle {count, plural, =0 {} other {(#)}}",
-    "deletedFrames": "Slettede rammer: {count}",
-    "deletedImages": "Slettede bilder: {count}"
-  },
-  "VideoParamsForm": {
-    "dialogHeader": "Opprett animert GIF med {count} frames",
-    "frameRate": "Framerate",
-    "scaleGif": "Skaler GIF",
-    "enableYoyo": "Aktiver yo-yo-effekt (gjenta animasjon baklengs)",
-    "reverseDirection": "Reverser animasjonsretning",
-    "handleFrames": "Håndtering av rammer for animasjon",
-    "noFrameOption": "Som valgt per bilde",
-    "frameModes": {
-      "keepFrame": "Behold ramme",
-      "cropFrame": "Beskjær ramme",
-      "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
-      "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
-    }
+  "Navigation": {
+    "addPlugin": "Legg til plugin",
+    "closeMainNav": "Lukk hovednavigasjon",
+    "frames": "Rammer",
+    "gallery": "Galleri",
+    "galleryShortcuts": "Gallerisnarveier",
+    "home": "Hjem",
+    "import": "Import",
+    "mainNavAriaLabel": "Hovednavigasjon",
+    "openMainNav": "Åpne hovednavigasjon",
+    "palettes": "Paletter",
+    "settings": "Innstillinger",
+    "switchToBright": "Bytt til lys modus",
+    "switchToDark": "Bytt til mørk modus",
+    "syncRemote": "Synkroniser med fjern-tjeneste(r)",
+    "trash": "Papirkurv",
+    "usbDevices": "WebUSB og serielle enheter",
+    "usbDisabled": "USB-enheter er ikke tilgjengelige",
+    "utilityNavAriaLabel": "Verktøy-navigasjon"
   },
   "Pagination": {
     "pageCount": "{current}/{total}"
@@ -571,114 +382,178 @@
     "usageCount": "({shortName}) {count, plural, =0 {Ikke brukt} =1 {Brukt én gang} other {Brukt # ganger}}"
   },
   "PaletteContextMenu": {
-    "setActive": "Sett aktiv",
     "clone": "Klon",
+    "delete": "Slett",
     "edit": "Rediger",
-    "delete": "Slett"
+    "setActive": "Sett aktiv"
   },
   "Palettes": {
-    "ownPalettes": "Egne paletter",
-    "predefinedPalettes": "Forhåndsdefinerte paletter",
     "allPalettes": "Alle paletter",
+    "exportPalettes": "Eksporter paletter",
     "newPalette": "Ny palett",
     "newPaletteFromImage": "Ny palett fra bilde",
-    "sortPalettes": "Sorter paletter",
-    "exportPalettes": "Eksporter paletter"
+    "ownPalettes": "Egne paletter",
+    "predefinedPalettes": "Forhåndsdefinerte paletter",
+    "sortPalettes": "Sorter paletter"
   },
   "PaletteSelect": {
     "asSelectedPerImage": "Som valgt per bilde",
-    "palette": "Palett",
-    "invertPalette": "Inverter palett"
+    "invertPalette": "Inverter palett",
+    "palette": "Palett"
+  },
+  "PickColors": {
+    "dialogHeader": "Velg farger fra ”{fileName}”",
+    "newPaletteNameFromFile": "Fra fil {fileName}"
   },
   "PluginSelect": {
     "pluginTooltip": "{description}\n{url}"
   },
   "PrinterReport": {
-    "functions": {
-      "checkPrinter": "Kontroller skriver",
-      "fetchImagesGeneric": "Importer bilder",
-      "fetchImagesCount": "Importer {count} bilder",
-      "clearPrinter": "Tøm skriver"
-    },
-    "printerFilesystem": "Skriver-filsystem",
-    "total": "Totalt",
-    "used": "Brukt",
     "free": "Ledig",
     "freeImages": "{count} bilder",
-    "images": "Bilder"
-  },
-  "StorageWarning": {
-    "storageTypes": {
-      "indexedDB": "IndexedDB",
-      "localStorage": "LocalStorage"
+    "functions": {
+      "checkPrinter": "Kontroller skriver",
+      "clearPrinter": "Tøm skriver",
+      "fetchImagesCount": "Importer {count} bilder",
+      "fetchImagesGeneric": "Importer bilder"
     },
-    "usageTooltip": "Bruker {used} av {total}",
-    "usageWarning": "Du bruker {percentage}% av nettleserens {type}. Merk at lagring av bilder ikke lenger vil være mulig når grensen er nådd."
+    "images": "Bilder",
+    "printerFilesystem": "Skriver-filsystem",
+    "total": "Totalt",
+    "used": "Brukt"
   },
-  "TagsList": {
-    "favourite": "Favoritt",
-    "moreTags": "+{count} flere tagger:\n{tags}",
-    "moreTagsLabel": "+{count} flere"
+  "ProgressBox": {
+    "dialogHeader": "Fremdriftsdialog"
   },
-  "TagsSelect": {
-    "resetTags": "Tilbakestill tagger"
+  "ProgressLogBox": {
+    "dialogHeaderDone": "✔️ Oppdatering fullført {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderError": "❌ Oppdatering mislyktes {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderUpdating": "⏳ Oppdaterer... {repo, select, NO_REPO {} other {- {repo}}}",
+    "finishedAfter": "Ferdig etter: {duration}",
+    "openDropboxFolder": "Åpne Dropbox-mappe",
+    "openDropboxFolderTitle": "Åpne Dropbox-mappe:\n{path}",
+    "openGitHubRepository": "Åpne GitHub-repository",
+    "reduceMessages": "Reduser meldinger",
+    "runningFor": "Kjører siden: {duration}",
+    "showAllMessages": "Vis alle {count} meldinger",
+    "startedAt": "Startet kl.: {time}"
   },
-  "InputNewTag": {
-    "tagsLabel": "Tagger"
+  "RemotePrinterContext": {
+    "noFilesReceived": "Ingen gyldige filer mottatt fra WiFi-skriver"
   },
-  "useBatchButtons": {
-    "deleteConfirmation": "Slett {count} bilder?"
+  "Serials": {
+    "dialogHeader": "Serielles dialog"
   },
-  "useEditForm": {
-    "updateDate": "Oppdater dato",
-    "updateTitle": "Oppdater tittel",
-    "updatePalette": "Oppdater palett",
-    "updateInvertPalette": "Oppdater inverter palett",
-    "updateFrame": "Oppdater ramme",
-    "updateLockFrame": "Oppdater lås ramme",
-    "updateFramePalette": "Oppdater ramme palett",
-    "updateInvertFramePalette": "Oppdater inverter ramme palett",
-    "updateTags": "Oppdater tagger",
-    "updateRotation": "Oppdater rotasjon"
+  "SettingsDropbox": {
+    "authenticate": "Autentiser",
+    "enableEnhancedSync": "Aktiver forbedret Dropbox-synkronisering",
+    "enableEnhancedSyncHelper": "Dette er en eksperimentell funksjon.",
+    "enableStorage": "Bruk Dropbox som lagring",
+    "logout": "Logg ut",
+    "openFolder": "<link>🔗 Åpne mappe</link>",
+    "openFolderLinkTitle": "Åpne Dropbox-mappe:\n{folderLink}",
+    "subfolder": "Undermappe",
+    "subfolderWarning": "Skriv inn bare navnet på undermappen. Ellers vil appen fullstendig løse til ”{fullAppPath}” innenfor din Dropbox, noe som sannsynligvis ikke er det du hadde til hensikt."
   },
-  "useEditPalette": {
-    "paletteOrigin": "Palettopprinnelse"
+  "SettingsGapiSheets": {
+    "about": "Dette er en eksperimentell funksjon. Økten må fornyes hvert 60. minutt.",
+    "authenticate": "Autentiser",
+    "enableAutoSync": "Synkronisere automatisk",
+    "enableStorage": "Bruk Google Sheets som lagring",
+    "logout": "Logg ut",
+    "openSheetLink": "Åpne ark i ny fane",
+    "sheetId": "Regneark-ID",
+    "sheetIdHelper": "Du kan lime inn hele redigeringslinken for å få riktig regneark-ID.",
+    "tokenExpiry": "Økten utløper om {time}"
   },
-  "useFrame": {
-    "deleteConfirmation": "Slett ramme ”{name}” ({frameId})?"
+  "SettingsGeneric": {
+    "enableDebug": "Vis feilsøkingsinformasjon",
+    "exampleDateFormat": "Eksempel datoformat: {format}",
+    "forceMagicCheck": "Tving gyldig .sav-fil ved import",
+    "galleryClickAction": "Klikkoppførsel for galleribilder",
+    "galleryClickActionHelper": "Ctrl+klikk og Shift+klikk kan alltid brukes for å velge/velge område",
+    "galleryClickActions": {
+      "clickOpensEditDialog": "Klikk åpner redigeringsdialog",
+      "clickOpensLightbox": "Klikk åpner elementet i lightbox",
+      "clickSelectsItem": "Klikk velger elementet"
+    },
+    "galleryPageSize": "Bilder per galleriside",
+    "galleryPageSizeHelper": "Sett til 0 for å deaktivere paginering – kan føre til ytelsesreduksjon ved store bildevolumer",
+    "hideDates": "Skjul bildedato i galleriet",
+    "importDeleted": "Importer slettede bilder ved import av cartridge-dumps",
+    "importLastSeen": "Importer ’Sist sett’-bilde ved import av cartridge-dumps",
+    "importOrders": {
+      "cartIndex": "Sortert etter ROM-avgjørelse (som sett i kamerarulle i opprinnelig RAM)",
+      "ramIndex": "Sortert etter faktisk rekkefølge i RAM (minneadresse)"
+    },
+    "importPad": "Fyll ut bilder til 144px høyde ved import",
+    "importSavFrames": "Rammer som skal brukes ved import av cartridge-dumps",
+    "importSavFramesNone": "Ingen",
+    "importSavFramesUnknown": "Ukjent",
+    "importSavOrder": "Rekkefølge å bruke ved import av .sav-fil",
+    "locales": {
+      "de-DE": "Tysk – Tyskland (de-DE)",
+      "en-CA": "Engelsk – Canada (en-CA)",
+      "en-GB": "Engelsk – Storbritannia (en-GB)",
+      "en-US": "Engelsk – USA (en-US)",
+      "fr-FR": "Fransk – Frankrike (fr-FR)"
+    },
+    "preferredLocale": "Foretrukket språk",
+    "resetTrackingConsent": "Tilbakestill analyse-/sporingssamtykke (for øyeblikket {consentState, select, accepted {aktiv} other {inaktiv}})",
+    "sortPalettes": "Sorter paletter"
   },
-  "useGalleryImageContext": {
-    "deleteImage": "{title, select, NO_TITLE {Dette bildet} other {Bilde ”{title}”}} slett",
-    "metaInfo": "Metadata {title, select, NO_TITLE {} other {for ”{title}”}}"
+  "SettingsGit": {
+    "branch": "Gren",
+    "enableStorage": "Bruk GitHub som lagring",
+    "owner": "Eier",
+    "repoName": "Repository-navn",
+    "throttle": "Struping (i ms)",
+    "token": "Token",
+    "tokenHelper": "Gå til GitHub for å opprette et <link>🔗 nytt finjustert personlig tilgangstoken</link>, velg repositoryet du vil bruke for synkronisering, og tillat lese-/skrivetilgang for <code>”Repository Permissions > Contents”</code>"
   },
-  "useGetPortSettings": {
-    "specifyBaudrate": "Spesifiser baudrate",
-    "baudRateLabel": "Baudrate"
+  "SettingsPlugins": {
+    "addPlugin": "Legg til plugin",
+    "addPluginHelper": "🔗 Et utvalg av plugins finner du her",
+    "deletePlugin": "Slett plugin ”{name}”",
+    "installedPlugins": "Installerte plugins"
   },
-  "useImageGroups": {
-    "newGroupDefault": "Ny gruppe standard",
-    "resetGroupsMessage": "Tilbakestill bildegrupper",
-    "resetGroupsInfo": "Tilbakestill bildegrupper info",
-    "deleteGroupMessage": "Slett gruppe",
-    "deleteGroupInfo": "Dette vil slette gruppen ”{groupTitle}” og flytte alt innhold (bilder & grupper) til gjeldende nivå."
+  "SettingsPrinterUrls": {
+    "addPrinter": "Legg til skriver",
+    "printerUrl": "Skriver-URL",
+    "printerUrlHelper": "Hvis du eier en fysisk WiFi-skriver, kan du legge til URL-en her og fortsette i <link>🔗 Import-fanen</link>",
+    "printerUrls": "Skriver-URLer"
   },
-  "usePalette": {
-    "deletePaletteMessage": "Slett palett ”{name}”?"
+  "SettingsTabs": {
+    "dropboxSettings": "Dropbox-innstillinger",
+    "gapiSheetsSettings": "Google Sheets-innstillinger",
+    "genericSettings": "Generelle innstillinger",
+    "gitSettings": "Git-innstillinger",
+    "pluginSettings": "Plugin-innstillinger"
   },
-  "useRunImport": {
-    "importGroupTitle": "Import {date}"
+  "SheetsTable": {
+    "columns": "Kolonner",
+    "id": "ID",
+    "lastLocalUpdate": "Siste lokale oppdatering",
+    "lastRemoteUpdate": "Siste eksterne oppdatering",
+    "refreshStats": "Oppdater egenskaper",
+    "rows": "Rader",
+    "syncMerge": "Slå sammen med Sheets",
+    "syncPull": "Synkroniser fra Sheets",
+    "syncPush": "Synkroniser til Sheets",
+    "title": "Tittel"
   },
-  "useSetEditPalette": {
-    "copyOfPalette": "Kopi av {name}"
-  },
-  "useTrashbin": {
-    "backupExportImage": "Sikkerhetskopi-eksport {hash}",
-    "backupExportFrame": "Sikkerhetskopi-eksport {hash}",
-    "reImportedTrashFrames": "Gjenimporterte papirkurv-rammer"
+  "SortForm": {
+    "ascending": "Stigende",
+    "dateOption": "Dato",
+    "descending": "Synkende",
+    "dialogHeader": "Sorter etter: {sortBy}/{order}",
+    "paletteOption": "Palett",
+    "sortByLabel": "Sorter etter",
+    "sortDirectionLabel": "Sorteringsretning",
+    "titleOption": "Tittel"
   },
   "SSTVForm": {
     "dialogHeader": "Opprett SSTV-lydfil",
-    "modeTypeLabel": "Velg SSTV-modus",
     "modeType": {
       "martin1": "Martin 1",
       "martin2": "Martin 2",
@@ -690,6 +565,135 @@
       "scottie1": "Scottie 1",
       "scottie2": "Scottie 2",
       "scottieDX": "Scottie DX"
-    }
+    },
+    "modeTypeLabel": "Velg SSTV-modus"
+  },
+  "StorageWarning": {
+    "storageTypes": {
+      "indexedDB": "IndexedDB",
+      "localStorage": "LocalStorage"
+    },
+    "usageTooltip": "Bruker {used} av {total}",
+    "usageWarning": "Du bruker {percentage}% av nettleserens {type}. Merk at lagring av bilder ikke lenger vil være mulig når grensen er nådd."
+  },
+  "SyncSelect": {
+    "dialogHeader": "Synkroniser",
+    "pendingLocalChangesWarning": "Det er lokale endringer som ikke er synkronisert med Dropbox ennå. Hvis du synkroniserer fra Dropbox nå, vil disse gå tapt.",
+    "pendingRemoteChangesWarning": "Det er ventende fjernendringer. Hvis du synkroniserer med Dropbox nå, vil disse gå tapt.",
+    "syncFromDropbox": "Synkroniser fra Dropbox",
+    "syncFromGitHub": "Synkroniser fra GitHub",
+    "syncFromGitHubTitle": "Synkroniser fra GitHub\n{repoUrl}",
+    "syncImagesToDropbox": "Synkroniser bilder med Dropbox",
+    "syncToDropbox": "Synkroniser til Dropbox",
+    "syncToGitHub": "Synkroniser til GitHub",
+    "syncToGitHubTitle": "Synkroniser til GitHub\n{repoUrl}"
+  },
+  "TagsList": {
+    "favourite": "Favoritt",
+    "moreTags": "+{count} flere tagger:\n{tags}",
+    "moreTagsLabel": "+{count} flere"
+  },
+  "TagsSelect": {
+    "resetTags": "Tilbakestill tagger"
+  },
+  "TrackingConsent": {
+    "confirm": "Det går fint for meg",
+    "deny": "Nei, takk",
+    "title": "Jeg kunne trengt din hjelp"
+  },
+  "Trashbin": {
+    "deletedFrames": "Slettede rammer: {count}",
+    "deletedImages": "Slettede bilder: {count}",
+    "dialogHeader": "Papirkurv ({count} elementer)",
+    "downloadFrames": "Last ned rammer {count, plural, =0 {} other {(#)}}",
+    "downloadImages": "Last ned bilder {count, plural, =0 {} other {(#)}}",
+    "purgeAll": "Slett alle {count, plural, =0 {} other {(#)}}"
+  },
+  "useAsPasswordField": {
+    "hidePassword": "Skjul passord",
+    "showPassword": "Vis passord"
+  },
+  "useBatchButtons": {
+    "deleteConfirmation": "Slett {count} bilder?"
+  },
+  "useEditForm": {
+    "updateDate": "Oppdater dato",
+    "updateFrame": "Oppdater ramme",
+    "updateFramePalette": "Oppdater ramme palett",
+    "updateInvertFramePalette": "Oppdater inverter ramme palett",
+    "updateInvertPalette": "Oppdater inverter palett",
+    "updateLockFrame": "Oppdater lås ramme",
+    "updatePalette": "Oppdater palett",
+    "updateRotation": "Oppdater rotasjon",
+    "updateTags": "Oppdater tagger",
+    "updateTitle": "Oppdater tittel"
+  },
+  "useEditPalette": {
+    "paletteOrigin": "Palettopprinnelse"
+  },
+  "useEditRGBNImages": {
+    "rgbNewGroupTitle": "RGB {date}"
+  },
+  "useFrame": {
+    "deleteConfirmation": "Slett ramme ”{name}” ({frameId})?"
+  },
+  "useGalleryImageContext": {
+    "deleteImage": "{title, select, NO_TITLE {Dette bildet} other {Bilde ”{title}”}} slett",
+    "metaInfo": "Metadata {title, select, NO_TITLE {} other {for ”{title}”}}"
+  },
+  "useGetPortSettings": {
+    "baudRateLabel": "Baudrate",
+    "specifyBaudrate": "Spesifiser baudrate"
+  },
+  "useImageGroups": {
+    "deleteGroupInfo": "Dette vil slette gruppen ”{groupTitle}” og flytte alt innhold (bilder & grupper) til gjeldende nivå.",
+    "deleteGroupMessage": "Slett gruppe",
+    "newGroupDefault": "Ny gruppe standard",
+    "resetGroupsInfo": "Tilbakestill bildegrupper info",
+    "resetGroupsMessage": "Tilbakestill bildegrupper"
+  },
+  "usePalette": {
+    "deletePaletteMessage": "Slett palett ”{name}”?"
+  },
+  "usePaletteSort": {
+    "defaultAsc": "Standard (stigende)",
+    "defaultDesc": "Standard (synkende)",
+    "nameAsc": "Navn (stigende)",
+    "nameDesc": "Navn (synkende)",
+    "usageAsc": "Bruk (stigende)",
+    "usageDesc": "Bruk (synkende)"
+  },
+  "useRunImport": {
+    "importGroupTitle": "Import {date}"
+  },
+  "useSetEditPalette": {
+    "copyOfPalette": "Kopi av {name}"
+  },
+  "useTrashbin": {
+    "backupExportFrame": "Sikkerhetskopi-eksport {hash}",
+    "backupExportImage": "Sikkerhetskopi-eksport {hash}",
+    "reImportedTrashFrames": "Gjenimporterte papirkurv-rammer"
+  },
+  "VideoParamsForm": {
+    "dialogHeader": "Opprett animert GIF med {count} frames",
+    "enableYoyo": "Aktiver yo-yo-effekt (gjenta animasjon baklengs)",
+    "frameModes": {
+      "cropFrame": "Beskjær ramme",
+      "keepFrame": "Behold ramme",
+      "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
+      "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
+    },
+    "frameRate": "Framerate",
+    "handleFrames": "Håndtering av rammer for animasjon",
+    "noFrameOption": "Som valgt per bilde",
+    "reverseDirection": "Reverser animasjonsretning",
+    "scaleGif": "Skaler GIF"
+  },
+  "WebUSBGreeting": {
+    "enableWebUsb": "Aktiver WebUSB / Serielle porter",
+    "webSerialDisabled": "Din nåværende nettleser/enhet støtter dessverre ikke Web Serial",
+    "webSerialEnabled": "Din nåværende nettleser/enhet støtter Web Serial",
+    "webUSBDisabled": "Din nåværende nettleser/enhet støtter dessverre ikke WebUSB",
+    "webUSBEnabled": "Din nåværende nettleser/enhet støtter WebUSB"
   }
 }

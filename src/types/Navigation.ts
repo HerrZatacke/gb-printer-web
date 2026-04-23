@@ -2,9 +2,9 @@ import { GridSize, ResponsiveStyleValue } from '@mui/system';
 import { ComponentType } from 'react';
 
 export interface FlyoutContent {
-  headline: string,
-  navItems: NavItem[],
-  sizeFlyout: ResponsiveStyleValue<GridSize>,
+  headline: string;
+  navItems: NavItem[];
+  sizeFlyout: ResponsiveStyleValue<GridSize>;
 }
 
 export interface NavItem {

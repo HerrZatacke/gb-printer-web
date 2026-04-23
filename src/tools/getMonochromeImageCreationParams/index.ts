@@ -2,10 +2,10 @@ import { type MonochromeImageCreationParams } from 'gb-image-decoder';
 import { BW_PALETTE_HEX } from 'gb-image-decoder';
 
 interface Params {
-  imagePalette?: string[],
-  invertPalette?: boolean,
-  framePalette?: string[],
-  invertFramePalette?: boolean,
+  imagePalette?: string[];
+  invertPalette?: boolean;
+  framePalette?: string[];
+  invertFramePalette?: boolean;
 }
 
 

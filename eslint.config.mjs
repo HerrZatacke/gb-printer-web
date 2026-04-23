@@ -1,3 +1,4 @@
+import stylistic from '@stylistic/eslint-plugin';
 import { defineConfig, globalIgnores } from 'eslint/config'
 import nextVitals from 'eslint-config-next/core-web-vitals'
 import eslintTypescript from 'eslint-config-next/typescript'
@@ -7,7 +8,9 @@ const eslintConfig = defineConfig([
   ...eslintTypescript,
   {
     files: ['**/*.{js,ts,jsx,tsx}'],
-
+    plugins: {
+      '@stylistic': stylistic,
+    },
     rules: {
       'quotes': ['error', 'single'],
       'object-curly-spacing': ['error', 'always'],
@@ -19,7 +22,19 @@ const eslintConfig = defineConfig([
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'no-bitwise': ['error'],
-
+      '@stylistic/member-delimiter-style': [
+        'error',
+        {
+          multiline: {
+            delimiter: 'semi',
+            requireLast: true
+          },
+          singleline: {
+            delimiter: 'semi',
+            requireLast: false
+          }
+        }
+      ],
       'import/order': [
         'error',
         {

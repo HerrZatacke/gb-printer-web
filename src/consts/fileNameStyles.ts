@@ -5,8 +5,8 @@ export enum FileNameStyle {
 }
 
 interface FileNameStyleLabel {
-  id: FileNameStyle,
-  name: string,
+  id: FileNameStyle;
+  name: string;
 }
 
 export const fileNameStyleLabels: FileNameStyleLabel[] = [

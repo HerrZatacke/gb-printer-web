@@ -16,13 +16,13 @@ import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image'
 import { type ImageUpdates } from '@/types/ImageActions';
 
 interface BatchUpdateImagesParams {
-  shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>,
-  updates: ImageUpdates,
-  tagChanges: TagUpdates,
+  shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>;
+  updates: ImageUpdates;
+  tagChanges: TagUpdates;
 }
 
 interface UseBatchUpdateImages {
-  batchUpdateImages: (options: BatchUpdateImagesParams) => void,
+  batchUpdateImages: (options: BatchUpdateImagesParams) => void;
 }
 
 const useBatchUpdateImages = (): UseBatchUpdateImages => {

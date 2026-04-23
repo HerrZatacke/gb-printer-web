@@ -6,8 +6,8 @@ import React from 'react';
 import { specialTags, SpecialTags } from '@/consts/SpecialTags';
 
 interface Props {
-  tags: string[],
-  fromGroup?: boolean,
+  tags: string[];
+  fromGroup?: boolean;
 }
 
 const sortTags = (a: string, b: string) => (

@@ -13,8 +13,8 @@ import { ImportResult } from '@/types/ImportItem';
 import getImportSav from './importSav';
 
 export interface TransformOptions {
-  skipDialogs: boolean,
-  frameSet?: string,
+  skipDialogs: boolean;
+  frameSet?: string;
 }
 
 export const transformSav = async (file: File, options: TransformOptions): Promise<ImportResult> => {
@@ -90,7 +90,7 @@ export const transformSav = async (file: File, options: TransformOptions): Promi
         } : undefined,
       ].reduce(reduceItems<DialogQuestion>, [])),
       confirm: async (result: DialogResult): Promise<void> => {
-        const { chosenFrameset, cartIsJP } = result as { chosenFrameset: string, cartIsJP: boolean };
+        const { chosenFrameset, cartIsJP } = result as { chosenFrameset: string; cartIsJP: boolean };
         dismissDialog(0);
         setSavFrameTypes(chosenFrameset);
 

@@ -8,27 +8,27 @@ import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import { type Image } from '@/types/Image';
 
 interface CurrentInfo {
-  index: number,
-  title: string,
-  created: string,
+  index: number;
+  title: string;
+  created: string;
 }
 
 interface RenderHashInfo {
-  hash: string,
-  visible: boolean,
+  hash: string;
+  visible: boolean;
 }
 
 interface UseLightboxImage {
-  renderHashes: RenderHashInfo[],
-  currentInfo: CurrentInfo | null,
-  isFullscreen: boolean,
-  size: number,
-  canPrev: boolean,
-  canNext: boolean,
-  close: () => void,
-  prev: () => void,
-  next: () => void,
-  handleFullscreen: () => void,
+  renderHashes: RenderHashInfo[];
+  currentInfo: CurrentInfo | null;
+  isFullscreen: boolean;
+  size: number;
+  canPrev: boolean;
+  canNext: boolean;
+  close: () => void;
+  prev: () => void;
+  next: () => void;
+  handleFullscreen: () => void;
 }
 
 export const useLightboxImage = (): UseLightboxImage => {

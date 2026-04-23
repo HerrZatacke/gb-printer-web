@@ -8,8 +8,8 @@ type ReceivingCallback = () => void;
 type DataCallback = (data: string) => void;
 
 interface SetupParams {
-  receiving: ReceivingCallback,
-  data: DataCallback,
+  receiving: ReceivingCallback;
+  data: DataCallback;
 }
 
 export class CaptureCommsDevice implements BaseCommsDevice {

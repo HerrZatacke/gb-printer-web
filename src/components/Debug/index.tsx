@@ -5,7 +5,7 @@ import { useSettingsStore } from '@/stores/stores';
 import { getPreStyles } from '@/styles/tools/getPreStyles';
 
 interface Props {
-  text: string,
+  text: string;
 }
 
 

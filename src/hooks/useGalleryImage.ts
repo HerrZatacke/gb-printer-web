@@ -21,23 +21,23 @@ export enum SelectionEditMode {
 }
 
 interface GalleryImageData {
-  title: string,
-  created: string,
-  frame?: string,
-  hashes?: RGBNHashes,
-  tags: string[],
-  selectionIndex: number,
-  palette: RGBNPalette | string[],
-  framePalette: string[],
-  lockFrame?: boolean,
-  invertPalette?: boolean,
-  invertFramePalette?: boolean,
-  rotation?: Rotation,
+  title: string;
+  created: string;
+  frame?: string;
+  hashes?: RGBNHashes;
+  tags: string[];
+  selectionIndex: number;
+  palette: RGBNPalette | string[];
+  framePalette: string[];
+  lockFrame?: boolean;
+  invertPalette?: boolean;
+  invertFramePalette?: boolean;
+  rotation?: Rotation;
 }
 
 interface UseGalleryImage {
-  galleryImageData: GalleryImageData | null,
-  updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => void,
+  galleryImageData: GalleryImageData | null;
+  updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => void;
 }
 
 export const useGalleryImage = (hash: string): UseGalleryImage => {

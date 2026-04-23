@@ -1,23 +1,25 @@
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Switch from '@mui/material/Switch';
-import TextField from '@mui/material/TextField';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Typography from '@mui/material/Typography';
+import {
+  Badge,
+  Box,
+  FormControl,
+  FormControlLabel, FormHelperText,
+  InputLabel,
+  MenuItem,
+  Switch,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
 import { type ExportFrameMode } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useState } from 'react';
 import exportFrameModes from '@/consts/exportFrameModes';
 import { FileNameStyle, fileNameStyleLabels } from '@/consts/fileNameStyles';
+import { useDownloadInfo } from '@/hooks/useDownloadInfo';
 import { useSettingsStore } from '@/stores/stores';
-import supportedCanvasImageFormats from '@/tools/supportedCanvasImageFormats';
 
 interface Props {
-  inDialog: boolean,
+  inDialog: boolean;
 }
 
 function DownloadOptionsForm({ inDialog }: Props) {
@@ -25,7 +27,6 @@ function DownloadOptionsForm({ inDialog }: Props) {
 
   const {
     alwaysShowDownloadDialog,
-    exportFileTypes,
     exportScaleFactors,
     fileNameStyle,
     handleExportFrame,
@@ -36,19 +37,13 @@ function DownloadOptionsForm({ inDialog }: Props) {
     setHandleExportFrame,
   } = useSettingsStore();
 
-  const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<string[]>(['txt', 'pgm']);
-
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      setSupportedExportFileTypes([
-        ...supportedCanvasImageFormats(),
-        'txt',
-        'pgm',
-      ]);
-    }, 1);
-
-    return () => window.clearTimeout(handle);
-  }, []);
+  const {
+    exportFileTypes,
+    supportedExportFileTypes,
+    fileTypeCounts,
+    rgbnCount,
+    monochromeCount,
+  } = useDownloadInfo();
 
   return (
     <>
@@ -92,10 +87,26 @@ function DownloadOptionsForm({ inDialog }: Props) {
               value={fileType}
               title={fileType}
             >
-              { fileType }
+              <Badge
+                key={fileType}
+                badgeContent={inDialog && exportFileTypes.includes(fileType) ? fileTypeCounts[fileType] : null}
+                showZero
+                color={fileTypeCounts[fileType] ? 'info' : 'error'}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                sx={{ width: '100%' }}
+              >
+                <Box sx={{ width: '100%' }}>
+                  {fileType}
+                </Box>
+              </Badge>
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
+        {inDialog && (
+          <FormHelperText>
+            {t('fileTypeInfo', { rgbnCount, monochromeCount })}
+          </FormHelperText>
+        )}
       </FormControl>
 
       <TextField

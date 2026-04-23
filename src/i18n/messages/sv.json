@@ -1,376 +1,92 @@
 {
-  "SettingsGeneric": {
-    "galleryPageSize": "Bilder per gallerisida",
-    "galleryPageSizeHelper": "Sätt till 0 för att inaktivera paginering – kan orsaka prestandaproblem med stora bildmängder",
-    "galleryClickAction": "Klickbeteende för galleribilder",
-    "galleryClickActionHelper": "Ctrl+klick och Shift+klick kan alltid användas för att välja/välj område",
-    "importSavFrames": "Ramar som ska tillämpas vid import av cartridge-dumpar",
-    "importSavFramesNone": "Inga",
-    "importSavFramesUnknown": "Okänd",
-    "importLastSeen": "Importera ’Senast sedd’-bild vid import av cartridge-dumpar",
-    "importSavOrder": "Ordning att använda vid import av .sav-fil",
-    "importDeleted": "Importera raderade bilder vid import av cartridge-dumpar",
-    "forceMagicCheck": "Tvinga giltig .sav-fil vid import",
-    "importPad": "Fyll ut bilder till 144px höjd vid import",
-    "hideDates": "Dölj bilddatum i galleriet",
-    "sortPalettes": "Sortera paletter",
-    "preferredLocale": "Föredraget språk",
-    "exampleDateFormat": "Exempel datumformat: {format}",
-    "enableDebug": "Visa debug-information",
-    "galleryClickActions": {
-      "clickSelectsItem": "Klick väljer objektet",
-      "clickOpensEditDialog": "Klick öppnar redigeringsdialog",
-      "clickOpensLightbox": "Klick öppnar objektet i lightbox"
+  "AddPlugin": {
+    "addButton": "Lägg till",
+    "alreadyInstalled": "Plugin ”{url}” är redan installerat",
+    "goToPlugins": "🔗 Gå till Plugin-inställningar",
+    "notTrusted": "Källan ”{source}” för detta plugin är inte pålitlig!!",
+    "willAdd": "Detta kommer att lägga till {url} till dina plugins."
+  },
+  "BatchButtons": {
+    "batchActions": {
+      "animate": "Animera",
+      "delete": "Ta bort",
+      "download": "Ladda ner",
+      "edit": "Redigera",
+      "rgb": "Skapa RGB-bilder"
     },
-    "importOrders": {
-      "cartIndex": "Sorterad efter ROM-beslut (som sett i kamerarullen i ursprungligt RAM)",
-      "ramIndex": "Sorterad efter faktisk ordning i RAM (minnesadress)"
+    "checkAll": "Välj alla",
+    "manageFilters": "Hantera filter",
+    "manageSorting": "Hantera sortering",
+    "uncheckAll": "Avmarkera alla",
+    "usePlugin": "Använd plugin"
+  },
+  "BitmapQueue": {
+    "contrastPreset": "Kontrastförinställning",
+    "contrastSettings": {
+      "emulator": "Emulator",
+      "narrow": "Smal",
+      "narrower": "Smalare",
+      "normal": "Normal",
+      "wide": "Bred",
+      "wider": "Större"
     },
-    "locales": {
-      "de-DE": "Tyska – Tyskland (de-DE)",
-      "en-US": "Engelska – Förenta staterna (en-US)",
-      "en-GB": "Engelska – Förenade kungariket (en-GB)",
-      "en-CA": "Engelska – Kanada (en-CA)",
-      "fr-FR": "Franska – Frankrike (fr-FR)"
+    "dialogHeader": "Bitmap-kö",
+    "enableDither": "Aktivera dithering"
+  },
+  "ConnectPrinter": {
+    "askAddPrinterMessage": "Lita på extern skrivare från {openPrinterUrl}, lägga till den i listan över kända enheter och öppna den?",
+    "askAddPrinterTitle": "Lita på och lägg till skrivare",
+    "closePrinterPage": "Stäng skrivarsida",
+    "openPrinterPage": "Öppna skrivarsida"
+  },
+  "ConnectSerial": {
+    "connectedDevices": "{deviceCount, plural, =0 {Inga anslutna enheter} =1 {En ansluten enhet:} other {# anslutna enheter:}}",
+    "copyToClipboard": "Kopiera till urklipp",
+    "openWebSerial": "Öppna Web Serial-enhet",
+    "openWebUSB": "Öppna WebUSB-enhet",
+    "portDeviceTypes": {
+      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Printer Emulator",
+      "cartridgeReader": "Cartridge Reader (LK Firmware)",
+      "inactiveDevice": "Inaktiv enhet",
+      "superPrinterInterface": "Super Printer Interface"
     },
-    "resetTrackingConsent": "Återställ analys-/spårningssamtycke (för närvarande {consentState, select, accepted {aktiv} other {inaktiv}})"
+    "showUnknownResponse": "Visa meddelande från okänd enhet",
+    "unknownDeviceInfo": "Okänd enhetsinformation"
   },
-  "SettingsPrinterUrls": {
-    "printerUrls": "Skrivar-URL:er",
-    "printerUrlHelper": "Om du äger en fysisk WiFi-skrivare kan du lägga till dess URL här och fortsätta i <link>🔗 Import-fliken</link>",
-    "addPrinter": "Lägg till skrivare",
-    "printerUrl": "Skrivar-URL"
-  },
-  "TrackingConsent": {
-    "title": "Jag skulle kunna använda din hjälp",
-    "confirm": "Det är okej för mig",
-    "deny": "Nej tack"
-  },
-  "SettingsDropbox": {
-    "enableStorage": "Använd Dropbox som lagring",
-    "subfolder": "Undermapp",
-    "subfolderWarning": "Ange endast undermappens namn. Annars kommer appen att fullständigt lösa till ”{fullAppPath}” inom din Dropbox, vilket förmodligen inte är vad du avsåg.",
-    "openFolder": "<link>🔗 Öppna mapp</link>",
-    "openFolderLinkTitle": "Öppna Dropbox-mapp:\n{folderLink}",
-    "enableEnhancedSync": "Aktivera förbättrad Dropbox-synkronisering",
-    "enableEnhancedSyncHelper": "Detta är en experimentell funktion.",
-    "authenticate": "Autentisera",
-    "logout": "Logga ut"
-  },
-  "SettingsGapiSheets": {
-    "about": "Detta är en experimentell funktion. Sessionen måste förnyas var 60:e minut.",
-    "tokenExpiry": "Sessionen upphör om {time}",
-    "enableStorage": "Använd Google Sheets som lagring",
-    "enableAutoSync": "Synkronisera automatiskt",
-    "sheetId": "Sheet-ID",
-    "sheetIdHelper": "Du kan klistra in hela redigeringslänken för att få korrekt blad-ID.",
-    "authenticate": "Autentisera",
-    "logout": "Logga ut",
-    "openSheetLink": "Öppna blad i ny flik"
-  },
-  "SheetsTable": {
-    "id": "ID",
-    "title": "Titel",
-    "columns": "Kolumner",
-    "rows": "Rader",
-    "lastLocalUpdate": "Senaste lokala uppdatering",
-    "lastRemoteUpdate": "Senaste fjärruppdatering",
-    "refreshStats":  "Uppdatera egenskaper",
-    "syncPush": "Synkronisera till Sheets",
-    "syncMerge":  "Sammanfoga med Sheets",
-    "syncPull": "Synkronisera från Sheets"
-  },
-  "SettingsPlugins": {
-    "addPlugin": "Lägg till plugin",
-    "addPluginHelper": "🔗 Ett urval av plugins hittar du här",
-    "installedPlugins": "Installerade plugins",
-    "deletePlugin": "Ta bort plugin ”{name}”"
-  },
-  "SettingsGit": {
-    "enableStorage": "Använd GitHub som lagring",
-    "owner": "Ägare",
-    "repoName": "Repository-namn",
-    "branch": "Branch",
-    "throttle": "Begränsning (i ms)",
-    "token": "Token",
-    "tokenHelper": "Gå till GitHub för att skapa en <link>🔗 ny finjusterad personlig åtkomsttoken</link>, välj det repository du vill använda för synkronisering och tillåt läs-/skrivåtkomst för <code>”Repository Permissions > Contents”</code>"
+  "CopyDatabase": {
+    "copyButton": "Kopiera",
+    "loadButton": "Ladda",
+    "reportFrames": "{count} ramar",
+    "reportFramesCopied": "Ramar kopierade",
+    "reportImages": "{count} bilder",
+    "reportImagesCopied": "Bilder kopierade",
+    "reportLocalStorage": "{count} localStorage-poster",
+    "reportLocalStorageCleared": "localStorage rensad",
+    "reportLocalStorageCopied": "localStorage kopierad",
+    "sourceUrl": "Käll-URL"
   },
   "DownloadOptions": {
     "dialogHeader": "Ladda ner {count, plural, =1 {bild} other {# bilder}}"
   },
   "DownloadOptionsForm": {
+    "alwaysShowDownloadDialogHelper": "Du kan återaktivera det här alternativet i inställningarna när som helst",
+    "alwaysShowDownloadDialogInDialog": "Visa alltid denna dialogruta",
+    "alwaysShowDownloadDialogInForm": "Visa nedladdningsalternativ varje gång",
     "exportDimensions": "Bildexport-skalningar",
     "exportFiletypes": "Bildexport-filtyper",
     "exportHandleFrame": "Hantering av ramar vid export av bilder",
     "filenameStyle": "Filnamsstil",
-    "alwaysShowDownloadDialogInForm": "Visa nedladdningsalternativ varje gång",
-    "alwaysShowDownloadDialogInDialog": "Visa alltid denna dialogruta",
-    "alwaysShowDownloadDialogHelper": "Du kan återaktivera det här alternativet i inställningarna när som helst",
+    "filenameStyles": {
+      "dateTitle": "Datum och titel",
+      "fullTitle": "Fullständig titel",
+      "titleOnly": "Endast titel"
+    },
+    "fileTypeInfo": "Ditt bildval innehåller {monochromeCount, plural, =0 {no} other {#}} monokroma och {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder.",
     "frameModes": {
-      "keepFrame": "Behåll ram",
       "cropFrame": "Beskär ram",
+      "keepFrame": "Behåll ram",
       "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
       "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Fullständig titel",
-      "dateTitle": "Datum och titel",
-      "titleOnly": "Endast titel"
-    }
-  },
-  "WebUSBGreeting": {
-    "enableWebUsb": "Aktivera WebUSB / Seriella portar",
-    "webUSBEnabled": "Din nuvarande webbläsare/enhet stöder WebUSB",
-    "webUSBDisabled": "Din nuvarande webbläsare/enhet stöder tyvärr inte WebUSB",
-    "webSerialEnabled": "Din nuvarande webbläsare/enhet stöder Web Serial",
-    "webSerialDisabled": "Din nuvarande webbläsare/enhet stöder tyvärr inte Web Serial"
-  },
-  "ConnectSerial": {
-    "openWebUSB": "Öppna WebUSB-enhet",
-    "openWebSerial": "Öppna Web Serial-enhet",
-    "connectedDevices": "{deviceCount, plural, =0 {Inga anslutna enheter} =1 {En ansluten enhet:} other {# anslutna enheter:}}",
-    "showUnknownResponse": "Visa meddelande från okänd enhet",
-    "unknownDeviceInfo": "Okänd enhetsinformation",
-    "copyToClipboard": "Kopiera till urklipp",
-    "portDeviceTypes": {
-      "inactiveDevice": "Inaktiv enhet",
-      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Printer Emulator",
-      "superPrinterInterface": "Super Printer Interface",
-      "cartridgeReader": "Cartridge Reader (LK Firmware)"
-    }
-  },
-  "SettingsTabs": {
-    "genericSettings": "Allmänna inställningar",
-    "dropboxSettings": "Dropbox-inställningar",
-    "pluginSettings": "Plugin-inställningar",
-    "gitSettings": "Git-inställningar",
-    "gapiSheetsSettings": "Google Sheets-inställningar"
-  },
-  "ExportSettings": {
-    "resetGroups": "Återställ bildgrupper",
-    "exportAll": "Exportera allt",
-    "exportPlugins": "Exportera plugins",
-    "persistState": {
-      "isPersistent": "Lagring är persistent",
-      "requestPersistence": "Begär lagrings-persistens",
-      "apiUnavailable": "Persistens-API inte tillgängligt",
-      "failed": "Lagrings-persistering misslyckades"
-    }
-  },
-  "BatchButtons": {
-    "manageSorting": "Hantera sortering",
-    "manageFilters": "Hantera filter",
-    "checkAll": "Välj alla",
-    "uncheckAll": "Avmarkera alla",
-    "usePlugin": "Använd plugin",
-    "batchActions": {
-      "delete": "Ta bort",
-      "animate": "Animera",
-      "download": "Ladda ner",
-      "edit": "Redigera",
-      "rgb": "Skapa RGB-bilder"
-    }
-  },
-  "AddPlugin": {
-    "notTrusted": "Källan ”{source}” för detta plugin är inte pålitlig!!",
-    "alreadyInstalled": "Plugin ”{url}” är redan installerat",
-    "goToPlugins": "🔗 Gå till Plugin-inställningar",
-    "willAdd": "Detta kommer att lägga till {url} till dina plugins.",
-    "addButton": "Lägg till"
-  },
-  "CopyDatabase": {
-    "sourceUrl": "Käll-URL",
-    "loadButton": "Ladda",
-    "copyButton": "Kopiera",
-    "reportImages": "{count} bilder",
-    "reportFrames": "{count} ramar",
-    "reportLocalStorage": "{count} localStorage-poster",
-    "reportLocalStorageCleared": "localStorage rensad",
-    "reportLocalStorageCopied": "localStorage kopierad",
-    "reportImagesCopied": "Bilder kopierade",
-    "reportFramesCopied": "Ramar kopierade"
-  },
-  "EditFrameStartLine": {
-    "moveUp": "Flytta bild uppåt",
-    "moveDown": "Flytta bild nedåt"
-  },
-  "EditImageTabs": {
-    "tabTypes": {
-      "frame": "Ram",
-      "misc": "Övrigt",
-      "palette": "Palett",
-      "colors": "Färger",
-      "tags": "Taggar"
-    }
-  },
-  "FolderBreadcrumb": {
-    "editGroup": "Redigera grupp ”{title}”",
-    "openNavigation": "Öppna galleri-navigering"
-  },
-  "FolderTreeDialog": {
-    "dialogHeader": "Galleri-navigering"
-  },
-  "Frame": {
-    "usedTimes": "Använd {count} gånger",
-    "notUsed": "Inte använd"
-  },
-  "FrameContextMenu": {
-    "edit": "Redigera",
-    "delete": "Ta bort"
-  },
-  "FrameSelect": {
-    "frameLabel": "Ram",
-    "noFrameOption": "Som importerad / Ingen ram",
-    "separateColorSettings": "Använd separata färginställningar för ram"
-  },
-  "Frames": {
-    "editFramegroup": "Redigera ramgrupp",
-    "renameFramegroup": "Byt namn på ramgrupp",
-    "exportFrames": "Exportera ramar",
-    "exportCurrentFramegroup": "Exportera aktuell ramgrupp ({id})",
-    "convertFramesFormat": "Konvertera ramar till nytt format",
-    "applyFrames": "Lägg till ram till bilder om rådata matchar"
-  },
-  "GalleryGroup": {
-    "itemCount": "{count} bilder"
-  },
-  "GalleryGroupContextMenu": {
-    "edit": "Redigera",
-    "delete": "Ta bort"
-  },
-  "GalleryNumbers": {
-    "imageCount": "{count} bilder",
-    "filteredCount": "{count} filtrerade",
-    "selectedCount": "{count} valda",
-    "separator": " / "
-  },
-  "GalleryViewSelect": {
-    "viewNames": {
-      "smallest": "Minsta",
-      "originalSize": "Originalstorlek",
-      "doubleSize": "Dubbel storlek",
-      "maximumSize": "Maximal storlek"
-    }
-  },
-  "GalleryImageContextMenu": {
-    "edit": "Redigera",
-    "download": "Ladda ner",
-    "delete": "Ta bort",
-    "viewInLightbox": "Visa i lightbox",
-    "printViaSuperPrinter": "Skriv ut via Super Printer",
-    "useSSTV": "Spela upp som SSTV-ton",
-    "usePlugin": "Använd plugin",
-    "share": "Dela",
-    "addToFavourites": "Lägg till i favoriter",
-    "removeFromFavourites": "Ta bort från favoriter",
-    "addToSelection": "Lägg till i urval",
-    "removeFromSelection": "Ta bort från urval",
-    "showMetadata": "Visa metadata",
-    "createGroup": "Skapa grupp"
-  },
-  "GreySelect": {
-    "neutralLayerBlendmode": "Neutral-lager blandningsläge",
-    "blendModes": {
-      "normal": "Normal (ignorera neutralt lager)",
-      "normalS": "Normal ⇵ (endast neutralt lager)",
-      "lighten": "Ljusare",
-      "screen": "Skärm",
-      "dodge": "Undvik",
-      "addition": "Addition",
-      "darken": "Mörkare",
-      "multiply": "Multiplicera",
-      "burn": "Bränn",
-      "overlay": "Överlagring",
-      "softLight": "Mjukt ljus",
-      "hardLight": "Hårt ljus",
-      "difference": "Skillnad",
-      "exclusion": "Uteslutning"
-    }
-  },
-  "ConnectPrinter": {
-    "openPrinterPage": "Öppna skrivarsida",
-    "closePrinterPage": "Stäng skrivarsida",
-    "askAddPrinterTitle": "Lita på och lägg till skrivare",
-    "askAddPrinterMessage": "Lita på extern skrivare från {openPrinterUrl}, lägga till den i listan över kända enheter och öppna den?"
-  },
-  "EnvInfo": {
-    "appVersion": "Webbapp-version: {value}",
-    "appBranch": "Webbapp-branch: {value}",
-    "storageEstimate": "Användning av {type}: {percentage}% ({used} av {total})"
-  },
-  "usePaletteSort": {
-    "defaultAsc": "Standard (stigande)",
-    "defaultDesc": "Standard (fallande)",
-    "usageAsc": "Användning (stigande)",
-    "usageDesc": "Användning (fallande)",
-    "nameAsc": "Namn (stigande)",
-    "nameDesc": "Namn (fallande)"
-  },
-  "useAsPasswordField": {
-    "hidePassword": "Dölj lösenord",
-    "showPassword": "Visa lösenord"
-  },
-  "ImageMeta": {
-    "dateTime": "Datum / Tid",
-    "editRotation": "Redigera rotation"
-  },
-  "Import": {
-    "selectFiles": "Välj fil(er) att importera",
-    "importMemory": "Importera minne från Cartridge Reader",
-    "importAlbumRolls": "Importera albumrullar från Photo! (ROM + Flash)",
-    "serialMonitorLabel": "Importera data mottagen via seriell monitor",
-    "import": "Importera",
-    "exportImages": "Exportera bilder",
-    "exportSelectedImages": "Exportera valda bilder"
-  },
-  "ImportPreviewImage": {
-    "scaleFactorWarning": "Bildens skalningsfaktor är {scaleFactor}. För att få ett rent resultat utan artefakter, försök endast importera bilder vars dimensioner är skalade med tvåpotenser. (1, 2, 4, 8 ...)"
-  },
-  "Lightbox": {
-    "cancel": "Avbryt",
-    "close": "Stäng",
-    "ok": "OK",
-    "closeWithHeader": "Stäng {header}"
-  },
-  "LightboxImage": {
-    "leaveFullscreen": "Lämna fullskärmsläge",
-    "enterFullscreen": "Gå till fullskärmsläge",
-    "imageCounter": "{current} av {total}"
-  },
-  "MetaTable": {
-    "hashChannel": "Hash {channel}-kanal"
-  },
-  "Navigation": {
-    "home": "Hem",
-    "gallery": "Galleri",
-    "galleryShortcuts": "Gallerigenvägar",
-    "import": "Importera",
-    "palettes": "Paletter",
-    "frames": "Ramar",
-    "settings": "Inställningar",
-    "addPlugin": "Lägg till plugin",
-    "trash": "Papperskorg",
-    "syncRemote": "Synkronisera med fjärrtjänst(er)",
-    "switchToDark": "Växla till mörkt tema",
-    "switchToBright": "Växla till ljust tema",
-    "usbDisabled": "USB är inaktiverat",
-    "usbDevices": "USB-enheter",
-    "openMainNav": "Öppna huvudnavigering",
-    "closeMainNav": "Stäng huvudnavigering",
-    "mainNavAriaLabel": "Huvudnavigering",
-    "utilityNavAriaLabel": "Verktygsnavigering"
-  },
-  "BitmapQueue": {
-    "dialogHeader": "Bitmap-kö",
-    "enableDither": "Aktivera dithering",
-    "contrastPreset": "Kontrastförinställning",
-    "contrastSettings": {
-      "wider": "Större",
-      "wide": "Bred",
-      "normal": "Normal",
-      "narrow": "Smal",
-      "narrower": "Smalare",
-      "emulator": "Emulator"
     }
   },
   "DragOver": {
@@ -380,186 +96,281 @@
   "EditForm": {
     "dialogHeader": "Redigera {count, plural, =0 {} =1 {bild} other {# bilder}}",
     "editingMultiple": "Du redigerar {count} bilder",
-    "indexHelperText": "Använd %n (eller %nn, %nnn, ...) för att lägga till ett numeriskt index till bildtitlarna",
-    "editTitle": "Redigera titel"
+    "editTitle": "Redigera titel",
+    "indexHelperText": "Använd %n (eller %nn, %nnn, ...) för att lägga till ett numeriskt index till bildtitlarna"
   },
   "EditFrame": {
     "dialogHeader": "Redigera ram ”{id}” {idChange}",
     "idChange": "→ ”{newId}”"
   },
   "EditFrameForm": {
-    "selectFrameGroup": "Välj ramgrupp",
-    "newFrameGroup": "Ny ramgrupp",
-    "unknown": "Okänd",
     "frameGroup": "Ramgrupp",
     "frameGroupId": "Ramgrupps-ID",
-    "newFrameGroupId": "Nytt ramgrupps-ID",
-    "groupIdHelperText": "Ramgrupps-ID",
-    "newFrameGroupName": "Nytt ramgruppsnamn",
     "frameIndex": "Ramindex",
     "frameIndexHelperText": "Ramindex",
     "frameName": "Ramnamn",
-    "idInUse": "Det angivna ramindexet/identifieraren ”{id}” används redan, välj en annan."
+    "groupIdHelperText": "Ramgrupps-ID",
+    "idInUse": "Det angivna ramindexet/identifieraren ”{id}” används redan, välj en annan.",
+    "newFrameGroup": "Ny ramgrupp",
+    "newFrameGroupId": "Nytt ramgrupps-ID",
+    "newFrameGroupName": "Nytt ramgruppsnamn",
+    "selectFrameGroup": "Välj ramgrupp",
+    "unknown": "Okänd"
+  },
+  "EditFrameStartLine": {
+    "moveDown": "Flytta bild nedåt",
+    "moveUp": "Flytta bild uppåt"
   },
   "EditImageGroup": {
-    "dialogHeader": "Redigera grupp {title}",
     "createNewGroupDialogHeader": "Skapa ny grupp {count, plural, =0 {} =1 {} other {med # bilder}}",
-    "moveSelectedImages": "Flytta {count, plural, =0 {} =1 {bild} other {# bilder}}",
-    "title": "Titel",
+    "dialogHeader": "Redigera grupp {title}",
     "favourite": "Fäst till genvägar",
-    "pathSegment": "Sökvägssegment (identifierare)",
+    "moveSelectedImages": "Flytta {count, plural, =0 {} =1 {bild} other {# bilder}}",
+    "parentGroup": "Överordnad grupp",
     "path": "Sökväg: ”{path}”",
     "pathInUse": "Sökväg används redan: ”{path}”",
-    "parentGroup": "Överordnad grupp"
+    "pathSegment": "Sökvägssegment (identifierare)",
+    "title": "Titel"
   },
-  "EditPalette": {
-    "dialogHeader": "Redigera palett {name}",
-    "editTitle": "Redigera titel",
-    "addTitle": "Lägg till titel",
-    "idShortName": "ID/Kortnamn",
-    "colorIndex": "Färg {index}"
-  },
-  "EditRGBN": {
-    "dialogHeader": "Redigera RGBN",
-    "groupingLabel": "Gruppering",
-    "groupByColor": "Urval är grupperat efter färger (RRR GGG BBB)",
-    "groupByImage": "Urval är grupperat efter bilder (RGB RGB RGB)",
-    "manualChannelSelection": "Manuell kanalval",
-    "manualChannelInstructions": "Instruktioner för manuell kanalval",
-    "channelOrderInstructions": "Välj ordningen för kanaler som ska tillämpas (i ordning för valda bilder). Kanaler till höger om separatorn används inte.",
-    "channelDistributionError": "Kanal fördelning fel",
-    "imagePreview": "Bildförhandsvisning",
-    "createGroupLabel": "Skapa grupp"
-  },
-  "useEditRGBNImages": {
-    "rgbNewGroupTitle": "RGB {date}"
-  },
-  "FilterForm": {
-    "dialogHeader": "Filter",
-    "clearFiltersTitle": "Rensa filter",
-    "clear": "Rensa",
-    "clearFiltersAndApplyTitle": "Rensa filter och tillämpa",
-    "clearAndApply": "Rensa och tillämpa",
-    "clearTab": "Återställ valda {tab, select, tabTags {Taggar} tabPalettes {Paletter} tabFrames {Ramar} other {}}",
-    "allMustBeMet": "Alla måste uppfyllas",
-    "oneMustBeMet": "En måste uppfyllas",
-    "untagged": "Otaggade",
-    "favourite": "Favoriter",
-    "new": "Nya",
-    "monochrome": "Monokrom",
-    "rgb": "RGB",
-    "recentImports": "Nya import",
-    "imageHasComments": "Bilder med kommentarer",
-    "imageHasUsername": "Bilder med användarnamn",
-    "filterTabs": {
-      "tabTags": "Taggar {count, plural, =0 {} other {(#)}}",
-      "tabPalettes": "Paletter {count, plural, =0 {} other {(#)}}",
-      "tabFrames": "Ramar {count, plural, =0 {} other {(#)}}"
+  "EditImageTabs": {
+    "tabTypes": {
+      "colors": "Färger",
+      "frame": "Ram",
+      "misc": "Övrigt",
+      "palette": "Palett",
+      "tags": "Taggar"
     }
   },
-  "FilterFormTag": {
-    "removeTag": "Ta bort ”{title}”-tagg från urval",
-    "selectTag": "Välj ”{title}”-tagg"
+  "EditPalette": {
+    "addTitle": "Lägg till titel",
+    "colorIndex": "Färg {index}",
+    "dialogHeader": "Redigera palett {name}",
+    "editTitle": "Redigera titel",
+    "idShortName": "ID/Kortnamn"
+  },
+  "EditRGBN": {
+    "channelDistributionError": "Kanal fördelning fel",
+    "channelOrderInstructions": "Välj ordningen för kanaler som ska tillämpas (i ordning för valda bilder). Kanaler till höger om separatorn används inte.",
+    "createGroupLabel": "Skapa grupp",
+    "dialogHeader": "Redigera RGBN",
+    "groupByColor": "Urval är grupperat efter färger (RRR GGG BBB)",
+    "groupByImage": "Urval är grupperat efter bilder (RGB RGB RGB)",
+    "groupingLabel": "Gruppering",
+    "imagePreview": "Bildförhandsvisning",
+    "manualChannelInstructions": "Instruktioner för manuell kanalval",
+    "manualChannelSelection": "Manuell kanalval"
+  },
+  "EnvInfo": {
+    "appBranch": "Webbapp-branch: {value}",
+    "appVersion": "Webbapp-version: {value}",
+    "storageEstimate": "Användning av {type}: {percentage}% ({used} av {total})"
+  },
+  "ExportSettings": {
+    "exportAll": "Exportera allt",
+    "exportPlugins": "Exportera plugins",
+    "persistState": {
+      "apiUnavailable": "Persistens-API inte tillgängligt",
+      "failed": "Lagrings-persistering misslyckades",
+      "isPersistent": "Lagring är persistent",
+      "requestPersistence": "Begär lagrings-persistens"
+    },
+    "resetGroups": "Återställ bildgrupper"
+  },
+  "FilterForm": {
+    "allMustBeMet": "Alla måste uppfyllas",
+    "clear": "Rensa",
+    "clearAndApply": "Rensa och tillämpa",
+    "clearFiltersAndApplyTitle": "Rensa filter och tillämpa",
+    "clearFiltersTitle": "Rensa filter",
+    "clearTab": "Återställ valda {tab, select, tabTags {Taggar} tabPalettes {Paletter} tabFrames {Ramar} other {}}",
+    "dialogHeader": "Filter",
+    "favourite": "Favoriter",
+    "filterTabs": {
+      "tabFrames": "Ramar {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletter {count, plural, =0 {} other {(#)}}",
+      "tabTags": "Taggar {count, plural, =0 {} other {(#)}}"
+    },
+    "imageHasComments": "Bilder med kommentarer",
+    "imageHasUsername": "Bilder med användarnamn",
+    "monochrome": "Monokrom",
+    "new": "Nya",
+    "oneMustBeMet": "En måste uppfyllas",
+    "recentImports": "Nya import",
+    "rgb": "RGB",
+    "untagged": "Otaggade"
+  },
+  "FilterFormFrame": {
+    "removeFrame": "Ta bort ram ”{name}” från urval",
+    "selectFrame": "Välj ram ”{name}”",
+    "usage": "Använd {usage} gånger"
   },
   "FilterFormPalette": {
     "removePalette": "Ta bort palett ”{name}” från urval",
     "selectPalette": "Välj palett ”{name}”"
   },
-  "FilterFormFrame": {
-    "usage": "Använd {usage} gånger",
-    "removeFrame": "Ta bort ram ”{name}” från urval",
-    "selectFrame": "Välj ram ”{name}”"
+  "FilterFormTag": {
+    "removeTag": "Ta bort ”{title}”-tagg från urval",
+    "selectTag": "Välj ”{title}”-tagg"
+  },
+  "FolderBreadcrumb": {
+    "editGroup": "Redigera grupp ”{title}”",
+    "openNavigation": "Öppna galleri-navigering"
+  },
+  "FolderTreeDialog": {
+    "dialogHeader": "Galleri-navigering"
+  },
+  "Frame": {
+    "notUsed": "Inte använd",
+    "usedTimes": "Använd {count} gånger"
+  },
+  "FrameContextMenu": {
+    "delete": "Ta bort",
+    "edit": "Redigera"
   },
   "FrameQueue": {
     "dialogHeader": "Importera ny ram som ”{id}”"
   },
+  "Frames": {
+    "applyFrames": "Lägg till ram till bilder om rådata matchar",
+    "convertFramesFormat": "Konvertera ramar till nytt format",
+    "editFramegroup": "Redigera ramgrupp",
+    "exportCurrentFramegroup": "Exportera aktuell ramgrupp ({id})",
+    "exportFrames": "Exportera ramar",
+    "renameFramegroup": "Byt namn på ramgrupp"
+  },
+  "FrameSelect": {
+    "frameLabel": "Ram",
+    "noFrameOption": "Som importerad / Ingen ram",
+    "separateColorSettings": "Använd separata färginställningar för ram"
+  },
+  "GalleryGroup": {
+    "itemCount": "{count} bilder"
+  },
+  "GalleryGroupContextMenu": {
+    "delete": "Ta bort",
+    "edit": "Redigera"
+  },
+  "GalleryImageContextMenu": {
+    "addToFavourites": "Lägg till i favoriter",
+    "addToSelection": "Lägg till i urval",
+    "createGroup": "Skapa grupp",
+    "delete": "Ta bort",
+    "download": "Ladda ner",
+    "edit": "Redigera",
+    "printViaSuperPrinter": "Skriv ut via Super Printer",
+    "removeFromFavourites": "Ta bort från favoriter",
+    "removeFromSelection": "Ta bort från urval",
+    "share": "Dela",
+    "showMetadata": "Visa metadata",
+    "usePlugin": "Använd plugin",
+    "useSSTV": "Spela upp som SSTV-ton",
+    "viewInLightbox": "Visa i lightbox"
+  },
+  "GalleryNumbers": {
+    "filteredCount": "{count} filtrerade",
+    "imageCount": "{count} bilder",
+    "selectedCount": "{count} valda",
+    "separator": " / "
+  },
+  "GalleryViewSelect": {
+    "viewNames": {
+      "doubleSize": "Dubbel storlek",
+      "maximumSize": "Maximal storlek",
+      "originalSize": "Originalstorlek",
+      "smallest": "Minsta"
+    }
+  },
+  "GreySelect": {
+    "blendModes": {
+      "addition": "Addition",
+      "burn": "Bränn",
+      "darken": "Mörkare",
+      "difference": "Skillnad",
+      "dodge": "Undvik",
+      "exclusion": "Uteslutning",
+      "hardLight": "Hårt ljus",
+      "lighten": "Ljusare",
+      "multiply": "Multiplicera",
+      "normal": "Normal (ignorera neutralt lager)",
+      "normalS": "Normal ⇵ (endast neutralt lager)",
+      "overlay": "Överlagring",
+      "screen": "Skärm",
+      "softLight": "Mjukt ljus"
+    },
+    "neutralLayerBlendmode": "Neutral-lager blandningsläge"
+  },
+  "ImageMeta": {
+    "dateTime": "Datum / Tid",
+    "editRotation": "Redigera rotation"
+  },
+  "Import": {
+    "exportImages": "Exportera bilder",
+    "exportSelectedImages": "Exportera valda bilder",
+    "import": "Importera",
+    "importAlbumRolls": "Importera albumrullar från Photo! (ROM + Flash)",
+    "importMemory": "Importera minne från Cartridge Reader",
+    "selectFiles": "Välj fil(er) att importera",
+    "serialMonitorLabel": "Importera data mottagen via seriell monitor"
+  },
+  "ImportPreviewImage": {
+    "scaleFactorWarning": "Bildens skalningsfaktor är {scaleFactor}. För att få ett rent resultat utan artefakter, försök endast importera bilder vars dimensioner är skalade med tvåpotenser. (1, 2, 4, 8 ...)"
+  },
   "ImportQueue": {
+    "createGroupLabel": "Skapa grupp",
     "dialogHeader": "{count, plural, =1 {Importera bild} other {Importera # bilder}}",
-    "removeLastSeenTitle": "Ta bort senast sedda",
-    "removeLastSeen": "Ta bort senast sedda {count, plural, =0 {} other {({count})}}",
-    "removeDeletedTitle": "Ta bort raderade",
-    "removeDeleted": "Ta bort raderade {count, plural, =0 {} other {({count})}}",
-    "removeDuplicatesInQueueTitle": "Ta bort dubbletter i kön",
-    "removeDuplicatesInQueue": "Ta bort dubbletter i kön {count, plural, =0 {} other {({count})}}",
-    "removeAlreadyImportedTitle": "Ta bort redan importerade",
-    "removeAlreadyImported": "Ta bort redan importerade {count, plural, =0 {} other {({count})}}",
     "modifyFrame": "Ändra ram",
     "noFrameOption": "Ingen ram",
-    "createGroupLabel": "Skapa grupp"
+    "removeAlreadyImported": "Ta bort redan importerade {count, plural, =0 {} other {({count})}}",
+    "removeAlreadyImportedTitle": "Ta bort redan importerade",
+    "removeDeleted": "Ta bort raderade {count, plural, =0 {} other {({count})}}",
+    "removeDeletedTitle": "Ta bort raderade",
+    "removeDuplicatesInQueue": "Ta bort dubbletter i kön {count, plural, =0 {} other {({count})}}",
+    "removeDuplicatesInQueueTitle": "Ta bort dubbletter i kön",
+    "removeLastSeen": "Ta bort senast sedda {count, plural, =0 {} other {({count})}}",
+    "removeLastSeenTitle": "Ta bort senast sedda"
   },
   "ImportRow": {
-    "duplicateInQueue": "Dubblett i kön",
     "alreadyImported": "Denna bild har redan {title, select, NO_TITLE {} other {som ”{title}”}} importerats",
+    "duplicateInQueue": "Dubblett i kön",
     "importAsFrame": "Importera som ram",
     "removeFromQueue": "Ta bort från kön"
   },
-  "PickColors": {
-    "newPaletteNameFromFile": "Från fil {fileName}",
-    "dialogHeader": "Välj färger från ”{fileName}”"
+  "InputNewTag": {
+    "tagsLabel": "Taggar"
   },
-  "ProgressBox": {
-    "dialogHeader": "Förlopp"
+  "Lightbox": {
+    "cancel": "Avbryt",
+    "close": "Stäng",
+    "closeWithHeader": "Stäng {header}",
+    "ok": "OK"
   },
-  "ProgressLogBox": {
-    "dialogHeaderDone": "✔️ Uppdatering klar {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderUpdating": "⏳ Uppdaterar... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Uppdateringen misslyckades {repo, select, NO_REPO {} other {- {repo}}}",
-    "showAllMessages": "Visa alla {count} meddelanden",
-    "reduceMessages": "Minska meddelanden",
-    "startedAt": "Startad vid: {time}",
-    "finishedAfter": "Avslutad efter: {duration}",
-    "runningFor": "Körs sedan: {duration}",
-    "openGitHubRepository": "Öppna GitHub-repo",
-    "openDropboxFolder": "Öppna Dropbox-mapp",
-    "openDropboxFolderTitle": "Öppna Dropbox-mapp:\n{path}"
+  "LightboxImage": {
+    "enterFullscreen": "Gå till fullskärmsläge",
+    "imageCounter": "{current} av {total}",
+    "leaveFullscreen": "Lämna fullskärmsläge"
   },
-  "Serials": {
-    "dialogHeader": "Seriel"
+  "MetaTable": {
+    "hashChannel": "Hash {channel}-kanal"
   },
-  "SortForm": {
-    "dialogHeader": "Sortera efter: {sortBy}/{order}",
-    "sortByLabel": "Sortera efter",
-    "sortDirectionLabel": "Sorteringsriktning",
-    "titleOption": "Titel",
-    "dateOption": "Datum",
-    "paletteOption": "Palett",
-    "ascending": "Stigande",
-    "descending": "Fallande"
-  },
-  "SyncSelect": {
-    "dialogHeader": "Synkronisera",
-    "syncToGitHub": "Synkronisera till GitHub",
-    "syncToGitHubTitle": "Synkronisera till GitHub\n{repoUrl}",
-    "syncFromGitHub": "Synkronisera från GitHub",
-    "syncFromGitHubTitle": "Synkronisera från GitHub\n{repoUrl}",
-    "syncToDropbox": "Synkronisera till Dropbox",
-    "syncFromDropbox": "Synkronisera från Dropbox",
-    "syncImagesToDropbox": "Synkronisera bilder till Dropbox",
-    "pendingRemoteChangesWarning": "Väntande fjärrändringar",
-    "pendingLocalChangesWarning": "Väntande lokala ändringar"
-  },
-  "Trashbin": {
-    "dialogHeader": "Papperskorg ({count} objekt)",
-    "downloadFrames": "Ladda ner ramar {count, plural, =0 {} other {(#)}}",
-    "downloadImages": "Ladda ner bilder {count, plural, =0 {} other {(#)}}",
-    "purgeAll": "Rensa allt {count, plural, =0 {} other {(#)}}",
-    "deletedFrames": "Raderade ramar: {count}",
-    "deletedImages": "Raderade bilder: {count}"
-  },
-  "VideoParamsForm": {
-    "dialogHeader": "Skapa animerad GIF med {count} ramar",
-    "frameRate": "Bildfrekvens",
-    "scaleGif": "Skala GIF",
-    "enableYoyo": "Aktivera yoyo (upprepa animation bakåt)",
-    "reverseDirection": "Reversera riktning",
-    "handleFrames": "Hantera ramar",
-    "noFrameOption": "Ingen ram",
-    "frameModes": {
-      "keepFrame": "Behåll ram",
-      "cropFrame": "Beskär ram",
-      "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
-      "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
-    }
+  "Navigation": {
+    "addPlugin": "Lägg till plugin",
+    "closeMainNav": "Stäng huvudnavigering",
+    "frames": "Ramar",
+    "gallery": "Galleri",
+    "galleryShortcuts": "Gallerigenvägar",
+    "home": "Hem",
+    "import": "Importera",
+    "mainNavAriaLabel": "Huvudnavigering",
+    "openMainNav": "Öppna huvudnavigering",
+    "palettes": "Paletter",
+    "settings": "Inställningar",
+    "switchToBright": "Växla till ljust tema",
+    "switchToDark": "Växla till mörkt tema",
+    "syncRemote": "Synkronisera med fjärrtjänst(er)",
+    "trash": "Papperskorg",
+    "usbDevices": "USB-enheter",
+    "usbDisabled": "USB är inaktiverat",
+    "utilityNavAriaLabel": "Verktygsnavigering"
   },
   "Pagination": {
     "pageCount": "{current}/{total}"
@@ -571,114 +382,178 @@
     "usageCount": "({shortName}) {count, plural, =0 {Inte använd} =1 {Använd en gång} other {Använd # gånger}}"
   },
   "PaletteContextMenu": {
-    "setActive": "Aktivera",
     "clone": "Klona",
+    "delete": "Ta bort",
     "edit": "Redigera",
-    "delete": "Ta bort"
+    "setActive": "Aktivera"
   },
   "Palettes": {
-    "ownPalettes": "Egna paletter",
-    "predefinedPalettes": "Fördefinierade paletter",
     "allPalettes": "Alla paletter",
+    "exportPalettes": "Exportera paletter",
     "newPalette": "Ny palett",
     "newPaletteFromImage": "Ny palett från bild",
-    "sortPalettes": "Sortera paletter",
-    "exportPalettes": "Exportera paletter"
+    "ownPalettes": "Egna paletter",
+    "predefinedPalettes": "Fördefinierade paletter",
+    "sortPalettes": "Sortera paletter"
   },
   "PaletteSelect": {
     "asSelectedPerImage": "Som vald per bild",
-    "palette": "Palett",
-    "invertPalette": "Invertera palett"
+    "invertPalette": "Invertera palett",
+    "palette": "Palett"
+  },
+  "PickColors": {
+    "dialogHeader": "Välj färger från ”{fileName}”",
+    "newPaletteNameFromFile": "Från fil {fileName}"
   },
   "PluginSelect": {
     "pluginTooltip": "{description}\n{url}"
   },
   "PrinterReport": {
-    "functions": {
-      "checkPrinter": "Kontrollera skrivare",
-      "fetchImagesGeneric": "Importera bilder",
-      "fetchImagesCount": "Importera {count} bilder",
-      "clearPrinter": "Rensa skrivare"
-    },
-    "printerFilesystem": "Skrivar-filsystem",
-    "total": "Totalt",
-    "used": "Använt",
     "free": "Ledigt",
     "freeImages": "{count} bilder",
-    "images": "Bilder"
-  },
-  "StorageWarning": {
-    "storageTypes": {
-      "indexedDB": "IndexedDB",
-      "localStorage": "LocalStorage"
+    "functions": {
+      "checkPrinter": "Kontrollera skrivare",
+      "clearPrinter": "Rensa skrivare",
+      "fetchImagesCount": "Importera {count} bilder",
+      "fetchImagesGeneric": "Importera bilder"
     },
-    "usageTooltip": "Använder {used} av {total}",
-    "usageWarning": "Du använder {percentage}% av din webbläsares {type}. Observera att det inte kommer att vara möjligt att spara bilder när gränsen nås."
+    "images": "Bilder",
+    "printerFilesystem": "Skrivar-filsystem",
+    "total": "Totalt",
+    "used": "Använt"
   },
-  "TagsList": {
-    "favourite": "Favorit",
-    "moreTags": "+{count} fler taggar:\n{tags}",
-    "moreTagsLabel": "+{count} fler"
+  "ProgressBox": {
+    "dialogHeader": "Förlopp"
   },
-  "TagsSelect": {
-    "resetTags": "Återställ taggar"
+  "ProgressLogBox": {
+    "dialogHeaderDone": "✔️ Uppdatering klar {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderError": "❌ Uppdateringen misslyckades {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderUpdating": "⏳ Uppdaterar... {repo, select, NO_REPO {} other {- {repo}}}",
+    "finishedAfter": "Avslutad efter: {duration}",
+    "openDropboxFolder": "Öppna Dropbox-mapp",
+    "openDropboxFolderTitle": "Öppna Dropbox-mapp:\n{path}",
+    "openGitHubRepository": "Öppna GitHub-repo",
+    "reduceMessages": "Minska meddelanden",
+    "runningFor": "Körs sedan: {duration}",
+    "showAllMessages": "Visa alla {count} meddelanden",
+    "startedAt": "Startad vid: {time}"
   },
-  "InputNewTag": {
-    "tagsLabel": "Taggar"
+  "RemotePrinterContext": {
+    "noFilesReceived": "Inga giltiga filer mottagna från WiFi-skrivaren"
   },
-  "useBatchButtons": {
-    "deleteConfirmation": "Ta bort {count} bilder?"
+  "Serials": {
+    "dialogHeader": "Seriel"
   },
-  "useEditForm": {
-    "updateDate": "Uppdatera datum",
-    "updateTitle": "Uppdatera titel",
-    "updatePalette": "Uppdatera palett",
-    "updateInvertPalette": "Uppdatera inverterad palett",
-    "updateFrame": "Uppdatera ram",
-    "updateLockFrame": "Uppdatera låst ram",
-    "updateFramePalette": "Uppdatera ram-palett",
-    "updateInvertFramePalette": "Uppdatera inverterad ram-palett",
-    "updateTags": "Uppdatera taggar",
-    "updateRotation": "Uppdatera rotation"
+  "SettingsDropbox": {
+    "authenticate": "Autentisera",
+    "enableEnhancedSync": "Aktivera förbättrad Dropbox-synkronisering",
+    "enableEnhancedSyncHelper": "Detta är en experimentell funktion.",
+    "enableStorage": "Använd Dropbox som lagring",
+    "logout": "Logga ut",
+    "openFolder": "<link>🔗 Öppna mapp</link>",
+    "openFolderLinkTitle": "Öppna Dropbox-mapp:\n{folderLink}",
+    "subfolder": "Undermapp",
+    "subfolderWarning": "Ange endast undermappens namn. Annars kommer appen att fullständigt lösa till ”{fullAppPath}” inom din Dropbox, vilket förmodligen inte är vad du avsåg."
   },
-  "useEditPalette": {
-    "paletteOrigin": "Palettkälla"
+  "SettingsGapiSheets": {
+    "about": "Detta är en experimentell funktion. Sessionen måste förnyas var 60:e minut.",
+    "authenticate": "Autentisera",
+    "enableAutoSync": "Synkronisera automatiskt",
+    "enableStorage": "Använd Google Sheets som lagring",
+    "logout": "Logga ut",
+    "openSheetLink": "Öppna blad i ny flik",
+    "sheetId": "Sheet-ID",
+    "sheetIdHelper": "Du kan klistra in hela redigeringslänken för att få korrekt blad-ID.",
+    "tokenExpiry": "Sessionen upphör om {time}"
   },
-  "useFrame": {
-    "deleteConfirmation": "Ta bort ram ”{name}” ({frameId})?"
+  "SettingsGeneric": {
+    "enableDebug": "Visa debug-information",
+    "exampleDateFormat": "Exempel datumformat: {format}",
+    "forceMagicCheck": "Tvinga giltig .sav-fil vid import",
+    "galleryClickAction": "Klickbeteende för galleribilder",
+    "galleryClickActionHelper": "Ctrl+klick och Shift+klick kan alltid användas för att välja/välj område",
+    "galleryClickActions": {
+      "clickOpensEditDialog": "Klick öppnar redigeringsdialog",
+      "clickOpensLightbox": "Klick öppnar objektet i lightbox",
+      "clickSelectsItem": "Klick väljer objektet"
+    },
+    "galleryPageSize": "Bilder per gallerisida",
+    "galleryPageSizeHelper": "Sätt till 0 för att inaktivera paginering – kan orsaka prestandaproblem med stora bildmängder",
+    "hideDates": "Dölj bilddatum i galleriet",
+    "importDeleted": "Importera raderade bilder vid import av cartridge-dumpar",
+    "importLastSeen": "Importera ’Senast sedd’-bild vid import av cartridge-dumpar",
+    "importOrders": {
+      "cartIndex": "Sorterad efter ROM-beslut (som sett i kamerarullen i ursprungligt RAM)",
+      "ramIndex": "Sorterad efter faktisk ordning i RAM (minnesadress)"
+    },
+    "importPad": "Fyll ut bilder till 144px höjd vid import",
+    "importSavFrames": "Ramar som ska tillämpas vid import av cartridge-dumpar",
+    "importSavFramesNone": "Inga",
+    "importSavFramesUnknown": "Okänd",
+    "importSavOrder": "Ordning att använda vid import av .sav-fil",
+    "locales": {
+      "de-DE": "Tyska – Tyskland (de-DE)",
+      "en-CA": "Engelska – Kanada (en-CA)",
+      "en-GB": "Engelska – Förenade kungariket (en-GB)",
+      "en-US": "Engelska – Förenta staterna (en-US)",
+      "fr-FR": "Franska – Frankrike (fr-FR)"
+    },
+    "preferredLocale": "Föredraget språk",
+    "resetTrackingConsent": "Återställ analys-/spårningssamtycke (för närvarande {consentState, select, accepted {aktiv} other {inaktiv}})",
+    "sortPalettes": "Sortera paletter"
   },
-  "useGalleryImageContext": {
-    "deleteImage": "Ta bort {title, select, NO_TITLE {denna bild} other {bild ”{title}”}}",
-    "metaInfo": "Metadata {title, select, NO_TITLE {} other {för ”{title}”}}"
+  "SettingsGit": {
+    "branch": "Branch",
+    "enableStorage": "Använd GitHub som lagring",
+    "owner": "Ägare",
+    "repoName": "Repository-namn",
+    "throttle": "Begränsning (i ms)",
+    "token": "Token",
+    "tokenHelper": "Gå till GitHub för att skapa en <link>🔗 ny finjusterad personlig åtkomsttoken</link>, välj det repository du vill använda för synkronisering och tillåt läs-/skrivåtkomst för <code>”Repository Permissions > Contents”</code>"
   },
-  "useGetPortSettings": {
-    "specifyBaudrate": "Ange baudrate",
-    "baudRateLabel": "Baudrate"
+  "SettingsPlugins": {
+    "addPlugin": "Lägg till plugin",
+    "addPluginHelper": "🔗 Ett urval av plugins hittar du här",
+    "deletePlugin": "Ta bort plugin ”{name}”",
+    "installedPlugins": "Installerade plugins"
   },
-  "useImageGroups": {
-    "newGroupDefault": "Ny grupp",
-    "resetGroupsMessage": "Återställ bildgrupper",
-    "resetGroupsInfo": "Återställer alla bildgrupper till standard",
-    "deleteGroupMessage": "Ta bort grupp",
-    "deleteGroupInfo": "Detta kommer att ta bort gruppen ”{groupTitle}” och flytta allt innehåll (bilder & grupper) till den aktuella nivån."
+  "SettingsPrinterUrls": {
+    "addPrinter": "Lägg till skrivare",
+    "printerUrl": "Skrivar-URL",
+    "printerUrlHelper": "Om du äger en fysisk WiFi-skrivare kan du lägga till dess URL här och fortsätta i <link>🔗 Import-fliken</link>",
+    "printerUrls": "Skrivar-URL:er"
   },
-  "usePalette": {
-    "deletePaletteMessage": "Ta bort palett ”{name}”?"
+  "SettingsTabs": {
+    "dropboxSettings": "Dropbox-inställningar",
+    "gapiSheetsSettings": "Google Sheets-inställningar",
+    "genericSettings": "Allmänna inställningar",
+    "gitSettings": "Git-inställningar",
+    "pluginSettings": "Plugin-inställningar"
   },
-  "useRunImport": {
-    "importGroupTitle": "Import {date}"
+  "SheetsTable": {
+    "columns": "Kolumner",
+    "id": "ID",
+    "lastLocalUpdate": "Senaste lokala uppdatering",
+    "lastRemoteUpdate": "Senaste fjärruppdatering",
+    "refreshStats": "Uppdatera egenskaper",
+    "rows": "Rader",
+    "syncMerge": "Sammanfoga med Sheets",
+    "syncPull": "Synkronisera från Sheets",
+    "syncPush": "Synkronisera till Sheets",
+    "title": "Titel"
   },
-  "useSetEditPalette": {
-    "copyOfPalette": "Kopia av {name}"
-  },
-  "useTrashbin": {
-    "backupExportImage": "Säkerhetskopiering-export {hash}",
-    "backupExportFrame": "Säkerhetskopiering-export {hash}",
-    "reImportedTrashFrames": "Återimporterade raderade ramar"
+  "SortForm": {
+    "ascending": "Stigande",
+    "dateOption": "Datum",
+    "descending": "Fallande",
+    "dialogHeader": "Sortera efter: {sortBy}/{order}",
+    "paletteOption": "Palett",
+    "sortByLabel": "Sortera efter",
+    "sortDirectionLabel": "Sorteringsriktning",
+    "titleOption": "Titel"
   },
   "SSTVForm": {
     "dialogHeader": "Skapa SSTV-ljudfil",
-    "modeTypeLabel": "Välj SSTV-läge",
     "modeType": {
       "martin1": "Martin 1",
       "martin2": "Martin 2",
@@ -690,6 +565,135 @@
       "scottie1": "Scottie 1",
       "scottie2": "Scottie 2",
       "scottieDX": "Scottie DX"
-    }
+    },
+    "modeTypeLabel": "Välj SSTV-läge"
+  },
+  "StorageWarning": {
+    "storageTypes": {
+      "indexedDB": "IndexedDB",
+      "localStorage": "LocalStorage"
+    },
+    "usageTooltip": "Använder {used} av {total}",
+    "usageWarning": "Du använder {percentage}% av din webbläsares {type}. Observera att det inte kommer att vara möjligt att spara bilder när gränsen nås."
+  },
+  "SyncSelect": {
+    "dialogHeader": "Synkronisera",
+    "pendingLocalChangesWarning": "Väntande lokala ändringar",
+    "pendingRemoteChangesWarning": "Väntande fjärrändringar",
+    "syncFromDropbox": "Synkronisera från Dropbox",
+    "syncFromGitHub": "Synkronisera från GitHub",
+    "syncFromGitHubTitle": "Synkronisera från GitHub\n{repoUrl}",
+    "syncImagesToDropbox": "Synkronisera bilder till Dropbox",
+    "syncToDropbox": "Synkronisera till Dropbox",
+    "syncToGitHub": "Synkronisera till GitHub",
+    "syncToGitHubTitle": "Synkronisera till GitHub\n{repoUrl}"
+  },
+  "TagsList": {
+    "favourite": "Favorit",
+    "moreTags": "+{count} fler taggar:\n{tags}",
+    "moreTagsLabel": "+{count} fler"
+  },
+  "TagsSelect": {
+    "resetTags": "Återställ taggar"
+  },
+  "TrackingConsent": {
+    "confirm": "Det är okej för mig",
+    "deny": "Nej tack",
+    "title": "Jag skulle kunna använda din hjälp"
+  },
+  "Trashbin": {
+    "deletedFrames": "Raderade ramar: {count}",
+    "deletedImages": "Raderade bilder: {count}",
+    "dialogHeader": "Papperskorg ({count} objekt)",
+    "downloadFrames": "Ladda ner ramar {count, plural, =0 {} other {(#)}}",
+    "downloadImages": "Ladda ner bilder {count, plural, =0 {} other {(#)}}",
+    "purgeAll": "Rensa allt {count, plural, =0 {} other {(#)}}"
+  },
+  "useAsPasswordField": {
+    "hidePassword": "Dölj lösenord",
+    "showPassword": "Visa lösenord"
+  },
+  "useBatchButtons": {
+    "deleteConfirmation": "Ta bort {count} bilder?"
+  },
+  "useEditForm": {
+    "updateDate": "Uppdatera datum",
+    "updateFrame": "Uppdatera ram",
+    "updateFramePalette": "Uppdatera ram-palett",
+    "updateInvertFramePalette": "Uppdatera inverterad ram-palett",
+    "updateInvertPalette": "Uppdatera inverterad palett",
+    "updateLockFrame": "Uppdatera låst ram",
+    "updatePalette": "Uppdatera palett",
+    "updateRotation": "Uppdatera rotation",
+    "updateTags": "Uppdatera taggar",
+    "updateTitle": "Uppdatera titel"
+  },
+  "useEditPalette": {
+    "paletteOrigin": "Palettkälla"
+  },
+  "useEditRGBNImages": {
+    "rgbNewGroupTitle": "RGB {date}"
+  },
+  "useFrame": {
+    "deleteConfirmation": "Ta bort ram ”{name}” ({frameId})?"
+  },
+  "useGalleryImageContext": {
+    "deleteImage": "Ta bort {title, select, NO_TITLE {denna bild} other {bild ”{title}”}}",
+    "metaInfo": "Metadata {title, select, NO_TITLE {} other {för ”{title}”}}"
+  },
+  "useGetPortSettings": {
+    "baudRateLabel": "Baudrate",
+    "specifyBaudrate": "Ange baudrate"
+  },
+  "useImageGroups": {
+    "deleteGroupInfo": "Detta kommer att ta bort gruppen ”{groupTitle}” och flytta allt innehåll (bilder & grupper) till den aktuella nivån.",
+    "deleteGroupMessage": "Ta bort grupp",
+    "newGroupDefault": "Ny grupp",
+    "resetGroupsInfo": "Återställer alla bildgrupper till standard",
+    "resetGroupsMessage": "Återställ bildgrupper"
+  },
+  "usePalette": {
+    "deletePaletteMessage": "Ta bort palett ”{name}”?"
+  },
+  "usePaletteSort": {
+    "defaultAsc": "Standard (stigande)",
+    "defaultDesc": "Standard (fallande)",
+    "nameAsc": "Namn (stigande)",
+    "nameDesc": "Namn (fallande)",
+    "usageAsc": "Användning (stigande)",
+    "usageDesc": "Användning (fallande)"
+  },
+  "useRunImport": {
+    "importGroupTitle": "Import {date}"
+  },
+  "useSetEditPalette": {
+    "copyOfPalette": "Kopia av {name}"
+  },
+  "useTrashbin": {
+    "backupExportFrame": "Säkerhetskopiering-export {hash}",
+    "backupExportImage": "Säkerhetskopiering-export {hash}",
+    "reImportedTrashFrames": "Återimporterade raderade ramar"
+  },
+  "VideoParamsForm": {
+    "dialogHeader": "Skapa animerad GIF med {count} ramar",
+    "enableYoyo": "Aktivera yoyo (upprepa animation bakåt)",
+    "frameModes": {
+      "cropFrame": "Beskär ram",
+      "keepFrame": "Behåll ram",
+      "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
+      "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
+    },
+    "frameRate": "Bildfrekvens",
+    "handleFrames": "Hantera ramar",
+    "noFrameOption": "Ingen ram",
+    "reverseDirection": "Reversera riktning",
+    "scaleGif": "Skala GIF"
+  },
+  "WebUSBGreeting": {
+    "enableWebUsb": "Aktivera WebUSB / Seriella portar",
+    "webSerialDisabled": "Din nuvarande webbläsare/enhet stöder tyvärr inte Web Serial",
+    "webSerialEnabled": "Din nuvarande webbläsare/enhet stöder Web Serial",
+    "webUSBDisabled": "Din nuvarande webbläsare/enhet stöder tyvärr inte WebUSB",
+    "webUSBEnabled": "Din nuvarande webbläsare/enhet stöder WebUSB"
   }
 }

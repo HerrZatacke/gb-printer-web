@@ -6,21 +6,21 @@ import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 
 interface UseEditFrame {
-  frameGroups: FrameGroup[],
-  updateId: string,
-  fullId: string,
-  frameIndex: number,
-  frameGroup: string,
-  frameName: string,
-  idValid: boolean,
-  formValid: boolean,
-  groupIdValid: boolean,
-  frameIndexValid: boolean,
-  setFrameIndex: (frameIndex: number) => void,
-  setFrameGroup: (frameGroup: string) => void,
-  setFrameName: (frameName: string) => void,
-  cancelEdit: () => void,
-  saveFrame: () => void,
+  frameGroups: FrameGroup[];
+  updateId: string;
+  fullId: string;
+  frameIndex: number;
+  frameGroup: string;
+  frameName: string;
+  idValid: boolean;
+  formValid: boolean;
+  groupIdValid: boolean;
+  frameIndexValid: boolean;
+  setFrameIndex: (frameIndex: number) => void;
+  setFrameGroup: (frameGroup: string) => void;
+  setFrameName: (frameName: string) => void;
+  cancelEdit: () => void;
+  saveFrame: () => void;
 }
 
 const useEditFrame = (frame?: Frame): UseEditFrame => {

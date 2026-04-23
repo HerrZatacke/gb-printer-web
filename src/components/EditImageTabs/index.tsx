@@ -23,33 +23,33 @@ enum TabType {
 }
 
 interface Props {
-  hash: string,
-  invertPalette?: boolean,
-  invertFramePalette?: boolean,
-  tags: TagChange,
-  regularImage: boolean,
-  lockFrame?: boolean,
+  hash: string;
+  invertPalette?: boolean;
+  invertFramePalette?: boolean;
+  tags: TagChange;
+  regularImage: boolean;
+  lockFrame?: boolean;
 
-  updateCreated: (value: string) => void,
-  updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void,
-  updateInvertPalette: (value: boolean) => void,
-  updateFramePalette: (paletteUpdate: string, confirm?: boolean) => void,
-  updateInvertFramePalette: (value: boolean) => void,
-  updateTags: (mode: TagUpdateMode, tag: string) => void,
-  updateFrame: (value: string) => void,
-  updateFrameLock: (value: boolean) => void,
-  updateRotation: (value: Rotation) => void,
-  resetTags: () => void,
+  updateCreated: (value: string) => void;
+  updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void;
+  updateInvertPalette: (value: boolean) => void;
+  updateFramePalette: (paletteUpdate: string, confirm?: boolean) => void;
+  updateInvertFramePalette: (value: boolean) => void;
+  updateTags: (mode: TagUpdateMode, tag: string) => void;
+  updateFrame: (value: string) => void;
+  updateFrameLock: (value: boolean) => void;
+  updateRotation: (value: Rotation) => void;
+  resetTags: () => void;
 
-  hashes?: RGBNHashes,
-  created?: string,
-  paletteShort?: string,
-  framePaletteShort?: string,
-  paletteRGBN?: RGBNPalette,
-  frame?: string,
-  meta?: ImageMetadata,
-  rotation?: number,
-  mixedTypes?: boolean,
+  hashes?: RGBNHashes;
+  created?: string;
+  paletteShort?: string;
+  framePaletteShort?: string;
+  paletteRGBN?: RGBNPalette;
+  frame?: string;
+  meta?: ImageMetadata;
+  rotation?: number;
+  mixedTypes?: boolean;
 }
 
 const tabTitle = (tabType: TabType, isRGBN: boolean): string => {

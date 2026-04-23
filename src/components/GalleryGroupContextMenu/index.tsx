@@ -12,9 +12,9 @@ interface ContextMenuItem {
 }
 
 interface Props {
-  groupId: string,
-  menuAnchor: HTMLElement | null,
-  onClose: () => void,
+  groupId: string;
+  menuAnchor: HTMLElement | null;
+  onClose: () => void;
 }
 
 function GalleryGroupContextMenu({ groupId, menuAnchor, onClose }: Props) {

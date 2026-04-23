@@ -1,376 +1,92 @@
 {
-  "SettingsGeneric": {
-    "galleryPageSize": "Bilder pro Galerieseite",
-    "galleryPageSizeHelper": "Auf 0 setzen, um Paginierung zu deaktivieren – kann bei großen Bildmengen zu Leistungseinbußen führen",
-    "galleryClickAction": "Klickverhalten für Galeriebilder",
-    "galleryClickActionHelper": "Strg+Klick und Umschalt+Klick können immer für auswählen/bereichsweise auswählen verwendet werden",
-    "importSavFrames": "Rahmen, die beim Importieren von Cartridge-Dumps angewendet werden sollen",
-    "importSavFramesNone": "Keine",
-    "importSavFramesUnknown": "Unbekannt",
-    "importLastSeen": "‚Zuletzt gesehen‘-Bild beim Importieren von Cartridge-Dumps importieren",
-    "importSavOrder": "Reihenfolge beim Importieren einer .sav-Datei",
-    "importDeleted": "Gelöschte Bilder beim Importieren von Cartridge-Dumps importieren",
-    "forceMagicCheck": "Gültige .sav-Datei beim Importieren erzwingen",
-    "importPad": "Bilder beim Import auf 144px Höhe auffüllen",
-    "hideDates": "Bilddatum in der Galerie ausblenden",
-    "sortPalettes": "Paletten sortieren",
-    "preferredLocale": "Bevorzugte Sprache",
-    "exampleDateFormat": "Beispiel-Datumsformat: {format}",
-    "enableDebug": "Debug-Informationen anzeigen",
-    "galleryClickActions": {
-      "clickSelectsItem": "Klick wählt das Element aus",
-      "clickOpensEditDialog": "Klick öffnet Bearbeitungsdialog",
-      "clickOpensLightbox": "Klick öffnet das Element in der Lightbox"
+  "AddPlugin": {
+    "addButton": "Hinzufügen",
+    "alreadyInstalled": "Das Plugin „{url}“ ist bereits installiert",
+    "goToPlugins": "🔗 Zu den Plugin Einstellungen",
+    "notTrusted": "Die Quelle „{source}“ dieses Plugins ist nicht vertrauenswürdig!!",
+    "willAdd": "Dies wird {url} zu deinen Plugins hinzufügen."
+  },
+  "BatchButtons": {
+    "batchActions": {
+      "animate": "Animieren",
+      "delete": "Löschen",
+      "download": "Herunterladen",
+      "edit": "Bearbeiten",
+      "rgb": "RGB-Bilder erstellen"
     },
-    "importOrders": {
-      "cartIndex": "Sortiert nach ROM-Entscheidung (wie in der Kamerarolle im ursprünglichen RAM zu sehen)",
-      "ramIndex": "Sortiert nach tatsächlicher Reihenfolge im RAM (Speicheradresse)"
+    "checkAll": "Alle auswählen",
+    "manageFilters": "Filter verwalten",
+    "manageSorting": "Sortierung verwalten",
+    "uncheckAll": "Alle abwählen",
+    "usePlugin": "Plugin verwenden"
+  },
+  "BitmapQueue": {
+    "contrastPreset": "Kontrast-Voreinstellung",
+    "contrastSettings": {
+      "emulator": "Von Emulator",
+      "narrow": "Eng",
+      "narrower": "Enger",
+      "normal": "Normal",
+      "wide": "Weit",
+      "wider": "Weiter"
     },
-    "locales": {
-      "de-DE": "Deutsch – Deutschland (de-DE)",
-      "en-US": "Englisch – Vereinigte Staaten (en-US)",
-      "en-GB": "Englisch – Vereinigtes Königreich (en-GB)",
-      "en-CA": "Englisch – Kanada (en-CA)",
-      "fr-FR": "Französisch – Frankreich (fr-FR)"
+    "dialogHeader": "Bilderimport Warteschlange",
+    "enableDither": "Dithering aktivieren"
+  },
+  "ConnectPrinter": {
+    "askAddPrinterMessage": "Externem Drucker von {openPrinterUrl} vertrauen und zu Liste bekannter Geräte hinzufügen und öffnen?",
+    "askAddPrinterTitle": "Drucker vertrauen und hinzufügen",
+    "closePrinterPage": "Druckerseite schließen",
+    "openPrinterPage": "Druckerseite öffnen"
+  },
+  "ConnectSerial": {
+    "connectedDevices": "{deviceCount, plural, =0 {Keine verbundenen Geräte} =1 {Ein verbundenes Gerät:} other {# verbundene Geräte:}}",
+    "copyToClipboard": "In Zwischenablage kopieren",
+    "openWebSerial": "Web Serial-Gerät öffnen",
+    "openWebUSB": "WebUSB-Gerät öffnen",
+    "portDeviceTypes": {
+      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Drucker Emulator",
+      "cartridgeReader": "Cartridge Reader (LK Firmware)",
+      "inactiveDevice": "Inaktives Gerät",
+      "superPrinterInterface": "Super Printer Interface"
     },
-    "resetTrackingConsent": "Analyse-/Tracking-Einwilligung zurücksetzen (derzeit {consentState, select, accepted {aktiv} other {inaktiv}})"
+    "showUnknownResponse": "Nachricht von unbekanntem Gerät anzeigen",
+    "unknownDeviceInfo": "Unbekannte Geräteinformationen"
   },
-  "SettingsPrinterUrls": {
-    "printerUrls": "Drucker-URLs",
-    "printerUrlHelper": "Wenn du einen physischen WLAN-Drucker besitzt, kannst du dessen URL hier hinzufügen und im <link>🔗 Import-Tab</link> weiter machen",
-    "addPrinter": "Drucker hinzufügen",
-    "printerUrl": "Drucker-URL"
-  },
-  "TrackingConsent": {
-    "title": "Ich könnte deine Hilfe brauchen",
-    "confirm": "Das ist für mich in Ordnung",
-    "deny": "Nein, danke"
-  },
-  "SettingsDropbox": {
-    "enableStorage": "Dropbox als Speicher verwenden",
-    "subfolder": "Unterordner",
-    "subfolderWarning": "Gib nur den Namen des Unterordners ein. Andernfalls wird der Ordnerpfad vollständig zu „{fullAppPath}“ in Deiner Dropbox aufgelöst, was wahrscheinlich nicht das ist, was Du beabsichtigst.",
-    "openFolder": "<link>🔗 Ordner öffnen</link>",
-    "openFolderLinkTitle": "Dropbox-Ordner öffnen:\n{folderLink}",
-    "enableEnhancedSync": "Erweiterte Dropbox-Synchronisation aktivieren",
-    "enableEnhancedSyncHelper": "Dies ist eine experimentelle Funktion.",
-    "authenticate": "Authentifizieren",
-    "logout": "Abmelden"
-  },
-  "SettingsGapiSheets": {
-    "about": "Dies ist eine experimentelle Funktion. Die Sitzung muss alle 60 Minuten erneuert werden.",
-    "tokenExpiry": "Die Sitzung läuft in {time} ab",
-    "enableStorage": "Google Sheets als Speicher verwenden",
-    "enableAutoSync": "Automatisch synchronisieren",
-    "sheetId": "Sheet-ID",
-    "sheetIdHelper": "Du kannst den kompletten Bearbeitungslink einfügen, um die korrekte Sheet-ID zu erhalten.",
-    "authenticate": "Authentifizieren",
-    "logout": "Abmelden",
-    "openSheetLink": "Sheet in neuem Tab öffnen"
-  },
-  "SheetsTable": {
-    "id": "ID",
-    "title": "Titel",
-    "columns": "Spalten",
-    "rows": "Zeilen",
-    "lastLocalUpdate": "Letzte lokale Aktualisierung",
-    "lastRemoteUpdate": "Letzte entfernte Aktualisierung",
-    "refreshStats":  "Eigenschaften aktualisieren",
-    "syncPush": "Nach Sheets synchronisieren",
-    "syncMerge":  "Mit Sheets zusammenführen",
-    "syncPull": "Von Sheets synchronisieren"
-  },
-  "SettingsPlugins": {
-    "addPlugin": "Plugin hinzufügen",
-    "addPluginHelper": "🔗 Eine Auswahl von Plugins findest du hier",
-    "installedPlugins": "Installierte Plugins",
-    "deletePlugin": "Plugin „{name}“ löschen"
-  },
-  "SettingsGit": {
-    "enableStorage": "GitHub als Speicher verwenden",
-    "owner": "Eigentümer",
-    "repoName": "Repository-Name",
-    "branch": "Branch",
-    "throttle": "Drosselung (in ms)",
-    "token": "Token",
-    "tokenHelper": "Gehe zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlaube Lese-/Schreibzugriff für <code>„Repository Permissions > Contents“</code>"
+  "CopyDatabase": {
+    "copyButton": "Kopieren",
+    "loadButton": "Laden",
+    "reportFrames": "{count} Rahmen",
+    "reportFramesCopied": "Rahmen kopiert",
+    "reportImages": "{count} Bilder",
+    "reportImagesCopied": "Bilder kopiert",
+    "reportLocalStorage": "{count} localStorage-Einträge",
+    "reportLocalStorageCleared": "localStorage geleert",
+    "reportLocalStorageCopied": "localStorage kopiert",
+    "sourceUrl": "Quell-URL"
   },
   "DownloadOptions": {
     "dialogHeader": "{count, plural, =1 {Bild} other {# Bilder}} herunterladen"
   },
   "DownloadOptionsForm": {
+    "alwaysShowDownloadDialogHelper": "Du kannst diese Option in den Einstellungen jederzeit wieder aktivieren",
+    "alwaysShowDownloadDialogInDialog": "Diesen Dialog jedes Mal anzeigen",
+    "alwaysShowDownloadDialogInForm": "Download Optionen bei jedem Download anzeigen",
     "exportDimensions": "Bildexport-Skalierungen",
     "exportFiletypes": "Bildexport-Dateitypen",
     "exportHandleFrame": "Umgang mit Rahmen beim Exportieren von Bildern",
     "filenameStyle": "Dateinamenstil",
-    "alwaysShowDownloadDialogInForm": "Download Optionen bei jedem Download anzeigen",
-    "alwaysShowDownloadDialogInDialog": "Diesen Dialog jedes Mal anzeigen",
-    "alwaysShowDownloadDialogHelper": "Du kannst diese Option in den Einstellungen jederzeit wieder aktivieren",
+    "filenameStyles": {
+      "dateTitle": "Datum und Titel",
+      "fullTitle": "Vollständiger Titel",
+      "titleOnly": "Nur Titel"
+    },
+    "fileTypeInfo": "Ihre Bildauswahl enthält {monochromeCount, plural, =0 {keine} other {#}} monochrome und {rgbnCount, plural, =0 {keine} other {#}} rgbn Bilder.",
     "frameModes": {
-      "keepFrame": "Rahmen beibehalten",
       "cropFrame": "Rahmen zuschneiden",
+      "keepFrame": "Rahmen beibehalten",
       "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
       "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
-    },
-    "filenameStyles": {
-      "fullTitle": "Vollständiger Titel",
-      "dateTitle": "Datum und Titel",
-      "titleOnly": "Nur Titel"
-    }
-  },
-  "WebUSBGreeting": {
-    "enableWebUsb": "WebUSB / Serielle Ports aktivieren",
-    "webUSBEnabled": "Dein aktueller/s Browser/Gerät unterstützt WebUSB",
-    "webUSBDisabled": "Dein aktueller/s Browser/Gerät unterstützt leider kein WebUSB",
-    "webSerialEnabled": "Dein aktueller/s Browser/Gerät unterstützt Web Serial",
-    "webSerialDisabled": "Dein aktueller/s Browser/Gerät unterstützt leider kein Web Serial"
-  },
-  "ConnectSerial": {
-    "openWebUSB": "WebUSB-Gerät öffnen",
-    "openWebSerial": "Web Serial-Gerät öffnen",
-    "connectedDevices": "{deviceCount, plural, =0 {Keine verbundenen Geräte} =1 {Ein verbundenes Gerät:} other {# verbundene Geräte:}}",
-    "showUnknownResponse": "Nachricht von unbekanntem Gerät anzeigen",
-    "unknownDeviceInfo": "Unbekannte Geräteinformationen",
-    "copyToClipboard": "In Zwischenablage kopieren",
-    "portDeviceTypes": {
-      "inactiveDevice": "Inaktives Gerät",
-      "arduinoGameboyPrinterEmulator": "Arduino Gameboy Drucker Emulator",
-      "superPrinterInterface": "Super Printer Interface",
-      "cartridgeReader": "Cartridge Reader (LK Firmware)"
-    }
-  },
-  "SettingsTabs": {
-    "genericSettings": "Allgemeine Einstellungen",
-    "dropboxSettings": "Dropbox-Einstellungen",
-    "gapiSheetsSettings": "Google Sheets Einstellungen",
-    "pluginSettings": "Plugin-Einstellungen",
-    "gitSettings": "Git-Einstellungen"
-  },
-  "ExportSettings": {
-    "resetGroups": "Bildgruppen zurücksetzen",
-    "exportAll": "Alles exportieren",
-    "exportPlugins": "Plugins exportieren",
-    "persistState": {
-      "isPersistent": "Speicher ist persistent",
-      "requestPersistence": "Speicher-Persistenz anfordern",
-      "apiUnavailable": "Persistenz-API nicht verfügbar",
-      "failed": "Speicher-Persistierung fehlgeschlagen"
-    }
-  },
-  "BatchButtons": {
-    "manageSorting": "Sortierung verwalten",
-    "manageFilters": "Filter verwalten",
-    "checkAll": "Alle auswählen",
-    "uncheckAll": "Alle abwählen",
-    "usePlugin": "Plugin verwenden",
-    "batchActions": {
-      "delete": "Löschen",
-      "animate": "Animieren",
-      "download": "Herunterladen",
-      "edit": "Bearbeiten",
-      "rgb": "RGB-Bilder erstellen"
-    }
-  },
-  "AddPlugin": {
-    "notTrusted": "Die Quelle „{source}“ dieses Plugins ist nicht vertrauenswürdig!!",
-    "alreadyInstalled": "Das Plugin „{url}“ ist bereits installiert",
-    "goToPlugins": "🔗 Zu den Plugin Einstellungen",
-    "willAdd": "Dies wird {url} zu deinen Plugins hinzufügen.",
-    "addButton": "Hinzufügen"
-  },
-  "CopyDatabase": {
-    "sourceUrl": "Quell-URL",
-    "loadButton": "Laden",
-    "copyButton": "Kopieren",
-    "reportImages": "{count} Bilder",
-    "reportFrames": "{count} Rahmen",
-    "reportLocalStorage": "{count} localStorage-Einträge",
-    "reportLocalStorageCleared": "localStorage geleert",
-    "reportLocalStorageCopied": "localStorage kopiert",
-    "reportImagesCopied": "Bilder kopiert",
-    "reportFramesCopied": "Rahmen kopiert"
-  },
-  "EditFrameStartLine": {
-    "moveUp": "Bild nach oben verschieben",
-    "moveDown": "Bild nach unten verschieben"
-  },
-  "EditImageTabs": {
-    "tabTypes": {
-      "frame": "Rahmen",
-      "misc": "Sonstiges",
-      "palette": "Palette",
-      "colors": "Farben",
-      "tags": "Tags"
-    }
-  },
-  "FolderBreadcrumb": {
-    "editGroup": "Gruppe „{title}“ bearbeiten",
-    "openNavigation": "Galerie-Navigation öffnen"
-  },
-  "FolderTreeDialog": {
-    "dialogHeader": "Galerie-Navigation"
-  },
-  "Frame": {
-    "usedTimes": "{count} mal verwendet",
-    "notUsed": "Nicht verwendet"
-  },
-  "FrameContextMenu": {
-    "edit": "Bearbeiten",
-    "delete": "Löschen"
-  },
-  "FrameSelect": {
-    "frameLabel": "Rahmen",
-    "noFrameOption": "Wie importiert / Kein Rahmen",
-    "separateColorSettings": "Separate Farbeinstellungen für Rahmen verwenden"
-  },
-  "Frames": {
-    "editFramegroup": "Rahmengruppe bearbeiten",
-    "renameFramegroup": "Rahmengruppe umbenennen",
-    "exportFrames": "Rahmen exportieren",
-    "exportCurrentFramegroup": "Aktuelle Rahmengruppe exportieren ({id})",
-    "convertFramesFormat": "Rahmen in neues Format konvertieren",
-    "applyFrames": "Frame zu Bildern hinzufügen falls Rohdaten übereinstimmen"
-  },
-  "GalleryGroup": {
-    "itemCount": "{count} Bilder"
-  },
-  "GalleryGroupContextMenu": {
-    "edit": "Bearbeiten",
-    "delete": "Löschen"
-  },
-  "GalleryNumbers": {
-    "imageCount": "{count} Bilder",
-    "filteredCount": "{count} gefiltert",
-    "selectedCount": "{count} ausgewählt",
-    "separator": " / "
-  },
-  "GalleryViewSelect": {
-    "viewNames": {
-      "smallest": "Kleinste",
-      "originalSize": "Originalgröße",
-      "doubleSize": "Doppelte Größe",
-      "maximumSize": "Maximale Größe"
-    }
-  },
-  "GalleryImageContextMenu": {
-    "edit": "Bearbeiten",
-    "download": "Herunterladen",
-    "delete": "Löschen",
-    "viewInLightbox": "In Lightbox anzeigen",
-    "printViaSuperPrinter": "Über Super Printer drucken",
-    "useSSTV": "Als SSTV-Ton abspielen",
-    "usePlugin": "Plugin verwenden",
-    "share": "Teilen",
-    "addToFavourites": "Zu Favoriten hinzufügen",
-    "removeFromFavourites": "Aus Favoriten entfernen",
-    "addToSelection": "Zur Auswahl hinzufügen",
-    "removeFromSelection": "Aus Auswahl entfernen",
-    "showMetadata": "Metadaten anzeigen",
-    "createGroup": "Gruppe erstellen"
-  },
-  "GreySelect": {
-    "neutralLayerBlendmode": "Neutral-Ebenen-Mischmodus",
-    "blendModes": {
-      "normal": "Normal (neutrale Ebene ignorieren)",
-      "normalS": "Normal ⇵ (nur neutrale Ebene)",
-      "lighten": "Aufhellen",
-      "screen": "Negativ multiplizieren",
-      "dodge": "Abwedeln",
-      "addition": "Addition",
-      "darken": "Abdunkeln",
-      "multiply": "Multiplizieren",
-      "burn": "Nachbelichten",
-      "overlay": "Überlagern",
-      "softLight": "Weiches Licht",
-      "hardLight": "Hartes Licht",
-      "difference": "Differenz",
-      "exclusion": "Ausschluss"
-    }
-  },
-  "ConnectPrinter": {
-    "openPrinterPage": "Druckerseite öffnen",
-    "closePrinterPage": "Druckerseite schließen",
-    "askAddPrinterTitle": "Drucker vertrauen und hinzufügen",
-    "askAddPrinterMessage": "Externem Drucker von {openPrinterUrl} vertrauen und zu Liste bekannter Geräte hinzufügen und öffnen?"
-  },
-  "EnvInfo": {
-    "appVersion": "Web-App-Version: {value}",
-    "appBranch": "Web-App-Branch: {value}",
-    "storageEstimate": "Auslastung {type}: {percentage}% ({used} von {total})"
-  },
-  "usePaletteSort": {
-    "defaultAsc": "Standard (aufsteigend)",
-    "defaultDesc": "Standard (absteigend)",
-    "usageAsc": "Verwendung (aufsteigend)",
-    "usageDesc": "Verwendung (absteigend)",
-    "nameAsc": "Name (aufsteigend)",
-    "nameDesc": "Name (absteigend)"
-  },
-  "useAsPasswordField": {
-    "hidePassword": "Passwort verbergen",
-    "showPassword": "Passwort anzeigen"
-  },
-  "ImageMeta": {
-    "dateTime": "Datum / Zeit",
-    "editRotation": "Rotation bearbeiten"
-  },
-  "Import": {
-    "selectFiles": "Datei(en) zum Importieren auswählen",
-    "importMemory": "Speicher von Cartridge Reader importieren",
-    "importAlbumRolls": "Album-Rollen von Photo! importieren (ROM + Flash)",
-    "serialMonitorLabel": "Über den seriellen Monitor empfangene Daten importieren",
-    "import": "Importieren",
-    "exportImages": "Bilder exportieren",
-    "exportSelectedImages": "Ausgewählte Bilder exportieren"
-  },
-  "ImportPreviewImage": {
-    "scaleFactorWarning": "Der Skalierungsfaktor des Bildes ist {scaleFactor}. Um ein sauberes Ergebnis ohne Artefakte zu erhalten, versuche nur Bilder zu importieren, deren Abmessungen um Zweierpotenzen skaliert sind. (1, 2, 4, 8 ...)"
-  },
-  "Lightbox": {
-    "cancel": "Abbrechen",
-    "close": "Schließen",
-    "ok": "Ok",
-    "closeWithHeader": "{header} schließen"
-  },
-  "LightboxImage": {
-    "leaveFullscreen": "Vollbild verlassen",
-    "enterFullscreen": "Vollbild aktivieren",
-    "imageCounter": "Bild {current}/{total}"
-  },
-  "MetaTable": {
-    "hashChannel": "Hash {channel}-Kanal"
-  },
-  "Navigation": {
-    "home": "Startseite",
-    "gallery": "Galerie",
-    "galleryShortcuts": "Galerie Schnellzugriff",
-    "import": "Import",
-    "palettes": "Paletten",
-    "frames": "Rahmen",
-    "settings": "Einstellungen",
-    "addPlugin": "Plugin hinzufügen",
-    "trash": "Papierkorb",
-    "syncRemote": "Mit Remote-Service(s) synchronisieren",
-    "switchToDark": "Zu dunklem Modus wechseln",
-    "switchToBright": "Zu hellem Modus wechseln",
-    "usbDisabled": "USB-Geräte sind nicht verfügbar",
-    "usbDevices": "WebUSB und Serielle Geräte",
-    "openMainNav": "Hauptnavigation öffnen",
-    "closeMainNav": "Hauptnavigation schließen",
-    "mainNavAriaLabel": "Hauptnavigation",
-    "utilityNavAriaLabel": "Werkzeug-Navigation"
-  },
-  "BitmapQueue": {
-    "dialogHeader": "Bilderimport Warteschlange",
-    "enableDither": "Dithering aktivieren",
-    "contrastPreset": "Kontrast-Voreinstellung",
-    "contrastSettings": {
-      "wider": "Weiter",
-      "wide": "Weit",
-      "normal": "Normal",
-      "narrow": "Eng",
-      "narrower": "Enger",
-      "emulator": "Von Emulator"
     }
   },
   "DragOver": {
@@ -380,186 +96,281 @@
   "EditForm": {
     "dialogHeader": "{count, plural, =0 {} =1 {Bild} other {# Bilder}} bearbeiten",
     "editingMultiple": "Du bearbeitest {count} Bilder",
-    "indexHelperText": "Verwende %n (oder %nn, %nnn, ...), um einen numerischen Index zu den Bildtiteln hinzuzufügen",
-    "editTitle": "Titel bearbeiten"
+    "editTitle": "Titel bearbeiten",
+    "indexHelperText": "Verwende %n (oder %nn, %nnn, ...), um einen numerischen Index zu den Bildtiteln hinzuzufügen"
   },
   "EditFrame": {
     "dialogHeader": "Rahmen „{id}“ bearbeiten {idChange}",
     "idChange": "→ „{newId}“"
   },
   "EditFrameForm": {
-    "selectFrameGroup": "Rahmengruppe auswählen",
-    "newFrameGroup": "Neue Rahmengruppe",
-    "unknown": "Unbekannt",
     "frameGroup": "Rahmengruppe",
     "frameGroupId": "Rahmengruppen-ID",
-    "newFrameGroupId": "Neue Rahmengruppen-ID",
-    "groupIdHelperText": "Muss mindestens zwei Zeichen haben, nur Kleinbuchstaben",
-    "newFrameGroupName": "Neuer Rahmengruppenname",
     "frameIndex": "Rahmen-Index",
     "frameIndexHelperText": "Ganzzahl, muss größer als 0 sein",
     "frameName": "Rahmenname",
-    "idInUse": "Der angegebene Rahmen-Index/Bezeichner „{id}“ wird bereits verwendet, bitte wähle einen anderen."
+    "groupIdHelperText": "Muss mindestens zwei Zeichen haben, nur Kleinbuchstaben",
+    "idInUse": "Der angegebene Rahmen-Index/Bezeichner „{id}“ wird bereits verwendet, bitte wähle einen anderen.",
+    "newFrameGroup": "Neue Rahmengruppe",
+    "newFrameGroupId": "Neue Rahmengruppen-ID",
+    "newFrameGroupName": "Neuer Rahmengruppenname",
+    "selectFrameGroup": "Rahmengruppe auswählen",
+    "unknown": "Unbekannt"
+  },
+  "EditFrameStartLine": {
+    "moveDown": "Bild nach unten verschieben",
+    "moveUp": "Bild nach oben verschieben"
   },
   "EditImageGroup": {
-    "dialogHeader": "Gruppe {title} bearbeiten",
     "createNewGroupDialogHeader": "Neue Gruppe {count, plural, =0 {} =1 {} other {mit # Bildern}} erstellen",
-    "moveSelectedImages": "{count, plural, =0 {} =1 {Bild} other {# Bilder}} verschieben",
-    "title": "Titel",
+    "dialogHeader": "Gruppe {title} bearbeiten",
     "favourite": "An Schnellzugriff anheften",
-    "pathSegment": "Pfadsegment (Bezeichner)",
+    "moveSelectedImages": "{count, plural, =0 {} =1 {Bild} other {# Bilder}} verschieben",
+    "parentGroup": "Übergeordnete Gruppe",
     "path": "Pfad: „{path}“",
     "pathInUse": "Pfad wird bereits verwendet: „{path}“",
-    "parentGroup": "Übergeordnete Gruppe"
+    "pathSegment": "Pfadsegment (Bezeichner)",
+    "title": "Titel"
   },
-  "EditPalette": {
-    "dialogHeader": "Palette {name} bearbeiten",
-    "editTitle": "Titel bearbeiten",
-    "addTitle": "Titel hinzufügen",
-    "idShortName": "ID/Kurzname",
-    "colorIndex": "Farbe {index}"
-  },
-  "EditRGBN": {
-    "dialogHeader": "RGBN-Bilder erstellen",
-    "groupingLabel": "Gruppierung der Auswahl",
-    "groupByColor": "Auswahl ist nach Farben gruppiert (RRR GGG BBB)",
-    "groupByImage": "Auswahl ist nach Bildern gruppiert (RGB RGB RGB)",
-    "manualChannelSelection": "Manuelle Kanalauswahl für ein einzelnes Bild",
-    "manualChannelInstructions": "Wähle manuell die Kanäle aus, um ein einzelnes RGBN-Bild zu erstellen",
-    "channelOrderInstructions": "Wähle die Reihenfolge der anzuwendenden Kanäle (in der Reihenfolge ausgewählter Bilder). Kanäle rechts vom Separator werden nicht verwendet.",
-    "channelDistributionError": "Deine Auswahl von Kanälen und Anzahl ausgewählter Bilder stimmt nicht überein! Stelle sicher, dass du die richtigen Bilder ausgewählt hast.",
-    "imagePreview": "Bildvorschau",
-    "createGroupLabel": "Gruppe aus erstellten Bildern auf aktueller Ebene erstellen"
-  },
-  "useEditRGBNImages": {
-    "rgbNewGroupTitle": "RGB {date}"
-  },
-  "FilterForm": {
-    "dialogHeader": "Filter auswählen",
-    "clearFiltersTitle": "Filter löschen",
-    "clear": "Löschen",
-    "clearFiltersAndApplyTitle": "Filter löschen und anwenden",
-    "clearAndApply": "Löschen und anwenden",
-    "clearTab": "Ausgewählte {tab, select, tabTags {Tags} tabPalettes {Paletten} tabFrames {Frames} other {}} zurücksetzen",
-    "allMustBeMet": "Falls gesetzt, müssen alle erfüllt sein",
-    "oneMustBeMet": "Falls gesetzt, muss eines erfüllt sein",
-    "untagged": "Ohne Tags",
-    "favourite": "❤️ Favorit",
-    "new": "Neu",
-    "monochrome": "Monochrom",
-    "rgb": "RGB",
-    "recentImports": "Aktuelle Importe",
-    "imageHasComments": "Bild hat Kommentare",
-    "imageHasUsername": "Bild hat Benutzername",
-    "filterTabs": {
-      "tabTags": "Tags {count, plural, =0 {} other {(#)}}",
-      "tabPalettes": "Paletten {count, plural, =0 {} other {(#)}}",
-      "tabFrames": "Frames {count, plural, =0 {} other {(#)}}"
+  "EditImageTabs": {
+    "tabTypes": {
+      "colors": "Farben",
+      "frame": "Rahmen",
+      "misc": "Sonstiges",
+      "palette": "Palette",
+      "tags": "Tags"
     }
   },
-  "FilterFormTag": {
-    "removeTag": "„{title}“-Tag abwählen",
-    "selectTag": "„{title}“-Tag auswählen"
+  "EditPalette": {
+    "addTitle": "Titel hinzufügen",
+    "colorIndex": "Farbe {index}",
+    "dialogHeader": "Palette {name} bearbeiten",
+    "editTitle": "Titel bearbeiten",
+    "idShortName": "ID/Kurzname"
+  },
+  "EditRGBN": {
+    "channelDistributionError": "Deine Auswahl von Kanälen und Anzahl ausgewählter Bilder stimmt nicht überein! Stelle sicher, dass du die richtigen Bilder ausgewählt hast.",
+    "channelOrderInstructions": "Wähle die Reihenfolge der anzuwendenden Kanäle (in der Reihenfolge ausgewählter Bilder). Kanäle rechts vom Separator werden nicht verwendet.",
+    "createGroupLabel": "Gruppe aus erstellten Bildern auf aktueller Ebene erstellen",
+    "dialogHeader": "RGBN-Bilder erstellen",
+    "groupByColor": "Auswahl ist nach Farben gruppiert (RRR GGG BBB)",
+    "groupByImage": "Auswahl ist nach Bildern gruppiert (RGB RGB RGB)",
+    "groupingLabel": "Gruppierung der Auswahl",
+    "imagePreview": "Bildvorschau",
+    "manualChannelInstructions": "Wähle manuell die Kanäle aus, um ein einzelnes RGBN-Bild zu erstellen",
+    "manualChannelSelection": "Manuelle Kanalauswahl für ein einzelnes Bild"
+  },
+  "EnvInfo": {
+    "appBranch": "Web-App-Branch: {value}",
+    "appVersion": "Web-App-Version: {value}",
+    "storageEstimate": "Auslastung {type}: {percentage}% ({used} von {total})"
+  },
+  "ExportSettings": {
+    "exportAll": "Alles exportieren",
+    "exportPlugins": "Plugins exportieren",
+    "persistState": {
+      "apiUnavailable": "Persistenz-API nicht verfügbar",
+      "failed": "Speicher-Persistierung fehlgeschlagen",
+      "isPersistent": "Speicher ist persistent",
+      "requestPersistence": "Speicher-Persistenz anfordern"
+    },
+    "resetGroups": "Bildgruppen zurücksetzen"
+  },
+  "FilterForm": {
+    "allMustBeMet": "Falls gesetzt, müssen alle erfüllt sein",
+    "clear": "Löschen",
+    "clearAndApply": "Löschen und anwenden",
+    "clearFiltersAndApplyTitle": "Filter löschen und anwenden",
+    "clearFiltersTitle": "Filter löschen",
+    "clearTab": "Ausgewählte {tab, select, tabTags {Tags} tabPalettes {Paletten} tabFrames {Frames} other {}} zurücksetzen",
+    "dialogHeader": "Filter auswählen",
+    "favourite": "❤️ Favorit",
+    "filterTabs": {
+      "tabFrames": "Frames {count, plural, =0 {} other {(#)}}",
+      "tabPalettes": "Paletten {count, plural, =0 {} other {(#)}}",
+      "tabTags": "Tags {count, plural, =0 {} other {(#)}}"
+    },
+    "imageHasComments": "Bild hat Kommentare",
+    "imageHasUsername": "Bild hat Benutzername",
+    "monochrome": "Monochrom",
+    "new": "Neu",
+    "oneMustBeMet": "Falls gesetzt, muss eines erfüllt sein",
+    "recentImports": "Aktuelle Importe",
+    "rgb": "RGB",
+    "untagged": "Ohne Tags"
+  },
+  "FilterFormFrame": {
+    "removeFrame": "Frame „{name}“ abwählen",
+    "selectFrame": "Frame „{name}“ auswählen",
+    "usage": "{usage} mal benutzt"
   },
   "FilterFormPalette": {
     "removePalette": "Palette „{name}“ abwählen",
     "selectPalette": "Palette „{name}“ auswählen"
   },
-  "FilterFormFrame": {
-    "usage": "{usage} mal benutzt",
-    "removeFrame": "Frame „{name}“ abwählen",
-    "selectFrame": "Frame „{name}“ auswählen"
+  "FilterFormTag": {
+    "removeTag": "„{title}“-Tag abwählen",
+    "selectTag": "„{title}“-Tag auswählen"
+  },
+  "FolderBreadcrumb": {
+    "editGroup": "Gruppe „{title}“ bearbeiten",
+    "openNavigation": "Galerie-Navigation öffnen"
+  },
+  "FolderTreeDialog": {
+    "dialogHeader": "Galerie-Navigation"
+  },
+  "Frame": {
+    "notUsed": "Nicht verwendet",
+    "usedTimes": "{count} mal verwendet"
+  },
+  "FrameContextMenu": {
+    "delete": "Löschen",
+    "edit": "Bearbeiten"
   },
   "FrameQueue": {
     "dialogHeader": "Neuen Rahmen als „{id}“ importieren"
   },
+  "Frames": {
+    "applyFrames": "Frame zu Bildern hinzufügen falls Rohdaten übereinstimmen",
+    "convertFramesFormat": "Rahmen in neues Format konvertieren",
+    "editFramegroup": "Rahmengruppe bearbeiten",
+    "exportCurrentFramegroup": "Aktuelle Rahmengruppe exportieren ({id})",
+    "exportFrames": "Rahmen exportieren",
+    "renameFramegroup": "Rahmengruppe umbenennen"
+  },
+  "FrameSelect": {
+    "frameLabel": "Rahmen",
+    "noFrameOption": "Wie importiert / Kein Rahmen",
+    "separateColorSettings": "Separate Farbeinstellungen für Rahmen verwenden"
+  },
+  "GalleryGroup": {
+    "itemCount": "{count} Bilder"
+  },
+  "GalleryGroupContextMenu": {
+    "delete": "Löschen",
+    "edit": "Bearbeiten"
+  },
+  "GalleryImageContextMenu": {
+    "addToFavourites": "Zu Favoriten hinzufügen",
+    "addToSelection": "Zur Auswahl hinzufügen",
+    "createGroup": "Gruppe erstellen",
+    "delete": "Löschen",
+    "download": "Herunterladen",
+    "edit": "Bearbeiten",
+    "printViaSuperPrinter": "Über Super Printer drucken",
+    "removeFromFavourites": "Aus Favoriten entfernen",
+    "removeFromSelection": "Aus Auswahl entfernen",
+    "share": "Teilen",
+    "showMetadata": "Metadaten anzeigen",
+    "usePlugin": "Plugin verwenden",
+    "useSSTV": "Als SSTV-Ton abspielen",
+    "viewInLightbox": "In Lightbox anzeigen"
+  },
+  "GalleryNumbers": {
+    "filteredCount": "{count} gefiltert",
+    "imageCount": "{count} Bilder",
+    "selectedCount": "{count} ausgewählt",
+    "separator": " / "
+  },
+  "GalleryViewSelect": {
+    "viewNames": {
+      "doubleSize": "Doppelte Größe",
+      "maximumSize": "Maximale Größe",
+      "originalSize": "Originalgröße",
+      "smallest": "Kleinste"
+    }
+  },
+  "GreySelect": {
+    "blendModes": {
+      "addition": "Addition",
+      "burn": "Nachbelichten",
+      "darken": "Abdunkeln",
+      "difference": "Differenz",
+      "dodge": "Abwedeln",
+      "exclusion": "Ausschluss",
+      "hardLight": "Hartes Licht",
+      "lighten": "Aufhellen",
+      "multiply": "Multiplizieren",
+      "normal": "Normal (neutrale Ebene ignorieren)",
+      "normalS": "Normal ⇵ (nur neutrale Ebene)",
+      "overlay": "Überlagern",
+      "screen": "Negativ multiplizieren",
+      "softLight": "Weiches Licht"
+    },
+    "neutralLayerBlendmode": "Neutral-Ebenen-Mischmodus"
+  },
+  "ImageMeta": {
+    "dateTime": "Datum / Zeit",
+    "editRotation": "Rotation bearbeiten"
+  },
+  "Import": {
+    "exportImages": "Bilder exportieren",
+    "exportSelectedImages": "Ausgewählte Bilder exportieren",
+    "import": "Importieren",
+    "importAlbumRolls": "Album-Rollen von Photo! importieren (ROM + Flash)",
+    "importMemory": "Speicher von Cartridge Reader importieren",
+    "selectFiles": "Datei(en) zum Importieren auswählen",
+    "serialMonitorLabel": "Über den seriellen Monitor empfangene Daten importieren"
+  },
+  "ImportPreviewImage": {
+    "scaleFactorWarning": "Der Skalierungsfaktor des Bildes ist {scaleFactor}. Um ein sauberes Ergebnis ohne Artefakte zu erhalten, versuche nur Bilder zu importieren, deren Abmessungen um Zweierpotenzen skaliert sind. (1, 2, 4, 8 ...)"
+  },
   "ImportQueue": {
+    "createGroupLabel": "Gruppe aus Bildern am aktuellen Standort erstellen",
     "dialogHeader": "{count, plural, =1 {Bild importieren} other {# Bilder importieren}}",
-    "removeLastSeenTitle": "Zuletzt gesehen entfernen",
-    "removeLastSeen": "Zuletzt gesehen entfernen {count, plural, =0 {} other {({count})}}",
-    "removeDeletedTitle": "Gelöschte entfernen",
-    "removeDeleted": "Gelöschte entfernen {count, plural, =0 {} other {({count})}}",
-    "removeDuplicatesInQueueTitle": "Duplikate in Warteschlange entfernen",
-    "removeDuplicatesInQueue": "Duplikate in Warteschlange entfernen {count, plural, =0 {} other {({count})}}",
-    "removeAlreadyImportedTitle": "Bereits importierte entfernen",
-    "removeAlreadyImported": "Bereits importierte entfernen {count, plural, =0 {} other {({count})}}",
     "modifyFrame": "Rahmen ändern",
     "noFrameOption": "Kein Rahmen / wie importiert",
-    "createGroupLabel": "Gruppe aus Bildern am aktuellen Standort erstellen"
+    "removeAlreadyImported": "Bereits importierte entfernen {count, plural, =0 {} other {({count})}}",
+    "removeAlreadyImportedTitle": "Bereits importierte entfernen",
+    "removeDeleted": "Gelöschte entfernen {count, plural, =0 {} other {({count})}}",
+    "removeDeletedTitle": "Gelöschte entfernen",
+    "removeDuplicatesInQueue": "Duplikate in Warteschlange entfernen {count, plural, =0 {} other {({count})}}",
+    "removeDuplicatesInQueueTitle": "Duplikate in Warteschlange entfernen",
+    "removeLastSeen": "Zuletzt gesehen entfernen {count, plural, =0 {} other {({count})}}",
+    "removeLastSeenTitle": "Zuletzt gesehen entfernen"
   },
   "ImportRow": {
-    "duplicateInQueue": "Dieses Bild existiert mehrfach in dieser Warteschlange",
     "alreadyImported": "Dieses Bild wurde bereits {title, select, NO_TITLE {} other {als „{title}“}} importiert",
+    "duplicateInQueue": "Dieses Bild existiert mehrfach in dieser Warteschlange",
     "importAsFrame": "Bild als Rahmen importieren",
     "removeFromQueue": "Bild aus Warteschlange entfernen"
   },
-  "PickColors": {
-    "newPaletteNameFromFile": "Aus Datei {fileName}",
-    "dialogHeader": "Farben aus „{fileName}“ auswählen"
+  "InputNewTag": {
+    "tagsLabel": "Tags"
   },
-  "ProgressBox": {
-    "dialogHeader": "Arbeite..."
+  "Lightbox": {
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "closeWithHeader": "{header} schließen",
+    "ok": "Ok"
   },
-  "ProgressLogBox": {
-    "dialogHeaderDone": "✔️ Update abgeschlossen {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderUpdating": "⏳ Aktualisiere... {repo, select, NO_REPO {} other {- {repo}}}",
-    "dialogHeaderError": "❌ Update fehlgeschlagen {repo, select, NO_REPO {} other {- {repo}}}",
-    "showAllMessages": "Alle {count} Nachrichten anzeigen",
-    "reduceMessages": "Nachrichten reduzieren",
-    "startedAt": "Gestartet um: {time}",
-    "finishedAfter": "Abgeschlossen nach: {duration}",
-    "runningFor": "Läuft seit: {duration}",
-    "openGitHubRepository": "GitHub Repository öffnen",
-    "openDropboxFolder": "Dropbox-Ordner öffnen",
-    "openDropboxFolderTitle": "Dropbox-Ordner öffnen:\n{path}"
+  "LightboxImage": {
+    "enterFullscreen": "Vollbild aktivieren",
+    "imageCounter": "Bild {current}/{total}",
+    "leaveFullscreen": "Vollbild verlassen"
   },
-  "Serials": {
-    "dialogHeader": "WebUSB / Serielle Geräte"
+  "MetaTable": {
+    "hashChannel": "Hash {channel}-Kanal"
   },
-  "SortForm": {
-    "dialogHeader": "Sortieren nach: {sortBy}/{order}",
-    "sortByLabel": "Sortieren nach",
-    "sortDirectionLabel": "Sortierrichtung",
-    "titleOption": "Titel",
-    "dateOption": "Datum",
-    "paletteOption": "Palette",
-    "ascending": "Aufsteigend",
-    "descending": "Absteigend"
-  },
-  "SyncSelect": {
-    "dialogHeader": "Synchronisieren",
-    "syncToGitHub": "Nach GitHub synchronisieren",
-    "syncToGitHubTitle": "Nach GitHub synchronisieren\n{repoUrl}",
-    "syncFromGitHub": "Von GitHub synchronisieren",
-    "syncFromGitHubTitle": "Von GitHub synchronisieren\n{repoUrl}",
-    "syncToDropbox": "Nach Dropbox synchronisieren",
-    "syncFromDropbox": "Von Dropbox synchronisieren",
-    "syncImagesToDropbox": "Bilder mit Dropbox synchronisieren",
-    "pendingRemoteChangesWarning": "Es gibt ausstehende Remote-Änderungen. Wenn du jetzt mit Dropbox synchronisierst, gehen diese verloren.",
-    "pendingLocalChangesWarning": "Es gibt lokale Änderungen, die noch nicht mit Dropbox synchronisiert wurden. Wenn du jetzt von Dropbox synchronisierst, gehen diese verloren."
-  },
-  "Trashbin": {
-    "dialogHeader": "Papierkorb ({count} Elemente)",
-    "downloadFrames": "Rahmen herunterladen {count, plural, =0 {} other {(#)}}",
-    "downloadImages": "Bilder herunterladen {count, plural, =0 {} other {(#)}}",
-    "purgeAll": "Alle löschen {count, plural, =0 {} other {(#)}}",
-    "deletedFrames": "Gelöschte Rahmen: {count}",
-    "deletedImages": "Gelöschte Bilder: {count}"
-  },
-  "VideoParamsForm": {
-    "dialogHeader": "Animiertes GIF mit {count} Frames erstellen",
-    "frameRate": "Framerate",
-    "scaleGif": "GIF skalieren",
-    "enableYoyo": "Jo-Jo-Effekt aktivieren (Animation rückwärts wiederholen)",
-    "reverseDirection": "Animationsrichtung umkehren",
-    "handleFrames": "Umgang mit Rahmen für Animation",
-    "noFrameOption": "Wie pro Bild ausgewählt",
-    "frameModes": {
-      "keepFrame": "Rahmen beibehalten",
-      "cropFrame": "Rahmen zuschneiden",
-      "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
-      "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
-    }
+  "Navigation": {
+    "addPlugin": "Plugin hinzufügen",
+    "closeMainNav": "Hauptnavigation schließen",
+    "frames": "Rahmen",
+    "gallery": "Galerie",
+    "galleryShortcuts": "Galerie Schnellzugriff",
+    "home": "Startseite",
+    "import": "Import",
+    "mainNavAriaLabel": "Hauptnavigation",
+    "openMainNav": "Hauptnavigation öffnen",
+    "palettes": "Paletten",
+    "settings": "Einstellungen",
+    "switchToBright": "Zu hellem Modus wechseln",
+    "switchToDark": "Zu dunklem Modus wechseln",
+    "syncRemote": "Mit Remote-Service(s) synchronisieren",
+    "trash": "Papierkorb",
+    "usbDevices": "WebUSB und Serielle Geräte",
+    "usbDisabled": "USB-Geräte sind nicht verfügbar",
+    "utilityNavAriaLabel": "Werkzeug-Navigation"
   },
   "Pagination": {
     "pageCount": "{current}/{total}"
@@ -571,114 +382,178 @@
     "usageCount": "({shortName}) {count, plural, =0 {Nicht verwendet} =1 {Einmal verwendet} other {# mal verwendet}}"
   },
   "PaletteContextMenu": {
-    "setActive": "Als aktiv setzen",
     "clone": "Kopieren und Bearbeiten",
+    "delete": "Löschen",
     "edit": "Bearbeiten",
-    "delete": "Löschen"
+    "setActive": "Als aktiv setzen"
   },
   "Palettes": {
-    "ownPalettes": "Eigene Paletten",
-    "predefinedPalettes": "Vordefinierte Paletten",
     "allPalettes": "Alle Paletten",
+    "exportPalettes": "Paletten exportieren",
     "newPalette": "Neue Palette",
     "newPaletteFromImage": "Neue Palette aus Bild",
-    "sortPalettes": "Paletten sortieren",
-    "exportPalettes": "Paletten exportieren"
+    "ownPalettes": "Eigene Paletten",
+    "predefinedPalettes": "Vordefinierte Paletten",
+    "sortPalettes": "Paletten sortieren"
   },
   "PaletteSelect": {
     "asSelectedPerImage": "Wie pro Bild ausgewählt",
-    "palette": "Palette",
-    "invertPalette": "Palette invertieren"
+    "invertPalette": "Palette invertieren",
+    "palette": "Palette"
+  },
+  "PickColors": {
+    "dialogHeader": "Farben aus „{fileName}“ auswählen",
+    "newPaletteNameFromFile": "Aus Datei {fileName}"
   },
   "PluginSelect": {
     "pluginTooltip": "{description}\n{url}"
   },
   "PrinterReport": {
-    "functions": {
-      "checkPrinter": "Druckerinfo abrufen",
-      "fetchImagesGeneric": "Bilder importieren",
-      "fetchImagesCount": "{count} Bilder importieren",
-      "clearPrinter": "Drucker leeren"
-    },
-    "printerFilesystem": "Drucker-Dateisystem",
-    "total": "Gesamt",
-    "used": "Verwendet",
     "free": "Frei",
     "freeImages": "{count} Bilder",
-    "images": "Bilder"
-  },
-  "StorageWarning": {
-    "storageTypes": {
-      "indexedDB": "Datenbank-Speicher",
-      "localStorage": "lokalen Speicher"
+    "functions": {
+      "checkPrinter": "Druckerinfo abrufen",
+      "clearPrinter": "Drucker leeren",
+      "fetchImagesCount": "{count} Bilder importieren",
+      "fetchImagesGeneric": "Bilder importieren"
     },
-    "usageTooltip": "Verwende {used} von {total}",
-    "usageWarning": "Du verwendest {percentage}% des {type}s deines Browsers. Beachte, dass das Speichern von Bildern nicht mehr möglich sein wird, sobald das Limit erreicht ist."
+    "images": "Bilder",
+    "printerFilesystem": "Drucker-Dateisystem",
+    "total": "Gesamt",
+    "used": "Verwendet"
   },
-  "TagsList": {
-    "favourite": "Favorit",
-    "moreTags": "+{count} weitere Tags:\n{tags}",
-    "moreTagsLabel": "+{count} weitere"
+  "ProgressBox": {
+    "dialogHeader": "Arbeite..."
   },
-  "TagsSelect": {
-    "resetTags": "Tags zurücksetzen"
+  "ProgressLogBox": {
+    "dialogHeaderDone": "✔️ Update abgeschlossen {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderError": "❌ Update fehlgeschlagen {repo, select, NO_REPO {} other {- {repo}}}",
+    "dialogHeaderUpdating": "⏳ Aktualisiere... {repo, select, NO_REPO {} other {- {repo}}}",
+    "finishedAfter": "Abgeschlossen nach: {duration}",
+    "openDropboxFolder": "Dropbox-Ordner öffnen",
+    "openDropboxFolderTitle": "Dropbox-Ordner öffnen:\n{path}",
+    "openGitHubRepository": "GitHub Repository öffnen",
+    "reduceMessages": "Nachrichten reduzieren",
+    "runningFor": "Läuft seit: {duration}",
+    "showAllMessages": "Alle {count} Nachrichten anzeigen",
+    "startedAt": "Gestartet um: {time}"
   },
-  "InputNewTag": {
-    "tagsLabel": "Tags"
+  "RemotePrinterContext": {
+    "noFilesReceived": "Keine gültigen Dateien vom WiFi-Printer empfangen"
   },
-  "useBatchButtons": {
-    "deleteConfirmation": "{count} Bilder löschen?"
+  "Serials": {
+    "dialogHeader": "WebUSB / Serielle Geräte"
   },
-  "useEditForm": {
-    "updateDate": "Datum aktualisieren",
-    "updateTitle": "Titel aktualisieren",
-    "updatePalette": "Bildpaletten-Farben aktualisieren",
-    "updateInvertPalette": "Bildpaletten-Invertierung aktualisieren",
-    "updateFrame": "Rahmen aktualisieren",
-    "updateLockFrame": "Separate Rahmeneinstellungen aktualisieren",
-    "updateFramePalette": "Rahmenpaletten-Farben aktualisieren",
-    "updateInvertFramePalette": "Rahmenpaletten-Invertierung aktualisieren",
-    "updateTags": "Tags aktualisieren",
-    "updateRotation": "Rotation aktualisieren"
+  "SettingsDropbox": {
+    "authenticate": "Authentifizieren",
+    "enableEnhancedSync": "Erweiterte Dropbox-Synchronisation aktivieren",
+    "enableEnhancedSyncHelper": "Dies ist eine experimentelle Funktion.",
+    "enableStorage": "Dropbox als Speicher verwenden",
+    "logout": "Abmelden",
+    "openFolder": "<link>🔗 Ordner öffnen</link>",
+    "openFolderLinkTitle": "Dropbox-Ordner öffnen:\n{folderLink}",
+    "subfolder": "Unterordner",
+    "subfolderWarning": "Gib nur den Namen des Unterordners ein. Andernfalls wird der Ordnerpfad vollständig zu „{fullAppPath}“ in Deiner Dropbox aufgelöst, was wahrscheinlich nicht das ist, was Du beabsichtigst."
   },
-  "useEditPalette": {
-    "paletteOrigin": "Mit der Webapp erstellt"
+  "SettingsGapiSheets": {
+    "about": "Dies ist eine experimentelle Funktion. Die Sitzung muss alle 60 Minuten erneuert werden.",
+    "authenticate": "Authentifizieren",
+    "enableAutoSync": "Automatisch synchronisieren",
+    "enableStorage": "Google Sheets als Speicher verwenden",
+    "logout": "Abmelden",
+    "openSheetLink": "Sheet in neuem Tab öffnen",
+    "sheetId": "Sheet-ID",
+    "sheetIdHelper": "Du kannst den kompletten Bearbeitungslink einfügen, um die korrekte Sheet-ID zu erhalten.",
+    "tokenExpiry": "Die Sitzung läuft in {time} ab"
   },
-  "useFrame": {
-    "deleteConfirmation": "Rahmen „{name}“ ({frameId}) löschen?"
+  "SettingsGeneric": {
+    "enableDebug": "Debug-Informationen anzeigen",
+    "exampleDateFormat": "Beispiel-Datumsformat: {format}",
+    "forceMagicCheck": "Gültige .sav-Datei beim Importieren erzwingen",
+    "galleryClickAction": "Klickverhalten für Galeriebilder",
+    "galleryClickActionHelper": "Strg+Klick und Umschalt+Klick können immer für auswählen/bereichsweise auswählen verwendet werden",
+    "galleryClickActions": {
+      "clickOpensEditDialog": "Klick öffnet Bearbeitungsdialog",
+      "clickOpensLightbox": "Klick öffnet das Element in der Lightbox",
+      "clickSelectsItem": "Klick wählt das Element aus"
+    },
+    "galleryPageSize": "Bilder pro Galerieseite",
+    "galleryPageSizeHelper": "Auf 0 setzen, um Paginierung zu deaktivieren – kann bei großen Bildmengen zu Leistungseinbußen führen",
+    "hideDates": "Bilddatum in der Galerie ausblenden",
+    "importDeleted": "Gelöschte Bilder beim Importieren von Cartridge-Dumps importieren",
+    "importLastSeen": "‚Zuletzt gesehen‘-Bild beim Importieren von Cartridge-Dumps importieren",
+    "importOrders": {
+      "cartIndex": "Sortiert nach ROM-Entscheidung (wie in der Kamerarolle im ursprünglichen RAM zu sehen)",
+      "ramIndex": "Sortiert nach tatsächlicher Reihenfolge im RAM (Speicheradresse)"
+    },
+    "importPad": "Bilder beim Import auf 144px Höhe auffüllen",
+    "importSavFrames": "Rahmen, die beim Importieren von Cartridge-Dumps angewendet werden sollen",
+    "importSavFramesNone": "Keine",
+    "importSavFramesUnknown": "Unbekannt",
+    "importSavOrder": "Reihenfolge beim Importieren einer .sav-Datei",
+    "locales": {
+      "de-DE": "Deutsch – Deutschland (de-DE)",
+      "en-CA": "Englisch – Kanada (en-CA)",
+      "en-GB": "Englisch – Vereinigtes Königreich (en-GB)",
+      "en-US": "Englisch – Vereinigte Staaten (en-US)",
+      "fr-FR": "Französisch – Frankreich (fr-FR)"
+    },
+    "preferredLocale": "Bevorzugte Sprache",
+    "resetTrackingConsent": "Analyse-/Tracking-Einwilligung zurücksetzen (derzeit {consentState, select, accepted {aktiv} other {inaktiv}})",
+    "sortPalettes": "Paletten sortieren"
   },
-  "useGalleryImageContext": {
-    "deleteImage": "{title, select, NO_TITLE {Dieses Bild} other {Bild „{title}“}} löschen",
-    "metaInfo": "Metadaten {title, select, NO_TITLE {} other {für „{title}“}}"
+  "SettingsGit": {
+    "branch": "Branch",
+    "enableStorage": "GitHub als Speicher verwenden",
+    "owner": "Eigentümer",
+    "repoName": "Repository-Name",
+    "throttle": "Drosselung (in ms)",
+    "token": "Token",
+    "tokenHelper": "Gehe zu GitHub, um einen <link>🔗 neuen feinabgestimmten persönlichen Zugriffstoken</link> zu erstellen, wähle das Repository aus, das du für die Synchronisation verwenden möchtest, und erlaube Lese-/Schreibzugriff für <code>„Repository Permissions > Contents“</code>"
   },
-  "useGetPortSettings": {
-    "specifyBaudrate": "Baudrate für Port wählen",
-    "baudRateLabel": "Baudrate"
+  "SettingsPlugins": {
+    "addPlugin": "Plugin hinzufügen",
+    "addPluginHelper": "🔗 Eine Auswahl von Plugins findest du hier",
+    "deletePlugin": "Plugin „{name}“ löschen",
+    "installedPlugins": "Installierte Plugins"
   },
-  "useImageGroups": {
-    "newGroupDefault": "Neue Gruppe",
-    "resetGroupsMessage": "Bildgruppen zurücksetzen?",
-    "resetGroupsInfo": "Dies wird ALLE erstellten Gruppen entfernen und alle vorhandenen Bilder auf die oberste Ebene verschieben.",
-    "deleteGroupMessage": "Bildgruppe löschen?",
-    "deleteGroupInfo": "Dies wird die Gruppe „{groupTitle}“ löschen und alle Inhalte (Bilder & Gruppen) auf die aktuelle Ebene verschieben."
+  "SettingsPrinterUrls": {
+    "addPrinter": "Drucker hinzufügen",
+    "printerUrl": "Drucker-URL",
+    "printerUrlHelper": "Wenn du einen physischen WLAN-Drucker besitzt, kannst du dessen URL hier hinzufügen und im <link>🔗 Import-Tab</link> weiter machen",
+    "printerUrls": "Drucker-URLs"
   },
-  "usePalette": {
-    "deletePaletteMessage": "Palette „{name}“ löschen?"
+  "SettingsTabs": {
+    "dropboxSettings": "Dropbox-Einstellungen",
+    "gapiSheetsSettings": "Google Sheets Einstellungen",
+    "genericSettings": "Allgemeine Einstellungen",
+    "gitSettings": "Git-Einstellungen",
+    "pluginSettings": "Plugin-Einstellungen"
   },
-  "useRunImport": {
-    "importGroupTitle": "Import {date}"
+  "SheetsTable": {
+    "columns": "Spalten",
+    "id": "ID",
+    "lastLocalUpdate": "Letzte lokale Aktualisierung",
+    "lastRemoteUpdate": "Letzte entfernte Aktualisierung",
+    "refreshStats": "Eigenschaften aktualisieren",
+    "rows": "Zeilen",
+    "syncMerge": "Mit Sheets zusammenführen",
+    "syncPull": "Von Sheets synchronisieren",
+    "syncPush": "Nach Sheets synchronisieren",
+    "title": "Titel"
   },
-  "useSetEditPalette": {
-    "copyOfPalette": "Kopie von {name}"
-  },
-  "useTrashbin": {
-    "backupExportImage": "Backup-Export {hash}",
-    "backupExportFrame": "Backup-Export {hash}",
-    "reImportedTrashFrames": "Wieder importierte, gelöschte Rahmen"
+  "SortForm": {
+    "ascending": "Aufsteigend",
+    "dateOption": "Datum",
+    "descending": "Absteigend",
+    "dialogHeader": "Sortieren nach: {sortBy}/{order}",
+    "paletteOption": "Palette",
+    "sortByLabel": "Sortieren nach",
+    "sortDirectionLabel": "Sortierrichtung",
+    "titleOption": "Titel"
   },
   "SSTVForm": {
     "dialogHeader": "SSTV Audiodatei erstellen",
-    "modeTypeLabel": "Wähle SSTV Mode",
     "modeType": {
       "martin1": "Martin 1",
       "martin2": "Martin 2",
@@ -690,6 +565,135 @@
       "scottie1": "Scottie 1",
       "scottie2": "Scottie 2",
       "scottieDX": "Scottie DX"
-    }
+    },
+    "modeTypeLabel": "Wähle SSTV Mode"
+  },
+  "StorageWarning": {
+    "storageTypes": {
+      "indexedDB": "Datenbank-Speicher",
+      "localStorage": "lokalen Speicher"
+    },
+    "usageTooltip": "Verwende {used} von {total}",
+    "usageWarning": "Du verwendest {percentage}% des {type}s deines Browsers. Beachte, dass das Speichern von Bildern nicht mehr möglich sein wird, sobald das Limit erreicht ist."
+  },
+  "SyncSelect": {
+    "dialogHeader": "Synchronisieren",
+    "pendingLocalChangesWarning": "Es gibt lokale Änderungen, die noch nicht mit Dropbox synchronisiert wurden. Wenn du jetzt von Dropbox synchronisierst, gehen diese verloren.",
+    "pendingRemoteChangesWarning": "Es gibt ausstehende Remote-Änderungen. Wenn du jetzt mit Dropbox synchronisierst, gehen diese verloren.",
+    "syncFromDropbox": "Von Dropbox synchronisieren",
+    "syncFromGitHub": "Von GitHub synchronisieren",
+    "syncFromGitHubTitle": "Von GitHub synchronisieren\n{repoUrl}",
+    "syncImagesToDropbox": "Bilder mit Dropbox synchronisieren",
+    "syncToDropbox": "Nach Dropbox synchronisieren",
+    "syncToGitHub": "Nach GitHub synchronisieren",
+    "syncToGitHubTitle": "Nach GitHub synchronisieren\n{repoUrl}"
+  },
+  "TagsList": {
+    "favourite": "Favorit",
+    "moreTags": "+{count} weitere Tags:\n{tags}",
+    "moreTagsLabel": "+{count} weitere"
+  },
+  "TagsSelect": {
+    "resetTags": "Tags zurücksetzen"
+  },
+  "TrackingConsent": {
+    "confirm": "Das ist für mich in Ordnung",
+    "deny": "Nein, danke",
+    "title": "Ich könnte deine Hilfe brauchen"
+  },
+  "Trashbin": {
+    "deletedFrames": "Gelöschte Rahmen: {count}",
+    "deletedImages": "Gelöschte Bilder: {count}",
+    "dialogHeader": "Papierkorb ({count} Elemente)",
+    "downloadFrames": "Rahmen herunterladen {count, plural, =0 {} other {(#)}}",
+    "downloadImages": "Bilder herunterladen {count, plural, =0 {} other {(#)}}",
+    "purgeAll": "Alle löschen {count, plural, =0 {} other {(#)}}"
+  },
+  "useAsPasswordField": {
+    "hidePassword": "Passwort verbergen",
+    "showPassword": "Passwort anzeigen"
+  },
+  "useBatchButtons": {
+    "deleteConfirmation": "{count} Bilder löschen?"
+  },
+  "useEditForm": {
+    "updateDate": "Datum aktualisieren",
+    "updateFrame": "Rahmen aktualisieren",
+    "updateFramePalette": "Rahmenpaletten-Farben aktualisieren",
+    "updateInvertFramePalette": "Rahmenpaletten-Invertierung aktualisieren",
+    "updateInvertPalette": "Bildpaletten-Invertierung aktualisieren",
+    "updateLockFrame": "Separate Rahmeneinstellungen aktualisieren",
+    "updatePalette": "Bildpaletten-Farben aktualisieren",
+    "updateRotation": "Rotation aktualisieren",
+    "updateTags": "Tags aktualisieren",
+    "updateTitle": "Titel aktualisieren"
+  },
+  "useEditPalette": {
+    "paletteOrigin": "Mit der Webapp erstellt"
+  },
+  "useEditRGBNImages": {
+    "rgbNewGroupTitle": "RGB {date}"
+  },
+  "useFrame": {
+    "deleteConfirmation": "Rahmen „{name}“ ({frameId}) löschen?"
+  },
+  "useGalleryImageContext": {
+    "deleteImage": "{title, select, NO_TITLE {Dieses Bild} other {Bild „{title}“}} löschen",
+    "metaInfo": "Metadaten {title, select, NO_TITLE {} other {für „{title}“}}"
+  },
+  "useGetPortSettings": {
+    "baudRateLabel": "Baudrate",
+    "specifyBaudrate": "Baudrate für Port wählen"
+  },
+  "useImageGroups": {
+    "deleteGroupInfo": "Dies wird die Gruppe „{groupTitle}“ löschen und alle Inhalte (Bilder & Gruppen) auf die aktuelle Ebene verschieben.",
+    "deleteGroupMessage": "Bildgruppe löschen?",
+    "newGroupDefault": "Neue Gruppe",
+    "resetGroupsInfo": "Dies wird ALLE erstellten Gruppen entfernen und alle vorhandenen Bilder auf die oberste Ebene verschieben.",
+    "resetGroupsMessage": "Bildgruppen zurücksetzen?"
+  },
+  "usePalette": {
+    "deletePaletteMessage": "Palette „{name}“ löschen?"
+  },
+  "usePaletteSort": {
+    "defaultAsc": "Standard (aufsteigend)",
+    "defaultDesc": "Standard (absteigend)",
+    "nameAsc": "Name (aufsteigend)",
+    "nameDesc": "Name (absteigend)",
+    "usageAsc": "Verwendung (aufsteigend)",
+    "usageDesc": "Verwendung (absteigend)"
+  },
+  "useRunImport": {
+    "importGroupTitle": "Import {date}"
+  },
+  "useSetEditPalette": {
+    "copyOfPalette": "Kopie von {name}"
+  },
+  "useTrashbin": {
+    "backupExportFrame": "Backup-Export {hash}",
+    "backupExportImage": "Backup-Export {hash}",
+    "reImportedTrashFrames": "Wieder importierte, gelöschte Rahmen"
+  },
+  "VideoParamsForm": {
+    "dialogHeader": "Animiertes GIF mit {count} Frames erstellen",
+    "enableYoyo": "Jo-Jo-Effekt aktivieren (Animation rückwärts wiederholen)",
+    "frameModes": {
+      "cropFrame": "Rahmen zuschneiden",
+      "keepFrame": "Rahmen beibehalten",
+      "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
+      "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
+    },
+    "frameRate": "Framerate",
+    "handleFrames": "Umgang mit Rahmen für Animation",
+    "noFrameOption": "Wie pro Bild ausgewählt",
+    "reverseDirection": "Animationsrichtung umkehren",
+    "scaleGif": "GIF skalieren"
+  },
+  "WebUSBGreeting": {
+    "enableWebUsb": "WebUSB / Serielle Ports aktivieren",
+    "webSerialDisabled": "Dein aktueller/s Browser/Gerät unterstützt leider kein Web Serial",
+    "webSerialEnabled": "Dein aktueller/s Browser/Gerät unterstützt Web Serial",
+    "webUSBDisabled": "Dein aktueller/s Browser/Gerät unterstützt leider kein WebUSB",
+    "webUSBEnabled": "Dein aktueller/s Browser/Gerät unterstützt WebUSB"
   }
 }

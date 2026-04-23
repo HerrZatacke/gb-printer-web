@@ -1,8 +1,8 @@
 import { type MonochromeImage } from '@/types/Image';
 
 export interface PaletteSettings {
-  invertPalette: boolean,
-  invertFramePalette: boolean,
+  invertPalette: boolean;
+  invertFramePalette: boolean;
 }
 
 export const getPaletteSettings = (image: MonochromeImage): PaletteSettings => {

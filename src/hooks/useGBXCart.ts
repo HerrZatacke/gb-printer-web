@@ -10,12 +10,12 @@ import { concatImportResults } from '@/tools/concatImportResults';
 import getHandleFileImport from '@/tools/getHandleFileImport';
 
 interface UseGBXCart {
-  gbxCartAvailable: boolean,
-  readRAMImage: () => void,
-  readPhotoRom: () => void,
-  readRomName: () => void,
-  canReadPhotoRom: boolean,
-  busy: boolean,
+  gbxCartAvailable: boolean;
+  readRAMImage: () => void;
+  readPhotoRom: () => void;
+  readRomName: () => void;
+  canReadPhotoRom: boolean;
+  busy: boolean;
 }
 
 export const useGBXCart = (): UseGBXCart => {

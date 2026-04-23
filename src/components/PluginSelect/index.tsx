@@ -8,9 +8,9 @@ import { usePluginsContext } from '@/contexts/PluginsContext';
 import { useFiltersStore, useItemsStore } from '@/stores/stores';
 
 interface Props {
-  pluginAnchor: HTMLElement | null,
-  onClose: () => void,
-  hash?: string,
+  pluginAnchor: HTMLElement | null;
+  onClose: () => void;
+  hash?: string;
 }
 
 function PluginSelect({ pluginAnchor, hash, onClose }: Props) {
