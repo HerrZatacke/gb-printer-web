@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.55.1",
+  "version": "1.55.2",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "next dev --webpack",
@@ -109,7 +109,7 @@
     "typescript": "^5",
     "ufo": "^1.6.3",
     "use-debounce": "^10.1.1",
-    "uuid": "^13.0.0",
+    "uuid": "^14.0.0",
     "zustand": "^5.0.12"
   },
   "overrides": {
