@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import screenfull from 'screenfull';
-import { v4 } from 'uuid';
 import { create } from 'zustand';
 import { type PrinterFunction } from '@/consts/printerFunction';
+import { randomId } from '@/tools/randomId';
 import { type PrinterInfo } from '@/types/Printer';
 
 export interface TrashCount {
@@ -78,7 +78,7 @@ export const createInteractionsStore = () => (
     dismissError: (index: number) => set({ errors: get().errors.filter((_, i) => i !== index) }),
     setDownloadHashes: (downloadHashes: string[]) => set({ downloadHashes }),
     setDragover: (dragover: boolean) => set({ dragover }),
-    setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix(), id: v4() }] }),
+    setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix(), id: randomId() }] }),
     setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
     setPrinterBusy: (printerBusy: boolean) => set({ printerBusy }),
     setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),

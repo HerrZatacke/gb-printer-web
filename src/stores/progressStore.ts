@@ -1,5 +1,5 @@
-import { v4 } from 'uuid';
 import { create } from 'zustand';
+import { randomId } from '@/tools/randomId';
 
 export enum LogType {
   ERROR = 'error',
@@ -48,7 +48,7 @@ export const createProgressStore = () => (
 
     startProgress: (label: string): string => {
       const newProgress: Progress = {
-        id: v4(),
+        id: randomId(),
         label,
         value: 0,
       };
