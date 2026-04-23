@@ -9,7 +9,7 @@ export const toggleButtonGroup = (theme: Theme): Components['MuiToggleButtonGrou
         ...(['primary', 'secondary', 'tertiary'] as ('primary' | 'secondary')[]).map((color) => ({
           props: { color },
           style: {
-            '&.Mui-selected': {
+            '&.Mui-selected:not(:disabled)': {
               background: theme.palette[color].main,
               color: theme.palette[color].contrastText,
               '&:hover': {
