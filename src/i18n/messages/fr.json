@@ -81,6 +81,7 @@
       "fullTitle": "Titre complet",
       "titleOnly": "Titre seulement"
     },
+    "fileTypeInfo": "Votre sélection d'images contient {monochromeCount, plural, =0 {aucune} other {#}} monochrome et {rgbnCount, plural, =0 {aucune} other {#}} rgbn images.",
     "frameModes": {
       "cropFrame": "Recadrer le cadre",
       "keepFrame": "Conserver le cadre",
@@ -498,7 +499,7 @@
       "fr-FR": "Français – France (fr-FR)"
     },
     "preferredLocale": "Langue préférée",
-    "resetTrackingConsent": "Réinitialiser le consentement pour l'analyse/le suivi (actuellement {consentState, select, accepted {active} other {inactive}})",
+    "resetTrackingConsent": "Réinitialiser le consentement pour l'analyse/le suivi (actuellement {consentState, select, accepted {actif} other {inactif}})",
     "sortPalettes": "Trier les palettes"
   },
   "SettingsGit": {

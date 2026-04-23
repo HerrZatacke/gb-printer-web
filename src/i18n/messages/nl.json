@@ -81,6 +81,7 @@
       "fullTitle": "Volledige titel",
       "titleOnly": "Alleen titel"
     },
+    "fileTypeInfo": "Uw selectie afbeeldingen bevat {monochromeCount, plural, =0 {geen} other {#}} monochrome en {rgbnCount, plural, =0 {geen} other {#}} rgbn-afbeeldingen.",
     "frameModes": {
       "cropFrame": "Kader bijsnijden",
       "keepFrame": "Kader behouden",

@@ -81,6 +81,7 @@
       "fullTitle": "Fullständig titel",
       "titleOnly": "Endast titel"
     },
+    "fileTypeInfo": "Ditt bildval innehåller {monochromeCount, plural, =0 {no} other {#}} monokroma och {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder.",
     "frameModes": {
       "cropFrame": "Beskär ram",
       "keepFrame": "Behåll ram",

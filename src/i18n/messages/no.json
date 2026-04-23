@@ -81,6 +81,7 @@
       "fullTitle": "Full tittel",
       "titleOnly": "Kun tittel"
     },
+    "fileTypeInfo": "Bildeutvalget ditt inneholder {monochromeCount, plural, =0 {no} other {#}} monokrome og {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder.",
     "frameModes": {
       "cropFrame": "Beskjær ramme",
       "keepFrame": "Behold ramme",

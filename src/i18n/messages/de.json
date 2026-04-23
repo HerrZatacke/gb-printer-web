@@ -81,6 +81,7 @@
       "fullTitle": "Vollständiger Titel",
       "titleOnly": "Nur Titel"
     },
+    "fileTypeInfo": "Ihre Bildauswahl enthält {monochromeCount, plural, =0 {keine} other {#}} monochrome und {rgbnCount, plural, =0 {keine} other {#}} rgbn Bilder.",
     "frameModes": {
       "cropFrame": "Rahmen zuschneiden",
       "keepFrame": "Rahmen beibehalten",
