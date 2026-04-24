@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
 import { isRGBNImage } from '@/tools/isRGBNImage';
-import { bitmapFileTypes, supportedCanvasImageFormats, type TestFileType } from '@/tools/supportedCanvasImageFormats';
+import { bitmapFileTypes, supportedCanvasImageFormats, TestFileType } from '@/tools/supportedCanvasImageFormats';
 
 interface UseDownloadInfo {
   exportFileTypes: string[];
@@ -36,6 +36,11 @@ export const useDownloadInfo = (): UseDownloadInfo => {
 
   const fileTypeCounts: Record<string, number> = useMemo(() => {
     return supportedExportFileTypes.reduce((acc, fileType) => {
+      if (fileType === TestFileType.JSON) {
+        acc[fileType] = 1;
+        return acc;
+      }
+
       const supportsRGBN = bitmapFileTypes.includes(fileType);
 
       let count = 0;

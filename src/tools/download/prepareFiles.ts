@@ -10,6 +10,7 @@ import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type DownloadInfo } from '@/types/Sync';
 import { getTxtFile } from './getTxtFile';
+import { TestFileType } from '@/tools/supportedCanvasImageFormats';
 
 export interface PrepareFilesOptions {
   exportScaleFactors: number[];
@@ -85,11 +86,16 @@ export const prepareFiles = async (
     }
 
     if (!validExportFileTypes.length) {
-      validExportFileTypes.push('png');
+      return [];
     }
 
-    const images = validExportScaleFactors.map((exportScaleFactor): Promise<null | DownloadInfo>[] => (
-      validExportFileTypes.map((fileType) => (
+    const images = validExportFileTypes.map((fileType): Promise<null | DownloadInfo>[] => {
+      let scaleFactors = validExportScaleFactors;
+      if (([TestFileType.PGM, TestFileType.TXT] as string[]).includes(fileType)) {
+        scaleFactors = [1];
+      }
+
+      return scaleFactors.map((exportScaleFactor) => (
         new Promise((resolve) => {
 
           const filename = generateFileName({
@@ -99,7 +105,7 @@ export const prepareFiles = async (
             fileNameStyle,
           });
 
-          // export the raw tildata of an image
+          // export the raw tiledata of an image
           switch (fileType) {
             case 'txt': {
               // not for rgbn images
@@ -204,8 +210,8 @@ export const prepareFiles = async (
             }
           }
         })
-      ))
-    ));
+      ));
+    });
 
     const imgs: (DownloadInfo | null)[] = await Promise.all(images.flat());
     return imgs.reduce((acc: DownloadInfo[], fileInfo: DownloadInfo | null) => {
