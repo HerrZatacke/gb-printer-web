@@ -46,6 +46,7 @@ export type ImportFn = (repoContents: JSONExport) => Promise<void>;
 
 export interface ImportExportSettings {
   downloadSettings: (what: ExportTypes, selectedFrameGroup?: string) => Promise<void>;
+  getSettingsFile: (what: ExportTypes, selectedFrameGroup?: string) => Promise<File>;
   jsonImport: ImportFn;
   remoteImport: (repoContents: JSONExportState) => Promise<void>;
 }
@@ -53,15 +54,21 @@ export interface ImportExportSettings {
 export const useImportExportSettings = (): ImportExportSettings => {
   const { globalUpdate } = useStores();
 
-  const downloadSettings = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<void> => {
+  const getSettingsFile = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<File> => {
     const currentSettings = await getSettings(what, { selectedFrameGroup });
     const filename = what === 'frames' ? 'frames' : [what, selectedFrameGroup].filter(Boolean).join('_');
 
-    download(null)([{
-      blob: new Blob(new Array(currentSettings)),
-      filename: `${filename}.json`,
-    }]);
+    return new File(new Array(currentSettings), `${filename}.json`, { type: 'application/json' });
   }, []);
+
+  const downloadSettings = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<void> => {
+    const settingsFile = await getSettingsFile(what, selectedFrameGroup);
+
+    download(null)([{
+      blob: settingsFile,
+      filename: settingsFile.name,
+    }]);
+  }, [getSettingsFile]);
 
   const jsonImport = useCallback(async (repoContents: JSONExport): Promise<void> => {
     const update = await mergeSettings(repoContents, true);
@@ -74,6 +81,7 @@ export const useImportExportSettings = (): ImportExportSettings => {
   }, [globalUpdate]);
 
   return {
+    getSettingsFile,
     downloadSettings,
     jsonImport,
     remoteImport,

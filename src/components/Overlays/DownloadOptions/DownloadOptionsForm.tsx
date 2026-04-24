@@ -17,6 +17,8 @@ import exportFrameModes from '@/consts/exportFrameModes';
 import { FileNameStyle, fileNameStyleLabels } from '@/consts/fileNameStyles';
 import { useDownloadInfo } from '@/hooks/useDownloadInfo';
 import { useSettingsStore } from '@/stores/stores';
+import { useCallback } from 'react';
+import { bitmapFileTypes, TestFileType } from '@/tools/supportedCanvasImageFormats';
 
 interface Props {
   inDialog: boolean;
@@ -44,6 +46,32 @@ function DownloadOptionsForm({ inDialog }: Props) {
     rgbnCount,
     monochromeCount,
   } = useDownloadInfo();
+
+
+  const getBadgeContent = useCallback((fileType: string): number | null => {
+    if (!exportFileTypes.includes(fileType)) {
+      return null;
+    }
+
+    const isBitmap = bitmapFileTypes.includes(fileType as TestFileType);
+
+    const count = fileTypeCounts[fileType];
+
+    if (typeof count === 'undefined') {
+      return null;
+    }
+
+    if (fileType === TestFileType.JSON && count) {
+      return 1;
+    }
+
+    if (isBitmap) {
+      return count * exportScaleFactors.length;
+    }
+
+    return count;
+  }, [exportFileTypes, exportScaleFactors.length, fileTypeCounts]);
+
 
   return (
     <>
@@ -81,26 +109,29 @@ function DownloadOptionsForm({ inDialog }: Props) {
             setExportFileTypes(value);
           }}
         >
-          {supportedExportFileTypes.map((fileType) => (
-            <ToggleButton
-              key={fileType}
-              value={fileType}
-              title={fileType}
-            >
-              <Badge
+          {supportedExportFileTypes.map((fileType) => {
+            const badgeContent = inDialog && getBadgeContent(fileType);
+            return (
+              <ToggleButton
                 key={fileType}
-                badgeContent={inDialog && exportFileTypes.includes(fileType) ? fileTypeCounts[fileType] : null}
-                showZero
-                color={fileTypeCounts[fileType] ? 'info' : 'error'}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                sx={{ width: '100%' }}
+                value={fileType}
+                title={fileType}
               >
-                <Box sx={{ width: '100%' }}>
-                  {fileType}
-                </Box>
-              </Badge>
-            </ToggleButton>
-          ))}
+                <Badge
+                  key={fileType}
+                  badgeContent={badgeContent}
+                  showZero
+                  color={fileTypeCounts[fileType] ? 'info' : 'error'}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  sx={{ width: '100%' }}
+                >
+                  <Box sx={{ width: '100%' }}>
+                    {fileType}
+                  </Box>
+                </Badge>
+              </ToggleButton>
+            );
+          })}
         </ToggleButtonGroup>
         {inDialog && (
           <FormHelperText>

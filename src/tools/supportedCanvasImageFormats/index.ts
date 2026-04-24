@@ -44,7 +44,8 @@ const supportsFileType = (fileType: TestFileType) => {
     }
 
     case TestFileType.TXT:
-    case TestFileType.PGM: {
+    case TestFileType.PGM:
+    case TestFileType.JSON: {
       isSupported = true;
       break;
     }
