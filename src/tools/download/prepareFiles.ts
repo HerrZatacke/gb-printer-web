@@ -6,11 +6,11 @@ import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
+import { TestFileType } from '@/tools/supportedCanvasImageFormats';
 import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type DownloadInfo } from '@/types/Sync';
 import { getTxtFile } from './getTxtFile';
-import { TestFileType } from '@/tools/supportedCanvasImageFormats';
 
 export interface PrepareFilesOptions {
   exportScaleFactors: number[];

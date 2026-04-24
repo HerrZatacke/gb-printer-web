@@ -13,11 +13,11 @@ import {
 } from '@mui/material';
 import { type ExportFrameMode } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
+import { useCallback } from 'react';
 import exportFrameModes from '@/consts/exportFrameModes';
 import { FileNameStyle, fileNameStyleLabels } from '@/consts/fileNameStyles';
 import { useDownloadInfo } from '@/hooks/useDownloadInfo';
 import { useSettingsStore } from '@/stores/stores';
-import { useCallback } from 'react';
 import { bitmapFileTypes, TestFileType } from '@/tools/supportedCanvasImageFormats';
 
 interface Props {
