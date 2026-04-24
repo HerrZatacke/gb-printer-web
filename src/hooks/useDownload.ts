@@ -1,17 +1,17 @@
 import { useCallback, useMemo } from 'react';
+import { ExportTypes } from '@/consts/exportTypes';
 import { useTracking } from '@/contexts/TrackingContext';
-import {
-  useInteractionsStore,
-  useItemsStore,
-  useSettingsStore,
-} from '@/stores/stores';
+import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { prepareFiles, download, PrepareFilesOptions } from '@/tools/download';
+import { download, prepareFiles, PrepareFilesOptions } from '@/tools/download';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
-import { DownloadInfo } from '@/types/Sync';
+import { TestFileType } from '@/tools/supportedCanvasImageFormats';
+import { type DownloadBlob } from '@/types/download';
+import { type DownloadInfo } from '@/types/Sync';
 
 interface UseDownload {
   downloadImages: (hashes: string[]) => Promise<void>;
@@ -23,6 +23,7 @@ const useDownload = (): UseDownload => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle, alwaysShowDownloadDialog } = useSettingsStore();
   const { frames, palettes, images } = useItemsStore();
   const { setDownloadHashes } = useInteractionsStore();
+  const { getSettingsFile } = useImportExportSettings();
   const { sendEvent } = useTracking();
 
   const prepareFilesOptions = useMemo<PrepareFilesOptions>(() => ( {
@@ -70,16 +71,38 @@ const useDownload = (): UseDownload => {
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
+    const options: PrepareFilesOptions = structuredClone(prepareFilesOptionsOverride || prepareFilesOptions);
 
-    return prepareFiles(image, tiles, imageStartLine, prepareFilesOptionsOverride || prepareFilesOptions);
+    options.exportFileTypes = options.exportFileTypes.filter((fileType) => fileType !== TestFileType.JSON);
+
+    if (!options.exportFileTypes.length) {
+      return [];
+    }
+
+    return prepareFiles(image, tiles, imageStartLine, options);
   }, [frames, images, prepareFilesOptions]);
 
   const downloadImages = useCallback(async (hashes: string[]): Promise<void> => {
     const zipFilename = getZipFileName(hashes);
-    const resultImages = await Promise.all(hashes.map((hash) => prepareDownloadInfo(hash)));
-    download(zipFilename)(resultImages.flat());
-    sendEvent('downloadImages', { imageCount: nextPowerOfTwo(resultImages.flat().length) });
-  }, [getZipFileName, prepareDownloadInfo, sendEvent]);
+    const downloadInfos = (await Promise.all(hashes.map((hash) => prepareDownloadInfo(hash)))).flat();
+    const resultFiles = downloadInfos.map(({ blob, filename }): DownloadBlob => ({ blob, filename }));
+
+    if (prepareFilesOptions.exportFileTypes.includes(TestFileType.JSON)) {
+      const settingsFile = await getSettingsFile(ExportTypes.SELECTED_IMAGES);
+
+      resultFiles.push({
+        blob: settingsFile,
+        filename: settingsFile.name,
+      });
+    }
+
+    if (!resultFiles.length) {
+      return;
+    }
+
+    download(zipFilename)(resultFiles);
+    sendEvent('downloadImages', { imageCount: nextPowerOfTwo(resultFiles.length) });
+  }, [getSettingsFile, getZipFileName, prepareDownloadInfo, prepareFilesOptions.exportFileTypes, sendEvent]);
 
   const setDownloadImages = useCallback(async (hashes: string[]) => {
     if (alwaysShowDownloadDialog) {
