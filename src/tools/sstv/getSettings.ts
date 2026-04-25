@@ -34,18 +34,19 @@ const sstvCommon: SSTVSettings = {
 */
 const martinCommon: SSTVSettings = {
   ...sstvCommon,
-  visCode: 32,
   syncMs: 4.862,
   porchMs: 0.572,
 };
 
 const martin1: SSTVSettings = {
   ...martinCommon,
+  visCode: 44,
   pixelMs: 0.4576,
 };
 
 const martin2: SSTVSettings = {
   ...martinCommon,
+  visCode: 40,
   pixelMs: 0.2288,
 };
 
@@ -57,22 +58,23 @@ const robotCommon: SSTVSettings = {
   ...sstvCommon,
   syncMs: 9.0,
   porchMs: 3.0,
-  visCode: 0,
 };
 
 const robot36: SSTVSettings = {
   ...robotCommon,
+  visCode: 8,
   pixelMs: 0.2752, // somehow wrong
 };
 
 const robot72: SSTVSettings = {
   ...robotCommon,
+  visCode: 12,
   pixelMs: 0.2752, // somehow wrong
 };
 
 
 export const getSettings = (mode: ModeType): SSTVSettings => {
-  const { width, height, visPartial } = getDimensions(mode);
+  const { width, height } = getDimensions(mode);
 
   let settings: SSTVSettings;
 
@@ -93,19 +95,9 @@ export const getSettings = (mode: ModeType): SSTVSettings => {
       throw new Error(`Unknown mode "${mode}"`);
   }
 
-  console.log({
-    mode,
-    'settings.visCode': settings.visCode,
-    visPartial,
-    // eslint-disable-next-line no-bitwise
-    combined: settings.visCode | visPartial,
-  });
-
   return {
     ...settings,
     width,
     height,
-    // eslint-disable-next-line no-bitwise
-    visCode: settings.visCode | visPartial,
   };
 };

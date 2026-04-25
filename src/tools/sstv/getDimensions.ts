@@ -30,12 +30,8 @@ export const getDimensions = (modeType: ModeType): SSTVDimensions => {
   const width = sstvWidths[modeType];
   const height = sstvHeights[modeType];
 
-  const bit2 = width > 200 ? 4 : 0;
-  const bit3 = height > 200 ? 8 : 0;
-
   return {
     width,
     height,
-    visPartial: bit2 + bit3,
   };
 };
