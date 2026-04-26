@@ -1,15 +1,14 @@
 import FormControlLabel from '@mui/material/FormControlLabel';
-import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import { type ExportFrameMode } from 'gb-image-decoder';
+import { ExportFrameMode } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import ExportFrameModeSelect from '@/components/ExportFrameModeSelect';
 import FrameSelect from '@/components/FrameSelect';
 import Lightbox from '@/components/Lightbox';
 import PaletteSelect from '@/components/PaletteSelect';
-import exportFrameModes from '@/consts/exportFrameModes';
 import { useVideoForm } from '@/hooks/useVideoForm';
 
 function VideoParamsForm() {
@@ -95,21 +94,11 @@ function VideoParamsForm() {
             update({ invertPalette });
           }}
         />
-        <TextField
+        <ExportFrameModeSelect
           label={t('handleFrames')}
-          size="small"
-          select
-          value={videoParams.exportFrameMode}
-          onChange={(ev) => {
-            update({ exportFrameMode: ev.target.value as ExportFrameMode });
-          }}
-        >
-          {
-            exportFrameModes.map(({ id, name }) => (
-              <MenuItem value={id} key={id}>{t(name)}</MenuItem>
-            ))
-          }
-        </TextField>
+          frameMode={videoParams.exportFrameMode || ExportFrameMode.FRAMEMODE_KEEP}
+          onFrameModeChange={(exportFrameMode) => update({ exportFrameMode })}
+        />
         { videoParams.exportFrameMode === 'crop' ? null : (
           <FrameSelect
             frame={videoParams.frame || ''}

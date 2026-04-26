@@ -81,13 +81,7 @@
       "fullTitle": "Full tittel",
       "titleOnly": "Kun tittel"
     },
-    "fileTypeInfo": "Bildeutvalget ditt inneholder {monochromeCount, plural, =0 {no} other {#}} monokrome og {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder.",
-    "frameModes": {
-      "cropFrame": "Beskjær ramme",
-      "keepFrame": "Behold ramme",
-      "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
-      "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
-    }
+    "fileTypeInfo": "Bildeutvalget ditt inneholder {monochromeCount, plural, =0 {no} other {#}} monokrome og {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder."
   },
   "DragOver": {
     "dropFilesHere": "Slipp filer her",
@@ -164,6 +158,12 @@
     "appBranch": "Web-app-gren: {value}",
     "appVersion": "Web-app-versjon: {value}",
     "storageEstimate": "Bruk av {type}: {percentage}% ({used} av {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Beskjær ramme",
+    "keepFrame": "Behold ramme",
+    "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
+    "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
   },
   "ExportSettings": {
     "exportAll": "Eksporter alt",
@@ -678,12 +678,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Opprett animert GIF med {count} frames",
     "enableYoyo": "Aktiver yo-yo-effekt (gjenta animasjon baklengs)",
-    "frameModes": {
-      "cropFrame": "Beskjær ramme",
-      "keepFrame": "Behold ramme",
-      "squareBlack": "Gjør bildet kvadratisk (legg til svart)",
-      "squareWhite": "Gjør bildet kvadratisk (legg til hvitt)"
-    },
     "frameRate": "Framerate",
     "handleFrames": "Håndtering av rammer for animasjon",
     "noFrameOption": "Som valgt per bilde",

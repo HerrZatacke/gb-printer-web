@@ -81,13 +81,7 @@
       "fullTitle": "Full Title",
       "titleOnly": "Title only"
     },
-    "fileTypeInfo": "Your image selection contains {monochromeCount, plural, =0 {no} other {#}} monochrome and {rgbnCount, plural, =0 {no} other {#}} rgbn images.",
-    "frameModes": {
-      "cropFrame": "Crop frame",
-      "keepFrame": "Keep frame",
-      "squareBlack": "Make image squared (add black)",
-      "squareWhite": "Make image squared (add white)"
-    }
+    "fileTypeInfo": "Your image selection contains {monochromeCount, plural, =0 {no} other {#}} monochrome and {rgbnCount, plural, =0 {no} other {#}} rgbn images."
   },
   "DragOver": {
     "dropFilesHere": "Drop your files here",
@@ -164,6 +158,12 @@
     "appBranch": "Web-App branch: {value}",
     "appVersion": "Web-App version: {value}",
     "storageEstimate": "{type} usage: {percentage}% ({used} of {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Crop frame",
+    "keepFrame": "Keep frame",
+    "squareBlack": "Make image squared (add black)",
+    "squareWhite": "Make image squared (add white)"
   },
   "ExportSettings": {
     "exportAll": "Export Everything",
@@ -678,12 +678,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Create an animated GIF with {count} frames",
     "enableYoyo": "Enable Yoyo-Effect (loop back to the beginning)",
-    "frameModes": {
-      "cropFrame": "Crop frame",
-      "keepFrame": "Keep frame",
-      "squareBlack": "Make image squared (add black)",
-      "squareWhite": "Make image squared (add white)"
-    },
     "frameRate": "Framerate",
     "handleFrames": "How to handle frames for animation",
     "noFrameOption": "As selected per image",

@@ -81,13 +81,7 @@
       "fullTitle": "Titolo completo",
       "titleOnly": "Solo titolo"
     },
-    "fileTypeInfo": "La tua selezione di immagini contiene {monochromeCount, plural, =0 {nessun} other {#}} immagini monocromatiche e {rgbnCount, plural, =0 {nessun} other {#}} immagini rgbn.",
-    "frameModes": {
-      "cropFrame": "Ritaglia cornice",
-      "keepFrame": "Mantieni cornice",
-      "squareBlack": "Rendi l'immagine quadrata (aggiungi nero)",
-      "squareWhite": "Rendi l'immagine quadrata (aggiungi bianco)"
-    }
+    "fileTypeInfo": "La tua selezione di immagini contiene {monochromeCount, plural, =0 {nessun} other {#}} immagini monocromatiche e {rgbnCount, plural, =0 {nessun} other {#}} immagini rgbn."
   },
   "DragOver": {
     "dropFilesHere": "Rilascia file qui",
@@ -164,6 +158,12 @@
     "appBranch": "Branch app web: {value}",
     "appVersion": "Versione app web: {value}",
     "storageEstimate": "Utilizzo di {type}: {percentage}% ({used} di {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Ritaglia cornice",
+    "keepFrame": "Mantieni cornice",
+    "squareBlack": "Rendi l'immagine quadrata (aggiungi nero)",
+    "squareWhite": "Rendi l'immagine quadrata (aggiungi bianco)"
   },
   "ExportSettings": {
     "exportAll": "Esporta tutto",
@@ -678,12 +678,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Crea GIF animata con {count} frame",
     "enableYoyo": "Abilita effetto yo-yo (ripeti animazione all'indietro)",
-    "frameModes": {
-      "cropFrame": "Ritaglia cornice",
-      "keepFrame": "Mantieni cornice",
-      "squareBlack": "Rendi immagine quadrata (aggiungi nero)",
-      "squareWhite": "Rendi immagine quadrata (aggiungi bianco)"
-    },
     "frameRate": "Frequenza fotogrammi",
     "handleFrames": "Gestione cornici per animazione",
     "noFrameOption": "Come selezionato per immagine",

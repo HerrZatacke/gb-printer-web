@@ -81,13 +81,7 @@
       "fullTitle": "Fullständig titel",
       "titleOnly": "Endast titel"
     },
-    "fileTypeInfo": "Ditt bildval innehåller {monochromeCount, plural, =0 {no} other {#}} monokroma och {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder.",
-    "frameModes": {
-      "cropFrame": "Beskär ram",
-      "keepFrame": "Behåll ram",
-      "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
-      "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
-    }
+    "fileTypeInfo": "Ditt bildval innehåller {monochromeCount, plural, =0 {no} other {#}} monokroma och {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder."
   },
   "DragOver": {
     "dropFilesHere": "Släpp filer här",
@@ -164,6 +158,12 @@
     "appBranch": "Webbapp-branch: {value}",
     "appVersion": "Webbapp-version: {value}",
     "storageEstimate": "Användning av {type}: {percentage}% ({used} av {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Beskär ram",
+    "keepFrame": "Behåll ram",
+    "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
+    "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
   },
   "ExportSettings": {
     "exportAll": "Exportera allt",
@@ -678,12 +678,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Skapa animerad GIF med {count} ramar",
     "enableYoyo": "Aktivera yoyo (upprepa animation bakåt)",
-    "frameModes": {
-      "cropFrame": "Beskär ram",
-      "keepFrame": "Behåll ram",
-      "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
-      "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
-    },
     "frameRate": "Bildfrekvens",
     "handleFrames": "Hantera ramar",
     "noFrameOption": "Ingen ram",

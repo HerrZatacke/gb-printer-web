@@ -11,10 +11,9 @@ import {
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
-import { type ExportFrameMode } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
-import exportFrameModes from '@/consts/exportFrameModes';
+import ExportFrameModeSelect from '@/components/ExportFrameModeSelect';
 import { FileNameStyle, fileNameStyleLabels } from '@/consts/fileNameStyles';
 import { useDownloadInfo } from '@/hooks/useDownloadInfo';
 import { useSettingsStore } from '@/stores/stores';
@@ -140,25 +139,11 @@ function DownloadOptionsForm({ inDialog }: Props) {
         )}
       </FormControl>
 
-      <TextField
-        value={handleExportFrame}
+      <ExportFrameModeSelect
         label={t('exportHandleFrame')}
-        select
-        onChange={(ev) => {
-          setHandleExportFrame(ev.target.value as ExportFrameMode);
-        }}
-      >
-        {
-          exportFrameModes.map(({ id, name }) => (
-            <MenuItem
-              key={id}
-              value={id}
-            >
-              {t(name)}
-            </MenuItem>
-          ))
-        }
-      </TextField>
+        frameMode={handleExportFrame}
+        onFrameModeChange={setHandleExportFrame}
+      />
 
       <TextField
         value={fileNameStyle}

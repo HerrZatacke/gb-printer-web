@@ -81,13 +81,7 @@
       "fullTitle": "Vollständiger Titel",
       "titleOnly": "Nur Titel"
     },
-    "fileTypeInfo": "Ihre Bildauswahl enthält {monochromeCount, plural, =0 {keine} other {#}} monochrome und {rgbnCount, plural, =0 {keine} other {#}} rgbn Bilder.",
-    "frameModes": {
-      "cropFrame": "Rahmen zuschneiden",
-      "keepFrame": "Rahmen beibehalten",
-      "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
-      "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
-    }
+    "fileTypeInfo": "Ihre Bildauswahl enthält {monochromeCount, plural, =0 {keine} other {#}} monochrome und {rgbnCount, plural, =0 {keine} other {#}} rgbn Bilder."
   },
   "DragOver": {
     "dropFilesHere": "Dateien hier ablegen",
@@ -164,6 +158,12 @@
     "appBranch": "Web-App-Branch: {value}",
     "appVersion": "Web-App-Version: {value}",
     "storageEstimate": "Auslastung {type}: {percentage}% ({used} von {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Rahmen zuschneiden",
+    "keepFrame": "Rahmen beibehalten",
+    "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
+    "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
   },
   "ExportSettings": {
     "exportAll": "Alles exportieren",
@@ -678,12 +678,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Animiertes GIF mit {count} Frames erstellen",
     "enableYoyo": "Jo-Jo-Effekt aktivieren (Animation rückwärts wiederholen)",
-    "frameModes": {
-      "cropFrame": "Rahmen zuschneiden",
-      "keepFrame": "Rahmen beibehalten",
-      "squareBlack": "Bild quadratisch machen (schwarz hinzufügen)",
-      "squareWhite": "Bild quadratisch machen (weiß hinzufügen)"
-    },
     "frameRate": "Framerate",
     "handleFrames": "Umgang mit Rahmen für Animation",
     "noFrameOption": "Wie pro Bild ausgewählt",

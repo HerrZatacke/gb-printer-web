@@ -81,13 +81,7 @@
       "fullTitle": "Título completo",
       "titleOnly": "Apenas título"
     },
-    "fileTypeInfo": "Sua seleção de imagens contém {monochromeCount, plural, =0 {no} other {#}} imagens monocromáticas e {rgbnCount, plural, =0 {no} other {#}} imagens RGBN.",
-    "frameModes": {
-      "cropFrame": "Recortar moldura",
-      "keepFrame": "Manter moldura",
-      "squareBlack": "Tornar imagem quadrada (adicionar preto)",
-      "squareWhite": "Tornar imagem quadrada (adicionar branco)"
-    }
+    "fileTypeInfo": "Sua seleção de imagens contém {monochromeCount, plural, =0 {no} other {#}} imagens monocromáticas e {rgbnCount, plural, =0 {no} other {#}} imagens RGBN."
   },
   "DragOver": {
     "dropFilesHere": "Larga ficheiros aqui",
@@ -164,6 +158,12 @@
     "appBranch": "Ramo da web-app: {value}",
     "appVersion": "Versão da web-app: {value}",
     "storageEstimate": "Utilização de {type}: {percentage}% ({used} de {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Recortar moldura",
+    "keepFrame": "Manter moldura",
+    "squareBlack": "Tornar imagem quadrada (adicionar preto)",
+    "squareWhite": "Tornar imagem quadrada (adicionar branco)"
   },
   "ExportSettings": {
     "exportAll": "Exportar tudo",
@@ -678,12 +678,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Criar GIF animado com {count} frames",
     "enableYoyo": "Ativar efeito ioiô (animar ao contrário)",
-    "frameModes": {
-      "cropFrame": "Recortar moldura",
-      "keepFrame": "Manter moldura",
-      "squareBlack": "Tornar imagem quadrada (adicionar preto)",
-      "squareWhite": "Tornar imagem quadrada (adicionar branco)"
-    },
     "frameRate": "Taxa de frames",
     "handleFrames": "Tratamento da moldura para animação",
     "noFrameOption": "Como selecionado por imagem",
