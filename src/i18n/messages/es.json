@@ -81,13 +81,7 @@
       "fullTitle": "Título completo",
       "titleOnly": "Solo título"
     },
-    "fileTypeInfo": "Su selección de imágenes contiene {monochromeCount, plural, =0 {no} other {#}} imágenes monocromáticas y {rgbnCount, plural, =0 {no} other {#}} imágenes rgbn.",
-    "frameModes": {
-      "cropFrame": "Recortar marco",
-      "keepFrame": "Mantener marco",
-      "squareBlack": "Hacer imagen cuadrada (agregar negro)",
-      "squareWhite": "Hacer imagen cuadrada (agregar blanco)"
-    }
+    "fileTypeInfo": "Su selección de imágenes contiene {monochromeCount, plural, =0 {no} other {#}} imágenes monocromáticas y {rgbnCount, plural, =0 {no} other {#}} imágenes rgbn."
   },
   "DragOver": {
     "dropFilesHere": "Soltar archivos aquí",
@@ -164,6 +158,12 @@
     "appBranch": "Rama de aplicación web: {value}",
     "appVersion": "Versión de aplicación web: {value}",
     "storageEstimate": "Uso de {type}: {percentage}% ({used} de {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Recortar marco",
+    "keepFrame": "Mantener marco",
+    "squareBlack": "Hacer imagen cuadrada (agregar negro)",
+    "squareWhite": "Hacer imagen cuadrada (agregar blanco)"
   },
   "ExportSettings": {
     "exportAll": "Exportar todo",
@@ -553,19 +553,9 @@
     "titleOption": "Título"
   },
   "SSTVForm": {
+    "addSilence": "Silencio antes/después del audio",
     "dialogHeader": "Crear archivo de audio SSTV",
-    "modeType": {
-      "martin1": "Martin 1",
-      "martin2": "Martin 2",
-      "robot8": "Robot 8",
-      "robot12": "Robot 12",
-      "robot24": "Robot 24",
-      "robot36": "Robot 36",
-      "robot72": "Robot 72",
-      "scottie1": "Scottie 1",
-      "scottie2": "Scottie 2",
-      "scottieDX": "Scottie DX"
-    },
+    "handleFrame": "Manejo de marcos",
     "modeTypeLabel": "Seleccionar modo SSTV"
   },
   "StorageWarning": {
@@ -677,12 +667,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Crear GIF animado con {count} cuadros",
     "enableYoyo": "Activar efecto yoyo (repetir animación hacia atrás)",
-    "frameModes": {
-      "cropFrame": "Recortar marco",
-      "keepFrame": "Mantener marco",
-      "squareBlack": "Hacer imagen cuadrada (agregar negro)",
-      "squareWhite": "Hacer imagen cuadrada (agregar blanco)"
-    },
     "frameRate": "Tasa de cuadros",
     "handleFrames": "Manejo de marcos para animación",
     "noFrameOption": "Como se seleccionó por imagen",

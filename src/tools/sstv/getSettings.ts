@@ -9,24 +9,30 @@ export const voxTones: VoxTones = {
 };
 
 const sstvCommon: SSTVSettings = {
-  startStopBitFreq: 1200,
-  highBitFreq: 1100,
-  lowBitFreq: 1300,
+  // Leader + Break + Leader
+  leaderMs: 300,
+  leaderFreq: 1900,
+  breakMs: 10,
+  breakFreq: 1200,
+
+  freqBlack: 1500,
+  freqWhite: 2300,
+
   visCode: -1,
   width: -1,
   height: -1,
-  pixelMs: -1,
-  syncMs: -1,
-  porchMs: -1,
-  freqBlack: 1500,
-  freqWhite: 2300,
-  syncFreq: 1200,
-  porchFreq: 1500,
-  leaderFreq: 1900,
-  leaderMs: 300,
-  breakFreq: 1200,
-  breakMs: 10,
+  channelDurationMs: -1,
+
   visBitMs: 30,
+  startStopBitFreq: 1200,
+  highBitFreq: 1100,
+  lowBitFreq: 1300,
+
+  syncMs: -1,
+  syncFreq: 1200,
+
+  porchMs: -1,
+  porchFreq: 1500,
 };
 
 /*
@@ -34,45 +40,45 @@ const sstvCommon: SSTVSettings = {
 */
 const martinCommon: SSTVSettings = {
   ...sstvCommon,
-  visCode: 32,
   syncMs: 4.862,
   porchMs: 0.572,
 };
 
 const martin1: SSTVSettings = {
   ...martinCommon,
-  pixelMs: 0.4576,
+  visCode: 44,
+  channelDurationMs: 146.432,
 };
 
 const martin2: SSTVSettings = {
   ...martinCommon,
-  pixelMs: 0.2288,
+  visCode: 40,
+  channelDurationMs: 73.216,
 };
 
 
 /*
   ROBOT
 */
-const robotCommon: SSTVSettings = {
-  ...sstvCommon,
-  syncMs: 9.0,
-  porchMs: 3.0,
-  visCode: 0,
-};
-
 const robot36: SSTVSettings = {
-  ...robotCommon,
-  pixelMs: 0.2752, // somehow wrong
+  ...sstvCommon,
+  visCode: 8,
+  syncMs: 9, // 10.5 ??
+  porchMs: 3, // 4.5 ??
+  channelDurationMs: 90,
 };
 
 const robot72: SSTVSettings = {
-  ...robotCommon,
-  pixelMs: 0.2752, // somehow wrong
+  ...sstvCommon,
+  visCode: 12,
+  syncMs: 10.5, // 12 ??
+  porchMs: 4.5, // 6 ??
+  channelDurationMs: 138,
 };
 
 
 export const getSettings = (mode: ModeType): SSTVSettings => {
-  const { width, height, visPartial } = getDimensions(mode);
+  const { width, height } = getDimensions(mode);
 
   let settings: SSTVSettings;
 
@@ -93,19 +99,9 @@ export const getSettings = (mode: ModeType): SSTVSettings => {
       throw new Error(`Unknown mode "${mode}"`);
   }
 
-  console.log({
-    mode,
-    'settings.visCode': settings.visCode,
-    visPartial,
-    // eslint-disable-next-line no-bitwise
-    combined: settings.visCode | visPartial,
-  });
-
   return {
     ...settings,
     width,
     height,
-    // eslint-disable-next-line no-bitwise
-    visCode: settings.visCode | visPartial,
   };
 };

@@ -81,13 +81,7 @@
       "fullTitle": "Titre complet",
       "titleOnly": "Titre seulement"
     },
-    "fileTypeInfo": "Votre sélection d'images contient {monochromeCount, plural, =0 {aucune} other {#}} monochrome et {rgbnCount, plural, =0 {aucune} other {#}} rgbn images.",
-    "frameModes": {
-      "cropFrame": "Recadrer le cadre",
-      "keepFrame": "Conserver le cadre",
-      "squareBlack": "Rendre l'image carrée (ajouter du noir)",
-      "squareWhite": "Rendre l'image carrée (ajouter du blanc)"
-    }
+    "fileTypeInfo": "Votre sélection d'images contient {monochromeCount, plural, =0 {aucune} other {#}} monochrome et {rgbnCount, plural, =0 {aucune} other {#}} rgbn images."
   },
   "DragOver": {
     "dropFilesHere": "Déposer les fichiers ici",
@@ -164,6 +158,12 @@
     "appBranch": "Branche de l'application web : {value}",
     "appVersion": "Version de l'application web : {value}",
     "storageEstimate": "Utilisation de {type} : {percentage}% ({used} sur {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Recadrer le cadre",
+    "keepFrame": "Conserver le cadre",
+    "squareBlack": "Rendre l'image carrée (ajouter du noir)",
+    "squareWhite": "Rendre l'image carrée (ajouter du blanc)"
   },
   "ExportSettings": {
     "exportAll": "Tout exporter",
@@ -553,19 +553,9 @@
     "titleOption": "Titre"
   },
   "SSTVForm": {
+    "addSilence": "Silence avant/après l'audio",
     "dialogHeader": "Créer un fichier audio SSTV",
-    "modeType": {
-      "martin1": "Martin 1",
-      "martin2": "Martin 2",
-      "robot8": "Robot 8",
-      "robot12": "Robot 12",
-      "robot24": "Robot 24",
-      "robot36": "Robot 36",
-      "robot72": "Robot 72",
-      "scottie1": "Scottie 1",
-      "scottie2": "Scottie 2",
-      "scottieDX": "Scottie DX"
-    },
+    "handleFrame": "Gestion des cadre",
     "modeTypeLabel": "Sélectionner le mode SSTV"
   },
   "StorageWarning": {
@@ -677,12 +667,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Créer un GIF animé avec {count} images",
     "enableYoyo": "Activer l'effet yo-yo (répéter l'animation en arrière)",
-    "frameModes": {
-      "cropFrame": "Recadrer le cadre",
-      "keepFrame": "Conserver le cadre",
-      "squareBlack": "Rendre l'image carrée (ajouter du noir)",
-      "squareWhite": "Rendre l'image carrée (ajouter du blanc)"
-    },
     "frameRate": "Fréquence d'images",
     "handleFrames": "Gestion des cadres pour l'animation",
     "noFrameOption": "Comme sélectionné par image",

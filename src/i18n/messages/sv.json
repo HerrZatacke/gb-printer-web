@@ -81,13 +81,7 @@
       "fullTitle": "Fullständig titel",
       "titleOnly": "Endast titel"
     },
-    "fileTypeInfo": "Ditt bildval innehåller {monochromeCount, plural, =0 {no} other {#}} monokroma och {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder.",
-    "frameModes": {
-      "cropFrame": "Beskär ram",
-      "keepFrame": "Behåll ram",
-      "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
-      "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
-    }
+    "fileTypeInfo": "Ditt bildval innehåller {monochromeCount, plural, =0 {no} other {#}} monokroma och {rgbnCount, plural, =0 {no} other {#}} rgbn-bilder."
   },
   "DragOver": {
     "dropFilesHere": "Släpp filer här",
@@ -164,6 +158,12 @@
     "appBranch": "Webbapp-branch: {value}",
     "appVersion": "Webbapp-version: {value}",
     "storageEstimate": "Användning av {type}: {percentage}% ({used} av {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Beskär ram",
+    "keepFrame": "Behåll ram",
+    "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
+    "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
   },
   "ExportSettings": {
     "exportAll": "Exportera allt",
@@ -553,19 +553,9 @@
     "titleOption": "Titel"
   },
   "SSTVForm": {
+    "addSilence": "Tystnad före/efter ljud",
     "dialogHeader": "Skapa SSTV-ljudfil",
-    "modeType": {
-      "martin1": "Martin 1",
-      "martin2": "Martin 2",
-      "robot8": "Robot 8",
-      "robot12": "Robot 12",
-      "robot24": "Robot 24",
-      "robot36": "Robot 36",
-      "robot72": "Robot 72",
-      "scottie1": "Scottie 1",
-      "scottie2": "Scottie 2",
-      "scottieDX": "Scottie DX"
-    },
+    "handleFrame": "Hantera ramar",
     "modeTypeLabel": "Välj SSTV-läge"
   },
   "StorageWarning": {
@@ -677,12 +667,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Skapa animerad GIF med {count} ramar",
     "enableYoyo": "Aktivera yoyo (upprepa animation bakåt)",
-    "frameModes": {
-      "cropFrame": "Beskär ram",
-      "keepFrame": "Behåll ram",
-      "squareBlack": "Gör bilden fyrkantig (lägg till svart)",
-      "squareWhite": "Gör bilden fyrkantig (lägg till vitt)"
-    },
     "frameRate": "Bildfrekvens",
     "handleFrames": "Hantera ramar",
     "noFrameOption": "Ingen ram",

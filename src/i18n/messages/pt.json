@@ -81,13 +81,7 @@
       "fullTitle": "Título completo",
       "titleOnly": "Apenas título"
     },
-    "fileTypeInfo": "Sua seleção de imagens contém {monochromeCount, plural, =0 {no} other {#}} imagens monocromáticas e {rgbnCount, plural, =0 {no} other {#}} imagens RGBN.",
-    "frameModes": {
-      "cropFrame": "Recortar moldura",
-      "keepFrame": "Manter moldura",
-      "squareBlack": "Tornar imagem quadrada (adicionar preto)",
-      "squareWhite": "Tornar imagem quadrada (adicionar branco)"
-    }
+    "fileTypeInfo": "Sua seleção de imagens contém {monochromeCount, plural, =0 {no} other {#}} imagens monocromáticas e {rgbnCount, plural, =0 {no} other {#}} imagens RGBN."
   },
   "DragOver": {
     "dropFilesHere": "Larga ficheiros aqui",
@@ -164,6 +158,12 @@
     "appBranch": "Ramo da web-app: {value}",
     "appVersion": "Versão da web-app: {value}",
     "storageEstimate": "Utilização de {type}: {percentage}% ({used} de {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Recortar moldura",
+    "keepFrame": "Manter moldura",
+    "squareBlack": "Tornar imagem quadrada (adicionar preto)",
+    "squareWhite": "Tornar imagem quadrada (adicionar branco)"
   },
   "ExportSettings": {
     "exportAll": "Exportar tudo",
@@ -553,19 +553,9 @@
     "titleOption": "Título"
   },
   "SSTVForm": {
+    "addSilence": "Silêncio antes/depois do áudio",
     "dialogHeader": "Criar arquivo de áudio SSTV",
-    "modeType": {
-      "martin1": "Martin 1",
-      "martin2": "Martin 2",
-      "robot8": "Robot 8",
-      "robot12": "Robot 12",
-      "robot24": "Robot 24",
-      "robot36": "Robot 36",
-      "robot72": "Robot 72",
-      "scottie1": "Scottie 1",
-      "scottie2": "Scottie 2",
-      "scottieDX": "Scottie DX"
-    },
+    "handleFrame": "Tratamento da moldura",
     "modeTypeLabel": "Selecionar modo SSTV"
   },
   "StorageWarning": {
@@ -677,12 +667,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Criar GIF animado com {count} frames",
     "enableYoyo": "Ativar efeito ioiô (animar ao contrário)",
-    "frameModes": {
-      "cropFrame": "Recortar moldura",
-      "keepFrame": "Manter moldura",
-      "squareBlack": "Tornar imagem quadrada (adicionar preto)",
-      "squareWhite": "Tornar imagem quadrada (adicionar branco)"
-    },
     "frameRate": "Taxa de frames",
     "handleFrames": "Tratamento da moldura para animação",
     "noFrameOption": "Como selecionado por imagem",

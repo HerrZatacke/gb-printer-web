@@ -1,9 +1,9 @@
 export enum ModeType {
   MARTIN_1 = 'M1',
   MARTIN_2 = 'M2',
-  ROBOT_8 = 'R8',
-  ROBOT_12 = 'R12',
-  ROBOT_24 = 'R24',
+  // ROBOT_8 = 'R8',
+  // ROBOT_12 = 'R12',
+  // ROBOT_24 = 'R24',
   ROBOT_36 = 'R36',
   ROBOT_72 = 'R72',
   SCOTTIE_1 = 'S1',
@@ -21,7 +21,6 @@ export interface VoxTones {
 export interface SSTVDimensions {
   width: number;
   height: number;
-  visPartial: number;
 }
 
 export interface SSTVSettings {
@@ -31,7 +30,7 @@ export interface SSTVSettings {
   visCode: number;
   width: number;
   height: number;
-  pixelMs: number;
+  channelDurationMs: number;
   syncMs: number;
   porchMs: number;
   freqBlack: number;
@@ -54,4 +53,10 @@ export enum RGBChannel {
   RED = 'r',
   GREEN = 'g',
   BLUE = 'b',
+}
+
+
+export interface SamplesResult {
+  samples: Sample[];
+  settings: SSTVSettings;
 }

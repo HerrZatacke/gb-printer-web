@@ -81,13 +81,7 @@
       "fullTitle": "Volledige titel",
       "titleOnly": "Alleen titel"
     },
-    "fileTypeInfo": "Uw selectie afbeeldingen bevat {monochromeCount, plural, =0 {geen} other {#}} monochrome en {rgbnCount, plural, =0 {geen} other {#}} rgbn-afbeeldingen.",
-    "frameModes": {
-      "cropFrame": "Kader bijsnijden",
-      "keepFrame": "Kader behouden",
-      "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
-      "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
-    }
+    "fileTypeInfo": "Uw selectie afbeeldingen bevat {monochromeCount, plural, =0 {geen} other {#}} monochrome en {rgbnCount, plural, =0 {geen} other {#}} rgbn-afbeeldingen."
   },
   "DragOver": {
     "dropFilesHere": "Bestanden hier neerzetten",
@@ -164,6 +158,12 @@
     "appBranch": "Web-app branch: {value}",
     "appVersion": "Web-app versie: {value}",
     "storageEstimate": "Gebruik van {type}: {percentage}% ({used} van {total})"
+  },
+  "ExportFrameModeSelect": {
+    "cropFrame": "Kader bijsnijden",
+    "keepFrame": "Kader behouden",
+    "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
+    "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
   },
   "ExportSettings": {
     "exportAll": "Alles exporteren",
@@ -553,19 +553,9 @@
     "titleOption": "Titel"
   },
   "SSTVForm": {
+    "addSilence": "Stilte voor/na audio",
     "dialogHeader": "SSTV-audiobestand maken",
-    "modeType": {
-      "martin1": "Martin 1",
-      "martin2": "Martin 2",
-      "robot8": "Robot 8",
-      "robot12": "Robot 12",
-      "robot24": "Robot 24",
-      "robot36": "Robot 36",
-      "robot72": "Robot 72",
-      "scottie1": "Scottie 1",
-      "scottie2": "Scottie 2",
-      "scottieDX": "Scottie DX"
-    },
+    "handleFrame": "Omgang met kaders",
     "modeTypeLabel": "Selecteer SSTV-modus"
   },
   "StorageWarning": {
@@ -677,12 +667,6 @@
   "VideoParamsForm": {
     "dialogHeader": "Geanimeerde GIF maken met {count} frames",
     "enableYoyo": "Jo-jo-effect inschakelen (animatie achteruit herhalen)",
-    "frameModes": {
-      "cropFrame": "Kader bijsnijden",
-      "keepFrame": "Kader behouden",
-      "squareBlack": "Afbeelding vierkant maken (zwart toevoegen)",
-      "squareWhite": "Afbeelding vierkant maken (wit toevoegen)"
-    },
     "frameRate": "Framerate",
     "handleFrames": "Omgang met kaders voor animatie",
     "noFrameOption": "Zoals per afbeelding geselecteerd",
