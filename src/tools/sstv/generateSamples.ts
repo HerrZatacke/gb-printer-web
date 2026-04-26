@@ -57,7 +57,9 @@ const createRGBLine = (settings: SSTVSettings, channelOrder: RGBChannel[], rawRG
   const pxMs = settings.channelDurationMs / pxWidth;
 
   const lineParts = channelOrder.map((channel) => {
-    const linePartSamples: Sample[] = [];
+    const linePartSamples: Sample[] = [
+      valueToSample(settings.porchFreq, settings.porchMs),
+    ];
     for (let x = 0; x < settings.width; x += 1) {
       const pixelIndex = x * 4 + pixelOffsets[channel];
       const colorValue = rawRGBA[pixelIndex];
@@ -68,11 +70,8 @@ const createRGBLine = (settings: SSTVSettings, channelOrder: RGBChannel[], rawRG
   });
 
   return [
-    valueToSample(settings.porchFreq, settings.porchMs),
     ...lineParts[0],
-    valueToSample(settings.porchFreq, settings.porchMs),
     ...lineParts[1],
-    valueToSample(settings.porchFreq, settings.porchMs),
     ...lineParts[2],
   ];
 };
