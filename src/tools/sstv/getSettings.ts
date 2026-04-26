@@ -21,7 +21,7 @@ const sstvCommon: SSTVSettings = {
   visCode: -1,
   width: -1,
   height: -1,
-  pixelMs: -1,
+  channelDurationMs: -1,
 
   visBitMs: 30,
   startStopBitFreq: 1200,
@@ -47,13 +47,13 @@ const martinCommon: SSTVSettings = {
 const martin1: SSTVSettings = {
   ...martinCommon,
   visCode: 44,
-  pixelMs: 0.4576,
+  channelDurationMs: 146.7,
 };
 
 const martin2: SSTVSettings = {
   ...martinCommon,
   visCode: 40,
-  pixelMs: 0.2288,
+  channelDurationMs: 73.35,
 };
 
 
@@ -69,14 +69,13 @@ const robotCommon: SSTVSettings = {
 const robot36: SSTVSettings = {
   ...robotCommon,
   visCode: 8,
-  pixelMs: 0.34,
-  // pixelMs: 0.2752, // somehow wrong
+  channelDurationMs: 90,
 };
 
 const robot72: SSTVSettings = {
   ...robotCommon,
   visCode: 12,
-  pixelMs: 0.2752, // somehow wrong
+  channelDurationMs: 138,
 };
 
 

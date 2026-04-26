@@ -30,7 +30,7 @@ export interface SSTVSettings {
   visCode: number;
   width: number;
   height: number;
-  pixelMs: number;
+  channelDurationMs: number;
   syncMs: number;
   porchMs: number;
   freqBlack: number;

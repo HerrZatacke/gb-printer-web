@@ -53,12 +53,15 @@ const createRGBLine = (settings: SSTVSettings, channelOrder: RGBChannel[], rawRG
     [RGBChannel.BLUE]: 2,
   };
 
+  const pxWidth = rawRGBA.length / 4;
+  const pxMs = settings.channelDurationMs / pxWidth;
+
   const lineParts = channelOrder.map((channel) => {
     const linePartSamples: Sample[] = [];
     for (let x = 0; x < settings.width; x += 1) {
       const pixelIndex = x * 4 + pixelOffsets[channel];
       const colorValue = rawRGBA[pixelIndex];
-      linePartSamples.push(valueToSample(pixelToFreq(settings, colorValue), settings.pixelMs));
+      linePartSamples.push(valueToSample(pixelToFreq(settings, colorValue), pxMs));
     }
 
     return linePartSamples;
@@ -79,7 +82,7 @@ const createYLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample
   const samples: Sample[] = [];
 
   const pxWidth = rawRGBA.length / 4;
-  const pxMs = 90 / pxWidth;
+  const pxMs = settings.channelDurationMs / pxWidth;
 
   for (let x = 0; x < settings.width; x += 1) {
     const i = x * 4;
@@ -100,7 +103,7 @@ const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, us
   const samples: Sample[] = [];
 
   const pxWidth = rawRGBA.length / 4;
-  const pxMs = 45 / pxWidth;
+  const pxMs = (settings.channelDurationMs / 2) / pxWidth;
 
   for (let x = 0; x < settings.width; x += 1) {
     const i = x * 4;
