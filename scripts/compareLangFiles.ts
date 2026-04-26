@@ -71,11 +71,38 @@ function isFalsePositive(keyPath: string, charGroupType: string, want: number, f
    [
      'ConnectPrinter.openPrinterPage',
      'ConnectPrinter.closePrinterPage',
-     'ConnectPrinter.askAddPrinterMessage',
    ].includes(keyPath) &&
    charGroupType === 'Single quotationmarks' &&
    want === 0 &&
    found === 1
+ ) {
+   return true;
+ }
+
+ if (
+   [
+     'ConnectPrinter.askAddPrinterTitle',
+   ].includes(keyPath) &&
+   charGroupType === 'Single quotationmarks' &&
+   want === 0 &&
+   (
+     found === 2 || // fr
+     found === 1 // it
+   )
+ ) {
+   return true;
+ }
+
+ if (
+   [
+     'ConnectPrinter.askAddPrinterMessage',
+   ].includes(keyPath) &&
+   charGroupType === 'Single quotationmarks' &&
+   want === 0 &&
+   (
+     found === 3 || // fr
+     found === 1 // it
+   )
  ) {
    return true;
  }
