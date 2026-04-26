@@ -47,13 +47,13 @@ const martinCommon: SSTVSettings = {
 const martin1: SSTVSettings = {
   ...martinCommon,
   visCode: 44,
-  channelDurationMs: 146.7,
+  channelDurationMs: 146.432,
 };
 
 const martin2: SSTVSettings = {
   ...martinCommon,
   visCode: 40,
-  channelDurationMs: 73.35,
+  channelDurationMs: 73.216,
 };
 
 
