@@ -42,17 +42,17 @@ function SSTVForm() {
   const visible = !!sstvHash;
 
   const modeTypes = useMemo(() => ([
-    { title: t('modeType.martin1'), key: ModeType.MARTIN_1, disabled: false },
-    { title: t('modeType.martin2'), key: ModeType.MARTIN_2, disabled: false },
-    // { title: t('modeType.robot8'), key: ModeType.ROBOT_8, disabled: true },
-    // { title: t('modeType.robot12'), key: ModeType.ROBOT_12, disabled: true },
-    // { title: t('modeType.robot24'), key: ModeType.ROBOT_24, disabled: true },
-    { title: t('modeType.robot36'), key: ModeType.ROBOT_36, disabled: false },
-    { title: t('modeType.robot72'), key: ModeType.ROBOT_72, disabled: false },
-    { title: t('modeType.scottie1'), key: ModeType.SCOTTIE_1, disabled: true },
-    { title: t('modeType.scottie2'), key: ModeType.SCOTTIE_2, disabled: true },
-    { title: t('modeType.scottieDX'), key: ModeType.SCOTTIE_DX, disabled: true },
-  ]), [t]);
+    { title: 'Martin 1', key: ModeType.MARTIN_1, disabled: false },
+    { title: 'Martin 2', key: ModeType.MARTIN_2, disabled: false },
+    // { title: 'Robot 8', key: ModeType.ROBOT_8, disabled: true },
+    // { title: 'Robot 12', key: ModeType.ROBOT_12, disabled: true },
+    // { title: 'Robot 24', key: ModeType.ROBOT_24, disabled: true },
+    { title: 'Robot 36', key: ModeType.ROBOT_36, disabled: false },
+    { title: 'Robot 72', key: ModeType.ROBOT_72, disabled: false },
+    { title: 'Scottie 1', key: ModeType.SCOTTIE_1, disabled: true },
+    { title: 'Scottie 2', key: ModeType.SCOTTIE_2, disabled: true },
+    { title: 'Scottie DX', key: ModeType.SCOTTIE_DX, disabled: true },
+  ]), []);
 
   if (!visible) {
     return null;
