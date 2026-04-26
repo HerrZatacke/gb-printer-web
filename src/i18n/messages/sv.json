@@ -555,6 +555,7 @@
   "SSTVForm": {
     "addSilence": "Tystnad före/efter ljud",
     "dialogHeader": "Skapa SSTV-ljudfil",
+    "handleFrame": "Hantera ramar",
     "modeType": {
       "martin1": "Martin 1",
       "martin2": "Martin 2",

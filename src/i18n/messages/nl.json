@@ -555,6 +555,7 @@
   "SSTVForm": {
     "addSilence": "Stilte voor/na audio",
     "dialogHeader": "SSTV-audiobestand maken",
+    "handleFrame": "Omgang met kaders",
     "modeType": {
       "martin1": "Martin 1",
       "martin2": "Martin 2",

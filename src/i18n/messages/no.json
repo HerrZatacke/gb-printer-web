@@ -555,6 +555,7 @@
   "SSTVForm": {
     "addSilence": "Stillhet før/etter lyd",
     "dialogHeader": "Opprett SSTV-lydfil",
+    "handleFrame": "Håndtering av rammer",
     "modeType": {
       "martin1": "Martin 1",
       "martin2": "Martin 2",

@@ -555,6 +555,7 @@
   "SSTVForm": {
     "addSilence": "Silencio antes/después del audio",
     "dialogHeader": "Crear archivo de audio SSTV",
+    "handleFrame": "Manejo de marcos",
     "modeType": {
       "martin1": "Martin 1",
       "martin2": "Martin 2",

@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import AudioPlayer from '@/components/AudioPlayer';
 import Debug from '@/components/Debug';
+import ExportFrameModeSelect from '@/components/ExportFrameModeSelect';
 import Lightbox from '@/components/Lightbox';
 import { useSSTV } from '@/hooks/useSSTV';
 import { useInteractionsStore } from '@/stores/stores';
@@ -34,6 +35,8 @@ function SSTVForm() {
     sstvSettings,
     silenceMs,
     setSilenceMs,
+    frameMode,
+    setFrameMode,
   } = useSSTV();
 
   const visible = !!sstvHash;
@@ -76,6 +79,13 @@ function SSTVForm() {
             <MenuItem key={key} value={key} disabled={disabled}>{ title }</MenuItem>
           )) }
         </TextField>
+
+        <ExportFrameModeSelect
+          label={t('handleFrame')}
+          frameMode={frameMode}
+          onFrameModeChange={setFrameMode}
+        />
+
         <TextField
           size="small"
           value={silenceMs}
@@ -87,6 +97,7 @@ function SSTVForm() {
           onChange={(ev) => setSilenceMs(ev.target.value)}
           onBlur={(ev) => setSilenceMs(clampNumberToString(ev.target.value))}
         />
+
         <AudioPlayer
           audioSource={audioSource}
           downloadFilename={filename}

@@ -11,6 +11,8 @@ interface UseSSTV {
   setModeType: Dispatch<SetStateAction<ModeType>>;
   silenceMs: string;
   setSilenceMs: Dispatch<SetStateAction<string>>;
+  frameMode: ExportFrameMode;
+  setFrameMode: Dispatch<SetStateAction<ExportFrameMode>>;
   audioSource: string;
   filename: string;
   sstvSettings: SSTVSettings | null;
@@ -21,7 +23,8 @@ export const useSSTV = (): UseSSTV => {
   const [audioSource, setAudioSource] = useState<string>('');
   const [filename, setFilename] = useState<string>('');
   const [sstvSettings, setSstvSettings] = useState<SSTVSettings | null>(null);
-  const [modeType, setModeType] = useState<ModeType>(ModeType.MARTIN_1);
+  const [modeType, setModeType] = useState<ModeType>(ModeType.MARTIN_2);
+  const [frameMode, setFrameMode] = useState<ExportFrameMode>(ExportFrameMode.FRAMEMODE_KEEP);
   const [silenceMs, setSilenceMs] = useState<string>('0');
   const { prepareDownloadInfo } = useDownload();
   const { sstvHash } = useInteractionsStore();
@@ -38,8 +41,7 @@ export const useSSTV = (): UseSSTV => {
       const sstvPrepareFilesOptions: PrepareFilesOptions = {
         exportScaleFactors: [1],
         exportFileTypes: ['png'],
-        // handleExportFrame: ExportFrameMode.FRAMEMODE_KEEP,
-        handleExportFrame: ExportFrameMode.FRAMEMODE_CROP,
+        handleExportFrame: frameMode,
         palettes,
         fileNameStyle: FileNameStyle.TITLE_ONLY,
       };
@@ -62,13 +64,15 @@ export const useSSTV = (): UseSSTV => {
     }, 1);
 
     return () => window.clearTimeout(handle);
-  }, [modeType, palettes, prepareDownloadInfo, silenceMs, sstvHash]);
+  }, [frameMode, modeType, palettes, prepareDownloadInfo, silenceMs, sstvHash]);
 
   return {
     modeType,
     setModeType,
     silenceMs,
     setSilenceMs,
+    frameMode,
+    setFrameMode,
     audioSource,
     filename,
     sstvSettings,
