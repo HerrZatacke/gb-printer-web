@@ -9,24 +9,30 @@ export const voxTones: VoxTones = {
 };
 
 const sstvCommon: SSTVSettings = {
-  startStopBitFreq: 1200,
-  highBitFreq: 1100,
-  lowBitFreq: 1300,
+  // Leader + Break + Leader
+  leaderMs: 300,
+  leaderFreq: 1900,
+  breakMs: 10,
+  breakFreq: 1200,
+
+  freqBlack: 1500,
+  freqWhite: 2300,
+
   visCode: -1,
   width: -1,
   height: -1,
   pixelMs: -1,
-  syncMs: -1,
-  porchMs: -1,
-  freqBlack: 1500,
-  freqWhite: 2300,
-  syncFreq: 1200,
-  porchFreq: 1500,
-  leaderFreq: 1900,
-  leaderMs: 300,
-  breakFreq: 1200,
-  breakMs: 10,
+
   visBitMs: 30,
+  startStopBitFreq: 1200,
+  highBitFreq: 1100,
+  lowBitFreq: 1300,
+
+  syncMs: -1, // Robot: 9.0
+  syncFreq: 1200,
+
+  porchMs: -1, // Robot: 3.0
+  porchFreq: 1500,
 };
 
 /*
@@ -63,7 +69,8 @@ const robotCommon: SSTVSettings = {
 const robot36: SSTVSettings = {
   ...robotCommon,
   visCode: 8,
-  pixelMs: 0.2752, // somehow wrong
+  pixelMs: 0.34,
+  // pixelMs: 0.2752, // somehow wrong
 };
 
 const robot72: SSTVSettings = {

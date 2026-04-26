@@ -1,6 +1,6 @@
 import { getSettings, voxTones } from './getSettings';
 import { blobToImageData, pixelToFreq, valueToSample } from './tools';
-import { ModeType, RGBChannel, type Sample, type SSTVSettings } from './types';
+import { ModeType, RGBChannel, type Sample, type SSTVSettings, type SamplesResult } from './types';
 
 const createVoxTones = (): Sample[] => {
   const samples: Sample[] = [
@@ -65,6 +65,7 @@ const createRGBLine = (settings: SSTVSettings, channelOrder: RGBChannel[], rawRG
   });
 
   return [
+    valueToSample(settings.porchFreq, settings.porchMs),
     ...lineParts[0],
     valueToSample(settings.porchFreq, settings.porchMs),
     ...lineParts[1],
@@ -77,6 +78,9 @@ const createRGBLine = (settings: SSTVSettings, channelOrder: RGBChannel[], rawRG
 const createYLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample[] => {
   const samples: Sample[] = [];
 
+  const pxWidth = rawRGBA.length / 4;
+  const pxMs = 90 / pxWidth;
+
   for (let x = 0; x < settings.width; x += 1) {
     const i = x * 4;
 
@@ -86,11 +90,8 @@ const createYLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample
 
     const y  =  0.299 * r + 0.587 * g + 0.114 * b;
 
-    samples.push(valueToSample(pixelToFreq(settings, y), settings.pixelMs));
+    samples.push(valueToSample(pixelToFreq(settings, y), pxMs));
   }
-
-  // Porch after Y
-  samples.push(valueToSample(settings.porchFreq, 4.5));
 
   return samples;
 };
@@ -98,8 +99,8 @@ const createYLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample
 const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, useCb: boolean): Sample[] => {
   const samples: Sample[] = [];
 
-  const scaleTime = 1.568;
-  const pixelMs = scaleTime * settings.pixelMs;
+  const pxWidth = rawRGBA.length / 4;
+  const pxMs = 45 / pxWidth;
 
   for (let x = 0; x < settings.width; x += 1) {
     const i = x * 4;
@@ -112,15 +113,23 @@ const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, us
       ? 128 - 0.168736 * r - 0.331264 * g + 0.5 * b
       : 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
 
-    samples.push(valueToSample(pixelToFreq(settings, value), pixelMs));
+    samples.push(valueToSample(pixelToFreq(settings, value), pxMs));
   }
-
-  samples.push(valueToSample(settings.porchFreq, settings.porchMs));
 
   return samples;
 };
 
-export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
+
+const createYChLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, useCb: boolean): Sample[] => {
+  return [
+    valueToSample(settings.porchFreq, settings.porchMs),
+    ...createYLine(settings, rawRGBA),
+    valueToSample(useCb ? 2300 : 1500, 5),
+    ...createChromaLine(settings, rawRGBA, useCb),
+  ];
+};
+
+export const generateSamples = async (pngBlob: Blob, mode: ModeType): Promise<SamplesResult> => {
   const settings = getSettings(mode);
 
   const data = await blobToImageData(pngBlob, settings.width, settings.height);
@@ -131,9 +140,8 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
 
   // Image lines
   for (let y = 0; y < settings.height; y += 1) {
-    // Sync + porch
+    // Sync
     samples.push(valueToSample(settings.syncFreq, settings.syncMs));
-    samples.push(valueToSample(settings.porchFreq, settings.porchMs));
     const lineData = data.subarray(y * settings.width * 4, (y + 1) * settings.width * 4);
 
     switch (mode) {
@@ -141,14 +149,13 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
       case ModeType.MARTIN_2:
         samples.push(...createRGBLine(settings, [RGBChannel.GREEN, RGBChannel.BLUE, RGBChannel.RED], lineData));
         break;
-      case ModeType.ROBOT_8:
-      case ModeType.ROBOT_12:
-      case ModeType.ROBOT_24:
+      // case ModeType.ROBOT_8:
+      // case ModeType.ROBOT_12:
+      // case ModeType.ROBOT_24:
       case ModeType.ROBOT_36:
-      case ModeType.ROBOT_72:
-        samples.push(...createYLine(settings, lineData));
-        samples.push(...createChromaLine(settings, lineData, Boolean(y % 2)));
+        samples.push(...createYChLine(settings, lineData, Boolean(y % 2)));
         break;
+      case ModeType.ROBOT_72:
       case ModeType.SCOTTIE_1:
       case ModeType.SCOTTIE_2:
       case ModeType.SCOTTIE_DX:
@@ -157,5 +164,8 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType) => {
     }
   }
 
-  return samples;
+  return {
+    samples,
+    settings,
+  };
 };

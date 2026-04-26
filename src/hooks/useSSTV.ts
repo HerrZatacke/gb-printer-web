@@ -4,19 +4,21 @@ import { FileNameStyle } from '@/consts/fileNameStyles';
 import useDownload from '@/hooks/useDownload';
 import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 import { PrepareFilesOptions } from '@/tools/download';
-import { audioBufferToWav, generateSamples, ModeType, samplesToAudioBuffer } from '@/tools/sstv';
+import { audioBufferToWav, generateSamples, ModeType, samplesToAudioBuffer, type SSTVSettings } from '@/tools/sstv';
 
 interface UseSSTV {
   modeType: ModeType;
   setModeType: Dispatch<SetStateAction<ModeType>>;
   audioSource: string;
   filename: string;
+  sstvSettings: SSTVSettings | null;
 }
 
 export const useSSTV = (): UseSSTV => {
   const { palettes } = useItemsStore();
   const [audioSource, setAudioSource] = useState<string>('');
   const [filename, setFilename] = useState<string>('');
+  const [sstvSettings, setSstvSettings] = useState<SSTVSettings | null>(null);
   const [modeType, setModeType] = useState<ModeType>(ModeType.MARTIN_1);
   const { prepareDownloadInfo } = useDownload();
   const { sstvHash } = useInteractionsStore();
@@ -28,6 +30,7 @@ export const useSSTV = (): UseSSTV => {
         return '';
       });
       setFilename('');
+      setSstvSettings(null);
 
       const sstvPrepareFilesOptions: PrepareFilesOptions = {
         exportScaleFactors: [1],
@@ -41,7 +44,7 @@ export const useSSTV = (): UseSSTV => {
       const sampleRate = 22500;
 
       const [{ blob: pngBlob, filename: imageFilename }] = await prepareDownloadInfo(sstvHash, sstvPrepareFilesOptions);
-      const samples = await generateSamples(pngBlob, modeType);
+      const { samples, settings } = await generateSamples(pngBlob, modeType);
       const audioBuffer = await samplesToAudioBuffer(sampleRate, samples);
 
       if (audioBuffer) {
@@ -50,7 +53,8 @@ export const useSSTV = (): UseSSTV => {
           URL.revokeObjectURL(currentSource);
           return URL.createObjectURL(waveFile);
         });
-        setFilename(imageFilename.replace(/(\.[^.]+)$/, '.wav'));
+        setFilename(imageFilename.replace(/(\.[^.]+)$/, `_${modeType}.wav`));
+        setSstvSettings(settings);
       }
     }, 1);
 
@@ -62,5 +66,6 @@ export const useSSTV = (): UseSSTV => {
     setModeType,
     audioSource,
     filename,
+    sstvSettings,
   };
 };
