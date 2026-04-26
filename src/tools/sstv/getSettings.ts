@@ -28,10 +28,10 @@ const sstvCommon: SSTVSettings = {
   highBitFreq: 1100,
   lowBitFreq: 1300,
 
-  syncMs: -1, // Robot: 9.0
+  syncMs: -1,
   syncFreq: 1200,
 
-  porchMs: -1, // Robot: 3.0
+  porchMs: -1,
   porchFreq: 1500,
 };
 
@@ -60,21 +60,19 @@ const martin2: SSTVSettings = {
 /*
   ROBOT
 */
-const robotCommon: SSTVSettings = {
-  ...sstvCommon,
-  syncMs: 9.0,
-  porchMs: 3.0,
-};
-
 const robot36: SSTVSettings = {
-  ...robotCommon,
+  ...sstvCommon,
   visCode: 8,
+  syncMs: 9, // 10.5 ??
+  porchMs: 3, // 4.5 ??
   channelDurationMs: 90,
 };
 
 const robot72: SSTVSettings = {
-  ...robotCommon,
+  ...sstvCommon,
   visCode: 12,
+  syncMs: 10.5, // 12 ??
+  porchMs: 4.5, // 6 ??
   channelDurationMs: 138,
 };
 

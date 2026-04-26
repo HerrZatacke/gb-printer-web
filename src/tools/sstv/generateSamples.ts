@@ -78,7 +78,9 @@ const createRGBLine = (settings: SSTVSettings, channelOrder: RGBChannel[], rawRG
 
 
 const createYLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample[] => {
-  const samples: Sample[] = [];
+  const samples: Sample[] = [
+    valueToSample(settings.porchFreq, settings.porchMs),
+  ];
 
   const pxWidth = rawRGBA.length / 4;
   const pxMs = settings.channelDurationMs / pxWidth;
@@ -99,7 +101,9 @@ const createYLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray): Sample
 };
 
 const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, useCb: boolean): Sample[] => {
-  const samples: Sample[] = [];
+  const samples: Sample[] = [
+    valueToSample(useCb ? settings.freqWhite : settings.freqBlack, settings.porchMs),
+  ];
 
   const pxWidth = rawRGBA.length / 4;
   const pxMs = (settings.channelDurationMs / 2) / pxWidth;
@@ -119,16 +123,6 @@ const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, us
   }
 
   return samples;
-};
-
-
-const createYChLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, useCb: boolean): Sample[] => {
-  return [
-    valueToSample(settings.porchFreq, settings.porchMs),
-    ...createYLine(settings, rawRGBA),
-    valueToSample(useCb ? 2300 : 1500, 5),
-    ...createChromaLine(settings, rawRGBA, useCb),
-  ];
 };
 
 export const generateSamples = async (pngBlob: Blob, mode: ModeType): Promise<SamplesResult> => {
@@ -155,9 +149,14 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType): Promise<Sa
       // case ModeType.ROBOT_12:
       // case ModeType.ROBOT_24:
       case ModeType.ROBOT_36:
-        samples.push(...createYChLine(settings, lineData, Boolean(y % 2)));
+        samples.push(...createYLine(settings, lineData));
+        samples.push(...createChromaLine(settings, lineData, Boolean(y % 2)));
         break;
       case ModeType.ROBOT_72:
+        samples.push(...createYLine(settings, lineData));
+        samples.push(...createChromaLine(settings, lineData, false));
+        samples.push(...createChromaLine(settings, lineData, true));
+        break;
       case ModeType.SCOTTIE_1:
       case ModeType.SCOTTIE_2:
       case ModeType.SCOTTIE_DX:

@@ -45,7 +45,7 @@ function SSTVForm() {
     // { title: t('modeType.robot12'), key: ModeType.ROBOT_12, disabled: true },
     // { title: t('modeType.robot24'), key: ModeType.ROBOT_24, disabled: true },
     { title: t('modeType.robot36'), key: ModeType.ROBOT_36, disabled: false },
-    { title: t('modeType.robot72'), key: ModeType.ROBOT_72, disabled: true },
+    { title: t('modeType.robot72'), key: ModeType.ROBOT_72, disabled: false },
     { title: t('modeType.scottie1'), key: ModeType.SCOTTIE_1, disabled: true },
     { title: t('modeType.scottie2'), key: ModeType.SCOTTIE_2, disabled: true },
     { title: t('modeType.scottieDX'), key: ModeType.SCOTTIE_DX, disabled: true },
