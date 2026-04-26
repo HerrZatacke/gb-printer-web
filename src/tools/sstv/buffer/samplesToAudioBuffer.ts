@@ -1,9 +1,8 @@
 import { Sample } from '@/tools/sstv/types';
 
-const SILENCE = 1;
 
-export const samplesToAudioBuffer = async (sampleRate: number, samples: Sample[]): Promise<AudioBuffer | null> => {
-  const totalDurationSec = samples.reduce((sum, s) => sum + s.durationMs / 1000, SILENCE);
+export const samplesToAudioBuffer = async (sampleRate: number, samples: Sample[], silence: number): Promise<AudioBuffer | null> => {
+  const totalDurationSec = samples.reduce((sum, s) => sum + s.durationMs / 1000, silence);
   const audioCtx = new window.OfflineAudioContext(1, Math.ceil(sampleRate * totalDurationSec), sampleRate);
 
   if (!audioCtx) {
@@ -19,7 +18,7 @@ export const samplesToAudioBuffer = async (sampleRate: number, samples: Sample[]
   oscillator.connect(gainNode);
   gainNode.connect(audioCtx.destination);
 
-  let t = SILENCE;
+  let t = silence;
   samples.forEach(({ freq, durationMs }) => {
     oscillator.frequency.setValueAtTime(freq, t);
     gainNode.gain.setValueAtTime(0.8, t);
@@ -29,7 +28,7 @@ export const samplesToAudioBuffer = async (sampleRate: number, samples: Sample[]
   gainNode.gain.setValueAtTime(0, t);
 
   oscillator.start();
-  oscillator.stop(t + SILENCE);
+  oscillator.stop(t + silence);
   return audioCtx.startRendering();
 };
 

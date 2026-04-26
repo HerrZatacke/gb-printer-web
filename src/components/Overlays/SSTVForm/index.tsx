@@ -8,6 +8,20 @@ import { useSSTV } from '@/hooks/useSSTV';
 import { useInteractionsStore } from '@/stores/stores';
 import { ModeType } from '@/tools/sstv';
 
+const clampMin = 0;
+const clampMax = 5000;
+
+const clampNumberToString = (value: string): string => {
+  const numeric = parseInt(value, 10);
+
+  if (isNaN(numeric)) {
+    return '0';
+  }
+
+  const clamped = Math.min(clampMax, Math.max(clampMin, numeric));
+  return clamped.toString(10);
+};
+
 function SSTVForm() {
   const t = useTranslations('SSTVForm');
 
@@ -18,6 +32,8 @@ function SSTVForm() {
     audioSource,
     filename,
     sstvSettings,
+    silenceMs,
+    setSilenceMs,
   } = useSSTV();
 
   const visible = !!sstvHash;
@@ -60,6 +76,17 @@ function SSTVForm() {
             <MenuItem key={key} value={key} disabled={disabled}>{ title }</MenuItem>
           )) }
         </TextField>
+        <TextField
+          size="small"
+          value={silenceMs}
+          type="number"
+          label={t('addSilence')}
+          slotProps={{
+            htmlInput: { min: clampMin, max: clampMax, step: 500 },
+          }}
+          onChange={(ev) => setSilenceMs(ev.target.value)}
+          onBlur={(ev) => setSilenceMs(clampNumberToString(ev.target.value))}
+        />
         <AudioPlayer
           audioSource={audioSource}
           downloadFilename={filename}
