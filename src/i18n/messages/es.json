@@ -553,6 +553,7 @@
     "titleOption": "Título"
   },
   "SSTVForm": {
+    "addSilence": "Silencio antes/después del audio",
     "dialogHeader": "Crear archivo de audio SSTV",
     "modeType": {
       "martin1": "Martin 1",

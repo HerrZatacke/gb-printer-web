@@ -553,6 +553,7 @@
     "titleOption": "Tittel"
   },
   "SSTVForm": {
+    "addSilence": "Stillhet før/etter lyd",
     "dialogHeader": "Opprett SSTV-lydfil",
     "modeType": {
       "martin1": "Martin 1",
