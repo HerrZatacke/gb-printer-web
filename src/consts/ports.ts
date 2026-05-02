@@ -8,6 +8,7 @@ export enum PortDeviceType {
   PACKET_CAPTURE = 'packet_capture',
   SUPER_PRINTER_INTERFACE = 'super_printer_interface',
   GBXCART = 'gbxcart',
+  PICNREC = 'picnrec',
 }
 
 export const usbDeviceFilters: USBDeviceFilter[] = [
