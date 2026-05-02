@@ -22,6 +22,7 @@ export const portDeviceTranslationKeys: Record<PortDeviceType, string> = {
   [PortDeviceType.PACKET_CAPTURE]: 'portDeviceTypes.arduinoGameboyPrinterEmulator',
   [PortDeviceType.SUPER_PRINTER_INTERFACE]: 'portDeviceTypes.superPrinterInterface',
   [PortDeviceType.GBXCART]: 'portDeviceTypes.cartridgeReader',
+  [PortDeviceType.PICNREC]: 'portDeviceTypes.picNRec',
 };
 
 function ConnectSerial({ inline }: Props) {
