@@ -93,6 +93,14 @@ const parseRange = (startValue: string, endValue: string, maxImageIndex: number)
 
 const getReportedImageCount = (lastImageNumber: number): number => Math.max(0, lastImageNumber);
 
+const getEffectiveLastImageIndex = (reportedLastImageNumber: number): number => (
+  Math.max(0, reportedLastImageNumber - 1)
+);
+
+const getEffectiveImageCount = (reportedLastImageNumber: number): number => (
+  Math.max(0, getEffectiveLastImageIndex(reportedLastImageNumber))
+);
+
 const isImportablePicNRecImage = (image: Uint8Array): boolean => Boolean(transformImage(image, 0));
 
 export const usePicNRec = (): UsePicNRec => {
@@ -156,13 +164,14 @@ export const usePicNRec = (): UsePicNRec => {
     setPreviewStatus('Detecting PicNRec device...');
 
     try {
-      const lastImageNumber = await picNRec.readLastImageNumber();
-      const imageCount = getReportedImageCount(lastImageNumber);
-      const defaultEndImage = Math.max(FIRST_IMAGE_SLOT, lastImageNumber);
+      const reportedLastImageNumber = await picNRec.readLastImageNumber();
+      const effectiveLastImageIndex = getEffectiveLastImageIndex(reportedLastImageNumber);
+      const imageCount = getEffectiveImageCount(reportedLastImageNumber);
+      const defaultEndImage = Math.max(FIRST_IMAGE_SLOT, effectiveLastImageIndex);
 
       setDeviceInfo({
         imageCount,
-        lastImageIndex: lastImageNumber,
+        lastImageIndex: effectiveLastImageIndex,
         maxSupportedImageIndex: MAX_SUPPORTED_IMAGE_INDEX,
       });
       setStartImageNumber(FIRST_IMAGE_SLOT.toString(10));
@@ -302,14 +311,15 @@ export const usePicNRec = (): UsePicNRec => {
 
         try {
           await picNRec.clearLastImageLocation();
-          const lastImageNumber = await picNRec.readLastImageNumber();
+          const reportedLastImageNumber = await picNRec.readLastImageNumber();
+          const effectiveLastImageIndex = getEffectiveLastImageIndex(reportedLastImageNumber);
 
           setDeviceInfo((current) => (current ? {
             ...current,
-            imageCount: getReportedImageCount(lastImageNumber),
-            lastImageIndex: lastImageNumber,
+            imageCount: getEffectiveImageCount(reportedLastImageNumber),
+            lastImageIndex: effectiveLastImageIndex,
           } : current));
-          setPreviewStatus(`Cleared last-image location. Device now reports highest populated slot ${lastImageNumber}.`);
+          setPreviewStatus(`Cleared last-image location. Device now reports latest usable slot ${effectiveLastImageIndex}.`);
         } catch (error) {
           setError(error as Error);
         } finally {

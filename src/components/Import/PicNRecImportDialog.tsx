@@ -140,7 +140,7 @@ function PicNRecImportDialog({
             >
               <Typography fontWeight={600}>PicNRec import range</Typography>
               <Typography color="text.secondary">
-                Detected {deviceInfo.imageCount} available image(s). Highest populated slot: {deviceInfo.lastImageIndex}. Preview and import can address slots up to {deviceInfo.maxSupportedImageIndex}.
+                Detected {deviceInfo.imageCount} available image(s). Preview and import can address slots up to {deviceInfo.maxSupportedImageIndex}.
               </Typography>
             </Box>
 
