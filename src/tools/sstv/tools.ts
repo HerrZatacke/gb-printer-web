@@ -1,10 +1,13 @@
 import { type Sample, type SSTVSettings } from '@/tools/sstv/types';
 
-export const blobToImageData = async (blob: Blob, { width, height }: SSTVSettings): Promise<ImageDataArray> => {
+export const blobToImageData = async (blob: Blob, { width, height }: SSTVSettings, paddingColor: string): Promise<ImageData> => {
   const bitmap = await createImageBitmap(blob);
   const canvas = new OffscreenCanvas(width, height);
   const ctx = canvas.getContext('2d') as OffscreenCanvasRenderingContext2D;
   ctx.imageSmoothingEnabled = false;
+
+  ctx.fillStyle = paddingColor;
+  ctx.fillRect(0, 0, width, height);
 
   const scale = Math.min(width / bitmap.width, height / bitmap.height);
 
@@ -16,7 +19,7 @@ export const blobToImageData = async (blob: Blob, { width, height }: SSTVSetting
 
   ctx.drawImage(bitmap, dx, dy, drawW, drawH);
 
-  return ctx.getImageData(0, 0, width, height).data;
+  return ctx.getImageData(0, 0, width, height);
 };
 
 export const valueToSample = (freq: number, durationMs: number): Sample => ({
