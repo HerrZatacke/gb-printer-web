@@ -125,10 +125,12 @@ const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, us
   return samples;
 };
 
-export const generateSamples = async (pngBlob: Blob, mode: ModeType): Promise<SamplesResult> => {
+export const generateSamples = async (pngBlob: Blob, mode: ModeType, paddingColor: string): Promise<SamplesResult> => {
   const settings = getSettings(mode);
 
-  const data = await blobToImageData(pngBlob, settings);
+  const imageData = await blobToImageData(pngBlob, settings, paddingColor);
+  const { data } = imageData;
+
   const samples: Sample[] = [
     ...createVoxTones(),
     ...createVIS(settings),
@@ -168,5 +170,6 @@ export const generateSamples = async (pngBlob: Blob, mode: ModeType): Promise<Sa
   return {
     samples,
     settings,
+    imageData,
   };
 };

@@ -59,4 +59,5 @@ export enum RGBChannel {
 export interface SamplesResult {
   samples: Sample[];
   settings: SSTVSettings;
+  imageData: ImageData;
 }

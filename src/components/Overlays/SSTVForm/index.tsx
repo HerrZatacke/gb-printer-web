@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { MenuItem, Stack, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
@@ -31,6 +32,8 @@ function SSTVForm() {
     modeType,
     setModeType,
     audioSource,
+    previewImageSource,
+    previewImageWidth,
     filename,
     sstvSettings,
     silenceMs,
@@ -68,6 +71,18 @@ function SSTVForm() {
         direction="column"
         gap={4}
       >
+        {previewImageSource && previewImageWidth && (
+          <Stack
+            direction="column"
+            alignItems="center"
+          >
+            <img
+              src={previewImageSource}
+              width={previewImageWidth}
+              alt=""
+            />
+          </Stack>
+        )}
         <TextField
           label={t('modeTypeLabel')}
           size="small"
