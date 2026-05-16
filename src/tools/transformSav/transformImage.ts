@@ -1,7 +1,12 @@
 const black = 'ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff';
 const white = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00';
 
-const transformImage = (data: Uint8Array, baseAddress: number): string[] | null => {
+interface TransformImageOptions {
+  allowBlank?: boolean,
+}
+
+const transformImage = (data: Uint8Array, baseAddress: number, options: TransformImageOptions = {}): string[] | null => {
+  const allowBlank = options.allowBlank || false;
   const transformed: string[] = [];
   let currentLine = '';
   let hasData = false;
@@ -38,7 +43,7 @@ const transformImage = (data: Uint8Array, baseAddress: number): string[] | null 
   // add lower frame placeholder
   transformed.push(...[...Array(40)].map(() => black));
 
-  return hasData ? transformed : null;
+  return (hasData || allowBlank) ? transformed : null;
 };
 
 export default transformImage;

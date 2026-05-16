@@ -5,10 +5,12 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import ConnectPrinter from '@/components/ConnectPrinter';
+import PicNRecImportDialog from '@/components/Import/PicNRecImportDialog';
 import { ExportTypes } from '@/consts/exportTypes';
 import { useGBXCart } from '@/hooks/useGBXCart';
+import { usePicNRec } from '@/hooks/usePicNRec';
 import { useImport } from './useImport';
 
 function Import() {
@@ -28,6 +30,29 @@ function Import() {
     canReadPhotoRom,
     busy,
   } = useGBXCart();
+
+  const {
+    picNRecAvailable,
+    openImportDialog,
+    closeImportDialog,
+    importPicNRec,
+    busy: picNRecBusy,
+    dialogOpen,
+    dialogLoading,
+    deviceInfo,
+    previewImageNumber,
+    setPreviewImageNumber,
+    previewTiles,
+    previewStatus,
+    previewLoading,
+    startImageNumber,
+    setStartImageNumber,
+    endImageNumber,
+    setEndImageNumber,
+    rangeError,
+    canImport,
+    clearPicNRecLastImageLocation,
+  } = usePicNRec();
 
   useEffect(() => {
     import(/* webpackChunkName: "dmy" */ './dummy')
@@ -55,7 +80,7 @@ function Import() {
             tabIndex={-1}
             hidden
             multiple
-            onChange={(ev) => {
+            onChange={(ev: ChangeEvent<HTMLInputElement>) => {
               const { target } = ev;
               const { files } = target;
 
@@ -86,6 +111,15 @@ function Import() {
             </Button>
           </>
         )}
+        {picNRecAvailable && (
+          <Button
+            onClick={openImportDialog}
+            title={t('importPicNRec')}
+            disabled={picNRecBusy || dialogLoading}
+          >
+            {t('importPicNRec')}
+          </Button>
+        )}
       </ButtonGroup>
 
       <Stack
@@ -100,7 +134,7 @@ function Import() {
           multiline
           rows={20}
           value={text}
-          onChange={({ target }) => {
+          onChange={({ target }: ChangeEvent<HTMLInputElement>) => {
             setText(target.value);
           }}
         />
@@ -132,6 +166,27 @@ function Import() {
           {t('exportSelectedImages')}
         </Button>
       </ButtonGroup>
+
+      <PicNRecImportDialog
+        open={dialogOpen}
+        loading={dialogLoading}
+        busy={picNRecBusy}
+        canImport={canImport}
+        closeDialog={closeImportDialog}
+        confirmImport={importPicNRec}
+        clearLastImageLocation={clearPicNRecLastImageLocation}
+        deviceInfo={deviceInfo}
+        startImageNumber={startImageNumber}
+        setStartImageNumber={setStartImageNumber}
+        endImageNumber={endImageNumber}
+        setEndImageNumber={setEndImageNumber}
+        previewImageNumber={previewImageNumber}
+        setPreviewImageNumber={setPreviewImageNumber}
+        previewTiles={previewTiles}
+        previewStatus={previewStatus}
+        previewLoading={previewLoading}
+        rangeError={rangeError}
+      />
     </Stack>
   );
 }
