@@ -32,7 +32,7 @@ const mergeStates = (
   currentStateImages: Image[],
   currentStateImageGroups: SerializableImageGroup[],
   updatedState: ExportableState,
-  mergeContents: boolean,
+  isFromJsonImport: boolean,
 ): Partial<ExportableState> => {
 
   let frames = currentStateFrames;
@@ -40,7 +40,7 @@ const mergeStates = (
   let palettes = currentStatePalettes;
   let imageGroups = currentStateImageGroups;
 
-  if (mergeContents) {
+  if (isFromJsonImport) {
     if (updatedState.frames && updatedState.frames.length) {
       frames = mergeFrames(frames, updatedState.frames);
     }

@@ -121,6 +121,7 @@ const useRunImport = (): UseRunImport => {
             frame,
             tags: add,
             // Adding index to milliseconds to ensure proper sorting
+            // see also src/hooks/useBatchUpdate.ts which adds the index after batch edit
             created: toCreationDate(date + index),
             meta,
           })
