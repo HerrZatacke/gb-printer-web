@@ -11,7 +11,7 @@ import { type JSONExport, type JSONExportState, type ExportableState } from '@/t
 
 const mergeSettings = async (
   newSettings: JSONExport,
-  mergeContents = false,
+  isFromJsonImport: boolean,
 ): Promise<Partial<ExportableState>> => {
   const { frames, palettes, images, imageGroups } = useItemsStore.getState();
 
@@ -38,7 +38,7 @@ const mergeSettings = async (
     images,
     imageGroups,
     settings.state || {},
-    mergeContents,
+    isFromJsonImport,
   );
 };
 
