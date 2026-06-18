@@ -12,6 +12,7 @@ import applyTagChanges from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type TagUpdates } from '@/tools/modifyTagChanges';
 import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
+import { toCreationDate } from '@/tools/toCreationDate';
 import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type ImageUpdates } from '@/types/ImageActions';
 
@@ -35,6 +36,8 @@ const useBatchUpdateImages = (): UseBatchUpdateImages => {
     const sortFunc = sortImages(sortBy);
 
     const currentEditHashes: string[] = editImages?.batch || [];
+
+    console.log({ shouldUpdate, updates });
 
     if (shouldUpdate && currentEditHashes?.length) {
 
@@ -80,11 +83,21 @@ const useBatchUpdateImages = (): UseBatchUpdateImages => {
 
               case Updatable.ROTATION:
               case Updatable.LOCK_FRAME:
-              case Updatable.FRAME:
-              case Updatable.CREATED: {
+              case Updatable.FRAME:{
                 return {
                   ...image,
                   [updatable]: updates[updatable],
+                };
+              }
+
+              case Updatable.CREATED: {
+                const dateObject = new Date(updates[updatable]);
+
+                // Adding index to milliseconds to ensure proper sorting
+                // see also src/hooks/useRunImport.ts which adds the index during import
+                return {
+                  ...image,
+                  [updatable]: toCreationDate(dateObject.getTime() + selectionIndex),
                 };
               }
 
