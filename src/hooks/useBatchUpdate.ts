@@ -12,7 +12,7 @@ import applyTagChanges from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type TagUpdates } from '@/tools/modifyTagChanges';
 import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
-import { toCreationDate } from '@/tools/toCreationDate';
+import { fromCreationDate, toCreationDate } from '@/tools/toCreationDate';
 import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type ImageUpdates } from '@/types/ImageActions';
 
@@ -91,7 +91,7 @@ const useBatchUpdateImages = (): UseBatchUpdateImages => {
               }
 
               case Updatable.CREATED: {
-                const dateObject = new Date(updates[updatable]);
+                const dateObject = fromCreationDate(updates[updatable]);
 
                 // Adding index to milliseconds to ensure proper sorting
                 // see also src/hooks/useRunImport.ts which adds the index during import
