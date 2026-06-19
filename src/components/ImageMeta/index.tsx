@@ -11,7 +11,7 @@ import { Rotation } from 'gb-image-decoder';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import { useSettingsStore } from '@/stores/stores';
-import { toCreationDate } from '@/tools/toCreationDate';
+import { fromCreationDate, toCreationDate } from '@/tools/toCreationDate';
 import { type ImageMetadata, type RGBNHashes } from '@/types/Image';
 import MetaTable from '../MetaTable';
 import MuiCleanThemeProvider from '../MuiCleanThemeProvider';
@@ -76,7 +76,7 @@ function ImageMeta({
             label={t('dateTime')}
             closeOnSelect={false}
             views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
-            value={dayjs(created)}
+            value={created ? dayjs(fromCreationDate(created)) : undefined}
             onChange={(newDate: Dayjs | null) => {
               if (newDate) {
                 updateCreated(toCreationDate(newDate.toDate()));

@@ -1,3 +1,11 @@
+import dayjs from 'dayjs';
+
+const FORMAT = 'YYYY-MM-DD HH:mm:ss:SSS';
+
+export const fromCreationDate = (creationDate: string): Date => {
+  const d = dayjs(creationDate, FORMAT, true); // strict = true: no loose fallback parsing
+  return d.isValid() ? d.toDate() : new Date(NaN);
+};
 
 // Outputs a date in YYYY-MM-DD HH:mm:ss:SSS format
 export const toCreationDate = (date?: number | string | Date): string => {
