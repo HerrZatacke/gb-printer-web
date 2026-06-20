@@ -4,6 +4,7 @@ import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { PrepareFilesOptions, prepareFiles } from '@/tools/download';
 import { loadImageTiles } from '@/tools/loadImageTiles';
+import { Date } from '@/tools/safeDate';
 
 interface UseShareImage {
   shareImage: (hash: string) => Promise<void>;

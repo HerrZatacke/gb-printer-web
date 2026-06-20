@@ -2,6 +2,7 @@
 import { useItemsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import padToHeight from '@/tools/padToHeight';
+import { Date } from '@/tools/safeDate';
 import saveNewImage from '@/tools/saveNewImage';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type MonochromeImage } from '@/types/Image';
@@ -40,7 +41,7 @@ const generateDebugImage = async (index: number): Promise<DebugImport> => {
     frame: 'int14',
     tags: ['debug', 'dummy'],
     // Adding index to milliseconds to ensure better sorting
-    created: toCreationDate(timestamp),
+    created: toCreationDate(timestamp + index),
     meta: {},
   });
 

@@ -1,3 +1,5 @@
+import { Date } from '@/tools/safeDate';
+
 let canShareValue: boolean | null = null;
 
 export const canShare = (): boolean => {

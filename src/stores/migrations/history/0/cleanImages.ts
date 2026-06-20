@@ -1,7 +1,7 @@
 import { BlendMode } from 'gb-image-decoder';
 import { defaultRGBNPalette } from '@/consts/defaults';
 import { isRGBNImage } from '@/tools/isRGBNImage';
-import { toCreationDate } from '@/tools/toCreationDate';
+import { fromCreationDate, toCreationDate } from '@/tools/toCreationDate';
 import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 
 
@@ -10,7 +10,7 @@ export const cleanImages = (dirtyImages: Image[]): Image[] => {
     // clean the created date (add ms) (e.g. "2021-01-30 18:16:09" -> "2021-01-30 18:16:09:000")
     .map((image) => ({
       ...image,
-      created: toCreationDate(image.created),
+      created: toCreationDate(fromCreationDate(image.created)),
     }))
 
     // add tags array if missing

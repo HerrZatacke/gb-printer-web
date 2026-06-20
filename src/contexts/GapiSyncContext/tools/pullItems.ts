@@ -3,6 +3,7 @@ import {
   getRemoteSheetProperties,
   type RemoteSheetProperties,
 } from '@/contexts/GapiSyncContext/tools/getRemoteSheetProperties';
+import { Date } from '@/tools/safeDate';
 import { sheetToObjects } from '@/tools/sheetConversion/sheetToObjects';
 import { ColumnSpec } from '@/tools/sheetConversion/types';
 

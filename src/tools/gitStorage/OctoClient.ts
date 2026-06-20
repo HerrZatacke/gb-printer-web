@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import { type RestEndpointMethodTypes } from '@octokit/rest';
 import { Octokit } from '@octokit/rest';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
+import { Date } from '@/tools/safeDate';
 import { type RepoFile, type RepoTasks } from '@/types/Export';
 import { type AddToQueueFn, type GitStorageSettings, type GitUploadResult, type UploadFile } from '@/types/Sync';
 
