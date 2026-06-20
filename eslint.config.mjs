@@ -47,6 +47,10 @@ const eslintConfig = defineConfig([
         },
       ],
       "import/consistent-type-specifier-style": ["error", "prefer-inline"],
+      "no-restricted-globals": [
+        "error",
+        { "name": "Date", "message": "Use `import { Date } from '@/tools/safeDate';` instead of using the global." }
+      ]
     },
   },
   // Override default ignores of eslint-config-next.

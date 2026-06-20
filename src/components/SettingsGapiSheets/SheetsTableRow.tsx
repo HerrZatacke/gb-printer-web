@@ -11,6 +11,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { useGapiSync } from '@/contexts/GapiSyncContext';
 import { SheetStats } from '@/hooks/useGapiSheetsStats';
+import { Date } from '@/tools/safeDate';
 
 const toDate = (timestamp?: number): string => {
   if (!timestamp) {

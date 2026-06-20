@@ -21,6 +21,7 @@ import { useFrameGroups } from '@/hooks/useFrameGroups';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import { locales } from '@/i18n/locales';
 import { useSettingsStore } from '@/stores/stores';
+import { Date } from '@/tools/safeDate';
 
 interface ClickActionOption {
   translationKey: string;

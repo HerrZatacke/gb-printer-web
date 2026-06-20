@@ -1,5 +1,6 @@
 import { LASTUPDATE_METADATA_KEY } from '@/contexts/GapiSheetStateContext/consts';
 import { ColumnRange, getRemoteSheetProperties } from '@/contexts/GapiSyncContext/tools/getRemoteSheetProperties';
+import { Date } from '@/tools/safeDate';
 import { objectsToSheet } from '@/tools/sheetConversion/objectsToSheet';
 import { PushOptions, UpdaterOptions } from '@/tools/sheetConversion/types';
 import UpdateDeveloperMetadataRequest = gapi.client.sheets.UpdateDeveloperMetadataRequest;

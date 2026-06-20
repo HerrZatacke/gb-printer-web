@@ -16,6 +16,7 @@ import {
 import { type TagChange } from '@/tools/applyTagChanges';
 import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';
+import { Date } from '@/tools/safeDate';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
 import { toCreationDate } from '@/tools/toCreationDate';

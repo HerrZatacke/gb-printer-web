@@ -1,6 +1,7 @@
 import { useEffect, useCallback, useState, useMemo } from 'react';
 import { useLoadScript } from '@/hooks/useLoadScript';
 import { useStoragesStore } from '@/stores/stores';
+import { Date } from '@/tools/safeDate';
 import TokenClient = google.accounts.oauth2.TokenClient;
 
 export interface GISContextType {

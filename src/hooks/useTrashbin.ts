@@ -14,6 +14,7 @@ import { localforageReady, localforageImages, localforageFrames } from '@/tools/
 import { type WrappedLocalForageInstance } from '@/tools/localforageInstance/createWrappedInstance';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
+import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type JSONExportBinary, type JSONExportState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';

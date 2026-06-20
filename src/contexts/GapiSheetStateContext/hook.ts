@@ -9,6 +9,7 @@ import { useGIS } from '@/contexts/GisContext';
 import { useLimitCounter } from '@/hooks/useLimitCounter';
 import { useInteractionsStore, useStoragesStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
+import { Date } from '@/tools/safeDate';
 import Sheet = gapi.client.sheets.Sheet;
 
 

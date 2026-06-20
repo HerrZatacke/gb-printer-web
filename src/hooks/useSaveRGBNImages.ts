@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { defaultRGBNPalette } from '@/consts/defaults';
 import { useStores } from '@/hooks/useStores';
 import { useFiltersStore } from '@/stores/stores';
+import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type RGBNHashes, type RGBNImage } from '@/types/Image';
 
