@@ -22,6 +22,7 @@ const useSaveRGBNImages = (): UseSaveRGBNImages => {
 
     const images = hashes.map((rgbnHashes: RGBNHashes, index: number): RGBNImage => {
       const image: RGBNImage = {
+        type: 'rgbn',
         palette: defaultRGBNPalette,
         hashes: rgbnHashes,
         hash: hash(rgbnHashes),

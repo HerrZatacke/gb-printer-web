@@ -1,7 +1,8 @@
-/*
-* On Type-Changes, a history for migration must be kept in /src/javascript/app/stores/migrations/history/
-* */
-export interface FrameGroup {
-  id: string;
-  name: string;
-}
+import z from 'zod';
+
+export const FrameGroupSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+});
+
+export type FrameGroup = z.infer<typeof FrameGroupSchema>;

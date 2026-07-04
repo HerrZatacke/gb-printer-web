@@ -74,6 +74,7 @@ const useTrashbin = (): UseTrashbin => {
       try {
         jsonExportBinary[image.hash] = image.binary;
         return {
+          type: 'mono',
           hash: image.hash,
           created: toCreationDate(),
           title: t('backupExportImage', { hash: image.hash }),

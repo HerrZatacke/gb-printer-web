@@ -1,4 +1,5 @@
-export type GapiLastUpdates = Record<SheetName, number>;
+import z from 'zod';
+
 export const SheetName = {
   BIN_FRAMES: 'binFrames',
   BIN_IMAGES: 'binImages',
@@ -12,6 +13,11 @@ export const SheetName = {
 } as const;
 export type SheetName = (typeof SheetName)[keyof typeof SheetName];
 
+export const GapiLastUpdatesSchema = z.record(
+  z.enum(SheetName),
+  z.number(),
+);
+export type GapiLastUpdates = z.infer<typeof GapiLastUpdatesSchema>;
 
 // Order is used in SheetsTable
 export const sheetNames: SheetName[] = [

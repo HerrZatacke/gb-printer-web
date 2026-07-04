@@ -20,6 +20,7 @@ const saveNewImage = async ({
   const dataHash = await save(lines);
 
   return {
+    type: 'mono',
     hash: dataHash,
     created,
     title: filename || '',

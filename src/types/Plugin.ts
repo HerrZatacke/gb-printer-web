@@ -1,6 +1,7 @@
 import type FileSaver from 'file-saver';
 import { type RGBNTiles, type RGBNPalette, type ExportFrameMode } from 'gb-image-decoder';
-import { type ConfigParamType } from '@/consts/plugins';
+import z from 'zod';
+import { ConfigParamType } from '@/consts/plugins';
 import { type ImportFn } from '@/hooks/useImportExportSettings';
 import { type UseStores } from '@/hooks/useStores';
 import {
@@ -22,13 +23,36 @@ export interface PluginFunctions {
   alert: (title: string, text: string) => void;
 }
 
-export interface ConfigParam {
-  label: string;
-  type: ConfigParamType;
-}
+export const ConfigParamSchema = z.object({
+  label: z.string(),
+  type: z.enum(ConfigParamType),
+});
 
-type PluginConfigParams = Record<string, ConfigParam>;
-export type PluginConfigValues = Record<string, number | string>;
+export type ConfigParam = z.infer<typeof ConfigParamSchema>;
+
+export const PluginConfigParamsSchema = z.partialRecord(
+  z.string(),
+  ConfigParamSchema,
+).default({});
+export type PluginConfigParams = z.infer<typeof PluginConfigParamsSchema>;
+
+export const PluginConfigValuesSchema = z.partialRecord(
+  z.string(),
+  z.union([z.number(), z.string()],
+)).default({});
+export type PluginConfigValues = z.infer<typeof PluginConfigValuesSchema>;
+
+export const PluginSchema = z.object({
+  url: z.string(),
+  config: PluginConfigValuesSchema.optional(),
+  name: z.string().prefault(''),
+  description: z.string().prefault(''),
+  loading: z.boolean().optional(),
+  error: z.union([z.string(), z.literal(false)]).optional(),
+  configParams: PluginConfigParamsSchema.optional(),
+});
+
+export type Plugin = z.infer<typeof PluginSchema>;
 
 export interface GetCanvasOptions {
   scaleFactor?: number;
@@ -38,19 +62,6 @@ export interface GetCanvasOptions {
   invertPalette?: boolean;
   invertFramePalette?: boolean;
   handleExportFrame?: ExportFrameMode;
-}
-
-/*
-* On Type-Changes, a history for migration must be kept in /src/javascript/app/stores/migrations/history/
-* */
-export interface Plugin {
-  url: string;
-  config?: PluginConfigValues;
-  name?: string;
-  description?: string;
-  loading?: boolean;
-  error?: string | false;
-  configParams?: PluginConfigParams;
 }
 
 export interface PluginImageData {
@@ -95,7 +106,7 @@ declare global {
 export interface PluginsContext {
   runWithImage: (pluginUrl: string, imageHash: string) => Promise<void>;
   runWithImages: (pluginUrl: string, imageSelection: string[]) => Promise<void>;
-  validateAndAddPlugin: (plugin: Plugin) => Promise<boolean>;
+  validateAndAddPlugin: (pluginUrl: string) => Promise<boolean>;
 }
 
 export type InitPluginSetupParams =
