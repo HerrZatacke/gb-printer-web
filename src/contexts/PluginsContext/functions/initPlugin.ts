@@ -75,6 +75,8 @@ export const initPlugin = (
       } catch (error: unknown) {
         addUpdatePluginProperties({
           url,
+          description: plugin.description,
+          name: plugin.name,
           loading: false,
           error: (error as Error)?.message,
         });
@@ -92,6 +94,8 @@ export const initPlugin = (
 
       addUpdatePluginProperties({
         url,
+        description: plugin.description,
+        name: plugin.name,
         loading: false,
         error: 'Loading error',
       });

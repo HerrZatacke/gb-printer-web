@@ -18,11 +18,12 @@ import { useFilterForm } from '@/hooks/useFilterForm';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import sortBy, { SortDirection } from '@/tools/sortby';
 
-enum FilterTab {
-  TAGS = 'tabTags',
-  PALETTES = 'tabPalettes',
-  FRAMES = 'tabFrames',
-}
+const FilterTab = {
+  TAGS: 'tabTags',
+  PALETTES: 'tabPalettes',
+  FRAMES: 'tabFrames',
+} as const;
+type FilterTab = (typeof FilterTab)[keyof typeof FilterTab];
 
 interface FilterTabUsage {
   tab: FilterTab;

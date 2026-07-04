@@ -8,10 +8,11 @@ import { type Image } from '@/types/Image';
 import { type RecentImport } from '@/types/Sync';
 import { PROJECT_PREFIX } from './constants';
 
-export enum ImageSelectionMode {
-  ADD = 'add',
-  REMOVE = 'remove',
-}
+export const ImageSelectionMode = {
+  ADD: 'add',
+  REMOVE: 'remove',
+} as const;
+export type ImageSelectionMode = (typeof ImageSelectionMode)[keyof typeof ImageSelectionMode];
 
 interface Values {
   filtersTags: string[];

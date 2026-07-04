@@ -49,11 +49,12 @@ const findParentGroup = (paths: PathMap[], groupId: string): PathMap | null => (
   )) || null
 );
 
-enum EditMode {
-  CREATE_NEW = 'CREATE_NEW',
-  EDIT_EXISTING = 'EDIT_EXISTING',
-  NOT_EDITING = 'NOT_EDITING',
-}
+const EditMode = {
+  CREATE_NEW: 'CREATE_NEW',
+  EDIT_EXISTING: 'EDIT_EXISTING',
+  NOT_EDITING: 'NOT_EDITING',
+} as const;
+type EditMode = (typeof EditMode)[keyof typeof EditMode];
 
 const getEditMode = (editImageGroup: EditGroupInfo | null): EditMode => {
   if (!editImageGroup?.groupId) {

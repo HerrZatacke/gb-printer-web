@@ -1,5 +1,6 @@
-export enum HandleLine {
-  NEW_LINES = 'NEW_LINES',
-  IMAGE_COMPLETE = 'IMAGE_COMPLETE',
-  PARSE_ERROR = 'PARSE_ERROR',
-}
+export const HandleLine = {
+  NEW_LINES: 'NEW_LINES',
+  IMAGE_COMPLETE: 'IMAGE_COMPLETE',
+  PARSE_ERROR: 'PARSE_ERROR',
+} as const;
+export type HandleLine = (typeof HandleLine)[keyof typeof HandleLine];

@@ -8,22 +8,22 @@ interface CompatibilityActionBase {
 }
 
 export interface CompatibilityActionConfirmAsk extends CompatibilityActionBase {
-  type: CompatibilityActionType.CONFIRM_ASK;
+  type: typeof CompatibilityActionType.CONFIRM_ASK;
   payload: Dialog;
 }
 
 export interface CompatibilityActionConfirmAnswered extends CompatibilityActionBase {
-  type: CompatibilityActionType.CONFIRM_ANSWERED;
+  type: typeof CompatibilityActionType.CONFIRM_ANSWERED;
   payload: undefined;
 }
 
 export interface CompatibilityActionAddImages extends CompatibilityActionBase {
-  type: CompatibilityActionType.ADD_IMAGES;
+  type: typeof CompatibilityActionType.ADD_IMAGES;
   payload: Image[];
 }
 
 export interface CompatibilityActionImportFiles extends CompatibilityActionBase {
-  type: CompatibilityActionType.IMPORT_FILES;
+  type: typeof CompatibilityActionType.IMPORT_FILES;
   payload: { files: File[] };
 }
 

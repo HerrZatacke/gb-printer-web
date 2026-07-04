@@ -1,10 +1,12 @@
-export enum SyncDirection {
-  UP = 'up',
-  DOWN = 'down',
-}
+export const SyncDirection = {
+  UP: 'up',
+  DOWN: 'down',
+} as const;
+export type SyncDirection = (typeof SyncDirection)[keyof typeof SyncDirection];
 
-export enum StorageType {
-  GIT = 'git',
-  DROPBOX = 'dropbox',
-  DROPBOXIMAGES = 'dropboximages',
-}
+export const StorageType = {
+  GIT: 'git',
+  DROPBOX: 'dropbox',
+  DROPBOXIMAGES: 'dropboximages',
+} as const;
+export type StorageType = (typeof StorageType)[keyof typeof StorageType];

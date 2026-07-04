@@ -20,6 +20,7 @@ const saveNewImage = async ({
   const dataHash = await save(lines);
 
   return {
+    type: 'mono',
     hash: dataHash,
     created,
     title: filename || '',
@@ -29,6 +30,7 @@ const saveNewImage = async ({
     framePalette: palette,
     invertFramePalette: false,
     invertPalette: false,
+    lockFrame: false,
     frame,
     meta,
   };

@@ -15,10 +15,11 @@ import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNHashes, type RGBNImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 
-export enum SelectionEditMode {
-  ADD = 'add',
-  REMOVE = 'remove',
-}
+export const SelectionEditMode = {
+  ADD: 'add',
+  REMOVE: 'remove',
+} as const;
+export type SelectionEditMode = (typeof SelectionEditMode)[keyof typeof SelectionEditMode];
 
 interface GalleryImageData {
   title: string;

@@ -1,8 +1,9 @@
 import predefinedPalettes from 'gb-palettes';
+import z from 'zod';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { SpecialTags } from '@/consts/SpecialTags';
-import { GapiLastUpdates, SheetName } from '@/contexts/GapiSheetStateContext/consts';
+import { GapiLastUpdatesSchema, SheetName } from '@/contexts/GapiSheetStateContext/consts';
 import { PROJECT_PREFIX } from '@/stores/constants';
 import { cleanupItems } from '@/stores/migrations/cleanupItems';
 import { migrateItems } from '@/stores/migrations/history/0/migrateItems';
@@ -11,12 +12,12 @@ import { Date } from '@/tools/safeDate';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
 import uniqueBy from '@/tools/unique/by';
-import { type Frame } from '@/types/Frame';
-import { type FrameGroup } from '@/types/FrameGroup';
-import { type Image } from '@/types/Image';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
-import { type Palette } from '@/types/Palette';
-import { type Plugin, type PluginConfigValues } from '@/types/Plugin';
+import { type Frame, FrameSchema } from '@/types/Frame';
+import { type FrameGroup, FrameGroupSchema } from '@/types/FrameGroup';
+import { type Image, ImageSchema } from '@/types/Image';
+import { type SerializableImageGroup, SerializableImageGroupSchema } from '@/types/ImageGroup';
+import { type Palette, PaletteSchema } from '@/types/Palette';
+import { type Plugin, type PluginConfigValues, PluginSchema } from '@/types/Plugin';
 
 export const ITEMS_STORE_VERSION = 1;
 
@@ -33,16 +34,18 @@ const imagesUniqueByHash = uniqueBy<Image>('hash');
 const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(frames));
 const sortByNameUniqueByUrl = (plugins: Plugin[]) => pluginsSortByName(pluginsUniqueByUrl(plugins));
 
-export interface Values {
-  initialized: boolean;
-  frames: Frame[];
-  palettes: Palette[];
-  frameGroups: FrameGroup[];
-  plugins: Plugin[];
-  imageGroups: SerializableImageGroup[];
-  images: Image[];
-  gapiLastLocalUpdates: GapiLastUpdates;
-}
+const ValuesSchema = z.object({
+  initialized: z.boolean(),
+  frames: z.array(FrameSchema),
+  frameGroups: z.array(FrameGroupSchema),
+  palettes: z.array(PaletteSchema),
+  plugins: z.array(PluginSchema),
+  images: z.array(ImageSchema),
+  imageGroups: z.array(SerializableImageGroupSchema),
+  gapiLastLocalUpdates: GapiLastUpdatesSchema,
+});
+
+export type Values = z.infer<typeof ValuesSchema>;
 
 interface Actions {
   // Frame updates
@@ -118,7 +121,7 @@ const updateLastLocalUpdates = (get: () => ItemsState, sheetNames: SheetName[], 
   });
 };
 
-export const createItemsStore = () => (
+export const createItemsStore = (onError: (err: Error) => void) => (
   create<ItemsState>()(
     persist(
       (set, get) => ({
@@ -439,7 +442,7 @@ export const createItemsStore = () => (
             initialized: true,
           };
 
-          return {
+          const itemsState: ItemsState = {
             ...mergedState,
             palettes: withPredefinedPalettes(mergedState.palettes),
             plugins: mergedState.plugins.map((plugin) => ({
@@ -447,6 +450,20 @@ export const createItemsStore = () => (
               loading: false,
             })),
           };
+
+          // console.log(itemsState.images[1291]);
+
+          try {
+            const values = ValuesSchema.parse(itemsState);
+
+            return {
+              ...currentState,
+              ...values,
+            };
+          } catch (error) {
+            onError(error as Error);
+            return itemsState;
+          }
         },
 
         partialize: (state: ItemsState): Values => ({

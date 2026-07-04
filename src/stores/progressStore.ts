@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import { randomId } from '@/tools/randomId';
 
-export enum LogType {
-  ERROR = 'error',
-  DONE = 'done',
-  MESSAGE = 'message',
-}
+export const LogType = {
+  ERROR: 'error',
+  DONE: 'done',
+  MESSAGE: 'message',
+} as const;
+export type LogType = (typeof LogType)[keyof typeof LogType];
 
 export interface LogItem {
   timestamp: number;

@@ -1,16 +1,23 @@
-export enum SheetName {
-  BIN_FRAMES = 'binFrames',
-  BIN_IMAGES = 'binImages',
-  FRAME_GROUPS = 'frameGroups',
-  FRAMES = 'frames',
-  IMAGE_GROUPS = 'imageGroups',
-  IMAGES = 'images',
-  PALETTES = 'palettes',
-  PLUGINS = 'plugins',
-  RGBN_IMAGES = 'rgbnImages',
-}
+import z from 'zod';
 
-export type GapiLastUpdates = Record<SheetName, number>;
+export const SheetName = {
+  BIN_FRAMES: 'binFrames',
+  BIN_IMAGES: 'binImages',
+  FRAME_GROUPS: 'frameGroups',
+  FRAMES: 'frames',
+  IMAGE_GROUPS: 'imageGroups',
+  IMAGES: 'images',
+  PALETTES: 'palettes',
+  PLUGINS: 'plugins',
+  RGBN_IMAGES: 'rgbnImages',
+} as const;
+export type SheetName = (typeof SheetName)[keyof typeof SheetName];
+
+export const GapiLastUpdatesSchema = z.record(
+  z.enum(SheetName),
+  z.number(),
+);
+export type GapiLastUpdates = z.infer<typeof GapiLastUpdatesSchema>;
 
 // Order is used in SheetsTable
 export const sheetNames: SheetName[] = [

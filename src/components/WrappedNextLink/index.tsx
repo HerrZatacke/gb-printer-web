@@ -15,11 +15,12 @@ if (typeof window !== 'undefined') {
   window.debugNext71365 = false;
 }
 
-export enum ExactMatchMode {
-  PATH_STARTSWITH = 'PATH_STARTSWITH',
-  EXACT_PATH = 'EXACT_PATH',
-  EXACT_PATH_AND_SEARCH = 'EXACT_PATH_AND_SEARCH',
-}
+export const ExactMatchMode = {
+  PATH_STARTSWITH: 'PATH_STARTSWITH',
+  EXACT_PATH: 'EXACT_PATH',
+  EXACT_PATH_AND_SEARCH: 'EXACT_PATH_AND_SEARCH',
+} as const;
+export type ExactMatchMode = (typeof ExactMatchMode)[keyof typeof ExactMatchMode];
 
 export type WrappedNextLinkProps = LinkProps &
   Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {

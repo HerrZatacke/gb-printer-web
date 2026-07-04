@@ -36,16 +36,17 @@ interface UseGalleryImageContext {
   editImage: () => void;
 }
 
-export enum ButtonOption {
-  EDIT = 'edit',
-  DOWNLOAD = 'download',
-  DELETE = 'delete',
-  SHARE = 'share',
-  SELECT = 'select',
-  VIEW = 'view',
-  FAVOURITE = 'favourite',
-  PLUGINS = 'plugins',
-}
+export const ButtonOption = {
+  EDIT: 'edit',
+  DOWNLOAD: 'download',
+  DELETE: 'delete',
+  SHARE: 'share',
+  SELECT: 'select',
+  VIEW: 'view',
+  FAVOURITE: 'favourite',
+  PLUGINS: 'plugins',
+} as const;
+export type ButtonOption = (typeof ButtonOption)[keyof typeof ButtonOption];
 
 export const useGalleryImageContext = (hash: string): UseGalleryImageContext => {
   const t = useTranslations('useGalleryImageContext');

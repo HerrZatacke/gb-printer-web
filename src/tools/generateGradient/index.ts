@@ -1,11 +1,12 @@
 import { type SxProps, type Theme } from '@mui/material/styles';
 import { hexToRgbString } from '@/tools/hexToRgbString';
 
-export enum GradientType {
-  HARD = 'HARD',
-  SMOOTH = 'SMOOTH',
-  CONIC = 'CONIC',
-}
+export const GradientType = {
+  HARD: 'HARD',
+  SMOOTH: 'SMOOTH',
+  CONIC: 'CONIC',
+} as const;
+export type GradientType = (typeof GradientType)[keyof typeof GradientType];
 
 export const generateGradient = (paletteColors: string[], type: GradientType): SxProps<Theme> => {
   const opacity = 0.25;

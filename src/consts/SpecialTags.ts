@@ -1,15 +1,16 @@
-export enum SpecialTags {
-  FILTER_UNTAGGED = '__filter:untagged__',
-  FILTER_NEW = '__filter:new__',
-  FILTER_MONOCHROME = '__filter:mono__',
-  FILTER_RGB = '__filter:rgb__',
-  FILTER_RECENT = '__filter:recent__',
-  FILTER_FAVOURITE = '__filter:favourite__',
-  FILTER_COMMENTS = '__filter:comments__',
-  FILTER_USERNAME = '__filter:username__',
-}
+export const SpecialTags = {
+  FILTER_UNTAGGED: '__filter:untagged__',
+  FILTER_NEW: '__filter:new__',
+  FILTER_MONOCHROME: '__filter:mono__',
+  FILTER_RGB: '__filter:rgb__',
+  FILTER_RECENT: '__filter:recent__',
+  FILTER_FAVOURITE: '__filter:favourite__',
+  FILTER_COMMENTS: '__filter:comments__',
+  FILTER_USERNAME: '__filter:username__',
+} as const;
+export type SpecialTags = (typeof SpecialTags)[keyof typeof SpecialTags];
 
-export const specialTags: string[] = [
+export const specialTags: SpecialTags[] = [
   SpecialTags.FILTER_UNTAGGED,
   SpecialTags.FILTER_NEW,
   SpecialTags.FILTER_MONOCHROME,

@@ -85,16 +85,18 @@ function PluginConfig(props: Props) {
           )}
 
           {Object.keys(configParams).map((fieldName) => (
-            <PluginInputField
-              key={`${fieldName}-${pluginIndex}`}
-              id={`${fieldName}-${pluginIndex}`}
-              label={configParams[fieldName].label}
-              type={configParams[fieldName].type}
-              value={config[fieldName]}
-              onChange={(value: string | number) => {
-                updatePluginConfig(url, fieldName, value);
-              }}
-            />
+            configParams[fieldName] && (
+              <PluginInputField
+                key={`${fieldName}-${pluginIndex}`}
+                id={`${fieldName}-${pluginIndex}`}
+                label={configParams[fieldName].label}
+                type={configParams[fieldName].type}
+                value={config[fieldName]}
+                onChange={(value: string | number) => {
+                  updatePluginConfig(url, fieldName, value);
+                }}
+              />
+            )
           ))}
         </Stack>
       </CardContent>

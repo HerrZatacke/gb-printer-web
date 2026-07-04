@@ -1,11 +1,12 @@
-export enum ImportContrastValue {
-  WIDER = 'wider',
-  WIDE = 'wide',
-  NORMAL = 'normal',
-  NARROW = 'narrow',
-  NARROWER = 'narrower',
-  EMULATOR = 'emulator',
-}
+export const ImportContrastValue = {
+  WIDER: 'wider',
+  WIDE: 'wide',
+  NORMAL: 'normal',
+  NARROW: 'narrow',
+  NARROWER: 'narrower',
+  EMULATOR: 'emulator',
+} as const;
+export type ImportContrastValue = (typeof ImportContrastValue)[keyof typeof ImportContrastValue];
 
 interface ImportContrast {
   translationKey: string;

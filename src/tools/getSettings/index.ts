@@ -31,6 +31,18 @@ import getImages from './getImages';
 
 type ExportableKey = keyof Values;
 
+const imageExportTypes: ExportTypes[] = [
+  ExportTypes.IMAGES,
+  ExportTypes.SELECTED_IMAGES,
+  ExportTypes.ALL,
+];
+
+const frameExportTypes: ExportTypes[] = [
+  ExportTypes.FRAMES,
+  ExportTypes.CURRENT_FRAMEGROUP,
+  ExportTypes.ALL,
+];
+
 const getExportKeys = (what: ExportTypes): ExportableKey[] => {
   switch (what) {
     case ExportTypes.ALL:
@@ -119,11 +131,7 @@ export const getSettings = async (
 
   if (
     exportableState.images?.length &&
-    [
-      ExportTypes.IMAGES,
-      ExportTypes.SELECTED_IMAGES,
-      ExportTypes.ALL,
-    ].includes(what)
+    imageExportTypes.includes(what)
   ) {
     exportBinary = {
       ...exportBinary,
@@ -133,11 +141,7 @@ export const getSettings = async (
 
   if (
     exportableState.frames?.length &&
-    [
-      ExportTypes.FRAMES,
-      ExportTypes.CURRENT_FRAMEGROUP,
-      ExportTypes.ALL,
-    ].includes(what)
+    frameExportTypes.includes(what)
   ) {
     const whatFrames = what === ExportTypes.CURRENT_FRAMEGROUP ? ExportTypes.CURRENT_FRAMEGROUP : ExportTypes.FRAMES;
     exportBinary = {

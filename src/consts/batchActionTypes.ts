@@ -1,28 +1,31 @@
 import { type MonochromeImage, type Image } from '@/types/Image';
 
-export enum BatchActionType {
-  DELETE = 'delete',
-  ANIMATE = 'animate',
-  DOWNLOAD = 'download',
-  EDIT = 'edit',
-  RGB = 'rgb',
-}
+export const BatchActionType = {
+  DELETE: 'delete',
+  ANIMATE: 'animate',
+  DOWNLOAD: 'download',
+  EDIT: 'edit',
+  RGB: 'rgb',
+} as const;
+export type BatchActionType = (typeof BatchActionType)[keyof typeof BatchActionType];
 
-export enum Updatable {
-  LOCK_FRAME = 'lockFrame',
-  FRAME = 'frame',
-  PALETTE = 'palette',
-  TITLE = 'title',
-  TAGS = 'tags',
-  CREATED = 'created',
-  ROTATION = 'rotation'
-}
+export const Updatable = {
+  LOCK_FRAME: 'lockFrame',
+  FRAME: 'frame',
+  PALETTE: 'palette',
+  TITLE: 'title',
+  TAGS: 'tags',
+  CREATED: 'created',
+  ROTATION: 'rotation',
+} as const;
+export type Updatable = (typeof Updatable)[keyof typeof Updatable];
 
-export enum UpdatableMonochrome {
-  INVERT_PALETTE = 'invertPalette',
-  FRAME_PALETTE = 'framePalette',
-  INVERT_FRAME_PALETTE = 'invertFramePalette',
-}
+export const UpdatableMonochrome = {
+  INVERT_PALETTE: 'invertPalette',
+  FRAME_PALETTE: 'framePalette',
+  INVERT_FRAME_PALETTE: 'invertFramePalette',
+} as const;
+export type UpdatableMonochrome = (typeof UpdatableMonochrome)[keyof typeof UpdatableMonochrome];
 
 export type ImageUpdatable = (keyof Image | keyof MonochromeImage);
 

@@ -15,12 +15,13 @@ import { type TagChange } from '@/tools/applyTagChanges';
 import { type TagUpdateMode } from '@/tools/modifyTagChanges';
 import { type ImageMetadata, type RGBNHashes } from '@/types/Image';
 
-enum TabType {
-  PALETTE = 'pal',
-  FRAME = 'frame',
-  TAGS = 'tags',
-  MISC = 'misc',
-}
+const TabType = {
+  PALETTE: 'pal',
+  FRAME: 'frame',
+  TAGS: 'tags',
+  MISC: 'misc',
+} as const;
+type TabType = (typeof TabType)[keyof typeof TabType];
 
 interface Props {
   hash: string;

@@ -11,11 +11,12 @@ import EventData = umami.EventData;
 
 const CONSENT_STORAGE_KEY = 'gbp-z-web-analytics-consent';
 
-export enum ConsentState {
-  UNKNOWN = 'unknown',
-  ACCEPTED = 'accepted',
-  DENIED = 'denied',
-}
+export const ConsentState = {
+  UNKNOWN: 'unknown',
+  ACCEPTED: 'accepted',
+  DENIED: 'denied',
+} as const;
+export type ConsentState = (typeof ConsentState)[keyof typeof ConsentState];
 
 export interface TrackingContextType {
   consentState: ConsentState;

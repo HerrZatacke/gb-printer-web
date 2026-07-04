@@ -22,6 +22,11 @@ const functionTranslationKeys: Record<PrinterFunction, string> = {
   clearPrinter: 'functions.clearPrinter',
 };
 
+const clickFunctions: PrinterFunction[] = [
+  PrinterFunction.FETCHIMAGES,
+  PrinterFunction.CLEARPRINTER,
+];
+
 function PrinterReport({ children }: PropsWithChildren) {
   const t = useTranslations('PrinterReport');
   const { printerData, printerFunctions, printerBusy } = useInteractionsStore();
@@ -49,7 +54,7 @@ function PrinterReport({ children }: PropsWithChildren) {
               disabled={
                 printerBusy ||
                 (
-                  [PrinterFunction.FETCHIMAGES, PrinterFunction.CLEARPRINTER].includes(name) &&
+                  clickFunctions.includes(name) &&
                   !printerData?.dumps?.length
                 )
               }
