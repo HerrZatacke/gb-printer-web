@@ -1,7 +1,8 @@
-export enum SavImportOrder {
-  CART_INDEX = 'CART_INDEX',
-  RAM_INDEX = 'RAM_INDEX',
-}
+export const SavImportOrder = {
+  CART_INDEX: 'CART_INDEX',
+  RAM_INDEX: 'RAM_INDEX',
+} as const;
+export type SavImportOrder = (typeof SavImportOrder)[keyof typeof SavImportOrder];
 
 interface SavImportOption {
   translationKey: string;

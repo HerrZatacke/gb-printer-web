@@ -1,7 +1,8 @@
-export enum TagUpdateMode {
-  ADD = 'add',
-  REMOVE = 'remove',
-}
+export const TagUpdateMode = {
+  ADD: 'add',
+  REMOVE: 'remove',
+} as const;
+export type TagUpdateMode = (typeof TagUpdateMode)[keyof typeof TagUpdateMode];
 
 export interface TagUpdates {
   add: string[];

@@ -23,11 +23,12 @@ type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
 type RGBOrder = ColorKey[];
 
-export enum RGBGrouping {
-  BY_COLOR = 'BY_COLOR',
-  BY_IMAGE = 'BY_IMAGE',
-  MANUAL = 'MANUAL',
-}
+export const RGBGrouping = {
+  BY_COLOR: 'BY_COLOR',
+  BY_IMAGE: 'BY_IMAGE',
+  MANUAL: 'MANUAL',
+} as const;
+export type RGBGrouping = (typeof RGBGrouping)[keyof typeof RGBGrouping];
 
 interface UseEditRGBNImages {
   order: RGBOrder;

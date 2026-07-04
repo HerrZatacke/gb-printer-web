@@ -1,8 +1,9 @@
-export enum FileNameStyle {
-  FULL = 'FULL',
-  TITLE_ONLY = 'TITLE_ONLY',
-  DATE_TITLE = 'DATE_TITLE',
-}
+export const FileNameStyle = {
+  FULL: 'FULL',
+  TITLE_ONLY: 'TITLE_ONLY',
+  DATE_TITLE: 'DATE_TITLE',
+} as const;
+export type FileNameStyle = (typeof FileNameStyle)[keyof typeof FileNameStyle];
 
 interface FileNameStyleLabel {
   id: FileNameStyle;

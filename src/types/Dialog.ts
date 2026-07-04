@@ -17,41 +17,41 @@ export interface DialogQuestion {
 }
 
 export interface DialogQuestionText extends DialogQuestion {
-  type: DialoqQuestionType.TEXT;
+  type: typeof DialoqQuestionType.TEXT;
   initialValue?: string;
   disabled?: boolean;
 }
 
 export interface DialogQuestionNumber extends DialogQuestion {
-  type: DialoqQuestionType.NUMBER;
+  type: typeof DialoqQuestionType.NUMBER;
   min: number;
   max: number;
   disabled?: boolean;
 }
 
 export interface DialogQuestionSelect extends DialogQuestion {
-  type: DialoqQuestionType.SELECT;
+  type: typeof DialoqQuestionType.SELECT;
   options: DialogOption[];
   disabled?: boolean;
 }
 
 export interface DialogQuestionCheckbox extends DialogQuestion {
-  type: DialoqQuestionType.CHECKBOX;
+  type: typeof DialoqQuestionType.CHECKBOX;
   disabled?: boolean;
 }
 
 export interface DialogQuestionInfo extends DialogQuestion {
-  type: DialoqQuestionType.INFO;
+  type: typeof DialoqQuestionType.INFO;
   severity: AlertColor;
 }
 
 export interface DialogQuestionImage extends DialogQuestion {
-  type: DialoqQuestionType.IMAGE;
+  type: typeof DialoqQuestionType.IMAGE;
   src: string;
 }
 
 export interface DialogQuestionMeta extends DialogQuestion {
-  type: DialoqQuestionType.META;
+  type: typeof DialoqQuestionType.META;
   meta: MetaProps;
 }
 

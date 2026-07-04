@@ -1,14 +1,16 @@
-export enum PortType {
-  USB = 'USB',
-  SERIAL = 'SERIAL',
-}
+export const PortType = {
+  USB: 'USB',
+  SERIAL: 'SERIAL',
+} as const;
+export type PortType = (typeof PortType)[keyof typeof PortType];
 
-export enum PortDeviceType {
-  INACTIVE = 'inactive', // Could not be identified, set to be inactive
-  PACKET_CAPTURE = 'packet_capture',
-  SUPER_PRINTER_INTERFACE = 'super_printer_interface',
-  GBXCART = 'gbxcart',
-}
+export const PortDeviceType = {
+  INACTIVE: 'inactive', // Could not be identified, set to be inactive
+  PACKET_CAPTURE: 'packet_capture',
+  SUPER_PRINTER_INTERFACE: 'super_printer_interface',
+  GBXCART: 'gbxcart',
+} as const;
+export type PortDeviceType = (typeof PortDeviceType)[keyof typeof PortDeviceType];
 
 export const usbDeviceFilters: USBDeviceFilter[] = [
   { vendorId: 0x2341, productId: 0x8036 }, // Arduino Leonardo

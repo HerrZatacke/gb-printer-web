@@ -1,11 +1,12 @@
 import { SavImportOrder } from '@/consts/SavImportOrder';
 import { type Frame } from '@/types/Frame';
 
-export enum RomTypes {
-  PHOTO = 'photo',
-  STOCK = 'stock',
-  PXLR = 'pxlr',
-}
+export const RomTypes = {
+  PHOTO: 'photo',
+  STOCK: 'stock',
+  PXLR: 'pxlr',
+} as const;
+export type RomTypes = (typeof RomTypes)[keyof typeof RomTypes];
 
 export interface RomByteOffsets {
   thumbnailByteCapture: number;

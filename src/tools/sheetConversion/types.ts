@@ -1,11 +1,12 @@
 import { SheetName } from '@/contexts/GapiSheetStateContext/consts';
 
-export enum ColumnType {
-  STRING = 'string',
-  NUMBER = 'number',
-  BOOLEAN = 'boolean',
-  JSON = 'json',
-}
+export const ColumnType = {
+  STRING: 'string',
+  NUMBER: 'number',
+  BOOLEAN: 'boolean',
+  JSON: 'json',
+} as const;
+export type ColumnType = (typeof ColumnType)[keyof typeof ColumnType];
 
 export interface ColumnSpec<T> {
   prop: keyof T;

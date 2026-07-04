@@ -1,9 +1,10 @@
-export enum SortDirection {
-  ASC = 'asc',
-  DESC = 'desc',
-}
+export const SortDirection = {
+  ASC: 'asc',
+  DESC: 'desc',
+} as const;
+export type SortDirection = (typeof SortDirection)[keyof typeof SortDirection];
 
-const sortBy = <T>(key: keyof T, direction = SortDirection.ASC) => (arr: T[]): T[] => {
+const sortBy = <T>(key: keyof T, direction: SortDirection = SortDirection.ASC) => (arr: T[]): T[] => {
 
   const dir = direction === SortDirection.DESC ? -1 : 1;
 

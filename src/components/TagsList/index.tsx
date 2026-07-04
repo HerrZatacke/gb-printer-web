@@ -22,7 +22,7 @@ function TagsList({ tags, fromGroup }: Props) {
 
   if (fromGroup) {
     const groupOnly = tags.sort(sortTags).filter((groupTag) => (
-      !specialTags.includes(groupTag)
+      !specialTags.includes(groupTag as SpecialTags)
     ));
 
     showTags = groupOnly.slice(0, 3);

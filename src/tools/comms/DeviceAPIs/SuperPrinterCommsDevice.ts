@@ -6,11 +6,12 @@ import { randomId } from '@/tools/randomId';
 import { ReadParams, SetErrorCallback, SetProgressCallback, StartProgressCallback, StopProgressCallback } from '@/types/ports';
 import { CommonPort } from '../CommonPort';
 
-enum PrinterExposure {
-  LIGHT = 0x00,
-  NORMAL = 0x40,
-  DARK = 0x7f,
-}
+const PrinterExposure = {
+  LIGHT: 0x00,
+  NORMAL: 0x40,
+  DARK: 0x7f,
+} as const;
+type PrinterExposure = (typeof PrinterExposure)[keyof typeof PrinterExposure];
 
 interface SetupParams {
   startProgress: StartProgressCallback;

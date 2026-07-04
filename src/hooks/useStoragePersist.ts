@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
-export enum PersistState {
-  PERSISTED = 'persisted',
-  NOT_PERSISTED = 'not-persisted',
-  FAILED = 'failed',
-  NO_API = 'no_api',
-}
+export const PersistState = {
+  PERSISTED: 'persisted',
+  NOT_PERSISTED: 'not-persisted',
+  FAILED: 'failed',
+  NO_API: 'no_api',
+} as const;
+export type PersistState = (typeof PersistState)[keyof typeof PersistState];
 
 interface UseStoragePersist {
   persistAPIAvailable: boolean;
@@ -34,7 +35,7 @@ const setPersistState = async (set: (state: PersistState) => void) => {
 };
 
 const useStoragePersist = (): UseStoragePersist => {
-  const [persisted, setPersisted] = useState(PersistState.NOT_PERSISTED);
+  const [persisted, setPersisted] = useState<PersistState>(PersistState.NOT_PERSISTED);
 
   useEffect(() => {
     getPersistState(setPersisted);

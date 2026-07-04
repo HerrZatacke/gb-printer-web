@@ -13,11 +13,12 @@ export interface NavItem {
   children?: FlyoutContent[];
 }
 
-export enum NavBadgeColor {
-  ERROR = 'error',
-  INFO = 'info',
-  DEFAULT = 'default',
-}
+export const NavBadgeColor = {
+  ERROR: 'error',
+  INFO: 'info',
+  DEFAULT: 'default',
+} as const;
+export type NavBadgeColor = (typeof NavBadgeColor)[keyof typeof NavBadgeColor];
 
 export interface NavActionItem {
   title: string;

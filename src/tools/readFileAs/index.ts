@@ -1,12 +1,13 @@
-export enum ReadAs {
-  UINT8_ARRAY = 'uint8array',
-  TEXT = 'text',
-  DATA_URL = 'dataURL',
-}
+export const ReadAs = {
+  UINT8_ARRAY: 'uint8array',
+  TEXT: 'text',
+  DATA_URL: 'dataURL',
+} as const;
+export type ReadAs = (typeof ReadAs)[keyof typeof ReadAs];
 
-function readFileAs(file: File | Blob, readAs: ReadAs.UINT8_ARRAY): Promise<Uint8Array>;
-function readFileAs(file: File | Blob, readAs: ReadAs.TEXT): Promise<string>;
-function readFileAs(file: File | Blob, readAs: ReadAs.DATA_URL): Promise<string>;
+function readFileAs(file: File | Blob, readAs: typeof ReadAs.UINT8_ARRAY): Promise<Uint8Array>;
+function readFileAs(file: File | Blob, readAs: typeof ReadAs.TEXT): Promise<string>;
+function readFileAs(file: File | Blob, readAs: typeof ReadAs.DATA_URL): Promise<string>;
 
 function readFileAs(file: File | Blob, readAs: ReadAs): Promise<Uint8Array | string> {
   return new Promise((resolve, reject) => {

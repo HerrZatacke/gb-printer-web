@@ -18,16 +18,18 @@ interface Props {
   hash: string;
 }
 
+const thumbViews: GalleryViews[] = [
+  GalleryViews.GALLERY_VIEW_SMALL,
+  GalleryViews.GALLERY_VIEW_1X,
+];
+
 function GalleryGroup({ hash }: Props) {
   const t = useTranslations('GalleryGroup');
   const { getUrl } = useGalleryTreeContext();
   const { group, path } = useGalleryGroup(hash);
   const { galleryView } = useSettingsStore();
 
-  const asThumb = [
-    GalleryViews.GALLERY_VIEW_SMALL,
-    GalleryViews.GALLERY_VIEW_1X,
-  ].includes(galleryView);
+  const asThumb = thumbViews.includes(galleryView);
 
   if (!group) {
     return null;

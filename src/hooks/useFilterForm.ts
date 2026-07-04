@@ -6,10 +6,11 @@ import unique from '@/tools/unique';
 import { type Frame } from '@/types/Frame';
 import { type Palette } from '@/types/Palette';
 
-export enum ActiveFilterUpdateMode {
-  ADD = 'add',
-  REMOVE = 'remove',
-}
+export const ActiveFilterUpdateMode = {
+  ADD: 'add',
+  REMOVE: 'remove',
+} as const;
+export type ActiveFilterUpdateMode = (typeof ActiveFilterUpdateMode)[keyof typeof ActiveFilterUpdateMode];
 
 interface FilterFrameInfo {
   usage: number;

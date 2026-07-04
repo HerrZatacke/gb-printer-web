@@ -3,11 +3,12 @@ import { getSheetColumnRange } from '@/contexts/GapiSyncContext/tools/getSheetCo
 import SheetProperties = gapi.client.sheets.SheetProperties;
 import DeveloperMetadata = gapi.client.sheets.DeveloperMetadata;
 
-export enum ColumnRange {
-  ALL = 'all',
-  HASHES = 'hashes',
-  SPECIFIC_COLUMN = 'specificColumn',
-}
+export const ColumnRange = {
+  ALL: 'all',
+  HASHES: 'hashes',
+  SPECIFIC_COLUMN: 'specificColumn',
+} as const;
+export type ColumnRange = (typeof ColumnRange)[keyof typeof ColumnRange];
 
 export interface GetRemoteSheetOptions {
   sheetsClient: typeof gapi.client.sheets;

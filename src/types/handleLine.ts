@@ -5,16 +5,16 @@ export interface ImportLineBase {
 }
 
 export interface ImportLineNewLines extends ImportLineBase {
-  type: HandleLine.NEW_LINES;
+  type: typeof HandleLine.NEW_LINES;
   payload: string[];
 }
 
 export interface ImportLineImageComplete extends ImportLineBase {
-  type: HandleLine.IMAGE_COMPLETE;
+  type: typeof HandleLine.IMAGE_COMPLETE;
 }
 
 export interface ImportLineError extends ImportLineBase {
-  type: HandleLine.PARSE_ERROR;
+  type: typeof HandleLine.PARSE_ERROR;
   payload: string;
 }
 
