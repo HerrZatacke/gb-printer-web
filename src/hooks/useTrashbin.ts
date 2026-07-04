@@ -82,6 +82,7 @@ const useTrashbin = (): UseTrashbin => {
           palette: 'bw',
           framePalette: 'bw',
           invertPalette: false,
+          lockFrame: false,
           invertFramePalette: false,
           frame: '',
         };

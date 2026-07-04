@@ -29,6 +29,7 @@ const saveNewImage = async ({
     framePalette: palette,
     invertFramePalette: false,
     invertPalette: false,
+    lockFrame: false,
     frame,
     meta,
   };
