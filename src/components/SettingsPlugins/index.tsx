@@ -49,7 +49,7 @@ function SettingsPlugins() {
                 disabled={!pluginUrl || addBusy}
                 onClick={async () => {
                   setAddBusy(true);
-                  if (await validateAndAddPlugin({ url: pluginUrl })) {
+                  if (await validateAndAddPlugin(pluginUrl)) {
                     setPluginUrl('');
                   } else {
                     setError(new Error('Could not install plugin.'));

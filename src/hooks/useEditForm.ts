@@ -336,7 +336,7 @@ export const useEditForm = (): UseEditForm => {
           title,
           created,
           frame,
-          lockFrame,
+          lockFrame: lockFrame || false,
           rotation,
           palette: paletteRGBN || paletteShort,
           invertPalette: invertPalette || false,

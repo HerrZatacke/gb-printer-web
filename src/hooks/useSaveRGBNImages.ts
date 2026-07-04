@@ -28,6 +28,7 @@ const useSaveRGBNImages = (): UseSaveRGBNImages => {
         created: toCreationDate(now + index),
         title: '',
         tags: [],
+        lockFrame: false,
       };
 
       return image;

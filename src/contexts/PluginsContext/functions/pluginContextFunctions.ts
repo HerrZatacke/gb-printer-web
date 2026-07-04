@@ -3,7 +3,8 @@ import { CompatibilityActionType } from '@/consts/plugins';
 import { type ImportFn } from '@/hooks/useImportExportSettings';
 import { type UseStores } from '@/hooks/useStores';
 import getHandleFileImport from '@/tools/getHandleFileImport';
-import { type DialogQuestion } from '@/types/Dialog';
+import { Dialog, type DialogQuestion } from '@/types/Dialog';
+import { type Image } from '@/types/Image';
 import { type PluginFunctions } from '@/types/Plugin';
 import { type CompatibilityAction, type PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
 
@@ -45,7 +46,7 @@ export const pluginCompatibilityStore = (
       console.warn(`You are using a legacy method: "dispatch(${action.type})". Please refer to "env.functions" from your plugin to switch to up-to-date methods`);
       switch (action.type) {
         case CompatibilityActionType.CONFIRM_ASK:
-          setDialog(action.payload);
+          setDialog(action.payload as Dialog);
           break;
 
         case CompatibilityActionType.CONFIRM_ANSWERED:
@@ -53,11 +54,11 @@ export const pluginCompatibilityStore = (
           break;
 
         case CompatibilityActionType.IMPORT_FILES:
-          importFiles(action.payload.files);
+          importFiles((action.payload as { files: File[] }).files);
           break;
 
         case CompatibilityActionType.ADD_IMAGES:
-          addImages(action.payload);
+          addImages(action.payload as Image[]);
           break;
 
         default:

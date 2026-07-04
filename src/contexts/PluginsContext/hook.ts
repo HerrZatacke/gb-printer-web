@@ -38,13 +38,23 @@ export const useContextHook = (): PluginsContext => {
   }), [images, addUpdatePluginProperties, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
-    const plugin: Plugin = plugins.find((p) => p.url === url) || { url: '' };
+    const plugin: Plugin | undefined = plugins.find((p) => p.url === url);
+    if (!plugin) {
+      throw new Error(`Plugin with url "${url}" not found`);
+    }
     return initPlugin(initPluginSetupParams, plugin);
   }, [initPluginSetupParams, plugins]);
 
-  const validateAndAddPlugin = useCallback(async (plugin: Plugin): Promise<boolean> => (
-    !!(await initPlugin(initPluginSetupParams, plugin))
-  ), [initPluginSetupParams]);
+  const validateAndAddPlugin = useCallback(async (url: string): Promise<boolean> => {
+    const plugin: Plugin = plugins.find((p) => p.url === url) ||
+      {
+        url,
+        name: '',
+        description: '',
+      };
+
+    return !!(await initPlugin(initPluginSetupParams, plugin));
+  }, [initPluginSetupParams, plugins]);
 
 
   const runWithImage = useCallback(async (url: string, imageHash: string): Promise<void> => {

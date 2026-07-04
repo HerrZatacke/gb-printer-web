@@ -1,3 +1,4 @@
+import { type ImportMethod } from '@/consts/ImportMethod';
 import { Image, ImageMetadata } from './Image';
 
 export interface ImportItem {

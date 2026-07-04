@@ -44,7 +44,7 @@ export const useAddPlugin = (): UseAddPlugin => {
 
   const addPlugin = useCallback(async () => {
     setPending(true);
-    const installSuccess = await validateAndAddPlugin({ url });
+    const installSuccess = await validateAndAddPlugin(url);
     if (!installSuccess) {
       setError(new Error('Could not install plugin.'));
     }
