@@ -49,3 +49,5 @@ export const useItemsStore = createItemsStore(onError);
 export const useProgressStore = createProgressStore();
 export const useSettingsStore = createSettingsStore();
 export const useStoragesStore = createStoragesStore();
+
+useFiltersStore.getState().cleanRecentImports();
