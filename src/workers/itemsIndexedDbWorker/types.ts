@@ -116,7 +116,9 @@ export interface ItemsSource {
   getFrameGroups(): Promise<ItemsSourceResponse<FrameGroup>>;
 
   getPalettes() : Promise<ItemsSourceResponse<Palette>>;
-  getPalettesByShortName(shortNames: string[]) : Promise<ItemsSourceResponse<Palette>>;
+  getPalettesByShortNames(shortNames: string[]) : Promise<ItemsSourceResponse<Palette>>;
+  updatePalettes(palettes: Palette[]): Promise<void>;
+  deletePalettesByShortNames(shortNames: string[]): Promise<void>;
 
   getPlugins(): Promise<ItemsSourceResponse<Plugin>>;
   getPluginsByUrls(urls: string[]): Promise<ItemsSourceResponse<Plugin>>;

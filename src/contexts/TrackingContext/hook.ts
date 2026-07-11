@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { usePalettes } from '@/hooks/usePalettes';
 import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import EventData = umami.EventData;
@@ -67,6 +68,7 @@ export const useContextHook = (): TrackingContextType => {
 
 
   const itemsState = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
   const { errors } = useInteractionsStore();
 
   // Send stats event when itemState changes
@@ -76,7 +78,6 @@ export const useContextHook = (): TrackingContextType => {
       imageGroups,
       frames,
       frameGroups,
-      palettes,
       plugins,
     } = itemsState;
 
@@ -88,7 +89,7 @@ export const useContextHook = (): TrackingContextType => {
       palettes: nextPowerOfTwo(palettes.length),
       plugins: nextPowerOfTwo(plugins.length),
     });
-  }, [itemsState, sendEvent]);
+  }, [itemsState, palettes, sendEvent]);
 
 
   // Send error event when error occurs

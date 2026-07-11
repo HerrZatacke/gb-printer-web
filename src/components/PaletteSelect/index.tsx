@@ -11,8 +11,8 @@ import { type Theme } from '@mui/system';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import PaletteIcon from '@/components/PaletteIcon';
+import { usePalettes } from '@/hooks/usePalettes';
 import usePaletteSort from '@/hooks/usePaletteSort';
-import { useItemsStore } from '@/stores/stores';
 
 interface Props {
   value: string;
@@ -35,7 +35,7 @@ function PaletteSelect({
   const t = useTranslations('PaletteSelect');
   const [initiallySelected, setInitiallySelected] = useState<string>(value);
 
-  const { palettes: palettesUnsorted } = useItemsStore();
+  const { palettes: palettesUnsorted } = usePalettes({ list: true });
   const theme: Theme = useTheme();
 
   const { sortFn } = usePaletteSort();

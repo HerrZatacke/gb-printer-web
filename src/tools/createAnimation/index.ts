@@ -107,7 +107,7 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 export const createAnimation = async () => {
   const { setError, videoSelection } = useInteractionsStore.getState();
   const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
-  const { frames, palettes, images: stateImages } = useItemsStore.getState();
+  const { frames, palettes, images: stateImages } = useItemsStore.getState(); // ToDo: Palettes
   const { videoParams, fileNameStyle } = useSettingsStore.getState();
 
   const progressId = startProgress('Creating Animation');

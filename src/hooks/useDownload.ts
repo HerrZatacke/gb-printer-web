@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { ExportTypes } from '@/consts/exportTypes';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { usePalettes } from '@/hooks/usePalettes';
 import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { download, prepareFiles, PrepareFilesOptions } from '@/tools/download';
@@ -21,7 +22,8 @@ interface UseDownload {
 
 const useDownload = (): UseDownload => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle, alwaysShowDownloadDialog } = useSettingsStore();
-  const { frames, palettes, images } = useItemsStore();
+  const { frames, images } = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
   const { setDownloadHashes } = useInteractionsStore();
   const { getSettingsFile } = useImportExportSettings();
   const { sendEvent } = useTracking();

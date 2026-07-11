@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
+import { useActivePalette } from '@/hooks/useActivePalette';
 import { posTiles } from './posTiles';
 
 interface Props {
@@ -17,10 +17,7 @@ interface Props {
 
 function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
   const t = useTranslations('EditFrameStartLine');
-  const { activePalette } = useSettingsStore();
-  const { palettes } = useItemsStore();
-
-  const palette = palettes.find(({ shortName }) => shortName === activePalette)?.palette;
+  const palette = useActivePalette().palette;
 
   const previewTiles = useMemo<string[]>(() => {
     const pt: string[] = [];

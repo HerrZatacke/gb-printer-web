@@ -12,7 +12,7 @@ import { type Palette } from '@/types/Palette';
 import { type GetCanvasOptions, type GetCollectImageDataFn, type PluginImageData } from '@/types/Plugin';
 
 export const getCollectImageData: GetCollectImageDataFn = (images: Image[]) => (hash: string): PluginImageData => {
-  const { frames, palettes } = useItemsStore.getState();
+  const { frames, palettes } = useItemsStore.getState(); // ToDo: Palettes
   const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
 
   const meta = images.find((image) => image.hash === hash);
