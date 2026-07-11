@@ -26,6 +26,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
     QueryClientProvider,
     TrackingProvider,
     PortsProvider,
+    QueryClientProvider,
     GalleryTreeProvider,
     GlobalAppInit, // needs <GalleryTreeProvider>
     PluginsProvider,
