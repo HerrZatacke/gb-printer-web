@@ -26,12 +26,12 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   const providers: ComponentType<{ children: ReactNode }>[] = [
     SearchParamsProvider,
     I18nProvider,
+    QueryClientProvider,
     TrackingProvider,
     GISProvider,
     GapiSheetStateProvider,
     GapiSyncProvider,
     PortsProvider,
-    QueryClientProvider,
     GalleryTreeProvider,
     GlobalAppInit, // needs <GalleryTreeProvider>
     PluginsProvider,
