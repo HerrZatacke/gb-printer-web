@@ -13,7 +13,6 @@ import { useUrl } from '@/hooks/useUrl';
 import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { reduceItems } from '@/tools/reduceArray';
 import sortBy from '@/tools/sortby';
-import { FeatureFlag } from '@/types/FeatureFlags';
 import { NavActionItem, NavBadgeColor, NavItem } from '@/types/Navigation';
 
 const sortByLabel = sortBy<NavItem>('label');
@@ -34,7 +33,6 @@ export const useContextHook = (): NavigationItemsContextType => {
   const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
   const { themeName, setThemeName } = useSettingsStore();
   const { showTrashCount, trashCount, trashBusy } = useInteractionsStore();
-  const { featureFlags } = useSettingsStore();
 
   const {
     disableSerials,
@@ -73,15 +71,6 @@ export const useContextHook = (): NavigationItemsContextType => {
         route: '/settings/generic/',
         label: tSettingsTabs('genericSettings'),
       },
-      (
-        process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID &&
-        process.env.NEXT_PUBLIC_GOOGLE_SCOPE &&
-        featureFlags.includes(FeatureFlag.GAPI_SHEETS)
-      ) ?
-        {
-          route: '/settings/gsheets/',
-          label: tSettingsTabs('gapiSheetsSettings'),
-        } : null,
       process.env.NEXT_PUBLIC_DROPBOX_APP_KEY ?
         {
           route: '/settings/dropbox/',
@@ -97,7 +86,7 @@ export const useContextHook = (): NavigationItemsContextType => {
       },
     ]
       .reduce(reduceItems<NavItem>, [])
-  ), [tSettingsTabs, featureFlags]);
+  ), [tSettingsTabs]);
 
   const palettesTabs: NavItem[] = useMemo<NavItem[]>(() => (
     [

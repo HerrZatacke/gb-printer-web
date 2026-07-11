@@ -455,17 +455,6 @@
     "subfolder": "Sous-dossier",
     "subfolderWarning": "Saisissez uniquement le nom du sous-dossier. Sinon, l'application résoudra complètement vers « {fullAppPath} » dans votre Dropbox, ce qui n'est probablement pas ce que vous aviez l'intention de faire."
   },
-  "SettingsGapiSheets": {
-    "about": "Ceci est une fonctionnalité expérimentale. La session doit être renouvelée toutes les 60 minutes.",
-    "authenticate": "Authentifier",
-    "enableAutoSync": "Synchroniser automatiquement",
-    "enableStorage": "Utiliser Google Sheets comme stockage",
-    "logout": "Se déconnecter",
-    "openSheetLink": "Ouvrir la feuille dans un nouvel onglet",
-    "sheetId": "ID de feuille",
-    "sheetIdHelper": "Vous pouvez coller le lien d'édition complet pour obtenir le bon ID de feuille.",
-    "tokenExpiry": "La session expirera dans {time}"
-  },
   "SettingsGeneric": {
     "enableDebug": "Afficher les informations de débogage",
     "exampleDateFormat": "Format de date d'exemple : {format}",
@@ -525,7 +514,6 @@
   },
   "SettingsTabs": {
     "dropboxSettings": "Paramètres Dropbox",
-    "gapiSheetsSettings": "Paramètres Google Sheets",
     "genericSettings": "Paramètres généraux",
     "gitSettings": "Paramètres Git",
     "pluginSettings": "Paramètres des plugins"

@@ -455,17 +455,6 @@
     "subfolder": "Subcarpeta",
     "subfolderWarning": "Ingrese solo el nombre de la subcarpeta. De lo contrario, la aplicación se resolverá completamente a «{fullAppPath}» dentro de su Dropbox, lo cual probablemente no es lo que pretendía."
   },
-  "SettingsGapiSheets": {
-    "about": "Esta es una función experimental. La sesión requiere renovación cada 60 minutos.",
-    "authenticate": "Autenticar",
-    "enableAutoSync": "Sincronizar automáticamente",
-    "enableStorage": "Usar Google Sheets como almacenamiento",
-    "logout": "Cerrar sesión",
-    "openSheetLink": "Abrir hoja en una nueva pestaña",
-    "sheetId": "ID de hoja",
-    "sheetIdHelper": "Puedes pegar el enlace completo de edición para obtener el ID de hoja correcto.",
-    "tokenExpiry": "La sesión expirará en {time}"
-  },
   "SettingsGeneric": {
     "enableDebug": "Mostrar información de depuración",
     "exampleDateFormat": "Formato de fecha de ejemplo: {format}",
@@ -525,7 +514,6 @@
   },
   "SettingsTabs": {
     "dropboxSettings": "Configuraciones de Dropbox",
-    "gapiSheetsSettings": "Configuración de Google Sheets",
     "genericSettings": "Configuraciones generales",
     "gitSettings": "Configuraciones de Git",
     "pluginSettings": "Configuraciones de plugin"
