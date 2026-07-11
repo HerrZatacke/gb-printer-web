@@ -2,6 +2,7 @@ import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { useCallback, useMemo } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
+import { usePalettes } from '@/hooks/usePalettes';
 import {
   type ImageSelectionMode,
   useFiltersStore,
@@ -56,7 +57,8 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     setImageSelection,
   } = useFiltersStore();
 
-  const { palettes, images: stateImages } = useItemsStore();
+  const { images: stateImages } = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
 
   const selectionIndex = imageSelection.indexOf(hash);
 

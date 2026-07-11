@@ -4,7 +4,7 @@ import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/queryHelpers';
 import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
-export const getPalettesByShortName = async (shortNames: string[]): Promise<ItemsSourceResponse<Palette>> => {
+export const getPalettesByShortNames = async (shortNames: string[]): Promise<ItemsSourceResponse<Palette>> => {
   const db = await getDb();
   const { store } = db.transaction('palettes');
   const total = await store.count();
@@ -48,4 +48,24 @@ export const getPalettes = async (): Promise<ItemsSourceResponse<Palette>> => {
   const addPaging = getAddPaging<Palette>(total, 0, withPredefined.length);
 
   return addPaging(withPredefined);
+};
+
+export const updatePalettes = async (palettes: Palette[]): Promise<void> => {
+  const db = await getDb();
+
+  const tx = db.transaction('palettes', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(palettes.map((palette) => store.put(palette)));
+  await tx.done;
+};
+
+export const deletePalettesByShortNames = async (shortNames: string[]): Promise<void> => {
+  const db = await getDb();
+
+  const tx = db.transaction('palettes', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(shortNames.map((shortName) => store.delete(shortName)));
+  await tx.done;
 };

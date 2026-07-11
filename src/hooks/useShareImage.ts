@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useTracking } from '@/contexts/TrackingContext';
+import { usePalettes } from '@/hooks/usePalettes';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { PrepareFilesOptions, prepareFiles } from '@/tools/download';
@@ -12,7 +13,8 @@ interface UseShareImage {
 
 const useShareImage = (): UseShareImage => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore();
-  const { frames, palettes, images } = useItemsStore();
+  const { frames, images } = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
   const { sendEvent } = useTracking();
 
   const shareImage = useCallback(async (hash: string) => {

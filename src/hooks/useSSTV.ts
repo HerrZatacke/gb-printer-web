@@ -2,6 +2,7 @@ import { ExportFrameMode } from 'gb-image-decoder';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileNameStyle } from '@/consts/fileNameStyles';
 import useDownload from '@/hooks/useDownload';
+import { usePalettes } from '@/hooks/usePalettes';
 import { useInteractionsStore, useItemsStore } from '@/stores/stores';
 import { PrepareFilesOptions } from '@/tools/download';
 import { getPaddingColor } from '@/tools/getPaddingColor';
@@ -23,7 +24,8 @@ interface UseSSTV {
 }
 
 export const useSSTV = (): UseSSTV => {
-  const { palettes, images } = useItemsStore();
+  const { images } = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
   const [audioSource, setAudioSource] = useState<string>('');
   const [previewImageSource, setPreviewImageSource] = useState<string>('');
   const [previewImageWidth, setPreviewImageWidth] = useState<number>(0);

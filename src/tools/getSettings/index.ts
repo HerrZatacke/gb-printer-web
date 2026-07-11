@@ -70,7 +70,7 @@ export const getSettings = async (
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {
   // get all possible exportable properties
-  const { frames, images, palettes, imageGroups, frameGroups, plugins } = itemsState;
+  const { frames, images, palettes, imageGroups, frameGroups, plugins } = itemsState; // ToDo: Palettes
   const { imageSelection } = useFiltersStore.getState();
 
   const exportableState: ExportableState = {

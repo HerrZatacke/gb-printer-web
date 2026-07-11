@@ -17,9 +17,9 @@ import Palette from '@/components/Palette';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import usePaletteFromFile from '@/hooks/usePaletteFromFile';
+import { usePalettes } from '@/hooks/usePalettes';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import useEditPalette from '@/hooks/useSetEditPalette';
-import { useItemsStore } from '@/stores/stores';
 import { type Palette as PaletteT } from '@/types/Palette';
 
 interface Props {
@@ -28,7 +28,7 @@ interface Props {
 }
 
 function Palettes({ filter, showEditButtons }: Props) {
-  const { palettes: palettesUnsorted } = useItemsStore();
+  const { palettes: palettesUnsorted } = usePalettes({ list: true });
   const { onInputChange, busy } = usePaletteFromFile();
   const { editPalette } = useEditPalette();
   const [sortMenuAnchor, setSortMenuAnchor] = useState<HTMLElement | null>(null);

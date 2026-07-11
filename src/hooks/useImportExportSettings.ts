@@ -14,7 +14,7 @@ const mergeSettings = async (
   itemsState: ItemsState,
   isFromJsonImport: boolean,
 ): Promise<Partial<ExportableState>> => {
-  const { frames, palettes, images, imageGroups } = itemsState;
+  const { frames, palettes, images, imageGroups } = itemsState; // ToDo: Palettes
 
   // add hashes to frames if they have the very old name+id format and replace the binary keys of the JSONExport
   const settings = await hashImportFrames(newSettings);

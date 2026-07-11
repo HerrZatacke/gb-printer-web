@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAvailableTags } from '@/hooks/useAvailableTags';
+import { usePalettes } from '@/hooks/usePalettes';
 import { useFiltersStore, useItemsStore } from '@/stores/stores';
 import sortBy, { SortDirection } from '@/tools/sortby';
 import unique from '@/tools/unique';
@@ -48,7 +49,8 @@ export const useFilterForm = (): UseFilterForm => {
     setFilters,
   } = useFiltersStore();
 
-  const { frames, images, palettes } = useItemsStore();
+  const { frames, images } = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
 
   const [activeTags, setActiveTags] = useState(stateTags);
   const [activeFrames, setActiveFrames] = useState(stateFrames);

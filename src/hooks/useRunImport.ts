@@ -1,9 +1,9 @@
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
+import { useActivePalette } from '@/hooks/useActivePalette';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useStores } from '@/hooks/useStores';
 import {
@@ -63,7 +63,7 @@ const useRunImport = (): UseRunImport => {
     setCreateGroup: stateSetCreateGroup,
   } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
-  const { addImageGroup, palettes, images } = useItemsStore();
+  const { addImageGroup, images } = useItemsStore();
   const { setImageSelection } = useFiltersStore();
   const { importQueue: rawImportQueue, importQueueSet, frameQueueAdd, importQueueCancelOne } = useImportsStore();
   const { addImages, importQueueCancel } = useStores();
@@ -162,7 +162,7 @@ const useRunImport = (): UseRunImport => {
     setImageSelection(imageHashes);
   }, [t, activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
 
-  const palette = useMemo(() => palettes.find(({ shortName }) => shortName === activePalette) || missingGreyPalette, [activePalette, palettes]);
+  const palette = useActivePalette();
 
   const stateImages = useMemo(() => {
     return new Map<string, Image>(images.map((image) => [image.hash, image]));

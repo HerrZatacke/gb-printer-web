@@ -4,6 +4,7 @@ import { type GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
 import { useItemsStore, useStoragesStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
@@ -27,7 +28,8 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const [gbImageProps, setGbImageProps] = useState<PartialGameBoyImageProps | null>(null);
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
-  const { frames: allFrames, palettes: allPalettes, images: allImages } = useItemsStore();
+  const { frames: allFrames, images: allImages } = useItemsStore();
+  const { palettes: allPalettes } = usePalettes({ list: true });
   const { dropboxStorage, gitStorage } = useStoragesStore();
   const { galleryImageData } = useGalleryImage(hash);
 
