@@ -41,7 +41,7 @@ export const v1LegacyData: AfterUpgradeFn = async (
 
     let oldData: unknown[];
     try {
-      oldData = await legacyStore.getAll(oldStoreName);
+      oldData = await legacyStore.getAll();
     } catch {
       olderLegacyData = olderLegacyData || await hostApi.getLegacyStorage(); // fallback to even older storage solution in localStorage
       oldData = olderLegacyData[olderLegacyKey] || [];
