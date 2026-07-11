@@ -1,4 +1,5 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
+import { usePalettes } from '@/hooks/usePalettes';
 import {
   ImageSelectionMode, type ItemsState,
   useDialogsStore,
@@ -13,9 +14,11 @@ import { Date } from '@/tools/safeDate';
 import { type Dialog } from '@/types/Dialog';
 import { type ExportableState } from '@/types/ExportState';
 import { type Image } from '@/types/Image';
+import { type Palette } from '@/types/Palette';
 
 export interface SyncToolData {
   itemsState: ItemsState;
+  palettes: Palette[];
 }
 
 export interface UseStores {
@@ -37,13 +40,16 @@ export const useStores = (): UseStores => {
   const { importQueueCancel } = useImportsStore();
   const { setPrinterBusy } = useInteractionsStore();
   const itemsState = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
 
   // Update refs for github and dropbox exports
   const itemsStateRef = useRef(itemsState);
+  const palettesRef = useRef(palettes);
 
   useLayoutEffect(() => {
     itemsStateRef.current = itemsState;
-  }, [itemsState]);
+    palettesRef.current = palettes;
+  }, [itemsState, palettes]);
 
   const {
     addImages,
@@ -125,6 +131,7 @@ export const useStores = (): UseStores => {
       console.log('called!');
       return {
         itemsState: itemsStateRef.current,
+        palettes: palettesRef.current,
       };
     };
 

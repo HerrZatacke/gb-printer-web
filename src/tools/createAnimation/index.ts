@@ -5,8 +5,8 @@ import { getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_H
 import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';
 import {
+  ItemsState,
   useInteractionsStore,
-  useItemsStore,
   useProgressStore,
   useSettingsStore,
 } from '@/stores/stores';
@@ -104,10 +104,10 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 });
 
 // ToDo: move to src/javascript/app/components/Overlays/VideoParamsForm/useVideoForm.ts
-export const createAnimation = async () => {
+export const createAnimation = async (itemsState: ItemsState, palettes: Palette[]) => {
   const { setError, videoSelection } = useInteractionsStore.getState();
   const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
-  const { frames, palettes, images: stateImages } = useItemsStore.getState(); // ToDo: Palettes
+  const { frames, images: stateImages } = itemsState;
   const { videoParams, fileNameStyle } = useSettingsStore.getState();
 
   const progressId = startProgress('Creating Animation');

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
+import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
 import { hashImportFrames } from '@/stores/migrations/history/0/hashFrames';
 import { type ItemsState, useItemsStore } from '@/stores/stores';
@@ -8,13 +9,15 @@ import { getSettings } from '@/tools/getSettings';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import mergeStates from '@/tools/mergeStates';
 import { type JSONExport, type JSONExportState, type ExportableState } from '@/types/ExportState';
+import { Palette } from '@/types/Palette';
 
 const mergeSettings = async (
   newSettings: JSONExport,
   itemsState: ItemsState,
+  palettes: Palette[],
   isFromJsonImport: boolean,
 ): Promise<Partial<ExportableState>> => {
-  const { frames, palettes, images, imageGroups } = itemsState; // ToDo: Palettes
+  const { frames, images, imageGroups } = itemsState;
 
   // add hashes to frames if they have the very old name+id format and replace the binary keys of the JSONExport
   const settings = await hashImportFrames(newSettings);
@@ -55,13 +58,14 @@ export interface ImportExportSettings {
 export const useImportExportSettings = (): ImportExportSettings => {
   const { globalUpdate } = useStores();
   const itemsState = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
 
   const getSettingsFile = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<File> => {
-    const currentSettings = await getSettings(what, itemsState, { selectedFrameGroup });
+    const currentSettings = await getSettings(what, itemsState, palettes, { selectedFrameGroup });
     const filename = what === 'frames' ? 'frames' : [what, selectedFrameGroup].filter(Boolean).join('_');
 
     return new File(new Array(currentSettings), `${filename}.json`, { type: 'application/json' });
-  }, [itemsState]);
+  }, [itemsState, palettes]);
 
   const downloadSettings = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<void> => {
     const settingsFile = await getSettingsFile(what, selectedFrameGroup);
@@ -73,14 +77,14 @@ export const useImportExportSettings = (): ImportExportSettings => {
   }, [getSettingsFile]);
 
   const jsonImport = useCallback(async (repoContents: JSONExport): Promise<void> => {
-    const update = await mergeSettings(repoContents, itemsState, true);
+    const update = await mergeSettings(repoContents, itemsState, palettes, true);
     globalUpdate(update);
-  }, [globalUpdate, itemsState]);
+  }, [globalUpdate, itemsState, palettes]);
 
   const remoteImport = useCallback(async (repoContents: JSONExportState): Promise<void> => {
-    const update = await mergeSettings(repoContents as JSONExport, itemsState, false);
+    const update = await mergeSettings(repoContents as JSONExport, itemsState, palettes, false);
     globalUpdate(update);
-  }, [globalUpdate, itemsState]);
+  }, [globalUpdate, itemsState, palettes]);
 
   return {
     getSettingsFile,

@@ -1,18 +1,18 @@
 import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
 import { type RGBNPalette, type RGBNTiles } from 'gb-image-decoder';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
+import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
+import { Frame } from '@/types/Frame';
 import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type GetCanvasOptions, type GetCollectImageDataFn, type PluginImageData } from '@/types/Plugin';
 
-export const getCollectImageData: GetCollectImageDataFn = (images: Image[]) => (hash: string): PluginImageData => {
-  const { frames, palettes } = useItemsStore.getState(); // ToDo: Palettes
+export const getCollectImageData: GetCollectImageDataFn = (images: Image[], palettes: Palette[], frames: Frame[]) => (hash: string): PluginImageData => {
   const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
 
   const meta = images.find((image) => image.hash === hash);

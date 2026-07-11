@@ -125,7 +125,8 @@ export const dropBoxSyncTool = (
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { frames, palettes, images: stateImages } = stores.getSyncToolData().itemsState; // ToDo: Palettes
+    const { frames, images: stateImages } = stores.getSyncToolData().itemsState;
+    const palettes = stores.getSyncToolData().palettes;
 
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
