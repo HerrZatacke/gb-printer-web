@@ -2,7 +2,6 @@ import { type RGBNPalette } from 'gb-image-decoder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
-import { useGapiSync } from '@/contexts/GapiSyncContext';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { usePalettes } from '@/hooks/usePalettes';
@@ -31,8 +30,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const { remoteImport } = useImportExportSettings();
   const { frames: allFrames, images: allImages } = useItemsStore();
   const { palettes: allPalettes } = usePalettes({ list: true });
-  const { gapiStorage, dropboxStorage, gitStorage } = useStoragesStore();
-  const { recoverImage } = useGapiSync();
+  const { dropboxStorage, gitStorage } = useStoragesStore();
   const { galleryImageData } = useGalleryImage(hash);
 
   const frameId = overrides?.frameId || galleryImageData?.frame;
@@ -42,13 +40,6 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
       const recoverFn = async () => {
         console.log(`🗃️ recovering ${imgHash}`);
         let recovered = false;
-        if (gapiStorage.use) {
-          console.log('🗃️ from gapi storage');
-          recovered = recoverImage(imgHash);
-          if (!recovered) {
-            console.log('🗃️ ...failed');
-          }
-        }
 
         if (!recovered && dropboxStorage.use) {
           console.log('🗃️ from dropbox storage');
@@ -73,7 +64,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashesOverride);
     },
-    [allImages, allFrames, gapiStorage.use, dropboxStorage.use, gitStorage.use, recoverImage, stores, remoteImport],
+    [allImages, allFrames, dropboxStorage.use, gitStorage.use, stores, remoteImport],
   );
 
   const isRGB = useMemo(() => {

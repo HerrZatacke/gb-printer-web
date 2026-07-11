@@ -455,17 +455,6 @@
     "subfolder": "Undermappe",
     "subfolderWarning": "Skriv inn bare navnet på undermappen. Ellers vil appen fullstendig løse til ”{fullAppPath}” innenfor din Dropbox, noe som sannsynligvis ikke er det du hadde til hensikt."
   },
-  "SettingsGapiSheets": {
-    "about": "Dette er en eksperimentell funksjon. Økten må fornyes hvert 60. minutt.",
-    "authenticate": "Autentiser",
-    "enableAutoSync": "Synkronisere automatisk",
-    "enableStorage": "Bruk Google Sheets som lagring",
-    "logout": "Logg ut",
-    "openSheetLink": "Åpne ark i ny fane",
-    "sheetId": "Regneark-ID",
-    "sheetIdHelper": "Du kan lime inn hele redigeringslinken for å få riktig regneark-ID.",
-    "tokenExpiry": "Økten utløper om {time}"
-  },
   "SettingsGeneric": {
     "enableDebug": "Vis feilsøkingsinformasjon",
     "exampleDateFormat": "Eksempel datoformat: {format}",
@@ -525,7 +514,6 @@
   },
   "SettingsTabs": {
     "dropboxSettings": "Dropbox-innstillinger",
-    "gapiSheetsSettings": "Google Sheets-innstillinger",
     "genericSettings": "Generelle innstillinger",
     "gitSettings": "Git-innstillinger",
     "pluginSettings": "Plugin-innstillinger"
