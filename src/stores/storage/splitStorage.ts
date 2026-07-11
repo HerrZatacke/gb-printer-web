@@ -84,6 +84,7 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
 
   const unloadHandler = (event: BeforeUnloadEvent) => {
     event.preventDefault();
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     event.returnValue = ''; // Required for Chrome
   };
 

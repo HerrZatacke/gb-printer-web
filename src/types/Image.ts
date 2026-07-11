@@ -1,7 +1,7 @@
 import { BlendMode, type RGBNPalette as DecoderLibRGBNPalette, Rotation } from 'gb-image-decoder';
 import z from 'zod';
 
-const nullToValue = <T extends z.ZodTypeAny>(schema: T, defaultValue: undefined | z.input<T>) => {
+const nullToValue = <T extends z.ZodType>(schema: T, defaultValue: undefined | z.input<T>) => {
   return z.preprocess((val) => (val === null ? defaultValue : val), schema.optional());
 };
 
