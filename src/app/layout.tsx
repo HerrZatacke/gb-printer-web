@@ -23,9 +23,9 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   const providers: ComponentType<{ children: ReactNode }>[] = [
     SearchParamsProvider,
     I18nProvider,
+    QueryClientProvider,
     TrackingProvider,
     PortsProvider,
-    QueryClientProvider,
     GalleryTreeProvider,
     GlobalAppInit, // needs <GalleryTreeProvider>
     PluginsProvider,
