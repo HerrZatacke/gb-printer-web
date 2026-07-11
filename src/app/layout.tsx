@@ -11,6 +11,7 @@ import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
 import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
 import { PluginsProvider } from '@/contexts/PluginsContext';
 import { PortsProvider } from '@/contexts/PortsContext';
+import { QueryClientProvider } from '@/contexts/QueryClient';
 import { RemotePrinterProvider } from '@/contexts/RemotePrinterContext';
 import { SearchParamsProvider } from '@/contexts/SearchParamsContext';
 import { TrackingProvider } from '@/contexts/TrackingContext';
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
     GapiSheetStateProvider,
     GapiSyncProvider,
     PortsProvider,
+    QueryClientProvider,
     GalleryTreeProvider,
     GlobalAppInit, // needs <GalleryTreeProvider>
     PluginsProvider,
