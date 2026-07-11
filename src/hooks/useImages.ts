@@ -2,7 +2,7 @@ import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { getItemsSource } from '@/items/client';
 import  { type GetImagesParams } from '@/workers/itemsIndexedDbWorker/types';
 
-export function useImages(params: GetImagesParams) {
+export const useImages = (params: GetImagesParams) => {
   return useQuery({
     queryKey: ['items', 'images', params],
     queryFn: async () => {
@@ -12,4 +12,4 @@ export function useImages(params: GetImagesParams) {
     placeholderData: keepPreviousData,
     retry: false,
   });
-}
+};
