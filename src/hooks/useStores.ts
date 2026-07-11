@@ -1,4 +1,5 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
+import { usePalettes } from '@/hooks/usePalettes';
 import {
   ImageSelectionMode, type ItemsState,
   useDialogsStore,
@@ -54,8 +55,10 @@ export const useStores = (): UseStores => {
     updateImages,
     setFrames,
     setImages,
-    setPalettes,
   } = itemsState;
+
+  const { updatePalettes } = usePalettes({});
+
   const { setSyncLastUpdate } = useStoragesStore();
 
   return useMemo(() => {
@@ -97,9 +100,11 @@ export const useStores = (): UseStores => {
         updateLastSyncLocalNow();
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.palettes) {
         // hard replace all palettes -> merging happens in src/javascript/tools/mergeStates/index.ts
-        setPalettes(state.palettes);
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        updatePalettes(state.palettes);
       }
 
       if (state.images) {
@@ -150,7 +155,7 @@ export const useStores = (): UseStores => {
     setDialog,
     setFrames,
     setImages,
-    setPalettes,
+    updatePalettes,
     setImageGroups,
     setPrinterBusy,
     setSyncLastUpdate,

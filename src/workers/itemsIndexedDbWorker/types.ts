@@ -122,6 +122,8 @@ export interface ItemsSource {
 
   getPlugins(): Promise<ItemsSourceResponse<Plugin>>;
   getPluginsByUrls(urls: string[]): Promise<ItemsSourceResponse<Plugin>>;
+  updatePlugins(plugins: Plugin[]): Promise<void>;
+  deletePluginsByUrls(urls: string[]): Promise<void>;
 }
 
 export type FilterStep =

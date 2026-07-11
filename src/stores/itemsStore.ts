@@ -15,28 +15,30 @@ import { type FrameGroup, FrameGroupSchema } from '@/types/FrameGroup';
 import { type Image, ImageSchema } from '@/types/Image';
 import { type SerializableImageGroup, SerializableImageGroupSchema } from '@/types/ImageGroup';
 import { type Palette, PaletteSchema } from '@/types/Palette';
-import { type Plugin, type PluginConfigValues, PluginSchema } from '@/types/Plugin';
+import { PluginSchema } from '@/types/Plugin';
 
 export const ITEMS_STORE_VERSION = 1;
 
 const framesUniqueById = uniqueBy<Frame>('id');
 const frameGroupsUniqueById = uniqueBy<FrameGroup>('id');
 const groupUniqueById = uniqueBy<SerializableImageGroup>('id');
-const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
+// const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
 const framesSortById = sortBy<Frame>('id');
 const palettesUniqueByShortName = uniqueBy<Palette>('shortName');
-const pluginsSortByName = sortBy<Plugin>('name');
+// const pluginsSortByName = sortBy<Plugin>('name');
 const imagesUniqueByHash = uniqueBy<Image>('hash');
 
 // The order of calls is important: First run unique, so that new/updated items are relevant, then sort.
 const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(frames));
-const sortByNameUniqueByUrl = (plugins: Plugin[]) => pluginsSortByName(pluginsUniqueByUrl(plugins));
+// const sortByNameUniqueByUrl = (plugins: Plugin[]) => pluginsSortByName(pluginsUniqueByUrl(plugins));
 
 const ValuesSchema = z.object({
   initialized: z.boolean(),
   frames: z.array(FrameSchema),
   frameGroups: z.array(FrameGroupSchema),
+  /** @deprecated Use `usePalettes` instead */
   palettes: z.array(PaletteSchema),
+  /** @deprecated Use `usePlugins` instead */
   plugins: z.array(PluginSchema),
   images: z.array(ImageSchema),
   imageGroups: z.array(SerializableImageGroupSchema),
@@ -53,13 +55,13 @@ interface Actions {
   updateFrameGroups: (frameGroups: FrameGroup[]) => void;
 
   // Palette updates
-  addPalettes: (palettes: Palette[]) => void;
-  deletePalette: (shortName: string) => void;
+  // addPalettes: (palettes: Palette[]) => void;
+  // deletePalette: (shortName: string) => void;
 
   // Plugin updates
-  addUpdatePluginProperties: (plugin: Plugin) => void;
-  deletePlugin: (pluginUrl: string) => void;
-  updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues;
+  // addUpdatePluginProperties: (plugin: Plugin) => void;
+  // deletePlugin: (pluginUrl: string) => void;
+  // updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues;
 
   // Image updates
   addImages: (images: Image[]) => void;
@@ -80,16 +82,16 @@ interface Actions {
   setFrameGroups: (frameGroups: FrameGroup[]) => void;
   setImages: (images: Image[]) => void;
   setImageGroups: (imageGroups: SerializableImageGroup[]) => void;
-  setPalettes: (palettes: Palette[]) => void;
-  setPlugins: (plugins: Plugin[]) => void;
+  // setPalettes: (palettes: Palette[]) => void;
+  // setPlugins: (plugins: Plugin[]) => void;
 }
 
 export type ItemsState = Values & Actions;
 
-interface AddUpdatePalettes {
-  add: Palette[];
-  update: Palette[];
-}
+// interface AddUpdatePalettes {
+//   add: Palette[];
+//   update: Palette[];
+// }
 
 const withPredefinedPalettes = (palettes: Palette[]): Palette[] => palettesUniqueByShortName([
   ...predefinedPalettes.map((gbPalette): Palette => ({
@@ -117,31 +119,31 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           }
         )),
 
-        addPalettes: (palettes: Palette[]) => {
-          const { palettes: statePalettes } = get();
-
-          // split palettes to be added
-          const { update, add } = palettes.reduce((acc: AddUpdatePalettes, palette): AddUpdatePalettes => {
-            const paletteIsKnown = !!statePalettes.find((statePalette) => statePalette.shortName === palette.shortName);
-
-            return paletteIsKnown ? {
-              update: [...acc.update, palette],
-              add: acc.add,
-            } : {
-              update: acc.update,
-              add: [...acc.add, palette],
-            };
-          }, { add: [], update: [] });
-
-          set({
-            palettes: palettesUniqueByShortName([
-              ...add,
-              ...statePalettes.map((statePalette) => (
-                update.find(({ shortName }) => shortName === statePalette.shortName) || statePalette
-              )),
-            ]),
-          });
-        },
+        // addPalettes: (palettes: Palette[]) => {
+        //   const { palettes: statePalettes } = get();
+        //
+        //   // split palettes to be added
+        //   const { update, add } = palettes.reduce((acc: AddUpdatePalettes, palette): AddUpdatePalettes => {
+        //     const paletteIsKnown = !!statePalettes.find((statePalette) => statePalette.shortName === palette.shortName);
+        //
+        //     return paletteIsKnown ? {
+        //       update: [...acc.update, palette],
+        //       add: acc.add,
+        //     } : {
+        //       update: acc.update,
+        //       add: [...acc.add, palette],
+        //     };
+        //   }, { add: [], update: [] });
+        //
+        //   set({
+        //     palettes: palettesUniqueByShortName([
+        //       ...add,
+        //       ...statePalettes.map((statePalette) => (
+        //         update.find(({ shortName }) => shortName === statePalette.shortName) || statePalette
+        //       )),
+        //     ]),
+        //   });
+        // },
 
         deleteFrame: (frameId: string) => (set(({ frames }) => (
           {
@@ -149,17 +151,17 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           }
         ))),
 
-        deletePalette: (shortName: string) => set(({ palettes }) => (
-          {
-            palettes: palettes.filter((palette) => shortName !== palette.shortName),
-          }
-        )),
+        // deletePalette: (shortName: string) => set(({ palettes }) => (
+        //   {
+        //     palettes: palettes.filter((palette) => shortName !== palette.shortName),
+        //   }
+        // )),
 
-        deletePlugin: (pluginUrl: string) => set(({ plugins }) => (
-          {
-            plugins: sortByNameUniqueByUrl(plugins.filter((plugin) => pluginUrl !== plugin.url)),
-          }
-        )),
+        // deletePlugin: (pluginUrl: string) => set(({ plugins }) => (
+        //   {
+        //     plugins: sortByNameUniqueByUrl(plugins.filter((plugin) => pluginUrl !== plugin.url)),
+        //   }
+        // )),
 
         updateFrameGroups: (frameGroups: FrameGroup[]) => (set((itemsState) => (
           {
@@ -167,52 +169,52 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           }
         ))),
 
-        updatePluginConfig: (url: string, key: string, value: string | number): PluginConfigValues => {
-          const { plugins } = get();
+        // updatePluginConfig: (url: string, key: string, value: string | number): PluginConfigValues => {
+        //   const { plugins } = get();
+        //
+        //   const findPlugin = plugins.find((plugin) => plugin.url === url);
+        //
+        //   if (!findPlugin) {
+        //     throw new Error(`Plugin "${url}" not found`);
+        //   }
+        //
+        //   let changedPlugin: Plugin = findPlugin;
+        //
+        //   const newConfigValues: PluginConfigValues = {
+        //     ...(changedPlugin.config || {}),
+        //     [key]: value,
+        //   };
+        //
+        //   changedPlugin = {
+        //     ...changedPlugin,
+        //     config: newConfigValues,
+        //   };
+        //
+        //   set({
+        //     plugins: plugins.map((mapPlugin): Plugin => (
+        //       mapPlugin.url !== url ? mapPlugin : changedPlugin
+        //     )),
+        //   });
+        //
+        //   return newConfigValues;
+        // },
 
-          const findPlugin = plugins.find((plugin) => plugin.url === url);
-
-          if (!findPlugin) {
-            throw new Error(`Plugin "${url}" not found`);
-          }
-
-          let changedPlugin: Plugin = findPlugin;
-
-          const newConfigValues: PluginConfigValues = {
-            ...(changedPlugin.config || {}),
-            [key]: value,
-          };
-
-          changedPlugin = {
-            ...changedPlugin,
-            config: newConfigValues,
-          };
-
-          set({
-            plugins: plugins.map((mapPlugin): Plugin => (
-              mapPlugin.url !== url ? mapPlugin : changedPlugin
-            )),
-          });
-
-          return newConfigValues;
-        },
-
-        addUpdatePluginProperties: (plugin: Plugin) => {
-          const { plugins } = get();
-          const updatedPlugins: Plugin[] = [...plugins];
-
-          const findPlugin = plugins.find(({ url }) => plugin.url === url);
-
-          if (!findPlugin) {
-            updatedPlugins.push(plugin);
-          }
-
-          set({
-            plugins: sortByNameUniqueByUrl(updatedPlugins.map((mapPlugin) => (
-              (mapPlugin.url !== plugin.url) ? mapPlugin : { ...mapPlugin, ...plugin }
-            ))),
-          });
-        },
+        // addUpdatePluginProperties: (plugin: Plugin) => {
+        //   const { plugins } = get();
+        //   const updatedPlugins: Plugin[] = [...plugins];
+        //
+        //   const findPlugin = plugins.find(({ url }) => plugin.url === url);
+        //
+        //   if (!findPlugin) {
+        //     updatedPlugins.push(plugin);
+        //   }
+        //
+        //   set({
+        //     plugins: sortByNameUniqueByUrl(updatedPlugins.map((mapPlugin) => (
+        //       (mapPlugin.url !== plugin.url) ? mapPlugin : { ...mapPlugin, ...plugin }
+        //     ))),
+        //   });
+        // },
 
         addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
           const { imageGroups } = get();
@@ -371,13 +373,13 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           imageGroups,
         }),
 
-        setPalettes: (palettes: Palette[]) => set({
-          palettes: withPredefinedPalettes(palettes),
-        }),
-
-        setPlugins: (plugins: Plugin[]) => set({
-          plugins: pluginsUniqueByUrl(plugins),
-        }),
+        // setPalettes: (palettes: Palette[]) => set({
+        //   palettes: withPredefinedPalettes(palettes),
+        // }),
+        //
+        // setPlugins: (plugins: Plugin[]) => set({
+        //   plugins: pluginsUniqueByUrl(plugins),
+        // }),
       }),
       {
         name: `${PROJECT_PREFIX}-items`,
@@ -385,14 +387,16 @@ export const createItemsStore = (onError: (err: Error) => void) => (
 
         merge: (persistedState: unknown, currentState: ItemsState): ItemsState => {
           const mergedState: ItemsState = {
-            ...currentState,
+            ...(currentState as ItemsState),
             ...(persistedState as object),
             initialized: true,
           };
 
           const itemsState: ItemsState = {
             ...mergedState,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             palettes: withPredefinedPalettes(mergedState.palettes),
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             plugins: mergedState.plugins.map((plugin) => ({
               ...plugin,
               loading: false,
@@ -419,11 +423,13 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           frameGroups: state.frameGroups,
           imageGroups: state.imageGroups,
           images: state.images,
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           plugins: state.plugins.map((plugin) => ({
             ...plugin,
             loading: undefined,
             error: undefined,
           })),
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           palettes: state.palettes.filter(({ isPredefined }) => !isPredefined),
           initialized: false,
         }),

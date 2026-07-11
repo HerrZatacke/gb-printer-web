@@ -16,10 +16,12 @@ export const migrateItems = async (persistedState: unknown): Promise<Partial<Ite
   }
 
   if (v0state.palettes?.length) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     result.palettes = v0state.palettes;
   }
 
   if (v0state.plugins?.length) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     result.plugins = v0state.plugins;
   }
 

@@ -2,8 +2,9 @@ import { redirect, RedirectType } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { parseURL } from 'ufo';
 import { usePluginsContext } from '@/contexts/PluginsContext';
+import { usePlugins } from '@/hooks/usePlugins';
 import { useUrl } from '@/hooks/useUrl';
-import { useInteractionsStore, useItemsStore } from '@/stores/stores';
+import { useInteractionsStore } from '@/stores/stores';
 
 const trustedSources = [
   'https://herrzatacke.github.io',
@@ -23,10 +24,9 @@ interface UseAddPlugin {
 }
 export const useAddPlugin = (): UseAddPlugin => {
   const { searchParams } = useUrl();
-  const url = searchParams.get('pluginUrl') ||'';
+  const url = searchParams.get('pluginUrl') || '';
   const parsedPluginUrl = parseURL(url);
   const [pending, setPending] = useState(false);
-  const { plugins } = useItemsStore();
   const { setError } = useInteractionsStore();
   const { validateAndAddPlugin } = usePluginsContext();
 
@@ -38,9 +38,8 @@ export const useAddPlugin = (): UseAddPlugin => {
     );
   });
 
-  const pluginExists = plugins.some((plugin) => (
-    plugin.url === url
-  ));
+  const { byUrls: [foundPlugin] } = usePlugins({ urls: [url] });
+  const pluginExists = Boolean(foundPlugin);
 
   const addPlugin = useCallback(async () => {
     setPending(true);

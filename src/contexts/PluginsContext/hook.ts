@@ -1,7 +1,10 @@
 import { useCallback, useMemo } from 'react';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { usePlugins } from '@/hooks/usePlugins';
 import { useStores } from '@/hooks/useStores';
+import { pluginsByUrlsQueryOptions } from '@/stores/queries/plugins';
 import {
   useInteractionsStore,
   useItemsStore,
@@ -10,7 +13,6 @@ import {
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import {
   type InitPluginSetupParams,
-  type Plugin,
   type PluginClassInstance,
   type PluginImageData,
   type PluginsContext,
@@ -19,7 +21,8 @@ import { getCollectImageData } from './functions/collectImageData';
 import { initPlugin } from './functions/initPlugin';
 
 export const useContextHook = (): PluginsContext => {
-  const { plugins, images, frames, addUpdatePluginProperties } = useItemsStore();
+  const { images, frames } = useItemsStore();
+  const { updatePlugins, updatePluginState } = usePlugins({});
   const stores = useStores();
   const { startProgress, setProgress, stopProgress } = useProgressStore();
   const { setError } = useInteractionsStore();
@@ -28,33 +31,46 @@ export const useContextHook = (): PluginsContext => {
 
   const initPluginSetupParams = useMemo<InitPluginSetupParams>(() => ({
     collectImageData: getCollectImageData(images, frames),
-    addUpdatePluginProperties,
+    updatePluginState,
     startProgress,
     setProgress,
     stopProgress,
     setError,
     stores,
     importFn: jsonImport,
-  }), [images, frames, addUpdatePluginProperties, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
+  }), [images, frames, updatePluginState, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
-    const plugin: Plugin | undefined = plugins.find((p) => p.url === url);
+    const queryClient = getQueryClient();
+    const { items: [plugin] } = await queryClient.fetchQuery(pluginsByUrlsQueryOptions([url]));
+
     if (!plugin) {
       throw new Error(`Plugin with url "${url}" not found`);
     }
     return initPlugin(initPluginSetupParams, plugin);
-  }, [initPluginSetupParams, plugins]);
+  }, [initPluginSetupParams]);
 
   const validateAndAddPlugin = useCallback(async (url: string): Promise<boolean> => {
-    const plugin: Plugin = plugins.find((p) => p.url === url) ||
-      {
-        url,
-        name: '',
-        description: '',
-      };
+    const pluginInstance = await initPlugin(initPluginSetupParams, {
+      url,
+      name: '',
+      description: '',
+    });
 
-    return !!(await initPlugin(initPluginSetupParams, plugin));
-  }, [initPluginSetupParams, plugins]);
+    if (!pluginInstance) {
+      return false;
+    }
+
+    await updatePlugins([{
+      url,
+      description: pluginInstance.description,
+      name: pluginInstance.name,
+      config: pluginInstance.config,
+      configParams: pluginInstance.configParams,
+    }]);
+
+    return true;
+  }, [initPluginSetupParams, updatePlugins]);
 
 
   const runWithImage = useCallback(async (url: string, imageHash: string): Promise<void> => {

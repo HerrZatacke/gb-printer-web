@@ -4,6 +4,7 @@ import { BatchActionType } from '@/consts/batchActionTypes';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
+import { usePlugins } from '@/hooks/usePlugins';
 import { useStores } from '@/hooks/useStores';
 import {
   useDialogsStore,
@@ -50,7 +51,8 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     setSortOptionsVisible,
     setImageSelection,
   } = useFiltersStore();
-  const { plugins, images: stateImages } = useItemsStore();
+  const { images: stateImages } = useItemsStore();
+  const { plugins } = usePlugins({ list: true });
   const { pageSize } = useSettingsStore();
   const { setEditImages, setEditRGBNImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();

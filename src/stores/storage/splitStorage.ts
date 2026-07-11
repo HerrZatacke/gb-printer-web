@@ -119,7 +119,9 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
     await framesStore.setData(state.frames);
     await imagesStore.setData(state.images);
     await imageGroupsStore.setData(state.imageGroups);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     await palettesStore.setData(state.palettes);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     await pluginsStore.setData(state.plugins);
 
     console.log(`⚙️ saved in ${(performance.now() - start).toFixed(2)}ms`);

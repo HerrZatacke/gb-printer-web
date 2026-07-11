@@ -11,7 +11,12 @@ import {
   getPalettesByShortNames,
   updatePalettes,
 } from '@/workers/itemsIndexedDbWorker/queries/palettes';
-import { getPluginsByUrls, getPlugins } from '@/workers/itemsIndexedDbWorker/queries/plugins';
+import {
+  deletePluginsByUrls,
+  getPlugins,
+  getPluginsByUrls,
+  updatePlugins,
+} from '@/workers/itemsIndexedDbWorker/queries/plugins';
 import { type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
 const api: ItemsSource = {
@@ -37,6 +42,8 @@ const api: ItemsSource = {
 
   getPlugins,
   getPluginsByUrls,
+  updatePlugins,
+  deletePluginsByUrls,
 };
 
 Comlink.expose(api);

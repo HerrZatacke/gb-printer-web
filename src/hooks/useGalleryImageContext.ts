@@ -5,6 +5,7 @@ import { SpecialTags } from '@/consts/SpecialTags';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
+import { usePlugins } from '@/hooks/usePlugins';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
 import {
@@ -61,7 +62,8 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
-  const { plugins, updateImageFavouriteTag } = useItemsStore();
+  const { updateImageFavouriteTag } = useItemsStore();
+  const { plugins } = usePlugins({ list: true });
   const { view, covers } = useGalleryTreeContext();
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();

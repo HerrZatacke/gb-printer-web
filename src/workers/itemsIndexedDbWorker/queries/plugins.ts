@@ -29,3 +29,24 @@ export const getPluginsByUrls = async (urls: string[]): Promise<ItemsSourceRespo
 
   return addPaging(filteredPlugins);
 };
+
+export const updatePlugins = async (plugins: Plugin[]): Promise<void> => {
+  const db = await getDb();
+
+  const tx = db.transaction('plugins', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(plugins.map((palette) => store.put(palette)));
+  await tx.done;
+};
+
+export const deletePluginsByUrls = async (urls: string[]): Promise<void> => {
+const db = await getDb();
+
+  const tx = db.transaction('plugins', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(urls.map((url) => store.delete(url)));
+  await tx.done;
+};
+

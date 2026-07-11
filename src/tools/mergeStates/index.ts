@@ -49,7 +49,9 @@ const mergeStates = (
       images = mergeImages(images, updatedState.images);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (updatedState.palettes && updatedState.palettes.length) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       palettes = mergePalettes(palettes, updatedState.palettes);
     }
 
@@ -59,6 +61,7 @@ const mergeStates = (
   } else {
     frames = updatedState.frames || currentStateFrames;
     images = updatedState.images || currentStateImages;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     palettes = updatedState.palettes || currentStatePalettes;
     imageGroups = updatedState.imageGroups || currentStateImageGroups;
   }

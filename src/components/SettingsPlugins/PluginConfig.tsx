@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { useItemsStore } from '@/stores/stores';
+import { usePlugins } from '@/hooks/usePlugins';
 import { type Plugin } from '@/types/Plugin';
 import PluginInputField from './PluginInputField';
 
@@ -19,7 +19,7 @@ interface Props extends Plugin {
 }
 
 function PluginConfig(props: Props) {
-  const { deletePlugin, updatePluginConfig } = useItemsStore();
+  const { deletePluginsByUrls, updatePluginConfig, pluginStates } = usePlugins({});
   const t = useTranslations('SettingsPlugins');
 
   const {
@@ -28,10 +28,10 @@ function PluginConfig(props: Props) {
     description,
     configParams = {},
     config = {},
-    error,
-    loading,
     pluginIndex,
   } = props;
+
+  const { error, loading } = pluginStates.get(url) || { url, error: false, loading: false };
 
   return (
     <Card
@@ -63,7 +63,7 @@ function PluginConfig(props: Props) {
         action={(
           <IconButton
             title={t('deletePlugin', { name: name || '' })}
-            onClick={() => deletePlugin(url)}
+            onClick={() => deletePluginsByUrls([url])}
           >
             <DeleteIcon />
           </IconButton>

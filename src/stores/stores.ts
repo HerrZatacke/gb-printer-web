@@ -50,4 +50,6 @@ export const useProgressStore = createProgressStore();
 export const useSettingsStore = createSettingsStore();
 export const useStoragesStore = createStoragesStore();
 
-useFiltersStore.getState().cleanRecentImports();
+if (typeof window !== 'undefined') {
+  useFiltersStore.getState().cleanRecentImports();
+}
