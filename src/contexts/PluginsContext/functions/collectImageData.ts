@@ -7,7 +7,7 @@ import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCrea
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
-import { Frame } from '@/types/Frame';
+import { type Frame } from '@/types/Frame';
 import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type GetCanvasOptions, type GetCollectImageDataFn, type PluginImageData } from '@/types/Plugin';
