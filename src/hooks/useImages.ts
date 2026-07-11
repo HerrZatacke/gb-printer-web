@@ -4,7 +4,7 @@ import  { type GetImagesParams } from '@/workers/itemsIndexedDbWorker/types';
 
 export function useImages(params: GetImagesParams) {
   return useQuery({
-    queryKey: ['items', params],
+    queryKey: ['items', 'images', params],
     queryFn: async () => {
       const source = await getItemsSource();
       return source.getImages(params);
