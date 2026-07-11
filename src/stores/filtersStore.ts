@@ -27,7 +27,7 @@ interface Values {
 }
 
 interface Actions {
-  cleanRecentImports: (imageHashes: string[]) => void;
+  cleanRecentImports: () => void;
   setFilters: (filtersTags: string[], filtersPalettes: string[], filtersFrames: string[]) => void;
   setFiltersVisible: (filtersVisible: boolean) => void;
   setImageSelection: (imageSelection: string[]) => void;
@@ -67,13 +67,12 @@ export const createFiltersStore = () => (
         setSortBy: (sortBy: string) => set({ sortBy, sortOptionsVisible: false }),
         setSortOptionsVisible: (sortOptionsVisible: boolean) => set({ sortOptionsVisible }),
 
-        cleanRecentImports: (imageHashes: string[]) => {
+        cleanRecentImports: () => {
           const { recentImports } = get();
           const yesterday = dayjs().subtract(6, 'hour').unix();
 
           set({
-            recentImports: recentImports.filter(({ hash, timestamp }) => (
-              imageHashes.includes(hash) &&
+            recentImports: recentImports.filter(({ timestamp }) => (
               timestamp > yesterday
             )),
           });

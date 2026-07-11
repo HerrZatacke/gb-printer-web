@@ -455,17 +455,6 @@
     "subfolder": "Submap",
     "subfolderWarning": "Voer alleen de naam van de submap in. Anders zal de app volledig oplossen naar “{fullAppPath}”, binnen uw Dropbox, wat waarschijnlijk niet is wat u bedoelde."
   },
-  "SettingsGapiSheets": {
-    "about": "Dit is een experimentele functie. De sessie moet elke 60 minuten worden vernieuwd.",
-    "authenticate": "Authenticeren",
-    "enableAutoSync": "Automatisch synchroniseren",
-    "enableStorage": "Gebruik Google Sheets als opslag",
-    "logout": "Uitloggen",
-    "openSheetLink": "Werkblad in nieuw tabblad openen",
-    "sheetId": "Sheet-ID",
-    "sheetIdHelper": "Je kunt de volledige bewerkingslink plakken om de juiste sheet-id te krijgen.",
-    "tokenExpiry": "Sessie verloopt over {time}"
-  },
   "SettingsGeneric": {
     "enableDebug": "Debug-informatie tonen",
     "exampleDateFormat": "Voorbeeld datumformaat: {format}",
@@ -525,7 +514,6 @@
   },
   "SettingsTabs": {
     "dropboxSettings": "Dropbox-instellingen",
-    "gapiSheetsSettings": "Google Sheets-instellingen",
     "genericSettings": "Algemene instellingen",
     "gitSettings": "Git-instellingen",
     "pluginSettings": "Plugin-instellingen"

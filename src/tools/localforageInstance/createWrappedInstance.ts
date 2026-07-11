@@ -1,8 +1,4 @@
 import localforage from 'localforage';
-import { type SheetName } from '@/contexts/GapiSheetStateContext/consts';
-import { BinaryGapiSyncItem } from '@/contexts/GapiSyncContext/tools/types';
-import { useItemsStore } from '@/stores/stores';
-import { reduceItems } from '@/tools/reduceArray';
 import { Date } from '@/tools/safeDate';
 
 export interface WrappedLocalForageInstance<T> {
@@ -12,13 +8,11 @@ export interface WrappedLocalForageInstance<T> {
   setItem: (key: string, value: T) => Promise<T>;
   getItem: (key: string) => Promise<T | null>;
   removeItem: (key: string) => Promise<void>;
-  getSyncItems: () => Promise<BinaryGapiSyncItem[]>;
-  setSyncItems: (items: BinaryGapiSyncItem[], merge: boolean) => Promise<void>;
 }
 
 const DUMMY = `dummy${(new Date()).getTime()}`;
 
-const createWrappedInstance = <T>(options: LocalForageOptions, lastUpdateSheetName: SheetName): WrappedLocalForageInstance<T> => {
+const createWrappedInstance = <T>(options: LocalForageOptions): WrappedLocalForageInstance<T> => {
   let instance = localforage.createInstance(options);
 
   const createDummys = async () => {
@@ -55,7 +49,6 @@ const createWrappedInstance = <T>(options: LocalForageOptions, lastUpdateSheetNa
     setItem: async (key: string, value: T): Promise<T> => {
       try {
         const item = await instance.setItem(key, value);
-        useItemsStore.getState().setLastUpdate(lastUpdateSheetName);
         return item;
       } catch (error) {
         instance = localforage.createInstance(options);
@@ -74,52 +67,6 @@ const createWrappedInstance = <T>(options: LocalForageOptions, lastUpdateSheetNa
     removeItem: async (key: string): Promise<void> => {
       try {
         await instance.removeItem(key);
-        useItemsStore.getState().setLastUpdate(lastUpdateSheetName);
-      } catch (error) {
-        instance = localforage.createInstance(options);
-        throw error;
-      }
-    },
-    getSyncItems: async (): Promise<BinaryGapiSyncItem[]> => {
-      try {
-        const keys = await instance.keys();
-
-        const allItems = await Promise.all(keys.map(async (key): Promise<BinaryGapiSyncItem | null> => {
-          const data = await instance.getItem<string | null>(key);
-          if (typeof data !== 'string') {
-            return null;
-          }
-
-          return { hash: key, data: btoa(data) };
-        }));
-
-        return allItems.reduce(reduceItems<BinaryGapiSyncItem>, []);
-      } catch (error) {
-        instance = localforage.createInstance(options);
-        throw error;
-      }
-    },
-    setSyncItems: async (items: BinaryGapiSyncItem[], merge: boolean): Promise<void> => {
-      const syncedHashes = new Set<string>();
-      try {
-        for (const { hash, data } of items) {
-          await instance.setItem(hash, atob(data));
-          syncedHashes.add(hash);
-        }
-
-        if (!merge) {
-          const keys = await instance.keys();
-          const toDelete = keys.filter((key) => !syncedHashes.has(key));
-
-          console.log((await instance.keys()).length);
-
-          for (const hash of toDelete) {
-            console.log(`deleting ${hash}`);
-            await instance.removeItem(hash);
-          }
-
-          console.log((await instance.keys()).length);
-        }
       } catch (error) {
         instance = localforage.createInstance(options);
         throw error;

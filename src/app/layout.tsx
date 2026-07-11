@@ -3,9 +3,6 @@ import { type Viewport } from 'next';
 import { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import GlobalAppInit from '@/components/GlobalAppInit';
 import { GalleryTreeProvider } from '@/contexts/GalleryTreeContext';
-import { GapiSheetStateProvider } from '@/contexts/GapiSheetStateContext';
-import { GapiSyncProvider  } from '@/contexts/GapiSyncContext';
-import { GISProvider } from '@/contexts/GisContext';
 import { I18nProvider } from '@/contexts/I18nContext';
 import { NavigationItemsProvider } from '@/contexts/NavigationItemsContext';
 import { NavigationToolsProvider } from '@/contexts/NavigationToolsContext';
@@ -26,9 +23,6 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
     SearchParamsProvider,
     I18nProvider,
     TrackingProvider,
-    GISProvider,
-    GapiSheetStateProvider,
-    GapiSyncProvider,
     PortsProvider,
     GalleryTreeProvider,
     GlobalAppInit, // needs <GalleryTreeProvider>
