@@ -1,5 +1,7 @@
 import { ExportTypes } from '@/consts/exportTypes';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
+import { palettesListQueryOptions } from '@/stores/queries/palettes';
 import {
   type Values,
   ITEMS_STORE_VERSION,
@@ -8,7 +10,6 @@ import {
 } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
 import { type ExportableState, type JSONExport, type JSONExportBinary } from '@/types/ExportState';
-import { Palette } from '@/types/Palette';
 import { type GetSettingsOptions } from '@/types/Sync';
 import getFrames from './getFrames';
 import getFramesForExport from './getFramesForExport';
@@ -68,12 +69,14 @@ const getExportKeys = (what: ExportTypes): ExportableKey[] => {
 export const getSettings = async (
   what: ExportTypes,
   itemsState: ItemsState,
-  palettes: Palette[],
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {
   // get all possible exportable properties
   const { frames, images, imageGroups, frameGroups, plugins } = itemsState;
   const { imageSelection } = useFiltersStore.getState();
+
+  const queryClient = getQueryClient();
+  const { items: palettes } = await queryClient.fetchQuery(palettesListQueryOptions());
 
   const exportableState: ExportableState = {
     ...getExportKeys(what)

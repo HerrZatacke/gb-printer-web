@@ -61,11 +61,11 @@ export const useImportExportSettings = (): ImportExportSettings => {
   const { palettes } = usePalettes({ list: true });
 
   const getSettingsFile = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<File> => {
-    const currentSettings = await getSettings(what, itemsState, palettes, { selectedFrameGroup });
+    const currentSettings = await getSettings(what, itemsState, { selectedFrameGroup });
     const filename = what === 'frames' ? 'frames' : [what, selectedFrameGroup].filter(Boolean).join('_');
 
     return new File(new Array(currentSettings), `${filename}.json`, { type: 'application/json' });
-  }, [itemsState, palettes]);
+  }, [itemsState]);
 
   const downloadSettings = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<void> => {
     const settingsFile = await getSettingsFile(what, selectedFrameGroup);

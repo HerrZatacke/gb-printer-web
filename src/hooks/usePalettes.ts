@@ -1,6 +1,11 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { getItemsSource } from '@/items/client';
+import {
+  paletteKeys,
+  palettesByShortNameQueryOptions,
+  palettesListQueryOptions,
+} from '@/stores/queries/palettes';
 import { Palette } from '@/types/Palette';
 
 export interface UsePalettes {
@@ -18,28 +23,18 @@ export interface UsePalettesOptions {
   shortNames?: string[];
 }
 
-const baseKey = ['items', 'palettes'];
-
 export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalettes => {
   const queryClient = useQueryClient();
 
   const listQuery = useQuery({
-    queryKey: [...baseKey, 'list'],
-    queryFn: async () => {
-      const source = await getItemsSource();
-      return source.getPalettes();
-    },
+    ...palettesListQueryOptions(),
     enabled: Boolean(list),
     placeholderData: keepPreviousData,
     retry: false,
   });
 
   const byShortNamesQuery = useQuery({
-    queryKey: [...baseKey, 'byShortName', shortNames],
-    queryFn: async () => {
-      const source = await getItemsSource();
-      return source.getPalettesByShortNames(shortNames || []);
-    },
+    ...palettesByShortNameQueryOptions(shortNames || []),
     enabled: Boolean(shortNames?.length),
     placeholderData: keepPreviousData,
     retry: false,
@@ -48,13 +43,13 @@ export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalett
   const updatePalettes = useCallback(async (palettes: Palette[]): Promise<void> => {
     const source = await getItemsSource();
     await source.updatePalettes(palettes);
-    queryClient.invalidateQueries({ queryKey: baseKey });
+    queryClient.invalidateQueries({ queryKey: paletteKeys.all });
   }, [queryClient]);
 
   const deletePalettesByShortNames = useCallback(async (deleteShortNames: string[]): Promise<void> => {
     const source = await getItemsSource();
     await source.deletePalettesByShortNames(deleteShortNames);
-    queryClient.invalidateQueries({ queryKey: baseKey });
+    queryClient.invalidateQueries({ queryKey: paletteKeys.all });
   }, [queryClient]);
 
   return {

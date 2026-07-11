@@ -104,7 +104,7 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 });
 
 // ToDo: move to src/javascript/app/components/Overlays/VideoParamsForm/useVideoForm.ts
-export const createAnimation = async (itemsState: ItemsState, palettes: Palette[]) => {
+export const createAnimation = async (itemsState: ItemsState) => {
   const { setError, videoSelection } = useInteractionsStore.getState();
   const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
   const { frames, images: stateImages } = itemsState;
@@ -161,7 +161,7 @@ export const createAnimation = async (itemsState: ItemsState, palettes: Palette[
     const lockFrame = videoLockFrame || image.lockFrame || false;
     const rotation = image.rotation || 0;
 
-    const { palette, framePalette } = getImagePalettes(palettes, { ...image, lockFrame }); // set Lockframe to value set by global animate settings
+    const { palette, framePalette } = await getImagePalettes({ ...image, lockFrame }); // set Lockframe to value set by global animate settings
 
     const frame = frames.find(({ id }) => id === image.frame);
     const frameData = frame ? await loadFrameData(frame.hash) : null;

@@ -12,7 +12,7 @@ import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type GetCanvasOptions, type GetCollectImageDataFn, type PluginImageData } from '@/types/Plugin';
 
-export const getCollectImageData: GetCollectImageDataFn = (images: Image[], palettes: Palette[], frames: Frame[]) => (hash: string): PluginImageData => {
+export const getCollectImageData: GetCollectImageDataFn = (images: Image[], frames: Frame[]) => async (hash: string): Promise<PluginImageData> => {
   const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
 
   const meta = images.find((image) => image.hash === hash);
@@ -20,7 +20,7 @@ export const getCollectImageData: GetCollectImageDataFn = (images: Image[], pale
     throw new Error('image not found');
   }
 
-  const { palette: selectedPalette, framePalette: selectedFramePalette } = getImagePalettes(palettes, meta);
+  const { palette: selectedPalette, framePalette: selectedFramePalette } = await getImagePalettes(meta);
   if (!selectedPalette) {
     throw new Error('selectedPalette not found');
   }

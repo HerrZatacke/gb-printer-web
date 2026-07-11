@@ -1,8 +1,7 @@
 import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { usePalettes } from '@/hooks/usePalettes';
 import {
   type ImageSelectionMode,
   useFiltersStore,
@@ -10,7 +9,7 @@ import {
   useSettingsStore,
 } from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
-import { getImagePalettes } from '@/tools/getImagePalettes';
+import { getImagePalettes, ImagePalettes } from '@/tools/getImagePalettes';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNHashes, type RGBNImage } from '@/types/Image';
@@ -58,31 +57,50 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
   } = useFiltersStore();
 
   const { images: stateImages } = useItemsStore();
-  const { palettes } = usePalettes({ list: true });
+  const stateImage = stateImages.find((img) => img.hash === hash);
 
   const selectionIndex = imageSelection.indexOf(hash);
 
+  const [imagePalettes, setImagePalettes] = useState<ImagePalettes | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+
+    if (stateImage) {
+      getImagePalettes(stateImage)
+        .then((data) => {
+          console.log({ data });
+          if (!cancelled) {
+            setImagePalettes(data);
+          }
+        });
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [stateImage]);
+
   const galleryImageData = useMemo((): GalleryImageData | null => {
-    const image = stateImages.find((img) => img.hash === hash);
+
     let palette: RGBNPalette | string[];
     let framePalette: string[] = [];
 
-    if (!image) {
+    if (!stateImage || !imagePalettes) {
       return null;
     }
 
     const {
       palette: selectedPalette,
       framePalette: selectedFramePalette,
-    } = getImagePalettes(palettes, image);
+    } = imagePalettes;
 
-    const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
+    const { invertPalette, invertFramePalette } = getPaletteSettings(stateImage as MonochromeImage);
 
     if (!selectedPalette) {
       throw new Error('Palette missing?');
     }
 
-    if (isRGBNImage(image)) {
+    if (isRGBNImage(stateImage)) {
       palette = selectedPalette as RGBNPalette;
     } else {
       palette = ((selectedPalette || missingGreyPalette) as Palette).palette;
@@ -91,20 +109,20 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
 
 
     return ({
-      title: image.title,
-      created: image.created,
-      frame: image.frame,
-      hashes: (image as RGBNImage).hashes || undefined,
-      tags: image.tags,
+      title: stateImage.title,
+      created: stateImage.created,
+      frame: stateImage.frame,
+      hashes: (stateImage as RGBNImage).hashes || undefined,
+      tags: stateImage.tags,
       palette,
       framePalette,
-      lockFrame: image.lockFrame,
+      lockFrame: stateImage.lockFrame,
       invertPalette,
       invertFramePalette,
-      rotation: image.rotation,
+      rotation: stateImage.rotation,
       selectionIndex,
     });
-  }, [hash, selectionIndex, palettes, stateImages]);
+  }, [selectionIndex, stateImage, imagePalettes]);
 
   const { view, covers } = useGalleryTreeContext();
 

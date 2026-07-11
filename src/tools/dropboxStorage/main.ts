@@ -10,7 +10,7 @@ import {
   useStoragesStore,
 } from '@/stores/stores';
 import { delay } from '@/tools/delay';
-import { prepareFiles, PrepareFilesOptions } from '@/tools/download';
+import { prepareFiles, type PrepareFilesOptions } from '@/tools/download';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import getUploadFiles from '@/tools/getUploadFiles';
 import { loadImageTiles } from '@/tools/loadImageTiles';
@@ -126,7 +126,6 @@ export const dropBoxSyncTool = (
     setSyncSelect(false);
 
     const { frames, images: stateImages } = stores.getSyncToolData().itemsState;
-    const palettes = stores.getSyncToolData().palettes;
 
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
@@ -135,7 +134,6 @@ export const dropBoxSyncTool = (
       exportScaleFactors,
       exportFileTypes,
       handleExportFrame,
-      palettes,
       fileNameStyle,
     };
     const loadTiles = loadImageTiles(stateImages, frames);

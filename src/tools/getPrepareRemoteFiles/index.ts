@@ -65,8 +65,8 @@ const getPrepareRemoteFiles = (
     ]
       .join('\n');
 
-    const { itemsState, palettes } = getSyncToolData();
-    const remoteSettings: string = await getSettings(ExportTypes.JSON_EXPORT, itemsState, palettes, { lastUpdateUTC });
+    const { itemsState } = getSyncToolData();
+    const remoteSettings: string = await getSettings(ExportTypes.JSON_EXPORT, itemsState, { lastUpdateUTC });
 
     toUpload.push(
       {

@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { usePalettes } from '@/hooks/usePalettes';
 import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
 import { createAnimation, videoParamsWithDefaults } from '@/tools/createAnimation';
 import { type VideoParams } from '@/types/VideoParams';
@@ -19,12 +18,11 @@ export const useVideoForm = (): UseVideoForm => {
   const imageCount = videoSelection.length || 0;
 
   const itemsState = useItemsStore();
-  const { palettes } = usePalettes({ list: true });
 
   const animate = useCallback(() => {
-    createAnimation(itemsState, palettes);
+    createAnimation(itemsState);
     setVideoSelection([]); // Hide dialog
-  }, [itemsState, palettes, setVideoSelection]);
+  }, [itemsState, setVideoSelection]);
 
   return {
     imageCount,

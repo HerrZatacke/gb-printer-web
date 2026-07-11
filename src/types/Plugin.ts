@@ -82,8 +82,8 @@ export interface PluginClassInstance {
   setConfig: (config: PluginConfigValues) => void;
 }
 
-export type CollectImageDataFn = (hash: string) => PluginImageData
-export type GetCollectImageDataFn = (images: Image[], palettes: Palette[], frames: Frame[]) => CollectImageDataFn;
+export type CollectImageDataFn = (hash: string) => Promise<PluginImageData>;
+export type GetCollectImageDataFn = (images: Image[], frames: Frame[]) => CollectImageDataFn;
 
 export interface PluginArgs {
   saveAs: typeof FileSaver;

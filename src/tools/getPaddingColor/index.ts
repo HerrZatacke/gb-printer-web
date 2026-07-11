@@ -1,9 +1,8 @@
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type Image } from '@/types/Image';
-import { type Palette } from '@/types/Palette';
 
-export const getPaddingColor = (images: Image[], palettes: Palette[], imageHash: string) => {
+export const getPaddingColor = async (images: Image[], imageHash: string): Promise<string> => {
   const image = images.find(({ hash }) => hash === imageHash);
   if (!image) {
     throw new Error('image not found');
@@ -13,7 +12,7 @@ export const getPaddingColor = (images: Image[], palettes: Palette[], imageHash:
     return '#000';
   }
 
-  const palette = getImagePalettes(palettes, image).framePalette;
+  const palette = (await getImagePalettes(image)).framePalette;
 
   if (!palette) {
     return '#000';

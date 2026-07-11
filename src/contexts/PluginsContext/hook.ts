@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
-import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
 import {
   useInteractionsStore,
@@ -21,7 +20,6 @@ import { initPlugin } from './functions/initPlugin';
 
 export const useContextHook = (): PluginsContext => {
   const { plugins, images, frames, addUpdatePluginProperties } = useItemsStore();
-  const { palettes } = usePalettes({ list: true });
   const stores = useStores();
   const { startProgress, setProgress, stopProgress } = useProgressStore();
   const { setError } = useInteractionsStore();
@@ -29,7 +27,7 @@ export const useContextHook = (): PluginsContext => {
   const { sendEvent } = useTracking();
 
   const initPluginSetupParams = useMemo<InitPluginSetupParams>(() => ({
-    collectImageData: getCollectImageData(images, palettes, frames),
+    collectImageData: getCollectImageData(images, frames),
     addUpdatePluginProperties,
     startProgress,
     setProgress,
@@ -37,7 +35,7 @@ export const useContextHook = (): PluginsContext => {
     setError,
     stores,
     importFn: jsonImport,
-  }), [images, palettes, frames, addUpdatePluginProperties, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
+  }), [images, frames, addUpdatePluginProperties, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
     const plugin: Plugin | undefined = plugins.find((p) => p.url === url);
@@ -60,17 +58,17 @@ export const useContextHook = (): PluginsContext => {
 
 
   const runWithImage = useCallback(async (url: string, imageHash: string): Promise<void> => {
-    const pluginImage: PluginImageData = getCollectImageData(images, palettes, frames)(imageHash);
+    const pluginImage: PluginImageData = await getCollectImageData(images, frames)(imageHash);
     (await getInstance(url))?.withImage(pluginImage);
     sendEvent('runPlugin', { imageCount: 1 });
-  }, [getInstance, images, palettes, frames, sendEvent]);
+  }, [getInstance, images, frames, sendEvent]);
 
   const runWithImages = useCallback(async (url: string, imageSelection: string[]): Promise<void> => {
-    const pluginImages: PluginImageData[] = imageSelection.map(getCollectImageData(images, palettes, frames));
+    const pluginImages: PluginImageData[] = await Promise.all(imageSelection.map(getCollectImageData(images, frames)));
     if (!pluginImages.length) { return; }
     (await getInstance(url))?.withSelection(pluginImages);
     sendEvent('runPlugin', { imageCount: nextPowerOfTwo(pluginImages.length) });
-  }, [getInstance, images, palettes, frames, sendEvent]);
+  }, [getInstance, images, frames, sendEvent]);
 
   return {
     validateAndAddPlugin,

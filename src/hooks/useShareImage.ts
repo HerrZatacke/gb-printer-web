@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
 import { useTracking } from '@/contexts/TrackingContext';
-import { usePalettes } from '@/hooks/usePalettes';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { PrepareFilesOptions, prepareFiles } from '@/tools/download';
+import { type PrepareFilesOptions, prepareFiles } from '@/tools/download';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import { Date } from '@/tools/safeDate';
 
@@ -14,7 +13,6 @@ interface UseShareImage {
 const useShareImage = (): UseShareImage => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore();
   const { frames, images } = useItemsStore();
-  const { palettes } = usePalettes({ list: true });
   const { sendEvent } = useTracking();
 
   const shareImage = useCallback(async (hash: string) => {
@@ -35,7 +33,6 @@ const useShareImage = (): UseShareImage => {
       exportScaleFactors: [shareScaleFactor],
       fileNameStyle,
       handleExportFrame,
-      palettes,
     };
 
     const tiles = await loadImageTiles(images, frames)(image.hash);
@@ -55,7 +52,7 @@ const useShareImage = (): UseShareImage => {
       .catch(() => ('¯\\_(ツ)_/¯'));
 
     sendEvent('shareImages', { imageCount: 1 });
-  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, palettes, sendEvent]);
+  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, sendEvent]);
 
   return {
     shareImage,
