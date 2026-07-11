@@ -80,7 +80,7 @@ export const dropBoxSyncTool = (
       switch (direction) {
         case SyncDirection.UP: {
           const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
-          const changes = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
+          const changes = await getUploadFiles(stores.getSyncToolData, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
           await dropboxClient.upload(changes, 'settings');
           useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdateUTC);
           break;

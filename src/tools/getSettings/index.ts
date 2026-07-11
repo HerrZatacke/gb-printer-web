@@ -3,8 +3,8 @@ import { getFrameGroups } from '@/hooks/useFrameGroups';
 import {
   type Values,
   ITEMS_STORE_VERSION,
-  useItemsStore,
   useFiltersStore,
+  ItemsState,
 } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
 import { type ExportableState, type JSONExport, type JSONExportBinary } from '@/types/ExportState';
@@ -66,10 +66,11 @@ const getExportKeys = (what: ExportTypes): ExportableKey[] => {
 
 export const getSettings = async (
   what: ExportTypes,
+  itemsState: ItemsState,
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {
   // get all possible exportable properties
-  const { frames, images, palettes, imageGroups, frameGroups, plugins } = useItemsStore.getState();
+  const { frames, images, palettes, imageGroups, frameGroups, plugins } = itemsState;
   const { imageSelection } = useFiltersStore.getState();
 
   const exportableState: ExportableState = {

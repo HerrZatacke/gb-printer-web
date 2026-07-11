@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useLayoutEffect, useMemo, useRef } from 'react';
 import {
-  ImageSelectionMode,
+  ImageSelectionMode, type ItemsState,
   useDialogsStore,
   useEditStore,
   useFiltersStore,
@@ -14,6 +14,10 @@ import { type Dialog } from '@/types/Dialog';
 import { type ExportableState } from '@/types/ExportState';
 import { type Image } from '@/types/Image';
 
+export interface SyncToolData {
+  itemsState: ItemsState;
+}
+
 export interface UseStores {
   addImages: (images: Image[]) => void;
   deleteImages: (hashes: string[]) => void;
@@ -23,6 +27,7 @@ export interface UseStores {
   setDialog: (dialog: Dialog) => void;
   updateImages: (images: Image[]) => void;
   updateLastSyncLocalNow: () => void;
+  getSyncToolData: () => SyncToolData;
 }
 
 export const useStores = (): UseStores => {
@@ -31,6 +36,15 @@ export const useStores = (): UseStores => {
   const { updateRecentImports, updateImageSelection } = useFiltersStore();
   const { importQueueCancel } = useImportsStore();
   const { setPrinterBusy } = useInteractionsStore();
+  const itemsState = useItemsStore();
+
+  // Update refs for github and dropbox exports
+  const itemsStateRef = useRef(itemsState);
+
+  useLayoutEffect(() => {
+    itemsStateRef.current = itemsState;
+  }, [itemsState]);
+
   const {
     addImages,
     deleteImages,
@@ -40,7 +54,7 @@ export const useStores = (): UseStores => {
     setFrames,
     setImages,
     setPalettes,
-  } = useItemsStore();
+  } = itemsState;
   const { setSyncLastUpdate } = useStoragesStore();
 
   return useMemo(() => {
@@ -107,6 +121,13 @@ export const useStores = (): UseStores => {
       }
     };
 
+    const getSyncToolData = (): SyncToolData => {
+      console.log('called!');
+      return {
+        itemsState: itemsStateRef.current,
+      };
+    };
+
     return ({
       addImages: combinedAddImages,
       deleteImages: combinedDeleteImages,
@@ -116,6 +137,7 @@ export const useStores = (): UseStores => {
       setDialog,
       updateImages: combinedUpdateImages,
       updateLastSyncLocalNow,
+      getSyncToolData,
     });
   }, [
     addImages,

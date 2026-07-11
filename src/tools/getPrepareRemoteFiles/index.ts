@@ -1,4 +1,5 @@
 import { ExportTypes } from '@/consts/exportTypes';
+import { type SyncToolData } from '@/hooks/useStores';
 import { getSettings } from '@/tools/getSettings';
 import { type SyncFile } from '@/types/Export';
 import { type DownloadInfo, type ExportStats, type KeepFile, type RemoteFiles, type UploadFile } from '@/types/Sync';
@@ -27,7 +28,9 @@ const extFromType = (type: string): string => {
   }
 };
 
-const getPrepareRemoteFiles = (): PrepareRemoteFilesFn => {
+const getPrepareRemoteFiles = (
+  getSyncToolData: () => SyncToolData,
+): PrepareRemoteFilesFn => {
   return async (fileCollection: SyncFile[], lastUpdateUTC: number): Promise<RemoteFiles> => {
     const toUpload: UploadFile[] = [];
     const toKeep: KeepFile[] = [];
@@ -62,8 +65,8 @@ const getPrepareRemoteFiles = (): PrepareRemoteFilesFn => {
     ]
       .join('\n');
 
-    // querying only remote settings, so no state object needs to be provided
-    const remoteSettings: string = await getSettings(ExportTypes.JSON_EXPORT, { lastUpdateUTC });
+    const { itemsState } = getSyncToolData();
+    const remoteSettings: string = await getSettings(ExportTypes.JSON_EXPORT, itemsState, { lastUpdateUTC });
 
     toUpload.push(
       {

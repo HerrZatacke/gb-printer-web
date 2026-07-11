@@ -1,5 +1,6 @@
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
+import { type UseStores } from '@/hooks/useStores';
 import {
   LogType,
   useInteractionsStore,
@@ -47,6 +48,7 @@ export const init = () => {
 
 
 export const gitSyncTool = (
+  stores: UseStores,
   remoteImport: (repoContents: JSONExportState) => Promise<void>,
 ): GitSyncTool => {
   const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
@@ -67,7 +69,7 @@ export const gitSyncTool = (
       switch (direction) {
         case SyncDirection.UP: {
           const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
-          const repoTasks = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
+          const repoTasks = await getUploadFiles(stores.getSyncToolData, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
           await octoClient.updateRemoteStore(repoTasks);
           break;
         }

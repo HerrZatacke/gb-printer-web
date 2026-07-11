@@ -50,7 +50,7 @@ export const useSyncSelect = (): UseSyncSelect => {
           break;
 
         case StorageType.GIT:
-          gitStorageTool(remoteImport).startSyncData(direction);
+          gitStorageTool(stores, remoteImport).startSyncData(direction);
           break;
 
         default:
