@@ -5,7 +5,6 @@ import {
   LogType,
   useFiltersStore,
   useInteractionsStore,
-  useItemsStore,
   useProgressStore,
   useSettingsStore,
   useStoragesStore,
@@ -126,7 +125,7 @@ export const dropBoxSyncTool = (
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { frames, palettes, images: stateImages } = useItemsStore.getState();
+    const { frames, palettes, images: stateImages } = stores.getSyncToolData().itemsState; // ToDo: Palettes
 
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
