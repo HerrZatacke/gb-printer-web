@@ -42,16 +42,10 @@ const getNextConfig = async (): Promise<NextConfig> => {
       }),
     },
 
-    // build still requires webpack, so cannot use... :(
-    // turbopack: {},
-
-    webpack: (config) => {
-      config.module.rules.push({
-        test: /\.md$/i,
-        use: 'raw-loader',
-      });
-
-      return config;
+    turbopack: {
+      rules: {
+        '*.md': { loaders: ['raw-loader'], as: '*.js' },
+      },
     },
   };
 
