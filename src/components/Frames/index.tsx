@@ -11,7 +11,7 @@ import Frame from '@/components/Frame';
 import GalleryGrid from '@/components/GalleryGrid';
 import GalleryViewSelect from '@/components/GalleryViewSelect';
 import { ExportTypes } from '@/consts/exportTypes';
-import useFrames from '@/hooks/useFrames';
+import { useFramesPage } from '@/hooks/useFramesPage';
 
 function Frames() {
   const t = useTranslations('Frames');
@@ -28,7 +28,7 @@ function Frames() {
     convertFormat,
     detectFrames,
     enableDebug,
-  } = useFrames();
+  } = useFramesPage();
 
   return (
     <Stack

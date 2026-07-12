@@ -24,7 +24,7 @@ const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
   return group.id;
 };
 
-interface UseFrames {
+interface UseFramesPage {
   selectedFrameGroup: string;
   groupFrames: Frame[];
   setSelectedFrameGroup: (id: string) => void;
@@ -38,7 +38,7 @@ interface UseFrames {
   enableDebug: boolean;
 }
 
-const useFrames = (): UseFrames => {
+export const useFramesPage = (): UseFramesPage => {
   const { enableDebug, savFrameTypes } = useSettingsStore();
   const { frames, images, addFrames, updateFrameGroups } = useItemsStore();
   const { frameGroups } = useFrameGroups();
@@ -163,5 +163,3 @@ const useFrames = (): UseFrames => {
     enableDebug,
   };
 };
-
-export default useFrames;
