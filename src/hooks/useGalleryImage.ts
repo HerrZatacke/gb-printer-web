@@ -68,7 +68,6 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     if (stateImage) {
       getImagePalettes(stateImage)
         .then((data) => {
-          console.log({ data });
           if (!cancelled) {
             setImagePalettes(data);
           }
