@@ -5,7 +5,7 @@ const baseKeys = ['items', 'palettes'] as const;
 export const palettesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
-  byShortName: (shortNames: string[]) => [...baseKeys, 'byShortName', [...shortNames]] as const,
+  byShortNames: (shortNames: string[]) => [...baseKeys, 'byShortNames', [...shortNames]] as const,
 };
 
 export const palettesListQueryOptions = () => {
@@ -20,7 +20,7 @@ export const palettesListQueryOptions = () => {
 
 export const palettesByShortNameQueryOptions = (shortNames: string[]) => {
   return {
-    queryKey: palettesKeys.byShortName(shortNames),
+    queryKey: palettesKeys.byShortNames(shortNames),
     queryFn: async () => {
       const source = await getItemsSource();
       return source.getPalettesByShortNames(shortNames || []);
