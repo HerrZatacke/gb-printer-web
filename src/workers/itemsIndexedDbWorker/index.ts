@@ -19,6 +19,10 @@ import {
 } from '@/workers/itemsIndexedDbWorker/queries/plugins';
 import { type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
+if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
+  throw new Error(`worker is executing outside a worker context (is: "${self.constructor.name}")`);
+}
+
 const api: ItemsSource = {
   init: configureDb,
 

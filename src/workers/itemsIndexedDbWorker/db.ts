@@ -16,15 +16,16 @@ const migrationFunctions: MigrationFn[] = [
 ];
 
 let hostApi: ItemsHostApi | null = null;
-
-export const configureDb = (configureHostApi: ItemsHostApi): void => {
-  hostApi = configureHostApi;
-};
-
 let dbPromise: Promise<IDBPDatabase<ItemsDB>> | null = null;
 let hostApiPromise: Promise<ItemsHostApi> | null = null;
 
-export const openAndPrepareDb = async () => {
+export const configureDb = (configureHostApi: ItemsHostApi): void => {
+  console.log('init call');
+  hostApi = configureHostApi;
+};
+
+
+const openAndPrepareDb = async () => {
   const p = performance.now();
   const afterUpgradeTasks: AfterUpgradeFn[] = [];
 

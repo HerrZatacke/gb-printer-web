@@ -5,7 +5,7 @@ import { useFiltersStore } from '@/stores/stores';
 import { type ItemsHostApi, type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
 declare global {
-  var __itemsSource: ItemsSource | undefined;
+  var __itemsSourcePromise: Promise<ItemsSource> | undefined;
 }
 
 export const getItemsSource = async (): Promise<ItemsSource> => {
@@ -13,34 +13,41 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
     throw new Error('cannot create worker server-side');
   }
 
-  const g = globalThis;
-  if (g.__itemsSource) {
-    return g.__itemsSource;
+  if (!globalThis.__itemsSourcePromise) {
+    globalThis.__itemsSourcePromise = (async () => {
+      const worker = new Worker(new URL('../workers/itemsIndexedDbWorker', import.meta.url), { type: 'module' });
+      const instance = Comlink.wrap<ItemsSource>(worker);
+
+      const hostApi: ItemsHostApi = {
+        async getLegacyStorage(): Promise<Record<string, unknown[]>> {
+          try {
+            const legacyState = JSON.parse(localStorage.getItem('gbp-z-web-items') || 'null');
+            return legacyState?.state || {};
+          } catch {
+            return {};
+          }
+        },
+        async getRecentImports(): Promise<Set<string>> {
+          const recentHashes = useFiltersStore.getState().recentImports.map(({ hash }) => hash);
+          return new Set(recentHashes);
+        },
+        onDataChanged() {
+          getQueryClient().invalidateQueries({ queryKey: ['items'] });
+        },
+      };
+
+      console.log('await instance init');
+      const proxiedApi = Comlink.proxy(hostApi);
+      console.log({ proxiedApi });
+      await instance.init(proxiedApi);
+      console.log('instance initialized');
+
+      return instance;
+    })().catch((err) => {
+      globalThis.__itemsSourcePromise = undefined;
+      throw err;
+    });
   }
 
-  const worker = new Worker(new URL('@/workers/itemsIndexedDbWorker', import.meta.url), { type: 'module' });
-  const instance = Comlink.wrap<ItemsSource>(worker);
-
-  const hostApi: ItemsHostApi = {
-    async getLegacyStorage(): Promise<Record<string, unknown[]>> {
-      try {
-        const legacyState = JSON.parse(localStorage.getItem('gbp-z-web-items') || 'null');
-        return legacyState?.state || {};
-      } catch {
-        return {};
-      }
-    },
-    async getRecentImports(): Promise<Set<string>> {
-      const recentHashes = useFiltersStore.getState().recentImports.map(({ hash }) => hash);
-      return new Set(recentHashes);
-    },
-    onDataChanged() {
-      getQueryClient().invalidateQueries({ queryKey: ['items'] });
-    },
-  };
-
-  await instance.init(Comlink.proxy(hostApi));
-
-  g.__itemsSource = instance;
-  return instance;
+  return globalThis.__itemsSourcePromise;
 };
