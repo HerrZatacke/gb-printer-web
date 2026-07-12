@@ -1,7 +1,7 @@
 import  { type Frame } from '@/types/Frame';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/queryHelpers';
-import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getFrames = async (): Promise<ItemsSourceResponse<Frame>> => {
   const db = await getDb();

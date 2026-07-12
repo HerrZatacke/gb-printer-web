@@ -1,7 +1,7 @@
 import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/queryHelpers';
-import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getImageGroups = async (): Promise<ItemsSourceResponse<SerializableImageGroup>> => {
   const db = await getDb();

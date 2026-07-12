@@ -1,5 +1,5 @@
 import { type IDBPDatabase } from 'idb';
-import { AfterUpgradeFn, type ItemsDB, type MigrationFn } from '@/workers/itemsIndexedDbWorker/types';
+import { type AfterUpgradeFn, type ItemsDB, type MigrationFn } from '@/workers/itemsIndexedDbWorker/types';
 import { v1LegacyData } from './v1LegacyData';
 
 export const migrateV1: MigrationFn = (db: IDBPDatabase<ItemsDB>): AfterUpgradeFn => {

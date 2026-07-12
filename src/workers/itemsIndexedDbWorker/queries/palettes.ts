@@ -2,7 +2,7 @@ import predefinedPalettes from 'gb-palettes';
 import { type Palette } from '@/types/Palette';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/queryHelpers';
-import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getPalettesByShortNames = async (shortNames: string[]): Promise<ItemsSourceResponse<Palette>> => {
   const db = await getDb();

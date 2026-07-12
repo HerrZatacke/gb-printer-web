@@ -1,7 +1,7 @@
 import { FrameGroup } from '@/types/FrameGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/queryHelpers';
-import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getFrameGroups = async (): Promise<ItemsSourceResponse<FrameGroup>> => {
   const db = await getDb();

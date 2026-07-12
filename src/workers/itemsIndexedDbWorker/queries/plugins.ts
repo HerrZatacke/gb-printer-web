@@ -1,7 +1,7 @@
 import  { type Plugin } from '@/types/Plugin';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/queryHelpers';
-import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getPlugins = async (): Promise<ItemsSourceResponse<Plugin>> => {
   const db = await getDb();
