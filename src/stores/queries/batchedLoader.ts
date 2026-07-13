@@ -1,6 +1,10 @@
 type FetchByKeys<T> = (keys: string[]) => Promise<{ items: T[]; missing?: string[] }>;
 
-export const createBatchedLoader = <T>(fetchByKeys: FetchByKeys<T>, getKey: (item: T) => string) => {
+export const createBatchedLoader = <T>(
+  fetchByKeys: FetchByKeys<T>,
+  getKey: (item: T) => string,
+  delay: number,
+) => {
   type PendingEntry = { resolve: (item: T | null) => void; reject: (err: unknown) => void };
 
   let pending = new Map<string, PendingEntry>();
@@ -26,11 +30,12 @@ export const createBatchedLoader = <T>(fetchByKeys: FetchByKeys<T>, getKey: (ite
     }
   };
 
-  const loadByKey = (key: string): Promise<T | null> => {
+  const loadByKey = async (key: string): Promise<T | null> => {
     if (!promises.has(key)) {
       const promise = new Promise<T | null>((resolve, reject) => {
         pending.set(key, { resolve, reject });
       });
+
       promises.set(key, promise);
       promise.finally(() => {
         promises.delete(key);
@@ -39,10 +44,14 @@ export const createBatchedLoader = <T>(fetchByKeys: FetchByKeys<T>, getKey: (ite
 
     if (!scheduled) {
       scheduled = true;
-      queueMicrotask(flush);
+      if (!delay) {
+        queueMicrotask(flush);
+      } else {
+        setTimeout(flush, delay);
+      }
     }
 
-    return promises.get(key)!;
+    return (await promises.get(key)) || null;
   };
 
   return { loadByKey };
