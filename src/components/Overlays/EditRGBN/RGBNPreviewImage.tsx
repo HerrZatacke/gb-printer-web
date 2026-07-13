@@ -13,15 +13,15 @@ interface Props {
 
 function RGBNPreviewImage({ rgbnHashes }: Props) {
   const [tiles, setTiles] = useState<RGBNTiles | null>(null);
-  const { frames: allFrames, images: allImages } = useItemsStore();
+  const { images: allImages } = useItemsStore();
 
   const loadImageTiles = useCallback(
     async (hashesOverride?: RGBNHashes): Promise<RGBNTiles> => {
-      const imageLoader = getLoadImageTiles(allImages, allFrames);
+      const imageLoader = getLoadImageTiles(allImages);
 
       return (await imageLoader('', undefined, undefined, hashesOverride) as RGBNTiles);
     },
-    [allImages, allFrames],
+    [allImages],
   );
 
   useEffect(()=> {

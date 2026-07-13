@@ -111,18 +111,21 @@ export interface ItemsSource {
 
   getFrames(): Promise<ItemsSourceResponse<Frame>>;
   getFramesByIds(ids: string[]): Promise<ItemsSourceResponse<Frame>>;
-  // getFramesByGroup(groupId: string): Promise<ItemsSourceResponse<Frame>>;
+  updateFrames(frames: Frame[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
+  deleteFramesByIds(ids: string[]): Promise<void>;
 
   getFrameGroups(): Promise<ItemsSourceResponse<FrameGroup>>;
+  updateFrameGroups(frameGroups: FrameGroup[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
+  deleteFrameGroupsByIds(ids: string[]): Promise<void>;
 
   getPalettes() : Promise<ItemsSourceResponse<Palette>>;
   getPalettesByShortNames(shortNames: string[]) : Promise<ItemsSourceResponse<Palette>>;
-  updatePalettes(palettes: Palette[]): Promise<void>;
+  updatePalettes(palettes: Palette[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
   deletePalettesByShortNames(shortNames: string[]): Promise<void>;
 
   getPlugins(): Promise<ItemsSourceResponse<Plugin>>;
   getPluginsByUrls(urls: string[]): Promise<ItemsSourceResponse<Plugin>>;
-  updatePlugins(plugins: Plugin[]): Promise<void>;
+  updatePlugins(plugins: Plugin[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
   deletePluginsByUrls(urls: string[]): Promise<void>;
 }
 

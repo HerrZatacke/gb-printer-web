@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { useItemsStore } from '@/stores/stores';
+import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrames } from '@/hooks/useFrames';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 
@@ -76,15 +77,18 @@ export const getFrameGroups = (frames: Frame[], frameGroupNames: FrameGroup[]): 
 
 export interface UseFrameGroups {
   frameGroups: FrameGroup[];
+  isLoadingList: boolean;
 }
 
 export const useFrameGroups = (): UseFrameGroups => {
-  const { frameGroups: frameGroupsState, frames } = useItemsStore();
+  const {  frameGroups: frameGroupsState, isLoadingList } = useFrameGroups2();
+  const { frames } = useFrames({ list: true });
   const frameGroups = useMemo(() => {
     return getFrameGroups(frames, frameGroupsState);
   }, [frameGroupsState, frames]);
 
   return {
     frameGroups,
+    isLoadingList,
   };
 };

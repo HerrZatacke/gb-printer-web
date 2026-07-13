@@ -20,7 +20,6 @@ let dbPromise: Promise<IDBPDatabase<ItemsDB>> | null = null;
 let hostApiPromise: Promise<ItemsHostApi> | null = null;
 
 export const configureDb = (configureHostApi: ItemsHostApi): void => {
-  console.log('init call');
   hostApi = configureHostApi;
 };
 

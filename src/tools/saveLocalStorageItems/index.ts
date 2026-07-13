@@ -54,8 +54,9 @@ export const saveFrameFileContent = async (fileContent: string): Promise<string>
   return saveFrameData(paddedFrameData, imageStartLine);
 };
 
-const saveLocalStorageItems = async ({ images, frames, settings }: RepoContents): Promise<JSONExportState> => {
+export const saveLocalStorageItems = async ({ images, frames, settings }: RepoContents): Promise<JSONExportState> => {
   const settingsImages = settings.state.images || [];
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   const settingsFrames = settings.state.frames || [];
 
   const imagesRehashed = (
@@ -169,5 +170,3 @@ const saveLocalStorageItems = async ({ images, frames, settings }: RepoContents)
 
   return exportState;
 };
-
-export default saveLocalStorageItems;

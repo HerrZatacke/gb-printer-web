@@ -36,11 +36,7 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
         },
       };
 
-      console.log('await instance init');
-      const proxiedApi = Comlink.proxy(hostApi);
-      console.log({ proxiedApi });
-      await instance.init(proxiedApi);
-      console.log('instance initialized');
+      await instance.init(Comlink.proxy(hostApi));
 
       return instance;
     })().catch((err) => {

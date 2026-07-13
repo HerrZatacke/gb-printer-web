@@ -1,18 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
 import { useActivePalette } from '@/hooks/useActivePalette';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
+import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
-import { compressAndHashFrame, loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
-import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
+import { useSettingsStore } from '@/stores/stores';
 import { getFramesForGroup } from '@/tools/getFramesForGroup';
-import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
-import { padFrameData } from '@/tools/saveLocalStorageItems';
-import { load } from '@/tools/storage';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
-import { Image } from '@/types/Image';
 import { useImportExportSettings } from './useImportExportSettings';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
@@ -31,18 +27,19 @@ interface UseFramesPage {
   frameGroups: FrameGroup[];
   exportJson: (what: ExportTypes) => void;
   palette: string[];
+  activeFrameGroupName: string;
   setActiveFrameGroupName: (name: string) => void;
+  saveActiveFrameGroupName: () => void;
   activeFrameGroup: FrameGroup;
-  convertFormat: () => void;
-  detectFrames: () => void;
   enableDebug: boolean;
 }
 
 export const useFramesPage = (): UseFramesPage => {
   const { enableDebug, savFrameTypes } = useSettingsStore();
-  const { frames, images, addFrames, updateFrameGroups } = useItemsStore();
+  const { frames } = useFrames({ list: true });
   const { frameGroups } = useFrameGroups();
-  const { updateLastSyncLocalNow, updateImages } = useStores();
+  const { updateFrameGroups } = useFrameGroups2();
+  const { updateLastSyncLocalNow } = useStores();
   const { downloadSettings } = useImportExportSettings();
   const palette = useActivePalette();
 
@@ -74,80 +71,25 @@ export const useFramesPage = (): UseFramesPage => {
     return () => window.clearTimeout(handle);
   }, [frameGroups, frames, savFrameTypes, selectedFrameGroup]);
 
-  const activeFrameGroup = frameGroups.find(({ id }) => (id === selectedFrameGroup)) || frameGroups[0];
+  const activeFrameGroup = frameGroups.find(({ id }) => id === selectedFrameGroup) || frameGroups[0];
 
-  const setActiveFrameGroupName = (name: string) => {
-    updateFrameGroups([{ ...activeFrameGroup, name }]);
+  const [activeFrameGroupName, setActiveFrameGroupName] = useState<string>(activeFrameGroup?.name || '');
+  const [prevActiveFrameGroupId, setPrevActiveFrameGroupId] = useState<string | undefined>(activeFrameGroup?.id);
+
+  if (activeFrameGroup?.id !== prevActiveFrameGroupId) {
+    setPrevActiveFrameGroupId(activeFrameGroup?.id);
+    setActiveFrameGroupName(activeFrameGroup?.name || '');
+  }
+
+  const saveActiveFrameGroupName = () => {
+    updateFrameGroups([{
+      ...activeFrameGroup,
+      name: activeFrameGroupName,
+    }]);
     updateLastSyncLocalNow();
   };
 
   const exportJson = (what: ExportTypes) => downloadSettings(what, selectedFrameGroup);
-
-  const convertFormat = useCallback(async () => {
-    const updatedFrames = await Promise.all(frames.map(async (frame): Promise<Frame> => {
-      const stateData = await loadFrameData(frame.hash);
-
-      if (!stateData) {
-        return frame;
-      }
-
-      const imageStartLine = stateData.upper.length / 20;
-      const tileData = padFrameData(stateData);
-
-      const { dataHash: newHash } = await compressAndHashFrame(tileData, imageStartLine);
-
-
-      if (frame.hash === newHash) {
-        return frame;
-      }
-
-      const saveHash = await saveFrameData(tileData, imageStartLine);
-
-      return {
-        ...frame,
-        hash: saveHash,
-      };
-    }));
-
-    addFrames(updatedFrames);
-  }, [addFrames, frames]);
-
-  const detectFrames = useCallback(async () => {
-    const unframedImages = images
-      .filter(({ frame }: Image) => !frame)
-      .reduce(reduceImagesMonochrome, [])
-    ;
-
-    const updatedImages: Image[] = [];
-
-    console.log(`found ${unframedImages.length} images without frame`);
-
-    for (const image of unframedImages) {
-      const tiles = await load(image.hash, undefined, true);
-
-      if (!tiles || tiles.length !== 360) { continue; }
-
-      const frameData = getFrameFromFullTiles(tiles, 2);
-      const frameTileData = padFrameData(frameData);
-      const { dataHash } = await compressAndHashFrame(frameTileData, 2);
-
-      const frame = frames.find(({ hash }) => (hash === dataHash));
-
-      if (!frame) {
-        console.log(`unknown frame in image "${image.title}"`);
-        continue;
-      }
-
-
-      updatedImages.push({
-        ...image,
-        frame: frame.id,
-      });
-    }
-
-    console.log(`will update ${updatedImages.length} with correct frame`);
-    updateImages(updatedImages);
-  }, [frames, images, updateImages]);
 
   return {
     selectedFrameGroup,
@@ -156,10 +98,10 @@ export const useFramesPage = (): UseFramesPage => {
     frameGroups,
     exportJson,
     palette: palette?.palette,
+    activeFrameGroupName,
     setActiveFrameGroupName,
+    saveActiveFrameGroupName,
     activeFrameGroup,
-    convertFormat,
-    detectFrames,
     enableDebug,
   };
 };

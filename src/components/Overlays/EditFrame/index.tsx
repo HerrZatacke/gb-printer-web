@@ -1,58 +1,44 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import Lightbox from '@/components/Lightbox';
+import EditFrameForm from '@/components/Overlays/EditFrameForm';
 import useEditFrame from '@/hooks/useEditFrame';
-import { useEditStore, useItemsStore } from '@/stores/stores';
-import EditFrameForm from './EditFrameForm';
+import { frameIdFromGroupAndIndex } from '@/hooks/useEditFrameForm';
+import { useFrames } from '@/hooks/useFrames';
+import { useEditStore } from '@/stores/stores';
 
 const EditFrame = () => {
   const t = useTranslations('EditFrame');
   const { editFrame } = useEditStore();
-  const { frames } = useItemsStore();
-  const frame = frames.find(({ id }) => id === editFrame);
+  const { frames } = useFrames({ list: true });
+  const frame = frames.find((f) => f.id === editFrame) || null;
 
   const {
+    editFrameData,
+    onEditDataChange,
+    onFormValidChange,
+    formValid,
     cancelEdit,
     saveFrame,
-    updateId,
-    fullId,
-    formValid,
-    frameGroups,
-    frameGroup,
-    frameIndex,
-    setFrameIndex,
-    frameName,
-    setFrameGroup,
-    setFrameName,
-    idValid,
-    groupIdValid,
-    frameIndexValid,
   } = useEditFrame(frame);
 
-  const idChange = updateId !== fullId ? t('idChange', { newId: fullId }) : '';
+  const newId = editFrameData ? frameIdFromGroupAndIndex(editFrameData.frameGroup, editFrameData.frameIndex) : '';
+  const idChange = (newId && newId !== editFrameData?.initialId) ? t('idChange', { newId }) : '';
 
   return (
     <Lightbox
       confirm={saveFrame}
       canConfirm={formValid}
-      header={frame ? t('dialogHeader', { id: updateId, idChange }) : undefined}
+      header={editFrameData ? t('dialogHeader', { id: editFrameData.initialId, idChange }) : undefined}
       deny={cancelEdit}
     >
-      { frame ? (
+      {editFrameData && (
         <EditFrameForm
-          groups={frameGroups}
-          fullId={fullId}
-          frameIndex={frameIndex}
-          frameGroup={frameGroup}
-          frameName={frameName}
-          idValid={idValid}
-          groupIdValid={groupIdValid}
-          frameIndexValid={frameIndexValid}
-          setFrameIndex={setFrameIndex}
-          setFrameGroup={setFrameGroup}
-          setFrameName={setFrameName}
+          editFrameData={editFrameData}
+          onEditDataChange={onEditDataChange}
+          onFormValidChange={onFormValidChange}
         />
-      ) : null }
+      )}
     </Lightbox>
   );
 };

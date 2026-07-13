@@ -11,7 +11,7 @@ import {
 import { delay } from '@/tools/delay';
 import getUploadFiles from '@/tools/getUploadFiles';
 import { Date } from '@/tools/safeDate';
-import saveLocalStorageItems from '@/tools/saveLocalStorageItems';
+import { saveLocalStorageItems } from '@/tools/saveLocalStorageItems';
 import { type JSONExportState } from '@/types/ExportState';
 import { type AddToQueueFn, type GitStorageSettings } from '@/types/Sync';
 import OctoClient from './OctoClient';

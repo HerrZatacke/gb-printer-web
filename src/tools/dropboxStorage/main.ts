@@ -1,6 +1,8 @@
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { type UseStores } from '@/hooks/useStores';
+import { framesByIdsQueryOptions } from '@/stores/queries/frames';
 import {
   LogType,
   useFiltersStore,
@@ -17,7 +19,7 @@ import { loadImageTiles } from '@/tools/loadImageTiles';
 import parseAuthParams from '@/tools/parseAuthParams';
 import replaceDuplicateFilenames from '@/tools/replaceDuplicateFilenames';
 import { Date } from '@/tools/safeDate';
-import saveLocalStorageItems, { saveImageFileContent } from '@/tools/saveLocalStorageItems';
+import { saveLocalStorageItems, saveImageFileContent } from '@/tools/saveLocalStorageItems';
 import { DownloadArrayBuffer } from '@/types/download';
 import { type RepoContents } from '@/types/Export';
 import { type JSONExportState } from '@/types/ExportState';
@@ -38,6 +40,7 @@ export const dropBoxSyncTool = (
   stores: UseStores,
   remoteImport: (repoContents: JSONExportState) => Promise<void>,
 ): DropBoxSyncTool => {
+  const queryClient = getQueryClient();
   const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
   const { setProgressLog } = useProgressStore.getState();
 
@@ -125,7 +128,7 @@ export const dropBoxSyncTool = (
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { frames, images: stateImages } = stores.getSyncToolData().itemsState;
+    const { images: stateImages } = stores.getSyncToolData().itemsState;
 
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
@@ -136,14 +139,14 @@ export const dropBoxSyncTool = (
       handleExportFrame,
       fileNameStyle,
     };
-    const loadTiles = loadImageTiles(stateImages, frames);
+    const loadTiles = loadImageTiles(stateImages);
 
     const downloadInfos = (await Promise.all(
       images.map(async (image, index): Promise<unknown> => (
         addToQueue('Generate images and hashes')(`${index + 1}/${images.length}`, 10, async () => {
           const tiles = await loadTiles(image.hash);
 
-          const frame = frames.find(({ id }) => id === image.frame);
+          const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
           const frameData = frame ? await loadFrameData(frame?.hash) : null;
           const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 

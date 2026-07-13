@@ -2,6 +2,7 @@ import { type RGBNPalette } from 'gb-image-decoder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
+import { useFrames } from '@/hooks/useFrames';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { usePalettes } from '@/hooks/usePalettes';
@@ -28,7 +29,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const [gbImageProps, setGbImageProps] = useState<PartialGameBoyImageProps | null>(null);
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
-  const { frames: allFrames, images: allImages } = useItemsStore();
+  const { images: allImages } = useItemsStore();
   const { palettes: allPalettes } = usePalettes({ list: true });
   const { dropboxStorage, gitStorage } = useStoragesStore();
   const { galleryImageData } = useGalleryImage(hash);
@@ -60,20 +61,19 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
         }
       };
 
-      const imageLoader = getLoadImageTiles(allImages, allFrames, recoverFn);
+      const imageLoader = getLoadImageTiles(allImages, recoverFn);
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashesOverride);
     },
-    [allImages, allFrames, dropboxStorage.use, gitStorage.use, stores, remoteImport],
+    [allImages, dropboxStorage.use, gitStorage.use, stores, remoteImport],
   );
 
   const isRGB = useMemo(() => {
     return  Boolean(galleryImageData?.hashes);
   }, [galleryImageData]);
 
-  const frameHash = useMemo(() => (
-    allFrames.find(({ id }) => id === frameId)?.hash
-  ), [allFrames, frameId]);
+  const { byIds: [foundFrame] } = useFrames({ ids: frameId ? [frameId] : [] });
+  const frameHash = foundFrame?.hash;
 
   const invertPalette = useMemo(() => ((overrides?.invertPalette !== undefined) ?
     overrides.invertPalette :

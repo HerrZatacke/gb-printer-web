@@ -5,6 +5,8 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrames } from '@/hooks/useFrames';
 import { usePalettes } from '@/hooks/usePalettes';
 import { usePlugins } from '@/hooks/usePlugins';
 import { useInteractionsStore, useItemsStore } from '@/stores/stores';
@@ -68,20 +70,15 @@ export const useContextHook = (): TrackingContextType => {
   }, [consentState]);
 
 
-  const itemsState = useItemsStore();
+  const { images, imageGroups } = useItemsStore();
   const { palettes } = usePalettes({ list: true });
   const { plugins } = usePlugins({ list: true });
+  const { frames } = useFrames({ list: true });
+  const { frameGroups } = useFrameGroups2();
   const { errors } = useInteractionsStore();
 
   // Send stats event when itemState changes
   useEffect(() => {
-    const {
-      images,
-      imageGroups,
-      frames,
-      frameGroups,
-    } = itemsState;
-
     sendEvent('global-stats', {
       images: nextPowerOfTwo(images.length),
       imageGroups: nextPowerOfTwo(imageGroups.length),
@@ -90,7 +87,7 @@ export const useContextHook = (): TrackingContextType => {
       palettes: nextPowerOfTwo(palettes.length),
       plugins: nextPowerOfTwo(plugins.length),
     });
-  }, [itemsState, palettes, plugins, sendEvent]);
+  }, [frameGroups, frames, imageGroups, images, palettes, plugins, sendEvent]);
 
 
   // Send error event when error occurs

@@ -1,9 +1,11 @@
 import { DialoqQuestionType } from '@/consts/dialog';
 import { ImportMethod } from '@/consts/ImportMethod';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
+import { frameGroupsListQueryOptions } from '@/stores/queries/frameGroups';
+import { framesListQueryOptions } from '@/stores/queries/frames';
 import {
   useDialogsStore,
-  useItemsStore,
   useSettingsStore,
 } from '@/stores/stores';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
@@ -19,7 +21,10 @@ export interface TransformOptions {
 
 export const transformSav = async (file: File, options: TransformOptions): Promise<ImportResult> => {
   const { dismissDialog, setDialog } = useDialogsStore.getState();
-  const { frames, frameGroups } = useItemsStore.getState();
+  const queryClient = getQueryClient();
+  const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
+  const { items: frameGroups } = await queryClient.fetchQuery(frameGroupsListQueryOptions());
+
   const { savFrameTypes, setSavFrameTypes } = useSettingsStore.getState();
   const data = await readFileAs(file, ReadAs.UINT8_ARRAY);
 

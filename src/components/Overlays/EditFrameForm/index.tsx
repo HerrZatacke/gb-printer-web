@@ -3,44 +3,52 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
-import React from 'react';
-import { type FrameGroup } from '@/types/FrameGroup';
+import React, { Dispatch, SetStateAction } from 'react';
+import { EditFrameData, useEditFrameForm } from '@/hooks/useEditFrameForm';
+import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
 
 interface Props {
-  frameIndex: number;
-  frameName: string;
-  idValid: boolean;
-  groupIdValid: boolean;
-  frameIndexValid: boolean;
-  frameGroup: string;
-  groups: FrameGroup[];
-  fullId: string;
-  frameGroupName?: string;
+  editFrameData: EditFrameData;
+  onEditDataChange: Dispatch<SetStateAction<EditFrameData | null>>;
+  onFormValidChange: Dispatch<SetStateAction<boolean>>;
+
   extraFields?: React.ReactNode;
-  setFrameGroupName?: (frameGroupName: string) => void;
-  setFrameIndex: (frameIndex: number) => void;
-  setFrameGroup: (frameGroup: string) => void;
-  setFrameName: (frameName: string) => void;
+  newFrameGroupName?: string;
+  setNewFrameGroupName?: (frameGroupName: string) => void;
 }
 
 function EditFrameForm({
-  frameIndex,
-  frameName,
-  idValid,
-  groupIdValid,
-  frameIndexValid,
-  frameGroup,
-  groups,
-  fullId,
-  frameGroupName,
+  editFrameData,
+  onEditDataChange,
+  onFormValidChange,
   extraFields,
-  setFrameGroupName,
-  setFrameIndex,
-  setFrameGroup,
-  setFrameName,
+  newFrameGroupName,
+  setNewFrameGroupName,
 }: Props) {
   const t = useTranslations('EditFrameForm');
-  const groupExists = Boolean(groups.find(({ id }) => (frameGroup === id)));
+  const { frameGroups } = useFrameGroups2();
+
+  const {
+    frameIndex,
+    setFrameIndex,
+    frameGroup,
+    setFrameGroup,
+    frameName,
+    setFrameName,
+
+    fullId,
+
+    validation: {
+      idValid,
+      groupIdValid,
+      frameIndexValid,
+      groupExists,
+    },
+  } = useEditFrameForm(
+    editFrameData,
+    onEditDataChange,
+    onFormValidChange,
+  );
 
   return (
     <Stack
@@ -67,7 +75,7 @@ function EditFrameForm({
                 return selected === '' ? t('selectFrameGroup') : t('newFrameGroup');
               }
 
-              return groups.find(({ id }) => (
+              return frameGroups.find(({ id }) => (
                 id === selected
               ))?.name || t('unknown');
             },
@@ -78,7 +86,7 @@ function EditFrameForm({
           {groupExists ? t('selectFrameGroup') : t('newFrameGroup')}
         </MenuItem>
         {
-          groups.map(({ id, name }) => (
+          frameGroups.map(({ id, name }) => (
             <MenuItem value={id} key={id}>{ name }</MenuItem>
           ))
         }
@@ -95,19 +103,18 @@ function EditFrameForm({
         helperText={groupIdValid ? undefined : t('groupIdHelperText')}
       />
 
-      { setFrameGroupName ? (
+      { setNewFrameGroupName ? (
         <TextField
           label={t('newFrameGroupName')}
           size="small"
           type="text"
           onChange={(ev) => {
-            setFrameGroupName(ev.target.value);
+            setNewFrameGroupName(ev.target.value);
           }}
-          value={groupExists ? '' : frameGroupName}
+          value={groupExists ? '' : newFrameGroupName}
           disabled={groupExists}
         />
       ) : null }
-
 
       <TextField
         label={t('frameIndex')}

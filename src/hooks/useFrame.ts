@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
+import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';
 import {
   useDialogsStore,
@@ -43,7 +44,8 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
 
   const { setEditFrame } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
-  const { frames, deleteFrame, images } = useItemsStore();
+  const { frames, deleteFramesByIds } = useFrames({ list: true });
+  const { images } = useItemsStore();
   const { updateLastSyncLocalNow } = useStores();
 
   const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
@@ -82,7 +84,7 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
         confirm: async () => {
           dismissDialog(0);
           updateLastSyncLocalNow();
-          deleteFrame(frameId);
+          deleteFramesByIds([frameId]);
         },
         deny: async () => dismissDialog(0),
       });

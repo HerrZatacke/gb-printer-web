@@ -1,3 +1,5 @@
+import { getQueryClient } from '@/contexts/QueryClient';
+import { framesListQueryOptions } from '@/stores/queries/frames';
 import { delay } from '@/tools/delay';
 import { localforageFrames, localforageImages, localforageReady } from '@/tools/localforageInstance';
 import { del, delFrame } from '@/tools/storage';
@@ -45,14 +47,11 @@ const deleteImageFromStorage = (images: Image[]) => (deleteHash: string): void =
   }
 };
 
-export const cleanupStorage = async ({
-  images,
-  frames,
-}: {
-  images: Image[];
-  frames: CheckFrame[];
-}): Promise<void> => {
+export const cleanupStorage = async (images: Image[]): Promise<void> => {
   await localforageReady();
+  const queryClient = getQueryClient();
+  const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
+
   const storedImages = await localforageImages.keys();
   storedImages.forEach(deleteImageFromStorage(images));
 
@@ -81,14 +80,20 @@ export const getTrashImages = async (images: Image[]): Promise<string[]> => {
   return results;
 };
 
-const frameIsDeleted = (frames: CheckFrame[]) => (hash: string): boolean => (
-  !frames.find((frame) => frame.hash === hash)
-);
+type CheckIsDeletedFn = ((hash: string) => boolean);
+const frameIsDeleted = async (): Promise<CheckIsDeletedFn> => {
+  const queryClient = getQueryClient();
+  const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
 
-export const getTrashFrames = async (frames: CheckFrame[]): Promise<string[]> => {
+  return (hash: string): boolean => (
+    !frames.find((frame) => frame.hash === hash)
+  );
+};
+
+export const getTrashFrames = async (): Promise<string[]> => {
   await localforageReady();
   const storedHashes = await localforageFrames.keys();
-  const isDeleted = frameIsDeleted(frames);
+  const isDeleted = await frameIsDeleted();
 
   const results: string[] = [];
 

@@ -1,5 +1,7 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useTracking } from '@/contexts/TrackingContext';
+import { framesByIdsQueryOptions } from '@/stores/queries/frames';
 import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { type PrepareFilesOptions, prepareFiles } from '@/tools/download';
@@ -12,8 +14,9 @@ interface UseShareImage {
 
 const useShareImage = (): UseShareImage => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore();
-  const { frames, images } = useItemsStore();
+  const { images } = useItemsStore();
   const { sendEvent } = useTracking();
+  const queryClient = useQueryClient();
 
   const shareImage = useCallback(async (hash: string) => {
     if (!window.navigator.share) { return; }
@@ -23,7 +26,7 @@ const useShareImage = (): UseShareImage => {
       throw new Error('image not found');
     }
 
-    const frame = frames.find(({ id }) => id === image.frame);
+    const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
 
     const shareScaleFactor = [...exportScaleFactors].pop() || 4;
     const shareFileType = [...exportFileTypes].pop() || 'png';
@@ -35,7 +38,7 @@ const useShareImage = (): UseShareImage => {
       handleExportFrame,
     };
 
-    const tiles = await loadImageTiles(images, frames)(image.hash);
+    const tiles = await loadImageTiles(images)(image.hash);
 
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
 
@@ -52,7 +55,7 @@ const useShareImage = (): UseShareImage => {
       .catch(() => ('¯\\_(ツ)_/¯'));
 
     sendEvent('shareImages', { imageCount: 1 });
-  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, sendEvent]);
+  }, [exportFileTypes, exportScaleFactors, fileNameStyle, queryClient, handleExportFrame, images, sendEvent]);
 
   return {
     shareImage,

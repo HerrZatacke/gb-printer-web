@@ -4,14 +4,13 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { PROJECT_PREFIX } from '@/stores/constants';
-import { cleanupItems } from '@/stores/migrations/cleanupItems';
+// import { cleanupItems } from '@/stores/migrations/cleanupItems';
 import { migrateItems } from '@/stores/migrations/history/0/migrateItems';
 import { createSplitStorage } from '@/stores/storage/splitStorage';
-import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
 import uniqueBy from '@/tools/unique/by';
-import { type Frame, FrameSchema } from '@/types/Frame';
-import { type FrameGroup, FrameGroupSchema } from '@/types/FrameGroup';
+import { FrameSchema } from '@/types/Frame';
+import { FrameGroupSchema } from '@/types/FrameGroup';
 import { type Image, ImageSchema } from '@/types/Image';
 import { type SerializableImageGroup, SerializableImageGroupSchema } from '@/types/ImageGroup';
 import { type Palette, PaletteSchema } from '@/types/Palette';
@@ -19,22 +18,24 @@ import { PluginSchema } from '@/types/Plugin';
 
 export const ITEMS_STORE_VERSION = 1;
 
-const framesUniqueById = uniqueBy<Frame>('id');
-const frameGroupsUniqueById = uniqueBy<FrameGroup>('id');
+// const framesUniqueById = uniqueBy<Frame>('id');
+// const frameGroupsUniqueById = uniqueBy<FrameGroup>('id');
 const groupUniqueById = uniqueBy<SerializableImageGroup>('id');
 // const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
-const framesSortById = sortBy<Frame>('id');
+// const framesSortById = sortBy<Frame>('id');
 const palettesUniqueByShortName = uniqueBy<Palette>('shortName');
 // const pluginsSortByName = sortBy<Plugin>('name');
 const imagesUniqueByHash = uniqueBy<Image>('hash');
 
 // The order of calls is important: First run unique, so that new/updated items are relevant, then sort.
-const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(frames));
+// const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(frames));
 // const sortByNameUniqueByUrl = (plugins: Plugin[]) => pluginsSortByName(pluginsUniqueByUrl(plugins));
 
 const ValuesSchema = z.object({
   initialized: z.boolean(),
+  /** @deprecated Use `useFrames` instead */
   frames: z.array(FrameSchema),
+  /** @deprecated Use `useFrameGroups` instead */
   frameGroups: z.array(FrameGroupSchema),
   /** @deprecated Use `usePalettes` instead */
   palettes: z.array(PaletteSchema),
@@ -48,11 +49,11 @@ export type Values = z.infer<typeof ValuesSchema>;
 
 interface Actions {
   // Frame updates
-  addFrames: (frames: Frame[]) => void;
-  deleteFrame: (id: string) => void;
+  // addFrames: (frames: Frame[]) => void;
+  // deleteFrame: (id: string) => void;
 
   // FrameGroup updates
-  updateFrameGroups: (frameGroups: FrameGroup[]) => void;
+  // updateFrameGroups: (frameGroups: FrameGroup[]) => void;
 
   // Palette updates
   // addPalettes: (palettes: Palette[]) => void;
@@ -68,7 +69,7 @@ interface Actions {
   deleteImages: (hashes: string[]) => void;
   updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void;
   updateImages: (images: Image[]) => void;
-  updateFrames: (frames: Frame[]) => void;
+  // updateFrames: (frames: Frame[]) => void;
 
   // ImageGroup updates
   addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
@@ -78,8 +79,8 @@ interface Actions {
   ungroupImages: (images: string[]) => void;
 
   // Global Updates
-  setFrames: (frames: Frame[]) => void;
-  setFrameGroups: (frameGroups: FrameGroup[]) => void;
+  // setFrames: (frames: Frame[]) => void;
+  // setFrameGroups: (frameGroups: FrameGroup[]) => void;
   setImages: (images: Image[]) => void;
   setImageGroups: (imageGroups: SerializableImageGroup[]) => void;
   // setPalettes: (palettes: Palette[]) => void;
@@ -113,11 +114,11 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         imageGroups: [],
         images: [],
 
-        addFrames: (frames: Frame[]) => set((itemsState) => (
-          {
-            frames: sortAndUniqueById([...frames, ...itemsState.frames]),
-          }
-        )),
+        // addFrames: (frames: Frame[]) => set((itemsState) => (
+        //   {
+        //     frames: sortAndUniqueById([...frames, ...itemsState.frames]),
+        //   }
+        // )),
 
         // addPalettes: (palettes: Palette[]) => {
         //   const { palettes: statePalettes } = get();
@@ -145,11 +146,11 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         //   });
         // },
 
-        deleteFrame: (frameId: string) => (set(({ frames }) => (
-          {
-            frames: sortAndUniqueById(frames.filter((frame) => frameId !== frame.id)),
-          }
-        ))),
+        // deleteFrame: (frameId: string) => (set(({ frames }) => (
+        //   {
+        //     frames: sortAndUniqueById(frames.filter((frame) => frameId !== frame.id)),
+        //   }
+        // ))),
 
         // deletePalette: (shortName: string) => set(({ palettes }) => (
         //   {
@@ -163,11 +164,11 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         //   }
         // )),
 
-        updateFrameGroups: (frameGroups: FrameGroup[]) => (set((itemsState) => (
-          {
-            frameGroups: frameGroupsUniqueById([...frameGroups, ...itemsState.frameGroups]),
-          }
-        ))),
+        // updateFrameGroups: (frameGroups: FrameGroup[]) => (set((itemsState) => (
+        //   {
+        //     frameGroups: frameGroupsUniqueById([...frameGroups, ...itemsState.frameGroups]),
+        //   }
+        // ))),
 
         // updatePluginConfig: (url: string, key: string, value: string | number): PluginConfigValues => {
         //   const { plugins } = get();
@@ -346,24 +347,24 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           };
         }),
 
-        updateFrames: (frames: Frame[]) => set((itemsState) => {
-          console.log('updateFrames', frames);
-          const changedFramesMap = new Map(frames.map((frm) => [frm.hash, frm]));
+        // updateFrames: (frames: Frame[]) => set((itemsState) => {
+        //   console.log('updateFrames', frames);
+        //   const changedFramesMap = new Map(frames.map((frm) => [frm.hash, frm]));
+        //
+        //   return {
+        //     frames: itemsState.frames.map((stateFrame) => (
+        //       changedFramesMap.get(stateFrame.hash) || stateFrame
+        //     )),
+        //   };
+        // }),
 
-          return {
-            frames: itemsState.frames.map((stateFrame) => (
-              changedFramesMap.get(stateFrame.hash) || stateFrame
-            )),
-          };
-        }),
+        // setFrames: (frames: Frame[]) => set({
+        //   frames: framesUniqueById(frames),
+        // }),
 
-        setFrames: (frames: Frame[]) => set({
-          frames: framesUniqueById(frames),
-        }),
-
-        setFrameGroups: (frameGroups: FrameGroup[]) => set({
-          frameGroups: frameGroupsUniqueById(frameGroups),
-        }),
+        // setFrameGroups: (frameGroups: FrameGroup[]) => set({
+        //   frameGroups: frameGroupsUniqueById(frameGroups),
+        // }),
 
         setImages: (images: Image[]) => set({
           images: imagesUniqueByHash(images),
@@ -419,7 +420,9 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         },
 
         partialize: (state: ItemsState): Values => ({
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           frames: state.frames,
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           frameGroups: state.frameGroups,
           imageGroups: state.imageGroups,
           images: state.images,
@@ -434,11 +437,11 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           initialized: false,
         }),
 
-        onRehydrateStorage: () => (hydratedState) => {
-          if (hydratedState) {
-            cleanupItems(hydratedState);
-          }
-        },
+        // onRehydrateStorage: () => (hydratedState) => {
+        //   if (hydratedState) {
+        //     cleanupItems(hydratedState);
+        //   }
+        // },
 
         version: ITEMS_STORE_VERSION,
         // migrate: async (persistedState: unknown, version: number): Promise<Partial<ItemsState>> => {

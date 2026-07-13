@@ -11,7 +11,6 @@ import {
 } from '@/stores/stores';
 import { type HandeFileImportFn } from '@/tools/getHandleFileImport';
 import { type Dialog } from '@/types/Dialog';
-import { Frame } from '@/types/Frame';
 import { type Image } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
@@ -83,7 +82,7 @@ export interface PluginClassInstance {
 }
 
 export type CollectImageDataFn = (hash: string) => Promise<PluginImageData>;
-export type GetCollectImageDataFn = (images: Image[], frames: Frame[]) => CollectImageDataFn;
+export type GetCollectImageDataFn = (images: Image[]) => CollectImageDataFn;
 
 export interface PluginArgs {
   // eslint-disable-next-line @typescript-eslint/no-deprecated

@@ -98,10 +98,10 @@ const willUpdate = (batch: Batch, t: ReturnType<typeof useTranslations>): string
 export const useEditForm = (): UseEditForm => {
   const t = useTranslations('useEditForm');
   const { editImages, cancelEditImages } = useEditStore();
-  const { frames, images } = useItemsStore();
+  const { images } = useItemsStore();
   const { batchUpdateImages } = useBatchUpdate();
 
-  const tileCounter = getImageTileCount(images, frames);
+  const tileCounter = getImageTileCount(images);
 
   const dimensions = useScreenDimensions();
 

@@ -17,12 +17,12 @@ interface UseSuperPrinterInterface {
 
 export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
   const { connectedDevices } = usePortsContext();
-  const { images, frames } = useItemsStore();
+  const { images } = useItemsStore();
   const { setError } = useInteractionsStore();
   const { setProgress, startProgress, stopProgress } = useProgressStore();
 
   const getTiles = useCallback(async (hash: string) => {
-    const tileLoader = loadImageTiles(images, frames);
+    const tileLoader = loadImageTiles(images);
     const loadedTiles = await tileLoader(hash, true);
 
     if ((loadedTiles as string[]).length) {
@@ -30,7 +30,7 @@ export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
     }
 
     return [];
-  }, [frames, images]);
+  }, [images]);
 
   const printer: Remote<SuperPrinterCommsDevice> | null = useMemo(() => {
     const deviceMeta = connectedDevices.find((device) => device.portDeviceType === PortDeviceType.SUPER_PRINTER_INTERFACE);

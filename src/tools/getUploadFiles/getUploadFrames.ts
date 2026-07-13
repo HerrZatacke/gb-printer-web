@@ -1,4 +1,5 @@
-import { useItemsStore } from '@/stores/stores';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { framesListQueryOptions } from '@/stores/queries/frames';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { type RepoContents, type RepoFile, type SyncFile } from '@/types/Export';
 import { type Frame } from '@/types/Frame';
@@ -17,9 +18,10 @@ export const getUploadFrames = async (
   syncFrames: SyncFile[];
   missingLocally: string[];
 }> => {
+  const queryClient = getQueryClient();
   const missingLocally: string[] = [];
 
-  const { frames: stateFrames } = useItemsStore.getState();
+  const { items: stateFrames } = await queryClient.fetchQuery(framesListQueryOptions());
 
   const frames: TmpInfo[] = stateFrames.map((frame): TmpInfo => ({
     file: frame,

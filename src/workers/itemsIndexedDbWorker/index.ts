@@ -1,8 +1,17 @@
 import * as Comlink from 'comlink';
 import { configureDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getFrameDataByHashes, getImageDataByHashes } from '@/workers/itemsIndexedDbWorker/queries/binaryData';
-import { getFrameGroups } from '@/workers/itemsIndexedDbWorker/queries/frameGroups';
-import { getFramesByIds, getFrames } from '@/workers/itemsIndexedDbWorker/queries/frames';
+import {
+  deleteFrameGroupsByIds,
+  getFrameGroups,
+  updateFrameGroups,
+} from '@/workers/itemsIndexedDbWorker/queries/frameGroups';
+import {
+  deleteFramesByIds,
+  getFrames,
+  getFramesByIds,
+  updateFrames,
+} from '@/workers/itemsIndexedDbWorker/queries/frames';
 import { getImageGroups } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
 import { getImagesByHashes, getImages } from '@/workers/itemsIndexedDbWorker/queries/images';
 import {
@@ -36,8 +45,12 @@ const api: ItemsSource = {
 
   getFrames,
   getFramesByIds,
+  updateFrames,
+  deleteFramesByIds,
 
   getFrameGroups,
+  updateFrameGroups,
+  deleteFrameGroupsByIds,
 
   getPalettes,
   getPalettesByShortNames,

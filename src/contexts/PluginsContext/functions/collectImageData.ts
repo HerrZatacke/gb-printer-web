@@ -1,5 +1,7 @@
 import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
 import { type RGBNPalette, type RGBNTiles } from 'gb-image-decoder';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { framesByIdsQueryOptions } from '@/stores/queries/frames';
 import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getImagePalettes } from '@/tools/getImagePalettes';
@@ -7,13 +9,13 @@ import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCrea
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
-import { type Frame } from '@/types/Frame';
 import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type GetCanvasOptions, type GetCollectImageDataFn, type PluginImageData } from '@/types/Plugin';
 
-export const getCollectImageData: GetCollectImageDataFn = (images: Image[], frames: Frame[]) => async (hash: string): Promise<PluginImageData> => {
+export const getCollectImageData: GetCollectImageDataFn = (images: Image[]) => async (hash: string): Promise<PluginImageData> => {
   const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
+  const queryClient = getQueryClient();
 
   const meta = images.find((image) => image.hash === hash);
   if (!meta) {
@@ -25,7 +27,7 @@ export const getCollectImageData: GetCollectImageDataFn = (images: Image[], fram
     throw new Error('selectedPalette not found');
   }
 
-  const getTiles = () => loadImageTiles(images, frames)(meta.hash);
+  const getTiles = () => loadImageTiles(images)(meta.hash);
 
   const isRGBN = isRGBNImage(meta);
 
@@ -43,7 +45,7 @@ export const getCollectImageData: GetCollectImageDataFn = (images: Image[], fram
     const tiles = await getTiles();
     let blob: Blob;
 
-    const frame = frames.find(({ id }) => id === meta.frame);
+    const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(meta.frame ? [meta.frame] : []));
     const frameData = frame ? await loadFrameData(frame.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 

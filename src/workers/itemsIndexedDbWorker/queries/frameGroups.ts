@@ -13,3 +13,23 @@ export const getFrameGroups = async (): Promise<ItemsSourceResponse<FrameGroup>>
 
   return addPaging(frameGroups);
 };
+
+export const updateFrameGroups = async (frameGroups: FrameGroup[]): Promise<void> => {
+  const db = await getDb();
+
+  const tx = db.transaction('framegroups', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(frameGroups.map((frameGroup) => store.put(frameGroup)));
+  await tx.done;
+};
+
+export const deleteFrameGroupsByIds = async (ids: string[]): Promise<void> => {
+  const db = await getDb();
+
+  const tx = db.transaction('framegroups', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(ids.map((id) => store.delete(id)));
+  await tx.done;
+};

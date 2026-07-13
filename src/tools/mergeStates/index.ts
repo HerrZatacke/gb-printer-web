@@ -41,7 +41,9 @@ const mergeStates = (
   let imageGroups = currentStateImageGroups;
 
   if (isFromJsonImport) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (updatedState.frames && updatedState.frames.length) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       frames = mergeFrames(frames, updatedState.frames);
     }
 
@@ -59,6 +61,7 @@ const mergeStates = (
       imageGroups = mergeImageGroups(imageGroups, updatedState.imageGroups);
     }
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     frames = updatedState.frames || currentStateFrames;
     images = updatedState.images || currentStateImages;
     // eslint-disable-next-line @typescript-eslint/no-deprecated

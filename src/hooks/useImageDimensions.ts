@@ -1,5 +1,6 @@
 import { Rotation, TILE_PIXEL_WIDTH, TILES_PER_LINE } from 'gb-image-decoder';
 import { useMemo } from 'react';
+import { useFrames } from '@/hooks/useFrames';
 import { useItemsStore } from '@/stores/stores';
 import { isRGBNImage, reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNImage } from '@/types/Image';
@@ -39,15 +40,15 @@ export const dimensionsFromTileCount = (tileCount: number, rotation = Rotation.D
 };
 
 export const useImageDimensions = (hash: string): UseDimensions => {
-  const { images, frames } = useItemsStore();
+  const { images } = useItemsStore();
+
+  const image = useMemo(() => images.find((img) => img.hash === hash) || null, [hash, images]);
+
+  const { byIds: [frame] } = useFrames({ ids: image?.frame ? [image?.frame] : [] });
 
   const dimensions = useMemo<Dimensions>(() => {
-    const image = images.find((img) => img.hash === hash) || null;
-
     // return default dimensions
     if (!image) { return dimensionsFromTileCount(360); }
-
-    const frame = frames.find(({ id }) => id === image.frame) || null;
 
     if (frame?.lines) {
       return dimensionsFromTileCount(frame.lines, image.rotation);
@@ -66,7 +67,7 @@ export const useImageDimensions = (hash: string): UseDimensions => {
     }
 
     return dimensionsFromTileCount(tileCount, image.rotation);
-  }, [images, frames, hash]);
+  }, [image, frame, images]);
 
 
   return {

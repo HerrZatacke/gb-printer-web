@@ -1,7 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import { ExportTypes } from '@/consts/exportTypes';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { framesByIdsQueryOptions } from '@/stores/queries/frames';
 import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { download, prepareFiles, type PrepareFilesOptions } from '@/tools/download';
@@ -21,7 +23,7 @@ interface UseDownload {
 
 const useDownload = (): UseDownload => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle, alwaysShowDownloadDialog } = useSettingsStore();
-  const { frames, images } = useItemsStore();
+  const { images } = useItemsStore();
   const { setDownloadHashes } = useInteractionsStore();
   const { getSettingsFile } = useImportExportSettings();
   const { sendEvent } = useTracking();
@@ -60,13 +62,15 @@ const useDownload = (): UseDownload => {
   }, [fileNameStyle, images]);
 
   const prepareDownloadInfo = useCallback(async (imageHash: string, prepareFilesOptionsOverride?: PrepareFilesOptions): Promise<DownloadInfo[]> => {
+    const queryClient = getQueryClient();
     const image = images.find(({ hash }) => hash === imageHash);
     if (!image) { throw new Error('image not found'); }
 
-    const frame = frames.find(({ id }) => id === image.frame);
-    const tiles = await loadImageTiles(images, frames)(image.hash);
+
+    const tiles = await loadImageTiles(images)(image.hash);
     if (!tiles) { throw new Error('no tiles'); }
 
+    const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
@@ -79,7 +83,7 @@ const useDownload = (): UseDownload => {
     }
 
     return prepareFiles(image, tiles, imageStartLine, options);
-  }, [frames, images, prepareFilesOptions]);
+  }, [images, prepareFilesOptions]);
 
   const downloadImages = useCallback(async (hashes: string[]): Promise<void> => {
     const zipFilename = await getZipFileName(hashes);

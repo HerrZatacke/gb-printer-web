@@ -1,4 +1,6 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
+import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrames } from '@/hooks/useFrames';
 import { usePalettes } from '@/hooks/usePalettes';
 import {
   ImageSelectionMode, type ItemsState,
@@ -51,15 +53,14 @@ export const useStores = (): UseStores => {
     addImages,
     deleteImages,
     setImageGroups,
-    updateFrameGroups,
     updateImages,
-    setFrames,
     setImages,
   } = itemsState;
 
-  const { updatePalettes } = usePalettes({});
-
   const { setSyncLastUpdate } = useStoragesStore();
+  const { updatePalettes } = usePalettes({});
+  const { updateFrames } = useFrames({});
+  const { updateFrameGroups } = useFrameGroups2();
 
   return useMemo(() => {
     const updateLastSyncLocalNow = () => setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
@@ -113,12 +114,16 @@ export const useStores = (): UseStores => {
         updateRecentImports(state.images);
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.frames) {
         // hard replace all frames -> merging happens in src/javascript/tools/mergeStates/index.ts
-        setFrames(state.frames);
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        updateFrames(state.frames);
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.frameGroups) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         updateFrameGroups(state.frameGroups); // updateFrameGroups merges
       }
 
@@ -153,7 +158,7 @@ export const useStores = (): UseStores => {
     dismissDialog,
     importQueueCancel,
     setDialog,
-    setFrames,
+    updateFrames,
     setImages,
     updatePalettes,
     setImageGroups,

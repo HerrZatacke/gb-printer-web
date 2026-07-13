@@ -4,25 +4,27 @@ import { type RGBNTiles, type RGBNPalette } from 'gb-image-decoder';
 import { getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { framesByIdsQueryOptions } from '@/stores/queries/frames';
 import {
   ItemsState,
   useInteractionsStore,
   useProgressStore,
   useSettingsStore,
 } from '@/stores/stores';
+import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { delay } from '@/tools/delay';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
+import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
+import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import { reduceItems } from '@/tools/reduceArray';
+import unique from '@/tools/unique';
 import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type VideoParams } from '@/types/VideoParams';
-import { loadFrameData } from '../applyFrame/frameData';
-import { getMonochromeImageCreationParams } from '../getMonochromeImageCreationParams';
-import { getPaletteSettings } from '../getPaletteSettings';
-import unique from '../unique';
 
 interface GifFrameData {
   palette: number[];
@@ -107,7 +109,7 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 export const createAnimation = async (itemsState: ItemsState) => {
   const { setError, videoSelection } = useInteractionsStore.getState();
   const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
-  const { frames, images: stateImages } = itemsState;
+  const { images: stateImages } = itemsState;
   const { videoParams, fileNameStyle } = useSettingsStore.getState();
 
   const progressId = startProgress('Creating Animation');
@@ -154,7 +156,7 @@ export const createAnimation = async (itemsState: ItemsState) => {
   }, []);
 
 
-  const tileLoader = loadImageTiles(images, frames);
+  const tileLoader = loadImageTiles(images);
 
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
     const tiles = await tileLoader(image.hash);
@@ -163,7 +165,9 @@ export const createAnimation = async (itemsState: ItemsState) => {
 
     const { palette, framePalette } = await getImagePalettes({ ...image, lockFrame }); // set Lockframe to value set by global animate settings
 
-    const frame = frames.find(({ id }) => id === image.frame);
+    const queryClient = getQueryClient();
+    const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
+
     const frameData = frame ? await loadFrameData(frame.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 

@@ -29,3 +29,23 @@ export const getFramesByIds = async (ids: string[]): Promise<ItemsSourceResponse
 
   return addPaging(filteredFrames);
 };
+
+export const updateFrames = async (frames: Frame[]): Promise<void> => {
+    const db = await getDb();
+
+  const tx = db.transaction('frames', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(frames.map((frame) => store.put(frame)));
+  await tx.done;
+};
+
+export const deleteFramesByIds = async (ids: string[]): Promise<void> => {
+    const db = await getDb();
+
+  const tx = db.transaction('frames', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(ids.map((id) => store.delete(id)));
+  await tx.done;
+};

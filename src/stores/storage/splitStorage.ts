@@ -115,7 +115,9 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
 
     // sequentially saving seems to be slightly faster than Promise.all([...]);
     await rootStore.setItem('version', version);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     await frameGroupsStore.setData(state.frameGroups);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     await framesStore.setData(state.frames);
     await imagesStore.setData(state.images);
     await imageGroupsStore.setData(state.imageGroups);

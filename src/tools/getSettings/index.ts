@@ -1,6 +1,8 @@
 import { ExportTypes } from '@/consts/exportTypes';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
+import { frameGroupsListQueryOptions } from '@/stores/queries/frameGroups';
+import { framesListQueryOptions } from '@/stores/queries/frames';
 import { palettesListQueryOptions } from '@/stores/queries/palettes';
 import { pluginsListQueryOptions } from '@/stores/queries/plugins';
 import {
@@ -73,12 +75,14 @@ export const getSettings = async (
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {
   // get all possible exportable properties
-  const { frames, images, imageGroups, frameGroups } = itemsState;
+  const { images, imageGroups } = itemsState;
   const { imageSelection } = useFiltersStore.getState();
 
   const queryClient = getQueryClient();
   const { items: palettes } = await queryClient.fetchQuery(palettesListQueryOptions());
   const { items: plugins } = await queryClient.fetchQuery(pluginsListQueryOptions());
+  const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
+  const { items: frameGroups } = await queryClient.fetchQuery(frameGroupsListQueryOptions());
 
   const exportableState: ExportableState = {
     ...getExportKeys(what)
@@ -148,6 +152,7 @@ export const getSettings = async (
   }
 
   if (
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     exportableState.frames?.length &&
     frameExportTypes.includes(what)
   ) {
