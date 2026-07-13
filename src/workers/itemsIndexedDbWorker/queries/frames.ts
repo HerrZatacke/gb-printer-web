@@ -31,7 +31,7 @@ export const getFramesByIds = async (ids: string[]): Promise<ItemsSourceResponse
 };
 
 export const updateFrames = async (frames: Frame[]): Promise<void> => {
-    const db = await getDb();
+  const db = await getDb();
 
   const tx = db.transaction('frames', 'readwrite');
   const store = tx.store;
@@ -41,7 +41,7 @@ export const updateFrames = async (frames: Frame[]): Promise<void> => {
 };
 
 export const deleteFramesByIds = async (ids: string[]): Promise<void> => {
-    const db = await getDb();
+  const db = await getDb();
 
   const tx = db.transaction('frames', 'readwrite');
   const store = tx.store;
