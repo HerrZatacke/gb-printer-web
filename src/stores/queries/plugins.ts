@@ -19,6 +19,7 @@ export const pluginsListQueryOptions = () => {
   };
 };
 
+// ToDo: add batched loader
 export const pluginsByUrlsQueryOptions = (urls: string[]) => {
   return {
     queryKey: pluginsKeys.byUrls(urls),

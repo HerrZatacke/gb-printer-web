@@ -19,6 +19,7 @@ export const palettesListQueryOptions = () => {
   };
 };
 
+// ToDo: add batched loader
 export const palettesByShortNameQueryOptions = (shortNames: string[]) => {
   return {
     queryKey: palettesKeys.byShortNames(shortNames),
