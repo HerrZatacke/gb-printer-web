@@ -15,6 +15,10 @@ import { type SerializableImageGroup, type TreeImageGroup } from '@/types/ImageG
 
 const MAX_INFLATE_DEPTH = 20;
 
+if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
+  throw new Error(`worker is executing outside a worker context (is: "${self.constructor.name}")`);
+}
+
 const getDeepChildImages = (
   imageHashes: string[],
   childGroups: TreeImageGroup[],

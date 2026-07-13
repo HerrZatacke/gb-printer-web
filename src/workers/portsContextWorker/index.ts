@@ -6,6 +6,10 @@ import {
   PortsWorkerClient,
 } from '@/types/ports';
 
+if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
+  throw new Error(`worker is executing outside a worker context (is: "${self.constructor.name}")`);
+}
+
 const portsWorkerRemote: PortsWorkerRemote = {
   async openSerial(): Promise<void> {
     console.log('open serial');
