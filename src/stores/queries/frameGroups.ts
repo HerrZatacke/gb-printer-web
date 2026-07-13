@@ -14,5 +14,6 @@ export const frameGroupsListQueryOptions = () => {
       const source = await getItemsSource();
       return source.getFrameGroups();
     },
+    staleTime: 30000,
   };
 };

@@ -15,6 +15,7 @@ export const palettesListQueryOptions = () => {
       const source = await getItemsSource();
       return source.getPalettes();
     },
+    staleTime: 30000,
   };
 };
 
@@ -25,5 +26,6 @@ export const palettesByShortNameQueryOptions = (shortNames: string[]) => {
       const source = await getItemsSource();
       return source.getPalettesByShortNames(shortNames || []);
     },
+    staleTime: 30000,
   };
 };

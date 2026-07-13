@@ -15,6 +15,7 @@ export const framesListQueryOptions = () => {
       const source = await getItemsSource();
       return source.getFrames();
     },
+    staleTime: 30000,
   };
 };
 
@@ -25,5 +26,6 @@ export const framesByIdsQueryOptions = (ids: string[]) => {
       const source = await getItemsSource();
       return source.getFramesByIds(ids || []);
     },
+    staleTime: 30000,
   };
 };

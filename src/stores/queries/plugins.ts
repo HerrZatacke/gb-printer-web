@@ -15,6 +15,7 @@ export const pluginsListQueryOptions = () => {
       const source = await getItemsSource();
       return source.getPlugins();
     },
+    staleTime: 30000,
   };
 };
 
@@ -25,5 +26,6 @@ export const pluginsByUrlsQueryOptions = (urls: string[]) => {
       const source = await getItemsSource();
       return source.getPluginsByUrls(urls || []);
     },
+    staleTime: 30000,
   };
 };
