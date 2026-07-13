@@ -5,7 +5,7 @@ const baseKeys = ['items', 'palettes'] as const;
 export const palettesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
-  byShortNames: (shortNames: string[]) => [...baseKeys, 'byShortNames', [...shortNames]] as const,
+  byShortNames: (shortNames: string[]) => [...baseKeys, 'byShortNames', [...shortNames].sort()] as const,
 };
 
 export const palettesListQueryOptions = () => {

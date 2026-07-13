@@ -5,7 +5,7 @@ const baseKeys = ['items', 'plugins'] as const;
 export const pluginsKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
-  byUrls: (urls: string[]) => [...baseKeys, 'byUrls', [...urls]] as const,
+  byUrls: (urls: string[]) => [...baseKeys, 'byUrls', [...urls].sort()] as const,
 };
 
 export const pluginsListQueryOptions = () => {

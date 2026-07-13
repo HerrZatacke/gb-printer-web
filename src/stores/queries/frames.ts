@@ -5,7 +5,7 @@ const baseKeys = ['items', 'frames'] as const;
 export const framesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
-  byIds: (ids: string[]) => [...baseKeys, 'byIds', [...ids]] as const,
+  byIds: (ids: string[]) => [...baseKeys, 'byIds', [...ids].sort()] as const,
 };
 
 export const framesListQueryOptions = () => {
