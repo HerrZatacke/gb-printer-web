@@ -11,14 +11,15 @@ import {
   useItemsStore,
 } from '@/stores/stores';
 
-interface UseImageGroups {
+interface UseEditImageGroups {
   resetGroups: () => void;
   createGroup: (hash: string) => void;
   editGroup: (id: string) => void;
   deleteGroup: (id: string) => void;
 }
 
-export const useImageGroups = (): UseImageGroups => {
+export const useEditImageGroups = (): UseEditImageGroups => {
+  // ToDo: rename key to useEditImageGroups
   const t = useTranslations('useImageGroups');
   const { view } = useGalleryTreeContext();
   const { dismissDialog, setDialog } = useDialogsStore();

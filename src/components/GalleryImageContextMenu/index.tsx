@@ -17,7 +17,7 @@ import { type ComponentType, type MouseEventHandler, useMemo, useState } from 'r
 import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 import PluginSelect from '@/components/PluginSelect';
 import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
-import { useImageGroups } from '@/hooks/useImageGroups';
+import { useEditImageGroups } from '@/hooks/useEditImageGroups';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
 import { ImageSelectionMode, useInteractionsStore } from '@/stores/stores';
 
@@ -65,7 +65,7 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     setSSTVHash,
   } = useInteractionsStore();
 
-  const { createGroup } = useImageGroups();
+  const { createGroup } = useEditImageGroups();
   const sstvEnabled = browser.getBrowserName() !== 'Firefox';
 
   const menuItems = useMemo((): ContextMenuItem[] => (

@@ -5,7 +5,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { ExportTypes } from '@/consts/exportTypes';
-import { useImageGroups } from '@/hooks/useImageGroups';
+import { useEditImageGroups } from '@/hooks/useEditImageGroups';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import useStoragePersist, { PersistState } from '@/hooks/useStoragePersist';
 
@@ -27,7 +27,7 @@ function ExportSettings() {
   const { downloadSettings } = useImportExportSettings();
   const t = useTranslations('ExportSettings');
 
-  const { resetGroups } = useImageGroups();
+  const { resetGroups } = useEditImageGroups();
   const exportJson = (what: ExportTypes) => downloadSettings(what);
 
   const {
