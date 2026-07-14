@@ -3,7 +3,7 @@ import { SpecialTags } from '@/consts/SpecialTags';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 import { type Image } from '@/types/Image';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
+import { type NewTreeImageGroup, type SerializableImageGroup } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
 
@@ -99,6 +99,16 @@ export interface ItemsSourceResponse<T> {
   paging: ItemsSourcePaging;
 }
 
+export interface ItemSourceResponse<T> {
+  item: T;
+  paging: ItemsSourcePaging;
+}
+
+export interface RootItemSourceResponse<T> {
+  item: T;
+  totalCount: number;
+}
+
 export interface ItemsSource {
   init(hostApi: ItemsHostApi): void;
   getFrameDataByHashes(hashes: string[]): Promise<string[]>;
@@ -109,7 +119,9 @@ export interface ItemsSource {
   updateImages(images: Image[]): Promise<void>;
   deleteImagesByHashes(hashes: string[]): Promise<void>;
 
-  getImageGroups(): Promise<ItemsSourceResponse<SerializableImageGroup>>;
+  getImageGroupsFullTree(): Promise<RootItemSourceResponse<NewTreeImageGroup>>;
+  updateImageGroups(imageGroups: SerializableImageGroup[]): Promise<void>;
+  deleteImageGroupsByIds(ids: string[]): Promise<void>;
 
   getFrames(): Promise<ItemsSourceResponse<Frame>>;
   getFramesByIds(ids: string[]): Promise<ItemsSourceResponse<Frame>>;

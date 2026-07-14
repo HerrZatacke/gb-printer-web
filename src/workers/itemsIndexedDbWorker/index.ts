@@ -12,7 +12,7 @@ import {
   getFramesByIds,
   updateFrames,
 } from '@/workers/itemsIndexedDbWorker/queries/frames';
-import { getImageGroups } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
+import { getImageGroupsFullTree } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
 import { getImagesByHashes, getImages } from '@/workers/itemsIndexedDbWorker/queries/images';
 import {
   deletePalettesByShortNames,
@@ -49,7 +49,16 @@ const api: ItemsSource = {
     return undefined;
   },
 
-  getImageGroups,
+  getImageGroupsFullTree,
+  updateImageGroups: async () => {
+    console.warn(self.constructor.name, 'Not implemented');
+    return undefined;
+  },
+  deleteImageGroupsByIds: async () => {
+    console.warn(self.constructor.name, 'Not implemented');
+    return undefined;
+  },
+
 
   getFrames,
   getFramesByIds,
