@@ -40,6 +40,14 @@ const api: ItemsSource = {
 
   getImages,
   getImagesByHashes,
+  updateImages: async () => {
+    console.warn(self.constructor.name, 'Not implemented');
+    return undefined;
+  },
+  deleteImagesByHashes: async () => {
+    console.warn(self.constructor.name, 'Not implemented');
+    return undefined;
+  },
 
   getImageGroups,
 

@@ -106,6 +106,8 @@ export interface ItemsSource {
 
   getImages(params: GetImagesParams): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Image>>;
+  updateImages(images: Image[]): Promise<void>;
+  deleteImagesByHashes(hashes: string[]): Promise<void>;
 
   getImageGroups(): Promise<ItemsSourceResponse<SerializableImageGroup>>;
 
