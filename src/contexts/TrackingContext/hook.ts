@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useFrames } from '@/hooks/useFrames';
 import { usePalettes } from '@/hooks/usePalettes';
 import { usePlugins } from '@/hooks/usePlugins';
@@ -74,7 +74,7 @@ export const useContextHook = (): TrackingContextType => {
   const { palettes } = usePalettes({ list: true });
   const { plugins } = usePlugins({ list: true });
   const { frames } = useFrames({ list: true });
-  const { frameGroups } = useFrameGroups2();
+  const { frameGroups } = useFrameGroups();
   const { errors } = useInteractionsStore();
 
   // Send stats event when itemState changes

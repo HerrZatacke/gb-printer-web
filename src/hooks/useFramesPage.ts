@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
 import { useActivePalette } from '@/hooks/useActivePalette';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
-import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
 import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';
 import { useSettingsStore } from '@/stores/stores';
@@ -37,8 +36,7 @@ interface UseFramesPage {
 export const useFramesPage = (): UseFramesPage => {
   const { enableDebug, savFrameTypes } = useSettingsStore();
   const { frames } = useFrames({ list: true });
-  const { frameGroups } = useFrameGroups();
-  const { updateFrameGroups } = useFrameGroups2();
+  const { frameGroups, updateFrameGroups } = useFrameGroups();
   const { updateLastSyncLocalNow } = useStores();
   const { downloadSettings } = useImportExportSettings();
   const palette = useActivePalette();

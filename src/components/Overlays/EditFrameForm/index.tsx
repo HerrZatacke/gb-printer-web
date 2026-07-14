@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
 import React, { Dispatch, SetStateAction } from 'react';
 import { EditFrameData, useEditFrameForm } from '@/hooks/useEditFrameForm';
-import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 
 interface Props {
   editFrameData: EditFrameData;
@@ -26,7 +26,7 @@ function EditFrameForm({
   setNewFrameGroupName,
 }: Props) {
   const t = useTranslations('EditFrameForm');
-  const { frameGroups } = useFrameGroups2();
+  const { frameGroups } = useFrameGroups();
 
   const {
     frameIndex,

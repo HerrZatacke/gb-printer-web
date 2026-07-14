@@ -9,7 +9,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
-import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useFrames } from '@/hooks/useFrames';
 import { getFramesForGroup } from '@/tools/getFramesForGroup';
 
@@ -38,7 +38,7 @@ function FrameSelect({
 }: Props) {
   const t = useTranslations('FrameSelect');
   const { frames } = useFrames({});
-  const { frameGroups } = useFrameGroups2();
+  const { frameGroups } = useFrameGroups();
 
   const groupedFrames = useMemo<FrameSelectOption[]>((): FrameSelectOption[] => {
     const groups = frameGroups.map((group): FrameSelectOption[] => {

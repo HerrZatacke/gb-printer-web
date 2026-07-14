@@ -5,7 +5,7 @@ import Lightbox from '@/components/Lightbox';
 import EditFrameForm from '@/components/Overlays/EditFrameForm';
 import useEditFrame from '@/hooks/useEditFrame';
 import { frameIdFromGroupAndIndex } from '@/hooks/useEditFrameForm';
-import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useStores } from '@/hooks/useStores';
 import { useImportsStore } from '@/stores/stores';
 import { compressAndHashFrame, saveFrameData } from '@/tools/applyFrame/frameData';
@@ -19,7 +19,7 @@ function FrameQueue() {
     importQueueCancelOne,
   } = useImportsStore();
   const { updateLastSyncLocalNow } = useStores();
-  const { updateFrameGroups } = useFrameGroups2();
+  const { updateFrameGroups } = useFrameGroups();
 
   const frame = frameQueue[0];
   const [newFrameGroupName, setNewFrameGroupName] = useState('');

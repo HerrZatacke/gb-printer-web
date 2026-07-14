@@ -1,6 +1,11 @@
-import { useMemo } from 'react';
-import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useMemo } from 'react';
 import { useFrames } from '@/hooks/useFrames';
+import { getItemsSource } from '@/items/client';
+import {
+  frameGroupsKeys,
+  frameGroupsListQueryOptions,
+} from '@/stores/queries/frameGroups';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 
@@ -77,18 +82,49 @@ export const getFrameGroups = (frames: Frame[], frameGroupNames: FrameGroup[]): 
 
 export interface UseFrameGroups {
   frameGroups: FrameGroup[];
+  totalCount: number;
   isLoadingList: boolean;
+  updateFrameGroups: (frameGroups: FrameGroup[]) => Promise<void>;
+  deleteFrameGroupsByIds: (ids: string[]) => Promise<void>;
 }
 
 export const useFrameGroups = (): UseFrameGroups => {
-  const {  frameGroups: frameGroupsState, isLoadingList } = useFrameGroups2();
+  const queryClient = useQueryClient();
+
+  const listQuery = useQuery({
+    ...frameGroupsListQueryOptions(),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
+
+  const updateFrameGroups = useCallback(async (frameGroups: FrameGroup[]): Promise<void> => {
+    const source = await getItemsSource();
+    await source.updateFrameGroups(frameGroups);
+    queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
+  }, [queryClient]);
+
+  const deleteFrameGroupsByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
+    const source = await getItemsSource();
+    await source.deleteFrameGroupsByIds(deleteIds);
+    queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
+  }, [queryClient]);
+
   const { frames } = useFrames({ list: true });
+
   const frameGroups = useMemo(() => {
-    return getFrameGroups(frames, frameGroupsState);
-  }, [frameGroupsState, frames]);
+    if (!listQuery.data?.items.length) {
+      return [];
+    }
+
+    return getFrameGroups(frames, listQuery.data?.items);
+  }, [listQuery.data, frames]);
 
   return {
     frameGroups,
-    isLoadingList,
+    totalCount: listQuery.data?.paging?.total ?? 0,
+    isLoadingList: listQuery.isLoading,
+
+    updateFrameGroups,
+    deleteFrameGroupsByIds,
   };
 };

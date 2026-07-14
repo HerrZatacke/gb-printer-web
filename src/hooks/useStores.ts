@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
-import { useFrameGroups2 } from '@/hooks/useFrameGroups2';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useFrames } from '@/hooks/useFrames';
 import { usePalettes } from '@/hooks/usePalettes';
 import {
@@ -60,7 +60,7 @@ export const useStores = (): UseStores => {
   const { setSyncLastUpdate } = useStoragesStore();
   const { updatePalettes } = usePalettes({});
   const { updateFrames } = useFrames({});
-  const { updateFrameGroups } = useFrameGroups2();
+  const { updateFrameGroups } = useFrameGroups();
 
   return useMemo(() => {
     const updateLastSyncLocalNow = () => setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
