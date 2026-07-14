@@ -2,13 +2,9 @@ import { type IDBPDatabase } from 'idb';
 import sortBy from '@/tools/sortby';
 import { type Image } from '@/types/Image';
 import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
-import {
-  buildFilterSteps,
-  getAddPaging,
-  getCandidates,
-  intersectAll,
-  resolveKeyableStep,
-} from '@/workers/itemsIndexedDbWorker/queries/queryHelpers';
+import { buildFilterSteps } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildFilterSteps';
+import { getAddPaging, intersectAll } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { getCandidates, resolveKeyableStep } from '@/workers/itemsIndexedDbWorker/queries/helpers/imagesKeyQueries';
 import { type FilterStep, type GetImagesParams, type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getImages = async (params: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
