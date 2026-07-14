@@ -19,7 +19,7 @@ export const SerializableImageGroupSchema = BaseImageGroupSchema.extend({
 
 export type SerializableImageGroup = z.infer<typeof SerializableImageGroupSchema>;
 
-export interface TreeImageGroup extends z.infer<typeof BaseImageGroupSchema> {
+export interface TreeImageGroup extends BaseImageGroup {
   images: Image[];
   tags: string[];
   allImages: Image[];
