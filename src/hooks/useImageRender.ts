@@ -29,7 +29,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const [gbImageProps, setGbImageProps] = useState<PartialGameBoyImageProps | null>(null);
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
-  const { images: allImages } = useItemsStore();
+  const { images } = useItemsStore();
   const { palettes: allPalettes } = usePalettes({ list: true });
   const { dropboxStorage, gitStorage } = useStoragesStore();
   const { galleryImageData } = useGalleryImage(hash);
@@ -61,11 +61,11 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
         }
       };
 
-      const imageLoader = getLoadImageTiles(allImages, recoverFn);
+      const imageLoader = getLoadImageTiles(images, recoverFn);
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashesOverride);
     },
-    [allImages, dropboxStorage.use, gitStorage.use, stores, remoteImport],
+    [images, dropboxStorage.use, gitStorage.use, stores, remoteImport],
   );
 
   const isRGB = useMemo(() => {

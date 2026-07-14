@@ -41,7 +41,7 @@ const usePreviewImages = (): UsePreviewImages => {
       [] :
       getFilteredImages(root, filterState).reduce(reduceImagesMonochrome, []);
 
-    const allImages = ((selectedImages.length + filtered.length) > 1) ?
+    const monoImages = ((selectedImages.length + filtered.length) > 1) ?
       [] :
       [...root.allImages]
         .map(addSortIndex)
@@ -52,8 +52,8 @@ const usePreviewImages = (): UsePreviewImages => {
     const availableImages = uniqeHash([
       selectedImages.shift(),
       filtered.shift(),
-      allImages.shift(),
-      allImages.pop(),
+      monoImages.shift(),
+      monoImages.pop(),
       filtered.pop(),
       selectedImages.pop(),
     ].reduce(reduceImagesMonochrome, []));
