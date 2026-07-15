@@ -60,6 +60,7 @@ export type NewSerializableImageGroup = z.infer<typeof NewSerializableImageGroup
 export interface NewTreeImageGroup extends NewBaseImageGroup {
   groups: NewTreeImageGroup[];
   totalImages: number;
+  fullSlug: string;
 }
 
 export const NewTreeImageGroupSchema: z.ZodType<NewTreeImageGroup> = NewBaseImageGroupSchema.extend({
@@ -67,4 +68,5 @@ export const NewTreeImageGroupSchema: z.ZodType<NewTreeImageGroup> = NewBaseImag
     return z.array(NewTreeImageGroupSchema);
   },
   totalImages: z.number(),
+  fullSlug: z.string(),
 });

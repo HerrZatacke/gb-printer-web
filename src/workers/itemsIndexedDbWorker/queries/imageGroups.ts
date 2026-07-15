@@ -4,6 +4,7 @@ import {
   NewSerializableImageGroupSchema,
 } from '@/types/ImageGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSugs';
 import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
 import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildTree';
 import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
@@ -42,8 +43,8 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<N
     .filter((group): group is NewTreeImageGroup => group !== null);
 
   const treeRoot = createTreeRoot(topLevelGroups, orphanedImageIds);
-
-  const root = applyImageTotals(treeRoot);
+  const withTotals = applyImageTotals(treeRoot);
+  const root = applyFullSlugs(withTotals);
 
   return {
     item: root,

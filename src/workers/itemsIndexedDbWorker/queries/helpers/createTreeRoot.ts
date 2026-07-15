@@ -9,6 +9,7 @@ export const createTreeRoot = (
 ): NewTreeImageGroup => ({
   id: ROOT_ID,
   slug: '',
+  fullSlug: '',
   created: '',
   title: 'Home',
   isFavourite: false,

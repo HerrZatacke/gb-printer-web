@@ -27,6 +27,7 @@ export const buildTree = (
   return {
     ...group,
     totalImages: NaN, // Populated later by "applyImageTotals"
+    fullSlug: '', // Populated later by "applyFullSlugs"
     images: imageIdsByGroup.get(groupId) ?? [],
     groups: children,
   };
