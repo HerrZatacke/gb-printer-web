@@ -5,17 +5,21 @@ import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getPlugins = async (): Promise<ItemsSourceResponse<Plugin>> => {
   const db = await getDb();
+  const start = performance.now();
+
   const { store } = db.transaction('plugins');
   const plugins = await store.getAll();
   const total = await store.count();
 
-  const addPaging = getAddPaging<Plugin>(total, 0, plugins.length);
+  const addPaging = getAddPaging<Plugin>(total, 0, plugins.length, start);
 
   return addPaging(plugins);
 };
 
 export const getPluginsByUrls = async (urls: string[]): Promise<ItemsSourceResponse<Plugin>> => {
   const db = await getDb();
+  const start = performance.now();
+
   const { store } = db.transaction('plugins');
   const total = await store.count();
 
@@ -25,7 +29,7 @@ export const getPluginsByUrls = async (urls: string[]): Promise<ItemsSourceRespo
 
   const filteredPlugins = plugins.filter((plugin): plugin is Plugin => Boolean(plugin));
 
-  const addPaging = getAddPaging<Plugin>(total, 0, plugins.length);
+  const addPaging = getAddPaging<Plugin>(total, 0, plugins.length, start);
 
   return addPaging(filteredPlugins);
 };

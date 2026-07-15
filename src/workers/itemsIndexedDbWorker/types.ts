@@ -97,16 +97,13 @@ export interface ItemsSourcePaging {
 export interface ItemsSourceResponse<T> {
   items: T[];
   paging: ItemsSourcePaging;
-}
-
-export interface ItemSourceResponse<T> {
-  item: T;
-  paging: ItemsSourcePaging;
+  duration: number;
 }
 
 export interface RootItemSourceResponse<T> {
   item: T;
   totalCount: number;
+  duration: number;
 }
 
 export interface ItemsSource {

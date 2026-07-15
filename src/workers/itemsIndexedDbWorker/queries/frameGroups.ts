@@ -5,11 +5,13 @@ import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getFrameGroups = async (): Promise<ItemsSourceResponse<FrameGroup>> => {
   const db = await getDb();
+  const start = performance.now();
+
   const { store } = db.transaction('framegroups');
   const frameGroups = await store.getAll();
   const total = await store.count();
 
-  const addPaging = getAddPaging<FrameGroup>(total, 0, frameGroups.length);
+  const addPaging = getAddPaging<FrameGroup>(total, 0, frameGroups.length, start);
 
   return addPaging(frameGroups);
 };

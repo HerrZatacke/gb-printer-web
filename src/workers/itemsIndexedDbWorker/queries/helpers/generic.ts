@@ -10,6 +10,7 @@ export const getAddPaging = <T>(
   total: number,
   page: number,
   pageSize: number,
+  startTime: number,
 ) => (
   sortedItems: T[],
 ): ItemsSourceResponse<T> => {
@@ -23,5 +24,6 @@ export const getAddPaging = <T>(
       pageSize,
       page,
     },
+    duration: performance.now() - startTime,
   };
 };

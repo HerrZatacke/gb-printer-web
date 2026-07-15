@@ -13,6 +13,7 @@ import { RootItemSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<NewTreeImageGroup>> => {
   const db = await getDb();
+  const start = performance.now();
 
   const groupsStore = db.transaction('imagegroups').store;
   const imagesStore = db.transaction('images').store;
@@ -49,5 +50,26 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<N
   return {
     item: root,
     totalCount,
+    duration: performance.now() - start,
   };
+};
+
+export const updateImageGroups = async (imageGroups: NewSerializableImageGroup[]): Promise<void> => {
+  const { success, data: parsedGroups, error } = z.array(NewSerializableImageGroupSchema).safeParse(imageGroups);
+  if (success) {
+    const db = await getDb();
+
+    const tx = db.transaction('imagegroups', 'readwrite');
+    const store = tx.store;
+
+    await Promise.all(parsedGroups.map((group) => store.put(group)));
+    await tx.done;
+  } else {
+    console.error(error);
+  }
+};
+
+export const deleteImageGroupsByIds = async (): Promise<void> => {
+  console.warn(self.constructor.name, 'Not implemented');
+  return undefined;
 };

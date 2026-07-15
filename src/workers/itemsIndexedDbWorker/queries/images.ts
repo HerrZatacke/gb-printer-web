@@ -9,6 +9,8 @@ import { type FilterStep, type GetImagesParams, type ItemsSourceResponse } from 
 
 export const getImages = async (params: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
+  const start = performance.now();
+
   const hostApi = await getHostApi();
   const { store } = db.transaction('images');
   const total = await store.count();
@@ -20,7 +22,7 @@ export const getImages = async (params: GetImagesParams): Promise<ItemsSourceRes
     filters,
   } = params;
 
-  const addPaging = getAddPaging<Image>(total, page, pageSize);
+  const addPaging = getAddPaging<Image>(total, page, pageSize, start);
 
   const hasFilters = !!(
     filters?.tags?.length ||
@@ -72,6 +74,8 @@ export const getImages = async (params: GetImagesParams): Promise<ItemsSourceRes
 
 export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
+  const start = performance.now();
+
   const { store } = db.transaction('images');
   const total = await store.count();
 
@@ -81,7 +85,7 @@ export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
 
   const filteredImages = images.filter((image): image is Image => Boolean(image));
 
-  const addPaging = getAddPaging<Image>(total, 0, images.length);
+  const addPaging = getAddPaging<Image>(total, 0, images.length, start);
 
   return addPaging(filteredImages);
 };

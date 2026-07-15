@@ -6,6 +6,8 @@ import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getPalettesByShortNames = async (shortNames: string[]): Promise<ItemsSourceResponse<Palette>> => {
   const db = await getDb();
+  const start = performance.now();
+
   const { store } = db.transaction('palettes');
   const total = await store.count();
 
@@ -26,13 +28,15 @@ export const getPalettesByShortNames = async (shortNames: string[]): Promise<Ite
 
   const filteredPalettes = palettes.filter((palette): palette is Palette => Boolean(palette));
 
-  const addPaging = getAddPaging<Palette>(total, 0, palettes.length);
+  const addPaging = getAddPaging<Palette>(total, 0, palettes.length, start);
 
   return addPaging(filteredPalettes);
 };
 
 export const getPalettes = async (): Promise<ItemsSourceResponse<Palette>> => {
   const db = await getDb();
+  const start = performance.now();
+
   const { store } = db.transaction('palettes');
   const palettes = await store.getAll();
   const total = await store.count() + predefinedPalettes.length;
@@ -45,7 +49,7 @@ export const getPalettes = async (): Promise<ItemsSourceResponse<Palette>> => {
     ...palettes,
   ];
 
-  const addPaging = getAddPaging<Palette>(total, 0, withPredefined.length);
+  const addPaging = getAddPaging<Palette>(total, 0, withPredefined.length, start);
 
   return addPaging(withPredefined);
 };
