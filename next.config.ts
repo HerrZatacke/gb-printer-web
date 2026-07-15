@@ -26,7 +26,9 @@ const getNextConfig = async (): Promise<NextConfig> => {
     trailingSlash: true,
     basePath,
     assetPrefix: basePath ? `${basePath}/` : '',
-
+    logging: {
+      browserToTerminal: false,
+    },
     env: {
       NEXT_PUBLIC_BRANCH: branch,
       NEXT_PUBLIC_VERSION: version,
