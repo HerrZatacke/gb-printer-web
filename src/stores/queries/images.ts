@@ -45,13 +45,12 @@ export const imagesByHashesQueryOptions = (hashes: string[]) => {
     queryKey: imagesKeys.byHashes(hashes),
     queryFn: async () => {
       if (!hashes?.length) {
-        return { items: [], missing: [] };
+        return { items: [] };
       }
 
       const results = await Promise.all(hashes.map(imagesByHashesBatchedLoader.loadByKey));
       const items = results.filter((f): f is Image => Boolean(f));
-      const missing = hashes.filter((id, i) => !Boolean(results[i]));
-      return { items, missing };
+      return { items };
     },
     staleTime: 30000,
   };

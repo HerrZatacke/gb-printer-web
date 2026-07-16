@@ -1,4 +1,4 @@
-type FetchByKeys<T> = (keys: string[]) => Promise<{ items: T[]; missing?: string[] }>;
+type FetchByKeys<T> = (keys: string[]) => Promise<{ items: T[] }>;
 
 export const createBatchedLoader = <T>(
   fetchByKeys: FetchByKeys<T>,

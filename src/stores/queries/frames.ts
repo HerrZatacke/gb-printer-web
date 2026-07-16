@@ -45,13 +45,12 @@ export const framesByHashesQueryOptions = (hashes: string[]) => {
     queryKey: framesKeys.byHashes(hashes),
     queryFn: async () => {
       if (!hashes?.length) {
-        return { items: [], missing: [] };
+        return { items: [] };
       }
 
       const results = await Promise.all(hashes.map(framesByHashesBatchedLoader.loadByKey));
       const items = results.filter((f): f is Frame => Boolean(f));
-      const missing = hashes.filter((hash, i) => !Boolean(results[i]));
-      return { items, missing };
+      return { items };
     },
     staleTime: 30000,
   };
@@ -62,13 +61,12 @@ export const framesByIdsQueryOptions = (ids: string[]) => {
     queryKey: framesKeys.byIds(ids),
     queryFn: async () => {
       if (!ids?.length) {
-        return { items: [], missing: [] };
+        return { items: [] };
       }
 
       const results = await Promise.all(ids.map(framesByIdsBatchedLoader.loadByKey));
       const items = results.filter((f): f is Frame => Boolean(f));
-      const missing = ids.filter((id, i) => !Boolean(results[i]));
-      return { items, missing };
+      return { items };
     },
     staleTime: 30000,
   };
