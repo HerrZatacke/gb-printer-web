@@ -87,6 +87,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     groupImagesAdd,
     ungroupImages,
   } = useItemsStore();
+  // const { updateImageGroups } = useImageGroups({});
   const { navigateToGroup, navigateToImage } = useNavigationTools();
   const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
@@ -273,6 +274,23 @@ const useEditImageGroup = (): UseEditImageGroup => {
         if (!initialValues.imageGroup) {
           return;
         }
+
+        // ToDo: implement change of parentgroup
+
+        // Prepared regular update:
+        // updateImageGroups([
+        //   {
+        //     id: initialValues.imageGroup.id,
+        //     created: initialValues.imageGroup.created,
+        //     coverImage: initialValues.imageGroup.coverImage,
+        //     groups: initialValues.imageGroup.groups,
+        //     images: initialValues.imageGroup.images,
+        //     tags: ['not', 'implemented'],
+        //     slug,
+        //     title,
+        //     isFavourite,
+        //   },
+        // ]);
 
         updateImageGroup(
           {
