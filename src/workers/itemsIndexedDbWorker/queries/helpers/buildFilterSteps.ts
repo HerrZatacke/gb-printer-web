@@ -79,7 +79,6 @@ export const buildFilterSteps = async (filters: GetImagesFilters, hostApi: Items
 
       case SpecialTags.FILTER_RECENT: {
         const ids = await hostApi.getRecentImports();
-        console.log(ids);
         steps.push({
           kind: 'ids',
           ids,

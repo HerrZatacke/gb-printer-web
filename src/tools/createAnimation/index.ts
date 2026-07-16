@@ -257,7 +257,6 @@ export const createAnimation = async (itemsState: ItemsState) => {
     queue,
     total: canvases.length,
     setProgress: (value: number) => {
-      console.log(value);
       setProgress(progressId, value);
     },
   });
