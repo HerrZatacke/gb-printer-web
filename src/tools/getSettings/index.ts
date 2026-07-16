@@ -3,13 +3,14 @@ import { getQueryClient } from '@/contexts/QueryClient';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
 import { frameGroupsListQueryOptions } from '@/stores/queries/frameGroups';
 import { framesListQueryOptions } from '@/stores/queries/frames';
+import { imageGroupsListQueryOptions } from '@/stores/queries/imageGroups';
+import { imagesListQueryOptions } from '@/stores/queries/images';
 import { palettesListQueryOptions } from '@/stores/queries/palettes';
 import { pluginsListQueryOptions } from '@/stores/queries/plugins';
 import {
   type Values,
   ITEMS_STORE_VERSION,
   useFiltersStore,
-  ItemsState,
 } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
 import { type ExportableState, type JSONExport, type JSONExportBinary } from '@/types/ExportState';
@@ -18,21 +19,6 @@ import getFrames from './getFrames';
 import getFramesForExport from './getFramesForExport';
 import getImageHashesForExport from './getImageHashesForExport';
 import getImages from './getImages';
-// import type { Image } from '@/types/Image';
-// import type { Frame } from '@/types/Frame';
-// import type { Palette } from '@/types/Palette';
-// import type { FrameGroup } from '@/types/FrameGroup';
-
-// export interface StorePropertyDefault {
-//   key: keyof ExportableState,
-//   saveLocally: boolean,
-//   saveExport: ExportTypes[],
-//   value: unknown,
-// }
-//
-// export interface StorePropertyExportable extends Omit<StorePropertyDefault, 'key'> {
-//   key: keyof ExportableState,
-// }
 
 type ExportableKey = keyof Values;
 
@@ -71,18 +57,19 @@ const getExportKeys = (what: ExportTypes): ExportableKey[] => {
 
 export const getSettings = async (
   what: ExportTypes,
-  itemsState: ItemsState,
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {
-  // get all possible exportable properties
-  const { images, imageGroups } = itemsState;
-  const { imageSelection } = useFiltersStore.getState();
-
   const queryClient = getQueryClient();
+  // get all possible exportable properties
+  const { imageSelection } = useFiltersStore.getState();
   const { items: palettes } = await queryClient.fetchQuery(palettesListQueryOptions());
   const { items: plugins } = await queryClient.fetchQuery(pluginsListQueryOptions());
   const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
   const { items: frameGroups } = await queryClient.fetchQuery(frameGroupsListQueryOptions());
+  const { items: images } = await queryClient.fetchQuery(imagesListQueryOptions());
+  const { items: imageGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
+
+  console.log({ imageGroups, images });
 
   const exportableState: ExportableState = {
     ...getExportKeys(what)

@@ -15,6 +15,7 @@ import {
 } from '@/workers/itemsIndexedDbWorker/queries/frames';
 import {
   getImageGroupsFullTree,
+  getImageGroupsList,
   updateImageGroups,
   deleteImageGroupsByIds,
 } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
@@ -62,6 +63,7 @@ const api: ItemsSource = {
   },
 
   getImageGroupsFullTree,
+  getImageGroupsList,
   updateImageGroups,
   deleteImageGroupsByIds,
 

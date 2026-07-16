@@ -9,8 +9,22 @@ import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/a
 import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
 import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildTree';
 import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
+import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
-import { RootItemSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { ItemsSourceResponse, RootItemSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+
+export const getImageGroupsList = async (): Promise<ItemsSourceResponse<NewSerializableImageGroup>> => {
+  const db = await getDb();
+  const start = performance.now();
+
+  const { store } = db.transaction('imagegroups');
+  const imageGroups = await store.getAll();
+  const total = await store.count();
+
+  const addPaging = getAddPaging<NewSerializableImageGroup>(total, 0, imageGroups.length, start, NewSerializableImageGroupSchema);
+
+  return addPaging(imageGroups);
+};
 
 export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<NewTreeImageGroup>> => {
   const db = await getDb();

@@ -24,6 +24,7 @@ export const findGroupByFullSlug = (
 
 export const imageGroupsKeys = {
   all: baseKeys,
+  list: [...baseKeys, 'list'] as const,
   fullTree: [...baseKeys, 'fullTree'] as const,
 };
 
@@ -33,6 +34,17 @@ export const imageGroupsFullTreeQueryOptions = () => {
     queryFn: async () => {
       const source = await getItemsSource();
       return source.getImageGroupsFullTree();
+    },
+    staleTime: 30000,
+  };
+};
+
+export const imageGroupsListQueryOptions = () => {
+  return {
+    queryKey: imageGroupsKeys.list,
+    queryFn: async () => {
+      const source = await getItemsSource();
+      return source.getImageGroupsList();
     },
     staleTime: 30000,
   };

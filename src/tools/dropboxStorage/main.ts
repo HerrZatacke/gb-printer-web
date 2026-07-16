@@ -3,6 +3,7 @@ import { SyncDirection } from '@/consts/sync';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { type UseStores } from '@/hooks/useStores';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
+import { imagesListQueryOptions } from '@/stores/queries/images';
 import {
   LogType,
   useFiltersStore,
@@ -82,7 +83,7 @@ export const dropBoxSyncTool = (
       switch (direction) {
         case SyncDirection.UP: {
           const lastUpdateUTC = syncLastUpdate?.local || Math.floor((new Date()).getTime() / 1000);
-          const changes = await getUploadFiles(stores.getSyncToolData, repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
+          const changes = await getUploadFiles(repoContents, lastUpdateUTC, addToQueue('GBPrinter'));
           await dropboxClient.upload(changes, 'settings');
           useStoragesStore.getState().setSyncLastUpdate('dropbox', lastUpdateUTC);
           break;
@@ -128,7 +129,7 @@ export const dropBoxSyncTool = (
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { images: stateImages } = stores.getSyncToolData().itemsState;
+    const { items: stateImages } = await queryClient.fetchQuery(imagesListQueryOptions());
 
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
     const filtersState = useFiltersStore.getState();
@@ -139,7 +140,7 @@ export const dropBoxSyncTool = (
       handleExportFrame,
       fileNameStyle,
     };
-    const loadTiles = loadImageTiles(stateImages);
+    const loadTiles = loadImageTiles();
 
     const downloadInfos = (await Promise.all(
       images.map(async (image, index): Promise<unknown> => (

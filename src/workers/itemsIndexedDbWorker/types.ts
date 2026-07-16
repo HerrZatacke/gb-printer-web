@@ -7,7 +7,6 @@ import { type Image, MonochromeImageSchema, RGBNImageSchema } from '@/types/Imag
 import {
   type NewSerializableImageGroup,
   type NewTreeImageGroup,
-  type SerializableImageGroup,
 } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
@@ -60,7 +59,7 @@ export interface ItemsDB extends DBSchema {
   };
   imagegroups: {
     key: string;
-    value: SerializableImageGroup;
+    value: NewSerializableImageGroup;
   };
   palettes: {
     key: string;
@@ -150,6 +149,7 @@ export interface ItemsSource {
   deleteImagesByHashes(hashes: string[]): Promise<void>;
 
   getImageGroupsFullTree(): Promise<RootItemSourceResponse<NewTreeImageGroup>>;
+  getImageGroupsList(): Promise<ItemsSourceResponse<NewSerializableImageGroup>>;
   updateImageGroups(imageGroups: NewSerializableImageGroup[]): Promise<void>;
   deleteImageGroupsByIds(ids: string[]): Promise<void>;
 

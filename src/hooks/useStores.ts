@@ -1,9 +1,9 @@
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useFrames } from '@/hooks/useFrames';
 import { usePalettes } from '@/hooks/usePalettes';
 import {
-  ImageSelectionMode, type ItemsState,
+  ImageSelectionMode,
   useDialogsStore,
   useEditStore,
   useFiltersStore,
@@ -17,10 +17,6 @@ import { type Dialog } from '@/types/Dialog';
 import { type ExportableState } from '@/types/ExportState';
 import { type Image } from '@/types/Image';
 
-export interface SyncToolData {
-  itemsState: ItemsState;
-}
-
 export interface UseStores {
   addImages: (images: Image[]) => void;
   deleteImages: (hashes: string[]) => void;
@@ -30,7 +26,6 @@ export interface UseStores {
   setDialog: (dialog: Dialog) => void;
   updateImages: (images: Image[]) => void;
   updateLastSyncLocalNow: () => void;
-  getSyncToolData: () => SyncToolData;
 }
 
 export const useStores = (): UseStores => {
@@ -39,23 +34,13 @@ export const useStores = (): UseStores => {
   const { updateRecentImports, updateImageSelection } = useFiltersStore();
   const { importQueueCancel } = useImportsStore();
   const { setPrinterBusy } = useInteractionsStore();
-  const itemsState = useItemsStore();
-
-  // ToDo: remove once better sync is available
-  // Update refs for github and dropbox exports
-  const itemsStateRef = useRef(itemsState);
-
-  useLayoutEffect(() => {
-    itemsStateRef.current = itemsState;
-  }, [itemsState]);
-
   const {
     addImages,
     deleteImages,
     setImageGroups,
     updateImages,
     setImages,
-  } = itemsState;
+  } = useItemsStore();
 
   const { setSyncLastUpdate } = useStoragesStore();
   const { updatePalettes } = usePalettes({});
@@ -132,12 +117,6 @@ export const useStores = (): UseStores => {
       }
     };
 
-    const getSyncToolData = (): SyncToolData => {
-      return {
-        itemsState: itemsStateRef.current,
-      };
-    };
-
     return ({
       addImages: combinedAddImages,
       deleteImages: combinedDeleteImages,
@@ -147,7 +126,6 @@ export const useStores = (): UseStores => {
       setDialog,
       updateImages: combinedUpdateImages,
       updateLastSyncLocalNow,
-      getSyncToolData,
     });
   }, [
     addImages,

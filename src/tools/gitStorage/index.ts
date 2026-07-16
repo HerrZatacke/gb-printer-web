@@ -1,5 +1,4 @@
 import { SyncDirection } from '@/consts/sync';
-import { UseStores } from '@/hooks/useStores';
 import { useStoragesStore } from '@/stores/stores';
 import { type JSONExportState } from '@/types/ExportState';
 import { type GitStorageSettings } from '@/types/Sync';
@@ -13,14 +12,13 @@ export interface GitSyncTool {
 let gitSyncTool: GitSyncTool;
 
 export const gitStorageTool = (
-  stores: UseStores,
   remoteImport: (repoContents: JSONExportState) => Promise<void>,
 ): GitSyncTool => {
   const loadAndInitMiddleware = async (): Promise<GitSyncTool> => {
     if (!gitSyncTool) {
       const { init, gitSyncTool: tool } = await import(/* webpackChunkName: "syn" */ './main');
       init();
-      gitSyncTool = gitSyncTool || tool(stores, remoteImport);
+      gitSyncTool = gitSyncTool || tool(remoteImport);
     }
 
     return gitSyncTool;
