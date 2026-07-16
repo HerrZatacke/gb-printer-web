@@ -1,13 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { type RGBNPalette } from 'gb-image-decoder';
 import { useCallback } from 'react';
 import { Updatable, UpdatableMonochrome, UPDATATABLES } from '@/consts/batchActionTypes';
 import { type ImageUpdatable } from '@/consts/batchActionTypes';
 import { useStores } from '@/hooks/useStores';
-import {
-  useEditStore,
-  useFiltersStore,
-  useItemsStore,
-} from '@/stores/stores';
+import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { useEditStore, useFiltersStore } from '@/stores/stores';
 import applyTagChanges from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type TagUpdates } from '@/tools/modifyTagChanges';
@@ -29,22 +27,26 @@ interface UseBatchUpdateImages {
 const useBatchUpdateImages = (): UseBatchUpdateImages => {
   const { editImages, cancelEditImages } = useEditStore();
   const { sortBy } = useFiltersStore();
-  const { images } = useItemsStore();
+  const queryClient = useQueryClient();
   const { updateImages } = useStores();
 
-  const batchUpdateImages = useCallback(({ shouldUpdate, updates, tagChanges }: BatchUpdateImagesParams): void => {
+  const batchUpdateImages = useCallback(async ({ shouldUpdate, updates, tagChanges }: BatchUpdateImagesParams): Promise<void> => {
     const sortFunc = sortImages(sortBy);
 
     const currentEditHashes: string[] = editImages?.batch || [];
 
-    console.log({ shouldUpdate, updates });
-
     if (shouldUpdate && currentEditHashes?.length) {
 
-      const imagesInBatch = currentEditHashes.reduce((acc: Image[], selcetionHash: string): Image[] => {
-        const img = images.find(({ hash }) => hash === selcetionHash);
-        return img ? [...acc, img] : acc;
-      }, [])
+      // Promise.all with separate fetches required to ensure sort order
+      const foundImages: (Image | null)[] = await Promise.all(
+        currentEditHashes.map(async (hash): Promise<Image | null> => {
+          const { items: [foundImage] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hash]));
+          return foundImage || null;
+        }),
+      );
+
+      const imagesInBatch = foundImages
+        .filter((img): img is Image => Boolean(img))
         .map(addSortIndex)
         .sort(sortFunc)
         .map(removeSortIndex);
@@ -144,7 +146,7 @@ const useBatchUpdateImages = (): UseBatchUpdateImages => {
     }
 
     cancelEditImages();
-  }, [cancelEditImages, editImages?.batch, images, sortBy, updateImages]);
+  }, [cancelEditImages, editImages?.batch, queryClient, sortBy, updateImages]);
 
   return { batchUpdateImages };
 };
