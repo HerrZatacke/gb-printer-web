@@ -1,10 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { ExportTypes } from '@/consts/exportTypes';
-import { getQueryClient } from '@/contexts/QueryClient';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
+import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { download, prepareFiles, type PrepareFilesOptions } from '@/tools/download';
 import generateFileName from '@/tools/generateFileName';
@@ -23,7 +24,7 @@ interface UseDownload {
 
 const useDownload = (): UseDownload => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle, alwaysShowDownloadDialog } = useSettingsStore();
-  const { images } = useItemsStore();
+  const queryClient = useQueryClient();
   const { setDownloadHashes } = useInteractionsStore();
   const { getSettingsFile } = useImportExportSettings();
   const { sendEvent } = useTracking();
@@ -37,7 +38,7 @@ const useDownload = (): UseDownload => {
 
   const getZipFileName = useCallback(async (hashes: string[]): Promise<string> => {
     if (hashes.length === 1) {
-      const image = images.find(({ hash }) => hash === hashes[0]);
+      const { items: [image] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hashes[0]]));
       if (!image) {
         throw new Error('image not found');
       }
@@ -59,15 +60,14 @@ const useDownload = (): UseDownload => {
       useCurrentDate: true,
       fileNameStyle,
     });
-  }, [fileNameStyle, images]);
+  }, [fileNameStyle, queryClient]);
 
   const prepareDownloadInfo = useCallback(async (imageHash: string, prepareFilesOptionsOverride?: PrepareFilesOptions): Promise<DownloadInfo[]> => {
-    const queryClient = getQueryClient();
-    const image = images.find(({ hash }) => hash === imageHash);
+    const { items: [image] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([imageHash]));
     if (!image) { throw new Error('image not found'); }
 
 
-    const tiles = await loadImageTiles(images)(image.hash);
+    const tiles = await loadImageTiles()(image.hash);
     if (!tiles) { throw new Error('no tiles'); }
 
     const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
@@ -83,7 +83,7 @@ const useDownload = (): UseDownload => {
     }
 
     return prepareFiles(image, tiles, imageStartLine, options);
-  }, [images, prepareFilesOptions]);
+  }, [queryClient, prepareFilesOptions]);
 
   const downloadImages = useCallback(async (hashes: string[]): Promise<void> => {
     const zipFilename = await getZipFileName(hashes);

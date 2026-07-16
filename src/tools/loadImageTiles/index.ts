@@ -1,6 +1,7 @@
 import { type RGBNTiles } from 'gb-image-decoder';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
+import { imagesByHashesQueryOptions } from '@/stores/queries/images';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { load, type RecoverFn } from '@/tools/storage';
 import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
@@ -11,7 +12,7 @@ export type PImage = {
   hashes?: RGBNImage['hashes'];
 }
 
-export const loadImageTiles = (stateImages: Image[], recover?: RecoverFn) => {
+export const loadImageTiles = (recover?: RecoverFn) => {
   const loader = async (
     hash: string,
     noDummy?: boolean,
@@ -19,7 +20,7 @@ export const loadImageTiles = (stateImages: Image[], recover?: RecoverFn) => {
     hashesOverride?: RGBNHashes,
   ): Promise<string[] | RGBNTiles> => {
     const queryClient = getQueryClient();
-    const image = stateImages.find(((img) => hash === img.hash));
+    const { items: [image] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hash]));
 
     // Image may not exist when loading RGBN-channels where original image has been deleted.
     const frame = (typeof overrideFrame === 'string' ? overrideFrame : image?.frame) || undefined;
@@ -46,8 +47,8 @@ export const loadImageTiles = (stateImages: Image[], recover?: RecoverFn) => {
   return loader;
 };
 
-export const getImageTileCount = (stateImages: Image[]) => {
-  const tileLoader = loadImageTiles(stateImages);
+export const getImageTileCount = () => {
+  const tileLoader = loadImageTiles();
   return async (hash: string): Promise<number> => {
     const loadedTiles = await tileLoader(hash, true, '');
     if (loadedTiles) {

@@ -7,7 +7,7 @@ import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
-import { useItemsStore, useStoragesStore } from '@/stores/stores';
+import { useStoragesStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { type RGBNHashes } from '@/types/Image';
@@ -29,7 +29,6 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const [gbImageProps, setGbImageProps] = useState<PartialGameBoyImageProps | null>(null);
   const stores = useStores();
   const { remoteImport } = useImportExportSettings();
-  const { images } = useItemsStore();
   const { palettes: allPalettes } = usePalettes({ list: true });
   const { dropboxStorage, gitStorage } = useStoragesStore();
   const { galleryImageData } = useGalleryImage(hash);
@@ -61,11 +60,11 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
         }
       };
 
-      const imageLoader = getLoadImageTiles(images, recoverFn);
+      const imageLoader = getLoadImageTiles(recoverFn);
 
       return imageLoader(imgHash, noDummy, overrideFrame, hashesOverride);
     },
-    [images, dropboxStorage.use, gitStorage.use, stores, remoteImport],
+    [dropboxStorage.use, gitStorage.use, stores, remoteImport],
   );
 
   const isRGB = useMemo(() => {
