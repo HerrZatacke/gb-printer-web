@@ -1,9 +1,10 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
-import { isRGBNImage } from '@/tools/isRGBNImage';
-import { type Image, type MonochromeImage } from '@/types/Image';
+import { useImages } from '@/hooks/useImages';
+import { useSettingsStore } from '@/stores/stores';
+import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
+import { type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 
 export interface PaletteSortOption {
@@ -23,7 +24,7 @@ interface UsePaletteSort {
 
 const usePaletteSort = (): UsePaletteSort => {
   const { sortPalettes, setSortPalettes } = useSettingsStore();
-  const { images } = useItemsStore();
+  const { images } = useImages({ list: true });
   const t = useTranslations('usePaletteSort');
 
   const paletteSortOptions: PaletteSortOption[] = useMemo(() => ([
@@ -54,16 +55,12 @@ const usePaletteSort = (): UsePaletteSort => {
   ]), [t]);
 
   const paletteUsages = useMemo(() => (
-    images.reduce((acc: PaletteUsage, image: Image): PaletteUsage => {
-      const imageIsRGBN = isRGBNImage(image);
-
-      if (imageIsRGBN) {
-        return acc;
-      }
-
+    images
+      .reduce(reduceImagesMonochrome, [])
+      .reduce((acc: PaletteUsage, image: MonochromeImage): PaletteUsage => {
       return {
         ...acc,
-        [(image as MonochromeImage).palette]: (acc[(image as MonochromeImage).palette] || 0) + 1,
+        [image.palette]: (acc[image.palette] || 0) + 1,
       };
     }, {})
   ), [images]);
