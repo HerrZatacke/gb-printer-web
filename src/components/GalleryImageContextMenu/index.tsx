@@ -16,8 +16,8 @@ import Bowser from 'bowser';
 import { type ComponentType, type MouseEventHandler, useMemo, useState } from 'react';
 import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 import PluginSelect from '@/components/PluginSelect';
-import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useEditImageGroups } from '@/hooks/useEditImageGroups';
+import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
 import { ImageSelectionMode, useInteractionsStore } from '@/stores/stores';
 

@@ -23,7 +23,7 @@ interface UseGallery {
 
 export const useGallery = (): UseGallery => {
   const { pageIndex, getUrl, view, covers, isWorking } = useGalleryTreeContext();
-  const { pageSize, enableDebug } = useSettingsStore();
+  const { pageSize } = useSettingsStore();
 
   const {
     imageSelection,

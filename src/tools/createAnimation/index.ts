@@ -6,8 +6,8 @@ import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
+import { imagesByHashesQueryOptions } from '@/stores/queries/images';
 import {
-  ItemsState,
   useInteractionsStore,
   useProgressStore,
   useSettingsStore,
@@ -20,12 +20,10 @@ import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCrea
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
-import { reduceItems } from '@/tools/reduceArray';
 import unique from '@/tools/unique';
 import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type VideoParams } from '@/types/VideoParams';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
 
 interface GifFrameData {
   palette: number[];
@@ -163,7 +161,6 @@ export const createAnimation = async () => {
 
     const { palette, framePalette } = await getImagePalettes({ ...image, lockFrame }); // set Lockframe to value set by global animate settings
 
-    const queryClient = getQueryClient();
     const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
 
     const frameData = frame ? await loadFrameData(frame.hash) : null;
