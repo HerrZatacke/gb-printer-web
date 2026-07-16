@@ -9,7 +9,7 @@ export const imagesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
-  byAnyHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
+  byAnyHashes: (hashes: string[]) => [...baseKeys, 'byAnyHashes', [...hashes].sort()] as const,
   raw: (raw: GetImagesParams) => [...baseKeys, 'raw', raw] as const,
 };
 
