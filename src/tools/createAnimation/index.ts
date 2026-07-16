@@ -156,7 +156,7 @@ export const createAnimation = async (itemsState: ItemsState) => {
   }, []);
 
 
-  const tileLoader = loadImageTiles(images);
+  const tileLoader = loadImageTiles();
 
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
     const tiles = await tileLoader(image.hash);
