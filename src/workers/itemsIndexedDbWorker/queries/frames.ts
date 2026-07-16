@@ -34,6 +34,24 @@ export const getFramesByIds = async (ids: string[]): Promise<ItemsSourceResponse
   return addPaging(filteredFrames);
 };
 
+export const getFramesByHashes = async (hashes: string[]): Promise<ItemsSourceResponse<Frame>> => {
+  const db = await getDb();
+  const start = performance.now();
+
+  const { store } = db.transaction('frames');
+  const total = await store.count();
+
+  const frames = await Promise.all(
+    hashes.map(hash => store.index('hash').get(hash)),
+  );
+
+  const filteredFrames = frames.filter((frame): frame is Frame => Boolean(frame));
+
+  const addPaging = getAddPaging<Frame>(total, 0, frames.length, start);
+
+  return addPaging(filteredFrames);
+};
+
 export const updateFrames = async (frames: Frame[]): Promise<void> => {
   const db = await getDb();
 

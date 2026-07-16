@@ -1,5 +1,5 @@
 import { getQueryClient } from '@/contexts/QueryClient';
-import { framesListQueryOptions } from '@/stores/queries/frames';
+import { framesByHashesQueryOptions, framesListQueryOptions } from '@/stores/queries/frames';
 import { delay } from '@/tools/delay';
 import { localforageFrames, localforageImages, localforageReady } from '@/tools/localforageInstance';
 import { del, delFrame } from '@/tools/storage';
@@ -80,31 +80,33 @@ export const getTrashImages = async (images: Image[]): Promise<string[]> => {
   return results;
 };
 
-type CheckIsDeletedFn = ((hash: string) => boolean);
-const frameIsDeleted = async (): Promise<CheckIsDeletedFn> => {
-  const queryClient = getQueryClient();
-  const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
 
-  return (hash: string): boolean => (
-    !frames.find((frame) => frame.hash === hash)
-  );
+const isFrameDeleted = async (hash: string): Promise<boolean> => {
+  const queryClient = getQueryClient();
+  const res = await queryClient.fetchQuery(framesByHashesQueryOptions([hash]));
+  const { items: [frame] } = res;
+  return !frame;
 };
 
 export const getTrashFrames = async (): Promise<string[]> => {
   await localforageReady();
   const storedHashes = await localforageFrames.keys();
-  const isDeleted = await frameIsDeleted();
 
+  const BATCH_SIZE = 50;
   const results: string[] = [];
 
-  for (let i = 0; i < storedHashes.length; i++) {
-    const hash = storedHashes[i];
-    if (!hash.startsWith('dummy') && isDeleted(hash)) {
-      results.push(hash);
-    }
+  const candidates = storedHashes.filter((hash) => !hash.startsWith('dummy'));
 
-    // Yield to the event loop to keep UI responsive
-    if (i % 20 === 0) await delay(0);
+
+  for (let i = 0; i < candidates.length; i += BATCH_SIZE) {
+    const batch = candidates.slice(i, i + BATCH_SIZE);
+    const deletedFlags = await Promise.all(batch.map((hash) => isFrameDeleted(hash)));
+
+    for (let j = 0; j < batch.length; j++) {
+      if (deletedFlags[j]) {
+        results.push(batch[j]);
+      }
+    }
   }
 
   return results;

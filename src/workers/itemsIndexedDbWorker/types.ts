@@ -25,6 +25,7 @@ export interface ItemsDB extends DBSchema {
     value: Frame;
     indexes: {
       name: string;
+      hash: string;
     };
   };
   framegroups: {
@@ -39,6 +40,7 @@ export interface ItemsDB extends DBSchema {
       frame: string;
       palette: string;
       tags: string;
+      hashes: string;
       title: string;
       type: string;
     };
@@ -125,6 +127,7 @@ export interface ItemsSource {
   deleteImageGroupsByIds(ids: string[]): Promise<void>;
 
   getFrames(): Promise<ItemsSourceResponse<Frame>>;
+  getFramesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Frame>>;
   getFramesByIds(ids: string[]): Promise<ItemsSourceResponse<Frame>>;
   updateFrames(frames: Frame[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
   deleteFramesByIds(ids: string[]): Promise<void>;

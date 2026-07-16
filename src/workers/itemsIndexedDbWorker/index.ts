@@ -9,6 +9,7 @@ import {
 import {
   deleteFramesByIds,
   getFrames,
+  getFramesByHashes,
   getFramesByIds,
   updateFrames,
 } from '@/workers/itemsIndexedDbWorker/queries/frames';
@@ -58,6 +59,7 @@ const api: ItemsSource = {
   deleteImageGroupsByIds,
 
   getFrames,
+  getFramesByHashes,
   getFramesByIds,
   updateFrames,
   deleteFramesByIds,
