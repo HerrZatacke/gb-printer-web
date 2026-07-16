@@ -4,6 +4,7 @@ import { BatchActionType } from '@/consts/batchActionTypes';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
+import { useImages } from '@/hooks/useImages';
 import { usePlugins } from '@/hooks/usePlugins';
 import { useStores } from '@/hooks/useStores';
 import {
@@ -11,7 +12,6 @@ import {
   useEditStore,
   useFiltersStore,
   useInteractionsStore,
-  useItemsStore,
   useSettingsStore,
 } from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
@@ -51,7 +51,6 @@ const useBatchButtons = (page: number): UseBatchButtons => {
     setSortOptionsVisible,
     setImageSelection,
   } = useFiltersStore();
-  const { images: stateImages } = useItemsStore();
   const { plugins } = usePlugins({ list: true });
   const { pageSize } = useSettingsStore();
   const { setEditImages, setEditRGBNImages } = useEditStore();
@@ -82,12 +81,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
 
   const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
 
-  const batchImages: Image[] = useMemo(() => (
-    imageSelection.reduce((acc: Image[], selHash: string): Image[] => {
-      const image = stateImages.find(({ hash }) => hash === selHash);
-      return image ? [image, ...acc] : acc;
-    }, [])
-  ), [imageSelection, stateImages]);
+  const { byHashes: batchImages } = useImages({ hashes: imageSelection });
 
   const selectedImageCount = imageSelection.length;
   const hasSelected = selectedImages.length > 0;
@@ -134,6 +128,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
           }
 
           case BatchActionType.RGB:
+            console.log({ batchImages });
             setEditRGBNImages(batchImages.reduce(reduceImagesMonochrome, []).map(({ hash }) => hash));
             break;
 

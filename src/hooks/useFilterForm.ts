@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAvailableTags } from '@/hooks/useAvailableTags';
 import { useFrames } from '@/hooks/useFrames';
+import { useImages } from '@/hooks/useImages';
 import { usePalettes } from '@/hooks/usePalettes';
-import { useFiltersStore, useItemsStore } from '@/stores/stores';
+import { useFiltersStore } from '@/stores/stores';
 import sortBy, { SortDirection } from '@/tools/sortby';
 import unique from '@/tools/unique';
 import { type Frame } from '@/types/Frame';
@@ -50,7 +51,7 @@ export const useFilterForm = (): UseFilterForm => {
     setFilters,
   } = useFiltersStore();
 
-  const { images } = useItemsStore();
+  const { images } = useImages({ list: true });
   const { frames } = useFrames({ list: true });
   const { palettes } = usePalettes({ list: true });
 
