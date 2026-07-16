@@ -1,4 +1,6 @@
-type FetchByKeys<T> = (keys: string[]) => Promise<{ items: T[] }>;
+import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+
+type FetchByKeys<T> = (keys: string[]) => Promise<ItemsSourceResponse<T>>;
 
 export const createBatchedLoader = <T>(
   fetchByKeys: FetchByKeys<T>,
