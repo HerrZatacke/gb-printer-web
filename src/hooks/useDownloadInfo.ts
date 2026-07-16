@@ -1,5 +1,7 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
-import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
+import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { bitmapFileTypes, supportedCanvasImageFormats, TestFileType } from '@/tools/supportedCanvasImageFormats';
 
@@ -14,7 +16,7 @@ interface UseDownloadInfo {
 
 export const useDownloadInfo = (): UseDownloadInfo => {
   const { downloadHashes } = useInteractionsStore();
-  const { images } = useItemsStore();
+  const queryClient = useQueryClient();
   const { exportFileTypes } = useSettingsStore();
 
   const [supportedExportFileTypes, setSupportedExportFileTypes] = useState<TestFileType[]>([]);
@@ -27,12 +29,21 @@ export const useDownloadInfo = (): UseDownloadInfo => {
     return () => window.clearTimeout(handle);
   }, []);
 
-  const rgbnFlags = useMemo(() => {
-    return downloadHashes.map((downloadHash) => {
-      const image = images.find(({ hash }) => hash === downloadHash);
-      return image ? isRGBNImage(image) : null;
-    });
-  }, [downloadHashes, images]);
+  const [rgbnFlags, setRgbnFlags] = useState<(boolean)[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    queryClient.fetchQuery(imagesByHashesQueryOptions(downloadHashes))
+      .then(({ items: downloadImages }) => {
+        if (!cancelled) {
+          setRgbnFlags(downloadImages.map(isRGBNImage));
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [downloadHashes, queryClient]);
 
   const fileTypeCounts: Record<string, number> = useMemo(() => {
     return supportedExportFileTypes.reduce((acc, fileType) => {
