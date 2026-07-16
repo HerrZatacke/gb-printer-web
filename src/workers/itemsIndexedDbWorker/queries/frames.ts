@@ -41,9 +41,9 @@ export const getFramesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
   const { store } = db.transaction('frames');
   const total = await store.count();
 
-  const frames = await Promise.all(
-    hashes.map(hash => store.index('hash').get(hash)),
-  );
+  const frames = (await Promise.all(
+    hashes.map(hash => store.index('hash').getAll(hash)),
+  )).flat();
 
   const filteredFrames = frames.filter((frame): frame is Frame => Boolean(frame));
 
