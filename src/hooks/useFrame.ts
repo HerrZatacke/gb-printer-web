@@ -1,12 +1,9 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useFrames } from '@/hooks/useFrames';
+import { useImages } from '@/hooks/useImages';
 import { useStores } from '@/hooks/useStores';
-import {
-  useDialogsStore,
-  useEditStore,
-  useItemsStore,
-} from '@/stores/stores';
+import { useDialogsStore, useEditStore } from '@/stores/stores';
 import applyFrame from '@/tools/applyFrame';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import textToTiles from '@/tools/textToTiles';
@@ -45,7 +42,7 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const { setEditFrame } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { frames, deleteFramesByIds } = useFrames({ list: true });
-  const { images } = useItemsStore();
+  const { images } = useImages({ list: true });
   const { updateLastSyncLocalNow } = useStores();
 
   const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
