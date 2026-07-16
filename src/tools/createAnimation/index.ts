@@ -25,6 +25,7 @@ import unique from '@/tools/unique';
 import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
 import { type VideoParams } from '@/types/VideoParams';
+import { imagesByHashesQueryOptions } from '@/stores/queries/images';
 
 interface GifFrameData {
   palette: number[];
@@ -106,10 +107,9 @@ export const videoParamsWithDefaults = (params: VideoParams): Required<VideoPara
 });
 
 // ToDo: move to src/javascript/app/components/Overlays/VideoParamsForm/useVideoForm.ts
-export const createAnimation = async (itemsState: ItemsState) => {
+export const createAnimation = async () => {
   const { setError, videoSelection } = useInteractionsStore.getState();
   const { startProgress, setProgress, stopProgress } = useProgressStore.getState();
-  const { images: stateImages } = itemsState;
   const { videoParams, fileNameStyle } = useSettingsStore.getState();
 
   const progressId = startProgress('Creating Animation');
@@ -132,12 +132,9 @@ export const createAnimation = async (itemsState: ItemsState) => {
     return;
   }
 
-  const images: Image[] = videoSelection
-    .map((imageHash) => (
-      stateImages.find(({ hash }) => hash === imageHash)
-    ))
-    .reduce(reduceItems<Image>, []);
+  const queryClient = getQueryClient();
 
+  const { items: images } = await queryClient.fetchQuery(imagesByHashesQueryOptions(videoSelection));
 
   const animationFrames = images.reduce((acc: Image[], image?: Image): Image[] => {
     if (!image) {
@@ -155,6 +152,7 @@ export const createAnimation = async (itemsState: ItemsState) => {
     return [...acc, animationFrame];
   }, []);
 
+  console.log({ animationFrames });
 
   const tileLoader = loadImageTiles();
 

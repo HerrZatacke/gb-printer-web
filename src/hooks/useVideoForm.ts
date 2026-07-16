@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { createAnimation, videoParamsWithDefaults } from '@/tools/createAnimation';
 import { type VideoParams } from '@/types/VideoParams';
 
@@ -17,12 +17,10 @@ export const useVideoForm = (): UseVideoForm => {
   const videoParams = videoParamsWithDefaults(stateVideoParams);
   const imageCount = videoSelection.length || 0;
 
-  const itemsState = useItemsStore();
-
   const animate = useCallback(() => {
-    createAnimation(itemsState);
+    createAnimation();
     setVideoSelection([]); // Hide dialog
-  }, [itemsState, setVideoSelection]);
+  }, [setVideoSelection]);
 
   return {
     imageCount,
