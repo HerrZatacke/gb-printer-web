@@ -1,5 +1,5 @@
 import predefinedPalettes from 'gb-palettes';
-import { type Palette } from '@/types/Palette';
+import { type Palette, PaletteSchema } from '@/types/Palette';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
@@ -28,7 +28,7 @@ export const getPalettesByShortNames = async (shortNames: string[]): Promise<Ite
 
   const filteredPalettes = palettes.filter((palette): palette is Palette => Boolean(palette));
 
-  const addPaging = getAddPaging<Palette>(total, 0, palettes.length, start);
+  const addPaging = getAddPaging<Palette>(total, 0, palettes.length, start, PaletteSchema);
 
   return addPaging(filteredPalettes);
 };
@@ -49,7 +49,7 @@ export const getPalettes = async (): Promise<ItemsSourceResponse<Palette>> => {
     ...palettes,
   ];
 
-  const addPaging = getAddPaging<Palette>(total, 0, withPredefined.length, start);
+  const addPaging = getAddPaging<Palette>(total, 0, withPredefined.length, start, PaletteSchema);
 
   return addPaging(withPredefined);
 };

@@ -1,4 +1,4 @@
-import  { type Plugin } from '@/types/Plugin';
+import { type Plugin, PluginSchema } from '@/types/Plugin';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
@@ -11,7 +11,7 @@ export const getPlugins = async (): Promise<ItemsSourceResponse<Plugin>> => {
   const plugins = await store.getAll();
   const total = await store.count();
 
-  const addPaging = getAddPaging<Plugin>(total, 0, plugins.length, start);
+  const addPaging = getAddPaging<Plugin>(total, 0, plugins.length, start, PluginSchema);
 
   return addPaging(plugins);
 };
@@ -29,7 +29,7 @@ export const getPluginsByUrls = async (urls: string[]): Promise<ItemsSourceRespo
 
   const filteredPlugins = plugins.filter((plugin): plugin is Plugin => Boolean(plugin));
 
-  const addPaging = getAddPaging<Plugin>(total, 0, plugins.length, start);
+  const addPaging = getAddPaging<Plugin>(total, 0, plugins.length, start, PluginSchema);
 
   return addPaging(filteredPlugins);
 };

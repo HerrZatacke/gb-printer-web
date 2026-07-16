@@ -1,3 +1,4 @@
+import { type ZodType } from 'zod';
 import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const intersectAll = (
@@ -11,13 +12,17 @@ export const getAddPaging = <T>(
   page: number,
   pageSize: number,
   startTime: number,
+  schema: ZodType<T>,
 ) => (
   sortedItems: T[],
 ): ItemsSourceResponse<T> => {
   const start = page * pageSize;
 
+  const slicedItems = sortedItems.slice(start, start + pageSize);
+  const parsedItems = slicedItems.map((item) => schema.parse(item));
+
   return {
-    items: sortedItems.slice(start, start + pageSize),
+    items: parsedItems,
     paging: {
       filtered: sortedItems.length,
       total,

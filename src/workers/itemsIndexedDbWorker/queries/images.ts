@@ -1,6 +1,6 @@
 import { type IDBPDatabase } from 'idb';
 import sortBy from '@/tools/sortby';
-import { type Image } from '@/types/Image';
+import { type Image, ImageSchema } from '@/types/Image';
 import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
 import { buildFilterSteps } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildFilterSteps';
 import { getAddPaging, intersectAll } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
@@ -22,7 +22,7 @@ export const getImages = async (params: GetImagesParams): Promise<ItemsSourceRes
     filters,
   } = params;
 
-  const addPaging = getAddPaging<Image>(total, page, pageSize, start);
+  const addPaging = getAddPaging<Image>(total, page, pageSize, start, ImageSchema);
 
   const hasFilters = !!(
     filters?.tags?.length ||
@@ -85,7 +85,7 @@ export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
 
   const filteredImages = images.filter((image): image is Image => Boolean(image));
 
-  const addPaging = getAddPaging<Image>(total, 0, images.length, start);
+  const addPaging = getAddPaging<Image>(total, 0, images.length, start, ImageSchema);
 
   return addPaging(filteredImages);
 };

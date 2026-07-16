@@ -1,4 +1,4 @@
-import  { type Frame } from '@/types/Frame';
+import { type Frame, FrameSchema } from '@/types/Frame';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
@@ -11,7 +11,7 @@ export const getFrames = async (): Promise<ItemsSourceResponse<Frame>> => {
   const frames = await store.getAll();
   const total = await store.count();
 
-  const addPaging = getAddPaging<Frame>(total, 0, frames.length, start);
+  const addPaging = getAddPaging<Frame>(total, 0, frames.length, start, FrameSchema);
 
   return addPaging(frames);
 };
@@ -29,7 +29,7 @@ export const getFramesByIds = async (ids: string[]): Promise<ItemsSourceResponse
 
   const filteredFrames = frames.filter((frame): frame is Frame => Boolean(frame));
 
-  const addPaging = getAddPaging<Frame>(total, 0, frames.length, start);
+  const addPaging = getAddPaging<Frame>(total, 0, frames.length, start, FrameSchema);
 
   return addPaging(filteredFrames);
 };
@@ -47,7 +47,7 @@ export const getFramesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
 
   const filteredFrames = frames.filter((frame): frame is Frame => Boolean(frame));
 
-  const addPaging = getAddPaging<Frame>(total, 0, frames.length, start);
+  const addPaging = getAddPaging<Frame>(total, 0, frames.length, start, FrameSchema);
 
   return addPaging(filteredFrames);
 };
