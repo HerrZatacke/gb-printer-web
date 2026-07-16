@@ -18,7 +18,11 @@ import {
   updateImageGroups,
   deleteImageGroupsByIds,
 } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
-import { getImagesByHashes, getImages } from '@/workers/itemsIndexedDbWorker/queries/images';
+import {
+  getImagesByHashes,
+  getImagesByAnyHashes,
+  getImages,
+} from '@/workers/itemsIndexedDbWorker/queries/images';
 import {
   deletePalettesByShortNames,
   getPalettes,
@@ -45,6 +49,7 @@ const api: ItemsSource = {
 
   getImages,
   getImagesByHashes,
+  getImagesByAnyHashes,
   updateImages: async () => {
     console.warn(self.constructor.name, 'Not implemented');
     return undefined;

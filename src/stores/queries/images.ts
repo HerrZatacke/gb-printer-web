@@ -1,7 +1,7 @@
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { Image } from '@/types/Image';
-import { type GetImagesParams } from '@/workers/itemsIndexedDbWorker/types';
+import { type GetImagesParams, type ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
 
 const baseKeys = ['items', 'images'] as const;
 
@@ -9,6 +9,7 @@ export const imagesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
+  byAnyHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
   raw: (raw: GetImagesParams) => [...baseKeys, 'raw', raw] as const,
 };
 
@@ -18,6 +19,15 @@ export const imagesByHashesBatchedLoader = createBatchedLoader<Image>(
     return source.getImagesByHashes(hashes);
   },
   (image) => image.hash,
+  50,
+);
+
+export const imagesByAnyHashesBatchedLoader = createBatchedLoader<ItemsReferenceList<Image>>(
+  async (hashes) => {
+    const source = await getItemsSource();
+    return source.getImagesByAnyHashes(hashes);
+  },
+  (image) => image.reference,
   50,
 );
 
@@ -50,6 +60,22 @@ export const imagesByHashesQueryOptions = (hashes: string[]) => {
 
       const results = await Promise.all(hashes.map(imagesByHashesBatchedLoader.loadByKey));
       const items = results.filter((f): f is Image => Boolean(f));
+      return { items };
+    },
+    staleTime: 30000,
+  };
+};
+
+export const imagesByAnyHashesQueryOptions = (hashes: string[]) => {
+  return {
+    queryKey: imagesKeys.byAnyHashes(hashes),
+    queryFn: async () => {
+      if (!hashes?.length) {
+        return { items: [] };
+      }
+
+      const results = await Promise.all(hashes.map(imagesByAnyHashesBatchedLoader.loadByKey));
+      const items = results.filter((f): f is ItemsReferenceList<Image> => Boolean(f));
       return { items };
     },
     staleTime: 30000,

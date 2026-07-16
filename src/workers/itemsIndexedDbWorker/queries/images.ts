@@ -1,5 +1,7 @@
 import { type IDBPDatabase } from 'idb';
+import z from 'zod';
 import sortBy from '@/tools/sortby';
+import uniqueBy from '@/tools/unique/by';
 import { type Image, ImageSchema } from '@/types/Image';
 import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
 import { buildFilterSteps } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildFilterSteps';
@@ -8,9 +10,13 @@ import { getCandidates, resolveKeyableStep } from '@/workers/itemsIndexedDbWorke
 import {
   type FilterStep,
   type GetImagesParams,
+  ItemsReferenceListSchema,
+  type ItemsReferenceList,
   type ItemsSourceResponse,
   type StoredImage,
 } from '@/workers/itemsIndexedDbWorker/types';
+
+const uniqueByHash = uniqueBy<Image>('hash');
 
 export const getImages = async (params: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
@@ -93,4 +99,39 @@ export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
   const addPaging = getAddPaging<Image>(total, 0, images.length, start, ImageSchema);
 
   return addPaging(filteredImages);
+};
+
+export const getImagesByAnyHashes = async (hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
+  const db = await getDb();
+  const start = performance.now();
+
+  const { store } = db.transaction('images');
+  const total = await store.count();
+
+  const [foundByPrimary, foundByReference] = await Promise.all([
+    Promise.all(hashes.map((hash) => store.get(hash))),
+    Promise.all(hashes.map((hash) => store.index('referencedHashes').getAll(hash))),
+  ]);
+
+  const items = hashes.map((hash): ImageReferenceList => {
+
+    const foundFiltered = [
+      foundByPrimary.find((image) => (image?.hash === hash )),
+      ...foundByReference.flat().filter((image) => (image?.referencedHashes.includes(hash))),
+    ]
+      .filter((image): image is StoredImage => Boolean(image));
+
+
+    return {
+      reference: hash,
+      items: uniqueByHash(foundFiltered),
+    };
+  });
+
+  const ImageReferenceListSchema = ItemsReferenceListSchema<typeof ImageSchema>(ImageSchema);
+  type ImageReferenceList = z.infer<typeof ImageReferenceListSchema>;
+
+  const addPaging = getAddPaging<ImageReferenceList>(total, 0, items.length, start, ImageReferenceListSchema);
+
+  return addPaging(items);
 };

@@ -5,14 +5,15 @@ import {
   imagesByHashesQueryOptions,
   imagesListQueryOptions,
   imagesKeys,
-  imagesRawQueryOptions,
+  imagesRawQueryOptions, imagesByAnyHashesQueryOptions,
 } from '@/stores/queries/images';
 import { type Image } from '@/types/Image';
-import  { type GetImagesParams } from '@/workers/itemsIndexedDbWorker/types';
+import { type GetImagesParams, ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UseImagesOptions {
   list?: boolean;
   hashes?: string[];
+  anyHashes?: string[];
   raw?: GetImagesParams;
 }
 
@@ -22,13 +23,15 @@ export interface UseImages {
   isLoadingList: boolean;
   byHashes: Image[];
   isLoadingByHashes: boolean;
+  byAnyHashes: ItemsReferenceList<Image>[];
+  isLoadingByAnyHashes: boolean;
   raw: Image[];
   isLoadingRaw: boolean;
   updateImages: (images: Image[]) => Promise<void>;
   deleteImagesByHashes: (hashes: string[]) => Promise<void>;
 }
 
-export const useImages = ({ list, hashes, raw }: UseImagesOptions): UseImages => {
+export const useImages = ({ list, hashes, anyHashes , raw }: UseImagesOptions): UseImages => {
   const queryClient = useQueryClient();
 
   const listQuery = useQuery({
@@ -41,6 +44,13 @@ export const useImages = ({ list, hashes, raw }: UseImagesOptions): UseImages =>
   const byHashesQuery = useQuery({
     ...imagesByHashesQueryOptions(hashes || []),
     enabled: Boolean(hashes?.length),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
+
+  const byAnyHashesQuery = useQuery({
+    ...imagesByAnyHashesQueryOptions(anyHashes || []),
+    enabled: Boolean(anyHashes?.length),
     placeholderData: keepPreviousData,
     retry: false,
   });
@@ -74,6 +84,9 @@ export const useImages = ({ list, hashes, raw }: UseImagesOptions): UseImages =>
 
     byHashes: byHashesQuery.data?.items ?? [],
     isLoadingByHashes: byHashesQuery.isLoading,
+
+    byAnyHashes: byAnyHashesQuery.data?.items ?? [],
+    isLoadingByAnyHashes: byAnyHashesQuery.isLoading,
 
     raw: rawQuery.data?.items ?? [],
     isLoadingRaw: rawQuery.isLoading,

@@ -119,6 +119,18 @@ export interface ItemsSourceResponse<T> {
   duration: number;
 }
 
+export const ItemsReferenceListSchema = <T extends z.ZodType>(itemSchema: T) => {
+  return z.object({
+    reference: z.string(),
+    items: z.array(itemSchema),
+  });
+};
+
+export interface ItemsReferenceList<T> {
+  reference: string;
+  items: T[];
+}
+
 export interface RootItemSourceResponse<T> {
   item: T;
   totalCount: number;
@@ -132,6 +144,7 @@ export interface ItemsSource {
 
   getImages(params: GetImagesParams): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Image>>;
+  getImagesByAnyHashes(hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;
   updateImages(images: Image[]): Promise<void>;
   deleteImagesByHashes(hashes: string[]): Promise<void>;
 
