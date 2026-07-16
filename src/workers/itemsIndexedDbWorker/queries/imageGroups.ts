@@ -2,6 +2,7 @@ import z from 'zod';
 import {
   type NewTreeImageGroup,
   NewSerializableImageGroupSchema,
+  type NewSerializableImageGroup,
 } from '@/types/ImageGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSugs';
@@ -44,8 +45,8 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<N
     .filter((group): group is NewTreeImageGroup => group !== null);
 
   const treeRoot = createTreeRoot(topLevelGroups, orphanedImageIds);
-  const withTotals = applyImageTotals(treeRoot);
-  const root = applyFullSlugs(withTotals);
+  const treeRootWithTotals = applyImageTotals(treeRoot);
+  const root = applyFullSlugs(treeRootWithTotals);
 
   return {
     item: root,

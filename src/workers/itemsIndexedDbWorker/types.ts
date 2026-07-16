@@ -3,7 +3,11 @@ import { SpecialTags } from '@/consts/SpecialTags';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 import { type Image } from '@/types/Image';
-import { type NewTreeImageGroup, type SerializableImageGroup } from '@/types/ImageGroup';
+import {
+  type NewSerializableImageGroup,
+  type NewTreeImageGroup,
+  type SerializableImageGroup,
+} from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
 
@@ -117,7 +121,7 @@ export interface ItemsSource {
   deleteImagesByHashes(hashes: string[]): Promise<void>;
 
   getImageGroupsFullTree(): Promise<RootItemSourceResponse<NewTreeImageGroup>>;
-  updateImageGroups(imageGroups: SerializableImageGroup[]): Promise<void>;
+  updateImageGroups(imageGroups: NewSerializableImageGroup[]): Promise<void>;
   deleteImageGroupsByIds(ids: string[]): Promise<void>;
 
   getFrames(): Promise<ItemsSourceResponse<Frame>>;
