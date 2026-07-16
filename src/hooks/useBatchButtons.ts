@@ -128,7 +128,6 @@ const useBatchButtons = (page: number): UseBatchButtons => {
           }
 
           case BatchActionType.RGB:
-            console.log({ batchImages });
             setEditRGBNImages(batchImages.reduce(reduceImagesMonochrome, []).map(({ hash }) => hash));
             break;
 

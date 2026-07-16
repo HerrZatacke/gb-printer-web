@@ -36,14 +36,7 @@ const useBatchUpdateImages = (): UseBatchUpdateImages => {
     const currentEditHashes: string[] = editImages?.batch || [];
 
     if (shouldUpdate && currentEditHashes?.length) {
-
-      // Promise.all with separate fetches required to ensure sort order
-      const foundImages: (Image | null)[] = await Promise.all(
-        currentEditHashes.map(async (hash): Promise<Image | null> => {
-          const { items: [foundImage] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hash]));
-          return foundImage || null;
-        }),
-      );
+      const { items: foundImages } = await queryClient.fetchQuery(imagesByHashesQueryOptions(currentEditHashes));
 
       const imagesInBatch = foundImages
         .filter((img): img is Image => Boolean(img))

@@ -74,6 +74,14 @@ export const imagesByHashesQueryOptions = (hashes: string[]) => {
       const items = results.filter((f): f is Image => Boolean(f));
       return { items };
     },
+    select: (data: { items: Image[] }) => {
+      const byHash = new Map(data.items.map((image) => [image.hash, image]));
+      return {
+        items: hashes // sort result by this call's original order, not the cached one
+          .map((hash) => byHash.get(hash))
+          .filter((image): image is Image => Boolean(image)),
+      };
+    },
     staleTime: 30000,
   };
 };
