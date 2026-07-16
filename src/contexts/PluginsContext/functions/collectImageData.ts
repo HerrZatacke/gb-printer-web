@@ -2,6 +2,7 @@ import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-ima
 import { type RGBNPalette, type RGBNTiles } from 'gb-image-decoder';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
+import { imagesByHashesQueryOptions } from '@/stores/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getImagePalettes } from '@/tools/getImagePalettes';
@@ -9,15 +10,15 @@ import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCrea
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
-import { type Image, type MonochromeImage } from '@/types/Image';
+import { type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
-import { type GetCanvasOptions, type GetCollectImageDataFn, type PluginImageData } from '@/types/Plugin';
+import { type CollectImageDataFn, type GetCanvasOptions, type PluginImageData } from '@/types/Plugin';
 
-export const getCollectImageData: GetCollectImageDataFn = (images: Image[]) => async (hash: string): Promise<PluginImageData> => {
+export const collectImageData: CollectImageDataFn = async (hash: string): Promise<PluginImageData> => {
   const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
   const queryClient = getQueryClient();
 
-  const meta = images.find((image) => image.hash === hash);
+  const { items: [meta] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hash]));
   if (!meta) {
     throw new Error('image not found');
   }
@@ -27,7 +28,7 @@ export const getCollectImageData: GetCollectImageDataFn = (images: Image[]) => a
     throw new Error('selectedPalette not found');
   }
 
-  const getTiles = () => loadImageTiles(images)(meta.hash);
+  const getTiles = () => loadImageTiles()(meta.hash);
 
   const isRGBN = isRGBNImage(meta);
 

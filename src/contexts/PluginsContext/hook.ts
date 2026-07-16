@@ -5,11 +5,7 @@ import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { usePlugins } from '@/hooks/usePlugins';
 import { useStores } from '@/hooks/useStores';
 import { pluginsByUrlsQueryOptions } from '@/stores/queries/plugins';
-import {
-  useInteractionsStore,
-  useItemsStore,
-  useProgressStore,
-} from '@/stores/stores';
+import { useInteractionsStore, useProgressStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import {
   type InitPluginSetupParams,
@@ -17,11 +13,10 @@ import {
   type PluginImageData,
   type PluginsContext,
 } from '@/types/Plugin';
-import { getCollectImageData } from './functions/collectImageData';
+import { collectImageData } from './functions/collectImageData';
 import { initPlugin } from './functions/initPlugin';
 
 export const useContextHook = (): PluginsContext => {
-  const { images } = useItemsStore();
   const { updatePlugins, updatePluginState } = usePlugins({});
   const stores = useStores();
   const { startProgress, setProgress, stopProgress } = useProgressStore();
@@ -30,7 +25,7 @@ export const useContextHook = (): PluginsContext => {
   const { sendEvent } = useTracking();
 
   const initPluginSetupParams = useMemo<InitPluginSetupParams>(() => ({
-    collectImageData: getCollectImageData(images),
+    collectImageData,
     updatePluginState,
     startProgress,
     setProgress,
@@ -38,7 +33,7 @@ export const useContextHook = (): PluginsContext => {
     setError,
     stores,
     importFn: jsonImport,
-  }), [images, updatePluginState, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
+  }), [updatePluginState, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
     const queryClient = getQueryClient();
@@ -74,17 +69,17 @@ export const useContextHook = (): PluginsContext => {
 
 
   const runWithImage = useCallback(async (url: string, imageHash: string): Promise<void> => {
-    const pluginImage: PluginImageData = await getCollectImageData(images)(imageHash);
+    const pluginImage: PluginImageData = await collectImageData(imageHash);
     (await getInstance(url))?.withImage(pluginImage);
     sendEvent('runPlugin', { imageCount: 1 });
-  }, [getInstance, images, sendEvent]);
+  }, [getInstance, sendEvent]);
 
   const runWithImages = useCallback(async (url: string, imageSelection: string[]): Promise<void> => {
-    const pluginImages: PluginImageData[] = await Promise.all(imageSelection.map(getCollectImageData(images)));
+    const pluginImages: PluginImageData[] = await Promise.all(imageSelection.map(collectImageData));
     if (!pluginImages.length) { return; }
     (await getInstance(url))?.withSelection(pluginImages);
     sendEvent('runPlugin', { imageCount: nextPowerOfTwo(pluginImages.length) });
-  }, [getInstance, images, sendEvent]);
+  }, [getInstance, sendEvent]);
 
   return {
     validateAndAddPlugin,

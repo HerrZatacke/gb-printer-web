@@ -82,7 +82,6 @@ export interface PluginClassInstance {
 }
 
 export type CollectImageDataFn = (hash: string) => Promise<PluginImageData>;
-export type GetCollectImageDataFn = (images: Image[]) => CollectImageDataFn;
 
 export interface PluginArgs {
   // eslint-disable-next-line @typescript-eslint/no-deprecated
