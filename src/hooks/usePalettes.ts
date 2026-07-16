@@ -43,13 +43,13 @@ export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalett
   const updatePalettes = useCallback(async (palettes: Palette[]): Promise<void> => {
     const source = await getItemsSource();
     await source.updatePalettes(palettes);
-    queryClient.invalidateQueries({ queryKey: palettesKeys.all });
+    await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
   }, [queryClient]);
 
   const deletePalettesByShortNames = useCallback(async (deleteShortNames: string[]): Promise<void> => {
     const source = await getItemsSource();
     await source.deletePalettesByShortNames(deleteShortNames);
-    queryClient.invalidateQueries({ queryKey: palettesKeys.all });
+    await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
   }, [queryClient]);
 
   return {

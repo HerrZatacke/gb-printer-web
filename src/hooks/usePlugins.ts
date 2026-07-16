@@ -52,7 +52,7 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
   const updatePlugins = useCallback(async (plugins: Plugin[]): Promise<void> => {
     const source = await getItemsSource();
     await source.updatePlugins(plugins);
-    queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
+    await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
   }, [queryClient]);
 
   const updatePluginConfig = useCallback(async (url: string, key: string, value: string | number): Promise<void> => {
@@ -80,7 +80,7 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
   const deletePluginsByUrls = useCallback(async (deleteUrls: string[]): Promise<void> => {
     const source = await getItemsSource();
     await source.deletePluginsByUrls(deleteUrls);
-    queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
+    await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
   }, [queryClient]);
 
   const updatePluginState = useCallback((url: string, loading: boolean, error: string | false) => {

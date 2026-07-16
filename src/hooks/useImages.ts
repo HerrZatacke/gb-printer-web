@@ -58,13 +58,13 @@ export const useImages = ({ list, hashes, raw }: UseImagesOptions): UseImages =>
   const updateImages = useCallback(async (images: Image[]): Promise<void> => {
     const source = await getItemsSource();
     await source.updateImages(images);
-    queryClient.invalidateQueries({ queryKey: imagesKeys.all });
+    await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
   }, [queryClient]);
 
   const deleteImagesByHashes = useCallback(async (deleteHashes: string[]): Promise<void> => {
     const source = await getItemsSource();
     await source.deleteImagesByHashes(deleteHashes);
-    queryClient.invalidateQueries({ queryKey: imagesKeys.all });
+    await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
   }, [queryClient]);
 
   return {

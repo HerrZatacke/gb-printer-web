@@ -43,13 +43,13 @@ export const useFrames = ({ list, ids }: UseFramesOptions): UseFrames => {
   const updateFrames = useCallback(async (frames: Frame[]): Promise<void> => {
     const source = await getItemsSource();
     await source.updateFrames(frames);
-    queryClient.invalidateQueries({ queryKey: framesKeys.all });
+    await queryClient.invalidateQueries({ queryKey: framesKeys.all });
   }, [queryClient]);
 
   const deleteFramesByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
     const source = await getItemsSource();
     await source.deleteFramesByIds(deleteIds);
-    queryClient.invalidateQueries({ queryKey: framesKeys.all });
+    await queryClient.invalidateQueries({ queryKey: framesKeys.all });
   }, [queryClient]);
 
   return {

@@ -100,13 +100,13 @@ export const useFrameGroups = (): UseFrameGroups => {
   const updateFrameGroups = useCallback(async (frameGroups: FrameGroup[]): Promise<void> => {
     const source = await getItemsSource();
     await source.updateFrameGroups(frameGroups);
-    queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
+    await queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
   }, [queryClient]);
 
   const deleteFrameGroupsByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
     const source = await getItemsSource();
     await source.deleteFrameGroupsByIds(deleteIds);
-    queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
+    await queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
   }, [queryClient]);
 
   const { frames } = useFrames({ list: true });
