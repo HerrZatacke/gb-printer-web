@@ -62,7 +62,7 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
-  const { updateImageFavouriteTag } = useItemsStore();
+  const { images, updateImageFavouriteTag } = useItemsStore();
   const { plugins } = usePlugins({ list: true });
   const { view, covers } = useGalleryTreeContext();
   const { setEditImages } = useEditStore();
@@ -72,7 +72,6 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   const { shareImage } = useShareImage();
   const { sendEvent } = useTracking();
 
-  const { images } = useItemsStore();
   const image = useMemo(() => (
     images.find((img) => img.hash === hash)
   ), [hash, images]);
