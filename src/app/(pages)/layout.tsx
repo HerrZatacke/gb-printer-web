@@ -10,6 +10,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo, type CSSPropertiesVars, useEffect, useState } from 'react';
 import Errors from '@/components/Errors';
+import LocalDebug from '@/components/LocalDebug';
 import { Navigation } from '@/components/Navigation';
 import Overlays from '@/components/Overlays';
 import { ThemeName } from '@/consts/theme';
@@ -77,6 +78,7 @@ export default function RootLayout({
           flexDirection: 'column',
         }}
       >
+      <LocalDebug />
         <Stack
           direction="column"
           gap={2}
