@@ -4,7 +4,6 @@ import { useCallback } from 'react';
 import {
   type TrashCount,
   ITEMS_STORE_VERSION,
-  useItemsStore,
   useInteractionsStore,
 } from '@/stores/stores';
 import { FrameData } from '@/tools/applyFrame/frameData';
@@ -61,12 +60,11 @@ const getItems = async (keys: string[], storage: WrappedLocalForageInstance<stri
 
 const useTrashbin = (): UseTrashbin => {
   const { trashCount, showTrashCount } = useInteractionsStore();
-  const { images } = useItemsStore();
   const { updateTrashCount, setTrashBusy } = useInteractionsStore();
   const t = useTranslations('useTrashbin');
 
   const downloadImages = useCallback(async (): Promise<void> => {
-    const imageHashes = await getTrashImages(images);
+    const imageHashes = await getTrashImages();
     const deletedImages = await getItems(imageHashes, localforageImages);
 
     const jsonExportBinary: JSONExportBinary = {};
@@ -100,7 +98,7 @@ const useTrashbin = (): UseTrashbin => {
     } };
 
     saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_images.json');
-  }, [images, t]);
+  }, [t]);
 
   const downloadFrames = useCallback(async (): Promise<void> => {
     const frameHashes = await getTrashFrames();
@@ -147,20 +145,20 @@ const useTrashbin = (): UseTrashbin => {
 
     const [trashFrames, trashImages] = await Promise.all([
       getTrashFrames(),
-      getTrashImages(images),
+      getTrashImages(),
     ]);
 
     updateTrashCount(trashFrames.length, trashImages.length);
     setTrashBusy(false);
-  }, [images, setTrashBusy, updateTrashCount]);
+  }, [setTrashBusy, updateTrashCount]);
 
   const purgeTrash = useCallback(async (): Promise<void> => {
-    await cleanupStorage(images);
+    await cleanupStorage();
     showTrashCount(false);
     window.requestAnimationFrame(() => {
       checkUpdateTrashCount();
     });
-  }, [checkUpdateTrashCount, images, showTrashCount]);
+  }, [checkUpdateTrashCount, showTrashCount]);
 
   return {
     showTrashCount,
