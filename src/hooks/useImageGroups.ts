@@ -2,8 +2,10 @@ import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-quer
 import { useCallback } from 'react';
 import { getItemsSource } from '@/items/client';
 import {
+  findGroupByFullSlug,
   imageGroupsFullTreeQueryOptions,
-  imageGroupsKeys, findGroupByFullSlug,
+  imageGroupsKeys,
+  imageGroupsListQueryOptions,
 } from '@/stores/queries/imageGroups';
 import {
   type NewSerializableImageGroup,
@@ -11,13 +13,16 @@ import {
 } from '@/types/ImageGroup';
 
 export interface UseImageGroupsOptions {
+  list?: boolean;
   tree?: boolean;
   bySlug?: string;
 }
 
 export interface UseImageGroups {
-  imageGroupTree: NewTreeImageGroup | null;
+  imageGroups: NewSerializableImageGroup[];
   totalCount: number;
+  isLoadingList: boolean;
+  imageGroupTree: NewTreeImageGroup | null;
   isLoadingTree: boolean;
   byFullSlug: NewTreeImageGroup | null;
   isLoadingByFullSlug: boolean;
@@ -25,8 +30,15 @@ export interface UseImageGroups {
   deleteImageGroupsByIds: (ids: string[]) => Promise<void>;
 }
 
-export const useImageGroups = ({ tree, bySlug }: UseImageGroupsOptions): UseImageGroups => {
+export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): UseImageGroups => {
   const queryClient = useQueryClient();
+
+  const listQuery = useQuery({
+    ...imageGroupsListQueryOptions(),
+    enabled: Boolean(list),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
 
   const treeQuery = useQuery({
     ...imageGroupsFullTreeQueryOptions(),
@@ -61,8 +73,11 @@ export const useImageGroups = ({ tree, bySlug }: UseImageGroupsOptions): UseImag
   }, [queryClient]);
 
   return {
+    imageGroups: listQuery.data?.items ?? [],
+    totalCount: listQuery.data?.paging.total ?? 0,
+    isLoadingList: listQuery.isLoading,
+
     imageGroupTree: treeQuery.data?.item ?? null,
-    totalCount: treeQuery.data?.totalCount ?? 0,
     isLoadingTree: treeQuery.isLoading,
 
     byFullSlug: byFullSlugQuery.data ?? null,
