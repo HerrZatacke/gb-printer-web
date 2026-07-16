@@ -1,8 +1,9 @@
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
+import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
-import { type Image } from '@/types/Image';
+import { type Image, MonochromeImageSchema, RGBNImageSchema } from '@/types/Image';
 import {
   type NewSerializableImageGroup,
   type NewTreeImageGroup,
@@ -10,6 +11,18 @@ import {
 } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
+
+export const StoredImageSchema = z.discriminatedUnion('type', [
+  MonochromeImageSchema,
+  RGBNImageSchema,
+]).transform((image) => ({
+  ...image,
+  referencedHashes: image.type === 'rgbn'
+    ? Object.values(image.hashes ?? {}).filter((h): h is string => Boolean(h))
+    : [],
+}));
+
+export type StoredImage = z.infer<typeof StoredImageSchema>;
 
 export interface ItemsDB extends DBSchema {
   binaryframes: {
@@ -34,13 +47,13 @@ export interface ItemsDB extends DBSchema {
   };
   images: {
     key: string;
-    value: Image;
+    value: StoredImage;
     indexes: {
       created: string;
       frame: string;
       palette: string;
       tags: string;
-      hashes: string;
+      referencedHashes: string;
       title: string;
       type: string;
     };

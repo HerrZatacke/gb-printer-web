@@ -12,7 +12,7 @@ export const migrateV1: MigrationFn = (db: IDBPDatabase<ItemsDB>): AfterUpgradeF
   imagesStore.createIndex('frame', 'frame');
   imagesStore.createIndex('palette', 'palette');
   imagesStore.createIndex('tags', 'tags', { multiEntry: true });
-  imagesStore.createIndex('hashes', 'hashes', { multiEntry: true });
+  imagesStore.createIndex('referencedHashes', 'referencedHashes', { multiEntry: true });
   imagesStore.createIndex('title', 'title');
   imagesStore.createIndex('type', 'type');
 

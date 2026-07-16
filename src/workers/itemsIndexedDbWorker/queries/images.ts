@@ -5,7 +5,12 @@ import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
 import { buildFilterSteps } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildFilterSteps';
 import { getAddPaging, intersectAll } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { getCandidates, resolveKeyableStep } from '@/workers/itemsIndexedDbWorker/queries/helpers/imagesKeyQueries';
-import { type FilterStep, type GetImagesParams, type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type FilterStep,
+  type GetImagesParams,
+  type ItemsSourceResponse,
+  type StoredImage,
+} from '@/workers/itemsIndexedDbWorker/types';
 
 export const getImages = async (params: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
@@ -83,7 +88,7 @@ export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
     hashes.map(hash => store.get(hash)),
   );
 
-  const filteredImages = images.filter((image): image is Image => Boolean(image));
+  const filteredImages = images.filter((image): image is StoredImage => Boolean(image));
 
   const addPaging = getAddPaging<Image>(total, 0, images.length, start, ImageSchema);
 
