@@ -19,6 +19,7 @@ import {
   deleteImageGroupsByIds,
 } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
 import {
+  getAllTags,
   getImagesByHashes,
   getImagesByAnyHashes,
   getImages,
@@ -47,6 +48,7 @@ const api: ItemsSource = {
   getFrameDataByHashes,
   getImageDataByHashes,
 
+  getAllTags,
   getImages,
   getImagesByHashes,
   getImagesByAnyHashes,

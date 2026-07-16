@@ -8,6 +8,7 @@ const baseKeys = ['items', 'images'] as const;
 export const imagesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
+  allTags: [...baseKeys, 'allTags'] as const,
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
   byAnyHashes: (hashes: string[]) => [...baseKeys, 'byAnyHashes', [...hashes].sort()] as const,
   raw: (raw: GetImagesParams) => [...baseKeys, 'raw', raw] as const,
@@ -45,6 +46,17 @@ export const imagesListQueryOptions = () => {
           direction: 'asc',
         },
       });
+    },
+    staleTime: 30000,
+  };
+};
+
+export const imagesAllTagsQueryOptions = () => {
+  return {
+    queryKey: imagesKeys.allTags,
+    queryFn: async () => {
+      const source = await getItemsSource();
+      return source.getAllTags();
     },
     staleTime: 30000,
   };

@@ -1,18 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { SpecialTags } from '@/consts/SpecialTags';
-import { useItemsStore } from '@/stores/stores';
-import { type Image } from '@/types/Image';
+import { useImages } from '@/hooks/useImages';
 
-export const getAvailableTags = (images: Image[]): string[] => {
-  const tagSet = new Set<string>();
+export const getAvailableTags = (allTags: string[]): string[] => {
+  const tagSet = new Set<string>(allTags);
 
-  for (const { tags } of images) {
-    for (const tag of tags) {
-      if (tag !== SpecialTags.FILTER_FAVOURITE) {
-        tagSet.add(tag);
-      }
-    }
-  }
+  tagSet.delete(SpecialTags.FILTER_FAVOURITE);
 
   return Array.from(tagSet).sort((a, b) => (
     a.toLowerCase().localeCompare(b.toLowerCase())
@@ -24,12 +17,9 @@ export interface UseAvailableTags {
 }
 
 export const useAvailableTags = (): UseAvailableTags => {
-  const { images } = useItemsStore();
-  const [availableTags, setAvailableTags] = useState<string[]>(getAvailableTags(images));
+  const { allTags } = useImages({ allTags: true });
 
-  useEffect(() => {
-    setAvailableTags(getAvailableTags(images));
-  }, [images]);
+  const availableTags = useMemo(() => getAvailableTags(allTags), [allTags]);
 
   return { availableTags };
 };

@@ -142,6 +142,7 @@ export interface ItemsSource {
   getFrameDataByHashes(hashes: string[]): Promise<string[]>;
   getImageDataByHashes(hashes: string[]): Promise<string[]>;
 
+  getAllTags(): Promise<ItemsSourceResponse<string>>;
   getImages(params: GetImagesParams): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Image>>;
   getImagesByAnyHashes(hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;

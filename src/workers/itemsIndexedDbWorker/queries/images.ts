@@ -135,3 +135,26 @@ export const getImagesByAnyHashes = async (hashes: string[]): Promise<ItemsSourc
 
   return addPaging(items);
 };
+
+export const getAllTags = async (): Promise<ItemsSourceResponse<string>> => {
+  const db = await getDb();
+  const start = performance.now();
+
+  const store = db.transaction('images').store;
+  const index = store.index('tags');
+
+  const uniqueTags: string[] = [];
+  let cursor = await index.openKeyCursor();
+
+  while (cursor) {
+    const tag = cursor.key as string;
+    if (uniqueTags[uniqueTags.length - 1] !== tag) {
+      uniqueTags.push(tag);
+    }
+    cursor = await cursor.continue();
+  }
+
+  const addPaging = getAddPaging<string>(uniqueTags.length, 0, uniqueTags.length, start, z.string());
+
+  return addPaging(uniqueTags);
+};

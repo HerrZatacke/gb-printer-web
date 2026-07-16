@@ -2,16 +2,19 @@ import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-quer
 import { useCallback } from 'react';
 import { getItemsSource } from '@/items/client';
 import {
+  imagesAllTagsQueryOptions,
+  imagesByAnyHashesQueryOptions,
   imagesByHashesQueryOptions,
-  imagesListQueryOptions,
   imagesKeys,
-  imagesRawQueryOptions, imagesByAnyHashesQueryOptions,
+  imagesListQueryOptions,
+  imagesRawQueryOptions,
 } from '@/stores/queries/images';
 import { type Image } from '@/types/Image';
 import { type GetImagesParams, ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UseImagesOptions {
   list?: boolean;
+  allTags?: boolean;
   hashes?: string[];
   anyHashes?: string[];
   raw?: GetImagesParams;
@@ -21,6 +24,8 @@ export interface UseImages {
   images: Image[];
   totalCount: number;
   isLoadingList: boolean;
+  allTags: string[];
+  isLoadingAllTags: boolean;
   byHashes: Image[];
   isLoadingByHashes: boolean;
   byAnyHashes: ItemsReferenceList<Image>[];
@@ -31,12 +36,19 @@ export interface UseImages {
   deleteImagesByHashes: (hashes: string[]) => Promise<void>;
 }
 
-export const useImages = ({ list, hashes, anyHashes , raw }: UseImagesOptions): UseImages => {
+export const useImages = ({ list, allTags, hashes, anyHashes , raw }: UseImagesOptions): UseImages => {
   const queryClient = useQueryClient();
 
   const listQuery = useQuery({
     ...imagesListQueryOptions(),
     enabled: Boolean(list),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
+
+  const allTagsQuery = useQuery({
+    ...imagesAllTagsQueryOptions(),
+    enabled: Boolean(allTags),
     placeholderData: keepPreviousData,
     retry: false,
   });
@@ -81,6 +93,9 @@ export const useImages = ({ list, hashes, anyHashes , raw }: UseImagesOptions): 
     images: listQuery.data?.items ?? [],
     totalCount: listQuery.data?.paging?.total ?? 0,
     isLoadingList: listQuery.isLoading,
+
+    allTags: allTagsQuery.data?.items ?? [],
+    isLoadingAllTags: allTagsQuery.isLoading,
 
     byHashes: byHashesQuery.data?.items ?? [],
     isLoadingByHashes: byHashesQuery.isLoading,
