@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';
 import { framesListQueryOptions } from '@/stores/queries/frames';
-import { useItemsStore } from '@/stores/stores';
+import { imagesListQueryOptions } from '@/stores/queries/images';
 import { compressAndHashFrame, loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
 import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
@@ -18,7 +18,6 @@ export interface UseMigrateFrames {
 }
 
 export const useMigrateFrames = (): UseMigrateFrames => {
-  const { images } = useItemsStore();
   const { updateFrames } = useFrames({});
   const queryClient = useQueryClient();
   const { updateImages } = useStores();
@@ -59,6 +58,7 @@ export const useMigrateFrames = (): UseMigrateFrames => {
 
   const detectAndApply = useCallback(async () => {
     const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
+    const { items: images } = await queryClient.fetchQuery(imagesListQueryOptions());
     const unframedImages = images
       .filter(({ frame }: Image) => !frame)
       .reduce(reduceImagesMonochrome, [])
@@ -93,7 +93,7 @@ export const useMigrateFrames = (): UseMigrateFrames => {
 
     console.log(`will update ${updatedImages.length} with correct frame`);
     updateImages(updatedImages);
-  }, [queryClient, images, updateImages]);
+  }, [queryClient, updateImages]);
 
   return {
     convertFormat,
