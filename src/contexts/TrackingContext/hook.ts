@@ -7,9 +7,11 @@ import {
 } from 'react';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useFrames } from '@/hooks/useFrames';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImages } from '@/hooks/useImages';
 import { usePalettes } from '@/hooks/usePalettes';
 import { usePlugins } from '@/hooks/usePlugins';
-import { useInteractionsStore, useItemsStore } from '@/stores/stores';
+import { useInteractionsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import EventData = umami.EventData;
 
@@ -70,11 +72,12 @@ export const useContextHook = (): TrackingContextType => {
   }, [consentState]);
 
 
-  const { images, imageGroups } = useItemsStore();
   const { palettes } = usePalettes({ list: true });
   const { plugins } = usePlugins({ list: true });
   const { frames } = useFrames({ list: true });
   const { frameGroups } = useFrameGroups();
+  const { images } = useImages({ list: true });
+  const { imageGroups } = useImageGroups({ list: true });
   const { errors } = useInteractionsStore();
 
   // Send stats event when itemState changes
