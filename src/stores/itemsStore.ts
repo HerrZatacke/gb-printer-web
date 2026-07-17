@@ -20,7 +20,7 @@ export const ITEMS_STORE_VERSION = 1;
 
 // const framesUniqueById = uniqueBy<Frame>('id');
 // const frameGroupsUniqueById = uniqueBy<FrameGroup>('id');
-const groupUniqueById = uniqueBy<SerializableImageGroup>('id');
+// const groupUniqueById = uniqueBy<SerializableImageGroup>('id');
 // const pluginsUniqueByUrl = uniqueBy<Plugin>('url');
 // const framesSortById = sortBy<Frame>('id');
 const palettesUniqueByShortName = uniqueBy<Palette>('shortName');
@@ -72,9 +72,9 @@ interface Actions {
   // updateFrames: (frames: Frame[]) => void;
 
   // ImageGroup updates
-  addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
+  // addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
   deleteImageGroup: (groupId: string) => void;
-  updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
+  // updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
   groupImagesAdd: (imageGroupId: string, images: string[]) => void;
   ungroupImages: (images: string[]) => void;
 
@@ -217,23 +217,23 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         //   });
         // },
 
-        addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
-          const { imageGroups } = get();
-
-          const groups = imageGroups.map((group: SerializableImageGroup) => {
-            // remove images in current selection from _all other_ imagegroups.
-            const images = group.images.filter((hash: string) => !imageGroup.images.includes(hash));
-
-            // add new group id to parent group.
-            const groupGroups = group.id === parentId ? [...group.groups, imageGroup.id] : group.groups;
-
-            return { ...group, groups: groupGroups, images };
-          });
-
-          set({
-            imageGroups: groupUniqueById([...groups, imageGroup]),
-          });
-        },
+        // addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
+        //   const { imageGroups: stateImageGroups } = get();
+        //
+        //   const imageGroups = stateImageGroups.map((group: SerializableImageGroup) => {
+        //     // remove images in current selection from _all other_ imagegroups.
+        //     const images = group.images.filter((hash: string) => !imageGroup.images.includes(hash));
+        //
+        //     // add new group id to parent group.
+        //     const groupGroups = group.id === parentId ? [...group.groups, imageGroup.id] : group.groups;
+        //
+        //     return { ...group, groups: groupGroups, images };
+        //   });
+        //
+        //   set({
+        //     imageGroups: groupUniqueById([...imageGroups, imageGroup]),
+        //   });
+        // },
 
         deleteImageGroup: (groupId: string) => {
           const { imageGroups: stateImageGroups } = get();
@@ -271,25 +271,25 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           });
         },
 
-        updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
-          const { imageGroups: stateImageGroups } = get();
-
-          const imageGroups = stateImageGroups.map((group) => {
-            const updateGroup = { ...group };
-
-            updateGroup.groups = updateGroup.groups.filter((childGroupId) => childGroupId !== imageGroup.id);
-
-            if (parentId === updateGroup.id) {
-              updateGroup.groups = [...updateGroup.groups, imageGroup.id];
-            }
-
-            return updateGroup.id === imageGroup.id ? imageGroup : updateGroup;
-          });
-
-          set({
-            imageGroups,
-          });
-        },
+        // updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
+        //   const { imageGroups: stateImageGroups } = get();
+        //
+        //   const imageGroups = stateImageGroups.map((group) => {
+        //     const updateGroup = { ...group };
+        //
+        //     updateGroup.groups = updateGroup.groups.filter((childGroupId) => childGroupId !== imageGroup.id);
+        //
+        //     if (parentId === updateGroup.id) {
+        //       updateGroup.groups = [...updateGroup.groups, imageGroup.id];
+        //     }
+        //
+        //     return updateGroup.id === imageGroup.id ? imageGroup : updateGroup;
+        //   });
+        //
+        //   set({
+        //     imageGroups,
+        //   });
+        // },
 
         groupImagesAdd: (imageGroupId: string, images: string[]) => set((itemsState) => ({
           imageGroups: itemsState.imageGroups.map((group): SerializableImageGroup => (

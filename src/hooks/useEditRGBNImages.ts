@@ -5,11 +5,11 @@ import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { toSlug } from '@/hooks/useEditImageGroup';
+import { useImageGroups } from '@/hooks/useImageGroups';
 import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
 import {
   useEditStore,
   useFiltersStore,
-  useItemsStore,
   useSettingsStore,
 } from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
@@ -18,6 +18,7 @@ import { randomId } from '@/tools/randomId';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type MonochromeImage, type RGBNHashes } from '@/types/Image';
+import { type NewSerializableImageGroup } from '@/types/ImageGroup';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -59,7 +60,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const { sortBy } = useFiltersStore();
   const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
-  const { addImageGroup } = useItemsStore();
+  const { updateImageGroup } = useImageGroups({});
 
   const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5 && stateCreateGroup);
 
@@ -192,26 +193,24 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
       cancelEditImageGroup();
 
-      const newGroupId = randomId();
+      const newImageGroup: NewSerializableImageGroup = {
+        id: randomId(),
+        slug,
+        title,
+        isFavourite: false,
+        created: toCreationDate(),
+        coverImage: createdImageHashes[0],
+        images: createdImageHashes,
+        groups: [],
+        tags: [],
+      };
 
-      addImageGroup(
-        {
-          id: newGroupId,
-          slug,
-          title,
-          isFavourite: false,
-          created: toCreationDate(),
-          coverImage: createdImageHashes[0],
-          images: createdImageHashes,
-          groups: [],
-        },
-        view.id,
-      );
+      await updateImageGroup(newImageGroup, view.id);
 
-      navigateToGroup(newGroupId, 0);
+      navigateToGroup(newImageGroup.id, 0);
     }
 
-  }, [t, addImageGroup, cancelEditImageGroup, cancelEditRGBNImages, createGroup, formatter, navigateToGroup, rgbnHashes, saveRGBNImage, view.id]);
+  }, [t, updateImageGroup, cancelEditImageGroup, cancelEditRGBNImages, createGroup, formatter, navigateToGroup, rgbnHashes, saveRGBNImage, view.id]);
 
   const singleMode = grouping === RGBGrouping.MANUAL;
 

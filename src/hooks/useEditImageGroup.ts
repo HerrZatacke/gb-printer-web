@@ -12,7 +12,7 @@ import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
 import { type PathMap } from '@/types/galleryTreeContext';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
+import { NewSerializableImageGroup, type SerializableImageGroup } from '@/types/ImageGroup';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -33,7 +33,7 @@ interface UseEditImageGroup {
   setTitle: (title: string) => void;
   setIsFavourite: (isFavourite: boolean) => void;
   setParentSlug: (slug: string) => void;
-  confirm: () => void;
+  confirm: () => Promise<void>;
   move: () => Promise<void>;
   cancelEditImageGroup: () => void;
 }
@@ -81,8 +81,8 @@ interface InitialEditValues {
 const useEditImageGroup = (): UseEditImageGroup => {
   const { imageSelection: selection } = useFiltersStore();
   const { editImageGroup, cancelEditImageGroup } = useEditStore();
-  const { addImageGroup, updateImageGroup, groupImagesAdd, ungroupImages } = useItemsStore();
-  const { imageGroups /*, updateImageGroups*/ } = useImageGroups({ list: true });
+  const { groupImagesAdd, ungroupImages } = useItemsStore();
+  const { imageGroups, updateImageGroup } = useImageGroups({ list: true });
   const { navigateToGroup, navigateToImage } = useNavigationTools();
   const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
@@ -234,7 +234,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     },
     setIsFavourite,
     setParentSlug,
-    confirm: () => {
+    confirm: async () => {
       cancelEditImageGroup();
 
       if (!canConfirm || !editImageGroup) {
@@ -243,62 +243,44 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
       const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
 
+      let updateGroup: NewSerializableImageGroup;
+
       if (editImageGroup.groupId === NEW_GROUP) {
         if (!editImageGroup.newGroupCover) {
           return;
         }
 
-        const newGroupId = randomId();
-
-        addImageGroup(
-          {
-            id: newGroupId,
-            slug,
-            title,
-            isFavourite,
-            created: toCreationDate(),
-            coverImage: editImageGroup.newGroupCover,
-            images: selection,
-            groups: [],
-          },
-          parentGroupId,
-        );
-
-        navigateToGroup(newGroupId, 0);
+        updateGroup = {
+          id: randomId(),
+          slug,
+          title,
+          isFavourite,
+          created: toCreationDate(),
+          coverImage: editImageGroup.newGroupCover,
+          images: selection,
+          groups: [],
+          tags: [],
+        };
       } else {
         if (!initialValues.imageGroup) {
           return;
         }
 
-        // ToDo: implement change of parentgroup
-
-        // Prepared regular update:
-        // updateImageGroups([
-        //   {
-        //     id: initialValues.imageGroup.id,
-        //     created: initialValues.imageGroup.created,
-        //     coverImage: initialValues.imageGroup.coverImage,
-        //     groups: initialValues.imageGroup.groups,
-        //     images: initialValues.imageGroup.images,
-        //     tags: ['not', 'implemented'],
-        //     slug,
-        //     title,
-        //     isFavourite,
-        //   },
-        // ]);
-
-        updateImageGroup(
-          {
-            ...initialValues.imageGroup,
-            slug,
-            title,
-            isFavourite,
-          },
-          parentGroupId,
-        );
-
-        navigateToGroup(editImageGroup.groupId, 0);
+        updateGroup = {
+          id: initialValues.imageGroup.id,
+          created: initialValues.imageGroup.created,
+          coverImage: initialValues.imageGroup.coverImage,
+          groups: initialValues.imageGroup.groups,
+          images: initialValues.imageGroup.images,
+          tags: [],
+          slug,
+          title,
+          isFavourite,
+        };
       }
+
+      await updateImageGroup(updateGroup, parentGroupId);
+      navigateToGroup(updateGroup.id, 0);
     },
     move: async () => {
       cancelEditImageGroup();
