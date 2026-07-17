@@ -6,7 +6,6 @@ import {
   type EditGroupInfo,
   useEditStore,
   useFiltersStore,
-  useItemsStore,
 } from '@/stores/stores';
 import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
@@ -81,8 +80,7 @@ interface InitialEditValues {
 const useEditImageGroup = (): UseEditImageGroup => {
   const { imageSelection: selection } = useFiltersStore();
   const { editImageGroup, cancelEditImageGroup } = useEditStore();
-  const { groupImagesAdd, ungroupImages } = useItemsStore();
-  const { imageGroups, updateImageGroup } = useImageGroups({ list: true });
+  const { imageGroups, updateImageGroup, moveImagesToGroup } = useImageGroups({ list: true });
   const { navigateToGroup, navigateToImage } = useNavigationTools();
   const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
@@ -291,14 +289,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
       const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
 
-      if (parentGroupId) { // move to selected parentgroup
-        groupImagesAdd(
-          parentGroupId,
-          selection,
-        );
-      } else { // move to root
-        ungroupImages(selection);
-      }
+      // move images to other group or root if no parentgroup
+      await moveImagesToGroup(selection, parentGroupId || undefined);
 
       navigateToImage(selection[0]);
     },

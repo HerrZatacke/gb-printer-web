@@ -7,6 +7,7 @@ import {
   imageGroupsKeys,
   imageGroupsListQueryOptions,
 } from '@/stores/queries/imageGroups';
+import unique from '@/tools/unique';
 import {
   type NewSerializableImageGroup,
   type NewTreeImageGroup,
@@ -26,15 +27,32 @@ export interface UseImageGroups {
   isLoadingTree: boolean;
   byFullSlug: NewTreeImageGroup | null;
   isLoadingByFullSlug: boolean;
+  moveImagesToGroup: (images: string[], targetImageGroupId?: string) => Promise<void>;
   updateImageGroups: (imageGroups: NewSerializableImageGroup[], purge?: boolean) => Promise<void>;
   updateImageGroup: (group: NewSerializableImageGroup, parentGroupId: string) => Promise<void>;
   deleteImageGroupsByIds: (ids: string[]) => Promise<void>;
 }
 
+const removeImagesFromGroups = (allGroups: NewSerializableImageGroup[], imagesToRemove: string[]): NewSerializableImageGroup[] => {
+  const changedGroups = new Set<NewSerializableImageGroup>();
+  const ownImageIds = new Set(imagesToRemove);
+  for (const other of allGroups) {
+    const remainingImages = other.images.filter((id) => !ownImageIds.has(id));
+    if (remainingImages.length !== other.images.length) {
+      changedGroups.add({
+        ...other,
+        images: remainingImages,
+      });
+    }
+  }
+
+  return [...changedGroups];
+};
+
 export const computeImageGroupUpdateDiff = (
-  group: NewSerializableImageGroup,
-  parentGroupId: string,
   allGroups: NewSerializableImageGroup[],
+  group: NewSerializableImageGroup,
+  parentGroupId?: string,
 ): NewSerializableImageGroup[] => {
   const groupsById = new Map<string, NewSerializableImageGroup>(allGroups.map((g) => [g.id, g]));
   const changedIds = new Set<string>();
@@ -59,21 +77,23 @@ export const computeImageGroupUpdateDiff = (
   }
 
   // detach this group from any parent other than the intended one
-  for (const other of allGroups) {
-    if (other.id === parentGroupId || !other.groups.includes(group.id)) {
-      continue;
+  if (parentGroupId?.length) {
+    for (const other of allGroups) {
+      if (other.id === parentGroupId || !other.groups.includes(group.id)) {
+        continue;
+      }
+      const current = groupsById.get(other.id) ?? other;
+      setGroup({ ...current, groups: current.groups.filter((id) => id !== group.id) });
     }
-    const current = groupsById.get(other.id) ?? other;
-    setGroup({ ...current, groups: current.groups.filter((id) => id !== group.id) });
-  }
 
-  // attach this group under its intended parent
-  const parentGroup = groupsById.get(parentGroupId);
-  if (!parentGroup) {
-    throw new Error(`Parent group "${parentGroupId}" not found`);
-  }
-  if (!parentGroup.groups.includes(group.id)) {
-    setGroup({ ...parentGroup, groups: [...parentGroup.groups, group.id] });
+    // attach this group under its intended parent
+    const parentGroup = groupsById.get(parentGroupId);
+    if (!parentGroup) {
+      throw new Error(`Parent group "${parentGroupId}" not found`);
+    }
+    if (!parentGroup.groups.includes(group.id)) {
+      setGroup({ ...parentGroup, groups: [...parentGroup.groups, group.id] });
+    }
   }
 
   return [...changedIds].map((id) => groupsById.get(id)!);
@@ -123,7 +143,32 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
     // invalidate initially to ensure "fresh" dataset
     await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
     const { items: allGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
-    const changedGroups = computeImageGroupUpdateDiff(group, parentGroupId, allGroups);
+    const changedGroups = computeImageGroupUpdateDiff(allGroups, group, parentGroupId);
+
+    const source = await getItemsSource();
+    await source.updateImageGroups(changedGroups, false);
+    await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
+  }, [queryClient]);
+
+  const moveImagesToGroup = useCallback(async (images: string[], targetImageGroupId?: string): Promise<void> => {
+    await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
+    const { items: allGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
+    const newImageParentGroup = (targetImageGroupId && allGroups.find((g) => g.id === targetImageGroupId)) || null;
+
+    let changedGroups: NewSerializableImageGroup[];
+
+    if (newImageParentGroup) {
+      const changedGroup: NewSerializableImageGroup = {
+        ...newImageParentGroup,
+        images: unique([...newImageParentGroup.images, ...images]),
+      };
+
+      // no parentGroupId needed, because group is not being moved
+      changedGroups = computeImageGroupUpdateDiff(allGroups, changedGroup);
+    } else {
+      // No group found to move images to, just remove them from all groups (=move to root)
+      changedGroups = removeImagesFromGroups(allGroups, images);
+    }
 
     const source = await getItemsSource();
     await source.updateImageGroups(changedGroups, false);
@@ -147,6 +192,7 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
     byFullSlug: byFullSlugQuery.data ?? null,
     isLoadingByFullSlug: byFullSlugQuery.isLoading,
 
+    moveImagesToGroup,
     updateImageGroups,
     updateImageGroup,
     deleteImageGroupsByIds,

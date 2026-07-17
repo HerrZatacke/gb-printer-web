@@ -75,8 +75,8 @@ interface Actions {
   // addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
   // deleteImageGroup: (groupId: string) => void;
   // updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
-  groupImagesAdd: (imageGroupId: string, images: string[]) => void;
-  ungroupImages: (images: string[]) => void;
+  // groupImagesAdd: (imageGroupId: string, images: string[]) => void;
+  // ungroupImages: (images: string[]) => void;
 
   // Global Updates
   // setFrames: (frames: Frame[]) => void;
@@ -291,30 +291,30 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         //   });
         // },
 
-        groupImagesAdd: (imageGroupId: string, images: string[]) => set((itemsState) => ({
-          imageGroups: itemsState.imageGroups.map((group): SerializableImageGroup => (
-            group.id === imageGroupId ? {
-              ...group,
-              // new images for matching imageGroupId
-              images: [
-                ...group.images,
-                ...images,
-              ],
-            } : {
-              ...group,
-              // remove all images from non-matching imageGroupId
-              images: group.images.filter((hash) => !images.includes(hash)),
-            }
-          )),
-        })),
+        // groupImagesAdd: (imageGroupId: string, images: string[]) => set((itemsState) => ({
+        //   imageGroups: itemsState.imageGroups.map((group): SerializableImageGroup => (
+        //     group.id === imageGroupId ? {
+        //       ...group,
+        //       // new images for matching imageGroupId
+        //       images: [
+        //         ...group.images,
+        //         ...images,
+        //       ],
+        //     } : {
+        //       ...group,
+        //       // remove all images from non-matching imageGroupId
+        //       images: group.images.filter((hash) => !images.includes(hash)),
+        //     }
+        //   )),
+        // })),
 
-        ungroupImages: (images: string[]) => set((itemsState) => ({
-          imageGroups: itemsState.imageGroups.map((group): SerializableImageGroup => ({
-            ...group,
-            // remove images from imageGroup - images will move to root group
-            images: group.images.filter((hash) => !images.includes(hash)),
-          })),
-        })),
+        // ungroupImages: (images: string[]) => set((itemsState) => ({
+        //   imageGroups: itemsState.imageGroups.map((group): SerializableImageGroup => ({
+        //     ...group,
+        //     // remove images from imageGroup - images will move to root group
+        //     images: group.images.filter((hash) => !images.includes(hash)),
+        //   })),
+        // })),
 
         addImages: (images: Image[]) => set((itemsState) => ({
           images: imagesUniqueByHash([...itemsState.images, ...images]),
