@@ -1,5 +1,7 @@
 import { proxy, wrap } from 'comlink';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImages } from '@/hooks/useImages';
 import { useUrl } from '@/hooks/useUrl';
 import {
   useInteractionsStore,
@@ -21,7 +23,10 @@ import { TreeImageGroup } from '@/types/ImageGroup';
 const GALLERY_BASE_PATH = '/gallery/';
 
 export const useContextHook = (): GalleryTreeContextType => {
-  const { imageGroups, images: stateImages, setImageGroups, initialized: itemsStoreInitialized } = useItemsStore();
+  const { setImageGroups } = useItemsStore();
+  const { images: stateImages, isLoadingList: isLoadingImagesList } = useImages({ list: true });
+  const { imageGroups, isLoadingList: isLoadingGroupsList } = useImageGroups({ list: true });
+  const itemsStoreInitialized = !isLoadingImagesList && !isLoadingGroupsList;
   const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
   const [isInitialized, setIsInitialized] = useState<boolean>(false); // start asto prevent navigation side effect
   const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot(stateImages));
