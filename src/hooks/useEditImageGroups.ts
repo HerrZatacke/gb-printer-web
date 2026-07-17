@@ -10,7 +10,6 @@ import {
   useDialogsStore,
   useEditStore,
   useFiltersStore,
-  useItemsStore,
 } from '@/stores/stores';
 
 interface UseEditImageGroups {
@@ -26,8 +25,7 @@ export const useEditImageGroups = (): UseEditImageGroups => {
   const { view } = useGalleryTreeContext();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setEditImageGroup } = useEditStore();
-  const { setImageGroups } = useItemsStore();
-  const { deleteImageGroupsByIds } = useImageGroups({});
+  const { deleteImageGroupsByIds, updateImageGroups } = useImageGroups({});
   const { imageSelection } = useFiltersStore();
 
   const { byHashes: selectionImages } = useImages({ hashes: imageSelection });
@@ -66,7 +64,7 @@ export const useEditImageGroups = (): UseEditImageGroups => {
         }],
         confirm: async () => {
           dismissDialog(0);
-          setImageGroups([]);
+          updateImageGroups([], true);
         },
         deny: async () => {
           dismissDialog(0);
