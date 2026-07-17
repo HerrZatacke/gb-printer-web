@@ -4,6 +4,7 @@ import { longestCommonSubstring } from 'string-algorithms';
 import { DialoqQuestionType } from '@/consts/dialog';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { NEW_GROUP } from '@/hooks/useEditImageGroup';
+import { useImageGroups } from '@/hooks/useImageGroups';
 import { useImages } from '@/hooks/useImages';
 import {
   useDialogsStore,
@@ -25,7 +26,8 @@ export const useEditImageGroups = (): UseEditImageGroups => {
   const { view } = useGalleryTreeContext();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setEditImageGroup } = useEditStore();
-  const { deleteImageGroup, setImageGroups } = useItemsStore();
+  const { setImageGroups } = useItemsStore();
+  const { deleteImageGroupsByIds } = useImageGroups({});
   const { imageSelection } = useFiltersStore();
 
   const { byHashes: selectionImages } = useImages({ hashes: imageSelection });
@@ -96,7 +98,7 @@ export const useEditImageGroups = (): UseEditImageGroups => {
         }],
         confirm: async () => {
           dismissDialog(0);
-          deleteImageGroup(id);
+          await deleteImageGroupsByIds([id]);
         },
         deny: async () => {
           dismissDialog(0);

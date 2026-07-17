@@ -73,7 +73,7 @@ interface Actions {
 
   // ImageGroup updates
   // addImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
-  deleteImageGroup: (groupId: string) => void;
+  // deleteImageGroup: (groupId: string) => void;
   // updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => void;
   groupImagesAdd: (imageGroupId: string, images: string[]) => void;
   ungroupImages: (images: string[]) => void;
@@ -235,41 +235,41 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         //   });
         // },
 
-        deleteImageGroup: (groupId: string) => {
-          const { imageGroups: stateImageGroups } = get();
-
-          const deleteGroup = stateImageGroups.find(({ id }) => id === groupId);
-
-          if (!deleteGroup) {
-            return;
-          }
-
-          const imageGroups = stateImageGroups.reduce((
-            acc: SerializableImageGroup[],
-            reduceGroup: SerializableImageGroup,
-          ): SerializableImageGroup[] => {
-            if (reduceGroup.id === groupId) {
-              return acc;
-            }
-
-            if (reduceGroup.groups.includes(groupId)) { // group to be deleted is child of reduceGroup
-              return [
-                ...acc,
-                {
-                  ...reduceGroup,
-                  images: [...reduceGroup.images, ...deleteGroup.images],
-                  groups: [...reduceGroup.groups, ...deleteGroup.groups].filter((id) => id !== deleteGroup.id),
-                },
-              ];
-            }
-
-            return [...acc, reduceGroup];
-          }, []);
-
-          set({
-            imageGroups,
-          });
-        },
+        // deleteImageGroup: (groupId: string) => {
+        //   const { imageGroups: stateImageGroups } = get();
+        //
+        //   const deleteGroup = stateImageGroups.find(({ id }) => id === groupId);
+        //
+        //   if (!deleteGroup) {
+        //     return;
+        //   }
+        //
+        //   const imageGroups = stateImageGroups.reduce((
+        //     acc: SerializableImageGroup[],
+        //     reduceGroup: SerializableImageGroup,
+        //   ): SerializableImageGroup[] => {
+        //     if (reduceGroup.id === groupId) {
+        //       return acc;
+        //     }
+        //
+        //     if (reduceGroup.groups.includes(groupId)) { // group to be deleted is child of reduceGroup
+        //       return [
+        //         ...acc,
+        //         {
+        //           ...reduceGroup,
+        //           images: [...reduceGroup.images, ...deleteGroup.images],
+        //           groups: [...reduceGroup.groups, ...deleteGroup.groups].filter((id) => id !== deleteGroup.id),
+        //         },
+        //       ];
+        //     }
+        //
+        //     return [...acc, reduceGroup];
+        //   }, []);
+        //
+        //   set({
+        //     imageGroups,
+        //   });
+        // },
 
         // updateImageGroup: (imageGroup: SerializableImageGroup, parentId: string) => {
         //   const { imageGroups: stateImageGroups } = get();
