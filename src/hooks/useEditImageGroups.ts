@@ -10,6 +10,7 @@ import {
   useFiltersStore,
   useItemsStore,
 } from '@/stores/stores';
+import { useImages } from '@/hooks/useImages';
 
 interface UseEditImageGroups {
   resetGroups: () => void;
@@ -24,16 +25,17 @@ export const useEditImageGroups = (): UseEditImageGroups => {
   const { view } = useGalleryTreeContext();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setEditImageGroup } = useEditStore();
-  const { deleteImageGroup, setImageGroups, images } = useItemsStore();
+  const { deleteImageGroup, setImageGroups } = useItemsStore();
   const { imageSelection } = useFiltersStore();
 
+  const { byHashes: selectionImages } = useImages({ hashes: imageSelection });
+
   const newGroupTitle = useMemo<string>(() => {
-    if (!imageSelection.length) {
+    if (!selectionImages.length) {
       return '';
     }
 
-    const titles = images
-      .filter(({ hash }) => imageSelection.includes(hash))
+    const titles = selectionImages
       .map(({ title }) => title)
       .filter((title) => title.length > 3);
 
@@ -49,7 +51,7 @@ export const useEditImageGroups = (): UseEditImageGroups => {
       .replace(/[_-]/g, ' ')
       .replace(/^\s*\d+\s+|\s+\d+\s*$/g, '')
       .trim();
-  }, [imageSelection, images, t]);
+  }, [selectionImages, t]);
 
   return {
     resetGroups: () => {
