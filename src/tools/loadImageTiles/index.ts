@@ -1,7 +1,7 @@
 import { type RGBNTiles } from 'gb-image-decoder';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions } from '@/stores/queries/images';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { load, type RecoverFn } from '@/tools/storage';
 import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
@@ -20,7 +20,7 @@ export const loadImageTiles = (recover?: RecoverFn) => {
     hashesOverride?: RGBNHashes,
   ): Promise<string[] | RGBNTiles> => {
     const queryClient = getQueryClient();
-    const { items: [image] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hash]));
+    const image = await queryClient.fetchQuery(imageByHashQueryOptions(hash));
 
     // Image may not exist when loading RGBN-channels where original image has been deleted.
     const frame = (typeof overrideFrame === 'string' ? overrideFrame : image?.frame) || undefined;

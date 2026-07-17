@@ -2,7 +2,7 @@ import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-ima
 import { type RGBNPalette, type RGBNTiles } from 'gb-image-decoder';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions } from '@/stores/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getImagePalettes } from '@/tools/getImagePalettes';
@@ -18,7 +18,7 @@ export const collectImageData: CollectImageDataFn = async (hash: string): Promis
   const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
   const queryClient = getQueryClient();
 
-  const { items: [meta] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hash]));
+  const meta = await queryClient.fetchQuery(imageByHashQueryOptions(hash));
   if (!meta) {
     throw new Error('image not found');
   }

@@ -4,7 +4,7 @@ import { ExportTypes } from '@/consts/exportTypes';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions } from '@/stores/queries/images';
 import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { download, prepareFiles, type PrepareFilesOptions } from '@/tools/download';
@@ -38,7 +38,7 @@ const useDownload = (): UseDownload => {
 
   const getZipFileName = useCallback(async (hashes: string[]): Promise<string> => {
     if (hashes.length === 1) {
-      const { items: [image] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hashes[0]]));
+      const image = await queryClient.fetchQuery(imageByHashQueryOptions(hashes[0]));
       if (!image) {
         throw new Error('image not found');
       }
@@ -63,7 +63,7 @@ const useDownload = (): UseDownload => {
   }, [fileNameStyle, queryClient]);
 
   const prepareDownloadInfo = useCallback(async (imageHash: string, prepareFilesOptionsOverride?: PrepareFilesOptions): Promise<DownloadInfo[]> => {
-    const { items: [image] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([imageHash]));
+    const image = await queryClient.fetchQuery(imageByHashQueryOptions(imageHash));
     if (!image) { throw new Error('image not found'); }
 
 

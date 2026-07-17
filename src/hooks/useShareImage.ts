@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useTracking } from '@/contexts/TrackingContext';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions } from '@/stores/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { type PrepareFilesOptions, prepareFiles } from '@/tools/download';
@@ -21,7 +21,7 @@ const useShareImage = (): UseShareImage => {
   const shareImage = useCallback(async (hash: string) => {
     if (!window.navigator.share) { return; }
 
-    const { items: [image] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([hash]));
+    const image = await queryClient.fetchQuery(imageByHashQueryOptions(hash));
     if (!image) {
       throw new Error('image not found');
     }

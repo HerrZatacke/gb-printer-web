@@ -1,11 +1,11 @@
 import { getQueryClient } from '@/contexts/QueryClient';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions } from '@/stores/queries/images';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 
 export const getPaddingColor = async (imageHash: string): Promise<string> => {
   const queryClient = getQueryClient();
-  const { items: [image] } = await queryClient.fetchQuery(imagesByHashesQueryOptions([imageHash]));
+  const image = await queryClient.fetchQuery(imageByHashQueryOptions(imageHash));
   if (!image) {
     throw new Error('image not found');
   }

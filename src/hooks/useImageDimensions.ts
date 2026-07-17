@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Rotation, TILE_PIXEL_WIDTH, TILES_PER_LINE } from 'gb-image-decoder';
 import { useEffect, useMemo, useState } from 'react';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions, imagesByHashesQueryOptions } from '@/stores/queries/images';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNImage } from '@/types/Image';
 
@@ -49,8 +49,8 @@ export const useImageDimensions = (hash: string): UseDimensions => {
   useEffect(() => {
     let cancelled = false;
 
-    queryClient.fetchQuery(imagesByHashesQueryOptions([hash]))
-      .then(async ({ items: [image] }) => {
+    queryClient.fetchQuery(imageByHashQueryOptions(hash))
+      .then(async (image) => {
         if (!image || cancelled) {
           return;
         }
