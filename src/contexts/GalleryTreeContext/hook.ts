@@ -5,7 +5,6 @@ import { useImages } from '@/hooks/useImages';
 import { useUrl } from '@/hooks/useUrl';
 import {
   useInteractionsStore,
-  useItemsStore,
   useSettingsStore,
 } from '@/stores/stores';
 import { createTreeRoot } from '@/tools/createTreeRoot';
@@ -23,7 +22,6 @@ import { TreeImageGroup } from '@/types/ImageGroup';
 const GALLERY_BASE_PATH = '/gallery/';
 
 export const useContextHook = (): GalleryTreeContextType => {
-  const { setImageGroups } = useItemsStore();
   const { images: stateImages, isLoadingList: isLoadingImagesList } = useImages({ list: true });
   const { imageGroups, isLoadingList: isLoadingGroupsList } = useImageGroups({ list: true });
   const itemsStoreInitialized = !isLoadingImagesList && !isLoadingGroupsList;
@@ -65,12 +63,6 @@ export const useContextHook = (): GalleryTreeContextType => {
           setError(new Error(errors.join('\n')));
         }
 
-        if (imageGroups.length > workerResult.paths.length) {
-          const idsInPaths = workerResult.paths.map(({ group }) => group.id);
-          const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-          setImageGroups(usedGroups);
-        }
-
         if (enableDebug) {
           console.info(`worker ran for ${workerResult.duration.toFixed(2)}ms`);
         }
@@ -89,7 +81,7 @@ export const useContextHook = (): GalleryTreeContextType => {
       worker.terminate();
       setIsWorking(false);
     };
-  }, [enableDebug, imageGroups, itemsStoreInitialized, setError, setImageGroups, stateImages]);
+  }, [enableDebug, imageGroups, itemsStoreInitialized, setError, stateImages]);
 
   const pageIndex = useMemo(() => (
     parseInt(searchParams.get('page') ?? '1', 10) - 1
