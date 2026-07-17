@@ -105,7 +105,7 @@ const withPredefinedPalettes = (palettes: Palette[]): Palette[] => palettesUniqu
 export const createItemsStore = (onError: (err: Error) => void) => (
   create<ItemsState>()(
     persist(
-      (set, get) => ({
+      (set /*, get*/) => ({
         initialized: false,
         frames: [],
         palettes: [],
