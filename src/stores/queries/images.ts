@@ -1,3 +1,4 @@
+import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { Image } from '@/types/Image';
@@ -9,9 +10,17 @@ export const imagesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
   allTags: [...baseKeys, 'allTags'] as const,
+  byHash: (hash: string) => [...baseKeys, 'byHash', hash] as const,
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
   byAnyHashes: (hashes: string[]) => [...baseKeys, 'byAnyHashes', [...hashes].sort()] as const,
   raw: (raw: GetImagesParams) => [...baseKeys, 'raw', raw] as const,
+};
+
+const warmImageCache = (images: Image[]) => {
+  const queryClient = getQueryClient();
+  images.forEach((image) => {
+    queryClient.setQueryData(imagesKeys.byHash(image.hash), image);
+  });
 };
 
 export const imagesByHashesBatchedLoader = createBatchedLoader<Image>(
@@ -38,7 +47,7 @@ export const imagesListQueryOptions = () => {
     queryKey: imagesKeys.list,
     queryFn: async () => {
       const source = await getItemsSource();
-      return source.getImages({
+      const result = await source.getImages({
         page: 0,
         pageSize: 10000, // ToDo. Temporary limit. Never do this in the api.
         sort: {
@@ -46,6 +55,9 @@ export const imagesListQueryOptions = () => {
           direction: 'asc',
         },
       });
+
+      warmImageCache(result.items);
+      return result;
     },
     staleTime: 30000,
   };
@@ -72,6 +84,8 @@ export const imagesByHashesQueryOptions = (hashes: string[]) => {
 
       const results = await Promise.all(hashes.map(imagesByHashesBatchedLoader.loadByKey));
       const items = results.filter((f): f is Image => Boolean(f));
+
+      warmImageCache(items);
       return { items };
     },
     select: (data: { items: Image[] }) => {
@@ -85,6 +99,12 @@ export const imagesByHashesQueryOptions = (hashes: string[]) => {
     staleTime: 30000,
   };
 };
+
+export const imageByHashQueryOptions = (hash: string) => ({
+  queryKey: imagesKeys.byHash(hash), // mostly populated by imagesByHashes
+  queryFn: async () => imagesByHashesBatchedLoader.loadByKey(hash),
+  staleTime: 30000,
+});
 
 export const imagesByAnyHashesQueryOptions = (hashes: string[]) => {
   return {
@@ -107,7 +127,10 @@ export const imagesRawQueryOptions = (raw: GetImagesParams) => {
     queryKey: imagesKeys.raw(raw),
     queryFn: async () => {
       const source = await getItemsSource();
-      return source.getImages(raw);
+      const result = await source.getImages(raw);
+
+      warmImageCache(result.items);
+      return result;
     },
     staleTime: 30000,
   };
