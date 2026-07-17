@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 import { useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
+import { useImages } from '@/hooks/useImages';
 import {
   useFiltersStore,
-  useItemsStore,
   useSettingsStore,
 } from '@/stores/stores';
 import { getFilteredImages } from '@/tools/getFilteredImages';
@@ -34,7 +34,7 @@ export const useGallery = (): UseGallery => {
     sortBy,
   } = useFiltersStore();
 
-  const { images: stateImages } = useItemsStore();
+  const { images: stateImages } = useImages({ list: true });
 
   const totalImageCount = stateImages.length;
   const filteredCount = getFilteredImagesCount(view, filtersTags, filtersFrames, filtersPalettes, recentImports);
