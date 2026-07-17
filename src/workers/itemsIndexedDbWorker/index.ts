@@ -20,10 +20,12 @@ import {
   deleteImageGroupsByIds,
 } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
 import {
+  deleteImagesByHashes,
   getAllTags,
   getImagesByHashes,
   getImagesByAnyHashes,
   getImages,
+  updateImages,
 } from '@/workers/itemsIndexedDbWorker/queries/images';
 import {
   deletePalettesByShortNames,
@@ -53,14 +55,8 @@ const api: ItemsSource = {
   getImages,
   getImagesByHashes,
   getImagesByAnyHashes,
-  updateImages: async () => {
-    console.warn(self.constructor.name, 'Not implemented');
-    return undefined;
-  },
-  deleteImagesByHashes: async () => {
-    console.warn(self.constructor.name, 'Not implemented');
-    return undefined;
-  },
+  updateImages,
+  deleteImagesByHashes,
 
   getImageGroupsFullTree,
   getImageGroupsList,

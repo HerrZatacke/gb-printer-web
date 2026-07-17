@@ -1,4 +1,5 @@
 import predefinedPalettes from 'gb-palettes';
+import z from 'zod';
 import { type Palette, PaletteSchema } from '@/types/Palette';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
@@ -55,13 +56,18 @@ export const getPalettes = async (): Promise<ItemsSourceResponse<Palette>> => {
 };
 
 export const updatePalettes = async (palettes: Palette[]): Promise<void> => {
-  const db = await getDb();
+  const { success, data: parsedPalettes, error } = z.array(PaletteSchema).safeParse(palettes);
+  if (success) {
+    const db = await getDb();
 
-  const tx = db.transaction('palettes', 'readwrite');
-  const store = tx.store;
+    const tx = db.transaction('palettes', 'readwrite');
+    const store = tx.store;
 
-  await Promise.all(palettes.map((palette) => store.put(palette)));
-  await tx.done;
+    await Promise.all(parsedPalettes.map((palette) => store.put(palette)));
+    await tx.done;
+  } else {
+    console.error(error);
+  }
 };
 
 export const deletePalettesByShortNames = async (shortNames: string[]): Promise<void> => {

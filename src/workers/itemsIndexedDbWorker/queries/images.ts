@@ -14,6 +14,7 @@ import {
   type ItemsReferenceList,
   type ItemsSourceResponse,
   type StoredImage,
+  StoredImageSchema,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
@@ -157,4 +158,29 @@ export const getAllTags = async (): Promise<ItemsSourceResponse<string>> => {
   const addPaging = getAddPaging<string>(uniqueTags.length, 0, uniqueTags.length, start, z.string());
 
   return addPaging(uniqueTags);
+};
+
+export const updateImages = async (images: Image[]): Promise<void> => {
+  const { success, data: parsedImages, error } = z.array(StoredImageSchema).safeParse(images);
+  if (success) {
+    const db = await getDb();
+
+    const tx = db.transaction('images', 'readwrite');
+    const store = tx.store;
+
+    await Promise.all(parsedImages.map((image) => store.put(image)));
+    await tx.done;
+  } else {
+    console.error(error);
+  }
+};
+
+export const deleteImagesByHashes = async (hashes: string[]): Promise<void> => {
+  const db = await getDb();
+
+  const tx = db.transaction('images', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(hashes.map((hash) => store.delete(hash)));
+  await tx.done;
 };

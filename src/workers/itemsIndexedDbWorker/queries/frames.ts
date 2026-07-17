@@ -1,3 +1,4 @@
+import z from 'zod';
 import { type Frame, FrameSchema } from '@/types/Frame';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
@@ -53,13 +54,19 @@ export const getFramesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
 };
 
 export const updateFrames = async (frames: Frame[]): Promise<void> => {
-  const db = await getDb();
+  const { success, data: parsedFrames, error } = z.array(FrameSchema).safeParse(frames);
 
-  const tx = db.transaction('frames', 'readwrite');
-  const store = tx.store;
+  if (success) {
+    const db = await getDb();
 
-  await Promise.all(frames.map((frame) => store.put(frame)));
-  await tx.done;
+    const tx = db.transaction('frames', 'readwrite');
+    const store = tx.store;
+
+    await Promise.all(parsedFrames.map((frame) => store.put(frame)));
+    await tx.done;
+  } else {
+    console.error(error);
+  }
 };
 
 export const deleteFramesByIds = async (ids: string[]): Promise<void> => {

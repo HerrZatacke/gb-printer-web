@@ -1,3 +1,4 @@
+import z from 'zod';
 import { FrameGroup, FrameGroupSchema } from '@/types/FrameGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
@@ -17,13 +18,18 @@ export const getFrameGroups = async (): Promise<ItemsSourceResponse<FrameGroup>>
 };
 
 export const updateFrameGroups = async (frameGroups: FrameGroup[]): Promise<void> => {
-  const db = await getDb();
+  const { success, data: parsedFrameGroups, error } = z.array(FrameGroupSchema).safeParse(frameGroups);
+  if (success) {
+    const db = await getDb();
 
-  const tx = db.transaction('framegroups', 'readwrite');
-  const store = tx.store;
+    const tx = db.transaction('framegroups', 'readwrite');
+    const store = tx.store;
 
-  await Promise.all(frameGroups.map((frameGroup) => store.put(frameGroup)));
-  await tx.done;
+    await Promise.all(parsedFrameGroups.map((frameGroup) => store.put(frameGroup)));
+    await tx.done;
+  } else {
+    console.error(error);
+  }
 };
 
 export const deleteFrameGroupsByIds = async (ids: string[]): Promise<void> => {

@@ -1,3 +1,4 @@
+import z from 'zod';
 import { type Plugin, PluginSchema } from '@/types/Plugin';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
@@ -35,13 +36,18 @@ export const getPluginsByUrls = async (urls: string[]): Promise<ItemsSourceRespo
 };
 
 export const updatePlugins = async (plugins: Plugin[]): Promise<void> => {
-  const db = await getDb();
+  const { success, data: parsedPlugins, error } = z.array(PluginSchema).safeParse(plugins);
+  if (success) {
+    const db = await getDb();
 
-  const tx = db.transaction('plugins', 'readwrite');
-  const store = tx.store;
+    const tx = db.transaction('plugins', 'readwrite');
+    const store = tx.store;
 
-  await Promise.all(plugins.map((palette) => store.put(palette)));
-  await tx.done;
+    await Promise.all(parsedPlugins.map((palette) => store.put(palette)));
+    await tx.done;
+  } else {
+    console.error(error);
+  }
 };
 
 export const deletePluginsByUrls = async (urls: string[]): Promise<void> => {
