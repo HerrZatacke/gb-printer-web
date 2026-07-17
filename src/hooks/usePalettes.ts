@@ -14,7 +14,7 @@ export interface UsePalettes {
   isLoadingList: boolean;
   byShortNames: Palette[];
   isLoadingByShortNames: boolean;
-  updatePalettes: (palettes: Palette[]) => Promise<void>;
+  updatePalettes: (palettes: Palette[], purge?: boolean) => Promise<void>;
   deletePalettesByShortNames: (shortNames: string[]) => Promise<void>;
 }
 
@@ -40,9 +40,9 @@ export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalett
     retry: false,
   });
 
-  const updatePalettes = useCallback(async (palettes: Palette[]): Promise<void> => {
+  const updatePalettes = useCallback(async (palettes: Palette[], purge = false): Promise<void> => {
     const source = await getItemsSource();
-    await source.updatePalettes(palettes);
+    await source.updatePalettes(palettes, purge);
     await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
   }, [queryClient]);
 

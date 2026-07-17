@@ -160,13 +160,17 @@ export const getAllTags = async (): Promise<ItemsSourceResponse<string>> => {
   return addPaging(uniqueTags);
 };
 
-export const updateImages = async (images: Image[]): Promise<void> => {
+export const updateImages = async (images: Image[], purge: boolean): Promise<void> => {
   const { success, data: parsedImages, error } = z.array(StoredImageSchema).safeParse(images);
   if (success) {
     const db = await getDb();
 
     const tx = db.transaction('images', 'readwrite');
     const store = tx.store;
+
+    if (purge) {
+      await store.clear();
+    }
 
     await Promise.all(parsedImages.map((image) => store.put(image)));
     await tx.done;

@@ -69,13 +69,17 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<N
   };
 };
 
-export const updateImageGroups = async (imageGroups: NewSerializableImageGroup[]): Promise<void> => {
+export const updateImageGroups = async (imageGroups: NewSerializableImageGroup[], purge: boolean): Promise<void> => {
   const { success, data: parsedGroups, error } = z.array(NewSerializableImageGroupSchema).safeParse(imageGroups);
   if (success) {
     const db = await getDb();
 
     const tx = db.transaction('imagegroups', 'readwrite');
     const store = tx.store;
+
+    if (purge) {
+      await store.clear();
+    }
 
     await Promise.all(parsedGroups.map((group) => store.put(group)));
     await tx.done;

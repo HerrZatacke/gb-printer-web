@@ -14,7 +14,7 @@ export interface UseFrames {
   isLoadingList: boolean;
   byIds: Frame[];
   isLoadingByIds: boolean;
-  updateFrames: (frames: Frame[]) => Promise<void>;
+  updateFrames: (frames: Frame[], purge?: boolean) => Promise<void>;
   deleteFramesByIds: (ids: string[]) => Promise<void>;
 }
 
@@ -40,9 +40,9 @@ export const useFrames = ({ list, ids }: UseFramesOptions): UseFrames => {
     retry: false,
   });
 
-  const updateFrames = useCallback(async (frames: Frame[]): Promise<void> => {
+  const updateFrames = useCallback(async (frames: Frame[], purge = false): Promise<void> => {
     const source = await getItemsSource();
-    await source.updateFrames(frames);
+    await source.updateFrames(frames, purge);
     await queryClient.invalidateQueries({ queryKey: framesKeys.all });
   }, [queryClient]);
 

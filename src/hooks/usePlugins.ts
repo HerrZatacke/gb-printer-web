@@ -19,7 +19,7 @@ export interface UsePlugins {
   isLoadingList: boolean;
   byUrls: Plugin[];
   isLoadingByUrls: boolean;
-  updatePlugins: (plugins: Plugin[]) => Promise<void>;
+  updatePlugins: (plugins: Plugin[], purge?: boolean) => Promise<void>;
   deletePluginsByUrls: (urls: string[]) => Promise<void>;
   updatePluginConfig: (url: string, key: string, value: string | number) => Promise<void>;
   updatePluginState: (url: string, loading: boolean, error: string | false) => void;
@@ -49,9 +49,9 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
     retry: false,
   });
 
-  const updatePlugins = useCallback(async (plugins: Plugin[]): Promise<void> => {
+  const updatePlugins = useCallback(async (plugins: Plugin[], purge = false): Promise<void> => {
     const source = await getItemsSource();
-    await source.updatePlugins(plugins);
+    await source.updatePlugins(plugins, purge);
     await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
   }, [queryClient]);
 

@@ -53,7 +53,7 @@ export const getFramesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
   return addPaging(filteredFrames);
 };
 
-export const updateFrames = async (frames: Frame[]): Promise<void> => {
+export const updateFrames = async (frames: Frame[], purge: boolean): Promise<void> => {
   const { success, data: parsedFrames, error } = z.array(FrameSchema).safeParse(frames);
 
   if (success) {
@@ -61,6 +61,10 @@ export const updateFrames = async (frames: Frame[]): Promise<void> => {
 
     const tx = db.transaction('frames', 'readwrite');
     const store = tx.store;
+
+    if (purge) {
+      await store.clear();
+    }
 
     await Promise.all(parsedFrames.map((frame) => store.put(frame)));
     await tx.done;

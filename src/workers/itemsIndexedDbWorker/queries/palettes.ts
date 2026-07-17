@@ -55,13 +55,17 @@ export const getPalettes = async (): Promise<ItemsSourceResponse<Palette>> => {
   return addPaging(withPredefined);
 };
 
-export const updatePalettes = async (palettes: Palette[]): Promise<void> => {
+export const updatePalettes = async (palettes: Palette[], purge: boolean): Promise<void> => {
   const { success, data: parsedPalettes, error } = z.array(PaletteSchema).safeParse(palettes);
   if (success) {
     const db = await getDb();
 
     const tx = db.transaction('palettes', 'readwrite');
     const store = tx.store;
+
+    if (purge) {
+      await store.clear();
+    }
 
     await Promise.all(parsedPalettes.map((palette) => store.put(palette)));
     await tx.done;

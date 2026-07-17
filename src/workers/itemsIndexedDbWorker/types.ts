@@ -145,32 +145,32 @@ export interface ItemsSource {
   getImages(params: GetImagesParams): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Image>>;
   getImagesByAnyHashes(hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;
-  updateImages(images: Image[]): Promise<void>;
+  updateImages(images: Image[], purge: boolean): Promise<void>;
   deleteImagesByHashes(hashes: string[]): Promise<void>;
 
   getImageGroupsFullTree(): Promise<RootItemSourceResponse<NewTreeImageGroup>>;
   getImageGroupsList(): Promise<ItemsSourceResponse<NewSerializableImageGroup>>;
-  updateImageGroups(imageGroups: NewSerializableImageGroup[]): Promise<void>;
+  updateImageGroups(imageGroups: NewSerializableImageGroup[], purge: boolean): Promise<void>;
   deleteImageGroupsByIds(ids: string[]): Promise<void>;
 
   getFrames(): Promise<ItemsSourceResponse<Frame>>;
   getFramesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Frame>>;
   getFramesByIds(ids: string[]): Promise<ItemsSourceResponse<Frame>>;
-  updateFrames(frames: Frame[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
+  updateFrames(frames: Frame[], purge: boolean): Promise<void>;
   deleteFramesByIds(ids: string[]): Promise<void>;
 
   getFrameGroups(): Promise<ItemsSourceResponse<FrameGroup>>;
-  updateFrameGroups(frameGroups: FrameGroup[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
+  updateFrameGroups(frameGroups: FrameGroup[], purge: boolean): Promise<void>;
   deleteFrameGroupsByIds(ids: string[]): Promise<void>;
 
   getPalettes() : Promise<ItemsSourceResponse<Palette>>;
   getPalettesByShortNames(shortNames: string[]) : Promise<ItemsSourceResponse<Palette>>;
-  updatePalettes(palettes: Palette[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
+  updatePalettes(palettes: Palette[], purge: boolean): Promise<void>;
   deletePalettesByShortNames(shortNames: string[]): Promise<void>;
 
   getPlugins(): Promise<ItemsSourceResponse<Plugin>>;
   getPluginsByUrls(urls: string[]): Promise<ItemsSourceResponse<Plugin>>;
-  updatePlugins(plugins: Plugin[]): Promise<void>; // ToDo: add "purge"-option for a fresh/clean write
+  updatePlugins(plugins: Plugin[], purge: boolean): Promise<void>;
   deletePluginsByUrls(urls: string[]): Promise<void>;
 }
 

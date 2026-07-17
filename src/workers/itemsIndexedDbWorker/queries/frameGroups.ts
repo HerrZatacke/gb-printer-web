@@ -17,13 +17,17 @@ export const getFrameGroups = async (): Promise<ItemsSourceResponse<FrameGroup>>
   return addPaging(frameGroups);
 };
 
-export const updateFrameGroups = async (frameGroups: FrameGroup[]): Promise<void> => {
+export const updateFrameGroups = async (frameGroups: FrameGroup[], purge: boolean): Promise<void> => {
   const { success, data: parsedFrameGroups, error } = z.array(FrameGroupSchema).safeParse(frameGroups);
   if (success) {
     const db = await getDb();
 
     const tx = db.transaction('framegroups', 'readwrite');
     const store = tx.store;
+
+    if (purge) {
+      await store.clear();
+    }
 
     await Promise.all(parsedFrameGroups.map((frameGroup) => store.put(frameGroup)));
     await tx.done;

@@ -32,7 +32,7 @@ export interface UseImages {
   isLoadingByAnyHashes: boolean;
   raw: Image[];
   isLoadingRaw: boolean;
-  updateImages: (images: Image[]) => Promise<void>;
+  updateImages: (images: Image[], purge?: boolean) => Promise<void>;
   deleteImagesByHashes: (hashes: string[]) => Promise<void>;
 }
 
@@ -77,9 +77,9 @@ export const useImages = ({ list, allTags, hashes, anyHashes , raw }: UseImagesO
     retry: false,
   });
 
-  const updateImages = useCallback(async (images: Image[]): Promise<void> => {
+  const updateImages = useCallback(async (images: Image[], purge = false): Promise<void> => {
     const source = await getItemsSource();
-    await source.updateImages(images);
+    await source.updateImages(images, purge);
     await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
   }, [queryClient]);
 

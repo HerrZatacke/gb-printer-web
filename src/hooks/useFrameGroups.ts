@@ -84,7 +84,7 @@ export interface UseFrameGroups {
   frameGroups: FrameGroup[];
   totalCount: number;
   isLoadingList: boolean;
-  updateFrameGroups: (frameGroups: FrameGroup[]) => Promise<void>;
+  updateFrameGroups: (frameGroups: FrameGroup[], purge?: boolean) => Promise<void>;
   deleteFrameGroupsByIds: (ids: string[]) => Promise<void>;
 }
 
@@ -97,9 +97,9 @@ export const useFrameGroups = (): UseFrameGroups => {
     retry: false,
   });
 
-  const updateFrameGroups = useCallback(async (frameGroups: FrameGroup[]): Promise<void> => {
+  const updateFrameGroups = useCallback(async (frameGroups: FrameGroup[], purge = false): Promise<void> => {
     const source = await getItemsSource();
-    await source.updateFrameGroups(frameGroups);
+    await source.updateFrameGroups(frameGroups, purge);
     await queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
   }, [queryClient]);
 

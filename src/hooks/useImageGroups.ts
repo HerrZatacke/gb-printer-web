@@ -26,7 +26,7 @@ export interface UseImageGroups {
   isLoadingTree: boolean;
   byFullSlug: NewTreeImageGroup | null;
   isLoadingByFullSlug: boolean;
-  updateImageGroups: (imageGroups: NewSerializableImageGroup[]) => Promise<void>;
+  updateImageGroups: (imageGroups: NewSerializableImageGroup[], purge?: boolean) => Promise<void>;
   updateImageGroup: (group: NewSerializableImageGroup, parentGroupId: string) => Promise<void>;
   deleteImageGroupsByIds: (ids: string[]) => Promise<void>;
 }
@@ -109,9 +109,9 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
     retry: false,
   });
 
-  const updateImageGroups = useCallback(async (imageGroups: NewSerializableImageGroup[]): Promise<void> => {
+  const updateImageGroups = useCallback(async (imageGroups: NewSerializableImageGroup[], purge = false): Promise<void> => {
     const source = await getItemsSource();
-    await source.updateImageGroups(imageGroups);
+    await source.updateImageGroups(imageGroups, purge);
     await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
   }, [queryClient]);
 
@@ -126,7 +126,7 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
     const changedGroups = computeImageGroupUpdateDiff(group, parentGroupId, allGroups);
 
     const source = await getItemsSource();
-    await source.updateImageGroups(changedGroups);
+    await source.updateImageGroups(changedGroups, false);
     await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
   }, [queryClient]);
 
