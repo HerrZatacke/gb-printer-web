@@ -12,6 +12,7 @@ import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
 import { type PathMap } from '@/types/galleryTreeContext';
 import { type SerializableImageGroup } from '@/types/ImageGroup';
+import { useImageGroups } from '@/hooks/useImageGroups';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -81,13 +82,12 @@ const useEditImageGroup = (): UseEditImageGroup => {
   const { imageSelection: selection } = useFiltersStore();
   const { editImageGroup, cancelEditImageGroup } = useEditStore();
   const {
-    imageGroups,
     addImageGroup,
     updateImageGroup,
     groupImagesAdd,
     ungroupImages,
   } = useItemsStore();
-  // const { updateImageGroups } = useImageGroups({});
+  const { imageGroups /*, updateImageGroups*/ } = useImageGroups({ list: true });
   const { navigateToGroup, navigateToImage } = useNavigationTools();
   const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
