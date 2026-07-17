@@ -100,7 +100,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
             setDialog({
               message: t('deleteConfirmation', { count: imageSelection.length }),
               confirm: async () => {
-                deleteImages(imageSelection);
+                await deleteImages(imageSelection);
               },
               deny: async () => dismissDialog(0),
             });

@@ -107,7 +107,7 @@ export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContext
       setDialog({
         message: t('deleteImage', { title: image?.title || 'NO_TITLE' }),
         confirm: async () => {
-          deleteImages([hash]);
+          await deleteImages([hash]);
         },
         deny: async () => dismissDialog(0),
       });

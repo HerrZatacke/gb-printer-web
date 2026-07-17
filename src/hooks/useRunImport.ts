@@ -134,7 +134,7 @@ const useRunImport = (): UseRunImport => {
 
     const imageHashes = savedImages.map(({ hash }) => hash);
 
-    addImages(savedImages);
+    await addImages(savedImages);
 
     if (createGroup) {
       const title = t('importGroupTitle', { date: formatter(new Date()) });

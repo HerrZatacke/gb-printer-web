@@ -82,12 +82,12 @@ export const useImportExportSettings = (): ImportExportSettings => {
 
   const jsonImport = useCallback(async (repoContents: JSONExport): Promise<void> => {
     const update = await mergeSettings(repoContents, images, imageGroups, palettes, frames, true);
-    globalUpdate(update);
+    await globalUpdate(update);
   }, [globalUpdate, images, imageGroups, palettes, frames]);
 
   const remoteImport = useCallback(async (repoContents: JSONExportState): Promise<void> => {
     const update = await mergeSettings(repoContents as JSONExport, images, imageGroups, palettes, frames, false);
-    globalUpdate(update);
+    await globalUpdate(update);
   }, [globalUpdate, images, imageGroups, palettes, frames]);
 
   return {

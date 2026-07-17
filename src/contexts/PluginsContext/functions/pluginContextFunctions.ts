@@ -42,7 +42,7 @@ export const pluginCompatibilityStore = (
   const { setDialog, dismissDialog, importFiles, addImages, alert } = pluginFunctions(useStores, importFn);
 
   return ({
-    dispatch: (action: CompatibilityAction) => {
+    dispatch: async (action: CompatibilityAction) => {
       console.warn(`You are using a legacy method: "dispatch(${action.type})". Please refer to "env.functions" from your plugin to switch to up-to-date methods`);
       switch (action.type) {
         case CompatibilityActionType.CONFIRM_ASK:
@@ -54,11 +54,11 @@ export const pluginCompatibilityStore = (
           break;
 
         case CompatibilityActionType.IMPORT_FILES:
-          importFiles((action.payload as { files: File[] }).files);
+          await importFiles((action.payload as { files: File[] }).files);
           break;
 
         case CompatibilityActionType.ADD_IMAGES:
-          addImages(action.payload as Image[]);
+          await addImages(action.payload as Image[]);
           break;
 
         default:

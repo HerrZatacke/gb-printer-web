@@ -92,7 +92,7 @@ export const useMigrateFrames = (): UseMigrateFrames => {
     }
 
     console.log(`will update ${updatedImages.length} with correct frame`);
-    updateImages(updatedImages);
+    await updateImages(updatedImages);
   }, [queryClient, updateImages]);
 
   return {

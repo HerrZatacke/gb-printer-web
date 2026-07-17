@@ -225,7 +225,7 @@ export const dropBoxSyncTool = (
         await saveImageFileContent(remoteFileContent);
 
         // ToDo find a way to better trigger update (if it is even necessary ??)
-        updateImages([]);
+        await updateImages([]);
         return true;
       } catch {
         return false;
