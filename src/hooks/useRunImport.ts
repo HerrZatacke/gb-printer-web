@@ -5,13 +5,13 @@ import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useActivePalette } from '@/hooks/useActivePalette';
 import { useDateFormat } from '@/hooks/useDateFormat';
+import { useImageGroups } from '@/hooks/useImageGroups';
 import { useImages } from '@/hooks/useImages';
 import { useStores } from '@/hooks/useStores';
 import {
   useEditStore,
   useFiltersStore,
   useImportsStore,
-  useItemsStore,
   useSettingsStore,
 } from '@/stores/stores';
 import { type TagChange } from '@/tools/applyTagChanges';
@@ -22,6 +22,7 @@ import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type Image } from '@/types/Image';
+import { type NewSerializableImageGroup } from '@/types/ImageGroup';
 import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
 import { Palette } from '@/types/Palette';
 import { toSlug } from './useEditImageGroup';
@@ -64,7 +65,7 @@ const useRunImport = (): UseRunImport => {
     setCreateGroup: stateSetCreateGroup,
   } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
-  const { addImageGroup } = useItemsStore();
+  const { updateImageGroup } = useImageGroups({});
   const { setImageSelection } = useFiltersStore();
   const { importQueue: rawImportQueue, importQueueSet, frameQueueAdd, importQueueCancelOne } = useImportsStore();
   const { addImages, importQueueCancel } = useStores();
@@ -143,25 +144,25 @@ const useRunImport = (): UseRunImport => {
 
       const newGroupId = randomId();
 
-      addImageGroup(
-        {
-          id: newGroupId,
-          slug,
-          title,
-          isFavourite: false,
-          created: toCreationDate(),
-          coverImage: savedImages[0].hash,
-          images: imageHashes,
-          groups: [],
-        },
-        view.id,
-      );
+      const newImageGroup: NewSerializableImageGroup = {
+        id: newGroupId,
+        slug,
+        title,
+        isFavourite: false,
+        created: toCreationDate(),
+        coverImage: savedImages[0].hash,
+        images: imageHashes,
+        groups: [],
+        tags: [],
+      };
+
+      await updateImageGroup(newImageGroup, view.id);
 
       navigateToGroup(newGroupId, 0);
     }
 
     setImageSelection(imageHashes);
-  }, [t, activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
+  }, [t, activePalette, updateImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
 
   const palette = useActivePalette();
 
