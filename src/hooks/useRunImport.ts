@@ -5,6 +5,7 @@ import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useActivePalette } from '@/hooks/useActivePalette';
 import { useDateFormat } from '@/hooks/useDateFormat';
+import { useImages } from '@/hooks/useImages';
 import { useStores } from '@/hooks/useStores';
 import {
   useEditStore,
@@ -63,7 +64,7 @@ const useRunImport = (): UseRunImport => {
     setCreateGroup: stateSetCreateGroup,
   } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
-  const { addImageGroup, images } = useItemsStore();
+  const { addImageGroup } = useItemsStore();
   const { setImageSelection } = useFiltersStore();
   const { importQueue: rawImportQueue, importQueueSet, frameQueueAdd, importQueueCancelOne } = useImportsStore();
   const { addImages, importQueueCancel } = useStores();
@@ -164,10 +165,11 @@ const useRunImport = (): UseRunImport => {
 
   const palette = useActivePalette();
 
+  const { images } = useImages({ list: true });
   const stateImages = useMemo(() => {
     return new Map<string, Image>(images.map((image) => [image.hash, image]));
   }, [images]);
-
+  //
   const importQueue = useMemo<FlaggedImportItem[]>(() => {
     const seen = new Set<string>();
 
