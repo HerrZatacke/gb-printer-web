@@ -14,10 +14,10 @@ import {
   updateFrames,
 } from '@/workers/itemsIndexedDbWorker/queries/frames';
 import {
+  deleteImageGroupsByIds,
   getImageGroupsFullTree,
   getImageGroupsList,
   updateImageGroups,
-  deleteImageGroupsByIds,
 } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
 import {
   deleteImagesByHashes,
