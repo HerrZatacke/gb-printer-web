@@ -5,6 +5,7 @@ import { SpecialTags } from '@/consts/SpecialTags';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
+import { useImageByHash } from '@/hooks/useImageByHash';
 import { usePlugins } from '@/hooks/usePlugins';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
@@ -62,7 +63,8 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
-  const { images, updateImageFavouriteTag } = useItemsStore();
+  const { updateImageFavouriteTag } = useItemsStore();
+  const { image } = useImageByHash(hash);
   const { plugins } = usePlugins({ list: true });
   const { view, covers } = useGalleryTreeContext();
   const { setEditImages } = useEditStore();
@@ -71,10 +73,6 @@ export const useGalleryImageContext = (hash: string): UseGalleryImageContext => 
   const { setDownloadImages } = useDownload();
   const { shareImage } = useShareImage();
   const { sendEvent } = useTracking();
-
-  const image = useMemo(() => (
-    images.find((img) => img.hash === hash)
-  ), [hash, images]);
 
   const isSelected = imageSelection.includes(hash);
   const hasPlugins = !!plugins.length;
