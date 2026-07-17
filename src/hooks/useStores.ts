@@ -34,13 +34,7 @@ export const useStores = (): UseStores => {
   const { updateRecentImports, updateImageSelection } = useFiltersStore();
   const { importQueueCancel } = useImportsStore();
   const { setPrinterBusy } = useInteractionsStore();
-  const {
-    addImages,
-    deleteImages,
-    setImageGroups,
-    updateImages,
-    setImages,
-  } = useItemsStore();
+  const { addImages, deleteImages, setImageGroups, updateImages, setImages } = useItemsStore();
 
   const { setSyncLastUpdate } = useStoragesStore();
   const { updatePalettes } = usePalettes({});

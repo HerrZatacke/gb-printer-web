@@ -81,12 +81,7 @@ interface InitialEditValues {
 const useEditImageGroup = (): UseEditImageGroup => {
   const { imageSelection: selection } = useFiltersStore();
   const { editImageGroup, cancelEditImageGroup } = useEditStore();
-  const {
-    addImageGroup,
-    updateImageGroup,
-    groupImagesAdd,
-    ungroupImages,
-  } = useItemsStore();
+  const { addImageGroup, updateImageGroup, groupImagesAdd, ungroupImages } = useItemsStore();
   const { imageGroups /*, updateImageGroups*/ } = useImageGroups({ list: true });
   const { navigateToGroup, navigateToImage } = useNavigationTools();
   const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
