@@ -47,7 +47,9 @@ const mergeStates = (
       frames = mergeFrames(frames, updatedState.frames);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (updatedState.images && updatedState.images.length) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       images = mergeImages(images, updatedState.images);
     }
 
@@ -57,15 +59,19 @@ const mergeStates = (
       palettes = mergePalettes(palettes, updatedState.palettes);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (updatedState.imageGroups && updatedState.imageGroups.length) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       imageGroups = mergeImageGroups(imageGroups, updatedState.imageGroups);
     }
   } else {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     frames = updatedState.frames || currentStateFrames;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     images = updatedState.images || currentStateImages;
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     palettes = updatedState.palettes || currentStatePalettes;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     imageGroups = updatedState.imageGroups || currentStateImageGroups;
   }
 

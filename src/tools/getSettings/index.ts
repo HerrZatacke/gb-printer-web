@@ -129,11 +129,13 @@ export const getSettings = async (
   let exportBinary: JSONExportBinary = {};
 
   if (
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     exportableState.images?.length &&
     imageExportTypes.includes(what)
   ) {
     exportBinary = {
       ...exportBinary,
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       ...await getImages(exportableState.images),
     };
   }

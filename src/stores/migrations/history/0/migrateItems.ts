@@ -27,10 +27,12 @@ export const migrateItems = async (persistedState: unknown): Promise<Partial<Ite
   }
 
   if (v0state.imageGroups?.length) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     result.imageGroups = v0state.imageGroups;
   }
 
   if (v0state.images?.length) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     result.images = cleanImages(v0state.images);
   }
 

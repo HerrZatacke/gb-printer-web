@@ -91,9 +91,12 @@ export const useStores = (): UseStores => {
         await updatePalettes(state.palettes);
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.images) {
         // hard replace all images -> merging happens in src/javascript/tools/mergeStates/index.ts
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         await updateImages(state.images, true);
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         updateRecentImports(state.images);
       }
 
@@ -110,8 +113,10 @@ export const useStores = (): UseStores => {
         await updateFrameGroups(state.frameGroups); // updateFrameGroups merges
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.imageGroups) {
           await updateImageGroups(
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             state.imageGroups
               // ToDo: The map function is a migration. Must be moved or removed
               .map((ig) => ({ ...ig, tags: (ig as NewSerializableImageGroup).tags || [] })),

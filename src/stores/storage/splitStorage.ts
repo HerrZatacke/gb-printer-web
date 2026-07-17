@@ -119,7 +119,9 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
     await frameGroupsStore.setData(state.frameGroups);
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     await framesStore.setData(state.frames);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     await imagesStore.setData(state.images);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     await imageGroupsStore.setData(state.imageGroups);
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     await palettesStore.setData(state.palettes);
@@ -193,7 +195,9 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
         jsonStorage.getItem(name),
       ]);
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (loadedIndexedDB?.state.images.length !== loadedJsonStorage?.state.images.length) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         console.warn(`indexedDB images: ${loadedIndexedDB?.state.images.length}\njsonStorage images: ${loadedJsonStorage?.state.images.length}`);
       }
 
