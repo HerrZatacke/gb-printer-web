@@ -11,8 +11,8 @@ import { createSplitStorage } from '@/stores/storage/splitStorage';
 import uniqueBy from '@/tools/unique/by';
 import { FrameSchema } from '@/types/Frame';
 import { FrameGroupSchema } from '@/types/FrameGroup';
-import { type Image, ImageSchema } from '@/types/Image';
-import { type SerializableImageGroup, SerializableImageGroupSchema } from '@/types/ImageGroup';
+import { ImageSchema } from '@/types/Image';
+import { SerializableImageGroupSchema } from '@/types/ImageGroup';
 import { type Palette, PaletteSchema } from '@/types/Palette';
 import { PluginSchema } from '@/types/Plugin';
 
@@ -25,7 +25,7 @@ export const ITEMS_STORE_VERSION = 1;
 // const framesSortById = sortBy<Frame>('id');
 const palettesUniqueByShortName = uniqueBy<Palette>('shortName');
 // const pluginsSortByName = sortBy<Plugin>('name');
-const imagesUniqueByHash = uniqueBy<Image>('hash');
+// const imagesUniqueByHash = uniqueBy<Image>('hash');
 
 // The order of calls is important: First run unique, so that new/updated items are relevant, then sort.
 // const sortAndUniqueById = (frames: Frame[]) => framesSortById(framesUniqueById(frames));
@@ -41,13 +41,15 @@ const ValuesSchema = z.object({
   palettes: z.array(PaletteSchema),
   /** @deprecated Use `usePlugins` instead */
   plugins: z.array(PluginSchema),
+  /** @deprecated Use `usePlugins` instead */
   images: z.array(ImageSchema),
+  /** @deprecated Use `usePlugins` instead */
   imageGroups: z.array(SerializableImageGroupSchema),
 });
 
 export type Values = z.infer<typeof ValuesSchema>;
 
-interface Actions {
+// interface Actions {
   // Frame updates
   // addFrames: (frames: Frame[]) => void;
   // deleteFrame: (id: string) => void;
@@ -65,10 +67,10 @@ interface Actions {
   // updatePluginConfig: (url: string, key: string, value: string | number) => PluginConfigValues;
 
   // Image updates
-  addImages: (images: Image[]) => void;
-  deleteImages: (hashes: string[]) => void;
-  // updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void;
-  updateImages: (images: Image[]) => void;
+  // addImages: (images: Image[]) => void;
+  // // deleteImages: (hashes: string[]) => void;
+  // // updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void;
+  // updateImages: (images: Image[]) => void;
   // updateFrames: (frames: Frame[]) => void;
 
   // ImageGroup updates
@@ -81,13 +83,13 @@ interface Actions {
   // Global Updates
   // setFrames: (frames: Frame[]) => void;
   // setFrameGroups: (frameGroups: FrameGroup[]) => void;
-  setImages: (images: Image[]) => void;
-  setImageGroups: (imageGroups: SerializableImageGroup[]) => void;
+  // setImages: (images: Image[]) => void;
+  // setImageGroups: (imageGroups: SerializableImageGroup[]) => void;
   // setPalettes: (palettes: Palette[]) => void;
   // setPlugins: (plugins: Plugin[]) => void;
-}
+// }
 
-export type ItemsState = Values & Actions;
+export type ItemsState = Values; // & Actions;
 
 // interface AddUpdatePalettes {
 //   add: Palette[];
@@ -105,7 +107,7 @@ const withPredefinedPalettes = (palettes: Palette[]): Palette[] => palettesUniqu
 export const createItemsStore = (onError: (err: Error) => void) => (
   create<ItemsState>()(
     persist(
-      (set /*, get*/) => ({
+      (/*set, get*/) => ({
         initialized: false,
         frames: [],
         palettes: [],
@@ -316,13 +318,13 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         //   })),
         // })),
 
-        addImages: (images: Image[]) => set((itemsState) => ({
-          images: imagesUniqueByHash([...itemsState.images, ...images]),
-        })),
+        // addImages: (images: Image[]) => set((itemsState) => ({
+        //   images: imagesUniqueByHash([...itemsState.images, ...images]),
+        // })),
 
-        deleteImages: (hashes: string[]) => set((itemsState) => ({
-          images: [...itemsState.images.filter(({ hash }) => !hashes.includes(hash))],
-        })),
+        // deleteImages: (hashes: string[]) => set((itemsState) => ({
+        //   images: [...itemsState.images.filter(({ hash }) => !hashes.includes(hash))],
+        // })),
 
         // updateImageFavouriteTag: (isFavourite: boolean, hash: string) => set((itemsState) => ({
         //   images: itemsState.images.map((image) => (
@@ -337,15 +339,15 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         //   )),
         // })),
 
-        updateImages: (images: Image[]) => set((itemsState) => {
-          const changedImagesMap = new Map(images.map((img) => [img.hash, img]));
-
-          return {
-            images: itemsState.images.map((stateImage) => (
-              changedImagesMap.get(stateImage.hash) || stateImage
-            )),
-          };
-        }),
+        // updateImages: (images: Image[]) => set((itemsState) => {
+        //   const changedImagesMap = new Map(images.map((img) => [img.hash, img]));
+        //
+        //   return {
+        //     images: itemsState.images.map((stateImage) => (
+        //       changedImagesMap.get(stateImage.hash) || stateImage
+        //     )),
+        //   };
+        // }),
 
         // updateFrames: (frames: Frame[]) => set((itemsState) => {
         //   console.log('updateFrames', frames);
@@ -366,13 +368,13 @@ export const createItemsStore = (onError: (err: Error) => void) => (
         //   frameGroups: frameGroupsUniqueById(frameGroups),
         // }),
 
-        setImages: (images: Image[]) => set({
-          images: imagesUniqueByHash(images),
-        }),
+        // setImages: (images: Image[]) => set({
+        //   images: imagesUniqueByHash(images),
+        // }),
 
-        setImageGroups: (imageGroups: SerializableImageGroup[]) => set({
-          imageGroups,
-        }),
+        // setImageGroups: (imageGroups: SerializableImageGroup[]) => set({
+        //   imageGroups,
+        // }),
 
         // setPalettes: (palettes: Palette[]) => set({
         //   palettes: withPredefinedPalettes(palettes),
@@ -424,7 +426,9 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           frames: state.frames,
           // eslint-disable-next-line @typescript-eslint/no-deprecated
           frameGroups: state.frameGroups,
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           imageGroups: state.imageGroups,
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           images: state.images,
           // eslint-disable-next-line @typescript-eslint/no-deprecated
           plugins: state.plugins.map((plugin) => ({
