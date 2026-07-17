@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
+import { useImageGroups } from '@/hooks/useImageGroups';
 import {
   type EditGroupInfo,
   useEditStore,
@@ -12,7 +13,6 @@ import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
 import { type PathMap } from '@/types/galleryTreeContext';
 import { type SerializableImageGroup } from '@/types/ImageGroup';
-import { useImageGroups } from '@/hooks/useImageGroups';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
