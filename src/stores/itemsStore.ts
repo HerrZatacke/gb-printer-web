@@ -67,7 +67,7 @@ interface Actions {
   // Image updates
   addImages: (images: Image[]) => void;
   deleteImages: (hashes: string[]) => void;
-  updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void;
+  // updateImageFavouriteTag: (isFavourite: boolean, hash: string) => void;
   updateImages: (images: Image[]) => void;
   // updateFrames: (frames: Frame[]) => void;
 
@@ -324,18 +324,18 @@ export const createItemsStore = (onError: (err: Error) => void) => (
           images: [...itemsState.images.filter(({ hash }) => !hashes.includes(hash))],
         })),
 
-        updateImageFavouriteTag: (isFavourite: boolean, hash: string) => set((itemsState) => ({
-          images: itemsState.images.map((image) => (
-            (image.hash === hash) ? {
-              ...image,
-              tags: unique(
-                isFavourite ?
-                  [SpecialTags.FILTER_FAVOURITE, ...image.tags] :
-                  image.tags.filter((tag) => tag !== SpecialTags.FILTER_FAVOURITE),
-              ),
-            } : image
-          )),
-        })),
+        // updateImageFavouriteTag: (isFavourite: boolean, hash: string) => set((itemsState) => ({
+        //   images: itemsState.images.map((image) => (
+        //     (image.hash === hash) ? {
+        //       ...image,
+        //       tags: unique(
+        //         isFavourite ?
+        //           [SpecialTags.FILTER_FAVOURITE, ...image.tags] :
+        //           image.tags.filter((tag) => tag !== SpecialTags.FILTER_FAVOURITE),
+        //       ),
+        //     } : image
+        //   )),
+        // })),
 
         updateImages: (images: Image[]) => set((itemsState) => {
           const changedImagesMap = new Map(images.map((img) => [img.hash, img]));

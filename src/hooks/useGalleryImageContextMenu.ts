@@ -1,11 +1,12 @@
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import { useImageByHash } from '@/hooks/useImageByHash';
+import { useImages } from '@/hooks/useImages';
 import { usePlugins } from '@/hooks/usePlugins';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
@@ -15,10 +16,10 @@ import {
   useEditStore,
   useFiltersStore,
   useInteractionsStore,
-  useItemsStore,
 } from '@/stores/stores';
 import { canShare } from '@/tools/canShare';
 import { getFilteredImages } from '@/tools/getFilteredImages';
+import unique from '@/tools/unique';
 import { type RGBNImage } from '@/types/Image';
 
 interface UseGalleryImageContextMenu {
@@ -34,7 +35,7 @@ interface UseGalleryImageContextMenu {
   showMetadata: () => void;
   updateImageToSelection: (mode: ImageSelectionMode) => void;
   setLightboxImage: () => void;
-  updateFavouriteTag: (isFavourite: boolean) => void;
+  updateFavouriteTag: (isFavourite: boolean) => Promise<void>;
   editImage: () => void;
 }
 
@@ -63,8 +64,8 @@ export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContext
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
-  const { updateImageFavouriteTag } = useItemsStore();
   const { image } = useImageByHash(hash);
+  const { updateImages } = useImages({});
   const { plugins } = usePlugins({ list: true });
   const { view, covers } = useGalleryTreeContext();
   const { setEditImages } = useEditStore();
@@ -76,6 +77,23 @@ export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContext
 
   const isSelected = imageSelection.includes(hash);
   const hasPlugins = !!plugins.length;
+
+  const updateFavouriteTag = useCallback(async (isFavourite: boolean) => {
+    if (!image) {
+      return;
+    }
+
+    const tags = isFavourite ?
+      unique([SpecialTags.FILTER_FAVOURITE, ...image.tags]) :
+      image.tags.filter((tag) => tag !== SpecialTags.FILTER_FAVOURITE);
+
+    await updateImages([{
+      ...image,
+      tags,
+    }]);
+
+    updateLastSyncLocalNow();
+  }, [image, updateImages, updateLastSyncLocalNow]);
 
   return {
     hasPlugins,
@@ -132,10 +150,7 @@ export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContext
           .findIndex((img) => hash === img.hash),
       );
     },
-    updateFavouriteTag: (isFavourite: boolean) => {
-      updateImageFavouriteTag(isFavourite, hash);
-      updateLastSyncLocalNow();
-    },
+    updateFavouriteTag,
     editImage: () => {
       setEditImages({
         tags: image?.tags || [],
