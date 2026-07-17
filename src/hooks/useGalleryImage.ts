@@ -2,7 +2,7 @@ import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useImages } from '@/hooks/useImages';
+import { useImageByHash } from '@/hooks/useImageByHash';
 import {
   type ImageSelectionMode,
   useFiltersStore,
@@ -56,7 +56,7 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     setImageSelection,
   } = useFiltersStore();
 
-  const { byHashes: [stateImage] } = useImages({ hashes: [hash] });
+  const { image: stateImage } = useImageByHash(hash);
 
   const selectionIndex = imageSelection.indexOf(hash);
 
