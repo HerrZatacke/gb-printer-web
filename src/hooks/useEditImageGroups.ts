@@ -4,13 +4,13 @@ import { longestCommonSubstring } from 'string-algorithms';
 import { DialoqQuestionType } from '@/consts/dialog';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { NEW_GROUP } from '@/hooks/useEditImageGroup';
+import { useImages } from '@/hooks/useImages';
 import {
   useDialogsStore,
   useEditStore,
   useFiltersStore,
   useItemsStore,
 } from '@/stores/stores';
-import { useImages } from '@/hooks/useImages';
 
 interface UseEditImageGroups {
   resetGroups: () => void;

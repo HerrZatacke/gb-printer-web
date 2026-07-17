@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
 import { useFrames } from '@/hooks/useFrames';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImages } from '@/hooks/useImages';
 import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
-import { useItemsStore } from '@/stores/stores';
 import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
 import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
@@ -13,8 +14,6 @@ import { type Frame } from '@/types/Frame';
 import { Image } from '@/types/Image';
 import { SerializableImageGroup } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
-import { useImages } from '@/hooks/useImages';
-import { useImageGroups } from '@/hooks/useImageGroups';
 
 const mergeSettings = async (
   settings: JSONExport,
