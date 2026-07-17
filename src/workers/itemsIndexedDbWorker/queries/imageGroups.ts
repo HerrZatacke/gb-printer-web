@@ -84,7 +84,12 @@ export const updateImageGroups = async (imageGroups: NewSerializableImageGroup[]
   }
 };
 
-export const deleteImageGroupsByIds = async (): Promise<void> => {
-  console.warn(self.constructor.name, 'Not implemented');
-  return undefined;
+export const deleteImageGroupsByIds = async (ids: string[]): Promise<void> => {
+  const db = await getDb();
+
+  const tx = db.transaction('imagegroups', 'readwrite');
+  const store = tx.store;
+
+  await Promise.all(ids.map((id) => store.delete(id)));
+  await tx.done;
 };
