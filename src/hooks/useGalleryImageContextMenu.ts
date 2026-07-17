@@ -21,7 +21,7 @@ import { canShare } from '@/tools/canShare';
 import { getFilteredImages } from '@/tools/getFilteredImages';
 import { type RGBNImage } from '@/types/Image';
 
-interface UseGalleryImageContext {
+interface UseGalleryImageContextMenu {
   isSelected: boolean;
   canShare: boolean;
   hasPlugins: boolean;
@@ -50,7 +50,7 @@ export const ButtonOption = {
 } as const;
 export type ButtonOption = (typeof ButtonOption)[keyof typeof ButtonOption];
 
-export const useGalleryImageContext = (hash: string): UseGalleryImageContext => {
+export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContextMenu => {
   const t = useTranslations('useGalleryImageContext');
   const {
     imageSelection,

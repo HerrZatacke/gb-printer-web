@@ -17,7 +17,7 @@ import { type ComponentType, type MouseEventHandler, useMemo, useState } from 'r
 import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
 import PluginSelect from '@/components/PluginSelect';
 import { useEditImageGroups } from '@/hooks/useEditImageGroups';
-import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
+import { useGalleryImageContextMenu } from '@/hooks/useGalleryImageContextMenu';
 import { useSuperPrinterInterface } from '@/hooks/useSuperPrinterInterface';
 import { ImageSelectionMode, useInteractionsStore } from '@/stores/stores';
 
@@ -54,7 +54,7 @@ function GalleryImageContextMenu({ hash, menuAnchor, onClose }: Props) {
     updateImageToSelection,
     updateFavouriteTag,
     editImage,
-  } = useGalleryImageContext(hash);
+  } = useGalleryImageContextMenu(hash);
 
   const {
     canPrint,

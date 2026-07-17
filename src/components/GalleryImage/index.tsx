@@ -9,7 +9,7 @@ import TagsList from '@/components/TagsList';
 import { GalleryClickAction } from '@/consts/GalleryClickAction';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
-import { useGalleryImageContext } from '@/hooks/useGalleryImageContext';
+import { useGalleryImageContextMenu } from '@/hooks/useGalleryImageContextMenu';
 import { ImageSelectionMode, useSettingsStore } from '@/stores/stores';
 import { type RGBNHashes } from '@/types/Image';
 
@@ -31,7 +31,7 @@ function GalleryImage({ page, hash }: Props) {
   const {
     setLightboxImage,
     editImage,
-  } = useGalleryImageContext(hash);
+  } = useGalleryImageContextMenu(hash);
 
   const { formatterGallery } = useDateFormat();
 
