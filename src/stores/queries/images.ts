@@ -1,6 +1,7 @@
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
+import { STALE_TIME } from '@/stores/queries/consts';
 import { Image } from '@/types/Image';
 import { type GetImagesParams, type ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
 
@@ -59,7 +60,7 @@ export const imagesListQueryOptions = () => {
       warmImageCache(result.items);
       return result;
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
 
@@ -70,7 +71,7 @@ export const imagesAllTagsQueryOptions = () => {
       const source = await getItemsSource();
       return source.getAllTags();
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
 
@@ -96,14 +97,14 @@ export const imagesByHashesQueryOptions = (hashes: string[]) => {
           .filter((image): image is Image => Boolean(image)),
       };
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
 
 export const imageByHashQueryOptions = (hash: string) => ({
   queryKey: imagesKeys.byHash(hash), // mostly populated by imagesByHashes
   queryFn: async () => imagesByHashesBatchedLoader.loadByKey(hash),
-  staleTime: 30000,
+  staleTime: STALE_TIME,
 });
 
 export const imagesByAnyHashesQueryOptions = (hashes: string[]) => {
@@ -118,7 +119,7 @@ export const imagesByAnyHashesQueryOptions = (hashes: string[]) => {
       const items = results.filter((f): f is ItemsReferenceList<Image> => Boolean(f));
       return { items };
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
 
@@ -132,6 +133,6 @@ export const imagesRawQueryOptions = (raw: GetImagesParams) => {
       warmImageCache(result.items);
       return result;
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };

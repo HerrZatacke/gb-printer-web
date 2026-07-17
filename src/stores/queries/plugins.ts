@@ -1,4 +1,5 @@
 import { getItemsSource } from '@/items/client';
+import { STALE_TIME } from '@/stores/queries/consts';
 
 const baseKeys = ['items', 'plugins'] as const;
 
@@ -15,7 +16,7 @@ export const pluginsListQueryOptions = () => {
       const source = await getItemsSource();
       return source.getPlugins();
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
 
@@ -27,6 +28,6 @@ export const pluginsByUrlsQueryOptions = (urls: string[]) => {
       const source = await getItemsSource();
       return source.getPluginsByUrls(urls || []);
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };

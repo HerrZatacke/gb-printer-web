@@ -1,4 +1,5 @@
 import { getItemsSource } from '@/items/client';
+import { STALE_TIME } from '@/stores/queries/consts';
 
 const baseKeys = ['items', 'framegroups'] as const;
 
@@ -14,6 +15,6 @@ export const frameGroupsListQueryOptions = () => {
       const source = await getItemsSource();
       return source.getFrameGroups();
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };

@@ -18,9 +18,10 @@ function LocalDebug() {
   }
 
   return (
-    <Paper>
+    <Paper sx={(theme) => ({ padding: theme.spacing(2) })}>
       <Stack
         direction="column"
+        gap={2}
       >
         <Alert severity="warning" variant="filled">
           Debug Stuff

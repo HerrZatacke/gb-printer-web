@@ -1,5 +1,6 @@
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
+import { STALE_TIME } from '@/stores/queries/consts';
 import { Frame } from '@/types/Frame';
 
 const baseKeys = ['items', 'frames'] as const;
@@ -18,7 +19,7 @@ export const framesListQueryOptions = () => {
       const source = await getItemsSource();
       return source.getFrames();
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
 
@@ -52,7 +53,7 @@ export const framesByHashesQueryOptions = (hashes: string[]) => {
       const items = results.filter((f): f is Frame => Boolean(f));
       return { items };
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
 
@@ -68,6 +69,6 @@ export const framesByIdsQueryOptions = (ids: string[]) => {
       const items = results.filter((f): f is Frame => Boolean(f));
       return { items };
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };

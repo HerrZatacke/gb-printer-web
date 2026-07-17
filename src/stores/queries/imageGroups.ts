@@ -1,4 +1,5 @@
 import { getItemsSource } from '@/items/client';
+import { STALE_TIME } from '@/stores/queries/consts';
 import { type NewTreeImageGroup } from '@/types/ImageGroup';
 
 const baseKeys = ['items', 'imagegroups'] as const;
@@ -35,7 +36,7 @@ export const imageGroupsFullTreeQueryOptions = () => {
       const source = await getItemsSource();
       return source.getImageGroupsFullTree();
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
 
@@ -46,6 +47,6 @@ export const imageGroupsListQueryOptions = () => {
       const source = await getItemsSource();
       return source.getImageGroupsList();
     },
-    staleTime: 30000,
+    staleTime: STALE_TIME,
   };
 };
