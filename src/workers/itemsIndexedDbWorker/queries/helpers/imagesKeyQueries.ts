@@ -1,7 +1,8 @@
 import { type IDBPDatabase } from 'idb';
-import { Image } from '@/types/Image';
 import {
   type FilterStep,
+  type ItemsDB,
+  type StoredImage,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 export const resolveIndexNone = async (
@@ -15,7 +16,7 @@ export const resolveIndexNone = async (
 };
 
 export const getCandidates = async (
-  db: IDBPDatabase,
+  db: IDBPDatabase<ItemsDB>,
   candidateIds: Set<string> | null,
 ) => {
   const { store } = db.transaction('images');
@@ -30,7 +31,7 @@ export const getCandidates = async (
         }
       }),
     );
-    return items.filter((i): i is Image => Boolean(i));
+    return items.filter((i): i is StoredImage => Boolean(i));
   } else {
     // only predicate filters present (or none) — full scan unavoidable
     return await store.getAll();

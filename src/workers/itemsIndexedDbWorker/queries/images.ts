@@ -71,13 +71,13 @@ export const getImages = async (params: GetImagesParams): Promise<ItemsSourceRes
     candidateIds = candidateIds ? intersectAll([candidateIds, ids!]) as Set<string> : ids;
   }
 
-  let images = await getCandidates(db as IDBPDatabase, candidateIds);
+  let images = await getCandidates(db, candidateIds);
 
   for (const step of predicateSteps) {
     images = images.filter(step.test);
   }
 
-  const sortByFieldName = sortBy<Image>(sort.field);
+  const sortByFieldName = sortBy<Image>(sort.field, sort.direction);
 
   const sortedItems = sortByFieldName(images);
 
