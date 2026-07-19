@@ -3,7 +3,7 @@ import { SyncDirection } from '@/consts/sync';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { type UseStores } from '@/hooks/useStores';
 import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imagesListQueryOptions } from '@/stores/queries/images';
+import { imagesRawQueryOptions } from '@/stores/queries/images';
 import {
   LogType,
   useFiltersStore,
@@ -14,7 +14,6 @@ import {
 } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { prepareFiles, type PrepareFilesOptions } from '@/tools/download';
-import { getFilteredImages } from '@/tools/getFilteredImages';
 import getUploadFiles from '@/tools/getUploadFiles';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import parseAuthParams from '@/tools/parseAuthParams';
@@ -24,8 +23,8 @@ import { saveLocalStorageItems, saveImageFileContent } from '@/tools/saveLocalSt
 import { DownloadArrayBuffer } from '@/types/download';
 import { type RepoContents } from '@/types/Export';
 import { type JSONExportState } from '@/types/ExportState';
-import { type Image } from '@/types/Image';
 import { type AddToQueueFn, type DBFolderFile, type DownloadInfo, type DropBoxSettings, type UploadFile } from '@/types/Sync';
+import  { type ImageSortField, type SortDirection } from '@/workers/itemsIndexedDbWorker/types';
 import { loadFrameData } from '../applyFrame/frameData';
 import DropboxClient from './DropboxClient';
 import { hasher } from './DropboxClient/dropboxContentHasher';
@@ -129,11 +128,26 @@ export const dropBoxSyncTool = (
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { items: stateImages } = await queryClient.fetchQuery(imagesListQueryOptions());
-
+    // const { items: stateImages } = await queryClient.fetchQuery(imagesListQueryOptions());
+    const { filtersTags, filtersPalettes, filtersFrames, sortBy } = useFiltersStore.getState();
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
-    const filtersState = useFiltersStore.getState();
-    const images: Image[] = getFilteredImages({ images: stateImages, groups: [] }, filtersState);
+
+    const [sortField, direction] = sortBy.split('_');
+
+    const { items: images } = await queryClient.fetchQuery(imagesRawQueryOptions({
+      page: 0,
+      pageSize: 10000, // ToDo. Temporary limit. Never do this in the api.
+      filters: {
+        tags: filtersTags,
+        palette: filtersPalettes,
+        frame: filtersFrames,
+      },
+      sort: {
+        field: sortField as ImageSortField,
+        direction: direction as SortDirection,
+      },
+    }));
+
     const prepareFilesOptions: PrepareFilesOptions ={
       exportScaleFactors,
       exportFileTypes,
