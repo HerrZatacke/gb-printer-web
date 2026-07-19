@@ -110,6 +110,7 @@ export interface ItemsSourcePaging {
   total: number;
   page: number;
   pageSize: number;
+  maxPageIndex: number;
 }
 
 export interface ItemsSourceResponse<T> {

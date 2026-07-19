@@ -28,6 +28,7 @@ export const getAddPaging = <T>(
       total,
       pageSize,
       page,
+      maxPageIndex: Math.max(0, Math.ceil(sortedItems.length / pageSize) - 1),
     },
     duration: performance.now() - startTime,
   };
