@@ -5,7 +5,7 @@ import {
   type NewTreeImageGroup,
   type TreeImageGroup,
 } from '@/types/ImageGroup';
-import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface CalculateRootWorkerParams {
   imageGroups: SerializableImageGroup[];
