@@ -15,6 +15,16 @@ import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 function Gallery() {
   const { images, paging, covers, isWorking } = useGalleryTreeContext();
 
+  // ToDo: Navigation Effects
+  // if (
+  //   byGroupPaging &&
+  //   !isLoadingByGroupId &&
+  //   maxPageIndex > 0 &&
+  //   byGroupPaging.page !== currentPageIndex
+  // ) {
+  //   redirect(getUrl({ currentPageIndex: page }));
+  // }
+
   const totalImageCount = paging?.total || 0;
   const filteredCount = paging?.filtered || 0;
   const page = paging?.page || 0;

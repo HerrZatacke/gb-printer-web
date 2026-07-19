@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { PathMap } from '@/types/galleryTreeContext';
@@ -16,6 +16,7 @@ export interface UsePathSegments {
 export const usePathSegments = (): UsePathSegments => {
   const { path: currentPath, getUrl, root, paths, isInitialized } = useGalleryTreeContext();
   const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
+  const { getImagePageIndexInGroup } = useNavigationTools();
 
   const breadCrumbSlugs = useMemo(() => {
     const breadCrumbsRaw = ['', ...currentPath.split('/').filter(Boolean)];
@@ -58,16 +59,14 @@ export const usePathSegments = (): UsePathSegments => {
     return breadCrumbSegments;
   }, [breadCrumbSlugs, root, paths, getUrl, getImagePageIndexInGroup]);
 
-
-  useEffect(() => {
-    if (!isInitialized) { return; }
-
-    // if url path does not match breadcrumb, navigate to the best possible path instead
-    if (breadCrumbSlugs.length !== segments.length) {
-      const validGroupId = segments[segments.length - 1].group.id;
-      navigateToGroup(validGroupId, 0);
-    }
-  }, [breadCrumbSlugs.length, isInitialized, navigateToGroup, segments]);
+  // ToDo: Navigation Effects
+  // useEffect(() => {
+  //   // if url path does not match breadcrumb, navigate to the best possible path instead
+  //   if (breadCrumbSlugs.length !== segments.length) {
+  //     const validGroupId = segments[segments.length - 1].group.id;
+  //     navigateToGroup(validGroupId, 0);
+  //   }
+  // }, [breadCrumbSlugs.length, isInitialized, navigateToGroup, segments]);
 
   return {
     segments,
