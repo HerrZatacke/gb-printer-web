@@ -32,7 +32,6 @@ function Gallery() {
       <StorageWarning />
       <GalleryNumbers
         imageCount={totalImageCount}
-        selectedCount={selectedCount}
         filteredCount={filteredCount}
       />
       <FolderBreadcrumb />
