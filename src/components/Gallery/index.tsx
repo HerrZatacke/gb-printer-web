@@ -10,19 +10,15 @@ import GalleryImage from '@/components/GalleryImage';
 import GalleryNumbers from '@/components/GalleryNumbers';
 import Pagination from '@/components/Pagination';
 import StorageWarning from '@/components/StorageWarning';
-import { useGallery } from '@/hooks/useGallery';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 
 function Gallery() {
-  const {
-    totalImageCount,
-    selectedCount,
-    filteredCount,
-    page,
-    maxPageIndex,
-    images,
-    covers,
-    isWorking,
-  } = useGallery();
+  const { images, paging, covers, isWorking } = useGalleryTreeContext();
+
+  const totalImageCount = paging?.total || 0;
+  const filteredCount = paging?.filtered || 0;
+  const page = paging?.page || 0;
+  const maxPageIndex = paging?.maxPageIndex || 0;
 
   return (
     <Stack
