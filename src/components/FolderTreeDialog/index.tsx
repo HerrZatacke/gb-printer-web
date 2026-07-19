@@ -9,12 +9,13 @@ import Lightbox from '@/components/Lightbox';
 import WrappedNextLink from '@/components/WrappedNextLink';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
+import { useImageGroups } from '@/hooks/useImageGroups';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';
-import { type TreeImageGroup } from '@/types/ImageGroup';
+import { type NewTreeImageGroup } from '@/types/ImageGroup';
 
 interface FolderTreeItemProps {
-  group: TreeImageGroup;
+  group: NewTreeImageGroup;
   onClick: () => void;
 }
 
@@ -65,9 +66,10 @@ interface FolderTreeDialogProps {
 
 function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
   const t = useTranslations('FolderTreeDialog');
-  const { pathsOptions, root } = useGalleryTreeContext();
+  const { pathsOptions } = useGalleryTreeContext();
   const { currentGroup } = useNavigationTools();
   const theme = useTheme();
+  const { imageGroupTree } = useImageGroups({ tree: true });
   const { segments } = usePathSegments();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
@@ -82,7 +84,7 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
     return () => window.clearTimeout(handle);
   }, [segments]);
 
-  if (pathsOptions.length < 2) {
+  if (!imageGroupTree || pathsOptions.length < 2) {
     return null;
   }
 
@@ -99,13 +101,13 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
         expansionTrigger="iconContainer"
         expandedItems={expandedItems}
         onExpandedItemsChange={(_, items) => setExpandedItems(items)}
-        selectedItems={currentGroup.id}
+        selectedItems={currentGroup?.id}
         sx={{
           width: theme.breakpoints.values.sm,
           height: '60vh',
         }}
       >
-        <FolderTreeItem group={root} onClick={onClose} />
+        <FolderTreeItem group={imageGroupTree} onClick={onClose} />
       </SimpleTreeView>
     </Lightbox>
   );
