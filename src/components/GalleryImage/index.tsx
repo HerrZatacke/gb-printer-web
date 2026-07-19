@@ -17,10 +17,9 @@ dayjs.extend(customParseFormat);
 
 interface Props {
   hash: string;
-  page: number;
 }
 
-function GalleryImage({ page, hash }: Props) {
+function GalleryImage({ hash }: Props) {
   const { enableDebug, galleryClickAction } = useSettingsStore();
 
   const {
@@ -45,19 +44,18 @@ function GalleryImage({ page, hash }: Props) {
     .join('\n')
   ), [galleryImageData, hash]);
 
-  const updateSelection = useCallback((shift: boolean) => {
-    updateImageSelection(
+  const updateSelection = useCallback(async (shift: boolean) => {
+    await updateImageSelection(
       galleryImageData?.selectionIndex !== -1 ? ImageSelectionMode.REMOVE : ImageSelectionMode.ADD,
       shift,
-      page,
     );
-  }, [galleryImageData, page, updateImageSelection]);
+  }, [galleryImageData, updateImageSelection]);
 
-  const handleCellClick = useCallback((ev: React.MouseEvent) => {
+  const handleCellClick = useCallback(async (ev: React.MouseEvent) => {
     ev.preventDefault();
 
     if (ev.ctrlKey || ev.shiftKey) {
-      updateSelection(ev.shiftKey);
+      await updateSelection(ev.shiftKey);
       return;
     }
 
@@ -74,7 +72,7 @@ function GalleryImage({ page, hash }: Props) {
 
       case GalleryClickAction.SELECT:
       default: {
-        updateSelection(ev.shiftKey);
+        await updateSelection(ev.shiftKey);
         break;
       }
     }

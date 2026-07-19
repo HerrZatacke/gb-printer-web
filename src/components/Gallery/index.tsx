@@ -55,7 +55,6 @@ function Gallery() {
             <GalleryImage
               key={image.hash}
               hash={image.hash}
-              page={page}
             />
           )
         )) }
