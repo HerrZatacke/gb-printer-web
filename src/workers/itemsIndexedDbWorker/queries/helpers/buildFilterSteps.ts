@@ -4,11 +4,11 @@ import { toCreationDate } from '@/tools/toCreationDate';
 import { Image } from '@/types/Image';
 import {
   type FilterStep,
-  type GetImagesFilters,
+  type ImageQueryFilters,
   type ItemsHostApi,
 } from '@/workers/itemsIndexedDbWorker/types';
 
-export const buildFilterSteps = async (filters: GetImagesFilters, hostApi: ItemsHostApi): Promise<FilterStep[]> => {
+export const buildFilterSteps = async (filters: ImageQueryFilters, hostApi: ItemsHostApi): Promise<FilterStep[]> => {
   const { tags, palette, frame } = filters;
   const steps: FilterStep[] = [];
 

@@ -1,15 +1,20 @@
-import { type IDBPDatabase } from 'idb';
 import z from 'zod';
+import { ROOT_ID } from '@/tools/createTreeRoot';
 import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
 import { type Image, ImageSchema } from '@/types/Image';
-import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
-import { buildFilterSteps } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildFilterSteps';
-import { getAddPaging, intersectAll } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { getCandidates, resolveKeyableStep } from '@/workers/itemsIndexedDbWorker/queries/helpers/imagesKeyQueries';
 import {
-  type FilterStep,
-  type GetImagesParams,
+  type NewSerializableImageGroup,
+  type NewTreeImageGroup,
+} from '@/types/ImageGroup';
+import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
+import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
+import { getImageGroupsFullTree } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
+import {
+  type ImageQueryParams,
+  type GroupItem,
+  GroupItemSchema,
   ItemsReferenceListSchema,
   type ItemsReferenceList,
   type ItemsSourceResponse,
@@ -19,7 +24,7 @@ import {
 
 const uniqueByHash = uniqueBy<Image>('hash');
 
-export const getImages = async (params: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
+export const getImages = async (queryParams: ImageQueryParams): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -32,7 +37,7 @@ export const getImages = async (params: GetImagesParams): Promise<ItemsSourceRes
     pageSize,
     sort,
     filters,
-  } = params;
+  } = queryParams;
 
   const addPaging = getAddPaging<Image>(total, page, pageSize, start, ImageSchema);
 
@@ -60,28 +65,81 @@ export const getImages = async (params: GetImagesParams): Promise<ItemsSourceRes
     return addPaging(images);
   }
 
-  const steps: FilterStep[] = await buildFilterSteps(filters, hostApi);
-
-  const predicateSteps = steps.filter((s): s is Extract<FilterStep, { kind: 'predicate' }> => s.kind === 'predicate');
-
-  let candidateIds: Set<string> | null = null;
-  for (const step of steps) {
-    if (step.kind === 'predicate') continue;
-    const ids = await resolveKeyableStep(db as IDBPDatabase, step);
-    candidateIds = candidateIds ? intersectAll([candidateIds, ids!]) as Set<string> : ids;
-  }
-
-  let images = await getCandidates(db, candidateIds);
-
-  for (const step of predicateSteps) {
-    images = images.filter(step.test);
-  }
+  const images = await resolveAndFilterImages(db, hostApi, filters);
 
   const sortByFieldName = sortBy<Image>(sort.field, sort.direction);
 
   const sortedItems = sortByFieldName(images);
 
   return addPaging(sortedItems);
+};
+
+export const getGroupItemsByGroupId = async (groupId: string, queryParams: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>> => {
+  const db = await getDb();
+  const start = performance.now();
+
+  const hostApi = await getHostApi();
+
+  const {
+    page,
+    pageSize,
+    sort,
+    filters,
+  } = queryParams;
+
+  let rootGroup: NewTreeImageGroup | undefined;
+  let imageHashes: string[];
+  let groupIds: string[];
+
+  if (!groupId || groupId === ROOT_ID) {
+    // getImageGroupsFullTree must be called before creating stores
+    rootGroup = (await getImageGroupsFullTree()).item;
+  }
+
+  const { store: groupsStore } = db.transaction('imagegroups');
+  const imageGroup: NewSerializableImageGroup | undefined = await groupsStore.get(groupId);
+
+  if (imageGroup) {
+    imageHashes = imageGroup.images;
+    groupIds = imageGroup.groups;
+  } else if (rootGroup) {
+    imageHashes = rootGroup.images;
+    groupIds = rootGroup.groups.map((g: NewTreeImageGroup) => g.id);
+  } else {
+    throw new Error(`could not find imagegroup ${groupId}`);
+  }
+
+  const groups = (await Promise.all(
+    groupIds.map(id => groupsStore.get(id)),
+  )).filter((g): g is NewSerializableImageGroup => Boolean(g));
+
+  const coverImageHashes = groups.map((g) => g.coverImage);
+
+  const { store: imagesStore } = db.transaction('images');
+  const total = await imagesStore.count();
+
+  const images = await resolveAndFilterImages(db, hostApi, filters, new Set([...imageHashes, ...coverImageHashes]));
+
+  const groupItems = images.map((image) => {
+    const group = groups.find((g) => g.coverImage === image.hash) || null;
+    return {
+      image,
+      group,
+      title: group?.title || image.title,
+      // created: image.created,
+      created: group?.created || image.created,
+      frame: image.frame || null,
+      palette: typeof image.palette === 'string' ? image.palette : null,
+    };
+  });
+
+  const sortByFieldName = sortBy<GroupItem>(sort.field, sort.direction);
+
+  const sortedGroupItems = sortByFieldName(groupItems);
+
+  const addPaging = getAddPaging<GroupItem>(total, page, pageSize, start, GroupItemSchema);
+
+  return addPaging(sortedGroupItems);
 };
 
 export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceResponse<Image>> => {

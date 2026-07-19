@@ -3,9 +3,15 @@ import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
-import { type Image, MonochromeImageSchema, RGBNImageSchema } from '@/types/Image';
+import {
+  type Image,
+  ImageSchema,
+  MonochromeImageSchema,
+  RGBNImageSchema,
+} from '@/types/Image';
 import {
   type NewSerializableImageGroup,
+  NewSerializableImageGroupSchema,
   type NewTreeImageGroup,
 } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
@@ -71,8 +77,8 @@ export interface ItemsDB extends DBSchema {
   };
 }
 
-type SortDirection = 'asc' | 'desc';
-type ImageSortField = 'created' | 'frame' | 'palette' | 'title';
+export type SortDirection = 'asc' | 'desc';
+export type ImageSortField = 'created' | 'frame' | 'palette' | 'title';
 
 export interface ItemsHostApi {
   getLegacyStorage(): Promise<Record<string, unknown[]>>;
@@ -87,23 +93,34 @@ export type MigrationFn = (
   tx: IDBPTransaction<ItemsDB, StoreNames<ItemsDB>[], 'versionchange'>,
 ) => AfterUpgradeFn | null;
 
-export interface GetImagesFilters {
+export interface ImageQueryFilters {
   tags?: (string | SpecialTags)[];
   palette?: string[];
   frame?: string[];
 }
 
-export interface GetImagesSort {
+export interface ImageQuerySort {
   field: ImageSortField;
   direction: SortDirection;
 }
 
-export interface GetImagesParams {
+export interface ImageQueryParams {
   page: number;
   pageSize: number;
-  filters?: GetImagesFilters;
-  sort: GetImagesSort;
+  filters?: ImageQueryFilters;
+  sort: ImageQuerySort;
 }
+
+export const GroupItemSchema = z.object({
+  image: ImageSchema,
+  group: NewSerializableImageGroupSchema.nullable(),
+  title: z.string(),
+  created: z.string(),
+  frame: z.string().nullable(),
+  palette: z.string().nullable(),
+});
+
+export type GroupItem = z.infer<typeof GroupItemSchema>;
 
 export interface ItemsSourcePaging {
   filtered: number;
@@ -143,7 +160,8 @@ export interface ItemsSource {
   getImageDataByHashes(hashes: string[]): Promise<string[]>;
 
   getAllTags(): Promise<ItemsSourceResponse<string>>;
-  getImages(params: GetImagesParams): Promise<ItemsSourceResponse<Image>>;
+  getGroupItemsByGroupId(groupId: string, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;
+  getImages(params: ImageQueryParams): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Image>>;
   getImagesByAnyHashes(hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;
   updateImages(images: Image[], purge: boolean): Promise<void>;

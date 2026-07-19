@@ -1,5 +1,5 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { getItemsSource } from '@/items/client';
 import {
   imagesAllTagsQueryOptions,
@@ -8,28 +8,37 @@ import {
   imagesKeys,
   imagesListQueryOptions,
   imagesRawQueryOptions,
+  groupItemsIdQueryOptions,
 } from '@/stores/queries/images';
+import { useFiltersStore, useSettingsStore } from '@/stores/stores';
 import { type Image } from '@/types/Image';
-import { type GetImagesParams, ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
 import {
   type ImageQueryParams,
-  type GetImagesParams,
+  type GroupItem,
   type ItemsReferenceList,
+  type ImageSortField,
+  type SortDirection,
   type ItemsSourcePaging,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UseImagesOptions {
+  page?: number;
   list?: boolean;
   allTags?: boolean;
+  groupId?: string;
   hashes?: string[];
   anyHashes?: string[];
-  raw?: GetImagesParams;
+  raw?: ImageQueryParams;
+  keepPreviousData?: boolean;
 }
 
 export interface UseImages {
   images: Image[];
   paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
+  byGroupId: GroupItem[];
+  byGroupPaging: ItemsSourcePaging | null;
+  isLoadingByGroupId: boolean;
   allTags: string[];
   isLoadingAllTags: boolean;
   byHashes: Image[];
@@ -42,34 +51,78 @@ export interface UseImages {
   deleteImagesByHashes: (hashes: string[]) => Promise<void>;
 }
 
-export const useImages = ({ list, allTags, hashes, anyHashes , raw }: UseImagesOptions): UseImages => {
+export const useImages = ({
+  page,
+  list,
+  groupId,
+  allTags,
+  hashes,
+  anyHashes,
+  raw,
+  keepPreviousData: shouldKeepPreviousData = true,
+}: UseImagesOptions): UseImages => {
   const queryClient = useQueryClient();
+  const { pageSize } = useSettingsStore();
+
+  const placeholderData = shouldKeepPreviousData ? keepPreviousData : undefined;
+
+  const {
+    filtersTags,
+    filtersPalettes,
+    filtersFrames,
+    sortBy,
+  } = useFiltersStore();
+
+
+  const imageQueryParams = useMemo<ImageQueryParams>(() => {
+    const [sortField, direction] = sortBy.split('_');
+    return {
+      page: page || 0,
+      pageSize,
+      filters: {
+        tags: filtersTags,
+        palette: filtersPalettes,
+        frame: filtersFrames,
+      },
+      sort: {
+        field: sortField as ImageSortField,
+        direction: direction as SortDirection,
+      },
+    };
+  }, [filtersFrames, filtersPalettes, filtersTags, page, pageSize, sortBy]);
 
   const listQuery = useQuery({
     ...imagesListQueryOptions(),
     enabled: Boolean(list),
-    placeholderData: keepPreviousData,
+    placeholderData,
+    retry: false,
+  });
+
+  const byGroupIdQuery = useQuery({
+    ...groupItemsIdQueryOptions(groupId || '', imageQueryParams),
+    enabled: Boolean(typeof groupId === 'string'),
+    placeholderData,
     retry: false,
   });
 
   const allTagsQuery = useQuery({
     ...imagesAllTagsQueryOptions(),
     enabled: Boolean(allTags),
-    placeholderData: keepPreviousData,
+    placeholderData,
     retry: false,
   });
 
   const byHashesQuery = useQuery({
     ...imagesByHashesQueryOptions(hashes || []),
     enabled: Boolean(hashes?.length),
-    placeholderData: keepPreviousData,
+    placeholderData,
     retry: false,
   });
 
   const byAnyHashesQuery = useQuery({
     ...imagesByAnyHashesQueryOptions(anyHashes || []),
     enabled: Boolean(anyHashes?.length),
-    placeholderData: keepPreviousData,
+    placeholderData,
     retry: false,
   });
 
@@ -79,7 +132,7 @@ export const useImages = ({ list, allTags, hashes, anyHashes , raw }: UseImagesO
       { page: 0, pageSize: 1, sort: { field: 'created', direction: 'asc' } }, // dummy query
     ),
     enabled: Boolean(raw),
-    placeholderData: keepPreviousData,
+    placeholderData,
     retry: false,
   });
 
@@ -99,6 +152,10 @@ export const useImages = ({ list, allTags, hashes, anyHashes , raw }: UseImagesO
     images: listQuery.data?.items ?? [],
     paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
+
+    byGroupId: byGroupIdQuery.data?.items ?? [],
+    byGroupPaging: byGroupIdQuery.data?.paging || null,
+    isLoadingByGroupId: byGroupIdQuery.isLoading,
 
     allTags: allTagsQuery.data?.items ?? [],
     isLoadingAllTags: allTagsQuery.isLoading,

@@ -3,18 +3,19 @@ import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { Image } from '@/types/Image';
-import { type GetImagesParams, type ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
+import { type ImageQueryParams, type ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
 
 const baseKeys = ['items', 'images'] as const;
 
 export const imagesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
+  byGroupId: (groupId: string, params: ImageQueryParams) => [...baseKeys, 'byGroupId', groupId, params] as const,
   allTags: [...baseKeys, 'allTags'] as const,
   byHash: (hash: string) => [...baseKeys, 'byHash', hash] as const,
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
   byAnyHashes: (hashes: string[]) => [...baseKeys, 'byAnyHashes', [...hashes].sort()] as const,
-  raw: (raw: GetImagesParams) => [...baseKeys, 'raw', raw] as const,
+  raw: (raw: ImageQueryParams) => [...baseKeys, 'raw', raw] as const,
 };
 
 const warmImageCache = (images: Image[]) => {
@@ -58,6 +59,18 @@ export const imagesListQueryOptions = () => {
       });
 
       warmImageCache(result.items);
+      return result;
+    },
+    staleTime: STALE_TIME,
+  };
+};
+
+export const groupItemsIdQueryOptions = (groupId: string, params: ImageQueryParams) => {
+  return {
+    queryKey: imagesKeys.byGroupId(groupId, params),
+    queryFn: async () => {
+      const source = await getItemsSource();
+      const result = await source.getGroupItemsByGroupId(groupId, params);
       return result;
     },
     staleTime: STALE_TIME,
@@ -123,7 +136,7 @@ export const imagesByAnyHashesQueryOptions = (hashes: string[]) => {
   };
 };
 
-export const imagesRawQueryOptions = (raw: GetImagesParams) => {
+export const imagesRawQueryOptions = (raw: ImageQueryParams) => {
   return {
     queryKey: imagesKeys.raw(raw),
     queryFn: async () => {

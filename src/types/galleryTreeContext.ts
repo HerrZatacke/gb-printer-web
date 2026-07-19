@@ -1,6 +1,11 @@
 import { DialogOption } from '@/types/Dialog';
 import { type Image } from '@/types/Image';
-import { SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
+import {
+  type SerializableImageGroup,
+  type NewTreeImageGroup,
+  type TreeImageGroup,
+} from '@/types/ImageGroup';
+import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface CalculateRootWorkerParams {
   imageGroups: SerializableImageGroup[];
@@ -16,7 +21,7 @@ export interface CalculateRootWorkerResult {
 
 export interface PathMap {
   absolutePath: string;
-  group: TreeImageGroup;
+  group: NewTreeImageGroup;
 }
 
 export interface GetUrlParams {
@@ -25,15 +30,13 @@ export interface GetUrlParams {
 }
 
 export interface GalleryTreeContextType {
-  root: TreeImageGroup; // always the root element
-  view: TreeImageGroup; // 'view' contains images and coverImages (=groups)
-  images: Image[]; // 'images' contains only actual images (without covers/groups)
+  view: NewTreeImageGroup | null; // 'view' contains images and coverImages (=groups)
+  images: Image[];
   covers: string[];
   paths: PathMap[];
   pathsOptions: DialogOption[];
   isWorking: boolean;
-  isInitialized: boolean;
-  pageIndex: number;
+  paging: ItemsSourcePaging | null;
   path: string;
   lastGalleryLink: string;
   getUrl: (params: GetUrlParams) => string;
