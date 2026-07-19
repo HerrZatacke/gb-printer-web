@@ -4,6 +4,7 @@ import { blend } from '@mui/system';
 import { type Theme } from '@mui/system';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import Debug from '@/components/Debug';
 import GalleryGridItem from '@/components/GalleryGridItem';
 import GalleryGroupContextMenu from '@/components/GalleryGroupContextMenu';
 import ImageRender from '@/components/ImageRender';
@@ -11,8 +12,8 @@ import TagsList from '@/components/TagsList';
 import WrappedNextLink from '@/components/WrappedNextLink';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useGalleryGroup } from '@/hooks/useGalleryGroup';
 import { useSettingsStore } from '@/stores/stores';
+import { type NewTreeImageGroup } from '@/types/ImageGroup';
 
 interface Props {
   hash: string;
@@ -26,20 +27,29 @@ const thumbViews: GalleryViews[] = [
 function GalleryGroup({ hash }: Props) {
   const t = useTranslations('GalleryGroup');
   const { getUrl } = useGalleryTreeContext();
-  const { group, path } = useGalleryGroup(hash);
-  const { galleryView } = useSettingsStore();
-
+  const { enableDebug, galleryView } = useSettingsStore();
   const asThumb = thumbViews.includes(galleryView);
+  const { view } = useGalleryTreeContext();
+
+  const group: NewTreeImageGroup | null = view?.groups.find(({ coverImage }) => coverImage === hash) || null;
+  const path: string | null = group?.fullSlug || null;
 
   if (!group) {
     return null;
   }
 
+  const debugText = [
+    group.title,
+    group.fullSlug,
+    `Cover: ${group.coverImage}`,
+    `Images: ${group.images.length}`,
+  ].join('\n');
+
   return (
     <GalleryGridItem
       selectionText=""
       title={group.title}
-      subheader={t('itemCount', { count: group.allImages.length })}
+      subheader={t('itemCount', { count: group.totalImages })}
       wrapperProps={{
         component: WrappedNextLink,
         href: getUrl({ group: path || '', pageIndex: 0 }),
@@ -81,8 +91,11 @@ function GalleryGroup({ hash }: Props) {
           <ImageRender hash={hash} asThumb={asThumb} />
         </Box>
       )}
-      content={group.tags.length > 0 && (
-        <TagsList tags={group.tags} fromGroup />
+      content={(group.tags.length > 0 || (debugText && enableDebug)) && (
+        <>
+          <TagsList tags={group.tags} fromGroup />
+          <Debug text={debugText} />
+        </>
       )}
     />
   );
