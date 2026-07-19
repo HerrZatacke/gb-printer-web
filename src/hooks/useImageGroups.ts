@@ -122,7 +122,8 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
       if (typeof bySlug !== 'string') {
         return null;
       }
-      return findGroupByFullSlug(result.item, bySlug) ?? null;
+
+      return findGroupByFullSlug(result.item, cleanDoubleSlashes(withLeadingSlash(bySlug))) ?? null;
     },
     enabled: typeof bySlug === 'string',
     placeholderData: keepPreviousData,

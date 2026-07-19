@@ -1,4 +1,4 @@
-import { joinURL } from 'ufo';
+import { joinURL, withLeadingSlash, cleanDoubleSlashes } from 'ufo';
 import { ROOT_ID } from '@/tools/createTreeRoot';
 import { type NewTreeImageGroup } from '@/types/ImageGroup';
 
@@ -9,7 +9,7 @@ export const applyFullSlugs = (
   const isRoot = group.id === ROOT_ID;
   const segment = group.slug || group.id;
 
-  const fullSlug = isRoot ? '/' : joinURL(parentFullSlug, segment);
+  const fullSlug = isRoot ? '/' : cleanDoubleSlashes(withLeadingSlash(joinURL(parentFullSlug, segment)));
 
   return {
     ...group,
