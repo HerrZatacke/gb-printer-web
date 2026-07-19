@@ -11,6 +11,12 @@ import {
 } from '@/stores/queries/images';
 import { type Image } from '@/types/Image';
 import { type GetImagesParams, ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type ImageQueryParams,
+  type GetImagesParams,
+  type ItemsReferenceList,
+  type ItemsSourcePaging,
+} from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UseImagesOptions {
   list?: boolean;
@@ -22,7 +28,7 @@ export interface UseImagesOptions {
 
 export interface UseImages {
   images: Image[];
-  totalCount: number;
+  paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
   allTags: string[];
   isLoadingAllTags: boolean;
@@ -91,7 +97,7 @@ export const useImages = ({ list, allTags, hashes, anyHashes , raw }: UseImagesO
 
   return {
     images: listQuery.data?.items ?? [],
-    totalCount: listQuery.data?.paging?.total ?? 0,
+    paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
 
     allTags: allTagsQuery.data?.items ?? [],

@@ -7,10 +7,11 @@ import {
   palettesListQueryOptions,
 } from '@/stores/queries/palettes';
 import { Palette } from '@/types/Palette';
+import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UsePalettes {
   palettes: Palette[];
-  totalCount: number;
+  paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
   byShortNames: Palette[];
   isLoadingByShortNames: boolean;
@@ -54,7 +55,7 @@ export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalett
 
   return {
     palettes: listQuery.data?.items ?? [],
-    totalCount: listQuery.data?.paging?.total ?? 0,
+    paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
 
     byShortNames: byShortNamesQuery.data?.items ?? [],

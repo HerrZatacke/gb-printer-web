@@ -7,10 +7,11 @@ import {
   framesListQueryOptions,
 } from '@/stores/queries/frames';
 import { Frame } from '@/types/Frame';
+import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UseFrames {
   frames: Frame[];
-  totalCount: number;
+  paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
   byIds: Frame[];
   isLoadingByIds: boolean;
@@ -54,7 +55,7 @@ export const useFrames = ({ list, ids }: UseFramesOptions): UseFrames => {
 
   return {
     frames: listQuery.data?.items ?? [],
-    totalCount: listQuery.data?.paging?.total ?? 0,
+    paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
 
     byIds: byIdsQuery.data?.items ?? [],
