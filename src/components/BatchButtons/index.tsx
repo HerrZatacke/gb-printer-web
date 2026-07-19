@@ -62,11 +62,7 @@ const actionIcon = (action: BatchActionType): ReactNode => {
   }
 };
 
-interface Props {
-  page: number;
-}
-
-function BatchButtons({ page }: Props) {
+function BatchButtons() {
   const t = useTranslations('BatchButtons');
 
   const {
@@ -81,7 +77,7 @@ function BatchButtons({ page }: Props) {
     unCheckAll,
     filter,
     showSortOptions,
-  } = useBatchButtons(page);
+  } = useBatchButtons();
 
   const [pluginAnchor, setPluginAnchor] = useState<HTMLElement | null>(null);
 

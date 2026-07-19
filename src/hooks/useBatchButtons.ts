@@ -12,9 +12,7 @@ import {
   useEditStore,
   useFiltersStore,
   useInteractionsStore,
-  useSettingsStore,
 } from '@/stores/stores';
-import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import unique from '@/tools/unique';
@@ -38,42 +36,29 @@ const collectTags = (batchImages: Image[]): string[] => (
   unique(batchImages.map(({ tags }) => tags).flat())
 );
 
-const useBatchButtons = (page: number): UseBatchButtons => {
+const useBatchButtons = (): UseBatchButtons => {
   const t = useTranslations('useBatchButtons');
   const {
     imageSelection,
-    sortBy,
     filtersTags,
     filtersPalettes,
     filtersFrames,
-    recentImports,
     setFiltersVisible,
     setSortOptionsVisible,
     setImageSelection,
   } = useFiltersStore();
   const { plugins } = usePlugins({ list: true });
-  const { pageSize } = useSettingsStore();
   const { setEditImages, setEditRGBNImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setVideoSelection } = useInteractionsStore();
   const { setDownloadImages } = useDownload();
   const { deleteImages } = useStores();
-  const { view, covers } = useGalleryTreeContext();
+  const { images, covers } = useGalleryTreeContext();
   const { sendEvent } = useTracking();
 
-  const indexOffset = page * pageSize;
-
-  const currentPageImages: Image[] = useMemo(() => (
-    getFilteredImages(view, {
-      sortBy,
-      filtersTags,
-      filtersFrames,
-      filtersPalettes,
-      recentImports,
-    }) // take images from current VIEW (including covers)
-      .splice(indexOffset, pageSize || Infinity) // use images of the current PAGE
-      .filter((image: Image) => !covers.includes(image.hash)) // And remove covers AFTERWARDS
-  ), [covers, filtersFrames, filtersPalettes, filtersTags, indexOffset, pageSize, recentImports, sortBy, view]);
+  const currentPageImages: Image[] = useMemo(() => {
+    return images.filter((image: Image) => !covers.includes(image.hash)); // Current page without covers
+  }, [covers, images]);
 
   const selectedImages = useMemo(() => (
     currentPageImages.filter(({ hash }) => imageSelection.includes(hash))

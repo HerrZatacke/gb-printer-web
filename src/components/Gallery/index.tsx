@@ -41,7 +41,7 @@ function Gallery() {
         filteredCount={filteredCount}
       />
       <FolderBreadcrumb />
-      <GalleryHeader page={page} isSticky />
+      <GalleryHeader isSticky />
       { maxPageIndex > 0 && <Pagination page={page} maxPageIndex={maxPageIndex} /> }
 
       <GalleryGrid showLoader={isWorking}>
@@ -63,7 +63,7 @@ function Gallery() {
       { images.length >= 3 && (
         <>
           <Pagination page={page} maxPageIndex={maxPageIndex} />
-          <GalleryHeader page={page} isBottom />
+          <GalleryHeader isBottom />
         </>
       ) }
     </Stack>
