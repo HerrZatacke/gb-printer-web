@@ -1,17 +1,12 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import screenfull from 'screenfull';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
-import { useFiltersStore, useInteractionsStore } from '@/stores/stores';
-import { getFilteredImages } from '@/tools/getFilteredImages';
+import { useImages } from '@/hooks/useImages';
+import { imageByHashQueryOptions } from '@/stores/queries/images';
+import { useInteractionsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
-import { type Image } from '@/types/Image';
-
-interface CurrentInfo {
-  index: number;
-  title: string;
-  created: string;
-}
 
 interface RenderHashInfo {
   hash: string;
@@ -20,7 +15,9 @@ interface RenderHashInfo {
 
 interface UseLightboxImage {
   renderHashes: RenderHashInfo[];
-  currentInfo: CurrentInfo | null;
+  currentIndex: number | null;
+  currentTitle: string;
+  currentCreated: string;
   isFullscreen: boolean;
   size: number;
   canPrev: boolean;
@@ -32,9 +29,8 @@ interface UseLightboxImage {
 }
 
 export const useLightboxImage = (): UseLightboxImage => {
-  const filtersState = useFiltersStore();
   const { sendEvent } = useTracking();
-  const { view, covers } = useGalleryTreeContext();
+  const queryClient = useQueryClient();
   const {
     isFullscreen,
     setIsFullscreen,
@@ -42,74 +38,78 @@ export const useLightboxImage = (): UseLightboxImage => {
     lightboxImage: lightboxImageState,
   } = useInteractionsStore();
 
-  const filteredImages = useMemo<Image[]>(() => {
-    console.log('filteredImagesUpdate');
-    const viewImages = getFilteredImages(view, filtersState);
-    return viewImages.filter(({ hash }) => !covers.includes(hash));
-  }, [covers, filtersState, view]);
+  const { view } = useGalleryTreeContext();
+  const { hashesByGroupId: lightboxImageHashes  } = useImages({ hashesGroupId: view?.id });
 
-  const lightboxImageHashes = useMemo<string[]>(() => (
-    filteredImages.map(({ hash }) => (hash))
-  ), [filteredImages]);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const [currentTitle, setCurrentTitle] = useState<string>('');
+  const [currentCreated, setCurrentCreated] = useState<string>('');
 
 
-  const [currentInfo, setCurrentInfo] = useState<CurrentInfo | null>(null);
+  if (currentIndex === null) {
 
-  const createCurrentInfo = useCallback((index: number): CurrentInfo | null => {
-    const currentImage = filteredImages[index];
-    if (!currentImage) { return null; }
+  }
 
-    return {
-      title: currentImage.title,
-      created: currentImage.created,
-      index,
-    };
-  }, [filteredImages]);
+  useEffect(() => {
+    const handle = window.setTimeout(async () => {
+      if (currentIndex === null) {
+        setCurrentTitle('');
+        setCurrentCreated('');
+        return;
+      }
+
+      const image = await queryClient.fetchQuery(imageByHashQueryOptions(lightboxImageHashes[currentIndex]));
+      setCurrentTitle(image?.title || '');
+      setCurrentCreated(image?.created || '');
+    }, 0);
+
+    return () => { window.clearTimeout(handle); };
+  }, [currentIndex, lightboxImageHashes, queryClient]);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
-      setCurrentInfo((prevInfo) => {
+      setCurrentIndex((prevInfo) => {
         if (lightboxImageState === null) {
           return null;
         }
 
-        if (!prevInfo) {
+        if (typeof prevInfo === null) {
           sendEvent('lightBox', {
             imageCount: nextPowerOfTwo(lightboxImageHashes.length),
           });
         }
 
-        return createCurrentInfo(lightboxImageState);
+        return lightboxImageState;
       });
     });
 
     return () => window.clearTimeout(handle);
-  }, [createCurrentInfo, lightboxImageHashes.length, lightboxImageState, sendEvent]);
+  }, [lightboxImageHashes.length, lightboxImageState, sendEvent]);
 
   const next = useCallback(() => {
-    setCurrentInfo((current) => {
+    setCurrentIndex((current) => {
       if (current === null) { return null; }
-      const { length } = filteredImages;
+      const length = lightboxImageHashes.length;
 
-      return createCurrentInfo(Math.min(current.index + 1, length - 1));
+      return Math.min(current + 1, length - 1);
     });
-  }, [createCurrentInfo, filteredImages]);
+  }, [lightboxImageHashes.length]);
 
   const prev = useCallback(() => {
-    setCurrentInfo((current) => {
+    setCurrentIndex((current) => {
       if (current === null) { return null; }
 
-      return createCurrentInfo(Math.max(current.index - 1, 0));
+      return Math.max(current - 1, 0);
     });
-  }, [createCurrentInfo]);
+  }, []);
 
-  const setCurrentIndex = useCallback((index: number) => {
-    setCurrentInfo((current) => {
+  const setIndex = useCallback((index: number) => {
+    setCurrentIndex((current) => {
       if (current === null) { return null; }
 
-      return createCurrentInfo(index);
+      return index;
     });
-  }, [createCurrentInfo]);
+  }, []);
 
   const close = useCallback(() => {
     setLightboxImageState(null);
@@ -143,12 +143,12 @@ export const useLightboxImage = (): UseLightboxImage => {
           break;
 
         case 'Home':
-          setCurrentIndex(0);
+          setIndex(0);
           ev.preventDefault();
           break;
 
         case 'End':
-          setCurrentIndex(filteredImages.length - 1);
+          setIndex(lightboxImageHashes.length - 1);
           ev.preventDefault();
           break;
 
@@ -168,7 +168,8 @@ export const useLightboxImage = (): UseLightboxImage => {
         screenfull.off('change', handleFullscreenChange);
       }
     };
-  }, [filteredImages.length, setIsFullscreen, next, prev, close, createCurrentInfo, setCurrentIndex]);
+  }, [close, lightboxImageHashes.length, next, prev, setIndex, setIsFullscreen]);
+
 
   const handleFullscreen = useCallback(() => {
     if (screenfull.isEnabled) {
@@ -180,28 +181,28 @@ export const useLightboxImage = (): UseLightboxImage => {
     }
   }, []);
 
-  const canPrev = useMemo(() => (currentInfo !== null) ? currentInfo.index > 0 : false, [currentInfo]);
-  const canNext = useMemo(() => (currentInfo !== null) ? currentInfo.index < filteredImages.length - 1 : false, [currentInfo, filteredImages.length]);
+  const canPrev = useMemo(() => (currentIndex !== null) ? currentIndex > 0 : false, [currentIndex]);
+  const canNext = useMemo(() => (currentIndex !== null) ? currentIndex < lightboxImageHashes.length - 1 : false, [currentIndex, lightboxImageHashes.length]);
 
   const renderHashes = useMemo<RenderHashInfo[]>(() => {
-    if (!currentInfo) {
+    if (currentIndex === null) {
       return [];
     }
 
-    const index = currentInfo.index;
-
-    const visibleHash = lightboxImageHashes[currentInfo.index];
+    const visibleHash = lightboxImageHashes[currentIndex];
 
     return lightboxImageHashes
-      .slice(Math.max(0, index - 1), index + 2)
+      .slice(Math.max(0, currentIndex - 1), currentIndex + 2)
       .map((hash): RenderHashInfo => ({
         hash,
         visible: hash === visibleHash,
       }));
-  }, [lightboxImageHashes, currentInfo]);
+  }, [currentIndex, lightboxImageHashes]);
 
   return {
-    currentInfo,
+    currentIndex,
+    currentTitle,
+    currentCreated,
     renderHashes,
     isFullscreen,
     size: lightboxImageHashes.length,

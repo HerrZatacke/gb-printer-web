@@ -20,6 +20,8 @@ import {
   type ItemsSourceResponse,
   type StoredImage,
   StoredImageSchema,
+  type ImageQueryFilters,
+  type ImageQuerySort,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
@@ -72,6 +74,42 @@ export const getImages = async (queryParams: ImageQueryParams): Promise<ItemsSou
   const sortedItems = sortByFieldName(images);
 
   return addPaging(sortedItems);
+};
+
+export const getHashesByGroupId = async (groupId: string, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceResponse<string>> => {
+  const db = await getDb();
+  const start = performance.now();
+
+  const hostApi = await getHostApi();
+
+  let rootGroup: NewTreeImageGroup | undefined;
+  let imageHashes: string[];
+
+  if (!groupId || groupId === ROOT_ID) {
+    // getImageGroupsFullTree must be called before creating stores
+    rootGroup = (await getImageGroupsFullTree()).item;
+  }
+
+  const { store: groupsStore } = db.transaction('imagegroups');
+  const imageGroup: NewSerializableImageGroup | undefined = await groupsStore.get(groupId);
+
+  if (imageGroup) {
+    imageHashes = imageGroup.images;
+  } else if (rootGroup) {
+    imageHashes = rootGroup.images;
+  } else {
+    throw new Error(`could not find imagegroup ${groupId}`);
+  }
+
+  const images = await resolveAndFilterImages(db, hostApi, filters, new Set(imageHashes));
+
+  const sortByFieldName = sortBy<StoredImage>(sort.field, sort.direction);
+
+  const sortedImages = sortByFieldName(images);
+
+  const addPaging = getAddPaging<string>(imageHashes.length, 0, imageHashes.length, start, z.string());
+
+  return addPaging(sortedImages.map(({ hash }) => hash));
 };
 
 export const getGroupItemsByGroupId = async (groupId: string, queryParams: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>> => {

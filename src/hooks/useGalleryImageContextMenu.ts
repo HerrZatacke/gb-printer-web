@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
@@ -10,6 +11,7 @@ import { useImages } from '@/hooks/useImages';
 import { usePlugins } from '@/hooks/usePlugins';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
+import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
 import {
   type ImageSelectionMode,
   useDialogsStore,
@@ -18,7 +20,6 @@ import {
   useInteractionsStore,
 } from '@/stores/stores';
 import { canShare } from '@/tools/canShare';
-import { getFilteredImages } from '@/tools/getFilteredImages';
 import unique from '@/tools/unique';
 import { type RGBNImage } from '@/types/Image';
 
@@ -53,21 +54,17 @@ export type ButtonOption = (typeof ButtonOption)[keyof typeof ButtonOption];
 
 export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContextMenu => {
   const t = useTranslations('useGalleryImageContext');
+  const queryClient = useQueryClient();
   const {
     imageSelection,
     updateImageSelection,
-    filtersTags,
-    filtersFrames,
-    filtersPalettes,
-    sortBy,
-    recentImports,
   } = useFiltersStore();
 
   const { setLightboxImage } = useInteractionsStore();
   const { image } = useImageByHash(hash);
-  const { updateImages } = useImages({});
+  const { updateImages, imageQueryParams } = useImages({});
   const { plugins } = usePlugins({ list: true });
-  const { view, covers } = useGalleryTreeContext();
+  const { view } = useGalleryTreeContext();
   const { setEditImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { updateLastSyncLocalNow, deleteImages } = useStores();
@@ -134,21 +131,15 @@ export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContext
     updateImageToSelection: (mode: ImageSelectionMode) => {
       updateImageSelection(mode, [hash]);
     },
-    setLightboxImage: () => {
-      setLightboxImage(
-        getFilteredImages(
-          view,
-          {
-            filtersTags,
-            filtersFrames,
-            filtersPalettes,
-            sortBy,
-            recentImports,
-          },
-        )
-          .filter((img) => !covers.includes(img.hash))
-          .findIndex((img) => hash === img.hash),
-      );
+    setLightboxImage: async () => {
+      if (!view) {
+        return;
+      }
+
+      const { items: hashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(view.id, imageQueryParams.sort, imageQueryParams.filters));
+      const index = hashes.findIndex((h) => hash === h);
+
+      setLightboxImage(index);
     },
     updateFavouriteTag,
     editImage: () => {

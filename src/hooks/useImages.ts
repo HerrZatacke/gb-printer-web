@@ -8,7 +8,8 @@ import {
   imagesKeys,
   imagesListQueryOptions,
   imagesRawQueryOptions,
-  groupItemsIdQueryOptions,
+  groupItemsByGroupIdQueryOptions,
+  hashesByGroupIdQueryOptions,
 } from '@/stores/queries/images';
 import { useFiltersStore, useSettingsStore } from '@/stores/stores';
 import { type Image } from '@/types/Image';
@@ -26,6 +27,7 @@ export interface UseImagesOptions {
   list?: boolean;
   allTags?: boolean;
   groupId?: string;
+  hashesGroupId?: string;
   hashes?: string[];
   anyHashes?: string[];
   raw?: ImageQueryParams;
@@ -36,9 +38,13 @@ export interface UseImages {
   images: Image[];
   paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
+  imageQueryParams: ImageQueryParams;
   byGroupId: GroupItem[];
   byGroupPaging: ItemsSourcePaging | null;
   isLoadingByGroupId: boolean;
+  hashesByGroupId: string[];
+  hashesByGroupPaging: ItemsSourcePaging | null;
+  isLoadingHashesByGroupId: boolean;
   allTags: string[];
   isLoadingAllTags: boolean;
   byHashes: Image[];
@@ -55,6 +61,7 @@ export const useImages = ({
   page,
   list,
   groupId,
+  hashesGroupId,
   allTags,
   hashes,
   anyHashes,
@@ -99,8 +106,15 @@ export const useImages = ({
   });
 
   const byGroupIdQuery = useQuery({
-    ...groupItemsIdQueryOptions(groupId || '', imageQueryParams),
+    ...groupItemsByGroupIdQueryOptions(groupId || '', imageQueryParams),
     enabled: Boolean(typeof groupId === 'string'),
+    placeholderData,
+    retry: false,
+  });
+
+  const hashesByGroupIdQuery = useQuery({
+    ...hashesByGroupIdQueryOptions(hashesGroupId || '', imageQueryParams.sort, imageQueryParams.filters),
+    enabled: Boolean(typeof hashesGroupId === 'string'),
     placeholderData,
     retry: false,
   });
@@ -153,9 +167,15 @@ export const useImages = ({
     paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
 
+    imageQueryParams,
+
     byGroupId: byGroupIdQuery.data?.items ?? [],
     byGroupPaging: byGroupIdQuery.data?.paging || null,
     isLoadingByGroupId: byGroupIdQuery.isLoading,
+
+    hashesByGroupId: hashesByGroupIdQuery.data?.items ?? [],
+    hashesByGroupPaging: hashesByGroupIdQuery.data?.paging || null,
+    isLoadingHashesByGroupId: hashesByGroupIdQuery.isLoading,
 
     allTags: allTagsQuery.data?.items ?? [],
     isLoadingAllTags: allTagsQuery.isLoading,

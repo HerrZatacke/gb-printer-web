@@ -3,14 +3,20 @@ import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { Image } from '@/types/Image';
-import { type ImageQueryParams, type ItemsReferenceList } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type ImageQueryFilters,
+  type ImageQueryParams,
+  type ImageQuerySort,
+  type ItemsReferenceList,
+} from '@/workers/itemsIndexedDbWorker/types';
 
 const baseKeys = ['items', 'images'] as const;
 
 export const imagesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
-  byGroupId: (groupId: string, params: ImageQueryParams) => [...baseKeys, 'byGroupId', groupId, params] as const,
+  hashesByGroupId: (groupId: string, sort: ImageQuerySort, filters?: ImageQueryFilters) => [...baseKeys, 'hashesByGroupId', { groupId, sort, filters }] as const,
+  byGroupId: (groupId: string, params: ImageQueryParams) => [...baseKeys, 'byGroupId', { groupId, params }] as const,
   allTags: [...baseKeys, 'allTags'] as const,
   byHash: (hash: string) => [...baseKeys, 'byHash', hash] as const,
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
@@ -65,12 +71,24 @@ export const imagesListQueryOptions = () => {
   };
 };
 
-export const groupItemsIdQueryOptions = (groupId: string, params: ImageQueryParams) => {
+export const groupItemsByGroupIdQueryOptions = (groupId: string, params: ImageQueryParams) => {
   return {
     queryKey: imagesKeys.byGroupId(groupId, params),
     queryFn: async () => {
       const source = await getItemsSource();
       const result = await source.getGroupItemsByGroupId(groupId, params);
+      return result;
+    },
+    staleTime: STALE_TIME,
+  };
+};
+
+export const hashesByGroupIdQueryOptions = (groupId: string, sort: ImageQuerySort, filters?: ImageQueryFilters) => {
+  return {
+    queryKey: imagesKeys.hashesByGroupId(groupId, sort, filters),
+    queryFn: async () => {
+      const source = await getItemsSource();
+      const result = await source.getHashesByGroupId(groupId, sort, filters);
       return result;
     },
     staleTime: STALE_TIME,

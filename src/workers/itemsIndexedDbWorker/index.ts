@@ -23,6 +23,7 @@ import {
   deleteImagesByHashes,
   getAllTags,
   getGroupItemsByGroupId,
+  getHashesByGroupId,
   getImagesByHashes,
   getImagesByAnyHashes,
   getImages,
@@ -54,6 +55,7 @@ const api: ItemsSource = {
 
   getAllTags,
   getGroupItemsByGroupId,
+  getHashesByGroupId,
   getImages,
   getImagesByHashes,
   getImagesByAnyHashes,
