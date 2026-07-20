@@ -6,13 +6,13 @@ import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { toSlug } from '@/hooks/useEditImageGroup';
 import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImages } from '@/hooks/useImages';
 import useSaveRGBNImages from '@/hooks/useSaveRGBNImages';
 import {
   useEditStore,
   useFiltersStore,
   useSettingsStore,
 } from '@/stores/stores';
-import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
 import { Date } from '@/tools/safeDate';
@@ -71,41 +71,27 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const globalSortDirection = sortBy.split('_')[1];
 
-  const sortedImages = useMemo<MonochromeImage[]>(() => {
-    const filtered = getFilteredImages(view, {
-      filtersTags: [],
-      filtersFrames: [],
-      filtersPalettes: [],
-      sortBy,
-      recentImports: [],
-    });
+  const { imageQueryParams } = useImages({});
+  const { raw: rawImages } = useImages({ raw: imageQueryParams, rawCandidateHashes: new Set(editRGBNImages) });
 
-    if (globalSortDirection === 'desc') {
-      filtered.reverse();
-    }
-
-    return filtered
-      .reduce(reduceImagesMonochrome, [])
-      .reduce((acc: MonochromeImage[], image: MonochromeImage): MonochromeImage[] => {
-        if (!editRGBNImages.includes(image.hash)) {
-          return acc;
-        }
-
-        return [...acc, image];
-      }, []);
-  }, [editRGBNImages, globalSortDirection, view, sortBy]);
+  const sortedImages = useMemo(() => rawImages.reduce(reduceImagesMonochrome, []), [rawImages]);
 
   const [order, setOrder] = useState<RGBOrder>(['r', 'g', 'b', 's', 'n']);
-  const [grouping, setGrouping] = useState<RGBGrouping>(
-    sortedImages.length <= 4 ?
-      RGBGrouping.MANUAL :
-      RGBGrouping.BY_COLOR,
-  );
+  const [grouping, setGrouping] = useState<RGBGrouping>(RGBGrouping.MANUAL);
   const [manualHashes, setManualHashes] = useState<RGBNHashes>({
     r: sortedImages[0]?.hash || undefined,
     g: sortedImages[Math.floor(sortedImages.length / 3)]?.hash || undefined,
     b: sortedImages[Math.floor(sortedImages.length / 3) * 2]?.hash || undefined,
   });
+
+  useEffect(() => {
+    // intentional: recalculate grouping default when sortedImages changes,
+    // while still allowing free user overrides via setGrouping in between
+    // https://github.com/react/react/issues/34858
+    // https://github.com/react/react/issues/34743
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setGrouping(sortedImages.length <= 4 ? RGBGrouping.MANUAL : RGBGrouping.BY_COLOR);
+  }, [sortedImages]);
 
   const toggleSingleChannel = (channel: keyof RGBNHashes, hash: string) => {
     const nextRGBNHashes: RGBNHashes = { ...manualHashes };
@@ -182,6 +168,10 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   const { formatter } = useDateFormat();
 
   const save = useCallback(async () => {
+    if (!view) {
+      return;
+    }
+
     cancelEditRGBNImages();
     await saveRGBNImage(rgbnHashes);
 
@@ -210,7 +200,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
       navigateToGroup(newImageGroup.id, 0);
     }
 
-  }, [t, updateImageGroup, cancelEditImageGroup, cancelEditRGBNImages, createGroup, formatter, navigateToGroup, rgbnHashes, saveRGBNImage, view.id]);
+  }, [cancelEditImageGroup, cancelEditRGBNImages, createGroup, formatter, navigateToGroup, rgbnHashes, saveRGBNImage, t, updateImageGroup, view]);
 
   const singleMode = grouping === RGBGrouping.MANUAL;
 
