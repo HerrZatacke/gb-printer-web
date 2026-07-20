@@ -30,8 +30,8 @@ export const useContextHook = (): GalleryTreeContextType => {
   }, [paths]);
 
 
-  const currentPageIndex = parseInt(searchParams.get('page') ?? '1', 10) - 1;
-  const path = searchParams.get('group') || '';
+  const currentPageIndex = useMemo(() => (parseInt(searchParams.get('page') ?? '1', 10) - 1), [searchParams]);
+  const path = useMemo(() => (searchParams.get('group') || ''), [searchParams]);
 
   const getUrl = useCallback((params: GetUrlParams) => {
     const page: number = typeof params.pageIndex === 'number' ? params.pageIndex : currentPageIndex;
