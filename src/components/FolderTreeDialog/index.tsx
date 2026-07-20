@@ -66,8 +66,7 @@ interface FolderTreeDialogProps {
 
 function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
   const t = useTranslations('FolderTreeDialog');
-  const { pathsOptions } = useGalleryTreeContext();
-  const { currentGroup } = useNavigationTools();
+  const { pathsOptions, view } = useGalleryTreeContext();
   const theme = useTheme();
   const { imageGroupTree } = useImageGroups({ tree: true });
   const { segments } = usePathSegments();
@@ -101,7 +100,7 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
         expansionTrigger="iconContainer"
         expandedItems={expandedItems}
         onExpandedItemsChange={(_, items) => setExpandedItems(items)}
-        selectedItems={currentGroup?.id}
+        selectedItems={view?.id}
         sx={{
           width: theme.breakpoints.values.sm,
           height: '60vh',
