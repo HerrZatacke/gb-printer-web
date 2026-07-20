@@ -1,5 +1,4 @@
 import { type IDBPDatabase } from 'idb';
-import { ROOT_ID } from '@/tools/createTreeRoot';
 import sortBy from '@/tools/sortby';
 import { NewSerializableImageGroup, NewTreeImageGroup } from '@/types/ImageGroup';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
@@ -11,6 +10,7 @@ import {
   type ItemsDB,
   type ItemsHostApi,
 } from '@/workers/itemsIndexedDbWorker/types';
+import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 
 export const resolveGroupItemsByGroupId = async (
   db: IDBPDatabase<ItemsDB>,

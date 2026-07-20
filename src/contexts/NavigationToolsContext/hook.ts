@@ -9,8 +9,8 @@ import { imageGroupsFullTreeQueryOptions } from '@/stores/queries/imageGroups';
 import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { cleanFullSlug } from '@/tools/cleanSlug';
-import { ROOT_ID } from '@/tools/createTreeRoot';
 import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 
 export interface UseNavigationTools {
   getGroupPath: (groupId: string, pageIndex: number) => string;

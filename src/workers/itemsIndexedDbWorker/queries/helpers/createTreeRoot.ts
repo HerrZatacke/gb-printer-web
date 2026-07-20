@@ -1,7 +1,8 @@
-import { ROOT_ID } from '@/tools/createTreeRoot';
 import {
   type NewTreeImageGroup,
 } from '@/types/ImageGroup';
+
+export const ROOT_ID = 'ROOT';
 
 export const createTreeRoot = (
   topLevelGroups: NewTreeImageGroup[],

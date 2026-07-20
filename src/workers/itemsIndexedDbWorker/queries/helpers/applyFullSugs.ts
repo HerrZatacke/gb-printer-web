@@ -1,6 +1,6 @@
 import { joinURL, withLeadingSlash, cleanDoubleSlashes } from 'ufo';
-import { ROOT_ID } from '@/tools/createTreeRoot';
 import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 
 export const applyFullSlugs = (
   group: NewTreeImageGroup,
