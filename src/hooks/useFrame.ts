@@ -25,7 +25,7 @@ interface UseFrame {
   imageStartLine: number;
   setTiles: (tiles: string[]) => void;
   deleteFrame: () => void;
-  editFrame: () => void;
+  editFrame: () => Promise<void>;
   usage: number;
 }
 
@@ -86,7 +86,7 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
         deny: async () => dismissDialog(0),
       });
     },
-    editFrame: () => setEditFrame(frameId),
+    editFrame: async () => setEditFrame(frameId),
   };
 };
 

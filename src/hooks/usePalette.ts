@@ -11,7 +11,7 @@ interface UsePalette {
   isActive: boolean;
   setActive: () => void;
   deletePalette: () => void;
-  editPalette: () => void;
+  editPalette: () => Promise<void>;
   clonePalette: () => void;
 }
 
@@ -43,7 +43,7 @@ export const usePalette = (shortName: string, name: string): UsePalette => {
         deny: async () => dismissDialog(0),
       });
     },
-    editPalette: () => editPalette(shortName),
+    editPalette: async () => editPalette(shortName),
     clonePalette: () => clonePalette(shortName),
   };
 };
