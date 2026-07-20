@@ -20,6 +20,8 @@ function LocalDebug() {
   // const { byGroupId: rootGroupItems } = useImages({ groupId: '' });
   // const { byGroupId: randomRgbGroupItems } = useImages({ groupId: '34ee68d9-16e4-46b8-a745-2a510950d858' });
 
+  const { navigateToImage, navigateToGroup } = useNavigationTools();
+
   if (!shouldRender) {
     return null;
   }
@@ -39,6 +41,54 @@ function LocalDebug() {
         {/* <pre style={{ maxHeight: '30vh' }}> */}
         {/*   {JSON.stringify(randomRgbGroupItems, null, 2)} */}
         {/* </pre> */}
+        <Stack direction="row">
+          <button onClick={async () => {
+            await navigateToGroup('BadId', 0);
+          }}>
+            Bad Id/pageIndex 0
+          </button>
+          <button onClick={async () => {
+            await navigateToGroup('ROOT', 0);
+          }}>
+            ROOT/pageIndex 0
+          </button>
+          <button onClick={async () => {
+            await navigateToGroup('ROOT', 2);
+          }}>
+            ROOT/pageIndex 2
+          </button>
+          <button onClick={async () => {
+            await navigateToGroup('54e8e70e-68ea-400a-ae9d-0cee8e41f965', 0);
+          }}>
+            Drinks / pageIndex 0
+          </button>
+          <button onClick={async () => {
+            await navigateToGroup('54e8e70e-68ea-400a-ae9d-0cee8e41f965', 2);
+          }}>
+            Drinks / pageIndex 2
+          </button>
+          <hr />
+          <button onClick={async () => {
+            await navigateToImage('BadHash');
+          }}>
+            To Image: Bad Hash
+          </button>
+          <button onClick={async () => {
+            await navigateToImage('75844f32d28fc7a47ce096b28aaf9114f7fa5582');
+          }}>
+            To Image: *Drinks 2* (Drinks / pageIndex:0)
+          </button>
+          <button onClick={async () => {
+            await navigateToImage('4d8c1dd7609c864834c24341990156da8c91a56a');
+          }}>
+            To Image: *Drinks 23* (Drinks / pageIndex:1)
+          </button>
+          <button onClick={async () => {
+            await navigateToImage('c89f0f97516aa784c0ccec1d0c9c1cf782b2fba5');
+          }}>
+            To Image: *Isar* (munich/isar / pageIndex:1)
+          </button>
+        </Stack>
       </Stack>
     </Paper>
   );
