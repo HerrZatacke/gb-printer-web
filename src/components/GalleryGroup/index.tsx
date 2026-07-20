@@ -41,6 +41,7 @@ function GalleryGroup({ hash }: Props) {
   const debugText = [
     group.title,
     group.fullSlug,
+    `Id: ${group.id}`,
     `Cover: ${group.coverImage}`,
     `Images: ${group.images.length}`,
   ].join('\n');
