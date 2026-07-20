@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
@@ -13,45 +13,51 @@ export interface UsePathSegments {
   segments: Segment[];
 }
 
-// ToDo: handle "partial" paths
 const collectAncestors = (
   root: TreeImageGroup,
-  targetFullSlug: string,
+  remainingSegments: string[],
 ): TreeImageGroup[] => {
-  if (root.fullSlug === targetFullSlug) {
+  if (remainingSegments.length === 0) {
     return [root];
   }
 
-  for (const child of root.groups) {
-    const remaining = collectAncestors(child, targetFullSlug);
-    if (remaining.length > 0) {
-      return [root, ...remaining];
-    }
+  const [nextSlug, ...rest] = remainingSegments;
+  const nextChild = root.groups.find((child) => child.slug === nextSlug);
+  if (!nextChild) {
+    return [root];
   }
 
-  return [];
+  return [root, ...collectAncestors(nextChild, rest)];
 };
 
 export const usePathSegments = (): UsePathSegments => {
   const { path: currentPath, getUrl } = useGalleryTreeContext();
-  const { getImagePageIndexInGroup /*, navigateToGroup */ } = useNavigationTools();
+  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
   const { imageGroupTree } = useImageGroups({ tree: true });
 
   const [segments, setSegments] = useState<Segment[]>([]);
 
+  const targetSegments = useMemo(() => (currentPath.split('/').filter(Boolean)), [currentPath]);
+
+  const ancestors = useMemo(() => {
+    if (!imageGroupTree) {
+      return [];
+    }
+
+    return collectAncestors(imageGroupTree, targetSegments);
+  }, [imageGroupTree, targetSegments]);
+
   useEffect(() => {
     let cancelled = false;
     const handle = window.setTimeout(async () => {
-      if (!imageGroupTree) {
+      if (!ancestors.length) {
         setSegments([]);
         return;
       }
 
-      const breadcrumbPaths = collectAncestors(imageGroupTree, currentPath);
-
       const breadCrumbSegments = await Promise.all(
-          breadcrumbPaths.map(async (group: TreeImageGroup, index: number): Promise<Segment> => {
-          const childGroup: TreeImageGroup | undefined = breadcrumbPaths[index + 1];
+          ancestors.map(async (group: TreeImageGroup, index: number): Promise<Segment> => {
+          const childGroup: TreeImageGroup | undefined = ancestors[index + 1];
 
           let parentPageIndex = 0;
 
@@ -76,24 +82,15 @@ export const usePathSegments = (): UsePathSegments => {
       cancelled = true;
       window.clearTimeout(handle);
     };
-  }, [currentPath, getImagePageIndexInGroup, getUrl, imageGroupTree]);
+  }, [ancestors, getImagePageIndexInGroup, getUrl]);
 
   useEffect(() => {
-    console.log({
-      currentPath,
-      currentPathSplit: currentPath.split('/'),
-      segments: segments.map(({ group }) => group.fullSlug),
-    });
-  }, [currentPath, segments]);
-
-  // ToDo: Navigation Effects
-  // useEffect(() => {
-  //   // if url path does not match breadcrumb, navigate to the best possible path instead
-  //   if (breadCrumbSlugs.length !== segments.length) {
-  //     const validGroupId = segments[segments.length - 1].group.id;
-  //     navigateToGroup(validGroupId, 0);
-  //   }
-  // }, [breadCrumbSlugs.length, isInitialized, navigateToGroup, segments]);
+    const isFullMatch = ancestors.length === targetSegments.length + 1; // +1 for the root element
+    if (imageGroupTree && !isFullMatch) {
+      const deepestValidGroup = ancestors[ancestors.length - 1];
+      navigateToGroup(deepestValidGroup.id, 0);
+    }
+  }, [imageGroupTree, ancestors, navigateToGroup, targetSegments.length]);
 
   return {
     segments,
