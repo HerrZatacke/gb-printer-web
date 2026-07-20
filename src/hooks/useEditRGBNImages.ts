@@ -196,8 +196,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
       };
 
       await updateImageGroup(newImageGroup, view.id);
-
-      navigateToGroup(newImageGroup.id, 0);
+      await navigateToGroup(newImageGroup.id, 0);
     }
 
   }, [cancelEditImageGroup, cancelEditRGBNImages, createGroup, formatter, navigateToGroup, rgbnHashes, saveRGBNImage, t, updateImageGroup, view]);

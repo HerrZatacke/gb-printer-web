@@ -1,119 +1,94 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useFiltersStore, useSettingsStore } from '@/stores/stores';
+import { reducePaths } from '@/contexts/GalleryTreeContext/reducePaths';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImages } from '@/hooks/useImages';
+import { imageGroupsFullTreeQueryOptions } from '@/stores/queries/imageGroups';
+import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
+import { useSettingsStore } from '@/stores/stores';
 import { ROOT_ID } from '@/tools/createTreeRoot';
-import { getFilteredImages } from '@/tools/getFilteredImages';
-import { type Image } from '@/types/Image';
-import { type TreeImageGroup } from '@/types/ImageGroup';
+import { type NewTreeImageGroup } from '@/types/ImageGroup';
 
 export interface UseNavigationTools {
   getGroupPath: (groupId: string, pageIndex: number) => string;
-  currentGroup: TreeImageGroup;
-  getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number;
-  navigateToGroup: (groupId: string, pageIndex: number) => void;
-  navigateToImage: (hash: string) => void;
-}
-
-interface ShouldNavigate {
-  imageHash? :string;
-  group?: {
-    id: string;
-    pageIndex: number;
-  };
+  getImagePageIndexInGroup: (imageHash: string, parentGroup: NewTreeImageGroup) => Promise<number>;
+  navigateToGroup: (groupId: string, pageIndex: number) => Promise<void>;
+  navigateToImage: (hash: string) => Promise<void>;
 }
 
 export const useContextHook = (): UseNavigationTools => {
   const router = useRouter();
-  const { paths, root, isWorking, path: currentPath, getUrl } = useGalleryTreeContext();
-  const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate | false>(false);
-  const { sortBy, filtersTags, filtersFrames, filtersPalettes, recentImports } = useFiltersStore();
+  const queryClient = useQueryClient();
+  const { paths, getUrl } = useGalleryTreeContext();
+  const { imageGroupTree } = useImageGroups({ tree: true });
   const { pageSize } = useSettingsStore();
+  const { imageQueryParams } = useImages({});
 
-  const imageFilter = useCallback((group: TreeImageGroup): Image[] => (
-    getFilteredImages(group, {
-      filtersTags,
-      filtersFrames,
-      filtersPalettes,
-      sortBy,
-      recentImports,
-    })
-  ), [filtersFrames, filtersPalettes, filtersTags, recentImports, sortBy]);
-
-  const getImagePageIndexInGroup = useCallback((imageHash: string, parentGroup: TreeImageGroup) => {
-    const sortedImages = imageFilter(parentGroup);
-    const imageIndex = sortedImages.findIndex(({ hash }) => (
-      hash === imageHash
-    ));
-
+  const getImagePageIndexInGroup = useCallback(async (imageHash: string, parentGroup: NewTreeImageGroup): Promise<number> => {
+    const { items: sortedImageHashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(parentGroup.id, true, imageQueryParams.sort, imageQueryParams.filters));
+    const imageIndex = sortedImageHashes.findIndex((hash) => hash === imageHash);
+    if (imageIndex === -1) {
+      return 0;
+    }
     return Math.floor(imageIndex / pageSize);
-  }, [imageFilter, pageSize]);
+  }, [imageQueryParams.filters, imageQueryParams.sort, pageSize, queryClient]);
+
 
   const getGroupPath = useCallback((groupId: string, pageIndex: number): string => {
     if (groupId === ROOT_ID) {
       return getUrl({ pageIndex, group: '' });
     }
 
-    const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath || '';
+    const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath;
+
+    if (!groupPath) {
+      return '';
+    }
+
     return getUrl({ pageIndex, group: groupPath });
   }, [getUrl, paths]);
 
-  const currentGroup = useMemo<TreeImageGroup>(() => (
-    paths.find(({ absolutePath }) => (absolutePath === currentPath))?.group || root
-  ), [currentPath, paths, root]);
+  const getPagedImagePath = useCallback(async (imageHash: string): Promise<string> => {
+    const { item: root } = await queryClient.fetchQuery(imageGroupsFullTreeQueryOptions());
+    const usedPaths = new Set<string>();
+    const freshPaths = reducePaths('', [root], usedPaths);
 
-  const getPagedImagePath = useCallback((imageHash: string): string => {
-    const pathMap = paths.find(({ group: { images } }) => (
-      images.map(({ hash }) => hash).includes(imageHash)
+    const pathMap = freshPaths.find(({ group: { images } }) => (
+      images.includes(imageHash)
     ));
 
-    const viewSlug = pathMap?.absolutePath || '';
-    const group = pathMap?.group || root;
+    console.log({ pathMap, freshPaths, imageHash });
 
-    const pageIndex = getImagePageIndexInGroup(imageHash, group);
+    if (!pathMap) {
+      return '';
+    }
+
+    const viewSlug = pathMap.absolutePath || '';
+    const group = pathMap.group || imageGroupTree;
+    console.log('getPagedImagePath', group);
+
+    const pageIndex = group ? await getImagePageIndexInGroup(imageHash, group) : 0;
 
     return getUrl({ pageIndex, group: viewSlug });
-  }, [getImagePageIndexInGroup, getUrl, paths, root]);
+  }, [getImagePageIndexInGroup, getUrl, queryClient, imageGroupTree]);
 
-  const navigateToGroup = useCallback((groupId: string, pageIndex: number) => {
-    if (isWorking) { return; }
+  const navigateToGroup = useCallback(async (groupId: string, pageIndex: number) => {
+    const groupPath = await getGroupPath(groupId, pageIndex);
+    if (groupPath) {
+      router.push(groupPath);
+    }
+  }, [getGroupPath, router]);
 
-    // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
-    window.setTimeout(() => {
-      setShouldNavigate({
-        group: {
-          id: groupId,
-          pageIndex,
-        },
-      });
-    }, 1);
-  }, [isWorking]);
-
-  const navigateToImage = useCallback((hash: string) => {
-    // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
-    window.setTimeout(() => {
-      setShouldNavigate({ imageHash: hash });
-    }, 1);
-  }, []);
-
-  useEffect(() => {
-    if (isWorking || !shouldNavigate) { return; }
-
-    const handle = window.setTimeout(() => {
-      if (shouldNavigate.imageHash) {
-        router.push(getPagedImagePath(shouldNavigate.imageHash));
-        setShouldNavigate(false);
-      } else if (shouldNavigate.group) {
-        router.push(getGroupPath(shouldNavigate.group.id, shouldNavigate.group.pageIndex));
-        setShouldNavigate(false);
-      }
-    }, 1);
-
-    return () => { window.clearTimeout(handle); };
-  }, [getGroupPath, getPagedImagePath, isWorking, router, shouldNavigate]);
+  const navigateToImage = useCallback(async (hash: string) => {
+    const pagedImagePath = await getPagedImagePath(hash);
+    if (pagedImagePath) {
+      router.push(pagedImagePath);
+    }
+  }, [getPagedImagePath, router]);
 
   return {
-    currentGroup,
     getGroupPath,
     getImagePageIndexInGroup,
     navigateToGroup,

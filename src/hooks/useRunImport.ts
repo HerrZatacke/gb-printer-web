@@ -157,8 +157,7 @@ const useRunImport = (): UseRunImport => {
       };
 
       await updateImageGroup(newImageGroup, view.id);
-
-      navigateToGroup(newGroupId, 0);
+      await navigateToGroup(newGroupId, 0);
     }
 
     setImageSelection(imageHashes);
