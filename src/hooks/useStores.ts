@@ -84,39 +84,28 @@ export const useStores = (): UseStores => {
         updateLastSyncLocalNow();
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.palettes) {
         // hard replace all palettes -> merging happens in src/javascript/tools/mergeStates/index.ts
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         await updatePalettes(state.palettes);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.images) {
         // hard replace all images -> merging happens in src/javascript/tools/mergeStates/index.ts
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         await updateImages(state.images, true);
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         updateRecentImports(state.images);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.frames) {
         // hard replace all frames -> merging happens in src/javascript/tools/mergeStates/index.ts
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         await updateFrames(state.frames);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.frameGroups) {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         await updateFrameGroups(state.frameGroups); // updateFrameGroups merges
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (state.imageGroups) {
           await updateImageGroups(
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
             state.imageGroups
               // ToDo: The map function is a migration. Must be moved or removed
               .map((ig) => ({ ...ig, tags: (ig as SerializableImageGroup).tags || [] })),

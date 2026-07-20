@@ -21,7 +21,6 @@ export const getImportJSON = (importFn: ImportFn) => async (file: File): Promise
   importFn(settingsDump);
 
   return {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     imageCount: settingsDump.state.images?.length || 0,
     importMethod: ImportMethod.JSON,
   };
