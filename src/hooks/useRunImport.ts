@@ -108,6 +108,10 @@ const useRunImport = (): UseRunImport => {
   }, []);
 
   const runImport = useCallback(async (): Promise<void> => {
+    if (!view) {
+      return;
+    }
+
     const { importQueue } = useImportsStore.getState();
     const queue = new Queue(1, Infinity);
     const now = Date.now();
@@ -161,7 +165,7 @@ const useRunImport = (): UseRunImport => {
     }
 
     setImageSelection(imageHashes);
-  }, [t, activePalette, updateImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
+  }, [t, activePalette, updateImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view]);
 
   const palette = useActivePalette();
 

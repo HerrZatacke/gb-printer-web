@@ -93,7 +93,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         const title = editImageGroup?.newGroupTitle || '';
         return {
           imageGroup: null,
-          parentPathMap: paths.find(({ group }) => group.id === view.id) || null,
+          parentPathMap: view ? paths.find(({ group }) => group.id === view.id) || null : null,
           title,
           isFavourite: false,
           slug: toSlug(title),

@@ -82,7 +82,7 @@ export const useEditImageGroups = (): UseEditImageGroups => {
       setEditImageGroup({ groupId: id });
     },
     deleteGroup: (id: string) => {
-      const deleteGroup = view.groups.find((group) => group.id === id);
+      const deleteGroup = view?.groups.find((group) => group.id === id);
       if (!deleteGroup) {
         return;
       }
