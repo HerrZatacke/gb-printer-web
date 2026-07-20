@@ -21,7 +21,7 @@ export const imagesKeys = {
   byHash: (hash: string) => [...baseKeys, 'byHash', hash] as const,
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
   byAnyHashes: (hashes: string[]) => [...baseKeys, 'byAnyHashes', [...hashes].sort()] as const,
-  raw: (raw: ImageQueryParams) => [...baseKeys, 'raw', raw] as const,
+  raw: (raw: ImageQueryParams, candidateHashes?: Set<string>) => [...baseKeys, 'raw', { raw, candidateHashes }] as const,
 };
 
 const warmImageCache = (images: Image[]) => {
@@ -156,7 +156,7 @@ export const imagesByAnyHashesQueryOptions = (hashes: string[]) => {
 
 export const imagesRawQueryOptions = (raw: ImageQueryParams, candidateHashes?: Set<string>) => {
   return {
-    queryKey: imagesKeys.raw(raw),
+    queryKey: imagesKeys.raw(raw, candidateHashes),
     queryFn: async () => {
       const source = await getItemsSource();
       const result = await source.getImages(raw, candidateHashes);
