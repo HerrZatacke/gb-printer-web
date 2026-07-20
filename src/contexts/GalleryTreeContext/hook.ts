@@ -36,7 +36,11 @@ export const useContextHook = (): GalleryTreeContextType => {
 
   const getUrl = useCallback((params: GetUrlParams) => {
     const page: number = typeof params.pageIndex === 'number' ? params.pageIndex : currentPageIndex;
-    const group: string = typeof params.group === 'string' ? params.group : path;
+    let group: string = typeof params.group === 'string' ? params.group : path;
+
+    if (group === '/') {
+      group = '';
+    }
 
     let link = `${GALLERY_BASE_PATH}?page=${page + 1}`;
     if (group.length) {
