@@ -7,20 +7,16 @@ import { imageGroupsListQueryOptions } from '@/stores/queries/imageGroups';
 import { imagesListQueryOptions } from '@/stores/queries/images';
 import { palettesListQueryOptions } from '@/stores/queries/palettes';
 import { pluginsListQueryOptions } from '@/stores/queries/plugins';
-import {
-  type Values,
-  ITEMS_STORE_VERSION,
-  useFiltersStore,
-} from '@/stores/stores';
+import { useFiltersStore, ITEMS_STORE_VERSION } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
-import { type ExportableState, type JSONExport, type JSONExportBinary } from '@/types/ExportState';
+import { type ExportableState, type JSONExport, type JSONExportBinary, type ExportableValues } from '@/types/ExportState';
 import { type GetSettingsOptions } from '@/types/Sync';
 import getFrames from './getFrames';
 import getFramesForExport from './getFramesForExport';
 import getImageHashesForExport from './getImageHashesForExport';
 import getImages from './getImages';
 
-type ExportableKey = keyof Values;
+type ExportableKey = keyof ExportableValues;
 
 const imageExportTypes: ExportTypes[] = [
   ExportTypes.IMAGES,
