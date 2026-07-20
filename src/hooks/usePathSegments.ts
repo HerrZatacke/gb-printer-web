@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
-import { PathMap } from '@/types/galleryTreeContext';
-import { type TreeImageGroup } from '@/types/ImageGroup';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { type NewTreeImageGroup } from '@/types/ImageGroup';
 
 export interface Segment {
-  group: TreeImageGroup;
+  group: NewTreeImageGroup;
   link: string;
 }
 
@@ -13,51 +13,78 @@ export interface UsePathSegments {
   segments: Segment[];
 }
 
+// ToDo: handle "partial" paths
+const collectAncestors = (
+  root: NewTreeImageGroup,
+  targetFullSlug: string,
+): NewTreeImageGroup[] => {
+  if (root.fullSlug === targetFullSlug) {
+    return [root];
+  }
+
+  for (const child of root.groups) {
+    const remaining = collectAncestors(child, targetFullSlug);
+    if (remaining.length > 0) {
+      return [root, ...remaining];
+    }
+  }
+
+  return [];
+};
+
 export const usePathSegments = (): UsePathSegments => {
-  const { path: currentPath, getUrl, root, paths, isInitialized } = useGalleryTreeContext();
+  const { path: currentPath, getUrl } = useGalleryTreeContext();
   const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
-  const { getImagePageIndexInGroup } = useNavigationTools();
+  const { imageGroupTree } = useImageGroups({ tree: true });
 
-  const breadCrumbSlugs = useMemo(() => {
-    const breadCrumbsRaw = ['', ...currentPath.split('/').filter(Boolean)];
+  const [segments, setSegments] = useState<Segment[]>([]);
 
-    return breadCrumbsRaw.reduce((acc: string[], path: string, index: number): string[] => ([
-      ...acc,
-      breadCrumbsRaw.slice(1, index + 1).join('/').concat('/'),
-    ]), []);
-  }, [currentPath]);
-
-  const segments = useMemo<Segment[]>(() => {
-    const breadCrumbPaths: PathMap[] = breadCrumbSlugs.reduce((acc: PathMap[], breadCrumbPath): PathMap[] => {
-      let segmentPath: PathMap | undefined;
-
-      if (breadCrumbPath === '/') {
-        segmentPath = { absolutePath: '', group: root };
-      } else {
-        segmentPath = paths.find(({ absolutePath }) => absolutePath === breadCrumbPath);
+  useEffect(() => {
+    let cancelled = false;
+    const handle = window.setTimeout(async () => {
+      if (!imageGroupTree) {
+        setSegments([]);
+        return;
       }
 
-      return segmentPath ? [...acc, segmentPath] : acc;
-    }, []);
+      const breadcrumbPaths = collectAncestors(imageGroupTree, currentPath);
 
-    const breadCrumbSegments = breadCrumbPaths.map((breadCrumbPath: PathMap, index: number): Segment => {
-      const childPath = breadCrumbPaths[index + 1];
+      const breadCrumbSegments = await Promise.all(
+          breadcrumbPaths.map(async (group: NewTreeImageGroup, index: number): Promise<Segment> => {
+          const childGroup: NewTreeImageGroup | undefined = breadcrumbPaths[index + 1];
 
-      let parentPageIndex = 0;
+          let parentPageIndex = 0;
 
-      if (childPath) {
-        const childCoverImage = childPath.group.coverImage;
-        parentPageIndex = getImagePageIndexInGroup(childCoverImage, breadCrumbPath.group);
+          if (childGroup) {
+            const childCoverImage = childGroup.coverImage;
+            parentPageIndex = await getImagePageIndexInGroup(childCoverImage, group);
+          }
+
+          return {
+            group,
+            link: getUrl({ pageIndex: parentPageIndex, group: group.fullSlug }),
+          };
+        }),
+      );
+
+      if (!cancelled) {
+        setSegments(breadCrumbSegments);
       }
+    }, 1);
 
-      return {
-        group: breadCrumbPath.group,
-        link: getUrl({ pageIndex: parentPageIndex, group: breadCrumbPath.absolutePath }),
-      };
+    return () => {
+      cancelled = true;
+      window.clearTimeout(handle);
+    };
+  }, [currentPath, getImagePageIndexInGroup, getUrl, imageGroupTree]);
+
+  useEffect(() => {
+    console.log({
+      currentPath,
+      currentPathSplit: currentPath.split('/'),
+      segments: segments.map(({ group }) => group.fullSlug),
     });
-
-    return breadCrumbSegments;
-  }, [breadCrumbSlugs, root, paths, getUrl, getImagePageIndexInGroup]);
+  }, [currentPath, segments]);
 
   // ToDo: Navigation Effects
   // useEffect(() => {
