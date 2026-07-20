@@ -1,8 +1,8 @@
 import z from 'zod';
 import {
-  type NewTreeImageGroup,
-  NewSerializableImageGroupSchema,
-  type NewSerializableImageGroup,
+  type TreeImageGroup,
+  SerializableImageGroupSchema,
+  type SerializableImageGroup,
 } from '@/types/ImageGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSugs';
@@ -13,7 +13,7 @@ import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/gen
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
 import { ItemsSourceResponse, RootItemSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
-export const getImageGroupsList = async (): Promise<ItemsSourceResponse<NewSerializableImageGroup>> => {
+export const getImageGroupsList = async (): Promise<ItemsSourceResponse<SerializableImageGroup>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -21,12 +21,12 @@ export const getImageGroupsList = async (): Promise<ItemsSourceResponse<NewSeria
   const imageGroups = await store.getAll();
   const total = await store.count();
 
-  const addPaging = getAddPaging<NewSerializableImageGroup>(total, 0, imageGroups.length, start, NewSerializableImageGroupSchema);
+  const addPaging = getAddPaging<SerializableImageGroup>(total, 0, imageGroups.length, start, SerializableImageGroupSchema);
 
   return addPaging(imageGroups);
 };
 
-export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<NewTreeImageGroup>> => {
+export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<TreeImageGroup>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -39,7 +39,7 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<N
     imagesStore.getAllKeys(),
   ]);
 
-  const { success, error, data: parsedImageGroups } = z.array(NewSerializableImageGroupSchema).safeParse(imageGroups);
+  const { success, error, data: parsedImageGroups } = z.array(SerializableImageGroupSchema).safeParse(imageGroups);
   if (!success) {
     console.error(error.message);
     throw error;
@@ -56,7 +56,7 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<N
 
   const topLevelGroups = topLevelGroupIds
     .map((id) => buildTree(id, groupsById, childGroupIdsByParent, imageIdsByGroup, 0))
-    .filter((group): group is NewTreeImageGroup => group !== null);
+    .filter((group): group is TreeImageGroup => group !== null);
 
   const treeRoot = createTreeRoot(topLevelGroups, orphanedImageIds);
   const treeRootWithTotals = applyImageTotals(treeRoot);
@@ -69,8 +69,8 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<N
   };
 };
 
-export const updateImageGroups = async (imageGroups: NewSerializableImageGroup[], purge: boolean): Promise<void> => {
-  const { success, data: parsedGroups, error } = z.array(NewSerializableImageGroupSchema).safeParse(imageGroups);
+export const updateImageGroups = async (imageGroups: SerializableImageGroup[], purge: boolean): Promise<void> => {
+  const { success, data: parsedGroups, error } = z.array(SerializableImageGroupSchema).safeParse(imageGroups);
   if (success) {
     const db = await getDb();
 

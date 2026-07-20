@@ -18,7 +18,7 @@ import { randomId } from '@/tools/randomId';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type MonochromeImage, type RGBNHashes } from '@/types/Image';
-import { type NewSerializableImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 
@@ -183,7 +183,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
       cancelEditImageGroup();
 
-      const newImageGroup: NewSerializableImageGroup = {
+      const newImageGroup: SerializableImageGroup = {
         id: randomId(),
         slug,
         title,

@@ -10,9 +10,9 @@ import {
   RGBNImageSchema,
 } from '@/types/Image';
 import {
-  type NewSerializableImageGroup,
-  NewSerializableImageGroupSchema,
-  type NewTreeImageGroup,
+  type SerializableImageGroup,
+  SerializableImageGroupSchema,
+  type TreeImageGroup,
 } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
@@ -65,7 +65,7 @@ export interface ItemsDB extends DBSchema {
   };
   imagegroups: {
     key: string;
-    value: NewSerializableImageGroup;
+    value: SerializableImageGroup;
   };
   palettes: {
     key: string;
@@ -113,7 +113,7 @@ export interface ImageQueryParams {
 
 export const GroupItemSchema = z.object({
   image: ImageSchema,
-  group: NewSerializableImageGroupSchema.nullable(),
+  group: SerializableImageGroupSchema.nullable(),
   title: z.string(),
   created: z.string(),
   frame: z.string().nullable(),
@@ -168,9 +168,9 @@ export interface ItemsSource {
   updateImages(images: Image[], purge: boolean): Promise<void>;
   deleteImagesByHashes(hashes: string[]): Promise<void>;
 
-  getImageGroupsFullTree(): Promise<RootItemSourceResponse<NewTreeImageGroup>>;
-  getImageGroupsList(): Promise<ItemsSourceResponse<NewSerializableImageGroup>>;
-  updateImageGroups(imageGroups: NewSerializableImageGroup[], purge: boolean): Promise<void>;
+  getImageGroupsFullTree(): Promise<RootItemSourceResponse<TreeImageGroup>>;
+  getImageGroupsList(): Promise<ItemsSourceResponse<SerializableImageGroup>>;
+  updateImageGroups(imageGroups: SerializableImageGroup[], purge: boolean): Promise<void>;
   deleteImageGroupsByIds(ids: string[]): Promise<void>;
 
   getFrames(): Promise<ItemsSourceResponse<Frame>>;

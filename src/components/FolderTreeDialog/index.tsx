@@ -12,10 +12,10 @@ import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';
-import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface FolderTreeItemProps {
-  group: NewTreeImageGroup;
+  group: TreeImageGroup;
   onClick: () => void;
 }
 

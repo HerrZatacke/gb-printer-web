@@ -1,12 +1,12 @@
 import { DialogOption } from '@/types/Dialog';
 import { type Image } from '@/types/Image';
-import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 import { type ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
-// ToDo: obsolete because NewTreeImageGroup already holds "fullSlug" property
+// ToDo: obsolete because TreeImageGroup already holds "fullSlug" property
 export interface PathMap {
   absolutePath: string;
-  group: NewTreeImageGroup;
+  group: TreeImageGroup;
 }
 
 export interface GetUrlParams {
@@ -15,7 +15,7 @@ export interface GetUrlParams {
 }
 
 export interface GalleryTreeContextType {
-  view: NewTreeImageGroup | null; // 'view' contains images and coverImages (=groups)
+  view: TreeImageGroup | null; // 'view' contains images and coverImages (=groups)
   images: Image[];
   covers: string[];
   paths: PathMap[];

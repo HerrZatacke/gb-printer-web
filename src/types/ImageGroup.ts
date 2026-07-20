@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const NewBaseImageGroupSchema = z.object({
+export const BaseImageGroupSchema = z.object({
   id: z.string(),
   slug: z.string(),
   created: z.string(),
@@ -11,23 +11,23 @@ export const NewBaseImageGroupSchema = z.object({
   tags: z.array(z.string()).prefault([]),
 });
 
-export type NewBaseImageGroup = z.infer<typeof NewBaseImageGroupSchema>;
+export type BaseImageGroup = z.infer<typeof BaseImageGroupSchema>;
 
-export const NewSerializableImageGroupSchema = NewBaseImageGroupSchema.extend({
+export const SerializableImageGroupSchema = BaseImageGroupSchema.extend({
   groups: z.array(z.string()),
 });
 
-export type NewSerializableImageGroup = z.infer<typeof NewSerializableImageGroupSchema>;
+export type SerializableImageGroup = z.infer<typeof SerializableImageGroupSchema>;
 
-export interface NewTreeImageGroup extends NewBaseImageGroup {
-  groups: NewTreeImageGroup[];
+export interface TreeImageGroup extends BaseImageGroup {
+  groups: TreeImageGroup[];
   totalImages: number;
   fullSlug: string;
 }
 
-export const NewTreeImageGroupSchema: z.ZodType<NewTreeImageGroup> = NewBaseImageGroupSchema.extend({
+export const TreeImageGroupSchema: z.ZodType<TreeImageGroup> = BaseImageGroupSchema.extend({
   get groups() {
-    return z.array(NewTreeImageGroupSchema);
+    return z.array(TreeImageGroupSchema);
   },
   totalImages: z.number(),
   fullSlug: z.string(),

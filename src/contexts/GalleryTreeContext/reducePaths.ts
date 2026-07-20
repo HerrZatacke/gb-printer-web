@@ -1,10 +1,10 @@
 import { cleanSlug } from '@/tools/cleanSlug';
 import { type DialogOption } from '@/types/Dialog';
 import { type PathMap } from '@/types/galleryTreeContext';
-import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
-export const reducePaths = (prefix: string, groups: NewTreeImageGroup[], usedPaths: Set<string>): PathMap[] => {
-  const reducedPaths = groups.reduce((acc: PathMap[], group: NewTreeImageGroup): PathMap[] => {
+export const reducePaths = (prefix: string, groups: TreeImageGroup[], usedPaths: Set<string>): PathMap[] => {
+  const reducedPaths = groups.reduce((acc: PathMap[], group: TreeImageGroup): PathMap[] => {
     const cleanedSlug = cleanSlug(group.slug);
 
     let count = 0;

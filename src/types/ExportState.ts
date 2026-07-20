@@ -2,7 +2,7 @@ import z from 'zod';
 import { FrameSchema } from '@/types/Frame';
 import { FrameGroupSchema } from '@/types/FrameGroup';
 import { ImageSchema } from '@/types/Image';
-import { NewSerializableImageGroupSchema } from '@/types/ImageGroup';
+import { SerializableImageGroupSchema } from '@/types/ImageGroup';
 import { PaletteSchema } from '@/types/Palette';
 import { PluginSchema } from '@/types/Plugin';
 
@@ -12,7 +12,7 @@ export const ExportableValuesSchema = z.object({
   palettes: z.array(PaletteSchema),
   plugins: z.array(PluginSchema),
   images: z.array(ImageSchema),
-  imageGroups: z.array(NewSerializableImageGroupSchema),
+  imageGroups: z.array(SerializableImageGroupSchema),
 });
 
 export type ExportableValues = z.infer<typeof ExportableValuesSchema>;

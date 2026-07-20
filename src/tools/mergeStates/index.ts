@@ -2,7 +2,7 @@ import uniqueBy from '@/tools/unique/by';
 import { type ExportableState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
 import { type Image } from '@/types/Image';
-import { type NewSerializableImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 
 const mergeBy = <T>(by: keyof T) => {
@@ -24,13 +24,13 @@ const mergeBy = <T>(by: keyof T) => {
 const mergeImages = mergeBy<Image>('hash');
 const mergeFrames = mergeBy<Frame>('id');
 const mergePalettes = mergeBy<Palette>('shortName');
-const mergeImageGroups = mergeBy<NewSerializableImageGroup>('id');
+const mergeImageGroups = mergeBy<SerializableImageGroup>('id');
 
 const mergeStates = (
   currentStateFrames: Frame[],
   currentStatePalettes: Palette[],
   currentStateImages: Image[],
-  currentStateImageGroups: NewSerializableImageGroup[],
+  currentStateImageGroups: SerializableImageGroup[],
   updatedState: ExportableState,
   isFromJsonImport: boolean,
 ): Partial<ExportableState> => {
@@ -54,7 +54,7 @@ const mergeStates = (
     }
 
     if (updatedState.imageGroups && updatedState.imageGroups.length) {
-      imageGroups = mergeImageGroups(imageGroups, updatedState.imageGroups as NewSerializableImageGroup[]);
+      imageGroups = mergeImageGroups(imageGroups, updatedState.imageGroups as SerializableImageGroup[]);
     }
   } else {
     frames = updatedState.frames || currentStateFrames;

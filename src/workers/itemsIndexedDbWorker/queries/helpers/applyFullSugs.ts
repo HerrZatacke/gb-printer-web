@@ -1,11 +1,11 @@
 import { joinURL, withLeadingSlash, cleanDoubleSlashes } from 'ufo';
-import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 
 export const applyFullSlugs = (
-  group: NewTreeImageGroup,
+  group: TreeImageGroup,
   parentFullSlug: string = '',
-): NewTreeImageGroup => {
+): TreeImageGroup => {
   const isRoot = group.id === ROOT_ID;
   const segment = group.slug || group.id;
 

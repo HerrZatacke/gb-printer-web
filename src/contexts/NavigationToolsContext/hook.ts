@@ -9,12 +9,12 @@ import { imageGroupsFullTreeQueryOptions } from '@/stores/queries/imageGroups';
 import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { cleanFullSlug } from '@/tools/cleanSlug';
-import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 
 export interface UseNavigationTools {
   getGroupPath: (groupId: string, pageIndex: number) => string;
-  getImagePageIndexInGroup: (imageHash: string, parentGroup: NewTreeImageGroup) => Promise<number>;
+  getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => Promise<number>;
   navigateToGroup: (groupId: string, pageIndex: number) => Promise<void>;
   navigateToImage: (hash: string) => Promise<void>;
 }
@@ -27,7 +27,7 @@ export const useContextHook = (): UseNavigationTools => {
   const { pageSize } = useSettingsStore();
   const { imageQueryParams } = useImages({});
 
-  const getImagePageIndexInGroup = useCallback(async (imageHash: string, parentGroup: NewTreeImageGroup): Promise<number> => {
+  const getImagePageIndexInGroup = useCallback(async (imageHash: string, parentGroup: TreeImageGroup): Promise<number> => {
     const { items: sortedImageHashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(parentGroup.id, true, imageQueryParams.sort, imageQueryParams.filters));
     const imageIndex = sortedImageHashes.findIndex((hash) => hash === imageHash);
     if (imageIndex === -1) {

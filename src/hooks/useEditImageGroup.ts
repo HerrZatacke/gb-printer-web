@@ -11,7 +11,7 @@ import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
 import { type PathMap } from '@/types/galleryTreeContext';
-import { type NewSerializableImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -69,7 +69,7 @@ const getEditMode = (editImageGroup: EditGroupInfo | null): EditMode => {
 };
 
 interface InitialEditValues {
-  imageGroup: NewSerializableImageGroup | null;
+  imageGroup: SerializableImageGroup | null;
   parentPathMap: PathMap | null;
   title: string;
   isFavourite: boolean;
@@ -241,7 +241,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
       const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
 
-      let updateGroup: NewSerializableImageGroup;
+      let updateGroup: SerializableImageGroup;
 
       if (editImageGroup.groupId === NEW_GROUP) {
         if (!editImageGroup.newGroupCover) {

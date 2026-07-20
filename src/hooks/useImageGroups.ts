@@ -10,8 +10,8 @@ import {
 import { cleanFullSlug } from '@/tools/cleanSlug';
 import unique from '@/tools/unique';
 import {
-  type NewSerializableImageGroup,
-  type NewTreeImageGroup,
+  type SerializableImageGroup,
+  type TreeImageGroup,
 } from '@/types/ImageGroup';
 import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
@@ -22,21 +22,21 @@ export interface UseImageGroupsOptions {
 }
 
 export interface UseImageGroups {
-  imageGroups: NewSerializableImageGroup[];
+  imageGroups: SerializableImageGroup[];
   paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
-  imageGroupTree: NewTreeImageGroup | null;
+  imageGroupTree: TreeImageGroup | null;
   isLoadingTree: boolean;
-  byFullSlug: NewTreeImageGroup | null;
+  byFullSlug: TreeImageGroup | null;
   isLoadingByFullSlug: boolean;
   moveImagesToGroup: (images: string[], targetImageGroupId?: string) => Promise<void>;
-  updateImageGroups: (imageGroups: NewSerializableImageGroup[], purge?: boolean) => Promise<void>;
-  updateImageGroup: (group: NewSerializableImageGroup, parentGroupId: string) => Promise<void>;
+  updateImageGroups: (imageGroups: SerializableImageGroup[], purge?: boolean) => Promise<void>;
+  updateImageGroup: (group: SerializableImageGroup, parentGroupId: string) => Promise<void>;
   deleteImageGroupsByIds: (ids: string[]) => Promise<void>;
 }
 
-const removeImagesFromGroups = (allGroups: NewSerializableImageGroup[], imagesToRemove: string[]): NewSerializableImageGroup[] => {
-  const changedGroups = new Set<NewSerializableImageGroup>();
+const removeImagesFromGroups = (allGroups: SerializableImageGroup[], imagesToRemove: string[]): SerializableImageGroup[] => {
+  const changedGroups = new Set<SerializableImageGroup>();
   const ownImageIds = new Set(imagesToRemove);
   for (const other of allGroups) {
     const remainingImages = other.images.filter((id) => !ownImageIds.has(id));
@@ -52,14 +52,14 @@ const removeImagesFromGroups = (allGroups: NewSerializableImageGroup[], imagesTo
 };
 
 export const computeImageGroupUpdateDiff = (
-  allGroups: NewSerializableImageGroup[],
-  group: NewSerializableImageGroup,
+  allGroups: SerializableImageGroup[],
+  group: SerializableImageGroup,
   parentGroupId?: string,
-): NewSerializableImageGroup[] => {
-  const groupsById = new Map<string, NewSerializableImageGroup>(allGroups.map((g) => [g.id, g]));
+): SerializableImageGroup[] => {
+  const groupsById = new Map<string, SerializableImageGroup>(allGroups.map((g) => [g.id, g]));
   const changedIds = new Set<string>();
 
-  const setGroup = (updated: NewSerializableImageGroup) => {
+  const setGroup = (updated: SerializableImageGroup) => {
     groupsById.set(updated.id, updated);
     changedIds.add(updated.id);
   };
@@ -131,13 +131,13 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
     retry: false,
   });
 
-  const updateImageGroups = useCallback(async (imageGroups: NewSerializableImageGroup[], purge = false): Promise<void> => {
+  const updateImageGroups = useCallback(async (imageGroups: SerializableImageGroup[], purge = false): Promise<void> => {
     const source = await getItemsSource();
     await source.updateImageGroups(imageGroups, purge);
     await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
   }, [queryClient]);
 
-  const updateImageGroup = useCallback(async (group: NewSerializableImageGroup, parentGroupId: string): Promise<void> => {
+  const updateImageGroup = useCallback(async (group: SerializableImageGroup, parentGroupId: string): Promise<void> => {
     if (group.id === parentGroupId) {
       throw new Error('A group cannot be its own parent');
     }
@@ -157,10 +157,10 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
     const { items: allGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
     const newImageParentGroup = (targetImageGroupId && allGroups.find((g) => g.id === targetImageGroupId)) || null;
 
-    let changedGroups: NewSerializableImageGroup[];
+    let changedGroups: SerializableImageGroup[];
 
     if (newImageParentGroup) {
-      const changedGroup: NewSerializableImageGroup = {
+      const changedGroup: SerializableImageGroup = {
         ...newImageParentGroup,
         images: unique([...newImageParentGroup.images, ...images]),
       };

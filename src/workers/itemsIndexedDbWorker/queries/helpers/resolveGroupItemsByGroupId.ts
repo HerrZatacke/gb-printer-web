@@ -1,6 +1,6 @@
 import { type IDBPDatabase } from 'idb';
 import sortBy from '@/tools/sortby';
-import { NewSerializableImageGroup, NewTreeImageGroup } from '@/types/ImageGroup';
+import { SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { getImageGroupsFullTree } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
@@ -20,7 +20,7 @@ export const resolveGroupItemsByGroupId = async (
   sort: ImageQuerySort,
   filters?: ImageQueryFilters,
 ): Promise<GroupItem[]> => {
-  let rootGroup: NewTreeImageGroup | undefined;
+  let rootGroup: TreeImageGroup | undefined;
   let imageHashes: string[];
   let groupIds: string[];
 
@@ -30,14 +30,14 @@ export const resolveGroupItemsByGroupId = async (
   }
 
   const { store: groupsStore } = db.transaction('imagegroups');
-  const imageGroup: NewSerializableImageGroup | undefined = await groupsStore.get(groupId);
+  const imageGroup: SerializableImageGroup | undefined = await groupsStore.get(groupId);
 
   if (imageGroup) {
     imageHashes = imageGroup.images;
     groupIds = imageGroup.groups;
   } else if (rootGroup) {
     imageHashes = rootGroup.images;
-    groupIds = rootGroup.groups.map((g: NewTreeImageGroup) => g.id);
+    groupIds = rootGroup.groups.map((g: TreeImageGroup) => g.id);
   } else {
     throw new Error(`could not find imagegroup ${groupId}`);
   }
@@ -47,7 +47,7 @@ export const resolveGroupItemsByGroupId = async (
       (await Promise.all(
         groupIds.map(id => groupsStore.get(id)),
       ))
-        .filter((g): g is NewSerializableImageGroup => Boolean(g))
+        .filter((g): g is SerializableImageGroup => Boolean(g))
     )
     : [];
 

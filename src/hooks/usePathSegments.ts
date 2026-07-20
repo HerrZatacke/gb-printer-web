@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 export interface Segment {
-  group: NewTreeImageGroup;
+  group: TreeImageGroup;
   link: string;
 }
 
@@ -15,9 +15,9 @@ export interface UsePathSegments {
 
 // ToDo: handle "partial" paths
 const collectAncestors = (
-  root: NewTreeImageGroup,
+  root: TreeImageGroup,
   targetFullSlug: string,
-): NewTreeImageGroup[] => {
+): TreeImageGroup[] => {
   if (root.fullSlug === targetFullSlug) {
     return [root];
   }
@@ -50,8 +50,8 @@ export const usePathSegments = (): UsePathSegments => {
       const breadcrumbPaths = collectAncestors(imageGroupTree, currentPath);
 
       const breadCrumbSegments = await Promise.all(
-          breadcrumbPaths.map(async (group: NewTreeImageGroup, index: number): Promise<Segment> => {
-          const childGroup: NewTreeImageGroup | undefined = breadcrumbPaths[index + 1];
+          breadcrumbPaths.map(async (group: TreeImageGroup, index: number): Promise<Segment> => {
+          const childGroup: TreeImageGroup | undefined = breadcrumbPaths[index + 1];
 
           let parentPageIndex = 0;
 

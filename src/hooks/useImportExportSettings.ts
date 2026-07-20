@@ -12,13 +12,13 @@ import mergeStates from '@/tools/mergeStates';
 import { type JSONExport, type JSONExportState, type ExportableState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
 import { Image } from '@/types/Image';
-import { NewSerializableImageGroup } from '@/types/ImageGroup';
+import { SerializableImageGroup } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 
 const mergeSettings = async (
   settings: JSONExport,
   images: Image[],
-  imageGroups: NewSerializableImageGroup[],
+  imageGroups: SerializableImageGroup[],
   palettes: Palette[],
   frames: Frame[],
   isFromJsonImport: boolean,

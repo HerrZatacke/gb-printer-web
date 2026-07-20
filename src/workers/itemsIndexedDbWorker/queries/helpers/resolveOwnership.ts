@@ -1,4 +1,4 @@
-import { type NewSerializableImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
 
 interface OwnershipResult {
   childGroupIdsByParent: Map<string, string[]>;
@@ -8,7 +8,7 @@ interface OwnershipResult {
 }
 
 export const resolveOwnership = (
-  groups: NewSerializableImageGroup[],
+  groups: SerializableImageGroup[],
   allImageIds: string[],
 ): OwnershipResult => {
   const claimedGroups = new Set<string>();

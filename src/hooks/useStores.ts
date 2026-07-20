@@ -17,7 +17,7 @@ import { Date } from '@/tools/safeDate';
 import { type Dialog } from '@/types/Dialog';
 import { type ExportableState } from '@/types/ExportState';
 import { type Image } from '@/types/Image';
-import { NewSerializableImageGroup } from '@/types/ImageGroup';
+import { SerializableImageGroup } from '@/types/ImageGroup';
 
 export interface UseStores {
   addImages: (images: Image[]) => Promise<void>;
@@ -119,7 +119,7 @@ export const useStores = (): UseStores => {
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             state.imageGroups
               // ToDo: The map function is a migration. Must be moved or removed
-              .map((ig) => ({ ...ig, tags: (ig as NewSerializableImageGroup).tags || [] })),
+              .map((ig) => ({ ...ig, tags: (ig as SerializableImageGroup).tags || [] })),
             true,
           );
       }

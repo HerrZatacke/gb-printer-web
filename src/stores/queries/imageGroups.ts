@@ -1,13 +1,13 @@
 import { getItemsSource } from '@/items/client';
 import { STALE_TIME } from '@/stores/queries/consts';
-import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 const baseKeys = ['items', 'imagegroups'] as const;
 
 export const findGroupByFullSlug = (
-  group: NewTreeImageGroup,
+  group: TreeImageGroup,
   fullSlug: string,
-): NewTreeImageGroup | null => {
+): TreeImageGroup | null => {
   if (group.fullSlug === fullSlug) {
     return group;
   }

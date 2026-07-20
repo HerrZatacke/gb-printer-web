@@ -13,7 +13,7 @@ import WrappedNextLink from '@/components/WrappedNextLink';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useSettingsStore } from '@/stores/stores';
-import { type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface Props {
   hash: string;
@@ -31,7 +31,7 @@ function GalleryGroup({ hash }: Props) {
   const asThumb = thumbViews.includes(galleryView);
   const { view } = useGalleryTreeContext();
 
-  const group: NewTreeImageGroup | null = view?.groups.find(({ coverImage }) => coverImage === hash) || null;
+  const group: TreeImageGroup | null = view?.groups.find(({ coverImage }) => coverImage === hash) || null;
   const path: string | null = group?.fullSlug || null;
 
   if (!group) {

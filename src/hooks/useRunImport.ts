@@ -22,7 +22,7 @@ import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type Image } from '@/types/Image';
-import { type NewSerializableImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
 import { Palette } from '@/types/Palette';
 import { toSlug } from './useEditImageGroup';
@@ -148,7 +148,7 @@ const useRunImport = (): UseRunImport => {
 
       const newGroupId = randomId();
 
-      const newImageGroup: NewSerializableImageGroup = {
+      const newImageGroup: SerializableImageGroup = {
         id: newGroupId,
         slug,
         title,

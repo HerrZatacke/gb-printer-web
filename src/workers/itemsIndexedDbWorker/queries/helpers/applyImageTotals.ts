@@ -1,6 +1,6 @@
-import { NewTreeImageGroup } from '@/types/ImageGroup';
+import { TreeImageGroup } from '@/types/ImageGroup';
 
-export const applyImageTotals = (group: NewTreeImageGroup): NewTreeImageGroup => {
+export const applyImageTotals = (group: TreeImageGroup): TreeImageGroup => {
   const groups = group.groups.map(applyImageTotals);
   const totalImages = group.images.length + groups.reduce((sum, child) => sum + child.totalImages, 0);
 

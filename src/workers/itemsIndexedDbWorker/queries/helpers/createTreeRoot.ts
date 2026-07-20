@@ -1,13 +1,13 @@
 import {
-  type NewTreeImageGroup,
+  type TreeImageGroup,
 } from '@/types/ImageGroup';
 
 export const ROOT_ID = 'ROOT';
 
 export const createTreeRoot = (
-  topLevelGroups: NewTreeImageGroup[],
+  topLevelGroups: TreeImageGroup[],
   images: string[],
-): NewTreeImageGroup => ({
+): TreeImageGroup => ({
   id: ROOT_ID,
   slug: '',
   fullSlug: '',

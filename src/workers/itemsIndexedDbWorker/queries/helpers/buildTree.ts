@@ -1,15 +1,15 @@
-import { type NewSerializableImageGroup, type NewTreeImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup, type TreeImageGroup } from '@/types/ImageGroup';
 
 const MAX_TREE_DEPTH = 20;
 
 export const buildTree = (
   groupId: string,
-  groupsById: Map<string, NewSerializableImageGroup>,
+  groupsById: Map<string, SerializableImageGroup>,
   childGroupIdsByParent: Map<string, string[]>,
   imageIdsByGroup: Map<string, string[]>,
   depth: number,
-): NewTreeImageGroup | null => {
-  const group: NewSerializableImageGroup | undefined = groupsById.get(groupId);
+): TreeImageGroup | null => {
+  const group: SerializableImageGroup | undefined = groupsById.get(groupId);
 
   if (!group) {
     return null;
@@ -22,7 +22,7 @@ export const buildTree = (
 
   const children = (childGroupIdsByParent.get(groupId) ?? [])
     .map((childId) => buildTree(childId, groupsById, childGroupIdsByParent, imageIdsByGroup, depth + 1))
-    .filter((child): child is NewTreeImageGroup => child !== null);
+    .filter((child): child is TreeImageGroup => child !== null);
 
   return {
     ...group,
