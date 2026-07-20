@@ -26,7 +26,7 @@ import {
 
 const uniqueByHash = uniqueBy<Image>('hash');
 
-export const getImages = async (queryParams: ImageQueryParams): Promise<ItemsSourceResponse<Image>> => {
+export const getImages = async (queryParams: ImageQueryParams, candidateHashes?: Set<string>): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -49,7 +49,7 @@ export const getImages = async (queryParams: ImageQueryParams): Promise<ItemsSou
     filters?.frame?.length
   );
 
-  if (!hasFilters) {
+  if (!hasFilters && !candidateHashes) {
     const index = store.index(sort.field);
     const direction = sort.direction === 'asc' ? 'next' : 'prev';
 
@@ -67,7 +67,7 @@ export const getImages = async (queryParams: ImageQueryParams): Promise<ItemsSou
     return addPaging(images);
   }
 
-  const images = await resolveAndFilterImages(db, hostApi, filters);
+  const images = await resolveAndFilterImages(db, hostApi, filters, candidateHashes);
 
   const sortByFieldName = sortBy<Image>(sort.field, sort.direction);
 

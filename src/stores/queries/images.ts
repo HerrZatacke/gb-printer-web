@@ -154,12 +154,12 @@ export const imagesByAnyHashesQueryOptions = (hashes: string[]) => {
   };
 };
 
-export const imagesRawQueryOptions = (raw: ImageQueryParams) => {
+export const imagesRawQueryOptions = (raw: ImageQueryParams, candidateHashes?: Set<string>) => {
   return {
     queryKey: imagesKeys.raw(raw),
     queryFn: async () => {
       const source = await getItemsSource();
-      const result = await source.getImages(raw);
+      const result = await source.getImages(raw, candidateHashes);
 
       warmImageCache(result.items);
       return result;

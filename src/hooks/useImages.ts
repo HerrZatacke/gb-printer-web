@@ -31,6 +31,7 @@ export interface UseImagesOptions {
   hashes?: string[];
   anyHashes?: string[];
   raw?: ImageQueryParams;
+  rawCandidateHashes?: Set<string>;
   keepPreviousData?: boolean;
 }
 
@@ -66,6 +67,7 @@ export const useImages = ({
   hashes,
   anyHashes,
   raw,
+  rawCandidateHashes,
   keepPreviousData: shouldKeepPreviousData = true,
 }: UseImagesOptions): UseImages => {
   const queryClient = useQueryClient();
@@ -142,8 +144,8 @@ export const useImages = ({
 
   const rawQuery = useQuery({
     ...imagesRawQueryOptions(
-      raw ||
-      { page: 0, pageSize: 1, sort: { field: 'created', direction: 'asc' } }, // dummy query
+      raw || { page: 0, pageSize: 1, sort: { field: 'created', direction: 'asc' } }, // dummy query
+      rawCandidateHashes,
     ),
     enabled: Boolean(raw),
     placeholderData,
