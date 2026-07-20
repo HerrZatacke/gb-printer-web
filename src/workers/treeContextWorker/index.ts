@@ -1,4 +1,5 @@
 import { expose } from 'comlink';
+import { cleanSlug } from '@/tools/cleanSlug';
 import { createTreeRoot } from '@/tools/createTreeRoot';
 import { ensureSingleUsage, SingleUsageResult } from '@/tools/ensureSingleUsage';
 import unique from '@/tools/unique';
@@ -80,26 +81,29 @@ const filterAndTagImages = (
 
 const reducePaths = (prefix: string, groups: TreeImageGroup[], usedPaths: Set<string>): PathMap[] => {
   const reducedPaths = groups.reduce((acc: PathMap[], group: TreeImageGroup): PathMap[] => {
-    const cleanSlug = group.slug.replace(/[^A-Z0-9_-]+/gi, '_');
+    const cleanedSlug = cleanSlug(group.slug);
 
     let count = 0;
-    let absolute = `${prefix}${cleanSlug}/`;
+    let absolute = `${prefix}${cleanedSlug}/`;
 
     while (usedPaths.has(absolute)) {
       count += 1;
-      absolute = `${prefix}${cleanSlug}_${count}/`;
+      absolute = `${prefix}${cleanedSlug}_${count}/`;
     }
 
     usedPaths.add(absolute);
 
-    return ([
+    // ToDo: This file needs to be deleted
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return [
       ...acc,
       {
         absolutePath: absolute,
         group,
       },
       ...reducePaths(absolute, group.groups, usedPaths),
-    ]);
+    ];
   }, []);
 
   return reducedPaths;

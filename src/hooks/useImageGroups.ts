@@ -1,6 +1,5 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import { cleanDoubleSlashes, withLeadingSlash, withoutTrailingSlash } from 'ufo';
 import { getItemsSource } from '@/items/client';
 import {
   findGroupByFullSlug,
@@ -8,6 +7,7 @@ import {
   imageGroupsKeys,
   imageGroupsListQueryOptions,
 } from '@/stores/queries/imageGroups';
+import { cleanFullSlug } from '@/tools/cleanSlug';
 import unique from '@/tools/unique';
 import {
   type NewSerializableImageGroup,
@@ -34,10 +34,6 @@ export interface UseImageGroups {
   updateImageGroup: (group: NewSerializableImageGroup, parentGroupId: string) => Promise<void>;
   deleteImageGroupsByIds: (ids: string[]) => Promise<void>;
 }
-
-const cleanSlug = (slug: string): string => {
-  return cleanDoubleSlashes(withLeadingSlash(withoutTrailingSlash(slug)));
-};
 
 const removeImagesFromGroups = (allGroups: NewSerializableImageGroup[], imagesToRemove: string[]): NewSerializableImageGroup[] => {
   const changedGroups = new Set<NewSerializableImageGroup>();
@@ -129,7 +125,7 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
         return null;
       }
 
-      return findGroupByFullSlug(result.item, cleanSlug(bySlug)) ?? null;
+      return findGroupByFullSlug(result.item, cleanFullSlug(bySlug)) ?? null;
     },
     enabled: typeof bySlug === 'string',
     retry: false,

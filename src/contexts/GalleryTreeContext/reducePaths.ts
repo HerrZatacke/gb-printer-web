@@ -1,17 +1,18 @@
-import  { type PathMap } from '@/types/galleryTreeContext';
-import  { type NewTreeImageGroup } from '@/types/ImageGroup';
-import type { DialogOption } from '@/types/Dialog';
+import { cleanSlug } from '@/tools/cleanSlug';
+import { type DialogOption } from '@/types/Dialog';
+import { type PathMap } from '@/types/galleryTreeContext';
+import { type NewTreeImageGroup } from '@/types/ImageGroup';
 
 export const reducePaths = (prefix: string, groups: NewTreeImageGroup[], usedPaths: Set<string>): PathMap[] => {
   const reducedPaths = groups.reduce((acc: PathMap[], group: NewTreeImageGroup): PathMap[] => {
-    const cleanSlug = group.slug.replace(/[^A-Z0-9_-]+/gi, '_');
+    const cleanedSlug = cleanSlug(group.slug);
 
     let count = 0;
-    let absolute = `${prefix}${cleanSlug}/`;
+    let absolute = `${prefix}${cleanedSlug}/`;
 
     while (usedPaths.has(absolute)) {
       count += 1;
-      absolute = `${prefix}${cleanSlug}_${count}/`;
+      absolute = `${prefix}${cleanedSlug}_${count}/`;
     }
 
     usedPaths.add(absolute);

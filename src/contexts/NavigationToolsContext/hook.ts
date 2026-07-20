@@ -8,6 +8,7 @@ import { useImages } from '@/hooks/useImages';
 import { imageGroupsFullTreeQueryOptions } from '@/stores/queries/imageGroups';
 import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
 import { useSettingsStore } from '@/stores/stores';
+import { cleanFullSlug } from '@/tools/cleanSlug';
 import { ROOT_ID } from '@/tools/createTreeRoot';
 import { type NewTreeImageGroup } from '@/types/ImageGroup';
 
@@ -47,7 +48,7 @@ export const useContextHook = (): UseNavigationTools => {
       return '';
     }
 
-    return getUrl({ pageIndex, group: groupPath });
+    return getUrl({ pageIndex, group: cleanFullSlug(groupPath) });
   }, [getUrl, paths]);
 
   const getPagedImagePath = useCallback(async (imageHash: string): Promise<string> => {
@@ -59,19 +60,16 @@ export const useContextHook = (): UseNavigationTools => {
       images.includes(imageHash)
     ));
 
-    console.log({ pathMap, freshPaths, imageHash });
-
     if (!pathMap) {
       return '';
     }
 
     const viewSlug = pathMap.absolutePath || '';
     const group = pathMap.group || imageGroupTree;
-    console.log('getPagedImagePath', group);
 
     const pageIndex = group ? await getImagePageIndexInGroup(imageHash, group) : 0;
 
-    return getUrl({ pageIndex, group: viewSlug });
+    return getUrl({ pageIndex, group: cleanFullSlug(viewSlug) });
   }, [getImagePageIndexInGroup, getUrl, queryClient, imageGroupTree]);
 
   const navigateToGroup = useCallback(async (groupId: string, pageIndex: number) => {
