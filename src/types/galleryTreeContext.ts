@@ -19,6 +19,7 @@ export interface CalculateRootWorkerResult {
   duration: number;
 }
 
+// ToDo: obsolete because NewTreeImageGroup already holds "fullSlug" property
 export interface PathMap {
   absolutePath: string;
   group: NewTreeImageGroup;
