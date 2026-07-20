@@ -15,8 +15,8 @@ const baseKeys = ['items', 'images'] as const;
 export const imagesKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
-  hashesByGroupId: (groupId: string, sort: ImageQuerySort, filters?: ImageQueryFilters) => [...baseKeys, 'hashesByGroupId', { groupId, sort, filters }] as const,
-  byGroupId: (groupId: string, params: ImageQueryParams) => [...baseKeys, 'byGroupId', { groupId, params }] as const,
+  hashesByGroupId: (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters) => [...baseKeys, 'hashesByGroupId', { groupId, includeGroupImageHashes, sort, filters }] as const,
+  byGroupId: (groupId: string, includeGroups: boolean, params: ImageQueryParams) => [...baseKeys, 'byGroupId', { groupId, includeGroups, params }] as const,
   allTags: [...baseKeys, 'allTags'] as const,
   byHash: (hash: string) => [...baseKeys, 'byHash', hash] as const,
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
@@ -71,24 +71,29 @@ export const imagesListQueryOptions = () => {
   };
 };
 
-export const groupItemsByGroupIdQueryOptions = (groupId: string, params: ImageQueryParams) => {
+export const groupItemsByGroupIdQueryOptions = (groupId: string, includeGroups: boolean, params: ImageQueryParams) => {
   return {
-    queryKey: imagesKeys.byGroupId(groupId, params),
+    queryKey: imagesKeys.byGroupId(groupId, includeGroups, params),
     queryFn: async () => {
       const source = await getItemsSource();
-      const result = await source.getGroupItemsByGroupId(groupId, params);
+      const result = await source.getGroupItemsByGroupId(groupId, includeGroups, params);
       return result;
     },
     staleTime: STALE_TIME,
   };
 };
 
-export const hashesByGroupIdQueryOptions = (groupId: string, sort: ImageQuerySort, filters?: ImageQueryFilters) => {
+export const hashesByGroupIdQueryOptions = (
+  groupId: string,
+  includeGroupImageHashes: boolean,
+  sort: ImageQuerySort,
+  filters?: ImageQueryFilters,
+) => {
   return {
-    queryKey: imagesKeys.hashesByGroupId(groupId, sort, filters),
+    queryKey: imagesKeys.hashesByGroupId(groupId, includeGroupImageHashes, sort, filters),
     queryFn: async () => {
       const source = await getItemsSource();
-      const result = await source.getHashesByGroupId(groupId, sort, filters);
+      const result = await source.getHashesByGroupId(groupId, includeGroupImageHashes, sort, filters);
       return result;
     },
     staleTime: STALE_TIME,

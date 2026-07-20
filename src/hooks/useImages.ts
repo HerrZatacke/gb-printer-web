@@ -108,14 +108,16 @@ export const useImages = ({
   });
 
   const byGroupIdQuery = useQuery({
-    ...groupItemsByGroupIdQueryOptions(groupId || '', imageQueryParams),
+    // ToDo: make `true` param configurable
+    ...groupItemsByGroupIdQueryOptions(groupId || '', true, imageQueryParams),
     enabled: Boolean(typeof groupId === 'string'),
     placeholderData,
     retry: false,
   });
 
   const hashesByGroupIdQuery = useQuery({
-    ...hashesByGroupIdQueryOptions(hashesGroupId || '', imageQueryParams.sort, imageQueryParams.filters),
+    // ToDo: make `false` param configurable
+    ...hashesByGroupIdQueryOptions(hashesGroupId || '', false, imageQueryParams.sort, imageQueryParams.filters),
     enabled: Boolean(typeof hashesGroupId === 'string'),
     placeholderData,
     retry: false,

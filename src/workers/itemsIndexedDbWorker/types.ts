@@ -160,8 +160,8 @@ export interface ItemsSource {
   getImageDataByHashes(hashes: string[]): Promise<string[]>;
 
   getAllTags(): Promise<ItemsSourceResponse<string>>;
-  getGroupItemsByGroupId(groupId: string, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;
-  getHashesByGroupId(groupId: string, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceResponse<string>>;
+  getGroupItemsByGroupId(groupId: string, includeGroups: boolean, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;
+  getHashesByGroupId(groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceResponse<string>>;
   getImages(params: ImageQueryParams, candidateHashes?: Set<string>): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Image>>;
   getImagesByAnyHashes(hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;

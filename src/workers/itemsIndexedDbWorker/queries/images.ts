@@ -1,16 +1,11 @@
 import z from 'zod';
-import { ROOT_ID } from '@/tools/createTreeRoot';
 import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
 import { type Image, ImageSchema } from '@/types/Image';
-import {
-  type NewSerializableImageGroup,
-  type NewTreeImageGroup,
-} from '@/types/ImageGroup';
 import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
-import { getImageGroupsFullTree } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
+import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
 import {
   type ImageQueryParams,
   type GroupItem,
@@ -76,43 +71,19 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
   return addPaging(sortedItems);
 };
 
-export const getHashesByGroupId = async (groupId: string, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceResponse<string>> => {
+export const getHashesByGroupId = async (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceResponse<string>> => {
   const db = await getDb();
   const start = performance.now();
 
   const hostApi = await getHostApi();
 
-  let rootGroup: NewTreeImageGroup | undefined;
-  let imageHashes: string[];
-
-  if (!groupId || groupId === ROOT_ID) {
-    // getImageGroupsFullTree must be called before creating stores
-    rootGroup = (await getImageGroupsFullTree()).item;
-  }
-
-  const { store: groupsStore } = db.transaction('imagegroups');
-  const imageGroup: NewSerializableImageGroup | undefined = await groupsStore.get(groupId);
-
-  if (imageGroup) {
-    imageHashes = imageGroup.images;
-  } else if (rootGroup) {
-    imageHashes = rootGroup.images;
-  } else {
-    throw new Error(`could not find imagegroup ${groupId}`);
-  }
-
-  const images = await resolveAndFilterImages(db, hostApi, filters, new Set(imageHashes));
-
-  const sortByFieldName = sortBy<StoredImage>(sort.field, sort.direction);
-
-  const sortedImages = sortByFieldName(images);
-
-  const addPaging = getAddPaging<string>(imageHashes.length, 0, imageHashes.length, start, z.string());
-
-  return addPaging(sortedImages.map(({ hash }) => hash));
+  const sortedGroupItems = await resolveGroupItemsByGroupId(db, hostApi, groupId, includeGroupImageHashes, sort, filters);
+  const sortedImageHashes = sortedGroupItems.map(({ image: { hash } }) => hash);
+  const addPaging = getAddPaging<string>(sortedImageHashes.length, 0, sortedImageHashes.length, start, z.string());
+  return addPaging(sortedImageHashes);
 };
 
-export const getGroupItemsByGroupId = async (groupId: string, queryParams: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>> => {
+export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boolean, queryParams: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -125,58 +96,11 @@ export const getGroupItemsByGroupId = async (groupId: string, queryParams: Image
     filters,
   } = queryParams;
 
-  let rootGroup: NewTreeImageGroup | undefined;
-  let imageHashes: string[];
-  let groupIds: string[];
-
-  if (!groupId || groupId === ROOT_ID) {
-    // getImageGroupsFullTree must be called before creating stores
-    rootGroup = (await getImageGroupsFullTree()).item;
-  }
-
-  const { store: groupsStore } = db.transaction('imagegroups');
-  const imageGroup: NewSerializableImageGroup | undefined = await groupsStore.get(groupId);
-
-  if (imageGroup) {
-    imageHashes = imageGroup.images;
-    groupIds = imageGroup.groups;
-  } else if (rootGroup) {
-    imageHashes = rootGroup.images;
-    groupIds = rootGroup.groups.map((g: NewTreeImageGroup) => g.id);
-  } else {
-    throw new Error(`could not find imagegroup ${groupId}`);
-  }
-
-  const groups = (await Promise.all(
-    groupIds.map(id => groupsStore.get(id)),
-  )).filter((g): g is NewSerializableImageGroup => Boolean(g));
-
-  const coverImageHashes = groups.map((g) => g.coverImage);
-
   const { store: imagesStore } = db.transaction('images');
   const total = await imagesStore.count();
 
-  const images = await resolveAndFilterImages(db, hostApi, filters, new Set([...imageHashes, ...coverImageHashes]));
-
-  const groupItems = images.map((image) => {
-    const group = groups.find((g) => g.coverImage === image.hash) || null;
-    return {
-      image,
-      group,
-      title: group?.title || image.title,
-      // created: image.created,
-      created: group?.created || image.created,
-      frame: image.frame || null,
-      palette: typeof image.palette === 'string' ? image.palette : null,
-    };
-  });
-
-  const sortByFieldName = sortBy<GroupItem>(sort.field, sort.direction);
-
-  const sortedGroupItems = sortByFieldName(groupItems);
-
+  const sortedGroupItems = await resolveGroupItemsByGroupId(db, hostApi, groupId, includeGroups, sort, filters);
   const addPaging = getAddPaging<GroupItem>(total, page, pageSize, start, GroupItemSchema);
-
   return addPaging(sortedGroupItems);
 };
 

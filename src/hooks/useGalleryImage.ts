@@ -127,7 +127,7 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
     }
 
     if (shift) {
-      const { items: imageHashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(view.id, imageQueryParams.sort, imageQueryParams.filters));
+      const { items: imageHashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(view.id, false, imageQueryParams.sort, imageQueryParams.filters));
 
       console.log({ imageHashes, viewImageHashes: view.images });
 

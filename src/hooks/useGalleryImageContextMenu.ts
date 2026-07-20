@@ -136,7 +136,7 @@ export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContext
         return;
       }
 
-      const { items: hashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(view.id, imageQueryParams.sort, imageQueryParams.filters));
+      const { items: hashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(view.id, false, imageQueryParams.sort, imageQueryParams.filters));
       const index = hashes.findIndex((h) => hash === h);
 
       setLightboxImage(index);
