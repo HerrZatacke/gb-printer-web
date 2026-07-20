@@ -16,6 +16,7 @@ export const useContextHook = (): GalleryTreeContextType => {
   const { searchParams, pathname } = useUrl();
   const [lastGalleryLink, setLastGalleryLink] = useState<string>('');
 
+  // ToDo: Can we eliminate needing "paths"?
   const paths = useMemo<PathMap[]>(() => {
     if (!root) {
       return [];
@@ -25,6 +26,7 @@ export const useContextHook = (): GalleryTreeContextType => {
     return reducePaths('', [root], usedPaths);
   }, [root]);
 
+  // ToDo: Can we eliminate needing "pathsOptions" (or move it to dedicated component which needs it)?
   const pathsOptions = useMemo(() => {
     return reducePathsOptions(paths);
   }, [paths]);

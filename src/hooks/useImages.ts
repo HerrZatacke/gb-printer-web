@@ -82,7 +82,7 @@ export const useImages = ({
     sortBy,
   } = useFiltersStore();
 
-
+  // ToDo: create own hook for this;
   const imageQueryParams = useMemo<ImageQueryParams>(() => {
     const [sortField, direction] = sortBy.split('_');
     return {
