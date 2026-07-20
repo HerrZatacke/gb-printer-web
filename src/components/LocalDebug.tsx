@@ -1,6 +1,6 @@
 import { Alert, Paper, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useImages } from '@/hooks/useImages';
+import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { delay } from '@/tools/delay';
 
 function LocalDebug() {

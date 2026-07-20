@@ -34,7 +34,7 @@ const collectAncestors = (
 
 export const usePathSegments = (): UsePathSegments => {
   const { path: currentPath, getUrl } = useGalleryTreeContext();
-  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
+  const { getImagePageIndexInGroup /*, navigateToGroup */ } = useNavigationTools();
   const { imageGroupTree } = useImageGroups({ tree: true });
 
   const [segments, setSegments] = useState<Segment[]>([]);
