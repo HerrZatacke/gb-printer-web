@@ -1,4 +1,6 @@
 import { type IDBPDatabase, openDB, deleteDB } from 'idb';
+import { populateGroupAggregatedTags } from '@/workers/itemsIndexedDbWorker/maintenance/populateGroupAggregatedTags';
+import { MaintenanceTask } from '@/workers/itemsIndexedDbWorker/maintenance/types';
 import { migrateV1 } from '@/workers/itemsIndexedDbWorker/migrations/v1';
 import {
   type AfterUpgradeFn,
@@ -55,6 +57,14 @@ const openAndPrepareDb = async () => {
 
   for (const afterUpgradeTask of afterUpgradeTasks) {
     await afterUpgradeTask(database, hostApi);
+  }
+
+  const maintenanceTasks: MaintenanceTask[] = [
+    populateGroupAggregatedTags,
+  ];
+
+  for (const maintenanceTask of maintenanceTasks) {
+    await maintenanceTask(database, hostApi);
   }
 
   console.log(`openAndPrepareDb() done in ${performance.now() - p}ms`);
