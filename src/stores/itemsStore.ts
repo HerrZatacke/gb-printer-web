@@ -12,7 +12,7 @@ import uniqueBy from '@/tools/unique/by';
 import { FrameSchema } from '@/types/Frame';
 import { FrameGroupSchema } from '@/types/FrameGroup';
 import { ImageSchema } from '@/types/Image';
-import { SerializableImageGroupSchema } from '@/types/ImageGroup';
+import { NewSerializableImageGroupSchema } from '@/types/ImageGroup';
 import { type Palette, PaletteSchema } from '@/types/Palette';
 import { PluginSchema } from '@/types/Plugin';
 
@@ -44,7 +44,7 @@ const ValuesSchema = z.object({
   /** @deprecated Use `usePlugins` instead */
   images: z.array(ImageSchema),
   /** @deprecated Use `usePlugins` instead */
-  imageGroups: z.array(SerializableImageGroupSchema),
+  imageGroups: z.array(NewSerializableImageGroupSchema),
 });
 
 export type Values = z.infer<typeof ValuesSchema>;

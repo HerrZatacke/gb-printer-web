@@ -8,7 +8,7 @@ import sortBy from '@/tools/sortby';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 import { type Image } from '@/types/Image';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
+import { type NewSerializableImageGroup } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
 
@@ -73,14 +73,14 @@ export const createSplitStorage = (prefix: string): PersistStorage<Values> => {
   const framesStore = wrapForage<Frame>(`${prefix}--frames`, 'id');
   const frameGroupsStore = wrapForage<FrameGroup>(`${prefix}--framegroups`, 'id');
   const imagesStore = wrapForage<Image>(`${prefix}--images`, 'hash');
-  const imageGroupsStore = wrapForage<SerializableImageGroup>(`${prefix}--imagegroups`, 'id');
+  const imageGroupsStore = wrapForage<NewSerializableImageGroup>(`${prefix}--imagegroups`, 'id');
   const palettesStore = wrapForage<Palette>(`${prefix}--palettes`, 'shortName');
   const pluginsStore = wrapForage<Plugin>(`${prefix}--plugins`, 'url');
 
   const sortByShortName = sortBy<Palette>('shortName');
   const sortByTitle = sortBy<Plugin>('name');
   const sortById = sortBy<Frame>('id');
-  const sortBySlug = sortBy<SerializableImageGroup>('slug');
+  const sortBySlug = sortBy<NewSerializableImageGroup>('slug');
 
   const unloadHandler = (event: BeforeUnloadEvent) => {
     event.preventDefault();

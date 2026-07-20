@@ -11,7 +11,7 @@ import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
 import { type PathMap } from '@/types/galleryTreeContext';
-import { NewSerializableImageGroup, type SerializableImageGroup } from '@/types/ImageGroup';
+import { type NewSerializableImageGroup } from '@/types/ImageGroup';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -69,7 +69,7 @@ const getEditMode = (editImageGroup: EditGroupInfo | null): EditMode => {
 };
 
 interface InitialEditValues {
-  imageGroup: SerializableImageGroup | null;
+  imageGroup: NewSerializableImageGroup | null;
   parentPathMap: PathMap | null;
   title: string;
   isFavourite: boolean;

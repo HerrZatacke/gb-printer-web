@@ -2,7 +2,7 @@ import uniqueBy from '@/tools/unique/by';
 import { type ExportableState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
 import { type Image } from '@/types/Image';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
+import { type NewSerializableImageGroup } from '@/types/ImageGroup';
 import { type Palette } from '@/types/Palette';
 
 const mergeBy = <T>(by: keyof T) => {
@@ -24,13 +24,13 @@ const mergeBy = <T>(by: keyof T) => {
 const mergeImages = mergeBy<Image>('hash');
 const mergeFrames = mergeBy<Frame>('id');
 const mergePalettes = mergeBy<Palette>('shortName');
-const mergeImageGroups = mergeBy<SerializableImageGroup>('id');
+const mergeImageGroups = mergeBy<NewSerializableImageGroup>('id');
 
 const mergeStates = (
   currentStateFrames: Frame[],
   currentStatePalettes: Palette[],
   currentStateImages: Image[],
-  currentStateImageGroups: SerializableImageGroup[],
+  currentStateImageGroups: NewSerializableImageGroup[],
   updatedState: ExportableState,
   isFromJsonImport: boolean,
 ): Partial<ExportableState> => {
@@ -41,37 +41,25 @@ const mergeStates = (
   let imageGroups = currentStateImageGroups;
 
   if (isFromJsonImport) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (updatedState.frames && updatedState.frames.length) {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       frames = mergeFrames(frames, updatedState.frames);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (updatedState.images && updatedState.images.length) {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       images = mergeImages(images, updatedState.images);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (updatedState.palettes && updatedState.palettes.length) {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       palettes = mergePalettes(palettes, updatedState.palettes);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (updatedState.imageGroups && updatedState.imageGroups.length) {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      imageGroups = mergeImageGroups(imageGroups, updatedState.imageGroups);
+      imageGroups = mergeImageGroups(imageGroups, updatedState.imageGroups as NewSerializableImageGroup[]);
     }
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     frames = updatedState.frames || currentStateFrames;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     images = updatedState.images || currentStateImages;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     palettes = updatedState.palettes || currentStatePalettes;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     imageGroups = updatedState.imageGroups || currentStateImageGroups;
   }
 
