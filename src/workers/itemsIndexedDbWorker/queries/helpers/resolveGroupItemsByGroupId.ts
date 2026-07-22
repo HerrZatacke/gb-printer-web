@@ -1,16 +1,21 @@
 import { type IDBPDatabase } from 'idb';
 import sortBy from '@/tools/sortby';
 import { SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
+import {
+  facetFromImage,
+  facetFromSerializableImageGroup,
+  getMatcher,
+} from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
-import { getCandidates } from '@/workers/itemsIndexedDbWorker/queries/helpers/imagesKeyQueries';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { getImageGroupsFullTree } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
 import {
-  GroupItem,
+  type GroupItem,
   type ImageQueryFilters,
   type ImageQuerySort,
   type ItemsDB,
   type ItemsHostApi,
+  type StoredImage,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 export const resolveGroupItemsByGroupId = async (
@@ -30,6 +35,19 @@ export const resolveGroupItemsByGroupId = async (
     rootGroup = (await getImageGroupsFullTree()).item;
   }
 
+  const imageMatcher = await getMatcher(
+    hostApi,
+    filters,
+  );
+
+  const imageMatchesFilters = (item: StoredImage): boolean => (
+    imageMatcher(facetFromImage(item))
+  );
+
+  const serializableImageGroupMatchesFilters = (item: SerializableImageGroup): boolean => (
+    imageMatcher(facetFromSerializableImageGroup(item))
+  );
+
   const { store: groupsStore } = db.transaction('imagegroups');
   const imageGroup: SerializableImageGroup | undefined = await groupsStore.get(groupId);
 
@@ -43,32 +61,28 @@ export const resolveGroupItemsByGroupId = async (
     throw new Error(`could not find imagegroup ${groupId}`);
   }
 
-  const groups = includeGroups
+  const filteredGroups = includeGroups
     ? (
       (await Promise.all(
         groupIds.map(id => groupsStore.get(id)),
       ))
         .filter((g): g is SerializableImageGroup => Boolean(g))
+        .filter(serializableImageGroupMatchesFilters)
     )
     : [];
 
+  const coverImageHashes = filteredGroups.map((g) => g.coverImage);
 
-  console.log({ groups });
+  const images = await resolveAndFilterImages(db, imageMatchesFilters, new Set(imageHashes));
 
-  const coverImageHashes = groups.map((g) => g.coverImage);
-
-  const images = await resolveAndFilterImages(db, hostApi, filters, new Set(imageHashes));
-
-  // ToDo: Implement filterImageGroups(filters, groups); similar to resolveAndFilterImages but with already preloaded group items
-  const groupImages = await getCandidates(db, new Set(coverImageHashes));
+  const groupImages = await resolveAndFilterImages(db, undefined, new Set(coverImageHashes));
 
   const groupItems = [...images, ...groupImages].map((image) => {
-    const group = groups.find((g) => g.coverImage === image.hash) || null;
+    const group = filteredGroups.find((g) => g.coverImage === image.hash) || null;
     return {
       image,
       group,
       title: group?.title || image.title,
-      // created: image.created, // in the "old" version, all items were sorted by image creationdate not group creationdate (same for title)
       created: group?.created || image.created,
       frame: image.frame || null,
       palette: typeof image.palette === 'string' ? image.palette : null,

@@ -3,6 +3,7 @@ import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
 import { type Image, ImageSchema } from '@/types/Image';
 import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
+import { facetFromImage, getMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
@@ -38,37 +39,22 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
 
   const addPaging = getAddPaging<Image>(total, page, pageSize, start, ImageSchema);
 
-  const hasFilters = !!(
-    filters?.tags?.length ||
-    filters?.palette?.length ||
-    filters?.frame?.length
+  const imageMatcher = await getMatcher(
+    hostApi,
+    filters,
   );
 
-  if (!hasFilters && !candidateHashes) {
-    const index = store.index(sort.field);
-    const direction = sort.direction === 'asc' ? 'next' : 'prev';
+  const imageFacetMatchesFilters = (item: StoredImage): boolean => (
+    imageMatcher(facetFromImage(item))
+  );
 
-    let cursor = await index.openCursor(null, direction);
-    if (page > 0 && cursor) {
-      cursor = await cursor.advance(page * pageSize);
-    }
-
-    const images: Image[] = [];
-    while (cursor && images.length < pageSize) {
-      images.push(cursor.value);
-      cursor = await cursor.continue();
-    }
-
-    return addPaging(images);
-  }
-
-  const images = await resolveAndFilterImages(db, hostApi, filters, candidateHashes);
+  const images = await resolveAndFilterImages(db, imageFacetMatchesFilters, candidateHashes);
 
   const sortByFieldName = sortBy<Image>(sort.field, sort.direction);
 
-  const sortedItems = sortByFieldName(images);
+  const sortedImages = sortByFieldName(images);
 
-  return addPaging(sortedItems);
+  return addPaging(sortedImages);
 };
 
 export const getHashesByGroupId = async (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceResponse<string>> => {

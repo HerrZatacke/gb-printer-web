@@ -5,6 +5,7 @@ import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 import {
   type Image,
+  type ImageMetadata,
   ImageSchema,
   MonochromeImageSchema,
   RGBNImageSchema,
@@ -194,14 +195,12 @@ export interface ItemsSource {
   deletePluginsByUrls(urls: string[]): Promise<void>;
 }
 
-export type FilterStep =
-  // regular filter
-  { kind: 'indexAny'; indexName: string; values: string[] } |
-  // e.g. "has no tags"
-  { kind: 'indexNone'; indexName: string } |
-  // e.g. searching for newest
-  { kind: 'indexRange'; indexName: 'created'; range: IDBKeyRange } |
-  // e.g. "recent imports" list
-  { kind: 'ids'; ids: Set<string> } |
-  // e.g. check for hascomments/hasusername
-  { kind: 'predicate'; test: (image: Image) => boolean };
+export interface FilterableFacet {
+  hash: string;
+  tags: string[];
+  created: string;
+  palette: string | null;
+  frame: string | null;
+  type: 'mono' | 'rgbn' | null;
+  meta: ImageMetadata | null;
+}

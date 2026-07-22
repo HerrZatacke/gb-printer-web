@@ -1,12 +1,6 @@
 import { type ZodType } from 'zod';
 import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
-export const intersectAll = (
-  sets: Set<string>[],
-): Set<string> => {
-  return sets.reduce((acc, s) => new Set([...acc].filter((id) => s.has(id))));
-};
-
 export const getAddPaging = <T>(
   total: number,
   page: number,
