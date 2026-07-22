@@ -71,6 +71,9 @@ export const resolveGroupItemsByGroupId = async (
     )
     : [];
 
+  // ToDo: Edge-Case
+  // filtering for "testing" and "favourite" shows some empty folders because the folder has BOTH tags but images inside only have one or the other
+
   const coverImageHashes = filteredGroups.map((g) => g.coverImage);
 
   const images = await resolveAndFilterImages(db, imageMatchesFilters, new Set(imageHashes));
