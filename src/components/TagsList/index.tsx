@@ -26,7 +26,7 @@ function TagsList({ tags, fromGroup }: Props) {
     ));
 
     showTags = groupOnly.slice(0, 3);
-    moreTags = groupOnly.slice(3, -1);
+    moreTags = groupOnly.slice(3);
   } else {
     showTags = tags;
   }
