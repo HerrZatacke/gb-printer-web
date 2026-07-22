@@ -27,7 +27,7 @@ export const configureDb = (configureHostApi: ItemsHostApi): void => {
 
 
 const openAndPrepareDb = async () => {
-  const p = performance.now();
+  const start = performance.now();
   const afterUpgradeTasks: AfterUpgradeFn[] = [];
 
   if (!hostApi) {
@@ -37,6 +37,8 @@ const openAndPrepareDb = async () => {
   if (location.hostname === 'localhost') {
     await deleteDB('gb-printer-web--items');
   }
+
+  let didUpgrade = false;
 
   const database = await openDB<ItemsDB>(
     'gb-printer-web--items',
@@ -51,23 +53,31 @@ const openAndPrepareDb = async () => {
             afterUpgradeTasks.push(task);
           }
         }
+
+        didUpgrade = true;
       },
     },
   );
 
-  for (const afterUpgradeTask of afterUpgradeTasks) {
-    await afterUpgradeTask(database, hostApi);
+  if (didUpgrade) {
+    const startUpgradeTasks = performance.now();
+    for (const afterUpgradeTask of afterUpgradeTasks) {
+      await afterUpgradeTask(database, hostApi);
+    }
+    console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
+
+    const maintenanceTasks: MaintenanceTask[] = [
+      populateGroupAggregatedTags,
+    ];
+
+    const startMaintenanceTasks = performance.now();
+    for (const maintenanceTask of maintenanceTasks) {
+      await maintenanceTask(database, hostApi);
+    }
+    console.log(`MaintenanceTasks done in ${performance.now() - startMaintenanceTasks}ms`);
   }
 
-  const maintenanceTasks: MaintenanceTask[] = [
-    populateGroupAggregatedTags,
-  ];
-
-  for (const maintenanceTask of maintenanceTasks) {
-    await maintenanceTask(database, hostApi);
-  }
-
-  console.log(`openAndPrepareDb() done in ${performance.now() - p}ms`);
+  console.log(`openAndPrepareDb() done in ${performance.now() - start}ms`);
   return database;
 };
 

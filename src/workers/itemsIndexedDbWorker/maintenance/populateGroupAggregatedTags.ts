@@ -49,8 +49,6 @@ const resolveGroupTags = (
 export const populateGroupAggregatedTags = async (
   db: IDBPDatabase<ItemsDB>,
 ): Promise<void> => {
-  const start = performance.now();
-
   const groups = await db.getAll('imagegroups');
   const images = await db.getAll('images');
 
@@ -64,6 +62,4 @@ export const populateGroupAggregatedTags = async (
     await tx.store.put({ ...group, tags });
   }
   await tx.done;
-
-  console.log(`Populated all tags in ${Math.ceil(performance.now() - start)}ms`);
 };
