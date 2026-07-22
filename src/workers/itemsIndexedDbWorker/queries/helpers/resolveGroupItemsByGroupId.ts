@@ -11,6 +11,7 @@ import {
   type ItemsDB,
   type ItemsHostApi,
 } from '@/workers/itemsIndexedDbWorker/types';
+import { getCandidates } from '@/workers/itemsIndexedDbWorker/queries/helpers/imagesKeyQueries';
 
 export const resolveGroupItemsByGroupId = async (
   db: IDBPDatabase<ItemsDB>,
@@ -52,13 +53,16 @@ export const resolveGroupItemsByGroupId = async (
     : [];
 
 
+  console.log({ groups });
+
   const coverImageHashes = groups.map((g) => g.coverImage);
 
-  const hashSet = includeGroups ? new Set([...imageHashes, ...coverImageHashes]) : new Set(imageHashes);
+  const images = await resolveAndFilterImages(db, hostApi, filters, new Set(imageHashes));
 
-  const images = await resolveAndFilterImages(db, hostApi, filters, hashSet);
+  // ToDo: Implement filterImageGroups(filters, groups); similar to resolveAndFilterImages but with already preloaded group items
+  const groupImages = await getCandidates(db, new Set(coverImageHashes));
 
-  const groupItems = images.map((image) => {
+  const groupItems = [...images, ...groupImages].map((image) => {
     const group = groups.find((g) => g.coverImage === image.hash) || null;
     return {
       image,

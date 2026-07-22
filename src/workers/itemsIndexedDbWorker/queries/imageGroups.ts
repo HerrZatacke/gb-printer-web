@@ -5,7 +5,7 @@ import {
   type SerializableImageGroup,
 } from '@/types/ImageGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSugs';
+import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSlugs';
 import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
 import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildTree';
 import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
