@@ -71,10 +71,9 @@ export const resolveGroupItemsByGroupId = async (
     )
     : [];
 
-  const coverImageHashes = filteredGroups.map((g) => g.coverImage);
-
   const images = await resolveAndFilterImages(db, imageMatchesFilters, new Set(imageHashes));
 
+  const coverImageHashes = filteredGroups.map((g) => g.coverImage);
   const groupImages = await resolveAndFilterImages(db, undefined, new Set(coverImageHashes));
 
   const groupItems = [...images, ...groupImages].map((image) => {
