@@ -71,9 +71,6 @@ export const resolveGroupItemsByGroupId = async (
     )
     : [];
 
-  // ToDo: Edge-Case
-  // filtering for "testing" and "favourite" shows some empty folders because the folder has BOTH tags but images inside only have one or the other
-
   const coverImageHashes = filteredGroups.map((g) => g.coverImage);
 
   const images = await resolveAndFilterImages(db, imageMatchesFilters, new Set(imageHashes));
@@ -92,7 +89,28 @@ export const resolveGroupItemsByGroupId = async (
     };
   });
 
+  // groupItems must be filtered recursively to account for Edge-Case:
+  // filtering for multiple tags cahn show empty folders because the folder
+  // may have BOTH tags but items inside only have one or the other and would be filtered outh
+  const deepFilteredGroupItems = (await Promise.all(groupItems.map(async (checkGroupItem): Promise<GroupItem | null> => {
+    const childGroup = checkGroupItem.group;
+
+    if (!childGroup) {
+      // not a group, so it's already a valid groupItem
+      return checkGroupItem;
+    }
+
+    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(db, hostApi, childGroup.id, includeGroups, sort, filters)).length);
+    return hasDisplayableItems ? checkGroupItem : null;
+  })))
+    .filter((gi): gi is GroupItem => Boolean(gi));
+
+  if (!deepFilteredGroupItems.length && !groupImages.length) {
+    return [];
+  }
+
   const sortByFieldName = sortBy<GroupItem>(sort.field, sort.direction);
 
-  return sortByFieldName(groupItems);
+  // console.log(`### ${imageGroup?.title || 'ROOT'}`, deepFilteredGroupItems.length);
+  return sortByFieldName(deepFilteredGroupItems);
 };
