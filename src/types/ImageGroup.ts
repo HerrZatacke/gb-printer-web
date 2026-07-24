@@ -7,7 +7,9 @@ export const BaseImageGroupSchema = z.object({
   title: z.string(),
   isFavourite: z.boolean().prefault(false),
   coverImage: z.string(),
-  images: z.array(z.string()),
+  images: z.array(z.string()).transform((images) => ([
+    ...new Set(images),
+  ])),
   tags: z.array(z.string()).prefault([]),
 });
 
