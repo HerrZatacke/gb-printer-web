@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { reducePaths } from '@/contexts/GalleryTreeContext/reducePaths';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { useImages } from '@/hooks/useImages';
+import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import { imageGroupsFullTreeQueryOptions } from '@/stores/queries/imageGroups';
 import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
 import { useSettingsStore } from '@/stores/stores';
@@ -25,7 +25,7 @@ export const useContextHook = (): UseNavigationTools => {
   const { paths, getUrl } = useGalleryTreeContext();
   const { imageGroupTree } = useImageGroups({ tree: true });
   const { pageSize } = useSettingsStore();
-  const { imageQueryParams } = useImages({});
+  const imageQueryParams = useImageQueryParams();
 
   const getImagePageIndexInGroup = useCallback(async (imageHash: string, parentGroup: TreeImageGroup): Promise<number> => {
     const { items: sortedImageHashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(parentGroup.id, true, imageQueryParams.sort, imageQueryParams.filters));

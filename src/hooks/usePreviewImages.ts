@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { SpecialTags } from '@/consts/SpecialTags';
+import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import { useImages } from '@/hooks/useImages';
 import { useFiltersStore } from '@/stores/stores';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
@@ -15,7 +16,7 @@ interface UsePreviewImages {
 const usePreviewImages = (): UsePreviewImages => {
   const { imageSelection } = useFiltersStore();
   const { byHashes: selected } = useImages({ hashes: imageSelection });
-  const { imageQueryParams } = useImages({});
+  const imageQueryParams = useImageQueryParams();
 
   const query = {
     ...imageQueryParams,

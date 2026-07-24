@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useImageByHash } from '@/hooks/useImageByHash';
-import { useImages } from '@/hooks/useImages';
+import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
 import {
   type ImageSelectionMode,
@@ -53,7 +53,7 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
   } = useFiltersStore();
 
   const { image: stateImage } = useImageByHash(hash);
-  const { imageQueryParams } = useImages({});
+  const imageQueryParams = useImageQueryParams();
 
   const selectionIndex = imageSelection.indexOf(hash);
 

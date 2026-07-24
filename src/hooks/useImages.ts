@@ -1,5 +1,6 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
+import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import { getItemsSource } from '@/items/client';
 import {
   imagesAllTagsQueryOptions,
@@ -11,14 +12,11 @@ import {
   groupItemsByGroupIdQueryOptions,
   hashesByGroupIdQueryOptions,
 } from '@/stores/queries/images';
-import { useFiltersStore, useSettingsStore } from '@/stores/stores';
 import { type Image } from '@/types/Image';
 import {
   type ImageQueryParams,
   type GroupItem,
   type ItemsReferenceList,
-  type ImageSortField,
-  type SortDirection,
   type ItemsSourcePaging,
 } from '@/workers/itemsIndexedDbWorker/types';
 
@@ -39,7 +37,6 @@ export interface UseImages {
   images: Image[];
   paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
-  imageQueryParams: ImageQueryParams;
   byGroupId: GroupItem[];
   byGroupPaging: ItemsSourcePaging | null;
   isLoadingByGroupId: boolean;
@@ -71,34 +68,9 @@ export const useImages = ({
   keepPreviousData: shouldKeepPreviousData = true,
 }: UseImagesOptions): UseImages => {
   const queryClient = useQueryClient();
-  const { pageSize } = useSettingsStore();
+  const imageQueryParams = useImageQueryParams(page);
 
   const placeholderData = shouldKeepPreviousData ? keepPreviousData : undefined;
-
-  const {
-    filtersTags,
-    filtersPalettes,
-    filtersFrames,
-    sortBy,
-  } = useFiltersStore();
-
-  // ToDo: create own hook for this;
-  const imageQueryParams = useMemo<ImageQueryParams>(() => {
-    const [sortField, direction] = sortBy.split('_');
-    return {
-      page: page || 0,
-      pageSize,
-      filters: {
-        tags: filtersTags,
-        palette: filtersPalettes,
-        frame: filtersFrames,
-      },
-      sort: {
-        field: sortField as ImageSortField,
-        direction: direction as SortDirection,
-      },
-    };
-  }, [filtersFrames, filtersPalettes, filtersTags, page, pageSize, sortBy]);
 
   const listQuery = useQuery({
     ...imagesListQueryOptions(),
@@ -146,10 +118,10 @@ export const useImages = ({
 
   const rawQuery = useQuery({
     ...imagesRawQueryOptions(
-      raw || { page: 0, pageSize: 1, sort: { field: 'created', direction: 'asc' } }, // dummy query
+      raw || imageQueryParams,
       rawCandidateHashes,
     ),
-    enabled: Boolean(raw),
+    enabled: Boolean(raw) || Boolean(rawCandidateHashes),
     placeholderData,
     retry: false,
   });
@@ -170,8 +142,6 @@ export const useImages = ({
     images: listQuery.data?.items ?? [],
     paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
-
-    imageQueryParams,
 
     byGroupId: byGroupIdQuery.data?.items ?? [],
     byGroupPaging: byGroupIdQuery.data?.paging || null,

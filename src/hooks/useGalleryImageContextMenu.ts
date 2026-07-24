@@ -7,6 +7,7 @@ import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
 import { useImageByHash } from '@/hooks/useImageByHash';
+import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import { useImages } from '@/hooks/useImages';
 import { usePlugins } from '@/hooks/usePlugins';
 import useShareImage from '@/hooks/useShareImage';
@@ -62,7 +63,8 @@ export const useGalleryImageContextMenu = (hash: string): UseGalleryImageContext
 
   const { setLightboxImage } = useInteractionsStore();
   const { image } = useImageByHash(hash);
-  const { updateImages, imageQueryParams } = useImages({});
+  const { updateImages } = useImages({});
+  const imageQueryParams = useImageQueryParams();
   const { plugins } = usePlugins({ list: true });
   const { view } = useGalleryTreeContext();
   const { setEditImages } = useEditStore();

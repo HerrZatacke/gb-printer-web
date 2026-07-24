@@ -71,8 +71,7 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const globalSortDirection = sortBy.split('_')[1];
 
-  const { imageQueryParams } = useImages({});
-  const { raw: rawImages } = useImages({ raw: imageQueryParams, rawCandidateHashes: new Set(editRGBNImages) });
+  const { raw: rawImages } = useImages({ rawCandidateHashes: new Set(editRGBNImages) });
 
   const sortedImages = useMemo(() => rawImages.reduce(reduceImagesMonochrome, []), [rawImages]);
 
