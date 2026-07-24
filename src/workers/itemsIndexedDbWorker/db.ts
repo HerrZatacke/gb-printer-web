@@ -9,6 +9,16 @@ import {
   type MigrationFn,
 } from '@/workers/itemsIndexedDbWorker/types';
 
+declare global {
+  var hostApi: ItemsHostApi | null;
+  var dbPromise: Promise<IDBPDatabase<ItemsDB>> | null;
+  var hostApiPromise: Promise<ItemsHostApi> | null;
+}
+
+global.hostApi = null;
+global.dbPromise = null;
+global.hostApiPromise = null;
+
 const migrationFunctions: MigrationFn[] = [
   migrateV1, // migrate v0 -> v1
   // Pattern for future migrations:
@@ -17,12 +27,8 @@ const migrationFunctions: MigrationFn[] = [
   // migrateV4, // migrate v3 -> v4
 ];
 
-let hostApi: ItemsHostApi | null = null;
-let dbPromise: Promise<IDBPDatabase<ItemsDB>> | null = null;
-let hostApiPromise: Promise<ItemsHostApi> | null = null;
-
 export const configureDb = (configureHostApi: ItemsHostApi): void => {
-  hostApi = configureHostApi;
+  global.hostApi = configureHostApi;
 };
 
 
@@ -30,7 +36,7 @@ const openAndPrepareDb = async () => {
   const start = performance.now();
   const afterUpgradeTasks: AfterUpgradeFn[] = [];
 
-  if (!hostApi) {
+  if (!global.hostApi) {
     throw new Error('getDb not configured');
   }
 
@@ -62,7 +68,7 @@ const openAndPrepareDb = async () => {
   if (didUpgrade) {
     const startUpgradeTasks = performance.now();
     for (const afterUpgradeTask of afterUpgradeTasks) {
-      await afterUpgradeTask(database, hostApi);
+      await afterUpgradeTask(database, global.hostApi);
     }
     console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
 
@@ -72,7 +78,7 @@ const openAndPrepareDb = async () => {
 
     const startMaintenanceTasks = performance.now();
     for (const maintenanceTask of maintenanceTasks) {
-      await maintenanceTask(database, hostApi);
+      await maintenanceTask(database, global.hostApi);
     }
     console.log(`MaintenanceTasks done in ${performance.now() - startMaintenanceTasks}ms`);
   }
@@ -82,21 +88,21 @@ const openAndPrepareDb = async () => {
 };
 
 export function getDb(): Promise<IDBPDatabase<ItemsDB>> {
-  if (!dbPromise) {
-    dbPromise = openAndPrepareDb().catch((err) => {
-      dbPromise = null;
+  if (!global.dbPromise) {
+    global.dbPromise = openAndPrepareDb().catch((err) => {
+      global.dbPromise = null;
       throw err;
     });
   }
-  return dbPromise;
+  return global.dbPromise;
 }
 
 export function getHostApi(): Promise<ItemsHostApi> {
   if (!hostApiPromise) {
-    if (!hostApi) {
+    if (!global.hostApi) {
       throw new Error('No host api configured');
     }
-    hostApiPromise = Promise.resolve(hostApi);
+    hostApiPromise = Promise.resolve(global.hostApi);
   }
   return hostApiPromise;
 }
