@@ -15,10 +15,10 @@ function LocalDebug() {
     }
   }, []);
 
-  const { images: allImages } = useImages({ list: true }); // All images
-  const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
+  // const { images: allImages } = useImages({ list: true }); // All images
+  // const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
   // ToDo: See edge-case in resolveGroupItemsByGroupId
-  const { byGroupId: rawImages2 } = useImages({ groupId: 'ROOT' });
+  // const { byGroupId: rawImages2 } = useImages({ groupId: 'ROOT' });
 
   // const { byAnyHashes: blueChannel } = useImages({ anyHashes: ['8ce194178ea421d56f06215c582dbec844566954'] }); // RGB-Bulli b-channel hash
   // const { byAnyHashes: neutralChannel } = useImages({ anyHashes: ['5e20e1ee863a83e9d5a9c762391e58095e7b165e'] }); // RGB-Bulli n-channel hash
@@ -41,9 +41,9 @@ function LocalDebug() {
         <Alert severity="warning" variant="filled">
           Debug Stuff
         </Alert>
-        <pre style={{ maxHeight: '30vh' }}>{allImages.length || 'no images'}</pre>
-        <pre style={{ maxHeight: '30vh' }}>{rawImages1.length || 'no images'}</pre>
-        <pre style={{ maxHeight: '30vh' }}>{rawImages2.length || 'no images'}</pre>
+        {/* <pre style={{ maxHeight: '30vh' }}>{allImages.length || 'no images'}</pre> */}
+        {/* <pre style={{ maxHeight: '30vh' }}>{rawImages1.length || 'no images'}</pre> */}
+        {/* <pre style={{ maxHeight: '30vh' }}>{rawImages2.length || 'no images'}</pre> */}
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(rootGroupItems, null, 2)}</pre> */}
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}
         <Stack direction="row">
