@@ -1,5 +1,6 @@
 import { type IDBPDatabase, openDB, deleteDB } from 'idb';
 import { populateGroupAggregatedTags } from '@/workers/itemsIndexedDbWorker/maintenance/populateGroupAggregatedTags';
+import { pruneAndRepairImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/pruneAndRepairImageGroups';
 import { MaintenanceTask } from '@/workers/itemsIndexedDbWorker/maintenance/types';
 import { migrateV1 } from '@/workers/itemsIndexedDbWorker/migrations/v1';
 import {
@@ -74,6 +75,7 @@ const openAndPrepareDb = async () => {
 
     const maintenanceTasks: MaintenanceTask[] = [
       populateGroupAggregatedTags,
+      pruneAndRepairImageGroups,
     ];
 
     const startMaintenanceTasks = performance.now();

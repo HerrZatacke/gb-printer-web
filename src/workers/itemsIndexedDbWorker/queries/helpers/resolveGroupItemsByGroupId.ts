@@ -51,6 +51,10 @@ export const resolveGroupItemsByGroupId = async (
   const { store: groupsStore } = db.transaction('imagegroups');
   const imageGroup: SerializableImageGroup | undefined = await groupsStore.get(groupId);
 
+  if (!imageGroup && !rootGroup) {
+    throw new Error('Group by ID not found');
+  }
+
   if (imageGroup) {
     imageHashes = imageGroup.images;
     groupIds = imageGroup.groups;
