@@ -197,6 +197,11 @@ export interface ItemsSource {
   getBinaryImageHashes(): Promise<ItemsSourceResponse<string>>;
   updateBinaryImages(binaryImages: BinaryStoreItem[]): Promise<void>;
   deleteBinaryImagesByHashes(hashes: string[]): Promise<void>;
+
+  getBinaryFramesByHashes(hashes: string[]): Promise<ItemsSourceResponse<BinaryStoreItem>>;
+  getBinaryFrameHashes(): Promise<ItemsSourceResponse<string>>;
+  updateBinaryFrames(binaryFrames: BinaryStoreItem[]): Promise<void>;
+  deleteBinaryFramesByHashes(hashes: string[]): Promise<void>;
 }
 
 export interface FilterableFacet {

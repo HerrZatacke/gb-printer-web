@@ -1,6 +1,12 @@
 import * as Comlink from 'comlink';
 import { configureDb } from '@/workers/itemsIndexedDbWorker/db';
 import {
+  deleteBinaryFramesByHashes,
+  getBinaryFrameHashes,
+  getBinaryFramesByHashes,
+  updateBinaryFrames,
+} from '@/workers/itemsIndexedDbWorker/queries/binaryFrames';
+import {
   deleteBinaryImagesByHashes,
   getBinaryImageHashes,
   getBinaryImagesByHashes,
@@ -88,6 +94,11 @@ const api: ItemsSource = {
   getPluginsByUrls,
   updatePlugins,
   deletePluginsByUrls,
+
+  getBinaryFramesByHashes,
+  getBinaryFrameHashes,
+  updateBinaryFrames,
+  deleteBinaryFramesByHashes,
 
   getBinaryImagesByHashes,
   getBinaryImageHashes,
