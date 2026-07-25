@@ -21,8 +21,8 @@ const collectAncestors = (
     return [root];
   }
 
-  const [nextSlug, ...rest] = remainingSegments;
-  const nextChild = root.groups.find((child) => child.slug === nextSlug);
+  const [nextSegment, ...rest] = remainingSegments;
+  const nextChild = root.groups.find((child) => child.fullSlug.split('/').pop() === nextSegment);
   if (!nextChild) {
     return [root];
   }
@@ -84,6 +84,7 @@ export const usePathSegments = (): UsePathSegments => {
     };
   }, [ancestors, getImagePageIndexInGroup, getUrl]);
 
+  // ToDo: Navigation Effects / There should be a centralized spot for all redirects
   useEffect(() => {
     const isFullMatch = ancestors.length === targetSegments.length + 1; // +1 for the root element
     if (imageGroupTree && !isFullMatch) {
