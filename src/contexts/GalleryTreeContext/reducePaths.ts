@@ -42,8 +42,5 @@ export const reducePathsOptions = (paths: PathMap[]) => {
         name: `${indent}${group.title} (/${absolutePath.replace(/\/$/, '')})`,
       },
     ];
-  }, [{
-    value: '',
-    name: '/',
-  }]);
+  }, []);
 };
