@@ -1,16 +1,16 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useImageQueryParams } from '@/hooks/useImageQueryParams';
-import { getItemsSource } from '@/items/client';
 import {
   imagesAllTagsQueryOptions,
   imagesByAnyHashesQueryOptions,
   imagesByHashesQueryOptions,
-  imagesKeys,
   imagesListQueryOptions,
   imagesRawQueryOptions,
   groupItemsByGroupIdQueryOptions,
   hashesByGroupIdQueryOptions,
+  updateImagesAction,
+  deleteImagesByHashesAction,
 } from '@/stores/queries/images';
 import { type Image } from '@/types/Image';
 import {
@@ -127,15 +127,11 @@ export const useImages = ({
   });
 
   const updateImages = useCallback(async (images: Image[], purge = false): Promise<void> => {
-    const source = await getItemsSource();
-    await source.updateImages(images, purge);
-    await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
+    await updateImagesAction(queryClient, images, purge);
   }, [queryClient]);
 
   const deleteImagesByHashes = useCallback(async (deleteHashes: string[]): Promise<void> => {
-    const source = await getItemsSource();
-    await source.deleteImagesByHashes(deleteHashes);
-    await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
+    await deleteImagesByHashesAction(queryClient, deleteHashes);
   }, [queryClient]);
 
   return {

@@ -1,3 +1,4 @@
+import { type QueryClient } from '@tanstack/react-query';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
@@ -171,4 +172,16 @@ export const imagesRawQueryOptions = (raw: ImageQueryParams, candidateHashes?: S
     },
     staleTime: STALE_TIME,
   };
+};
+
+export const updateImagesAction = async (queryClient: QueryClient, images: Image[], purge = false): Promise<void> => {
+  const source = await getItemsSource();
+  await source.updateImages(images, purge);
+  await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
+};
+
+export const deleteImagesByHashesAction = async (queryClient: QueryClient, hashes: string[]): Promise<void> => {
+  const source = await getItemsSource();
+  await source.deleteImagesByHashes(hashes);
+  await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
 };
