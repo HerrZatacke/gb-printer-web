@@ -1,19 +1,14 @@
-import { localforageFrames } from '@/tools/localforageInstance';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryFramesByHashesQueryOptions } from '@/stores/queries/binaryFrames';
+import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 
 const getFrames = async (exportFrameHashes: string[]): Promise<Record<string, string>> => {
-  const result = await Promise.all(exportFrameHashes.map(async (hash) => {
-    const data = await localforageFrames.getItem(hash);
-    return {
-      hash,
-      data,
-    };
-  }));
+  const queryClient = getQueryClient();
+  const { items: result } = await queryClient.fetchQuery(binaryFramesByHashesQueryOptions(exportFrameHashes));
 
   const frames: Record<string, string> = {};
-  result.forEach(({ hash, data }) => {
-    if (data) {
-      frames[`frame-${hash}`] = data;
-    }
+  result.forEach(({ hash, data }: BinaryStoreItem) => {
+    frames[`frame-${hash}`] = data;
   });
 
   return frames;

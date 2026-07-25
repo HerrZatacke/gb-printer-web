@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryFrameByHashQueryOptions } from '@/stores/queries/binaryFrames';
 import { binaryImageByHashQueryOptions } from '@/stores/queries/binaryImages';
 import {
   type TrashCount,
@@ -11,12 +12,11 @@ import {
 import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
-import { localforageReady, localforageFrames } from '@/tools/localforageInstance';
-import { type WrappedLocalForageInstance } from '@/tools/localforageInstance/createWrappedInstance';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
+import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type JSONExportBinary, type JSONExportState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
 import { type Image } from '@/types/Image';
@@ -36,22 +36,31 @@ interface TrashItem {
   binary: string;
 }
 
-const getBinaryImageItems = async (hashes: string[]): Promise<TrashItem[]> => {
+interface AnyBinaryByHashQueryOptions {
+  queryKey: readonly unknown[];
+  queryFn: () => Promise<BinaryStoreItem | null>;
+  staleTime: number;
+}
+
+const getBinaryItems = async (
+  hashes: string[],
+  byHashQueryOptions: (hash: string) => AnyBinaryByHashQueryOptions,
+): Promise<TrashItem[]> => {
   const queryClient = getQueryClient();
 
   const items = await Promise.all(hashes.map(async (hash) => {
     try {
-      const binaryImage = await queryClient.fetchQuery(binaryImageByHashQueryOptions(hash));
+      const binaryItem = await queryClient.fetchQuery(byHashQueryOptions(hash));
 
-      if (!binaryImage?.data) {
+      if (!binaryItem?.data) {
         return null;
       }
 
-      const inflated = await inflate(binaryImage.data);
+      const inflated = await inflate(binaryItem.data);
       return {
         hash,
         lines: inflated.split('\n'),
-        binary: binaryImage.data,
+        binary: binaryItem.data,
       };
     } catch {
       return null;
@@ -61,29 +70,8 @@ const getBinaryImageItems = async (hashes: string[]): Promise<TrashItem[]> => {
   return items.reduce(reduceItems<TrashItem>, []);
 };
 
-const getItems = async (keys: string[], storage: WrappedLocalForageInstance<string>): Promise<TrashItem[]> => {
-  await localforageReady();
-  const items = await Promise.all(keys.map(async (hash) => {
-    try {
-      const binary = await storage.getItem(hash);
-
-      if (!binary) {
-        return null;
-      }
-
-      const inflated = await inflate(binary);
-      return {
-        hash,
-        lines: inflated.split('\n'),
-        binary,
-      };
-    } catch {
-      return null;
-    }
-  }));
-
-  return items.reduce(reduceItems<TrashItem>, []);
-};
+const getBinaryImageItems = (hashes: string[]): Promise<TrashItem[]> => getBinaryItems(hashes, binaryImageByHashQueryOptions);
+const getBinaryFrameItems = (hashes: string[]): Promise<TrashItem[]> => getBinaryItems(hashes, binaryFrameByHashQueryOptions);
 
 const useTrashbin = (): UseTrashbin => {
   const { trashCount, showTrashCount } = useInteractionsStore();
@@ -129,7 +117,7 @@ const useTrashbin = (): UseTrashbin => {
 
   const downloadFrames = useCallback(async (): Promise<void> => {
     const frameHashes = await getTrashFrames();
-    const deletedFrames = await getItems(frameHashes, localforageFrames);
+    const deletedFrames = await getBinaryFrameItems(frameHashes);
 
     const jsonExportBinary: JSONExportBinary = {};
     const backupFrames: Frame[] = deletedFrames.map((frame, index) => {

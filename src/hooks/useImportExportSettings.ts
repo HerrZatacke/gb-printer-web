@@ -6,10 +6,10 @@ import { useImageGroups } from '@/hooks/useImageGroups';
 import { useImages } from '@/hooks/useImages';
 import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
+import { updateBinaryFramesAction } from '@/stores/queries/binaryFrames';
 import { updateBinaryImagesAction } from '@/stores/queries/binaryImages';
 import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
-import { localforageFrames } from '@/tools/localforageInstance';
 import mergeStates from '@/tools/mergeStates';
 import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type JSONExport, type JSONExportState, type ExportableState } from '@/types/ExportState';
@@ -27,7 +27,7 @@ const mergeSettings = async (
   isFromJsonImport: boolean,
 ): Promise<Partial<ExportableState>> => {
   const binaryImageEntries: BinaryStoreItem[] = [];
-  const frameWrites: Promise<string | null>[] = [];
+  const binaryFrameEntries: BinaryStoreItem[] = [];
 
   Object.keys(settings).forEach((key: string) => {
     if (key === 'state') {
@@ -39,15 +39,19 @@ const mergeSettings = async (
     if (key.match(/^[a-f0-9]{40,}$/gi)) {
       binaryImageEntries.push({ hash: key, data: exportProp });
     } else if (key.startsWith('frame-')) {
-      frameWrites.push(localforageFrames.setItem(`${key.split('frame-').pop()}`, exportProp));
+      binaryFrameEntries.push({ hash: `${key.split('frame-').pop()}`, data: exportProp });
     }
   });
 
+  const queryClient = getQueryClient();
+
   if (binaryImageEntries.length > 0) {
-    await updateBinaryImagesAction(getQueryClient(), binaryImageEntries);
+    await updateBinaryImagesAction(queryClient, binaryImageEntries);
   }
 
-  await Promise.all(frameWrites);
+  if (binaryFrameEntries.length > 0) {
+    await updateBinaryFramesAction(queryClient, binaryFrameEntries);
+  }
 
   // ToDo: check for cases which need to "purge" the target table/store on update
   return mergeStates(

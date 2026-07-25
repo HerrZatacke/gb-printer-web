@@ -1,8 +1,8 @@
 import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryFrameHashesQueryOptions } from '@/stores/queries/binaryFrames';
 import { binaryImageHashesQueryOptions } from '@/stores/queries/binaryImages';
 import { framesByHashesQueryOptions } from '@/stores/queries/frames';
 import { imagesByAnyHashesQueryOptions } from '@/stores/queries/images';
-import { localforageFrames, localforageReady } from '@/tools/localforageInstance';
 import { deleteBinaryImage } from '@/tools/storage';
 
 const isImageDeleted = async (hash: string): Promise<boolean> => {
@@ -41,8 +41,8 @@ const isFrameDeleted = async (hash: string): Promise<boolean> => {
 };
 
 export const getTrashFrames = async (): Promise<string[]> => {
-  await localforageReady();
-  const storedHashes = await localforageFrames.keys();
+  const queryClient = getQueryClient();
+  const { items: storedHashes } = await queryClient.fetchQuery(binaryFrameHashesQueryOptions());
 
   const BATCH_SIZE = 50;
   const results: string[] = [];

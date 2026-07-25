@@ -1,11 +1,11 @@
 import { getQueryClient } from '@/contexts/QueryClient';
+import { deleteBinaryFramesByHashesAction } from '@/stores/queries/binaryFrames';
 import {
   binaryImagesByHashesQueryOptions,
   deleteBinaryImagesByHashesAction,
   updateBinaryImagesAction,
 } from '@/stores/queries/binaryImages';
 import applyFrame from '@/tools/applyFrame';
-import { localforageFrames } from '@/tools/localforageInstance';
 import { deflate, inflate } from '@/tools/pack';
 import dummyImage from './dummyImage';
 
@@ -85,6 +85,6 @@ export const deleteBinaryImage = async (dataHash: string): Promise<void> => {
   await deleteBinaryImagesByHashesAction(getQueryClient(), [dataHash]);
 };
 
-export const delFrame = async (dataHash: string): Promise<void> => (
-  localforageFrames.removeItem(dataHash)
-);
+export const delFrame = async (dataHash: string): Promise<void> => {
+  await deleteBinaryFramesByHashesAction(getQueryClient(), [dataHash]);
+};
