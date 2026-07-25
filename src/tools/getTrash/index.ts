@@ -3,7 +3,7 @@ import { binaryFrameHashesQueryOptions } from '@/stores/queries/binaryFrames';
 import { binaryImageHashesQueryOptions } from '@/stores/queries/binaryImages';
 import { framesByHashesQueryOptions } from '@/stores/queries/frames';
 import { imagesByAnyHashesQueryOptions } from '@/stores/queries/images';
-import { deleteBinaryImage } from '@/tools/storage';
+import { deleteBinaryFrame, deleteBinaryImage } from '@/tools/storage';
 
 const isImageDeleted = async (hash: string): Promise<boolean> => {
   const queryClient = getQueryClient();
@@ -66,10 +66,10 @@ export const getTrashFrames = async (): Promise<string[]> => {
 
 export const cleanupStorage = async (): Promise<void> => {
   const trashImages = await getTrashImages();
-  // const trashFrames = await getTrashFrames();
+  const trashFrames = await getTrashFrames();
 
   await Promise.all([
-  //   ...trashFrames.map((deleteHash) => delFrame(deleteHash)),
+    ...trashFrames.map((deleteHash) => deleteBinaryFrame(deleteHash)),
     ...trashImages.map((deleteHash) => deleteBinaryImage(deleteHash)),
   ]);
 };

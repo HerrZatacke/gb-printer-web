@@ -84,6 +84,6 @@ export const deleteBinaryImage = async (dataHash: string): Promise<void> => {
   await deleteBinaryImagesByHashesAction(getQueryClient(), [dataHash]);
 };
 
-export const delFrame = async (dataHash: string): Promise<void> => {
+export const deleteBinaryFrame = async (dataHash: string): Promise<void> => {
   await deleteBinaryFramesByHashesAction(getQueryClient(), [dataHash]);
 };
