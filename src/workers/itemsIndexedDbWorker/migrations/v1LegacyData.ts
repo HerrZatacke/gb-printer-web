@@ -2,7 +2,7 @@ import {
   openDB,
   type IDBPDatabase,
   type StoreNames,
-  type StoreValue, IDBPTransaction,
+  type StoreValue,
 } from 'idb';
 import { type ZodSafeParseResult } from 'zod';
 import { FrameSchema } from '@/types/Frame';
