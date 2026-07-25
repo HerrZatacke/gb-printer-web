@@ -1,7 +1,7 @@
 import { getQueryClient } from '@/contexts/QueryClient';
 import { deleteBinaryFramesByHashesAction } from '@/stores/queries/binaryFrames';
 import {
-  binaryImagesByHashesQueryOptions,
+  binaryImageByHashQueryOptions,
   deleteBinaryImagesByHashesAction,
   updateBinaryImagesAction,
 } from '@/stores/queries/binaryImages';
@@ -54,10 +54,9 @@ export const load = async (
     return null;
   }
 
-  const queryClient = getQueryClient();
-
   try {
-    const { items: [binaryImage] } = await queryClient.fetchQuery(binaryImagesByHashesQueryOptions([dataHash]));
+    const queryClient = getQueryClient();
+    const binaryImage = await queryClient.fetchQuery(binaryImageByHashQueryOptions(dataHash));
 
     if (!binaryImage) {
       throw new Error('missing binary imagedata');

@@ -2,6 +2,7 @@ import { getQueryClient } from '@/contexts/QueryClient';
 import { binaryImagesByHashesQueryOptions } from '@/stores/queries/binaryImages';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';
+import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type Image, type RGBNImage } from '@/types/Image';
 
 const getImages = async (exportImages: Image[]): Promise<Record<string, string>> => {
@@ -18,24 +19,11 @@ const getImages = async (exportImages: Image[]): Promise<Record<string, string>>
     ];
   }, []);
 
-  const result = await Promise.all(exportImageHashes.map(async (hash) => {
-    const { items: [binaryImage] } = await queryClient.fetchQuery(binaryImagesByHashesQueryOptions([hash]));
-    const data = binaryImage.data || null;
-
-    return ({
-      hash,
-      data,
-    });
-  }));
+  const { items: result } = await queryClient.fetchQuery(binaryImagesByHashesQueryOptions(exportImageHashes));
 
   const images: Record<string, string> = {};
-  result.forEach(({
-    hash,
-    data,
-  }) => {
-    if (data) {
-      images[hash] = data;
-    }
+  result.forEach(({ hash, data }: BinaryStoreItem) => {
+    images[hash] = data;
   });
 
   return images;
