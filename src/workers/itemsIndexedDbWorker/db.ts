@@ -41,9 +41,9 @@ const openAndPrepareDb = async () => {
     throw new Error('getDb not configured');
   }
 
-  if (location.hostname === 'localhost') {
-    await deleteDB('gb-printer-web--items');
-  }
+  // if (location.hostname === 'localhost') {
+  //   await deleteDB('gb-printer-web--items');
+  // }
 
   let didUpgrade = false;
 

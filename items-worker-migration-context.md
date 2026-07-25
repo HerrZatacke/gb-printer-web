@@ -221,17 +221,6 @@ The `delay` param is new versus chat's design (which only used `queueMicrotask`)
 - `imagesListQueryOptions` still loads the **entire** image collection unpaginated (`pageSize: 10000`), with an explicit `// ToDo: getting _all_ images without pagination must be eliminated for API` comment — i.e., the user is aware this doesn't survive the transition to a hosted API and has flagged it as a known remaining migration task, not an oversight.
 - `imageGroupsFullTreeQueryOptions`/`findGroupByFullSlug` live in `stores/queries/imageGroups.ts` — confirms the `select`-over-shared-cache pattern for by-slug lookup was adopted as planned.
 
-## Dev/Debug State — ACTIVE, needs attention before real persistence testing
-
-```ts
-// db.ts, inside openAndPrepareDb(), unconditional every call:
-if (location.hostname === 'localhost') {
-  await deleteDB('gb-printer-web--items');
-}
-```
-
-Still exactly the "wipe on every load" dev convenience flagged in chat as needing deliberate removal before real cutover — it is **not** gated behind any separate toggle; it's hardcoded to `localhost`. A `src/components/LocalDebug.tsx` component also exists (renders only on `localhost`) with ad hoc debug buttons (`navigateToGroup('BadId', 0)`, etc.) and commented-out scratch hook calls — treat as throwaway dev scaffolding, not part of the architecture.
-
 ## Project/Tooling Notes
 
 - `@tanstack/react-query` (`^5.101.2`) and `idb` (`^8.0.3`) are now real dependencies.
@@ -250,7 +239,6 @@ Still exactly the "wipe on every load" dev convenience flagged in chat as needin
 - Debounced/dirty-tracked aggregate recompute — **not built** Ask before assuming staleness behavior matches the original design discussion.
 - Cross-tab `BroadcastChannel` invalidation — **not built**
 - `imagesListQueryOptions`'s unpaginated `pageSize: 10000` — known-acknowledged remaining migration debt (per the user's own `ToDo` comment), not yet addressed.
-- Dev-only DB wipe on localhost — **still active**, needs explicit removal/gating before persistence testing.
 
 ## What to Ask For When Resuming
 
