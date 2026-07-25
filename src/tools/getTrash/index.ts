@@ -1,19 +1,20 @@
 import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryImageHashesQueryOptions } from '@/stores/queries/binaryImages';
 import { framesByHashesQueryOptions } from '@/stores/queries/frames';
 import { imagesByAnyHashesQueryOptions } from '@/stores/queries/images';
-import { localforageFrames, localforageImages, localforageReady } from '@/tools/localforageInstance';
-// import { del, delFrame } from '@/tools/storage';
+import { localforageFrames, localforageReady } from '@/tools/localforageInstance';
+import { deleteBinaryImage } from '@/tools/storage';
 
 const isImageDeleted = async (hash: string): Promise<boolean> => {
   const queryClient = getQueryClient();
   const res = await queryClient.fetchQuery(imagesByAnyHashesQueryOptions([hash]));
-  const { items: [image] } = res;
+  const { items: [{ items: [image] }] } = res;
   return !image;
 };
 
 export const getTrashImages = async (): Promise<string[]> => {
-  await localforageReady();
-  const storedHashes = await localforageImages.keys();
+  const queryClient = getQueryClient();
+  const { items: storedHashes } = await queryClient.fetchQuery(binaryImageHashesQueryOptions());
 
   const BATCH_SIZE = 150;
   const results: string[] = [];
@@ -65,13 +66,10 @@ export const getTrashFrames = async (): Promise<string[]> => {
 
 export const cleanupStorage = async (): Promise<void> => {
   const trashImages = await getTrashImages();
-  const trashFrames = await getTrashFrames();
+  // const trashFrames = await getTrashFrames();
 
-  alert('ToDo: check cleanup result'); // ToDo: Check the result. Including hashes used only in rgbn images, moni images, both etc...
-  console.log(trashImages, trashFrames);
-
-  // await Promise.all([
+  await Promise.all([
   //   ...trashFrames.map((deleteHash) => delFrame(deleteHash)),
-  //   ...trashImages.map((deleteHash) => del(deleteHash)),
-  // ]);
+    ...trashImages.map((deleteHash) => deleteBinaryImage(deleteHash)),
+  ]);
 };

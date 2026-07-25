@@ -1,13 +1,15 @@
 import { useCallback } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { useFrames } from '@/hooks/useFrames';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { useImages } from '@/hooks/useImages';
 import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
+import { updateBinaryImagesAction } from '@/stores/queries/binaryImages';
 import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
-import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
+import { localforageFrames } from '@/tools/localforageInstance';
 import mergeStates from '@/tools/mergeStates';
 import { type JSONExport, type JSONExportState, type ExportableState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
@@ -23,19 +25,28 @@ const mergeSettings = async (
   frames: Frame[],
   isFromJsonImport: boolean,
 ): Promise<Partial<ExportableState>> => {
+  const binaryImageEntries: { hash: string; imageData: string }[] = [];
+  const frameWrites: Promise<string | null>[] = [];
+
   Object.keys(settings).forEach((key: string) => {
-    if (key !== 'state') {
-      // import frames and images from JSON
+    if (key === 'state') {
+      return;
+    }
 
-      const exportProp: string = settings[key];
+    const exportProp: string = settings[key];
 
-      if (key.match(/^[a-f0-9]{40,}$/gi)) {
-        localforageImages.setItem(`${key}`, exportProp);
-      } else if (key.startsWith('frame-')) {
-        localforageFrames.setItem(`${key.split('frame-').pop()}`, exportProp);
-      }
+    if (key.match(/^[a-f0-9]{40,}$/gi)) {
+      binaryImageEntries.push({ hash: key, imageData: exportProp });
+    } else if (key.startsWith('frame-')) {
+      frameWrites.push(localforageFrames.setItem(`${key.split('frame-').pop()}`, exportProp));
     }
   });
+
+  if (binaryImageEntries.length > 0) {
+    await updateBinaryImagesAction(getQueryClient(), binaryImageEntries);
+  }
+
+  await Promise.all(frameWrites);
 
   // ToDo: check for cases which need to "purge" the target table/store on update
   return mergeStates(

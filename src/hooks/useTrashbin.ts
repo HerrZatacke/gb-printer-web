@@ -1,6 +1,8 @@
 import { saveAs } from 'file-saver';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryImageByHashQueryOptions } from '@/stores/queries/binaryImages';
 import {
   type TrashCount,
   ITEMS_STORE_VERSION,
@@ -9,7 +11,7 @@ import {
 import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
-import { localforageReady, localforageImages, localforageFrames } from '@/tools/localforageInstance';
+import { localforageReady, localforageFrames } from '@/tools/localforageInstance';
 import { type WrappedLocalForageInstance } from '@/tools/localforageInstance/createWrappedInstance';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
@@ -33,6 +35,31 @@ interface TrashItem {
   lines: string[];
   binary: string;
 }
+
+const getBinaryImageItems = async (hashes: string[]): Promise<TrashItem[]> => {
+  const queryClient = getQueryClient();
+
+  const items = await Promise.all(hashes.map(async (hash) => {
+    try {
+      const binaryImage = await queryClient.fetchQuery(binaryImageByHashQueryOptions(hash));
+
+      if (!binaryImage?.imageData) {
+        return null;
+      }
+
+      const inflated = await inflate(binaryImage.imageData);
+      return {
+        hash,
+        lines: inflated.split('\n'),
+        binary: binaryImage.imageData,
+      };
+    } catch {
+      return null;
+    }
+  }));
+
+  return items.reduce(reduceItems<TrashItem>, []);
+};
 
 const getItems = async (keys: string[], storage: WrappedLocalForageInstance<string>): Promise<TrashItem[]> => {
   await localforageReady();
@@ -65,7 +92,7 @@ const useTrashbin = (): UseTrashbin => {
 
   const downloadImages = useCallback(async (): Promise<void> => {
     const imageHashes = await getTrashImages();
-    const deletedImages = await getItems(imageHashes, localforageImages);
+    const deletedImages = await getBinaryImageItems(imageHashes);
 
     const jsonExportBinary: JSONExportBinary = {};
     const backupImages = deletedImages.map((image): Image | null => {

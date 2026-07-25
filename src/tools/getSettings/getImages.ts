@@ -1,9 +1,11 @@
+import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryImagesByHashesQueryOptions } from '@/stores/queries/binaryImages';
 import { isRGBNImage } from '@/tools/isRGBNImage';
-import { localforageImages } from '@/tools/localforageInstance';
 import unique from '@/tools/unique';
 import { type Image, type RGBNImage } from '@/types/Image';
 
 const getImages = async (exportImages: Image[]): Promise<Record<string, string>> => {
+  const queryClient = getQueryClient();
 
   const exportImageHashes = exportImages.reduce((acc: string[], exportImage: Image): string[] => {
     const exportHashes: string[] = isRGBNImage(exportImage) ?
@@ -17,7 +19,9 @@ const getImages = async (exportImages: Image[]): Promise<Record<string, string>>
   }, []);
 
   const result = await Promise.all(exportImageHashes.map(async (hash) => {
-    const data = await localforageImages.getItem(hash);
+    const { items: [binaryImage] } = await queryClient.fetchQuery(binaryImagesByHashesQueryOptions([hash]));
+    const data = binaryImage.imageData || null;
+
     return ({
       hash,
       data,
