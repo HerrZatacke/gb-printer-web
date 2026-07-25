@@ -13,6 +13,7 @@ import {
   type SerializableImageGroup,
   type TreeImageGroup,
 } from '@/types/ImageGroup';
+import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UseImageGroupsOptions {
@@ -79,7 +80,7 @@ export const computeImageGroupUpdateDiff = (
   }
 
   // detach this group from any parent other than the intended one
-  if (parentGroupId?.length) {
+  if (parentGroupId?.length && parentGroupId !== ROOT_ID) {
     for (const other of allGroups) {
       if (other.id === parentGroupId || !other.groups.includes(group.id)) {
         continue;
