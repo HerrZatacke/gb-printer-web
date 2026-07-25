@@ -53,8 +53,7 @@ export const useContextHook = (): UseNavigationTools => {
 
   const getPagedImagePath = useCallback(async (imageHash: string): Promise<string> => {
     const { item: root } = await queryClient.fetchQuery(imageGroupsFullTreeQueryOptions());
-    const usedPaths = new Set<string>();
-    const freshPaths = reducePaths('', [root], usedPaths);
+    const freshPaths = reducePaths([root]);
 
     const pathMap = freshPaths.find(({ group: { images } }) => (
       images.includes(imageHash)

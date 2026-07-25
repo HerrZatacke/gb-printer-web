@@ -21,8 +21,7 @@ export const useContextHook = (): GalleryTreeContextType => {
       return [];
     }
 
-    const usedPaths = new Set<string>();
-    return reducePaths('', [root], usedPaths);
+    return reducePaths([root]);
   }, [root]);
 
   const pathsOptions = useMemo(() => {
