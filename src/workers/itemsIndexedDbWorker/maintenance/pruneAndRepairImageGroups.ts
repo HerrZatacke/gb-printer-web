@@ -75,9 +75,6 @@ export const pruneAndRepairImageGroups = async (
 
   const deepImagesCache = new Map<string, Set<string>>();
 
-  const tx = db.transaction('imagegroups', 'readwrite');
-  const groupsStore = tx.objectStore('imagegroups');
-
   for (const group of groups) {
     const deepImages = getDeepImages(group.id, groupsById, deepImagesCache);
 
@@ -85,6 +82,42 @@ export const pruneAndRepairImageGroups = async (
       const [firstAvailable] = deepImages;
       group.coverImage = firstAvailable ?? '';
     }
+  }
+
+  const deletedGroupIds = new Set<string>();
+  let hasNewlyDeleted = true;
+
+  while (hasNewlyDeleted) {
+    hasNewlyDeleted = false;
+
+    for (const group of groups) {
+      if (deletedGroupIds.has(group.id)) {
+        continue;
+      }
+
+      const remainingChildIds = group.groups.filter((childId) => {
+        return !deletedGroupIds.has(childId);
+      });
+
+      if (!group.images.length && !remainingChildIds.length) {
+        deletedGroupIds.add(group.id);
+        hasNewlyDeleted = true;
+      }
+    }
+  }
+
+  const tx = db.transaction('imagegroups', 'readwrite');
+  const groupsStore = tx.objectStore('imagegroups');
+
+  for (const group of groups) {
+    if (deletedGroupIds.has(group.id)) {
+      await groupsStore.delete(group.id);
+      continue;
+    }
+
+    group.groups = group.groups.filter((childId) => {
+      return !deletedGroupIds.has(childId);
+    });
 
     await groupsStore.put(group);
   }
