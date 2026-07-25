@@ -11,6 +11,7 @@ import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
 import { localforageFrames } from '@/tools/localforageInstance';
 import mergeStates from '@/tools/mergeStates';
+import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type JSONExport, type JSONExportState, type ExportableState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
 import { Image } from '@/types/Image';
@@ -25,7 +26,7 @@ const mergeSettings = async (
   frames: Frame[],
   isFromJsonImport: boolean,
 ): Promise<Partial<ExportableState>> => {
-  const binaryImageEntries: { hash: string; imageData: string }[] = [];
+  const binaryImageEntries: BinaryStoreItem[] = [];
   const frameWrites: Promise<string | null>[] = [];
 
   Object.keys(settings).forEach((key: string) => {
@@ -36,7 +37,7 @@ const mergeSettings = async (
     const exportProp: string = settings[key];
 
     if (key.match(/^[a-f0-9]{40,}$/gi)) {
-      binaryImageEntries.push({ hash: key, imageData: exportProp });
+      binaryImageEntries.push({ hash: key, data: exportProp });
     } else if (key.startsWith('frame-')) {
       frameWrites.push(localforageFrames.setItem(`${key.split('frame-').pop()}`, exportProp));
     }

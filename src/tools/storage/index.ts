@@ -40,7 +40,7 @@ export const save = async (lines: string[]): Promise<string> => {
     dataHash,
     compressed,
   } = await compressAndHash(lines);
-  await updateBinaryImagesAction(getQueryClient(), [{ hash: dataHash, imageData: compressed }]);
+  await updateBinaryImagesAction(getQueryClient(), [{ hash: dataHash, data: compressed }]);
   return dataHash;
 };
 
@@ -63,7 +63,7 @@ export const load = async (
       throw new Error('missing binary imagedata');
     }
 
-    const inflated = await inflate(binaryImage.imageData);
+    const inflated = await inflate(binaryImage.data);
     const tiles = inflated.split('\n');
     if (!frameHash) {
       return tiles;

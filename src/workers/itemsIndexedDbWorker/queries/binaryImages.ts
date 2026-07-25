@@ -1,10 +1,10 @@
 import z from 'zod';
-import { type BinaryImage, BinaryImageSchema } from '@/types/BinaryImage';
+import { type BinaryStoreItem, BinaryStoreItemSchema } from '@/types/BinaryStoreItem';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
-export const getBinaryImagesByHashes = async (hashes: string[]): Promise<ItemsSourceResponse<BinaryImage>> => {
+export const getBinaryImagesByHashes = async (hashes: string[]): Promise<ItemsSourceResponse<BinaryStoreItem>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -12,7 +12,7 @@ export const getBinaryImagesByHashes = async (hashes: string[]): Promise<ItemsSo
   const total = await store.count();
 
   const binaryImages = await Promise.all(
-    hashes.map(async (hash): Promise<BinaryImage | null> => {
+    hashes.map(async (hash): Promise<BinaryStoreItem | null> => {
       const imageData = await store.get(hash);
       if (!imageData) {
         return null;
@@ -22,9 +22,9 @@ export const getBinaryImagesByHashes = async (hashes: string[]): Promise<ItemsSo
     }),
   );
 
-  const filteredBinaryImages = binaryImages.filter((binaryImage): binaryImage is BinaryImage => Boolean(binaryImage));
+  const filteredBinaryImages = binaryImages.filter((binaryImage): binaryImage is BinaryStoreItem => Boolean(binaryImage));
 
-  const addPaging = getAddPaging<BinaryImage>(total, 0, binaryImages.length, start, BinaryImageSchema);
+  const addPaging = getAddPaging<BinaryStoreItem>(total, 0, binaryImages.length, start, BinaryStoreItemSchema);
 
   return addPaging(filteredBinaryImages);
 };
@@ -43,8 +43,8 @@ export const getBinaryImageHashes = async (): Promise<ItemsSourceResponse<string
 
 };
 
-export const updateBinaryImages = async (binaryImages: BinaryImage[]): Promise<void> => {
-  const { success, data: parsedBinaryImages, error } = z.array(BinaryImageSchema).safeParse(binaryImages);
+export const updateBinaryImages = async (binaryImages: BinaryStoreItem[]): Promise<void> => {
+  const { success, data: parsedBinaryImages, error } = z.array(BinaryStoreItemSchema).safeParse(binaryImages);
   if (success) {
     const db = await getDb();
 

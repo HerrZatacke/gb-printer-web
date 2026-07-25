@@ -1,7 +1,7 @@
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
-import { BinaryImage } from '@/types/BinaryImage';
+import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 import {
@@ -193,9 +193,9 @@ export interface ItemsSource {
   updatePlugins(plugins: Plugin[], purge: boolean): Promise<void>;
   deletePluginsByUrls(urls: string[]): Promise<void>;
 
-  getBinaryImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<BinaryImage>>;
+  getBinaryImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<BinaryStoreItem>>;
   getBinaryImageHashes(): Promise<ItemsSourceResponse<string>>;
-  updateBinaryImages(binaryImages: BinaryImage[]): Promise<void>;
+  updateBinaryImages(binaryImages: BinaryStoreItem[]): Promise<void>;
   deleteBinaryImagesByHashes(hashes: string[]): Promise<void>;
 }
 

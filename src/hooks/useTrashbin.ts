@@ -43,15 +43,15 @@ const getBinaryImageItems = async (hashes: string[]): Promise<TrashItem[]> => {
     try {
       const binaryImage = await queryClient.fetchQuery(binaryImageByHashQueryOptions(hash));
 
-      if (!binaryImage?.imageData) {
+      if (!binaryImage?.data) {
         return null;
       }
 
-      const inflated = await inflate(binaryImage.imageData);
+      const inflated = await inflate(binaryImage.data);
       return {
         hash,
         lines: inflated.split('\n'),
-        binary: binaryImage.imageData,
+        binary: binaryImage.data,
       };
     } catch {
       return null;

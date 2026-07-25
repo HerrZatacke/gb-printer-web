@@ -3,7 +3,7 @@ import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { STALE_TIME } from '@/stores/queries/consts';
-import { BinaryImage } from '@/types/BinaryImage';
+import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 
 const baseKeys = ['items', 'binary', 'images'] as const;
 
@@ -14,14 +14,14 @@ export const binaryImagesKeys = {
   byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
 };
 
-const warmBinaryImageCache = (binaryImages: BinaryImage[]) => {
+const warmBinaryImageCache = (binaryImages: BinaryStoreItem[]) => {
   const queryClient = getQueryClient();
   binaryImages.forEach((binaryImage) => {
     queryClient.setQueryData(binaryImagesKeys.byHash(binaryImage.hash), binaryImage);
   });
 };
 
-export const binaryImagesByHashesBatchedLoader = createBatchedLoader<BinaryImage>(
+export const binaryImagesByHashesBatchedLoader = createBatchedLoader<BinaryStoreItem>(
   async (hashes) => {
     const source = await getItemsSource();
     return source.getBinaryImagesByHashes(hashes);
@@ -54,24 +54,24 @@ export const binaryImagesByHashesQueryOptions = (hashes: string[]) => {
       }
 
       const results = await Promise.all(hashes.map(binaryImagesByHashesBatchedLoader.loadByKey));
-      const items = results.filter((f): f is BinaryImage => Boolean(f));
+      const items = results.filter((f): f is BinaryStoreItem => Boolean(f));
 
       warmBinaryImageCache(items);
       return { items };
     },
-    select: (data: { items: BinaryImage[] }) => {
+    select: (data: { items: BinaryStoreItem[] }) => {
       const byHash = new Map(data.items.map((image) => [image.hash, image]));
       return {
         items: hashes // sort result by this call's original order, not the cached one
           .map((hash) => byHash.get(hash))
-          .filter((image): image is BinaryImage => Boolean(image)),
+          .filter((image): image is BinaryStoreItem => Boolean(image)),
       };
     },
     staleTime: STALE_TIME,
   };
 };
 
-export const updateBinaryImagesAction = async (queryClient: QueryClient, binaryImages: BinaryImage[]): Promise<void> => {
+export const updateBinaryImagesAction = async (queryClient: QueryClient, binaryImages: BinaryStoreItem[]): Promise<void> => {
   const source = await getItemsSource();
   await source.updateBinaryImages(binaryImages);
   await queryClient.invalidateQueries({ queryKey: binaryImagesKeys.all });

@@ -20,7 +20,7 @@ const getImages = async (exportImages: Image[]): Promise<Record<string, string>>
 
   const result = await Promise.all(exportImageHashes.map(async (hash) => {
     const { items: [binaryImage] } = await queryClient.fetchQuery(binaryImagesByHashesQueryOptions([hash]));
-    const data = binaryImage.imageData || null;
+    const data = binaryImage.data || null;
 
     return ({
       hash,
