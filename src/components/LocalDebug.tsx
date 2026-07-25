@@ -1,7 +1,8 @@
 import { Alert, Paper, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
-import { useImages } from '@/hooks/useImages';
+// import { useImages } from '@/hooks/useImages';
+import useTrashbin from '@/hooks/useTrashbin';
 import { delay } from '@/tools/delay';
 
 function LocalDebug() {
@@ -27,6 +28,7 @@ function LocalDebug() {
   // const { byGroupId: randomRgbGroupItems } = useImages({ groupId: '34ee68d9-16e4-46b8-a745-2a510950d858' });
 
   const { navigateToImage, navigateToGroup } = useNavigationTools();
+  const { checkUpdateTrashCount } = useTrashbin();
 
   if (!shouldRender) {
     return null;
@@ -92,6 +94,10 @@ function LocalDebug() {
             await navigateToImage('c89f0f97516aa784c0ccec1d0c9c1cf782b2fba5');
           }}>
             To Image: *Isar* (munich/isar / pageIndex:1)
+          </button>
+          <hr/>
+          <button onClick={checkUpdateTrashCount}>
+            checkUpdateTrashCount
           </button>
         </Stack>
       </Stack>
