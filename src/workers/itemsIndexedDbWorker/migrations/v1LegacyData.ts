@@ -87,6 +87,11 @@ export const v1LegacyData: AfterUpgradeFn = async (
         throw new Error('Skipping invalid binary item during migration');
       }
 
+      // localForage relic
+      if (key.startsWith('dummy')) {
+        continue;
+      }
+
       await tx.store.put(value, key as string);
     }
 
