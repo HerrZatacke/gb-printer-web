@@ -87,7 +87,7 @@ export interface ItemsDB extends DBSchema {
 }
 ```
 
-Binary data (actual frame/image pixel bytes) is a **separate concern from metadata**, stored in its own out-of-line-key stores and queried independently (`queries/binaryData.ts`:`getFrameDataByHashes`/`getImageDataByHashes`, plain `Promise.all(hashes.map(store.get))`, no batching yet). This split was not discussed in chat — ask for `binaryData.ts` and its call sites if a task touches binary payloads.
+Binary data (actual frame/image pixel bytes) is a **separate concern from metadata**, stored in its own out-of-line-key stores and queried independently.
 
 Six item types now follow the established pattern end to end: **Images, ImageGroups, Frames, FrameGroups, Palettes, Plugins**. Chat only ever worked through Images/ImageGroups/Palettes in depth — Frames/FrameGroups/Plugins were extended by the user following the same shape, largely unassisted. If a task touches Frames/FrameGroups/Plugins specifically, ask for the current `queries/frames.ts` / `queries/frameGroups.ts` / `queries/plugins.ts` and their `stores/queries/*` counterparts, since chat has no detailed history with them.
 
