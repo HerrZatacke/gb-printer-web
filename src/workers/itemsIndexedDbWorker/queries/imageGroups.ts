@@ -1,4 +1,5 @@
 import z from 'zod';
+import sortBy from '@/tools/sortby';
 import {
   type TreeImageGroup,
   SerializableImageGroupSchema,
@@ -12,6 +13,8 @@ import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/c
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
 import { ItemsSourceResponse, RootItemSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+
+const sortById = sortBy<SerializableImageGroup>('id');
 
 export const getImageGroupsList = async (): Promise<ItemsSourceResponse<SerializableImageGroup>> => {
   const db = await getDb();
@@ -45,14 +48,16 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
     throw error;
   }
 
+  const sortedParsedImageGroups = sortById(parsedImageGroups);
+
   const {
     childGroupIdsByParent,
     imageIdsByGroup,
     topLevelGroupIds,
     orphanedImageIds,
-  } = resolveOwnership(parsedImageGroups, allImageIds);
+  } = resolveOwnership(sortedParsedImageGroups, allImageIds);
 
-  const groupsById = new Map(parsedImageGroups.map((group) => [group.id, group]));
+  const groupsById = new Map(sortedParsedImageGroups.map((group) => [group.id, group]));
 
   const topLevelGroups = topLevelGroupIds
     .map((id) => buildTree(id, groupsById, childGroupIdsByParent, imageIdsByGroup, 0))
