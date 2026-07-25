@@ -1,6 +1,11 @@
 import * as Comlink from 'comlink';
 import { configureDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getFrameDataByHashes, getImageDataByHashes } from '@/workers/itemsIndexedDbWorker/queries/binaryData';
+import {
+  deleteBinaryImagesByHashes,
+  getBinaryImageHashes,
+  getBinaryImagesByHashes,
+  updateBinaryImages,
+} from '@/workers/itemsIndexedDbWorker/queries/binaryImages';
 import {
   deleteFrameGroupsByIds,
   getFrameGroups,
@@ -50,9 +55,6 @@ if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
 const api: ItemsSource = {
   init: configureDb,
 
-  getFrameDataByHashes,
-  getImageDataByHashes,
-
   getAllTags,
   getGroupItemsByGroupId,
   getHashesByGroupId,
@@ -86,6 +88,11 @@ const api: ItemsSource = {
   getPluginsByUrls,
   updatePlugins,
   deletePluginsByUrls,
+
+  getBinaryImagesByHashes,
+  getBinaryImageHashes,
+  updateBinaryImages,
+  deleteBinaryImagesByHashes,
 };
 
 Comlink.expose(api);

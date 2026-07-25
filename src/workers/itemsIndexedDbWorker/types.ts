@@ -1,6 +1,7 @@
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
+import { BinaryImage } from '@/types/BinaryImage';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 import {
@@ -157,8 +158,6 @@ export interface RootItemSourceResponse<T> {
 
 export interface ItemsSource {
   init(hostApi: ItemsHostApi): void;
-  getFrameDataByHashes(hashes: string[]): Promise<string[]>;
-  getImageDataByHashes(hashes: string[]): Promise<string[]>;
 
   getAllTags(): Promise<ItemsSourceResponse<string>>;
   getGroupItemsByGroupId(groupId: string, includeGroups: boolean, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;
@@ -193,6 +192,11 @@ export interface ItemsSource {
   getPluginsByUrls(urls: string[]): Promise<ItemsSourceResponse<Plugin>>;
   updatePlugins(plugins: Plugin[], purge: boolean): Promise<void>;
   deletePluginsByUrls(urls: string[]): Promise<void>;
+
+  getBinaryImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<BinaryImage>>;
+  getBinaryImageHashes(): Promise<ItemsSourceResponse<string>>;
+  updateBinaryImages(binaryImages: BinaryImage[]): Promise<void>;
+  deleteBinaryImagesByHashes(hashes: string[]): Promise<void>;
 }
 
 export interface FilterableFacet {
