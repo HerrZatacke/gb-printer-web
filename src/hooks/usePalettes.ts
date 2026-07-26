@@ -1,10 +1,10 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import { getItemsSource } from '@/items/client';
 import {
-  palettesKeys,
   palettesByShortNameQueryOptions,
   palettesListQueryOptions,
+  updatePalettesAction,
+  deletePalettesByShortNamesAction,
 } from '@/stores/queries/palettes';
 import { Palette } from '@/types/Palette';
 import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
@@ -42,15 +42,11 @@ export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalett
   });
 
   const updatePalettes = useCallback(async (palettes: Palette[], purge = false): Promise<void> => {
-    const source = await getItemsSource();
-    await source.updatePalettes(palettes, purge);
-    await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
+    await updatePalettesAction(queryClient, palettes, purge);
   }, [queryClient]);
 
   const deletePalettesByShortNames = useCallback(async (deleteShortNames: string[]): Promise<void> => {
-    const source = await getItemsSource();
-    await source.deletePalettesByShortNames(deleteShortNames);
-    await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
+    await deletePalettesByShortNamesAction(queryClient, deleteShortNames);
   }, [queryClient]);
 
   return {
