@@ -158,6 +158,7 @@ export interface RootItemSourceResponse<T> {
 
 export interface ItemsSource {
   init(hostApi: ItemsHostApi): void;
+  debugReset(): Promise<void>;
 
   getAllTags(): Promise<ItemsSourceResponse<string>>;
   getGroupItemsByGroupId(groupId: string, includeGroups: boolean, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;

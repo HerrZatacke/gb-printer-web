@@ -24,6 +24,7 @@ import {
   getFramesByIds,
   updateFrames,
 } from '@/workers/itemsIndexedDbWorker/queries/frames';
+import { debugReset } from '@/workers/itemsIndexedDbWorker/queries/helpers/debug';
 import {
   deleteImageGroupsByIds,
   getImageGroupsFullTree,
@@ -60,6 +61,7 @@ if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
 
 const api: ItemsSource = {
   init: configureDb,
+  debugReset,
 
   getAllTags,
   getGroupItemsByGroupId,

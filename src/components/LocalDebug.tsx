@@ -5,10 +5,11 @@ import {
   Paper,
   Stack,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import useTrashbin from '@/hooks/useTrashbin';
+import { getItemsSource } from '@/items/client';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 
@@ -23,6 +24,12 @@ function LocalDebug() {
       });
     }
   }, [enableDebug]);
+
+  const debugReset = useCallback(async () => {
+    const source = await getItemsSource();
+    await source.debugReset();
+    window.location.reload();
+  }, []);
 
   // const { images: allImages } = useImages({ list: true }); // All images
   // const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
@@ -107,6 +114,9 @@ function LocalDebug() {
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
           <Button onClick={checkUpdateTrashCount}>
             checkUpdateTrashCount
+          </Button>
+          <Button onClick={debugReset}>
+            debugReset
           </Button>
         </ButtonGroup>
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}

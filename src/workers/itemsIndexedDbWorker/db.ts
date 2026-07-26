@@ -1,4 +1,4 @@
-import { type IDBPDatabase, openDB, deleteDB } from 'idb';
+import { type IDBPDatabase, openDB } from 'idb';
 import { populateGroupAggregatedTags } from '@/workers/itemsIndexedDbWorker/maintenance/populateGroupAggregatedTags';
 import { pruneAndRepairImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/pruneAndRepairImageGroups';
 import { MaintenanceTask } from '@/workers/itemsIndexedDbWorker/maintenance/types';
@@ -40,10 +40,6 @@ const openAndPrepareDb = async () => {
   if (!global.hostApi) {
     throw new Error('getDb not configured');
   }
-
-  // if (location.hostname === 'localhost') {
-  //   await deleteDB('gb-printer-web--items');
-  // }
 
   let didUpgrade = false;
 
