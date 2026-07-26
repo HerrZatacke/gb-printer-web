@@ -1,3 +1,4 @@
+import { QueryClient } from '@tanstack/react-query';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { STALE_TIME } from '@/stores/queries/consts';
@@ -71,4 +72,16 @@ export const framesByIdsQueryOptions = (ids: string[]) => {
     },
     staleTime: STALE_TIME,
   };
+};
+
+export const updateFramesAction = async (queryClient: QueryClient, frames: Frame[], purge = false): Promise<void> => {
+  const source = await getItemsSource();
+  await source.updateFrames(frames, purge);
+  await queryClient.invalidateQueries({ queryKey: framesKeys.all });
+};
+
+export const deleteFramesByIdsAction = async (queryClient: QueryClient, deleteIds: string[]): Promise<void> => {
+  const source = await getItemsSource();
+  await source.deleteFramesByIds(deleteIds);
+  await queryClient.invalidateQueries({ queryKey: framesKeys.all });
 };

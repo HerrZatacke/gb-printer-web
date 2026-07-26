@@ -1,10 +1,10 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import { getItemsSource } from '@/items/client';
 import {
-  framesKeys,
   framesByIdsQueryOptions,
   framesListQueryOptions,
+  updateFramesAction,
+  deleteFramesByIdsAction,
 } from '@/stores/queries/frames';
 import { Frame } from '@/types/Frame';
 import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
@@ -42,15 +42,11 @@ export const useFrames = ({ list, ids }: UseFramesOptions): UseFrames => {
   });
 
   const updateFrames = useCallback(async (frames: Frame[], purge = false): Promise<void> => {
-    const source = await getItemsSource();
-    await source.updateFrames(frames, purge);
-    await queryClient.invalidateQueries({ queryKey: framesKeys.all });
+    await updateFramesAction(queryClient, frames, purge);
   }, [queryClient]);
 
   const deleteFramesByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
-    const source = await getItemsSource();
-    await source.deleteFramesByIds(deleteIds);
-    await queryClient.invalidateQueries({ queryKey: framesKeys.all });
+    await deleteFramesByIdsAction(queryClient, deleteIds);
   }, [queryClient]);
 
   return {
