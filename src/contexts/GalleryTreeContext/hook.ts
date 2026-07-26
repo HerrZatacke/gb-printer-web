@@ -1,13 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { reducePaths, reducePathsOptions } from '@/contexts/GalleryTreeContext/reducePaths';
+import {
+  collectGroupsByFullSlug,
+  collectGroupsById,
+  reducePathsOptions,
+} from '@/contexts/GalleryTreeContext/reducePaths';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { useImages } from '@/hooks/useImages';
 import { useUrl } from '@/hooks/useUrl';
+import { DialogOption } from '@/types/Dialog';
 import {
   type GetUrlParams,
   type GalleryTreeContextType,
-  type PathMap,
 } from '@/types/galleryTreeContext';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 const GALLERY_BASE_PATH = '/gallery/';
 
@@ -16,17 +21,17 @@ export const useContextHook = (): GalleryTreeContextType => {
   const { searchParams, pathname } = useUrl();
   const [lastGalleryLink, setLastGalleryLink] = useState<string>('');
 
-  const paths = useMemo<PathMap[]>(() => {
-    if (!root) {
-      return [];
-    }
-
-    return reducePaths([root]);
+  const groupsByFullSlug = useMemo<Map<string, TreeImageGroup>>(() => {
+    return root ? collectGroupsByFullSlug([root]): new Map();
   }, [root]);
 
-  const pathsOptions = useMemo(() => {
-    return reducePathsOptions(paths);
-  }, [paths]);
+  const groupsById = useMemo<Map<string, TreeImageGroup>>(() => {
+    return root ? collectGroupsById([root]): new Map();
+  }, [root]);
+
+  const pathsOptions = useMemo<DialogOption[]>(() => {
+    return reducePathsOptions(groupsByFullSlug);
+  }, [groupsByFullSlug]);
 
 
   const currentPageIndex = useMemo(() => (parseInt(searchParams.get('page') ?? '1', 10) - 1), [searchParams]);
@@ -88,7 +93,8 @@ export const useContextHook = (): GalleryTreeContextType => {
   return {
     view,
     covers,
-    paths,
+    groupsByFullSlug,
+    groupsById,
     images,
     pathsOptions,
     isWorking: isLoadingTree || isLoadingByGroupId || isLoadingByFullSlug,

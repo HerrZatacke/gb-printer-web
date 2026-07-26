@@ -2,8 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { reducePaths } from '@/contexts/GalleryTreeContext/reducePaths';
-import { useImageGroups } from '@/hooks/useImageGroups';
+import { collectGroupsByFullSlug } from '@/contexts/GalleryTreeContext/reducePaths';
 import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import { imageGroupsFullTreeQueryOptions } from '@/stores/queries/imageGroups';
 import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
@@ -22,8 +21,7 @@ export interface UseNavigationTools {
 export const useContextHook = (): UseNavigationTools => {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { paths, getUrl } = useGalleryTreeContext();
-  const { imageGroupTree } = useImageGroups({ tree: true });
+  const { groupsByFullSlug, getUrl } = useGalleryTreeContext();
   const { pageSize } = useSettingsStore();
   const imageQueryParams = useImageQueryParams();
 
@@ -42,34 +40,30 @@ export const useContextHook = (): UseNavigationTools => {
       return getUrl({ pageIndex, group: '' });
     }
 
-    const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath;
+    const groupPath = [...groupsByFullSlug.values()].find((group) => group.id === groupId)?.fullSlug;
 
     if (!groupPath) {
       return '';
     }
 
     return getUrl({ pageIndex, group: cleanFullSlug(groupPath) });
-  }, [getUrl, paths]);
+  }, [getUrl, groupsByFullSlug]);
 
   const getPagedImagePath = useCallback(async (imageHash: string): Promise<string> => {
     const { item: root } = await queryClient.fetchQuery(imageGroupsFullTreeQueryOptions());
-    const freshPaths = reducePaths([root]);
+    const freshPaths = collectGroupsByFullSlug([root]);
 
-    const pathMap = freshPaths.find(({ group: { images } }) => (
-      images.includes(imageHash)
-    ));
+    const group = [...freshPaths.values()].find(({ images }) => images.includes(imageHash));
 
-    if (!pathMap) {
+    if (!group) {
       return '';
     }
 
-    const viewSlug = pathMap.absolutePath || '';
-    const group = pathMap.group || imageGroupTree;
-
+    const viewSlug = group.fullSlug;
     const pageIndex = group ? await getImagePageIndexInGroup(imageHash, group) : 0;
 
     return getUrl({ pageIndex, group: cleanFullSlug(viewSlug) });
-  }, [getImagePageIndexInGroup, getUrl, queryClient, imageGroupTree]);
+  }, [getImagePageIndexInGroup, getUrl, queryClient]);
 
   const navigateToGroup = useCallback(async (groupId: string, pageIndex: number) => {
     const groupPath = await getGroupPath(groupId, pageIndex);

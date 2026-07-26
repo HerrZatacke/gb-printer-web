@@ -11,8 +11,7 @@ import { cleanFullSlug } from '@/tools/cleanSlug';
 import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
-import { type PathMap } from '@/types/galleryTreeContext';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -42,13 +41,11 @@ export const toSlug = (title: string): string => (
   title.trim().replace(/[^A-Z0-9_-]+/gi, '_').toLowerCase()
 );
 
-const findParentGroup = (paths: PathMap[], groupId: string): PathMap | null => (
-  paths.find(({ group: { groups } }) => (
-    groups.find(({ id }) => (
-      id === groupId
-    ))
-  )) || null
-);
+const findParentGroup = (groups: TreeImageGroup[], groupId: string): TreeImageGroup | null => {
+  const entry = groups.find(({ groups: children }) => children.some(({ id }) => id === groupId));
+
+  return entry ?? null;
+};
 
 const EditMode = {
   CREATE_NEW: 'CREATE_NEW',
@@ -71,7 +68,7 @@ const getEditMode = (editImageGroup: EditGroupInfo | null): EditMode => {
 
 interface InitialEditValues {
   imageGroup: SerializableImageGroup | null;
-  parentPathMap: PathMap | null;
+  parentGroup: TreeImageGroup | null;
   title: string;
   isFavourite: boolean;
   slug: string;
@@ -83,7 +80,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
   const { editImageGroup, cancelEditImageGroup } = useEditStore();
   const { imageGroups, updateImageGroup, moveImagesToGroup } = useImageGroups({ list: true });
   const { navigateToGroup, navigateToImage } = useNavigationTools();
-  const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
+  const { path: currentPath, view, groupsByFullSlug, groupsById, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
 
   const editMode = getEditMode(editImageGroup);
@@ -94,7 +91,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         const title = editImageGroup?.newGroupTitle || '';
         return {
           imageGroup: null,
-          parentPathMap: view ? paths.find(({ group }) => group.id === view.id) || null : null,
+          parentGroup: view ? groupsById.get(view.id) ?? null : null,
           title,
           isFavourite: false,
           slug: toSlug(title),
@@ -106,7 +103,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         const imageGroup = imageGroups.find(({ id }) => id === editImageGroup?.groupId) || null;
         return {
           imageGroup,
-          parentPathMap: editImageGroup?.groupId ? findParentGroup(paths, editImageGroup.groupId) : null,
+          parentGroup: editImageGroup?.groupId ? findParentGroup([...groupsById.values()], editImageGroup.groupId) : null,
           title: imageGroup?.title || '',
           isFavourite: imageGroup?.isFavourite || false,
           slug: imageGroup?.slug || '',
@@ -118,7 +115,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
       default: {
         return {
           imageGroup: null,
-          parentPathMap: null,
+          parentGroup: null,
           title: '',
           isFavourite: false,
           slug: '',
@@ -126,13 +123,13 @@ const useEditImageGroup = (): UseEditImageGroup => {
         };
       }
     }
-  }, [editImageGroup, editMode, imageGroups, paths, view]);
+  }, [editImageGroup, editMode, imageGroups, groupsById, view]);
 
   const [title, setTitle] = useState<string>(initialValues.title);
   const [isFavourite, setIsFavourite] = useState<boolean>(initialValues.isFavourite);
   const [slug, setSlug] = useState<string>(initialValues.slug);
   const [slugTouched, setSlugTouched] = useState<boolean>(initialValues.slugTouched);
-  const [parentSlug, setParentSlug] = useState<string>(initialValues.parentPathMap?.absolutePath || '');
+  const [parentSlug, setParentSlug] = useState<string>(initialValues.parentGroup?.fullSlug || '');
 
   const absoluteSlug = useMemo(() => {
     if (!editImageGroup?.groupId) {
@@ -148,9 +145,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
   // absolute slug already exists
   const slugIsInUse = useMemo(() => {
-    console.log({ paths, absoluteSlug, parentSlug });
-    return !!paths.find(({ absolutePath }) => absolutePath === absoluteSlug);
-  }, [absoluteSlug, paths, parentSlug]);
+    return groupsByFullSlug.has(absoluteSlug);
+  }, [absoluteSlug, groupsByFullSlug]);
 
   // slug has changed
   const slugWasChanged = useMemo(() => (
@@ -178,15 +174,15 @@ const useEditImageGroup = (): UseEditImageGroup => {
   }, [editMode, slug, slugIsInUse, slugWasChanged]);
 
   const canMove = useMemo<boolean>(() => {
-    const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
-    const currentGroupId = initialValues.parentPathMap?.group.id || '';
+    const parentGroupId = groupsByFullSlug.get(parentSlug)?.id ?? '';
+    const currentGroupId = initialValues.parentGroup?.id ?? '';
     return currentGroupId !== parentGroupId;
-  }, [initialValues, parentSlug, paths]);
+  }, [initialValues, parentSlug, groupsByFullSlug]);
 
   const possibleParents = useMemo<DialogOption[]>(() => {
     switch (editMode) {
       case EditMode.EDIT_EXISTING: {
-        const editGroupPath = paths.find(({ group }) => group.id === editImageGroup?.groupId)?.absolutePath || '';
+        const editGroupPath = groupsById.get(editImageGroup?.groupId ?? '')?.fullSlug ?? '';
         return pathsOptions.filter(({ value }) => (
           !value.startsWith(absoluteSlug) &&
           value !== editGroupPath
@@ -202,7 +198,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         return [];
       }
     }
-  }, [absoluteSlug, editImageGroup, editMode, paths, pathsOptions]);
+  }, [absoluteSlug, editImageGroup, editMode, groupsById, pathsOptions]);
 
   return {
     editId: editImageGroup?.groupId || null,
@@ -237,7 +233,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         return;
       }
 
-      const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
+      const parentGroupId = groupsByFullSlug.get(parentSlug)?.id ?? '';
 
       let updateGroup: SerializableImageGroup;
 
@@ -285,7 +281,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         return;
       }
 
-      const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
+      const parentGroupId = groupsByFullSlug.get(parentSlug)?.id ?? '';
 
       // move images to other group or root if no parentgroup
       await moveImagesToGroup(selection, parentGroupId || undefined);

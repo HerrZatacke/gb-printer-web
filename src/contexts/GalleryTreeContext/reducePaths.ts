@@ -1,37 +1,32 @@
-import { cleanFullSlug, cleanSlug } from '@/tools/cleanSlug';
 import { type DialogOption } from '@/types/Dialog';
-import { type PathMap } from '@/types/galleryTreeContext';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
-export const reducePaths = (groups: TreeImageGroup[], prefix = '/', usedPaths = new Set<string>()): PathMap[] => {
-  const reducedPaths = groups.reduce((acc: PathMap[], group: TreeImageGroup): PathMap[] => {
-    const cleanedSlug = cleanSlug(group.slug);
+export const collectGroupsByFullSlug = (
+  groups: TreeImageGroup[],
+  groupsByFullSlug: Map<string, TreeImageGroup> = new Map(),
+): Map<string, TreeImageGroup> => {
+  groups.forEach((group) => {
+    groupsByFullSlug.set(group.fullSlug, group);
+    collectGroupsByFullSlug(group.groups, groupsByFullSlug);
+  });
 
-    let count = 0;
-    let absolute = cleanFullSlug(`${prefix}/${cleanedSlug}`);
-
-    while (usedPaths.has(absolute)) {
-      count += 1;
-      absolute = cleanFullSlug(`${prefix}/${cleanedSlug}_${count}`);
-    }
-
-    usedPaths.add(absolute);
-
-    return ([
-      ...acc,
-      {
-        absolutePath: absolute,
-        group,
-      },
-      ...reducePaths(group.groups, absolute, usedPaths),
-    ]);
-  }, []);
-
-  return reducedPaths;
+  return groupsByFullSlug;
 };
 
-export const reducePathsOptions = (paths: PathMap[]) => {
-  return paths.reduce((acc: DialogOption[], { group, absolutePath }): DialogOption[] => {
+export const collectGroupsById = (
+  groups: TreeImageGroup[],
+  groupsById: Map<string, TreeImageGroup> = new Map(),
+): Map<string, TreeImageGroup> => {
+  groups.forEach((group) => {
+    groupsById.set(group.id, group);
+    collectGroupsById(group.groups, groupsById);
+  });
+
+  return groupsById;
+};
+
+export const reducePathsOptions = (groupsByFullSlug: Map<string, TreeImageGroup>): DialogOption[] => {
+  return [...groupsByFullSlug.entries()].reduce((acc: DialogOption[], [absolutePath, group]): DialogOption[] => {
     const depth = absolutePath.split('/').length - 1;
     const indent = Array(depth).fill('\u2007').join('');
 
