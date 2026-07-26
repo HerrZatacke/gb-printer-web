@@ -1,10 +1,10 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
-import { getItemsSource } from '@/items/client';
 import {
-  pluginsKeys,
   pluginsByUrlsQueryOptions,
   pluginsListQueryOptions,
+  updatePluginsAction,
+  deletePluginsByUrlsAction,
 } from '@/stores/queries/plugins';
 import { Plugin, type PluginConfigValues } from '@/types/Plugin';
 import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
@@ -51,9 +51,7 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
   });
 
   const updatePlugins = useCallback(async (plugins: Plugin[], purge = false): Promise<void> => {
-    const source = await getItemsSource();
-    await source.updatePlugins(plugins, purge);
-    await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
+    await updatePluginsAction(queryClient, plugins, purge);
   }, [queryClient]);
 
   const updatePluginConfig = useCallback(async (url: string, key: string, value: string | number): Promise<void> => {
@@ -79,9 +77,7 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
   }, [queryClient, updatePlugins]);
 
   const deletePluginsByUrls = useCallback(async (deleteUrls: string[]): Promise<void> => {
-    const source = await getItemsSource();
-    await source.deletePluginsByUrls(deleteUrls);
-    await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
+    await deletePluginsByUrlsAction(queryClient, deleteUrls);
   }, [queryClient]);
 
   const updatePluginState = useCallback((url: string, loading: boolean, error: string | false) => {

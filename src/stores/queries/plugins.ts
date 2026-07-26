@@ -1,5 +1,7 @@
+import { type QueryClient } from '@tanstack/react-query';
 import { getItemsSource } from '@/items/client';
 import { STALE_TIME } from '@/stores/queries/consts';
+import { Plugin } from '@/types/Plugin';
 
 const baseKeys = ['items', 'plugins'] as const;
 
@@ -30,4 +32,16 @@ export const pluginsByUrlsQueryOptions = (urls: string[]) => {
     },
     staleTime: STALE_TIME,
   };
+};
+
+export const updatePluginsAction = async (queryClient: QueryClient, plugins: Plugin[], purge = false): Promise<void> => {
+  const source = await getItemsSource();
+  await source.updatePlugins(plugins, purge);
+  await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
+};
+
+export const deletePluginsByUrlsAction = async (queryClient: QueryClient, deleteUrls: string[]): Promise<void> => {
+  const source = await getItemsSource();
+  await source.deletePluginsByUrls(deleteUrls);
+  await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
 };
