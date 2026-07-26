@@ -135,7 +135,7 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
   const updateImageGroups = useCallback(async (imageGroups: SerializableImageGroup[], purge = false): Promise<void> => {
     const source = await getItemsSource();
     await source.updateImageGroups(imageGroups, purge);
-    await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
+    await queryClient.removeQueries({ queryKey: imageGroupsKeys.all });
   }, [queryClient]);
 
   const updateImageGroup = useCallback(async (group: SerializableImageGroup, parentGroupId: string): Promise<void> => {
@@ -143,19 +143,24 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
       throw new Error('A group cannot be its own parent');
     }
 
-    // invalidate initially to ensure "fresh" dataset
-    await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
-    const { items: allGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
+    const { items: allGroups } = await queryClient.fetchQuery({
+      ...imageGroupsListQueryOptions(),
+      // ensure "fresh" dataset
+      staleTime: 0,
+    });
     const changedGroups = computeImageGroupUpdateDiff(allGroups, group, parentGroupId);
 
     const source = await getItemsSource();
     await source.updateImageGroups(changedGroups, false);
-    await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
+    await queryClient.removeQueries({ queryKey: imageGroupsKeys.all });
   }, [queryClient]);
 
   const moveImagesToGroup = useCallback(async (images: string[], targetImageGroupId?: string): Promise<void> => {
-    await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
-    const { items: allGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
+    const { items: allGroups } = await queryClient.fetchQuery({
+      ...imageGroupsListQueryOptions(),
+      // ensure "fresh" dataset
+      staleTime: 0,
+    });
     const newImageParentGroup = (targetImageGroupId && allGroups.find((g) => g.id === targetImageGroupId)) || null;
 
     let changedGroups: SerializableImageGroup[];
@@ -175,13 +180,13 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
 
     const source = await getItemsSource();
     await source.updateImageGroups(changedGroups, false);
-    await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
+    await queryClient.removeQueries({ queryKey: imageGroupsKeys.all });
   }, [queryClient]);
 
   const deleteImageGroupsByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
     const source = await getItemsSource();
     await source.deleteImageGroupsByIds(deleteIds);
-    await queryClient.invalidateQueries({ queryKey: imageGroupsKeys.all });
+    await queryClient.removeQueries({ queryKey: imageGroupsKeys.all });
   }, [queryClient]);
 
   return {
