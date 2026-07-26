@@ -7,6 +7,7 @@ import {
   useEditStore,
   useFiltersStore,
 } from '@/stores/stores';
+import { cleanFullSlug } from '@/tools/cleanSlug';
 import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
@@ -139,20 +140,17 @@ const useEditImageGroup = (): UseEditImageGroup => {
     }
 
     if (editImageGroup?.groupId === NEW_GROUP) {
-      return `${currentPath}${slug}/`;
+      return cleanFullSlug(`${currentPath}/${slug}`);
     }
 
-    const parentGroup = findParentGroup(paths, editImageGroup.groupId);
-
-    const parentPath = parentGroup?.absolutePath || '';
-
-    return `${parentPath}${slug}/`;
-  }, [editImageGroup, paths, currentPath, slug]);
+    return cleanFullSlug(`${parentSlug}/${slug}`);
+  }, [editImageGroup?.groupId, parentSlug, slug, currentPath]);
 
   // absolute slug already exists
-  const slugIsInUse = useMemo(() => (
-    !!paths.find(({ absolutePath }) => absolutePath === absoluteSlug)
-  ), [absoluteSlug, paths]);
+  const slugIsInUse = useMemo(() => {
+    console.log({ paths, absoluteSlug, parentSlug });
+    return !!paths.find(({ absolutePath }) => absolutePath === absoluteSlug);
+  }, [absoluteSlug, paths, parentSlug]);
 
   // slug has changed
   const slugWasChanged = useMemo(() => (
@@ -185,7 +183,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     return currentGroupId !== parentGroupId;
   }, [initialValues, parentSlug, paths]);
 
-  const possibleParents = useMemo(() => {
+  const possibleParents = useMemo<DialogOption[]>(() => {
     switch (editMode) {
       case EditMode.EDIT_EXISTING: {
         const editGroupPath = paths.find(({ group }) => group.id === editImageGroup?.groupId)?.absolutePath || '';
