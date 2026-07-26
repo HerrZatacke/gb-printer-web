@@ -1,10 +1,10 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { useFrames } from '@/hooks/useFrames';
-import { getItemsSource } from '@/items/client';
 import {
-  frameGroupsKeys,
   frameGroupsListQueryOptions,
+  updateFrameGroupsAction,
+  deleteFrameGroupsByIdsAction,
 } from '@/stores/queries/frameGroups';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
@@ -98,18 +98,6 @@ export const useFrameGroups = (): UseFrameGroups => {
     retry: false,
   });
 
-  const updateFrameGroups = useCallback(async (frameGroups: FrameGroup[], purge = false): Promise<void> => {
-    const source = await getItemsSource();
-    await source.updateFrameGroups(frameGroups, purge);
-    await queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
-  }, [queryClient]);
-
-  const deleteFrameGroupsByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
-    const source = await getItemsSource();
-    await source.deleteFrameGroupsByIds(deleteIds);
-    await queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
-  }, [queryClient]);
-
   const { frames } = useFrames({ list: true });
 
   const frameGroups = useMemo(() => {
@@ -119,6 +107,14 @@ export const useFrameGroups = (): UseFrameGroups => {
 
     return getFrameGroups(frames, listQuery.data?.items);
   }, [listQuery.data, frames]);
+
+  const updateFrameGroups = useCallback(async (updatedGroups: FrameGroup[], purge = false): Promise<void> => {
+    await updateFrameGroupsAction(queryClient, updatedGroups, purge);
+  }, [queryClient]);
+
+  const deleteFrameGroupsByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
+    await deleteFrameGroupsByIdsAction(queryClient, deleteIds);
+  }, [queryClient]);
 
   return {
     frameGroups,
