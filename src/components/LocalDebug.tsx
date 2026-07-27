@@ -8,14 +8,17 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
+import { useImageGroups } from '@/hooks/useImageGroups';
 import useTrashbin from '@/hooks/useTrashbin';
 import { getItemsSource } from '@/items/client';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
+import { randomId } from '@/tools/randomId';
 
 function LocalDebug() {
   const [shouldRender, setShouldRender] = useState(false);
   const { enableDebug } = useSettingsStore();
+  const { updateImageGroup } = useImageGroups({});
 
   useEffect(() => {
     if (window.location.hostname === 'localhost') {
@@ -35,6 +38,29 @@ function LocalDebug() {
     const source = await getItemsSource();
     await source.runMaintenance();
   }, []);
+
+  const createSubGroup = useCallback(async () => {
+    console.log('calling updateImageGroup');
+    await updateImageGroup({
+      'id': randomId(),
+        'slug': 'new_group',
+        'title': 'New Group',
+        'isFavourite': false,
+        'created': '2026-07-27 20:56:12:175',
+        'coverImage': 'a8448313542d45c76368054197e44e8074d5d66e',
+        'images': [
+        '58c724d7d652486bb96cd2cffb0595dafe7b0e66',
+        '244bae16355c866aaa9bb8e707d2125f123a00b6',
+        '244e3126864607093dc4a063e65700c3ec57b762',
+        'a8448313542d45c76368054197e44e8074d5d66e',
+      ],
+        'groups': [],
+        'tags': [],
+      },
+      '111c3c9d-c464-4f17-b2aa-3e53878e11c5',
+    );
+    console.log('updateImageGroup done');
+  }, [updateImageGroup]);
 
   // const { images: allImages } = useImages({ list: true }); // All images
   // const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
@@ -114,6 +140,11 @@ function LocalDebug() {
             await navigateToImage('c89f0f97516aa784c0ccec1d0c9c1cf782b2fba5');
           }}>
             To Image: *Isar* (munich/isar / pageIndex:1)
+          </Button>
+        </ButtonGroup>
+        <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
+          <Button onClick={createSubGroup}>
+            create group with 4 existing images from `Lego Bulli`
           </Button>
         </ButtonGroup>
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
