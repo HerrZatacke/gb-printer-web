@@ -104,7 +104,7 @@ function EditImageGroup() {
                 )) }
               </TextField>
             ) }
-            <Debug text={JSON.stringify({ slug, parentSlug, canConfirm, slugIsInUse }, null, 2)} />
+            <Debug text={JSON.stringify({ editId, slug, parentSlug, canConfirm, slugIsInUse }, null, 2)} />
           </>
         )}
       </Stack>
