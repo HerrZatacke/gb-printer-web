@@ -8,7 +8,6 @@ import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
 import WrappedNextLink from '@/components/WrappedNextLink';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';
@@ -20,7 +19,7 @@ interface FolderTreeItemProps {
 }
 
 function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
-  const { getGroupPath } = useNavigationTools();
+  const { getUrl } = useGalleryTreeContext();
 
   return (
     <TreeItem
@@ -28,7 +27,7 @@ function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
       label={(
         <Link
           component={WrappedNextLink}
-          href={getGroupPath(group.id, 0)}
+          href={getUrl({ group: group.fullSlug })}
           prefetch={false}
           onClick={onClick}
           sx={{ display: 'block' }}

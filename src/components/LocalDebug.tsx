@@ -19,6 +19,8 @@ function LocalDebug() {
   const [shouldRender, setShouldRender] = useState(false);
   const { enableDebug } = useSettingsStore();
   const { updateImageGroup } = useImageGroups({});
+  const { navigateToImage, navigateToGroup } = useNavigationTools();
+  const { checkUpdateTrashCount } = useTrashbin();
 
   useEffect(() => {
     if (window.location.hostname === 'localhost') {
@@ -41,26 +43,29 @@ function LocalDebug() {
 
   const createSubGroup = useCallback(async () => {
     console.log('calling updateImageGroup');
-    await updateImageGroup({
-      'id': randomId(),
-        'slug': 'new_group',
-        'title': 'New Group',
-        'isFavourite': false,
-        'created': '2026-07-27 20:56:12:175',
-        'coverImage': 'a8448313542d45c76368054197e44e8074d5d66e',
-        'images': [
-        '58c724d7d652486bb96cd2cffb0595dafe7b0e66',
-        '244bae16355c866aaa9bb8e707d2125f123a00b6',
-        '244e3126864607093dc4a063e65700c3ec57b762',
-        'a8448313542d45c76368054197e44e8074d5d66e',
-      ],
-        'groups': [],
-        'tags': [],
+    const id = randomId();
+    await updateImageGroup(
+      {
+        id,
+        slug: 'new_group',
+        title: 'New Group',
+        isFavourite: false,
+        created: '2026-07-27 20:56:12:175',
+        coverImage: 'a8448313542d45c76368054197e44e8074d5d66e',
+        images: [
+          '58c724d7d652486bb96cd2cffb0595dafe7b0e66',
+          '244bae16355c866aaa9bb8e707d2125f123a00b6',
+          '244e3126864607093dc4a063e65700c3ec57b762',
+          'a8448313542d45c76368054197e44e8074d5d66e',
+        ],
+        groups: [],
+        tags: [],
       },
       '111c3c9d-c464-4f17-b2aa-3e53878e11c5',
     );
+    await navigateToGroup(id, 0);
     console.log('updateImageGroup done');
-  }, [updateImageGroup]);
+  }, [updateImageGroup, navigateToGroup]);
 
   // const { images: allImages } = useImages({ list: true }); // All images
   // const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
@@ -72,9 +77,6 @@ function LocalDebug() {
 
   // const { byGroupId: rootGroupItems } = useImages({ groupId: '' });
   // const { byGroupId: randomRgbGroupItems } = useImages({ groupId: '34ee68d9-16e4-46b8-a745-2a510950d858' });
-
-  const { navigateToImage, navigateToGroup } = useNavigationTools();
-  const { checkUpdateTrashCount } = useTrashbin();
 
   if (!shouldRender) {
     return null;
