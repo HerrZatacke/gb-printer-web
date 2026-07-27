@@ -53,7 +53,7 @@ const computeImageGroupUpdateDiff = (
   }
 
   // detach this group from any parent other than the intended one
-  if (parentGroupId?.length && parentGroupId !== ROOT_ID) {
+  if (parentGroupId?.length) {
     for (const other of allGroups) {
       if (other.id === parentGroupId || !other.groups.includes(group.id)) {
         continue;
@@ -62,13 +62,15 @@ const computeImageGroupUpdateDiff = (
       setGroup({ ...current, groups: current.groups.filter((id) => id !== group.id) });
     }
 
-    // attach this group under its intended parent
-    const parentGroup = groupsById.get(parentGroupId);
-    if (!parentGroup) {
-      throw new Error(`Parent group "${parentGroupId}" not found`);
-    }
-    if (!parentGroup.groups.includes(group.id)) {
-      setGroup({ ...parentGroup, groups: [...parentGroup.groups, group.id] });
+    // attach this group under its intended parent -> attaching to ROOT is implied for orphaned images
+    if (parentGroupId !== ROOT_ID) {
+      const parentGroup = groupsById.get(parentGroupId);
+      if (!parentGroup) {
+        throw new Error(`Parent group "${parentGroupId}" not found`);
+      }
+      if (!parentGroup.groups.includes(group.id)) {
+        setGroup({ ...parentGroup, groups: [...parentGroup.groups, group.id] });
+      }
     }
   }
 
