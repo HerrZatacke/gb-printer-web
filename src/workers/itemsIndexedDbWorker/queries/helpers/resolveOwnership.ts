@@ -5,6 +5,7 @@ interface OwnershipResult {
   imageIdsByGroup: Map<string, string[]>;
   topLevelGroupIds: string[];
   orphanedImageIds: string[];
+  parentByChild: Map<string, string>;
 }
 
 export const resolveOwnership = (
@@ -27,7 +28,18 @@ export const resolveOwnership = (
   const topLevelGroupIds = groups.map((g) => g.id).filter((id) => !claimedGroups.has(id));
   const orphanedImageIds = allImageIds.filter((id) => !claimedImages.has(id));
 
+  const parentByChild = new Map<string, string>();
+  for (const [parentId, childIds] of childGroupIdsByParent) {
+    for (const childId of childIds) {
+      parentByChild.set(childId, parentId);
+    }
+  }
+
   return {
-    childGroupIdsByParent, imageIdsByGroup, topLevelGroupIds, orphanedImageIds,
+    childGroupIdsByParent,
+    imageIdsByGroup,
+    topLevelGroupIds,
+    orphanedImageIds,
+    parentByChild,
   };
 };
