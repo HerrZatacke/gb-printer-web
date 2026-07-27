@@ -1,5 +1,6 @@
 import { BlendMode, type RGBNPalette as DecoderLibRGBNPalette, Rotation } from 'gb-image-decoder';
 import z from 'zod';
+import { fromCreationDate, toCreationDate } from '@/tools/toCreationDate';
 
 const nullToValue = <T extends z.ZodType>(schema: T, defaultValue: undefined | z.input<T>) => {
   return z.preprocess((val) => (val === null ? defaultValue : val), schema.optional());
@@ -32,7 +33,17 @@ export type ImageMetadata = z.infer<typeof ImageMetadataSchema>;
 
 export const CommonImageSchema = z.object({
   hash: z.string(),
-  created: z.string(),
+  created: z.string().transform((value, ctx) => {
+    try {
+      return toCreationDate(fromCreationDate(value));
+    } catch (error) {
+      ctx.addIssue({
+        code: 'custom',
+        message: error instanceof Error ? error.message : 'Invalid creation date',
+      });
+      return z.NEVER;
+    }
+  }),
   title: z.string(),
   frame: z.string().optional(),
   tags: z.array(z.string()),

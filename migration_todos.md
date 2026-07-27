@@ -13,7 +13,6 @@
 * Inside useStores: // ToDo: The map function is a migration. Must be moved or removed
 * Handle inheritance for JSONExportState and ExportableState -> should get it's types from somewhere else
 * Link version of export to new API Schemas
-* check usage of cleanImages.ts (still needed?)
 * Rename translation key "useImageGroups" -> "useEditImageGroups"
 * Strange behaviour when importing batch items and creating a group: Images are temporarily listed twice???
 
