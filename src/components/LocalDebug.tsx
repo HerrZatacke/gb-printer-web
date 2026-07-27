@@ -14,6 +14,8 @@ import { getItemsSource } from '@/items/client';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
+import { resetImageCaches } from '@/stores/queries/cacheResets';
+import { useQueryClient } from '@tanstack/react-query';
 
 function LocalDebug() {
   const [shouldRender, setShouldRender] = useState(false);
@@ -21,6 +23,7 @@ function LocalDebug() {
   const { updateImageGroup } = useImageGroups({});
   const { navigateToImage, navigateToGroup } = useNavigationTools();
   const { checkUpdateTrashCount } = useTrashbin();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (window.location.hostname === 'localhost') {
@@ -40,6 +43,11 @@ function LocalDebug() {
     const source = await getItemsSource();
     await source.runMaintenance();
   }, []);
+
+  const clearCaches = useCallback(async () => {
+    await resetImageCaches(queryClient, true);
+  }, [queryClient]);
+
 
   const createSubGroup = useCallback(async () => {
     console.log('calling updateImageGroup');
@@ -158,6 +166,9 @@ function LocalDebug() {
           </Button>
           <Button onClick={runMaintenance}>
             runMaintenance
+          </Button>
+          <Button onClick={clearCaches}>
+            clearCaches
           </Button>
         </ButtonGroup>
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}
