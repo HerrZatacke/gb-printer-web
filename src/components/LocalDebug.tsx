@@ -31,6 +31,11 @@ function LocalDebug() {
     window.location.reload();
   }, []);
 
+  const runMaintenance = useCallback(async () => {
+    const source = await getItemsSource();
+    await source.runMaintenance();
+  }, []);
+
   // const { images: allImages } = useImages({ list: true }); // All images
   // const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
   // ToDo: See edge-case in resolveGroupItemsByGroupId
@@ -117,6 +122,9 @@ function LocalDebug() {
           </Button>
           <Button onClick={debugReset}>
             debugReset
+          </Button>
+          <Button onClick={runMaintenance}>
+            runMaintenance
           </Button>
         </ButtonGroup>
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}
