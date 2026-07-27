@@ -126,7 +126,7 @@ export const imageGroupsListQueryOptions = () => {
 export const updateImageGroupsAction = async (queryClient: QueryClient, imageGroups: SerializableImageGroup[], purge = false): Promise<void> => {
   const source = await getItemsSource();
   await source.updateImageGroups(imageGroups, purge);
-  queryClient.removeQueries({ queryKey: imageGroupsKeys.all });
+  queryClient.resetQueries({ queryKey: imageGroupsKeys.all });
 };
 
 
@@ -144,7 +144,7 @@ export const updateImageGroupAction = async (queryClient: QueryClient, group: Se
 
   const source = await getItemsSource();
   await source.updateImageGroups(changedGroups, false);
-  queryClient.removeQueries({ queryKey: imageGroupsKeys.all });
+  await queryClient.resetQueries({ queryKey: imageGroupsKeys.all });
 };
 
 
@@ -173,12 +173,12 @@ export const moveImagesToGroupAction = async (queryClient: QueryClient, images: 
 
   const source = await getItemsSource();
   await source.updateImageGroups(changedGroups, false);
-  queryClient.removeQueries({ queryKey: imageGroupsKeys.all });
+  queryClient.resetQueries({ queryKey: imageGroupsKeys.all });
 };
 
 
 export const deleteImageGroupsByIdsAction = async (queryClient: QueryClient, deleteIds: string[]): Promise<void> => {
   const source = await getItemsSource();
   await source.deleteImageGroupsByIds(deleteIds);
-  queryClient.removeQueries({ queryKey: imageGroupsKeys.all });
+  queryClient.resetQueries({ queryKey: imageGroupsKeys.all });
 };
