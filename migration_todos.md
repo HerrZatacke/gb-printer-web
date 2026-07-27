@@ -1,5 +1,4 @@
 # Webworker Migration ToDos:
-* // ToDo: add batched loader
 * Remove Pagination from queries which are supposed to return the full set (of hashes)
 * Saving imageGroups has weird effect: some images remaining in parent
 * Redirect after editing/saving imageGroup happens too early?

@@ -210,7 +210,7 @@ export const createBatchedLoader = <T>(
 ) => { /* returns { loadByKey } */ };
 ```
 
-The `delay` param is new versus chat's design (which only used `queueMicrotask`). Frames/Images loaders in `stores/queries/` are configured with **`delay: 50`** (ms), not `0` — a deliberate widening of the coalescing window, addressing the "staggered mounts" caveat. **Palettes and Plugins do not have batched loaders yet** — both `stores/queries/palettes.ts` and `plugins.ts` have a literal `// ToDo: add batched loader` comment; their `byX` lookups currently just do an unbatched `Promise.all(keys.map(store.get))`.
+The `delay` param is new versus chat's design (which only used `queueMicrotask`). Loaders for now are configured with **`delay: 50`** (ms), not `0` — a deliberate widening of the coalescing window, addressing the "staggered mounts" caveat. 
 
 ## TanStack Layer Specifics (confirmed)
 

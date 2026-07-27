@@ -1,7 +1,7 @@
 import { type RGBNPalette } from 'gb-image-decoder';
 import { missingGreyPalette } from '@/consts/defaults';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { palettesListQueryOptions } from '@/stores/queries/palettes';
+import { paletteByShortNameQueryOptions } from '@/stores/queries/palettes';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
@@ -22,13 +22,13 @@ export const getImagePalettes = async (image: Image): Promise<ImagePalettes> => 
   const monoImage = image as MonochromeImage;
 
   const queryClient = getQueryClient();
-  const { items: palettes } = await queryClient.fetchQuery(palettesListQueryOptions());
-
-  const palette = palettes.find(({ shortName }) => shortName === monoImage.palette) || missingGreyPalette;
-  const framePalette = palettes.find(({ shortName }) => shortName === monoImage.framePalette) || missingGreyPalette;
+  const [foundPalette, foundFramePalette] = await Promise.all([
+    queryClient.fetchQuery(paletteByShortNameQueryOptions(monoImage.palette)),
+    queryClient.fetchQuery(paletteByShortNameQueryOptions(monoImage.framePalette)),
+  ]);
 
   return {
-    palette,
-    framePalette: monoImage.lockFrame ? framePalette : palette,
+    palette: foundPalette || missingGreyPalette,
+    framePalette: (monoImage.lockFrame ? foundFramePalette : foundPalette) || missingGreyPalette,
   };
 };

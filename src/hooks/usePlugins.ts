@@ -5,6 +5,7 @@ import {
   pluginsListQueryOptions,
   updatePluginsAction,
   deletePluginsByUrlsAction,
+  pluginByUrlQueryOptions,
 } from '@/stores/queries/plugins';
 import { Plugin, type PluginConfigValues } from '@/types/Plugin';
 import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
@@ -55,7 +56,7 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
   }, [queryClient]);
 
   const updatePluginConfig = useCallback(async (url: string, key: string, value: string | number): Promise<void> => {
-    const { items: [foundPlugin] } = await queryClient.fetchQuery(pluginsByUrlsQueryOptions([url]));
+    const foundPlugin = await queryClient.fetchQuery(pluginByUrlQueryOptions(url));
 
     if (!foundPlugin) {
       throw new Error(`Plugin "${url}" not found`);

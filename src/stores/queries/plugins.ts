@@ -1,5 +1,7 @@
 import { type QueryClient } from '@tanstack/react-query';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/items/client';
+import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { Plugin } from '@/types/Plugin';
 
@@ -8,31 +10,71 @@ const baseKeys = ['items', 'plugins'] as const;
 export const pluginsKeys = {
   all: baseKeys,
   list: [...baseKeys, 'list'] as const,
+  byUrl: (url: string) => [...baseKeys, 'byUrl', url] as const,
   byUrls: (urls: string[]) => [...baseKeys, 'byUrls', [...urls].sort()] as const,
 };
+
+const warmPluginCache = (plugins: Plugin[]) => {
+  const queryClient = getQueryClient();
+  plugins.forEach((plugin) => {
+    queryClient.setQueryData(pluginsKeys.byUrl(plugin.url), plugin);
+  });
+};
+
+export const pluginsByUrlsBatchedLoader = createBatchedLoader<Plugin>(
+  async (urls: string[]) => {
+    const source = await getItemsSource();
+    return source.getPluginsByUrls(urls);
+  },
+  (plugin) => plugin.url,
+  50,
+);
 
 export const pluginsListQueryOptions = () => {
   return {
     queryKey: pluginsKeys.list,
     queryFn: async () => {
       const source = await getItemsSource();
-      return source.getPlugins();
+      const result = await source.getPlugins();
+
+      warmPluginCache(result.items);
+      return result;
     },
     staleTime: STALE_TIME,
   };
 };
 
-// ToDo: add batched loader
 export const pluginsByUrlsQueryOptions = (urls: string[]) => {
   return {
     queryKey: pluginsKeys.byUrls(urls),
     queryFn: async () => {
-      const source = await getItemsSource();
-      return source.getPluginsByUrls(urls || []);
+      if (!urls?.length) {
+        return { items: [] };
+      }
+
+      const results = await Promise.all(urls.map(pluginsByUrlsBatchedLoader.loadByKey));
+      const items = results.filter((f): f is Plugin => Boolean(f));
+
+      warmPluginCache(items);
+      return { items };
+    },
+    select: (data: { items: Plugin[] }) => {
+      const byUrl = new Map(data.items.map((plugin) => [plugin.url, plugin]));
+      return {
+        items: urls // sort result by this call's original order, not the cached one
+          .map((url) => byUrl.get(url))
+          .filter((plugin): plugin is Plugin => Boolean(plugin)),
+      };
     },
     staleTime: STALE_TIME,
   };
 };
+
+export const pluginByUrlQueryOptions = (url: string) => ({
+  queryKey: pluginsKeys.byUrl(url), // mostly populated by pluginsByUrls
+  queryFn: async () => pluginsByUrlsBatchedLoader.loadByKey(url),
+  staleTime: STALE_TIME,
+});
 
 export const updatePluginsAction = async (queryClient: QueryClient, plugins: Plugin[], purge = false): Promise<void> => {
   const source = await getItemsSource();

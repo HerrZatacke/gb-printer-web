@@ -4,7 +4,7 @@ import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { usePlugins } from '@/hooks/usePlugins';
 import { useStores } from '@/hooks/useStores';
-import { pluginsByUrlsQueryOptions } from '@/stores/queries/plugins';
+import { pluginByUrlQueryOptions } from '@/stores/queries/plugins';
 import { useInteractionsStore, useProgressStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import {
@@ -37,7 +37,7 @@ export const useContextHook = (): PluginsContext => {
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
     const queryClient = getQueryClient();
-    const { items: [plugin] } = await queryClient.fetchQuery(pluginsByUrlsQueryOptions([url]));
+    const plugin = await queryClient.fetchQuery(pluginByUrlQueryOptions(url));
 
     if (!plugin) {
       throw new Error(`Plugin with url "${url}" not found`);

@@ -1,7 +1,7 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import {
-  palettesByShortNameQueryOptions,
+  palettesByShortNamesQueryOptions,
   palettesListQueryOptions,
   updatePalettesAction,
   deletePalettesByShortNamesAction,
@@ -35,7 +35,7 @@ export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalett
   });
 
   const byShortNamesQuery = useQuery({
-    ...palettesByShortNameQueryOptions(shortNames || []),
+    ...palettesByShortNamesQueryOptions(shortNames || []),
     enabled: Boolean(shortNames?.length),
     placeholderData: keepPreviousData,
     retry: false,
