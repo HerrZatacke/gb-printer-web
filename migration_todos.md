@@ -10,7 +10,6 @@
 * Avoid reading full image list -> useImages({ list: true });
 * Test moving images to other groups (or root)
 * Test moving groups to other groups (or root)!!
-* Inside useStores: // ToDo: The map function is a migration. Must be moved or removed
 * Handle inheritance for JSONExportState and ExportableState -> should get it's types from somewhere else
 * Link version of export to new API Schemas
 * Rename translation key "useImageGroups" -> "useEditImageGroups"

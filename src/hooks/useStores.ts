@@ -105,12 +105,7 @@ export const useStores = (): UseStores => {
       }
 
       if (state.imageGroups) {
-          await updateImageGroups(
-            state.imageGroups
-              // ToDo: The map function is a migration. Must be moved or removed
-              .map((ig) => ({ ...ig, tags: (ig as SerializableImageGroup).tags || [] })),
-            true,
-          );
+        await updateImageGroups(state.imageGroups, true);
       }
     };
 
