@@ -2,6 +2,8 @@ import { type QueryClient } from '@tanstack/react-query';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
+import { imagesKeys } from '@/stores/queries/cacheKeys';
+import { resetImageCaches } from '@/stores/queries/cacheResets';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { Image } from '@/types/Image';
 import {
@@ -10,20 +12,6 @@ import {
   type ImageQuerySort,
   type ItemsReferenceList,
 } from '@/workers/itemsIndexedDbWorker/types';
-
-const baseKeys = ['items', 'images'] as const;
-
-export const imagesKeys = {
-  all: baseKeys,
-  list: [...baseKeys, 'list'] as const,
-  hashesByGroupId: (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters) => [...baseKeys, 'hashesByGroupId', { groupId, includeGroupImageHashes, sort, filters }] as const,
-  byGroupId: (groupId: string, includeGroups: boolean, params: ImageQueryParams) => [...baseKeys, 'byGroupId', { groupId, includeGroups, params }] as const,
-  allTags: [...baseKeys, 'allTags'] as const,
-  byHash: (hash: string) => [...baseKeys, 'byHash', hash] as const,
-  byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
-  byAnyHashes: (hashes: string[]) => [...baseKeys, 'byAnyHashes', [...hashes].sort()] as const,
-  raw: (raw: ImageQueryParams, candidateHashes?: Set<string>) => [...baseKeys, 'raw', { raw, candidateHashes }] as const,
-};
 
 const warmImageCache = (images: Image[]) => {
   const queryClient = getQueryClient();
@@ -176,12 +164,13 @@ export const imagesRawQueryOptions = (raw: ImageQueryParams, candidateHashes?: S
 
 export const updateImagesAction = async (queryClient: QueryClient, images: Image[], purge = false): Promise<void> => {
   const source = await getItemsSource();
+  // ToDo: updateImages should report if groups were also affected (e.g. by adding new images)
   await source.updateImages(images, purge);
-  await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
+  await resetImageCaches(queryClient, true);
 };
 
 export const deleteImagesByHashesAction = async (queryClient: QueryClient, hashes: string[]): Promise<void> => {
   const source = await getItemsSource();
   await source.deleteImagesByHashes(hashes);
-  await queryClient.invalidateQueries({ queryKey: imagesKeys.all });
+  await resetImageCaches(queryClient, true);
 };

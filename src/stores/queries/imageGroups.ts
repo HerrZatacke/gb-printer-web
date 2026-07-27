@@ -1,11 +1,11 @@
 import { QueryClient } from '@tanstack/react-query';
 import { getItemsSource } from '@/items/client';
+import { imageGroupsKeys } from '@/stores/queries/cacheKeys';
+import { resetImageGroupCaches } from '@/stores/queries/cacheResets';
 import { STALE_TIME } from '@/stores/queries/consts';
 import unique from '@/tools/unique';
 import { type SerializableImageGroup, type TreeImageGroup } from '@/types/ImageGroup';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
-
-const baseKeys = ['items', 'imagegroups'] as const;
 
 export const findGroupByFullSlug = (
   group: TreeImageGroup,
@@ -94,11 +94,6 @@ const removeImagesFromGroups = (allGroups: SerializableImageGroup[], imagesToRem
   return [...changedGroups];
 };
 
-export const imageGroupsKeys = {
-  all: baseKeys,
-  list: [...baseKeys, 'list'] as const,
-  fullTree: [...baseKeys, 'fullTree'] as const,
-};
 
 export const imageGroupsFullTreeQueryOptions = () => {
   return {
@@ -126,7 +121,7 @@ export const imageGroupsListQueryOptions = () => {
 export const updateImageGroupsAction = async (queryClient: QueryClient, imageGroups: SerializableImageGroup[], purge = false): Promise<void> => {
   const source = await getItemsSource();
   await source.updateImageGroups(imageGroups, purge);
-  queryClient.resetQueries({ queryKey: imageGroupsKeys.all });
+  await resetImageGroupCaches(queryClient);
 };
 
 
@@ -144,7 +139,7 @@ export const updateImageGroupAction = async (queryClient: QueryClient, group: Se
 
   const source = await getItemsSource();
   await source.updateImageGroups(changedGroups, false);
-  await queryClient.resetQueries({ queryKey: imageGroupsKeys.all });
+  await resetImageGroupCaches(queryClient);
 };
 
 
@@ -173,12 +168,12 @@ export const moveImagesToGroupAction = async (queryClient: QueryClient, images: 
 
   const source = await getItemsSource();
   await source.updateImageGroups(changedGroups, false);
-  queryClient.resetQueries({ queryKey: imageGroupsKeys.all });
+  await resetImageGroupCaches(queryClient);
 };
 
 
 export const deleteImageGroupsByIdsAction = async (queryClient: QueryClient, deleteIds: string[]): Promise<void> => {
   const source = await getItemsSource();
   await source.deleteImageGroupsByIds(deleteIds);
-  queryClient.resetQueries({ queryKey: imageGroupsKeys.all });
+  await resetImageGroupCaches(queryClient);
 };
