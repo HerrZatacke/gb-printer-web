@@ -4,10 +4,18 @@ import { Date } from '@/tools/safeDate';
 const FORMAT = 'YYYY-MM-DD HH:mm:ss:SSS';
 
 export const fromCreationDate = (creationDate: string): Date => {
+
   const d = dayjs(creationDate, FORMAT, true); // strict = true: no loose fallback parsing
 
   if (!d.isValid()) {
     console.warn(`fromCreationDate received malformed creationDate "${creationDate}". Must be "${FORMAT}"`);
+
+    // Also try the slightly older format without `:000`
+    const d2 = dayjs(`${creationDate}:000`, FORMAT, true);
+    if (d2.isValid()) {
+      return d2.toDate();
+    }
+
     return new Date(NaN);
   }
 
