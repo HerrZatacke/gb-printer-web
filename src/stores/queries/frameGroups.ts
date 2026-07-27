@@ -1,14 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 import { getItemsSource } from '@/items/client';
+import { frameGroupsKeys } from '@/stores/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { FrameGroup } from '@/types/FrameGroup';
-
-const baseKeys = ['items', 'framegroups'] as const;
-
-export const frameGroupsKeys = {
-  all: baseKeys,
-  list: [...baseKeys, 'list'] as const,
-};
 
 export const frameGroupsListQueryOptions = () => {
   return {

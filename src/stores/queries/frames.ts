@@ -1,17 +1,9 @@
 import { QueryClient } from '@tanstack/react-query';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
+import { framesKeys } from '@/stores/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { Frame } from '@/types/Frame';
-
-const baseKeys = ['items', 'frames'] as const;
-
-export const framesKeys = {
-  all: baseKeys,
-  list: [...baseKeys, 'list'] as const,
-  byIds: (ids: string[]) => [...baseKeys, 'byIds', [...ids].sort()] as const,
-  byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
-};
 
 export const framesListQueryOptions = () => {
   return {

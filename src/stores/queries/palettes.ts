@@ -2,17 +2,9 @@ import { QueryClient } from '@tanstack/react-query';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
+import { palettesKeys } from '@/stores/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { Palette } from '@/types/Palette';
-
-const baseKeys = ['items', 'palettes'] as const;
-
-export const palettesKeys = {
-  all: baseKeys,
-  list: [...baseKeys, 'list'] as const,
-  byShortName: (shortName: string) => [...baseKeys, 'byShortName', shortName] as const,
-  byShortNames: (shortNames: string[]) => [...baseKeys, 'byShortNames', [...shortNames].sort()] as const,
-};
 
 const warmPaletteCache = (palettes: Palette[]) => {
   const queryClient = getQueryClient();

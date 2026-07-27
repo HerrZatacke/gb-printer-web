@@ -2,17 +2,9 @@ import { type QueryClient } from '@tanstack/react-query';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
+import { pluginsKeys } from '@/stores/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { Plugin } from '@/types/Plugin';
-
-const baseKeys = ['items', 'plugins'] as const;
-
-export const pluginsKeys = {
-  all: baseKeys,
-  list: [...baseKeys, 'list'] as const,
-  byUrl: (url: string) => [...baseKeys, 'byUrl', url] as const,
-  byUrls: (urls: string[]) => [...baseKeys, 'byUrls', [...urls].sort()] as const,
-};
 
 const warmPluginCache = (plugins: Plugin[]) => {
   const queryClient = getQueryClient();
