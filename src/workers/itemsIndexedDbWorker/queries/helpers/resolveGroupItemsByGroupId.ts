@@ -105,17 +105,34 @@ export const resolveGroupItemsByGroupId = async (
     });
   }
 
-  const groupItems = [...images, ...groupImages].map((image) => {
-    const group = filteredGroups.find((g) => g.coverImage === image.hash) || null;
+  const imageItems = images.map((image): GroupItem => {
     return {
       image,
-      group,
-      title: group?.title || image.title,
-      created: group?.created || image.created,
+      group: null,
+      title: image.title,
+      created: image.created,
       frame: image.frame || null,
       palette: typeof image.palette === 'string' ? image.palette : null,
     };
   });
+
+  const groupCoverItems = groupImages.map((image): GroupItem | null => {
+    const group = filteredGroups.find((g) => g.coverImage === image.hash);
+    if (!group) {
+      return null;
+    }
+
+    return {
+      image,
+      group,
+      title: group.title,
+      created: group.created,
+      frame: image.frame || null,
+      palette: typeof image.palette === 'string' ? image.palette : null,
+    };
+  }).filter((gi): gi is GroupItem => Boolean(gi));
+
+  const groupItems: GroupItem[] = [...imageItems, ...groupCoverItems];
 
   // groupItems must be filtered recursively to account for Edge-Case:
   // filtering for multiple tags cahn show empty folders because the folder
