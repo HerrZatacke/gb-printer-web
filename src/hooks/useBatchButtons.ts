@@ -17,6 +17,7 @@ import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import unique from '@/tools/unique';
 import { type Image, type MonochromeImage } from '@/types/Image';
+import { type GroupItem } from '@/workers/itemsIndexedDbWorker/types';
 
 interface UseBatchButtons {
   hasPlugins: boolean;
@@ -53,12 +54,15 @@ const useBatchButtons = (): UseBatchButtons => {
   const { setVideoSelection } = useInteractionsStore();
   const { setDownloadImages } = useDownload();
   const { deleteImages } = useStores();
-  const { images, covers } = useGalleryTreeContext();
+  const { viewItems } = useGalleryTreeContext();
   const { sendEvent } = useTracking();
 
   const currentPageImages: Image[] = useMemo(() => {
-    return images.filter((image: Image) => !covers.includes(image.hash)); // Current page without covers
-  }, [covers, images]);
+    // Current page without covers
+    return viewItems
+      .filter(({ group }: GroupItem) => !group)
+      .map(({ image }) => image);
+  }, [viewItems]);
 
   const selectedImages = useMemo(() => (
     currentPageImages.filter(({ hash }) => imageSelection.includes(hash))

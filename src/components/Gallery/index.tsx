@@ -13,7 +13,7 @@ import StorageWarning from '@/components/StorageWarning';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 
 function Gallery() {
-  const { images, paging, covers, isWorking } = useGalleryTreeContext();
+  const { viewItems, paging, isWorking } = useGalleryTreeContext();
 
   // ToDo: Navigation Effects
   // if (
@@ -45,10 +45,10 @@ function Gallery() {
       { maxPageIndex > 0 && <Pagination page={page} maxPageIndex={maxPageIndex} /> }
 
       <GalleryGrid showLoader={isWorking}>
-        { images.map((image) => (
-          covers.includes(image.hash) ? (
+        { viewItems.map(({ image, group }) => (
+          group ? (
             <GalleryGroup
-              key={image.hash}
+              key={group.id}
               hash={image.hash}
             />
           ) : (
@@ -60,7 +60,7 @@ function Gallery() {
         )) }
       </GalleryGrid>
 
-      { images.length >= 3 && (
+      { viewItems.length >= 3 && (
         <>
           <Pagination page={page} maxPageIndex={maxPageIndex} />
           <GalleryHeader isBottom />

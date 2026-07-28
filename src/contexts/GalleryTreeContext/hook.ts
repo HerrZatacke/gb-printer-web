@@ -68,34 +68,17 @@ export const useContextHook = (): GalleryTreeContextType => {
 
   const { byFullSlug: view, isLoadingByFullSlug } = useImageGroups({ bySlug: path });
 
-  const covers = view?.groups.map(({ coverImage }) => coverImage) || [];
-
   const { byGroupId: viewItems, byGroupPaging, isLoadingByGroupId } = useImages({
     page: currentPageIndex,
     groupId: view?.id,
     keepPreviousData: false,
   });
 
-  const images = viewItems.map(({ image }) => image);
-
-  // useEffect(() => {
-  //   console.log(`🦚 ${Math.round(performance.now())} page/path`, { currentPageIndex, path });
-  // }, [currentPageIndex, path]);
-  //
-  // useEffect(() => {
-  //   console.log(`🦚 ${Math.round(performance.now())} view: ${view?.id}: `, { view });
-  // }, [view]);
-  //
-  // useEffect(() => {
-  //   console.log(`🦚 ${Math.round(performance.now())} images`, images);
-  // }, [images]);
-
   return {
     view,
-    covers,
     groupsByFullSlug,
     groupsById,
-    images,
+    viewItems,
     pathsOptions,
     isWorking: isLoadingTree || isLoadingByGroupId || isLoadingByFullSlug,
     paging: byGroupPaging,
