@@ -2,11 +2,10 @@
 
 ## Worker/API
 * Remove Pagination from queries which are supposed to return the full set (of hashes)
-* deleting imageGroups must also update dependent imageGroups
+* deleting imageGroups or images must also update dependent imageGroups
 * Trigger for cleanup on worker side is missing (after image deletion etc.)
 
 ## ImageGroups
-* Deleting imageGroups moves item possibly to wrong location
 * Test moving images to other groups (or root)
 * Test moving groups to other groups (or root)!!
 
