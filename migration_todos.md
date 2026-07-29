@@ -1,9 +1,5 @@
 # Webworker Migration ToDos:
 
-## ImageGroups
-* Test moving images to other groups (or root)
-* Test moving groups to other groups (or root)!!
-
 ## Style/Global
 * Move "from '@/items/client'" somewehere smart...
 * Fix: ToDo: Navigation Effects

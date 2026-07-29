@@ -1,5 +1,6 @@
 import z from 'zod';
 import sortBy from '@/tools/sortby';
+import unique from '@/tools/unique';
 import {
   type TreeImageGroup,
   SerializableImageGroupSchema,
@@ -109,6 +110,25 @@ const deleteImageGroupById = async (id: string): Promise<void> => {
     await tx.done;
     return;
   }
+
+  const { childGroupIdsByParent, imageIdsByGroup, parentByChild } = resolveOwnership(allGroups, []);
+  const parentId = parentByChild.get(id) ?? null;
+  const parent = parentId && groupsById.get(parentId);
+
+  // if no parent, images/children naturally fall to root via resolveOwnership on next read
+  if (parent) {
+    const ownImages = imageIdsByGroup.get(id) ?? [];
+    const ownChildIds = childGroupIdsByParent.get(id) ?? [];
+
+    await store.put({
+      ...parent,
+      images: unique([...parent.images, ...ownImages]),
+      groups: unique([...parent.groups, ...ownChildIds]),
+    });
+  }
+
+  await store.delete(id);
+  await tx.done;
 
   await reconcileImageGroups(db);
 };
