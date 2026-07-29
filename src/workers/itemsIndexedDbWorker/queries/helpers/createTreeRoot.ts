@@ -14,7 +14,7 @@ export const createTreeRoot = (
   created: '',
   title: 'Home',
   isFavourite: false,
-  coverImage: '',
+  coverImage: null,
   images,
   tags: [...new Set(topLevelGroups.flatMap((group) => group.tags))],
   totalImages: topLevelGroups.reduce((sum, group) => sum + group.totalImages, 0),

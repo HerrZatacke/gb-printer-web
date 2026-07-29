@@ -1,12 +1,12 @@
 import z from 'zod';
 import sortBy from '@/tools/sortby';
-import unique from '@/tools/unique';
 import {
   type TreeImageGroup,
   SerializableImageGroupSchema,
   type SerializableImageGroup,
 } from '@/types/ImageGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
 import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSlugs';
 import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
 import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildTree';
@@ -89,6 +89,8 @@ export const updateImageGroups = async (imageGroups: SerializableImageGroup[], p
 
     await Promise.all(parsedGroups.map((group) => store.put(group)));
     await tx.done;
+
+    await reconcileImageGroups(db);
   } else {
     console.error(error);
   }
@@ -108,24 +110,7 @@ const deleteImageGroupById = async (id: string): Promise<void> => {
     return;
   }
 
-  const { childGroupIdsByParent, imageIdsByGroup, parentByChild } = resolveOwnership(allGroups, []);
-  const parentId = parentByChild.get(id) ?? null;
-  const parent = parentId && groupsById.get(parentId);
-
-  // if no parent, images/children naturally fall to root via resolveOwnership on next read
-  if (parent) {
-    const ownImages = imageIdsByGroup.get(id) ?? [];
-    const ownChildIds = childGroupIdsByParent.get(id) ?? [];
-
-    await store.put({
-      ...parent,
-      images: unique([...parent.images, ...ownImages]),
-      groups: unique([...parent.groups, ...ownChildIds]),
-    });
-  }
-
-  await store.delete(id);
-  await tx.done;
+  await reconcileImageGroups(db);
 };
 
 export const deleteImageGroupsByIds = async (ids: string[]): Promise<void> => {

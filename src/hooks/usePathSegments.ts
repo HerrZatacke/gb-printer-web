@@ -62,8 +62,9 @@ export const usePathSegments = (): UsePathSegments => {
           let parentPageIndex = 0;
 
           if (childGroup) {
+            // ToDo: find way to calulate group position for groups without coverimage (using viewItems)?
             const childCoverImage = childGroup.coverImage;
-            parentPageIndex = await getImagePageIndexInGroup(childCoverImage, group);
+            parentPageIndex = childCoverImage ? await getImagePageIndexInGroup(childCoverImage, group) : 0;
           }
 
           return {

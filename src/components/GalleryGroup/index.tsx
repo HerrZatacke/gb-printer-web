@@ -16,7 +16,7 @@ import { useSettingsStore } from '@/stores/stores';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface Props {
-  hash: string;
+  id: string;
 }
 
 const thumbViews: GalleryViews[] = [
@@ -24,14 +24,14 @@ const thumbViews: GalleryViews[] = [
   GalleryViews.GALLERY_VIEW_1X,
 ];
 
-function GalleryGroup({ hash }: Props) {
+function GalleryGroup({ id }: Props) {
   const t = useTranslations('GalleryGroup');
   const { getUrl } = useGalleryTreeContext();
   const { enableDebug, galleryView } = useSettingsStore();
   const asThumb = thumbViews.includes(galleryView);
   const { view } = useGalleryTreeContext();
 
-  const group: TreeImageGroup | null = view?.groups.find(({ coverImage }) => coverImage === hash) || null;
+  const group: TreeImageGroup | null = view?.groups.find((g) => g.id === id) || null;
   const path: string | null = group?.fullSlug || null;
 
   if (!group) {
@@ -41,7 +41,7 @@ function GalleryGroup({ hash }: Props) {
   const debugText = [
     group.title,
     group.fullSlug,
-    `Id: ${group.id}`,
+    `Id: ${id}`,
     `Cover: ${group.coverImage}`,
     `Images: ${group.images.length}`,
   ].join('\n');
@@ -89,7 +89,9 @@ function GalleryGroup({ hash }: Props) {
           >
             <path d="M 10,2 H 4 C 2.9,2 2.01,2.9 2.01,4 L 2,16 c 0,1.1 0.9,2 2,2 h 16 c 1.1,0 2,-0.9 2,-2 V 6 C 22,4.9 21.1,4 20,4 h -8 z" />
           </SvgIcon>
-          <ImageRender hash={hash} asThumb={asThumb} />
+          {group.coverImage && (
+            <ImageRender hash={group.coverImage} asThumb={asThumb} />
+          )}
         </Box>
       )}
       content={(group.tags.length > 0 || (debugText && enableDebug)) && (

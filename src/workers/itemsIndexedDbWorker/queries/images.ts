@@ -3,6 +3,7 @@ import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
 import { type Image, ImageSchema } from '@/types/Image';
 import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
+import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
 import { facetFromImage, getMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
@@ -193,4 +194,6 @@ export const deleteImagesByHashes = async (hashes: string[]): Promise<void> => {
 
   await Promise.all(hashes.map((hash) => store.delete(hash)));
   await tx.done;
+
+  await reconcileImageGroups(db);
 };

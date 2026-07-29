@@ -67,7 +67,7 @@ export const getMatcher = async (
           }
           break;
         case SpecialTags.FILTER_RECENT:
-          if (!recentImportHashes.has(facet.hash)) {
+          if (!(facet.hash && recentImportHashes.has(facet.hash))) {
             return false;
           }
           break;
@@ -103,7 +103,7 @@ export const facetFromImage = (image: StoredImage): FilterableFacet => ({
 });
 
 export const facetFromSerializableImageGroup = (group: SerializableImageGroup): FilterableFacet => ({
-  hash: group.coverImage,
+  hash: group.coverImage || null,
   tags: group.tags,
   created: group.created,
   palette: null,

@@ -1,12 +1,12 @@
 import { type IDBPDatabase } from 'idb';
 import { populateGroupAggregatedTags } from '@/workers/itemsIndexedDbWorker/maintenance/populateGroupAggregatedTags';
-import { pruneAndRepairImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/pruneAndRepairImageGroups';
+import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
 import { MaintenanceTask } from '@/workers/itemsIndexedDbWorker/maintenance/types';
 import { type ItemsDB, type ItemsHostApi } from '@/workers/itemsIndexedDbWorker/types';
 
 const maintenanceTasks: MaintenanceTask[] = [
   populateGroupAggregatedTags,
-  pruneAndRepairImageGroups,
+  reconcileImageGroups,
 ];
 
 export const startMaintenanceTasks = async (db: IDBPDatabase<ItemsDB>, hostApi: ItemsHostApi): Promise<void> => {

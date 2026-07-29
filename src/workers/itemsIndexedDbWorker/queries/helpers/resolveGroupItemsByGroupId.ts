@@ -77,7 +77,7 @@ export const resolveGroupItemsByGroupId = async (
 
   const images = await resolveAndFilterImages(db, imageMatchesFilters, new Set(imageHashes));
 
-  const coverImageHashes = filteredGroups.map((g) => g.coverImage);
+  const coverImageHashes = filteredGroups.map((g) => g.coverImage).filter((h): h is string => Boolean(h));
   const groupImages = await resolveAndFilterImages(db, undefined, new Set(coverImageHashes));
 
   const hasFilters = filters && Boolean(filters.tags?.length || filters.palette?.length || filters.frame?.length);
@@ -85,8 +85,11 @@ export const resolveGroupItemsByGroupId = async (
   if (!hasFilters) {
     if (!rootGroup && coverImageHashes.length !== groupImages.length) {
       const foundGroupImageHashes = new Set(groupImages.map(({ hash }) => hash));
-      const missingCovers = new Set(coverImageHashes.filter((coverHash) => !foundGroupImageHashes.has(coverHash)));
-      const badGroups = filteredGroups.filter(({ coverImage }) => missingCovers.has(coverImage));
+      const missingCovers = new Set(coverImageHashes
+        .filter((coverHash) => !foundGroupImageHashes.has(coverHash))
+        .filter((h): h is string => Boolean(h)),
+      );
+      const badGroups = filteredGroups.filter(({ coverImage }) => coverImage && missingCovers.has(coverImage));
       console.warn(`missing coverimage(s) of childgroup(s) "${(imageGroup || rootGroup)?.title}" (${(imageGroup || rootGroup)?.id}):`, {
         expectedLength: coverImageHashes.length,
         foundLength: groupImages.length,

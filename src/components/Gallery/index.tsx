@@ -49,7 +49,7 @@ function Gallery() {
           group ? (
             <GalleryGroup
               key={group.id}
-              hash={image.hash}
+              id={group.id}
             />
           ) : (
             <GalleryImage

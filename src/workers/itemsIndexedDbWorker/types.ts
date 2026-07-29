@@ -207,7 +207,7 @@ export interface ItemsSource {
 }
 
 export interface FilterableFacet {
-  hash: string;
+  hash: string | null;
   tags: string[];
   created: string;
   palette: string | null;

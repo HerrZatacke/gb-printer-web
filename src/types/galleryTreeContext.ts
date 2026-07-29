@@ -8,7 +8,7 @@ export interface GetUrlParams {
 }
 
 export interface GalleryTreeContextType {
-  view: TreeImageGroup | null; // 'view' contains images and coverImages (=groups)
+  view: TreeImageGroup | null; // 'view' contains images and groups
   viewItems: GroupItem[];
   groupsByFullSlug: Map<string, TreeImageGroup>;
   groupsById: Map<string, TreeImageGroup>;
