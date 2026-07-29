@@ -17,7 +17,6 @@ import { Date } from '@/tools/safeDate';
 import { type Dialog } from '@/types/Dialog';
 import { type ExportableState } from '@/types/ExportState';
 import { type Image } from '@/types/Image';
-import { SerializableImageGroup } from '@/types/ImageGroup';
 
 export interface UseStores {
   addImages: (images: Image[]) => Promise<void>;

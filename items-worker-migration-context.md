@@ -43,7 +43,7 @@ Next.js/TypeScript app (`gb-printer-web`), migrating from Zustand + localForage 
 
 ## Response Envelope (applies to every `ItemsSource` method)
 
-Every read method — including batch-by-id/hash lookups, where paging is semantically meaningless — returns the same shape, produced by the shared `getAddPaging` helper:
+Every read method returns one of three shape:
 
 ```ts
 export interface ItemsSourcePaging {
@@ -52,13 +52,21 @@ export interface ItemsSourcePaging {
 export interface ItemsSourceResponse<T> {
   items: T[]; paging: ItemsSourcePaging; duration: number;
 }
+// full-set responses use a leaner shape via the sibling `getAddTotal` helper:
+export interface ItemsSourceTotalResponse<T> {
+  items: T[]; total: number; duration: number;
+}
 // tree-shaped single-item responses (getImageGroupsFullTree) use a sibling shape instead:
 export interface RootItemSourceResponse<T> {
   item: T; totalCount: number; duration: number;
 }
 ```
 
-`getAddPaging<T>(total, page, pageSize, startTime, schema)` returns a function that slices, **re-parses every item through its domain zod schema**, and wraps the envelope. That re-parse is worth noting specifically: it's the actual mechanism that strips storage-only fields (like `StoredImage.referencedHashes`) back off before data leaves the worker — because zod's default `z.object()` behavior strips unrecognized keys, parsing a `StoredImage` through the plain `ImageSchema` silently drops `referencedHashes`. There is no separate `toDomainImage`-style stripping function; `getAddPaging` does it for every item type uniformly.
+`getAddPaging<T>(total, page, pageSize, startTime, schema)` and `getAddTotal<T>(total, startTime, schema)` both **re-parse every item through its domain zod schema** before wrapping the envelope. That re-parse is worth noting specifically: it's the actual mechanism that strips storage-only fields (like `StoredImage.referencedHashes`) back off before data leaves the worker — because zod's default `z.object()` behavior strips unrecognized keys, parsing a `StoredImage` through the plain `ImageSchema` silently drops `referencedHashes`. There is no separate `toDomainImage`-style stripping function; both helpers do it for every item type uniformly.
+
+Note: `getImagesByAnyHashes` returns `ItemsSourceResponse<ItemsReferenceList<Image>>` — it paginates over reference-list wrappers (one entry per queried hash, each holding its matched images) rather than over images directly, which is a slightly different use of the envelope than the other paginated methods.
+
+## Batched Loader
 
 `createBatchedLoader`'s `fetchByKeys` param is typed `(keys: string[]) => Promise<ItemsSourceResponse<T>>` — The loader destructures `.items` internally and discards paging/duration, but the fetch function itself must return the full envelope for consistency with every other worker method.
 

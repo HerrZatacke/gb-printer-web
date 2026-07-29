@@ -16,7 +16,12 @@ const warmPluginCache = (plugins: Plugin[]) => {
 export const pluginsByUrlsBatchedLoader = createBatchedLoader<Plugin>(
   async (urls: string[]) => {
     const source = await getItemsSource();
-    return source.getPluginsByUrls(urls);
+    const response = await source.getPluginsByUrls(urls);
+    return {
+      duration: response.duration,
+      total: response.paging.total,
+      items: response.items,
+    };
   },
   (plugin) => plugin.url,
   50,

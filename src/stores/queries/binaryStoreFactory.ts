@@ -3,11 +3,11 @@ import { getQueryClient } from '@/contexts/QueryClient';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
-import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 interface BinaryStoreSourceApi {
   getByHashes: (hashes: string[]) => Promise<ItemsSourceResponse<BinaryStoreItem>>;
-  getHashes: () => Promise<ItemsSourceResponse<string>>;
+  getHashes: () => Promise<ItemsSourceTotalResponse<string>>;
   update: (items: BinaryStoreItem[]) => Promise<void>;
   deleteByHashes: (hashes: string[]) => Promise<void>;
 }
@@ -30,7 +30,14 @@ export const createBinaryBlobQueries = (storeLabel: string, sourceApi: BinarySto
   };
 
   const batchedLoader = createBatchedLoader<BinaryStoreItem>(
-    async (hashes) => sourceApi.getByHashes(hashes),
+    async (hashes) => {
+      const response = await sourceApi.getByHashes(hashes);
+      return {
+        duration: response.duration,
+        total: response.paging.total,
+        items: response.items,
+      };
+    },
     (item) => item.hash,
     50,
   );

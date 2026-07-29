@@ -2,8 +2,8 @@ import predefinedPalettes from 'gb-palettes';
 import z from 'zod';
 import { type Palette, PaletteSchema } from '@/types/Palette';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getPalettesByShortNames = async (shortNames: string[]): Promise<ItemsSourceResponse<Palette>> => {
   const db = await getDb();
@@ -34,7 +34,7 @@ export const getPalettesByShortNames = async (shortNames: string[]): Promise<Ite
   return addPaging(filteredPalettes);
 };
 
-export const getPalettes = async (): Promise<ItemsSourceResponse<Palette>> => {
+export const getPalettes = async (): Promise<ItemsSourceTotalResponse<Palette>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -50,7 +50,7 @@ export const getPalettes = async (): Promise<ItemsSourceResponse<Palette>> => {
     ...palettes,
   ];
 
-  const addPaging = getAddPaging<Palette>(total, 0, withPredefined.length, start, PaletteSchema);
+  const addPaging = getAddTotal<Palette>(total, start, PaletteSchema);
 
   return addPaging(withPredefined);
 };

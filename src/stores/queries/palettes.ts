@@ -16,7 +16,12 @@ const warmPaletteCache = (palettes: Palette[]) => {
 export const palettesByShortNamesBatchedLoader = createBatchedLoader<Palette>(
   async (shortNames: string[]) => {
     const source = await getItemsSource();
-    return source.getPalettesByShortNames(shortNames);
+    const response = await source.getPalettesByShortNames(shortNames);
+    return {
+      duration: response.duration,
+      total: response.paging.total,
+      items: response.items,
+    };
   },
   (palette) => palette.shortName,
   50,

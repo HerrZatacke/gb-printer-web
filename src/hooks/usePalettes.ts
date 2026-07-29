@@ -6,12 +6,10 @@ import {
   updatePalettesAction,
   deletePalettesByShortNamesAction,
 } from '@/stores/queries/palettes';
-import { Palette } from '@/types/Palette';
-import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
+import { type Palette } from '@/types/Palette';
 
 export interface UsePalettes {
   palettes: Palette[];
-  paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
   byShortNames: Palette[];
   isLoadingByShortNames: boolean;
@@ -51,7 +49,6 @@ export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalett
 
   return {
     palettes: listQuery.data?.items ?? [],
-    paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
 
     byShortNames: byShortNamesQuery.data?.items ?? [],

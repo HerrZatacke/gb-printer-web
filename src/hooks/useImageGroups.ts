@@ -14,7 +14,6 @@ import {
   type SerializableImageGroup,
   type TreeImageGroup,
 } from '@/types/ImageGroup';
-import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UseImageGroupsOptions {
   list?: boolean;
@@ -24,7 +23,6 @@ export interface UseImageGroupsOptions {
 
 export interface UseImageGroups {
   imageGroups: SerializableImageGroup[];
-  paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
   imageGroupTree: TreeImageGroup | null;
   isLoadingTree: boolean;
@@ -84,7 +82,6 @@ export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): U
 
   return {
     imageGroups: listQuery.data?.items ?? [],
-    paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
 
     imageGroupTree: treeQuery.data?.item ?? null,

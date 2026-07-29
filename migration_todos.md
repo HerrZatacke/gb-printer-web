@@ -1,9 +1,5 @@
 # Webworker Migration ToDos:
 
-## Worker/API
-* Remove Pagination from queries which are supposed to return the full set (of hashes)
-* Trigger for cleanup on worker side is missing (after image deletion etc.)
-
 ## ImageGroups
 * Test moving images to other groups (or root)
 * Test moving groups to other groups (or root)!!

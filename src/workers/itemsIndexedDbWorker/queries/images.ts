@@ -5,7 +5,7 @@ import { type Image, ImageSchema } from '@/types/Image';
 import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
 import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
 import { facetFromImage, getMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
-import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
 import {
@@ -19,6 +19,7 @@ import {
   StoredImageSchema,
   type ImageQueryFilters,
   type ImageQuerySort,
+  type ItemsSourceTotalResponse,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
@@ -58,7 +59,7 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
   return addPaging(sortedImages);
 };
 
-export const getHashesByGroupId = async (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceResponse<string>> => {
+export const getHashesByGroupId = async (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceTotalResponse<string>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -66,7 +67,7 @@ export const getHashesByGroupId = async (groupId: string, includeGroupImageHashe
 
   const sortedGroupItems = await resolveGroupItemsByGroupId(db, hostApi, groupId, includeGroupImageHashes, sort, filters);
   const sortedImageHashes = sortedGroupItems.map(({ image: { hash } }) => hash);
-  const addPaging = getAddPaging<string>(sortedImageHashes.length, 0, sortedImageHashes.length, start, z.string());
+  const addPaging = getAddTotal<string>(sortedImageHashes.length, start, z.string());
   return addPaging(sortedImageHashes);
 };
 
@@ -144,7 +145,7 @@ export const getImagesByAnyHashes = async (hashes: string[]): Promise<ItemsSourc
   return addPaging(items);
 };
 
-export const getAllTags = async (): Promise<ItemsSourceResponse<string>> => {
+export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -162,7 +163,7 @@ export const getAllTags = async (): Promise<ItemsSourceResponse<string>> => {
     cursor = await cursor.continue();
   }
 
-  const addPaging = getAddPaging<string>(uniqueTags.length, 0, uniqueTags.length, start, z.string());
+  const addPaging = getAddTotal<string>(uniqueTags.length, start, z.string());
 
   return addPaging(uniqueTags);
 };

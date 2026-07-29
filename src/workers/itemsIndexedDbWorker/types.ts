@@ -138,6 +138,12 @@ export interface ItemsSourceResponse<T> {
   duration: number;
 }
 
+export interface ItemsSourceTotalResponse<T> {
+  items: T[];
+  total: number;
+  duration: number;
+}
+
 export const ItemsReferenceListSchema = <T extends z.ZodType>(itemSchema: T) => {
   return z.object({
     reference: z.string(),
@@ -161,9 +167,9 @@ export interface ItemsSource {
   debugReset(): Promise<void>;
   runMaintenance(): Promise<void>;
 
-  getAllTags(): Promise<ItemsSourceResponse<string>>;
+  getAllTags(): Promise<ItemsSourceTotalResponse<string>>;
   getGroupItemsByGroupId(groupId: string, includeGroups: boolean, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;
-  getHashesByGroupId(groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceResponse<string>>;
+  getHashesByGroupId(groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceTotalResponse<string>>;
   getImages(params: ImageQueryParams, candidateHashes?: Set<string>): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Image>>;
   getImagesByAnyHashes(hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;
@@ -171,37 +177,37 @@ export interface ItemsSource {
   deleteImagesByHashes(hashes: string[]): Promise<void>;
 
   getImageGroupsFullTree(): Promise<RootItemSourceResponse<TreeImageGroup>>;
-  getImageGroupsList(): Promise<ItemsSourceResponse<SerializableImageGroup>>;
+  getImageGroupsList(): Promise<ItemsSourceTotalResponse<SerializableImageGroup>>;
   updateImageGroups(imageGroups: SerializableImageGroup[], purge: boolean): Promise<void>;
   deleteImageGroupsByIds(ids: string[]): Promise<void>;
 
-  getFrames(): Promise<ItemsSourceResponse<Frame>>;
-  getFramesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Frame>>;
-  getFramesByIds(ids: string[]): Promise<ItemsSourceResponse<Frame>>;
+  getFrames(): Promise<ItemsSourceTotalResponse<Frame>>;
+  getFramesByHashes(hashes: string[]): Promise<ItemsSourceTotalResponse<Frame>>;
+  getFramesByIds(ids: string[]): Promise<ItemsSourceTotalResponse<Frame>>;
   updateFrames(frames: Frame[], purge: boolean): Promise<void>;
   deleteFramesByIds(ids: string[]): Promise<void>;
 
-  getFrameGroups(): Promise<ItemsSourceResponse<FrameGroup>>;
+  getFrameGroups(): Promise<ItemsSourceTotalResponse<FrameGroup>>;
   updateFrameGroups(frameGroups: FrameGroup[], purge: boolean): Promise<void>;
   deleteFrameGroupsByIds(ids: string[]): Promise<void>;
 
-  getPalettes() : Promise<ItemsSourceResponse<Palette>>;
+  getPalettes() : Promise<ItemsSourceTotalResponse<Palette>>;
   getPalettesByShortNames(shortNames: string[]) : Promise<ItemsSourceResponse<Palette>>;
   updatePalettes(palettes: Palette[], purge: boolean): Promise<void>;
   deletePalettesByShortNames(shortNames: string[]): Promise<void>;
 
-  getPlugins(): Promise<ItemsSourceResponse<Plugin>>;
+  getPlugins(): Promise<ItemsSourceTotalResponse<Plugin>>;
   getPluginsByUrls(urls: string[]): Promise<ItemsSourceResponse<Plugin>>;
   updatePlugins(plugins: Plugin[], purge: boolean): Promise<void>;
   deletePluginsByUrls(urls: string[]): Promise<void>;
 
   getBinaryImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<BinaryStoreItem>>;
-  getBinaryImageHashes(): Promise<ItemsSourceResponse<string>>;
+  getBinaryImageHashes(): Promise<ItemsSourceTotalResponse<string>>;
   updateBinaryImages(binaryImages: BinaryStoreItem[]): Promise<void>;
   deleteBinaryImagesByHashes(hashes: string[]): Promise<void>;
 
   getBinaryFramesByHashes(hashes: string[]): Promise<ItemsSourceResponse<BinaryStoreItem>>;
-  getBinaryFrameHashes(): Promise<ItemsSourceResponse<string>>;
+  getBinaryFrameHashes(): Promise<ItemsSourceTotalResponse<string>>;
   updateBinaryFrames(binaryFrames: BinaryStoreItem[]): Promise<void>;
   deleteBinaryFramesByHashes(hashes: string[]): Promise<void>;
 }

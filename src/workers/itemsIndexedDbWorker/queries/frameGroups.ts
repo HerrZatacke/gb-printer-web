@@ -1,10 +1,10 @@
 import z from 'zod';
 import { FrameGroup, FrameGroupSchema } from '@/types/FrameGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
 
-export const getFrameGroups = async (): Promise<ItemsSourceResponse<FrameGroup>> => {
+export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -12,7 +12,7 @@ export const getFrameGroups = async (): Promise<ItemsSourceResponse<FrameGroup>>
   const frameGroups = await store.getAll();
   const total = await store.count();
 
-  const addPaging = getAddPaging<FrameGroup>(total, 0, frameGroups.length, start, FrameGroupSchema);
+  const addPaging = getAddTotal<FrameGroup>(total, start, FrameGroupSchema);
 
   return addPaging(frameGroups);
 };

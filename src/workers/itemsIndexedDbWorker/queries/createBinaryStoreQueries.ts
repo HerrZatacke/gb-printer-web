@@ -1,8 +1,8 @@
 import z, { type ZodType } from 'zod';
 import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryframes', schema: ZodType<BinaryStoreItem>) => {
   const getByHashes = async (hashes: string[]): Promise<ItemsSourceResponse<BinaryStoreItem>> => {
@@ -30,7 +30,7 @@ export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryfram
     return addPaging(filteredItems);
   };
 
-  const getHashes = async (): Promise<ItemsSourceResponse<string>> => {
+  const getHashes = async (): Promise<ItemsSourceTotalResponse<string>> => {
     const db = await getDb();
     const start = performance.now();
 
@@ -38,7 +38,7 @@ export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryfram
     const hashes = await store.getAllKeys();
     const total = await store.count();
 
-    const addPaging = getAddPaging<string>(total, 0, hashes.length, start, z.string());
+    const addPaging = getAddTotal<string>(total, start, z.string());
 
     return addPaging(hashes);
   };

@@ -1,5 +1,5 @@
 import { type ZodType } from 'zod';
-import { ItemsSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getAddPaging = <T>(
   total: number,
@@ -24,6 +24,22 @@ export const getAddPaging = <T>(
       page,
       maxPageIndex: Math.max(0, Math.ceil(sortedItems.length / pageSize) - 1),
     },
+    duration: performance.now() - startTime,
+  };
+};
+
+export const getAddTotal = <T>(
+  total: number,
+  startTime: number,
+  schema: ZodType<T>,
+) => (
+  sortedItems: T[],
+): ItemsSourceTotalResponse<T> => {
+  const parsedItems = sortedItems.map((item) => schema.parse(item));
+
+  return {
+    items: parsedItems,
+    total,
     duration: performance.now() - startTime,
   };
 };

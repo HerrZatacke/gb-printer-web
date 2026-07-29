@@ -5,17 +5,17 @@ import {
   Paper,
   Stack,
 } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import useTrashbin from '@/hooks/useTrashbin';
 import { getItemsSource } from '@/items/client';
+import { resetImageCaches } from '@/stores/queries/cacheResets';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
-import { resetImageCaches } from '@/stores/queries/cacheResets';
-import { useQueryClient } from '@tanstack/react-query';
 
 function LocalDebug() {
   const [shouldRender, setShouldRender] = useState(false);

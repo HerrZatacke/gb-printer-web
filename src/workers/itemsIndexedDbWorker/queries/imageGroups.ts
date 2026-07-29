@@ -11,13 +11,13 @@ import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/a
 import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
 import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildTree';
 import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
-import { getAddPaging } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
-import { ItemsSourceResponse, RootItemSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceTotalResponse, type RootItemSourceResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 const sortById = sortBy<SerializableImageGroup>('id');
 
-export const getImageGroupsList = async (): Promise<ItemsSourceResponse<SerializableImageGroup>> => {
+export const getImageGroupsList = async (): Promise<ItemsSourceTotalResponse<SerializableImageGroup>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -25,7 +25,7 @@ export const getImageGroupsList = async (): Promise<ItemsSourceResponse<Serializ
   const imageGroups = await store.getAll();
   const total = await store.count();
 
-  const addPaging = getAddPaging<SerializableImageGroup>(total, 0, imageGroups.length, start, SerializableImageGroupSchema);
+  const addPaging = getAddTotal<SerializableImageGroup>(total, start, SerializableImageGroupSchema);
 
   return addPaging(imageGroups);
 };

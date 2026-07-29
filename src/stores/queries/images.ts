@@ -11,6 +11,7 @@ import {
   type ImageQueryParams,
   type ImageQuerySort,
   type ItemsReferenceList,
+  type ItemsSourceTotalResponse,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const warmImageCache = (images: Image[]) => {
@@ -21,18 +22,28 @@ const warmImageCache = (images: Image[]) => {
 };
 
 export const imagesByHashesBatchedLoader = createBatchedLoader<Image>(
-  async (hashes) => {
+  async (hashes): Promise<ItemsSourceTotalResponse<Image>> => {
     const source = await getItemsSource();
-    return source.getImagesByHashes(hashes);
+    const response = await source.getImagesByHashes(hashes);
+    return {
+      duration: response.duration,
+      total: response.paging.total,
+      items: response.items,
+    };
   },
   (image) => image.hash,
   50,
 );
 
 export const imagesByAnyHashesBatchedLoader = createBatchedLoader<ItemsReferenceList<Image>>(
-  async (hashes) => {
+  async (hashes): Promise<ItemsSourceTotalResponse<ItemsReferenceList<Image>>> => {
     const source = await getItemsSource();
-    return source.getImagesByAnyHashes(hashes);
+    const response = await source.getImagesByAnyHashes(hashes);
+    return {
+      duration: response.duration,
+      total: response.paging.total,
+      items: response.items,
+    };
   },
   (image) => image.reference,
   50,

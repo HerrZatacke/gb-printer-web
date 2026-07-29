@@ -8,7 +8,6 @@ import {
   pluginByUrlQueryOptions,
 } from '@/stores/queries/plugins';
 import { Plugin, type PluginConfigValues } from '@/types/Plugin';
-import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface PluginState {
   loading: boolean;
@@ -17,7 +16,6 @@ export interface PluginState {
 
 export interface UsePlugins {
   plugins: Plugin[];
-  paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
   byUrls: Plugin[];
   isLoadingByUrls: boolean;
@@ -97,7 +95,6 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
 
   return {
     plugins: listQuery.data?.items ?? [],
-    paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
 
     byUrls: byUrlsQuery.data?.items ?? [],

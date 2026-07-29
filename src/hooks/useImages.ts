@@ -41,7 +41,6 @@ export interface UseImages {
   byGroupPaging: ItemsSourcePaging | null;
   isLoadingByGroupId: boolean;
   hashesByGroupId: string[];
-  hashesByGroupPaging: ItemsSourcePaging | null;
   isLoadingHashesByGroupId: boolean;
   allTags: string[];
   isLoadingAllTags: boolean;
@@ -144,7 +143,6 @@ export const useImages = ({
     isLoadingByGroupId: byGroupIdQuery.isLoading,
 
     hashesByGroupId: hashesByGroupIdQuery.data?.items ?? [],
-    hashesByGroupPaging: hashesByGroupIdQuery.data?.paging || null,
     isLoadingHashesByGroupId: hashesByGroupIdQuery.isLoading,
 
     allTags: allTagsQuery.data?.items ?? [],

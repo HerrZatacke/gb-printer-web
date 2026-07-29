@@ -8,7 +8,6 @@ import {
 } from '@/stores/queries/frameGroups';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
-import { ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 const getGroupName = (id: string, name: string, frameGroupNames: FrameGroup[]): string => {
   const namedGroup = frameGroupNames.find((group) => (group.id === id));
@@ -83,7 +82,6 @@ export const getFrameGroups = (frames: Frame[], frameGroupNames: FrameGroup[]): 
 
 export interface UseFrameGroups {
   frameGroups: FrameGroup[];
-  paging: ItemsSourcePaging | null;
   isLoadingList: boolean;
   updateFrameGroups: (frameGroups: FrameGroup[], purge?: boolean) => Promise<void>;
   deleteFrameGroupsByIds: (ids: string[]) => Promise<void>;
@@ -118,7 +116,6 @@ export const useFrameGroups = (): UseFrameGroups => {
 
   return {
     frameGroups,
-    paging: listQuery.data?.paging ?? null,
     isLoadingList: listQuery.isLoading,
 
     updateFrameGroups,
