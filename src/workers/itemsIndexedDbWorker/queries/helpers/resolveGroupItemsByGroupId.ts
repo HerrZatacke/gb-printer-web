@@ -83,7 +83,7 @@ export const resolveGroupItemsByGroupId = async (
   const hasFilters = filters && Boolean(filters.tags?.length || filters.palette?.length || filters.frame?.length);
 
   if (!hasFilters) {
-    if (coverImageHashes.length !== groupImages.length) {
+    if (!rootGroup && coverImageHashes.length !== groupImages.length) {
       const foundGroupImageHashes = new Set(groupImages.map(({ hash }) => hash));
       const missingCovers = new Set(coverImageHashes.filter((coverHash) => !foundGroupImageHashes.has(coverHash)));
       const badGroups = filteredGroups.filter(({ coverImage }) => missingCovers.has(coverImage));
