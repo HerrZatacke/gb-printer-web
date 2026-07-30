@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
-import { getItemsSource } from '@/items/client';
+import { getItemsSource } from '@/stores/items/client';
 import { frameGroupsKeys } from '@/stores/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/queries/consts';
 import { FrameGroup } from '@/types/FrameGroup';

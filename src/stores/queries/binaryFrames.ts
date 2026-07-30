@@ -1,4 +1,4 @@
-import { getItemsSource } from '@/items/client';
+import { getItemsSource } from '@/stores/items/client';
 import { createBinaryBlobQueries } from '@/stores/queries/binaryStoreFactory';
 
 export const {

@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
-import { getItemsSource } from '@/items/client';
+import { getItemsSource } from '@/stores/items/client';
 import { imageGroupsKeys } from '@/stores/queries/cacheKeys';
 import { resetImageGroupCaches } from '@/stores/queries/cacheResets';
 import { STALE_TIME } from '@/stores/queries/consts';

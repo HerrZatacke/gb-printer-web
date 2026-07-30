@@ -15,7 +15,7 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
 
   if (!globalThis.__itemsSourcePromise) {
     globalThis.__itemsSourcePromise = (async () => {
-      const worker = new Worker(new URL('../workers/itemsIndexedDbWorker', import.meta.url), { type: 'module' });
+      const worker = new Worker(new URL('@/workers/itemsIndexedDbWorker', import.meta.url), { type: 'module' });
       const instance = Comlink.wrap<ItemsSource>(worker);
 
       const hostApi: ItemsHostApi = {

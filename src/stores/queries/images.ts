@@ -1,6 +1,6 @@
 import { type QueryClient } from '@tanstack/react-query';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { getItemsSource } from '@/items/client';
+import { getItemsSource } from '@/stores/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { imagesKeys } from '@/stores/queries/cacheKeys';
 import { resetImageCaches } from '@/stores/queries/cacheResets';

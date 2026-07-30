@@ -1,6 +1,6 @@
 import { type QueryClient } from '@tanstack/react-query';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { getItemsSource } from '@/items/client';
+import { getItemsSource } from '@/stores/items/client';
 import { createBatchedLoader } from '@/stores/queries/batchedLoader';
 import { pluginsKeys } from '@/stores/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/queries/consts';

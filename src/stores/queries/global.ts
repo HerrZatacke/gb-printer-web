@@ -1,4 +1,4 @@
-import { getItemsSource } from '@/items/client';
+import { getItemsSource } from '@/stores/items/client';
 import { globalKeys } from '@/stores/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/queries/consts';
 
