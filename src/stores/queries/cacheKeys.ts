@@ -71,3 +71,9 @@ export const pluginsKeys = {
   byUrl: (url: string) => [...pluginBaseKeys, 'byUrl', url] as const,
   byUrls: (urls: string[]) => [...pluginBaseKeys, 'byUrls', [...urls].sort()] as const,
 };
+
+export const trashCheckKeys = [
+  imageGroupsKeys.all,
+  imagesKeys.all,
+  framesKeys.all,
+];

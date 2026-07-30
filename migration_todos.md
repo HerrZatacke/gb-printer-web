@@ -1,10 +1,9 @@
 # Webworker Migration ToDos:
 
 ## Style/Global
+* Avoid reading full image list → useImages({ list: true });
 * Move "from '@/items/client'" somewehere smart...
 * Fix: ToDo: Navigation Effects
-* Trigger for trashCount update is missing
-* Avoid reading full image list → useImages({ list: true });
 * Rename translation key "useImageGroups" → "useEditImageGroups"
 
 ## Import/Export

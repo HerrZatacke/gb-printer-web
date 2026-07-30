@@ -10,7 +10,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import useTrashbin from '@/hooks/useTrashbin';
 import { getItemsSource } from '@/items/client';
 import { resetImageCaches } from '@/stores/queries/cacheResets';
 import { useSettingsStore } from '@/stores/stores';
@@ -22,7 +21,6 @@ function LocalDebug() {
   const { enableDebug } = useSettingsStore();
   const { updateImageGroup } = useImageGroups({});
   const { navigateToImage, navigateToGroup } = useNavigationTools();
-  const { checkUpdateTrashCount } = useTrashbin();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -158,9 +156,6 @@ function LocalDebug() {
           </Button>
         </ButtonGroup>
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
-          <Button onClick={checkUpdateTrashCount}>
-            checkUpdateTrashCount
-          </Button>
           <Button onClick={debugReset}>
             debugReset
           </Button>
