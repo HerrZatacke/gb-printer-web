@@ -1,8 +1,8 @@
 import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
 import { type RGBNPalette, type RGBNTiles } from 'gb-image-decoder';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imageByHashQueryOptions } from '@/stores/queries/images';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getImagePalettes } from '@/tools/getImagePalettes';

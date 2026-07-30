@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Rotation, TILE_PIXEL_WIDTH, TILES_PER_LINE } from 'gb-image-decoder';
 import { useEffect, useMemo, useState } from 'react';
-import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imageByHashQueryOptions, imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions, imagesByHashesQueryOptions } from '@/stores/items/queries/images';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNImage } from '@/types/Image';
 

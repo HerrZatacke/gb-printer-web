@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { frameGroupsListQueryOptions } from '@/stores/queries/frameGroups';
-import { framesByIdsQueryOptions } from '@/stores/queries/frames';
+import { frameGroupsListQueryOptions } from '@/stores/items/queries/frameGroups';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
 
 export interface EditFrameData {
   initialId: string;

@@ -5,7 +5,7 @@ import {
   framesListQueryOptions,
   updateFramesAction,
   deleteFramesByIdsAction,
-} from '@/stores/queries/frames';
+} from '@/stores/items/queries/frames';
 import { Frame } from '@/types/Frame';
 
 export interface UseFrames {

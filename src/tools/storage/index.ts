@@ -1,10 +1,10 @@
 import { getQueryClient } from '@/contexts/QueryClient';
-import { deleteBinaryFramesByHashesAction } from '@/stores/queries/binaryFrames';
+import { deleteBinaryFramesByHashesAction } from '@/stores/items/queries/binaryFrames';
 import {
   binaryImageByHashQueryOptions,
   deleteBinaryImagesByHashesAction,
   updateBinaryImagesAction,
-} from '@/stores/queries/binaryImages';
+} from '@/stores/items/queries/binaryImages';
 import applyFrame from '@/tools/applyFrame';
 import { deflate, inflate } from '@/tools/pack';
 import dummyImage from './dummyImage';

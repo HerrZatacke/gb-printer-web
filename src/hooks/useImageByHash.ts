@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { imageByHashQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { Image } from '@/types/Image';
 
 export interface UseImageByHash {

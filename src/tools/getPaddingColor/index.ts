@@ -1,5 +1,5 @@
 import { getQueryClient } from '@/contexts/QueryClient';
-import { imageByHashQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 

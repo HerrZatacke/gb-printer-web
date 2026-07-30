@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
-import { imageGroupsKeys, imagesKeys } from '@/stores/queries/cacheKeys';
+import { imageGroupsKeys, imagesKeys } from '@/stores/items/queries/cacheKeys';
 
 export const resetImageGroupCaches = async (queryClient: QueryClient): Promise<void> => {
   await Promise.all([

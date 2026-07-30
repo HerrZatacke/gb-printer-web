@@ -1,5 +1,5 @@
 import { getQueryClient } from '@/contexts/QueryClient';
-import { binaryFrameByHashQueryOptions, updateBinaryFramesAction } from '@/stores/queries/binaryFrames';
+import { binaryFrameByHashQueryOptions, updateBinaryFramesAction } from '@/stores/items/queries/binaryFrames';
 import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
 import { deflate, inflate } from '@/tools/pack';
 

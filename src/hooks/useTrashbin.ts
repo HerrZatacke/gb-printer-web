@@ -2,8 +2,8 @@ import { saveAs } from 'file-saver';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { binaryFrameByHashQueryOptions } from '@/stores/queries/binaryFrames';
-import { binaryImageByHashQueryOptions } from '@/stores/queries/binaryImages';
+import { binaryFrameByHashQueryOptions } from '@/stores/items/queries/binaryFrames';
+import { binaryImageByHashQueryOptions } from '@/stores/items/queries/binaryImages';
 import {
   type TrashCount,
   ITEMS_STORE_VERSION,

@@ -5,8 +5,8 @@ import { getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_H
 import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imagesByHashesQueryOptions } from '@/stores/items/queries/images';
 import {
   useInteractionsStore,
   useProgressStore,

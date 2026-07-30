@@ -1,12 +1,12 @@
 import { ExportTypes } from '@/consts/exportTypes';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
-import { frameGroupsListQueryOptions } from '@/stores/queries/frameGroups';
-import { framesListQueryOptions } from '@/stores/queries/frames';
-import { imageGroupsListQueryOptions } from '@/stores/queries/imageGroups';
-import { imagesListQueryOptions } from '@/stores/queries/images';
-import { palettesListQueryOptions } from '@/stores/queries/palettes';
-import { pluginsListQueryOptions } from '@/stores/queries/plugins';
+import { frameGroupsListQueryOptions } from '@/stores/items/queries/frameGroups';
+import { framesListQueryOptions } from '@/stores/items/queries/frames';
+import { imageGroupsListQueryOptions } from '@/stores/items/queries/imageGroups';
+import { imagesListQueryOptions } from '@/stores/items/queries/images';
+import { palettesListQueryOptions } from '@/stores/items/queries/palettes';
+import { pluginsListQueryOptions } from '@/stores/items/queries/plugins';
 import { useFiltersStore, ITEMS_STORE_VERSION } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
 import { type ExportableState, type JSONExport, type JSONExportBinary, type ExportableValues } from '@/types/ExportState';

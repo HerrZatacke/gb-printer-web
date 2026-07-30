@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { globalStatsQueryOptions } from '@/stores/queries/global';
+import { globalStatsQueryOptions } from '@/stores/items/queries/global';
 import { useInteractionsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import EventData = umami.EventData;

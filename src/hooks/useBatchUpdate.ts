@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 import { Updatable, UpdatableMonochrome, UPDATATABLES } from '@/consts/batchActionTypes';
 import { type ImageUpdatable } from '@/consts/batchActionTypes';
 import { useStores } from '@/hooks/useStores';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { imagesByHashesQueryOptions } from '@/stores/items/queries/images';
 import { useEditStore, useFiltersStore } from '@/stores/stores';
 import applyTagChanges from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';

@@ -1,7 +1,7 @@
 import { type QueryClient } from '@tanstack/react-query';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { createBatchedLoader } from '@/stores/queries/batchedLoader';
-import { STALE_TIME } from '@/stores/queries/consts';
+import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
+import { STALE_TIME } from '@/stores/items/queries/consts';
 import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
 

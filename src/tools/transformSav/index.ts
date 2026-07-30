@@ -2,8 +2,8 @@ import { DialoqQuestionType } from '@/consts/dialog';
 import { ImportMethod } from '@/consts/ImportMethod';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
-import { frameGroupsListQueryOptions } from '@/stores/queries/frameGroups';
-import { framesListQueryOptions } from '@/stores/queries/frames';
+import { frameGroupsListQueryOptions } from '@/stores/items/queries/frameGroups';
+import { framesListQueryOptions } from '@/stores/items/queries/frames';
 import {
   useDialogsStore,
   useSettingsStore,

@@ -1,5 +1,5 @@
 import { getQueryClient } from '@/contexts/QueryClient';
-import { imagesListQueryOptions } from '@/stores/queries/images';
+import { imagesListQueryOptions } from '@/stores/items/queries/images';
 import { getTxtFile } from '@/tools/download/getTxtFile';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';

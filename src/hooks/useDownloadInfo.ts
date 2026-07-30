@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
-import { imagesByHashesQueryOptions } from '@/stores/queries/images';
+import { imagesByHashesQueryOptions } from '@/stores/items/queries/images';
 import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { bitmapFileTypes, supportedCanvasImageFormats, TestFileType } from '@/tools/supportedCanvasImageFormats';

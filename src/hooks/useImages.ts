@@ -11,7 +11,7 @@ import {
   hashesByGroupIdQueryOptions,
   updateImagesAction,
   deleteImagesByHashesAction,
-} from '@/stores/queries/images';
+} from '@/stores/items/queries/images';
 import { type Image } from '@/types/Image';
 import {
   type ImageQueryParams,

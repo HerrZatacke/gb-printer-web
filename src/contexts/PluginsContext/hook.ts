@@ -4,7 +4,7 @@ import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { usePlugins } from '@/hooks/usePlugins';
 import { useStores } from '@/hooks/useStores';
-import { pluginByUrlQueryOptions } from '@/stores/queries/plugins';
+import { pluginByUrlQueryOptions } from '@/stores/items/queries/plugins';
 import { useInteractionsStore, useProgressStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import {

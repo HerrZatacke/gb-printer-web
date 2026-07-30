@@ -1,10 +1,10 @@
 import { type QueryClient } from '@tanstack/react-query';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/stores/items/client';
-import { createBatchedLoader } from '@/stores/queries/batchedLoader';
-import { imagesKeys } from '@/stores/queries/cacheKeys';
-import { resetImageCaches } from '@/stores/queries/cacheResets';
-import { STALE_TIME } from '@/stores/queries/consts';
+import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
+import { imagesKeys } from '@/stores/items/queries/cacheKeys';
+import { resetImageCaches } from '@/stores/items/queries/cacheResets';
+import { STALE_TIME } from '@/stores/items/queries/consts';
 import { Image } from '@/types/Image';
 import {
   type ImageQueryFilters,

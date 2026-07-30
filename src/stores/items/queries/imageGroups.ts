@@ -1,8 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 import { getItemsSource } from '@/stores/items/client';
-import { imageGroupsKeys } from '@/stores/queries/cacheKeys';
-import { resetImageGroupCaches } from '@/stores/queries/cacheResets';
-import { STALE_TIME } from '@/stores/queries/consts';
+import { imageGroupsKeys } from '@/stores/items/queries/cacheKeys';
+import { resetImageGroupCaches } from '@/stores/items/queries/cacheResets';
+import { STALE_TIME } from '@/stores/items/queries/consts';
 import unique from '@/tools/unique';
 import { type SerializableImageGroup, type TreeImageGroup } from '@/types/ImageGroup';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';

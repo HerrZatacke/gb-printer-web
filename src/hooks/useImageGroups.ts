@@ -8,7 +8,7 @@ import {
   moveImagesToGroupAction,
   updateImageGroupAction,
   updateImageGroupsAction,
-} from '@/stores/queries/imageGroups';
+} from '@/stores/items/queries/imageGroups';
 import { cleanFullSlug } from '@/tools/cleanSlug';
 import {
   type SerializableImageGroup,

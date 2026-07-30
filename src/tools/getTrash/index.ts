@@ -1,8 +1,8 @@
 import { getQueryClient } from '@/contexts/QueryClient';
-import { binaryFrameHashesQueryOptions } from '@/stores/queries/binaryFrames';
-import { binaryImageHashesQueryOptions } from '@/stores/queries/binaryImages';
-import { framesByHashesQueryOptions } from '@/stores/queries/frames';
-import { imagesByAnyHashesQueryOptions } from '@/stores/queries/images';
+import { binaryFrameHashesQueryOptions } from '@/stores/items/queries/binaryFrames';
+import { binaryImageHashesQueryOptions } from '@/stores/items/queries/binaryImages';
+import { framesByHashesQueryOptions } from '@/stores/items/queries/frames';
+import { imagesByAnyHashesQueryOptions } from '@/stores/items/queries/images';
 import { deleteBinaryFrame, deleteBinaryImage } from '@/tools/storage';
 
 const isImageDeleted = async (hash: string): Promise<boolean> => {

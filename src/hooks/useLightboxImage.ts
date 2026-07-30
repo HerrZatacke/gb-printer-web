@@ -4,7 +4,7 @@ import screenfull from 'screenfull';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImages } from '@/hooks/useImages';
-import { imageByHashQueryOptions } from '@/stores/queries/images';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { useInteractionsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 

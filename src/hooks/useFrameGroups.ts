@@ -5,7 +5,7 @@ import {
   frameGroupsListQueryOptions,
   updateFrameGroupsAction,
   deleteFrameGroupsByIdsAction,
-} from '@/stores/queries/frameGroups';
+} from '@/stores/items/queries/frameGroups';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 

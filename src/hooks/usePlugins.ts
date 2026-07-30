@@ -6,7 +6,7 @@ import {
   updatePluginsAction,
   deletePluginsByUrlsAction,
   pluginByUrlQueryOptions,
-} from '@/stores/queries/plugins';
+} from '@/stores/items/queries/plugins';
 import { Plugin, type PluginConfigValues } from '@/types/Plugin';
 
 export interface PluginState {

@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useTracking } from '@/contexts/TrackingContext';
-import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imageByHashQueryOptions } from '@/stores/queries/images';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { type PrepareFilesOptions, prepareFiles } from '@/tools/download';

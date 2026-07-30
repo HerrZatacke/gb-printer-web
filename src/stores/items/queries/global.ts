@@ -1,6 +1,6 @@
 import { getItemsSource } from '@/stores/items/client';
-import { globalKeys } from '@/stores/queries/cacheKeys';
-import { STALE_TIME } from '@/stores/queries/consts';
+import { globalKeys } from '@/stores/items/queries/cacheKeys';
+import { STALE_TIME } from '@/stores/items/queries/consts';
 
 export const globalStatsQueryOptions = () => {
   return {

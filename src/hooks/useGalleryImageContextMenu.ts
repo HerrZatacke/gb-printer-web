@@ -12,7 +12,7 @@ import { useImages } from '@/hooks/useImages';
 import { usePlugins } from '@/hooks/usePlugins';
 import useShareImage from '@/hooks/useShareImage';
 import { useStores } from '@/hooks/useStores';
-import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
+import { hashesByGroupIdQueryOptions } from '@/stores/items/queries/images';
 import {
   type ImageSelectionMode,
   useDialogsStore,

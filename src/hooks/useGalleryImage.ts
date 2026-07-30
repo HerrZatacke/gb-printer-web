@@ -5,7 +5,7 @@ import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useImageByHash } from '@/hooks/useImageByHash';
 import { useImageQueryParams } from '@/hooks/useImageQueryParams';
-import { hashesByGroupIdQueryOptions } from '@/stores/queries/images';
+import { hashesByGroupIdQueryOptions } from '@/stores/items/queries/images';
 import {
   type ImageSelectionMode,
   useFiltersStore,

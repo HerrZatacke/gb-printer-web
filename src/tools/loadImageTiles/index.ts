@@ -1,7 +1,7 @@
 import { type RGBNTiles } from 'gb-image-decoder';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imageByHashQueryOptions } from '@/stores/queries/images';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { load, type RecoverFn } from '@/tools/storage';
 import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';

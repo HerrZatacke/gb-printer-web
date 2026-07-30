@@ -2,8 +2,8 @@ import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { type UseStores } from '@/hooks/useStores';
-import { framesByIdsQueryOptions } from '@/stores/queries/frames';
-import { imagesRawQueryOptions } from '@/stores/queries/images';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imagesRawQueryOptions } from '@/stores/items/queries/images';
 import {
   LogType,
   useFiltersStore,

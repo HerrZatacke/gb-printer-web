@@ -1,7 +1,7 @@
 import { type RGBNPalette } from 'gb-image-decoder';
 import { missingGreyPalette } from '@/consts/defaults';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { paletteByShortNameQueryOptions } from '@/stores/queries/palettes';
+import { paletteByShortNameQueryOptions } from '@/stores/items/queries/palettes';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type Image, type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';

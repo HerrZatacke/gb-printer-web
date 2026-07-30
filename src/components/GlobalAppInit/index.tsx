@@ -8,7 +8,7 @@ import { useHandleHashParams } from '@/hooks/useHandleHashParams';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { useStores } from '@/hooks/useStores';
 import useTrashbin from '@/hooks/useTrashbin';
-import { trashCheckKeys } from '@/stores/queries/cacheKeys';
+import { trashCheckKeys } from '@/stores/items/queries/cacheKeys';
 import { dropboxStorageTool } from '@/tools/dropboxStorage';
 
 // if (typeof window !== 'undefined') {

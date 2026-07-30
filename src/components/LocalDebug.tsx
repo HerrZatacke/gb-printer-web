@@ -11,7 +11,7 @@ import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { getItemsSource } from '@/stores/items/client';
-import { resetImageCaches } from '@/stores/queries/cacheResets';
+import { resetImageCaches } from '@/stores/items/queries/cacheResets';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';

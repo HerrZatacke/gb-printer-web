@@ -5,7 +5,7 @@ import {
   palettesListQueryOptions,
   updatePalettesAction,
   deletePalettesByShortNamesAction,
-} from '@/stores/queries/palettes';
+} from '@/stores/items/queries/palettes';
 import { type Palette } from '@/types/Palette';
 
 export interface UsePalettes {

@@ -1,5 +1,5 @@
 import { getQueryClient } from '@/contexts/QueryClient';
-import { binaryImagesByHashesQueryOptions } from '@/stores/queries/binaryImages';
+import { binaryImagesByHashesQueryOptions } from '@/stores/items/queries/binaryImages';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';
 import { BinaryStoreItem } from '@/types/BinaryStoreItem';

@@ -1,5 +1,5 @@
 import { getItemsSource } from '@/stores/items/client';
-import { createBinaryBlobQueries } from '@/stores/queries/binaryStoreFactory';
+import { createBinaryBlobQueries } from '@/stores/items/queries/binaryStoreFactory';
 
 export const {
   hashesQueryOptions: binaryImageHashesQueryOptions,
