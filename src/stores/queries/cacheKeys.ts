@@ -72,6 +72,14 @@ export const pluginsKeys = {
   byUrls: (urls: string[]) => [...pluginBaseKeys, 'byUrls', [...urls].sort()] as const,
 };
 
+// *********** Global ***********
+const globalBaseKeys = ['items', 'global'] as const;
+
+export const globalKeys = {
+  all: globalBaseKeys,
+  stats: [...globalBaseKeys, 'stats'] as const,
+};
+
 export const trashCheckKeys = [
   imageGroupsKeys.all,
   imagesKeys.all,

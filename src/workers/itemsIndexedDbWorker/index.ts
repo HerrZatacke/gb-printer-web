@@ -54,6 +54,7 @@ import {
   updatePlugins,
 } from '@/workers/itemsIndexedDbWorker/queries/plugins';
 import { type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
+import { getStats } from './queries/helpers/getStats';
 import { runMaintenance } from './queries/helpers/runMaintenance';
 
 if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
@@ -64,6 +65,7 @@ const api: ItemsSource = {
   init: configureDb,
   debugReset,
   runMaintenance,
+  getStats,
 
   getAllTags,
   getGroupItemsByGroupId,

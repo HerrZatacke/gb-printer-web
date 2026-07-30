@@ -162,10 +162,25 @@ export interface RootItemSourceResponse<T> {
   duration: number;
 }
 
+export interface ItemsStatsResponse {
+  totals: {
+    palettes: number;
+    plugins: number;
+    frames: number;
+    frameGroups: number;
+    images: number;
+    imageGroups: number;
+    binaryImages: number;
+    binaryFrames: number;
+  };
+  duration: number;
+}
+
 export interface ItemsSource {
   init(hostApi: ItemsHostApi): void;
   debugReset(): Promise<void>;
   runMaintenance(): Promise<void>;
+  getStats(): Promise<ItemsStatsResponse>;
 
   getAllTags(): Promise<ItemsSourceTotalResponse<string>>;
   getGroupItemsByGroupId(groupId: string, includeGroups: boolean, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;

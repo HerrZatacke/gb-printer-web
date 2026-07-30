@@ -5,12 +5,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useFrameGroups } from '@/hooks/useFrameGroups';
-import { useFrames } from '@/hooks/useFrames';
-import { useImageGroups } from '@/hooks/useImageGroups';
-import { useImages } from '@/hooks/useImages';
-import { usePalettes } from '@/hooks/usePalettes';
-import { usePlugins } from '@/hooks/usePlugins';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { globalStatsQueryOptions } from '@/stores/queries/global';
 import { useInteractionsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import EventData = umami.EventData;
@@ -71,26 +67,23 @@ export const useContextHook = (): TrackingContextType => {
     }, 1000);
   }, [consentState]);
 
-
-  const { palettes } = usePalettes({ list: true });
-  const { plugins } = usePlugins({ list: true });
-  const { frames } = useFrames({ list: true });
-  const { frameGroups } = useFrameGroups();
-  const { images } = useImages({ list: true });
-  const { imageGroups } = useImageGroups({ list: true });
   const { errors } = useInteractionsStore();
+  const queryClient = getQueryClient();
 
   // Send stats event when itemState changes
   useEffect(() => {
-    sendEvent('global-stats', {
-      images: nextPowerOfTwo(images.length),
-      imageGroups: nextPowerOfTwo(imageGroups.length),
-      frames: nextPowerOfTwo(frames.length),
-      frameGroups: nextPowerOfTwo(frameGroups.length),
-      palettes: nextPowerOfTwo(palettes.length),
-      plugins: nextPowerOfTwo(plugins.length),
-    });
-  }, [frameGroups, frames, imageGroups, images, palettes, plugins, sendEvent]);
+    queryClient.fetchQuery(globalStatsQueryOptions())
+      .then((itemsStatsResponse) => {
+        sendEvent('global-stats', {
+          images: nextPowerOfTwo(itemsStatsResponse.totals.images),
+          imageGroups: nextPowerOfTwo(itemsStatsResponse.totals.imageGroups),
+          frames: nextPowerOfTwo(itemsStatsResponse.totals.frames),
+          frameGroups: nextPowerOfTwo(itemsStatsResponse.totals.frameGroups),
+          palettes: nextPowerOfTwo(itemsStatsResponse.totals.palettes),
+          plugins: nextPowerOfTwo(itemsStatsResponse.totals.plugins),
+        });
+      });
+  }, [queryClient, sendEvent]);
 
 
   // Send error event when error occurs
