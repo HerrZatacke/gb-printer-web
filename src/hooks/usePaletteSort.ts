@@ -27,6 +27,8 @@ const usePaletteSort = (): UsePaletteSort => {
   const { images } = useImages({ list: true });
   const t = useTranslations('usePaletteSort');
 
+  console.warn('"usePaletteSort" loading full image list');
+
   const paletteSortOptions: PaletteSortOption[] = useMemo(() => ([
     {
       label: t('defaultAsc'),

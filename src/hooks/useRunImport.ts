@@ -170,6 +170,7 @@ const useRunImport = (): UseRunImport => {
   const palette = useActivePalette();
 
   const { images } = useImages({ list: true });
+  console.warn('"useRunImport" loading full image list');
   const stateImages = useMemo(() => {
     return new Map<string, Image>(images.map((image) => [image.hash, image]));
   }, [images]);

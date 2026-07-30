@@ -55,6 +55,8 @@ export const useFilterForm = (): UseFilterForm => {
   const { frames } = useFrames({ list: true });
   const { palettes } = usePalettes({ list: true });
 
+  console.warn('"useFilterForm" loading full image list');
+
   const [activeTags, setActiveTags] = useState(stateTags);
   const [activeFrames, setActiveFrames] = useState(stateFrames);
   const [activePalettes, setActivePalettes] = useState(statePalettes);

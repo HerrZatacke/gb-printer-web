@@ -45,6 +45,8 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const { images } = useImages({ list: true });
   const { updateLastSyncLocalNow } = useStores();
 
+  console.warn('"useFrame" loading full image list');
+
   const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
   const usage = useMemo(() => (
     images.filter(({ frame }) => frame === frameId).length
