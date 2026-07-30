@@ -1,7 +1,9 @@
 # Webworker Migration ToDos:
 
 ## Style/Global
-* Avoid reading full image list → useImages({ list: true });
+* Avoid reading full image list 
+  * → useImages({ list: true });
+  * → console.warn('"xxx" loading full image list');
 * Move "from '@/items/client'" somewehere smart...
 * Fix: ToDo: Navigation Effects
 * Rename translation key "useImageGroups" → "useEditImageGroups"
