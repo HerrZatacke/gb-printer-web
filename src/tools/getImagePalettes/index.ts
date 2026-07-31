@@ -23,8 +23,8 @@ export const getImagePalettes = async (image: Image): Promise<ImagePalettes> => 
 
   const queryClient = getQueryClient();
   const [foundPalette, foundFramePalette] = await Promise.all([
-    queryClient.fetchQuery(paletteByShortNameQueryOptions(monoImage.palette)),
-    queryClient.fetchQuery(paletteByShortNameQueryOptions(monoImage.framePalette)),
+    monoImage.palette ? queryClient.fetchQuery(paletteByShortNameQueryOptions(monoImage.palette)) : undefined,
+    monoImage.framePalette ? queryClient.fetchQuery(paletteByShortNameQueryOptions(monoImage.framePalette)) : undefined,
   ]);
 
   return {

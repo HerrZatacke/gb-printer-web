@@ -45,7 +45,7 @@ export const CommonImageSchema = z.object({
     }
   }),
   title: z.string(),
-  frame: z.string().optional(),
+  frame: z.string().optional().catch(undefined),
   tags: z.array(z.string()),
   lockFrame: z.boolean().prefault(false),
   rotation: nullToValue(z.enum(Rotation), Rotation.DEG_0),
@@ -85,9 +85,9 @@ export type RGBNImage = z.infer<typeof RGBNImageSchema>;
 export const MonochromeImageSchema = CommonImageSchema.extend({
   type: z.literal('mono'),
   lines: z.number(),
-  palette: z.string(),
+  palette: z.string().optional().catch(undefined),
   invertPalette: z.boolean().prefault(false),
-  framePalette: z.string(),
+  framePalette: z.string().optional().catch(undefined),
   invertFramePalette: z.boolean().prefault(false),
 });
 
