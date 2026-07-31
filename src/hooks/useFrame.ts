@@ -1,13 +1,12 @@
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFrames } from '@/hooks/useFrames';
-import { useImages } from '@/hooks/useImages';
+import { useGlobalQueries } from '@/hooks/useGlobalQueries';
 import { useStores } from '@/hooks/useStores';
 import { useDialogsStore, useEditStore } from '@/stores/stores';
 import applyFrame from '@/tools/applyFrame';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import textToTiles from '@/tools/textToTiles';
-import { useGlobalQueries } from '@/hooks/useGlobalQueries';
 
 interface GetTilesParams {
   frameId: string;
