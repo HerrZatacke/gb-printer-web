@@ -25,7 +25,9 @@ export interface UseImagesOptions {
   list?: boolean;
   allTags?: boolean;
   groupId?: string;
+  groupIdIncludeGroups?: boolean;
   hashesGroupId?: string;
+  hashesGroupIdIncludeGroups?: boolean;
   hashes?: string[];
   anyHashes?: string[];
   raw?: ImageQueryParams;
@@ -58,7 +60,9 @@ export const useImages = ({
   page,
   list,
   groupId,
+  groupIdIncludeGroups,
   hashesGroupId,
+  hashesGroupIdIncludeGroups,
   allTags,
   hashes,
   anyHashes,
@@ -79,16 +83,14 @@ export const useImages = ({
   });
 
   const byGroupIdQuery = useQuery({
-    // ToDo: make `true` param configurable
-    ...groupItemsByGroupIdQueryOptions(groupId || '', true, imageQueryParams),
+    ...groupItemsByGroupIdQueryOptions(groupId || '', groupIdIncludeGroups ?? true, imageQueryParams),
     enabled: Boolean(typeof groupId === 'string'),
     placeholderData,
     retry: false,
   });
 
   const hashesByGroupIdQuery = useQuery({
-    // ToDo: make `false` param configurable
-    ...hashesByGroupIdQueryOptions(hashesGroupId || '', false, imageQueryParams.sort, imageQueryParams.filters),
+    ...hashesByGroupIdQueryOptions(hashesGroupId || '', hashesGroupIdIncludeGroups ?? false, imageQueryParams.sort, imageQueryParams.filters),
     enabled: Boolean(typeof hashesGroupId === 'string'),
     placeholderData,
     retry: false,

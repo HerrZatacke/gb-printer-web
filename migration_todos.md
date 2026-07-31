@@ -1,8 +1,6 @@
 # Webworker Migration ToDos:
 
 ## ToDos
-* // ToDo: make `true` param configurable
-* // ToDo: make `false` param configurable
 * // ToDo: Navigation Effects
 * // ToDo: Navigation Effects / There should be a centralized spot for all redirects
 * // ToDo: check for cases which need to "purge" the target table/store on update
