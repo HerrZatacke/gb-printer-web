@@ -3,7 +3,6 @@
 ## Style/Global
 * Avoid reading full lists where possible
   * → useXXX({ list: true });
-  * → console.warn('"xxx" loading full image list');
   * Fix: ToDo: Navigation Effects
 
 ## Finally:

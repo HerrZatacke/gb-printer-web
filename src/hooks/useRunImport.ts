@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -6,8 +7,8 @@ import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useActivePalette } from '@/hooks/useActivePalette';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { useImages } from '@/hooks/useImages';
 import { useStores } from '@/hooks/useStores';
+import { imagesByHashesQueryOptions } from '@/stores/items/queries/images';
 import {
   useEditStore,
   useFiltersStore,
@@ -69,7 +70,7 @@ const useRunImport = (): UseRunImport => {
   const { setImageSelection } = useFiltersStore();
   const { importQueue: rawImportQueue, importQueueSet, frameQueueAdd, importQueueCancelOne } = useImportsStore();
   const { addImages, importQueueCancel } = useStores();
-
+  const queryClient = useQueryClient();
   const { view } = useGalleryTreeContext();
   const { navigateToGroup } = useNavigationTools();
 
@@ -169,28 +170,40 @@ const useRunImport = (): UseRunImport => {
 
   const palette = useActivePalette();
 
-  const { images } = useImages({ list: true });
-  console.warn('"useRunImport" loading full image list');
-  const stateImages = useMemo(() => {
-    return new Map<string, Image>(images.map((image) => [image.hash, image]));
-  }, [images]);
-  //
-  const importQueue = useMemo<FlaggedImportItem[]>(() => {
-    const seen = new Set<string>();
+  const [stateImages, setStateImages] = useState<Map<string, Image>>(new Map());
+  const [importQueue, setImportQueue] = useState<FlaggedImportItem[]>([]);
 
-    return rawImportQueue.map((importItem: ImportItem): FlaggedImportItem => {
-      const alreadyImported = stateImages.get(importItem.imageHash) || null;
-      const isDuplicateInQueue = seen.has(importItem.imageHash);
+  useEffect(() => {
+    const updateImportQueue = async () => {
+      if (!rawImportQueue.length) {
+        setImportQueue([]);
+        return;
+      }
 
-      seen.add(importItem.imageHash);
+      const rawQueueHashes = new Set<string>(rawImportQueue.map(({ imageHash }) => imageHash));
+      const { items: storedImages } = await queryClient.fetchQuery(imagesByHashesQueryOptions([...rawQueueHashes]));
+      const nextStateImages = new Map<string, Image>(storedImages.map((image) => [image.hash, image]));
+      const seen = new Set<string>();
 
-      return {
-        ...importItem,
-        isDuplicateInQueue,
-        alreadyImported,
-      };
-    });
-  }, [rawImportQueue, stateImages]);
+      const newImportQueue = rawImportQueue.map((importItem: ImportItem): FlaggedImportItem => {
+        const alreadyImported = nextStateImages.get(importItem.imageHash) || null;
+        const isDuplicateInQueue = seen.has(importItem.imageHash);
+
+        seen.add(importItem.imageHash);
+
+        return {
+          ...importItem,
+          isDuplicateInQueue,
+          alreadyImported,
+        };
+      });
+
+      setImportQueue(newImportQueue);
+      setStateImages(nextStateImages);
+    };
+
+    updateImportQueue();
+  }, [queryClient, rawImportQueue]);
 
   const lastSeenCount = useMemo<number>(() => (
     rawImportQueue.filter((importItem: ImportItem) => (
