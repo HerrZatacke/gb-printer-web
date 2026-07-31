@@ -1,10 +1,10 @@
 # Webworker Migration ToDos:
 
 ## Style/Global
-* Avoid reading full image list 
-  * → useImages({ list: true });
+* Avoid reading full lists where possible
+  * → useXXX({ list: true });
   * → console.warn('"xxx" loading full image list');
-* Fix: ToDo: Navigation Effects
+  * Fix: ToDo: Navigation Effects
 
 ## Finally:
 * Test all special filters (favoruite, mono, rgb, hasComment, etc.)
