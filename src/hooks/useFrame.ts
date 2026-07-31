@@ -7,6 +7,7 @@ import { useDialogsStore, useEditStore } from '@/stores/stores';
 import applyFrame from '@/tools/applyFrame';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import textToTiles from '@/tools/textToTiles';
+import { useGlobalQueries } from '@/hooks/useGlobalQueries';
 
 interface GetTilesParams {
   frameId: string;
@@ -42,15 +43,12 @@ const useFrame = ({ frameId, name }: UseFrameParams): UseFrame => {
   const { setEditFrame } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { frames, deleteFramesByIds } = useFrames({ list: true });
-  const { images } = useImages({ list: true });
   const { updateLastSyncLocalNow } = useStores();
 
-  console.warn('"useFrame" loading full image list');
+  const { usages } = useGlobalQueries({ usages: true });
 
-  const frameHash = frames.find(({ id }) => id === frameId)?.hash || '';
-  const usage = useMemo(() => (
-    images.filter(({ frame }) => frame === frameId).length
-  ), [frameId, images]);
+  const frameHash = frames.find(({ id }) => id === frameId)?.hash ?? '';
+  const usage = usages?.frames.find(({ id }) => id === frameId)?.usage ?? 0;
 
   useEffect(() => {
     const handle = window.setTimeout(async () => {
