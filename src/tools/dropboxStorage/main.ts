@@ -34,7 +34,7 @@ interface WithContentHash {
   dropboxContentHash: string;
 }
 
-const recoveryAttempts: string[] = [];
+let recoveryAttempts: number = 0;
 
 export const dropBoxSyncTool = (
   stores: UseStores,
@@ -230,9 +230,8 @@ export const dropBoxSyncTool = (
     }
 
     const { updateImages } = stores;
-    if (!recoveryAttempts.includes(hash)) {
-      // only attempt once to recover file
-      recoveryAttempts.push(hash);
+    if (recoveryAttempts < 3) {
+      recoveryAttempts += 1;
 
       try {
         const remoteFileContent = await dropboxClient.getFileContent(`images/${hash}.txt`, 0, 1, true);
