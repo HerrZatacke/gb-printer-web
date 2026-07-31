@@ -1,5 +1,6 @@
+import hasher from 'object-hash';
 import z from 'zod';
-import { FrameSchema } from '@/types/Frame';
+import { type Frame, FrameSchema } from '@/types/Frame';
 import { FrameGroupSchema } from '@/types/FrameGroup';
 import { ImageSchema } from '@/types/Image';
 import { SerializableImageGroupSchema } from '@/types/ImageGroup';
@@ -29,8 +30,65 @@ const stripIrrelevantValues = (obj: Record<string, unknown>): Record<string, unk
   );
 };
 
+export const OldFrameSchema = FrameSchema.extend({
+  hash: z.string().optional(),
+});
+
+export type OldFrame = z.infer<typeof OldFrameSchema>;
+
+const hasUnhashedFrames = (frames: OldFrame[]): boolean => (
+  Boolean(frames.find(({ hash }) => !hash))
+);
+
+export const hashImportFrames = (rawState: Record<string, unknown>): Record<string, unknown> => {
+  const { state, ...newBinaries } = rawState;
+
+  const stateRecord = state as Record<string, unknown>;
+  const oldFrames = (stateRecord.frames as OldFrame[]) || [];
+
+  if (!oldFrames.length || !hasUnhashedFrames(oldFrames)) {
+    return rawState;
+  }
+
+  const newFrames: Frame[] = oldFrames.map((frame: OldFrame): Frame => {
+    if (frame.hash) {
+      return frame as Frame;
+    }
+
+    const frameKey = `frame-${frame.id}`;
+
+    const frameData = newBinaries[frameKey];
+
+    if (!frameData) {
+      throw new Error(`could not load ${frameKey} from json import`);
+    }
+
+    const hash = hasher(frameData);
+    delete newBinaries[frameKey];
+    newBinaries[`frame-${hash}`] = frameData;
+
+    return {
+      ...frame,
+      hash,
+    };
+  });
+
+  return {
+    state: {
+      ...stateRecord,
+      frames: newFrames,
+    },
+    ...newBinaries,
+  };
+};
+
+
 export const JSONExportSchema = z.preprocess(
-  stripIrrelevantValues,
+  (raw: Record<string, unknown>) => {
+    const strippedRaw = stripIrrelevantValues(raw);
+    const withHashedFrames = hashImportFrames(strippedRaw);
+    return withHashedFrames;
+  },
   z.object({
     state: ExportableStateSchema,
   })

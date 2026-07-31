@@ -99,11 +99,8 @@ export const useFrameGroups = (): UseFrameGroups => {
   const { frames } = useFrames({ list: true });
 
   const frameGroups = useMemo(() => {
-    if (!listQuery.data?.items.length) {
-      return [];
-    }
-
-    return getFrameGroups(frames, listQuery.data?.items);
+    // Run with an empty array if user has only un-edited default groups
+    return getFrameGroups(frames, listQuery.data?.items || []);
   }, [listQuery.data, frames]);
 
   const updateFrameGroups = useCallback(async (updatedGroups: FrameGroup[], purge = false): Promise<void> => {
