@@ -46,7 +46,7 @@ export const CommonImageSchema = z.object({
   }),
   title: z.string(),
   frame: z.string().optional().catch(undefined),
-  tags: z.array(z.string()),
+  tags: z.array(z.string()).catch([]),
   lockFrame: z.boolean().prefault(false),
   rotation: nullToValue(z.enum(Rotation), Rotation.DEG_0),
   meta: nullToValue(ImageMetadataSchema, undefined),
