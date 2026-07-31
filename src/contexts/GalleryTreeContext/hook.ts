@@ -17,7 +17,7 @@ import { type TreeImageGroup } from '@/types/ImageGroup';
 const GALLERY_BASE_PATH = '/gallery/';
 
 export const useContextHook = (): GalleryTreeContextType => {
-  const { imageGroupTree: root, isLoadingTree } = useImageGroups({ tree: true, list: true });
+  const { imageGroupTree: root, isLoadingTree } = useImageGroups({ tree: true });
   const { searchParams, pathname } = useUrl();
   const [lastGalleryLink, setLastGalleryLink] = useState<string>('');
 

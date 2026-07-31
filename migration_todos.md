@@ -1,9 +1,7 @@
 # Webworker Migration ToDos:
 
 ## Style/Global
-* Avoid reading full lists where possible
-  * → useXXX({ list: true });
-  * Fix: ToDo: Navigation Effects
+* Fix: ToDo: Navigation Effects
 
 ## Finally:
 * Test all special filters (favoruite, mono, rgb, hasComment, etc.)
