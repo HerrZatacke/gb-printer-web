@@ -113,8 +113,6 @@ export const v1LegacyData: AfterUpgradeFn = async (
     await updateFromLegacyData(OLD_IMAGEGROUPS_STORE, 'imageGroups', SerializableImageGroupSchema.safeParse, 'imagegroups');
     await updateFromLegacyData(OLD_PALETTES_STORE, 'palettes', PaletteSchema.safeParse, 'palettes');
     await updateFromLegacyData(OLD_PLUGINS_STORE, 'plugins', PluginSchema.safeParse, 'plugins');
-  } catch (err) {
-    console.error('error during v1 migration:', err);
   } finally {
     oldDb.close();
   }
