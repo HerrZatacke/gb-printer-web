@@ -3,6 +3,7 @@ import { SyncDirection } from '@/consts/sync';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { type UseStores } from '@/hooks/useStores';
 import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { globalStatsQueryOptions } from '@/stores/items/queries/global';
 import { imagesRawQueryOptions } from '@/stores/items/queries/images';
 import {
   LogType,
@@ -41,7 +42,7 @@ export const dropBoxSyncTool = (
   remoteImport: (repoContents: JSONExport) => Promise<void>,
 ): DropBoxSyncTool => {
   const queryClient = getQueryClient();
-  const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+  const { setSyncBusy, setSyncSelect, setError } = useInteractionsStore.getState();
   const { setProgressLog } = useProgressStore.getState();
 
   const queue = new Queue(1, Infinity);
@@ -134,9 +135,17 @@ export const dropBoxSyncTool = (
 
     const [sortField, direction] = sortBy.split('_');
 
+    const { totals: { images: totalImages } } = await queryClient.fetchQuery(globalStatsQueryOptions());
+
+    if (totalImages > 500) {
+      setSyncBusy(false);
+      setError(new Error('Cancelled - Syncing more than 500 images to dropbox is most likely to fail'));
+      return;
+    }
+
     const { items: images } = await queryClient.fetchQuery(imagesRawQueryOptions({
       page: 0,
-      pageSize: 10000, // ToDo. Temporary limit. Never do this in the api.
+      pageSize: totalImages,
       filters: {
         tags: filtersTags,
         palette: filtersPalettes,
