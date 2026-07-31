@@ -51,28 +51,43 @@ const openAndPrepareDb = async () => {
     ITEMS_DB_VERSION,
     {
       async upgrade(db, oldVersion, _newVersion, tx) {
+        try {
+          for (let v = oldVersion; v < ITEMS_DB_VERSION; v++) {
+            const task = migrationFunctions[v](db, tx);
 
-        for (let v = oldVersion; v < ITEMS_DB_VERSION; v++) {
-          const task = migrationFunctions[v](db, tx);
-
-          if (task) {
-            afterUpgradeTasks.push(task);
+            if (task) {
+              afterUpgradeTasks.push(task);
+            }
           }
-        }
 
-        didUpgrade = true;
+          didUpgrade = true;
+        } catch (error) {
+          const hostApi = await getHostApi();
+          const err = new Error(`Error while upgrading indexedDB version: "${(error as Error)?.message}"`);
+          hostApi.onMigrationError(err.message);
+          database.close();
+          throw err;
+        }
       },
     },
   );
 
   if (didUpgrade) {
-    const startUpgradeTasks = performance.now();
-    for (const afterUpgradeTask of afterUpgradeTasks) {
-      await afterUpgradeTask(database, global.hostApi);
-    }
-    console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
+    try {
+      const startUpgradeTasks = performance.now();
+      for (const afterUpgradeTask of afterUpgradeTasks) {
+        await afterUpgradeTask(database, global.hostApi);
+      }
+      console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
 
-    await startMaintenanceTasks(database, global.hostApi);
+      await startMaintenanceTasks(database, global.hostApi);
+    } catch (error) {
+      const hostApi = await getHostApi();
+      const err = new Error(`Error while running upgrade- or maintenance-tasks: "${(error as Error)?.message}"`);
+      hostApi.onMigrationError(err.message);
+      database.close();
+      throw err;
+    }
   }
 
   console.log(`openAndPrepareDb() done in ${performance.now() - start}ms`);

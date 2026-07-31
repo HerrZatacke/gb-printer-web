@@ -80,6 +80,7 @@ export interface ItemsHostApi {
   getLegacyStorage(): Promise<Record<string, unknown[]>>;
   getRecentImports(): Promise<Set<string>>;
   onDataChanged(): void;
+  onMigrationError(message: string): void;
 }
 
 export type AfterUpgradeFn =  (upgradedDatabase: IDBPDatabase<ItemsDB>, hostApi: ItemsHostApi) => Promise<void>;

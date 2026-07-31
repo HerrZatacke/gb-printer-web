@@ -1,7 +1,7 @@
 'use client';
 import * as Comlink from 'comlink';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { useFiltersStore } from '@/stores/stores';
+import { useFiltersStore, useInteractionsStore } from '@/stores/stores';
 import { type ItemsHostApi, type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
 declare global {
@@ -33,6 +33,9 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
         },
         onDataChanged() {
           getQueryClient().invalidateQueries({ queryKey: ['items'] });
+        },
+        onMigrationError(message: string) {
+          useInteractionsStore.getState().setFatalError(Error(message));
         },
       };
 
