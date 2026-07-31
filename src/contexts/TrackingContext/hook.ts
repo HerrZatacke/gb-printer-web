@@ -5,8 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { getQueryClient } from '@/contexts/QueryClient';
-import { globalStatsQueryOptions } from '@/stores/items/queries/global';
+import { useGlobalQueries } from '@/hooks/useGlobalQueries';
 import { useInteractionsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import EventData = umami.EventData;
@@ -68,22 +67,24 @@ export const useContextHook = (): TrackingContextType => {
   }, [consentState]);
 
   const { errors } = useInteractionsStore();
-  const queryClient = getQueryClient();
+
+  const { stats } = useGlobalQueries({ stats: true });
 
   // Send stats event when itemState changes
   useEffect(() => {
-    queryClient.fetchQuery(globalStatsQueryOptions())
-      .then((itemsStatsResponse) => {
-        sendEvent('global-stats', {
-          images: nextPowerOfTwo(itemsStatsResponse.totals.images),
-          imageGroups: nextPowerOfTwo(itemsStatsResponse.totals.imageGroups),
-          frames: nextPowerOfTwo(itemsStatsResponse.totals.frames),
-          frameGroups: nextPowerOfTwo(itemsStatsResponse.totals.frameGroups),
-          palettes: nextPowerOfTwo(itemsStatsResponse.totals.palettes),
-          plugins: nextPowerOfTwo(itemsStatsResponse.totals.plugins),
-        });
-      });
-  }, [queryClient, sendEvent]);
+    if (!stats) {
+      return;
+    }
+
+    sendEvent('global-stats', {
+      images: nextPowerOfTwo(stats.images),
+      imageGroups: nextPowerOfTwo(stats.imageGroups),
+      frames: nextPowerOfTwo(stats.frames),
+      frameGroups: nextPowerOfTwo(stats.frameGroups),
+      palettes: nextPowerOfTwo(stats.palettes),
+      plugins: nextPowerOfTwo(stats.plugins),
+    });
+  }, [stats, sendEvent]);
 
 
   // Send error event when error occurs
