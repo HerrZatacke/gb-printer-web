@@ -162,17 +162,39 @@ export interface RootItemSourceResponse<T> {
   duration: number;
 }
 
+export interface ItemsStatsTotals {
+  palettes: number;
+  plugins: number;
+  frames: number;
+  frameGroups: number;
+  images: number;
+  imageGroups: number;
+  binaryImages: number;
+  binaryFrames: number;
+}
+
 export interface ItemsStatsResponse {
-  totals: {
-    palettes: number;
-    plugins: number;
-    frames: number;
-    frameGroups: number;
-    images: number;
-    imageGroups: number;
-    binaryImages: number;
-    binaryFrames: number;
-  };
+  totals: ItemsStatsTotals;
+  duration: number;
+}
+
+export interface PaletteUsage {
+  shortName: string;
+  usage: number;
+}
+
+export interface FrameUsage {
+  id: string;
+  usage: number;
+}
+
+export interface ItemsUsageTotals {
+  palettes: PaletteUsage[];
+  frames: FrameUsage[];
+}
+
+export interface ItemsUsageReponse {
+  totals: ItemsUsageTotals;
   duration: number;
 }
 
@@ -181,6 +203,7 @@ export interface ItemsSource {
   debugReset(): Promise<void>;
   runMaintenance(): Promise<void>;
   getStats(): Promise<ItemsStatsResponse>;
+  getUsages(): Promise<ItemsUsageReponse>;
 
   getAllTags(): Promise<ItemsSourceTotalResponse<string>>;
   getGroupItemsByGroupId(groupId: string, includeGroups: boolean, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;

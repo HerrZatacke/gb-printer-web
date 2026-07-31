@@ -132,7 +132,7 @@ function Palettes({ filter, showEditButtons }: Props) {
               isPredefined={palette.isPredefined || false}
               shortName={palette.shortName}
               palette={palette.palette}
-              usage={paletteUsages[palette.shortName] || 0}
+              usage={paletteUsages.get(palette.shortName) ?? 0}
             />
           ))
         }

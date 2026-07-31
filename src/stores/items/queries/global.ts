@@ -12,3 +12,14 @@ export const globalStatsQueryOptions = () => {
     staleTime: STALE_TIME,
   };
 };
+
+export const globalUsagesQueryOptions = () => {
+  return {
+    queryKey: globalKeys.usages,
+    queryFn: async () => {
+      const source = await getItemsSource();
+      return source.getUsages();
+    },
+    staleTime: STALE_TIME,
+  };
+};

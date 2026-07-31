@@ -78,6 +78,7 @@ const globalBaseKeys = ['items', 'global'] as const;
 export const globalKeys = {
   all: globalBaseKeys,
   stats: [...globalBaseKeys, 'stats'] as const,
+  usages: [...globalBaseKeys, 'usages'] as const,
 };
 
 export const trashCheckKeys = [
