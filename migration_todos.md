@@ -5,11 +5,9 @@
 * // ToDo: Navigation Effects / There should be a centralized spot for all redirects
 
 ## Finally:
-* Check startSyncImages/dropbox-tool loading all filtered
 * Clean up unused Endpoints
 * // ToDo: rename key to useEditImageGroups
-* Check ToDos globally
-* Test all special filters (favoruite, mono, rgb, hasComment, etc.)
+* Test all special filters (favourite, mono, rgb, hasComment, etc.)
 
 ## Later
 * // ToDo: find way to calulate group position for groups without coverimage (using viewItems)?
