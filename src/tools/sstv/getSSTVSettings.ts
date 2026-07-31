@@ -77,7 +77,7 @@ const robot72: SSTVSettings = {
 };
 
 
-export const getSettings = (mode: ModeType): SSTVSettings => {
+export const getSSTVSettings = (mode: ModeType): SSTVSettings => {
   const { width, height } = getDimensions(mode);
 
   let settings: SSTVSettings;
