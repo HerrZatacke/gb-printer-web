@@ -25,7 +25,9 @@ export const getFramesByIds = async (ids: string[]): Promise<ItemsSourceTotalRes
   const total = await store.count();
 
   const frames = await Promise.all(
-    ids.map(id => store.get(id)),
+    ids
+      .filter(Boolean)
+      .map(id => store.get(id)),
   );
 
   const filteredFrames = frames.filter((frame): frame is Frame => Boolean(frame));

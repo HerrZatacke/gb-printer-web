@@ -14,17 +14,19 @@ export const getPalettesByShortNames = async (shortNames: string[]): Promise<Ite
 
 
   const palettes = await Promise.all(
-    shortNames.map(async (shortName): Promise<Palette | null> => {
-      const predefined = predefinedPalettes.find((pal) => (pal.shortName === shortName));
-      if (predefined) {
-        return {
-          ...predefined,
-          isPredefined: true,
-        };
-      }
+    shortNames
+      .filter(Boolean)
+      .map(async (shortName): Promise<Palette | null> => {
+        const predefined = predefinedPalettes.find((pal) => (pal.shortName === shortName));
+        if (predefined) {
+          return {
+            ...predefined,
+            isPredefined: true,
+          };
+        }
 
-      return (await store.get(shortName)) || null;
-    }),
+        return (await store.get(shortName)) || null;
+      }),
   );
 
   const filteredPalettes = palettes.filter((palette): palette is Palette => Boolean(palette));
