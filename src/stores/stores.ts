@@ -11,7 +11,7 @@ export { type EditGroupInfo } from './editStore';
 export { type FiltersState, ImageSelectionMode } from './filtersStore';
 export { type TrashCount, type InteractionsState, type ErrorMessage } from './interactionsStore';
 export { type LogItem, type ProgressState, LogType } from './progressStore';
-export { ITEMS_STORE_VERSION } from './constants';
+export { ITEMS_DB_VERSION } from './constants';
 
 export const useDialogsStore = createDialogsStore();
 export const useInteractionsStore = createInteractionsStore();

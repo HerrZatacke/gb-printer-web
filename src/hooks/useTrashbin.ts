@@ -6,7 +6,7 @@ import { binaryFrameByHashQueryOptions } from '@/stores/items/queries/binaryFram
 import { binaryImageByHashQueryOptions } from '@/stores/items/queries/binaryImages';
 import {
   type TrashCount,
-  ITEMS_STORE_VERSION,
+  ITEMS_DB_VERSION,
   useInteractionsStore,
 } from '@/stores/stores';
 import { FrameData } from '@/tools/applyFrame/frameData';
@@ -108,7 +108,7 @@ const useTrashbin = (): UseTrashbin => {
     const exportState: ExportableState = {
       images: backupImages,
       lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
-      version: ITEMS_STORE_VERSION,
+      version: ITEMS_DB_VERSION,
     };
 
     const jsonExport = createJSONExport(exportState, binaries);
@@ -150,7 +150,7 @@ const useTrashbin = (): UseTrashbin => {
         },
       ],
       lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
-      version: ITEMS_STORE_VERSION,
+      version: ITEMS_DB_VERSION,
     };
 
     const jsonExport = createJSONExport(exportState, binaries);

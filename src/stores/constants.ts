@@ -1,4 +1,5 @@
 export const PROJECT_PREFIX = 'gbp-z-web';
 
-// ToDo: Link this to new Api Schemas
-export const ITEMS_STORE_VERSION = 0;
+// this number mus correspond with the ItemsDB-version defined in
+// src/workers/itemsIndexedDbWorker/db.ts
+export const ITEMS_DB_VERSION = 1;

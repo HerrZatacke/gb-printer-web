@@ -7,7 +7,7 @@ import { imageGroupsListQueryOptions } from '@/stores/items/queries/imageGroups'
 import { imagesListQueryOptions } from '@/stores/items/queries/images';
 import { palettesListQueryOptions } from '@/stores/items/queries/palettes';
 import { pluginsListQueryOptions } from '@/stores/items/queries/plugins';
-import { useFiltersStore, ITEMS_STORE_VERSION } from '@/stores/stores';
+import { useFiltersStore, ITEMS_DB_VERSION } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
 import { type ExportableState, type ExportableValues, createJSONExport } from '@/types/ExportState';
 import { type GetSettingsOptions } from '@/types/Sync';
@@ -117,7 +117,7 @@ export const getSettings = async (
         }
       }, {}),
     lastUpdateUTC: lastUpdateUTC || Math.floor((new Date()).getTime() / 1000),
-    version: ITEMS_STORE_VERSION,
+    version: ITEMS_DB_VERSION,
   };
 
   let exportBinary: Record<string, string> = {};

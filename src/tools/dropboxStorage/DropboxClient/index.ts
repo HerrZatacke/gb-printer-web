@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import { type DropboxAuth, type DropboxOptions, type DropboxResponse } from 'dropbox';
 import { Dropbox } from 'dropbox';
 import { type files as Files, type async as Async } from 'dropbox/types/dropbox_types';
-import { ITEMS_STORE_VERSION, useStoragesStore } from '@/stores/stores';
+import { ITEMS_DB_VERSION, useStoragesStore } from '@/stores/stores';
 import cleanPath from '@/tools/cleanPath';
 import { delay } from '@/tools/delay';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
@@ -172,7 +172,7 @@ class DropboxClient extends EventEmitter {
     } catch {
       return createJSONExport({
         lastUpdateUTC: 0,
-        version: ITEMS_STORE_VERSION,
+        version: ITEMS_DB_VERSION,
       }, {});
     }
   }

@@ -1,8 +1,5 @@
 # Webworker Migration ToDos:
 
-## Import/Export
-* Link version of export to new API Schemas
-
 ## Style/Global
 * Avoid reading full image list 
   * → useImages({ list: true });

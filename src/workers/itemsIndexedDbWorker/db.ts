@@ -1,4 +1,5 @@
 import { type IDBPDatabase, openDB } from 'idb';
+import { ITEMS_DB_VERSION } from '@/stores/constants';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { migrateV1 } from '@/workers/itemsIndexedDbWorker/migrations/v1';
 import {
@@ -26,6 +27,10 @@ const migrationFunctions: MigrationFn[] = [
   // migrateV4, // migrate v3 -> v4
 ];
 
+if (ITEMS_DB_VERSION !== migrationFunctions.length) {
+  throw new Error('ITEMS_DB_VERSION version mismatch!');
+}
+
 export const configureDb = (configureHostApi: ItemsHostApi): void => {
   global.hostApi = configureHostApi;
 };
@@ -43,11 +48,11 @@ const openAndPrepareDb = async () => {
 
   const database = await openDB<ItemsDB>(
     'gb-printer-web--items',
-    migrationFunctions.length,
+    ITEMS_DB_VERSION,
     {
       async upgrade(db, oldVersion, _newVersion, tx) {
 
-        for (let v = oldVersion; v < migrationFunctions.length; v++) {
+        for (let v = oldVersion; v < ITEMS_DB_VERSION; v++) {
           const task = migrationFunctions[v](db, tx);
 
           if (task) {
