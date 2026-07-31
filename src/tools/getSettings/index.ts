@@ -9,7 +9,7 @@ import { palettesListQueryOptions } from '@/stores/items/queries/palettes';
 import { pluginsListQueryOptions } from '@/stores/items/queries/plugins';
 import { useFiltersStore, ITEMS_STORE_VERSION } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
-import { type ExportableState, type JSONExport, type JSONExportBinary, type ExportableValues } from '@/types/ExportState';
+import { type ExportableState, type ExportableValues, createJSONExport } from '@/types/ExportState';
 import { type GetSettingsOptions } from '@/types/Sync';
 import getFrames from './getFrames';
 import getFramesForExport from './getFramesForExport';
@@ -64,8 +64,6 @@ export const getSettings = async (
   const { items: frameGroups } = await queryClient.fetchQuery(frameGroupsListQueryOptions());
   const { items: images } = await queryClient.fetchQuery(imagesListQueryOptions());
   const { items: imageGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
-
-  console.log({ imageGroups, images });
 
   const exportableState: ExportableState = {
     ...getExportKeys(what)
@@ -122,7 +120,7 @@ export const getSettings = async (
     version: ITEMS_STORE_VERSION,
   };
 
-  let exportBinary: JSONExportBinary = {};
+  let exportBinary: Record<string, string> = {};
 
   if (
     exportableState.images?.length &&
@@ -145,10 +143,7 @@ export const getSettings = async (
     };
   }
 
-  const jsonExport = {
-    state: exportableState,
-    ...exportBinary,
-  } as JSONExport;
+  const jsonExport = createJSONExport(exportableState, exportBinary);
 
   return JSON.stringify(jsonExport, null, 2);
 };

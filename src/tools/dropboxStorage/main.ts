@@ -22,7 +22,7 @@ import { Date } from '@/tools/safeDate';
 import { saveLocalStorageItems, saveImageFileContent } from '@/tools/saveLocalStorageItems';
 import { DownloadArrayBuffer } from '@/types/download';
 import { type RepoContents } from '@/types/Export';
-import { type JSONExportState } from '@/types/ExportState';
+import { type JSONExport } from '@/types/ExportState';
 import { type AddToQueueFn, type DBFolderFile, type DownloadInfo, type DropBoxSettings, type UploadFile } from '@/types/Sync';
 import  { type ImageSortField, type SortDirection } from '@/workers/itemsIndexedDbWorker/types';
 import { loadFrameData } from '../applyFrame/frameData';
@@ -38,7 +38,7 @@ const recoveryAttempts: string[] = [];
 
 export const dropBoxSyncTool = (
   stores: UseStores,
-  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+  remoteImport: (repoContents: JSONExport) => Promise<void>,
 ): DropBoxSyncTool => {
   const queryClient = getQueryClient();
   const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();

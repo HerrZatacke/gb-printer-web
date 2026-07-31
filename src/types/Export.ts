@@ -1,4 +1,4 @@
-import { type JSONExportState } from './ExportState';
+import { type JSONExport } from './ExportState';
 import { type DownloadInfo, type UploadFile } from './Sync';
 
 export interface RepoFile {
@@ -15,7 +15,7 @@ export interface DropBoxRepoFile extends RepoFile {
 export interface RepoContents {
   images: RepoFile[];
   frames: RepoFile[];
-  settings: JSONExportState;
+  settings: JSONExport;
 }
 
 export interface SyncFile {

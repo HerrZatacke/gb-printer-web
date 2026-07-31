@@ -11,13 +11,12 @@ import {
 } from '@/stores/stores';
 import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
-import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
-import { type JSONExportBinary, type JSONExportState } from '@/types/ExportState';
+import { createJSONExport, type ExportableState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
 import { type Image } from '@/types/Image';
 
@@ -82,10 +81,11 @@ const useTrashbin = (): UseTrashbin => {
     const imageHashes = await getTrashImages();
     const deletedImages = await getBinaryImageItems(imageHashes);
 
-    const jsonExportBinary: JSONExportBinary = {};
-    const backupImages = deletedImages.map((image): Image | null => {
+    const binaries: Record<string, string> = {};
+
+    const backupImages: Image[] = deletedImages.map((image): Image | null => {
       try {
-        jsonExportBinary[image.hash] = image.binary;
+        binaries[image.hash] = image.binary;
         return {
           type: 'mono',
           hash: image.hash,
@@ -103,26 +103,28 @@ const useTrashbin = (): UseTrashbin => {
       } catch {
         return null;
       }
-    }).reduce(reduceImagesMonochrome, []);
+    }).filter((i): i is Image => Boolean(i));
 
-
-    const jsonExportState: JSONExportState = { state: {
+    const exportState: ExportableState = {
       images: backupImages,
       lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
       version: ITEMS_STORE_VERSION,
-    } };
+    };
 
-    saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_images.json');
+    const jsonExport = createJSONExport(exportState, binaries);
+
+    saveAs(new Blob([...JSON.stringify(jsonExport, null, 2)]), 'backup_images.json');
   }, [t]);
 
   const downloadFrames = useCallback(async (): Promise<void> => {
     const frameHashes = await getTrashFrames();
     const deletedFrames = await getBinaryFrameItems(frameHashes);
 
-    const jsonExportBinary: JSONExportBinary = {};
+    const binaries: Record<string, string> = {};
+
     const backupFrames: Frame[] = deletedFrames.map((frame, index) => {
       try {
-        jsonExportBinary[`frame-${frame.hash}`] = frame.binary;
+        binaries[`frame-${frame.hash}`] = frame.binary;
 
         const frameData = JSON.parse(frame.lines[0]) as FrameData;
         const lines = frameData.upper.length + (frameData.left.length * 20) + frameData.lower.length;
@@ -138,21 +140,22 @@ const useTrashbin = (): UseTrashbin => {
       }
     }).reduce(reduceItems<Frame>, []);
 
-    const jsonExportState: JSONExportState = {
-      state: {
-        frames: backupFrames,
-        frameGroups: [
-          {
-            id: 'bak',
-            name: t('reImportedTrashFrames'),
-          },
-        ],
-        lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
-        version: ITEMS_STORE_VERSION,
-      },
+
+    const exportState: ExportableState = {
+      frames: backupFrames,
+      frameGroups: [
+        {
+          id: 'bak',
+          name: t('reImportedTrashFrames'),
+        },
+      ],
+      lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
+      version: ITEMS_STORE_VERSION,
     };
 
-    saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_frames.json');
+    const jsonExport = createJSONExport(exportState, binaries);
+
+    saveAs(new Blob([...JSON.stringify(jsonExport, null, 2)]), 'backup_frames.json');
   }, [t]);
 
   const checkUpdateTrashCount = useCallback(async () => {

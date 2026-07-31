@@ -11,7 +11,7 @@ import { delay } from '@/tools/delay';
 import getUploadFiles from '@/tools/getUploadFiles';
 import { Date } from '@/tools/safeDate';
 import { saveLocalStorageItems } from '@/tools/saveLocalStorageItems';
-import { type JSONExportState } from '@/types/ExportState';
+import { type JSONExport } from '@/types/ExportState';
 import { type AddToQueueFn, type GitStorageSettings } from '@/types/Sync';
 import OctoClient from './OctoClient';
 import { type GitSyncTool } from './index';
@@ -47,7 +47,7 @@ export const init = () => {
 
 
 export const gitSyncTool = (
-  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+  remoteImport: (repoContents: JSONExport) => Promise<void>,
 ): GitSyncTool => {
   const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
   const { setProgressLog } = useProgressStore.getState();

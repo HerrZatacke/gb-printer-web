@@ -7,31 +7,46 @@ import { PaletteSchema } from '@/types/Palette';
 import { PluginSchema } from '@/types/Plugin';
 
 export const ExportableValuesSchema = z.object({
-  frames: z.array(FrameSchema),
-  frameGroups: z.array(FrameGroupSchema),
-  palettes: z.array(PaletteSchema),
-  plugins: z.array(PluginSchema),
-  images: z.array(ImageSchema),
-  imageGroups: z.array(SerializableImageGroupSchema),
+  frames: z.array(FrameSchema).optional(),
+  frameGroups: z.array(FrameGroupSchema).optional(),
+  palettes: z.array(PaletteSchema).optional(),
+  plugins: z.array(PluginSchema).optional(),
+  images: z.array(ImageSchema).optional(),
+  imageGroups: z.array(SerializableImageGroupSchema).optional(),
 });
 
+export const ExportableStateSchema = ExportableValuesSchema.extend({
+  lastUpdateUTC: z.number().prefault(0),
+  version: z.number().prefault(0),
+});
+
+const stripIrrelevantValues = (obj: Record<string, unknown>): Record<string, unknown> => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => (
+      value !== null
+      && value !== undefined
+    )),
+  );
+};
+
+export const JSONExportSchema = z.preprocess(
+  stripIrrelevantValues,
+  z.object({
+    state: ExportableStateSchema,
+  })
+    .catchall(z.string()),
+);
+
 export type ExportableValues = z.infer<typeof ExportableValuesSchema>;
+export type ExportableState = z.infer<typeof ExportableStateSchema>;
+export type JSONExport = z.infer<typeof JSONExportSchema>;
 
-// ToDo: extend this to a schema for merging
-export interface ExportableState extends Partial<ExportableValues> {
-  lastUpdateUTC: number;
-  version: number;
-}
-
-// ToDo: extend this to a schema for merging
-export interface JSONExportState {
-  state: ExportableState;
-}
-
-// ToDo: extend this to a schema for merging
-export interface JSONExportBinary {
-  [k: string]: string;
-}
-
-// ToDo: extend this to a schema for merging
-export type JSONExport = JSONExportState & JSONExportBinary;
+export const createJSONExport = (
+  state: ExportableState,
+  binaries: Record<string, string>,
+): JSONExport => {
+  return JSONExportSchema.parse({
+    state,
+    ...binaries,
+  });
+};

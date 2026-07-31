@@ -12,7 +12,11 @@ import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
 import mergeStates from '@/tools/mergeStates';
 import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
-import { type JSONExport, type JSONExportState, type ExportableState } from '@/types/ExportState';
+import {
+  type JSONExport,
+  type ExportableState,
+  JSONExportSchema,
+} from '@/types/ExportState';
 
 const mergeSettings = async (
   settings: JSONExport,
@@ -74,7 +78,7 @@ export interface ImportExportSettings {
   downloadSettings: (what: ExportTypes, selectedFrameGroup?: string) => Promise<void>;
   getSettingsFile: (what: ExportTypes, selectedFrameGroup?: string) => Promise<File>;
   jsonImport: ImportFn;
-  remoteImport: (repoContents: JSONExportState) => Promise<void>;
+  remoteImport: (repoContents: JSONExport) => Promise<void>;
 }
 
 export const useImportExportSettings = (): ImportExportSettings => {
@@ -96,13 +100,15 @@ export const useImportExportSettings = (): ImportExportSettings => {
     }]);
   }, [getSettingsFile]);
 
-  const jsonImport = useCallback(async (repoContents: JSONExport): Promise<void> => {
+  const jsonImport = useCallback(async (repoContentsRaw: JSONExport): Promise<void> => {
+    const repoContents = JSONExportSchema.parse(repoContentsRaw);
     const update = await mergeSettings(repoContents, true);
     await globalUpdate(update);
   }, [globalUpdate]);
 
-  const remoteImport = useCallback(async (repoContents: JSONExportState): Promise<void> => {
-    const update = await mergeSettings(repoContents as JSONExport, false);
+  const remoteImport = useCallback(async (repoContentsRaw: JSONExport): Promise<void> => {
+    const repoContents = JSONExportSchema.parse(repoContentsRaw);
+    const update = await mergeSettings(repoContents, false);
     await globalUpdate(update);
   }, [globalUpdate]);
 
