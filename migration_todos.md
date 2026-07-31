@@ -1,7 +1,6 @@
 # Webworker Migration ToDos:
 
 ## Style/Global
-* Fix: pageSize: 10000
 * Fix: ToDo: Navigation Effects
 
 ## Finally:

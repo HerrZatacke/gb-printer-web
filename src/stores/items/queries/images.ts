@@ -49,15 +49,21 @@ export const imagesByAnyHashesBatchedLoader = createBatchedLoader<ItemsReference
   50,
 );
 
-// ToDo: getting _all_ images without pagination must be elimiated for API
 export const imagesListQueryOptions = () => {
   return {
     queryKey: imagesKeys.list,
     queryFn: async () => {
       const source = await getItemsSource();
+
+      const { totals: { images: totalImages } } = await source.getStats();
+
+      if (totalImages > 5000) {
+        console.warn(`Querying ${totalImages} images. When using remote APIs this might fail`);
+      }
+
       const result = await source.getImages({
         page: 0,
-        pageSize: 10000, // ToDo. Temporary limit. Never do this in the api.
+        pageSize: totalImages,
         sort: {
           field: 'created',
           direction: 'asc',
