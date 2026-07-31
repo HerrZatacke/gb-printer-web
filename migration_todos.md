@@ -1,6 +1,7 @@
 # Webworker Migration ToDos:
 
 ## Style/Global
+* Add a reference to the discord if migration fails
 * Fix: ToDo: Navigation Effects
 
 ## Finally:
