@@ -3,7 +3,6 @@
 ## ToDos
 * // ToDo: Navigation Effects
 * // ToDo: Navigation Effects / There should be a centralized spot for all redirects
-* // ToDo: check for cases which need to "purge" the target table/store on update
 
 ## Finally:
 * Check startSyncImages/dropbox-tool loading all filtered

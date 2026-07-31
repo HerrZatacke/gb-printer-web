@@ -72,39 +72,36 @@ export const useStores = (): UseStores => {
       updateLastSyncLocalNow();
     };
 
-    const combinedGlobalUpdate = async (state: Partial<ExportableState>) => {
+    const globalUpdate = async (newState: Partial<ExportableState>) => {
       cancelEditFrame();
       cancelEditPalette();
       cancelEditImages();
 
-      if (state.lastUpdateUTC) {
-        setSyncLastUpdate('local', state.lastUpdateUTC);
+      if (newState.lastUpdateUTC) {
+        setSyncLastUpdate('local', newState.lastUpdateUTC);
       } else {
         updateLastSyncLocalNow();
       }
 
-      if (state.palettes) {
-        // hard replace all palettes -> merging happens in src/javascript/tools/mergeStates/index.ts
-        await updatePalettes(state.palettes);
+      if (newState.palettes) {
+        await updatePalettes(newState.palettes, true);
       }
 
-      if (state.images) {
-        // hard replace all images -> merging happens in src/javascript/tools/mergeStates/index.ts
-        await updateImages(state.images, true);
-        updateRecentImports(state.images);
+      if (newState.images) {
+        await updateImages(newState.images, true);
+        updateRecentImports(newState.images);
       }
 
-      if (state.frames) {
-        // hard replace all frames -> merging happens in src/javascript/tools/mergeStates/index.ts
-        await updateFrames(state.frames);
+      if (newState.frames) {
+        await updateFrames(newState.frames, true);
       }
 
-      if (state.frameGroups) {
-        await updateFrameGroups(state.frameGroups); // updateFrameGroups merges
+      if (newState.frameGroups) {
+        await updateFrameGroups(newState.frameGroups, true); // updateFrameGroups merges
       }
 
-      if (state.imageGroups) {
-        await updateImageGroups(state.imageGroups, true);
+      if (newState.imageGroups) {
+        await updateImageGroups(newState.imageGroups, true);
       }
     };
 
@@ -112,7 +109,7 @@ export const useStores = (): UseStores => {
       addImages: combinedAddImages,
       deleteImages: combinedDeleteImages,
       dismissDialog,
-      globalUpdate: combinedGlobalUpdate,
+      globalUpdate,
       importQueueCancel: combinedImportQueueCancel,
       setDialog,
       updateImages: combinedUpdateImages,
