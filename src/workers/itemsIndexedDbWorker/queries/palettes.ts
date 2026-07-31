@@ -56,7 +56,11 @@ export const getPalettes = async (): Promise<ItemsSourceTotalResponse<Palette>> 
 };
 
 export const updatePalettes = async (palettes: Palette[], purge: boolean): Promise<void> => {
-  const { success, data: parsedPalettes, error } = z.array(PaletteSchema).safeParse(palettes);
+  const predefinedPaletteShortNames = new Set(predefinedPalettes.map(({ shortName }) => shortName));
+
+  const filteredPalettes = palettes.filter(({ shortName }) => !predefinedPaletteShortNames.has(shortName));
+
+  const { success, data: parsedPalettes, error } = z.array(PaletteSchema).safeParse(filteredPalettes);
   if (success) {
     const db = await getDb();
 
