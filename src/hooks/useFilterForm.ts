@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAvailableTags } from '@/hooks/useAvailableTags';
 import { useFrames } from '@/hooks/useFrames';
-import { useImages } from '@/hooks/useImages';
+import { useGlobalQueries } from '@/hooks/useGlobalQueries';
 import { usePalettes } from '@/hooks/usePalettes';
 import { useFiltersStore } from '@/stores/stores';
 import sortBy, { SortDirection } from '@/tools/sortby';
@@ -51,11 +51,8 @@ export const useFilterForm = (): UseFilterForm => {
     setFilters,
   } = useFiltersStore();
 
-  const { images } = useImages({ list: true });
   const { frames } = useFrames({ list: true });
   const { palettes } = usePalettes({ list: true });
-
-  console.warn('"useFilterForm" loading full image list');
 
   const [activeTags, setActiveTags] = useState(stateTags);
   const [activeFrames, setActiveFrames] = useState(stateFrames);
@@ -63,11 +60,13 @@ export const useFilterForm = (): UseFilterForm => {
 
   const { availableTags } = useAvailableTags();
 
+  const { usages } = useGlobalQueries({ usages: true });
+
   const availableFrames = useMemo<FilterFrameInfo[]>(() => (
     sortByUsage(
       frames
         .map((frame): FilterFrameInfo => {
-          const usage = images.filter((image) => image.frame === frame.id).length;
+          const usage = usages?.frames.find(({ id }) => id === frame.id)?.usage ?? 0;
           return ({
             frame,
             usage,
@@ -77,7 +76,7 @@ export const useFilterForm = (): UseFilterForm => {
           usage > 0 || activeFrames.includes(frame.id)
         )),
     )
-  ), [activeFrames, frames, images]);
+  ), [activeFrames, frames, usages?.frames]);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
