@@ -107,9 +107,9 @@ export const v1LegacyData: AfterUpgradeFn = async (
   try {
     await updateFromLegacyBinaryData(OLD_BINARY_FRAMES_STORE, 'binaryframes');
     await updateFromLegacyBinaryData(OLD_BINARY_IMAGES_STORE, 'binaryimages');
-    await updateFromLegacyData(OLD_FRAMES_STORE, 'frames', FrameSchema.safeParse, 'frames'); // ToDo: add "lines" and "hash" properties if missing
+    await updateFromLegacyData(OLD_FRAMES_STORE, 'frames', FrameSchema.safeParse, 'frames');
     await updateFromLegacyData(OLD_FRAMEGROUPS_STORE, 'frameGroups', FrameGroupSchema.safeParse, 'framegroups');
-    await updateFromLegacyData(OLD_IMAGES_STORE, 'images', StoredImageSchema.safeParse, 'images'); // ToDo: add "lines" property if missing (could happen in StoredImageSchema.transform)
+    await updateFromLegacyData(OLD_IMAGES_STORE, 'images', StoredImageSchema.safeParse, 'images');
     await updateFromLegacyData(OLD_IMAGEGROUPS_STORE, 'imageGroups', SerializableImageGroupSchema.safeParse, 'imagegroups');
     await updateFromLegacyData(OLD_PALETTES_STORE, 'palettes', PaletteSchema.safeParse, 'palettes');
     await updateFromLegacyData(OLD_PLUGINS_STORE, 'plugins', PluginSchema.safeParse, 'plugins');

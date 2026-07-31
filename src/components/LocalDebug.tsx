@@ -75,7 +75,6 @@ function LocalDebug() {
 
   // const { images: allImages } = useImages({ list: true }); // All images
   // const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
-  // ToDo: See edge-case in resolveGroupItemsByGroupId
   // const { byGroupId: rawImages2 } = useImages({ groupId: 'ROOT' });
 
   // const { byAnyHashes: blueChannel } = useImages({ anyHashes: ['8ce194178ea421d56f06215c582dbec844566954'] }); // RGB-Bulli b-channel hash
