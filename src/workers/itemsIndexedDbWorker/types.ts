@@ -44,7 +44,6 @@ export interface ItemsDB extends DBSchema {
     key: string;
     value: Frame;
     indexes: {
-      name: string;
       hash: string;
     };
   };
@@ -56,13 +55,8 @@ export interface ItemsDB extends DBSchema {
     key: string;
     value: StoredImage;
     indexes: {
-      created: string;
-      frame: string;
-      palette: string;
       tags: string;
       referencedHashes: string;
-      title: string;
-      type: string;
     };
   };
   imagegroups: {
