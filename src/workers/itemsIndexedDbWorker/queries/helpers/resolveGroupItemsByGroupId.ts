@@ -35,17 +35,9 @@ export const resolveGroupItemsByGroupId = async (
     rootGroup = (await getImageGroupsFullTree()).item;
   }
 
-  const imageMatcher = await getMatcher(
+  const facetMatcher = await getMatcher(
     hostApi,
     filters,
-  );
-
-  const imageMatchesFilters = (item: StoredImage): boolean => (
-    imageMatcher(facetFromImage(item))
-  );
-
-  const serializableImageGroupMatchesFilters = (item: SerializableImageGroup): boolean => (
-    imageMatcher(facetFromSerializableImageGroup(item))
   );
 
   const { store: groupsStore } = db.transaction('imagegroups');
@@ -65,16 +57,26 @@ export const resolveGroupItemsByGroupId = async (
     throw new Error(`could not find imagegroup ${groupId}`);
   }
 
-  const filteredGroups = includeGroups
-    ? (
-      (await Promise.all(
-        groupIds.map(id => groupsStore.get(id)),
-      ))
-        .filter((g): g is SerializableImageGroup => Boolean(g))
-        .filter(serializableImageGroupMatchesFilters)
-    )
-    : [];
+  let filteredGroups: SerializableImageGroup[] = [];
 
+  if (includeGroups) {
+    const serializableImageGroupMatchesFilters = (item: SerializableImageGroup): boolean => (
+      facetMatcher(facetFromSerializableImageGroup(item))
+    );
+
+    const loadedGroups = await Promise.all(
+      groupIds.map((id): Promise<SerializableImageGroup | undefined> => groupsStore.get(id)),
+    );
+
+    filteredGroups = loadedGroups
+      .filter((g): g is SerializableImageGroup => Boolean(g))
+      .filter(serializableImageGroupMatchesFilters);
+  }
+
+
+  const imageMatchesFilters = (item: StoredImage): boolean => (
+    facetMatcher(facetFromImage(item))
+  );
   const images = await resolveAndFilterImages(db, imageMatchesFilters, new Set(imageHashes));
 
   const coverImageHashes = filteredGroups.map((g) => g.coverImage).filter((h): h is string => Boolean(h));
