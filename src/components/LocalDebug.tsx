@@ -19,9 +19,19 @@ import { randomId } from '@/tools/randomId';
 function LocalDebug() {
   const [shouldRender, setShouldRender] = useState(false);
   const { enableDebug } = useSettingsStore();
-  const { updateImageGroup } = useImageGroups({});
+  const { updateImageGroup } = useImageGroups({ tree: true, list: true });
+  // const { updateImageGroup, imageGroupTree, imageGroups } = useImageGroups({ tree: true, list: true });
   const { navigateToImage, navigateToGroup } = useNavigationTools();
   const queryClient = useQueryClient();
+
+  // useEffect(() => {
+  //   console.log({ imageGroupTree });
+  // }, [imageGroupTree]);
+  //
+  // useEffect(() => {
+  //   console.log({ imageGroups });
+  // }, [imageGroups]);
+
 
   useEffect(() => {
     if (window.location.hostname === 'localhost') {
