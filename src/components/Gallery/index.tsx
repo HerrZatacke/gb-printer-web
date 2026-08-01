@@ -12,6 +12,7 @@ import Pagination from '@/components/Pagination';
 import StorageWarning from '@/components/StorageWarning';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useGalleryNavigationGuards } from '@/tools/useGalleryNavigationGuards';
+import { GroupItem } from '@/workers/itemsIndexedDbWorker/types';
 
 function Gallery() {
   useGalleryNavigationGuards();
@@ -37,19 +38,28 @@ function Gallery() {
       { maxPageIndex > 0 && <Pagination page={page} maxPageIndex={maxPageIndex} /> }
 
       <GalleryGrid showLoader={isWorking}>
-        { viewItems.map(({ image, group }) => (
-          group ? (
-            <GalleryGroup
-              key={group.id}
-              id={group.id}
-            />
-          ) : (
-            <GalleryImage
-              key={image.hash}
-              hash={image.hash}
-            />
-          )
-        )) }
+        { viewItems.map((groupItem: GroupItem) => {
+          switch (groupItem.type) {
+            case 'group':
+              return (
+                <GalleryGroup
+                  key={groupItem.group.id}
+                  id={groupItem.group.id}
+                />
+              );
+
+            case 'image':
+              return (
+                <GalleryImage
+                  key={groupItem.image.hash}
+                  hash={groupItem.image.hash}
+                />
+              );
+
+            default:
+              return null;
+          }
+        }) }
       </GalleryGrid>
 
       { viewItems.length >= 3 && (

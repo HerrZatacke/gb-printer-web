@@ -17,7 +17,7 @@ import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import unique from '@/tools/unique';
 import { type Image, type MonochromeImage } from '@/types/Image';
-import { type GroupItem } from '@/workers/itemsIndexedDbWorker/types';
+import { type GroupItem, type GroupItemImage } from '@/workers/itemsIndexedDbWorker/types';
 
 interface UseBatchButtons {
   hasPlugins: boolean;
@@ -60,8 +60,8 @@ const useBatchButtons = (): UseBatchButtons => {
   const currentPageImages: Image[] = useMemo(() => {
     // Current page without covers
     return viewItems
-      .filter(({ group }: GroupItem) => !group)
-      .map(({ image }) => image);
+      .filter((item: GroupItem): item is GroupItemImage => item.type === 'image')
+      .map(({ image }: GroupItemImage) => image);
   }, [viewItems]);
 
   const selectedImages = useMemo(() => (

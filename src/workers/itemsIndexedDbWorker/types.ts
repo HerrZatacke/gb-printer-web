@@ -108,15 +108,30 @@ export interface ImageQueryParams {
   sort: ImageQuerySort;
 }
 
-export const GroupItemSchema = z.object({
-  image: ImageSchema,
-  group: SerializableImageGroupSchema.nullable(),
+const GroupItemBaseSchema = z.object({
   title: z.string(),
   created: z.string(),
   frame: z.string().nullable(),
   palette: z.string().nullable(),
 });
 
+export const GroupItemImageSchema = GroupItemBaseSchema.extend({
+  type: z.literal('image'),
+  image: ImageSchema,
+});
+
+export const GroupItemGroupSchema = GroupItemBaseSchema.extend({
+  type: z.literal('group'),
+  group: SerializableImageGroupSchema,
+});
+
+export const GroupItemSchema = z.discriminatedUnion('type', [
+  GroupItemImageSchema,
+  GroupItemGroupSchema,
+]);
+
+export type GroupItemImage = z.infer<typeof GroupItemImageSchema>;
+export type GroupItemGroup = z.infer<typeof GroupItemGroupSchema>;
 export type GroupItem = z.infer<typeof GroupItemSchema>;
 
 export interface ItemsSourcePaging {

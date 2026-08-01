@@ -82,8 +82,8 @@ export const resolveGroupItemsByGroupId = async (
 
   const imageItems = images.map((image): GroupItem => {
     return {
+      type: 'image',
       image,
-      group: null,
       title: image.title,
       created: image.created,
       frame: image.frame || null,
@@ -91,21 +91,18 @@ export const resolveGroupItemsByGroupId = async (
     };
   });
 
-  const groupCoverItems = groupImages.map((image): GroupItem | null => {
-    const group = filteredGroups.find((g) => g.coverImage === image.hash);
-    if (!group) {
-      return null;
-    }
+  const groupCoverItems = filteredGroups.map((group): GroupItem => {
+    const image = groupImages.find((gi) => gi.hash === group.coverImage) || null;
 
     return {
-      image,
+      type: 'group',
       group,
       title: group.title,
       created: group.created,
-      frame: image.frame || null,
-      palette: typeof image.palette === 'string' ? image.palette : null,
+      frame: image?.frame || null,
+      palette: typeof image?.palette === 'string' ? image.palette : null,
     };
-  }).filter((gi): gi is GroupItem => Boolean(gi));
+  });
 
   const groupItems: GroupItem[] = [...imageItems, ...groupCoverItems];
 
@@ -113,14 +110,14 @@ export const resolveGroupItemsByGroupId = async (
   // filtering for multiple tags cahn show empty folders because the folder
   // may have BOTH tags but items inside only have one or the other and would be filtered outh
   const deepFilteredGroupItems = (await Promise.all(groupItems.map(async (checkGroupItem): Promise<GroupItem | null> => {
-    const childGroup = checkGroupItem.group;
+    const isGroup = checkGroupItem.type === 'group';
 
-    if (!childGroup) {
+    if (!isGroup) {
       // not a group, so it's already a valid groupItem
       return checkGroupItem;
     }
 
-    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(db, hostApi, childGroup.id, includeGroups, sort, filters)).length);
+    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(db, hostApi, checkGroupItem.group.id, includeGroups, sort, filters)).length);
     return hasDisplayableItems ? checkGroupItem : null;
   })))
     .filter((gi): gi is GroupItem => Boolean(gi));

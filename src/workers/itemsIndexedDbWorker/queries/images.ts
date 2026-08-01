@@ -20,6 +20,7 @@ import {
   type ImageQueryFilters,
   type ImageQuerySort,
   type ItemsSourceTotalResponse,
+  type GroupItemImage,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
@@ -66,7 +67,9 @@ export const getHashesByGroupId = async (groupId: string, includeGroupImageHashe
   const hostApi = await getHostApi();
 
   const sortedGroupItems = await resolveGroupItemsByGroupId(db, hostApi, groupId, includeGroupImageHashes, sort, filters);
-  const sortedImageHashes = sortedGroupItems.map(({ image: { hash } }) => hash);
+  const sortedImageHashes = sortedGroupItems
+    .filter((item): item is GroupItemImage => item.type === 'image')
+    .map(({ image: { hash } }) => hash);
   const addPaging = getAddTotal<string>(sortedImageHashes.length, start, z.string());
   return addPaging(sortedImageHashes);
 };
