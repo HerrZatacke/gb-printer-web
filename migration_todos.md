@@ -3,7 +3,6 @@
 ## Finally:
 * Test all special filters (favourite, mono, rgb, hasComment, etc.)
 * Clean up unused Endpoints
-* // ToDo: rename key to useEditImageGroups
 
 ## Later
 * // ToDo: find way to calulate group position for groups without coverimage (using viewItems)?

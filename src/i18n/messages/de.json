@@ -606,6 +606,13 @@
     "updateTags": "Tags aktualisieren",
     "updateTitle": "Titel aktualisieren"
   },
+  "useEditImageGroups": {
+    "deleteGroupInfo": "Dies wird die Gruppe „{groupTitle}“ löschen und alle Inhalte (Bilder & Gruppen) auf die aktuelle Ebene verschieben.",
+    "deleteGroupMessage": "Bildgruppe löschen?",
+    "newGroupDefault": "Neue Gruppe",
+    "resetGroupsInfo": "Dies wird ALLE erstellten Gruppen entfernen und alle vorhandenen Bilder auf die oberste Ebene verschieben.",
+    "resetGroupsMessage": "Bildgruppen zurücksetzen?"
+  },
   "useEditPalette": {
     "paletteOrigin": "Mit der Webapp erstellt"
   },
@@ -622,13 +629,6 @@
   "useGetPortSettings": {
     "baudRateLabel": "Baudrate",
     "specifyBaudrate": "Baudrate für Port wählen"
-  },
-  "useImageGroups": {
-    "deleteGroupInfo": "Dies wird die Gruppe „{groupTitle}“ löschen und alle Inhalte (Bilder & Gruppen) auf die aktuelle Ebene verschieben.",
-    "deleteGroupMessage": "Bildgruppe löschen?",
-    "newGroupDefault": "Neue Gruppe",
-    "resetGroupsInfo": "Dies wird ALLE erstellten Gruppen entfernen und alle vorhandenen Bilder auf die oberste Ebene verschieben.",
-    "resetGroupsMessage": "Bildgruppen zurücksetzen?"
   },
   "usePalette": {
     "deletePaletteMessage": "Palette „{name}“ löschen?"

@@ -606,6 +606,13 @@
     "updateTags": "Uppdatera taggar",
     "updateTitle": "Uppdatera titel"
   },
+  "useEditImageGroups": {
+    "deleteGroupInfo": "Detta kommer att ta bort gruppen ”{groupTitle}” och flytta allt innehåll (bilder & grupper) till den aktuella nivån.",
+    "deleteGroupMessage": "Ta bort grupp",
+    "newGroupDefault": "Ny grupp",
+    "resetGroupsInfo": "Återställer alla bildgrupper till standard",
+    "resetGroupsMessage": "Återställ bildgrupper"
+  },
   "useEditPalette": {
     "paletteOrigin": "Palettkälla"
   },
@@ -622,13 +629,6 @@
   "useGetPortSettings": {
     "baudRateLabel": "Baudrate",
     "specifyBaudrate": "Ange baudrate"
-  },
-  "useImageGroups": {
-    "deleteGroupInfo": "Detta kommer att ta bort gruppen ”{groupTitle}” och flytta allt innehåll (bilder & grupper) till den aktuella nivån.",
-    "deleteGroupMessage": "Ta bort grupp",
-    "newGroupDefault": "Ny grupp",
-    "resetGroupsInfo": "Återställer alla bildgrupper till standard",
-    "resetGroupsMessage": "Återställ bildgrupper"
   },
   "usePalette": {
     "deletePaletteMessage": "Ta bort palett ”{name}”?"

@@ -20,8 +20,7 @@ interface UseEditImageGroups {
 }
 
 export const useEditImageGroups = (): UseEditImageGroups => {
-  // ToDo: rename key to useEditImageGroups
-  const t = useTranslations('useImageGroups');
+  const t = useTranslations('useEditImageGroups');
   const { view } = useGalleryTreeContext();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setEditImageGroup } = useEditStore();

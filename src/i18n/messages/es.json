@@ -606,6 +606,13 @@
     "updateTags": "Actualizar etiquetas",
     "updateTitle": "Actualizar título"
   },
+  "useEditImageGroups": {
+    "deleteGroupInfo": "Esto eliminará el grupo «{groupTitle}» y moverá todo el contenido (imágenes y grupos) al nivel actual.",
+    "deleteGroupMessage": "¿Eliminar grupo de imágenes?",
+    "newGroupDefault": "Nuevo grupo",
+    "resetGroupsInfo": "Esto eliminará TODOS los grupos creados y moverá todas las imágenes existentes al nivel superior.",
+    "resetGroupsMessage": "¿Restablecer grupos de imágenes?"
+  },
   "useEditPalette": {
     "paletteOrigin": "Creado con la aplicación web"
   },
@@ -622,13 +629,6 @@
   "useGetPortSettings": {
     "baudRateLabel": "Velocidad de baudios",
     "specifyBaudrate": "Seleccionar velocidad de baudios para puerto"
-  },
-  "useImageGroups": {
-    "deleteGroupInfo": "Esto eliminará el grupo «{groupTitle}» y moverá todo el contenido (imágenes y grupos) al nivel actual.",
-    "deleteGroupMessage": "¿Eliminar grupo de imágenes?",
-    "newGroupDefault": "Nuevo grupo",
-    "resetGroupsInfo": "Esto eliminará TODOS los grupos creados y moverá todas las imágenes existentes al nivel superior.",
-    "resetGroupsMessage": "¿Restablecer grupos de imágenes?"
   },
   "usePalette": {
     "deletePaletteMessage": "¿Eliminar paleta «{name}»?"
