@@ -1,5 +1,10 @@
 # Webworker Migration ToDos:
 
+## Filters
+* Add specialTags-property to StoredImage and SerializableImageGroup
+* Populate specialTags-properties on save/update / maintenanceTask
+* Use specialTags-property to simplify faceting
+
 ## Finally:
 * Test all special filters (favourite, mono, rgb, hasComment, etc.)
 * Clean up unused Endpoints
