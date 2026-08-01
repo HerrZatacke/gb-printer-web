@@ -1,9 +1,5 @@
 # Webworker Migration ToDos:
 
-## ToDos
-* // ToDo: Navigation Effects
-* // ToDo: Navigation Effects / There should be a centralized spot for all redirects
-
 ## Finally:
 * Clean up unused Endpoints
 * // ToDo: rename key to useEditImageGroups

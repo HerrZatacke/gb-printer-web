@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
-import { useImageGroups } from '@/hooks/useImageGroups';
+import { useGalleryTreeAncestors } from '@/tools/useGalleryTreeAncestors';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 export interface Segment {
@@ -13,44 +13,20 @@ export interface UsePathSegments {
   segments: Segment[];
 }
 
-const collectAncestors = (
-  root: TreeImageGroup,
-  remainingSegments: string[],
-): TreeImageGroup[] => {
-  if (remainingSegments.length === 0) {
-    return [root];
-  }
-
-  const [nextSegment, ...rest] = remainingSegments;
-  const nextChild = root.groups.find((child) => child.fullSlug.split('/').pop() === nextSegment);
-  if (!nextChild) {
-    return [root];
-  }
-
-  return [root, ...collectAncestors(nextChild, rest)];
-};
-
 export const usePathSegments = (): UsePathSegments => {
-  const { path: currentPath, getUrl } = useGalleryTreeContext();
-  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
-  const { imageGroupTree } = useImageGroups({ tree: true });
+  const { path: currentPath, getUrl, isWorking } = useGalleryTreeContext();
+  const { getImagePageIndexInGroup } = useNavigationTools();
 
   const [segments, setSegments] = useState<Segment[]>([]);
 
   const targetSegments = useMemo(() => (currentPath.split('/').filter(Boolean)), [currentPath]);
 
-  const ancestors = useMemo(() => {
-    if (!imageGroupTree) {
-      return [];
-    }
-
-    return collectAncestors(imageGroupTree, targetSegments);
-  }, [imageGroupTree, targetSegments]);
+  const ancestors = useGalleryTreeAncestors(targetSegments);
 
   useEffect(() => {
     let cancelled = false;
     const handle = window.setTimeout(async () => {
-      if (!ancestors.length) {
+      if (!ancestors.length || isWorking) {
         setSegments([]);
         return;
       }
@@ -74,7 +50,7 @@ export const usePathSegments = (): UsePathSegments => {
         }),
       );
 
-      if (!cancelled) {
+      if (!cancelled && !isWorking) {
         setSegments(breadCrumbSegments);
       }
     }, 1);
@@ -83,16 +59,7 @@ export const usePathSegments = (): UsePathSegments => {
       cancelled = true;
       window.clearTimeout(handle);
     };
-  }, [ancestors, getImagePageIndexInGroup, getUrl]);
-
-  // ToDo: Navigation Effects / There should be a centralized spot for all redirects
-  useEffect(() => {
-    const isFullMatch = ancestors.length === targetSegments.length + 1; // +1 for the root element
-    if (imageGroupTree && !isFullMatch) {
-      const deepestValidGroup = ancestors[ancestors.length - 1];
-      navigateToGroup(deepestValidGroup.id, 0);
-    }
-  }, [imageGroupTree, ancestors, navigateToGroup, targetSegments.length]);
+  }, [ancestors, getImagePageIndexInGroup, getUrl, isWorking]);
 
   return {
     segments,

@@ -11,19 +11,11 @@ import GalleryNumbers from '@/components/GalleryNumbers';
 import Pagination from '@/components/Pagination';
 import StorageWarning from '@/components/StorageWarning';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
+import { useGalleryNavigationGuards } from '@/tools/useGalleryNavigationGuards';
 
 function Gallery() {
+  useGalleryNavigationGuards();
   const { viewItems, paging, isWorking } = useGalleryTreeContext();
-
-  // ToDo: Navigation Effects
-  // if (
-  //   byGroupPaging &&
-  //   !isLoadingByGroupId &&
-  //   maxPageIndex > 0 &&
-  //   byGroupPaging.page !== currentPageIndex
-  // ) {
-  //   redirect(getUrl({ currentPageIndex: page }));
-  // }
 
   const totalImageCount = paging?.total || 0;
   const filteredCount = paging?.filtered || 0;

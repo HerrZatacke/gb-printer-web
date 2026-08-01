@@ -272,7 +272,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
       }
 
       await updateImageGroup(updateGroup, parentGroupId);
-      await navigateToGroup(updateGroup.id, 0);
+      const replaceHistory = editImageGroup.groupId !== NEW_GROUP;
+      await navigateToGroup(updateGroup.id, 0, replaceHistory);
     },
     move: async () => {
       cancelEditImageGroup();
@@ -285,7 +286,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
       // move images to other group or root if no parentgroup
       await moveImagesToGroup(selection, parentGroupId || undefined);
-      await navigateToImage(selection[0]);
+      await navigateToImage(selection[0], true);
     },
     cancelEditImageGroup,
   };

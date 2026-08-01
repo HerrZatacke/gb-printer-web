@@ -15,6 +15,7 @@ export interface GalleryTreeContextType {
   pathsOptions: DialogOption[];
   isWorking: boolean;
   paging: ItemsSourcePaging | null;
+  currentPageIndex: number;
   path: string;
   lastGalleryLink: string;
   getUrl: (params: GetUrlParams) => string;

@@ -69,7 +69,7 @@ function LocalDebug() {
       },
       '111c3c9d-c464-4f17-b2aa-3e53878e11c5',
     );
-    await navigateToGroup(id, 0);
+    await navigateToGroup(id, 0, false);
     console.log('updateImageGroup done');
   }, [updateImageGroup, navigateToGroup]);
 
@@ -102,49 +102,49 @@ function LocalDebug() {
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(rootGroupItems, null, 2)}</pre> */}
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
           <Button onClick={async () => {
-            await navigateToGroup('BadId', 0);
+            await navigateToGroup('BadId', 0, false);
           }}>
             Bad Id/pageIndex 0
           </Button>
           <Button onClick={async () => {
-            await navigateToGroup('ROOT', 0);
+            await navigateToGroup('ROOT', 0, false);
           }}>
             ROOT/pageIndex 0
           </Button>
           <Button onClick={async () => {
-            await navigateToGroup('ROOT', 2);
+            await navigateToGroup('ROOT', 2, false);
           }}>
             ROOT/pageIndex 2
           </Button>
           <Button onClick={async () => {
-            await navigateToGroup('54e8e70e-68ea-400a-ae9d-0cee8e41f965', 0);
+            await navigateToGroup('54e8e70e-68ea-400a-ae9d-0cee8e41f965', 0, false);
           }}>
             Drinks / pageIndex 0
           </Button>
           <Button onClick={async () => {
-            await navigateToGroup('54e8e70e-68ea-400a-ae9d-0cee8e41f965', 2);
+            await navigateToGroup('54e8e70e-68ea-400a-ae9d-0cee8e41f965', 2, false);
           }}>
             Drinks / pageIndex 2
           </Button>
         </ButtonGroup>
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
           <Button onClick={async () => {
-            await navigateToImage('BadHash');
+            await navigateToImage('BadHash', false);
           }}>
             To Image: Bad Hash
           </Button>
           <Button onClick={async () => {
-            await navigateToImage('75844f32d28fc7a47ce096b28aaf9114f7fa5582');
+            await navigateToImage('75844f32d28fc7a47ce096b28aaf9114f7fa5582', false);
           }}>
             To Image: *Drinks 2* (Drinks / pageIndex:0)
           </Button>
           <Button onClick={async () => {
-            await navigateToImage('4d8c1dd7609c864834c24341990156da8c91a56a');
+            await navigateToImage('4d8c1dd7609c864834c24341990156da8c91a56a', false);
           }}>
             To Image: *Drinks 23* (Drinks / pageIndex:1)
           </Button>
           <Button onClick={async () => {
-            await navigateToImage('c89f0f97516aa784c0ccec1d0c9c1cf782b2fba5');
+            await navigateToImage('c89f0f97516aa784c0ccec1d0c9c1cf782b2fba5', false);
           }}>
             To Image: *Isar* (munich/isar / pageIndex:1)
           </Button>

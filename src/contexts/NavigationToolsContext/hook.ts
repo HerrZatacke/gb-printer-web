@@ -14,8 +14,8 @@ import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTr
 export interface UseNavigationTools {
   getGroupPath: (groupId: string, pageIndex: number) => Promise<string>;
   getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => Promise<number>;
-  navigateToGroup: (groupId: string, pageIndex: number) => Promise<void>;
-  navigateToImage: (hash: string) => Promise<void>;
+  navigateToGroup: (groupId: string, pageIndex: number, replaceHistory: boolean) => Promise<void>;
+  navigateToImage: (hash: string, replaceHistory: boolean) => Promise<void>;
 }
 
 export const useContextHook = (): UseNavigationTools => {
@@ -76,18 +76,26 @@ export const useContextHook = (): UseNavigationTools => {
     return getUrl({ pageIndex, group: cleanFullSlug(viewSlug) });
   }, [getImagePageIndexInGroup, getUrl, queryClient]);
 
-  const navigateToGroup = useCallback(async (groupId: string, pageIndex: number) => {
+  const navigateToGroup = useCallback(async (groupId: string, pageIndex: number, replaceHistory: boolean) => {
     const groupPath = await getGroupPath(groupId, pageIndex);
     console.log({ groupId, groupPath });
     if (groupPath) {
-      router.push(groupPath);
+      if (replaceHistory) {
+        router.replace(groupPath);
+      } else {
+        router.push(groupPath);
+      }
     }
   }, [getGroupPath, router]);
 
-  const navigateToImage = useCallback(async (hash: string) => {
+  const navigateToImage = useCallback(async (hash: string, replaceHistory: boolean) => {
     const pagedImagePath = await getPagedImagePath(hash);
     if (pagedImagePath) {
-      router.push(pagedImagePath);
+      if (replaceHistory) {
+        router.replace(pagedImagePath);
+      } else {
+        router.push(pagedImagePath);
+      }
     }
   }, [getPagedImagePath, router]);
 

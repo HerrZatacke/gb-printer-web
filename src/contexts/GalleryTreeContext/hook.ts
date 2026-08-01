@@ -34,7 +34,16 @@ export const useContextHook = (): GalleryTreeContextType => {
   }, [groupsByFullSlug]);
 
 
-  const currentPageIndex = useMemo(() => (parseInt(searchParams.get('page') ?? '1', 10) - 1), [searchParams]);
+  const currentPageIndex = useMemo(() => {
+    const pageSearchParam = parseInt(searchParams.get('page') ?? '1', 10);
+
+    if (isNaN(pageSearchParam)) {
+      return 0;
+    }
+
+    return pageSearchParam - 1;
+  }, [searchParams]);
+
   const path = useMemo(() => (searchParams.get('group') || ''), [searchParams]);
 
   const getUrl = useCallback((params: GetUrlParams) => {
@@ -82,6 +91,7 @@ export const useContextHook = (): GalleryTreeContextType => {
     pathsOptions,
     isWorking: isLoadingTree || isLoadingByGroupId || isLoadingByFullSlug,
     paging: byGroupPaging,
+    currentPageIndex,
     path,
     lastGalleryLink,
     getUrl,
