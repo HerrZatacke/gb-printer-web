@@ -23,3 +23,8 @@ export const globalUsagesQueryOptions = () => {
     staleTime: STALE_TIME,
   };
 };
+
+export const runMaintenanceAction = async () => {
+  const source = await getItemsSource();
+  await source.runMaintenance();
+};

@@ -4,5 +4,5 @@ import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenanc
 export const runMaintenance = async () => {
   const db = await getDb();
   const hostApi = await getHostApi();
-  startMaintenanceTasks(db, hostApi);
+  await startMaintenanceTasks(db, hostApi);
 };

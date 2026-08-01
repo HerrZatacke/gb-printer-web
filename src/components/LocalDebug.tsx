@@ -12,6 +12,7 @@ import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { getItemsSource } from '@/stores/items/client';
 import { resetImageCaches } from '@/stores/items/queries/cacheResets';
+import { runMaintenanceAction } from '@/stores/items/queries/global';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
@@ -48,8 +49,7 @@ function LocalDebug() {
   }, []);
 
   const runMaintenance = useCallback(async () => {
-    const source = await getItemsSource();
-    await source.runMaintenance();
+    await runMaintenanceAction();
   }, []);
 
   const clearCaches = useCallback(async () => {
