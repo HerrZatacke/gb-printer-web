@@ -80,39 +80,6 @@ export const resolveGroupItemsByGroupId = async (
   const coverImageHashes = filteredGroups.map((g) => g.coverImage).filter((h): h is string => Boolean(h));
   const groupImages = await resolveAndFilterImages(db, undefined, new Set(coverImageHashes));
 
-  const hasFilters = filters && Boolean(filters.tags?.length || filters.palette?.length || filters.frame?.length);
-
-  if (!hasFilters) {
-    if (!rootGroup && coverImageHashes.length !== groupImages.length) {
-      const foundGroupImageHashes = new Set(groupImages.map(({ hash }) => hash));
-      const missingCovers = new Set(coverImageHashes
-        .filter((coverHash) => !foundGroupImageHashes.has(coverHash))
-        .filter((h): h is string => Boolean(h)),
-      );
-      const badGroups = filteredGroups.filter(({ coverImage }) => coverImage && missingCovers.has(coverImage));
-      console.warn(`missing coverimage(s) of childgroup(s) "${(imageGroup || rootGroup)?.title}" (${(imageGroup || rootGroup)?.id}):`, {
-        expectedLength: coverImageHashes.length,
-        foundLength: groupImages.length,
-        missingCovers,
-        badGroups,
-        foundGroupImageHashes,
-      });
-    }
-
-    if (imageHashes.length !== images.length) {
-      const foundImageHashes = new Set(images.map(({ hash }) => hash));
-      const missingImages = imageHashes.filter((coverHash) => !foundImageHashes.has(coverHash));
-      console.warn(`missing images from group "${(imageGroup || rootGroup)?.title}" (${(imageGroup || rootGroup)?.id}):`, {
-        expectedLength: imageHashes.length,
-        foundLength: images.length,
-        missingImages,
-        badGroup: imageGroup || rootGroup,
-        foundImageHashes,
-      });
-    }
-  }
-
-
   const imageItems = images.map((image): GroupItem => {
     return {
       image,
