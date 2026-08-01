@@ -19,6 +19,7 @@ function EditImageGroup() {
     slug,
     title,
     isFavourite,
+    canEdit,
     canConfirm,
     canMove,
     slugIsInUse,
@@ -33,6 +34,10 @@ function EditImageGroup() {
     move,
     cancelEditImageGroup,
   } = useEditImageGroup();
+
+  if (!canEdit) {
+    return null;
+  }
 
   return (
     <Lightbox
@@ -104,7 +109,7 @@ function EditImageGroup() {
                 )) }
               </TextField>
             ) }
-            <Debug text={JSON.stringify({ editId, slug, parentSlug, canConfirm, slugIsInUse }, null, 2)} />
+            <Debug text={JSON.stringify({ editId, absoluteSlug, slug, parentSlug, canConfirm, slugIsInUse }, null, 2)} />
           </>
         )}
       </Stack>

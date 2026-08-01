@@ -1,7 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
+import { imageGroupsListQueryOptions } from '@/stores/items/queries/imageGroups';
 import {
   type EditGroupInfo,
   useEditStore,
@@ -22,6 +24,7 @@ interface UseEditImageGroup {
   slug: string;
   title: string;
   isFavourite: boolean;
+  canEdit: boolean;
   canConfirm: boolean;
   canMove: boolean;
   slugIsInUse: boolean;
@@ -78,58 +81,80 @@ interface InitialEditValues {
 const useEditImageGroup = (): UseEditImageGroup => {
   const { imageSelection: selection } = useFiltersStore();
   const { editImageGroup, cancelEditImageGroup } = useEditStore();
-  const { imageGroups, updateImageGroup, moveImagesToGroup } = useImageGroups({ list: true });
+  const queryClient = useQueryClient();
+  const { updateImageGroup, moveImagesToGroup } = useImageGroups({});
   const { navigateToGroup, navigateToImage } = useNavigationTools();
   const { path: currentPath, view, groupsByFullSlug, groupsById, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
 
   const editMode = getEditMode(editImageGroup);
 
-  const initialValues = useMemo<InitialEditValues>(() => {
-    switch (editMode) {
-      case EditMode.CREATE_NEW: {
-        const title = editImageGroup?.newGroupTitle || '';
-        return {
-          imageGroup: null,
-          parentGroup: view ? groupsById.get(view.id) ?? null : null,
-          title,
-          isFavourite: false,
-          slug: toSlug(title),
-          slugTouched: false,
-        };
-      }
+  const [initialValues, setInitialValues] = useState<InitialEditValues | null>(null);
+  const [title, setTitle] = useState<string>('');
+  const [isFavourite, setIsFavourite] = useState<boolean>(false);
+  const [slug, setSlug] = useState<string>('');
+  const [slugTouched, setSlugTouched] = useState<boolean>(false);
+  const [parentSlug, setParentSlug] = useState<string>('');
 
-      case EditMode.EDIT_EXISTING: {
-        const imageGroup = imageGroups.find(({ id }) => id === editImageGroup?.groupId) || null;
-        return {
-          imageGroup,
-          parentGroup: editImageGroup?.groupId ? findParentGroup([...groupsById.values()], editImageGroup.groupId) : null,
-          title: imageGroup?.title || '',
-          isFavourite: imageGroup?.isFavourite || false,
-          slug: imageGroup?.slug || '',
-          slugTouched: true,
-        };
-      }
+  useEffect(() => {
+    const prepareInitialValues = async (): Promise<InitialEditValues> => {
+      switch (editMode) {
+        case EditMode.CREATE_NEW: {
+          const newTitle = editImageGroup?.newGroupTitle || '';
+          return {
+            imageGroup: null,
+            parentGroup: view ? groupsById.get(view.id) ?? null : null,
+            title: newTitle,
+            isFavourite: false,
+            slug: toSlug(newTitle),
+            slugTouched: false,
+          };
+        }
 
-      case EditMode.NOT_EDITING:
-      default: {
-        return {
-          imageGroup: null,
-          parentGroup: null,
-          title: '',
-          isFavourite: false,
-          slug: '',
-          slugTouched: false,
-        };
-      }
-    }
-  }, [editImageGroup, editMode, imageGroups, groupsById, view]);
+        case EditMode.EDIT_EXISTING: {
+          const { items: freshGroups } = await queryClient.fetchQuery({
+            ...imageGroupsListQueryOptions(),
+            staleTime: 0,
+          });
 
-  const [title, setTitle] = useState<string>(initialValues.title);
-  const [isFavourite, setIsFavourite] = useState<boolean>(initialValues.isFavourite);
-  const [slug, setSlug] = useState<string>(initialValues.slug);
-  const [slugTouched, setSlugTouched] = useState<boolean>(initialValues.slugTouched);
-  const [parentSlug, setParentSlug] = useState<string>(initialValues.parentGroup?.fullSlug || '');
+          const imageGroup = freshGroups.find(({ id }) => id === editImageGroup?.groupId) || null;
+
+          return {
+            imageGroup,
+            parentGroup: editImageGroup?.groupId ? findParentGroup([...groupsById.values()], editImageGroup.groupId) : null,
+            title: imageGroup?.title || '',
+            isFavourite: imageGroup?.isFavourite || false,
+            slug: imageGroup?.slug || '',
+            slugTouched: true,
+          };
+        }
+
+        case EditMode.NOT_EDITING:
+        default: {
+          return {
+            imageGroup: null,
+            parentGroup: null,
+            title: '',
+            isFavourite: false,
+            slug: '',
+            slugTouched: false,
+          };
+        }
+      }
+    };
+
+    prepareInitialValues()
+      .then((initial) => {
+        setInitialValues(initial);
+        setTitle(initial.title);
+        setIsFavourite(initial.isFavourite);
+        setSlug(initial.slug);
+        setSlugTouched(initial.slugTouched);
+        setParentSlug(initial.parentGroup?.fullSlug || '');
+      });
+
+    return () => setInitialValues(null);
+  }, [editImageGroup, editMode, queryClient, groupsById, view]);
 
   const absoluteSlug = useMemo(() => {
     if (!editImageGroup?.groupId) {
@@ -149,8 +174,8 @@ const useEditImageGroup = (): UseEditImageGroup => {
   }, [absoluteSlug, groupsByFullSlug]);
 
   // slug has changed
-  const slugWasChanged = useMemo(() => (
-    slug !== initialValues.imageGroup?.slug
+  const slugWasChanged = useMemo<boolean>(() => (
+    Boolean(initialValues && (slug !== initialValues.imageGroup?.slug))
   ), [initialValues, slug]);
 
   const canConfirm = useMemo<boolean>(() => {
@@ -174,6 +199,10 @@ const useEditImageGroup = (): UseEditImageGroup => {
   }, [editMode, slug, slugIsInUse, slugWasChanged]);
 
   const canMove = useMemo<boolean>(() => {
+    if (!initialValues) {
+      return false;
+    }
+
     const parentGroupId = groupsByFullSlug.get(parentSlug)?.id ?? '';
     const currentGroupId = initialValues.parentGroup?.id ?? '';
     return currentGroupId !== parentGroupId;
@@ -208,6 +237,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     title,
     isFavourite,
     canConfirm,
+    canEdit: Boolean(initialValues),
     canMove,
     slugIsInUse,
     slugWasChanged,
@@ -229,7 +259,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     confirm: async () => {
       cancelEditImageGroup();
 
-      if (!canConfirm || !editImageGroup) {
+      if (!canConfirm || !editImageGroup || !initialValues) {
         return;
       }
 
@@ -286,7 +316,9 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
       // move images to other group or root if no parentgroup
       await moveImagesToGroup(selection, parentGroupId || undefined);
-      await navigateToImage(selection[0], true);
+      setTimeout(async () => {
+        await navigateToImage(selection[0], true);
+      }, 1000);
     },
     cancelEditImageGroup,
   };

@@ -6,7 +6,7 @@ import { useGalleryTreeAncestors } from '@/tools/useGalleryTreeAncestors';
 
 export const useGalleryNavigationGuards = (): void => {
   const { path: currentPath, getUrl, paging, isWorking, currentPageIndex } = useGalleryTreeContext();
-  const { navigateToGroup } = useNavigationTools();
+  const { navigateToGroup, isNavigating } = useNavigationTools();
   const router = useRouter();
 
   const targetSegments = useMemo(() => (currentPath.split('/').filter(Boolean)), [currentPath]);
@@ -16,7 +16,7 @@ export const useGalleryNavigationGuards = (): void => {
 
   // Guard 1: path segment is not a valid group -> walk up to deepest valid ancestor
   useEffect(() => {
-    if (isWorking) {
+    if (isWorking || isNavigating) {
       return;
     }
 
@@ -24,11 +24,11 @@ export const useGalleryNavigationGuards = (): void => {
       const deepestValidGroup = ancestors[ancestors.length - 1];
       navigateToGroup(deepestValidGroup.id, 0, true);
     }
-  }, [ancestors, isWorking, navigateToGroup, needsGroupRedirect]);
+  }, [ancestors, isNavigating, isWorking, navigateToGroup, needsGroupRedirect]);
 
   // Guard 2: page index for the current group is out of range -> redirect to corrected page
   useEffect(() => {
-    if (isWorking || !paging || needsGroupRedirect) {
+    if (isWorking || isNavigating || !paging || needsGroupRedirect) {
       return;
     }
 
@@ -38,5 +38,5 @@ export const useGalleryNavigationGuards = (): void => {
       router.replace(getUrl({ pageIndex: validPageIndex }));
     }
 
-  }, [currentPageIndex, getUrl, isWorking, needsGroupRedirect, paging, router]);
+  }, [currentPageIndex, getUrl, isNavigating, isWorking, needsGroupRedirect, paging, router]);
 };
