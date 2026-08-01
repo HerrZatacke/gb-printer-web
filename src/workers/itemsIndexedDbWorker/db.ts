@@ -10,14 +10,14 @@ import {
 } from '@/workers/itemsIndexedDbWorker/types';
 
 declare global {
-  var hostApi: ItemsHostApi | null;
-  var dbPromise: Promise<IDBPDatabase<ItemsDB>> | null;
-  var hostApiPromise: Promise<ItemsHostApi> | null;
+  var _hostApi: ItemsHostApi | null;
+  var _dbPromise: Promise<IDBPDatabase<ItemsDB>> | null;
+  var _hostApiPromise: Promise<ItemsHostApi> | null;
 }
 
-global.hostApi = null;
-global.dbPromise = null;
-global.hostApiPromise = null;
+global._hostApi = null;
+global._dbPromise = null;
+global._hostApiPromise = null;
 
 const migrationFunctions: MigrationFn[] = [
   migrateV1, // migrate v0 -> v1
@@ -32,15 +32,16 @@ if (ITEMS_DB_VERSION !== migrationFunctions.length) {
 }
 
 export const configureDb = (configureHostApi: ItemsHostApi): void => {
-  global.hostApi = configureHostApi;
+  global._hostApi = configureHostApi;
 };
 
 
 const openAndPrepareDb = async () => {
   const start = performance.now();
   const afterUpgradeTasks: AfterUpgradeFn[] = [];
+  const hostApi = await getHostApi();
 
-  if (!global.hostApi) {
+  if (!hostApi) {
     throw new Error('getDb not configured');
   }
 
@@ -62,7 +63,7 @@ const openAndPrepareDb = async () => {
 
           didUpgrade = true;
         } catch (error) {
-          const hostApi = await getHostApi();
+
           const err = new Error(`Error while upgrading indexedDB version: "${(error as Error)?.message}"`);
           hostApi.onMigrationError(err.message);
           database.close();
@@ -76,13 +77,12 @@ const openAndPrepareDb = async () => {
     try {
       const startUpgradeTasks = performance.now();
       for (const afterUpgradeTask of afterUpgradeTasks) {
-        await afterUpgradeTask(database, global.hostApi);
+        await afterUpgradeTask(database, hostApi);
       }
       console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
 
-      await startMaintenanceTasks(database, global.hostApi);
+      await startMaintenanceTasks(database, hostApi);
     } catch (error) {
-      const hostApi = await getHostApi();
       const err = new Error(`Error while running upgrade- or maintenance-tasks: "${(error as Error)?.message}"`);
       hostApi.onMigrationError(err.message);
       database.close();
@@ -95,21 +95,21 @@ const openAndPrepareDb = async () => {
 };
 
 export function getDb(): Promise<IDBPDatabase<ItemsDB>> {
-  if (!global.dbPromise) {
-    global.dbPromise = openAndPrepareDb().catch((err) => {
-      global.dbPromise = null;
+  if (!global._dbPromise) {
+    global._dbPromise = openAndPrepareDb().catch((err) => {
+      global._dbPromise = null;
       throw err;
     });
   }
-  return global.dbPromise;
+  return global._dbPromise;
 }
 
 export function getHostApi(): Promise<ItemsHostApi> {
-  if (!hostApiPromise) {
-    if (!global.hostApi) {
+  if (!global._hostApiPromise) {
+    if (!global._hostApi) {
       throw new Error('No host api configured');
     }
-    hostApiPromise = Promise.resolve(global.hostApi);
+    global._hostApiPromise = Promise.resolve(global._hostApi);
   }
-  return hostApiPromise;
+  return global._hostApiPromise;
 }
