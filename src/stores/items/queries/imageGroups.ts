@@ -52,8 +52,8 @@ const computeImageGroupUpdateDiff = (
     }
   }
 
-  // detach this group from any parent other than the intended one
-  if (parentGroupId?.length) {
+// detach this group from any parent other than the intended one
+  if (parentGroupId !== undefined) {
     for (const other of allGroups) {
       if (other.id === parentGroupId || !other.groups.includes(group.id)) {
         continue;
@@ -62,8 +62,8 @@ const computeImageGroupUpdateDiff = (
       setGroup({ ...current, groups: current.groups.filter((id) => id !== group.id) });
     }
 
-    // attach this group under its intended parent -> attaching to ROOT is implied for orphaned images
-    if (parentGroupId !== ROOT_ID) {
+    // attach this group under its intended parent -> ROOT_ID or '' both mean "move to root"
+    if (parentGroupId !== ROOT_ID && parentGroupId !== '') {
       const parentGroup = groupsById.get(parentGroupId);
       if (!parentGroup) {
         throw new Error(`Parent group "${parentGroupId}" not found`);
