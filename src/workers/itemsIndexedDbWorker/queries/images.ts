@@ -2,7 +2,7 @@ import z from 'zod';
 import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
 import { type Image, ImageSchema } from '@/types/Image';
-import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
+import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
 import { facetFromImage, getFacetMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
@@ -31,7 +31,6 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
   const db = await getDb();
   const start = performance.now();
 
-  const hostApi = await getHostApi();
   const { store } = db.transaction('images');
   const total = await store.count();
 
@@ -44,10 +43,7 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
 
   const addPaging = getAddPaging<Image>(total, page, pageSize, start, ImageSchema);
 
-  const facetMatcher = await getFacetMatcher(
-    hostApi,
-    filters,
-  );
+  const facetMatcher = await getFacetMatcher(filters);
 
   const imageFacetMatchesFilters = (item: StoredImage): boolean => (
     facetMatcher(facetFromImage(item))
@@ -66,9 +62,7 @@ export const getHashesByGroupId = async (groupId: string, includeGroupImageHashe
   const db = await getDb();
   const start = performance.now();
 
-  const hostApi = await getHostApi();
-
-  const sortedGroupItems = await resolveGroupItemsByGroupId(db, hostApi, groupId, includeGroupImageHashes, sort, filters);
+  const sortedGroupItems = await resolveGroupItemsByGroupId(db, groupId, includeGroupImageHashes, sort, filters);
   const sortedImageHashes = sortedGroupItems
     .filter((item): item is GroupItemImage => item.type === 'image')
     .map(({ image: { hash } }) => hash);
@@ -80,8 +74,6 @@ export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boo
   const db = await getDb();
   const start = performance.now();
 
-  const hostApi = await getHostApi();
-
   const {
     page,
     pageSize,
@@ -92,7 +84,7 @@ export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boo
   const { store: imagesStore } = db.transaction('images');
   const total = await imagesStore.count();
 
-  const sortedGroupItems = await resolveGroupItemsByGroupId(db, hostApi, groupId, includeGroups, sort, filters);
+  const sortedGroupItems = await resolveGroupItemsByGroupId(db, groupId, includeGroups, sort, filters);
   const addPaging = getAddPaging<GroupItem>(total, page, pageSize, start, GroupItemSchema);
   return addPaging(sortedGroupItems);
 };

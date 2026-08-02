@@ -75,7 +75,6 @@ Note: `getImagesByAnyHashes` returns `ItemsSourceResponse<ItemsReferenceList<Ima
 ```ts
 export interface ItemsHostApi {
   getLegacyStorage(): Promise<Record<string, unknown[]>>;
-  getRecentImports(): Promise<Set<string>>; // reads useFiltersStore.getState() — a deliberate permanent bridge point, not a phase-out target
   onDataChanged(): void; // no payload — always invalidates the top-level ['items'] key - needs implementation later
 }
 ```
@@ -176,11 +175,11 @@ export type FilterStep =
 
 ```ts
 // consts/SpecialTags.ts — ask for the full file; known members from usage:
-// FILTER_UNTAGGED, FILTER_NEW, FILTER_MONOCHROME, FILTER_RGB, FILTER_RECENT,
-// FILTER_FAVOURITE, FILTER_COMMENTS, FILTER_USERNAME
+// FILTER_UNTAGGED, FILTER_NEW, FILTER_MONOCHROME, FILTER_RGB, FILTER_FAVOURITE, FILTER_COMMENTS, FILTER_USERNAME
 ```
 
-`FILTER_FAVOURITE` confirms the "magic tag" approach discussed in chat: it becomes `{ kind: 'indexAny', indexName: 'tags', values: ['FILTER_FAVOURITE'] }` — favourite-ness is a literal reserved tag value, not a separate boolean field. `FILTER_RECENT` resolves via `hostApi.getRecentImports()` into an `'ids'` step. `FILTER_COMMENTS`/`FILTER_USERNAME` are `predicate` steps checking `image.meta?.comment` / `image.meta?.userName`.
+`FILTER_FAVOURITE` confirms the "magic tag" approach discussed in chat: it becomes `{ kind: 'indexAny', indexName: 'tags', values: ['FILTER_FAVOURITE'] }` — favourite-ness is a literal reserved tag value, not a separate boolean field.  
+`FILTER_COMMENTS`/`FILTER_USERNAME` are `predicate` steps checking `image.meta?.comment` / `image.meta?.userName`.
 
 Pipeline (`resolveAndFilterImages.ts`): build steps → resolve every non-predicate step to a `Set<string>` via `resolveKeyableStep` → `intersectAll` → load full records for the survivors (`getCandidates`, `store.get` per id, or `store.getAll()` if only predicates/no filters at all) → apply predicate steps last. Exactly the filter → sort → paginate discipline from chat, confirmed in the shipped code.
 

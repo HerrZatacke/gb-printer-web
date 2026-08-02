@@ -14,14 +14,12 @@ import {
   type ImageQueryFilters,
   type ImageQuerySort,
   type ItemsDB,
-  type ItemsHostApi,
   type StoredImage,
   type StoredSerializableImageGroup,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 export const resolveGroupItemsByGroupId = async (
   db: IDBPDatabase<ItemsDB>,
-  hostApi: ItemsHostApi,
   groupId: string,
   includeGroups: boolean,
   sort: ImageQuerySort,
@@ -36,10 +34,7 @@ export const resolveGroupItemsByGroupId = async (
     rootGroup = (await getImageGroupsFullTree()).item;
   }
 
-  const facetMatcher = await getFacetMatcher(
-    hostApi,
-    filters,
-  );
+  const facetMatcher = await getFacetMatcher(filters);
 
   const { store: groupsStore } = db.transaction('imagegroups');
   const imageGroup: StoredSerializableImageGroup | undefined = await groupsStore.get(groupId);
@@ -120,7 +115,7 @@ export const resolveGroupItemsByGroupId = async (
       return checkGroupItem;
     }
 
-    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(db, hostApi, checkGroupItem.group.id, includeGroups, sort, filters)).length);
+    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(db, checkGroupItem.group.id, includeGroups, sort, filters)).length);
     return hasDisplayableItems ? checkGroupItem : null;
   })))
     .filter((gi): gi is GroupItem => Boolean(gi));

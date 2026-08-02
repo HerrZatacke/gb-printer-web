@@ -1,7 +1,7 @@
 'use client';
 import * as Comlink from 'comlink';
 import { getQueryClient } from '@/contexts/QueryClient';
-import { useFiltersStore, useInteractionsStore } from '@/stores/stores';
+import { useInteractionsStore } from '@/stores/stores';
 import { type ItemsHostApi, type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
 declare global {
@@ -26,10 +26,6 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
           } catch {
             return {};
           }
-        },
-        async getRecentImports(): Promise<Set<string>> {
-          const recentHashes = useFiltersStore.getState().recentImports.map(({ hash }) => hash);
-          return new Set(recentHashes);
         },
         onDataChanged() {
           getQueryClient().invalidateQueries({ queryKey: ['items'] });

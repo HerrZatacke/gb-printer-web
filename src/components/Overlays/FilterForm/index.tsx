@@ -212,11 +212,6 @@ function FilterForm() {
                 toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_RGB, active)}
               />
               <FilterFormTag
-                title={t('recentImports')}
-                tagActive={activeTags.includes(SpecialTags.FILTER_RECENT)}
-                toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_RECENT, active)}
-              />
-              <FilterFormTag
                 title={t('imageHasComments')}
                 tagActive={activeTags.includes(SpecialTags.FILTER_COMMENTS)}
                 toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_COMMENTS, active)}
