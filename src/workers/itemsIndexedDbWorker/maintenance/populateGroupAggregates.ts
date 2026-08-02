@@ -7,12 +7,32 @@ const MAX_TREE_DEPTH = 20;
 interface GroupAggregates {
   tags: string[];
   specialTags: SpecialTags[];
+  palettes: string[];
+  frames: string[];
 }
 
-const newSet = (
-  tags: string[] = [],
-  specialTags: SpecialTags[] = [],
-): GroupAggregates => ({ tags, specialTags });
+interface NewSetParams {
+  tags: string[];
+  specialTags: SpecialTags[];
+  frames: string[];
+  palettes: string[];
+}
+
+const newSet = (params?: NewSetParams): GroupAggregates => {
+  const {
+    tags = [],
+    specialTags = [],
+    frames = [],
+    palettes = [],
+  } = params || {};
+
+  return {
+    tags,
+    specialTags,
+    frames,
+    palettes,
+  };
+};
 
 const resolveGroupTags = (
   groupId: string,
@@ -38,6 +58,8 @@ const resolveGroupTags = (
 
   const tagSet = new Set<string>();
   const specialTagSet = new Set<SpecialTags>();
+  const frameSet = new Set<string>();
+  const paletteSet = new Set<string>();
 
   for (const hash of group.images) {
     const imageTags = tagsByImageHash.get(hash) ?? newSet();
@@ -47,25 +69,35 @@ const resolveGroupTags = (
     for (const specialTag of imageTags.specialTags) {
       specialTagSet.add(specialTag);
     }
+    for (const frame of imageTags.frames) {
+      frameSet.add(frame);
+    }
+    for (const palette of imageTags.palettes) {
+      paletteSet.add(palette);
+    }
   }
 
   for (const childId of group.groups) {
-    const childTags = resolveGroupTags(childId, depth + 1, groupsById, tagsByImageHash, resolvedTagsById);
-    for (const tag of childTags.tags) {
+    const childGroupAggregates = resolveGroupTags(childId, depth + 1, groupsById, tagsByImageHash, resolvedTagsById);
+    for (const tag of childGroupAggregates.tags) {
       tagSet.add(tag);
     }
-    for (const specialTag of childTags.specialTags) {
+    for (const specialTag of childGroupAggregates.specialTags) {
       specialTagSet.add(specialTag);
     }
-
+    for (const frame of childGroupAggregates.frames) {
+      frameSet.add(frame);
+    }
+    for (const palette of childGroupAggregates.palettes) {
+      paletteSet.add(palette);
+    }
   }
 
-  const resolvedTags = [...tagSet].sort();
-  const resolvedSpecialTags = [...specialTagSet].sort();
-
   const resolved: GroupAggregates = {
-    tags: resolvedTags,
-    specialTags: resolvedSpecialTags,
+    tags: [...tagSet].sort(),
+    specialTags: [...specialTagSet].sort(),
+    frames: [...frameSet].sort(),
+    palettes: [...paletteSet].sort(),
   };
 
   resolvedTagsById.set(groupId, resolved);
@@ -81,7 +113,12 @@ export const populateGroupAggregates = async (
   const groupsById = new Map(groups.map((group) => [group.id, group]));
   const tagsByImageHash = new Map<string, GroupAggregates>(images.map((image: StoredImage): [string, GroupAggregates] => ([
     image.hash,
-    newSet(image.tags, image.specialTags),
+    newSet({
+      tags: image.tags,
+      specialTags: image.specialTags,
+      frames: image.frame ? [image.frame] : [],
+      palettes: typeof image.palette === 'string' ? [image.palette] : [],
+    }),
   ])));
   const resolvedTagsById = new Map<string, GroupAggregates>();
 

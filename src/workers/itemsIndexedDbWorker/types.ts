@@ -4,10 +4,7 @@ import { SpecialTags } from '@/consts/SpecialTags';
 import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
-import {
-  type Image,
-  type ImageMetadata,
-} from '@/types/Image';
+import { type Image } from '@/types/Image';
 import {
   type SerializableImageGroup,
   type TreeImageGroup,
@@ -222,12 +219,8 @@ export interface ItemsSource {
 }
 
 export interface FilterableFacet {
-  hash: string | null;
   tags: string[];
   specialTags: SpecialTags[];
-  created: string;
-  palette: string | null;
-  frame: string | null;
-  type: 'mono' | 'rgbn' | null;
-  meta: ImageMetadata | null;
+  palettes: string[];
+  frames: string[];
 }

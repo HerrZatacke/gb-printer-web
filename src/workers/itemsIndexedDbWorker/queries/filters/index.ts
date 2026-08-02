@@ -15,8 +15,8 @@ export const getFacetMatcher = async (filters?: ImageQueryFilters) => {
 
     const {
       tags = [],
-      palette,
-      frame,
+      palette = [],
+      frame = [],
     } = filters;
 
     const filterTags = tags.filter((t) => !specialTags.includes(t as SpecialTags));
@@ -28,10 +28,10 @@ export const getFacetMatcher = async (filters?: ImageQueryFilters) => {
     if (filterSpecialTags.length && !filterSpecialTags.some((t) => facet.specialTags.includes(t))) {
       return false;
     }
-    if (palette?.length && !(facet.palette && palette.includes(facet.palette))) {
+    if (palette?.length && !palette.some((p) => facet.palettes.includes(p))) {
       return false;
     }
-    if (frame?.length && !(facet.frame && frame.includes(facet.frame))) {
+    if (frame?.length && !frame.some((f) => facet.frames.includes(f))) {
       return false;
     }
 
@@ -40,23 +40,15 @@ export const getFacetMatcher = async (filters?: ImageQueryFilters) => {
 };
 
 export const facetFromImage = (image: StoredImage): FilterableFacet => ({
-  hash: image.hash,
   tags: image.tags,
   specialTags: image.specialTags,
-  palette: typeof image.palette === 'string' ? image.palette : null,
-  frame: image.frame ?? null,
-  type: image.type,
-  created: image.created,
-  meta: image.meta || null,
+  palettes: typeof image.palette === 'string' ? [image.palette] : [],
+  frames: image.frame ? [image.frame] : [],
 });
 
 export const facetFromSerializableImageGroup = (group: StoredSerializableImageGroup): FilterableFacet => ({
-  hash: group.coverImage || null,
   tags: group.tags,
   specialTags: group.specialTags,
-  created: group.created,
-  palette: null,
-  frame: null,
-  type: null,
-  meta: null,
+  palettes: group.palettes,
+  frames: group.frames,
 });
