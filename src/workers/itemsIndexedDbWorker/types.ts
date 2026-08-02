@@ -1,6 +1,8 @@
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
+import { Date } from '@/tools/safeDate';
+import { toCreationDate } from '@/tools/toCreationDate';
 import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
@@ -19,15 +21,58 @@ import {
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+const calculateSpecialTags = (image: Image): SpecialTags[] => {
+  const specialTags: SpecialTags[] = [];
+  const oneDayAgo = toCreationDate(Date.now() - DAY_MS);
+
+  if (!image.tags.length) {
+    specialTags.push(SpecialTags.FILTER_UNTAGGED);
+  }
+
+  if (image.created > oneDayAgo) {
+    specialTags.push(SpecialTags.FILTER_NEW);
+  }
+
+  if (image.type === 'mono') {
+    specialTags.push(SpecialTags.FILTER_MONOCHROME);
+  }
+
+  if (image.type === 'rgbn') {
+    specialTags.push(SpecialTags.FILTER_RGB);
+  }
+
+  if (image.tags.includes(SpecialTags.FILTER_FAVOURITE)) {
+    specialTags.push(SpecialTags.FILTER_FAVOURITE);
+  }
+
+  if (image.meta?.comment) {
+    specialTags.push(SpecialTags.FILTER_COMMENTS);
+  }
+
+  if (image.meta?.userName) {
+    specialTags.push(SpecialTags.FILTER_USERNAME);
+  }
+
+  return specialTags;
+};
+
 export const StoredImageSchema = z.discriminatedUnion('type', [
   MonochromeImageSchema,
   RGBNImageSchema,
-]).transform((image) => ({
-  ...image,
-  referencedHashes: image.type === 'rgbn'
+]).transform((image) => {
+
+  const referencedHashes: string[] = image.type === 'rgbn'
     ? Object.values(image.hashes ?? {}).filter((h): h is string => Boolean(h))
-    : [],
-}));
+    : [];
+
+  return ({
+    ...image,
+    referencedHashes,
+    specialTags: calculateSpecialTags(image),
+  });
+});
 
 export type StoredImage = z.infer<typeof StoredImageSchema>;
 
