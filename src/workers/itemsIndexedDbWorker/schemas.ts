@@ -65,6 +65,8 @@ export const StoredImageSchema = z.discriminatedUnion('type', [
 
 export const StoredSerializableImageGroupSchema = SerializableImageGroupSchema.extend({
   specialTags: z.array(z.enum(SpecialTags)).prefault([]),
+  palettes: z.array(z.string()).prefault([]),
+  frames: z.array(z.string()).prefault([]),
 });
 
 const GroupItemBaseSchema = z.object({
