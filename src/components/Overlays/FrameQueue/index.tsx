@@ -1,72 +1,80 @@
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditFrameStartLine from '@/components/EditFrameStartLine';
 import Lightbox from '@/components/Lightbox';
-import EditFrameForm from '@/components/Overlays/EditFrame/EditFrameForm';
+import EditFrameForm from '@/components/Overlays/EditFrameForm';
 import useEditFrame from '@/hooks/useEditFrame';
+import { frameIdFromGroupAndIndex } from '@/hooks/useEditFrameForm';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useStores } from '@/hooks/useStores';
-import {
-  useDialogsStore,
-  useImportsStore,
-  useItemsStore,
-} from '@/stores/stores';
-import { saveFrameData } from '@/tools/applyFrame/frameData';
+import { useImportsStore } from '@/stores/stores';
+import { compressAndHashFrame, saveFrameData } from '@/tools/applyFrame/frameData';
+import { Frame } from '@/types/Frame';
 
 function FrameQueue() {
   const t = useTranslations('FrameQueue');
-  const { dismissDialog } = useDialogsStore();
-  const { frameQueue, frameQueueCancelOne, importQueueCancelOne } = useImportsStore();
+  const {
+    frameQueue,
+    frameQueueCancelOne,
+    importQueueCancelOne,
+  } = useImportsStore();
   const { updateLastSyncLocalNow } = useStores();
-  const { addFrames, updateFrameGroups } = useItemsStore();
+  const { updateFrameGroups } = useFrameGroups();
 
   const frame = frameQueue[0];
-  const [newGroupName, setNewGroupName] = useState('');
+  const [newFrameGroupName, setNewFrameGroupName] = useState('');
   const [startLine, setStartLine] = useState<number>(Math.floor((frame.tiles.length - 280) / 40));
 
-  const {
-    fullId,
-    formValid,
-    frameGroups,
-    frameGroup,
-    frameIndex,
-    setFrameIndex,
-    frameName,
-    setFrameGroup,
-    setFrameName,
-    idValid,
-    groupIdValid,
-    frameIndexValid,
-  } = useEditFrame({
+  const [initialFrame] = useState<Frame | null>({
     id: '',
     hash: '',
     name: frame.fileName,
     lines: frame.tiles.length,
   });
 
+  const {
+    editFrameData,
+    setHash,
+    onEditDataChange,
+    onFormValidChange,
+    formValid,
+    saveFrame,
+  } = useEditFrame(initialFrame);
+
+  useEffect(() => {
+    if (!frame) {
+      return;
+    }
+
+    compressAndHashFrame(frame.tiles, startLine)
+      .then(({ dataHash }) => {
+        setHash(dataHash);
+      });
+  }, [frame, setHash, startLine]);
+
+  if (!editFrameData) {
+    return null;
+  }
+
+  const newId = frameIdFromGroupAndIndex(editFrameData.frameGroup, editFrameData.frameIndex);
+
   return (
     <Lightbox
-      header={t('dialogHeader', { id: fullId })}
+      header={t('dialogHeader', { id: newId })}
       canConfirm={formValid}
       confirm={async () => {
-        const hash = await saveFrameData(frame.tiles, startLine);
-        dismissDialog(0);
+        await saveFrameData(frame.tiles, startLine);
+        await saveFrame();
 
         if (frame.tempId) {
-          importQueueCancelOne(frame.tempId);
           frameQueueCancelOne(frame.tempId);
+          importQueueCancelOne(frame.tempId);
         }
 
-        addFrames([{
-          id: fullId,
-          name: frameName,
-          hash,
-          lines: frame.tiles.length,
-        }]);
-
-        if (newGroupName?.trim()) {
-          updateFrameGroups([{
-            id: frameGroup,
-            name: newGroupName,
+        if (newFrameGroupName?.trim()) {
+          await updateFrameGroups([{
+            id: editFrameData.frameGroup,
+            name: newFrameGroupName,
           }]);
         }
 
@@ -75,19 +83,11 @@ function FrameQueue() {
       deny={() => frameQueueCancelOne(frame.tempId)}
     >
       <EditFrameForm
-        frameIndex={frameIndex}
-        setFrameGroup={setFrameGroup}
-        frameName={frameName}
-        frameGroup={frameGroup}
-        setFrameName={setFrameName}
-        groupIdValid={groupIdValid}
-        idValid={idValid}
-        frameIndexValid={frameIndexValid}
-        setFrameIndex={setFrameIndex}
-        groups={frameGroups}
-        fullId={fullId}
-        frameGroupName={newGroupName}
-        setFrameGroupName={setNewGroupName}
+        editFrameData={editFrameData}
+        onEditDataChange={onEditDataChange}
+        onFormValidChange={onFormValidChange}
+        newFrameGroupName={newFrameGroupName}
+        setNewFrameGroupName={setNewFrameGroupName}
         extraFields={(
           <EditFrameStartLine
             tiles={frame.tiles}

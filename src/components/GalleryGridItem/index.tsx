@@ -18,7 +18,7 @@ interface WrapperProps extends PropsWithChildren {
   sx?: object;
   component?: ElementType;
   href?: string;
-  onClick?: (ev: MouseEvent) => void;
+  onClick?: (ev: MouseEvent) => Promise<void>;
   disableRipple?: boolean;
 }
 

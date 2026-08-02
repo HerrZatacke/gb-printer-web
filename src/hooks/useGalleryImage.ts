@@ -1,15 +1,16 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
+import { useImageByHash } from '@/hooks/useImageByHash';
+import { useImageQueryParams } from '@/hooks/useImageQueryParams';
+import { hashesByGroupIdQueryOptions } from '@/stores/items/queries/images';
 import {
   type ImageSelectionMode,
   useFiltersStore,
-  useItemsStore,
-  useSettingsStore,
 } from '@/stores/stores';
-import { getFilteredImages } from '@/tools/getFilteredImages';
-import { getImagePalettes } from '@/tools/getImagePalettes';
+import { getImagePalettes, ImagePalettes } from '@/tools/getImagePalettes';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNHashes, type RGBNImage } from '@/types/Image';
@@ -38,49 +39,63 @@ interface GalleryImageData {
 
 interface UseGalleryImage {
   galleryImageData: GalleryImageData | null;
-  updateImageSelection: (mode: ImageSelectionMode, shift: boolean, page: number) => void;
+  updateImageSelection: (mode: ImageSelectionMode, shift: boolean) => void;
 }
 
 export const useGalleryImage = (hash: string): UseGalleryImage => {
-  const { pageSize } = useSettingsStore();
+  const queryClient = useQueryClient();
 
   const {
-    filtersTags,
-    filtersFrames,
-    filtersPalettes,
-    sortBy,
-    recentImports,
     imageSelection,
     updateImageSelection: storeUpdateImageSelection,
     lastSelectedImage,
     setImageSelection,
   } = useFiltersStore();
 
-  const { palettes, images: stateImages } = useItemsStore();
+  const { image: stateImage } = useImageByHash(hash);
+  const imageQueryParams = useImageQueryParams();
 
   const selectionIndex = imageSelection.indexOf(hash);
 
+  const [imagePalettes, setImagePalettes] = useState<ImagePalettes | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+
+    if (stateImage) {
+      getImagePalettes(stateImage)
+        .then((data) => {
+          if (!cancelled) {
+            setImagePalettes(data);
+          }
+        });
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [stateImage]);
+
   const galleryImageData = useMemo((): GalleryImageData | null => {
-    const image = stateImages.find((img) => img.hash === hash);
+
     let palette: RGBNPalette | string[];
     let framePalette: string[] = [];
 
-    if (!image) {
+    if (!stateImage || !imagePalettes) {
       return null;
     }
 
     const {
       palette: selectedPalette,
       framePalette: selectedFramePalette,
-    } = getImagePalettes(palettes, image);
+    } = imagePalettes;
 
-    const { invertPalette, invertFramePalette } = getPaletteSettings(image as MonochromeImage);
+    const { invertPalette, invertFramePalette } = getPaletteSettings(stateImage as MonochromeImage);
 
     if (!selectedPalette) {
       throw new Error('Palette missing?');
     }
 
-    if (isRGBNImage(image)) {
+    if (isRGBNImage(stateImage)) {
       palette = selectedPalette as RGBNPalette;
     } else {
       palette = ((selectedPalette || missingGreyPalette) as Palette).palette;
@@ -89,53 +104,49 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
 
 
     return ({
-      title: image.title,
-      created: image.created,
-      frame: image.frame,
-      hashes: (image as RGBNImage).hashes || undefined,
-      tags: image.tags,
+      title: stateImage.title,
+      created: stateImage.created,
+      frame: stateImage.frame,
+      hashes: (stateImage as RGBNImage).hashes || undefined,
+      tags: stateImage.tags,
       palette,
       framePalette,
-      lockFrame: image.lockFrame,
+      lockFrame: stateImage.lockFrame,
       invertPalette,
       invertFramePalette,
-      rotation: image.rotation,
+      rotation: stateImage.rotation,
       selectionIndex,
     });
-  }, [hash, selectionIndex, palettes, stateImages]);
+  }, [selectionIndex, stateImage, imagePalettes]);
 
-  const { view, covers } = useGalleryTreeContext();
+  const { view } = useGalleryTreeContext();
 
-  const updateImageSelection = useCallback((mode: ImageSelectionMode, shift: boolean, page: number) => {
+  const updateImageSelection = useCallback(async (mode: ImageSelectionMode, shift: boolean): Promise<void> => {
+    if (!view) {
+      return;
+    }
+
     if (shift) {
-      const images = getFilteredImages(
-        view,
-        {
-          filtersTags,
-          filtersFrames,
-          filtersPalettes,
-          sortBy,
-          recentImports,
-        },
-      )
-        .filter((image) => (
-          !covers.includes(image.hash)
-        ));
+      const { items: imageHashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(view.id, false, imageQueryParams.sort, imageQueryParams.filters));
 
-      const selectedIndex = images.findIndex((image) => image.hash === hash);
-      let prevSelectedIndex = images.findIndex((image) => image.hash === lastSelectedImage);
+      console.log({ imageHashes, viewImageHashes: view.images });
+
+      const selectedIndex = imageHashes.findIndex((findHash) => findHash === hash);
+
+      let prevSelectedIndex = imageHashes.findIndex((findHash) => findHash === lastSelectedImage);
+
       if (prevSelectedIndex === -1) {
-        prevSelectedIndex = page * pageSize;
+        prevSelectedIndex = 0;
       }
 
       const from = Math.min(prevSelectedIndex, selectedIndex);
       const to = Math.max(prevSelectedIndex, selectedIndex);
 
-      setImageSelection(images.slice(from, to + 1).map((image) => image.hash));
+      setImageSelection(imageHashes.slice(from, to + 1));
     } else {
       storeUpdateImageSelection(mode, [hash]);
     }
-  }, [covers, filtersFrames, filtersPalettes, filtersTags, hash, lastSelectedImage, pageSize, recentImports, setImageSelection, sortBy, storeUpdateImageSelection, view]);
+  }, [hash, imageQueryParams.filters, imageQueryParams.sort, lastSelectedImage, queryClient, setImageSelection, storeUpdateImageSelection, view]);
 
   return {
     galleryImageData,

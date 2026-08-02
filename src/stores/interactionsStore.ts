@@ -21,6 +21,7 @@ interface Values {
   downloadHashes: string[];
   dragover: boolean;
   errors: ErrorMessage[];
+  fatalError: ErrorMessage | null;
   isFullscreen: boolean;
   lightboxImage: number | null;
   printerBusy: boolean;
@@ -40,6 +41,7 @@ interface Actions {
   setDownloadHashes: (downloadHashes: string[]) => void;
   setDragover: (dragover: boolean) => void;
   setError: (error: Error) => void;
+  setFatalError: (fatalError: Error) => void;
   setIsFullscreen: (isFullscreen: boolean) => void;
   setLightboxImage: (index: number | null) => void;
   setPrinterBusy: (printerBusy: boolean) => void;
@@ -62,6 +64,7 @@ export const createInteractionsStore = () => (
     downloadHashes: [],
     dragover: false,
     errors: [],
+    fatalError: null,
     isFullscreen: false,
     lightboxImage: null,
     printerBusy: false,
@@ -79,6 +82,7 @@ export const createInteractionsStore = () => (
     setDownloadHashes: (downloadHashes: string[]) => set({ downloadHashes }),
     setDragover: (dragover: boolean) => set({ dragover }),
     setError: (error: Error) => set({ errors: [...get().errors, { error, timestamp: dayjs().unix(), id: randomId() }] }),
+    setFatalError: (fatalError: Error) => set({ fatalError: { error: fatalError, timestamp: dayjs().unix(), id: randomId() } }),
     setIsFullscreen: (isFullscreen: boolean) => set({ isFullscreen }),
     setPrinterBusy: (printerBusy: boolean) => set({ printerBusy }),
     setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),

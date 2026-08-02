@@ -11,7 +11,8 @@ import Frame from '@/components/Frame';
 import GalleryGrid from '@/components/GalleryGrid';
 import GalleryViewSelect from '@/components/GalleryViewSelect';
 import { ExportTypes } from '@/consts/exportTypes';
-import useFrames from '@/hooks/useFrames';
+import { useFramesPage } from '@/hooks/useFramesPage';
+import { useMigrateFrames } from '@/hooks/useMigrateFrames';
 
 function Frames() {
   const t = useTranslations('Frames');
@@ -23,12 +24,17 @@ function Frames() {
     palette,
     groupFrames,
     exportJson,
+    activeFrameGroupName,
     setActiveFrameGroupName,
+    saveActiveFrameGroupName,
     activeFrameGroup,
-    convertFormat,
-    detectFrames,
     enableDebug,
-  } = useFrames();
+  } = useFramesPage();
+
+  const {
+    detectAndApply,
+    convertFormat,
+  } = useMigrateFrames();
 
   return (
     <Stack
@@ -54,7 +60,8 @@ function Frames() {
           size="small"
           type="text"
           onChange={(ev) => setActiveFrameGroupName(ev.target.value)}
-          value={activeFrameGroup.name || ''}
+          onBlur={saveActiveFrameGroupName}
+          value={activeFrameGroupName}
         />
       )}
       <Stack
@@ -98,7 +105,7 @@ function Frames() {
                 {t('convertFramesFormat')}
               </Button>
               <Button
-                onClick={detectFrames}
+                onClick={detectAndApply}
               >
                 {t('applyFrames')}
               </Button>

@@ -195,7 +195,6 @@
     "monochrome": "Monochrome",
     "new": "New",
     "oneMustBeMet": "If set, one must be met",
-    "recentImports": "Recent Imports",
     "rgb": "RGB",
     "untagged": "Untagged"
   },
@@ -606,6 +605,13 @@
     "updateTags": "Update tags",
     "updateTitle": "Update title"
   },
+  "useEditImageGroups": {
+    "deleteGroupInfo": "This will delete this group “{groupTitle}” and move all children (images & groups) to the current level.",
+    "deleteGroupMessage": "Delete image group?",
+    "newGroupDefault": "New Group",
+    "resetGroupsInfo": "This will remove ALL your created groups and all existing images will be moved to the top level.",
+    "resetGroupsMessage": "Reset image groups?"
+  },
   "useEditPalette": {
     "paletteOrigin": "Made with the webapp"
   },
@@ -622,13 +628,6 @@
   "useGetPortSettings": {
     "baudRateLabel": "Baud Rate",
     "specifyBaudrate": "Specify Baudrate for Port"
-  },
-  "useImageGroups": {
-    "deleteGroupInfo": "This will delete this group “{groupTitle}” and move all children (images & groups) to the current level.",
-    "deleteGroupMessage": "Delete image group?",
-    "newGroupDefault": "New Group",
-    "resetGroupsInfo": "This will remove ALL your created groups and all existing images will be moved to the top level.",
-    "resetGroupsMessage": "Reset image groups?"
   },
   "usePalette": {
     "deletePaletteMessage": "Delete palette “{name}”?"

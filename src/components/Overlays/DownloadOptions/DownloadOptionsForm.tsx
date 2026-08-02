@@ -110,7 +110,6 @@ function DownloadOptionsForm({ inDialog }: Props) {
         >
           {supportedExportFileTypes.map((fileType) => {
             const badgeContent = inDialog ? getBadgeContent(fileType) : null;
-            console.log(badgeContent);
             return (
               <ToggleButton
                 key={fileType}

@@ -195,7 +195,6 @@
     "monochrome": "Monochroom",
     "new": "Nieuw",
     "oneMustBeMet": "Indien ingesteld, moet één worden voldaan",
-    "recentImports": "Recente imports",
     "rgb": "RGB",
     "untagged": "Zonder tags"
   },
@@ -606,6 +605,13 @@
     "updateTags": "Tags bijwerken",
     "updateTitle": "Titel bijwerken"
   },
+  "useEditImageGroups": {
+    "deleteGroupInfo": "Dit zal de groep “{groupTitle}” verwijderen en alle inhoud (afbeeldingen & groepen) naar het huidige niveau verplaatsen.",
+    "deleteGroupMessage": "Afbeeldingsgroep verwijderen?",
+    "newGroupDefault": "Nieuwe groep",
+    "resetGroupsInfo": "Dit zal ALLE gemaakte groepen verwijderen en alle bestaande afbeeldingen naar het hoogste niveau verplaatsen.",
+    "resetGroupsMessage": "Afbeeldingsgroepen resetten?"
+  },
   "useEditPalette": {
     "paletteOrigin": "Gemaakt met de webapp"
   },
@@ -622,13 +628,6 @@
   "useGetPortSettings": {
     "baudRateLabel": "Baudrate",
     "specifyBaudrate": "Baudrate voor poort kiezen"
-  },
-  "useImageGroups": {
-    "deleteGroupInfo": "Dit zal de groep “{groupTitle}” verwijderen en alle inhoud (afbeeldingen & groepen) naar het huidige niveau verplaatsen.",
-    "deleteGroupMessage": "Afbeeldingsgroep verwijderen?",
-    "newGroupDefault": "Nieuwe groep",
-    "resetGroupsInfo": "Dit zal ALLE gemaakte groepen verwijderen en alle bestaande afbeeldingen naar het hoogste niveau verplaatsen.",
-    "resetGroupsMessage": "Afbeeldingsgroepen resetten?"
   },
   "usePalette": {
     "deletePaletteMessage": "Palet “{name}” verwijderen?"

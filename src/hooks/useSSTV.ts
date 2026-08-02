@@ -2,8 +2,8 @@ import { ExportFrameMode } from 'gb-image-decoder';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileNameStyle } from '@/consts/fileNameStyles';
 import useDownload from '@/hooks/useDownload';
-import { useInteractionsStore, useItemsStore } from '@/stores/stores';
-import { PrepareFilesOptions } from '@/tools/download';
+import { useInteractionsStore } from '@/stores/stores';
+import { type PrepareFilesOptions } from '@/tools/download';
 import { getPaddingColor } from '@/tools/getPaddingColor';
 import { imageDataToObjectURL } from '@/tools/imageDataToObjectURL';
 import { audioBufferToWav, generateSamples, ModeType, samplesToAudioBuffer, type SSTVSettings } from '@/tools/sstv';
@@ -23,7 +23,6 @@ interface UseSSTV {
 }
 
 export const useSSTV = (): UseSSTV => {
-  const { palettes, images } = useItemsStore();
   const [audioSource, setAudioSource] = useState<string>('');
   const [previewImageSource, setPreviewImageSource] = useState<string>('');
   const [previewImageWidth, setPreviewImageWidth] = useState<number>(0);
@@ -53,11 +52,10 @@ export const useSSTV = (): UseSSTV => {
         exportScaleFactors: [1],
         exportFileTypes: ['png'],
         handleExportFrame: frameMode,
-        palettes,
         fileNameStyle: FileNameStyle.TITLE_ONLY,
       };
 
-      const paddingColor = getPaddingColor(images, palettes, sstvHash);
+      const paddingColor = await getPaddingColor(sstvHash);
 
       const sampleRate = 48000;
 
@@ -86,7 +84,7 @@ export const useSSTV = (): UseSSTV => {
     }, 1);
 
     return () => window.clearTimeout(handle);
-  }, [frameMode, images, modeType, palettes, prepareDownloadInfo, silenceMs, sstvHash]);
+  }, [frameMode, modeType, prepareDownloadInfo, silenceMs, sstvHash]);
 
   return {
     modeType,

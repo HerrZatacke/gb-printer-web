@@ -1,17 +1,19 @@
-import { useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { imageGroupsListQueryOptions } from '@/stores/items/queries/imageGroups';
 import {
   type EditGroupInfo,
   useEditStore,
   useFiltersStore,
-  useItemsStore,
 } from '@/stores/stores';
+import { cleanFullSlug } from '@/tools/cleanSlug';
 import { randomId } from '@/tools/randomId';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type DialogOption } from '@/types/Dialog';
-import { type PathMap } from '@/types/galleryTreeContext';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
+import { type SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
 
 export const NEW_GROUP = 'NEW_GROUP';
 
@@ -22,6 +24,7 @@ interface UseEditImageGroup {
   slug: string;
   title: string;
   isFavourite: boolean;
+  canEdit: boolean;
   canConfirm: boolean;
   canMove: boolean;
   slugIsInUse: boolean;
@@ -32,7 +35,7 @@ interface UseEditImageGroup {
   setTitle: (title: string) => void;
   setIsFavourite: (isFavourite: boolean) => void;
   setParentSlug: (slug: string) => void;
-  confirm: () => void;
+  confirm: () => Promise<void>;
   move: () => Promise<void>;
   cancelEditImageGroup: () => void;
 }
@@ -41,13 +44,11 @@ export const toSlug = (title: string): string => (
   title.trim().replace(/[^A-Z0-9_-]+/gi, '_').toLowerCase()
 );
 
-const findParentGroup = (paths: PathMap[], groupId: string): PathMap | null => (
-  paths.find(({ group: { groups } }) => (
-    groups.find(({ id }) => (
-      id === groupId
-    ))
-  )) || null
-);
+const findParentGroup = (groups: TreeImageGroup[], groupId: string): TreeImageGroup | null => {
+  const entry = groups.find(({ groups: children }) => children.some(({ id }) => id === groupId));
+
+  return entry ?? null;
+};
 
 const EditMode = {
   CREATE_NEW: 'CREATE_NEW',
@@ -70,7 +71,7 @@ const getEditMode = (editImageGroup: EditGroupInfo | null): EditMode => {
 
 interface InitialEditValues {
   imageGroup: SerializableImageGroup | null;
-  parentPathMap: PathMap | null;
+  parentGroup: TreeImageGroup | null;
   title: string;
   isFavourite: boolean;
   slug: string;
@@ -80,64 +81,80 @@ interface InitialEditValues {
 const useEditImageGroup = (): UseEditImageGroup => {
   const { imageSelection: selection } = useFiltersStore();
   const { editImageGroup, cancelEditImageGroup } = useEditStore();
-  const {
-    imageGroups,
-    addImageGroup,
-    updateImageGroup,
-    groupImagesAdd,
-    ungroupImages,
-  } = useItemsStore();
+  const queryClient = useQueryClient();
+  const { updateImageGroup, moveImagesToGroup } = useImageGroups({});
   const { navigateToGroup, navigateToImage } = useNavigationTools();
-  const { path: currentPath, view, paths, pathsOptions } = useGalleryTreeContext();
+  const { path: currentPath, view, groupsByFullSlug, groupsById, pathsOptions } = useGalleryTreeContext();
   const selectionCount = selection.length;
 
   const editMode = getEditMode(editImageGroup);
 
-  const initialValues = useMemo<InitialEditValues>(() => {
-    switch (editMode) {
-      case EditMode.CREATE_NEW: {
-        const title = editImageGroup?.newGroupTitle || '';
-        return {
-          imageGroup: null,
-          parentPathMap: paths.find(({ group }) => group.id === view.id) || null,
-          title,
-          isFavourite: false,
-          slug: toSlug(title),
-          slugTouched: false,
-        };
-      }
+  const [initialValues, setInitialValues] = useState<InitialEditValues | null>(null);
+  const [title, setTitle] = useState<string>('');
+  const [isFavourite, setIsFavourite] = useState<boolean>(false);
+  const [slug, setSlug] = useState<string>('');
+  const [slugTouched, setSlugTouched] = useState<boolean>(false);
+  const [parentSlug, setParentSlug] = useState<string>('');
 
-      case EditMode.EDIT_EXISTING: {
-        const imageGroup = imageGroups.find(({ id }) => id === editImageGroup?.groupId) || null;
-        return {
-          imageGroup,
-          parentPathMap: editImageGroup?.groupId ? findParentGroup(paths, editImageGroup.groupId) : null,
-          title: imageGroup?.title || '',
-          isFavourite: imageGroup?.isFavourite || false,
-          slug: imageGroup?.slug || '',
-          slugTouched: true,
-        };
-      }
+  useEffect(() => {
+    const prepareInitialValues = async (): Promise<InitialEditValues> => {
+      switch (editMode) {
+        case EditMode.CREATE_NEW: {
+          const newTitle = editImageGroup?.newGroupTitle || '';
+          return {
+            imageGroup: null,
+            parentGroup: view ? groupsById.get(view.id) ?? null : null,
+            title: newTitle,
+            isFavourite: false,
+            slug: toSlug(newTitle),
+            slugTouched: false,
+          };
+        }
 
-      case EditMode.NOT_EDITING:
-      default: {
-        return {
-          imageGroup: null,
-          parentPathMap: null,
-          title: '',
-          isFavourite: false,
-          slug: '',
-          slugTouched: false,
-        };
-      }
-    }
-  }, [editImageGroup, editMode, imageGroups, paths, view]);
+        case EditMode.EDIT_EXISTING: {
+          const { items: freshGroups } = await queryClient.fetchQuery({
+            ...imageGroupsListQueryOptions(),
+            staleTime: 0,
+          });
 
-  const [title, setTitle] = useState<string>(initialValues.title);
-  const [isFavourite, setIsFavourite] = useState<boolean>(initialValues.isFavourite);
-  const [slug, setSlug] = useState<string>(initialValues.slug);
-  const [slugTouched, setSlugTouched] = useState<boolean>(initialValues.slugTouched);
-  const [parentSlug, setParentSlug] = useState<string>(initialValues.parentPathMap?.absolutePath || '');
+          const imageGroup = freshGroups.find(({ id }) => id === editImageGroup?.groupId) || null;
+
+          return {
+            imageGroup,
+            parentGroup: editImageGroup?.groupId ? findParentGroup([...groupsById.values()], editImageGroup.groupId) : null,
+            title: imageGroup?.title || '',
+            isFavourite: imageGroup?.isFavourite || false,
+            slug: imageGroup?.slug || '',
+            slugTouched: true,
+          };
+        }
+
+        case EditMode.NOT_EDITING:
+        default: {
+          return {
+            imageGroup: null,
+            parentGroup: null,
+            title: '',
+            isFavourite: false,
+            slug: '',
+            slugTouched: false,
+          };
+        }
+      }
+    };
+
+    prepareInitialValues()
+      .then((initial) => {
+        setInitialValues(initial);
+        setTitle(initial.title);
+        setIsFavourite(initial.isFavourite);
+        setSlug(initial.slug);
+        setSlugTouched(initial.slugTouched);
+        setParentSlug(initial.parentGroup?.fullSlug || '');
+      });
+
+    return () => setInitialValues(null);
+  }, [editImageGroup, editMode, queryClient, groupsById, view]);
 
   const absoluteSlug = useMemo(() => {
     if (!editImageGroup?.groupId) {
@@ -145,24 +162,20 @@ const useEditImageGroup = (): UseEditImageGroup => {
     }
 
     if (editImageGroup?.groupId === NEW_GROUP) {
-      return `${currentPath}${slug}/`;
+      return cleanFullSlug(`${currentPath}/${slug}`);
     }
 
-    const parentGroup = findParentGroup(paths, editImageGroup.groupId);
-
-    const parentPath = parentGroup?.absolutePath || '';
-
-    return `${parentPath}${slug}/`;
-  }, [editImageGroup, paths, currentPath, slug]);
+    return cleanFullSlug(`${parentSlug}/${slug}`);
+  }, [editImageGroup?.groupId, parentSlug, slug, currentPath]);
 
   // absolute slug already exists
-  const slugIsInUse = useMemo(() => (
-    !!paths.find(({ absolutePath }) => absolutePath === absoluteSlug)
-  ), [absoluteSlug, paths]);
+  const slugIsInUse = useMemo(() => {
+    return groupsByFullSlug.has(absoluteSlug);
+  }, [absoluteSlug, groupsByFullSlug]);
 
   // slug has changed
-  const slugWasChanged = useMemo(() => (
-    slug !== initialValues.imageGroup?.slug
+  const slugWasChanged = useMemo<boolean>(() => (
+    Boolean(initialValues && (slug !== initialValues.imageGroup?.slug))
   ), [initialValues, slug]);
 
   const canConfirm = useMemo<boolean>(() => {
@@ -186,15 +199,19 @@ const useEditImageGroup = (): UseEditImageGroup => {
   }, [editMode, slug, slugIsInUse, slugWasChanged]);
 
   const canMove = useMemo<boolean>(() => {
-    const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
-    const currentGroupId = initialValues.parentPathMap?.group.id || '';
-    return currentGroupId !== parentGroupId;
-  }, [initialValues, parentSlug, paths]);
+    if (!initialValues) {
+      return false;
+    }
 
-  const possibleParents = useMemo(() => {
+    const parentGroupId = groupsByFullSlug.get(parentSlug)?.id ?? '';
+    const currentGroupId = initialValues.parentGroup?.id ?? '';
+    return currentGroupId !== parentGroupId;
+  }, [initialValues, parentSlug, groupsByFullSlug]);
+
+  const possibleParents = useMemo<DialogOption[]>(() => {
     switch (editMode) {
       case EditMode.EDIT_EXISTING: {
-        const editGroupPath = paths.find(({ group }) => group.id === editImageGroup?.groupId)?.absolutePath || '';
+        const editGroupPath = groupsById.get(editImageGroup?.groupId ?? '')?.fullSlug ?? '';
         return pathsOptions.filter(({ value }) => (
           !value.startsWith(absoluteSlug) &&
           value !== editGroupPath
@@ -210,7 +227,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
         return [];
       }
     }
-  }, [absoluteSlug, editImageGroup, editMode, paths, pathsOptions]);
+  }, [absoluteSlug, editImageGroup, editMode, groupsById, pathsOptions]);
 
   return {
     editId: editImageGroup?.groupId || null,
@@ -220,6 +237,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
     title,
     isFavourite,
     canConfirm,
+    canEdit: Boolean(initialValues),
     canMove,
     slugIsInUse,
     slugWasChanged,
@@ -238,54 +256,54 @@ const useEditImageGroup = (): UseEditImageGroup => {
     },
     setIsFavourite,
     setParentSlug,
-    confirm: () => {
+    confirm: async () => {
       cancelEditImageGroup();
 
-      if (!canConfirm || !editImageGroup) {
+      if (!canConfirm || !editImageGroup || !initialValues) {
         return;
       }
 
-      const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
+      const parentGroupId = groupsByFullSlug.get(parentSlug)?.id ?? '';
+
+      let updateGroup: SerializableImageGroup;
 
       if (editImageGroup.groupId === NEW_GROUP) {
         if (!editImageGroup.newGroupCover) {
           return;
         }
 
-        const newGroupId = randomId();
-
-        addImageGroup(
-          {
-            id: newGroupId,
-            slug,
-            title,
-            isFavourite,
-            created: toCreationDate(),
-            coverImage: editImageGroup.newGroupCover,
-            images: selection,
-            groups: [],
-          },
-          parentGroupId,
-        );
-
-        navigateToGroup(newGroupId, 0);
+        updateGroup = {
+          id: randomId(),
+          slug,
+          title,
+          isFavourite,
+          created: toCreationDate(),
+          coverImage: editImageGroup.newGroupCover,
+          images: selection,
+          groups: [],
+          tags: [],
+        };
       } else {
         if (!initialValues.imageGroup) {
           return;
         }
 
-        updateImageGroup(
-          {
-            ...initialValues.imageGroup,
-            slug,
-            title,
-            isFavourite,
-          },
-          parentGroupId,
-        );
-
-        navigateToGroup(editImageGroup.groupId, 0);
+        updateGroup = {
+          id: initialValues.imageGroup.id,
+          created: initialValues.imageGroup.created,
+          coverImage: initialValues.imageGroup.coverImage,
+          groups: initialValues.imageGroup.groups,
+          images: initialValues.imageGroup.images,
+          tags: [],
+          slug,
+          title,
+          isFavourite,
+        };
       }
+
+      await updateImageGroup(updateGroup, parentGroupId);
+      const replaceHistory = editImageGroup.groupId !== NEW_GROUP;
+      await navigateToGroup(updateGroup.id, 0, replaceHistory);
     },
     move: async () => {
       cancelEditImageGroup();
@@ -294,18 +312,13 @@ const useEditImageGroup = (): UseEditImageGroup => {
         return;
       }
 
-      const parentGroupId = paths.find(({ absolutePath }) => absolutePath === parentSlug)?.group.id || '';
+      const parentGroupId = groupsByFullSlug.get(parentSlug)?.id ?? '';
 
-      if (parentGroupId) { // move to selected parentgroup
-        groupImagesAdd(
-          parentGroupId,
-          selection,
-        );
-      } else { // move to root
-        ungroupImages(selection);
-      }
-
-      navigateToImage(selection[0]);
+      // move images to other group or root if no parentgroup
+      await moveImagesToGroup(selection, parentGroupId || undefined);
+      setTimeout(async () => {
+        await navigateToImage(selection[0], true);
+      }, 1000);
     },
     cancelEditImageGroup,
   };

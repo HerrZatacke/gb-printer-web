@@ -18,7 +18,7 @@ export const getImportJSON = (importFn: ImportFn) => async (file: File): Promise
     throw new Error('Not a settings .json file');
   }
 
-  importFn(settingsDump);
+  await importFn(settingsDump);
 
   return {
     imageCount: settingsDump.state.images?.length || 0,

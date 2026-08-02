@@ -1,10 +1,13 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { ExportTypes } from '@/consts/exportTypes';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
-import { useInteractionsStore, useItemsStore, useSettingsStore } from '@/stores/stores';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { download, prepareFiles, PrepareFilesOptions } from '@/tools/download';
+import { download, prepareFiles, type PrepareFilesOptions } from '@/tools/download';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { loadImageTiles } from '@/tools/loadImageTiles';
@@ -21,7 +24,7 @@ interface UseDownload {
 
 const useDownload = (): UseDownload => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle, alwaysShowDownloadDialog } = useSettingsStore();
-  const { frames, palettes, images } = useItemsStore();
+  const queryClient = useQueryClient();
   const { setDownloadHashes } = useInteractionsStore();
   const { getSettingsFile } = useImportExportSettings();
   const { sendEvent } = useTracking();
@@ -31,17 +34,16 @@ const useDownload = (): UseDownload => {
     exportScaleFactors,
     fileNameStyle,
     handleExportFrame,
-    palettes,
-  }), [exportFileTypes, exportScaleFactors, fileNameStyle, handleExportFrame, palettes]);
+  }), [exportFileTypes, exportScaleFactors, fileNameStyle, handleExportFrame]);
 
-  const getZipFileName = useCallback((hashes: string[]): string => {
+  const getZipFileName = useCallback(async (hashes: string[]): Promise<string> => {
     if (hashes.length === 1) {
-      const image = images.find(({ hash }) => hash === hashes[0]);
+      const image = await queryClient.fetchQuery(imageByHashQueryOptions(hashes[0]));
       if (!image) {
         throw new Error('image not found');
       }
 
-      const { palette: imagePalette } = getImagePalettes(palettes, image);
+      const { palette: imagePalette } = await getImagePalettes(image);
       if (!imagePalette) {
         throw new Error('imagePalette not found');
       }
@@ -58,16 +60,17 @@ const useDownload = (): UseDownload => {
       useCurrentDate: true,
       fileNameStyle,
     });
-  }, [fileNameStyle, images, palettes]);
+  }, [fileNameStyle, queryClient]);
 
   const prepareDownloadInfo = useCallback(async (imageHash: string, prepareFilesOptionsOverride?: PrepareFilesOptions): Promise<DownloadInfo[]> => {
-    const image = images.find(({ hash }) => hash === imageHash);
+    const image = await queryClient.fetchQuery(imageByHashQueryOptions(imageHash));
     if (!image) { throw new Error('image not found'); }
 
-    const frame = frames.find(({ id }) => id === image.frame);
-    const tiles = await loadImageTiles(images, frames)(image.hash);
+
+    const tiles = await loadImageTiles()(image.hash);
     if (!tiles) { throw new Error('no tiles'); }
 
+    const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
@@ -80,10 +83,10 @@ const useDownload = (): UseDownload => {
     }
 
     return prepareFiles(image, tiles, imageStartLine, options);
-  }, [frames, images, prepareFilesOptions]);
+  }, [queryClient, prepareFilesOptions]);
 
   const downloadImages = useCallback(async (hashes: string[]): Promise<void> => {
-    const zipFilename = getZipFileName(hashes);
+    const zipFilename = await getZipFileName(hashes);
     const downloadInfos = (await Promise.all(hashes.map((hash) => prepareDownloadInfo(hash)))).flat();
     const resultFiles = downloadInfos.map(({ blob, filename }): DownloadBlob => ({ blob, filename }));
 

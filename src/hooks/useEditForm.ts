@@ -3,8 +3,9 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import useBatchUpdate from '@/hooks/useBatchUpdate';
 import { type Overrides } from '@/hooks/useImageRender';
+import { useImages } from '@/hooks/useImages';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
-import { useEditStore, useItemsStore } from '@/stores/stores';
+import { useEditStore } from '@/stores/stores';
 import { type TagChange } from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { getImageTileCount } from '@/tools/loadImageTiles';
@@ -98,10 +99,11 @@ const willUpdate = (batch: Batch, t: ReturnType<typeof useTranslations>): string
 export const useEditForm = (): UseEditForm => {
   const t = useTranslations('useEditForm');
   const { editImages, cancelEditImages } = useEditStore();
-  const { frames, images } = useItemsStore();
   const { batchUpdateImages } = useBatchUpdate();
 
-  const tileCounter = getImageTileCount(images, frames);
+  const { byHashes: images } = useImages({ hashes: editImages?.batch || [] });
+
+  const tileCounter = getImageTileCount();
 
   const dimensions = useScreenDimensions();
 

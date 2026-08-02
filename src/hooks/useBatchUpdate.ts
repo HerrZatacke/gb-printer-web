@@ -1,17 +1,15 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { type RGBNPalette } from 'gb-image-decoder';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Updatable, UpdatableMonochrome, UPDATATABLES } from '@/consts/batchActionTypes';
 import { type ImageUpdatable } from '@/consts/batchActionTypes';
 import { useStores } from '@/hooks/useStores';
-import {
-  useEditStore,
-  useFiltersStore,
-  useItemsStore,
-} from '@/stores/stores';
+import { imagesByHashesQueryOptions } from '@/stores/items/queries/images';
+import { useEditStore, useFiltersStore } from '@/stores/stores';
 import applyTagChanges from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type TagUpdates } from '@/tools/modifyTagChanges';
-import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
+import sortBy, { SortDirection } from '@/tools/sortby';
 import { fromCreationDate, toCreationDate } from '@/tools/toCreationDate';
 import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type ImageUpdates } from '@/types/ImageActions';
@@ -28,28 +26,25 @@ interface UseBatchUpdateImages {
 
 const useBatchUpdateImages = (): UseBatchUpdateImages => {
   const { editImages, cancelEditImages } = useEditStore();
-  const { sortBy } = useFiltersStore();
-  const { images } = useItemsStore();
+  const { sortBy: sortByState } = useFiltersStore();
+  const queryClient = useQueryClient();
   const { updateImages } = useStores();
 
-  const batchUpdateImages = useCallback(({ shouldUpdate, updates, tagChanges }: BatchUpdateImagesParams): void => {
-    const sortFunc = sortImages(sortBy);
+  const sortFunc = useMemo<(i: Image[]) => Image[]>(() => {
+    const [sortByKey, sortByDirection] = sortByState.split('_') as [keyof Image, SortDirection];
+    return sortBy<Image>(sortByKey, sortByDirection);
+  }, [sortByState]);
 
+  const batchUpdateImages = useCallback(async ({ shouldUpdate, updates, tagChanges }: BatchUpdateImagesParams): Promise<void> => {
     const currentEditHashes: string[] = editImages?.batch || [];
 
-    console.log({ shouldUpdate, updates });
-
     if (shouldUpdate && currentEditHashes?.length) {
+      const { items: foundImages } = await queryClient.fetchQuery(imagesByHashesQueryOptions(currentEditHashes));
 
-      const imagesInBatch = currentEditHashes.reduce((acc: Image[], selcetionHash: string): Image[] => {
-        const img = images.find(({ hash }) => hash === selcetionHash);
-        return img ? [...acc, img] : acc;
-      }, [])
-        .map(addSortIndex)
-        .sort(sortFunc)
-        .map(removeSortIndex);
+      const imagesInBatch = foundImages
+        .filter((img): img is Image => Boolean(img));
 
-      const updatedImages = imagesInBatch
+      const updatedImages = sortFunc(imagesInBatch)
         .map((updateImage, selectionIndex): Image => (
           UPDATATABLES.reduce((image: Image, updatable: ImageUpdatable): Image => {
             if (!shouldUpdate[updatable as keyof ImageUpdates]) {
@@ -144,7 +139,7 @@ const useBatchUpdateImages = (): UseBatchUpdateImages => {
     }
 
     cancelEditImages();
-  }, [cancelEditImages, editImages?.batch, images, sortBy, updateImages]);
+  }, [cancelEditImages, editImages?.batch, queryClient, sortFunc, updateImages]);
 
   return { batchUpdateImages };
 };

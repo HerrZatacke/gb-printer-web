@@ -7,15 +7,15 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import FilterFormFrame from '@/components/Overlays/FilterForm/FilterFormFrame';
 import FilterFormPalette from '@/components/Overlays/FilterForm/FilterFormPalette';
 import FilterFormTab from '@/components/Overlays/FilterForm/FilterFormTab';
 import FilterFormTag from '@/components/Overlays/FilterForm/FilterFormTag';
 import { SpecialTags } from '@/consts/SpecialTags';
+import { useActivePalette } from '@/hooks/useActivePalette';
 import { useFilterForm } from '@/hooks/useFilterForm';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
 import sortBy, { SortDirection } from '@/tools/sortby';
 
 const FilterTab = {
@@ -76,12 +76,7 @@ function FilterForm() {
     return () => window.clearTimeout(handle);
   }, [activeFrames.length, activePalettes.length, activeTags.length, tabValue]);
 
-  const { palettes } = useItemsStore();
-  const { activePalette } = useSettingsStore();
-
-  const framePalette = useMemo(() => (
-    palettes.find(({ shortName }) => shortName === activePalette) || palettes[0]
-  ), [activePalette, palettes]);
+  const framePalette = useActivePalette();
 
   const clearCurrentTabSelection = useCallback(() => {
     switch (tabValue) {
@@ -215,11 +210,6 @@ function FilterForm() {
                 title={t('rgb')}
                 tagActive={activeTags.includes(SpecialTags.FILTER_RGB)}
                 toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_RGB, active)}
-              />
-              <FilterFormTag
-                title={t('recentImports')}
-                tagActive={activeTags.includes(SpecialTags.FILTER_RECENT)}
-                toggleTag={(active) => updateActiveTags(SpecialTags.FILTER_RECENT, active)}
               />
               <FilterFormTag
                 title={t('imageHasComments')}

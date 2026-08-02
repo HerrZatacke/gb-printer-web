@@ -1,0 +1,106 @@
+import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
+import { longestCommonSubstring } from 'string-algorithms';
+import { DialoqQuestionType } from '@/consts/dialog';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
+import { NEW_GROUP } from '@/hooks/useEditImageGroup';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImages } from '@/hooks/useImages';
+import {
+  useDialogsStore,
+  useEditStore,
+  useFiltersStore,
+} from '@/stores/stores';
+
+interface UseEditImageGroups {
+  resetGroups: () => void;
+  createGroup: (hash: string) => void;
+  editGroup: (id: string) => void;
+  deleteGroup: (id: string) => void;
+}
+
+export const useEditImageGroups = (): UseEditImageGroups => {
+  const t = useTranslations('useEditImageGroups');
+  const { view } = useGalleryTreeContext();
+  const { dismissDialog, setDialog } = useDialogsStore();
+  const { setEditImageGroup } = useEditStore();
+  const { deleteImageGroupsByIds, updateImageGroups } = useImageGroups({});
+  const { imageSelection } = useFiltersStore();
+
+  const { byHashes: selectionImages } = useImages({ hashes: imageSelection });
+
+  const newGroupTitle = useMemo<string>(() => {
+    if (!selectionImages.length) {
+      return '';
+    }
+
+    const titles = selectionImages
+      .map(({ title }) => title)
+      .filter((title) => title.length > 3);
+
+    const groupTitle = longestCommonSubstring(titles);
+
+    const rawTitle = groupTitle.filter((part) => (part.length > 3))[0]?.trim();
+
+    if (!rawTitle) {
+      return t('newGroupDefault');
+    }
+
+    return rawTitle
+      .replace(/[_-]/g, ' ')
+      .replace(/^\s*\d+\s+|\s+\d+\s*$/g, '')
+      .trim();
+  }, [selectionImages, t]);
+
+  return {
+    resetGroups: () => {
+      setDialog({
+        message: t('resetGroupsMessage'),
+        questions: () => [{
+          key: 'info',
+          type: DialoqQuestionType.INFO,
+          label: t('resetGroupsInfo'),
+        }],
+        confirm: async () => {
+          dismissDialog(0);
+          updateImageGroups([], true);
+        },
+        deny: async () => {
+          dismissDialog(0);
+        },
+      });
+    },
+    createGroup: (hash: string) => {
+      setEditImageGroup({
+        groupId: NEW_GROUP,
+        newGroupCover: hash,
+        newGroupTitle,
+      });
+    },
+    editGroup: (id: string) => {
+      setEditImageGroup({ groupId: id });
+    },
+    deleteGroup: (id: string) => {
+      const deleteGroup = view?.groups.find((group) => group.id === id);
+      if (!deleteGroup) {
+        return;
+      }
+
+      setDialog({
+        message: t('deleteGroupMessage'),
+        questions: () => [{
+          key: 'info',
+          type: DialoqQuestionType.INFO,
+          label: t('deleteGroupInfo', { groupTitle: deleteGroup.title || deleteGroup.slug }),
+        }],
+        confirm: async () => {
+          dismissDialog(0);
+          await deleteImageGroupsByIds([id]);
+        },
+        deny: async () => {
+          dismissDialog(0);
+        },
+      });
+    },
+  };
+};

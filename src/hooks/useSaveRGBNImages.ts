@@ -35,7 +35,7 @@ const useSaveRGBNImages = (): UseSaveRGBNImages => {
       return image;
     });
 
-    addImages(images);
+    await addImages(images);
     setImageSelection(images.map((i) => i.hash));
   }, [addImages, setImageSelection]);
 

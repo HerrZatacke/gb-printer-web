@@ -1,8 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useTracking } from '@/contexts/TrackingContext';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
+import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { PrepareFilesOptions, prepareFiles } from '@/tools/download';
+import { type PrepareFilesOptions, prepareFiles } from '@/tools/download';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import { Date } from '@/tools/safeDate';
 
@@ -12,18 +15,18 @@ interface UseShareImage {
 
 const useShareImage = (): UseShareImage => {
   const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore();
-  const { frames, palettes, images } = useItemsStore();
   const { sendEvent } = useTracking();
+  const queryClient = useQueryClient();
 
   const shareImage = useCallback(async (hash: string) => {
     if (!window.navigator.share) { return; }
 
-    const image = images.find(({ hash: findHash }) => hash === findHash);
+    const image = await queryClient.fetchQuery(imageByHashQueryOptions(hash));
     if (!image) {
       throw new Error('image not found');
     }
 
-    const frame = frames.find(({ id }) => id === image.frame);
+    const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
 
     const shareScaleFactor = [...exportScaleFactors].pop() || 4;
     const shareFileType = [...exportFileTypes].pop() || 'png';
@@ -33,10 +36,9 @@ const useShareImage = (): UseShareImage => {
       exportScaleFactors: [shareScaleFactor],
       fileNameStyle,
       handleExportFrame,
-      palettes,
     };
 
-    const tiles = await loadImageTiles(images, frames)(image.hash);
+    const tiles = await loadImageTiles()(image.hash);
 
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
 
@@ -53,7 +55,7 @@ const useShareImage = (): UseShareImage => {
       .catch(() => ('¯\\_(ツ)_/¯'));
 
     sendEvent('shareImages', { imageCount: 1 });
-  }, [exportFileTypes, exportScaleFactors, fileNameStyle, frames, handleExportFrame, images, palettes, sendEvent]);
+  }, [exportFileTypes, exportScaleFactors, fileNameStyle, queryClient, handleExportFrame, sendEvent]);
 
   return {
     shareImage,

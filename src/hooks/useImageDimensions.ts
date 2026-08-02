@@ -1,7 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { Rotation, TILE_PIXEL_WIDTH, TILES_PER_LINE } from 'gb-image-decoder';
-import { useMemo } from 'react';
-import { useItemsStore } from '@/stores/stores';
-import { isRGBNImage, reduceImagesMonochrome } from '@/tools/isRGBNImage';
+import { useEffect, useMemo, useState } from 'react';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions, imagesByHashesQueryOptions } from '@/stores/items/queries/images';
+import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type MonochromeImage, type RGBNImage } from '@/types/Image';
 
 export interface Dimensions {
@@ -39,35 +41,60 @@ export const dimensionsFromTileCount = (tileCount: number, rotation = Rotation.D
 };
 
 export const useImageDimensions = (hash: string): UseDimensions => {
-  const { images, frames } = useItemsStore();
+  const queryClient = useQueryClient();
 
-  const dimensions = useMemo<Dimensions>(() => {
-    const image = images.find((img) => img.hash === hash) || null;
+  const [lines, setLines] = useState<number>(360);
+  const [rotation, setRotation] = useState<Rotation>(Rotation.DEG_0);
 
-    // return default dimensions
-    if (!image) { return dimensionsFromTileCount(360); }
+  useEffect(() => {
+    let cancelled = false;
 
-    const frame = frames.find(({ id }) => id === image.frame) || null;
+    queryClient.fetchQuery(imageByHashQueryOptions(hash))
+      .then(async (image) => {
+        if (!image || cancelled) {
+          return;
+        }
 
-    if (frame?.lines) {
-      return dimensionsFromTileCount(frame.lines, image.rotation);
-    }
+        const imageRotation = image.rotation || Rotation.DEG_0;
 
-    let tileCount: number;
-    if (isRGBNImage(image)) {
-      const { hashes: { r, g, b, n } } = (image as RGBNImage);
-      const channelLines = [r, g, b, n]
-        .map((channelHash) => images.find((img) => img.hash === channelHash) || null)
-        .reduce(reduceImagesMonochrome, [])
-        .map(({ lines }) => lines);
-      tileCount = Math.max(...channelLines);
-    } else {
-      tileCount = (image as MonochromeImage).lines;
-    }
+        if (image.frame) {
+          const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions([image.frame]));
+          if (frame?.lines) {
+            setLines(frame.lines);
+            setRotation(imageRotation);
+          }
+        }
 
-    return dimensionsFromTileCount(tileCount, image.rotation);
-  }, [images, frames, hash]);
+        let tileCount = 360;
 
+        if (isRGBNImage(image)) {
+          if (cancelled) {
+            return;
+          }
+
+          const { hashes: { r, g, b, n } } = (image as RGBNImage);
+          const channelHashes = [r, g, b, n].filter((s):s is string => Boolean(s));
+          const { items: channelImages } = await queryClient.fetchQuery(imagesByHashesQueryOptions(channelHashes));
+          const channelLines = (channelImages as MonochromeImage[]).map((img) => img.lines || 360);
+
+          tileCount = Math.max(...channelLines);
+        } else {
+          tileCount = (image as MonochromeImage).lines;
+        }
+
+        if (!cancelled) {
+          setLines(tileCount);
+          setRotation(imageRotation);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hash, queryClient]);
+
+
+  const dimensions = useMemo(() => dimensionsFromTileCount(lines, rotation), [lines, rotation]);
 
   return {
     dimensions,

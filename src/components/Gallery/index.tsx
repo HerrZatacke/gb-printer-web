@@ -10,19 +10,18 @@ import GalleryImage from '@/components/GalleryImage';
 import GalleryNumbers from '@/components/GalleryNumbers';
 import Pagination from '@/components/Pagination';
 import StorageWarning from '@/components/StorageWarning';
-import { useGallery } from '@/hooks/useGallery';
+import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
+import { useGalleryNavigationGuards } from '@/tools/useGalleryNavigationGuards';
+import { GroupItem } from '@/workers/itemsIndexedDbWorker/types';
 
 function Gallery() {
-  const {
-    totalImageCount,
-    selectedCount,
-    filteredCount,
-    page,
-    maxPageIndex,
-    images,
-    covers,
-    isWorking,
-  } = useGallery();
+  useGalleryNavigationGuards();
+  const { viewItems, paging, isWorking } = useGalleryTreeContext();
+
+  const totalImageCount = paging?.total || 0;
+  const filteredCount = paging?.filtered || 0;
+  const page = paging?.page || 0;
+  const maxPageIndex = paging?.maxPageIndex || 0;
 
   return (
     <Stack
@@ -32,34 +31,41 @@ function Gallery() {
       <StorageWarning />
       <GalleryNumbers
         imageCount={totalImageCount}
-        selectedCount={selectedCount}
         filteredCount={filteredCount}
       />
       <FolderBreadcrumb />
-      <GalleryHeader page={page} isSticky />
+      <GalleryHeader isSticky />
       { maxPageIndex > 0 && <Pagination page={page} maxPageIndex={maxPageIndex} /> }
 
       <GalleryGrid showLoader={isWorking}>
-        { images.map((image) => (
-          covers.includes(image.hash) ? (
-            <GalleryGroup
-              key={image.hash}
-              hash={image.hash}
-            />
-          ) : (
-            <GalleryImage
-              key={image.hash}
-              hash={image.hash}
-              page={page}
-            />
-          )
-        )) }
+        { viewItems.map((groupItem: GroupItem) => {
+          switch (groupItem.type) {
+            case 'group':
+              return (
+                <GalleryGroup
+                  key={groupItem.group.id}
+                  id={groupItem.group.id}
+                />
+              );
+
+            case 'image':
+              return (
+                <GalleryImage
+                  key={groupItem.image.hash}
+                  hash={groupItem.image.hash}
+                />
+              );
+
+            default:
+              return null;
+          }
+        }) }
       </GalleryGrid>
 
-      { images.length >= 3 && (
+      { viewItems.length >= 3 && (
         <>
           <Pagination page={page} maxPageIndex={maxPageIndex} />
-          <GalleryHeader page={page} isBottom />
+          <GalleryHeader isBottom />
         </>
       ) }
     </Stack>

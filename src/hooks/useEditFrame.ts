@@ -1,87 +1,68 @@
-import { useState } from 'react';
-import { useFrameGroups } from '@/hooks/useFrameGroups';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { EditFrameData, frameIdFromGroupAndIndex, parseFrameId } from '@/hooks/useEditFrameForm';
+import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';
-import { useEditStore, useItemsStore } from '@/stores/stores';
-import { type Frame } from '@/types/Frame';
-import { type FrameGroup } from '@/types/FrameGroup';
+import { useEditStore } from '@/stores/stores';
+import { Frame } from '@/types/Frame';
 
 interface UseEditFrame {
-  frameGroups: FrameGroup[];
-  updateId: string;
-  fullId: string;
-  frameIndex: number;
-  frameGroup: string;
-  frameName: string;
-  idValid: boolean;
+  editFrameData: EditFrameData | null;
+  setHash: Dispatch<SetStateAction<string>>;
+  onEditDataChange: Dispatch<SetStateAction<EditFrameData | null>>;
+  onFormValidChange: Dispatch<SetStateAction<boolean>>;
   formValid: boolean;
-  groupIdValid: boolean;
-  frameIndexValid: boolean;
-  setFrameIndex: (frameIndex: number) => void;
-  setFrameGroup: (frameGroup: string) => void;
-  setFrameName: (frameName: string) => void;
   cancelEdit: () => void;
-  saveFrame: () => void;
+  saveFrame: () => Promise<void>;
 }
 
-const useEditFrame = (frame?: Frame): UseEditFrame => {
-  const updateId = frame?.id || '';
+const frameToEditFrameData = (frame: Frame): EditFrameData => {
+  const { frameIndex, groupName } = parseFrameId(frame.id);
+  return {
+    initialId: frame.id,
+    frameIndex,
+    frameGroup: groupName,
+    frameName: frame.name,
+  };
+};
+
+const useEditFrame = (frame: Frame | null): UseEditFrame => {
+  const { updateFrames } = useFrames({});
   const { cancelEditFrame } = useEditStore();
-  const { frames } = useItemsStore();
-  const { addFrames } = useItemsStore();
   const { updateLastSyncLocalNow } = useStores();
+  const [hash, setHash] = useState<string>(frame?.hash || '');
+  const [formValid, setFormValid] = useState<boolean>(true);
+  const [editFrameData, setEditFrameData] = useState<EditFrameData | null>(null);
+  const [prevFrame, setPrevFrame] = useState<Frame | null>(null);
 
-  const { frameGroups } = useFrameGroups();
-  const frameGroupIdRegex = /^(?<groupName>[a-z]+)(?<id>[0-9]+)/g;
+  if (frame !== prevFrame) {
+    setPrevFrame(frame);
+    setHash(frame?.hash || '');
+    setEditFrameData(frame ? frameToEditFrameData(frame) : null);
+  }
 
-  const match = frameGroupIdRegex.exec(updateId);
-  const groupName = match?.groups?.groupName || '';
-  const id = match?.groups?.id || '0';
+  const saveFrame = async (): Promise<void> => {
+    if (!editFrameData || !frame) {
+      return;
+    }
 
-  const [frameGroup, setFrameGroup] = useState<string>(groupName);
-  const [frameIndex, setFrameIndex] = useState<number>(parseInt(id, 10));
-  const [frameName, setFrameName] = useState<string>(frame?.name || '');
-  const fullId = `${frameGroup}${frameIndex.toString(10).padStart(2, '0')}`;
-
-  const idIsSelf = fullId === updateId;
-  const idValid = idIsSelf || !(frames.find((findFrame) => (fullId === findFrame.id)));
-
-  const groupIdValid = Boolean(frameGroup.match(/^[a-z]{2,}$/g));
-
-  const frameIndexValid = frameIndex > 0;
-
-  const formValid = (
-    idValid &&
-    groupIdValid &&
-    frameIndexValid
-  );
-
-  const saveFrame = () => {
+    await updateFrames([{
+      hash: hash,
+      id: frameIdFromGroupAndIndex(editFrameData.frameGroup, editFrameData.frameIndex),
+      name: editFrameData.frameName,
+      lines: frame.lines,
+    }]);
     cancelEditFrame();
     updateLastSyncLocalNow();
-    addFrames([{
-      hash: frame?.hash || '',
-      id: fullId,
-      name: frameName,
-      lines: frame?.lines || 0,
-    }]);
   };
 
   return {
-    frameGroups,
-    updateId,
-    fullId,
-    frameIndex,
-    frameGroup,
-    frameName,
-    idValid,
+    editFrameData,
+    setHash,
+    onEditDataChange: setEditFrameData,
+    onFormValidChange: setFormValid,
     formValid,
-    groupIdValid,
-    frameIndexValid,
-    setFrameIndex,
-    setFrameGroup,
-    setFrameName,
-    saveFrame,
     cancelEdit: cancelEditFrame,
+    saveFrame,
   };
 };
 

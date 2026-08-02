@@ -54,7 +54,7 @@ const mergeStates = (
     }
 
     if (updatedState.imageGroups && updatedState.imageGroups.length) {
-      imageGroups = mergeImageGroups(imageGroups, updatedState.imageGroups);
+      imageGroups = mergeImageGroups(imageGroups, updatedState.imageGroups as SerializableImageGroup[]);
     }
   } else {
     frames = updatedState.frames || currentStateFrames;

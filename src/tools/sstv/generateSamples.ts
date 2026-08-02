@@ -1,4 +1,4 @@
-import { getSettings, voxTones } from './getSettings';
+import { getSSTVSettings, voxTones } from './getSSTVSettings';
 import { blobToImageData, pixelToFreq, valueToSample } from './tools';
 import { ModeType, RGBChannel, type Sample, type SSTVSettings, type SamplesResult } from './types';
 
@@ -126,7 +126,7 @@ const createChromaLine = (settings: SSTVSettings, rawRGBA: Uint8ClampedArray, us
 };
 
 export const generateSamples = async (pngBlob: Blob, mode: ModeType, paddingColor: string): Promise<SamplesResult> => {
-  const settings = getSettings(mode);
+  const settings = getSSTVSettings(mode);
 
   const imageData = await blobToImageData(pngBlob, settings, paddingColor);
   const { data } = imageData;

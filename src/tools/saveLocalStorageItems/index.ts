@@ -4,7 +4,7 @@ import { isRGBNImage } from '@/tools/isRGBNImage';
 import { reduceItems } from '@/tools/reduceArray';
 import { load, save } from '@/tools/storage';
 import { type RepoContents } from '@/types/Export';
-import { type JSONExportState } from '@/types/ExportState';
+import { createJSONExport, type JSONExport } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
 import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
 
@@ -54,7 +54,7 @@ export const saveFrameFileContent = async (fileContent: string): Promise<string>
   return saveFrameData(paddedFrameData, imageStartLine);
 };
 
-const saveLocalStorageItems = async ({ images, frames, settings }: RepoContents): Promise<JSONExportState> => {
+export const saveLocalStorageItems = async ({ images, frames, settings }: RepoContents): Promise<JSONExport> => {
   const settingsImages = settings.state.images || [];
   const settingsFrames = settings.state.frames || [];
 
@@ -158,16 +158,17 @@ const saveLocalStorageItems = async ({ images, frames, settings }: RepoContents)
     };
   });
 
-  const exportState: JSONExportState = {
-    ...settings,
-    state: {
+  const exportState = createJSONExport(
+    {
       ...settings.state,
       images: newImages,
       frames: newFrames,
     },
-  };
+    // settings _should_ not contain any binary data, so that can be left empty
+    // because git and dropbox tools internally load remote settings from the
+    // remote .json file which should not contain binaries in the firt place.
+    {},
+  );
 
   return exportState;
 };
-
-export default saveLocalStorageItems;

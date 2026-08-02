@@ -195,7 +195,6 @@
     "monochrome": "Monokrom",
     "new": "Ny",
     "oneMustBeMet": "Hvis satt, må en være oppfylt",
-    "recentImports": "Nylige importer",
     "rgb": "RGB",
     "untagged": "Uten tagger"
   },
@@ -606,6 +605,13 @@
     "updateTags": "Oppdater tagger",
     "updateTitle": "Oppdater tittel"
   },
+  "useEditImageGroups": {
+    "deleteGroupInfo": "Dette vil slette gruppen ”{groupTitle}” og flytte alt innhold (bilder & grupper) til gjeldende nivå.",
+    "deleteGroupMessage": "Slett gruppe",
+    "newGroupDefault": "Ny gruppe standard",
+    "resetGroupsInfo": "Tilbakestill bildegrupper info",
+    "resetGroupsMessage": "Tilbakestill bildegrupper"
+  },
   "useEditPalette": {
     "paletteOrigin": "Palettopprinnelse"
   },
@@ -622,13 +628,6 @@
   "useGetPortSettings": {
     "baudRateLabel": "Baudrate",
     "specifyBaudrate": "Spesifiser baudrate"
-  },
-  "useImageGroups": {
-    "deleteGroupInfo": "Dette vil slette gruppen ”{groupTitle}” og flytte alt innhold (bilder & grupper) til gjeldende nivå.",
-    "deleteGroupMessage": "Slett gruppe",
-    "newGroupDefault": "Ny gruppe standard",
-    "resetGroupsInfo": "Tilbakestill bildegrupper info",
-    "resetGroupsMessage": "Tilbakestill bildegrupper"
   },
   "usePalette": {
     "deletePaletteMessage": "Slett palett ”{name}”?"

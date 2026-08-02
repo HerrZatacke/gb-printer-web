@@ -1,9 +1,8 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
-import { isRGBNImage } from '@/tools/isRGBNImage';
-import { type Image, type MonochromeImage } from '@/types/Image';
+import { useGlobalQueries } from '@/hooks/useGlobalQueries';
+import { useSettingsStore } from '@/stores/stores';
 import { type Palette } from '@/types/Palette';
 
 export interface PaletteSortOption {
@@ -11,19 +10,17 @@ export interface PaletteSortOption {
   value: PaletteSortMode;
 }
 
-type PaletteUsage = Record<string, number>;
-
 interface UsePaletteSort {
   sortPalettes: PaletteSortMode;
   setSortPalettes: (mode: PaletteSortMode) => void;
   paletteSortOptions: PaletteSortOption[];
-  paletteUsages: PaletteUsage;
+  paletteUsages: Map<string, number>;
   sortFn: (p1: Palette, p2: Palette) => number;
 }
 
 const usePaletteSort = (): UsePaletteSort => {
   const { sortPalettes, setSortPalettes } = useSettingsStore();
-  const { images } = useItemsStore();
+  const { usages } = useGlobalQueries({ usages: true });
   const t = useTranslations('usePaletteSort');
 
   const paletteSortOptions: PaletteSortOption[] = useMemo(() => ([
@@ -53,20 +50,13 @@ const usePaletteSort = (): UsePaletteSort => {
     },
   ]), [t]);
 
-  const paletteUsages = useMemo(() => (
-    images.reduce((acc: PaletteUsage, image: Image): PaletteUsage => {
-      const imageIsRGBN = isRGBNImage(image);
+  const paletteUsages = useMemo(() => {
+    if (!usages?.palettes) {
+      return new Map();
+    }
 
-      if (imageIsRGBN) {
-        return acc;
-      }
-
-      return {
-        ...acc,
-        [(image as MonochromeImage).palette]: (acc[(image as MonochromeImage).palette] || 0) + 1,
-      };
-    }, {})
-  ), [images]);
+    return new Map(usages?.palettes.map(({ shortName, usage }) => ([shortName, usage])));
+  }, [usages?.palettes]);
 
   const sortFn = useCallback((p1: Palette, p2: Palette) => {
     const [what, direction] = sortPalettes.split('_');
@@ -75,8 +65,8 @@ const usePaletteSort = (): UsePaletteSort => {
     switch (what) {
       case 'usage': {
 
-        const u1 = paletteUsages[p1.shortName] || 0;
-        const u2 = paletteUsages[p2.shortName] || 0;
+        const u1 = paletteUsages?.get(p1.shortName) ?? 0;
+        const u2 = paletteUsages?.get(p2.shortName) ?? 0;
 
         if (u1 < u2) {
           return dir * -1;

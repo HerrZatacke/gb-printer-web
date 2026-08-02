@@ -1,8 +1,9 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
+import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
-import { useEditStore, useItemsStore } from '@/stores/stores';
+import { useEditStore } from '@/stores/stores';
 import { type Palette } from '@/types/Palette';
 
 interface UseEditPalette {
@@ -24,7 +25,7 @@ export const useEditPalette = (): UseEditPalette => {
   const t = useTranslations('useEditPalette');
 
   const { editPalette, cancelEditPalette } = useEditStore();
-  const { palettes, addPalettes } = useItemsStore();
+  const { palettes, updatePalettes } = usePalettes({ list: true });
   const { updateLastSyncLocalNow } = useStores();
 
   const shortName = editPalette?.shortName || '';
@@ -51,7 +52,7 @@ export const useEditPalette = (): UseEditPalette => {
 
   const save = useCallback(() => {
     const savePalette = (updatedPalette: Palette) => {
-      addPalettes([updatedPalette]);
+      updatePalettes([updatedPalette]);
       updateLastSyncLocalNow();
       cancelEditPalette();
     };
@@ -64,7 +65,7 @@ export const useEditPalette = (): UseEditPalette => {
       isPredefined: false,
     });
   }, [
-    addPalettes,
+    updatePalettes,
     canEditShortName,
     cancelEditPalette,
     newName,

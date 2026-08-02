@@ -1,22 +1,22 @@
 import { saveAs } from 'file-saver';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryFrameByHashQueryOptions } from '@/stores/items/queries/binaryFrames';
+import { binaryImageByHashQueryOptions } from '@/stores/items/queries/binaryImages';
 import {
   type TrashCount,
-  ITEMS_STORE_VERSION,
-  useItemsStore,
+  ITEMS_DB_VERSION,
   useInteractionsStore,
 } from '@/stores/stores';
 import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
-import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
-import { localforageReady, localforageImages, localforageFrames } from '@/tools/localforageInstance';
-import { type WrappedLocalForageInstance } from '@/tools/localforageInstance/createWrappedInstance';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
-import { type JSONExportBinary, type JSONExportState } from '@/types/ExportState';
+import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
+import { createJSONExport, type ExportableState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
 import { type Image } from '@/types/Image';
 
@@ -35,21 +35,31 @@ interface TrashItem {
   binary: string;
 }
 
-const getItems = async (keys: string[], storage: WrappedLocalForageInstance<string>): Promise<TrashItem[]> => {
-  await localforageReady();
-  const items = await Promise.all(keys.map(async (hash) => {
-    try {
-      const binary = await storage.getItem(hash);
+interface AnyBinaryByHashQueryOptions {
+  queryKey: readonly unknown[];
+  queryFn: () => Promise<BinaryStoreItem | null>;
+  staleTime: number;
+}
 
-      if (!binary) {
+const getBinaryItems = async (
+  hashes: string[],
+  byHashQueryOptions: (hash: string) => AnyBinaryByHashQueryOptions,
+): Promise<TrashItem[]> => {
+  const queryClient = getQueryClient();
+
+  const items = await Promise.all(hashes.map(async (hash) => {
+    try {
+      const binaryItem = await queryClient.fetchQuery(byHashQueryOptions(hash));
+
+      if (!binaryItem?.data) {
         return null;
       }
 
-      const inflated = await inflate(binary);
+      const inflated = await inflate(binaryItem.data);
       return {
         hash,
         lines: inflated.split('\n'),
-        binary,
+        binary: binaryItem.data,
       };
     } catch {
       return null;
@@ -59,20 +69,23 @@ const getItems = async (keys: string[], storage: WrappedLocalForageInstance<stri
   return items.reduce(reduceItems<TrashItem>, []);
 };
 
+const getBinaryImageItems = (hashes: string[]): Promise<TrashItem[]> => getBinaryItems(hashes, binaryImageByHashQueryOptions);
+const getBinaryFrameItems = (hashes: string[]): Promise<TrashItem[]> => getBinaryItems(hashes, binaryFrameByHashQueryOptions);
+
 const useTrashbin = (): UseTrashbin => {
   const { trashCount, showTrashCount } = useInteractionsStore();
-  const { frames, images } = useItemsStore();
   const { updateTrashCount, setTrashBusy } = useInteractionsStore();
   const t = useTranslations('useTrashbin');
 
   const downloadImages = useCallback(async (): Promise<void> => {
-    const imageHashes = await getTrashImages(images);
-    const deletedImages = await getItems(imageHashes, localforageImages);
+    const imageHashes = await getTrashImages();
+    const deletedImages = await getBinaryImageItems(imageHashes);
 
-    const jsonExportBinary: JSONExportBinary = {};
-    const backupImages = deletedImages.map((image): Image | null => {
+    const binaries: Record<string, string> = {};
+
+    const backupImages: Image[] = deletedImages.map((image): Image | null => {
       try {
-        jsonExportBinary[image.hash] = image.binary;
+        binaries[image.hash] = image.binary;
         return {
           type: 'mono',
           hash: image.hash,
@@ -90,26 +103,28 @@ const useTrashbin = (): UseTrashbin => {
       } catch {
         return null;
       }
-    }).reduce(reduceImagesMonochrome, []);
+    }).filter((i): i is Image => Boolean(i));
 
-
-    const jsonExportState: JSONExportState = { state: {
+    const exportState: ExportableState = {
       images: backupImages,
       lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
-      version: ITEMS_STORE_VERSION,
-    } };
+      version: ITEMS_DB_VERSION,
+    };
 
-    saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_images.json');
-  }, [images, t]);
+    const jsonExport = createJSONExport(exportState, binaries);
+
+    saveAs(new Blob([...JSON.stringify(jsonExport, null, 2)]), 'backup_images.json');
+  }, [t]);
 
   const downloadFrames = useCallback(async (): Promise<void> => {
-    const frameHashes = await getTrashFrames(frames);
-    const deletedFrames = await getItems(frameHashes, localforageFrames);
+    const frameHashes = await getTrashFrames();
+    const deletedFrames = await getBinaryFrameItems(frameHashes);
 
-    const jsonExportBinary: JSONExportBinary = {};
+    const binaries: Record<string, string> = {};
+
     const backupFrames: Frame[] = deletedFrames.map((frame, index) => {
       try {
-        jsonExportBinary[`frame-${frame.hash}`] = frame.binary;
+        binaries[`frame-${frame.hash}`] = frame.binary;
 
         const frameData = JSON.parse(frame.lines[0]) as FrameData;
         const lines = frameData.upper.length + (frameData.left.length * 20) + frameData.lower.length;
@@ -125,42 +140,43 @@ const useTrashbin = (): UseTrashbin => {
       }
     }).reduce(reduceItems<Frame>, []);
 
-    const jsonExportState: JSONExportState = {
-      state: {
-        frames: backupFrames,
-        frameGroups: [
-          {
-            id: 'bak',
-            name: t('reImportedTrashFrames'),
-          },
-        ],
-        lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
-        version: ITEMS_STORE_VERSION,
-      },
+
+    const exportState: ExportableState = {
+      frames: backupFrames,
+      frameGroups: [
+        {
+          id: 'bak',
+          name: t('reImportedTrashFrames'),
+        },
+      ],
+      lastUpdateUTC: Math.floor((new Date()).getTime() / 1000),
+      version: ITEMS_DB_VERSION,
     };
 
-    saveAs(new Blob([...JSON.stringify({ ...jsonExportState, ...jsonExportBinary }, null, 2)]), 'backup_frames.json');
-  }, [t, frames]);
+    const jsonExport = createJSONExport(exportState, binaries);
+
+    saveAs(new Blob([...JSON.stringify(jsonExport, null, 2)]), 'backup_frames.json');
+  }, [t]);
 
   const checkUpdateTrashCount = useCallback(async () => {
     setTrashBusy(true);
 
     const [trashFrames, trashImages] = await Promise.all([
-      getTrashFrames(frames),
-      getTrashImages(images),
+      getTrashFrames(),
+      getTrashImages(),
     ]);
 
     updateTrashCount(trashFrames.length, trashImages.length);
     setTrashBusy(false);
-  }, [frames, images, setTrashBusy, updateTrashCount]);
+  }, [setTrashBusy, updateTrashCount]);
 
   const purgeTrash = useCallback(async (): Promise<void> => {
-    await cleanupStorage({ images, frames });
+    await cleanupStorage();
     showTrashCount(false);
     window.requestAnimationFrame(() => {
       checkUpdateTrashCount();
     });
-  }, [checkUpdateTrashCount, frames, images, showTrashCount]);
+  }, [checkUpdateTrashCount, showTrashCount]);
 
   return {
     showTrashCount,

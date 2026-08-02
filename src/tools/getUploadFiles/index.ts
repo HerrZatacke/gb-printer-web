@@ -1,18 +1,15 @@
-import { SyncToolData } from '@/hooks/useStores';
 import filterDeleteNew from '@/tools/filterDeleteNew';
-import getPrepareRemoteFiles from '@/tools/getPrepareRemoteFiles';
+import { prepareRemoteFiles } from '@/tools/prepareRemoteFiles';
 import { type RepoContents, type RepoTasks, type SyncFile } from '@/types/Export';
 import { type AddToQueueFn } from '@/types/Sync';
 import { getUploadFrames } from './getUploadFrames';
 import { getUploadImages } from './getUploadImages';
 
 const getUploadFiles = async (
-  getSyncToolData: () => SyncToolData,
   repoContents: RepoContents,
   lastUpdateUTC: number,
   addToQueue: AddToQueueFn<unknown>,
 ): Promise<RepoTasks> => {
-  const prepareRemoteFiles = getPrepareRemoteFiles(getSyncToolData);
   const missingLocally: string[] = []; // ToDo: is this always empty?
 
   const {

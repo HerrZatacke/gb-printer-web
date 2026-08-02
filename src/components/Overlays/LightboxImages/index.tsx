@@ -16,7 +16,9 @@ function LightboxImages() {
   const t = useTranslations('LightboxImage');
 
   const {
-    currentInfo,
+    currentIndex,
+    currentTitle,
+    currentCreated,
     size,
     renderHashes,
     isFullscreen,
@@ -30,12 +32,11 @@ function LightboxImages() {
 
   const { formatter } = useDateFormat();
 
-
-  if (!size || !currentInfo) { return null; }
+  if (!size || currentIndex === null) { return null; }
 
   return (
     <Lightbox
-      header={currentInfo.title}
+      header={currentTitle}
       deny={close}
       contentWidth="100%"
       contentHeight="100%"
@@ -81,7 +82,7 @@ function LightboxImages() {
             <KeyboardArrowLeftIcon />
           </IconButton>
 
-          { currentInfo && (
+          { currentIndex !== null && (
             <Stack
               direction="row"
               gap={0}
@@ -127,11 +128,11 @@ function LightboxImages() {
           justifyContent="center"
         >
           <Typography variant="body2">
-            {t('imageCounter', { current: currentInfo.index + 1, total: size })}
+            {t('imageCounter', { current: currentIndex + 1, total: size })}
           </Typography>
-          {currentInfo.created && (
+          {currentCreated && (
             <Typography variant="body2">
-              {formatter(currentInfo.created)}
+              {formatter(currentCreated)}
             </Typography>
           )}
         </Stack>

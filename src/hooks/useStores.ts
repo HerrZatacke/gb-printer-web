@@ -1,12 +1,16 @@
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
+import { useFrameGroups } from '@/hooks/useFrameGroups';
+import { useFrames } from '@/hooks/useFrames';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImages } from '@/hooks/useImages';
+import { usePalettes } from '@/hooks/usePalettes';
 import {
-  ImageSelectionMode, type ItemsState,
+  ImageSelectionMode,
   useDialogsStore,
   useEditStore,
   useFiltersStore,
   useImportsStore,
   useInteractionsStore,
-  useItemsStore,
   useStoragesStore,
 } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
@@ -14,20 +18,15 @@ import { type Dialog } from '@/types/Dialog';
 import { type ExportableState } from '@/types/ExportState';
 import { type Image } from '@/types/Image';
 
-export interface SyncToolData {
-  itemsState: ItemsState;
-}
-
 export interface UseStores {
-  addImages: (images: Image[]) => void;
-  deleteImages: (hashes: string[]) => void;
+  addImages: (images: Image[]) => Promise<void>;
+  deleteImages: (hashes: string[]) => Promise<void>;
   dismissDialog: (index: number) => void;
-  globalUpdate: (state: Partial<ExportableState>) => void;
+  globalUpdate: (state: Partial<ExportableState>) => Promise<void>;
   importQueueCancel: () => void;
   setDialog: (dialog: Dialog) => void;
-  updateImages: (images: Image[]) => void;
+  updateImages: (images: Image[]) => Promise<void>;
   updateLastSyncLocalNow: () => void;
-  getSyncToolData: () => SyncToolData;
 }
 
 export const useStores = (): UseStores => {
@@ -36,26 +35,14 @@ export const useStores = (): UseStores => {
   const { updateRecentImports, updateImageSelection } = useFiltersStore();
   const { importQueueCancel } = useImportsStore();
   const { setPrinterBusy } = useInteractionsStore();
-  const itemsState = useItemsStore();
 
-  // Update refs for github and dropbox exports
-  const itemsStateRef = useRef(itemsState);
+  const { updateImages, deleteImagesByHashes } = useImages({});
+  const { updateImageGroups } = useImageGroups({});
 
-  useLayoutEffect(() => {
-    itemsStateRef.current = itemsState;
-  }, [itemsState]);
-
-  const {
-    addImages,
-    deleteImages,
-    setImageGroups,
-    updateFrameGroups,
-    updateImages,
-    setFrames,
-    setImages,
-    setPalettes,
-  } = itemsState;
   const { setSyncLastUpdate } = useStoragesStore();
+  const { updatePalettes } = usePalettes({});
+  const { updateFrames } = useFrames({});
+  const { updateFrameGroups } = useFrameGroups();
 
   return useMemo(() => {
     const updateLastSyncLocalNow = () => setSyncLastUpdate('local', Math.floor((new Date()).getTime() / 1000));
@@ -65,98 +52,85 @@ export const useStores = (): UseStores => {
       importQueueCancel();
     };
 
-    const combinedAddImages = (images: Image[]) => {
-      addImages(images);
+    const combinedAddImages = async (images: Image[]) => {
+      await updateImages(images);
       dismissDialog(0);
       updateLastSyncLocalNow();
       combinedImportQueueCancel();
       updateRecentImports(images);
     };
 
-    const combinedUpdateImages = (images: Image[]) => {
-      updateImages(images);
+    const combinedUpdateImages = async (images: Image[]) => {
+      await updateImages(images);
       updateLastSyncLocalNow();
     };
 
-    const combinedDeleteImages = (hashes: string[]) => {
-      deleteImages(hashes);
+    const combinedDeleteImages = async (hashes: string[]) => {
+      await deleteImagesByHashes(hashes);
       updateImageSelection(ImageSelectionMode.REMOVE, hashes);
       dismissDialog(0);
       updateLastSyncLocalNow();
     };
 
-    const combinedGlobalUpdate = (state: Partial<ExportableState>) => {
+    const globalUpdate = async (newState: Partial<ExportableState>) => {
       cancelEditFrame();
       cancelEditPalette();
       cancelEditImages();
 
-      if (state.lastUpdateUTC) {
-        setSyncLastUpdate('local', state.lastUpdateUTC);
+      if (newState.lastUpdateUTC) {
+        setSyncLastUpdate('local', newState.lastUpdateUTC);
       } else {
         updateLastSyncLocalNow();
       }
 
-      if (state.palettes) {
-        // hard replace all palettes -> merging happens in src/javascript/tools/mergeStates/index.ts
-        setPalettes(state.palettes);
+      if (newState.palettes) {
+        await updatePalettes(newState.palettes, true);
       }
 
-      if (state.images) {
-        // hard replace all images -> merging happens in src/javascript/tools/mergeStates/index.ts
-        setImages(state.images);
-        updateRecentImports(state.images);
+      if (newState.images) {
+        await updateImages(newState.images, true);
+        updateRecentImports(newState.images);
       }
 
-      if (state.frames) {
-        // hard replace all frames -> merging happens in src/javascript/tools/mergeStates/index.ts
-        setFrames(state.frames);
+      if (newState.frames) {
+        await updateFrames(newState.frames, true);
       }
 
-      if (state.frameGroups) {
-        updateFrameGroups(state.frameGroups); // updateFrameGroups merges
+      if (newState.frameGroups) {
+        await updateFrameGroups(newState.frameGroups, true); // updateFrameGroups merges
       }
 
-      if (state.imageGroups) {
-        setImageGroups(state.imageGroups);
+      if (newState.imageGroups) {
+        await updateImageGroups(newState.imageGroups, true);
       }
-    };
-
-    const getSyncToolData = (): SyncToolData => {
-      console.log('called!');
-      return {
-        itemsState: itemsStateRef.current,
-      };
     };
 
     return ({
       addImages: combinedAddImages,
       deleteImages: combinedDeleteImages,
       dismissDialog,
-      globalUpdate: combinedGlobalUpdate,
+      globalUpdate,
       importQueueCancel: combinedImportQueueCancel,
       setDialog,
       updateImages: combinedUpdateImages,
       updateLastSyncLocalNow,
-      getSyncToolData,
     });
   }, [
-    addImages,
     cancelEditFrame,
     cancelEditImages,
     cancelEditPalette,
-    deleteImages,
+    deleteImagesByHashes,
     dismissDialog,
     importQueueCancel,
     setDialog,
-    setFrames,
-    setImages,
-    setPalettes,
-    setImageGroups,
+    updateFrames,
+    updatePalettes,
     setPrinterBusy,
     setSyncLastUpdate,
     updateFrameGroups,
     updateImageSelection,
     updateImages,
+    updateImageGroups,
     updateRecentImports,
   ]);
 };

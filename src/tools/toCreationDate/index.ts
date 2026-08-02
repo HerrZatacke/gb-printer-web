@@ -2,9 +2,14 @@ import dayjs from 'dayjs';
 import { Date } from '@/tools/safeDate';
 
 const FORMAT = 'YYYY-MM-DD HH:mm:ss:SSS';
+const LEGACY_FORMAT_REGEX = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+
+let rollingMillis = 0;
 
 export const fromCreationDate = (creationDate: string): Date => {
-  const d = dayjs(creationDate, FORMAT, true); // strict = true: no loose fallback parsing
+  const normalized = LEGACY_FORMAT_REGEX.test(creationDate) ? `${creationDate}:${(rollingMillis++ % 1000).toString().padStart(3, '0')}` : creationDate;
+
+  const d = dayjs(normalized, FORMAT, true); // strict = true: no loose fallback parsing
 
   if (!d.isValid()) {
     console.warn(`fromCreationDate received malformed creationDate "${creationDate}". Must be "${FORMAT}"`);

@@ -1,104 +1,98 @@
-import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
-import { longestCommonSubstring } from 'string-algorithms';
-import { DialoqQuestionType } from '@/consts/dialog';
-import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { NEW_GROUP } from '@/hooks/useEditImageGroup';
+import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
 import {
-  useDialogsStore,
-  useEditStore,
-  useFiltersStore,
-  useItemsStore,
-} from '@/stores/stores';
+  deleteImageGroupsByIdsAction,
+  findGroupByFullSlug,
+  imageGroupsFullTreeQueryOptions,
+  imageGroupsListQueryOptions,
+  moveImagesToGroupAction,
+  updateImageGroupAction,
+  updateImageGroupsAction,
+} from '@/stores/items/queries/imageGroups';
+import { cleanFullSlug } from '@/tools/cleanSlug';
+import {
+  type SerializableImageGroup,
+  type TreeImageGroup,
+} from '@/types/ImageGroup';
 
-interface UseImageGroups {
-  resetGroups: () => void;
-  createGroup: (hash: string) => void;
-  editGroup: (id: string) => void;
-  deleteGroup: (id: string) => void;
+export interface UseImageGroupsOptions {
+  list?: boolean;
+  tree?: boolean;
+  bySlug?: string;
 }
 
-export const useImageGroups = (): UseImageGroups => {
-  const t = useTranslations('useImageGroups');
-  const { view } = useGalleryTreeContext();
-  const { dismissDialog, setDialog } = useDialogsStore();
-  const { setEditImageGroup } = useEditStore();
-  const { deleteImageGroup, setImageGroups, images } = useItemsStore();
-  const { imageSelection } = useFiltersStore();
+export interface UseImageGroups {
+  imageGroups: SerializableImageGroup[];
+  isLoadingList: boolean;
+  imageGroupTree: TreeImageGroup | null;
+  isLoadingTree: boolean;
+  byFullSlug: TreeImageGroup | null;
+  isLoadingByFullSlug: boolean;
+  moveImagesToGroup: (images: string[], targetImageGroupId?: string) => Promise<void>;
+  updateImageGroups: (imageGroups: SerializableImageGroup[], purge?: boolean) => Promise<void>;
+  updateImageGroup: (group: SerializableImageGroup, parentGroupId: string) => Promise<void>;
+  deleteImageGroupsByIds: (ids: string[]) => Promise<void>;
+}
 
-  const newGroupTitle = useMemo<string>(() => {
-    if (!imageSelection.length) {
-      return '';
-    }
+export const useImageGroups = ({ list, tree, bySlug }: UseImageGroupsOptions): UseImageGroups => {
+  const queryClient = useQueryClient();
 
-    const titles = images
-      .filter(({ hash }) => imageSelection.includes(hash))
-      .map(({ title }) => title)
-      .filter((title) => title.length > 3);
+  const listQuery = useQuery({
+    ...imageGroupsListQueryOptions(),
+    enabled: Boolean(list),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
 
-    const groupTitle = longestCommonSubstring(titles);
+  const treeQuery = useQuery({
+    ...imageGroupsFullTreeQueryOptions(),
+    enabled: Boolean(tree),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
 
-    const rawTitle = groupTitle.filter((part) => (part.length > 3))[0]?.trim();
-
-    if (!rawTitle) {
-      return t('newGroupDefault');
-    }
-
-    return rawTitle
-      .replace(/[_-]/g, ' ')
-      .replace(/^\s*\d+\s+|\s+\d+\s*$/g, '')
-      .trim();
-  }, [imageSelection, images, t]);
-
-  return {
-    resetGroups: () => {
-      setDialog({
-        message: t('resetGroupsMessage'),
-        questions: () => [{
-          key: 'info',
-          type: DialoqQuestionType.INFO,
-          label: t('resetGroupsInfo'),
-        }],
-        confirm: async () => {
-          dismissDialog(0);
-          setImageGroups([]);
-        },
-        deny: async () => {
-          dismissDialog(0);
-        },
-      });
-    },
-    createGroup: (hash: string) => {
-      setEditImageGroup({
-        groupId: NEW_GROUP,
-        newGroupCover: hash,
-        newGroupTitle,
-      });
-    },
-    editGroup: (id: string) => {
-      setEditImageGroup({ groupId: id });
-    },
-    deleteGroup: (id: string) => {
-      const deleteGroup = view.groups.find((group) => group.id === id);
-      if (!deleteGroup) {
-        return;
+  const byFullSlugQuery = useQuery({
+    ...imageGroupsFullTreeQueryOptions(),
+    select: (result) => {
+      if (typeof bySlug !== 'string') {
+        return null;
       }
 
-      setDialog({
-        message: t('deleteGroupMessage'),
-        questions: () => [{
-          key: 'info',
-          type: DialoqQuestionType.INFO,
-          label: t('deleteGroupInfo', { groupTitle: deleteGroup.title || deleteGroup.slug }),
-        }],
-        confirm: async () => {
-          dismissDialog(0);
-          deleteImageGroup(id);
-        },
-        deny: async () => {
-          dismissDialog(0);
-        },
-      });
+      return findGroupByFullSlug(result.item, cleanFullSlug(bySlug)) ?? null;
     },
+    enabled: typeof bySlug === 'string',
+    retry: false,
+  });
+
+  const updateImageGroups = useCallback(async (imageGroups: SerializableImageGroup[], purge = false): Promise<void> => {
+    await updateImageGroupsAction(queryClient, imageGroups, purge);
+  }, [queryClient]);
+
+  const updateImageGroup = useCallback(async (group: SerializableImageGroup, parentGroupId: string): Promise<void> => {
+    await updateImageGroupAction(queryClient, group, parentGroupId);
+  }, [queryClient]);
+
+  const moveImagesToGroup = useCallback(async (images: string[], targetImageGroupId?: string): Promise<void> => {
+    await moveImagesToGroupAction(queryClient, images, targetImageGroupId);
+  }, [queryClient]);
+
+  const deleteImageGroupsByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
+    await deleteImageGroupsByIdsAction(queryClient, deleteIds);
+  }, [queryClient]);
+
+  return {
+    imageGroups: listQuery.data?.items ?? [],
+    isLoadingList: listQuery.isLoading,
+
+    imageGroupTree: treeQuery.data?.item ?? null,
+    isLoadingTree: treeQuery.isLoading,
+
+    byFullSlug: byFullSlugQuery.data ?? null,
+    isLoadingByFullSlug: byFullSlugQuery.isLoading,
+
+    moveImagesToGroup,
+    updateImageGroups,
+    updateImageGroup,
+    deleteImageGroupsByIds,
   };
 };

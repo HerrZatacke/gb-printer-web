@@ -1,119 +1,125 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useFiltersStore, useSettingsStore } from '@/stores/stores';
-import { ROOT_ID } from '@/tools/createTreeRoot';
-import { getFilteredImages } from '@/tools/getFilteredImages';
-import { type Image } from '@/types/Image';
+import { collectGroupsByFullSlug, collectGroupsById } from '@/contexts/GalleryTreeContext/reducePaths';
+import { useImageQueryParams } from '@/hooks/useImageQueryParams';
+import { useUrl } from '@/hooks/useUrl';
+import { imageGroupsFullTreeQueryOptions } from '@/stores/items/queries/imageGroups';
+import { hashesByGroupIdQueryOptions } from '@/stores/items/queries/images';
+import { useSettingsStore } from '@/stores/stores';
+import { cleanFullSlug } from '@/tools/cleanSlug';
+import { delay } from '@/tools/delay';
 import { type TreeImageGroup } from '@/types/ImageGroup';
+import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 
 export interface UseNavigationTools {
-  getGroupPath: (groupId: string, pageIndex: number) => string;
-  currentGroup: TreeImageGroup;
-  getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => number;
-  navigateToGroup: (groupId: string, pageIndex: number) => void;
-  navigateToImage: (hash: string) => void;
-}
-
-interface ShouldNavigate {
-  imageHash? :string;
-  group?: {
-    id: string;
-    pageIndex: number;
-  };
+  isNavigating: boolean;
+  getGroupPath: (groupId: string, pageIndex: number) => Promise<string>;
+  getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => Promise<number>;
+  navigateToGroup: (groupId: string, pageIndex: number, replaceHistory: boolean) => Promise<void>;
+  navigateToImage: (hash: string, replaceHistory: boolean) => Promise<void>;
 }
 
 export const useContextHook = (): UseNavigationTools => {
   const router = useRouter();
-  const { paths, root, isWorking, path: currentPath, getUrl } = useGalleryTreeContext();
-  const [shouldNavigate, setShouldNavigate] = useState<ShouldNavigate | false>(false);
-  const { sortBy, filtersTags, filtersFrames, filtersPalettes, recentImports } = useFiltersStore();
+  const queryClient = useQueryClient();
+  const { getUrl } = useGalleryTreeContext();
+  const { searchParams } = useUrl();
   const { pageSize } = useSettingsStore();
+  const imageQueryParams = useImageQueryParams();
+  const [isNavigating, setIsNavigating] = useState(false);
 
-  const imageFilter = useCallback((group: TreeImageGroup): Image[] => (
-    getFilteredImages(group, {
-      filtersTags,
-      filtersFrames,
-      filtersPalettes,
-      sortBy,
-      recentImports,
-    })
-  ), [filtersFrames, filtersPalettes, filtersTags, recentImports, sortBy]);
+  useEffect(() => {
+    delay(1)
+      .then(() => {
+        setIsNavigating(false);
+      });
+  }, [searchParams]);
 
-  const getImagePageIndexInGroup = useCallback((imageHash: string, parentGroup: TreeImageGroup) => {
-    const sortedImages = imageFilter(parentGroup);
-    const imageIndex = sortedImages.findIndex(({ hash }) => (
-      hash === imageHash
-    ));
-
+  const getImagePageIndexInGroup = useCallback(async (imageHash: string, parentGroup: TreeImageGroup): Promise<number> => {
+    const { items: sortedImageHashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(parentGroup.id, true, imageQueryParams.sort, imageQueryParams.filters));
+    const imageIndex = sortedImageHashes.findIndex((hash) => hash === imageHash);
+    if (imageIndex === -1) {
+      return 0;
+    }
     return Math.floor(imageIndex / pageSize);
-  }, [imageFilter, pageSize]);
+  }, [imageQueryParams.filters, imageQueryParams.sort, pageSize, queryClient]);
 
-  const getGroupPath = useCallback((groupId: string, pageIndex: number): string => {
+
+  const getGroupPath = useCallback(async (groupId: string, pageIndex: number): Promise<string> => {
     if (groupId === ROOT_ID) {
       return getUrl({ pageIndex, group: '' });
     }
 
-    const groupPath = paths.find(({ group: { id } }) => (groupId === id))?.absolutePath || '';
-    return getUrl({ pageIndex, group: groupPath });
-  }, [getUrl, paths]);
+    const { item: root } = await queryClient.fetchQuery({
+      ...imageGroupsFullTreeQueryOptions(),
+      staleTime: 0,
+    });
 
-  const currentGroup = useMemo<TreeImageGroup>(() => (
-    paths.find(({ absolutePath }) => (absolutePath === currentPath))?.group || root
-  ), [currentPath, paths, root]);
+    const groupsById = root ? collectGroupsById([root]): null;
 
-  const getPagedImagePath = useCallback((imageHash: string): string => {
-    const pathMap = paths.find(({ group: { images } }) => (
-      images.map(({ hash }) => hash).includes(imageHash)
-    ));
+    if (!groupsById) {
+      return '';
+    }
 
-    const viewSlug = pathMap?.absolutePath || '';
-    const group = pathMap?.group || root;
+    const groupPath = groupsById.get(groupId)?.fullSlug;
 
-    const pageIndex = getImagePageIndexInGroup(imageHash, group);
+    if (!groupPath) {
+      return '';
+    }
 
-    return getUrl({ pageIndex, group: viewSlug });
-  }, [getImagePageIndexInGroup, getUrl, paths, root]);
+    return getUrl({ pageIndex, group: cleanFullSlug(groupPath) });
+  }, [getUrl, queryClient]);
 
-  const navigateToGroup = useCallback((groupId: string, pageIndex: number) => {
-    if (isWorking) { return; }
+  const getPagedImagePath = useCallback(async (imageHash: string): Promise<string> => {
+    const { item: root } = await queryClient.fetchQuery(imageGroupsFullTreeQueryOptions());
+    const freshPaths = collectGroupsByFullSlug([root]);
 
-    // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
-    window.setTimeout(() => {
-      setShouldNavigate({
-        group: {
-          id: groupId,
-          pageIndex,
-        },
-      });
-    }, 1);
-  }, [isWorking]);
+    const group = [...freshPaths.values()].find(({ images }) => images.includes(imageHash));
 
-  const navigateToImage = useCallback((hash: string) => {
-    // use a timeout so that treeContext (and worker) can become "working" before triggering navigation
-    window.setTimeout(() => {
-      setShouldNavigate({ imageHash: hash });
-    }, 1);
-  }, []);
+    if (!group) {
+      return '';
+    }
 
-  useEffect(() => {
-    if (isWorking || !shouldNavigate) { return; }
+    const viewSlug = group.fullSlug;
+    const pageIndex = group ? await getImagePageIndexInGroup(imageHash, group) : 0;
 
-    const handle = window.setTimeout(() => {
-      if (shouldNavigate.imageHash) {
-        router.push(getPagedImagePath(shouldNavigate.imageHash));
-        setShouldNavigate(false);
-      } else if (shouldNavigate.group) {
-        router.push(getGroupPath(shouldNavigate.group.id, shouldNavigate.group.pageIndex));
-        setShouldNavigate(false);
+    return getUrl({ pageIndex, group: cleanFullSlug(viewSlug) });
+  }, [getImagePageIndexInGroup, getUrl, queryClient]);
+
+  const navigateToGroup = useCallback(async (groupId: string, pageIndex: number, replaceHistory: boolean) => {
+    setIsNavigating(true);
+    const groupPath = await getGroupPath(groupId, pageIndex);
+    console.log(`Navigating to group "${groupPath}", replaceHistory:${replaceHistory}`);
+    if (groupPath) {
+      if (replaceHistory) {
+        router.replace(groupPath);
+      } else {
+        router.push(groupPath);
       }
-    }, 1);
+    } else {
+      setIsNavigating(false);
+    }
+  }, [getGroupPath, router]);
 
-    return () => { window.clearTimeout(handle); };
-  }, [getGroupPath, getPagedImagePath, isWorking, router, shouldNavigate]);
+  const navigateToImage = useCallback(async (hash: string, replaceHistory: boolean) => {
+    setIsNavigating(true);
+    const pagedImagePath = await getPagedImagePath(hash);
+    if (pagedImagePath) {
+      console.log(`Navigating to image "${pagedImagePath}", replaceHistory:${replaceHistory}`);
+      if (replaceHistory) {
+        router.replace(pagedImagePath);
+      } else {
+        router.push(pagedImagePath);
+      }
+    } else {
+      setIsNavigating(false);
+    }
+  }, [getPagedImagePath, router]);
 
   return {
-    currentGroup,
+    isNavigating,
     getGroupPath,
     getImagePageIndexInGroup,
     navigateToGroup,
