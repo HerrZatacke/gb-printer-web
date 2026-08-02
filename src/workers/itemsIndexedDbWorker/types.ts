@@ -22,14 +22,6 @@ import {
   StoredSerializableImageGroupSchema,
   ItemsReferenceListSchema,
 } from '@/workers/itemsIndexedDbWorker/schemas';
-export {
-  GroupItemGroupSchema,
-  GroupItemImageSchema,
-  GroupItemSchema,
-  StoredImageSchema,
-  StoredSerializableImageGroupSchema,
-  ItemsReferenceListSchema,
-} from '@/workers/itemsIndexedDbWorker/schemas';
 
 export type StoredImage = z.infer<typeof StoredImageSchema>;
 export type StoredSerializableImageGroup = z.infer<typeof StoredSerializableImageGroupSchema>;

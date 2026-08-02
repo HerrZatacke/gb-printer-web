@@ -9,14 +9,16 @@ import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/querie
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
 import {
-  type ImageQueryParams,
-  type GroupItem,
   GroupItemSchema,
   ItemsReferenceListSchema,
+  StoredImageSchema,
+} from '@/workers/itemsIndexedDbWorker/schemas';
+import {
+  type ImageQueryParams,
+  type GroupItem,
   type ItemsReferenceList,
   type ItemsSourceResponse,
   type StoredImage,
-  StoredImageSchema,
   type ImageQueryFilters,
   type ImageQuerySort,
   type ItemsSourceTotalResponse,

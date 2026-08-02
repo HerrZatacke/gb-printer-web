@@ -6,7 +6,7 @@ import {
   type ImageQueryFilters,
   type ItemsHostApi,
   type StoredImage,
-  StoredSerializableImageGroup,
+  type StoredSerializableImageGroup,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getMatcher = async (

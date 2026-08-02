@@ -1,5 +1,5 @@
 import { type TreeImageGroup } from '@/types/ImageGroup';
-import { StoredSerializableImageGroup } from '@/workers/itemsIndexedDbWorker/types';
+import { type StoredSerializableImageGroup } from '@/workers/itemsIndexedDbWorker/types';
 
 const MAX_TREE_DEPTH = 20;
 

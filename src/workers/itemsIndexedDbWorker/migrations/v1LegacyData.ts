@@ -10,11 +10,13 @@ import { FrameGroupSchema } from '@/types/FrameGroup';
 import { PaletteSchema } from '@/types/Palette';
 import { PluginSchema } from '@/types/Plugin';
 import {
+  StoredImageSchema,
+  StoredSerializableImageGroupSchema,
+} from '@/workers/itemsIndexedDbWorker/schemas';
+import {
   type AfterUpgradeFn,
   type ItemsDB,
   type ItemsHostApi,
-  StoredImageSchema,
-  StoredSerializableImageGroupSchema,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const OLD_DB_NAME = 'GB Printer Web';

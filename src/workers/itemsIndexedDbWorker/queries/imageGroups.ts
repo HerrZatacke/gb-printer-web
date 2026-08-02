@@ -14,11 +14,11 @@ import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildT
 import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
+import { StoredSerializableImageGroupSchema } from '@/workers/itemsIndexedDbWorker/schemas';
 import {
   type ItemsSourceTotalResponse,
   type RootItemSourceResponse,
   type StoredSerializableImageGroup,
-  StoredSerializableImageGroupSchema,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const sortById = sortBy<StoredSerializableImageGroup>('id');
