@@ -4,7 +4,6 @@ import { useFrames } from '@/hooks/useFrames';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { useImages } from '@/hooks/useImages';
 import { usePalettes } from '@/hooks/usePalettes';
-import { runMaintenanceAction } from '@/stores/items/queries/global';
 import {
   ImageSelectionMode,
   useDialogsStore,
@@ -104,8 +103,6 @@ export const useStores = (): UseStores => {
       if (newState.imageGroups) {
         await updateImageGroups(newState.imageGroups, true);
       }
-
-      await runMaintenanceAction();
     };
 
     return ({

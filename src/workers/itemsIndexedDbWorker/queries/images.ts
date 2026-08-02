@@ -3,7 +3,7 @@ import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
 import { type Image, ImageSchema } from '@/types/Image';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
+import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { facetFromImage, getFacetMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
@@ -179,6 +179,7 @@ export const updateImages = async (images: Image[], purge: boolean): Promise<voi
 
     await Promise.all(parsedImages.map((image) => store.put(image)));
     await tx.done;
+    await startMaintenanceTasks(db);
   } else {
     console.error(error);
   }
@@ -193,5 +194,5 @@ export const deleteImagesByHashes = async (hashes: string[]): Promise<void> => {
   await Promise.all(hashes.map((hash) => store.delete(hash)));
   await tx.done;
 
-  await reconcileImageGroups(db);
+  await startMaintenanceTasks(db);
 };

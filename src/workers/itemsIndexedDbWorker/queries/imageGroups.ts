@@ -1,3 +1,4 @@
+import { IDBPDatabase } from 'idb';
 import z from 'zod';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
@@ -7,7 +8,7 @@ import {
   type SerializableImageGroup,
 } from '@/types/ImageGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
+import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSlugs';
 import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
 import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildTree';
@@ -16,6 +17,7 @@ import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/gene
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
 import { StoredSerializableImageGroupSchema } from '@/workers/itemsIndexedDbWorker/schemas';
 import {
+  ItemsDB,
   type ItemsSourceTotalResponse,
   type RootItemSourceResponse,
   type StoredSerializableImageGroup,
@@ -96,14 +98,13 @@ export const updateImageGroups = async (imageGroups: SerializableImageGroup[], p
     await Promise.all(parsedGroups.map((group) => store.put(group)));
     await tx.done;
 
-    await reconcileImageGroups(db);
+    await startMaintenanceTasks(db);
   } else {
     console.error(error);
   }
 };
 
-const deleteImageGroupById = async (id: string): Promise<void> => {
-  const db = await getDb();
+const deleteImageGroupById = async (id: string, db: IDBPDatabase<ItemsDB>): Promise<void> => {
   const tx = db.transaction('imagegroups', 'readwrite');
   const store = tx.store;
 
@@ -134,12 +135,14 @@ const deleteImageGroupById = async (id: string): Promise<void> => {
 
   await store.delete(id);
   await tx.done;
-
-  await reconcileImageGroups(db);
 };
 
 export const deleteImageGroupsByIds = async (ids: string[]): Promise<void> => {
+  const db = await getDb();
+
   for (const id of ids) {
-    await deleteImageGroupById(id);
+    await deleteImageGroupById(id, db);
   }
+
+  await startMaintenanceTasks(db);
 };
