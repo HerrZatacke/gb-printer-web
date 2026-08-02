@@ -1,106 +1,75 @@
-import { delay } from '@/tools/delay';
-import { localforageFrames, localforageImages, localforageReady } from '@/tools/localforageInstance';
-import { del, delFrame } from '@/tools/storage';
-import { type MonochromeImage, type RGBNImage, type Image } from '@/types/Image';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryFrameHashesQueryOptions } from '@/stores/items/queries/binaryFrames';
+import { binaryImageHashesQueryOptions } from '@/stores/items/queries/binaryImages';
+import { framesByHashesQueryOptions } from '@/stores/items/queries/frames';
+import { imagesByAnyHashesQueryOptions } from '@/stores/items/queries/images';
+import { deleteBinaryFrame, deleteBinaryImage } from '@/tools/storage';
 
-interface CheckFrame {
-  hash: string;
-}
-
-const hashIsUsedInRGBN = (hash: string, images: RGBNImage[]): boolean => (
-  !!images.find(({ hashes }) => {
-    if (!hashes) {
-      return false;
-    }
-
-    return Object.values(hashes).includes(hash);
-  })
-);
-
-const hashIsUsedInMonochrome = (hash: string, images: MonochromeImage[]): boolean => (
-  !!images.find((image) => image.hash === hash)
-);
-
-const imageIsDeleted = (images: Image[]) => (deleteHash: string): boolean => (
-  !hashIsUsedInRGBN(deleteHash, images as RGBNImage[]) &&
-  !hashIsUsedInMonochrome(deleteHash, images as MonochromeImage[])
-);
-
-const frameIsUsed = (hash: string, frames: CheckFrame[]): boolean => (
-  !!frames.find((frame) => frame.hash === hash)
-);
-
-const deleteFrameFromStorage = (frames: CheckFrame[]) => (deleteHash: string): void => {
-  if (!frameIsUsed(deleteHash, frames)) {
-    delFrame(deleteHash);
-  }
+const isImageDeleted = async (hash: string): Promise<boolean> => {
+  const queryClient = getQueryClient();
+  const res = await queryClient.fetchQuery(imagesByAnyHashesQueryOptions([hash]));
+  const { items: [{ items: [image] }] } = res;
+  return !image;
 };
 
-const deleteImageFromStorage = (images: Image[]) => (deleteHash: string): void => {
-  if (
-    !hashIsUsedInRGBN(deleteHash, images as RGBNImage[]) &&
-    !hashIsUsedInMonochrome(deleteHash, images as MonochromeImage[])
-  ) {
-    del(deleteHash);
-  }
-};
+export const getTrashImages = async (): Promise<string[]> => {
+  const queryClient = getQueryClient();
+  const { items: storedHashes } = await queryClient.fetchQuery(binaryImageHashesQueryOptions());
 
-export const cleanupStorage = async ({
-  images,
-  frames,
-}: {
-  images: Image[];
-  frames: CheckFrame[];
-}): Promise<void> => {
-  await localforageReady();
-  const storedImages = await localforageImages.keys();
-  storedImages.forEach(deleteImageFromStorage(images));
-
-  const storedFrames = await localforageFrames.keys();
-  storedFrames.forEach(deleteFrameFromStorage(frames));
-};
-
-
-export const getTrashImages = async (images: Image[]): Promise<string[]> => {
-  await localforageReady();
-  const storedHashes = await localforageImages.keys();
-  const isDeleted = imageIsDeleted(images);
-
+  const BATCH_SIZE = 150;
   const results: string[] = [];
 
-  for (let i = 0; i < storedHashes.length; i++) {
-    const hash = storedHashes[i];
-    if (!hash.startsWith('dummy') && isDeleted(hash)) {
-      results.push(hash);
-    }
+  for (let i = 0; i < storedHashes.length; i += BATCH_SIZE) {
+    const batch = storedHashes.slice(i, i + BATCH_SIZE);
+    const deletedFlags = await Promise.all(batch.map((hash) => isImageDeleted(hash)));
 
-    // Yield to the event loop to keep UI responsive
-    if (i % 20 === 0) await delay(0);
+    for (let j = 0; j < batch.length; j++) {
+      if (deletedFlags[j]) {
+        results.push(batch[j]);
+      }
+    }
   }
 
   return results;
 };
 
-const frameIsDeleted = (frames: CheckFrame[]) => (hash: string): boolean => (
-  !frames.find((frame) => frame.hash === hash)
-);
+const isFrameDeleted = async (hash: string): Promise<boolean> => {
+  const queryClient = getQueryClient();
+  const res = await queryClient.fetchQuery(framesByHashesQueryOptions([hash]));
+  const { items: [frame] } = res;
+  return !frame;
+};
 
-export const getTrashFrames = async (frames: CheckFrame[]): Promise<string[]> => {
-  await localforageReady();
-  const storedHashes = await localforageFrames.keys();
-  const isDeleted = frameIsDeleted(frames);
+export const getTrashFrames = async (): Promise<string[]> => {
+  const queryClient = getQueryClient();
+  const { items: storedHashes } = await queryClient.fetchQuery(binaryFrameHashesQueryOptions());
 
+  const BATCH_SIZE = 50;
   const results: string[] = [];
 
-  for (let i = 0; i < storedHashes.length; i++) {
-    const hash = storedHashes[i];
-    if (!hash.startsWith('dummy') && isDeleted(hash)) {
-      results.push(hash);
-    }
+  const candidates = storedHashes.filter((hash) => !hash.startsWith('dummy'));
 
-    // Yield to the event loop to keep UI responsive
-    if (i % 20 === 0) await delay(0);
+
+  for (let i = 0; i < candidates.length; i += BATCH_SIZE) {
+    const batch = candidates.slice(i, i + BATCH_SIZE);
+    const deletedFlags = await Promise.all(batch.map((hash) => isFrameDeleted(hash)));
+
+    for (let j = 0; j < batch.length; j++) {
+      if (deletedFlags[j]) {
+        results.push(batch[j]);
+      }
+    }
   }
 
   return results;
+};
+
+export const cleanupStorage = async (): Promise<void> => {
+  const trashImages = await getTrashImages();
+  const trashFrames = await getTrashFrames();
+
+  await Promise.all([
+    ...trashFrames.map((deleteHash) => deleteBinaryFrame(deleteHash)),
+    ...trashImages.map((deleteHash) => deleteBinaryImage(deleteHash)),
+  ]);
 };

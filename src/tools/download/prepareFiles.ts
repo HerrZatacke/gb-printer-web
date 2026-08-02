@@ -16,7 +16,6 @@ export interface PrepareFilesOptions {
   exportScaleFactors: number[];
   exportFileTypes: string[];
   handleExportFrame: ExportFrameMode;
-  palettes: Palette[];
   fileNameStyle: FileNameStyle;
 }
 
@@ -28,7 +27,6 @@ export const prepareFiles = async (
       exportScaleFactors,
       exportFileTypes,
       handleExportFrame,
-      palettes,
       fileNameStyle,
     }: PrepareFilesOptions,
   ): Promise<DownloadInfo[]> => {
@@ -37,7 +35,7 @@ export const prepareFiles = async (
     const lockFrame = image.lockFrame || false;
     const rotation = image.rotation || 0;
 
-    const { palette, framePalette } = getImagePalettes(palettes, image);
+    const { palette, framePalette } = await getImagePalettes(image);
 
     if (!palette) {
       throw new Error('Palette missing?');

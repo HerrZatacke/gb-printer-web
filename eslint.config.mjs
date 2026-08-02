@@ -11,6 +11,12 @@ const eslintConfig = defineConfig([
     plugins: {
       '@stylistic': stylistic,
     },
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
       'quotes': ['error', 'single'],
       'object-curly-spacing': ['error', 'always'],
@@ -50,7 +56,8 @@ const eslintConfig = defineConfig([
       "no-restricted-globals": [
         "error",
         { "name": "Date", "message": "Use `import { Date } from '@/tools/safeDate';` instead of using the global." }
-      ]
+      ],
+      '@typescript-eslint/no-deprecated': 'error',
     },
   },
   // Override default ignores of eslint-config-next.

@@ -1,7 +1,8 @@
 import { BlendMode, type RGBNPalette as DecoderLibRGBNPalette, Rotation } from 'gb-image-decoder';
 import z from 'zod';
+import { fromCreationDate, toCreationDate } from '@/tools/toCreationDate';
 
-const nullToValue = <T extends z.ZodTypeAny>(schema: T, defaultValue: undefined | z.input<T>) => {
+const nullToValue = <T extends z.ZodType>(schema: T, defaultValue: undefined | z.input<T>) => {
   return z.preprocess((val) => (val === null ? defaultValue : val), schema.optional());
 };
 
@@ -32,10 +33,20 @@ export type ImageMetadata = z.infer<typeof ImageMetadataSchema>;
 
 export const CommonImageSchema = z.object({
   hash: z.string(),
-  created: z.string(),
+  created: z.string().transform((value, ctx) => {
+    try {
+      return toCreationDate(fromCreationDate(value));
+    } catch (error) {
+      ctx.addIssue({
+        code: 'custom',
+        message: error instanceof Error ? error.message : 'Invalid creation date',
+      });
+      return z.NEVER;
+    }
+  }),
   title: z.string(),
-  frame: z.string().optional(),
-  tags: z.array(z.string()),
+  frame: z.string().optional().catch(undefined),
+  tags: z.array(z.string()).catch([]),
   lockFrame: z.boolean().prefault(false),
   rotation: nullToValue(z.enum(Rotation), Rotation.DEG_0),
   meta: nullToValue(ImageMetadataSchema, undefined),
@@ -74,9 +85,9 @@ export type RGBNImage = z.infer<typeof RGBNImageSchema>;
 export const MonochromeImageSchema = CommonImageSchema.extend({
   type: z.literal('mono'),
   lines: z.number(),
-  palette: z.string(),
+  palette: z.string().optional().catch(undefined),
   invertPalette: z.boolean().prefault(false),
-  framePalette: z.string(),
+  framePalette: z.string().optional().catch(undefined),
   invertFramePalette: z.boolean().prefault(false),
 });
 

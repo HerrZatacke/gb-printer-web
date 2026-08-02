@@ -29,7 +29,7 @@ export const useContextHook = (): NavigationItemsContextType => {
   const tSettingsTabs = useTranslations('SettingsTabs');
   const tPalettes = useTranslations('Palettes');
   const { fullPath } = useUrl();
-  const { lastGalleryLink, getUrl, paths } = useGalleryTreeContext();
+  const { lastGalleryLink, getUrl, groupsByFullSlug } = useGalleryTreeContext();
   const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
   const { themeName, setThemeName } = useSettingsStore();
   const { showTrashCount, trashCount, trashBusy } = useInteractionsStore();
@@ -106,19 +106,19 @@ export const useContextHook = (): NavigationItemsContextType => {
   ), [tPalettes]);
 
   const galleryShortcuts: NavItem[] = useMemo(() => {
-    const favouriteGroups = paths
-      .filter((pathMap) => (
-        pathMap.group.isFavourite
+    const favouriteGroups = [...groupsByFullSlug.values()]
+      .filter((group) => (
+        group.isFavourite
       ))
-      .map((pathMap): NavItem => ({
-        label: pathMap.group.title,
+      .map((group): NavItem => ({
+        label: group.title,
         route: getUrl({
-          group: pathMap.absolutePath,
+          group: group.fullSlug,
         }),
       }));
 
     return sortByLabel(favouriteGroups);
-  }, [getUrl, paths]);
+  }, [getUrl, groupsByFullSlug]);
 
   const mainNavigationItems = useMemo<NavItem[]>(() => (
     [

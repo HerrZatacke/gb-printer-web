@@ -2,11 +2,7 @@ import { proxy, Remote } from 'comlink';
 import { useCallback, useMemo } from 'react';
 import { PortDeviceType } from '@/consts/ports';
 import { usePortsContext } from '@/contexts/PortsContext';
-import {
-  useInteractionsStore,
-  useItemsStore,
-  useProgressStore,
-} from '@/stores/stores';
+import { useInteractionsStore, useProgressStore } from '@/stores/stores';
 import { SuperPrinterCommsDevice } from '@/tools/comms/DeviceAPIs/SuperPrinterCommsDevice';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 
@@ -17,12 +13,11 @@ interface UseSuperPrinterInterface {
 
 export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
   const { connectedDevices } = usePortsContext();
-  const { images, frames } = useItemsStore();
   const { setError } = useInteractionsStore();
   const { setProgress, startProgress, stopProgress } = useProgressStore();
 
   const getTiles = useCallback(async (hash: string) => {
-    const tileLoader = loadImageTiles(images, frames);
+    const tileLoader = loadImageTiles();
     const loadedTiles = await tileLoader(hash, true);
 
     if ((loadedTiles as string[]).length) {
@@ -30,7 +25,7 @@ export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
     }
 
     return [];
-  }, [frames, images]);
+  }, []);
 
   const printer: Remote<SuperPrinterCommsDevice> | null = useMemo(() => {
     const deviceMeta = connectedDevices.find((device) => device.portDeviceType === PortDeviceType.SUPER_PRINTER_INTERFACE);

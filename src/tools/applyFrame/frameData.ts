@@ -1,5 +1,6 @@
+import { getQueryClient } from '@/contexts/QueryClient';
+import { binaryFrameByHashQueryOptions, updateBinaryFramesAction } from '@/stores/items/queries/binaryFrames';
 import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
-import { localforageFrames } from '@/tools/localforageInstance';
 import { deflate, inflate } from '@/tools/pack';
 
 export interface FrameData {
@@ -27,7 +28,7 @@ export const saveFrameData = async (lines: string[], imageStartLine: number): Pr
     dataHash,
     compressed,
   } = await compressAndHashFrame(lines, imageStartLine);
-  await localforageFrames.setItem(dataHash, compressed);
+  await updateBinaryFramesAction(getQueryClient(), [{ hash: dataHash, data: compressed }]);
   return dataHash;
 };
 
@@ -36,7 +37,9 @@ export const loadFrameData = async (frameHash: string): Promise<null | FrameData
     return null;
   }
 
-  const binary = await localforageFrames.getItem(frameHash);
+  const queryClient = getQueryClient();
+  const binaryFrame = await queryClient.fetchQuery(binaryFrameByHashQueryOptions(frameHash));
+  const binary = binaryFrame?.data || null;
 
   if (!binary) {
     return null;

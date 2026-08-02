@@ -1,37 +1,67 @@
 import { useCallback } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { useStores } from '@/hooks/useStores';
-import { hashImportFrames } from '@/stores/migrations/history/0/hashFrames';
-import { useItemsStore } from '@/stores/stores';
+import { updateBinaryFramesAction } from '@/stores/items/queries/binaryFrames';
+import { updateBinaryImagesAction } from '@/stores/items/queries/binaryImages';
+import { framesListQueryOptions } from '@/stores/items/queries/frames';
+import { imageGroupsListQueryOptions } from '@/stores/items/queries/imageGroups';
+import { imagesListQueryOptions } from '@/stores/items/queries/images';
+import { palettesListQueryOptions } from '@/stores/items/queries/palettes';
 import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
-import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import mergeStates from '@/tools/mergeStates';
-import { type JSONExport, type JSONExportState, type ExportableState } from '@/types/ExportState';
+import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
+import {
+  type JSONExport,
+  type ExportableState,
+  JSONExportSchema,
+} from '@/types/ExportState';
 
 const mergeSettings = async (
-  newSettings: JSONExport,
+  settings: JSONExport,
   isFromJsonImport: boolean,
 ): Promise<Partial<ExportableState>> => {
-  const { frames, palettes, images, imageGroups } = useItemsStore.getState();
+  const queryClient = getQueryClient();
 
-  // add hashes to frames if they have the very old name+id format and replace the binary keys of the JSONExport
-  const settings = await hashImportFrames(newSettings);
+  const [
+    { items: images },
+    { items: palettes },
+    { items: frames },
+    { items: imageGroups },
+  ] = await Promise.all([
+    queryClient.fetchQuery(imagesListQueryOptions()),
+    queryClient.fetchQuery(palettesListQueryOptions()),
+    queryClient.fetchQuery(framesListQueryOptions()),
+    queryClient.fetchQuery(imageGroupsListQueryOptions()),
+  ]);
+
+  const binaryImageEntries: BinaryStoreItem[] = [];
+  const binaryFrameEntries: BinaryStoreItem[] = [];
 
   Object.keys(settings).forEach((key: string) => {
-    if (key !== 'state') {
-      // import frames and images from JSON
+    if (key === 'state') {
+      return;
+    }
 
-      const exportProp: string = settings[key];
+    const exportProp: string = settings[key];
 
-      if (key.match(/^[a-f0-9]{40,}$/gi)) {
-        localforageImages.setItem(`${key}`, exportProp);
-      } else if (key.startsWith('frame-')) {
-        localforageFrames.setItem(`${key.split('frame-').pop()}`, exportProp);
-      }
+    if (key.match(/^[a-f0-9]{40,}$/gi)) {
+      binaryImageEntries.push({ hash: key, data: exportProp });
+    } else if (key.startsWith('frame-')) {
+      binaryFrameEntries.push({ hash: `${key.split('frame-').pop()}`, data: exportProp });
     }
   });
 
+  if (binaryImageEntries.length > 0) {
+    await updateBinaryImagesAction(queryClient, binaryImageEntries);
+  }
+
+  if (binaryFrameEntries.length > 0) {
+    await updateBinaryFramesAction(queryClient, binaryFrameEntries);
+  }
+
+  // ToDo: check for cases which need to "purge" the target table/store on update
   return mergeStates(
     frames,
     palettes,
@@ -48,7 +78,7 @@ export interface ImportExportSettings {
   downloadSettings: (what: ExportTypes, selectedFrameGroup?: string) => Promise<void>;
   getSettingsFile: (what: ExportTypes, selectedFrameGroup?: string) => Promise<File>;
   jsonImport: ImportFn;
-  remoteImport: (repoContents: JSONExportState) => Promise<void>;
+  remoteImport: (repoContents: JSONExport) => Promise<void>;
 }
 
 export const useImportExportSettings = (): ImportExportSettings => {
@@ -70,14 +100,16 @@ export const useImportExportSettings = (): ImportExportSettings => {
     }]);
   }, [getSettingsFile]);
 
-  const jsonImport = useCallback(async (repoContents: JSONExport): Promise<void> => {
+  const jsonImport = useCallback(async (repoContentsRaw: JSONExport): Promise<void> => {
+    const repoContents = JSONExportSchema.parse(repoContentsRaw);
     const update = await mergeSettings(repoContents, true);
-    globalUpdate(update);
+    await globalUpdate(update);
   }, [globalUpdate]);
 
-  const remoteImport = useCallback(async (repoContents: JSONExportState): Promise<void> => {
-    const update = await mergeSettings(repoContents as JSONExport, false);
-    globalUpdate(update);
+  const remoteImport = useCallback(async (repoContentsRaw: JSONExport): Promise<void> => {
+    const repoContents = JSONExportSchema.parse(repoContentsRaw);
+    const update = await mergeSettings(repoContents, false);
+    await globalUpdate(update);
   }, [globalUpdate]);
 
   return {

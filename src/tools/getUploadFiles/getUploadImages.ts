@@ -1,4 +1,5 @@
-import { useItemsStore } from '@/stores/stores';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { imagesListQueryOptions } from '@/stores/items/queries/images';
 import { getTxtFile } from '@/tools/download/getTxtFile';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';
@@ -20,8 +21,9 @@ export const getUploadImages = async (
   missingLocally: string[];
 }> => {
   const missingLocally: string[] = [];
+  const queryClient = getQueryClient();
 
-  const { images: stateImages } = useItemsStore.getState();
+  const { items: stateImages } = await queryClient.fetchQuery(imagesListQueryOptions());
 
   const images: TmpInfo[] = stateImages
     .map((image: Image): TmpInfo => {

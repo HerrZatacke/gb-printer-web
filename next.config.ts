@@ -26,7 +26,14 @@ const getNextConfig = async (): Promise<NextConfig> => {
     trailingSlash: true,
     basePath,
     assetPrefix: basePath ? `${basePath}/` : '',
-
+    // Might need to enable this again if the "forward-logs-shared.ts as source in console for all next logs"(https://github.com/vercel/next.js/issues/87822) Bug appears again
+    // logging: {
+    //   browserToTerminal: false,
+    // },
+    // experimental: {
+      // browserDebugInfoInTerminal: false,
+      // mcpServer: false,
+    // },
     env: {
       NEXT_PUBLIC_BRANCH: branch,
       NEXT_PUBLIC_VERSION: version,
@@ -42,16 +49,10 @@ const getNextConfig = async (): Promise<NextConfig> => {
       }),
     },
 
-    // build still requires webpack, so cannot use... :(
-    // turbopack: {},
-
-    webpack: (config) => {
-      config.module.rules.push({
-        test: /\.md$/i,
-        use: 'raw-loader',
-      });
-
-      return config;
+    turbopack: {
+      rules: {
+        '*.md': { loaders: ['raw-loader'], as: '*.js' },
+      },
     },
   };
 

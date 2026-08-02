@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
-import { PathMap } from '@/types/galleryTreeContext';
+import { useGalleryTreeAncestors } from '@/tools/useGalleryTreeAncestors';
 import { type TreeImageGroup } from '@/types/ImageGroup';
 
 export interface Segment {
@@ -14,60 +14,52 @@ export interface UsePathSegments {
 }
 
 export const usePathSegments = (): UsePathSegments => {
-  const { path: currentPath, getUrl, root, paths, isInitialized } = useGalleryTreeContext();
-  const { getImagePageIndexInGroup, navigateToGroup } = useNavigationTools();
+  const { path: currentPath, getUrl, isWorking } = useGalleryTreeContext();
+  const { getImagePageIndexInGroup } = useNavigationTools();
 
-  const breadCrumbSlugs = useMemo(() => {
-    const breadCrumbsRaw = ['', ...currentPath.split('/').filter(Boolean)];
+  const [segments, setSegments] = useState<Segment[]>([]);
 
-    return breadCrumbsRaw.reduce((acc: string[], path: string, index: number): string[] => ([
-      ...acc,
-      breadCrumbsRaw.slice(1, index + 1).join('/').concat('/'),
-    ]), []);
-  }, [currentPath]);
+  const targetSegments = useMemo(() => (currentPath.split('/').filter(Boolean)), [currentPath]);
 
-  const segments = useMemo<Segment[]>(() => {
-    const breadCrumbPaths: PathMap[] = breadCrumbSlugs.reduce((acc: PathMap[], breadCrumbPath): PathMap[] => {
-      let segmentPath: PathMap | undefined;
-
-      if (breadCrumbPath === '/') {
-        segmentPath = { absolutePath: '', group: root };
-      } else {
-        segmentPath = paths.find(({ absolutePath }) => absolutePath === breadCrumbPath);
-      }
-
-      return segmentPath ? [...acc, segmentPath] : acc;
-    }, []);
-
-    const breadCrumbSegments = breadCrumbPaths.map((breadCrumbPath: PathMap, index: number): Segment => {
-      const childPath = breadCrumbPaths[index + 1];
-
-      let parentPageIndex = 0;
-
-      if (childPath) {
-        const childCoverImage = childPath.group.coverImage;
-        parentPageIndex = getImagePageIndexInGroup(childCoverImage, breadCrumbPath.group);
-      }
-
-      return {
-        group: breadCrumbPath.group,
-        link: getUrl({ pageIndex: parentPageIndex, group: breadCrumbPath.absolutePath }),
-      };
-    });
-
-    return breadCrumbSegments;
-  }, [breadCrumbSlugs, root, paths, getUrl, getImagePageIndexInGroup]);
-
+  const ancestors = useGalleryTreeAncestors(targetSegments);
 
   useEffect(() => {
-    if (!isInitialized) { return; }
+    let cancelled = false;
+    const handle = window.setTimeout(async () => {
+      if (!ancestors.length || isWorking) {
+        setSegments([]);
+        return;
+      }
 
-    // if url path does not match breadcrumb, navigate to the best possible path instead
-    if (breadCrumbSlugs.length !== segments.length) {
-      const validGroupId = segments[segments.length - 1].group.id;
-      navigateToGroup(validGroupId, 0);
-    }
-  }, [breadCrumbSlugs.length, isInitialized, navigateToGroup, segments]);
+      const breadCrumbSegments = await Promise.all(
+          ancestors.map(async (group: TreeImageGroup, index: number): Promise<Segment> => {
+          const childGroup: TreeImageGroup | undefined = ancestors[index + 1];
+
+          let parentPageIndex = 0;
+
+          if (childGroup) {
+            // ToDo: find way to calulate group position for groups without coverimage (using viewItems)?
+            const childCoverImage = childGroup.coverImage;
+            parentPageIndex = childCoverImage ? await getImagePageIndexInGroup(childCoverImage, group) : 0;
+          }
+
+          return {
+            group,
+            link: getUrl({ pageIndex: parentPageIndex, group: group.fullSlug }),
+          };
+        }),
+      );
+
+      if (!cancelled && !isWorking) {
+        setSegments(breadCrumbSegments);
+      }
+    }, 1);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(handle);
+    };
+  }, [ancestors, getImagePageIndexInGroup, getUrl, isWorking]);
 
   return {
     segments,

@@ -195,7 +195,6 @@
     "monochrome": "Monochrome",
     "new": "Nouveau",
     "oneMustBeMet": "Si défini, un doit être satisfait",
-    "recentImports": "Importations récentes",
     "rgb": "RGB",
     "untagged": "Sans tags"
   },
@@ -606,6 +605,13 @@
     "updateTags": "Mettre à jour les tags",
     "updateTitle": "Mettre à jour le titre"
   },
+  "useEditImageGroups": {
+    "deleteGroupInfo": "Ceci supprimera le groupe « {groupTitle} » et déplacera tout le contenu (images et groupes) au niveau actuel.",
+    "deleteGroupMessage": "Supprimer le groupe d'images ?",
+    "newGroupDefault": "Nouveau groupe",
+    "resetGroupsInfo": "Ceci supprimera TOUS les groupes créés et déplacera toutes les images existantes au niveau supérieur.",
+    "resetGroupsMessage": "Réinitialiser les groupes d'images ?"
+  },
   "useEditPalette": {
     "paletteOrigin": "Créé avec l'application web"
   },
@@ -622,13 +628,6 @@
   "useGetPortSettings": {
     "baudRateLabel": "Débit",
     "specifyBaudrate": "Choisir le débit (ou baudrate) pour le port"
-  },
-  "useImageGroups": {
-    "deleteGroupInfo": "Ceci supprimera le groupe « {groupTitle} » et déplacera tout le contenu (images et groupes) au niveau actuel.",
-    "deleteGroupMessage": "Supprimer le groupe d'images ?",
-    "newGroupDefault": "Nouveau groupe",
-    "resetGroupsInfo": "Ceci supprimera TOUS les groupes créés et déplacera toutes les images existantes au niveau supérieur.",
-    "resetGroupsMessage": "Réinitialiser les groupes d'images ?"
   },
   "usePalette": {
     "deletePaletteMessage": "Supprimer la palette « {name} » ?"

@@ -4,20 +4,20 @@ import { BatchActionType } from '@/consts/batchActionTypes';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';
+import { useImages } from '@/hooks/useImages';
+import { usePlugins } from '@/hooks/usePlugins';
 import { useStores } from '@/hooks/useStores';
 import {
   useDialogsStore,
   useEditStore,
   useFiltersStore,
   useInteractionsStore,
-  useItemsStore,
-  useSettingsStore,
 } from '@/stores/stores';
-import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import unique from '@/tools/unique';
 import { type Image, type MonochromeImage } from '@/types/Image';
+import { type GroupItem, type GroupItemImage } from '@/workers/itemsIndexedDbWorker/types';
 
 interface UseBatchButtons {
   hasPlugins: boolean;
@@ -37,42 +37,32 @@ const collectTags = (batchImages: Image[]): string[] => (
   unique(batchImages.map(({ tags }) => tags).flat())
 );
 
-const useBatchButtons = (page: number): UseBatchButtons => {
+const useBatchButtons = (): UseBatchButtons => {
   const t = useTranslations('useBatchButtons');
   const {
     imageSelection,
-    sortBy,
     filtersTags,
     filtersPalettes,
     filtersFrames,
-    recentImports,
     setFiltersVisible,
     setSortOptionsVisible,
     setImageSelection,
   } = useFiltersStore();
-  const { plugins, images: stateImages } = useItemsStore();
-  const { pageSize } = useSettingsStore();
+  const { plugins } = usePlugins({ list: true });
   const { setEditImages, setEditRGBNImages } = useEditStore();
   const { dismissDialog, setDialog } = useDialogsStore();
   const { setVideoSelection } = useInteractionsStore();
   const { setDownloadImages } = useDownload();
   const { deleteImages } = useStores();
-  const { view, covers } = useGalleryTreeContext();
+  const { viewItems } = useGalleryTreeContext();
   const { sendEvent } = useTracking();
 
-  const indexOffset = page * pageSize;
-
-  const currentPageImages: Image[] = useMemo(() => (
-    getFilteredImages(view, {
-      sortBy,
-      filtersTags,
-      filtersFrames,
-      filtersPalettes,
-      recentImports,
-    }) // take images from current VIEW (including covers)
-      .splice(indexOffset, pageSize || Infinity) // use images of the current PAGE
-      .filter((image: Image) => !covers.includes(image.hash)) // And remove covers AFTERWARDS
-  ), [covers, filtersFrames, filtersPalettes, filtersTags, indexOffset, pageSize, recentImports, sortBy, view]);
+  const currentPageImages: Image[] = useMemo(() => {
+    // Current page without covers
+    return viewItems
+      .filter((item: GroupItem): item is GroupItemImage => item.type === 'image')
+      .map(({ image }: GroupItemImage) => image);
+  }, [viewItems]);
 
   const selectedImages = useMemo(() => (
     currentPageImages.filter(({ hash }) => imageSelection.includes(hash))
@@ -80,12 +70,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
 
   const monochromeImages: MonochromeImage[] = selectedImages.reduce(reduceImagesMonochrome, []);
 
-  const batchImages: Image[] = useMemo(() => (
-    imageSelection.reduce((acc: Image[], selHash: string): Image[] => {
-      const image = stateImages.find(({ hash }) => hash === selHash);
-      return image ? [image, ...acc] : acc;
-    }, [])
-  ), [imageSelection, stateImages]);
+  const { byHashes: batchImages } = useImages({ hashes: imageSelection });
 
   const selectedImageCount = imageSelection.length;
   const hasSelected = selectedImages.length > 0;
@@ -104,7 +89,7 @@ const useBatchButtons = (page: number): UseBatchButtons => {
             setDialog({
               message: t('deleteConfirmation', { count: imageSelection.length }),
               confirm: async () => {
-                deleteImages(imageSelection);
+                await deleteImages(imageSelection);
               },
               deny: async () => dismissDialog(0),
             });

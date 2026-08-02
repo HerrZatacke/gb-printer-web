@@ -3,10 +3,10 @@ import { type RGBNTiles, type RGBNPalette, type ExportFrameMode } from 'gb-image
 import z from 'zod';
 import { ConfigParamType } from '@/consts/plugins';
 import { type ImportFn } from '@/hooks/useImportExportSettings';
+import { UsePlugins } from '@/hooks/usePlugins';
 import { type UseStores } from '@/hooks/useStores';
 import {
   type InteractionsState,
-  type ItemsState,
   type ProgressState,
 } from '@/stores/stores';
 import { type HandeFileImportFn } from '@/tools/getHandleFileImport';
@@ -47,8 +47,8 @@ export const PluginSchema = z.object({
   config: PluginConfigValuesSchema.optional(),
   name: z.string().prefault(''),
   description: z.string().prefault(''),
-  loading: z.boolean().optional(),
-  error: z.union([z.string(), z.literal(false)]).optional(),
+  // loading: z.boolean().optional(),
+  // error: z.union([z.string(), z.literal(false)]).optional(),
   configParams: PluginConfigParamsSchema.optional(),
 });
 
@@ -81,10 +81,10 @@ export interface PluginClassInstance {
   setConfig: (config: PluginConfigValues) => void;
 }
 
-export type CollectImageDataFn = (hash: string) => PluginImageData
-export type GetCollectImageDataFn = (images: Image[]) => CollectImageDataFn;
+export type CollectImageDataFn = (hash: string) => Promise<PluginImageData>;
 
 export interface PluginArgs {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   saveAs: typeof FileSaver;
   progress: (progressValue: number) => void;
   setError: (err: Error) => void;
@@ -110,7 +110,7 @@ export interface PluginsContext {
 }
 
 export type InitPluginSetupParams =
-  Pick<ItemsState, 'addUpdatePluginProperties'> &
+  Pick<UsePlugins, 'updatePluginState'> &
   Pick<ProgressState, 'setProgress'  | 'startProgress' | 'stopProgress'> &
   Pick<InteractionsState, 'setError'> &
   {

@@ -1,6 +1,6 @@
 import { SyncDirection } from '@/consts/sync';
 import { useStoragesStore } from '@/stores/stores';
-import { type JSONExportState } from '@/types/ExportState';
+import { type JSONExport } from '@/types/ExportState';
 import { type GitStorageSettings } from '@/types/Sync';
 
 export interface GitSyncTool {
@@ -12,7 +12,7 @@ export interface GitSyncTool {
 let gitSyncTool: GitSyncTool;
 
 export const gitStorageTool = (
-  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+  remoteImport: (repoContents: JSONExport) => Promise<void>,
 ): GitSyncTool => {
   const loadAndInitMiddleware = async (): Promise<GitSyncTool> => {
     if (!gitSyncTool) {

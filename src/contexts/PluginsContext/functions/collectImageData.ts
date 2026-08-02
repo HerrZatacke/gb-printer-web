@@ -1,31 +1,34 @@
 import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
 import { type RGBNPalette, type RGBNTiles } from 'gb-image-decoder';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
+import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
-import { type Image, type MonochromeImage } from '@/types/Image';
+import { type MonochromeImage } from '@/types/Image';
 import { type Palette } from '@/types/Palette';
-import { type GetCanvasOptions, type GetCollectImageDataFn, type PluginImageData } from '@/types/Plugin';
+import { type CollectImageDataFn, type GetCanvasOptions, type PluginImageData } from '@/types/Plugin';
 
-export const getCollectImageData: GetCollectImageDataFn = (images: Image[]) => (hash: string): PluginImageData => {
-  const { frames, palettes } = useItemsStore.getState();
+export const collectImageData: CollectImageDataFn = async (hash: string): Promise<PluginImageData> => {
   const { handleExportFrame: handleExportFrameState } = useSettingsStore.getState();
+  const queryClient = getQueryClient();
 
-  const meta = images.find((image) => image.hash === hash);
+  const meta = await queryClient.fetchQuery(imageByHashQueryOptions(hash));
   if (!meta) {
     throw new Error('image not found');
   }
 
-  const { palette: selectedPalette, framePalette: selectedFramePalette } = getImagePalettes(palettes, meta);
+  const { palette: selectedPalette, framePalette: selectedFramePalette } = await getImagePalettes(meta);
   if (!selectedPalette) {
     throw new Error('selectedPalette not found');
   }
 
-  const getTiles = () => loadImageTiles(images, frames)(meta.hash);
+  const getTiles = () => loadImageTiles()(meta.hash);
 
   const isRGBN = isRGBNImage(meta);
 
@@ -43,7 +46,7 @@ export const getCollectImageData: GetCollectImageDataFn = (images: Image[]) => (
     const tiles = await getTiles();
     let blob: Blob;
 
-    const frame = frames.find(({ id }) => id === meta.frame);
+    const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(meta.frame ? [meta.frame] : []));
     const frameData = frame ? await loadFrameData(frame.hash) : null;
     const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 

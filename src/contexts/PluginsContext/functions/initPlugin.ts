@@ -8,7 +8,7 @@ export const initPlugin = (
     setProgress,
     stopProgress,
     setError,
-    addUpdatePluginProperties,
+    updatePluginState,
     collectImageData,
     stores,
     importFn,
@@ -54,32 +54,11 @@ export const initPlugin = (
           collectImageData,
         }, initialConfig);
 
-        const {
-          name,
-          description = '',
-          configParams = {},
-          config = {},
-        } = instance;
-
-        addUpdatePluginProperties({
-          url,
-          name,
-          description,
-          configParams,
-          config,
-          loading: false,
-          error: false,
-        });
+        updatePluginState(url, false, false);
 
         resolve(instance);
       } catch (error: unknown) {
-        addUpdatePluginProperties({
-          url,
-          description: plugin.description,
-          name: plugin.name,
-          loading: false,
-          error: (error as Error)?.message,
-        });
+        updatePluginState(url, false, (error as Error)?.message);
 
         resolve(null);
       }
@@ -91,15 +70,7 @@ export const initPlugin = (
 
     pluginScript.addEventListener('error', () => {
       window.gbpwRegisterPlugin = () => { /* noop */ };
-
-      addUpdatePluginProperties({
-        url,
-        description: plugin.description,
-        name: plugin.name,
-        loading: false,
-        error: 'Loading error',
-      });
-
+      updatePluginState(url, false, 'Loading error');
       resolve(null);
     });
 

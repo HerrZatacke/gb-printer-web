@@ -195,7 +195,6 @@
     "monochrome": "Monocromatico",
     "new": "Nuovo",
     "oneMustBeMet": "Se impostato, uno deve essere soddisfatto",
-    "recentImports": "Importazioni recenti",
     "rgb": "RGB",
     "untagged": "Senza tag"
   },
@@ -606,6 +605,13 @@
     "updateTags": "Aggiorna tag",
     "updateTitle": "Aggiorna titolo"
   },
+  "useEditImageGroups": {
+    "deleteGroupInfo": "Questo eliminerà il gruppo «{groupTitle}» e sposterà tutti i contenuti (immagini e gruppi) al livello attuale.",
+    "deleteGroupMessage": "Eliminare gruppo di immagini?",
+    "newGroupDefault": "Nuovo gruppo",
+    "resetGroupsInfo": "Questo rimuoverà TUTTI i gruppi creati e sposterà tutte le immagini esistenti al livello superiore.",
+    "resetGroupsMessage": "Ripristinare gruppi di immagini?"
+  },
   "useEditPalette": {
     "paletteOrigin": "Creato con la webapp"
   },
@@ -622,13 +628,6 @@
   "useGetPortSettings": {
     "baudRateLabel": "Baudrate",
     "specifyBaudrate": "Scegli baudrate per porta"
-  },
-  "useImageGroups": {
-    "deleteGroupInfo": "Questo eliminerà il gruppo «{groupTitle}» e sposterà tutti i contenuti (immagini e gruppi) al livello attuale.",
-    "deleteGroupMessage": "Eliminare gruppo di immagini?",
-    "newGroupDefault": "Nuovo gruppo",
-    "resetGroupsInfo": "Questo rimuoverà TUTTI i gruppi creati e sposterà tutte le immagini esistenti al livello superiore.",
-    "resetGroupsMessage": "Ripristinare gruppi di immagini?"
   },
   "usePalette": {
     "deletePaletteMessage": "Eliminare palette «{name}»?"

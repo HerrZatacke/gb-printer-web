@@ -1,5 +1,11 @@
+import { getQueryClient } from '@/contexts/QueryClient';
+import { deleteBinaryFramesByHashesAction } from '@/stores/items/queries/binaryFrames';
+import {
+  binaryImageByHashQueryOptions,
+  deleteBinaryImagesByHashesAction,
+  updateBinaryImagesAction,
+} from '@/stores/items/queries/binaryImages';
 import applyFrame from '@/tools/applyFrame';
-import { localforageFrames, localforageImages } from '@/tools/localforageInstance';
 import { deflate, inflate } from '@/tools/pack';
 import dummyImage from './dummyImage';
 
@@ -34,7 +40,7 @@ export const save = async (lines: string[]): Promise<string> => {
     dataHash,
     compressed,
   } = await compressAndHash(lines);
-  await localforageImages.setItem(dataHash, compressed);
+  await updateBinaryImagesAction(getQueryClient(), [{ hash: dataHash, data: compressed }]);
   return dataHash;
 };
 
@@ -49,13 +55,14 @@ export const load = async (
   }
 
   try {
-    const binary = await localforageImages.getItem(dataHash);
+    const queryClient = getQueryClient();
+    const binaryImage = await queryClient.fetchQuery(binaryImageByHashQueryOptions(dataHash));
 
-    if (!binary) {
-      throw new Error('missing imagedata');
+    if (!binaryImage) {
+      throw new Error('missing binary imagedata');
     }
 
-    const inflated = await inflate(binary);
+    const inflated = await inflate(binaryImage.data);
     const tiles = inflated.split('\n');
     if (!frameHash) {
       return tiles;
@@ -73,10 +80,10 @@ export const load = async (
   }
 };
 
-export const del = async (dataHash: string): Promise<void> => (
-  localforageImages.removeItem(dataHash)
-);
+export const deleteBinaryImage = async (dataHash: string): Promise<void> => {
+  await deleteBinaryImagesByHashesAction(getQueryClient(), [dataHash]);
+};
 
-export const delFrame = async (dataHash: string): Promise<void> => (
-  localforageFrames.removeItem(dataHash)
-);
+export const deleteBinaryFrame = async (dataHash: string): Promise<void> => {
+  await deleteBinaryFramesByHashesAction(getQueryClient(), [dataHash]);
+};

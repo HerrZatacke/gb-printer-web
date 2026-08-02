@@ -5,7 +5,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useInteractionsStore, useItemsStore } from '@/stores/stores';
+import { useGlobalQueries } from '@/hooks/useGlobalQueries';
+import { useInteractionsStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import EventData = umami.EventData;
 
@@ -65,30 +66,25 @@ export const useContextHook = (): TrackingContextType => {
     }, 1000);
   }, [consentState]);
 
-
-  const itemsState = useItemsStore();
   const { errors } = useInteractionsStore();
+
+  const { stats } = useGlobalQueries({ stats: true });
 
   // Send stats event when itemState changes
   useEffect(() => {
-    const {
-      images,
-      imageGroups,
-      frames,
-      frameGroups,
-      palettes,
-      plugins,
-    } = itemsState;
+    if (!stats) {
+      return;
+    }
 
     sendEvent('global-stats', {
-      images: nextPowerOfTwo(images.length),
-      imageGroups: nextPowerOfTwo(imageGroups.length),
-      frames: nextPowerOfTwo(frames.length),
-      frameGroups: nextPowerOfTwo(frameGroups.length),
-      palettes: nextPowerOfTwo(palettes.length),
-      plugins: nextPowerOfTwo(plugins.length),
+      images: nextPowerOfTwo(stats.images),
+      imageGroups: nextPowerOfTwo(stats.imageGroups),
+      frames: nextPowerOfTwo(stats.frames),
+      frameGroups: nextPowerOfTwo(stats.frameGroups),
+      palettes: nextPowerOfTwo(stats.palettes),
+      plugins: nextPowerOfTwo(stats.plugins),
     });
-  }, [itemsState, sendEvent]);
+  }, [stats, sendEvent]);
 
 
   // Send error event when error occurs

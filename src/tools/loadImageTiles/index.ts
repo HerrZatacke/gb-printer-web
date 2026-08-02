@@ -1,7 +1,9 @@
 import { type RGBNTiles } from 'gb-image-decoder';
+import { getQueryClient } from '@/contexts/QueryClient';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { load, type RecoverFn } from '@/tools/storage';
-import { type Frame } from '@/types/Frame';
 import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
 
 export type PImage = {
@@ -10,18 +12,20 @@ export type PImage = {
   hashes?: RGBNImage['hashes'];
 }
 
-export const loadImageTiles = (stateImages: Image[], stateFrames: Frame[], recover?: RecoverFn) => {
+export const loadImageTiles = (recover?: RecoverFn) => {
   const loader = async (
     hash: string,
     noDummy?: boolean,
     overrideFrame?: string,
     hashesOverride?: RGBNHashes,
   ): Promise<string[] | RGBNTiles> => {
-    const image = stateImages.find(((img) => hash === img.hash));
+    const queryClient = getQueryClient();
+    const image = await queryClient.fetchQuery(imageByHashQueryOptions(hash));
 
     // Image may not exist when loading RGBN-channels where original image has been deleted.
     const frame = (typeof overrideFrame === 'string' ? overrideFrame : image?.frame) || undefined;
-    const frameHash = stateFrames.find(({ id }) => id === frame)?.hash;
+    const { items: [foundFrame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(frame ? [frame] : []));
+    const frameHash = foundFrame?.hash;
 
     if (!hashesOverride) {
       if (!image || !isRGBNImage(image)) {
@@ -43,8 +47,8 @@ export const loadImageTiles = (stateImages: Image[], stateFrames: Frame[], recov
   return loader;
 };
 
-export const getImageTileCount = (stateImages: Image[], stateFrames: Frame[]) => {
-  const tileLoader = loadImageTiles(stateImages, stateFrames);
+export const getImageTileCount = () => {
+  const tileLoader = loadImageTiles();
   return async (hash: string): Promise<number> => {
     const loadedTiles = await tileLoader(hash, true, '');
     if (loadedTiles) {

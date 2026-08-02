@@ -1,29 +1,31 @@
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { type UseStores } from '@/hooks/useStores';
+import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
+import { globalStatsQueryOptions } from '@/stores/items/queries/global';
+import { imagesRawQueryOptions } from '@/stores/items/queries/images';
 import {
   LogType,
   useFiltersStore,
   useInteractionsStore,
-  useItemsStore,
   useProgressStore,
   useSettingsStore,
   useStoragesStore,
 } from '@/stores/stores';
 import { delay } from '@/tools/delay';
-import { prepareFiles, PrepareFilesOptions } from '@/tools/download';
-import { getFilteredImages } from '@/tools/getFilteredImages';
+import { prepareFiles, type PrepareFilesOptions } from '@/tools/download';
 import getUploadFiles from '@/tools/getUploadFiles';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import parseAuthParams from '@/tools/parseAuthParams';
 import replaceDuplicateFilenames from '@/tools/replaceDuplicateFilenames';
 import { Date } from '@/tools/safeDate';
-import saveLocalStorageItems, { saveImageFileContent } from '@/tools/saveLocalStorageItems';
+import { saveLocalStorageItems, saveImageFileContent } from '@/tools/saveLocalStorageItems';
 import { DownloadArrayBuffer } from '@/types/download';
 import { type RepoContents } from '@/types/Export';
-import { type JSONExportState } from '@/types/ExportState';
-import { type Image } from '@/types/Image';
+import { type JSONExport } from '@/types/ExportState';
 import { type AddToQueueFn, type DBFolderFile, type DownloadInfo, type DropBoxSettings, type UploadFile } from '@/types/Sync';
+import  { type ImageSortField, type SortDirection } from '@/workers/itemsIndexedDbWorker/types';
 import { loadFrameData } from '../applyFrame/frameData';
 import DropboxClient from './DropboxClient';
 import { hasher } from './DropboxClient/dropboxContentHasher';
@@ -33,13 +35,14 @@ interface WithContentHash {
   dropboxContentHash: string;
 }
 
-const recoveryAttempts: string[] = [];
+let recoveryAttempts: number = 0;
 
 export const dropBoxSyncTool = (
   stores: UseStores,
-  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+  remoteImport: (repoContents: JSONExport) => Promise<void>,
 ): DropBoxSyncTool => {
-  const { setSyncBusy, setSyncSelect } = useInteractionsStore.getState();
+  const queryClient = getQueryClient();
+  const { setSyncBusy, setSyncSelect, setError } = useInteractionsStore.getState();
   const { setProgressLog } = useProgressStore.getState();
 
   const queue = new Queue(1, Infinity);
@@ -126,26 +129,48 @@ export const dropBoxSyncTool = (
     setSyncBusy(true);
     setSyncSelect(false);
 
-    const { frames, palettes, images: stateImages } = useItemsStore.getState();
-
+    // const { items: stateImages } = await queryClient.fetchQuery(imagesListQueryOptions());
+    const { filtersTags, filtersPalettes, filtersFrames, sortBy } = useFiltersStore.getState();
     const { exportScaleFactors, exportFileTypes, handleExportFrame, fileNameStyle } = useSettingsStore.getState();
-    const filtersState = useFiltersStore.getState();
-    const images: Image[] = getFilteredImages({ images: stateImages, groups: [] }, filtersState);
+
+    const [sortField, direction] = sortBy.split('_');
+
+    const { totals: { images: totalImages } } = await queryClient.fetchQuery(globalStatsQueryOptions());
+
+    if (totalImages > 500) {
+      setSyncBusy(false);
+      setError(new Error('Cancelled - Syncing more than 500 images to dropbox is most likely to fail'));
+      return;
+    }
+
+    const { items: images } = await queryClient.fetchQuery(imagesRawQueryOptions({
+      page: 0,
+      pageSize: totalImages,
+      filters: {
+        tags: filtersTags,
+        palette: filtersPalettes,
+        frame: filtersFrames,
+      },
+      sort: {
+        field: sortField as ImageSortField,
+        direction: direction as SortDirection,
+      },
+    }));
+
     const prepareFilesOptions: PrepareFilesOptions ={
       exportScaleFactors,
       exportFileTypes,
       handleExportFrame,
-      palettes,
       fileNameStyle,
     };
-    const loadTiles = loadImageTiles(stateImages, frames);
+    const loadTiles = loadImageTiles();
 
     const downloadInfos = (await Promise.all(
       images.map(async (image, index): Promise<unknown> => (
         addToQueue('Generate images and hashes')(`${index + 1}/${images.length}`, 10, async () => {
           const tiles = await loadTiles(image.hash);
 
-          const frame = frames.find(({ id }) => id === image.frame);
+          const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
           const frameData = frame ? await loadFrameData(frame?.hash) : null;
           const imageStartLine = frameData ? frameData.upper.length / 20 : 2;
 
@@ -214,16 +239,15 @@ export const dropBoxSyncTool = (
     }
 
     const { updateImages } = stores;
-    if (!recoveryAttempts.includes(hash)) {
-      // only attempt once to recover file
-      recoveryAttempts.push(hash);
+    if (recoveryAttempts < 3) {
+      recoveryAttempts += 1;
 
       try {
         const remoteFileContent = await dropboxClient.getFileContent(`images/${hash}.txt`, 0, 1, true);
         await saveImageFileContent(remoteFileContent);
 
         // ToDo find a way to better trigger update (if it is even necessary ??)
-        updateImages([]);
+        await updateImages([]);
         return true;
       } catch {
         return false;

@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
 import WrappedNextLink from '@/components/WrappedNextLink';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
-import { useNavigationTools } from '@/contexts/NavigationToolsContext';
+import { useImageGroups } from '@/hooks/useImageGroups';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';
 import { type TreeImageGroup } from '@/types/ImageGroup';
@@ -19,7 +19,7 @@ interface FolderTreeItemProps {
 }
 
 function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
-  const { getGroupPath } = useNavigationTools();
+  const { getUrl } = useGalleryTreeContext();
 
   return (
     <TreeItem
@@ -27,7 +27,7 @@ function FolderTreeItem({ group, onClick }: FolderTreeItemProps) {
       label={(
         <Link
           component={WrappedNextLink}
-          href={getGroupPath(group.id, 0)}
+          href={getUrl({ group: group.fullSlug })}
           prefetch={false}
           onClick={onClick}
           sx={{ display: 'block' }}
@@ -65,9 +65,9 @@ interface FolderTreeDialogProps {
 
 function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
   const t = useTranslations('FolderTreeDialog');
-  const { pathsOptions, root } = useGalleryTreeContext();
-  const { currentGroup } = useNavigationTools();
+  const { pathsOptions, view } = useGalleryTreeContext();
   const theme = useTheme();
+  const { imageGroupTree } = useImageGroups({ tree: true });
   const { segments } = usePathSegments();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
@@ -82,7 +82,7 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
     return () => window.clearTimeout(handle);
   }, [segments]);
 
-  if (pathsOptions.length < 2) {
+  if (!imageGroupTree || pathsOptions.length < 2) {
     return null;
   }
 
@@ -99,13 +99,13 @@ function FolderTreeDialog({ open, onClose }: FolderTreeDialogProps) {
         expansionTrigger="iconContainer"
         expandedItems={expandedItems}
         onExpandedItemsChange={(_, items) => setExpandedItems(items)}
-        selectedItems={currentGroup.id}
+        selectedItems={view?.id}
         sx={{
           width: theme.breakpoints.values.sm,
           height: '60vh',
         }}
       >
-        <FolderTreeItem group={root} onClick={onClose} />
+        <FolderTreeItem group={imageGroupTree} onClick={onClose} />
       </SimpleTreeView>
     </Lightbox>
   );

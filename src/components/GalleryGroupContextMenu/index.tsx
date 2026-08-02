@@ -2,7 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React, { type ComponentType, type MouseEventHandler, useMemo } from 'react';
 import GalleryGridItemContextMenu from '@/components/GalleryGridItemContextMenu';
-import { useImageGroups } from '@/hooks/useImageGroups';
+import { useEditImageGroups } from '@/hooks/useEditImageGroups';
 
 interface ContextMenuItem {
   label: string;
@@ -18,7 +18,7 @@ interface Props {
 }
 
 function GalleryGroupContextMenu({ groupId, menuAnchor, onClose }: Props) {
-  const { deleteGroup, editGroup } = useImageGroups();
+  const { deleteGroup, editGroup } = useEditImageGroups();
 
   const menuItems = useMemo((): ContextMenuItem[] => (
     [

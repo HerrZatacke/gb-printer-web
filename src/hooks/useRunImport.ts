@@ -1,16 +1,18 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
+import { useActivePalette } from '@/hooks/useActivePalette';
 import { useDateFormat } from '@/hooks/useDateFormat';
+import { useImageGroups } from '@/hooks/useImageGroups';
 import { useStores } from '@/hooks/useStores';
+import { imagesByHashesQueryOptions } from '@/stores/items/queries/images';
 import {
   useEditStore,
   useFiltersStore,
   useImportsStore,
-  useItemsStore,
   useSettingsStore,
 } from '@/stores/stores';
 import { type TagChange } from '@/tools/applyTagChanges';
@@ -21,6 +23,7 @@ import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
 import { toCreationDate } from '@/tools/toCreationDate';
 import { type Image } from '@/types/Image';
+import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
 import { Palette } from '@/types/Palette';
 import { toSlug } from './useEditImageGroup';
@@ -63,11 +66,11 @@ const useRunImport = (): UseRunImport => {
     setCreateGroup: stateSetCreateGroup,
   } = useSettingsStore();
   const { cancelEditImageGroup } = useEditStore();
-  const { addImageGroup, palettes, images } = useItemsStore();
+  const { updateImageGroup } = useImageGroups({});
   const { setImageSelection } = useFiltersStore();
   const { importQueue: rawImportQueue, importQueueSet, frameQueueAdd, importQueueCancelOne } = useImportsStore();
   const { addImages, importQueueCancel } = useStores();
-
+  const queryClient = useQueryClient();
   const { view } = useGalleryTreeContext();
   const { navigateToGroup } = useNavigationTools();
 
@@ -106,6 +109,10 @@ const useRunImport = (): UseRunImport => {
   }, []);
 
   const runImport = useCallback(async (): Promise<void> => {
+    if (!view) {
+      return;
+    }
+
     const { importQueue } = useImportsStore.getState();
     const queue = new Queue(1, Infinity);
     const now = Date.now();
@@ -132,7 +139,7 @@ const useRunImport = (): UseRunImport => {
 
     const imageHashes = savedImages.map(({ hash }) => hash);
 
-    addImages(savedImages);
+    await addImages(savedImages);
 
     if (createGroup) {
       const title = t('importGroupTitle', { date: formatter(new Date()) });
@@ -142,48 +149,61 @@ const useRunImport = (): UseRunImport => {
 
       const newGroupId = randomId();
 
-      addImageGroup(
-        {
-          id: newGroupId,
-          slug,
-          title,
-          isFavourite: false,
-          created: toCreationDate(),
-          coverImage: savedImages[0].hash,
-          images: imageHashes,
-          groups: [],
-        },
-        view.id,
-      );
+      const newImageGroup: SerializableImageGroup = {
+        id: newGroupId,
+        slug,
+        title,
+        isFavourite: false,
+        created: toCreationDate(),
+        coverImage: savedImages[0].hash,
+        images: imageHashes,
+        groups: [],
+        tags: [],
+      };
 
-      navigateToGroup(newGroupId, 0);
+      await updateImageGroup(newImageGroup, view.id);
+      await navigateToGroup(newGroupId, 0, false);
     }
 
     setImageSelection(imageHashes);
-  }, [t, activePalette, addImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view.id]);
+  }, [t, activePalette, updateImageGroup, addImages, cancelEditImageGroup, createGroup, formatter, frame, importPad, navigateToGroup, setImageSelection, tagChanges, view]);
 
-  const palette = useMemo(() => palettes.find(({ shortName }) => shortName === activePalette) || missingGreyPalette, [activePalette, palettes]);
+  const palette = useActivePalette();
 
-  const stateImages = useMemo(() => {
-    return new Map<string, Image>(images.map((image) => [image.hash, image]));
-  }, [images]);
+  const [stateImages, setStateImages] = useState<Map<string, Image>>(new Map());
+  const [importQueue, setImportQueue] = useState<FlaggedImportItem[]>([]);
 
-  const importQueue = useMemo<FlaggedImportItem[]>(() => {
-    const seen = new Set<string>();
+  useEffect(() => {
+    const updateImportQueue = async () => {
+      if (!rawImportQueue.length) {
+        setImportQueue([]);
+        return;
+      }
 
-    return rawImportQueue.map((importItem: ImportItem): FlaggedImportItem => {
-      const alreadyImported = stateImages.get(importItem.imageHash) || null;
-      const isDuplicateInQueue = seen.has(importItem.imageHash);
+      const rawQueueHashes = new Set<string>(rawImportQueue.map(({ imageHash }) => imageHash));
+      const { items: storedImages } = await queryClient.fetchQuery(imagesByHashesQueryOptions([...rawQueueHashes]));
+      const nextStateImages = new Map<string, Image>(storedImages.map((image) => [image.hash, image]));
+      const seen = new Set<string>();
 
-      seen.add(importItem.imageHash);
+      const newImportQueue = rawImportQueue.map((importItem: ImportItem): FlaggedImportItem => {
+        const alreadyImported = nextStateImages.get(importItem.imageHash) || null;
+        const isDuplicateInQueue = seen.has(importItem.imageHash);
 
-      return {
-        ...importItem,
-        isDuplicateInQueue,
-        alreadyImported,
-      };
-    });
-  }, [rawImportQueue, stateImages]);
+        seen.add(importItem.imageHash);
+
+        return {
+          ...importItem,
+          isDuplicateInQueue,
+          alreadyImported,
+        };
+      });
+
+      setImportQueue(newImportQueue);
+      setStateImages(nextStateImages);
+    };
+
+    updateImportQueue();
+  }, [queryClient, rawImportQueue]);
 
   const lastSeenCount = useMemo<number>(() => (
     rawImportQueue.filter((importItem: ImportItem) => (

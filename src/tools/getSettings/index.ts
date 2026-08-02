@@ -1,35 +1,22 @@
 import { ExportTypes } from '@/consts/exportTypes';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
-import {
-  type Values,
-  ITEMS_STORE_VERSION,
-  useItemsStore,
-  useFiltersStore,
-} from '@/stores/stores';
+import { frameGroupsListQueryOptions } from '@/stores/items/queries/frameGroups';
+import { framesListQueryOptions } from '@/stores/items/queries/frames';
+import { imageGroupsListQueryOptions } from '@/stores/items/queries/imageGroups';
+import { imagesListQueryOptions } from '@/stores/items/queries/images';
+import { palettesListQueryOptions } from '@/stores/items/queries/palettes';
+import { pluginsListQueryOptions } from '@/stores/items/queries/plugins';
+import { useFiltersStore, ITEMS_DB_VERSION } from '@/stores/stores';
 import { Date } from '@/tools/safeDate';
-import { type ExportableState, type JSONExport, type JSONExportBinary } from '@/types/ExportState';
+import { type ExportableState, type ExportableValues, createJSONExport } from '@/types/ExportState';
 import { type GetSettingsOptions } from '@/types/Sync';
 import getFrames from './getFrames';
 import getFramesForExport from './getFramesForExport';
 import getImageHashesForExport from './getImageHashesForExport';
 import getImages from './getImages';
-// import type { Image } from '@/types/Image';
-// import type { Frame } from '@/types/Frame';
-// import type { Palette } from '@/types/Palette';
-// import type { FrameGroup } from '@/types/FrameGroup';
 
-// export interface StorePropertyDefault {
-//   key: keyof ExportableState,
-//   saveLocally: boolean,
-//   saveExport: ExportTypes[],
-//   value: unknown,
-// }
-//
-// export interface StorePropertyExportable extends Omit<StorePropertyDefault, 'key'> {
-//   key: keyof ExportableState,
-// }
-
-type ExportableKey = keyof Values;
+type ExportableKey = keyof ExportableValues;
 
 const imageExportTypes: ExportTypes[] = [
   ExportTypes.IMAGES,
@@ -68,9 +55,15 @@ export const getSettings = async (
   what: ExportTypes,
   { lastUpdateUTC, selectedFrameGroup }: GetSettingsOptions = {},
 ): Promise<string> => {
+  const queryClient = getQueryClient();
   // get all possible exportable properties
-  const { frames, images, palettes, imageGroups, frameGroups, plugins } = useItemsStore.getState();
   const { imageSelection } = useFiltersStore.getState();
+  const { items: palettes } = await queryClient.fetchQuery(palettesListQueryOptions());
+  const { items: plugins } = await queryClient.fetchQuery(pluginsListQueryOptions());
+  const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
+  const { items: frameGroups } = await queryClient.fetchQuery(frameGroupsListQueryOptions());
+  const { items: images } = await queryClient.fetchQuery(imagesListQueryOptions());
+  const { items: imageGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
 
   const exportableState: ExportableState = {
     ...getExportKeys(what)
@@ -124,10 +117,10 @@ export const getSettings = async (
         }
       }, {}),
     lastUpdateUTC: lastUpdateUTC || Math.floor((new Date()).getTime() / 1000),
-    version: ITEMS_STORE_VERSION,
+    version: ITEMS_DB_VERSION,
   };
 
-  let exportBinary: JSONExportBinary = {};
+  let exportBinary: Record<string, string> = {};
 
   if (
     exportableState.images?.length &&
@@ -150,10 +143,7 @@ export const getSettings = async (
     };
   }
 
-  const jsonExport = {
-    state: exportableState,
-    ...exportBinary,
-  } as JSONExport;
+  const jsonExport = createJSONExport(exportableState, exportBinary);
 
   return JSON.stringify(jsonExport, null, 2);
 };

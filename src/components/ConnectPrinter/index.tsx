@@ -67,7 +67,6 @@ function ConnectPrinter() {
           openPrinter(openPrinterUrl);
           router.replace(pathname);
         } else {
-          console.log(openPrinterUrl);
           setDialog({
             message: t('askAddPrinterTitle'),
             questions: () => ([{

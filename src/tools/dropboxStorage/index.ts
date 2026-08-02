@@ -1,7 +1,7 @@
 import { SyncDirection } from '@/consts/sync';
 import { type UseStores } from '@/hooks/useStores';
 import { useStoragesStore } from '@/stores/stores';
-import { type JSONExportState } from '@/types/ExportState';
+import { type JSONExport } from '@/types/ExportState';
 import { type DropBoxSettings } from '@/types/Sync';
 
 export interface DropBoxSyncTool {
@@ -20,7 +20,7 @@ interface AndSubscribe {
 
 export const dropboxStorageTool = (
   stores: UseStores,
-  remoteImport: (repoContents: JSONExportState) => Promise<void>,
+  remoteImport: (repoContents: JSONExport) => Promise<void>,
 ): DropBoxSyncTool & AndSubscribe => {
   const loadAndInitMiddleware = async (): Promise<DropBoxSyncTool> => {
     if (!dropBoxSyncTool) {

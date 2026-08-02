@@ -2,13 +2,13 @@ import { EventEmitter } from 'events';
 import { type DropboxAuth, type DropboxOptions, type DropboxResponse } from 'dropbox';
 import { Dropbox } from 'dropbox';
 import { type files as Files, type async as Async } from 'dropbox/types/dropbox_types';
-import { ITEMS_STORE_VERSION, useStoragesStore } from '@/stores/stores';
+import { ITEMS_DB_VERSION, useStoragesStore } from '@/stores/stores';
 import cleanPath from '@/tools/cleanPath';
 import { delay } from '@/tools/delay';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import { Date } from '@/tools/safeDate';
 import { type DropBoxRepoFile, type RepoContents, type RepoTasks } from '@/types/Export';
-import { type JSONExportState } from '@/types/ExportState';
+import { createJSONExport, type JSONExport, JSONExportSchema } from '@/types/ExportState';
 import {
   type AddToQueueFn,
   type UploadDeleteResult,
@@ -160,7 +160,7 @@ class DropboxClient extends EventEmitter {
     });
   }
 
-  async getRemoteSettings(isSilent: boolean): Promise<JSONExportState> {
+  async getRemoteSettings(isSilent: boolean): Promise<JSONExport> {
     try {
       const response: DropboxResponse<unknown> = await this.addToQueue('dbx.filesDownload /settings.json', this.throttle, () => (
         this.dbx.filesDownload({ path: this.toPath('/settings/settings.json') })
@@ -168,14 +168,12 @@ class DropboxClient extends EventEmitter {
       const result = response.result as (Files.FileMetadata & { fileBlob: Blob });
 
       const settingsText = await readFileAs(result.fileBlob, ReadAs.TEXT);
-      return JSON.parse(settingsText) as JSONExportState;
+      return JSONExportSchema.parse(JSON.parse(settingsText));
     } catch {
-      return {
-        state: {
-          lastUpdateUTC: 0,
-          version: ITEMS_STORE_VERSION,
-        },
-      };
+      return createJSONExport({
+        lastUpdateUTC: 0,
+        version: ITEMS_DB_VERSION,
+      }, {});
     }
   }
 

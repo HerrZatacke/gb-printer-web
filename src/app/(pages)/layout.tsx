@@ -10,11 +10,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo, type CSSPropertiesVars, useEffect, useState } from 'react';
 import Errors from '@/components/Errors';
+import FatalError from '@/components/FatalErroe';
+import LocalDebug from '@/components/LocalDebug';
 import { Navigation } from '@/components/Navigation';
 import Overlays from '@/components/Overlays';
 import { ThemeName } from '@/consts/theme';
 import { useScreenDimensions } from '@/hooks/useScreenDimensions';
-import { useSettingsStore } from '@/stores/stores';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import { darkTheme, lightTheme } from '@/styles/themes';
 
 export default function RootLayout({
@@ -63,28 +65,35 @@ export default function RootLayout({
 
   const belowMd = useMediaQuery(muiTheme.breakpoints.down('md'));
 
+  const { fatalError } = useInteractionsStore();
+
   return (
     <ThemeProvider theme={muiTheme}>
       <CssBaseline />
-      <Navigation />
-      <Container
-        maxWidth="xl"
-        sx={{
-          ...ddpx,
-          p: belowMd ? 2 : 3,
-          minHeight: 'calc(100dvh - var(--navigation-height))',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <Stack
-          direction="column"
-          gap={2}
-          sx={{ flexGrow: 1 }}
-        >
-          {children}
-        </Stack>
-      </Container>
+      {fatalError ? <FatalError /> : (
+        <>
+          <Navigation />
+          <Container
+            maxWidth="xl"
+            sx={{
+              ...ddpx,
+              p: belowMd ? 2 : 3,
+              minHeight: 'calc(100dvh - var(--navigation-height))',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <LocalDebug />
+            <Stack
+              direction="column"
+              gap={2}
+              sx={{ flexGrow: 1 }}
+            >
+              {children}
+            </Stack>
+          </Container>
+        </>
+      )}
       <Overlays />
       <Errors />
     </ThemeProvider>

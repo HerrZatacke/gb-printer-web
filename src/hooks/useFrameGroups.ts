@@ -1,5 +1,11 @@
-import { useMemo } from 'react';
-import { useItemsStore } from '@/stores/stores';
+import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useMemo } from 'react';
+import { useFrames } from '@/hooks/useFrames';
+import {
+  frameGroupsListQueryOptions,
+  updateFrameGroupsAction,
+  deleteFrameGroupsByIdsAction,
+} from '@/stores/items/queries/frameGroups';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
 
@@ -76,15 +82,40 @@ export const getFrameGroups = (frames: Frame[], frameGroupNames: FrameGroup[]): 
 
 export interface UseFrameGroups {
   frameGroups: FrameGroup[];
+  isLoadingList: boolean;
+  updateFrameGroups: (frameGroups: FrameGroup[], purge?: boolean) => Promise<void>;
+  deleteFrameGroupsByIds: (ids: string[]) => Promise<void>;
 }
 
 export const useFrameGroups = (): UseFrameGroups => {
-  const { frameGroups: frameGroupsState, frames } = useItemsStore();
+  const queryClient = useQueryClient();
+
+  const listQuery = useQuery({
+    ...frameGroupsListQueryOptions(),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
+
+  const { frames } = useFrames({ list: true });
+
   const frameGroups = useMemo(() => {
-    return getFrameGroups(frames, frameGroupsState);
-  }, [frameGroupsState, frames]);
+    // Run with an empty array if user has only un-edited default groups
+    return getFrameGroups(frames, listQuery.data?.items || []);
+  }, [listQuery.data, frames]);
+
+  const updateFrameGroups = useCallback(async (updatedGroups: FrameGroup[], purge = false): Promise<void> => {
+    await updateFrameGroupsAction(queryClient, updatedGroups, purge);
+  }, [queryClient]);
+
+  const deleteFrameGroupsByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
+    await deleteFrameGroupsByIdsAction(queryClient, deleteIds);
+  }, [queryClient]);
 
   return {
     frameGroups,
+    isLoadingList: listQuery.isLoading,
+
+    updateFrameGroups,
+    deleteFrameGroupsByIds,
   };
 };

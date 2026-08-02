@@ -1,100 +1,58 @@
-import { proxy, wrap } from 'comlink';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useUrl } from '@/hooks/useUrl';
 import {
-  useInteractionsStore,
-  useItemsStore,
-  useSettingsStore,
-} from '@/stores/stores';
-import { createTreeRoot } from '@/tools/createTreeRoot';
-import { type DialogOption } from '@/types/Dialog';
+  collectGroupsByFullSlug,
+  collectGroupsById,
+  reducePathsOptions,
+} from '@/contexts/GalleryTreeContext/reducePaths';
+import { useImageGroups } from '@/hooks/useImageGroups';
+import { useImages } from '@/hooks/useImages';
+import { useUrl } from '@/hooks/useUrl';
+import { DialogOption } from '@/types/Dialog';
 import {
   type GetUrlParams,
   type GalleryTreeContextType,
-  type PathMap,
-  type SetErrorFn,
-  type TreeContextWorkerApi,
 } from '@/types/galleryTreeContext';
-import { type Image } from '@/types/Image';
-import { TreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 
 const GALLERY_BASE_PATH = '/gallery/';
 
 export const useContextHook = (): GalleryTreeContextType => {
-  const { imageGroups, images: stateImages, setImageGroups, initialized: itemsStoreInitialized } = useItemsStore();
-  const [isWorking, setIsWorking] = useState<boolean>(true); // start as isWorking=true to prevent premature effects triggering
-  const [isInitialized, setIsInitialized] = useState<boolean>(false); // start asto prevent navigation side effect
-  const [root, setRoot] = useState<TreeImageGroup>(createTreeRoot(stateImages));
-  const [paths, setPaths] = useState<PathMap[]>([]);
-  const [pathsOptions, setPathsOptions] = useState<DialogOption[]>([]);
+  const { imageGroupTree: root, isLoadingTree } = useImageGroups({ tree: true });
   const { searchParams, pathname } = useUrl();
   const [lastGalleryLink, setLastGalleryLink] = useState<string>('');
 
-  const { enableDebug } = useSettingsStore();
-  const { setError } = useInteractionsStore();
+  const groupsByFullSlug = useMemo<Map<string, TreeImageGroup>>(() => {
+    return root ? collectGroupsByFullSlug([root]): new Map();
+  }, [root]);
 
-  useEffect(() => {
-    const worker = new Worker(new URL('@/workers/treeContextWorker', import.meta.url), { type: 'module' });
-    const api = wrap<TreeContextWorkerApi>(worker);
-    const errors: string[] = [];
+  const groupsById = useMemo<Map<string, TreeImageGroup>>(() => {
+    return root ? collectGroupsById([root]): new Map();
+  }, [root]);
 
-    const setErrorProxy = proxy<SetErrorFn>((error: string) => {
-      errors.push(error);
-    });
+  const pathsOptions = useMemo<DialogOption[]>(() => {
+    return reducePathsOptions(groupsByFullSlug);
+  }, [groupsByFullSlug]);
 
-    const handle = window.setTimeout(async () => {
-      if (!itemsStoreInitialized) {
-        return;
-      }
 
-      setIsWorking(true);
+  const currentPageIndex = useMemo(() => {
+    const pageSearchParam = parseInt(searchParams.get('page') ?? '1', 10);
 
-      const workerResult = await api.calculate({ imageGroups, stateImages }, setErrorProxy);
+    if (isNaN(pageSearchParam)) {
+      return 0;
+    }
 
-      try {
-        setRoot(workerResult.root);
-        setPaths(workerResult.paths);
-        setPathsOptions(workerResult.pathsOptions);
-
-        if (errors.length) {
-          setError(new Error(errors.join('\n')));
-        }
-
-        if (imageGroups.length > workerResult.paths.length) {
-          const idsInPaths = workerResult.paths.map(({ group }) => group.id);
-          const usedGroups = imageGroups.filter(({ id }) => (idsInPaths.includes(id)));
-          setImageGroups(usedGroups);
-        }
-
-        if (enableDebug) {
-          console.info(`worker ran for ${workerResult.duration.toFixed(2)}ms`);
-        }
-      } catch (error) {
-        console.error(error);
-        setError(error as Error);
-      } finally {
-        setIsWorking(false);
-        setIsInitialized(true);
-        worker.terminate();
-      }
-    }, 1);
-
-    return () => {
-      clearTimeout(handle);
-      worker.terminate();
-      setIsWorking(false);
-    };
-  }, [enableDebug, imageGroups, itemsStoreInitialized, setError, setImageGroups, stateImages]);
-
-  const pageIndex = useMemo(() => (
-    parseInt(searchParams.get('page') ?? '1', 10) - 1
-  ), [searchParams]);
+    return pageSearchParam - 1;
+  }, [searchParams]);
 
   const path = useMemo(() => (searchParams.get('group') || ''), [searchParams]);
 
   const getUrl = useCallback((params: GetUrlParams) => {
-    const page: number = typeof params.pageIndex === 'number' ? params.pageIndex : pageIndex;
-    const group: string = typeof params.group === 'string' ? params.group : path;
+    const page: number = typeof params.pageIndex === 'number' ? params.pageIndex : currentPageIndex;
+    let group: string = typeof params.group === 'string' ? params.group : path;
+
+    if (group === '/') {
+      group = '';
+    }
 
     let link = `${GALLERY_BASE_PATH}?page=${page + 1}`;
     if (group.length) {
@@ -102,12 +60,12 @@ export const useContextHook = (): GalleryTreeContextType => {
     }
 
     return link;
-  }, [pageIndex, path]);
+  }, [currentPageIndex, path]);
 
   useEffect(() => {
     if (pathname === GALLERY_BASE_PATH) {
       const handle = window.setTimeout(() => {
-        const link = getUrl({ pageIndex , group: path });
+        const link = getUrl({ group: path });
         setLastGalleryLink(link);
       }, 1);
 
@@ -115,31 +73,25 @@ export const useContextHook = (): GalleryTreeContextType => {
     }
 
     return () => {/**/};
-  }, [path, pageIndex, pathname, getUrl]);
+  }, [path, pathname, getUrl]);
 
+  const { byFullSlug: view, isLoadingByFullSlug } = useImageGroups({ bySlug: path });
 
-  const view = useMemo(() => (
-    paths.find(({ absolutePath }) => absolutePath === path)?.group || root
-  ), [path, paths, root]);
-
-  const covers = useMemo(() => (
-    view.groups.map(({ coverImage }) => coverImage)
-  ), [view.groups]);
-
-  const images = useMemo(() => (
-    view.images.filter((image: Image) => !covers.includes(image.hash))
-  ), [covers, view.images]);
+  const { byGroupId: viewItems, byGroupPaging, isLoadingByGroupId } = useImages({
+    page: currentPageIndex,
+    groupId: view?.id,
+    keepPreviousData: false,
+  });
 
   return {
     view,
-    covers,
-    paths,
-    images,
+    groupsByFullSlug,
+    groupsById,
+    viewItems,
     pathsOptions,
-    root,
-    isWorking,
-    isInitialized,
-    pageIndex,
+    isWorking: isLoadingTree || isLoadingByGroupId || isLoadingByFullSlug,
+    paging: byGroupPaging,
+    currentPageIndex,
     path,
     lastGalleryLink,
     getUrl,

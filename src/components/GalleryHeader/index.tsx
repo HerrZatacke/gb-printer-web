@@ -4,12 +4,11 @@ import BatchButtons from '@/components/BatchButtons';
 import GalleryViewSelect from '@/components/GalleryViewSelect';
 
 interface Props {
-  page: number;
   isBottom?: boolean;
   isSticky?: boolean;
 }
 
-function GalleryHeader({ isBottom, page, isSticky }: Props) {
+function GalleryHeader({ isBottom, isSticky }: Props) {
   return (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
@@ -33,7 +32,7 @@ function GalleryHeader({ isBottom, page, isSticky }: Props) {
       })}
     >
       <GalleryViewSelect />
-      <BatchButtons page={page} />
+      <BatchButtons />
     </Stack>
   );
 }

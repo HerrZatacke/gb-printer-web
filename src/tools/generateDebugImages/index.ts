@@ -1,5 +1,4 @@
 // Currently unused, but may be added to "window" for debugging purposes
-import { useItemsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import padToHeight from '@/tools/padToHeight';
 import { Date } from '@/tools/safeDate';
@@ -78,12 +77,13 @@ export const generateDebugImages = async (count: number) => {
 
   const dispatchStart = Date.now();
 
-  const { images, setImages } = useItemsStore.getState();
-
-  setImages([
-    ...images,
-    ...debugs.map(({ image }) => image),
-  ]);
+  // const { images, setImages } = useItemsStore.getState();
+  //
+  // setImages([
+  //   ...images,
+  //   ...debugs.map(({ image }) => image),
+  // ]);
+  console.log(debugs);
 
   console.log(`Dispatch time: ${Date.now() - dispatchStart}`);
 };

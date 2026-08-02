@@ -1,7 +1,8 @@
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
-import { useEditStore, useItemsStore } from '@/stores/stores';
+import { usePalettes } from '@/hooks/usePalettes';
+import { useEditStore } from '@/stores/stores';
 import { type Palette } from '@/types/Palette';
 
 const randomColor = (max: number): string => (
@@ -32,7 +33,7 @@ interface UseSetEditPalette {
 }
 
 const useSetEditPalette = (): UseSetEditPalette => {
-  const { palettes } = useItemsStore();
+  const { palettes } = usePalettes({ list: true });
   const { setEditPalette } = useEditStore();
   const t = useTranslations('useSetEditPalette');
 

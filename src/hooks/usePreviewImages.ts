@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
-import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
+import { SpecialTags } from '@/consts/SpecialTags';
+import { useImageQueryParams } from '@/hooks/useImageQueryParams';
+import { useImages } from '@/hooks/useImages';
 import { useFiltersStore } from '@/stores/stores';
-import { type FilteredImagesState } from '@/tools/getFilteredImages';
-import { getFilteredImages } from '@/tools/getFilteredImages';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
-import { addSortIndex, removeSortIndex, sortImages } from '@/tools/sortImages';
 import uniqueBy from '@/tools/unique/by';
 import { type Image } from '@/types/Image';
 
@@ -15,46 +14,34 @@ interface UsePreviewImages {
 }
 
 const usePreviewImages = (): UsePreviewImages => {
-  const { root } = useGalleryTreeContext();
+  const { imageSelection } = useFiltersStore();
+  const { byHashes: selected } = useImages({ hashes: imageSelection });
+  const imageQueryParams = useImageQueryParams();
 
-  const {
-    imageSelection,
-    sortBy,
-    filtersTags,
-    filtersFrames,
-    filtersPalettes,
-    recentImports,
-  } = useFiltersStore();
+  const query = {
+    ...imageQueryParams,
+    page: 0,
+    pageSize: 2,
+    filters: {
+      ...imageQueryParams.filters,
+      tags: [
+        ...(imageQueryParams.filters?.tags || []),
+        SpecialTags.FILTER_MONOCHROME,
+      ],
+    },
+  };
 
-  const filterState: FilteredImagesState = useMemo(() => (
-    { sortBy, filtersTags, filtersPalettes, filtersFrames, recentImports }
-  ), [filtersFrames, filtersPalettes, filtersTags, recentImports, sortBy]);
+  const { raw: filtered } = useImages({ raw: query });
 
   const previewImages = useMemo<string[]>(() => {
-    const selectedImages = imageSelection
-      .map((imageHash) => (
-        root.allImages.find(({ hash }) => hash === imageHash)
-      ))
-      .reduce(reduceImagesMonochrome, []);
-
-    const filtered = (selectedImages.length > 1) ?
-      [] :
-      getFilteredImages(root, filterState).reduce(reduceImagesMonochrome, []);
-
-    const allImages = ((selectedImages.length + filtered.length) > 1) ?
-      [] :
-      [...root.allImages]
-        .map(addSortIndex)
-        .sort(sortImages(filterState.sortBy))
-        .map(removeSortIndex)
-        .reduce(reduceImagesMonochrome, []);
+    // raw basic sources
+    const selectedImages = selected.reduce(reduceImagesMonochrome, []);
+    const filteredImages = filtered.reduce(reduceImagesMonochrome, []);
 
     const availableImages = uniqeHash([
       selectedImages.shift(),
-      filtered.shift(),
-      allImages.shift(),
-      allImages.pop(),
-      filtered.pop(),
+      filteredImages.shift(),
+      filteredImages.pop(),
       selectedImages.pop(),
     ].reduce(reduceImagesMonochrome, []));
 
@@ -64,7 +51,9 @@ const usePreviewImages = (): UsePreviewImages => {
     ]
       .reduce(reduceImagesMonochrome, [])
       .map(({ hash }) => hash);
-  }, [filterState, imageSelection, root]);
+  }, [filtered, selected]);
+
+  console.log({ filtered, query });
 
   return {
     previewImages,

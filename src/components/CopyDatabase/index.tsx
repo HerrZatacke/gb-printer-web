@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { dbClearAndSetAll, dbGetAllFromStore, type KV } from '@/tools/database/dbGetSet';
 import { localStorageClear, localStorageGetAll, localStorageSet } from '@/tools/database/lsGetSet';
-import { localforageReady } from '@/tools/localforageInstance';
 
 const DB_NAME = 'GB Printer Web';
 const TRANSFER_MESSAGE_TYPE = 'DBDATA';
@@ -35,7 +34,6 @@ export default function CopyDatabase() {
 
   useEffect(() => {
     (async () => {
-      await localforageReady();
       const databases = await indexedDB.databases();
       const version = databases.find(({ name }) => name === DB_NAME)?.version || 1;
       const request = indexedDB.open(DB_NAME, version);

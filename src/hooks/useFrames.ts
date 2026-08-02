@@ -1,167 +1,60 @@
-import { useState, useEffect, useCallback } from 'react';
-import { type ExportTypes } from '@/consts/exportTypes';
-import { useFrameGroups } from '@/hooks/useFrameGroups';
-import { useStores } from '@/hooks/useStores';
-import { useItemsStore, useSettingsStore } from '@/stores/stores';
-import { compressAndHashFrame, loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
-import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
-import { getFramesForGroup } from '@/tools/getFramesForGroup';
-import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
-import { padFrameData } from '@/tools/saveLocalStorageItems';
-import { load } from '@/tools/storage';
-import { type Frame } from '@/types/Frame';
-import { type FrameGroup } from '@/types/FrameGroup';
-import { Image } from '@/types/Image';
-import { useImportExportSettings } from './useImportExportSettings';
+import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
+import {
+  framesByIdsQueryOptions,
+  framesListQueryOptions,
+  updateFramesAction,
+  deleteFramesByIdsAction,
+} from '@/stores/items/queries/frames';
+import { Frame } from '@/types/Frame';
 
-const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {
-  const group = groups.find(({ id }) => id === byId);
-  if (!group) {
-    return groups[0]?.id || '';
-  }
-
-  return group.id;
-};
-
-interface UseFrames {
-  selectedFrameGroup: string;
-  groupFrames: Frame[];
-  setSelectedFrameGroup: (id: string) => void;
-  frameGroups: FrameGroup[];
-  exportJson: (what: ExportTypes) => void;
-  palette: string[];
-  setActiveFrameGroupName: (name: string) => void;
-  activeFrameGroup: FrameGroup;
-  convertFormat: () => void;
-  detectFrames: () => void;
-  enableDebug: boolean;
+export interface UseFrames {
+  frames: Frame[];
+  isLoadingList: boolean;
+  byIds: Frame[];
+  isLoadingByIds: boolean;
+  updateFrames: (frames: Frame[], purge?: boolean) => Promise<void>;
+  deleteFramesByIds: (ids: string[]) => Promise<void>;
 }
 
-const useFrames = (): UseFrames => {
-  const { enableDebug, savFrameTypes, activePalette } = useSettingsStore();
-  const { frames, images, palettes, addFrames, updateFrameGroups } = useItemsStore();
-  const { frameGroups } = useFrameGroups();
-  const { updateLastSyncLocalNow, updateImages } = useStores();
-  const { downloadSettings } = useImportExportSettings();
+export interface UseFramesOptions {
+  list?: boolean;
+  ids?: string[];
+}
 
-  const palette = palettes.find(({ shortName }) => shortName === activePalette) || palettes[0];
+export const useFrames = ({ list, ids }: UseFramesOptions): UseFrames => {
+  const queryClient = useQueryClient();
 
-  const [groupFrames, setGroupFrames] = useState<Frame[]>([]);
-  const [selectedFrameGroup, setSelectedFrameGroup] = useState(getValidFrameGroupId(frameGroups, savFrameTypes));
+  const listQuery = useQuery({
+    ...framesListQueryOptions(),
+    enabled: Boolean(list),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
 
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      if (selectedFrameGroup) {
-        setGroupFrames(getFramesForGroup(frames, selectedFrameGroup));
-      } else {
-        setGroupFrames([]);
-      }
-    }, 1);
+  const byIdsQuery = useQuery({
+    ...framesByIdsQueryOptions(ids || []),
+    enabled: Boolean(ids?.length),
+    placeholderData: keepPreviousData,
+    retry: false,
+  });
 
-    return () => window.clearTimeout(handle);
-  }, [frames, selectedFrameGroup]);
+  const updateFrames = useCallback(async (frames: Frame[], purge = false): Promise<void> => {
+    await updateFramesAction(queryClient, frames, purge);
+  }, [queryClient]);
 
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      if (selectedFrameGroup === '') {
-        const possibleFrameGroup = getValidFrameGroupId(frameGroups, savFrameTypes);
-        if (possibleFrameGroup !== '') {
-          setSelectedFrameGroup(possibleFrameGroup);
-        }
-      }
-    }, 1);
-
-    return () => window.clearTimeout(handle);
-  }, [frameGroups, frames, savFrameTypes, selectedFrameGroup]);
-
-  const activeFrameGroup = frameGroups.find(({ id }) => (id === selectedFrameGroup)) || frameGroups[0];
-
-  const setActiveFrameGroupName = (name: string) => {
-    updateFrameGroups([{ ...activeFrameGroup, name }]);
-    updateLastSyncLocalNow();
-  };
-
-  const exportJson = (what: ExportTypes) => downloadSettings(what, selectedFrameGroup);
-
-  const convertFormat = useCallback(async () => {
-    const updatedFrames = await Promise.all(frames.map(async (frame): Promise<Frame> => {
-      const stateData = await loadFrameData(frame.hash);
-
-      if (!stateData) {
-        return frame;
-      }
-
-      const imageStartLine = stateData.upper.length / 20;
-      const tileData = padFrameData(stateData);
-
-      const { dataHash: newHash } = await compressAndHashFrame(tileData, imageStartLine);
-
-
-      if (frame.hash === newHash) {
-        return frame;
-      }
-
-      const saveHash = await saveFrameData(tileData, imageStartLine);
-
-      return {
-        ...frame,
-        hash: saveHash,
-      };
-    }));
-
-    addFrames(updatedFrames);
-  }, [addFrames, frames]);
-
-  const detectFrames = useCallback(async () => {
-    const unframedImages = images
-      .filter(({ frame }: Image) => !frame)
-      .reduce(reduceImagesMonochrome, [])
-    ;
-
-    const updatedImages: Image[] = [];
-
-    console.log(`found ${unframedImages.length} images without frame`);
-
-    for (const image of unframedImages) {
-      const tiles = await load(image.hash, undefined, true);
-
-      if (!tiles || tiles.length !== 360) { continue; }
-
-      const frameData = getFrameFromFullTiles(tiles, 2);
-      const frameTileData = padFrameData(frameData);
-      const { dataHash } = await compressAndHashFrame(frameTileData, 2);
-
-      const frame = frames.find(({ hash }) => (hash === dataHash));
-
-      if (!frame) {
-        console.log(`unknown frame in image "${image.title}"`);
-        continue;
-      }
-
-
-      updatedImages.push({
-        ...image,
-        frame: frame.id,
-      });
-    }
-
-    console.log(`will update ${updatedImages.length} with correct frame`);
-    updateImages(updatedImages);
-  }, [frames, images, updateImages]);
+  const deleteFramesByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
+    await deleteFramesByIdsAction(queryClient, deleteIds);
+  }, [queryClient]);
 
   return {
-    selectedFrameGroup,
-    groupFrames,
-    setSelectedFrameGroup,
-    frameGroups,
-    exportJson,
-    palette: palette?.palette,
-    setActiveFrameGroupName,
-    activeFrameGroup,
-    convertFormat,
-    detectFrames,
-    enableDebug,
+    frames: listQuery.data?.items ?? [],
+    isLoadingList: listQuery.isLoading,
+
+    byIds: byIdsQuery.data?.items ?? [],
+    isLoadingByIds: byIdsQuery.isLoading,
+
+    updateFrames,
+    deleteFramesByIds,
   };
 };
-
-export default useFrames;

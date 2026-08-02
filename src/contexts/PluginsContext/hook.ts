@@ -1,25 +1,23 @@
 import { useCallback, useMemo } from 'react';
+import { getQueryClient } from '@/contexts/QueryClient';
 import { useTracking } from '@/contexts/TrackingContext';
 import { useImportExportSettings } from '@/hooks/useImportExportSettings';
+import { usePlugins } from '@/hooks/usePlugins';
 import { useStores } from '@/hooks/useStores';
-import {
-  useInteractionsStore,
-  useItemsStore,
-  useProgressStore,
-} from '@/stores/stores';
+import { pluginByUrlQueryOptions } from '@/stores/items/queries/plugins';
+import { useInteractionsStore, useProgressStore } from '@/stores/stores';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import {
   type InitPluginSetupParams,
-  type Plugin,
   type PluginClassInstance,
   type PluginImageData,
   type PluginsContext,
 } from '@/types/Plugin';
-import { getCollectImageData } from './functions/collectImageData';
+import { collectImageData } from './functions/collectImageData';
 import { initPlugin } from './functions/initPlugin';
 
 export const useContextHook = (): PluginsContext => {
-  const { plugins, images, addUpdatePluginProperties } = useItemsStore();
+  const { updatePlugins, updatePluginState } = usePlugins({});
   const stores = useStores();
   const { startProgress, setProgress, stopProgress } = useProgressStore();
   const { setError } = useInteractionsStore();
@@ -27,48 +25,61 @@ export const useContextHook = (): PluginsContext => {
   const { sendEvent } = useTracking();
 
   const initPluginSetupParams = useMemo<InitPluginSetupParams>(() => ({
-    collectImageData: getCollectImageData(images),
-    addUpdatePluginProperties,
+    collectImageData,
+    updatePluginState,
     startProgress,
     setProgress,
     stopProgress,
     setError,
     stores,
     importFn: jsonImport,
-  }), [images, addUpdatePluginProperties, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
+  }), [updatePluginState, startProgress, setProgress, stopProgress, setError, stores, jsonImport]);
 
   const getInstance = useMemo(() => async (url: string): Promise<PluginClassInstance | null> => {
-    const plugin: Plugin | undefined = plugins.find((p) => p.url === url);
+    const queryClient = getQueryClient();
+    const plugin = await queryClient.fetchQuery(pluginByUrlQueryOptions(url));
+
     if (!plugin) {
       throw new Error(`Plugin with url "${url}" not found`);
     }
     return initPlugin(initPluginSetupParams, plugin);
-  }, [initPluginSetupParams, plugins]);
+  }, [initPluginSetupParams]);
 
   const validateAndAddPlugin = useCallback(async (url: string): Promise<boolean> => {
-    const plugin: Plugin = plugins.find((p) => p.url === url) ||
-      {
-        url,
-        name: '',
-        description: '',
-      };
+    const pluginInstance = await initPlugin(initPluginSetupParams, {
+      url,
+      name: '',
+      description: '',
+    });
 
-    return !!(await initPlugin(initPluginSetupParams, plugin));
-  }, [initPluginSetupParams, plugins]);
+    if (!pluginInstance) {
+      return false;
+    }
+
+    await updatePlugins([{
+      url,
+      description: pluginInstance.description,
+      name: pluginInstance.name,
+      config: pluginInstance.config,
+      configParams: pluginInstance.configParams,
+    }]);
+
+    return true;
+  }, [initPluginSetupParams, updatePlugins]);
 
 
   const runWithImage = useCallback(async (url: string, imageHash: string): Promise<void> => {
-    const pluginImage: PluginImageData = getCollectImageData(images)(imageHash);
+    const pluginImage: PluginImageData = await collectImageData(imageHash);
     (await getInstance(url))?.withImage(pluginImage);
     sendEvent('runPlugin', { imageCount: 1 });
-  }, [getInstance, images, sendEvent]);
+  }, [getInstance, sendEvent]);
 
   const runWithImages = useCallback(async (url: string, imageSelection: string[]): Promise<void> => {
-    const pluginImages: PluginImageData[] = imageSelection.map(getCollectImageData(images));
+    const pluginImages: PluginImageData[] = await Promise.all(imageSelection.map(collectImageData));
     if (!pluginImages.length) { return; }
     (await getInstance(url))?.withSelection(pluginImages);
     sendEvent('runPlugin', { imageCount: nextPowerOfTwo(pluginImages.length) });
-  }, [getInstance, images, sendEvent]);
+  }, [getInstance, sendEvent]);
 
   return {
     validateAndAddPlugin,

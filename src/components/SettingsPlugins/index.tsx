@@ -10,12 +10,13 @@ import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { textFieldSlotDefaults } from '@/consts/textFieldSlotDefaults';
 import { usePluginsContext } from '@/contexts/PluginsContext';
-import { useInteractionsStore, useItemsStore } from '@/stores/stores';
+import { usePlugins } from '@/hooks/usePlugins';
+import { useInteractionsStore } from '@/stores/stores';
 import PluginConfig from './PluginConfig';
 
 
 function SettingsPlugins() {
-  const { plugins } = useItemsStore();
+  const { plugins } = usePlugins({ list: true });
   const { setError } = useInteractionsStore();
   const { validateAndAddPlugin } = usePluginsContext();
   const [pluginUrl, setPluginUrl] = useState('');

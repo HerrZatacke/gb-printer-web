@@ -3,7 +3,6 @@ import { RGBNTiles } from 'gb-image-decoder';
 import React, { useCallback, useEffect, useState } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import { defaultRGBNPalette } from '@/consts/defaults';
-import { useItemsStore } from '@/stores/stores';
 import { loadImageTiles as getLoadImageTiles } from '@/tools/loadImageTiles';
 import { type RGBNHashes } from '@/types/Image';
 
@@ -13,15 +12,14 @@ interface Props {
 
 function RGBNPreviewImage({ rgbnHashes }: Props) {
   const [tiles, setTiles] = useState<RGBNTiles | null>(null);
-  const { frames: allFrames, images: allImages } = useItemsStore();
 
   const loadImageTiles = useCallback(
     async (hashesOverride?: RGBNHashes): Promise<RGBNTiles> => {
-      const imageLoader = getLoadImageTiles(allImages, allFrames);
+      const imageLoader = getLoadImageTiles();
 
       return (await imageLoader('', undefined, undefined, hashesOverride) as RGBNTiles);
     },
-    [allImages, allFrames],
+    [],
   );
 
   useEffect(()=> {

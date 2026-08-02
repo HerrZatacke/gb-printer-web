@@ -5,7 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { usePluginsContext } from '@/contexts/PluginsContext';
-import { useFiltersStore, useItemsStore } from '@/stores/stores';
+import { usePlugins } from '@/hooks/usePlugins';
+import { useFiltersStore } from '@/stores/stores';
 
 interface Props {
   pluginAnchor: HTMLElement | null;
@@ -15,7 +16,7 @@ interface Props {
 
 function PluginSelect({ pluginAnchor, hash, onClose }: Props) {
   const t = useTranslations('PluginSelect');
-  const { plugins } = useItemsStore();
+  const { plugins, pluginStates } = usePlugins({ list: true });
   const { imageSelection } = useFiltersStore();
   const { runWithImage, runWithImages } = usePluginsContext();
 
@@ -34,24 +35,27 @@ function PluginSelect({ pluginAnchor, hash, onClose }: Props) {
       onClose={onClose}
     >
       {
-        plugins.map(({ url, name, description, loading, error }) => (
-          <MenuItem
-            key={url}
-            disabled={Boolean(loading || error)}
-            title={t('pluginTooltip', {
-              description: error || description || '',
-              url,
-            })}
-            onClick={() => {
-              onClose();
-              dispatchToPlugin(url);
-            }}
-          >
-            {error && <WarningIcon color="warning" />}
-            {loading && <CircularProgress color="secondary" size={22} />}
-            {name || url}
-          </MenuItem>
-        ))
+        plugins.map(({ url, name, description }) => {
+          const { error, loading } = pluginStates.get(url) || { url, error: false, loading: false };
+          return (
+            <MenuItem
+              key={url}
+              disabled={Boolean(loading || error)}
+              title={t('pluginTooltip', {
+                description: error || description || '',
+                url,
+              })}
+              onClick={() => {
+                onClose();
+                dispatchToPlugin(url);
+              }}
+            >
+              {error && <WarningIcon color="warning"/>}
+              {loading && <CircularProgress color="secondary" size={22}/>}
+              {name || url}
+            </MenuItem>
+          );
+        })
       }
     </Menu>
   );
