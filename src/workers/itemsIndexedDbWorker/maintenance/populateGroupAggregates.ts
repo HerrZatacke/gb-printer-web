@@ -4,7 +4,7 @@ import { type ItemsDB, StoredImage } from '@/workers/itemsIndexedDbWorker/types'
 
 const MAX_TREE_DEPTH = 20;
 
-interface AggregatedTags {
+interface GroupAggregates {
   tags: string[];
   specialTags: SpecialTags[];
 }
@@ -12,15 +12,15 @@ interface AggregatedTags {
 const newSet = (
   tags: string[] = [],
   specialTags: SpecialTags[] = [],
-): AggregatedTags => ({ tags, specialTags });
+): GroupAggregates => ({ tags, specialTags });
 
 const resolveGroupTags = (
   groupId: string,
   depth: number,
   groupsById: Map<string, { images: string[]; groups: string[] }>,
-  tagsByImageHash: Map<string, AggregatedTags>,
-  resolvedTagsById: Map<string, AggregatedTags>,
-): AggregatedTags => {
+  tagsByImageHash: Map<string, GroupAggregates>,
+  resolvedTagsById: Map<string, GroupAggregates>,
+): GroupAggregates => {
   const cached = resolvedTagsById.get(groupId);
   if (cached) {
     return cached;
@@ -63,7 +63,7 @@ const resolveGroupTags = (
   const resolvedTags = [...tagSet].sort();
   const resolvedSpecialTags = [...specialTagSet].sort();
 
-  const resolved: AggregatedTags = {
+  const resolved: GroupAggregates = {
     tags: resolvedTags,
     specialTags: resolvedSpecialTags,
   };
@@ -79,11 +79,11 @@ export const populateGroupAggregates = async (
   const images = await db.getAll('images');
 
   const groupsById = new Map(groups.map((group) => [group.id, group]));
-  const tagsByImageHash = new Map<string, AggregatedTags>(images.map((image: StoredImage): [string, AggregatedTags] => ([
+  const tagsByImageHash = new Map<string, GroupAggregates>(images.map((image: StoredImage): [string, GroupAggregates] => ([
     image.hash,
     newSet(image.tags, image.specialTags),
   ])));
-  const resolvedTagsById = new Map<string, AggregatedTags>();
+  const resolvedTagsById = new Map<string, GroupAggregates>();
 
   const tx = db.transaction('imagegroups', 'readwrite');
   for (const group of groups) {
