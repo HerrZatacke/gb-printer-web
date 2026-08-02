@@ -17,7 +17,7 @@ import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
 
-function LocalDebug() {
+function Index() {
   const [shouldRender, setShouldRender] = useState(false);
   const { enableDebug } = useSettingsStore();
   const { updateImageGroup } = useImageGroups({ tree: true, list: true });
@@ -183,4 +183,4 @@ function LocalDebug() {
   );
 }
 
-export default LocalDebug;
+export default Index;
