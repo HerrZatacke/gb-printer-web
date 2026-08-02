@@ -72,7 +72,7 @@ const resolveGroupTags = (
   return resolved;
 };
 
-export const populateGroupAggregatedTags = async (
+export const populateGroupAggregates = async (
   db: IDBPDatabase<ItemsDB>,
 ): Promise<void> => {
   const groups = await db.getAll('imagegroups');

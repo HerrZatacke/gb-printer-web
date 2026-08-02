@@ -1,11 +1,11 @@
 import { type IDBPDatabase } from 'idb';
-import { populateGroupAggregatedTags } from '@/workers/itemsIndexedDbWorker/maintenance/populateGroupAggregatedTags';
+import { populateGroupAggregates } from '@/workers/itemsIndexedDbWorker/maintenance/populateGroupAggregates';
 import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
 import { MaintenanceTask } from '@/workers/itemsIndexedDbWorker/maintenance/types';
 import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 const maintenanceTasks: MaintenanceTask[] = [
-  populateGroupAggregatedTags,
+  populateGroupAggregates,
   reconcileImageGroups,
 ];
 
