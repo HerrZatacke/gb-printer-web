@@ -9,7 +9,7 @@ import {
   type StoredSerializableImageGroup,
 } from '@/workers/itemsIndexedDbWorker/types';
 
-export const getMatcher = async (
+export const getFacetMatcher = async (
   hostApi: ItemsHostApi,
   filters?: ImageQueryFilters,
 ) => {

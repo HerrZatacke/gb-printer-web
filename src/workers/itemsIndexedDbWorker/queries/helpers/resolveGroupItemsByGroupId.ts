@@ -4,7 +4,7 @@ import { type TreeImageGroup } from '@/types/ImageGroup';
 import {
   facetFromImage,
   facetFromSerializableImageGroup,
-  getMatcher,
+  getFacetMatcher,
 } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
@@ -36,7 +36,7 @@ export const resolveGroupItemsByGroupId = async (
     rootGroup = (await getImageGroupsFullTree()).item;
   }
 
-  const facetMatcher = await getMatcher(
+  const facetMatcher = await getFacetMatcher(
     hostApi,
     filters,
   );

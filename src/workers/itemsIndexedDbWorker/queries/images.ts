@@ -4,7 +4,7 @@ import uniqueBy from '@/tools/unique/by';
 import { type Image, ImageSchema } from '@/types/Image';
 import { getDb, getHostApi } from '@/workers/itemsIndexedDbWorker/db';
 import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
-import { facetFromImage, getMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
+import { facetFromImage, getFacetMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
@@ -44,13 +44,13 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
 
   const addPaging = getAddPaging<Image>(total, page, pageSize, start, ImageSchema);
 
-  const imageMatcher = await getMatcher(
+  const facetMatcher = await getFacetMatcher(
     hostApi,
     filters,
   );
 
   const imageFacetMatchesFilters = (item: StoredImage): boolean => (
-    imageMatcher(facetFromImage(item))
+    facetMatcher(facetFromImage(item))
   );
 
   const images = await resolveAndFilterImages(db, imageFacetMatchesFilters, candidateHashes);
