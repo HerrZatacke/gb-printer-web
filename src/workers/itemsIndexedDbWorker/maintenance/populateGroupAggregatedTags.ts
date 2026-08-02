@@ -1,15 +1,26 @@
 import { type IDBPDatabase } from 'idb';
-import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
+import { SpecialTags } from '@/consts/SpecialTags';
+import { type ItemsDB, StoredImage } from '@/workers/itemsIndexedDbWorker/types';
 
 const MAX_TREE_DEPTH = 20;
+
+interface AggregatedTags {
+  tags: string[];
+  specialTags: SpecialTags[];
+}
+
+const newSet = (
+  tags: string[] = [],
+  specialTags: SpecialTags[] = [],
+): AggregatedTags => ({ tags, specialTags });
 
 const resolveGroupTags = (
   groupId: string,
   depth: number,
   groupsById: Map<string, { images: string[]; groups: string[] }>,
-  tagsByImageHash: Map<string, string[]>,
-  resolvedTagsById: Map<string, string[]>,
-): string[] => {
+  tagsByImageHash: Map<string, AggregatedTags>,
+  resolvedTagsById: Map<string, AggregatedTags>,
+): AggregatedTags => {
   const cached = resolvedTagsById.get(groupId);
   if (cached) {
     return cached;
@@ -17,31 +28,46 @@ const resolveGroupTags = (
 
   if (depth > MAX_TREE_DEPTH) {
     console.error(`Group tree exceeds max depth (${MAX_TREE_DEPTH}) at "${groupId}" — likely a cycle, treating this branch as tagless`);
-    return [];
+    return newSet();
   }
 
   const group = groupsById.get(groupId);
   if (!group) {
-    return [];
+    return newSet();
   }
 
   const tagSet = new Set<string>();
+  const specialTagSet = new Set<SpecialTags>();
 
   for (const hash of group.images) {
-    const imageTags = tagsByImageHash.get(hash) ?? [];
-    for (const tag of imageTags) {
+    const imageTags = tagsByImageHash.get(hash) ?? newSet();
+    for (const tag of imageTags.tags) {
       tagSet.add(tag);
+    }
+    for (const specialTag of imageTags.specialTags) {
+      specialTagSet.add(specialTag);
     }
   }
 
   for (const childId of group.groups) {
     const childTags = resolveGroupTags(childId, depth + 1, groupsById, tagsByImageHash, resolvedTagsById);
-    for (const tag of childTags) {
+    for (const tag of childTags.tags) {
       tagSet.add(tag);
     }
+    for (const specialTag of childTags.specialTags) {
+      specialTagSet.add(specialTag);
+    }
+
   }
 
-  const resolved = [...tagSet].sort();
+  const resolvedTags = [...tagSet].sort();
+  const resolvedSpecialTags = [...specialTagSet].sort();
+
+  const resolved: AggregatedTags = {
+    tags: resolvedTags,
+    specialTags: resolvedSpecialTags,
+  };
+
   resolvedTagsById.set(groupId, resolved);
   return resolved;
 };
@@ -53,13 +79,16 @@ export const populateGroupAggregatedTags = async (
   const images = await db.getAll('images');
 
   const groupsById = new Map(groups.map((group) => [group.id, group]));
-  const tagsByImageHash = new Map(images.map((image) => [image.hash, image.tags]));
-  const resolvedTagsById = new Map<string, string[]>();
+  const tagsByImageHash = new Map<string, AggregatedTags>(images.map((image: StoredImage): [string, AggregatedTags] => ([
+    image.hash,
+    newSet(image.tags, image.specialTags),
+  ])));
+  const resolvedTagsById = new Map<string, AggregatedTags>();
 
   const tx = db.transaction('imagegroups', 'readwrite');
   for (const group of groups) {
     const tags = resolveGroupTags(group.id, 0, groupsById, tagsByImageHash, resolvedTagsById);
-    await tx.store.put({ ...group, tags });
+    await tx.store.put({ ...group, ...tags });
   }
   await tx.done;
 };
