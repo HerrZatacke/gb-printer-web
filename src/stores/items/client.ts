@@ -1,6 +1,5 @@
 'use client';
 import * as Comlink from 'comlink';
-import { getQueryClient } from '@/contexts/QueryClient';
 import { useInteractionsStore } from '@/stores/stores';
 import { type ItemsHostApi, type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
