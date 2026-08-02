@@ -73,7 +73,6 @@ export type ImageSortField = 'created' | 'frame' | 'palette' | 'title';
 
 export interface ItemsHostApi {
   getLegacyStorage(): Promise<Record<string, unknown[]>>;
-  onDataChanged(): void;
   onMigrationError(message: string): void;
 }
 

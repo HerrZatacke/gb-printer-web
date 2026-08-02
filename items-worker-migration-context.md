@@ -75,7 +75,7 @@ Note: `getImagesByAnyHashes` returns `ItemsSourceResponse<ItemsReferenceList<Ima
 ```ts
 export interface ItemsHostApi {
   getLegacyStorage(): Promise<Record<string, unknown[]>>;
-  onDataChanged(): void; // no payload — always invalidates the top-level ['items'] key - needs implementation later
+  onMigrationError(message: string): void;  
 }
 ```
 

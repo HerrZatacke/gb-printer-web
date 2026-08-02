@@ -27,9 +27,6 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
             return {};
           }
         },
-        onDataChanged() {
-          getQueryClient().invalidateQueries({ queryKey: ['items'] });
-        },
         onMigrationError(message: string) {
           useInteractionsStore.getState().setFatalError(Error(message));
         },
