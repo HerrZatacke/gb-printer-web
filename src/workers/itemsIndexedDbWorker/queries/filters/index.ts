@@ -1,12 +1,12 @@
 import { SpecialTags, specialTags } from '@/consts/SpecialTags';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
-import { SerializableImageGroup } from '@/types/ImageGroup';
 import {
   type FilterableFacet,
   type ImageQueryFilters,
   type ItemsHostApi,
   type StoredImage,
+  StoredSerializableImageGroup,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getMatcher = async (
@@ -95,6 +95,7 @@ export const getMatcher = async (
 export const facetFromImage = (image: StoredImage): FilterableFacet => ({
   hash: image.hash,
   tags: image.tags,
+  specialTags: image.specialTags,
   palette: typeof image.palette === 'string' ? image.palette : null,
   frame: image.frame ?? null,
   type: image.type,
@@ -102,9 +103,10 @@ export const facetFromImage = (image: StoredImage): FilterableFacet => ({
   meta: image.meta || null,
 });
 
-export const facetFromSerializableImageGroup = (group: SerializableImageGroup): FilterableFacet => ({
+export const facetFromSerializableImageGroup = (group: StoredSerializableImageGroup): FilterableFacet => ({
   hash: group.coverImage || null,
   tags: group.tags,
+  specialTags: group.specialTags,
   created: group.created,
   palette: null,
   frame: null,

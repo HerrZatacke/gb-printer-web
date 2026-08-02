@@ -1,15 +1,16 @@
-import { type SerializableImageGroup, type TreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
+import { StoredSerializableImageGroup } from '@/workers/itemsIndexedDbWorker/types';
 
 const MAX_TREE_DEPTH = 20;
 
 export const buildTree = (
   groupId: string,
-  groupsById: Map<string, SerializableImageGroup>,
+  groupsById: Map<string, StoredSerializableImageGroup>,
   childGroupIdsByParent: Map<string, string[]>,
   imageIdsByGroup: Map<string, string[]>,
   depth: number,
 ): TreeImageGroup | null => {
-  const group: SerializableImageGroup | undefined = groupsById.get(groupId);
+  const group: StoredSerializableImageGroup | undefined = groupsById.get(groupId);
 
   if (!group) {
     return null;

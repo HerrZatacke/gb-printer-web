@@ -7,7 +7,6 @@ import {
 import { type ZodSafeParseResult } from 'zod';
 import { FrameSchema } from '@/types/Frame';
 import { FrameGroupSchema } from '@/types/FrameGroup';
-import { SerializableImageGroupSchema } from '@/types/ImageGroup';
 import { PaletteSchema } from '@/types/Palette';
 import { PluginSchema } from '@/types/Plugin';
 import {
@@ -15,6 +14,7 @@ import {
   type ItemsDB,
   type ItemsHostApi,
   StoredImageSchema,
+  StoredSerializableImageGroupSchema,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const OLD_DB_NAME = 'GB Printer Web';
@@ -110,7 +110,7 @@ export const v1LegacyData: AfterUpgradeFn = async (
     await updateFromLegacyData(OLD_FRAMES_STORE, 'frames', FrameSchema.safeParse, 'frames');
     await updateFromLegacyData(OLD_FRAMEGROUPS_STORE, 'frameGroups', FrameGroupSchema.safeParse, 'framegroups');
     await updateFromLegacyData(OLD_IMAGES_STORE, 'images', StoredImageSchema.safeParse, 'images');
-    await updateFromLegacyData(OLD_IMAGEGROUPS_STORE, 'imageGroups', SerializableImageGroupSchema.safeParse, 'imagegroups');
+    await updateFromLegacyData(OLD_IMAGEGROUPS_STORE, 'imageGroups', StoredSerializableImageGroupSchema.safeParse, 'imagegroups');
     await updateFromLegacyData(OLD_PALETTES_STORE, 'palettes', PaletteSchema.safeParse, 'palettes');
     await updateFromLegacyData(OLD_PLUGINS_STORE, 'plugins', PluginSchema.safeParse, 'plugins');
   } finally {

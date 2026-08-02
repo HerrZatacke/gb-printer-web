@@ -8,9 +8,7 @@ import {
   MonochromeImageSchema,
   RGBNImageSchema,
 } from '@/types/Image';
-import {
-  SerializableImageGroupSchema,
-} from '@/types/ImageGroup';
+import { SerializableImageGroupSchema } from '@/types/ImageGroup';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -63,6 +61,10 @@ export const StoredImageSchema = z.discriminatedUnion('type', [
     referencedHashes,
     specialTags: calculateSpecialTags(image),
   });
+});
+
+export const StoredSerializableImageGroupSchema = SerializableImageGroupSchema.extend({
+  specialTags: z.array(z.enum(SpecialTags)).prefault([]),
 });
 
 const GroupItemBaseSchema = z.object({

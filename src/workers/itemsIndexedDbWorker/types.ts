@@ -19,6 +19,7 @@ import {
   GroupItemImageSchema,
   GroupItemSchema,
   StoredImageSchema,
+  StoredSerializableImageGroupSchema,
   ItemsReferenceListSchema,
 } from '@/workers/itemsIndexedDbWorker/schemas';
 export {
@@ -26,10 +27,12 @@ export {
   GroupItemImageSchema,
   GroupItemSchema,
   StoredImageSchema,
+  StoredSerializableImageGroupSchema,
   ItemsReferenceListSchema,
 } from '@/workers/itemsIndexedDbWorker/schemas';
 
 export type StoredImage = z.infer<typeof StoredImageSchema>;
+export type StoredSerializableImageGroup = z.infer<typeof StoredSerializableImageGroupSchema>;
 export type GroupItemImage = z.infer<typeof GroupItemImageSchema>;
 export type GroupItemGroup = z.infer<typeof GroupItemGroupSchema>;
 export type GroupItem = z.infer<typeof GroupItemSchema>;
@@ -64,7 +67,7 @@ export interface ItemsDB extends DBSchema {
   };
   imagegroups: {
     key: string;
-    value: SerializableImageGroup;
+    value: StoredSerializableImageGroup;
   };
   palettes: {
     key: string;
@@ -230,6 +233,7 @@ export interface ItemsSource {
 export interface FilterableFacet {
   hash: string | null;
   tags: string[];
+  specialTags: SpecialTags[];
   created: string;
   palette: string | null;
   frame: string | null;

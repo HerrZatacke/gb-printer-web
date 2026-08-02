@@ -1,6 +1,6 @@
 import { type IDBPDatabase } from 'idb';
 import sortBy from '@/tools/sortby';
-import { SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
+import { type TreeImageGroup } from '@/types/ImageGroup';
 import {
   facetFromImage,
   facetFromSerializableImageGroup,
@@ -16,6 +16,7 @@ import {
   type ItemsDB,
   type ItemsHostApi,
   type StoredImage,
+  type StoredSerializableImageGroup,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 export const resolveGroupItemsByGroupId = async (
@@ -41,7 +42,7 @@ export const resolveGroupItemsByGroupId = async (
   );
 
   const { store: groupsStore } = db.transaction('imagegroups');
-  const imageGroup: SerializableImageGroup | undefined = await groupsStore.get(groupId);
+  const imageGroup: StoredSerializableImageGroup | undefined = await groupsStore.get(groupId);
 
   if (!imageGroup && !rootGroup) {
     throw new Error('Group by ID not found');
@@ -57,19 +58,19 @@ export const resolveGroupItemsByGroupId = async (
     throw new Error(`could not find imagegroup ${groupId}`);
   }
 
-  let filteredGroups: SerializableImageGroup[] = [];
+  let filteredGroups: StoredSerializableImageGroup[] = [];
 
   if (includeGroups) {
-    const serializableImageGroupMatchesFilters = (item: SerializableImageGroup): boolean => (
+    const serializableImageGroupMatchesFilters = (item: StoredSerializableImageGroup): boolean => (
       facetMatcher(facetFromSerializableImageGroup(item))
     );
 
     const loadedGroups = await Promise.all(
-      groupIds.map((id): Promise<SerializableImageGroup | undefined> => groupsStore.get(id)),
+      groupIds.map((id): Promise<StoredSerializableImageGroup | undefined> => groupsStore.get(id)),
     );
 
     filteredGroups = loadedGroups
-      .filter((g): g is SerializableImageGroup => Boolean(g))
+      .filter((g): g is StoredSerializableImageGroup => Boolean(g))
       .filter(serializableImageGroupMatchesFilters);
   }
 

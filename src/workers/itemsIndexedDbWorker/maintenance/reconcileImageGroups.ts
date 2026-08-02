@@ -1,17 +1,19 @@
 import { type IDBPDatabase } from 'idb';
 import unique from '@/tools/unique';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
-import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type StoredSerializableImageGroup,
+  type ItemsDB,
+} from '@/workers/itemsIndexedDbWorker/types';
 
 const MAX_PASSES = 20;
 
 interface GroupSanitizationResult {
-  group: SerializableImageGroup;
+  group: StoredSerializableImageGroup;
   didChange: boolean;
 }
 
 const sanitizeGroup = (
-  group: SerializableImageGroup,
+  group: StoredSerializableImageGroup,
   validImageHashes: Set<string>,
   validGroupIds: Set<string>,
 ): GroupSanitizationResult => {
@@ -33,7 +35,7 @@ const sanitizeGroup = (
     || groups.length !== group.groups.length
     || coverImage !== group.coverImage;
 
-  const changedGroup: SerializableImageGroup = {
+  const changedGroup: StoredSerializableImageGroup = {
     ...group,
     images,
     groups,
@@ -46,7 +48,7 @@ const sanitizeGroup = (
   };
 };
 
-const isEmptyGroup = (group: SerializableImageGroup): boolean => {
+const isEmptyGroup = (group: StoredSerializableImageGroup): boolean => {
   return !group.images.length && !group.groups.length;
 };
 
