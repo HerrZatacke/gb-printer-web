@@ -8,25 +8,42 @@ export interface Quota {
   percentage: number;
 }
 
-const sortByPercentage = sortBy<Quota>('percentage', SortDirection.DESC);
+interface LocalStorageUsageItem {
+  key: string;
+  size: number;
+}
+
+interface LocalStorageUsage {
+  items: LocalStorageUsageItem[];
+  totalSize: number;
+}
 
 interface UseStorageInfo {
   criticalStorageEstimate: Quota | null;
   storageEstimate: Quota[];
+  localStorageUsageItems: LocalStorageUsageItem[];
 }
 
-const getLocalStorageUsage = (): number => {
+const sortByPercentage = sortBy<Quota>('percentage', SortDirection.DESC);
+
+const getLocalStorageUsage = (): LocalStorageUsage => {
   let totalSize = 0;
+  const items: LocalStorageUsageItem[] = [];
   for (const key in localStorage) {
     if (localStorage.hasOwnProperty(key)) {
       const value = localStorage.getItem(key);
       if (value !== null) {
-        totalSize += key.length + value.length;
+        const size = key.length + value.length;
+        totalSize += size;
+        items.push({ key, size });
       }
     }
   }
 
-  return totalSize;
+  return {
+    items,
+    totalSize,
+  };
 };
 
 const estimateLocalStorageAvailableSize = (): number => {
@@ -57,13 +74,16 @@ const estimateLocalStorageAvailableSize = (): number => {
 
 export const useStorageInfo = (): UseStorageInfo => {
   const [storageEstimate, setStorageEstimate] = useState<Quota[]>([]);
+  const [localStorageUsageItems, setLocalStorageUsageItems] = useState<LocalStorageUsageItem[]>([]);
 
   useEffect(() => {
     window.setTimeout(async () => {
       const estimate: StorageEstimate | null = await navigator.storage?.estimate() || null;
 
-      const used = getLocalStorageUsage();
+      const { totalSize: used, items } = getLocalStorageUsage();
       const total = used + estimateLocalStorageAvailableSize();
+
+      setLocalStorageUsageItems(items);
 
       setStorageEstimate([
         {
@@ -79,11 +99,14 @@ export const useStorageInfo = (): UseStorageInfo => {
           percentage: total ? (estimate?.usage || 0) / (estimate?.quota || 1) * 100 : 100,
         },
       ]);
+
+      console.log(items);
     }, 10);
   }, []);
 
   return {
     criticalStorageEstimate: sortByPercentage(storageEstimate.filter(({ percentage }) => (percentage > 75)))[0] || null,
     storageEstimate,
+    localStorageUsageItems,
   };
 };
