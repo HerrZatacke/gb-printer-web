@@ -25,7 +25,7 @@ import { DownloadArrayBuffer } from '@/types/download';
 import { type RepoContents } from '@/types/Export';
 import { type JSONExport } from '@/types/ExportState';
 import { type AddToQueueFn, type DBFolderFile, type DownloadInfo, type DropBoxSettings, type UploadFile } from '@/types/Sync';
-import  { type ImageSortField, type SortDirection } from '@/workers/itemsIndexedDbWorker/types';
+import { type ImageSortField, type SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 import { loadFrameData } from '../applyFrame/frameData';
 import DropboxClient from './DropboxClient';
 import { hasher } from './DropboxClient/dropboxContentHasher';

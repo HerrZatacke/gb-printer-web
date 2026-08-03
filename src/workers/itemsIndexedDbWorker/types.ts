@@ -15,6 +15,9 @@ import {
   GroupItemGroupSchema,
   GroupItemImageSchema,
   GroupItemSchema,
+  ImageQueryFiltersSchema,
+  ImageQuerySortSchema,
+  ImageQueryParamsSchema,
   StoredImageSchema,
   StoredSerializableImageGroupSchema,
   ItemsReferenceListSchema,
@@ -25,6 +28,9 @@ export type StoredSerializableImageGroup = z.infer<typeof StoredSerializableImag
 export type GroupItemImage = z.infer<typeof GroupItemImageSchema>;
 export type GroupItemGroup = z.infer<typeof GroupItemGroupSchema>;
 export type GroupItem = z.infer<typeof GroupItemSchema>;
+export type ImageQueryFilters = z.infer<typeof ImageQueryFiltersSchema>;
+export type ImageQuerySort = z.infer<typeof ImageQuerySortSchema>;
+export type ImageQueryParams = z.infer<typeof ImageQueryParamsSchema>;
 
 export interface ItemsDB extends DBSchema {
   binaryframes: {
@@ -80,24 +86,6 @@ export type MigrationFn = (
   db: IDBPDatabase<ItemsDB>,
   tx: IDBPTransaction<ItemsDB, StoreNames<ItemsDB>[], 'versionchange'>,
 ) => AfterUpgradeFn | null;
-
-export interface ImageQueryFilters {
-  tags?: (string | SpecialTags)[];
-  palette?: string[];
-  frame?: string[];
-}
-
-export interface ImageQuerySort {
-  field: ImageSortField;
-  direction: SortDirection;
-}
-
-export interface ImageQueryParams {
-  page: number;
-  pageSize: number;
-  filters?: ImageQueryFilters;
-  sort: ImageQuerySort;
-}
 
 export interface ItemsSourcePaging {
   filtered: number;

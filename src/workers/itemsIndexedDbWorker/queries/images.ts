@@ -10,6 +10,9 @@ import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/h
 import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
 import {
   GroupItemSchema,
+  ImageQueryFiltersSchema,
+  ImageQuerySortSchema,
+  ImageQueryParamsSchema,
   ItemsReferenceListSchema,
   StoredImageSchema,
 } from '@/workers/itemsIndexedDbWorker/schemas';
@@ -27,7 +30,7 @@ import {
 
 const uniqueByHash = uniqueBy<Image>('hash');
 
-export const getImages = async (queryParams: ImageQueryParams, candidateHashes?: Set<string>): Promise<ItemsSourceResponse<Image>> => {
+export const getImages = async (queryParamsRaw: ImageQueryParams, candidateHashes?: Set<string>): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -39,7 +42,7 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
     pageSize,
     sort,
     filters,
-  } = queryParams;
+  } = ImageQueryParamsSchema.parse(queryParamsRaw);
 
   const addPaging = getAddPaging<Image>(total, page, pageSize, start, ImageSchema);
 
@@ -58,9 +61,12 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
   return addPaging(sortedImages);
 };
 
-export const getHashesByGroupId = async (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceTotalResponse<string>> => {
+export const getHashesByGroupId = async (groupId: string, includeGroupImageHashes: boolean, sortRaw: ImageQuerySort, filtersRaw?: ImageQueryFilters): Promise<ItemsSourceTotalResponse<string>> => {
   const db = await getDb();
   const start = performance.now();
+
+  const sort = ImageQuerySortSchema.parse(sortRaw);
+  const filters = ImageQueryFiltersSchema.optional().parse(filtersRaw);
 
   const sortedGroupItems = await resolveGroupItemsByGroupId(db, groupId, includeGroupImageHashes, sort, filters);
   const sortedImageHashes = sortedGroupItems
@@ -70,7 +76,7 @@ export const getHashesByGroupId = async (groupId: string, includeGroupImageHashe
   return addPaging(sortedImageHashes);
 };
 
-export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boolean, queryParams: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>> => {
+export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boolean, queryParamsRaw: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -79,7 +85,7 @@ export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boo
     pageSize,
     sort,
     filters,
-  } = queryParams;
+  } = ImageQueryParamsSchema.parse(queryParamsRaw);
 
   const { store: imagesStore } = db.transaction('images');
   const total = await imagesStore.count();
