@@ -47,11 +47,7 @@ const calculateSpecialTags = (image: Image): SpecialTags[] => {
   return specialTags;
 };
 
-export const StoredImageSchema = z.discriminatedUnion('type', [
-  MonochromeImageSchema,
-  RGBNImageSchema,
-]).transform((image) => {
-
+export const StoredImageSchema = ImageSchema.transform((image) => {
   const referencedHashes: string[] = image.type === 'rgbn'
     ? Object.values(image.hashes ?? {}).filter((h): h is string => Boolean(h))
     : [];
