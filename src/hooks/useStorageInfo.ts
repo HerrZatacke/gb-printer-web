@@ -100,7 +100,6 @@ export const useStorageInfo = (): UseStorageInfo => {
         },
       ]);
 
-      console.log(items);
     }, 10);
   }, []);
 

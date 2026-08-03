@@ -68,8 +68,7 @@ const RGBNPaletteSchema = z.object({
   g: z.array(z.number()).optional(),
   b: z.array(z.number()).optional(),
   n: z.array(z.number()).optional(),
-  // blend: nullToValue(z.enum(BlendMode), undefined).catch(undefined),
-  blend: nullToValue(z.enum(BlendMode), undefined),
+  blend: nullToValue(z.enum(BlendMode), undefined).catch(undefined),
 }) satisfies z.ZodType<DecoderLibRGBNPalette>;
 
 export type RGBNPalette = z.infer<typeof RGBNPaletteSchema>;
