@@ -2,12 +2,7 @@ import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
-import {
-  type Image,
-  ImageSchema,
-  MonochromeImageSchema,
-  RGBNImageSchema,
-} from '@/types/Image';
+import { type Image, ImageSchema } from '@/types/Image';
 import { SerializableImageGroupSchema } from '@/types/ImageGroup';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
