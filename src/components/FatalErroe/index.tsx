@@ -47,6 +47,11 @@ export default function FatalError() {
     window.location.reload();
   }, []);
 
+  const retry = useCallback(async () => {
+    await deleteDB('gb-printer-web--items');
+    window.location.reload();
+  }, []);
+
   if (!fatalError) {
     return null;
   }
@@ -80,6 +85,11 @@ export default function FatalError() {
                 onClick={resetApp}
               >
                 Reset app and delete local data
+              </Button>
+              <Button
+                onClick={retry}
+              >
+                Retry
               </Button>
               <Button
                 component={Link}
