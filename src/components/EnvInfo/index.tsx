@@ -1,15 +1,17 @@
 'use client';
 
+import HelpIcon from '@mui/icons-material/Help';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { filesize } from 'filesize';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useStorageInfo } from '@/hooks/useStorageInfo';
 
 function EnvInfo() {
   const t = useTranslations('EnvInfo');
-  const { storageEstimate } = useStorageInfo();
+  const [showLSInfo, setShowLSInfo] = useState(false);
+  const { storageEstimate, localStorageUsageItems } = useStorageInfo();
 
   const infos = useMemo<string[]>(() => {
     return ([
@@ -23,8 +25,11 @@ function EnvInfo() {
           percentage: estimate.percentage.toFixed(2),
         })
       )),
+      ...(showLSInfo ? localStorageUsageItems.map(({ key, size }) => (
+        `${key}: ${filesize(size)}`
+      )) : []),
     ]);
-  }, [storageEstimate, t]);
+  }, [localStorageUsageItems, showLSInfo, storageEstimate, t]);
 
   return (
     <Stack
@@ -32,16 +37,37 @@ function EnvInfo() {
       direction="column"
     >
       { infos.map((text) => (
-        <Typography
+        <Stack
           key={text}
           component="li"
-          variant="caption"
-          color="textDisabled"
-          align="right"
-          lineHeight={1.25}
+          direction="row"
+          justifyContent="end"
+          gap={1}
         >
-          {text}
-        </Typography>
+          {text.includes('localStorage') ? (
+            <button
+              tabIndex={-1}
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                margin: 0,
+                cursor: 'pointer',
+              }}
+              onClick={() => setShowLSInfo(!showLSInfo)}
+            >
+              <HelpIcon sx={{ fontSize: 14 }} color="action" />
+            </button>
+          ) : null}
+          <Typography
+            variant="caption"
+            color="textDisabled"
+            align="right"
+            lineHeight={1.25}
+          >
+            {text}
+          </Typography>
+        </Stack>
       )) }
     </Stack>
   );

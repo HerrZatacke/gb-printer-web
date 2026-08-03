@@ -57,6 +57,10 @@ export const v1LegacyData: AfterUpgradeFn = async (
     for (const raw of oldData) {
       const result = parser(raw);
       if (!result.success) {
+        console.log({
+          result,
+          raw,
+        });
         throw result.error;
       }
 
