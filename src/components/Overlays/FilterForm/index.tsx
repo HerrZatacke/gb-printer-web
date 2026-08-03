@@ -16,7 +16,8 @@ import FilterFormTag from '@/components/Overlays/FilterForm/FilterFormTag';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { useActivePalette } from '@/hooks/useActivePalette';
 import { useFilterForm } from '@/hooks/useFilterForm';
-import sortBy, { SortDirection } from '@/tools/sortby';
+import sortBy from '@/tools/sortby';
+import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 const FilterTab = {
   TAGS: 'tabTags',

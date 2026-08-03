@@ -1,8 +1,4 @@
-export const SortDirection = {
-  ASC: 'asc',
-  DESC: 'desc',
-} as const;
-export type SortDirection = (typeof SortDirection)[keyof typeof SortDirection];
+import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 const sortBy = <T>(key: keyof T, direction: SortDirection = SortDirection.ASC) => (arr: T[]): T[] => {
 

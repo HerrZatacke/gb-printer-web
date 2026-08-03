@@ -68,8 +68,6 @@ export interface ItemsDB extends DBSchema {
   };
 }
 
-export type SortDirection = 'asc' | 'desc';
-export type ImageSortField = 'created' | 'frame' | 'palette' | 'title';
 
 export interface ItemsHostApi {
   getLegacyStorage(): Promise<Record<string, unknown[]>>;

@@ -9,10 +9,11 @@ import { useEditStore, useFiltersStore } from '@/stores/stores';
 import applyTagChanges from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type TagUpdates } from '@/tools/modifyTagChanges';
-import sortBy, { SortDirection } from '@/tools/sortby';
+import sortBy from '@/tools/sortby';
 import { fromCreationDate, toCreationDate } from '@/tools/toCreationDate';
 import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type ImageUpdates } from '@/types/ImageActions';
+import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 interface BatchUpdateImagesParams {
   shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>;

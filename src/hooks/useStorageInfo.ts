@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import sortBy, { SortDirection } from '@/tools/sortby';
+import sortBy from '@/tools/sortby';
+import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 export interface Quota {
   type: string;

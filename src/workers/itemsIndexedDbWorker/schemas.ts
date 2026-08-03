@@ -7,6 +7,21 @@ import { SerializableImageGroupSchema } from '@/types/ImageGroup';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+export const SortDirection = {
+  ASC: 'asc',
+  DESC: 'desc',
+} as const;
+export type SortDirection = (typeof SortDirection)[keyof typeof SortDirection];
+
+export const ImageSortField = {
+  CREATED: 'created',
+  FRAME: 'frame',
+  PALETTE: 'palette',
+  TITLE: 'title',
+} as const;
+export type ImageSortField = (typeof ImageSortField)[keyof typeof ImageSortField];
+
+
 const calculateSpecialTags = (image: Image): SpecialTags[] => {
   const specialTags: SpecialTags[] = [];
   const oneDayAgo = toCreationDate(Date.now() - DAY_MS);
