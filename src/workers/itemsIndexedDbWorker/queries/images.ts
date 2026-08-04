@@ -17,20 +17,24 @@ import {
   StoredImageSchema,
 } from '@/workers/itemsIndexedDbWorker/schemas';
 import {
-  type ImageQueryParams,
   type GroupItem,
   type ItemsReferenceList,
   type ItemsSourceResponse,
   type StoredImage,
-  type ImageQueryFilters,
-  type ImageQuerySort,
   type ItemsSourceTotalResponse,
   type GroupItemImage,
+  type GetGroupItemsByGroupIdParams,
+  type GetHashesByGroupIdParams,
+  type GetImagesParams,
+  type GetImagesByHashesParams,
+  type GetImagesByAnyHashesParams,
+  type UpdateImagesParams,
+  type DeleteImagesByHashesParams,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
 
-export const getImages = async (queryParamsRaw: ImageQueryParams, candidateHashes?: Set<string>): Promise<ItemsSourceResponse<Image>> => {
+export const getImages = async ({ params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -61,7 +65,7 @@ export const getImages = async (queryParamsRaw: ImageQueryParams, candidateHashe
   return addPaging(sortedImages);
 };
 
-export const getHashesByGroupId = async (groupId: string, includeGroupImageHashes: boolean, sortRaw: ImageQuerySort, filtersRaw?: ImageQueryFilters): Promise<ItemsSourceTotalResponse<string>> => {
+export const getHashesByGroupId = async ({ groupId, includeGroupImageHashes, sort: sortRaw, filters: filtersRaw } : GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -76,7 +80,7 @@ export const getHashesByGroupId = async (groupId: string, includeGroupImageHashe
   return addPaging(sortedImageHashes);
 };
 
-export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boolean, queryParamsRaw: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>> => {
+export const getGroupItemsByGroupId = async ({ groupId, includeGroups, params: queryParamsRaw }: GetGroupItemsByGroupIdParams): Promise<ItemsSourceResponse<GroupItem>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -95,7 +99,7 @@ export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boo
   return addPaging(sortedGroupItems);
 };
 
-export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceResponse<Image>> => {
+export const getImagesByHashes = async ({ hashes }: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -113,7 +117,7 @@ export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
   return addPaging(filteredImages);
 };
 
-export const getImagesByAnyHashes = async (hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
+export const getImagesByAnyHashes = async ({ hashes }: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -171,7 +175,7 @@ export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> =>
   return addPaging(uniqueTags);
 };
 
-export const updateImages = async (images: Image[], purge: boolean): Promise<void> => {
+export const updateImages = async ({ images, purge }: UpdateImagesParams): Promise<void> => {
   const parsedImages = z.array(StoredImageSchema).parse(images);
   const db = await getDb();
 
@@ -187,7 +191,7 @@ export const updateImages = async (images: Image[], purge: boolean): Promise<voi
   await startMaintenanceTasks(db);
 };
 
-export const deleteImagesByHashes = async (hashes: string[]): Promise<void> => {
+export const deleteImagesByHashes = async ({ hashes }: DeleteImagesByHashesParams): Promise<void> => {
   const db = await getDb();
 
   const tx = db.transaction('images', 'readwrite');

@@ -151,6 +151,114 @@ export interface ItemsUsageReponse {
   duration: number;
 }
 
+export interface GetGroupItemsByGroupIdParams {
+  groupId: string;
+  includeGroups: boolean;
+  params: ImageQueryParams;
+}
+
+export interface GetHashesByGroupIdParams {
+  groupId: string;
+  includeGroupImageHashes: boolean;
+  sort: ImageQuerySort;
+  filters?: ImageQueryFilters;
+}
+
+export interface GetImagesParams {
+  params: ImageQueryParams;
+  candidateHashes?: Set<string>;
+}
+
+export interface GetImagesByHashesParams {
+  hashes: string[];
+}
+
+export interface GetImagesByAnyHashesParams {
+  hashes: string[];
+}
+
+export interface UpdateImagesParams {
+  images: Image[];
+  purge: boolean;
+}
+
+export interface DeleteImagesByHashesParams {
+  hashes: string[];
+}
+
+export interface UpdateImageGroupsParams {
+  imageGroups: SerializableImageGroup[];
+  purge: boolean;
+}
+
+export interface DeleteImageGroupsByIdsParams {
+  ids: string[];
+}
+
+export interface GetFramesByHashesParams {
+  hashes: string[];
+}
+
+export interface GetFramesByIdsParams {
+  ids: string[];
+}
+
+export interface UpdateFramesParams {
+  frames: Frame[];
+  purge: boolean;
+}
+
+export interface DeleteFramesByIdsParams {
+  ids: string[];
+}
+
+export interface UpdateFrameGroupsParams {
+  frameGroups: FrameGroup[];
+  purge: boolean;
+}
+
+export interface DeleteFrameGroupsByIdsParams {
+  ids: string[];
+}
+
+export interface GetPalettesByShortNamesParams {
+  shortNames: string[];
+}
+
+export interface UpdatePalettesParams {
+  palettes: Palette[];
+  purge: boolean;
+}
+
+export interface DeletePalettesByShortNamesParams {
+  shortNames: string[];
+}
+
+export interface GetPluginsByUrlsParams {
+  urls: string[];
+}
+
+export interface UpdatePluginsParams {
+  plugins: Plugin[];
+  purge: boolean;
+}
+
+export interface DeletePluginsByUrlsParams {
+  urls: string[];
+}
+
+export interface GetBinaryItemsByHashesParams {
+  hashes: string[];
+}
+
+export interface UpdateBinaryItemsParams {
+  items: BinaryStoreItem[];
+}
+
+export interface DeleteBinaryItemsByHashesParams {
+  hashes: string[];
+}
+
 export interface ItemsSource {
   init(hostApi: ItemsHostApi): void;
   debugReset(): Promise<void>;
@@ -159,48 +267,48 @@ export interface ItemsSource {
   getUsages(): Promise<ItemsUsageReponse>;
 
   getAllTags(): Promise<ItemsSourceTotalResponse<string>>;
-  getGroupItemsByGroupId(groupId: string, includeGroups: boolean, params: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>>;
-  getHashesByGroupId(groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceTotalResponse<string>>;
-  getImages(params: ImageQueryParams, candidateHashes?: Set<string>): Promise<ItemsSourceResponse<Image>>;
-  getImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<Image>>;
-  getImagesByAnyHashes(hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;
-  updateImages(images: Image[], purge: boolean): Promise<void>;
-  deleteImagesByHashes(hashes: string[]): Promise<void>;
+  getGroupItemsByGroupId(params: GetGroupItemsByGroupIdParams): Promise<ItemsSourceResponse<GroupItem>>;
+  getHashesByGroupId(params: GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>>;
+  getImages(params: GetImagesParams): Promise<ItemsSourceResponse<Image>>;
+  getImagesByHashes(params: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>>;
+  getImagesByAnyHashes(params: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;
+  updateImages(params: UpdateImagesParams): Promise<void>;
+  deleteImagesByHashes(params: DeleteImagesByHashesParams): Promise<void>;
 
   getImageGroupsFullTree(): Promise<RootItemSourceResponse<TreeImageGroup>>;
   getImageGroupsList(): Promise<ItemsSourceTotalResponse<SerializableImageGroup>>;
-  updateImageGroups(imageGroups: SerializableImageGroup[], purge: boolean): Promise<void>;
-  deleteImageGroupsByIds(ids: string[]): Promise<void>;
+  updateImageGroups(params: UpdateImageGroupsParams): Promise<void>;
+  deleteImageGroupsByIds(params: DeleteImageGroupsByIdsParams): Promise<void>;
 
   getFrames(): Promise<ItemsSourceTotalResponse<Frame>>;
-  getFramesByHashes(hashes: string[]): Promise<ItemsSourceTotalResponse<Frame>>;
-  getFramesByIds(ids: string[]): Promise<ItemsSourceTotalResponse<Frame>>;
-  updateFrames(frames: Frame[], purge: boolean): Promise<void>;
-  deleteFramesByIds(ids: string[]): Promise<void>;
+  getFramesByHashes(params: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>>;
+  getFramesByIds(params: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>>;
+  updateFrames(params: UpdateFramesParams): Promise<void>;
+  deleteFramesByIds(params: DeleteFramesByIdsParams): Promise<void>;
 
   getFrameGroups(): Promise<ItemsSourceTotalResponse<FrameGroup>>;
-  updateFrameGroups(frameGroups: FrameGroup[], purge: boolean): Promise<void>;
-  deleteFrameGroupsByIds(ids: string[]): Promise<void>;
+  updateFrameGroups(params: UpdateFrameGroupsParams): Promise<void>;
+  deleteFrameGroupsByIds(params: DeleteFrameGroupsByIdsParams): Promise<void>;
 
   getPalettes() : Promise<ItemsSourceTotalResponse<Palette>>;
-  getPalettesByShortNames(shortNames: string[]) : Promise<ItemsSourceResponse<Palette>>;
-  updatePalettes(palettes: Palette[], purge: boolean): Promise<void>;
-  deletePalettesByShortNames(shortNames: string[]): Promise<void>;
+  getPalettesByShortNames(params: GetPalettesByShortNamesParams) : Promise<ItemsSourceResponse<Palette>>;
+  updatePalettes(params: UpdatePalettesParams): Promise<void>;
+  deletePalettesByShortNames(params: DeletePalettesByShortNamesParams): Promise<void>;
 
   getPlugins(): Promise<ItemsSourceTotalResponse<Plugin>>;
-  getPluginsByUrls(urls: string[]): Promise<ItemsSourceResponse<Plugin>>;
-  updatePlugins(plugins: Plugin[], purge: boolean): Promise<void>;
-  deletePluginsByUrls(urls: string[]): Promise<void>;
+  getPluginsByUrls(params: GetPluginsByUrlsParams): Promise<ItemsSourceResponse<Plugin>>;
+  updatePlugins(params: UpdatePluginsParams): Promise<void>;
+  deletePluginsByUrls(params: DeletePluginsByUrlsParams): Promise<void>;
 
-  getBinaryImagesByHashes(hashes: string[]): Promise<ItemsSourceResponse<BinaryStoreItem>>;
+  getBinaryImagesByHashes(params: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>>;
   getBinaryImageHashes(): Promise<ItemsSourceTotalResponse<string>>;
-  updateBinaryImages(binaryImages: BinaryStoreItem[]): Promise<void>;
-  deleteBinaryImagesByHashes(hashes: string[]): Promise<void>;
+  updateBinaryImages(params: UpdateBinaryItemsParams): Promise<void>;
+  deleteBinaryImagesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<void>;
 
-  getBinaryFramesByHashes(hashes: string[]): Promise<ItemsSourceResponse<BinaryStoreItem>>;
+  getBinaryFramesByHashes(params: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>>;
   getBinaryFrameHashes(): Promise<ItemsSourceTotalResponse<string>>;
-  updateBinaryFrames(binaryFrames: BinaryStoreItem[]): Promise<void>;
-  deleteBinaryFramesByHashes(hashes: string[]): Promise<void>;
+  updateBinaryFrames(params: UpdateBinaryItemsParams): Promise<void>;
+  deleteBinaryFramesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<void>;
 }
 
 export interface FilterableFacet {

@@ -2,7 +2,13 @@ import z from 'zod';
 import { type Frame, FrameSchema } from '@/types/Frame';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type DeleteFramesByIdsParams,
+  type GetFramesByHashesParams,
+  type GetFramesByIdsParams,
+  type ItemsSourceTotalResponse,
+  type UpdateFramesParams,
+} from '@/workers/itemsIndexedDbWorker/types';
 
 export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
   const db = await getDb();
@@ -17,7 +23,7 @@ export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
   return addPaging(frames);
 };
 
-export const getFramesByIds = async (ids: string[]): Promise<ItemsSourceTotalResponse<Frame>> => {
+export const getFramesByIds = async ({ ids }: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -37,7 +43,7 @@ export const getFramesByIds = async (ids: string[]): Promise<ItemsSourceTotalRes
   return addPaging(filteredFrames);
 };
 
-export const getFramesByHashes = async (hashes: string[]): Promise<ItemsSourceTotalResponse<Frame>> => {
+export const getFramesByHashes = async ({ hashes }: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -55,7 +61,7 @@ export const getFramesByHashes = async (hashes: string[]): Promise<ItemsSourceTo
   return addPaging(filteredFrames);
 };
 
-export const updateFrames = async (frames: Frame[], purge: boolean): Promise<void> => {
+export const updateFrames = async ({ frames, purge }: UpdateFramesParams): Promise<void> => {
   const parsedFrames = z.array(FrameSchema).parse(frames);
 
   const db = await getDb();
@@ -71,7 +77,7 @@ export const updateFrames = async (frames: Frame[], purge: boolean): Promise<voi
   await tx.done;
 };
 
-export const deleteFramesByIds = async (ids: string[]): Promise<void> => {
+export const deleteFramesByIds = async ({ ids }: DeleteFramesByIdsParams): Promise<void> => {
   const db = await getDb();
 
   const tx = db.transaction('frames', 'readwrite');

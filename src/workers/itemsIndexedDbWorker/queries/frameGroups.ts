@@ -2,7 +2,11 @@ import z from 'zod';
 import { FrameGroup, FrameGroupSchema } from '@/types/FrameGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type DeleteFrameGroupsByIdsParams,
+  type ItemsSourceTotalResponse,
+  type UpdateFrameGroupsParams,
+} from '@/workers/itemsIndexedDbWorker/types';
 
 export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
   const db = await getDb();
@@ -17,7 +21,7 @@ export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGr
   return addPaging(frameGroups);
 };
 
-export const updateFrameGroups = async (frameGroups: FrameGroup[], purge: boolean): Promise<void> => {
+export const updateFrameGroups = async ({ frameGroups, purge }: UpdateFrameGroupsParams): Promise<void> => {
   const parsedFrameGroups = z.array(FrameGroupSchema).parse(frameGroups);
   const db = await getDb();
 
@@ -32,7 +36,7 @@ export const updateFrameGroups = async (frameGroups: FrameGroup[], purge: boolea
   await tx.done;
 };
 
-export const deleteFrameGroupsByIds = async (ids: string[]): Promise<void> => {
+export const deleteFrameGroupsByIds = async ({ ids }: DeleteFrameGroupsByIdsParams): Promise<void> => {
   const db = await getDb();
 
   const tx = db.transaction('framegroups', 'readwrite');

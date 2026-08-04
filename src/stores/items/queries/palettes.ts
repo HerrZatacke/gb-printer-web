@@ -16,7 +16,7 @@ const warmPaletteCache = (palettes: Palette[]) => {
 export const palettesByShortNamesBatchedLoader = createBatchedLoader<Palette>(
   async (shortNames: string[]) => {
     const source = await getItemsSource();
-    const response = await source.getPalettesByShortNames(shortNames);
+    const response = await source.getPalettesByShortNames({ shortNames });
     return {
       duration: response.duration,
       total: response.paging.total,
@@ -75,12 +75,12 @@ export const paletteByShortNameQueryOptions = (shortName: string) => ({
 
 export const updatePalettesAction = async (queryClient: QueryClient, palettes: Palette[], purge = false): Promise<void> => {
   const source = await getItemsSource();
-  await source.updatePalettes(palettes, purge);
+  await source.updatePalettes({ palettes, purge });
   await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
 };
 
 export const deletePalettesByShortNamesAction = async (queryClient: QueryClient, deleteShortNames: string[]): Promise<void> => {
   const source = await getItemsSource();
-  await source.deletePalettesByShortNames(deleteShortNames);
+  await source.deletePalettesByShortNames({ shortNames: deleteShortNames });
   await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
 };

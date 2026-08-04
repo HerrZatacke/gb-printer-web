@@ -17,12 +17,12 @@ export const frameGroupsListQueryOptions = () => {
 
 export const updateFrameGroupsAction = async (queryClient: QueryClient, frameGroups: FrameGroup[], purge = false): Promise<void> => {
   const source = await getItemsSource();
-  await source.updateFrameGroups(frameGroups, purge);
+  await source.updateFrameGroups({ frameGroups, purge });
   await queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
 };
 
 export const deleteFrameGroupsByIdsAction = async (queryClient: QueryClient, deleteIds: string[]): Promise<void> => {
   const source = await getItemsSource();
-  await source.deleteFrameGroupsByIds(deleteIds);
+  await source.deleteFrameGroupsByIds({ ids: deleteIds });
   await queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
 };

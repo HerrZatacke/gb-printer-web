@@ -17,10 +17,12 @@ import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/gene
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
 import { StoredSerializableImageGroupSchema } from '@/workers/itemsIndexedDbWorker/schemas';
 import {
-  ItemsDB,
+  type DeleteImageGroupsByIdsParams,
+  type ItemsDB,
   type ItemsSourceTotalResponse,
   type RootItemSourceResponse,
   type StoredSerializableImageGroup,
+  type UpdateImageGroupsParams,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const sortById = sortBy<StoredSerializableImageGroup>('id');
@@ -79,7 +81,7 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
   };
 };
 
-export const updateImageGroups = async (imageGroups: SerializableImageGroup[], purge: boolean): Promise<void> => {
+export const updateImageGroups = async ({ imageGroups, purge }: UpdateImageGroupsParams): Promise<void> => {
   const parsedGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
 
   const db = await getDb();
@@ -130,7 +132,7 @@ const deleteImageGroupById = async (id: string, db: IDBPDatabase<ItemsDB>): Prom
   await tx.done;
 };
 
-export const deleteImageGroupsByIds = async (ids: string[]): Promise<void> => {
+export const deleteImageGroupsByIds = async ({ ids }: DeleteImageGroupsByIdsParams): Promise<void> => {
   const db = await getDb();
 
   for (const id of ids) {

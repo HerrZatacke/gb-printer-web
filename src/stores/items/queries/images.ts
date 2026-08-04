@@ -24,7 +24,7 @@ const warmImageCache = (images: Image[]) => {
 export const imagesByHashesBatchedLoader = createBatchedLoader<Image>(
   async (hashes): Promise<ItemsSourceTotalResponse<Image>> => {
     const source = await getItemsSource();
-    const response = await source.getImagesByHashes(hashes);
+    const response = await source.getImagesByHashes({ hashes });
     return {
       duration: response.duration,
       total: response.paging.total,
@@ -38,7 +38,7 @@ export const imagesByHashesBatchedLoader = createBatchedLoader<Image>(
 export const imagesByAnyHashesBatchedLoader = createBatchedLoader<ItemsReferenceList<Image>>(
   async (hashes): Promise<ItemsSourceTotalResponse<ItemsReferenceList<Image>>> => {
     const source = await getItemsSource();
-    const response = await source.getImagesByAnyHashes(hashes);
+    const response = await source.getImagesByAnyHashes({ hashes });
     return {
       duration: response.duration,
       total: response.paging.total,
@@ -62,12 +62,15 @@ export const imagesListQueryOptions = () => {
       }
 
       const result = await source.getImages({
-        page: 0,
-        pageSize: totalImages,
-        sort: {
-          field: 'created',
-          direction: 'asc',
+        params: {
+          page: 0,
+          pageSize: totalImages,
+          sort: {
+            field: 'created',
+            direction: 'asc',
+          },
         },
+        // candidateHashes
       });
 
       warmImageCache(result.items);
@@ -82,7 +85,7 @@ export const groupItemsByGroupIdQueryOptions = (groupId: string, includeGroups: 
     queryKey: imagesKeys.byGroupId(groupId, includeGroups, params),
     queryFn: async () => {
       const source = await getItemsSource();
-      const result = await source.getGroupItemsByGroupId(groupId, includeGroups, params);
+      const result = await source.getGroupItemsByGroupId({ groupId, includeGroups, params });
       return result;
     },
     staleTime: STALE_TIME,
@@ -99,7 +102,7 @@ export const hashesByGroupIdQueryOptions = (
     queryKey: imagesKeys.hashesByGroupId(groupId, includeGroupImageHashes, sort, filters),
     queryFn: async () => {
       const source = await getItemsSource();
-      const result = await source.getHashesByGroupId(groupId, includeGroupImageHashes, sort, filters);
+      const result = await source.getHashesByGroupId({ groupId, includeGroupImageHashes, sort, filters });
       return result;
     },
     staleTime: STALE_TIME,
@@ -170,7 +173,7 @@ export const imagesRawQueryOptions = (raw: ImageQueryParams, candidateHashes?: S
     queryKey: imagesKeys.raw(raw, candidateHashes),
     queryFn: async () => {
       const source = await getItemsSource();
-      const result = await source.getImages(raw, candidateHashes);
+      const result = await source.getImages({ params: raw, candidateHashes });
 
       warmImageCache(result.items);
       return result;
@@ -182,12 +185,12 @@ export const imagesRawQueryOptions = (raw: ImageQueryParams, candidateHashes?: S
 export const updateImagesAction = async (queryClient: QueryClient, images: Image[], purge = false): Promise<void> => {
   const source = await getItemsSource();
   // ToDo: updateImages should report if groups were also affected (e.g. by adding new images)
-  await source.updateImages(images, purge);
+  await source.updateImages({ images, purge });
   await resetImageCaches(queryClient, true);
 };
 
 export const deleteImagesByHashesAction = async (queryClient: QueryClient, hashes: string[]): Promise<void> => {
   const source = await getItemsSource();
-  await source.deleteImagesByHashes(hashes);
+  await source.deleteImagesByHashes({ hashes });
   await resetImageCaches(queryClient, true);
 };

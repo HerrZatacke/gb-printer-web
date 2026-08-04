@@ -2,7 +2,13 @@ import z from 'zod';
 import { type Plugin, PluginSchema } from '@/types/Plugin';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type DeletePluginsByUrlsParams,
+  type GetPluginsByUrlsParams,
+  type ItemsSourceResponse,
+  type ItemsSourceTotalResponse,
+  type UpdatePluginsParams,
+} from '@/workers/itemsIndexedDbWorker/types';
 
 export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> => {
   const db = await getDb();
@@ -17,7 +23,7 @@ export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> =>
   return addPaging(plugins);
 };
 
-export const getPluginsByUrls = async (urls: string[]): Promise<ItemsSourceResponse<Plugin>> => {
+export const getPluginsByUrls = async ({ urls }: GetPluginsByUrlsParams): Promise<ItemsSourceResponse<Plugin>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -35,7 +41,7 @@ export const getPluginsByUrls = async (urls: string[]): Promise<ItemsSourceRespo
   return addPaging(filteredPlugins);
 };
 
-export const updatePlugins = async (plugins: Plugin[], purge: boolean): Promise<void> => {
+export const updatePlugins = async ({ plugins, purge }: UpdatePluginsParams): Promise<void> => {
   const parsedPlugins = z.array(PluginSchema).parse(plugins);
 
   const db = await getDb();
@@ -51,7 +57,7 @@ export const updatePlugins = async (plugins: Plugin[], purge: boolean): Promise<
   await tx.done;
 };
 
-export const deletePluginsByUrls = async (urls: string[]): Promise<void> => {
+export const deletePluginsByUrls = async ({ urls }: DeletePluginsByUrlsParams): Promise<void> => {
 const db = await getDb();
 
   const tx = db.transaction('plugins', 'readwrite');
