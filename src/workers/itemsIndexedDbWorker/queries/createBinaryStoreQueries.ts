@@ -44,12 +44,7 @@ export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryfram
   };
 
   const update = async (items: BinaryStoreItem[]): Promise<void> => {
-    const { success, data: parsedItems, error } = z.array(schema).safeParse(items);
-
-    if (!success) {
-      console.error(error);
-      return;
-    }
+    const parsedItems = z.array(schema).parse(items);
 
     const db = await getDb();
     const tx = db.transaction(storeName, 'readwrite');

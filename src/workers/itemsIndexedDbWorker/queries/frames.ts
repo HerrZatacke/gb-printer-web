@@ -56,23 +56,19 @@ export const getFramesByHashes = async (hashes: string[]): Promise<ItemsSourceTo
 };
 
 export const updateFrames = async (frames: Frame[], purge: boolean): Promise<void> => {
-  const { success, data: parsedFrames, error } = z.array(FrameSchema).safeParse(frames);
+  const parsedFrames = z.array(FrameSchema).parse(frames);
 
-  if (success) {
-    const db = await getDb();
+  const db = await getDb();
 
-    const tx = db.transaction('frames', 'readwrite');
-    const store = tx.store;
+  const tx = db.transaction('frames', 'readwrite');
+  const store = tx.store;
 
-    if (purge) {
-      await store.clear();
-    }
-
-    await Promise.all(parsedFrames.map((frame) => store.put(frame)));
-    await tx.done;
-  } else {
-    console.error(error);
+  if (purge) {
+    await store.clear();
   }
+
+  await Promise.all(parsedFrames.map((frame) => store.put(frame)));
+  await tx.done;
 };
 
 export const deleteFramesByIds = async (ids: string[]): Promise<void> => {

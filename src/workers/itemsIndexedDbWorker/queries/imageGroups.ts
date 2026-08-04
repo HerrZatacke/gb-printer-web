@@ -51,11 +51,7 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
     imagesStore.getAllKeys(),
   ]);
 
-  const { success, error, data: parsedImageGroups } = z.array(StoredSerializableImageGroupSchema).safeParse(imageGroups);
-  if (!success) {
-    console.error(error.message);
-    throw error;
-  }
+  const parsedImageGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
 
   const sortedParsedImageGroups = sortById(parsedImageGroups);
 
@@ -84,24 +80,21 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
 };
 
 export const updateImageGroups = async (imageGroups: SerializableImageGroup[], purge: boolean): Promise<void> => {
-  const { success, data: parsedGroups, error } = z.array(StoredSerializableImageGroupSchema).safeParse(imageGroups);
-  if (success) {
-    const db = await getDb();
+  const parsedGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
 
-    const tx = db.transaction('imagegroups', 'readwrite');
-    const store = tx.store;
+  const db = await getDb();
 
-    if (purge) {
-      await store.clear();
-    }
+  const tx = db.transaction('imagegroups', 'readwrite');
+  const store = tx.store;
 
-    await Promise.all(parsedGroups.map((group) => store.put(group)));
-    await tx.done;
-
-    await startMaintenanceTasks(db);
-  } else {
-    console.error(error);
+  if (purge) {
+    await store.clear();
   }
+
+  await Promise.all(parsedGroups.map((group) => store.put(group)));
+  await tx.done;
+
+  await startMaintenanceTasks(db);
 };
 
 const deleteImageGroupById = async (id: string, db: IDBPDatabase<ItemsDB>): Promise<void> => {

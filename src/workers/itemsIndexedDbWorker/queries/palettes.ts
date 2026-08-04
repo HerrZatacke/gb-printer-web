@@ -62,22 +62,19 @@ export const updatePalettes = async (palettes: Palette[], purge: boolean): Promi
 
   const filteredPalettes = palettes.filter(({ shortName }) => !predefinedPaletteShortNames.has(shortName));
 
-  const { success, data: parsedPalettes, error } = z.array(PaletteSchema).safeParse(filteredPalettes);
-  if (success) {
-    const db = await getDb();
+  const parsedPalettes = z.array(PaletteSchema).parse(filteredPalettes);
 
-    const tx = db.transaction('palettes', 'readwrite');
-    const store = tx.store;
+  const db = await getDb();
 
-    if (purge) {
-      await store.clear();
-    }
+  const tx = db.transaction('palettes', 'readwrite');
+  const store = tx.store;
 
-    await Promise.all(parsedPalettes.map((palette) => store.put(palette)));
-    await tx.done;
-  } else {
-    console.error(error);
+  if (purge) {
+    await store.clear();
   }
+
+  await Promise.all(parsedPalettes.map((palette) => store.put(palette)));
+  await tx.done;
 };
 
 export const deletePalettesByShortNames = async (shortNames: string[]): Promise<void> => {
