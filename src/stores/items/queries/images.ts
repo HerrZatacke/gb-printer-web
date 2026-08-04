@@ -94,15 +94,15 @@ export const groupItemsByGroupIdQueryOptions = (groupId: string, includeGroups: 
 
 export const hashesByGroupIdQueryOptions = (
   groupId: string,
-  includeGroupImageHashes: boolean,
+  includeGroups: boolean,
   sort: ImageQuerySort,
   filters?: ImageQueryFilters,
 ) => {
   return {
-    queryKey: imagesKeys.hashesByGroupId(groupId, includeGroupImageHashes, sort, filters),
+    queryKey: imagesKeys.hashesByGroupId(groupId, includeGroups, sort, filters),
     queryFn: async () => {
       const source = await getItemsSource();
-      const result = await source.getHashesByGroupId({ groupId, includeGroupImageHashes, sort, filters });
+      const result = await source.getHashesByGroupId({ groupId, includeGroups, sort, filters });
       return result;
     },
     staleTime: STALE_TIME,

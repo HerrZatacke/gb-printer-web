@@ -159,7 +159,7 @@ export interface GetGroupItemsByGroupIdParams {
 
 export interface GetHashesByGroupIdParams {
   groupId: string;
-  includeGroupImageHashes: boolean;
+  includeGroups: boolean;
   sort: ImageQuerySort;
   filters?: ImageQueryFilters;
 }
