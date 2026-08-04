@@ -22,7 +22,6 @@ import {
   type ItemsSourceResponse,
   type StoredImage,
   type ItemsSourceTotalResponse,
-  type GroupItemImage,
   type GetGroupItemsByGroupIdParams,
   type GetHashesByGroupIdParams,
   type GetImagesParams,
