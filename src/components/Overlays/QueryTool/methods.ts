@@ -1,6 +1,6 @@
 import { ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
-type MethodName = keyof Omit<ItemsSource, 'init' | 'debugReset' | 'runMaintenance'>;
+export type MethodName = keyof Omit<ItemsSource, 'init' | 'debugReset' | 'runMaintenance'>;
 
 export const itemsSourceMethodNames = [
   'getStats',
@@ -47,3 +47,65 @@ type AssertExhaustive = Exclude<MethodName, (typeof itemsSourceMethodNames)[numb
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const _exhaustiveCheck: AssertExhaustive = true;
+
+const exampleImageQuerySort = {
+  field: 'created',
+  direction: 'asc',
+};
+const exampleImageQuerySortJSON = JSON.stringify(exampleImageQuerySort);
+
+const exampleFilters = {
+  tags: [
+    'testing',
+  ],
+};
+const exampleFiltersJSON = JSON.stringify(exampleFilters);
+
+const exampleImageQueryParams = {
+  filters: exampleFilters,
+  sort: exampleImageQuerySort,
+  page: 0,
+  pageSize: 15,
+};
+const exampleImageQueryParamsJSON = JSON.stringify(exampleImageQueryParams);
+
+export const exampleBodies: Record<MethodName, string> = {
+  getStats: '',
+  getUsages: '',
+  getAllTags: '',
+  getGroupItemsByGroupId: `{"groupId": "", "includeGroups": true, "params": ${exampleImageQueryParamsJSON}}`,
+  getHashesByGroupId: `{"groupId": "", "includeGroups": true, "sort": ${exampleImageQuerySortJSON}, "filters": ${exampleFiltersJSON}}`,
+  getImages: '{}',
+  getImagesByHashes: '{}',
+  getImagesByAnyHashes: '{}',
+  updateImages: '{}',
+  deleteImagesByHashes: '{}',
+  getImageGroupsFullTree: '', // empty
+  getImageGroupsList: '', // empty
+  updateImageGroups: '{}',
+  deleteImageGroupsByIds: '{}',
+  getFrames: '', // empty
+  getFramesByHashes: '{}',
+  getFramesByIds: '{}',
+  updateFrames: '{}',
+  deleteFramesByIds: '{}',
+  getFrameGroups: '', // empty
+  updateFrameGroups: '{}',
+  deleteFrameGroupsByIds: '{}',
+  getPalettes: '', // empty
+  getPalettesByShortNames: '{}',
+  updatePalettes: '{}',
+  deletePalettesByShortNames: '{}',
+  getPlugins: '', // empty
+  getPluginsByUrls: '{}',
+  updatePlugins: '{}',
+  deletePluginsByUrls: '{}',
+  getBinaryImagesByHashes: '{}',
+  getBinaryImageHashes: '', // empty
+  updateBinaryImages: '{}',
+  deleteBinaryImagesByHashes: '{}',
+  getBinaryFramesByHashes: '{}',
+  getBinaryFrameHashes: '', // empty
+  updateBinaryFrames: '{}',
+  deleteBinaryFramesByHashes: '{}',
+};
