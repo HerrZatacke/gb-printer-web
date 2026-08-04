@@ -10,24 +10,30 @@ import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/h
 import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
 import {
   GroupItemSchema,
+  ImageQueryFiltersSchema,
+  ImageQuerySortSchema,
+  ImageQueryParamsSchema,
   ItemsReferenceListSchema,
   StoredImageSchema,
 } from '@/workers/itemsIndexedDbWorker/schemas';
 import {
-  type ImageQueryParams,
   type GroupItem,
   type ItemsReferenceList,
   type ItemsSourceResponse,
   type StoredImage,
-  type ImageQueryFilters,
-  type ImageQuerySort,
   type ItemsSourceTotalResponse,
-  type GroupItemImage,
+  type GetGroupItemsByGroupIdParams,
+  type GetHashesByGroupIdParams,
+  type GetImagesParams,
+  type GetImagesByHashesParams,
+  type GetImagesByAnyHashesParams,
+  type UpdateImagesParams,
+  type DeleteImagesByHashesParams,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
 
-export const getImages = async (queryParams: ImageQueryParams, candidateHashes?: Set<string>): Promise<ItemsSourceResponse<Image>> => {
+export const getImages = async ({ params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -39,7 +45,7 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
     pageSize,
     sort,
     filters,
-  } = queryParams;
+  } = ImageQueryParamsSchema.parse(queryParamsRaw);
 
   const addPaging = getAddPaging<Image>(total, page, pageSize, start, ImageSchema);
 
@@ -58,19 +64,30 @@ export const getImages = async (queryParams: ImageQueryParams, candidateHashes?:
   return addPaging(sortedImages);
 };
 
-export const getHashesByGroupId = async (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters): Promise<ItemsSourceTotalResponse<string>> => {
+export const getHashesByGroupId = async ({ groupId, includeGroups, sort: sortRaw, filters: filtersRaw } : GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>> => {
   const db = await getDb();
   const start = performance.now();
 
-  const sortedGroupItems = await resolveGroupItemsByGroupId(db, groupId, includeGroupImageHashes, sort, filters);
+  const sort = ImageQuerySortSchema.parse(sortRaw);
+  const filters = ImageQueryFiltersSchema.optional().parse(filtersRaw);
+
+  const sortedGroupItems = await resolveGroupItemsByGroupId(db, groupId, includeGroups, sort, filters);
   const sortedImageHashes = sortedGroupItems
-    .filter((item): item is GroupItemImage => item.type === 'image')
-    .map(({ image: { hash } }) => hash);
+    .map((item: GroupItem) => {
+      switch (item.type) {
+        case 'image':
+          return item.image.hash;
+        case 'group':
+          return item.group.id;
+        default:
+          throw new Error('unknown group item type', item);
+      }
+    });
   const addPaging = getAddTotal<string>(sortedImageHashes.length, start, z.string());
   return addPaging(sortedImageHashes);
 };
 
-export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boolean, queryParams: ImageQueryParams): Promise<ItemsSourceResponse<GroupItem>> => {
+export const getGroupItemsByGroupId = async ({ groupId, includeGroups, params: queryParamsRaw }: GetGroupItemsByGroupIdParams): Promise<ItemsSourceResponse<GroupItem>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -79,7 +96,7 @@ export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boo
     pageSize,
     sort,
     filters,
-  } = queryParams;
+  } = ImageQueryParamsSchema.parse(queryParamsRaw);
 
   const { store: imagesStore } = db.transaction('images');
   const total = await imagesStore.count();
@@ -89,7 +106,7 @@ export const getGroupItemsByGroupId = async (groupId: string, includeGroups: boo
   return addPaging(sortedGroupItems);
 };
 
-export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceResponse<Image>> => {
+export const getImagesByHashes = async ({ hashes }: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -107,7 +124,7 @@ export const getImagesByHashes = async (hashes: string[]): Promise<ItemsSourceRe
   return addPaging(filteredImages);
 };
 
-export const getImagesByAnyHashes = async (hashes: string[]): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
+export const getImagesByAnyHashes = async ({ hashes }: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
   const db = await getDb();
   const start = performance.now();
 
@@ -165,27 +182,23 @@ export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> =>
   return addPaging(uniqueTags);
 };
 
-export const updateImages = async (images: Image[], purge: boolean): Promise<void> => {
-  const { success, data: parsedImages, error } = z.array(StoredImageSchema).safeParse(images);
-  if (success) {
-    const db = await getDb();
+export const updateImages = async ({ images, purge }: UpdateImagesParams): Promise<void> => {
+  const parsedImages = z.array(StoredImageSchema).parse(images);
+  const db = await getDb();
 
-    const tx = db.transaction('images', 'readwrite');
-    const store = tx.store;
+  const tx = db.transaction('images', 'readwrite');
+  const store = tx.store;
 
-    if (purge) {
-      await store.clear();
-    }
-
-    await Promise.all(parsedImages.map((image) => store.put(image)));
-    await tx.done;
-    await startMaintenanceTasks(db);
-  } else {
-    console.error(error);
+  if (purge) {
+    await store.clear();
   }
+
+  await Promise.all(parsedImages.map((image) => store.put(image)));
+  await tx.done;
+  await startMaintenanceTasks(db);
 };
 
-export const deleteImagesByHashes = async (hashes: string[]): Promise<void> => {
+export const deleteImagesByHashes = async ({ hashes }: DeleteImagesByHashesParams): Promise<void> => {
   const db = await getDb();
 
   const tx = db.transaction('images', 'readwrite');

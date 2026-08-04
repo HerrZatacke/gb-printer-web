@@ -10,9 +10,10 @@ export const getAddPaging = <T>(
 ) => (
   sortedItems: T[],
 ): ItemsSourceResponse<T> => {
-  const start = page * pageSize;
+  const actualPageSize = pageSize < 1 ? sortedItems.length : pageSize;
+  const start = page * actualPageSize;
 
-  const slicedItems = sortedItems.slice(start, start + pageSize);
+  const slicedItems = sortedItems.slice(start, start + actualPageSize);
   const parsedItems = slicedItems.map((item) => schema.parse(item));
 
   return {
@@ -20,9 +21,9 @@ export const getAddPaging = <T>(
     paging: {
       filtered: sortedItems.length,
       total,
-      pageSize,
+      pageSize: actualPageSize,
       page,
-      maxPageIndex: Math.max(0, Math.ceil(sortedItems.length / pageSize) - 1),
+      maxPageIndex: Math.max(0, Math.ceil(sortedItems.length / actualPageSize) - 1),
     },
     duration: performance.now() - startTime,
   };

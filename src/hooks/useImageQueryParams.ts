@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useFiltersStore, useSettingsStore } from '@/stores/stores';
-import  { type ImageQueryParams, type ImageSortField, type SortDirection } from '@/workers/itemsIndexedDbWorker/types';
+import { ImageQueryParamsSchema } from '@/workers/itemsIndexedDbWorker/schemas';
+import { type ImageQueryParams } from '@/workers/itemsIndexedDbWorker/types';
 
 export const useImageQueryParams = (page: number = 0): ImageQueryParams => {
   const {
@@ -13,7 +14,7 @@ export const useImageQueryParams = (page: number = 0): ImageQueryParams => {
 
   const imageQueryParams = useMemo<ImageQueryParams>(() => {
     const [sortField, direction] = sortBy.split('_');
-    return {
+    return ImageQueryParamsSchema.parse({
       page,
       pageSize,
       filters: {
@@ -22,10 +23,10 @@ export const useImageQueryParams = (page: number = 0): ImageQueryParams => {
         frame: filtersFrames,
       },
       sort: {
-        field: sortField as ImageSortField,
-        direction: direction as SortDirection,
+        field: sortField,
+        direction: direction,
       },
-    };
+    });
   }, [filtersFrames, filtersPalettes, filtersTags, page, pageSize, sortBy]);
 
   return imageQueryParams;

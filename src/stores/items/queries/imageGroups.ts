@@ -120,7 +120,7 @@ export const imageGroupsListQueryOptions = () => {
 
 export const updateImageGroupsAction = async (queryClient: QueryClient, imageGroups: SerializableImageGroup[], purge = false): Promise<void> => {
   const source = await getItemsSource();
-  await source.updateImageGroups(imageGroups, purge);
+  await source.updateImageGroups({ imageGroups, purge });
   await resetImageGroupCaches(queryClient);
 };
 
@@ -138,7 +138,7 @@ export const updateImageGroupAction = async (queryClient: QueryClient, group: Se
   const changedGroups = computeImageGroupUpdateDiff(allGroups, group, parentGroupId);
 
   const source = await getItemsSource();
-  await source.updateImageGroups(changedGroups, false);
+  await source.updateImageGroups({ imageGroups: changedGroups, purge: false });
   await resetImageGroupCaches(queryClient);
 };
 
@@ -167,13 +167,13 @@ export const moveImagesToGroupAction = async (queryClient: QueryClient, images: 
   }
 
   const source = await getItemsSource();
-  await source.updateImageGroups(changedGroups, false);
+  await source.updateImageGroups({ imageGroups: changedGroups, purge: false });
   await resetImageGroupCaches(queryClient);
 };
 
 
 export const deleteImageGroupsByIdsAction = async (queryClient: QueryClient, deleteIds: string[]): Promise<void> => {
   const source = await getItemsSource();
-  await source.deleteImageGroupsByIds(deleteIds);
+  await source.deleteImageGroupsByIds({ ids: deleteIds });
   await resetImageGroupCaches(queryClient);
 };

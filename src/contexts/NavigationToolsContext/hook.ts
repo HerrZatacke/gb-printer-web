@@ -16,7 +16,7 @@ import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTr
 export interface UseNavigationTools {
   isNavigating: boolean;
   getGroupPath: (groupId: string, pageIndex: number) => Promise<string>;
-  getImagePageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => Promise<number>;
+  getItemPageIndexInGroup: (imageHash: string, parentGroup: TreeImageGroup) => Promise<number>;
   navigateToGroup: (groupId: string, pageIndex: number, replaceHistory: boolean) => Promise<void>;
   navigateToImage: (hash: string, replaceHistory: boolean) => Promise<void>;
 }
@@ -37,7 +37,7 @@ export const useContextHook = (): UseNavigationTools => {
       });
   }, [searchParams]);
 
-  const getImagePageIndexInGroup = useCallback(async (imageHash: string, parentGroup: TreeImageGroup): Promise<number> => {
+  const getItemPageIndexInGroup = useCallback(async (imageHash: string, parentGroup: TreeImageGroup): Promise<number> => {
     const { items: sortedImageHashes } = await queryClient.fetchQuery(hashesByGroupIdQueryOptions(parentGroup.id, true, imageQueryParams.sort, imageQueryParams.filters));
     const imageIndex = sortedImageHashes.findIndex((hash) => hash === imageHash);
     if (imageIndex === -1) {
@@ -83,10 +83,10 @@ export const useContextHook = (): UseNavigationTools => {
     }
 
     const viewSlug = group.fullSlug;
-    const pageIndex = group ? await getImagePageIndexInGroup(imageHash, group) : 0;
+    const pageIndex = await getItemPageIndexInGroup(imageHash, group);
 
     return getUrl({ pageIndex, group: cleanFullSlug(viewSlug) });
-  }, [getImagePageIndexInGroup, getUrl, queryClient]);
+  }, [getItemPageIndexInGroup, getUrl, queryClient]);
 
   const navigateToGroup = useCallback(async (groupId: string, pageIndex: number, replaceHistory: boolean) => {
     setIsNavigating(true);
@@ -121,7 +121,7 @@ export const useContextHook = (): UseNavigationTools => {
   return {
     isNavigating,
     getGroupPath,
-    getImagePageIndexInGroup,
+    getItemPageIndexInGroup,
     navigateToGroup,
     navigateToImage,
   };

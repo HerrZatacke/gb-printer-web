@@ -19,7 +19,7 @@ export const framesListQueryOptions = () => {
 export const framesByHashesBatchedLoader = createBatchedLoader<Frame>(
   async (hashes) => {
     const source = await getItemsSource();
-    return source.getFramesByHashes(hashes);
+    return source.getFramesByHashes({ hashes });
   },
   (frame) => frame.hash,
   50,
@@ -28,7 +28,7 @@ export const framesByHashesBatchedLoader = createBatchedLoader<Frame>(
 export const framesByIdsBatchedLoader = createBatchedLoader<Frame>(
   async (ids) => {
     const source = await getItemsSource();
-    return source.getFramesByIds(ids);
+    return source.getFramesByIds({ ids });
   },
   (frame) => frame.id,
   50,
@@ -68,12 +68,12 @@ export const framesByIdsQueryOptions = (ids: string[]) => {
 
 export const updateFramesAction = async (queryClient: QueryClient, frames: Frame[], purge = false): Promise<void> => {
   const source = await getItemsSource();
-  await source.updateFrames(frames, purge);
+  await source.updateFrames({ frames, purge });
   await queryClient.invalidateQueries({ queryKey: framesKeys.all });
 };
 
 export const deleteFramesByIdsAction = async (queryClient: QueryClient, deleteIds: string[]): Promise<void> => {
   const source = await getItemsSource();
-  await source.deleteFramesByIds(deleteIds);
+  await source.deleteFramesByIds({ ids: deleteIds });
   await queryClient.invalidateQueries({ queryKey: framesKeys.all });
 };

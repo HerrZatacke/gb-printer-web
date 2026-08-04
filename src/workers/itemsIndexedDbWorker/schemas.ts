@@ -2,15 +2,26 @@ import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
-import {
-  type Image,
-  ImageSchema,
-  MonochromeImageSchema,
-  RGBNImageSchema,
-} from '@/types/Image';
+import { type Image, ImageSchema } from '@/types/Image';
 import { SerializableImageGroupSchema } from '@/types/ImageGroup';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+export const SortDirection = {
+  ASC: 'asc',
+  DESC: 'desc',
+} as const;
+export const SortDirectionSchema = z.enum(SortDirection);
+export type SortDirection = z.infer<typeof SortDirectionSchema>;
+
+export const ImageSortField = {
+  CREATED: 'created',
+  FRAME: 'frame',
+  PALETTE: 'palette',
+  TITLE: 'title',
+} as const;
+export const ImageSortFieldSchema = z.enum(ImageSortField);
+export type ImageSortField = z.infer<typeof ImageSortFieldSchema>;
 
 const calculateSpecialTags = (image: Image): SpecialTags[] => {
   const specialTags: SpecialTags[] = [];
@@ -94,4 +105,20 @@ export const ItemsReferenceListSchema = <T extends z.ZodType>(itemSchema: T) => 
   });
 };
 
+export const ImageQueryFiltersSchema = z.object({
+  tags: z.array(z.union([z.string(), z.enum(SpecialTags)])).optional(),
+  palette: z.array(z.string()).optional(),
+  frame: z.array(z.string()).optional(),
+});
 
+export const ImageQuerySortSchema = z.object({
+  field: ImageSortFieldSchema,
+  direction: SortDirectionSchema,
+});
+
+export const ImageQueryParamsSchema = z.object({
+  page: z.number().min(0),
+  pageSize: z.number().min(0),
+  filters: ImageQueryFiltersSchema.optional(),
+  sort: ImageQuerySortSchema,
+});

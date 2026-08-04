@@ -17,10 +17,12 @@ import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/gene
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
 import { StoredSerializableImageGroupSchema } from '@/workers/itemsIndexedDbWorker/schemas';
 import {
-  ItemsDB,
+  type DeleteImageGroupsByIdsParams,
+  type ItemsDB,
   type ItemsSourceTotalResponse,
   type RootItemSourceResponse,
   type StoredSerializableImageGroup,
+  type UpdateImageGroupsParams,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 const sortById = sortBy<StoredSerializableImageGroup>('id');
@@ -51,11 +53,7 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
     imagesStore.getAllKeys(),
   ]);
 
-  const { success, error, data: parsedImageGroups } = z.array(StoredSerializableImageGroupSchema).safeParse(imageGroups);
-  if (!success) {
-    console.error(error.message);
-    throw error;
-  }
+  const parsedImageGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
 
   const sortedParsedImageGroups = sortById(parsedImageGroups);
 
@@ -83,25 +81,22 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
   };
 };
 
-export const updateImageGroups = async (imageGroups: SerializableImageGroup[], purge: boolean): Promise<void> => {
-  const { success, data: parsedGroups, error } = z.array(StoredSerializableImageGroupSchema).safeParse(imageGroups);
-  if (success) {
-    const db = await getDb();
+export const updateImageGroups = async ({ imageGroups, purge }: UpdateImageGroupsParams): Promise<void> => {
+  const parsedGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
 
-    const tx = db.transaction('imagegroups', 'readwrite');
-    const store = tx.store;
+  const db = await getDb();
 
-    if (purge) {
-      await store.clear();
-    }
+  const tx = db.transaction('imagegroups', 'readwrite');
+  const store = tx.store;
 
-    await Promise.all(parsedGroups.map((group) => store.put(group)));
-    await tx.done;
-
-    await startMaintenanceTasks(db);
-  } else {
-    console.error(error);
+  if (purge) {
+    await store.clear();
   }
+
+  await Promise.all(parsedGroups.map((group) => store.put(group)));
+  await tx.done;
+
+  await startMaintenanceTasks(db);
 };
 
 const deleteImageGroupById = async (id: string, db: IDBPDatabase<ItemsDB>): Promise<void> => {
@@ -137,7 +132,7 @@ const deleteImageGroupById = async (id: string, db: IDBPDatabase<ItemsDB>): Prom
   await tx.done;
 };
 
-export const deleteImageGroupsByIds = async (ids: string[]): Promise<void> => {
+export const deleteImageGroupsByIds = async ({ ids }: DeleteImageGroupsByIdsParams): Promise<void> => {
   const db = await getDb();
 
   for (const id of ids) {

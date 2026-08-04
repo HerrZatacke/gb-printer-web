@@ -4,10 +4,11 @@ import { useFrames } from '@/hooks/useFrames';
 import { useGlobalQueries } from '@/hooks/useGlobalQueries';
 import { usePalettes } from '@/hooks/usePalettes';
 import { useFiltersStore } from '@/stores/stores';
-import sortBy, { SortDirection } from '@/tools/sortby';
+import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
 import { type Frame } from '@/types/Frame';
 import { type Palette } from '@/types/Palette';
+import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 export const ActiveFilterUpdateMode = {
   ADD: 'add',

@@ -16,7 +16,7 @@ const warmPluginCache = (plugins: Plugin[]) => {
 export const pluginsByUrlsBatchedLoader = createBatchedLoader<Plugin>(
   async (urls: string[]) => {
     const source = await getItemsSource();
-    const response = await source.getPluginsByUrls(urls);
+    const response = await source.getPluginsByUrls({ urls });
     return {
       duration: response.duration,
       total: response.paging.total,
@@ -75,12 +75,12 @@ export const pluginByUrlQueryOptions = (url: string) => ({
 
 export const updatePluginsAction = async (queryClient: QueryClient, plugins: Plugin[], purge = false): Promise<void> => {
   const source = await getItemsSource();
-  await source.updatePlugins(plugins, purge);
+  await source.updatePlugins({ plugins, purge });
   await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
 };
 
 export const deletePluginsByUrlsAction = async (queryClient: QueryClient, deleteUrls: string[]): Promise<void> => {
   const source = await getItemsSource();
-  await source.deletePluginsByUrls(deleteUrls);
+  await source.deletePluginsByUrls({ urls: deleteUrls });
   await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
 };

@@ -41,7 +41,7 @@ export const imagesKeys = {
   all: imagesBaseKeys,
   list: [...imagesBaseKeys, 'list'] as const,
   imagesByGroupKeys,
-  hashesByGroupId: (groupId: string, includeGroupImageHashes: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters) => [...imagesByGroupKeys, 'hashesByGroupId', { groupId, includeGroupImageHashes, sort, filters }] as const,
+  hashesByGroupId: (groupId: string, includeGroups: boolean, sort: ImageQuerySort, filters?: ImageQueryFilters) => [...imagesByGroupKeys, 'hashesByGroupId', { groupId, includeGroups, sort, filters }] as const,
   byGroupId: (groupId: string, includeGroups: boolean, params: ImageQueryParams) => [...imagesByGroupKeys, 'byGroupId', { groupId, includeGroups, params }] as const,
   allTags: [...imagesBaseKeys, 'allTags'] as const,
   byHash: (hash: string) => [...imagesBaseKeys, 'byHash', hash] as const,

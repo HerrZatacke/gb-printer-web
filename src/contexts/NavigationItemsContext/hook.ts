@@ -1,5 +1,6 @@
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import SyncIcon from '@mui/icons-material/Sync';
 import UsbIcon from '@mui/icons-material/Usb';
@@ -31,8 +32,8 @@ export const useContextHook = (): NavigationItemsContextType => {
   const { fullPath } = useUrl();
   const { lastGalleryLink, getUrl, groupsByFullSlug } = useGalleryTreeContext();
   const [galleryRoute, setGalleryRoute] = useState(getUrl({ pageIndex: 0, group: '' }));
-  const { themeName, setThemeName } = useSettingsStore();
-  const { showTrashCount, trashCount, trashBusy } = useInteractionsStore();
+  const { themeName, setThemeName, enableDebug } = useSettingsStore();
+  const { showTrashCount, trashCount, trashBusy, setShowQueryTool } = useInteractionsStore();
 
   const {
     disableSerials,
@@ -204,6 +205,15 @@ export const useContextHook = (): NavigationItemsContextType => {
         isBusy: isReceiving,
         onClick: setShowSerials,
       } : null,
+      enableDebug ? {
+        title: 'Debug Tool',
+        Icon: DeveloperModeIcon,
+        badgeContent: null,
+        badgeColor: NavBadgeColor.DEFAULT,
+        disabled: false,
+        isBusy: false,
+        onClick: () => setShowQueryTool(true),
+      } : null,
     ].reduce(reduceItems<NavActionItem>, [])
   ), [
     disableSerials,
@@ -222,6 +232,8 @@ export const useContextHook = (): NavigationItemsContextType => {
     useSerials,
     useSync,
     isReceiving,
+    enableDebug,
+    setShowQueryTool,
   ]);
 
   return {

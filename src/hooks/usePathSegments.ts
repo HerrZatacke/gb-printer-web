@@ -15,7 +15,7 @@ export interface UsePathSegments {
 
 export const usePathSegments = (): UsePathSegments => {
   const { path: currentPath, getUrl, isWorking } = useGalleryTreeContext();
-  const { getImagePageIndexInGroup } = useNavigationTools();
+  const { getItemPageIndexInGroup } = useNavigationTools();
 
   const [segments, setSegments] = useState<Segment[]>([]);
 
@@ -38,9 +38,7 @@ export const usePathSegments = (): UsePathSegments => {
           let parentPageIndex = 0;
 
           if (childGroup) {
-            // ToDo: find way to calulate group position for groups without coverimage (using viewItems)?
-            const childCoverImage = childGroup.coverImage;
-            parentPageIndex = childCoverImage ? await getImagePageIndexInGroup(childCoverImage, group) : 0;
+            parentPageIndex = await getItemPageIndexInGroup(childGroup.id, group);
           }
 
           return {
@@ -59,7 +57,7 @@ export const usePathSegments = (): UsePathSegments => {
       cancelled = true;
       window.clearTimeout(handle);
     };
-  }, [ancestors, getImagePageIndexInGroup, getUrl, isWorking]);
+  }, [ancestors, getItemPageIndexInGroup, getUrl, isWorking]);
 
   return {
     segments,

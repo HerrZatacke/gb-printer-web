@@ -9,21 +9,16 @@ interface GroupAggregates {
   specialTags: SpecialTags[];
   palettes: string[];
   frames: string[];
+  coverImage: string | null;
 }
 
-interface NewSetParams {
-  tags: string[];
-  specialTags: SpecialTags[];
-  frames: string[];
-  palettes: string[];
-}
-
-const newSet = (params?: NewSetParams): GroupAggregates => {
+const newSet = (params?: GroupAggregates): GroupAggregates => {
   const {
     tags = [],
     specialTags = [],
     frames = [],
     palettes = [],
+    coverImage = null,
   } = params || {};
 
   return {
@@ -31,17 +26,18 @@ const newSet = (params?: NewSetParams): GroupAggregates => {
     specialTags,
     frames,
     palettes,
+    coverImage,
   };
 };
 
-const resolveGroupTags = (
+const resolveGroupAggregates = (
   groupId: string,
   depth: number,
   groupsById: Map<string, { images: string[]; groups: string[] }>,
-  tagsByImageHash: Map<string, GroupAggregates>,
-  resolvedTagsById: Map<string, GroupAggregates>,
+  aggregatesByImageHash: Map<string, GroupAggregates>,
+  resolvedAggregatesById: Map<string, GroupAggregates>,
 ): GroupAggregates => {
-  const cached = resolvedTagsById.get(groupId);
+  const cached = resolvedAggregatesById.get(groupId);
   if (cached) {
     return cached;
   }
@@ -60,9 +56,11 @@ const resolveGroupTags = (
   const specialTagSet = new Set<SpecialTags>();
   const frameSet = new Set<string>();
   const paletteSet = new Set<string>();
+  let coverImage: string | null = null;
 
   for (const hash of group.images) {
-    const imageTags = tagsByImageHash.get(hash) ?? newSet();
+    const imageTags = aggregatesByImageHash.get(hash) ?? newSet();
+    coverImage = coverImage || hash;
     for (const tag of imageTags.tags) {
       tagSet.add(tag);
     }
@@ -78,7 +76,8 @@ const resolveGroupTags = (
   }
 
   for (const childId of group.groups) {
-    const childGroupAggregates = resolveGroupTags(childId, depth + 1, groupsById, tagsByImageHash, resolvedTagsById);
+    const childGroupAggregates = resolveGroupAggregates(childId, depth + 1, groupsById, aggregatesByImageHash, resolvedAggregatesById);
+    coverImage = coverImage || childGroupAggregates.coverImage;
     for (const tag of childGroupAggregates.tags) {
       tagSet.add(tag);
     }
@@ -98,9 +97,10 @@ const resolveGroupTags = (
     specialTags: [...specialTagSet].sort(),
     frames: [...frameSet].sort(),
     palettes: [...paletteSet].sort(),
+    coverImage,
   };
 
-  resolvedTagsById.set(groupId, resolved);
+  resolvedAggregatesById.set(groupId, resolved);
   return resolved;
 };
 
@@ -111,21 +111,22 @@ export const populateGroupAggregates = async (
   const images = await db.getAll('images');
 
   const groupsById = new Map(groups.map((group) => [group.id, group]));
-  const tagsByImageHash = new Map<string, GroupAggregates>(images.map((image: StoredImage): [string, GroupAggregates] => ([
+  const aggregatesByImageHash = new Map<string, GroupAggregates>(images.map((image: StoredImage): [string, GroupAggregates] => ([
     image.hash,
     newSet({
       tags: image.tags,
       specialTags: image.specialTags,
       frames: image.frame ? [image.frame] : [],
       palettes: typeof image.palette === 'string' ? [image.palette] : [],
+      coverImage: image.hash,
     }),
   ])));
-  const resolvedTagsById = new Map<string, GroupAggregates>();
+  const resolvedAggregatesById = new Map<string, GroupAggregates>();
 
   const tx = db.transaction('imagegroups', 'readwrite');
   for (const group of groups) {
-    const tags = resolveGroupTags(group.id, 0, groupsById, tagsByImageHash, resolvedTagsById);
-    await tx.store.put({ ...group, ...tags });
+    const aggregates = resolveGroupAggregates(group.id, 0, groupsById, aggregatesByImageHash, resolvedAggregatesById);
+    await tx.store.put({ ...group, ...aggregates });
   }
   await tx.done;
 };
