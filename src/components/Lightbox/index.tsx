@@ -70,9 +70,11 @@ const contentDimensions = (
   switch (typeof width) {
     case 'string':
       styles.width = width;
+      styles.maxWidth = 'calc(100vw - 80px)';
       break;
     case 'number':
       styles.width = `${width}px`;
+      styles.maxWidth = 'calc(100vw - 80px)';
       break;
     default:
       styles.width = '440px';
