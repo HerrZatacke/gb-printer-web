@@ -126,7 +126,8 @@ export const populateGroupAggregates = async (
   const tx = db.transaction('imagegroups', 'readwrite');
   for (const group of groups) {
     const aggregates = resolveGroupAggregates(group.id, 0, groupsById, aggregatesByImageHash, resolvedAggregatesById);
-    await tx.store.put({ ...group, ...aggregates });
+    const coverImage = group.coverImage || aggregates.coverImage;
+    await tx.store.put({ ...group, ...aggregates, coverImage });
   }
   await tx.done;
 };
