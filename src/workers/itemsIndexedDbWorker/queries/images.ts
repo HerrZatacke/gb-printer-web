@@ -74,8 +74,16 @@ export const getHashesByGroupId = async ({ groupId, includeGroups, sort: sortRaw
 
   const sortedGroupItems = await resolveGroupItemsByGroupId(db, groupId, includeGroups, sort, filters);
   const sortedImageHashes = sortedGroupItems
-    .filter((item): item is GroupItemImage => item.type === 'image')
-    .map(({ image: { hash } }) => hash);
+    .map((item: GroupItem) => {
+      switch (item.type) {
+        case 'image':
+          return item.image.hash;
+        case 'group':
+          return item.group.id;
+        default:
+          throw new Error('unknown group item type', item);
+      }
+    });
   const addPaging = getAddTotal<string>(sortedImageHashes.length, start, z.string());
   return addPaging(sortedImageHashes);
 };
