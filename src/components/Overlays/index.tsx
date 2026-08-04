@@ -15,6 +15,7 @@ import LightboxImages from '@/components/Overlays/LightboxImages';
 import PickColors from '@/components/Overlays/PickColors';
 import ProgressBox from '@/components/Overlays/ProgressBox';
 import ProgressLogBox from '@/components/Overlays/ProgressLogBox';
+import QueryTool from '@/components/Overlays/QueryTool';
 import Serials from '@/components/Overlays/Serials';
 import SortForm from '@/components/Overlays/SortForm';
 import SSTVForm from '@/components/Overlays/SSTVForm';
@@ -81,6 +82,7 @@ function Overlays() {
     trashCount: { show: showTrashbin },
     syncSelect,
     videoSelection,
+    showQueryTool,
     showSerials,
     downloadHashes,
     sstvHash,
@@ -137,6 +139,8 @@ function Overlays() {
       return <Trashbin />; // interactive
     case showSerialOverlay:
       return <Serials />; // interactive
+    case showQueryTool:
+      return <QueryTool />; // interactive
     case showDownloadOverlay:
       return <DownloadOptions />; // interactive
     case showDragOver:

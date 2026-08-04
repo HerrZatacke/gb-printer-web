@@ -28,6 +28,7 @@ interface Values {
   printerData: PrinterInfo | null;
   printerFunctions: PrinterFunction[];
   showSerials: boolean;
+  showQueryTool: boolean;
   sstvHash: string;
   syncBusy: boolean;
   syncSelect: boolean;
@@ -47,6 +48,7 @@ interface Actions {
   setPrinterBusy: (printerBusy: boolean) => void;
   setPrinterData: (printerData: PrinterInfo | null) => void;
   setPrinterFunctions: (printerFunctions: PrinterFunction[]) => void;
+  setShowQueryTool: (showQueryTool: boolean) => void;
   setShowSerials: (showSerials: boolean) => void;
   setSSTVHash: (sstvHash: string) => void;
   setSyncBusy: (syncBusy: boolean) => void;
@@ -70,6 +72,7 @@ export const createInteractionsStore = () => (
     printerBusy: false,
     printerData: null,
     printerFunctions: [],
+    showQueryTool: false,
     showSerials: false,
     sstvHash: '',
     syncBusy: false,
@@ -88,6 +91,7 @@ export const createInteractionsStore = () => (
     setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),
     setPrinterFunctions: (printerFunctions: PrinterFunction[]) => set({ printerFunctions }),
     setSSTVHash: (sstvHash: string) => set({ sstvHash }),
+    setShowQueryTool: (showQueryTool: boolean) => set({ showQueryTool }),
     setShowSerials: (showSerials: boolean) => set({ showSerials }),
     setSyncBusy: (syncBusy: boolean) => set({ syncBusy }),
     setSyncSelect: (syncSelect: boolean) => set({ syncSelect }),
