@@ -2,4 +2,3 @@
 
 ## Later
 * // ToDo: updateImages should report if groups were also affected (e.g. by adding new images)
-* Try to repair imageGroups with missing covers
