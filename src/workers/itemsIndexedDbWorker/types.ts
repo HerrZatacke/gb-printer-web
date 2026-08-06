@@ -12,15 +12,39 @@ import {
 import { type Palette } from '@/types/Palette';
 import { type Plugin } from '@/types/Plugin';
 import {
+  DeleteBinaryItemsByHashesParamsSchema,
+  DeleteFrameGroupsByIdsParamsSchema,
+  DeleteFramesByIdsParamsSchema,
+  DeleteImageGroupsByIdsParamsSchema,
+  DeleteImagesByHashesParamsSchema,
+  DeletePalettesByShortNamesParamsSchema,
+  DeletePluginsByUrlsParamsSchema,
+  GetBinaryItemsByHashesParamsSchema,
+  GetFramesByHashesParamsSchema,
+  GetFramesByIdsParamsSchema,
+  GetGroupItemsByGroupIdParamsSchema,
+  GetHashesByGroupIdParamsSchema,
+  GetImagesByAnyHashesParamsSchema,
+  GetImagesByHashesParamsSchema,
+  GetImagesParamsSchema,
+  GetPalettesByShortNamesParamsSchema,
+  GetPluginsByUrlsParamsSchema,
   GroupItemGroupSchema,
   GroupItemImageSchema,
   GroupItemSchema,
   ImageQueryFiltersSchema,
-  ImageQuerySortSchema,
   ImageQueryParamsSchema,
+  ImageQuerySortSchema,
+  ItemsReferenceListSchema,
   StoredImageSchema,
   StoredSerializableImageGroupSchema,
-  ItemsReferenceListSchema,
+  UpdateBinaryItemsParamsSchema,
+  UpdateFrameGroupsParamsSchema,
+  UpdateFramesParamsSchema,
+  UpdateImageGroupsParamsSchema,
+  UpdateImagesParamsSchema,
+  UpdatePalettesParamsSchema,
+  UpdatePluginsParamsSchema,
 } from '@/workers/itemsIndexedDbWorker/schemas';
 
 export type StoredImage = z.infer<typeof StoredImageSchema>;
@@ -31,6 +55,30 @@ export type GroupItem = z.infer<typeof GroupItemSchema>;
 export type ImageQueryFilters = z.infer<typeof ImageQueryFiltersSchema>;
 export type ImageQuerySort = z.infer<typeof ImageQuerySortSchema>;
 export type ImageQueryParams = z.infer<typeof ImageQueryParamsSchema>;
+export type GetGroupItemsByGroupIdParams = z.infer<typeof GetGroupItemsByGroupIdParamsSchema>;
+export type GetHashesByGroupIdParams = z.infer<typeof GetHashesByGroupIdParamsSchema>;
+export type GetImagesParams = z.infer<typeof GetImagesParamsSchema>;
+export type GetImagesByHashesParams = z.infer<typeof GetImagesByHashesParamsSchema>;
+export type GetImagesByAnyHashesParams = z.infer<typeof GetImagesByAnyHashesParamsSchema>;
+export type UpdateImagesParams = z.infer<typeof UpdateImagesParamsSchema>;
+export type DeleteImagesByHashesParams = z.infer<typeof DeleteImagesByHashesParamsSchema>;
+export type UpdateImageGroupsParams = z.infer<typeof UpdateImageGroupsParamsSchema>;
+export type DeleteImageGroupsByIdsParams = z.infer<typeof DeleteImageGroupsByIdsParamsSchema>;
+export type GetFramesByHashesParams = z.infer<typeof GetFramesByHashesParamsSchema>;
+export type GetFramesByIdsParams = z.infer<typeof GetFramesByIdsParamsSchema>;
+export type UpdateFramesParams = z.infer<typeof UpdateFramesParamsSchema>;
+export type DeleteFramesByIdsParams = z.infer<typeof DeleteFramesByIdsParamsSchema>;
+export type UpdateFrameGroupsParams = z.infer<typeof UpdateFrameGroupsParamsSchema>;
+export type DeleteFrameGroupsByIdsParams = z.infer<typeof DeleteFrameGroupsByIdsParamsSchema>;
+export type GetPalettesByShortNamesParams = z.infer<typeof GetPalettesByShortNamesParamsSchema>;
+export type UpdatePalettesParams = z.infer<typeof UpdatePalettesParamsSchema>;
+export type DeletePalettesByShortNamesParams = z.infer<typeof DeletePalettesByShortNamesParamsSchema>;
+export type GetPluginsByUrlsParams = z.infer<typeof GetPluginsByUrlsParamsSchema>;
+export type UpdatePluginsParams = z.infer<typeof UpdatePluginsParamsSchema>;
+export type DeletePluginsByUrlsParams = z.infer<typeof DeletePluginsByUrlsParamsSchema>;
+export type GetBinaryItemsByHashesParams = z.infer<typeof GetBinaryItemsByHashesParamsSchema>;
+export type UpdateBinaryItemsParams = z.infer<typeof UpdateBinaryItemsParamsSchema>;
+export type DeleteBinaryItemsByHashesParams = z.infer<typeof DeleteBinaryItemsByHashesParamsSchema>;
 
 export interface ItemsDB extends DBSchema {
   binaryframes: {
@@ -149,114 +197,6 @@ export interface ItemsUsageTotals {
 export interface ItemsUsageReponse {
   totals: ItemsUsageTotals;
   duration: number;
-}
-
-export interface GetGroupItemsByGroupIdParams {
-  groupId: string;
-  includeGroups: boolean;
-  params: ImageQueryParams;
-}
-
-export interface GetHashesByGroupIdParams {
-  groupId: string;
-  includeGroups: boolean;
-  sort: ImageQuerySort;
-  filters?: ImageQueryFilters;
-}
-
-export interface GetImagesParams {
-  params: ImageQueryParams;
-  candidateHashes?: Set<string>;
-}
-
-export interface GetImagesByHashesParams {
-  hashes: string[];
-}
-
-export interface GetImagesByAnyHashesParams {
-  hashes: string[];
-}
-
-export interface UpdateImagesParams {
-  images: Image[];
-  purge: boolean;
-}
-
-export interface DeleteImagesByHashesParams {
-  hashes: string[];
-}
-
-export interface UpdateImageGroupsParams {
-  imageGroups: SerializableImageGroup[];
-  purge: boolean;
-}
-
-export interface DeleteImageGroupsByIdsParams {
-  ids: string[];
-}
-
-export interface GetFramesByHashesParams {
-  hashes: string[];
-}
-
-export interface GetFramesByIdsParams {
-  ids: string[];
-}
-
-export interface UpdateFramesParams {
-  frames: Frame[];
-  purge: boolean;
-}
-
-export interface DeleteFramesByIdsParams {
-  ids: string[];
-}
-
-export interface UpdateFrameGroupsParams {
-  frameGroups: FrameGroup[];
-  purge: boolean;
-}
-
-export interface DeleteFrameGroupsByIdsParams {
-  ids: string[];
-}
-
-export interface GetPalettesByShortNamesParams {
-  shortNames: string[];
-}
-
-export interface UpdatePalettesParams {
-  palettes: Palette[];
-  purge: boolean;
-}
-
-export interface DeletePalettesByShortNamesParams {
-  shortNames: string[];
-}
-
-export interface GetPluginsByUrlsParams {
-  urls: string[];
-}
-
-export interface UpdatePluginsParams {
-  plugins: Plugin[];
-  purge: boolean;
-}
-
-export interface DeletePluginsByUrlsParams {
-  urls: string[];
-}
-
-export interface GetBinaryItemsByHashesParams {
-  hashes: string[];
-}
-
-export interface UpdateBinaryItemsParams {
-  items: BinaryStoreItem[];
-}
-
-export interface DeleteBinaryItemsByHashesParams {
-  hashes: string[];
 }
 
 export interface ItemsSource {

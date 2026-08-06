@@ -2,8 +2,13 @@ import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { Date } from '@/tools/safeDate';
 import { toCreationDate } from '@/tools/toCreationDate';
+import { BinaryStoreItemSchema } from '@/types/BinaryStoreItem';
+import { FrameSchema } from '@/types/Frame';
+import { FrameGroupSchema } from '@/types/FrameGroup';
 import { type Image, ImageSchema } from '@/types/Image';
 import { SerializableImageGroupSchema } from '@/types/ImageGroup';
+import { PaletteSchema } from '@/types/Palette';
+import { PluginSchema } from '@/types/Plugin';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -121,4 +126,113 @@ export const ImageQueryParamsSchema = z.object({
   pageSize: z.number().min(0),
   filters: ImageQueryFiltersSchema.optional(),
   sort: ImageQuerySortSchema,
+});
+
+// API Endpoint Parameters
+export const GetGroupItemsByGroupIdParamsSchema = z.object({
+  groupId: z.string(),
+  includeGroups: z.boolean(),
+  params: ImageQueryParamsSchema,
+});
+
+export const GetHashesByGroupIdParamsSchema = z.object({
+  groupId: z.string(),
+  includeGroups: z.boolean(),
+  sort: ImageQuerySortSchema,
+  filters: ImageQueryFiltersSchema.optional(),
+});
+
+export const GetImagesParamsSchema = z.object({
+  params: ImageQueryParamsSchema,
+  candidateHashes: z.set(z.string()).optional(),
+});
+
+export const GetImagesByHashesParamsSchema = z.object({
+  hashes: z.array(z.string()),
+});
+
+export const GetImagesByAnyHashesParamsSchema = z.object({
+  hashes: z.array(z.string()),
+});
+
+export const UpdateImagesParamsSchema = z.object({
+  images: z.array(ImageSchema),
+  purge: z.boolean(),
+});
+
+export const DeleteImagesByHashesParamsSchema = z.object({
+  hashes: z.array(z.string()),
+});
+
+export const UpdateImageGroupsParamsSchema = z.object({
+  imageGroups: z.array(SerializableImageGroupSchema),
+  purge: z.boolean(),
+});
+
+export const DeleteImageGroupsByIdsParamsSchema = z.object({
+  ids: z.array(z.string()),
+});
+
+export const GetFramesByHashesParamsSchema = z.object({
+  hashes: z.array(z.string()),
+});
+
+export const GetFramesByIdsParamsSchema = z.object({
+  ids: z.array(z.string()),
+});
+
+export const UpdateFramesParamsSchema = z.object({
+  frames: z.array(FrameSchema),
+  purge: z.boolean(),
+});
+
+export const DeleteFramesByIdsParamsSchema = z.object({
+  ids: z.array(z.string()),
+});
+
+export const UpdateFrameGroupsParamsSchema = z.object({
+  frameGroups: z.array(FrameGroupSchema),
+  purge: z.boolean(),
+});
+
+export const DeleteFrameGroupsByIdsParamsSchema = z.object({
+  ids: z.array(z.string()),
+});
+
+export const GetPalettesByShortNamesParamsSchema = z.object({
+  shortNames: z.array(z.string()),
+});
+
+export const UpdatePalettesParamsSchema = z.object({
+  palettes: z.array(PaletteSchema),
+  purge: z.boolean(),
+});
+
+export const DeletePalettesByShortNamesParamsSchema = z.object({
+  shortNames: z.array(z.string()),
+});
+
+export const GetPluginsByUrlsParamsSchema = z.object({
+  urls: z.array(z.string()),
+});
+
+export const UpdatePluginsParamsSchema = z.object({
+  plugins: z.array(PluginSchema),
+  purge: z.boolean(),
+});
+
+export const DeletePluginsByUrlsParamsSchema = z.object({
+  urls: z.array(z.string()),
+});
+
+export const GetBinaryItemsByHashesParamsSchema = z.object({
+  hashes: z.array(z.string()),
+});
+
+export const UpdateBinaryItemsParamsSchema = z.object({
+  items: z.array(BinaryStoreItemSchema),
+});
+
+export const DeleteBinaryItemsByHashesParamsSchema = z.object({
+  hashes: z.array(z.string()),
 });
