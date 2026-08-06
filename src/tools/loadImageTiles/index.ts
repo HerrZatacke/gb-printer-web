@@ -3,7 +3,7 @@ import { getQueryClient } from '@/contexts/QueryClient';
 import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
 import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { isRGBNImage } from '@/tools/isRGBNImage';
-import { load, type RecoverFn } from '@/tools/storage';
+import { load } from '@/tools/storage';
 import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
 
 export type PImage = {
@@ -12,7 +12,7 @@ export type PImage = {
   hashes?: RGBNImage['hashes'];
 }
 
-export const loadImageTiles = (recover?: RecoverFn) => {
+export const loadImageTiles = () => {
   const loader = async (
     hash: string,
     noDummy?: boolean,
@@ -29,7 +29,7 @@ export const loadImageTiles = (recover?: RecoverFn) => {
 
     if (!hashesOverride) {
       if (!image || !isRGBNImage(image)) {
-        const tiles = await load(hash, frameHash, noDummy, recover);
+        const tiles = await load(hash, frameHash, noDummy);
         return tiles || [];
       }
     }

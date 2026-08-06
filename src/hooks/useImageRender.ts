@@ -4,12 +4,8 @@ import { type GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
 import { useFrames } from '@/hooks/useFrames';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
-import { useImportExportSettings } from '@/hooks/useImportExportSettings';
 import { usePalettes } from '@/hooks/usePalettes';
-import { useStores } from '@/hooks/useStores';
-import { useStoragesStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { dropboxStorageTool } from '@/tools/dropboxStorage';
 import { type RGBNHashes } from '@/types/Image';
 import { loadImageTiles as getLoadImageTiles } from '../tools/loadImageTiles';
 
@@ -27,44 +23,17 @@ interface UseImageRender {
 
 export const useImageRender = (hash: string, overrides?: Overrides): UseImageRender => {
   const [gbImageProps, setGbImageProps] = useState<PartialGameBoyImageProps | null>(null);
-  const stores = useStores();
-  const { remoteImport } = useImportExportSettings();
   const { palettes: allPalettes } = usePalettes({ list: true });
-  const { dropboxStorage, gitStorage } = useStoragesStore();
   const { galleryImageData } = useGalleryImage(hash);
 
   const frameId = overrides?.frameId || galleryImageData?.frame;
 
   const loadImageTiles = useCallback(
     (imgHash: string, noDummy?: boolean, overrideFrame?: string, hashesOverride?: RGBNHashes) => {
-      const recoverFn = async () => {
-        console.log(`🗃️ recovering ${imgHash}`);
-        let recovered = false;
-
-        if (!recovered && dropboxStorage.use) {
-          console.log('🗃️ from dropbox storage');
-          recovered = await dropboxStorageTool(stores, remoteImport).recoverImageData(imgHash);
-          if (!recovered) {
-            console.log('🗃️ ...failed');
-          }
-        }
-
-        if (!recovered && gitStorage.use) {
-          console.log('🗃️ recovering from git storage is not a feature');
-        } else {
-          if (recovered) {
-            console.log('🗃️ recovery successfull');
-          } else {
-            console.log('🗃️ recovery failed');
-          }
-        }
-      };
-
-      const imageLoader = getLoadImageTiles(recoverFn);
-
+      const imageLoader = getLoadImageTiles();
       return imageLoader(imgHash, noDummy, overrideFrame, hashesOverride);
     },
-    [dropboxStorage.use, gitStorage.use, stores, remoteImport],
+    [],
   );
 
   const isRGB = useMemo(() => {

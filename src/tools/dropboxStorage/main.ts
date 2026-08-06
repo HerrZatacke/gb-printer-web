@@ -20,7 +20,7 @@ import { loadImageTiles } from '@/tools/loadImageTiles';
 import parseAuthParams from '@/tools/parseAuthParams';
 import replaceDuplicateFilenames from '@/tools/replaceDuplicateFilenames';
 import { Date } from '@/tools/safeDate';
-import { saveLocalStorageItems, saveImageFileContent } from '@/tools/saveLocalStorageItems';
+import { saveLocalStorageItems } from '@/tools/saveLocalStorageItems';
 import { DownloadArrayBuffer } from '@/types/download';
 import { type RepoContents } from '@/types/Export';
 import { type JSONExport } from '@/types/ExportState';
@@ -34,8 +34,6 @@ import { type DropBoxSyncTool } from './index';
 interface WithContentHash {
   dropboxContentHash: string;
 }
-
-let recoveryAttempts: number = 0;
 
 export const dropBoxSyncTool = (
   stores: UseStores,
@@ -229,34 +227,6 @@ export const dropBoxSyncTool = (
     setSyncBusy(false);
   };
 
-
-  const recoverImageData = async (hash: string): Promise<boolean> => {
-    const { dropboxStorage } = useStoragesStore.getState();
-    const { use, accessToken } = dropboxStorage;
-
-    if (!use || !accessToken) {
-      return false;
-    }
-
-    const { updateImages } = stores;
-    if (recoveryAttempts < 3) {
-      recoveryAttempts += 1;
-
-      try {
-        const remoteFileContent = await dropboxClient.getFileContent(`images/${hash}.txt`, 0, 1, true);
-        await saveImageFileContent(remoteFileContent);
-
-        // ToDo find a way to better trigger update (if it is even necessary ??)
-        await updateImages([]);
-        return true;
-      } catch {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  };
-
   dropboxClient.on('loginDataUpdate', (data) => {
     const { setDropboxStorage } = useStoragesStore.getState();
     setDropboxStorage(data);
@@ -274,6 +244,5 @@ export const dropBoxSyncTool = (
     startSyncData,
     startSyncImages,
     startAuth: () => dropboxClient.startAuth(),
-    recoverImageData,
   };
 };

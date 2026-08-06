@@ -9,7 +9,6 @@ export interface DropBoxSyncTool {
   startSyncData: (direction: SyncDirection) => Promise<void>;
   startSyncImages: () => Promise<void>;
   startAuth: () => Promise<void>;
-  recoverImageData: (hash: string) => Promise<boolean>;
 }
 
 let dropBoxSyncTool: DropBoxSyncTool;
@@ -36,13 +35,11 @@ export const dropboxStorageTool = (
   }
 
   const subscribe = () => useStoragesStore.subscribe((state) => state.dropboxStorage, async (dropboxSettings) => {
-    (await loadAndInitMiddleware()).updateSettings(dropboxSettings);
+    const middlerware = await loadAndInitMiddleware();
+    await middlerware.updateSettings(dropboxSettings);
   });
 
   return {
-    recoverImageData: async (hash: string) => (
-      (await loadAndInitMiddleware()).recoverImageData(hash)
-    ),
     startAuth: async () => (
       (await loadAndInitMiddleware()).startAuth()
     ),

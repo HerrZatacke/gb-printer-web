@@ -14,8 +14,6 @@ export interface HashedCompressed {
   compressed: string;
 }
 
-export type RecoverFn = (hash: string) => Promise<void>;
-
 export const compressAndHash = async (lines: string[]): Promise<HashedCompressed> => {
   const { default: hash } = await import(/* webpackChunkName: "obh" */ 'object-hash');
 
@@ -48,7 +46,6 @@ export const load = async (
   dataHash: string,
   frameHash?: string,
   noDummy?: boolean,
-  recover?: RecoverFn,
 ): Promise<string[] | null> => {
   if (!dataHash) {
     return null;
@@ -70,12 +67,6 @@ export const load = async (
 
     return applyFrame(tiles, frameHash);
   } catch {
-    if (typeof recover === 'function') {
-      // Recovery function is only used by <ImageRender> component
-      // it dispatches so that data might get re-loaded from sync storage
-      await recover(dataHash);
-    }
-
     return noDummy ? [] : dummyImage(dataHash);
   }
 };
