@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.57.6",
+  "version": "1.57.7",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "npm run dev:clean && npm run dev:dev",
