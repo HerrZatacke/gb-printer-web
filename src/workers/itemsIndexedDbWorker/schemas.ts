@@ -148,11 +148,11 @@ export const GetImagesParamsSchema = z.object({
 });
 
 export const GetImagesByHashesParamsSchema = z.object({
-  hashes: z.array(z.string()),
+  hashes: z.array(z.string()).min(1),
 });
 
 export const GetImagesByAnyHashesParamsSchema = z.object({
-  hashes: z.array(z.string()),
+  hashes: z.array(z.string()).min(1),
 });
 
 export const UpdateImagesParamsSchema = z.object({
@@ -161,7 +161,7 @@ export const UpdateImagesParamsSchema = z.object({
 });
 
 export const DeleteImagesByHashesParamsSchema = z.object({
-  hashes: z.array(z.string()),
+  hashes: z.array(z.string()).min(1),
 });
 
 export const UpdateImageGroupsParamsSchema = z.object({
@@ -170,15 +170,15 @@ export const UpdateImageGroupsParamsSchema = z.object({
 });
 
 export const DeleteImageGroupsByIdsParamsSchema = z.object({
-  ids: z.array(z.string()),
+  ids: z.array(z.string()).min(1),
 });
 
 export const GetFramesByHashesParamsSchema = z.object({
-  hashes: z.array(z.string()),
+  hashes: z.array(z.string()).min(1),
 });
 
 export const GetFramesByIdsParamsSchema = z.object({
-  ids: z.array(z.string()),
+  ids: z.array(z.string()).min(1),
 });
 
 export const UpdateFramesParamsSchema = z.object({
@@ -187,7 +187,7 @@ export const UpdateFramesParamsSchema = z.object({
 });
 
 export const DeleteFramesByIdsParamsSchema = z.object({
-  ids: z.array(z.string()),
+  ids: z.array(z.string()).min(1),
 });
 
 export const UpdateFrameGroupsParamsSchema = z.object({
@@ -196,11 +196,11 @@ export const UpdateFrameGroupsParamsSchema = z.object({
 });
 
 export const DeleteFrameGroupsByIdsParamsSchema = z.object({
-  ids: z.array(z.string()),
+  ids: z.array(z.string()).min(1),
 });
 
 export const GetPalettesByShortNamesParamsSchema = z.object({
-  shortNames: z.array(z.string()),
+  shortNames: z.array(z.string()).min(1),
 });
 
 export const UpdatePalettesParamsSchema = z.object({
@@ -209,11 +209,11 @@ export const UpdatePalettesParamsSchema = z.object({
 });
 
 export const DeletePalettesByShortNamesParamsSchema = z.object({
-  shortNames: z.array(z.string()),
+  shortNames: z.array(z.string()).min(1),
 });
 
 export const GetPluginsByUrlsParamsSchema = z.object({
-  urls: z.array(z.string()),
+  urls: z.array(z.string()).min(1),
 });
 
 export const UpdatePluginsParamsSchema = z.object({
@@ -222,17 +222,17 @@ export const UpdatePluginsParamsSchema = z.object({
 });
 
 export const DeletePluginsByUrlsParamsSchema = z.object({
-  urls: z.array(z.string()),
+  urls: z.array(z.string()).min(1),
 });
 
 export const GetBinaryItemsByHashesParamsSchema = z.object({
-  hashes: z.array(z.string()),
+  hashes: z.array(z.string()).min(1),
 });
 
 export const UpdateBinaryItemsParamsSchema = z.object({
-  items: z.array(BinaryStoreItemSchema),
+  items: z.array(BinaryStoreItemSchema).min(1),
 });
 
 export const DeleteBinaryItemsByHashesParamsSchema = z.object({
-  hashes: z.array(z.string()),
+  hashes: z.array(z.string()).min(1),
 });

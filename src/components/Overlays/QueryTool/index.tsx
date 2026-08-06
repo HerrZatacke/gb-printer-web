@@ -8,7 +8,12 @@ import {
 import { filesize } from 'filesize';
 import React, { useCallback, useEffect, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
-import { exampleBodies, itemsSourceMethodNames, MethodName } from '@/components/Overlays/QueryTool/methods';
+import {
+  type EndpointSettings,
+  endpointSettings,
+  itemsSourceMethodNames,
+  type MethodName,
+} from '@/components/Overlays/QueryTool/methods';
 import { getItemsSource } from '@/stores/items/client';
 import { useInteractionsStore } from '@/stores/stores';
 
@@ -16,7 +21,9 @@ function QueryTool() {
   const { setShowQueryTool } = useInteractionsStore();
 
   const [endpoint, setEndpoint] = useState<MethodName | ''>('');
+  const [currentSettings, setCurrentSettings] = useState<EndpointSettings | null>(null);
   const [requestBody, setRequestBody] = useState<string>('{}');
+  const [requestDuration, setRequestDuration] = useState<number>(0);
   const [requestError, setRequestError] = useState<string>('');
   const [result, setResult] = useState<string>('');
   const [resultIsError, setResultIsError] = useState<boolean>(false);
@@ -29,7 +36,7 @@ function QueryTool() {
     }
 
     try {
-      setRequestBody(JSON.stringify(JSON.parse(newBody), null, 2));
+      setRequestBody(JSON.stringify(newBody ? JSON.parse(newBody) : undefined, null, 2));
       setRequestError('');
     } catch (error) {
       setRequestBody(newBody);
@@ -45,15 +52,17 @@ function QueryTool() {
       setResult(`${endpoint} is not a valid endpoint`);
     }
 
-    let body: object;
+    let body: unknown;
 
     try {
-      body = JSON.parse(requestBody);
+      body = currentSettings?.schema.parse(requestBody ? JSON.parse(requestBody) : undefined) || undefined;
       setRequestError('');
     } catch (error) {
       setRequestError((error as Error).message);
       return;
     }
+
+    const start = performance.now();
 
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -65,12 +74,18 @@ function QueryTool() {
       setResult((error as Error).message);
       setResultIsError(true);
     }
-  }, [endpoint, requestBody]);
+
+    setRequestDuration(performance.now() - start);
+  }, [endpoint, requestBody, currentSettings]);
 
   useEffect(() => {
     if (endpoint) {
+      const newSettings = endpointSettings[endpoint];
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      updateBody(exampleBodies[endpoint]);
+      updateBody(newSettings.exampleBody);
+      setResult('');
+      setRequestDuration(0);
+      setCurrentSettings(newSettings);
     }
   }, [endpoint, updateBody]);
 
@@ -90,7 +105,6 @@ function QueryTool() {
           value={endpoint || ''}
           label="Endpoint"
           onChange={(ev) => {
-            setResult('');
             setEndpoint(ev.target.value as MethodName | '');
           }}
         >
@@ -107,18 +121,25 @@ function QueryTool() {
           }
         </TextField>
 
+        <Typography
+          variant="caption"
+          whiteSpace="pre"
+        >
+          {currentSettings?.description ?? ''}
+        </Typography>
+
         <TextField
           label="Request Body"
           value={requestBody}
           error={Boolean(requestError)}
           helperText={requestError || null}
           multiline
-          rows={20}
+          rows={15}
           onChange={(ev) => setRequestBody(ev.target.value)}
           onBlur={() => setRequestBody((current) => {
             try {
               setRequestError('');
-              return JSON.stringify(JSON.parse(current), null, 2);
+              return JSON.stringify(currentSettings?.schema.parse(current ? JSON.parse(current) : undefined), null, 2);
             } catch (error) {
               setRequestError((error as Error).message);
               return current;
@@ -129,18 +150,23 @@ function QueryTool() {
         <Button
           variant="contained"
           onClick={execute}
-          disabled={!Boolean(endpoint)}
+          disabled={!endpoint || Boolean(requestError)}
         >
           Run!
         </Button>
 
+        <Typography variant="caption">
+          {[
+            result?.length ? filesize(result.length) : 'no result',
+            requestDuration ? `${Math.round(requestDuration)}ms` : null,
+          ].filter(Boolean).join(' / ')}
+        </Typography>
         <pre style={{
           height: '30vh',
           color: resultIsError ? 'red' : 'inherit',
         }}>
           {result || 'no response'}
         </pre>
-        <Typography variant="caption">{ result?.length ? filesize(result.length) : '-' }</Typography>
 
       </Stack>
     </Lightbox>
