@@ -1,0 +1,1 @@
+@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}@keyframes pulse-bg{0%{background-color:#735b9a}50%{background-color:#735b9a4d}to{background-color:#735b9a}}:root{--navigation-height:64px}
