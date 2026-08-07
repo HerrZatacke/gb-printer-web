@@ -56,6 +56,7 @@ export const calculateActive = (exact: ExactMatchMode, pathname: string, href: s
 };
 
 const WrappedNextLink = forwardRef<HTMLAnchorElement, WrappedNextLinkProps>(
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   function WrappedNextLink(
     {
       href,

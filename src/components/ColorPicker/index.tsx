@@ -22,6 +22,7 @@ function ColorPicker({ value, onChange, label }: Props) {
   const id = useId();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocalValue(value);
   }, [value]);
 
