@@ -83,7 +83,7 @@
     "idb": "^8.0.3",
     "jszip": "^3.10.1",
     "localforage": "^1.10.0",
-    "mui-markdown": "^2.1.1",
+    "mui-markdown": "^3.0.1",
     "next": "^16.3.0",
     "next-intl": "^4.13.5",
     "node-kmeans": "^1.1.9",
