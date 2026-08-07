@@ -39,7 +39,7 @@
     "@mui/lab": "^7.0.1-beta.24",
     "@mui/material": "^7.3.10",
     "@mui/material-nextjs": "^7.3.10",
-    "@mui/x-date-pickers": "^8.27.2",
+    "@mui/x-date-pickers": "^9.11.0",
     "@mui/x-tree-view": "^8.27.2",
     "@octokit/rest": "^22.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
