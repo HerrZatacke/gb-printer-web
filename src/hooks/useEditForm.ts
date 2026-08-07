@@ -180,6 +180,11 @@ export const useEditForm = (): UseEditForm => {
   const [paletteShort, updatePaletteShort] = useState<string>(toEdit?.paletteShort || '');
   const [framePaletteShort, updateFramePaletteShort] = useState<string>(toEdit?.framePaletteShort || '');
   const [paletteRGBN, updatePaletteRGBN] = useState<RGBNPalette | undefined>(toEdit?.paletteRGBN);
+  const [tagChanges, updateTagChanges] = useState<TagChange>({
+    initial: toEdit?.tags || [],
+    add: [],
+    remove: [],
+  });
 
   useEffect(() => {
     if (!toEdit) {
@@ -187,16 +192,22 @@ export const useEditForm = (): UseEditForm => {
     }
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    updateTitle(toEdit?.title);
-    updateCreated(toEdit?.created);
-    updateFrame(toEdit?.frame ?? '');
-    updateFrameLock(toEdit?.lockFrame);
-    updateRotation(toEdit?.rotation);
-    updateInvertPalette(toEdit?.invertPalette);
-    updateInvertFramePalette(toEdit?.invertFramePalette);
-    updatePaletteShort(toEdit?.paletteShort ?? '');
-    updateFramePaletteShort(toEdit?.framePaletteShort ?? '');
-    updatePaletteRGBN(toEdit?.paletteRGBN);
+    updateTitle(toEdit.title);
+    updateCreated(toEdit.created);
+    updateFrame(toEdit.frame ?? '');
+    updateFrameLock(toEdit.lockFrame);
+    updateRotation(toEdit.rotation);
+    updateInvertPalette(toEdit.invertPalette);
+    updateInvertFramePalette(toEdit.invertFramePalette);
+    updatePaletteShort(toEdit.paletteShort ?? '');
+    updateFramePaletteShort(toEdit.framePaletteShort ?? '');
+    updatePaletteRGBN(toEdit.paletteRGBN);
+    updateTagChanges({
+      initial: toEdit.tags || [],
+      add: [],
+      remove: [],
+    });
+
   }, [toEdit]);
 
   const [isRegularImage, setIsRegularImage] = useState<boolean>(false);
@@ -241,11 +252,7 @@ export const useEditForm = (): UseEditForm => {
     updateIsRegular();
   }, [tileCounter, hash]);
 
-  const [tagChanges, updateTagChanges] = useState<TagChange>({
-    initial: toEdit?.tags || [],
-    add: [],
-    remove: [],
-  });
+
 
   const [shouldUpdate, updateShouldUpdate] = useState<Batch>({
     created: false,
