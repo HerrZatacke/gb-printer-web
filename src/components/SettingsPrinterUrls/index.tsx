@@ -51,9 +51,16 @@ function SettingsPrinterUrls() {
   return (
     <Stack
       direction="column"
-      gap={2}
+      sx={{
+        gap: 2,
+      }}
     >
-      <Stack direction="column" gap={1}>
+      <Stack
+        direction="column"
+        sx={{
+          gap: 1,
+        }}
+      >
         <Typography variant="h3">
           {t('printerUrls')}
         </Typography>
@@ -76,7 +83,9 @@ function SettingsPrinterUrls() {
 
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         {printerUrlsState.map((printerUrl, index) => (
           <TextField
@@ -118,7 +127,11 @@ function SettingsPrinterUrls() {
           />
         ))}
       </Stack>
-      <Stack alignItems="flex-end">
+      <Stack
+        sx={{
+          alignItems: 'flex-end',
+        }}
+      >
         <Button
           variant="outlined"
           color="secondary"

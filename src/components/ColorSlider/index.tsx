@@ -29,9 +29,11 @@ function ColorSlider({ color, onChange, values }: Props) {
   return (
     <Stack
       direction="row"
-      gap={2}
-      alignItems="center"
-      sx={{ pr: 2 }}
+      sx={{
+        gap: 2,
+        alignItems: 'center',
+        pr: 2,
+      }}
     >
       <IconButton
         title="Reset"

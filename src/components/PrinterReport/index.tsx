@@ -42,7 +42,12 @@ function PrinterReport({ children }: PropsWithChildren) {
   }, [printerData?.dumps?.length, t]);
 
   return (
-    <Stack direction="column" gap={2}>
+    <Stack
+      direction="column"
+      sx={{
+        gap: 2,
+      }}
+    >
       <ButtonGroup
         variant="contained"
         fullWidth

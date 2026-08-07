@@ -67,7 +67,9 @@ function Pagination({ page, maxPageIndex }: Props) {
   return (
     <Stack
       direction="row"
-      justifyContent="space-around"
+      sx={{
+        justifyContent: 'space-around',
+      }}
     >
       <ButtonGroup
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

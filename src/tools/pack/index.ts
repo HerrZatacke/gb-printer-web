@@ -1,4 +1,7 @@
-import pako from 'pako';
+import {
+  inflate as pakoInflate,
+  deflate as pakoDeflate,
+} from 'pako';
 
 const bytesStringToArrayBuffer = (stringData: string) => {
   const uint8 = new Uint8Array(stringData.length);
@@ -20,11 +23,11 @@ const arrayBufferToByteString = (buffer: Uint8Array) => {
 };
 
 export const inflate = async (data: string): Promise<string> => {
-  return pako.inflate(bytesStringToArrayBuffer(data), { to: 'string' });
+  return pakoInflate(bytesStringToArrayBuffer(data), { toText: true });
 };
 
 export const deflate = async (data: string): Promise<string> => {
-  const compressed = pako.deflate(data, {
+  const compressed = pakoDeflate(data, {
     strategy: 1,
     level: 8,
   });

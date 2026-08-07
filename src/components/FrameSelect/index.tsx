@@ -65,7 +65,9 @@ function FrameSelect({
   return (
     <Stack
       direction="column"
-      gap={2}
+      sx={{
+        gap: 2,
+      }}
     >
       <TextField
         label={selectLabel || t('frameLabel')}

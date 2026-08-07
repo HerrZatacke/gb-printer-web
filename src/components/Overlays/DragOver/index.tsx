@@ -13,9 +13,9 @@ function DragOver() {
 
   return (
     <Stack
-      justifyContent="center"
-      alignItems="center"
       sx={{
+        justifyContent: 'center',
+        alignItems: 'center',
         position: 'fixed',
         top: 0,
         left: 0,
@@ -35,18 +35,27 @@ function DragOver() {
       >
         <Stack
           direction="column"
-          gap={4}
-          alignItems="center"
-          color={theme.palette.tertiary.main}
+          sx={{
+            gap: 4,
+            alignItems: 'center',
+            color: theme.palette.tertiary.main,
+          }}
         >
           <CloudUploadIcon sx={{ fontSize: 64 }} />
-          <Typography variant="h5" fontWeight="bold">
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 'bold',
+            }}
+          >
             {t('dropFilesHere')}
           </Typography>
           <Typography
             variant="body2"
-            sx={{ maxWidth: '70vw' }}
-            textAlign="center"
+            sx={{
+              textAlign: 'center',
+              maxWidth: '70vw',
+            }}
           >
             {t('supportedFileTypes')}
           </Typography>

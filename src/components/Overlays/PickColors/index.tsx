@@ -78,7 +78,9 @@ function PickColors() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         <PalettePreview palette={palette} />
 
@@ -125,8 +127,8 @@ function PickColors() {
 
         <Stack
           direction="row"
-          gap={0}
           sx={{
+            gap: 0,
             '& > .MuiBox-root': {
               height: '32px',
               flexGrow: 1,

@@ -94,7 +94,12 @@ function ConnectPrinter() {
   }, [addPrinter, dismissDialog, openPrinter, pathname, printerUrls, router, setDialog, setPrinterUrls, t]);
 
   return (
-    <Stack direction="column" gap={2}>
+    <Stack
+      direction="column"
+      sx={{
+        gap: 2,
+      }}
+    >
       {printerUrls.map((printerUrl, index) => (
         openedUrl === printerUrl ? (
           <PrinterReport key={`${printerUrl}-report-${index}`}>
@@ -106,8 +111,10 @@ function ConnectPrinter() {
           <Stack
             key={`${printerUrl}-button-${index}`}
             direction="row"
-            gap={4}
-            alignItems="center"
+            sx={{
+              gap: 4,
+              alignItems: 'center',
+            }}
           >
             <Typography variant="body2">
               {printerUrl}

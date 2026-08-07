@@ -53,18 +53,18 @@ function LightboxImages() {
     >
       <Stack
         direction="column"
-        gap={2}
         sx={{
+          gap: 2,
           width: '100%',
           height: '100%',
         }}
       >
         <Stack
           direction="row"
-          gap={1}
-          alignItems="center"
-          justifyContent="center"
           sx={{
+            gap: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
             height: '100%',
             overflow: 'hidden',
             position: 'relative',
@@ -85,8 +85,8 @@ function LightboxImages() {
           { currentIndex !== null && (
             <Stack
               direction="row"
-              gap={0}
               sx={{
+                gap: 0,
                 width: '100%',
                 height: '100%',
                 flexBasis: '100%',
@@ -123,9 +123,11 @@ function LightboxImages() {
 
         <Stack
           direction="row"
-          gap={{ xs: 4, md: 12 }}
-          alignItems="center"
-          justifyContent="center"
+          sx={{
+            gap: { xs: 4, md: 12 },
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
         >
           <Typography variant="body2">
             {t('imageCounter', { current: currentIndex + 1, total: size })}

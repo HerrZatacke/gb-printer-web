@@ -72,9 +72,9 @@ function Error({ dismiss, errorMessage }: Props) {
       { showStack && (
         <Typography
           variant="caption"
-          fontFamily="monospace"
           component="pre"
           sx={(theme: Theme) => getPreStyles(theme, {
+            fontFamily: 'monospace',
             backgroundColor: '#FFFFFF22',
             maxHeight: '200px',
             overflow: 'auto',

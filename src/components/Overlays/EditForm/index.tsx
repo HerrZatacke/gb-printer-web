@@ -90,21 +90,16 @@ function EditForm() {
   const { gbImageProps } = useImageRender(toEdit?.hash || '', overrides);
 
   if (!gbImageProps || !toEdit) {
-    if (toEdit) {
-      return (
-        <Lightbox
-          contentHeight={toEdit.height}
-          header={t('dialogHeader', { count: toEdit.imageCount })}
-          open
-          deny={cancel}
-        >
-          <LinearProgress variant="indeterminate" />
-        </Lightbox>
-      );
-    }
-
-    console.warn('Editform should be open, but "toEdit" is undefined', toEdit, gbImageProps);
-    return null;
+    return (
+      <Lightbox
+        contentHeight={900}
+        header={t('dialogHeader', { count: 0 })}
+        open
+        deny={cancel}
+      >
+        <LinearProgress variant="indeterminate" />
+      </Lightbox>
+    );
   }
 
   return (
@@ -117,7 +112,9 @@ function EditForm() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         <Box
           ref={setStickyBox}

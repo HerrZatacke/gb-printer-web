@@ -34,7 +34,9 @@ function AddPlugin() {
   return (
     <Stack
       direction="column"
-      gap={4}
+      sx={{
+        gap: 4,
+      }}
     >
       { isTrusted ? null : (
         <Alert severity="error" variant="filled">

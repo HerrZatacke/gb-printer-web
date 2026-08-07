@@ -86,8 +86,10 @@ export default function RootLayout({
             <LocalDebug />
             <Stack
               direction="column"
-              gap={2}
-              sx={{ flexGrow: 1 }}
+              sx={{
+                gap: 2,
+                flexGrow: 1,
+              }}
             >
               {children}
             </Stack>

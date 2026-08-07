@@ -88,8 +88,10 @@ function AudioPlayer({ audioSource, downloadFilename }: Props) {
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent="space-between"
+      sx={{
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
     >
       <IconButton
         onClick={playing ? stop : play}

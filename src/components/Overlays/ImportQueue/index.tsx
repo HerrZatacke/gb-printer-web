@@ -53,7 +53,9 @@ function ImportQueue() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         <List
           rowComponent={ImportRow}

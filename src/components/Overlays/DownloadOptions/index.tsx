@@ -25,7 +25,9 @@ function DownloadOptions() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         <DownloadOptionsForm inDialog />
       </Stack>

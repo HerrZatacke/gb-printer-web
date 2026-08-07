@@ -181,6 +181,24 @@ export const useEditForm = (): UseEditForm => {
   const [framePaletteShort, updateFramePaletteShort] = useState<string>(toEdit?.framePaletteShort || '');
   const [paletteRGBN, updatePaletteRGBN] = useState<RGBNPalette | undefined>(toEdit?.paletteRGBN);
 
+  useEffect(() => {
+    if (!toEdit) {
+      return;
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    updateTitle(toEdit?.title);
+    updateCreated(toEdit?.created);
+    updateFrame(toEdit?.frame ?? '');
+    updateFrameLock(toEdit?.lockFrame);
+    updateRotation(toEdit?.rotation);
+    updateInvertPalette(toEdit?.invertPalette);
+    updateInvertFramePalette(toEdit?.invertFramePalette);
+    updatePaletteShort(toEdit?.paletteShort ?? '');
+    updateFramePaletteShort(toEdit?.framePaletteShort ?? '');
+    updatePaletteRGBN(toEdit?.paletteRGBN);
+  }, [toEdit]);
+
   const [isRegularImage, setIsRegularImage] = useState<boolean>(false);
 
   const form = useMemo<Form>(() => ({

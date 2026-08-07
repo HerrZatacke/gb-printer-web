@@ -22,6 +22,7 @@ function ColorPicker({ value, onChange, label }: Props) {
   const id = useId();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocalValue(value);
   }, [value]);
 
@@ -72,8 +73,8 @@ function ColorPicker({ value, onChange, label }: Props) {
       </InputLabel>
       <Stack
         direction="row"
-        gap={1}
         sx={{
+          gap: 1,
           '& > *': {
             flexBasis: 'auto',
             flexShrink: 0,

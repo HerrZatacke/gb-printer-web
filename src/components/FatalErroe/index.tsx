@@ -73,7 +73,11 @@ export default function FatalError() {
           <AlertTitle variant="h1" color="textPrimary">
             Oh oh! Something went wrong!
           </AlertTitle>
-          <Stack gap={2}>
+          <Stack
+            sx={{
+              gap: 2,
+            }}
+          >
             <pre>{fatalError.error.message}</pre>
             <Typography variant="body1">Something went wrong while migrating your local data to the new storage format.</Typography>
             <Typography variant="body1">Your existing data has not been modified or lost. It is still stored exactly as it was before the migration attempt.</Typography>

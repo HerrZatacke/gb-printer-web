@@ -53,7 +53,9 @@ function Palettes({ filter, showEditButtons }: Props) {
     <>
       <Stack
         direction="row"
-        justifyContent="end"
+        sx={{
+          justifyContent: 'end',
+        }}
       >
         <ButtonGroup
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

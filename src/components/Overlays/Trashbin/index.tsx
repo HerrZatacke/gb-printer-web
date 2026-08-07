@@ -59,7 +59,9 @@ function Trashbin() {
     >
       <Stack
         direction="column"
-        gap={2}
+        sx={{
+          gap: 2,
+        }}
       >
         <Typography variant="body2">
           {t('deletedFrames', { count: trashCount.frames })}

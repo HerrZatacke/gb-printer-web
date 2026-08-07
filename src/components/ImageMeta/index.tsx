@@ -68,7 +68,9 @@ function ImageMeta({
   return (
     <Stack
       direction="column"
-      gap={4}
+      sx={{
+        gap: 4,
+      }}
     >
       <MuiCleanThemeProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>

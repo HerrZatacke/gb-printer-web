@@ -56,7 +56,9 @@ function PaletteSelect({
   return (
     <Stack
       direction="column"
-      gap={2}
+      sx={{
+        gap: 2,
+      }}
     >
       <TextField
         value={value}

@@ -16,13 +16,17 @@ function ProgressBox() {
     >
       <Stack
         direction="column"
-        gap={2}
+        sx={{
+          gap: 2,
+        }}
       >
         { progress.map((progressItem) => (
           <Stack
             key={progressItem.id}
             direction="column"
-            gap={1}
+            sx={{
+              gap: 1,
+            }}
           >
             <Typography>{ progressItem.label }</Typography>
             <LinearProgress

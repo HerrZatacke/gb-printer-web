@@ -90,6 +90,7 @@ function EditImageTabs(props: Props) {
   const [tab, setTab] = useState<TabType | null>(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTab(tabs[0]);
   }, [tabs]);
 

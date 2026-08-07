@@ -30,7 +30,9 @@ function TagsSelect({
   return (
     <Stack
       direction="column"
-      gap={2}
+      sx={{
+        gap: 2,
+      }}
     >
       <InputNewTag
         updateTags={updateTags}
@@ -39,10 +41,10 @@ function TagsSelect({
       { activeTags.length > 0 && (
         <Stack
           direction="row"
-          gap={1}
-          flexWrap="wrap"
-          alignItems="center"
           sx={{
+            gap: 1,
+            flexWrap: 'wrap',
+            alignItems: 'center',
             '.MuiChip-root': {
               my: '1px', // IconButton for reset function is 2px higher than chip.
             },
@@ -68,14 +70,16 @@ function TagsSelect({
                   label={(
                     <Stack
                       direction="row"
-                      gap={1}
-                      alignItems="center"
+                      sx={{
+                        gap: 1,
+                        alignItems: 'center',
+                      }}
                     >
                       {tag === SpecialTags.FILTER_FAVOURITE ? '❤️' : tag}
                       <Stack
                         direction="row"
-                        gap={0}
                         sx={{
+                          gap: 0,
                           mr: -1,
                           '.MuiButtonBase-root': {
                             opacity: 0.4,

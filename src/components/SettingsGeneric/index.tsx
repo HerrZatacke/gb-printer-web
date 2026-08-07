@@ -94,7 +94,9 @@ function SettingsGeneric() {
   return (
     <Stack
       direction="column"
-      gap={6}
+      sx={{
+        gap: 6,
+      }}
     >
       <TextField
         id="settings-pagesize"
@@ -312,8 +314,10 @@ function SettingsGeneric() {
       {trackingAvailable && (
         <Stack
           direction="column"
-          gap={2}
-          alignItems="flex-start"
+          sx={{
+            gap: 2,
+            alignItems: 'flex-start',
+          }}
         >
           <Button
             variant="outlined"

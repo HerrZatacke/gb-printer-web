@@ -59,16 +59,21 @@ function ConnectSerial({ inline }: Props) {
   return (
     <Stack
       direction="column"
-      gap={4}
+      sx={{
+        gap: 4,
+      }}
     >
       <Stack
         direction={{ xs: 'column', md: inline ? 'row' : 'column' }}
-        gap={4}
-        sx={{ '& > *': { flex: 1 } }}
-      >
+        sx={{
+          gap: 4,
+          '& > *': { flex: 1 },
+        }}>
         <Stack
           direction="column"
-          gap={1}
+          sx={{
+            gap: 1,
+          }}
         >
           <Button
             title={t('openWebUSB')}
@@ -84,7 +89,9 @@ function ConnectSerial({ inline }: Props) {
 
         <Stack
           direction="column"
-          gap={1}
+          sx={{
+            gap: 1,
+          }}
         >
           <Button
             title={t('openWebSerial')}
@@ -105,23 +112,29 @@ function ConnectSerial({ inline }: Props) {
       <Stack
         component="ul"
         direction="column"
-        gap={2}
+        sx={{
+          gap: 2,
+        }}
       >
         {connectedDevices.map(({ id, portType, portDeviceType, description }) => {
           const Icon = portType === PortType.SERIAL ? SettingsInputHdmiIcon : UsbIcon;
           return (
             <Stack
               key={id}
-              gap={1}
               direction="row"
-              alignItems="center"
+              sx={{
+                gap: 1,
+                alignItems: 'center',
+              }}
             >
               <Icon />
               <Stack
                 component="li"
                 direction={inline ? 'row' : 'column'}
-                gap={inline ? 2 : 0}
-                alignItems="baseline"
+                sx={{
+                  gap: inline ? 2 : 0,
+                  alignItems: 'baseline',
+                }}
               >
                 <Typography variant="body1" component="span">
                   {t(portDeviceTranslationKeys[portDeviceType])}
@@ -152,13 +165,20 @@ function ConnectSerial({ inline }: Props) {
         deny={() => setShowUnknownDeviceResponse(false)}
         open={showUnknownDeviceResponse && Boolean(unknownDeviceResponse?.length)}
       >
-        <Stack direction="column" gap={2}>
+        <Stack
+          direction="column"
+          sx={{
+            gap: 2,
+          }}
+        >
           {unknownDeviceResponseInfo.map((value, index) => (
             <Stack
               key={index}
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
               <Typography>{value}</Typography>
               <IconButton

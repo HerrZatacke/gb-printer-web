@@ -53,7 +53,9 @@ function EditFrameForm({
   return (
     <Stack
       direction="column"
-      gap={4}
+      sx={{
+        gap: 4,
+      }}
     >
       {extraFields}
       <TextField

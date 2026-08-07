@@ -21,7 +21,9 @@ function NavigationFlyoutContent({ flyoutContent: { headline, navItems, sizeFlyo
     <Grid size={sizeFlyout} sx={{ p: 2 }}>
       <Stack
         direction="column"
-        gap={2}
+        sx={{
+          gap: 2,
+        }}
       >
         <Typography
           variant="h2"

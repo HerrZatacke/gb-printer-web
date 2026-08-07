@@ -65,6 +65,7 @@ function GalleryGrid({ fixedView, showLoader, children }: Props) {
 
     return {
       gap,
+      position: 'relative',
       display: 'grid',
       justifyContent: 'center',
       gridTemplateColumns: `repeat(auto-fill, ${imageSize})`,
@@ -75,7 +76,6 @@ function GalleryGrid({ fixedView, showLoader, children }: Props) {
     <Box
       component="ul"
       sx={styleVariables}
-      position="relative"
     >
       { showLoader && (
         <LinearProgress

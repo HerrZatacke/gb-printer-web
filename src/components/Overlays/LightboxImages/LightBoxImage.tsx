@@ -15,10 +15,10 @@ function LightBoxImage({ hash, visible }: LightBoxImageProps) {
       key={hash}
       tabIndex={0}
       sx={{
+        justifyContent: 'center',
         flex: '0 0 auto',
         width: visible ? '100%' : '0',
       }}
-      justifyContent="center"
     >
       <Box sx={{ maxHeight: '100%' }}>
         <ImageRender hash={hash}/>

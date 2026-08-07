@@ -115,7 +115,9 @@ function EditRGBN() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         <TextField
           label={t('groupingLabel')}
@@ -138,19 +140,21 @@ function EditRGBN() {
         { grouping === RGBGrouping.MANUAL ? (
           <Stack
             direction="column"
-            gap={1}
+            sx={{
+              gap: 1,
+            }}
           >
             <Typography variant="body2">
               {t('manualChannelInstructions')}
             </Typography>
             <Stack
               direction="row"
-              gap={2}
               component="ul"
-              justifyContent="center"
-              alignItems="center"
-              flexWrap="wrap"
               sx={{
+                gap: 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexWrap: 'wrap',
                 '& .MuiCardContent-root': {
                   padding: 1,
                 },
@@ -205,17 +209,21 @@ function EditRGBN() {
         ) : (
           <Stack
             direction="column"
-            gap={1}
+            sx={{
+              gap: 1,
+            }}
           >
             <Typography variant="body2">
               {t('channelOrderInstructions')}
             </Typography>
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
-              gap={{ xs: 1, sm: 2 }}
               component="ul"
-              justifyContent="center"
-              alignItems="center"
+              sx={{
+                gap: { xs: 1, sm: 2 },
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               { order.map((colorKey, index) => (colorKey === 's' ? (
                 <Divider
@@ -263,7 +271,9 @@ function EditRGBN() {
 
         <Stack
           direction="column"
-          gap={1}
+          sx={{
+            gap: 1,
+          }}
         >
           <Typography variant="body2">
             {t('imagePreview')}
@@ -272,13 +282,13 @@ function EditRGBN() {
             direction="row"
             component="ul"
             sx={{
+              gap: 1,
               overflowX: 'auto',
               '& > *': {
                 flex: '160px 0 0',
                 margin: '0 auto',
               },
             }}
-            gap={1}
           >
             { rgbnHashes.map((hashes, index) => (
               <RGBNPreviewImage key={index} rgbnHashes={hashes} />

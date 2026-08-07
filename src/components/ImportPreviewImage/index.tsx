@@ -47,14 +47,18 @@ function ImportPreviewImage({
   return (
     <Stack
       direction="column"
-      gap={1}
+      sx={{
+        gap: 1,
+      }}
     >
       <Stack
         title={`${fileName} - ${scaleFactor}x`}
         direction="row"
-        gap={1}
-        justifyContent="space-between"
-        alignItems="center"
+        sx={{
+          gap: 1,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
       >
         <canvas
           width={width}

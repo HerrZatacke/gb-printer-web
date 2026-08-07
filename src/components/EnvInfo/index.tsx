@@ -41,8 +41,10 @@ function EnvInfo() {
           key={text}
           component="li"
           direction="row"
-          justifyContent="end"
-          gap={1}
+          sx={{
+            justifyContent: 'end',
+            gap: 1,
+          }}
         >
           {text.includes('localStorage') ? (
             <button
@@ -63,7 +65,9 @@ function EnvInfo() {
             variant="caption"
             color="textDisabled"
             align="right"
-            lineHeight={1.25}
+            sx={{
+              lineHeight: 1.25,
+            }}
           >
             {text}
           </Typography>
