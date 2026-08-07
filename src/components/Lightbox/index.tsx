@@ -139,10 +139,17 @@ function Lightbox({
       fullScreen={fullScreen || fullSize}
       maxWidth="lg"
       open={open}
-      onClose={closeOnOverlayClick ? deny : undefined}
+      onClose={(event, reason) => {
+        if (reason === 'escapeKeyDown') { // esc is handled in useOverlayGlobalKeys
+          return;
+        }
+
+        if (closeOnOverlayClick) {
+          deny?.();
+        }
+      }}
       aria-label={typeof header === 'string' ? header : undefined}
       keepMounted={keepMounted}
-      disableEscapeKeyDown
       sx={{
         // matching "scrollbar-width: thin;" on <html>
         paddingRight: '10px',
