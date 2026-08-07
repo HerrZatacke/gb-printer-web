@@ -42,7 +42,9 @@ function SettingsDropbox() {
   return (
     <Stack
       direction="column"
-      gap={6}
+      sx={{
+        gap: 6,
+      }}
     >
       <FormControlLabel
         label={t('enableStorage')}
@@ -61,7 +63,11 @@ function SettingsDropbox() {
       {
         !use ? null : (
           <>
-            <Stack gap={1}>
+            <Stack
+              sx={{
+                gap: 1,
+              }}
+            >
               <TextField
                 id="dropbox-settings-path"
                 label={t('subfolder')}

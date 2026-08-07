@@ -39,7 +39,9 @@ function Frames() {
   return (
     <Stack
       direction="column"
-      gap={4}
+      sx={{
+        gap: 4,
+      }}
     >
       <TextField
         label={t('editFramegroup')}
@@ -66,7 +68,9 @@ function Frames() {
       )}
       <Stack
         direction="column"
-        gap={2}
+        sx={{
+          gap: 2,
+        }}
       >
         <GalleryViewSelect />
         <GalleryGrid>

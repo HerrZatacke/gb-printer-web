@@ -28,17 +28,21 @@ function FolderBreadcrumb() {
   return (
     <Stack
       direction="row"
-      gap={2}
-      justifyContent="space-between"
-      alignItems="center"
+      sx={{
+        gap: 2,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
     >
       <Breadcrumbs>
         { segments.map(({ group, link }, index) => (
           <Stack
             key={group.id}
             direction="row"
-            gap={0.5}
-            alignItems="center"
+            sx={{
+              gap: 0.5,
+              alignItems: 'center',
+            }}
           >
             { index > 0 ? (
               <Link

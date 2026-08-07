@@ -42,7 +42,9 @@ function PluginConfig(props: Props) {
         title={(
           <Stack
             direction="row"
-            gap={2}
+            sx={{
+              gap: 2,
+            }}
           >
             <Typography variant="h3" component="h3">
               {name}
@@ -73,7 +75,9 @@ function PluginConfig(props: Props) {
       <CardContent>
         <Stack
           direction="column"
-          gap={4}
+          sx={{
+            gap: 4,
+          }}
         >
           {error && (
             <Alert

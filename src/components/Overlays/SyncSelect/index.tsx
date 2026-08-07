@@ -40,13 +40,19 @@ function SyncSelect() {
     >
       <Stack
         direction="column"
-        gap={4}
-        sx={{ '& .MuiButton-endIcon svg': { fontSize: 32 } }}
+        sx={{
+          gap: 4,
+          '& .MuiButton-endIcon svg': {
+            fontSize: 32,
+          },
+        }}
       >
         {gitActive && (
           <Stack
             direction="column"
-            gap={2}
+            sx={{
+              gap: 2,
+            }}
           >
             <Button
               variant="contained"
@@ -77,11 +83,15 @@ function SyncSelect() {
         {dropboxActive && (
           <Stack
             direction="column"
-            gap={2}
+            sx={{
+              gap: 2,
+            }}
           >
             <Stack
               direction="column"
-              gap={1}
+              sx={{
+                gap: 1,
+              }}
             >
               <Button
                 variant="contained"
@@ -103,7 +113,9 @@ function SyncSelect() {
 
             <Stack
               direction="column"
-              gap={1}
+              sx={{
+                gap: 1,
+              }}
             >
               <Button
                 variant="contained"

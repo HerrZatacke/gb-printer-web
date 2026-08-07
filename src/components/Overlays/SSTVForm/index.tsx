@@ -69,12 +69,16 @@ function SSTVForm() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         {previewImageSource && previewImageWidth && (
           <Stack
             direction="column"
-            alignItems="center"
+            sx={{
+              alignItems: 'center',
+            }}
           >
             <img
               src={previewImageSource}

@@ -37,9 +37,9 @@ function TagsList({ tags, fromGroup }: Props) {
     <Stack
       component="ul"
       direction="row"
-      gap={0.66}
-      flexWrap="wrap"
       sx={(theme: Theme) => ({
+        gap: 0.66,
+        flexWrap: 'wrap',
         '& .MuiChip-root': {
           fontSize: '0.75rem',
           height: theme.spacing(2.5),

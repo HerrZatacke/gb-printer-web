@@ -11,9 +11,11 @@ function FilterFormTabPanel({ children, hidden }: Props & PropsWithChildren) {
   return (
     <Stack
       direction="column"
-      gap={4}
       role="tabpanel"
-      sx={{ pt: 4 }}
+      sx={{
+        gap: 4,
+        pt: 4,
+      }}
     >
       {children}
     </Stack>

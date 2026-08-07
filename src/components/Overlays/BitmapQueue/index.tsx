@@ -42,7 +42,9 @@ function BitmapQueue() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         {
           bitmapQueue.map((image, index) => (

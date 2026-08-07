@@ -117,7 +117,9 @@ function EditForm() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         <Box
           ref={setStickyBox}

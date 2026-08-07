@@ -12,10 +12,10 @@ function GalleryHeader({ isBottom, isSticky }: Props) {
   return (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
-      alignItems="center"
-      gap={2}
-      justifyContent="space-between"
       sx={(theme) => ({
+        alignItems: 'center',
+        gap: 2,
+        justifyContent: 'space-between',
         zIndex: 20,
         backgroundColor: theme.palette.background.default,
         ...(isSticky ? {

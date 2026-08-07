@@ -44,7 +44,9 @@ function WebUSBGreeting() {
   return (
     <Stack
       direction="column"
-      gap={4}
+      sx={{
+        gap: 4,
+      }}
     >
       <MuiMarkdown options={{ wrapper: MarkdownStack }}>
         {processedReadme}
@@ -55,8 +57,10 @@ function WebUSBGreeting() {
           <ConnectSerial inline />
           <Stack
             direction={{ xs: 'column', md: 'row' }}
-            gap={4}
-            sx={{ '& > *': { flex: 1 } }}
+            sx={{
+              gap: 4,
+              '& > *': { flex: 1 },
+            }}
           >
             <Alert
               severity={webUSBEnabled ? 'success' : 'warning'}

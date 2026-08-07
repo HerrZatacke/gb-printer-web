@@ -26,7 +26,9 @@ function SettingsPlugins() {
   return (
     <Stack
       direction="column"
-      gap={10}
+      sx={{
+        gap: 10,
+      }}
     >
       <TextField
         id="plugin-settings-add-plugin"
@@ -70,10 +72,11 @@ function SettingsPlugins() {
         }}
       />
 
-
       <Stack
         direction="column"
-        gap={1}
+        sx={{
+          gap: 1,
+        }}
       >
         <Typography component="h3" variant="h3">
           {t('installedPlugins')}
@@ -81,8 +84,10 @@ function SettingsPlugins() {
 
         <Stack
           direction="column"
-          gap={6}
           component="ul"
+          sx={{
+            gap: 6,
+          }}
         >
           {
             plugins.map((plugin, pluginIndex) => (

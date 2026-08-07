@@ -35,7 +35,9 @@ function SettingsGit() {
   return (
     <Stack
       direction="column"
-      gap={6}
+      sx={{
+        gap: 6,
+      }}
     >
       <FormControlLabel
         label={t('enableStorage')}

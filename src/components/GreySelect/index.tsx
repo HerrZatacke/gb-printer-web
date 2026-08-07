@@ -47,7 +47,9 @@ function GreySelect({ values, onChange, useChannels }: Props) {
   return (
     <Stack
       direction="column"
-      gap={3}
+      sx={{
+        gap: 3,
+      }}
     >
       {
         usedChannels
@@ -55,7 +57,9 @@ function GreySelect({ values, onChange, useChannels }: Props) {
             <Stack
               key={`slider-${color}`}
               direction="column"
-              gap={0}
+              sx={{
+                gap: 0,
+              }}
             >
               {color === 'n' ? (
                 <TextField

@@ -133,7 +133,9 @@ function FilterForm() {
     >
       <Stack
         direction="row"
-        justifyContent="space-between"
+        sx={{
+          justifyContent: 'space-between',
+        }}
       >
         <Tabs
           value={tabValue}
@@ -164,11 +166,15 @@ function FilterForm() {
       <FilterFormTab hidden={tabValue !== FilterTab.TAGS} >
         <Stack
           direction="column"
-          gap={4}
+          sx={{
+            gap: 4,
+          }}
         >
           <Stack
             direction="column"
-            gap={1}
+            sx={{
+              gap: 1,
+            }}
           >
             <Typography
               component="span"
@@ -178,10 +184,10 @@ function FilterForm() {
             </Typography>
             <Stack
               direction="row"
-              gap={1}
-              flexWrap="wrap"
-              alignItems="center"
               sx={{
+                gap: 1,
+                flexWrap: 'wrap',
+                alignItems: 'center',
                 '.MuiChip-root': {
                   my: '1px', // IconButton for reset function is 2px higher than chip.
                 },
@@ -227,7 +233,9 @@ function FilterForm() {
 
           <Stack
             direction="column"
-            gap={1}
+            sx={{
+              gap: 1,
+            }}
           >
             <Typography
               component="span"
@@ -237,10 +245,10 @@ function FilterForm() {
             </Typography>
             <Stack
               direction="row"
-              gap={1}
-              flexWrap="wrap"
-              alignItems="center"
               sx={{
+                gap: 1,
+                flexWrap: 'wrap',
+                alignItems: 'center',
                 '.MuiChip-root': {
                   my: '1px', // IconButton for reset function is 2px higher than chip.
                 },
@@ -262,7 +270,9 @@ function FilterForm() {
       <FilterFormTab hidden={tabValue !== FilterTab.PALETTES} >
         <Stack
           direction="column"
-          gap={1}
+          sx={{
+            gap: 1,
+          }}
         >
           <Typography
             component="span"
@@ -272,10 +282,10 @@ function FilterForm() {
           </Typography>
           <Stack
             direction="row"
-            gap={1}
-            flexWrap="wrap"
-            alignItems="center"
             sx={{
+              gap: 1,
+              flexWrap: 'wrap',
+              alignItems: 'center',
               '.MuiChip-root': {
                 my: '1px', // IconButton for reset function is 2px higher than chip.
               },
@@ -304,7 +314,9 @@ function FilterForm() {
       <FilterFormTab hidden={tabValue !== FilterTab.FRAMES} >
         <Stack
           direction="column"
-          gap={1}
+          sx={{
+            gap: 1,
+          }}
         >
           <Typography
             component="span"
@@ -314,11 +326,11 @@ function FilterForm() {
           </Typography>
           <Stack
             direction="row"
-            gap={1}
-            flexWrap="wrap"
-            alignItems="stretch"
-            justifyContent="center"
             sx={{
+              gap: 1,
+              flexWrap: 'wrap',
+              alignItems: 'stretch',
+              justifyContent: 'center',
               '.MuiButton-root': {
                 width: '180px',
               },

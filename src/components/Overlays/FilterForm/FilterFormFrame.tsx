@@ -64,9 +64,11 @@ function FilterFormFrame({ frameActive, toggleFrame, frame, usage, palette }: Pr
     >
       <Stack
         direction="column"
-        justifyContent="flex-start"
-        gap={1}
-        sx={{ height: '100%' }}
+        sx={{
+          justifyContent: 'flex-start',
+          gap: 1,
+          height: '100%',
+        }}
       >
         <Box
           sx={{

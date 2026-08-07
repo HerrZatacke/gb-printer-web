@@ -20,9 +20,9 @@ function Debug({ text }: Props) {
     <Typography
       title={text}
       variant="caption"
-      fontFamily="monospace"
       component="pre"
       sx={(theme: Theme) => getPreStyles(theme, {
+        fontFamily: 'monospace',
         px: 0.5,
         py: 0,
         mt: 1,

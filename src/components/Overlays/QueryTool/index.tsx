@@ -97,7 +97,9 @@ function QueryTool() {
     >
       <Stack
         direction="column"
-        gap={4}
+        sx={{
+          gap: 4,
+        }}
       >
         <TextField
           select
@@ -123,7 +125,9 @@ function QueryTool() {
 
         <Typography
           variant="caption"
-          whiteSpace="pre"
+          sx={{
+            whiteSpace: 'pre',
+          }}
         >
           {currentSettings?.description ?? ''}
         </Typography>

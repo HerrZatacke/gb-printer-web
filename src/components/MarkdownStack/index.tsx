@@ -8,8 +8,8 @@ export default function MarkdownStack({ children }: PropsWithChildren) {
   return (
     <Stack
       direction="column"
-      gap={1}
       sx={(theme: Theme) => ({
+        gap: 1,
         a: {
           color: theme.palette.secondary.light,
           textDecorationColor: 'currentColor',

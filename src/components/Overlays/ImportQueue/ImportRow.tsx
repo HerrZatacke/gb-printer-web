@@ -72,7 +72,12 @@ function ImportRow({
       gap={1}
       alignItems="stretch"
       justifyContent="left"
-      sx={style}
+      sx={{
+        ...style,
+        gap: 1,
+        alignItems: 'stretch',
+        justifyContent: 'left',
+      }}
       {...ariaAttributes}
     >
       <Box
@@ -90,6 +95,9 @@ function ImportRow({
 
       <Stack
         sx={{
+          gap: 2,
+          justifyContent: 'space-between',
+          alignContent: 'space-between',
           flex: 'auto 1 1',
           my: 1,
         }}
@@ -132,9 +140,11 @@ function ImportRow({
         </ButtonGroup>
 
         <Stack
-          sx={{ pr: 1 }}
-          gap={1}
           direction="column"
+          sx={{
+            gap: 1,
+            pr: 1,
+          }}
         >
           <Typography
             variant="caption"

@@ -86,8 +86,8 @@ function GalleryGridItem({
     <Stack
       component="li"
       direction="column"
-      justifyContent="stretch"
       sx={{
+        justifyContent: 'stretch',
         position: 'relative',
         '& > *': {
           flexGrow: 1,
@@ -127,8 +127,10 @@ function GalleryGridItem({
             title={titleIcon ? (
               <Stack
                 direction="row"
-                gap={0.5}
-                alignItems="center"
+                sx={{
+                  gap: 0.5,
+                  alignItems: 'center',
+                }}
               >
                 {titleIcon}
                 {title}

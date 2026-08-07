@@ -34,7 +34,9 @@ function Confirm() {
     >
       <Stack
         direction="column"
-        gap={2}
+        sx={{
+          gap: 2,
+        }}
       >
         {
           questions.map((question) => {

@@ -20,7 +20,9 @@ export default function PalettesLayout({ children }: Readonly<PropsWithChildren>
   return (
     <Stack
       direction="column"
-      gap={4}
+      sx={{
+        gap: 4,
+      }}
     >
       <Typography
         component="h1"

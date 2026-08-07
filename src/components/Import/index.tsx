@@ -37,7 +37,12 @@ function Import() {
   }, []);
 
   return (
-    <Stack direction="column" gap={6}>
+    <Stack
+      direction="column"
+      sx={{
+        gap: 6,
+      }}
+    >
       <ConnectPrinter />
 
       <ButtonGroup
@@ -89,10 +94,12 @@ function Import() {
       </ButtonGroup>
 
       <Stack
-        flexDirection="column"
-        gap={1}
-        justifyContent="flex-end"
-        justifyItems="end"
+        sx={{
+          flexDirection: 'column',
+          gap: 1,
+          justifyContent: 'flex-end',
+          justifyItems: 'end',
+        }}
       >
         <TextField
           id="import-plaintext"
@@ -104,7 +111,12 @@ function Import() {
             setText(target.value);
           }}
         />
-        <Stack direction="row" justifyContent="flex-end">
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: 'flex-end',
+          }}
+        >
           <Button
             variant="contained"
             onClick={() => {

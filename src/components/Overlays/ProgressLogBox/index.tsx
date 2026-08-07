@@ -94,7 +94,9 @@ function ProgressLogBox() {
     >
       <Stack
         direction="column"
-        gap={2}
+        sx={{
+          gap: 2,
+        }}
       >
         <Box
           component="ul"
@@ -136,7 +138,9 @@ function ProgressLogBox() {
         )}
         <Stack
           direction="column"
-          gap={0}
+          sx={{
+            gap: 0,
+          }}
         >
           <Typography variant="caption">
             {t('startedAt', { time: dayjs.unix(timeStart).format('HH:mm:ss') })}

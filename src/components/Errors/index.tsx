@@ -10,9 +10,9 @@ function Error() {
   return (
     <Stack
       direction="column"
-      alignItems="end"
-      gap={4}
       sx={{
+        alignItems: 'end',
+        gap: 4,
         position: 'fixed',
         top: 80,
         left: 16,

@@ -44,8 +44,10 @@ function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
   return (
     <Stack
       direction="row"
-      gap={3}
-      justifyContent="center"
+      sx={{
+        gap: 3,
+        justifyContent: 'center',
+      }}
     >
       <GameBoyImage
         tiles={previewTiles}
@@ -54,7 +56,9 @@ function EditFrameStartLine({ tiles, startLine, setStartLine }: Props) {
       />
       <Stack
         direction="column"
-        justifyContent="center"
+        sx={{
+          justifyContent: 'center',
+        }}
       >
         <ButtonGroup
           orientation="vertical"

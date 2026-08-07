@@ -25,13 +25,17 @@ export default function SettingsLayout({ children }: Readonly<PropsWithChildren>
       {isIdle && (
         <Stack
           direction="column"
-          gap={4}
-          justifyContent="space-between"
-          sx={{ flexGrow: 1 }}
+          sx={{
+            gap: 4,
+            justifyContent: 'space-between',
+            flexGrow: 1,
+          }}
         >
           <Stack
             direction="column"
-            gap={6}
+            sx={{
+              gap: 6,
+            }}
           >
             <SettingsTabs/>
             <Box>{children}</Box>

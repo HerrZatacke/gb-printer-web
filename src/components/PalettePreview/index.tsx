@@ -14,9 +14,11 @@ function PalettePreview({ palette }: Props) {
   return (
     <Stack
       direction="row"
-      gap={2}
       component="ul"
-      justifyContent="space-around"
+      sx={{
+        gap: 2,
+        justifyContent: 'space-around',
+      }}
     >
       {
         previewImages.map((imageHash) => (
