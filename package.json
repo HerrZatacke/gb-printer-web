@@ -38,7 +38,7 @@
     "@mui/icons-material": "^7.3.10",
     "@mui/lab": "^7.0.1-beta.24",
     "@mui/material": "^7.3.10",
-    "@mui/material-nextjs": "^7.3.10",
+    "@mui/material-nextjs": "^9.3.0",
     "@mui/x-date-pickers": "^9.11.0",
     "@mui/x-tree-view": "^9.11.0",
     "@octokit/rest": "^22.0.1",
