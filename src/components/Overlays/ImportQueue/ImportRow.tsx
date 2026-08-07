@@ -69,9 +69,6 @@ function ImportRow({
     <Stack
       direction="row"
       component="li"
-      gap={1}
-      alignItems="stretch"
-      justifyContent="left"
       sx={{
         ...style,
         gap: 1,
@@ -102,9 +99,6 @@ function ImportRow({
           my: 1,
         }}
         direction="column"
-        gap={2}
-        justifyContent="space-between"
-        alignContent="space-between"
       >
         <ButtonGroup
           fullWidth
