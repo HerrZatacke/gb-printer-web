@@ -15,6 +15,7 @@
     "serve": "npm run build && npm run serve:serve",
     "serve:serve": "npx serve out",
     "audit": "npm audit fix",
+    "checkupdates": "npx npm-check-updates",
     "postinstall": "patch-package",
     "browserlist": "npx update-browserslist-db@latest",
     "translations:compare": "tsx scripts/compareLangFiles.ts",

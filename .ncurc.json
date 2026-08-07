@@ -1,0 +1,7 @@
+{
+  "reject": [
+    "typescript",
+    "@types/node",
+    "eslint"
+  ]
+}
