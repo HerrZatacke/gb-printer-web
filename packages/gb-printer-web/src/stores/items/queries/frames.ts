@@ -1,9 +1,9 @@
 import { QueryClient } from '@tanstack/react-query';
+import { Frame } from 'gb-printer-schemas';
 import { getItemsSource } from '@/stores/items/client';
 import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
 import { framesKeys } from '@/stores/items/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/items/queries/consts';
-import { Frame } from '@/types/Frame';
 
 export const framesListQueryOptions = () => {
   return {

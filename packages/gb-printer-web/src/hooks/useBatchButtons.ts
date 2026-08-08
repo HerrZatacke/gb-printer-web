@@ -1,3 +1,9 @@
+import {
+  type Image,
+  type MonochromeImage,
+  type GroupItem,
+  type GroupItemImage,
+} from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { BatchActionType } from '@/consts/batchActionTypes';
@@ -16,8 +22,6 @@ import {
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { nextPowerOfTwo } from '@/tools/nextPowerOfTwo';
 import unique from '@/tools/unique';
-import { type Image, type MonochromeImage } from '@/types/Image';
-import { type GroupItem, type GroupItemImage } from '@/workers/itemsIndexedDbWorker/types';
 
 interface UseBatchButtons {
   hasPlugins: boolean;

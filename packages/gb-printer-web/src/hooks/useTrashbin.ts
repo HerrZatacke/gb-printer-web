@@ -1,4 +1,11 @@
 import { saveAs } from 'file-saver';
+import {
+  Date,
+  toCreationDate,
+  type BinaryStoreItem,
+  type Image,
+  type Frame,
+} from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { getQueryClient } from '@/contexts/QueryClient';
@@ -13,12 +20,7 @@ import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
-import { Date } from '@/tools/safeDate';
-import { toCreationDate } from '@/tools/toCreationDate';
-import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { createJSONExport, type ExportableState } from '@/types/ExportState';
-import { type Frame } from '@/types/Frame';
-import { type Image } from '@/types/Image';
 
 export interface UseTrashbin {
   showTrashCount: (show: boolean) => void;

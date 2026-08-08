@@ -1,5 +1,5 @@
 import { BlendMode } from 'gb-image-decoder';
-import { type Palette } from '@/types/Palette';
+import { type Palette } from 'gb-printer-schemas';
 
 export const defaultGreys = [0x00, 0x55, 0xaa, 0xff];
 

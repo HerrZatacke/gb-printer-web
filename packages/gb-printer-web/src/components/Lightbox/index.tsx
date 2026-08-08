@@ -11,7 +11,6 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslations } from 'next-intl';
 import { CSSProperties, useEffect, useState } from 'react';
-import React from 'react';
 import useOverlayGlobalKeys from '@/hooks/useOverlayGlobalKeys';
 
 interface Props {

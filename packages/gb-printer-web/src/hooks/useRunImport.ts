@@ -1,4 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
+import {
+  Date,
+  type Image,
+  type Palette,
+  type SerializableImageGroup,
+  toCreationDate,
+} from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -18,14 +25,9 @@ import {
 import { type TagChange } from '@/tools/applyTagChanges';
 import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';
-import { Date } from '@/tools/safeDate';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
-import { toCreationDate } from '@/tools/toCreationDate';
-import { type Image } from '@/types/Image';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
-import { Palette } from '@/types/Palette';
 import { toSlug } from './useEditImageGroup';
 
 const sortByFilename = sortBy<ImportItem>('fileName');

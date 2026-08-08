@@ -1,4 +1,4 @@
-import { type MonochromeImage } from '@/types/Image';
+import { type MonochromeImage } from 'gb-printer-schemas';
 
 export interface PaletteSettings {
   invertPalette: boolean;

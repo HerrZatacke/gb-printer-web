@@ -8,10 +8,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { type Plugin } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { usePlugins } from '@/hooks/usePlugins';
-import { type Plugin } from '@/types/Plugin';
 import PluginInputField from './PluginInputField';
 
 interface Props extends Plugin {

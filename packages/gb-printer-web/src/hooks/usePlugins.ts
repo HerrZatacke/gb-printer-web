@@ -1,4 +1,5 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { type Plugin, type PluginConfigValues } from 'gb-printer-schemas';
 import { useCallback, useState } from 'react';
 import {
   pluginsByUrlsQueryOptions,
@@ -7,7 +8,6 @@ import {
   deletePluginsByUrlsAction,
   pluginByUrlQueryOptions,
 } from '@/stores/items/queries/plugins';
-import { Plugin, type PluginConfigValues } from '@/types/Plugin';
 
 export interface PluginState {
   loading: boolean;

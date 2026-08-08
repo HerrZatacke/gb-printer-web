@@ -29,7 +29,7 @@ function PalettePreview({ palette }: Props) {
               flex: '160px 0 0',
             }}
           >
-            <ImageRender hash={imageHash} overrides={{ palette , framePalette: palette }} />
+            <ImageRender hash={imageHash} overrides={{ palette, framePalette: palette }} />
           </Box>
         ))
       }

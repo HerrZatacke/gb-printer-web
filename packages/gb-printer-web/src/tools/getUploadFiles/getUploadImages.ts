@@ -1,10 +1,10 @@
+import { type Image, type MonochromeImage, type RGBNImage } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { imagesListQueryOptions } from '@/stores/items/queries/images';
 import { getTxtFile } from '@/tools/download/getTxtFile';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';
 import { type RepoContents, type RepoFile, type SyncFile } from '@/types/Export';
-import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type AddToQueueFn, type DownloadInfo } from '@/types/Sync';
 
 interface TmpInfo {

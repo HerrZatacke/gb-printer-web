@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { type RGBNHashes } from 'gb-printer-schemas';
 import React, { useMemo, useCallback } from 'react';
 import Debug from '@/components/Debug';
 import GalleryGridItem from '@/components/GalleryGridItem';
@@ -11,7 +12,6 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { useGalleryImageContextMenu } from '@/hooks/useGalleryImageContextMenu';
 import { ImageSelectionMode, useSettingsStore } from '@/stores/stores';
-import { type RGBNHashes } from '@/types/Image';
 
 dayjs.extend(customParseFormat);
 

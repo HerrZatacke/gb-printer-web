@@ -9,10 +9,15 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
-import { blend } from '@mui/system';
-import { type Theme } from '@mui/system';
-import { type PropsWithChildren } from 'react';
-import { type ElementType, type MouseEvent, type ReactNode, useMemo, useState } from 'react';
+import { blend, type Theme } from '@mui/system';
+import {
+  type PropsWithChildren,
+  type ElementType,
+  type MouseEvent,
+  type ReactNode,
+  useMemo,
+  useState,
+} from 'react';
 
 interface WrapperProps extends PropsWithChildren {
   sx?: object;

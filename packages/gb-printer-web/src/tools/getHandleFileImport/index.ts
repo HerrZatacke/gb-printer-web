@@ -6,8 +6,8 @@ import { transformPlainText } from '@/tools/transformPlainText';
 import { transformReduced } from '@/tools/transformReduced';
 import { transformSav } from '@/tools/transformSav';
 import { ImportResult } from '@/types/ImportItem';
-import { type PreparedFile } from './prepareFile';
-import prepareFile from './prepareFile';
+import prepareFile, { type PreparedFile } from './prepareFile';
+
 
 export interface HandeFileImportOptions {
   fromPrinter: boolean;

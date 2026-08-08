@@ -1,4 +1,4 @@
-import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
+import { SortDirection } from 'gb-printer-schemas';
 
 const sortBy = <T>(key: keyof T, direction: SortDirection = SortDirection.ASC) => (arr: T[]): T[] => {
 

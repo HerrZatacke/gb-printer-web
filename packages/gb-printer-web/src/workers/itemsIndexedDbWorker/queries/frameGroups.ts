@@ -1,12 +1,14 @@
-import z from 'zod';
-import { FrameGroup, FrameGroupSchema } from '@/types/FrameGroup';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {
+  FrameGroup,
+  FrameGroupSchema,
   type DeleteFrameGroupsByIdsParams,
   type ItemsSourceTotalResponse,
   type UpdateFrameGroupsParams,
-} from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
+import z from 'zod';
+import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+
 
 export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
   const db = await getDb();

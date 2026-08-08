@@ -1,4 +1,4 @@
-import { type Frame } from '@/types/Frame';
+import { type Frame } from 'gb-printer-schemas';
 
 const mapCartFrameToHash = (frameNumber: number, savFrameTypes: string, frames: Frame[]): string => {
   if (!savFrameTypes) {

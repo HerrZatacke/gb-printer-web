@@ -1,4 +1,11 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import {
+  type Image,
+  type ImageQueryParams,
+  type GroupItem,
+  type ItemsReferenceList,
+  type ItemsSourcePaging,
+} from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import {
@@ -12,13 +19,7 @@ import {
   updateImagesAction,
   deleteImagesByHashesAction,
 } from '@/stores/items/queries/images';
-import { type Image } from '@/types/Image';
-import {
-  type ImageQueryParams,
-  type GroupItem,
-  type ItemsReferenceList,
-  type ItemsSourcePaging,
-} from '@/workers/itemsIndexedDbWorker/types';
+
 
 export interface UseImagesOptions {
   page?: number;

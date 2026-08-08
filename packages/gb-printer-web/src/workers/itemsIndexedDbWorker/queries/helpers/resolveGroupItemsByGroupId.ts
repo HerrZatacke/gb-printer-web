@@ -1,6 +1,13 @@
+import {
+  type TreeImageGroup,
+  type GroupItem,
+  type ImageQueryFilters,
+  type ImageQuerySort,
+  type StoredImage,
+  type StoredSerializableImageGroup,
+} from 'gb-printer-schemas';
 import { type IDBPDatabase } from 'idb';
 import sortBy from '@/tools/sortby';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 import {
   facetFromImage,
   facetFromSerializableImageGroup,
@@ -9,14 +16,7 @@ import {
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { getImageGroupsFullTree } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
-import {
-  type GroupItem,
-  type ImageQueryFilters,
-  type ImageQuerySort,
-  type ItemsDB,
-  type StoredImage,
-  type StoredSerializableImageGroup,
-} from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 export const resolveGroupItemsByGroupId = async (
   db: IDBPDatabase<ItemsDB>,

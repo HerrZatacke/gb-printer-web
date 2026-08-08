@@ -1,12 +1,18 @@
+import {
+  SerializableImageGroupSchema,
+  StoredSerializableImageGroupSchema,
+  type DeleteImageGroupsByIdsParams,
+  type ItemsSourceTotalResponse,
+  type RootItemSourceResponse,
+  type SerializableImageGroup,
+  type StoredSerializableImageGroup,
+  type TreeImageGroup,
+  type UpdateImageGroupsParams,
+} from 'gb-printer-schemas';
 import { IDBPDatabase } from 'idb';
 import z from 'zod';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
-import {
-  type TreeImageGroup,
-  SerializableImageGroupSchema,
-  type SerializableImageGroup,
-} from '@/types/ImageGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSlugs';
@@ -15,15 +21,7 @@ import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildT
 import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
-import { StoredSerializableImageGroupSchema } from '@/workers/itemsIndexedDbWorker/schemas';
-import {
-  type DeleteImageGroupsByIdsParams,
-  type ItemsDB,
-  type ItemsSourceTotalResponse,
-  type RootItemSourceResponse,
-  type StoredSerializableImageGroup,
-  type UpdateImageGroupsParams,
-} from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 const sortById = sortBy<StoredSerializableImageGroup>('id');
 

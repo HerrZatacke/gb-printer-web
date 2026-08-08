@@ -1,4 +1,4 @@
-import { TreeImageGroup } from '@/types/ImageGroup';
+import { TreeImageGroup } from 'gb-printer-schemas';
 
 export const applyImageTotals = (group: TreeImageGroup): TreeImageGroup => {
   const groups = group.groups.map(applyImageTotals);

@@ -1,5 +1,5 @@
+import { Image, ImageMetadata } from 'gb-printer-schemas';
 import { type ImportMethod } from '@/consts/ImportMethod';
-import { Image, ImageMetadata } from './Image';
 
 export interface ImportItem {
   fileName:string;

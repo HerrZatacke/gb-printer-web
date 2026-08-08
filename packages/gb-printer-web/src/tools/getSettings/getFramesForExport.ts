@@ -1,5 +1,5 @@
+import { type Frame } from 'gb-printer-schemas';
 import { type ExportTypes } from '@/consts/exportTypes';
-import { type Frame } from '@/types/Frame';
 
 const getFramesForExport = (
   what: typeof ExportTypes.CURRENT_FRAMEGROUP | typeof ExportTypes.FRAMES,

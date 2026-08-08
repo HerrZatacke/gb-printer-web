@@ -1,4 +1,5 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { type Frame, type FrameGroup } from 'gb-printer-schemas';
 import { useCallback, useMemo } from 'react';
 import { useFrames } from '@/hooks/useFrames';
 import {
@@ -6,8 +7,6 @@ import {
   updateFrameGroupsAction,
   deleteFrameGroupsByIdsAction,
 } from '@/stores/items/queries/frameGroups';
-import { type Frame } from '@/types/Frame';
-import { type FrameGroup } from '@/types/FrameGroup';
 
 const getGroupName = (id: string, name: string, frameGroupNames: FrameGroup[]): string => {
   const namedGroup = frameGroupNames.find((group) => (group.id === id));

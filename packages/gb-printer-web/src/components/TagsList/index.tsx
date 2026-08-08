@@ -1,9 +1,9 @@
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { type Theme } from '@mui/system';
+import { specialTags, SpecialTags } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { specialTags, SpecialTags } from '@/consts/SpecialTags';
 
 interface Props {
   tags: string[];

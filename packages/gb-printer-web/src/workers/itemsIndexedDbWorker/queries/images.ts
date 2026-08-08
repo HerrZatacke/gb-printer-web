@@ -1,35 +1,34 @@
+import {
+  GroupItemSchema,
+  ImageQueryFiltersSchema,
+  ImageQueryParamsSchema,
+  ImageQuerySortSchema,
+  ImageSchema,
+  ItemsReferenceListSchema,
+  StoredImageSchema,
+  type DeleteImagesByHashesParams,
+  type GetGroupItemsByGroupIdParams,
+  type GetHashesByGroupIdParams,
+  type GetImagesByAnyHashesParams,
+  type GetImagesByHashesParams,
+  type GetImagesParams,
+  type GroupItem,
+  type Image,
+  type ItemsReferenceList,
+  type ItemsSourceResponse,
+  type ItemsSourceTotalResponse,
+  type StoredImage,
+  type UpdateImagesParams,
+} from 'gb-printer-schemas';
 import z from 'zod';
 import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
-import { type Image, ImageSchema } from '@/types/Image';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { facetFromImage, getFacetMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
-import {
-  GroupItemSchema,
-  ImageQueryFiltersSchema,
-  ImageQuerySortSchema,
-  ImageQueryParamsSchema,
-  ItemsReferenceListSchema,
-  StoredImageSchema,
-} from '@/workers/itemsIndexedDbWorker/schemas';
-import {
-  type GroupItem,
-  type ItemsReferenceList,
-  type ItemsSourceResponse,
-  type StoredImage,
-  type ItemsSourceTotalResponse,
-  type GetGroupItemsByGroupIdParams,
-  type GetHashesByGroupIdParams,
-  type GetImagesParams,
-  type GetImagesByHashesParams,
-  type GetImagesByAnyHashesParams,
-  type UpdateImagesParams,
-  type DeleteImagesByHashesParams,
-} from '@/workers/itemsIndexedDbWorker/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
 

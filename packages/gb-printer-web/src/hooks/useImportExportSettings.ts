@@ -1,3 +1,4 @@
+import { type BinaryStoreItem } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
 import { getQueryClient } from '@/contexts/QueryClient';
@@ -11,7 +12,6 @@ import { palettesListQueryOptions } from '@/stores/items/queries/palettes';
 import { download } from '@/tools/download';
 import { getSettings } from '@/tools/getSettings';
 import mergeStates from '@/tools/mergeStates';
-import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
 import {
   type JSONExport,
   type ExportableState,

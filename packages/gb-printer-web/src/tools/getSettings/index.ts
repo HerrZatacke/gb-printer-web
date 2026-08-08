@@ -1,3 +1,4 @@
+import { Date } from 'gb-printer-schemas';
 import { ExportTypes } from '@/consts/exportTypes';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getFrameGroups } from '@/hooks/useFrameGroups';
@@ -8,7 +9,6 @@ import { imagesListQueryOptions } from '@/stores/items/queries/images';
 import { palettesListQueryOptions } from '@/stores/items/queries/palettes';
 import { pluginsListQueryOptions } from '@/stores/items/queries/plugins';
 import { useFiltersStore, ITEMS_DB_VERSION } from '@/stores/stores';
-import { Date } from '@/tools/safeDate';
 import { type ExportableState, type ExportableValues, createJSONExport } from '@/types/ExportState';
 import { type GetSettingsOptions } from '@/types/Sync';
 import getFrames from './getFrames';

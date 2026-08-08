@@ -1,5 +1,7 @@
-import { type TreeImageGroup } from '@/types/ImageGroup';
-import { type StoredSerializableImageGroup } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type TreeImageGroup,
+  type StoredSerializableImageGroup,
+} from 'gb-printer-schemas';
 
 const MAX_TREE_DEPTH = 20;
 

@@ -1,8 +1,8 @@
+import { type Frame } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { framesListQueryOptions } from '@/stores/items/queries/frames';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { type RepoContents, type RepoFile, type SyncFile } from '@/types/Export';
-import { type Frame } from '@/types/Frame';
 import { type AddToQueueFn } from '@/types/Sync';
 
 interface TmpInfo {

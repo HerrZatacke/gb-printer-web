@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box';
 import { RGBNTiles } from 'gb-image-decoder';
+import { type RGBNHashes } from 'gb-printer-schemas';
 import React, { useCallback, useEffect, useState } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import { defaultRGBNPalette } from '@/consts/defaults';
 import { loadImageTiles as getLoadImageTiles } from '@/tools/loadImageTiles';
-import { type RGBNHashes } from '@/types/Image';
 
 interface Props {
   rgbnHashes: RGBNHashes;

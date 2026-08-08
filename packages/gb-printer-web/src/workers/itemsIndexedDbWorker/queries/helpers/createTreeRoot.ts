@@ -1,6 +1,6 @@
 import {
   type TreeImageGroup,
-} from '@/types/ImageGroup';
+} from 'gb-printer-schemas';
 
 export const ROOT_ID = 'ROOT';
 

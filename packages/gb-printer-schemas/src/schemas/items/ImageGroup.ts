@@ -1,4 +1,5 @@
 import z from 'zod';
+import { SpecialTags } from '../api/consts';
 
 export const BaseImageGroupSchema = z.object({
   id: z.string(),
@@ -33,4 +34,10 @@ export const TreeImageGroupSchema: z.ZodType<TreeImageGroup> = BaseImageGroupSch
   },
   totalImages: z.number(),
   fullSlug: z.string(),
+});
+
+export const StoredSerializableImageGroupSchema = SerializableImageGroupSchema.extend({
+  specialTags: z.array(z.enum(SpecialTags)).prefault([]),
+  palettes: z.array(z.string()).prefault([]),
+  frames: z.array(z.string()).prefault([]),
 });

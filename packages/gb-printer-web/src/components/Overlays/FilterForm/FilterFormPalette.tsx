@@ -1,10 +1,10 @@
 import { useTheme } from '@mui/material/styles';
 import { type Theme } from '@mui/system';
+import { Palette } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import PaletteIcon from '@/components/PaletteIcon';
 import { ActiveFilterUpdateMode } from '@/hooks/useFilterForm';
-import { Palette } from '@/types/Palette';
 
 interface Props {
   palette: Palette;

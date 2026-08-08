@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { type TreeImageGroup } from 'gb-printer-schemas';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
@@ -10,7 +11,6 @@ import { hashesByGroupIdQueryOptions } from '@/stores/items/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { cleanFullSlug } from '@/tools/cleanSlug';
 import { delay } from '@/tools/delay';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 
 export interface UseNavigationTools {

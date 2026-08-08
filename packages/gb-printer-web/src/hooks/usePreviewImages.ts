@@ -1,11 +1,11 @@
+import { type Image, SpecialTags } from 'gb-printer-schemas';
 import { useMemo } from 'react';
-import { SpecialTags } from '@/consts/SpecialTags';
 import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import { useImages } from '@/hooks/useImages';
 import { useFiltersStore } from '@/stores/stores';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import uniqueBy from '@/tools/unique/by';
-import { type Image } from '@/types/Image';
+
 
 const uniqeHash = uniqueBy<Image>('hash');
 

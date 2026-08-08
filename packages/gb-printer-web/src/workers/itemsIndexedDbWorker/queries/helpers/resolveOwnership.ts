@@ -1,4 +1,4 @@
-import { type StoredSerializableImageGroup } from '@/workers/itemsIndexedDbWorker/types';
+import { type StoredSerializableImageGroup } from 'gb-printer-schemas';
 
 interface OwnershipResult {
   childGroupIdsByParent: Map<string, string[]>;

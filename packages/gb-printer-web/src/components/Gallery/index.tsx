@@ -1,6 +1,7 @@
 'use client';
 
 import Stack from '@mui/material/Stack';
+import { GroupItem } from 'gb-printer-schemas';
 import React from 'react';
 import FolderBreadcrumb from '@/components/FolderBreadcrumb';
 import GalleryGrid from '@/components/GalleryGrid';
@@ -12,7 +13,6 @@ import Pagination from '@/components/Pagination';
 import StorageWarning from '@/components/StorageWarning';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useGalleryNavigationGuards } from '@/tools/useGalleryNavigationGuards';
-import { GroupItem } from '@/workers/itemsIndexedDbWorker/types';
 
 function Gallery() {
   useGalleryNavigationGuards();

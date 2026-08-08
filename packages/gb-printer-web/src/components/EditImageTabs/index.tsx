@@ -4,6 +4,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
 import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
+import { type ImageMetadata, type RGBNHashes } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useMemo, useState, useEffect } from 'react';
 import FrameSelect from '@/components/FrameSelect';
@@ -13,7 +14,6 @@ import PaletteSelect from '@/components/PaletteSelect';
 import TagsSelect from '@/components/TagsSelect';
 import { type TagChange } from '@/tools/applyTagChanges';
 import { type TagUpdateMode } from '@/tools/modifyTagChanges';
-import { type ImageMetadata, type RGBNHashes } from '@/types/Image';
 
 const TabType = {
   PALETTE: 'pal',

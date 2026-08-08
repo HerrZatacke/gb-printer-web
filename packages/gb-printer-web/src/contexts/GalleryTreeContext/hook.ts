@@ -1,3 +1,4 @@
+import { type TreeImageGroup } from 'gb-printer-schemas';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   collectGroupsByFullSlug,
@@ -12,7 +13,6 @@ import {
   type GetUrlParams,
   type GalleryTreeContextType,
 } from '@/types/galleryTreeContext';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 
 const GALLERY_BASE_PATH = '/gallery/';
 

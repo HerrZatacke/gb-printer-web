@@ -1,6 +1,5 @@
+import { toCreationDate, type MonochromeImage } from 'gb-printer-schemas';
 import { save } from '@/tools/storage';
-import { toCreationDate } from '@/tools/toCreationDate';
-import { type MonochromeImage } from '@/types/Image';
 
 interface ImageRawData extends Pick<MonochromeImage, 'palette' | 'frame' | 'tags' | 'meta' | 'created'> {
   lines: string[];

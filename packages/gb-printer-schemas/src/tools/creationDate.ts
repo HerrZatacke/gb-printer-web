@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Date } from '@/tools/safeDate';
+import { Date } from '../tools/safeDate';
 
 const FORMAT = 'YYYY-MM-DD HH:mm:ss:SSS';
 const LEGACY_FORMAT_REGEX = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;

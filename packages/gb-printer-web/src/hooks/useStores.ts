@@ -1,3 +1,4 @@
+import { Date, type Image } from 'gb-printer-schemas';
 import { useMemo } from 'react';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useFrames } from '@/hooks/useFrames';
@@ -13,10 +14,8 @@ import {
   useInteractionsStore,
   useStoragesStore,
 } from '@/stores/stores';
-import { Date } from '@/tools/safeDate';
 import { type Dialog } from '@/types/Dialog';
 import { type ExportableState } from '@/types/ExportState';
-import { type Image } from '@/types/Image';
 
 export interface UseStores {
   addImages: (images: Image[]) => Promise<void>;

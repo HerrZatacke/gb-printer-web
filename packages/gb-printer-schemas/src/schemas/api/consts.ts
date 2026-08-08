@@ -1,3 +1,5 @@
+import z from 'zod';
+
 export const SpecialTags = {
   FILTER_UNTAGGED: '__filter:untagged__',
   FILTER_NEW: '__filter:new__',
@@ -20,3 +22,21 @@ export const specialTags: SpecialTags[] = [
 ];
 
 export const NEW_PALETTE_SHORT = '__new:palette__';
+
+export const DAY_MS = 24 * 60 * 60 * 1000;
+
+export const SortDirection = {
+  ASC: 'asc',
+  DESC: 'desc',
+} as const;
+export const SortDirectionSchema = z.enum(SortDirection);
+export type SortDirection = z.infer<typeof SortDirectionSchema>;
+
+export const ImageSortField = {
+  CREATED: 'created',
+  FRAME: 'frame',
+  PALETTE: 'palette',
+  TITLE: 'title',
+} as const;
+export const ImageSortFieldSchema = z.enum(ImageSortField);
+export type ImageSortField = z.infer<typeof ImageSortFieldSchema>;

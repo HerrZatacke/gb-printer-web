@@ -1,3 +1,4 @@
+import { type Frame, type FrameGroup } from 'gb-printer-schemas';
 import { useState, useEffect } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
 import { useActivePalette } from '@/hooks/useActivePalette';
@@ -6,8 +7,6 @@ import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';
 import { useSettingsStore } from '@/stores/stores';
 import { getFramesForGroup } from '@/tools/getFramesForGroup';
-import { type Frame } from '@/types/Frame';
-import { type FrameGroup } from '@/types/FrameGroup';
 import { useImportExportSettings } from './useImportExportSettings';
 
 const getValidFrameGroupId = (groups: FrameGroup[], byId: string): string => {

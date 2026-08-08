@@ -1,4 +1,5 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { type Palette } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import {
   palettesByShortNamesQueryOptions,
@@ -6,7 +7,6 @@ import {
   updatePalettesAction,
   deletePalettesByShortNamesAction,
 } from '@/stores/items/queries/palettes';
-import { type Palette } from '@/types/Palette';
 
 export interface UsePalettes {
   palettes: Palette[];

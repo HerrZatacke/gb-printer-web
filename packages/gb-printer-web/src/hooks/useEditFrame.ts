@@ -1,9 +1,9 @@
+import { Frame } from 'gb-printer-schemas';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { EditFrameData, frameIdFromGroupAndIndex, parseFrameId } from '@/hooks/useEditFrameForm';
 import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';
 import { useEditStore } from '@/stores/stores';
-import { Frame } from '@/types/Frame';
 
 interface UseEditFrame {
   editFrameData: EditFrameData | null;

@@ -1,8 +1,6 @@
+import { type StoredImage } from 'gb-printer-schemas';
 import { type IDBPDatabase } from 'idb';
-import {
-  type ItemsDB,
-  type StoredImage,
-} from '@/workers/itemsIndexedDbWorker/types';
+import { ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 export const resolveAndFilterImages = async (
   db: IDBPDatabase<ItemsDB>,

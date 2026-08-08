@@ -1,9 +1,12 @@
 import { type QueryClient } from '@tanstack/react-query';
+import {
+  type BinaryStoreItem,
+  type ItemsSourceResponse,
+  type ItemsSourceTotalResponse,
+} from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
 import { STALE_TIME } from '@/stores/items/queries/consts';
-import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
-import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 interface BinaryStoreSourceApi {
   getByHashes: (hashes: string[]) => Promise<ItemsSourceResponse<BinaryStoreItem>>;

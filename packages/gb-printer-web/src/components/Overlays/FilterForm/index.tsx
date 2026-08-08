@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
+import { SortDirection, SpecialTags } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useCallback, useEffect, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
@@ -13,11 +14,9 @@ import FilterFormFrame from '@/components/Overlays/FilterForm/FilterFormFrame';
 import FilterFormPalette from '@/components/Overlays/FilterForm/FilterFormPalette';
 import FilterFormTab from '@/components/Overlays/FilterForm/FilterFormTab';
 import FilterFormTag from '@/components/Overlays/FilterForm/FilterFormTag';
-import { SpecialTags } from '@/consts/SpecialTags';
 import { useActivePalette } from '@/hooks/useActivePalette';
 import { useFilterForm } from '@/hooks/useFilterForm';
 import sortBy from '@/tools/sortby';
-import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 const FilterTab = {
   TAGS: 'tabTags',

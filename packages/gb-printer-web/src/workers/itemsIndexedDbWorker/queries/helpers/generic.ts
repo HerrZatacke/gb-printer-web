@@ -1,5 +1,5 @@
+import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from 'gb-printer-schemas';
 import { type ZodType } from 'zod';
-import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getAddPaging = <T>(
   total: number,

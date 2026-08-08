@@ -68,7 +68,7 @@ function QueryTool() {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const res = await fn(body);
-      setResult(JSON.stringify(res, null , 2));
+      setResult(JSON.stringify(res, null, 2));
       setResultIsError(false);
     } catch (error) {
       setResult((error as Error).message);

@@ -4,11 +4,11 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { NEW_PALETTE_SHORT } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import Lightbox from '@/components/Lightbox';
 import PalettePreview from '@/components/PalettePreview';
-import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import { toHexColor } from '@/hooks/usePaletteFromFile';
 import { useEditStore } from '@/stores/stores';
 

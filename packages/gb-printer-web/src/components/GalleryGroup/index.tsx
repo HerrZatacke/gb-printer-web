@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
-import { blend } from '@mui/system';
-import { type Theme } from '@mui/system';
+import { blend, type Theme } from '@mui/system';
+import { type TreeImageGroup } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import Debug from '@/components/Debug';
@@ -13,7 +13,6 @@ import WrappedNextLink from '@/components/WrappedNextLink';
 import { GalleryViews } from '@/consts/GalleryViews';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useSettingsStore } from '@/stores/stores';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface Props {
   id: string;

@@ -1,84 +1,48 @@
-import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
-import z from 'zod';
-import { SpecialTags } from '@/consts/SpecialTags';
-import { BinaryStoreItem } from '@/types/BinaryStoreItem';
-import { type Frame } from '@/types/Frame';
-import { type FrameGroup } from '@/types/FrameGroup';
-import { type Image } from '@/types/Image';
 import {
+  type BinaryStoreItem,
+  type DeleteBinaryItemsByHashesParams,
+  type DeleteFrameGroupsByIdsParams,
+  type DeleteFramesByIdsParams,
+  type DeleteImageGroupsByIdsParams,
+  type DeleteImagesByHashesParams,
+  type DeletePalettesByShortNamesParams,
+  type DeletePluginsByUrlsParams,
+  type Frame,
+  type FrameGroup,
+  type GetBinaryItemsByHashesParams,
+  type GetFramesByHashesParams,
+  type GetFramesByIdsParams,
+  type GetGroupItemsByGroupIdParams,
+  type GetHashesByGroupIdParams,
+  type GetImagesByAnyHashesParams,
+  type GetImagesByHashesParams,
+  type GetImagesParams,
+  type GetPalettesByShortNamesParams,
+  type GetPluginsByUrlsParams,
+  type GroupItem,
+  type Image,
+  type ItemsReferenceList,
+  type ItemsSourceResponse,
+  type ItemsSourceTotalResponse,
+  type ItemsStatsResponse,
+  type ItemsUsageReponse,
+  type Palette,
+  type Plugin,
+  type RootItemSourceResponse,
   type SerializableImageGroup,
+  type SpecialTags,
+  type StoredImage,
+  type StoredSerializableImageGroup,
   type TreeImageGroup,
-} from '@/types/ImageGroup';
-import { type Palette } from '@/types/Palette';
-import { type Plugin } from '@/types/Plugin';
-import {
-  DeleteBinaryItemsByHashesParamsSchema,
-  DeleteFrameGroupsByIdsParamsSchema,
-  DeleteFramesByIdsParamsSchema,
-  DeleteImageGroupsByIdsParamsSchema,
-  DeleteImagesByHashesParamsSchema,
-  DeletePalettesByShortNamesParamsSchema,
-  DeletePluginsByUrlsParamsSchema,
-  GetBinaryItemsByHashesParamsSchema,
-  GetFramesByHashesParamsSchema,
-  GetFramesByIdsParamsSchema,
-  GetGroupItemsByGroupIdParamsSchema,
-  GetHashesByGroupIdParamsSchema,
-  GetImagesByAnyHashesParamsSchema,
-  GetImagesByHashesParamsSchema,
-  GetImagesParamsSchema,
-  GetPalettesByShortNamesParamsSchema,
-  GetPluginsByUrlsParamsSchema,
-  GroupItemGroupSchema,
-  GroupItemImageSchema,
-  GroupItemSchema,
-  ImageQueryFiltersSchema,
-  ImageQueryParamsSchema,
-  ImageQuerySortSchema,
-  ItemsReferenceListSchema,
-  StoredImageSchema,
-  StoredSerializableImageGroupSchema,
-  UpdateBinaryItemsParamsSchema,
-  UpdateFrameGroupsParamsSchema,
-  UpdateFramesParamsSchema,
-  UpdateImageGroupsParamsSchema,
-  UpdateImagesParamsSchema,
-  UpdatePalettesParamsSchema,
-  UpdatePluginsParamsSchema,
-} from '@/workers/itemsIndexedDbWorker/schemas';
-
-export type StoredImage = z.infer<typeof StoredImageSchema>;
-export type StoredSerializableImageGroup = z.infer<typeof StoredSerializableImageGroupSchema>;
-export type GroupItemImage = z.infer<typeof GroupItemImageSchema>;
-export type GroupItemGroup = z.infer<typeof GroupItemGroupSchema>;
-export type GroupItem = z.infer<typeof GroupItemSchema>;
-export type ImageQueryFilters = z.infer<typeof ImageQueryFiltersSchema>;
-export type ImageQuerySort = z.infer<typeof ImageQuerySortSchema>;
-export type ImageQueryParams = z.infer<typeof ImageQueryParamsSchema>;
-export type GetGroupItemsByGroupIdParams = z.infer<typeof GetGroupItemsByGroupIdParamsSchema>;
-export type GetHashesByGroupIdParams = z.infer<typeof GetHashesByGroupIdParamsSchema>;
-export type GetImagesParams = z.infer<typeof GetImagesParamsSchema>;
-export type GetImagesByHashesParams = z.infer<typeof GetImagesByHashesParamsSchema>;
-export type GetImagesByAnyHashesParams = z.infer<typeof GetImagesByAnyHashesParamsSchema>;
-export type UpdateImagesParams = z.infer<typeof UpdateImagesParamsSchema>;
-export type DeleteImagesByHashesParams = z.infer<typeof DeleteImagesByHashesParamsSchema>;
-export type UpdateImageGroupsParams = z.infer<typeof UpdateImageGroupsParamsSchema>;
-export type DeleteImageGroupsByIdsParams = z.infer<typeof DeleteImageGroupsByIdsParamsSchema>;
-export type GetFramesByHashesParams = z.infer<typeof GetFramesByHashesParamsSchema>;
-export type GetFramesByIdsParams = z.infer<typeof GetFramesByIdsParamsSchema>;
-export type UpdateFramesParams = z.infer<typeof UpdateFramesParamsSchema>;
-export type DeleteFramesByIdsParams = z.infer<typeof DeleteFramesByIdsParamsSchema>;
-export type UpdateFrameGroupsParams = z.infer<typeof UpdateFrameGroupsParamsSchema>;
-export type DeleteFrameGroupsByIdsParams = z.infer<typeof DeleteFrameGroupsByIdsParamsSchema>;
-export type GetPalettesByShortNamesParams = z.infer<typeof GetPalettesByShortNamesParamsSchema>;
-export type UpdatePalettesParams = z.infer<typeof UpdatePalettesParamsSchema>;
-export type DeletePalettesByShortNamesParams = z.infer<typeof DeletePalettesByShortNamesParamsSchema>;
-export type GetPluginsByUrlsParams = z.infer<typeof GetPluginsByUrlsParamsSchema>;
-export type UpdatePluginsParams = z.infer<typeof UpdatePluginsParamsSchema>;
-export type DeletePluginsByUrlsParams = z.infer<typeof DeletePluginsByUrlsParamsSchema>;
-export type GetBinaryItemsByHashesParams = z.infer<typeof GetBinaryItemsByHashesParamsSchema>;
-export type UpdateBinaryItemsParams = z.infer<typeof UpdateBinaryItemsParamsSchema>;
-export type DeleteBinaryItemsByHashesParams = z.infer<typeof DeleteBinaryItemsByHashesParamsSchema>;
+  type UpdateBinaryItemsParams,
+  type UpdateFrameGroupsParams,
+  type UpdateFramesParams,
+  type UpdateImageGroupsParams,
+  type UpdateImagesParams,
+  type UpdatePalettesParams,
+  type UpdatePluginsParams,
+} from 'gb-printer-schemas';
+import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 
 export interface ItemsDB extends DBSchema {
   binaryframes: {
@@ -134,70 +98,6 @@ export type MigrationFn = (
   db: IDBPDatabase<ItemsDB>,
   tx: IDBPTransaction<ItemsDB, StoreNames<ItemsDB>[], 'versionchange'>,
 ) => AfterUpgradeFn | null;
-
-export interface ItemsSourcePaging {
-  filtered: number;
-  total: number;
-  page: number;
-  pageSize: number;
-  maxPageIndex: number;
-}
-
-export interface ItemsSourceResponse<T> {
-  items: T[];
-  paging: ItemsSourcePaging;
-  duration: number;
-}
-
-export interface ItemsSourceTotalResponse<T> {
-  items: T[];
-  total: number;
-  duration: number;
-}
-
-export type ItemsReferenceList<T> = z.infer<ReturnType<typeof ItemsReferenceListSchema<z.ZodType<T>>>>;
-
-export interface RootItemSourceResponse<T> {
-  item: T;
-  totalCount: number;
-  duration: number;
-}
-
-export interface ItemsStatsTotals {
-  palettes: number;
-  plugins: number;
-  frames: number;
-  frameGroups: number;
-  images: number;
-  imageGroups: number;
-  binaryImages: number;
-  binaryFrames: number;
-}
-
-export interface ItemsStatsResponse {
-  totals: ItemsStatsTotals;
-  duration: number;
-}
-
-export interface PaletteUsage {
-  shortName: string;
-  usage: number;
-}
-
-export interface FrameUsage {
-  id: string;
-  usage: number;
-}
-
-export interface ItemsUsageTotals {
-  palettes: PaletteUsage[];
-  frames: FrameUsage[];
-}
-
-export interface ItemsUsageReponse {
-  totals: ItemsUsageTotals;
-  duration: number;
-}
 
 export interface ItemsSource {
   init(hostApi: ItemsHostApi): void;

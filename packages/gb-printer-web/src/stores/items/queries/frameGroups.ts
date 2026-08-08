@@ -1,8 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
+import { FrameGroup } from 'gb-printer-schemas';
 import { getItemsSource } from '@/stores/items/client';
 import { frameGroupsKeys } from '@/stores/items/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/items/queries/consts';
-import { FrameGroup } from '@/types/FrameGroup';
 
 export const frameGroupsListQueryOptions = () => {
   return {

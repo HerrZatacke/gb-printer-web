@@ -2,8 +2,8 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import IconButton from '@mui/material/IconButton';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
+import { type RGBNHashes } from 'gb-printer-schemas';
 import React, { useMemo } from 'react';
-import { type RGBNHashes } from '@/types/Image';
 
 interface Props {
   color: keyof RGBNHashes;

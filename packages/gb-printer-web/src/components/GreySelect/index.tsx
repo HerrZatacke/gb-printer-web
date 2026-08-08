@@ -2,12 +2,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { type BlendMode, type RGBNPalette } from 'gb-image-decoder';
+import { type RGBNHashes } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useCallback, useState, useMemo } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import ColorSlider from '@/components/ColorSlider';
 import { blendModeLabels } from '@/consts/blendModes';
-import { type RGBNHashes } from '@/types/Image';
 
 interface Props {
   values: RGBNPalette;

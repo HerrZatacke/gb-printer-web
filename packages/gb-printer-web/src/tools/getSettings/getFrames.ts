@@ -1,6 +1,6 @@
+import { type BinaryStoreItem } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { binaryFramesByHashesQueryOptions } from '@/stores/items/queries/binaryFrames';
-import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 
 const getFrames = async (exportFrameHashes: string[]): Promise<Record<string, string>> => {
   const queryClient = getQueryClient();

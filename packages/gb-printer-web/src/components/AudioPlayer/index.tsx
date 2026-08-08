@@ -3,8 +3,8 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { IconButton, Stack, Typography } from '@mui/material';
 import { saveAs } from 'file-saver';
+import { Date } from 'gb-printer-schemas';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Date } from '@/tools/safeDate';
 
 interface Props {
   audioSource: string;

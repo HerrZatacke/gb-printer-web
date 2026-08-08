@@ -1,5 +1,5 @@
+import { type TreeImageGroup } from 'gb-printer-schemas';
 import { type DialogOption } from '@/types/Dialog';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 
 export const collectGroupsByFullSlug = (
   groups: TreeImageGroup[],

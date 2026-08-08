@@ -1,3 +1,4 @@
+import path from 'node:path';
 import stylistic from '@stylistic/eslint-plugin';
 import { defineConfig, globalIgnores } from 'eslint/config'
 import nextVitals from 'eslint-config-next/core-web-vitals'
@@ -10,6 +11,17 @@ const eslintConfig = defineConfig([
     files: ['**/*.{js,ts,jsx,tsx}'],
     plugins: {
       '@stylistic': stylistic,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: [
+            path.join(import.meta.dirname, 'packages/gb-printer-web/tsconfig.json'),
+            path.join(import.meta.dirname, 'packages/gb-printer-schemas/tsconfig.json'),
+          ],
+          noWarnOnMultipleProjects: true,
+        },
+      },
     },
     languageOptions: {
       parserOptions: {
@@ -53,6 +65,7 @@ const eslintConfig = defineConfig([
         },
       ],
       "import/consistent-type-specifier-style": ["error", "prefer-inline"],
+      'import/no-duplicates': ['error', { 'prefer-inline': true }],
       "no-restricted-globals": [
         "error",
         { "name": "Date", "message": "Use `import { Date } from '@/tools/safeDate';` instead of using the global." }

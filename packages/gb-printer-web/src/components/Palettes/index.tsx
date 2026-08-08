@@ -10,17 +10,16 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { type Palette as PaletteT, NEW_PALETTE_SHORT } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useMemo, useState } from 'react';
 import GalleryGrid from '@/components/GalleryGrid';
 import Palette from '@/components/Palette';
 import { GalleryViews } from '@/consts/GalleryViews';
-import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import usePaletteFromFile from '@/hooks/usePaletteFromFile';
 import { usePalettes } from '@/hooks/usePalettes';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import useEditPalette from '@/hooks/useSetEditPalette';
-import { type Palette as PaletteT } from '@/types/Palette';
 
 interface Props {
   filter: (palette: PaletteT) => boolean;

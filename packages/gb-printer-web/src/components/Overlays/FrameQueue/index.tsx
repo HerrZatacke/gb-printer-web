@@ -1,3 +1,4 @@
+import { type Frame } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import EditFrameStartLine from '@/components/EditFrameStartLine';
@@ -9,7 +10,6 @@ import { useFrameGroups } from '@/hooks/useFrameGroups';
 import { useStores } from '@/hooks/useStores';
 import { useImportsStore } from '@/stores/stores';
 import { compressAndHashFrame, saveFrameData } from '@/tools/applyFrame/frameData';
-import { Frame } from '@/types/Frame';
 
 function FrameQueue() {
   const t = useTranslations('FrameQueue');

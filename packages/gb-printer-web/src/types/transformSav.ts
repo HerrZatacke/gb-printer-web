@@ -1,5 +1,5 @@
+import { type Frame } from 'gb-printer-schemas';
 import { SavImportOrder } from '@/consts/SavImportOrder';
-import { type Frame } from '@/types/Frame';
 
 export const RomTypes = {
   PHOTO: 'photo',

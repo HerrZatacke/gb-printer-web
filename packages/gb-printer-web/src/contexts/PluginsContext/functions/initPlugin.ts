@@ -1,5 +1,6 @@
 import { saveAs } from 'file-saver';
-import { InitPluginSetupParams, Plugin, PluginClassInstance } from '@/types/Plugin';
+import { Plugin } from 'gb-printer-schemas';
+import { InitPluginSetupParams, PluginClassInstance } from '@/types/Plugin';
 import { pluginFunctions, pluginCompatibilityStore } from './pluginContextFunctions';
 
 export const initPlugin = (

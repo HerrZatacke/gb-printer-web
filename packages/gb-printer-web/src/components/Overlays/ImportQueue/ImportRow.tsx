@@ -6,13 +6,13 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { type Palette } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import { type RowComponentProps } from 'react-window';
 import GameBoyImage from '@/components/GameBoyImage';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { type FlaggedImportItem } from '@/types/ImportItem';
-import { type Palette } from '@/types/Palette';
 
 interface Props {
   importQueue: FlaggedImportItem[];

@@ -1,10 +1,10 @@
 import { type RGBNTiles } from 'gb-image-decoder';
+import { type Image, type RGBNHashes, type RGBNImage } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
 import { imageByHashQueryOptions } from '@/stores/items/queries/images';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { load } from '@/tools/storage';
-import { type Image, type RGBNHashes, type RGBNImage } from '@/types/Image';
 
 export type PImage = {
   hash: Image['hash'];

@@ -1,16 +1,14 @@
-import { BW_PALETTE, BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
-import { type RGBNTiles, type ExportFrameMode, type RGBNPalette } from 'gb-image-decoder';
+import { BW_PALETTE, BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob, type RGBNTiles, type ExportFrameMode, type RGBNPalette } from 'gb-image-decoder';
+import { type Palette, type Image, type MonochromeImage } from 'gb-printer-schemas';
 import { type FileNameStyle } from '@/consts/fileNameStyles';
+import { getTxtFile } from '@/tools/download/getTxtFile';
 import generateFileName from '@/tools/generateFileName';
 import { getImagePalettes } from '@/tools/getImagePalettes';
 import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCreationParams';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { TestFileType } from '@/tools/supportedCanvasImageFormats';
-import { type Image, type MonochromeImage } from '@/types/Image';
-import { type Palette } from '@/types/Palette';
 import { type DownloadInfo } from '@/types/Sync';
-import { getTxtFile } from './getTxtFile';
 
 export interface PrepareFilesOptions {
   exportScaleFactors: number[];

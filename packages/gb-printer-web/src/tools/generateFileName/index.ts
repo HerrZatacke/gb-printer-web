@@ -1,10 +1,8 @@
 import dayjs from 'dayjs';
 import filenamify from 'filenamify/browser';
 import { type RGBNPalette } from 'gb-image-decoder';
+import { type Palette, type Image, fromCreationDate } from 'gb-printer-schemas';
 import { FileNameStyle } from '@/consts/fileNameStyles';
-import { fromCreationDate } from '@/tools/toCreationDate';
-import { type Image } from '@/types/Image';
-import { type Palette } from '@/types/Palette';
 
 const joinTruthy = (parts: string[], sep = '-'): string => (
   parts.reduce((acc: string, part: string): string => (

@@ -1,4 +1,4 @@
-import { type ItemsSourceTotalResponse } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceTotalResponse } from 'gb-printer-schemas';
 
 type FetchByKeys<T> = (keys: string[]) => Promise<ItemsSourceTotalResponse<T>>;
 

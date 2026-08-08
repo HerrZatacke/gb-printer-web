@@ -1,3 +1,8 @@
+import {
+  Date,
+  type ImageSortField,
+  type SortDirection,
+} from 'gb-printer-schemas';
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
 import { getQueryClient } from '@/contexts/QueryClient';
@@ -19,13 +24,11 @@ import getUploadFiles from '@/tools/getUploadFiles';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import parseAuthParams from '@/tools/parseAuthParams';
 import replaceDuplicateFilenames from '@/tools/replaceDuplicateFilenames';
-import { Date } from '@/tools/safeDate';
 import { saveLocalStorageItems } from '@/tools/saveLocalStorageItems';
 import { DownloadArrayBuffer } from '@/types/download';
 import { type RepoContents } from '@/types/Export';
 import { type JSONExport } from '@/types/ExportState';
 import { type AddToQueueFn, type DBFolderFile, type DownloadInfo, type DropBoxSettings, type UploadFile } from '@/types/Sync';
-import { type ImageSortField, type SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 import { loadFrameData } from '../applyFrame/frameData';
 import DropboxClient from './DropboxClient';
 import { hasher } from './DropboxClient/dropboxContentHasher';

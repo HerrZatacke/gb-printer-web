@@ -1,4 +1,5 @@
 import { type RGBNPalette } from 'gb-image-decoder';
+import { type RGBNHashes } from 'gb-printer-schemas';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
@@ -6,8 +7,7 @@ import { useFrames } from '@/hooks/useFrames';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { usePalettes } from '@/hooks/usePalettes';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { type RGBNHashes } from '@/types/Image';
-import { loadImageTiles as getLoadImageTiles } from '../tools/loadImageTiles';
+import { loadImageTiles as getLoadImageTiles } from '@/tools/loadImageTiles';
 
 export type PartialGameBoyImageProps = Omit<GameBoyImageProps, 'dimensions' | 'asThumb'>;
 

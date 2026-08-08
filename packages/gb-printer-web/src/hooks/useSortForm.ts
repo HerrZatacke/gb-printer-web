@@ -1,5 +1,5 @@
+import { type SortDirection } from 'gb-printer-schemas';
 import { useFiltersStore } from '@/stores/stores';
-import { type SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 interface UseSortForm {
   visible: boolean;

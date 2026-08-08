@@ -1,9 +1,7 @@
+import { type StoredSerializableImageGroup } from 'gb-printer-schemas';
 import { type IDBPDatabase } from 'idb';
 import unique from '@/tools/unique';
-import {
-  type StoredSerializableImageGroup,
-  type ItemsDB,
-} from '@/workers/itemsIndexedDbWorker/types';
+import { ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 const MAX_PASSES = 20;
 

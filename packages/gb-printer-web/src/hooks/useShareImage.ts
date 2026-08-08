@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { Date } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import { useTracking } from '@/contexts/TrackingContext';
 import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
@@ -7,7 +8,6 @@ import { useSettingsStore } from '@/stores/stores';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
 import { type PrepareFilesOptions, prepareFiles } from '@/tools/download';
 import { loadImageTiles } from '@/tools/loadImageTiles';
-import { Date } from '@/tools/safeDate';
 
 interface UseShareImage {
   shareImage: (hash: string) => Promise<void>;

@@ -1,7 +1,7 @@
+import { ImageQueryParamsSchema, type ImageQueryParams } from 'gb-printer-schemas';
 import { useMemo } from 'react';
 import { useFiltersStore, useSettingsStore } from '@/stores/stores';
-import { ImageQueryParamsSchema } from '@/workers/itemsIndexedDbWorker/schemas';
-import { type ImageQueryParams } from '@/workers/itemsIndexedDbWorker/types';
+
 
 export const useImageQueryParams = (page: number = 0): ImageQueryParams => {
   const {

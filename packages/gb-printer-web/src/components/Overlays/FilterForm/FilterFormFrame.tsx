@@ -3,12 +3,12 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { SKIP_LINE } from 'gb-image-decoder';
+import { type Frame } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import { ActiveFilterUpdateMode } from '@/hooks/useFilterForm';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { Frame } from '@/types/Frame';
 
 const transparentLine: string[] = (new Array(20)).fill(SKIP_LINE);
 

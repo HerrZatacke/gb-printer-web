@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
+import { type Palette, type MonochromeImage, type RGBNHashes, type RGBNImage } from 'gb-printer-schemas';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
@@ -13,8 +14,6 @@ import {
 import { getImagePalettes, ImagePalettes } from '@/tools/getImagePalettes';
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
-import { type MonochromeImage, type RGBNHashes, type RGBNImage } from '@/types/Image';
-import { type Palette } from '@/types/Palette';
 
 export const SelectionEditMode = {
   ADD: 'add',
