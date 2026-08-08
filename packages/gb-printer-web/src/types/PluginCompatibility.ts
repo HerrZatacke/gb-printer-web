@@ -1,6 +1,6 @@
-import { CompatibilityActionType } from '@/consts/plugins';
+import { type Image } from 'gb-printer-schemas';
 import { type Dialog } from './Dialog';
-import { type Image } from './Image';
+import { CompatibilityActionType } from '@/consts/plugins';
 
 interface CompatibilityActionBase {
   type: CompatibilityActionType;
