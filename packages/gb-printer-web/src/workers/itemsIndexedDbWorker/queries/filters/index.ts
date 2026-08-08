@@ -1,10 +1,11 @@
-import { SpecialTags, specialTags } from '@/consts/SpecialTags';
 import {
-  type FilterableFacet,
+  SpecialTags,
+  specialTags,
   type ImageQueryFilters,
   type StoredImage,
   type StoredSerializableImageGroup,
-} from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
+import { FilterableFacet } from '@/workers/itemsIndexedDbWorker/types';
 
 export const getFacetMatcher = async (filters?: ImageQueryFilters) => {
 

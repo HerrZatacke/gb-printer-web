@@ -1,6 +1,6 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { ItemsStatsTotals, type ItemsUsageTotals } from 'gb-printer-schemas';
 import { globalStatsQueryOptions, globalUsagesQueryOptions } from '@/stores/items/queries/global';
-import { ItemsStatsTotals, type ItemsUsageTotals } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface UseGlobalQueries {
   stats: ItemsStatsTotals | null;

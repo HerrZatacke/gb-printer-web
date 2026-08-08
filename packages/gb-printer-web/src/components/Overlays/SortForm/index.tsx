@@ -1,11 +1,11 @@
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { SortDirection } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
 import { useSortForm } from '@/hooks/useSortForm';
-import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 interface Sortable {
   title: string;

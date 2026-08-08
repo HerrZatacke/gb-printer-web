@@ -1,6 +1,6 @@
+import { SpecialTags, StoredImage } from 'gb-printer-schemas';
 import { type IDBPDatabase } from 'idb';
-import { SpecialTags } from '@/consts/SpecialTags';
-import { type ItemsDB, StoredImage } from '@/workers/itemsIndexedDbWorker/types';
+import { ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 const MAX_TREE_DEPTH = 20;
 

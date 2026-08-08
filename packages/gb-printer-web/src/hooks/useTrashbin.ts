@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import {
   Date,
   toCreationDate,
+  type BinaryStoreItem,
   type Image,
   type Frame,
 } from 'gb-printer-schemas';
@@ -19,7 +20,6 @@ import { FrameData } from '@/tools/applyFrame/frameData';
 import { cleanupStorage, getTrashImages, getTrashFrames } from '@/tools/getTrash';
 import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
-import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { createJSONExport, type ExportableState } from '@/types/ExportState';
 
 export interface UseTrashbin {

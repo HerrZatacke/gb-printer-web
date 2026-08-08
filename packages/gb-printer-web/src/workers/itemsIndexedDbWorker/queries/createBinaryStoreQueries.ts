@@ -1,14 +1,14 @@
-import z, { type ZodType } from 'zod';
-import { BinaryStoreItem } from '@/types/BinaryStoreItem';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {
+  type BinaryStoreItem,
   type DeleteBinaryItemsByHashesParams,
   type GetBinaryItemsByHashesParams,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
   type UpdateBinaryItemsParams,
-} from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
+import z, { type ZodType } from 'zod';
+import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 
 export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryframes', schema: ZodType<BinaryStoreItem>) => {
   const getByHashes = async ({ hashes }: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>> => {

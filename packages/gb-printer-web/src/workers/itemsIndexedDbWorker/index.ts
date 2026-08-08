@@ -53,7 +53,7 @@ import {
   getPluginsByUrls,
   updatePlugins,
 } from '@/workers/itemsIndexedDbWorker/queries/plugins';
-import { type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
+import { ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 import { getStats, getUsages } from './queries/helpers/getStats';
 import { runMaintenance } from './queries/helpers/runMaintenance';
 

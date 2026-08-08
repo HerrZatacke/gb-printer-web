@@ -3,6 +3,8 @@ import {
   FrameSchema,
   FrameGroupSchema,
   PluginSchema,
+  StoredImageSchema,
+  StoredSerializableImageGroupSchema,
 } from 'gb-printer-schemas';
 import {
   openDB,
@@ -11,10 +13,6 @@ import {
   type StoreValue,
 } from 'idb';
 import { type ZodSafeParseResult } from 'zod';
-import {
-  StoredImageSchema,
-  StoredSerializableImageGroupSchema,
-} from '@/workers/itemsIndexedDbWorker/schemas';
 import {
   type AfterUpgradeFn,
   type ItemsDB,

@@ -1,15 +1,17 @@
 import predefinedPalettes from 'gb-palettes';
-import { type Palette, PaletteSchema } from 'gb-printer-schemas';
-import z from 'zod';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {
+  type Palette,
+  PaletteSchema,
   type DeletePalettesByShortNamesParams,
   type GetPalettesByShortNamesParams,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
   type UpdatePalettesParams,
-} from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
+import z from 'zod';
+import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+
 
 export const getPalettesByShortNames = async ({ shortNames }: GetPalettesByShortNamesParams): Promise<ItemsSourceResponse<Palette>> => {
   const db = await getDb();

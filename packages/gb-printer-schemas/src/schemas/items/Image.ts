@@ -1,6 +1,8 @@
 import { BlendMode, type RGBNPalette as DecoderLibRGBNPalette, Rotation } from 'gb-image-decoder';
 import z from 'zod';
 import { fromCreationDate, toCreationDate } from '@/tools/creationDate';
+import { Date } from '@/tools/safeDate';
+import { DAY_MS, SpecialTags } from '../api/consts';
 
 const nullToValue = <T extends z.ZodType>(schema: T, defaultValue: undefined | z.input<T>) => {
   return z.preprocess((val) => (val === null ? defaultValue : val), schema.optional());
@@ -116,3 +118,50 @@ export interface CurrentEditBatch {
   batch?: string[];
   tags?: string[];
 }
+
+export const calculateSpecialTags = (image: Image): SpecialTags[] => {
+  const specialTags: SpecialTags[] = [];
+  const oneDayAgo = toCreationDate(Date.now() - DAY_MS);
+
+  if (!image.tags.length) {
+    specialTags.push(SpecialTags.FILTER_UNTAGGED);
+  }
+
+  if (image.created > oneDayAgo) {
+    specialTags.push(SpecialTags.FILTER_NEW);
+  }
+
+  if (image.type === 'mono') {
+    specialTags.push(SpecialTags.FILTER_MONOCHROME);
+  }
+
+  if (image.type === 'rgbn') {
+    specialTags.push(SpecialTags.FILTER_RGB);
+  }
+
+  if (image.tags.includes(SpecialTags.FILTER_FAVOURITE)) {
+    specialTags.push(SpecialTags.FILTER_FAVOURITE);
+  }
+
+  if (image.meta?.comment) {
+    specialTags.push(SpecialTags.FILTER_COMMENTS);
+  }
+
+  if (image.meta?.userName) {
+    specialTags.push(SpecialTags.FILTER_USERNAME);
+  }
+
+  return specialTags;
+};
+
+export const StoredImageSchema = ImageSchema.transform((image) => {
+  const referencedHashes: string[] = image.type === 'rgbn'
+    ? Object.values(image.hashes ?? {}).filter((h): h is string => Boolean(h))
+    : [];
+
+  return ({
+    ...image,
+    referencedHashes,
+    specialTags: calculateSpecialTags(image),
+  });
+});

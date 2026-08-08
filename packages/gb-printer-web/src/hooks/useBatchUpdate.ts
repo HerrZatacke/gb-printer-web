@@ -1,6 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { type RGBNPalette } from 'gb-image-decoder';
-import { fromCreationDate, toCreationDate, type Image, type MonochromeImage, type RGBNImage } from 'gb-printer-schemas';
+import {
+  fromCreationDate,
+  toCreationDate,
+  SortDirection,
+  type Image,
+  type MonochromeImage,
+  type RGBNImage,
+} from 'gb-printer-schemas';
 import { useCallback, useMemo } from 'react';
 import { Updatable, UpdatableMonochrome, UPDATATABLES, type ImageUpdatable } from '@/consts/batchActionTypes';
 import { useStores } from '@/hooks/useStores';
@@ -11,7 +18,6 @@ import { isRGBNImage } from '@/tools/isRGBNImage';
 import { type TagUpdates } from '@/tools/modifyTagChanges';
 import sortBy from '@/tools/sortby';
 import { type ImageUpdates } from '@/types/ImageActions';
-import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 interface BatchUpdateImagesParams {
   shouldUpdate: Record<keyof ImageUpdates | 'tags', boolean>;

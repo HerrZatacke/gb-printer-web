@@ -1,5 +1,5 @@
+import { SpecialTags } from 'gb-printer-schemas';
 import { useMemo } from 'react';
-import { SpecialTags } from '@/consts/SpecialTags';
 import { useImages } from '@/hooks/useImages';
 
 export const getAvailableTags = (allTags: string[]): string[] => {

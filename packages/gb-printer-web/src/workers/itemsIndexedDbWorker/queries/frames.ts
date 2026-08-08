@@ -1,14 +1,15 @@
-import { type Frame, FrameSchema } from 'gb-printer-schemas';
-import z from 'zod';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {
+  FrameSchema,
   type DeleteFramesByIdsParams,
+  type Frame,
   type GetFramesByHashesParams,
   type GetFramesByIdsParams,
   type ItemsSourceTotalResponse,
   type UpdateFramesParams,
-} from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
+import z from 'zod';
+import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 
 export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
   const db = await getDb();

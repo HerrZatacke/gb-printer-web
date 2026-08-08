@@ -1,117 +1,16 @@
-import {
-  PaletteSchema,
-  Date,
-  toCreationDate,
-  SerializableImageGroupSchema,
-  FrameSchema,
-  FrameGroupSchema,
-  PluginSchema,
-  ImageSchema,
-  type Image,
-} from 'gb-printer-schemas';
 import z from 'zod';
-import { SpecialTags } from '@/consts/SpecialTags';
-import { BinaryStoreItemSchema } from '@/types/BinaryStoreItem';
-
-const DAY_MS = 24 * 60 * 60 * 1000;
-
-export const SortDirection = {
-  ASC: 'asc',
-  DESC: 'desc',
-} as const;
-export const SortDirectionSchema = z.enum(SortDirection);
-export type SortDirection = z.infer<typeof SortDirectionSchema>;
-
-export const ImageSortField = {
-  CREATED: 'created',
-  FRAME: 'frame',
-  PALETTE: 'palette',
-  TITLE: 'title',
-} as const;
-export const ImageSortFieldSchema = z.enum(ImageSortField);
-export type ImageSortField = z.infer<typeof ImageSortFieldSchema>;
-
-const calculateSpecialTags = (image: Image): SpecialTags[] => {
-  const specialTags: SpecialTags[] = [];
-  const oneDayAgo = toCreationDate(Date.now() - DAY_MS);
-
-  if (!image.tags.length) {
-    specialTags.push(SpecialTags.FILTER_UNTAGGED);
-  }
-
-  if (image.created > oneDayAgo) {
-    specialTags.push(SpecialTags.FILTER_NEW);
-  }
-
-  if (image.type === 'mono') {
-    specialTags.push(SpecialTags.FILTER_MONOCHROME);
-  }
-
-  if (image.type === 'rgbn') {
-    specialTags.push(SpecialTags.FILTER_RGB);
-  }
-
-  if (image.tags.includes(SpecialTags.FILTER_FAVOURITE)) {
-    specialTags.push(SpecialTags.FILTER_FAVOURITE);
-  }
-
-  if (image.meta?.comment) {
-    specialTags.push(SpecialTags.FILTER_COMMENTS);
-  }
-
-  if (image.meta?.userName) {
-    specialTags.push(SpecialTags.FILTER_USERNAME);
-  }
-
-  return specialTags;
-};
-
-export const StoredImageSchema = ImageSchema.transform((image) => {
-  const referencedHashes: string[] = image.type === 'rgbn'
-    ? Object.values(image.hashes ?? {}).filter((h): h is string => Boolean(h))
-    : [];
-
-  return ({
-    ...image,
-    referencedHashes,
-    specialTags: calculateSpecialTags(image),
-  });
-});
-
-export const StoredSerializableImageGroupSchema = SerializableImageGroupSchema.extend({
-  specialTags: z.array(z.enum(SpecialTags)).prefault([]),
-  palettes: z.array(z.string()).prefault([]),
-  frames: z.array(z.string()).prefault([]),
-});
-
-const GroupItemBaseSchema = z.object({
-  title: z.string(),
-  created: z.string(),
-  frame: z.string().nullable(),
-  palette: z.string().nullable(),
-});
-
-export const GroupItemImageSchema = GroupItemBaseSchema.extend({
-  type: z.literal('image'),
-  image: ImageSchema,
-});
-
-export const GroupItemGroupSchema = GroupItemBaseSchema.extend({
-  type: z.literal('group'),
-  group: SerializableImageGroupSchema,
-});
-
-export const GroupItemSchema = z.discriminatedUnion('type', [
-  GroupItemImageSchema,
-  GroupItemGroupSchema,
-]);
-
-export const ItemsReferenceListSchema = <T extends z.ZodType>(itemSchema: T) => {
-  return z.object({
-    reference: z.string(),
-    items: z.array(itemSchema),
-  });
-};
+import { BinaryStoreItemSchema } from '@/schemas/items/BinaryStoreItem';
+import { FrameSchema } from '@/schemas/items/Frame';
+import { FrameGroupSchema } from '@/schemas/items/FrameGroup';
+import { ImageSchema } from '@/schemas/items/Image';
+import { SerializableImageGroupSchema } from '@/schemas/items/ImageGroup';
+import { PaletteSchema } from '@/schemas/items/Palette';
+import { PluginSchema } from '@/schemas/items/Plugin';
+import {
+  ImageSortFieldSchema,
+  SortDirectionSchema,
+  SpecialTags,
+} from './consts';
 
 export const ImageQueryFiltersSchema = z.object({
   tags: z.array(z.union([z.string(), z.enum(SpecialTags)])).optional(),

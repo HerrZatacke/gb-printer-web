@@ -1,9 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { type RGBNImage } from 'gb-printer-schemas';
+import { type RGBNImage, SpecialTags } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
-import { SpecialTags } from '@/consts/SpecialTags';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useTracking } from '@/contexts/TrackingContext';
 import useDownload from '@/hooks/useDownload';

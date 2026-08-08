@@ -1,6 +1,6 @@
+import { SortDirection } from 'gb-printer-schemas';
 import { useEffect, useState } from 'react';
 import sortBy from '@/tools/sortby';
-import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 export interface Quota {
   type: string;

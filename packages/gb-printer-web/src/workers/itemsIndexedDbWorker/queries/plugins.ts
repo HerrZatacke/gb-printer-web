@@ -1,14 +1,15 @@
-import { type Plugin, PluginSchema } from 'gb-printer-schemas';
-import z from 'zod';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
-import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {
+  PluginSchema,
   type DeletePluginsByUrlsParams,
   type GetPluginsByUrlsParams,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
+  type Plugin,
   type UpdatePluginsParams,
-} from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
+import z from 'zod';
+import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 
 export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> => {
   const db = await getDb();

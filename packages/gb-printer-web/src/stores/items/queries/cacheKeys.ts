@@ -2,7 +2,7 @@ import  {
   type ImageQueryFilters,
   type ImageQueryParams,
   type ImageQuerySort,
-} from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
 
 // *********** Frame Groups ***********
 const frameGroupBaseKeys = ['items', 'framegroups'] as const;

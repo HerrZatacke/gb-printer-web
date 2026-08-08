@@ -1,4 +1,3 @@
-import z from 'zod';
 import {
   GetGroupItemsByGroupIdParamsSchema,
   GetHashesByGroupIdParamsSchema,
@@ -24,8 +23,9 @@ import {
   GetBinaryItemsByHashesParamsSchema,
   UpdateBinaryItemsParamsSchema,
   DeleteBinaryItemsByHashesParamsSchema,
-} from '@/workers/itemsIndexedDbWorker/schemas';
-import  { type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
+import z from 'zod';
+import { ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
 export type MethodName = keyof Omit<ItemsSource, 'init' | 'debugReset' | 'runMaintenance'>;
 

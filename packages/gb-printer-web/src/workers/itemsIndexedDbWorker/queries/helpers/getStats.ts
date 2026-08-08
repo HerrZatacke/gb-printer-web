@@ -1,10 +1,10 @@
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import {
   type FrameUsage,
   type ItemsStatsResponse,
   type ItemsUsageReponse,
   type PaletteUsage,
-} from '@/workers/itemsIndexedDbWorker/types';
+} from 'gb-printer-schemas';
+import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 
 export const getStats = async (): Promise<ItemsStatsResponse> => {
   const db = await getDb();

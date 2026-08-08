@@ -1,4 +1,4 @@
-import { BinaryStoreItemSchema } from '@/types/BinaryStoreItem';
+import { BinaryStoreItemSchema } from 'gb-printer-schemas';
 import { createBinaryStoreQueries } from '@/workers/itemsIndexedDbWorker/queries/createBinaryStoreQueries';
 
 export const {

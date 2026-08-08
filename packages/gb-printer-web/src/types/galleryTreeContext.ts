@@ -1,6 +1,9 @@
-import { type TreeImageGroup } from 'gb-printer-schemas';
+import {
+  type TreeImageGroup,
+  type GroupItem,
+  type ItemsSourcePaging,
+} from 'gb-printer-schemas';
 import { DialogOption } from '@/types/Dialog';
-import { type GroupItem, type ItemsSourcePaging } from '@/workers/itemsIndexedDbWorker/types';
 
 export interface GetUrlParams {
   pageIndex?: number;

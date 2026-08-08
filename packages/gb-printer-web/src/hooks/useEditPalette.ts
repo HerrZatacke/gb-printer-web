@@ -1,7 +1,6 @@
-import { type Palette } from 'gb-printer-schemas';
+import { type Palette, NEW_PALETTE_SHORT } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { NEW_PALETTE_SHORT } from '@/consts/SpecialTags';
 import { usePalettes } from '@/hooks/usePalettes';
 import { useStores } from '@/hooks/useStores';
 import { useEditStore } from '@/stores/stores';

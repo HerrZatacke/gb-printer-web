@@ -1,9 +1,8 @@
-import { type Image, type RGBNImage } from 'gb-printer-schemas';
+import { type BinaryStoreItem, type Image, type RGBNImage } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { binaryImagesByHashesQueryOptions } from '@/stores/items/queries/binaryImages';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import unique from '@/tools/unique';
-import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 
 const getImages = async (exportImages: Image[]): Promise<Record<string, string>> => {
   const queryClient = getQueryClient();
