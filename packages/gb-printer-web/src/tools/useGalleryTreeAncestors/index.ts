@@ -1,6 +1,6 @@
+import { type TreeImageGroup } from 'gb-printer-schemas';
 import { useMemo } from 'react';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 
 const collectAncestors = (
   root: TreeImageGroup,

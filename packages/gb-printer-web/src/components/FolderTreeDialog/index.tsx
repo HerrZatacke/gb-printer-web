@@ -3,6 +3,7 @@ import Link from '@mui/material/Link';
 import { useTheme } from '@mui/material/styles';
 import { type Theme } from '@mui/system';
 import { TreeItem, SimpleTreeView } from '@mui/x-tree-view';
+import { type TreeImageGroup } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 import Lightbox from '@/components/Lightbox';
@@ -11,7 +12,6 @@ import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { usePathSegments } from '@/hooks/usePathSegments';
 import unique from '@/tools/unique';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 
 interface FolderTreeItemProps {
   group: TreeImageGroup;

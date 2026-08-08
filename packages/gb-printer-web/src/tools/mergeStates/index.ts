@@ -1,8 +1,8 @@
 import { type Palette , type Image } from 'gb-printer-schemas';
+import { type SerializableImageGroup } from 'gb-printer-schemas';
 import uniqueBy from '@/tools/unique/by';
 import { type ExportableState } from '@/types/ExportState';
 import { type Frame } from '@/types/Frame';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
 
 const mergeBy = <T>(by: keyof T) => {
   const unique = uniqueBy<T>(by);

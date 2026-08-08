@@ -4,6 +4,7 @@ import {
   type MonochromeImage,
   type RGBNHashes,
 } from 'gb-printer-schemas';
+import { type SerializableImageGroup } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import objectHash from 'object-hash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -21,7 +22,6 @@ import {
 } from '@/stores/stores';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { randomId } from '@/tools/randomId';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
 
 type ColorKey = 'r' | 'g' | 'b' | 'n' | 's'; // s=separator
 

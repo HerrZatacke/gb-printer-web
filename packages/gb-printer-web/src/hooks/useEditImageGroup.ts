@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { toCreationDate } from 'gb-printer-schemas';
+import { type SerializableImageGroup, TreeImageGroup } from 'gb-printer-schemas';
 import { useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
@@ -13,7 +14,6 @@ import {
 import { cleanFullSlug } from '@/tools/cleanSlug';
 import { randomId } from '@/tools/randomId';
 import { type DialogOption } from '@/types/Dialog';
-import { type SerializableImageGroup, TreeImageGroup } from '@/types/ImageGroup';
 
 export const NEW_GROUP = 'NEW_GROUP';
 

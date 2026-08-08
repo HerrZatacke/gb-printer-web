@@ -1,8 +1,8 @@
+import { type TreeImageGroup } from 'gb-printer-schemas';
 import { useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useGalleryTreeAncestors } from '@/tools/useGalleryTreeAncestors';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 
 export interface Segment {
   group: TreeImageGroup;

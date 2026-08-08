@@ -1,14 +1,14 @@
 import { type Palette , type Image } from 'gb-printer-schemas';
+import {
+  type SerializableImageGroup,
+  type TreeImageGroup,
+} from 'gb-printer-schemas';
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { type Frame } from '@/types/Frame';
 import { type FrameGroup } from '@/types/FrameGroup';
-import {
-  type SerializableImageGroup,
-  type TreeImageGroup,
-} from '@/types/ImageGroup';
 import { type Plugin } from '@/types/Plugin';
 import {
   DeleteBinaryItemsByHashesParamsSchema,

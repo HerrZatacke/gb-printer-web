@@ -1,3 +1,4 @@
+import path from 'node:path';
 import stylistic from '@stylistic/eslint-plugin';
 import { defineConfig, globalIgnores } from 'eslint/config'
 import nextVitals from 'eslint-config-next/core-web-vitals'
@@ -14,7 +15,10 @@ const eslintConfig = defineConfig([
     settings: {
       'import/resolver': {
         typescript: {
-          project: './packages/*/tsconfig.json',
+          project: [
+            path.join(import.meta.dirname, 'packages/gb-printer-web/tsconfig.json'),
+            path.join(import.meta.dirname, 'packages/gb-printer-schemas/tsconfig.json'),
+          ],
         },
       },
     },

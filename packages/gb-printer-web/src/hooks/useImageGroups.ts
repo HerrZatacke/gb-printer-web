@@ -1,4 +1,8 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import {
+  type SerializableImageGroup,
+  type TreeImageGroup,
+} from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import {
   deleteImageGroupsByIdsAction,
@@ -10,10 +14,6 @@ import {
   updateImageGroupsAction,
 } from '@/stores/items/queries/imageGroups';
 import { cleanFullSlug } from '@/tools/cleanSlug';
-import {
-  type SerializableImageGroup,
-  type TreeImageGroup,
-} from '@/types/ImageGroup';
 
 export interface UseImageGroupsOptions {
   list?: boolean;

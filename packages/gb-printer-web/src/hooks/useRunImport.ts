@@ -5,6 +5,7 @@ import {
   toCreationDate,
   type Image,
 } from 'gb-printer-schemas';
+import { type SerializableImageGroup } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -26,7 +27,6 @@ import padToHeight from '@/tools/padToHeight';
 import { randomId } from '@/tools/randomId';
 import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
-import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
 import { toSlug } from './useEditImageGroup';
 

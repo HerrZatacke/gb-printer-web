@@ -1,6 +1,6 @@
+import { type TreeImageGroup } from 'gb-printer-schemas';
 import { type IDBPDatabase } from 'idb';
 import sortBy from '@/tools/sortby';
-import { type TreeImageGroup } from '@/types/ImageGroup';
 import {
   facetFromImage,
   facetFromSerializableImageGroup,
