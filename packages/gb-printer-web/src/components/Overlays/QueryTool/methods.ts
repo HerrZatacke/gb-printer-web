@@ -46,9 +46,7 @@ const exampleImageQuerySort = {
 const exampleImageQuerySortJSON = JSON.stringify(exampleImageQuerySort);
 
 const exampleFilters = {
-  tags: [
-    'testing',
-  ],
+  tags: [],
 };
 const exampleFiltersJSON = JSON.stringify(exampleFilters);
 
